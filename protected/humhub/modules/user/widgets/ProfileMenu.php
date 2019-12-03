@@ -9,6 +9,8 @@
 namespace humhub\modules\user\widgets;
 
 use Yii;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\LeftNavigation;
 use humhub\modules\user\models\User;
 use humhub\modules\user\permissions\ViewAboutPage;
 
@@ -24,7 +26,7 @@ use humhub\modules\user\permissions\ViewAboutPage;
  * @since 0.5
  * @author Luke
  */
-class ProfileMenu extends \humhub\widgets\BaseMenu
+class ProfileMenu extends LeftNavigation
 {
 
     /**
@@ -32,41 +34,33 @@ class ProfileMenu extends \humhub\widgets\BaseMenu
      */
     public $user;
 
-    /**
-     * @inheritdoc
-     */
-    public $template = "@humhub/widgets/views/leftNavigation";
 
     /**
      * @inheritdoc
      */
     public function init()
     {
-        $this->addItemGroup([
-            'id' => 'profile',
-            'label' => Yii::t('UserModule.widgets_ProfileMenuWidget', '<strong>Profile</strong> menu'),
-            'sortOrder' => 100,
-        ]);
 
-        $this->addItem([
-            'label' => Yii::t('UserModule.widgets_ProfileMenuWidget', 'Stream'),
-            'group' => 'profile',
-            'icon' => '<i class="fa fa-bars"></i>',
+        $this->panelTitle = Yii::t('UserModule.profile', '<strong>Profile</strong> menu');
+
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('UserModule.profile', 'Stream'),
+            'icon' => 'bars',
             'url' => $this->user->createUrl('//user/profile/home'),
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->id == "profile" && (Yii::$app->controller->action->id == "index" || Yii::$app->controller->action->id == "home")),
-        ]);
+            'isActive' =>  MenuLink::isActiveState('user', 'profile', ['index', 'home'])
+        ]));
 
-        if ($this->user->permissionManager->can(new ViewAboutPage())) {
-            $this->addItem([
-                'label' => Yii::t('UserModule.widgets_ProfileMenuWidget', 'About'),
-                'group' => 'profile',
-                'icon' => '<i class="fa fa-info-circle"></i>',
-                'url' => $this->user->createUrl('//user/profile/about'),
-                'sortOrder' => 300,
-                'isActive' => (Yii::$app->controller->id == "profile" && Yii::$app->controller->action->id == "about"),
-            ]);
-        }
+
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('UserModule.profile', 'About'),
+            'icon' => 'info-circle',
+            'url' => $this->user->createUrl('/user/profile/about'),
+            'sortOrder' => 300,
+            'isActive' =>  MenuLink::isActiveState('user', 'profile', 'about'),
+            'isVisible' => $this->user->permissionManager->can(ViewAboutPage::class)
+        ]));
+
         parent::init();
     }
 
@@ -76,7 +70,7 @@ class ProfileMenu extends \humhub\widgets\BaseMenu
     public function run()
     {
         if (Yii::$app->user->isGuest && $this->user->visibility != User::VISIBILITY_ALL) {
-            return;
+            return '';
         }
 
         return parent::run();

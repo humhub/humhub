@@ -19,12 +19,12 @@ class AdminNotificationCategory extends NotificationCategory
 
     public function getDescription()
     {
-        return Yii::t('AdminModule.notifications_AdminNotificationCategory', 'Receive Notifications for administrative events like available updates.');
+        return Yii::t('AdminModule.notification', 'Receive Notifications for administrative events like available updates.');
     }
 
     public function getTitle()
     {
-        return Yii::t('AdminModule.notifications_AdminNotificationCategory', 'Administrative');
+        return Yii::t('AdminModule.notification', 'Administrative');
     }
 
 }

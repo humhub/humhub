@@ -10,6 +10,8 @@ namespace humhub\modules\content\widgets;
 
 use humhub\modules\dashboard\controllers\DashboardController;
 use humhub\modules\stream\actions\Stream;
+use humhub\modules\ui\menu\DropdownDivider;
+use humhub\modules\ui\menu\MenuEntry;
 use Yii;
 use humhub\components\Widget;
 use humhub\modules\space\models\Space;
@@ -18,7 +20,7 @@ use humhub\modules\content\components\ContentContainerController;
 
 /**
  * WallEntry is responsible to show a content inside a stream/wall.
- * 
+ *
  * @see \humhub\modules\content\components\ContentActiveRecord
  * @since 0.20
  * @author luke
@@ -57,22 +59,23 @@ class WallEntry extends Widget
 
     /**
      * Route to edit the content
-     * 
+     *
      * @var string
      */
     public $editRoute = "";
 
     /**
      * Defines the way the edit of this wallentry is displayed.
-     * 
+     *
      * @var string
      */
     public $editMode = self::EDIT_MODE_INLINE;
 
     /**
      * The wall entry layout to use
-     * 
+     *
      * @var string
+     * @deprecated since 1.4 use [[widgetLayout]] instead
      */
     public $wallEntryLayout = "@humhub/modules/content/widgets/views/wallEntry.php";
 
@@ -131,26 +134,19 @@ class WallEntry extends Widget
     /**
      * @inheritdoc
      */
-    public static function widget($config = [])
+    public function init()
     {
-        ob_start();
-        ob_implicit_flush(false);
-        try {
-            /* @var $widget Widget */
-            $config['class'] = get_called_class();
-            $widget = Yii::createObject($config);
-            $out = $widget->render($widget->wallEntryLayout, $widget->getWallEntryViewParams());
-        } catch (\Exception $e) {
-            ob_end_clean();
-            throw $e;
+        // Compatibility layer
+        parent::init();
+        if(empty($this->widgetLayout)) {
+            $this->widgetLayout = $this->wallEntryLayout;
         }
-
-        return ob_get_clean() . $out;
     }
+
 
     /**
      * Returns the edit url to edit the content (if supported)
-     * 
+     *
      * @return string url
      */
     public function getEditUrl()
@@ -173,16 +169,16 @@ class WallEntry extends Widget
 
     /**
      * Returns an array of context menu items either in form of a single array:
-     * 
+     *
      * ['label' => 'mylabel', 'icon' => 'fa-myicon', 'data-action-click' => 'myaction', ...]
-     * 
+     *
      * or as widget type definition:
-     * 
+     *
      * [MyWidget::class, [...], [...]]
-     * 
+     *
      * If an [[editRoute]] is set this function will include an edit button.
      * The edit logic can be changed by changing the [[editMode]].
-     * 
+     *
      * @return array
      * @since 1.2
      */
@@ -196,12 +192,13 @@ class WallEntry extends Widget
             $this->addControl($result, [EditLink::class, ['model' => $this->contentObject, 'mode' => $this->editMode, 'url' => $this->getEditUrl()], ['sortOrder' => 200]]);
         }
 
-        $this->addControl($result, [VisibilityLink::class, ['contentRecord' => $this->contentObject], ['sortOrder' => 250]]);
-        $this->addControl($result, [NotificationSwitchLink::class, ['content' => $this->contentObject], ['sortOrder' => 300]]);
-        $this->addControl($result, [PermaLink::class, ['content' => $this->contentObject], ['sortOrder' => 400]]);
-        $this->addControl($result, [PinLink::class, ['content' => $this->contentObject], ['sortOrder' => 500]]);
-        $this->addControl($result, [MoveContentLink::class, ['model' => $this->contentObject], ['sortOrder' => 550]]);
-        $this->addControl($result, [ArchiveLink::class, ['content' => $this->contentObject], ['sortOrder' => 600]]);
+        $this->addControl($result, [PermaLink::class, ['content' => $this->contentObject], ['sortOrder' => 300]]);
+        $this->addControl( $result, new DropdownDivider(['sortOrder' => 350]));
+        $this->addControl($result, [VisibilityLink::class, ['contentRecord' => $this->contentObject], ['sortOrder' => 400]]);
+        $this->addControl($result, [NotificationSwitchLink::class, ['content' => $this->contentObject], ['sortOrder' => 500]]);
+        $this->addControl($result, [PinLink::class, ['content' => $this->contentObject], ['sortOrder' => 600]]);
+        $this->addControl($result, [MoveContentLink::class, ['model' => $this->contentObject], ['sortOrder' => 700]]);
+        $this->addControl($result, [ArchiveLink::class, ['content' => $this->contentObject], ['sortOrder' => 800]]);
 
         if(isset($this->controlsOptions['add'])) {
             foreach ($this->controlsOptions['add'] as $linkOptions) {
@@ -212,26 +209,40 @@ class WallEntry extends Widget
         return $result;
     }
 
-    protected function addControl(&$result, $options) {
-        if(isset($this->controlsOptions['prevent']) && isset($options[0]) && in_array($options[0], $this->controlsOptions['prevent'])) {
+    protected function addControl(&$result, $entry) {
+        $entryClass = null;
+        if($entry instanceof MenuEntry) {
+           $entryClass = get_class($entry);
+        } elseif(is_array($entry) && isset($entry[0])) {
+           $entryClass = $entry[0];
+        }
+
+        if(isset($this->controlsOptions['prevent']) && $entryClass && in_array($entryClass, $this->controlsOptions['prevent'])) {
             return;
         }
 
-        $result[] = $options;
+        $result[] = $entry;
     }
 
     /**
-     * Renders the wall entry output 
-     * 
+     * Renders the wall entry output
+     *
+     * Note this function does not call
+     *
      * @return string the output
      * @throws \Exception
+     * @deprecated since 1.4
      */
     public function renderWallEntry()
     {
         ob_start();
         ob_implicit_flush(false);
         try {
-            $out = $this->render($this->wallEntryLayout, $this->getWallEntryViewParams());
+            $out = '';
+            if($this->beforeRun()) {
+                $result = $this->render($this->widgetLayout, $this->getLayoutViewParams());
+                $out = $this->afterRun($result);
+            }
         } catch (\Exception $e) {
             ob_end_clean();
             throw $e;
@@ -241,9 +252,18 @@ class WallEntry extends Widget
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getLayoutViewParams()
+    {
+        return $this->getWallEntryViewParams();
+    }
+
+    /**
      * Returns the view paramters for the wall entry layout
-     * 
+     *
      * @return array the view parameter array
+     * @deprecated since 1.4 use [[getLayoutViewParams()]] instead
      */
     public function getWallEntryViewParams()
     {

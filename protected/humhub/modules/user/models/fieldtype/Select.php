@@ -50,13 +50,13 @@ class Select extends BaseType
         return parent::getFormDefinition([
                     get_class($this) => [
                         'type' => 'form',
-                        'title' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Select field options'),
+                        'title' => Yii::t('UserModule.profile', 'Select field options'),
                         'elements' => [
                             'options' => [
                                 'type' => 'textarea',
-                                'label' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Possible values'),
+                                'label' => Yii::t('UserModule.profile', 'Possible values'),
                                 'class' => 'form-control',
-                                'hint' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'One option per line. Key=>Value Format (e.g. yes=>Yes)')
+                                'hint' => Yii::t('UserModule.profile', 'One option per line. Key=>Value Format (e.g. yes=>Yes)')
                             ],
                         ]
         ]]);
@@ -98,7 +98,7 @@ class Select extends BaseType
                 'class' => 'form-control',
                 'readonly' => (!$this->profileField->editable),
                 'items' => $this->getSelectItems(),
-                'prompt' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Please select:'),
+                'prompt' => Yii::t('UserModule.profile', 'Please select:'),
         ]];
     }
 

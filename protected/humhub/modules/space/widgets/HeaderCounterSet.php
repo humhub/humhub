@@ -38,12 +38,12 @@ class HeaderCounterSet extends CounterSet
         $postQuery = Content::find()
             ->where(['object_model' => Post::class, 'contentcontainer_id' => $this->space->contentContainerRecord->id]);
         $this->counters[] = new CounterSetItem([
-            'label' => Yii::t('SpaceModule.widgets_views_profileHeader', 'Posts'),
+            'label' => Yii::t('SpaceModule.base', 'Posts'),
             'value' => $postQuery->count()
         ]);
 
         $this->counters[] = new CounterSetItem([
-            'label' => Yii::t('SpaceModule.widgets_views_profileHeader', 'Members'),
+            'label' => Yii::t('SpaceModule.base', 'Members'),
             'value' => Membership::getSpaceMembersQuery($this->space)->active()->visible()->count(),
             'url' => Url::to(['/space/membership/members-list', 'container' => $this->space]),
             'linkOptions' => ['data-target' => '#globalModal']
@@ -51,7 +51,7 @@ class HeaderCounterSet extends CounterSet
 
         if (!Yii::$app->getModule('space')->disableFollow) {
             $this->counters[] = new CounterSetItem([
-                'label' => Yii::t('SpaceModule.widgets_views_profileHeader', 'Followers'),
+                'label' => Yii::t('SpaceModule.base', 'Followers'),
                 'value' => $this->space->getFollowerCount(),
                 'url' => Url::to(['/space/space/follower-list', 'container' => $this->space]),
                 'linkOptions' => ['data-target' => '#globalModal']

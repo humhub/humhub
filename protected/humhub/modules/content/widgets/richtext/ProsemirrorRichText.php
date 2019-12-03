@@ -10,7 +10,6 @@ namespace humhub\modules\content\widgets\richtext;
 
 use humhub\libs\EmojiMap;
 use humhub\libs\Helpers;
-use humhub\libs\Markdown;
 use humhub\libs\ParameterEvent;
 use humhub\modules\content\assets\ProseMirrorRichTextAsset;
 use humhub\modules\content\models\ContentContainer;
@@ -192,9 +191,9 @@ class ProsemirrorRichText extends AbstractRichText
      */
     protected function renderMinimal() {
         $result = preg_replace('/\\\\(\n|\r){1,2}/',  ' ', $this->text);
-        $result = strip_tags((new Markdown())->parse($result));
+        $result = strip_tags((new PreviewMarkdown())->parse($result));
         $result = $this->toUTF8Emoji($result);
-        return  Html::encode(($this->maxLength > 0) ? Helpers::truncateText($result, $this->maxLength) : $result);
+        return  trim(Html::encode(($this->maxLength > 0) ? Helpers::truncateText($result, $this->maxLength) : $result));
     }
 
     protected function toUTF8Emoji($text)

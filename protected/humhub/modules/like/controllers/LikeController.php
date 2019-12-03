@@ -8,20 +8,36 @@
 
 namespace humhub\modules\like\controllers;
 
+use humhub\modules\like\Module;
 use Yii;
 use humhub\modules\like\models\Like;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\content\components\ContentAddonController;
+use yii\web\HttpException;
 
 /**
  * Like Controller
  *
  * Handles requests by the like widgets. (e.g. like, unlike, show likes)
  *
+ * @property Module $module
  * @since 0.5
  */
 class LikeController extends ContentAddonController
 {
+
+    /**
+     * @param $action
+     * @return bool
+     * @throws HttpException
+     */
+    public function beforeAction($action)
+    {
+        if (!$this->module->isEnabled) {
+            throw new HttpException(404, 'The like module not enabled!');
+        }
+        return parent::beforeAction($action);
+    }
 
     /**
      * @inheritdoc
@@ -112,7 +128,7 @@ class LikeController extends ContentAddonController
         ]);
         $query->orderBy('like.created_at DESC');
 
-        $title = Yii::t('LikeModule.controllers_LikeController', "<strong>Users</strong> who like this");
+        $title = Yii::t('LikeModule.base', "<strong>Users</strong> who like this");
 
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }

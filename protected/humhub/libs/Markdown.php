@@ -79,9 +79,9 @@ class Markdown extends GithubMarkdown
      */
     protected function renderCode($block)
     {
-        $class = isset($block['language']) ? ' class="' . $block['language'] . '"' : '';
+        $class = isset($block['language']) ? ' class="' . Html::encode($block['language']) . '"' : '';
 
-        return "<pre><code$class>" . $block['content'] . "\n" . "</code></pre>\n";
+        return "<pre><code $class>" . $block['content'] . "\n" . "</code></pre>\n";
     }
 
     /**

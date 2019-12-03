@@ -8,39 +8,41 @@
 
 namespace humhub\modules\space\modules\manage\widgets;
 
-use humhub\widgets\BaseMenu;
 use Yii;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\TabMenu;
 
 /**
  * Space Administration Menu
  *
  * @author Luke
  */
-class DefaultMenu extends BaseMenu
+class DefaultMenu extends TabMenu
 {
-
-    public $template = '@humhub/widgets/views/tabMenu';
 
     /**
      * @var \humhub\modules\space\models\Space
      */
     public $space;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
-        $this->addItem([
-            'label' => Yii::t('AdminModule.manage', 'Basic'),
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.base', 'Basic'),
             'url' => $this->space->createUrl('/space/manage/default/index'),
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->id == 'default' && Yii::$app->controller->action->id == 'index'),
-        ]);
+            'isActive' => MenuLink::isActiveState(null, 'default', 'index')
+        ]));
 
-        $this->addItem([
-            'label' => Yii::t('AdminModule.manage', 'Advanced'),
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.base', 'Advanced'),
             'url' => $this->space->createUrl('/space/manage/default/advanced'),
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->id == 'default' && Yii::$app->controller->action->id == 'advanced'),
-        ]);
+            'isActive' => MenuLink::isActiveState(null, 'default', 'advanced')
+        ]));
 
         parent::init();
     }

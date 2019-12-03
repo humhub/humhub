@@ -11,7 +11,7 @@ use humhub\modules\like\widgets\LikeLink;
 /* @var $editUrl string */
 /* @var $loadUrl string */
 /* @var $user \humhub\modules\user\models\User */
-/* @var $canWrite bool */
+/* @var $canEdit bool */
 /* @var $canDelete bool */
 /* @var $createdAt string */
 /* @var $updatedAt string */
@@ -20,7 +20,7 @@ use humhub\modules\like\widgets\LikeLink;
 <div class="media" id="comment_<?= $comment->id; ?>"
      data-action-component="comment.Comment"
      data-content-delete-url="<?= $deleteUrl ?>">
-         <?php if ($canWrite || $canDelete) : ?>
+         <?php if ($canEdit || $canDelete) : ?>
         <div class="comment-entry-loader pull-right"></div>
         <ul class="nav nav-pills preferences">
             <li class="dropdown ">
@@ -29,13 +29,13 @@ use humhub\modules\like\widgets\LikeLink;
                 </a>
 
                 <ul class="dropdown-menu pull-right">
-                    <?php if ($canWrite): ?>
+                    <?php if ($canEdit): ?>
                         <li>
                             <a href="#" class="comment-edit-link" data-action-click="edit" data-action-url="<?= $editUrl ?>">
-                                <i class="fa fa-pencil"></i> <?= Yii::t('CommentModule.widgets_views_showComment', 'Edit') ?>
+                                <i class="fa fa-pencil"></i> <?= Yii::t('CommentModule.base', 'Edit') ?>
                             </a>
                             <a href="#" class="comment-cancel-edit-link" data-action-click="cancelEdit" data-action-url="<?= $loadUrl ?>" style="display:none;">
-                                <i class="fa fa-pencil"></i> <?= Yii::t('CommentModule.widgets_views_showComment', 'Cancel Edit') ?>
+                                <i class="fa fa-pencil"></i> <?= Yii::t('CommentModule.base', 'Cancel Edit') ?>
                             </a>
                         </li>
                     <?php endif; ?>
@@ -43,7 +43,7 @@ use humhub\modules\like\widgets\LikeLink;
                     <?php if ($canDelete): ?>
                         <li>
                             <a href="#" data-action-click="delete">
-                                <i class="fa fa-trash-o"></i>  <?= Yii::t('CommentModule.widgets_views_showComment', 'Delete') ?>
+                                <i class="fa fa-trash-o"></i>  <?= Yii::t('CommentModule.base', 'Delete') ?>
                             </a>
                         </li>
                     <?php endif; ?>
@@ -64,7 +64,7 @@ use humhub\modules\like\widgets\LikeLink;
         </div>
         <!-- class comment_edit_content required since v1.2 -->
         <div class="content comment_edit_content" id="comment_editarea_<?= $comment->id; ?>">
-            <div id="comment-message-<?= $comment->id; ?>" class="comment-message" data-ui-markdown data-ui-show-more data-read-more-text="<?= Yii::t('CommentModule.widgets_views_showComment', 'Read full comment...') ?>">
+            <div id="comment-message-<?= $comment->id; ?>" class="comment-message" data-ui-markdown data-ui-show-more data-read-more-text="<?= Yii::t('CommentModule.base', 'Read full comment...') ?>">
                 <?= RichText::output($comment->message, ['record' => $comment]); ?>
             </div>
             <?= ShowFiles::widget(['object' => $comment]); ?>

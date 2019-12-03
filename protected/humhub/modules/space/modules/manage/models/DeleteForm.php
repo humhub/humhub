@@ -42,7 +42,7 @@ class DeleteForm extends Model
     public function attributeLabels()
     {
         return [
-            'currentPassword' => Yii::t('SpaceModule.forms_SpaceDeleteForm', 'Your password'),
+            'currentPassword' => Yii::t('SpaceModule.manage', 'Your password'),
         ];
     }
 

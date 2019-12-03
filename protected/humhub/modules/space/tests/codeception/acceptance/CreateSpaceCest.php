@@ -9,8 +9,9 @@ class CreateSpaceCest
 
     /**
      * Create private space
-     * 
+     *
      * @param AcceptanceTester $I
+     * @throws \Exception
      */
     public function testCreateSpace(AcceptanceTester $I)
     {

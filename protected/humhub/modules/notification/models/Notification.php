@@ -161,17 +161,6 @@ class Notification extends \humhub\components\ActiveRecord
     }
 
     /**
-     * Returns space of this notification
-     *
-     * @return \yii\db\ActiveQuery
-     * @deprecated since version 1.1
-     */
-    public function getSpace()
-    {
-        return $this->hasOne(Space::class, ['id' => 'space_id']);
-    }
-
-    /**
      * Returns polymorphic relation linked with this notification
      *
      * @return \humhub\components\ActiveRecord

@@ -174,7 +174,7 @@ if(!$model->content->canView()) {
 }
 ```
 
-## Content edit permission
+### Content Write Permission
 
 By default users can edit a content if one of the following conditions defined in `Content::canEdit()` are met:
 
@@ -380,6 +380,7 @@ Content addons can be used to extend the content concept with further features. 
 ## ContentContainerModule
 
 See the [Use of ContentContainerModule](modules-base-class.md#use-of-contentcontainermodule) section.
+See the [Use of ContentContainerModule](modules.md#use-of-container-module) section.
 
 ## Content Streams
 

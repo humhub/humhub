@@ -94,11 +94,11 @@ class ApprovalController extends Controller
         $user = $this->getUser($id);
 
         $model = new ApproveUserForm;
-        $model->subject = Yii::t('AdminModule.controllers_ApprovalController', "Account Request for '{displayName}' has been approved.", ['{displayName}' => Html::encode($user->displayName)]);
-        $model->message = strtr(Yii::$app->getModule('user')->settings->get('auth.registrationApprovalMailContent', Yii::t('AdminModule.controllers_ApprovalController', \humhub\modules\admin\models\forms\AuthenticationSettingsForm::defaultRegistrationApprovalMailContent)), [
-            '{displayName}' => Html::encode($user->displayName),
-            '{loginURL}' => urldecode(Url::to(["/user/auth/login"], true)),
-            '{AdminName}' => Yii::$app->user->getIdentity()->displayName,
+        $model->subject = Yii::t('AdminModule.user', "Account Request for '{displayName}' has been approved.", ['{displayName}' => Html::encode($user->displayName)]);
+        $model->message = strtr(Yii::$app->getModule('user')->settings->get('auth.registrationApprovalMailContent', Yii::t('AdminModule.user', \humhub\modules\admin\models\forms\AuthenticationSettingsForm::defaultRegistrationApprovalMailContent)), [
+                    '{displayName}' => Html::encode($user->displayName),
+                    '{loginURL}' => urldecode(Url::to(["/user/auth/login"], true)),
+                    '{AdminName}' => Yii::$app->user->getIdentity()->displayName,
         ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -120,10 +120,10 @@ class ApprovalController extends Controller
         $user = $this->getUser($id);
 
         $model = new ApproveUserForm;
-        $model->subject = Yii::t('AdminModule.controllers_ApprovalController', 'Account Request for \'{displayName}\' has been declined.', ['{displayName}' => Html::encode($user->displayName)]);
-        $model->message = strtr(Yii::$app->getModule('user')->settings->get('auth.registrationDenialMailContent', Yii::t('AdminModule.controllers_ApprovalController', \humhub\modules\admin\models\forms\AuthenticationSettingsForm::defaultRegistrationDenialMailContent)), [
-            '{displayName}' => Html::encode($user->displayName),
-            '{AdminName}' => Yii::$app->user->getIdentity()->displayName,
+        $model->subject = Yii::t('AdminModule.user', 'Account Request for \'{displayName}\' has been declined.', ['{displayName}' => Html::encode($user->displayName)]);
+        $model->message = strtr(Yii::$app->getModule('user')->settings->get('auth.registrationDenialMailContent', Yii::t('AdminModule.user', \humhub\modules\admin\models\forms\AuthenticationSettingsForm::defaultRegistrationDenialMailContent)), [
+                    '{displayName}' => Html::encode($user->displayName),
+                    '{AdminName}' => Yii::$app->user->getIdentity()->displayName,
         ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {

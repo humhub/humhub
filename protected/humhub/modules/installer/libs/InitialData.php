@@ -41,6 +41,7 @@ class InitialData
         Yii::$app->getModule('user')->settings->set('auth.needApproval', '0');
         Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', '1');
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInvite', '1');
+        Yii::$app->getModule('user')->settings->set('auth.showCaptureInRegisterForm', '1');
 
         // Mailing
         Yii::$app->settings->set('mailer.transportType', 'php');
@@ -301,19 +302,6 @@ class InitialData
             $field->fieldType->maxLength = 100;
             $field->fieldType->save();
         }
-
-        $field = new ProfileField();
-        $field->internal_name = "im_msn";
-        $field->title = 'MSN';
-        $field->sort_order = 600;
-        $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->maxLength = 100;
-            $field->fieldType->save();
-        }
-
 
         $field = new ProfileField();
         $field->internal_name = "im_xmpp";

@@ -2,7 +2,9 @@
 
 namespace humhub\modules\content\widgets;
 
-class WallEntryLabels extends \yii\base\Widget
+use yii\base\Widget;
+
+class WallEntryLabels extends Widget
 {
 
     /**

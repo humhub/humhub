@@ -15,6 +15,67 @@ if (version_compare(Yii::$app->version, '1.3', '>')) {
 }
 ```
 
+Migrate from 1.3 to 1.4
+-----------------------
+
+### CSP and Nonce support
+
+Please test your modules against the `security.strict.json` rules and mention possible incompatibilities in your module
+description.
+
+In order to support [CSP nonces](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src) 
+you should either completely avoid using inline scripts or use one of the techniques described 
+in the [Javascript Guide](javascript.md). Its furthermore recommended to avoid inline styles, as they may be restricted
+in the strict CSP rule in a future version as well.
+
+### Menus
+
+The menu system has been revised, is mostly downward compatible, but the old API methods/views will be removed with the next HumHub 1.5 version.
+
+Please adjust your module menus accordingly. More details can be found in the [Menu](menus.md) chapter of the developer documentation. 
+
+### Language codes
+
+Following language codes has been changed.
+
+If you're using any custom modules, please change the message directories accordingly.
+
+| Old language code| New language code |
+|----------|-------------|
+| en | en-US |
+| en_gb | en-GB |
+| pt_br | pt-BR |
+| nb_no | nb-NO |
+| nn_no | nn-NO |
+| zh_cn | zh-CN |
+| zh_tw | zh-TW |
+| fa_ir | fa-IR |
+
+
+### Removed deprecated methods
+
+The following deprecated method have been removed.
+ 
+**Content model -removed methods **
+
+- canWrite()
+- canRead()
+- canDelete()
+- getSpace()
+- getUser()
+
+**Removed class**
+
+- humhub\modules\space\modules\manage\widgets\Menu
+
+**Space class - removed methods**
+
+- canInvite()
+- canShare()
+
+**Notification class - removed methods**
+
+- getSpace()
 
 Migrate from 1.2 to 1.3
 -----------------------

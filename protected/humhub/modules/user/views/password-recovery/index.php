@@ -1,48 +1,52 @@
 <?php
 
+use humhub\widgets\Button;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use humhub\compat\CActiveForm;
+use yii\bootstrap\ActiveForm;
+use humhub\widgets\SiteLogo;
+use yii\captcha\Captcha;
 
-$this->pageTitle = Yii::t('UserModule.views_auth_recoverPassword', 'Password recovery');
+$this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
 ?>
 <div class="container" style="text-align: center;">
-    <?php echo humhub\widgets\SiteLogo::widget(['place' => 'login']); ?>
+    <?= SiteLogo::widget(['place' => 'login']); ?>
     <br>
 
     <div class="row">
-        <div id="password-recovery-form" class="panel panel-default animated bounceIn" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
-            <div class="panel-heading"><?php echo Yii::t('UserModule.views_auth_recoverPassword', '<strong>Password</strong> recovery'); ?></div>
+        <div id="password-recovery-form" class="panel panel-default animated bounceIn"
+             style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
+            <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Password</strong> recovery'); ?></div>
             <div class="panel-body">
 
-                <?php $form = CActiveForm::begin(['enableClientValidation' => false]); ?>
+                <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 
-                <p><?= Yii::t('UserModule.views_auth_recoverPassword', 'Just enter your e-mail address. We\'ll send you recovery instructions!'); ?></p>
+                <p><?= Yii::t('UserModule.auth', 'Just enter your e-mail address. We\'ll send you recovery instructions!'); ?></p>
 
-                <?= $form->field($model, 'email')->textInput(['class' => 'form-control', 'id' => 'email_txt', 'placeholder' => Yii::t('UserModule.views_auth_recoverPassword', 'Your email')])->label(false) ?>
+                <?= $form->field($model, 'email')->textInput(['class' => 'form-control', 'id' => 'email_txt', 'placeholder' => Yii::t('UserModule.auth', 'Your email')])->label(false) ?>
 
                 <div class="form-group">
-                    <?=\yii\captcha\Captcha::widget([
+                    <?= $form->field($model, 'verifyCode')->widget(Captcha::class, [
                         'model' => $model,
                         'attribute' => 'verifyCode',
                         'captchaAction' => '/user/auth/captcha',
-                        'options' => ['class' => 'form-control', 'placeholder' => Yii::t('UserModule.views_auth_recoverPassword', 'Enter security code above')]
-                    ]);
+                        'options' => ['class' => 'form-control', 'placeholder' => Yii::t('UserModule.auth', 'Enter security code above')]
+                    ])->label(false);
                     ?>
-                    <?= $form->error($model, 'verifyCode'); ?>
                 </div>
 
                 <hr>
-                <?= Html::submitButton(Yii::t('UserModule.views_auth_recoverPassword', 'Reset password'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?> <a class="btn btn-primary" data-ui-loader href="<?php echo Url::home(); ?>"><?php echo Yii::t('UserModule.views_auth_recoverPassword', 'Back') ?></a>
+                <?= Html::submitButton(Yii::t('UserModule.auth', 'Reset password'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+                <?= Button::primary(Yii::t('UserModule.auth', 'Back'))->link(Url::home())->pjax(false) ?>
 
-                <?php CActiveForm::end(); ?>
+                <?php ActiveForm::end(); ?>
 
             </div>
         </div>
     </div>
 </div>
 
-<script type="text/javascript">
+<script <?= \humhub\libs\Html::nonce() ?>>
 
     $(function () {
         // set cursor to email field
@@ -50,9 +54,9 @@ $this->pageTitle = Yii::t('UserModule.views_auth_recoverPassword', 'Password rec
     });
 
     // Shake panel after wrong validation
-<?php if ($model->hasErrors()) : ?>
-        $('#password-recovery-form').removeClass('bounceIn');
-        $('#password-recovery-form').addClass('shake');
-        $('#app-title').removeClass('fadeIn');
-<?php endif; ?>
+    <?php if ($model->hasErrors()) : ?>
+    $('#password-recovery-form').removeClass('bounceIn');
+    $('#password-recovery-form').addClass('shake');
+    $('#app-title').removeClass('fadeIn');
+    <?php endif; ?>
 </script>

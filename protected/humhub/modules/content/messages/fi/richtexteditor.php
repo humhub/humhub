@@ -15,6 +15,7 @@ return array (
   'Delete table' => 'Poista lista',
   'Flags' => 'Liput',
   'Food & Drink' => 'Ruoka &amp; Juoma',
+  'Heading' => 'Otsikko',
   'Height' => 'Korkeus',
   'Horizontal rule' => 'Horisontaalinen sääntö',
   'Image' => 'Kuva',

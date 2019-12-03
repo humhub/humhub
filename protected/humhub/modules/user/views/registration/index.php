@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 
-$this->pageTitle = Yii::t('UserModule.views_auth_createAccount', 'Create Account');
+$this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
 ?>
 
 <div class="container" style="text-align: center;">
@@ -10,7 +10,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_createAccount', 'Create Account
     <br/>
     <div class="row">
         <div id="create-account-form" class="panel panel-default animated bounceIn" style="max-width: 500px; margin: 0 auto 20px; text-align: left;">
-            <div class="panel-heading"><?php echo Yii::t('UserModule.views_auth_createAccount', '<strong>Account</strong> registration'); ?></div>
+            <div class="panel-heading"><?php echo Yii::t('UserModule.auth', '<strong>Account</strong> registration'); ?></div>
             <div class="panel-body">
                 <?php $form = \yii\bootstrap\ActiveForm::begin(['id' => 'registration-form', 'enableClientValidation' => false]); ?>
                 <?= $hForm->render($form); ?>
@@ -20,7 +20,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_createAccount', 'Create Account
     </div>
 </div>
 
-<script type="text/javascript">
+<script <?= \humhub\libs\Html::nonce() ?>>
     $(function () {
         // set cursor to login field
         $('#User_username').focus();

@@ -59,11 +59,11 @@ class SecurityForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'allowGuestAccess' => Yii::t('InstallerModule.forms_SecurityForm', 'Allow access for non-registered users to public content (guest access)'),
-            'internalRequireApprovalAfterRegistration' => Yii::t('InstallerModule.forms_SecurityForm', 'Newly registered users have to be activated by an admin first'),
-            'internalAllowAnonymousRegistration' => Yii::t('InstallerModule.forms_SecurityForm', 'External users can register (show registration form on login)'),
-            'canInviteExternalUsersByEmail' => Yii::t('InstallerModule.forms_SecurityForm', 'Registered members can invite new users via email'),
-            'enableFriendshipModule' => Yii::t('InstallerModule.forms_SecurityForm', 'Allow friendships between members'),
+            'allowGuestAccess' => Yii::t('InstallerModule.base', 'Allow access for non-registered users to public content (guest access)'),
+            'internalRequireApprovalAfterRegistration' => Yii::t('InstallerModule.base', 'Newly registered users have to be activated by an admin first'),
+            'internalAllowAnonymousRegistration' => Yii::t('InstallerModule.base', 'External users can register (show registration form on login)'),
+            'canInviteExternalUsersByEmail' => Yii::t('InstallerModule.base', 'Registered members can invite new users via email'),
+            'enableFriendshipModule' => Yii::t('InstallerModule.base', 'Allow friendships between members'),
         ];
     }
 

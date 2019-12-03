@@ -19,7 +19,7 @@
 return [
     'Access directory' => '',
     'Can access the directory section.' => '',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Neviens vēl nav neko uzrakstījis.</b><br>Sāc un uzraksti kaut ko...',
+    '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>Neviens vēl nav neko uzrakstījis.</b><br>Sāc un uzraksti kaut ko...',
     '<b>There are no profile posts yet!</b>' => '<b>Šeit vēl nav profila ieraksti!</b>',
     '<strong>Directory</strong> menu' => '<strong>Kataloga</strong> izvēlne',
     '<strong>Group</strong> members - {group}' => '<strong>Grupas</strong> dalībnieki - {group}',

@@ -127,42 +127,42 @@ class Profile extends ActiveRecord
      */
     private function translationOnly()
     {
-        Yii::t('UserModule.models_Profile', 'First name');
-        Yii::t('UserModule.models_Profile', 'Last name');
-        Yii::t('UserModule.models_Profile', 'Title');
-        Yii::t('UserModule.models_Profile', 'Street');
-        Yii::t('UserModule.models_Profile', 'Zip');
-        Yii::t('UserModule.models_Profile', 'City');
-        Yii::t('UserModule.models_Profile', 'Country');
-        Yii::t('UserModule.models_Profile', 'State');
-        Yii::t('UserModule.models_Profile', 'About');
-        Yii::t('UserModule.models_Profile', 'Birthday');
-        Yii::t('UserModule.models_Profile', 'Hide year in profile');
+        Yii::t('UserModule.profile', 'First name');
+        Yii::t('UserModule.profile', 'Last name');
+        Yii::t('UserModule.profile', 'Title');
+        Yii::t('UserModule.profile', 'Street');
+        Yii::t('UserModule.profile', 'Zip');
+        Yii::t('UserModule.profile', 'City');
+        Yii::t('UserModule.profile', 'Country');
+        Yii::t('UserModule.profile', 'State');
+        Yii::t('UserModule.profile', 'About');
+        Yii::t('UserModule.profile', 'Birthday');
+        Yii::t('UserModule.profile', 'Hide year in profile');
 
-        Yii::t('UserModule.models_Profile', 'Gender');
-        Yii::t('UserModule.models_Profile', 'Male');
-        Yii::t('UserModule.models_Profile', 'Female');
-        Yii::t('UserModule.models_Profile', 'Custom');
-        Yii::t('UserModule.models_Profile', 'Hide year in profile');
+        Yii::t('UserModule.profile', 'Gender');
+        Yii::t('UserModule.profile', 'Male');
+        Yii::t('UserModule.profile', 'Female');
+        Yii::t('UserModule.profile', 'Custom');
+        Yii::t('UserModule.profile', 'Hide year in profile');
 
-        Yii::t('UserModule.models_Profile', 'Phone Private');
-        Yii::t('UserModule.models_Profile', 'Phone Work');
-        Yii::t('UserModule.models_Profile', 'Mobile');
-        Yii::t('UserModule.models_Profile', 'Fax');
-        Yii::t('UserModule.models_Profile', 'Skype Nickname');
-        Yii::t('UserModule.models_Profile', 'MSN');
-        Yii::t('UserModule.models_Profile', 'XMPP Jabber Address');
+        Yii::t('UserModule.profile', 'Phone Private');
+        Yii::t('UserModule.profile', 'Phone Work');
+        Yii::t('UserModule.profile', 'Mobile');
+        Yii::t('UserModule.profile', 'Fax');
+        Yii::t('UserModule.profile', 'Skype Nickname');
+        Yii::t('UserModule.profile', 'MSN');
+        Yii::t('UserModule.profile', 'XMPP Jabber Address');
 
-        Yii::t('UserModule.models_Profile', 'Url');
-        Yii::t('UserModule.models_Profile', 'Facebook URL');
-        Yii::t('UserModule.models_Profile', 'LinkedIn URL');
-        Yii::t('UserModule.models_Profile', 'Xing URL');
-        Yii::t('UserModule.models_Profile', 'YouTube URL');
-        Yii::t('UserModule.models_Profile', 'Vimeo URL');
-        Yii::t('UserModule.models_Profile', 'Flickr URL');
-        Yii::t('UserModule.models_Profile', 'MySpace URL');
-        Yii::t('UserModule.models_Profile', 'Google+ URL');
-        Yii::t('UserModule.models_Profile', 'Twitter URL');
+        Yii::t('UserModule.profile', 'Url');
+        Yii::t('UserModule.profile', 'Facebook URL');
+        Yii::t('UserModule.profile', 'LinkedIn URL');
+        Yii::t('UserModule.profile', 'Xing URL');
+        Yii::t('UserModule.profile', 'YouTube URL');
+        Yii::t('UserModule.profile', 'Vimeo URL');
+        Yii::t('UserModule.profile', 'Flickr URL');
+        Yii::t('UserModule.profile', 'MySpace URL');
+        Yii::t('UserModule.profile', 'Google+ URL');
+        Yii::t('UserModule.profile', 'Twitter URL');
     }
 
     /**

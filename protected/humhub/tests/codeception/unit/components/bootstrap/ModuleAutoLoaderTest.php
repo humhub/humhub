@@ -27,8 +27,10 @@ class ModuleAutoLoaderTest extends Unit
         'file',
         'friendship',
         'installer',
+        'ldap',
         'like',
         'live',
+        'marketplace',
         'notification',
         'post',
         'queue',
@@ -39,7 +41,7 @@ class ModuleAutoLoaderTest extends Unit
         'tour',
         'ui',
         'user',
-        'ldap',
+        'web'
     ];
 
     /**

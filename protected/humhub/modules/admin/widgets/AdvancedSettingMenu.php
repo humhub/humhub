@@ -8,85 +8,84 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\modules\ui\menu\MenuLink;
 use Yii;
 use yii\helpers\Url;
+use humhub\modules\ui\menu\widgets\SubTabMenu;
 
 /**
  * Authentication Settings Menu
  */
-class AdvancedSettingMenu extends \humhub\widgets\BaseMenu
+class AdvancedSettingMenu extends SubTabMenu
 {
-
-    /**
-     * @inheritdoc
-     */
-    public $template = "@humhub/widgets/views/subTabMenu";
 
     /**
      * @inheritdoc
      */
     public function init()
     {
-        $this->addItem([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Caching'),
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.base', 'Caching'),
             'url' => Url::toRoute(['/admin/setting/caching']),
-            'icon' => '<i class="fa fa-dashboard"></i>',
+            'icon' => 'dashboard',
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && Yii::$app->controller->action->id == 'caching'),
+            'isActive' => MenuLink::isActiveState('admin', 'setting', 'caching'),
             'isVisible' => Yii::$app->user->isAdmin(),
-        ]);
+        ]));
 
-        $this->addItem([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Files'),
-            'url' => Url::toRoute('/admin/setting/file'),
-            'icon' => '<i class="fa fa-file"></i>',
-            'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && Yii::$app->controller->action->id == 'file'),
-            'isVisible' => Yii::$app->user->isAdmin(),
-        ]);
+         $this->addEntry(new MenuLink([
+             'label' => Yii::t('AdminModule.base', 'Files'),
+             'url' => Url::toRoute('/admin/setting/file'),
+             'icon' => 'file',
+             'sortOrder' => 200,
+             'isActive' =>  MenuLink::isActiveState('admin', 'setting', 'file'),
+             'isVisible' => Yii::$app->user->isAdmin(),
+         ]));
 
-        $this->addItem([
-            'label' => Yii::t('AdminModule.views_setting_mailing', 'E-Mail'),
-            'url' => Url::toRoute(['/admin/setting/mailing-server']),
-            'icon' => '<i class="fa fa-envelope"></i>',
-            'sortOrder' => 250,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && Yii::$app->controller->action->id == 'mailing-server'),
-        ]);
+         $this->addEntry(new MenuLink([
+             'label' => Yii::t('AdminModule.settings', 'E-Mail'),
+             'url' => Url::toRoute(['/admin/setting/mailing-server']),
+             'icon' => 'envelope',
+             'sortOrder' => 250,
+             'isActive' => MenuLink::isActiveState('admin', 'setting', 'mailing-server'),
+             'isVisible' => Yii::$app->user->isAdmin(),
+         ]));
 
-        $this->addItem([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Proxy'),
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.base', 'Proxy'),
             'url' => Url::toRoute('/admin/setting/proxy'),
-            'icon' => '<i class="fa fa-sitemap"></i>',
+            'icon' => 'sitemap',
             'sortOrder' => 300,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && Yii::$app->controller->action->id == 'proxy'),
+            'isActive' => MenuLink::isActiveState('admin', 'setting', 'proxy'),
             'isVisible' => Yii::$app->user->isAdmin(),
-        ]);
-        $this->addItem([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Statistics'),
+        ]));
+
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.base', 'Statistics'),
             'url' => Url::toRoute('/admin/setting/statistic'),
-            'icon' => '<i class="fa fa-bar-chart-o"></i>',
+            'icon' => 'bar-chart-o',
             'sortOrder' => 400,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && Yii::$app->controller->action->id == 'statistic'),
+            'isActive' => MenuLink::isActiveState('admin', 'setting', 'statistic'),
             'isVisible' => Yii::$app->user->isAdmin(),
-        ]);
+        ]));
 
-        $this->addItem([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'OEmbed'),
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.base', 'OEmbed'),
             'url' => Url::toRoute('/admin/setting/oembed'),
-            'icon' => '<i class="fa fa-cloud"></i>',
+            'icon' => 'cloud',
             'sortOrder' => 500,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && (Yii::$app->controller->action->id == 'oembed' || Yii::$app->controller->action->id == 'oembed-edit')),
+            'isActive' => MenuLink::isActiveState('admin', 'setting', 'oembed'),
             'isVisible' => Yii::$app->user->isAdmin(),
-        ]);
+        ]));
 
-        $this->addItem([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Logs'),
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.base', 'Logs'),
             'url' => Url::toRoute('/admin/setting/logs'),
-            'icon' => '<i class="fa fa-terminal"></i>',
+            'icon' => 'terminal',
             'sortOrder' => 600,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'setting' && (Yii::$app->controller->action->id == 'logs' || Yii::$app->controller->action->id == 'logs-edit')),
+            'isActive' => MenuLink::isActiveState('admin', 'setting', ['logs', 'logs-edit']),
             'isVisible' => Yii::$app->user->isAdmin(),
-        ]);
+        ]));
 
         parent::init();
     }

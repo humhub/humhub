@@ -29,7 +29,7 @@ return [
     'Access directory' => '',
     'Can access the directory section.' => '',
     'Online right now' => '',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>belum ada yang menulis sesuatu</b><br>ayo mulai menulis sesuatu ....',
+    '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>belum ada yang menulis sesuatu</b><br>ayo mulai menulis sesuatu ....',
     '<strong>Space</strong> directory' => '<strong>Space</strong> direktori',
     '<strong>Space</strong> stats' => '<strong>Space</strong> status',
     'Average members' => 'Rata rata anggota',

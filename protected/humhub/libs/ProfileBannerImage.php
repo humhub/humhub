@@ -9,7 +9,11 @@
 namespace humhub\libs;
 
 use humhub\modules\file\libs\ImageConverter;
+use humhub\modules\space\models\Space;
+use humhub\modules\space\widgets\ProfileBannerImage as SpaceImage;
+use humhub\modules\user\widgets\Image as UserImage;
 use yii\helpers\FileHelper;
+use yii\helpers\Html;
 
 /**
  * ProfileBannerImage is responsible for the profile banner images.
@@ -60,6 +64,7 @@ class ProfileBannerImage extends ProfileImage
      * Sets a new profile image by given temp file
      *
      * @param \yii\web\UploadedFile $file
+     * @throws \yii\base\Exception
      */
     public function setNew($file)
     {
@@ -67,5 +72,18 @@ class ProfileBannerImage extends ProfileImage
         ImageConverter::TransformToJpeg($file->tempName, $this->getPath('_org'));
         ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), ['width' => 1134, 'mode' => 'max']);
         ImageConverter::Resize($this->getPath('_org'), $this->getPath(''), ['width' => $this->width, 'height' => $this->height]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function render($width, $cfg = [])
+    {
+        if(is_int($width)) {
+            $width .= 'px';
+        }
+
+        Html::addCssStyle($cfg,['width' => $width]);
+        return Html::img($this->getUrl(),$cfg);
     }
 }

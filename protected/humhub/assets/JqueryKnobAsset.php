@@ -24,7 +24,7 @@ class JqueryKnobAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/jquery-knob';
+    public $sourcePath = '@npm/jquery-knob';
 
     /**
      * @inheritdoc

@@ -31,6 +31,7 @@ Basic Concepts
 * [Activities](activities.md)
 * [File Handling](files.md)
 * [Widgets](widgets.md)
+* [Menus and Navigations](menus.md)
 * [Snippets](snippet.md)
 * [Internationalization](i18n.md)
 
@@ -50,5 +51,6 @@ Advanced Topics
 * [Security](security.md)
 * [HumHub Build](build.md)
 * [Console Application](console.md)
+* [Oembed Providers](oembed.md)
 
 

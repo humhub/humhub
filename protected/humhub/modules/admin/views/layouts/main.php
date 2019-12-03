@@ -2,6 +2,7 @@
 
 use humhub\widgets\FooterMenu;
 
+/** @var $content string */
 ?>
 <div class="container">
     <div class="row">

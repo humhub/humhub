@@ -398,8 +398,8 @@ abstract class BasePicker extends JsInputWidget
     {
         $allowMultiple = $this->maxSelection !== 1;
 
-        $placeholder = ($this->placeholder != null) ? $this->placeholder : Yii::t('UserModule.widgets_BasePickerField', 'Select {n,plural,=1{item} other{items}}', ['n' => ($allowMultiple) ? 2 : 1]);
-        $placeholderMore = ($this->placeholderMore != null) ? $this->placeholderMore : Yii::t('UserModule.widgets_BasePickerField', 'Add more...');
+        $placeholder = ($this->placeholder != null) ? $this->placeholder : Yii::t('UserModule.chooser', 'Select {n,plural,=1{item} other{items}}', ['n' => ($allowMultiple) ? 2 : 1]);
+        $placeholderMore = ($this->placeholderMore != null) ? $this->placeholderMore : Yii::t('UserModule.chooser', 'Add more...');
 
         $result = [
             'add-options' => $this->addOptions,
@@ -411,16 +411,16 @@ abstract class BasePicker extends JsInputWidget
             'minimum-input-length' => $this->minInput,
             'placeholder' => $placeholder,
             'placeholder-more' => $placeholderMore,
-            'no-result' => Yii::t('UserModule.widgets_BasePickerField', 'Your search returned no matches.'),
-            'format-ajax-error' => Yii::t('UserModule.widgets_BasePickerField', 'An unexpected error occurred while loading the result.'),
-            'load-more' => Yii::t('UserModule.widgets_BasePickerField', 'Load more'),
-            'input-too-short' => Yii::t('UserModule.widgets_BasePickerField', 'Please enter at least {n} character', ['n' => $this->minInput]),
-            'input-too-long' => Yii::t('UserModule.widgets_BasePickerField', 'You reached the maximum number of allowed charachters ({n}).', ['n' => $this->maxInput]),
+            'no-result' => Yii::t('UserModule.chooser', 'Your search returned no matches.'),
+            'format-ajax-error' => Yii::t('UserModule.chooser', 'An unexpected error occurred while loading the result.'),
+            'load-more' => Yii::t('UserModule.chooser', 'Load more'),
+            'input-too-short' => Yii::t('UserModule.chooser', 'Please enter at least {n} character', ['n' => $this->minInput]),
+            'input-too-long' => Yii::t('UserModule.chooser', 'You reached the maximum number of allowed charachters ({n}).', ['n' => $this->maxInput]),
             'default-results' => $this->getDefaultResultData()
         ];
 
         if ($this->maxSelection) {
-            $result['maximum-selected'] = Yii::t('UserModule.widgets_BasePickerField', 'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.', ['n' => $this->maxSelection]);
+            $result['maximum-selected'] = Yii::t('UserModule.chooser', 'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.', ['n' => $this->maxSelection]);
         }
         return $result;
     }

@@ -15,7 +15,7 @@ StreamAsset::register($this);
 
 <?php if ($contentContainer && $contentContainer->isArchived()) : ?>
     <span class="label label-warning pull-right" style="margin-top:10px;">
-        <?= Yii::t('ContentModule.widgets_views_label', 'Archived'); ?>
+        <?= Yii::t('ContentModule.base', 'Archived'); ?>
     </span>
 <?php endif; ?>
 
@@ -28,7 +28,7 @@ StreamAsset::register($this);
 <!-- DIV for a normal wall stream -->
 <div class="s2_stream">
     <div class="back_button_holder" style="display:none">
-        <?= Button::primary(Yii::t('ContentModule.widgets_views_stream', 'Back to stream'))->action('init')->loader(false); ?>
+        <?= Button::primary(Yii::t('ContentModule.base', 'Back to stream'))->action('init')->loader(false); ?>
         <br><br>
     </div>
     <div class="s2_streamContent" data-stream-content></div>
@@ -38,7 +38,7 @@ StreamAsset::register($this);
 
 <!-- show "Load More" button on mobile devices -->
 <div class="col-md-12 text-center visible-xs visible-sm">
-    <?= Button::primary(Yii::t('ContentModule.widgets_views_stream', 'Load more'))
+    <?= Button::primary(Yii::t('ContentModule.base', 'Load more'))
         ->id('btn-load-more')
         ->action('loadMore', null, '#wallStream')
         ->lg() ?>

@@ -91,7 +91,7 @@ class ProfileController extends ContentContainerController
     public function actionFollow()
     {
         if(Yii::$app->getModule('user')->disableFollow) {
-            throw new HttpException(403, Yii::t('ContentModule.controllers_ContentController', 'This action is disabled!'));
+            throw new HttpException(403, Yii::t('ContentModule.base', 'This action is disabled!'));
         }
         
         $this->forcePostRequest();
@@ -126,7 +126,7 @@ class ProfileController extends ContentContainerController
         $query->andWhere(['IS NOT', 'user_follow.id', new Expression('NULL')]);
         $query->active();
 
-        $title = Yii::t('UserModule.widgets_views_userFollower', '<strong>User</strong> followers');
+        $title = Yii::t('UserModule.base', '<strong>User</strong> followers');
 
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
@@ -139,7 +139,7 @@ class ProfileController extends ContentContainerController
         $query->andWhere(['IS NOT', 'user_follow.id', new Expression('NULL')]);
         $query->active();
 
-        $title = Yii::t('UserModule.widgets_views_userFollower', '<strong>Following</strong> user');
+        $title = Yii::t('UserModule.base', '<strong>Following</strong> user');
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
@@ -151,7 +151,7 @@ class ProfileController extends ContentContainerController
             $query->andWhere(['!=', 'space.visibility', Space::VISIBILITY_NONE]);
         }
 
-        $title = Yii::t('UserModule.widgets_views_userSpaces', '<strong>Member</strong> in these spaces');
+        $title = Yii::t('UserModule.base', '<strong>Member</strong> in these spaces');
         return $this->renderAjaxContent(ListBox::widget(['query' => $query, 'title' => $title]));
     }
 

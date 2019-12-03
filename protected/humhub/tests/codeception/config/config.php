@@ -7,7 +7,7 @@ $default = [
     'name' => 'HumHub Test',
     'language' => 'en-US',
     'params' => [
-        'allowedLanguages' => ['en'],
+        'allowedLanguages' => ['en-US'],
         'installed' => true,
         'settings' => [
             'core' => [
@@ -32,6 +32,14 @@ $default = [
             'showScriptName' => true,
             'scriptUrl' => 'index-test.php',
         ],
+    ],
+    'modules' => [
+        'user' => [
+            'passwordStrength' => [
+                '/^(.*?[A-Z]){2,}.*$/' => 'Password has to contain two uppercase letters.',
+                '/^.{8,}$/' => 'Password needs to be at least 8 characters long.',
+            ]
+        ]
     ]
 ];
 

@@ -93,7 +93,7 @@ class Post extends ContentActiveRecord implements Searchable
      */
     public function getContentName()
     {
-        return Yii::t('PostModule.models_Post', 'post');
+        return Yii::t('PostModule.base', 'post');
     }
 
     /**

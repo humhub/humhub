@@ -9,6 +9,7 @@
 namespace humhub\libs;
 
 use humhub\modules\ldap\helpers\LdapHelper;
+use humhub\modules\marketplace\Module;
 use Yii;
 
 /**
@@ -43,16 +44,22 @@ class SelfTest
         // Checks PHP Version
         $title = 'PHP - Version - ' . PHP_VERSION;
 
-        if (version_compare(PHP_VERSION, '5.6', '>=')) {
+        if (version_compare(PHP_VERSION, '7.1', '>=')) {
             $checks[] = [
                 'title' => Yii::t('base', $title),
                 'state' => 'OK'
+            ];
+        } elseif (version_compare(PHP_VERSION, '7.0', '>=')) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'WARNING',
+                'hint' => 'Minimum Version 7.1'
             ];
         } else {
             $checks[] = [
                 'title' => Yii::t('base', $title),
                 'state' => 'ERROR',
-                'hint' => 'Minimum 5.6'
+                'hint' => 'Minimum Version 7.1'
             ];
         }
 
@@ -165,6 +172,22 @@ class SelfTest
                 'title' => Yii::t('base', $title),
                 'state' => 'ERROR',
                 'hint' => 'Install EXIF Extension'
+            ];
+        }
+
+        // Checks XML Extension
+        $title = 'PHP - XML Extension';
+
+        if (function_exists('libxml_get_errors')) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'WARNING',
+                'hint' => 'Install XML Extension'
             ];
         }
 
@@ -364,7 +387,9 @@ class SelfTest
         // Check Custom Modules Directory
         $title = 'Permissions - Module Directory';
 
-        $path = Yii::getAlias(Yii::$app->params['moduleMarketplacePath']);
+        /** @var Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+        $path = Yii::getAlias($marketplaceModule->modulesPath);
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => Yii::t('base', $title),

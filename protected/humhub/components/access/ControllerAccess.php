@@ -8,6 +8,7 @@
 
 namespace humhub\components\access;
 
+use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use humhub\modules\user\models\User;
 use yii\base\InvalidArgumentException;
@@ -276,6 +277,7 @@ class ControllerAccess extends BaseObject
      * to allow other direct settings required by the action validator e.g. direct permission settings.
      *
      * @param $setting array validator setting array
+     * @throws \yii\base\InvalidConfigException
      */
     protected function registerValidator($options)
     {
@@ -415,7 +417,7 @@ class ControllerAccess extends BaseObject
      */
     public function validateStrictMode()
     {
-        return !$this->isGuest() || Yii::$app->user->isGuestAccessEnabled();
+        return !$this->isGuest() || AuthHelper::isGuestAccessEnabled();
     }
 
     /**

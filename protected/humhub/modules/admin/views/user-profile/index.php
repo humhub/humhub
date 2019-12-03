@@ -6,15 +6,15 @@ use humhub\modules\user\models\ProfileFieldCategory;
 ?>
 
 <div class="panel-body">
-    <h4><?= Yii::t('AdminModule.views_userprofile_index', 'Manage profile attributes'); ?></h4>
+    <h4><?= Yii::t('AdminModule.user', 'Manage profile attributes'); ?></h4>
     <div class="help-block">
-        <?= Yii::t('AdminModule.views_userprofile_index', 'Here you can create or edit profile categories and fields.'); ?>
+        <?= Yii::t('AdminModule.user', 'Here you can create or edit profile categories and fields.'); ?>
     </div>
     <br>
 
     <div class="pull-right">
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.views_userprofile_index', 'Add new category'), Url::to(['edit-category']), ['class' => 'btn btn-success']); ?>
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.views_userprofile_index', 'Add new field'), Url::to(['edit-field']), ['class' => 'btn btn-success']); ?>
+        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.user', 'Add new category'), Url::to(['edit-category']), ['class' => 'btn btn-success']); ?>
+        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.user', 'Add new field'), Url::to(['edit-field']), ['class' => 'btn btn-success']); ?>
     </div>
 
     <ul>

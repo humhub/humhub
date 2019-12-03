@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<strong>Bisher hat niemand etwas geschrieben.</strong><br />Mache den Anfang und schreibe etwas...',
+  '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<strong>Bisher hat niemand etwas geschrieben.</strong><br />Mache den Anfang und schreibe etwas...',
   '<b>There are no profile posts yet!</b>' => '<b>Bisher existieren keine Profil-Beiträge!</b>',
   '<strong>Directory</strong> menu' => '<strong>Verzeichnis-</strong>Menü',
   '<strong>Group</strong> members - {group}' => '<strong>Gruppen-</strong>Mitglieder - {group}',

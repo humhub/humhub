@@ -61,5 +61,14 @@ class Link extends Button
         return $this;
     }
 
+    public function target($target)
+    {
+        $this->htmlOptions['target'] = $target;
+        return $this;
+    }
 
+    public function blank()
+    {
+        return $this->target('_blank');
+    }
 }

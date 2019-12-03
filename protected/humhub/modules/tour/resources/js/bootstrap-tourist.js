@@ -1,6 +1,6 @@
 /* ========================================================================
  *
- * Bootstrap Tourist v0.10
+ * Bootstrap Tourist v0.2.0
  * Copyright FFS 2019
  * @ IGreatlyDislikeJavascript on Github
  *
@@ -18,10 +18,14 @@
  * I'm not a JS coder, so suggest you test very carefully and read the
  * docs (comments) below before using.
  *
+ * If anyone would like to take on the creation of proper docs for
+ * Tourist, please feel free and post here:
+ * https://github.com/IGreatlyDislikeJavascript/bootstrap-tourist/issues/15
+ *
  * ========================================================================
  * ENTIRELY BASED UPON:
  *
- * bootstrap-tour - v0.11.0
+ * bootstrap-tour - v0.2.0
  * http://bootstraptour.com
  * ========================================================================
  * Copyright 2012-2015 Ulrich Sossou
@@ -40,7 +44,20 @@
  * limitations under the License.
  * ========================================================================
  *
- * Updated for CS by FFS 2018 - v0.10
+ * Updated for CS by FFS 2018
+ *
+ * Changes in v0.2.0
+ *  - Version update as major fix to bug preventing element: function(){...} feature under BS4/popper.js
+ *  - published as release
+ *
+ * Changes IN v0.12 FROM v0.11:
+ *	- note version labelling change in this changelog!
+ *  - fixes to the button text change code and better prep for localization (thanks to @DancingDad, @thenewbeat, @bardware)
+ *	- fixed css for BS4 progress text to correctly use float-right (thanks to @macroscian, @thenewbeat)
+ *
+ * Changes from v0.10:
+ *  - added support for changing button texts (thanks to @vneri)
+ *	- added dummy init() to support drop-in replacement for Tour (thanks to @pau1phi11ips)
  *
  * Changes from 0.9:
  *  - smartPlacement option removed, deprecated
@@ -89,6 +106,7 @@
  12. Call onPreviouslyEnded if tour.start() is called for a tour that has previously ended (see docs)
  13. Switch between Bootstrap 3 or 4 (popover methods and template) automatically using tour options
  14. Added sanitizeWhitelist and sanitizeFunction global options
+ 15. Added support for changing button texts
 
  --------------
 	1. Control flow from onNext() / onPrevious() options:
@@ -116,6 +134,10 @@
 			var Tour=new Tour({
 								steps: tourSteps,
 								framework: "bootstrap3",	// or "bootstrap4" depending on your version of bootstrap
+                buttonTexts:{           // customize or localize button texts
+                  nextButton:"go on",
+                  endTourButton:"ok it's over",
+                }
 								onNext: function(tour)
 										{
 											if(someVar = true)
@@ -135,6 +157,8 @@
 			Call Tour.restart() to always start Tour from first step
 
 			Tour.init() was a redundant method that caused conflict with hidden Tour elements.
+
+			As of Tourist v0.11, calling Tour.init() will generate a warning in the console (thanks to @pau1phi11ips).
 
 ---------------
 	3. Dynamically determine element by function
@@ -173,19 +197,52 @@
 			Function signature: function(tour, stepNumber) {}
 			Option is available at global and per step levels.
 
-			function tourBroken(tour, stepNumber)
-			{
-				alert("Uhoh, tour element is done broke on step number " + stepNumber);
-			}
+			Use it per step to have a step-specific error handler:
+				function tourStepBroken(tour, stepNumber)
+				{
+					alert("Uhoh, the tour broke on the #btnMagic element);
+				}
 
-			var tourSteps = [
-								{
-									element: "#btnMagic",
-									onElementUnavailable: tourBroken,
-									title: "Hold my beer",
-									content: "now watch this"
-								}
-							];
+				var tourSteps = [
+									{
+										element: "#btnMagic",
+										onElementUnavailable: tourStepBroken,
+										title: "Hold my beer",
+										content: "now watch this"
+									}
+								];
+
+
+			Use it globally, and optionally override per step, to have a robust and comprehensive error handler:
+				function tourBroken(tour, stepNumber)
+				{
+					alert("The default error handler: tour element is done broke on step number " + stepNumber);
+				}
+
+				var tourSteps = [
+									{
+										element: "#btnThis",
+										//onElementUnavailable: COMMENTED OUT, therefore default global handler used
+										title: "Some button",
+										content: "Some content"
+									},
+									{
+										element: "#btnThat",
+										onElementUnavailable: 	function(tour, stepNumber)
+																{
+																	// override the default global handler for this step only
+																	alert("The tour broke on #btnThat step");
+																},
+										title: "Another button",
+										content: "More content"
+									}
+								];
+
+				var Tour=new Tour({
+									steps: tourSteps,
+									framework: "bootstrap3",	// or "bootstrap4" depending on your version of bootstrap
+									onElementUnavailable: tourBroken, // default "element unavailable" handler for all tour steps
+								});
 
 ---------------
 	6. Scroll flicker / continue reload fixed
@@ -197,6 +254,8 @@
 
 ---------------
 	7. Progress bar & progress text:
+			With thanks to @macroscian, @thenewbeat for fixes to this code, incorporated in Tourist v0.12
+
 			Use the following options globally or per step to show tour progress:
 			showProgressBar - shows a bootstrap progress bar for tour progress at the top of the tour content
 			showProgressText - shows a textual progress (N/X, i.e.: 1/24 for slide 1 of 24) in the tour title
@@ -291,7 +350,7 @@
 			delayOnElement is an object with the following:
 							delayOnElement: {
 												delayElement: "#waitForMe", // the element to wait to become visible, or the string literal "element" to use the step element
-												maxDelay: 2000, // optional milliseconds to wait/timeout for the element, before crapping out. If maxDelay is not specified, this is 2000ms by default
+												maxDelay: 2000 // optional milliseconds to wait/timeout for the element, before crapping out. If maxDelay is not specified, this is 2000ms by default,
 											}
 
 			var tourSteps = [
@@ -533,6 +592,42 @@
 														}
 								});
 
+----------------
+	15. Change text for the buttons in the popup (also, preparation for future localization options)
+		With thanks to @vneri (https://github.com/IGreatlyDislikeJavascript/bootstrap-tourist/pull/8) for the original change
+		With thanks to @DancingDad, @thenewbeat, @bardware for the fixes/updates
+
+		You can now change the text displayed for the buttons used in the tour step popups.	For this, there is a new object you can pass to the options, called "localization".
+		This option only applies to the default templates. If you specify your own custom template, the localization.buttonTexts option has no effect on the basis that
+		you will make any changes to your own template directly.
+
+			var tour = new Tour({
+									framework: "bootstrap3",	// or "bootstrap4" depending on your version of bootstrap
+									steps:	[ .....	],
+									localization:
+									{
+										buttonTexts:	{
+															prevButton: 'Back',
+															nextButton: 'Go',
+															pauseButton: 'Wait',
+															resumeButton: 'Continue',
+															endTourButton: 'Ok, enough'
+														}
+									}
+								});
+
+		You may specify only the labels you want to change. Unspecified labels will remain at their defaults:
+
+			var tour = new Tour({
+									localization:
+									{
+										buttonTexts:	{
+															endTourButton: 'Adios muchachos'
+														}
+									}
+								});
+
+
  *
  */
 
@@ -550,15 +645,9 @@
     }
 })(window, function ($) {
 
-    var Tour, document, objTemplates;
+    var Tour, document, objTemplates, objTemplatesButtonTexts;
 
     document = window.document;
-
-    // SEARCH PLACEHOLDER: TEMPLATES LOCATION
-    objTemplates =	{
-        bootstrap3	: '<div class="popover" role="tooltip"> <div class="arrow"></div> <h3 class="popover-title"></h3> <div class="popover-content"></div> <div class="popover-navigation"> <div class="btn-group"> <button class="btn btn-sm btn-default" data-role="prev">&laquo; Prev</button> <button class="btn btn-sm btn-default" data-role="next">Next &raquo;</button> <button class="btn btn-sm btn-default" data-role="pause-resume" data-pause-text="Pause" data-resume-text="Resume">Pause</button> </div> <button class="btn btn-sm btn-default" data-role="end">End tour</button> </div> </div>',
-        bootstrap4	: '<div class="popover" role="tooltip"> <div class="arrow"></div> <h3 class="popover-header"></h3> <div class="popover-body"></div> <div class="popover-navigation"> <div class="btn-group"> <button class="btn btn-sm btn-outline-secondary" data-role="prev">&laquo; Prev</button> <button class="btn btn-sm btn-outline-secondary" data-role="next">Next &raquo;</button> <button class="btn btn-sm btn-outline-secondary" data-role="pause-resume" data-pause-text="Pause" data-resume-text="Resume">Pause</button> </div> <button class="btn btn-sm btn-outline-secondary" data-role="end">End tour</button> </div> </div>',
-    };
 
     Tour = (function () {
 
@@ -574,55 +663,91 @@
                 storage = false;
             }
 
+            // CUSTOMIZABLE TEXTS FOR BUTTONS
+            // set defaults. We could of course add this to the $.extend({..localization: {} ...}) directly below.
+            // However this is configured here, prior to the $.extend of options below, to enable a potential
+            // future option of loading localization externally perhaps using $.getScript() etc.
+            //
+            // Note that these only affect the "default" templates (see objTemplates in this func below). The assumption is
+            // that if user creates a tour with a custom template, they will name the buttons as required. We could force the
+            // naming even in custom templates by identifying buttons in templates with data-role="...", but it seems more logical
+            // NOT to do that...
+            //
+            // Finally, it's simple to allow different localization/button texts per tour step. To do this, alter the $.extend in
+            // Tour.prototype.getStep() and subsequent code to load the per-step localization, identify the buttons by data-role, and
+            // make the appropriate changes. That seems like a very niche requirement so it's not implemented here.
+            objTemplatesButtonTexts =	{
+                prevButton: "Prev",
+                nextButton: "Next",
+                pauseButton: "Pause",
+                resumeButton: "Resume",
+                endTourButton: "End Tour"
+            };
+
+
             // take default options and overwrite with this tour options
-            this._options = $.extend({
-                name: 'tour',
-                steps: [],
-                container: 'body',
-                autoscroll: true,
-                keyboard: true,
-                storage: storage,
-                debug: false,
-                backdrop: false,
-                backdropContainer: 'body',
-                backdropPadding: 0,
-                redirect: true,
-                orphan: false,
-                duration: false,
-                delay: false,
-                basePath: '',
-                template: null,
-                framework: 'bootstrap3',
-                sanitizeWhitelist: [],
-                sanitizeFunction: null,// function(content) return sanitizedContent
-                showProgressBar: true,
-                showProgressText: true,
-                getProgressBarHTML: null,//function(percent) {},
-                getProgressTextHTML: null,//function(stepNumber, percent, stepCount) {},
-                afterSetState: function (key, value) {},
-                afterGetState: function (key, value) {},
-                afterRemoveState: function (key) {},
-                onStart: function (tour) {},
-                onEnd: function (tour) {},
-                onShow: function (tour) {},
-                onShown: function (tour) {},
-                onHide: function (tour) {},
-                onHidden: function (tour) {},
-                onNext: function (tour) {},
-                onPrev: function (tour) {},
-                onPause: function (tour, duration) {},
-                onResume: function (tour, duration) {},
-                onRedirectError: function (tour) {},
-                onElementUnavailable: null, // function (tour, stepNumber) {},
-                onPreviouslyEnded: null, // function (tour) {},
-                onModalHidden: null, // function(tour, stepNumber) {}
-            }, options);
+            this._options = $.extend(true,
+                {
+                    name: 'tour',
+                    steps: [],
+                    container: 'body',
+                    autoscroll: true,
+                    keyboard: true,
+                    storage: storage,
+                    debug: false,
+                    backdrop: false,
+                    backdropContainer: 'body',
+                    backdropPadding: 0,
+                    redirect: true,
+                    orphan: false,
+                    duration: false,
+                    delay: false,
+                    basePath: '',
+                    template: null,
+                    localization:	{
+                        buttonTexts: objTemplatesButtonTexts
+                    },
+                    framework: 'bootstrap3',
+                    sanitizeWhitelist: [],
+                    sanitizeFunction: null,// function(content) return sanitizedContent
+                    showProgressBar: true,
+                    showProgressText: true,
+                    getProgressBarHTML: null,//function(percent) {},
+                    getProgressTextHTML: null,//function(stepNumber, percent, stepCount) {},
+                    afterSetState: function (key, value) {},
+                    afterGetState: function (key, value) {},
+                    afterRemoveState: function (key) {},
+                    onStart: function (tour) {},
+                    onEnd: function (tour) {},
+                    onShow: function (tour) {},
+                    onShown: function (tour) {},
+                    onHide: function (tour) {},
+                    onHidden: function (tour) {},
+                    onNext: function (tour) {},
+                    onPrev: function (tour) {},
+                    onPause: function (tour, duration) {},
+                    onResume: function (tour, duration) {},
+                    onRedirectError: function (tour) {},
+                    onElementUnavailable: null, // function (tour, stepNumber) {},
+                    onPreviouslyEnded: null, // function (tour) {},
+                    onModalHidden: null, // function(tour, stepNumber) {}
+                }, options);
+
 
             if(this._options.framework !== "bootstrap3" && this._options.framework !== "bootstrap4")
             {
                 this._debug('Invalid framework specified: ' + this._options.framework);
                 throw "Bootstrap Tourist: Invalid framework specified";
             }
+
+
+            // create the templates
+
+            // SEARCH PLACEHOLDER: TEMPLATES LOCATION
+            objTemplates = {
+                bootstrap3	: '<div class="popover" role="tooltip"> <div class="arrow"></div> <h3 class="popover-title"></h3> <div class="popover-content"></div> <div class="popover-navigation"> <div class="btn-group"> <button class="btn btn-sm btn-default" data-role="prev">&laquo; ' + this._options.localization.buttonTexts.prevButton + '</button> <button class="btn btn-sm btn-default" data-role="next">' + this._options.localization.buttonTexts.nextButton + ' &raquo;</button> <button class="btn btn-sm btn-default" data-role="pause-resume" data-pause-text="' + this._options.localization.buttonTexts.pauseButton + '" data-resume-text="' + this._options.localization.buttonTexts.resumeButton + '">' + this._options.localization.buttonTexts.pauseButton + '</button> </div> <button class="btn btn-sm btn-default" data-role="end">' + this._options.localization.buttonTexts.endTourButton + '</button> </div> </div>',
+                bootstrap4	: '<div class="popover" role="tooltip"> <div class="arrow"></div> <h3 class="popover-header"></h3> <div class="popover-body"></div> <div class="popover-navigation"> <div class="btn-group"> <button class="btn btn-sm btn-outline-secondary" data-role="prev">&laquo; ' + this._options.localization.buttonTexts.prevButton + '</button> <button class="btn btn-sm btn-outline-secondary" data-role="next">' + this._options.localization.buttonTexts.nextButton + ' &raquo;</button> <button class="btn btn-sm btn-outline-secondary" data-role="pause-resume" data-pause-text="' + this._options.localization.buttonTexts.pauseButton + '" data-resume-text="' + this._options.localization.buttonTexts.resumeButton + '">' + this._options.localization.buttonTexts.pauseButton + '</button> </div> <button class="btn btn-sm btn-outline-secondary" data-role="end">' + this._options.localization.buttonTexts.endTourButton + '</button> </div> </div>',
+            };
 
             // template option is default null. If not null after extend, caller has set a custom template, so don't touch it
             if(this._options.template === null)
@@ -751,6 +876,7 @@
                     this._options.steps[i].element = this._options.steps[i].element();
                 }
 
+                // Set per step options: take the global options then override with this step's options.
                 this._options.steps[i] =  $.extend(true,
                     {
                         id: "step-" + i,
@@ -823,6 +949,10 @@
         //=======================================================================================================================================
         // Initiate tour and movement between steps
 
+        Tour.prototype.init = function ()
+        {
+            console.log('You should remove Tour.init() from your code. It\'s not required with Bootstrap Tourist');
+        }
 
         Tour.prototype.start = function ()
         {
@@ -1271,51 +1401,52 @@
                     var delayFunc = null;
                     var _this = this;
 
-                    if(typeof(step.delayOnElement.delayElement) == "function")
-                        $delayElement = step.delayOnElement.delayElement();
-                    else if(step.delayOnElement.delayElement == "element")
-                        $delayElement = $(step.element);
-                    else
-                        $delayElement = $(step.delayOnElement.delayElement);
+                    var revalidateDelayElement = function() {
+                        if(typeof(step.delayOnElement.delayElement) == "function")
+                            return step.delayOnElement.delayElement();
+                        else if(step.delayOnElement.delayElement == "element")
+                            return $(step.element);
+                        else
+                            return $(step.delayOnElement.delayElement);
+                    };
+                    var $delayElement = revalidateDelayElement();
 
-                    if($delayElement.length > 0)
+                    var delayElementLog = $delayElement.length > 0 ? $delayElement[0].tagName : step.delayOnElement.delayElement;
+
+                    var delayMax = (step.delayOnElement.maxDelay ? step.delayOnElement.maxDelay : 2000);
+                    this._debug("Wait for element " + delayElementLog + " visible or max " + delayMax + " milliseconds to show the step " + (this._current + 1));
+
+                    delayFunc = window.setInterval(	function()
                     {
-                        var delayMax = (step.delayOnElement.maxDelay ? step.delayOnElement.maxDelay : 2000);
-                        this._debug("Wait for element " + $delayElement[0].tagName + " visible or max " + delayMax + " milliseconds to show the step " + (this._current + 1));
-
-                        delayFunc = window.setInterval(	function()
+                        _this._debug("Wait for element " + delayElementLog + ": checking...");
+                        if($delayElement.length === 0) {
+                            $delayElement = revalidateDelayElement();
+                        }
+                        if($delayElement.is(':visible'))
                         {
-                            _this._debug("Wait for element " + $delayElement[0].tagName + ": checking...");
-                            if($delayElement.is(':visible'))
-                            {
-                                _this._debug("Wait for element " + $delayElement[0].tagName + ": found, showing step");
-                                window.clearInterval(delayFunc);
-                                delayFunc = null;
-                                return _this._callOnPromiseDone(promise, showStepHelper);
-                            }
-                        }, 250);
+                            _this._debug("Wait for element " + delayElementLog + ": found, showing step");
+                            window.clearInterval(delayFunc);
+                            delayFunc = null;
+                            return _this._callOnPromiseDone(promise, showStepHelper);
+                        }
+                    }, 250);
 
-                        //	set max delay to greater than default interval check for element appearance
-                        if(delayMax < 250)
-                            delayMax = 251;
+                    //	set max delay to greater than default interval check for element appearance
+                    if(delayMax < 250)
+                        delayMax = 251;
 
-                        // Set timer to kill the setInterval call after max delay time expires
-                        window.setTimeout(	function ()
-                        {
-                            if(delayFunc)
-                            {
-                                _this._debug("Wait for element " + $delayElement[0].tagName + ": max timeout reached without element found");
-                                window.clearInterval(delayFunc);
-
-                                // showStepHelper will handle broken/missing/invisible element
-                                return _this._callOnPromiseDone(promise, showStepHelper);
-                            }
-                        }, delayMax);
-                    }
-                    else
+                    // Set timer to kill the setInterval call after max delay time expires
+                    window.setTimeout(	function ()
                     {
-                        this._debug("Error - delayOnElement given invalid element " + step.delayOnElement.delayElement + " on step " + (this._current + 1));
-                    }
+                        if(delayFunc)
+                        {
+                            _this._debug("Wait for element " + delayElementLog + ": max timeout reached without element found");
+                            window.clearInterval(delayFunc);
+
+                            // showStepHelper will handle broken/missing/invisible element
+                            return _this._callOnPromiseDone(promise, showStepHelper);
+                        }
+                    }, delayMax);
                 }
                 else
                 {
@@ -1659,7 +1790,14 @@
                     }
                     else
                     {
-                        title += '<span class="pull-right">' + (i + 1) + '/' + this.getStepCount() + '</span>';
+                        if(this._options.framework == "bootstrap3")
+                        {
+                            title += '<span class="pull-right">' + (i + 1) + '/' + this.getStepCount() + '</span>';
+                        }
+                        if(this._options.framework == "bootstrap4")
+                        {
+                            title += '<span class="float-right">' + (i + 1) + '/' + this.getStepCount() + '</span>';
+                        }
                     }
                 }
 
@@ -1680,25 +1818,39 @@
                     //boundary: "viewport", // added for BS4 popper testing. Do not enable, creates visible jump on orphan step scroll to bottom
                 };
 
-                if(this._options.framework == "bootstrap4" && isOrphan)
+                if(this._options.framework == "bootstrap4")
                 {
-                    // BS4 uses popper.js, which doesn't have a method of fixing the popper to the center of the viewport without an element. However
-                    // BS4 wrapper does some extra funky stuff that means we can't just replace the BS4 popper init code. Instead, fudge the popper
-                    // using the offset feature, which params don't seem to be documented properly!
-                    popOpts.offset = function(obj)
+                    if(isOrphan)
                     {
-                        console.log(obj);
+                        // BS4 uses popper.js, which doesn't have a method of fixing the popper to the center of the viewport without an element. However
+                        // BS4 wrapper does some extra funky stuff that means we can't just replace the BS4 popper init code. Instead, fudge the popper
+                        // using the offset feature, which params don't seem to be documented properly!
+                        popOpts.offset = function(obj)
+                        {
+                            //console.log(obj);
 
-                        var top = Math.max(0, ( ($(window).height() - obj.popper.height) / 2) );
-                        var left = Math.max(0, ( ($(window).width() - obj.popper.width) / 2) );
+                            var top = Math.max(0, ( ($(window).height() - obj.popper.height) / 2) );
+                            var left = Math.max(0, ( ($(window).width() - obj.popper.width) / 2) );
 
-                        obj.popper.position="fixed";
-                        obj.popper.top = top;
-                        obj.popper.bottom = top + obj.popper.height;
-                        obj.popper.left = left;
-                        obj.popper.right = top + obj.popper.width;
-                        return obj;
+                            obj.popper.position="fixed";
+                            obj.popper.top = top;
+                            obj.popper.bottom = top + obj.popper.height;
+                            obj.popper.left = left;
+                            obj.popper.right = top + obj.popper.width;
+                            return obj;
+                        }
                     }
+                    else
+                    {
+                        // BS3 popover accepts jq object or string literal. BS4 popper.js of course doesn't, just to make life extra irritating.
+                        popOpts.selector = "#" + step.element[0].id;
+                    }
+                }
+
+                // BS4 / popper.js does not accept a jquery object as element. BS3 popover does!
+                if(this._options.framework == "bootstrap4" && isOrphan == false)
+                {
+                    popOpts.selector = "#" + step.element[0].id;
                 }
 
                 $element.popover(popOpts);
@@ -2135,7 +2287,7 @@
                 $backdropLeft.offset({top: elementData.offset.top, left: 0});
 
                 var $backdropRight	= $('<div class="tour-backdrop right"></div>');
-                $backdropRight.width(docWidth - elementData.width);
+                $backdropRight.width(docWidth - (elementData.width + elementData.offset.left));
                 $backdropRight.height(elementData.height);
                 $backdropRight.offset({top: elementData.offset.top, left: elementData.offset.left + elementData.width});
 
@@ -2229,7 +2381,7 @@
         Tour.prototype._getParams = function (path, start) {
             var j,
                 len,
-                param,
+                param
                 params,
                 paramsObject;
             params = path.split(start);

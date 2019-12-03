@@ -29,7 +29,7 @@ class ContentCreatedNotificationCategory extends NotificationCategory
      */
     public function getDescription()
     {
-        return Yii::t('ContentModule.notifications_ContentCreatedNotificationCategory', 'Receive Notifications for new content you follow.');
+        return Yii::t('ContentModule.notifications', 'Receive Notifications for new content you follow.');
     }
 
     /**
@@ -37,7 +37,7 @@ class ContentCreatedNotificationCategory extends NotificationCategory
      */
     public function getTitle()
     {
-        return Yii::t('ContentModule.notifications_ContentCreatedNotificationCategory', 'New Content');
+        return Yii::t('ContentModule.notifications', 'New Content');
     }
 
 }

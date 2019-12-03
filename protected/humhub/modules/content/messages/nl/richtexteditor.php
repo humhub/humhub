@@ -15,6 +15,7 @@ return array (
   'Delete table' => 'Tabel verwijderen',
   'Flags' => 'Vlaggen',
   'Food & Drink' => 'Eten & drinken',
+  'Heading' => 'Kop',
   'Height' => 'Hoogte',
   'Horizontal rule' => 'Horizontale lijn',
   'Image' => 'Afbeelding',

@@ -15,6 +15,7 @@ class UserAsset extends AssetBundle
     public $sourcePath = '@user/resources';
     public $css = [];
     public $js = [
-        'js/humhub.user.js'
+        'js/humhub.user.js',
+        'js/humhub.user.login.js',
     ];
 }

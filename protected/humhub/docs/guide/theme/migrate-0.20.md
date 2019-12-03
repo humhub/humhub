@@ -6,19 +6,22 @@ Follow this steps to migrate an older theme ot 0.20:
 
 1. Get the latest **style.css** [here](https://github.com/humhub/humhub/blob/v0.11/css/style.css) and copy it to **webroot/themes/yourtheme/css/**
 
-2. Open the file ``head.php`` in **/themes/yourtheme/views/layouts/**
+2. Open the file `head.php` in **/themes/yourtheme/views/layouts/**
 
 3. Remove this code snippet:
-``
-<?php $ver = HVersion::VERSION; ?>
-``
+
+    `<?php $ver = HVersion::VERSION; ?>`
 
 4. To load the old **style.css**, insert this code to the first line:
-``
-<link href="<?php echo $this->theme->getBaseUrl() . '/css/style.css'; ?>" rel="stylesheet">
-``
 
-5. Change the structure of all reference calls for your additional theme files from 
-``<link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/theme.css?ver=<?php echo $ver; ?>" rel="stylesheet">`` to ``<link href="<?php echo $this->theme->getBaseUrl() . '/css/theme.css'; ?>" rel="stylesheet">``. 
+    `<link href="<?php echo $this->theme->getBaseUrl() . '/css/style.css'; ?>" rel="stylesheet">`
 
-6. Check if everything works well, and fix optical issues at your theme file, if necessery.
+5. Change the structure of all reference calls for your additional theme files from:
+
+    `<link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/theme.css?ver=<?php echo $ver; ?>" rel="stylesheet">` 
+
+    to: 
+    
+    `<link href="<?php echo $this->theme->getBaseUrl() . '/css/theme.css'; ?>" rel="stylesheet">` 
+
+6. Check if everything works well, and fix optical issues at your theme file, if necessary.

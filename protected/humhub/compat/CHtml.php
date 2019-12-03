@@ -12,6 +12,7 @@ namespace humhub\compat;
  * CHtml - Yii1 compatiblity
  *
  * @author luke
+ * @deprecated since 1.4
  */
 class CHtml extends \yii\helpers\Html
 {

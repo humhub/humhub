@@ -5,6 +5,7 @@ use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\modules\space\widgets\SpaceNameColorInput;
 use yii\helpers\Url;
+use humhub\libs\Html;
 
 /* @var $model \humhub\modules\space\models\Space */
 /* @var $visibilityOptions array */
@@ -13,16 +14,16 @@ use yii\helpers\Url;
 $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('SpaceModule.views_create_create', '<strong>Create</strong> new space'), 'size' => 'small']) ?>
+<?php ModalDialog::begin(['header' => Yii::t('SpaceModule.manage', '<strong>Create</strong> new space'), 'size' => 'small']) ?>
     <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
         <div class="modal-body">
 
             <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model]) ?>
 
-            <?= $form->field($model, 'description')->textarea(['placeholder' => Yii::t('SpaceModule.views_create_create', 'space description'), 'rows' => '3']); ?>
+            <?= $form->field($model, 'description')->textarea(['placeholder' => Yii::t('SpaceModule.manage', 'space description'), 'rows' => '3']); ?>
 
             <a data-toggle="collapse" id="access-settings-link" href="#collapse-access-settings" style="font-size: 11px;">
-                <i class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.views_create_create', 'Advanced access settings'); ?>
+                <i class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.manage', 'Advanced access settings'); ?>
             </a>
 
             <div id="collapse-access-settings" class="panel-collapse collapse">
@@ -39,12 +40,12 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
         </div>
 
         <div class="modal-footer">
-            <?= ModalButton::submitModal(Url::to(['/space/create/create']), Yii::t('SpaceModule.views_create_create', 'Next')); ?>
+            <?= ModalButton::submitModal(Url::to(['/space/create/create']), Yii::t('SpaceModule.manage', 'Next')); ?>
         </div>
     <?php ActiveForm::end(); ?>
 <?php ModalDialog::end(); ?>
 
-<script>
+<script <?= Html::nonce() ?>>
 
     var $checkedVisibility = $('input[type=radio][name="Space[visibility]"]:checked');
     if ($checkedVisibility.length && $checkedVisibility[0].value == 0) {

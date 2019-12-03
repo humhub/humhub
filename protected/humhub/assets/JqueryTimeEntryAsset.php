@@ -26,7 +26,7 @@ class JqueryTimeEntryAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/jquery-timeentry';
+    public $sourcePath = '@npm/kbw.timeentry';
 
     /**
      * @inheritdoc

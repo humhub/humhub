@@ -8,6 +8,7 @@
 
 namespace humhub\modules\topic;
 
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\ContentTopicButton;
 use Yii;
@@ -17,10 +18,11 @@ class Events extends BaseObject
 {
     public static function onWallEntryControlsInit($event)
     {
+        /** @var ContentActiveRecord $record */
         $record = $event->sender->object;
 
-        if ($record->content->canWrite()) {
-            $event->sender->addWidget(ContentTopicButton::class, ['record' => $record], ['sortOrder' => 240]);
+        if ($record->content->canEdit()) {
+            $event->sender->addWidget(ContentTopicButton::class, ['record' => $record], ['sortOrder' => 370]);
         }
     }
 

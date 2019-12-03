@@ -21,12 +21,12 @@ class ClipboardJsAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/clipboard.js';
+    public $sourcePath = '@npm/clipboard-polyfill';
 
     /**
      * @inheritdoc
      */
-    public $js = ['build/clipboard-polyfill.js'];
+    public $js = ['dist/clipboard-polyfill.js'];
 
     /**
      * @inheritdoc

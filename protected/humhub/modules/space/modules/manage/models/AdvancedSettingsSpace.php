@@ -61,8 +61,8 @@ class AdvancedSettingsSpace extends Space
     public function attributeLabels()
     {
         $labels = parent::attributeLabels();
-        $labels['indexUrl'] = Yii::t('SpaceModule.models_Space', 'Homepage');
-        $labels['indexGuestUrl'] = Yii::t('SpaceModule.models_Space', 'Homepage (Guests)');
+        $labels['indexUrl'] = Yii::t('SpaceModule.base', 'Homepage');
+        $labels['indexGuestUrl'] = Yii::t('SpaceModule.base', 'Homepage (Guests)');
 
         return $labels;
     }

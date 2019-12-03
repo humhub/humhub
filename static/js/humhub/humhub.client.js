@@ -41,7 +41,7 @@ humhub.module('client', function (module, require, $) {
     Response.prototype.isAbort = function () {
         return this.textStatus == "abort";
     }
-    
+
     Response.prototype.header = function (key) {
         return this.xhr.getResponseHeader(key);
     };
@@ -130,7 +130,7 @@ humhub.module('client', function (module, require, $) {
 
         return ajax(url, cfg, originalEvent);
     };
-    
+
     var actionPost = function (evt) {
         post(evt).catch(function(e) {
             module.log.error(e, true);
@@ -208,7 +208,7 @@ humhub.module('client', function (module, require, $) {
 
         var promise = new Promise(function (resolve, reject) {
             cfg = cfg || {};
-            
+
             // allows data-action-data-type="json" on $trigger
             if(originalEvent && object.isFunction(originalEvent.data)) {
                 cfg.dataType = originalEvent.data('data-type', cfg.dataType);
@@ -219,6 +219,7 @@ humhub.module('client', function (module, require, $) {
                 var response = new Response(xhr, url, textStatus, cfg.dataType).setError(errorThrown);
                 if (response.status == 302) {
                     _redirect(xhr);
+                    resolve(response);
                     return;
                 }
 
@@ -313,13 +314,18 @@ humhub.module('client', function (module, require, $) {
             originalEvent.finish();
         }
     };
-    
+
     var back = function() {
         history.back();
     };
 
+    module.initOnPjaxLoad = true;
+
     var init = function (isPjax) {
         if (!isPjax) {
+            if(module.config.reloadableScripts) {
+                $.extend(yii.reloadableScripts, module.config.reloadableScripts)
+            }
             action.registerHandler('post', function (evt) {
                 evt.block = 'manual';
                 module.post(evt).then(function (resp) {

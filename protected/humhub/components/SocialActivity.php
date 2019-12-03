@@ -320,6 +320,7 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
      *
      * @param Content $content
      * @return string|null
+     * @throws Exception
      */
     public function getContentInfo(ContentOwner $content = null, $withContentName = true)
     {
@@ -378,6 +379,24 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
         }
 
         return RichText::preview($content->getContentDescription(), $maxLength);
+    }
+
+    /**
+     * @param ContentOwner|null $content
+     * @param int $maxLength
+     * @return string|null
+     * @throws Exception
+     * @since 1.4
+     */
+    public function getContentPlainTextPreview(ContentOwner $content = null, $maxLength = 25)
+    {
+        try {
+            return html_entity_decode( $this->getContentPreview($content, $maxLength), ENT_QUOTES, 'UTF-8');
+        } catch(\Exception $e) {
+            Yii::error($e);
+        }
+
+        return '';
     }
 
     /**

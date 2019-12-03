@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Actions' => '',
     '<strong>My</strong> friends' => '<strong>Přátelé</strong>',
     '<strong>Pending</strong> friend requests' => '<strong>Žádosti</strong> o přátelství',
     '<strong>Sent</strong> friend requests' => '<strong>Odeslat</strong> žádost o přátelství',
     'Accept Friend Request' => 'Přijmout žádost',
+    'Actions' => 'Akce',
     'Add Friend' => 'Přidat přítele',
     'Cancel friend request' => 'Zrušit žádost o přátelství',
     'Deny friend request' => 'Odmítnout žádost',

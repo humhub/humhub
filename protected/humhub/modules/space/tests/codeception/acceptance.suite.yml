@@ -21,3 +21,6 @@ modules:
       window_size: maximize
       restart: true
       port: 4444
+      capabilities:
+          chromeOptions:
+              w3c: false

@@ -8,8 +8,10 @@
 
 namespace humhub\modules\ui\view\components;
 
+use humhub\libs\BaseSettingsManager;
 use humhub\modules\ui\Module;
 use humhub\modules\ui\view\helpers\ThemeHelper;
+
 use Yii;
 use yii\base\Component;
 
@@ -54,9 +56,14 @@ class ThemeVariables extends Component
      *
      * @param $key
      * @param $default
+     * @return string|null
      */
     public function get($key, $default = null)
     {
+        if (!BaseSettingsManager::isDatabaseInstalled()) {
+            return null;
+        }
+
         $this->ensureLoaded();
 
         return $this->module->settings->get(

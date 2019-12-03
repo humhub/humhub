@@ -8,6 +8,18 @@
 
 namespace humhub\modules\admin\controllers;
 
+use humhub\libs\LogoImage;
+use humhub\modules\admin\models\forms\BasicSettingsForm;
+use humhub\modules\admin\models\forms\CacheSettingsForm;
+use humhub\modules\admin\models\forms\DesignSettingsForm;
+use humhub\modules\admin\models\forms\FileSettingsForm;
+use humhub\modules\admin\models\forms\LogsSettingsForm;
+use humhub\modules\admin\models\forms\MailingSettingsForm;
+use humhub\modules\admin\models\forms\OEmbedProviderForm;
+use humhub\modules\admin\models\forms\ProxySettingsForm;
+use humhub\modules\admin\models\forms\StatisticSettingsForm;
+use humhub\modules\admin\permissions\ManageSettings;
+use humhub\modules\web\pwa\widgets\SiteIcon;
 use Yii;
 use humhub\libs\Helpers;
 use humhub\models\UrlOembed;
@@ -59,7 +71,7 @@ class SettingController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => \humhub\modules\admin\permissions\ManageSettings::class]
+            ['permissions' => ManageSettings::class]
         ];
     }
 
@@ -73,7 +85,7 @@ class SettingController extends Controller
      */
     public function actionBasic()
     {
-        $form = new \humhub\modules\admin\models\forms\BasicSettingsForm();
+        $form = new BasicSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect(['/admin/setting/basic']);
@@ -90,7 +102,7 @@ class SettingController extends Controller
     public function actionDeleteLogoImage()
     {
         $this->forcePostRequest();
-        $image = new \humhub\libs\LogoImage();
+        $image = new LogoImage();
 
         if ($image->hasImage()) {
             $image->delete();
@@ -101,16 +113,26 @@ class SettingController extends Controller
     }
 
     /**
+     * Delete Icon Image
+     */
+    public function actionDeleteIconImage()
+    {
+        $this->forcePostRequest();
+        SiteIcon::set(null);
+        return $this->asJson([]);
+    }
+
+    /**
      * Caching Options
      */
     public function actionCaching()
     {
-        $form = new \humhub\modules\admin\models\forms\CacheSettingsForm;
+        $form = new CacheSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             Yii::$app->cache->flush();
             Yii::$app->assetManager->clear();
             Yii::$app->view->theme->variables->flushCache();
-            $this->view->success(Yii::t('AdminModule.controllers_SettingController', 'Saved and flushed cache'));
+            $this->view->success(Yii::t('AdminModule.settings', 'Saved and flushed cache'));
             return $this->redirect(['/admin/setting/caching']);
         }
 
@@ -125,7 +147,7 @@ class SettingController extends Controller
      */
     public function actionStatistic()
     {
-        $form = new \humhub\modules\admin\models\forms\StatisticSettingsForm;
+        $form = new StatisticSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([
@@ -158,7 +180,7 @@ class SettingController extends Controller
      */
     public function actionMailingServer()
     {
-        $form = new \humhub\modules\admin\models\forms\MailingSettingsForm;
+        $form = new MailingSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([
@@ -186,7 +208,7 @@ class SettingController extends Controller
 
     public function actionDesign()
     {
-        $form = new \humhub\modules\admin\models\forms\DesignSettingsForm;
+        $form = new DesignSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([
@@ -196,7 +218,7 @@ class SettingController extends Controller
 
         return $this->render('design', [
             'model' => $form,
-            'logo' => new \humhub\libs\LogoImage()
+            'logo' => new LogoImage()
         ]);
     }
 
@@ -205,7 +227,7 @@ class SettingController extends Controller
      */
     public function actionFile()
     {
-        $form = new \humhub\modules\admin\models\forms\FileSettingsForm;
+        $form = new FileSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([
@@ -246,7 +268,7 @@ class SettingController extends Controller
      */
     public function actionProxy()
     {
-        $form = new \humhub\modules\admin\models\forms\ProxySettingsForm;
+        $form = new ProxySettingsForm;
 
 
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
@@ -284,13 +306,13 @@ class SettingController extends Controller
             $dating = "the begining of time";
         }
 
-        $form = new \humhub\modules\admin\models\forms\LogsSettingsForm;
+        $form = new LogsSettingsForm;
         $limitAgeOptions = $form->options;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
 
             $timeAgo = strtotime($form->logsDateLimit);
             Log::deleteAll(['<', 'log_time', $timeAgo]);
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.controllers_SettingController', 'Saved'));
+            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.settings', 'Saved'));
             return $this->redirect([
                 '/admin/setting/logs'
             ]);
@@ -309,7 +331,7 @@ class SettingController extends Controller
      */
     public function actionOembedEdit()
     {
-        $form = new \humhub\modules\admin\models\forms\OEmbedProviderForm;
+        $form = new OEmbedProviderForm;
 
         $prefix = Yii::$app->request->get('prefix');
         $providers = UrlOembed::getProviders();

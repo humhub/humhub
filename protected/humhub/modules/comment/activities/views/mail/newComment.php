@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $originator \humhub\modules\user\models\User */
 /* @var $source \humhub\modules\comment\models\Comment */
 
-echo Yii::t('CommentModule.views_activities_CommentCreated', "%displayName% wrote a new comment ", [
-    '%displayName%' => '<strong>' . Html::encode($originator->displayName) . '</strong>'
+echo Yii::t('CommentModule.base', "{displayName} wrote a new comment ", [
+    '{displayName}' => '<strong>' . Html::encode($originator->displayName) . '</strong>'
 ]);
 ?>
 <br>

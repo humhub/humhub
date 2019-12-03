@@ -32,8 +32,8 @@ class ApproveUserForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'subject' => Yii::t('AdminModule.forms_ApproveUserForm', 'Subject'),
-            'message' => Yii::t('AdminModule.forms_ApproveUserForm', 'Message'),
+            'subject' => Yii::t('AdminModule.user', 'Subject'),
+            'message' => Yii::t('AdminModule.user', 'Message'),
         ];
     }
 

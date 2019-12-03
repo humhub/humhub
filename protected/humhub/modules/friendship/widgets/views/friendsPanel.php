@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 ?>
 <?php if (count($friends) > 0) { ?>
-    <div class="panel panel-default follower" id="profile-follower-panel">
+    <div class="panel panel-default follower" id="profile-friends-panel">
         <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'profile-friends-panel']); ?>
 
         <div class="panel-heading"><strong><?php echo Yii::t('FriendshipModule.base', 'Friends'); ?></strong> (<?php echo $totalCount; ?>)</div>

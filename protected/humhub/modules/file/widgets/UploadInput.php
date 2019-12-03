@@ -10,14 +10,14 @@ use humhub\widgets\JsWidget;
 
 /**
  * The file input will upload files either to the given $url or to the default
- * file upload route '/file/file/upload'. 
- * 
+ * file upload route '/file/file/upload'.
+ *
  * The returned guids will be attached to an array input field with a default form name 'guids[]'.
  * The default form name can either be overwritten by providing a $model and $attribute or by setting the
  * $name field.
- * 
+ *
  * The resulted guids will either be appended to the surrounding form if no $form selector is given.
- * 
+ *
  * @package humhub.modules_core.file.widgets
  * @since 1.2
  */
@@ -28,14 +28,14 @@ class UploadInput extends JsWidget
 
     /**
      * javascript widget implementation.
-     * 
-     * @var type 
+     *
+     * @var type
      */
     public $jsWidget = 'file.Upload';
 
     /**
      * @inheritdoc
-     * @var type 
+     * @var type
      */
     public $init = true;
 
@@ -49,15 +49,15 @@ class UploadInput extends JsWidget
     /**
      * Can be used to overwrite the default result input name files[] with a model
      * bound attribute formName.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $attribute;
 
     /**
      * Name of the upload input field default files[].
      *
-     * @var string 
+     * @var string
      */
     public $name = 'files[]';
 
@@ -71,58 +71,58 @@ class UploadInput extends JsWidget
      * @since 1.3.5
      */
     public $postState = false;
-    
+
     /**
      * Defines the input name of attached file list items.
      *
      * If no model is given the default name is `fileList[]`
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $submitName;
 
     /**
      * Can be set if the upload button is not contained in the form itself.
-     * 
-     * @var type 
+     *
+     * @var type
      */
     public $form;
 
     /**
      * Can be set to overwrite the default file upload route.
-     * 
-     * @var type 
+     *
+     * @var type
      */
     public $url;
 
     /**
      * Total number of maximum amount of allowed file uploads.
-     * @var type 
+     * @var type
      */
     public $max;
 
     /**
      * Selector of dropzone node.
-     * @var type 
+     * @var type
      */
     public $dropZone;
 
     /**
      * File preview js widget selector.
-     * 
-     * @var type 
+     *
+     * @var type
      */
     public $preview;
 
     /**
      * Upload progress js widget selector.
-     * @var type 
+     * @var type
      */
     public $progress;
 
     /**
      * Used to hide/show the actual input element.
-     * @var type 
+     * @var type
      */
     public $visible = false;
 
@@ -130,12 +130,12 @@ class UploadInput extends JsWidget
      * @var boolean defines if uploaded files should set the show_in_stream flag, this has only effect if the underlying action does support the showInStream request parameter
      */
     public $hideInStream = false;
-    
-        
+
+
     /**
      * This flag can be used in order to only allow a single guid to be submitted.
      * Note that already attached files have to be removed manually.
-     * @var boolean 
+     * @var boolean
      */
     public $single = false;
 
@@ -202,14 +202,14 @@ class UploadInput extends JsWidget
             }
 
             $files = Yii::$app->request->post($postSubmit);
+        }
 
-            if(!$files) {
-                return [];
-            }
+        if(!$files) {
+            return [];
+        }
 
-            if(!is_array($files)) {
-                $files = [$files];
-            }
+        if(!is_array($files)) {
+            $files = [$files];
         }
 
         $result = [];
@@ -251,20 +251,20 @@ class UploadInput extends JsWidget
         if($this->hideInStream) {
             $result['upload-hide-in-stream'] = '1';
         }
-        
+
         if ($this->model instanceof \yii\db\ActiveRecord && $this->attach) {
             $result['upload-model'] = $this->model->className();
             $result['upload-model-id'] = $this->model->getPrimaryKey();
         }
 
         $result['php-max-file-uploads'] = ini_get('max_file_uploads');
-        $result['php-max-file-uploads-message'] = Yii::t('FileModule.widgets_UploadInput', 'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.', ['n' => $result['php-max-file-uploads']]);
+        $result['php-max-file-uploads-message'] = Yii::t('FileModule.base', 'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.', ['n' => $result['php-max-file-uploads']]);
 
         if ($this->max) {
             $result['max-number-of-files'] = $this->max;
-            $result['max-number-of-files-message'] = Yii::t('FileModule.widgets_UploadInput', 'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.', ['n' => $this->max]);
+            $result['max-number-of-files-message'] = Yii::t('FileModule.base', 'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.', ['n' => $this->max]);
         }
-        
+
         return $result;
     }
 }

@@ -1,0 +1,117 @@
+HumHub Change Log (DEVELOP)
+=================
+
+1.4.beta2
+---
+
+- Fix #3703: Fixed user profile image dimension of mobile
+- Fix #3732: Reverted changes of default oembed style
+- Enh: Added link to changelog for module marketplaces updates
+- Fix #3674: Back button breaks layout on login page when guest access enabled
+- Enh: Added `safeCreateTable`, `safeDropTable`, `safeDropColumn`, `safeAddColumn` to `humhub\components\Migration`
+- Fixed `.layout-nav-container` padding issue
+- Fix #2605: User display name cropped in profile header
+- Fix #3729: Integrity check used deprecated methods
+- Enh #3697: Stay of module update page after updating a module
+- Fix #3692: Icon Upload Problems
+- Fix #3705: Don't render empty navigation/menu
+- Fix #3706: Space mentioning broken
+- Fix #3742: OAuth timeout doesn't respect configured timeout 
+- Enh: Added `DateHelper:getUserTimeZone()`, `DateHelper:getSystemTimeZone()`, `DateHelper:isInDbFormat()`
+- Fix #3711: Fullscreen Richtext menu broken on ios safari
+- Enh #3768: Add `Module::afterUpdate`, `Module::beforeUpdate` events to `humhub\components\Module`
+- Enh: Add `OnlineModuleManager::EVENT_BEFORE_UPDATE`, `OnlineModuleManager::EVENT_AFTER_UPDATE`
+- Fix: Double encoding of `&` in `Richtext::output()`
+- Enh: Added `SocialActivity::getContentPlainTextPreview()` mainly used in mail subjects
+
+
+1.4
+---
+
+- Enh: GroupPermissionManager - allow to query users by given permission
+- Enh: Automatic migrate DB collations from utf8 to utf8mb4
+- Enh: Added Icon widget as wrapper class 
+- Enh: Moved from bower to npm assets
+- Chng: Removed `jquery-placeholder` asset and dependency
+- Chng: Removed `atwho` asset and dependency
+- Cnng: Removed old IE support
+- Fix #2946: Use Yii2 default timezone handling
+- Enh: Use LocalStorage in panel menu
+- Chng #2164: Removed MSN & Google+ social bookmarks during setup
+- Enh: Added a user module configuration for setting password strength rules (Baleks)
+- Fix #3103 Password recovery links pjax layout issue
+- Enh: Added `humhub.ui.widget.Widget.loader()` for default loader functionality
+- Enh: Added `humhub.ui.widget.Widget.reload()` in combination with `humhub\widgets\Reloadable` interface
+- Enh: Implemented an auto loading mechanism for notification filters (Baleks)
+- Enh: Added an option for added additional or override existing OEmbed providers (Baleks)
+- Fix: WallEntry::EVENT_AFTER_RUN event not triggered
+- Enh: Added `humhub\components\Widget::widgetLayout`
+- Enh: Added container image set widget (Baleks)
+- Enh: Added an option for user to change username (Baleks)
+- Enh: Added warning confirmation when module is being deactivated from console (Baleks)
+- Enh: Moved 'Default spaces' setting from Basic settings to Space settings (Baleks)
+- Enh: Add inviter name to Space Admin Member section (Baleks) 
+- Fix #3463 Changed 'Deny Invite' to 'Decline Invite' for space invites (Baleks)
+- Enh: Responsive mobile view enhancements
+- Enh: Added `humhub\widgets\Link::target()` and `blank()`
+- Fix: `humhub.client` does not resolve promise 302 on redirects 
+- Enh: Separated marketplace methods into own submodule
+- Enh: Added consistent user "sub" displayname handling
+- Enh: Added possibility to manage database settings via CLI
+- Fix: Force redirect to login instead 404 when guest access is disabled (thanks to Security Research Team, Datafarm Co.,Ltd.) 
+- Enh: Added "web" submodule for web specific features (e.g. security headers or PWA)
+- Enh: Added Progressive Web App (PWA) support
+- Enh: Added integrated page icon handling
+- Enh: Raised minimum PHP Version to 7.1
+- Chng: New Menu and MenuEntry rendering
+- Enh: Added Icon abstraction `humhub\modules\ui\icon\widgets\Icon`
+- Enh: Added `humhub\libs\Html::addPjaxPrevention()` for link options
+- Enh: Added obj support for `humhub\libs\Sort`
+- Enh: Reorganized WallEntry context menu
+- Enh: Added new configurable security module with nonce script support
+- Chng: Updated jQuery version to 3.4.0
+- Enh: Added `humhub\modules\user\controllers\AuthController::EVENT_AFTER_LOGIN` triggered after login success response is rendered
+- Enh: Make sure embedded video controls are enabled
+- Fix #3404 Richtext `Heading` text not translatable
+- Fix #3642 Welcome tour not using community name
+- Chng: Moved collapsible panel logic into own js module
+- Enh #3649: Provide a way to S/MIME sign e-mails (@ChadiRachid)
+- Fix `humhub\modules\file\widgets\Upload::progress` config options not working
+- Enh: More generic approach to determine themed view files
+- Enh: Always use ISO 639-1 alpha-2 (and ISO 3166-2) language codes
+- Enh: Update Yii version to 2.0.28
+- Enh: Reorganized translation method categories to reduce language files
+- Enh: Removed deprecated methods/classes since v1.1 - see migration guide for details
+- Enh: Show registration form captcha per default
+- Enh: Added abstract `ContentContainerActiveRecord::getDisplayNameSub()`
+- Enh: Allow `humhub\modules\files\widgets\Upload::withName($submitName, $cfg);`
+- Enh: Auto add `data-container-id` to Space and User `Image` widget
+- Enh: Added `grunt test --debug` option
+- Fix #3653: Add PHP LibXML requirement
+- Enh: Added show password feature for password form elements
+- Fix: `humhub\components\acces\AccessValidator` now returns http code `401` for guest and `403` for users by default 
+- Enh: Added generic `humhub\modules\ui\helpers\models\ItemDrop` model for drag/drop reordering
+- Enh: Added `ContentContainer::findRecord($guid)` for loading a ContentContainerActiveRecord by guid
+- Enh: Implemented `ProfileImage::render($width, $cfg)` for e.g. `$container->getProfileImage()->render(400)`
+- Enh: Added `ContentTag::sort_order` field to provide a default order mechanism for content tags
+- Enh: Added `sort_order` configuration for topics
+- Enh #3564: Link MemberAdded activity to new member instead of the space
+- Enh: Added `humhub.modules.ui.form.submit` action e.g. `data-action-change="ui.form.submit"`
+- Chng: Added `humhub.ui.form` namespace to core api asset
+- Fix #3567: Profile field type Checkbox List with comma in option list not working
+- Enh: Added `changed` and `resetSearch` js widget events to `humhub.space.chooser.SpaceChooser`
+- Enh: Added a way to specify script urls, which should not be reloaded (`yii.reloadableScripts`) by configuration and event
+- Enh: Add base provider url as `data-oembed-provider` attribute to oembed container
+- Fix #3547: Invalid font-family in system mail
+- Chng: `humhub\compat\CActiveForm` and `humhub\compat\CHtml` is now deprecated
+- Enh: Updated to twemoji v12
+- Enh: Editable `['twemoji']['path']` config parameter
+- Enh: Added configuration option to hide/disable the Like module
+- Enh: Added link to changelog for module marketplaces updates
+- Fix #3674: Back button breaks layout on login page when guest access enabled
+- Enh: Added `safeCreateTable`, `safeDropTable`, `safeDropColumn`, `safeAddColumn` to `humhub\components\Migration`
+- Enh: Added support of upcoming HumHub Professional Edition in Marketplace module
+- Enh: Added module marketplace categories
+- Enh: Added isFluid LESS variable for automatic HTML container handling
+- Fix #2605: User display name cropped in profile header
+- Enh: Updated Yii to 2.0.30

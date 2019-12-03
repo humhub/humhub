@@ -8,6 +8,9 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\modules\file\Module;
+use humhub\modules\file\validators\ImageSquareValidator;
+use humhub\modules\web\pwa\widgets\SiteIcon;
 use Yii;
 use yii\base\Model;
 use yii\web\UploadedFile;
@@ -28,6 +31,7 @@ class DesignSettingsForm extends Model
     public $displayName;
     public $spaceOrder;
     public $logo;
+    public $icon;
     public $dateInputDisplayFormat;
     public $horImageScrollOnMobile;
 
@@ -53,13 +57,17 @@ class DesignSettingsForm extends Model
      */
     public function rules()
     {
+        /** @var Module $fileModule */
+        $fileModule = Yii::$app->getModule('file');
+
         return [
             ['paginationSize', 'integer', 'max' => 200, 'min' => 1],
             ['theme', 'in', 'range' => $this->getThemes()],
             [['displayName', 'spaceOrder'], 'safe'],
             [['horImageScrollOnMobile'], 'boolean'],
-            ['logo', 'file', 'extensions' => ['jpg', 'png', 'jpeg'], 'maxSize' => Yii::$app->getModule('file')->settings->get('maxFileSize')],
-            ['logo', 'dimensionValidation', 'skipOnError' => true],
+            ['logo', 'image', 'extensions' => 'png, jpg, jpeg',  'minWidth' => 100, 'minHeight' => 120],
+            ['icon', 'image', 'extensions' => 'png, jpg, jpeg',  'minWidth' => 256, 'minHeight' => 256],
+            ['icon', ImageSquareValidator::class],
             ['dateInputDisplayFormat', 'in', 'range' => ['', 'php:d/m/Y']],
         ];
     }
@@ -70,28 +78,17 @@ class DesignSettingsForm extends Model
     public function attributeLabels()
     {
         return [
-            'theme' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Theme'),
-            'paginationSize' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Default pagination size (Entries per page)'),
-            'displayName' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Display Name (Format)'),
-            'spaceOrder' => Yii::t('AdminModule.forms_DesignSettingsForm', 'Dropdown space order'),
-            'logo' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Logo upload'),
-            'dateInputDisplayFormat' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Date input format'),
-            'horImageScrollOnMobile' => Yii::t('AdminModule.forms_BasicSettingsForm', 'Horizontal scrolling images on a mobile device'),
+            'theme' => Yii::t('AdminModule.settings', 'Theme'),
+            'paginationSize' => Yii::t('AdminModule.settings', 'Default pagination size (Entries per page)'),
+            'displayName' => Yii::t('AdminModule.settings', 'Display Name (Format)'),
+            'spaceOrder' => Yii::t('AdminModule.settings', 'Dropdown space order'),
+            'logo' => Yii::t('AdminModule.settings', 'Logo upload'),
+            'icon' => Yii::t('AdminModule.settings', 'Icon upload'),
+            'dateInputDisplayFormat' => Yii::t('AdminModule.settings', 'Date input format'),
+            'horImageScrollOnMobile' => Yii::t('AdminModule.settings', 'Horizontal scrolling images on a mobile device'),
         ];
     }
 
-    /**
-     * Dimension Validator
-     */
-    public function dimensionValidation($attribute, $param)
-    {
-        if (is_object($this->logo)) {
-            list($width, $height) = getimagesize($this->logo->tempName);
-            if ($height < 40) {
-                $this->addError('logo', 'Logo size should have at least 40px of height');
-            }
-        }
-    }
 
     /**
      * @inheritdoc
@@ -102,6 +99,12 @@ class DesignSettingsForm extends Model
         if (count($files) != 0) {
             $file = $files[0];
             $this->logo = $file;
+        }
+
+        $files = UploadedFile::getInstancesByName('icon');
+        if (count($files) != 0) {
+            $file = $files[0];
+            $this->icon = $file;
         }
 
         return parent::load($data, $formName);
@@ -143,6 +146,10 @@ class DesignSettingsForm extends Model
         if ($this->logo) {
             $logoImage = new LogoImage();
             $logoImage->setNew($this->logo);
+        }
+
+        if ($this->icon) {
+            SiteIcon::set($this->icon);
         }
 
         DynamicConfig::rewrite();

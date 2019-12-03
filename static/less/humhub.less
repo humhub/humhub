@@ -74,6 +74,11 @@
     @import "popover.less";
 }
 
+@prev-profile: false;
+& when not(@prev-profile) {
+    @import "profile.less";
+}
+
 @prev-list-group: false;
 & when not(@prev-list-group) {
     @import "list-group.less";
@@ -182,6 +187,16 @@
 @prev-richtext: false;
 & when not(@prev-richtext) {
   @import "richtext.less";
+}
+
+@prev-mobile: false;
+& when not(@prev-mobile) {
+  @import "mobile.less";
+}
+
+@prev-icon: false;
+& when not(@prev-icon) {
+  @import "icon.less";
 }
 
 @import "../css/select2Theme/build.less";

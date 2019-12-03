@@ -53,11 +53,11 @@ class FollowButton extends Widget
     public function init()
     {
         if ($this->followLabel === null) {
-            $this->followLabel = Yii::t('SpaceModule.widgets_views_followButton', 'Follow');
+            $this->followLabel = Yii::t('SpaceModule.base', 'Follow');
         }
 
         if ($this->unfollowLabel === null) {
-            $this->unfollowLabel = Yii::t('SpaceModule.widgets_views_followButton', 'Unfollow');
+            $this->unfollowLabel = Yii::t('SpaceModule.base', 'Unfollow');
         }
 
         if (!isset($this->followOptions['class'])) {

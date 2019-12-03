@@ -10,7 +10,6 @@ namespace humhub\modules\admin\controllers;
 
 use humhub\components\Module;
 use humhub\modules\admin\components\Controller;
-use humhub\modules\admin\libs\OnlineModuleManager;
 use humhub\modules\admin\models\forms\ModuleSetAsDefaultForm;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\components\ContentContainerModuleManager;
@@ -32,7 +31,6 @@ class ModuleController extends Controller
      * @inheritdoc
      */
     public $adminOnly = false;
-    private $_onlineModuleManager = null;
 
     /**
      * @inheritdoc
@@ -40,6 +38,7 @@ class ModuleController extends Controller
     public function init()
     {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Modules'));
+        $this->subLayout = '@admin/views/layouts/module';
 
         return parent::init();
     }
@@ -82,7 +81,7 @@ class ModuleController extends Controller
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
-            throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+            throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
         }
 
         $module->enable();
@@ -104,7 +103,7 @@ class ModuleController extends Controller
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
-            throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+            throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
         }
 
         $module->disable();
@@ -129,25 +128,6 @@ class ModuleController extends Controller
     }
 
     /**
-     * Installs a given moduleId from marketplace
-     */
-    public function actionInstall()
-    {
-
-        $this->forcePostRequest();
-
-        $moduleId = Yii::$app->request->get('moduleId');
-
-        if (!Yii::$app->moduleManager->hasModule($moduleId)) {
-            $onlineModules = new OnlineModuleManager();
-            $onlineModules->install($moduleId);
-        }
-
-        // Redirect to Module Install?
-        return $this->redirect(['/admin/module/list']);
-    }
-
-    /**
      * Removes a module
      *
      * @throws HttpException
@@ -164,11 +144,11 @@ class ModuleController extends Controller
             $module = Yii::$app->moduleManager->getModule($moduleId);
 
             if ($module == null) {
-                throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+                throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
             }
 
             if (!is_writable($module->getBasePath())) {
-                throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Module path %path% is not writeable!', ['%path%' => $module->getPath()]));
+                throw new HttpException(500, Yii::t('AdminModule.modules', 'Module path %path% is not writeable!', ['%path%' => $module->getPath()]));
             }
 
             Yii::$app->moduleManager->removeModule($module->id);
@@ -176,107 +156,6 @@ class ModuleController extends Controller
         return $this->redirect(['/admin/module/list']);
     }
 
-    /**
-     * Updates a module with the most recent version online
-     *
-     * @throws HttpException
-     */
-    public function actionUpdate()
-    {
-
-        $this->forcePostRequest();
-
-        $moduleId = Yii::$app->request->get('moduleId');
-
-        /** @var Module $module */
-        $module = Yii::$app->moduleManager->getModule($moduleId);
-
-        if ($module == null) {
-            throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
-        }
-
-        $onlineModules = $this->getOnlineModuleManager();
-        $onlineModules->update($moduleId);
-
-        try {
-            $module->publishAssets(true);
-        } catch (\Exception $e) {
-            Yii::error($e);
-        }
-
-        return $this->redirect(['/admin/module/list']);
-    }
-
-    /**
-     * Complete list of all modules
-     */
-    public function actionListOnline()
-    {
-        $keyword = Yii::$app->request->post('keyword', "");
-
-        $onlineModules = $this->getOnlineModuleManager();
-        $modules = $onlineModules->getModules();
-
-        if ($keyword != "") {
-            $results = [];
-            foreach ($modules as $module) {
-                if (stripos($module['name'], $keyword) !== false || stripos($module['description'], $keyword) !== false) {
-                    $results[] = $module;
-                }
-            }
-            $modules = $results;
-        }
-
-        return $this->render('listOnline', ['modules' => $modules, 'keyword' => $keyword]);
-    }
-
-    /**
-     * Lists all available module updates
-     */
-    public function actionListUpdates()
-    {
-        $onlineModules = $this->getOnlineModuleManager();
-        $modules = $onlineModules->getModuleUpdates();
-
-        return $this->render('listUpdates', ['modules' => $modules]);
-    }
-
-    /**
-     * Complete list of all modules
-     */
-    public function actionListPurchases()
-    {
-        $hasError = false;
-        $message = "";
-
-        $licenceKey = Yii::$app->request->post('licenceKey', "");
-        if ($licenceKey != "") {
-            $result = \humhub\modules\admin\libs\HumHubAPI::request('v1/modules/registerPaid', ['licenceKey' => $licenceKey]);
-            if (!isset($result['status'])) {
-                $hasError = true;
-                $message = 'Could not connect to HumHub API!';
-            } elseif ($result['status'] == 'ok' || $result['status'] == 'created') {
-                $message = 'Module licence added!';
-                $licenceKey = "";
-            } else {
-                $hasError = true;
-                $message = 'Invalid module licence key!';
-            }
-        }
-
-        // Only showed purchased modules
-        $onlineModules = $this->getOnlineModuleManager();
-        $modules = $onlineModules->getModules(false);
-
-
-        foreach ($modules as $i => $module) {
-            if (!isset($module['purchased']) || !$module['purchased']) {
-                unset($modules[$i]);
-            }
-        }
-
-        return $this->render('listPurchases', ['modules' => $modules, 'licenceKey' => $licenceKey, 'hasError' => $hasError, 'message' => $message]);
-    }
 
     /**
      * Returns more information about an installed module.
@@ -295,7 +174,7 @@ class ModuleController extends Controller
         }
 
         if ($module == null) {
-            throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+            throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
         }
 
         $readmeMd = "";
@@ -309,19 +188,8 @@ class ModuleController extends Controller
     }
 
     /**
-     * Returns the thirdparty disclaimer
-     *
-     * @throws HttpException
-     */
-    public function actionThirdpartyDisclaimer()
-    {
-        return $this->renderAjax('thirdpartyDisclaimer', []);
-    }
-
-    /**
      * Sets default enabled/disabled on User or/and Space Modules
-     *
-     * @throws CHttpException
+     * @throws HttpException
      */
     public function actionSetAsDefault()
     {
@@ -329,7 +197,7 @@ class ModuleController extends Controller
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
-            throw new HttpException(500, Yii::t('AdminModule.controllers_ModuleController', 'Could not find requested module!'));
+            throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
         }
         if (!$module instanceof ContentContainerModule) {
             throw new HttpException(500, 'Invalid module type!');
@@ -348,14 +216,5 @@ class ModuleController extends Controller
         return $this->renderAjax('setAsDefault', ['module' => $module, 'model' => $model]);
     }
 
-    public function getOnlineModuleManager()
-    {
-
-        if ($this->_onlineModuleManager === null) {
-            $this->_onlineModuleManager = new OnlineModuleManager();
-        }
-
-        return $this->_onlineModuleManager;
-    }
 
 }

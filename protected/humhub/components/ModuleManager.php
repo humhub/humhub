@@ -139,7 +139,11 @@ class ModuleManager extends Component
             Yii::setAlias('@' . str_replace('\\', '/', $config['namespace']), $basePath);
         }
 
-        Yii::setAlias('@' . $config['id'], $basePath);
+        // Check if alias is not in use yet (e.g. don't register "web" module alias)
+        if (Yii::getAlias('@' . $config['id'], false) === false) {
+            Yii::setAlias('@' . $config['id'], $basePath);
+        }
+
         if (isset($config['aliases']) && is_array($config['aliases'])) {
             foreach ($config['aliases'] as $name => $value) {
                 Yii::setAlias($name, $value);
@@ -288,6 +292,8 @@ class ModuleManager extends Component
      *
      * @param string $id Module Id
      * @return Module|object
+     * @throws Exception
+     * @throws InvalidConfigException
      */
     public function getModule($id)
     {
@@ -318,6 +324,7 @@ class ModuleManager extends Component
      *
      * @param string $moduleId
      * @return bool
+     * @throws Exception
      */
     public function canRemoveModule($moduleId)
     {
@@ -328,7 +335,7 @@ class ModuleManager extends Component
         }
 
         // Check is in dynamic/marketplace module folder
-        if (strpos($module->getBasePath(), Yii::getAlias(Yii::$app->params['moduleMarketplacePath'])) !== false) {
+        if (strpos($module->getBasePath(), Yii::getAlias(Yii::$app->getModule('marketplace')->modulesPath)) !== false) {
             return true;
         }
 
@@ -379,8 +386,9 @@ class ModuleManager extends Component
     /**
      * Enables a module
      *
+     * @param Module $module
+     * @throws InvalidConfigException
      * @since 1.1
-     * @param \humhub\components\Module $module
      */
     public function enable(Module $module)
     {
@@ -409,8 +417,10 @@ class ModuleManager extends Component
     /**
      * Disables a module
      *
+     * @param Module $module
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      * @since 1.1
-     * @param \humhub\components\Module $module
      */
     public function disable(Module $module)
     {
@@ -430,6 +440,10 @@ class ModuleManager extends Component
         $this->trigger(static::EVENT_AFTER_MODULE_DISABLE, new ModuleEvent(['module' => $module]));
     }
 
+    /**
+     * @param array $modules
+     * @throws Exception
+     */
     public function disableModules($modules = [])
     {
         foreach ($modules as $module) {

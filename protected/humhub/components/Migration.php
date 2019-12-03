@@ -18,6 +18,61 @@ use Yii;
 class Migration extends \yii\db\Migration
 {
 
+    protected function safeCreateTable($table, $columns, $options = null)
+    {
+        if(!$this->db->getTableSchema($table, true)) {
+            $this->createTable($table, $columns, $options);
+        } else {
+            if (!$this->compact) {
+                echo "    > skipped create table $table, table does already exist ...\n";
+            }
+            Yii::warning("Tried to create an already existing existing table '$table' in migration ".get_class($this));
+        }
+    }
+
+    protected function safeDropTable($table)
+    {
+        if($this->db->getTableSchema($table, true)) {
+            $this->dropTable($table);
+        } else {
+            if (!$this->compact) {
+                echo "    > skipped drop table $table, table does not exist ...\n";
+            }
+            Yii::warning("Tried to drop a non existing table '$table' in migration ".get_class($this));
+        }
+    }
+
+    protected function safeDropColumn($table, $column)
+    {
+        $tableSchema = $this->db->getTableSchema($table, true);
+
+        // If the table does not exists, we want the default exception behavior
+        if(!$tableSchema || in_array($column, $tableSchema->columnNames, true)) {
+            $this->dropColumn($table, $column);
+        } else {
+            if (!$this->compact) {
+                echo "    > skipped drop column $column from table $table, column does not exist ...\n";
+            }
+            Yii::warning("Tried to drop a non existing column '$column' from table '$table' in migration ".get_class($this));
+        }
+    }
+
+    protected function safeAddColumn($table, $column, $type)
+    {
+        $tableSchema = $this->db->getTableSchema($table, true);
+
+        // If the table does not exists, we want the default exception behavior
+        if(!$tableSchema || !in_array($column, $tableSchema->columnNames, true)) {
+            $this->addColumn($table, $column, $type);
+        } else {
+            if (!$this->compact) {
+                echo "    > skipped add column $column from table $table, column does already exist ...\n";
+            }
+            Yii::warning("Tried to add an already existing column '$column' on table '$table' in migration ".get_class($this));
+        }
+    }
+
+
     /**
      * Renames a class
      *
@@ -28,6 +83,7 @@ class Migration extends \yii\db\Migration
      *
      * @param string $oldClass
      * @param string $newClass
+     * @throws \yii\db\Exception
      */
     protected function renameClass($oldClass, $newClass)
     {

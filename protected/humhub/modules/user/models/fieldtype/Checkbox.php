@@ -48,10 +48,10 @@ class Checkbox extends BaseType
         return parent::getFormDefinition([
             get_class($this) => [
                 'type' => 'form',
-                'title' => Yii::t('UserModule.models_ProfileFieldTypeCheckbox', 'Checkbox field options'),
+                'title' => Yii::t('UserModule.profile', 'Checkbox field options'),
                 'elements' => [
                     'default' => [
-                        'label' => Yii::t('UserModule.models_ProfileFieldTypeCheckbox', 'Default value'),
+                        'label' => Yii::t('UserModule.profile', 'Default value'),
                         'class' => 'form-control',
                         'type' => 'dropdownlist',
                         'items' => [

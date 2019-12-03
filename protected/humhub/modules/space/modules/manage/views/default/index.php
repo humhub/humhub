@@ -11,7 +11,7 @@ use humhub\widgets\Button;
 <div class="panel panel-default">
     <div>
         <div class="panel-heading">
-            <?= Yii::t('SpaceModule.views_settings', '<strong>Space</strong> settings'); ?>
+            <?= Yii::t('SpaceModule.manage', '<strong>Space</strong> settings'); ?>
         </div>
     </div>
 
@@ -35,11 +35,11 @@ This description will be visible below the space name everywhere it appears.'); 
            <p class='help-block' style='margin-top:-30px;margin-bottom:20px'>
 <?= Yii::t('SpaceModule.settings', 'If this space is public, its tags are also public and can be used to find it.<br/>These tags will be visible in the Space Directory.'); ?></p><br/>
 
-        <?= Html::submitButton(Yii::t('SpaceModule.views_admin_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
+        <?= Html::submitButton(Yii::t('SpaceModule.manage', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
         <?= DataSaved::widget(); ?>
 
-        <?= Button::danger(Yii::t('SpaceModule.views_admin_edit', 'Delete'))->right()->link($model->createUrl('delete'))->visible($model->canDelete()) ?>
+        <?= Button::danger(Yii::t('SpaceModule.manage', 'Delete'))->right()->link($model->createUrl('delete'))->visible($model->canDelete()) ?>
 
         <?php ActiveForm::end(); ?>
     </div>

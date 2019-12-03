@@ -4,7 +4,7 @@ Users
 User Component
 ---------------------
 
-The [[\humhub\modules\user\component\User]] component can be accessed by `Yii::$app->user` and beside others provides the following
+The [[\humhub\modules\user\components\User]] component can be accessed by `Yii::$app->user` and beside others provides the following
 features:
 
 - Access the [user identity](#user-identity) of the currently logged in user:
@@ -14,8 +14,8 @@ features:
 if(Yii::$app->user->isGuest) {
     //...
 }
-
-if(Yii::$app->user->isGuestAccessEnabled()) {
+use humhub\modules\user\helpers\AuthHelper;
+if(AuthHelper::isGuestAccessEnabled()) {
     //...
 }
 ```
@@ -84,7 +84,7 @@ public static function onUserSoftDelete(UserEvent $event)
 The hard delete option will wipe all data in relation with the deleted user.
 HumHub objects created by the user like comments, files, posts, notification or activities will automatically be removed with the user profile.
 
-Example 'config.php':
+Example '**config.php**':
 
 ```php
 <?php

@@ -12,9 +12,10 @@
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\ModalDialog;
 use yii\bootstrap\ActiveForm;
+use humhub\libs\Html;
 
 $modal = ModalDialog::begin([
-    'header' => Yii::t('SpaceModule.views_space_invite', '<strong>Invite</strong> members'),
+    'header' => Yii::t('SpaceModule.base', '<strong>Invite</strong> members'),
 ]);
 
 $modalAnimationClass = ($model->hasErrors()) ? 'shake' : 'fadeIn';
@@ -38,12 +39,12 @@ $form = ActiveForm::begin([
             <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
                 <li class="<?= $isInviteTabActiveClass ?> tab-internal">
                     <a href="#internal" data-toggle="tab">
-                        <?= Yii::t('SpaceModule.views_space_invite', 'Pick users'); ?>
+                        <?= Yii::t('SpaceModule.base', 'Pick users'); ?>
                     </a>
                 </li>
                 <li class="<?= $isInviteExternalTabActiveClass ?> tab-external">
                     <a href="#external" data-toggle="tab">
-                        <?= Yii::t('SpaceModule.views_space_invite', 'Invite by email'); ?>
+                        <?= Yii::t('SpaceModule.base', 'Invite by email'); ?>
                     </a>
                 </li>
             </ul>
@@ -54,7 +55,7 @@ $form = ActiveForm::begin([
     <div class="tab-content">
         <div class="tab-pane <?= $isInviteTabActiveClass ?>" id="internal">
 
-            <?= Yii::t('SpaceModule.views_space_invite',
+            <?= Yii::t('SpaceModule.base',
                 'To invite users to this space, please type their names below to find and pick them.'); ?>
 
             <br><br>
@@ -73,14 +74,14 @@ $form = ActiveForm::begin([
                 <br />
                 <?= $form
                     ->field($model, 'withoutInvite')
-                    ->label(Yii::t('SpaceModule.views_space_invite',
+                    ->label(Yii::t('SpaceModule.base',
                         'Add users without invitation'))
                     ->checkbox() ?>
                 <br/>
 
                 <?= $form
                     ->field($model, 'allRegisteredUsers')
-                    ->label(Yii::t('SpaceModule.views_space_invite',
+                    ->label(Yii::t('SpaceModule.base',
                         'Select all registered users'))
                     ->checkbox() ?>
             <?php endif; ?>
@@ -89,18 +90,18 @@ $form = ActiveForm::begin([
 
         <?php if ($canInviteExternal) : ?>
             <div class="<?= $isInviteExternalTabActiveClass ?> tab-pane" id="external">
-                <?= Yii::t('SpaceModule.views_space_invite',
+                <?= Yii::t('SpaceModule.base',
                     'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.'); ?>
                 <br><br>
                 <?= $form->field($model, 'inviteExternal')->textarea([
                     'id' => 'space-invite-external',
                     'rows' => '3',
-                    'placeholder' => Yii::t('SpaceModule.views_space_invite', 'Email addresses'),
+                    'placeholder' => Yii::t('SpaceModule.base', 'Email addresses'),
                 ]); ?>
             </div>
         <?php endif; ?>
 
-        <script>
+        <script <?= Html::nonce() ?>>
             $('#inviteform-allregisteredusers').on('change', function () {
                 var userPicker = humhub.modules.action.Component.instance('#space-invite-user-picker');
 

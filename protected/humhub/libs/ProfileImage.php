@@ -8,7 +8,13 @@
 
 namespace humhub\libs;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\models\ContentContainer;
+use humhub\modules\space\models\Space;
+use humhub\modules\space\widgets\Image as SpaceImage;
+use humhub\modules\user\widgets\Image as UserImage;
 use Yii;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
@@ -34,6 +40,11 @@ class ProfileImage
      * @var String is the guid of user or space
      */
     protected $guid = '';
+
+    /**
+     * @var ContentContainerActiveRecord
+     */
+    protected $container;
 
     /**
      * @var Integer width of the Image
@@ -65,7 +76,12 @@ class ProfileImage
      */
     public function __construct($guid, $defaultImage = 'default_user')
     {
-        $this->guid = $guid;
+        if($guid instanceof ContentContainerActiveRecord) {
+            $this->container = $guid;
+            $this->guid = $this->container->guid;
+        } else {
+            $this->guid = $guid;
+        }
         $this->defaultImage = $defaultImage;
     }
 
@@ -75,6 +91,8 @@ class ProfileImage
      * @param String $prefix Prefix of the returned image
      * @param boolean $scheme URL Scheme
      * @return String Url of the profile image
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\base\Exception
      */
     public function getUrl($prefix = '', $scheme = false)
     {
@@ -95,6 +113,7 @@ class ProfileImage
      * Indicates there is a custom profile image
      *
      * @return Boolean is there a profile image
+     * @throws \yii\base\Exception
      */
     public function hasImage()
     {
@@ -106,6 +125,7 @@ class ProfileImage
      *
      * @param String $prefix for the profile image
      * @return String Path to the profile image
+     * @throws \yii\base\Exception
      */
     public function getPath($prefix = '')
     {
@@ -128,6 +148,7 @@ class ProfileImage
      * @param Int $h
      * @param Int $w
      * @return boolean indicates the success
+     * @throws \yii\base\Exception
      */
     public function cropOriginal($x, $y, $h, $w)
     {
@@ -148,6 +169,7 @@ class ProfileImage
      * Sets a new profile image by given temp file
      *
      * @param mixed $file CUploadedFile or file path
+     * @throws \yii\base\Exception
      */
     public function setNew($file)
     {
@@ -175,5 +197,44 @@ class ProfileImage
         if (file_exists($prefixPath)) {
             FileHelper::unlink($prefixPath);
         }
+    }
+
+    /**
+     * @return ContentContainerActiveRecord|string
+     * @throws \yii\db\IntegrityException
+     * @since 1.4
+     */
+    public function getContainer()
+    {
+        if(!$this->container) {
+            $this->container = ContentContainer::findRecord([$this->guid]);
+        }
+
+        return $this->container;
+    }
+
+    /**
+     * Renders this profile image
+     * @param int $width
+     * @param array $cfg
+     * @return string
+     * @throws \yii\db\IntegrityException
+     * @since 1.4
+     */
+    public function render($width, $cfg = [])
+    {
+        $container = $this->getContainer();
+
+        if(!$container) {
+            return '';
+        }
+
+        $cfg['width'] = $width;
+
+        if($container instanceof Space) {
+            return SpaceImage::widget(['width' => $width, 'space' => $container, 'htmlOptions' => $cfg]);
+        }
+
+        return UserImage::widget(['width' => $width, 'user' => $container, 'imageOptions' => $cfg]);
     }
 }

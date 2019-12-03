@@ -132,6 +132,11 @@ class Upload extends Widget
     public $reset = false;
 
     /**
+     * @var string can be set to overwrite default file upload url
+     */
+    public $url;
+
+    /**
      * Static initializer for model based forms.
      *
      * @param $model
@@ -149,13 +154,18 @@ class Upload extends Widget
      * Static initializer for simple form name based uploads
      *
      * @param $submitName
-     * @param $uploadName
+     * @param string|array $uploadName
      * @param array $cfg
      * @return static
      * @throws \yii\base\InvalidConfigException
      */
     public static function withName($submitName = self::DEFAULT_SUBMIT_NAME, $uploadName = self::DEFAULT_UPLOAD_NAME, $cfg = [])
     {
+        if(is_array($uploadName)) {
+            $cfg = $uploadName;
+            $uploadName = $submitName;
+        }
+
         return static::create(array_merge($cfg, ['submitName' => $submitName, 'name' => $uploadName]));
     }
 
@@ -250,7 +260,8 @@ class Upload extends Widget
             'attribute' => $this->attribute,
             'name' => $this->name,
             'submitName' => $this->submitName,
-            'postState' => $this->postState && !$this->reset
+            'postState' => $this->postState && !$this->reset,
+            'url' => $this->url
         ], $cfg);
 
         return UploadButton::widget($cfg);
@@ -294,7 +305,7 @@ class Upload extends Widget
      */
     public function progress($cfg = [])
     {
-        $options = (isset($cfg['options'])) ? isset($cfg['options']) : [];
+        $options = (isset($cfg['options'])) ? $cfg['options'] : [];
         $options['id'] = $this->id.'_progress';
         $cfg['options'] = $options;
 

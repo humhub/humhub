@@ -47,6 +47,11 @@ class UploadAction extends Action
     protected $scenario = null;
 
     /**
+     * @var string
+     */
+    public $uploadName = 'files';
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -62,7 +67,7 @@ class UploadAction extends Action
     {
         $files = [];
         $hideInStream = $this->isHideInStreamRequest();
-        foreach (UploadedFile::getInstancesByName('files') as $cFile) {
+        foreach (UploadedFile::getInstancesByName($this->uploadName) as $cFile) {
             $files[] = $this->handleFileUpload($cFile, $hideInStream);
         }
 
@@ -136,7 +141,7 @@ class UploadAction extends Action
      */
     protected function getErrorResponse(File $file)
     {
-        $errorMessage = Yii::t('FileModule.actions_UploadAction', 'File {fileName} could not be uploaded!', ['fileName' => Html::encode($file->file_name)]);
+        $errorMessage = Yii::t('FileModule.base', 'File {fileName} could not be uploaded!', ['fileName' => Html::encode($file->file_name)]);
 
         if ($file->getErrors()) {
             $errorMessage = $file->getErrors('uploadedFile');

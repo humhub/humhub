@@ -3,6 +3,6 @@
 ?>
 <li>
     <a href="#" data-action-click="content.permalink" data-content-permalink="<?= $permaLink ?>">
-        <i class="fa fa-link"></i><?= Yii::t('ContentModule.widgets_views_permaLink', 'Permalink') ?>
+        <i class="fa fa-link"></i><?= Yii::t('ContentModule.base', 'Permalink') ?>
     </a>
 </li>

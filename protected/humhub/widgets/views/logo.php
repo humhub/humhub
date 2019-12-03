@@ -15,7 +15,7 @@ use yii\helpers\Html;
 
 <?php if ($place == "login") : ?>
     <?php if ($logo->hasImage()) : ?>
-        <a href="<?= Yii::$app->homeUrl; ?>">
+        <a href="<?= Yii::$app->homeUrl; ?>" data-pjax-prevent>
             <img class="img-rounded" src="<?= $logo->getUrl(); ?>" id="img-logo" alt="<?= Yii::t('base', 'Logo of {appName}', ['appName' => Html::encode(Yii::$app->name)]) ?>"/>
         </a>
         <br>

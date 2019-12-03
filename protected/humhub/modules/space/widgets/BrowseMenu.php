@@ -21,26 +21,26 @@ class BrowseMenu extends MenuWidget
 
         $this->addItemGroup([
             'id' => 'browse',
-            'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'Spaces'),
+            'label' => Yii::t('SpaceModule.base', 'Spaces'),
             'sortOrder' => 100,
         ]);
 
         $this->addItem([
-            'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'My Space List'),
+            'label' => Yii::t('SpaceModule.base', 'My Space List'),
             'url' => Yii::app()->createUrl('/space/browse', []),
             'sortOrder' => 100,
             'isActive' => (Yii::app()->controller->id == "spacebrowse" && Yii::app()->controller->action->id === 'index'),
         ]);
 
         $this->addItem([
-            'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'My space summary'),
+            'label' => Yii::t('SpaceModule.base', 'My space summary'),
             'url' => Yii::app()->createUrl('/dashboard', []),
             'sortOrder' => 100,
             'isActive' => (Yii::app()->controller->id == "spacebrowse" && Yii::app()->controller->action->id === 'index'),
         ]);
 
         $this->addItem([
-            'label' => Yii::t('SpaceModule.widgets_SpaceBrowseMenuWidget', 'Space directory'),
+            'label' => Yii::t('SpaceModule.base', 'Space directory'),
             'url' => Yii::app()->createUrl('/community/workspaces', []),
             'sortOrder' => 200,
             'isActive' => (Yii::app()->controller->id == "spacebrowse" && Yii::app()->controller->action->id === 'index'),

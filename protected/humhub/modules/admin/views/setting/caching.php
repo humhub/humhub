@@ -1,31 +1,26 @@
 <?php
 
-use humhub\compat\CActiveForm;
-use humhub\compat\CHtml;
-use humhub\models\Setting;
+use humhub\modules\admin\models\forms\CacheSettingsForm;
+use humhub\widgets\Button;
+use yii\widgets\ActiveForm;
+
+/* @var $cacheTypes [] */
+/* @var $model CacheSettingsForm */
+
 ?>
 
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
-<?php $form = CActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(); ?>
 
-<?= $form->errorSummary($model); ?>
+        <?= $form->field($model, 'type')->dropDownList($cacheTypes, ['readonly' => Yii::$app->settings->isFixed('cache.class')]) ?>
 
-<div class="form-group">
-    <?= $form->labelEx($model, 'type'); ?>
-    <?= $form->dropDownList($model, 'type', $cacheTypes, ['class' => 'form-control', 'readonly' => Setting::IsFixed('cache.class')]); ?>
-    <br>
-</div>
 
-<div class="form-group">
-    <?= $form->labelEx($model, 'expireTime'); ?>
-    <?= $form->textField($model, 'expireTime', ['class' => 'form-control', 'readonly' => Setting::IsFixed('cache.expireTime')]); ?>
-</div>
+        <?= $form->field($model, 'expireTime')->textInput(['readonly' => Yii::$app->settings->isFixed('cache.expireTime')]) ?>
 
-<hr>
-<?= CHtml::submitButton(Yii::t('AdminModule.views_setting_caching', 'Save & Flush Caches'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+        <hr>
+        <?= Button::primary(Yii::t('AdminModule.settings', 'Save & Flush Caches'))->submit() ?>
 
-<?= \humhub\widgets\DataSaved::widget(); ?>
-<?php CActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 
 <?php $this->endContent(); ?>

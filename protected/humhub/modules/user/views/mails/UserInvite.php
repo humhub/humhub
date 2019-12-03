@@ -1,6 +1,7 @@
 <?php
 
 
+use humhub\modules\ui\mail\DefaultMailStyle;
 use yii\helpers\Html;
 
 ?>
@@ -27,9 +28,9 @@ use yii\helpers\Html;
                                             <!-- start button -->
                                             <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                 <tr>
-                                                    <td width="auto"  align="center" valign="middle" height="28" style=" background-color:<?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>; background-clip: padding-box; font-size:26px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; text-align:center; font-weight: 300; padding-left:18px; padding-right:18px; ">
+                                                    <td width="auto"  align="center" valign="middle" height="28" style=" background-color:<?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>; background-clip: padding-box; font-size:26px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; text-align:center; font-weight: 300; padding-left:18px; padding-right:18px; ">
                                                         <span style="color: <?= Yii::$app->view->theme->variable('text-color-highlight', '#555') ?>; font-weight: 300;">
-                                                            <?php echo Yii::t('UserModule.views_mails_UserInviteSpace', 'You got an invite'); ?>
+                                                            <?php echo Yii::t('UserModule.base', 'You got an invite'); ?>
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -113,7 +114,7 @@ use yii\helpers\Html;
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0"
                                            align="center">
                                         <tr>
-                                            <td style="font-size: 18px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; font-weight:300; text-align:center;">
+                                            <td style="font-size: 18px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; font-weight:300; text-align:center;">
                                                 <span style="color: <?= Yii::$app->view->theme->variable('text-color-highlight', '#555') ?>; font-weight: 300;">
                                                     <a href="<?php echo $originator->createUrl('/user/profile', [], true); ?>"
                                                        style="text-decoration: none; color: <?= Yii::$app->view->theme->variable('text-color-highlight', '#555') ?>; font-weight: 300;">
@@ -187,11 +188,11 @@ use yii\helpers\Html;
                                                 <!--end space height -->
 
                                                 <tr>
-                                                    <td  style="font-size: 14px; line-height: 22px; padding-left: 50px; padding-right: 50px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:center; ">
+                                                    <td  style="font-size: 14px; line-height: 22px; padding-left: 50px; padding-right: 50px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:center; ">
 
                                                         <!-- START: CONTENT -->
-                                                        <?= Yii::t('UserModule.views_mails_UserInviteSpace', 'invited you to join {name}.', ['name' => '<strong>' . Html::encode(Yii::$app->name) . '</strong>']); ?><br />
-                                                        <?= Yii::t('UserModule.views_mails_UserInviteSpace', 'Register now and participate!'); ?><br/>
+                                                        <?= Yii::t('UserModule.base', 'invited you to join {name}.', ['name' => '<strong>' . Html::encode(Yii::$app->name) . '</strong>']); ?><br />
+                                                        <?= Yii::t('UserModule.base', 'Register now and participate!'); ?><br/>
                                                         &nbsp;
                                                         <!-- END: CONTENT -->
                                                     </td>
@@ -207,11 +208,11 @@ use yii\helpers\Html;
                                             <!-- start button -->
                                             <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                 <tr>
-                                                    <td width="auto"  align="center" valign="middle" height="32" style=" background-color:<?= $this->theme->variable('primary'); ?>;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; text-align:center; font-weight: 600; padding-left:30px; padding-right:30px; padding-top: 5px; padding-bottom: 5px;">
+                                                    <td width="auto"  align="center" valign="middle" height="32" style=" background-color:<?= $this->theme->variable('primary'); ?>;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; text-align:center; font-weight: 600; padding-left:30px; padding-right:30px; padding-top: 5px; padding-bottom: 5px;">
 
                                                         <span style="color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#fff') ?>; font-weight: 300;">
                                                             <a href="<?= $registrationUrl; ?>" style="text-decoration: none; color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#fff') ?>; font-weight: 300;">
-                                                                <strong><?= Yii::t('UserModule.views_mails_UserInviteSpace', 'Sign up now'); ?></strong>
+                                                                <strong><?= Yii::t('UserModule.base', 'Sign up now'); ?></strong>
                                                             </a>
                                                         </span>
                                                     </td>

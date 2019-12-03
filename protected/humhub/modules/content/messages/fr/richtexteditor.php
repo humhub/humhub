@@ -15,6 +15,7 @@ return array (
   'Delete table' => 'Supprimer la table',
   'Flags' => 'Drapeaux',
   'Food & Drink' => 'Nourriture et boissons',
+  'Heading' => 'Entête',
   'Height' => 'Hauteur',
   'Horizontal rule' => 'Ligne horizontale',
   'Image' => 'Image',

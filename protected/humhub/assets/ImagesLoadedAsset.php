@@ -21,7 +21,7 @@ class ImagesLoadedAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/imagesloaded';
+    public $sourcePath = '@npm/imagesloaded';
 
     /**
      * @inheritdoc

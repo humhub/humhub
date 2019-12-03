@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Actions' => '',
     '<strong>My</strong> friends' => '<strong>Mis</strong> amigos',
     '<strong>Pending</strong> friend requests' => 'Solicitudes de amistad <strong>pendientes</strong>',
     '<strong>Sent</strong> friend requests' => 'Solicitudes de amistad <strong>enviadas</strong>',
     'Accept Friend Request' => 'Aceptar solicitud de amistad',
+    'Actions' => 'Acciones',
     'Add Friend' => 'Agregar amigo',
     'Cancel friend request' => 'Cancelar solicitud de amistad',
     'Deny friend request' => 'Negar solicitud de amistad',

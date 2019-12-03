@@ -1,16 +1,33 @@
 HumHub Change Log
 =================
 
-1.3.18 (Unreleased)
--------------------
+1.3.19 (Unreleased)
+--------------------------
+
+- Fix #3759: Allow individual file extensions (e.g. msg)
+- Fix #3147: Module related permissions are not properly removed on deactivate/uninstall
+- Fix #3740: Profile fieldtype Checkbox List does not show "other"
+- Fix #3484: Encoding issue in german space visibility translation
+- Fix #3717: Account deletion incomplete if related to an identity provider
+
+
+1.3.18 (November 22, 2019)
+--------------------------
 
 - Fix #3698: Approval by group manager broken
+- Enh: Set max signs of User tags to 250
+- Fix: https://github.com/humhub/humhub-modules-wiki/issues/103 Topic attachment fails with given topic instances
+- Fix #3366: Set max-width for stream entry image file attachments
+- Fix: `ContentContainerController::getAccess` uses `ContentContainerControllerAccess` also for global access
+- Fix: Global content does not allow guest access
+- Fix #3727 Bug with Bluebird and Firefox 71 breaking mentioning requests
 
 
 1.3.17  (October 17, 2019)
 --------------------------
 
 - Fix #3690: Rollback from broken version 2.8.6 to 2.8.1 of bower-asset/clipboard.js
+
 
 1.3.16  (October 17, 2019)
 --------------------------

@@ -8,6 +8,8 @@
 
 namespace humhub\models;
 
+use yii\base\InvalidArgumentException;
+use humhub\events\OembedFetchEvent;
 use humhub\libs\RestrictedCallException;
 use humhub\libs\UrlOembedClient;
 use humhub\libs\UrlOembedHttpClient;
@@ -32,6 +34,7 @@ use Yii;
  */
 class UrlOembed extends ActiveRecord
 {
+    const FETCH = 'fetch';
     /**
      * @var int Maximum amount of remote fetch calls per request
      */
@@ -136,6 +139,12 @@ class UrlOembed extends ActiveRecord
      */
     public static function getOEmbed($url)
     {
+        $oembedFetchEvent = new OembedFetchEvent(['url' => $url]);
+        (new UrlOembed())->trigger(static::FETCH, $oembedFetchEvent);
+        if ($result = $oembedFetchEvent->getResult()) {
+            return $result;
+        }
+
         try {
             $url = trim($url);
 
@@ -220,9 +229,10 @@ class UrlOembed extends ActiveRecord
      * A Remote fetch for new urls is only executed in case there is a related provider for the given url configured.
      *
      * @param string $url
+     * @param string $customProviderUrl
      * @return string|null
      */
-    protected static function loadUrl($url)
+    protected static function loadUrl($url, $customProviderUrl = '')
     {
         try {
             $urlOembed = static::findExistingOembed($url);
@@ -231,12 +241,13 @@ class UrlOembed extends ActiveRecord
                 $urlOembed = new static(['url' => $url]);
             }
 
-            if (empty($urlOembed->getProviderUrl())) {
+            $providerUrl = $customProviderUrl != '' ? $customProviderUrl : $urlOembed->getProviderUrl();
+            if (empty($providerUrl)) {
                 return null;
             }
 
 
-            $data = static::fetchUrl($urlOembed->getProviderUrl());
+            $data = static::fetchUrl($providerUrl);
             $html = static::buildHtmlPreview($url, $data);
 
             $urlOembed->preview = $html ?: '';
@@ -257,6 +268,7 @@ class UrlOembed extends ActiveRecord
      *
      * @param $url
      * @param []|null $data
+     * @param UrlOembed $urlOembed
      * @return string|null
      */
     protected static function buildHtmlPreview($url, $data = null)
@@ -266,6 +278,7 @@ class UrlOembed extends ActiveRecord
                 'data' => [
                     'guid' => uniqid('oembed-', true),
                     'richtext-feature' => 1,
+                    'oembed-provider' => Html::encode(static::getProviderByUrl($url)),
                     'url' => Html::encode($url)
                 ],
                 'class' => 'oembed_snippet',
@@ -296,13 +309,22 @@ class UrlOembed extends ActiveRecord
      */
     public static function hasOEmbedSupport($url)
     {
+        return static::getProviderByUrl($url) != null;
+    }
+
+    /**
+     * @param $url
+     * @return mixed|null
+     */
+    public static function getProviderByUrl($url)
+    {
         foreach (static::getProviders() as $providerBaseUrl => $providerAPI) {
             if (strpos($url, $providerBaseUrl) !== false) {
-                return true;
+                return $providerBaseUrl;
             }
         }
 
-        return false;
+        return null;
     }
 
     /**

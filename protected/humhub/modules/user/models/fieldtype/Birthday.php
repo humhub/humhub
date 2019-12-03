@@ -54,11 +54,11 @@ class Birthday extends BaseType
         return parent::getFormDefinition([
             get_class($this) => [
                 'type' => 'form',
-                'title' => Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Birthday field options'),
+                'title' => Yii::t('UserModule.profile', 'Birthday field options'),
                 'elements' => [
                     'defaultHideAge' => [
                         'type' => 'checkbox',
-                        'label' => Yii::t('UserModule.models_ProfileFieldTypeBirthday', 'Hide age per default'),
+                        'label' => Yii::t('UserModule.profile', 'Hide age per default'),
                         'class' => 'form-control',
                     ],
                 ]
@@ -206,7 +206,7 @@ class Birthday extends BaseType
         }
 
         $ageInYears = Yii::t(
-            'UserModule.models_ProfileFieldTypeBirthday',
+            'UserModule.profile',
             '%y Years',
             ['%y' => $birthdayDate->diff(new \DateTime())->y]
         );

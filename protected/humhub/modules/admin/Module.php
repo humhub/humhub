@@ -34,11 +34,6 @@ class Module extends \humhub\components\Module
     public $isCoreModule = true;
 
     /**
-     * @var boolean is marketplace enabled?
-     */
-    public $marketplaceEnabled = true;
-
-    /**
      * @inheritdoc
      */
     public $resourcesPath = 'resources';
@@ -58,6 +53,14 @@ class Module extends \humhub\components\Module
      * @var boolean show incomplete setup warning on the dashboard for admins
      */
     public $showDashboardIncompleteSetupWarning = true;
+
+    /**
+     * @since 1.4
+     * @var array list of script urls which should not be cached on the client side
+     */
+    public $defaultReloadableScripts = [
+        'https://platform.twitter.com/widgets.js'
+    ];
 
     /**
      * @inheritdoc

@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\ui\mail\DefaultMailStyle;
 use yii\helpers\Html;
 ?>
 <tr>
@@ -25,10 +26,10 @@ use yii\helpers\Html;
                                             <!-- start button -->
                                             <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                 <tr>
-                                                    <td width="auto"  align="center" valign="middle" height="28" style="background-color:<?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>;background-clip: padding-box; font-size:26px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; text-align:center;  color:#a3a2a2; font-weight: 300; padding-left:18px; padding-right:18px; ">
+                                                    <td width="auto"  align="center" valign="middle" height="28" style="background-color:<?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>;background-clip: padding-box; font-size:26px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; text-align:center;  color:#a3a2a2; font-weight: 300; padding-left:18px; padding-right:18px; ">
 
                                                         <span style="color:<?= Yii::$app->view->theme->variable('text-color-highlight', '#555') ?>; font-weight: 300;">
-                                                            <?= Yii::t('UserModule.views_mails_ChangeEmail', '<strong>Confirm</strong></strong> your new email address'); ?>
+                                                            <?= Yii::t('UserModule.account', '<strong>Confirm</strong></strong> your new email address'); ?>
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -92,11 +93,11 @@ use yii\helpers\Html;
                                                 <!--end space height -->
 
                                                 <tr>
-                                                    <td  style="font-size: 14px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left; ">
+                                                    <td  style="font-size: 14px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left; ">
 
-                                                        <?php echo Yii::t('UserModule.views_mails_ChangeEmail', 'Hello'); ?> <?php echo Html::encode($user->displayName); ?>,<br><br>
+                                                        <?php echo Yii::t('UserModule.account', 'Hello'); ?> <?php echo Html::encode($user->displayName); ?>,<br><br>
 
-                                                        <?php echo Yii::t('UserModule.views_mails_ChangeEmail', 'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.', ['{newemail}' => Html::encode($newEmail)]); ?>
+                                                        <?php echo Yii::t('UserModule.account', 'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.', ['{newemail}' => Html::encode($newEmail)]); ?>
 
                                                     </td>
                                                 </tr>
@@ -119,11 +120,11 @@ use yii\helpers\Html;
                                             <!-- start button -->
                                             <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                 <tr>
-                                                    <td width="auto"  align="center" valign="middle" height="32" style="background-color:<?= $this->theme->variable('primary'); ?>;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; text-align:center;  color:#ffffff; font-weight: 600; padding-left:30px; padding-right:30px; padding-top: 5px; padding-bottom: 5px;">
+                                                    <td width="auto"  align="center" valign="middle" height="32" style="background-color:<?= $this->theme->variable('primary'); ?>;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; text-align:center;  color:#ffffff; font-weight: 600; padding-left:30px; padding-right:30px; padding-top: 5px; padding-bottom: 5px;">
 
                                                         <span style="color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#fff') ?>; font-weight: 300;">
                                                             <a href="<?php echo $approveUrl; ?>" style="text-decoration: none; color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#fff') ?>; font-weight: 300;">
-                                                                <strong><?= Yii::t('UserModule.views_mails_ChangeEmail', 'Confirm'); ?></strong>
+                                                                <strong><?= Yii::t('UserModule.account', 'Confirm'); ?></strong>
                                                             </a>
                                                         </span>
                                                     </td>

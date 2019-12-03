@@ -2,7 +2,7 @@
 
 use humhub\widgets\FooterMenu;
 use yii\helpers\Url;
-use yii\helpers\Html;
+use humhub\libs\Html;
 use yii\bootstrap\ActiveForm;
 use humhub\modules\search\models\forms\SearchForm;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -22,27 +22,27 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                         <div class="col-md-6">
                             <?php $form = ActiveForm::begin(['action' => Url::to(['index']), 'method' => 'GET']); ?>
                                 <div class="form-group form-group-search">
-                                    <?= $form->field($model, 'keyword')->textInput(['placeholder' => Yii::t('SearchModule.views_search_index', 'Search for user, spaces and content'),
-                                        'title' => Yii::t('SearchModule.views_search_index', 'Search for user, spaces and content'), 'class' => 'form-control form-search', 'id' => 'search-input-field'])->label(false); ?>
+                                    <?= $form->field($model, 'keyword')->textInput(['placeholder' => Yii::t('SearchModule.base', 'Search for user, spaces and content'),
+                                        'title' => Yii::t('SearchModule.base', 'Search for user, spaces and content'), 'class' => 'form-control form-search', 'id' => 'search-input-field'])->label(false); ?>
                                     <?php echo Html::submitButton(Yii::t('base', 'Search'), ['class' => 'btn btn-default btn-sm form-button-search', 'data-ui-loader' => '']); ?>
                                 </div>
 
                                 <div class="text-center">
                                     <a data-toggle="collapse" id="search-settings-link" href="#collapse-search-settings"
                                        style="font-size: 11px;"><i
-                                            class="fa fa-caret-right"></i> <?php echo Yii::t('SearchModule.views_search_index', 'Advanced search settings'); ?>
+                                            class="fa fa-caret-right"></i> <?php echo Yii::t('SearchModule.base', 'Advanced search settings'); ?>
                                     </a>
                                 </div>
 
                                 <div id="collapse-search-settings" class="panel-collapse collapse">
                                     <br>
-                                    <?=  Yii::t('SearchModule.views_search_index', 'Search only in certain spaces:'); ?>
+                                    <?=  Yii::t('SearchModule.base', 'Search only in certain spaces:'); ?>
                                     <?= \humhub\modules\space\widgets\SpacePickerField::widget([
                                         'id' => 'space_filter',
                                         'model' => $model,
                                         'attribute' => 'limitSpaceGuids',
                                         'selection' => $limitSpaces,
-                                        'placeholder' => Yii::t('SearchModule.views_search_index', 'Specify space')
+                                        'placeholder' => Yii::t('SearchModule.base', 'Specify space')
                                     ]) ?>
                                 </div>
                                 <br>
@@ -60,12 +60,12 @@ humhub\modules\stream\assets\StreamAsset::register($this);
             <div class="col-md-2">
                 <div class="panel panel-default">
                     <div
-                        class="panel-heading"><?php echo Yii::t('SearchModule.views_search_index', '<strong>Search </strong> results'); ?></div>
+                        class="panel-heading"><?php echo Yii::t('SearchModule.base', '<strong>Search </strong> results'); ?></div>
                     <div class="list-group">
                         <a data-pjax-prevent href='<?php echo Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_ALL]); ?>'
                            class="list-group-item <?php if ($model->scope == SearchForm::SCOPE_ALL): ?>active<?php endif; ?>">
                             <div>
-                                <div class="edit_group "><?php echo Yii::t('SearchModule.views_search_index', 'All'); ?>
+                                <div class="edit_group "><?php echo Yii::t('SearchModule.base', 'All'); ?>
                                     (<?php echo $totals[SearchForm::SCOPE_ALL]; ?>)
                                 </div>
                             </div>
@@ -75,7 +75,7 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                            class="list-group-item <?php if ($model->scope == SearchForm::SCOPE_CONTENT): ?>active<?php endif; ?>">
                             <div>
                                 <div
-                                    class="edit_group "><?php echo Yii::t('SearchModule.views_search_index', 'Content'); ?>
+                                    class="edit_group "><?php echo Yii::t('SearchModule.base', 'Content'); ?>
                                     (<?php echo $totals[SearchForm::SCOPE_CONTENT]; ?>)
                                 </div>
                             </div>
@@ -84,7 +84,7 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                            class="list-group-item <?php if ($model->scope == SearchForm::SCOPE_USER): ?>active<?php endif; ?>">
                             <div>
                                 <div
-                                    class="edit_group "><?php echo Yii::t('SearchModule.views_search_index', 'Users'); ?>
+                                    class="edit_group "><?php echo Yii::t('SearchModule.base', 'Users'); ?>
                                     (<?php echo $totals[SearchForm::SCOPE_USER]; ?>)
                                 </div>
                             </div>
@@ -93,7 +93,7 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                            class="list-group-item <?php if ($model->scope == SearchForm::SCOPE_SPACE): ?>active<?php endif; ?>">
                             <div>
                                 <div
-                                    class="edit_group "><?php echo Yii::t('SearchModule.views_search_index', 'Spaces'); ?>
+                                    class="edit_group "><?php echo Yii::t('SearchModule.base', 'Spaces'); ?>
                                     (<?php echo $totals[SearchForm::SCOPE_SPACE]; ?>)
                                 </div>
                             </div>
@@ -121,7 +121,7 @@ humhub\modules\stream\assets\StreamAsset::register($this);
 
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <p><strong><?php echo Yii::t('SearchModule.views_search_index', 'Your search returned no matches.'); ?></strong></p>
+                                <p><strong><?php echo Yii::t('SearchModule.base', 'Your search returned no matches.'); ?></strong></p>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -138,7 +138,7 @@ humhub\modules\stream\assets\StreamAsset::register($this);
     <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_FULL_PAGE]); ?>
 </div>
 
-<script type="text/javascript">
+<script <?= Html::nonce() ?>>
 
     $(document).ready(function () {
         // set focus to input for seach field

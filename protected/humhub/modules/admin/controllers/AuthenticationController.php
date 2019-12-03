@@ -65,7 +65,7 @@ class AuthenticationController extends Controller
         // Build Group Dropdown
         $groups = [
             '' => Yii::t(
-                'AdminModule.controllers_SettingController',
+                'AdminModule.settings',
                 'None - shows dropdown in user registration.'
             )
         ];

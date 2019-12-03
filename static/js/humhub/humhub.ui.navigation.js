@@ -31,7 +31,7 @@ humhub.module('ui.navigation', function (module, require, $) {
         if(!id) {
             return;
         }
-        
+
         if(item && item.url) {
             module.setActiveItem($('#' + id).find('[href="' + item.url + '"]'));
         } else {
@@ -44,7 +44,7 @@ humhub.module('ui.navigation', function (module, require, $) {
             $('#top-menu-nav li').removeClass('active');
             return;
         }
-        
+
         $item.closest('ul').find('li').removeClass('active');
         $item.closest('li').addClass('active');
         $item.trigger('blur');

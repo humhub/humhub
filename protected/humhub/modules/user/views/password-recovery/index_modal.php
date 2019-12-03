@@ -9,15 +9,15 @@ use yii\captcha\Captcha;
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel"><?= Yii::t('UserModule.views_auth_recoverPassword', '<strong>Password</strong> recovery'); ?></h4>
+            <h4 class="modal-title" id="myModalLabel"><?= Yii::t('UserModule.auth', '<strong>Password</strong> recovery'); ?></h4>
         </div>
         <div class="modal-body">
             <?php $form = CActiveForm::begin(['enableClientValidation' => false]); ?>
 
-            <p><?= Yii::t('UserModule.views_auth_recoverPassword', 'Just enter your e-mail address. We\'ll send you recovery instructions!'); ?></p>
+            <p><?= Yii::t('UserModule.auth', 'Just enter your e-mail address. We\'ll send you recovery instructions!'); ?></p>
 
             <div class="form-group">
-                <?= $form->textField($model, 'email', ['class' => 'form-control', 'id' => 'email_txt', 'placeholder' => Yii::t('UserModule.views_auth_recoverPassword', 'Your email')]); ?>
+                <?= $form->textField($model, 'email', ['class' => 'form-control', 'id' => 'email_txt', 'placeholder' => Yii::t('UserModule.auth', 'Your email')]); ?>
                 <?= $form->error($model, 'email'); ?>
             </div>
 
@@ -26,7 +26,7 @@ use yii\captcha\Captcha;
                     'model' => $model,
                     'attribute' => 'verifyCode',
                     'captchaAction' => '/user/auth/captcha',
-                    'options' => ['class' => 'form-control', 'placeholder' => Yii::t('UserModule.views_auth_recoverPassword', 'Enter security code above')]
+                    'options' => ['class' => 'form-control', 'placeholder' => Yii::t('UserModule.auth', 'Enter security code above')]
                 ]);
                 ?>
                 <?= $form->error($model, 'verifyCode'); ?>
@@ -34,11 +34,11 @@ use yii\captcha\Captcha;
 
             <hr>
             <a href="#" class="btn btn-primary" data-action-click="ui.modal.submit" data-action-url="<?= Url::to(['/user/password-recovery']) ?>" data-ui-loader>
-                <?= Yii::t('UserModule.views_auth_recoverPassword', 'Reset password') ?>
+                <?= Yii::t('UserModule.auth', 'Reset password') ?>
             </a>
             &nbsp;
             <a href="#" class="btn btn-default" data-action-click="ui.modal.load" data-action-url="<?= Url::to(['/user/auth/login']) ?>" data-ui-loader>
-                <?= Yii::t('UserModule.views_auth_recoverPassword', 'Back') ?>
+                <?= Yii::t('UserModule.auth', 'Back') ?>
             </a>
             <?php CActiveForm::end() ?>
         </div>
@@ -46,7 +46,7 @@ use yii\captcha\Captcha;
     </div>
 </div>
 
-<script>
+<script <?= \humhub\libs\Html::nonce() ?>>
 <?php if ($model->hasErrors()) { ?>
     $('#password-recovery-form').removeClass('bounceIn');
     $('#password-recovery-form').addClass('shake');

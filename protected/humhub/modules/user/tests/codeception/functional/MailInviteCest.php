@@ -50,8 +50,8 @@ class MailInviteCest
         $I->amOnRoute('/user/registration', ['token' => $token]);
         $I->see('Account registration');
         $I->fillField( 'User[username]', 'NewUser');
-        $I->fillField(    'Password[newPassword]', 'newUser');
-        $I->fillField(    'Password[newPasswordConfirm]', 'newUser');
+        $I->fillField(    'Password[newPassword]', 'NewUser123');
+        $I->fillField(    'Password[newPasswordConfirm]', 'NewUser123');
         $I->fillField(    'Profile[firstname]', 'New');
         $I->fillField(    'Profile[lastname]', 'User');
         $I->click('#registration-form [type="submit"]');
@@ -92,8 +92,8 @@ class MailInviteCest
         $I->amOnRoute('/user/registration', ['token' => $token]);
         $I->see('Account registration');
         $I->fillField( 'User[username]', 'NewUser');
-        $I->fillField(    'Password[newPassword]', 'newUser');
-        $I->fillField(    'Password[newPasswordConfirm]', 'newUser');
+        $I->fillField(    'Password[newPassword]', 'NewUser123');
+        $I->fillField(    'Password[newPasswordConfirm]', 'NewUser123');
         $I->fillField(    'Profile[firstname]', 'New');
         $I->fillField(    'Profile[lastname]', 'User');
         $I->click('#registration-form [type="submit"]');

@@ -2,6 +2,9 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\libs\DynamicConfig;
+use humhub\modules\admin\events\FetchReloadableScriptsEvent;
+use humhub\modules\admin\Module;
 use Yii;
 use yii\base\Model;
 
@@ -12,9 +15,11 @@ use yii\base\Model;
  */
 class CacheSettingsForm extends Model
 {
+    const EVENT_FETCH_RELOADABLE_SCRIPTS = 'fetchReloadableScripts';
 
     public $type;
     public $expireTime;
+    public $reloadableScripts;
 
     /**
      * @inheritdoc
@@ -26,6 +31,7 @@ class CacheSettingsForm extends Model
         $settingsManager = Yii::$app->settings;
         $this->type = $settingsManager->get('cache.class');
         $this->expireTime = $settingsManager->get('cache.expireTime');
+        $this->reloadableScripts = $settingsManager->get('cache.reloadableScripts');
     }
 
     /**
@@ -35,6 +41,7 @@ class CacheSettingsForm extends Model
     {
         return [
             [['type', 'expireTime'], 'required'],
+            ['reloadableScripts', 'string'],
             ['type', 'checkCacheType'],
             ['expireTime', 'integer'],
             ['type', 'in', 'range' => array_keys($this->getTypes())],
@@ -47,8 +54,9 @@ class CacheSettingsForm extends Model
     public function attributeLabels()
     {
         return [
-            'type' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'Cache Backend'),
-            'expireTime' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'Default Expire Time (in seconds)'),
+            'type' => \Yii::t('AdminModule.settings', 'Cache Backend'),
+            'expireTime' => \Yii::t('AdminModule.settings', 'Default Expire Time (in seconds)'),
+            'reloadableScripts' => \Yii::t('AdminModule.settings', 'Prevent client caching of following scripts'),
         ];
     }
 
@@ -58,15 +66,15 @@ class CacheSettingsForm extends Model
     public function getTypes()
     {
         $cacheTypes = [
-            'yii\caching\DummyCache' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'No caching'),
-            'yii\caching\FileCache' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'File'),
-            'yii\caching\ApcCache' => \Yii::t('AdminModule.forms_CacheSettingsForm', 'APC(u)'),
+            'yii\caching\DummyCache' => \Yii::t('AdminModule.settings', 'No caching'),
+            'yii\caching\FileCache' => \Yii::t('AdminModule.settings', 'File'),
+            'yii\caching\ApcCache' => \Yii::t('AdminModule.settings', 'APC(u)'),
         ];
-        
+
         if (isset(Yii::$app->redis)) {
-            $cacheTypes['yii\redis\Cache'] = \Yii::t('AdminModule.forms_CacheSettingsForm', 'Redis');
+            $cacheTypes['yii\redis\Cache'] = \Yii::t('AdminModule.settings', 'Redis');
         }
-        
+
         return $cacheTypes;
     }
 
@@ -76,7 +84,7 @@ class CacheSettingsForm extends Model
     public function checkCacheType($attribute, $params)
     {
         if ($this->type == 'yii\caching\ApcCache' && !function_exists('apc_add') && !function_exists('apcu_add')) {
-            $this->addError($attribute, \Yii::t('AdminModule.forms_CacheSettingsForm', "PHP APC(u) Extension missing - Type not available!"));
+            $this->addError($attribute, \Yii::t('AdminModule.settings', "PHP APC(u) Extension missing - Type not available!"));
         }
     }
 
@@ -91,10 +99,31 @@ class CacheSettingsForm extends Model
 
         $settingsManager->set('cache.class', $this->type);
         $settingsManager->set('cache.expireTime', $this->expireTime);
+        $settingsManager->set('cache.reloadableScripts', $this->reloadableScripts);
 
-        \humhub\libs\DynamicConfig::rewrite();
+        DynamicConfig::rewrite();
 
         return true;
+    }
+
+    public static function getReloadableScriptUrls()
+    {
+        /* @var $module Module */
+        $module = Yii::$app->getModule('admin');
+        $instance = new static();
+        $urls = array_merge($instance->getReloadableScriptsAsArray(), $module->defaultReloadableScripts);
+        $event = new FetchReloadableScriptsEvent(['urls' => $urls]);
+        $instance->trigger(static::EVENT_FETCH_RELOADABLE_SCRIPTS, $event);
+        return $event->urls;
+    }
+
+    public function getReloadableScriptsAsArray()
+    {
+        if(is_string($this->reloadableScripts) && !empty($this->reloadableScripts)) {
+            return array_map('trim', explode("\n", $this->reloadableScripts));
+        }
+
+        return [];
     }
 
 }

@@ -79,7 +79,14 @@ class FunctionalTester extends \Codeception\Actor
     public function assertSpaceAccessFalse($userGroup, $path, $params = [], $post = false)
     {
         $space = $this->loginBySpaceUserGroup($userGroup, $path, $params, $post);
-        $this->dontSeeResponseCodeIs(200);
+
+        if($userGroup === Space::USERGROUP_GUEST) {
+            $this->seeInCurrentUrl('auth');
+            $this->seeInCurrentUrl('login');
+        } else {
+            $this->dontSeeResponseCodeIs(200);
+        }
+
         $this->logout();
         return $space;
     }
@@ -116,16 +123,25 @@ class FunctionalTester extends \Codeception\Actor
                 $spaceId = 3;
                 $user = 'User1';
                 break;
-            case Space::USERGROUP_GUEST:
+            case Space::USERGROUP_USER:
                 $spaceId = 1;
                 $user = 'User1';
                 break;
+            case Space::USERGROUP_GUEST:
+                $this->logout();
+                $spaceId = 1;
+                break;
         }
 
-        $space = Space::findOne(['id' => $spaceId]);
+        if($spaceId) {
+            $space = Space::findOne(['id' => $spaceId]);
+        }
 
+        if($user) {
+            $this->logout();
+            $this->amUser($user);
+        }
 
-        $this->amUser($user);
         $this->amOnSpace($space, $path, $params, $post);
         return $space;
     }

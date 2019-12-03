@@ -2,6 +2,7 @@
 
 namespace humhub\modules\notification\models\forms;
 
+use humhub\modules\notification\models\Notification;
 use Yii;
 
 class FilterForm extends \yii\base\Model
@@ -21,7 +22,7 @@ class FilterForm extends \yii\base\Model
 
     /**
      * Contains all notifications by modulenames
-     * @var type 
+     * @var type
      */
     public $notifications;
 
@@ -41,7 +42,7 @@ class FilterForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'categoryFilter' => Yii::t('NotificationModule.views_overview_index', 'Module Filter'),
+            'categoryFilter' => Yii::t('NotificationModule.base', 'Module Filter'),
         ];
     }
 
@@ -59,7 +60,7 @@ class FilterForm extends \yii\base\Model
 
     /**
      * Returns all Notifications classes of modules not selected in the filter
-     * 
+     *
      * @return type
      */
     public function getExcludeClassFilter()
@@ -113,6 +114,19 @@ class FilterForm extends \yii\base\Model
     public function hasFilter()
     {
         return $this->categoryFilter != null;
+    }
+
+    /**
+     * Creates the filter query
+     * @return \yii\db\ActiveQuery
+     */
+    public function createQuery()
+    {
+        $query = Notification::findGrouped();
+        if($this->hasFilter()) {
+            $query->andFilterWhere(['not in', 'class', $this->getExcludeClassFilter()]);
+        }
+        return $query;
     }
 
 }

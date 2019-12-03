@@ -64,7 +64,7 @@ class AddGroupMemberForm extends Model
         $group = $this->getGroup();
 
         if (!$group) {
-            throw new HttpException(404, Yii::t('AdminModule.models_form_AddGroupMemberForm', 'Group not found!'));
+            throw new HttpException(404, Yii::t('AdminModule.user', 'Group not found!'));
         }
 
         if($group->is_admin_group && !Yii::$app->user->isAdmin()) {

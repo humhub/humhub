@@ -8,7 +8,7 @@ use humhub\widgets\TimeAgo;
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?= Yii::t('SpaceModule.views_admin_members', '<strong>Manage</strong> members'); ?>
+        <?= Yii::t('SpaceModule.manage', '<strong>Manage</strong> members'); ?>
     </div>
     <?= MemberMenu::widget(['space' => $space]); ?>
     <div class="panel-body">
@@ -28,13 +28,26 @@ use humhub\widgets\TimeAgo;
                         'format' => 'raw',
                         'value' => function ($data) use (&$groups) {
                             if (empty($data->last_visit)) {
-                                return Yii::t('SpaceModule.views_admin_members', 'never');
+                                return Yii::t('SpaceModule.manage', 'never');
                             }
                             return TimeAgo::widget(['timestamp' => $data->last_visit]);
                         }
                     ],
                     [
-                        'header' => Yii::t('SpaceModule.views_admin_members', 'Actions'),
+                        'label' => Yii::t('SpaceModule.manage', 'Invited By'),
+                        'attribute' => 'originator',
+                        'format' => 'raw',
+                        'value' =>
+                            function ($data) {
+                                if (is_null($data->originator)) {
+                                    return Yii::t('SpaceModule.manage', '-');
+                                }
+
+                                return Html::a(HTML::encode($data->originator->getDisplayName()), $data->originator->getUrl());
+                            }
+                    ],
+                    [
+                        'header' => Yii::t('SpaceModule.manage', 'Actions'),
                         'class' => 'yii\grid\ActionColumn',
                         'buttons' => [
                             'view' => function() {

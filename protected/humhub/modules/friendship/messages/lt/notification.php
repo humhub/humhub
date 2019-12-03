@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Friendship' => '',
+    'Receive Notifications for Friendship Request and Approval events.' => '',
     '{displayName} accepted your friend request.' => '',
     '{displayName} declined your friend request.' => '',
     '{displayName} sent you a friend request.' => '',

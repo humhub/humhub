@@ -1,4 +1,8 @@
-<?php \humhub\widgets\ModalDialog::begin(['header' => Yii::t('CommentModule.views_comment_show', 'Comments')]) ?>
+<?php
+ use humhub\libs\Html;
+?>
+
+<?php \humhub\widgets\ModalDialog::begin(['header' => Yii::t('CommentModule.base', 'Comments')]) ?>
     <div class="modal-body comment-container comment-modal-body" style="margin-top:0px">
         <div id="userlist-content">
             <div class="well well-small" id="comment_<?= $id; ?>">
@@ -10,7 +14,7 @@
         </div>
     </div>
 <?php \humhub\widgets\ModalDialog::end() ?>
-<script type="text/javascript">
+<script <?= Html::nonce() ?>>
 
     // scroll to top of list
     $(".comment-modal-body").animate({scrollTop: 0}, 200);

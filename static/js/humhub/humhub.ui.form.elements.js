@@ -12,6 +12,36 @@ humhub.module('ui.form.elements', function (module, require, $) {
                 }
             });
         });
+
+        additions.register('password', '[type="password"]', function ($match) {
+            $match.each(function () {
+                var $input = $(this);
+                var $formGroup = $input.parent('.form-group');
+
+                if($formGroup.length) {
+                    $formGroup.css('position', 'relative');
+                    var $pwShow = $('<div class="humhub-pw-show"><i class="fa fa-eye"></i></div>').on('click', function() {
+                        var $icon = $(this).find('i');
+                        if ($input.attr('type') ==='password') {
+                            $input.attr('type', 'input');
+                            $icon.addClass('fa-eye-slash').removeClass('fa-eye');
+                        } else {
+                            $input.attr('type', 'password');
+                            $icon.addClass('fa-eye').removeClass('fa-eye-slash');
+                        }
+                    }).css({
+                        'position' : 'absolute',
+                        'right' : '2px',
+                        'padding': '4px',
+                        'font-size': '19px',
+                        'cursor': 'pointer',
+                        'top': $input.position().top
+                    });
+
+                    $formGroup.prepend($pwShow);
+                }
+            });
+        });
     };
 
     var initCheckbox = function ($input) {
@@ -71,7 +101,7 @@ humhub.module('ui.form.elements', function (module, require, $) {
     /**
      * Checks the label style of $input.
      * If the $input is not wrapped in a label we wrap it around a new label and use the old label text if given.
-     * 
+     *
      * @param {type} $input
      * @returns {undefined}
      */

@@ -6,9 +6,9 @@ use humhub\compat\CHtml;
 ?>
 
 <div class="panel-body">
-    <h4><?= Yii::t('AdminModule.setting', 'General Settings'); ?></h4>
+    <h4><?= Yii::t('AdminModule.settings', 'General Settings'); ?></h4>
     <div class="help-block">
-        <?= Yii::t('AdminModule.setting', 'Here you can configure basic settings of your social network.'); ?>
+        <?= Yii::t('AdminModule.settings', 'Here you can configure basic settings of your social network.'); ?>
     </div>
 
     <br>
@@ -18,7 +18,7 @@ use humhub\compat\CHtml;
     <?= $form->field($model, 'name'); ?>
 
     <?= $form->field($model, 'baseUrl'); ?>
-    <p class="help-block"><?= Yii::t('AdminModule.views_setting_index', 'E.g. http://example.com/humhub'); ?></p>
+    <p class="help-block"><?= Yii::t('AdminModule.settings', 'E.g. http://example.com/humhub'); ?></p>
 
     <?php $allowedLanguages = Yii::$app->i18n->getAllowedLanguages(); ?>
     <?php if (count($allowedLanguages) > 1) : ?>
@@ -27,31 +27,22 @@ use humhub\compat\CHtml;
 
     <?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(true), ['data-ui-select2' => '']); ?>
 
-    <?= humhub\modules\space\widgets\SpacePickerField::widget([
-        'form' => $form,
-        'model' => $model,
-        'attribute' => 'defaultSpaceGuid',
-        'selection' => $model->defaultSpaces
-    ])?>
-
-    <p class="help-block"><?= Yii::t('AdminModule.views_setting_index', 'New users will automatically be added to these space(s).'); ?></p>
-
     <?= $form->field($model, 'defaultStreamSort')->dropDownList($model->getDefaultStreamSortOptions()); ?>
 
-    <strong><?= Yii::t('AdminModule.views_setting_index', 'Dashboard'); ?></strong>
+    <strong><?= Yii::t('AdminModule.settings', 'Dashboard'); ?></strong>
     <br>
     <br>
     <?= $form->field($model, 'tour')->checkbox(); ?>
     <?= $form->field($model, 'dashboardShowProfilePostForm')->checkbox(); ?>
 
-    <strong><?= Yii::t('AdminModule.views_setting_index', 'Friendship'); ?></strong>
+    <strong><?= Yii::t('AdminModule.settings', 'Friendship'); ?></strong>
     <br>
     <br>
     <?= $form->field($model, 'enableFriendshipModule')->checkbox(); ?>
 
     <hr>
 
-    <?= CHtml::submitButton(Yii::t('AdminModule.views_setting_index', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+    <?= CHtml::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
     <!-- show flash message after saving -->
     <?php \humhub\widgets\DataSaved::widget(); ?>

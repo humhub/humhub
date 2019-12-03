@@ -45,7 +45,7 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
 
 **mymodule\widgets\views\wallEntry.php**:
 
-```php
+```html
 <div>
     <?= $model->title ?>
     <?= $model->myContent ?>

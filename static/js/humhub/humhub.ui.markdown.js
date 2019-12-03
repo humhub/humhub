@@ -32,7 +32,7 @@ humhub.module('ui.markdown', function (module, require, $) {
     var modal = require('ui.modal');
 
     var init = function () {
-        initAddition();
+        //initAddition();
     };
 
     /**
@@ -46,7 +46,7 @@ humhub.module('ui.markdown', function (module, require, $) {
             $match.each(function () {
                 var $this = $(this);
 
-                return;
+                return
 
                 if (this.isContentEditable || $this.hasClass('ProseMirror') || $this.data('markdownProcessed')) {
                     return;
@@ -106,7 +106,7 @@ humhub.module('ui.markdown', function (module, require, $) {
         var uploadWidget = Widget.instance('#markdown-file-upload');
         uploadWidget.$form = $(this.$.closest('form'));
 
-        if(this.options.filesInputName) {
+        if (this.options.filesInputName) {
             uploadWidget.options.uploadSubmitName = this.options.filesInputName;
         } else {
             uploadWidget.options.uploadSubmitName = uploadWidget.data('upload-submit-name');

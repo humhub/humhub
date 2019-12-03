@@ -87,7 +87,7 @@ class Picker extends Widget
             $this->spaceSearchUrl = Url::to(['/space/browse/search-json', 'keyword' => '-keywordPlaceholder-']);
 
         if ($this->placeholder === null) {
-            $this->placeholder = Yii::t('SpaceModule.picker', 'Add {n,plural,=1{space} other{spaces}}', ['n' => $this->maxSpaces]);
+            $this->placeholder = Yii::t('SpaceModule.chooser', 'Add {n,plural,=1{space} other{spaces}}', ['n' => $this->maxSpaces]);
         }
 
         // Currently populated spaces

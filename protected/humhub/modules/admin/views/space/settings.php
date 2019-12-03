@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\content\models\Content;
+use humhub\libs\Html;
 use humhub\widgets\Button;
 use yii\bootstrap\ActiveForm;
 
@@ -10,12 +10,19 @@ use yii\bootstrap\ActiveForm;
 /* @var $contentVisibilityOptions array */
 
 ?>
-<h4><?= Yii::t('AdminModule.views_space_settings', 'Space Settings'); ?></h4>
+<h4><?= Yii::t('AdminModule.space', 'Space Settings'); ?></h4>
 <div class="help-block">
-    <?= Yii::t('AdminModule.views_space_index', 'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.'); ?>
+    <?= Yii::t('AdminModule.space', 'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.'); ?>
 </div>
 
 <?php $form = ActiveForm::begin(['id' => 'space-settings-form']); ?>
+
+<?= humhub\modules\space\widgets\SpacePickerField::widget([
+    'form' => $form,
+    'model' => $model,
+    'attribute' => 'defaultSpaceGuid',
+    'selection' => $model->defaultSpaces
+])?>
 
 <?= $form->field($model, 'defaultVisibility')->dropDownList($visibilityOptions) ?>
 
@@ -27,7 +34,7 @@ use yii\bootstrap\ActiveForm;
 
 <?php ActiveForm::end(); ?>
 
-<script>
+<?= Html::beginTag('script'); ?>
     $('#spacesettingsform-defaultvisibility').on('change', function () {
         if (this.value == 0) {
             $('#spacesettingsform-defaultjoinpolicy, #spacesettingsform-defaultcontentvisibility').val('0').prop('disabled', true);
@@ -35,4 +42,4 @@ use yii\bootstrap\ActiveForm;
             $('#spacesettingsform-defaultjoinpolicy, #spacesettingsform-defaultcontentvisibility').val('0').prop('disabled', false);
         }
     });
-</script>
+<?= Html::endTag('script'); ?>

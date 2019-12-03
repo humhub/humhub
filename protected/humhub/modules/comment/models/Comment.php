@@ -249,7 +249,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
      */
     public function getContentName()
     {
-        return Yii::t('CommentModule.models_comment', 'comment');
+        return Yii::t('CommentModule.base', 'comment');
     }
 
     /**

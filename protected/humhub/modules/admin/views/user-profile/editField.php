@@ -10,9 +10,9 @@ use yii\helpers\Url;
     </div>
 
     <?php if (!$field->isNewRecord) : ?>
-        <h4><?= Yii::t('AdminModule.views_userprofile_editField', 'Edit profile field'); ?></h4>
+        <h4><?= Yii::t('AdminModule.user', 'Edit profile field'); ?></h4>
     <?php else: ?>
-        <h4><?= Yii::t('AdminModule.views_userprofile_editField', 'Create new profile field'); ?></h4>
+        <h4><?= Yii::t('AdminModule.user', 'Create new profile field'); ?></h4>
     <?php endif; ?>
 
     <br>
@@ -22,7 +22,7 @@ use yii\helpers\Url;
     <?php \yii\widgets\ActiveForm::end(); ?>
 </div>
 
-<script>
+<script <?= Html::nonce() ?>>
 
     /**
      * Switcher for Sub Forms (FormField Type)

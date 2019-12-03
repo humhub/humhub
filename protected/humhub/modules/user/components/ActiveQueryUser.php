@@ -10,6 +10,8 @@ namespace humhub\modules\user\components;
 
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\models\GroupUser;
+use humhub\modules\user\models\Group;
+use humhub\modules\user\models\ProfileField;
 use yii\db\ActiveQuery;
 use humhub\modules\user\models\User as UserModel;
 use humhub\events\ActiveQueryEvent;
@@ -21,6 +23,7 @@ use humhub\events\ActiveQueryEvent;
  */
 class ActiveQueryUser extends ActiveQuery
 {
+    const MAX_SEARCH_NEEDLES = 5;
 
     /**
      * @event Event an event that is triggered when only visible users are requested via [[visible()]].
@@ -58,6 +61,7 @@ class ActiveQueryUser extends ActiveQuery
         return $this->active();
     }
 
+
     /**
      * Adds default user order (e.g. by lastname)
      *
@@ -67,6 +71,70 @@ class ActiveQueryUser extends ActiveQuery
     {
         $this->joinWith('profile');
         $this->addOrderBy(['profile.lastname' => SORT_ASC]);
+
+        return $this;
+    }
+
+    /**
+     * Performs a user full text search
+     *
+     * @param string|array $keywords
+     * @param array|null $fields if empty all searchable profile fields will be used
+     *
+     * @return ActiveQueryUser the query
+     */
+    public function search($keywords, $fields = null)
+    {
+        if (empty($keywords)) {
+            return $this;
+        }
+
+        if (empty($fields)) {
+            $fields = $this->getSearchableUserFields();
+        }
+
+        $this->joinWith('profile');
+
+        if (!is_array($keywords)) {
+            $keywords = explode(' ', $keywords);
+        }
+
+        foreach (array_slice($keywords, 0, static::MAX_SEARCH_NEEDLES) as $keyword) {
+            $conditions = [];
+            foreach ($fields as $field) {
+                $conditions[] = ['LIKE', $field, $keyword];
+            }
+            $this->andWhere(array_merge(['OR'], $conditions));
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns a list of fields to be included in a user search.
+     *
+     * @return array
+     */
+    private function getSearchableUserFields()
+    {
+        $fields = ['user.username', 'user.email', 'user.tags'];
+        foreach (ProfileField::findAll(['searchable' => 1]) as $profileField) {
+            $fields[] = 'profile.' . $profileField->internal_name;
+        }
+
+        return $fields;
+    }
+
+    /**
+     * Limits the query to a specified user group
+     *
+     * @param Group $group
+     * @return ActiveQueryUser the query
+     */
+    public function isGroupMember(Group $group)
+    {
+        $this->leftJoin('group_user', 'user.id=group_user.user_id');
+        $this->andWhere(['group_user.group_id' => $group->id]);
 
         return $this;
     }

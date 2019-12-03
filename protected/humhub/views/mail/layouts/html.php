@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\widgets\FooterMenu;
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -520,7 +521,7 @@ use humhub\widgets\PoweredBy;
             <?php $this->head() ?>
     </head>
 
-    <body style="font-size:12px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; background-color: <?= Yii::$app->view->theme->variable('background-color-page', '#ededed') ?>;">
+    <body style="font-size:12px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; background-color: <?= Yii::$app->view->theme->variable('background-color-page', '#ededed') ?>;">
         <?php $this->beginBody() ?>
 
         <!--start 100% wrapper (white background) -->
@@ -560,7 +561,7 @@ use humhub\widgets\PoweredBy;
                                                                             <td style="text-align:center;">
                                                                                 <span style="text-decoration: none; color:<?= Yii::$app->view->theme->variable('text-color-contrast', '#ffffff') ?>;">
                                                                                     <a href="<?php echo Url::to(['/'], true); ?>"
-                                                                                        style="text-decoration: none; font-size: 18px; line-height: 27px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#ffffff') ?>; font-weight: 700; text-align: left;">
+                                                                                        style="text-decoration: none; font-size: 18px; line-height: 27px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#ffffff') ?>; font-weight: 700; text-align: left;">
                                                                                             <?php echo Html::encode(Yii::$app->name); ?>
                                                                                     </a>
                                                                                 </span>
@@ -685,7 +686,7 @@ use humhub\widgets\PoweredBy;
                                                         <table align="center" border="0" cellspacing="0" cellpadding="0" class="container2">
 
                                                             <tr>
-                                                                <td align="center" valign="top" style="font-size: 11px; line-height: 18px; font-weight:300; text-align: center; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>;">
+                                                                <td align="center" valign="top" style="font-size: 11px; line-height: 18px; font-weight:300; text-align: center; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>;">
 
                                                                     <?php if (isset(Yii::$app->view->params['showUnsubscribe']) && Yii::$app->view->params['showUnsubscribe'] === true) : ?>
                                                                         <?php $url = (isset(Yii::$app->view->params['unsubscribeUrl'])) ? Yii::$app->view->params['unsubscribeUrl'] : \yii\helpers\Url::to(['/notification/user'], true) ?>
@@ -710,17 +711,7 @@ use humhub\widgets\PoweredBy;
                                                                 </td>
                                                             </tr>
                                                             <!-- end space -->
-                                                            <tr style="display: none;">
-                                                                <td>
-                                                                    <p>
-                                                                        HumHub is a free social network software and framework built to give you the tools to make communication and collaboration easy and successful.
-
-                                                                        It's lightweight, powerful and comes with an user-friendly interface. With HumHub you can create your own customized social network, social intranet or huge social enterprise application that really fits your needs.
-
-                                                                        Boost your business, support your customers, teach your students or organize your football club. It's on you.
-                                                                    </p>
-                                                                </td>
-                                                            </tr>
+                                                           
                                                         </table>
 
                                                     </td>

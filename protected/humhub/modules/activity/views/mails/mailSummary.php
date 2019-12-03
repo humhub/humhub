@@ -5,7 +5,8 @@
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
-?>
+
+use humhub\modules\ui\mail\DefaultMailStyle; ?>
 
 <tr>
     <td align="center" valign="top" class="fix-box">
@@ -30,7 +31,7 @@
                                         <td valign="top">
                                             <table border="0" cellspacing="0" cellpadding="0" align="left">
                                                 <tr>
-                                                    <td style="font-size: 18px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', 'Open Sans, Arial, Tahoma, Helvetica, sans-serif') ?>; font-weight:300; text-align:left;">
+                                                    <td style="font-size: 18px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; font-weight:300; text-align:left;">
                                                         <span style="color:<?= Yii::$app->view->theme->variable('text-color-highlight', '#555') ?>; font-weight: 300;">
                                                             <a href="#" style="text-decoration: none; color:<?= Yii::$app->view->theme->variable('text-color-highlight', '#555') ?>; font-weight: 300;">
                                                                 <?= Yii::t('base', '<strong>Mail</strong> summary'); ?>

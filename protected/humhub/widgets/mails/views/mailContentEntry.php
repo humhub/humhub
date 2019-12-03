@@ -39,7 +39,7 @@ use yii\helpers\Html;
                             <?php endif; ?>
                              <?php if ($space && !$isComment) : ?>
                                 <span style="font-size: 11px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-soft', '#bebebe') ?>; font-weight:300; text-align:left;">
-                                    <?= Yii::t('ContentModule.views_wallLayout', 'in'); ?>
+                                    <?= Yii::t('ContentModule.base', 'in'); ?>
                                 </span>
                                 <span style="font-size: 11px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-soft', '#bebebe') ?>; font-weight:bold; text-align:left;">
                                      <a style="font-size: 11px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-soft', '#bebebe') ?>; font-weight:bold; text-align:left; " href="<?= $space->createUrl(null, [], true) ?>">
@@ -56,7 +56,7 @@ use yii\helpers\Html;
                             </td>
                         <?php else : ?>
                             <td height="15" style="font-size: 15px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-soft2', '#aeaeae') ?>; font-weight:300; text-align:left; ">
-                                <?= Html::encode($originator->profile->title); ?>
+                                <?= Html::encode($originator->displayNameSub); ?>
                             </td>
                         <?php endif; ?>
                     </tr>

@@ -52,7 +52,7 @@ use humhub\models\Setting;
 <?php } ?>
 
 <hr>
-<?= CHtml::submitButton(Yii::t('AdminModule.views_setting_proxy', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+<?= CHtml::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
 <?= \humhub\widgets\DataSaved::widget(); ?>
 <?php CActiveForm::end(); ?>

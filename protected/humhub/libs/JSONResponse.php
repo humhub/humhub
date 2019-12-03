@@ -9,27 +9,28 @@
 namespace humhub\libs;
 
 use Yii;
+use yii\base\BaseObject;
+use yii\web\Response;
 
 /**
  * Description of JSONResponse
  *
- * @deprecated since v1.2
  * @author buddha
  */
-class JSONResponse
+class JSONResponse extends BaseObject
 {
-    const STATE_CONFIRM = 0;
-    const STATE_ERROR_APPLICATION = 1;
-    const STATE_ERROR_VALIDATOIN = 2;
+    const RESULT_KEY_OUTPUT = 'output';
+    const RESULT_KEY_SUCCESS = 'success';
+
     /**
      * The resulting json array
-     * @var type
+     * @var []
      */
-    private $result = null;
+    private $result = [];
 
-    public function __construct()
+    public static function output($dom, $success = null)
     {
-        $result = [];
+        return (new static())->withOutput($dom, $success)->result();
     }
 
     public function error($errors, $errorTitle = null, $status = null)
@@ -41,6 +42,11 @@ class JSONResponse
         return $this;
     }
 
+    public function success($success = true)
+    {
+        $this->result[static::RESULT_KEY_SUCCESS] = $success;
+    }
+
     public function content($content)
     {
         $this->result['content'] = $content;
@@ -48,12 +54,13 @@ class JSONResponse
         return $this;
     }
 
-    public function confirm($content)
+    public function withOutput($dom, $success = null)
     {
-        if ($content != null) {
-            $this->content($content);
+        $this->result[static::RESULT_KEY_OUTPUT] = $dom;
+
+        if($success !== null) {
+            $this->success($success);
         }
-        $this->result['status'] = self::STATE_CONFIRM;
 
         return $this;
     }
@@ -68,10 +75,11 @@ class JSONResponse
         return $this;
     }
 
-    public function asJSON()
+    public function result()
     {
-        Yii::$app->response->format = 'json';
-
-        return $this->result;
+        $response = Yii::$app->getResponse();
+        $response->format = Response::FORMAT_JSON;
+        $response->data = $this->result;
+        return $response;
     }
 }

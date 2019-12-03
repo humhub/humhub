@@ -74,7 +74,7 @@ class DefaultController extends Controller
         unset($indexModuleSelection[Url::to(['/space/home', 'container' => $space])]);
 
         // To avoid infinit redirects of actionIndex we remove the stream value and set an empty selection instead
-        $indexModuleSelection = ['' => Yii::t('SpaceModule.controllers_AdminController', 'Stream (Default)')] + $indexModuleSelection;
+        $indexModuleSelection = ['' => Yii::t('SpaceModule.manage', 'Stream (Default)')] + $indexModuleSelection;
 
         return $this->render('advanced', ['model' => $space, 'indexModuleSelection' => $indexModuleSelection]);
     }

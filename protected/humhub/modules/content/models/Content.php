@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\models;
 
+use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
@@ -21,6 +22,7 @@ use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
@@ -49,13 +51,11 @@ use yii\helpers\Url;
  * @property string $stream_channel
  * @property integer $contentcontainer_id;
  * @property ContentContainerActiveRecord $container
- * @property User $createdBy
- * @property User $updatedBy
  * @mixin PolymorphicRelation
  * @mixin GUID
  * @since 0.5
  */
-class Content extends ContentDeprecated implements Movable, ContentOwner
+class Content extends ActiveRecord implements Movable, ContentOwner
 {
 
     /**
@@ -201,7 +201,7 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
             Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
                 'sguid' => ($this->container instanceof Space) ? $this->container->guid : null,
                 'uguid' => ($this->container instanceof User) ? $this->container->guid : null,
-                'originator' => $this->user->guid,
+                'originator' => $this->createdBy->guid,
                 'contentContainerId' => $this->container->contentContainerRecord->id,
                 'visibility' => $this->visibility,
                 'sourceClass' => $contentSource->className(),
@@ -241,12 +241,12 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
         }
 
         \humhub\modules\content\notifications\ContentCreated::instance()
-            ->from($this->user)
+            ->from($this->createdBy)
             ->about($contentSource)
             ->sendBulk($userQuery);
 
         \humhub\modules\content\activities\ContentCreated::instance()
-            ->from($this->user)
+            ->from($this->createdBy)
             ->about($contentSource)->save();
     }
 
@@ -613,7 +613,7 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
      */
     public function getTags($tagClass = ContentTag::class)
     {
-        return $this->hasMany($tagClass, ['id' => 'tag_id'])->via('tagRelations');
+        return $this->hasMany($tagClass, ['id' => 'tag_id'])->via('tagRelations')->orderBy('sort_order');
     }
 
     /**
@@ -633,7 +633,7 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
             return true;
         }
 
-        unset($this->tags);
+        $this->refresh();
 
         $contentRelation = new ContentTagRelation($this, $tag);
         return $contentRelation->save();
@@ -780,19 +780,31 @@ class Content extends ContentDeprecated implements Movable, ContentOwner
      * This is the case if all of the following conditions are met:
      *
      *  - The content is public
-     *  - The `auth.allowGuestAccess` module setting is enabled
+     *  - The `auth.allowGuestAccess` setting is enabled
      *  - The space or profile visibility is set to VISIBILITY_ALL
      *
      * @return bool
      */
     public function checkGuestAccess()
     {
-        if (!$this->isPublic() || !Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
+        if (!$this->isPublic() || !AuthHelper::isGuestAccessEnabled()) {
             return false;
         }
 
-        // Check container visibility for guests
-        return ($this->container instanceof Space && $this->container->visibility == Space::VISIBILITY_ALL) || ($this->container instanceof User && $this->container->visibility == User::VISIBILITY_ALL);
+        // GLobal content
+        if(!$this->container) {
+            return $this->isPublic();
+        }
+
+        if($this->container instanceof Space) {
+            return $this->isPublic() && $this->container->visibility == Space::VISIBILITY_ALL;
+        }
+
+        if($this->container instanceof User) {
+            return $this->isPublic() && $this->container->visibility == User::VISIBILITY_ALL;
+        }
+
+        return false;
     }
 
     /**

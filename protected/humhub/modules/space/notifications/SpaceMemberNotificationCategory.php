@@ -33,7 +33,7 @@ class SpaceMemberNotificationCategory extends NotificationCategory
     public function getTitle()
     {
         return Yii::t(
-            'SpaceModule.notifications_SpaceMemberNotificationCategory',
+            'SpaceModule.notification',
             'Space Membership'
         );
     }
@@ -44,7 +44,7 @@ class SpaceMemberNotificationCategory extends NotificationCategory
     public function getDescription()
     {
         return Yii::t(
-            'SpaceModule.notifications_SpaceMemberNotificationCategory',
+            'SpaceModule.notification',
             'Receive Notifications of Space Membership events.'
         );
     }

@@ -5,10 +5,10 @@ use yii\helpers\Url;
 /* @var $this \humhub\modules\ui\view\components\View */
 
 $isAmind = Yii::$app->user->isAdmin();
-$nextUrl = $isAmind ? Url::to(['/admin/module/list-online', 'tour' => 'true']) : '';
+$nextUrl = $isAmind ? Url::to(['/marketplace/browse', 'tour' => 'true']) : '';
 ?>
 
-<script type="text/javascript">
+<script <?= \humhub\libs\Html::nonce() ?>>
     $(document).one('humhub:ready', function () {
         humhub.require('tour').start(
             {
@@ -18,46 +18,46 @@ $nextUrl = $isAmind ? Url::to(['/admin/module/list-online', 'tour' => 'true']) :
                     {
                         orphan: true,
                         backdrop: true,
-                        title: <?= json_encode(Yii::t('TourModule.widgets_views_guide_profile', '<strong>User profile</strong>')); ?>,
-                        content: <?= json_encode(Yii::t('TourModule.widgets_views_guide_profile', "This is your public user profile, which can be seen by any registered user.")); ?>
+                        title: <?= json_encode(Yii::t('TourModule.profile', '<strong>User profile</strong>')); ?>,
+                        content: <?= json_encode(Yii::t('TourModule.profile', "This is your public user profile, which can be seen by any registered user.")); ?>
                     },
                     {
-                        element: "#user-profile-image",
-                        title: <?= json_encode(Yii::t('TourModule.widgets_views_guide_profile', '<strong>Profile</strong> photo')); ?>,
-                        content: <?= json_encode(Yii::t('TourModule.widgets_views_guide_profile', 'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.')); ?>,
+                        element: ".profile-user-photo-container",
+                        title: <?= json_encode(Yii::t('TourModule.profile', '<strong>Profile</strong> photo')); ?>,
+                        content: <?= json_encode(Yii::t('TourModule.profile', 'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.')); ?>,
                         placement: "right"
                     },
                     {
                         element: ".edit-account",
-                        title: <?= json_encode(Yii::t('TourModule.widgets_views_guide_profile', '<strong>Edit</strong> account')); ?>,
-                        content: <?= json_encode(Yii::t('TourModule.widgets_views_guide_profile', 'Click on this button to update your profile and account settings. You can also add more information to your profile.')); ?>,
+                        title: <?= json_encode(Yii::t('TourModule.profile', '<strong>Edit</strong> account')); ?>,
+                        content: <?= json_encode(Yii::t('TourModule.profile', 'Click on this button to update your profile and account settings. You can also add more information to your profile.')); ?>,
                         placement: "left"
                     },
                     {
                         element: ".layout-nav-container .panel",
-                        title: <?= json_encode(Yii::t('TourModule.widgets_views_guide_profile', '<strong>Profile</strong> menu')); ?>,
-                        content: <?= json_encode(Yii::t('TourModule.widgets_views_guide_profile', 'Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in “Modules” in the account settings menu.')); ?>,
+                        title: <?= json_encode(Yii::t('TourModule.profile', '<strong>Profile</strong> menu')); ?>,
+                        content: <?= json_encode(Yii::t('TourModule.profile', 'Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in “Modules” in the account settings menu.')); ?>,
                         placement: "right"
                     },
                     {
                         element: "#contentFormBody",
-                        title: <?= json_encode(Yii::t('TourModule.widgets_views_guide_profile', '<strong>Profile</strong> stream')); ?>,
-                        content: <?= json_encode(Yii::t('TourModule.widgets_views_guide_profile', 'Each profile has its own pin board. Your posts will also appear on the dashboards of those users who are following you.')); ?>,
+                        title: <?= json_encode(Yii::t('TourModule.profile', '<strong>Profile</strong> stream')); ?>,
+                        content: <?= json_encode(Yii::t('TourModule.profile', 'Each profile has its own pin board. Your posts will also appear on the dashboards of those users who are following you.')); ?>,
                         placement: "bottom"
                     },
                     <?php if ($isAmind) : ?>
                         {
                             orphan: true,
                             backdrop: true,
-                            title: <?= json_encode(Yii::t('TourModule.widgets_views_guide_profile', '<strong>Hurray!</strong> You\'re done!')); ?>,
-                            content: <?= json_encode(Yii::t('TourModule.widgets_views_guide_profile', 'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />')); ?> + "<a href='#' data-action-click='tour.next'><?= Yii::t("TourModule.widgets_views_guide_profile", "<strong>Administration (Modules)</strong>"); ?></a><br><br>"
+                            title: <?= json_encode(Yii::t('TourModule.profile', '<strong>Hurray!</strong> You\'re done!')); ?>,
+                            content: <?= json_encode(Yii::t('TourModule.profile', 'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />')); ?> + "<a href='#' data-action-click='tour.next'><?= Yii::t("TourModule.profile", "<strong>Administration (Modules)</strong>"); ?></a><br><br>"
                         }
                     <?php else : ?>
                         {
                             orphan: true,
                             backdrop: true,
-                            title: <?= json_encode(Yii::t('TourModule.widgets_views_guide_profile', '<strong>Hurray!</strong> The End.')); ?>,
-                            content: <?= json_encode(Yii::t('TourModule.widgets_views_guide_profile', "You've completed the user profile guide!")); ?>
+                            title: <?= json_encode(Yii::t('TourModule.profile', '<strong>Hurray!</strong> The End.')); ?>,
+                            content: <?= json_encode(Yii::t('TourModule.profile', "You've completed the user profile guide!")); ?>
                         }
                     <?php endif; ?>
 

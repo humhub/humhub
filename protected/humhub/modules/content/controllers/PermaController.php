@@ -58,7 +58,7 @@ class PermaController extends Controller
             }
         }
 
-        throw new HttpException(404, Yii::t('ContentModule.controllers_PermaController', 'Could not find requested content!'));
+        throw new HttpException(404, Yii::t('ContentModule.base', 'Could not find requested content!'));
     }
 }
 

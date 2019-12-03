@@ -83,7 +83,7 @@ class ContentController extends Controller
         }
 
         if (!$contentObj->canEdit()) {
-            throw new HttpException(400, Yii::t('ContentModule.controllers_ContentController', 'Could not delete content: Access denied!'));
+            throw new HttpException(400, Yii::t('ContentModule.base', 'Could not delete content: Access denied!'));
         }
 
         if ($contentObj !== null && $contentObj->delete()) {
@@ -94,7 +94,7 @@ class ContentController extends Controller
                 'pk' => $id
             ];
         } else {
-            throw new HttpException(500, Yii::t('ContentModule.controllers_ContentController', 'Could not delete content!'));
+            throw new HttpException(500, Yii::t('ContentModule.base', 'Could not delete content!'));
         }
 
         return $json;
@@ -154,7 +154,7 @@ class ContentController extends Controller
         $this->forcePostRequest();
         $content = Content::findOne(['id' => Yii::$app->request->post('id')]);
         if (!$content) {
-            throw new HttpException(400, Yii::t('ContentController.base', 'Invalid content id given!'));
+            throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
         } elseif (!$content->canEdit()) {
             throw new HttpException(403);
         }
@@ -166,7 +166,7 @@ class ContentController extends Controller
     {
         $content = Content::findOne(['id' => $id]);
         if (!$content) {
-            throw new HttpException(400, Yii::t('ContentController.base', 'Invalid content id given!'));
+            throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
         } elseif (!$content->canView()) {
             throw new HttpException(403);
         }
@@ -187,7 +187,7 @@ class ContentController extends Controller
         $content = Content::findOne(['id' => $id]);
 
         if (!$content) {
-            throw new HttpException(400, Yii::t('ContentController.base', 'Invalid content id given!'));
+            throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
         } elseif (!$content->canEdit()) {
             throw new HttpException(403);
         } elseif ($content->isPrivate() && !$content->container->permissionManager->can(new CreatePublicContent())) {
@@ -226,10 +226,10 @@ class ContentController extends Controller
                 $json['success'] = true;
                 $json['contentId'] = $content->id;
             } else {
-                $json['info'] = Yii::t('ContentModule.controllers_ContentController', "Maximum number of pinned items reached!\n\nYou can pin to top only two items at once.\nTo however pin this item, unpin another before!");
+                $json['info'] = Yii::t('ContentModule.base', "Maximum number of pinned items reached!\n\nYou can pin to top only two items at once.\nTo however pin this item, unpin another before!");
             }
         } else {
-            $json['error'] = Yii::t('ContentModule.controllers_ContentController', 'Could not load requested object!');
+            $json['error'] = Yii::t('ContentModule.base', 'Could not load requested object!');
         }
 
         return $this->asJson($json);

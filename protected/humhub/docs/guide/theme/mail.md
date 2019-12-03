@@ -13,7 +13,8 @@ Since the CSS support in mail templates is very limited, you may need to access 
 You can access all CSS variables defined in `variables.less` by calling `Yii::$app->view->theme->variable('variableName');`.
 
 Example:
-```
+
+```html
 <html> 
     ...
     <body style="background-color:<?= Yii::$app->view->theme->variable('background-color-page') ?>; ">
@@ -21,3 +22,4 @@ Example:
     </body>
     ...
 </html>
+```

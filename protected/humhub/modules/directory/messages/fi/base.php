@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Kukaan ei ole kirjoittanut mitään.</b><br /> Kirjoita jotain ...',
+  '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>Kukaan ei ole kirjoittanut mitään.</b><br /> Kirjoita jotain ...',
   '<b>There are no profile posts yet!</b>' => '<b>Täällä ei ole vielä mitään!</b>',
   '<strong>Directory</strong> menu' => '<strong>Hakemisto</strong>',
   '<strong>Group</strong> members - {group}' => '<strong>Ryhmän</strong> jäsenet - {group}',

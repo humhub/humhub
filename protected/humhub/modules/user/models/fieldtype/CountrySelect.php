@@ -31,13 +31,13 @@ class CountrySelect extends Select
         return parent::getFormDefinition([
                     get_class($this) => [
                         'type' => 'form',
-                        'title' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Supported ISO3166 country codes'),
+                        'title' => Yii::t('UserModule.profile', 'Supported ISO3166 country codes'),
                         'elements' => [
                             'options' => [
                                 'type' => 'textarea',
-                                'label' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Possible values'),
+                                'label' => Yii::t('UserModule.profile', 'Possible values'),
                                 'class' => 'form-control',
-                                'hint' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Comma separated country codes, e.g. DE,EN,AU')
+                                'hint' => Yii::t('UserModule.profile', 'Comma separated country codes, e.g. DE,EN,AU')
                             ]
                         ]
                     ]

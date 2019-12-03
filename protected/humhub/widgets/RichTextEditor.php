@@ -43,7 +43,7 @@ class RichTextEditor extends Widget
     /**
      * JSON Search URL
      */
-    public $searchUrl = "/search/search/mentioning";
+    public $searchUrl = "/search/mentioning";
 
     /**
      * @var string preset content

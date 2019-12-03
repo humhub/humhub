@@ -1,16 +1,7 @@
 <?php
 /**
- * Tab Navigation by MenuWidget.
- *
- * @package humhub.widgets
- * @since 0.5 */
-
-use \yii\helpers\Html;
+ * @deprecated since 1.3
+ */
 ?>
-<ul id="tabs" class="nav nav-tabs tab-sub-menu">
-    <?php foreach ($this->context->getItems() as $item) {?>
-        <li <?php echo Html::renderTagAttributes($item['htmlOptions'])?>>
-        <?php echo Html::a($item['label'], $item['url']); ?>
-    </li>
-    <?php }; ?>
-</ul>
+
+<?= $this->render('@ui/menu/widgets/views/sub-tab-menu.php', ['options' => ['class' => 'nav nav-tabs tab-sub-menu'], 'entries' => $this->context->getSortedEntries()]) ?>

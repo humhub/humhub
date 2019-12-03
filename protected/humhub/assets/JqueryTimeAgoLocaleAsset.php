@@ -23,17 +23,15 @@ class JqueryTimeAgoLocaleAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/jquery-timeago';
+    public $sourcePath = '@npm/timeago';
 
     /**
      * @var array language mapping between humhub locale id and timeago messages
      */
     public $languageMapping = [
         'nb_no' => 'no',
-        'pt_br' => 'pt-br',
-        'zh_cn' => 'zh-CN',
-        'zh_tw' => 'zh-TW',
-        'fa_ir' => 'fa',
+        'pt-BR' => 'pt-br',
+        'fa-IR' => 'fa',
     ];
 
     /**

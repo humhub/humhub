@@ -23,9 +23,7 @@ class ApprovalCest
         $settingsManager->set('auth.allowGuestAccess', 0);
 
         $this->register($I);
-
         $I->amAdmin();
-
         $this->approveUser($I);
     }
 
@@ -123,6 +121,8 @@ class ApprovalCest
 
     private function approveUser(FunctionalTester $I)
     {
+        Yii::$app->settings->set('displayNameFormat', '{profile.firstname} {profile.lastname}');
+
         $I->amOnDashboard();
         $I->see('New approval requests');
         $I->click('Click here to review');

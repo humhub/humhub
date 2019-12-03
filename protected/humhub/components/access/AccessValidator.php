@@ -53,7 +53,7 @@ abstract class AccessValidator extends BaseObject
     /**
      * @var int http error code used in case the validation failes
      */
-    public $code = 403;
+    public $code;
 
     /**
      * @var string validator error message
@@ -72,6 +72,10 @@ abstract class AccessValidator extends BaseObject
 
     public function init()
     {
+        if(!$this->code) {
+            $this->code = Yii::$app->user->isGuest ? 401 : 403;
+        }
+
         if (!$this->name) {
             $this->name = static::class;
         }
@@ -79,6 +83,8 @@ abstract class AccessValidator extends BaseObject
         if (empty($this->reason)) {
             $this->reason = Yii::t('error', 'You are not permitted to access this section.');
         }
+
+        parent::init();
     }
 
     /**

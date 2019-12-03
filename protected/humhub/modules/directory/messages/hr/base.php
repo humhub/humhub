@@ -19,7 +19,7 @@
 return [
     'Access directory' => '',
     'Can access the directory section.' => '',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Još nitko nije napisao nešto.</ b> <br> Napravite početak i objavite nešto ...',
+    '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>Još nitko nije napisao nešto.</ b> <br> Napravite početak i objavite nešto ...',
     '<b>There are no profile posts yet!</b>' => '<b> Još nema postova profila! </ b>',
     '<strong>Directory</strong> menu' => '<strong>Direktorijski</strong> izbornik',
     '<strong>Group</strong> members - {group}' => '<strong>Grupa</strong> članovi - {group}',

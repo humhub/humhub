@@ -39,6 +39,15 @@ class MemberAdded extends BaseActivity implements ConfigurableActivityInterface
         parent::init();
     }
 
+    public function getUrl()
+    {
+        if($this->originator) {
+            return $this->originator->getUrl();
+        }
+
+        return parent::getUrl();
+    }
+
     /**
      * @inheritdoc
      */

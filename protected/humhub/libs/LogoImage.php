@@ -34,6 +34,7 @@ class LogoImage
      * Returns the URl of Logo Image
      *
      * @return String Url of the profile image
+     * @throws \yii\base\Exception
      */
     public function getUrl()
     {
@@ -58,6 +59,7 @@ class LogoImage
      * Indicates there is a logo image
      *
      * @return Boolean is there a logo image
+     * @throws \yii\base\Exception
      */
     public function hasImage()
     {
@@ -68,6 +70,7 @@ class LogoImage
      * Returns the Path of the logo image
      *
      * @return String Path to the logo image
+     * @throws \yii\base\Exception
      */
     public function getPath()
     {
@@ -82,6 +85,7 @@ class LogoImage
      * Sets a new logo image by given temp file
      *
      * @param UploadedFile $file
+     * @throws \yii\base\Exception
      */
     public function setNew(UploadedFile $file)
     {

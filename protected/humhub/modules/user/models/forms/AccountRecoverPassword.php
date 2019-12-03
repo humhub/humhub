@@ -30,7 +30,7 @@ class AccountRecoverPassword extends Model
             ['email', 'email'],
             ['email', 'canRecoverPassword'],
             ['verifyCode', 'captcha', 'captchaAction' => '/user/auth/captcha'],
-            ['email', 'exist', 'targetClass' => User::class, 'targetAttribute' => 'email', 'message' => Yii::t('UserModule.forms_AccountRecoverPasswordForm', '{attribute} "{value}" was not found!')],
+            ['email', 'exist', 'targetClass' => User::class, 'targetAttribute' => 'email', 'message' => Yii::t('UserModule.account', '{attribute} "{value}" was not found!')],
         ];
     }
 
@@ -42,7 +42,7 @@ class AccountRecoverPassword extends Model
     public function attributeLabels()
     {
         return [
-            'email' => Yii::t('UserModule.forms_AccountRecoverPasswordForm', 'E-Mail'),
+            'email' => Yii::t('UserModule.account', 'E-Mail'),
         ];
     }
 
@@ -58,7 +58,7 @@ class AccountRecoverPassword extends Model
             $passwordAuth = new Password();
 
             if ($user != null && $user->auth_mode !== $passwordAuth->getId()) {
-                $this->addError($attribute, Yii::t('UserModule.forms_AccountRecoverPasswordForm', Yii::t('UserModule.forms_AccountRecoverPasswordForm', 'Password recovery is not possible on your account type!')));
+                $this->addError($attribute, Yii::t('UserModule.account', Yii::t('UserModule.account', 'Password recovery is not possible on your account type!')));
             }
         }
     }
@@ -88,7 +88,7 @@ class AccountRecoverPassword extends Model
             'linkPasswordReset' => Url::to(['/user/password-recovery/reset', 'token' => $token, 'guid' => $user->guid], true)
         ]);
         $mail->setTo($user->email);
-        $mail->setSubject(Yii::t('UserModule.forms_AccountRecoverPasswordForm', 'Password Recovery'));
+        $mail->setSubject(Yii::t('UserModule.account', 'Password Recovery'));
         $mail->send();
 
         return true;

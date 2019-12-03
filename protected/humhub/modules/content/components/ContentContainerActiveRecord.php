@@ -14,6 +14,7 @@ use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
@@ -26,6 +27,7 @@ use yii\helpers\Url;
  *
  * @property integer $id
  * @property integer $visibility
+ * @property string $guid
  * @property integer $contentcontainer_id
  * @property ContentContainerPermissionManager $permissionManager
  * @property ContentContainerSettingsManager $settings
@@ -62,16 +64,29 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public $defaultRoute = '/';
 
     /**
+     * Returns the display name of content container
+     *
+     * @since 0.11.0
+     * @return string
+     */
+    public abstract function getDisplayName();
+
+    /**
+     * Returns a descriptive sub title of this container used in the frontend.
+     *
+     * @since 1.4
+     * @return mixed
+     */
+    public abstract function getDisplayNameSub();
+
+    /**
      * Returns the Profile Image Object for this Content Base
      *
      * @return ProfileImage
      */
     public function getProfileImage()
     {
-        if ($this instanceof \humhub\modules\space\models\Space) {
-            return new ProfileImage($this->guid, 'default_space');
-        }
-        return new ProfileImage($this->guid);
+        return new ProfileImage($this);
     }
 
     /**
@@ -81,7 +96,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getProfileBannerImage()
     {
-        return new ProfileBannerImage($this->guid);
+        return new ProfileBannerImage($this);
     }
 
     /**
@@ -108,17 +123,6 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     }
 
     /**
-     * Returns the display name of content container
-     *
-     * @since 0.11.0
-     * @return string
-     */
-    public function getDisplayName()
-    {
-        return "Container: " . get_class($this) . " - " . $this->getPrimaryKey();
-    }
-
-    /**
      * Checks if the user is allowed to access private content in this container
      *
      * @param User $user
@@ -140,6 +144,10 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         return "Default Wall Output for Class " . get_class($this);
     }
 
+    /**
+     * @param $token
+     * @return ContentContainerActiveRecord|null
+     */
     public static function findByGuid($token)
     {
         return static::findOne(['guid' => $token]);

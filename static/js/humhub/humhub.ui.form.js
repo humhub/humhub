@@ -81,7 +81,7 @@ humhub.module('ui.form', function(module, require, $) {
     /**
      * Prepares all included fieldsets for $form indexed
      * by its label (legend).
-     * 
+     *
      * @param {type} $form
      * @returns {$lastFieldSet$fieldSet} Array of fieldsets indexed by its label
      */
@@ -125,8 +125,13 @@ humhub.module('ui.form', function(module, require, $) {
         });
     };
 
+    var submit = function(evt) {
+        evt.$trigger.closest('form').submit();
+    };
+
     module.export({
         init: init,
+        submit: submit,
         TabbedForm: TabbedForm
     });
 });

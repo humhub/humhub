@@ -90,7 +90,7 @@ class Invite extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'email' => Yii::t('UserModule.models_Invite', 'Email'),
+            'email' => Yii::t('UserModule.invite', 'Email'),
         ];
     }
 
@@ -144,7 +144,7 @@ class Invite extends ActiveRecord
                 'registrationUrl' => $registrationUrl
             ]);
             $mail->setTo($this->email);
-            $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSelf', 'Welcome to %appName%', ['%appName%' => Yii::$app->name]));
+            $mail->setSubject(Yii::t('UserModule.base', 'Welcome to %appName%', ['%appName%' => Yii::$app->name]));
             $mail->send();
         } elseif ($this->source == self::SOURCE_INVITE && $this->space !== null) {
 
@@ -163,7 +163,7 @@ class Invite extends ActiveRecord
                 'registrationUrl' => $registrationUrl
             ]);
             $mail->setTo($this->email);
-            $mail->setSubject(Yii::t('UserModule.views_mails_UserInviteSpace', 'You\'ve been invited to join {space} on {appName}', ['space' => $this->space->name, 'appName' => Yii::$app->name]));
+            $mail->setSubject(Yii::t('UserModule.base', 'You\'ve been invited to join {space} on {appName}', ['space' => $this->space->name, 'appName' => Yii::$app->name]));
             $mail->send();
 
             // Switch back to users language

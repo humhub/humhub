@@ -9,81 +9,75 @@
 namespace humhub\modules\admin\widgets;
 
 use Yii;
-use yii\helpers\Url;
 use humhub\modules\admin\models\UserApprovalSearch;
-use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSettings;
-use humhub\modules\user\models\Invite;
-use humhub\widgets\BaseMenu;
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\TabMenu;
 
 /**
  * User Administration Menu
  *
  * @author Basti
  */
-class UserMenu extends BaseMenu
+class UserMenu extends TabMenu
 {
 
-    public $template = '@humhub/widgets/views/tabMenu';
-    public $type = 'adminUserSubNavigation';
-
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
-        $this->addItem([
-            'label' => Yii::t('AdminModule.views_user_index', 'Users'),
-            'url' => Url::to(['/admin/user/index']),
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.user', 'Users'),
+            'url' => ['/admin/user/index'],
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && (Yii::$app->controller->id == 'user' || Yii::$app->controller->id == 'pending-registrations')),
+            'isActive' => MenuLink::isActiveState('admin', ['user', 'pending-registrations']),
             'isVisible' => Yii::$app->user->can([
-                new ManageUsers(),
-                new ManageGroups(),
+                ManageUsers::class,
+                ManageGroups::class,
             ])
-        ]);
+        ]));
 
-        $this->addItem([
-            'label' => Yii::t('AdminModule.views_user_index', 'Settings'),
-            'url' => Url::to(['/admin/authentication']),
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.user', 'Settings'),
+            'url' => ['/admin/authentication'],
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'authentication'),
-            'isVisible' => Yii::$app->user->can([
-                new ManageSettings()
-            ])
-        ]);
+            'isActive' => MenuLink::isActiveState('admin', 'authentication'),
+            'isVisible' => Yii::$app->user->can(ManageSettings::class)
+        ]));
 
         $approvalCount = UserApprovalSearch::getUserApprovalCount();
+
         if ($approvalCount > 0) {
-            $this->addItem([
+            $this->addEntry(new MenuLink([
                 'label' => Yii::t('AdminModule.user', 'Pending approvals') . ' <span class="label label-danger">' . $approvalCount . '</span>',
-                'url' => Url::to(['/admin/approval']),
+                'url' => ['/admin/approval'],
                 'sortOrder' => 300,
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'approval'),
+                'isActive' => MenuLink::isActiveState('admin', 'approval'),
                 'isVisible' => Yii::$app->user->can([
-                    new ManageUsers(),
-                    new ManageGroups()
+                    ManageUsers::class,
+                    ManageGroups::class
                 ])
-            ]);
+            ]));
         }
 
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.user', 'Profiles'),
-            'url' => Url::to(['/admin/user-profile']),
+            'url' => ['/admin/user-profile'],
             'sortOrder' => 400,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'user-profile'),
-            'isVisible' => Yii::$app->user->can([
-                new ManageUsers()
-            ])
-        ]);
+            'isActive' => MenuLink::isActiveState('admin', 'user-profile'),
+            'isVisible' => Yii::$app->user->can(ManageUsers::class)
+        ]));
 
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.user', 'Groups'),
-            'url' => Url::to(['/admin/group']),
+            'url' => ['/admin/group'],
             'sortOrder' => 500,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'group'),
-            'isVisible' => Yii::$app->user->can(
-                    new ManageGroups()
-            )
-        ]);
+            'isActive' => MenuLink::isActiveState('admin', 'group'),
+            'isVisible' => Yii::$app->user->can(ManageGroups::class)
+        ]));
 
         parent::init();
     }

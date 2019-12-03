@@ -1,6 +1,7 @@
 <?php
 
 use humhub\compat\CActiveForm;
+use humhub\libs\Html;
 ?>
 <div class="modal-dialog animated fadeIn">
     <div class="modal-content">
@@ -8,11 +9,11 @@ use humhub\compat\CActiveForm;
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
-                id="myModalLabel"><?php echo Yii::t('SpaceModule.views_space_requestMembership', "<strong>Request</strong> space membership"); ?></h4>
+                id="myModalLabel"><?php echo Yii::t('SpaceModule.base', "<strong>Request</strong> space membership"); ?></h4>
         </div>
         <div class="modal-body">
 
-            <?php echo Yii::t('SpaceModule.views_space_requestMembership', 'Please shortly introduce yourself, to become an approved member of this space.'); ?>
+            <?php echo Yii::t('SpaceModule.base', 'Please shortly introduce yourself, to become an approved member of this space.'); ?>
 
             <br/>
             <br/>
@@ -26,7 +27,7 @@ use humhub\compat\CActiveForm;
             <hr/>
             <?php
             echo \humhub\widgets\AjaxButton::widget([
-                'label' => Yii::t('SpaceModule.views_space_invite', 'Send'),
+                'label' => Yii::t('SpaceModule.base', 'Send'),
                 'ajaxOptions' => [
                     'type' => 'POST',
                     'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
@@ -39,7 +40,7 @@ use humhub\compat\CActiveForm;
             ]);
             ?>
             <button type="button" class="btn btn-primary"
-                    data-dismiss="modal"><?php echo Yii::t('SpaceModule.views_space_requestMembership', 'Close'); ?></button>
+                    data-dismiss="modal"><?php echo Yii::t('SpaceModule.base', 'Close'); ?></button>
 
             <?php echo \humhub\widgets\LoaderWidget::widget(['id' => 'send-loader', 'cssClass' => 'loader-modal hidden']); ?>
 
@@ -51,7 +52,7 @@ use humhub\compat\CActiveForm;
 </div>
 
 
-<script type="text/javascript">
+<script <?= Html::nonce() ?>>
 
     // set focus to input field
     $('#request-message').focus()

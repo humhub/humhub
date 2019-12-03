@@ -12,6 +12,7 @@ namespace humhub\compat;
  * CActiveForm is a Yii 1 compatible active form
  *
  * @author luke
+ * @deprecated since 1.4
  */
 class CActiveForm extends \yii\widgets\ActiveForm
 {

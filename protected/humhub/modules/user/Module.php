@@ -22,7 +22,7 @@ class Module extends \humhub\components\Module
     public $controllerNamespace = 'humhub\modules\user\controllers';
 
     /**
-     * @var boolean option to translate all invite mails except self invites to the default language (true) or user language (false) 
+     * @var boolean option to translate all invite mails except self invites to the default language (true) or user language (false)
      */
     public $sendInviteMailsInGlobalLanguage = true;
 
@@ -78,14 +78,19 @@ class Module extends \humhub\components\Module
     public $displayNameCallback = null;
 
     /**
+     * @var callable a callback that returns the user displayName sub text
+     */
+    public $displayNameSubCallback = null;
+
+    /**
      * @var boolean defines if the user following is disabled or not.
-     * @since 1.2 
+     * @since 1.2
      */
     public $disableFollow = false;
 
     /**
      * @var boolean defines mark user e-mail field as required
-     * @since 1.2.2 
+     * @since 1.2.2
      */
     public $emailRequired = true;
 
@@ -94,6 +99,18 @@ class Module extends \humhub\components\Module
      * @since 1.3
      */
     public $softDeleteKeepProfileFields = ['firstname', 'lastname'];
+
+    /**
+     * @var array defines empty additional rules for password validation
+     */
+    public $passwordStrength = [];
+
+    /**
+     * @var array defines default additional rules for password validation
+     */
+    private $defaultPasswordStrength = [
+        '/^.{5,255}$/' => 'Password needs to be at least 8 characters long.',
+    ];
 
     /**
      * @inheritdoc
@@ -128,4 +145,22 @@ class Module extends \humhub\components\Module
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getPasswordStrength()
+    {
+        if (empty($this->passwordStrength)) {
+            $this->passwordStrength = $this->defaultPasswordStrength;
+        }
+        return $this->passwordStrength;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isCustomPasswordStrength()
+    {
+        return $this->defaultPasswordStrength !== $this->getPasswordStrength();
+    }
 }

@@ -8,9 +8,11 @@
 
 namespace humhub\modules\space\widgets;
 
-use humhub\widgets\BaseMenu;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\space\models\Space;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\LeftNavigation;
 use Yii;
 use yii\base\Exception;
 
@@ -18,41 +20,39 @@ use yii\base\Exception;
  * The Main Navigation for a space. It includes the Modules the Stream
  *
  * @author Luke
- * @package humhub.modules_core.space.widgets
  * @since 0.5
  */
-class Menu extends BaseMenu
+class Menu extends LeftNavigation
 {
+
     /** @var Space */
     public $space;
-    public $template = '@humhub/widgets/views/leftNavigation';
 
+    /** @var Space */
+    public $id = 'space-main-menu';
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
-        if ($this->space === null && Yii::$app->controller instanceof ContentContainerController && Yii::$app->controller->contentContainer instanceof Space) {
-            $this->space = Yii::$app->controller->contentContainer;
+        if(!$this->space) {
+            $this->space = ContentContainerHelper::getCurrent(Space::class);
         }
 
-        if ($this->space === null) {
+        if (!$this->space) {
             throw new Exception('Could not instance space menu without space!');
         }
-        
-        $this->id = 'navigation-menu-space-' . $this->space->getUniqueId();
 
-        $this->addItemGroup([
-            'id' => 'modules',
-            'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', '<strong>Space</strong> menu'),
-            'sortOrder' => 100,
-        ]);
+        $this->panelTitle = Yii::t('SpaceModule.base', '<strong>Space</strong> menu');
 
-        $this->addItem([
-            'label' => Yii::t('SpaceModule.widgets_SpaceMenuWidget', 'Stream'),
-            'group' => 'modules',
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('SpaceModule.base', 'Stream'),
             'url' => $this->space->createUrl('/space/space/home'),
-            'icon' => '<i class="fa fa-bars"></i>',
+            'icon' => 'fa-bars',
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->id == 'space' && (Yii::$app->controller->action->id == 'index' || Yii::$app->controller->action->id == 'home') && Yii::$app->controller->module->id == 'space'),
-        ]);
+            'isActive' => MenuLink::isActiveState('space', 'space', ['index', 'home']),
+        ]));
 
         parent::init();
     }
@@ -61,17 +61,17 @@ class Menu extends BaseMenu
      * Searches for urls of modules which are activated for the current space
      * and offer an own site over the space menu.
      * The urls are associated with a module label.
-     * 
-     * Returns an array of urls with associated module labes for modules 
-     * @param type $space
+     *
+     * Returns an array of urls with associated module labes for modules
      */
     public static function getAvailablePages()
     {
         //Initialize the space Menu to check which active modules have an own page
-        $moduleItems = (new static())->getItems('modules');
+        $entries = (new static())->getEntries(MenuLink::class);
         $result = [];
-        foreach ($moduleItems as $moduleItem) {
-            $result[$moduleItem['url']] = $moduleItem['label'];
+        foreach ($entries as $entry) {
+            /* @var $entry MenuLink */
+            $result[$entry->getUrl()] = $entry->getLabel();
         }
 
         return $result;
@@ -79,7 +79,8 @@ class Menu extends BaseMenu
 
     /**
      * Returns space default / homepage
-     * 
+     *
+     * @param Space $space
      * @return string|null the url to redirect or null for default home
      */
     public static function getDefaultPageUrl($space)
@@ -91,10 +92,10 @@ class Menu extends BaseMenu
             $pages = static::getAvailablePages();
             if (isset($pages[$indexUrl])) {
                 return $indexUrl;
-            } else {
-                //Either the module was deactivated or url changed
-                $settings->contentContainer($space)->delete('indexUrl');
             }
+
+            //Either the module was deactivated or url changed
+            $settings->contentContainer($space)->delete('indexUrl');
         }
 
         return null;
@@ -102,7 +103,8 @@ class Menu extends BaseMenu
 
     /**
      * Returns space default / homepage
-     * 
+     *
+     * @param $space Space
      * @return string|null the url to redirect or null for default home
      */
     public static function getGuestsDefaultPageUrl($space)
@@ -114,10 +116,10 @@ class Menu extends BaseMenu
             $pages = static::getAvailablePages();
             if (isset($pages[$indexUrl])) {
                 return $indexUrl;
-            } else {
-                //Either the module was deactivated or url changed
-                $settings->contentContainer($space)->delete('indexGuestUrl');
             }
+
+            //Either the module was deactivated or url changed
+            $settings->contentContainer($space)->delete('indexGuestUrl');
         }
 
         return null;

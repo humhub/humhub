@@ -12,6 +12,7 @@ use humhub\modules\admin\models\forms\SpaceSettingsForm;
 use humhub\modules\admin\models\SpaceSearch;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageSpaces;
@@ -102,14 +103,9 @@ class SpaceController extends Controller
     public function actionSettings()
     {
         $form = new SpaceSettingsForm;
-
-        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            $this->view->saved();
-        }
-
         $visibilityOptions = [];
 
-        if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
+        if (AuthHelper::isGuestAccessEnabled()) {
             $visibilityOptions[Space::VISIBILITY_ALL] = Yii::t('SpaceModule.base', 'Public (Members & Guests)');
         }
 
@@ -125,6 +121,11 @@ class SpaceController extends Controller
         $contentVisibilityOptions = [
             Content::VISIBILITY_PRIVATE => Yii::t('SpaceModule.base', 'Private'),
             Content::VISIBILITY_PUBLIC => Yii::t('SpaceModule.base', 'Public')];
+
+        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
+            $this->view->saved();
+            return $this->redirect(['settings']);
+        }
 
         return $this->render('settings', [
                     'model' => $form,

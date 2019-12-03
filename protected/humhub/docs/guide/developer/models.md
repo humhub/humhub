@@ -45,7 +45,7 @@ In order to provide scheme updates for new versions, just follow the same steps 
 You can manually execute new migrations by the following commands:
 
 ```
-php yii migrate/up --inclueModuleMigrations=1
+php yii migrate/up --includeModuleMigrations=1
 ```
 
 or by grunt 
@@ -86,7 +86,7 @@ class uninstall extends Migration
 
 The integrity check is a command which validates and if necessary repairs the application database.
 
-If you want to add own checking methods for your module to it, you can intercept the [[humhub\controllers\IntegrityController::EVENT_ON_RUN]] event.
+If you want to add own checking methods for your module to it, you can intercept the [[humhub\commands\IntegrityController::EVENT_ON_RUN]] event.
 
 Example callback implementation:
 

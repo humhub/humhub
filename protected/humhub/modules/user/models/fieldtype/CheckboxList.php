@@ -9,12 +9,13 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\User;
 use Yii;
+use yii\helpers\Html;
 
 /**
  * CheckboxList profile field for selecting multiple options.
  *
- * @package humhub.modules_core.user.models
  * @since 2.1.1
  */
 class CheckboxList extends BaseType
@@ -53,26 +54,26 @@ class CheckboxList extends BaseType
     /**
      * Returns Form Definition for edit/create this field.
      *
-     * @return Array Form Definition
+     * @return array Form Definition
      */
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
             get_class($this) => [
                 'type' => 'form',
-                'title' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Select field options'),
+                'title' => Yii::t('UserModule.profile', 'Select field options'),
                 'elements' => [
                     'options' => [
                         'type' => 'textarea',
-                        'label' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Possible values'),
+                        'label' => Yii::t('UserModule.profile', 'Possible values'),
                         'class' => 'form-control',
-                        'hint' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'One option per line. Key=>Value Format (e.g. yes=>Yes)')
+                        'hint' => Yii::t('UserModule.profile', 'One option per line. Key=>Value Format (e.g. yes=>Yes)')
                     ],
                     'allowOther' => [
                         'type' => 'checkbox',
-                        'label' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'Allow other selection'),
+                        'label' => Yii::t('UserModule.profile', 'Allow other selection'),
                         'class' => 'form-control',
-                        'hint' => Yii::t('UserModule.models_ProfileFieldTypeSelect', 'This will add an additional input element for custom values')
+                        'hint' => Yii::t('UserModule.profile', 'This will add an additional input element for custom values')
                     ]
                 ]
             ]]);
@@ -117,14 +118,15 @@ class CheckboxList extends BaseType
         $result = [
             $this->profileField->internal_name => [
                 'type' => 'checkboxlist',
+                'delimiter' => "\n",
                 'class' => 'form-control',
                 'items' => $this->getSelectItems(),
                 'readonly' => (!$this->profileField->editable),
             ]
         ];
 
-        if($this->allowOther) {
-            $result[$this->profileField->internal_name. '_other_selection'] = [
+        if ($this->allowOther) {
+            $result[$this->profileField->internal_name . '_other_selection'] = [
                 'type' => 'text',
                 'class' => 'form-control',
                 'label' => false,
@@ -135,8 +137,9 @@ class CheckboxList extends BaseType
         return $result;
     }
 
-    public function beforeProfileSave($values) {
-        if(is_array($values)) {
+    public function beforeProfileSave($values)
+    {
+        if (is_array($values)) {
             return implode(',', $values);
         }
         return $values;
@@ -145,7 +148,7 @@ class CheckboxList extends BaseType
     /**
      * Returns a list of possible options
      *
-     * @return Array
+     * @return array
      */
     public function getSelectItems()
     {
@@ -155,7 +158,7 @@ class CheckboxList extends BaseType
             $items[trim($option)] = trim($option);
         }
 
-        if($this->allowOther) {
+        if ($this->allowOther) {
             $items['other'] = Yii::t($this->profileField->getTranslationCategory(), 'Other:');
         }
 
@@ -172,13 +175,23 @@ class CheckboxList extends BaseType
     public function getUserValue($user, $raw = true)
     {
         $internalName = $this->profileField->internal_name;
-        $value = $user->profile->$internalName;
+        $internalNameOther = $internalName . '_other_selection';
 
+        $value = $user->profile->$internalName;
         if (!$raw) {
+
             $options = $this->getSelectItems();
-            if (isset($options[$value])) {
-                return \yii\helpers\Html::encode(Yii::t($this->profileField->getTranslationCategory(), $options[$value]));
+            $translatedValues = [];
+
+            foreach (explode(',', $value) as $v) {
+                if ($v === 'other' && !empty($user->profile->$internalNameOther)) {
+                    $translatedValues[] = Html::encode($user->profile->$internalNameOther);
+                } elseif (isset($options[$v])) {
+                    $translatedValues[] = Html::encode(Yii::t($this->profileField->getTranslationCategory(), $options[$v]));
+                }
             }
+
+            return implode(', ', $translatedValues);
         }
 
         return $value;

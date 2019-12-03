@@ -94,7 +94,7 @@ $('[data-toggle="tooltip"]').tooltip() })
 
                             <?php if ($space->isArchived()) : ?>
                                 <span
-                                    class="label label-warning"><?= Yii::t('ContentModule.widgets_views_label', 'Archived'); ?></span>
+                                    class="label label-warning"><?= Yii::t('ContentModule.base', 'Archived'); ?></span>
                             <?php endif; ?>
                         </h4>
 

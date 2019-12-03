@@ -49,11 +49,11 @@ class DateTime extends BaseType
         return parent::getFormDefinition([
                     get_class($this) => [
                         'type' => 'form',
-                        'title' => Yii::t('UserModule.models_ProfileFieldTypeDateTime', 'Date(-time) field options'),
+                        'title' => Yii::t('UserModule.profile', 'Date(-time) field options'),
                         'elements' => [
                             'showTimePicker' => [
                                 'type' => 'checkbox',
-                                'label' => Yii::t('UserModule.models_ProfileFieldTypeDateTime', 'Show date/time picker'),
+                                'label' => Yii::t('UserModule.profile', 'Show date/time picker'),
                                 'class' => 'form-control',
                             ],
                         ]

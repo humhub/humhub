@@ -20,7 +20,7 @@ return [
     'Access directory' => 'Каталог доступа',
     'Can access the directory section.' => 'Можно получить доступ к разделу каталога.',
     'This group has no members yet.' => 'У этой группы пока нет участников.',
-    '<b>Nobody wrote something yet.</b><br>Make the beginning and post something...' => '<b>Ещё никто ничего не написал.</b><br>Будьте первым...',
+    '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>Ещё никто ничего не написал.</b><br>Будьте первым...',
     '<b>There are no profile posts yet!</b>' => '<b>Сообщений в профиле пока нет!</b>',
     '<strong>Directory</strong> menu' => '<strong>Меню</strong> каталога',
     '<strong>Group</strong> members - {group}' => '<strong>Группа</strong> участников - {group}',

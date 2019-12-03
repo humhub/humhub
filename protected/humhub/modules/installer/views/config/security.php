@@ -6,12 +6,12 @@ use yii\bootstrap\Html;
 <div id="name-form" class="panel panel-default animated fadeIn">
 
     <div class="panel-heading">
-        <?php echo Yii::t('InstallerModule.views_config_security', 'Security <strong>Settings</strong>'); ?>
+        <?php echo Yii::t('InstallerModule.base', 'Security <strong>Settings</strong>'); ?>
     </div>
 
     <div class="panel-body">
 
-        <p><?php echo Yii::t('InstallerModule.views_config_security', 'Here you can decide how new, unregistered users can access HumHub.'); ?></p>
+        <p><?php echo Yii::t('InstallerModule.base', 'Here you can decide how new, unregistered users can access HumHub.'); ?></p>
         <br>
 
         <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>

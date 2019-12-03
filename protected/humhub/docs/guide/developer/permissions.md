@@ -70,7 +70,7 @@ Space user-groups:
 Example of `ContentContainerPermissions` are:
 
  - [[humhub\modules\space\permissions\InviteUsers]] - Permission to invite users to a space.
- - [[humhub\modules\mail\permissions\SendMail]] - Allows/Disallows other users to send messages.
+ - [[humhub\modules\mail\permissions\SendMail]] - Allows/Disallows other users to send messages. (Require to install [Mail](https://github.com/humhub/humhub-modules-mail) module) 
  - [[humhub\modules\content\permissions\ManageContent]] - Permission to archive, pin to top or delete content within a space.
 
 ### Verify ContentContainer Permissions

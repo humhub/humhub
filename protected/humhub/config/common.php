@@ -5,6 +5,9 @@
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
+
+use humhub\components\i18n\PhpMessageSource;
+
 Yii::setAlias('@webroot', realpath(__DIR__ . '/../../../'));
 Yii::setAlias('@app', '@webroot/protected');
 Yii::setAlias('@humhub', '@app/humhub');
@@ -16,7 +19,7 @@ Yii::$classMap['Zend\Stdlib\ArrayObject'] = '@humhub/compat/ArrayObject.php';
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.3.17',
+    'version' => '1.4.0-beta.2',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue', 'humhub\modules\ui\view\bootstrap\ThemeLoader'],
     'sourceLanguage' => 'en',
@@ -26,21 +29,21 @@ $config = [
     ],
     'components' => [
         'moduleManager' => [
-            'class' => '\humhub\components\ModuleManager'
+            'class' => \humhub\components\ModuleManager::class
         ],
         'notification' => [
-            'class' => 'humhub\modules\notification\components\NotificationManager',
+            'class' => \humhub\modules\notification\components\NotificationManager::class,
             'targets' => [
                 [
-                    'class' => 'humhub\modules\notification\targets\WebTarget',
-                    'renderer' => ['class' => 'humhub\modules\notification\renderer\WebRenderer']
+                    'class' => \humhub\modules\notification\targets\WebTarget::class,
+                    'renderer' => ['class' => \humhub\modules\notification\renderer\WebRenderer::class]
                 ],
                 [
-                    'class' => 'humhub\modules\notification\targets\MailTarget',
-                    'renderer' => ['class' => 'humhub\modules\notification\renderer\MailRenderer']
+                    'class' => \humhub\modules\notification\targets\MailTarget::class,
+                    'renderer' => ['class' => \humhub\modules\notification\renderer\MailRenderer::class]
                 ],
                 [
-                    'class' => 'humhub\modules\notification\targets\MobileTarget'
+                    'class' => \humhub\modules\notification\targets\MobileTarget::class
                 ],
             ]
         ],
@@ -48,13 +51,13 @@ $config = [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => 'yii\log\FileTarget',
+                    'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
                     'except' => ['yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403', 'yii\web\HttpException:404', 'yii\web\HttpException:405'],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
                 [
-                    'class' => 'yii\log\DbTarget',
+                    'class' => \yii\log\DbTarget::class,
                     'levels' => ['error', 'warning'],
                     'except' => ['yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403', 'yii\web\HttpException:404', 'yii\web\HttpException:405'],
                     'logVars' => ['_GET', '_SERVER'],
@@ -62,74 +65,70 @@ $config = [
             ],
         ],
         'search' => [
-            'class' => 'humhub\modules\search\engine\ZendLuceneSearch',
+            'class' => \humhub\modules\search\engine\ZendLuceneSearch::class,
         ],
         'settings' => [
-            'class' => 'humhub\components\SettingsManager',
+            'class' => \humhub\components\SettingsManager::class,
             'moduleId' => 'base',
         ],
         'i18n' => [
-            'class' => 'humhub\components\i18n\I18N',
+            'class' => \humhub\components\i18n\I18N::class,
             'translations' => [
                 'base' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@humhub/messages'
-                ],
-                'security' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
+                    'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'
                 ],
                 'error' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@humhub/messages'
-                ],
-                'widgets_views_markdownEditor' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
+                    'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'
                 ],
                 'humhub.yii' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
+                    'class' => PhpMessageSource::class,
+                    'basePath' => '@humhub/messages'
+                ],
+                'custom' => [
+                    'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'
                 ],
             ],
         ],
         'formatter' => [
-            'class' => 'humhub\components\i18n\Formatter',
+            'class' => \humhub\components\i18n\Formatter::class,
         ],
         /**
          * Deprecated
          */
         'formatterApp' => [
-            'class' => 'yii\i18n\Formatter',
+            'class' => \yii\i18n\Formatter::class,
         ],
         'cache' => [
-            'class' => 'yii\caching\DummyCache',
+            'class' => \yii\caching\DummyCache::class,
         ],
         'mailer' => [
-            'class' => 'humhub\components\mail\Mailer',
+            'class' => \humhub\components\mail\Mailer::class,
             'viewPath' => '@humhub/views/mail',
             'view' => [
-                'class' => '\yii\web\View',
+                'class' => \yii\web\View::class,
                 'theme' => [
-                    'class' => '\humhub\modules\ui\view\components\Theme',
+                    'class' => \humhub\modules\ui\view\components\Theme::class,
                     'name' => 'HumHub'
                 ],
             ],
         ],
         'assetManager' => [
-            'class' => '\humhub\components\AssetManager',
+            'class' => \humhub\components\AssetManager::class,
             'appendTimestamp' => true,
             'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD || YII_ENV_TEST ? 'assets-prod.php' : 'assets-dev.php')),
         ],
         'view' => [
-            'class' => '\humhub\modules\ui\view\components\View',
+            'class' => \humhub\modules\ui\view\components\View::class,
             'theme' => [
-                'class' => '\humhub\modules\ui\view\components\Theme',
+                'class' => \humhub\modules\ui\view\components\Theme::class,
                 'name' => 'HumHub',
             ],
         ],
         'db' => [
-            'class' => 'yii\db\Connection',
+            'class' => \yii\db\Connection::class,
             'dsn' => 'mysql:host=localhost;dbname=humhub',
             'username' => '',
             'password' => '',
@@ -138,24 +137,23 @@ $config = [
             'on afterOpen' => ['humhub\libs\Helpers', 'SqlMode'],
         ],
         'authClientCollection' => [
-            'class' => 'humhub\modules\user\authclient\Collection',
+            'class' => \humhub\modules\user\authclient\Collection::class,
             'clients' => [],
         ],
         'queue' => [
-            'class' => 'humhub\modules\queue\driver\MySQL',
+            'class' => \humhub\modules\queue\driver\MySQL::class,
         ],
         'urlManager' => [
-            'class' => 'humhub\components\UrlManager',
+            'class' => \humhub\components\UrlManager::class,
         ],
         'live' => [
-            'class' => 'humhub\modules\live\components\Sender',
+            'class' => \humhub\modules\live\components\Sender::class,
             'driver' => [
-                'class' => 'humhub\modules\live\driver\Poll',
+                'class' => \humhub\modules\live\driver\Poll::class,
             ],
         ],
         'mutex' => [
-
-            'class' => 'yii\mutex\MysqlMutex'
+            'class' => \yii\mutex\MysqlMutex::class
         ],
     ],
     'params' => [
@@ -163,16 +161,15 @@ $config = [
         'databaseInstalled' => false,
         'dynamicConfigFile' => '@config/dynamic.php',
         'moduleAutoloadPaths' => ['@app/modules', '@humhub/modules'],
-        'moduleMarketplacePath' => '@app/modules',
         'availableLanguages' => [
-            'en' => 'English (US)',
-            'en_gb' => 'English (UK)',
+            'en-US' => 'English (US)',
+            'en-GB' => 'English (UK)',
             'de' => 'Deutsch',
             'fr' => 'Français',
             'nl' => 'Nederlands',
             'pl' => 'Polski',
             'pt' => 'Português',
-            'pt_br' => 'Português do Brasil',
+            'pt-BR' => 'Português do Brasil',
             'es' => 'Español',
             'ca' => 'Català',
             'it' => 'Italiano',
@@ -183,17 +180,17 @@ $config = [
             'el' => 'Ελληνικά',
             'ja' => '日本語',
             'hu' => 'Magyar',
-            'nb_no' => 'Norsk bokmål',
-            'nn_no' => 'Nynorsk',
-            'zh_cn' => '中文(简体)',
-            'zh_tw' => '中文(台灣)',
+            'nb-NO' => 'Norsk bokmål',
+            'nn-NO' => 'Nynorsk',
+            'zh-CN' => '中文(简体)',
+            'zh-TW' => '中文(台灣)',
             'an' => 'Aragonés',
             'vi' => 'Tiếng Việt',
             'sv' => 'Svenska',
             'cs' => 'čeština',
             'da' => 'dansk',
             'uz' => 'Ўзбек',
-            'fa_ir' => 'فارسی',
+            'fa-IR' => 'فارسی',
             'bg' => 'български',
             'sk' => 'slovenčina',
             'ro' => 'română',
@@ -206,7 +203,8 @@ $config = [
             'sl' => 'Slovenščina',
             'hr' => 'Hrvatski',
             'am' => 'አማርኛ',
-            'fi' => 'Suomi',
+            'fi' => 'suomalainen',
+            'he' => 'עברית'
         ],
         'ldap' => [
             // LDAP date field formats
@@ -250,7 +248,11 @@ $config = [
             'acceptableNames' => ['interface', 'administration', 'profile', 'spaces']
         ],
         'richText' => [
-            'class' => 'humhub\modules\content\widgets\richtext\ProsemirrorRichText',
+            'class' => \humhub\modules\content\widgets\richtext\ProsemirrorRichText::class,
+        ],
+        'twemoji' => [
+            'path' => '@web-static/img/twemoji/',
+            'size' => '72x72'
         ],
         'enablePjax' => true,
         'dailyCronExecutionTime' => '18:00',

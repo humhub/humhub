@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\libs;
-
 
 use Yii;
 use yii\helpers\Json;
@@ -10,6 +8,7 @@ use yii\helpers\Json;
 class UrlOembedHttpClient implements UrlOembedClient
 {
     const RESPONSE_UNAUTHORIZED = 'Unauthorized';
+
     const RESPONSE_NOT_FOUND = 'Not Found';
 
     const ERROR_RESPONSES = [
@@ -59,7 +58,7 @@ class UrlOembedHttpClient implements UrlOembedClient
     protected function parseJson($json)
     {
         try {
-            if(!empty($json) && !in_array($json, static::ERROR_RESPONSES, true)) {
+            if (!empty($json) && !in_array($json, static::ERROR_RESPONSES, true)) {
                 return Json::decode($json);
             }
         } catch (\Exception $ex) {

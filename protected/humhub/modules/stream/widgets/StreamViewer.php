@@ -108,10 +108,10 @@ class StreamViewer extends JsWidget
 
         // Setup default messages
         if ($this->messageStreamEmpty == "") {
-            $this->messageStreamEmpty = Yii::t('ContentModule.widgets_views_stream', 'Nothing here yet!');
+            $this->messageStreamEmpty = Yii::t('ContentModule.base', 'Nothing here yet!');
         }
         if ($this->messageStreamEmptyWithFilters == "") {
-            $this->messageStreamEmptyWithFilters = Yii::t('ContentModule.widgets_views_stream', 'No matches with your selected filters!');
+            $this->messageStreamEmptyWithFilters = Yii::t('ContentModule.base', 'No matches with your selected filters!');
         }
     }
 

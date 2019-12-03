@@ -89,16 +89,16 @@ class Text extends BaseType
         return parent::getFormDefinition([
                     get_class($this) => [
                         'type' => 'form',
-                        'title' => Yii::t('UserModule.models_ProfileFieldTypeText', 'Text Field Options'),
+                        'title' => Yii::t('UserModule.profile', 'Text Field Options'),
                         'elements' => [
                             'maxLength' => [
                                 'type' => 'text',
                                 'maxlength' => 32,
-                                'label' => Yii::t('UserModule.models_ProfileFieldTypeText', 'Maximum length'),
+                                'label' => Yii::t('UserModule.profile', 'Maximum length'),
                                 'class' => 'form-control',
                             ],
                             'validator' => [
-                                'label' => Yii::t('UserModule.models_ProfileFieldTypeText', 'Validator'),
+                                'label' => Yii::t('UserModule.profile', 'Validator'),
                                 'type' => 'dropdownlist',
                                 'class' => 'form-control',
                                 'items' => [
@@ -108,27 +108,27 @@ class Text extends BaseType
                                 ],
                             ],
                             'minLength' => [
-                                'label' => Yii::t('UserModule.models_ProfileFieldTypeText', 'Minimum length'),
+                                'label' => Yii::t('UserModule.profile', 'Minimum length'),
                                 'type' => 'text',
                                 'class' => 'form-control',
                             ],
                             'maxLength' => [
-                                'label' => Yii::t('UserModule.models_ProfileFieldTypeText', 'Maximum length'),
+                                'label' => Yii::t('UserModule.profile', 'Maximum length'),
                                 'class' => 'form-control',
                                 'type' => 'text',
                             ],
                             'default' => [
-                                'label' => Yii::t('UserModule.models_ProfileFieldTypeText', 'Default value'),
+                                'label' => Yii::t('UserModule.profile', 'Default value'),
                                 'class' => 'form-control',
                                 'type' => 'text',
                             ],
                             'regexp' => [
-                                'label' => Yii::t('UserModule.models_ProfileFieldTypeText', 'Regular Expression: Validator'),
+                                'label' => Yii::t('UserModule.profile', 'Regular Expression: Validator'),
                                 'class' => 'form-control',
                                 'type' => 'text',
                             ],
                             'regexpErrorMessage' => [
-                                'label' => Yii::t('UserModule.models_ProfileFieldTypeText', 'Regular Expression: Error message'),
+                                'label' => Yii::t('UserModule.profile', 'Regular Expression: Error message'),
                                 'class' => 'form-control',
                                 'type' => 'text',
                             ],

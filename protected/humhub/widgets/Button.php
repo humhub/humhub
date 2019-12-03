@@ -53,6 +53,7 @@ class Button extends BootstrapComponent
     /**
      * @param string $text Button text
      * @return static
+     * @throws \Exception
      */
     public static function back($url, $text = null)
     {
@@ -101,6 +102,16 @@ class Button extends BootstrapComponent
     }
 
     /**
+     * @param null $url
+     * @param bool $pjax
+     * @return |null
+     */
+    public function getHref()
+    {
+        return isset($this->htmlOptions['href']) ? $this->htmlOptions['href'] : null;
+    }
+
+    /**
      * If set to false the [data-pjax-prevent] flag is attached to the link.
      * @param bool $pjax
      * @return $this
@@ -108,10 +119,19 @@ class Button extends BootstrapComponent
     public function pjax($pjax = true)
     {
         if (!$pjax) {
-            $this->options(['data-pjax-prevent' => true]);
+            Html::addPjaxPrevention($this->htmlOptions);
         }
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     * @since 1.4
+     */
+    public function isPjaxEnabled()
+    {
+        return Html::isPjaxEnabled($this->htmlOptions);
     }
 
     /**

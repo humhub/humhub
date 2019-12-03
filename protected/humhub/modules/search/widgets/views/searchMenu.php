@@ -1,15 +1,16 @@
 <?php
 
 use yii\helpers\Url;
+use humhub\libs\Html;
 ?>
 
 <li class="dropdown search-menu">
-    <a href="<?= Url::to(['/search/search/index']); ?>" id="search-menu" class="dropdown-toggle" aria-label="<?= Yii::t('SearchModule.views_search_index', 'Search for user, spaces and content') ?>">
+    <a href="<?= Url::to(['/search/search/index']); ?>" id="search-menu" class="dropdown-toggle" aria-label="<?= Yii::t('SearchModule.base', 'Search for user, spaces and content') ?>">
         <i class="fa fa-search"></i>
     </a>
 </li>
 
-<script>
+<script <?= Html::nonce() ?>>
     /**
      * Open search menu
      */

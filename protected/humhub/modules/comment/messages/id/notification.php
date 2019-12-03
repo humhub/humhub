@@ -17,6 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Comments' => 'Komentar',
+    'Receive Notifications when someone comments on my own or a following post.' => 'Menerima pemberitahuan ketika seseorang mengomentari tulisan dan mengikuti saya',
+    'View Online' => '',
     '[Deleted]' => '',
     '{displayNames} commented {contentTitle}' => '',
     '{displayNames} commented {contentTitle} in space {space}' => '',

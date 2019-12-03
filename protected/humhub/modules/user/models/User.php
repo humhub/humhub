@@ -28,6 +28,8 @@ use humhub\modules\user\behaviors\ProfileController;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\events\UserEvent;
+use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\Module;
 use humhub\modules\user\widgets\UserWall;
 use Yii;
 use yii\base\Exception;
@@ -58,6 +60,7 @@ use yii\web\IdentityInterface;
  * @property Profile $profile
  *
  * @property string $displayName
+ * @property string $displayNameSub
  */
 class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
 {
@@ -135,11 +138,13 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         return [
             [['username', 'email'], 'trim'],
             [['username'], 'required'],
+            [['username'], 'unique'],
+            [['username'], 'string', 'max' => $userModule->maximumUsernameLength, 'min' => $userModule->minimumUsernameLength],
+            // Client validation is disable due to invalid client pattern validation
+            [['username'], 'match', 'not' => true, 'pattern' => '/[\x00-\x1f\x7f]/', 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false],
             [['status', 'created_by', 'updated_by', 'visibility'], 'integer'],
-            [['status', 'visibility'], 'integer'],
             [['tags'], 'string'],
             [['guid'], 'string', 'max' => 45],
-            [['username'], 'string', 'max' => $userModule->maximumUsernameLength, 'min' => $userModule->minimumUsernameLength],
             [['time_zone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
@@ -149,7 +154,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['email'], 'required', 'when' => function ($model, $attribute) use ($userModule) {
                 return $userModule->emailRequired;
             }],
-            [['username'], 'unique'],
             [['guid'], 'unique'],
         ];
     }
@@ -215,20 +219,20 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         return [
             'id' => 'ID',
             'guid' => 'Guid',
-            'status' => Yii::t('UserModule.models_User', 'Status'),
-            'username' => Yii::t('UserModule.models_User', 'Username'),
-            'email' => Yii::t('UserModule.models_User', 'Email'),
-            'profile.firstname' => Yii::t('UserModule.models_Profile', 'First name'),
-            'profile.lastname' => Yii::t('UserModule.models_Profile', 'Last name'),
-            'auth_mode' => Yii::t('UserModule.models_User', 'Auth Mode'),
-            'tags' => Yii::t('UserModule.models_User', 'Tags'),
-            'language' => Yii::t('UserModule.models_User', 'Language'),
-            'created_at' => Yii::t('UserModule.models_User', 'Created at'),
-            'created_by' => Yii::t('UserModule.models_User', 'Created by'),
-            'updated_at' => Yii::t('UserModule.models_User', 'Updated at'),
-            'updated_by' => Yii::t('UserModule.models_User', 'Updated by'),
-            'last_login' => Yii::t('UserModule.models_User', 'Last Login'),
-            'visibility' => Yii::t('UserModule.models_User', 'Visibility'),
+            'status' => Yii::t('UserModule.base', 'Status'),
+            'username' => Yii::t('UserModule.base', 'Username'),
+            'email' => Yii::t('UserModule.base', 'Email'),
+            'profile.firstname' => Yii::t('UserModule.profile', 'First name'),
+            'profile.lastname' => Yii::t('UserModule.profile', 'Last name'),
+            'auth_mode' => Yii::t('UserModule.base', 'Auth Mode'),
+            'tags' => Yii::t('UserModule.base', 'Tags'),
+            'language' => Yii::t('UserModule.base', 'Language'),
+            'created_at' => Yii::t('UserModule.base', 'Created at'),
+            'created_by' => Yii::t('UserModule.base', 'Created by'),
+            'updated_at' => Yii::t('UserModule.base', 'Updated at'),
+            'updated_by' => Yii::t('UserModule.base', 'Updated by'),
+            'last_login' => Yii::t('UserModule.base', 'Last Login'),
+            'visibility' => Yii::t('UserModule.base', 'Visibility'),
         ];
     }
 
@@ -258,7 +262,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * @inheritdoc
      *
-     * @return ActiveQueryUser|object
+     * @return ActiveQueryUser
      */
     public static function find()
     {
@@ -430,6 +434,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         Session::deleteAll(['user_id' => $this->id]);
         Friendship::deleteAll(['user_id' => $this->id]);
         Friendship::deleteAll(['friend_user_id' => $this->id]);
+        Auth::deleteAll(['user_id' => $this->id]);
 
         $this->updateAttributes([
             'email' => new Expression('NULL'),
@@ -449,13 +454,12 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function beforeSave($insert)
     {
         if ($insert) {
-
             if ($this->auth_mode == '') {
                 $passwordAuth = new PasswordAuth();
                 $this->auth_mode = $passwordAuth->getId();
             }
 
-            if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess')) {
+            if (AuthHelper::isGuestAccessEnabled()) {
                 // Set users profile default visibility to all
                 if (Yii::$app->getModule('user')->settings->get('auth.defaultUserProfileVisibility') == User::VISIBILITY_ALL) {
                     $this->visibility = User::VISIBILITY_ALL;
@@ -553,8 +557,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getDisplayName()
     {
-        if (Yii::$app->getModule('user')->displayNameCallback !== null) {
-            return call_user_func(Yii::$app->getModule('user')->displayNameCallback, $this);
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if ($module->displayNameCallback !== null) {
+            return call_user_func($module->displayNameCallback, $this);
         }
 
         $name = '';
@@ -572,6 +579,29 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         return $name;
     }
+
+    /**
+     * Returns the users display name sub text.
+     * Per default as sub text the 'title' profile attribute is used
+     *
+     * @return string the display name sub text
+     */
+    public function getDisplayNameSub()
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if ($module->displayNameSubCallback !== null) {
+            return call_user_func($module->displayNameSubCallback, $this);
+        }
+
+        if ($this->profile !== null && $this->profile->hasAttribute('title')) {
+            return $this->profile->title;
+        }
+
+        return '';
+    }
+
 
     /**
      * Checks if this user is the current logged in user.
@@ -593,7 +623,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      * @param \humhub\modules\user\models\User $user
      * @return boolean
      */
-    public function is(User $user)
+    public function is(User $user = null)
     {
         if (!$user) {
             return false;

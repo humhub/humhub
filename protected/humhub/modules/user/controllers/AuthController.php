@@ -20,6 +20,7 @@ use humhub\modules\user\models\Session;
 use Yii;
 use yii\authclient\BaseClient;
 use yii\web\Cookie;
+use humhub\modules\user\events\UserEvent;
 
 /**
  * AuthController handles login and logout
@@ -28,6 +29,11 @@ use yii\web\Cookie;
  */
 class AuthController extends Controller
 {
+    /**
+     * @event Triggered after an successful login. Note: In contrast to User::EVENT_AFTER_LOGIN, this event is triggered
+     * after the response is generated.
+     */
+    const EVENT_AFTER_LOGIN = 'afterLogin';
 
     /**
      * @inheritdoc
@@ -78,7 +84,7 @@ class AuthController extends Controller
             return $this->onAuthSuccess($login->authClient);
         }
 
-        // Self Invite 
+        // Self Invite
         $invite = new Invite();
         $invite->scenario = 'invite';
         if ($invite->load(Yii::$app->request->post()) && $invite->selfInvite()) {
@@ -98,9 +104,10 @@ class AuthController extends Controller
 
     /**
      * Handle successful authentication
-     * 
+     *
      * @param \yii\authclient\BaseClient $authClient
      * @return Response
+     * @throws \Throwable
      */
     public function onAuthSuccess(BaseClient $authClient)
     {
@@ -112,7 +119,7 @@ class AuthController extends Controller
             return $this->redirect(['/user/account/connected-accounts']);
         }
 
-        // Login existing user 
+        // Login existing user
         $user = AuthClientHelpers::getUserByAuthClient($authClient);
 
         if ($user !== null) {
@@ -159,7 +166,7 @@ class AuthController extends Controller
 
     /**
      * Login user
-     * 
+     *
      * @param User $user
      * @param \yii\authclient\BaseClient $authClient
      * @return Response the current response object
@@ -167,17 +174,18 @@ class AuthController extends Controller
     protected function login($user, $authClient)
     {
         $redirectUrl = ['/user/auth/login'];
+        $success = false;
         if ($user->status == User::STATUS_ENABLED) {
             $duration = 0;
-            if ($authClient instanceof BaseFormAuth) {
-                if ($authClient->login->rememberMe) {
-                    $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
-                }
-            }
+            if (
+                ($authClient instanceof BaseFormAuth && $authClient->login->rememberMe) ||
+                !empty(Yii::$app->session->get('loginRememberMe'))) {
 
+                $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
+            }
             AuthClientHelpers::updateUser($authClient, $user);
 
-            if (Yii::$app->user->login($user, $duration)) {
+            if ($success = Yii::$app->user->login($user, $duration)) {
                 Yii::$app->user->setCurrentAuthClient($authClient);
                 $redirectUrl = Yii::$app->user->returnUrl;
             }
@@ -189,11 +197,13 @@ class AuthController extends Controller
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Unknown user status!'));
         }
 
-        if (Yii::$app->request->getIsAjax()) {
-            return $this->htmlRedirect($redirectUrl);
+        $result = Yii::$app->request->getIsAjax() ? $this->htmlRedirect($redirectUrl) : $this->redirect($redirectUrl);
+
+        if ($success) {
+            $this->trigger(static::EVENT_AFTER_LOGIN, new UserEvent(['user' => Yii::$app->user->identity]));
         }
 
-        return $this->redirect($redirectUrl);
+        return $result;
     }
 
     /**

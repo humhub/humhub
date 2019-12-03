@@ -79,11 +79,17 @@ class Mentioning extends ActiveRecord
         return parent::afterSave($insert, $changedAttributes);
     }
 
+    /**
+     * @param $source
+     * @return User|null
+     */
     private function getOriginatorBySource($source)
     {
         if ($source instanceof ContentActiveRecord) {
-            return $source->content->user;
+            /** @var ContentActiveRecord $source */
+            return $source->content->createdBy;
         } elseif ($source instanceof ContentAddonActiveRecord) {
+            /** @var ContentAddonActiveRecord $source */
             return $source->user;
         }
 

@@ -1,13 +1,16 @@
+<?php
+ use humhub\libs\Html;
+?>
 <div id="lightbox_requestWorkspace">
 
     <div class="panel panel_lightbox">
         <div class="content content_innershadow">
 
-            <h2><?= Yii::t('SpaceModule.widgets_views_requestMembershipSave', 'Request workspace membership'); ?></h2>
+            <h2><?= Yii::t('SpaceModule.base', 'Request workspace membership'); ?></h2>
 
-            <p><?= Yii::t('SpaceModule.widgets_views_requestMembershipSave', 'Your request was successfully submitted to the workspace administrators.'); ?></p>
+            <p><?= Yii::t('SpaceModule.base', 'Your request was successfully submitted to the workspace administrators.'); ?></p>
             <br><br>
-            <?= CHtml::link(Yii::t('SpaceModule.widgets_views_requestMembershipSave', 'Close'), '#', ['onclick'=>'redirect();//RequestWorkspacebox.close()', 'class' => 'button', 'style' => 'color: #fff;']); ?>
+            <?= CHtml::link(Yii::t('SpaceModule.base', 'Close'), '#', ['onclick'=>'redirect();//RequestWorkspacebox.close()', 'class' => 'button', 'style' => 'color: #fff;']); ?>
 
             <div class="clearFloats"></div>
 
@@ -16,7 +19,7 @@
 
 </div>
 
-<script>
+<script <?= Html::nonce() ?>>
 
     $('#close_button_requestWorkspace').remove();
 

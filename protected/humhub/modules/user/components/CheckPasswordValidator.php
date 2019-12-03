@@ -37,7 +37,7 @@ class CheckPasswordValidator extends Validator
         }
 
         if ($this->user->currentPassword !== null && !$this->user->currentPassword->validatePassword($value)) {
-            $object->addError($attribute, Yii::t('UserModule.password', 'Your password is incorrect!'));
+            $object->addError($attribute, Yii::t('UserModule.auth', 'Your password is incorrect!'));
         }
     }
 

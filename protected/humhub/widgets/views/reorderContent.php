@@ -11,7 +11,7 @@
  */
 ?>
 
-<script>
+<script <?= \humhub\libs\Html::nonce() ?>>
 $(function() {
 	$( ".<?php echo $containerClassName; ?>" ).sortable({
 		stop: function(event, ui) {

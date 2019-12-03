@@ -31,6 +31,12 @@ class Module extends \humhub\components\Module
     public $autoFollowLikedContent = false;
 
     /**
+     * @var bool mark this core module as enabled
+     * @since 1.4
+     */
+    public $isEnabled = true;
+
+    /**
      * @inheritdoc
      */
     public function getName()
@@ -43,6 +49,10 @@ class Module extends \humhub\components\Module
      */
     public function getNotifications()
     {
+        if (!$this->isEnabled) {
+            return [];
+        }
+
         return [
             'humhub\modules\like\notifications\NewLike'
         ];

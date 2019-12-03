@@ -15,6 +15,7 @@ return array (
   'Delete table' => 'ሳጥኑን አስወግድ',
   'Flags' => 'ሰንደቅ አላማዎች',
   'Food & Drink' => 'ምግብ እና መጠጥ',
+  'Heading' => 'ራስጌ',
   'Height' => 'ቁመት',
   'Horizontal rule' => 'አግድሞሻዊ ህግ',
   'Image' => 'ምስል',

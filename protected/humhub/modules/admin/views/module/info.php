@@ -8,7 +8,7 @@ use yii\helpers\Html;
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
-                <?= Yii::t('AdminModule.views_module_info', '<strong>Module</strong> details', ['%moduleName%' => Html::encode($name)]); ?>
+                <?= Yii::t('AdminModule.modules', '<strong>Module</strong> details', ['%moduleName%' => Html::encode($name)]); ?>
             </h4>
         </div>
         <div class="modal-body">
@@ -23,7 +23,7 @@ use yii\helpers\Html;
                     <br>
                     <br>
 
-                    <?= Yii::t('AdminModule.views_module_info', 'This module doesn\'t provide further informations.'); ?>
+                    <?= Yii::t('AdminModule.modules', 'This module doesn\'t provide further informations.'); ?>
                 <?php endif; ?>
             </div>
 

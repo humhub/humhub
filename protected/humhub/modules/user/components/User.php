@@ -12,6 +12,7 @@ use humhub\modules\user\authclient\AuthClientHelpers;
 use humhub\modules\user\authclient\Password;
 use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
 use humhub\modules\user\events\UserEvent;
+use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\db\Expression;
@@ -84,9 +85,11 @@ class User extends \yii\web\User
      * ```
      *
      * @param string|string[]|BasePermission $permission
-     * @see PermissionManager::can()
      * @return boolean
+     * @throws \yii\base\InvalidConfigException
+     * @throws \Throwable
      * @since 1.2
+     * @see PermissionManager::can()
      */
     public function can($permission, $params = [], $allowCaching = true)
     {
@@ -95,6 +98,7 @@ class User extends \yii\web\User
 
     /**
      * @return PermissionManager instance with the related identity instance as permission subject.
+     * @throws \Throwable
      */
     public function getPermissionManager()
     {
@@ -124,10 +128,25 @@ class User extends \yii\web\User
     /**
      * Determines if this user is able to change the email address.
      * @return boolean
+     * @throws \Throwable
      */
     public function canChangeEmail()
     {
         if (in_array('email', AuthClientHelpers::getSyncAttributesByUser($this->getIdentity()))) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Determines if this user is able to change his username.
+     * @return boolean
+     * @throws \Throwable
+     */
+    public function canChangeUsername()
+    {
+        if (in_array('username', AuthClientHelpers::getSyncAttributesByUser($this->getIdentity()))) {
             return false;
         }
 
@@ -188,10 +207,11 @@ class User extends \yii\web\User
      * Checks if the system configuration allows access for guests
      *
      * @return boolean is guest access enabled and allowed
+     * @deprecated since 1.4
      */
     public static function isGuestAccessEnabled()
     {
-        return (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess'));
+        return AuthHelper::isGuestAccessEnabled();
     }
 
     /**

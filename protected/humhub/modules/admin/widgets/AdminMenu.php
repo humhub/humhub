@@ -9,86 +9,95 @@
 namespace humhub\modules\admin\widgets;
 
 use Yii;
-use yii\helpers\Url;
+use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\admin\permissions\ManageSpaces;
+use humhub\modules\admin\permissions\SeeAdminInformation;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\LeftNavigation;
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\admin\permissions\ManageSettings;
+use humhub\modules\admin\permissions\ManageGroups;
 
 /**
- * Description of AdminMenu
+ * AdminMenu
  *
  * @author luke
  */
-class AdminMenu extends \humhub\widgets\BaseMenu
+class AdminMenu extends LeftNavigation
 {
 
+    /**
+     * @inheritdoc
+     */
     const SESSION_CAN_SEE_ADMIN_SECTION = 'user.canSeeAdminSection';
 
-    public $template = "@humhub/widgets/views/leftNavigation";
     public $type = "adminNavigation";
     public $id = "admin-menu";
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
-        $this->addItemGroup([
-            'id' => 'admin',
-            'label' => \Yii::t('AdminModule.widgets_AdminMenuWidget', '<strong>Administration</strong> menu'),
-            'sortOrder' => 100,
-        ]);
+        $this->panelTitle = Yii::t('AdminModule.base', '<strong>Administration</strong> menu');
 
-        $this->addItem([
-            'label' => \Yii::t('AdminModule.widgets_AdminMenuWidget', 'Users'),
-            'url' => Url::toRoute(['/admin/user']),
-            'icon' => '<i class="fa fa-user"></i>',
+        $this->addEntry(new MenuLink([
+            'id' => 'user',
+            'label' => Yii::t('AdminModule.base', 'Users'),
+            'url' => ['/admin/user'],
+            'icon' => 'user',
             'sortOrder' => 200,
-            'isActive' => (\Yii::$app->controller->module && \Yii::$app->controller->module->id == 'admin' && (Yii::$app->controller->id == 'user' || Yii::$app->controller->id == 'group' || Yii::$app->controller->id == 'approval' || Yii::$app->controller->id == 'authentication' || Yii::$app->controller->id == 'user-profile' || Yii::$app->controller->id == 'pending-registrations')),
+            'isActive' => MenuLink::isActiveState('admin', ['user', 'group', 'approval', 'authentication', 'user-profile', 'pending-registrations']),
             'isVisible' => Yii::$app->user->can([
-                new \humhub\modules\admin\permissions\ManageUsers(),
-                new \humhub\modules\admin\permissions\ManageSettings(),
-                new \humhub\modules\admin\permissions\ManageGroups()
-            ]),
-        ]);
+                ManageUsers::class,
+                ManageSettings::class,
+                ManageGroups::class
+            ])
+        ]));
 
-        $this->addItem([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Spaces'),
+        $this->addEntry(new MenuLink([
             'id' => 'spaces',
-            'url' => Url::toRoute('/admin/space'),
-            'icon' => '<i class="fa fa-inbox"></i>',
+            'label' => Yii::t('AdminModule.base', 'Spaces'),
+            'url' => ['/admin/space'],
+            'icon' => 'inbox',
             'sortOrder' => 400,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'space'),
+            'isActive' => MenuLink::isActiveState('admin', 'space'),
             'isVisible' => Yii::$app->user->can([
-                new \humhub\modules\admin\permissions\ManageSpaces(),
-                new \humhub\modules\admin\permissions\ManageSettings(),
-            ]),
-        ]);
+                ManageSpaces::class,
+                ManageSettings::class
+            ])
+        ]));
 
-        $this->addItem([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Modules'),
+        $this->addEntry(new MenuLink([
             'id' => 'modules',
-            'url' => Url::toRoute('/admin/module'),
-            'icon' => '<i class="fa fa-rocket"></i>',
+            'label' => Yii::t('AdminModule.base', 'Modules'),
+            'url' => ['/admin/module'],
+            'icon' => 'rocket',
             'sortOrder' => 500,
-            'newItemCount' => 0,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'module'),
-            'isVisible' => Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageModules())
-        ]);
+            'htmlOptions' => ['class' => 'modules'],
+            'isActive' => MenuLink::isActiveState('admin', 'module'),
+            'isVisible' => Yii::$app->user->can(ManageModules::class)
+        ]));
 
-        $this->addItem([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Settings'),
-            'url' => Url::toRoute('/admin/setting'),
-            'icon' => '<i class="fa fa-gears"></i>',
+        $this->addEntry(new MenuLink([
+            'id' => 'settings',
+            'label' => Yii::t('AdminModule.base', 'Settings'),
+            'url' => ['/admin/setting'],
+            'icon' => 'gears',
             'sortOrder' => 600,
-            'newItemCount' => 0,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'setting'),
-            'isVisible' => Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageSettings())
-        ]);
+            'isActive' => MenuLink::isActiveState('admin', 'setting'),
+            'isVisible' => Yii::$app->user->can(ManageSettings::class)
+        ]));
 
-        $this->addItem([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Information'),
-            'url' => Url::toRoute('/admin/information'),
-            'icon' => '<i class="fa fa-info-circle"></i>',
-            'sortOrder' => 10000,
-            'newItemCount' => 0,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'information'),
-            'isVisible' => Yii::$app->user->can(new \humhub\modules\admin\permissions\SeeAdminInformation())
-        ]);
+        $this->addEntry(new MenuLink([
+            'id' => 'information',
+            'label' => Yii::t('AdminModule.base', 'Information'),
+            'url' => ['/admin/information'],
+            'icon' => 'info-circle',
+            'sortOrder' => 1000,
+            'isActive' => MenuLink::isActiveState('admin', 'information'),
+            'isVisible' => Yii::$app->user->can(SeeAdminInformation::class)
+        ]));
 
         parent::init();
     }
@@ -96,25 +105,15 @@ class AdminMenu extends \humhub\widgets\BaseMenu
     /**
      * @inheritdoc
      */
-    public function run()
+    public function addItem($entryArray)
     {
-        // Workaround for modules with no admin menu permission support.
-        if (!Yii::$app->user->isAdmin()) {
-            foreach ($this->items as $key => $item) {
-                if (!isset($item['isVisible'])) {
-                    unset($this->items[$key]);
-                }
-            }
+        $entry = MenuLink::createByArray($entryArray);
+
+        if(!isset($entryArray['isVisible'])) {
+            $entry->setIsVisible(Yii::$app->user->isAdmin());
         }
 
-        return parent::run();
-    }
-
-    public function addItem($item)
-    {
-        $item['group'] = 'admin';
-
-        parent::addItem($item);
+        $this->addEntry($entry);
     }
 
     public static function canAccess()
@@ -125,7 +124,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             Yii::$app->session->set(static::SESSION_CAN_SEE_ADMIN_SECTION, $canSeeAdminSection);
         }
 
-		return $canSeeAdminSection;
+        return $canSeeAdminSection;
     }
 
     public static function reset()
@@ -135,14 +134,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
 
     private static function checkNonAdminAccess()
     {
-        $adminMenu = new self();
-        foreach($adminMenu->items as $item) {
-            if(isset($item['isVisible']) && $item['isVisible']) {
-                return true;
-            }
-        }
-
-		return false;
+        return Yii::$app->user->can([ManageGroups::class, ManageModules::class, ManageSettings::class, ManageUsers::class, SeeAdminInformation::class]);
     }
 
 }

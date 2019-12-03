@@ -51,7 +51,7 @@ class Comment extends Widget
                     'loadUrl' => $loadUrl,
                     'createdAt' => $this->comment->created_at,
                     'updatedAt' => $updatedAt,
-                    'canWrite' => $this->comment->canWrite(),
+                    'canEdit' => $this->comment->canEdit(),
                     'canDelete' => $this->comment->canDelete(),
         ]);
     }

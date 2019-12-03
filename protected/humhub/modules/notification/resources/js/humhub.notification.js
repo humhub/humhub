@@ -24,6 +24,20 @@ humhub.module('notification', function (module, require, $) {
 
     object.inherits(NotificationDropDown, Widget);
 
+    var OverviewWidget = function (node, options) {
+        Widget.call(this, node, options);
+    };
+
+    object.inherits(OverviewWidget, Widget);
+
+    OverviewWidget.prototype.init = function() {
+        var that = this;
+        event.on('humhub:notification:filterApplied', function (evt, form) {
+            evt.preventDefault();
+            that.reload({data: $(form).serializeArray()});
+        });
+    };
+
     NotificationDropDown.prototype.init = function (update) {
         this.isOpen = false;
         this.lastEntryLoaded = false;
@@ -299,7 +313,21 @@ humhub.module('notification', function (module, require, $) {
         module.menu = NotificationDropDown.instance('#notification_widget');
     };
 
+    var handleFilterChanges = function () {
+        var filterForm = $("#notification_overview_filter");
+        filterForm.on('click', 'label', function(evt) {
+            evt.preventDefault();
+            var checkbox = $(this).children().first();
+            checkbox.prop("checked", !checkbox.prop( "checked"));
+            event.trigger('humhub:notification:filterApplied', filterForm);
+        });
+    };
+
     var initOverviewPage = function () {
+        handleFilterChanges();
+        if ($('#notification_overview_list').length) {
+            OverviewWidget.instance('#notification_overview_list');
+        }
         if ($('#notification_overview_list').length) {
             if (!$('#notification_overview_list li.new').length) {
                 $('#notification_overview_markseen').hide();
@@ -312,7 +340,8 @@ humhub.module('notification', function (module, require, $) {
         markAsSeen: markAsSeen,
         sendDesktopNotifiaction: sendDesktopNotifiaction,
         getNotificationCount: getNotificationCount,
-        NotificationDropDown: NotificationDropDown
+        NotificationDropDown: NotificationDropDown,
+        OverviewWidget: OverviewWidget
     });
 });
 

@@ -9,8 +9,8 @@
 namespace humhub\modules\user\widgets;
 
 use Yii;
-use \humhub\widgets\BaseMenu;
-use \yii\helpers\Url;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\LeftNavigation;
 
 /**
  * AccountMenuWidget as (usally left) navigation on users account options.
@@ -19,82 +19,66 @@ use \yii\helpers\Url;
  * @since 0.5
  * @author Luke
  */
-class AccountMenu extends BaseMenu
+class AccountMenu extends LeftNavigation
 {
 
-    public $template = "@humhub/widgets/views/leftNavigation";
-    public $type = "accountNavigation";
-
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
+        $this->panelTitle = Yii::t('UserModule.account', '<strong>Account</strong> settings');
 
-        $controllerAction = Yii::$app->controller->action->id;
-        $this->addItemGroup([
-            'id' => 'account',
-            'label' => Yii::t('UserModule.widgets_AccountMenuWidget', '<strong>Account</strong> settings'),
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('UserModule.account', 'Profile'),
+            'icon' => 'user',
+            'url' => ['/user/account/edit'],
             'sortOrder' => 100,
-        ]);
+            'isActive' => MenuLink::isActiveState('user', 'account', ['edit', 'change-email', 'change-password', 'delete'])
+        ]));
 
-        $this->addItem([
-            'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'Profile'),
-            'icon' => '<i class="fa fa-user"></i>',
-            'group' => 'account',
-            'url' => Url::toRoute('/user/account/edit'),
-            'sortOrder' => 100,
-            'isActive' => ($controllerAction == "edit" || $controllerAction == "change-email" || $controllerAction == "change-password" || $controllerAction == "delete"),
-        ]);
-
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.account', 'E-Mail Summaries'),
-            'icon' => '<i class="fa fa-envelope"></i>',
-            'group' => 'account',
-            'url' => Url::toRoute('/activity/user'),
+            'icon' => 'envelope',
+            'url' => ['/activity/user'],
             'sortOrder' => 105,
-            'isActive' => (Yii::$app->controller->module->id == 'activity'),
-        ]);
-        
-        $this->addItem([
+            'isActive' => MenuLink::isActiveState('activity')
+        ]));
+
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.account', 'Notifications'),
-            'icon' => '<i class="fa fa-bell"></i>',
-            'group' => 'account',
-            'url' => Url::toRoute('/notification/user'),
+            'icon' => 'bell',
+            'url' => ['/notification/user'],
             'sortOrder' => 106,
-            'isActive' => (Yii::$app->controller->module->id == 'notification'),
-        ]);
+            'isActive' => MenuLink::isActiveState('notification')
+        ]));
 
-        $this->addItem([
-            'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'Settings'),
-            'icon' => '<i class="fa fa-wrench"></i>',
-            'group' => 'account',
-            'url' => Url::toRoute('/user/account/edit-settings'),
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('UserModule.account', 'Settings'),
+            'icon' => 'wrench',
+            'url' => ['/user/account/edit-settings'],
             'sortOrder' => 110,
-            'isActive' => ($controllerAction == "edit-settings"),
-        ]);
+            'isActive' => MenuLink::isActiveState('user', 'account', 'edit-settings')
+        ]));
 
-        $this->addItem([
-            'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'Security'),
-            'icon' => '<i class="fa fa-lock"></i>',
-            'group' => 'account',
-            'url' => Url::toRoute('/user/account/security'),
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('UserModule.account', 'Security'),
+            'icon' => 'lock',
+            'url' => ['/user/account/security'],
             'sortOrder' => 115,
-            'isActive' => (Yii::$app->controller->action->id == "security"),
-        ]);
+            'isActive' => MenuLink::isActiveState('user', 'account', 'security')
+        ]));
 
-        // Only show this page when really user specific modules available
-        if (count(Yii::$app->user->getIdentity()->getAvailableModules()) != 0) {
-            $this->addItem([
-                'label' => Yii::t('UserModule.widgets_AccountMenuWidget', 'Modules'),
-                'icon' => '<i class="fa fa-rocket"></i>',
-                'group' => 'account',
-                'url' => Url::toRoute('//user/account/edit-modules'),
-                'sortOrder' => 120,
-                'isActive' => (Yii::$app->controller->action->id == "edit-modules"),
-            ]);
-        }
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('UserModule.account', 'Modules'),
+            'icon' => 'rocket',
+            'url' => ['/user/account/edit-modules'],
+            'sortOrder' => 120,
+            'isActive' => MenuLink::isActiveState('user', 'account', 'edit-modules'),
+            'isVisible' => (count(Yii::$app->user->getIdentity()->getAvailableModules()) !== 0)
+        ]));
 
         parent::init();
     }
 
 }
-
-?>

@@ -44,7 +44,7 @@ Supervisor is a process monitoring tool for Linux. It automatically starts, moni
 
 Example configuration (e.g. /etc/supervisor/conf.d/humhub.conf):
 
-```conf
+```
 [program:humhub-workers]
 process_name=%(program_name)s_%(process_num)02d
 command=/usr/bin/php <INSERT HUMHUB PATH HERE>/protected/yii queue/listen --verbose=1 --color=0

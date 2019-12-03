@@ -43,12 +43,12 @@ class StreamViewer extends BaseStreamViewer
         if (empty($this->messageStreamEmpty)) {
             if ($this->contentContainer->permissionManager->can($createPostPermission)) {
                 if (Yii::$app->user->id === $this->contentContainer->id) {
-                    $this->messageStreamEmpty = Yii::t('UserModule.views_profile_index', '<b>Your profile stream is still empty</b><br>Get started and post something...');
+                    $this->messageStreamEmpty = Yii::t('UserModule.profile', '<b>Your profile stream is still empty</b><br>Get started and post something...');
                 } else {
-                    $this->messageStreamEmpty = Yii::t('UserModule.views_profile_index', '<b>This profile stream is still empty</b><br>Be the first and post something...');
+                    $this->messageStreamEmpty = Yii::t('UserModule.profile', '<b>This profile stream is still empty</b><br>Be the first and post something...');
                 }
             } else {
-                $this->messageStreamEmpty = Yii::t('UserModule.views_profile_index', '<b>This profile stream is still empty!</b>');
+                $this->messageStreamEmpty = Yii::t('UserModule.profile', '<b>This profile stream is still empty!</b>');
             }
         }
 
