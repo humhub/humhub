@@ -65,14 +65,16 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
             <?php if ($allowModifyProfileBanner): ?>
                 <div class="image-upload-buttons" id="banner-image-upload-buttons">
                     <a href="#" onclick="javascript:$('#bannerfileupload input').click();" class="btn btn-info btn-sm"
-                       aria-label="<?= Yii::t('UserModule.base', 'Upload profile banner'); ?>">
+                       aria-label="<?= Yii::t('UserModule.base', 'Upload profile banner'); ?>"
+                       data-toggle="tooltip" data-placement="bottom" title="&nbsp;&nbsp;&nbsp;&nbsp;Upload Profile Banner">
                         <i class="fa fa-cloud-upload"></i>
                     </a>
                     <a id="banner-image-upload-edit-button"
                        style="<?= (!$user->getProfileBannerImage()->hasImage()) ? 'display: none;' : '' ?>"
                        href="<?= Url::to(['/user/image/crop', 'userGuid' => $user->guid, 'type' => ImageController::TYPE_PROFILE_BANNER_IMAGE]); ?>"
                        class="btn btn-info btn-sm" data-target="#globalModal" data-backdrop="static"
-                       aria-label="<?= Yii::t('UserModule.base', 'Crop profile background'); ?>">
+                       aria-label="<?= Yii::t('UserModule.base', 'Crop profile background'); ?>"
+                       data-toggle="tooltip" data-placement="bottom" title="Crop Profile Banner">
                         <i class="fa fa-edit"></i>
                     </a>
                     <?php
@@ -127,7 +129,8 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
 
                 <div class="image-upload-buttons" id="profile-image-upload-buttons">
                     <a href="#" onclick="javascript:$('#profilefileupload input').click();" class="btn btn-info btn-sm"
-                       aria-label="<?= Yii::t('UserModule.base', 'Upload profile image'); ?>">
+                       aria-label="<?= Yii::t('UserModule.base', 'Upload profile image'); ?>"
+                       data-toggle="tooltip" data-html="true" title="Upload <em>Public</em> User Image">
                         <i class="fa fa-cloud-upload"></i>
                     </a>
                     <a id="profile-image-upload-edit-button"
@@ -138,7 +141,8 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
                        ?>"
                        href="<?php echo Url::to(['/user/image/crop', 'userGuid' => $user->guid, 'type' => ImageController::TYPE_PROFILE_IMAGE]); ?>"
                        class="btn btn-info btn-sm" data-target="#globalModal" data-backdrop="static"
-                       aria-label="<?= Yii::t('UserModule.base', 'Crop profile image'); ?>">
+                       aria-label="<?= Yii::t('UserModule.base', 'Crop profile image'); ?>"
+                       data-toggle="tooltip" data-html="true" title="Crop <em>Public</em> User Image">
                         <i class="fa fa-edit"></i></a>
                     <?php
                     echo \humhub\widgets\ModalConfirm::widget([
