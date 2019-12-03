@@ -26,9 +26,9 @@ $this->registerJsConfig('content.form', [
     'defaultVisibility' => $defaultVisibility,
     'disabled' => ($contentContainer instanceof Space && $contentContainer->isArchived()),
     'text' => [
-        'makePrivate' => Yii::t('ContentModule.widgets_views_contentForm', 'Make private'),
-        'makePublic' => Yii::t('ContentModule.widgets_views_contentForm', 'Make public'),
-        'info.archived' => Yii::t('ContentModule.widgets_views_contentForm', 'This space is archived.')
+        'makePrivate' => Yii::t('ContentModule.base', 'Make private'),
+        'makePublic' => Yii::t('ContentModule.base', 'Make public'),
+        'info.archived' => Yii::t('ContentModule.base', 'This space is archived.')
 ]]);
 
 $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl('/space/membership/search') : null;
@@ -48,7 +48,7 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
                 'formName' => 'notifyUserInput',
                 'maxSelection' => 10,
                 'disabledItems' => [Yii::$app->user->guid],
-                'placeholder' => Yii::t('ContentModule.widgets_views_contentForm', 'Add a member to notify'),
+                'placeholder' => Yii::t('ContentModule.base', 'Add a member to notify'),
             ]) ?>
         </div>
 
@@ -82,12 +82,12 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
                 <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>
 
                 <!-- public checkbox -->
-                <?= Html::checkbox("visibility", "", ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true', 'title' => Yii::t('ContentModule.widgets_views_contentForm', 'Content visibility') ]); ?>
+                <?= Html::checkbox("visibility", "", ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true', 'title' => Yii::t('ContentModule.base', 'Content visibility') ]); ?>
 
                 <!-- content sharing -->
                 <div class="pull-right">
 
-                    <span class="label label-info label-public hidden"><?= Yii::t('ContentModule.widgets_views_contentForm', 'Public'); ?></span>
+                    <span class="label label-info label-public hidden"><?= Yii::t('ContentModule.base', 'Public'); ?></span>
 
                     <ul class="nav nav-pills preferences" style="right: 0; top: 5px;">
                         <li class="dropdown">
@@ -95,14 +95,14 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
                                 <i class="fa fa-cogs"></i></a>
                             <ul class="dropdown-menu pull-right">
                                 <li>
-                                    <?= Link::withAction(Yii::t('ContentModule.widgets_views_contentForm', 'Notify members'), 'notifyUser')->icon('fa-bell')?>
+                                    <?= Link::withAction(Yii::t('ContentModule.base', 'Notify members'), 'notifyUser')->icon('fa-bell')?>
                                 </li>
                                  <li>
                                      <?= Link::withAction(Yii::t('ContentModule.base', 'Topics'), 'setTopics')->icon(Yii::$app->getModule('topic')->icon) ?>
                                 </li>
                                 <?php if ($canSwitchVisibility): ?>
                                     <li>
-                                        <?= Link::withAction(Yii::t('ContentModule.widgets_views_contentForm', 'Make public'), 'changeVisibility')
+                                        <?= Link::withAction(Yii::t('ContentModule.base', 'Make public'), 'changeVisibility')
                                             ->id('contentForm_visibility_entry')->icon('fa-unlock') ?>
                                     </li>
                                 <?php endif; ?>
