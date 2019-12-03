@@ -23,11 +23,11 @@ use yii\helpers\Html;
 
         <?php
         $visibilities = [
-            Space::VISIBILITY_NONE => Yii::t('SpaceModule.base', 'Private (Invisible)'),
-            Space::VISIBILITY_REGISTERED_ONLY => Yii::t('SpaceModule.base', 'Public (Registered users only)')
+            Space::VISIBILITY_NONE => Yii::t('SpaceModule.base', 'Private (Unlisted)'),
+            Space::VISIBILITY_REGISTERED_ONLY => Yii::t('SpaceModule.base', 'Public: Visible to registered users')
         ];
         if (Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess') == 1) {
-            $visibilities[Space::VISIBILITY_ALL] = Yii::t('SpaceModule.base', 'Visible for all (members and guests)');
+            $visibilities[Space::VISIBILITY_ALL] = Yii::t('SpaceModule.base', 'Public: Visible to all (even unregistered users)');
         }
         ?>
         <?= $form->field($model, 'visibility')->dropDownList($visibilities); ?>
