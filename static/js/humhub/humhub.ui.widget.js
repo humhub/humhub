@@ -199,7 +199,11 @@ humhub.module('ui.widget', function (module, require, $) {
     };
 
     Widget.prototype.initOptions = function (options) {
-        return $.extend(this.getDefaultOptions(options), this.$.data(), options);
+        var data = {};
+        $.each(this.$.data(), function(key, value) {
+            data[key] = (value === '') ? true : value;
+        });
+        return $.extend(this.getDefaultOptions(options), data, options);
     };
 
     Widget.prototype.statusError = function (title) {
