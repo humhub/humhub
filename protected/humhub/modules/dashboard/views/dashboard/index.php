@@ -36,4 +36,3 @@ use humhub\libs\Html;
     </div>
 </div>
 <?= Html::endContainer(); ?>
-1
