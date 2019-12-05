@@ -11,7 +11,7 @@ use humhub\widgets\FooterMenu;
 
 <?= Html::beginContainer(); ?>
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-8 layout-content-container">
         <?= DashboardContent::widget(); ?>
     </div>
     <div class="col-md-4 layout-sidebar-container">
