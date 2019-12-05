@@ -36,7 +36,7 @@ humhub.module('ui.panel', function(module, require, $) {
     };
 
     PanelMenu.prototype.checkToggleLinkState = function() {
-        var isCollapsed = this.$body.is(':visible');
+        var isCollapsed = this.$body.css('display') !== 'none';
 
         var icon = (isCollapsed)
             ? module.config.icon.up
