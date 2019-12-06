@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6b057901539281a2504ccd6b2f628578",
+    "content-hash": "5b2fc2e65860abe0c92942c2be8f0617",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -2014,6 +2014,20 @@
                 "npm-asset/blueimp-canvas-to-blob": "3.5.0",
                 "npm-asset/blueimp-load-image": "2.12.2",
                 "npm-asset/blueimp-tmpl": "3.6.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/blueimp-gallery",
+            "version": "2.36.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/blueimp-gallery/-/blueimp-gallery-2.36.0.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset",
             "license": [

@@ -27,6 +27,8 @@ HumHub Change Log (DEVELOP)
 - Enh: Added `data-ui-addition` way of defining ui additions
 - Enh #3771: Added `data-ui-addition="acknowledgeForm"` in order to prevent page changes without save/confirmation
 - Enh #3771: Added `humhub\modules\ui\form\widgets\ActiveForm:acknowledge` flag
+- Chng: Use of `BlueimpGalleryAsset` npm asset instead of static asset file
+- Enh: Add gallery view of richtext images
 
 1.4
 ---

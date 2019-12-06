@@ -37,7 +37,6 @@ class AppAsset extends AssetBundle
         'css/temp.css',
         'css/bootstrap-wysihtml5.css',
         'css/flatelements.css',
-        'css/blueimp-gallery.min.css'
     ];
 
     /**
@@ -58,6 +57,7 @@ class AppAsset extends AssetBundle
         'humhub\assets\JqueryColorAsset',
         'humhub\assets\FontAwesomeAsset',
         'humhub\assets\BlueimpFileUploadAsset',
+        'humhub\assets\BlueimpGalleryAsset',
         'humhub\assets\JqueryHighlightAsset',
         'humhub\assets\JqueryCookieAsset',
         'humhub\assets\JqueryAutosizeAsset',
@@ -91,7 +91,6 @@ class AppAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/blueimp-gallery.min.js',
         'js/jquery.highlight.min.js',
         'js/desktop-notify-min.js',
         'js/desktop-notify-config.js',
