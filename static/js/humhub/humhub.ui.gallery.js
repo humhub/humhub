@@ -9,8 +9,6 @@ humhub.module('ui.gallery', function (module, require, $) {
         $(document).on('click.humhub:ui:gallery', '[data-ui-gallery]', function (evt) {
             var $this = $(this);
 
-            debugger;
-
             if($this.is('img') && $this.closest('a').length) {
                 return;
             }
