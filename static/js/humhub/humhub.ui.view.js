@@ -34,7 +34,7 @@ humhub.module('ui.view', function (module, require, $) {
     module.initOnPjaxLoad = true;
     var init = function (pjax) {
 
-        if(isSmall()) {
+        if(isSmall() && module.config.useDefaultSwipe) {
             setTimeout(initMobileSidebar, 50);
         }
 
