@@ -29,6 +29,7 @@ HumHub Change Log (DEVELOP)
 - Enh #3771: Added `humhub\modules\ui\form\widgets\ActiveForm:acknowledge` flag
 - Chng: Use of `BlueimpGalleryAsset` npm asset instead of static asset file
 - Enh: Add gallery view of richtext images
+- Enh: Added mobile swipe in order to show sidebar (needs to be activated `Administaration -> Settings -> Appearance`)
 
 1.4
 ---
