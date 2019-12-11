@@ -17,13 +17,15 @@ use tests\codeception\_support\HumHubDbTestCase;
  */
 class DBDateValidatorTest extends HumHubDbTestCase
 {
+    protected $fixtureConfig = ['default'];
+
     public function _before()
     {
         parent::_before();
         Yii::$app->timeZone = 'Europe/Berlin';
         Yii::$app->language = 'en-US';
         $this->becomeUser('admin');
-        Yii::$app->user->identity->time_zone = 'Europe/London';
+         Yii::$app->user->identity->setAttribute('time_zone', 'Europe/London');
     }
 
     public function testInitValues()

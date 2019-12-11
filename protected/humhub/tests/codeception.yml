@@ -16,7 +16,7 @@ extensions:
   enabled:
   - tests\codeception\_support\HumHubExtension
 include:
-- ../modules/*/tests
+  - ../modules/*/tests
 paths:
   data: codeception/_data
   envs: config/env
