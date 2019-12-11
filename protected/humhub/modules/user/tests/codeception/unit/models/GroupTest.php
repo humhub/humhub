@@ -96,13 +96,28 @@ class GroupTest extends HumHubDbTestCase
     {
         $groups = Group::getRegistrationGroups();
         $this->assertTrue(is_array($groups));
-        $this->assertEquals($groups, Group::find()->orderBy('name ASC')->all());
+        $this->assertEquals($groups, Group::find()->where(['is_admin_group' => 0, 'show_at_registration' => 1])->orderBy('name ASC')->all());
 
         $groupUsers = Group::findOne(['name' => 'Users']);
         Yii::$app->getModule('user')->settings->set('auth.defaultUserGroup', $groupUsers->id);
         $groups = Group::getRegistrationGroups();
         $this->assertTrue(is_array($groups));
         $this->assertEquals($groups, [$groupUsers]);
+    }
+
+    public function testExcludeAdminGroupFromRegistration()
+    {
+        $adminGroup = Group::findOne(['is_admin_group' => 1]);
+        $adminGroup->show_at_registration = 1;
+        $this->assertFalse($adminGroup->save());
+
+        // Force show at registration for admin group
+        $adminGroup->updateAttributes(['show_at_registration' => 1]);
+        $adminGroup = Group::findOne(['is_admin_group' => 1]);
+        $this->assertEquals(1, $adminGroup->show_at_registration);
+
+        $groups = Group::getRegistrationGroups();
+        $this->assertEquals($groups, Group::find()->where(['is_admin_group' => 0, 'show_at_registration' => 1])->orderBy('name ASC')->all());
     }
 
     public function testReturnDirectoryGroups()
