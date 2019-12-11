@@ -171,7 +171,7 @@ abstract class BasePicker extends JsInputWidget
      *
      * @var bool|null
      */
-    public $addOptions = null;
+    public $addOptions = false;
 
 
     /**
@@ -404,8 +404,7 @@ abstract class BasePicker extends JsInputWidget
         $result = [
             'add-options' => $this->addOptions,
             'picker-url' => $this->getUrl(),
-            'picker-focus' => ($this->focus) ? 1 : null,
-            'disabled-items' => (!$this->disabledItems) ? null : $this->disabledItems,
+            'picker-focus' => $this->focus,
             'maximum-selection-length' => $this->maxSelection,
             'maximum-input-length' => $this->maxInput,
             'minimum-input-length' => $this->minInput,
@@ -418,6 +417,10 @@ abstract class BasePicker extends JsInputWidget
             'input-too-long' => Yii::t('UserModule.chooser', 'You reached the maximum number of allowed charachters ({n}).', ['n' => $this->maxInput]),
             'default-results' => $this->getDefaultResultData()
         ];
+
+        if(!empty($this->disabledItems)) {
+            $result['disabled-items'] = $this->disabledItems;
+        }
 
         if ($this->maxSelection) {
             $result['maximum-selected'] = Yii::t('UserModule.chooser', 'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.', ['n' => $this->maxSelection]);

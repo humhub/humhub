@@ -81,7 +81,7 @@ humhub.module('ui.picker', function (module, require, $) {
 
     /**
      * Mapping between select2 search parameter and our picker parameter.
-     * 
+     *
      * @param {type} params select2 search parameter
      */
     Picker.prototype.ajaxData = function (params) {
@@ -94,12 +94,12 @@ humhub.module('ui.picker', function (module, require, $) {
     /**
      * Used to sort the results of the search queries.
      * The sorter takes the following properties into account:
-     * 
+     *
      *   - Sort Priority
      *   - Item text should match the search term
      *   - IndexOf search term in item text
      *   - Disabled items at the end.
-     *   
+     *
      * @param {type} results
      * @returns {unresolved}
      */
@@ -125,7 +125,7 @@ humhub.module('ui.picker', function (module, require, $) {
 
     /**
      * Initializes the select2 widget for the given $node with the given $options.
-     * 
+     *
      * @param {type} $node select field node
      * @param {type} options widget options
      * @returns {undefined}
@@ -178,7 +178,7 @@ humhub.module('ui.picker', function (module, require, $) {
 
     /**
      * Renders the placeholder if the maximum selection count is not exceeded.
-     * 
+     *
      * @returns {undefined}
      */
     Picker.prototype.renderPlaceholder = function (delayed) {
@@ -254,7 +254,7 @@ humhub.module('ui.picker', function (module, require, $) {
 
     /**
      * Template function for search query results.
-     * 
+     *
      * @param {type} item
      * @returns {jQuery|$}
      */
@@ -318,7 +318,7 @@ humhub.module('ui.picker', function (module, require, $) {
 
     /**
      * Prepares the image node.
-     * 
+     *
      * @param {type} item
      * @returns {String}
      */
@@ -422,7 +422,7 @@ humhub.module('ui.picker', function (module, require, $) {
 
     /**
      * Deselects an option with the given id (value)
-     * 
+     *
      * @param {type} id
      * @returns {undefined}
      */
@@ -448,7 +448,7 @@ humhub.module('ui.picker', function (module, require, $) {
 
     /**
      * Returns an option node by the given id (value)
-     * 
+     *
      * @param {type} id
      * @returns {unresolved}
      */
@@ -502,7 +502,7 @@ humhub.module('ui.picker', function (module, require, $) {
     };
 
     Picker.prototype.isDisabledItem = function (item) {
-        return (this.options.disabledItems && this.options.disabledItems.indexOf(item.id) >= 0);
+        return (this.options.disabledItems && object.isArray(this.options.disabledItems) && this.options.disabledItems.indexOf(item.id) >= 0);
     };
 
     var init = function () {
@@ -518,7 +518,7 @@ humhub.module('ui.picker', function (module, require, $) {
         $.fn.select2.amd.define('select2/data/extended-ajax', ['./ajax', '../utils', './minimumInputLength'], function (AjaxAdapter, Utils, MinimumInputLength) {
 
             function ExtendedAjaxAdapter($element, options) {
-                //we need explicitly process minimumInputLength value 
+                //we need explicitly process minimumInputLength value
                 //to decide should we use AjaxAdapter or return defaultResults,
                 //so it is impossible to use MinimumLength decorator here
                 this.minimumInputLength = options.get('minimumInputLength');
@@ -551,7 +551,7 @@ humhub.module('ui.picker', function (module, require, $) {
 
                     if (filterResult.length) {
                         var processedResults = this.processResults(filterResult, params);
-                        callback(processedResults);   
+                        callback(processedResults);
                     } else {
                         this.container.$results.empty();
                     }

@@ -34,6 +34,7 @@ class DesignSettingsForm extends Model
     public $icon;
     public $dateInputDisplayFormat;
     public $horImageScrollOnMobile;
+    public $useDefaultSwipeOnMobile;
 
     /**
      * @inheritdoc
@@ -50,6 +51,7 @@ class DesignSettingsForm extends Model
         $this->spaceOrder = Yii::$app->getModule('space')->settings->get('spaceOrder');
         $this->dateInputDisplayFormat = Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat');
         $this->horImageScrollOnMobile = $settingsManager->get('horImageScrollOnMobile');
+        $this->useDefaultSwipeOnMobile = $settingsManager->get('useDefaultSwipeOnMobile');
     }
 
     /**
@@ -64,7 +66,7 @@ class DesignSettingsForm extends Model
             ['paginationSize', 'integer', 'max' => 200, 'min' => 1],
             ['theme', 'in', 'range' => $this->getThemes()],
             [['displayName', 'spaceOrder'], 'safe'],
-            [['horImageScrollOnMobile'], 'boolean'],
+            [['horImageScrollOnMobile', 'useDefaultSwipeOnMobile'], 'boolean'],
             ['logo', 'image', 'extensions' => 'png, jpg, jpeg',  'minWidth' => 100, 'minHeight' => 120],
             ['icon', 'image', 'extensions' => 'png, jpg, jpeg',  'minWidth' => 256, 'minHeight' => 256],
             ['icon', ImageSquareValidator::class],
@@ -86,6 +88,7 @@ class DesignSettingsForm extends Model
             'icon' => Yii::t('AdminModule.settings', 'Icon upload'),
             'dateInputDisplayFormat' => Yii::t('AdminModule.settings', 'Date input format'),
             'horImageScrollOnMobile' => Yii::t('AdminModule.settings', 'Horizontal scrolling images on a mobile device'),
+            'useDefaultSwipeOnMobile' => Yii::t('AdminModule.settings', 'Use the default swipe to show sidebar on a mobile device'),
         ];
     }
 
@@ -142,6 +145,7 @@ class DesignSettingsForm extends Model
         Yii::$app->getModule('space')->settings->set('spaceOrder', $this->spaceOrder);
         Yii::$app->getModule('admin')->settings->set('defaultDateInputFormat', $this->dateInputDisplayFormat);
         $settingsManager->set('horImageScrollOnMobile', $this->horImageScrollOnMobile);
+        $settingsManager->set('useDefaultSwipeOnMobile', $this->useDefaultSwipeOnMobile);
 
         if ($this->logo) {
             $logoImage = new LogoImage();

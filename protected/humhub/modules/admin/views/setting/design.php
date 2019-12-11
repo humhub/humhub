@@ -46,10 +46,11 @@ $iconUrl = SiteIcon::getUrl(140);
         'php:d/m/Y' => Yii::t('AdminModule.settings', 'Fixed format (dd/mm/yyyy) - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'php:d/m/Y')]),
     ]);
     ?>
-    <strong><?= Yii::t('AdminModule.settings', 'Wall entry layout'); ?></strong>
+    <strong><?= Yii::t('AdminModule.settings', 'Mobile appearance'); ?></strong>
     <br>
     <br>
     <?= $form->field($model, 'horImageScrollOnMobile')->checkbox(); ?>
+    <?= $form->field($model, 'useDefaultSwipeOnMobile')->checkbox(); ?>
 
 
     <div class="well">
