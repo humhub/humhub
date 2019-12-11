@@ -313,7 +313,7 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     /**
      * Build info text about a content
      *
-     * This is a combination a the type of the content with a short preview
+     * This is a combination of the type of the content with a short preview
      * of it.
      *
      * If no $content is provided the contentInfo of $source is returned.
@@ -331,6 +331,40 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
         }
 
         $truncatedDescription = $this->getContentPreview($content, 60);
+
+        if (empty($truncatedDescription)) {
+            return null;
+        }
+
+        $trimmed = Helpers::trimText($truncatedDescription, 60);
+
+        return ($withContentName) ? Html::encode($content->getContentName()). ' "' . $trimmed . '"' : $trimmed;
+    }
+
+    /**
+     * Builds plain text info text about a given content
+     *
+     * This is a combination of the type of the content with a short preview
+     * of it.
+     *
+     * Note: This should only be used for mail subjects and other plain text
+     *
+     * If no $content is provided the contentInfo of $source is returned.
+     *
+     * @param Content $content
+     * @return string|null
+     * @throws Exception
+     * @since 1.4
+     */
+    public function getContentPlainTextInfo(ContentOwner $content = null, $withContentName = true)
+    {
+        if (!$this->hasContent() && !$content) {
+            return null;
+        } elseif (!$content) {
+            $content = $this->source;
+        }
+
+        $truncatedDescription = $this->getContentPlainTextPreview($content, 60);
 
         if (empty($truncatedDescription)) {
             return null;
@@ -382,7 +416,14 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     }
 
     /**
-     * @param ContentOwner|null $content
+     * Returns a short preview text of the content in plain text. The max length can be defined by setting
+     * $maxLength (25 by default).
+     *
+     *  If no $content is provided the contentPreview of $source is returned.
+     *
+     * Note: This should only be used for mail subjects and other plain text
+     *
+     * @param ContentOwner $content
      * @param int $maxLength
      * @return string|null
      * @throws Exception

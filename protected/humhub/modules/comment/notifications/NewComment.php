@@ -86,7 +86,7 @@ class NewComment extends \humhub\modules\notification\components\BaseNotificatio
 
         $user = $this->record->user;
         $contentRecord = $this->getCommentedRecord();
-        $contentInfo = $this->getContentPlainTextPreview($this->getCommentedRecord());
+        $contentInfo = $this->getContentPlainTextInfo($this->getCommentedRecord());
         $space = $this->getSpace();
 
         if ($user->is($contentRecord->owner)) {
