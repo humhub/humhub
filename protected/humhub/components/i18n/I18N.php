@@ -37,6 +37,15 @@ class I18N extends BaseI18N
     public $unsupportedYiiLanguages = ['an'];
 
     /**
+     * Called before the translate method is executed.
+     * e.g. to modify translations on the fly.
+     *
+     * @since 1.4
+     * @var callable
+     */
+    public $beforeTranslateCallback;
+
+    /**
      * Automatically sets the current locale and time zone
      */
     public function autosetLocale()
@@ -129,6 +138,11 @@ class I18N extends BaseI18N
     {
         if ($category === 'yii' && in_array($language, $this->unsupportedYiiLanguages)) {
             $category = 'humhub.yii';
+        }
+
+        if (is_callable($this->beforeTranslateCallback)) {
+            list($category, $message, $params, $language) =
+                $this->beforeTranslateCallback->call($this, $category, $message, $params, $language);
         }
 
         return parent::translate($category, $message, $params, $language);
