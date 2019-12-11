@@ -77,7 +77,7 @@ class ProfileBannerImage extends ProfileImage
     /**
      * @inheritDoc
      */
-    public function render($width, $cfg = [])
+    public function render($width = 32, $cfg = [])
     {
         if(is_int($width)) {
             $width .= 'px';
