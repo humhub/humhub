@@ -7,6 +7,7 @@ HumHub Change Log (DEVELOP)
 - Fix #3790: "Create post" permission visible in profile permissions settings for guest user group
 - Fix: `AdminMenu:reset()` fails on console requests using user switch
 - Fix: Default `ContentContainerController::subLayout` can't be overwritten directly or within controller `init`
+- Fix: Topic overview missing for user profiles
 
 
 1.4.0-beta.2

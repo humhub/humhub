@@ -11,6 +11,9 @@ namespace humhub\modules\topic;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\ContentTopicButton;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\user\events\UserEvent;
+use humhub\modules\user\widgets\AccountMenu;
 use Yii;
 use yii\base\BaseObject;
 
@@ -26,6 +29,9 @@ class Events extends BaseObject
         }
     }
 
+    /**
+     * @param $event
+     */
     public static function onSpaceSettingMenuInit($event)
     {
         $space = $event->sender->space;
@@ -34,9 +40,30 @@ class Events extends BaseObject
             $event->sender->addItem([
                 'label' => Yii::t('TopicModule.base', 'Topics'),
                 'url' => $space->createUrl('/topic/manage'),
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'topic' && Yii::$app->controller->id == 'manage'),
+                'isActive' => MenuLink::isActiveState('topic', 'manage'),
                 'sortOrder' => 250
             ]);
+        }
+    }
+
+    /**
+     * @param $event UserEvent
+     */
+    public static function onProfileSettingMenuInit($event)
+    {
+        if(Yii::$app->user->isGuest) {
+            return;
+        }
+
+        $event->sender->addItem([
+            'label' => Yii::t('TopicModule.base', 'Topics'),
+            'url' => Yii::$app->user->identity->createUrl('/topic/manage'),
+            'isActive' => MenuLink::isActiveState('topic', 'manage'),
+            'sortOrder' => 250
+        ]);
+
+        if(MenuLink::isActiveState('topic', 'manage')) {
+            AccountMenu::markAsActive('account-settings-settings');
         }
     }
 }
