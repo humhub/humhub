@@ -1,6 +1,11 @@
 HumHub Change Log (DEVELOP)
 =================
 
+1.4.0 (Unreleased)
+------------
+- Fix #3789: TopicPicker `addOptions` flag ignored
+
+
 1.4.0-beta.2
 ------------
 
