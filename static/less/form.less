@@ -7,6 +7,16 @@
     margin-bottom: 0;
 }
 
+div.required > label:after {
+    content: " *";
+    color: @info;
+}
+
+div.required.has-error > label:after {
+    content: " *";
+    color: @danger;
+}
+
 .radio label,
 .checkbox label {
     padding-left: 10px;

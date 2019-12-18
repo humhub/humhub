@@ -15,6 +15,7 @@ use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
 use Yii;
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /**
  * HForm - Yii1 compatible form generator
@@ -37,7 +38,13 @@ class HForm extends \yii\base\Component
     const EVENT_BEFORE_RENDER = 'beforeRender';
 
     public $showErrorSummary;
+
+
+    /**
+     * @var ActiveForm
+     */
     protected $form;
+
     public $primaryModel = null;
     public $models = [];
     public $definition = [];

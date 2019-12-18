@@ -8,6 +8,8 @@ HumHub Change Log (DEVELOP)
 - Fix: `AdminMenu:reset()` fails on console requests using user switch
 - Fix: Default `ContentContainerController::subLayout` can't be overwritten directly or within controller `init`
 - Fix #3791: Topic overview missing for user profiles
+- Fix #3787: Required checkboxlist input shows asterisk on each option
+- Chng: **Theme:** removed `static/temp.css`, moved required form style to `form.less`
 
 
 1.4.0-beta.2
