@@ -1,6 +1,8 @@
 <?php
 
-use yii\helpers\Html;
 use yii\helpers\Url;
+use humhub\widgets\Button;
 
-print Html::a(Yii::t("UserModule.profile", "Edit account"), Url::toRoute('/user/account/edit'), ['class' => 'btn btn-primary edit-account']);
+?>
+
+<?= Button::primary(Yii::t("UserModule.profile", "Edit account"))->link(Url::toRoute('/user/account/edit'))->cssClass('edit-account')?>
