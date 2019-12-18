@@ -5,6 +5,7 @@ HumHub Change Log (DEVELOP)
 ------------
 - Fix #3789: TopicPicker `addOptions` flag ignored
 - Fix #3790: "Create post" permission visible in profile permissions settings for guest user group
+- Fix `AdminMenu:reset()` fails on console requests using user switch
 
 
 1.4.0-beta.2
