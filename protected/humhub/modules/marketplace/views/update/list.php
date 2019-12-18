@@ -1,12 +1,15 @@
 <?php
 
+use humhub\modules\ui\icon\widgets\Icon;
 use yii\helpers\Html;
+
+/* @var $modules [] */
 
 ?>
 <div class="panel-body">
-    <?php if (count($modules) == 0): ?>
+    <?php if (empty($modules)): ?>
         <br>
-        <div><?= Yii::t('MarketplaceModule.base', 'All modules are up to date!'); ?></div>
+        <div class="alert alert-success"><?= Icon::get('check')?> <?= Yii::t('MarketplaceModule.base', 'All modules are up to date!'); ?></div>
     <?php endif; ?>
 
     <?php foreach ($modules as $module): ?>
