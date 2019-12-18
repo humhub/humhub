@@ -10,6 +10,7 @@ HumHub Change Log (DEVELOP)
 - Fix #3791: Topic overview missing for user profiles
 - Fix #3787: Required checkboxlist input shows asterisk on each option
 - Chng: **Theme:** removed `static/temp.css`, moved required form style to `form.less`
+- Enh: **Theme:** use of colored required input field asterisk
 
 
 1.4.0-beta.2
