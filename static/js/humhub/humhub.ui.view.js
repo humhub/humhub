@@ -69,7 +69,7 @@ humhub.module('ui.view', function (module, require, $) {
             if(e.target && $(e.target).closest('[data-menu-id]').length) {
                 return;
             }
-            
+
             var topPadding = getContentTop() + 7;
             $sidebar.css({height: '100%', padding: topPadding + 'px 5px 5px 5px'})
                 .show()

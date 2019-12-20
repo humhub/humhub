@@ -17,6 +17,9 @@ HumHub Change Log (DEVELOP)
 - Fix #3798: DBValidator not working with time value and swedish locale
 - Enh #3779: Added `ui.view.getContentTop()` for calculating the top position of the layout content with theme support
 - Fix #3704: Public space is not displayed when guest user accesses "Space directory".
+- Fix: Fixed modal width calculation on mobile (ee)
+- Fix: Dropdown width issue on mobile (ee)
+- Fix: Prevent sidebar swipe on menu scroll
 
 
 1.4.0-beta.2
