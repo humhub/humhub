@@ -36,6 +36,18 @@ class DBDateValidatorTest extends HumHubDbTestCase
         $this->assertEquals('en-US', $validator->locale);
     }
 
+    public function testInDBFormatDateOnly()
+    {
+        // No time translation, since no time value given
+        Yii::$app->language = 'sv';
+        Yii::$app->timeZone = 'Europe/London'; // Set user tz back to app tz
+        $model = new DateValidatorTestModel(['date' => '2019-12-20', 'time' => '12PM']);
+        $validator = new DbDateValidator(['timeAttribute' => 'time']);
+        $validator->validateAttribute($model, 'date');
+        $this->assertEmpty($model->getErrors());
+        $this->assertEquals('2019-12-20 12:00:00', $model->date);
+    }
+
     public function testParseDateWithoutTimeValueFormatUS()
     {
         // No time translation, since no time value given
@@ -60,12 +72,13 @@ class DBDateValidatorTest extends HumHubDbTestCase
 
     public function testParseDateWithTimeValueFormatUS()
     {
-        // Translate from Cairo (UTC +2) to Berlin (UTC + 1)
+        // Translate from Cairo (UTC +2) to London (UTC + 0)
+        Yii::$app->timeZone = 'UTC';
         $model = new DateValidatorTestModel(['date' => '12/1/19', 'time' => '12 PM']);
         $validator = new DbDateValidator(['timeAttribute' => 'time', 'timeZone' => 'Africa/Cairo']);
         $validator->validateAttribute($model, 'date');
         $this->assertEmpty($model->getErrors());
-        $this->assertEquals('2019-12-01 11:00:00', $model->date);
+        $this->assertEquals('2019-12-01 10:00:00', $model->date);
     }
 
     public function testParseDateWithTimeValueFormatDE()

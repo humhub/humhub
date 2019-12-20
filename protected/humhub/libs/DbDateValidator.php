@@ -63,7 +63,7 @@ class DbDateValidator extends DateValidator
     public function validateAttribute($model, $attribute)
     {
         // If the date is already in system format, we do not need any further translation or parsing
-        if(DateHelper::isInDbFormat($model->$attribute)) {
+        if(DateHelper::isInDbFormat($model->$attribute, $this->isDateOnly())) {
             return;
         }
 
@@ -83,7 +83,7 @@ class DbDateValidator extends DateValidator
             $date->setTimestamp($timestamp);
 
             if ($timeValue) {
-                // Convert timestamp to apps timeZone
+                // Convert timestamp to apps timezone
                 $date->setTimezone(DateHelper::getSystemTimeZone());
             }
 
@@ -126,7 +126,15 @@ class DbDateValidator extends DateValidator
      */
     protected function hasTime()
     {
-        return ($this->timeAttribute != "");
+        return !empty($this->timeAttribute);
+    }
+
+    /**
+     * @return bool checks if the validator should validate date only fields
+     */
+    protected function isDateOnly()
+    {
+        return !$this->hasTime();
     }
 
     /**
