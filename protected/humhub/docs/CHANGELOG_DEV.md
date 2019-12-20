@@ -3,6 +3,7 @@ HumHub Change Log (DEVELOP)
 
 1.4.0 (Unreleased)
 ------------
+
 - Fix #3789: TopicPicker `addOptions` flag ignored
 - Fix #3790: "Create post" permission visible in profile permissions settings for guest user group
 - Fix: `AdminMenu:reset()` fails on console requests using user switch
@@ -14,6 +15,7 @@ HumHub Change Log (DEVELOP)
 - Fix #3784: `ActiveQueryContent::readable()` not working for global content
 - Chng: Removed italic text from summary mail of comment and content activities for better readability
 - Fix #3798: DBValidator not working with time value and swedish locale
+- Enh #3779: Added `ui.view.getContentTop()` for calculating the top position of the layout content with theme support
 
 
 1.4.0-beta.2
