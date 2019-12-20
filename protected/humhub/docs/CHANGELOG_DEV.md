@@ -1,8 +1,22 @@
 HumHub Change Log (DEVELOP)
 =================
 
-1.4.beta2
----
+1.4.0 (Unreleased)
+------------
+- Fix #3789: TopicPicker `addOptions` flag ignored
+- Fix #3790: "Create post" permission visible in profile permissions settings for guest user group
+- Fix: `AdminMenu:reset()` fails on console requests using user switch
+- Fix: Default `ContentContainerController::subLayout` can't be overwritten directly or within controller `init`
+- Fix #3791: Topic overview missing for user profiles
+- Fix #3787: Required checkboxlist input shows asterisk on each option
+- Chng: **Theme:** removed `static/temp.css`, moved required form style to `form.less`
+- Enh: **Theme:** use of colored required input field asterisk
+- Fix #3784: `ActiveQueryContent::readable()` not working for global content
+- Chng: Removed italic text from summary mail of comment and content activities for better readability
+
+
+1.4.0-beta.2
+------------
 
 - Fix #3703: Fixed user profile image dimension of mobile
 - Fix #3732: Reverted changes of default oembed style

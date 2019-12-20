@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\components\Application;
 use Yii;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\admin\permissions\ManageSpaces;
@@ -118,6 +119,10 @@ class AdminMenu extends LeftNavigation
 
     public static function canAccess()
     {
+        if(!(Yii::$app instanceof Application)) {
+            return false;
+        }
+
         $canSeeAdminSection = Yii::$app->session->get(static::SESSION_CAN_SEE_ADMIN_SECTION);
         if ($canSeeAdminSection == null) {
             $canSeeAdminSection = Yii::$app->user->isAdmin() ? true : self::checkNonAdminAccess();
@@ -129,7 +134,9 @@ class AdminMenu extends LeftNavigation
 
     public static function reset()
     {
-        Yii::$app->session->remove(static::SESSION_CAN_SEE_ADMIN_SECTION);
+        if(Yii::$app instanceof Application) {
+            Yii::$app->session->remove(static::SESSION_CAN_SEE_ADMIN_SECTION);
+        }
     }
 
     private static function checkNonAdminAccess()

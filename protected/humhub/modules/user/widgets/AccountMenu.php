@@ -31,6 +31,7 @@ class AccountMenu extends LeftNavigation
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.account', 'Profile'),
+            'id' => 'account-settings-profile',
             'icon' => 'user',
             'url' => ['/user/account/edit'],
             'sortOrder' => 100,
@@ -39,6 +40,7 @@ class AccountMenu extends LeftNavigation
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.account', 'E-Mail Summaries'),
+            'id' => 'account-settings-emailsummary',
             'icon' => 'envelope',
             'url' => ['/activity/user'],
             'sortOrder' => 105,
@@ -47,6 +49,7 @@ class AccountMenu extends LeftNavigation
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.account', 'Notifications'),
+            'id' => 'account-settings-notifications',
             'icon' => 'bell',
             'url' => ['/notification/user'],
             'sortOrder' => 106,
@@ -55,6 +58,7 @@ class AccountMenu extends LeftNavigation
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.account', 'Settings'),
+            'id' => 'account-settings-settings',
             'icon' => 'wrench',
             'url' => ['/user/account/edit-settings'],
             'sortOrder' => 110,
@@ -63,6 +67,7 @@ class AccountMenu extends LeftNavigation
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.account', 'Security'),
+            'id' => 'account-settings-security',
             'icon' => 'lock',
             'url' => ['/user/account/security'],
             'sortOrder' => 115,
@@ -71,6 +76,7 @@ class AccountMenu extends LeftNavigation
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.account', 'Modules'),
+            'id' => 'account-settings-modules',
             'icon' => 'rocket',
             'url' => ['/user/account/edit-modules'],
             'sortOrder' => 120,

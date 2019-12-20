@@ -42,9 +42,7 @@ class TopicPicker extends ContentTagPicker
             $this->url = $this->contentContainer->createUrl('/topic/topic/search');
         }
 
-        if ($this->addOptions !== false) {
-            $this->addOptions = $this->contentContainer->can(AddTopic::class);
-        }
+        $this->addOptions = $this->contentContainer && $this->contentContainer->can(AddTopic::class);
 
         parent::init();
     }

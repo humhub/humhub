@@ -12,4 +12,4 @@ echo Yii::t('ContentModule.activities', '{displayName} created a new {contentTit
 ]);
 ?>
 <br />
-<em>"<?= RichText::preview($source->getContentDescription()); ?>"</em>
+"<?= RichText::preview($source->getContentDescription()); ?>"

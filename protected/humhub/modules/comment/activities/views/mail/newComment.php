@@ -12,4 +12,4 @@ echo Yii::t('CommentModule.base', "{displayName} wrote a new comment ", [
 ?>
 <br>
 
-<em>"<?= RichText::preview($source->message); ?>"</em>
+"<?= RichText::preview($source->message); ?>"

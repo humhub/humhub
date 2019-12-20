@@ -8,6 +8,7 @@
 
 namespace humhub\modules\topic\controllers;
 
+use humhub\modules\user\models\User;
 use humhub\widgets\ModalClose;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\topic\models\Topic;
@@ -21,9 +22,19 @@ class ManageController extends ContentContainerController
     public function getAccessRules()
     {
         return [
+            ['login'],
             ['permission' => ManageTopics::class],
             ['json' => ['delete']]
         ];
+    }
+
+    public function init()
+    {
+        parent::init();
+
+        if($this->contentContainer instanceof User) {
+            $this->subLayout = "@humhub/modules/user/views/account/_layout";
+        }
     }
 
     public function actionIndex()

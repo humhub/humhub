@@ -34,7 +34,6 @@ class AppAsset extends AssetBundle
      * @inheritdoc
      */
     public $css = [
-        'css/temp.css',
         'css/bootstrap-wysihtml5.css',
         'css/flatelements.css',
     ];

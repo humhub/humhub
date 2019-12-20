@@ -36,12 +36,12 @@ Available user groups in space context:
 
 | Group   | Description |
 |---|---|
-| \humhub\modules\user\models\User::USERGROUP_OWNER  | The owner of the space |
-| \humhub\modules\user\models\User::USERGROUP_ADMIN  | An administrator of the space |
-| \humhub\modules\user\models\User::USERGROUP_MODERATOR  | A moderator of the space |
-| \humhub\modules\user\models\User::USERGROUP_MEMBER  | A member of the space |
-| \humhub\modules\user\models\User::USERGROUP_USER  | Any registered user |
-| \humhub\modules\user\models\User::USERGROUP_GUEST  | Any user, even unauthenticated if available |
+| \humhub\modules\space\models\Space::USERGROUP_OWNER  | The owner of the space |
+| \humhub\modules\space\models\Space::USERGROUP_ADMIN  | An administrator of the space |
+| \humhub\modules\space\models\Space::USERGROUP_MODERATOR  | A moderator of the space |
+| \humhub\modules\space\models\Space::USERGROUP_MEMBER  | A member of the space |
+| \humhub\modules\space\models\Space::USERGROUP_USER  | Any registered user |
+| \humhub\modules\space\models\Space::USERGROUP_GUEST  | Any user, even unauthenticated if available |
 
 
 Core Permissions

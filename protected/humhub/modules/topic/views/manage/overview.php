@@ -6,13 +6,15 @@
  *
  */
 
+use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 use humhub\widgets\Button;
 use humhub\widgets\GridView;
 use humhub\widgets\ModalButton;
 use yii\bootstrap\ActiveForm;
+use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\AccountSettingsMenu;
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 /* @var $this \humhub\components\View */
 /* @var $dataProvider \yii\data\ActiveDataProvider */
@@ -21,10 +23,16 @@ use yii\helpers\Url;
 
 ?>
 
+
+
 <div class="panel panel-default">
     <div class="panel-heading"><?= Yii::t('TopicModule.base', '<strong>Topic</strong> Overview'); ?></div>
 
-    <?= DefaultMenu::widget(['space' => $contentContainer]); ?>
+    <?php if($contentContainer instanceof Space) :?>
+        <?= DefaultMenu::widget(['space' => $contentContainer]); ?>
+    <?php elseif ($contentContainer instanceof User) : ?>
+        <?= AccountSettingsMenu::widget()?>
+    <?php endif; ?>
 
     <div class="panel-body">
 

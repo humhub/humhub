@@ -8,9 +8,11 @@
 
 namespace humhub\modules\user\behaviors;
 
+use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use yii\base\Behavior;
+use yii\base\InvalidValueException;
 use yii\web\HttpException;
 use humhub\modules\user\models\User;
 use humhub\components\Controller;
@@ -21,8 +23,8 @@ use humhub\components\Controller;
  * In User container scopes, this behavior will automatically attached to a contentcontainer controller.
  *
  * @see User::controllerBehavior
- * @see \humhub\modules\contentcontainer\components\Controller
- * @property \humhub\modules\contentcontainer\components\Controller $owner the controller
+ * @see ContentContainerController
+ * @property ContentContainerController $owner the controller
  */
 class ProfileController extends Behavior
 {
@@ -50,7 +52,7 @@ class ProfileController extends Behavior
         parent::attach($owner);
 
         if (!$this->owner->contentContainer instanceof User) {
-            throw new \yii\base\InvalidValueException('Invalid contentcontainer type of controller.');
+            throw new InvalidValueException('Invalid contentcontainer type of controller.');
         }
 
         $this->user = $this->owner->contentContainer;
@@ -58,13 +60,17 @@ class ProfileController extends Behavior
 
     /**
      *
-     * @return type
+     * @return User
      */
     public function getUser()
     {
         return $this->user;
     }
 
+    /**
+     * @param $action
+     * @throws HttpException
+     */
     public function beforeAction($action)
     {
         if ($this->user->status == User::STATUS_NEED_APPROVAL) {
@@ -80,7 +86,10 @@ class ProfileController extends Behavior
         }
 
         $this->owner->prependPageTitle($this->user->displayName);
-        $this->owner->subLayout = "@humhub/modules/user/views/profile/_layout";
+
+        if(empty($this->owner->subLayout)) {
+            $this->owner->subLayout = "@humhub/modules/user/views/profile/_layout";
+        }
     }
 
 }

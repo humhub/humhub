@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\behaviors;
 
+use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use yii\base\Behavior;
@@ -24,8 +25,8 @@ use humhub\components\Controller;
  * In Space scopes, this behavior will automatically attached to a contentcontainer controller.
  *
  * @see Space::controllerBehavior
- * @see \humhub\modules\contentcontainer\components\Controller
- * @property \humhub\modules\contentcontainer\components\Controller $owner the controller
+ * @see ContentContainerController
+ * @property ContentContainerController $owner the controller
  */
 class SpaceController extends Behavior
 {
@@ -59,6 +60,10 @@ class SpaceController extends Behavior
         ];
     }
 
+    /**
+     * @param $action
+     * @throws HttpException
+     */
     public function beforeAction($action)
     {
         $this->updateLastVisit();
@@ -71,7 +76,10 @@ class SpaceController extends Behavior
             throw new HttpException(404, Yii::t('SpaceModule.base', 'Space is invisible!'));
         }
 
-        $this->owner->subLayout = "@humhub/modules/space/views/space/_layout";
+        if(empty($this->owner->subLayout)) {
+            $this->owner->subLayout = "@humhub/modules/space/views/space/_layout";
+        }
+
         $this->owner->prependPageTitle($this->space->name);
 
         if (Yii::$app->request->isPjax || !Yii::$app->request->isAjax) {

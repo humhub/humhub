@@ -55,6 +55,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
         $this->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::class]);
         $conditionSpace = '';
         $conditionUser = '';
+        $globalCondition = '';
 
         if ($user !== null) {
             $this->leftJoin('space_membership', 'contentcontainer.pk=space_membership.space_id AND contentcontainer.class=:spaceClass AND space_membership.user_id=:userId', [':userId' => $user->id, ':spaceClass' => Space::class]);
@@ -77,14 +78,16 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
 
             // Created content of is always visible
             $conditionUser .= 'OR content.created_by=' . $user->id;
+            $globalCondition .= 'content.contentcontainer_id IS NULL';
         } elseif (AuthHelper::isGuestAccessEnabled()) {
             $conditionSpace = 'space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL . ' AND content.visibility=1';
             $conditionUser = 'cuser.id IS NOT NULL and cuser.visibility=' . User::VISIBILITY_ALL . ' AND content.visibility=1';
+            $globalCondition .= 'content.contentcontainer_id IS NULL AND content.visibility=1';
         } else {
             $this->emulateExecution();
         }
 
-        $this->andWhere("{$conditionSpace} OR {$conditionUser}");
+        $this->andWhere("{$conditionSpace} OR {$conditionUser} OR {$globalCondition}");
 
 
         return $this;
