@@ -111,7 +111,7 @@ humhub.module('ui.view', function (module, require, $) {
 
         var $topBar = $('#topbar-second');
 
-        return $topBar.offset().top + $topBar.height();
+        return $topBar.position().top + $topBar.height();
     };
 
     module.export({
