@@ -139,6 +139,7 @@
 
 	// MODAL
 	.modal-dialog {
+		width: calc(100vw - 4px) !important;
 		padding:0 !important;
 		margin:2px !important;
 	}
@@ -153,6 +154,14 @@
 	{
 		padding-top:10px;
 		padding-bottom:10px;
+		text-overflow: ellipsis;
+		overflow:hidden;
+		white-space: nowrap;
+	}
+
+	.dropdown-menu {
+		max-width:320px;
+
 	}
 
 	select.form-control:not([multiple]) {
