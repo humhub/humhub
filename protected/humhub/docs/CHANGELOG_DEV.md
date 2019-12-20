@@ -16,6 +16,7 @@ HumHub Change Log (DEVELOP)
 - Chng: Removed italic text from summary mail of comment and content activities for better readability
 - Fix #3798: DBValidator not working with time value and swedish locale
 - Enh #3779: Added `ui.view.getContentTop()` for calculating the top position of the layout content with theme support
+- Fix #3704: Public space is not displayed when guest user accesses "Space directory".
 
 
 1.4.0-beta.2
