@@ -25,9 +25,12 @@ class TimezoneHelper
      * // Includes current time for each timezone (would help users who don't know what their timezone is)
      *
      * @staticvar array $regions
+     * @param bool $includeUTC whether or not to include UTC timeZone
+     * @param bool $withOffset whether or not to add offset information
      * @return array
+     * @throws \Exception
      */
-    public static function generateList($includeUTC = false)
+    public static function generateList($includeUTC = false, $withOffset = true)
     {
         $regions = [
             DateTimeZone::AFRICA,
@@ -62,16 +65,14 @@ class TimezoneHelper
         $timezone_list = [];
 
         foreach ($timezone_offsets as $timezone => $offset) {
-            $offset_prefix = $offset < 0 ? '-' : '+';
-            $offset_formatted = gmdate('H:i', abs($offset));
-
-            $pretty_offset = "UTC${offset_prefix}${offset_formatted}";
-
-            $t = new DateTimeZone($timezone);
-            $c = new DateTime(null, $t);
-            $current_time = $c->format('H:i');
-
-            $timezone_list[$timezone] = $pretty_offset . ' - ' . $timezone;
+            if($withOffset) {
+                $offset_prefix = $offset < 0 ? '-' : '+';
+                $offset_formatted = gmdate('H:i', abs($offset));
+                $pretty_offset = "UTC${offset_prefix}${offset_formatted}";
+                $timezone_list[$timezone] = $pretty_offset . ' - ' . $timezone;
+            } else {
+                $timezone_list[$timezone] = $timezone;
+            }
         }
 
         return $timezone_list;
