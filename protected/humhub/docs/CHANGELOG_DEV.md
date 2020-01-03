@@ -13,6 +13,7 @@ HumHub Change Log (DEVELOP)
 - Enh: **Theme:** use of colored required input field asterisk
 - Fix #3784: `ActiveQueryContent::readable()` not working for global content
 - Chng: Removed italic text from summary mail of comment and content activities for better readability
+- Fix #3805: Cannot select more than one activity in E-Mail Summaries settings
 
 
 1.4.0-beta.2
