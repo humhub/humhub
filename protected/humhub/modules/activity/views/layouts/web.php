@@ -11,6 +11,8 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
 use humhub\widgets\TimeAgo;
 use yii\helpers\Url;
+
+/* @var $originator \humhub\modules\user\models\User  */
 ?>
 
 <?php if ($clickable) : ?>
@@ -20,9 +22,7 @@ use yii\helpers\Url;
         <div class="media">
             <?php if ($originator !== null) : ?>
                 <!-- Show user image -->
-                <img class="media-object img-rounded pull-left" data-src="holder.js/32x32" alt="32x32"
-                     style="width: 32px; height: 32px;"
-                     src="<?= $originator->getProfileImage()->getUrl(); ?>">
+                <?= $originator->getProfileImage()->render(32, ['class' => 'media-object', 'htmlOptions' => ['class' => 'pull-left']]) ?>
             <?php endif; ?>
 
             <!-- Show space image, if you are outside from a space -->

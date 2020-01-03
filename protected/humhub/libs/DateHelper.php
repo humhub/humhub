@@ -56,13 +56,17 @@ class DateHelper
     /**
      * Checks whether the given value is a db date format or not.
      *
+     * If $dateOnly flag is set to true this method tests against date format without time, otherwise it will test against
+     * the db datetime format.
+     *
      * @param string $value the date value
+     * @param bool $dateOnly
      * @return boolean
      * @since v1.4
      */
-    public static function isInDbFormat($value)
+    public static function isInDbFormat($value, $dateOnly = false)
     {
-        return (preg_match(self::REGEX_DBFORMAT_DATE, $value) || preg_match(self::REGEX_DBFORMAT_DATETIME, $value));
+        return $dateOnly ? preg_match(self::REGEX_DBFORMAT_DATE, $value) : preg_match(self::REGEX_DBFORMAT_DATETIME, $value);
     }
 
     /**

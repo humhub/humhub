@@ -221,7 +221,7 @@ class ProfileImage
      * @throws \yii\db\IntegrityException
      * @since 1.4
      */
-    public function render($width, $cfg = [])
+    public function render($width = 32, $cfg = [])
     {
         $container = $this->getContainer();
 
@@ -235,6 +235,13 @@ class ProfileImage
             return SpaceImage::widget(['width' => $width, 'space' => $container, 'htmlOptions' => $cfg]);
         }
 
-        return UserImage::widget(['width' => $width, 'user' => $container, 'imageOptions' => $cfg]);
+        $htmlOptions = [];
+
+        if(isset($cfg['htmlOptions'])) {
+            $htmlOptions = $cfg['htmlOptions'];
+            unset($cfg['htmlOptions']);
+        }
+
+        return UserImage::widget(['width' => $width, 'user' => $container, 'imageOptions' => $cfg, 'htmlOptions' => $htmlOptions]);
     }
 }

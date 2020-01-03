@@ -10,6 +10,7 @@
 namespace humhub\modules\space\components;
 
 use humhub\modules\space\models\Membership;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
 use Yii;
@@ -49,11 +50,11 @@ class ActiveQuerySpace extends ActiveQuery
             }, Membership::findAll(['user_id' => $user->id]));
 
             $this->andWhere(['OR',
-                ['space.visibility' => 1],
+                ['!=', 'space.visibility', Space::VISIBILITY_NONE],
                 ['IN', 'space.id', $spaceIds]
             ]);
         } else {
-            $this->andWhere(['space.visibility' => 1]);
+            $this->andWhere(['space.visibility' => Space::VISIBILITY_ALL]);
         }
         return $this;
     }
