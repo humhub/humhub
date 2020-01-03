@@ -105,6 +105,12 @@ class Profile extends ActiveRecord
         foreach (ProfileField::find()->all() as $profileField) {
             // Some fields consist of multiple field definitions (e.g. Birthday)
             foreach ($profileField->fieldType->getFieldFormDefinition() as $fieldName => $definition) {
+
+                // Skip automatically synced attributes (readonly)
+                if (in_array($profileField->internal_name, $syncAttributes)) {
+                    continue;
+                }
+
                 $scenarios[static::SCENARIO_EDIT_ADMIN][] = $fieldName;
 
                 if ($profileField->editable && !in_array($profileField->internal_name, $syncAttributes)) {

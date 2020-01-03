@@ -8,6 +8,7 @@
 namespace humhub\widgets;
 
 use humhub\libs\TimezoneHelper;
+use humhub\modules\ui\form\widgets\JsInputWidget;
 use Yii;
 
 /**
@@ -17,9 +18,14 @@ use Yii;
  *
  * @package humhub\widgets
  */
-class TimeZoneDropdownAddition extends InputWidget
+class TimeZoneDropdownAddition extends JsInputWidget
 {
     public $toggleClass = 'input-field-addon-sm colorInfo pull-right';
+
+    /**
+     * @var bool whether or not to add offset information
+     */
+    public $withOffset = false;
 
     /**
      * @var array cached timeZone item array
@@ -52,6 +58,7 @@ class TimeZoneDropdownAddition extends InputWidget
     /**
      * @return null|array of timezone items, note we only include UTC+00:00 as possible selection
      * if the current (or default) time zone is UTC
+     * @throws \Exception
      */
     private function getCurrentLabel()
     {
@@ -83,13 +90,14 @@ class TimeZoneDropdownAddition extends InputWidget
 
     /**
      * @return array of timezones with UTC offset, note that the result will be cached
+     * @throws \Exception
      * @see TimezoneHelper::generateList()
      */
     public function getTimeZoneItems()
     {
         $value = $this->getTimeZoneValue();
         if (empty($this->timeZoneItems)) {
-            $this->timeZoneItems = TimezoneHelper::generateList($value == 'UTC');
+            $this->timeZoneItems = TimezoneHelper::generateList($value === 'UTC', $this->withOffset);
         }
 
         return $this->timeZoneItems;

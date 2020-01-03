@@ -1,14 +1,15 @@
 HumHub Change Log
 =================
 
-1.3.19 (Unreleased)
+1.3.19 (December 20, 2019)
 --------------------------
 
 - Fix #3759: Allow individual file extensions (e.g. msg)
 - Fix #3147: Module related permissions are not properly removed on deactivate/uninstall
-- Fix #3740: Profile fieldtype Checkbox List does not show "other"
+- Fix #3740: Profile field type Checkbox List does not show "other"
 - Fix #3484: Encoding issue in german space visibility translation
 - Fix #3717: Account deletion incomplete if related to an identity provider
+- Fix #3800: Birthday "Hide year in profile" inconsistent with LDAP
 
 
 1.3.18 (November 22, 2019)

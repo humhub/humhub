@@ -19,6 +19,7 @@ use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\models\Invite;
+use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use Yii;
@@ -103,7 +104,7 @@ class UserController extends Controller
         }
 
         $user->scenario = 'editAdmin';
-        $user->profile->scenario = 'editAdmin';
+        $user->profile->scenario = Profile::SCENARIO_EDIT_ADMIN;
         $profile = $user->profile;
 
         // Build Form Definition
