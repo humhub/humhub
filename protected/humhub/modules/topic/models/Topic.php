@@ -76,7 +76,7 @@ class Topic extends ContentTag
         $topics = is_array($topics) ? $topics : [$topics];
 
         foreach ($topics as $topic) {
-            if(strpos($topic, '_add:') === 0 && $canAdd) {
+            if(is_string($topic) && strpos($topic, '_add:') === 0 && $canAdd) {
                 $newTopic = new Topic([
                     'name' => substr($topic, strlen('_add:')),
                     'contentcontainer_id' => $content->contentcontainer_id
