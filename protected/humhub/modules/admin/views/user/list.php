@@ -43,7 +43,7 @@ use yii\widgets\ActiveForm;
             </div>
         </div>
         <div class="col-md-4 usersearch-statuses">
-            <?= Html::activeDropDownList($searchModel, 'status', UserSearch::getStatusAttributes(), ['class' => 'form-control', 'data-action-click' => 'ui.form.submit']); ?>
+            <?= Html::activeDropDownList($searchModel, 'status', UserSearch::getStatusAttributes(), ['class' => 'form-control', 'data-action-change' => 'ui.form.submit']); ?>
         </div>
     </div>
     <?php ActiveForm::end(); ?>

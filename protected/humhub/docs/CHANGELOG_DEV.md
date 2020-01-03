@@ -21,6 +21,7 @@ HumHub Change Log (DEVELOP)
 - Fix: Dropdown width issue on mobile (ee)
 - Fix: Prevent sidebar swipe on menu scroll
 - Fix #3805: Cannot select more than one activity in E-Mail Summaries settings
+- Fix #3802: 'usersearch-status' dropdown triggers reload on click
 
 
 1.4.0-beta.2
