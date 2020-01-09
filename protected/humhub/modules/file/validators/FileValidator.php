@@ -10,8 +10,10 @@ namespace humhub\modules\file\validators;
 
 use humhub\modules\file\Module;
 use Yii;
+use yii\web\UploadedFile;
 use humhub\modules\file\models\File;
 use humhub\modules\file\libs\ImageConverter;
+use humhub\modules\file\libs\FileHelper;
 
 /**
  * FileValidator
