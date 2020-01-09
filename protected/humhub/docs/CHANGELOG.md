@@ -1,6 +1,14 @@
 HumHub Change Log
 =================
 
+
+1.3.20 (January 9, 2020)
+------------------------
+
+- Fix #3814: File uploads broken with restricted file extensions
+- Enh: Added `withTimeZone` parameter to `humhub\libs\TimezoneHelper::generateList()`
+- Chng: Remove offset information in `humhub\widgets\TimeZoneDropdownAddition` by default
+
 1.3.19 (December 20, 2019)
 --------------------------
 
