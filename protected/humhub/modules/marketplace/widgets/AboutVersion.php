@@ -26,8 +26,8 @@ class AboutVersion extends Widget
         $licence = $module->getLicence();
 
         if ($licence->type === Licence::LICENCE_TYPE_PRO) {
-            if (isset(Yii::$app->params['hosting']) && empty($licence->licencedTo)) {
-                return $this->render('about_version_pro_cloud', []);
+            if (isset(Yii::$app->params['hosting'])) {
+                return $this->render('about_version_pro_cloud', ['licence' => $licence]);
             } else {
                 return $this->render('about_version_pro', ['licence' => $licence]);
             }
