@@ -8,7 +8,7 @@
 namespace humhub\modules\marketplace\controllers;
 
 use humhub\modules\admin\components\Controller;
-use humhub\modules\marketplace\models\Licence;
+use humhub\modules\marketplace\components\LicenceManager;
 use humhub\modules\marketplace\Module;
 use Yii;
 
@@ -26,6 +26,7 @@ class LicenceController extends Controller
         $model = $this->module->getLicence();
 
         if ($model->load(Yii::$app->request->post()) && $model->register()) {
+            LicenceManager::fetch();
             return $this->redirect(['index']);
         }
 
@@ -35,8 +36,7 @@ class LicenceController extends Controller
 
     public function actionRemove()
     {
-        Licence::remove();
-
+        LicenceManager::remove();
         return $this->redirect(['/marketplace/licence']);
     }
 

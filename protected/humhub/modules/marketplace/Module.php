@@ -10,6 +10,7 @@ namespace humhub\modules\marketplace;
 
 use humhub\components\Module as BaseModule;
 use humhub\models\Setting;
+use humhub\modules\marketplace\components\LicenceManager;
 use humhub\modules\marketplace\models\Licence;
 use humhub\modules\marketplace\components\OnlineModuleManager;
 use Yii;
@@ -84,32 +85,12 @@ class Module extends BaseModule
 
 
     /**
+     * Returns the currently active licence object
+     *
      * @return Licence
      */
     public function getLicence()
     {
-        Licence::fetch();
-
-        $l = new Licence();
-
-        $l->licenceKey = $this->settings->get('licenceKey');
-        $l->licencedTo = $this->settings->get('licencedTo');
-
-        if (!empty($l->licencedTo)) {
-            $l->maxUsers = (int)$this->settings->get('maxUsers');
-            $l->type = Licence::LICENCE_TYPE_PRO;
-        } else {
-            $l->type = Licence::LICENCE_TYPE_CE;
-
-            if (Yii::$app->hasModule('enterprise')) {
-                /** @var \humhub\modules\enterprise\Module $enterprise */
-                $enterprise = Yii::$app->getModule('enterprise');
-                if ($enterprise->settings->get('licence') !== null && $enterprise->settings->get('licence_valid') == 1) {
-                    $l->type = Licence::LICENCE_TYPE_EE;
-                }
-            }
-        }
-
-        return $l;
+        return LicenceManager::get();
     }
 }
