@@ -110,10 +110,11 @@ class LicenceManager
             return true;
         } elseif ($result['status'] === 'not-found') {
             try {
-                if (Licence::remove()) {
+                if (static::remove()) {
                     return true;
                 }
             } catch (\Throwable $e) {
+                Yii::error('Could not fetch/remove licence: ' . $e->getMessage());
             }
         }
 
@@ -129,7 +130,6 @@ class LicenceManager
     public static function remove()
     {
         $licenceKey = static::getModule()->settings->get('licenceKey');
-
         if (!empty($licenceKey)) {
             $result = static::request('v1/pro/unregister', ['licenceKey' => $licenceKey]);
         }
