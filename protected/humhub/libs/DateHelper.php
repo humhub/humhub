@@ -74,7 +74,7 @@ class DateHelper
      *
      * @param string $value
      * @param string $timeValue optional time value
-     * @return int timestamp in utc
+     * @return int|false timestamp in utc
      * @throws \Exception
      */
     public static function parseDateTimeToTimestamp($value, $timeValue = null)
