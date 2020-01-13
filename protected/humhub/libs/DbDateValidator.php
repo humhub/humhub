@@ -99,7 +99,7 @@ class DbDateValidator extends DateValidator
      * Parses a date and a time value if timeAttribute is specified.
      *
      * @param string $value
-     * @return int timestamp in utc
+     * @return int|false timestamp in system timezone
      * @throws \Exception
      */
     protected function parseDateTimeValue($value, $timeValue = null)
@@ -111,7 +111,7 @@ class DbDateValidator extends DateValidator
 
         $timestamp = $this->parseDateValue($value);
 
-        if ($this->hasTime() && !empty($timeValue)) {
+        if ($timestamp !== false && $this->hasTime() && !empty($timeValue)) {
             $timestamp += $this->parseTimeValue($timeValue);
             $timestamp = $this->fixTimestampTimeZone($timestamp, $this->timeZone);
         }
@@ -155,8 +155,10 @@ class DbDateValidator extends DateValidator
     /**
      * Parses a date and optionally a time if timeAttribute is specified.
      *
+     * Returns false in case the value could not be parsed.
+     *
      * @param string $value
-     * @return int timestamp in utc
+     * @return int|false
      * @throws \Exception
      */
     public static function parseDateTime($value, $timeValue = null)
