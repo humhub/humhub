@@ -217,7 +217,7 @@ class ProsemirrorRichText extends AbstractRichText
     {
         $result = '';
         foreach ($this->oembeds as $url => $oembed) {
-            $result .= Html::tag('div', $oembed, ['data-oembed' => $url]);
+            $result .= Html::tag('div', $oembed, ['data-oembed' => Html::encode($url)]);
         }
 
         return Html::tag('div', $result, ['class' => 'richtext-oembed-container', 'style' => 'display:none']);
