@@ -6,6 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\commands\CronController;
 use humhub\modules\marketplace\Events;
 use humhub\modules\admin\widgets\ModuleMenu;
 use humhub\modules\marketplace\Module;
@@ -17,6 +18,7 @@ return [
     'isCoreModule' => true,
     'events' => [
         ['humhub\components\console\Application', 'onInit', [Events::class, 'onConsoleApplicationInit']],
-        [ModuleMenu::class, ModuleMenu::EVENT_INIT, [Events::class, 'onAdminModuleMenuInit']]
+        [ModuleMenu::class, ModuleMenu::EVENT_INIT, [Events::class, 'onAdminModuleMenuInit']],
+        [CronController::class, CronController::EVENT_ON_HOURLY_RUN, [Events::class, 'onHourlyCron']],
     ]
 ];
