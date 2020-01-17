@@ -97,6 +97,7 @@ class NotificationManager
      *
      * @param \humhub\modules\notification\components\BaseNotification $notification
      * @param User $user target user
+     * @throws \yii\base\InvalidConfigException
      */
     public function send(BaseNotification $notification, User $user)
     {
@@ -116,8 +117,12 @@ class NotificationManager
         // Initialize targets
         if ($this->_targets === null) {
             $this->_targets = [];
-            foreach ($this->targets as $target) {
-                $this->_targets[] = Yii::createObject($target);
+            foreach ($this->targets as $targetClass => $targetConfig) {
+                $targetConfig = is_array($targetConfig) ? $targetConfig : [];
+                if(!isset($targetConfig['class'])) { // Allow class overwrites
+                    $targetConfig['class'] = $targetClass;
+                }
+                $this->_targets[] = Yii::createObject($targetConfig);
             }
         }
 
@@ -136,6 +141,7 @@ class NotificationManager
      *
      * @param string $class
      * @return BaseTarget
+     * @throws \yii\base\InvalidConfigException
      */
     public function getTarget($class)
     {

@@ -15,7 +15,7 @@ use yii\di\NotInstantiableException;
 
 /**
  * Mobile Target
- * 
+ *
  * @since 1.2
  * @author buddha
  */
@@ -47,7 +47,7 @@ class MobileTarget extends BaseTarget
      * Used to forward a BaseNotification object to a BaseTarget.
      * The notification target should handle the notification by pushing a Job to
      * a Queue or directly handling the notification.
-     * 
+     *
      * @param BaseNotification $notification
      */
     public function handle(BaseNotification $notification, User $user)
@@ -67,7 +67,7 @@ class MobileTarget extends BaseTarget
 
     public function isActive(User $user = null)
     {
-        if(!$this->provider) {
+        if(!parent::isActive() || !$this->provider) {
             return false;
         }
 

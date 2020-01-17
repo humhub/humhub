@@ -61,6 +61,14 @@ abstract class BaseTarget extends \yii\base\BaseObject
     public $defaultSetting = false;
 
     /**
+     * This flag can be used to deactivate a target within the configuration.
+     *
+     * @var bool
+     * @since 1.4
+     */
+    public $active = true;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -76,6 +84,7 @@ abstract class BaseTarget extends \yii\base\BaseObject
 
     /**
      * @return \humhub\components\rendering\Renderer default renderer for this target.
+     * @throws \yii\base\InvalidConfigException
      */
     public function getRenderer()
     {
@@ -190,11 +199,14 @@ abstract class BaseTarget extends \yii\base\BaseObject
      *
      * If a subclass does not overwrite this function it will be activated for all users by default.
      *
+     * Subclasses should always check `parent::isActive()`
+     *
      * @param User $user
+     * @return bool
      */
     public function isActive(User $user = null)
     {
-        return true;
+        return $this->active;
     }
 
     /**

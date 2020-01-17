@@ -34,17 +34,13 @@ $config = [
         'notification' => [
             'class' => \humhub\modules\notification\components\NotificationManager::class,
             'targets' => [
-                [
-                    'class' => \humhub\modules\notification\targets\WebTarget::class,
+                \humhub\modules\notification\targets\WebTarget::class => [
                     'renderer' => ['class' => \humhub\modules\notification\renderer\WebRenderer::class]
                 ],
-                [
-                    'class' => \humhub\modules\notification\targets\MailTarget::class,
+                \humhub\modules\notification\targets\MailTarget::class => [
                     'renderer' => ['class' => \humhub\modules\notification\renderer\MailRenderer::class]
                 ],
-                [
-                    'class' => \humhub\modules\notification\targets\MobileTarget::class
-                ],
+                \humhub\modules\notification\targets\MobileTarget::class => []
             ]
         ],
         'log' => [

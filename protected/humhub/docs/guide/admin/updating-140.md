@@ -25,3 +25,43 @@ Affected codes:
 | zh_cn | zh-CN |
 | zh_tw | zh-TW |
 | fa_ir | fa-IR |
+
+3.) The notification target configuration changed from:
+
+```
+'targets' => [ 
+    \humhub\modules\notification\targets\WebTarget::class => [
+        'class' => \humhub\modules\notification\targets\WebTarget::class
+        'renderer' => ['class' => \humhub\modules\notification\renderer\WebRenderer::class]
+    ],
+...
+]
+```
+
+to:
+
+```
+'targets' => [ 
+    \humhub\modules\notification\targets\WebTarget::class => [
+        'renderer' => ['class' => \humhub\modules\notification\renderer\WebRenderer::class]
+    ],
+...
+]
+```
+
+Notification targets now can be overwritten or disabled e.g:
+
+```
+return [
+    'components' => [
+        'targets' => [ 
+            \humhub\modules\notification\targets\MailTarget::class => [
+                'active' => false
+            ],
+            \humhub\modules\notification\targets\MobileTarget::class => [
+                'class' => '/my/own/target/MobileTarget'
+            ],
+        ]
+    ]
+]
+```

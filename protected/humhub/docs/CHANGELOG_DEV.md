@@ -24,7 +24,7 @@ HumHub Change Log (DEVELOP)
 - Fix #3802: 'usersearch-status' dropdown triggers reload on click
 - Chng #3816: Use of `static::class` query class within `ContentActiveRecord::find()` instead of `getObjectModel()`
 - Fix: DBDatevalidator returns unix epoch date when parsing with a time value fails
-
+- Enh: Notification targets can be deactivated or overwritten by configuration
 
 1.4.0-beta.2
 ------------
