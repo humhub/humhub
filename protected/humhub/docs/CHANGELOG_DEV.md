@@ -26,7 +26,7 @@ HumHub Change Log (DEVELOP)
 - Fix: DBDatevalidator returns unix epoch date when parsing with a time value fails
 - Enh: Notification targets can be deactivated or overwritten by configuration
 - Fix #3810: Print Media Cluttered by HREF Content
-- Enh: Added further print enhancements
+- Enh: Added further print style enhancements
 
 1.4.0-beta.2
 ------------
