@@ -38,3 +38,8 @@ More details can be found in the [Views](views.md) chapter of the theme document
 
 The old mapping will be available until at least version 1.5. But we recommend to upgrade your theme as soon as possible.
 
+### print.less
+
+There is a new `print.less` less file included which currently only fixes https://github.com/humhub/humhub/issues/3810
+but may be used for further print style enhancements in the future. As with all included less files you can omit this
+by setting the `@prev-print` less variable to true.

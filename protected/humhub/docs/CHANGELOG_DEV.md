@@ -25,6 +25,7 @@ HumHub Change Log (DEVELOP)
 - Chng #3816: Use of `static::class` query class within `ContentActiveRecord::find()` instead of `getObjectModel()`
 - Fix: DBDatevalidator returns unix epoch date when parsing with a time value fails
 - Enh: Notification targets can be deactivated or overwritten by configuration
+- Fix #3810: Print Media Cluttered by HREF Content
 
 1.4.0-beta.2
 ------------
