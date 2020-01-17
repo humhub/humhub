@@ -77,16 +77,6 @@ hr {
   }
 }
 
-@media (min-width:768px) and (max-width:920px) {
-  #topbar-first, #topbar-second{
-    .container {
-      padding-left:10px;
-      padding-right:20px;
-    }
-  }
-}
-
-
 h4 {
   font-weight: 300;
   font-size: 150%;
@@ -112,4 +102,19 @@ input[type=select] {
 
 [data-ui-show-more] {
   overflow:hidden;
+}
+
+@media (min-width:768px) and (max-width:920px) {
+    #topbar-first, #topbar-second{
+        .container {
+            padding-left:10px;
+            padding-right:20px;
+        }
+    }
+}
+
+@media print {
+    #topbar-first, #topbar-second {
+        display: none;
+    }
 }

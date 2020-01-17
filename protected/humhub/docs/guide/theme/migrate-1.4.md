@@ -40,6 +40,6 @@ The old mapping will be available until at least version 1.5. But we recommend t
 
 ### print.less
 
-There is a new `print.less` less file included which currently only fixes https://github.com/humhub/humhub/issues/3810
-but may be used for further print style enhancements in the future. As with all included less files you can omit this
-by setting the `@prev-print` less variable to true.
+There is a new `print.less` less file which fixes https://github.com/humhub/humhub/issues/3810 and includes further
+print style enhancements. As with all included less files you can omit this by setting the `@prev-print` less variable to true.
+There are some further print style enhancements added to `stream.less` and `profile.less`

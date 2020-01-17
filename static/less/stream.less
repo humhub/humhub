@@ -269,3 +269,14 @@
     font-size: 11px
   }
 }
+
+@media print {
+    .wall-entry {
+        page-break-inside: avoid;
+    }
+
+    #wall-stream-filter-nav,
+    #contentFormBody {
+        display:none;
+    }
+}
