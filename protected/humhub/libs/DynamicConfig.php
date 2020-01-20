@@ -180,6 +180,21 @@ class DynamicConfig extends BaseObject
         self::save($config);
     }
 
+    /**
+     * Checks whether the config should be rewritten based on changed setting name
+     *
+     * @param $moduleId
+     * @param $name
+     * @return bool
+     */
+    public static function needRewrite($moduleId, $name)
+    {
+        return (in_array($name, [
+            'name', 'defaultLanguage', 'timeZone', 'cache.class', 'mailer.transportType',
+            'mailer.hostname', 'mailer.username', 'mailer.password', 'mailer.encryption',
+            'mailer.port', 'horImageScrollOnMobile']));
+    }
+
     public static function getConfigFilePath()
     {
         return Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
