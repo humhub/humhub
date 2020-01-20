@@ -27,6 +27,8 @@ HumHub Change Log (DEVELOP)
 - Enh: Notification targets can be deactivated or overwritten by configuration
 - Fix #3810: Print Media Cluttered by HREF Content
 - Enh: Added further print style enhancements
+- Fix #3803: Invalid editor preset handling
+- Fix: Invalid editor placeholder handling
 
 1.4.0-beta.2
 ------------

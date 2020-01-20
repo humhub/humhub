@@ -156,14 +156,19 @@ abstract class AbstractRichText extends JsWidget
      */
     public function getData()
     {
-        return [
+        $result = [
             'exclude' => $this->exclude,
             'include' => $this->include,
             'plugin-options' => $this->pluginOptions,
-            'preset' => $this->preset,
             'edit' => $this->edit,
             'ui-richtext' => true
         ];
+
+        if(!empty($this->preset)) {
+            $result['preset'] = $this->preset;
+        }
+
+        return $result;
     }
 
     /**
