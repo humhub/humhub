@@ -47,7 +47,7 @@ humhub.module('action', function(module, require, $) {
     var BLOCK_MANUAL = 'manual';
 
     var DATA_COMPONENT = 'action-component';
-    
+
     var processes = {};
 
     /**
@@ -329,10 +329,10 @@ humhub.module('action', function(module, require, $) {
     /**
      * Thes method will search for a sorrounding component and try to execute
      * the event handler action on this component.
-     * 
+     *
      * If no component is found or the component does not provide the action handler
      * we'll return false else true.
-     * 
+     *
      * @param {object} event - event object
      * @returns {Boolean} true if the component action could be executed else false
      */
@@ -397,10 +397,10 @@ humhub.module('action', function(module, require, $) {
 
     /**
      * Registers a given handler with the given id.
-     * 
+     *
      * This handler will be called e.g. after clicking a button with the handler id as
      * data-action-click attribute.
-     * 
+     *
      * The handler can access additional event information through the argument event.
      * The this object within the handler will be the trigger of the event.
      *
@@ -432,7 +432,7 @@ humhub.module('action', function(module, require, $) {
             $targets.data('action-' + binding.event, true);
         });
     };
-    
+
     var getProcessTrigger = function(id) {
         return processes[id];
     };
@@ -440,7 +440,7 @@ humhub.module('action', function(module, require, $) {
     /**
      * ActionBinding instances are used to store the binding settings and handling
      * binding events.
-     * 
+     *
      * @param {type} options
      * @returns {humhub_action_L5.ActionBinding}
      */
@@ -458,32 +458,32 @@ humhub.module('action', function(module, require, $) {
 
     /**
      * Handles an action event for the given $trigger node.
-     * 
+     *
      * This handler searches for a valid action handler, by checking the following handler types in the given order:
-     * 
+     *
      *  - **Direct-ActionHandler** is called if a directHandler was given when binding the action.
      *  - **Component-ActionHandler** is called if $trigger is part of a component and the component handler can be resolved
      *  - **Global-ActionHandler** is called if we find a handler in the _handler array. See registerHandler
      *  - **Namespace-ActionHandler** is called if we can resolve an action by namespace e.g: data-action-click="myModule.myAction"
-     * 
+     *
      * Once triggered the handler can be blocked to prevent multiple click events. The block logic can be configured by setting
      * the data-action-block or more specific data-action-<eventType>-block on the $trigger node. The following block values are available:
-     * 
+     *
      *  - `none`: No blocking at all
      *  - `sync`: Synchronous blocking, the block will be removed after the actionhandler was executed.
      *  - `async`: Asynchronous the block has to be manually removed by calling event.finish.
-     *  
+     *
      *  If the action is provided with an url or is an submit action (data-action-submit or type="submit") the block value is set to 'async' by default,
      *  otherwise its set to 'sync'.
-     *  
+     *
      *  Note: When using humhub.modules.client for submitting a form or sending a request and providing the action event, the event.finish will be
      *  called for you after we receive you response, so you do not have to call it manually.
      *
      * Once triggered the handler will block the event for this actionbinding until the actionevents .finish is called.
      * This is used to prevent multiple triggering of actions. This behaviour can be disabled by setting:
-     * 
+     *
      *  data-action-prevent-block or data-action-prevent-block-<eventType>
-     *  
+     *
      * @param {type} evt the originalEvent
      * @param {type} $trigger the jQuery node which triggered the event
      * @returns {undefined}
@@ -491,7 +491,7 @@ humhub.module('action', function(module, require, $) {
     ActionBinding.prototype.handle = function(options) {
         var options = options || {};
         var $trigger = options.$trigger;
-        
+
         if(this.data($trigger, 'process')) {
             processes[this.data($trigger, 'process')] = $trigger;
         }
@@ -516,10 +516,10 @@ humhub.module('action', function(module, require, $) {
             });
             return;
         }
-        
+
         // Reset value just to get sure the options are not reused.
         options.confirmed = undefined;
-        
+
         if(this.isBlocked($trigger)) {
             module.log.warn('Blocked action execution ', $trigger);
             return;
@@ -535,7 +535,7 @@ humhub.module('action', function(module, require, $) {
                 this.directHandler.apply($trigger, _getArgs(event));
                 return;
             }
-            
+
             // Check for a component action handler
             if(Component.handleAction(event)) {
                 return;
@@ -602,15 +602,15 @@ humhub.module('action', function(module, require, $) {
     /**
      * Returns the value of data-action-click-<name> over data-action-<name>
      * e.g.:
-     * 
+     *
      * If the $trigger sets a data-action-click-url and data-action-url and we call
-     * 
+     *
      * $actioNBinding.data($trigger, 'url');
-     * 
+     *
      * We'll receive the data-action-click-url.
-     * 
+     *
      * If no data-action-click-url is set it will return the fallback data-action-url setting.
-     * 
+     *
      * @param {type} $trigger
      * @param {type} name
      * @param {type} def
@@ -627,12 +627,18 @@ humhub.module('action', function(module, require, $) {
     };
 
     ActionBinding.prototype.getUrl = function($trigger) {
-        return this.data($trigger, 'url');
+        var url = this.data($trigger, 'url');
+
+        if(!url) {
+            url = $trigger.attr('href');
+        }
+
+        return url;
     };
 
     /**
      * Checks if the trigger should be blocked before running the action.
-     * 
+     *
      * @param {type} $trigger
      * @returns {Boolean}
      */
@@ -642,7 +648,7 @@ humhub.module('action', function(module, require, $) {
 
     /**
      * Checks the given block data setting of $trigger agains a blocktype.
-     * 
+     *
      * @param {type} $trigger
      * @param {type} type
      * @returns {Boolean}
@@ -660,7 +666,7 @@ humhub.module('action', function(module, require, $) {
 
     /**
      * Checks if $trigger is currently blocked.
-     * 
+     *
      * @param {type} $trigger
      * @returns {unresolved}
      */
@@ -670,7 +676,7 @@ humhub.module('action', function(module, require, $) {
 
     /**
      * Blocks $trigger, which will disable further action calls.
-     * 
+     *
      * @param {type} $trigger
      * @returns {undefined}
      */
@@ -690,7 +696,7 @@ humhub.module('action', function(module, require, $) {
         var settings = {
             $trigger : $trigger,
             $target: $(this.data($trigger, 'target', $trigger)),
-            url: this.data($trigger, 'url'),
+            url: this.getUrl($trigger),
             params: this.data($trigger, 'params', {}),
             block: this.data($trigger, 'block'),
             handler: $trigger.data('action' + '-' + this.eventType)
@@ -708,7 +714,7 @@ humhub.module('action', function(module, require, $) {
             _removeLoaderFromEventTarget(event.originalEvent);
             that.unblock($trigger);
         };
-        
+
         event.data = function(key, def) {
             return that.data($trigger, key, def);
         };
@@ -727,19 +733,19 @@ humhub.module('action', function(module, require, $) {
      * Binds a delegate wrapper event handler to the parent node. This is used to detect action handlers like
      * `data-action-click` events and map the call to either a stand alone handler or a content
      * action handler. The trigger of a contentAction has to be contained in a data-content-base node.
-     * 
+     *
      * This function uses the jQuery event delegation:
      *
      * ```
      *  $(parent).on(type, selector, function(){...});
      * ```
-     * 
+     *
      * This assures the event binding for dynamic content (ajax content etc..)
      *
      * @function module:action.bindAction
      * @param {Node|jQuery} parent - the event target
      * @param {string} type - event type e.g. click, change,...
-     * @param {string} selector - jQuery selector 
+     * @param {string} selector - jQuery selector
      * @param {function} directHandler
      * @param {boolean} preventDefault
      */
@@ -773,7 +779,7 @@ humhub.module('action', function(module, require, $) {
                 evt.preventDefault();
             }
             var $this = $(this);
-            
+
             // Get sure we don't call the handler twice if the event was already handled by the directly attached handler.
             // We have to rebind the handler only if we detect an unbound handler!
             // Note, since jquery object loses data after removed from dom, we also check if the trigger is still in dom, if not we do not execute the action.
@@ -795,7 +801,7 @@ humhub.module('action', function(module, require, $) {
      * This function can be called to manually trigger an action event of the given $trigger.
      * This can be used for example for additional event types without actually binding the
      * event to $trigger.
-     * 
+     *
      * e.g manually trigger a custom data-action-done action of an ui component.
      *
      * @function module:action.trigger

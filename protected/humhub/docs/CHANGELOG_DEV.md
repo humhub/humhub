@@ -28,7 +28,8 @@ HumHub Change Log (DEVELOP)
 - Fix #3810: Print Media Cluttered by HREF Content
 - Enh: Added further print style enhancements
 - Fix #3803: Invalid editor preset handling
-- Fix: Invalid editor placeholder handling
+- Fix #3829: Guest user access to counter set freezes
+- Enh: `data-action` url now can be set as `href` attribute additionally to  `data-action-url`
 
 1.4.0-beta.2
 ------------
