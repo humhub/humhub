@@ -183,4 +183,14 @@ class DirectoryController extends Controller
         return $this->render('userPosts', []);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getAccessRules()
+    {
+        return [
+            ['permissions' => \humhub\modules\directory\permissions\AccessDirectory::class]
+        ];
+    }
+
 }
