@@ -30,6 +30,7 @@ HumHub Change Log (DEVELOP)
 - Fix #3803: Invalid editor preset handling
 - Fix #3829: Guest user access to counter set freezes
 - Enh: `data-action` url now can be set as `href` attribute additionally to  `data-action-url`
+- Fix #3837: Legacy modal may freeze in case of errors
 
 1.4.0-beta.2
 ------------

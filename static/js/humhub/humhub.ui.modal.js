@@ -624,6 +624,7 @@ humhub.module('ui.modal', function (module, require, $) {
                 }
             }).catch(function (error) {
                 module.log.error(error, true);
+                module.global.close();
             });
         });
     };
@@ -674,7 +675,8 @@ humhub.module('ui.modal', function (module, require, $) {
         }
 
         var modal = (id) ? module.get(id) : module.global;
-        return modal.load(evt, _defaultRequestOptions(evt, options)).catch(function (err) {
+        return modal.load(evt, _defaultRequestOptions(evt, options))
+            .catch(function (err) {
             module.log.error(err, true);
             modal.close();
         });
