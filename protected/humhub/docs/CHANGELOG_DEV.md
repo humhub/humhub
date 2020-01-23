@@ -33,6 +33,9 @@ HumHub Change Log (DEVELOP)
 - Fix #3837: Legacy modal may freeze in case of errors
 - Fix #3796: Guest users can't access public posts from 'Latest activities'
 - Fix #3797: User `humhub\modules\user\widgets\Image` link was disabled by default
+- Fix #3795: Open Sans load downloadable font: kern: Too large subtable, table discarded
+- Chng: Dropped open-sans npm dependency and updated and included font in `static/css/open-sans.css`
+- Enh: Update Yii version to 2.0.32
 
 1.4.0-beta.2
 ------------

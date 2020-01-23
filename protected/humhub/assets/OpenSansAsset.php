@@ -21,10 +21,17 @@ class OpenSansAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@npm/open-sans-fontface';
+    public $basePath = '@webroot-static';
 
     /**
      * @inheritdoc
      */
-    public $css = ['open-sans.css'];
+    public $baseUrl = '@web-static';
+
+    /**
+     * @inheritdoc
+     */
+    public $css = [
+        'css/open-sans.css',
+    ];
 }
