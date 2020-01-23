@@ -14,7 +14,6 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\widgets\Image as UserImage;
 use Yii;
-use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
@@ -230,10 +229,30 @@ class ProfileImage
         }
 
         $cfg['width'] = $width;
+        $widgetOptions = ['width' => $width];
+
+        // TODO: improve option handling...
+        if(isset($cfg['link'])) {
+            $widgetOptions['link'] = $cfg['link'];
+            unset($cfg['link']);
+        }
+
+        if(isset($cfg['showTooltip'])) {
+            $widgetOptions['showTooltip'] = $cfg['showTooltip'];
+            unset($cfg['showTooltip']);
+        }
+
+        if(isset($cfg['tooltipText'])) {
+            $widgetOptions['tooltipText'] = $cfg['tooltipText'];
+            unset($cfg['tooltipText']);
+        }
 
         if($container instanceof Space) {
-            return SpaceImage::widget(['width' => $width, 'space' => $container, 'htmlOptions' => $cfg]);
+            $widgetOptions['space'] = $container;
+            $widgetOptions['htmlOptions'] = $cfg;
+            return SpaceImage::widget($widgetOptions);
         }
+
 
         $htmlOptions = [];
 
@@ -242,6 +261,10 @@ class ProfileImage
             unset($cfg['htmlOptions']);
         }
 
-        return UserImage::widget(['width' => $width, 'user' => $container, 'imageOptions' => $cfg, 'htmlOptions' => $htmlOptions]);
+        $widgetOptions['user'] = $container;
+        $widgetOptions['imageOptions'] = $cfg;
+        $widgetOptions['htmlOptions'] = $htmlOptions;
+
+        return UserImage::widget($widgetOptions);
     }
 }

@@ -6,6 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
@@ -13,6 +14,9 @@ use humhub\widgets\TimeAgo;
 use yii\helpers\Url;
 
 /* @var $originator \humhub\modules\user\models\User  */
+/* @var $clickable boolean  */
+/* @var $record ActiveRecord  */
+
 ?>
 
 <?php if ($clickable) : ?>
@@ -22,7 +26,7 @@ use yii\helpers\Url;
         <div class="media">
             <?php if ($originator !== null) : ?>
                 <!-- Show user image -->
-                <?= $originator->getProfileImage()->render(32, ['class' => 'media-object', 'htmlOptions' => ['class' => 'pull-left']]) ?>
+                <?= $originator->getProfileImage()->render(32, ['class' => 'media-object', 'link' => false, 'htmlOptions' => ['class' => 'pull-left']]) ?>
             <?php endif; ?>
 
             <!-- Show space image, if you are outside from a space -->
