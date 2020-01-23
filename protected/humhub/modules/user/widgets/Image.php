@@ -29,6 +29,11 @@ class Image extends BaseImage
     /**
      * @inheritdoc
      */
+    public $link = true;
+
+    /**
+     * @inheritdoc
+     */
     public function run()
     {
         if ($this->user->status == User::STATUS_SOFT_DELETED) {

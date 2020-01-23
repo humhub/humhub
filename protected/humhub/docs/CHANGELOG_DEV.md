@@ -32,6 +32,7 @@ HumHub Change Log (DEVELOP)
 - Enh: `data-action` url now can be set as `href` attribute additionally to  `data-action-url`
 - Fix #3837: Legacy modal may freeze in case of errors
 - Fix #3796: Guest users can't access public posts from 'Latest activities'
+- Fix #3797: User `humhub\modules\user\widgets\Image` link was disabled by default
 
 1.4.0-beta.2
 ------------
