@@ -36,6 +36,7 @@ HumHub Change Log (DEVELOP)
 - Fix #3795: Open Sans load downloadable font: kern: Too large subtable, table discarded
 - Chng: Dropped open-sans npm dependency and updated and included font in `static/css/open-sans.css`
 - Enh: Update Yii version to 2.0.32
+- Enh #3822 Added content id to notification urls as fallback in case notification was deleted
 
 1.4.0-beta.2
 ------------

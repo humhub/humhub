@@ -2,12 +2,17 @@
 
 namespace humhub\modules\notification\models;
 
+use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
-use humhub\modules\space\models\Space;
+use humhub\components\Module;
+use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\Exception;
+use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\db\IntegrityException;
+use yii\db\Query;
 
 /**
  * This is the model class for table "notification".
@@ -30,7 +35,7 @@ use yii\db\IntegrityException;
  *
  * @mixin PolymorphicRelation
  */
-class Notification extends \humhub\components\ActiveRecord
+class Notification extends ActiveRecord
 {
 
     /**
@@ -100,7 +105,8 @@ class Notification extends \humhub\components\ActiveRecord
     /**
      * Use getBaseModel instead.
      * @param array $params
-     * @return \humhub\modules\notification\components\BaseNotification
+     * @return BaseNotification
+     * @throws IntegrityException
      * @deprecated since version 1.2 use [getBaseModel()] instead
      */
     public function getClass($params = [])
@@ -112,7 +118,7 @@ class Notification extends \humhub\components\ActiveRecord
      * Returns the business model of this notification
      *
      * @param array $params
-     * @return \humhub\modules\notification\components\BaseNotification
+     * @return BaseNotification
      * @throws IntegrityException
      */
     public function getBaseModel($params = [])
@@ -145,7 +151,7 @@ class Notification extends \humhub\components\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery the receiver of this notification
+     * @return ActiveQuery the receiver of this notification
      */
     public function getUser()
     {
@@ -153,7 +159,7 @@ class Notification extends \humhub\components\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery the originator user relations
+     * @return ActiveQuery the originator user relations
      */
     public function getOriginator()
     {
@@ -163,7 +169,7 @@ class Notification extends \humhub\components\ActiveRecord
     /**
      * Returns polymorphic relation linked with this notification
      *
-     * @return \humhub\components\ActiveRecord
+     * @return ActiveRecord
      */
     public function getSourceObject()
     {
@@ -178,12 +184,13 @@ class Notification extends \humhub\components\ActiveRecord
      * Returns all available notifications of a module identified by its modulename.
      *
      * @return array with format [moduleId => notifications[]]
+     * @throws Exception
      */
     public static function getModuleNotifications()
     {
         $result = [];
         foreach (Yii::$app->moduleManager->getModules(['includeCoreModules' => true]) as $module) {
-            if ($module instanceof \humhub\components\Module) {
+            if ($module instanceof Module) {
                 $notifications = $module->getNotifications();
                 if (count($notifications) > 0) {
                     $result[$module->getName()] = $notifications;
@@ -198,7 +205,7 @@ class Notification extends \humhub\components\ActiveRecord
      */
     public static function getNotificationClasses()
     {
-        return (new \yii\db\Query())
+        return (new Query())
             ->select(['class'])
             ->from(self::tableName())
             ->distinct()->all();
@@ -210,6 +217,7 @@ class Notification extends \humhub\components\ActiveRecord
      * @param integer $from notification id which was the last loaded entry.
      * @param int $limit count of results.
      * @return Notification[]
+     * @throws \Throwable
      * @since 1.2
      */
     public static function loadMore($from = 0, $limit = 6)
@@ -231,7 +239,8 @@ class Notification extends \humhub\components\ActiveRecord
      *
      * @param User|null $user
      * @param int $sendWebNotifications
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
+     * @throws \Throwable
      */
     public static function findGrouped(User $user = null, $sendWebNotifications = 1)
     {
@@ -263,7 +272,8 @@ class Notification extends \humhub\components\ActiveRecord
      * if no User instance is provided.
      *
      * @param User $user
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
+     * @throws \Throwable
      * @since 1.2
      */
     public static function findUnseen(User $user = null)
@@ -277,7 +287,8 @@ class Notification extends \humhub\components\ActiveRecord
      * Finds all grouped unseen notifications which were not already sent to the frontend.
      *
      * @param User $user
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
+     * @throws \Throwable
      * @since 1.2
      */
     public static function findUnnotifiedInFrontend(User $user = null)

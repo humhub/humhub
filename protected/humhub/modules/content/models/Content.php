@@ -706,6 +706,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
 
     /**
      * @return ContentActiveRecord
+     * @throws IntegrityException
      * @since 1.3
      */
     public function getModel()

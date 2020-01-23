@@ -8,7 +8,11 @@
 
 namespace humhub\modules\notification\controllers;
 
+use humhub\modules\content\models\Content;
 use Yii;
+use yii\base\Exception;
+use yii\console\Response;
+use yii\db\IntegrityException;
 use yii\web\HttpException;
 use humhub\components\Controller;
 use humhub\components\behaviors\AccessControl;
@@ -35,23 +39,64 @@ class EntryController extends Controller
 
     /**
      * Redirects to the target URL of the given notification
+     * @param int $id
+     * @param int|null $cId
+     * @return EntryController|Response|\yii\web\Response
+     * @throws Exception
+     * @throws HttpException
+     * @throws IntegrityException
+     * @throws \Throwable
      */
-    public function actionIndex()
+    public function actionIndex($id, $cId = null)
     {
-        $notificationModel = Notification::findOne(['id' => Yii::$app->request->get('id'), 'user_id' => Yii::$app->user->id]);
+        $notificationModel = Notification::findOne(['id' => $id, 'user_id' => Yii::$app->user->id]);
 
-        if ($notificationModel === null) {
+        if($notificationModel) {
+            $notification = $notificationModel->getBaseModel();
+
+            if(!$notification) {
+                throw new HttpException(404, Yii::t('NotificationModule.base','The requested content is not valid or was removed!'));
+            }
+
+            $url = $notification->getUrl();
+
+            if ($notification->markAsSeenOnClick) {
+                $notification->markAsSeen();
+            }
+        } else {
+            $url = $this->getContentUrl($cId);
+        }
+
+        if(!$url) {
             throw new HttpException(404, Yii::t('NotificationModule.base','The requested content is not valid or was removed!'));
         }
 
-        $notification = $notificationModel->getBaseModel();
+        return $this->redirect($url);
+    }
 
-        if ($notification->markAsSeenOnClick) {
-            $notification->markAsSeen();
+    /**
+     * @param null $cId
+     * @return string|null
+     * @throws HttpException
+     * @throws \Throwable
+     * @throws Exception
+     */
+    private function getContentUrl($cId = null) {
+        if($cId === null) {
+            return null;
         }
 
-        // Redirect to notification URL
-        return $this->redirect($notification->getUrl());
+        $content = Content::findOne(['id' => $cId]);
+
+        if(!$content) {
+            return null;
+        }
+
+        if(!$content->canView()) {
+            throw new HttpException(403);
+        }
+
+        return $content->getUrl();
     }
 
 }

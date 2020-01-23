@@ -190,6 +190,7 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
 
     /**
      * @return Space related space instance in case the activity source is an related contentcontainer of type space, otherwise null
+     * @throws \yii\base\Exception
      */
     public function getSpace()
     {
@@ -200,6 +201,7 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
 
     /**
      * @return integer related space id in case the activity source is an related contentcontainer of type space, otherwise null
+     * @throws \yii\base\Exception
      */
     public function getSpaceId()
     {
@@ -224,6 +226,7 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
      * This is the case if the source is either a ContentContainerActiveRecord itself or a ContentOwner.
      *
      * @return ContentContainerActiveRecord
+     * @throws \yii\base\Exception
      */
     public function getContentContainer()
     {

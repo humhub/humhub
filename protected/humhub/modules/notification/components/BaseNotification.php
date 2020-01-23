@@ -131,9 +131,17 @@ abstract class BaseNotification extends SocialActivity
             $date = null;
         }
 
+        if($this->hasContent()) {
+            $url = Url::to(['/notification/entry', 'id' => $this->record->id, 'cId' => $this->getContent()->id], true);
+            $relativeUrl = Url::to(['/notification/entry', 'id' => $this->record->id, 'cId' => $this->getContent()->id], false);
+        } else {
+            $url = Url::to(['/notification/entry', 'id' => $this->record->id], true);
+            $relativeUrl = Url::to(['/notification/entry', 'id' => $this->record->id], false);
+        }
+
         $result = [
-            'url' => Url::to(['/notification/entry', 'id' => $this->record->id], true),
-            'relativeUrl' => Url::to(['/notification/entry', 'id' => $this->record->id], false),
+            'url' => $url,
+            'relativeUrl' => $relativeUrl,
             'date' => $date,
             'isNew' => !$this->record->seen,
         ];
