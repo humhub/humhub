@@ -123,6 +123,7 @@ The following table shows the default files.
 | MANUAL.md | No | Information on how to use this module |
 | CHANGELOG.md | Yes | A file which contains a curated, chronologically ordered list of changes for each version |
 | LICENCE.md | No | Licencing information including the licence |
+| DEVELOPER.md | No | Additional information for developers |
 
 
 ## Extended structure example
