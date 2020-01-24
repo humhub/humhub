@@ -633,7 +633,11 @@ humhub.module('action', function(module, require, $) {
             url = $trigger.attr('href');
         }
 
-        return url;
+        if(url !== '#' && url !== '') {
+            return url;
+        }
+
+        return null;
     };
 
     /**
