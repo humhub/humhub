@@ -38,7 +38,7 @@ HumHub Change Log (DEVELOP)
 - Enh: Update Yii version to 2.0.32
 - Enh #3822 Added content id to notification urls as fallback in case notification was deleted
 - Fix: Settings cli rewrite dynamic config when required
-
+- Fix #3806: Using `Receive notifications for new content` will not include the space to the notification setting view until settings are saved
 
 1.4.0-beta.2
 ------------

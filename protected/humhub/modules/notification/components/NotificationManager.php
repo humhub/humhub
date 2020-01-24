@@ -260,15 +260,21 @@ class NotificationManager
      */
     public function getSpaces(User $user)
     {
-        $isLoaded = (Yii::$app->getModule('notification')->settings->user($user)->get('notification.like_email') !== null);
-        if ($isLoaded) {
-            $memberSpaces = Membership::getUserSpaceQuery($user, true, true)->all();
-            $followSpaces = Follow::getFollowedSpacesQuery($user, true)->all();
+        $memberSpaces = Membership::getUserSpaceQuery($user, true, true)->all();
+        $followSpaces = Follow::getFollowedSpacesQuery($user, true)->all();
 
-            return array_merge($memberSpaces, $followSpaces);
-        } else {
-            return Space::findAll(['guid' => Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces')]);
+        $result = array_merge($memberSpaces, $followSpaces);
+
+        if($this->isUntouchedSettings($user)) {
+            $result = array_merge($result, Space::findAll(['guid' => Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces')]));
         }
+
+        return $result;
+    }
+
+    private function isUntouchedSettings(User $user)
+    {
+        return Yii::$app->getModule('notification')->settings->user($user)->get('notification.like_email') === null;
     }
 
     /**
