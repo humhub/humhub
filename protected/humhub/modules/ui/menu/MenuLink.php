@@ -11,12 +11,14 @@ namespace humhub\modules\ui\menu;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\widgets\Menu;
 use humhub\widgets\Button;
+
 /**
  * Class MenuLink
  *
  * Used to render menu link entries.
  *
  * @since 1.4
+ * @property $icon
  * @see Menu
  */
 class MenuLink extends MenuEntry
@@ -26,17 +28,19 @@ class MenuLink extends MenuEntry
      */
     protected $url;
 
+
     /**
      * @var Button
      */
     protected $link;
+
 
     /**
      * @return Button
      */
     public function getLink()
     {
-        if(!$this->link) {
+        if (!$this->link) {
             $this->link = Button::none();
         }
 
@@ -62,7 +66,7 @@ class MenuLink extends MenuEntry
             $this->getLink()->cssClass('active');
         }
 
-        if($this->getId()) {
+        if ($this->getId()) {
             $this->getLink()->options(['data-menu-id' => $this->getId()]);
         }
 
@@ -175,9 +179,9 @@ class MenuLink extends MenuEntry
      *
      * > Note: In the array icons must be provided in legacy html format.
      *
-     * @deprecated since 1.4
      * @param $item
      * @return MenuLink
+     * @deprecated since 1.4
      */
     public static function createByArray($item)
     {
@@ -227,8 +231,8 @@ class MenuLink extends MenuEntry
     /**
      * Returns the MenuEntry as array structure
      *
-     * @deprecated since 1.4
      * @return array the menu entry array representation
+     * @deprecated since 1.4
      */
     public function toArray()
     {
