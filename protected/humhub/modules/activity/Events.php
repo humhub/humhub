@@ -11,6 +11,10 @@ namespace humhub\modules\activity;
 use humhub\modules\activity\components\MailSummary;
 use humhub\modules\activity\jobs\SendMailSummary;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\admin\permissions\ManageSettings;
+use humhub\modules\admin\widgets\SettingsMenu;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\user\widgets\AccountMenu;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\Event;
@@ -32,7 +36,9 @@ class Events extends BaseObject
      */
     public static function onCronHourlyRun($event)
     {
-        Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_HOURLY]));
+        if (static::getModule()->enableMailSummaries) {
+            Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_HOURLY]));
+        }
     }
 
     /**
@@ -42,9 +48,11 @@ class Events extends BaseObject
      */
     public static function onCronDailyRun($event)
     {
-        Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_DAILY]));
-        if (date('w') == Yii::$app->getModule('activity')->weeklySummaryDay) {
-            Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_WEEKLY]));
+        if (static::getModule()->enableMailSummaries) {
+            Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_DAILY]));
+            if (date('w') == Yii::$app->getModule('activity')->weeklySummaryDay) {
+                Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_WEEKLY]));
+            }
         }
     }
 
@@ -75,10 +83,46 @@ class Events extends BaseObject
         }
     }
 
+    public static function onAccountMenuInit($event)
+    {
+        if (static::getModule()->enableMailSummaries) {
+            /** @var AccountMenu $menu */
+            $menu = $event->sender;
+
+            $menu->addEntry(new MenuLink([
+                'label' => Yii::t('ActivityModule.account', 'E-Mail Summaries'),
+                'id' => 'account-settings-emailsummary',
+                'icon' => 'envelope',
+                'url' => ['/activity/user'],
+                'sortOrder' => 105,
+                'isActive' => MenuLink::isActiveState('activity')
+            ]));
+        }
+    }
+
+
+    public static function onSettingsMenuInit($event)
+    {
+        if (static::getModule()->enableMailSummaries) {
+            /** @var SettingsMenu $menu */
+            $menu = $event->sender;
+
+            $menu->addEntry(new MenuLink([
+                'label' => Yii::t('ActivityModule.base', 'E-Mail Summaries'),
+                'url' => ['/activity/admin/defaults'],
+                'sortOrder' => 300,
+                'isActive' => MenuLink::isActiveState('activity', 'admin', 'defaults'),
+                'isVisible' => Yii::$app->user->can(ManageSettings::class)
+            ]));
+        }
+    }
+
     /**
      * Callback to validate module database records.
      *
      * @param Event $event
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public static function onIntegrityCheck($event)
     {
@@ -114,6 +158,15 @@ class Events extends BaseObject
                 }
             }
         }
+    }
+
+
+    /**
+     * @return Module
+     */
+    private static function getModule()
+    {
+        return Yii::$app->getModule('activity');
     }
 
 }

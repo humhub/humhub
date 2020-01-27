@@ -43,14 +43,6 @@ class SettingsMenu extends TabMenu
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.base', 'E-Mail summaries'),
-            'url' => ['/activity/admin/defaults'],
-            'sortOrder' => 300,
-            'isActive' => MenuLink::isActiveState('activity', 'admin', 'defaults'),
-            'isVisible' => $canEditSettings
-        ]));
-
-        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.base', 'Notifications'),
             'url' => ['/notification/admin/defaults'],
             'sortOrder' => 400,

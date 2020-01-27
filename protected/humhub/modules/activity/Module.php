@@ -31,6 +31,13 @@ class Module extends \humhub\components\Module
     public $weeklySummaryDay = 0;
 
     /**
+     * @var boolean enable mail summary feature
+     * @since 1.4
+     */
+    public $enableMailSummaries = true;
+
+
+    /**
      * Returns all configurable Activitiess
      *
      * @since 1.2

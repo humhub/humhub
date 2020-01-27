@@ -39,15 +39,6 @@ class AccountMenu extends LeftNavigation
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.account', 'E-Mail Summaries'),
-            'id' => 'account-settings-emailsummary',
-            'icon' => 'envelope',
-            'url' => ['/activity/user'],
-            'sortOrder' => 105,
-            'isActive' => MenuLink::isActiveState('activity')
-        ]));
-
-        $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.account', 'Notifications'),
             'id' => 'account-settings-notifications',
             'icon' => 'bell',
