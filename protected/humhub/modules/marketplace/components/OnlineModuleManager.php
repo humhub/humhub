@@ -44,10 +44,10 @@ class OnlineModuleManager extends Component
     {
         /** @var Module $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
-        $modulePath = Yii::getAlias($marketplaceModule->modulesPath);
+        $modulesPath = Yii::getAlias($marketplaceModule->modulesPath);
 
-        if (!is_writable($modulePath)) {
-            throw new Exception(Yii::t('MarketplaceModule.base', 'Module directory %modulePath% is not writeable!', ['%modulePath%' => $modulePath]));
+        if (!is_writable($modulesPath)) {
+            throw new Exception(Yii::t('MarketplaceModule.base', 'Module directory %modulePath% is not writeable!', ['%modulePath%' => $modulesPath]));
         }
 
         $moduleInfo = $this->getModuleInfo($moduleId);
@@ -56,10 +56,45 @@ class OnlineModuleManager extends Component
             throw new Exception(Yii::t('MarketplaceModule.base', 'No compatible module version found!'));
         }
 
-        $moduleDir = $modulePath . DIRECTORY_SEPARATOR . $moduleId;
-        if (is_dir($moduleDir)) {
+        // Check Module Folder exists
+        $moduleDownloadFolder = Yii::getAlias($marketplaceModule->modulesDownloadPath);
+        FileHelper::createDirectory($moduleDownloadFolder);
+
+        // Download
+        $downloadUrl = $moduleInfo['latestCompatibleVersion']['downloadUrl'];
+        $downloadTargetFileName = $moduleDownloadFolder . DIRECTORY_SEPARATOR . basename($downloadUrl);
+        try {
+            $hashSha256 = $moduleInfo['latestCompatibleVersion']['downloadFileSha256'];
+            $this->downloadFile($downloadTargetFileName, $downloadUrl, $hashSha256);
+        } catch (\Exception $ex) {
+            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Module download failed! (%error%)', ['%error%' => $ex->getMessage()]));
+        }
+
+        // Remove old module path
+        if (!$this->removeModuleDir($modulesPath . DIRECTORY_SEPARATOR . $moduleId)) {
+            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Could not remove old module path!'));
+        }
+
+        // Extract Package
+        if (!file_exists($downloadTargetFileName)) {
+            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Download of module failed!'));
+        }
+
+        if (!$this->unzip($downloadTargetFileName, $modulesPath)) {
+            Yii::error('Could not unzip ' . $downloadTargetFileName . ' to ' . $modulesPath, 'marketplace');
+            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Could not extract module!'));
+        }
+
+        Yii::$app->moduleManager->flushCache();
+        Yii::$app->moduleManager->register($modulesPath . DIRECTORY_SEPARATOR . $moduleId);
+    }
+
+
+    private function removeModuleDir($path)
+    {
+        if (is_dir($path)) {
             $files = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($moduleDir, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
+                new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
             );
 
             foreach ($files as $fileinfo) {
@@ -67,49 +102,52 @@ class OnlineModuleManager extends Component
                 $todo($fileinfo->getRealPath());
             }
 
-            FileHelper::removeDirectory($moduleDir);
+            FileHelper::removeDirectory($path);
         }
 
-        // Check Module Folder exists
-        $moduleDownloadFolder = Yii::getAlias('@runtime/module_downloads');
-        FileHelper::createDirectory($moduleDownloadFolder);
-
-        $version = $moduleInfo['latestCompatibleVersion'];
-
-        // Download
-        $downloadUrl = $version['downloadUrl'];
-        $downloadTargetFileName = $moduleDownloadFolder . DIRECTORY_SEPARATOR . basename($downloadUrl);
-        try {
-            $http = new \Zend\Http\Client($downloadUrl, [
-                'adapter' => '\Zend\Http\Client\Adapter\Curl',
-                'curloptions' => CURLHelper::getOptions(),
-                'timeout' => 30
-            ]);
-
-            $response = $http->send();
-
-            file_put_contents($downloadTargetFileName, $response->getBody());
-        } catch (Exception $ex) {
-            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Module download failed! (%error%)', ['%error%' => $ex->getMessage()]));
-        }
-
-        // Extract Package
-        if (file_exists($downloadTargetFileName)) {
-            $zip = new ZipArchive;
-            $res = $zip->open($downloadTargetFileName);
-            if ($res === true) {
-                $zip->extractTo($modulePath);
-                $zip->close();
-            } else {
-                throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Could not extract module!'));
-            }
-        } else {
-            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Download of module failed!'));
-        }
-
-        Yii::$app->moduleManager->flushCache();
-        Yii::$app->moduleManager->register($modulePath . DIRECTORY_SEPARATOR . $moduleId);
+        return (!is_dir($path));
     }
+
+    private function unzip($file, $folder)
+    {
+        $zip = new ZipArchive;
+        $res = $zip->open($file);
+        if ($res !== true) {
+            return false;
+        }
+        $zip->extractTo($folder);
+        $zip->close();
+
+        return true;
+    }
+
+    private function downloadFile($fileName, $url, $sha256 = null)
+    {
+        if (is_file($fileName) && !empty($sha256) && hash_file('sha256', $fileName) === $sha256) {
+            // File already downloaded
+            return true;
+        }
+
+        $http = new \Zend\Http\Client($url, [
+            'adapter' => '\Zend\Http\Client\Adapter\Curl',
+            'curloptions' => CURLHelper::getOptions(),
+            'timeout' => 30
+        ]);
+
+        $response = $http->send();
+
+        file_put_contents($fileName, $response->getBody());
+
+        if (!is_file($fileName)) {
+            throw new \Exception('Download failed. Could not write file! ' . $fileName);
+        }
+
+        if (!empty($sha256) && hash_file('sha256', $fileName) !== $sha256) {
+            throw new \Exception('File verification failed. Could not download file! ' . $fileName);
+        }
+        return true;
+    }
+
 
     /**
      * Updates a given module

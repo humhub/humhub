@@ -46,6 +46,11 @@ class Module extends BaseModule
     public $enabled = true;
 
     /**
+     * @var string download path for marketplace modules
+     */
+    public $modulesDownloadPath = '@runtime/module_downloads';
+
+    /**
      * @inheritdoc
      */
     public function getName()
