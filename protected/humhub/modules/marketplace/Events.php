@@ -74,10 +74,10 @@ class Events extends BaseObject
 
     }
 
-
     public static function onHourlyCron($event)
     {
         Yii::$app->queue->push(new jobs\PeActiveCheckJob());
+        Yii::$app->queue->push(new jobs\ModuleCleanupsJob());
     }
 
 }
