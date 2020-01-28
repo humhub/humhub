@@ -6,7 +6,7 @@ return array (
   'E-Mail Address Attribute' => 'E-Mail-Adressattribut',
   'Enable LDAP Support' => 'LDAP-Unterstützung aktivieren',
   'Encryption' => 'Verschlüsselung',
-  'Fetch/Update Users Automatically' => 'Benutzer automatisch erkennen/aktualisieren',
+  'Fetch/Update Users Automatically' => 'Benutzer automatisch erstellen und aktualisieren',
   'Hostname' => 'Host-Name',
   'ID Attribute' => 'ID Attribut',
   'LDAP' => 'LDAP',

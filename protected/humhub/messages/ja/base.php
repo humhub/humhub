@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Confirm</strong> Action' => '<strong>確認 strong&gt; アクション</strong>',
+  '<strong>Confirm</strong> Action' => '<strong>確認</strong> アクション',
   '<strong>Latest</strong> updates' => '<strong>最新</strong> 更新',
-  '<strong>Mail</strong> summary' => '<strong>メール strong&gt; 概要</strong>',
+  '<strong>Mail</strong> summary' => '<strong>メール</strong> 概要',
   'Account settings' => 'アカウント設定',
   'Add:' => '追加:',
   'Administration' => '管理',

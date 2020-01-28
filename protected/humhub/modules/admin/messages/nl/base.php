@@ -2,7 +2,7 @@
 return array (
   '<strong>Administration</strong> menu' => '<strong>Administratie</strong> menu',
   '<strong>Module </strong> administration' => '<strong>Module </strong> administratie',
-  '<strong>Warning</strong> incomplete setup!' => '<strong>Waarschuwing strong&gt; onvolledige installatie!</strong>',
+  '<strong>Warning</strong> incomplete setup!' => '<strong>Waarschuwing</strong> onvolledige installatie!',
   'About' => 'Over',
   'Admin' => 'Beheerder',
   'Administration' => 'Beheer',

@@ -2,19 +2,19 @@
 return array (
   '
 Module successfully disabled!
-' => '',
+' => 'Módulo deshabilitado con éxito.',
   '
 Module successfully enabled!
-' => '',
+' => 'Módulo habilitado con éxito.',
   '--- Disable module: {moduleId} ---
 
-' => '',
+' => '--- Deshabilitar módulo: {moduleId} ---',
   '--- Enable module: {moduleId} ---
 
-' => '',
+' => '--- Habilitar módulo: {moduleId} ---',
   'Add purchased module by licence key' => 'Agregar licencia de módulo comprado',
   'All modules are up to date!' => '¡Todos los módulos están la versión más reciente!',
-  'All {moduleId} module content will be deleted. Continue?' => '',
+  'All {moduleId} module content will be deleted. Continue?' => 'Se eliminará todo el contenido del módulo {moduleId}. ¿Continuar?',
   'Available updates' => 'Actualizaciones disponibles',
   'Browse online' => 'Explorar en línea',
   'Buy (%price%)' => 'Comprar (%price%)',
@@ -28,13 +28,13 @@ Module successfully enabled!
   'Latest compatible version:' => 'Última versión compatible:',
   'Latest version:' => 'Última versión:',
   'Licence Key:' => 'Número de licencia:',
-  'Marketplace' => '',
+  'Marketplace' => 'Marketplace',
   'Module directory %modulePath% is not writeable!' => '¡El directorio del módulo %modulePath% no es escribible!',
   'Module download failed! (%error%)' => '¡Falló la descarga del módulo! (%error%)',
   'Module not found or activated!
-' => '',
+' => 'El módulo no se ha encontrado o está ya activado.',
   'Module not found!
-' => '',
+' => 'El módulo no se ha encontrado.',
   'More info' => 'Más información',
   'No compatible module version found!' => '¡No se encontró una versión compatible del módulo!',
   'No modules found!' => '¡No se han encontrado módulos!',
