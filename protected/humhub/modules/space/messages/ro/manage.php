@@ -57,7 +57,7 @@ return array (
   'This option will hide new content from this space at your dashboard' => '',
   'This option will show new content from this space at your dashboard' => '',
   'Transfer ownership' => '',
-  'Unarchive' => '',
+  'Unarchive' => 'Dezarhivează',
   'Your password' => '',
   'e.g. example for {baseUrl}/s/example' => '',
   'never' => '',

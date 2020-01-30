@@ -71,7 +71,7 @@ return array (
   'The requested resource could not be found.' => '',
   'The space has been archived.' => '',
   'The space has been unarchived.' => '',
-  'Time Zone' => '',
+  'Time Zone' => 'Tidszone',
   'Toggle comment menu' => '',
   'Toggle panel menu' => '',
   'Toggle post menu' => '',

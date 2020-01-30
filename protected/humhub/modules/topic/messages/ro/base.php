@@ -6,7 +6,7 @@ return array (
   '<strong>Topic</strong> Overview' => '',
   'Add Topic' => '',
   'Do you really want to delete this topic?' => '',
-  'Topic' => '',
+  'Topic' => 'Subiect',
   'Topic has been deleted!' => '',
   'Topics' => 'Argumente',
 );

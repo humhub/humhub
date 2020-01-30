@@ -39,7 +39,7 @@ Module successfully enabled!
   'No compatible module version found!' => '',
   'No modules found!' => '',
   'No purchased modules found!' => '',
-  'Ok' => '',
+  'Ok' => 'Ok',
   'Purchases' => '',
   'Register' => '',
   'Search' => 'Cari',

@@ -46,7 +46,7 @@ return array (
   'File' => 'Arxiu',
   'Firstname Lastname (e.g. John Doe)' => '',
   'Friendship' => '',
-  'General' => '',
+  'General' => 'General',
   'General Settings' => '',
   'Got invalid image magick response! - Correct command?' => '',
   'HTML tracking code' => '',

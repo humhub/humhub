@@ -1,7 +1,7 @@
 <?php
 return array (
   'Author' => '',
-  'Content' => '',
+  'Content' => 'Περιεχόμενο',
   'Content Type' => '',
   'Sorting' => '',
   'Topic' => '',

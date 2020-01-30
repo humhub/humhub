@@ -40,7 +40,7 @@ return array (
   'Following' => 'Seguint',
   'Friends' => '',
   'Gender' => '',
-  'General' => '',
+  'General' => 'General',
   'Google+ URL' => '',
   'Hide age per default' => '',
   'Hide year in profile' => '',

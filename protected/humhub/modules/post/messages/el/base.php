@@ -6,7 +6,7 @@ return array (
   'Create post' => '',
   'Edit your post...' => '',
   'Read full post...' => 'Διάβασε ολόκληρη την ανάρτηση...',
-  'This space is archived.' => '',
+  'This space is archived.' => 'Αυτός ο χώρος είναι αρχειοθετημένος.',
   'What\'s on your mind?' => 'Τι έχεις στο μυαλό σου;',
   'post' => 'Ανάστηση',
 );

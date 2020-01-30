@@ -16,7 +16,7 @@ return array (
   'Allowed file extensions' => 'Tilladte filtyper',
   'Alphabetical' => 'Alfabetisk',
   'Appearance Settings' => '',
-  'Back to overview' => '',
+  'Back to overview' => 'Tilbage til oversigten',
   'Base URL' => 'Base URL',
   'Cache Backend' => 'Cache Backend',
   'Comma separated list. Leave empty to allow all.' => 'Komma separeret liste. Lad den være tom for at tillade alle.',

@@ -35,7 +35,7 @@ return array (
   'Expand' => 'Extinde',
   'Export' => '',
   'Info:' => '',
-  'Invalid request method!' => '',
+  'Invalid request method!' => 'Invalid request method!',
   'It looks like you may have taken the wrong turn.' => 'Se pare că ai luat-o pe calea greșită.',
   'Language' => 'Limbă',
   'Loading...' => '',

@@ -19,7 +19,7 @@ return array (
   'Hide my year of birth' => '',
   'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => '',
   'Next »' => '',
-  'Ok' => '',
+  'Ok' => 'Ok',
   'Save and close' => '',
   'The account menu gives you access to your private settings and allows you to manage your public profile.' => '',
   'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.' => '',

@@ -2,7 +2,7 @@
 return array (
   'Add more...' => '',
   'An unexpected error occurred while loading the result.' => '',
-  'Load more' => '',
+  'Load more' => 'Încarcă mai mult',
   'No users found for the given query.' => '',
   'Please enter at least {n} character' => '',
   'Select {n,plural,=1{item} other{items}}' => '',

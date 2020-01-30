@@ -17,7 +17,7 @@ return array (
   'Are you sure that you want to delete your account?' => '',
   'Changing the username can make some links unusable, for example old links to the profile.' => '',
   'Configure' => 'Configura',
-  'Confirm' => '',
+  'Confirm' => 'Confirma',
   'Current password' => 'Contrasenya actual',
   'Delete account' => 'Elimina el compte',
   'Disable' => 'Inhabilita',

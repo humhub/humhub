@@ -8,7 +8,7 @@ return array (
   'Could not upload File:' => '',
   'Created by:' => '',
   'Double file extensions are not allowed!' => '',
-  'Download' => '',
+  'Download' => 'Λήψη',
   'File {fileName} could not be uploaded!' => '',
   'Image dimensions are too big to be processed with current server memory limit!' => '',
   'Insufficient permissions!' => '',

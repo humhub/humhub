@@ -9,7 +9,7 @@ return array (
   'Fetch/Update Users Automatically' => '',
   'Hostname' => '',
   'ID Attribute' => '',
-  'LDAP' => '',
+  'LDAP' => 'LDAP',
   'LDAP Attribute for E-Mail Address. Default: &quotmail&quot;' => '',
   'LDAP Attribute for Username. Example: &quotuid&quot; or &quot;sAMAccountName&quot;' => '',
   'Limit access to users meeting this criteria. Example: &quot(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => '',
@@ -25,6 +25,6 @@ return array (
   'The default credentials password (used only with username above).' => '',
   'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => '',
   'User Filer' => '',
-  'Username' => '',
+  'Username' => 'Όνομα χρήστη',
   'Username Attribute' => '',
 );

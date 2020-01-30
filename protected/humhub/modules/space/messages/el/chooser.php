@@ -3,7 +3,7 @@ return array (
   'Add Space' => '',
   'Add {n,plural,=1{space} other{spaces}}' => '',
   'Create new space' => '',
-  'My spaces' => '',
+  'My spaces' => 'Οι χώροι μου',
   'No member or following spaces found.' => '',
   'No result found for the given filter.' => '',
   'No spaces found for the given query' => '',

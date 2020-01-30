@@ -5,7 +5,7 @@ return array (
   'Email' => '',
   'Email address(es)' => '',
   'Please add the email addresses of people you want to invite below.' => '',
-  'Send invite' => '',
+  'Send invite' => 'Αποστολή πρόσκλησης',
   'Separate multiple email addresses by comma.' => '',
   'You\'ve been invited to join %appName%' => '',
   '{email} is already registered!' => '',

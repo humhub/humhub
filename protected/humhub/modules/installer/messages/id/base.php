@@ -29,7 +29,7 @@ return array (
   'Name of Database' => '',
   'Name of your network' => '',
   'Newly registered users have to be activated by an admin first' => '',
-  'Next' => '',
+  'Next' => 'Selanjutnya',
   'Nike – Just buy it. ;Wink;' => '',
   'Of course, your new social network needs a name. Please change the default name with one you like. (For example the name of your company, organization or club)' => '',
   'Ohh, something went wrong!' => '',

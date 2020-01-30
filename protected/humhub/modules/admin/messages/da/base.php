@@ -11,7 +11,7 @@ return array (
   'Appearance' => '',
   'Approval' => '',
   'Authentication' => 'Godkendelse',
-  'Back to overview' => '',
+  'Back to overview' => 'Tilbage til oversigten',
   'Back to user overview' => '',
   'Base URL needs to begin with http:// or https://' => '',
   'Basic' => 'Basis',
