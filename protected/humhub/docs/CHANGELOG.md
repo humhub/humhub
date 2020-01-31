@@ -2,6 +2,11 @@ HumHub Change Log
 =================
 
 
+1.3.21 (Unreleased)
+-------------------
+- Fix #3846: Timeline sort by "update" looses entries
+
+
 1.3.20 (January 9, 2020)
 ------------------------
 
