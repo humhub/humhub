@@ -15,8 +15,10 @@ use humhub\modules\marketplace\Module;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\Component;
 use yii\base\InvalidConfigException;
 use yii\db\StaleObjectException;
+use yii\base\Event;
 
 
 /**
@@ -24,8 +26,19 @@ use yii\db\StaleObjectException;
  *
  * @package humhub\modules\marketplace\components
  */
-class LicenceManager
+class LicenceManager extends Component
 {
+
+    /**
+     * @var Licence
+     */
+    private static $_licence = null;
+
+    /**
+     * @event Event an event that is triggered when the current licence is requested
+     */
+    const EVENT_GET_LICENCE = 'getLicence';
+
 
     const SETTING_KEY_PE_LICENCE_KEY = 'licenceKey';
     const SETTING_KEY_PE_LAST_FETCH = 'lastFetch';
@@ -35,12 +48,29 @@ class LicenceManager
     const PE_FETCH_INTERVAL = 60 * 60 * 2;
     const PE_FETCH_TOLERANCE = 60 * 60 * 24 * 2;
 
+
     /**
      * Returns the current licence object
      *
      * @return Licence
      */
     public static function get()
+    {
+        if (static::$_licence === null) {
+            static::$_licence = static::create();
+            Event::trigger(static::class, static::EVENT_GET_LICENCE);
+        }
+
+        return static::$_licence;
+    }
+
+
+    /**
+     * Returns the current licence object
+     *
+     * @return Licence
+     */
+    private static function create()
     {
         $settings = static::getModule()->settings;
 
