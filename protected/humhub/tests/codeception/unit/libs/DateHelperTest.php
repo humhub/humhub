@@ -26,7 +26,7 @@ class DateHelperTest extends Unit
 
     public function testIsInDBFormat()
     {
-        $this->assertTrue(DateHelper::isInDbFormat('2019-12-01'));
+        $this->assertFalse(DateHelper::isInDbFormat('2019-12-01'));
         $this->assertTrue(DateHelper::isInDbFormat('2019-12-01 12:30:00'));
 
         $this->assertFalse(DateHelper::isInDbFormat('2019-13-01'));
