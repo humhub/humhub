@@ -35,7 +35,7 @@ class SendMailSummary extends ActiveJob
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('activity');
-        if ($module->enableMailSummaries) {
+        if (!$module->enableMailSummaries) {
             return;
         }
 
