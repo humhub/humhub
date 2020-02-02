@@ -239,14 +239,20 @@ class UploadInput extends JsWidget
 
         $result = [
             'upload-url' => $this->url,
-            'upload-drop-zone' => $this->dropZone,
             'upload-progress' => $this->progress,
             'upload-preview' => $this->preview,
             'upload-form' => $formSelector,
             'upload-single' => $this->single,
             'upload-submit-name' => $this->submitName,
-            'upload-hide-in-stream' => $this->hideInStream ? '1' : null
         ];
+
+        if($this->hideInStream) {
+            $result['upload-hide-in-stream'] = 1;
+        }
+
+        if($this->dropZone) {
+            $result['upload-drop-zone'] = $this->dropZone;
+        }
 
         if($this->hideInStream) {
             $result['upload-hide-in-stream'] = '1';
