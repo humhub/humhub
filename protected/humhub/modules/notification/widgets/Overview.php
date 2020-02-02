@@ -23,6 +23,8 @@ class Overview extends JsWidget
 {
     public $id = 'notification_widget';
 
+    public $jsWidget = 'notification.NotificationDropDown';
+
     public function init()
     {
         $this->view->registerJsConfig('notification', [
@@ -63,7 +65,6 @@ class Overview extends JsWidget
     {
         return [
             'ui-init' => ListController::getUpdates(),
-            'ui-widget' => "notification.NotificationDropDown"
         ];
     }
 }

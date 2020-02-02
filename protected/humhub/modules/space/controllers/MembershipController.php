@@ -139,7 +139,10 @@ class MembershipController extends ContentContainerController
 
     /**
      * Revokes Membership for this workspace
+     * @return \yii\web\Response
      * @throws HttpException
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionRevokeMembership()
     {
