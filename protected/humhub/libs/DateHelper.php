@@ -66,7 +66,7 @@ class DateHelper
      */
     public static function isInDbFormat($value, $dateOnly = false)
     {
-        return $dateOnly ? preg_match(self::REGEX_DBFORMAT_DATE, $value) : preg_match(self::REGEX_DBFORMAT_DATETIME, $value);
+        return (boolean) ($dateOnly ? preg_match(self::REGEX_DBFORMAT_DATE, $value) : preg_match(self::REGEX_DBFORMAT_DATETIME, $value));
     }
 
     /**

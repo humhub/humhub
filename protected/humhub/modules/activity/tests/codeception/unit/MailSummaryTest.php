@@ -9,6 +9,8 @@
 namespace humhub\modules\activity\tests\codeception\unit;
 
 
+use Yii;
+use yii\swiftmailer\Message;
 use Codeception\Module\Yii2;
 use humhub\modules\activity\components\MailSummary;
 use humhub\modules\activity\components\MailSummaryProcessor;
@@ -22,8 +24,6 @@ use humhub\modules\space\activities\MemberAdded;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
-use Yii;
-use yii\swiftmailer\Message;
 
 class MailSummaryTest extends HumHubDbTestCase
 {
