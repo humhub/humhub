@@ -34,7 +34,12 @@ use Yii;
  */
 class UrlOembed extends ActiveRecord
 {
-    const FETCH = 'fetch';
+    /**
+     * @event
+     * @since 1.4
+     */
+    const EVENT_FETCH = 'fetch';
+
     /**
      * @var int Maximum amount of remote fetch calls per request
      */
@@ -140,7 +145,7 @@ class UrlOembed extends ActiveRecord
     public static function getOEmbed($url)
     {
         $oembedFetchEvent = new OembedFetchEvent(['url' => $url]);
-        (new UrlOembed())->trigger(static::FETCH, $oembedFetchEvent);
+        (new UrlOembed())->trigger(static::EVENT_FETCH, $oembedFetchEvent);
         if ($result = $oembedFetchEvent->getResult()) {
             return $result;
         }
@@ -232,7 +237,7 @@ class UrlOembed extends ActiveRecord
      * @param string $customProviderUrl
      * @return string|null
      */
-    protected static function loadUrl($url, $customProviderUrl = '')
+    public static function loadUrl($url, $customProviderUrl = '')
     {
         try {
             $urlOembed = static::findExistingOembed($url);
