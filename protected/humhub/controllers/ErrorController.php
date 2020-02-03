@@ -28,6 +28,9 @@ class ErrorController extends Controller
      */
     public function actionIndex()
     {
+        // Fix: https://github.com/humhub/humhub/issues/3848
+        Yii::$app->view->theme->register();
+
         if (($exception = Yii::$app->getErrorHandler()->exception) === null) {
             return '';
         }
