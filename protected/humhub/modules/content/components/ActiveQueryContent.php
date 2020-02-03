@@ -169,6 +169,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
      * @param array $scopes
      * @param User $user
      * @return \humhub\modules\content\components\ActiveQueryContent
+     * @throws \Throwable
      */
     public function userRelated($scopes = [], $user = null)
     {

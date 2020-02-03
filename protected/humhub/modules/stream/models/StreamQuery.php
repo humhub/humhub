@@ -40,7 +40,7 @@ class StreamQuery extends Model
 
     /**
      * Can be set to filter specific content types.
-     * 
+     *
      * @var array Content type filter
      */
     public $includes;
@@ -52,7 +52,7 @@ class StreamQuery extends Model
 
     /**
      * Can be set to filter out specific content types.
-     * 
+     *
      * @var array Content type filter
      */
     public $excludes;
@@ -71,32 +71,32 @@ class StreamQuery extends Model
 
     /**
      * Can be set to request a single content instance.
-     * @var int 
+     * @var int
      */
     public $contentId;
 
     /**
      * Start contentId used for stream "pagination".
-     * @var int 
+     * @var int
      */
     public $from = 0;
 
     /**
      * Stream sorting default = SORT_CREATED_AT;
-     * @var string 
+     * @var string
      */
     public $sort;
 
     /**
      * Result count limit.
-     * @var int 
+     * @var int
      */
     public $limit;
 
     /**
      * Array of stream filters to apply to the query.
      * There are the following filter available:
-     * 
+     *
      *  - 'entry_files': Filters content with attached files
      *  - 'entry_mine': Filters only content created by the query $user
      *  - 'entry_userinvovled': Filter content the query $user is involved
@@ -123,8 +123,8 @@ class StreamQuery extends Model
 
     /**
      * The content query.
-     * 
-     * @var \yii\db\ActiveQuery 
+     *
+     * @var \yii\db\ActiveQuery
      */
     protected $_query;
 
@@ -146,7 +146,7 @@ class StreamQuery extends Model
 
     /**
      * Static initializer.
-     * 
+     *
      * @param array|string|int $includes either an array of ContentActiveRecord class names or single class name or single contentId.
      * @param array|string $excludes either an array of ContentActiveRecord class names or single class name to exclude from the query.
      * @return StreamQuery
@@ -345,9 +345,9 @@ class StreamQuery extends Model
             if (!empty($this->from)) {
                 $this->_query->andWhere(
                     ['or',
-                        "content.stream_sort_date < (SELECT updated_at FROM content wd WHERE wd.id=:from)",
+                        "content.stream_sort_date < (SELECT stream_sort_date FROM content wd WHERE wd.id=:from)",
                         ['and',
-                            "content.stream_sort_date = (SELECT updated_at FROM content wd WHERE wd.id=:from)",
+                            "content.stream_sort_date = (SELECT stream_sort_date FROM content wd WHERE wd.id=:from)",
                             "content.id > :from"
                         ],
                     ], [':from' => $this->from]);
@@ -382,7 +382,7 @@ class StreamQuery extends Model
 
     /**
      * Sets the channel for this stream query
-     * 
+     *
      * @param string $channel
      * @return StreamQuery
      */
