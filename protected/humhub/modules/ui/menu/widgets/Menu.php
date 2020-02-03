@@ -317,7 +317,8 @@ abstract class Menu extends JsWidget
     }
 
     /**
-     * @deprecated since 1.4
+     * Deactivates an entry by given id or url search string.
+     * @param $searchStr menu entry id or url
      */
     public function setInactive($searchStr)
     {

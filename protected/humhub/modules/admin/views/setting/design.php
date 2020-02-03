@@ -1,10 +1,13 @@
 <?php
 
+use humhub\modules\admin\models\forms\DesignSettingsForm;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\Button;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use humhub\compat\CHtml;
+
+/* @var $model DesignSettingsForm */
 
 \humhub\modules\admin\assets\AdminAsset::register($this);
 
