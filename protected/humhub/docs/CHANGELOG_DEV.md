@@ -10,8 +10,8 @@ HumHub Change Log (DEVELOP)
 - Fix: Default `ContentContainerController::subLayout` can't be overwritten directly or within controller `init`
 - Fix #3791: Topic overview missing for user profiles
 - Fix #3787: Required checkboxlist input shows asterisk on each option
-- Chng: **Theme:** removed `static/temp.css`, moved required form style to `form.less`
-- Enh: **Theme:** use of colored required input field asterisk
+- Chng: Removed `static/temp.css`, moved required form style to `form.less`
+- Enh: Use of colored required input field asterisk
 - Fix #3784: `ActiveQueryContent::readable()` not working for global content
 - Chng: Removed italic text from summary mail of comment and content activities for better readability
 - Fix #3798: DBValidator not working with time value and swedish locale
@@ -55,7 +55,7 @@ HumHub Change Log (DEVELOP)
 - Fix #3729: Integrity check used deprecated methods
 - Enh #3697: Stay of module update page after updating a module
 - Fix #3692: Icon Upload Problems
-- Fix #3705: Don't render empty navigation/menu
+- Fix #3705: Don't render empty menus
 - Fix #3706: Space mentioning broken
 - Fix #3742: OAuth timeout doesn't respect configured timeout 
 - Enh: Added `DateHelper:getUserTimeZone()`, `DateHelper:getSystemTimeZone()`, `DateHelper:isInDbFormat()`
@@ -90,10 +90,9 @@ HumHub Change Log (DEVELOP)
 - Enh: Added `humhub.ui.widget.Widget.loader()` for default loader functionality
 - Enh: Added `humhub.ui.widget.Widget.reload()` in combination with `humhub\widgets\Reloadable` interface
 - Enh: Implemented an auto loading mechanism for notification filters (Baleks)
-- Enh: Added an option for added additional or override existing OEmbed providers (Baleks)
-- Fix: WallEntry::EVENT_AFTER_RUN event not triggered
+- Enh: Modules can add or overwrite oembed providers by means of `humhub\models\UrlOembed:EVENT_FETCH` event (Baleks)
+- Fix: `WallEntry::EVENT_AFTER_RUN` event not triggered
 - Enh: Added `humhub\components\Widget::widgetLayout`
-- Enh: Added container image set widget (Baleks)
 - Enh: Added an option for user to change username (Baleks)
 - Enh: Added warning confirmation when module is being deactivated from console (Baleks)
 - Enh: Moved 'Default spaces' setting from Basic settings to Space settings (Baleks)
@@ -101,9 +100,9 @@ HumHub Change Log (DEVELOP)
 - Fix #3463 Changed 'Deny Invite' to 'Decline Invite' for space invites (Baleks)
 - Enh: Responsive mobile view enhancements
 - Enh: Added `humhub\widgets\Link::target()` and `blank()`
-- Fix: `humhub.client` does not resolve promise 302 on redirects 
+- Fix: `humhub.client` does not resolve promise on 302 redirects 
 - Enh: Separated marketplace methods into own submodule
-- Enh: Added consistent user "sub" displayname handling
+- Enh: Added consistent user "sub" display-name handling
 - Enh: Added possibility to manage database settings via CLI
 - Fix: Force redirect to login instead 404 when guest access is disabled (thanks to Security Research Team, Datafarm Co.,Ltd.) 
 - Enh: Added "web" submodule for web specific features (e.g. security headers or PWA)
@@ -126,7 +125,6 @@ HumHub Change Log (DEVELOP)
 - Fix `humhub\modules\file\widgets\Upload::progress` config options not working
 - Enh: More generic approach to determine themed view files
 - Enh: Always use ISO 639-1 alpha-2 (and ISO 3166-2) language codes
-- Enh: Update Yii version to 2.0.28
 - Enh: Reorganized translation method categories to reduce language files
 - Enh: Removed deprecated methods/classes since v1.1 - see migration guide for details
 - Enh: Show registration form captcha per default
