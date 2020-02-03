@@ -40,7 +40,7 @@ HumHub Change Log (DEVELOP)
 - Fix: Settings cli rewrite dynamic config when required
 - Fix #3806: Using `Receive notifications for new content` will not include the space to the notification setting view until settings are saved
 - Enh: Added possibility to disable mail summary feature
-- Fix 3848: Error page does not use theme
+- Fix #3848: Error page does not use theme
 
 
 1.4.0-beta.2
