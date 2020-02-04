@@ -9,6 +9,7 @@
 namespace humhub\modules\ui\view\bootstrap;
 
 use humhub\libs\BaseSettingsManager;
+use humhub\modules\installer\libs\EnvironmentChecker;
 use humhub\modules\ui\view\components\Theme;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 use Yii;
@@ -44,8 +45,10 @@ class ThemeLoader implements BootstrapInterface
                     $app->mailer->view->theme = $theme;
                 }
             }
+        } else {
+            EnvironmentChecker::preInstallChecks();
         }
-        
+
         if (!Yii::$app->request->isConsoleRequest && $app->view->theme instanceof Theme) {
             $app->view->theme->register();
         }
