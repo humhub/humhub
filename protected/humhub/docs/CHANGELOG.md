@@ -75,8 +75,8 @@ HumHub Change Log
 - Enh: Added mobile swipe in order to show sidebar (needs to be activated `Administaration -> Settings -> Appearance`)
 
 
-1.4
----
+1.4.0-beta.1
+------------
 
 - Enh: GroupPermissionManager - allow to query users by given permission
 - Enh: Automatic migrate DB collations from utf8 to utf8mb4
