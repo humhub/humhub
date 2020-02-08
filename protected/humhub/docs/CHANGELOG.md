@@ -1,6 +1,12 @@
 HumHub Change Log
 =================
 
+1.4.1 (Unreleased)
+------------------
+
+- Fix #3852: Error when OpenSSL extension is not installed
+
+
 
 1.4.0 (February 4, 2020)
 ------------------------
