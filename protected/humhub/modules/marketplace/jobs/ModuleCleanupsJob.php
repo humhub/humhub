@@ -43,7 +43,7 @@ class ModuleCleanupsJob extends ActiveJob
 
         foreach (scandir($moduleDownloadFolder) as $downloadFile) {
             $file = $moduleDownloadFolder . DIRECTORY_SEPARATOR . $downloadFile;
-            if (filemtime($file) + $this->downloadKeepTime < time()) {
+            if (is_file($file) && filemtime($file) + $this->downloadKeepTime < time()) {
                 unlink($file);
             }
         }

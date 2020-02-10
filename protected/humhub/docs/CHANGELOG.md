@@ -5,6 +5,7 @@ HumHub Change Log
 ------------------
 
 - Fix #3852: Error when OpenSSL extension is not installed
+- Fix #3849: ModuleCleanupJob produces an error due to ".." in path
 
 
 
