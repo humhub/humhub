@@ -60,22 +60,6 @@ $config = [
                 ],
             ],
         ],
-        'session' => [
-            'cookieParams' => [
-                'sameSite' => PHP_VERSION_ID >= 70300 ? yii\web\Cookie::SAME_SITE_LAX : null,
-            ],
-        ],
-        'request' => [
-            'csrfCookie' => [
-                'sameSite' => PHP_VERSION_ID >= 70300 ? yii\web\Cookie::SAME_SITE_LAX : null,
-            ],
-        ],
-        'user' => [
-            'identityCookie' => [
-                'name' => '_identity',
-                'sameSite' => PHP_VERSION_ID >= 70300 ? yii\web\Cookie::SAME_SITE_LAX : null,
-            ],
-        ],
         'search' => [
             'class' => \humhub\modules\search\engine\ZendLuceneSearch::class,
         ],
