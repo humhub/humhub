@@ -1,7 +1,7 @@
 # Configuration for Support Requests - https://github.com/dessant/support-requests
 
 # Label used to mark issues as support requests
-supportLabel: support
+supportLabel: Support
 
 # Comment to post on issues marked as support requests, `{issue-author}` is an
 # optional placeholder. Set to `false` to disable
