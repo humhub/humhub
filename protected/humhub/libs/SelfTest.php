@@ -269,6 +269,22 @@ class SelfTest
             ];
         }
 
+        // Checks OpenSSL Extension
+        $title = 'PHP - OpenSSL Extension';
+
+        if (function_exists('openssl_encrypt')) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'WARNING',
+                'hint' => 'Optional - Install OpenSSL Extension for e-mail S/MIME support.'
+            ];
+        }
+
         // Checks LDAP Extension
         $title = 'LDAP Support';
 
@@ -284,6 +300,7 @@ class SelfTest
                 'hint' => 'Optional - Install PHP LDAP Extension and Zend LDAP Composer Package'
             ];
         }
+
 
         // Checks APC(u) Extension
         $title = 'PHP - APC(u) Support';
