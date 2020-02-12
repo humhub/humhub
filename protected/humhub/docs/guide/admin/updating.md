@@ -7,11 +7,10 @@ For each version there will be a themeing and module migration guide available:
 - [Theme Migration Guide](../theme/migrate.md)
 - [Module Migration Guide](../developer/modules-migrate.md)
  
-> Additional update notes for older versions:
-> - [Update from 1.3 or below](updating-140.md)
-> - [Update from 1.2 or below](updating-130.md)
-> - [Update from 0.20 or below](updating-020.md)
-
+> Additional update notes:
+> - [Update to 1.4](updating-140.md)
+> - [Update to 1.3](updating-130.md)
+> - [Update to 0.20](updating-020.md)
 
 > Warning: Always backup your data before updating! See: [Backup Chapter](backup.md)
 
@@ -20,8 +19,8 @@ For each version there will be a themeing and module migration guide available:
 3. Restore the following files from backup:
 
 	- /uploads/*
-	- /protected/runtime
 	- /protected/config/*
+	- /protected/runtime/searchdb/*
 	- /protected/modules/* (if any)
 	- /themes (if there are any custom themes - except HumHub default theme)
 	
