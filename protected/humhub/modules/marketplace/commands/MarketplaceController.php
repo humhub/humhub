@@ -49,7 +49,7 @@ class MarketplaceController extends Controller
      */
     public function actionListOnline()
     {
-        $modules = $this->module->onlineModuleManager->getModules();
+        $modules = $this->getMarketplaceModule()->onlineModuleManager->getModules();
 
         print "Online available modules: \n\n";
 
@@ -73,7 +73,7 @@ class MarketplaceController extends Controller
      */
     public function actionInstall($moduleId)
     {
-        $this->module->onlineModuleManager->install($moduleId);
+        $this->getMarketplaceModule()->onlineModuleManager->install($moduleId);
 
         print "\nModule " . $moduleId . " successfully installed!\n";
     }
@@ -117,7 +117,7 @@ class MarketplaceController extends Controller
         }
 
         // Look online for module
-        $moduleInfo = $this->module->onlineModuleManager->getModuleInfo($moduleId);
+        $moduleInfo = $this->getMarketplaceModule()->onlineModuleManager->getModuleInfo($moduleId);
 
         if (!isset($moduleInfo['latestCompatibleVersion'])) {
             print "No compatible version for " . $moduleId . " found online!\n";
@@ -131,7 +131,7 @@ class MarketplaceController extends Controller
             return;
         }
 
-        $this->module->onlineModuleManager->update($moduleId);
+        $this->getMarketplaceModule()->onlineModuleManager->update($moduleId);
 
         print "Module " . $moduleId . " successfully updated!\n";
     }
@@ -163,7 +163,7 @@ class MarketplaceController extends Controller
                 // Module seems to be installed - but cannot be loaded
                 // Try force re-install
                 try {
-                    $this->module->onlineModuleManager->install($moduleId);
+                    $this->getMarketplaceModule()->onlineModuleManager->install($moduleId);
                     print "Reinstalled: " . $moduleId . "\n";
                 } catch (\Exception $ex) {
 
@@ -203,7 +203,7 @@ class MarketplaceController extends Controller
      */
     public function actionDisable($moduleId)
     {
-        if (! $this->confirm(Yii::t('MarketplaceModule.base', 'All {moduleId} module content will be deleted. Continue?', ['moduleId' => $moduleId]), false)) {
+        if (!$this->confirm(Yii::t('MarketplaceModule.base', 'All {moduleId} module content will be deleted. Continue?', ['moduleId' => $moduleId]), false)) {
             return 1;
         }
 
@@ -220,6 +220,14 @@ class MarketplaceController extends Controller
 
         $this->stdout(Yii::t('MarketplaceModule.base', "\nModule successfully disabled!\n"), Console::FG_GREEN, Console::BOLD);
         return 0;
+    }
+
+    /**
+     * @return \humhub\modules\marketplace\Module
+     */
+    private function getMarketplaceModule()
+    {
+        return Yii::$app->getModule('marketplace');
     }
 
 }
