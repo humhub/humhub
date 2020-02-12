@@ -31,7 +31,7 @@ class Mailer extends \yii\swiftmailer\Mailer
      * @since 1.3
      */
     public $surpressedRecipients = ['david.roberts@example.com', 'sara.schuster@example.com'];
-    
+
     /**
      * @var string|null Path for the sigining certificate. If provided emails will be digitally signed before sending.
      */
@@ -41,14 +41,14 @@ class Mailer extends \yii\swiftmailer\Mailer
      * @var string|null Path for the sigining certificate private key. If provided emails will be digitally signed before sending.
      */
     public $signingPrivateKeyPath = null;
-    
+
     /**
      * @var string|null Path for extra sigining certificates (i.e. intermidiate certificates).
      */
     public $signingExtraCertsPath = null;
 
     /**
-     * @var int Bitwise operator options for openssl_pkcs7_sign()     
+     * @var int Bitwise operator options for openssl_pkcs7_sign()
     */
     public $signingOptions = PKCS7_DETACHED;
 
