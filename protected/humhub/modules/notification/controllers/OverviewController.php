@@ -48,7 +48,7 @@ class OverviewController extends Controller
     {
         $filterForm = $this->loadFilterForm($reload);
 
-        if($filterForm->hasFilter()) {
+        if ($filterForm->hasFilter()) {
             $query = $filterForm->createQuery();
             $notifications = $this->prepareNotifications($query->all());
             $overview = OverviewWidget::widget([
@@ -92,7 +92,7 @@ class OverviewController extends Controller
     {
         $filterForm = new FilterForm();
 
-        if($reload) {
+        if ($reload) {
             $filterForm->load(Yii::$app->request->post());
         } else {
             $filterForm->load(Yii::$app->request->get());
@@ -118,10 +118,10 @@ class OverviewController extends Controller
             try {
                 $baseModel = $notificationRecord->getBaseModel();
 
-                if($baseModel->validate()) {
+                if ($baseModel->validate()) {
                     $result[] = $baseModel;
                 } else {
-                    throw new IntegrityException('Invalid base model found for notification');
+                    throw new IntegrityException('Invalid base model (' . $notificationRecord->class . ') found for notification');
                 }
 
             } catch (IntegrityException $ex) {
