@@ -27,7 +27,6 @@ There are a few guidelines that we need contributors to follow so that we can ha
 
 * Make sure you have a [GitHub account](https://github.com/signup/free)
 * Fork the repository on GitHub
-* Before we can accept your patches, you'll have to sign the Contributors License Agreement 
-  * https://www.humhub.org/cla/github/sign
+* Before we can accept your patches, you'll have to sign the [Contributor License Agreement](https://www.humhub.com/en/cla/)
 * Make sure there is an issue created for the thing you are working on if it requires significant effort to fix
 * Open a pull request
