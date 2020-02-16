@@ -2,7 +2,7 @@
 return array (
   '<strong>Administration</strong> menu' => '<strong>管理</strong> 管理メニュー',
   '<strong>Module </strong> administration' => '<strong>モジュール</strong> 管理',
-  '<strong>Warning</strong> incomplete setup!' => '<strong>警告 strong&gt;設定が不完全です！</strong>',
+  '<strong>Warning</strong> incomplete setup!' => '<strong>警告</strong>設定が不完全です！',
   'About' => '約',
   'Admin' => '管理',
   'Administration' => '管理',

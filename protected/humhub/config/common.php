@@ -17,6 +17,11 @@ Yii::setAlias('@themes', '@webroot/themes');
 // Workaround: PHP 7.3 compatible ZF2 ArrayObject class
 Yii::$classMap['Zend\Stdlib\ArrayObject'] = '@humhub/compat/ArrayObject.php';
 
+// Workaround: If OpenSSL extension is not available (#3852)
+if (!defined('PKCS7_DETACHED')) {
+    define('PKCS7_DETACHED', 64);
+}
+
 $config = [
     'name' => 'HumHub',
     'version' => '1.5.0-dev',

@@ -140,7 +140,7 @@ class CheckboxList extends BaseType
     public function beforeProfileSave($values)
     {
         if (is_array($values)) {
-            return implode(',', $values);
+            return implode("\n", $values);
         }
         return $values;
     }
@@ -183,7 +183,7 @@ class CheckboxList extends BaseType
             $options = $this->getSelectItems();
             $translatedValues = [];
 
-            foreach (explode(',', $value) as $v) {
+            foreach (explode("\n", $value) as $v) {
                 if ($v === 'other' && !empty($user->profile->$internalNameOther)) {
                     $translatedValues[] = Html::encode($user->profile->$internalNameOther);
                 } elseif (isset($options[$v])) {
