@@ -1,14 +1,14 @@
 HumHub Change Log
 =================
 
-1.4.1 (Unreleased)
-------------------
+1.4.1 (Februrary 17, 2020)
+--------------------------
 
 - Fix #3852: Error when OpenSSL extension is not installed
 - Fix #3849: ModuleCleanupJob produces an error due to ".." in path
 - Fix #3860: Console/Cli Marketplace actions broken
 - Fix #3862: Profile field type checkbox list with multiple values broken
-- Fix #3864: Profile field translations broken  
+- Fix #3864: Some profile field translations broken  
 
 
 1.4.0 (February 4, 2020)
