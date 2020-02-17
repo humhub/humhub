@@ -24,7 +24,7 @@ humhub.module('activity', function (module, require, $) {
 
     /**
      * Number of stream entries loaded with each request (except initial request)
-     * @type Number
+     * @type string
      */
     var ACTIVITY_STREAM_SELECTOR = '#activityStream';
 
@@ -44,7 +44,7 @@ humhub.module('activity', function (module, require, $) {
 
     /**
      * ActivityStream implementation.
-     * 
+     *
      * @param {type} container id or jQuery object of the stream container
      * @returns {undefined}
      */
@@ -117,7 +117,7 @@ humhub.module('activity', function (module, require, $) {
         return instance;
     };
 
-    
+
     var unload = function() {
         // Cleanup nicescroll rails from dom
         if(instance && instance.$) {

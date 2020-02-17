@@ -53,7 +53,7 @@ class MailSummaryForm extends Model
     /**
      * @var User the user when user settings should be loaded/saved
      */
-    public $user = null;
+    public $user;
 
     /**
      * @var boolean indicates that custom user settings were loaded
@@ -103,8 +103,8 @@ class MailSummaryForm extends Model
     public function getLimitSpaceModes()
     {
         return [
-            MailSummaryForm::LIMIT_MODE_EXCLUDE => Yii::t('ActivityModule.base', 'Exclude spaces below from the mail summary'),
-            MailSummaryForm::LIMIT_MODE_INCLUDE => Yii::t('ActivityModule.base', 'Only include spaces below to the mail summary'),
+            static::LIMIT_MODE_EXCLUDE => Yii::t('ActivityModule.base', 'Exclude spaces below from the mail summary'),
+            static::LIMIT_MODE_INCLUDE => Yii::t('ActivityModule.base', 'Only include spaces below to the mail summary'),
         ];
     }
 
@@ -133,7 +133,7 @@ class MailSummaryForm extends Model
         $contents = [];
 
         foreach (Module::getConfigurableActivities() as $activity) {
-            $contents[$activity->className()] = $activity->getTitle() . ' - ' . $activity->getDescription();
+            $contents[get_class($activity)] = $activity->getTitle() . ' - ' . $activity->getDescription();
         }
 
         return $contents;
@@ -213,11 +213,19 @@ class MailSummaryForm extends Model
             throw new Exception('Could not reset settings when no user is set!');
         }
 
-        $settingsManager = Yii::$app->getModule('activity')->settings->user($this->user);
+        $settingsManager = static::getModule()->settings->user($this->user);
         $settingsManager->delete('mailSummaryInterval');
         $settingsManager->delete('mailSummaryLimitSpaces');
         $settingsManager->delete('mailSummaryLimitSpacesMode');
         $settingsManager->delete('mailSummaryActivitySuppress');
+    }
+
+    /**
+     * @return Module
+     */
+    private static function getModule()
+    {
+        return Yii::$app->getModule('activity');
     }
 
 }

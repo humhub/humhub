@@ -7,6 +7,7 @@
  */
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\space\models\Space;
 use humhub\modules\ui\mail\DefaultMailStyle;
 use yii\helpers\Html;
 
@@ -26,7 +27,7 @@ use yii\helpers\Html;
 
         <!-- start  container width 600px -->
         <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container" bgcolor="#ffffff"
-               style="background-color: #ffffff; border-bottom-left-radius: 4px; border-bottom-left-radius: 4px;">
+               style="background-color: #ffffff; border-bottom-left-radius: 4px;">
             <tr>
                 <td valign="top">
 
@@ -57,9 +58,9 @@ use yii\helpers\Html;
 
                                                     <td valign="top" align="left" style="padding-right:20px;">
                                                         <!-- START: USER IMAGE -->
-                                                        <a href="<?= $originator->createUrl('/user/profile', [], true); ?>">
+                                                        <a href="<?= $originator->createUrl('/user/profile', [], true) ?>">
                                                             <img
-                                                                src="<?= $originator->getProfileImage()->getUrl("", true); ?>"
+                                                                src="<?= $originator->getProfileImage()->getUrl('', true) ?>"
                                                                 width="50"
                                                                 alt=""
                                                                 style="max-width:50px; display:block !important; border-radius: 4px;"
@@ -80,22 +81,22 @@ use yii\helpers\Html;
                                                                     <div
                                                                         style="width:480px;overflow:hidden;text-overflow:ellipsis;font-size: 13px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:#555555; font-weight:300; text-align:left;">
                                                                         <!-- content output-->
-                                                                        <?= $content; ?>
+                                                                        <?= $content ?>
 
                                                                         <!-- check if activity object has a space -->
                                                                         <?php if ($space !== null): ?>
                                                                             <?= Html::a($space->displayName,
                                                                                 $space->createUrl(null, [], true), [
                                                                                     'style' => 'text-decoration: none; color: #555555;'
-                                                                                ]); ?>
+                                                                                ]) ?>
                                                                         <?php endif; ?>
 
-                                                                        <?php if ($url != "") : ?>
+                                                                        <?php if ($url != '') : ?>
                                                                             <!-- START: CONTENT LINK -->
                                                                             <span
-                                                                                style="text-decoration: none; color: <?= $this->theme->variable('primary'); ?>;"> - <a
-                                                                                    href="<?= $url; ?>"
-                                                                                    style="text-decoration: none; color: <?= $this->theme->variable('primary'); ?>; "><?= Yii::t('ActivityModule.base', 'see online'); ?></a></span>
+                                                                                style="text-decoration: none; color: <?= $this->theme->variable('primary') ?>;"> - <a
+                                                                                    href="<?= $url ?>"
+                                                                                    style="text-decoration: none; color: <?= $this->theme->variable('primary') ?>; "><?= Yii::t('ActivityModule.base', 'see online') ?></a></span>
                                                                             <!-- END: CONTENT LINK -->
                                                                         <?php endif; ?>
                                                                     </div>

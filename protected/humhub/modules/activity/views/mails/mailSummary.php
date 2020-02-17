@@ -6,6 +6,8 @@
  * @license https://www.humhub.com/licences
  */
 
+/* @var $activities string */
+
 use humhub\modules\ui\mail\DefaultMailStyle; ?>
 
 <tr>
@@ -34,7 +36,7 @@ use humhub\modules\ui\mail\DefaultMailStyle; ?>
                                                     <td style="font-size: 18px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; font-weight:300; text-align:left;">
                                                         <span style="color:<?= Yii::$app->view->theme->variable('text-color-highlight', '#555') ?>; font-weight: 300;">
                                                             <a href="#" style="text-decoration: none; color:<?= Yii::$app->view->theme->variable('text-color-highlight', '#555') ?>; font-weight: 300;">
-                                                                <?= Yii::t('base', '<strong>Mail</strong> summary'); ?>
+                                                                <?= Yii::t('base', '<strong>Mail</strong> summary') ?>
                                                             </a>
                                                         </span>
                                                     </td>
@@ -65,4 +67,4 @@ use humhub\modules\ui\mail\DefaultMailStyle; ?>
     </td>
 </tr>
 
-<?= $activities; ?>
+<?= $activities ?>

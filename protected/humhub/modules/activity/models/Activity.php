@@ -8,12 +8,15 @@
 
 namespace humhub\modules\activity\models;
 
+use humhub\modules\activity\components\BaseActivity;
 use Yii;
 use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\activity\components\ActivityWebRenderer;
 use humhub\components\behaviors\PolymorphicRelation;
+use yii\db\IntegrityException;
 
 /**
  * This is the model class for table "activity".
@@ -88,24 +91,24 @@ class Activity extends ContentActiveRecord
     /**
      * Returns the related BaseActivity object of this Activity record.
      *
-     * @return \humhub\modules\activity\components\BaseActivity
+     * @return BaseActivity
      * @throws Exception
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\db\IntegrityException
+     * @throws InvalidConfigException
+     * @throws IntegrityException
      */
     public function getActivityBaseClass()
     {
-        if (class_exists($this->class)) {
-            $result = Yii::createObject([
-                'class' => $this->class,
-                'originator' => $this->content->createdBy,
-                'source' => $this->getSource(),
-            ]);
-            $result->record = $this; // If we include the record in createObject, it somehow loses activerecord data (id etc...)
-            return $result;
-        } else {
+        if (!class_exists($this->class)) {
             throw new Exception('Could not find BaseActivity ' . $this->class . ' for Activity Record.');
         }
+
+        $result = Yii::createObject([
+            'class' => $this->class,
+            'originator' => $this->content->createdBy,
+            'source' => $this->getSource(),
+        ]);
+        $result->record = $this; // If we include the record in createObject, it somehow loses activerecord data (id etc...)
+        return $result;
     }
 
     /**
@@ -132,9 +135,9 @@ class Activity extends ContentActiveRecord
     /**
      * Returns the source object which belongs to this Activity.
      *
-     * @see \humhub\modules\activity\components\BaseActivity::$source
      * @return mixed
-     * @throws \yii\db\IntegrityException
+     * @throws IntegrityException
+     * @see \humhub\modules\activity\components\BaseActivity::$source
      */
     public function getSource()
     {

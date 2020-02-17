@@ -8,6 +8,7 @@
 
 namespace humhub\modules\activity\components;
 
+use humhub\modules\activity\Module;
 use Yii;
 use yii\helpers\Console;
 use humhub\modules\activity\components\MailSummary;
@@ -99,15 +100,12 @@ class MailSummaryProcessor
             return false;
         }
 
+        /* @var $activityModule Module */
         $activityModule = Yii::$app->getModule('activity');
         $defaultInterval = (int) $activityModule->settings->get('mailSummaryInterval', MailSummary::INTERVAL_DAILY);
         $wantedInterval = (int) $activityModule->settings->user($user)->get('mailSummaryInterval', $defaultInterval);
 
-        if ($interval !== $wantedInterval) {
-            return false;
-        }
-
-        return true;
+        return $interval === $wantedInterval;
     }
 
 }

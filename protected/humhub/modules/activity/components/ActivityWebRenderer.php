@@ -62,7 +62,7 @@ class ActivityWebRenderer extends LayoutRenderer
      *
      * If this view also does not exist we return the base notification view file.
      *
-     * @param \humhub\modules\notification\components\Viewable $viewable
+     * @param Viewable $viewable
      * @return string view file of this notification
      */
     public function getViewFile(Viewable $viewable)
@@ -88,8 +88,8 @@ class ActivityWebRenderer extends LayoutRenderer
      *
      * If this file does not exists the default layout will be returned.
      *
-     * @param \humhub\modules\notification\components\Viewable $viewable
-     * @return type
+     * @param Viewable $viewable
+     * @return string
      */
     public function getLayout(Viewable $viewable)
     {

@@ -19,11 +19,11 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 
 ---
 
-<?= $content; ?>
+<?= $content ?>
 <?php if (!empty($space)) : ?>
-    (<?= strip_tags(Yii::t('ActivityModule.base', 'via')); ?> <?= $space->displayName; ?>)
+    (<?= strip_tags(Yii::t('ActivityModule.base', 'via')) ?> <?= $space->displayName ?>)
 <?php endif; ?>
 
 <?php if ($url != '') : ?>
-    <?= strip_tags(Yii::t('ActivityModule.base', 'See online:')); ?> <?= urldecode($url); ?>
+    <?= strip_tags(Yii::t('ActivityModule.base', 'See online:')) ?> <?= urldecode($url) ?>
 <?php endif; ?>

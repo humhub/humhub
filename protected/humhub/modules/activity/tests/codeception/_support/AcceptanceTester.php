@@ -1,6 +1,8 @@
 <?php
 namespace activity;
 
+use Codeception\Lib\Friend;
+
 /**
  * Inherited Methods
  * @method void wantToTest($text)
@@ -12,7 +14,7 @@ namespace activity;
  * @method void am($role)
  * @method void lookForwardTo($achieveValue)
  * @method void comment($description)
- * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = null)
+ * @method Friend haveFriend($name, $actorClass = null)
  *
  * @SuppressWarnings(PHPMD)
 */

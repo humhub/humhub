@@ -17,8 +17,6 @@ class ActivityAsset extends AssetBundle
 
     public $sourcePath = '@activity/resources';
 
-    public $css = [];
-
     public $js = [
         'js/humhub.activity.js'
     ];
