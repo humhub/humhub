@@ -8,6 +8,8 @@ HumHub Change Log
 - Fix #3849: ModuleCleanupJob produces an error due to ".." in path
 - Fix #3860: Console/Cli Marketplace actions broken
 - Fix #3862: Profile field type checkbox list with multiple values broken
+- Fix #3864: Profile field translations broken  
+
 
 1.4.0 (February 4, 2020)
 ------------------------
