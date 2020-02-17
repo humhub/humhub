@@ -7,3 +7,4 @@ HumHub Change Log (DEVELOP)
 
 - Enh #3858: Support SameSite cookies
 - Fix #3861: Improved warning details when auto delete inconsistent notification
+- Enh: Added gradient to `ui.showMore` feature

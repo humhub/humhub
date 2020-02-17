@@ -24,7 +24,6 @@ humhub.module('ui.showMore', function (module, require, $) {
         var height = this.$.outerHeight();
         this.$collapseButton = this.$.siblings('.showMore');
 
-
         // If the first or second node is we add some more space to our collapseAt
         var $firstChild = this.$.children(':first');
         var $secondChild = $firstChild.next();
@@ -38,12 +37,13 @@ humhub.module('ui.showMore', function (module, require, $) {
         // If height expands the max height we init the collapse post logic
         if (height > this.collapseAt && diff > 70) {
             if (!this.$collapseButton.length) {
-                this.$collapseButton = $(module.templates.showMore);
-                that.$.after(this.$collapseButton);
+                this.$.after($(module.templates.showMore));
+                this.$collapseButton = this.$.siblings('.showMore');
+                this.$gradient = this.$.siblings('.showMoreGradient');
             }
 
             // Init collapse button
-            this.$collapseButton.on('click', function (evt) {
+            this.$collapseButton.add(this.$gradient).on('click', function (evt) {
                 evt.preventDefault();
                 if (that.$.data('state') === 'collapsed') {
                     that.expand();
@@ -54,9 +54,9 @@ humhub.module('ui.showMore', function (module, require, $) {
 
             // Set init state
             if (this.$.data('state') !== 'expanded') {
-                that.collapse();
+                this.collapse();
             } else {
-                that.expand();
+                this.expand();
             }
         }
     };
@@ -65,12 +65,14 @@ humhub.module('ui.showMore', function (module, require, $) {
         this.$.css({'display': 'block', 'max-height': this.collapseAt + 'px'});
         this.$collapseButton.html('<i class="fa fa-arrow-down"></i> ' + this.options.readMoreText);
         this.$.data('state', 'collapsed');
+        this.$gradient.show();
     };
 
     CollapseContent.prototype.expand = function () {
         this.$.css('max-height', '');
         this.$collapseButton.html('<i class="fa fa-arrow-up"></i> ' + this.options.readLessText);
         this.$.data('state', 'expanded');
+        this.$gradient.hide();
     };
 
     var init = function () {
@@ -82,7 +84,7 @@ humhub.module('ui.showMore', function (module, require, $) {
     };
 
     module.templates = {
-        showMore: '<a href="#" style="display:block;margin: 5px 0;"></a>'
+        showMore: '<div class="showMoreGradient" style="position:relative;cursor:pointer"><div style="bottom: 0;height: 40px;position: absolute;background: linear-gradient(rgba(251,251,251,0), #ffff);z-index: 30;width: 100%;"></div></div><a  class="showMore" href="#" style="display:block;margin: 5px 0;"></a>'
     };
 
     module.export({
