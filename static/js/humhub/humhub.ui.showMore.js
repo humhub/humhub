@@ -40,6 +40,7 @@ humhub.module('ui.showMore', function (module, require, $) {
                 this.$.after($(module.templates.showMore));
                 this.$collapseButton = this.$.siblings('.showMore');
                 this.$gradient = this.$.siblings('.showMoreGradient');
+                this.$gradient.children().css({background: 'linear-gradient(rgba(251,251,251,0), '+determineBackground(this.$)+')'});
             }
 
             // Init collapse button
@@ -58,6 +59,35 @@ humhub.module('ui.showMore', function (module, require, $) {
             } else {
                 this.expand();
             }
+        }
+    };
+
+    var determineBackground = function($node) {
+        var bc;
+        var defColor = '#ffff';
+
+        if(!$node || !$node.length) {
+            return defColor;
+        }
+
+        while (isTransparent(bc = $node.css("background-color"))) {
+            if ($node.is("body")) {
+                return defColor;
+            }
+            $node = $node.parent();
+        }
+
+        return bc;
+    };
+
+    var isTransparent = function(color) {
+        switch ((color || "").replace(/\s+/g, '').toLowerCase()) {
+            case "transparent":
+            case "":
+            case "rgba(0,0,0,0)":
+                return true;
+            default:
+                return false;
         }
     };
 
@@ -84,7 +114,7 @@ humhub.module('ui.showMore', function (module, require, $) {
     };
 
     module.templates = {
-        showMore: '<div class="showMoreGradient" style="position:relative;cursor:pointer"><div style="bottom: 0;height: 40px;position: absolute;background: linear-gradient(rgba(251,251,251,0), #ffff);z-index: 30;width: 100%;"></div></div><a  class="showMore" href="#" style="display:block;margin: 5px 0;"></a>'
+        showMore: '<div class="showMoreGradient" style="position:relative;cursor:pointer"><div style="bottom: 0;height: 40px;position: absolute;z-index: 30;width: 100%;"></div></div><a  class="showMore" href="#" style="display:block;margin: 5px 0;"></a>'
     };
 
     module.export({
