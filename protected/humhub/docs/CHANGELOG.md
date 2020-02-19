@@ -1,6 +1,12 @@
 HumHub Change Log
 =================
 
+1.4.2
+--------------------------
+
+- Fix #3865: "Use default swipe" setting not working
+
+
 1.4.1 (Februrary 17, 2020)
 --------------------------
 
