@@ -83,7 +83,7 @@ class ProfileBannerImage extends ProfileImage
             $width .= 'px';
         }
 
-        Html::addCssStyle($cfg,['width' => $width]);
+        Html::addCssStyle($cfg, ['width' => $width]);
         return Html::img($this->getUrl(),$cfg);
     }
 }
