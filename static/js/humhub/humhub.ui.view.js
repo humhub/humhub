@@ -44,8 +44,23 @@ humhub.module('ui.view', function (module, require, $) {
         module.log.debug('Current view state', state);
     };
 
+    var isSwipeAllowed = function() {
+        return !prevSwipeDelay && !prevSwipe;
+    };
+
+    var isActiveScroll = function() {
+        return prevSwipeDelay;
+    };
+
+
     var prevSwipeDelay = false;
+    var prevSwipe = false;
+
     var scrollTimeout;
+
+    var preventSwipe = function(prev) {
+        prevSwipe = object.isDefined(prev) ? prev : true;
+    };
 
     var initMobileSidebar = function() {
 
@@ -76,7 +91,7 @@ humhub.module('ui.view', function (module, require, $) {
         }, true);
 
         $(document).on('swiped-left', function(e) {
-            if(prevSwipeDelay || e.target && $(e.target).closest('[data-menu-id]').length) {
+            if(!isSwipeAllowed() || e.target && $(e.target).closest('[data-menu-id]').length) {
                 return;
             }
 
@@ -131,6 +146,8 @@ humhub.module('ui.view', function (module, require, $) {
     module.export({
         init: init,
         isSmall: isSmall,
+        preventSwipe: preventSwipe,
+        isActiveScroll: isActiveScroll,
         isMedium: isMedium,
         isNormal: isNormal,
         getHeight: getHeight,

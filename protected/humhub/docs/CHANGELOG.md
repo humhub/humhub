@@ -7,6 +7,8 @@ HumHub Change Log
 - Fix #3865: "Use default swipe" setting not working
 - Fix #3875: Profile image click does not open gallery overlay
 - Fix #3879: New mobile swap interfers horizontal scroll
+- Enh: Added `humhub.ui.view.isActiveScroll()` in order to check current scroll state (e.g. used to prevent swipe)
+- Enh: Added `humhub.ui.view.preventSwipe()` in order to prevent default swipe
 
 
 1.4.1 (Februrary 17, 2020)
