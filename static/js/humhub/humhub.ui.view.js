@@ -49,11 +49,8 @@ humhub.module('ui.view', function (module, require, $) {
 
     var initMobileSidebar = function() {
 
-        debugger;
         var duration = 500;
         var animation = 'swing';
-
-
 
         var $sidebar = $('.layout-sidebar-container');
 
