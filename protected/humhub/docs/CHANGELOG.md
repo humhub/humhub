@@ -6,6 +6,7 @@ HumHub Change Log
 
 - Fix #3865: "Use default swipe" setting not working
 - Fix #3875: Profile image click does not open gallery overlay
+- Fix #3879: New mobile swap interfers horizontal scroll
 
 
 1.4.1 (Februrary 17, 2020)

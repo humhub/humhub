@@ -44,6 +44,9 @@ humhub.module('ui.view', function (module, require, $) {
         module.log.debug('Current view state', state);
     };
 
+    var prevSwipeDelay = false;
+    var scrollTimeout;
+
     var initMobileSidebar = function() {
 
         debugger;
@@ -65,8 +68,18 @@ humhub.module('ui.view', function (module, require, $) {
             'z-index' : '997'
         });
 
+        window.addEventListener('scroll', function(){
+            window.clearTimeout( scrollTimeout );
+
+            prevSwipeDelay = true;
+
+            scrollTimeout = setTimeout(function() {
+                prevSwipeDelay = false;
+            }, 100);
+        }, true);
+
         $(document).on('swiped-left', function(e) {
-            if(e.target && $(e.target).closest('[data-menu-id]').length) {
+            if(prevSwipeDelay || e.target && $(e.target).closest('[data-menu-id]').length) {
                 return;
             }
 
