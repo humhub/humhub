@@ -7,7 +7,7 @@ return array (
   'Add:' => 'Προσθήκη:',
   'Administration' => 'Διαχείρηση',
   'Allow' => 'Επιτρέπω',
-  'An error occurred while handling your last action. (Handler not found).' => 'Παρουσιάστηκε σφάλμα κατά το χειρισμό της τελευταίας σας ενέργειας. (Δεν βρέθηκε χειριστής ).',
+  'An error occurred while handling your last action. (Handler not found).' => 'Παρουσιάστηκε σφάλμα κατά το χειρισμό της τελευταίας σας ενέργειας. (Δεν βρέθηκε χειριστής).',
   'An unexpected error occurred while loading the search result.' => 'Παρουσιάστηκε μη αναμενόμενο σφάλμα κατά τη φόρτωση του αποτελέσματος αναζήτησης.',
   'An unexpected error occurred. If this keeps happening, please contact a site administrator.' => 'Προέκυψε ένα μη αναμενόμενο σφάλμα. Αν αυτό εξακολουθεί να συμβαίνει, επικοινωνήστε με τον διαχειριστή ιστότοπου.',
   'An unexpected server error occurred. If this keeps happening, please contact a site administrator.' => 'Παρουσιάστηκε ένα μη αναμενόμενο σφάλμα διακομιστή. Αν αυτό εξακολουθεί να συμβαίνει, επικοινωνήστε με τον διαχειριστή ιστότοπου.',

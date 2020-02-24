@@ -5,8 +5,8 @@ return array (
   'Collapse' => 'Einklappen',
   'Create post' => 'Beitrag erstellen',
   'Edit your post...' => 'Bearbeite deinen Beitrag ...',
-  'Read full post...' => 'Den ganzen Beitrag lesen...',
+  'Read full post...' => 'Den ganzen Beitrag lesen ...',
   'This space is archived.' => 'Dieser Space ist archiviert.',
-  'What\'s on your mind?' => 'Was möchtest Du mitteilen?',
+  'What\'s on your mind?' => 'Was möchtest du mitteilen?',
   'post' => 'Beitrag',
 );

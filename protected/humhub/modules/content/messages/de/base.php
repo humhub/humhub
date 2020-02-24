@@ -33,7 +33,7 @@ return array (
   'Maximum number of pinned items reached!
 
 You can pin to top only two items at once.
-To however pin this item, unpin another before!' => 'Maximale Anzahl der angehefteten Elemente erreicht! Du kannst nur zwei Elemente gleichzeitig anheften. Um dieses Element dennoch anzuheften, löse vorher ein anderes! ',
+To however pin this item, unpin another before!' => 'Maximale Anzahl der angehefteten Elemente erreicht! Du kannst nur zwei Elemente gleichzeitig anheften. Um dieses Element dennoch anzuheften, löse vorher ein anderes!',
   'Move content' => 'Inhalt verschieben',
   'Move to archive' => 'Ins Archiv',
   'No matches with your selected filters!' => 'Die ausgewählten Filterkriterien ergaben keine Übereinstimmung!',
@@ -62,7 +62,7 @@ To however pin this item, unpin another before!' => 'Maximale Anzahl der angehef
   'This content type can\'t be moved.' => 'Dieser Inhaltstyp kann nicht verschoben werden.',
   'This space is archived.' => 'Dieser Space ist archiviert.',
   'This space is not visible!' => 'Dieser Space ist nicht sichtbar!',
-  'Topics' => 'Themen',
+  'Topics' => 'Tags',
   'Turn off notifications' => 'Benachrichtigungen abschalten',
   'Turn on notifications' => 'Benachrichtigungen aktivieren',
   'Unarchive' => 'Aus dem Archiv',
