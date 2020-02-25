@@ -10,7 +10,7 @@ HumHub Change Log
 - Enh: Added `humhub.ui.view.isActiveScroll()` in order to check current scroll state (e.g. used to prevent swipe)
 - Enh: Added `humhub.ui.view.preventSwipe()` in order to prevent default swipe
 - Fix #3866: Emoji chooser broken after pjax link
-- Enh: Added emoji menu item
+- Enh: Added emoji richtext menu item
 - Enh: Updated humhub richtext version to 1.0.20
 
 
