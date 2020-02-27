@@ -8,13 +8,13 @@ Module successfully enabled!
 ' => 'Module activé avec succès',
   '--- Disable module: {moduleId} ---
 
-' => '--Désactivé module:{moduleId} --- ',
+' => '--Désactivé module:{moduleId} ---',
   '--- Enable module: {moduleId} ---
 
 ' => '--Activé module:{moduleld}--',
   'Add purchased module by licence key' => 'Ajouter un module acheté par sa clé de licence',
   'All modules are up to date!' => 'Tous les modules sont à jour.',
-  'All {moduleId} module content will be deleted. Continue?' => '',
+  'All {moduleId} module content will be deleted. Continue?' => 'Tout le contenu du module {moduleId} sera supprimé. Continuer ?',
   'Available updates' => 'Mise à jour',
   'Browse online' => 'Voir en ligne',
   'Buy (%price%)' => 'Acheter (%price%)',
@@ -26,15 +26,15 @@ Module successfully enabled!
   'Installing module...' => 'Installation du module...',
   'Latest compatible Version:' => 'Dernière version compatible :',
   'Latest compatible version:' => 'Dernière version compatible :',
-  'Latest version:' => 'Dernière version : ',
+  'Latest version:' => 'Dernière version :',
   'Licence Key:' => 'Clé de licence :',
-  'Marketplace' => '',
+  'Marketplace' => 'Marketplace',
   'Module directory %modulePath% is not writeable!' => 'Le dossier du module %modulePath% est en lecture seule.',
   'Module download failed! (%error%)' => 'Erreur de téléchargement du module (%error%)',
   'Module not found or activated!
 ' => 'Module introuvable ou activé',
   'Module not found!
-' => 'Module introuvable ! ',
+' => 'Module introuvable !',
   'More info' => 'Plus d\'infos',
   'No compatible module version found!' => 'Version du module non compatible.',
   'No modules found!' => 'Aucun module trouvé.',
