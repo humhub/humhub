@@ -9,6 +9,9 @@ HumHub Change Log
 - Fix #3879: New mobile swap interfers horizontal scroll
 - Enh: Added `humhub.ui.view.isActiveScroll()` in order to check current scroll state (e.g. used to prevent swipe)
 - Enh: Added `humhub.ui.view.preventSwipe()` in order to prevent default swipe
+- Fix #3866: Emoji chooser broken after pjax link
+- Enh: Added emoji richtext menu item
+- Enh: Updated humhub richtext version to 1.0.20
 
 
 1.4.1 (Februrary 17, 2020)
