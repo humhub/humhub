@@ -213,8 +213,8 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      * Find user based on ldap attributes
      *
      * @inheritdoc
-     * @see PrimaryClient
      * @return User the user
+     * @see PrimaryClient
      */
     public function getUser()
     {
@@ -510,7 +510,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                         $user->status = User::STATUS_ENABLED;
                         $user->save();
                         Yii::info('Enabled user' . $user->username . ' (' . $user->id . ') - found in LDAP!', 'ldap');
-                    } elseif (!$foundInLdap && $user->status !== User::STATUS_DISABLED) {
+                    } elseif (!$foundInLdap && $user->status == User::STATUS_ENABLED) {
                         // Disable users that were not found in ldap
                         $user->status = User::STATUS_DISABLED;
                         $user->save();
