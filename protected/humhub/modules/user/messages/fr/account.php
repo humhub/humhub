@@ -11,7 +11,7 @@ return array (
   'All your personal data will be irrevocably deleted.' => 'Toutes vos données personnelles seront irrémédiablement supprimées.',
   'Are you really sure? *ALL* module data for your profile will be deleted!' => 'Êtes-vous vraiment certain ? *TOUTES* les données associées à ce module seront définitivement perdues !',
   'Are you sure that you want to delete your account?' => 'Êtes-vous certain de vouloir supprimer votre compte ?',
-  'Changing the username can make some links unusable, for example old links to the profile.' => '',
+  'Changing the username can make some links unusable, for example old links to the profile.' => 'La modification du nom d\'utilisateur peut entraîner la rupture de liens (par exemple, un lien vers l\'ancien profil).',
   'Configure' => 'Configurer',
   'Confirm' => 'Confirmer',
   'Current password' => 'Mot de passe actuel',
