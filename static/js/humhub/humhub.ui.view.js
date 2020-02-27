@@ -82,12 +82,12 @@ humhub.module('ui.view', function (module, require, $) {
 
         window.addEventListener('scroll', function(){
             window.clearTimeout( scrollTimeout );
-
+            debugger;
             prevSwipeDelay = true;
 
             scrollTimeout = setTimeout(function() {
                 prevSwipeDelay = false;
-            }, 100);
+            }, 400);
         }, true);
 
         $(document).on('swiped-left', function(e) {
