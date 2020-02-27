@@ -82,7 +82,6 @@ humhub.module('ui.view', function (module, require, $) {
 
         window.addEventListener('scroll', function(){
             window.clearTimeout( scrollTimeout );
-            debugger;
             prevSwipeDelay = true;
 
             scrollTimeout = setTimeout(function() {
