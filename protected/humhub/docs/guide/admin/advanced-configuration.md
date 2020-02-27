@@ -45,7 +45,7 @@ return [
 ];
 ```
 
-Thre previous configuration will disable pjax support on your site.
+The previous configuration will disable pjax support on your site.
 
 Available params:
 
