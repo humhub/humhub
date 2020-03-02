@@ -64,6 +64,7 @@
         left: 35px;
     }
     .media-body {
+        overflow: hidden !important;
         font-size: 13px;
         h4.media-heading {
             font-size: 14px;
@@ -112,4 +113,13 @@
 
 .content span {
     .text-break;
+}
+
+
+audio,canvas,progress,video {
+    display: inline-block;
+    vertical-align: baseline;
+    border: solid 1px #000;
+    max-width: 100%;
+    height: auto
 }

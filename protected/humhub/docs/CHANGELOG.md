@@ -1,6 +1,10 @@
 HumHub Change Log
 =================
 
+1.4.3
+--------------------------
+- Fix #3887: CSS presentation issue for tables wider than the container and videos missing borders (areasas)
+
 1.4.2 (Februrary 27, 2020)
 --------------------------
 
