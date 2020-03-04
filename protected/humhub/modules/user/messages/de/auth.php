@@ -2,7 +2,7 @@
 return array (
   '<strong>Account</strong> registration' => '<strong>Benutzerkonto</strong>-Registrierung',
   '<strong>Change</strong> your password' => '<strong>Ändere</strong> dein Passwort',
-  '<strong>Join</strong> the network' => '%appName% <strong>beitreten</strong>',
+  '<strong>Join</strong> the network' => 'Plattform <strong>beitreten</strong>',
   '<strong>Password</strong> changed!' => '<strong>Passwort</strong> geändert!',
   '<strong>Password</strong> recovery' => '<strong>Passwort</strong>-Wiederherstellung!',
   '<strong>Password</strong> recovery!' => '<strong>Passwort</strong>-Wiederherstellung!',
@@ -16,7 +16,7 @@ return array (
   'Change password' => 'Passwort ändern',
   'Create Account' => 'Benutzerkonto anlegen',
   'Create account' => 'Benutzerkonto erstellen',
-  'Don\'t have an account? Join the network by entering your e-mail address.' => 'Noch kein Benutzerkonto? Werde Mitglied, indem du deine E-Mail Adresse eingibst.',
+  'Don\'t have an account? Join the network by entering your e-mail address.' => 'Noch kein Benutzerkonto? Werde Mitglied, indem du deine E-Mail-Adresse eingibst.',
   'Enter security code above' => 'Bitte gib den Sicherheitscode ein',
   'Forgot your password?' => 'Passwort vergessen?',
   'Go to login page' => 'Zur Loginseite',

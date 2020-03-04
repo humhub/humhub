@@ -28,8 +28,8 @@ return array (
   'Invalid space selection.' => 'Ungültige Auswahl des Space.',
   'Last update' => 'Letzte Aktualisierung',
   'Load more' => 'Mehr laden',
-  'Make private' => 'Ändern in geschlossene Gruppe',
-  'Make public' => 'Ändern in öffentliche Gruppe',
+  'Make private' => 'Ändern in privat',
+  'Make public' => 'Ändern in öffentlich',
   'Maximum number of pinned items reached!
 
 You can pin to top only two items at once.
@@ -58,7 +58,7 @@ To however pin this item, unpin another before!' => 'Maximale Anzahl der angehef
   'The given name is already in use.' => 'Der eingegebene Name wird bereits verwendet.',
   'The module {moduleName} is not enabled on the selected target space.' => 'Das Modul {moduleName} ist im Zielspace nicht aktiviert.',
   'This action is disabled!' => 'Diese Aktion ist deaktiviert!',
-  'This content type can\'t be moved due to a missing module-id setting.' => 'Dieser Inhaltstyp kann wegen einer fehlenden Module-Id-Einstellung nicht verschoben werden.',
+  'This content type can\'t be moved due to a missing module-id setting.' => 'Dieser Inhaltstyp kann wegen einer fehlenden Modul-ID-Einstellung nicht verschoben werden.',
   'This content type can\'t be moved.' => 'Dieser Inhaltstyp kann nicht verschoben werden.',
   'This space is archived.' => 'Dieser Space ist archiviert.',
   'This space is not visible!' => 'Dieser Space ist nicht sichtbar!',
