@@ -1,9 +1,12 @@
 HumHub Change Log
 =================
 
-1.4.3
---------------------------
+1.4.3 (March 4, 2020)
+---------------------
 - Fix #3887: CSS presentation issue for tables wider than the container and videos missing borders (areasas)
+- Fix #3893: New user invite headline broken in German translation
+- Enh: Updated translation files
+
 
 1.4.2 (Februrary 27, 2020)
 --------------------------
