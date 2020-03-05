@@ -9,3 +9,4 @@ HumHub Change Log (DEVELOP)
 - Fix #3861: Improved warning details when auto delete inconsistent notification
 - Enh: Added gradient to `ui.showMore` feature
 - Fix #3873: Invalid visibility handling in `Content::canView()` for private global content
+- Fix #3896: Top menu dropdown double border on focus/hover
