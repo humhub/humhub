@@ -17,7 +17,7 @@ TopNavigationAsset::register($this);
     </li>
 <?php endforeach; ?>
 
-<li id="top-menu-sub" class="dropdown">
+<li id="top-menu-sub" class="dropdown" style="display:none;">
     <a href="#" id="top-dropdown-menu" class="dropdown-toggle" data-toggle="dropdown">
         <i class="fa fa-align-justify"></i><br>
         <?= Yii::t('base', 'Menu'); ?>

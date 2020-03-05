@@ -6,16 +6,16 @@ humhub.module('ui.topNavigation', function (module, require, $) {
     $topBarSecond.css('overflow', 'hidden');
 
     var init = function () {
-        if (!isOverflow()) {
-            $topBarSecond.css('overflow', '');
-        }
-
-        setTimeout(fixNavigationOverflow, 50);
-
         $(window).on('resize', function () {
             fixNavigationOverflow();
         });
 
+        if (!isOverflow()) {
+            $topBarSecond.css('overflow', '');
+            return;
+        }
+
+        setTimeout(fixNavigationOverflow, 50);
     };
 
     var fixNavigationOverflow = function () {
