@@ -10,3 +10,4 @@ HumHub Change Log (DEVELOP)
 - Enh: Added gradient to `ui.showMore` feature
 - Fix #3873: Invalid visibility handling in `Content::canView()` for private global content
 - Fix #3896: Top menu dropdown double border on focus/hover
+- Fix #3834: Many entries in the top menu crashing layout
