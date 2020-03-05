@@ -4,6 +4,11 @@ humhub.module('ui.view', function (module, require, $) {
     var title;
     var state = {};
 
+    var prevSwipeDelay = false;
+    var prevSwipe = false;
+
+    var scrollTimeout;
+
     var isSmall = function () {
         return module.getWidth() <= 767;
     };
@@ -36,6 +41,9 @@ humhub.module('ui.view', function (module, require, $) {
     module.initOnPjaxLoad = true;
 
     var init = function (pjax) {
+        prevSwipeDelay = false;
+        prevSwipe = false;
+        $('body').removeClass('modal-open');
 
         if(isSmall() && module.config.useDefaultSwipe) {
             setTimeout(initMobileSidebar, 50);
@@ -53,10 +61,7 @@ humhub.module('ui.view', function (module, require, $) {
     };
 
 
-    var prevSwipeDelay = false;
-    var prevSwipe = false;
 
-    var scrollTimeout;
 
     var preventSwipe = function(prev) {
         prevSwipe = object.isDefined(prev) ? prev : true;

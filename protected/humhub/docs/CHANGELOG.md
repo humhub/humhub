@@ -6,6 +6,7 @@ HumHub Change Log
 - Fix #3887: CSS presentation issue for tables wider than the container and videos missing borders (areasas)
 - Fix #3893: New user invite headline broken in German translation
 - Enh: Updated translation files
+- Fix #3894: Pjax call does not does not release scroll body scroll lock when default swipe is active
 
 
 1.4.2 (Februrary 27, 2020)
