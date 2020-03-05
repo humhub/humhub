@@ -7,6 +7,7 @@ HumHub Change Log
 - Fix #3893: New user invite headline broken in German translation
 - Enh: Updated translation files
 - Fix #3894: Pjax call does not does not release scroll body scroll lock when default swipe is active
+- Fix #3897: Top menu dropdown on mobile does not update active state
 
 
 1.4.2 (Februrary 27, 2020)
