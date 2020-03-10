@@ -90,6 +90,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     const USERGROUP_OWNER = 'owner';
     const USERGROUP_ADMIN = 'admin';
     const USERGROUP_MODERATOR = 'moderator';
+    const USERGROUP_SUBMITTER = 'submitter';
     const USERGROUP_MEMBER = 'member';
     const USERGROUP_USER = 'user';
     const USERGROUP_GUEST = 'guest';
@@ -604,6 +605,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             self::USERGROUP_OWNER => Yii::t('SpaceModule.models_Space', 'Owner'),
             self::USERGROUP_ADMIN => Yii::t('SpaceModule.models_Space', 'Administrators'),
             self::USERGROUP_MODERATOR => Yii::t('SpaceModule.models_Space', 'Moderators'),
+            self::USERGROUP_SUBMITTER => Yii::t('SpaceModule.models_Space', 'Submitters'),
             self::USERGROUP_MEMBER => Yii::t('SpaceModule.models_Space', 'Members'),
             self::USERGROUP_USER => Yii::t('SpaceModule.models_Space', 'Users')
         ];
