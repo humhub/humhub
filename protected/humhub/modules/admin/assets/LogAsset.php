@@ -11,7 +11,7 @@ namespace humhub\modules\admin\assets;
 use yii\web\AssetBundle;
 use yii\web\View;
 
-class AdminAsset extends AssetBundle
+class LogAsset extends AssetBundle
 {
 
     public $jsOptions = [
@@ -21,7 +21,7 @@ class AdminAsset extends AssetBundle
     public $sourcePath = '@admin/resources';
     public $css = [];
     public $js = [
-        'js/humhub.admin.js'
+        'js/humhub.admin.log.js'
     ];
 
 }

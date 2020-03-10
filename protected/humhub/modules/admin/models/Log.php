@@ -2,6 +2,8 @@
 
 namespace humhub\modules\admin\models;
 
+use yii\db\ActiveRecord;
+
 /**
  * This is the model class for table "log".
  *
@@ -12,7 +14,7 @@ namespace humhub\modules\admin\models;
  * @property string $prefix
  * @property string $message
  */
-class Log extends \yii\db\ActiveRecord
+class Log extends ActiveRecord
 {
     /**
      * @inheritdoc
