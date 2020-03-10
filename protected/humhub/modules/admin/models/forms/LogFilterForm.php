@@ -268,7 +268,7 @@ class LogFilterForm extends Model
     {
         $categoryArr = Log::find()->select('category')->distinct()->asArray()->all();
 
-        $result = [static::FILTER_CATEGORY_NONE => 'All'];
+        $result = [static::FILTER_CATEGORY_NONE => Yii::t('AdminModule.information','Select category..')];
         foreach ($categoryArr as $logArr) {
             if(!isset($logArr['category']) || strpos($logArr['category'], 'yii\\') === 0) {
                 continue;

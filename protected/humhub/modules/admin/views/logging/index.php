@@ -64,7 +64,7 @@ if($filter->day) {
         <div class="col-md-4" style="padding-right:0">
             <?= $form->field($filter, 'levels')->widget(MultiSelect::class, [
                 'items' => $filter->getLevelSelection(),
-                'placeholderMore' => Yii::t('AdminModule.information', 'Select Level...')
+                'placeholderMore' => Yii::t('AdminModule.information', 'Select level...')
             ])->label(false) ?>
         </div>
         <div class="col-md-3">
