@@ -1,6 +1,10 @@
 HumHub Change Log
 =================
 
+1.4.4 (Unreleased)
+---------------------
+- Fix #3908: `DateHelper::parseDateTime()` returns invalid date if given value is not parsable
+
 1.4.3 (March 4, 2020)
 ---------------------
 - Fix #3887: CSS presentation issue for tables wider than the container and videos missing borders (areasas)

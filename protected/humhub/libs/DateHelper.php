@@ -89,12 +89,17 @@ class DateHelper
      * @param string $value date value
      * @param string $pattern pattern
      * @param string $timeValue optional time value
-     * @return int timestamp in utc
+     * @return int|false timestamp in utc or false in case value was could not be parsed
      * @throws \Exception
      */
     public static function parseDateTime($value, $pattern = 'Y-m-d', $timeValue = null)
     {
         $ts = self::parseDateTimeToTimestamp($value, $timeValue);
+
+        if($ts === false) {
+            return false;
+        }
+
         $dt = new \DateTime();
         $dt->setTimestamp($ts);
 
