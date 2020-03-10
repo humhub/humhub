@@ -207,6 +207,8 @@ humhub.module('client', function (module, require, $) {
             cfg = {'success': cfg};
         }
 
+        var requestXhr = null;
+
         var promise = new Promise(function (resolve, reject) {
             cfg = cfg || {};
 
@@ -255,9 +257,19 @@ humhub.module('client', function (module, require, $) {
                 });
             };
 
+            var beforeSendHandler = cfg.beforeSend;
+            var beforeSend = function (xhr, settings) {
+                if(beforeSendHandler) {
+                    beforeSendHandler(xhr, settings);
+                }
+
+                requestXhr = xhr;
+            };
+
             //Overwriting the handler with our wrapper handler
             cfg.success = success;
             cfg.error = error;
+            cfg.beforeSend = beforeSend;
             cfg.url = url;
 
             $.ajax(cfg);
@@ -287,6 +299,12 @@ humhub.module('client', function (module, require, $) {
                     }
                 });
             });
+        };
+
+        promise.abort = function() {
+            if(requestXhr) {
+                requestXhr.abort();
+            }
         };
 
         return promise;
