@@ -33,6 +33,8 @@ class Menu extends LeftNavigation
 
         if ($module->isGroupListingEnabled()) {
             $this->addEntry(new MenuLink([
+                'id' => 'directory-groups',
+                'icon' => 'users',
                 'label' => Yii::t('DirectoryModule.base', 'Groups'),
                 'url' => ['/directory/directory/groups'],
                 'sortOrder' => 100,
@@ -41,6 +43,8 @@ class Menu extends LeftNavigation
         }
 
         $this->addEntry(new MenuLink([
+            'id' => 'directory-members',
+            'icon' => 'user',
             'label' => Yii::t('DirectoryModule.base', 'Members'),
             'url' => ['/directory/directory/members'],
             'sortOrder' => 200,
@@ -48,6 +52,8 @@ class Menu extends LeftNavigation
         ]));
 
         $this->addEntry(new MenuLink([
+            'id' => 'directory-spaces',
+            'icon' => 'dot-circle-o',
             'label' => Yii::t('DirectoryModule.base', 'Spaces'),
             'url' => ['/directory/directory/spaces'],
             'sortOrder' => 300,
@@ -56,6 +62,8 @@ class Menu extends LeftNavigation
 
         if ($module->showUserProfilePosts) {
             $this->addEntry(new MenuLink([
+                'id' => 'directory-user-posts',
+                'icon' => 'commenting ',
                 'label' => Yii::t('DirectoryModule.base', 'User profile posts'),
                 'url' => ['/directory/directory/user-posts'],
                 'sortOrder' => 400,
