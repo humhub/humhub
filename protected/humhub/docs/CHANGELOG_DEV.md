@@ -13,3 +13,4 @@ HumHub Change Log (DEVELOP)
 - Fix #3834: Many entries in the top menu crashing layout
 - Enh #3907: Allow `client.ajax().abort()`
 - Enh #3909: Add filters to `Administration -> Information -> Logging`
+- Enh #3910: Add javascript url util `humhub.util.url.getUrlParameter()`

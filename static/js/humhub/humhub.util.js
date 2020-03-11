@@ -279,9 +279,23 @@ humhub.module('util', function(module, require, $) {
         }
     };
 
+    var url = {
+        getUrlParameter: function (search) {
+            var url = window.location.search.substring(1);
+            var urlVariables = url.split('&');
+            for (var i = 0; i < urlVariables.length; i++) {
+                var param = urlVariables[i].split('=');
+                if (param[0] === search) {
+                    return param[1];
+                }
+            }
+        }
+    }
+
     module.export({
         object: object,
         string: string,
-        array:array
+        array:array,
+        url: url
     });
 });
