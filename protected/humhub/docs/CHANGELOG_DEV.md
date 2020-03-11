@@ -14,3 +14,4 @@ HumHub Change Log (DEVELOP)
 - Enh #3907: Allow `client.ajax().abort()`
 - Enh #3909: Add filters to `Administration -> Information -> Logging`
 - Enh #3910: Add javascript url util `humhub.util.url.getUrlParameter()`
+- Enh #3557: Add permission filter to space and user permission settings
