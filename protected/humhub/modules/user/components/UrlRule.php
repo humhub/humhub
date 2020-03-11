@@ -77,12 +77,10 @@ class UrlRule extends BaseObject implements UrlRuleInterface
             }
             $params = $request->get();
             $params['cguid'] = $user->guid;
-        } else {
-            // Allow controller to handle 404
-            $params['cguid'] = 'not found';
+            return [$parts[2] , $params];
         }
 
-        return [$parts[2], $params];
+        return false;
     }
 
     /**
