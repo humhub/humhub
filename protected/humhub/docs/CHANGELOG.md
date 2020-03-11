@@ -4,6 +4,7 @@ HumHub Change Log
 1.4.4 (Unreleased)
 ---------------------
 - Fix #3908: `DateHelper::parseDateTime()` returns invalid date if given value is not parsable
+- Fix #3905: `accountTopMenu` renders redundant `<li>` tag
 
 1.4.3 (March 4, 2020)
 ---------------------
