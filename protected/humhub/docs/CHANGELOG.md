@@ -8,6 +8,7 @@ HumHub Change Log
 - Fix #3911: Error thrown in UrlRule for non existing user names
 - Fix #3914: Directory link in space chooser still visible when directory module not active
 - Fix #3915: Removed default border from canvas style
+- Fix #3885: Prevent comments on archived content
 
 1.4.3 (March 4, 2020)
 ---------------------
