@@ -9,6 +9,7 @@
 namespace humhub\libs;
 
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\Exception;
@@ -158,14 +159,23 @@ class BasePermission extends BaseObject
      * the configuration.
      *
      * @param int $groupId
-     * @return int
+     * @return int|null
      * @since 1.2
      */
     protected function getConfiguredState($groupId)
     {
-        if (isset(Yii::$app->params['defaultPermissions'][static::class]) &&
-            isset(Yii::$app->params['defaultPermissions'][static::class][$groupId])) {
+        if(!isset(Yii::$app->params['defaultPermissions'][static::class])) {
+            return null;
+        }
+
+        if (isset(Yii::$app->params['defaultPermissions'][static::class][$groupId])) {
             return Yii::$app->params['defaultPermissions'][static::class][$groupId];
+        }
+
+        // Allow asterisk to overwrite all groups excluding guest groups
+        if (isset(Yii::$app->params['defaultPermissions'][static::class]['*'])
+            && !in_array($groupId, [Space::USERGROUP_GUEST, User::USERGROUP_GUEST], true)) {
+            return Yii::$app->params['defaultPermissions'][static::class]['*'];
         }
 
         return null;
@@ -195,6 +205,7 @@ class BasePermission extends BaseObject
      * Returns the label for given State
      *
      * @return string the label
+     * @throws Exception
      */
     public static function getLabelForState($state)
     {
