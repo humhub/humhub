@@ -8,8 +8,11 @@
 
 namespace humhub\modules\user\controllers;
 
+use humhub\compat\HForm;
 use humhub\modules\user\authclient\interfaces\PrimaryClient;
 use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\models\forms\AccountChangeEmail;
+use humhub\modules\user\models\forms\AccountChangeUsername;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\user\components\BaseAccountController;
@@ -82,7 +85,7 @@ class AccountController extends BaseAccountController
             ],
         ];
 
-        $form = new \humhub\compat\HForm($definition, $user->profile);
+        $form = new HForm($definition, $user->profile);
         $form->showErrorSummary = true;
         if ($form->submitted('save') && $form->validate() && $form->save()) {
 
@@ -308,7 +311,7 @@ class AccountController extends BaseAccountController
             throw new HttpException(500, 'Change Username is not allowed');
         }
 
-        $model = new \humhub\modules\user\models\forms\AccountChangeUsername;
+        $model = new AccountChangeUsername;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->sendChangeUsername()) {
             return $this->render('changeUsername_success', ['model' => $model]);
@@ -327,7 +330,7 @@ class AccountController extends BaseAccountController
             throw new HttpException(500, 'Change E-Mail is not allowed');
         }
 
-        $model = new \humhub\modules\user\models\forms\AccountChangeEmail;
+        $model = new AccountChangeEmail;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->sendChangeEmail()) {
             return $this->render('changeEmail_success', ['model' => $model]);

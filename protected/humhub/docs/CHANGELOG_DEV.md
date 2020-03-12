@@ -16,3 +16,4 @@ HumHub Change Log (DEVELOP)
 - Enh #3910: Add javascript url util `humhub.util.url.getUrlParameter()`
 - Enh #3557: Add permission filter to space and user permission settings
 - Enh #3844: Add directory menu icons
+- Enh #3792: Render profile field description as form hint
