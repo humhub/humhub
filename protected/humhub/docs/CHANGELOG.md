@@ -7,6 +7,7 @@ HumHub Change Log
 - Fix #3905: `accountTopMenu` renders redundant `<li>` tag
 - Fix #3911: Error thrown in UrlRule for non existing user names
 - Fix #3914: Directory link in space chooser still visible when directory module not active
+- Fix #3915: Removed default border from canvas style
 
 1.4.3 (March 4, 2020)
 ---------------------
