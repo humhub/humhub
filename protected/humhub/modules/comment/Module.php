@@ -68,6 +68,10 @@ class Module extends \humhub\components\Module
             }
         }
 
+        if ($content->isArchived()) {
+            return false;
+        }
+
         return true;
     }
 
