@@ -18,3 +18,4 @@ HumHub Change Log (DEVELOP)
 - Enh #3844: Add directory menu icons
 - Enh #3792: Render profile field description as form hint
 - Enh #3841: Allow * as group-id in `defaultPermissions` configuration
+- Enh #3924: Implement `StreamQuery->$to` field and query for stream updates
