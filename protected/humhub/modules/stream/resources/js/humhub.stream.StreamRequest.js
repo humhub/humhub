@@ -44,7 +44,11 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
         this.loader = object.defaultValue(this.options.loader, !object.isDefined(this.options.insertAfter));
         this.url = object.defaultValue(this.options.url, this.stream.options.stream);
         this.limit = object.defaultValue(this.options.limit, this.stream.options.loadCount);
-        this.from = object.defaultValue(this.options.from, this.stream.state.lastContentId);
+        if(!object.isDefined(this.options.to)) {
+            this.from = object.defaultValue(this.options.from, this.stream.state.lastContentId);
+        } else {
+            this.to = this.options.to;
+        }
         this.suppressionsOnly = this.options.suppressionsOnly;
         this.channel = this.options.channel;
     };
@@ -85,6 +89,7 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
     };
 
     StreamRequest.prototype._send = function () {
+        var that = this;
         var stream = this.stream;
 
         if (stream.currentXhr) {
@@ -92,9 +97,13 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
         }
 
         return client.ajax(this.url, {data:  this.getRequestData(), beforeSend: function (xhr) {
-            stream.currentXhr = xhr;
+            // Update requests do not interfer with other request
+            if(!that.isUpdateRequest()) {
+                stream.currentXhr = xhr;
+            }
         }}).then(function(response) {
             stream.currentXhr = undefined;
+            stream.state.initialized = true;
             return response;
         });
     };
@@ -106,7 +115,12 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
 
         if(!this.contentId) {
             data[this.buildRequestDataKey('sort')] = this.sort;
-            data[this.buildRequestDataKey('from')] = this.from;
+
+            if(!object.isDefined(this.to)) {
+                data[this.buildRequestDataKey('from')] = this.from;
+            } else {
+                data[this.buildRequestDataKey('to')] = this.to;
+            }
             data[this.buildRequestDataKey('limit')] = this.limit;
         }
 
@@ -131,23 +145,7 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
     };
 
     StreamRequest.prototype.isLastEntryResponse = function () {
-        return !this.isSingleEntryRequest() && object.isEmpty(this.response.content);
-    };
-
-    StreamRequest.prototype.initRequestOptions = function () {
-        var options = {};
-
-        if(this.isSingleEntryRequest()) {
-            options.limit = 1;
-        } else {
-            options.limit = this.options.limit;
-            options.from = this.options.from;
-            options.sort = this.options.sort;
-            options.suppressionsOnly = this.options.suppressionsOnly;
-        }
-
-        options.prepend = object.isDefined(this.options.prepend) ? this.options.prepend : false;
-        return options;
+        return !this.isSingleEntryRequest() && !this.isUpdateRequest() && object.isEmpty(this.response.content);
     };
 
     StreamRequest.prototype.getResultHtml = function() {
@@ -167,6 +165,10 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
 
     StreamRequest.prototype.isSingleEntryRequest = function() {
         return !!this.contentId;
+    };
+
+    StreamRequest.prototype.isUpdateRequest = function() {
+        return !!this.to;
     };
 
     module.export = StreamRequest;

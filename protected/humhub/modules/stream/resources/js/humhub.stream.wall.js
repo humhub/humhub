@@ -14,7 +14,6 @@ humhub.module('stream.wall', function (module, require, $) {
 
     var stream = require('stream');
     var BaseStream = stream.Stream;
-    var StreamRequest = stream.StreamRequest;
     var Component = require('action').Component;
     var Widget = require('ui.widget').Widget;
     var event = require('event');
@@ -22,6 +21,9 @@ humhub.module('stream.wall', function (module, require, $) {
     var string = require('util').string;
     var topic = require('topic');
     var view = require('ui.view');
+    var loader = require('ui.loader');
+    var container = require('content.container');
+    var user = require('user');
 
     var DATA_STREAM_TOPIC = 'stream-topic';
 
@@ -36,6 +38,7 @@ humhub.module('stream.wall', function (module, require, $) {
         options = options || {};
 
         options.filter =  Component.instance($('#wall-stream-filter-nav'), {stream : this});
+        options.pinSupport = !this.isDashboardStream();
 
         BaseStream.call(this, container, options);
 
@@ -74,14 +77,20 @@ humhub.module('stream.wall', function (module, require, $) {
             $('#btn-load-more').hide();
         });
 
-        event.on('humhub:content:newEntry.wallStream', function (evt, html) {
-            that.prependEntry(html, true);
+        event.on('humhub:content:beforeSubmit.wallStream', function (evt, html) {
+            that.submitLock = true;
+        });
+
+        event.on('humhub:content:afterSubmit.wallStream', function (evt, html) {
+            that.prependEntry(html, true).then(function() {
+                that.submitLock = false;
+            });
         });
 
         event.on('humhub:content:afterMove.wallStream', function (evt, response) {
             var entry = that.entry(response.id);
             if(entry) {
-                if(view.getState().moduleId === 'dashboard') {
+                if(that.isDashboardStream()) {
                     entry.reload();
                 } else {
                     setTimeout($.proxy(entry.remove, entry), 1000);
@@ -90,15 +99,144 @@ humhub.module('stream.wall', function (module, require, $) {
         });
     };
 
+    /**
+     * TODO: Create own dasboard stream subclass
+     * @returns {boolean}
+     * @since 1.5
+     */
+    WallStream.prototype.isDashboardStream = function() {
+        return view.getState().moduleId === 'dashboard';
+    };
+
+    /**
+     * @returns {boolean}
+     * @since 1.5
+     */
+    WallStream.prototype.isUserStream = function() {
+        return view.getState().moduleId === 'user';
+    };
+
+    /**
+     * @returns {boolean}
+     * @since 1.5
+     */
+    WallStream.prototype.isSpaceStream = function() {
+        return view.getState().moduleId === 'user';
+    };
+
+    WallStream.prototype.isUpdateAvailable = function(events) {
+        var that = this;
+
+        // We currently only support updates on dashboard and space stream
+        var isDashboard = this.isDashboardStream();
+        var isContainer = this.isSpaceStream() || this.isUserStream();
+
+        if(!isDashboard && !isContainer) {
+            return false;
+        }
+
+        var updatesAvailable = false;
+        events.forEach(function(event) {
+            if(that.entry(event.data.contentId)) {
+                return;
+            }
+
+            if(event.data.streamChannel !== 'default') {
+                return;
+            }
+
+            // Prevent edge-cases where live event was faster than content submission
+            if(that.submitLock && event.data.originator === user.guid()) {
+                return;
+            }
+
+            if(isDashboard) {
+                updatesAvailable = true;
+            } else if(container.guid() === event.data.sguid || container.guid() === event.data.uguid) {
+                updatesAvailable = true;
+            }
+        });
+
+        return updatesAvailable;
+    };
+
+    WallStream.prototype.onUpdateAvailable = function() {
+        if(this.submitLock || $('#streamUpdateBadge').length) {
+            return;
+        }
+
+        this.renderUpdateBadge();
+    };
+
+    WallStream.prototype.renderUpdateBadge = function() {
+        var that = this;
+        var appendToStreamTimeout;
+
+        var $badge =  $(WallStream.template.updateBadge);
+
+        $('body').append($badge);
+
+        var appendToStream = function() {
+            $('#wallStream').prepend($badge.css({'position': '', 'display': 'block'}));
+            $badge.data('appended', true);
+        };
+
+        var topOffset = view.getContentTop();
+        var top = topOffset + 20;
+        var left = this.$.offset().left + (that.$.width() / 2) - ($badge.find('span').width() / 2);
+
+        $badge.css({
+            'position': 'fixed',
+            'top': top +'px',
+            'left': left+'px',
+            'display':'inline-block',
+            'text-align': 'center',
+            //'width': '100%',
+            'z-index': '9999',
+            'margin-top': '15px',
+            'margin-bottom': '15px'
+        }).on('click', function() {
+            if(appendToStreamTimeout) {
+                clearTimeout(appendToStreamTimeout);
+            }
+
+            var load = function() {
+                loader.set($badge, {css: {padding: '4px'}});
+                that.loadUpdate().finally(function() {
+                    $badge.remove();
+                });
+            };
+
+            if($badge.data('appended')) {
+                load();
+            } else {
+                $('html').animate({ scrollTop: 0 }, 'slow', function() {
+                    appendToStream();
+                    load();
+                });
+            }
+        });
+
+        if(($(window).scrollTop() + topOffset - this.$.position().top) < 0) {
+           appendToStream();
+        } else {
+             appendToStreamTimeout = setTimeout(function() {
+              //   appendToStream();
+             }, 10000);
+        }
+
+    }
+
     WallStream.template = {
-        loadSuppressedButton: '<div class="load-suppressed" style="display:none;"><a href="#" data-action-click="loadSuppressed" data-entry-key="{key}" data-action-block="manual" data-ui-loader><i class="fa fa-chevron-down"></i>&nbsp;&nbsp;{message}&nbsp;&nbsp;<span class="badge">{contentName}</span></a></div>'
+        loadSuppressedButton: '<div class="load-suppressed" style="display:none;"><a href="#" data-action-click="loadSuppressed" data-entry-key="{key}" data-action-block="manual" data-ui-loader><i class="fa fa-chevron-down"></i>&nbsp;&nbsp;{message}&nbsp;&nbsp;<span class="badge">{contentName}</span></a></div>',
+        updateBadge: '<div id="streamUpdateBadge" class="animated bounceIn"><span class="label label-info" style="cursor:pointer"><i class="fa fa-arrow-circle-up"></i> New Updates Available!</span></div>'
     };
 
     WallStream.prototype.loadSuppressed = function(evt) {
         var key = evt.$trigger.data('entry-key');
         var entry = this.entry(key);
 
-        this.loadEntries({
+        this.load({
             'insertAfter': entry.$,
             'from': key,
             'suppressionsOnly': true
@@ -107,7 +245,7 @@ humhub.module('stream.wall', function (module, require, $) {
         }).finally(function() {
             evt.finish();
         });
-    }
+    };
 
     WallStream.prototype.initScroll = function() {
         var that = this;
@@ -143,10 +281,9 @@ humhub.module('stream.wall', function (module, require, $) {
     };
 
     var unload = function() {
-        event.off('humhub:content:newEntry.wallStream');
-        event.off('humhub:content:afterMove.wallStream');
-        event.off('humhub:topic:updated.wallStream');
-        $(window).off('scroll.wallStream');
+        event.off('.wallStream');
+        $('#streamUpdateBadge').remove();
+        $(window).off('.wallStream');
     };
 
     var WallStreamFilter = Filter.extend();
@@ -211,7 +348,7 @@ humhub.module('stream.wall', function (module, require, $) {
         if(this.topicUpdate) {
             return;
         }
-        
+
         try {
             this.topicUpdate = true;
             var topicPicker =  this.getTopicPicker();

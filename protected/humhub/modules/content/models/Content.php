@@ -207,6 +207,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
                 'sourceClass' => $contentSource->className(),
                 'sourceId' => $contentSource->getPrimaryKey(),
                 'silent' => $this->isMuted(),
+                'streamChannel' => $this->stream_channel,
                 'contentId' => $this->id
             ]));
         }

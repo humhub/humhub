@@ -19,3 +19,8 @@ HumHub Change Log (DEVELOP)
 - Enh #3792: Render profile field description as form hint
 - Enh #3841: Allow * as group-id in `defaultPermissions` configuration
 - Enh #3924: Implement `StreamQuery->$to` field and query for stream updates
+- Enh #3927: Add `content.container.guid()` function to determine active container on the frontend
+- Enh #3924: Display update stream badge once an update is available
+- Enh #3924: Implement `Stream.isUpdateAvailable()` to determine if there is an update available
+- Enh #3924: Implement `Stream.onUpdateAvailable()`, `Stream.loadUpdate()` and `Stream.options.autoUpdate` to manage stream updates
+- Enh #3924: Added `humhub\modules\content\live\NewContent:$streamChannel`
