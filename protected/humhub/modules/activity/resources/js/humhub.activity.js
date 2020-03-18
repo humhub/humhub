@@ -5,10 +5,10 @@
 humhub.module('activity', function (module, require, $) {
 
     var util = require('util');
-    var object = util.object;
     var stream = require('stream');
-    var loader = require('ui.loader');
     var Widget = require('ui.widget').Widget;
+    var container = require('content.container');
+    var user = require('user');
 
     /**
      * Number of initial stream enteis loaded when stream is initialized.
@@ -53,9 +53,35 @@ humhub.module('activity', function (module, require, $) {
         stream.Stream.call(this, container, {
             initLoadCount: STREAM_INIT_COUNT,
             loadCount: STREAM_LOAD_COUNT,
+            autoUpdate: true,
             streamEntryClass: ActivityStreamEntry,
         });
     });
+
+    ActivityStream.prototype.isUpdateAvailable = function(events) {
+        var that = this;
+
+        var updatesAvailable = false;
+        events.forEach(function(event) {
+            if(that.entry(event.data.contentId)) {
+                return;
+            }
+
+            if(event.data.streamChannel !== 'activity') {
+                return;
+            }
+
+            if(event.data.originator === user.guid()) {
+                return;
+            }
+
+            if(container.guid() === event.data.sguid || container.guid() === event.data.uguid) {
+                updatesAvailable = true;
+            }
+        });
+
+        return updatesAvailable;
+    };
 
     ActivityStream.prototype.initScroll = function () {
         if(!this.$content.is(':visible')) {
