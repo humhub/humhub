@@ -121,7 +121,7 @@ humhub.module('stream.wall', function (module, require, $) {
      * @since 1.5
      */
     WallStream.prototype.isSpaceStream = function() {
-        return view.getState().moduleId === 'user';
+        return view.getState().moduleId === 'space';
     };
 
     WallStream.prototype.isUpdateAvailable = function(events) {
