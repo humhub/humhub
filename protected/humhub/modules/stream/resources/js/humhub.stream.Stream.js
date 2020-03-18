@@ -23,6 +23,10 @@ humhub.module('stream.Stream', function (module, require, $) {
     var loader = require('ui.loader');
     var event = require('event');
 
+    var EVENT_AFTER_ADD_ENTRIES = 'humhub:stream:afterAddEntries';
+    var EVENT_BEFORE_ADD_ENTRIES = 'humhub:stream:beforeAddEntries';
+    var EVENT_INITIALIZED = 'humhub:stream:initialized';
+
     /**
      * Number of initial stream entries loaded when stream is initialized.
      * @type Number
@@ -69,13 +73,39 @@ humhub.module('stream.Stream', function (module, require, $) {
      * @param {type} container id or jQuery object of the stream container
      * @returns {undefined}
      */
-    var Stream = Widget.extend(function (container, options) {
-        Widget.call(this, container, options);
-    });
+    var Stream = Widget.extend();
 
     Stream.prototype.onClear = function() {/* abstract onClear function */};
 
-    Stream.prototype.initScroll = function() {/* abstract initScroll function */};
+    Stream.prototype.initScroll = function() {
+        if(window.IntersectionObserver && this.options.scrollSupport) {
+
+            var options = { root: this.$content[0], rootMargin: "50px" };
+            options = this.options.scrollOptions ? $.extend(options, this.options.scrollOptions) : options;
+            var $streamEnd = $('<div class="stream-end"></div>');
+            this.$content.append($streamEnd);
+
+            var that = this;
+            var observer = new IntersectionObserver(function(entries) {
+                if(that.preventScrollLoading()) {
+                    return;
+                }
+
+                if(entries.length && entries[0].isIntersecting) {
+                    that.load().finally(function() {
+                        that.state.scrollLock = false;
+                    });
+                }
+
+            }, options);
+
+            observer.observe($streamEnd[0]);
+        }
+    };
+
+    Stream.prototype.preventScrollLoading = function() {
+        return this.state.scrollLock || !this.canLoadMore() || !this.state.lastRequest || this.state.firstRequest.isSingleEntryRequest()
+    };
 
     Stream.prototype.initEvents = function() {/* abstract initScroll function */};
 
@@ -99,6 +129,10 @@ humhub.module('stream.Stream', function (module, require, $) {
             }
 
             that.onUpdateAvailable();
+        });
+
+        this.on(EVENT_INITIALIZED, function() {
+            that.initScroll();
         });
     };
 
@@ -138,6 +172,7 @@ humhub.module('stream.Stream', function (module, require, $) {
             .loadInit()
             .then($.proxy(this.handleResponse, this))
             .then($.proxy(this.updateTop, this))
+            .then($.proxy(this.triggerInitEvent, this))
             .catch($.proxy(this.handleLoadError, this));
     };
 
@@ -155,13 +190,17 @@ humhub.module('stream.Stream', function (module, require, $) {
         return response;
     };
 
+    Stream.prototype.triggerInitEvent = function(response) {
+        this.trigger(EVENT_INITIALIZED, this);
+        return response;
+    };
+
     Stream.prototype.initWidget = function() {
         this.$content = this.$.find(this.options.contentSelector);
         this.loader = this.options.loader || new StreamLoader(this);
         this.initDefaultEvents();
         this.initEvents();
         this.initFilter();
-        this.initScroll();
     };
 
     Stream.prototype.initFilter = function () {
@@ -328,7 +367,7 @@ humhub.module('stream.Stream', function (module, require, $) {
             return Promise.resolve();
         }
 
-        this.$.trigger('humhub:stream:beforeAddEntries', [request.response, request, $result]);
+        this.$.trigger(EVENT_BEFORE_ADD_ENTRIES, [request.response, request, $result]);
 
         var promise;
 
@@ -341,7 +380,7 @@ humhub.module('stream.Stream', function (module, require, $) {
         }
 
         return promise.then(function () {
-            that.trigger('humhub:stream:afterAddEntries', [request.response, request, $result]);
+            that.trigger(EVENT_AFTER_ADD_ENTRIES, [request.response, request, $result]);
             return request;
         });
     };
@@ -399,8 +438,14 @@ humhub.module('stream.Stream', function (module, require, $) {
      * @param html
      */
     Stream.prototype.appendEntry = function (html) {
+        var that = this;
         return this._streamEntryAnimation(html, function ($html) {
-            this.$content.append($html);
+            var $streamEnd = that.$content.find('.stream-end:first');
+            if($streamEnd.length) {
+                $streamEnd.before($html)
+            } else {
+                this.$content.append($html);
+            }
         });
     };
 

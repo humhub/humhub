@@ -84,6 +84,7 @@ class AppAsset extends AssetBundle
         'humhub\assets\OpenSansAsset',
         'humhub\assets\HighlightJsAsset',
         'humhub\assets\SwipedEventsAssets',
+        IntersectionObserverPolyfillAsset::class,
     ];
 
     /**

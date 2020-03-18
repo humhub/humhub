@@ -36,6 +36,7 @@
         "npm-asset/select2-bootstrap-theme": "0.1.0-beta.4",
         "npm-asset/bootstrap-tour": "0.11.0",
         "npm-asset/swiped-events": "1.0.9",
+        "npm-asset/intersection-observer": "^0.7.0",
         "cebe/markdown": "1.0.2",
         "firebase/php-jwt": "^5.0",
         "jbroadway/urlify": "^1.0",

@@ -13,7 +13,7 @@
 humhub.module('stream.wall', function (module, require, $) {
 
     var stream = require('stream');
-    var BaseStream = stream.Stream;
+    var Stream = stream.Stream;
     var Component = require('action').Component;
     var Widget = require('ui.widget').Widget;
     var event = require('event');
@@ -34,13 +34,15 @@ humhub.module('stream.wall', function (module, require, $) {
      * @param {type} cfg
      * @returns {undefined}
      */
-    var WallStream = BaseStream.extend(function (container, options) {
+    var WallStream = Stream.extend(function (container, options) {
         options = options || {};
 
+        options.scrollSupport = true;
+        options.scrollOptions = { root: null, rootMargin: "300px" };
         options.filter =  Component.instance($('#wall-stream-filter-nav'), {stream : this});
         options.pinSupport = !this.isDashboardStream();
 
-        BaseStream.call(this, container, options);
+        Stream.call(this, container, options);
 
         if (module.config.horizontalImageScrollOnMobile && /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
             this.$.addClass('mobile');
@@ -225,7 +227,7 @@ humhub.module('stream.wall', function (module, require, $) {
              }, 10000);
         }
 
-    }
+    };
 
     WallStream.template = {
         loadSuppressedButton: '<div class="load-suppressed" style="display:none;"><a href="#" data-action-click="loadSuppressed" data-entry-key="{key}" data-action-block="manual" data-ui-loader><i class="fa fa-chevron-down"></i>&nbsp;&nbsp;{message}&nbsp;&nbsp;<span class="badge">{contentName}</span></a></div>',
@@ -244,30 +246,6 @@ humhub.module('stream.wall', function (module, require, $) {
             evt.$trigger.closest('.load-suppressed').remove();
         }).finally(function() {
             evt.finish();
-        });
-    };
-
-    WallStream.prototype.initScroll = function() {
-        var that = this;
-        $(window).off('scroll.wallStream').on('scroll.wallStream', function () {
-            if(that.state.scrollLock || !that.canLoadMore() || !that.state.lastRequest || that.state.firstRequest.isSingleEntryRequest()) {
-                return;
-            }
-
-            var $window = $(window);
-            var windowHeight = $window.height();
-            var windowBottom = $window.scrollTop() + windowHeight;
-            var elementBottom = that.$.offset().top + that.$.outerHeight();
-            var remaining = elementBottom - windowBottom;
-            if (remaining <= 300) {
-                that.state.scrollLock = true;
-                $('#btn-load-more').hide();
-                setTimeout(function () {
-                    that.loadEntries().finally(function() {
-                        that.state.scrollLock = false;
-                    });
-                });
-            }
         });
     };
 
