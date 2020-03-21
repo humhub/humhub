@@ -6,4 +6,5 @@
 - Permission overview filter (https://github.com/humhub/humhub/issues/3557) (TBD)
 - Admin log filter (https://github.com/humhub/humhub/issues/3909) (TBD)
 - SameSite Cookie Support (TBD)
+- Removed caching section from `.htaccess` file. See [Documentation](https://docs.humhub.org/docs/admin/performance#http-caching) for more details. 
 
