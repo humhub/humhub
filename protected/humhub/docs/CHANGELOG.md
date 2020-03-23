@@ -9,6 +9,8 @@ HumHub Change Log
 - Fix #3914: Directory link in space chooser still visible when directory module not active
 - Fix #3915: Removed default border from canvas style
 - Fix #3885: Prevent comments on archived content
+- Fix #3940: Empty visibility for some new spaces 
+
 
 1.4.3 (March 4, 2020)
 ---------------------
