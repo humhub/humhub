@@ -11,6 +11,9 @@ HumHub Change Log
 - Fix #3885: Prevent comments on archived content
 - Fix #3940: Empty visibility for some new spaces 
 - Fix #3942: Show password icon not placed correctly if field was initially hidden
+- Chng: Updated richtext version to 1.0.21
+- Fix #3906: Prevent emoji chooser focus when triggered by input rule
+- Fix #3890: Richtext list menu item disappears
 
 
 1.4.3 (March 4, 2020)
