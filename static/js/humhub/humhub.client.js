@@ -318,7 +318,17 @@ humhub.module('client', function (module, require, $) {
             url = xhr.getResponseHeader('X-Redirect');
         }
 
-        if (url !== null) {
+        redirect(url);
+    };
+
+    var redirect = function(url) {
+        if(!url) {
+            return;
+        }
+
+        url = object.isString(url) ? url : url.url;
+
+        if (object.isString(url)) {
             if(module.pjax && module.pjax.config.active) {
                 module.pjax.redirect(url);
             } else {
@@ -419,10 +429,11 @@ humhub.module('client', function (module, require, $) {
         reload: reload,
         submit: submit,
         init: init,
+        sortOrder: 100,
         json: json,
         Response: Response,
         onBeforeLoad: onBeforeLoad,
-        offBeforeLoad: offBeforeLoad
-
+        offBeforeLoad: offBeforeLoad,
+        redirect: redirect
     });
 });
