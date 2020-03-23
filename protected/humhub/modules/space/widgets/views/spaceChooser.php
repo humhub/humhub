@@ -1,13 +1,19 @@
 <?php
 
-/* @var $this \humhub\components\WebView */
-/* @var $currentSpace \humhub\modules\space\models\Space */
-
+use humhub\components\View;
 use humhub\modules\space\assets\SpaceChooserAsset;
+use humhub\modules\space\models\Membership;
+use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\SpaceChooserItem;
 use humhub\modules\space\widgets\Image;
 use yii\helpers\Url;
-use yii\helpers\Html;
+
+
+/* @var $this View */
+/* @var $currentSpace Space */
+/* @var $memberships Membership[] */
+/* @var $followSpaces Space[] */
+/* @var $canCreateSpace boolean */
 
 SpaceChooserAsset::register($this);
 
