@@ -83,9 +83,11 @@ class CreateController extends Controller
             $visibilityOptions[Space::VISIBILITY_NONE] = Yii::t('SpaceModule.base', 'Private (Invisible)');
         }
 
-        // allow setting pre-selected visibility
         if ($visibility !== null && isset($visibilityOptions[$visibility])) {
+            // allow setting pre-selected visibility
             $model->visibility = $visibility;
+        } elseif (!isset($visibilityOptions[$model->visibility])) {
+            $model->visibility = array_key_first($visibilityOptions);
         }
 
         $joinPolicyOptions = [

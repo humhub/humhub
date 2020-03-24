@@ -10,7 +10,7 @@ humhub.module('ui.navigation', function (module, require, $) {
         // Default implementation for topbar. Activate li on click.
         $('#top-menu-nav a').on('click', function () {
             var $this = $(this);
-            if (!$this.is('#space-menu')) {
+            if (!$this.is('#space-menu') && !$this.is('#top-dropdown-menu')) {
                 module.setActiveItem($this);
             }
         });
@@ -32,11 +32,23 @@ humhub.module('ui.navigation', function (module, require, $) {
             return;
         }
 
-        if(item && item.url) {
-            module.setActiveItem($('#' + id).find('[href="' + item.url + '"]'));
-        } else {
+        if(!item) {
             module.setActiveItem(null);
+            return;
         }
+
+        var $menu = $('#' + id);
+        var $item = null;
+
+        if(item.id) {
+            $item = $menu.find('[data-menu-id="'+item.id+'"]');
+        }
+
+        if((!$item || !$item.length) && item.url) {
+            $item = $menu.find('[href="' + item.url + '"]');
+        }
+
+        module.setActiveItem($item);
     };
 
     var setActiveItem = function ($item) {
@@ -45,9 +57,14 @@ humhub.module('ui.navigation', function (module, require, $) {
             return;
         }
 
-        $item.closest('ul').find('li').removeClass('active');
-        $item.closest('li').addClass('active');
-        $item.trigger('blur');
+        $item.each(function() {
+            var $this = $(this);
+            $this.closest('ul').find('li').removeClass('active');
+            $this.closest('ul').find('a').removeClass('active');
+            $this.closest('li').addClass('active');
+            $this.addClass('active');
+            $this.trigger('blur');
+        });
     };
 
     module.export({

@@ -31,21 +31,27 @@
 }
 
 #space-menu-dropdown .input-group-addon {
-    border-radius: 0px 4px 4px 0px;
+    border-radius: 0 4px 4px 0;
 }
 
 #space-menu-dropdown .input-group-addon.focus {
-    border-radius: 0px 4px 4px 0px;
+    border-radius: 0 4px 4px 0;
     border: 2px solid @info;
-    border-left: 0px;
+    border-left: 0;
 }
 
-#space-menu-search {
-    border-right: 0px;
+.input-group #space-menu-search {
+    border-right: 0;
+
+}
+
+#space-menu-dropdown div:not(.input-group) > .search-reset {
+    top: 10px !important;
+    right:15px !important;
 }
 
 #space-directory-link i {
-    margin-right:0px;
+    margin-right:0;
 }
 
 .space-acronym {

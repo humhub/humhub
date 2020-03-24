@@ -6,6 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\modules\ui\menu\DropdownDivider;
 use humhub\widgets\FooterMenu;
 use \yii\helpers\Html;
 use \yii\helpers\Url;
@@ -50,9 +51,9 @@ $userModel = Yii::$app->user->identity;
             </a>
             <ul class="dropdown-menu pull-right">
                 <?php foreach ($entries as $entry): ?>
-                    <li>
+                    <?php if(!($entry instanceof DropdownDivider)) : ?><li><?php endif; ?>
                         <?= $entry->render() ?>
-                    </li>
+                    <?php if(!($entry instanceof DropdownDivider)) : ?></li><?php endif; ?>
                 <?php endforeach; ?>
                 <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_ACCOUNT_MENU]); ?>
             </ul>

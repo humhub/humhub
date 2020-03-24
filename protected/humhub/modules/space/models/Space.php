@@ -241,6 +241,11 @@ class Space extends ContentContainerActiveRecord implements Searchable
             $this->url = mb_strtolower($this->url);
         }
 
+        // Make sure visibility attribute is not empty
+        if (empty($this->visibility)) {
+            $this->visibility = self::VISIBILITY_NONE;
+        }
+
         if ($this->visibility == self::VISIBILITY_NONE) {
             $this->join_policy = self::JOIN_POLICY_NONE;
             $this->default_content_visibility = Content::VISIBILITY_PRIVATE;
