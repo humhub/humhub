@@ -28,6 +28,10 @@ class LikeLink extends \yii\base\Widget
      */
     public function run()
     {
+        if (Yii::$app->getModule('like')->isEnabled === false) {
+            return;
+        }
+
         $currentUserLiked = false;
 
         $likes = Like::GetLikes($this->object->className(), $this->object->id);
