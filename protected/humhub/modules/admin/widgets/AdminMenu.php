@@ -51,11 +51,23 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             'id' => 'spaces',
             'url' => Url::toRoute('/admin/space'),
             'icon' => '<i class="fa fa-inbox"></i>',
-            'sortOrder' => 400,
+            'sortOrder' => 300,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'space'),
             'isVisible' => Yii::$app->user->can([
                 new \humhub\modules\admin\permissions\ManageSpaces(),
                 new \humhub\modules\admin\permissions\ManageSettings(),
+            ]),
+        ]);
+
+        $this->addItem([
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Categories'),
+            'id' => 'categories',
+            'url' => Url::toRoute('/admin/category/index-funding'),
+            'icon' => '<i class="fa fa-tag"></i>',
+            'sortOrder' => 400,
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'category'),
+            'isVisible' => Yii::$app->user->can([
+                new \humhub\modules\admin\permissions\ManageCategories(),
             ]),
         ]);
 
