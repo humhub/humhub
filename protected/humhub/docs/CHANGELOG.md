@@ -1,6 +1,10 @@
 HumHub Change Log
 =================
 
+1.4.5 (Unreleased)
+----------------------
+- Fix #3945: Default object-src policy prevents loading pdf on safari
+
 1.4.4 (March 24, 2020)
 ----------------------
 - Fix #3908: `DateHelper::parseDateTime()` returns invalid date if given value is not parsable
