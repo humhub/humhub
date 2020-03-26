@@ -44,7 +44,6 @@ $userModel = Yii::$app->user->identity;
                         'width' => 32,
                         'htmlOptions' => [
                                 'id' => 'user-account-image',
-                                'alt' =>  Yii::t('base', 'My profile image')
                  ]])?>
 
                 <b class="caret"></b>

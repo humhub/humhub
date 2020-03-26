@@ -26,3 +26,4 @@ HumHub Change Log (DEVELOP)
 - Enh #3924: Added `humhub\modules\content\live\NewContent:$streamChannel`
 - Enh #3928: Implement auto updates on activity stream
 - Enh #3930: Add default `Stream.initScroll` with support of IntersectionObserver
+- Fix #3904: Removed unused "alt" attribute on Span element
