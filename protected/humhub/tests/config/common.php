@@ -57,6 +57,7 @@ return [
                         "unsafe-inline" => true
                     ],
                     "object-src" => [
+                        'self' => true
                     ],
                     "frame-src" => [
                         "allow" => [

@@ -21,7 +21,7 @@ return array (
   'Next »' => 'Weiter »',
   'Ok' => 'Ok',
   'Save and close' => 'Speichern und schließen',
-  'The account menu gives you access to your private settings and allows you to manage your public profile.' => 'Das Benuzerkonto-Menü gibt dir die Möglichkeit deine privaten Einstellungen zu ändern und dein öffentliches Profil zu verwalten.',
+  'The account menu gives you access to your private settings and allows you to manage your public profile.' => 'Das Benuzerkonto-Menü gibt dir die Möglichkeit deine persönlichen Einstellungen zu ändern und dein öffentliches Profil zu verwalten.',
   'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.' => 'Hierdurch wird das Tour-Panel aus der Übersicht entfernt. Du kannst es reaktivieren über <br />Einstellungen <i class="fa fa-caret-right"></i>.',
   'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:' => 'Dies ist das wichtigste Menü und wird wahrscheinlich dasjenige sein, das du am häufigsten benutzt!<br /><br />Betrete alle deine Spaces und erstelle neue.<br /><br />Die folgende Anleitung wird dir zeigen wie:',
   'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.' => 'Du bist hier der erste Benutzer ... Yehaaa! Sei ein gutes Vorbild und vervollständige dein Profil,<br />so dass künftige Benutzer wissen, wer die Verantwortung trägt und an wen sie sich wenden können, wenn sie Fragen haben.',
@@ -30,6 +30,6 @@ return array (
   'Your mobile phone number' => 'Deine Mobilfunknummer',
   'Your phone number at work' => 'Deine Geschäftsnummer',
   'Your skills, knowledge and experience (comma seperated)' => 'Deine Fähigkeiten, Kenntnisse und Erfahrungen (Komma getrennt)',
-  'Your title or position' => 'Dein Titel oder Position',
+  'Your title or position' => 'Dein Titel oder Funktion',
   '« Prev' => '« Zurück',
 );
