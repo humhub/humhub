@@ -27,4 +27,7 @@ Aihetta',
     'Topic' => 'Aihe',
     'Topic has been deleted!' => 'Aihe on poistettu',
     'Topics' => 'Aiheet',
+    'Color' => '',
+    'Name' => '',
+    'Sort order' => '',
 ];

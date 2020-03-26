@@ -22,4 +22,6 @@ return [
     'There is a new HumHub Version ({version}) available.' => 'HumHubの最新版は ({version}) です。',
     'Administrative' => '',
     'Receive Notifications for administrative events like available updates.' => '',
+    '{displayName} added you to group {groupName}' => '',
+    '{displayName} removed you from group {groupName}' => '',
 ];

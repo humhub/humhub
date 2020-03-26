@@ -33,7 +33,6 @@ return [
     'Caching' => 'Fazer cache',
     'Cronjobs' => 'Tarefas agendadas',
     'Design' => 'Design',
-    'E-Mail summaries' => 'Resumos de e-mail',
     'Files' => 'Arquivos',
     'General' => 'Geral',
     'Groups' => 'Grupos',

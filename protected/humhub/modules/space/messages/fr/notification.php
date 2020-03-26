@@ -28,4 +28,5 @@ return [
     '{displayName} invited you to the space {spaceName}' => '{displayName} vous a invité à rejoindre l\'espace {spaceName}',
     '{displayName} requests membership for the space {spaceName}' => '{displayName} a demandé l\'adhésion à l\'espace {spaceName}',
     '{displayName} revoked your invitation for the space {spaceName}' => '{displayName} a annulé votre invitation à l\'espace {spaceName}',
+    '{displayName} changed your role to {roleName} in the space {spaceName}.' => '',
 ];

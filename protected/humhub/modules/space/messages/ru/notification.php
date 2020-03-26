@@ -27,5 +27,6 @@ return [
     'Receive Notifications of Space Membership events.' => '',
     'Space Membership' => '',
     'View Online' => '',
+    '{displayName} changed your role to {roleName} in the space {spaceName}.' => '',
     '{displayName} revoked your invitation for the space {spaceName}' => '',
 ];

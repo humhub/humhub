@@ -27,5 +27,6 @@ return [
     '{displayName} requests membership for the space {spaceName}' => '{displayName} 请求加入空间 {spaceName}',
     'Receive Notifications of Space Membership events.' => '',
     'You were added to Space {spaceName}' => '',
+    '{displayName} changed your role to {roleName} in the space {spaceName}.' => '',
     '{displayName} revoked your invitation for the space {spaceName}' => '',
 ];
