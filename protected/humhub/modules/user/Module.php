@@ -101,6 +101,12 @@ class Module extends \humhub\components\Module
     public $softDeleteKeepProfileFields = ['firstname', 'lastname'];
 
     /**
+     * @var bool include user contents on profile stream
+     * @since 1.5
+     */
+    public $includeAllUserContentsOnProfile = true;
+
+    /**
      * @var array defines empty additional rules for password validation
      */
     public $passwordStrength = [];

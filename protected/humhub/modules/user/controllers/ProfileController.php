@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\controllers;
 
+use humhub\modules\user\components\ProfileStream;
 use Yii;
 use yii\web\HttpException;
 use yii\db\Expression;
@@ -52,8 +53,8 @@ class ProfileController extends ContentContainerController
     {
         return [
             'stream' => [
-                'class' => ContentContainerStream::class,
-                'mode' => ContentContainerStream::MODE_NORMAL,
+                'class' => ProfileStream::class,
+                'mode' => ProfileStream::MODE_NORMAL,
                 'contentContainer' => $this->contentContainer
             ],
         ];
@@ -61,7 +62,7 @@ class ProfileController extends ContentContainerController
 
     /**
      * User profile home
-     * 
+     *
      * @todo Allow change of default action
      * @return string the response
      */
@@ -93,7 +94,7 @@ class ProfileController extends ContentContainerController
         if(Yii::$app->getModule('user')->disableFollow) {
             throw new HttpException(403, Yii::t('ContentModule.base', 'This action is disabled!'));
         }
-        
+
         $this->forcePostRequest();
         $this->getUser()->follow(Yii::$app->user->getIdentity(), false);
 
