@@ -1,81 +1,48 @@
 <?php
 
-use humhub\compat\CActiveForm;
 use humhub\libs\Html;
-use humhub\models\Setting;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\Button;
+
+/* @var $this \yii\web\View */
+/* @var $transportTypes array */
+/* @var $encryptionTypes array */
+/* @var \humhub\components\SettingsManager $settings */
 
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
-<?php $form = CActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(); ?>
 
 <?= $form->errorSummary($model); ?>
 
-<div class="form-group">
-    <?= $form->labelEx($model, 'systemEmailAddress'); ?>
-    <?= $form->textField($model, 'systemEmailAddress', ['class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.systemEmailAddress')]); ?>
-</div>
+<?= $form->field($model, 'systemEmailAddress')->textInput(['readonly' => $settings->isFixed('mailer.systemEmailAddress')]); ?>
+<?= $form->field($model, 'systemEmailName')->textInput(['readonly' => $settings->isFixed('mailer.systemEmailName')]); ?>
+<?= $form->field($model, 'transportType')->dropDownList($transportTypes, ['readonly' => $settings->isFixed('mailer.transportType')]); ?>
 
-
-<div class="form-group">
-    <?= $form->labelEx($model, 'systemEmailName'); ?>
-    <?= $form->textField($model, 'systemEmailName', ['class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.systemEmailName')]); ?>
-</div>
-
-
-<div class="form-group">
-    <?= $form->labelEx($model, 'transportType'); ?>
-    <?= $form->dropDownList($model, 'transportType', $transportTypes, ['class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.transportType')]); ?>
-</div>
 
 <div id="smtpOptions">
     <hr>
     <h4> <?= Yii::t('AdminModule.settings', 'SMTP Options'); ?> </h4>
 
-    <div class="form-group">
-        <?= $form->labelEx($model, 'hostname'); ?>
-        <?= $form->textField($model, 'hostname', ['class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.hostname')]); ?>
-    </div>
-
-    <div class="form-group">
-        <?= $form->labelEx($model, 'username'); ?>
-        <?= $form->textField($model, 'username', ['class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.username')]); ?>
-    </div>
-
-    <div class="form-group">
-        <?= $form->labelEx($model, 'password'); ?>
-        <?= $form->passwordField($model, 'password', ['class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.password')]); ?>
-    </div>
-
-    <div class="form-group">
-        <?= $form->labelEx($model, 'port'); ?>
-        <?= $form->textField($model, 'port', ['class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.port')]); ?>
-    </div>
-
-    <div class="form-group">
-        <?= $form->labelEx($model, 'encryption'); ?>
-        <?= $form->dropDownList($model, 'encryption', $encryptionTypes, ['class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.encryption')]); ?>
-    </div>
+    <?= $form->field($model, 'hostname')->textInput(['readonly' => $settings->isFixed('mailer.hostname')]); ?>
+    <?= $form->field($model, 'username')->textInput(['readonly' => $settings->isFixed('mailer.username')]); ?>
+    <?= $form->field($model, 'password')->textInput(['readonly' => $settings->isFixed('mailer.password')])->passwordInput(); ?>
+    <?= $form->field($model, 'port')->textInput(['readonly' => $settings->isFixed('mailer.port')]); ?>
+    <?= $form->field($model, 'encryption')->dropDownList($encryptionTypes, ['readonly' => $settings->isFixed('mailer.encryption')]); ?>
 
     <div id="encryptionOptions">
-        <div class="form-group">
-            <strong>Encryption Options</strong>
-            <div class="checkbox">
-                <label>
-                    <?= $form->checkBox($model, 'allowSelfSignedCerts', ['class' => 'form-control', 'readonly' => Setting::IsFixed('mailer.allowSelfSignedCerts')]); ?>
-                    <?= $model->getAttributeLabel('allowSelfSignedCerts'); ?>
-                </label>
-            </div>
-        </div>
+        <?= $form->field($model, 'allowSelfSignedCerts')->checkbox(); ?>
     </div>
 </div>
 <hr>
-<?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
-<?= \humhub\widgets\DataSaved::widget(); ?>
-<?php CActiveForm::end(); ?>
+<?= Button::primary(Yii::t('AdminModule.settings', 'Save & Test'))->submit() ?>
 
-<?= Html::beginTag('script'); ?>
+<?php ActiveForm::end(); ?>
+<?php $this->endContent(); ?>
+
+<script <?= Html::nonce() ?>>
     if ($("#mailingsettingsform-transporttype option:selected").val() != 'smtp') {
         $("#smtpOptions").hide();
     }
@@ -99,6 +66,4 @@ use humhub\models\Setting;
             $("#encryptionOptions").show();
         }
     });
-<?= Html::endTag('script')
-?>
-<?php $this->endContent(); ?>
+</script>

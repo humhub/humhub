@@ -8,4 +8,4 @@
 - SameSite Cookie Support (TBD)
 - Removed caching section from `.htaccess` file. See [Documentation](https://docs.humhub.org/docs/admin/performance#http-caching) for more details. 
 - Included all user posts to profile -  https://github.com/humhub/humhub/issues/3950
-
+- Add test mail to mail settings (#3937)
