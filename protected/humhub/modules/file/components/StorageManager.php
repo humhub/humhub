@@ -9,10 +9,10 @@
 namespace humhub\modules\file\components;
 
 use humhub\modules\file\models\File;
-use humhub\modules\file\libs\ImageConverter;
 use humhub\modules\file\libs\FileHelper;
 use Yii;
 use yii\base\Component;
+use yii\imagine\Image;
 use yii\web\UploadedFile;
 
 /**
@@ -35,7 +35,7 @@ class StorageManager extends Component implements StorageManagerInterface
     protected $storagePath = '@webroot/uploads/file';
 
     /**
-     * @var integer file mode 
+     * @var integer file mode
      */
     public $fileMode = 0744;
 
@@ -86,7 +86,7 @@ class StorageManager extends Component implements StorageManagerInterface
          * exif attributes (e.g. orientation)
          */
         if ($file->type === 'image/jpeg') {
-            ImageConverter::TransformToJpeg($this->get($variant), $this->get($variant));
+            Image::getImagine()->open($this->get($variant))->save($this->get($variant), ['format' => 'jpg']);
         }
     }
 
@@ -132,7 +132,7 @@ class StorageManager extends Component implements StorageManagerInterface
 
     /**
      * Returns the path where the files of this file are located
-     * 
+     *
      * @return string the path
      */
     protected function getPath()
@@ -149,9 +149,9 @@ class StorageManager extends Component implements StorageManagerInterface
         }
 
         $path = $basePath . DIRECTORY_SEPARATOR .
-                substr($this->file->guid, 0, 1) . DIRECTORY_SEPARATOR .
-                substr($this->file->guid, 1, 1) . DIRECTORY_SEPARATOR .
-                $this->file->guid;
+            substr($this->file->guid, 0, 1) . DIRECTORY_SEPARATOR .
+            substr($this->file->guid, 1, 1) . DIRECTORY_SEPARATOR .
+            $this->file->guid;
 
         FileHelper::createDirectory($path, $this->fileMode, true);
 

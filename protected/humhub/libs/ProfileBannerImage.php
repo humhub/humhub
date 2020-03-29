@@ -8,12 +8,11 @@
 
 namespace humhub\libs;
 
-use humhub\modules\file\libs\ImageConverter;
-use humhub\modules\space\models\Space;
-use humhub\modules\space\widgets\ProfileBannerImage as SpaceImage;
-use humhub\modules\user\widgets\Image as UserImage;
-use yii\helpers\FileHelper;
+use Imagine\Image\Box;
+use Imagine\Image\ManipulatorInterface;
 use yii\helpers\Html;
+use yii\imagine\Image;
+use yii\web\UploadedFile;
 
 /**
  * ProfileBannerImage is responsible for the profile banner images.
@@ -68,10 +67,22 @@ class ProfileBannerImage extends ProfileImage
      */
     public function setNew($file)
     {
+        if ($file instanceof UploadedFile) {
+            $file = $file->tempName;
+        }
+
         $this->delete();
-        ImageConverter::TransformToJpeg($file->tempName, $this->getPath('_org'));
-        ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), ['width' => 1134, 'mode' => 'max']);
-        ImageConverter::Resize($this->getPath('_org'), $this->getPath(''), ['width' => $this->width, 'height' => $this->height]);
+
+        // Make sure original file is max. 800 width
+        $image = Image::getImagine()->open($file);
+        if ($image->getSize()->getWidth() > 2000) {
+            $image->resize($image->getSize()->widen(2000));
+        }
+        $image->save($this->getPath('_org'), ['format' => 'jpg']);
+
+        // Create version
+        $image->thumbnail(new Box($this->width, $this->height), ManipulatorInterface::THUMBNAIL_OUTBOUND)
+            ->save($this->getPath(''));
     }
 
     /**

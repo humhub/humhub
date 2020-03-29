@@ -30,3 +30,4 @@ HumHub Change Log (DEVELOP)
 - Enh #3950: Include non profile content to users profile timeline
 - Enh #3937: Add test mail to mail settings
 - Fix #3912: Unneeded inline style breaks stylesheet in logo.php
+- Enh #3402: Replaced ImageConverter class with Imagine 

@@ -8,11 +8,10 @@
 
 namespace humhub\modules\file\converter;
 
-use humhub\modules\file\libs\FileHelper;
 use Yii;
 use humhub\modules\file\models\File;
-use humhub\modules\file\libs\ImageConverter;
 use humhub\libs\Html;
+use yii\imagine\Image;
 
 /**
  * PreviewImage Converter
@@ -30,7 +29,6 @@ class PreviewImage extends BaseConverter
      */
     public function init()
     {
-        $this->options['mode'] = 'max';
         $maxPreviewImageWidth = Yii::$app->getModule('file')->settings->get('maxPreviewImageWidth');
         $maxPreviewImageHeight = Yii::$app->getModule('file')->settings->get('maxPreviewImageHeight');
 
@@ -45,11 +43,11 @@ class PreviewImage extends BaseConverter
         if ($file) {
             $this->applyFile($file);
         }
-        
+
         // Provide the natural height so the browser will include a placeholder height. Todo: smooth image loading
-        return \yii\helpers\Html::img($this->getUrl(), ['class' => 'animated fadeIn', 'height' => $this->height, 'alt' => $this->getAltText()]);
+        return Html::img($this->getUrl(), ['class' => 'animated fadeIn', 'height' => $this->height, 'alt' => $this->getAltText()]);
     }
-    
+
     protected function getAltText($file = null)
     {
         if ($file) {
@@ -66,7 +64,17 @@ class PreviewImage extends BaseConverter
     protected function convert($fileName)
     {
         if (!is_file($this->file->store->get($fileName))) {
-            ImageConverter::ResizeFile($this->file, $fileName, $this->options);
+            $image = Image::getImagine()->open($this->file->store->get());
+
+            if ($image->getSize()->getHeight() > $this->options['height']) {
+                $image->resize($image->getSize()->heighten($this->options['height']));
+            }
+
+            if ($image->getSize()->getWidth() > $this->options['width']) {
+                $image->resize($image->getSize()->widen($this->options['width']));
+            }
+
+            $image->save($this->file->store->get($fileName), ['format' => 'png']);
         }
 
         $this->imageInfo = @getimagesize($this->file->store->get($fileName));
@@ -127,7 +135,7 @@ class PreviewImage extends BaseConverter
 
     /**
      * Returns the gallery link to the original file
-     * 
+     *
      * @param array $htmlOptions optional link html options
      * @return string the link
      */

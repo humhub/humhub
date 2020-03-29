@@ -266,19 +266,12 @@ class SettingController extends Controller
         $maxUploadSize = floor($maxUploadSize / 1024 / 1024);
         $maxUploadSizeText = "(" . $fileSizeKey . "): " . $maxUploadSize;
 
-        // Determine currently used ImageLibary
-        $currentImageLibrary = 'GD';
-        if (Yii::$app->getModule('file')->settings->get('imageMagickPath')) {
-            $currentImageLibrary = 'ImageMagick';
-        }
-
         return $this->render(
             'file',
             [
                 'model' => $form,
                 'maxUploadSize' => $maxUploadSize,
                 'maxUploadSizeText' => $maxUploadSizeText,
-                'currentImageLibrary' => $currentImageLibrary,
             ]
         );
     }

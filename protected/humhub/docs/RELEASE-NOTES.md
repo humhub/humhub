@@ -9,3 +9,6 @@
 - Removed caching section from `.htaccess` file. See [Documentation](https://docs.humhub.org/docs/admin/performance#http-caching) for more details. 
 - Included all user posts to profile -  https://github.com/humhub/humhub/issues/3950
 - Add test mail to mail settings (#3937)
+- Removed ImageConverter class, switched to Imagine library (#3402)
+    - ImageMagick "convert" command not longer exists
+    - New optional PHP extensions (ImageMagicks, GMagicks) 
