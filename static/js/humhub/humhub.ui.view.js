@@ -148,6 +148,7 @@ humhub.module('ui.view', function (module, require, $) {
 
     module.export({
         init: init,
+        sortOrder: 100,
         isSmall: isSmall,
         preventSwipe: preventSwipe,
         isActiveScroll: isActiveScroll,

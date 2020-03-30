@@ -13,13 +13,21 @@ use yii\web\View;
 
 class LogAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $sourcePath = '@admin/resources';
 
+    /**
+     * @inheritdoc
+     */
     public $jsOptions = [
         'position' => View::POS_END
     ];
 
-    public $sourcePath = '@admin/resources';
-    public $css = [];
+    /**
+     * @inheritdoc
+     */
     public $js = [
         'js/humhub.admin.log.js'
     ];

@@ -8,9 +8,8 @@
 
 namespace humhub\modules\activity\assets;
 
-use humhub\assets\CoreApiAsset;
+use humhub\components\assets\AssetBundle;
 use humhub\modules\stream\assets\StreamAsset;
-use yii\web\AssetBundle;
 
 class ActivityAsset extends AssetBundle
 {
@@ -22,7 +21,6 @@ class ActivityAsset extends AssetBundle
     ];
 
     public $depends = [
-        CoreApiAsset::class,
         StreamAsset::class
     ];
 

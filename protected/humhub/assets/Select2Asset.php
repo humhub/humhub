@@ -32,11 +32,4 @@ class Select2Asset extends AssetBundle
      * @inheritdoc
      */
     public $css = ['dist/css/select2.min.css'];
-
-    public $depends = [
-        'yii\web\JqueryAsset',
-
-        'yii\bootstrap\BootstrapAsset'
-    ];
-
 }

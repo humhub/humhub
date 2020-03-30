@@ -8,14 +8,21 @@
 
 namespace humhub\modules\user\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 
 class UserAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
     public $sourcePath = '@user/resources';
-    public $css = [];
+
+    /**
+     * @inheritdoc
+     */
     public $js = [
         'js/humhub.user.js',
         'js/humhub.user.login.js',
     ];
+
 }

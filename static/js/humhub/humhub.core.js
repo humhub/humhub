@@ -1,7 +1,7 @@
 /**
  * Sets up the humhub namespace and module management.
  * This namespace provides the following functions:
- * 
+ *
  * module - for adding modules to this namespace and initializing them
  *
  * @namespace
@@ -24,7 +24,7 @@ var humhub = humhub || (function ($) {
     var moduleArr = [];
 
     /**
-     * Used to collect modules added while initial page load. 
+     * Used to collect modules added while initial page load.
      * These modules will be intitialized after the document is ready.
      * @type Array
      */
@@ -38,13 +38,13 @@ var humhub = humhub || (function ($) {
 
     /**
      * Adds a module to the humhub.modules namespace.
-     * 
+     *
      * The module id can be provided either as
-     * 
+     *
      * - full namespace humhub.modules.ui.modal
      * - or modules.ui.modal
      * - or short ui.modal
-     * 
+     *
      * Usage:
      *
      * ```
@@ -52,19 +52,19 @@ var humhub = humhub || (function ($) {
      * ```
      *
      * This would create an empty ui namespace (if not already created before) register the given module `ui.modal`.
-     * 
+     *
      * The module can export functions and properties by using:
      *
      * ```
-     * module.myFunction = function() {...} 
+     * module.myFunction = function() {...}
      *
-     * or 
-     * 
+     * or
+     *
      * module.export({
      *  myFunction: function() {...}
      * });
      * ```
-     * 
+     *
      * The export function can be called as often as needed (but should be called once at the end of the module).
      * Its also possible to export single classes e.g.:
      *
@@ -75,7 +75,7 @@ var humhub = humhub || (function ($) {
      *    module.export = LoaderWidget;
      * });
      * ```
-     * 
+     *
      * A module can provide an `init` function, which by default is only called after the first initialization
      * e.g. after a full page load when the document is ready or when loaded by means of ajax ajax.
      * In case a modules `init` function need to be called also after each `pjax` request, the modules `initOnPjaxLoad` has to be
@@ -84,23 +84,23 @@ var humhub = humhub || (function ($) {
      * ```
      * module.initOnPjaxLoad = true;
      * ```
-     * 
+     *
      * Dependencies:
-     * 
+     *
      * The core modules are initialized in a specific order to provide the required dependencies for each module.
      * The order is given by the order of module calls and in case of core modules configured in the API's AssetBundle.
-     * 
+     *
      * A module can be received by using the required function within a module function.
      * You can either depend on a module at initialisation time or within your functions or
      * use the lazy flag of the require function.
-     * 
+     *
      * Usage:
      *
      * ```
      * var modal = require('ui.modal');
-     * 
+     *
      * or lazy require
-     * 
+     *
      * var modal = require('ui.modal', true);
      * ````
      * @function module:humhub.module
@@ -118,26 +118,15 @@ var humhub = humhub || (function ($) {
             return;
         }
 
-        instance.id = 'humhub.modules.' + _cutModulePrefix(id);
-        instance.require = require;
-        instance.initOnPjaxLoad = false;
-        instance.config = require('config').module(instance);
-        instance.isModule = true;
+        createModule(id, instance);
 
-        instance.text = function ($key) {
-            var textCfg = instance.config['text'];
-            return (textCfg) ? textCfg[$key] : undefined;
-        };
-
-        var exportFunc = instance.export = function (exports) {
-            $.extend(instance, exports);
-        };
+        var exportFunc = instance.export;
 
         // Setup the module by calling the moduleFunction
         try {
             moduleFunction(instance, require, $);
             // Allows module.export = MyClass for exporting single classes/objects
-            if(exportFunc !== instance.export) {
+            if (exportFunc !== instance.export) {
                 _setNameSpace(instance.id, instance.export);
             }
         } catch (err) {
@@ -159,9 +148,24 @@ var humhub = humhub || (function ($) {
         }
     };
 
+    var createModule = function(id, instance) {
+        instance.require = require;
+        instance.initOnPjaxLoad = false;
+        instance.isModule = true;
+        instance.id = 'humhub.modules.' + _cutModulePrefix(id);
+        instance.config = require('config').module(instance);
+        instance.text = function(key) {
+            var textCfg = instance.config['text'];
+            return (textCfg) ? textCfg[key] : undefined;
+        };
+        instance.export = function (exports) {
+            $.extend(instance, exports);
+        };
+    };
+
     /**
      * This function is used to resolve namespaces and receive module instances or single classes.
-     * 
+     *
      * For the module humhub.modules.ui.modal you can search:
      *
      * ```
@@ -175,10 +179,10 @@ var humhub = humhub || (function ($) {
      * @param {type} moduleId
      * @param {boolean} lazy - can be set to require modules which are not yet created.
      * @returns object - the module instance if already initialized else undefined
-     * 
+     *
      * */
     var require = function (moduleNS, lazy) {
-        var module = resolveNameSpace(moduleNS, lazy);
+        var module = resolveNameSpace(moduleNS, (lazy !== false), true);
         if (!module) {
             console.error('No module found for namespace: ' + moduleNS);
         }
@@ -187,12 +191,13 @@ var humhub = humhub || (function ($) {
 
     /**
      * Search the given namespace, and creates the namespace if init = true.
-     * 
-     * @param {type} typePath the searched module namespace
+     *
+     * @param {string} typePath the searched module namespace
      * @param {Boolean} init - if set to true, creates namespaces if not already present
-     * @returns object - the given module
+     * @param warn whether or not to warn if the modules was initialized
+     * @returns Module - the given module
      */
-    var resolveNameSpace = function (typePath, init) {
+    var resolveNameSpace = function (typePath, init, warn) {
         try {
             //cut humhub.modules prefix if present
             var moduleSuffix = _cutModulePrefix(typePath);
@@ -203,6 +208,9 @@ var humhub = humhub || (function ($) {
                 if (subPath in result) {
                     result = result[subPath];
                 } else if (init) {
+                    if(warn) {
+                        console.warn('Required a non initialized module: '+typePath)
+                    }
                     result = result[subPath] = {};
                 } else {
                     result = undefined; //path not found
@@ -215,7 +223,7 @@ var humhub = humhub || (function ($) {
             log.error('Error while resolving namespace: ' + typePath, e);
         }
     };
-    
+
     var _setNameSpace = function (path, obj) {
         try {
             //cut humhub.modules prefix if present
@@ -465,7 +473,7 @@ var humhub = humhub || (function ($) {
     /**
      * Cuts a prefix from a string, this is already available in humhub.util but
      * this is not accessible here.
-     * 
+     *
      * @param {type} value
      * @param {type} prefix
      * @returns {unresolved}
@@ -499,7 +507,6 @@ var humhub = humhub || (function ($) {
         module.log = log.module(module);
     };
 
-    //Initialize all initial modules
     $(function() {
         var log = require('log');
 
@@ -507,10 +514,23 @@ var humhub = humhub || (function ($) {
             addModuleLogger(module, log);
         });
 
+        initialModules.sort(function(a,b) {
+            var sortA = (typeof a.sortOrder !== 'undefined') ? a.sortOrder : 4294967295;
+            var sortB = (typeof b.sortOrder !== 'undefined') ? b.sortOrder : 4294967295;
+
+            if (sortA === sortB) {
+                return 0;
+            } else if (sortA < sortB) {
+                return -1;
+            }
+
+            return 1;
+        });
+
         $.each(initialModules, function (i, module) {
             initModule(module);
         });
-        
+
         humhub.initialized = true;
         event.trigger('humhub:ready');
         $(document).trigger('humhub:ready', [false, humhub]);
@@ -523,11 +543,11 @@ var humhub = humhub || (function ($) {
             try {
                 // compatibility with beta 1.2 beta release
                 event.trigger(module.id.replace('.', ':') + ':beforeInit', module);
-                
+
                 event.trigger(module.id.replace(/\./g, ':') + ':beforeInit', module);
                 module.init();
                 event.trigger(module.id.replace(/\./g, ':') + ':afterInit', module);
-                
+
                 // compatibility with beta 1.2 beta release
                 event.trigger(module.id.replace('.', ':') + ':afterInit', module);
             } catch (err) {
@@ -541,7 +561,7 @@ var humhub = humhub || (function ($) {
     // Used to prevent the double initialization of modules loades by pjax.
     var unloaded = [];
 
-    event.on('humhub:modules:client:pjax:success', function (evt) {        
+    event.on('humhub:modules:client:pjax:success', function (evt) {
         // Init all modules again which were unloaded in the beforeSend and are configured for pjax initialization.
         // Note: this does not include modules loaded by the pjax request, those are initialized in the module function.
         $.each(pjaxInitModules, function (i, module) {
@@ -549,7 +569,7 @@ var humhub = humhub || (function ($) {
                 module.init(true);
             }
         });
-        
+
         event.trigger('humhub:ready');
         $(document).trigger('humhub:ready', [true, humhub]);
     }).on('humhub:modules:client:pjax:beforeSend', function (evt) {
@@ -562,15 +582,15 @@ var humhub = humhub || (function ($) {
         });
     });
 
-    var polyfill = function() {
+    var polyfill = function () {
         objectAssignPolyfill();
         arrayIncludesPolyfill();
     };
 
-    var arrayIncludesPolyfill = function() {
+    var arrayIncludesPolyfill = function () {
         if (!Array.prototype.includes) {
             Object.defineProperty(Array.prototype, 'includes', {
-                value: function(searchElement, fromIndex) {
+                value: function (searchElement, fromIndex) {
 
                     if (this == null) {
                         throw new TypeError('"this" is null or not defined');
@@ -620,7 +640,7 @@ var humhub = humhub || (function ($) {
         }
     };
 
-    var objectAssignPolyfill = function() {
+    var objectAssignPolyfill = function () {
         if (typeof Object.assign != 'function') {
             // Must be writable: true, enumerable: false, configurable: true
             Object.defineProperty(Object, "assign", {

@@ -148,6 +148,7 @@ humhub.module('ui.form.elements', function (module, require, $) {
 
     module.export({
         init: init,
+        sortOrder: 100,
         initCheckbox: initCheckbox,
         initRadio: initRadio,
         toggleTimeZoneInput: toggleTimeZoneInput,

@@ -8,17 +8,27 @@
 
 namespace humhub\modules\user\assets;
 
-use yii\web\AssetBundle;
+use humhub\assets\Select2BootstrapAsset;
+use humhub\components\assets\AssetBundle;
 
 class UserPickerAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
     public $sourcePath = '@user/resources';
-    public $css = [];
+
+    /**
+     * @inheritdoc
+     */
     public $js = [
         'js/humhub.user.picker.js'
     ];
-    
+
+    /**
+     * @inheritdoc
+     */
     public $depends = [
-        'humhub\assets\Select2BootstrapAsset'
+        Select2BootstrapAsset::class
     ];
 }

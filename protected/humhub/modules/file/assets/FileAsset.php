@@ -8,11 +8,11 @@
 
 namespace humhub\modules\file\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 
 /**
  * Fle related assets.
- * 
+ *
  * @since 1.2
  * @author buddha
  */
@@ -30,12 +30,4 @@ class FileAsset extends AssetBundle
     public $js = [
         'js/humhub.file.js'
     ];
-
-    /**
-     * @inheritdoc
-     */
-    public $depends = [
-        'humhub\assets\CoreApiAsset'
-    ];
-
 }

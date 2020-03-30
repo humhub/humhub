@@ -10,11 +10,10 @@
 namespace humhub\modules\content\assets;
 
 use humhub\assets\ProsemirrorEditorAsset;
-use yii\web\AssetBundle;
-
+use humhub\components\assets\AssetBundle;
 /**
  * Asset for core content resources.
- * 
+ *
  * @since 1.3
  * @author buddha
  */
@@ -31,7 +30,7 @@ class ProseMirrorRichTextAsset extends AssetBundle
     public $js = [
         'js/humhub.ui.richtext.prosemirror.js'
     ];
-    
+
      /**
      * @inheritdoc
      */

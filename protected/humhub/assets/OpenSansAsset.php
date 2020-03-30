@@ -8,7 +8,8 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\WebStaticAssetBundle;
+use humhub\modules\ui\view\components\View;
 
 /**
  * OpenSans Font
@@ -16,17 +17,24 @@ use yii\web\AssetBundle;
  * @since 1.3
  * @author luke
  */
-class OpenSansAsset extends AssetBundle
+class OpenSansAsset extends WebStaticAssetBundle
 {
     /**
      * @inheritdoc
      */
-    public $basePath = '@webroot-static';
+    public $defaultDepends = false;
 
     /**
      * @inheritdoc
      */
-    public $baseUrl = '@web-static';
+    public $jsPosition = View::POS_HEAD;
+
+    /**
+     * @inheritdoc
+     */
+    public $preload = [
+        'css/open-sans.css'
+    ];
 
     /**
      * @inheritdoc

@@ -52,6 +52,7 @@ humhub.module('ui.topNavigation', function (module, require, $) {
     };
 
     module.export({
-        init: init
+        init: init,
+        sortOrder: 100,
     })
 });

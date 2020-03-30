@@ -24,8 +24,8 @@ module.exports = function (grunt) {
                     let sep = cmdSep();
                     let delAssets = isWin() ? '(For /D %i in (static\\assets\\*.*) do (rmdir %i /S /Q))' : `${rm} -rf static/assets/*/`;
                     let dirSep = isWin() ? "\\" : '/';
-                    let jsFile = `static${dirSep}js${dirSep}all-*.js`;
-                    let cssFile = `static${dirSep}css${dirSep}all-*.css`;
+                    let jsFile = `static${dirSep}js${dirSep}humhub-*.js`;
+                    let cssFile = `static${dirSep}css${dirSep}humhub-*.css`;
                     return `${rm} ${jsFile} ${sep} ${rm} ${cssFile} ${sep} ${delAssets} ${sep} cd protected ${sep} php yii asset humhub/config/assets.php humhub/config/assets-prod.php`;
                 }
             },
@@ -102,18 +102,14 @@ module.exports = function (grunt) {
             }
 
         },
+        concat: {},
         uglify: {
-            build: {
-                files: {
-                    'js/dist/humhub.all.min.js': ['js/dist/humhub.all.js']
-                }
-            },
             assets: {
                 options: {
                     preserveComments: /^!|@preserve|@license|@cc_on/i
                 },
                 files: uglifyAssetcfg
-            }
+            },
         },
         cssmin: {
             target: {

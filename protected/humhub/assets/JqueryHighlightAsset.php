@@ -8,26 +8,15 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\WebStaticAssetBundle;
 
 /**
  * jquery-highlight
  *
  * @author buddha
  */
-class JqueryHighlightAsset extends AssetBundle
+class JqueryHighlightAsset extends WebStaticAssetBundle
 {
-
-    /**
-     * @inheritdoc
-     */
-    public $basePath = '@webroot-static';
-
-    /**
-     * @inheritdoc
-     */
-    public $baseUrl = '@web-static';
-
     /**
      * @inheritdoc
      */

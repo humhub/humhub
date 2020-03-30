@@ -8,11 +8,12 @@
 
 namespace humhub\modules\content\assets;
 
-use yii\web\AssetBundle;
+use humhub\assets\CoreExtensionAsset;
+use humhub\components\assets\AssetBundle;
 
 /**
  * Asset for core content resources.
- * 
+ *
  * @since 1.2
  * @author buddha
  */
@@ -29,12 +30,8 @@ class ContentAsset extends AssetBundle
     public $js = [
         'js/humhub.content.js'
     ];
-    
-     /**
-     * @inheritdoc
-     */
-    public $depends = [
-        'humhub\assets\CoreApiAsset'
-    ];
 
+    public $depends = [
+        CoreExtensionAsset::class
+    ];
 }

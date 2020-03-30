@@ -8,11 +8,11 @@
 
 namespace humhub\modules\content\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 
 /**
  * Content container asset for shared user/space js functionality.
- * 
+ *
  * @since 1.2
  * @author buddha
  */

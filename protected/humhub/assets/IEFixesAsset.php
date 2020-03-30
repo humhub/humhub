@@ -15,6 +15,7 @@ use yii\web\AssetBundle;
  *
  * @since 1.2
  * @author Luke
+ * @deprecated since v1.5 not in use anymore
  */
 class IEFixesAsset extends AssetBundle
 {

@@ -14,6 +14,7 @@ use yii\web\AssetBundle;
  * jquery-At.js
  *
  * @author buddha
+ * @deprecated since v1.5 not in use anymore
  */
 class AtJsStyleAsset extends AssetBundle
 {

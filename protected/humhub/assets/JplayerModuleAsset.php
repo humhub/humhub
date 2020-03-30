@@ -8,33 +8,26 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\WebStaticAssetBundle;
 
 /**
  * jquery-At.js
  *
  * @author buddha
- * @deprecated since v1.5 not in use anymore
  */
-class AtJsAsset extends AssetBundle
+class JplayerModuleAsset extends WebStaticAssetBundle
 {
-
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@npm/at.js';
-
-    /**
-     * @inheritdoc
-     */
-    public $js = ['dist/js/jquery.atwho.min.js'];
+    public $js = [
+        'js/humhub/humhub.media.Jplayer.js',
+    ];
 
     /**
      * @inheritdoc
      */
     public $depends = [
-        CaretjsAsset::class,
-        AtJsStyleAsset::class
+        JplayerAsset::class
     ];
-
 }

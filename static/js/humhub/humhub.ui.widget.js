@@ -293,5 +293,6 @@ humhub.module('ui.widget', function (module, require, $) {
     module.export({
         Widget: Widget,
         init: init,
+        sortOrder: 100,
     });
 });

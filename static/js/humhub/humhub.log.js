@@ -1,5 +1,5 @@
 /**
- *  
+ *
  * @param {type} param1
  * @param {type} param2
  */
@@ -85,9 +85,9 @@ humhub.module('log', function (module, require, $) {
             if (this.traceLevel > level) {
                 return;
             }
-            
+
             msg = msg || '';
-            
+
             if (object.isBoolean(details)) {
                 setStatus = details;
                 details = undefined;
@@ -109,7 +109,7 @@ humhub.module('log', function (module, require, $) {
             }
 
             this._consoleLog(msg, level, details);
-            
+
             if (setStatus) {
                 event.trigger('humhub:modules:log:setStatus', [msg, details, level]);
             }
@@ -120,21 +120,21 @@ humhub.module('log', function (module, require, $) {
 
     Logger.prototype.getMessage = function (key, level, returnDefault) {
         var result;
-        
+
         if(this.module) {
             result = this.module.text(key);
         }
-        
+
         if(!result) {
             result = module.text(key);
         }
-        
+
         if(!result && returnDefault) {
             result = module.text(traceLevels[level].toLowerCase()+'.default');
         } else if(!result){
             result = key;
         }
-        
+
         return result;
     };
 
@@ -192,7 +192,7 @@ humhub.module('log', function (module, require, $) {
     var debug = function (msg, details, setStatus) {
         module.getRootLogger().debug(msg, details, setStatus);
     };
-    
+
     var success = function (msg, details, setStatus) {
         module.getRootLogger().success(msg, details, setStatus);
     };
@@ -215,6 +215,7 @@ humhub.module('log', function (module, require, $) {
 
     module.export({
         init: init,
+        sortOrder: 100,
         Logger: Logger,
         module: getModuleLogger,
         getRootLogger: getRootLogger,

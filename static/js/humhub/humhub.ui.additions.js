@@ -1,7 +1,7 @@
 /**
- * This module manages UI-Additions registered by other modules. Additions can be applied to DOM elements 
+ * This module manages UI-Additions registered by other modules. Additions can be applied to DOM elements
  * and are used to add a specific behaviour or manipulate the element itself. e.g: Richtext, Autosize input...
- * 
+ *
  * An addition can be registered for a specific selector e.g: <input data-addition-richtext ... />
  * It is possible to register multiple additions for the same selector.
  */
@@ -9,7 +9,6 @@ humhub.module('ui.additions', function (module, require, $) {
 
     var event = require('event');
     var object = require('util.object');
-    var richtext = require('ui.richtext', true);
 
     var _additions = {};
     var _order = [];
@@ -25,7 +24,6 @@ humhub.module('ui.additions', function (module, require, $) {
      * @param options
      */
     var register = function (id, selector, handler, options) {
-
         // Register an addition without selector data-ui-addition="additionId"
         if(object.isFunction(selector)) {
             options = handler;
@@ -152,7 +150,7 @@ humhub.module('ui.additions', function (module, require, $) {
                     m = $(e.target).find('.dropdown-menu'),
                     tb = t.offset().top + t.height(),
                     mb = m.offset().top + m.outerHeight(true),
-                    d = 20; // Space for shadow + scrollbar.   
+                    d = 20; // Space for shadow + scrollbar.
             if (t[0].scrollWidth > t.innerWidth()) {
                 if (mb + d > tb) {
                     t.css('padding-bottom', ((mb + d) - tb));
@@ -319,6 +317,7 @@ humhub.module('ui.additions', function (module, require, $) {
 
     module.export({
         init: init,
+        sortOrder: 100,
         observe: observe,
         unload: unload,
         applyTo: applyTo,
@@ -392,3 +391,11 @@ humhub.module('ui.additions', function (module, require, $) {
 
     };
 })(jQuery, window);
+
+/**
+ * @deprecated since v1.2
+ */
+function setModalLoader() {
+    $(".modal-footer .btn").hide();
+    $(".modal-footer .loader").removeClass("hidden");
+}

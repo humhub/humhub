@@ -569,6 +569,7 @@ humhub.module('ui.picker', function (module, require, $) {
 
     module.export({
         init: init,
+        sortOrder: 100,
         Picker: Picker
     });
 });

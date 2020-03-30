@@ -740,6 +740,7 @@ humhub.module('ui.modal', function (module, require, $) {
 
     module.export({
         init: init,
+        sortOrder: 100,
         confirm: confirm,
         Modal: Modal,
         ConfirmModal: ConfirmModal,

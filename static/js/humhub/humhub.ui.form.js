@@ -131,6 +131,7 @@ humhub.module('ui.form', function(module, require, $) {
 
     module.export({
         init: init,
+        sortOrder: 100,
         submit: submit,
         TabbedForm: TabbedForm
     });

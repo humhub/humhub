@@ -1,3 +1,10 @@
+
+function htmlEncode(value) {
+    //create a in-memory div, set it's inner text(which jQuery automatically encodes)
+    //then grab the encoded contents back out.  The div never exists on the page.
+    return $('<div/>').text(value).html();
+}
+
 function installUploader(uploaderId) {
 
     $('#fileUploaderButton_' + uploaderId).each(function () {

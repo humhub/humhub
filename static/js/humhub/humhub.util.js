@@ -71,6 +71,7 @@ humhub.module('util', function(module, require, $) {
 
                 return result;
             }
+
             return typeof obj !== 'undefined';
         },
         chain: function(thisObj) {
@@ -179,8 +180,32 @@ humhub.module('util', function(module, require, $) {
             };
 
             return extendableClass;
+        },
+        sort: function(arr, field) {
+            field = field || 'sortOrder';
+            if(!arr || !arr.length) {
+                return;
+            }
+
+            arr.sort(function(a,b) {
+               var sortA = getSortValue(a, field);
+               var sortB = getSortValue(b, field);
+
+                if (sortA === sortB) {
+                    return 0;
+                } else if (sortA < sortB) {
+                    return -1;
+                }
+
+                return 1;
+            });
         }
     };
+
+    function getSortValue(obj, field)
+    {
+        return obj[field] ? obj[field] : 4294967295;
+    }
 
     var entityMap = {
         '&': '&amp;',

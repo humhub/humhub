@@ -8,17 +8,19 @@
 
 namespace humhub\modules\space\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
+use humhub\modules\user\assets\UserAsset;
 
 class SpaceChooserAsset extends AssetBundle
 {
-
-    public $jsOptions = ['position' => \yii\web\View::POS_END];
     public $sourcePath = '@space/resources';
-    public $css = [];
+
     public $js = [
         'js/humhub.space.chooser.js'
     ];
-    
-    public $depends = ['humhub\modules\space\assets\SpaceAsset'];
+
+    public $depends = [
+        SpaceAsset::class,
+        UserAsset::class
+    ];
 }

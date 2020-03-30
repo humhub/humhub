@@ -217,6 +217,7 @@ humhub.module('ui.status', function (module, require, $) {
 
     module.export({
         init: init,
+        sortOrder: 100,
         StatusBar: StatusBar,
         success: function (msg, closeAfter) {
             if (!module.statusBar) {

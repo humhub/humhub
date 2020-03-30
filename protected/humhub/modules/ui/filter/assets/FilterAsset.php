@@ -8,18 +8,27 @@
 
 namespace humhub\modules\ui\filter\assets;
 
-
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
+use humhub\modules\topic\assets\TopicAsset;
 
 class FilterAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
     public $sourcePath = '@ui/filter/resources';
-    public $css = [];
+
+    /**
+     * @inheritdoc
+     */
     public $js = [
         'js/humhub.ui.filter.js'
     ];
 
+    /**
+     * @inheritdoc
+     */
     public $depends = [
-        'humhub\assets\CoreApiAsset'
+        TopicAsset::class
     ];
 }

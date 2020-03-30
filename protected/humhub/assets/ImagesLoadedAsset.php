@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 
 /**
  * masonry asset class
@@ -27,9 +27,4 @@ class ImagesLoadedAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['imagesloaded.pkgd.min.js'];
-
-    /**
-     * @inheritdoc
-     */
-    public $css = [];
 }

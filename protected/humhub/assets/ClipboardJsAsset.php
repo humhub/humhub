@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 
 /**
  * Clipboard JS
@@ -27,10 +27,5 @@ class ClipboardJsAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['dist/clipboard-polyfill.js'];
-
-    /**
-     * @inheritdoc
-     */
-    public $css = [];
 
 }

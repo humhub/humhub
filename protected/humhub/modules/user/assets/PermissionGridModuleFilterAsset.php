@@ -12,8 +12,14 @@ use yii\web\AssetBundle;
 
 class PermissionGridModuleFilterAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
     public $sourcePath = '@user/resources';
-    public $css = [];
+
+    /**
+     * @inheritdoc
+     */
     public $js = [
         'js/humhub.user.PermissionGridModuleFilter.js',
     ];

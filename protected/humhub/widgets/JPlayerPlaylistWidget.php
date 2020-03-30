@@ -9,6 +9,7 @@
 namespace humhub\widgets;
 
 use humhub\assets\JplayerAsset;
+use humhub\assets\JplayerModuleAsset;
 use yii\helpers\Html;
 use humhub\libs\Helpers;
 use humhub\modules\file\libs\FileHelper;
@@ -42,7 +43,7 @@ class JPlayerPlaylistWidget extends JsWidget
 
         $this->init = $this->getJsonPlaylist();
 
-        $asset = JplayerAsset::register($this->getView());
+        $asset = JplayerModuleAsset::register($this->getView());
 
         $options = $this->getOptions();
         $options['data-swf-path'] = $asset->baseUrl.'/jplayer';

@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 
 /**
  * jquery-color
@@ -27,10 +27,4 @@ class JqueryColorAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['jquery.color.js'];
-
-    /**
-     * @inheritdoc
-     */
-    public $css = [];
-
 }

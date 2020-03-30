@@ -8,20 +8,10 @@
 
 namespace humhub\assets;
 
+use humhub\components\assets\WebStaticAssetBundle;
 
-use yii\web\AssetBundle;
-
-class HighlightJsAsset extends AssetBundle
+class HighlightJsAsset extends WebStaticAssetBundle
 {
-    /**
-     * @inheritdoc
-     */
-    public $basePath = '@webroot-static';
-
-    /**
-     * @inheritdoc
-     */
-    public $baseUrl = '@web-static';
 
     /**
      * @inheritdoc

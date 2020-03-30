@@ -13,7 +13,7 @@ use yii\web\AssetBundle;
 
 /**
  * Asset for core content resources.
- * 
+ *
  * @since 1.3
  * @author buddha
  */
@@ -30,12 +30,4 @@ class LegacyRichTextAsset extends AssetBundle
     public $js = [
         'js/humhub.ui.richtext.legacy.js'
     ];
-    
-     /**
-     * @inheritdoc
-     */
-    public $depends = [
-        'humhub\assets\CoreApiAsset'
-    ];
-
 }

@@ -31,3 +31,18 @@ HumHub Change Log (DEVELOP)
 - Enh #3937: Add test mail to mail settings
 - Fix #3912: Unneeded inline style breaks stylesheet in logo.php
 - Enh #3402: Replaced ImageConverter class with Imagine 
+- Enh #3939: Add `client.redirect` action to client js module
+- Chg: Removed legacy `humhub\assets\PagedownConverterAsset` from AppAsset
+- Chg: Removed legacy `humhub\assets\JqueryCookieAsset` from AppAsset
+- Chg: Removed legacy `resources/file/fileuploader.js` from AppAsset
+- Chg: Removed legacy `resources/user/userpicker.js` from AppAsset
+- Chg: Removed legacy `js/humhub/legacy/jquery.loader.js` from CoreApiAsset
+- Chg: Removed legacy `js/humhub/legacy/app.js` from CoreApiAsset
+- Chg: Removed legacy `js/humhub/humhub.ui.markdown.js` from CoreApiAsset 
+- Chg: Removed `humhub\assets\SocketIoAsset` from AppAsset
+- Chg: Deprecated `humhub\modules\ui\form\widgets\MarkdownField` in order to favor `humhub\modules\content\widgets\richtext\RichTextField`
+- Chg: Use lazy js module fallback for `humhub.require()` by default
+- Enh #3941: Core asset bundle optimization
+
+
+

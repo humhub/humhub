@@ -9,10 +9,10 @@ humhub.module('action', function(module, require, $) {
     /** @module action **/
 
     var _handler = {};
-    var object = require('util').object;
-    var string = require('util').string;
+    var util = require('util');
+    var object = util.object;
+    var string = util.string;
     var loader = require('ui.loader');
-    var modal = require('ui.modal', true);
 
     /**
      * Used for non blocked actions.
@@ -283,7 +283,6 @@ humhub.module('action', function(module, require, $) {
             }
 
             var ns = Component.getNameSpace($node);
-
             var ComponentClass = (ns) ? require(ns) : this;
             return Component._getInstance(ComponentClass, $node, options);
         } catch(e) {
@@ -374,7 +373,7 @@ humhub.module('action', function(module, require, $) {
 
             evt.preventDefault();
 
-            modal.confirm($this).then(function(confirmed) {
+            require('ui.modal').confirm($this).then(function(confirmed) {
                 if(confirmed) {
                     var client =  require('client');
                     var url = $this.attr('href');
@@ -506,7 +505,7 @@ humhub.module('action', function(module, require, $) {
 
         if(object.isDefined(this.data($trigger, 'confirm')) && !options.confirmed) {
             var that = this;
-            modal.confirm($trigger).then(function(confirmed) {
+            require('ui.modal').confirm($trigger).then(function(confirmed) {
                 if(confirmed) {
                     options.confirmed = true;
                     that.handle(options);
@@ -831,6 +830,7 @@ humhub.module('action', function(module, require, $) {
     module.export({
         initOnPjax: true,
         init: init,
+        sortOrder: 100,
         bindAction: bindAction,
         registerHandler: registerHandler,
         Component: Component,

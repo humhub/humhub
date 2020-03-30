@@ -1,23 +1,23 @@
 /**
  * Module for adding loader animations to dom nodes.
- * 
+ *
  * The default loader animation can be added or appended/prepended as follows
- * 
+ *
  * var loader = require('ui.loader');
- * 
+ *
  * // Overwrite current html content with loader animation
  * loader.set(myNode);
- * 
+ *
  * // Remove loader animation
  * loader.reset(myNode);
- * 
+ *
  * The loader module also adds an click handler to all buttons and links with a
  * data-ui-loader attribute set.
- * 
+ *
  * If a data-ui-loader button is used within a yii ActiveForm we automaticly reset all loader buttons
  * in case of form validation errors.
- * 
- *  
+ *
+ *
  * @param {type} param1
  * @param {type} param2
  */
@@ -99,7 +99,7 @@ humhub.module('ui.loader', function (module, require, $) {
         if (cfg.style || cfg.css) {
             $result.css(cfg.style || cfg.css);
         }
-        
+
         if($this && cfg.alignHeight) {
             var height = $this.innerHeight();
             $result.css('height', height+'px');
@@ -213,6 +213,7 @@ humhub.module('ui.loader', function (module, require, $) {
         getInstance: getInstance,
         template: template,
         initLoaderButton: initLoaderButton,
-        init: init
+        init: init,
+        sortOrder: 100,
     });
 });
