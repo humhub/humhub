@@ -13,7 +13,6 @@ use Yii;
 use yii\web\HttpException;
 use yii\db\Expression;
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\stream\actions\ContentContainerStream;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\space\widgets\ListBox;
@@ -27,7 +26,6 @@ use humhub\modules\space\models\Space;
  * Also the following functions are implemented here.
  *
  * @author Luke
- * @package humhub.modules_core.user.controllers
  * @since 0.5
  */
 class ProfileController extends ContentContainerController

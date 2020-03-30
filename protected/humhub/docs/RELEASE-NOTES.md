@@ -11,4 +11,4 @@
 - Add test mail to mail settings (#3937)
 - Removed ImageConverter class, switched to Imagine library (#3402)
     - ImageMagick "convert" command not longer exists
-    - New optional PHP extensions (ImageMagicks, GMagicks) 
+    - New optional PHP extensions (ImageMagicks, GraphicsMagick) 
