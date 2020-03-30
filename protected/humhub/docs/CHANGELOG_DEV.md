@@ -43,6 +43,8 @@ HumHub Change Log (DEVELOP)
 - Chg: Deprecated `humhub\modules\ui\form\widgets\MarkdownField` in order to favor `humhub\modules\content\widgets\richtext\RichTextField`
 - Chg: Use lazy js module fallback for `humhub.require()` by default
 - Enh #3941: Core asset bundle optimization
+- Enh #3428: Added dashboard stream filter
+
 
 
 
