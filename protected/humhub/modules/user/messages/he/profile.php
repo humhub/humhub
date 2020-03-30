@@ -17,13 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '%y Years' => '',
     '<b>This profile stream is still empty!</b>' => '',
     '<b>This profile stream is still empty</b><br>Be the first and post something...' => '',
     '<b>Your profile stream is still empty</b><br>Get started and post something...' => '',
     '<strong>About</strong> this user' => '',
-    '<strong>Modify</strong> your title image' => '',
     '<strong>Profile</strong> menu' => '',
-    '<strong>Something</strong> went wrong' => '',
     'About' => '',
     'Allow other selection' => '',
     'Birthday' => '',
@@ -32,7 +31,6 @@ return [
     'Checkbox List' => '',
     'Checkbox field options' => '',
     'City' => '',
-    'Close' => '',
     'Comma separated country codes, e.g. DE,EN,AU' => '',
     'Communication' => '',
     'Country' => '',
@@ -82,7 +80,6 @@ return [
     'MySpace URL' => '',
     'Number' => '',
     'Number field options' => '',
-    'Ok' => '',
     'One option per line. Key=>Value Format (e.g. yes=>Yes)' => '',
     'Only alphanumeric characters allowed!' => '',
     'Phone Private' => '',
@@ -93,7 +90,6 @@ return [
     'Regular Expression: Error message' => '',
     'Regular Expression: Validator' => '',
     'Required' => '',
-    'Save' => '',
     'Searchable' => '',
     'Select List' => '',
     'Select field options' => '',

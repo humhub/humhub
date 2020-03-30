@@ -26,4 +26,7 @@ return [
     'Topic' => 'Тема',
     'Topic has been deleted!' => 'Тема была удалена!',
     'Topics' => 'Темы',
+    'Color' => '',
+    'Name' => '',
+    'Sort order' => '',
 ];

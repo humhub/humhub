@@ -36,7 +36,6 @@ return [
     'Caching' => '',
     'Cronjobs' => '',
     'Design' => '',
-    'E-Mail summaries' => '',
     'Files' => '',
     'General' => '',
     'Groups' => '',

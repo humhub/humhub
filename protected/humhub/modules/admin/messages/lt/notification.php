@@ -22,4 +22,6 @@ return [
     'Notify from {appName}. You were removed from the group.' => '',
     'Receive Notifications for administrative events like available updates.' => '',
     'There is a new HumHub Version ({version}) available.' => '',
+    '{displayName} added you to group {groupName}' => '',
+    '{displayName} removed you from group {groupName}' => '',
 ];

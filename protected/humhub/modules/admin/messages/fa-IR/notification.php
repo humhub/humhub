@@ -17,9 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'There is a new HumHub Version ({version}) available.' => 'نسخه جدیدی از مهیا موجود است',
+    'There is a new HumHub Version ({version}) available.' => 'نسخه جدیدی از هام‌هاب موجود است',
     'Administrative' => '',
     'Notify from {appName}. You were added to the group.' => '',
     'Notify from {appName}. You were removed from the group.' => '',
     'Receive Notifications for administrative events like available updates.' => '',
+    '{displayName} added you to group {groupName}' => '',
+    '{displayName} removed you from group {groupName}' => '',
 ];

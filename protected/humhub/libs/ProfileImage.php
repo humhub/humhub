@@ -13,11 +13,14 @@ use humhub\modules\content\models\ContentContainer;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\widgets\Image as UserImage;
+use Imagine\Image\Box;
+use Imagine\Image\ManipulatorInterface;
+use Imagine\Image\Point;
 use Yii;
 use yii\helpers\Url;
 use yii\helpers\FileHelper;
+use yii\imagine\Image;
 use yii\web\UploadedFile;
-use humhub\modules\file\libs\ImageConverter;
 
 /**
  * ProfileImage is responsible for all profile images.
@@ -75,7 +78,7 @@ class ProfileImage
      */
     public function __construct($guid, $defaultImage = 'default_user')
     {
-        if($guid instanceof ContentContainerActiveRecord) {
+        if ($guid instanceof ContentContainerActiveRecord) {
             $this->container = $guid;
             $this->guid = $this->container->guid;
         } else {
@@ -151,17 +154,12 @@ class ProfileImage
      */
     public function cropOriginal($x, $y, $h, $w)
     {
-        $image = imagecreatefromjpeg($this->getPath('_org'));
+        $image = Image::getImagine()->open($this->getPath('_org'))
+            ->crop(new Point($x, $y), new Box($w, $h));
 
-        // Create new destination Image
-        $destImage = imagecreatetruecolor($this->width, $this->height);
-
-        if (!imagecopyresampled($destImage, $image, 0, 0, $x, $y, $this->width, $this->height, $w, $h)) {
-            return false;
-        }
-
-        FileHelper::unlink($this->getPath());
-        imagejpeg($destImage, $this->getPath(), 100);
+        $image->resize($image->getSize()->heighten($this->height))
+            ->resize($image->getSize()->widen($this->width))
+            ->save($this->getPath());
     }
 
     /**
@@ -177,24 +175,32 @@ class ProfileImage
         }
 
         $this->delete();
-        ImageConverter::TransformToJpeg($file, $this->getPath('_org'));
-        ImageConverter::Resize($this->getPath('_org'), $this->getPath('_org'), ['width' => 800, 'mode' => 'max']);
-        ImageConverter::Resize($this->getPath('_org'), $this->getPath(''), ['width' => $this->width, 'height' => $this->height]);
+
+        // Make sure original file is max. 800 width
+        $image = Image::getImagine()->open($file);
+        if ($image->getSize()->getWidth() > 800) {
+            $image->resize($image->getSize()->widen(800));
+        }
+        $image->save($this->getPath('_org'), ['format' => 'jpg']);
+
+        // Create squared version
+        $image->thumbnail(new Box($this->width, $this->height), ManipulatorInterface::THUMBNAIL_OUTBOUND)
+            ->save($this->getPath(''));
     }
 
-    /**
+    /** 1
      * Deletes current profile
      */
     public function delete()
     {
-        $path = $this->getPath();
-        if (file_exists($path)) {
-            FileHelper::unlink($path);
+        if (file_exists(($this->getPath()))) {
+            FileHelper::unlink($this->getPath());
         }
-
-        $prefixPath = $this->getPath('_org');
-        if (file_exists($prefixPath)) {
-            FileHelper::unlink($prefixPath);
+        if (file_exists(($this->getPath('_org')))) {
+            FileHelper::unlink($this->getPath('_org'));
+        }
+        if (file_exists(($this->getPath('_cropped')))) {
+            FileHelper::unlink($this->getPath('_cropped'));
         }
     }
 
@@ -205,7 +211,7 @@ class ProfileImage
      */
     public function getContainer()
     {
-        if(!$this->container) {
+        if (!$this->container) {
             $this->container = ContentContainer::findRecord([$this->guid]);
         }
 
@@ -224,7 +230,7 @@ class ProfileImage
     {
         $container = $this->getContainer();
 
-        if(!$container) {
+        if (!$container) {
             return '';
         }
 
@@ -232,22 +238,22 @@ class ProfileImage
         $widgetOptions = ['width' => $width];
 
         // TODO: improve option handling...
-        if(isset($cfg['link'])) {
+        if (isset($cfg['link'])) {
             $widgetOptions['link'] = $cfg['link'];
             unset($cfg['link']);
         }
 
-        if(isset($cfg['showTooltip'])) {
+        if (isset($cfg['showTooltip'])) {
             $widgetOptions['showTooltip'] = $cfg['showTooltip'];
             unset($cfg['showTooltip']);
         }
 
-        if(isset($cfg['tooltipText'])) {
+        if (isset($cfg['tooltipText'])) {
             $widgetOptions['tooltipText'] = $cfg['tooltipText'];
             unset($cfg['tooltipText']);
         }
 
-        if($container instanceof Space) {
+        if ($container instanceof Space) {
             $widgetOptions['space'] = $container;
             $widgetOptions['htmlOptions'] = $cfg;
             return SpaceImage::widget($widgetOptions);
@@ -256,7 +262,7 @@ class ProfileImage
 
         $htmlOptions = [];
 
-        if(isset($cfg['htmlOptions'])) {
+        if (isset($cfg['htmlOptions'])) {
             $htmlOptions = $cfg['htmlOptions'];
             unset($cfg['htmlOptions']);
         }

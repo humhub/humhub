@@ -4,6 +4,11 @@ humhub.module('ui.view', function (module, require, $) {
     var title;
     var state = {};
 
+    var prevSwipeDelay = false;
+    var prevSwipe = false;
+
+    var scrollTimeout;
+
     var isSmall = function () {
         return module.getWidth() <= 767;
     };
@@ -36,6 +41,9 @@ humhub.module('ui.view', function (module, require, $) {
     module.initOnPjaxLoad = true;
 
     var init = function (pjax) {
+        prevSwipeDelay = false;
+        prevSwipe = false;
+        $('body').removeClass('modal-open');
 
         if(isSmall() && module.config.useDefaultSwipe) {
             setTimeout(initMobileSidebar, 50);
@@ -44,7 +52,23 @@ humhub.module('ui.view', function (module, require, $) {
         module.log.debug('Current view state', state);
     };
 
+    var isSwipeAllowed = function() {
+        return !prevSwipeDelay && !prevSwipe;
+    };
+
+    var isActiveScroll = function() {
+        return prevSwipeDelay;
+    };
+
+
+
+
+    var preventSwipe = function(prev) {
+        prevSwipe = object.isDefined(prev) ? prev : true;
+    };
+
     var initMobileSidebar = function() {
+
         var duration = 500;
         var animation = 'swing';
         var $sidebar = $('.layout-sidebar-container');
@@ -60,8 +84,17 @@ humhub.module('ui.view', function (module, require, $) {
             'z-index' : '997'
         });
 
+        window.addEventListener('scroll', function(){
+            window.clearTimeout( scrollTimeout );
+            prevSwipeDelay = true;
+
+            scrollTimeout = setTimeout(function() {
+                prevSwipeDelay = false;
+            }, 400);
+        }, true);
+
         $(document).on('swiped-left', function(e) {
-            if(e.target && $(e.target).closest('[data-menu-id]').length) {
+            if(!isSwipeAllowed() || e.target && $(e.target).closest('[data-menu-id]').length) {
                 return;
             }
 
@@ -116,6 +149,8 @@ humhub.module('ui.view', function (module, require, $) {
     module.export({
         init: init,
         isSmall: isSmall,
+        preventSwipe: preventSwipe,
+        isActiveScroll: isActiveScroll,
         isMedium: isMedium,
         isNormal: isNormal,
         getHeight: getHeight,

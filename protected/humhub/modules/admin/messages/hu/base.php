@@ -18,6 +18,7 @@
  */
 return [
     '<strong>Administration</strong> menu' => '<strong>Adminisztrációs</strong> menü',
+    '<strong>Module </strong> administration' => '<strong>Modulok </strong> adminisztrálása',
     '<strong>Warning</strong> incomplete setup!' => '<strong>Figyelmeztetés</strong> befejezetlen telepítés!',
     'About' => 'Rólunk',
     'Admin' => 'Admin',
@@ -34,7 +35,6 @@ return [
     'Caching' => 'Gyorsítótár',
     'Cronjobs' => 'Cron ütemezett feladatok',
     'Design' => 'Dizájn',
-    'E-Mail summaries' => 'Email összesítések',
     'Files' => 'Fájlok',
     'General' => 'Általános',
     'Groups' => 'Csoportok',
@@ -64,5 +64,4 @@ return [
     'User posts' => 'Felhasználói bejegyzések',
     'Userprofiles' => 'Felhasználói profilok',
     'Users' => 'Felhasználók',
-    '<strong>Module </strong> administration' => '',
 ];

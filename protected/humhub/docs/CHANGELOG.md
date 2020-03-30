@@ -1,6 +1,48 @@
 HumHub Change Log
 =================
 
+1.4.5 (Unreleased)
+----------------------
+- Fix #3945: Default object-src policy prevents loading pdf on safari
+
+1.4.4 (March 24, 2020)
+----------------------
+- Fix #3908: `DateHelper::parseDateTime()` returns invalid date if given value is not parsable
+- Fix #3905: `accountTopMenu` renders redundant `<li>` tag
+- Fix #3911: Error thrown in UrlRule for non existing user names
+- Fix #3914: Directory link in space chooser still visible when directory module not active
+- Fix #3915: Removed default border from canvas style
+- Fix #3885: Prevent comments on archived content
+- Fix #3940: Empty visibility for some new spaces 
+- Fix #3942: Show password icon not placed correctly if field was initially hidden
+- Chng: Updated richtext version to 1.0.21
+- Fix #3906: Prevent emoji chooser focus when triggered by input rule
+- Fix #3890: Richtext list menu item disappears
+
+
+1.4.3 (March 4, 2020)
+---------------------
+- Fix #3887: CSS presentation issue for tables wider than the container and videos missing borders (areasas)
+- Fix #3893: New user invite headline broken in German translation
+- Enh: Updated translation files
+- Fix #3894: Pjax call does not does not release scroll body scroll lock when default swipe is active
+- Fix #3897: Top menu dropdown on mobile does not update active state
+
+
+1.4.2 (Februrary 27, 2020)
+--------------------------
+
+- Fix #3865: "Use default swipe" setting not working
+- Fix #3875: Profile image click does not open gallery overlay
+- Fix #3879: New mobile swap interfers horizontal scroll
+- Enh: Added `humhub.ui.view.isActiveScroll()` in order to check current scroll state (e.g. used to prevent swipe)
+- Enh: Added `humhub.ui.view.preventSwipe()` in order to prevent default swipe
+- Fix #3866: Emoji chooser broken after pjax link
+- Enh: Added emoji richtext menu item
+- Enh: Updated humhub richtext version to 1.0.20
+- Fix #3883: Former & soft deleted LDAP user produces multiple warnings
+
+
 1.4.1 (Februrary 17, 2020)
 --------------------------
 

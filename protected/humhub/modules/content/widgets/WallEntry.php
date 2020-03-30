@@ -13,6 +13,7 @@ use humhub\modules\stream\actions\Stream;
 use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\ui\menu\MenuEntry;
 use Yii;
+use humhub\modules\user\controllers\ProfileController;
 use humhub\components\Widget;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -138,7 +139,7 @@ class WallEntry extends Widget
     {
         // Compatibility layer
         parent::init();
-        if(empty($this->widgetLayout)) {
+        if (empty($this->widgetLayout)) {
             $this->widgetLayout = $this->wallEntryLayout;
         }
     }
@@ -193,14 +194,14 @@ class WallEntry extends Widget
         }
 
         $this->addControl($result, [PermaLink::class, ['content' => $this->contentObject], ['sortOrder' => 300]]);
-        $this->addControl( $result, new DropdownDivider(['sortOrder' => 350]));
+        $this->addControl($result, new DropdownDivider(['sortOrder' => 350]));
         $this->addControl($result, [VisibilityLink::class, ['contentRecord' => $this->contentObject], ['sortOrder' => 400]]);
         $this->addControl($result, [NotificationSwitchLink::class, ['content' => $this->contentObject], ['sortOrder' => 500]]);
         $this->addControl($result, [PinLink::class, ['content' => $this->contentObject], ['sortOrder' => 600]]);
         $this->addControl($result, [MoveContentLink::class, ['model' => $this->contentObject], ['sortOrder' => 700]]);
         $this->addControl($result, [ArchiveLink::class, ['content' => $this->contentObject], ['sortOrder' => 800]]);
 
-        if(isset($this->controlsOptions['add'])) {
+        if (isset($this->controlsOptions['add'])) {
             foreach ($this->controlsOptions['add'] as $linkOptions) {
                 $this->addControl($result, $linkOptions);
             }
@@ -209,15 +210,16 @@ class WallEntry extends Widget
         return $result;
     }
 
-    protected function addControl(&$result, $entry) {
+    protected function addControl(&$result, $entry)
+    {
         $entryClass = null;
-        if($entry instanceof MenuEntry) {
-           $entryClass = get_class($entry);
-        } elseif(is_array($entry) && isset($entry[0])) {
-           $entryClass = $entry[0];
+        if ($entry instanceof MenuEntry) {
+            $entryClass = get_class($entry);
+        } elseif (is_array($entry) && isset($entry[0])) {
+            $entryClass = $entry[0];
         }
 
-        if(isset($this->controlsOptions['prevent']) && $entryClass && in_array($entryClass, $this->controlsOptions['prevent'])) {
+        if (isset($this->controlsOptions['prevent']) && $entryClass && in_array($entryClass, $this->controlsOptions['prevent'])) {
             return;
         }
 
@@ -239,7 +241,7 @@ class WallEntry extends Widget
         ob_implicit_flush(false);
         try {
             $out = '';
-            if($this->beforeRun()) {
+            if ($this->beforeRun()) {
                 $result = $this->render($this->widgetLayout, $this->getLayoutViewParams());
                 $out = $this->afterRun($result);
             }
@@ -277,6 +279,12 @@ class WallEntry extends Widget
             $showContentContainer = $this->controlsOptions['showContentContainer'];
         } elseif (!Yii::$app->controller instanceof ContentContainerController && !($container instanceof User && $container->id == $user->id)) {
             $showContentContainer = true;
+        } elseif (Yii::$app->controller instanceof ProfileController) {
+            if ($container instanceof User && $container->id == Yii::$app->controller->user->id) {
+                $showContentContainer = false;
+            } else {
+                $showContentContainer = true;
+            }
         }
 
         $createdAt = $content->created_at;

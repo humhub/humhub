@@ -19,12 +19,6 @@ use humhub\models\Setting;
 <?= $form->errorSummary($model); ?>
 
 <div class="form-group">
-    <?= $form->labelEx($model, 'imageMagickPath'); ?>
-    <?= $form->textField($model, 'imageMagickPath', ['class' => 'form-control', 'readonly' => Setting::IsFixed('imageMagickPath', 'file')]); ?>
-    <p class="help-block"><?= Yii::t('AdminModule.settings', 'Current Image Library: {currentImageLibrary}', ['{currentImageLibrary}' => $currentImageLibrary]); ?></p>
-</div>
-
-<div class="form-group">
     <?= $form->labelEx($model, 'maxFileSize'); ?>
     <?= $form->textField($model, 'maxFileSize', ['class' => 'form-control', 'readonly' => Setting::IsFixed('maxFileSize', 'file')]); ?>
     <p class="help-block" <?= ($model->maxFileSize > $maxUploadSize) ? 'style="color:'.$this->theme->variable('danger').' !important"' : ''?>>

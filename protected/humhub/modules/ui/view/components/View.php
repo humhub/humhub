@@ -297,6 +297,9 @@ class View extends \yii\web\View
                 $viewStatus = Yii::$app->getSession()->getFlash('view-status');
                 $type = strtolower(key($viewStatus));
                 $value = Html::encode(array_values($viewStatus)[0]);
+                $value = str_replace('&quot;', '', $value);
+                $value = trim($value);
+
                 $this->registerJs('humhub.modules.ui.status.' . $type . '("' . $value . '")', View::POS_END, 'viewStatusMessage');
             }
             if (Yii::$app->session->hasFlash('executeJavascript')) {

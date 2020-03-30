@@ -2,7 +2,7 @@
 return array (
   '<strong>Confirm</strong> post deletion' => '投稿の削除を決行する',
   '<strong>Move</strong> content' => '<strong>移動</strong> する',
-  '<strong>Permalink</strong> to this post' => '<strong>パーマリンク</ strong>この投稿へ',
+  '<strong>Permalink</strong> to this post' => '<strong>パーマリンク strong&gt;この投稿へ</strong>',
   'Add a member to notify' => '',
   'Archived' => '',
   'Back to stream' => 'ストリームに戻る',
@@ -29,7 +29,7 @@ return array (
   'Last update' => '最後のアップデート',
   'Load more' => 'さらに読み込む',
   'Make private' => '',
-  'Make public' => '',
+  'Make public' => '全員に公開する',
   'Maximum number of pinned items reached!
 
 You can pin to top only two items at once.

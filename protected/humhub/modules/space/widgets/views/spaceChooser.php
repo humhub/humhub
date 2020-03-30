@@ -1,13 +1,19 @@
 <?php
 
-/* @var $this \humhub\components\WebView */
-/* @var $currentSpace \humhub\modules\space\models\Space */
-
+use humhub\components\View;
 use humhub\modules\space\assets\SpaceChooserAsset;
+use humhub\modules\space\models\Membership;
+use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\SpaceChooserItem;
 use humhub\modules\space\widgets\Image;
 use yii\helpers\Url;
-use yii\helpers\Html;
+
+
+/* @var $this View */
+/* @var $currentSpace Space */
+/* @var $memberships Membership[] */
+/* @var $followSpaces Space[] */
+/* @var $canCreateSpace boolean */
 
 SpaceChooserAsset::register($this);
 
@@ -22,6 +28,11 @@ $this->registerJsConfig('space.chooser', [
         'info.emptyResult' => Yii::t('SpaceModule.chooser', 'No result found for the given filter.'),
     ],
 ]);
+
+/* @var $directoryModule \humhub\modules\directory\Module */
+$directoryModule = Yii::$app->getModule('directory');
+$isDirectoryActive = $directoryModule->active;
+
 ?>
 
 <li class="dropdown">
@@ -48,15 +59,17 @@ $this->registerJsConfig('space.chooser', [
     <ul class="dropdown-menu" id="space-menu-dropdown">
         <li>
             <form action="" class="dropdown-controls">
-                <div class="input-group">
-                    <input type="text" id="space-menu-search" class="form-control" autocomplete="off" 
+                <div <?php if($isDirectoryActive) : ?>class="input-group"<?php endif; ?>>
+                    <input type="text" id="space-menu-search" class="form-control" autocomplete="off"
                            placeholder="<?= Yii::t('SpaceModule.chooser', 'Search'); ?>"
                            title="<?= Yii::t('SpaceModule.chooser', 'Search for spaces'); ?>">
-                    <span id="space-directory-link" class="input-group-addon" >
-                        <a href="<?= Url::to(['/directory/directory/spaces']); ?>">
-                            <i class="fa fa-book"></i>
-                        </a>
-                    </span>
+                    <?php if($isDirectoryActive) : ?>
+                        <span id="space-directory-link" class="input-group-addon" >
+                            <a href="<?= Url::to(['/directory/directory/spaces']); ?>">
+                                <i class="fa fa-book"></i>
+                            </a>
+                        </span>
+                    <?php endif; ?>
                     <div class="search-reset" id="space-search-reset"><i class="fa fa-times-circle"></i></div>
                 </div>
             </form>

@@ -22,4 +22,6 @@ return [
     'Notify from {appName}. You were removed from the group.' => 'Értesítés küldése az {appName} applikációból. El lettél távolítva a csoportból.',
     'Receive Notifications for administrative events like available updates.' => 'Küldjön értesítéseket az adminisztratív eseményekről, például az elérhető frissítésekről.',
     'There is a new HumHub Version ({version}) available.' => 'Van egy új HumHub verzió: ({verzió}).',
+    '{displayName} added you to group {groupName}' => '',
+    '{displayName} removed you from group {groupName}' => '',
 ];

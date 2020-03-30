@@ -17,13 +17,16 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Confirm</strong> topic deletion' => '',
-    '<strong>Edit</strong> Topic' => '',
-    '<strong>Manage</strong> Topics' => '',
-    '<strong>Topic</strong> Overview' => '',
-    'Add Topic' => '',
-    'Do you really want to delete this topic?' => '',
-    'Topic' => '',
-    'Topic has been deleted!' => '',
-    'Topics' => '',
+    '<strong>Confirm</strong> topic deletion' => '<strong>Xác nhận</strong> xóa chủ đề',
+    '<strong>Edit</strong> Topic' => '<strong>Sửa</strong> Chủ đề',
+    '<strong>Manage</strong> Topics' => '<strong>Quản lý</strong> Chủ đề',
+    '<strong>Topic</strong> Overview' => 'Tổng quan <strong>Chủ đề</strong>',
+    'Add Topic' => 'Thêm chủ đề',
+    'Do you really want to delete this topic?' => 'Bạn thực sự muốn xóa chủ đề này?',
+    'Topic' => 'Chủ đề',
+    'Topic has been deleted!' => 'Chủ đề đã xóa!',
+    'Topics' => 'Chủ đề',
+    'Color' => '',
+    'Name' => '',
+    'Sort order' => '',
 ];

@@ -18,6 +18,7 @@
  */
 return [
     '<strong>Administration</strong> menu' => '<strong>Hallintapaneeli</strong>',
+    '<strong>Module </strong> administration' => '<strong>Laajennusten</strong> hallinta',
     '<strong>Warning</strong> incomplete setup!' => '<strong>Varoitus</strong> ongelma havaittu!',
     'About' => 'Tietoja',
     'Admin' => 'Admin',
@@ -34,7 +35,6 @@ return [
     'Caching' => 'Välimuistia',
     'Cronjobs' => 'Cornjobs',
     'Design' => 'Tyyli',
-    'E-Mail summaries' => 'Sähköposti yhteenvedot',
     'Files' => 'Tiedostot',
     'General' => 'Yleiset',
     'Groups' => 'Ryhmät',
@@ -64,5 +64,4 @@ return [
     'User posts' => 'Käyttäjien sivut',
     'Userprofiles' => 'Käyttäjä profiili',
     'Users' => 'Käyttäjät',
-    '<strong>Module </strong> administration' => '',
 ];

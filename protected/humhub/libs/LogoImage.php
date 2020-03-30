@@ -8,8 +8,8 @@
 
 namespace humhub\libs;
 
-use humhub\modules\file\libs\ImageConverter;
 use Yii;
+use yii\imagine\Image;
 use yii\web\UploadedFile;
 use yii\helpers\Url;
 use yii\helpers\FileHelper;
@@ -19,7 +19,6 @@ use yii\helpers\FileHelper;
  */
 class LogoImage
 {
-
     /**
      * @var Integer height of the image
      */
@@ -38,8 +37,6 @@ class LogoImage
      */
     public function getUrl()
     {
-        $cacheId = 0;
-
         // Workaround for absolute urls in console applications (Cron)
         if (Yii::$app->request->isConsoleRequest) {
             $path = Url::base(true);
@@ -49,8 +46,8 @@ class LogoImage
 
         if (file_exists($this->getPath())) {
             $path .= '/uploads/' . $this->folder_images . '/logo.png';
+            $cacheId = '?v=' . filemtime($this->getPath());
         }
-        $path .= '?cacheId=' . $cacheId;
 
         return $path;
     }
@@ -90,14 +87,12 @@ class LogoImage
     public function setNew(UploadedFile $file)
     {
         $this->delete();
-        move_uploaded_file($file->tempName, $this->getPath());
+        $image = Image::getImagine()->open($file->tempName);
 
-        ImageConverter::Resize($this->getPath(), $this->getPath(), [
-            'height' => $this->height,
-            'width' => 0,
-            'mode' => 'max',
-            'transparent' => ($file->getExtension() === 'png' && ImageConverter::checkTransparent($this->getPath()))
-        ]);
+        if ($image->getSize()->getHeight() > $this->height) {
+            $image->resize($image->getSize()->heighten($this->height));
+        }
+        $image->save($this->getPath());
     }
 
     /**

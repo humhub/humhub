@@ -31,7 +31,6 @@ return [
     'Caching' => '缓存设置',
     'Cronjobs' => '定时任务',
     'Design' => '设计',
-    'E-Mail summaries' => '邮件概览',
     'Files' => '附件设置',
     'General' => '一般',
     'Groups' => '组',

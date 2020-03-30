@@ -14,9 +14,21 @@ humhub.module('ui.form.elements', function (module, require, $) {
         });
 
         additions.register('password', '[type="password"]', function ($match) {
+
             $match.each(function () {
                 var $input = $(this);
                 var $formGroup = $input.parent('.form-group');
+                var invisibleTop = 0;
+
+                /**
+                 * We can't calculate top if input is invisible,
+                 * Note, this may not work for more complex cases.
+                 */
+                if(!$input.is(':visible')) {
+                    if($input.siblings('label').length) {
+                        invisibleTop = '23px';
+                    }
+                }
 
                 if($formGroup.length) {
                     $formGroup.css('position', 'relative');
@@ -35,7 +47,7 @@ humhub.module('ui.form.elements', function (module, require, $) {
                         'padding': '4px',
                         'font-size': '19px',
                         'cursor': 'pointer',
-                        'top': $input.position().top
+                        'top': !$input.is(':visible') ? invisibleTop :  $input.position().top
                     });
 
                     $formGroup.prepend($pwShow);
@@ -127,7 +139,7 @@ humhub.module('ui.form.elements', function (module, require, $) {
     };
 
     var timeZoneSelected = function(evt) {
-        $toggleButton = evt.$trigger.parent().siblings('.timeZoneToggle:first');
+        var $toggleButton = evt.$trigger.parent().siblings('.timeZoneToggle:first');
         $toggleButton.text(evt.$trigger.find('option:selected').text());
         evt.$trigger.parent().hide();
     };

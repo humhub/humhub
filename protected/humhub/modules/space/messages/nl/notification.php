@@ -28,4 +28,5 @@ return [
     '{displayName} invited you to the space {spaceName}' => '{displayName} heeft u uitgenodigd voor de ruimte {spaceName}',
     '{displayName} requests membership for the space {spaceName}' => '{displayName} wil lid worden van de ruimte {spaceName}',
     '{displayName} revoked your invitation for the space {spaceName}' => '{displayName} heeft uw uitnodiging voor de spatie {spaceName} ingetrokken',
+    '{displayName} changed your role to {roleName} in the space {spaceName}.' => '',
 ];

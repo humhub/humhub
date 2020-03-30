@@ -34,7 +34,6 @@ return [
     'Caching' => 'Caching',
     'Cronjobs' => 'Cronjobs',
     'Design' => 'Design',
-    'E-Mail summaries' => 'E-post oppsummering',
     'Files' => 'Filer',
     'General' => 'Generelt',
     'Groups' => 'Grupper',

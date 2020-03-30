@@ -87,7 +87,7 @@ class CoreJsConfig extends Widget
                     ]
                 ],
                 'ui.view' => [
-                    'useDefaultSwipe' => Yii::$app->settings->get('useDefaultSwipeOnMobile', 0)
+                    'useDefaultSwipe' => (boolean) Yii::$app->settings->get('useDefaultSwipeOnMobile', 0)
                 ],
                 'ui.richtext' => [
                     'emoji.url' => Yii::getAlias('@web-static/img/emoji/'),

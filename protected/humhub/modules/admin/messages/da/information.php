@@ -18,7 +18,6 @@
  */
 return [
     'Checking HumHub software prerequisites.' => 'Checker HumHub software forudsætninger.',
-    'Currently installed version: %currentVersion%' => 'Nuværende installerede version: %currentVersion%',
     'Database' => 'Database',
     'Displaying {count} entries per page.' => 'Viser {count} opslag pr side.',
     'Done' => 'Færdig',
@@ -41,11 +40,20 @@ return [
     'Database migration results:' => '',
     'Delayed' => '',
     'Driver' => '',
+    'Error' => '',
+    'Info' => '',
+    'Other' => '',
     'Please refer to the documentation to setup the cronjobs and queue workers.' => '',
     'Prerequisites' => '',
     'Queue successfully cleared.' => '',
     'Reserved' => '',
     'Search index rebuild in progress.' => '',
+    'Search term...' => '',
+    'Select category..' => '',
+    'Select day' => '',
+    'Select level...' => '',
     'The current main HumHub database name is ' => '',
+    'Trace' => '',
     'Waiting' => '',
+    'Warning' => '',
 ];

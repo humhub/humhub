@@ -26,3 +26,8 @@ HumHub Change Log (DEVELOP)
 - Enh #3924: Added `humhub\modules\content\live\NewContent:$streamChannel`
 - Enh #3928: Implement auto updates on activity stream
 - Enh #3930: Add default `Stream.initScroll` with support of IntersectionObserver
+- Fix #3904: Removed unused "alt" attribute on Span element
+- Enh #3950: Include non profile content to users profile timeline
+- Enh #3937: Add test mail to mail settings
+- Fix #3912: Unneeded inline style breaks stylesheet in logo.php
+- Enh #3402: Replaced ImageConverter class with Imagine 
