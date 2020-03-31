@@ -44,7 +44,6 @@ HumHub Change Log (DEVELOP)
 - Chg: Use lazy js module fallback for `humhub.require()` by default
 - Enh #3941: Core asset bundle optimization
 - Enh #3428: Added dashboard stream filter
-
-
+- Fix #2456: Only display list of relevant modules on space creation (@armezit)
 
 
