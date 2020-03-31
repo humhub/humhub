@@ -9,6 +9,7 @@
 namespace humhub\modules\live\driver;
 
 use Firebase\JWT\JWT;
+use modules\live\assets\LivePushAsset;
 use Yii;
 use yii\helpers\Json;
 use yii\helpers\Url;
@@ -56,12 +57,14 @@ class Push extends BaseDriver
     /**
      * Initializes the live push component.
      * This method will initialize the [[redis]] property to make sure it refers to a valid redis connection.
-     * 
+     *
      * @throws \yii\base\InvalidConfigException if [[redis]] is invalid.
      */
     public function init()
     {
         parent::init();
+
+        Yii::$app->view->registerAssetBundle(LivePushAsset::class);
 
         $this->redis = Instance::ensure($this->redis, Connection::class);
 
@@ -93,10 +96,11 @@ class Push extends BaseDriver
     }
 
     /**
-     * Generates an JWT authorization of the current user including 
+     * Generates an JWT authorization of the current user including
      * the contentContainer id legitmation.
-     * 
+     *
      * @return string the JWT string
+     * @throws \Throwable
      */
     public function generateJwtAuthorization()
     {

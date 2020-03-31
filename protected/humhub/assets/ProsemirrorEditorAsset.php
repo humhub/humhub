@@ -8,19 +8,13 @@
 
 namespace humhub\assets;
 
-
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 
 class ProsemirrorEditorAsset extends AssetBundle
 {
-    public $publishOptions = [
-        'forceCopy' => false
-    ];
-
     /**
      * @inheritdoc
      */
-    //public $sourcePath = '/codebase/humhub/humhub-prosemirror/dist/';
     public $sourcePath = '@npm/humhub-prosemirror-richtext/dist/';
 
     /**

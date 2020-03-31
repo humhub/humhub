@@ -1,7 +1,5 @@
 humhub.module('live.push', function (module, require, $) {
-    var client = require('client');
     var event = require('event');
-    var object = require('util').object;
 
     var PushClient = function (options) {
         if (!options) {
@@ -27,13 +25,9 @@ humhub.module('live.push', function (module, require, $) {
             module.log.error(err);
         });
         socket.on('message', function (data) {
-            message = JSON.parse(data);
+            var message = JSON.parse(data);
             event.trigger(message.type.replace(/\./g, ':'), [[message]]);
         });
-    };
-
-    var _handleUpdateError = function (e) {
-        module.log.error(e);
     };
 
     module.export({
