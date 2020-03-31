@@ -92,7 +92,7 @@ class Events extends BaseObject
             $menu = $event->sender;
 
             $menu->addEntry(new MenuLink([
-                'label' => Yii::t('ActivityModule.account', 'E-Mail Summaries'),
+                'label' => Yii::t('ActivityModule.base', 'E-Mail Summaries'),
                 'id' => 'account-settings-emailsummary',
                 'icon' => 'envelope',
                 'url' => ['/activity/user'],

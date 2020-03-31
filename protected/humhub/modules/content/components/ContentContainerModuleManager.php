@@ -97,6 +97,7 @@ class ContentContainerModuleManager extends \yii\base\Component
      *
      * @param string $id the module id
      * @return boolean
+     * @throws \yii\base\Exception
      */
     public function canEnable($id)
     {
