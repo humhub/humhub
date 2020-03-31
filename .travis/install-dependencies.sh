@@ -4,6 +4,6 @@
 set -ev
 
 # Install chomedriver
-curl -s -L -o chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/79.0.3945.16/chromedriver_linux64.zip \
+curl -s -L -o chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/80.0.3987.16/chromedriver_linux64.zip \
     && unzip -o -d $HOME chromedriver_linux64.zip \
 	&& chmod +x $HOME/chromedriver
