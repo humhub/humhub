@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Author' => '',
+  'Author' => 'Tác giả',
   'Content' => 'Nội dung',
-  'Content Type' => '',
+  'Content Type' => 'Loại nội dung',
   'Sorting' => 'Sắp xếp',
-  'Topic' => '',
+  'Topic' => 'Chủ đề',
   'Visibility' => 'Hiển thị',
 );
