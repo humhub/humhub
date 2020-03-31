@@ -10,6 +10,7 @@ namespace humhub\modules\ldap\authclient;
 
 use DateTime;
 use humhub\libs\StringHelper;
+use humhub\modules\ldap\Module;
 use humhub\modules\user\authclient\AuthClientHelpers;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
@@ -305,7 +306,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
 
         // Fix LDAP Attributes
         foreach ($attributes as $name => $value) {
-            if (is_array($value) && $name != 'memberof') {
+            if (is_array($value) && !in_array($name, ['memberof', 'ismemberof'])) {
                 if (isset($value[0])) {
                     $normalized[$name] = $value[0];
                 }
@@ -542,7 +543,14 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      */
     public function getUserCollection()
     {
-        return $this->getLdap()->multiPageSearch($this->userFilter, $this->baseDn, Ldap::SEARCH_SCOPE_SUB);
+        /** @var Module $module */
+        $module = Yii::$app->getModule('ldap');
+
+        if (empty($module->pageSize)) {
+            return $this->getLdap()->search($this->userFilter, $this->baseDn, Ldap::SEARCH_SCOPE_SUB, $module->retrievedAttributes);
+        }
+
+        return $this->getLdap()->multiPageSearch($this->userFilter, $this->baseDn, Ldap::SEARCH_SCOPE_SUB, $module->retrievedAttributes, null, null, 0, $module->pageSize);
     }
 
     /**
