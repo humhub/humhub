@@ -45,5 +45,6 @@ HumHub Change Log (DEVELOP)
 - Enh #3428: Added dashboard stream filter
 - Fix #2456: Only display list of relevant modules on space creation (@armezit)
 - Chg: Only register live push asset and `SocketIoAsset` on demand
+- Fix #3954: Support LDAP servers without pagination
 
 
