@@ -19,7 +19,13 @@ SpaceAsset::register($this);
 
             <div class="row">
 
-                <?php foreach ($availableModules as $moduleId => $module) : ?>
+                <?php foreach ($availableModules as $moduleId => $module) :
+
+                    if (($space->isModuleEnabled($moduleId) && !$space->canDisableModule($moduleId)) ||
+                        (!$space->isModuleEnabled($moduleId) && !$space->canEnableModule($moduleId))) {
+                        continue;
+                    }
+                    ?>
                     <div class="col-md-6">
                         <div class="media well well-small ">
                             <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
@@ -45,19 +51,18 @@ SpaceAsset::register($this);
                                     }
                                 }
                                 ?>
-                                <a href="#" class="btn btn-sm btn-primary enable" 
-                                    data-action-click="content.container.enableModule" 
-                                    data-ui-loader
-                                    data-action-url="<?= $space->createUrl('/space/manage/module/enable', ['moduleId' => $moduleId]); ?>">
-                                        <?= Yii::t('SpaceModule.manage', 'Enable'); ?>
+                                <a href="#" class="btn btn-sm btn-primary <?= $enable ?>"
+                                   data-action-click="content.container.enableModule"
+                                   data-ui-loader
+                                   data-action-url="<?= $space->createUrl('/space/manage/module/enable', ['moduleId' => $moduleId]); ?>">
+                                    <?= Yii::t('SpaceModule.manage', 'Enable'); ?>
                                 </a>
-                                
-                                <a href="#" class="btn btn-sm btn-primary disable" 
-                                   style="display:none"
-                                    data-action-click="content.container.disableModule" 
-                                    data-ui-loader
-                                    data-action-url="<?= $space->createUrl('/space/manage/module/disable', ['moduleId' => $moduleId]); ?>">
-                                        <?= Yii::t('SpaceModule.manage', 'Disable'); ?>
+
+                                <a href="#" class="btn btn-sm btn-primary <?= $disable ?>"
+                                   data-action-click="content.container.disableModule"
+                                   data-ui-loader
+                                   data-action-url="<?= $space->createUrl('/space/manage/module/disable', ['moduleId' => $moduleId]); ?>">
+                                    <?= Yii::t('SpaceModule.manage', 'Disable'); ?>
                                 </a>
                             </div>
                         </div>
@@ -68,11 +73,11 @@ SpaceAsset::register($this);
         </div>
 
         <div class="modal-footer">
-            <a href="#" class="btn btn-primary" 
-               data-action-click="ui.modal.post" 
+            <a href="#" class="btn btn-primary"
+               data-action-click="ui.modal.post"
                data-ui-loader
                data-action-url="<?= Url::to(['/space/create/invite', 'spaceId' => $space->id]); ?>">
-                   <?= Yii::t('SpaceModule.manage', 'Next'); ?>
+                <?= Yii::t('SpaceModule.manage', 'Next'); ?>
             </a>
         </div>
     </div>
