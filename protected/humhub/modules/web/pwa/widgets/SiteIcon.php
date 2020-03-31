@@ -57,7 +57,7 @@ class SiteIcon extends Widget
     {
         $file = self::getFile($size);
         if (file_exists($file)) {
-            return Yii::getAlias(Yii::$app->assetManager->baseUrl) . '/siteicons/' . static::buildFileName($size) . '?c=' . filemtime($file);
+            return Yii::getAlias(Yii::$app->assetManager->baseUrl) . '/siteicons/' . static::buildFileName($size) . '?v=' . filemtime($file);
         } elseif ($autoResize) {
             $baseIcon = static::getOriginalFile();
             if (!file_exists($baseIcon)) {
@@ -74,6 +74,10 @@ class SiteIcon extends Widget
         return null;
     }
 
+    public static function hasImage()
+    {
+        return file_exists(static::getOriginalFile());
+    }
 
     private static function getFile($size = null)
     {
