@@ -39,11 +39,11 @@ HumHub Change Log (DEVELOP)
 - Chg: Removed legacy `js/humhub/legacy/jquery.loader.js` from CoreApiAsset
 - Chg: Removed legacy `js/humhub/legacy/app.js` from CoreApiAsset
 - Chg: Removed legacy `js/humhub/humhub.ui.markdown.js` from CoreApiAsset 
-- Chg: Removed `humhub\assets\SocketIoAsset` from AppAsset
 - Chg: Deprecated `humhub\modules\ui\form\widgets\MarkdownField` in order to favor `humhub\modules\content\widgets\richtext\RichTextField`
 - Chg: Use lazy js module fallback for `humhub.require()` by default
 - Enh #3941: Core asset bundle optimization
 - Enh #3428: Added dashboard stream filter
+- Chg: Only register live push asset and `SocketIoAsset` on demand
 
 
 
