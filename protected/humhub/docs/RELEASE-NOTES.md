@@ -1,6 +1,7 @@
 1.5
 ------------------------------------
 
+- Dashboard stream filter
 - Profile field administration https://github.com/humhub/humhub/issues/3916
 - Stream update badge (https://github.com/humhub/humhub/issues/3924) (TBD)
 - Directory Menu Icons (https://github.com/humhub/humhub/issues/3844) (TBD)
