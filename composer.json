@@ -14,6 +14,8 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.6.0",
+        "ext-json": "*",
+        "ext-zip": "*",
         "bower-asset/animate.css": "*",
         "bower-asset/autosize": "1.*",
         "bower-asset/bluebird": "^3.3.5",
@@ -37,6 +39,7 @@
         "bower-asset/select2": "^4.0.4",
         "bower-asset/select2-bootstrap-theme": "0.1.0-beta.4",
         "cebe/markdown": "1.0.2",
+        "cornernote/yii2-linkall": "*",
         "firebase/php-jwt": "^5.0",
         "jbroadway/urlify": "^1.0",
         "kartik-v/yii2-widgets": "*",
@@ -60,9 +63,7 @@
         "yiisoft/yii2-redis": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "zendframework/zend-http": "*",
-        "zendframework/zend-ldap": "^2.5",
-        "ext-zip": "*",
-        "ext-json": "*"
+        "zendframework/zend-ldap": "^2.5"
     },
     "require-dev": {
         "codeception/codeception": "2.4.5",
