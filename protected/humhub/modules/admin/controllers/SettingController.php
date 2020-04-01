@@ -102,11 +102,7 @@ class SettingController extends Controller
     public function actionDeleteLogoImage()
     {
         $this->forcePostRequest();
-        $image = new LogoImage();
-
-        if ($image->hasImage()) {
-            $image->delete();
-        }
+        LogoImage::set(null);
 
         Yii::$app->response->format = 'json';
         return [];
@@ -238,7 +234,6 @@ class SettingController extends Controller
 
         return $this->render('design', [
             'model' => $form,
-            'logo' => new LogoImage()
         ]);
     }
 

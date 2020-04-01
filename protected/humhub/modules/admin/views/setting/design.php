@@ -1,5 +1,6 @@
 <?php
 
+use humhub\libs\LogoImage;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\Button;
@@ -59,16 +60,19 @@ $iconUrl = SiteIcon::getUrl(140);
     <div class="well">
         <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'style' => 'display: none', 'name' => 'logo[]']); ?>
         <div class="image-upload-container" id="logo-upload">
-            <img class="img-rounded" id="logo-image" src="<?= ($logo->hasImage()) ? $logo->getUrl() : '' ?>" data-src="holder.js/140x140"
-                 alt="<?= Yii::t('AdminModule.settings', "You're using no logo at the moment. Upload your logo now."); ?>"
-                 style="max-height: 40px;">
+            <?php if (LogoImage::hasImage()): ?>
+                <img class="img-rounded" id="logo-image" src="<?= LogoImage::getUrl() ?>"
+                     data-src="holder.js/140x140"
+                     alt="<?= Yii::t('AdminModule.settings', "You're using no logo at the moment. Upload your logo now."); ?>"
+                     style="max-height: 40px;">
+            <?php endif; ?>
 
             <div class="image-upload-buttons" id="logo-upload-buttons" style="display: block;">
                 <?= Button::info()->icon('cloud-upload')->id('admin-logo-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-logo-image')
                     ->action('admin.deletePageIcon', Url::to(['/admin/setting/delete-logo-image']))
-                    ->style($logo->hasImage() ? '' : 'display:none' )->icon('times')->sm()->loader(false) ?>
+                    ->style(LogoImage::hasImage() ? '' : 'display:none')->icon('times')->sm()->loader(false) ?>
             </div>
         </div>
     </div>
@@ -81,11 +85,11 @@ $iconUrl = SiteIcon::getUrl(140);
                  style="max-height: 40px;">
 
             <div class="image-upload-buttons" id="icon-upload-buttons" style="display: block;">
-                <?= Button::info()->icon('cloud-upload')->id('admin-icon-upload-button')->sm()->loader(false)?>
+                <?= Button::info()->icon('cloud-upload')->id('admin-icon-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-icon-image')
                     ->action('admin.deletePageIcon', Url::to(['/admin/setting/delete-icon-image']))
-                    ->style($logo->hasImage() ? '' : 'display:none' )->icon('times')->sm()->loader(false) ?>
+                    ->style(SiteIcon::hasImage() ? '' : 'display:none')->icon('times')->sm()->loader(false) ?>
             </div>
         </div>
     </div>

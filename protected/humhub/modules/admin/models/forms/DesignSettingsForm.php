@@ -148,8 +148,7 @@ class DesignSettingsForm extends Model
         $settingsManager->set('useDefaultSwipeOnMobile', $this->useDefaultSwipeOnMobile);
 
         if ($this->logo) {
-            $logoImage = new LogoImage();
-            $logoImage->setNew($this->logo);
+            LogoImage::set($this->logo);
         }
 
         if ($this->icon) {

@@ -10,7 +10,6 @@ namespace humhub\modules\web\pwa\widgets;
 
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\ui\view\components\View;
-use humhub\modules\web\Module;
 use Imagine\Image\Box;
 use Yii;
 use humhub\components\Widget;
@@ -29,10 +28,6 @@ use yii\web\UploadedFile;
  */
 class SiteIcon extends Widget
 {
-
-    protected static $iconFolderPath = '@webroot/uploads/icon';
-    protected static $iconFolderUrl = '@web/uploads/icon';
-
     /**
      * Sets a new icon for the installation.
      *
@@ -40,97 +35,91 @@ class SiteIcon extends Widget
      */
     public static function set(UploadedFile $file = null)
     {
-        static::setNewFile(($file !== null) ? $file->tempName : null);
+        static::deleteFiles();
+
+        if ($file !== null) {
+            try {
+                FileHelper::createDirectory(Yii::getAlias('@webroot/uploads/icon/'));
+            } catch (Exception $e) {
+            }
+            Image::getImagine()->open($file->tempName)->save(Yii::getAlias('@webroot/uploads/icon/icon.png'));
+        }
     }
 
     /**
      * Returns the URL of the icon in desired size (width + height)
      *
-     * @param int|null $size if size is empty the original file will be returned
+     * @param int $size in px
      * @param bool $autoResize automatically resize to given size if not available yet
-     * @return string
+     * @return string|null
      */
-    public static function getUrl($size = null, $autoResize = true)
+    public static function getUrl($size, $autoResize = true)
     {
-        $fileName = static::getFileName($size);
-        $file = Yii::getAlias(static::$iconFolderPath) . DIRECTORY_SEPARATOR . $fileName;
-
+        $file = self::getFile($size);
         if (file_exists($file)) {
-            return Yii::getAlias(static::$iconFolderUrl) . '/' . $fileName . '?c=' . filemtime($file);
-        }
-
-        if ($autoResize) {
-            $originalFile = Yii::getAlias(static::$iconFolderPath) . '/' . static::getFileName();
-
-            if (file_exists($originalFile)) {
-
-                Image::getImagine()
-                    ->open($originalFile)
-                    ->resize(new Box($size, $size))
-                    ->save($file);
-
-                return static::getUrl($size, false);
+            return Yii::getAlias(Yii::$app->assetManager->baseUrl) . '/siteicons/' . static::buildFileName($size) . '?v=' . filemtime($file);
+        } elseif ($autoResize) {
+            $baseIcon = static::getOriginalFile();
+            if (!file_exists($baseIcon)) {
+                $baseIcon = Yii::$app->getModule('web')->getBasePath() . '/pwa/resources/default_icon.png';
             }
+            try {
+                FileHelper::createDirectory(Yii::getAlias(Yii::$app->assetManager->basePath . DIRECTORY_SEPARATOR . 'siteicons'));
+            } catch (Exception $e) {
+            }
+            Image::getImagine()->open($baseIcon)->resize(new Box($size, $size))->save($file);
+            return static::getUrl($size, false);
         }
 
         return null;
     }
 
-
-    public static function getPath($size = null)
+    public static function hasImage()
     {
-        return Yii::getAlias(static::$iconFolderPath . DIRECTORY_SEPARATOR . static::getFileName($size));
+        return file_exists(static::getOriginalFile());
+    }
+
+    private static function getFile($size = null)
+    {
+        return Yii::getAlias(Yii::$app->assetManager->basePath . DIRECTORY_SEPARATOR . 'siteicons' . DIRECTORY_SEPARATOR . static::buildFileName($size));
     }
 
 
-    private static function getFileName($size = null)
+    private static function buildFileName($size = null)
     {
         $fileName = ($size === null) ? 'icon.png' : $size . 'x' . $size . '.png';
         return $fileName;
     }
 
-    private static function setNewFile($fileName = null)
+    private static function getOriginalFile()
     {
+        return Yii::getAlias('@webroot/uploads/icon/icon.png');
+    }
+
+    private static function deleteFiles()
+    {
+        // Delete assets folder if exists
         try {
-            FileHelper::removeDirectory(Yii::getAlias(static::$iconFolderPath));
+            FileHelper::removeDirectory(Yii::getAlias(Yii::$app->assetManager->basePath . DIRECTORY_SEPARATOR . 'siteicons'));
         } catch (ErrorException $e) {
             Yii::error($e, 'admin');
         }
 
+        // Delete uploads folder if exists
         try {
-            FileHelper::createDirectory(Yii::getAlias(static::$iconFolderPath));
-        } catch (Exception $e) {
+            FileHelper::removeDirectory(Yii::getAlias('@webroot/uploads/icon/'));
+        } catch (ErrorException $e) {
             Yii::error($e, 'admin');
         }
-
-        if ($fileName !== null && is_file($fileName)) {
-            Image::getImagine()
-                ->open($fileName)
-                ->save(Yii::getAlias(static::$iconFolderPath) . '/icon.png');
-        }
     }
-
-    private static function setDefaultIcon()
-    {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('web');
-
-        static::setNewFile($module->getBasePath() . '/pwa/resources/default_icon.png');
-    }
-
 
     /**
      * @param View $view
      */
     public static function registerMetaTags(View $view)
     {
-        if (!file_exists(static::getPath())) {
-            static::setDefaultIcon();
-        }
-
         // Add Apple touch icons
         // https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html
-        $view->registerLinkTag(['rel' => 'apple-touch-icon', 'href' => static::getUrl()]);
         $view->registerLinkTag(['rel' => 'apple-touch-icon', 'href' => static::getUrl(152), 'sizes' => '152x152']);
         $view->registerLinkTag(['rel' => 'apple-touch-icon', 'href' => static::getUrl(180), 'sizes' => '180x180']);
         $view->registerLinkTag(['rel' => 'apple-touch-icon', 'href' => static::getUrl(167), 'sizes' => '167x167']);
