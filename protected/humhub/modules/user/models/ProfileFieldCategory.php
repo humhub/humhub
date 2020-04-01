@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use Yii;
 
 /**
  * This is the model class for table "profile_field_category".
@@ -25,6 +26,7 @@ use humhub\components\ActiveRecord;
  * @property integer $updated_by
  * @property string $translation_category
  * @property integer $is_system
+ * @property-read  ProfileField[] $fields
  */
 class ProfileFieldCategory extends ActiveRecord
 {
@@ -71,6 +73,9 @@ class ProfileFieldCategory extends ActiveRecord
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function beforeDelete()
     {
         if ($this->is_system) {
@@ -96,6 +101,9 @@ class ProfileFieldCategory extends ActiveRecord
         return "UserModule.profile";
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getFields()
     {
         $query = $this->hasMany(ProfileField::class, ['profile_field_category_id' => 'id']);
@@ -105,7 +113,7 @@ class ProfileFieldCategory extends ActiveRecord
 
     /**
      * Internal
-     * 
+     *
      * Just holds message labels for the Yii Message Command
      */
     private function translationOnly()

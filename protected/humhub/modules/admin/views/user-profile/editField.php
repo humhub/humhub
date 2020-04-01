@@ -1,7 +1,10 @@
 <?php
 
 use humhub\libs\Html;
-use yii\helpers\Url;
+use humhub\modules\user\models\ProfileField;
+use yii\widgets\ActiveForm;
+
+/* @var $field ProfileField */
 ?>
 
 <div class="panel-body">
@@ -17,9 +20,9 @@ use yii\helpers\Url;
 
     <br>
 
-    <?php $form = \yii\widgets\ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(); ?>
     <?= $hForm->render($form); ?>
-    <?php \yii\widgets\ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 </div>
 
 <script <?= Html::nonce() ?>>

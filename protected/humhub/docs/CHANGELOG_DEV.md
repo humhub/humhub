@@ -47,3 +47,4 @@ HumHub Change Log (DEVELOP)
 - Chg: Deprecated `humhub\modules\ui\form\widgets\MarkdownField` in order to favor `humhub\modules\content\widgets\richtext\RichTextField`
 - Chg: Use lazy js module fallback for `humhub.require()` by default
 - Chg: Only register live push asset and `SocketIoAsset` on demand
+- Enh #3916: Rework profile field administration overview 

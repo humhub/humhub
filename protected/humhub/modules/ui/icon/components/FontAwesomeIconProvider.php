@@ -30,7 +30,8 @@ class FontAwesomeIconProvider implements IconProvider
         $icon = Icon::get($icon,$options);
 
         $options = $icon->htmlOptions;
-        $options['class'] = 'fa fa-'.$icon->name;
+
+        Html::addCssClass($options, 'fa fa-'.$icon->name);
 
         if($icon->size) {
             Html::addCssClass($options, $this->getIconSizeClass($icon));
