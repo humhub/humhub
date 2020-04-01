@@ -7,7 +7,6 @@ HumHub Change Log (DEVELOP)
 
 - Enh #3858: Support SameSite cookies
 - Fix #3861: Improved warning details when auto delete inconsistent notification
-- Enh: Added gradient to `ui.showMore` feature
 - Fix #3873: Invalid visibility handling in `Content::canView()` for private global content
 - Fix #3896: Top menu dropdown double border on focus/hover
 - Fix #3834: Many entries in the top menu crashing layout
@@ -32,6 +31,12 @@ HumHub Change Log (DEVELOP)
 - Fix #3912: Unneeded inline style breaks stylesheet in logo.php
 - Enh #3402: Replaced ImageConverter class with Imagine 
 - Enh #3939: Add `client.redirect` action to client js module
+- Enh #3941: Core asset bundle optimization
+- Enh #3428: Added dashboard stream filter
+- Fix #2456: Only display list of relevant modules on space creation (@armezit)
+- Fix #3954: Support LDAP servers without pagination
+- Enh #3958: Mark legacy modules in module overview 
+- Chg: Added gradient to `ui.showMore` feature
 - Chg: Removed legacy `humhub\assets\PagedownConverterAsset` from AppAsset
 - Chg: Removed legacy `humhub\assets\JqueryCookieAsset` from AppAsset
 - Chg: Removed legacy `resources/file/fileuploader.js` from AppAsset
@@ -41,10 +46,4 @@ HumHub Change Log (DEVELOP)
 - Chg: Removed legacy `js/humhub/humhub.ui.markdown.js` from CoreApiAsset 
 - Chg: Deprecated `humhub\modules\ui\form\widgets\MarkdownField` in order to favor `humhub\modules\content\widgets\richtext\RichTextField`
 - Chg: Use lazy js module fallback for `humhub.require()` by default
-- Enh #3941: Core asset bundle optimization
-- Enh #3428: Added dashboard stream filter
-- Fix #2456: Only display list of relevant modules on space creation (@armezit)
 - Chg: Only register live push asset and `SocketIoAsset` on demand
-- Fix #3954: Support LDAP servers without pagination
-
-

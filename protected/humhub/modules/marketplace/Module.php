@@ -51,6 +51,11 @@ class Module extends BaseModule
     public $modulesDownloadPath = '@runtime/module_downloads';
 
     /**
+     * @var bool
+     */
+    public $hideLegacyModules = true;
+
+    /**
      * @inheritdoc
      */
     public function getName()

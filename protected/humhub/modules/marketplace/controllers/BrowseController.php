@@ -68,6 +68,10 @@ class BrowseController extends Controller
             if ($hideInstalled && Yii::$app->moduleManager->hasModule($module['id'])) {
                 unset($modules[$i]);
             }
+
+            if ($this->module->hideLegacyModules && !empty($module['isDeprecated'])) {
+                unset($modules[$i]);
+            }
         }
 
         return $this->render('list', [

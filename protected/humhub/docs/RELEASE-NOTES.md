@@ -12,3 +12,4 @@
 - Removed ImageConverter class, switched to Imagine library (#3402)
     - ImageMagick "convert" command not longer exists
     - New optional PHP extensions (ImageMagicks, GraphicsMagick) 
+- Legacy modules are now marked in Module section

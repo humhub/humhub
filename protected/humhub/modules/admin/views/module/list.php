@@ -3,6 +3,9 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
+/* @var $this \humhub\components\View */
+/* @var $installedModules array */
+/* @var $deprecatedModuleIds array */
 ?>
 
 <div class="panel-body">
@@ -21,6 +24,10 @@ use yii\helpers\Url;
                     <small>
                         <?php if (Yii::$app->hasModule($module->id)) : ?>
                             <span class="label label-info"><?= Yii::t('AdminModule.modules', 'Activated'); ?></span>
+                        <?php endif; ?>
+
+                        <?php if (in_array($module->id, $deprecatedModuleIds)): ?>
+                            <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="<?= Yii::t('AdminModule.modules', 'Not maintained or maintenance is about to be discontinued.'); ?>"><?= Yii::t('AdminModule.modules', 'Legacy'); ?></span>
                         <?php endif; ?>
                     </small>
                 </h4>
