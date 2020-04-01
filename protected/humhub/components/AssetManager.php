@@ -8,12 +8,12 @@
 
 namespace humhub\components;
 
-use humhub\assets\AppAsset;
-use humhub\assets\CoreBundleAsset;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\helpers\FileHelper;
 use yii\web\AssetBundle;
+use humhub\assets\AppAsset;
+use humhub\assets\CoreBundleAsset;
 
 /**
  * AssetManager
@@ -64,7 +64,11 @@ class AssetManager extends \yii\web\AssetManager
            && !in_array($bundleClass, CoreBundleAsset::STATIC_DEPENDS)
            && !is_subclass_of($bundleClass, assets\AssetBundle::class)) {
             array_unshift($bundle->depends, CoreBundleAsset::class);
-            $bundle->jsOptions['defer'] = 'defer';
+
+            // Allows to prevent defer also an non humhub bundles.
+            if(!property_exists($bundle,'defer') || $bundle->defer) {
+                $bundle->jsOptions['defer'] = 'defer';
+            }
         }
 
         return $bundle;
