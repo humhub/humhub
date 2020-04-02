@@ -51,7 +51,7 @@ class LogoImage
         $file = self::getFile($maxWidth, $maxHeight);
         if (file_exists($file)) {
             // Workaround for absolute urls in console applications (Cron)
-            $base = Url::base();
+            $base = '';
             if (Yii::$app->request->isConsoleRequest) {
                 $base = Url::base(true);
             }
