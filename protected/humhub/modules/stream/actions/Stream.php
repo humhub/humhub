@@ -12,7 +12,6 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\stream\models\WallStreamQuery;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
-use humhub\modules\stream\models\StreamQuery;
 use humhub\modules\stream\models\StreamSuppressQuery;
 use Yii;
 use yii\base\Action;
@@ -225,7 +224,7 @@ abstract class Stream extends Action
         foreach ($this->streamQuery->all() as $content) {
             try {
                 $output['content'][$content->id] = static::getContentResultEntry($content);
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 // Don't kill the stream action in prod environments in case the rendering of an entry fails.
                 if (YII_ENV_PROD) {
                     Yii::error($e);
@@ -314,13 +313,13 @@ abstract class Stream extends Action
                 'jsWidget' => $jsWidget,
                 'entry' => $record->content
             ]);
-        } else {
-            return Yii::$app->controller->renderAjax('@humhub/modules/content/views/layouts/wallEntry', [
-                'content' => $record->getWallOut($options),
-                'jsWidget' => $jsWidget,
-                'entry' => $record->content
-            ]);
         }
+
+        return Yii::$app->controller->renderAjax('@humhub/modules/content/views/layouts/wallEntry', [
+            'content' => $record->getWallOut($options),
+            'jsWidget' => $jsWidget,
+            'entry' => $record->content
+        ]);
     }
 
     /**
