@@ -48,3 +48,4 @@ HumHub Change Log (DEVELOP)
 - Chg: Use lazy js module fallback for `humhub.require()` by default
 - Chg: Only register live push asset and `SocketIoAsset` on demand
 - Enh #3916: Rework profile field administration overview 
+- Fix #3635: Search rebuild job timeout
