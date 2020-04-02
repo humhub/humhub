@@ -4,6 +4,7 @@ HumHub Change Log
 1.4.5 (Unreleased)
 ----------------------
 - Fix #3945: Default object-src policy prevents loading pdf on safari
+- Fix #3963: Richtext/Markdown links not highlighted by default
 
 1.4.4 (March 24, 2020)
 ----------------------
