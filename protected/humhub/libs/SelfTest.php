@@ -330,7 +330,7 @@ class SelfTest
             $checks[] = [
                 'title' => Yii::t('base', $title),
                 'state' => 'WARNING',
-                'hint' => 'Optional - Install PHP LDAP Extension and Zend LDAP Composer Package'
+                'hint' => 'Optional - Install PHP LDAP Extension'
             ];
         }
 
