@@ -56,7 +56,7 @@
         "yiisoft/yii2-httpclient": "~2.0.0",
         "yiisoft/yii2-imagine": "~2.1.0",
         "yiisoft/yii2-jui": "~2.0.0",
-        "yiisoft/yii2-queue": "~2.1.0",
+        "yiisoft/yii2-queue": "~2.3.0",
         "yiisoft/yii2-redis": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "zendframework/zend-http": "*",
