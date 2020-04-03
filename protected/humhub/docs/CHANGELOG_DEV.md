@@ -53,3 +53,4 @@ HumHub Change Log (DEVELOP)
 - Fix #3635: Search rebuild job timeout
 - Fix #3965: Space deletion not possible on some AuthClients without password
 - Chg: Replaced Space archive and Space delete buttons
+- Fix #3813: Too high memory consumption on Notification cleanup  
