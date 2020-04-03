@@ -51,3 +51,4 @@ HumHub Change Log (DEVELOP)
 - Chg: Migrated from Zend Http to Yii2 HttpClient 
 - Enh #3916: Rework profile field administration overview 
 - Fix #3635: Search rebuild job timeout
+- Fix #3965: Space deletion not possible on some AuthClients without password
