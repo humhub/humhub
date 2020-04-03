@@ -42,4 +42,6 @@ return [
     'Uninstall' => 'Desinstalar',
     'User Profiles' => 'Perfis de Usuário',
     'Version:' => 'Versão:',
+    'Legacy' => '',
+    'Not maintained or maintenance is about to be discontinued.' => '',
 ];

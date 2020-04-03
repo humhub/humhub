@@ -42,4 +42,6 @@ return [
     'Uninstall' => '卸载',
     'User Profiles' => '用户属性',
     'Version:' => '版本:',
+    'Legacy' => '',
+    'Not maintained or maintenance is about to be discontinued.' => '',
 ];

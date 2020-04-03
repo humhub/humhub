@@ -54,6 +54,7 @@ return [
     'Unsubscribe' => 'ألغ الإشتراك',
     '<strong>Confirm</strong> Action' => '',
     '<strong>Mail</strong> summary' => '',
+    'Actions' => '',
     'Add:' => '',
     'An error occurred while handling your last action. (Handler not found).' => '',
     'An unexpected error occurred while loading the search result.' => '',

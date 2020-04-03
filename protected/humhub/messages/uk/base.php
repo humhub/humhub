@@ -21,6 +21,7 @@ return [
     '<strong>Latest</strong> updates' => '',
     '<strong>Mail</strong> summary' => '',
     'Account settings' => '',
+    'Actions' => '',
     'Add:' => '',
     'Administration' => '',
     'Allow' => '',

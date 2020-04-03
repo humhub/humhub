@@ -42,4 +42,6 @@ return [
     'Uninstall' => 'Kaldır',
     'User Profiles' => 'Kullanıcı profilleri',
     'Version:' => 'Sürüm:',
+    'Legacy' => '',
+    'Not maintained or maintenance is about to be discontinued.' => '',
 ];

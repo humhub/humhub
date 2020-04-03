@@ -42,4 +42,6 @@ return [
     'Uninstall' => 'Afinstaller',
     'User Profiles' => 'Bruger profiler',
     'Version:' => 'Version:',
+    'Legacy' => '',
+    'Not maintained or maintenance is about to be discontinued.' => '',
 ];

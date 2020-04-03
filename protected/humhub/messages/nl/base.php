@@ -4,6 +4,7 @@ return array (
   '<strong>Latest</strong> updates' => '<strong>Laatste</strong> updates',
   '<strong>Mail</strong> summary' => '<strong>E-mail</strong> samenvatting',
   'Account settings' => 'Accountinstellingen',
+  'Actions' => 'Acties',
   'Add:' => 'Toevoegen:',
   'Administration' => 'Administratie',
   'Allow' => 'Toestaan',

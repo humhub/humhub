@@ -42,4 +42,6 @@ return [
     'User Profiles' => 'Vartotojų profiliai',
     'Version:' => 'Versija:',
     'Enable module...' => '',
+    'Legacy' => '',
+    'Not maintained or maintenance is about to be discontinued.' => '',
 ];

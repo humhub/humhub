@@ -42,4 +42,6 @@ return [
     'Uninstall' => 'Poista',
     'User Profiles' => 'Käyttäjien profiilit',
     'Version:' => 'Versio:',
+    'Legacy' => '',
+    'Not maintained or maintenance is about to be discontinued.' => '',
 ];

@@ -87,6 +87,7 @@ return [
     'Upload' => 'Augšupielādēt',
     'Upload file' => 'Augšupielādēt failu',
     'You are not allowed to run this action.' => 'Tev nav tiesību izpildīt šo darbību.',
+    'Actions' => '',
     'Add:' => '',
     'Could not find requested page.' => '',
     'Export' => '',

@@ -18,7 +18,6 @@
  */
 return [
     'Next' => 'ถัดไป',
-    'Save' => 'บันทึก',
     '-' => '',
     '<strong>Create</strong> new space' => '',
     '<strong>Manage</strong> members' => '',
@@ -53,7 +52,7 @@ return [
     'Pending Approvals' => '',
     'Pending Invites' => '',
     'Permissions are assigned to different user-roles. To edit a permission, select the user-role you want to edit and change the drop-down value of the given permission.' => '',
-    'Please provide your password to continue!' => '',
+    'Please type the name of the space to proceed.' => '',
     'Receive Notifications for new content' => '',
     'Remove from space' => '',
     'Role' => '',
@@ -69,7 +68,6 @@ return [
     'This option will show new content from this space at your dashboard' => '',
     'Transfer ownership' => '',
     'Unarchive' => '',
-    'Your password' => '',
     'e.g. example for {baseUrl}/s/example' => '',
     'never' => '',
     'space description' => '',
