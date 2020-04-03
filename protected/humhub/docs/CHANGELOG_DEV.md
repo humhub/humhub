@@ -52,3 +52,4 @@ HumHub Change Log (DEVELOP)
 - Enh #3916: Rework profile field administration overview 
 - Fix #3635: Search rebuild job timeout
 - Fix #3965: Space deletion not possible on some AuthClients without password
+- Chg: Replaced Space archive and Space delete buttons
