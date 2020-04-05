@@ -250,6 +250,9 @@ input[type=select] {
   height: 50px;
   padding: 5px;
 }
+#topbar-first a.navbar-brand-text {
+  padding-top: 15px;
+}
 #topbar-first .nav > li > a:hover,
 #topbar-first .nav > .open > a {
   background-color: #8fa7b4;

@@ -12,11 +12,12 @@ use yii\helpers\Html;
                  alt="<?= Yii::t('base', 'Logo of {appName}', ['appName' => Html::encode(Yii::$app->name)]) ?>"
                  id="img-logo"/>
         </a>
+    <?php else: ?>
+        <a class="navbar-brand navbar-brand-text"
+           href="<?= Yii::$app->homeUrl; ?>" id="text-logo">
+            <?= Html::encode(Yii::$app->name); ?>
+        </a>
     <?php endif; ?>
-    <a class="navbar-brand" style="<?php if ($logo->hasImage()) : ?>display:none;<?php endif; ?> "
-       href="<?= Yii::$app->homeUrl; ?>" id="text-logo">
-        <?= Html::encode(Yii::$app->name); ?>
-    </a>
 <?php endif; ?>
 
 <?php if ($place == "login") : ?>
