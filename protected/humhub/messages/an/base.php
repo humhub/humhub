@@ -81,6 +81,7 @@ return [
     'Unsubscribe' => 'Desubscribir-se',
     'Upload' => 'Puyar',
     'Upload file' => 'Puyar fichero',
+    'Actions' => '',
     'Add:' => '',
     'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '',
     'Could not find content of addon!' => '',

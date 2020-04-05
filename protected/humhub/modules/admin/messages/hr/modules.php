@@ -42,4 +42,6 @@ return [
     'Uninstall' => 'Deinstaliraj',
     'User Profiles' => 'Korisnički profili',
     'Version:' => 'Verzija:',
+    'Legacy' => '',
+    'Not maintained or maintenance is about to be discontinued.' => '',
 ];

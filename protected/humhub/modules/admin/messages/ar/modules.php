@@ -41,5 +41,7 @@ return [
     'Deactivated' => '',
     'Enable module...' => '',
     'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => '',
+    'Legacy' => '',
+    'Not maintained or maintenance is about to be discontinued.' => '',
     'User Profiles' => '',
 ];

@@ -94,6 +94,7 @@ return [
     'Upload' => 'ጫን',
     'Upload file' => 'ፋይል ጫን',
     'You are not allowed to run this action.' => 'ይህን ተግባር ለማከናወን አልተፈቀደልዎትም።',
+    'Actions' => '',
     'Powered by {name}' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',
 ];
