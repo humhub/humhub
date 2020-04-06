@@ -6,6 +6,7 @@ humhub.module('file', function (module, require, $) {
 
     var Widget = require('ui.widget').Widget;
     var client = require('client');
+    var Progress = require('ui.progress').Progress;
     var util = require('util');
     var object = util.object;
     var string = util.string;
@@ -182,7 +183,7 @@ humhub.module('file', function (module, require, $) {
             $progress = $('#'+this.$.attr('id')+'_progress');
         }
 
-        this.progress = Widget.instance($progress);
+        this.progress = Progress.instance($progress);
     };
 
     Upload.prototype.initFileUpload = function () {
