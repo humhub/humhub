@@ -8,7 +8,6 @@ use yii\helpers\Html;
  * Register BootstrapMarkdown & changes
  */
 MarkdownFieldAsset::register($this);
-$this->registerJsFile('@web-static/js/legacy/markdownEditor.js');
 
 /**
  * Create a hidden field to store uploaded files guids

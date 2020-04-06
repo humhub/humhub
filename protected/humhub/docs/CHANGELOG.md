@@ -54,6 +54,7 @@ HumHub Change Log
 - Fix #3965: Space deletion not possible on some AuthClients without password
 - Chg: Replaced Space archive and Space delete buttons
 - Fix #3813: Too high memory consumption on Notification cleanup  
+- Chg: Updated richtext version to 1.0.22
 
 
 1.4.5 (Unreleased)

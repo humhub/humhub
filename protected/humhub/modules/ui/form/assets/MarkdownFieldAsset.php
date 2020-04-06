@@ -7,6 +7,11 @@ namespace humhub\modules\ui\form\assets;
 use humhub\assets\BootstrapMarkdownAsset;
 use humhub\components\assets\AssetBundle;
 
+/**
+ * Class MarkdownFieldAsset
+ * @package humhub\modules\ui\form\assets
+ * @deprecated since 1.5 Use `humhub\modules\content\widgets\richtext\RichTextField`
+ */
 class MarkdownFieldAsset extends AssetBundle
 {
     public $sourcePath = '@ui/form/resources';
@@ -16,6 +21,7 @@ class MarkdownFieldAsset extends AssetBundle
     ];
 
     public $js = [
+        'js/markdownEditor.js',
         'js/humhub.ui.markdown.js'
     ];
 
