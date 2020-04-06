@@ -9,6 +9,7 @@
 namespace humhub\modules\content\assets;
 
 use humhub\components\assets\AssetBundle;
+use humhub\modules\ui\view\components\View;
 
 /**
  * Asset for core content resources.
@@ -18,6 +19,16 @@ use humhub\components\assets\AssetBundle;
  */
 class ContentAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $defer = false;
+
+    /**
+     * @inheritdoc
+     */
+    public $jsPosition = View::POS_HEAD;
+
      /**
      * @inheritdoc
      */
