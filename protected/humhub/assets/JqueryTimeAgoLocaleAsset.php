@@ -8,8 +8,8 @@
 
 namespace humhub\assets;
 
+use humhub\components\assets\AssetBundle;
 use Yii;
-use yii\web\AssetBundle;
 
 /**
  * TimeAgo Asset Locale
@@ -19,6 +19,10 @@ use yii\web\AssetBundle;
  */
 class JqueryTimeAgoLocaleAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $defer = false;
 
     /**
      * @inheritdoc

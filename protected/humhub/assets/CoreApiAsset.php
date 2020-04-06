@@ -45,6 +45,8 @@ class CoreApiAsset extends WebStaticAssetBundle
         'js/humhub/humhub.client.js',
         'js/humhub/humhub.ui.status.js',
         'js/humhub/humhub.ui.view.js',
+        'js/humhub/humhub.ui.navigation.js', // Required here since we set the active navigation on each call
+        'js/humhub/humhub.ui.modal.js', // Should be moved to CoreModuleScriptAssets later
     ];
 
 }

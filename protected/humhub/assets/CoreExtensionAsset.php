@@ -16,8 +16,7 @@ class CoreExtensionAsset extends WebStaticAssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub/humhub.ui.modal.js', // Should be moved to CoreModuleScriptAssets later
-        'js/humhub/humhub.ui.navigation.js', // Required here since we set the active navigation on each call
+
         'js/humhub/humhub.ui.form.elements.js',
         'js/humhub/humhub.ui.form.js',
         'js/humhub/humhub.ui.showMore.js',

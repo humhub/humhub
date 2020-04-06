@@ -8,7 +8,6 @@
 
 namespace humhub\modules\content\assets;
 
-use humhub\assets\CoreExtensionAsset;
 use humhub\components\assets\AssetBundle;
 
 /**
@@ -29,9 +28,5 @@ class ContentAsset extends AssetBundle
      */
     public $js = [
         'js/humhub.content.js'
-    ];
-
-    public $depends = [
-        CoreExtensionAsset::class
     ];
 }
