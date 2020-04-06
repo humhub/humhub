@@ -18,9 +18,7 @@
  */
 return [
     'Delete' => 'Apagar',
-    'Save' => 'Guardar',
     'Show all' => 'Mostrar tudo',
-    'Your password' => 'Sua senha',
     '-' => '',
     '<strong>Create</strong> new space' => '',
     '<strong>Manage</strong> members' => '',
@@ -55,7 +53,7 @@ return [
     'Pending Approvals' => '',
     'Pending Invites' => '',
     'Permissions are assigned to different user-roles. To edit a permission, select the user-role you want to edit and change the drop-down value of the given permission.' => '',
-    'Please provide your password to continue!' => '',
+    'Please type the name of the space to proceed.' => '',
     'Receive Notifications for new content' => '',
     'Remove from space' => '',
     'Role' => '',

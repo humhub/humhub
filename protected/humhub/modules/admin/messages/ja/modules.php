@@ -42,4 +42,6 @@ return [
     'User Profiles' => 'ユーザープロファイル',
     'Version:' => 'バージョン：',
     '<strong>Module</strong> details' => '',
+    'Legacy' => '',
+    'Not maintained or maintenance is about to be discontinued.' => '',
 ];

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\libs;
 
+use humhub\modules\marketplace\Module;
 use Yii;
 use yii\helpers\Json;
 use humhub\libs\CURLHelper;
@@ -29,38 +30,17 @@ class HumHubAPI
      */
     public static function request($action, $params = [])
     {
-        if (!Yii::$app->params['humhub']['apiEnabled']) {
-            return [];
-        }
-
-        $url = Yii::$app->params['humhub']['apiUrl'] . '/' . $action;
-        $params['version'] = urlencode(Yii::$app->version);
-        $params['installId'] = Yii::$app->getModule('admin')->settings->get('installationId');
-
-        $url .= '?';
-        foreach ($params as $name => $value) {
-            $url .= urlencode($name) . '=' . urlencode($value)."&";
-        }
-        try {
-            $http = new \Zend\Http\Client($url, [
-                'adapter' => '\Zend\Http\Client\Adapter\Curl',
-                'curloptions' => CURLHelper::getOptions(),
-                'timeout' => 30
-            ]);
-
-            $response = $http->send();
-            $json = $response->getBody();
-        } catch (\Zend\Http\Client\Adapter\Exception\RuntimeException $ex) {
-            Yii::error('Could not connect to HumHub API! ' . $ex->getMessage());
-            return [];
-        } catch (Exception $ex) {
-            Yii::error('Could not get HumHub API response! ' . $ex->getMessage());
+        if (!Yii::$app->params['humhub']['apiEnabled'] || !Yii::$app->hasModule('marketplace')) {
             return [];
         }
 
         try {
-            return Json::decode($json);
-        } catch (\yii\base\InvalidArgumentException $ex) {
+            /** @var Module $marketplace */
+            $marketplace = Yii::$app->getModule('marketplace');
+
+            $response = $marketplace->getHumHubApi()->get($action)->addData($params)->send();
+            return $response->getData();
+        } catch (\Exception $ex) {
             Yii::error('Could not parse HumHub API response! ' . $ex->getMessage());
             return [];
         }

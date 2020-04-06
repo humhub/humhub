@@ -27,7 +27,6 @@ return [
     'Created by:' => '',
     'Double file extensions are not allowed!' => '',
     'File {fileName} could not be uploaded!' => '',
-    'Image dimensions are too big to be processed with current server memory limit!' => '',
     'Insufficient permissions!' => '',
     'Invalid Mime-Type' => '',
     'Invalid file name detected!' => '',

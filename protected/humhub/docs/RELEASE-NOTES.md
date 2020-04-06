@@ -15,3 +15,4 @@
     - ImageMagick "convert" command not longer exists
     - New optional PHP extensions (ImageMagicks, GraphicsMagick) 
 - Legacy modules are now marked in Module section
+- Replaced Space delete & archive buttons

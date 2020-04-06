@@ -48,5 +48,9 @@ HumHub Change Log (DEVELOP)
 - Chg: Use lazy js module fallback for `humhub.require()` by default
 - Chg: Only register live push asset and `SocketIoAsset` on demand
 - Chg: Updated Yii2 Queue Extension to v2.3.0
+- Chg: Migrated from Zend Http to Yii2 HttpClient 
 - Enh #3916: Rework profile field administration overview 
 - Fix #3635: Search rebuild job timeout
+- Fix #3965: Space deletion not possible on some AuthClients without password
+- Chg: Replaced Space archive and Space delete buttons
+- Fix #3813: Too high memory consumption on Notification cleanup  

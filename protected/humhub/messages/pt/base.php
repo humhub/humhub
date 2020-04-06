@@ -40,6 +40,7 @@ return [
     'Search' => 'Pesquisar',
     '<strong>Confirm</strong> Action' => '',
     '<strong>Mail</strong> summary' => '',
+    'Actions' => '',
     'Add:' => '',
     'Allow' => '',
     'An error occurred while handling your last action. (Handler not found).' => '',

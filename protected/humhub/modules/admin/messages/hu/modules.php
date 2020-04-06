@@ -42,4 +42,6 @@ return [
     'Uninstall' => 'Eltávolítás',
     'User Profiles' => 'Felhasználói profilok',
     'Version:' => 'Verzió:',
+    'Legacy' => '',
+    'Not maintained or maintenance is about to be discontinued.' => '',
 ];

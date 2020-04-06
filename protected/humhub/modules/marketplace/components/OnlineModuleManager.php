@@ -9,6 +9,7 @@
 namespace humhub\modules\marketplace\components;
 
 use humhub\components\ModuleEvent;
+use humhub\libs\HttpClient;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\marketplace\Module;
 use Yii;
@@ -128,15 +129,14 @@ class OnlineModuleManager extends Component
             return true;
         }
 
-        $http = new \Zend\Http\Client($url, [
-            'adapter' => '\Zend\Http\Client\Adapter\Curl',
-            'curloptions' => CURLHelper::getOptions(),
-            'timeout' => 30
-        ]);
-
-        $response = $http->send();
-
-        file_put_contents($fileName, $response->getBody());
+        $httpClient = new HumHubApiClient();
+        try {
+            $fp = fopen($fileName, "w");
+            $httpClient->get($url)->addOptions(['timeout' => 300])->setOutputFile($fp)->send();
+            fclose($fp);
+        } catch (\yii\httpclient\Exception $e) {
+            throw new \Exception('Download failed.' . $e->getMessage());
+        }
 
         if (!is_file($fileName)) {
             throw new \Exception('Download failed. Could not write file! ' . $fileName);
@@ -145,6 +145,7 @@ class OnlineModuleManager extends Component
         if (!empty($sha256) && hash_file('sha256', $fileName) !== $sha256) {
             throw new \Exception('File verification failed. Could not download file! ' . $fileName);
         }
+
         return true;
     }
 
@@ -190,6 +191,7 @@ class OnlineModuleManager extends Component
      */
     public function getModules($cached = true)
     {
+
         if (!$cached) {
             $this->_modules = null;
             Yii::$app->cache->delete('onlineModuleManager_modules');

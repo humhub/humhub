@@ -10,6 +10,7 @@ namespace humhub\modules\marketplace;
 
 use humhub\components\Module as BaseModule;
 use humhub\models\Setting;
+use humhub\modules\marketplace\components\HumHubApiClient;
 use humhub\modules\marketplace\components\LicenceManager;
 use humhub\modules\marketplace\models\Licence;
 use humhub\modules\marketplace\components\OnlineModuleManager;
@@ -65,6 +66,8 @@ class Module extends BaseModule
 
     private $_onlineModuleManager = null;
 
+    private $_humhubApi = null;
+
     /**
      * @inheritDoc
      */
@@ -102,5 +105,19 @@ class Module extends BaseModule
     public function getLicence()
     {
         return LicenceManager::get();
+    }
+
+    /**
+     * Returns the public HUmhub API (Marketplace, Updater & Co)
+     *
+     * @return HumHubApiClient
+     */
+    public function getHumHubApi()
+    {
+        if ($this->_humhubApi === null) {
+            $this->_humhubApi = new HumHubApiClient();
+        }
+
+        return $this->_humhubApi;
     }
 }
