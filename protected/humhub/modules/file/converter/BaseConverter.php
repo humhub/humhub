@@ -26,9 +26,10 @@ abstract class BaseConverter extends \yii\base\BaseObject
     public $file;
 
     /**
-     * All options used for the converted file variant
+     * All options used for the converted file variant.
+     * These values also produce the unique ID of the cached returned file.
      *
-     * @var array
+     * @var array the converter options
      */
     public $options = [];
 
