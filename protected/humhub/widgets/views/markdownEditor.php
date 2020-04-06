@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /**
  * Register BootstrapMarkdown & changes
  */
-MarkdownFieldAsset::register($this->view);
+MarkdownFieldAsset::register($this);
 $this->registerJsFile('@web-static/js/legacy/markdownEditor.js');
 
 /**
