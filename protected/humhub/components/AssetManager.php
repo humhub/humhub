@@ -10,6 +10,7 @@ namespace humhub\components;
 
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
 use yii\helpers\FileHelper;
 use yii\web\AssetBundle;
 use humhub\assets\AppAsset;
@@ -24,6 +25,12 @@ use humhub\assets\CoreBundleAsset;
 class AssetManager extends \yii\web\AssetManager
 {
     private $_published = [];
+
+    /**
+     * @var bool if true will prevent `defer` on all asset bundle scripts
+     * @since 1.5
+     */
+    public $preventDefer = false;
 
     /**
      * Clears all currently published assets
@@ -43,16 +50,16 @@ class AssetManager extends \yii\web\AssetManager
     }
 
     /**
-     * Workaround for modules not merged to HumHub v1.5.
-     * HumHub v1.5 introduced a deferred CoreBundleAsset.
-     * This workaround adds 'defer' and the CoreBundleAsset dependency to all non core and non migrated AssetBundles which
-     * is the default in humhubs base AssetBundle.
+     * @inheritDoc
+     *
+     * Adds defer support for non HumHub AssetBundles by $defer property and adds dependency to [[CoreBundleAsset]]
      *
      * @param string $name
      * @param array $config
      * @param bool $publish
      * @return AssetBundle
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
+     * @since 1.5
      */
     protected function loadBundle($name, $config = [], $publish = true)
     {
@@ -63,12 +70,18 @@ class AssetManager extends \yii\web\AssetManager
            && !in_array($bundleClass, AppAsset::STATIC_DEPENDS)
            && !in_array($bundleClass, CoreBundleAsset::STATIC_DEPENDS)
            && !is_subclass_of($bundleClass, assets\AssetBundle::class)) {
+
+            // Force dependency to CoreBundleAsset
             array_unshift($bundle->depends, CoreBundleAsset::class);
 
-            // Allows to prevent defer also an non humhub bundles.
-            if(!property_exists($bundle,'defer') || $bundle->defer) {
+            // Allows to add defer to non HumHub AssetBundles
+            if(property_exists($bundle,'defer') && $bundle->defer) {
                 $bundle->jsOptions['defer'] = 'defer';
             }
+        }
+
+        if($this->preventDefer && isset($bundle->jsOptions['defer'])) {
+            unset($bundle->jsOptions['defer']);
         }
 
         return $bundle;

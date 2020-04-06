@@ -9,6 +9,7 @@
 namespace humhub\modules\file\assets;
 
 use humhub\components\assets\AssetBundle;
+use humhub\modules\ui\view\components\View;
 
 /**
  * Fle related assets.
@@ -18,6 +19,15 @@ use humhub\components\assets\AssetBundle;
  */
 class FileAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $defer = false;
+
+    /**
+     * @inheritdoc
+     */
+    public $jsPosition = View::POS_HEAD;
 
     /**
      * @inheritdoc
