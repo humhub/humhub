@@ -21,7 +21,6 @@ class CoreExtensionAsset extends WebStaticAssetBundle
         'js/humhub/humhub.ui.form.js',
         'js/humhub/humhub.ui.showMore.js',
         'js/humhub/humhub.ui.panel.js',
-        'js/humhub/humhub.ui.progress.js',
         'js/humhub/humhub.ui.gallery.js',
         'js/humhub/humhub.ui.picker.js',
         'js/humhub/humhub.oembed.js',
