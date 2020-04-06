@@ -6,7 +6,7 @@
  *
  */
 
-namespace enterprise\acceptance\modules\emailwhitelist;
+namespace humhub\modules\space\tests\codeception\functional;
 
 use humhub\modules\space\models\Space;
 use FunctionalTester;
