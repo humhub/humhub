@@ -34,7 +34,6 @@ script:
 - 'php ../../vendor/bin/codecept build'
 - 'php ../../vendor/bin/codecept run --env travis'
 - 'cd ../../../'
-- 'cat /tmp/chromedriver.log'
 after_failure:
 - .travis/upload-failure.sh
 env:
