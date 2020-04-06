@@ -75,7 +75,7 @@ class PermissionCest
         $I->dontSee('You are not permitted to access this section.');
 
         $I->amOnPage(['/admin/user-profile']);
-        $I->see('Add new category');
+        $I->see('Add new field');
 
         $I->amOnPage(['/admin/authentication']);
         $I->see('You are not permitted to access this section.');
