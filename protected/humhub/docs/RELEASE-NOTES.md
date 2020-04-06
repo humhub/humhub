@@ -9,7 +9,7 @@ In regards to own themes and individual modules, the corresponding guides at htt
 1.5 (April 2020)
 ----------------
 
-**Realtime Updates (#3924)**
+**Live Updates (#3924)**
 
 An indicator for new content was added to the timeline.
 The activity widget updates in realtime when there is new content e.g. new comments.
