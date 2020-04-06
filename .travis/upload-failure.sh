@@ -14,9 +14,10 @@ zip -ur failure.zip runtime/logs || true
 
 zip -ur failure.zip /tmp/phpserver.log || true
 
+zip -ur failure.zip /tmp/chromedriver.log || true
+
 # upload file
 curl --upload-file ./failure.zip https://transfer.sh/humhub-travis-${TRAVIS_JOB_NUMBER}.zip
-
 
 # delete zip
 rm failure.zip
