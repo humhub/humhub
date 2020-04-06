@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0087af13b7e83c25f14c84ac3a32aee6",
+    "content-hash": "1680f7874a40aa402f7ee13f82ce4f08",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -2232,10 +2232,10 @@
         },
         {
             "name": "npm-asset/humhub-prosemirror-richtext",
-            "version": "1.0.21",
+            "version": "1.0.22",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/humhub-prosemirror-richtext/-/humhub-prosemirror-richtext-1.0.21.tgz"
+                "url": "https://registry.npmjs.org/humhub-prosemirror-richtext/-/humhub-prosemirror-richtext-1.0.22.tgz"
             },
             "type": "npm-asset",
             "license": [
