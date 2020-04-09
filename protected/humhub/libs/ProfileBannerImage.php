@@ -9,11 +9,6 @@
 namespace humhub\libs;
 
 use humhub\modules\file\libs\ImageConverter;
-use humhub\modules\space\models\Space;
-use humhub\modules\space\widgets\ProfileBannerImage as SpaceImage;
-use humhub\modules\user\widgets\Image as UserImage;
-use yii\helpers\FileHelper;
-use yii\helpers\Html;
 
 /**
  * ProfileBannerImage is responsible for the profile banner images.
