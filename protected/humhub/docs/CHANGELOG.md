@@ -5,6 +5,7 @@ HumHub Change Log
 ----------------------
 - Fix #3945: Default object-src policy prevents loading pdf on safari
 - Fix #3963: Richtext/Markdown links not highlighted by default
+- Fix #3986: Cannot use yii\helpers\Html as Html because the name is already in use in `humhub\libs\ProfileBannerImage`
 
 1.4.4 (March 24, 2020)
 ----------------------
