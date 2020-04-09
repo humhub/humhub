@@ -57,7 +57,7 @@ class ProfileStream extends ContentContainerStream
             $conditionUser .= '   (content.visibility = 1) OR';             // public visible content
             $conditionUser .= '   (content.visibility = 0 AND content.contentcontainer_id=' . $this->user->contentContainerRecord->id . ')';  // private content of user
             if (Yii::$app->getModule('friendship')->getIsEnabled()) {
-                $this->leftJoin('user_friendship cff', 'cuser.id=cff.user_id AND cff.friend_user_id=:fuid', [':fuid' => $this->user->id]);
+                $this->activeQuery->leftJoin('user_friendship cff', 'cuser.id=cff.user_id AND cff.friend_user_id=:fuid', [':fuid' => $this->user->id]);
                 $conditionUser .= ' OR (content.visibility = 0 AND cff.id IS NOT NULL)';  // users are friends
             }
             $conditionUser .= ')';

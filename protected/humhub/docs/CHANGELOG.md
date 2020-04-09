@@ -1,6 +1,10 @@
 HumHub Change Log
 =================
 
+1.5.0-beta.2 (Unreleased)
+-------------------------
+- Fix #3976: User profile stream could not be initialized
+
 
 1.5.0-beta.1 (April 6, 2020)
 ----------------------------
