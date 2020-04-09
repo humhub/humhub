@@ -27,7 +27,6 @@
         "npm-asset/jquery-color": "*",
         "npm-asset/jquery": "^3.4.0",
         "npm-asset/jquery-knob": "1.2.*",
-        "npm-asset/jquery.nicescroll": "3.6.8",
         "npm-asset/timeago": "^1.6.3",
         "npm-asset/kbw.timeentry": "^2.0",
         "npm-asset/jquery.cookie": "^1.4.1",

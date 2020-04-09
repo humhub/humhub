@@ -261,7 +261,7 @@ humhub.module('notification', function (module, require, $) {
 
     /**
      * Global action handler (used in overview page).
-     * 
+     *
      * @param {type} evt
      * @returns {undefined}
      */
@@ -288,14 +288,14 @@ humhub.module('notification', function (module, require, $) {
         if (user.isGuest()) {
             return;
         }
-        
+
         if (!$('#notification_widget').length) {
             return;
         }
-        
+
         updateTitle($('#notification_widget').data('notification-count'));
         initOverviewPage();
-        if (!$pjax) {
+        if (!$pjax && view.isLarge()) {
             $("#dropdown-notifications ul.media-list").niceScroll({
                 cursorwidth: "7",
                 cursorborder: "",

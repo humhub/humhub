@@ -4,6 +4,9 @@ HumHub Change Log
 1.5.0-beta.2 (Unreleased)
 -------------------------
 - Fix #3976: User profile stream could not be initialized
+- Fix #3977 Reverted nicescroll version to 3.6.6 due to mobile scroll issues
+- Chg: Only use nicescroll on space chooser, notifications, and activity stream on large devices
+- Chg: Replaced `humhub.ui.view.isNormal()` with  `humhub.ui.view.isLarge()`
 
 
 1.5.0-beta.1 (April 6, 2020)

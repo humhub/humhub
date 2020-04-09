@@ -9,6 +9,7 @@ humhub.module('activity', function (module, require, $) {
     var Widget = require('ui.widget').Widget;
     var container = require('content.container');
     var user = require('user');
+    var view = require('ui.view');
 
     /**
      * Number of initial stream enteis loaded when stream is initialized.
@@ -62,7 +63,7 @@ humhub.module('activity', function (module, require, $) {
     ActivityStream.prototype.initEvents = function(events) {
         var that = this;
         this.on('humhub:stream:afterAddEntries', function() {
-            if(!that.$content.getNiceScroll().length) {
+            if(view.isLarge() && !that.$content.getNiceScroll().length) {
                 that.$content.niceScroll({
                     cursorwidth: "7",
                     cursorborder: "",

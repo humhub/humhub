@@ -19,11 +19,7 @@ humhub.module('space.chooser', function (module, require, $) {
     var SELECTOR_ITEM = '[data-space-chooser-item]';
     var SELECTOR_ITEM_REMOTE = '[data-space-none],[data-space-archived]';
 
-    var SpaceChooser = function (node, options) {
-        Widget.call(this, node, options);
-    };
-
-    object.inherits(SpaceChooser, Widget);
+    var SpaceChooser = Widget.extend();
 
     SpaceChooser.prototype.init = function () {
         this.$menu = $('#space-menu');
@@ -31,19 +27,22 @@ humhub.module('space.chooser', function (module, require, $) {
         this.$search = $('#space-menu-search');
         this.$remoteSearch = $('#space-menu-remote-search');
 
-        // set niceScroll to SpaceChooser menu
-        this.$chooser.niceScroll({
-            cursorwidth: "7",
-            cursorborder: "",
-            cursorcolor: "#555",
-            cursoropacitymax: "0.2",
-            nativeparentscrolling: false,
-            railpadding: {top: 0, right: 3, left: 0, bottom: 0}
-        });
 
-        this.$chooser.on('touchmove', function (evt) {
-            evt.preventDefault();
-        });
+        if(view.isLarge()) {
+            // set niceScroll to SpaceChooser menu
+            this.$chooser.niceScroll({
+                cursorwidth: "7",
+                cursorborder: "",
+                cursorcolor: "#555",
+                cursoropacitymax: "0.2",
+                nativeparentscrolling: false,
+                railpadding: {top: 0, right: 3, left: 0, bottom: 0}
+            });
+
+            this.$chooser.on('touchmove', function (evt) {
+                evt.preventDefault();
+            });
+        }
 
         this.initEvents();
         this.initSpaceSearch();

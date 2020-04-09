@@ -17,7 +17,14 @@ humhub.module('ui.view', function (module, require, $) {
         return module.getWidth() > 767 && module.getWidth() <= 991;
     };
 
+    /**
+     * @deprecated since v1.5
+     */
     var isNormal = function () {
+        return isLarge();
+    };
+
+    var isLarge = function () {
         return module.getWidth() >= 991;
     };
 
@@ -45,7 +52,7 @@ humhub.module('ui.view', function (module, require, $) {
         prevSwipe = false;
         $('body').removeClass('modal-open');
 
-        if(isSmall() && module.config.useDefaultSwipe) {
+        if(isSmall() || isMedium() && module.config.useDefaultSwipe) {
             setTimeout(initMobileSidebar, 50);
         }
 
@@ -59,9 +66,6 @@ humhub.module('ui.view', function (module, require, $) {
     var isActiveScroll = function() {
         return prevSwipeDelay;
     };
-
-
-
 
     var preventSwipe = function(prev) {
         prevSwipe = object.isDefined(prev) ? prev : true;
@@ -154,6 +158,7 @@ humhub.module('ui.view', function (module, require, $) {
         isActiveScroll: isActiveScroll,
         isMedium: isMedium,
         isNormal: isNormal,
+        isLarge: isLarge,
         getHeight: getHeight,
         getWidth: getWidth,
         getContentTop: getContentTop,
