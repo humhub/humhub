@@ -547,10 +547,10 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         $module = Yii::$app->getModule('ldap');
 
         if (empty($module->pageSize)) {
-            return $this->getLdap()->search($this->userFilter, $this->baseDn, Ldap::SEARCH_SCOPE_SUB, $module->retrievedAttributes);
+            return $this->getLdap()->search($this->userFilter, $this->baseDn, Ldap::SEARCH_SCOPE_SUB, $module->queriedAttributes);
         }
 
-        return $this->getLdap()->multiPageSearch($this->userFilter, $this->baseDn, Ldap::SEARCH_SCOPE_SUB, $module->retrievedAttributes, null, null, 0, $module->pageSize);
+        return $this->getLdap()->multiPageSearch($this->userFilter, $this->baseDn, Ldap::SEARCH_SCOPE_SUB, $module->queriedAttributes, null, null, 0, $module->pageSize);
     }
 
     /**
