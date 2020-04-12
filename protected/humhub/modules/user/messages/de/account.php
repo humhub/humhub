@@ -24,7 +24,7 @@ return array (
   'Enter your password to continue' => 'Gib dein Passwort ein, um fortzufahren',
   'Hello' => 'Hallo',
   'Here you can edit your general profile data, which is visible in the about page of your profile.' => 'Hier kannst du deine allgemeinen Profildaten bearbeiten, die auf der Übersichtsseite deines Profils sichtbar sind.',
-  'Here you can manage your account permissions for different user-types. To edit a permission, select the user-type you want to edit and change the drop-down value of the given permission.' => '',
+  'Here you can manage your account permissions for different user-types. To edit a permission, select the user-type you want to edit and change the drop-down value of the given permission.' => 'Hier kannst du deine Kontoberechtigungen für verschiedene Benutzertypen verwalten. Um eine Berechtigung zu bearbeiten, wählst du den Benutzertyp aus, den du bearbeiten möchtest, und änderst den Dropdown-Wert der gegebenen Berechtigung.',
   'Hide introduction tour panel on dashboard' => 'Einführungstour in der Übersicht ausblenden',
   'Invalid link! Please make sure that you entered the entire url.' => 'Ungültiger Link! Bitte vergewissere dich, dass die vollständige URL eingegeben wurde.',
   'Language' => 'Sprache',

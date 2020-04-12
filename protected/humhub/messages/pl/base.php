@@ -70,7 +70,7 @@ return array (
   'The requested resource could not be found.' => 'Żądany zasób nie został znaleziony.',
   'The space has been archived.' => 'Strefa ma zostać zarchiwizowana.',
   'The space has been unarchived.' => 'Strefa ma zostać rozpakowana.',
-  'There are unsaved changes, do you really want to leave this page?' => '',
+  'There are unsaved changes, do you really want to leave this page?' => 'Istnieją niezapisane zmiany, na pewno chcesz opuścić tę stronę?',
   'Time Zone' => 'Strefa czasowa',
   'Toggle comment menu' => 'Przełącz menu komentarzy',
   'Toggle panel menu' => 'Przełącz menu panela',

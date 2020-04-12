@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '',
+  '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>Ingen har skrivit något ännu&gt;</b>',
   '<b>There are no profile posts yet!</b>' => '<b>Det finns inga profilinlägg ännu!</b>',
   '<strong>Directory</strong> menu' => '<strong>Katalog</strong> meny',
   '<strong>Group</strong> members - {group}' => '<strong>Grupp</strong> medlemmar - {group}',
@@ -27,7 +27,7 @@ return array (
   'Search' => 'Sök',
   'See all' => 'Se alla',
   'Send invite' => 'Skicka inbjudan',
-  'Spaces' => 'Nätverk ',
+  'Spaces' => 'Nätverk',
   'This group has no members yet.' => 'Denna grupp har inga medlemmar ännu!',
   'Top Group' => 'Topp grupp',
   'Total groups' => 'Totalt grupper',
