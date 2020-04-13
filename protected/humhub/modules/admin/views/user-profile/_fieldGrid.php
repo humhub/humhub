@@ -1,6 +1,5 @@
 <?php
 
-
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\ProfileFieldCategory;
 use humhub\widgets\Button;
@@ -14,8 +13,13 @@ use yii\helpers\Url;
 
 ?>
 
+
 <?= Button::success(Yii::t('AdminModule.user', 'Add new field'))
-    ->icon('plus')->sm()->link(Url::to(['edit-field', 'categoryId' => $category->id]))->right() ?>
+    ->icon('plus')->sm()->link(Url::to(['edit-field', 'categoryId' => $category->id]))->right()->style('margin-left:5px') ?>
+
+<?= Button::primary(Yii::t('AdminModule.user', 'Edit category'))
+    ->icon('pencil')->sm()->link(Url::to(['edit-category', 'id' => $category->id]))->right() ?>
+
 
 <?= GridView::widget([
     'dataProvider' => new ArrayDataProvider(['allModels' => $category->fields]),
@@ -69,5 +73,3 @@ use yii\helpers\Url;
         ],
     ]
 ]);
-
-
