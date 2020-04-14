@@ -45,7 +45,7 @@ class ContentContainerStream extends Stream
     protected function handleContentContainer()
     {
         // Limit to this content container
-        $this->activeQuery->andWhere(['content.contentcontainer_id' => $this->contentContainer->contentContainerRecord->id]);
+        $this->activeQuery->andWhere(['content.contentcontainer_id' => $this->contentContainer->contentcontainer_id]);
 
         // Limit to public posts when no member
         if (!$this->contentContainer->canAccessPrivateContent($this->user)) {
@@ -68,7 +68,7 @@ class ContentContainerStream extends Stream
         if ($this->isInitialRequest()) {
             // Get number of pinned contents
             $pinnedQuery = clone $this->activeQuery;
-            $pinnedQuery->andWhere(['AND', ['content.pinned' => 1], ['content.contentcontainer_id' => $this->contentContainer->id]]);
+            $pinnedQuery->andWhere(['AND', ['content.pinned' => 1], ['content.contentcontainer_id' => $this->contentContainer->contentcontainer_id]]);
             $pinnedCount = $pinnedQuery->count();
 
             // Increase query result limit to ensure there are also not pinned entries
