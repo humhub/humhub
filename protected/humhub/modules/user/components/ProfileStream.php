@@ -10,7 +10,7 @@ namespace humhub\modules\user\components;
 
 use humhub\modules\space\models\Space;
 use humhub\modules\stream\actions\ContentContainerStream;
-use humhub\modules\user\models\User;
+use humhub\modules\user\models\User as UserModel;
 use humhub\modules\user\Module;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -33,14 +33,14 @@ class ProfileStream extends ContentContainerStream
 
         if ($module->includeAllUserContentsOnProfile && $this->user !== null) {
             $profileUser = $this->contentContainer;
-            if (!$profileUser instanceof User) {
+            if (!$profileUser instanceof UserModel) {
                 throw new InvalidConfigException('ContentContainer must be related to a User record.');
             }
 
             $this->activeQuery->andWhere(['content.created_by' => $profileUser->id]);
 
             $this->activeQuery->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::class]);
-            $this->activeQuery->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::class]);
+            $this->activeQuery->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => UserModel::class]);
             $this->activeQuery->leftJoin('space_membership',
                 'contentcontainer.pk=space_membership.space_id AND contentcontainer.class=:spaceClass AND space_membership.user_id=:userId',
                 [':userId' => $this->user->id, ':spaceClass' => Space::class]
