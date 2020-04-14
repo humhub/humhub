@@ -37,7 +37,6 @@ class ProfileStream extends ContentContainerStream
                 throw new InvalidConfigException('ContentContainer must be related to a User record.');
             }
 
-            $this->activeQuery->andWhere(['content.created_by' => $profileUser->id]);
 
             $this->activeQuery->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::class]);
             $this->activeQuery->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => UserModel::class]);
@@ -45,6 +44,12 @@ class ProfileStream extends ContentContainerStream
                 'contentcontainer.pk=space_membership.space_id AND contentcontainer.class=:spaceClass AND space_membership.user_id=:userId',
                 [':userId' => $this->user->id, ':spaceClass' => Space::class]
             );
+
+            $this->activeQuery->andWhere([
+                'OR',
+                ['content.created_by' => $profileUser->id],
+                ['content.contentcontainer_id' => $profileUser->contentcontainer_id]
+            ]);
 
             // Build Access Check based on Space Content Container
             $conditionSpace = 'space.id IS NOT NULL AND (';                              // space content
