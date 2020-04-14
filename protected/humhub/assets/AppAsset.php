@@ -44,14 +44,6 @@ class AppAsset extends WebStaticAssetBundle
      */
     public $jsPosition = View::POS_HEAD;
 
-    /**
-     * @inheritdoc
-     */
-    public $css = [
-      //  'css/bootstrap-wysihtml5.css',
-        'css/flatelements.css',
-    ];
-
     const BUNDLE_NAME = 'app';
 
     const STATIC_DEPENDS = [
@@ -69,6 +61,15 @@ class AppAsset extends WebStaticAssetBundle
         OpenSansAsset::class,
         PjaxAsset::class,
         JqueryTimeAgoAsset::class,
+
+        /**
+         * Style only assets
+         */
+        HighlightJsStyleAsset::class,
+        NProgressStyleAsset::class,
+        Select2StyleAsset::class,
+        BlueimpGalleryStyleAsset::class,
+        FlatelementsStyleAsset::class,
 
 
         /**

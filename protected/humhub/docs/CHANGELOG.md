@@ -7,7 +7,9 @@ HumHub Change Log
 - Fix #3977 Reverted nicescroll version to 3.6.6 due to mobile scroll issues
 - Chg: Only use nicescroll on space chooser, notifications, and activity stream on large devices
 - Chg: Replaced `humhub.ui.view.isNormal()` with  `humhub.ui.view.isLarge()`
-
+- Fix #3973: Profile Categories Not Editable
+- Fix #3925: "Back to stream" button visible after pin to top in stream
+- Chg: Removed all style assets from CoreBundleAssets
 
 1.5.0-beta.1 (April 6, 2020)
 ----------------------------

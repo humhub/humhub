@@ -35,7 +35,17 @@ class BlueimpFileUploadAsset extends AssetBundle
      * @inheritdoc
      */
     public $depends = [
-        'humhub\assets\JqueryWidgetAsset',
+        JqueryWidgetAsset::class
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    public $publishOptions = [
+        'only' => [
+            'jquery.fileupload.js',
+            'jquery.iframe-transport.js',
+        ]
     ];
 
 }

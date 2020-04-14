@@ -15,19 +15,19 @@ use humhub\components\assets\AssetBundle;
  *
  * @author luke
  */
-class BlueimpGalleryAsset extends AssetBundle
+class BlueimpGalleryStyleAsset extends AssetBundle
 {
 
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@npm/blueimp-gallery/js';
+    public $sourcePath = '@npm/blueimp-gallery/css';
 
     /**
      * @inheritdoc
      */
-    public $js = [
-        'blueimp-gallery.min.js',
+    public $css = [
+        'blueimp-gallery.min.css',
     ];
 
     /**
@@ -35,16 +35,8 @@ class BlueimpGalleryAsset extends AssetBundle
      */
     public $publishOptions = [
         'only' => [
-            'blueimp-gallery.min.js',
-            'blueimp-gallery.min.js.map'
+            'blueimp-gallery.min.css',
+            'blueimp-gallery.min.css.map'
         ]
-    ];
-
-    /**
-     * @inheritdoc
-     */
-    public $depends = [
-        JqueryWidgetAsset::class,
-        BlueimpGalleryStyleAsset::class
     ];
 }

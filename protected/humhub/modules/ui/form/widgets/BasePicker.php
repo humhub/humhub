@@ -233,8 +233,6 @@ abstract class BasePicker extends JsInputWidget
      */
     public function run()
     {
-        \humhub\assets\Select2BootstrapAsset::register($this->view);
-
         if ($this->selection != null && !is_array($this->selection)) {
             $this->selection = [$this->selection];
         }

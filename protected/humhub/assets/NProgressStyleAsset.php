@@ -11,23 +11,24 @@ namespace humhub\assets;
 use humhub\components\assets\AssetBundle;
 
 /**
- * jQery Blueimp File Upload
+ * NProgress assets
  *
+ * @since 1.2
  * @author luke
  */
-class BlueimpGalleryAsset extends AssetBundle
+class NProgressStyleAsset extends AssetBundle
 {
 
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@npm/blueimp-gallery/js';
+    public $sourcePath = '@npm/nprogress';
 
     /**
      * @inheritdoc
      */
-    public $js = [
-        'blueimp-gallery.min.js',
+    public $css = [
+        'nprogress.css',
     ];
 
     /**
@@ -35,16 +36,8 @@ class BlueimpGalleryAsset extends AssetBundle
      */
     public $publishOptions = [
         'only' => [
-            'blueimp-gallery.min.js',
-            'blueimp-gallery.min.js.map'
-        ]
-    ];
-
-    /**
-     * @inheritdoc
-     */
-    public $depends = [
-        JqueryWidgetAsset::class,
-        BlueimpGalleryStyleAsset::class
+            '/nprogress.css',
+            '/nprogress.js'
+        ],
     ];
 }

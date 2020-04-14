@@ -1,6 +1,5 @@
 <?php
 
-
 namespace humhub\assets;
 
 use humhub\components\assets\WebStaticAssetBundle;
@@ -22,6 +21,14 @@ use humhub\modules\ui\filter\assets\FilterAsset;
 use humhub\modules\user\assets\UserAsset;
 use humhub\modules\user\assets\UserPickerAsset;
 
+/**
+ * This asset bundle contains core script dependencies which should be compatible with defer script loading.
+ * In a production build, all scripts will be bundled within `static/js/humhub-bundle.js` and deally be loaded with
+ * defer script loading.
+ *
+ * > Note: this class should not depend on any style assets, otherwise an extra humhub-bundle.css will be created which
+ * will triggers an extra asset request. All core style assets should be part of the `AppAsset` class.
+ */
 class CoreBundleAsset extends WebStaticAssetBundle
 {
     const BUNDLE_NAME = 'defer';
@@ -34,7 +41,6 @@ class CoreBundleAsset extends WebStaticAssetBundle
         JqueryHighlightAsset::class,
         JqueryAutosizeAsset::class,
         Select2Asset::class,
-        Select2BootstrapAsset::class,
         JqueryWidgetAsset::class,
         NProgressAsset::class,
         JqueryNiceScrollAsset::class,

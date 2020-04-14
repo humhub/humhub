@@ -4,25 +4,27 @@
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebStaticAssetBundle;
+use yii\web\AssetBundle;
 
-class HighlightJsAsset extends WebStaticAssetBundle
+/**
+ * select2
+ *
+ * @author buddha
+ */
+class Select2StyleAsset extends AssetBundle
 {
 
     /**
      * @inheritdoc
      */
-    public $js = ['js/highlight.js/highlight.pack.js'];
+    public $sourcePath = '@npm/select2/dist/css';
 
     /**
      * @inheritdoc
      */
-    public $depends = [
-        HighlightJsStyleAsset::class
-    ];
+    public $css = ['select2.min.css'];
 }

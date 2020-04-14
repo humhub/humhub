@@ -9,8 +9,12 @@
 namespace humhub\modules\ui\view\components;
 
 use humhub\assets\AppAsset;
+use humhub\assets\BlueimpGalleryStyleAsset;
 use humhub\assets\CoreBundleAsset;
+use humhub\assets\HighlightJsStyleAsset;
+use humhub\assets\NProgressStyleAsset;
 use humhub\assets\Select2Asset;
+use humhub\assets\Select2StyleAsset;
 use humhub\components\assets\AssetBundle;
 use humhub\libs\Html;
 use humhub\modules\web\pwa\widgets\LayoutHeader;
@@ -49,7 +53,7 @@ class View extends \yii\web\View
      * @var array contains static core style and script assets which should be pre-loaded as `<link rel="preload">` element.
      */
     protected static $preload = [
-        'theme.css',
+        //'theme.css',
         'bootstrap.css',
     ];
 
@@ -181,7 +185,10 @@ class View extends \yii\web\View
     protected function unregisterAjaxAssets()
     {
         unset($this->assetBundles['yii\bootstrap\BootstrapAsset']);
-        unset($this->assetBundles[Select2Asset::class]);
+        unset($this->assetBundles[Select2StyleAsset::class]);
+        unset($this->assetBundles[NProgressStyleAsset::class]);
+        unset($this->assetBundles[HighlightJsStyleAsset::class]);
+        unset($this->assetBundles[BlueimpGalleryStyleAsset::class]);
         unset($this->assetBundles[AppAsset::class]);
         unset($this->assetBundles[AppAsset::BUNDLE_NAME]);
         unset($this->assetBundles[CoreBundleAsset::class]);

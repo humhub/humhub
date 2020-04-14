@@ -21,15 +21,17 @@ class Select2Asset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@npm/select2';
+    public $sourcePath = '@npm/select2/dist/js';
 
     /**
      * @inheritdoc
      */
-    public $js = ['dist/js/select2.full.js'];
+    public $js = ['select2.full.min.js'];
 
     /**
      * @inheritdoc
      */
-    public $css = ['dist/css/select2.min.css'];
+    public $depends = [
+        Select2StyleAsset::class
+    ];
 }
