@@ -27,7 +27,7 @@ return array (
   'Search' => '検索',
   'See all' => 'すべてを見る',
   'Send invite' => '招待を送る',
-  'Spaces' => 'グループ',
+  'Spaces' => 'スペース',
   'This group has no members yet.' => 'このグループにはまだメンバーがいません。',
   'Top Group' => 'トップグループ',
   'Total groups' => '合計グループ数',
