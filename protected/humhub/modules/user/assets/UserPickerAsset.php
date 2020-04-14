@@ -8,7 +8,7 @@
 
 namespace humhub\modules\user\assets;
 
-use humhub\assets\Select2BootstrapAsset;
+use humhub\assets\Select2Asset;
 use humhub\components\assets\AssetBundle;
 
 class UserPickerAsset extends AssetBundle
@@ -29,6 +29,6 @@ class UserPickerAsset extends AssetBundle
      * @inheritdoc
      */
     public $depends = [
-        Select2BootstrapAsset::class
+        Select2Asset::class
     ];
 }
