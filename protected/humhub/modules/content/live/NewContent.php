@@ -59,4 +59,9 @@ class NewContent extends LiveEvent
      */
     public $streamChannel;
 
+    /**
+     * @var bool whether or not this was triggered for content creation
+     */
+    public $insert;
+
 }

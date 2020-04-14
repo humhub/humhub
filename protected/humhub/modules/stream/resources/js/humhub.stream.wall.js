@@ -126,35 +126,41 @@ humhub.module('stream.wall', function (module, require, $) {
         return view.getState().moduleId === 'space';
     };
 
-    WallStream.prototype.isUpdateAvailable = function(events) {
+    WallStream.prototype.isUpdateAvailable = function (events) {
         var that = this;
 
         // We currently only support updates on dashboard and space stream
         var isDashboard = this.isDashboardStream();
         var isContainer = this.isSpaceStream() || this.isUserStream();
 
-        if(!isDashboard && !isContainer) {
+
+
+        if (!isDashboard && !isContainer) {
             return false;
         }
 
         var updatesAvailable = false;
-        events.forEach(function(event) {
-            if(that.entry(event.data.contentId)) {
+        events.forEach(function (event) {
+            if (that.entry(event.data.contentId)) {
                 return;
             }
 
-            if(event.data.streamChannel !== 'default') {
+            if (event.data.streamChannel !== 'default') {
+                return;
+            }
+
+            if (!event.data.insert) {
                 return;
             }
 
             // Prevent edge-cases where live event was faster than content submission
-            if(that.submitLock && event.data.originator === user.guid()) {
+            if (that.submitLock && event.data.originator === user.guid()) {
                 return;
             }
 
-            if(isDashboard) {
+            if (isDashboard) {
                 updatesAvailable = true;
-            } else if(container.guid() === event.data.sguid || container.guid() === event.data.uguid) {
+            } else if (container.guid() === event.data.sguid || container.guid() === event.data.uguid) {
                 updatesAvailable = true;
             }
         });

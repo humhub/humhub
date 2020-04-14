@@ -10,6 +10,7 @@ HumHub Change Log
 - Fix #3973: Profile Categories Not Editable
 - Fix #3925: "Back to stream" button visible after pin to top in stream
 - Chg: Removed all style assets from CoreBundleAssets
+- Fix #3991: Archive content triggers "New updates available" stream badge
 
 1.5.0-beta.1 (April 6, 2020)
 ----------------------------
