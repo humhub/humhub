@@ -8,6 +8,7 @@
 
 namespace humhub\modules\ui\view\bootstrap;
 
+use humhub\components\console\Application as ConsoleApplication;
 use humhub\libs\BaseSettingsManager;
 use humhub\modules\installer\libs\EnvironmentChecker;
 use humhub\modules\ui\view\components\Theme;
@@ -49,10 +50,12 @@ class ThemeLoader implements BootstrapInterface
             EnvironmentChecker::preInstallChecks();
         }
 
-        if (!Yii::$app->request->isConsoleRequest && $app->view->theme instanceof Theme) {
-            $app->view->theme->register();
+        if ($app->view->theme instanceof Theme) {
+            if (!Yii::$app->request->isConsoleRequest && !(Yii::$app instanceof ConsoleApplication)) {
+                // Register the theme (e.g. add core js/css header)
+                $app->view->theme->register();
+            }
         }
 
     }
-
 }

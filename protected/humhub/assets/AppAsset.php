@@ -8,7 +8,17 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\WebStaticAssetBundle;
+use humhub\modules\content\assets\ContentAsset;
+use humhub\modules\file\assets\FileAsset;
+use yii\bootstrap\BootstrapAsset;
+use yii\bootstrap\BootstrapPluginAsset;
+use yii\jui\JuiAsset;
+use yii\validators\ValidationAsset;
+use yii\web\JqueryAsset;
+use yii\web\View;
+use yii\web\YiiAsset;
+use yii\widgets\ActiveFormAsset;
 
 /**
  * AppAsset includes HumHub core assets to the main layout.
@@ -17,85 +27,77 @@ use yii\web\AssetBundle;
  * Note: All CSS/JS files will be compressed and bundled. If you need dynamic
  * css/js loading e.g. based on users locale: see AppDynamicAsset
  */
-class AppAsset extends AssetBundle
+class AppAsset extends WebStaticAssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $defer = false;
 
     /**
      * @inheritdoc
      */
-    public $basePath = '@webroot-static';
+    public $defaultDepends = false;
 
     /**
      * @inheritdoc
      */
-    public $baseUrl = '@web-static';
+    public $jsPosition = View::POS_HEAD;
 
-    /**
-     * @inheritdoc
-     */
-    public $css = [
-        'css/bootstrap-wysihtml5.css',
-        'css/flatelements.css',
+    const BUNDLE_NAME = 'app';
+
+    const STATIC_DEPENDS = [
+        JqueryAsset::class,
+        JuiBootstrapBridgeAsset::class,
+        JuiAsset::class,
+        YiiAsset::class,
+        ActiveFormAsset::class,
+        ValidationAsset::class,
+        BootstrapAsset::class,
+        BootstrapPluginAsset::class,
+        BluebirdAsset::class,
+        FontAwesomeAsset::class,
+        AnimateCssAsset::class, // preload
+        OpenSansAsset::class,
+        PjaxAsset::class,
+        JqueryTimeAgoAsset::class,
+
+        /**
+         * Style only assets
+         */
+        HighlightJsStyleAsset::class,
+        NProgressStyleAsset::class,
+        Select2StyleAsset::class,
+        BlueimpGalleryStyleAsset::class,
+        FlatelementsStyleAsset::class,
+
+
+        /**
+         * Polyfills
+         */
+        IntersectionObserverPolyfillAsset::class,
+
+
+
+        /**
+         * Core HumHub API + commonly required modules
+         */
+        CoreApiAsset::class,
+        ContentAsset::class,
+        FileAsset::class,
     ];
 
     /**
      * @inheritdoc
      */
-    public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
-
-    /**
-     * @inheritdoc
-     */
-    public $depends = [
-        'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
-        'yii\bootstrap\BootstrapPluginAsset',
-        'humhub\assets\BluebirdAsset',
-        'humhub\assets\JqueryTimeAgoAsset',
-        'humhub\assets\JqueryWidgetAsset',
-        'humhub\assets\JqueryColorAsset',
-        'humhub\assets\FontAwesomeAsset',
-        'humhub\assets\BlueimpFileUploadAsset',
-        'humhub\assets\BlueimpGalleryAsset',
-        'humhub\assets\JqueryHighlightAsset',
-        'humhub\assets\JqueryCookieAsset',
-        'humhub\assets\JqueryAutosizeAsset',
-        'humhub\assets\AnimateCssAsset',
-        'humhub\assets\CoreApiAsset',
-        'humhub\modules\content\assets\ProseMirrorRichTextAsset',
-        'humhub\modules\user\assets\UserAsset',
-        'humhub\modules\live\assets\LiveAsset',
-        'humhub\modules\notification\assets\NotificationAsset',
-        'humhub\modules\content\assets\ContentAsset',
-        'humhub\modules\content\assets\ContentContainerAsset',
-        'humhub\modules\user\assets\UserPickerAsset',
-        'humhub\modules\file\assets\FileAsset',
-        'humhub\modules\post\assets\PostAsset',
-        'humhub\modules\space\assets\SpaceAsset',
-        'humhub\modules\topic\assets\TopicAsset',
-        'humhub\modules\ui\filter\assets\FilterAsset',
-        'humhub\modules\comment\assets\CommentAsset',
-        'humhub\modules\like\assets\LikeAsset',
-        'humhub\assets\NProgressAsset',
-        'humhub\assets\PagedownConverterAsset',
-        'humhub\assets\ClipboardJsAsset',
-        'humhub\assets\ImagesLoadedAsset',
-        'humhub\assets\SocketIoAsset',
-        'humhub\assets\OpenSansAsset',
-        'humhub\assets\HighlightJsAsset',
-        'humhub\assets\SwipedEventsAssets',
-    ];
+    public $depends = self::STATIC_DEPENDS;
 
     /**
      * @inheritdoc
      */
     public $js = [
-        'js/jquery.highlight.min.js',
         'js/desktop-notify-min.js',
         'js/desktop-notify-config.js',
-        'js/jquery.nicescroll.min.js',
-        'resources/file/fileuploader.js',
-        'resources/user/userpicker.js',
     ];
 
     /**
@@ -104,7 +106,9 @@ class AppAsset extends AssetBundle
     public static function register($view)
     {
         $instance = parent::register($view);
-        $view->registerAssetBundle(AppDynamicAsset::class);
+
+        AppDynamicAsset::register($view);
+        CoreBundleAsset::register($view);
 
         return $instance;
     }

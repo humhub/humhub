@@ -28,7 +28,7 @@ class MailLayoutRenderer extends LayoutRenderer
      * a $textLayout and removing all html elemtns.
      *
      * @param \humhub\components\rendering\Viewable $viewable
-     * @return type
+     * @return string
      */
     public function renderText(Viewable $viewable, $params = [])
     {
@@ -48,7 +48,7 @@ class MailLayoutRenderer extends LayoutRenderer
      * Returns the $textLayout for the given $viewable.
      *
      * @param \humhub\components\rendering\Viewable $viewable
-     * @return type
+     * @return string
      */
     public function getTextLayout(Viewable $viewable)
     {

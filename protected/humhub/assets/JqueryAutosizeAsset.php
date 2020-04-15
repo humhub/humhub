@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 
 /**
  * jquery-autosize
@@ -27,10 +27,4 @@ class JqueryAutosizeAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['jquery.autosize.min.js'];
-
-    /**
-     * @inheritdoc
-     */
-    public $css = [];
-
 }

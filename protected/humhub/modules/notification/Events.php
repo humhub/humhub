@@ -91,7 +91,7 @@ class Events extends \yii\base\BaseObject
                         $notification->delete();
                     }
                 }
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 // Handles errors for getSourceObject() calls
                 if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " source class set but seems to no longer exist!")) {
                     $notification->delete();
@@ -133,7 +133,7 @@ class Events extends \yii\base\BaseObject
      * On run of the cron, do some cleanup stuff.
      * We delete all notifications which are older than 2 month and are seen.
      *
-     * @param type $event
+     * @param Event $event
      */
     public static function onCronDailyRun($event)
     {
@@ -144,7 +144,7 @@ class Events extends \yii\base\BaseObject
          * Delete seen notifications which are older than 2 months
          */
         $deleteTime = time() - (60 * 60 * 24 * 31 * 2); // Notifcations which are older as ~ 2 Months
-        foreach (Notification::find()->where(['seen' => 1])->andWhere(['<', 'created_at', date('Y-m-d', $deleteTime)])->all() as $notification) {
+        foreach (Notification::find()->where(['seen' => 1])->andWhere(['<', 'created_at', date('Y-m-d', $deleteTime)])->each() as $notification) {
             $notification->delete();
         }
         $controller->stdout('done.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
@@ -160,7 +160,7 @@ class Events extends \yii\base\BaseObject
 
     public static function onLayoutAddons($event)
     {
-        if(Yii::$app->request->isPjax) {
+        if (Yii::$app->request->isPjax) {
             $event->sender->addWidget(widgets\UpdateNotificationCount::class);
         }
     }

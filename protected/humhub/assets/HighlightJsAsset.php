@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -8,20 +9,10 @@
 
 namespace humhub\assets;
 
+use humhub\components\assets\WebStaticAssetBundle;
 
-use yii\web\AssetBundle;
-
-class HighlightJsAsset extends AssetBundle
+class HighlightJsAsset extends WebStaticAssetBundle
 {
-    /**
-     * @inheritdoc
-     */
-    public $basePath = '@webroot-static';
-
-    /**
-     * @inheritdoc
-     */
-    public $baseUrl = '@web-static';
 
     /**
      * @inheritdoc
@@ -31,5 +22,7 @@ class HighlightJsAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $css = ['js/highlight.js/styles/github.css'];
+    public $depends = [
+        HighlightJsStyleAsset::class
+    ];
 }

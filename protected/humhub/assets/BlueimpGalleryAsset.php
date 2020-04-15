@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 
 /**
  * jQery Blueimp File Upload
@@ -21,24 +21,30 @@ class BlueimpGalleryAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@npm/blueimp-gallery';
+    public $sourcePath = '@npm/blueimp-gallery/js';
 
     /**
      * @inheritdoc
      */
     public $js = [
-        'js/blueimp-gallery.min.js',
+        'blueimp-gallery.min.js',
     ];
 
-    public $css = [
-        'css/blueimp-gallery.min.css',
+    /**
+     * @inheritdoc
+     */
+    public $publishOptions = [
+        'only' => [
+            'blueimp-gallery.min.js',
+            'blueimp-gallery.min.js.map'
+        ]
     ];
 
     /**
      * @inheritdoc
      */
     public $depends = [
-        'humhub\assets\JqueryWidgetAsset',
+        JqueryWidgetAsset::class,
+        BlueimpGalleryStyleAsset::class
     ];
-
 }

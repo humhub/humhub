@@ -5,15 +5,15 @@
 humhub.module('file', function (module, require, $) {
 
     var Widget = require('ui.widget').Widget;
-    var Progress = require('ui.progress').Progress;
     var client = require('client');
+    var Progress = require('ui.progress').Progress;
     var util = require('util');
     var object = util.object;
     var string = util.string;
     var action = require('action');
     var event = require('event');
 
-    
+
     var view = require('ui.view');
 
     var Upload = function (node, options) {
@@ -31,7 +31,7 @@ humhub.module('file', function (module, require, $) {
         this.initProgress();
         this.initPreview();
         this.initFileUpload();
-        
+
         if(!this.canUploadMore()) {
             this.disable(this.$.data('max-number-of-files-message'));
         }
@@ -105,13 +105,13 @@ humhub.module('file', function (module, require, $) {
 
         this.$.prop('disabled', true);
     };
-    
+
     Upload.prototype.enable = function () {
         var $trigger = this.getTrigger();
         if ($trigger.length) {
             $trigger.removeClass('disabled');
         }
-        
+
         if($trigger.data('bs.tooltip')) {
             $trigger.attr('data-original-title', this.originalTriggerTitle)
                         .tooltip('fixTitle');
@@ -166,7 +166,7 @@ humhub.module('file', function (module, require, $) {
             }
         }
     };
-    
+
     Upload.prototype.getFileCount = function () {
         if(this.preview && object.isFunction(this.preview.getFileCount)) {
             return this.preview.getFileCount();
@@ -224,7 +224,7 @@ humhub.module('file', function (module, require, $) {
         if (this.callbacks.start) {
             this.callbacks.start(e, data);
         }
-        
+
         this.fire('humhub:file:uploadStart', [data]);
         this.fire('uploadStart', [data]);
     };
@@ -241,11 +241,11 @@ humhub.module('file', function (module, require, $) {
 
     Upload.prototype.done = function (e, response) {
         var that = this;
-        
+
         if(!response.result.files || !response.result.files.length) {
             module.log.error('error.unknown', true);
         }
-        
+
         $.each(response.result.files, function (index, file) {
             that.handleFileResponse(file);
         });
@@ -266,14 +266,14 @@ humhub.module('file', function (module, require, $) {
             this.errors.push('&nbsp;');
         } else if (this.$form && this.$form.length) {
             var name = this.options.uploadSubmitName || 'fileList[]';
-            
+
             if(this.options.uploadSingle) {
                 this.$form.find('input[name="'+name+'"]').remove();
                 this.fileCount = 1;
             } else {
                 this.fileCount++;
             }
-            
+
             this.$form.append('<input type="hidden" name="' + name + '" value="' + file.guid + '">');
             if (this.preview) {
                 this.preview.show();
@@ -353,7 +353,7 @@ humhub.module('file', function (module, require, $) {
             that.add(file);
         });
     };
-    
+
     Preview.prototype.getFileCount = function () {
         return this.$.find('.file-preview-item').length;
     };
@@ -362,19 +362,19 @@ humhub.module('file', function (module, require, $) {
         file.name = string.encode(file.name);
         file.galleryId = this.$.attr('id') + '_file_preview_gallery';
         var template = this.getTemplate(file);
-        
+
         if(file.highlight) {
             file.highlight = 'highlight';
         } else {
             file.highlight = '';
         }
-        
+
         var $file = $(string.template(template, file));
-        
+
         if(this.source && this.source.options.uploadSingle) {
             this.$list.find('li').remove();
         }
-        
+
         this.$list.append($file);
 
         if (file.thumbnailUrl && !this.options.preventPopover) {
@@ -399,16 +399,16 @@ humhub.module('file', function (module, require, $) {
         $file.find('.file_upload_remove_link').on('click', function () {
             that.delete(file);
         });
-        
+
         if(!(this.isImage(file) && this.options.hideImageFileInfo)) {
             $file.fadeIn();
         }
     };
-    
+
     Preview.prototype.isImage = function (file) {
         return file.mimeIcon === 'mime-image';
     };
-    
+
     Preview.prototype.getTemplate = function (file) {
         if (this.options.fileEdit) {
             return Preview.template.file_edit;
@@ -501,7 +501,7 @@ humhub.module('file', function (module, require, $) {
 
     var init = function () {
         event.on('humhub:file:created', function (evt, files) {
-            
+
             if (!object.isArray(files)) {
                 files = [files];
             }

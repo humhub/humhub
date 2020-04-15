@@ -9,17 +9,26 @@
 namespace humhub\modules\admin\assets;
 
 use yii\web\AssetBundle;
+use yii\web\View;
 
 class AdminAsset extends AssetBundle
 {
-
+    /**
+     * @inheritdoc
+     */
     public $jsOptions = [
-        'position' => \yii\web\View::POS_END
+        'position' => View::POS_END
     ];
+
+    /**
+     * @inheritdoc
+     */
     public $sourcePath = '@admin/resources';
-    public $css = [];
+
+    /**
+     * @inheritdoc
+     */
     public $js = [
         'js/humhub.admin.js'
     ];
-
 }

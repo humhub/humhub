@@ -8,11 +8,11 @@
 
 namespace humhub\modules\file\converter;
 
-use humhub\modules\file\libs\FileHelper;
+use Imagine\Image\ImageInterface;
 use Yii;
 use humhub\modules\file\models\File;
-use humhub\modules\file\libs\ImageConverter;
 use humhub\libs\Html;
+use yii\imagine\Image;
 
 /**
  * PreviewImage Converter
@@ -23,14 +23,17 @@ use humhub\libs\Html;
 class PreviewImage extends BaseConverter
 {
 
-    public $imageInfo;
+    /**
+     * @var ImageInterface
+     */
+    public $image;
+
 
     /**
      * @inheritdoc
      */
     public function init()
     {
-        $this->options['mode'] = 'max';
         $maxPreviewImageWidth = Yii::$app->getModule('file')->settings->get('maxPreviewImageWidth');
         $maxPreviewImageHeight = Yii::$app->getModule('file')->settings->get('maxPreviewImageHeight');
 
@@ -40,21 +43,25 @@ class PreviewImage extends BaseConverter
         parent::init();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function render($file = null)
     {
         if ($file) {
             $this->applyFile($file);
         }
-        
+
         // Provide the natural height so the browser will include a placeholder height. Todo: smooth image loading
-        return \yii\helpers\Html::img($this->getUrl(), ['class' => 'animated fadeIn', 'height' => $this->height, 'alt' => $this->getAltText()]);
+        return Html::img($this->getUrl(), ['class' => 'animated fadeIn', 'height' => $this->height, 'alt' => $this->getAltText()]);
     }
-    
+
+
     protected function getAltText($file = null)
     {
         if ($file) {
             return Html::encode($file->file_name);
-        } elseif($this->file) {
+        } elseif ($this->file) {
             return Html::encode($this->file->file_name);
         }
         return '';
@@ -66,10 +73,21 @@ class PreviewImage extends BaseConverter
     protected function convert($fileName)
     {
         if (!is_file($this->file->store->get($fileName))) {
-            ImageConverter::ResizeFile($this->file, $fileName, $this->options);
+            $image = Image::getImagine()->open($this->file->store->get());
+
+            if ($image->getSize()->getHeight() > $this->options['height']) {
+                $image->resize($image->getSize()->heighten($this->options['height']));
+            }
+
+            if ($image->getSize()->getWidth() > $this->options['width']) {
+                $image->resize($image->getSize()->widen($this->options['width']));
+            }
+
+            $image->save($this->file->store->get($fileName), ['format' => 'png']);
         }
 
-        $this->imageInfo = @getimagesize($this->file->store->get($fileName));
+
+        $this->image = Image::getImagine()->open($this->file->store->get($fileName));
     }
 
     /**
@@ -83,51 +101,40 @@ class PreviewImage extends BaseConverter
             return false;
         }
 
-        $imageInfo = @getimagesize($originalFile);
-
-        // Check if we got any dimensions - invalid image
-        if (!isset($imageInfo[0]) || !isset($imageInfo[1])) {
-            return false;
-        }
-
-        // Check if image type is supported
-        if ($imageInfo[2] != IMAGETYPE_PNG && $imageInfo[2] != IMAGETYPE_JPEG && $imageInfo[2] != IMAGETYPE_GIF) {
+        try {
+            Image::getImagine()->open($originalFile)->getSize();
+        } catch (\Exception $ex) {
             return false;
         }
 
         return true;
     }
 
-    public function getDimensions()
-    {
-        if (!$this->imageInfo || !isset($this->imageInfo[3])) {
-            return;
-        }
-
-        return $this->imageInfo[3];
-    }
-
+    /**
+     * @return int the image width or 0 if not valid
+     */
     public function getWidth()
     {
-        if (!$this->imageInfo || !isset($this->imageInfo[0])) {
-            return 'auto';
+        if ($this->image !== null) {
+            return $this->image->getSize()->getWidth();
         }
-
-        return $this->imageInfo[0];
+        return 0;
     }
 
+    /**
+     * @return int the image height or 0 if not valid
+     */
     public function getHeight()
     {
-        if (!$this->imageInfo || !isset($this->imageInfo[1])) {
-            return 'auto';
+        if ($this->image !== null) {
+            return $this->image->getSize()->getHeight();
         }
-
-        return $this->imageInfo[1];
+        return 0;
     }
 
     /**
      * Returns the gallery link to the original file
-     * 
+     *
      * @param array $htmlOptions optional link html options
      * @return string the link
      */

@@ -9,18 +9,19 @@
 
 namespace humhub\modules\topic\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 
 class TopicAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
     public $sourcePath = '@topic/resources';
-    public $css = [];
+
+    /**
+     * @inheritdoc
+     */
     public $js = [
         'js/humhub.topic.js'
     ];
-    
-    public $depends = [
-        'humhub\assets\CoreApiAsset'
-    ];
-
 }

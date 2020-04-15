@@ -1,15 +1,13 @@
 <?php
 
-use humhub\assets\BootstrapMarkdownAsset;
+use humhub\modules\ui\form\assets\MarkdownFieldAsset;
 use yii\helpers\Url;
 use yii\helpers\Html;
 
 /**
  * Register BootstrapMarkdown & changes
  */
-BootstrapMarkdownAsset::register($this);
-$this->registerCssFile('@web-static/css/bootstrap-markdown-override.css');
-$this->registerJsFile('@web-static/js/markdownEditor.js');
+MarkdownFieldAsset::register($this);
 
 /**
  * Create a hidden field to store uploaded files guids

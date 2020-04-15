@@ -14,6 +14,6 @@ return array (
   'This space is archived' => '',
   'To search for other spaces, type at least {count} characters.' => '',
   'You are a member of this space' => 'Du är medlem i detta nätverk',
-  'You are following this space' => '',
+  'You are following this space' => 'Du följer detta nätverk',
   '{n,plural,=1{# new entry} other{# new entries}} since your last visit' => '',
 );

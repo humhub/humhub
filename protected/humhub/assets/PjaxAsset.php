@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\WebStaticAssetBundle;
 use yii\web\View;
 
 /**
@@ -16,20 +16,22 @@ use yii\web\View;
  *
  * @author buddha
  */
-class PjaxAsset extends AssetBundle
+class PjaxAsset extends WebStaticAssetBundle
 {
-
-    public $jsOptions = ['position' => View::POS_HEAD];
+    /**
+     * @inheritdoc
+     */
+    public $defaultDepends = false;
 
     /**
      * @inheritdoc
      */
-    public $basePath = '@webroot-static';
+    public $defer = false;
 
     /**
      * @inheritdoc
      */
-    public $baseUrl = '@web-static';
+    public $jsPosition = View::POS_HEAD;
 
     /**
      * @inheritdoc

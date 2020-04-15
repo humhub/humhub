@@ -102,11 +102,7 @@ class SettingController extends Controller
     public function actionDeleteLogoImage()
     {
         $this->forcePostRequest();
-        $image = new LogoImage();
-
-        if ($image->hasImage()) {
-            $image->delete();
-        }
+        LogoImage::set(null);
 
         Yii::$app->response->format = 'json';
         return [];
@@ -182,10 +178,7 @@ class SettingController extends Controller
     {
         $form = new MailingSettingsForm;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            $this->view->saved();
-            return $this->redirect([
-                '/admin/setting/mailing-server'
-            ]);
+            return $this->redirect(['/admin/setting/mailing-server-test']);
         }
 
         $encryptionTypes = [
@@ -202,9 +195,32 @@ class SettingController extends Controller
         return $this->render('mailing_server', [
             'model' => $form,
             'encryptionTypes' => $encryptionTypes,
-            'transportTypes' => $transportTypes
+            'transportTypes' => $transportTypes,
+            'settings' => Yii::$app->settings
         ]);
     }
+
+    public function actionMailingServerTest()
+    {
+        try {
+            $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
+                'message' => Yii::t('AdminModule.settings', 'Test message')
+            ]);
+            $mail->setTo(Yii::$app->user->getIdentity()->email);
+            $mail->setSubject(Yii::t('AdminModule.settings', 'Test message'));
+
+            if ($mail->send()) {
+                $this->view->saved();
+            } else {
+                $this->view->error(Yii::t('AdminModule.settings', 'Could not send test email.'));
+            }
+        } catch (\Exception $e) {
+            $this->view->error(Yii::t('AdminModule.settings', 'Could not send test email.') . ' ' . $e->getMessage());
+        }
+
+        return $this->redirect(['/admin/setting/mailing-server']);
+    }
+
 
     public function actionDesign()
     {
@@ -218,7 +234,6 @@ class SettingController extends Controller
 
         return $this->render('design', [
             'model' => $form,
-            'logo' => new LogoImage()
         ]);
     }
 
@@ -246,19 +261,12 @@ class SettingController extends Controller
         $maxUploadSize = floor($maxUploadSize / 1024 / 1024);
         $maxUploadSizeText = "(" . $fileSizeKey . "): " . $maxUploadSize;
 
-        // Determine currently used ImageLibary
-        $currentImageLibrary = 'GD';
-        if (Yii::$app->getModule('file')->settings->get('imageMagickPath')) {
-            $currentImageLibrary = 'ImageMagick';
-        }
-
         return $this->render(
             'file',
             [
                 'model' => $form,
                 'maxUploadSize' => $maxUploadSize,
                 'maxUploadSizeText' => $maxUploadSizeText,
-                'currentImageLibrary' => $currentImageLibrary,
             ]
         );
     }
@@ -286,18 +294,18 @@ class SettingController extends Controller
     {
         $providers = UrlOembed::getProviders();
         return $this->render('oembed',
-        [
-            'providers' => $providers
-        ]);
+            [
+                'providers' => $providers
+            ]);
     }
 
     public function actionLogs()
     {
         $logsCount = Log::find()->count();
         $dating = Log::find()
-                ->orderBy('log_time', 'asc')
-                ->limit(1)
-                ->one();
+            ->orderBy('log_time', 'asc')
+            ->limit(1)
+            ->one();
 
         // I wish..
         if ($dating) {
@@ -349,16 +357,16 @@ class SettingController extends Controller
             UrlOembed::setProviders($providers);
 
             return $this->redirect(
-            [
-                '/admin/setting/oembed'
-            ]);
+                [
+                    '/admin/setting/oembed'
+                ]);
         }
 
         return $this->render('oembed_edit',
-        [
-            'model' => $form,
-            'prefix' => $prefix
-        ]);
+            [
+                'model' => $form,
+                'prefix' => $prefix
+            ]);
     }
 
     /**
@@ -382,9 +390,9 @@ class SettingController extends Controller
     public function actionAdvanced()
     {
         return $this->redirect(
-        [
-            'caching'
-        ]);
+            [
+                'caching'
+            ]);
     }
 
 }

@@ -1,13 +1,12 @@
 <?php
 return array (
+  '%y Years' => '%y anni',
   '<b>This profile stream is still empty!</b>' => '<b>Questo profilo è ancora vuoto!</b>',
   '<b>This profile stream is still empty</b><br>Be the first and post something...' => '<b>Questo profilo è ancora vuoto</b><br> sii il primo a postare qualcosa...
 ',
   '<b>Your profile stream is still empty</b><br>Get started and post something...' => '<b>Questo profilo è ancora vuoto</b><br>Inizia postando qualcosa...',
   '<strong>About</strong> this user' => '<strong>Informazioni</strong> su questo utente',
-  '<strong>Modify</strong> your title image' => '<strong>Modifica</strong> il titolo della tua immagine',
   '<strong>Profile</strong> menu' => 'Menù <strong>Profilo</strong>',
-  '<strong>Something</strong> went wrong' => '<strong>Qualcosa</strong> è andato male',
   'About' => 'Informazioni',
   'Allow other selection' => 'Consenti altre selezioni',
   'Birthday' => 'Compleanno',
@@ -16,7 +15,6 @@ return array (
   'Checkbox List' => 'Elenco Lista di controllo',
   'Checkbox field options' => 'Opzioni campo di casella di controllo',
   'City' => 'Città',
-  'Close' => 'Chiudi',
   'Comma separated country codes, e.g. DE,EN,AU' => 'Codici paese separati da virgola, es: DE,EN,AU',
   'Communication' => 'Comunicazione',
   'Country' => 'Paese',
@@ -66,7 +64,6 @@ return array (
   'MySpace URL' => 'Profilo MySpace (URL)',
   'Number' => 'Numero',
   'Number field options' => 'Opzioni del campo numero',
-  'Ok' => 'Ok',
   'One option per line. Key=>Value Format (e.g. yes=>Yes)' => 'Una opzione per linea. Chiave=>Formato del valore (es. yes=>Yes)',
   'Only alphanumeric characters allowed!' => 'Sono permessi solo caratteri alfanumerici!',
   'Phone Private' => 'Telefono privato',
@@ -77,7 +74,6 @@ return array (
   'Regular Expression: Error message' => 'Espressione regolare: Messaggio di errore',
   'Regular Expression: Validator' => 'Espressione regolare: Validatore',
   'Required' => 'Richiesto',
-  'Save' => 'Salva',
   'Searchable' => 'Ricercabile',
   'Select List' => 'Seleziona lista',
   'Select field options' => 'Seleziona le opzioni del campo',

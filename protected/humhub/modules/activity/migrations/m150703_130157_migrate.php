@@ -14,7 +14,7 @@ class m150703_130157_migrate extends Migration
         $this->renameClass('Activity', Activity::class);
 
         // Space Created Activity - object_model/object_id (source fix)
-        $activities = (new \yii\db\Query())->select("activity.*, content.space_id")->from('activity')
+        $activities = (new \yii\db\Query())->select('activity.*, content.space_id')->from('activity')
                         ->leftJoin('content', 'content.object_model=:activityModel AND content.object_id=activity.id', [':activityModel' => Activity::class])
                         ->where(['class' => 'humhub\modules\space\activities\Created', 'activity.object_model' => ''])->all();
         foreach ($activities as $activity) {
@@ -25,7 +25,7 @@ class m150703_130157_migrate extends Migration
         }
 
         // Space Member added Activity - object_model/object_id (source fix)
-        $activities = (new \yii\db\Query())->select("activity.*, content.space_id")->from('activity')
+        $activities = (new \yii\db\Query())->select('activity.*, content.space_id')->from('activity')
                         ->leftJoin('content', 'content.object_model=:activityModel AND content.object_id=activity.id', [':activityModel' => Activity::class])
                         ->where(['class' => 'humhub\modules\space\activities\MemberAdded', 'activity.object_model' => ''])->all();
         foreach ($activities as $activity) {
@@ -36,7 +36,7 @@ class m150703_130157_migrate extends Migration
         }
 
         // Space Member removed Activity - object_model/object_id (source fix)
-        $activities = (new \yii\db\Query())->select("activity.*, content.space_id")->from('activity')
+        $activities = (new \yii\db\Query())->select('activity.*, content.space_id')->from('activity')
                         ->leftJoin('content', 'content.object_model=:activityModel AND content.object_id=activity.id', [':activityModel' => Activity::class])
                         ->where(['class' => 'humhub\modules\space\activities\MemberRemoved', 'activity.object_model' => ''])->all();
         foreach ($activities as $activity) {

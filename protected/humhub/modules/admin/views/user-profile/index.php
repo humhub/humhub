@@ -1,34 +1,41 @@
 <?php
 
-use yii\helpers\Html;
-use yii\helpers\Url;
+use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Tabs;
 use humhub\modules\user\models\ProfileFieldCategory;
+use yii\helpers\Url;
+
+$categoryItems = [];
+foreach (ProfileFieldCategory::find()->orderBy('sort_order')->all() as $category) {
+    $categoryItems[] = [
+        'label' => $category->title,
+        'encode' => true,
+        'params' => ['category' => $category],
+        'view' => '_fieldGrid'
+    ];
+}
+
+$categoryItems[] = [
+    'label' => Icon::get('plus', [
+        'htmlOptions' => [
+            'title' => Yii::t('AdminModule.user', 'Add new category'),
+            'class' => 'tt'
+        ],
+        ]),
+    'encode' => false,
+    'url' => Url::to(['edit-category'])
+];
 ?>
 
 <div class="panel-body">
-    <h4><?= Yii::t('AdminModule.user', 'Manage profile attributes'); ?></h4>
+
+    <h4><?= Yii::t('AdminModule.user', 'Manage profile attributes') ?></h4>
     <div class="help-block">
         <?= Yii::t('AdminModule.user', 'Here you can create or edit profile categories and fields.'); ?>
     </div>
-    <br>
 
-    <div class="pull-right">
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.user', 'Add new category'), Url::to(['edit-category']), ['class' => 'btn btn-success']); ?>
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.user', 'Add new field'), Url::to(['edit-field']), ['class' => 'btn btn-success']); ?>
-    </div>
-
-    <ul>
-        <?php foreach (ProfileFieldCategory::find()->orderBy('sort_order')->all() as $category): ?>
-            <li>
-                <a href="<?= Url::to(['edit-category', 'id' => $category->id]); ?>"><strong><?= Html::encode($category->title); ?></strong></a>
-                <ul class="admin-userprofiles-fields">
-                    <?php foreach ($category->fields as $field) : ?>
-                        <li class="admin-userprofiles-field" data-id="<?= $field->id ?>">
-                            <a href="<?= Url::to(['edit-field', 'id' => $field->id]); ?>"><?= Html::encode($field->title); ?></a>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+    <?= Tabs::widget([
+        'viewPath' => '@admin/views/user-profile/',
+        'items' => $categoryItems
+    ]) ?>
 </div>

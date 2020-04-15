@@ -17,6 +17,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\live\NewContent;
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
@@ -198,7 +199,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         }
 
         if ($this->container) {
-            Yii::$app->live->send(new \humhub\modules\content\live\NewContent([
+            Yii::$app->live->send(new NewContent([
                 'sguid' => ($this->container instanceof Space) ? $this->container->guid : null,
                 'uguid' => ($this->container instanceof User) ? $this->container->guid : null,
                 'originator' => $this->createdBy->guid,
@@ -207,7 +208,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner
                 'sourceClass' => $contentSource->className(),
                 'sourceId' => $contentSource->getPrimaryKey(),
                 'silent' => $this->isMuted(),
-                'contentId' => $this->id
+                'streamChannel' => $this->stream_channel,
+                'contentId' => $this->id,
+                'insert' => $insert
             ]));
         }
 
@@ -749,7 +752,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             $user = User::findOne(['id' => $user]);
         }
 
-        // User cann access own content
+        // Check global content visibility, private global content is visible for all users
+        if(empty($this->contentcontainer_id) && !Yii::$app->user->isGuest) {
+            return true;
+        }
+
+        // User can access own content
         if ($user !== null && $this->created_by == $user->id) {
             return true;
         }

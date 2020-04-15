@@ -4,8 +4,8 @@
 
     <!-- Include PSR-1 -->
     <rule ref="PSR1"/>
-    
-    <rule ref="PSR2">
+
+    <rule ref="PSR12">
         <!-- We don't have line length (line width) limits. -->
         <exclude name="Generic.Files.LineLength"/>
 

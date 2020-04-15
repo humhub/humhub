@@ -27,6 +27,7 @@ install:
 - .travis/install-dependencies.sh
 - .travis/setup-humhub.sh
 script:
+#- '$HOME/chromedriver --verbose --log-path=/tmp/chromedriver.log --url-base=/wd/hub &'
 - '$HOME/chromedriver --url-base=/wd/hub &'
 - 'php --server 127.0.0.1:8080 --docroot ${TRAVIS_BUILD_DIR} &>/tmp/phpserver.log &'
 - 'sleep 5 && curl --fail --head http://127.0.0.1:8080/index-test.php'

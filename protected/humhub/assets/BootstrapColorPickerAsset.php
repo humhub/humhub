@@ -8,28 +8,15 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\WebStaticAssetBundle;
 
 /**
  * jquery-color
  *
  * @author buddha
  */
-class BootstrapColorPickerAsset extends AssetBundle
+class BootstrapColorPickerAsset extends WebStaticAssetBundle
 {
-
-    public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
-
-    /**
-     * @inheritdoc
-     */
-    public $basePath = '@webroot-static';
-
-    /**
-     * @inheritdoc
-     */
-    public $baseUrl = '@web-static';
-
     /**
      * @inheritdoc
      */

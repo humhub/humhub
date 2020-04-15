@@ -93,6 +93,13 @@ abstract class Stream extends Action
     public $from;
 
     /**
+     * Entry id of the top stream entry used for update requests
+     *
+     * @var int
+     */
+    public $to;
+
+    /**
      * Sorting Mode
      *
      * @var int
@@ -254,7 +261,7 @@ abstract class Stream extends Action
      */
     protected function isInitialRequest()
     {
-        return ($this->from == '' && $this->limit != 1);
+        return $this->from === null && $this->to === null && $this->limit != 1;
     }
 
     /**

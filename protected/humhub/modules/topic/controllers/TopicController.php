@@ -21,6 +21,11 @@ class TopicController extends ContentContainerController
     /**
      * @inheritdoc
      */
+    public $requireContainer = false;
+
+    /**
+     * @inheritdoc
+     */
     public function getAccessRules()
     {
         return [
@@ -30,6 +35,8 @@ class TopicController extends ContentContainerController
 
     public function actionSearch($keyword)
     {
-        return TopicPicker::searchByContainer($keyword, $this->contentContainer);
+        return $this->contentContainer
+            ? TopicPicker::searchByContainer($keyword, $this->contentContainer)
+            : TopicPicker::search($keyword);
     }
 }

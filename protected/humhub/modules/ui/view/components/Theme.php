@@ -9,6 +9,7 @@
 namespace humhub\modules\ui\view\components;
 
 use humhub\assets\AppAsset;
+use humhub\assets\CoreBundleAsset;
 use humhub\libs\BaseSettingsManager;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 use Yii;
@@ -104,6 +105,10 @@ class Theme extends BaseTheme
      */
     public function register($includeParents = true)
     {
+        if(Yii::$app->request->isAjax) {
+            return;
+        }
+
         if ($includeParents) {
             foreach (array_reverse($this->getParents()) as $parent) {
                 /** @var Theme $parent */
@@ -113,7 +118,7 @@ class Theme extends BaseTheme
 
         if (file_exists($this->getBasePath() . '/css/theme.css')) {
             $mtime = filemtime($this->getBasePath() . '/css/theme.css');
-            Yii::$app->view->registerCssFile($this->getBaseUrl() . '/css/theme.css?v=' . $mtime, ['depends' => AppAsset::class]);
+            Yii::$app->view->registerCssFile($this->getBaseUrl() . '/css/theme.css?v=' . $mtime, ['depends' => CoreBundleAsset::class]);
         }
 
     }

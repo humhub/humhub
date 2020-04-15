@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\controllers;
 
+use humhub\modules\admin\permissions\ManageUsers;
 use Yii;
 
 use yii\web\HttpException;
@@ -47,7 +48,7 @@ class UserProfileController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => \humhub\modules\admin\permissions\ManageUsers::class]
+            ['permissions' => ManageUsers::class]
         ];
     }
 
@@ -100,14 +101,13 @@ class UserProfileController extends Controller
         return $this->redirect(['/admin/user-profile']);
     }
 
-    public function actionEditField()
+    public function actionEditField($id = null, $categoryId = null)
     {
-        $id = (int) Yii::$app->request->get('id');
-
         // Get Base Field
         $field = ProfileField::findOne(['id' => $id]);
-        if ($field == null)
-            $field = new ProfileField;
+        if (!$field) {
+            $field = new ProfileField(['profile_field_category_id' => $categoryId]);
+        }
 
         // Get all Available Field Class Instances, also bind current profilefield to the type
         $profileFieldTypes = new BaseType();

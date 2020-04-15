@@ -1,7 +1,12 @@
 <?php
 
+use humhub\compat\HForm;
 use humhub\libs\Html;
-use yii\helpers\Url;
+use humhub\modules\user\models\ProfileField;
+use yii\widgets\ActiveForm;
+
+/* @var $field ProfileField */
+/* @var $hForm HForm */
 ?>
 
 <div class="panel-body">
@@ -9,17 +14,17 @@ use yii\helpers\Url;
         <?= Html::backButton(['index'], ['label' => Yii::t('AdminModule.base', 'Back to overview'), 'class' => 'pull-right']); ?>
     </div>
 
-    <?php if (!$field->isNewRecord) : ?>
-        <h4><?= Yii::t('AdminModule.user', 'Edit profile field'); ?></h4>
+    <?php if (!$field->isNewRecord): ?>
+        <h4><?= Yii::t('AdminModule.user', 'Edit profile field') ?></h4>
     <?php else: ?>
-        <h4><?= Yii::t('AdminModule.user', 'Create new profile field'); ?></h4>
+        <h4><?= Yii::t('AdminModule.user', 'Create new profile field') ?></h4>
     <?php endif; ?>
 
     <br>
 
-    <?php $form = \yii\widgets\ActiveForm::begin(); ?>
-    <?= $hForm->render($form); ?>
-    <?php \yii\widgets\ActiveForm::end(); ?>
+    <?php $form = ActiveForm::begin(); ?>
+        <?= $hForm->render($form); ?>
+    <?php ActiveForm::end(); ?>
 </div>
 
 <script <?= Html::nonce() ?>>

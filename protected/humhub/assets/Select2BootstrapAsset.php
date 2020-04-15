@@ -14,6 +14,7 @@ use yii\web\AssetBundle;
  * select2 bootstrap asset
  *
  * @author buddha
+ * @deprecated since 1.5
  */
 class Select2BootstrapAsset extends AssetBundle
 {
@@ -39,7 +40,7 @@ class Select2BootstrapAsset extends AssetBundle
     * @inheritdoc
     */
     public $depends = [
-        'humhub\assets\Select2Asset'
+        Select2Asset::class
     ];
 
 }

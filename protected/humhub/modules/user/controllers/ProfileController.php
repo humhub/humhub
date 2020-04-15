@@ -8,11 +8,11 @@
 
 namespace humhub\modules\user\controllers;
 
+use humhub\modules\user\components\ProfileStream;
 use Yii;
 use yii\web\HttpException;
 use yii\db\Expression;
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\stream\actions\ContentContainerStream;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\space\widgets\ListBox;
@@ -26,7 +26,6 @@ use humhub\modules\space\models\Space;
  * Also the following functions are implemented here.
  *
  * @author Luke
- * @package humhub.modules_core.user.controllers
  * @since 0.5
  */
 class ProfileController extends ContentContainerController
@@ -52,8 +51,8 @@ class ProfileController extends ContentContainerController
     {
         return [
             'stream' => [
-                'class' => ContentContainerStream::class,
-                'mode' => ContentContainerStream::MODE_NORMAL,
+                'class' => ProfileStream::class,
+                'mode' => ProfileStream::MODE_NORMAL,
                 'contentContainer' => $this->contentContainer
             ],
         ];
@@ -61,7 +60,7 @@ class ProfileController extends ContentContainerController
 
     /**
      * User profile home
-     * 
+     *
      * @todo Allow change of default action
      * @return string the response
      */
@@ -93,7 +92,7 @@ class ProfileController extends ContentContainerController
         if(Yii::$app->getModule('user')->disableFollow) {
             throw new HttpException(403, Yii::t('ContentModule.base', 'This action is disabled!'));
         }
-        
+
         $this->forcePostRequest();
         $this->getUser()->follow(Yii::$app->user->getIdentity(), false);
 

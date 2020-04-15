@@ -18,11 +18,11 @@ humhub.module('client.pjax', function (module, require, $) {
         $options.type = 'POST';
         $.pjax($options);
     };
-    
+
     var redirect = function(url) {
         $.pjax({url: url, container: PJAX_CONTAINER_SELECTOR, timeout : module.config.options.timeout});
     };
-    
+
     var reload = function() {
         $.pjax.reload({container: PJAX_CONTAINER_SELECTOR, timeout : module.config.options.timeout});
     };
@@ -49,7 +49,7 @@ humhub.module('client.pjax', function (module, require, $) {
                 'xhr': xhr,
                 'options': options
             });
-            
+
             // Update default ajax url, used if no url is given.
             $.ajaxSetup({
                 url: window.location.href
@@ -101,6 +101,7 @@ humhub.module('client.pjax', function (module, require, $) {
 
     module.export({
         init: init,
+        sortOrder: 100,
         reload: reload,
         redirect: redirect,
         post: post,

@@ -15,6 +15,7 @@ use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
 use Yii;
 use yii\helpers\Html;
+use yii\widgets\ActiveField;
 use yii\widgets\ActiveForm;
 
 /**
@@ -258,26 +259,25 @@ class HForm extends \yii\base\Component
                         if (!$showLabel) {
                             $field->label(false);
                         }
-                        return $field;
+                        break;
                     case 'multiselectdropdown':
-                        return MultiSelect::widget([
-                            'form' => $this->form,
-                            'model' => $model,
-                            'attribute' => $name,
+                        $field = $this->form->field($model, $name)->widget(MultiSelect::class,  [
                             'items' => $definition['items'],
                             'options' => $definition['options']
                         ]);
+                        break;
                     case 'dropdownlist':
                         $field = $this->form->field($model, $name)->dropDownList($definition['items'], $options);
                         if (!empty($options['label'])) {
                             $field->label($options['label']);
                         }
-                        return $field;
+                        break;
                     case 'checkbox':
                         if (isset($options['readOnly']) && $options['readOnly']) {
                             $options['disabled'] = 'disabled';
                         }
-                        return $this->form->field($model, $name)->checkbox($options);
+                        $field = $this->form->field($model, $name)->checkbox($options);
+                        break;
                     case 'checkboxlist':
                         if (isset($options['readOnly']) && $options['readOnly']) {
                             $options['disabled'] = 'disabled';
@@ -290,17 +290,20 @@ class HForm extends \yii\base\Component
                             $model->$name = explode($delimiter, $model->$name);
                         }
 
-                        return $this->form->field($model, $name)->checkboxList($definition['items'], $options);
+                        $field = $this->form->field($model, $name)->checkboxList($definition['items'], $options);
+                        break;
                     case 'textarea':
                         $field = $this->form->field($model, $name)->textarea($options);
                         if (!$showLabel) {
                             $field->label(false);
                         }
-                        return $field;
+                        break;
                     case 'hidden':
-                        return $this->form->field($model, $name)->hiddenInput($options)->label(false);
+                        $field = $this->form->field($model, $name)->hiddenInput($options)->label(false);
+                        break;
                     case 'password':
-                        return $this->form->field($model, $name)->passwordInput($options);
+                        $field = $this->form->field($model, $name)->passwordInput($options);
+                        break;
                     case 'datetime':
                         $format = Yii::$app->formatter->dateFormat;
                         if (isset($definition['format'])) {
@@ -309,7 +312,7 @@ class HForm extends \yii\base\Component
 
                         $yearRange = isset($definition['yearRange']) ? $definition['yearRange'] : (date('Y') - 100) . ":" . (date('Y') + 100);
 
-                        return $this->form->field($model, $name)->widget(DatePicker::class, [
+                        $field = $this->form->field($model, $name)->widget(DatePicker::class, [
                             'dateFormat' => $format,
                             'clientOptions' => [
                                 'changeYear' => true,
@@ -320,6 +323,7 @@ class HForm extends \yii\base\Component
                             'options' => [
                                 'class' => 'form-control']
                         ]);
+                        break;
                     case 'markdown':
                         $options['id'] = $name;
                         if (isset($options['readOnly']) && $options['readOnly']) {
@@ -327,10 +331,17 @@ class HForm extends \yii\base\Component
                             return RichText::output(Html::getAttributeValue($model, $name));
                         }
 
-                        return $this->form->field($model, $name)->widget(RichTextField::class, $options);;
+                        $field = $this->form->field($model, $name)->widget(RichTextField::class, $options);
+                        break;
                     default:
                         return "Field Type " . $definition['type'] . " not supported by Compat HForm";
                 }
+
+                if(!empty($definition['hint'])  && $field instanceof ActiveField) {
+                    $field->hint(Html::encode($definition['hint']));
+                }
+
+                return $field;
             } else {
                 return "No type found for: FieldName: " . $name . " Forms: " . print_r($forms, 1) . "<br>";
             }

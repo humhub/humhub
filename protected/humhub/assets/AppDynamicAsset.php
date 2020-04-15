@@ -8,7 +8,8 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
+use yii\web\View;
 
 /**
  * AppDynamicAsset provides assets which are included in the core layout.
@@ -19,17 +20,21 @@ use yii\web\AssetBundle;
  */
 class AppDynamicAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $defer = false;
 
     /**
      * @inheritdoc
      */
-    public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
+    public $jsOptions = ['position' => View::POS_HEAD];
 
     /**
      * @inheritdoc
      */
     public $depends = [
-        'humhub\assets\JqueryTimeAgoLocaleAsset',
+        JqueryTimeAgoLocaleAsset::class
     ];
 
 }

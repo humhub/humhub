@@ -5,10 +5,11 @@
 humhub.module('activity', function (module, require, $) {
 
     var util = require('util');
-    var object = util.object;
     var stream = require('stream');
-    var loader = require('ui.loader');
     var Widget = require('ui.widget').Widget;
+    var container = require('content.container');
+    var user = require('user');
+    var view = require('ui.view');
 
     /**
      * Number of initial stream enteis loaded when stream is initialized.
@@ -24,7 +25,7 @@ humhub.module('activity', function (module, require, $) {
 
     /**
      * Number of stream entries loaded with each request (except initial request)
-     * @type Number
+     * @type string
      */
     var ACTIVITY_STREAM_SELECTOR = '#activityStream';
 
@@ -44,63 +45,62 @@ humhub.module('activity', function (module, require, $) {
 
     /**
      * ActivityStream implementation.
-     * 
+     *
      * @param {type} container id or jQuery object of the stream container
      * @returns {undefined}
      */
     var ActivityStream = stream.Stream.extend(function (container, options) {
-        var that = this;
         stream.Stream.call(this, container, {
+            scrollSupport: true,
+            scrollOptions: { rootMargin: "30px" },
             initLoadCount: STREAM_INIT_COUNT,
             loadCount: STREAM_LOAD_COUNT,
+            autoUpdate: true,
             streamEntryClass: ActivityStreamEntry,
         });
     });
 
-    ActivityStream.prototype.initScroll = function () {
-        if(!this.$content.is(':visible')) {
-            return;
-        }
-
-        // listen for scrolling event yes or no
-        var scrolling = true;
+    ActivityStream.prototype.initEvents = function(events) {
         var that = this;
-        this.$content.scroll(function (evt) {
-            if(that.lastEntryLoaded()) {
+        this.on('humhub:stream:afterAddEntries', function() {
+            if(view.isLarge() && !that.$content.getNiceScroll().length) {
+                that.$content.niceScroll({
+                    cursorwidth: "7",
+                    cursorborder: "",
+                    cursorcolor: "#555",
+                    cursoropacitymax: "0.2",
+                    nativeparentscrolling: false,
+                    railpadding: {top: 0, right: 3, left: 0, bottom: 0}
+                });
+            } else {
+                that.$content.getNiceScroll().resize();
+            }
+        });
+    };
+
+    ActivityStream.prototype.isUpdateAvailable = function(events) {
+        var that = this;
+
+        var updatesAvailable = false;
+        events.forEach(function(event) {
+            if(that.entry(event.data.contentId)) {
                 return;
             }
-            // save height of the overflow container
-            var _containerHeight = that.$content.height();
-            // save scroll height
-            var _scrollHeight = that.$content.prop("scrollHeight");
-            // save current scrollbar position
-            var _currentScrollPosition = that.$content.scrollTop();
 
-            // load more activites if current scroll position is near scroll height
-            if (_currentScrollPosition >= (_scrollHeight - _containerHeight - 30)) {
-                // checking if ajax loading is necessary or the last entries are already loaded
-                if (scrolling) {
-                    scrolling = false;
-                    // load more activities
-                    that.loadEntries({loader: true}).then(function() {
-                        that.$content.getNiceScroll().resize();
-                    }).finally(function () {
-                        scrolling = true;
-                    });
-                }
+            if(event.data.streamChannel !== 'activity') {
+                return;
+            }
+
+            if(event.data.originator === user.guid()) {
+                return;
+            }
+
+            if(container.guid() === event.data.sguid || container.guid() === event.data.uguid) {
+                updatesAvailable = true;
             }
         });
 
-
-        // set niceScroll to activity list
-        that.$content.niceScroll({
-            cursorwidth: "7",
-            cursorborder: "",
-            cursorcolor: "#555",
-            cursoropacitymax: "0.2",
-            nativeparentscrolling: false,
-            railpadding: {top: 0, right: 3, left: 0, bottom: 0}
-        });
+        return updatesAvailable;
     };
 
     ActivityStream.templates = {
@@ -117,7 +117,7 @@ humhub.module('activity', function (module, require, $) {
         return instance;
     };
 
-    
+
     var unload = function() {
         // Cleanup nicescroll rails from dom
         if(instance && instance.$) {

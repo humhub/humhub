@@ -111,6 +111,16 @@ class ContentContainerController extends Controller
 
         $this->checkModuleIsEnabled();
 
+        if($this->contentContainer) {
+            $this->view->registerJsConfig('content.container', [
+                'guid' => $this->contentContainer->guid
+            ]);
+        } else {
+            $this->view->registerJsConfig('content.container', [
+                'guid' => null
+            ]);
+        }
+
         return true;
     }
 

@@ -57,14 +57,34 @@ class ModuleController extends Controller
     {
         Yii::$app->moduleManager->flushCache();
 
+
         return $this->redirect(['/admin/module/list']);
     }
+
 
     public function actionList()
     {
         $installedModules = Yii::$app->moduleManager->getModules();
 
-        return $this->render('list', ['installedModules' => $installedModules]);
+        return $this->render('list', ['installedModules' => $installedModules, 'deprecatedModuleIds' => $this->getDeprecatedModules()]);
+    }
+
+    private function getDeprecatedModules()
+    {
+        $deprecatedModuleIds = [];
+        if (Yii::$app->hasModule('marketplace')) {
+            try {
+                foreach (Yii::$app->getModule('marketplace')->onlineModuleManager->getModules() as $id => $module) {
+                    if (!empty($module['isDeprecated'])) {
+                        $deprecatedModuleIds[] = $id;
+                    }
+                }
+
+            } catch (\Exception $ex) {
+            }
+        }
+
+        return $deprecatedModuleIds;
     }
 
     /**

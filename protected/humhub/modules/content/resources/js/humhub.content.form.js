@@ -51,11 +51,13 @@ humhub.module('content.form', function(module, require, $) {
 
         var that = this;
         evt.block = 'manual';
+        event.trigger('humhub:content:beforeSubmit', this);
         client.submit(evt).then(function(response) {
             that.$.find(".preferences, .fileinput-button").show();
             $('.contentForm_options .preferences, .fileinput-button').show();
             if(!response.errors) {
-                event.trigger('humhub:content:newEntry', response.output);
+                event.trigger('humhub:content:newEntry', response.output, this);
+                event.trigger('humhub:content:afterSubmit', response.output, this);
                 that.resetForm();
             } else {
                 that.handleError(response);

@@ -8,8 +8,10 @@
 
 namespace humhub\libs;
 
-use humhub\modules\file\libs\ImageConverter;
 use Yii;
+use yii\base\ErrorException;
+use yii\base\Exception;
+use yii\imagine\Image;
 use yii\web\UploadedFile;
 use yii\helpers\Url;
 use yii\helpers\FileHelper;
@@ -19,95 +21,103 @@ use yii\helpers\FileHelper;
  */
 class LogoImage
 {
-
     /**
-     * @var Integer height of the image
+     * Sets a new icon for the installation.
+     * @param UploadedFile|null $file
      */
-    protected $height = 40;
-
-    /**
-     * @var String folder name inside the uploads directory
-     */
-    protected $folder_images = 'logo_image';
-
-    /**
-     * Returns the URl of Logo Image
-     *
-     * @return String Url of the profile image
-     * @throws \yii\base\Exception
-     */
-    public function getUrl()
+    public static function set(UploadedFile $file = null)
     {
-        $cacheId = 0;
+        static::deleteFiles();
 
-        // Workaround for absolute urls in console applications (Cron)
-        if (Yii::$app->request->isConsoleRequest) {
-            $path = Url::base(true);
-        } else {
-            $path = Url::base();
+        if ($file !== null) {
+            try {
+                FileHelper::createDirectory(Yii::getAlias('@webroot/uploads/logo_image/'));
+            } catch (Exception $e) {
+            }
+            Image::getImagine()->open($file->tempName)->save(Yii::getAlias('@webroot/uploads/logo_image/logo.png'));
+        }
+    }
+
+    /**
+     * Returns the URL of the icon in desired size (width + height)
+     *
+     * @param int $maxWidth in px
+     * @param int $maxHeight in px
+     * @param bool $autoResize automatically resize to given size if not available yet
+     * @return string|null
+     */
+    public static function getUrl($maxWidth = 150, $maxHeight = 40, $autoResize = true)
+    {
+        $file = self::getFile($maxWidth, $maxHeight);
+        if (file_exists($file)) {
+            // Workaround for absolute urls in console applications (Cron)
+            $base = '';
+            if (Yii::$app->request->isConsoleRequest) {
+                $base = Url::base(true);
+            }
+            return $base . Yii::getAlias(Yii::$app->assetManager->baseUrl) . '/logo/' . static::buildFileName($maxWidth, $maxHeight) . '?v=' . filemtime($file);
+        } elseif (static::hasImage() && $autoResize) {
+            try {
+                FileHelper::createDirectory(Yii::getAlias(Yii::$app->assetManager->basePath . DIRECTORY_SEPARATOR . 'logo'));
+            } catch (Exception $e) {
+            }
+
+            $image = Image::getImagine()->open(static::getOriginalFile());
+            if ($image->getSize()->getHeight() > $maxHeight) {
+                $image->resize($image->getSize()->heighten($maxHeight));
+            }
+            if ($image->getSize()->getWidth() > $maxWidth) {
+                $image->resize($image->getSize()->widen($maxWidth));
+            }
+            $image->save($file);
+
+            return static::getUrl($maxWidth, $maxHeight, false);
         }
 
-        if (file_exists($this->getPath())) {
-            $path .= '/uploads/' . $this->folder_images . '/logo.png';
-        }
-        $path .= '?cacheId=' . $cacheId;
-
-        return $path;
+        return null;
     }
 
     /**
      * Indicates there is a logo image
      *
      * @return Boolean is there a logo image
-     * @throws \yii\base\Exception
      */
-    public function hasImage()
+    public static function hasImage()
     {
-        return file_exists($this->getPath());
+        return file_exists(static::getOriginalFile());
     }
 
-    /**
-     * Returns the Path of the logo image
-     *
-     * @return String Path to the logo image
-     * @throws \yii\base\Exception
-     */
-    public function getPath()
+    private static function getFile($maxWidth, $maxHeight)
     {
-        $path = Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $this->folder_images . DIRECTORY_SEPARATOR;
-        FileHelper::createDirectory($path);
-        $path .= 'logo.png';
-
-        return $path;
+        return Yii::getAlias(Yii::$app->assetManager->basePath . DIRECTORY_SEPARATOR . 'logo' . DIRECTORY_SEPARATOR . static::buildFileName($maxWidth, $maxHeight));
     }
 
-    /**
-     * Sets a new logo image by given temp file
-     *
-     * @param UploadedFile $file
-     * @throws \yii\base\Exception
-     */
-    public function setNew(UploadedFile $file)
+    private static function buildFileName($maxWidth, $maxHeight)
     {
-        $this->delete();
-        move_uploaded_file($file->tempName, $this->getPath());
-
-        ImageConverter::Resize($this->getPath(), $this->getPath(), [
-            'height' => $this->height,
-            'width' => 0,
-            'mode' => 'max',
-            'transparent' => ($file->getExtension() === 'png' && ImageConverter::checkTransparent($this->getPath()))
-        ]);
+        $fileName = $maxWidth . 'x' . $maxHeight . '.png';
+        return $fileName;
     }
 
-    /**
-     * Deletes current logo
-     */
-    public function delete()
+    private static function getOriginalFile()
     {
-        $path = $this->getPath();
-        if (file_exists($path)) {
-            FileHelper::unlink($this->getPath());
+        return Yii::getAlias('@webroot/uploads/logo_image/logo.png');
+    }
+
+    private static function deleteFiles()
+    {
+        // Delete assets folder if exists
+        try {
+            \humhub\modules\file\libs\FileHelper::removeDirectory(Yii::getAlias(Yii::$app->assetManager->basePath . DIRECTORY_SEPARATOR . 'logo'));
+        } catch (ErrorException $e) {
+            Yii::error($e, 'admin');
+        }
+
+        // Delete uploads folder if exists
+        try {
+            FileHelper::removeDirectory(Yii::getAlias('@webroot/uploads/logo_image/'));
+        } catch (ErrorException $e) {
+            Yii::error($e, 'admin');
         }
     }
+
 }

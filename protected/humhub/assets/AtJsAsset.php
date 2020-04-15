@@ -14,6 +14,7 @@ use yii\web\AssetBundle;
  * jquery-At.js
  *
  * @author buddha
+ * @deprecated since v1.5 not in use anymore
  */
 class AtJsAsset extends AssetBundle
 {
@@ -31,14 +32,9 @@ class AtJsAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $css = [];
-
-    /**
-     * @inheritdoc
-     */
     public $depends = [
-        'humhub\assets\CaretJsAsset',
-        'humhub\assets\AtJsStyleAsset'
+        CaretjsAsset::class,
+        AtJsStyleAsset::class
     ];
 
 }

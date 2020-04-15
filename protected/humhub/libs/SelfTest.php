@@ -285,6 +285,39 @@ class SelfTest
             ];
         }
 
+        // Checks ImageMagick Extension
+        $title = 'PHP - ImageMagick Extension';
+
+        if (class_exists('Imagick', false)) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'WARNING',
+                'hint' => 'Optional'
+            ];
+        }
+
+        // Checks GraphicsMagick Extension
+        $title = 'PHP - GraphicsMagick Extension';
+
+        if (class_exists('Gmagick', false)) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'WARNING',
+                'hint' => 'Optional'
+            ];
+        }
+
+
         // Checks LDAP Extension
         $title = 'LDAP Support';
 
@@ -297,7 +330,7 @@ class SelfTest
             $checks[] = [
                 'title' => Yii::t('base', $title),
                 'state' => 'WARNING',
-                'hint' => 'Optional - Install PHP LDAP Extension and Zend LDAP Composer Package'
+                'hint' => 'Optional - Install PHP LDAP Extension'
             ];
         }
 

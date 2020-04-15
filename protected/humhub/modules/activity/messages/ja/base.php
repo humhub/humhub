@@ -11,7 +11,7 @@ return array (
   'Hourly' => '毎時',
   'Interval' => '間隔',
   'Latest news' => '新着',
-  'Never' => '無し',
+  'Never' => 'なし',
   'On this page you can configure the contents and the interval of these e-mail updates.' => 'このページでは更新情報をメールで送るコンテンツとその間隔を設定できます。',
   'On this page you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => 'このページでは、ユーザーのデフォルトの動作を定義できます。 これらの設定は、アカウント設定ページでユーザーが上書きすることができます。',
   'Only include spaces below to the mail summary' => '以下のスペースのみメール概要に含める',

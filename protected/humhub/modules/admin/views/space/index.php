@@ -1,5 +1,7 @@
 <?php
 
+use humhub\modules\user\grid\DisplayNameColumn;
+use humhub\modules\user\grid\ImageColumn;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use humhub\modules\admin\widgets\SpaceGridView;
@@ -45,10 +47,10 @@ use yii\helpers\Url;
             ['class' => SpaceImageColumn::class],
             ['class' => SpaceTitleColumn::class],
             'memberCount',
-            ['class' => \humhub\modules\user\grid\ImageColumn::class, 'userAttribute' => 'ownerUser'],
+            ['class' => ImageColumn::class, 'userAttribute' => 'ownerUser'],
             [
                 'attribute' => 'ownerUser.profile.lastname',
-                'class' => \humhub\modules\user\grid\DisplayNameColumn::class,
+                'class' => DisplayNameColumn::class,
                 'userAttribute' => 'ownerUser',
                 'label' => 'Owner'
             ],

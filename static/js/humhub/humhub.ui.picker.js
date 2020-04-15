@@ -49,7 +49,6 @@ humhub.module('ui.picker', function (module, require, $) {
                     // https://github.com/select2/select2/issues/4355
                     module.log.error('Error Loading Picker result! The request may just has been aborted.');
                     return loader.set($('<div></div>'), {'css': {'padding': '4px'}});
-                    return '';
                 },
                 loadingMore: function () {
                     return module.text('showMore');
@@ -569,6 +568,7 @@ humhub.module('ui.picker', function (module, require, $) {
 
     module.export({
         init: init,
+        sortOrder: 100,
         Picker: Picker
     });
 });

@@ -4,6 +4,7 @@ namespace humhub\modules\stream\models;
 
 use Yii;
 use yii\base\Model;
+use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 use humhub\modules\stream\actions\Stream;
 use humhub\modules\stream\models\filters\ContentTypeStreamFilter;
@@ -82,7 +83,14 @@ class StreamQuery extends Model
     public $from = 0;
 
     /**
-     * Stream sorting default = SORT_CREATED_AT;
+     * Top contentId used for stream updates.
+     * @var int
+     * @since 1.5
+     */
+    public $to;
+
+    /**
+     * Stream sorting default = Stream::SORT_CREATED_AT;
      * @var string
      */
     public $sort;
@@ -124,7 +132,7 @@ class StreamQuery extends Model
     /**
      * The content query.
      *
-     * @var \yii\db\ActiveQuery
+     * @var ActiveQuery
      */
     protected $_query;
 
@@ -139,7 +147,7 @@ class StreamQuery extends Model
     public function rules()
     {
         return [
-            [['limit', 'from', 'contentId'], 'number'],
+            [['limit', 'from', 'to', 'contentId'], 'number'],
             [['sort'], 'safe']
         ];
     }
@@ -149,7 +157,7 @@ class StreamQuery extends Model
      *
      * @param array|string|int $includes either an array of ContentActiveRecord class names or single class name or single contentId.
      * @param array|string $excludes either an array of ContentActiveRecord class names or single class name to exclude from the query.
-     * @return StreamQuery
+     * @return static
      */
     public static function find($includes = [], $excludes = [])
     {
@@ -171,6 +179,9 @@ class StreamQuery extends Model
         return $instance->includes($includes)->excludes($excludes);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         $this->_query = Content::find();
@@ -178,6 +189,12 @@ class StreamQuery extends Model
         $this->checkUser();
     }
 
+    /**
+     * Builder function for single content stream query.
+     *
+     * @param $contentId int
+     * @return static
+     */
     public function content($contentId)
     {
         if (!is_int($contentId)) {
@@ -186,6 +203,13 @@ class StreamQuery extends Model
         return $this;
     }
 
+    /**
+     * Builder function used to set the user perspective of the stream.
+     *
+     * @param $user|null User if null the current user identity will be used
+     * @return static
+     * @see checkUser
+     */
     public function forUser($user = null)
     {
         $this->user = $user;
@@ -193,12 +217,24 @@ class StreamQuery extends Model
         return $this;
     }
 
+    /**
+     * Builder function to overwrite the active filters.
+     *
+     * @param array|string $filters
+     * @return static
+     */
     public function filters($filters = [])
     {
         $this->filters = (is_string($filters)) ? [$filters] : $filters;
         return $this;
     }
 
+    /**
+     * Builder function to add a single or multiple filters to the current set of active filters.
+     *
+     * @param $filters
+     * @return static
+     */
     public function addFilter($filters)
     {
         if (!is_string($filters)) {
@@ -209,6 +245,26 @@ class StreamQuery extends Model
         return $this;
     }
 
+    /**
+     * Builder function used to set the stream channel filter.
+     *
+     * @param string $channel
+     * @return static
+     */
+    public function channel($channel)
+    {
+        $this->channel = $channel;
+        $this->_query->andWhere(['content.stream_channel' => $channel]);
+        return $this;
+    }
+
+
+    /**
+     * Builder function used to set the $includes array in order to only include specific content types.
+     *
+     * @param string[]|string $includes
+     * @return static
+     */
     public function includes($includes = [])
     {
         if (is_string($includes)) {
@@ -231,30 +287,79 @@ class StreamQuery extends Model
         return $this;
     }
 
+    /**
+     * Builder function for query $sort field.
+     *
+     * @param $sort string stream sorting either [[Stream::SORT_CREATED_AT]] or [[Stream::SORT_UPDATED_AT]]
+     * @return static
+     * @since 1.5
+     */
+    public function sort($sort)
+    {
+        $this->sort = $sort;
+        return $this;
+    }
+
+    /**
+     * Builder function used to set the $originator filter.
+     *
+     * @param $user User
+     * @return static
+     */
     public function originator($user)
     {
         $this->originator = $user;
         return $this;
     }
 
+    /**
+     * Builder function used to set the $from filter. The result will only include older entries while respecting
+     * the $order setting. This function can be used for stream pagination (load more).
+     *
+     * > Note: the content entry with the id $from will not be included itself!
+     *
+     * @param $from int content id used for pagination
+     * @return static
+     */
     public function from($from = 0)
     {
         $this->from = $from;
         return $this;
     }
 
+    /**
+     * Builder function used to set the $to filter. The result will only include newer entries while respecting
+     * the $order setting. This function can be used for stream updates.
+     *
+     * > Note: the content entry with the id $to will not be included itself!
+     *
+     * @param $from int content id used for pagination
+     * @return static
+     */
+    public function to($to = null)
+    {
+        $this->to = $to;
+        return $this;
+    }
+
+    /**
+     * Builder function used to set the result limit.
+     *
+     * @param int $limit
+     * @return static
+     */
     public function limit($limit = self::MAX_LIMIT)
     {
         $this->limit = $limit;
         return $this;
     }
 
-    public function filter($limit = self::MAX_LIMIT)
-    {
-        $this->limit = $limit;
-        return $this;
-    }
-
+    /**
+     * Returns the underlying ActiveQuery object.
+     *
+     * @param bool $build weather or not the query should be build by means of the given filters
+     * @return ActiveQuery
+     */
     public function query($build = false)
     {
         if ($build) {
@@ -264,21 +369,26 @@ class StreamQuery extends Model
         return $this->_query;
     }
 
+    /**
+     * Returns the query result.
+     *
+     * @return Content[]
+     */
     public function all()
     {
-        if (!$this->_built) {
-            $this->setupQuery();
-        }
-
-        return $this->_query->all();
+        return $this->query(!$this->_built)->all();
     }
 
+    /**
+     * Builds up the query based on the active filters.
+     */
     protected function setupQuery()
     {
         $this->checkUser();
         $this->checkSort();
         $this->checkLimit();
         $this->checkFrom();
+        $this->checkTo();
         $this->setupCriteria();
         $this->setupFilters();
 
@@ -289,6 +399,9 @@ class StreamQuery extends Model
         $this->_built = true;
     }
 
+    /**
+     * Sets the user identity as default user perspective in case no user was set manually.
+     */
     protected function checkUser()
     {
         if ($this->user === null && !Yii::$app->user->isGuest) {
@@ -296,6 +409,9 @@ class StreamQuery extends Model
         }
     }
 
+    /**
+     * Sets the default stream sort order in case no or an invalid sort order has been set manually.
+     */
     protected function checkSort()
     {
         if(empty($this->sort) || !in_array($this->sort, [Stream::SORT_CREATED_AT, Stream::SORT_UPDATED_AT])) {
@@ -303,6 +419,9 @@ class StreamQuery extends Model
         }
     }
 
+    /**
+     * Makes sure a valid $from contentId field is set.
+     */
     protected function checkFrom()
     {
         if (empty($this->from)) {
@@ -312,6 +431,21 @@ class StreamQuery extends Model
         }
     }
 
+    /**
+     * Makes sure a valid $to contentId field is set.
+     */
+    protected function checkTo()
+    {
+        if (empty($this->to)) {
+            $this->to = null;
+        } else {
+            $this->to = (int) $this->to;
+        }
+    }
+
+    /**
+     * Sets the default limit in case no limit has been set manually.
+     */
     protected function checkLimit()
     {
         if (empty($this->limit) || $this->limit > self::MAX_LIMIT) {
@@ -321,6 +455,9 @@ class StreamQuery extends Model
         }
     }
 
+    /**
+     * Sets up the main query and stream order.
+     */
     protected function setupCriteria()
     {
         $this->_query->joinWith('createdBy');
@@ -351,15 +488,31 @@ class StreamQuery extends Model
                             "content.id > :from"
                         ],
                     ], [':from' => $this->from]);
+            } elseif (!empty($this->to)) {
+                $this->_query->andWhere(
+                    ['or',
+                        "content.stream_sort_date > (SELECT stream_sort_date FROM content wd WHERE wd.id=:to)",
+                        ['and',
+                            "content.stream_sort_date = (SELECT stream_sort_date FROM content wd WHERE wd.id=:to)",
+                            "content.id < :to"
+                        ],
+                    ], [':to' => $this->to]);
             }
         } else {
             $this->_query->orderBy('content.id DESC');
             if (!empty($this->from)) {
                 $this->_query->andWhere("content.id < :from", [':from' => $this->from]);
+            } elseif (!empty($this->to)) {
+                $this->_query->andWhere("content.id > :to", [':to' => $this->to]);
             }
         }
     }
 
+    /**
+     * Sets up the filter queries.
+     *
+     * @throws \yii\base\InvalidConfigException
+     */
     protected function setupFilters()
     {
         $this->trigger(static::EVENT_BEFORE_FILTER);
@@ -375,22 +528,11 @@ class StreamQuery extends Model
         }
     }
 
+    /**
+     * @return bool true of this query is used to query a single content entry
+     */
     public function isSingleContentQuery()
     {
         return $this->limit == 1 || $this->contentId != null;
     }
-
-    /**
-     * Sets the channel for this stream query
-     *
-     * @param string $channel
-     * @return StreamQuery
-     */
-    public function channel($channel)
-    {
-        $this->channel = $channel;
-        $this->_query->andWhere(['content.stream_channel' => $channel]);
-        return $this;
-    }
-
 }

@@ -47,6 +47,11 @@ class CompatModuleManager extends Behavior
         return $this->moduleManager->isEnabled($moduleId);
     }
 
+    public function canEnableModule($id)
+    {
+        return $this->moduleManager->canEnable($id);
+    }
+
     public function enableModule($moduleId)
     {
         return $this->moduleManager->enable($moduleId);

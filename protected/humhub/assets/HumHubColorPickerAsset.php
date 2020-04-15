@@ -8,34 +8,20 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\WebStaticAssetBundle;
 
 /**
  * Color Picker js utility
  *
  * @author buddha
  */
-class HumHubColorPickerAsset extends AssetBundle
+class HumHubColorPickerAsset extends WebStaticAssetBundle
 {
-
-    public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
-
-    /**
-     * @inheritdoc
-     */
-    public $basePath = '@webroot-static';
-
-    /**
-     * @inheritdoc
-     */
-    public $baseUrl = '@web-static';
-
     /**
      * @inheritdoc
      */
     public $js = ['js/humhub/humhub.ui.colorpicker.js'];
 
-
-    public $depends = ['humhub\assets\BootstrapColorPickerAsset'];
+    public $depends = [BootstrapColorPickerAsset::class];
 
 }

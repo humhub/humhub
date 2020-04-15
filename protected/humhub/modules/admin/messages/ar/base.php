@@ -42,7 +42,6 @@ return [
     'Caching' => '',
     'Cronjobs' => '',
     'Design' => '',
-    'E-Mail summaries' => '',
     'Files' => '',
     'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',
     'Information' => '',

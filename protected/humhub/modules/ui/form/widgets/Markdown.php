@@ -9,14 +9,15 @@
 
 namespace humhub\modules\ui\form\widgets;
 
-use humhub\assets\BootstrapMarkdownAsset;
 use humhub\libs\Html;
 use humhub\modules\file\widgets\UploadButton;
+use humhub\modules\ui\form\assets\MarkdownFieldAsset;
 use yii\helpers\Url;
 
 /**
  * Simple Markdown Editor form fields.
  *
+ * @deprecated since 1.5 use `humhub\modules\content\widgets\richtext\RichTextField` instead
  * @package humhub\widgets
  * @since 1.2.2
  */
@@ -103,8 +104,7 @@ class Markdown extends JsInputWidget
 
     public function run()
     {
-        BootstrapMarkdownAsset::register($this->view);
-        $this->view->registerCssFile('@web-static/css/bootstrap-markdown-override.css');
+        MarkdownFieldAsset::register($this->view);
 
         if ($this->placeholder === null && $this->hasModel()) {
             $this->placeholder = $this->model->getAttributeLabel($this->attribute);

@@ -16,6 +16,7 @@ use humhub\modules\admin\widgets\SettingsMenu;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\AccountMenu;
 use Yii;
+use yii\base\ActionEvent;
 use yii\base\BaseObject;
 use yii\base\Event;
 use yii\db\ActiveRecord;
@@ -32,7 +33,7 @@ class Events extends BaseObject
     /**
      * Handles cron hourly run event to send mail summaries to the users
      *
-     * @param \yii\base\ActionEvent $event
+     * @param ActionEvent $event
      */
     public static function onCronHourlyRun($event)
     {
@@ -44,13 +45,14 @@ class Events extends BaseObject
     /**
      * Handles cron daily run event to send mail summaries to the users
      *
-     * @param \yii\base\ActionEvent $event
+     * @param ActionEvent $event
      */
     public static function onCronDailyRun($event)
     {
-        if (static::getModule()->enableMailSummaries) {
+        $module = static::getModule();
+        if ($module->enableMailSummaries) {
             Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_DAILY]));
-            if (date('w') == Yii::$app->getModule('activity')->weeklySummaryDay) {
+            if (date('w') == $module->weeklySummaryDay) {
                 Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_WEEKLY]));
             }
         }
@@ -75,7 +77,7 @@ class Events extends BaseObject
         if ($pk !== null && !is_array($pk)) {
             $modelsActivity = Activity::find()->where([
                 'object_id' => $pk,
-                'object_model' => $activeRecordModel->className()
+                'object_model' => get_class($activeRecordModel)
             ])->each();
             foreach ($modelsActivity as $activity) {
                 $activity->delete();
@@ -90,7 +92,7 @@ class Events extends BaseObject
             $menu = $event->sender;
 
             $menu->addEntry(new MenuLink([
-                'label' => Yii::t('ActivityModule.account', 'E-Mail Summaries'),
+                'label' => Yii::t('ActivityModule.base', 'E-Mail Summaries'),
                 'id' => 'account-settings-emailsummary',
                 'icon' => 'envelope',
                 'url' => ['/activity/user'],
@@ -145,17 +147,13 @@ class Events extends BaseObject
             }
 
             // Check for moduleId is set
-            if ($a->module == '') {
-                if ($integrityController->showFix('Deleting activity id ' . $a->id . ' without module_id!')) {
-                    $a->delete();
-                }
+            if (empty($a->module) && $integrityController->showFix('Deleting activity id ' . $a->id . ' without module_id!')) {
+                $a->delete();
             }
 
             // Check Activity class exists
-            if (!class_exists($a->class)) {
-                if ($integrityController->showFix('Deleting activity id ' . $a->id . ' class not exists! (' . $a->class . ')')) {
-                    $a->delete();
-                }
+            if (!class_exists($a->class) && $integrityController->showFix('Deleting activity id ' . $a->id . ' class not exists! (' . $a->class . ')')) {
+                $a->delete();
             }
         }
     }

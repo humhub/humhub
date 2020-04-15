@@ -17,10 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Close' => '닫기',
     '<strong>Confirm</strong> Action' => '',
     '<strong>Latest</strong> updates' => '',
     '<strong>Mail</strong> summary' => '',
     'Account settings' => '',
+    'Actions' => '',
     'Add:' => '',
     'Administration' => '',
     'Allow' => '',
@@ -61,7 +63,6 @@ return [
     'Menu' => '',
     'Module is not enabled on this content container!' => '',
     'My profile' => '',
-    'My profile image' => '',
     'New profile image' => '',
     'Next' => '',
     'No error information given.' => '',
@@ -71,7 +72,6 @@ return [
     'Please type at least {count} characters' => '',
     'Powered by {name}' => '',
     'Profile dropdown' => '',
-    'Profile image of {displayName}' => '',
     'Profile picture of {displayName}' => '',
     'Save' => '',
     'Saved' => '',
@@ -87,6 +87,7 @@ return [
     'The requested resource could not be found.' => '',
     'The space has been archived.' => '',
     'The space has been unarchived.' => '',
+    'There are unsaved changes, do you really want to leave this page?' => '',
     'Time Zone' => '',
     'Toggle comment menu' => '',
     'Toggle panel menu' => '',
@@ -96,5 +97,4 @@ return [
     'Upload' => '',
     'Upload file' => '',
     'You are not allowed to run this action.' => '',
-    'Close' => '닫기',
 ];

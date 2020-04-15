@@ -207,6 +207,8 @@ humhub.module('client', function (module, require, $) {
             cfg = {'success': cfg};
         }
 
+        var requestXhr = null;
+
         var promise = new Promise(function (resolve, reject) {
             cfg = cfg || {};
 
@@ -255,9 +257,19 @@ humhub.module('client', function (module, require, $) {
                 });
             };
 
+            var beforeSendHandler = cfg.beforeSend;
+            var beforeSend = function (xhr, settings) {
+                if(beforeSendHandler) {
+                    beforeSendHandler(xhr, settings);
+                }
+
+                requestXhr = xhr;
+            };
+
             //Overwriting the handler with our wrapper handler
             cfg.success = success;
             cfg.error = error;
+            cfg.beforeSend = beforeSend;
             cfg.url = url;
 
             $.ajax(cfg);
@@ -289,6 +301,12 @@ humhub.module('client', function (module, require, $) {
             });
         };
 
+        promise.abort = function() {
+            if(requestXhr) {
+                requestXhr.abort();
+            }
+        };
+
         return promise;
     };
 
@@ -300,7 +318,17 @@ humhub.module('client', function (module, require, $) {
             url = xhr.getResponseHeader('X-Redirect');
         }
 
-        if (url !== null) {
+        redirect(url);
+    };
+
+    var redirect = function(url) {
+        if(!url) {
+            return;
+        }
+
+        url = object.isString(url) ? url : url.url;
+
+        if (object.isString(url)) {
             if(module.pjax && module.pjax.config.active) {
                 module.pjax.redirect(url);
             } else {
@@ -401,10 +429,11 @@ humhub.module('client', function (module, require, $) {
         reload: reload,
         submit: submit,
         init: init,
+        sortOrder: 100,
         json: json,
         Response: Response,
         onBeforeLoad: onBeforeLoad,
-        offBeforeLoad: offBeforeLoad
-
+        offBeforeLoad: offBeforeLoad,
+        redirect: redirect
     });
 });

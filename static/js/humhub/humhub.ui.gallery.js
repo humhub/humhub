@@ -1,5 +1,5 @@
 /**
- *  
+ *
  * @param {type} param1
  * @param {type} param2
  */
@@ -28,6 +28,7 @@ humhub.module('ui.gallery', function (module, require, $) {
     };
 
     module.export({
-        init: init
+        init: init,
+        sortOrder: 100,
     });
 });

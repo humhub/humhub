@@ -64,7 +64,7 @@ $.fn.spacepicker = function (options) {
         $('#space_input_field').focusout(function () {
             $('#space_tags').removeClass('focus');
         });
-        
+
         $('body').append($('#spacepicker'));
     }
 

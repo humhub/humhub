@@ -8,6 +8,14 @@
 
 namespace humhub\modules\ui\view\components;
 
+use humhub\assets\AppAsset;
+use humhub\assets\BlueimpGalleryStyleAsset;
+use humhub\assets\CoreBundleAsset;
+use humhub\assets\HighlightJsStyleAsset;
+use humhub\assets\NProgressStyleAsset;
+use humhub\assets\Select2Asset;
+use humhub\assets\Select2StyleAsset;
+use humhub\components\assets\AssetBundle;
 use humhub\libs\Html;
 use humhub\modules\web\pwa\widgets\LayoutHeader;
 use humhub\modules\web\pwa\widgets\SiteIcon;
@@ -29,14 +37,30 @@ class View extends \yii\web\View
      */
     const BLOCK_SIDEBAR = 'sidebar';
 
+    /**
+     * @var string page title
+     * @see View::setPageTitle
+     */
     private $_pageTitle;
 
     /**
-     * Holds all javascript configurations, which will be appended to the view.
+     * @var array Contains javascript configurations, which will be appended to the view.
      * @see View::endBody
-     * @var array
      */
     private $jsConfig = [];
+
+    /**
+     * @var array contains static core style and script assets which should be pre-loaded as `<link rel="preload">` element.
+     */
+    protected static $preload = [
+        //'theme.css',
+        'bootstrap.css',
+    ];
+
+    /**
+     * @var array contains already pre-loaded asset urls.
+     */
+    private static $preloaded = [];
 
     /**
      * Sets current page title
@@ -59,6 +83,28 @@ class View extends \yii\web\View
     }
 
 
+    /**
+     * Registers the javascript module configuration for one or multiple modules.
+     *
+     * ```javascript
+     * $this->registerJsConfig('moduleId', [
+     *     'someKey' => 'someValue'
+     * ]);
+     *
+     * // or
+     *
+     * $this->registerJsConfig([
+     *      'module1' => [
+     *         'someKey' => 'someValue'
+     *      ],
+     *      'module2' => [
+     *          'someKey' => 'anotherValue';
+     *      ]
+     * ]);
+     * ```
+     * @param $module
+     * @param null $params
+     */
     public function registerJsConfig($module, $params = null)
     {
         if (is_array($module)) {
@@ -120,23 +166,36 @@ class View extends \yii\web\View
     }
 
     /**
+     * @inheritDoc
+     */
+    public function registerAssetBundle($name, $position = null)
+    {
+        $bundle = parent::registerAssetBundle($name, $position);
+
+        if($bundle instanceof AssetBundle && !empty($bundle->preload)) {
+            static::$preload = ArrayHelper::merge(static::$preload, $bundle->preload);
+        }
+
+        return $bundle;
+    }
+
+    /**
      * Unregisters standard assets on ajax requests
      */
     protected function unregisterAjaxAssets()
     {
         unset($this->assetBundles['yii\bootstrap\BootstrapAsset']);
+        unset($this->assetBundles[Select2StyleAsset::class]);
+        unset($this->assetBundles[NProgressStyleAsset::class]);
+        unset($this->assetBundles[HighlightJsStyleAsset::class]);
+        unset($this->assetBundles[BlueimpGalleryStyleAsset::class]);
+        unset($this->assetBundles[AppAsset::class]);
+        unset($this->assetBundles[AppAsset::BUNDLE_NAME]);
+        unset($this->assetBundles[CoreBundleAsset::class]);
+        unset($this->assetBundles[CoreBundleAsset::BUNDLE_NAME]);
         unset($this->assetBundles['yii\web\JqueryAsset']);
         unset($this->assetBundles['yii\web\YiiAsset']);
         unset($this->assetBundles['all']);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function registerJsFile($url, $options = [], $key = null)
-    {
-        Html::setNonce($options);
-        parent::registerJsFile($this->addCacheBustQuery($url), $options, $key);
     }
 
     /**
@@ -218,13 +277,43 @@ class View extends \yii\web\View
         return parent::renderHeadHtml(). (empty($lines) ? '' : implode("\n", $lines));
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function registerJsFile($url, $options = [], $key = null)
+    {
+        $cacheBustedUrl = $this->addCacheBustQuery($url);
+        foreach (static::$preload as $fileName) {
+            if(strpos($url,$fileName)) {
+                $this->registerPreload($cacheBustedUrl, 'script');
+            }
+        }
+
+        Html::setNonce($options);
+        parent::registerJsFile($this->addCacheBustQuery($url), $options, $key);
+    }
 
     /**
      * @inheritdoc
      */
     public function registerCssFile($url, $options = [], $key = null)
     {
-        parent::registerCssFile($this->addCacheBustQuery($url), $options, $key);
+        $cacheBustedUrl = $this->addCacheBustQuery($url);
+        foreach (static::$preload as $fileName) {
+            if(strpos($url,$fileName)) {
+                $this->registerPreload($cacheBustedUrl, 'style');
+            }
+        }
+
+        parent::registerCssFile($cacheBustedUrl, $options, $key);
+    }
+
+    protected function registerPreload($url, $as)
+    {
+        if(!in_array($url, static::$preloaded, true)) {
+            $this->registerLinkTag((['rel' => 'preload', 'as' => $as, 'href' => $url]));
+            static::$preloaded[] = $url;
+        }
     }
 
     /**
@@ -297,14 +386,17 @@ class View extends \yii\web\View
                 $viewStatus = Yii::$app->getSession()->getFlash('view-status');
                 $type = strtolower(key($viewStatus));
                 $value = Html::encode(array_values($viewStatus)[0]);
+                $value = str_replace('&quot;', '', $value);
+                $value = trim($value);
                 $this->registerJs('humhub.modules.ui.status.' . $type . '("' . $value . '")', View::POS_END, 'viewStatusMessage');
             }
+
             if (Yii::$app->session->hasFlash('executeJavascript')) {
                 $position = self::POS_READY;
                 if (Yii::$app->session->hasFlash('executeJavascriptPosition')) {
                     $position = Yii::$app->session->hasFlash('executeJavascriptPosition');
                 }
-                $this->registerJs(Yii::$app->session->getFlash('executeJavascript'));
+                $this->registerJs(Yii::$app->session->getFlash('executeJavascript'), $position);
             }
         }
 

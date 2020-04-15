@@ -21,9 +21,16 @@ class DeleteForm extends Model
 {
 
     /**
-     * @var string users password
+     * @var string the space name to check
      */
-    public $currentPassword;
+    public $spaceName;
+
+
+    /**
+     * @var string the space name given by the user
+     */
+    public $confirmSpaceName;
+
 
     /**
      * @inheritdoc
@@ -31,8 +38,8 @@ class DeleteForm extends Model
     public function rules()
     {
         return [
-            ['currentPassword', 'required'],
-            ['currentPassword', CheckPasswordValidator::class]
+            ['confirmSpaceName', 'required'],
+            ['confirmSpaceName', 'compare', 'compareValue' => $this->spaceName],
         ];
     }
 
@@ -42,7 +49,7 @@ class DeleteForm extends Model
     public function attributeLabels()
     {
         return [
-            'currentPassword' => Yii::t('SpaceModule.manage', 'Your password'),
+            'confirmSpaceName' => Yii::t('SpaceModule.manage', 'Space name'),
         ];
     }
 

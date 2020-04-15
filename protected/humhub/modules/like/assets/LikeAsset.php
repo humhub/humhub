@@ -8,11 +8,11 @@
 
 namespace humhub\modules\like\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 
 /**
  * Assets for like related resources.
- * 
+ *
  * @since 1.2
  * @author buddha
  */

@@ -8,8 +8,8 @@
 
 namespace humhub\assets;
 
-use Yii;
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
+use yii\web\View;
 
 /**
  * TimeAgo Asset Bundle
@@ -18,6 +18,20 @@ use yii\web\AssetBundle;
  */
 class JqueryTimeAgoAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $defaultDepends = false;
+
+    /**
+     * @inheritdoc
+     */
+    public $defer = false;
+
+    /**
+     * @inheritdoc
+     */
+    public $jsPosition = View::POS_HEAD;
 
     /**
      * @inheritdoc

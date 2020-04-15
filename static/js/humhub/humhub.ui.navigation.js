@@ -69,6 +69,7 @@ humhub.module('ui.navigation', function (module, require, $) {
 
     module.export({
         init: init,
+        sortOrder: 100,
         setActive: setActive,
         initTopNav: initTopNav,
         setActiveItem: setActiveItem

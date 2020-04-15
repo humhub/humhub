@@ -27,10 +27,4 @@ class CaretjsAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = ['dist/jquery.caret.min.js'];
-
-    /**
-     * @inheritdoc
-     */
-    public $css = [];
-
 }

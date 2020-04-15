@@ -124,6 +124,7 @@ class DefaultController extends Controller
     public function actionDelete()
     {
         $model = new DeleteForm();
+        $model->spaceName = $this->getSpace()->name;
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $this->getSpace()->delete();
             return $this->goHome();

@@ -8,19 +8,19 @@
 
 namespace humhub\modules\post\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 
 class PostAsset extends AssetBundle
 {
-
+    /**
+     * @inheritdoc
+     */
     public $sourcePath = '@post/resources';
-    public $css = [];
+
+    /**
+     * @inheritdoc
+     */
     public $js = [
         'js/humhub.post.js'
     ];
-    
-    public $depends = [
-        'humhub\assets\CoreApiAsset'
-    ];
-
 }

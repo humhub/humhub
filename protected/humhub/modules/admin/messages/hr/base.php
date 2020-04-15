@@ -34,7 +34,6 @@ return [
     'Caching' => 'Caching',
     'Cronjobs' => 'Cronjobs',
     'Design' => 'Dizajn',
-    'E-Mail summaries' => 'E-mail sažeci',
     'Files' => 'Datoteke',
     'General' => 'Općenito',
     'Groups' => 'Grupe',

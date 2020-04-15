@@ -12,7 +12,6 @@ use humhub\modules\file\Module;
 use Yii;
 use yii\web\UploadedFile;
 use humhub\modules\file\models\File;
-use humhub\modules\file\libs\ImageConverter;
 use humhub\modules\file\libs\FileHelper;
 
 /**
@@ -67,11 +66,6 @@ class FileValidator extends \yii\validators\FileValidator
         if ($errors !== null) {
             return $errors;
         }
-
-        $error = $this->checkMemoryLimit($file);
-        if ($error !== null) {
-            return $error;
-        }
     }
 
     /**
@@ -100,29 +94,6 @@ class FileValidator extends \yii\validators\FileValidator
                 $this->addError($model, $attribute, Yii::t('FileModule.base', 'Double file extensions are not allowed!'));
             }
         }
-    }
-
-    /**
-     * Checks memory limit if GD is used for image conversions
-     *
-     * @param \yii\web\UploadedFile $file
-     * @return array|null
-     * @throws \yii\base\Exception
-     */
-    protected function checkMemoryLimit($file)
-    {
-        if (Yii::$app->getModule('file')->settings->get('imageMagickPath')) {
-            return null;
-        }
-
-        $convertableFileTypes = [image_type_to_mime_type(IMAGETYPE_PNG), image_type_to_mime_type(IMAGETYPE_GIF), image_type_to_mime_type(IMAGETYPE_JPEG)];
-        if (in_array($file->type, $convertableFileTypes)) {
-            if (!ImageConverter::allocateMemory($file->tempName, true)) {
-                return [Yii::t('FileModule.base', 'Image dimensions are too big to be processed with current server memory limit!'), []];
-            }
-        }
-
-        return null;
     }
 
 

@@ -8,6 +8,7 @@
 
 namespace humhub\assets;
 
+use humhub\components\assets\WebStaticAssetBundle;
 use yii\web\AssetBundle;
 
 /**
@@ -16,8 +17,9 @@ use yii\web\AssetBundle;
  * @see IEFixesAsset for older IE versions
  * @since 1.2
  * @author Luke
+ * @deprecated since v1.5 not in use anymore
  */
-class IE9FixesAsset extends AssetBundle
+class IE9FixesAsset extends WebStaticAssetBundle
 {
 
     /**

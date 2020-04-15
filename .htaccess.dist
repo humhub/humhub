@@ -1,4 +1,4 @@
-# check if RewriteModule is availbale 
+# check if RewriteModule is availbale
 <IfModule mod_rewrite.c>
 
     Options +FollowSymLinks
@@ -42,10 +42,3 @@
         Deny from all
     </IfModule>
 </FilesMatch>
-
-# Caching schema
-<IfModule mod_headers.c>
-    <FilesMatch "\.(jpg|png|gif|ico|svg|css|js|less)$">
-        Header set Cache-Control "private, max-age=3600"
-    </FilesMatch>
-</IfModule>

@@ -1,54 +1,43 @@
 <?php
 
-use humhub\compat\CActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\user\models\ProfileFieldCategory;
+use humhub\widgets\Button;
 use yii\helpers\Url;
 use humhub\libs\Html;
+
+/* @var $category ProfileFieldCategory */
 ?>
 <div class="panel-body">
     <div class="pull-right">
         <?= Html::backButton(['index'], ['label' => Yii::t('AdminModule.base', 'Back to overview'), 'class' => 'pull-right']); ?>
-    </div>   
+    </div>
 
-    <?php if (!$category->isNewRecord) : ?>
+    <?php if (!$category->isNewRecord): ?>
         <h4><?= Yii::t('AdminModule.user', 'Edit profile category'); ?></h4>
     <?php else: ?>
         <h4><?= Yii::t('AdminModule.user', 'Create new profile category'); ?></h4>
     <?php endif; ?>
     <br>
 
-    <?php $form = CActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(); ?>
 
-    <div class="form-group">
-        <?= $form->labelEx($category, 'title') ?>
-        <?= $form->textField($category, 'title', ['class' => 'form-control']); ?>
-        <?= $form->error($category, 'title'); ?>
-    </div>
+    <?= $form->field($category, 'title') ?>
 
-    <div class="form-group">
-        <?= $form->labelEx($category, 'description') ?>
-        <?= $form->textArea($category, 'description', ['class' => 'form-control', 'rows' => '5']); ?>
-        <?= $form->error($category, 'description'); ?>
-    </div>
+    <?= $form->field($category, 'description')->textarea(['rows' => 5]) ?>
 
-    <div class="form-group">
-        <?= $form->labelEx($category, 'sort_order') ?>
-        <?= $form->textField($category, 'sort_order', ['class' => 'form-control']); ?>
-        <?= $form->error($category, 'sort_order'); ?>
-    </div>
+    <?= $form->field($category, 'sort_order') ?>
 
-    <div class="form-group">
-        <?= $form->labelEx($category, 'translation_category') ?>
-        <?= $form->textField($category, 'translation_category', ['class' => 'form-control']); ?>
-        <?= $form->error($category, 'translation_category'); ?>
-    </div>
+    <?= $form->field($category, 'translation_category') ?>
 
     <hr>
 
-    <?= Html::submitButton(Yii::t('AdminModule.user', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+    <?= Button::save()->submit() ?>
 
-    <?php if (!$category->isNewRecord && !$category->is_system) : ?>
-        <?= Html::a(Yii::t('AdminModule.user', 'Delete'), Url::to(['delete-category', 'id' => $category->id]), ['class' => 'btn btn-danger']); ?>
+    <?php if (!$category->isNewRecord && !$category->is_system): ?>
+        <?= Button::danger(Yii::t('AdminModule.user', 'Delete'))
+            ->link(Url::to(['delete-category', 'id' => $category->id]))->confirm()->right()?>
     <?php endif; ?>
 
-    <?php CActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 </div>

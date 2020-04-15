@@ -8,19 +8,20 @@
 
 namespace humhub\modules\live\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 
 class LiveAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
     public $sourcePath = '@live/resources';
-    public $css = [];
+
+    /**
+     * @inheritdoc
+     */
     public $js = [
         'js/humhub.live.js',
         'js/humhub.live.poll.js',
-        'js/humhub.live.push.js',
-    ];
-    
-    public $publishOptions = [
-        'forceCopy' => false,
     ];
 }

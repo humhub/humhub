@@ -9,10 +9,10 @@
 namespace humhub\modules\admin\controllers;
 
 use Yii;
+use humhub\modules\admin\models\forms\LogFilterForm;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\SeeAdminInformation;
 use humhub\modules\admin\models\Log;
-use yii\data\Pagination;
 
 /**
  * LoggingController provides access to the database logging.
@@ -31,7 +31,7 @@ class LoggingController extends Controller
     {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Logging'));
         $this->subLayout = '@admin/views/layouts/information';
-        
+
 		return parent::init();
     }
 
@@ -47,26 +47,35 @@ class LoggingController extends Controller
 
     public function actionIndex()
     {
-        $pageSize = 10;
+        $filter = new LogFilterForm();
 
-        $query = Log::find();
-        $query->orderBy('id DESC');
+        if(Yii::$app->request->post()) {
+            $filter->load(Yii::$app->request->post());
+        } else {
+            $filter->load(Yii::$app->request->get());
+        }
 
-        $countQuery = clone $query;
-        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $pageSize]);
-        $query->offset($pagination->offset)->limit($pagination->limit);
+        $params = [
+            'filter' => $filter,
+            'logEntries' => $filter->findEntries(),
+            'pagination' => $filter->getPagination(),
+        ];
 
-        return $this->render('index', [
-            'logEntries' => $query->all(),
-            'pagination' => $pagination,
-        ]);
+        if(Yii::$app->request->isAjax && !Yii::$app->request->isPjax) {
+            return $this->asJson([
+                'html' => $this->renderPartial('log_entries', $params),
+                'url' => $filter->getUrl()
+            ]);
+        }
+
+        return $this->render('index', $params);
     }
 
     public function actionFlush()
     {
         $this->forcePostRequest();
         Log::deleteAll();
-        
+
 		return $this->redirect(['index']);
     }
 

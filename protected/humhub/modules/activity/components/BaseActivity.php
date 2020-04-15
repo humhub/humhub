@@ -177,11 +177,17 @@ abstract class BaseActivity extends SocialActivity
     {
         if ($this->originator !== null) {
             return $this->originator->id;
-        } elseif ($this->source instanceof ContentActiveRecord) {
+        }
+
+        if ($this->source instanceof ContentActiveRecord) {
             return $this->source->content->created_by;
-        } elseif ($this->source instanceof ContentAddonActiveRecord) {
+        }
+
+        if ($this->source instanceof ContentAddonActiveRecord) {
             return $this->source->created_by;
         }
+
+        return null;
     }
 
 }

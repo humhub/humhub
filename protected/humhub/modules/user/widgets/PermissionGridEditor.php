@@ -67,23 +67,23 @@ class PermissionGridEditor extends GridView
                         $module = Yii::$app->getModule($data['moduleId']);
                         return Html::tag('strong', $data['title']) .
                                 '&nbsp;&nbsp;' .
-                                Html::tag('span', $module->getName(), ['class' => 'badge']) .
+                                Html::tag('span', $module->getName(), ['class' => 'badge', 'data-module-id' => $data['moduleId']]) .
                                 Html::tag('br') .
                                 $data['description'];
                     }
-                        ],
-                        [
-                            'label' => '',
-                            'class' => 'humhub\libs\DropDownGridColumn',
-                            'attribute' => 'state',
-                            'readonly' => function($data) {
-                                return !($data['changeable']);
-                            },
-                            'submitAttributes' => [ 'permissionId', 'moduleId'],
-                            'dropDownOptions' => 'states'
-                        ],
-                    ],
-                ]);
+                ],
+                [
+                    'label' => '',
+                    'class' => 'humhub\libs\DropDownGridColumn',
+                    'attribute' => 'state',
+                    'readonly' => function($data) {
+                        return !($data['changeable']);
+                    },
+                    'submitAttributes' => [ 'permissionId', 'moduleId'],
+                    'dropDownOptions' => 'states'
+                ],
+            ],
+         ]);
 
                 /* Used for sections
                   $this->beforeRow = function($model, $key, $index, $that) {

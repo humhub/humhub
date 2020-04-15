@@ -37,7 +37,7 @@ function parseHtml(htmlString) {
 
 /**
  * Used previously to format/fix time fields on focus out
- * 
+ *
  * @deprecated 1.2
  */
-$.fn.format = function (options) {}
+$.fn.format = function (options) {};

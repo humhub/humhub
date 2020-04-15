@@ -28,6 +28,8 @@ class ModuleEvent extends \yii\base\Event
 
     /**
      * @return Module|null the module instance if already installed
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
      */
     public function getModule()
     {

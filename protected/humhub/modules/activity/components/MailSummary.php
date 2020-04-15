@@ -8,6 +8,7 @@
 
 namespace humhub\modules\activity\components;
 
+use humhub\modules\activity\Module;
 use Yii;
 use yii\base\Exception;
 use yii\base\Component;
@@ -38,7 +39,7 @@ class MailSummary extends Component
     /**
      * @var \humhub\modules\user\models\User the user
      */
-    public $user = null;
+    public $user;
 
     /**
      * @var int the interval of this summary
@@ -99,13 +100,16 @@ class MailSummary extends Component
             $mail->setSubject($this->getSubject());
             if ($mail->send()) {
                 $this->setLastSummaryDate();
+                Yii::$app->i18n->autosetLocale();
                 return true;
             }
-        } catch (Exception $ex) {
+        } catch (\Throwable $ex) {
             Yii::error('Could not send mail to: ' . $this->user->email . ' - Error:  ' . $ex->getMessage());
+        } finally {
+            Yii::$app->i18n->autosetLocale();
         }
 
-        Yii::$app->i18n->autosetLocale();
+        return false;
     }
 
     /**
@@ -117,9 +121,13 @@ class MailSummary extends Component
     {
         if ($this->interval === self::INTERVAL_DAILY) {
             return Yii::t('ActivityModule.base', 'Your daily summary');
-        } elseif ($this->interval === self::INTERVAL_HOURLY) {
+        }
+
+        if ($this->interval === self::INTERVAL_HOURLY) {
             return Yii::t('ActivityModule.base', 'Latest news');
-        } elseif ($this->interval === self::INTERVAL_WEEKLY) {
+        }
+
+        if ($this->interval === self::INTERVAL_WEEKLY) {
             return Yii::t('ActivityModule.base', 'Your weekly summary');
         }
 
@@ -129,7 +137,7 @@ class MailSummary extends Component
     /**
      * Returns the list of activities for the e-mail summary
      *
-     * @return \humhub\modules\activity\models\Activity[] the activities
+     * @return BaseActivity[] the activities
      */
     public function getActivities()
     {
@@ -160,9 +168,6 @@ class MailSummary extends Component
             try {
                 $activity = $content->getPolymorphicRelation();
                 if ($activity instanceof Activity) {
-                    /**
-                     * @var $activity \humhub\modules\activity\models\Activity
-                     */
                     $activities[] = $activity->getActivityBaseClass();
                 }
             } catch (Exception $ex) {
@@ -179,17 +184,17 @@ class MailSummary extends Component
      */
     protected function setLastSummaryDate()
     {
-        Yii::$app->getModule('activity')->settings->user($this->user)->set('mailSummaryLast', time());
+        static::getModule()->settings->user($this->user)->set('mailSummaryLast', time());
     }
 
     /**
      * Returns the last summary date
      *
-     * @return string|\yii\db\Expression of the last summary mail
+     * @return string|Expression of the last summary mail
      */
     protected function getLastSummaryDate()
     {
-        $lastSent = (int) Yii::$app->getModule('activity')->settings->user($this->user)->get('mailSummaryLast');
+        $lastSent = (int) static::getModule()->settings->user($this->user)->get('mailSummaryLast');
         if (empty($lastSent)) {
             $lastSent = new Expression('NOW() - INTERVAL 24 HOUR');
         } else {
@@ -207,9 +212,8 @@ class MailSummary extends Component
      */
     protected function getLimitContentContainerMode()
     {
-        $activityModule = Yii::$app->getModule('activity');
+        $activityModule = static::getModule();
         $default = $activityModule->settings->get('mailSummaryLimitSpacesMode', '');
-
         return $activityModule->settings->user($this->user)->get('mailSummaryLimitSpacesMode', $default);
     }
 
@@ -221,7 +225,7 @@ class MailSummary extends Component
     protected function getLimitContentContainers()
     {
         $spaces = [];
-        $activityModule = Yii::$app->getModule('activity');
+        $activityModule = static::getModule();
         $defaultLimitSpaces = $activityModule->settings->get('mailSummaryLimitSpaces', '');
         $limitSpaces = $activityModule->settings->user($this->user)->get('mailSummaryLimitSpaces', $defaultLimitSpaces);
         foreach (explode(',', $limitSpaces) as $guid) {
@@ -241,7 +245,7 @@ class MailSummary extends Component
      */
     protected function getSuppressedActivities()
     {
-        $activityModule = Yii::$app->getModule('activity');
+        $activityModule = static::getModule();
         $defaultActivitySuppress = $activityModule->settings->get('mailSummaryActivitySuppress', '');
         $activitySuppress = $activityModule->settings->user($this->user)->get('mailSummaryActivitySuppress', $defaultActivitySuppress);
         if (empty($activitySuppress)) {
@@ -251,4 +255,11 @@ class MailSummary extends Component
         return explode(',', trim($activitySuppress));
     }
 
+    /**
+     * @return Module
+     */
+    private static function getModule()
+    {
+        return Yii::$app->getModule('activity');
+    }
 }

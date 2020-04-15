@@ -262,7 +262,6 @@ humhub.module('ui.widget', function (module, require, $) {
                 });
             }
         });
-        return this;
     };
 
     Widget.prototype.fadeIn = function () {
@@ -274,7 +273,6 @@ humhub.module('ui.widget', function (module, require, $) {
                 });
             }
         });
-        return this;
     };
 
     Widget.exists = function (ns) {
@@ -293,5 +291,6 @@ humhub.module('ui.widget', function (module, require, $) {
     module.export({
         Widget: Widget,
         init: init,
+        sortOrder: 100,
     });
 });

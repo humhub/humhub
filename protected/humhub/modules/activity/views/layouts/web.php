@@ -39,7 +39,7 @@ use yii\helpers\Url;
                         'htmlOptions' => [
                             'class' => 'img-space pull-left',
                         ]
-                    ]);
+                    ])
                     ?>
                 <?php endif; ?>
 
@@ -48,11 +48,11 @@ use yii\helpers\Url;
             <div class="media-body text-break">
 
                 <!-- Show content -->
-                <?= $content; ?>
+                <?= $content ?>
                 <br>
 
                 <!-- show time -->
-                <?= TimeAgo::widget(['timestamp' => $record->content->created_at]); ?>
+                <?= TimeAgo::widget(['timestamp' => $record->content->created_at]) ?>
             </div>
         </div>
     </li>
