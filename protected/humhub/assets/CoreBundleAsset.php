@@ -37,7 +37,6 @@ class CoreBundleAsset extends WebStaticAssetBundle
 
     const STATIC_DEPENDS = [
         AppAsset::class,
-        JqueryColorAsset::class,
         JqueryHighlightAsset::class,
         JqueryAutosizeAsset::class,
         Select2Asset::class,

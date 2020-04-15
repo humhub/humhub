@@ -24,7 +24,6 @@
         "npm-asset/font-awesome": "^4.7.0",
         "npm-asset/imagesloaded": "*",
         "npm-asset/jplayer": "2.9.*",
-        "npm-asset/jquery-color": "*",
         "npm-asset/jquery": "^3.4.0",
         "npm-asset/jquery-knob": "1.2.*",
         "npm-asset/timeago": "^1.6.3",
