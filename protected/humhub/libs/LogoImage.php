@@ -46,8 +46,16 @@ class LogoImage
      * @param bool $autoResize automatically resize to given size if not available yet
      * @return string|null
      */
-    public static function getUrl($maxWidth = 150, $maxHeight = 40, $autoResize = true)
+    public static function getUrl($maxWidth = null, $maxHeight = null, $autoResize = true)
     {
+        if ($maxWidth === null) {
+            $maxWidth = 300;
+        }
+
+        if ($maxHeight === null) {
+            $maxHeight = 40;
+        }
+
         $file = self::getFile($maxWidth, $maxHeight);
         if (file_exists($file)) {
             // Workaround for absolute urls in console applications (Cron)
