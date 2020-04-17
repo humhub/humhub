@@ -2,11 +2,12 @@ HumHub Change Log
 =================
 
 
-1.5.1 (April 16, 2020)
+1.5.1 (April 17, 2020)
 ----------------------
 
 - Fix #4001: LDAP user sync error
 - Fix #4004: Missing translation strings
+- Fix #4009: Yii queue error handling broken
 
 
 1.5.0 (April 15, 2020)
