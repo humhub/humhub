@@ -83,7 +83,12 @@ class PreviewImage extends BaseConverter
                 $image->resize($image->getSize()->widen($this->options['width']));
             }
 
-            $image->save($this->file->store->get($fileName), ['format' => 'png']);
+            $options = ['format' => 'png'];
+            if (!($image instanceof \Imagine\Gd\Image) && count($image->layers()) > 1) {
+                $options = ['format' => 'gif', 'animated' => true];
+            }
+
+            $image->save($this->file->store->get($fileName), $options);
         }
 
 
