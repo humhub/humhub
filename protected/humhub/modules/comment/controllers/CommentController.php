@@ -92,23 +92,27 @@ class CommentController extends ContentAddonController
             );
         }
 
-        $message = Yii::$app->request->post('message');
-        $files = Yii::$app->request->post('fileList');
 
-        if (empty(trim($message)) && empty($files)) {
-            throw new BadRequestHttpException(Yii::t('CommentModule.base','The comment must not be empty!'));
-        }
+        return Comment::getDb()->transaction(function ($db) {
+            $message = Yii::$app->request->post('message');
+            $files = Yii::$app->request->post('fileList');
 
-        $comment = new Comment(['message' => $message]);
-        $comment->setPolyMorphicRelation($this->parentContent);
-        $comment->save();
-        $comment->fileManager->attach($files);
+            if (empty(trim($message)) && empty($files)) {
+                throw new BadRequestHttpException(Yii::t('CommentModule.base', 'The comment must not be empty!'));
+            }
 
-        // Reload comment to get populated created_at field
-        $comment->refresh();
+            $comment = new Comment(['message' => $message]);
+            $comment->setPolyMorphicRelation($this->parentContent);
+            $comment->save();
+            $comment->fileManager->attach($files);
 
-        return $this->renderAjaxContent(CommentWidget::widget(['comment' => $comment]));
+            // Reload comment to get populated created_at field
+            $comment->refresh();
+
+            return $this->renderAjaxContent(CommentWidget::widget(['comment' => $comment]));
+        });
     }
+
 
     public function actionEdit()
     {
@@ -124,15 +128,15 @@ class CommentController extends ContentAddonController
             $this->contentAddon = Comment::findOne(['id' => $this->contentAddon->id]);
 
             return $this->renderAjaxContent(CommentWidget::widget([
-                                'comment' => $this->contentAddon,
-                                'justEdited' => true
+                'comment' => $this->contentAddon,
+                'justEdited' => true
             ]));
         }
 
         return $this->renderAjax('edit', [
-                    'comment' => $this->contentAddon,
-                    'contentModel' => $this->contentAddon->object_model,
-                    'contentId' => $this->contentAddon->object_id
+            'comment' => $this->contentAddon,
+            'contentModel' => $this->contentAddon->object_model,
+            'contentId' => $this->contentAddon->object_id
         ]);
     }
 

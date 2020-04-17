@@ -83,9 +83,8 @@ class Post extends ContentActiveRecord implements Searchable
      */
     public function afterSave($insert, $changedAttributes)
     {
-
         parent::afterSave($insert, $changedAttributes);
-        RichText::postProcess($this->message, $this);
+        RichText::postProcess($this->message, $this, 'message');
     }
 
     /**
