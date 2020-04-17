@@ -20,7 +20,7 @@ use yii\helpers\Url;
     <?= Yii::t('AdminModule.space', 'This overview contains a list of each space with actions to view, edit and delete spaces.'); ?>
 </div>
 
-<br />
+<br/>
 <?php $form = ActiveForm::begin(['method' => 'get', 'action' => Url::to(['/admin/space'])]); ?>
 <div class="row">
     <div class="col-md-8">
@@ -46,13 +46,16 @@ use yii\helpers\Url;
         'columns' => [
             ['class' => SpaceImageColumn::class],
             ['class' => SpaceTitleColumn::class],
-            'memberCount',
+            [
+                'attribute' => 'memberCount',
+                'label' => Yii::t('SpaceModule.base', 'Members')
+            ],
             ['class' => ImageColumn::class, 'userAttribute' => 'ownerUser'],
             [
                 'attribute' => 'ownerUser.profile.lastname',
                 'class' => DisplayNameColumn::class,
                 'userAttribute' => 'ownerUser',
-                'label' => 'Owner'
+                'label' => Yii::t('SpaceModule.base', 'Owner')
             ],
             ['class' => SpaceActionColumn::class],
         ],

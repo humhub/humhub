@@ -6,6 +6,7 @@ HumHub Change Log
 ----------------------
 
 - Fix #4001: LDAP user sync error
+- Fix #4004: Missing translation strings
 
 
 1.5.0 (April 15, 2020)
