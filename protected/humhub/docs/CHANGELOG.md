@@ -8,6 +8,7 @@ HumHub Change Log
 - Fix #4001: LDAP user sync error
 - Fix #4004: Missing translation strings
 - Fix #4009: Yii queue error handling broken
+- Fix #4008: Some richtext images are embedded as Base64
 
 
 1.5.0 (April 15, 2020)
