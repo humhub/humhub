@@ -35,16 +35,16 @@ use yii\log\Logger;
                     switch ($entry->level) {
                         case Logger::LEVEL_INFO:
                             $labelClass = 'label-info';
-                            $levelName = 'Info';
+                            $levelName = Yii::t('AdminModule.information', 'Info');
                             break;
                         case Logger::LEVEL_WARNING:
                             $labelClass = 'label-warning';
-                            $levelName = 'Warning';
+                            $levelName = Yii::t('AdminModule.information', 'Warning');
                             break;
                         case Logger::LEVEL_ERROR:
                         default:
                             $labelClass = 'label-danger';
-                            $levelName = 'Error';
+                            $levelName = Yii::t('AdminModule.information', 'Error');
                     }
                     ?>
 
@@ -61,7 +61,8 @@ use yii\log\Logger;
     </ul>
 
     <?php if ($pagination->totalCount): ?>
-        <div class="pull-right"><?= Link::danger(Yii::t('AdminModule.information', 'Flush entries'))->post(['flush']) ?></div>
+        <div
+            class="pull-right"><?= Link::danger(Yii::t('AdminModule.information', 'Flush entries'))->post(['flush']) ?></div>
     <?php endif; ?>
 
     <div style="text-align: center;">
