@@ -128,14 +128,14 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     public function afterSave($insert, $changedAttributes)
     {
         $this->flushCache();
-        
+
         if($insert) {
             NewComment::instance()->about($this)->create();
         }
 
         // Handle mentioned users
         // Execute before NewCommentNotification to avoid double notification when mentioned.
-        $processResult = RichText::postProcess($this->message, $this);
+        $processResult = RichText::postProcess($this->message, $this, 'message');
         $mentionedUsers = (isset($processResult['mentioning'])) ? $processResult['mentioning'] : [];
 
         if ($insert) {

@@ -22,6 +22,12 @@ use Yii;
 class PostController extends ContentContainerController
 {
 
+    /**
+     * @return array|mixed
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
+     */
     public function actionPost()
     {
         // Check createPost Permission
@@ -32,7 +38,9 @@ class PostController extends ContentContainerController
         $post = new Post($this->contentContainer);
         $post->message = Yii::$app->request->post('message');
 
-        return WallCreateContentForm::create($post, $this->contentContainer);
+        return Post::getDb()->transaction(function($db) use($post) {
+            return WallCreateContentForm::create($post, $this->contentContainer);
+        });
     }
 
     public function actionEdit()
