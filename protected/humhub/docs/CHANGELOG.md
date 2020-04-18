@@ -12,6 +12,7 @@ HumHub Change Log
 - Fix #4019: Animated Gifs not handled correctly with GMagick extension 
 - Fix #4021: Activity mail queue job timeout error handling 
 - Fix #4005: The uploaded logo is scaled too small.
+- Enh #4026: Check memory limit in prerequisites check 
 - Fix #4023: Background flickering on firefox page transition
 
 
