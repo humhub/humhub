@@ -10,6 +10,7 @@ HumHub Change Log
 - Fix #4009: Yii queue error handling broken
 - Fix #4008: Some richtext images are embedded as Base64
 - Fix #4019: Animated Gifs not handled correctly with GMagick extension 
+- Fix #4021: Activity mail queue job timeout error handling 
 
 
 1.5.0 (April 15, 2020)
