@@ -91,6 +91,9 @@ class Invite extends ActiveRecord
     {
         return [
             'email' => Yii::t('UserModule.invite', 'Email'),
+            'created_at' => Yii::t('UserModule.base', 'Created at'),
+            'source' => Yii::t('UserModule.base', 'Source'),
+            'language' => Yii::t('base', 'Language'),
         ];
     }
 

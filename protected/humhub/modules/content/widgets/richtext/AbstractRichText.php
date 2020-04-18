@@ -180,9 +180,15 @@ abstract class AbstractRichText extends JsWidget
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    public static function postProcess($text, $record)
+    public static function postProcess($text, $record, $attribute = null)
     {
-        $processorResult = static::getProcessor($text,$record)->process();
+        $processor = static::getProcessor($text,$record, $attribute);
+        $processorResult = $processor->process();
+
+        if($record && $attribute && $processor->text !== $text) {
+            $record->updateAttributes([$attribute => $processor->text]);
+        }
+
         Event::trigger(static::class, static::EVENT_POST_PROCESS, new Event(['data' => ['processorClass' => static::$processorClass, 'text' => $text, 'record' => $record]]));
         return $processorResult;
     }
@@ -202,11 +208,12 @@ abstract class AbstractRichText extends JsWidget
      * @return AbstractRichTextProcessor the related post-processor
      * @throws \yii\base\InvalidConfigException
      */
-    public static function getProcessor($text, $record)
+    public static function getProcessor($text, $record, $attribute = null)
     {
         return Yii::createObject([
             'class' => static::getProcessorClass(),
             'text' => $text,
+            'attribute' => $attribute,
             'record' => $record]);
     }
 

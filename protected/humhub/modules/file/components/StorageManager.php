@@ -79,15 +79,17 @@ class StorageManager extends Component implements StorageManagerInterface
         if (is_uploaded_file($file->tempName)) {
             move_uploaded_file($file->tempName, $this->get($variant));
             @chmod($this->get($variant), $this->fileMode);
+
+            /**
+             * For uploaded jpeg files convert them again - to handle special
+             * exif attributes (e.g. orientation)
+             */
+            if ($file->type === 'image/jpeg') {
+                Image::getImagine()->open($this->get($variant))->save($this->get($variant), ['format' => 'jpg']);
+            }
         }
 
-        /**
-         * For uploaded jpeg files convert them again - to handle special
-         * exif attributes (e.g. orientation)
-         */
-        if ($file->type === 'image/jpeg') {
-            Image::getImagine()->open($this->get($variant))->save($this->get($variant), ['format' => 'jpg']);
-        }
+
     }
 
     /**

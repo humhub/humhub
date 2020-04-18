@@ -36,6 +36,11 @@ abstract class AbstractRichTextProcessor extends BaseObject
     public $record;
 
     /**
+     * @var string the richtext attribute of $record
+     */
+    public $attribute;
+
+    /**
      * Executes post process logic
      */
     public function process() {
@@ -46,9 +51,9 @@ abstract class AbstractRichTextProcessor extends BaseObject
             $result['mentioning'] = $this->parseMentioning();
         }
 
-        if($this->record instanceof ActiveRecord) {
-            $this->parseFiles();
-        }
+        $result['files'] = $this->parseFiles();
+
+        $result['text'] = $this->text;
 
         return $result;
     }
