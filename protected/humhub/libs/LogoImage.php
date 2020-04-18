@@ -39,20 +39,22 @@ class LogoImage
     }
 
     /**
-     * Returns the URL of the icon in desired size (width + height)
+     * Returns the URL of the logo image in desired maximum sizes (width and/or height)
      *
-     * @param int $maxWidth in px
-     * @param int $maxHeight in px
+     * @param int|null $maxWidth the maximum width in pixel
+     * @param int|null $maxHeight the maximum width in pixel
      * @param bool $autoResize automatically resize to given size if not available yet
      * @return string|null
      */
     public static function getUrl($maxWidth = null, $maxHeight = null, $autoResize = true)
     {
         if ($maxWidth === null) {
+            // Will change in future!
             $maxWidth = 300;
         }
 
         if ($maxHeight === null) {
+            // Will change in future!
             $maxHeight = 40;
         }
 
