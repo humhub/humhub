@@ -21,8 +21,11 @@ use humhub\modules\web\pwa\widgets\LayoutHeader;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\CoreJsConfig;
 use humhub\widgets\LayoutAddons;
+use yii\bootstrap\BootstrapAsset;
 use yii\helpers\ArrayHelper;
 use Yii;
+use yii\web\JqueryAsset;
+use yii\web\YiiAsset;
 
 /**
  * Class View
@@ -53,7 +56,7 @@ class View extends \yii\web\View
      * @var array contains static core style and script assets which should be pre-loaded as `<link rel="preload">` element.
      */
     protected static $preload = [
-        //'theme.css',
+        'theme.css',
         'bootstrap.css',
     ];
 
@@ -136,7 +139,6 @@ class View extends \yii\web\View
         $this->head();
         $this->beginBody();
         echo $content;
-        $this->unregisterAjaxAssets();
         $this->endBody();
         $this->endPage(true);
 
@@ -157,7 +159,6 @@ class View extends \yii\web\View
         $this->head();
         $this->beginBody();
         echo $this->renderFile($viewFile, $params, $context);
-        $this->unregisterAjaxAssets();
         $this->endBody();
 
         $this->endPage(true);
@@ -179,23 +180,16 @@ class View extends \yii\web\View
         return $bundle;
     }
 
-    /**
-     * Unregisters standard assets on ajax requests
-     */
-    protected function unregisterAjaxAssets()
+    protected function registerAssetFiles($name)
     {
-        unset($this->assetBundles['yii\bootstrap\BootstrapAsset']);
-        unset($this->assetBundles[Select2StyleAsset::class]);
-        unset($this->assetBundles[NProgressStyleAsset::class]);
-        unset($this->assetBundles[HighlightJsStyleAsset::class]);
-        unset($this->assetBundles[BlueimpGalleryStyleAsset::class]);
-        unset($this->assetBundles[AppAsset::class]);
-        unset($this->assetBundles[AppAsset::BUNDLE_NAME]);
-        unset($this->assetBundles[CoreBundleAsset::class]);
-        unset($this->assetBundles[CoreBundleAsset::BUNDLE_NAME]);
-        unset($this->assetBundles['yii\web\JqueryAsset']);
-        unset($this->assetBundles['yii\web\YiiAsset']);
-        unset($this->assetBundles['all']);
+        if(Yii::$app->request->isAjax
+            && (in_array($name, AppAsset::STATIC_DEPENDS)
+                || in_array($name, CoreBundleAsset::STATIC_DEPENDS)
+                || in_array($name, [AppAsset::BUNDLE_NAME, CoreBundleAsset::BUNDLE_NAME]))) {
+            return;
+        }
+
+       return parent::registerAssetFiles($name);
     }
 
     /**
