@@ -26,7 +26,12 @@ class PreviewImage extends BaseConverter
     /**
      * @var ImageInterface
      */
-    public $image;
+    private $_image;
+
+    /**
+     * @var ImageInterface
+     */
+    private $_imageFile;
 
 
     /**
@@ -52,8 +57,7 @@ class PreviewImage extends BaseConverter
             $this->applyFile($file);
         }
 
-        // Provide the natural height so the browser will include a placeholder height. Todo: smooth image loading
-        return Html::img($this->getUrl(), ['class' => 'animated fadeIn', 'height' => $this->height, 'alt' => $this->getAltText()]);
+        return Html::img($this->getUrl(), ['class' => 'animated fadeIn', 'alt' => $this->getAltText()]);
     }
 
 
@@ -72,27 +76,29 @@ class PreviewImage extends BaseConverter
      */
     protected function convert($fileName)
     {
-        if (!is_file($this->file->store->get($fileName))) {
-            $image = Image::getImagine()->open($this->file->store->get());
+        try {
 
-            if ($image->getSize()->getHeight() > $this->options['height']) {
-                $image->resize($image->getSize()->heighten($this->options['height']));
+            if (!is_file($this->file->store->get($fileName))) {
+                $image = Image::getImagine()->open($this->file->store->get());
+
+                if ($image->getSize()->getHeight() > $this->options['height']) {
+                    $image->resize($image->getSize()->heighten($this->options['height']));
+                }
+
+                if ($image->getSize()->getWidth() > $this->options['width']) {
+                    $image->resize($image->getSize()->widen($this->options['width']));
+                }
+
+                $options = ['format' => 'png'];
+                if (!($image instanceof \Imagine\Gd\Image) && count($image->layers()) > 1) {
+                    $options = ['format' => 'gif', 'animated' => true];
+                }
+
+                $image->save($this->file->store->get($fileName), $options);
             }
-
-            if ($image->getSize()->getWidth() > $this->options['width']) {
-                $image->resize($image->getSize()->widen($this->options['width']));
-            }
-
-            $options = ['format' => 'png'];
-            if (!($image instanceof \Imagine\Gd\Image) && count($image->layers()) > 1) {
-                $options = ['format' => 'gif', 'animated' => true];
-            }
-
-            $image->save($this->file->store->get($fileName), $options);
+        } catch (\Exception $ex) {
+            Yii::warning('Could not convert file with id ' . $this->file->id . '. Error: ' . $ex->getMessage());
         }
-
-
-        $this->image = Image::getImagine()->open($this->file->store->get($fileName));
     }
 
     /**
@@ -106,16 +112,11 @@ class PreviewImage extends BaseConverter
             return false;
         }
 
-        try {
-            Image::getImagine()->open($originalFile)->getSize();
-        } catch (\Exception $ex) {
-            return false;
-        }
-
         return true;
     }
 
     /**
+     * @deprecated since 1.5
      * @return int the image width or 0 if not valid
      */
     public function getWidth()
@@ -127,6 +128,7 @@ class PreviewImage extends BaseConverter
     }
 
     /**
+     * @deprecated since 1.5
      * @return int the image height or 0 if not valid
      */
     public function getHeight()
@@ -135,6 +137,21 @@ class PreviewImage extends BaseConverter
             return $this->image->getSize()->getHeight();
         }
         return 0;
+    }
+
+    /**
+     * @deprecated since 1.5
+     * @return ImageInterface
+     */
+    public function getImage()
+    {
+        $fileName = $this->file->store->get($this->getFilename());
+        if ($this->_image === null || $fileName !== $this->_imageFile) {
+            $this->_image = Image::getImagine()->open($fileName);
+            $this->_imageFile = $fileName;
+        }
+
+        return $this->_image;
     }
 
     /**
