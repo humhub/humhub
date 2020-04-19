@@ -2,7 +2,7 @@ HumHub Change Log
 =================
 
 
-1.5.1 (April 18, 2020)
+1.5.1 (April 19, 2020)
 ----------------------
 
 - Fix #4001: LDAP user sync error
