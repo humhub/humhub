@@ -318,8 +318,35 @@ class SelfTest
         }
 
 
+        $memoryLimit = ini_get('memory_limit');
+        if (preg_match('/^(\d+)(.)$/', $memoryLimit, $m)) {
+            if ($m[2] == 'G') {
+                $memoryLimit = $m[1] * 1024 * 1024 * 1024;
+            } elseif ($m[2] == 'M') {
+                $memoryLimit = $m[1] * 1024 * 1024;
+            } elseif ($m[2] == 'K') {
+                $memoryLimit = $m[1] * 1024;
+            }
+        }
+
+        // Check PHP Memory Limit
+        $title = 'PHP - Memory Limit (64 MB)';
+        if ($memoryLimit >= 64 * 1024 * 1024) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK',
+                'hint' => 'Current limit is: ' . Yii::$app->formatter->asShortSize($memoryLimit, 0)
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'WARNING',
+                'hint' => 'Increase memory limit in php.ini - Current limit is: ' . Yii::$app->formatter->asShortSize($memoryLimit, 0)
+            ];
+        }
+
         // Checks LDAP Extension
-        $title = 'LDAP Support';
+        $title = 'PHP - LDAP Support';
 
         if (LdapHelper::isLdapAvailable()) {
             $checks[] = [
