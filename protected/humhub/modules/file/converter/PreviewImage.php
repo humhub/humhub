@@ -72,27 +72,32 @@ class PreviewImage extends BaseConverter
      */
     protected function convert($fileName)
     {
-        if (!is_file($this->file->store->get($fileName))) {
-            $image = Image::getImagine()->open($this->file->store->get());
+        try {
 
-            if ($image->getSize()->getHeight() > $this->options['height']) {
-                $image->resize($image->getSize()->heighten($this->options['height']));
+            if (!is_file($this->file->store->get($fileName))) {
+                $image = Image::getImagine()->open($this->file->store->get());
+
+                if ($image->getSize()->getHeight() > $this->options['height']) {
+                    $image->resize($image->getSize()->heighten($this->options['height']));
+                }
+
+                if ($image->getSize()->getWidth() > $this->options['width']) {
+                    $image->resize($image->getSize()->widen($this->options['width']));
+                }
+
+                $options = ['format' => 'png'];
+                if (!($image instanceof \Imagine\Gd\Image) && count($image->layers()) > 1) {
+                    $options = ['format' => 'gif', 'animated' => true];
+                }
+
+                $image->save($this->file->store->get($fileName), $options);
             }
 
-            if ($image->getSize()->getWidth() > $this->options['width']) {
-                $image->resize($image->getSize()->widen($this->options['width']));
-            }
+            $this->image = Image::getImagine()->open($this->file->store->get($fileName));
 
-            $options = ['format' => 'png'];
-            if (!($image instanceof \Imagine\Gd\Image) && count($image->layers()) > 1) {
-                $options = ['format' => 'gif', 'animated' => true];
-            }
-
-            $image->save($this->file->store->get($fileName), $options);
+        } catch (\Exception $ex) {
+            Yii::warning('Could not convert file with id ' . $this->file->id . '. Error: ' . $ex->getMessage());
         }
-
-
-        $this->image = Image::getImagine()->open($this->file->store->get($fileName));
     }
 
     /**
@@ -103,12 +108,6 @@ class PreviewImage extends BaseConverter
         $originalFile = $file->store->get();
 
         if (substr($file->mime_type, 0, 6) !== 'image/' || !is_file($originalFile)) {
-            return false;
-        }
-
-        try {
-            Image::getImagine()->open($originalFile)->getSize();
-        } catch (\Exception $ex) {
             return false;
         }
 
