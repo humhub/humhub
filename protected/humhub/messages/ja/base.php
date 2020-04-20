@@ -70,7 +70,7 @@ return array (
   'The requested resource could not be found.' => '要求されたリソースが見つかりませんでした。',
   'The space has been archived.' => 'グループはアーカイブされています。',
   'The space has been unarchived.' => 'グループはアーカイブされていません。',
-  'There are unsaved changes, do you really want to leave this page?' => '',
+  'There are unsaved changes, do you really want to leave this page?' => '保存されていない変更があります。このページから移動しますか？',
   'Time Zone' => 'タイムゾーン',
   'Toggle comment menu' => 'コメントメニューの切り替え',
   'Toggle panel menu' => 'パネルメニューの切り替え',
