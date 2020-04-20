@@ -1,6 +1,11 @@
 HumHub Change Log
 =================
 
+1.5.2 (Unreleased)
+----------------------
+
+- Fix #4031: Notifications with non existing base model breaks notification list
+
 
 1.5.1 (April 18, 2020)
 ----------------------
