@@ -47,7 +47,7 @@ class ListController extends Controller
             try {
                 $baseModel = $notification->getBaseModel();
 
-                if (!$baseModel->validate()) {
+                if (!$baseModel || !$baseModel->validate()) {
                     throw new IntegrityException('Invalid base model found for notification');
                 }
 
