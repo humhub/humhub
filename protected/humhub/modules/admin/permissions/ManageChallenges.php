@@ -13,21 +13,21 @@ use humhub\modules\admin\components\BaseAdminPermission;
 use Yii;
 
 /**
- * ManageCategories permission allows access to categories section within the admin area.
+ * ManageChallenges permission allows access to challenges section within the admin area.
  */
-class ManageCategories extends BaseAdminPermission
+class ManageChallenges extends BaseAdminPermission
 {
     /**
      * @inheritdoc
      */
-    protected $id = 'admin_manage_categories';
+    protected $id = 'admin_manage_challenges';
 
     public function __construct($config = [])
     {
         parent::__construct($config);
 
-        $this->title = Yii::t('AdminModule.permissions', 'Manage Categories');
-        $this->description = Yii::t('AdminModule.permissions', 'Can manage categories within the \'Administration -> categories\' section (create/delete).');
+        $this->title = Yii::t('AdminModule.permissions', 'Manage Challenges');
+        $this->description = Yii::t('AdminModule.permissions', 'Can manage challenges within the \'Administration -> challenges\' section (edit).');
     }
 
 }

@@ -9,15 +9,16 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\widgets\BaseMenu;
 use Yii;
 use yii\helpers\Url;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageSettings;
 
 /**
- * Space Administration Menu
+ * Category Administration Menu
  */
-class CategoryMenu extends \humhub\widgets\BaseMenu
+class CategoryMenu extends BaseMenu
 {
 
     public $template = "@humhub/widgets/views/tabMenu";

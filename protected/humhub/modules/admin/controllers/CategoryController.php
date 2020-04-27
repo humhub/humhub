@@ -21,7 +21,7 @@ use yii\web\HttpException;
 use yii\web\Response;
 
 /**
- * CategoryController provides global space administration.
+ * CategoryController provides management for space funding categories.
  */
 class CategoryController extends Controller
 {

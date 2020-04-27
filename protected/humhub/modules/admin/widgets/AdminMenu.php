@@ -8,6 +8,15 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\modules\admin\permissions\ManageCategories;
+use humhub\modules\admin\permissions\ManageChallenges;
+use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\admin\permissions\ManageSettings;
+use humhub\modules\admin\permissions\ManageSpaces;
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\admin\permissions\SeeAdminInformation;
+use humhub\widgets\BaseMenu;
 use Yii;
 use yii\helpers\Url;
 
@@ -16,7 +25,7 @@ use yii\helpers\Url;
  *
  * @author luke
  */
-class AdminMenu extends \humhub\widgets\BaseMenu
+class AdminMenu extends BaseMenu
 {
 
     const SESSION_CAN_SEE_ADMIN_SECTION = 'user.canSeeAdminSection';
@@ -29,20 +38,20 @@ class AdminMenu extends \humhub\widgets\BaseMenu
     {
         $this->addItemGroup([
             'id' => 'admin',
-            'label' => \Yii::t('AdminModule.widgets_AdminMenuWidget', '<strong>Administration</strong> menu'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', '<strong>Administration</strong> menu'),
             'sortOrder' => 100,
         ]);
 
         $this->addItem([
-            'label' => \Yii::t('AdminModule.widgets_AdminMenuWidget', 'Users'),
+            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Users'),
             'url' => Url::toRoute(['/admin/user']),
             'icon' => '<i class="fa fa-user"></i>',
             'sortOrder' => 200,
-            'isActive' => (\Yii::$app->controller->module && \Yii::$app->controller->module->id == 'admin' && (Yii::$app->controller->id == 'user' || Yii::$app->controller->id == 'group' || Yii::$app->controller->id == 'approval' || Yii::$app->controller->id == 'authentication' || Yii::$app->controller->id == 'user-profile' || Yii::$app->controller->id == 'pending-registrations')),
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && (Yii::$app->controller->id == 'user' || Yii::$app->controller->id == 'group' || Yii::$app->controller->id == 'approval' || Yii::$app->controller->id == 'authentication' || Yii::$app->controller->id == 'user-profile' || Yii::$app->controller->id == 'pending-registrations')),
             'isVisible' => Yii::$app->user->can([
-                new \humhub\modules\admin\permissions\ManageUsers(),
-                new \humhub\modules\admin\permissions\ManageSettings(),
-                new \humhub\modules\admin\permissions\ManageGroups()
+                new ManageUsers(),
+                new ManageSettings(),
+                new ManageGroups()
             ]),
         ]);
 
@@ -54,22 +63,35 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             'sortOrder' => 300,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'space'),
             'isVisible' => Yii::$app->user->can([
-                new \humhub\modules\admin\permissions\ManageSpaces(),
-                new \humhub\modules\admin\permissions\ManageSettings(),
+                new ManageSpaces(),
+                new ManageSettings(),
             ]),
         ]);
 
-        $this->addItem([
-            'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Categories'),
-            'id' => 'categories',
-            'url' => Url::toRoute('/admin/category/index-funding'),
-            'icon' => '<i class="fa fa-tag"></i>',
-            'sortOrder' => 400,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'category'),
-            'isVisible' => Yii::$app->user->can([
-                new \humhub\modules\admin\permissions\ManageCategories(),
-            ]),
-        ]);
+        if (Yii::$app->hasModule('xcoin')) {
+            $this->addItem([
+                'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Categories'),
+                'id' => 'categories',
+                'url' => Url::toRoute('/admin/category/index-funding'),
+                'icon' => '<i class="fa fa-tag"></i>',
+                'sortOrder' => 400,
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'category'),
+                'isVisible' => Yii::$app->user->can([
+                    new ManageCategories(),
+                ]),
+            ]);
+            $this->addItem([
+                'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Challenges'),
+                'id' => 'challenges',
+                'url' => Url::toRoute('/admin/challenge/index'),
+                'icon' => '<i class="fa fa-users"></i>',
+                'sortOrder' => 400,
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'challenge'),
+                'isVisible' => Yii::$app->user->can([
+                    new ManageChallenges(),
+                ]),
+            ]);
+        }
 
         $this->addItem([
             'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Modules'),
@@ -79,7 +101,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             'sortOrder' => 500,
             'newItemCount' => 0,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'module'),
-            'isVisible' => Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageModules())
+            'isVisible' => Yii::$app->user->can(new ManageModules())
         ]);
 
         $this->addItem([
@@ -89,7 +111,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             'sortOrder' => 600,
             'newItemCount' => 0,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'setting'),
-            'isVisible' => Yii::$app->user->can(new \humhub\modules\admin\permissions\ManageSettings())
+            'isVisible' => Yii::$app->user->can(new ManageSettings())
         ]);
 
         $this->addItem([
@@ -99,7 +121,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             'sortOrder' => 10000,
             'newItemCount' => 0,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'information'),
-            'isVisible' => Yii::$app->user->can(new \humhub\modules\admin\permissions\SeeAdminInformation())
+            'isVisible' => Yii::$app->user->can(new SeeAdminInformation())
         ]);
 
         parent::init();
@@ -137,7 +159,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             Yii::$app->session->set(static::SESSION_CAN_SEE_ADMIN_SECTION, $canSeeAdminSection);
         }
 
-		return $canSeeAdminSection;
+        return $canSeeAdminSection;
     }
 
     public static function reset()
@@ -148,13 +170,13 @@ class AdminMenu extends \humhub\widgets\BaseMenu
     private static function checkNonAdminAccess()
     {
         $adminMenu = new self();
-        foreach($adminMenu->items as $item) {
-            if(isset($item['isVisible']) && $item['isVisible']) {
+        foreach ($adminMenu->items as $item) {
+            if (isset($item['isVisible']) && $item['isVisible']) {
                 return true;
             }
         }
 
-		return false;
+        return false;
     }
 
 }
