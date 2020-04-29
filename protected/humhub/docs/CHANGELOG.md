@@ -6,6 +6,7 @@ HumHub Change Log
 
 - Fix #4031: Notifications with non existing base model breaks notification list
 - Fix #4038: Cannot use yii\helpers\Html as Html because the name is already in use in ProfileBannerImage
+- Fix #4050: Broken Cron-job documentation link used in cron info sidebar snippet
 
 
 1.5.1 (April 19, 2020)

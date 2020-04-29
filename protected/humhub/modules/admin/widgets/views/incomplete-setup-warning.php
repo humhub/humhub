@@ -31,7 +31,7 @@ use humhub\modules\admin\widgets\IncompleteSetupWarning;
         </ul>
         <br />
         <?php if (Yii::$app->user->isAdmin()): ?>
-            <?= Html::a(Yii::t('AdminModule.base', 'Open documentation'), 'http://docs.humhub.org/admin-installation-configuration.html#cronjobs-and-asynchronous-job-processing-v13', ['class' => 'btn btn-danger', 'target' => '_blank']); ?>
+            <?= Html::a(Yii::t('AdminModule.base', 'Open documentation'), 'https://docs.humhub.org/docs/admin/cron-jobs', ['class' => 'btn btn-danger', 'target' => '_blank']); ?>
         <?php endif; ?>
     </div>
 </div>
