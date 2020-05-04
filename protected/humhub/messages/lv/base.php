@@ -89,6 +89,7 @@ return [
     'You are not allowed to run this action.' => 'Tev nav tiesību izpildīt šo darbību.',
     'Actions' => '',
     'Add:' => '',
+    'All' => '',
     'Could not find requested page.' => '',
     'Export' => '',
     'Please type at least {count} characters' => '',

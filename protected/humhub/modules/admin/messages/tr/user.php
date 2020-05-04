@@ -131,4 +131,5 @@ return [
     'You can only delete empty categories!' => 'Sadece boş kategorileri silebilirsiniz!',
     'You cannot delete yourself!' => 'Kendini silemezsin!',
     'never' => 'asla',
+    'Edit category' => '',
 ];

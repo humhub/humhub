@@ -117,6 +117,7 @@ return [
     'Delete all contributions of this user' => '',
     'Delete spaces which are owned by this user' => '',
     'Deleted users' => '',
+    'Edit category' => '',
     'Group Manager' => '',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => '',
     'Last login' => '',

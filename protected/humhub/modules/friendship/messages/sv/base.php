@@ -21,7 +21,6 @@ return [
     '<strong>Pending</strong> friend requests' => '<strong>Väntande</strong> vänförfrågan',
     '<strong>Sent</strong> friend requests' => '<strong>Skickade</strong> vänförfrågan',
     'Accept Friend Request' => 'Acceptera vänförfrågan',
-    'Actions' => 'Åtgärder',
     'Add Friend' => 'Lägg till vän',
     'Cancel friend request' => 'Avbryt vänförfrågan',
     'Deny friend request' => 'Neka vänförfrågan',

@@ -72,6 +72,7 @@ return [
     'Time Zone' => 'Fus horari',
     'Toggle comment menu' => 'Commuta el menú de comentaris',
     'Actions' => '',
+    'All' => '',
     'Allow' => '',
     'An error occurred while handling your last action. (Handler not found).' => '',
     'An unexpected error occurred while loading the search result.' => '',

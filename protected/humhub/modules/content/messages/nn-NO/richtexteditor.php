@@ -64,4 +64,5 @@ return [
     'Wrap in block quote' => '',
     'Wrap in bullet list' => '',
     'Wrap in ordered list' => '',
+    '[Invalid file]' => '',
 ];

@@ -130,5 +130,6 @@ return [
     'You cannot delete yourself!' => 'Ne možete sami izbrisati!',
     'never' => 'nikada',
     'Delete invitation' => '',
+    'Edit category' => '',
     'Send invitation email' => '',
 ];

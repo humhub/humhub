@@ -94,4 +94,5 @@ return [
     'invited you to join {name}.' => 'heeft uw uitgenodigd om lid te worden van {name}.',
     'invited you to join {space} on {name}.' => 'nodigt u uit om deel te nemen aan {space} op {name}.',
     'or' => 'of',
+    'Source' => '',
 ];

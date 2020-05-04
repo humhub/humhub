@@ -21,7 +21,6 @@ return [
     '<strong>Pending</strong> friend requests' => 'Yêu cầu kết bạn <strong>đang chờ duyệt</strong>',
     '<strong>Sent</strong> friend requests' => '<strong>Gửi</strong> yêu cầu kết bạn',
     'Accept Friend Request' => 'Chấp nhận yêu cầu kết bạn',
-    'Actions' => 'Hành động',
     'Add Friend' => 'Kết bạn',
     'Cancel friend request' => 'Hủy yêu cầu kết bạn',
     'Deny friend request' => 'Từ chối yêu cầu kết bạn',

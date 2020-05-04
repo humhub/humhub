@@ -84,6 +84,7 @@ return [
     'Upload file' => 'Unggah Dokumen',
     'You are not allowed to run this action.' => 'Anda tidak diizinkan menjalankan tindakan ini.',
     'Actions' => '',
+    'All' => '',
     'An unexpected error occurred while loading the search result.' => '',
     'An unexpected error occurred. If this keeps happening, please contact a site administrator.' => '',
     'An unexpected server error occurred. If this keeps happening, please contact a site administrator.' => '',
