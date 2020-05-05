@@ -10,7 +10,6 @@ namespace humhub\libs;
 
 use Imagine\Image\Box;
 use Imagine\Image\ManipulatorInterface;
-use yii\helpers\Html;
 use yii\imagine\Image;
 use yii\web\UploadedFile;
 
