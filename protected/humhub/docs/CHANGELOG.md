@@ -11,6 +11,7 @@ HumHub Change Log
 - Fix #4078: Richtext linkextension pattern fails on link extensions with containing `)` in link title
 - Fix #4080: Invalid absolute urls created in acceptance tests
 - Fix #4030: #search-menu-nav required in theme view layout main
+- Enh #4088: Improved table overflow handling in richtext content
 
 1.5.1 (April 19, 2020)
 ----------------------
