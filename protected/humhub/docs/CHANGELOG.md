@@ -9,6 +9,7 @@ HumHub Change Log
 - Fix #4050: Broken Cron-job documentation link used in cron info sidebar snippet
 - Fix #4036: Uploaded photos are not rotated correctly
 - Fix #4078: Richtext linkextension pattern fails on link extensions with containing `)` in link title
+- Fix #4080: Invalid absolute urls created in acceptance tests
 
 1.5.1 (April 19, 2020)
 ----------------------
