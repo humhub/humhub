@@ -384,7 +384,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
      */
     StreamEntry.prototype.remove = function () {
         var stream = this.stream();
-        return this.super('remove').then($.proxy(stream.onChange, stream));
+        return Content.prototype.remove.call(this).then($.proxy(stream.onChange, stream));
     };
 
     module.export = StreamEntry;
