@@ -8,6 +8,7 @@ HumHub Change Log
 - Fix #4038: Cannot use yii\helpers\Html as Html because the name is already in use in ProfileBannerImage
 - Fix #4050: Broken Cron-job documentation link used in cron info sidebar snippet
 - Fix #4036: Uploaded photos are not rotated correctly
+- Fix #4078: Richtext linkextension pattern fails on link extensions with containing `)` in link title
 
 1.5.1 (April 19, 2020)
 ----------------------
