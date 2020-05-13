@@ -30,7 +30,7 @@
         "npm-asset/bootstrap-tour": "0.11.0",
         "npm-asset/clipboard-polyfill": "*",
         "npm-asset/font-awesome": "^4.7.0",
-        "npm-asset/humhub-prosemirror-richtext": "1.0.24",
+        "npm-asset/humhub-prosemirror-richtext": "1.0.25",
         "npm-asset/imagesloaded": "*",
         "npm-asset/intersection-observer": "^0.7.0",
         "npm-asset/jplayer": "2.9.*",
