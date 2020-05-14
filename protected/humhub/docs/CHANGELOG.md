@@ -18,7 +18,9 @@ HumHub Change Log
 - Fix #4096: Missing CreatePost permission check in post model canMove
 - Fix #4098: Space setting edit fails due to unique name validation
 - Fix #4100: Empty message validation errors on post and comment edit broken
+- Enh #4061: Improved post context menu order
 - Fix #4056: Images not rendered in markdown profile field
+
 
 1.5.1 (April 19, 2020)
 ----------------------
