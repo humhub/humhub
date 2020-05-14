@@ -14,6 +14,7 @@ HumHub Change Log
 - Fix #4086: Maximum call stack size exceeded thrown on ActivityStreamEntry.remove
 - Enh #4088: Improved table overflow handling in richtext content
 - Chg: Updated humhub richtext version to 1.0.25
+- Fix #4091: Richtext compatibility parser translates links within code blocks
 
 
 1.5.1 (April 19, 2020)
