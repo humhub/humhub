@@ -17,6 +17,7 @@ HumHub Change Log
 - Fix #4091: Richtext compatibility parser translates links within code blocks
 - Fix #4096: Missing CreatePost permission check in post model canMove
 - Fix #4098: Space setting edit fails due to unique name validation
+- Fix #4100: Empty message validation errors on post and comment edit broken
 
 
 1.5.1 (April 19, 2020)

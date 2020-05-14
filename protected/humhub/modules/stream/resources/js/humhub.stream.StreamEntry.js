@@ -201,6 +201,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
             },
             400: function (response) {
                 that.replaceContent(response.html);
+                that.apply();
             }
         }).catch(function (e) {
             module.log.error(e, true);
