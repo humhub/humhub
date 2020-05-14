@@ -15,6 +15,7 @@ HumHub Change Log
 - Enh #4088: Improved table overflow handling in richtext content
 - Chg: Updated humhub richtext version to 1.0.25
 - Fix #4091: Richtext compatibility parser translates links within code blocks
+- Fix #4096: Missing CreatePost permission check in post model canMove
 
 
 1.5.1 (April 19, 2020)

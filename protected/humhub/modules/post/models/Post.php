@@ -8,6 +8,8 @@
 
 namespace humhub\modules\post\models;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\post\permissions\CreatePost;
 use Yii;
 use humhub\libs\MarkdownPreview;
 use humhub\modules\content\widgets\richtext\RichText;
@@ -42,7 +44,7 @@ class Post extends ContentActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
-    public $canMove = true;
+    public $canMove = CreatePost::class;
 
     /**
      * @inheritdoc
