@@ -20,6 +20,8 @@ HumHub Change Log
 - Fix #4100: Empty message validation errors on post and comment edit broken
 - Enh #4061: Improved post context menu order
 - Fix #4056: Images not rendered in markdown profile field
+- Fix #4034: Premission filter pagination shown without reason and broken
+- Fix #4012: Permission filter dropdown shows module id instead of module name
 
 
 1.5.1 (April 19, 2020)

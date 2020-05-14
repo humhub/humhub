@@ -8,7 +8,7 @@
 namespace humhub\modules\user\assets;
 
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 
 class PermissionGridModuleFilterAsset extends AssetBundle
 {
