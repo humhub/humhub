@@ -22,7 +22,7 @@ HumHub Change Log
 - Fix #4056: Images not rendered in markdown profile field
 - Fix #4034: Premission filter pagination shown without reason and broken
 - Fix #4012: Permission filter dropdown shows module id instead of module name
-
+- Fix #4046: Search results not highlighted
 
 1.5.1 (April 19, 2020)
 ----------------------
