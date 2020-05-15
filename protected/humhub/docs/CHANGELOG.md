@@ -25,6 +25,8 @@ HumHub Change Log
 - Fix #4046: Search results not highlighted
 - Fix #3975: Space chooser directory button visible, even if user is not allowed to access directory
 - Fix #4106: Profile about displays birthdays in current user timezone 
+- Fix #4108: Issues deleting network logo
+
 
 1.5.1 (April 19, 2020)
 ----------------------
