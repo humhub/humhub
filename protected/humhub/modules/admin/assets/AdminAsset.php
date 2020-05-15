@@ -8,7 +8,7 @@
 
 namespace humhub\modules\admin\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 use yii\web\View;
 
 class AdminAsset extends AssetBundle
