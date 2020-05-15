@@ -24,6 +24,7 @@ HumHub Change Log
 - Fix #4012: Permission filter dropdown shows module id instead of module name
 - Fix #4046: Search results not highlighted
 - Fix #3975: Space chooser directory button visible, even if user is not allowed to access directory
+- Fix #4106: Profile about displays birthdays in current user timezone 
 
 1.5.1 (April 19, 2020)
 ----------------------
