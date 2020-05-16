@@ -107,7 +107,7 @@ class CropProfileImage extends Model
             'setSelect' => $this->cropSetSelect,
             'bgColor' =>  $this->bgColor,
             'bgOpacity' => $this->bgOpacity,
-            'boxWidth' => $this->boxWidth,
+            'boxWidth' => new JsExpression('$("#profile-image-crop-modal-form .modal-body").width()'),
             'onChange' => new JsExpression('function(c){ $("#cropX").val(c.x);$("#cropY").val(c.y);$("#cropW").val(c.w);$("#cropH").val(c.h); }')
         ];
     }

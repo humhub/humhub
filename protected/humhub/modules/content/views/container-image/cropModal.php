@@ -60,6 +60,7 @@ $model->cropSetSelect = Json::decode('['.$cropSelect.']');
                 }
 
                 #profile-image-crop-modal .jcrop-keymgr {
+                    opacity: 0 !important;
                     display: none !important;
                 }
 
