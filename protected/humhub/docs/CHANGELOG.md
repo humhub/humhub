@@ -1,8 +1,8 @@
 HumHub Change Log
 =================
 
-1.5.2 (Unreleased)
-----------------------
+1.5.2 (May 20, 2020)
+--------------------
 
 - Fix #4031: Notifications with non existing base model breaks notification list
 - Fix #4038: Cannot use yii\helpers\Html as Html because the name is already in use in ProfileBannerImage
@@ -33,6 +33,9 @@ HumHub Change Log
 - Fix #4033: Checkboxlist profile field does not support `Key => Option` format as described in help text
 - Fix #4125: See password field addition calculates wrong position with container animation
 - Fix #4127: Richtext fullscreen mode within modal or login-container broken
+- Fix #4116: Definitive user deletion doesn't work 
+
+
 
 1.5.1 (April 19, 2020)
 ----------------------

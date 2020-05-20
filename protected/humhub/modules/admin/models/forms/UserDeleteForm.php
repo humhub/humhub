@@ -91,6 +91,20 @@ class UserDeleteForm extends Model
         ];
     }
 
+
+    /**
+     * @inheritDoc
+     */
+    public function load($data, $formName = null)
+    {
+        // Handle empty form submit
+        if ($this->user->status == User::STATUS_SOFT_DELETED && Yii::$app->request->isPost) {
+            return true;
+        }
+
+        return parent::load($data, $formName);
+    }
+
     /**
      * Perform user deletion
      * @since 1.3
@@ -121,7 +135,7 @@ class UserDeleteForm extends Model
 
     /**
      * Returns all spaces which are owned by the user
-     * 
+     *
      * @return Space[] the spaces
      */
     public function getOwningSpaces()
