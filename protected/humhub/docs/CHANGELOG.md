@@ -28,6 +28,7 @@ HumHub Change Log
 - Fix #4108: Issues deleting network logo
 - Fix #4119: Oembed not found due to different encoding
 - Fix #4084: Blueimp gallery image assets not published
+- Fix #4069: Duplication of log level filter parameter in pagination url
 
 
 1.5.1 (April 19, 2020)
