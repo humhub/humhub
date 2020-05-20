@@ -27,6 +27,7 @@ HumHub Change Log
 - Fix #4106: Profile about displays birthdays in current user timezone 
 - Fix #4108: Issues deleting network logo
 - Fix #4119: Oembed not found due to different encoding
+- Fix #4084: Blueimp gallery image assets not published
 
 
 1.5.1 (April 19, 2020)
