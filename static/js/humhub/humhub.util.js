@@ -219,8 +219,9 @@ humhub.module('util', function(module, require, $) {
     };
 
     var string = {
-        escapeHtml: function(string) {
-            return String(string).replace(/[&<>"'`=\/]/g, function(s) {
+        escapeHtml: function(string, simple) {
+            var $regex = simple ? /[&<>"']/g : /[&<>"'`=\/]/g;
+            return String(string).replace($regex, function(s) {
                 return entityMap[s];
             });
         },
