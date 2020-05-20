@@ -66,7 +66,7 @@ class CheckboxList extends BaseType
                     'options' => [
                         'type' => 'textarea',
                         'label' => Yii::t('UserModule.profile', 'Possible values'),
-                        'class' => 'form-control',
+                        'class' => 'form-control autosize',
                         'hint' => Yii::t('UserModule.profile', 'One option per line. Key=>Value Format (e.g. yes=>Yes)')
                     ],
                     'allowOther' => [
@@ -89,7 +89,7 @@ class CheckboxList extends BaseType
             $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), $columnName . '_other_selection', 'VARCHAR(255)');
             Yii::$app->db->createCommand($query)->execute();
 
-            $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName, 'VARCHAR(255)');
+            $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), $columnName, 'VARCHAR(255)');
             Yii::$app->db->createCommand($query)->execute();
         }
 
@@ -155,7 +155,13 @@ class CheckboxList extends BaseType
         $items = [];
 
         foreach (explode("\n", $this->options) as $option) {
-            $items[trim($option)] = trim($option);
+            if (strpos($option, "=>") !== false) {
+                list($key, $value) = explode("=>", $option);
+                $items[trim($key)] = Yii::t($this->profileField->getTranslationCategory(), trim($value));
+            } else {
+                $items[trim($option)] = Yii::t($this->profileField->getTranslationCategory(), trim($option));
+            }
+
         }
 
         if ($this->allowOther) {

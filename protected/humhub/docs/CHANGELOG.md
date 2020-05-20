@@ -30,6 +30,7 @@ HumHub Change Log
 - Fix #4084: Blueimp gallery image assets not published
 - Fix #4069: Duplication of log level filter parameter in pagination url
 - Fix #4075: Use of array_key_fist in space CreateController fails on PHP < 7.3
+- Fix #4033: Checkboxlist profile field does not support `Key => Option` format as described in help text
 
 1.5.1 (April 19, 2020)
 ----------------------
