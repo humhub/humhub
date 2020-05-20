@@ -87,7 +87,15 @@ class CreateController extends Controller
             // allow setting pre-selected visibility
             $model->visibility = $visibility;
         } elseif (!isset($visibilityOptions[$model->visibility])) {
-            $model->visibility = array_key_first($visibilityOptions);
+            if (!function_exists('array_key_first')) {
+                // TEMPORARY until min. version raised to PHP 7.3+
+                foreach ($visibilityOptions as $key => $unused) {
+                    $model->visibility = $key;
+                    break;
+                }
+            } else {
+                $model->visibility = array_key_first($visibilityOptions);
+            }
         }
 
         $joinPolicyOptions = [
@@ -142,7 +150,7 @@ class CreateController extends Controller
     {
         $space = ($space == null) ? Space::findOne(['id' => $spaceId]) : $space;
 
-        if(!$space) {
+        if (!$space) {
             throw new HttpException(404);
         }
 
