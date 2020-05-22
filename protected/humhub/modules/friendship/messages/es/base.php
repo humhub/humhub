@@ -21,7 +21,6 @@ return [
     '<strong>Pending</strong> friend requests' => 'Solicitudes de amistad <strong>pendientes</strong>',
     '<strong>Sent</strong> friend requests' => 'Solicitudes de amistad <strong>enviadas</strong>',
     'Accept Friend Request' => 'Aceptar solicitud de amistad',
-    'Actions' => 'Acciones',
     'Add Friend' => 'Agregar amigo',
     'Cancel friend request' => 'Cancelar solicitud de amistad',
     'Deny friend request' => 'Negar solicitud de amistad',

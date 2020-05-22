@@ -77,6 +77,7 @@ return [
     'Show At Registration' => '',
     'Sign in / up' => '',
     'Sort order' => '',
+    'Source' => '',
     'Space ID' => '',
     'Unknown user status!' => '',
     'User' => '',

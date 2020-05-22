@@ -112,6 +112,7 @@ return [
     'Deleted users' => '',
     'Disabled users' => '',
     'Do not change placeholders like {displayName} if you want them to be automatically filled by the system. To reset the email content fields with the system default, leave them empty.' => '',
+    'Edit category' => '',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => '',
     'Impersonate' => '',
     'Include captcha in registration form' => '',

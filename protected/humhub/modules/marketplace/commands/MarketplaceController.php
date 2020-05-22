@@ -141,10 +141,10 @@ class MarketplaceController extends Controller
      */
     public function actionUpdateAll()
     {
-        // Also install modules which are seems to be installed
-        $installedModules = Yii::$app->moduleManager->getModules(['returnClass' => true]);
+        $onlineModuleManager = $this->getMarketplaceModule()->onlineModuleManager;
 
-        foreach ($installedModules as $moduleId => $className) {
+        $i = 0;
+        foreach ($onlineModuleManager->getModuleUpdates() as $moduleId => $info) {
             try {
                 $this->actionUpdate($moduleId);
             } catch (InvalidArgumentException $ex) {
@@ -152,18 +152,24 @@ class MarketplaceController extends Controller
             } catch (\Exception $ex) {
                 print "Module " . $moduleId . " - Error: " . $ex->getMessage() . "\n";
             }
+            $i++;
         }
+
+        print "\nUpdated " . $i . " outdated modules. \n";
 
         /**
          * Looking up modules which are marked as installed but not loaded.
          * Try to get recent version online.
          */
+        // Also install modules which are seems to be installed
+        $installedModules = Yii::$app->moduleManager->getModules(['returnClass' => true]);
+
         foreach (ModuleEnabled::getEnabledIds() as $moduleId) {
             if (!in_array($moduleId, array_keys($installedModules))) {
                 // Module seems to be installed - but cannot be loaded
                 // Try force re-install
                 try {
-                    $this->getMarketplaceModule()->onlineModuleManager->install($moduleId);
+                    $onlineModuleManager->install($moduleId);
                     print "Reinstalled: " . $moduleId . "\n";
                 } catch (\Exception $ex) {
 

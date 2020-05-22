@@ -18,7 +18,6 @@
  */
 return [
     '<strong>My</strong> friends' => 'マイフレンズ',
-    'Actions' => 'アクション',
     'Friends' => 'フレンズ',
     'Friendship' => 'フレンドシップ',
     '<strong>Pending</strong> friend requests' => '',

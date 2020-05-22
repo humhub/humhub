@@ -21,7 +21,6 @@ return [
     '<strong>Pending</strong> friend requests' => '<strong>Na čekanju</strong> zahtjev za prijateljstvom',
     '<strong>Sent</strong> friend requests' => '<strong>Poslan</strong> zahtjev za prijateljstvom',
     'Accept Friend Request' => 'Prihvati zahtjev za prijateljstvom',
-    'Actions' => 'Akcije',
     'Add Friend' => 'Dodaj prijatelja',
     'Cancel friend request' => 'Otkaži zahtjev za prijateljstvom',
     'Deny friend request' => 'Odbaci zahtjev za prijateljstvom',

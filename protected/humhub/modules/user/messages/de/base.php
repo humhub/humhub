@@ -94,4 +94,5 @@ return [
     'invited you to join {name}.' => 'hat dich zu {name} eingeladen',
     'invited you to join {space} on {name}.' => 'hat dich auf {name} eingeladen {space} beizutreten',
     'or' => 'oder',
+    'Source' => '',
 ];

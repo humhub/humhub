@@ -76,6 +76,7 @@ return [
     'Show At Registration' => '',
     'Sign up now' => '',
     'Sort order' => '',
+    'Source' => '',
     'Space ID' => '',
     'Status' => '',
     'Tags' => '',

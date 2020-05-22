@@ -86,6 +86,7 @@ return [
     'Permission' => '',
     'Register now and participate!' => '',
     'Show At Directory' => '',
+    'Source' => '',
     'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => '',
     'Username contains invalid characters.' => '',
     'You\'ve been invited to join {space} on {appName}' => '',
