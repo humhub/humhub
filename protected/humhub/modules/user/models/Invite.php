@@ -135,7 +135,15 @@ class Invite extends ActiveRecord
     public function sendInviteMail()
     {
         $module = Yii::$app->moduleManager->getModule('user');
-        $registrationUrl = Url::to(['/user/registration', 'token' => $this->token], true);
+
+        # build up the registration Url settings->baseUrl rather than Yii\web\UrlManager's $hostInfo
+        $registrationUrl = Yii::$app->settings->get('baseUrl');
+        $registrationUrl .= Url::to(['/user/registration', 'token' => $this->token]);
+        $validator = new UrlValidator();
+        if (!$validator->validate($registrationUrl)) {
+          # fall back to using UrlManager->$hostInfo as a base in the link
+          $registrationUrl = Url::to(['/user/registration', 'token' => $this->token], true);
+        }
 
         // User requested registration link by its self
         if ($this->source == self::SOURCE_SELF) {
