@@ -1,6 +1,13 @@
 HumHub Change Log
 =================
 
+1.5.3 (Unreleased)
+--------------------
+
+- Fix #4036: Profile images are not rotated correctly
+
+
+
 1.5.2 (May 20, 2020)
 --------------------
 
