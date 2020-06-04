@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\converter;
 
+use humhub\modules\file\libs\ImageHelper;
 use Imagine\Image\ImageInterface;
 use Yii;
 use humhub\modules\file\models\File;
@@ -80,25 +81,7 @@ class PreviewImage extends BaseConverter
 
             if (!is_file($this->file->store->get($fileName))) {
                 $image = Image::getImagine()->open($this->file->store->get());
-
-                // Also handle orientation of resized images
-                // https://github.com/yiisoft/yii2-imagine/issues/44
-                if ($this->file->mime_type === 'image/jpeg' && function_exists('exif_read_data')) {
-                    $exif = exif_read_data($this->file->store->get());
-                    if (!empty($exif['Orientation'])) {
-                        switch ($exif['Orientation']) {
-                            case 3:
-                                $image->rotate(180);
-                                break;
-                            case 6:
-                                $image->rotate(90);
-                                break;
-                            case 8:
-                                $image->rotate(-90);
-                                break;
-                        }
-                    }
-                }
+                ImageHelper::fixJpegOrientation($image, $this->file);
 
                 if ($image->getSize()->getHeight() > $this->options['height']) {
                     $image->resize($image->getSize()->heighten($this->options['height']));
