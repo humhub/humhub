@@ -7,3 +7,4 @@ HumHub Change Log
 
 - Enh: Improved performance of cli marketplace module updater
 - Fix #4054: Duplicate "font-weight" value
+- Chg: Cleanup post table removed unused column  
