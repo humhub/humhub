@@ -140,34 +140,32 @@ humhub\modules\stream\assets\StreamAsset::register($this);
 
 <script <?= Html::nonce() ?>>
 
-    $(document).ready(function () {
-        // set focus to input for seach field
+    $(document).on('humhub:ready', function() {
         $('#search-input-field').focus();
-    });
+
+        $('#collapse-search-settings').on('show.bs.collapse', function () {
+            // change link arrow
+            $('#search-settings-link i').removeClass('fa-caret-right');
+            $('#search-settings-link i').addClass('fa-caret-down');
+        });
+
+        $('#collapse-search-settings').on('shown.bs.collapse', function () {
+            $('#space_input_field').focus();
+        })
+
+        $('#collapse-search-settings').on('hide.bs.collapse', function () {
+            // change link arrow
+            $('#search-settings-link i').removeClass('fa-caret-down');
+            $('#search-settings-link i').addClass('fa-caret-right');
+        });
 
 
-    $('#collapse-search-settings').on('show.bs.collapse', function () {
-        // change link arrow
-        $('#search-settings-link i').removeClass('fa-caret-right');
-        $('#search-settings-link i').addClass('fa-caret-down');
-    });
-
-    $('#collapse-search-settings').on('shown.bs.collapse', function () {
-        $('#space_input_field').focus();
-    })
-
-    $('#collapse-search-settings').on('hide.bs.collapse', function () {
-        // change link arrow
-        $('#search-settings-link i').removeClass('fa-caret-down');
-        $('#search-settings-link i').addClass('fa-caret-right');
-    });
-
-
-<?php foreach (explode(" ", $model->keyword) as $k) : ?>
+        <?php foreach (explode(" ", $model->keyword) as $k) : ?>
         $(".searchResults").highlight("<?php echo Html::encode($k); ?>");
         $(document).ajaxComplete(function (event, xhr, settings) {
             $(".searchResults").highlight("<?php echo Html::encode($k); ?>");
         });
-<?php endforeach; ?>
+        <?php endforeach; ?>
+    });
 </script>
 

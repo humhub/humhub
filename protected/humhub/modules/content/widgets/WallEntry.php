@@ -187,13 +187,14 @@ class WallEntry extends Widget
     {
         $result = [];
 
-        $this->addControl($result, [DeleteLink::class, ['content' => $this->contentObject], ['sortOrder' => 100]]);
-
         if (!empty($this->getEditUrl())) {
-            $this->addControl($result, [EditLink::class, ['model' => $this->contentObject, 'mode' => $this->editMode, 'url' => $this->getEditUrl()], ['sortOrder' => 200]]);
+            $this->addControl($result, [EditLink::class, ['model' => $this->contentObject, 'mode' => $this->editMode, 'url' => $this->getEditUrl()], ['sortOrder' => 100]]);
         }
 
-        $this->addControl($result, [PermaLink::class, ['content' => $this->contentObject], ['sortOrder' => 300]]);
+        $this->addControl($result, [PermaLink::class, ['content' => $this->contentObject], ['sortOrder' => 200]]);
+
+        $this->addControl($result, [DeleteLink::class, ['content' => $this->contentObject], ['sortOrder' => 300]]);
+
         $this->addControl($result, new DropdownDivider(['sortOrder' => 350]));
         $this->addControl($result, [VisibilityLink::class, ['contentRecord' => $this->contentObject], ['sortOrder' => 400]]);
         $this->addControl($result, [NotificationSwitchLink::class, ['content' => $this->contentObject], ['sortOrder' => 500]]);

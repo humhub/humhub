@@ -45,7 +45,7 @@ humhub.module('comment', function (module, require, $) {
 
         $elements.hide().css('opacity', 1).fadeIn('fast');
     };
-    
+
     Form.prototype.incrementCommentCount = function (count) {
         try {
             var $controls = this.$.closest('.comment-container').siblings('.wall-entry-controls');
@@ -82,12 +82,16 @@ humhub.module('comment', function (module, require, $) {
         this.loader();
         var that = this;
         client.post(evt, {dataType: 'html'}).then(function (response) {
-            that.$.find('.comment_edit_content').replaceWith(response.html);
-            that.$.find('.comment-cancel-edit-link').show();
-            that.$.find('.comment-edit-link').hide();
+            that.setEditContent(response.html);
         }).finally(function () {
             that.loader(false);
         });
+    };
+
+    Comment.prototype.setEditContent = function (html) {
+        this.$.find('.comment_edit_content,.content_edit').replaceWith(html);
+        this.$.find('.comment-cancel-edit-link').show();
+        this.$.find('.comment-edit-link').hide();
     };
 
     Comment.prototype.getRichtext = function () {
@@ -106,14 +110,19 @@ humhub.module('comment', function (module, require, $) {
 
     Comment.prototype.editSubmit = function (evt) {
         var that = this;
-        client.submit(evt, {dataType: 'html'}).then(function (response) {
-            that.replace(response.html);
-            that.highlight();
-            that.$.find('.comment-cancel-edit-link').hide();
-            that.$.find('.comment-edit-link').show();
-            module.log.success('success.saved');
-        }).catch(function (err) {
-            module.log.error(err, true);
+        client.submit(evt, {dataType: 'html'}).status({
+            200: function (response) {
+                that.replace(response.html);
+                that.highlight();
+                that.$.find('.comment-cancel-edit-link').hide();
+                that.$.find('.comment-edit-link').show();
+                module.log.success('success.saved');
+            },
+            400: function (response) {
+                that.setEditContent(response.html);
+            }
+        }).catch(function (e) {
+            module.log.error(e, true);
         });
     };
 

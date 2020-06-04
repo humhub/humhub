@@ -22,6 +22,7 @@ use humhub\modules\content\permissions\ManageContent;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\interfaces\ContentOwner;
+use yii\base\InvalidConfigException;
 
 /**
  * ContentActiveRecord is the base ActiveRecord [[\yii\db\ActiveRecord]] for Content.
@@ -114,7 +115,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     protected $initContent;
 
     /**
-     * @var bool defines if the Movable behaviour of this ContentContainerActiveRecord type is active.
+     * @var bool|string defines if the Movable behaviour of this ContentContainerActiveRecord type is active.
      * @see Content::move()
      * @since 1.3
      */
@@ -515,11 +516,19 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * > Note: Default checks for the underlying content are automatically handled within the [[Content::canMove()]]
      * @param ContentContainerActiveRecord|null $container
      * @return bool|string
+     * @throws InvalidConfigException
      */
     public function canMove(ContentContainerActiveRecord $container = null)
     {
         if(!$this->canMove) {
             return Yii::t('ContentModule.base', 'This content type can\'t be moved.');
+        }
+
+        if($container && is_string($this->canMove) && is_subclass_of($this->canMove, BasePermission::class)) {
+            $ownerPermissions = $container->getPermissionManager($this->content->createdBy);
+            if(!$ownerPermissions->can($this->canMove)) {
+                return Yii::t('ContentModule.base', 'The author of this content is not allowed to create this type of content within this space.');
+            }
         }
 
         return true;

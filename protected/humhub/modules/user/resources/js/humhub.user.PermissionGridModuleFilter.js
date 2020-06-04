@@ -20,9 +20,10 @@ humhub.module('user.PermissionGridModuleFilter', function (module, require, $) {
         this.modules = [];
         var that = this;
         this.$permissions.find('[data-module-id]').each(function () {
-            var id = $(this).attr('data-module-id');
+            var $this = $(this);
+            var id = $this.attr('data-module-id');
             if (that.modules.indexOf(id) < 0) {
-                that.$.append('<option value="' + id + '">' + id + '</option>');
+                that.$.append('<option value="' + id + '">' + $this.text() + '</option>');
                 that.modules.push(id);
             }
         });

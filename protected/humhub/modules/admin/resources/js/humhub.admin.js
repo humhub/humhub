@@ -6,11 +6,13 @@ humhub.module('admin', function (module, require, $) {
     /**
      * Action will delete the current page logo.
      * This will trigger a confirm modal.
-     * 
+     *
      * @param {type} evt
      * @returns {undefined}
      */
     var deletePageLogo = function (evt) {
+        evt.finish();
+
         var options = {
             'header': module.text('confirm.deleteLogo.header'),
             'body': module.text('confirm.deleteLogo.body'),
@@ -27,14 +29,14 @@ humhub.module('admin', function (module, require, $) {
     var _confirmDeletePageLogo = function (evt) {
         client.post(evt).then(function () {
             $('#deleteLogoImage').fadeOut();
-            $('#logo-image').attr('src', '');
-            additions.switchButtons($('#img-logo'), ('#text-logo'));
+            $('#logo-image').attr('src', '').hide();
+            additions.switchButtons($('#img-logo'), $('#text-logo'));
         });
     };
 
     /**
      * Action for changing the form image.
-     * 
+     *
      * @param {type} evt
      * @returns {undefined}
      */
@@ -44,7 +46,7 @@ humhub.module('admin', function (module, require, $) {
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                $('#logo-image').attr('src', e.target.result);
+                $('#logo-image').attr('src', e.target.result).show();
             };
 
             reader.readAsDataURL(input.files[0]);
@@ -60,6 +62,8 @@ humhub.module('admin', function (module, require, $) {
      * @returns {undefined}
      */
     var deletePageIcon = function (evt) {
+        evt.finish();
+
         var options = {
             'header': module.text('confirm.deleteIcon.header'),
             'body': module.text('confirm.deleteIcon.body'),
@@ -76,7 +80,7 @@ humhub.module('admin', function (module, require, $) {
     var _confirmDeletePageIcon = function (evt) {
         client.post(evt).then(function () {
             $('#deleteIconImage').fadeOut();
-            $('#icon-image').attr('src', '');
+            $('#icon-image').attr('src', '').hide();
             additions.switchButtons($('#img-icon'), ('#text-icon'));
         });
     };
@@ -93,7 +97,7 @@ humhub.module('admin', function (module, require, $) {
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                $('#icon-image').attr('src', e.target.result);
+                $('#icon-image').attr('src', e.target.result).show();
             };
 
             reader.readAsDataURL(input.files[0]);

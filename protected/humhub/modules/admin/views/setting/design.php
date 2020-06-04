@@ -60,18 +60,17 @@ $iconUrl = SiteIcon::getUrl(140);
     <div class="well">
         <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'style' => 'display: none', 'name' => 'logo[]']); ?>
         <div class="image-upload-container" id="logo-upload">
-            <?php if (LogoImage::hasImage()): ?>
-                <img class="img-rounded" id="logo-image" src="<?= LogoImage::getUrl() ?>"
-                     data-src="holder.js/140x140"
-                     alt="<?= Yii::t('AdminModule.settings', "You're using no logo at the moment. Upload your logo now."); ?>"
-                     style="max-height: 40px;">
-            <?php endif; ?>
+
+            <img class="img-rounded" id="logo-image" src="<?= LogoImage::getUrl() ?>"
+                 data-src="holder.js/140x140"
+                 alt="<?= Yii::t('AdminModule.settings', "You're using no logo at the moment. Upload your logo now."); ?>"
+                 style="max-height: 40px;<?= LogoImage::hasImage() ? '' : 'display:none' ?>">
 
             <div class="image-upload-buttons" id="logo-upload-buttons" style="display: block;">
                 <?= Button::info()->icon('cloud-upload')->id('admin-logo-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-logo-image')
-                    ->action('admin.deletePageIcon', Url::to(['/admin/setting/delete-logo-image']))
+                    ->action('admin.deletePageLogo', Url::to(['/admin/setting/delete-logo-image']))
                     ->style(LogoImage::hasImage() ? '' : 'display:none')->icon('times')->sm()->loader(false) ?>
             </div>
         </div>

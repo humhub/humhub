@@ -293,7 +293,12 @@ class HForm extends \yii\base\Component
                         $field = $this->form->field($model, $name)->checkboxList($definition['items'], $options);
                         break;
                     case 'textarea':
+                        if(isset($definition['class'])) {
+                            $options['class'] = $definition['class'];
+                        }
+
                         $field = $this->form->field($model, $name)->textarea($options);
+
                         if (!$showLabel) {
                             $field->label(false);
                         }
