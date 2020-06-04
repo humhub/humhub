@@ -143,13 +143,13 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function __construct($contentContainer = [], $visibility = null, $config = [])
     {
-        if(is_array($contentContainer)) {
+        if (is_array($contentContainer)) {
             parent::__construct($contentContainer);
-        } elseif($contentContainer instanceof ContentContainerActiveRecord) {
+        } elseif ($contentContainer instanceof ContentContainerActiveRecord) {
             $this->content->setContainer($contentContainer);
-            if(is_array($visibility)) {
+            if (is_array($visibility)) {
                 $config = $visibility;
-            } elseif($visibility !== null) {
+            } elseif ($visibility !== null) {
                 $this->content->visibility = $visibility;
             }
             parent::__construct($config);
@@ -179,12 +179,12 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
         if ($name == 'content') {
             $content = $this->initContent = (empty($this->initContent)) ? parent::__get('content') : $this->initContent;
 
-            if(!$content) {
-                $content = $this->initContent =  new Content();
+            if (!$content) {
+                $content = $this->initContent = new Content();
                 $content->setPolymorphicRelation($this);
             }
 
-            if(!$this->isRelationPopulated('content')) {
+            if (!$this->isRelationPopulated('content')) {
                 $this->populateRelation('content', $content);
             }
 
@@ -236,7 +236,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
             $labels[] = Label::danger(Yii::t('ContentModule.base', 'Pinned'))->icon('fa-map-pin')->sortOrder(100);
         }
 
-        if($this->content->isArchived()) {
+        if ($this->content->isArchived()) {
             $labels[] = Label::warning(Yii::t('ContentModule.base', 'Archived'))->icon('fa-archive')->sortOrder(200);
         }
 
@@ -272,34 +272,34 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     /**
      * Returns the $managePermission settings interpretable by an PermissionManager instance.
      *
-     * @since 1.2.1
-     * @see ContentActiveRecord::$managePermission
      * @return null|object|string
+     * @see ContentActiveRecord::$managePermission
+     * @since 1.2.1
      */
     public function getManagePermission()
     {
-        if(!$this->hasManagePermission()) {
+        if (!$this->hasManagePermission()) {
             return null;
         }
 
-        if(is_string($this->managePermission)) { // Simple Permission class specification
+        if (is_string($this->managePermission)) { // Simple Permission class specification
             return $this->managePermission;
         }
 
-        if(is_array($this->managePermission)) {
-            if(isset($this->managePermission['class'])) { // ['class' => '...', 'callback' => '...']
-                $handler = $this->managePermission['class'].'::'.$this->managePermission['callback'];
+        if (is_array($this->managePermission)) {
+            if (isset($this->managePermission['class'])) { // ['class' => '...', 'callback' => '...']
+                $handler = $this->managePermission['class'] . '::' . $this->managePermission['callback'];
                 return call_user_func($handler, $this);
             }
             // Simple Permission array specification
             return $this->managePermission;
         }
 
-        if(is_callable($this->managePermission)) { // anonymous function
+        if (is_callable($this->managePermission)) { // anonymous function
             return $this->managePermission($this);
         }
 
-        if($this->managePermission instanceof BasePermission) {
+        if ($this->managePermission instanceof BasePermission) {
             return $this->managePermission;
         }
 
@@ -309,8 +309,8 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     /**
      * Determines weather or not this records has an additional managePermission set.
      *
-     * @since 1.2.1
      * @return boolean
+     * @since 1.2.1
      */
     public function hasManagePermission()
     {
@@ -326,9 +326,9 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function getWallOut($params = [])
     {
-        if(!empty($this->wallEntryClass)) {
+        if (!empty($this->wallEntryClass)) {
             $params['contentObject'] = $this;
-            return call_user_func($this->wallEntryClass.'::widget', $params);
+            return call_user_func($this->wallEntryClass . '::widget', $params);
         }
 
         return "";
@@ -343,18 +343,18 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function getWallEntryWidget()
     {
-        if(empty($this->wallEntryClass)) {
+        if (empty($this->wallEntryClass)) {
             return null;
         }
 
-        if (is_subclass_of($this->wallEntryClass, WallEntry::class) ) {
+        if (is_subclass_of($this->wallEntryClass, WallEntry::class)) {
             $class = $this->wallEntryClass;
             $widget = new $class;
             $widget->contentObject = $this;
             return $widget;
         }
 
-        if($this->wallEntryClass) {
+        if ($this->wallEntryClass) {
             $class = $this->wallEntryClass;
             $widget = new $class;
             return $widget;
@@ -420,7 +420,8 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      *
      * @return string
      */
-    public static function getObjectModel() {
+    public static function getObjectModel()
+    {
         return static::class;
     }
 
@@ -449,8 +450,8 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * Checks if the given user or the current logged in user if no user was given, is the owner of this content
      * @param null $user
      * @return bool
-     * @since 1.3
      * @throws \Throwable
+     * @since 1.3
      */
     public function isOwner($user = null)
     {
@@ -518,7 +519,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function canMove(ContentContainerActiveRecord $container = null)
     {
-        if(!$this->canMove) {
+        if (!$this->canMove) {
             return Yii::t('ContentModule.base', 'This content type can\'t be moved.');
         }
 
@@ -538,5 +539,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * in order to define model specific logic as moving sub-content or other related.
      * @param ContentContainerActiveRecord|null $container
      */
-    public function afterMove(ContentContainerActiveRecord $container = null) {}
+    public function afterMove(ContentContainerActiveRecord $container = null)
+    {
+    }
 }

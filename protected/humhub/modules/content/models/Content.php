@@ -47,11 +47,14 @@ use yii\helpers\Url;
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
- * @property ContentContainer $contentContainer
  * @property string $stream_sort_date
  * @property string $stream_channel
  * @property integer $contentcontainer_id;
+ * @property string $title
+
+ * @property ContentContainer $contentContainer
  * @property ContentContainerActiveRecord $container
+ *
  * @mixin PolymorphicRelation
  * @mixin GUID
  * @since 0.5
@@ -125,7 +128,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             [['object_id', 'visibility', 'pinned'], 'integer'],
             [['archived'], 'safe'],
             [['guid'], 'string', 'max' => 45],
-            [['object_model'], 'string', 'max' => 100],
+            [['object_model', 'title'], 'string', 'max' => 100],
             [['object_model', 'object_id'], 'unique', 'targetAttribute' => ['object_model', 'object_id'], 'message' => 'The combination of Object Model and Object ID has already been taken.'],
             [['guid'], 'unique']
         ];
