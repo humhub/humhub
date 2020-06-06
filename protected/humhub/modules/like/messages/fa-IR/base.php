@@ -1,10 +1,10 @@
 <?php
 return array (
-  ' likes this.' => 'این را دوست دارد.',
-  '<strong>Users</strong> who like this' => 'کاربران علاقمند',
-  'Like' => 'دوست دارم',
-  'Unlike' => 'دوست ندارم',
+  ' likes this.' => 'این را می‌پسندد.',
+  '<strong>Users</strong> who like this' => '<strong>کاربرانی</strong> که این را پسندیده‌اند',
+  'Like' => 'می‌پسندم',
+  'Unlike' => 'نمی‌پسندم',
   'You' => 'شما',
-  'You like this.' => 'دوس داشتيد',
-  'and {count} more like this.' => 'و {count} نفر دیگر این را دوست دارند.',
+  'You like this.' => 'این را می‌پسندید.',
+  'and {count} more like this.' => 'و {count} نفر دیگر این را می‌پسندند.',
 );
