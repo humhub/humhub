@@ -1,11 +1,11 @@
 <?php
 return array (
-  'Following' => 'دنبال‌شونده‌ها',
-  'Mentionings' => '',
+  'Following' => 'دنبال‌‌‌شونده‌ها',
+  'Mentionings' => 'یادکننده‌ها',
   'Receive Notifications when someone is following you.' => '',
   'Receive Notifications when someone mentioned you in a post.' => '',
-  'View Online' => '',
-  '{displayName} is now following you.' => 'هم اكنون شما را دنبال مي كند {displayName}',
+  'View Online' => 'مشاهده آنلاین',
+  '{displayName} is now following you.' => '{displayName} هم اكنون شما را دنبال می‌كند.',
   '{displayName} just mentioned you in {contentTitle} "{preview}"' => '',
-  '{displayName} mentioned you in {contentTitle}.' => 'نام برد {contentTitle} از شما در مطلب  {displayName}',
+  '{displayName} mentioned you in {contentTitle}.' => '{displayName} از شما در {contentTitle} یاد کرد.',
 );

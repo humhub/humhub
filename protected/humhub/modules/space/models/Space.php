@@ -91,6 +91,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     // Model Scenarios
     const SCENARIO_CREATE = 'create';
     const SCENARIO_EDIT = 'edit';
+    const SCENARIO_SECURITY_SETTINGS = 'security_settings';
 
     /**
      * @inheritdoc
@@ -129,7 +130,9 @@ class Space extends ContentContainerActiveRecord implements Searchable
         ];
 
         if (Yii::$app->getModule('space')->useUniqueSpaceNames) {
-            $rules[] = [['name'], 'unique', 'targetClass' => static::class];
+            $rules[] = [['name'], 'unique', 'targetClass' => static::class, 'when' => function($model) {
+                return $model->isAttributeChanged('name');
+            }];
         }
 
         return $rules;
@@ -144,6 +147,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
 
         $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'tags', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
         $scenarios[static::SCENARIO_CREATE] = ['name', 'color', 'description', 'join_policy', 'visibility'];
+        $scenarios[static::SCENARIO_SECURITY_SETTINGS] = ['default_content_visibility', 'join_policy', 'visibility'];
 
         return $scenarios;
     }

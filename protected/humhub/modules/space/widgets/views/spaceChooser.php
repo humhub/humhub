@@ -1,6 +1,7 @@
 <?php
 
 use humhub\components\View;
+use humhub\modules\directory\permissions\AccessDirectory;
 use humhub\modules\space\assets\SpaceChooserAsset;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
@@ -31,7 +32,7 @@ $this->registerJsConfig('space.chooser', [
 
 /* @var $directoryModule \humhub\modules\directory\Module */
 $directoryModule = Yii::$app->getModule('directory');
-$isDirectoryActive = $directoryModule->active;
+$canAccessDirectory = $directoryModule->active && Yii::$app->user->can(AccessDirectory::class);
 
 ?>
 
@@ -59,11 +60,11 @@ $isDirectoryActive = $directoryModule->active;
     <ul class="dropdown-menu" id="space-menu-dropdown">
         <li>
             <form action="" class="dropdown-controls">
-                <div <?php if($isDirectoryActive) : ?>class="input-group"<?php endif; ?>>
+                <div <?php if($canAccessDirectory) : ?>class="input-group"<?php endif; ?>>
                     <input type="text" id="space-menu-search" class="form-control" autocomplete="off"
                            placeholder="<?= Yii::t('SpaceModule.chooser', 'Search'); ?>"
                            title="<?= Yii::t('SpaceModule.chooser', 'Search for spaces'); ?>">
-                    <?php if($isDirectoryActive) : ?>
+                    <?php if($canAccessDirectory) : ?>
                         <span id="space-directory-link" class="input-group-addon" >
                             <a href="<?= Url::to(['/directory/directory/spaces']); ?>">
                                 <i class="fa fa-book"></i>

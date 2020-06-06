@@ -1,12 +1,40 @@
 HumHub Change Log
 =================
 
-1.5.2 (Unreleased)
-----------------------
+1.5.2 (May 20, 2020)
+--------------------
 
 - Fix #4031: Notifications with non existing base model breaks notification list
 - Fix #4038: Cannot use yii\helpers\Html as Html because the name is already in use in ProfileBannerImage
 - Fix #4050: Broken Cron-job documentation link used in cron info sidebar snippet
+- Fix #4036: Uploaded photos are not rotated correctly
+- Fix #4078: Richtext linkextension pattern fails on link extensions with containing `)` in link title
+- Fix #4080: Invalid absolute urls created in acceptance tests
+- Fix #4030: #search-menu-nav required in theme view layout main
+- Fix #4086: Maximum call stack size exceeded thrown on ActivityStreamEntry.remove
+- Enh #4088: Improved table overflow handling in richtext content
+- Chg: Updated humhub richtext version to 1.0.25
+- Fix #4091: Richtext compatibility parser translates links within code blocks
+- Fix #4096: Missing CreatePost permission check in post model canMove
+- Fix #4098: Space setting edit fails due to unique name validation
+- Fix #4100: Empty message validation errors on post and comment edit broken
+- Enh #4061: Improved post context menu order
+- Fix #4056: Images not rendered in markdown profile field
+- Fix #4034: Premission filter pagination shown without reason and broken
+- Fix #4012: Permission filter dropdown shows module id instead of module name
+- Fix #4046: Search results not highlighted
+- Fix #3975: Space chooser directory button visible, even if user is not allowed to access directory
+- Fix #4106: Profile about displays birthdays in current user timezone 
+- Fix #4108: Issues deleting network logo
+- Fix #4119: Oembed not found due to different encoding
+- Fix #4084: Blueimp gallery image assets not published
+- Fix #4069: Duplication of log level filter parameter in pagination url
+- Fix #4075: Use of array_key_fist in space CreateController fails on PHP < 7.3
+- Fix #4033: Checkboxlist profile field does not support `Key => Option` format as described in help text
+- Fix #4125: See password field addition calculates wrong position with container animation
+- Fix #4127: Richtext fullscreen mode within modal or login-container broken
+- Fix #4116: Definitive user deletion doesn't work 
+
 
 
 1.5.1 (April 19, 2020)

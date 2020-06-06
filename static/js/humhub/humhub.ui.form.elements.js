@@ -20,38 +20,44 @@ humhub.module('ui.form.elements', function (module, require, $) {
                 var $formGroup = $input.parent('.form-group');
                 var invisibleTop = 0;
 
-                /**
-                 * We can't calculate top if input is invisible,
-                 * Note, this may not work for more complex cases.
-                 */
-                if(!$input.is(':visible')) {
-                    if($input.siblings('label').length) {
-                        invisibleTop = '23px';
-                    }
-                }
+                var timeout = $formGroup.closest('.animated').length ? 800 : 100;
 
-                if($formGroup.length) {
-                    $formGroup.css('position', 'relative');
-                    var $pwShow = $('<div class="humhub-pw-show"><i class="fa fa-eye"></i></div>').on('click', function() {
-                        var $icon = $(this).find('i');
-                        if ($input.attr('type') ==='password') {
-                            $input.attr('type', 'input');
-                            $icon.addClass('fa-eye-slash').removeClass('fa-eye');
-                        } else {
-                            $input.attr('type', 'password');
-                            $icon.addClass('fa-eye').removeClass('fa-eye-slash');
+                setTimeout(function() {
+                    /**
+                     * We can't calculate top if input is invisible,
+                     * Note, this may not work for more complex cases.
+                     */
+                    if(!$input.is(':visible')) {
+                        if($input.siblings('label').length) {
+                            invisibleTop = '23px';
                         }
-                    }).css({
-                        'position' : 'absolute',
-                        'right' : '2px',
-                        'padding': '4px',
-                        'font-size': '19px',
-                        'cursor': 'pointer',
-                        'top': !$input.is(':visible') ? invisibleTop :  $input.position().top
-                    });
+                    }
 
-                    $formGroup.prepend($pwShow);
-                }
+                    if($formGroup.length) {
+                        $formGroup.css('position', 'relative');
+                        var $pwShow = $('<div class="humhub-pw-show"><i class="fa fa-eye"></i></div>').on('click', function() {
+                            var $icon = $(this).find('i');
+                            if ($input.attr('type') ==='password') {
+                                $input.attr('type', 'input');
+                                $icon.addClass('fa-eye-slash').removeClass('fa-eye');
+                            } else {
+                                $input.attr('type', 'password');
+                                $icon.addClass('fa-eye').removeClass('fa-eye-slash');
+                            }
+                        }).css({
+                            'position' : 'absolute',
+                            'right' : '2px',
+                            'padding': '4px',
+                            'font-size': '19px',
+                            'cursor': 'pointer',
+                            'top': !$input.is(':visible') ? invisibleTop :  $input.position().top
+                        });
+
+                        $formGroup.prepend($pwShow.hide());
+                        $pwShow.fadeIn('fast');
+                    }
+                }, timeout);
+
             });
         });
     };

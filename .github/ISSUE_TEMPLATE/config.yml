@@ -1,0 +1,9 @@
+
+blank_issues_enabled: false
+contact_links:
+    - name: Question
+      url: https://community.humhub.com/
+      about: Please post your question or problem in our community.
+    - name: HumHub Professional Edition
+      url: https://www.humhub.com/en/professional-edition
+      about: Professional Edition customers also have access to individual support in case of questions or problems via our helpdesk.

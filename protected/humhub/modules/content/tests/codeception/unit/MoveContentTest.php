@@ -16,8 +16,12 @@
 namespace humhub\modules\content\tests\codeception\unit;
 
 
+use humhub\libs\BasePermission;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\permissions\CreatePublicContent;
+use humhub\modules\post\models\Post;
+use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\space\models\Space;
 use tests\codeception\_support\HumHubDbTestCase;
 
@@ -231,5 +235,69 @@ class MoveContentTest extends HumHubDbTestCase
         $spaceContent = Content::findOne(['id' => 11]);
         $this->assertTrue($spaceContent->container instanceof Space);
         $this->assertEquals($spaceContent->container->id, $space3->id);
+    }
+
+    public function testCanMovePublicContentDeny()
+    {
+        $this->becomeUser('User1');
+
+        // Disable public content creation on space3
+        $space3 = Space::findOne(3);
+        $space3->permissionManager->setGroupState(Space::USERGROUP_MEMBER, CreatePublicContent::class, BasePermission::STATE_DENY);
+
+        // Create public post on space4
+        $space4 = Space::findOne(4);
+        $post = new Post($space4, Content::VISIBILITY_PUBLIC, ['message' => 'Test']);
+        $this->assertTrue($post->save());
+
+        $this->assertNotTrue($post->move($space3));
+    }
+
+    public function testCanMovePublicContentAllow()
+    {
+        $this->becomeUser('User1');
+
+        // Disable public content creation on space3
+        $space3 = Space::findOne(3);
+        $space3->permissionManager->setGroupState(Space::USERGROUP_MEMBER, CreatePublicContent::class, BasePermission::STATE_ALLOW);
+
+        // Create public post on space4
+        $space4 = Space::findOne(4);
+        $post = new Post($space4, Content::VISIBILITY_PUBLIC, ['message' => 'Test']);
+        $this->assertTrue($post->save());
+
+        $this->assertTrue($post->move($space3));
+    }
+
+    public function testCanMoveContentPostPermissionAllow()
+    {
+        $this->becomeUser('User1');
+
+        // Disable public content creation on space3
+        $space3 = Space::findOne(3);
+        $space3->permissionManager->setGroupState(Space::USERGROUP_MEMBER, CreatePost::class, BasePermission::STATE_ALLOW);
+
+        // Create public post on space4
+        $space4 = Space::findOne(4);
+        $post = new Post($space4, Content::VISIBILITY_PRIVATE, ['message' => 'Test']);
+        $this->assertTrue($post->save());
+
+        $this->assertTrue($post->move($space3));
+    }
+
+    public function testCanMoveContentPostPermissionDeny()
+    {
+        $this->becomeUser('User1');
+
+        // Disable public content creation on space3
+        $space3 = Space::findOne(3);
+        $space3->permissionManager->setGroupState(Space::USERGROUP_MEMBER, CreatePost::class, BasePermission::STATE_DENY);
+
+        // Create public post on space4
+        $space4 = Space::findOne(4);
+        $post = new Post($space4, Content::VISIBILITY_PRIVATE, ['message' => 'Test']);
+        $this->assertTrue($post->save());
+
+        $this->assertNotTrue($post->move($space3));
     }
 }

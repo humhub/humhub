@@ -48,11 +48,12 @@ humhub.module('ui.topNavigation', function (module, require, $) {
     };
 
     var isOverflow = function() {
-        return $topNav[0].offsetHeight > $topBarSecond[0].offsetHeight ||  $('.search-menu')[0].offsetTop;
+        $searchMenu = $('.search-menu');
+        return $topNav[0].offsetHeight > $topBarSecond[0].offsetHeight || ($searchMenu.length && $searchMenu[0].offsetTop);
     };
 
     module.export({
         init: init,
         sortOrder: 100,
-    })
+    });
 });

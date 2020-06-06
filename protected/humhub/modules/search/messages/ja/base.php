@@ -5,10 +5,10 @@ return array (
   'All' => 'すべて',
   'Content' => 'コンテンツ',
   'Search' => '検索',
-  'Search for user, spaces and content' => 'ユーザー名、スペース名とその内容',
+  'Search for user, spaces and content' => 'ユーザー、スペース、コンテンツの検索',
   'Search only in certain spaces:' => '特定のスペースのみ検索',
   'Spaces' => 'スペース',
-  'Specify space' => '',
+  'Specify space' => 'スペースを指定',
   'Users' => 'ユーザー',
-  'Your search returned no matches.' => '何も検索できませんでした',
+  'Your search returned no matches.' => '何も検索できませんでした。',
 );

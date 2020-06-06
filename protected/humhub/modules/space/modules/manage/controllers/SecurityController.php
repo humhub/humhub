@@ -15,7 +15,7 @@ use yii\web\HttpException;
 
 /**
  * SecurityController
- * 
+ *
  * @since 1.1
  * @author Luke
  */
@@ -25,11 +25,13 @@ class SecurityController extends Controller
     public function actionIndex()
     {
         $space = $this->contentContainer;
-        $space->scenario = 'edit';
+        $space->scenario = Space::SCENARIO_SECURITY_SETTINGS;
 
-        if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
+        if ($space->load(Yii::$app->request->post()) && $space->save()) {
             $this->view->saved();
             return $this->redirect($space->createUrl('index'));
+        } else if(Yii::$app->request->post()) {
+            $this->view->error(Yii::t('SpaceModule.base', 'Settings could not be saved!'));
         }
 
         return $this->render('index', ['model' => $space]);

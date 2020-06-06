@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Likes' => '',
-  'Whenever someone likes something (e.g. a post or comment).' => '',
-  '{userDisplayName} likes {contentTitle}' => '{userDisplayName} {contentTitle} را دوست دارد',
+  'Likes' => 'پسندها',
+  'Whenever someone likes something (e.g. a post or comment).' => 'هرگاه کسی چیزی را می‌پسندد (مثلا پست یا دیدگاه).',
+  '{userDisplayName} likes {contentTitle}' => '{userDisplayName} {contentTitle} را می‌پسندد',
 );

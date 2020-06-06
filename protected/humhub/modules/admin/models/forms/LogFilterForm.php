@@ -105,6 +105,8 @@ class LogFilterForm extends Model
 
         $countQuery = clone $this->query;
 
+        $test = $this->getUrlParams();
+
         $this->pagination = new Pagination([
             'totalCount' => $countQuery->count(),
             'pageSize' => static::PAGE_SIZE,
@@ -121,12 +123,14 @@ class LogFilterForm extends Model
      */
     private function getUrlParams()
     {
-        return ArrayHelper::merge(Yii::$app->request->get(), [
+        $result = ArrayHelper::merge(Yii::$app->request->get(), [
             'category' => $this->category,
-            'levels' => $this->levels,
             'day' => $this->day,
             'term' => $this->term
         ]);
+
+        $result['levels'] = $this->levels;
+        return $result;
     }
 
     /**

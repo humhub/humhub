@@ -2,5 +2,5 @@
 return array (
   'E-Mail' => 'ایمیل',
   'Mobile' => 'موبایل',
-  'Web' => '',
+  'Web' => 'وب',
 );

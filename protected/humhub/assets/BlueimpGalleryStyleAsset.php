@@ -21,13 +21,13 @@ class BlueimpGalleryStyleAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@npm/blueimp-gallery/css';
+    public $sourcePath = '@npm/blueimp-gallery';
 
     /**
      * @inheritdoc
      */
     public $css = [
-        'blueimp-gallery.min.css',
+        'css/blueimp-gallery.min.css',
     ];
 
     /**
@@ -35,8 +35,8 @@ class BlueimpGalleryStyleAsset extends AssetBundle
      */
     public $publishOptions = [
         'only' => [
-            'blueimp-gallery.min.css',
-            'blueimp-gallery.min.css.map'
+            'css/*',
+            'img/*'
         ]
     ];
 }

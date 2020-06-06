@@ -81,6 +81,25 @@ class PreviewImage extends BaseConverter
             if (!is_file($this->file->store->get($fileName))) {
                 $image = Image::getImagine()->open($this->file->store->get());
 
+                // Also handle orientation of resized images
+                // https://github.com/yiisoft/yii2-imagine/issues/44
+                if ($this->file->mime_type === 'image/jpeg' && function_exists('exif_read_data')) {
+                    $exif = exif_read_data($this->file->store->get());
+                    if (!empty($exif['Orientation'])) {
+                        switch ($exif['Orientation']) {
+                            case 3:
+                                $image->rotate(180);
+                                break;
+                            case 6:
+                                $image->rotate(90);
+                                break;
+                            case 8:
+                                $image->rotate(-90);
+                                break;
+                        }
+                    }
+                }
+
                 if ($image->getSize()->getHeight() > $this->options['height']) {
                     $image->resize($image->getSize()->heighten($this->options['height']));
                 }
@@ -116,8 +135,8 @@ class PreviewImage extends BaseConverter
     }
 
     /**
-     * @deprecated since 1.5
      * @return int the image width or 0 if not valid
+     * @deprecated since 1.5
      */
     public function getWidth()
     {
@@ -128,8 +147,8 @@ class PreviewImage extends BaseConverter
     }
 
     /**
-     * @deprecated since 1.5
      * @return int the image height or 0 if not valid
+     * @deprecated since 1.5
      */
     public function getHeight()
     {
@@ -140,8 +159,8 @@ class PreviewImage extends BaseConverter
     }
 
     /**
-     * @deprecated since 1.5
      * @return ImageInterface
+     * @deprecated since 1.5
      */
     public function getImage()
     {
