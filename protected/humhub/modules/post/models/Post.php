@@ -62,7 +62,11 @@ class Post extends ContentActiveRecord implements Searchable
         return [
             [['message'], 'required'],
             [['message'], 'string'],
-            [['url'], 'string', 'max' => 255]
+            [['url'], 'string', 'max' => 255],
+            //ToDo: Provide automatically by ContentActiveRecord?
+            [['contentVisibility'], 'validateContentVisibility'],
+            [['contentContainer'], 'validateContentContainer'],
+            [['contentTitle'], 'validateContentTitle'],
         ];
     }
 

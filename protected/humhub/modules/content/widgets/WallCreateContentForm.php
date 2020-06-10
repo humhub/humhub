@@ -123,8 +123,8 @@ class WallCreateContentForm extends Widget
             $visibility = Content::VISIBILITY_PRIVATE;
         }
 
-        $record->content->visibility = $visibility;
-        $record->content->container = $contentContainer;
+        $record->contentVisibility = $visibility;
+        $record->contentContainer = $contentContainer;
 
         // Handle Notify User Features of ContentFormWidget
         // ToDo: Check permissions of user guids

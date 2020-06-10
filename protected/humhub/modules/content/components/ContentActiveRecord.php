@@ -9,6 +9,8 @@
 namespace humhub\modules\content\components;
 
 use humhub\modules\content\models\Movable;
+use humhub\modules\content\permissions\CreatePublicContent;
+use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicLabel;
 use humhub\modules\user\behaviors\Followable;
@@ -42,21 +44,26 @@ use yii\base\InvalidConfigException;
  *
  * ```php
  * $post = new Post();
- * $post->content->container = $space;
- * $post->content->visibility = Content::VISIBILITY_PRIVATE; // optional
- * $post->message = "Hello world!";
+ * $post->contentContainer = $space;
+ * $post->contentVisibility = Content::VISIBILITY_PRIVATE; // optional
+ * $post->contentTitle = "Hello world";
+ * $post->message = "My first post in Humhub!";
  * $post->save();
  * ```
  *
  * Note: If the underlying Content record cannot be saved or validated an Exception will thrown.
  *
  * @property Content $content
- * @mixin Followable
  * @property User $createdBy
+ * @property ContentContainerActiveRecord $contentContainer the container to which this content belongs to (automatically stored)
+ * @property string $contentTitle the title of the content (automatically stored)
+ * @property int $contentVisibility the visibility of this content (automatically stored)
+ * @mixin Followable
  * @author Luke
  */
 class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
 {
+
     /**
      * @see \humhub\modules\content\widgets\WallEntry
      * @var string the WallEntry widget class
@@ -191,6 +198,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
 
             return $content;
         }
+
         return parent::__get($name);
     }
 
@@ -525,9 +533,9 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
             return Yii::t('ContentModule.base', 'This content type can\'t be moved.');
         }
 
-        if($container && is_string($this->canMove) && is_subclass_of($this->canMove, BasePermission::class)) {
+        if ($container && is_string($this->canMove) && is_subclass_of($this->canMove, BasePermission::class)) {
             $ownerPermissions = $container->getPermissionManager($this->content->createdBy);
-            if(!$ownerPermissions->can($this->canMove)) {
+            if (!$ownerPermissions->can($this->canMove)) {
                 return Yii::t('ContentModule.base', 'The author of this content is not allowed to create this type of content within this space.');
             }
         }
@@ -551,4 +559,71 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     public function afterMove(ContentContainerActiveRecord $container = null)
     {
     }
+
+    public function setContentTitle($title)
+    {
+        $this->content->title = $title;
+    }
+
+    public function getContentTitle()
+    {
+        return $this->content->title;
+    }
+
+    public function setContentVisibility($visibilty)
+    {
+        $this->content->visibility = (int)$visibilty;
+    }
+
+    public function getContentVisibility()
+    {
+        return $this->content->visibility;
+    }
+
+    public function setContentContainer(ContentContainerActiveRecord $container)
+    {
+        $this->content->container = $container;
+    }
+
+    public function getContentContainer()
+    {
+        return $this->content->container;
+    }
+
+    public function validateContentVisibility($attribute, $params, $validator)
+    {
+        $visibility = (int)$this->$attribute;
+
+        if (!in_array($visibility, [Content::VISIBILITY_PUBLIC, Content::VISIBILITY_PRIVATE, Content::VISIBILITY_OWNER])) {
+            $this->addError('contentVisibility', 'Invalid visibility mode!');
+        }
+
+        if ($visibility === Content::VISIBILITY_PUBLIC && !$this->contentContainer->can(CreatePublicContent::class)) {
+            $this->addError('contentVisibility', 'You are not allowed to create public content.');
+        }
+    }
+
+    public function validateContentTitle($attribute, $params, $validator)
+    {
+        $container = $this->$attribute;
+        // ToDo: Validate title
+    }
+
+    public function validateContentContainer($attribute, $params, $validator)
+    {
+        if (!($this->$attribute instanceof ContentContainerActiveRecord)) {
+            $this->addError('contentContainer', 'Invalid content container given!');
+            return;
+        }
+
+        /** @var ContentContainerActiveRecord $container */
+        $container = $this->$attribute;
+
+        // ToDo: Introduce Create permission?
+        if (!$this->contentContainer->getPermissionManager()->can(new CreatePost())) {
+            $this->addError('contentContainer', 'You are not allowed to create this content.');
+            return;
+        }
+    }
+
 }
