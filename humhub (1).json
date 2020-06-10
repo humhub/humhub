@@ -1,0 +1,853 @@
+[
+{"type":"header","version":"5.0.2","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"humhub"},
+{"type":"table","name":"activity","database":"humhub","data":
+[
+{"id":"1","class":"humhub\\modules\\space\\activities\\Created","module":"space","object_model":"humhub\\modules\\space\\models\\Space","object_id":"1"},
+{"id":"3","class":"humhub\\modules\\space\\activities\\MemberAdded","module":"space","object_model":"humhub\\modules\\space\\models\\Space","object_id":"1"},
+{"id":"4","class":"humhub\\modules\\space\\activities\\MemberAdded","module":"space","object_model":"humhub\\modules\\space\\models\\Space","object_id":"1"},
+{"id":"17","class":"humhub\\modules\\space\\activities\\MemberAdded","module":"space","object_model":"humhub\\modules\\space\\models\\Space","object_id":"1"},
+{"id":"19","class":"humhub\\modules\\content\\activities\\ContentCreated","module":"content","object_model":"humhub\\modules\\post\\models\\Post","object_id":"3"},
+{"id":"20","class":"humhub\\modules\\space\\activities\\MemberRemoved","module":"space","object_model":"humhub\\modules\\space\\models\\Space","object_id":"1"},
+{"id":"21","class":"humhub\\modules\\space\\activities\\MemberRemoved","module":"space","object_model":"humhub\\modules\\space\\models\\Space","object_id":"1"},
+{"id":"22","class":"humhub\\modules\\space\\activities\\MemberAdded","module":"space","object_model":"humhub\\modules\\space\\models\\Space","object_id":"1"},
+{"id":"23","class":"humhub\\modules\\content\\activities\\ContentCreated","module":"content","object_model":"humhub\\modules\\post\\models\\Post","object_id":"4"}
+]
+}
+,{"type":"table","name":"cfiles_file","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"cfiles_folder","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"comment","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"content","database":"humhub","data":
+[
+{"id":"1","guid":"4e76d8df-9c79-4463-b82a-550555c8ff87","object_model":"humhub\\modules\\activity\\models\\Activity","object_id":"1","visibility":"1","pinned":"0","archived":"0","created_at":"2020-06-09 09:05:36","created_by":"1","updated_at":"2020-06-09 09:05:36","updated_by":"1","contentcontainer_id":"2","stream_sort_date":"2020-06-09 09:05:36","stream_channel":"activity"},
+{"id":"4","guid":"95d9f44c-cba3-4ed3-bc3a-8a843ae102ce","object_model":"humhub\\modules\\activity\\models\\Activity","object_id":"3","visibility":"0","pinned":"0","archived":"0","created_at":"2020-06-09 09:05:47","created_by":"2","updated_at":"2020-06-09 09:05:47","updated_by":"1","contentcontainer_id":"2","stream_sort_date":"2020-06-09 09:05:47","stream_channel":"activity"},
+{"id":"5","guid":"a8986e3b-ca5d-4405-90fb-0d631dc8d131","object_model":"humhub\\modules\\activity\\models\\Activity","object_id":"4","visibility":"0","pinned":"0","archived":"0","created_at":"2020-06-09 09:05:49","created_by":"3","updated_at":"2020-06-09 09:05:49","updated_by":"1","contentcontainer_id":"2","stream_sort_date":"2020-06-09 09:05:49","stream_channel":"activity"},
+{"id":"20","guid":"71da0fee-5a26-4ed4-9de7-eb28e045e35c","object_model":"humhub\\modules\\activity\\models\\Activity","object_id":"17","visibility":"0","pinned":"0","archived":"0","created_at":"2020-06-09 09:30:25","created_by":"4","updated_at":"2020-06-09 09:30:25","updated_by":"1","contentcontainer_id":"2","stream_sort_date":"2020-06-09 09:30:25","stream_channel":"activity"},
+{"id":"22","guid":"c8ba5892-b163-4bc1-8fee-7c0c8039d152","object_model":"humhub\\modules\\post\\models\\Post","object_id":"3","visibility":"1","pinned":"0","archived":"0","created_at":"2020-06-09 10:37:52","created_by":"4","updated_at":"2020-06-09 10:37:52","updated_by":"4","contentcontainer_id":"7","stream_sort_date":"2020-06-09 10:37:52","stream_channel":"default"},
+{"id":"23","guid":"dd84428f-b35b-4822-b767-252def866fca","object_model":"humhub\\modules\\activity\\models\\Activity","object_id":"19","visibility":"1","pinned":"0","archived":"0","created_at":"2020-06-09 10:37:52","created_by":"4","updated_at":"2020-06-09 10:37:52","updated_by":"4","contentcontainer_id":"7","stream_sort_date":"2020-06-09 10:37:52","stream_channel":"activity"},
+{"id":"24","guid":"c4705e9c-524d-4808-9022-5ba97305319e","object_model":"humhub\\modules\\activity\\models\\Activity","object_id":"20","visibility":"0","pinned":"0","archived":"0","created_at":"2020-06-09 11:56:56","created_by":"3","updated_at":"2020-06-09 11:56:56","updated_by":"1","contentcontainer_id":"2","stream_sort_date":"2020-06-09 11:56:56","stream_channel":"activity"},
+{"id":"25","guid":"1e67e926-e93f-4c19-852e-626dbb336228","object_model":"humhub\\modules\\activity\\models\\Activity","object_id":"21","visibility":"0","pinned":"0","archived":"0","created_at":"2020-06-09 11:57:04","created_by":"2","updated_at":"2020-06-09 11:57:04","updated_by":"1","contentcontainer_id":"2","stream_sort_date":"2020-06-09 11:57:04","stream_channel":"activity"},
+{"id":"26","guid":"73cc8d6c-3449-4d88-843a-d2c8f8b3ac46","object_model":"humhub\\modules\\activity\\models\\Activity","object_id":"22","visibility":"0","pinned":"0","archived":"0","created_at":"2020-06-09 12:33:48","created_by":"5","updated_at":"2020-06-09 12:33:48","updated_by":"1","contentcontainer_id":"2","stream_sort_date":"2020-06-09 12:33:48","stream_channel":"activity"},
+{"id":"27","guid":"9ef3955c-93f1-44a4-ae51-4e17fe9eddc4","object_model":"humhub\\modules\\post\\models\\Post","object_id":"4","visibility":"1","pinned":"0","archived":"0","created_at":"2020-06-09 18:11:57","created_by":"4","updated_at":"2020-06-09 18:11:57","updated_by":"4","contentcontainer_id":"7","stream_sort_date":"2020-06-09 18:11:57","stream_channel":"default"},
+{"id":"28","guid":"ed7af0dd-cd4f-426c-98d6-04781d5ac8ad","object_model":"humhub\\modules\\activity\\models\\Activity","object_id":"23","visibility":"1","pinned":"0","archived":"0","created_at":"2020-06-09 18:11:57","created_by":"4","updated_at":"2020-06-09 18:11:57","updated_by":"4","contentcontainer_id":"7","stream_sort_date":"2020-06-09 18:11:57","stream_channel":"activity"}
+]
+}
+,{"type":"table","name":"contentcontainer","database":"humhub","data":
+[
+{"id":"1","guid":"f0c1821e-6bd3-4529-a427-060304cd7069","class":"humhub\\modules\\user\\models\\User","pk":"1","owner_user_id":"1"},
+{"id":"2","guid":"c29b6083-1482-42e8-bd7f-afe9f36c0138","class":"humhub\\modules\\space\\models\\Space","pk":"1","owner_user_id":"1"},
+{"id":"3","guid":"8b4716ba-3368-4cae-918f-6bb2a2afc9e9","class":"humhub\\modules\\user\\models\\User","pk":"2","owner_user_id":"2"},
+{"id":"4","guid":"2900330b-4b06-4444-865b-ab69eed60323","class":"humhub\\modules\\user\\models\\User","pk":"3","owner_user_id":"3"},
+{"id":"7","guid":"d6d8f681-ebc0-460b-8b96-069ac3bc58a1","class":"humhub\\modules\\user\\models\\User","pk":"4","owner_user_id":"4"},
+{"id":"8","guid":"269fc54a-7422-4a0c-a220-cc0c9a739c00","class":"humhub\\modules\\user\\models\\User","pk":"5","owner_user_id":"5"}
+]
+}
+,{"type":"table","name":"contentcontainer_module","database":"humhub","data":
+[
+{"contentcontainer_id":"1","module_id":"cfiles","module_state":"1"},
+{"contentcontainer_id":"1","module_id":"tasks","module_state":"1"},
+{"contentcontainer_id":"1","module_id":"wiki","module_state":"1"},
+{"contentcontainer_id":"2","module_id":"cfiles","module_state":"1"},
+{"contentcontainer_id":"2","module_id":"custom_pages","module_state":"1"},
+{"contentcontainer_id":"2","module_id":"polls","module_state":"1"},
+{"contentcontainer_id":"2","module_id":"tasks","module_state":"1"},
+{"contentcontainer_id":"2","module_id":"wiki","module_state":"1"}
+]
+}
+,{"type":"table","name":"contentcontainer_permission","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"contentcontainer_setting","database":"humhub","data":
+[
+{"id":"1","module_id":"tour","contentcontainer_id":"1","name":"hideTourPanel","value":"1"}
+]
+}
+,{"type":"table","name":"content_tag","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"content_tag_relation","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"custom_pages_container_page","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"custom_pages_container_snippet","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"custom_pages_page","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"custom_pages_snippet","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"custom_pages_template","database":"humhub","data":
+[
+{"id":"1","name":"system_two_column_layout","engine":"twig","description":"Simple two column layout.","source":"<div class=\"row\">\n\t<div class=\"col-md-8\">\n\t\t<div class=\"panel panel-default\">\n\t\t\t<div class=\"panel-body\">\n\t\t\t\t{{ content }}\n\t\t\t<\/div>\n\t\t<\/div>\n\t<\/div>\n\t<div class=\"col-md-4\">\n\t\t<div class=\"panel panel-default\">\n\t\t\t<div class=\"panel-body\">\n\t\t\t\t{{ sidebar_container }}\n\t\t\t<\/div>\n\t\t<\/div>\t\n\t<\/div>\n<\/div>","allow_for_spaces":"0","type":"layout","created_at":"2020-06-09 08:49:50","created_by":null,"updated_at":null,"updated_by":null,"allow_inline_activation":"0"},
+{"id":"2","name":"system_one_column_layout","engine":"twig","description":"Simple one column layout.","source":"<div class=\"row\">\n\t<div class=\"col-md-12\">\n            <div class=\"panel panel-default\">\n\t\t\t<div class=\"panel-body\">\n                            {{ content }}\n                        <\/div>\n            <\/div>\n\t<\/div>\n<\/div>","allow_for_spaces":"0","type":"layout","created_at":"2020-06-09 08:49:51","created_by":null,"updated_at":null,"updated_by":null,"allow_inline_activation":"0"},
+{"id":"3","name":"system_headline_container","engine":"twig","description":"Simple headline row with background image.","source":"{% if background.empty %}\n    {% set bg = assets['bgImage2.jpg']  %}\n{% else %}\n    {% set bg =  background %}\n{% endif %}\n\n<div style=\"height:218px;overflow:hidden;color:#fff;background-image: url('{{ bg }}');background-position:50% 50%;text-align:center;\">\n\t<div style=\"padding-top:40px;\">\n\t\t<h1 style=\"color:#fff;font-size:36px;margin:20px 0 10px;\">{{ heading }}<\/h1>\n\t\t<hr style=\"max-width:100px;border-width:3px;\">\n\t\t <span>{{ subheading }}<\/span>\n  \t <\/div>\n<\/div>","allow_for_spaces":"0","type":"container","created_at":"2020-06-09 08:49:52","created_by":null,"updated_at":null,"updated_by":null,"allow_inline_activation":"0"},
+{"id":"4","name":"system_article_container","engine":"twig","description":"Simple richtext article.","source":"<div style=\"margin-top:15px;\">\n\t<div style=\"padding:0 15px;\">\n\t\t{{ content }}\n\t<\/div>\n<\/div>","allow_for_spaces":"0","type":"container","created_at":"2020-06-09 08:49:53","created_by":null,"updated_at":null,"updated_by":null,"allow_inline_activation":"0"},
+{"id":"5","name":"system_simple_snippet_layout","engine":"twig","description":"Simple snippet layout with head container and richtext.","source":"<div>\n        {{ heading }}\n<\/div>\n<div style=\"margin-top:15px;\">\n\t{{ content }}\n<\/div>","allow_for_spaces":"0","type":"snipped-layout","created_at":"2020-06-09 08:49:55","created_by":null,"updated_at":null,"updated_by":null,"allow_inline_activation":"0"},
+{"id":"6","name":"system_download_item","engine":"twig","description":"Single download item.","source":"<div class=\"download-item\">\n    {{ file_download }}\n<\/div>","allow_for_spaces":"0","type":"container","created_at":"2020-06-09 08:50:00","created_by":null,"updated_at":null,"updated_by":null,"allow_inline_activation":"0"},
+{"id":"7","name":"system_download_list","engine":"twig","description":"File download list.","source":"<div class=\"download-list\">\n    {{ download_list }}\n<\/div>","allow_for_spaces":"0","type":"container","created_at":"2020-06-09 08:50:00","created_by":null,"updated_at":null,"updated_by":null,"allow_inline_activation":"0"},
+{"id":"8","name":"system_plain_layout","engine":"twig","description":"Simple container layout.","source":"{{ content }}","allow_for_spaces":"0","type":"layout","created_at":"2020-06-09 08:50:08","created_by":null,"updated_at":null,"updated_by":null,"allow_inline_activation":"0"}
+]
+}
+,{"type":"table","name":"custom_pages_template_container","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"custom_pages_template_container_content","database":"humhub","data":
+[
+{"id":"1","definition_id":"1"},
+{"id":"2","definition_id":"2"},
+{"id":"3","definition_id":"3"},
+{"id":"4","definition_id":"4"},
+{"id":"5","definition_id":"5"},
+{"id":"6","definition_id":"6"}
+]
+}
+,{"type":"table","name":"custom_pages_template_container_content_definition","database":"humhub","data":
+[
+{"id":"1","allow_multiple":"1","is_inline":"0","is_default":"1"},
+{"id":"2","allow_multiple":"1","is_inline":"0","is_default":"1"},
+{"id":"3","allow_multiple":"1","is_inline":"0","is_default":"1"},
+{"id":"4","allow_multiple":"0","is_inline":"0","is_default":"1"},
+{"id":"5","allow_multiple":"1","is_inline":"0","is_default":"1"},
+{"id":"6","allow_multiple":"1","is_inline":"0","is_default":"1"}
+]
+}
+,{"type":"table","name":"custom_pages_template_container_content_item","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"custom_pages_template_container_content_template","database":"humhub","data":
+[
+{"id":"1","template_id":"3","definition_id":"4"},
+{"id":"2","template_id":"6","definition_id":"5"}
+]
+}
+,{"type":"table","name":"custom_pages_template_element","database":"humhub","data":
+[
+{"id":"1","template_id":"1","name":"content","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\ContainerContent","title":null},
+{"id":"2","template_id":"1","name":"sidebar_container","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\ContainerContent","title":null},
+{"id":"3","template_id":"2","name":"content","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\ContainerContent","title":null},
+{"id":"4","template_id":"3","name":"heading","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\TextContent","title":null},
+{"id":"5","template_id":"3","name":"subheading","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\TextContent","title":null},
+{"id":"6","template_id":"3","name":"background","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\FileContent","title":null},
+{"id":"7","template_id":"4","name":"content","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\RichtextContent","title":null},
+{"id":"8","template_id":"5","name":"heading","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\ContainerContent","title":null},
+{"id":"9","template_id":"5","name":"content","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\RichtextContent","title":null},
+{"id":"10","template_id":"6","name":"file_download","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\FileDownloadContent","title":"File"},
+{"id":"11","template_id":"7","name":"download_list","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\ContainerContent","title":"File List"},
+{"id":"12","template_id":"8","name":"content","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\ContainerContent","title":null}
+]
+}
+,{"type":"table","name":"custom_pages_template_file_content","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"custom_pages_template_file_download_content","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"custom_pages_template_hh_richtext_content","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"custom_pages_template_image_content","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"custom_pages_template_image_content_definition","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"custom_pages_template_owner_content","database":"humhub","data":
+[
+{"id":"1","element_name":"content","owner_model":"humhub\\modules\\custom_pages\\modules\\template\\models\\Template","owner_id":"1","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\ContainerContent","content_id":"1","use_default":"0"},
+{"id":"2","element_name":"sidebar_container","owner_model":"humhub\\modules\\custom_pages\\modules\\template\\models\\Template","owner_id":"1","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\ContainerContent","content_id":"2","use_default":"0"},
+{"id":"3","element_name":"content","owner_model":"humhub\\modules\\custom_pages\\modules\\template\\models\\Template","owner_id":"2","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\ContainerContent","content_id":"3","use_default":"0"},
+{"id":"4","element_name":"heading","owner_model":"humhub\\modules\\custom_pages\\modules\\template\\models\\Template","owner_id":"3","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\TextContent","content_id":"1","use_default":"0"},
+{"id":"5","element_name":"subheading","owner_model":"humhub\\modules\\custom_pages\\modules\\template\\models\\Template","owner_id":"3","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\TextContent","content_id":"2","use_default":"0"},
+{"id":"6","element_name":"content","owner_model":"humhub\\modules\\custom_pages\\modules\\template\\models\\Template","owner_id":"4","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\RichtextContent","content_id":"1","use_default":"0"},
+{"id":"7","element_name":"heading","owner_model":"humhub\\modules\\custom_pages\\modules\\template\\models\\Template","owner_id":"5","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\ContainerContent","content_id":"4","use_default":"0"},
+{"id":"8","element_name":"content","owner_model":"humhub\\modules\\custom_pages\\modules\\template\\models\\Template","owner_id":"5","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\RichtextContent","content_id":"2","use_default":"0"},
+{"id":"9","element_name":"download_list","owner_model":"humhub\\modules\\custom_pages\\modules\\template\\models\\Template","owner_id":"7","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\ContainerContent","content_id":"5","use_default":"0"},
+{"id":"10","element_name":"content","owner_model":"humhub\\modules\\custom_pages\\modules\\template\\models\\Template","owner_id":"8","content_type":"humhub\\modules\\custom_pages\\modules\\template\\models\\ContainerContent","content_id":"6","use_default":"0"}
+]
+}
+,{"type":"table","name":"custom_pages_template_richtext_content","database":"humhub","data":
+[
+{"id":"1","content":"<h1>This is a&nbsp;simple article!<\/h1>\n\n<hr \/>\n<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.<\/p>\n"},
+{"id":"2","content":"<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.<\/p>"}
+]
+}
+,{"type":"table","name":"custom_pages_template_text_content","database":"humhub","data":
+[
+{"id":"1","content":"My Headline","inline_text":"1"},
+{"id":"2","content":"My Subheadline","inline_text":"1"}
+]
+}
+,{"type":"table","name":"file","database":"humhub","data":
+[
+{"id":"1","guid":"8b375c8e-d074-458f-873b-c5ee766dafd5","object_model":"humhub\\modules\\post\\models\\Post","object_id":"4","file_name":"DELIVERY.png","title":null,"mime_type":"image\/png","size":"164270","created_at":"2020-06-09 18:11:40","created_by":"4","updated_at":"2020-06-09 18:11:40","updated_by":"4","show_in_stream":"1"}
+]
+}
+,{"type":"table","name":"gallery_gallery","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"gallery_media","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"group","database":"humhub","data":
+[
+{"id":"1","space_id":null,"name":"Administrator","description":"Administrator Group","created_at":"2020-06-09 08:45:49","created_by":null,"updated_at":null,"updated_by":null,"ldap_dn":null,"is_admin_group":"1","show_at_registration":"0","show_at_directory":"0","sort_order":"100"},
+{"id":"2","space_id":null,"name":"Users","description":"Example Group by Installer","created_at":"2020-06-09 08:47:23","created_by":null,"updated_at":"2020-06-09 08:47:23","updated_by":null,"ldap_dn":null,"is_admin_group":"0","show_at_registration":"1","show_at_directory":"0","sort_order":"100"},
+{"id":"3","space_id":null,"name":"Empresários","description":"","created_at":"2020-06-09 11:25:02","created_by":"1","updated_at":"2020-06-09 11:25:02","updated_by":"1","ldap_dn":null,"is_admin_group":"0","show_at_registration":"0","show_at_directory":"0","sort_order":"100"}
+]
+}
+,{"type":"table","name":"group_permission","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"group_user","database":"humhub","data":
+[
+{"id":"1","user_id":"1","group_id":"1","is_group_manager":"0","created_at":"2020-06-09 09:05:34","created_by":null,"updated_at":"2020-06-09 09:05:34","updated_by":null},
+{"id":"2","user_id":"2","group_id":"2","is_group_manager":"0","created_at":"2020-06-09 09:05:48","created_by":"1","updated_at":"2020-06-09 09:05:48","updated_by":"1"},
+{"id":"3","user_id":"3","group_id":"2","is_group_manager":"0","created_at":"2020-06-09 09:05:49","created_by":"1","updated_at":"2020-06-09 09:05:49","updated_by":"1"},
+{"id":"4","user_id":"4","group_id":"2","is_group_manager":"0","created_at":"2020-06-09 09:30:26","created_by":"1","updated_at":"2020-06-09 09:30:26","updated_by":"1"},
+{"id":"5","user_id":"4","group_id":"3","is_group_manager":"0","created_at":"2020-06-09 11:25:40","created_by":"1","updated_at":"2020-06-09 11:25:40","updated_by":"1"},
+{"id":"6","user_id":"5","group_id":"2","is_group_manager":"0","created_at":"2020-06-09 12:33:50","created_by":"1","updated_at":"2020-06-09 12:33:50","updated_by":"1"},
+{"id":"7","user_id":"5","group_id":"3","is_group_manager":"0","created_at":"2020-06-09 12:34:13","created_by":"1","updated_at":"2020-06-09 12:34:13","updated_by":"1"}
+]
+}
+,{"type":"table","name":"like","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"live","database":"humhub","data":
+[
+{"id":"1","contentcontainer_id":"2","visibility":"1","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:1;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"f0c1821e-6bd3-4529-a427-060304cd7069\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:1;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:1;}","created_at":"1591704336"},
+{"id":"2","contentcontainer_id":"2","visibility":"1","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:3;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"f0c1821e-6bd3-4529-a427-060304cd7069\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:2;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:1;}","created_at":"1591704338"},
+{"id":"3","contentcontainer_id":"2","visibility":"1","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:2;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"f0c1821e-6bd3-4529-a427-060304cd7069\";s:11:\"sourceClass\";s:31:\"humhub\\modules\\post\\models\\Post\";s:8:\"sourceId\";i:1;s:6:\"silent\";b:0;s:13:\"streamChannel\";s:7:\"default\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:1;}","created_at":"1591704338"},
+{"id":"4","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:4;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"8b4716ba-3368-4cae-918f-6bb2a2afc9e9\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:3;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591704347"},
+{"id":"5","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:5;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"2900330b-4b06-4444-865b-ab69eed60323\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:4;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591704349"},
+{"id":"6","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:7;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"f0c1821e-6bd3-4529-a427-060304cd7069\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:5;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591704350"},
+{"id":"7","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:6;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"f0c1821e-6bd3-4529-a427-060304cd7069\";s:11:\"sourceClass\";s:31:\"humhub\\modules\\post\\models\\Post\";s:8:\"sourceId\";i:2;s:6:\"silent\";b:0;s:13:\"streamChannel\";s:7:\"default\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591704350"},
+{"id":"8","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:8;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"8b4716ba-3368-4cae-918f-6bb2a2afc9e9\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:6;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591704351"},
+{"id":"9","contentcontainer_id":"1","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\comment\\live\\NewComment\":4:{s:9:\"commentId\";i:1;s:9:\"contentId\";i:6;s:18:\"contentContainerId\";i:1;s:10:\"visibility\";i:0;}","created_at":"1591704351"},
+{"id":"10","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:9;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"2900330b-4b06-4444-865b-ab69eed60323\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:7;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591704353"},
+{"id":"11","contentcontainer_id":"1","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\comment\\live\\NewComment\":4:{s:9:\"commentId\";i:2;s:9:\"contentId\";i:6;s:18:\"contentContainerId\";i:1;s:10:\"visibility\";i:0;}","created_at":"1591704354"},
+{"id":"12","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:10;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"2900330b-4b06-4444-865b-ab69eed60323\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:8;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591704355"},
+{"id":"13","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:11;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"2900330b-4b06-4444-865b-ab69eed60323\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:9;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591704355"},
+{"id":"14","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:13;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"f0c1821e-6bd3-4529-a427-060304cd7069\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:10;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591704355"},
+{"id":"15","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:12;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"f0c1821e-6bd3-4529-a427-060304cd7069\";s:11:\"sourceClass\";s:32:\"humhub\\modules\\polls\\models\\Poll\";s:8:\"sourceId\";i:1;s:6:\"silent\";b:0;s:13:\"streamChannel\";s:7:\"default\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591704356"},
+{"id":"16","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:14;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"8b4716ba-3368-4cae-918f-6bb2a2afc9e9\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:11;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591704356"},
+{"id":"17","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:15;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"8b4716ba-3368-4cae-918f-6bb2a2afc9e9\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:12;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591704357"},
+{"id":"18","contentcontainer_id":"1","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\comment\\live\\NewComment\":4:{s:9:\"commentId\";i:3;s:9:\"contentId\";i:12;s:18:\"contentContainerId\";i:1;s:10:\"visibility\";i:0;}","created_at":"1591704357"},
+{"id":"19","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:16;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"2900330b-4b06-4444-865b-ab69eed60323\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:13;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591704358"},
+{"id":"20","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:17;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"2900330b-4b06-4444-865b-ab69eed60323\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:14;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591704358"},
+{"id":"21","contentcontainer_id":"1","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\comment\\live\\NewComment\":4:{s:9:\"commentId\";i:4;s:9:\"contentId\";i:12;s:18:\"contentContainerId\";i:1;s:10:\"visibility\";i:0;}","created_at":"1591704358"},
+{"id":"22","contentcontainer_id":"1","visibility":"2","serialized_data":"O:48:\"humhub\\modules\\notification\\live\\NewNotification\":6:{s:14:\"notificationId\";i:1;s:17:\"notificationGroup\";s:81:\"humhub\\modules\\comment\\notifications\\NewComment:humhub\\modules\\post\\models\\Post-2\";s:4:\"text\";s:95:\"David Roberts commented post \"We&#039;re looking for great slogans of famous brands. Maybe...\".\";s:2:\"ts\";i:1591704361;s:18:\"contentContainerId\";i:1;s:10:\"visibility\";i:2;}","created_at":"1591704362"},
+{"id":"23","contentcontainer_id":"4","visibility":"2","serialized_data":"O:48:\"humhub\\modules\\notification\\live\\NewNotification\":6:{s:14:\"notificationId\";i:2;s:17:\"notificationGroup\";s:81:\"humhub\\modules\\comment\\notifications\\NewComment:humhub\\modules\\post\\models\\Post-2\";s:4:\"text\";s:95:\"David Roberts commented post \"We&#039;re looking for great slogans of famous brands. Maybe...\".\";s:2:\"ts\";i:1591704362;s:18:\"contentContainerId\";i:4;s:10:\"visibility\";i:2;}","created_at":"1591704362"},
+{"id":"24","contentcontainer_id":"1","visibility":"2","serialized_data":"O:48:\"humhub\\modules\\notification\\live\\NewNotification\":6:{s:14:\"notificationId\";i:3;s:17:\"notificationGroup\";s:81:\"humhub\\modules\\comment\\notifications\\NewComment:humhub\\modules\\post\\models\\Post-2\";s:4:\"text\";s:95:\"Sara Schuster commented post \"We&#039;re looking for great slogans of famous brands. Maybe...\".\";s:2:\"ts\";i:1591704362;s:18:\"contentContainerId\";i:1;s:10:\"visibility\";i:2;}","created_at":"1591704362"},
+{"id":"25","contentcontainer_id":"3","visibility":"2","serialized_data":"O:48:\"humhub\\modules\\notification\\live\\NewNotification\":6:{s:14:\"notificationId\";i:4;s:17:\"notificationGroup\";s:81:\"humhub\\modules\\comment\\notifications\\NewComment:humhub\\modules\\post\\models\\Post-2\";s:4:\"text\";s:95:\"Sara Schuster commented post \"We&#039;re looking for great slogans of famous brands. Maybe...\".\";s:2:\"ts\";i:1591704362;s:18:\"contentContainerId\";i:3;s:10:\"visibility\";i:2;}","created_at":"1591704362"},
+{"id":"26","contentcontainer_id":"3","visibility":"2","serialized_data":"O:48:\"humhub\\modules\\notification\\live\\NewNotification\":6:{s:14:\"notificationId\";i:5;s:17:\"notificationGroup\";s:81:\"humhub\\modules\\like\\notifications\\NewLike:humhub\\modules\\comment\\models\\Comment-1\";s:4:\"text\";s:57:\"Sara Schuster likes comment \"Nike – Just buy it. 😉\".\";s:2:\"ts\";i:1591704363;s:18:\"contentContainerId\";i:3;s:10:\"visibility\";i:2;}","created_at":"1591704363"},
+{"id":"27","contentcontainer_id":"1","visibility":"2","serialized_data":"O:48:\"humhub\\modules\\notification\\live\\NewNotification\":6:{s:14:\"notificationId\";i:6;s:17:\"notificationGroup\";s:75:\"humhub\\modules\\like\\notifications\\NewLike:humhub\\modules\\post\\models\\Post-2\";s:4:\"text\";s:91:\"Sara Schuster likes post \"We&#039;re looking for great slogans of famous brands. Maybe...\".\";s:2:\"ts\";i:1591704363;s:18:\"contentContainerId\";i:1;s:10:\"visibility\";i:2;}","created_at":"1591704363"},
+{"id":"28","contentcontainer_id":"1","visibility":"2","serialized_data":"O:48:\"humhub\\modules\\notification\\live\\NewNotification\":6:{s:14:\"notificationId\";i:7;s:17:\"notificationGroup\";s:82:\"humhub\\modules\\comment\\notifications\\NewComment:humhub\\modules\\polls\\models\\Poll-1\";s:4:\"text\";s:99:\"David Roberts commented Question \"Right now, we are in the planning stages for our next meetup...\".\";s:2:\"ts\";i:1591704364;s:18:\"contentContainerId\";i:1;s:10:\"visibility\";i:2;}","created_at":"1591704364"},
+{"id":"29","contentcontainer_id":"4","visibility":"2","serialized_data":"O:48:\"humhub\\modules\\notification\\live\\NewNotification\":6:{s:14:\"notificationId\";i:8;s:17:\"notificationGroup\";s:82:\"humhub\\modules\\comment\\notifications\\NewComment:humhub\\modules\\polls\\models\\Poll-1\";s:4:\"text\";s:99:\"David Roberts commented Question \"Right now, we are in the planning stages for our next meetup...\".\";s:2:\"ts\";i:1591704364;s:18:\"contentContainerId\";i:4;s:10:\"visibility\";i:2;}","created_at":"1591704364"},
+{"id":"30","contentcontainer_id":"1","visibility":"2","serialized_data":"O:48:\"humhub\\modules\\notification\\live\\NewNotification\":6:{s:14:\"notificationId\";i:9;s:17:\"notificationGroup\";s:82:\"humhub\\modules\\comment\\notifications\\NewComment:humhub\\modules\\polls\\models\\Poll-1\";s:4:\"text\";s:99:\"Sara Schuster commented Question \"Right now, we are in the planning stages for our next meetup...\".\";s:2:\"ts\";i:1591704365;s:18:\"contentContainerId\";i:1;s:10:\"visibility\";i:2;}","created_at":"1591704365"},
+{"id":"31","contentcontainer_id":"3","visibility":"2","serialized_data":"O:48:\"humhub\\modules\\notification\\live\\NewNotification\":6:{s:14:\"notificationId\";i:10;s:17:\"notificationGroup\";s:82:\"humhub\\modules\\comment\\notifications\\NewComment:humhub\\modules\\polls\\models\\Poll-1\";s:4:\"text\";s:99:\"Sara Schuster commented Question \"Right now, we are in the planning stages for our next meetup...\".\";s:2:\"ts\";i:1591704365;s:18:\"contentContainerId\";i:3;s:10:\"visibility\";i:2;}","created_at":"1591704365"},
+{"id":"34","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:20;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"d6d8f681-ebc0-460b-8b96-069ac3bc58a1\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:17;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591705826"},
+{"id":"35","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:21;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"f0c1821e-6bd3-4529-a427-060304cd7069\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:18;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591708175"},
+{"id":"36","contentcontainer_id":"1","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\comment\\live\\NewComment\":4:{s:9:\"commentId\";i:5;s:9:\"contentId\";i:6;s:18:\"contentContainerId\";i:1;s:10:\"visibility\";i:0;}","created_at":"1591708176"},
+{"id":"37","contentcontainer_id":"7","visibility":"1","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:23;s:5:\"sguid\";N;s:5:\"uguid\";s:36:\"d6d8f681-ebc0-460b-8b96-069ac3bc58a1\";s:10:\"originator\";s:36:\"d6d8f681-ebc0-460b-8b96-069ac3bc58a1\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:19;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:7;s:10:\"visibility\";s:1:\"1\";}","created_at":"1591709872"},
+{"id":"38","contentcontainer_id":"7","visibility":"1","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:22;s:5:\"sguid\";N;s:5:\"uguid\";s:36:\"d6d8f681-ebc0-460b-8b96-069ac3bc58a1\";s:10:\"originator\";s:36:\"d6d8f681-ebc0-460b-8b96-069ac3bc58a1\";s:11:\"sourceClass\";s:31:\"humhub\\modules\\post\\models\\Post\";s:8:\"sourceId\";i:3;s:6:\"silent\";b:0;s:13:\"streamChannel\";s:7:\"default\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:7;s:10:\"visibility\";s:1:\"1\";}","created_at":"1591709872"},
+{"id":"39","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:24;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"2900330b-4b06-4444-865b-ab69eed60323\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:20;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591714616"},
+{"id":"40","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:25;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"8b4716ba-3368-4cae-918f-6bb2a2afc9e9\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:21;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591714624"},
+{"id":"41","contentcontainer_id":"2","visibility":"0","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:26;s:5:\"sguid\";s:36:\"c29b6083-1482-42e8-bd7f-afe9f36c0138\";s:5:\"uguid\";N;s:10:\"originator\";s:36:\"269fc54a-7422-4a0c-a220-cc0c9a739c00\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:22;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:2;s:10:\"visibility\";i:0;}","created_at":"1591716829"},
+{"id":"42","contentcontainer_id":"7","visibility":"1","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:28;s:5:\"sguid\";N;s:5:\"uguid\";s:36:\"d6d8f681-ebc0-460b-8b96-069ac3bc58a1\";s:10:\"originator\";s:36:\"d6d8f681-ebc0-460b-8b96-069ac3bc58a1\";s:11:\"sourceClass\";s:39:\"humhub\\modules\\activity\\models\\Activity\";s:8:\"sourceId\";i:23;s:6:\"silent\";b:1;s:13:\"streamChannel\";s:8:\"activity\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:7;s:10:\"visibility\";s:1:\"1\";}","created_at":"1591737118"},
+{"id":"43","contentcontainer_id":"7","visibility":"1","serialized_data":"O:38:\"humhub\\modules\\content\\live\\NewContent\":11:{s:9:\"contentId\";i:27;s:5:\"sguid\";N;s:5:\"uguid\";s:36:\"d6d8f681-ebc0-460b-8b96-069ac3bc58a1\";s:10:\"originator\";s:36:\"d6d8f681-ebc0-460b-8b96-069ac3bc58a1\";s:11:\"sourceClass\";s:31:\"humhub\\modules\\post\\models\\Post\";s:8:\"sourceId\";i:4;s:6:\"silent\";b:0;s:13:\"streamChannel\";s:7:\"default\";s:6:\"insert\";b:1;s:18:\"contentContainerId\";i:7;s:10:\"visibility\";s:1:\"1\";}","created_at":"1591737118"}
+]
+}
+,{"type":"table","name":"log","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"logging","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"message","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"message_entry","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"migration","database":"humhub","data":
+[
+{"version":"m000000_000000_base","apply_time":"1591702997"},
+{"version":"m131023_164513_initial","apply_time":"1591703007"},
+{"version":"m131023_165214_initial","apply_time":"1591703456"},
+{"version":"m131023_165411_initial","apply_time":"1591703009"},
+{"version":"m131023_165507_initial","apply_time":"1591703433"},
+{"version":"m131023_165625_initial","apply_time":"1591703010"},
+{"version":"m131023_165755_initial","apply_time":"1591703016"},
+{"version":"m131023_165835_initial","apply_time":"1591703016"},
+{"version":"m131023_165921_initial","apply_time":"1591703419"},
+{"version":"m131023_170033_initial","apply_time":"1591703017"},
+{"version":"m131023_170135_initial","apply_time":"1591703017"},
+{"version":"m131023_170159_initial","apply_time":"1591703018"},
+{"version":"m131023_170253_initial","apply_time":"1591703018"},
+{"version":"m131023_170339_initial","apply_time":"1591703019"},
+{"version":"m131030_122743_longer_questions","apply_time":"1591703421"},
+{"version":"m131203_110444_oembed","apply_time":"1591703019"},
+{"version":"m131213_165552_user_optimize","apply_time":"1591703027"},
+{"version":"m140226_111945_ldap","apply_time":"1591703027"},
+{"version":"m140303_125031_password","apply_time":"1591703029"},
+{"version":"m140304_142711_memberautoadd","apply_time":"1591703029"},
+{"version":"m140321_000917_content","apply_time":"1591703031"},
+{"version":"m140324_170617_membership","apply_time":"1591703032"},
+{"version":"m140507_150421_create_settings_table","apply_time":"1591703033"},
+{"version":"m140507_171527_create_settings_table","apply_time":"1591703035"},
+{"version":"m140512_141414_i18n_profilefields","apply_time":"1591703036"},
+{"version":"m140513_180317_createlogging","apply_time":"1591703037"},
+{"version":"m140701_000611_profile_genderfield","apply_time":"1591703037"},
+{"version":"m140701_074404_protect_default_profilefields","apply_time":"1591703037"},
+{"version":"m140702_143912_notify_notification_unify","apply_time":"1591703038"},
+{"version":"m140703_104527_profile_birthdayfield","apply_time":"1591703038"},
+{"version":"m140704_080659_installationid","apply_time":"1591703038"},
+{"version":"m140705_065525_emailing_settings","apply_time":"1591703039"},
+{"version":"m140706_135210_lastlogin","apply_time":"1591703040"},
+{"version":"m140812_093445_rename_deadline_column","apply_time":"1591703456"},
+{"version":"m140829_122906_delete","apply_time":"1591703042"},
+{"version":"m140830_145504_following","apply_time":"1591703044"},
+{"version":"m140901_080147_indizies","apply_time":"1591703045"},
+{"version":"m140901_080432_indices","apply_time":"1591703046"},
+{"version":"m140901_112246_addState","apply_time":"1591703046"},
+{"version":"m140901_153403_addState","apply_time":"1591703048"},
+{"version":"m140901_170329_group_create_space","apply_time":"1591703048"},
+{"version":"m140902_091234_session_key_length","apply_time":"1591703050"},
+{"version":"m140907_140822_zip_field_to_text","apply_time":"1591703051"},
+{"version":"m140930_045035_initial","apply_time":"1591703365"},
+{"version":"m140930_205511_fix_default","apply_time":"1591703055"},
+{"version":"m140930_205859_fix_default","apply_time":"1591703056"},
+{"version":"m140930_210142_fix_default","apply_time":"1591703059"},
+{"version":"m140930_210635_fix_default","apply_time":"1591703062"},
+{"version":"m140930_212528_fix_default","apply_time":"1591703064"},
+{"version":"m141002_084750_fix_default","apply_time":"1591703457"},
+{"version":"m141002_092800_fix_deadline","apply_time":"1591703457"},
+{"version":"m141002_093710_fix_default","apply_time":"1591703422"},
+{"version":"m141004_022835_initial","apply_time":"1591703346"},
+{"version":"m141015_173305_follow_notifications","apply_time":"1591703065"},
+{"version":"m141019_093319_mentioning","apply_time":"1591703067"},
+{"version":"m141020_162639_fix_default","apply_time":"1591703073"},
+{"version":"m141020_193920_rm_alsocreated","apply_time":"1591703073"},
+{"version":"m141020_193931_rm_alsoliked","apply_time":"1591703073"},
+{"version":"m141021_162639_oembed_setting","apply_time":"1591703073"},
+{"version":"m141022_094635_addDefaults","apply_time":"1591703074"},
+{"version":"m141026_135537_adminOnly","apply_time":"1591703365"},
+{"version":"m141106_185632_log_init","apply_time":"1591703075"},
+{"version":"m150204_103433_html5_notified","apply_time":"1591703075"},
+{"version":"m150210_190006_user_invite_lang","apply_time":"1591703075"},
+{"version":"m150302_114347_add_visibility","apply_time":"1591703076"},
+{"version":"m150322_194403_remove_type_field","apply_time":"1591703076"},
+{"version":"m150322_195619_allowedExt2Text","apply_time":"1591703076"},
+{"version":"m150429_190600_indexes","apply_time":"1591703435"},
+{"version":"m150429_223856_optimize","apply_time":"1591703079"},
+{"version":"m150510_102900_update","apply_time":"1591703079"},
+{"version":"m150629_220311_change","apply_time":"1591703080"},
+{"version":"m150703_012735_typelength","apply_time":"1591703083"},
+{"version":"m150703_024635_activityTypes","apply_time":"1591703083"},
+{"version":"m150703_033650_namespace","apply_time":"1591703084"},
+{"version":"m150703_130157_migrate","apply_time":"1591703085"},
+{"version":"m150704_005338_namespace","apply_time":"1591703085"},
+{"version":"m150704_005418_namespace","apply_time":"1591703086"},
+{"version":"m150704_005434_namespace","apply_time":"1591703086"},
+{"version":"m150704_005452_namespace","apply_time":"1591703086"},
+{"version":"m150704_005504_namespace","apply_time":"1591703087"},
+{"version":"m150705_081309_namespace","apply_time":"1591703347"},
+{"version":"m150709_050451_namespace","apply_time":"1591703436"},
+{"version":"m150709_151858_namespace","apply_time":"1591703423"},
+{"version":"m150710_055123_namespace","apply_time":"1591703457"},
+{"version":"m150713_054441_timezone","apply_time":"1591703087"},
+{"version":"m150714_093525_activity","apply_time":"1591703088"},
+{"version":"m150714_100355_cleanup","apply_time":"1591703089"},
+{"version":"m150720_174011_initial","apply_time":"1591703442"},
+{"version":"m150831_061628_notifications","apply_time":"1591703089"},
+{"version":"m150910_223305_fix_user_follow","apply_time":"1591703090"},
+{"version":"m150916_131805_container","apply_time":"1591703366"},
+{"version":"m150917_104409_add_new_windows","apply_time":"1591703367"},
+{"version":"m150924_133344_update_notification_fix","apply_time":"1591703090"},
+{"version":"m150924_154635_user_invite_add_first_lastname","apply_time":"1591703090"},
+{"version":"m150927_190830_create_contentcontainer","apply_time":"1591703097"},
+{"version":"m150928_103711_permissions","apply_time":"1591703099"},
+{"version":"m150928_134934_groups","apply_time":"1591703100"},
+{"version":"m150928_140718_setColorVariables","apply_time":"1591703100"},
+{"version":"m151010_124437_group_permissions","apply_time":"1591703103"},
+{"version":"m151010_175000_default_visibility","apply_time":"1591703103"},
+{"version":"m151013_223814_include_dashboard","apply_time":"1591703103"},
+{"version":"m151022_131128_module_fix","apply_time":"1591703103"},
+{"version":"m151106_090948_addColor","apply_time":"1591703104"},
+{"version":"m151223_171310_fix_notifications","apply_time":"1591703104"},
+{"version":"m151224_162440_fix_module_id_notifications","apply_time":"1591704106"},
+{"version":"m151226_164234_authclient","apply_time":"1591703105"},
+{"version":"m160125_053702_stored_filename","apply_time":"1591703106"},
+{"version":"m160205_203840_foreign_keys","apply_time":"1591703120"},
+{"version":"m160205_203913_foreign_keys","apply_time":"1591703125"},
+{"version":"m160205_203939_foreign_keys","apply_time":"1591703127"},
+{"version":"m160205_203955_foreign_keys","apply_time":"1591703130"},
+{"version":"m160205_204000_foreign_keys","apply_time":"1591703131"},
+{"version":"m160205_204010_foreign_keys","apply_time":"1591703132"},
+{"version":"m160205_205540_foreign_keys","apply_time":"1591703134"},
+{"version":"m160216_160119_initial","apply_time":"1591703139"},
+{"version":"m160217_161220_addCanLeaveFlag","apply_time":"1591703139"},
+{"version":"m160218_132531_close_and_anonymous_poll","apply_time":"1591703423"},
+{"version":"m160220_013525_contentcontainer_id","apply_time":"1591703145"},
+{"version":"m160221_222312_public_permission_change","apply_time":"1591703145"},
+{"version":"m160225_180229_remove_website","apply_time":"1591703145"},
+{"version":"m160227_073020_birthday_date","apply_time":"1591703146"},
+{"version":"m160229_162959_multiusergroups","apply_time":"1591703150"},
+{"version":"m160309_141222_longerUserName","apply_time":"1591703150"},
+{"version":"m160321_163801_initial","apply_time":"1591722814"},
+{"version":"m160408_100725_rename_groupadmin_to_manager","apply_time":"1591703151"},
+{"version":"m160415_180332_wall_remove","apply_time":"1591703155"},
+{"version":"m160501_220850_activity_pk_int","apply_time":"1591703156"},
+{"version":"m160507_202611_settings","apply_time":"1591703159"},
+{"version":"m160508_005740_settings_cleanup","apply_time":"1591703162"},
+{"version":"m160509_214811_spaceurl","apply_time":"1591703163"},
+{"version":"m160517_132535_group","apply_time":"1591703163"},
+{"version":"m160523_105732_profile_searchable","apply_time":"1591703164"},
+{"version":"m160714_142827_remove_space_id","apply_time":"1591703164"},
+{"version":"m160719_131212_init_templates","apply_time":"1591703386"},
+{"version":"m160808_124800_text_content","apply_time":"1591703387"},
+{"version":"m160810_174011_add_description","apply_time":"1591703443"},
+{"version":"m160817_130334_page_content_medium_text","apply_time":"1591703388"},
+{"version":"m160817_180831_add_type","apply_time":"1591703443"},
+{"version":"m160824_120822_add_has_wall_entry","apply_time":"1591703444"},
+{"version":"m160831_133950_snippets","apply_time":"1591703389"},
+{"version":"m160907_122454_file_content","apply_time":"1591703390"},
+{"version":"m160907_175706_default_templates","apply_time":"1591703396"},
+{"version":"m160908_084038_admin_only_other_pagetypes","apply_time":"1591703397"},
+{"version":"m160922_092100_page_class","apply_time":"1591703398"},
+{"version":"m160922_115053_page_url","apply_time":"1591703398"},
+{"version":"m160922_143514_page_url_index","apply_time":"1591703399"},
+{"version":"m161031_161947_file_directories","apply_time":"1591703164"},
+{"version":"m170110_151419_membership_notifications","apply_time":"1591703164"},
+{"version":"m170110_152425_space_follow_reset_send_notification","apply_time":"1591703164"},
+{"version":"m170111_190400_disable_web_notifications","apply_time":"1591703165"},
+{"version":"m170112_115052_settings","apply_time":"1591703165"},
+{"version":"m170118_162332_streamchannel","apply_time":"1591703166"},
+{"version":"m170119_160740_initial","apply_time":"1591703168"},
+{"version":"m170122_091531_missingdefault","apply_time":"1591704109"},
+{"version":"m170123_125622_pinned","apply_time":"1591703168"},
+{"version":"m170210_154141_folderNoStream","apply_time":"1591703444"},
+{"version":"m170211_105743_show_in_stream","apply_time":"1591703168"},
+{"version":"m170211_110702_show_in_stream","apply_time":"1591703445"},
+{"version":"m170224_100937_fix_default_modules","apply_time":"1591703169"},
+{"version":"m170322_102446_removeContainerPagesFromStream","apply_time":"1591703399"},
+{"version":"m170411_124612_fileDownloadContent","apply_time":"1591703399"},
+{"version":"m170412_152540_template_element_label","apply_time":"1591703400"},
+{"version":"m170412_163156_allow_inline_activation","apply_time":"1591703400"},
+{"version":"m170413_085114_download_link_template","apply_time":"1591703401"},
+{"version":"m170723_133337_content_tag","apply_time":"1591703177"},
+{"version":"m170723_133338_content_tag_sort_order","apply_time":"1591703178"},
+{"version":"m170805_211208_authclient_id","apply_time":"1591703178"},
+{"version":"m170810_220543_group_sort","apply_time":"1591703178"},
+{"version":"m170830_122433_set_root_partent_null","apply_time":"1591703445"},
+{"version":"m170830_122439_foreignkeys","apply_time":"1591703448"},
+{"version":"m171015_155102_contentcontainer_module","apply_time":"1591703182"},
+{"version":"m171025_142030_queue_update","apply_time":"1591703184"},
+{"version":"m171025_200312_utf8mb4_fixes","apply_time":"1591703185"},
+{"version":"m171027_220519_exclusive_jobs","apply_time":"1591703187"},
+{"version":"m180305_084435_membership_pk","apply_time":"1591703192"},
+{"version":"m180315_112748_fix_email_length","apply_time":"1591703196"},
+{"version":"m180327_125017_show_result_after_close","apply_time":"1591703424"},
+{"version":"m180411_093623_checklist_and_revision","apply_time":"1591704125"},
+{"version":"m180413_145745_categories","apply_time":"1591703349"},
+{"version":"m180502_142535_renameclasses","apply_time":"1591704126"},
+{"version":"m180504_092302_permission_name_and_list_updated_at","apply_time":"1591704127"},
+{"version":"m180515_120940_list_settings_updated_at","apply_time":"1591704129"},
+{"version":"m180515_120941_added_uid","apply_time":"1591704130"},
+{"version":"m180907_224038_page_sort_order","apply_time":"1591703349"},
+{"version":"m181029_160453_collation","apply_time":"1591703227"},
+{"version":"m190211_133045_channel_length","apply_time":"1591703227"},
+{"version":"m190213_135902_align_page_types","apply_time":"1591703404"},
+{"version":"m190213_135903_humhub_richtext_content","apply_time":"1591703407"},
+{"version":"m190213_135904_page_abstract","apply_time":"1591703408"},
+{"version":"m190213_135905_blank_template","apply_time":"1591703408"},
+{"version":"m190213_135906_text_edit_mode","apply_time":"1591703409"},
+{"version":"m190309_201944_rename_settings","apply_time":"1591703227"},
+{"version":"m190920_142605_fix_language_codes","apply_time":"1591703227"},
+{"version":"m200217_122108_profile_translation_fix","apply_time":"1591703227"},
+{"version":"m200218_122109_profile_translation_fix2","apply_time":"1591703228"},
+{"version":"m200323_162006_fix_visibility","apply_time":"1591703228"}
+]
+}
+,{"type":"table","name":"module_enabled","database":"humhub","data":
+[
+{"module_id":"birthday"},
+{"module_id":"cfiles"},
+{"module_id":"custom_pages"},
+{"module_id":"gallery"},
+{"module_id":"jitsi-meet"},
+{"module_id":"mail"},
+{"module_id":"mostactiveusers"},
+{"module_id":"polls"},
+{"module_id":"popover-vcard"},
+{"module_id":"tasks"},
+{"module_id":"wiki"}
+]
+}
+,{"type":"table","name":"notification","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"poll","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"poll_answer","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"poll_answer_user","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"post","database":"humhub","data":
+[
+{"id":"3","message_2trash":null,"message":"quero conhecer mais o grupo","url":null,"created_at":"2020-06-09 10:37:52","created_by":"4","updated_at":"2020-06-09 10:37:52","updated_by":"4"},
+{"id":"4","message_2trash":null,"message":"Faça seu pedido ","url":null,"created_at":"2020-06-09 18:11:56","created_by":"4","updated_at":"2020-06-09 18:11:56","updated_by":"4"}
+]
+}
+,{"type":"table","name":"profile","database":"humhub","data":
+[
+{"user_id":"1","firstname":"william","lastname":"bachot","title":"System Administration","gender":null,"street":null,"zip":null,"city":null,"country":null,"state":null,"birthday_hide_year":null,"birthday":null,"about":null,"phone_private":null,"phone_work":null,"mobile":null,"fax":null,"im_skype":null,"im_xmpp":null,"url":null,"url_facebook":null,"url_linkedin":null,"url_xing":null,"url_youtube":null,"url_vimeo":null,"url_flickr":null,"url_myspace":null,"url_twitter":null},
+{"user_id":"2","firstname":"David","lastname":"Roberts","title":"Late riser","gender":null,"street":"2443 Queens Lane","zip":"24574","city":"Allwood","country":"Virginia","state":null,"birthday_hide_year":null,"birthday":null,"about":null,"phone_private":null,"phone_work":null,"mobile":null,"fax":null,"im_skype":null,"im_xmpp":null,"url":null,"url_facebook":null,"url_linkedin":null,"url_xing":null,"url_youtube":null,"url_vimeo":null,"url_flickr":null,"url_myspace":null,"url_twitter":null},
+{"user_id":"3","firstname":"Sara","lastname":"Schuster","title":"Do-gooder","gender":null,"street":"Schmarjestrasse 51","zip":"17095","city":"Friedland","country":"Niedersachsen","state":null,"birthday_hide_year":null,"birthday":null,"about":null,"phone_private":null,"phone_work":null,"mobile":null,"fax":null,"im_skype":null,"im_xmpp":null,"url":null,"url_facebook":null,"url_linkedin":null,"url_xing":null,"url_youtube":null,"url_vimeo":null,"url_flickr":null,"url_myspace":null,"url_twitter":null},
+{"user_id":"4","firstname":"Delicias","lastname":"Barra","title":"Massas Especializada","gender":null,"street":null,"zip":null,"city":null,"country":null,"state":null,"birthday_hide_year":"0","birthday":null,"about":null,"phone_private":"22997831424","phone_work":null,"mobile":null,"fax":null,"im_skype":null,"im_xmpp":null,"url":null,"url_facebook":null,"url_linkedin":null,"url_xing":null,"url_youtube":null,"url_vimeo":null,"url_flickr":null,"url_myspace":null,"url_twitter":null},
+{"user_id":"5","firstname":"Tereza Auto","lastname":"Eletrica","title":null,"gender":null,"street":null,"zip":null,"city":null,"country":null,"state":null,"birthday_hide_year":"0","birthday":null,"about":null,"phone_private":null,"phone_work":null,"mobile":null,"fax":null,"im_skype":null,"im_xmpp":null,"url":null,"url_facebook":null,"url_linkedin":null,"url_xing":null,"url_youtube":null,"url_vimeo":null,"url_flickr":null,"url_myspace":null,"url_twitter":null}
+]
+}
+,{"type":"table","name":"profile_field","database":"humhub","data":
+[
+{"id":"1","profile_field_category_id":"1","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":20,\"validator\":null,\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"firstname","title":"First name","description":null,"sort_order":"100","required":"1","show_at_registration":"1","editable":"1","visible":"1","created_at":"2020-06-09 08:47:13","created_by":null,"updated_at":"2020-06-09 08:47:13","updated_by":null,"ldap_attribute":"givenName","translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"2","profile_field_category_id":"1","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":30,\"validator\":null,\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"lastname","title":"Last name","description":null,"sort_order":"200","required":"1","show_at_registration":"1","editable":"1","visible":"1","created_at":"2020-06-09 08:47:13","created_by":null,"updated_at":"2020-06-09 08:47:13","updated_by":null,"ldap_attribute":"sn","translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"3","profile_field_category_id":"1","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":50,\"validator\":null,\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"title","title":"Title","description":null,"sort_order":"300","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:13","created_by":null,"updated_at":"2020-06-09 08:47:14","updated_by":null,"ldap_attribute":"title","translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"4","profile_field_category_id":"1","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Select","field_type_config":"{\"options\":\"male=>Male\\nfemale=>Female\\ncustom=>Custom\",\"fieldTypes\":[]}","internal_name":"gender","title":"Gender","description":null,"sort_order":"300","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:14","created_by":null,"updated_at":"2020-06-09 08:47:14","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"5","profile_field_category_id":"1","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":150,\"validator\":null,\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"street","title":"Street","description":null,"sort_order":"400","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:14","created_by":null,"updated_at":"2020-06-09 08:47:14","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"6","profile_field_category_id":"1","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":10,\"validator\":null,\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"zip","title":"Zip","description":null,"sort_order":"500","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:15","created_by":null,"updated_at":"2020-06-09 08:47:15","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"7","profile_field_category_id":"1","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":100,\"validator\":null,\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"city","title":"City","description":null,"sort_order":"600","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:15","created_by":null,"updated_at":"2020-06-09 08:47:15","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"8","profile_field_category_id":"1","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\CountrySelect","field_type_config":"{\"options\":null,\"fieldTypes\":[]}","internal_name":"country","title":"Country","description":null,"sort_order":"700","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:16","created_by":null,"updated_at":"2020-06-09 08:47:16","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"9","profile_field_category_id":"1","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":100,\"validator\":null,\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"state","title":"State","description":null,"sort_order":"800","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:16","created_by":null,"updated_at":"2020-06-09 08:47:17","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"10","profile_field_category_id":"1","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Birthday","field_type_config":"{\"defaultHideAge\":\"0\",\"fieldTypes\":[]}","internal_name":"birthday","title":"Aniversário","description":"","sort_order":"900","required":"0","show_at_registration":"1","editable":"1","visible":"1","created_at":"2020-06-09 08:47:17","created_by":null,"updated_at":"2020-06-09 10:46:03","updated_by":"1","ldap_attribute":"","translation_category":"UserModule.profile","is_system":"1","searchable":"1"},
+{"id":"11","profile_field_category_id":"1","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\TextArea","field_type_config":"{\"fieldTypes\":[]}","internal_name":"about","title":"About","description":null,"sort_order":"900","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:17","created_by":null,"updated_at":"2020-06-09 08:47:17","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"12","profile_field_category_id":"2","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":100,\"validator\":null,\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"phone_private","title":"Phone Private","description":null,"sort_order":"100","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:18","created_by":null,"updated_at":"2020-06-09 08:47:18","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"13","profile_field_category_id":"2","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":100,\"validator\":null,\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"phone_work","title":"Phone Work","description":null,"sort_order":"200","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:18","created_by":null,"updated_at":"2020-06-09 08:47:18","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"14","profile_field_category_id":"2","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":100,\"validator\":null,\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"mobile","title":"Mobile","description":null,"sort_order":"300","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:18","created_by":null,"updated_at":"2020-06-09 08:47:18","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"15","profile_field_category_id":"2","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":100,\"validator\":null,\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"fax","title":"Fax","description":null,"sort_order":"400","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:18","created_by":null,"updated_at":"2020-06-09 08:47:19","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"16","profile_field_category_id":"2","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":100,\"validator\":null,\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"im_skype","title":"Skype Nickname","description":null,"sort_order":"500","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:19","created_by":null,"updated_at":"2020-06-09 08:47:19","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"17","profile_field_category_id":"2","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":255,\"validator\":\"email\",\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"im_xmpp","title":"XMPP Jabber Address","description":null,"sort_order":"800","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:19","created_by":null,"updated_at":"2020-06-09 08:47:19","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"18","profile_field_category_id":"3","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":255,\"validator\":\"url\",\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"url","title":"Url","description":null,"sort_order":"100","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:19","created_by":null,"updated_at":"2020-06-09 08:47:20","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"19","profile_field_category_id":"3","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":255,\"validator\":\"url\",\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"url_facebook","title":"Facebook URL","description":null,"sort_order":"200","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:20","created_by":null,"updated_at":"2020-06-09 08:47:20","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"20","profile_field_category_id":"3","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":255,\"validator\":\"url\",\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"url_linkedin","title":"LinkedIn URL","description":null,"sort_order":"300","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:20","created_by":null,"updated_at":"2020-06-09 08:47:20","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"21","profile_field_category_id":"3","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":255,\"validator\":\"url\",\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"url_xing","title":"Xing URL","description":null,"sort_order":"400","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:21","created_by":null,"updated_at":"2020-06-09 08:47:21","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"22","profile_field_category_id":"3","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":255,\"validator\":\"url\",\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"url_youtube","title":"Youtube URL","description":null,"sort_order":"500","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:21","created_by":null,"updated_at":"2020-06-09 08:47:22","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"23","profile_field_category_id":"3","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":255,\"validator\":\"url\",\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"url_vimeo","title":"Vimeo URL","description":null,"sort_order":"600","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:22","created_by":null,"updated_at":"2020-06-09 08:47:22","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"24","profile_field_category_id":"3","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":255,\"validator\":\"url\",\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"url_flickr","title":"Flickr URL","description":null,"sort_order":"700","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:22","created_by":null,"updated_at":"2020-06-09 08:47:22","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"25","profile_field_category_id":"3","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":255,\"validator\":\"url\",\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"url_myspace","title":"MySpace URL","description":null,"sort_order":"800","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:22","created_by":null,"updated_at":"2020-06-09 08:47:23","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"},
+{"id":"26","profile_field_category_id":"3","module_id":null,"field_type_class":"humhub\\modules\\user\\models\\fieldtype\\Text","field_type_config":"{\"minLength\":null,\"maxLength\":255,\"validator\":\"url\",\"default\":null,\"regexp\":null,\"regexpErrorMessage\":null,\"fieldTypes\":[]}","internal_name":"url_twitter","title":"Twitter URL","description":null,"sort_order":"1000","required":null,"show_at_registration":null,"editable":"1","visible":"1","created_at":"2020-06-09 08:47:23","created_by":null,"updated_at":"2020-06-09 08:47:23","updated_by":null,"ldap_attribute":null,"translation_category":null,"is_system":"1","searchable":"1"}
+]
+}
+,{"type":"table","name":"profile_field_category","database":"humhub","data":
+[
+{"id":"1","title":"General","description":"","sort_order":"100","module_id":null,"visibility":"1","created_at":"2020-06-09 08:47:12","created_by":null,"updated_at":"2020-06-09 08:47:12","updated_by":null,"translation_category":null,"is_system":"1"},
+{"id":"2","title":"Communication","description":"","sort_order":"200","module_id":null,"visibility":"1","created_at":"2020-06-09 08:47:12","created_by":null,"updated_at":"2020-06-09 08:47:12","updated_by":null,"translation_category":null,"is_system":"1"},
+{"id":"3","title":"Social bookmarks","description":"","sort_order":"300","module_id":null,"visibility":"1","created_at":"2020-06-09 08:47:12","created_by":null,"updated_at":"2020-06-09 08:47:12","updated_by":null,"translation_category":null,"is_system":"1"}
+]
+}
+,{"type":"table","name":"queue","database":"humhub","data":
+[
+{"id":"26","channel":"queue","job":"O:41:\"humhub\\modules\\search\\jobs\\DeleteDocument\":2:{s:17:\"activeRecordClass\";s:33:\"humhub\\modules\\space\\models\\Space\";s:10:\"primaryKey\";i:3;}","pushed_at":"1591714528","ttr":"300","delay":"0","priority":"1024","reserved_at":null,"attempt":null,"done_at":null},
+{"id":"27","channel":"queue","job":"O:41:\"humhub\\modules\\search\\jobs\\DeleteDocument\":2:{s:17:\"activeRecordClass\";s:33:\"humhub\\modules\\space\\models\\Space\";s:10:\"primaryKey\";i:2;}","pushed_at":"1591714573","ttr":"300","delay":"0","priority":"1024","reserved_at":null,"attempt":null,"done_at":null},
+{"id":"28","channel":"queue","job":"O:41:\"humhub\\modules\\search\\jobs\\UpdateDocument\":2:{s:17:\"activeRecordClass\";s:33:\"humhub\\modules\\space\\models\\Space\";s:10:\"primaryKey\";i:1;}","pushed_at":"1591714697","ttr":"300","delay":"0","priority":"1024","reserved_at":null,"attempt":null,"done_at":null},
+{"id":"29","channel":"queue","job":"O:41:\"humhub\\modules\\search\\jobs\\UpdateDocument\":2:{s:17:\"activeRecordClass\";s:31:\"humhub\\modules\\user\\models\\User\";s:10:\"primaryKey\";i:5;}","pushed_at":"1591716827","ttr":"300","delay":"0","priority":"1024","reserved_at":null,"attempt":null,"done_at":null},
+{"id":"30","channel":"queue","job":"O:49:\"humhub\\modules\\notification\\jobs\\SendNotification\":2:{s:12:\"notification\";C:59:\"humhub\\modules\\admin\\notifications\\IncludeGroupNotification\":109:{a:3:{s:11:\"sourceClass\";s:32:\"humhub\\modules\\user\\models\\Group\";s:8:\"sourcePk\";i:3;s:13:\"originator_id\";i:1;}}s:11:\"recipientId\";i:5;}","pushed_at":"1591716854","ttr":"300","delay":"0","priority":"1024","reserved_at":null,"attempt":null,"done_at":null},
+{"id":"31","channel":"queue","job":"O:41:\"humhub\\modules\\search\\jobs\\DeleteDocument\":2:{s:17:\"activeRecordClass\";s:46:\"humhub\\modules\\admin\\models\\forms\\UserEditForm\";s:10:\"primaryKey\";i:5;}","pushed_at":"1591716855","ttr":"300","delay":"0","priority":"1024","reserved_at":null,"attempt":null,"done_at":null},
+{"id":"32","channel":"queue","job":"O:53:\"humhub\\modules\\notification\\jobs\\SendBulkNotification\":2:{s:12:\"notification\";C:51:\"humhub\\modules\\content\\notifications\\ContentCreated\":108:{a:3:{s:11:\"sourceClass\";s:31:\"humhub\\modules\\post\\models\\Post\";s:8:\"sourcePk\";i:4;s:13:\"originator_id\";i:4;}}s:5:\"query\";O:46:\"humhub\\modules\\user\\components\\ActiveQueryUser\":33:{s:3:\"sql\";N;s:2:\"on\";N;s:8:\"joinWith\";N;s:6:\"select\";N;s:12:\"selectOption\";N;s:8:\"distinct\";N;s:4:\"from\";N;s:7:\"groupBy\";N;s:4:\"join\";N;s:6:\"having\";N;s:5:\"union\";a:1:{i:0;a:2:{s:5:\"query\";O:46:\"humhub\\modules\\user\\components\\ActiveQueryUser\":33:{s:3:\"sql\";N;s:2:\"on\";N;s:8:\"joinWith\";N;s:6:\"select\";N;s:12:\"selectOption\";N;s:8:\"distinct\";N;s:4:\"from\";N;s:7:\"groupBy\";N;s:4:\"join\";N;s:6:\"having\";N;s:5:\"union\";N;s:11:\"withQueries\";N;s:6:\"params\";a:0:{}s:18:\"queryCacheDuration\";N;s:20:\"queryCacheDependency\";N;s:27:\"\u0000yii\\base\\Component\u0000_events\";a:0:{}s:35:\"\u0000yii\\base\\Component\u0000_eventWildcards\";a:0:{}s:30:\"\u0000yii\\base\\Component\u0000_behaviors\";a:0:{}s:5:\"where\";a:3:{i:0;s:3:\"and\";i:1;a:1:{s:11:\"user.status\";i:1;}i:2;a:2:{i:0;s:6:\"exists\";i:1;O:18:\"yii\\db\\ActiveQuery\":33:{s:3:\"sql\";N;s:2:\"on\";N;s:8:\"joinWith\";N;s:6:\"select\";N;s:12:\"selectOption\";N;s:8:\"distinct\";N;s:4:\"from\";N;s:7:\"groupBy\";N;s:4:\"join\";N;s:6:\"having\";N;s:5:\"union\";N;s:11:\"withQueries\";N;s:6:\"params\";a:0:{}s:18:\"queryCacheDuration\";N;s:20:\"queryCacheDependency\";N;s:27:\"\u0000yii\\base\\Component\u0000_events\";a:0:{}s:35:\"\u0000yii\\base\\Component\u0000_eventWildcards\";a:0:{}s:30:\"\u0000yii\\base\\Component\u0000_behaviors\";a:0:{}s:5:\"where\";a:4:{i:0;s:3:\"and\";i:1;a:2:{s:24:\"user_follow.object_model\";s:31:\"humhub\\modules\\user\\models\\User\";s:21:\"user_follow.object_id\";i:4;}i:2;s:27:\"user_follow.user_id=user.id\";i:3;a:1:{s:30:\"user_follow.send_notifications\";i:1;}}s:5:\"limit\";N;s:6:\"offset\";N;s:7:\"orderBy\";N;s:7:\"indexBy\";N;s:16:\"emulateExecution\";b:0;s:10:\"modelClass\";s:33:\"humhub\\modules\\user\\models\\Follow\";s:4:\"with\";N;s:7:\"asArray\";N;s:8:\"multiple\";N;s:12:\"primaryModel\";N;s:4:\"link\";N;s:3:\"via\";N;s:9:\"inverseOf\";N;s:26:\"\u0000yii\\db\\ActiveQuery\u0000viaMap\";N;}}}s:5:\"limit\";N;s:6:\"offset\";N;s:7:\"orderBy\";N;s:7:\"indexBy\";N;s:16:\"emulateExecution\";b:0;s:10:\"modelClass\";s:31:\"humhub\\modules\\user\\models\\User\";s:4:\"with\";N;s:7:\"asArray\";N;s:8:\"multiple\";N;s:12:\"primaryModel\";N;s:4:\"link\";N;s:3:\"via\";N;s:9:\"inverseOf\";N;s:26:\"\u0000yii\\db\\ActiveQuery\u0000viaMap\";N;}s:3:\"all\";b:0;}}s:11:\"withQueries\";N;s:6:\"params\";a:0:{}s:18:\"queryCacheDuration\";N;s:20:\"queryCacheDependency\";N;s:27:\"\u0000yii\\base\\Component\u0000_events\";a:0:{}s:35:\"\u0000yii\\base\\Component\u0000_eventWildcards\";a:0:{}s:30:\"\u0000yii\\base\\Component\u0000_behaviors\";a:0:{}s:5:\"where\";a:1:{s:2:\"id\";i:4;}s:5:\"limit\";N;s:6:\"offset\";N;s:7:\"orderBy\";N;s:7:\"indexBy\";N;s:16:\"emulateExecution\";b:0;s:10:\"modelClass\";s:31:\"humhub\\modules\\user\\models\\User\";s:4:\"with\";N;s:7:\"asArray\";N;s:8:\"multiple\";N;s:12:\"primaryModel\";N;s:4:\"link\";N;s:3:\"via\";N;s:9:\"inverseOf\";N;s:26:\"\u0000yii\\db\\ActiveQuery\u0000viaMap\";N;}}","pushed_at":"1591737117","ttr":"300","delay":"0","priority":"1024","reserved_at":null,"attempt":null,"done_at":null},
+{"id":"33","channel":"queue","job":"O:41:\"humhub\\modules\\search\\jobs\\UpdateDocument\":2:{s:17:\"activeRecordClass\";s:31:\"humhub\\modules\\post\\models\\Post\";s:10:\"primaryKey\";i:4;}","pushed_at":"1591737119","ttr":"300","delay":"0","priority":"1024","reserved_at":null,"attempt":null,"done_at":null}
+]
+}
+,{"type":"table","name":"queue_exclusive","database":"humhub","data":
+[
+{"id":"search.delete.1dad9ed37f07f9399478eab024d98832","job_message_id":"26","job_status":"2","last_update":"2020-06-09 11:55:29"},
+{"id":"search.delete.34adc3f8ba09ff3ef48513a09d9518f3","job_message_id":"23","job_status":"2","last_update":"2020-06-09 10:48:27"},
+{"id":"search.delete.35b00d81c1c9c19138d948da20a13253","job_message_id":"21","job_status":"2","last_update":"2020-06-09 10:47:46"},
+{"id":"search.delete.4c805d33bf76afab3706cae5e1e8b311","job_message_id":"17","job_status":"2","last_update":"2020-06-09 09:31:21"},
+{"id":"search.delete.5a1f359fd1047743f8abb8379d515399","job_message_id":"14","job_status":"2","last_update":"2020-06-09 09:29:39"},
+{"id":"search.delete.85a19f443c20eca221cb2a2b6034bec8","job_message_id":"27","job_status":"2","last_update":"2020-06-09 11:56:13"},
+{"id":"search.delete.97742c8dc275176e4020d80538c3769f","job_message_id":"31","job_status":"2","last_update":"2020-06-09 12:34:15"},
+{"id":"search.delete.bf655d283ff597c58a52647d65148919","job_message_id":"15","job_status":"2","last_update":"2020-06-09 09:29:49"},
+{"id":"search.delete.d44770b89ae8b7a54ccc3fb8b952c372","job_message_id":"22","job_status":"2","last_update":"2020-06-09 10:48:20"},
+{"id":"search.update.03cf50d034d7415616f9084317313c45","job_message_id":"33","job_status":"2","last_update":"2020-06-09 18:11:59"},
+{"id":"search.update.1dad9ed37f07f9399478eab024d98832","job_message_id":"11","job_status":"2","last_update":"2020-06-09 09:26:56"},
+{"id":"search.update.34adc3f8ba09ff3ef48513a09d9518f3","job_message_id":"6","job_status":"2","last_update":"2020-06-09 09:05:54"},
+{"id":"search.update.35b00d81c1c9c19138d948da20a13253","job_message_id":"14","job_status":"2","last_update":"2020-06-09 09:05:58"},
+{"id":"search.update.361d0180b3272bc66c0b8d301370686e","job_message_id":"29","job_status":"2","last_update":"2020-06-09 12:33:47"},
+{"id":"search.update.3d7b2424b991a0e9e3f987185369465f","job_message_id":"28","job_status":"2","last_update":"2020-06-09 11:58:18"},
+{"id":"search.update.49e5bf1ceddaea2bdb047f46cb3866ff","job_message_id":"16","job_status":"2","last_update":"2020-06-09 09:30:25"},
+{"id":"search.update.5a1f359fd1047743f8abb8379d515399","job_message_id":"7","job_status":"2","last_update":"2020-06-09 09:05:48"},
+{"id":"search.update.85a19f443c20eca221cb2a2b6034bec8","job_message_id":"9","job_status":"2","last_update":"2020-06-09 09:25:34"},
+{"id":"search.update.a4cb70bb5efe4d31fd8302088ec03b1d","job_message_id":"1","job_status":"2","last_update":"2020-06-09 09:05:32"},
+{"id":"search.update.bf655d283ff597c58a52647d65148919","job_message_id":"5","job_status":"2","last_update":"2020-06-09 09:05:46"},
+{"id":"search.update.c10f5066d89e2ecdaa3c2978fe87b276","job_message_id":"20","job_status":"2","last_update":"2020-06-09 10:37:53"},
+{"id":"search.update.d44770b89ae8b7a54ccc3fb8b952c372","job_message_id":"4","job_status":"2","last_update":"2020-06-09 09:05:39"},
+{"id":"user.deleteUser.3","job_message_id":"13","job_status":"2","last_update":"2020-06-09 09:29:30"}
+]
+}
+,{"type":"table","name":"setting","database":"humhub","data":
+[
+{"id":"1","name":"oembedProviders","value":"{\"vimeo.com\":\"http:\\\/\\\/vimeo.com\\\/api\\\/oembed.json?scheme=https&url=%url%&format=json&maxwidth=450\",\"youtube.com\":\"http:\\\/\\\/www.youtube.com\\\/oembed?scheme=https&url=%url%&format=json&maxwidth=450\",\"youtu.be\":\"http:\\\/\\\/www.youtube.com\\\/oembed?scheme=https&url=%url%&format=json&maxwidth=450\",\"soundcloud.com\":\"https:\\\/\\\/soundcloud.com\\\/oembed?url=%url%&format=json&maxwidth=450\",\"slideshare.net\":\"https:\\\/\\\/www.slideshare.net\\\/api\\\/oembed\\\/2?url=%url%&format=json&maxwidth=450\"}","module_id":"base"},
+{"id":"2","name":"defaultVisibility","value":"1","module_id":"space"},
+{"id":"3","name":"defaultJoinPolicy","value":"1","module_id":"space"},
+{"id":"5","name":"name","value":"Grupo Conectados Empresarios","module_id":"base"},
+{"id":"6","name":"baseUrl","value":"http:\/\/localhost\/humhub","module_id":"base"},
+{"id":"7","name":"paginationSize","value":"10","module_id":"base"},
+{"id":"8","name":"displayNameFormat","value":"{profile.firstname} {profile.lastname}","module_id":"base"},
+{"id":"9","name":"horImageScrollOnMobile","value":"1","module_id":"base"},
+{"id":"10","name":"cronLastDailyRun","value":"1591703230","module_id":"base"},
+{"id":"11","name":"auth.needApproval","value":"0","module_id":"user"},
+{"id":"12","name":"auth.anonymousRegistration","value":"1","module_id":"user"},
+{"id":"13","name":"auth.internalUsersCanInvite","value":"0","module_id":"user"},
+{"id":"14","name":"auth.showCaptureInRegisterForm","value":"0","module_id":"user"},
+{"id":"15","name":"mailer.transportType","value":"php","module_id":"base"},
+{"id":"16","name":"mailer.systemEmailAddress","value":"social@example.com","module_id":"base"},
+{"id":"17","name":"mailer.systemEmailName","value":"Grupo Conectados Empresarios","module_id":"base"},
+{"id":"18","name":"mailSummaryInterval","value":"2","module_id":"activity"},
+{"id":"19","name":"maxFileSize","value":"5242880","module_id":"file"},
+{"id":"20","name":"maxPreviewImageWidth","value":"200","module_id":"file"},
+{"id":"21","name":"maxPreviewImageHeight","value":"200","module_id":"file"},
+{"id":"22","name":"hideImageFileInfo","value":"0","module_id":"file"},
+{"id":"23","name":"cache.class","value":"yii\\caching\\FileCache","module_id":"base"},
+{"id":"24","name":"cache.expireTime","value":"3600","module_id":"base"},
+{"id":"25","name":"installationId","value":"321bd845c0d49939a8de203f304e13ad","module_id":"admin"},
+{"id":"26","name":"spaceOrder","value":"0","module_id":"space"},
+{"id":"27","name":"enable","value":"1","module_id":"tour"},
+{"id":"28","name":"defaultLanguage","value":"pt-BR","module_id":"base"},
+{"id":"29","name":"enable_html5_desktop_notifications","value":"0","module_id":"notification"},
+{"id":"30","name":"cronLastRun","value":"1591703232","module_id":"base"},
+{"id":"61","name":"useCase","value":"intranet","module_id":"base"},
+{"id":"62","name":"auth.allowGuestAccess","value":"0","module_id":"user"},
+{"id":"63","name":"enable","value":"1","module_id":"friendship"},
+{"id":"64","name":"shownDays","value":"2","module_id":"birthday"},
+{"id":"65","name":"sampleData","value":"1","module_id":"installer"},
+{"id":"66","name":"secret","value":"05fab0c3-118b-4c9a-8c22-c3bfaa6e469b","module_id":"base"},
+{"id":"67","name":"timeZone","value":"America\/Sao_Paulo","module_id":"base"},
+{"id":"68","name":"global_pages_migrated_visibility","value":"1","module_id":"custom_pages"},
+{"id":"69","name":"group.adminGroupId","value":"1","module_id":"user"},
+{"id":"70","name":"noUsers","value":"mostactiveusers","module_id":"base"},
+{"id":"71","name":"noUsers","value":"5","module_id":"mostactiveusers"},
+{"id":"72","name":"showProfilePostForm","value":"1","module_id":"dashboard"},
+{"id":"73","name":"defaultSort","value":"u","module_id":"stream"},
+{"id":"74","name":"auth.defaultUserGroup","value":"","module_id":"user"},
+{"id":"75","name":"auth.defaultUserIdleTimeoutSec","value":"","module_id":"user"},
+{"id":"76","name":"auth.defaultUserProfileVisibility","value":"1","module_id":"user"},
+{"id":"77","name":"phpPagesActive","value":"1","module_id":"custom_pages"},
+{"id":"78","name":"phpGlobalPagePath","value":"@custom_pages\/views\/custom\/global_pages\/","module_id":"custom_pages"},
+{"id":"79","name":"phpGlobalSnippetPath","value":"@custom_pages\/views\/custom\/global_snippets\/","module_id":"custom_pages"},
+{"id":"80","name":"phpContainerPagePath","value":"@custom_pages\/views\/custom\/container_pages\/","module_id":"custom_pages"},
+{"id":"81","name":"phpContainerSnippetPath","value":"@custom_pages\/views\/custom\/container_snippets\/","module_id":"custom_pages"},
+{"id":"82","name":"theme","value":"C:\\xampp\\Nova pasta\\htdocs\\humhub\/themes\\HumHub","module_id":"base"},
+{"id":"83","name":"defaultDateInputFormat","value":"","module_id":"admin"},
+{"id":"84","name":"useDefaultSwipeOnMobile","value":"1","module_id":"base"},
+{"id":"116","name":"themeParents","value":"[]","module_id":"base"},
+{"id":"117","name":"theme.var.HumHub.default","value":"#ededed","module_id":"base"},
+{"id":"118","name":"theme.var.HumHub.primary","value":"#708fa0","module_id":"base"},
+{"id":"119","name":"theme.var.HumHub.info","value":"#6fdbe8","module_id":"base"},
+{"id":"120","name":"theme.var.HumHub.success","value":"#97d271","module_id":"base"},
+{"id":"121","name":"theme.var.HumHub.warning","value":"#fdd198","module_id":"base"},
+{"id":"122","name":"theme.var.HumHub.danger","value":"#ff8989","module_id":"base"},
+{"id":"123","name":"theme.var.HumHub.text-color-main","value":"#777","module_id":"base"},
+{"id":"124","name":"theme.var.HumHub.text-color-secondary","value":"#7a7a7a","module_id":"base"},
+{"id":"125","name":"theme.var.HumHub.text-color-highlight","value":"#555","module_id":"base"},
+{"id":"126","name":"theme.var.HumHub.text-color-soft","value":"#bebebe","module_id":"base"},
+{"id":"127","name":"theme.var.HumHub.text-color-soft2","value":"#aeaeae","module_id":"base"},
+{"id":"128","name":"theme.var.HumHub.text-color-soft3","value":"#bac2c7","module_id":"base"},
+{"id":"129","name":"theme.var.HumHub.text-color-contrast","value":"#fff","module_id":"base"},
+{"id":"130","name":"theme.var.HumHub.background-color-main","value":"#fff","module_id":"base"},
+{"id":"131","name":"theme.var.HumHub.background-color-secondary","value":"#f7f7f7","module_id":"base"},
+{"id":"132","name":"theme.var.HumHub.background-color-page","value":"#ededed","module_id":"base"},
+{"id":"133","name":"theme.var.HumHub.background-color-highlight","value":"#fff8e0","module_id":"base"},
+{"id":"134","name":"theme.var.HumHub.background3","value":"#d7d7d7","module_id":"base"},
+{"id":"135","name":"theme.var.HumHub.background4","value":"#b2b2b2","module_id":"base"},
+{"id":"136","name":"theme.var.HumHub.background-color-success","value":"#f7fbf4","module_id":"base"},
+{"id":"137","name":"theme.var.HumHub.text-color-success","value":"#84be5e","module_id":"base"},
+{"id":"138","name":"theme.var.HumHub.border-color-success","value":"#97d271","module_id":"base"},
+{"id":"139","name":"theme.var.HumHub.background-color-warning","value":"#fffbf7","module_id":"base"},
+{"id":"140","name":"theme.var.HumHub.text-color-warning","value":"#e9b168","module_id":"base"},
+{"id":"141","name":"theme.var.HumHub.border-color-warning","value":"#fdd198","module_id":"base"},
+{"id":"142","name":"theme.var.HumHub.background-color-danger","value":"#fff6f6","module_id":"base"},
+{"id":"143","name":"theme.var.HumHub.text-color-danger","value":" #ff8989","module_id":"base"},
+{"id":"144","name":"theme.var.HumHub.border-color-danger","value":"#ff8989","module_id":"base"},
+{"id":"145","name":"theme.var.HumHub.mail-font-url","value":"'http:\/\/fonts.googleapis.com\/css?family=Open+Sans:300,100,400,600'","module_id":"base"},
+{"id":"146","name":"theme.var.HumHub.mail-font-family","value":"'Open Sans',Arial,Tahoma,Helvetica,sans-serif","module_id":"base"}
+]
+}
+,{"type":"table","name":"space","database":"humhub","data":
+[
+{"id":"1","guid":"c29b6083-1482-42e8-bd7f-afe9f36c0138","name":"Promoções Grupo","description":"O Grupo Conectado Sempre a frente!!!","join_policy":"0","visibility":"1","status":"1","tags":"","created_at":"2020-06-09 09:05:34","created_by":"1","updated_at":"2020-06-09 11:58:17","updated_by":"1","ldap_dn":null,"auto_add_new_members":"1","contentcontainer_id":"2","default_content_visibility":"0","color":"#6fdbe8","members_can_leave":"1","url":"welcome-space"}
+]
+}
+,{"type":"table","name":"space_membership","database":"humhub","data":
+[
+{"space_id":"1","user_id":"1","originator_user_id":null,"status":"3","request_message":null,"last_visit":"2020-06-09 16:27:16","created_at":"2020-06-09 09:05:35","created_by":"1","updated_at":"2020-06-09 11:05:54","updated_by":"1","group_id":"admin","show_at_dashboard":"0","can_cancel_membership":"1","send_notifications":"0","id":"1"},
+{"space_id":"1","user_id":"4","originator_user_id":null,"status":"3","request_message":null,"last_visit":"2020-06-09 18:12:27","created_at":"2020-06-09 09:30:25","created_by":"1","updated_at":"2020-06-09 09:30:25","updated_by":"1","group_id":"member","show_at_dashboard":"1","can_cancel_membership":"1","send_notifications":"0","id":"6"},
+{"space_id":"1","user_id":"5","originator_user_id":null,"status":"3","request_message":null,"last_visit":null,"created_at":"2020-06-09 12:33:48","created_by":"1","updated_at":"2020-06-09 12:33:48","updated_by":"1","group_id":"member","show_at_dashboard":"1","can_cancel_membership":"1","send_notifications":"0","id":"7"}
+]
+}
+,{"type":"table","name":"task","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"task_item","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"task_list_setting","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"task_reminder","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"task_user","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"url_oembed","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"user","database":"humhub","data":
+[
+{"id":"1","guid":"f0c1821e-6bd3-4529-a427-060304cd7069","status":"1","username":"Admin","email":"sac.grupoconectado@gmail.com","auth_mode":"local","tags":"Administration, Support, HumHub","language":"pt","created_at":"2020-06-09 09:05:32","created_by":null,"updated_at":"2020-06-09 10:05:45","updated_by":"1","last_login":"2020-06-10 17:12:47","visibility":"1","time_zone":"Europe\/Berlin","contentcontainer_id":"1","authclient_id":null},
+{"id":"2","guid":"8b4716ba-3368-4cae-918f-6bb2a2afc9e9","status":"0","username":"david1986","email":"david.roberts@example.com","auth_mode":"local","tags":"Microsoft Office, Marketing, SEM, Digital Native","language":"","created_at":"2020-06-09 09:05:46","created_by":"1","updated_at":"2020-06-09 09:29:48","updated_by":"1","last_login":null,"visibility":"1","time_zone":"Europe\/Berlin","contentcontainer_id":"3","authclient_id":null},
+{"id":"3","guid":"2900330b-4b06-4444-865b-ab69eed60323","status":"0","username":"sara1989","email":"sara.schuster@example.com","auth_mode":"local","tags":"Yoga, Travel, English, German, French","language":"","created_at":"2020-06-09 09:05:48","created_by":"1","updated_at":"2020-06-09 09:29:39","updated_by":"1","last_login":null,"visibility":"1","time_zone":"Europe\/Berlin","contentcontainer_id":"4","authclient_id":null},
+{"id":"4","guid":"d6d8f681-ebc0-460b-8b96-069ac3bc58a1","status":"1","username":"Andrea de Cassia Weber","email":"williambachot@gmail.com","auth_mode":"local","tags":null,"language":"pt","created_at":"2020-06-09 09:30:25","created_by":"1","updated_at":"2020-06-09 11:25:40","updated_by":"1","last_login":"2020-06-10 07:56:13","visibility":"1","time_zone":"Europe\/Berlin","contentcontainer_id":"7","authclient_id":null},
+{"id":"5","guid":"269fc54a-7422-4a0c-a220-cc0c9a739c00","status":"1","username":"Tereza Auto Eletrica","email":"grupoconectado@gmail.com","auth_mode":"local","tags":null,"language":"pt","created_at":"2020-06-09 12:33:46","created_by":"1","updated_at":"2020-06-09 12:34:13","updated_by":"1","last_login":"2020-06-09 12:36:53","visibility":"1","time_zone":"Europe\/Berlin","contentcontainer_id":"8","authclient_id":null}
+]
+}
+,{"type":"table","name":"user_auth","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"user_follow","database":"humhub","data":
+[
+{"id":"8","object_model":"humhub\\modules\\post\\models\\Post","object_id":"3","user_id":"4","send_notifications":"1"},
+{"id":"9","object_model":"humhub\\modules\\post\\models\\Post","object_id":"4","user_id":"4","send_notifications":"1"}
+]
+}
+,{"type":"table","name":"user_friendship","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"user_http_session","database":"humhub","data":
+[
+{"id":"9dttr4ke4qgi5jbh37pqvobbkc","expire":"1591823622","user_id":"1","data":"__flash|a:0:{}__returnUrl|s:65:\"http:\/\/grupoconectadoapp.com.br\/index.php?r=dashboard%2Fdashboard\";security-script-src-nonce|N;__id|i:1;__expire|i:1591823582;currentAuthClientId|s:5:\"local\";user.canSeeAdminSection|b:1;live.poll.lastQueryTime|i:1591822182;"},
+{"id":"cfajgbgag0gj59caqa0a2j5rh2","expire":"1591826418","user_id":"1","data":"__flash|a:0:{}security-script-src-nonce|N;__returnUrl|s:65:\"http:\/\/grupoconectadoapp.com.br\/index.php?r=dashboard%2Fdashboard\";__id|i:1;__expire|i:1591826378;currentAuthClientId|s:5:\"local\";user.canSeeAdminSection|b:1;live.poll.lastQueryTime|i:1591824978;"},
+{"id":"cr506afc1sod3a77retp2lkovj","expire":"1591806499","user_id":"4","data":"__flash|a:0:{}__id|i:4;__expire|i:1591806459;user.canSeeAdminSection|b:0;security-script-src-nonce|N;live.poll.lastQueryTime|i:1591805059;"},
+{"id":"mm4v8kk70g4rv27s14jf1hhr24","expire":"1591821344","user_id":null,"data":"__flash|a:0:{}security-script-src-nonce|N;"}
+]
+}
+,{"type":"table","name":"user_invite","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"user_mentioning","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"user_message","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"user_password","database":"humhub","data":
+[
+{"id":"1","user_id":"1","algorithm":"sha512whirlpool","password":"5ecbacb556d57e14e7897cc920f7ea7272fbed4eb4a39fcbdaedd72f55f03f59540b57251c0f2eae6b1fa0be48b77353877a4fdfd8d13b4585c39a8f275e88a9","salt":"7b2b0a1b-8a59-4ee3-95cb-7b9e5cfd5340","created_at":"2020-06-09 09:05:33"},
+{"id":"2","user_id":"4","algorithm":"sha512whirlpool","password":"3d1a1cee41d715d6c3fb07ecf5aa52ed13f3746921f1b05cc42fc921c4e8f330e94a0b077cc757ffacb00e14e39cbadd6e82f83c578c5f7b0072328dff9f0607","salt":"e0057709-6dc5-4a36-a12e-afb89830e7bf","created_at":"2020-06-09 09:30:26"},
+{"id":"3","user_id":"5","algorithm":"sha512whirlpool","password":"6e89b60fdcdcc683086a48f1b13f008c60f946bb101a3665f213b8ea42b6fa31b70c8eb181cc7e96af5fec2b60d5c20e5e85e94fb7661dacb993bc0806ea48ee","salt":"536df49f-e172-4e4f-98ff-ff3686a07261","created_at":"2020-06-09 12:33:50"}
+]
+}
+,{"type":"table","name":"wiki_page","database":"humhub","data":
+[
+
+]
+}
+,{"type":"table","name":"wiki_page_revision","database":"humhub","data":
+[
+
+]
+}
+]
