@@ -56,7 +56,7 @@ return array (
   'Your account cannot be deleted!' => 'Dein Benutzerkonto kann nicht gelöscht werden!',
   'Your current E-mail address is <b>{email}</b>. You can change your current E-mail address here.' => 'Deine aktuelle E-Mail-Adresse ist <b>{email}</b>. Du kannst sie hier ändern.',
   'Your current password can be changed here.' => 'Dein aktuelles Passwort kann hier geändert werden.',
-  'Your current username is <b>{username}</b>. You can change your current username here.' => '',
+  'Your current username is <b>{username}</b>. You can change your current username here.' => 'Dein aktueller Benutzername ist <b>{username}</b>. Du kannst deinen aktuellen Benutzernamen hier ändern.',
   'Your e-mail address has been successfully changed to {email}.' => 'Deine E-Mail-Adresse wurde erfolgreich in {email} geändert.',
   'Your friends' => 'Deine Freunde',
   'Your password has been successfully changed!' => 'Dein Passwort wurde erfolgreich geändert!',
