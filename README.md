@@ -16,5 +16,5 @@ More information:
 - [Homepage & Demo](http://www.humhub.org)
 - [Documentation & Class Reference](http://docs.humhub.org)
 - [Community](http://community.humhub.com/)
-- [Licence](http://www.humhub.org/licences)
+- [Licence](https://www.humhub.com/licences)
 
