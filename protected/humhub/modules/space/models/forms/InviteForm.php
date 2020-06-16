@@ -4,10 +4,12 @@ namespace humhub\modules\space\models\forms;
 
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\space\jobs\AddUsersToSpaceJob;
+use humhub\modules\space\MemberEvent;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\Exception;
 use yii\base\Model;
 use yii\validators\EmailValidator;
 
@@ -96,7 +98,7 @@ class InviteForm extends Model
      */
     public function save()
     {
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             return false;
         }
 
@@ -119,7 +121,8 @@ class InviteForm extends Model
         return ($this->withoutInvite || $this->allRegisteredUsers) && Yii::$app->user->can(ManageUsers::class);
     }
 
-    public function forceInvite() {
+    public function forceInvite()
+    {
         Yii::$app->queue->push(new AddUsersToSpaceJob([
             'originatorId' => Yii::$app->user->identity->id,
             'forceMembership' => $this->withoutInvite,
@@ -127,14 +130,34 @@ class InviteForm extends Model
             'userIds' => $this->getInviteIds(),
             'allUsers' => $this->allRegisteredUsers,
         ]));
+
+        if ($this->allRegisteredUsers) {
+            foreach (User::find()->active()->batch() as $users) {
+                foreach ($users as $user) {
+                    MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_ADDED, new MemberEvent([
+                        'space' => $this->space, 'user' => $user
+                    ]));
+                }
+            }
+        } else {
+            foreach ($this->getInviteIds() as $userId) {
+                $user = User::findOne(['id' => $userId]);
+
+                MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_ADDED, new MemberEvent([
+                    'space' => $this->space, 'user' => $user
+                ]));
+
+            }
+        }
     }
 
     /**
      * Invites selected members immediately
      *
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
-    public function inviteMembers() {
+    public function inviteMembers()
+    {
         foreach ($this->getInvites() as $user) {
             $this->space->inviteMember($user->id, Yii::$app->user->id);
         }
