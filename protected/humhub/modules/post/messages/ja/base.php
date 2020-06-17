@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Allow others to create new posts on your profile page' => 'あなたのプロフィールページに投稿を許可する',
+  'Allow others to create new posts on your profile page' => 'あなたのプロフィールページで投稿を許可する',
   'Allows the user to create posts' => 'ユーザーに投稿を許可する',
   'Collapse' => '折り畳む',
   'Create post' => '投稿',

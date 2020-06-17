@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Author' => '',
+  'Author' => '作成者',
   'Content' => 'コンテンツ',
-  'Content Type' => '',
+  'Content Type' => 'コンテンツタイプ',
   'Sorting' => '並べ替え',
   'Topic' => 'トピック',
   'Visibility' => '可視性',

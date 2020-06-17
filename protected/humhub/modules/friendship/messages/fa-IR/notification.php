@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Friendship' => 'دوستي',
-  'Receive Notifications for Friendship Request and Approval events.' => '',
-  '{displayName} accepted your friend request.' => 'دوستي با شما را پذيرفت {displayName}',
-  '{displayName} declined your friend request.' => 'دوستي با شما را نپذيرفت {displayName}',
-  '{displayName} sent you a friend request.' => 'براي شما يك پيشنهاد دوستي فرستاد {displayName}',
+  'Friendship' => 'دوستی',
+  'Receive Notifications for Friendship Request and Approval events.' => 'برای درخواست‌های دوستی و رویدادهای تأیید آگهی بپذیر',
+  '{displayName} accepted your friend request.' => '{displayName} درخواست دوستی شما را پذیرفت.',
+  '{displayName} declined your friend request.' => '{displayName} درخواست دوستی شما را نپذیرفت.',
+  '{displayName} sent you a friend request.' => '{displayName} برای شما درخواست دوستی فرستاد.',
 );

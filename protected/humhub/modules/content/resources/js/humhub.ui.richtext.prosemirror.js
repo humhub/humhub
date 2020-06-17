@@ -5,7 +5,7 @@
  *
  */
 humhub.module('ui.richtext.prosemirror', function(module, require, $) {
-    
+
     var object = require('util').object;
     var client = require('client');
     var Widget = require('ui.widget').Widget;
@@ -103,6 +103,7 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
             this.editor = new MarkdownEditor(this.$, this.options);
             this.$.html(this.editor.render());
             additions.applyTo(this.$, {filter: ['highlightCode']});
+            this.$.find('table').wrap('<div class="table-responsive"></div>');
         }
 
         // See https://github.com/ProseMirror/prosemirror/issues/432

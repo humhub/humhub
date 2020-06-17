@@ -291,7 +291,7 @@ class ProsemirrorRichText extends AbstractRichText
      */
     protected static function getLinkExtensionPattern($extension = '[a-zA-Z]+')
     {
-        return '/(?<!\\\\)\[([^\]]*)\]\(('.$extension.'):{1}([^\)\s]*)(?:\s")?([^\)"]*)?(?:")?[^\)]*\)/is';
+        return '/(?<!\\\\)\[([^\]]*)\]\(('.$extension.'):{1}([^\)\s]*)(?:\s")?([^"]*)?(?:")?[^\)]*\)/is';
     }
 
     /**

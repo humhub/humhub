@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Invalid icon.' => '無効のアイコン',
-  'Select icon' => 'アイコン選択',
+  'Invalid icon.' => '無効なアイコンです。',
+  'Select icon' => 'アイコンを選択',
 );

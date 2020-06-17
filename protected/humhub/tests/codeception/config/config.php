@@ -30,7 +30,7 @@ $default = [
         ],
         'urlManager' => [
             'showScriptName' => true,
-            'scriptUrl' => 'index-test.php',
+            'scriptUrl' => '/index-test.php',
         ],
     ],
     'modules' => [

@@ -122,7 +122,7 @@ class CommentController extends ContentAddonController
             throw new HttpException(403, Yii::t('CommentModule.base', 'Access denied!'));
         }
 
-        if ($this->contentAddon->load(Yii::$app->request->post()) && $this->contentAddon->validate() && $this->contentAddon->save()) {
+        if ($this->contentAddon->load(Yii::$app->request->post()) && $this->contentAddon->save()) {
 
             // Reload comment to get populated updated_at field
             $this->contentAddon = Comment::findOne(['id' => $this->contentAddon->id]);
@@ -131,6 +131,8 @@ class CommentController extends ContentAddonController
                 'comment' => $this->contentAddon,
                 'justEdited' => true
             ]));
+        } else if(Yii::$app->request->post()) {
+            Yii::$app->response->statusCode = 400;
         }
 
         return $this->renderAjax('edit', [

@@ -63,7 +63,7 @@ return array (
   'MySpace URL' => 'MySpace URL',
   'Number' => '数',
   'Number field options' => '数字型のオプション',
-  'One option per line. Key=>Value Format (e.g. yes=>Yes)' => '',
+  'One option per line. Key=>Value Format (e.g. yes=>Yes)' => '1行に1つのオプション。Key=&gt;Valueの形式（例：yes=&gt;Yes）',
   'Only alphanumeric characters allowed!' => '',
   'Phone Private' => 'プライベート電話番号',
   'Phone Work' => '仕事用の電話番号',
