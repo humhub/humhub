@@ -1,6 +1,10 @@
 HumHub Change Log
 =================
 
+1.5.3 (Unreleased)
+--------------------
+- Fix #4168: Erroneous pagination in notification overview 
+
 1.5.2 (May 20, 2020)
 --------------------
 
