@@ -7,3 +7,5 @@ HumHub Change Log
 
 - Enh: Improved performance of cli marketplace module updater
 - Fix #4054: Duplicate "font-weight" value
+- Fix #4173: Notification overview HTML compliant issue
+ 
