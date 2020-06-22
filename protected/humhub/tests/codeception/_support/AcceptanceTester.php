@@ -2,6 +2,7 @@
 
 use tests\codeception\_pages\LoginPage;
 use yii\helpers\Url;
+use \Facebook\WebDriver\WebDriverKeys;
 
 /**
  * Inherited Methods
@@ -246,14 +247,13 @@ class AcceptanceTester extends \Codeception\Actor
 
     public function logout()
     {
-        $this->clickAccountDropDown();
-        $this->wait(1);
-        $this->click('Logout');
+        $this->wait(2);
+        $this->jsClick('[data-menu-id="account-logout"]');
         if(!$this->guestAccessAllowed) {
             $this->waitForElementVisible('#login-form');
         } else {
             $this->waitForText('Sign in / up');
-            $this->wait(2);
+            $this->wait(1);
         }
     }
 

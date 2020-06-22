@@ -1,5 +1,6 @@
 actor: Tester
 namespace: web
+bootstrap: _bootstrap.php
 coverage:
     c3_url: 'http://localhost:8080/index-test.php'
     enabled: true
@@ -10,7 +11,6 @@ coverage:
     - ../Events.php
     - ../Module.php
 settings:
-    bootstrap: _bootstrap.php
     suite_class: \PHPUnit_Framework_TestSuite
     colors: true
     shuffle: false

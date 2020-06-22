@@ -15,7 +15,6 @@
     "require": {
         "php": ">=7.0.0",
         "ext-zip": "*",
-        "bower-asset/jquery": "^3.4",
         "cebe/markdown": "1.0.2",
         "firebase/php-jwt": "^5.0",
         "jbroadway/urlify": "^1.0",
@@ -34,7 +33,7 @@
         "npm-asset/imagesloaded": "*",
         "npm-asset/intersection-observer": "^0.7.0",
         "npm-asset/jplayer": "2.9.*",
-        "npm-asset/jquery": "3.4.1",
+        "npm-asset/jquery": "^3.5.1",
         "npm-asset/jquery-autosize": "1.*",
         "npm-asset/jquery-knob": "1.2.*",
         "npm-asset/jquery.cookie": "^1.4.1",
@@ -50,7 +49,7 @@
         "raoul2000/yii2-jcrop-widget": "*",
         "twig/twig": "^1.0",
         "xj/yii2-jplayer-widget": "*",
-        "yiisoft/yii2": "~2.0.30",
+        "yiisoft/yii2": "~2.0.35",
         "yiisoft/yii2-authclient": "~2.2.0",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-httpclient": "~2.0.0",
@@ -61,15 +60,22 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "zendframework/zend-http": "*",
         "zendframework/zend-ldap": "^2.5",
-      "ext-exif": "*"
+        "codeception/phpunit-wrapper": ">6.0.15 <6.1.0 | ^6.6.1 | ^7.7.1 | ^8.1.1 | ^9.0",
+        "codeception/stub": "^2.0 | ^3.0",
+        "ext-exif": "*"
     },
     "require-dev": {
-        "codeception/codeception": "2.4.5",
-        "codeception/specify": "~0.4 || ~1.0",
-        "codeception/verify": "~0.4 || ~1.0",
-        "yiisoft/yii2-debug": "~2.0.0",
+        "codeception/codeception": "^4.0",
+        "codeception/module-asserts": "^1.0",
+        "codeception/module-filesystem": "^1.0",
+        "codeception/module-webdriver": "^1.1",
+        "codeception/module-yii2": "^1.0",
+        "codeception/specify": "^1.0",
+        "codeception/verify": "~0.5.0 || ~1.1.0",
+        "symfony/browser-kit": ">=2.7 <=4.2.4",
+        "yiisoft/yii2-debug": "~2.1.0",
         "yiisoft/yii2-faker": "~2.0.0",
-        "yiisoft/yii2-gii": "~2.0.0"
+        "yiisoft/yii2-gii": "~2.1.0"
     },
     "repositories": [
         {
