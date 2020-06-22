@@ -8,6 +8,7 @@
 
 namespace humhub\modules\web\pwa\controllers;
 
+use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\ui\Module;
 
@@ -20,6 +21,13 @@ use humhub\modules\ui\Module;
  */
 class OfflineController extends Controller
 {
+    /**
+     * Allow guest access independently from guest mode setting.
+     *
+     * @var string
+     */
+    public $access = ControllerAccess::class;
+
     public function actionIndex()
     {
         return $this->renderPartial('@humhub/modules/web/pwa/views/offline/index');

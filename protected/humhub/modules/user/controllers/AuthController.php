@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\controllers;
 
+use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\user\models\User;
 use humhub\modules\user\authclient\AuthAction;
@@ -39,6 +40,13 @@ class AuthController extends Controller
      * @inheritdoc
      */
     public $layout = '@humhub/modules/user/views/layouts/main';
+
+    /**
+     * Allow guest access independently from guest mode setting.
+     *
+     * @var string
+     */
+    public $access = ControllerAccess::class;
 
     /**
      * @inheritdoc
