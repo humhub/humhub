@@ -9,11 +9,15 @@ namespace humhub\widgets;
 class ModalDialog extends Modal
 {
 
+    /**
+     * @var
+     */
     public $dialogContent;
 
+    /**
+     * @var
+     */
     private $dialogClass;
-
-    public $closable = false;
 
     /**
      * @inheritdoc

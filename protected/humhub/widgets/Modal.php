@@ -79,13 +79,13 @@ class Modal extends JsWidget
      * Defines if a click on the modal background should close the modal
      * @var boolean
      */
-    public $backdrop = false;
+    public $backdrop = true;
 
     /**
      * Defines if the modal can be closed by pressing escape
      * @var boolean
      */
-    public $keyboard = false;
+    public $keyboard = true;
 
     /**
      * Defines if the modal should be shown at startup
