@@ -14,7 +14,7 @@ namespace humhub\widgets;
  * @author luke
  */
 class Modal extends JsWidget
-{   
+{
     /**
      * @inheritdoc
      */
@@ -73,19 +73,19 @@ class Modal extends JsWidget
      *
      * @var bool
      */
-    public $closable = true;
+    public $closable = false;
 
     /**
      * Defines if a click on the modal background should close the modal
      * @var boolean
      */
-    public $backdrop = true;
+    public $backdrop = false;
 
     /**
      * Defines if the modal can be closed by pressing escape
      * @var boolean
      */
-    public $keyboard = true;
+    public $keyboard = false;
 
     /**
      * Defines if the modal should be shown at startup
