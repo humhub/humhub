@@ -1,4 +1,5 @@
 actor: Tester
+bootstrap: _bootstrap.php
 config:
   test_entry_url: "http://localhost:8080/index-test.php"
 coverage:
@@ -24,7 +25,6 @@ paths:
   log: codeception/_output
   tests: codeception
 settings:
-  bootstrap: _bootstrap.php
   colors: true
   log: true
   memory_limit: 1024M
