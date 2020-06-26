@@ -4,6 +4,7 @@ HumHub Change Log
 1.5.3 (Unreleased)
 --------------------
 - Fix #4168: Erroneous pagination in notification overview 
+- Fix #4060: Profile description and text regex error message not translatable
 
 1.5.2 (May 20, 2020)
 --------------------
