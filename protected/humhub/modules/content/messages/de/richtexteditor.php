@@ -26,7 +26,7 @@ return array (
   'Insert image' => 'Bild einfügen',
   'Insert row after' => 'Zeile einfügen nach',
   'Insert row before' => 'Zeile einfügen davor',
-  'Insert table' => 'Tablle einfügen',
+  'Insert table' => 'Tabelle einfügen',
   'Link target' => 'Verweisziel',
   'Location' => 'Ort',
   'Objects' => 'Objekte',

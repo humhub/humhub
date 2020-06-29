@@ -35,7 +35,7 @@ return array (
   'Pending Approvals' => 'Demandes en attente',
   'Pending Invites' => 'Invitations en attente',
   'Permissions are assigned to different user-roles. To edit a permission, select the user-role you want to edit and change the drop-down value of the given permission.' => 'Les permissions sont affectées à différents rôles-utilisateur. Pour modifier une permission, sélectionner le rôle-utilisateur que vous voulez modifier et changer la valeur souhaitée dans la liste déroulante des permissions.',
-  'Please type the name of the space to proceed.' => '',
+  'Please type the name of the space to proceed.' => 'Veuillez entrer le nom de l\'espace pour continuer.',
   'Receive Notifications for new content' => 'Recevoir une notification pour chaque nouvelle publication',
   'Remove from space' => 'Retirer de cet espace',
   'Role' => 'Rôle',
