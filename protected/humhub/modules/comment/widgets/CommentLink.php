@@ -58,11 +58,23 @@ class CommentLink extends Widget
             return '';
         }
 
+        $objectModel = $this->object->content->object_model;
+        $objectId = $this->object->content->object_id;
+        if ($this->object instanceof CommentModel) {
+            $objectModel = CommentModel::class;
+            $objectId = $this->object->id;
+
+            if ($this->object->getSource() instanceof CommentModel) {
+                // Dont allow comments of comments
+                return '';
+            }
+        }
+
         return $this->render('link', [
             'id' => $this->object->getUniqueId(),
             'mode' => $this->mode,
-            'objectModel' => $this->object->content->object_model,
-            'objectId' => $this->object->content->object_id,
+            'objectModel' => $objectModel,
+            'objectId' => $objectId,
         ]);
     }
 

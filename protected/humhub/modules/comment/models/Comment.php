@@ -37,10 +37,6 @@ use humhub\modules\user\models\User;
  * @property string $updated_at
  * @property integer $updated_by
  *
- * The followings are the available model relations:
- * @property Post[] $posts
- *
- * @package humhub.modules_core.comment.models
  * @since 0.5
  */
 class Comment extends ContentAddonActiveRecord implements ContentOwner
@@ -87,6 +83,13 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     {
         $this->flushCache();
 
+        // Delete sub comment (replies)
+        if ($this->object_model !== static::class) {
+            foreach (static::findAll(['object_model' => static::class, 'object_id' >= $this->id]) as $comment) {
+                $comment->delete();
+            }
+        }
+
         return parent::beforeDelete();
     }
 
@@ -130,7 +133,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     {
         $this->flushCache();
 
-        if($insert) {
+        if ($insert) {
             NewComment::instance()->about($this)->create();
         }
 

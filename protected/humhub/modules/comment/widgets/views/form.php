@@ -17,8 +17,8 @@ $submitUrl = Url::to(['/comment/comment/post']);
 <div id="comment_create_form_<?= $id; ?>" class="comment_create" data-ui-widget="comment.Form">
 
     <?= Html::beginForm('#'); ?>
-    <?= Html::hiddenInput('contentModel', $modelName); ?>
-    <?= Html::hiddenInput('contentId', $modelId); ?>
+    <?= Html::hiddenInput('object_model', $modelName); ?>
+    <?= Html::hiddenInput('object_id', $modelId); ?>
 
     <div class="comment-create-input-group">
         <?= RichTextField::widget([

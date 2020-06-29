@@ -2,6 +2,8 @@
 
 namespace humhub\modules\comment\widgets;
 
+use humhub\modules\comment\models\Comment as CommentModel;
+
 /**
  * This widget is used include the comments functionality to a wall entry.
  *
@@ -28,8 +30,8 @@ class Comments extends \yii\base\Widget
         $modelId = $this->object->content->object_id;
 
         // Count all Comments
-        $commentCount = \humhub\modules\comment\models\Comment::GetCommentCount($modelName, $modelId);
-        $comments = \humhub\modules\comment\models\Comment::GetCommentsLimited($modelName, $modelId, 2);
+        $commentCount = CommentModel::GetCommentCount($modelName, $modelId);
+        $comments = CommentModel::GetCommentsLimited($modelName, $modelId, 2);
 
         $isLimited = ($commentCount > 2);
 

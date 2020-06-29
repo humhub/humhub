@@ -141,8 +141,8 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
     /**
      * Checks if this content addon can be changed
      *
-     * @deprecated since 1.4
      * @return boolean
+     * @deprecated since 1.4
      */
     public function canWrite()
     {

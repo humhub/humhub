@@ -9,6 +9,7 @@
 namespace humhub\modules\comment\widgets;
 
 use Yii;
+use  humhub\modules\comment\models\Comment as CommentModel;
 
 /**
  * This widget is used include the comments functionality to a wall entry.
@@ -33,19 +34,23 @@ class Form extends \yii\base\Widget
     {
 
         if (Yii::$app->user->isGuest) {
-            return;
+            return '';
         }
 
         if (!Yii::$app->getModule('comment')->canComment($this->object->content)) {
-            return;
+            return '';
         }
-        
-        $modelName = $this->object->content->object_model;
-        $modelId = $this->object->content->object_id;
+
+        $objectModel = $this->object->content->object_model;
+        $objectId = $this->object->content->object_id;
+        if ($this->object instanceof CommentModel) {
+            $objectModel = CommentModel::class;
+            $objectId = $this->object->id;
+        }
 
         return $this->render('form', [
-            'modelName' => $modelName,
-            'modelId' => $modelId,
+            'modelName' => $objectModel,
+            'modelId' => $objectId,
             'id' => $this->object->getUniqueId(),
         ]);
     }
