@@ -8,6 +8,7 @@
 
 namespace humhub\modules\comment\widgets;
 
+use humhub\modules\comment\Module;
 use Yii;
 use  humhub\modules\comment\models\Comment as CommentModel;
 
@@ -37,16 +38,15 @@ class Form extends \yii\base\Widget
             return '';
         }
 
-        if (!Yii::$app->getModule('comment')->canComment($this->object->content)) {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('comment');
+
+        if (!$module->canComment($this->object)) {
             return '';
         }
 
-        $objectModel = $this->object->content->object_model;
-        $objectId = $this->object->content->object_id;
-        if ($this->object instanceof CommentModel) {
-            $objectModel = CommentModel::class;
-            $objectId = $this->object->id;
-        }
+        $objectModel = get_class($this->object);
+        $objectId = $this->object->getPrimaryKey();
 
         return $this->render('form', [
             'modelName' => $objectModel,

@@ -3,6 +3,7 @@
 namespace humhub\modules\comment\widgets;
 
 use humhub\modules\comment\models\Comment as CommentModel;
+use humhub\modules\content\components\ContentActiveRecord;
 
 /**
  * This widget is used include the comments functionality to a wall entry.
@@ -17,7 +18,7 @@ class Comments extends \yii\base\Widget
 {
 
     /**
-     * Content Object
+     * @var Comment|ContentActiveRecord
      */
     public $object;
 
@@ -26,20 +27,20 @@ class Comments extends \yii\base\Widget
      */
     public function run()
     {
-        $modelName = $this->object->content->object_model;
-        $modelId = $this->object->content->object_id;
+        $objectModel = get_class($this->object);
+        $objectId = $this->object->getPrimaryKey();
 
         // Count all Comments
-        $commentCount = CommentModel::GetCommentCount($modelName, $modelId);
-        $comments = CommentModel::GetCommentsLimited($modelName, $modelId, 2);
+        $commentCount = CommentModel::GetCommentCount($objectModel, $objectId);
+        $comments = CommentModel::GetCommentsLimited($objectModel, $objectId, 2);
 
         $isLimited = ($commentCount > 2);
 
         return $this->render('comments', [
             'object' => $this->object,
             'comments' => $comments,
-            'modelName' => $modelName,
-            'modelId' => $modelId,
+            'modelName' => $objectModel,
+            'modelId' => $objectId,
             'id' => $this->object->getUniqueId(),
             'isLimited' => $isLimited,
             'total' => $commentCount

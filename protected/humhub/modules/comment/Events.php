@@ -89,7 +89,10 @@ class Events extends Component
             return;
         }
 
-        if (Yii::$app->getModule('comment')->canComment($event->sender->object->content)) {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('comment');
+
+        if ($module->canComment($event->sender->object)) {
             $event->sender->addWidget(widgets\CommentLink::class, ['object' => $event->sender->object], ['sortOrder' => 10]);
         }
     }
@@ -107,8 +110,8 @@ class Events extends Component
     /**
      * Handles the SearchAttributesEvent and adds related comments
      *
-     * @since 1.2.3
      * @param SearchAttributesEvent $event
+     * @since 1.2.3
      */
     public static function onSearchAttributes(SearchAttributesEvent $event)
     {

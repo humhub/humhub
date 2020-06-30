@@ -2,6 +2,8 @@
 
 namespace humhub\modules\comment;
 
+use humhub\modules\comment\models\Comment;
+use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
 
 /**
@@ -47,19 +49,25 @@ class Module extends \humhub\components\Module
      */
     public function getNotifications()
     {
-       return [
-           'humhub\modules\comment\notifications\NewComment'
-       ];
+        return [
+            'humhub\modules\comment\notifications\NewComment'
+        ];
     }
 
     /**
      * Checks if given content object can be commented
      *
-     * @param \humhub\modules\content\models\Content $content
+     * @param Comment|ContentActiveRecord $object
      * @return boolean can comment
      */
-    public function canComment(\humhub\modules\content\models\Content $content)
+    public function canComment($object)
     {
+        // Only allow one level of subcomments
+        if ($object instanceof Comment && $object->object_model === Comment::class) {
+            return false;
+        }
+
+        $content = $object->content;
 
         if ($content->container instanceof \humhub\modules\space\models\Space) {
             $space = $content->container;

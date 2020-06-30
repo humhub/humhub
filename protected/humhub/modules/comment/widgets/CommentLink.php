@@ -54,7 +54,7 @@ class CommentLink extends Widget
             $this->mode = self::MODE_INLINE;
         }
 
-        if (!$module->canComment($this->object->content)) {
+        if (!$module->canComment($this->object)) {
             return '';
         }
 
@@ -63,11 +63,6 @@ class CommentLink extends Widget
         if ($this->object instanceof CommentModel) {
             $objectModel = CommentModel::class;
             $objectId = $this->object->id;
-
-            if ($this->object->getSource() instanceof CommentModel) {
-                // Dont allow comments of comments
-                return '';
-            }
         }
 
         return $this->render('link', [

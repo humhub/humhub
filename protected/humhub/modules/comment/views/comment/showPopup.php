@@ -2,6 +2,7 @@
 
 use humhub\libs\Html;
 use humhub\widgets\ModalDialog;
+use humhub\modules\comment\widgets\Form;
 
 ?>
 
@@ -12,16 +13,15 @@ use humhub\widgets\ModalDialog;
             <div class="comment" id="comments_area_<?= $id; ?>">
                 <?= $output; ?>
             </div>
-            <?= humhub\modules\comment\widgets\Form::widget(['object' => $object]); ?>
+            <?= Form::widget(['object' => $object]); ?>
         </div>
     </div>
 </div>
 <?php ModalDialog::end() ?>
-<script <?= Html::nonce() ?>>
 
+<script <?= Html::nonce() ?>>
     // scroll to top of list
     $(".comment-modal-body").animate({scrollTop: 0}, 200);
-
 </script>
 
 

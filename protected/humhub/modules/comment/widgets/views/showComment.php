@@ -7,6 +7,7 @@ use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\file\widgets\ShowFiles;
 use humhub\modules\like\widgets\LikeLink;
 use humhub\modules\comment\widgets\CommentLink;
+use humhub\modules\comment\widgets\Comments;
 
 /* @var $comment \humhub\modules\comment\models\Comment */
 /* @var $deleteUrl string */
@@ -80,8 +81,14 @@ use humhub\modules\comment\widgets\CommentLink;
         <div class="wall-entry-controls">
             <?= LikeLink::widget(['object' => $comment]); ?>
             &middot;
-            <?= CommentLink::widget(['object' => $comment, 'mode' => CommentLink::MODE_POPUP]); ?>
+            <?= CommentLink::widget(['object' => $comment]); ?>
+
+            <div style="border:1px solid red;padding-top:12px">
+                <?= Comments::widget(['object' => $comment]); ?>
+            </div>
         </div>
     </div>
+
+
     <hr>
 </div>
