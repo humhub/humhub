@@ -50,12 +50,12 @@ class LogoImage
     {
         if ($maxWidth === null) {
             // Will change in future!
-            $maxWidth = 300;
+            $maxWidth = 300 * 2;
         }
 
         if ($maxHeight === null) {
             // Will change in future!
-            $maxHeight = 40;
+            $maxHeight = 40 * 2;
         }
 
         $file = self::getFile($maxWidth, $maxHeight);
