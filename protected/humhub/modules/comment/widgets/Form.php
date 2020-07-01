@@ -9,8 +9,9 @@
 namespace humhub\modules\comment\widgets;
 
 use humhub\modules\comment\Module;
+use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
-use  humhub\modules\comment\models\Comment as CommentModel;
+use humhub\modules\comment\models\Comment as CommentModel;
 
 /**
  * This widget is used include the comments functionality to a wall entry.
@@ -22,9 +23,8 @@ use  humhub\modules\comment\models\Comment as CommentModel;
  */
 class Form extends \yii\base\Widget
 {
-
     /**
-     * Content Object
+     * @var CommentModel|ContentActiveRecord
      */
     public $object;
 
@@ -33,7 +33,6 @@ class Form extends \yii\base\Widget
      */
     public function run()
     {
-
         if (Yii::$app->user->isGuest) {
             return '';
         }
@@ -45,12 +44,9 @@ class Form extends \yii\base\Widget
             return '';
         }
 
-        $objectModel = get_class($this->object);
-        $objectId = $this->object->getPrimaryKey();
-
         return $this->render('form', [
-            'modelName' => $objectModel,
-            'modelId' => $objectId,
+            'objectModel' => get_class($this->object),
+            'objectId' => $this->object->getPrimaryKey(),
             'id' => $this->object->getUniqueId(),
         ]);
     }

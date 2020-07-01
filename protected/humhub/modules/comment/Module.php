@@ -4,6 +4,7 @@ namespace humhub\modules\comment;
 
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\space\models\Space;
 use Yii;
 
 /**
@@ -27,7 +28,7 @@ class Module extends \humhub\components\Module
      */
     public function getPermissions($contentContainer = null)
     {
-        if ($contentContainer instanceof \humhub\modules\space\models\Space) {
+        if ($contentContainer instanceof Space) {
             return [
                 new permissions\CreateComment()
             ];
@@ -69,7 +70,7 @@ class Module extends \humhub\components\Module
 
         $content = $object->content;
 
-        if ($content->container instanceof \humhub\modules\space\models\Space) {
+        if ($content->container instanceof Space) {
             $space = $content->container;
             if (!$space->permissionManager->can(new permissions\CreateComment())) {
                 return false;

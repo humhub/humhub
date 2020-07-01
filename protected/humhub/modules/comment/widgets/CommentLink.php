@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\components\Widget;
 use humhub\modules\comment\models\Comment as CommentModel;
 use humhub\modules\comment\Module;
+use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
 
 /**
@@ -26,7 +27,7 @@ class CommentLink extends Widget
     const MODE_POPUP = 'popup';
 
     /**
-     * @var ActiveRecord
+     * @var CommentModel|ContentActiveRecord
      */
     public $object;
 
@@ -50,7 +51,7 @@ class CommentLink extends Widget
         /** @var Module $module */
         $module = Yii::$app->getModule('comment');
 
-        if ($this->mode == "") {
+        if (empty($this->mode)) {
             $this->mode = self::MODE_INLINE;
         }
 
@@ -58,18 +59,11 @@ class CommentLink extends Widget
             return '';
         }
 
-        $objectModel = $this->object->content->object_model;
-        $objectId = $this->object->content->object_id;
-        if ($this->object instanceof CommentModel) {
-            $objectModel = CommentModel::class;
-            $objectId = $this->object->id;
-        }
-
         return $this->render('link', [
             'id' => $this->object->getUniqueId(),
             'mode' => $this->mode,
-            'objectModel' => $objectModel,
-            'objectId' => $objectId,
+            'objectModel' => get_class($this->object),
+            'objectId' => $this->object->getPrimaryKey(),
         ]);
     }
 

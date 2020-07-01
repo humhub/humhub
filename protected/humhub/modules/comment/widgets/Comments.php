@@ -39,8 +39,8 @@ class Comments extends \yii\base\Widget
         return $this->render('comments', [
             'object' => $this->object,
             'comments' => $comments,
-            'modelName' => $objectModel,
-            'modelId' => $objectId,
+            'objectModel' => $objectModel,
+            'objectId' => $objectId,
             'id' => $this->object->getUniqueId(),
             'isLimited' => $isLimited,
             'total' => $commentCount

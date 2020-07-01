@@ -8,6 +8,7 @@ use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\content\widgets\WallEntryLinks;
 use humhub\modules\search\engine\Search;
 
+/** @noinspection MissedFieldInspection */
 return [
     'id' => 'comment',
     'class' => \humhub\modules\comment\Module::class,

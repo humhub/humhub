@@ -7,9 +7,13 @@ use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\FilePreview;
 
-/* @var $modelName string */
-/* @var $modelId integer */
+/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $objectModel string */
+/* @var $objectId integer */
+/* @var $id string unique object id */
 
+/** @var \humhub\modules\content\Module $contentModule */
+$contentModule = Yii::$app->getModule('content');
 $submitUrl = Url::to(['/comment/comment/post']);
 
 ?>
@@ -17,8 +21,8 @@ $submitUrl = Url::to(['/comment/comment/post']);
 <div id="comment_create_form_<?= $id; ?>" class="comment_create" data-ui-widget="comment.Form">
 
     <?= Html::beginForm('#'); ?>
-    <?= Html::hiddenInput('object_model', $modelName); ?>
-    <?= Html::hiddenInput('object_id', $modelId); ?>
+    <?= Html::hiddenInput('objectModel', $objectModel); ?>
+    <?= Html::hiddenInput('objectId', $objectId); ?>
 
     <div class="comment-create-input-group">
         <?= RichTextField::widget([
@@ -39,8 +43,8 @@ $submitUrl = Url::to(['/comment/comment/post']);
                 'options' => ['class' => 'main_comment_upload'],
                 'progress' => '#comment_create_upload_progress_' . $id,
                 'preview' => '#comment_create_upload_preview_' . $id,
-                'dropZone' => '#comment_create_form_'.$id,
-                'max' => Yii::$app->getModule('content')->maxAttachedFiles
+                'dropZone' => '#comment_create_form_' . $id,
+                'max' => $contentModule->maxAttachedFiles
             ]); ?>
 
             <?= Button::defaultType(Yii::t('CommentModule.base', 'Send'))

@@ -2,10 +2,11 @@
 
 namespace humhub\modules\comment\widgets;
 
+use yii\helpers\Url;
+
 /**
  * CommentsShowMoreWidget
  *
- * @package humhub.modules_core.comment
  * @since 0.11
  * @author luke
  */
@@ -27,15 +28,15 @@ class ShowMore extends \yii\base\Widget
      */
     public function run()
     {
-        
+
         if (!$this->pagination->totalCount || $this->pagination->pageCount == $this->pagination->page + 1) {
-            return;
+            return '';
         }
 
-        $showMoreUrl = \yii\helpers\Url::to([
+        $showMoreUrl = Url::to([
             '/comment/comment/show',
-            'contentModel' => get_class($this->object),
-            'contentId' => $this->object->getPrimaryKey(),
+            'objectModel' => get_class($this->object),
+            'objectId' => $this->object->getPrimaryKey(),
             'page' => $this->pagination->page + 2
         ]);
 

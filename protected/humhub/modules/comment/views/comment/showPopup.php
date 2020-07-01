@@ -4,6 +4,9 @@ use humhub\libs\Html;
 use humhub\widgets\ModalDialog;
 use humhub\modules\comment\widgets\Form;
 
+/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $object \humhub\modules\content\components\ContentActiveRecord */
+
 ?>
 
 <?php ModalDialog::begin(['header' => Yii::t('CommentModule.base', 'Comments')]) ?>

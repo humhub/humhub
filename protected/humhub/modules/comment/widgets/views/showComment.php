@@ -9,6 +9,7 @@ use humhub\modules\like\widgets\LikeLink;
 use humhub\modules\comment\widgets\CommentLink;
 use humhub\modules\comment\widgets\Comments;
 
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $comment \humhub\modules\comment\models\Comment */
 /* @var $deleteUrl string */
 /* @var $editUrl string */
@@ -18,6 +19,10 @@ use humhub\modules\comment\widgets\Comments;
 /* @var $canDelete bool */
 /* @var $createdAt string */
 /* @var $updatedAt string */
+
+/** @var \humhub\modules\comment\Module $module */
+$module = Yii::$app->getModule('comment');
+
 ?>
 
 <div class="media" id="comment_<?= $comment->id; ?>"
@@ -80,12 +85,12 @@ use humhub\modules\comment\widgets\Comments;
 
         <div class="wall-entry-controls">
             <?= LikeLink::widget(['object' => $comment]); ?>
-            &middot;
-            <?= CommentLink::widget(['object' => $comment]); ?>
-
-            <div style="border:1px solid red;padding-top:12px">
-                <?= Comments::widget(['object' => $comment]); ?>
-            </div>
+            <?php if ($module->canComment($comment)): ?>
+                &middot; <?= CommentLink::widget(['object' => $comment]); ?>
+            <?php endif; ?>
+        </div>
+        <div style="margin-left:42px">
+            <?= Comments::widget(['object' => $comment]); ?>
         </div>
     </div>
 
