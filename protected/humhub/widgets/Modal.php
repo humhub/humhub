@@ -14,7 +14,7 @@ namespace humhub\widgets;
  * @author luke
  */
 class Modal extends JsWidget
-{   
+{
     /**
      * @inheritdoc
      */
@@ -73,7 +73,7 @@ class Modal extends JsWidget
      *
      * @var bool
      */
-    public $closable = true;
+    public $closable = false;
 
     /**
      * Defines if a click on the modal background should close the modal
