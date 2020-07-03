@@ -12,3 +12,4 @@ HumHub Change Log
 - Chg #4138: Updated jQuery to v3.5.1
 - Chg #4158: Cleanup post table removed unused column  
 - Fix #4182: Native edge password reveal icons interferes with custom one
+- Fix #4173: Notification overview HTML compliant issue
