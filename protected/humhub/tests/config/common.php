@@ -26,6 +26,9 @@ return [
         'installed' => true,
     ],
     'modules' => [
+        'user' => [
+            'loginRememberMeDefault' => false
+        ],
         'web' => [
             'security' =>  [
                 "headers" => [

@@ -1,13 +1,13 @@
 actor: Tester
 namespace: file
+bootstrap: _bootstrap.php
 settings:
-    bootstrap: _bootstrap.php
     suite_class: \PHPUnit_Framework_TestSuite
     colors: true
     shuffle: false
     memory_limit: 1024M
     log: true
-    
+
     # This value controls whether PHPUnit attempts to backup global variables
     # See https://phpunit.de/manual/current/en/appendixes.annotations.html#appendixes.annotations.backupGlobals
     backup_globals: true
@@ -21,4 +21,3 @@ config:
     # the entry script URL (with host info) for functional and acceptance tests
     # PLEASE ADJUST IT TO THE ACTUAL ENTRY SCRIPT URL
     test_entry_url: http://localhost:8080/index-test.php
-    

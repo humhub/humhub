@@ -16,10 +16,10 @@ return array (
   'Send' => 'Enviar',
   'Show all {total} comments.' => 'Ver los {total} comentarios.',
   'Show {count} more comments' => 'Mostrar {count} comentarios más',
-  'The comment must not be empty!' => '',
+  'The comment must not be empty!' => '¡El comentario no debe estar vacío!',
   'Whenever a new comment was written.' => 'Cuando un nuevo comentario sea escrito.',
   'Write a new comment...' => 'Escribe un nuevo comentario...',
-  'You are not allowed to comment.' => '',
+  'You are not allowed to comment.' => 'No tienes permiso para comentar.',
   'comment' => 'Comentar',
-  '{displayName} wrote a new comment ' => '{displayName} escribió un nuevo comentario ',
+  '{displayName} wrote a new comment ' => '{displayName} escribió un nuevo comentario',
 );
