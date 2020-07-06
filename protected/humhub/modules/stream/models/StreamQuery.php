@@ -72,12 +72,6 @@ class StreamQuery extends Model
     public $user;
 
     /**
-     * The user which requested the stream. By default the current user identity.
-     * @var ContentContainerActiveRecord
-     */
-    public $container;
-
-    /**
      * Can be set to filter content of a specific user
      * @var \humhub\modules\user\models\User
      */
