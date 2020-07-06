@@ -23,7 +23,10 @@ abstract class Filter extends Model
      */
     public $formName;
 
-    public $autoLoad = true;
+    /**
+     * @var bool Whether or not to automatically load the filter state from request.
+     */
+    public $autoLoad = self::AUTO_LOAD_ALL;
 
     public abstract function apply();
 

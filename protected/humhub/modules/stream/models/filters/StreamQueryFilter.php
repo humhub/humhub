@@ -19,6 +19,9 @@ abstract class StreamQueryFilter extends QueryFilter
      */
     public $streamQuery;
 
+    /**
+     * @inheritDoc
+     */
     public $autoLoad = self::AUTO_LOAD_GET;
 
     /**

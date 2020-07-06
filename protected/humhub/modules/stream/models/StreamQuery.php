@@ -2,6 +2,7 @@
 
 namespace humhub\modules\stream\models;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\stream\models\filters\StreamQueryFilter;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -13,7 +14,6 @@ use humhub\modules\stream\models\filters\ContentTypeStreamFilter;
 use humhub\modules\stream\models\filters\DefaultStreamFilter;
 use humhub\modules\stream\models\filters\OriginatorStreamFilter;
 use humhub\modules\stream\models\filters\TopicStreamFilter;
-use humhub\modules\ui\filter\models\QueryFilter;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
 
@@ -29,6 +29,11 @@ class StreamQuery extends Model
      * @event Event triggered before filterHandlers are applied, this can be used to add custom stream filters.
      */
     const EVENT_BEFORE_FILTER = 'beforeFilter';
+
+    /**
+     * @event Event triggered after filterHandlers are applied.
+     */
+    const EVENT_AFTER_FILTER = 'afterFilter';
 
     /**
      * Default channels
@@ -65,6 +70,12 @@ class StreamQuery extends Model
      * @var \humhub\modules\user\models\User
      */
     public $user;
+
+    /**
+     * The user which requested the stream. By default the current user identity.
+     * @var ContentContainerActiveRecord
+     */
+    public $container;
 
     /**
      * Can be set to filter content of a specific user
@@ -511,29 +522,126 @@ class StreamQuery extends Model
     }
 
     /**
-     * Sets up the filter queries.
+     * Sets up and apply filters.
      *
      * @throws \yii\base\InvalidConfigException
      */
     protected function setupFilters()
     {
-        $this->trigger(static::EVENT_BEFORE_FILTER);
+        $this->beforeApplyFilters();
 
         foreach ($this->filterHandlers as $handler) {
-            $this->initHandler($handler)->apply();
+            $this->prepareHandler($handler)->apply();
         }
+
+        $this->afterApplyFilters();
     }
 
     /**
+     * Is called right before applying query filters.
+     *
+     * Subclasses may use this function to add additional filters or modify existing filters.
+     *
+     * ```php
+     * protected function beforeApplyFilters()
+     * {
+     *   parent::beforeApplyFilters();
+     *   $this->addFilterHandler(MyStreamFilter::class);
+     * }
+     * ```
+     *
+     * @throws \yii\base\InvalidConfigException
+     * @since 1.6
+     */
+    protected function beforeApplyFilters()
+    {
+        $this->trigger(static::EVENT_BEFORE_FILTER);
+    }
+
+    /**
+     * Is called right after applying query filters.
+     *
+     * @throws \yii\base\InvalidConfigException
+     * @since 1.6
+     */
+    protected function afterApplyFilters()
+    {
+        $this->trigger(static::EVENT_AFTER_FILTER);
+    }
+
+    /**
+     * Adds a new filter handler to this query. This function accepts either a class name string or handler instance.
+     * Note, this function will automatically set the following filter properties:
+     *
+     *   - streamQuery: this streamQuery instance
+     *   - query: this activeQuery
+     *   - formName: this formName usually StreamQuery
+     *
+     * Usage:
+     *
+     * ```php
+     * // Use this if you need to set some initial filter data
+     * $filter = $streamQuery->addFilterHandler(new MyFilterHandler(['container' => $this->container]))
+     *
+     * // or just
+     * $filter = $streamQuery->addFilterHandler(AnotherFilter::class)
+     * ```
+     *
+     * @param string|StreamQueryFilter $handler
+     * @param bool $overwrite whether or not to overwrite existing filters of the same class
+     * @return StreamQueryFilter initialized stream filter
+     * @throws InvalidConfigException
+     * @since 1.6
+     */
+    public function addFilterHandler($handler, $overwrite = true)
+    {
+        if($overwrite) {
+            $this->removeFilterHandler($handler);
+        }
+
+        $handler = $this->prepareHandler($handler);
+        return $this->filterHandlers[] = $handler;
+    }
+
+    /**
+     * Can be used to remove filters by filter class.
+     *
      * @param $handler
      * @return StreamQueryFilter
      * @throws InvalidConfigException
      * @since 1.6
      */
-    public function addFilterHandler($handler)
+    public function removeFilterHandler($handlerToRemove)
     {
-        $handler = $this->initHandler($handler);
-        return $this->filterHandlers[] = $handler;
+        $result = [];
+        $handlerToRemoveClass = is_string($handlerToRemove) ? $handlerToRemove : get_class($handlerToRemove);
+        foreach ($this->filterHandlers as $handler) {
+            if(!is_a($handler, $handlerToRemoveClass, true)) {
+                $result[] = $handler;
+            }
+        }
+
+        $this->filterHandlers = $result;
+    }
+
+    /**
+     * Can be used to search for a filter handler by class.
+     *
+     * @param $handler
+     * @return StreamQueryFilter
+     * @throws InvalidConfigException
+     * @since 1.6
+     */
+    public function getFilterHandler($handlerToRemove)
+    {
+        $handlerToRemoveClass = is_string($handlerToRemove) ? $handlerToRemove : get_class($handlerToRemove);
+        foreach ($this->filterHandlers as $handler) {
+            if(is_a($handler, $handlerToRemoveClass, true)) {
+                return $this->prepareHandler($handler);
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -542,7 +650,7 @@ class StreamQuery extends Model
      * @throws InvalidConfigException
      * @since 1.6
      */
-    private function initHandler($handler)
+    private function prepareHandler($handler)
     {
         if (is_string($handler)) {
             $handler = Yii::createObject([
@@ -568,5 +676,15 @@ class StreamQuery extends Model
     public function isSingleContentQuery()
     {
         return $this->limit == 1 || $this->contentId != null;
+    }
+
+    /**
+     * Is inital stream requests (show first stream content)
+     *
+     * @return boolean Whether or not this query is considered as initial stream query.
+     */
+    public function isInitialQuery()
+    {
+        return $this->from === null && $this->to === null && !$this->isSingleContentQuery();
     }
 }

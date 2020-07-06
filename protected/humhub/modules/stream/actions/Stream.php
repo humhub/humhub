@@ -203,13 +203,28 @@ abstract class Stream extends Action
      * Initializes the StreamQuery instance. This can be used to add or remove stream filters or set query defaults.
      * By default [[streamQueryClass]] property will be used to initialize the instance.
      *
-     * @since 1.6
+     * Example usage:
+     *
+     * ```php
+     * protected function initQuery($options = [])
+     * {
+     *   $query = parent::initQuery($options);
+     *   $query->addFilterHandler(new MyStreamFilter(['container' => $this->contentContainer]));
+     *   return $query;
+     * }
+     * ```
+     *
+     * @param array $options instance attribute options
      * @return StreamQuery
+     * @since 1.6
      */
-    protected function initQuery()
+    protected function initQuery($options = [])
     {
         $streamQueryClass = $this->streamQueryClass;
-        return $streamQueryClass::find($this->includes, $this->excludes)->forUser($this->user);
+        /* @var $instance StreamQuery */
+        $instance = $streamQueryClass::find($this->includes, $this->excludes)->forUser($this->user);
+        $instance->setAttributes($options);
+        return $instance;
     }
 
     protected function setActionSettings()
@@ -278,6 +293,7 @@ abstract class Stream extends Action
      * Is inital stream requests (show first stream content)
      *
      * @return boolean Is initial request
+     * @deprecated since 1.6 use StreamQuery::isInitialQuery
      */
     protected function isInitialRequest()
     {

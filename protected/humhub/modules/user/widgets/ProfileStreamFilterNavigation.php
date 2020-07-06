@@ -16,6 +16,11 @@ class ProfileStreamFilterNavigation extends WallStreamFilterNavigation
     {
         parent::initFilters();
 
+        // IncludeAllContributionsFilter currently only supported for non guest users
+        if(Yii::$app->user->isGuest) {
+            return;
+        }
+
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
 
