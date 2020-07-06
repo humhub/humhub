@@ -1,29 +1,40 @@
 <?php
+
+use humhub\libs\Html;
+use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\modules\content\models\Content;
+use humhub\modules\activity\models\Activity;
+
 /**
  * WallEntry used in a stream and the activity stream.
  *
- * @property Mixed $object a content object like Post
- * @property Content $entry the wall entry to display
- * @property String $content the output of the content object (wallOut)
- *
- * @package humhub.modules_core.wall
- * @since 0.5
+ * @var Mixed $object a content object like Post
+ * @var string $jsWidget js widget component
+ * @var Content $entry the wall entry to display
+ * @var String $content the output of the content object (wallOut)
  */
-?>
-<?php
-$cssClass = ($entry->pinned) ? 'wall-entry pinned-entry' : 'wall-entry';
-$isActivity = $entry->object_model == humhub\modules\activity\models\Activity::class;
+
+$container = ContentContainerHelper::getCurrent();
+$isPinned = $container && $entry->pinned && $container->contentcontainer_id === $entry->contentcontainer_id;
+$isActivity = $entry->object_model === Activity::class;
 ?>
 
 <?php if (!$isActivity) : ?>
- 
-    <div class="<?= $cssClass ?>" data-stream-entry data-stream-pinned="<?= $entry->pinned ?>" data-action-component="<?= $jsWidget ?>" data-content-key="<?= $entry->id; ?>" >
-        
+    <?= Html::beginTag('div', [
+        'class' => ($isPinned) ? 'wall-entry pinned-entry' : 'wall-entry',
+        'data' => [
+            'content-container-id' => $entry->contentcontainer_id,
+            'stream-entry' => 1,
+            'stream-pinned' => (int) $isPinned,
+            'action-component' => $jsWidget,
+            'content-key' => $entry->id
+        ]
+    ])?>
 <?php endif; ?>
 
-<?= $content; ?>
+<?= $content ?>
 
 <?php if (!$isActivity) : ?>
-    </div>
+    <?= Html::endTag('div')?>
 <?php endif; ?>
 

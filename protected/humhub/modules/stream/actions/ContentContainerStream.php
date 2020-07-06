@@ -10,6 +10,8 @@ namespace humhub\modules\stream\actions;
 
 use Yii;
 use humhub\modules\content\models\Content;
+use yii\db\ArrayExpression;
+use yii\db\Expression;
 
 /**
  * ContentContainerStream is used to stream contentcontainers (space or users) content.
@@ -60,7 +62,7 @@ class ContentContainerStream extends Stream
     }
 
     /**
-     * Make sure pinned contents are returned first.
+     * Handles ordering of pinned content entries.
      */
     protected function handlePinnedContent()
     {
@@ -69,34 +71,22 @@ class ContentContainerStream extends Stream
             // Get number of pinned contents
             $pinnedQuery = clone $this->activeQuery;
             $pinnedQuery->andWhere(['AND', ['content.pinned' => 1], ['content.contentcontainer_id' => $this->contentContainer->contentcontainer_id]]);
-            $pinnedCount = $pinnedQuery->count();
+            $pinnedContent = $pinnedQuery->select('content.id')->column();
 
-            // Increase query result limit to ensure there are also not pinned entries
-            $this->activeQuery->limit += $pinnedCount;
+            if(!empty($pinnedContent)) {
+                // Increase query result limit to ensure all pinned entries are included in the first request
+                $this->activeQuery->limit += count($pinnedContent);
 
-            // Modify order - pinned content first
-            $oldOrder = $this->activeQuery->orderBy;
-            $this->activeQuery->orderBy("");
-            $this->activeQuery->addOrderBy('content.pinned DESC');
+                // Modify order - pinned content first
+                $oldOrder = $this->activeQuery->orderBy;
+                $this->activeQuery->orderBy("");
+                $this->activeQuery->addOrderBy(new Expression('CASE WHEN `content`.`id` IN ('.implode(',', $pinnedContent).') THEN 1 else 0 END DESC'));
+                $this->activeQuery->addOrderBy($oldOrder);
+            }
 
-
-            // Only include pinned content of the current contentcontainer (profile stream)
-            $this->activeQuery->andWhere([
-                'OR',
-                [
-                    'AND',
-                    ['content.pinned' => 1],
-                    ['content.contentcontainer_id' => $this->contentContainer->contentcontainer_id],
-                ],
-                ['content.pinned' => 0],
-            ]);
-
-            $this->activeQuery->addOrderBy($oldOrder);
         } else {
-            // No pinned content in further queries
-            $this->activeQuery->andWhere("content.pinned = 0");
+            // All pinned entries of this container were loaded within the initial request, so don't include them here!
+            $this->activeQuery->andWhere(['OR', ['content.pinned' => 0], ['<>', 'content.contentcontainer_id', $this->contentContainer->contentcontainer_id]]);
         }
-
     }
-
 }

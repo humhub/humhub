@@ -8,7 +8,7 @@
 
 namespace humhub\modules\user\controllers;
 
-use humhub\modules\user\components\ProfileStream;
+use humhub\modules\user\stream\ProfileStreamAction;
 use Yii;
 use yii\web\HttpException;
 use yii\db\Expression;
@@ -51,8 +51,7 @@ class ProfileController extends ContentContainerController
     {
         return [
             'stream' => [
-                'class' => ProfileStream::class,
-                'mode' => ProfileStream::MODE_NORMAL,
+                'class' => ProfileStreamAction::class,
                 'contentContainer' => $this->contentContainer
             ],
         ];

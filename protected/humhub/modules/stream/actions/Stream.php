@@ -9,6 +9,7 @@
 namespace humhub\modules\stream\actions;
 
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\stream\models\StreamQuery;
 use humhub\modules\stream\models\WallStreamQuery;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
@@ -62,9 +63,15 @@ abstract class Stream extends Action
     const SORT_UPDATED_AT = 'u';
 
     /**
-     * Modes
+     * @var string
+     * @deprecated since 1.6 use ActivityStreamAction
      */
     const MODE_NORMAL = 'normal';
+
+    /**
+     * @var string
+     * @deprecated since 1.6 use ActivityStreamAction
+     */
     const MODE_ACTIVITY = 'activity';
 
     const FROM_DASHBOARD = 'dashboard';
@@ -76,6 +83,7 @@ abstract class Stream extends Action
 
     /**
      * @var string
+     * @deprecated since 1.6 use ActivityStreamAction
      */
     public $mode;
 
@@ -165,8 +173,7 @@ abstract class Stream extends Action
     {
         $this->excludes = array_merge($this->excludes, Yii::$app->getModule('stream')->streamExcludes);
 
-        $streamQueryClass = $this->streamQueryClass;
-        $this->streamQuery = $streamQueryClass::find($this->includes, $this->excludes)->forUser($this->user);
+        $this->streamQuery = $this->initQuery();
 
         // Read parameters
         if (!Yii::$app->request->isConsoleRequest) {
@@ -190,6 +197,19 @@ abstract class Stream extends Action
         // Append additional filter of subclasses.
         $this->setupCriteria();
         $this->setupFilters();
+    }
+
+    /**
+     * Initializes the StreamQuery instance. This can be used to add or remove stream filters or set query defaults.
+     * By default [[streamQueryClass]] property will be used to initialize the instance.
+     *
+     * @since 1.6
+     * @return StreamQuery
+     */
+    protected function initQuery()
+    {
+        $streamQueryClass = $this->streamQueryClass;
+        return $streamQueryClass::find($this->includes, $this->excludes)->forUser($this->user);
     }
 
     protected function setActionSettings()

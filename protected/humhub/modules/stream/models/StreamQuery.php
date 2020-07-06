@@ -2,7 +2,9 @@
 
 namespace humhub\modules\stream\models;
 
+use humhub\modules\stream\models\filters\StreamQueryFilter;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
@@ -206,7 +208,7 @@ class StreamQuery extends Model
     /**
      * Builder function used to set the user perspective of the stream.
      *
-     * @param $user|null User if null the current user identity will be used
+     * @param $user |null User if null the current user identity will be used
      * @return static
      * @see checkUser
      */
@@ -414,8 +416,8 @@ class StreamQuery extends Model
      */
     protected function checkSort()
     {
-        if(empty($this->sort) || !in_array($this->sort, [Stream::SORT_CREATED_AT, Stream::SORT_UPDATED_AT])) {
-           $this->sort = Yii::$app->getModule('stream')->settings->get('defaultSort', Stream::SORT_CREATED_AT);
+        if (empty($this->sort) || !in_array($this->sort, [Stream::SORT_CREATED_AT, Stream::SORT_UPDATED_AT])) {
+            $this->sort = Yii::$app->getModule('stream')->settings->get('defaultSort', Stream::SORT_CREATED_AT);
         }
     }
 
@@ -427,7 +429,7 @@ class StreamQuery extends Model
         if (empty($this->from)) {
             $this->from = null;
         } else {
-            $this->from = (int) $this->from;
+            $this->from = (int)$this->from;
         }
     }
 
@@ -439,7 +441,7 @@ class StreamQuery extends Model
         if (empty($this->to)) {
             $this->to = null;
         } else {
-            $this->to = (int) $this->to;
+            $this->to = (int)$this->to;
         }
     }
 
@@ -451,7 +453,7 @@ class StreamQuery extends Model
         if (empty($this->limit) || $this->limit > self::MAX_LIMIT) {
             $this->limit = self::MAX_LIMIT;
         } else {
-            $this->limit = (int) $this->limit;
+            $this->limit = (int)$this->limit;
         }
     }
 
@@ -517,15 +519,47 @@ class StreamQuery extends Model
     {
         $this->trigger(static::EVENT_BEFORE_FILTER);
 
-        foreach ($this->filterHandlers as $handlerClass) {
-            /** @var $handler QueryFilter **/
-            Yii::createObject([
-                'class' => $handlerClass,
+        foreach ($this->filterHandlers as $handler) {
+            $this->initHandler($handler)->apply();
+        }
+    }
+
+    /**
+     * @param $handler
+     * @return StreamQueryFilter
+     * @throws InvalidConfigException
+     * @since 1.6
+     */
+    public function addFilterHandler($handler)
+    {
+        $handler = $this->initHandler($handler);
+        return $this->filterHandlers[] = $handler;
+    }
+
+    /**
+     * @param StreamQueryFilter|string $handler
+     * @return StreamQueryFilter
+     * @throws InvalidConfigException
+     * @since 1.6
+     */
+    private function initHandler($handler)
+    {
+        if (is_string($handler)) {
+            $handler = Yii::createObject([
+                'class' => $handler,
                 'streamQuery' => $this,
                 'query' => $this->_query,
                 'formName' => $this->formName()
-            ])->apply();
+            ]);
+        } elseif ($handler instanceof StreamQueryFilter) {
+            $handler->streamQuery = $this;
+            $handler->query = $this->_query;
+            $handler->formName = $this->formName();
+        } else {
+            throw new InvalidConfigException('Invalid stream filter class');
         }
+
+        return $handler;
     }
 
     /**

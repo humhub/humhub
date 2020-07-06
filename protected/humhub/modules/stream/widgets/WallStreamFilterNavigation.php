@@ -96,7 +96,7 @@ class WallStreamFilterNavigation extends FilterNavigation
     /**
      * @var string view
      */
-    public $view = 'wallStreamFilterNavigation';
+    public $view = '@stream/widgets/views/wallStreamFilterNavigation';
 
     /**
      * @inheritdoc

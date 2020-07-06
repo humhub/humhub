@@ -15,7 +15,7 @@ use humhub\modules\post\permissions\CreatePost;
 
 /**
  * StreamViewer shows a users profile stream
- * 
+ *
  * @since 1.2.4
  * @author Luke
  */
@@ -30,29 +30,35 @@ class StreamViewer extends BaseStreamViewer
     /**
      * @inheritdoc
      */
+    public $streamFilterNavigation = ProfileStreamFilterNavigation::class;
+
+    /**
+     * @var User
+     */
+    public $contentContainer;
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
-        $createPostPermission = new CreatePost();
+        parent::init();
 
-        if (empty($this->messageStreamEmptyCss)) {
-            if ($this->contentContainer->permissionManager->can($createPostPermission)) {
-                $this->messageStreamEmptyCss = 'placeholder-empty-stream';
-            }
+        $canCreatePost = $this->contentContainer->permissionManager->can(CreatePost::class);
+
+        if (empty($this->messageStreamEmptyCss) && $canCreatePost) {
+            $this->messageStreamEmptyCss = 'placeholder-empty-stream';
         }
 
         if (empty($this->messageStreamEmpty)) {
-            if ($this->contentContainer->permissionManager->can($createPostPermission)) {
-                if (Yii::$app->user->id === $this->contentContainer->id) {
-                    $this->messageStreamEmpty = Yii::t('UserModule.profile', '<b>Your profile stream is still empty</b><br>Get started and post something...');
-                } else {
-                    $this->messageStreamEmpty = Yii::t('UserModule.profile', '<b>This profile stream is still empty</b><br>Be the first and post something...');
-                }
+            if ($canCreatePost) {
+                $this->messageStreamEmpty = $this->contentContainer->is(Yii::$app->user->getIdentity())
+                    ? Yii::t('UserModule.profile', '<b>Your profile stream is still empty</b><br>Get started and post something...')
+                    : Yii::t('UserModule.profile', '<b>This profile stream is still empty</b><br>Be the first and post something...');
             } else {
                 $this->messageStreamEmpty = Yii::t('UserModule.profile', '<b>This profile stream is still empty!</b>');
             }
         }
-
-        parent::init();
     }
 
 }
