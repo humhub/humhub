@@ -21,7 +21,6 @@ use humhub\modules\user\models\User;
  * This is the model class for table "post".
  *
  * @property integer $id
- * @property string $message_2trash
  * @property string $message
  * @property string $url
  * @property string $created_at

@@ -1,7 +1,7 @@
 actor: Tester
 namespace: activity
+bootstrap: _bootstrap.php
 settings:
-    bootstrap: _bootstrap.php
     suite_class: \PHPUnit_Framework_TestSuite
     colors: true
     shuffle: false
@@ -36,4 +36,3 @@ config:
     # the entry script URL (with host info) for functional and acceptance tests
     # PLEASE ADJUST IT TO THE ACTUAL ENTRY SCRIPT URL
     test_entry_url: http://localhost:8080/index-test.php
-    
