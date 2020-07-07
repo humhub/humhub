@@ -22,7 +22,7 @@ class UserEmail extends BaseTypeVirtual
     /**
      * @inheritDoc
      */
-    public function getUserValue($user, $raw = true)
+    public function getVirtualUserValue($user, $raw = true)
     {
         if (empty($user->email)) {
             return '';

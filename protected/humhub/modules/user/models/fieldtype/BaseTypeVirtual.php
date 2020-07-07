@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\modules\user\models\User;
+
 /**
  * Base type for virtual profile fields
  *
@@ -24,20 +26,13 @@ abstract class BaseTypeVirtual extends BaseType
      */
     public $isVirtual = true;
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [];
-    }
 
     /**
      * @inheritdoc
      */
-    public function getUserValue($user, $raw = true)
+    final public function getUserValue($user, $raw = true)
     {
-        // TODO: Implement getUserValue() method.
+        return $this->getVirtualUserValue($user, $raw);
     }
 
     /**
@@ -63,4 +58,13 @@ abstract class BaseTypeVirtual extends BaseType
             'isVisible' => false,
         ]];
     }
+
+    /**
+     * Returns the readonly virutal value for the given User
+     *
+     * @param User $user
+     * @param bool $raw
+     * @return mixed
+     */
+    abstract protected function getVirtualUserValue($user, $raw = true);
 }
