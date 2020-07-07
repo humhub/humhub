@@ -1,12 +1,11 @@
 <?php
 
 
-namespace modules\live\assets;
+namespace humhub\modules\live\assets;
 
 
 use humhub\assets\SocketIoAsset;
 use humhub\components\assets\AssetBundle;
-use humhub\modules\live\assets\LiveAsset;
 
 class LivePushAsset extends AssetBundle
 {
@@ -19,7 +18,7 @@ class LivePushAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.live.poll.js',
+        'js/humhub.live.push.js',
     ];
 
     /**
