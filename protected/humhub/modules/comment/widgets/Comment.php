@@ -45,7 +45,7 @@ class Comment extends Widget
             $updatedAt = $this->comment->updated_at;
         }
 
-        return $this->render('showComment', [
+        return $this->render('comment', [
             'comment' => $this->comment,
             'user' => $this->comment->user,
             'justEdited' => $this->justEdited,
