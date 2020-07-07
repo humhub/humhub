@@ -214,7 +214,7 @@ class SettingController extends Controller
             $mail->setSubject(Yii::t('AdminModule.settings', 'Test message'));
 
             if ($mail->send()) {
-                $this->view->success(
+                $this->view->info(
                     Yii::t('AdminModule.settings', 'Saved and sent test email to: {address}',
                         ['address' => $user->email]
                     )
