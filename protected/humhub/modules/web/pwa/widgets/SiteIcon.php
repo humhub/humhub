@@ -66,8 +66,14 @@ class SiteIcon extends Widget
             try {
                 FileHelper::createDirectory(Yii::getAlias(Yii::$app->assetManager->basePath . DIRECTORY_SEPARATOR . 'siteicons'));
             } catch (Exception $e) {
+                // Directory already exists
             }
-            Image::getImagine()->open($baseIcon)->resize(new Box($size, $size))->save($file);
+
+            try {
+                Image::getImagine()->open($baseIcon)->resize(new Box($size, $size))->save($file);
+            } catch (\Exception $ex) {
+                Yii::error('Could not resize site icon: ' . $ex->getMessage());
+            }
             return static::getUrl($size, false);
         }
 

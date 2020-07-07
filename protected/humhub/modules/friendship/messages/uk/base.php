@@ -21,7 +21,6 @@ return [
     '<strong>Pending</strong> friend requests' => '',
     '<strong>Sent</strong> friend requests' => '',
     'Accept Friend Request' => '',
-    'Actions' => '',
     'Add Friend' => '',
     'Cancel friend request' => '',
     'Deny friend request' => '',

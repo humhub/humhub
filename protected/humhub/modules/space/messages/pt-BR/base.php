@@ -1,7 +1,7 @@
 <?php
 return array (
   '<b>This space is still empty!</b>' => '<b>Este espaço ainda está vazio!</b>',
-  '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>Este espaço ainda está vazio! </ b><br>Poste algo aqui...',
+  '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>Este espaço ainda está vazio!  b&gt;<br />Poste algo aqui...</b>',
   '<b>You are not member of this space and there is no public content, yet!</b>' => '<b>Você não é membro deste espaço e não há conteúdo público, ainda!</b>',
   '<strong>Confirm</strong> image deletion' => '<strong>Confirmar</strong> exclusão de imagem',
   '<strong>Invite</strong> members' => '<strong>Convidar</strong> membros',
@@ -27,7 +27,7 @@ return array (
   'Created At' => 'Criado em',
   'Created By' => 'Criado por',
   'Decline' => 'Recusar',
-  'Decline Invite' => '',
+  'Decline Invite' => 'Recusar convite',
   'Default' => 'Padrão',
   'Default content visibility' => 'Visibilidade de conteúdo padrão',
   'Delete' => 'Apagar',

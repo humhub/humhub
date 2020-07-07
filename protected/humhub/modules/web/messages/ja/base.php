@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Web' => 'ウェブ',
+  'Web' => 'Web',
 );

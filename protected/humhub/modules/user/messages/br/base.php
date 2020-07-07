@@ -69,6 +69,7 @@ return [
     'Sign up' => '',
     'Sign up now' => '',
     'Sort order' => '',
+    'Source' => '',
     'Space ID' => '',
     'Status' => '',
     'Tags' => '',

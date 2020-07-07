@@ -83,6 +83,7 @@ return [
     'Upload file' => 'Puyar fichero',
     'Actions' => '',
     'Add:' => '',
+    'All' => '',
     'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '',
     'Could not find content of addon!' => '',
     'Could not find requested page.' => '',

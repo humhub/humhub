@@ -393,8 +393,8 @@ humhub.module('ui.modal', function (module, require, $) {
             this.getDialog().addClass('modal-dialog-'+this.options.size);
         }
 
-        this.options.backdrop = object.defaultValue(options.backdrop, true);
-        this.options.keyboard = object.defaultValue(options.keyboard, true);
+        this.options.backdrop = object.defaultValue(options.backdrop, 'static');
+        this.options.keyboard = object.defaultValue(options.keyboard, false);
 
         if (this.$.data('bs.modal')) {
             this.$.data('bs.modal').options = this.options;
@@ -453,9 +453,6 @@ humhub.module('ui.modal', function (module, require, $) {
     };
 
     Modal.prototype.updateDialogOptions = function() {
-        var test = this.getDialog();
-        var test2 = this.getDialog().data('backdrop');
-        var test3 = this.getDialog().data('keyboard');
         this.set({
             backdrop : this.getDialog().data('backdrop'),
             keyboard : this.getDialog().data('keyboard')

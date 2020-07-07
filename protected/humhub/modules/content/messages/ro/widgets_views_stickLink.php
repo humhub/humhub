@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Pinned' => 'Anunț',
-  'Unpinned' => '',
+  'Pinned' => 'Fixat',
+  'Unpinned' => 'Nefixat',
 );

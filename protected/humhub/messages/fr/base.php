@@ -7,6 +7,7 @@ return array (
   'Actions' => 'Actions',
   'Add:' => 'Ajouter :',
   'Administration' => 'Administration',
+  'All' => 'Tout',
   'Allow' => 'Autoriser',
   'An error occurred while handling your last action. (Handler not found).' => 'Une erreur s\'est produite lors de la manipulation de votre dernière action. (Gestionnaire introuvable)',
   'An unexpected error occurred while loading the search result.' => 'Une erreur inattendue s\'est produite lors du chargement du résultat de la recherche.',

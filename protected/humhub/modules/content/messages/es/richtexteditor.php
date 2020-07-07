@@ -47,4 +47,5 @@ return array (
   'Wrap in block quote' => 'Convertir en un bloque de cita',
   'Wrap in bullet list' => 'Convertir en una lista',
   'Wrap in ordered list' => 'Convertir en una lista ordenada',
+  '[Invalid file]' => '[Archivo inválido]',
 );

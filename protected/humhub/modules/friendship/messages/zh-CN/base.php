@@ -21,7 +21,6 @@ return [
     '<strong>Pending</strong> friend requests' => '<strong>待处理</strong> 的好友请求',
     '<strong>Sent</strong> friend requests' => '<strong>发送</strong> 好友请求',
     'Accept Friend Request' => '接收好友请求',
-    'Actions' => '动作',
     'Add Friend' => '增加好友',
     'Cancel friend request' => '取消好友请求',
     'Deny friend request' => '拒绝好友请求',

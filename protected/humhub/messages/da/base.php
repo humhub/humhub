@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Latest</strong> updates' => '<strong>Nyeste</ strong> opdateringer',
+    '<strong>Latest</strong> updates' => '<strong>Nyeste</strong> opdateringer',
     'Account settings' => 'Kontoindstillinger',
     'Administration' => 'Administration',
     'Allow' => 'Tillad',
@@ -55,6 +55,7 @@ return [
     '<strong>Mail</strong> summary' => '',
     'Actions' => '',
     'Add:' => '',
+    'All' => '',
     'An error occurred while handling your last action. (Handler not found).' => '',
     'An unexpected error occurred while loading the search result.' => '',
     'An unexpected error occurred. If this keeps happening, please contact a site administrator.' => '',

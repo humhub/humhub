@@ -45,6 +45,7 @@ return array (
   'Disabled' => 'Deshabilitado',
   'Disabled users' => 'Deshabilitar usuarios',
   'Do not change placeholders like {displayName} if you want them to be automatically filled by the system. To reset the email content fields with the system default, leave them empty.' => 'No modifique los marcadores como {displayName} si quiere que el sistema los rellene automáticamente. Para reiniciar los campos de contenido de correo electrónico a los valores por defecto del sistema déjelos vacíos.',
+  'Edit category' => 'Editar categoria',
   'Edit profile category' => 'Editar categoría de perfil',
   'Edit profile field' => 'Editar campo de perfil',
   'Edit user: {name}' => 'Editar usuario: {name}',

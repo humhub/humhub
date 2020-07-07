@@ -14,7 +14,7 @@ return array (
   'Delete row' => 'Rij verwijderen',
   'Delete table' => 'Tabel verwijderen',
   'Flags' => 'Vlaggen',
-  'Food & Drink' => 'Eten & drinken',
+  'Food & Drink' => 'Eten &amp; drinken',
   'Heading' => 'Kop',
   'Height' => 'Hoogte',
   'Horizontal rule' => 'Horizontale lijn',
@@ -39,7 +39,7 @@ return array (
   'Toggle emphasis' => 'Cursief',
   'Toggle strikethrough' => 'Doorhalen',
   'Toggle strong style' => 'Vet',
-  'Travel & Places' => 'Reizen & plaatsen',
+  'Travel & Places' => 'Reizen &amp; plaatsen',
   'Type' => 'Type',
   'Upload File' => 'Upload bestand',
   'Upload and include a File' => 'Upload en voeg een bestand toe',
@@ -47,4 +47,5 @@ return array (
   'Wrap in block quote' => 'Maak een blokcitaat',
   'Wrap in bullet list' => 'Maak een lijst met opsomtekens',
   'Wrap in ordered list' => 'Maak een genummerde lijst',
+  '[Invalid file]' => '[Ongeldig bestand]',
 );

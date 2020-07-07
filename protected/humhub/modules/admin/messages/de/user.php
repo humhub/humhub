@@ -45,6 +45,7 @@ return array (
   'Disabled' => 'Deaktiviert',
   'Disabled users' => 'Deaktivierte Benutzer',
   'Do not change placeholders like {displayName} if you want them to be automatically filled by the system. To reset the email content fields with the system default, leave them empty.' => 'Wenn die Platzhalter wie {displayName} automatisch ersetzt werden sollen, dürfen sie nicht verändert werden. Um die Email-Inhaltsfelder auf den System-Standard zurückzusetzen müssen sie einfach leer gelassen werden.',
+  'Edit category' => 'Kategorie bearbeiten',
   'Edit profile category' => 'Profil-Kategorie bearbeiten',
   'Edit profile field' => 'Profil-Feld bearbeiten',
   'Edit user: {name}' => 'Benutzer editieren: {name}',

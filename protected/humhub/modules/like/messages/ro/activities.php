@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Likes' => '',
-  'Whenever someone likes something (e.g. a post or comment).' => '',
-  '{userDisplayName} likes {contentTitle}' => '',
+  'Likes' => 'Aprecieri',
+  'Whenever someone likes something (e.g. a post or comment).' => 'Oricând cineva apreciază ceva (ex: o postare sau comentariu).',
+  '{userDisplayName} likes {contentTitle}' => '{userDisplayName} apreciază {contentTitle}',
 );

@@ -71,6 +71,11 @@ class MenuLink extends MenuEntry
         }
 
         $this->getLink()->options($extraOptions);
+
+        // Add sort order for better debugging
+        $this->getLink()->options(['data-sort-order' => $this->getSortOrder()]);
+
+
         return $this->getLink()->htmlOptions;
     }
 

@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Confirm</strong> post deletion' => '<strong>Confirma</strong> exclusão do post',
-  '<strong>Move</strong> content' => '<strong> Mover </ strong> conteúdo',
+  '<strong>Move</strong> content' => '<strong> Mover  strong&gt; conteúdo</strong>',
   '<strong>Permalink</strong> to this post' => '<strong>Link permanente</strong> para este post',
   'Add a member to notify' => 'Adicionar um membro para notificar',
   'Archived' => 'Arquivado',
@@ -68,7 +68,7 @@ To however pin this item, unpin another before!' => 'Número máximo de itens fi
   'Unarchive' => 'Desarquivar',
   'Unpin' => 'Desprender',
   'Updated' => 'Atualizado',
-  'Where I\'m involved' => '',
+  'Where I\'m involved' => 'Onde eu estou envolvido',
   'With file attachments' => 'Com anexos de arquivos',
   'You do not have the permission to move this content to the given space.' => 'Você não tem permissão para mover este conteúdo para o espaço fornecido.',
   'You do not have the permission to move this content.' => 'Você não tem permissão para mover este conteúdo.',

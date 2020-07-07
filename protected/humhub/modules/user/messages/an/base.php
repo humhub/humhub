@@ -84,6 +84,7 @@ return [
     'Show At Directory' => '',
     'Show At Registration' => '',
     'Sort order' => '',
+    'Source' => '',
     'Space ID' => '',
     'Status' => '',
     'Unknown user status!' => '',

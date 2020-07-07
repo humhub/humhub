@@ -131,4 +131,5 @@ return [
     'You can only delete empty categories!' => 'Du kan kun slette tomme kategorier!',
     'You cannot delete yourself!' => 'Du kan ikke slette din egen bruker.',
     'never' => 'Aldri',
+    'Edit category' => '',
 ];

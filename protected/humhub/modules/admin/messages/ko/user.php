@@ -63,6 +63,7 @@ return [
     'Disabled' => '',
     'Disabled users' => '',
     'Do not change placeholders like {displayName} if you want them to be automatically filled by the system. To reset the email content fields with the system default, leave them empty.' => '',
+    'Edit category' => '',
     'Edit profile category' => '',
     'Edit profile field' => '',
     'Edit user: {name}' => '',

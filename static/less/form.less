@@ -90,6 +90,12 @@ label.control-label {
     color: @text-color-soft !important;
 }
 
+/* hide native password reveal icons */
+input::-ms-clear, input::-ms-reveal {
+    display: none;
+}
+
+
 /* ie */
 input:-moz-placeholder {
     color: @text-color-soft !important;

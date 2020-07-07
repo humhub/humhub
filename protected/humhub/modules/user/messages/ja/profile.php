@@ -1,9 +1,9 @@
 <?php
 return array (
-  '%y Years' => '%y 年',
+  '%y Years' => '%y歳',
   '<b>This profile stream is still empty!</b>' => '<b>このプロフィール・ストリームには何も書かれていません。</b>',
   '<b>This profile stream is still empty</b><br>Be the first and post something...' => '',
-  '<b>Your profile stream is still empty</b><br>Get started and post something...' => '<b>あなたのストリームには何も書かれていません</b><br>何かを適当に書いてみましょう\'',
+  '<b>Your profile stream is still empty</b><br>Get started and post something...' => '<b>あなたのストリームには何も書かれていません</b><br />何かを適当に書いてみましょう\'',
   '<strong>About</strong> this user' => '<strong>ユーザー</strong> 詳細',
   '<strong>Profile</strong> menu' => '<strong>プロフィール</strong>',
   'About' => 'About',
@@ -63,7 +63,7 @@ return array (
   'MySpace URL' => 'MySpace URL',
   'Number' => '数',
   'Number field options' => '数字型のオプション',
-  'One option per line. Key=>Value Format (e.g. yes=>Yes)' => '',
+  'One option per line. Key=>Value Format (e.g. yes=>Yes)' => '1行に1つのオプション。Key=&gt;Valueの形式（例：yes=&gt;Yes）',
   'Only alphanumeric characters allowed!' => '',
   'Phone Private' => 'プライベート電話番号',
   'Phone Work' => '仕事用の電話番号',
