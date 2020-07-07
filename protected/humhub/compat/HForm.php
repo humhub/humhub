@@ -343,7 +343,7 @@ class HForm extends \yii\base\Component
                 }
 
                 if(!empty($definition['hint'])  && $field instanceof ActiveField) {
-                    $field->hint(Html::encode($definition['hint']));
+                    $field->hint(Html::encode($definition['hint'], false));
                 }
 
                 return $field;
