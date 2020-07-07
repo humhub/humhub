@@ -9,7 +9,6 @@
 namespace humhub\modules\live\driver;
 
 use Firebase\JWT\JWT;
-use modules\live\assets\LivePushAsset;
 use Yii;
 use yii\helpers\Json;
 use yii\helpers\Url;
@@ -17,8 +16,8 @@ use yii\base\InvalidConfigException;
 use yii\redis\Connection;
 use yii\di\Instance;
 use humhub\modules\user\models\User;
-use humhub\modules\live\driver\BaseDriver;
 use humhub\modules\live\components\LiveEvent;
+use humhub\modules\live\assets\LivePushAsset;
 use humhub\modules\live\live\LegitimationChanged;
 
 /**
