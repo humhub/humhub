@@ -5,6 +5,7 @@ HumHub Change Log
 --------------------
 - Fix #4168: Erroneous pagination in notification overview 
 - Fix #4060: Profile description and text regex error message not translatable
+- Fix #4153: Administration: Email transport configuration 'Save & Test' Gives No Result
 
 1.5.2 (May 20, 2020)
 --------------------
