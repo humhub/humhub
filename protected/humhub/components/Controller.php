@@ -9,6 +9,7 @@
 namespace humhub\components;
 
 use humhub\components\access\ControllerAccess;
+use humhub\components\access\StrictAccess;
 use humhub\components\behaviors\AccessControl;
 use Yii;
 use yii\helpers\Url;
@@ -56,7 +57,7 @@ class Controller extends \yii\web\Controller
      * @var string defines the ControllerAccess class for this controller responsible for managing access rules
      * @see self::getAccess()
      */
-    protected $access = ControllerAccess::class;
+    protected $access = StrictAccess::class;
 
     /**
      * Returns access rules for the standard access control behavior.
@@ -70,7 +71,7 @@ class Controller extends \yii\web\Controller
     }
 
     /**
-     * @return null|ControllerAccess returns an ControllerAccess instance
+     * @return null|ControllerAccess returns a ControllerAccess instance
      */
     public function getAccess()
     {

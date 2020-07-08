@@ -9,7 +9,6 @@
 namespace humhub\modules\activity\controllers;
 
 use Yii;
-use humhub\components\access\StrictAccess;
 use humhub\components\Controller;
 use humhub\modules\activity\models\Activity;
 use yii\web\HttpException;
@@ -21,11 +20,6 @@ use yii\web\HttpException;
  */
 class LinkController extends Controller
 {
-
-    /**
-     * @inheritdoc
-     */
-    public $access = StrictAccess::class;
 
     /**
      * Returns the link for the given activity.

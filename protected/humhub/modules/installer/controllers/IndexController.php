@@ -9,6 +9,7 @@
 namespace humhub\modules\installer\controllers;
 
 
+use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 
 
@@ -19,6 +20,12 @@ use humhub\components\Controller;
  */
 class IndexController extends Controller
 {
+    /**
+     * Allow guest access independently from guest mode setting.
+     *
+     * @var string
+     */
+    public $access = ControllerAccess::class;
 
     /**
      * Index View just provides a welcome page
