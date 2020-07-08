@@ -8,10 +8,10 @@ Module successfully enabled!
 ' => 'Module activé avec succès',
   '--- Disable module: {moduleId} ---
 
-' => '--- Désactivé module: {moduleId} ---',
+' => '--- Désactiver module: {moduleId} ---',
   '--- Enable module: {moduleId} ---
 
-' => '--- Activé module: {moduleId} ---',
+' => '--- Activer module: {moduleId} ---',
   '<strong>Activate</strong> your Professional Edition' => '<strong>Activer</strong> l\'Edition Professionnelle',
   'Add purchased module by licence key' => 'Ajouter un module acheté par sa clé de licence',
   'All modules are up to date!' => 'Tous les modules sont à jour.',
