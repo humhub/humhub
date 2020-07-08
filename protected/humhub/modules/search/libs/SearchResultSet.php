@@ -42,7 +42,7 @@ class SearchResultSet
 
     /**
      * Returns active record instances of the search results
-     * 
+     *
      * @return ActiveRecord[]
      */
     public function getResultInstances()
@@ -52,7 +52,12 @@ class SearchResultSet
         foreach ($this->results as $result) {
             /** @var $modelClass ActiveRecord */
             $modelClass = $result->model;
-            $instance = $modelClass::findOne(['id' => $result->pk]);
+            try {
+                $instance = $modelClass::findOne(['id' => $result->pk]);
+            } catch (\Exception $ex) {
+                Yii::info('Could not load result model class ' . $result->model . ". Error: " . $ex->getMessage(), 'search');
+                continue;
+            }
             if ($instance !== null) {
                 $instances[] = $instance;
             } else {
