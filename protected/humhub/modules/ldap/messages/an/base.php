@@ -41,7 +41,7 @@ return [
     'The default base DN used for searching for accounts.' => '',
     'The default credentials password (used only with username above).' => '',
     'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => '',
-    'User Filer' => '',
+    'User Filter' => '',
     'Username' => '',
     'Username Attribute' => '',
 ];

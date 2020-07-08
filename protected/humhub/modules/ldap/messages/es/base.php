@@ -38,7 +38,7 @@ return [
     'The default base DN used for searching for accounts.' => 'El DN base por defecto usado para buscar cuentas.',
     'The default credentials password (used only with username above).' => 'La contraseña de las credenciales por defecto (usada sólo con el nombre de usuario de arriba).',
     'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'El nombre de usuario de las credenciales por defecto. Algunos servidores requieren que este esté en formato DN. Este tiene que estar en formato DN si el servidor LDAP requiere un DN para unirse y la unión debería ser posible con nombres de usuario simples.',
-    'User Filer' => 'Filtro de usuario',
+    'User Filter' => 'Filtro de usuario',
     'Username' => 'Nombre de usuario',
     'Username Attribute' => 'Atributo del nombre de usuario',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => '',
