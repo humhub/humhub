@@ -38,7 +38,7 @@ return [
     'The default base DN used for searching for accounts.' => 'Standardbasen DN brukes til å søke etter kontoer.',
     'The default credentials password (used only with username above).' => 'Standard legitimasjonspassord (bare brukt med brukernavn ovenfor).',
     'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'Standard credentials brukernavn. Noen servere krever at dette er i DN-form. Dette må oppgis i DN-skjema hvis LDAP-serveren krever at en DN skal binde og bindes, bør være mulig med enkle brukernavn.',
-    'User Filer' => 'Bruker filter',
+    'User Filter' => 'Bruker filter',
     'Username' => 'Brukernavn',
     'Username Attribute' => 'Brukernavn egenskap',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => '',
