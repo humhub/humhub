@@ -35,7 +35,7 @@ return [
     'The default base DN used for searching for accounts.' => 'База по умолчанию DN используется для поиска аккаунтов.',
     'The default credentials password (used only with username above).' => 'Пароль по умолчанию (используется только с именем пользователя, приведенном выше)',
     'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'Имя пользователя по умолчанию. Некоторые сервера требуют, чтобы имя пользователя было в форме DN, поэтому если LDAP сервер этого требует, имя должно быть приведено в надлежащем формате.',
-    'User Filer' => 'Пользовательский файлер',
+    'User Filter' => 'Пользовательский файлер',
     'Username' => 'Имя пользователя',
     'Username Attribute' => 'Пользовательские данные',
     'ID Attribute' => '',

@@ -25,7 +25,7 @@ return [
     'Login Filter' => 'Filtro de Login',
     'Password' => 'Palavra-passe',
     'Port' => 'Porta',
-    'User Filer' => 'Filtro de Utilizador',
+    'User Filter' => 'Filtro de Utilizador',
     'Username' => 'Nome de utilizador',
     'Username Attribute' => 'Atribuição de nome de utilizador',
     'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => '',

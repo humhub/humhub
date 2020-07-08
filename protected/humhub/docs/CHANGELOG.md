@@ -8,6 +8,8 @@ HumHub Change Log
 - Fix #4153: Administration: Email transport configuration 'Save & Test' Gives No Result
 - Fix #4187: Use of invalid LivePushAsset namespace
 - Fix #4140: Profile field hint is double encoded
+- Fix #4166: Typo in LDAP settings form
+
 
 1.5.2 (May 20, 2020)
 --------------------

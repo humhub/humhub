@@ -35,7 +35,7 @@ return [
     'The default base DN used for searching for accounts.' => 'Výchozí hodnoty DN použité pro vyhledávání účtů.',
     'The default credentials password (used only with username above).' => 'Výchozí heslo pověření (používá se pouze s uživatelským jménem výše).',
     'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'Výchozí uživatelské jméno pověření. Některé servery vyžadují, aby byly ve formátu DN. Musí být uvedeno ve formátu DN, pokud server LDAP vyžaduje vazbu DN a vazba by měla být možná s jednoduchými uživatelskými jmény.',
-    'User Filer' => 'Uživatelský filtr',
+    'User Filter' => 'Uživatelský filtr',
     'Username' => 'Uživatelské jméno',
     'Username Attribute' => ' Atributy uživatelského jména',
     'ID Attribute' => '',

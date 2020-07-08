@@ -33,7 +33,7 @@ return [
     'The default base DN used for searching for accounts.' => '默认的基本DN用于搜索帐户',
     'The default credentials password (used only with username above).' => '默认凭据的密码（仅用于以上用户名）。',
     'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => '默认凭据用户名。有些服务器要求该DN格式。这必须在DN形式给出，如果LDAP服务器需要一个DN绑定和绑定应尽可能用简单的用户名',
-    'User Filer' => '用户过滤',
+    'User Filter' => '用户过滤',
     'Username' => '用户名',
     'Username Attribute' => '用户属性',
     'ID Attribute' => '',
