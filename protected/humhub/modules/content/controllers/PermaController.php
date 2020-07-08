@@ -42,18 +42,18 @@ class PermaController extends Controller
      */
     public function actionIndex()
     {
-        $id = (int) Yii::$app->request->get('id', "");
+        $id = (int)Yii::$app->request->get('id');
 
         $content = Content::findOne(['id' => $id]);
-
         if ($content !== null) {
+
             if (method_exists($content->getPolymorphicRelation(), 'getUrl')) {
                 $url = $content->getPolymorphicRelation()->getUrl();
-            } elseif($content->container !== null) {
+            } elseif ($content->container !== null) {
                 $url = $content->container->createUrl(null, ['contentId' => $id]);
             }
 
-            if ($url) {
+            if (!empty($url)) {
                 return $this->redirect($url);
             }
         }
@@ -61,5 +61,3 @@ class PermaController extends Controller
         throw new HttpException(404, Yii::t('ContentModule.base', 'Could not find requested content!'));
     }
 }
-
-?>
