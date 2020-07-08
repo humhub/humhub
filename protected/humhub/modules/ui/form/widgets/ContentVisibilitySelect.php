@@ -1,0 +1,158 @@
+<?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2020 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace humhub\modules\ui\form\widgets;
+
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\models\Content;
+use humhub\modules\space\models\Space;
+use Yii;
+use yii\bootstrap\InputWidget;
+use yii\bootstrap\Html;
+
+
+/**
+ * ContentVisibilitySelect is a uniform form field for setting the visibility of a content.
+ *
+ * Features:
+ *    - Auto label text and hint text based on the linked ContentContainer
+ *    - Hiding if input not needed by the ContentContainer configuration
+ *    - Handling of default value
+ *
+ * Example usage:
+ *
+ * ```php
+ * <?= $form->field($model, $attribute)->widget(ContentVisibilitySelect::class, [
+ *     // configure additional widget properties here
+ * ]) ?>
+ * ```
+ *
+ * The specified model can either be a ContentActiveRecord or directly a Content record.
+ *
+ * @since 1.6
+ * @package humhub\modules\ui\form\widgets
+ */
+class ContentVisibilitySelect extends InputWidget
+{
+    /**
+     * @var bool Automatically hide the field when no mulitple visibility modes available
+     */
+    public $autoHide = true;
+
+    /**
+     * @var bool|null Readonly mode (automatically determined if null)
+     */
+    public $readonly = null;
+
+    /**
+     * @var Content
+     */
+    private $_content;
+
+    /**
+     * @inheritDoc
+     */
+    public function run()
+    {
+        $this->field->label(false);
+
+        if ($this->autoHide && $this->shouldHide()) {
+            return '';
+        }
+
+        $this->options['label'] = Yii::t('ContentModule.base', 'Public');
+
+        if ($this->getContentContainer() instanceof Space) {
+            $this->options['label'] .= ' ' .
+                Yii::t('ContentModule.base', '(Also visible to non-members of this space)');
+        }
+
+        $this->options['title'] =
+            Yii::t('ContentModule.base', 'Specify who can see this content.');
+
+        if ($this->readonly) {
+            $this->options['disabled'] = true;
+        }
+
+        $this->setDefaultValue();
+
+        return
+            '<div class="checkbox regular-checkbox-container">' .
+            Html::activeCheckbox($this->model, $this->attribute, $this->options) .
+            '</div';
+    }
+
+
+    private function setDefaultValue()
+    {
+        $model = $this->model;
+        $attribute = $this->attribute;
+
+        if ($model->$attribute === null) {
+            $contentContainer = $this->getContentContainer();
+            if ($contentContainer instanceof Space) {
+                /** @var Space $contentContainer */
+                $model->$attribute = $contentContainer->default_content_visibility;
+            }
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    private function shouldHide()
+    {
+        $contentContainer = $this->getContentContainer();
+
+        // Should hide on private spaces (Only provide private content visibility option)
+        if ($contentContainer instanceof Space) {
+            /** @var Space $contentContainer */
+            if ($contentContainer->visibility == Space::VISIBILITY_NONE) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return ContentContainerActiveRecord|null
+     */
+    private function getContentContainer()
+    {
+        $content = $this->getContent();
+        if ($content !== null) {
+            return $content->getContainer();
+        }
+
+        return null;
+    }
+
+    /**
+     * @return Content|null
+     */
+    private function getContent()
+    {
+        if ($this->_content !== null) {
+            return $this->_content;
+        }
+
+        if ($this->model instanceof ContentActiveRecord) {
+            $this->_content = $this->model->content;
+        } elseif ($this->model->page instanceof ContentActiveRecord) {
+            $this->_content = $this->model->page->content;
+        } elseif ($this->model instanceof Content) {
+            $this->_content = $this->model;
+        }
+
+        return $this->_content;
+
+    }
+
+}

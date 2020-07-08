@@ -13,3 +13,4 @@ HumHub Change Log
 - Chg #4158: Cleanup post table removed unused column  
 - Fix #4182: Native edge password reveal icons interferes with custom one
 - Fix #4173: Notification overview HTML compliant issue
+- Enh: Added `ContentVisibilitySelect` ActiveField widget for content forms
