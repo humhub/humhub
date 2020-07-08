@@ -177,9 +177,12 @@ class Text extends BaseType
 
         if ($this->regexp != "") {
             $errorMsg = $this->regexpErrorMessage;
-            if ($errorMsg == "") {
-                $errorMsg = "Invalid!";
+            if (empty($errorMsg)) {
+                $errorMsg = Yii::t('UserModule.profile',"Invalid!");
+            } else {
+                $errorMsg = Yii::t($this->profileField->getTranslationCategory(), $errorMsg);
             }
+
             $rules[] = [$this->profileField->internal_name, 'match', 'pattern' => $this->regexp, 'message' => $errorMsg];
         }
 
