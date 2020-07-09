@@ -1,17 +1,9 @@
 <?php
 return array (
-  '
-Module successfully disabled!
-' => 'تم تعطيل الوحدة بنجاح!',
-  '
-Module successfully enabled!
-' => 'تم تفعيل الوحدة بنجاح!',
-  '--- Disable module: {moduleId} ---
-
-' => '--- تعطيل الوحدة: {moduleId} ---',
-  '--- Enable module: {moduleId} ---
-
-' => '--- تمكين الوحدة: {moduleId} ---',
+  'Module successfully disabled!' => 'تم تعطيل الوحدة بنجاح!',
+  'Module successfully enabled!' => 'تم تفعيل الوحدة بنجاح!',
+  '--- Disable module: {moduleId} ---' => '--- تعطيل الوحدة: {moduleId} ---',
+  '--- Enable module: {moduleId} ---' => '--- تمكين الوحدة: {moduleId} ---',
   '<strong>Activate</strong> your Professional Edition' => '<strong> تنشيط </ strong> الإصدار المحترف الخاص بك',
   'Add purchased module by licence key' => 'إضافة وحدة مشتراة بواسطة مفتاح الترخيص',
   'All modules are up to date!' => 'جميع الموديولات نسختها هي الأحدث!',
@@ -40,10 +32,8 @@ Module successfully enabled!
   'Max. users:' => 'ماكس. المستخدمون:',
   'Module directory %modulePath% is not writeable!' => 'المجلد الذي يحتوي على الموديول غير قابل للكتابة %modulePath%',
   'Module download failed! (%error%)' => 'فشل تحميل الموديول! (%error%)',
-  'Module not found or activated!
-' => 'لم يتم العثور على الوحدة أو تفعيلها!',
-  'Module not found!
-' => 'لم يتم العثور على الوحدة أو تفعيلها!',
+  'Module not found or activated!' => 'لم يتم العثور على الوحدة أو تفعيلها!',
+  'Module not found!' => 'لم يتم العثور على الوحدة أو تفعيلها!',
   'More info' => 'معلومات',
   'No compatible module version found!' => 'لا توجد نسخة مناسبة للموديول!',
   'No license key? Find out more about the {pro} or contact us.' => 'لا يوجد مفتاح ترخيص؟ تعرف على المزيد حول {pro} أو اتصل بنا.',
