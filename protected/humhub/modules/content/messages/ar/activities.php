@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Contents' => '',
-  'Whenever a new content (e.g. post) has been created.' => '',
-  '{displayName} created a new {contentTitle}.' => '',
+  'Contents' => 'محتويات',
+  'Whenever a new content (e.g. post) has been created.' => 'كلما تم إنشاء محتوى جديد (مثل المشاركة).',
+  '{displayName} created a new {contentTitle}.' => 'قام {displayName} بإنشاء {contentTitle} جديد.',
 );
