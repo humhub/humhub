@@ -8,7 +8,7 @@ use humhub\modules\stream\models\filters\ContentContainerStreamFilter;
 use humhub\modules\stream\models\WallStreamQuery;
 use humhub\modules\user\models\User;
 use humhub\modules\user\stream\filters\IncludeAllContributionsFilter;
-use modules\stream\models\ContentContainerStreamQuery;
+use humhub\modules\stream\models\ContentContainerStreamQuery;
 
 /**
  * ProfileStream

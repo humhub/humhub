@@ -1,14 +1,18 @@
 <?php
 
 
-namespace modules\stream\models;
+namespace humhub\modules\stream\models;
 
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\stream\models\filters\ContentContainerStreamFilter;
 use humhub\modules\stream\models\filters\PinnedContentStreamFilter;
-use humhub\modules\stream\models\WallStreamQuery;
 
+/**
+ * This query class adds support for pinned container related streams.
+ *
+ * @package modules\stream\models
+ */
 class ContentContainerStreamQuery extends WallStreamQuery
 {
     /**

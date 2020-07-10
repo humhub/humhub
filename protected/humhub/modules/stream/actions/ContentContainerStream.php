@@ -9,7 +9,7 @@
 namespace humhub\modules\stream\actions;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use modules\stream\models\ContentContainerStreamQuery;
+use humhub\modules\stream\models\ContentContainerStreamQuery;
 use yii\base\InvalidConfigException;
 
 /**
