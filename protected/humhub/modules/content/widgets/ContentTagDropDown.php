@@ -31,6 +31,8 @@ class ContentTagDropDown extends JsInputWidget
 
     public function int()
     {
+        parent::init();
+
         if (!$this->tagClass) {
             $this->tagClass = ContentTag::class;
             // Reset default behavior inf no specific tagClass is given
@@ -49,7 +51,7 @@ class ContentTagDropDown extends JsInputWidget
         $items = $this->getItems();
 
         if (empty($items)) {
-            return;
+            return $this->emptyResult();
         }
 
         $options = $this->getOptions();

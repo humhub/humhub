@@ -73,6 +73,13 @@ abstract class JsInputWidget extends JsWidget
     public $options = [];
 
     /**
+     * @var \yii\widgets\ActiveField active input field, which triggers this widget rendering.
+     * This field will be automatically filled up in case widget instance is created via [[\yii\widgets\ActiveField::widget()]].
+     * @since 1.6
+     */
+    public $field;
+
+    /**
      * Initializes the widget.
      * If you override this method, make sure you call the parent implementation first.
      */
@@ -87,7 +94,41 @@ abstract class JsInputWidget extends JsWidget
         if (!$this->id && !isset($this->options['id'])) {
             $this->id = $this->options['id'] = $this->hasModel() ? Html::getInputId($this->model, $this->attribute) : $this->getId(true);
         }
+
         return true;
+    }
+
+    /**
+     * Should be returned by [[run]] in order to prevent rendering the field.
+     * This function will prepare the ActiveField instance by resetting the template and label and return
+     * an empty string.
+     *
+     * ```php
+     * public function run()
+     * {
+     *   if(!$this->shouldRender()) {
+     *       return $this->emptyResult();
+     *   }
+     *
+     *   return parent::run();
+     * }
+     * ```
+     * @return string
+     * @since 1.6
+     */
+    protected function emptyResult()
+    {
+        if($this->field) {
+            $this->field->label(false);
+            // Prevents empty-help/error block rendering
+            $this->field->template = '';
+
+            if($this->field instanceof ActiveField) {
+                $this->field->preventRendering = true;
+            }
+        }
+
+        return '';
     }
 
     /**

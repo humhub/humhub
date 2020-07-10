@@ -26,7 +26,7 @@ class ActiveForm extends \yii\bootstrap\ActiveForm
     /**
      * @inheritdoc
      */
-    public $fieldClass = 'humhub\modules\ui\form\widgets\ActiveField';
+    public $fieldClass = ActiveField::class;
 
     public $acknowledge = false;
 
