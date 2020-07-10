@@ -1,9 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: kingb
- * Date: 05.10.2018
- * Time: 21:14
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2020 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\ui\filter\widgets;
@@ -13,7 +12,8 @@ use humhub\libs\Html;
 
 /**
  * Dropdown stream filter input type.
- *
+ * 
+ * @since 1.6
  * @package humhub\modules\ui\filter\widgets
  */
 class DropdownFilterInput extends FilterInput
