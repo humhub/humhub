@@ -97,9 +97,11 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
                                 <li>
                                     <?= Link::withAction(Yii::t('ContentModule.base', 'Notify members'), 'notifyUser')->icon('fa-bell')?>
                                 </li>
-                                 <li>
-                                     <?= Link::withAction(Yii::t('ContentModule.base', 'Topics'), 'setTopics')->icon(Yii::$app->getModule('topic')->icon) ?>
-                                </li>
+                                <?php if(TopicPicker::showTopicPicker($contentContainer)) : ?>
+                                    <li>
+                                         <?= Link::withAction(Yii::t('ContentModule.base', 'Topics'), 'setTopics')->icon(Yii::$app->getModule('topic')->icon) ?>
+                                    </li>
+                                <?php endif; ?>
                                 <?php if ($canSwitchVisibility): ?>
                                     <li>
                                         <?= Link::withAction(Yii::t('ContentModule.base', 'Make public'), 'changeVisibility')
