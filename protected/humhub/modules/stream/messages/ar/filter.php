@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Author' => '',
-  'Content' => '',
-  'Content Type' => '',
+  'Author' => 'مؤلف',
+  'Content' => 'المحتوى',
+  'Content Type' => 'نوع المحتوى',
   'Sorting' => 'الترتيب',
-  'Topic' => '',
-  'Visibility' => '',
+  'Topic' => 'موضوع',
+  'Visibility' => 'الرؤية',
 );
