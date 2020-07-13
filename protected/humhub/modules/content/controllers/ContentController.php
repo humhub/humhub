@@ -8,13 +8,19 @@
 
 namespace humhub\modules\content\controllers;
 
+use humhub\modules\content\Module;
 use Yii;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
+use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 use humhub\components\Controller;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\components\behaviors\AccessControl;
 use humhub\modules\stream\actions\Stream;
+use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * ContentController is responsible for basic content objects.
@@ -41,12 +47,15 @@ class ContentController extends Controller
     public function actionViewModal($id)
     {
         $content = Content::findOne(['id' => $id]);
-        if ($content === null) {
-            throw new HttpException(404);
-        } elseif (!$content->canView()) {
-            throw new HttpException(403);
+
+        if (!$content) {
+            throw new NotFoundHttpException();
         }
-        
+
+        if (!$content->canView()) {
+            throw new ForbiddenHttpException();
+        }
+
         if (!Yii::$app->request->isAjax) {
             return $this->redirect(['/content/perma', 'id' => $content->id]);
         }
@@ -55,7 +64,7 @@ class ContentController extends Controller
         if ($entry === null) {
             throw new HttpException(500);
         }
-        
+
         return $this->renderAjax('view-modal', ['entry' => $entry]);
     }
 
@@ -176,9 +185,9 @@ class ContentController extends Controller
 
     /**
      * Switches the content visibility for the given content.
-     * 
+     *
      * @param type $id content id
-     * @return \yii\web\Response
+     * @return Response
      * @throws HttpException
      */
     public function actionToggleVisibility($id)
@@ -210,26 +219,39 @@ class ContentController extends Controller
      * Pins an wall entry & corresponding content object.
      *
      * Returns JSON Output.
+     * @return Response
+     * @throws ForbiddenHttpException
+     * @throws HttpException
+     * @throws NotFoundHttpException
+     * @throws Exception
+     * @throws InvalidConfigException
      */
     public function actionPin()
     {
         $this->forcePostRequest();
 
-        $json = [];
-        $json['success'] = false;
-
         $content = Content::findOne(['id' => Yii::$app->request->get('id', '')]);
-        if ($content !== null && $content->canPin()) {
-            if ($content->countPinnedItems() < 2) {
-                $content->pin();
 
-                $json['success'] = true;
-                $json['contentId'] = $content->id;
-            } else {
-                $json['info'] = Yii::t('ContentModule.base', "Maximum number of pinned items reached!\n\nYou can pin to top only two items at once.\nTo however pin this item, unpin another before!");
-            }
+        if(!$content) {
+            throw new NotFoundHttpException();
+        }
+
+        if(!$content->canPin()) {
+            throw new ForbiddenHttpException();
+        }
+
+        $json = ['success' => false];
+
+        /** @var Module $module */
+        $module = Yii::$app->getModule('content');
+        $maxPinnedContent = $module->getMaxPinnedContent($content->container);
+
+        if ($content->countPinnedItems() < $module->getMaxPinnedContent($content->container)) {
+            $content->pin();
+            $json['success'] = true;
+            $json['contentId'] = $content->id;
         } else {
-            $json['error'] = Yii::t('ContentModule.base', 'Could not load requested object!');
+            $json['info'] = Yii::t('ContentModule.base', "Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.", ['count' => $maxPinnedContent]);
         }
 
         return $this->asJson($json);
