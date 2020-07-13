@@ -84,10 +84,10 @@ $module = Yii::$app->getModule('comment');
         </div>
 
         <div class="wall-entry-controls">
-            <?= LikeLink::widget(['object' => $comment]); ?>
             <?php if ($module->canComment($comment)): ?>
-                &middot; <?= CommentLink::widget(['object' => $comment]); ?>
+                <?= CommentLink::widget(['object' => $comment]); ?>&nbsp;&nbsp;&middot;&nbsp;
             <?php endif; ?>
+            <?= LikeLink::widget(['object' => $comment]); ?>
         </div>
         <div style="margin-left:42px">
             <?= Comments::widget(['object' => $comment]); ?>
