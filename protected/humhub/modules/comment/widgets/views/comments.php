@@ -40,5 +40,4 @@ use humhub\libs\Html;
     // make comments visible at this point to fixing autoresizing issue for textareas in Firefox
     $('#comment_<?= $id; ?>').show();
     <?php endif;  ?>
-
 </script>

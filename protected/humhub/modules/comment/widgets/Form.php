@@ -12,6 +12,7 @@ use humhub\modules\comment\Module;
 use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
 use humhub\modules\comment\models\Comment as CommentModel;
+use humhub\components\Widget;
 
 /**
  * This widget is used include the comments functionality to a wall entry.
@@ -21,7 +22,7 @@ use humhub\modules\comment\models\Comment as CommentModel;
  *
  * @since 0.5
  */
-class Form extends \yii\base\Widget
+class Form extends Widget
 {
     /**
      * @var CommentModel|ContentActiveRecord

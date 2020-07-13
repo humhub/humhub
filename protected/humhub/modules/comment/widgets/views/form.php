@@ -16,9 +16,12 @@ use humhub\modules\file\widgets\FilePreview;
 $contentModule = Yii::$app->getModule('content');
 $submitUrl = Url::to(['/comment/comment/post']);
 
+// Hide the comment form for sub comments until the button is clicked
+$isHidden = ($objectModel === \humhub\modules\comment\models\Comment::class);
 ?>
 
-<div id="comment_create_form_<?= $id; ?>" class="comment_create" data-ui-widget="comment.Form">
+<div id="comment_create_form_<?= $id; ?>" class="comment_create" data-ui-widget="comment.Form"
+     style="<?php if ($isHidden): ?>display:none<?php endif; ?>">
 
     <?= Html::beginForm('#'); ?>
     <?= Html::hiddenInput('objectModel', $objectModel); ?>

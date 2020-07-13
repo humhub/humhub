@@ -164,7 +164,6 @@ humhub.module('comment', function (module, require, $) {
             'css': {
                 padding: '2px',
                 width: '60px'
-
             }
         });
 
@@ -187,7 +186,6 @@ humhub.module('comment', function (module, require, $) {
             'css': {
                 padding: '2px',
                 width: '60px'
-
             }
         });
         client.post(evt, {dataType: 'html'}).then(function (response) {
@@ -210,7 +208,6 @@ humhub.module('comment', function (module, require, $) {
                 element.show();
             }
         });
-
         $(document).on('mouseout', '.comment .media', function () {
             // find dropdown menu
             var element = $(this).find('.preferences');
@@ -224,6 +221,15 @@ humhub.module('comment', function (module, require, $) {
 
     var toggleComment = function(evt) {
         var visible = evt.$target.is(':visible');
+
+        // Comments are shown but form is not visible yet --> Toggle form only
+        if (visible && !evt.$target.children('.comment_create').is(':visible')) {
+            evt.$target.children('.comment_create').slideToggle(undefined, function() {
+                evt.$target.find('.humhub-ui-richtext').trigger('focus');
+            });
+            return;
+        }
+        evt.$target.children('.comment_create').show();
         evt.$target.slideToggle(undefined, function() {
             evt.$target.find('.humhub-ui-richtext').trigger('focus');
         });

@@ -4,6 +4,7 @@ namespace humhub\modules\comment\widgets;
 
 use humhub\modules\comment\models\Comment as CommentModel;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\components\Widget;
 
 /**
  * This widget is used include the comments functionality to a wall entry.
@@ -14,7 +15,7 @@ use humhub\modules\content\components\ContentActiveRecord;
  * @package humhub.modules_core.comment
  * @since 0.5
  */
-class Comments extends \yii\base\Widget
+class Comments extends Widget
 {
 
     /**
