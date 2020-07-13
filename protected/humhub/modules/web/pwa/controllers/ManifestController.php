@@ -8,6 +8,7 @@
 
 namespace humhub\modules\web\pwa\controllers;
 
+use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\modules\web\Module;
@@ -24,6 +25,12 @@ use yii\helpers\Url;
  */
 class ManifestController extends Controller
 {
+    /**
+     * Allow guest access independently from guest mode setting.
+     *
+     * @var string
+     */
+    public $access = ControllerAccess::class;
 
     /**
      * @var array the manifest

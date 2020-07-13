@@ -1,6 +1,6 @@
 <?php
 return array (
-  'New Content' => 'Contenus',
+  'New Content' => 'Nouveau contenu',
   'Receive Notifications for new content you follow.' => 'Recevoir une notification pour les nouveaux contenus suivis.',
   'View Online' => 'Voir en ligne',
   '{displayName} created {contentTitle}.' => '{displayName} a créé {contentTitle}.',

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\controllers;
 
+use humhub\components\access\ControllerAccess;
 use Yii;
 use yii\base\Exception;
 use yii\web\HttpException;
@@ -30,6 +31,13 @@ class RegistrationController extends Controller
      * @inheritdoc
      */
     public $layout = "@humhub/modules/user/views/layouts/main";
+
+    /**
+     * Allow guest access independently from guest mode setting.
+     *
+     * @var string
+     */
+    public $access = ControllerAccess::class;
 
     /**
      * @inheritdoc

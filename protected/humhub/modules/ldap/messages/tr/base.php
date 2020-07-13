@@ -38,7 +38,7 @@ return [
     'The default base DN used for searching for accounts.' => 'Hesaplar için yapılan aramada varsayılan temel DN kullan.',
     'The default credentials password (used only with username above).' => 'Varsayılan kimlik şifresi (Sadece kullanıcı adı ile kullanılır)',
     'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'Varsayılan kimlik ismi. Bazı sunucular bu DN formda olmasını gerektirir.LDAP sunucusu bağlamak ve bağlayıcı basit kullanıcı adları ile mümkün olmalıdır DN gerektiriyorsa, bu DN şeklinde verilmelidir.',
-    'User Filer' => 'Kullanıcı filtresi',
+    'User Filter' => 'Kullanıcı filtresi',
     'Username' => 'Kullanıcı adı',
     'Username Attribute' => 'Kullanıcı niteliği',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => '',

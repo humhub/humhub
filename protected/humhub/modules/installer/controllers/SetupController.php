@@ -8,6 +8,7 @@
 
 namespace humhub\modules\installer\controllers;
 
+use humhub\components\access\ControllerAccess;
 use Yii;
 use humhub\components\Controller;
 use humhub\modules\installer\forms\DatabaseForm;
@@ -22,6 +23,13 @@ use humhub\modules\admin\widgets\PrerequisitesList;
  */
 class SetupController extends Controller
 {
+    /**
+     * Allow guest access independently from guest mode setting.
+     *
+     * @var string
+     */
+    public $access = ControllerAccess::class;
+
 
     const PASSWORD_PLACEHOLDER = 'n0thingToSeeHere!';
 

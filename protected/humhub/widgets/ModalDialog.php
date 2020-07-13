@@ -8,12 +8,16 @@ namespace humhub\widgets;
  */
 class ModalDialog extends Modal
 {
-    
+
+    /**
+     * @var
+     */
     public $dialogContent;
 
+    /**
+     * @var
+     */
     private $dialogClass;
-
-    public $closable = false;
 
     /**
      * @inheritdoc
@@ -35,7 +39,7 @@ class ModalDialog extends Modal
         if(!$this->body && !$this->footer) {
             $this->dialogContent = ob_get_clean();
         }
-        
+
         //The x close button is rendered by default either if forced by showClose or a headertext is given
         $showClose = $this->showClose ?: ($this->header !== null);
 
@@ -43,7 +47,7 @@ class ModalDialog extends Modal
         $bodyClass .= $this->centerText ? ' text-center' : '';
 
         $this->initialLoader = ($this->initialLoader ==! null) ? $this->initialLoader : ($this->body === null);
-        
+
         return $this->render('modalDialog', [
             'header' => $this->header,
             'options' => $this->getOptions(),
@@ -70,7 +74,7 @@ class ModalDialog extends Modal
     public function getData()
     {
         return [
-            'backdrop' => (!$this->closable || $this->backdrop === false) ? 'static' : $this->backdrop,
+            'backdrop' => (!$this->closable || $this->backdrop === false) ? 'static' : 'true',
             'keyboard' => (!$this->closable || !$this->keyboard) ? 'false' : 'true',
         ];
     }

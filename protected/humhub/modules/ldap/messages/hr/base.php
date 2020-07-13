@@ -38,7 +38,7 @@ return [
     'The default base DN used for searching for accounts.' => 'Zadana baza DN koja se koristi za traženje računa.',
     'The default credentials password (used only with username above).' => 'Zadana lozinka vjerodajnica (upotrijebljena samo iznad gore navedenog korisničkog imena).',
     'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'Zadano korisničko ime vjerodajnica. Neki poslužitelji zahtijevaju da to bude u DN formi. To se mora dati u DN obliku ako LDAP poslužitelj zahtijeva DN vezanje i vezivanje bi trebalo biti moguće s jednostavnim korisničkim imenom.',
-    'User Filer' => 'Korisnički filter',
+    'User Filter' => 'Korisnički filter',
     'Username' => 'Korisničko ime',
     'Username Attribute' => 'Atribut korisničkog imena',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => '',

@@ -17,16 +17,16 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Confirm</strong> topic deletion' => '',
-    '<strong>Edit</strong> Topic' => '',
-    '<strong>Manage</strong> Topics' => '',
-    '<strong>Topic</strong> Overview' => '',
-    'Add Topic' => '',
-    'Color' => '',
-    'Do you really want to delete this topic?' => '',
-    'Name' => '',
-    'Sort order' => '',
-    'Topic' => '',
-    'Topic has been deleted!' => '',
-    'Topics' => '',
+    '<strong>Confirm</strong> topic deletion' => '<strong> تأكيد </strong> حذف الموضوع',
+    '<strong>Edit</strong> Topic' => '<strong> تحرير </strong> الموضوع',
+    '<strong>Manage</strong> Topics' => '<strong> إدارة </strong> المواضيع',
+    '<strong>Topic</strong> Overview' => '<strong> الموضوع </strong> نظرة عامة',
+    'Add Topic' => 'إضافة موضوع',
+    'Color' => 'اللون',
+    'Do you really want to delete this topic?' => 'هل تريد حقًا حذف هذا الموضوع؟',
+    'Name' => 'اسم',
+    'Sort order' => 'امر ترتيب',
+    'Topic' => 'موضوع',
+    'Topic has been deleted!' => 'تم حذف الموضوع!',
+    'Topics' => 'المواضيع',
 ];
