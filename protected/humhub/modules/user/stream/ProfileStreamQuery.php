@@ -35,8 +35,8 @@ class ProfileStreamQuery extends ContentContainerStreamQuery
         $this->addFilterHandler(new IncludeAllContributionsFilter([
             'container' => $this->container,
             'scope' => $this->includeContributions
-                ? IncludeAllContributionsFilter::SCOPE_PROFILE
-                : IncludeAllContributionsFilter::SCOPE_ALL
+                ? IncludeAllContributionsFilter::SCOPE_ALL
+                : IncludeAllContributionsFilter::SCOPE_PROFILE
         ]));
     }
 }
