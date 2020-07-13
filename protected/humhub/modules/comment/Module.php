@@ -24,6 +24,11 @@ class Module extends \humhub\components\Module
     public $commentsBlockLoadSize = 10;
 
     /**
+     * @var int maximum comments to show initially
+     */
+    public $commentsPreviewMax = 2;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)

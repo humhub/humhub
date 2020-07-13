@@ -9,9 +9,9 @@ use yii\helpers\Url;
 /* @var $objectModel string */
 /* @var $objectId integer */
 /* @var $id string unique object id */
+/* @var $commentCount integer */
 /* @var $mode string */
 
-$commentCount = $this->context->getCommentsCount();
 $hasComments = ($commentCount > 0);
 $commentCountSpan = Html::tag('span', ' (' . $commentCount . ')', [
     'class' => 'comment-count',
@@ -23,10 +23,14 @@ $commentCountSpan = Html::tag('span', ' (' . $commentCount . ')', [
 <?php if ($mode == CommentLink::MODE_POPUP): ?>
     <?php $url = Url::to(['/comment/comment/show', 'objectModel' => $objectModel, 'objectId' => $objectId, 'mode' => 'popup']); ?>
     <a href="#" data-action-click="ui.modal.load" data-action-url="<?= $url ?>">
-        <?= Yii::t('CommentModule.base', "Comment") . ' (' . $this->context->getCommentsCount() . ')' ?>
+        <?= Yii::t('CommentModule.base', "Comment") . ' (' . $commentCount . ')' ?>
     </a>
 <?php elseif (Yii::$app->user->isGuest): ?>
-    <?= Html::a(Yii::t('CommentModule.base', "Comment") . $commentCountSpan, Yii::$app->user->loginUrl, ['data-target' => '#globalModal']) ?>
+    <?= Html::a(
+        Yii::t('CommentModule.base', "Comment") . $commentCountSpan,
+        Yii::$app->user->loginUrl,
+        ['data-target' => '#globalModal']) ?>
 <?php else : ?>
-    <?= Button::asLink(Yii::t('CommentModule.base', "Comment") . $commentCountSpan)->action('comment.toggleComment', null, '#comment_' . $id) ?>
+    <?= Button::asLink(Yii::t('CommentModule.base', "Comment") . $commentCountSpan)
+        ->action('comment.toggleComment', null, '#comment_' . $id) ?>
 <?php endif; ?>

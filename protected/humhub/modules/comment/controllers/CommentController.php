@@ -98,10 +98,10 @@ class CommentController extends Controller
     {
         $query = Comment::find();
         $query->orderBy('created_at DESC');
-        $query->where(['object_model' => $this->target->className(), 'object_id' => $this->target->getPrimaryKey()]);
+        $query->where(['object_model' => get_class($this->target), 'object_id' => $this->target->getPrimaryKey()]);
 
         $pagination = new Pagination([
-            'totalCount' => Comment::GetCommentCount($this->target->className(), $this->target->getPrimaryKey()),
+            'totalCount' => Comment::GetCommentCount(get_class($this->target), $this->target->getPrimaryKey()),
             'pageSize' => $this->module->commentsBlockLoadSize
         ]);
 

@@ -64,17 +64,8 @@ class CommentLink extends Widget
             'mode' => $this->mode,
             'objectModel' => get_class($this->object),
             'objectId' => $this->object->getPrimaryKey(),
+            'commentCount' => CommentModel::GetCommentCount(get_class($this->object), $this->object->getPrimaryKey())
+
         ]);
     }
-
-    /**
-     * Returns count of existing comments
-     *
-     * @return Int the total amount of comments
-     */
-    public function getCommentsCount()
-    {
-        return CommentModel::GetCommentCount(get_class($this->object), $this->object->getPrimaryKey());
-    }
-
 }
