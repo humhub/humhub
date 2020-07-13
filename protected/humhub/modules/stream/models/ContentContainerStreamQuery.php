@@ -27,7 +27,10 @@ class ContentContainerStreamQuery extends WallStreamQuery
     protected function beforeApplyFilters()
     {
         $this->addFilterHandler(new ContentContainerStreamFilter(['container' => $this->container]));
-        $this->addFilterHandler(new PinnedContentStreamFilter(['container' => $this->container]));
+
+        if($this->channel !== static::CHANNEL_ACTIVITY) {
+            $this->addFilterHandler(new PinnedContentStreamFilter(['container' => $this->container]));
+        }
         parent::beforeApplyFilters();
     }
 

@@ -11,12 +11,27 @@ namespace humhub\modules\activity\actions;
 use humhub\modules\stream\actions\ContentContainerStream;
 use humhub\modules\user\models\User;
 
+/**
+ * This action can be used as container related wall- and activity stream. This stream action can be used as wall stream
+ * action by setting the $activity flag to true. By default this stream action will serve activity stream channel content
+ * only until the $activity flag is set to false.
+ *
+ * This action type is useful for streams types supporting both, a wall as well as activity stream.
+ *
+ * @package humhub\modules\activity\actions
+ */
 class ActivityStreamAction extends ContentContainerStream
 {
     const CHANNEL_ACTIVITY = 'activity';
 
+    /**
+     * @var bool if true the stream will search for activity content
+     */
     public $activity = true;
 
+    /**
+     * @inheritDoc
+     */
     protected function setActionSettings()
     {
         parent::setActionSettings();

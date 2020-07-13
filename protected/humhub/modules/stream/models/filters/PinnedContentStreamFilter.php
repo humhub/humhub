@@ -45,11 +45,12 @@ class PinnedContentStreamFilter extends StreamQueryFilter
             // Get number of pinned contents
             $pinnedQuery = clone $this->query;
             $pinnedQuery->andWhere(['AND', ['content.pinned' => 1], ['content.contentcontainer_id' => $this->container->contentcontainer_id]]);
+            $pinnedQuery->limit(1000);
             $pinnedContentIds = $pinnedQuery->select('content.id')->column();
 
             if(!empty($pinnedContentIds)) {
                 // Increase query result limit to ensure all pinned entries are included in the first request
-                $this->query->limit += count($pinnedContentIds);
+                $this->streamQuery->limit($this->streamQuery->limit + count($pinnedContentIds)) ;
 
                 // Modify order - pinned content first
                 $oldOrder = $this->query->orderBy;
