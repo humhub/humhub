@@ -16,3 +16,5 @@ HumHub Change Log
 - Fix #4199: Pinned posts of other spaces are excluded from profile stream
 - Enh #3995: Added additional user profile stream filter to include or exclude non profile stream content
 - Enh: Added `humhub\modules\stream\actions\Stream:initQuery` to manage query filter in subclasses
+- Enh: Make profile content archivable
+- Enh: Archived stream filter now only included archived content

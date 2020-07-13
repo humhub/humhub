@@ -72,6 +72,7 @@ class WallStreamFilterNavigation extends FilterNavigation
     const FILTER_BLOCK_BASIC = 'basic';
     const FILTER_BLOCK_VISIBILITY = 'visibility';
     const FILTER_BLOCK_SORTING = 'sorting';
+    const FILTER_BLOCK_SCOPE = 'scope';
     const FILTER_BLOCK_CONTENT_TYPE = 'contentType';
     const FILTER_BLOCK_TOPIC = 'topics';
     const FILTER_BLOCK_ORIGINATORS = 'originators';
@@ -183,6 +184,12 @@ class WallStreamFilterNavigation extends FilterNavigation
             'title' => Yii::t('ContentModule.base', 'With file attachments'),
             'sortOrder' => 300
         ], static::FILTER_BLOCK_BASIC);
+
+        $this->addFilter([
+            'id' => static::FILTER_ARCHIVED,
+            'title' =>  Yii::t('ContentModule.base', 'Archived'),
+            'sortOrder' => 200
+        ], static::FILTER_BLOCK_BASIC);
     }
 
     protected function initVisibilityFilters()
@@ -192,7 +199,7 @@ class WallStreamFilterNavigation extends FilterNavigation
         // Private spaces do not have public content
         if($container && $container->canAccessPrivateContent()
             && ($container instanceof User
-                || ($container instanceof Space && $container->visibility != Space::VISIBILITY_NONE))) {
+                || ($container instanceof Space && $container->visibility !== Space::VISIBILITY_NONE))) {
 
             $this->addFilter([
                 'id' => static::FILTER_VISIBILITY_PUBLIC,
@@ -212,12 +219,6 @@ class WallStreamFilterNavigation extends FilterNavigation
                 'sortOrder' => 200
             ], static::FILTER_BLOCK_VISIBILITY);
         }
-
-        $this->addFilter([
-            'id' => static::FILTER_ARCHIVED,
-            'title' =>  Yii::t('ContentModule.base', 'Include archived content'),
-            'sortOrder' => 200
-        ], static::FILTER_BLOCK_VISIBILITY);
     }
 
     protected function initSortFilters()

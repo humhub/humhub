@@ -8,18 +8,23 @@ use humhub\modules\user\models\User;
 use Yii;
 
 /**
- * Class IncludeAllContributionsFilter
- * @package humhub\modules\user\stream\filters
+ * This stream query filter manages the scope of a profile stream. This filter supports two scopes
+ *
+ *  - `StreamQuery[scope] = 'all'`: Include all user related contributions
+ *  - `StreamQuery[scope] = 'profile'`: Only include profile posts
+ *
+ * @since 1.6
  */
 class IncludeAllContributionsFilter extends ContentContainerStreamFilter
 {
 
-    const ID = 'includeAllContributions';
+    const SCOPE_ALL = 'all';
+    const SCOPE_PROFILE = 'profile';
 
     /**
      * @var array
      */
-    public $filters = [];
+    public $scope;
 
     /**
      * @inheritdoc
@@ -27,7 +32,7 @@ class IncludeAllContributionsFilter extends ContentContainerStreamFilter
     public function rules()
     {
         return [
-            [['filters'], 'safe']
+            [['scope'], 'safe'],
         ];
     }
 
@@ -79,8 +84,11 @@ class IncludeAllContributionsFilter extends ContentContainerStreamFilter
         $this->query->andWhere("{$conditionSpace} OR {$conditionUser} OR content.contentcontainer_id IS NULL");
     }
 
+    /**
+     * @return bool whether or not the include all filter is active or not
+     */
     public function isActive()
     {
-        return $this->container instanceof User && $this->streamQuery->user !== null && in_array(static::ID, $this->filters);
+        return $this->container instanceof User && $this->streamQuery->user !== null && $this->scope === static::SCOPE_ALL;
     }
 }

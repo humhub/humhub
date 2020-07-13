@@ -61,8 +61,10 @@ class DefaultStreamFilter extends StreamQueryFilter
             $this->filterFile();
         }
 
-        // Only apply archived filter when we should load more than one entry
-        if (!$this->streamQuery->isSingleContentQuery() && !$this->isFilterActive(self::FILTER_ARCHIVED)) {
+        if ($this->isFilterActive(self::FILTER_ARCHIVED)) {
+            $this->filterArchived();
+        } else if(!$this->streamQuery->isSingleContentQuery()) {
+            // Only omit archived content by default when we load more than one entry
             $this->unFilterArchived();
         }
 
@@ -105,6 +107,12 @@ class DefaultStreamFilter extends StreamQueryFilter
     protected function unFilterArchived()
     {
         $this->query->andWhere("(content.archived != 1 OR content.archived IS NULL)");
+        return $this;
+    }
+
+    protected function filterArchived()
+    {
+        $this->query->andWhere("(content.archived = 1)");
         return $this;
     }
 

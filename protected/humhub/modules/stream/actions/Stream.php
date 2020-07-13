@@ -223,7 +223,7 @@ abstract class Stream extends Action
         $streamQueryClass = $this->streamQueryClass;
         /* @var $instance StreamQuery */
         $instance = $streamQueryClass::find($this->includes, $this->excludes)->forUser($this->user);
-        $instance->setAttributes($options);
+        $instance->setAttributes($options, false);
         return $instance;
     }
 

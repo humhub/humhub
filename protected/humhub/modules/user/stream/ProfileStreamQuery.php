@@ -30,9 +30,13 @@ class ProfileStreamQuery extends ContentContainerStreamQuery
     {
         parent::beforeApplyFilters();
         $this->removeFilterHandler(ContentContainerStreamFilter::class);
+
+        // The default scope may be overwritten by first request, the real default is handled in the stream filter navigation
         $this->addFilterHandler(new IncludeAllContributionsFilter([
             'container' => $this->container,
-            'filters' => $this->includeContributions ? [IncludeAllContributionsFilter::ID] : []
+            'scope' => $this->includeContributions
+                ? IncludeAllContributionsFilter::SCOPE_PROFILE
+                : IncludeAllContributionsFilter::SCOPE_ALL
         ]));
     }
 }
