@@ -21,3 +21,4 @@ HumHub Change Log
 - Enh #4222: Added virtual profile fields to display users e-mail address and username
 - Enh #4194: Increased max pinnable space content
 - Enh #4194: Make max pinnable content configurable on space/profile level
+- Fix #4229: `Space::canAccessPrivateContent()` throws error for guest user if `globalAdminCanAccessPrivateContent` setting is true
