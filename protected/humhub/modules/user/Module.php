@@ -122,7 +122,7 @@ class Module extends \humhub\components\Module
      * @var bool disable profile stream
      * @since 1.6
      */
-    public $profileDisableStream = true;
+    public $profileDisableStream = false;
 
     /**
      * @inheritdoc
