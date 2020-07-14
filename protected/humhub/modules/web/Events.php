@@ -28,13 +28,13 @@ class Events
             return;
         }
 
-        Security::applyHeader(static::generateCSP());
+        Security::applyHeader(static::generateCSPRequestCheck());
     }
 
     /**
      * @return bool whether or not to generate a csp header for the current request
      */
-    private static function generateCSP()
+    private static function generateCSPRequestCheck()
     {
         return !Yii::$app->request->isAjax
             && Yii::$app->response->format === 'html'
