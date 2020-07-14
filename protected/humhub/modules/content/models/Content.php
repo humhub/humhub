@@ -32,10 +32,24 @@ use yii\db\IntegrityException;
 use yii\helpers\Url;
 
 /**
- * This is the model class for table "content".
+ * This is the model class for table "content". The content model serves as relation between a [[ContentContainer]] and
+ * [[ContentActiveRecord]] entries and contains shared content features as
  *
+ *  - read/write permission checks
+ *  - move content
+ *  - pin content
+ *  - archive content
+ *  - content author and update information
+ *  - stream relation by `stream_channel` field
  *
- * The followings are the available columns in table 'content':
+ * The relation to [[ContentActiveRecord]] models is defined by a polymorphic relation
+ * `object_model` and `object_id` content table fields.
+ *
+ * The relation to [[ContentContainer]] is defined by `contentContainer_id` field.
+ *
+ * Note: Instances of this class are automatically created and saved by the [[ContentActiveRecord]] model and should not
+ * manually be created or deleted to maintain data integrity.
+ *
  * @property integer $id
  * @property string $guid
  * @property string $object_model
@@ -47,10 +61,10 @@ use yii\helpers\Url;
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
- * @property ContentContainer $contentContainer
  * @property string $stream_sort_date
  * @property string $stream_channel
  * @property integer $contentcontainer_id;
+ * @property ContentContainer $contentContainer
  * @property ContentContainerActiveRecord $container
  * @mixin PolymorphicRelation
  * @mixin GUID
@@ -58,6 +72,11 @@ use yii\helpers\Url;
  */
 class Content extends ActiveRecord implements Movable, ContentOwner
 {
+    /**
+     * The default stream channel.
+     * @since 1.6
+     */
+    const STREAM_CHANNEL_DEFAULT = 'default';
 
     /**
      * A array of user objects which should informed about this new content.
@@ -132,18 +151,32 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     }
 
     /**
-     * Returns a Content Object by given Class and ID
+     * Returns a [[ContentActiveRecord]] model by given polymorphic relation class and id.
+     * If there is no existing content relation with this model instance, null is returned.
      *
      * @param string $className Class Name of the Content
      * @param int $id Primary Key
+     * @return ContentActiveRecord|null
+     * @throws IntegrityException
      */
     public static function Get($className, $id)
     {
         $content = self::findOne(['object_model' => $className, 'object_id' => $id]);
-        if ($content != null) {
-            return $className::findOne(['id' => $id]);
+        if ($content) {
+            return $content->getModel();
         }
+
         return null;
+    }
+
+    /**
+     * @return ContentActiveRecord
+     * @throws IntegrityException
+     * @since 1.3
+     */
+    public function getModel()
+    {
+        return $this->getPolymorphicRelation();
     }
 
     /**
@@ -187,7 +220,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     public function afterSave($insert, $changedAttributes)
     {
         /* @var $contentSource ContentActiveRecord */
-        $contentSource = $this->getPolymorphicRelation();
+        $contentSource = $this->getModel();
 
         foreach ($this->notifyUsersOfNewContent as $user) {
             $contentSource->follow($user->id);
@@ -332,6 +365,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      * This is only allowed for workspace owner.
      *
      * @return boolean
+     * @throws Exception
+     * @throws \yii\base\InvalidConfigException
      */
     public function canPin()
     {
@@ -356,6 +391,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      * Checks if current content object is archived
      *
      * @return boolean
+     * @throws Exception
      */
     public function isArchived()
     {
@@ -367,14 +403,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      * The content owner and the workspace admin can archive contents.
      *
      * @return boolean
+     * @throws Exception
+     * @throws \yii\base\InvalidConfigException
      */
     public function canArchive()
     {
-        // Disabled on user profiles, there is no stream filter available yet.
-        if ($this->getContainer() instanceof User) {
-            return false;
-        }
-
         return $this->getContainer()->permissionManager->can(new ManageContent());
     }
 
@@ -496,6 +529,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      * - The current user is the owner of this content
      * @param ContentContainerActiveRecord|null $container
      * @return bool determines if the current user is generally permitted to move content on the given container (or the related container if no container was provided)
+     * @throws IntegrityException
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
      */
     public function checkMovePermission(ContentContainerActiveRecord $container = null)
     {
@@ -665,9 +701,13 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      *  - The user is granted the managePermission set by the model record class
      *  - The user meets the additional condition implemented by the model records class own `canEdit()` function.
      *
-     * @since 1.1
      * @param User|integer $user user instance or user id
      * @return bool can edit this content
+     * @throws Exception
+     * @throws IntegrityException
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
+     * @since 1.1
      */
     public function canEdit($user = null)
     {
@@ -705,16 +745,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         }
 
         return false;
-    }
-
-    /**
-     * @return ContentActiveRecord
-     * @throws IntegrityException
-     * @since 1.3
-     */
-    public function getModel()
-    {
-        return $this->getPolymorphicRelation();
     }
 
     /**
