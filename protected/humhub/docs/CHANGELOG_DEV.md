@@ -25,3 +25,4 @@ HumHub Change Log
 - Fix #4229: `Space::canAccessPrivateContent()` throws error for guest user if `globalAdminCanAccessPrivateContent` setting is true
 - Fix #4227: Removed redundant code from `humhub.ui.widget.js`
 - Fix #4232: Metadata request creates guest session if CSP nonce header is enabled
+- Enh #4234: Enhanced custom test environment configuration in `@protected/humhub/tests/config/env/env.php` file
