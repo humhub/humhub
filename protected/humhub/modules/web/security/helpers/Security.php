@@ -64,7 +64,11 @@ class Security
 
     public static function setNonce($nonce = null)
     {
-        Yii::$app->session->set(static::SESSION_KEY_NONCE, $nonce);
+        if(!$nonce) {
+            Yii::$app->session->remove(static::SESSION_KEY_NONCE);
+        } else {
+            Yii::$app->session->set(static::SESSION_KEY_NONCE, $nonce);
+        }
     }
 
     /**

@@ -26,3 +26,4 @@ HumHub Change Log
 - Fix #4227: Removed redundant code from `humhub.ui.widget.js`
 - Fix #4232: Metadata request creates guest session if CSP nonce header is enabled
 - Enh #4234: Enhanced custom test environment configuration in `@protected/humhub/tests/config/env/env.php` file
+- Fix #4233: `humhub\modules\web\security\helpers\Security:setNonce()` does not remove nonce session value if nonce is null
