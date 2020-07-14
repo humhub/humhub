@@ -8,6 +8,7 @@
 
 namespace humhub\modules\web;
 
+use humhub\modules\web\pwa\controllers\ManifestController;
 use humhub\modules\web\pwa\controllers\OfflineController;
 use humhub\modules\web\pwa\controllers\ServiceWorkerController;
 use Yii;
@@ -41,6 +42,7 @@ class Events
             && Setting::isInstalled()
             && !(Yii::$app->controller instanceof ErrorController)
             && !(Yii::$app->controller instanceof OfflineController)
+            && !(Yii::$app->controller instanceof ManifestController)
             && !(Yii::$app->controller instanceof ServiceWorkerController);
     }
 
