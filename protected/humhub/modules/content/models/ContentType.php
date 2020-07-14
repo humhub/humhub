@@ -16,7 +16,19 @@ use yii\base\Model;
 use yii\db\Query;
 
 /**
- * This class can be used to search for existing types of [[\humhub\modules\content\components\ContentActiveRecords]].
+ * The ContentType class serves as meta data class for content types and can be used to
+ * search for existing types of [[\humhub\modules\content\components\ContentActiveRecords]].
+ *
+ * ContentType models are usually used for Picker widgets e.g. ContentType filters in a stream. The [[getContentTypes()]]
+ * and [[getContentTypeSelection()]] function will search for content types with `stream_channel="default"` and an existing
+ * content entry related to a given container or
+ *
+ * ## Usage:
+ *
+ * ```php
+ * // Fetch content types
+ * $spaceContentTypes = ContentType::getContentTypes($space);
+ * ```
  *
  * @since 1.3
  */
@@ -35,7 +47,7 @@ class ContentType extends Model
     /**
      * @var [] caches the result for contentContainer and global requests [$contentContainer->id|'' => ContentType[]]
      */
-    public static $cache = [];
+    private static $cache = [];
 
     /**
      * @inheritdoc
@@ -44,6 +56,11 @@ class ContentType extends Model
     {
         parent::init();
         $this->instance = Yii::createObject($this->typeClass);
+    }
+
+    public static function flush()
+    {
+        static::$cache = [];
     }
 
     /**
@@ -98,18 +115,9 @@ class ContentType extends Model
     }
 
     /**
-     * Returns a description of this particular content.
-     *
-     * This will be used to create a text preview of the content record. (e.g. in Activities or Notifications)
-     * You need to override this method in your content implementation.
-     *
-     * @return string description of this content
+     * Returns a content type related icon
+     * @return string
      */
-    public function getContentDescription()
-    {
-        return $this->instance->getContentDescription();
-    }
-
     public function getIcon()
     {
         return $this->instance->getIcon();

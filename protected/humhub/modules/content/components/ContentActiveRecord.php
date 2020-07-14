@@ -108,13 +108,6 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     public $silentContentCreation = false;
 
     /**
-     * @var Content used to cache the content relation in order to avoid the relation to be overwritten in the insert process
-     * @see https://github.com/humhub/humhub/issues/3110
-     * @since 1.3
-     */
-    protected $initContent;
-
-    /**
      * @var bool|string defines if the Movable behaviour of this ContentContainerActiveRecord type is active.
      * @see Content::move()
      * @since 1.3
@@ -177,15 +170,12 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
          * Ensure there is always a corresponding Content record
          * @see Content
          */
-        if ($name == 'content') {
-            $content = $this->initContent = (empty($this->initContent)) ? parent::__get('content') : $this->initContent;
+        if ($name === 'content') {
+            $content = parent::__get('content');
 
             if(!$content) {
-                $content = $this->initContent =  new Content();
+                $content = new Content();
                 $content->setPolymorphicRelation($this);
-            }
-
-            if(!$this->isRelationPopulated('content')) {
                 $this->populateRelation('content', $content);
             }
 
@@ -206,7 +196,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     }
 
     /**
-     * Can be used to define an icon for this content type e.g.: 'fa-calendar'.
+     * Can be used to define an icon for this content type e.g.: 'calendar'.
      * @return string
      */
     public function getIcon()
@@ -392,7 +382,6 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
 
         // Set polymorphic relation
         if ($insert) {
-            $this->populateRelation('content', $this->initContent);
             $this->content->object_model = static::getObjectModel();
             $this->content->object_id = $this->getPrimaryKey();
         }
