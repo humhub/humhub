@@ -24,3 +24,4 @@ HumHub Change Log
 - Chg #4228: Removed unnecessary `ContentActiveRecord:initContent`
 - Fix #4229: `Space::canAccessPrivateContent()` throws error for guest user if `globalAdminCanAccessPrivateContent` setting is true
 - Fix #4227: Removed redundant code from `humhub.ui.widget.js`
+- Fix #4233: `humhub\modules\web\security\helpers\Security:setNonce()` does not remove nonce session value if nonce is null
