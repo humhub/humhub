@@ -51,9 +51,9 @@ class BrowseController extends Controller
 
         // Include Community Modules Form Submit
         if (!empty(Yii::$app->request->get('communitySwitch'))) {
-            $this->module->settings->set('showCommunityModules', (empty(Yii::$app->request->post('includeCommunityModules'))) ? 0 : 1);
+            $this->module->settings->set('includeCommunityModules', (empty(Yii::$app->request->post('includeCommunityModules'))) ? 0 : 1);
         }
-        $includeCommunityModules = (boolean)$this->module->settings->get('showCommunityModules');
+        $includeCommunityModules = (boolean)$this->module->settings->get('includeCommunityModules');
 
         $onlineModules = $this->module->onlineModuleManager;
         $modules = $onlineModules->getModules();
