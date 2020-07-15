@@ -22,7 +22,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal">
-                <?= Yii::t('MarketplaceModule . base', 'Ok'); ?>
+                <?= Yii::t('MarketplaceModule.base', 'Ok'); ?>
             </button>
         </div>
     </div>
