@@ -8,7 +8,7 @@
 
 namespace humhub\modules\user\controllers;
 
-use humhub\modules\user\components\ProfileStream;
+use humhub\modules\user\actions\ProfileStreamAction;
 use humhub\modules\user\Module;
 use Yii;
 use yii\helpers\Url;
@@ -54,8 +54,7 @@ class ProfileController extends ContentContainerController
     {
         return [
             'stream' => [
-                'class' => ProfileStream::class,
-                'mode' => ProfileStream::MODE_NORMAL,
+                'class' => ProfileStreamAction::class,
                 'contentContainer' => $this->contentContainer
             ],
         ];

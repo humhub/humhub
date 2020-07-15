@@ -35,3 +35,8 @@ HumHub Change Log
 - Fix #4235: Misleading error message 'Unable to determine dataType from response' logged on ajax error
 - Enh #4238: Added module marketplace option for Community Modules. Updated third-party Module disclaimer
 - Enh #4238: Added module marketplace option to enable module beta version updates
+- Fix #4199: Pinned posts of other spaces are excluded from profile stream
+- Enh #3995: Added additional user profile stream filter to include or exclude non profile stream content
+- Enh: Added `humhub\modules\stream\actions\Stream:initQuery` to manage query filter in subclasses
+- Enh: Make profile content archivable
+- Enh: Archived stream filter now only included archived content

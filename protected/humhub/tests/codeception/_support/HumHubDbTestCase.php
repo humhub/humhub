@@ -291,6 +291,7 @@ class HumHubDbTestCase extends Unit
     {
         $user = User::findOne(['username' => $userName]);
         Yii::$app->user->switchIdentity($user);
+        return $user;
     }
 
     public function logout()

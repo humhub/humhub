@@ -89,7 +89,14 @@ class StreamCest
 
         $I->expectTo('See my unarchived post again');
         $I->seeSuccess('The content has been unarchived.');
-        $I->see('This is my stream test post', '.wall-entry');
+        $I->see('No matches with your selected filters!','.streamMessage');
+        $I->dontSee('This is my stream test post', '.wall-entry');
+
+        $I->amGoingTo('check if my post is visible without archived');
+        $I->click('Filter', '.wall-stream-filter-head');
+        $I->waitForElementVisible('[data-filter-id="entry_archived"]');
+        $I->click('[data-filter-id="entry_archived"]');
+        $I->waitForElementVisible($newEntrySelector);
         $I->dontSee('Archived', $newEntrySelector);
 
         $I->amGoingTo('archive the post again with include archived filter');
@@ -97,8 +104,7 @@ class StreamCest
         $I->waitForText('Move to archive', 10);
         $I->click('Move to archive', $newEntrySelector);
         $I->seeSuccess('The content has been archived.');
-        $I->see('This is my stream test post', '.wall-entry');
-        $I->see('Archived', $newEntrySelector);
+        $I->dontSee('This is my stream test post', '.wall-entry');
     }
 
     /**
@@ -270,7 +276,7 @@ class StreamCest
 
         $I->amGoingTo('reactivate the involved filter.');
         $I->expectTo('see the commented post after the stream reload.');
-        
+
         $I->click('[data-filter-id="entry_userinvolved"]');
         $I->wait(1);
         $I->waitForText('Involved Post.');
