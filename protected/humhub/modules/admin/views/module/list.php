@@ -6,6 +6,7 @@ use yii\helpers\Url;
 /* @var $this \humhub\components\View */
 /* @var $installedModules array */
 /* @var $deprecatedModuleIds array */
+/* @var $marketplaceUrls array */
 ?>
 
 <div class="panel-body">
@@ -14,7 +15,9 @@ use yii\helpers\Url;
         <div><?= Yii::t('AdminModule.modules', 'No modules installed yet. Install some to enhance the functionality!'); ?></div>
     <?php endif; ?>
 
-    <?php foreach ($installedModules as $moduleId => $module) : ?>
+    <?php foreach ($installedModules
+
+                   as $moduleId => $module) : ?>
         <div class="media">
             <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
                  style="width: 64px; height: 64px;" src="<?= $module->getImage(); ?>">
@@ -27,7 +30,8 @@ use yii\helpers\Url;
                         <?php endif; ?>
 
                         <?php if (in_array($module->id, $deprecatedModuleIds)): ?>
-                            <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="<?= Yii::t('AdminModule.modules', 'Not maintained or maintenance is about to be discontinued.'); ?>"><?= Yii::t('AdminModule.modules', 'Legacy'); ?></span>
+                            <span class="label label-default" data-toggle="tooltip" data-placement="bottom"
+                                  title="<?= Yii::t('AdminModule.modules', 'Not maintained or maintenance is about to be discontinued.'); ?>"><?= Yii::t('AdminModule.modules', 'Legacy'); ?></span>
                         <?php endif; ?>
                     </small>
                 </h4>
@@ -57,8 +61,14 @@ use yii\helpers\Url;
                         &middot; <?= Html::a(Yii::t('AdminModule.modules', 'Uninstall'), Url::to(['/admin/module/remove', 'moduleId' => $moduleId]), ['data-method' => 'POST', 'data-confirm' => Yii::t('AdminModule.modules', 'Are you sure? *ALL* module related data and files will be lost!')]); ?>
                     <?php endif; ?>
 
-                    &middot; <?= Html::a(Yii::t('AdminModule.modules', 'More info'), Url::to(['/admin/module/info', 'moduleId' => $moduleId]), ['data-target' => '#globalModal']); ?>
-
+                    <?php if (isset($marketplaceUrls[$moduleId])): ?>
+                        &middot; <?= Html::a(Yii::t('AdminModule.modules', 'More info') . '&nbsp;<i class="fa fa-external-link" aria-hidden="true"></i>'
+                            , $marketplaceUrls[$moduleId],
+                            ['rel' => 'noopener', 'target' => '_blank']
+                        ); ?>
+                    <?php else: ?>
+                        &middot; <?= Html::a(Yii::t('AdminModule.modules', 'More info'), Url::to(['/admin/module/info', 'moduleId' => $moduleId]), ['data-target' => '#globalModal']); ?>
+                    <?php endif; ?>
                 </div>
 
             </div>

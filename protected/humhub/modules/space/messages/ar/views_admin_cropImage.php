@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Modify</strong> image' => '',
+    '<strong>Modify</strong> image' => 'صورة <strong> تعديل </ strong>',
 ];

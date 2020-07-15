@@ -166,8 +166,11 @@ class ProfileField extends ActiveRecord
      */
     public function getFormDefinition()
     {
+
         $categories = ProfileFieldCategory::find()->orderBy('sort_order')->all();
         $profileFieldTypes = new fieldtype\BaseType();
+        $isVirtualField = (!$this->isNewRecord && $this->getFieldType()->isVirtual);
+
         $definition = [
             'ProfileField' => [
                 'type' => 'form',
@@ -188,7 +191,7 @@ class ProfileField extends ActiveRecord
                         'class' => 'form-control',
                     ],
                     'sort_order' => [
-                        'type' => 'text',
+                        'type' => 'sortOrder',
                         'maxlength' => 32,
                         'class' => 'form-control',
                     ],
@@ -203,21 +206,26 @@ class ProfileField extends ActiveRecord
                         'type' => 'text',
                         'maxlength' => 255,
                         'class' => 'form-control',
+                        'isVisible' => (!$isVirtualField)
                     ],
                     'required' => [
                         'type' => 'checkbox',
+                        'isVisible' => (!$isVirtualField)
                     ],
                     'visible' => [
                         'type' => 'checkbox',
                     ],
                     'show_at_registration' => [
                         'type' => 'checkbox',
+                        'isVisible' => (!$isVirtualField)
                     ],
                     'editable' => [
                         'type' => 'checkbox',
+                        'isVisible' => (!$isVirtualField)
                     ],
                     'searchable' => [
                         'type' => 'checkbox',
+                        'isVisible' => (!$isVirtualField)
                     ],
                     'profile_field_category_id' => [
                         'type' => 'dropdownlist',
