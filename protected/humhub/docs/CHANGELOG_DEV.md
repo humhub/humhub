@@ -31,6 +31,7 @@ HumHub Change Log
 - Fix #4232: Metadata request creates guest session if CSP nonce header is enabled
 - Enh #4234: Enhanced custom test environment configuration in `@protected/humhub/tests/config/env/env.php` file
 - Fix #4233: `humhub\modules\web\security\helpers\Security:setNonce()` does not remove nonce session value if nonce is null
+- Fix #4235: Misleading error message 'Unable to determine dataType from response' logged on ajax error
 - Fix #4199: Pinned posts of other spaces are excluded from profile stream
 - Enh #3995: Added additional user profile stream filter to include or exclude non profile stream content
 - Enh: Added `humhub\modules\stream\actions\Stream:initQuery` to manage query filter in subclasses
