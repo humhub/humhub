@@ -187,7 +187,7 @@ class OnlineModuleManager extends Component
      *  - latestVersion
      *  - latestCompatibleVersion
      *
-     * @return Array of modulles
+     * @return array of modules
      */
     public function getModules($cached = true)
     {
@@ -203,8 +203,8 @@ class OnlineModuleManager extends Component
 
         $this->_modules = Yii::$app->cache->get('onlineModuleManager_modules');
         if ($this->_modules === null || !is_array($this->_modules)) {
-
-            $this->_modules = HumHubAPI::request('v1/modules/list');
+            $settings = Yii::$app->getModule('marketplace')->settings;
+            $this->_modules = HumHubAPI::request('v1/modules/list', ['includeBetaVersions' => (boolean)$settings->get('includeBetaUpdates')]);
             Yii::$app->cache->set('onlineModuleManager_modules', $this->_modules, Yii::$app->settings->get('cache.expireTime'));
         }
 
@@ -236,11 +236,11 @@ class OnlineModuleManager extends Component
     }
 
 
-    public function getModuleUpdates()
+    public function getModuleUpdates($cached = true)
     {
         $updates = [];
 
-        foreach ($this->getModules() as $moduleId => $moduleInfo) {
+        foreach ($this->getModules($cached) as $moduleId => $moduleInfo) {
 
             if (isset($moduleInfo['latestCompatibleVersion']) && Yii::$app->moduleManager->hasModule($moduleId)) {
 
