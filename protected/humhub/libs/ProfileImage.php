@@ -10,6 +10,7 @@ namespace humhub\libs;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\file\libs\ImageHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\widgets\Image as UserImage;
@@ -173,11 +174,16 @@ class ProfileImage
         if ($file instanceof UploadedFile) {
             $file = $file->tempName;
         }
-
         $this->delete();
 
-        // Make sure original file is max. 800 width
+        // Convert image to uploaded JPEG, fix orientation and remove additional meta information
         $image = Image::getImagine()->open($file);
+        ImageHelper::fixJpegOrientation($image, $file);
+        $image->thumbnail($image->getSize())
+            ->save($this->getPath('_org'), ['format' => 'jpg']);
+
+        // Make sure original file is max. 800 width
+        $image = Image::getImagine()->open($this->getPath('_org'));
         if ($image->getSize()->getWidth() > 800) {
             $image->resize($image->getSize()->widen(800));
         }
