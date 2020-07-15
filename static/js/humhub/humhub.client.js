@@ -25,10 +25,11 @@ humhub.module('client', function (module, require, $) {
                 dataType = 'json';
             } else if (responseType && responseType.indexOf('html') > -1) {
                 dataType = 'html';
-            } else if(!this.isAbort()){
-                console.error('unable to determine dataType from response, this may cause problems.');
+            } else if(!this.isAbort() && !this.isError()){
+                console.error('Unable to determine dataType from response, this may cause problems.');
             }
         }
+
         this.dataType = dataType;
 
         // If we expect json and received json we merge the json result with our response object.
@@ -40,7 +41,11 @@ humhub.module('client', function (module, require, $) {
     };
 
     Response.prototype.isAbort = function () {
-        return this.textStatus == "abort";
+        return this.textStatus === "abort";
+    };
+
+    Response.prototype.isError = function () {
+        return this.textStatus === "error";
     };
 
     Response.prototype.header = function (key) {
