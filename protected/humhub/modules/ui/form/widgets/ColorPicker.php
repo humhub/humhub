@@ -45,7 +45,7 @@ class ColorPicker extends JsInputWidget
      */
     public function init()
     {
-        if (!empty($this->field)) {
+        if (!empty($this->field) && is_array($this->field)) {
             $this->attribute = $this->field;
         }
 

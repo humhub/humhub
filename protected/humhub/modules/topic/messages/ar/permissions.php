@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Can add new topics' => '',
-    'Can edit and remove topics' => '',
+    'Can add new topics' => 'يمكن إضافة مواضيع جديدة',
+    'Can edit and remove topics' => 'يمكن تحرير وإزالة المواضيع',
 ];

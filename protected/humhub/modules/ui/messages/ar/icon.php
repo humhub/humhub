@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'No icon provider registered for provider id {id}' => '',
+    'No icon provider registered for provider id {id}' => 'لا يوجد مزود رمز مسجل لمعرف الموفر {id}',
 ];

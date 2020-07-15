@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\modules\user\Module;
 use Yii;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\LeftNavigation;
@@ -43,21 +44,25 @@ class ProfileMenu extends LeftNavigation
 
         $this->panelTitle = Yii::t('UserModule.profile', '<strong>Profile</strong> menu');
 
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.profile', 'Stream'),
-            'icon' => 'bars',
-            'url' => $this->user->createUrl('//user/profile/home'),
-            'sortOrder' => 200,
-            'isActive' =>  MenuLink::isActiveState('user', 'profile', ['index', 'home'])
-        ]));
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
 
+        if (!$module->profileDisableStream) {
+            $this->addEntry(new MenuLink([
+                'label' => Yii::t('UserModule.profile', 'Stream'),
+                'icon' => 'bars',
+                'url' => $this->user->createUrl('//user/profile/home'),
+                'sortOrder' => 200,
+                'isActive' => MenuLink::isActiveState('user', 'profile', ['index', 'home'])
+            ]));
+        }
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.profile', 'About'),
             'icon' => 'info-circle',
             'url' => $this->user->createUrl('/user/profile/about'),
             'sortOrder' => 300,
-            'isActive' =>  MenuLink::isActiveState('user', 'profile', 'about'),
+            'isActive' => MenuLink::isActiveState('user', 'profile', 'about'),
             'isVisible' => $this->user->permissionManager->can(ViewAboutPage::class)
         ]));
 
