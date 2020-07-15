@@ -11,6 +11,7 @@ namespace humhub\modules\user\controllers;
 use humhub\modules\user\components\ProfileStream;
 use humhub\modules\user\Module;
 use Yii;
+use yii\helpers\Url;
 use yii\web\HttpException;
 use yii\db\Expression;
 use humhub\modules\content\components\ContentContainerController;
@@ -63,13 +64,13 @@ class ProfileController extends ContentContainerController
     /**
      * User profile home
      *
-     * @todo Allow change of default action
      * @return string the response
+     * @todo Allow change of default action
      */
     public function actionIndex()
     {
         if ($this->module->profileDefaultRoute !== null) {
-            return $this->redirect($this->getUser()->createUrl($this->module->profileDefaultRoute));
+            return $this->redirect(Url::to([$this->module->profileDefaultRoute, 'container' => $this->getUser()]));
         }
 
         return $this->actionHome();
@@ -78,7 +79,7 @@ class ProfileController extends ContentContainerController
     public function actionHome()
     {
         if ($this->module->profileDisableStream) {
-            $this->redirect('about');
+            return $this->redirect(Url::to(['/user/profile/about', 'container' => $this->getUser()]));
         }
 
         return $this->render('home', ['user' => $this->contentContainer]);
@@ -95,7 +96,7 @@ class ProfileController extends ContentContainerController
 
     public function actionFollow()
     {
-        if(Yii::$app->getModule('user')->disableFollow) {
+        if (Yii::$app->getModule('user')->disableFollow) {
             throw new HttpException(403, Yii::t('ContentModule.base', 'This action is disabled!'));
         }
 
