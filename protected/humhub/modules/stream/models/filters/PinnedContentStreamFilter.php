@@ -45,14 +45,14 @@ class PinnedContentStreamFilter extends StreamQueryFilter
             return;
         }
 
-        // Add all pinned contents to initial request
-        if ($this->streamQuery->isInitialQuery()) {
-            $pinnedContentIds = $this->fetchPinnedContent();
+         if ($this->streamQuery->isInitialQuery()) {
+             $pinnedContentIds = $this->fetchPinnedContent();
 
-            if(!empty($pinnedContentIds)) {
+             // Exclude pinned content from result, we've already fetched and cached them
+             if(!empty($pinnedContentIds)) {
                 $this->query->andWhere((['NOT IN', 'content.id', $pinnedContentIds]));
             }
-        } else {
+        } else if(!$this->streamQuery->isSingleContentQuery()) {
             // All pinned entries of this container were loaded within the initial request, so don't include them here!
             $this->query->andWhere(['OR', ['content.pinned' => 0], ['<>', 'content.contentcontainer_id', $this->container->contentcontainer_id]]);
         }
