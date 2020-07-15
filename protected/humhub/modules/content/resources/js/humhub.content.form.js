@@ -94,7 +94,11 @@ humhub.module('content.form', function(module, require, $) {
         $('#notifyUserContainer').hide();
         Widget.instance('#notifyUserInput').reset();
         $('#postTopicContainer').hide();
-        Widget.instance('#postTopicInput').reset();
+
+        var topicPicker = Widget.instance('#postTopicInput');
+        if(topicPicker) {
+            topicPicker.reset();
+        }
     };
 
     CreateForm.prototype.resetFilePreview = function() {
@@ -162,7 +166,11 @@ humhub.module('content.form', function(module, require, $) {
 
     CreateForm.prototype.setTopics = function() {
         $('#postTopicContainer').show();
-        Widget.instance('#postTopicInput').focus();
+
+        var topicPicker = Widget.instance('#postTopicInput');
+        if(topicPicker) {
+            topicPicker.focus();
+        }
     };
 
     var init = function() {
