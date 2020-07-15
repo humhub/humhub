@@ -197,12 +197,12 @@ class Helpers
 
         if (is_array($type)) {
             foreach ($type as $t) {
-                if (class_exists($className) && (is_subclass_of($className, $t) || $className === $t)) {
+                if (class_exists($className) && is_a($className, $t, true)) {
                     return true;
                 }
             }
         } else {
-            if (class_exists($className) && (is_subclass_of($className, $type) || $className === $type)) {
+            if (class_exists($className) && is_a($className, $t, true)) {
                 return true;
             }
         }
