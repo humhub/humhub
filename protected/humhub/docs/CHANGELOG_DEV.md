@@ -19,3 +19,12 @@ HumHub Change Log
 - Enh: Added `humhub\modules\ui\form\widgets\JsInputWidget:field` in order to access ActiveField instances within JsInputWidget
 - Enh #4216: Added `humhub\modules\ui\filter\widgets\DropdownFilterInput` in order to support dropdown stream filters
 - Enh: Show more information about installed module in marketplace when possible. Instead of limited README.md 
+- Enh #3923: Add ability to disable profile stream
+- Enh #4222: Added virtual profile fields to display users e-mail address and username
+- Enh #4194: Increased max pinnable space content
+- Enh #4194: Make max pinnable content configurable on space/profile level
+- Chg #4228: Removed unnecessary `ContentActiveRecord:initContent`
+- Fix #4229: `Space::canAccessPrivateContent()` throws error for guest user if `globalAdminCanAccessPrivateContent` setting is true
+- Fix #4227: Removed redundant code from `humhub.ui.widget.js`
+- Fix #4232: Metadata request creates guest session if CSP nonce header is enabled
+- Fix #4233: `humhub\modules\web\security\helpers\Security:setNonce()` does not remove nonce session value if nonce is null

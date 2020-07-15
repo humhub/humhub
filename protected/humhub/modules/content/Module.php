@@ -8,11 +8,14 @@
 
 namespace humhub\modules\content;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use Yii;
 
 /**
  * Content Module
- * 
+ *
  * @author Luke
  */
 class Module extends \humhub\components\Module
@@ -46,10 +49,10 @@ class Module extends \humhub\components\Module
      * @var string Custom e-mail subject for daily update mails - default: Your daily summary
      */
     public $emailSubjectDailyUpdate = null;
-    
+
     /**
      * @since 1.2
-     * @var integer Maximum allowed file uploads for posts/comments 
+     * @var integer Maximum allowed file uploads for posts/comments
      */
     public $maxAttachedFiles = 50;
 
@@ -58,6 +61,36 @@ class Module extends \humhub\components\Module
      * @var integer Maximum allowed number of oembeds in richtexts
      */
     public $maxOembeds = 5;
+
+    /**
+     * @var int
+     * @since 1.6
+     */
+    public $maxPinnedSpaceContent = 10;
+
+    /**
+     * @var int
+     * @since 1.6
+     */
+    public $maxPinnedProfileContent = 2;
+
+    /**
+     * @param ContentContainerActiveRecord $container
+     * @since 1.6
+     * @return int
+     */
+    public function getMaxPinnedContent(ContentContainerActiveRecord $container)
+    {
+        if($container instanceof User) {
+            return $this->maxPinnedProfileContent;
+        }
+
+        if($container instanceof Space) {
+            return $this->maxPinnedSpaceContent;
+        }
+
+        return 0;
+    }
 
     /**
      * @inheritdoc

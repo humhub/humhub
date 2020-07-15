@@ -8,6 +8,8 @@
 
 namespace humhub\modules\content\models;
 
+use yii\db\ActiveRecord;
+
 /**
  * This is the model class for table "contentcontainer_module".
  *
@@ -15,7 +17,7 @@ namespace humhub\modules\content\models;
  * @property string $module_id
  * @property integer $module_state
  */
-class ContentContainerModuleState extends \yii\db\ActiveRecord
+class ContentContainerModuleState extends ActiveRecord
 {
 
     const STATE_DISABLED = 0;
