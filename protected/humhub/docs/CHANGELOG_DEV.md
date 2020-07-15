@@ -13,6 +13,7 @@ HumHub Change Log
 - Chg #4158: Cleanup post table removed unused column  
 - Fix #4182: Native edge password reveal icons interferes with custom one
 - Fix #4173: Notification overview HTML compliant issue
+- Enh: Added `ContentVisibilitySelect` ActiveField widget for content forms
 - Enh #4213: Only render topic chooser if there are topics available or user can create topics
 - Enh: Added `humhub\modules\ui\form\widgets\ActiveField:preventRendering` to manage render state within field classes
 - Enh: Added `humhub\modules\ui\form\widgets\JsInputWidget:emptyResult()` helper to manage render state of JsInputWidget
