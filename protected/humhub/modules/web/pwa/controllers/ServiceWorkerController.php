@@ -8,6 +8,7 @@
 
 namespace humhub\modules\web\pwa\controllers;
 
+use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\ui\Module;
 use Yii;
@@ -24,6 +25,13 @@ use yii\helpers\Url;
 class ServiceWorkerController extends Controller
 {
 
+    /**
+
+     * Allow guest access independently from guest mode setting.
+     *
+     * @var string
+     */
+    public $access = ControllerAccess::class;
     public $baseJs;
     public $additionalJs;
 
@@ -43,14 +51,16 @@ class ServiceWorkerController extends Controller
 
         $offlinePageUrl = Url::to(['/web/pwa-offline/index']);
         $this->baseJs .= <<<JS
-            var CACHE = 'humhub-sw-cache';
             var OFFLINE_PAGE_URL = '{$offlinePageUrl}';
         
             self.addEventListener('install', function (event) {
                 console.log('********** The service worker is being installed.');
     
                 // Store "Offline" page
-                var offlineRequest = new Request(OFFLINE_PAGE_URL);
+                var offlineRequest = new Request(OFFLINE_PAGE_URL, {init: {
+                    credentials: 'omit'
+                }});
+                
                 event.waitUntil(
                     fetch(offlineRequest).then(function (response) {
                         return caches.open('offline').then(function (cache) {
@@ -69,7 +79,6 @@ JS;
         $this->baseJs .= <<<JS
             self.addEventListener('fetch', function (event) {
                 var request = event.request;
-                
                 // Check is "page" request
                 if (request.method === 'GET' && request.destination === 'document') {
                     event.respondWith(

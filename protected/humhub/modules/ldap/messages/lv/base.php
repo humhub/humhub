@@ -27,7 +27,7 @@ return [
     'Login Filter' => 'Autorizācijas filtrs',
     'Password' => 'Parole',
     'Port' => 'Ports',
-    'User Filer' => 'Lietotāja datnes',
+    'User Filter' => 'Lietotāja datnes',
     'Username' => 'Lietotāja vārds',
     'Username Attribute' => 'Lietotāja vārda atribūts',
     'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => '',

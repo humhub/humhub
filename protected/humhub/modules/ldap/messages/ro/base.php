@@ -26,7 +26,7 @@ return [
     'Login Filter' => '로그인 필터',
     'Password' => 'Password',
     'Port' => '포트',
-    'User Filer' => '유저 필터',
+    'User Filter' => '유저 필터',
     'Username' => '유저네임',
     'Username Attribute' => '유저네임 속성',
     'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => '',

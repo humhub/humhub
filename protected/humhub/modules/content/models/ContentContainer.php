@@ -41,6 +41,7 @@ class ContentContainer extends ActiveRecord
     {
         return [
             [['pk', 'owner_user_id'], 'integer'],
+            [['class', 'pk', 'guid'], 'required'],
             [['guid', 'class'], 'string', 'max' => 255],
             [['class', 'pk'], 'unique', 'targetAttribute' => ['class', 'pk'], 'message' => 'The combination of Class and Pk has already been taken.'],
             [['guid'], 'unique']
@@ -78,16 +79,14 @@ class ContentContainer extends ActiveRecord
 
     /**
      * @param $guid
-     * @return ContentContainerActiveRecord
+     * @return ContentContainerActiveRecord|null
      * @throws \yii\db\IntegrityException
      * @since 1.4
      */
     public static function findRecord($guid)
     {
         $instance = static::findOne(['guid' => $guid]);
-        if($instance) {
-            return $instance->getPolymorphicRelation();
-        }
+        return $instance ? $instance->getPolymorphicRelation() : null;
     }
 
 }

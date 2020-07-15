@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Hm...' => '',
-    'Please check your internet connection and <a href="?">refresh</a> this page once your are online again!' => '',
-    'Unable to connect to {site}' => '',
+    'Hm...' => 'جلالة ...',
+    'Please check your internet connection and <a href="?">refresh</a> this page once your are online again!' => 'الرجاء التحقق من اتصالك بالإنترنت و <a href="؟"> تحديث </a> هذه الصفحة بمجرد اتصالك بالإنترنت مرة أخرى!',
+    'Unable to connect to {site}' => 'تعذر الاتصال بـ {site}',
 ];

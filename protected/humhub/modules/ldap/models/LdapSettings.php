@@ -140,7 +140,7 @@ class LdapSettings extends Model
             'port' => Yii::t('LdapModule.base', 'Port'),
             'baseDn' => Yii::t('LdapModule.base', 'Base DN'),
             'loginFilter' => Yii::t('LdapModule.base', 'Login Filter'),
-            'userFilter' => Yii::t('LdapModule.base', 'User Filer'),
+            'userFilter' => Yii::t('LdapModule.base', 'User Filter'),
             'usernameAttribute' => Yii::t('LdapModule.base', 'Username Attribute'),
             'emailAttribute' => Yii::t('LdapModule.base', 'E-Mail Address Attribute'),
             'idAttribute' => Yii::t('LdapModule.base', 'ID Attribute'),

@@ -32,7 +32,7 @@ return [
     'Specify your LDAP-backend used to fetch user accounts.' => 'Määritä LDAP-backend, jota käytetään käyttäjätilijen hakemiseen.',
     'Status: Error! (Message: {message})' => 'Tila: Virhe! (Message: {message})',
     'Status: OK! ({userCount} Users)' => 'Tila: OK! ({userCount} Users)',
-    'User Filer' => 'Käyttäjän tiedostoija',
+    'User Filter' => 'Käyttäjän tiedostoija',
     'Username' => 'Käyttäjätunnus',
     'Username Attribute' => 'Käyttäjätunnuksen määrite',
     'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => '',

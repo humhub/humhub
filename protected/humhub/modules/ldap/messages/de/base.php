@@ -24,7 +24,7 @@ return array (
   'The default base DN used for searching for accounts.' => 'Der Standardbasis DN, der für die Suche nach Konten verwendet wird.',
   'The default credentials password (used only with username above).' => 'Das Standard-Anmeldekennwort (wird nur mit dem obigen Benutzernamen verwendet).',
   'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'Der standardmäßige Benutzername für die Anmeldeinformationen. Manche Server verlangen, dass dieser in DN-Form vorliegt. Dieser muss in DN-Form angegeben werden, wenn der LDAP-Server einen DN zum Verknüpfen benötigt und das Verknüpfen mit einfachem Benutzernamen möglich sein soll.',
-  'User Filer' => 'Benutzer Filer',
+  'User Filter' => 'Benutzer Filer',
   'Username' => 'Benutzername',
   'Username Attribute' => 'Benutzername Attribut',
 );

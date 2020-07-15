@@ -17,6 +17,13 @@ namespace humhub\modules\ui\form\widgets;
  */
 class ActiveField extends \yii\bootstrap\ActiveField
 {
+    /**
+     * @var bool Can be set to true in order to prevent this field from being rendered. This may be used by InputWidgets
+     * or other fields responsible for custom visibility management.
+     *
+     * @since 1.6
+     */
+    public $preventRendering = false;
 
     /**
      * @inheritdoc
@@ -28,11 +35,50 @@ class ActiveField extends \yii\bootstrap\ActiveField
         $config['attribute'] = $this->attribute;
         $config['view'] = $this->form->getView();
 
-        if (isset($config['options']) && isset(class_parents($class)['humhub\widgets\InputWidget'])) {
-            $this->adjustLabelFor($config['options']);
+        if(is_subclass_of($class, JsInputWidget::class)) {
+            if(isset($config['options'])) {
+                $this->adjustLabelFor($config['options']);
+            }
+
+            $config['field'] = $this;
         }
 
         return parent::widget($class, $config);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function begin()
+    {
+        if($this->preventRendering) {
+            return '';
+        }
+
+        return parent::begin();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function render($content = null)
+    {
+        if($this->preventRendering) {
+            return '';
+        }
+
+        return parent::render($content);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function end()
+    {
+        if($this->preventRendering) {
+            return '';
+        }
+
+        return parent::end();
+    }
 }

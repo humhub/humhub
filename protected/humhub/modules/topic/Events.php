@@ -11,6 +11,7 @@ namespace humhub\modules\topic;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\ContentTopicButton;
+use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\widgets\AccountMenu;
@@ -24,7 +25,7 @@ class Events extends BaseObject
         /** @var ContentActiveRecord $record */
         $record = $event->sender->object;
 
-        if ($record->content->canEdit()) {
+        if ($record->content->canEdit() && TopicPicker::showTopicPicker($record->content->container)) {
             $event->sender->addWidget(ContentTopicButton::class, ['record' => $record], ['sortOrder' => 370]);
         }
     }

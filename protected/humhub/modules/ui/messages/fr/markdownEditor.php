@@ -14,7 +14,7 @@ return array (
   'Italic' => 'Italique',
   'List' => 'Liste',
   'Ordered List' => 'Liste ordonnée',
-  'Please wait while uploading...' => 'Veuillez patienter pendant le chargement...',
+  'Please wait while uploading...' => 'Veuillez patienter pendant le transfert...',
   'Preview' => 'Prévisualiser',
   'Quote' => 'Citation',
   'Target' => 'Destination',
