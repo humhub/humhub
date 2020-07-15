@@ -18,6 +18,7 @@ HumHub Change Log
 - Enh: Added `humhub\modules\ui\form\widgets\JsInputWidget:emptyResult()` helper to manage render state of JsInputWidget
 - Enh: Added `humhub\modules\ui\form\widgets\JsInputWidget:field` in order to access ActiveField instances within JsInputWidget
 - Enh #4216: Added `humhub\modules\ui\filter\widgets\DropdownFilterInput` in order to support dropdown stream filters
+- Enh: Show more information about installed module in marketplace when possible. Instead of limited README.md 
 - Enh #3923: Add ability to disable profile stream
 - Enh #4222: Added virtual profile fields to display users e-mail address and username
 - Enh #4194: Increased max pinnable space content
