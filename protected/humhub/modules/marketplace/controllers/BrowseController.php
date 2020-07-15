@@ -10,9 +10,6 @@ namespace humhub\modules\marketplace\controllers;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\marketplace\Module;
 use Yii;
-use yii\base\ErrorException;
-use yii\base\Exception;
-use yii\base\InvalidConfigException;
 use yii\web\HttpException;
 
 /**
