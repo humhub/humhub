@@ -146,11 +146,14 @@ class WallStreamFilterNavigation extends FilterNavigation
             'sortOrder' => 200
         ], static::PANEL_POSITION_RIGHT);
 
-        $this->addFilterBlock(static::FILTER_BLOCK_TOPIC, [
-            'title' => Yii::t('StreamModule.filter', 'Topic'),
-            'sortOrder' => 300
-        ], static::PANEL_POSITION_RIGHT);
+        if(TopicPicker::showTopicPicker(ContentContainerHelper::getCurrent())) {
+            $this->addFilterBlock(static::FILTER_BLOCK_TOPIC, [
+                'title' => Yii::t('StreamModule.filter', 'Topic'),
+                'sortOrder' => 300
+            ], static::PANEL_POSITION_RIGHT);
+        }
     }
+
 
     /**
      * @inheritdoc
@@ -252,17 +255,19 @@ class WallStreamFilterNavigation extends FilterNavigation
 
     private function initTopicFilter()
     {
-        $this->addFilter([
-            'id' => static::FILTER_TOPICS,
-            'class' => PickerFilterInput::class,
-            'picker' => TopicPicker::class,
-            'category' => TopicStreamFilter::CATEGORY,
-            'pickerOptions' => [
-                'id' => 'stream-topic-picker',
-                'name' => 'stream-topic-picker',
-                'addOptions' => false
-            ]
-        ], static::FILTER_BLOCK_TOPIC);
+        if(TopicPicker::showTopicPicker(ContentContainerHelper::getCurrent())) {
+            $this->addFilter([
+                'id' => static::FILTER_TOPICS,
+                'class' => PickerFilterInput::class,
+                'picker' => TopicPicker::class,
+                'category' => TopicStreamFilter::CATEGORY,
+                'pickerOptions' => [
+                    'id' => 'stream-topic-picker',
+                    'name' => 'stream-topic-picker',
+                    'addOptions' => false
+                ]
+            ], static::FILTER_BLOCK_TOPIC);
+        }
     }
 
     private function initContentTypeFilter()

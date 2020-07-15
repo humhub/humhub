@@ -20,6 +20,7 @@ HumHub Change Log
 - Enh: Added `humhub\modules\ui\form\widgets\JsInputWidget:emptyResult()` helper to manage render state of JsInputWidget
 - Enh: Added `humhub\modules\ui\form\widgets\JsInputWidget:field` in order to access ActiveField instances within JsInputWidget
 - Enh #4216: Added `humhub\modules\ui\filter\widgets\DropdownFilterInput` in order to support dropdown stream filters
+- Enh: Added support for non-free marketplace modules without a fixed price 
 - Enh: Show more information about installed module in marketplace when possible. Instead of limited README.md 
 - Enh #3923: Add ability to disable profile stream
 - Enh #4222: Added virtual profile fields to display users e-mail address and username
@@ -32,6 +33,8 @@ HumHub Change Log
 - Enh #4234: Enhanced custom test environment configuration in `@protected/humhub/tests/config/env/env.php` file
 - Fix #4233: `humhub\modules\web\security\helpers\Security:setNonce()` does not remove nonce session value if nonce is null
 - Fix #4235: Misleading error message 'Unable to determine dataType from response' logged on ajax error
+- Enh #4238: Added module marketplace option for Community Modules. Updated third-party Module disclaimer
+- Enh #4238: Added module marketplace option to enable module beta version updates
 - Fix #4199: Pinned posts of other spaces are excluded from profile stream
 - Enh #3995: Added additional user profile stream filter to include or exclude non profile stream content
 - Enh: Added `humhub\modules\stream\actions\Stream:initQuery` to manage query filter in subclasses
