@@ -8,7 +8,7 @@
 
 namespace humhub\modules\user\controllers;
 
-use humhub\modules\user\stream\ProfileStreamAction;
+use humhub\modules\user\actions\ProfileStreamAction;
 use humhub\modules\user\Module;
 use Yii;
 use yii\web\HttpException;

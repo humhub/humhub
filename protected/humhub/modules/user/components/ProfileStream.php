@@ -14,7 +14,7 @@ namespace humhub\modules\user\components;
  * @package humhub\modules\user\components
  * @deprecated since 1.6 use \humhub\modules\user\stream\ProfileStream
  */
-class ProfileStream extends \humhub\modules\user\stream\ProfileStreamAction
+class ProfileStream extends \humhub\modules\user\actions\ProfileStreamAction
 {
 
 }

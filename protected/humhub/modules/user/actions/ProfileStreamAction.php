@@ -1,10 +1,11 @@
 <?php
 
 
-namespace humhub\modules\user\stream;
+namespace humhub\modules\user\actions;
 
 use humhub\modules\stream\actions\ContentContainerStream;
 use humhub\modules\user\models\User;
+use humhub\modules\user\stream\ProfileStreamQuery;
 
 /**
  * ProfileStream
