@@ -101,10 +101,6 @@ humhub.module('ui.widget', function (module, require, $) {
         return [];
     };
 
-    Widget.prototype.getReloadOptions = function () {
-        return [];
-    };
-
     Widget.prototype.replace = function (dom) {
         this.fire('beforeReplace');
         var $newDom = $(dom);

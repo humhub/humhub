@@ -22,6 +22,9 @@ use yii\helpers\Json;
  *
  * @package humhub.modules_core.user.models
  * @since 0.5
+ *
+ * @property array $fieldFormDefinition
+ * @property array $labels
  */
 class BaseType extends Model
 {
@@ -42,6 +45,14 @@ class BaseType extends Model
      * @var ProfileField
      */
     public $profileField = null;
+
+
+    /**
+     * @var boolean is a virtual field (readonly)
+     * @see BaseTypeVirtual
+     * @since 1.6
+     */
+    public $isVirtual = false;
 
     /**
      * Links a ProfileField to the ProfileFieldType.
@@ -73,6 +84,8 @@ class BaseType extends Model
             MarkdownEditor::class => Yii::t('UserModule.profile', 'Markdown'),
             Checkbox::class => Yii::t('UserModule.profile', 'Checkbox'),
             CheckboxList::class => Yii::t('UserModule.profile', 'Checkbox List'),
+            UserEmail::class => Yii::t('UserModule.profile', 'E-mail address of the user'),
+            UserName::class => Yii::t('UserModule.profile', 'Username'),
         ], $this->fieldTypes);
 
         return $fieldTypes;
@@ -113,16 +126,13 @@ class BaseType extends Model
      */
     public function getFieldFormDefinition()
     {
-
-        $definition = [
+        return [
             $this->profileField->internal_name => [
                 'type' => 'text',
                 'class' => 'form-control',
                 'readonly' => (!$this->profileField->editable)
             ]
         ];
-
-        return $definition;
     }
 
     /**
