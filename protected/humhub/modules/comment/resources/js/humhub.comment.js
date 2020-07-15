@@ -48,7 +48,21 @@ humhub.module('comment', function (module, require, $) {
 
     Form.prototype.incrementCommentCount = function (count) {
         try {
-            var $controls = this.$.closest('.comment-container').siblings('.wall-entry-controls');
+            // First check if this is a sub comment form
+            var $root = this.$.closest('[data-action-component="comment.Comment"]');
+            if(!$root.length) {
+                $root = this.$.closest('.stream-entry-addons');
+            }
+
+            if(!$root.length) {
+                return;
+            }
+
+            var $controls = $root.find('.wall-entry-controls:first');
+            if(!$controls.length) {
+                return;
+            }
+
             var $commentCount = $controls.find('.comment-count');
             if($commentCount.length) {
                 var currentCount = $commentCount.data('count');
@@ -57,7 +71,7 @@ humhub.module('comment', function (module, require, $) {
                 $commentCount.data('count', currentCount);
             }
         } catch(e) {
-            module.log.error(e);
+            module.log.error(e, false);
         }
     };
 
@@ -89,13 +103,13 @@ humhub.module('comment', function (module, require, $) {
     };
 
     Comment.prototype.setEditContent = function (html) {
-        this.$.find('.comment_edit_content,.content_edit').replaceWith(html);
-        this.$.find('.comment-cancel-edit-link').show();
-        this.$.find('.comment-edit-link').hide();
+        this.$.find('.comment_edit_content:first,.content_edit:first').replaceWith(html);
+        this.$.find('.comment-cancel-edit-link:first').show();
+        this.$.find('.comment-edit-link:first').hide();
     };
 
     Comment.prototype.getRichtext = function () {
-        return Widget.instance(this.$.find('div.humhub-ui-richtext'));
+        return Widget.instance(this.$.find('div.humhub-ui-richtext:first'));
     };
 
     Comment.prototype.delete = function () {
@@ -114,8 +128,8 @@ humhub.module('comment', function (module, require, $) {
             200: function (response) {
                 that.replace(response.html);
                 that.highlight();
-                that.$.find('.comment-cancel-edit-link').hide();
-                that.$.find('.comment-edit-link').show();
+                that.$.find('.comment-cancel-edit-link:first').hide();
+                that.$.find('.comment-edit-link:first').show();
                 module.log.success('success.saved');
             },
             400: function (response) {
@@ -138,8 +152,8 @@ humhub.module('comment', function (module, require, $) {
         this.loader();
         client.html(evt).then(function (response) {
             that.replace(response.html);
-            that.$.find('.comment-cancel-edit-link').hide();
-            that.$.find('.comment-edit-link').show();
+            that.$.find('.comment-cancel-edit-link:first').hide();
+            that.$.find('.comment-edit-link:first').show();
         }).catch(function (err) {
             module.log.error(err, true);
         }).finally(function () {
@@ -148,13 +162,13 @@ humhub.module('comment', function (module, require, $) {
     };
 
     Comment.prototype.highlight = function () {
-        additions.highlight(this.$.find('.comment-message'));
+        additions.highlight(this.$.find('.comment-message:first'));
     };
 
     Comment.prototype.loader = function ($show) {
-        var $loader = this.$.find('.comment-entry-loader');
+        var $loader = this.$.find('.comment-entry-loader:first');
         if ($show === false) {
-            this.$.find('.preferences').show();
+            this.$.find('.preferences:first').show();
             loader.reset($loader);
             return;
         }
@@ -167,7 +181,7 @@ humhub.module('comment', function (module, require, $) {
             }
         });
 
-        this.$.find('.preferences').hide();
+        this.$.find('.preferences:first').hide();
     };
 
     var showAll = function (evt) {
@@ -203,14 +217,14 @@ humhub.module('comment', function (module, require, $) {
     var init = function () {
         $(document).on('mouseover', '.comment .media', function () {
             var $this = $(this);
-            var element = $this.find('.preferences');
+            var element = $this.find('.preferences:first');
             if (!loader.is($this.find('.comment-entry-loader'))) {
                 element.show();
             }
         });
         $(document).on('mouseout', '.comment .media', function () {
             // find dropdown menu
-            var element = $(this).find('.preferences');
+            var element = $(this).find('.preferences:first');
 
             // hide dropdown if it's not open
             if (!element.find('li').hasClass('open')) {
