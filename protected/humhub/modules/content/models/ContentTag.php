@@ -334,7 +334,8 @@ class ContentTag extends ActiveRecord
      */
     public static function find()
     {
-        $query = parent::find()->orderBy('sort_order');
+        $query = parent::find()
+            ->orderBy('sort_order ASC')->addOrderBy('name ASC');
         return static::addQueryCondition($query);
     }
 
