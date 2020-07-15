@@ -49,6 +49,7 @@ class Form extends Widget
             'objectModel' => get_class($this->object),
             'objectId' => $this->object->getPrimaryKey(),
             'id' => $this->object->getUniqueId(),
+            'isNestedComment' => ($this->object instanceof CommentModel)
         ]);
     }
 

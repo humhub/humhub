@@ -11,6 +11,7 @@ use yii\helpers\Url;
 /* @var $id string unique object id */
 /* @var $commentCount integer */
 /* @var $mode string */
+/* @var $isNestedComment boolean */
 
 $hasComments = ($commentCount > 0);
 $commentCountSpan = Html::tag('span', ' (' . $commentCount . ')', [
@@ -18,19 +19,22 @@ $commentCountSpan = Html::tag('span', ' (' . $commentCount . ')', [
     'data-count' => $commentCount,
     'style' => ($hasComments) ? null : 'display:none'
 ]);
+
+$label = ($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('CommentModule.base', "Comment");
+
 ?>
 
 <?php if ($mode == CommentLink::MODE_POPUP): ?>
     <?php $url = Url::to(['/comment/comment/show', 'objectModel' => $objectModel, 'objectId' => $objectId, 'mode' => 'popup']); ?>
     <a href="#" data-action-click="ui.modal.load" data-action-url="<?= $url ?>">
-        <?= Yii::t('CommentModule.base', "Comment") . ' (' . $commentCount . ')' ?>
+        <?= $label . ' (' . $commentCount . ')' ?>
     </a>
 <?php elseif (Yii::$app->user->isGuest): ?>
     <?= Html::a(
-        Yii::t('CommentModule.base', "Comment") . $commentCountSpan,
+        $label . $commentCountSpan,
         Yii::$app->user->loginUrl,
         ['data-target' => '#globalModal']) ?>
 <?php else : ?>
-    <?= Button::asLink(Yii::t('CommentModule.base', "Comment") . $commentCountSpan)
+    <?= Button::asLink($label . $commentCountSpan)
         ->action('comment.toggleComment', null, '#comment_' . $id) ?>
 <?php endif; ?>
