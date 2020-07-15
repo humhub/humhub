@@ -45,8 +45,14 @@ class UpdateController extends Controller
      */
     public function actionList()
     {
-        $modules = $this->module->onlineModuleManager->getModuleUpdates();
-        return $this->render('list', ['modules' => $modules]);
+        // Include Community Modules Form Submit
+        if (!empty(Yii::$app->request->get('betaSwitch'))) {
+            $this->module->settings->set('includeBetaUpdates', (empty(Yii::$app->request->post('includeBetaUpdates'))) ? 0 : 1);
+        }
+        $includeBetaUpdates = (boolean)$this->module->settings->get('includeBetaUpdates');
+
+        $modules = $this->module->onlineModuleManager->getModuleUpdates(false);
+        return $this->render('list', ['modules' => $modules, 'includeBetaUpdates' => $includeBetaUpdates]);
     }
 
 

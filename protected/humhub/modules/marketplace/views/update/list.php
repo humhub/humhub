@@ -2,11 +2,23 @@
 
 use humhub\modules\ui\icon\widgets\Icon;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $modules [] */
 
 ?>
 <div class="panel-body">
+    <?= Html::beginForm(Url::to(['/marketplace/update', 'betaSwitch' => 1]), 'post', ['id' => 'betaSwitchForm']); ?>
+    <div class="form-group pull-right">
+        <label>
+            <?= Html::checkbox('includeBetaUpdates', $includeBetaUpdates, ['id' => 'chkBeta']); ?>
+            <?= Yii::t('MarketplaceModule.base', 'Include beta updates'); ?>
+        </label>
+    </div>
+    <?= Html::endForm(); ?>
+    <br>
+    <br>
+
     <?php if (empty($modules)): ?>
         <br>
         <div class="alert alert-success"><?= Icon::get('check')?> <?= Yii::t('MarketplaceModule.base', 'All modules are up to date!'); ?></div>
@@ -35,8 +47,8 @@ use yii\helpers\Html;
 
                 <div class="module-controls">
                     <?php if (isset($module['latestCompatibleVersion']) && Yii::$app->moduleManager->hasModule($module['id'])) : ?>
-                        <?= Yii::t('MarketplaceModule.base', 'Installed version:'); ?><?= Yii::$app->moduleManager->getModule($module['id'])->getVersion(); ?>
-                        &middot; <?= Yii::t('MarketplaceModule.base', 'Latest compatible Version:'); ?><?= $module['latestCompatibleVersion']; ?>
+                        <?= Yii::t('MarketplaceModule.base', 'Installed version:'); ?>&nbsp;<?= Yii::$app->moduleManager->getModule($module['id'])->getVersion(); ?>
+                        &middot; <?= Yii::t('MarketplaceModule.base', 'Latest compatible Version:'); ?>&nbsp;<?= $module['latestCompatibleVersion']; ?>
                         &middot; <?= Html::a(Yii::t('MarketplaceModule.base', 'View Changelog'), $module['marketplaceUrl'] . '#changelog', ['target' => '_blank']); ?>
                     <?php endif; ?>
 
@@ -46,3 +58,9 @@ use yii\helpers\Html;
         <hr>
     <?php endforeach; ?>
 </div>
+
+<script>
+    $('#chkBeta').change(function () {
+        $('#betaSwitchForm').submit();
+    });
+</script>

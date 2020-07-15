@@ -30,7 +30,7 @@ use humhub\libs\Html;
     <div class="form-group pull-right">
         <label>
             <?= Html::checkbox('includeCommunityModules', $includeCommunityModules, ['id' => 'chkCommunity']); ?>
-            <?= Yii::t('MarketplaceModule.base', 'Includes Community Modules'); ?>
+            <?= Yii::t('MarketplaceModule.base', 'Include Community Modules'); ?>
         </label>
     </div>
     <?= Html::endForm(); ?>
