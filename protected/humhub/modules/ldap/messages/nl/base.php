@@ -24,7 +24,7 @@ return array (
   'The default base DN used for searching for accounts.' => 'De standaardbasis-DN die wordt gebruikt voor het zoeken naar accounts.',
   'The default credentials password (used only with username above).' => 'Het standaard wachtwoord voor inloggegevens (alleen gebruikt met gebruikersnaam hierboven).',
   'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'De standaard gebruikersnaam voor inloggegevens. Sommige servers vereisen dat dit in DN-vorm is. Dit moet in DN-vorm worden gegeven als de LDAP-server een DN vereist om te binden en binding mogelijk zou moeten zijn met eenvoudige gebruikersnamen.',
-  'User Filer' => 'Gebruikersfiler',
+  'User Filter' => 'Gebruikersfiler',
   'Username' => 'Gebruikersnaam',
   'Username Attribute' => 'Gebruikersnaam Attribute',
 );

@@ -6,6 +6,7 @@
  *
  */
 
+use humhub\modules\ui\form\widgets\SortOrderField;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use yii\bootstrap\ActiveForm;
@@ -18,7 +19,7 @@ use yii\bootstrap\ActiveForm;
     <?php $form = ActiveForm::begin() ?>
         <div class="modal-body">
             <?= $form->field($model, 'name')?>
-            <?= $form->field($model, 'sort_order')->textInput( ['type' => 'number'])?>
+            <?= $form->field($model, 'sort_order')->widget(SortOrderField::class) ?>
         </div>
         <div class="modal-footer">
             <?= ModalButton::submitModal()?>

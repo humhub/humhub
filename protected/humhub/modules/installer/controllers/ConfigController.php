@@ -8,6 +8,7 @@
 
 namespace humhub\modules\installer\controllers;
 
+use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\marketplace\Module;
 use humhub\modules\queue\driver\Sync;
@@ -29,6 +30,12 @@ use yii\base\InvalidConfigException;
  */
 class ConfigController extends Controller
 {
+    /**
+     * Allow guest access independently from guest mode setting.
+     *
+     * @var string
+     */
+    public $access = ControllerAccess::class;
 
     const EVENT_INSTALL_SAMPLE_DATA = 'install_sample_data';
 

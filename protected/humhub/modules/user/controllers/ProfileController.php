@@ -9,6 +9,7 @@
 namespace humhub\modules\user\controllers;
 
 use humhub\modules\user\stream\ProfileStreamAction;
+use humhub\modules\user\Module;
 use Yii;
 use yii\web\HttpException;
 use yii\db\Expression;
@@ -26,6 +27,7 @@ use humhub\modules\space\models\Space;
  * Also the following functions are implemented here.
  *
  * @author Luke
+ * @property Module $module
  * @since 0.5
  */
 class ProfileController extends ContentContainerController
@@ -74,6 +76,10 @@ class ProfileController extends ContentContainerController
 
     public function actionHome()
     {
+        if ($this->module->profileDisableStream) {
+            $this->redirect('about');
+        }
+
         return $this->render('home', ['user' => $this->contentContainer]);
     }
 

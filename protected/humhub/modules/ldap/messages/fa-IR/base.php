@@ -34,7 +34,7 @@ return [
     'The default base DN used for searching for accounts.' => 'DN پیش‌فرض استفاده‌شده برای جستجوی حساب‌های کاربری',
     'The default credentials password (used only with username above).' => 'گذرواژه‌ی پیش‌فرض اسناد(استفاده‌شده تنها با نام کاربری بالا)  ',
     'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'نام کاربری پیش‌فرض اسناد. برخی سرور ها این را با فرم DN نیاز دارند. در صورتی که سرور LDAP نیاز به bind کردن داشته‌باشد باید با فرم DN داده‌شود تا bind کردن برای نام‌های کاربری ساده امکان‌پذیر باشد.',
-    'User Filer' => 'فیلتر کاربر',
+    'User Filter' => 'فیلتر کاربر',
     'Username' => 'نام کاربری',
     'Username Attribute' => 'صفت نام کاربری',
     'ID Attribute' => '',

@@ -80,6 +80,9 @@ class Profile extends ActiveRecord
         ];
 
         foreach (ProfileField::find()->all() as $profileField) {
+            if ($profileField->getFieldType()->isVirtual) {
+                continue;
+            }
             $rules = array_merge($rules, $profileField->getFieldType()->getFieldRules());
         }
 
@@ -154,6 +157,7 @@ class Profile extends ActiveRecord
         Yii::t('UserModule.profile', 'Phone Private');
         Yii::t('UserModule.profile', 'Phone Work');
         Yii::t('UserModule.profile', 'Mobile');
+        Yii::t('UserModule.profile', 'E-Mail');
         Yii::t('UserModule.profile', 'Fax');
         Yii::t('UserModule.profile', 'Skype Nickname');
         Yii::t('UserModule.profile', 'MSN');
@@ -167,7 +171,6 @@ class Profile extends ActiveRecord
         Yii::t('UserModule.profile', 'Vimeo URL');
         Yii::t('UserModule.profile', 'Flickr URL');
         Yii::t('UserModule.profile', 'MySpace URL');
-        Yii::t('UserModule.profile', 'Google+ URL');
         Yii::t('UserModule.profile', 'Twitter URL');
     }
 
@@ -236,7 +239,7 @@ class Profile extends ActiveRecord
                 $fieldDefinition = $profileField->fieldType->getFieldFormDefinition();
 
                 if(isset($fieldDefinition[$profileField->internal_name]) && !empty($profileField->description)) {
-                    $fieldDefinition[$profileField->internal_name]['hint'] = $profileField->description;
+                    $fieldDefinition[$profileField->internal_name]['hint'] =  Yii::t($profileFieldCategory->getTranslationCategory(), $profileField->description);
                 }
 
                 $category['elements'] = array_merge($category['elements'], $fieldDefinition);
@@ -256,6 +259,10 @@ class Profile extends ActiveRecord
     public function beforeSave($insert)
     {
         foreach (ProfileField::find()->all() as $profileField) {
+            /** @var ProfileField $profileField */
+            if ($profileField->getFieldType()->isVirtual) {
+                continue;
+            }
             $key = $profileField->internal_name;
             $this->$key = $profileField->getFieldType()->beforeProfileSave($this->$key);
         }

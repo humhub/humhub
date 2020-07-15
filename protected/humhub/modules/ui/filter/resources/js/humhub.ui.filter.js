@@ -156,6 +156,7 @@ humhub.module('ui.filter', function(module, require, $) {
         'checkbox': CheckBoxInput,
         'radio': RadioInput,
         'picker': PickerInput,
+        'dropdown': TextInput, // don't need a custom input type here
         'text': TextInput
     };
 

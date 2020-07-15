@@ -32,25 +32,39 @@ use yii\helpers\Url;
             'class' => CheckboxColumn::class,
             'label' => Yii::t('UserModule.profile', 'Required'),
             'attribute' => 'required',
-
+            'content' => function (ProfileField $model, $key, $index, $that) {
+                if ($model->getFieldType()->isVirtual) {
+                    return '';
+                }
+                return $that->getDataCellValue($model, $key, $index);
+            }
         ],
         [
             'class' => CheckboxColumn::class,
             'label' => Yii::t('UserModule.profile', 'Visible'),
             'attribute' => 'visible',
-
         ],
         [
             'class' => CheckboxColumn::class,
             'label' => Yii::t('UserModule.profile', 'Editable'),
             'attribute' => 'editable',
-
+            'content' => function (ProfileField $model, $key, $index, $that) {
+                if ($model->getFieldType()->isVirtual) {
+                    return '';
+                }
+                return $that->getDataCellValue($model, $key, $index);
+            }
         ],
         [
             'class' => CheckboxColumn::class,
             'label' => Yii::t('UserModule.profile', 'Searchable'),
             'attribute' => 'searchable',
-
+            'content' => function (ProfileField $model, $key, $index, $that) {
+                if ($model->getFieldType()->isVirtual) {
+                    return '';
+                }
+                return $that->getDataCellValue($model, $key, $index);
+            }
         ],
         [
             'header' => Yii::t('base', 'Actions'),

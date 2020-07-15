@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Friendship' => '',
-    'Receive Notifications for Friendship Request and Approval events.' => '',
-    '{displayName} accepted your friend request.' => '',
-    '{displayName} declined your friend request.' => '',
-    '{displayName} sent you a friend request.' => '',
+    'Friendship' => 'صداقة',
+    'Receive Notifications for Friendship Request and Approval events.' => 'تلقي الإخطارات الخاصة بطلبات الصداقة والموافقة.',
+    '{displayName} accepted your friend request.' => 'قبل {displayName} طلب الصداقة الخاص بك.',
+    '{displayName} declined your friend request.' => 'رفض {displayName} طلب الصداقة الخاص بك.',
+    '{displayName} sent you a friend request.' => 'أرسل {displayName} طلب صداقة إليك.',
 ];

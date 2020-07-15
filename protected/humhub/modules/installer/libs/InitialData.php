@@ -280,6 +280,17 @@ class InitialData
         }
 
         $field = new ProfileField();
+        $field->internal_name = "email_virtual";
+        $field->title = 'E-Mail';
+        $field->sort_order = 350;
+        $field->visible = 0;
+        $field->profile_field_category_id = $cCommunication->id;
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\UserEmail::class;
+        if ($field->save()) {
+            $field->fieldType->save();
+        }
+
+        $field = new ProfileField();
         $field->internal_name = "fax";
         $field->title = 'Fax';
         $field->sort_order = 400;
