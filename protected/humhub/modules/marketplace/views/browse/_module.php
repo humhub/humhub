@@ -43,10 +43,9 @@ $isProOnly = ($isProFeature && $licence->type !== Licence::LICENCE_TYPE_PRO);
                           style="font-size:12px;line-height:18px;background-color:#3F4B5A;color:white">
                     <?php if ($isProOnly): ?><i class="fa fa-lock"></i><?php endif; ?>
                     Professional Edition Feature
-            </span>
+                    </span>
                 </a>
             <?php endif; ?>
-
         </h4>
 
         <p><?= $module['description']; ?></p>
@@ -72,6 +71,9 @@ $isProOnly = ($isProFeature && $licence->type !== Licence::LICENCE_TYPE_PRO);
                 <?php if (!$isInstalled): ?>
                     <?php if ($isProOnly): ?>
                         &middot; <?= Html::a('<i class="fa fa-lock"></i> Professional Edition', ['/admin/information'], ['style' => 'font-weight:bold']); ?>
+                    <?php elseif (!empty($module['price_request_quote']) && !$module['purchased']) : ?>
+                        <?php $checkoutUrl = str_replace('-returnToUrl-', Url::to(['/marketplace/purchase/list'], true), $module['checkoutUrl']); ?>
+                        &middot; <?= Html::a(Yii::t('MarketplaceModule.base', 'Buy'), $checkoutUrl, ['style' => 'font-weight:bold', 'target' => '_blank']); ?>
                     <?php elseif (!empty($module['price_eur']) && !$module['purchased']) : ?>
                         <?php $checkoutUrl = str_replace('-returnToUrl-', Url::to(['/marketplace/purchase/list'], true), $module['checkoutUrl']); ?>
                         &middot; <?= Html::a(Yii::t('MarketplaceModule.base', 'Buy (%price%)', ['%price%' => $module['price_eur'] . '&euro;']), $checkoutUrl, ['style' => 'font-weight:bold', 'target' => '_blank']); ?>
@@ -90,8 +92,11 @@ $isProOnly = ($isProFeature && $licence->type !== Licence::LICENCE_TYPE_PRO);
                 '&nbsp;<i class="fa fa-external-link" aria-hidden="true"></i>'
                 , $module['marketplaceUrl'], ['target' => '_blank']); ?>
 
-            <?php if (!empty($module['showDisclaimer'])): ?>
+            <?php if (!empty($module['isThirdParty'])): ?>
                 &middot; <?= Html::a(Yii::t('MarketplaceModule.base', 'Third-party'), Url::to(['thirdparty-disclaimer']), ['data-target' => '#globalModal']); ?>
+                <a href="<?= Url::to(['thirdparty-disclaimer']) ?>" data-target="#globalModal">
+                    - Community
+                </a>
             <?php endif; ?>
         </div>
     </div>

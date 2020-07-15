@@ -1,5 +1,5 @@
-<?php
+.<?php
 return array (
-  'Change image' => '',
-  'Current space image' => '',
+  'Change image' => 'تغيير الصورة',
+  'Current space image' => 'صورة الفضاء الحالية',
 );

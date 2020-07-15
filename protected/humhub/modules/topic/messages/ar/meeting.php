@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add Topics' => '',
-    'Manage Topics' => '',
+    'Add Topics' => 'أضف مواضيع',
+    'Manage Topics' => 'إدارة المواضيع',
 ];

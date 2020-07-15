@@ -1,7 +1,13 @@
 <?php
 
 use yii\helpers\Url;
-use yii\bootstrap\Html;
+use humhub\libs\Html;
+
+/* @var $this View */
+/* @var $modules array */
+/* @var $categoryId int */
+/* @var $keyword string */
+/* @var $includeCommunityModules boolean */
 
 ?>
 <div class="panel-body">
@@ -20,6 +26,14 @@ use yii\bootstrap\Html;
     </div>
     <?= Html::endForm(); ?>
 
+    <?= Html::beginForm(Url::to(['/marketplace/browse', 'communitySwitch' => 1]), 'post', ['id' => 'communityForm']); ?>
+    <div class="form-group pull-right">
+        <label>
+            <?= Html::checkbox('includeCommunityModules', $includeCommunityModules, ['id' => 'chkCommunity']); ?>
+            <?= Yii::t('MarketplaceModule.base', 'Include Community Modules'); ?>
+        </label>
+    </div>
+    <?= Html::endForm(); ?>
     <br>
 
     <?php if (count($modules) == 0) : ?>
@@ -35,9 +49,13 @@ use yii\bootstrap\Html;
         <?php endforeach; ?>
     <?php endif; ?>
 </div>
+
 <script>
     $('#categorySelect').change(function () {
         $('#filterForm').submit();
+    });
+    $('#chkCommunity').change(function () {
+        $('#communityForm').submit();
     });
 </script>
 

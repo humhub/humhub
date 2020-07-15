@@ -30,11 +30,14 @@ class ActiveForm extends \yii\bootstrap\ActiveForm
 
     public $acknowledge = false;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();
 
-        if($this->acknowledge) {
+        if ($this->acknowledge) {
             $this->options['data-ui-addition'] = 'acknowledgeForm';
         }
     }
