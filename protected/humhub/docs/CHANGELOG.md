@@ -3,9 +3,13 @@ HumHub Change Log
 
 1.5.3 (Unreleased)
 --------------------
-
 - Fix #4036: Profile images are not rotated correctly
-
+- Fix #4168: Erroneous pagination in notification overview 
+- Fix #4060: Profile description and text regex error message not translatable
+- Fix #4153: Administration: Email transport configuration 'Save & Test' Gives No Result
+- Fix #4187: Use of invalid LivePushAsset namespace
+- Fix #4140: Profile field hint is double encoded
+- Fix #4166: Typo in LDAP settings form
 
 
 1.5.2 (May 20, 2020)

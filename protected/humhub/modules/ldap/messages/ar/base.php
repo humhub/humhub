@@ -26,7 +26,7 @@ return [
     'Login Filter' => 'فرز تسجيل الدخول',
     'Password' => 'كلمة السر',
     'Port' => 'المنفذ',
-    'User Filer' => 'فرز الأعضاء',
+    'User Filter' => 'فرز الأعضاء',
     'Username' => 'اسم المستخدم',
     'Username Attribute' => 'معلومات اسم المستخدم',
     'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => '',

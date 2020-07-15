@@ -33,7 +33,7 @@ return [
     'The default base DN used for searching for accounts.' => 'Numatytoji bazė DN, naudojama paskyrų paieškai.',
     'The default credentials password (used only with username above).' => 'Numatytasis įgaliojimų slaptažodis (naudojamas tik su vartotojo vardu)',
     'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'Numatytasis įgaliojimų vardas. Kai kurie serveriai reikalauja, kad tai būtų DN formoje. Tai turi būti DN formoje, jei LDAP serveris reikalauja DN įpareigoti ir įpareigojimas turi būti galimas su paprastais vartotojų vardais.',
-    'User Filer' => 'Vartotojo filtras',
+    'User Filter' => 'Vartotojo filtras',
     'Username' => 'Vartotojo vardas',
     'Username Attribute' => 'Vartotojo savybė',
     'E-Mail Address Attribute' => '',

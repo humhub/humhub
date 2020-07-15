@@ -34,7 +34,7 @@ return [
     'The default base DN used for searching for accounts.' => 'Standard basen som DN bruger for at søge efter kontier',
     'The default credentials password (used only with username above).' => 'Standard legitimationsoplysning i adgangskode (bruges kun med brugernavn ovenfor).',
     'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'Standardindstillingerne legitimationsoplysninger brugernavn . Nogle servere kræver , at dette skal være i DN form. Dette skal angives i DN formularen, hvis LDAP-serveren kræver en DN at forbinde til og forbindendelse bør være muligt ved simple brugernavne .',
-    'User Filer' => 'Bruger Filer',
+    'User Filter' => 'Bruger Filer',
     'Username' => 'Brugernavn',
     'Username Attribute' => 'Brugernavn Attribut',
     'ID Attribute' => '',

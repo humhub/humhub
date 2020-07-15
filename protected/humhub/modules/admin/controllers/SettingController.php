@@ -19,6 +19,7 @@ use humhub\modules\admin\models\forms\OEmbedProviderForm;
 use humhub\modules\admin\models\forms\ProxySettingsForm;
 use humhub\modules\admin\models\forms\StatisticSettingsForm;
 use humhub\modules\admin\permissions\ManageSettings;
+use humhub\modules\user\models\User;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use Yii;
 use humhub\libs\Helpers;
@@ -202,15 +203,22 @@ class SettingController extends Controller
 
     public function actionMailingServerTest()
     {
+        /** @var User $user */
+        $user = Yii::$app->user->getIdentity();
+
         try {
             $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
                 'message' => Yii::t('AdminModule.settings', 'Test message')
             ]);
-            $mail->setTo(Yii::$app->user->getIdentity()->email);
+            $mail->setTo($user->email);
             $mail->setSubject(Yii::t('AdminModule.settings', 'Test message'));
 
             if ($mail->send()) {
-                $this->view->saved();
+                $this->view->info(
+                    Yii::t('AdminModule.settings', 'Saved and sent test email to: {address}',
+                        ['address' => $user->email]
+                    )
+                );
             } else {
                 $this->view->error(Yii::t('AdminModule.settings', 'Could not send test email.'));
             }

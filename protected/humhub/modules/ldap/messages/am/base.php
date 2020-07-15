@@ -29,7 +29,7 @@ return [
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => 'ተጠቃሚው በዝርዝር ማውጫ ላይ ያለአሻሚናት እንዲለይ የLDAPው ባህሪ አይቀየርም። ባዶ ከሆነ ተጠቃሚው በኢሜል አድራሻ ወይም በተመጠቀሚያ ስም በራስ ሰር የሚወስን ይሆናል።',
     'Password' => 'የይለፍ ቃል',
     'Port' => 'መተላለፊያ',
-    'User Filer' => 'የተጠቃሚ ማስፈሪያ',
+    'User Filter' => 'የተጠቃሚ ማስፈሪያ',
     'Username' => 'የመጠቃሚያ ስም',
     'Username Attribute' => 'የመጠቀሚያ ስም ባህሪ',
     'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => '',

@@ -38,7 +38,7 @@ return [
     'The default base DN used for searching for accounts.' => 'La base par défaut DN utilisé pour la recherche de comptes.',
     'The default credentials password (used only with username above).' => 'Le mot de passe par défaut des informations d\'identification (utilisé uniquement avec identifiant ci-dessus).',
     'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'Le nom d\'utilisateur par défaut de l\'identification. Certains serveurs exigent cette information dans le formulaire DN. Celle-ci doit être précisée dans le formulaire DN si le serveur LDAP exige un lien vers un DN, et ce lien doit être possible avec de simples noms d\'utilisateur.',
-    'User Filer' => 'Filtre utilisateur',
+    'User Filter' => 'Filtre utilisateur',
     'Username' => 'Identifiant',
     'Username Attribute' => 'Attribut utilisateur',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => '',

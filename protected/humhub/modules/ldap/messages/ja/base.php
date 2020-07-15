@@ -38,7 +38,7 @@ return [
     'The default base DN used for searching for accounts.' => 'デフォルトのベース識別名（DN）を、アカウントの検索に使用。',
     'The default credentials password (used only with username above).' => 'デフォルトの資格のパスワード（上のユーザ名でのみ使用されます）。',
     'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'デフォルトの認証情報はユーザー名。サーバによってはこれがDN形式であることを必要とする。 LDAPサーバがバインドする結合は、単純なユーザ名で可能であるべきで、DNを必要とする場合にはDN形式で指定する必要があります。',
-    'User Filer' => 'ユーザーファイラー',
+    'User Filter' => 'ユーザーファイラー',
     'Username' => 'ユーザー名',
     'Username Attribute' => 'ユーザー属性',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => '',

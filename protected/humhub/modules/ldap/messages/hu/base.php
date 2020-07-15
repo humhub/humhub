@@ -38,7 +38,7 @@ return [
     'The default base DN used for searching for accounts.' => 'A fiókok kereséséhez használt alapértelmezett DN alap.',
     'The default credentials password (used only with username above).' => 'Az alapértelmezett hitelesítő jelszó (csak a fenti felhasználónévvel használható).',
     'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'Az alapértelmezett hitelesítő felhasználónév. Néhány kiszolgáló megköveteli, hogy ez DN formában legyen. Ezt DN formában kell megadni, ha az LDAP kiszolgáló megköveteli a DN-t a kötéshez, és a kötés egyszerű felhasználónevekkel lehetséges.',
-    'User Filer' => 'Felhasználói szűrő',
+    'User Filter' => 'Felhasználói szűrő',
     'Username' => 'Felhasználónév',
     'Username Attribute' => 'Felhasználónév attribútuma',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => '',
