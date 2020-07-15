@@ -191,7 +191,7 @@ class ProfileField extends ActiveRecord
                         'class' => 'form-control',
                     ],
                     'sort_order' => [
-                        'type' => 'text',
+                        'type' => 'sortOrder',
                         'maxlength' => 32,
                         'class' => 'form-control',
                     ],

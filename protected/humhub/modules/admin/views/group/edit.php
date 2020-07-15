@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\ui\form\widgets\SortOrderField;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -44,7 +45,7 @@ use humhub\modules\space\widgets\SpacePickerField;
         <?= $form->field($group, 'show_at_registration')->checkbox(); ?>
     <?php endif; ?>
     <?= $form->field($group, 'show_at_directory')->checkbox(); ?>
-    <?= $form->field($group, 'sort_order'); ?>
+    <?= $form->field($group, 'sort_order')->widget(SortOrderField::class) ?>
 
     <?= CHtml::submitButton(Yii::t('AdminModule.user', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 

@@ -13,6 +13,7 @@ use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\components\FileManager;
 use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
+use humhub\modules\ui\form\widgets\SortOrderField;
 use Yii;
 use yii\helpers\Html;
 use yii\widgets\ActiveField;
@@ -261,7 +262,7 @@ class HForm extends \yii\base\Component
                         }
                         break;
                     case 'multiselectdropdown':
-                        $field = $this->form->field($model, $name)->widget(MultiSelect::class,  [
+                        $field = $this->form->field($model, $name)->widget(MultiSelect::class, [
                             'items' => $definition['items'],
                             'options' => $definition['options']
                         ]);
@@ -293,7 +294,7 @@ class HForm extends \yii\base\Component
                         $field = $this->form->field($model, $name)->checkboxList($definition['items'], $options);
                         break;
                     case 'textarea':
-                        if(isset($definition['class'])) {
+                        if (isset($definition['class'])) {
                             $options['class'] = $definition['class'];
                         }
 
@@ -338,11 +339,14 @@ class HForm extends \yii\base\Component
 
                         $field = $this->form->field($model, $name)->widget(RichTextField::class, $options);
                         break;
+                    case 'sortOrder':
+                        $field = $this->form->field($model, $name)->widget(SortOrderField::class, $options);
+                        break;
                     default:
                         return "Field Type " . $definition['type'] . " not supported by Compat HForm";
                 }
 
-                if(!empty($definition['hint'])  && $field instanceof ActiveField) {
+                if (!empty($definition['hint']) && $field instanceof ActiveField) {
                     $field->hint(Html::encode($definition['hint'], false));
                 }
 

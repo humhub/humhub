@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\SortOrderField;
 use humhub\modules\user\models\ProfileFieldCategory;
 use humhub\widgets\Button;
 use yii\helpers\Url;
@@ -23,11 +24,8 @@ use humhub\libs\Html;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($category, 'title') ?>
-
     <?= $form->field($category, 'description')->textarea(['rows' => 5]) ?>
-
-    <?= $form->field($category, 'sort_order') ?>
-
+    <?= $form->field($category, 'sort_order')->widget(SortOrderField::class) ?>
     <?= $form->field($category, 'translation_category') ?>
 
     <hr>
@@ -36,7 +34,7 @@ use humhub\libs\Html;
 
     <?php if (!$category->isNewRecord && !$category->is_system): ?>
         <?= Button::danger(Yii::t('AdminModule.user', 'Delete'))
-            ->link(Url::to(['delete-category', 'id' => $category->id]))->confirm()->right()?>
+            ->link(Url::to(['delete-category', 'id' => $category->id]))->confirm()->right() ?>
     <?php endif; ?>
 
     <?php ActiveForm::end(); ?>
