@@ -1,8 +1,8 @@
 HumHub Change Log
 =================
 
-1.5.3 (Unreleased)
---------------------
+1.5.3 (July 16, 2020)
+---------------------
 - Fix #4036: Profile images are not rotated correctly
 - Fix #4168: Erroneous pagination in notification overview 
 - Fix #4060: Profile description and text regex error message not translatable
