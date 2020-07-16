@@ -268,6 +268,7 @@ class StreamCest
         $I->waitForElementVisible($postSelector);
 
         $I->click('Comment', $postSelector);
+        $I->wait(1);
         $I->waitForElementVisible($postSelector.' .comment-container', null );
         $I->fillField($postSelector.' .comment_create .humhub-ui-richtext', 'My Comment');
         $I->click('Send', $postSelector.' .comment_create');
@@ -315,6 +316,7 @@ class StreamCest
         $post4Selector = '[data-stream-entry][data-content-key="20"]';
 
         $I->click('Comment', $post4Selector);
+        $I->wait(1);
         $I->fillField($post4Selector . ' [contenteditable]', 'My Comment!');
         $I->click('Send', $post4Selector . ' .comment-buttons');
 
