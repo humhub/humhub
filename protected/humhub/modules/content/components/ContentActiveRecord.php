@@ -53,6 +53,7 @@ use yii\base\InvalidConfigException;
  * @property Content $content
  * @mixin Followable
  * @property User $createdBy
+ * @property User $owner
  * @author Luke
  */
 class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
