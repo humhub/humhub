@@ -93,6 +93,8 @@ return [
     'invited you to join {space} on {name}.' => 'pozvao vas je da se pridružite {space} na {name}.',
     'or' => 'ili',
     'Change Username' => '',
+    'Profile posts only' => '',
+    'Show all content' => '',
     'Source' => '',
     'Username contains invalid characters.' => '',
 ];

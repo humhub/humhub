@@ -88,6 +88,8 @@ return [
     'Change Username' => '',
     'Missing E-Mail Attribute from AuthClient.' => '',
     'Missing ID AuthClient Attribute from AuthClient.' => '',
+    'Profile posts only' => '',
+    'Show all content' => '',
     'Source' => '',
     'Unknown user status!' => '',
     'Username contains invalid characters.' => '',

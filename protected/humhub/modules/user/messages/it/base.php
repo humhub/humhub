@@ -94,5 +94,7 @@ return [
     'invited you to join {name}.' => 'ti ha invitato ad unirti a {name}.',
     'invited you to join {space} on {name}.' => 'ti ha invitato ad unirti a {space} su {name}.',
     'or' => 'o',
+    'Profile posts only' => '',
+    'Show all content' => '',
     'Source' => '',
 ];

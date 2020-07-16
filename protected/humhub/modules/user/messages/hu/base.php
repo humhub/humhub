@@ -93,6 +93,8 @@ return [
     'invited you to join {space} on {name}.' => 'meghivott, hogy csatlakozz ehhez: {space} itt: {name}.',
     'or' => 'vagy',
     'Change Username' => '',
+    'Profile posts only' => '',
+    'Show all content' => '',
     'Source' => '',
     'Username contains invalid characters.' => '',
 ];

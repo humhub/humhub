@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '(Also visible to non-members of this space)' => '',
     '<strong>Confirm</strong> post deletion' => '',
     '<strong>Move</strong> content' => '',
     '<strong>Permalink</strong> to this post' => '',
@@ -32,14 +33,12 @@ return [
     'Could not delete content!' => '',
     'Could not delete content: Access denied!' => '',
     'Could not find requested content!' => '',
-    'Could not load requested object!' => '',
     'Created by me' => '',
     'Creation time' => '',
     'Delete' => '',
     'Do you really want to delete this post? All likes and comments will be lost!' => '',
     'Edit' => '',
     'Filter' => '',
-    'Include archived content' => '',
     'Invalid content id given!' => '',
     'Invalid request method!' => '',
     'Invalid space selection.' => '',
@@ -47,10 +46,7 @@ return [
     'Load more' => '',
     'Make private' => '',
     'Make public' => '',
-    'Maximum number of pinned items reached!
-
-You can pin to top only two items at once.
-To however pin this item, unpin another before!' => '',
+    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => '',
     'Move content' => '',
     'Move to archive' => '',
     'No matches with your selected filters!' => '',
@@ -63,11 +59,13 @@ To however pin this item, unpin another before!' => '',
     'Pin to top' => '',
     'Pinned' => '',
     'Public' => '',
+    'Specify who can see this content.' => '',
     'Submit' => '',
     'Tag' => '',
     'Target Space' => '',
     'The author of this content is not allowed to create private content within the selected space.' => '',
     'The author of this content is not allowed to create public content within the selected space.' => '',
+    'The author of this content is not allowed to create this type of content within this space.' => '',
     'The content can\'t be moved to its current space.' => '',
     'The content has been archived.' => '',
     'The content has been deleted.' => '',

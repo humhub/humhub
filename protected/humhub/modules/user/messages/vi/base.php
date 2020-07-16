@@ -94,5 +94,7 @@ return [
     'invited you to join {name}.' => 'đã mời bạn tham gia {name}.',
     'invited you to join {space} on {name}.' => 'đã mời bạn tham gia diễn đàn {space} trên {name}.',
     'or' => 'hoặc',
+    'Profile posts only' => '',
+    'Show all content' => '',
     'Source' => '',
 ];

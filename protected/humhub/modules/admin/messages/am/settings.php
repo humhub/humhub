@@ -117,6 +117,7 @@ return [
     'PHP reported a maximum of {maxUploadSize} MB' => '',
     'Prevent client caching of following scripts' => '',
     'Save & Test' => '',
+    'Saved and sent test email to: {address}' => '',
     'Test message' => '',
     'Url Prefix without http:// or https:// (e.g. youtube.com)' => '',
     'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => '',

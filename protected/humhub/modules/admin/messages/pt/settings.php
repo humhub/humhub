@@ -107,6 +107,7 @@ return [
     'SMTP Options' => '',
     'Save & Flush Caches' => '',
     'Save & Test' => '',
+    'Saved and sent test email to: {address}' => '',
     'Server' => '',
     'Server Timezone' => '',
     'Show user profile post form on dashboard' => '',

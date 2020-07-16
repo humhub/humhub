@@ -95,6 +95,7 @@ return [
     'Select all registered users' => '',
     'Send' => '',
     'Settings' => '',
+    'Settings could not be saved!' => '',
     'Show all' => '',
     'Sorry, you are not allowed to leave this space!' => '',
     'Space' => '',
