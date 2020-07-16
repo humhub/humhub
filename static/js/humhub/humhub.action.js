@@ -89,7 +89,7 @@ humhub.module('action', function(module, require, $) {
                 this.$ = node;
             } else if(object.isString(node)) {
                 this.$ = $(node);
-                if(!this.$.length) {
+                if(!this.$.length && !string.startsWith(node, '#')) {
                     this.$ = $('#' + node);
                 }
             }
@@ -278,8 +278,8 @@ humhub.module('action', function(module, require, $) {
         try {
             var $node = _getNode(node);
 
-            if(!$node.length) {
-                return;
+            if(!$node || !$node.length) {
+                return null;
             }
 
             var ns = Component.getNameSpace($node);
@@ -293,12 +293,17 @@ humhub.module('action', function(module, require, $) {
     };
 
     var _getNode = function(node) {
-        var $node = (node instanceof $) ? node : $(node);
+        try {
+            var $node = (node instanceof $) ? node : $(node);
 
-        if(!$node.length && object.isString(node) && node.length) {
-            $node = $('#' + node);
+            if(!$node.length && object.isString(node) && node.length && !string.startsWith(node, '#')) {
+                    $node = $('#' + node);
+            }
+
+            return $node;
+        } catch(e) {
+            return null;
         }
-        return $node;
     };
 
     Component._getInstance = function(ComponentClass, $node, options) {
