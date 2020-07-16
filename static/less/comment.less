@@ -16,7 +16,6 @@
         .nav-pills.preferences {
             display: none;
             right: -3px;
-            top: -3px;
         }
     }
 
@@ -131,6 +130,50 @@
 }
 
 // Hide seperator of last comment. Seperator is included in optional comment form
-div.comment > div.media:last-of-type hr.comment_seperator {
-    display: none;
+div.comment > div.media:first-of-type {
+    hr.comment-separator {
+        display: none;
+    }
+
+    .nav-pills.preferences {
+        display: none;
+        top: -3px;
+    }
+}
+
+hr.comments-start-separator {
+    margin-top: 10px;
+}
+
+div.nested-comments-root {
+    hr.comment-separator {
+        display: inherit !important;
+    }
+
+    hr.comments-start-separator {
+        display:none;
+    }
+
+    a.show-all-link {
+        margin-top:10px;
+    }
+
+    div.comment {
+        .media {
+            position: relative !important;
+            margin-top: 0;
+
+            .nav-pills.preferences {
+                display: none;
+                top: 8px;
+                right: 0;
+            }
+        }
+    }
+
+    div.comment-container {
+        margin-top:0;
+        padding-bottom:0;
+        padding-top:0;
+    }
 }

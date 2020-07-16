@@ -29,6 +29,8 @@ $module = Yii::$app->getModule('comment');
      data-action-component="comment.Comment"
      data-content-delete-url="<?= $deleteUrl ?>">
 
+    <hr class="comment-separator">
+
     <?php if ($canEdit || $canDelete) : ?>
         <div class="comment-entry-loader pull-right"></div>
         <ul class="nav nav-pills preferences">
@@ -90,10 +92,9 @@ $module = Yii::$app->getModule('comment');
             <?php endif; ?>
             <?= LikeLink::widget(['object' => $comment]); ?>
         </div>
-        <div style="margin-left:42px">
+
+        <div class="nested-comments-root" style="margin-left:42px">
             <?= Comments::widget(['object' => $comment]); ?>
         </div>
     </div>
-
-    <hr class="comment_seperator">
 </div>
