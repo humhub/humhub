@@ -293,16 +293,17 @@ humhub.module('action', function(module, require, $) {
     };
 
     var _getNode = function(node) {
-        var $node = (node instanceof $) ? node : $(node);
+        try {
+            var $node = (node instanceof $) ? node : $(node);
 
-        if(!$node.length && object.isString(node) && node.length && !string.startsWith(node, '#')) {
-            try {
-                $node = $('#' + node);
-            } catch(e) {
-                return null;
+            if(!$node.length && object.isString(node) && node.length && !string.startsWith(node, '#')) {
+                    $node = $('#' + node);
             }
+
+            return $node;
+        } catch(e) {
+            return null;
         }
-        return $node;
     };
 
     Component._getInstance = function(ComponentClass, $node, options) {
