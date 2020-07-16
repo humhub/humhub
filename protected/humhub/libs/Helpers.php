@@ -202,7 +202,7 @@ class Helpers
                 }
             }
         } else {
-            if (class_exists($className) && is_a($className, $t, true)) {
+            if (class_exists($className) && is_a($className, $type, true)) {
                 return true;
             }
         }
