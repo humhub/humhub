@@ -26,6 +26,8 @@ $isHidden = ($objectModel === \humhub\modules\comment\models\Comment::class);
 <div id="comment_create_form_<?= $id; ?>" class="comment_create" data-ui-widget="comment.Form"
      style="<?php if ($isHidden): ?>display:none<?php endif; ?>">
 
+    <hr>
+
     <?= Html::beginForm('#'); ?>
     <?= Html::hiddenInput('objectModel', $objectModel); ?>
     <?= Html::hiddenInput('objectId', $objectId); ?>

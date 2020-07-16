@@ -28,6 +28,7 @@ $module = Yii::$app->getModule('comment');
 <div class="media" id="comment_<?= $comment->id; ?>"
      data-action-component="comment.Comment"
      data-content-delete-url="<?= $deleteUrl ?>">
+
     <?php if ($canEdit || $canDelete) : ?>
         <div class="comment-entry-loader pull-right"></div>
         <ul class="nav nav-pills preferences">
@@ -94,6 +95,5 @@ $module = Yii::$app->getModule('comment');
         </div>
     </div>
 
-
-    <hr>
+    <hr class="comment_seperator">
 </div>
