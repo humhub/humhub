@@ -75,8 +75,12 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
 
         if ($this->source instanceof ContentActiveRecord) {
             $this->_content = $this->source->content;
-        } elseif ($this->source instanceof ContentAddonActiveRecord && $this->source->source instanceof ContentActiveRecord) {
-            $this->_content = $this->source->source->content;
+        } elseif ($this->source instanceof ContentAddonActiveRecord) {
+            if ($this->source->source instanceof ContentActiveRecord) {
+                $this->_content = $this->source->source->content;
+            } elseif ($this->source->source->source) {
+                $this->_content = $this->source->source->source->content;
+            }
         }
 
         if ($this->_content == null) {
@@ -141,8 +145,8 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
     /**
      * Checks if this content addon can be changed
      *
-     * @deprecated since 1.4
      * @return boolean
+     * @deprecated since 1.4
      */
     public function canWrite()
     {

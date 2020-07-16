@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\components\Widget;
 use humhub\modules\comment\models\Comment as CommentModel;
 use humhub\modules\comment\Module;
+use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
 
 /**
@@ -26,7 +27,7 @@ class CommentLink extends Widget
     const MODE_POPUP = 'popup';
 
     /**
-     * @var ActiveRecord
+     * @var CommentModel|ContentActiveRecord
      */
     public $object;
 
@@ -50,30 +51,22 @@ class CommentLink extends Widget
         /** @var Module $module */
         $module = Yii::$app->getModule('comment');
 
-        if ($this->mode == "") {
+        if (empty($this->mode)) {
             $this->mode = self::MODE_INLINE;
         }
 
-        if (!$module->canComment($this->object->content)) {
+        if (!$module->canComment($this->object)) {
             return '';
         }
 
         return $this->render('link', [
             'id' => $this->object->getUniqueId(),
             'mode' => $this->mode,
-            'objectModel' => $this->object->content->object_model,
-            'objectId' => $this->object->content->object_id,
+            'objectModel' => get_class($this->object),
+            'objectId' => $this->object->getPrimaryKey(),
+            'commentCount' => CommentModel::GetCommentCount(get_class($this->object), $this->object->getPrimaryKey()),
+            'isNestedComment' => ($this->object instanceof CommentModel)
+
         ]);
     }
-
-    /**
-     * Returns count of existing comments
-     *
-     * @return Int the total amount of comments
-     */
-    public function getCommentsCount()
-    {
-        return CommentModel::GetCommentCount(get_class($this->object), $this->object->getPrimaryKey());
-    }
-
 }

@@ -13,7 +13,7 @@ use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 
 /**
- * Description of NewComment
+ * NewComment activity
  *
  * @author luke
  */

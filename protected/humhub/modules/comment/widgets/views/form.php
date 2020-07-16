@@ -7,25 +7,37 @@ use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\FilePreview;
 
-/* @var $modelName string */
-/* @var $modelId integer */
+/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $objectModel string */
+/* @var $objectId integer */
+/* @var $id string unique object id */
+/* @var $isNestedComment boolean */
 
+/** @var \humhub\modules\content\Module $contentModule */
+$contentModule = Yii::$app->getModule('content');
 $submitUrl = Url::to(['/comment/comment/post']);
 
+$placeholder = ($isNestedComment) ? Yii::t('CommentModule.base', 'Write a new reply...') : Yii::t('CommentModule.base', 'Write a new comment...');
+
+// Hide the comment form for sub comments until the button is clicked
+$isHidden = ($objectModel === \humhub\modules\comment\models\Comment::class);
 ?>
 
-<div id="comment_create_form_<?= $id; ?>" class="comment_create" data-ui-widget="comment.Form">
+<div id="comment_create_form_<?= $id; ?>" class="comment_create" data-ui-widget="comment.Form"
+     style="<?php if ($isHidden): ?>display:none<?php endif; ?>">
+
+    <hr>
 
     <?= Html::beginForm('#'); ?>
-    <?= Html::hiddenInput('contentModel', $modelName); ?>
-    <?= Html::hiddenInput('contentId', $modelId); ?>
+    <?= Html::hiddenInput('objectModel', $objectModel); ?>
+    <?= Html::hiddenInput('objectId', $objectId); ?>
 
     <div class="comment-create-input-group">
         <?= RichTextField::widget([
             'id' => 'newCommentForm_' . $id,
             'layout' => RichTextField::LAYOUT_INLINE,
             'pluginOptions' => ['maxHeight' => '300px'],
-            'placeholder' => Yii::t('CommentModule.base', 'Write a new comment...'),
+            'placeholder' => $placeholder,
             'name' => 'message',
             'events' => [
                 'scroll-active' => 'comment.scrollActive',
@@ -39,8 +51,8 @@ $submitUrl = Url::to(['/comment/comment/post']);
                 'options' => ['class' => 'main_comment_upload'],
                 'progress' => '#comment_create_upload_progress_' . $id,
                 'preview' => '#comment_create_upload_preview_' . $id,
-                'dropZone' => '#comment_create_form_'.$id,
-                'max' => Yii::$app->getModule('content')->maxAttachedFiles
+                'dropZone' => '#comment_create_form_' . $id,
+                'max' => $contentModule->maxAttachedFiles
             ]); ?>
 
             <?= Button::defaultType(Yii::t('CommentModule.base', 'Send'))

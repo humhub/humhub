@@ -30,7 +30,7 @@ class Helpers
      */
     public static function truncateText($text, $length)
     {
-        $length = abs((int) $length);
+        $length = abs((int)$length);
         if (strlen($text) > $length) {
             $text = preg_replace("/^(.{1,$length})(\s.*|$)/s", '\\1...', $text);
         }
@@ -42,7 +42,7 @@ class Helpers
     public static function trimText($text, $length)
     {
 
-        $length = abs((int) $length);
+        $length = abs((int)$length);
         $textlength = mb_strlen($text);
         if ($textlength > $length) {
             $text = self::substru($text, 0, $textlength - ($textlength - $length));
@@ -160,10 +160,17 @@ class Helpers
         }
 
         switch (substr($valueString, -1)) {
-            case 'M': case 'm': return (int) $valueString * 1048576;
-            case 'K': case 'k': return (int) $valueString * 1024;
-            case 'G': case 'g': return (int) $valueString * 1073741824;
-            default: return (int) $valueString;
+            case 'M':
+            case 'm':
+                return (int)$valueString * 1048576;
+            case 'K':
+            case 'k':
+                return (int)$valueString * 1024;
+            case 'G':
+            case 'g':
+                return (int)$valueString * 1073741824;
+            default:
+                return (int)$valueString;
         }
     }
 
@@ -190,12 +197,12 @@ class Helpers
 
         if (is_array($type)) {
             foreach ($type as $t) {
-                if (class_exists($className) && is_subclass_of($className, $t)) {
+                if (class_exists($className) && is_a($className, $t, true)) {
                     return true;
                 }
             }
         } else {
-            if (class_exists($className) && is_subclass_of($className, $type)) {
+            if (class_exists($className) && is_a($className, $type, true)) {
                 return true;
             }
         }
@@ -250,8 +257,8 @@ class Helpers
      *
      * This is mainly required for grouped notifications.
      *
-     * @since 1.2.1
      * @param $event
+     * @since 1.2.1
      */
     public static function SqlMode($event)
     {
@@ -260,7 +267,7 @@ class Helpers
             try {
                 $event->sender->createCommand('SET SESSION sql_mode=""; SET SESSION sql_mode="NO_ENGINE_SUBSTITUTION"')->execute();
             } catch (\Exception $ex) {
-                Yii::error('Could not switch SQL mode: '. $ex->getMessage());
+                Yii::error('Could not switch SQL mode: ' . $ex->getMessage());
             }
         }
     }

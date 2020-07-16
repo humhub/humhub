@@ -8,6 +8,7 @@
 
 namespace humhub\modules\comment;
 
+use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\search\events\SearchAttributesEvent;
@@ -30,7 +31,10 @@ class Events extends Component
      */
     public static function onContentDelete($event)
     {
-        foreach (Comment::find()->where(['object_model' => $event->sender->className(), 'object_id' => $event->sender->id])->all() as $comment) {
+        /** @var Comment|ContentActiveRecord $sender */
+        $sender = $event->sender;
+
+        foreach (Comment::find()->where(['object_model' => get_class($sender), 'object_id' => $sender->getPrimaryKey()])->all() as $comment) {
             $comment->delete();
         }
     }
@@ -89,7 +93,10 @@ class Events extends Component
             return;
         }
 
-        if (Yii::$app->getModule('comment')->canComment($event->sender->object->content)) {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('comment');
+
+        if ($module->canComment($event->sender->object)) {
             $event->sender->addWidget(widgets\CommentLink::class, ['object' => $event->sender->object], ['sortOrder' => 10]);
         }
     }
@@ -107,8 +114,8 @@ class Events extends Component
     /**
      * Handles the SearchAttributesEvent and adds related comments
      *
-     * @since 1.2.3
      * @param SearchAttributesEvent $event
+     * @since 1.2.3
      */
     public static function onSearchAttributes(SearchAttributesEvent $event)
     {

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\comment\models;
 
+use humhub\modules\comment\Module;
 use Yii;
 use yii\base\Exception;
 use yii\db\ActiveRecord;
@@ -19,7 +20,6 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\widgets\richtext\RichText;
-use humhub\modules\post\models\Post;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -37,10 +37,6 @@ use humhub\modules\user\models\User;
  * @property string $updated_at
  * @property integer $updated_by
  *
- * The followings are the available model relations:
- * @property Post[] $posts
- *
- * @package humhub.modules_core.comment.models
  * @since 0.5
  */
 class Comment extends ContentAddonActiveRecord implements ContentOwner
@@ -87,6 +83,13 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     {
         $this->flushCache();
 
+        // Delete sub comment (replies)
+        if ($this->object_model !== static::class) {
+            foreach (static::findAll(['object_model' => static::class, 'object_id' >= $this->id]) as $comment) {
+                $comment->delete();
+            }
+        }
+
         return parent::beforeDelete();
     }
 
@@ -130,7 +133,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     {
         $this->flushCache();
 
-        if($insert) {
+        if ($insert) {
             NewComment::instance()->about($this)->create();
         }
 
@@ -198,12 +201,18 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
      *
      * @param $model
      * @param $id
-     * @param int $limit
+     * @param int|null $limit when null the default limit will used
      *
      * @return Comment[] the comments
      */
-    public static function GetCommentsLimited($model, $id, $limit = 2)
+    public static function GetCommentsLimited($model, $id, $limit = null)
     {
+        if ($limit === null) {
+            /** @var Module $module */
+            $module = Yii::$app->getModule('comment');
+            $limit = $module->commentsPreviewMax;
+        }
+
         $cacheID = sprintf("commentsLimited_%s_%s", $model, $id);
         $comments = Yii::$app->cache->get($cacheID);
 

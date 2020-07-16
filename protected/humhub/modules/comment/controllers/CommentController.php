@@ -8,10 +8,15 @@
 
 namespace humhub\modules\comment\controllers;
 
+use humhub\components\Controller;
+use humhub\libs\Helpers;
+use humhub\modules\comment\Module;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\models\Content;
 use Yii;
 use yii\data\Pagination;
 use yii\web\HttpException;
-use humhub\modules\content\components\ContentAddonController;
+use yii\helpers\Url;
 use humhub\components\behaviors\AccessControl;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\widgets\Comment as CommentWidget;
@@ -23,9 +28,10 @@ use yii\web\ForbiddenHttpException;
  * CommentController provides all comment related actions.
  *
  * @package humhub.modules_core.comment.controllers
+ * @property Module $module
  * @since 0.5
  */
-class CommentController extends ContentAddonController
+class CommentController extends Controller
 {
 
     /**
@@ -47,35 +53,68 @@ class CommentController extends ContentAddonController
         ];
     }
 
+
+    /**
+     * @var Comment|ContentActiveRecord The model to comment
+     */
+    public $target;
+
+
+    /**
+     * @var Content
+     */
+    public $content;
+
+
+    /**
+     * @inheritDoc
+     */
+    public function beforeAction($action)
+    {
+        $modelClass = Yii::$app->request->get('objectModel', Yii::$app->request->post('objectModel'));
+        $modelPk = (int)Yii::$app->request->get('objectId', Yii::$app->request->post('objectId'));
+
+        Helpers::CheckClassType($modelClass, [Comment::class, ContentActiveRecord::class]);
+        $this->target = $modelClass::findOne(['id' => $modelPk]);
+
+        if ($this->target === null) {
+            throw new HttpException(500, 'Could not find underlying content or content addon record!');
+        }
+
+        $this->content = $this->target->content;
+
+        if (!$this->content->canView()) {
+            throw new HttpException(403, 'Access denied!');
+        }
+
+        return parent::beforeAction($action);
+    }
+
+
     /**
      * Returns a List of all Comments belong to this Model
      */
     public function actionShow()
     {
-        $content = $this->parentContent;
-
         $query = Comment::find();
         $query->orderBy('created_at DESC');
-        $query->where([
-            'object_model' => $content->className(),
-            'object_id' => $content->getPrimaryKey(),
-        ]);
+        $query->where(['object_model' => get_class($this->target), 'object_id' => $this->target->getPrimaryKey()]);
 
         $pagination = new Pagination([
-            'totalCount' => Comment::GetCommentCount($content->className(), $content->getPrimaryKey()),
+            'totalCount' => Comment::GetCommentCount(get_class($this->target), $this->target->getPrimaryKey()),
             'pageSize' => $this->module->commentsBlockLoadSize
         ]);
 
         $query->offset($pagination->offset)->limit($pagination->limit);
         $comments = array_reverse($query->all());
 
-        $output = ShowMore::widget(['pagination' => $pagination, 'object' => $content]);
+        $output = ShowMore::widget(['pagination' => $pagination, 'object' => $this->target]);
         foreach ($comments as $comment) {
             $output .= CommentWidget::widget(['comment' => $comment]);
         }
 
         if (Yii::$app->request->get('mode') == 'popup') {
-            return $this->renderAjax('showPopup', ['object' => $content, 'output' => $output, 'id' => $content->getUniqueId()]);
+            return $this->renderAjax('showPopup', ['object' => $this->target, 'output' => $output, 'id' => $this->content->getUniqueId()]);
         } else {
             return $this->renderAjaxContent($output);
         }
@@ -86,12 +125,9 @@ class CommentController extends ContentAddonController
      */
     public function actionPost()
     {
-        if (Yii::$app->user->isGuest || !Yii::$app->getModule('comment')->canComment($this->parentContent->content)) {
-            throw new ForbiddenHttpException(Yii::t('CommentModule.base',
-                'You are not allowed to comment.')
-            );
+        if (Yii::$app->user->isGuest || !$this->module->canComment($this->target)) {
+            throw new ForbiddenHttpException(Yii::t('CommentModule.base', 'You are not allowed to comment.'));
         }
-
 
         return Comment::getDb()->transaction(function ($db) {
             $message = Yii::$app->request->post('message');
@@ -102,7 +138,7 @@ class CommentController extends ContentAddonController
             }
 
             $comment = new Comment(['message' => $message]);
-            $comment->setPolyMorphicRelation($this->parentContent);
+            $comment->setPolyMorphicRelation($this->target);
             $comment->save();
             $comment->fileManager->attach($files);
 
@@ -116,56 +152,55 @@ class CommentController extends ContentAddonController
 
     public function actionEdit()
     {
-        $this->loadContentAddon(Comment::class, Yii::$app->request->get('id'));
+        $comment = Comment::findOne(['id' => Yii::$app->request->get('id')]);
 
-        if (!$this->contentAddon->canEdit()) {
+        if (!$comment->canEdit()) {
             throw new HttpException(403, Yii::t('CommentModule.base', 'Access denied!'));
         }
 
-        if ($this->contentAddon->load(Yii::$app->request->post()) && $this->contentAddon->save()) {
+        if ($comment->load(Yii::$app->request->post()) && $comment->save()) {
 
             // Reload comment to get populated updated_at field
-            $this->contentAddon = Comment::findOne(['id' => $this->contentAddon->id]);
+            $comment = Comment::findOne(['id' => $comment->id]);
 
             return $this->renderAjaxContent(CommentWidget::widget([
-                'comment' => $this->contentAddon,
+                'comment' => $comment,
                 'justEdited' => true
             ]));
-        } else if(Yii::$app->request->post()) {
+        } else if (Yii::$app->request->post()) {
             Yii::$app->response->statusCode = 400;
         }
 
+        $submitUrl = Url::to(['/comment/comment/edit',
+            'id' => $comment->id, 'objectModel' => $comment->object_model, 'objectId' => $comment->object_id]);
+
         return $this->renderAjax('edit', [
-            'comment' => $this->contentAddon,
-            'contentModel' => $this->contentAddon->object_model,
-            'contentId' => $this->contentAddon->object_id
+            'comment' => $comment,
+            'objectModel' => $comment->object_model,
+            'objectId' => $comment->object_id,
+            'submitUrl' => $submitUrl
         ]);
     }
 
     public function actionLoad()
     {
-        $this->loadContentAddon(Comment::class, Yii::$app->request->get('id'));
+        $comment = Comment::findOne(['id' => Yii::$app->request->get('id')]);
 
-        if (!$this->contentAddon->canRead()) {
+        if (!$comment->canRead()) {
             throw new HttpException(403, Yii::t('CommentModule.base', 'Access denied!'));
         }
 
-        return $this->renderAjaxContent(CommentWidget::widget(['comment' => $this->contentAddon]));
+        return $this->renderAjaxContent(CommentWidget::widget(['comment' => $comment]));
     }
 
-    /**
-     * Handles AJAX Request for Comment Deletion.
-     * Currently this is only allowed for the Comment Owner.
-     */
     public function actionDelete()
     {
         $this->forcePostRequest();
-        $this->loadContentAddon(Comment::class, Yii::$app->request->get('id'));
-        Yii::$app->response->format = 'json';
 
-        if ($this->contentAddon->canDelete()) {
-            $this->contentAddon->delete();
-            return ['success' => true];
+        $comment = Comment::findOne(['id' => Yii::$app->request->get('id')]);
+        if ($comment !== null && $comment->canDelete()) {
+            $comment->delete();
+            return $this->asJson(['success' => true]);
         } else {
             throw new HttpException(500, Yii::t('CommentModule.base', 'Insufficent permissions!'));
         }

@@ -2,6 +2,12 @@
 
 namespace humhub\modules\comment\widgets;
 
+use humhub\modules\comment\models\Comment as CommentModel;
+use humhub\modules\comment\Module;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\components\Widget;
+use Yii;
+
 /**
  * This widget is used include the comments functionality to a wall entry.
  *
@@ -11,11 +17,11 @@ namespace humhub\modules\comment\widgets;
  * @package humhub.modules_core.comment
  * @since 0.5
  */
-class Comments extends \yii\base\Widget
+class Comments extends Widget
 {
 
     /**
-     * Content Object
+     * @var Comment|ContentActiveRecord
      */
     public $object;
 
@@ -24,20 +30,26 @@ class Comments extends \yii\base\Widget
      */
     public function run()
     {
-        $modelName = $this->object->content->object_model;
-        $modelId = $this->object->content->object_id;
+        /** @var Module $module */
+        $module = Yii::$app->getModule('comment');
+
+        $objectModel = get_class($this->object);
+        $objectId = $this->object->getPrimaryKey();
 
         // Count all Comments
-        $commentCount = \humhub\modules\comment\models\Comment::GetCommentCount($modelName, $modelId);
-        $comments = \humhub\modules\comment\models\Comment::GetCommentsLimited($modelName, $modelId, 2);
+        $commentCount = CommentModel::GetCommentCount($objectModel, $objectId);
+        $comments = [];
+        if ($commentCount !== 0) {
+            $comments = CommentModel::GetCommentsLimited($objectModel, $objectId, $module->commentsPreviewMax);
+        }
 
-        $isLimited = ($commentCount > 2);
+        $isLimited = ($commentCount > $module->commentsPreviewMax);
 
         return $this->render('comments', [
             'object' => $this->object,
             'comments' => $comments,
-            'modelName' => $modelName,
-            'modelId' => $modelId,
+            'objectModel' => $objectModel,
+            'objectId' => $objectId,
             'id' => $this->object->getUniqueId(),
             'isLimited' => $isLimited,
             'total' => $commentCount
