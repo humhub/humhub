@@ -23,7 +23,7 @@ use humhub\modules\web\security\helpers\Security;
  */
 class Events
 {
-    public static function onAfterAction($evt)
+    public static function onBeforeAction($evt)
     {
         if(Yii::$app->request->isConsoleRequest) {
             return;
@@ -38,7 +38,6 @@ class Events
     private static function generateCSPRequestCheck()
     {
         return !Yii::$app->request->isAjax
-            && Yii::$app->response->format === 'html'
             && Setting::isInstalled()
             && !(Yii::$app->controller instanceof ErrorController)
             && !(Yii::$app->controller instanceof OfflineController)

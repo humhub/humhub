@@ -17,7 +17,7 @@ return [
         'offline.pwa.html' => 'web/pwa-offline/index'
     ],
     'events' => [
-        [Controller::class, Controller::EVENT_AFTER_ACTION, [Events::class, 'onAfterAction']],
+        [Controller::class, Controller::EVENT_BEFORE_ACTION, [Events::class, 'onBeforeAction']],
         [AuthController::class, AuthController::EVENT_AFTER_LOGIN, [Events::class, 'onAfterLogin']],
     ]
 ];
