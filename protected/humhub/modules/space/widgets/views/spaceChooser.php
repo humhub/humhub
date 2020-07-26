@@ -79,21 +79,47 @@ $canAccessDirectory = $directoryModule->active && Yii::$app->user->can(AccessDir
         <li class="divider"></li>
         <li>
             <ul class="media-list notLoaded" id="space-menu-spaces">
-                <?php foreach ($memberships as $membership) : ?>
-                    <?= SpaceChooserItem::widget([
-                        'space' => $membership->space,
-                        'updateCount' => $membership->countNewItems(),
-                        'isMember' => true
-                    ]);
-                    ?>
-                <?php endforeach; ?>
-                <?php foreach ($followSpaces as $followSpace) : ?>
-                    <?= SpaceChooserItem::widget([
-                        'space' => $followSpace,
-                        'isFollowing' => true
-                    ]);
-                    ?>
-                <?php endforeach; ?>
+                <?php
+                    function generateCategoryOrSpace($object, $categories, $dataset = "isMember") {
+                        if(is_array($object)) {
+                            foreach ($object as $parent => $nextObject) {
+                                if(is_string($parent)) {
+                                    echo SpaceChooserItem::widget([
+                                        "space" => $categories[$parent],
+                                        $dataset => true
+                                    ]);
+                                    echo "<ul class='space-menu-subcontainer'>";
+                                    generateCategoryOrSpace($nextObject, $categories, $dataset);
+                                    echo "</ul>";
+                                }else {
+                                    generateCategoryOrSpace($nextObject, $categories, $dataset);
+                                }
+                            }
+                        }else {
+                            echo SpaceChooserItem::widget([
+                                "space" => $object,
+                                $dataset => true
+                            ]);
+                        }
+                    }
+
+                    generateCategoryOrSpace($membershipsCategory, $categories);
+                    foreach ($membershipsWithoutCategory as $space) {
+                        echo SpaceChooserItem::widget([
+                            "space" => $space,
+                            "isMember" => true
+                        ]);
+                    }
+
+                    generateCategoryOrSpace($followsCategory, $categories, "isFollowing");
+                    foreach ($followsWithoutCategory as $space) {
+                        echo SpaceChooserItem::widget([
+                            "space" => $space,
+                            "isFollowing" => true
+                        ]);
+                    }
+                ?>
+
             </ul>
         </li>
         <li class="remoteSearch">
