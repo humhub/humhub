@@ -44,11 +44,86 @@ class Chooser extends Widget
             return '';
         }
 
+        $memberships = $this->getMemberships();
+        $categories = [];
+        $membershipsCategory = [];
+        $membershipsWithoutCategory = [];
+
+        foreach ($memberships as $key => $membership) {
+            $parent = $membership->space->getParent();
+            if($parent !== NULL) {
+                if(!isset($categories[$parent->name])) {
+                    $categories[$parent->name] = $parent;
+                }
+            }
+        }
+
+        foreach ($memberships as $key => $membership) {
+            $parent = $membership->space->getParent();
+            if($parent !== NULL) {
+                $parents = $membership->space->getParentPath($membership->space);
+                $cacheMembershipArray = &$membershipsCategory;
+                foreach ($parents as $parent) {
+                    $cacheMembershipArray = &$cacheMembershipArray[$parent];
+                }
+                if(!isset($cacheMembershipArray)) {
+                    $cacheMembershipArray = [];
+                }
+
+                if(!isset($categories[$membership->space->name])) {
+                    array_push($cacheMembershipArray, $membership->space);
+                }
+            }else {
+                if(!isset($categories[$membership->space->name])) {
+                    array_push($membershipsWithoutCategory, $membership->space);
+                }
+            }
+        }
+
+
+        $follows = $this->getFollowSpaces();
+        $followsCategory = [];
+        $followsWithoutCategory = [];
+
+        foreach ($follows as $key => $follow) {
+            $parent = $follow->getParent();
+            if($parent !== NULL) {
+                if(!isset($categories[$parent->name])) {
+                    $categories[$parent->name] = $parent;
+                }
+            }
+        }
+
+        foreach ($follows as $key => $follow) {
+            $parent = $follow->getParent();
+            if($parent !== NULL) {
+                $parents = $follow->getParentPath($follow);
+                $cacheFollowSpaceArray = &$followsCategory;
+                foreach ($parents as $parent) {
+                    $cacheFollowSpaceArray = &$cacheFollowSpaceArray[$parent];
+                }
+                if(!isset($cacheFollowSpaceArray)) {
+                    $cacheFollowSpaceArray = [];
+                }
+
+                if(!isset($categories[$follow->name])) {
+                    array_push($cacheFollowSpaceArray, $follow);
+                }
+            }else {
+                if(!isset($categories[$follow->name])) {
+                    array_push($followsWithoutCategory, $follow);
+                }
+            }
+        }
+
         return $this->render('spaceChooser', [
                     'currentSpace' => $this->getCurrentSpace(),
                     'canCreateSpace' => $this->canCreateSpace(),
-                    'memberships' => $this->getMemberships(),
-                    'followSpaces' => $this->getFollowSpaces()
+                    'categories' => $categories,
+                    'membershipsCategory' => $membershipsCategory,
+                    'membershipsWithoutCategory' => $membershipsWithoutCategory,
+                    'followsCategory' => $followsCategory,
+                    'followsWithoutCategory' => $followsWithoutCategory
         ]);
     }
 
