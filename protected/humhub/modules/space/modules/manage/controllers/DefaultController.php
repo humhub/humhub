@@ -20,6 +20,7 @@ use humhub\modules\space\modules\manage\models\DeleteForm;
 use humhub\modules\space\activities\SpaceArchived;
 use humhub\modules\space\activities\SpaceUnArchived;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 
 /**
  * Default space admin action
@@ -54,7 +55,11 @@ class DefaultController extends Controller
             return $this->redirect($space->createUrl('index'));
         }
 
-        return $this->render('index', ['model' => $space]);
+        $spaceList = ArrayHelper::map(Space::find()->visible()->all(), 'id', 'name');
+        $spaceList[0] = Yii::t('SpaceModule.base', 'No Space');
+        unset($spaceList[$space->id]);
+
+        return $this->render('index', ['model' => $space, 'spaces' => $spaceList]);
     }
 
     public function actionAdvanced()
