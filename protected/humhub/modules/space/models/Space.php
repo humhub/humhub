@@ -57,6 +57,7 @@ use Yii;
  * @property integer $auto_add_new_members
  * @property integer $contentcontainer_id
  * @property integer $default_content_visibility
+ * @property integer $parent_id
  * @property string $color
  * @property User $ownerUser the owner of this space
  *
@@ -117,7 +118,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     public function rules()
     {
         $rules = [
-            [['join_policy', 'visibility', 'status', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
+            [['join_policy', 'visibility', 'status', 'auto_add_new_members', 'default_content_visibility', 'parent_id'], 'integer'],
             [['name'], 'required'],
             [['description', 'tags', 'color'], 'string'],
             [['join_policy'], 'in', 'range' => [0, 1, 2]],
@@ -145,7 +146,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     {
         $scenarios = parent::scenarios();
 
-        $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'tags', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
+        $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'tags', 'join_policy', 'visibility', 'default_content_visibility', 'url', 'parent_id'];
         $scenarios[static::SCENARIO_CREATE] = ['name', 'color', 'description', 'join_policy', 'visibility'];
         $scenarios[static::SCENARIO_SECURITY_SETTINGS] = ['default_content_visibility', 'join_policy', 'visibility'];
 
@@ -171,7 +172,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
             'updated_at' => Yii::t('SpaceModule.base', 'Updated At'),
             'updated_by' => Yii::t('SpaceModule.base', 'Updated by'),
             'ownerUsernameSearch' => Yii::t('SpaceModule.base', 'Owner'),
-            'default_content_visibility' => Yii::t('SpaceModule.base', 'Default content visibility')
+            'default_content_visibility' => Yii::t('SpaceModule.base', 'Default content visibility'),
+            'parent_id' => Yii::t('SpaceModule.base', 'Parent Space'),
         ];
     }
 
@@ -627,6 +629,33 @@ class Space extends ContentContainerActiveRecord implements Searchable
         }
 
         return Content::VISIBILITY_PRIVATE;
+    }
+
+
+    /**
+     * Get the parent space from space
+     *
+     * @return Space
+     */
+    public function getParent() {
+      return Space::findOne(['id' => $this->parent_id]);
+    }
+
+
+    /**
+     * Get the path from parents
+     *
+     * @param  Space $space     the space or parent space
+     * @param  Array $path = [] the actually path
+     * @return Array            a list with the path
+     */
+    public function getParentPath($space, $path = []) {
+      if($space->getParent() !== NULL) {
+          array_unshift($path, $space->getParent()->name);
+        return $space->getParentPath($space->getParent(), $path);
+      }else {
+        return $path;
+      }
     }
 
 }
