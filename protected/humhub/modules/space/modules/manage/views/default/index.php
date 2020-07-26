@@ -28,6 +28,7 @@ use humhub\widgets\Button;
         <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model]) ?>
         <?= $form->field($model, 'description')->textarea(['rows' => 6]); ?>
         <?= $form->field($model, 'tags')->textInput(['maxlength' => 200]); ?>
+        <?= $form->field($model, 'parent_id')->dropDownList($spaces) ?>
 
         <?= Button::save()->submit() ?>
 
