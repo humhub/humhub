@@ -11,6 +11,9 @@ use humhub\compat\CActiveForm;
 use humhub\compat\CHtml;
 use humhub\models\Setting;
 
+/** @var \humhub\modules\file\Module $fileModule */
+$fileModule = Yii::$app->getModule('file');
+
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
@@ -20,7 +23,7 @@ use humhub\models\Setting;
 
 <div class="form-group">
     <?= $form->labelEx($model, 'maxFileSize'); ?>
-    <?= $form->textField($model, 'maxFileSize', ['class' => 'form-control', 'readonly' => Setting::IsFixed('maxFileSize', 'file')]); ?>
+    <?= $form->textField($model, 'maxFileSize', ['class' => 'form-control', 'readonly' => $fileModule->settings->isFixed('maxFileSize')]); ?>
     <p class="help-block" <?= ($model->maxFileSize > $maxUploadSize) ? 'style="color:'.$this->theme->variable('danger').' !important"' : ''?>>
         <?= Yii::t('AdminModule.settings', 'PHP reported a maximum of {maxUploadSize} MB', ['{maxUploadSize}' => $maxUploadSizeText]); ?>
     </p>
@@ -29,7 +32,7 @@ use humhub\models\Setting;
 <div class="form-group">
     <div class="checkbox">
         <label>
-            <?= $form->checkBox($model, 'useXSendfile', ['disabled' => Setting::IsFixed('useXSendfile', 'file')]); ?>
+            <?= $form->checkBox($model, 'useXSendfile', ['disabled' => $fileModule->settings->isFixed('useXSendfile')]); ?>
             <?= $model->getAttributeLabel('useXSendfile'); ?>
         </label>
     </div>
@@ -37,20 +40,20 @@ use humhub\models\Setting;
 
 <div class="form-group">
     <?= $form->labelEx($model, 'maxPreviewImageWidth'); ?>
-    <?= $form->textField($model, 'maxPreviewImageWidth', ['class' => 'form-control', 'readonly' => Setting::IsFixed('maxPreviewImageWidth', 'file')]); ?>
+    <?= $form->textField($model, 'maxPreviewImageWidth', ['class' => 'form-control', 'readonly' => $fileModule->settings->isFixed('maxPreviewImageWidth')]); ?>
     <p class="help-block"><?= Yii::t('AdminModule.settings', 'If not set, width will default to 200px.') ?></p>
 </div>
 
 <div class="form-group">
     <?= $form->labelEx($model, 'maxPreviewImageHeight'); ?>
-    <?= $form->textField($model, 'maxPreviewImageHeight', ['class' => 'form-control', 'readonly' => Setting::IsFixed('maxPreviewImageHeight', 'file')]); ?>
+    <?= $form->textField($model, 'maxPreviewImageHeight', ['class' => 'form-control', 'readonly' => $fileModule->settings->isFixed('maxPreviewImageHeight')]); ?>
     <p class="help-block"><?= Yii::t('AdminModule.settings', 'If not set, height will default to 200px.') ?></p>
 </div>
 
 <div class="form-group">
     <div class="checkbox">
         <label>
-            <?= $form->checkBox($model, 'hideImageFileInfo', ['disabled' => Setting::IsFixed('hideImageFileInfo', 'file')]); ?>
+            <?= $form->checkBox($model, 'hideImageFileInfo', ['disabled' => $fileModule->settings->isFixed('hideImageFileInfo')]); ?>
             <?= $model->getAttributeLabel('hideImageFileInfo'); ?>
         </label>
     </div>
