@@ -1,6 +1,11 @@
 HumHub Change Log
 =================
 
+1.6.0
+----------------------------
+
+- Fix #4256: MOV file support broken with wrong MIME Type
+
 
 1.6.0-beta.1 (July 16, 2020)
 ----------------------------
