@@ -14,7 +14,7 @@ return array (
   'Error' => 'Error',
   'Flush entries' => 'Limpiar entradas',
   'HumHub is currently in debug mode. Disable it when running on production!' => 'HumHub está actualmente en modo de depuración. ¡Deshabilitarlo cuando se ejecute en la producción!',
-  'Info' => 'Informacion',
+  'Info' => 'Información',
   'Last run (daily):' => 'Última ejecución (diaria):',
   'Last run (hourly):' => 'Última ejecución (por horas):',
   'Licences' => 'Licencias',
