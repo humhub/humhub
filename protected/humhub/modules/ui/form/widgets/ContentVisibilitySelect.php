@@ -11,6 +11,7 @@ namespace humhub\modules\ui\form\widgets;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\space\models\Space;
 use Yii;
 use yii\bootstrap\InputWidget;
@@ -41,7 +42,7 @@ use yii\bootstrap\Html;
 class ContentVisibilitySelect extends InputWidget
 {
     /**
-     * @var bool Automatically hide the field when no mulitple visibility modes available
+     * @var bool Automatically hide the field when no only one visibility option is available
      */
     public $autoHide = true;
 
@@ -114,6 +115,11 @@ class ContentVisibilitySelect extends InputWidget
         if ($contentContainer instanceof Space) {
             /** @var Space $contentContainer */
             if ($contentContainer->visibility == Space::VISIBILITY_NONE) {
+                return true;
+            }
+
+            // User can only create private content
+            if (!$contentContainer->can(CreatePublicContent::class)) {
                 return true;
             }
         }
