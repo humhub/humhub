@@ -85,7 +85,7 @@ abstract class BaseTypeVirtual extends BaseType
         $this->profileField->searchable = 0;
         $this->profileField->required = 0;
         $this->profileField->show_at_registration = 0;
-        parent::save();
+        return parent::save();
     }
 
 
