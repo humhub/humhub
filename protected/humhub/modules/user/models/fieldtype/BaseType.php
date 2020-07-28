@@ -92,6 +92,37 @@ class BaseType extends Model
     }
 
     /**
+     * Returns additional form field item options for all field types.
+     *
+     * @internal
+     * @return array
+     */
+    final public function getFieldTypeItemOptions()
+    {
+        $result = [];
+        foreach ($this->getFieldTypes() as $field_class => $label) {
+            $result[$field_class] = ['data-hidden-fields' => call_user_func($field_class.'::getHiddenFormFields')];
+        }
+        return $result;
+    }
+
+    /**
+     * Can be used to define form fields which should be hidden when editing or creating a profile field of this type e.g:
+     *
+     *  - searchable
+     *  - editable
+     *  - required
+     *  - show_at_registration
+     *  - visible
+     *
+     * @return array
+     */
+    protected static function getHiddenFormFields()
+    {
+        return [];
+    }
+
+    /**
      * Returns an array of instances of all available field types.
      *
      * @param ProfileField|null $profileField

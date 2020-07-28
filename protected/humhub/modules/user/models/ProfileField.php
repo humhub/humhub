@@ -235,6 +235,7 @@ class ProfileField extends ActiveRecord
                     'field_type_class' => [
                         'type' => 'dropdownlist',
                         'items' => $profileFieldTypes->getFieldTypes(),
+                        'htmlOptions' => ['options' => $profileFieldTypes->getFieldTypeItemOptions()],
                         'class' => 'form-control',
                     ],
                 ]
