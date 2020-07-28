@@ -3,6 +3,7 @@
 use humhub\libs\TimezoneHelper;
 use yii\widgets\ActiveForm;
 use humhub\compat\CHtml;
+
 ?>
 
 <div class="panel-body">
@@ -25,8 +26,7 @@ use humhub\compat\CHtml;
         <?= $languageDropDown = $form->field($model, 'defaultLanguage')->dropDownList($allowedLanguages, ['data-ui-select2' => '']); ?>
     <?php endif; ?>
 
-    <?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(true), ['data-ui-select2' => '']); ?>
-
+    <?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(true), ['data-ui-select2' => '', 'disabled' => Yii::$app->settings->isFixed('timeZone')]); ?>
     <?= $form->field($model, 'defaultStreamSort')->dropDownList($model->getDefaultStreamSortOptions()); ?>
 
     <strong><?= Yii::t('AdminModule.settings', 'Dashboard'); ?></strong>

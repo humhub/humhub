@@ -14,7 +14,7 @@ use humhub\models\Setting;
 <div class="form-group">
     <div class="checkbox">
         <label>
-            <?= $form->checkBox($model, 'enabled', ['readonly' => Setting::IsFixed('proxy.enabled')]); echo $model->getAttributeLabel('enabled'); ?>
+            <?= $form->checkBox($model, 'enabled', ['readonly' => Yii::$app->settings->isFixed('proxy.enabled')]); echo $model->getAttributeLabel('enabled'); ?>
         </label>
     </div>
 </div>
