@@ -6,8 +6,6 @@ use Yii;
 use yii\base\Model;
 use humhub\modules\user\authclient\BaseFormAuth;
 
-use humhub\modules\user\libs\Ldap;
-
 
 /**
  * LoginForm is the model behind the login form.
@@ -52,10 +50,10 @@ class Login extends Model
     public function init()
     {
         $this->rememberMe = Yii::$app->getModule('user')->loginRememberMeDefault;
-        
+
         parent::init();
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -83,7 +81,7 @@ class Login extends Model
                     $this->authClient = $authClient;
 
                     // Delete password after successful auth
-                    $this->password = "";
+                    $this->password = '';
 
                     return;
                 }
@@ -91,11 +89,11 @@ class Login extends Model
         }
 
         if ($user === null) {
-            $this->addError('password', 'User or Password incorrect.');
+            $this->addError('password', Yii::t('UserModule.auth', 'User or Password incorrect.'));
         }
 
         // Delete current password value
-        $this->password = "";
+        $this->password = '';
 
         parent::afterValidate();
     }
