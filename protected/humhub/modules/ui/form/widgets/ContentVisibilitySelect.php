@@ -42,7 +42,7 @@ use yii\bootstrap\Html;
 class ContentVisibilitySelect extends InputWidget
 {
     /**
-     * @var bool Automatically hide the field when no only one visibility option is available
+     * @var bool Hide the field when only one visibility option is available
      */
     public $autoHide = true;
 
