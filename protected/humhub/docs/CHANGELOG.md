@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.6.1 (Unreleased)
+------------------
+- Fix #4285: All ThirdParty modules are also marked with "Community"
+
 
 1.6.0 (July 29, 2020)
 ---------------------
