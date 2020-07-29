@@ -5,7 +5,9 @@ HumHub Change Log
 ----------------------------
 
 - Fix #4256: MOV file support broken with wrong MIME Type
+- Fix #4274: Force profile field attribute values of BaseTypeVirtual fields
 - Fix #1438: Error "User or Password incorrect." not translatable
+
 
 1.6.0-beta.1 (July 16, 2020)
 ----------------------------

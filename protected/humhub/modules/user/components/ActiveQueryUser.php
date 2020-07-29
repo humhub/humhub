@@ -9,6 +9,7 @@
 namespace humhub\modules\user\components;
 
 use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\user\models\fieldtype\BaseTypeVirtual;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\ProfileField;
@@ -119,7 +120,9 @@ class ActiveQueryUser extends ActiveQuery
     {
         $fields = ['user.username', 'user.email', 'user.tags'];
         foreach (ProfileField::findAll(['searchable' => 1]) as $profileField) {
-            $fields[] = 'profile.' . $profileField->internal_name;
+            if(!($profileField->getFieldType() instanceof BaseTypeVirtual)) {
+                $fields[] = 'profile.' . $profileField->internal_name;
+            }
         }
 
         return $fields;

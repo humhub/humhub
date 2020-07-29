@@ -60,6 +60,14 @@ abstract class BaseTypeVirtual extends BaseType
     }
 
     /**
+     * @inheritdoc
+     */
+    protected static function getHiddenFormFields()
+    {
+        return ['searchable', 'required', 'show_at_registration', 'editable'];
+    }
+
+    /**
      * Returns the readonly virutal value for the given User
      *
      * @param User $user
@@ -67,4 +75,18 @@ abstract class BaseTypeVirtual extends BaseType
      * @return mixed
      */
     abstract protected function getVirtualUserValue($user, $raw = true);
+
+    /**
+     * @inheritDoc
+     */
+    public function save()
+    {
+        $this->profileField->editable = 0;
+        $this->profileField->searchable = 0;
+        $this->profileField->required = 0;
+        $this->profileField->show_at_registration = 0;
+        return parent::save();
+    }
+
+
 }

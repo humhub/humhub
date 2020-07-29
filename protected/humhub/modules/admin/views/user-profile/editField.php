@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
 /* @var $hForm HForm */
 ?>
 
-<div class="panel-body">
+<div id="edit-profile-field-root" class="panel-body">
     <div class="pull-right">
         <?= Html::backButton(['index'], ['label' => Yii::t('AdminModule.base', 'Back to overview'), 'class' => 'pull-right']); ?>
     </div>
@@ -32,25 +32,32 @@ use yii\widgets\ActiveForm;
     /**
      * Switcher for Sub Forms (FormField Type)
      */
+    var checkFieldTypeFormState = function()
+    {
+        $("#edit-profile-field-root .form-group").show();
 
-    // Hide all Subforms for types
-    $(".fieldTypeSettings").hide();
-
-    showTypeSettings = $("#profilefield-field_type_class").val();
-    showTypeSettings = showTypeSettings.replace(/[\\]/g, '_');
-
-    // Display only the current selected type form
-    $("." + showTypeSettings).show();
-
-    $("#profilefield-field_type_class").on('change', function () {
-        // Hide all Subforms for types
+        // Hide all form type specific forms
         $(".fieldTypeSettings").hide();
 
-        // Show Current Selected
-        showTypeSettings = $("#profilefield-field_type_class").val();
-        showTypeSettings = showTypeSettings.replace(/[\\]/g, '_');
+        var $fieldTypeSelect =  $("#profilefield-field_type_class");
+        var fieldTypeClass = $fieldTypeSelect.val();
+        var showTypeSettings = fieldTypeClass.replace(/[\\]/g, '_');
 
+        // Display only the current selected type form
         $("." + showTypeSettings).show();
+
+        var $selectedOption = $fieldTypeSelect.find(':selected');
+        var hideFields = $selectedOption.data('hiddenFields');
+
+        hideFields.forEach(function(value) {
+            $('.field-profilefield-'+value).hide();
+        })
+    };
+
+    checkFieldTypeFormState();
+
+    $("#profilefield-field_type_class").on('change', function () {
+        checkFieldTypeFormState();
     });
 
 </script>
