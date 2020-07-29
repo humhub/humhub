@@ -97,7 +97,7 @@ class IncompleteSetupWarning extends Widget
                 ->one($queue->db);
 
 
-            if (is_array($counter) && $counter['jobCount'] > 0) {
+            if (is_array($counter) && array_key_exists('jobCount', $counter) && $counter['jobCount'] > 0) {
                 return false;
             }
         }
