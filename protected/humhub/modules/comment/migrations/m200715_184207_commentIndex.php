@@ -12,7 +12,8 @@ class m200715_184207_commentIndex extends Migration
      */
     public function safeUp()
     {
-        $this->createIndex('idx_comment_target', 'comment', ['object_model', 'object_id'], false);
+        // Was only used in beta version, avoid double index creation in stable version update
+        //$this->createIndex('idx_comment_target', 'comment', ['object_model', 'object_id'], false);
     }
 
     /**
