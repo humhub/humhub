@@ -57,15 +57,18 @@ class LikeLink extends \yii\base\Widget
     {
         $userlist = ""; // variable for users output
         $maxUser = 5; // limit for rendered users inside the tooltip
+        $previewUserCount = 0;
+
         // if the current user also likes
         if ($currentUserLiked == true) {
             // if only one user likes
             if (count($likes) == 1) {
                 // output, if the current user is the only one
-                $userlist = Yii::t('LikeModule.base', 'You like this.');
+                return Yii::t('LikeModule.base', 'You like this.');
             } else {
                 // output, if more users like this
                 $userlist .= Yii::t('LikeModule.base', 'You'). "\n";
+                $previewUserCount++;
             }
         }
 
@@ -76,20 +79,22 @@ class LikeLink extends \yii\base\Widget
                 // check, if you liked
                 if ($likes[$i]->user->guid != Yii::$app->user->guid) {
                     // output, if an other user liked
-                    $userlist .= Html::encode($likes[$i]->user->displayName) . Yii::t('LikeModule.base', ' likes this.');
+                    return Html::encode($likes[$i]->user->displayName) . Yii::t('LikeModule.base', ' likes this.');
                 }
             } else {
-
                 // check, if you liked
                 if ($likes[$i]->user->guid != Yii::$app->user->guid) {
                     // output, if an other user liked
                     $userlist .= Html::encode($likes[$i]->user->displayName). "\n";
+                    $previewUserCount++;
                 }
 
                 // check if exists more user as limited
                 if ($i == $maxUser) {
-                    // output with the number of not rendered users
-                    $userlist .= Yii::t('LikeModule.base', 'and {count} more like this.', ['{count}' => (int)(count($likes) - $maxUser)]);
+                    if ((int)(count($likes) - $previewUserCount) !== 0) {
+                        // output with the number of not rendered users
+                        $userlist .= Yii::t('LikeModule.base', 'and {count} more like this.', ['{count}' => (int)(count($likes) - $previewUserCount)]);
+                    }
 
                     // stop the loop
                     break;
