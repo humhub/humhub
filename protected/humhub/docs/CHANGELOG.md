@@ -1,6 +1,9 @@
 HumHub Changelog
 ================
 
+1.6.1 (unreleased)
+---------------------
+- Fix #4282: Sub-comment richtext menu dropdown does not hover main comment section
 
 1.6.0 (July 29, 2020)
 ---------------------
