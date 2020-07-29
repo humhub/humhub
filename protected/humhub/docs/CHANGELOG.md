@@ -1,8 +1,9 @@
 HumHub Changelog
 ================
 
-1.6.1 (Unreleased)
-------------------
+1.6.1 (unreleased)
+---------------------
+- Fix #4282: Sub-comment richtext menu dropdown does not hover main comment section
 - Fix #4285: All ThirdParty modules are also marked with "Community"
 
 
