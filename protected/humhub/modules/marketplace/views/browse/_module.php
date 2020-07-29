@@ -94,9 +94,11 @@ $isProOnly = ($isProFeature && $licence->type !== Licence::LICENCE_TYPE_PRO);
 
             <?php if (!empty($module['isThirdParty'])): ?>
                 &middot; <?= Html::a(Yii::t('MarketplaceModule.base', 'Third-party'), Url::to(['thirdparty-disclaimer']), ['data-target' => '#globalModal']); ?>
-                <a href="<?= Url::to(['thirdparty-disclaimer']) ?>" data-target="#globalModal">
-                    - Community
-                </a>
+                <?php if (!empty($module['isCommunity'])): ?>
+                    <a href="<?= Url::to(['thirdparty-disclaimer']) ?>" data-target="#globalModal">
+                        - Community
+                    </a>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>
