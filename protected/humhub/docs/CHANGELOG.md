@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #4274: Force profile field attribute values of BaseTypeVirtual fields
 - Fix #1438: Error "User or Password incorrect." not translatable
 - Fix #4262: Additional hr in comment section
+- Fix #4161: Number of "n more" likes is invalid
 
 
 1.6.0-beta.1 (July 16, 2020)
