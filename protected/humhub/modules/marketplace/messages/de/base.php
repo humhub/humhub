@@ -25,7 +25,7 @@ Module successfully enabled!
   'Could not remove old module path!' => 'Alter Module-Pfad kann nicht gelöscht werden!',
   'Could not update licence. Error: ' => 'Lizenz konnte nicht aktualisiert werden. Fehler:',
   'Download of module failed!' => 'Herunterladen des Moduls fehlgeschlagen!!',
-  'Edit licence' => 'Linzenz bearbeiten',
+  'Edit licence' => 'Lizenz bearbeiten',
   'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => 'Falls das Modul zusätzlich mit <strong>"Community"</strong> markiert ist, wird es vom HumHub Projekt Team nicht getestet oder überwacht.',
   'Include Community Modules' => 'Community Module einbeziehen',
   'Include beta updates' => 'Auch Beta Versionen anzeigen',
