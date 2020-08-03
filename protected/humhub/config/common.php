@@ -130,6 +130,11 @@ $config = [
         ],
         'db' => [
             'class' => \yii\db\Connection::class,
+            // Fix for MySQL 8.0.21+: https://github.com/yiisoft/yii2/issues/18207
+            'schemaMap' => [
+                'mysqli' => 'humhub\components\db\MysqlSchema',
+                'mysql' => 'humhub\components\db\MysqlSchema'
+            ],
             'dsn' => 'mysql:host=localhost;dbname=humhub',
             'username' => '',
             'password' => '',
