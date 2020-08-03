@@ -1,11 +1,13 @@
 HumHub Change Log
 =================
 
-1.4.5 (Unreleased)
+1.4.5 (August 3, 2020)
 ----------------------
 - Fix #3945: Default object-src policy prevents loading pdf on safari
 - Fix #3963: Richtext/Markdown links not highlighted by default
 - Fix #3986: Cannot use yii\helpers\Html as Html because the name is already in use in `humhub\libs\ProfileBannerImage`
+- Fix #4287: Fixed Yii2 compatibility issue with MySQL 8+
+
 
 1.4.4 (March 24, 2020)
 ----------------------
