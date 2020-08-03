@@ -1,6 +1,12 @@
 HumHub Changelog
 ================
 
+
+1.5.4 (August 3, 2020)
+----------------------
+- Fix #4287: Fixed Yii2 compatibility issue with MySQL 8+
+
+
 1.5.3 (July 16, 2020)
 ---------------------
 - Fix #4036: Profile images are not rotated correctly
