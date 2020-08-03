@@ -1,11 +1,12 @@
 HumHub Changelog
 ================
 
-1.6.1 (unreleased)
----------------------
+1.6.1 (August 3, 2020)
+----------------------
 - Fix #4282: Sub-comment richtext menu dropdown does not hover main comment section
 - Fix #4285: All ThirdParty modules are also marked with "Community"
 - Fix #4287: Fixed Yii2 compatibility issue with MySQL 8+
+- Fix #4303: Fixed syntax error in comment query
 
 
 1.6.0 (July 29, 2020)

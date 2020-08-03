@@ -85,7 +85,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
         // Delete sub comment (replies)
         if ($this->object_model !== static::class) {
-            foreach (static::findAll(['object_model' => static::class, 'object_id' >= $this->id]) as $comment) {
+            foreach (static::findAll(['object_model' => static::class, 'object_id' => $this->id]) as $comment) {
                 $comment->delete();
             }
         }
