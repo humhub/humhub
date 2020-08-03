@@ -5,6 +5,7 @@ HumHub Changelog
 ---------------------
 - Fix #4282: Sub-comment richtext menu dropdown does not hover main comment section
 - Fix #4285: All ThirdParty modules are also marked with "Community"
+- Fix #4287: Fixed Yii2 compatibility issue with MySQL 8+
 
 
 1.6.0 (July 29, 2020)
