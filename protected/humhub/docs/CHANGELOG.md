@@ -1,9 +1,9 @@
 HumHub Changelog
 ================
 
-1.6.2 (Unreleased)
-------------------
-- Fix #4305: 2nd comment "Submit" button hidden
+1.6.2 (August 4, 2020)
+-----------------------
+- Fix #4305: 2nd level comment "Submit" button not visible
 
 
 1.6.1 (August 3, 2020)
