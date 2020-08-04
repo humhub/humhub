@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.6.2 (Unreleased)
+------------------
+- Fix #4305: 2nd comment "Submit" button hidden
+
+
 1.6.1 (August 3, 2020)
 ----------------------
 - Fix #4282: Sub-comment richtext menu dropdown does not hover main comment section
