@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.6.3 (Unreleased)
+-----------------------
+- Fix #4315: UserInvite (E-Mail Approval) not deleted when declining users
+
+
 1.6.2 (August 4, 2020)
 -----------------------
 - Fix #4305: 2nd level comment "Submit" button not visible
