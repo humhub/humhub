@@ -2,7 +2,11 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\modules\user\Module;
 use Yii;
+use yii\helpers\Html;
+use yii\helpers\Url;
+use humhub\modules\user\models\User;
 
 /**
  * @package humhub.forms
@@ -43,6 +47,49 @@ class ApproveUserForm extends \yii\base\Model
         $mail->setTo($email);
         $mail->setSubject($this->subject);
         $mail->send();
+    }
+
+    /**
+     * Sets the subject and message attribute texts for user approval
+     *
+     * @param User $user
+     * @param User $admin
+     */
+    public function setApprovalDefaults(User $user, User $admin)
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        $this->subject = Yii::t('AdminModule.user', "Account Request for '{displayName}' has been approved.",
+            ['{displayName}' => Html::encode($user->displayName)]
+        );
+
+        $this->message = strtr($module->settings->get('auth.registrationApprovalMailContent', Yii::t('AdminModule.user', AuthenticationSettingsForm::defaultRegistrationApprovalMailContent)), [
+            '{displayName}' => Html::encode($user->displayName),
+            '{AdminName}' => Html::encode($admin->displayName),
+            '{loginURL}' => urldecode(Url::to(["/user/auth/login"], true)),
+        ]);
+
+    }
+
+    /**
+     * Sets the subject and message attribute texts for user decline
+     *
+     * @param User $user
+     * @param User $admin
+     */
+    public function setDeclineDefaults(User $user, User $admin)
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        $this->subject = Yii::t('AdminModule.user', 'Account Request for \'{displayName}\' has been declined.',
+            ['{displayName}' => Html::encode($user->displayName)]
+        );
+        $this->message = strtr($module->settings->get('auth.registrationDenialMailContent', Yii::t('AdminModule.user', AuthenticationSettingsForm::defaultRegistrationDenialMailContent)), [
+            '{displayName}' => Html::encode($user->displayName),
+            '{AdminName}' => Html::encode($admin->displayName),
+        ]);
     }
 
 }
