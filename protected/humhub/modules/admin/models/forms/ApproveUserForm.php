@@ -60,16 +60,24 @@ class ApproveUserForm extends \yii\base\Model
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
 
-        $this->subject = Yii::t('AdminModule.user', "Account Request for '{displayName}' has been approved.",
+        $this->subject = Yii::t('AdminModule.user',
+            "Account Request for '{displayName}' has been approved.",
             ['{displayName}' => Html::encode($user->displayName)]
         );
 
-        $this->message = strtr($module->settings->get('auth.registrationApprovalMailContent', Yii::t('AdminModule.user', AuthenticationSettingsForm::defaultRegistrationApprovalMailContent)), [
-            '{displayName}' => Html::encode($user->displayName),
-            '{AdminName}' => Html::encode($admin->displayName),
-            '{loginURL}' => urldecode(Url::to(["/user/auth/login"], true)),
-        ]);
-
+        if (!empty($module->settings->get('auth.registrationApprovalMailContent'))) {
+            $this->message = strtr($module->settings->get('auth.registrationApprovalMailContent'), [
+                '{displayName}' => Html::encode($user->displayName),
+                '{AdminName}' => Html::encode($admin->displayName),
+                '{loginURL}' => urldecode(Url::to(["/user/auth/login"], true)),
+            ]);
+        } else {
+            $this->message = static::getDefaultApprovalMessage(
+                Html::encode($user->displayName),
+                Html::encode($admin->displayName),
+                urldecode(Url::to(["/user/auth/login"], true))
+            );
+        }
     }
 
     /**
@@ -83,13 +91,59 @@ class ApproveUserForm extends \yii\base\Model
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
 
-        $this->subject = Yii::t('AdminModule.user', 'Account Request for \'{displayName}\' has been declined.',
+        $this->subject = Yii::t('AdminModule.user',
+            'Account Request for \'{displayName}\' has been declined.',
             ['{displayName}' => Html::encode($user->displayName)]
         );
-        $this->message = strtr($module->settings->get('auth.registrationDenialMailContent', Yii::t('AdminModule.user', AuthenticationSettingsForm::defaultRegistrationDenialMailContent)), [
-            '{displayName}' => Html::encode($user->displayName),
-            '{AdminName}' => Html::encode($admin->displayName),
-        ]);
+
+        if (!empty($module->settings->get('auth.registrationDenialMailContent'))) {
+            $this->message = strtr($module->settings->get('auth.registrationDenialMailContent'), [
+                '{displayName}' => Html::encode($user->displayName),
+                '{AdminName}' => Html::encode($admin->displayName),
+            ]);
+        } else {
+            $this->message = static::getDefaultDeclineMessage(
+                Html::encode($user->displayName), Html::encode($admin->displayName)
+            );
+        }
     }
 
+    /**
+     * Returns the default approval message. If not parameters set, the placeholder names are returned.
+     *
+     * @param string $userDisplayName
+     * @param string $adminDisplayName
+     * @param string $loginUrl
+     * @return string
+     */
+    public static function getDefaultApprovalMessage($userDisplayName = '{displayName}', $adminDisplayName = '{AdminName}', $loginUrl = '{loginURL}')
+    {
+        return Yii::t('AdminModule.user', "Hello {displayName},<br><br>\nYour account has been activated.<br><br>\n" .
+            "Click here to login:<br>\n<a href='{loginURL}'>{loginURL}</a><br><br>\n\n" .
+            "Kind Regards<br>\n{AdminName}<br><br>",
+            [
+                '{displayName}' => $userDisplayName,
+                '{AdminName}' => $adminDisplayName,
+                '{loginURL}' => $loginUrl,
+            ]);
+    }
+
+    /**
+     * Returns the default decline message. If not parameters set, the placeholder names are returned.
+     *
+     * @param string $userDisplayName
+     * @param string $adminDisplayName
+     * @return string
+     */
+    public static function getDefaultDeclineMessage($userDisplayName = '{displayName}', $adminDisplayName = '{AdminName}')
+    {
+        return Yii::t('AdminModule.user', "Hello {displayName},<br><br>\n" .
+            "Your account request has been declined.<br><br>\n\n" .
+            "Kind Regards<br>\n" .
+            "{AdminName} <br><br > ",
+            [
+                '{displayName}' => $userDisplayName,
+                '{AdminName}' => $adminDisplayName,
+            ]);
+    }
 }
