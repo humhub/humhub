@@ -48,7 +48,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
         $this->showCaptureInRegisterForm = $settingsManager->get('auth.showCaptureInRegisterForm');
         $this->defaultUserProfileVisibility = $settingsManager->get('auth.defaultUserProfileVisibility');
         $this->registrationApprovalMailContent = $settingsManager->get('auth.registrationApprovalMailContent', ApproveUserForm::getDefaultApprovalMessage());
-        $this->registrationDenialMailContent = $settingsManager->get('auth.registrationDenialMailContent', ApproveUserForm::getDefaultApprovalMessage());
+        $this->registrationDenialMailContent = $settingsManager->get('auth.registrationDenialMailContent', ApproveUserForm::getDefaultDeclineMessage());
     }
 
     /**
