@@ -2,6 +2,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\components\i18n\I18N;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\Module;
 use Yii;
@@ -159,6 +160,8 @@ class ApproveUserForm extends \yii\base\Model
      */
     public function setApprovalDefaults()
     {
+        Yii::$app->i18n->setUserLocale($this->user);
+
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
 
@@ -167,19 +170,21 @@ class ApproveUserForm extends \yii\base\Model
             ['{displayName}' => Html::encode($this->user->displayName)]
         );
 
+        $loginLink = Html::a(urldecode(Url::to(["/user/auth/login"], true)), Url::to(["/user/auth/login"], true));
+        $userName =  Html::encode($this->user->displayName);
+        $adminName =  Html::encode($this->admin->displayName);
+
         if (!empty($module->settings->get('auth.registrationApprovalMailContent'))) {
-            $this->message = strtr($module->settings->get('auth.registrationApprovalMailContent'), [
-                '{displayName}' => Html::encode($this->user->displayName),
-                '{AdminName}' => Html::encode($this->admin->displayName),
-                '{loginURL}' => urldecode(Url::to(["/user/auth/login"], true)),
+            $this->message = Yii::t('AdminModule.user', $module->settings->get('auth.registrationApprovalMailContent'), [
+                '{displayName}' => $userName,
+                '{AdminName}' => $adminName,
+                '{loginLink}' => $loginLink,
             ]);
         } else {
-            $this->message = static::getDefaultApprovalMessage(
-                Html::encode($this->user->displayName),
-                Html::encode($this->admin->displayName),
-                urldecode(Url::to(["/user/auth/login"], true))
-            );
+            $this->message = static::getDefaultApprovalMessage($userName, $adminName, $loginLink);
         }
+
+        Yii::$app->i18n->autosetLocale();
     }
 
     /**
@@ -190,6 +195,8 @@ class ApproveUserForm extends \yii\base\Model
      */
     public function setDeclineDefaults()
     {
+        Yii::$app->i18n->setUserLocale($this->user);
+
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
 
@@ -199,7 +206,7 @@ class ApproveUserForm extends \yii\base\Model
         );
 
         if (!empty($module->settings->get('auth.registrationDenialMailContent'))) {
-            $this->message = strtr($module->settings->get('auth.registrationDenialMailContent'), [
+            $this->message = Yii::t('AdminModule.user', $module->settings->get('auth.registrationDenialMailContent'), [
                 '{displayName}' => Html::encode($this->user->displayName),
                 '{AdminName}' => Html::encode($this->admin->displayName),
             ]);
@@ -208,6 +215,8 @@ class ApproveUserForm extends \yii\base\Model
                 Html::encode($this->user->displayName), Html::encode($this->admin->displayName)
             );
         }
+
+        Yii::$app->i18n->autosetLocale();
     }
 
     /**
@@ -218,15 +227,15 @@ class ApproveUserForm extends \yii\base\Model
      * @param string $loginUrl
      * @return string
      */
-    public static function getDefaultApprovalMessage($userDisplayName = '{displayName}', $adminDisplayName = '{AdminName}', $loginUrl = '{loginURL}')
+    public static function getDefaultApprovalMessage($userDisplayName = '{displayName}', $adminDisplayName = '{AdminName}', $loginLink = '{loginLink}')
     {
         return Yii::t('AdminModule.user', "Hello {displayName},<br><br>\nYour account has been activated.<br><br>\n" .
-            "Click here to login:<br>\n<a href='{loginURL}'>{loginURL}</a><br><br>\n\n" .
+            "Click here to login:<br>\n{loginLink}<br><br>\n\n" .
             "Kind Regards<br>\n{AdminName}<br><br>",
             [
                 '{displayName}' => $userDisplayName,
                 '{AdminName}' => $adminDisplayName,
-                '{loginURL}' => $loginUrl,
+                '{loginLink}' => $loginLink,
             ]);
     }
 
@@ -242,7 +251,7 @@ class ApproveUserForm extends \yii\base\Model
         return Yii::t('AdminModule.user', "Hello {displayName},<br><br>\n" .
             "Your account request has been declined.<br><br>\n\n" .
             "Kind Regards<br>\n" .
-            "{AdminName} <br><br > ",
+            "{AdminName} <br><br> ",
             [
                 '{displayName}' => $userDisplayName,
                 '{AdminName}' => $adminDisplayName,

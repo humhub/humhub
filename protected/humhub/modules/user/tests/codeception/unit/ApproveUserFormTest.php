@@ -28,24 +28,64 @@ class ApproveUserFormTest extends HumHubDbTestCase
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->setApprovalDefaults();
         $this->assertEquals("Hello UnApproved User,<br><br>\nYour account has been activated.<br><br>\n" .
-            "Click here to login:<br>\n<a href='http://localhost/index-test.php?r=user/auth/login'>http://localhost/index-test.php?r=user/auth/login</a><br><br>\n\n" .
+            "Click here to login:<br>\n<a href=\"http://localhost/index-test.php?r=user%2Fauth%2Flogin\">http://localhost/index-test.php?r=user/auth/login</a><br><br>\n\n" .
             "Kind Regards<br>\nAdmin Tester<br><br>", $form->message);
 
         $settings = new AuthenticationSettingsForm();
         $this->assertEquals(ApproveUserForm::getDefaultApprovalMessage(), $settings->registrationApprovalMailContent);
+    }
 
+    public function testSaveDefaultInUserLanguageDoesNotOverwrite()
+    {
+        $this->becomeUser('Admin');
+        Yii::$app->user->getIdentity()->setAttribute('language', 'de');
+        Yii::$app->i18n->setUserLocale(Yii::$app->user->getIdentity());
+
+        $this->assertEquals('Hallo {displayName},<br /><br /> Dein Konto wurde aktiviert.<br /><br /> Klicke hier um dich einzuloggen:<br /> {loginLink}<br /><br /> Mit freundlichen Grüßen<br /> {AdminName}<br /><br />',
+            ApproveUserForm::getDefaultApprovalMessage());
+
+        $this->setApprovalMessage(ApproveUserForm::getDefaultApprovalMessage());
+
+        Yii::$app->user->getIdentity()->setAttribute('language', 'en-US');
+        Yii::$app->i18n->setUserLocale(Yii::$app->user->getIdentity());
+
+        $this->testDefaultApproveMessage();
     }
 
     public function testOverwrittenApproveMessage()
     {
         $this->becomeUser('Admin');
 
-        $this->setApprovalMessage('Hey {displayName} your account was approved by {AdminName}, please click {loginURL}');
+        $this->setApprovalMessage('Hey {displayName} your account was approved by {AdminName}, please click {loginLink}');
 
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->setApprovalDefaults();
-        $this->assertEquals("Hey UnApproved User your account was approved by Admin Tester, please click http://localhost/index-test.php?r=user/auth/login"
+        $this->assertEquals("Hey UnApproved User your account was approved by Admin Tester, please click <a href=\"http://localhost/index-test.php?r=user%2Fauth%2Flogin\">http://localhost/index-test.php?r=user/auth/login</a>"
             , $form->message);
+    }
+
+    public function testApprovedMessageIsSentInUserLanguage()
+    {
+        $this->becomeUser('Admin');
+
+        $this->unapprovedUser->setAttribute('language', 'de');
+
+        $form = new ApproveUserForm($this->unapprovedUser->id);
+        $form->user->setAttribute('language', 'de');
+        $form->setApprovalDefaults();
+        $this->assertEquals("Hallo UnApproved User,<br /><br /> Dein Konto wurde aktiviert.<br /><br /> Klicke hier um dich einzuloggen:<br /> <a href=\"http://localhost/index-test.php?r=user%2Fauth%2Flogin\">http://localhost/index-test.php?r=user/auth/login</a><br /><br /> Mit freundlichen Grüßen<br /> Admin Tester<br /><br />", $form->message);
+    }
+
+    public function testDeclineMessageIsSentInUserLanguage()
+    {
+        $this->becomeUser('Admin');
+
+        $this->unapprovedUser->setAttribute('language', 'de');
+
+        $form = new ApproveUserForm($this->unapprovedUser->id);
+        $form->user->setAttribute('language', 'de');
+        $form->setDeclineDefaults();
+        $this->assertEquals("Hallo UnApproved User,<br /><br /> Deine Registrierungsanfrage wurde abgelehnt.<br /><br /> Mit freundlichen Grüßen<br /> Admin Tester <br /><br />", $form->message);
     }
 
     public function testDefaultDeclineMessage()
@@ -56,7 +96,7 @@ class ApproveUserFormTest extends HumHubDbTestCase
         $this->assertEquals("Hello UnApproved User,<br><br>\n" .
             "Your account request has been declined.<br><br>\n\n" .
             "Kind Regards<br>\n" .
-            "Admin Tester <br><br > ", $form->message);
+            "Admin Tester <br><br> ", $form->message);
 
         $settings = new AuthenticationSettingsForm();
         $this->assertEquals(ApproveUserForm::getDefaultDeclineMessage(), $settings->registrationDenialMailContent);
