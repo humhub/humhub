@@ -35,7 +35,6 @@ class ApprovalController extends Controller
     {
         $this->subLayout = '@admin/views/layouts/user';
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Approval'));
-
         return parent::init();
     }
 
@@ -89,56 +88,35 @@ class ApprovalController extends Controller
         ]);
     }
 
+    /**
+     * @param $id
+     * @return string
+     * @throws HttpException
+     * @throws \Throwable
+     */
     public function actionApprove($id)
     {
-        $user = $this->getUser($id);
-
-        $model = new ApproveUserForm;
-        $model->setApprovalDefaults($user, Yii::$app->user->getIdentity());
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $model->send($user->email);
-            $user->status = User::STATUS_ENABLED;
-            $user->save();
-            $user->setUpApproved();
+        $model = new ApproveUserForm($id);
+        if($model->load(Yii::$app->request->post()) && $model->approve()) {
             return $this->redirect(['index']);
         }
 
         return $this->render('approve', [
-            'model' => $user,
+            'model' => $model->user,
             'approveFormModel' => $model
         ]);
     }
 
     public function actionDecline($id)
     {
-        $user = $this->getUser($id);
-
-        $model = new ApproveUserForm;
-        $model->setDeclineDefaults($user, Yii::$app->user->getIdentity());
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $model->send($user->email);
-            $user->delete();
+        $model = new ApproveUserForm($id);
+        if($model->load(Yii::$app->request->post()) && $model->decline()) {
             return $this->redirect(['index']);
         }
 
         return $this->render('decline', [
-            'model' => $user,
+            'model' => $model->user,
             'approveFormModel' => $model
         ]);
     }
-
-    private function getUser($id)
-    {
-        $user = User::find()
-            ->andWhere(['user.id' => (int)Yii::$app->request->get('id'), 'user.status' => User::STATUS_NEED_APPROVAL])
-            ->administrableBy(Yii::$app->user->getIdentity())
-            ->one();
-
-        if ($user == null) {
-            throw new HttpException(404, Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
-        }
-
-        return $user;
-    }
-
 }

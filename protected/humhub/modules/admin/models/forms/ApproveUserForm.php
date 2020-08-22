@@ -2,11 +2,15 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\Module;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use humhub\modules\user\models\User;
+use yii\web\ForbiddenHttpException;
+use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * @package humhub.forms
@@ -15,8 +19,66 @@ use humhub\modules\user\models\User;
 class ApproveUserForm extends \yii\base\Model
 {
 
+    /**
+     * @var User
+     */
+    public $user;
+
+    /**
+     * @var User
+     */
+    public $admin;
+
+    /**
+     * @var string
+     */
     public $subject;
+
+    /**
+     * @var string
+     */
     public $message;
+
+    public function __construct($userId)
+    {
+        $this->admin = Yii::$app->user->getIdentity();
+        $this->user = $this->getUser($userId);
+        parent::__construct([]);
+    }
+
+    public function init()
+    {
+        parent::init();
+        if(!($this->user instanceof  User)) {
+            throw new NotFoundHttpException(Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
+        }
+
+        if($this->user->status !== User::STATUS_NEED_APPROVAL) {
+            throw new NotFoundHttpException(Yii::t('AdminModule.controllers_ApprovalController', 'Invalid user state: '.$this->user->status));
+        }
+
+        if(!($this->admin instanceof User)) {
+            throw new ForbiddenHttpException();
+        }
+
+        if(!$this->admin->canApproveUsers()) {
+            throw new ForbiddenHttpException();
+        }
+    }
+
+    /**
+     * @param $id int
+     * @return User|null
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
+     */
+    private function getUser($id)
+    {
+        return User::find()
+            ->andWhere(['user.id' => (int) $id, 'user.status' => User::STATUS_NEED_APPROVAL])
+            ->administrableBy($this->admin)
+            ->one();
+    }
 
     /**
      * Declares the validation rules.
@@ -41,10 +103,50 @@ class ApproveUserForm extends \yii\base\Model
         ];
     }
 
-    public function send($email)
+    /**
+     * Approves user by sending approval mail and updating user status and running initial approval logic.
+     * @return bool
+     */
+    public function approve()
+    {
+        if(!$this->message) {
+            $this->setApprovalDefaults();
+        }
+
+        if(!$this->validate()) {
+            return false;
+        }
+
+        $this->send();
+        $this->user->status = User::STATUS_ENABLED;
+        $this->user->save();
+        $this->user->setUpApproved();
+        return true;
+    }
+
+    /**
+     * Declines user by sending denial mail and deleting the user.
+     * @return bool
+     */
+    public function decline()
+    {
+        if(!$this->message) {
+            $this->setDeclineDefaults();
+        }
+
+        if(!$this->validate()) {
+            return false;
+        }
+
+        $this->send();
+        $this->user->delete();
+        return true;
+    }
+
+    public function send()
     {
         $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], ['message' => $this->message]);
-        $mail->setTo($email);
+        $mail->setTo($this->user->email);
         $mail->setSubject($this->subject);
         $mail->send();
     }
@@ -55,26 +157,26 @@ class ApproveUserForm extends \yii\base\Model
      * @param User $user
      * @param User $admin
      */
-    public function setApprovalDefaults(User $user, User $admin)
+    public function setApprovalDefaults()
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
 
         $this->subject = Yii::t('AdminModule.user',
             "Account Request for '{displayName}' has been approved.",
-            ['{displayName}' => Html::encode($user->displayName)]
+            ['{displayName}' => Html::encode($this->user->displayName)]
         );
 
         if (!empty($module->settings->get('auth.registrationApprovalMailContent'))) {
             $this->message = strtr($module->settings->get('auth.registrationApprovalMailContent'), [
-                '{displayName}' => Html::encode($user->displayName),
-                '{AdminName}' => Html::encode($admin->displayName),
+                '{displayName}' => Html::encode($this->user->displayName),
+                '{AdminName}' => Html::encode($this->admin->displayName),
                 '{loginURL}' => urldecode(Url::to(["/user/auth/login"], true)),
             ]);
         } else {
             $this->message = static::getDefaultApprovalMessage(
-                Html::encode($user->displayName),
-                Html::encode($admin->displayName),
+                Html::encode($this->user->displayName),
+                Html::encode($this->admin->displayName),
                 urldecode(Url::to(["/user/auth/login"], true))
             );
         }
@@ -86,24 +188,24 @@ class ApproveUserForm extends \yii\base\Model
      * @param User $user
      * @param User $admin
      */
-    public function setDeclineDefaults(User $user, User $admin)
+    public function setDeclineDefaults()
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
 
         $this->subject = Yii::t('AdminModule.user',
             'Account Request for \'{displayName}\' has been declined.',
-            ['{displayName}' => Html::encode($user->displayName)]
+            ['{displayName}' => Html::encode($this->user->displayName)]
         );
 
         if (!empty($module->settings->get('auth.registrationDenialMailContent'))) {
             $this->message = strtr($module->settings->get('auth.registrationDenialMailContent'), [
-                '{displayName}' => Html::encode($user->displayName),
-                '{AdminName}' => Html::encode($admin->displayName),
+                '{displayName}' => Html::encode($this->user->displayName),
+                '{AdminName}' => Html::encode($this->admin->displayName),
             ]);
         } else {
             $this->message = static::getDefaultDeclineMessage(
-                Html::encode($user->displayName), Html::encode($admin->displayName)
+                Html::encode($this->user->displayName), Html::encode($this->admin->displayName)
             );
         }
     }
