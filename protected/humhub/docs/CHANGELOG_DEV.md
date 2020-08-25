@@ -5,4 +5,4 @@ HumHub Changelog
 -----------------------
 - Fix #4327: Internationalization of user approval/decline message text
 - Fix #4139: Dashboard post input on mobile cuts editor menu 
-
+- Fix #4330: Allow users with permission ManageUsers to modify profile images
