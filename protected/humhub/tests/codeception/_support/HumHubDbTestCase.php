@@ -206,7 +206,7 @@ class HumHubDbTestCase extends Unit
      * @see assertSentEmail
      * @since 1.3
      */
-    public function assertMailSent($count = 0, $msg = null)
+    public function assertMailSent($count = 0)
     {
         return $this->getYiiModule()->seeEmailIsSent($count);
     }
@@ -219,6 +219,25 @@ class HumHubDbTestCase extends Unit
     public function assertSentEmail($count = 0)
     {
         return $this->getYiiModule()->seeEmailIsSent($count);
+    }
+
+    public function assertEqualsLastEmailTo($to, $strict = true)
+    {
+        if(is_string($to)) {
+            $to = [$to];
+        }
+
+        $message = $this->getYiiModule()->grabLastSentEmail();
+        $expected = $message->getTo();
+
+        foreach ($to as $email) {
+            $this->assertArrayHasKey($email, $expected);
+        }
+
+        if($strict) {
+            $this->assertEquals(count($to), count($expected));
+        }
+
     }
 
     public function assertEqualsLastEmailSubject($subject)
