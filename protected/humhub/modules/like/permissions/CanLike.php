@@ -30,7 +30,7 @@ class CanLike extends \humhub\libs\BasePermission
      * @inheritdoc
      */
     protected $fixedGroups = [
-//        Space::USERGROUP_GUEST,
+        Space::USERGROUP_GUEST,
     ];
 
     /**

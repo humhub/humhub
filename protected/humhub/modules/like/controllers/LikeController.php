@@ -13,6 +13,7 @@ use Yii;
 use humhub\modules\like\models\Like;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\content\components\ContentAddonController;
+use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 
 /**
@@ -57,6 +58,10 @@ class LikeController extends ContentAddonController
      */
     public function actionLike()
     {
+        if (!$this->module->canLike($this->parentContent)) {
+            throw new ForbiddenHttpException(Yii::t('LikeModule.base', 'You are not allowed to like.'));
+        }
+
         $this->forcePostRequest();
 
         $like = Like::findOne(['object_model' => $this->contentModel, 'object_id' => $this->contentId, 'created_by' => Yii::$app->user->id]);
@@ -78,6 +83,9 @@ class LikeController extends ContentAddonController
      */
     public function actionUnlike()
     {
+        if (!$this->module->canLike($this->parentContent)) {
+            throw new ForbiddenHttpException(Yii::t('LikeModule.base', 'You are not allowed to like.'));
+        }
         $this->forcePostRequest();
 
         if (!Yii::$app->user->isGuest) {

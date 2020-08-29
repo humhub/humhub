@@ -36,9 +36,7 @@ class LikeLink extends \yii\base\Widget
         $currentUserLiked = false;
         /** @var Module $module */
         $module = Yii::$app->getModule('like');
-        if (!$module->canLike($this->object)) {
-            return '';
-        }
+        $canLike = $module->canLike($this->object);
 
         $likes = LikeModel::GetLikes(get_class($this->object), $this->object->id);
         foreach ($likes as $like) {
@@ -48,6 +46,7 @@ class LikeLink extends \yii\base\Widget
         }
 
         return $this->render('likeLink', [
+                    'canLike' => $canLike,
                     'object' => $this->object,
                     'likes' => $likes,
                     'currentUserLiked' => $currentUserLiked,
