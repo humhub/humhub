@@ -17,20 +17,6 @@ humhub.module('ui.gallery', function (module, require, $) {
             evt.preventDefault();
             evt.stopPropagation();
 
-            // var initFirstView = function () {
-            //     var $slides = $('#blueimp-gallery .slides');
-            //     var firstAnimationTimeInMs = 1550;
-            //     $slides.css({'opacity': 0.1});
-            //     $slides.fadeTo(firstAnimationTimeInMs, 1);
-            // }
-            // var $slides = $('#blueimp-gallery .slides');
-            // console.log('$this.is(\'img\')', $this.is('img'));
-            // console.log('$slides.find(\'.slide img\')', $slides.find('.slide img'));
-            //
-            // if($('.slides').children().length <= 0){
-            //     initFirstView();
-            // }
-
             var gallery = $this.data('ui-gallery');
             var $links = (gallery) ? $('[data-ui-gallery="' + gallery + '"]') : $this.parent().find('[data-ui-gallery]');
             var options = {index: $this[0], event: evt.originalEvent};
