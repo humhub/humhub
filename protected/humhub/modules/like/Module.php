@@ -8,7 +8,6 @@
 
 namespace humhub\modules\like;
 
-use humhub\debug\RDebug;
 use Yii;
 use humhub\modules\like\models\Like;
 use humhub\modules\space\models\Space;
@@ -45,7 +44,7 @@ class Module extends \humhub\components\Module
      */
     public function getPermissions($contentContainer = null)
     {
-        if ($contentContainer instanceof Space) {
+        if(isset($contentContainer)) {
             return [
                 new permissions\CanLike()
             ];

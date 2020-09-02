@@ -59,7 +59,7 @@ class LikeController extends ContentAddonController
     public function actionLike()
     {
         if (!$this->module->canLike($this->parentContent)) {
-            throw new ForbiddenHttpException(Yii::t('LikeModule.base', 'You are not allowed to like.'));
+            throw new ForbiddenHttpException();
         }
 
         $this->forcePostRequest();
@@ -84,7 +84,7 @@ class LikeController extends ContentAddonController
     public function actionUnlike()
     {
         if (!$this->module->canLike($this->parentContent)) {
-            throw new ForbiddenHttpException(Yii::t('LikeModule.base', 'You are not allowed to like.'));
+            throw new ForbiddenHttpException();
         }
         $this->forcePostRequest();
 

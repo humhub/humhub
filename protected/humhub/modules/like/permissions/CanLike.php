@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2020 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -11,7 +11,7 @@ namespace humhub\modules\like\permissions;
 use humhub\modules\space\models\Space;
 
 /**
- * CreateComment Permission
+ * CanLike Permission
  */
 class CanLike extends \humhub\libs\BasePermission
 {
@@ -52,8 +52,8 @@ class CanLike extends \humhub\libs\BasePermission
     {
         parent::__construct($config);
 
-        $this->title = \Yii::t('LikeModule.permissions', $this->title);
-        $this->description = \Yii::t('LikeModule.permissions', $this->description);
+        $this->title = \Yii::t('LikeModule.permissions', 'Add Like');
+        $this->description = \Yii::t('LikeModule.permissions', 'Allows the user to add likes');
     }
 
 }
