@@ -6,7 +6,7 @@ use humhub\modules\user\models\fieldtype\MarkdownEditor;
 use humhub\widgets\MarkdownView;
 
 /**
- * @var $this \humhub\components\View
+ * @var $this \humhub\modules\ui\view\components\View
  * @var $user \humhub\modules\user\models\User
  */
 $categories = $user->profile->getProfileFieldCategories();

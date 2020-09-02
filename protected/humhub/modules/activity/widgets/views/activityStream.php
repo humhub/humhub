@@ -9,7 +9,7 @@ use humhub\modules\activity\assets\ActivityAsset;
 use humhub\widgets\PanelMenu;
 use yii\helpers\Html;
 
-/* @var $this humhub\components\View */
+/* @var $this humhub\modules\ui\view\components\View */
 /* @var $streamUrl string */
 /* @var $options array */
 
