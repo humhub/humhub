@@ -3,6 +3,8 @@
 namespace tests\codeception\_support;
 
 use Codeception\Module;
+use humhub\modules\live\tests\codeception\fixtures\LiveFixture;
+use humhub\modules\notification\tests\codeception\fixtures\NotificationFixture;
 use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
 use yii\test\FixtureTrait;
 use yii\test\InitDbFixture;
@@ -74,7 +76,8 @@ class FixtureHelper extends Module
             'space' => [ 'class' => \humhub\modules\space\tests\codeception\fixtures\SpaceFixture::className()],
             'space_membership' => [ 'class' => \humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture::className()],
             'contentcontainer' => [ 'class' => \humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture::className()],
-            'notification' => [ 'class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::className()],
+            'notification' => ['class' => NotificationFixture::class],
+            'live' => ['class' => LiveFixture::class],
             'activity' => [ 'class' => \humhub\modules\activity\tests\codeception\fixtures\ActivityFixture::className()],
         ];
     }

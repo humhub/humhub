@@ -7,6 +7,7 @@ use humhub\modules\activity\tests\codeception\fixtures\ActivityFixture;
 use humhub\modules\content\tests\codeception\fixtures\ContentFixture;
 use humhub\modules\file\tests\codeception\fixtures\FileFixture;
 use humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture;
+use humhub\modules\notification\tests\codeception\fixtures\LiveFixture;
 use humhub\modules\notification\tests\codeception\fixtures\NotificationFixture;
 use humhub\modules\space\tests\codeception\fixtures\SpaceFixture;
 use humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture;
@@ -126,9 +127,10 @@ class DynamicFixtureHelper extends Module
             'space_membership' => [ 'class' => SpaceMembershipFixture::class],
             'content' => ['class' => ContentFixture::class],
             'file' => ['class' => FileFixture::class],
-            'notification' => [ 'class' => NotificationFixture::class],
+            'notification' => ['class' => NotificationFixture::class],
             'activity' => [ 'class' => ActivityFixture::class],
-            'friendship' => ['class' => FriendshipFixture::class]
+            'friendship' => ['class' => FriendshipFixture::class],
+            'live' => ['class' => \humhub\modules\live\tests\codeception\fixtures\LiveFixture::class],
         ];
     }
 }
