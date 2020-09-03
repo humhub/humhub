@@ -6,7 +6,7 @@
  *
  */
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $pickerClass string */
 /* @var $pickerOptions string */
 /* @var $options array */
