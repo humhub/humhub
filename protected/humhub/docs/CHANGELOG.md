@@ -5,6 +5,8 @@ HumHub Changelog
 -----------------------
 - Fix #4315: UserInvite (E-Mail Approval) not deleted when declining users
 - Fix #4318: Timezone issue with LDAP and birthday fields
+- Fix #4342: Missing Emoji mappings used for plain richtext output
+- Fix #4343: Autofocus of picker input in modal not working
 
 
 1.6.2 (August 4, 2020)
