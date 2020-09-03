@@ -198,6 +198,7 @@ humhub.module('ui.modal', function (module, require, $) {
             client.get(url, cfg, originalEvent).then(function (response) {
                 that.setDialog(response);
                 resolve(response);
+                that.focus();
             }).catch(reject);
         });
     };
@@ -448,8 +449,17 @@ humhub.module('ui.modal', function (module, require, $) {
         return this;
     };
 
-    Modal.prototype.focus = function (content) {
-        this.$.find('select:visible, input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first().focus();
+    Modal.prototype.focus = function () {
+        var that = this;
+        setTimeout(function() {
+            var $input = that.$.find('select:visible, input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first();
+
+            if($input.data('select2')) {
+                $input.select2('focus');
+            } else {
+                $input.focus();
+            }
+        }, 100);
     };
 
     Modal.prototype.updateDialogOptions = function() {
