@@ -2,7 +2,7 @@
 return array (
   '<strong>Search </strong> results' => '',
   'Advanced search settings' => '',
-  'All' => '',
+  'All' => 'Toate',
   'Content' => 'Conținut',
   'Search' => 'Căutare',
   'Search for user, spaces and content' => '',
