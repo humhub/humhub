@@ -26,13 +26,6 @@ class LikeAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $css = [
-        'css/humhub.like.css'
-    ];
-
-    /**
-     * @inheritdoc
-     */
     public $js = [
         'js/humhub.like.js'
     ];
