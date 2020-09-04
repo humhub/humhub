@@ -7,7 +7,7 @@ HumHub Changelog
 - Fix #4318: Timezone issue with LDAP and birthday fields
 - Fix #4342: Missing Emoji mappings used for plain richtext output
 - Fix #4343: Autofocus of picker input in modal not working
-
+- Fix #4323: TabbedForm validation switches to erroneous tab on every client form validation
 
 1.6.2 (August 4, 2020)
 -----------------------
