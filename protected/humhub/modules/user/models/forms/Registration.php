@@ -127,6 +127,10 @@ class Registration extends HForm
             'class' => 'form-control',
             'maxlength' => 25,
         ];
+        $form['elements']['time_zone'] = [
+            'type' => 'hidden',
+            'maxlength' => 25,
+        ];
         if ($this->enableEmailField) {
             $form['elements']['email'] = [
                 'type' => 'text',
