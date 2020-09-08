@@ -10,6 +10,8 @@ namespace humhub\components\bootstrap;
 use humhub\components\Application;
 use Yii;
 use yii\base\BootstrapInterface;
+use yii\base\ErrorException;
+use yii\base\InvalidArgumentException;
 use yii\helpers\FileHelper;
 
 /**
@@ -36,6 +38,7 @@ class ModuleAutoLoader implements BootstrapInterface
     /**
      * Find available modules
      * @return array
+     * @throws ErrorException
      */
     public static function locateModules()
     {
@@ -53,12 +56,17 @@ class ModuleAutoLoader implements BootstrapInterface
      * Find all modules with configured paths
      * @param array $paths
      * @return array
+     * @throws ErrorException
      */
     private static function findModules($paths)
     {
         $folders = [];
         foreach ($paths as $path) {
-            $folders = array_merge($folders, self::findModulesByPath($path));
+            try {
+                $folders = array_merge($folders, self::findModulesByPath($path));
+            } catch (InvalidArgumentException $ex) {
+                throw new ErrorException('Invalid module autoload path: ' . $path);
+            }
         }
 
         $modules = [];
@@ -78,6 +86,7 @@ class ModuleAutoLoader implements BootstrapInterface
      * Find all directories with a configuration file inside
      * @param string $path
      * @return array
+     * @throws InvalidArgumentException
      */
     private static function findModulesByPath($path)
     {
@@ -85,13 +94,9 @@ class ModuleAutoLoader implements BootstrapInterface
             return is_file($path . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE);
         };
 
-        try {
-            return FileHelper::findDirectories(
-                Yii::getAlias($path, true),
-                ['filter' => $hasConfigurationFile, 'recursive' => false]
-            );
-        } catch (yii\base\InvalidArgumentException $e) {
-            return [];
-        }
+        return FileHelper::findDirectories(
+            Yii::getAlias($path, true),
+            ['filter' => $hasConfigurationFile, 'recursive' => false]
+        );
     }
 }
