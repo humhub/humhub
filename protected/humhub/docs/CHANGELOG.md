@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.6.4 (Unreleased)
+------------------
+- Fix #4355: Fixed error when authclient not providing an id attribute
+
+
 1.6.3 (September 9, 2020)
 -----------------------
 - Fix #4315: UserInvite (E-Mail Approval) not deleted when declining users
