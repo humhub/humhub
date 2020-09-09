@@ -38,10 +38,14 @@ class AuthClientHelpers
             return $authClient->getUser();
         }
 
-        $auth = Auth::find()->where(['source' => $authClient->getId(), 'source_id' => $attributes['id']])->one();
-        if ($auth !== null) {
-            return $auth->user;
+        if (isset($attributes['id'])) {
+            $auth = Auth::find()->where(['source' => $authClient->getId(), 'source_id' => $attributes['id']])->one();
+            if ($auth !== null) {
+                return $auth->user;
+            }
         }
+
+        return null;
     }
 
     /**
