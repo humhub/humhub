@@ -264,7 +264,8 @@ class OnlineModuleManager extends Component
      */
     public function getModuleInfo($moduleId)
     {
-        return HumHubAPI::request('v1/modules/info', ['id' => $moduleId]);
+        $settings = Yii::$app->getModule('marketplace')->settings;
+        return HumHubAPI::request('v1/modules/info', ['id' => $moduleId, 'includeBetaVersions' => (boolean)$settings->get('includeBetaUpdates')]);
     }
 
 }
