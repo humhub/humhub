@@ -72,11 +72,14 @@ humhub.module('ui.form', function(module, require, $) {
         });
 
 
+        this.$.on('submit', function() {
+            addValidationListener();
+        });
+
         // activate the first tab or the tab with errors
         $tabs.find('a[href="#tab-' + activeTab + '"]').tab('show');
         this.$.fadeIn();
     };
-
 
     /**
      * Prepares all included fieldsets for $form indexed
@@ -108,16 +111,16 @@ humhub.module('ui.form', function(module, require, $) {
 
     /**
      * Check for errors in a specific category.
-     * @param _object
+     * @param $fieldSet
      * @returns {boolean}
      */
     var _hasErrors = function($fieldSet) {
         return $fieldSet.find('.error, .has-error').length > 0;
     };
 
-    var init = function() {
+    var addValidationListener = function() {
         // Make sure frontend validation also activates the tab with errors.
-        $(document).on('afterValidate.humhub:ui:tabbedForm', function(evt, messages, errors) {
+        $(document).off('afterValidate.humhub:ui:tabbedForm').one('afterValidate.humhub:ui:tabbedForm', function(evt, messages, errors) {
             if (errors.length && Widget.exists('ui.form.TabbedForm')) {
                 var index = $(errors[0].container).closest('.tab-pane').data('tab-index');
                 $('a[href="#tab-' + index + '"]').tab('show');
@@ -129,9 +132,13 @@ humhub.module('ui.form', function(module, require, $) {
         evt.$trigger.closest('form').submit();
     };
 
+    var unload = function() {
+        $(document).off('afterValidate.humhub:ui:tabbedForm');
+    };
+
     module.export({
-        init: init,
         sortOrder: 100,
+        unload: unload,
         submit: submit,
         TabbedForm: TabbedForm
     });
