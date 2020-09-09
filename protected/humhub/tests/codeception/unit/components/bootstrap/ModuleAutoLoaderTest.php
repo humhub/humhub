@@ -79,14 +79,6 @@ class ModuleAutoLoaderTest extends Unit
         array_pop(Yii::$app->params['moduleAutoloadPaths']);
     }
 
-    /**
-     * Test module loading by path
-     * @dataProvider dataModuleLoadingByPath
-     */
-    public function testModuleLoadingByPath($path, $count)
-    {
-        $this->assertCount($count, ModuleAutoLoader::findModulesByPath($path));
-    }
 
     /**
      * Return test cases for module loading by path
@@ -99,16 +91,5 @@ class ModuleAutoLoaderTest extends Unit
             ['@humhub/invalid', 0],
             ['@invalid/folder', 0]
         ];
-    }
-
-    /**
-     * Assert that locateModules and findModules return the same list of modules
-     */
-    public function testLocateAndFindModules()
-    {
-        $this->assertEquals(
-            ModuleAutoLoader::locateModules(),
-            ModuleAutoLoader::findModules(Yii::$app->params['moduleAutoloadPaths'])
-        );
     }
 }
