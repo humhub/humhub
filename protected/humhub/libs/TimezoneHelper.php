@@ -11,6 +11,7 @@ namespace humhub\libs;
 use DateTime;
 use DateTimeZone;
 use Yii;
+use yii\db\Exception;
 
 /**
  * TimezoneHelpers
@@ -99,13 +100,17 @@ class TimezoneHelper
      */
     public static function compareTimeZones(): bool
     {
-        $timeZone = Yii::$app->settings->get('timeZone');
-        if (!$timeZone){
+        try {
+            $timeZone = Yii::$app->settings->get('timeZone');
+            if (!$timeZone){
+                return false;
+            }
+            $dbTimeZone = new DateTimeZone($timeZone);
+            $dbTimeZoneOffset = $dbTimeZone->getOffset(new DateTime);
+            $offset_prefix = $dbTimeZoneOffset < 0 ? '-' : '+';
+            return self::getMysqlTimeZone() == $offset_prefix.gmdate('H:i', abs($dbTimeZoneOffset));
+        } catch (Exception $e) {
             return false;
         }
-        $dbTimeZone = new DateTimeZone($timeZone);
-        $dbTimeZoneOffset = $dbTimeZone->getOffset(new DateTime);
-        $offset_prefix = $dbTimeZoneOffset < 0 ? '-' : '+';
-        return self::getMysqlTimeZone() == $offset_prefix.gmdate('H:i', abs($dbTimeZoneOffset));
     }
 }
