@@ -86,7 +86,7 @@ class BasicSettingsForm extends \yii\base\Model
     public function attributeHints()
     {
         return [
-            'timeZone' => Yii::t('AdminModule.settings', 'Database Timezone: {timeZone}', ['timeZone' => TimezoneHelper::getMysqlTimeZone()]),
+            'timeZone' => Yii::t('AdminModule.settings', 'Database Timezone: UTC{timeZone}', ['timeZone' => TimezoneHelper::getMysqlTimeZone()]),
         ];
     }
 

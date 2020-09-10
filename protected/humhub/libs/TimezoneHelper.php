@@ -84,14 +84,12 @@ class TimezoneHelper
      *
      * @return string
      */
-    public static function getMysqlTimeZone($returnHour = false): string
+    public static function getMysqlTimeZone(): string
     {
         $timeArr = Yii::$app->db->createCommand('SELECT TIMEDIFF(NOW(),UTC_TIMESTAMP)')->queryOne();
-        $time = explode(':', $timeArr['TIMEDIFF(NOW(),UTC_TIMESTAMP)'])[0];
-        if ($returnHour) {
-            return $time;
-        }
-        return 'UTC'.($time[0] != '-' ? '+'.$time : $time).':00';
+        $timeArr = explode(':', $timeArr['TIMEDIFF(NOW(),UTC_TIMESTAMP)']);
+        $time = $timeArr[0];
+        return ($time[0] != '-' ? '+'.$time : $time).':'.$timeArr[1];
     }
 
     /**
@@ -108,6 +106,6 @@ class TimezoneHelper
         $dbTimeZone = new DateTimeZone($timeZone);
         $dbTimeZoneOffset = $dbTimeZone->getOffset(new DateTime);
         $offset_prefix = $dbTimeZoneOffset < 0 ? '-' : '+';
-        return self::getMysqlTimeZone(true) == $offset_prefix.gmdate('H', abs($dbTimeZoneOffset));
+        return self::getMysqlTimeZone() == $offset_prefix.gmdate('H:i', abs($dbTimeZoneOffset));
     }
 }
