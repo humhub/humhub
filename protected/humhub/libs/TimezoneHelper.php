@@ -10,6 +10,7 @@ namespace humhub\libs;
 
 use DateTime;
 use DateTimeZone;
+use Yii;
 
 /**
  * TimezoneHelpers
@@ -76,5 +77,37 @@ class TimezoneHelper
         }
 
         return $timezone_list;
+    }
+
+    /**
+     * Get MySql time Zone
+     *
+     * @return string
+     */
+    public static function getMysqlTimeZone($returnHour = false): string
+    {
+        $timeArr = Yii::$app->db->createCommand('SELECT TIMEDIFF(NOW(),UTC_TIMESTAMP)')->queryOne();
+        $time = explode(':', $timeArr['TIMEDIFF(NOW(),UTC_TIMESTAMP)'])[0];
+        if ($returnHour) {
+            return $time;
+        }
+        return 'UTC'.($time[0] != '-' ? '+'.$time : $time).':00';
+    }
+
+    /**
+     * compare db and MySql Timezones
+     *
+     * @return boolean
+     */
+    public static function compareTimeZones(): bool
+    {
+        $timeZone = Yii::$app->settings->get('timeZone');
+        if (!$timeZone){
+            return false;
+        }
+        $dbTimeZone = new DateTimeZone($timeZone);
+        $dbTimeZoneOffset = $dbTimeZone->getOffset(new DateTime);
+        $offset_prefix = $dbTimeZoneOffset < 0 ? '-' : '+';
+        return self::getMysqlTimeZone(true) == $offset_prefix.gmdate('H', abs($dbTimeZoneOffset));
     }
 }

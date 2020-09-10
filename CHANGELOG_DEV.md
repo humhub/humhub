@@ -8,4 +8,4 @@ HumHub Changelog
 - Fix #4328: Top navigation overlaps post input richtext menu on dashboard page
 - Fix #4257: Notification dropdown text breaks after notification image on mobile
 - Chg: Move CHANGELOG to humhub root
-
+- Fix #4186:Add Timezone validation rules to admin prerequisite view 

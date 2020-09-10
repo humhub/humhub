@@ -410,6 +410,20 @@ class SelfTest
             ];
         }
 
+        // Timezone Setting
+        $title = 'Timezone Setting';
+        if (TimezoneHelper::compareTimeZones()) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'WARNING',
+            ];
+        }
+
         // Check Runtime Directory
         $title = 'Permissions - Runtime';
 
