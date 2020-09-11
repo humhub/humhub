@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.6.4 (Unreleased)
+------------------
+- Fix #4361: Added missing nonce attribute in inline marketplace script
+
+
 1.6.3 (September 9, 2020)
 -----------------------
 - Fix #4315: UserInvite (E-Mail Approval) not deleted when declining users
