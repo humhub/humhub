@@ -9,6 +9,7 @@
 namespace humhub\modules\like\permissions;
 
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 
 /**
  * CanLike Permission
@@ -24,6 +25,10 @@ class CanLike extends \humhub\libs\BasePermission
         Space::USERGROUP_ADMIN,
         Space::USERGROUP_MODERATOR,
         Space::USERGROUP_MEMBER,
+        Space::USERGROUP_USER,
+        User::USERGROUP_SELF,
+        User::USERGROUP_FRIEND,
+        User::USERGROUP_USER,
     ];
 
     /**
