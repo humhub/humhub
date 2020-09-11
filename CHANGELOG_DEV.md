@@ -11,3 +11,8 @@ HumHub Changelog
 - Fix #4272: Guess timezone for new accounts
 - Fix #4230: Auto enable "Hide file info (name, size) for images on wall" option
 - Chg: Move CHANGELOG to humhub root
+- Fix #4330: Allow users with permission ManageUsers to modify profile images
+- Enh #4331: Added 'break-all' stylesheet option to stream entry layouts
+- Enh #4179: Removed deprecated mysql character set in log table migration
+- Enh #4324: Improved line break for menu entries with many characters
+ 
