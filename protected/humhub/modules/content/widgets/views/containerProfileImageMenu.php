@@ -5,7 +5,7 @@ use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalConfirm;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $upload Upload */
 /* @var $cropUrl string */
 /* @var $deleteUrl string */

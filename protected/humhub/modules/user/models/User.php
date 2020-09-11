@@ -205,8 +205,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $scenarios = parent::scenarios();
         $scenarios['login'] = ['username', 'password'];
         $scenarios['editAdmin'] = ['username', 'email', 'status'];
-        $scenarios['registration_email'] = ['username', 'email'];
-        $scenarios['registration'] = ['username'];
+        $scenarios['registration_email'] = ['username', 'email', 'time_zone'];
+        $scenarios['registration'] = ['username', 'time_zone'];
 
         return $scenarios;
     }
@@ -427,6 +427,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         // Cleanup related tables
         Invite::deleteAll(['user_originator_id' => $this->id]);
+        Invite::deleteAll(['email' => $this->email]);
         Follow::deleteAll(['user_id' => $this->id]);
         Follow::deleteAll(['object_model' => static::class, 'object_id' => $this->id]);
         Password::deleteAll(['user_id' => $this->id]);

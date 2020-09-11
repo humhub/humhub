@@ -326,9 +326,9 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                 $date = DateTime::createFromFormat($dateFormat, $value);
 
                 if ($date !== false) {
-                    $normalized[$name] = $date->format('Y-m-d 00:00:00');
+                    $normalized[$name] = $date->format('Y-m-d');
                 } else {
-                    $normalized[$name] = "";
+                    $normalized[$name] = '';
                 }
             }
         }

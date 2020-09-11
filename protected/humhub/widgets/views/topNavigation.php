@@ -3,7 +3,7 @@
 use humhub\assets\TopNavigationAsset;
 use humhub\libs\Html;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $menu \humhub\widgets\TopMenu */
 /* @var $entries \humhub\modules\ui\menu\MenuEntry[] */
 

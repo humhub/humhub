@@ -19,11 +19,27 @@ use yii\helpers\Console;
  * HumHub Module Managament
  *
  * @property \humhub\modules\marketplace\Module $module
- * @package humhub.modules_core.admin.console
  * @since 0.5
  */
 class MarketplaceController extends Controller
 {
+
+    /**
+     * @inerhitdoc
+     */
+    public function beforeAction($action)
+    {
+        /** @var \humhub\modules\marketplace\Module $module */
+        $module = Yii::$app->getModule('marketplace');
+
+        if ($module === null || !$module->enabled) {
+            print "Fatal: The module marketplace is disabled by configuration!\n\n";
+            return false;
+        }
+
+        return parent::beforeAction($action);
+    }
+
 
     /**
      * Lists all installed and enabled modules.
