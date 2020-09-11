@@ -4,7 +4,7 @@ HumHub Changelog
 1.6.4 (Unreleased)
 ------------------
 - Fix #4361: Added missing nonce attribute in inline marketplace script
-- Fix: Open file modal throws permission denied for unauthenticated users in guest mode
+- Fix #4363: Open file modal throws permission denied for unauthenticated users in guest mode
 
 
 1.6.3 (September 9, 2020)
