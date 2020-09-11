@@ -8,7 +8,7 @@
 use humhub\libs\Html;
 
 /**
- * @var $this \humhub\components\View
+ * @var $this \humhub\modules\ui\view\components\View
  * @var $databaseName string
  * @var $migrate string
  * @var $rebuildSearchRunning boolean

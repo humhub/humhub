@@ -5,7 +5,7 @@ use humhub\widgets\Button;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Url;
 
-/* @var $this \humhub\components\View
+/* @var $this \humhub\modules\ui\view\components\View
  * @var $model \humhub\modules\space\modules\manage\models\AdvancedSettingsSpace
  * @var $indexModuleSection array
  */
