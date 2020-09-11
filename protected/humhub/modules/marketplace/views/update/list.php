@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\ui\icon\widgets\Icon;
-use yii\helpers\Html;
+use humhub\libs\Html;
 use yii\helpers\Url;
 
 /* @var $modules [] */
