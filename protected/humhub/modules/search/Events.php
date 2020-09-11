@@ -20,7 +20,6 @@ use yii\helpers\Console;
  */
 class Events extends BaseObject
 {
-
     public static function onTopMenuRightInit($event)
     {
         $event->sender->addWidget(widgets\SearchMenu::class);
@@ -35,11 +34,4 @@ class Events extends BaseObject
         Yii::$app->search->optimize();
         $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
     }
-
-    public static function onConsoleApplicationInit($event)
-    {
-        $application = $event->sender;
-        $application->controllerMap['search'] = commands\SearchController::class;
-    }
-
 }

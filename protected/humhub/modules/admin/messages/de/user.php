@@ -56,6 +56,18 @@ return array (
   'Group not found!' => 'Gruppe nicht gefunden!',
   'Group user not found!' => 'Benutzer in Gruppe nicht gefunden!',
   'Groups' => 'Gruppen',
+  'Hello {displayName},<br><br>
+Your account has been activated.<br><br>
+Click here to login:<br>
+{loginLink}<br><br>
+
+Kind Regards<br>
+{AdminName}<br><br>' => 'Hallo {displayName},<br /><br /> Dein Konto wurde aktiviert.<br /><br /> Klicke hier um dich einzuloggen:<br /> {loginLink}<br /><br /> Mit freundlichen Grüßen<br /> {AdminName}<br /><br />',
+  'Hello {displayName},<br><br>
+Your account request has been declined.<br><br>
+
+Kind Regards<br>
+{AdminName} <br><br> ' => 'Hallo {displayName},<br /><br /> Deine Registrierungsanfrage wurde abgelehnt.<br /><br /> Mit freundlichen Grüßen<br /> {AdminName} <br /><br />',
   'Here you can create or edit profile categories and fields.' => 'Hier kannst du neue Profil-Kategorien und Felder erstellen oder bearbeiten.',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Wenn diese Option nicht ausgewählt ist, wirst du Besitzer dieses Space',
   'Impersonate' => 'Simulieren',

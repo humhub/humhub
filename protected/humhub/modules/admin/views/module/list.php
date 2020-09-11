@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $installedModules array */
 /* @var $deprecatedModuleIds array */
 /* @var $marketplaceUrls array */

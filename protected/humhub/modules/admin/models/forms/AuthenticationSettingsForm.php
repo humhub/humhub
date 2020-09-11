@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\modules\user\models\Group;
 use Yii;
 use humhub\libs\DynamicConfig;
 
@@ -18,20 +19,6 @@ use humhub\libs\DynamicConfig;
  */
 class AuthenticationSettingsForm extends \yii\base\Model
 {
-
-    const defaultRegistrationApprovalMailContent = 'Hello {displayName},<br><br>
-Your account has been activated.<br><br>
-Click here to login:<br>
-<a href=\'{loginURL}\'>{loginURL}</a><br><br>
-
-Kind Regards<br>
-{AdminName}<br><br>';
-    const defaultRegistrationDenialMailContent = 'Hello {displayName},<br><br>
-Your account request has been declined.<br><br>
-
-Kind Regards<br>
-{AdminName}<br><br>';
-
     public $internalAllowAnonymousRegistration;
     public $internalRequireApprovalAfterRegistration;
     public $internalUsersCanInvite;
@@ -60,8 +47,8 @@ Kind Regards<br>
         $this->allowGuestAccess = $settingsManager->get('auth.allowGuestAccess');
         $this->showCaptureInRegisterForm = $settingsManager->get('auth.showCaptureInRegisterForm');
         $this->defaultUserProfileVisibility = $settingsManager->get('auth.defaultUserProfileVisibility');
-        $this->registrationApprovalMailContent = $settingsManager->get('auth.registrationApprovalMailContent', Yii::t('AdminModule.user', self::defaultRegistrationApprovalMailContent));
-        $this->registrationDenialMailContent = $settingsManager->get('auth.registrationDenialMailContent', Yii::t('AdminModule.user', self::defaultRegistrationDenialMailContent));
+        $this->registrationApprovalMailContent = $settingsManager->get('auth.registrationApprovalMailContent', ApproveUserForm::getDefaultApprovalMessage());
+        $this->registrationDenialMailContent = $settingsManager->get('auth.registrationDenialMailContent', ApproveUserForm::getDefaultDeclineMessage());
     }
 
     /**
@@ -71,7 +58,7 @@ Kind Regards<br>
     {
         return [
             [['internalUsersCanInvite', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess', 'showCaptureInRegisterForm'], 'boolean'],
-            ['defaultUserGroup', 'exist', 'targetAttribute' => 'id', 'targetClass' => \humhub\modules\user\models\Group::class],
+            ['defaultUserGroup', 'exist', 'targetAttribute' => 'id', 'targetClass' => Group::class],
             ['defaultUserProfileVisibility', 'in', 'range' => [1, 2]],
             ['defaultUserIdleTimeoutSec', 'integer', 'min' => 20],
             [['registrationApprovalMailContent', 'registrationDenialMailContent'], 'string']
@@ -122,14 +109,15 @@ Kind Regards<br>
         }
 
         if ($settingsManager->get('auth.needApproval')) {
-            if(empty($this->registrationApprovalMailContent) || (strcmp($this->registrationApprovalMailContent, Yii::t('AdminModule.user', self::defaultRegistrationApprovalMailContent)) == 0)) {
-                $this->registrationApprovalMailContent = Yii::t('AdminModule.user', self::defaultRegistrationApprovalMailContent);
+            if (empty($this->registrationApprovalMailContent) || $this->registrationApprovalMailContent === ApproveUserForm::getDefaultApprovalMessage()) {
+                $this->registrationApprovalMailContent = ApproveUserForm::getDefaultApprovalMessage();
                 $settingsManager->delete('auth.registrationApprovalMailContent');
             } else {
                 $settingsManager->set('auth.registrationApprovalMailContent', $this->registrationApprovalMailContent);
             }
-            if(empty($this->registrationDenialMailContent) || strcmp($this->registrationDenialMailContent, Yii::t('AdminModule.user', self::defaultRegistrationDenialMailContent)) == 0) {
-                $this->registrationDenialMailContent = Yii::t('AdminModule.user', self::defaultRegistrationDenialMailContent);
+
+            if (empty($this->registrationDenialMailContent) || $this->registrationDenialMailContent === ApproveUserForm::getDefaultDeclineMessage()) {
+                $this->registrationDenialMailContent = ApproveUserForm::getDefaultDeclineMessage();
                 $settingsManager->delete('auth.registrationDenialMailContent');
             } else {
                 $settingsManager->set('auth.registrationDenialMailContent', $this->registrationDenialMailContent);
