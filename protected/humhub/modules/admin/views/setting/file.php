@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $this \humhub\components\View
+ * @var $this \humhub\modules\ui\view\components\View
  * @var \humhub\modules\admin\models\forms\FileSettingsForm $model
  * @var float $maxUploadSize
  * @var string $maxUploadSizeText

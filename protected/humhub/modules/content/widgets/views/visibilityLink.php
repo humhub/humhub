@@ -1,6 +1,6 @@
 <?php
 
-/* @var $this humhub\components\View */
+/* @var $this humhub\modules\ui\view\components\View */
 /* @var content humhub\modules\content\models\Content */
 /* @var $toggleLink string */
 

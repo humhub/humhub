@@ -2,7 +2,7 @@
 
 use yii\helpers\Url;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 ?>
 <div style="padding:20px;min-height:164px" class="jumbotron">
     <div class="pull-left" style="padding-right:24px;">

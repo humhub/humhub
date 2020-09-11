@@ -20,7 +20,7 @@ return array (
   'Licences' => '',
   'Logging' => '',
   'Never' => 'Niciodată',
-  'Other' => '',
+  'Other' => 'Altele',
   'Please refer to the documentation to setup the cronjobs and queue workers.' => '',
   'Prerequisites' => '',
   'Queue successfully cleared.' => '',

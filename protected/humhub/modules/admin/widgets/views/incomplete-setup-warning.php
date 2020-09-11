@@ -9,7 +9,7 @@
 use humhub\libs\Html;
 use humhub\modules\admin\widgets\IncompleteSetupWarning;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $problems array */
 
 ?>

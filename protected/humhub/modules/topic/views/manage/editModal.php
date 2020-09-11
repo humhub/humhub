@@ -11,7 +11,7 @@ use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use yii\bootstrap\ActiveForm;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $model \humhub\modules\topic\models\Topic */
 ?>
 
