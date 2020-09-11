@@ -7,7 +7,7 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $model Licence */
 ?>
 

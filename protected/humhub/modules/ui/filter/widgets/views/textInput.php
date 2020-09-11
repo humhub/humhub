@@ -8,7 +8,7 @@
 
 use yii\bootstrap\Html;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 ?>
 <div class="form-group">
     <?= Html::textInput(null,null, $options) ?>
