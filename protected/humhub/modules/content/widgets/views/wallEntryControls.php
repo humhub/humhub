@@ -3,7 +3,7 @@
 use humhub\libs\Html;
 use humhub\modules\content\widgets\LegacyWallEntryControlLink;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $menu \humhub\modules\ui\menu\widgets\DropdownMenu */
 /* @var $entries \humhub\modules\ui\menu\MenuEntry[] */
 /* @var $options [] */

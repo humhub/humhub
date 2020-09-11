@@ -8,7 +8,7 @@
 
 use humhub\modules\ui\filter\widgets\FilterBlock;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $span integer */
 /* @var $blocks [] */
 

@@ -1,6 +1,6 @@
 <?php
 
-use humhub\components\View;
+use humhub\modules\ui\view\components\View;
 use humhub\libs\Html;
 use humhub\modules\admin\models\Log;
 use humhub\widgets\Link;

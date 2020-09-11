@@ -1,6 +1,6 @@
 <?php
 
-use humhub\components\View;
+use humhub\modules\ui\view\components\View;
 use humhub\modules\directory\permissions\AccessDirectory;
 use humhub\modules\space\assets\SpaceChooserAsset;
 use humhub\modules\space\models\Membership;
