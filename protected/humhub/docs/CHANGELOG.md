@@ -3,6 +3,8 @@ HumHub Changelog
 
 1.6.4 (Unreleased)
 ------------------
+- Fix #4361: Added missing nonce attribute in inline marketplace script
+- Fix #4371: Word break issue in notification dropdown
 - Fix #4355: Fixed error when authclient not providing an id attribute
 
 
