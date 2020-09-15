@@ -58,7 +58,7 @@ class Menu extends LeftNavigation
             'label' => Yii::t('SpaceModule.base', 'About'),
             'url' => $this->space->createUrl('/space/space/about'),
             'icon' => 'fa-id-card-o',
-            'sortOrder' => 200,
+            'sortOrder' => 90000,
             'isActive' => MenuLink::isActiveState('space', 'space', 'about'),
         ]));
 
