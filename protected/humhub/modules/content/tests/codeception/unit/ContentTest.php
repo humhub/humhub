@@ -43,6 +43,8 @@ class ContentTest extends HumHubDbTestCase
         $post1 = Post::findOne(['id' => $post1->id]);
         $post1->message = 'Updated Message';
         $this->assertTrue($post1->save());
+
+        // See https://github.com/humhub/humhub/issues/4381
         $post1->refresh();
         $this->assertTrue($post1->content->isEdited());
 
