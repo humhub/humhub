@@ -4,6 +4,7 @@ namespace tests\codeception\_support;
 
 use humhub\components\bootstrap\ModuleAutoLoader;
 use humhub\components\Module;
+use humhub\modules\live\tests\codeception\fixtures\LiveFixture;
 use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
 use humhub\tests\codeception\fixtures\ModulesEnabledFixture;
 use humhub\tests\codeception\fixtures\UrlOembedFixture;
@@ -128,6 +129,7 @@ class HumHubDbTestCase extends Unit
             'file' => ['class' => \humhub\modules\file\tests\codeception\fixtures\FileFixture::class],
             'activity' => ['class' => \humhub\modules\activity\tests\codeception\fixtures\ActivityFixture::class],
             'friendship' => ['class' => \humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture::class],
+            'live' => [ 'class' => LiveFixture::class]
         ];
     }
 
