@@ -10,6 +10,7 @@ namespace humhub\modules\space\controllers;
 
 use humhub\modules\content\components\ContentContainerController;
 use humhub\components\behaviors\AccessControl;
+use humhub\modules\space\permissions\ViewAboutPage;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
@@ -17,6 +18,7 @@ use humhub\modules\stream\actions\ContentContainerStream;
 use humhub\modules\space\widgets\Menu;
 use humhub\modules\post\permissions\CreatePost;
 use Yii;
+use yii\helpers\Url;
 use yii\web\HttpException;
 use yii\db\Expression;
 
@@ -43,7 +45,8 @@ class SpaceController extends ContentContainerController
         return [
             'acl' => [
                 'class' => AccessControl::class,
-                'guestAllowedActions' => ['index', 'home', 'stream']
+                'guestAllowedActions' => ['index', 'home', 'stream'],
+                'guestAllowedActions' => ['index', 'about', 'stream'],
             ]
         ];
     }
@@ -97,14 +100,31 @@ class SpaceController extends ContentContainerController
     public function actionHome()
     {
         $space = $this->contentContainer;
+
         $canCreatePosts = $space->permissionManager->can(new CreatePost());
         $isMember = $space->isMember();
 
         return $this->render('home', [
-                    'space' => $space,
-                    'canCreatePosts' => $canCreatePosts,
-                    'isMember' => $isMember
-        ]);
+            'space' => $space,
+            'canCreatePosts' => $canCreatePosts,
+            'isMember' => $isMember
+            ]);
+
+    }
+
+    /**
+     * Default space about page
+     *
+     * @return string the rendering result.
+     * @throws \yii\web\HttpException
+     */
+    public function actionAbout()
+    {
+        if (!$this->space->permissionManager->can(new ViewAboutPage())) {
+            throw new HttpException(403, 'Forbidden');
+        }
+
+        return $this->render('about', ['space' => $this->contentContainer]);
     }
 
     /**
