@@ -36,7 +36,7 @@ class Menu extends LeftNavigation
      */
     public function init()
     {
-        if(!$this->space) {
+        if (!$this->space) {
             $this->space = ContentContainerHelper::getCurrent(Space::class);
         }
 
@@ -52,6 +52,14 @@ class Menu extends LeftNavigation
             'icon' => 'fa-bars',
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState('space', 'space', ['index', 'home']),
+        ]));
+
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('SpaceModule.base', 'About'),
+            'url' => $this->space->createUrl('/space/space/about'),
+            'icon' => 'fa-id-card-o',
+            'sortOrder' => 200,
+            'isActive' => MenuLink::isActiveState('space', 'space', 'about'),
         ]));
 
         parent::init();
