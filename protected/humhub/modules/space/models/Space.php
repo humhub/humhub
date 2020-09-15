@@ -339,8 +339,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
     }
 
     /**
-     * Indicates that this user can join this workspace w
-     * ithout permission
+     * Indicates that this user can join this workspace
+     * without permission
      *
      * @param $userId User Id of User
      */
