@@ -1,10 +1,13 @@
 //
 // Comments
 // --------------------------------------------------
+
+@commentLeftMargin:35px;
+
 .comment-container {
     margin-top: 10px;
     .wall-entry-controls {
-        margin-left: 50px;
+        margin-left: @commentLeftMargin;
     }
 }
 
@@ -42,7 +45,7 @@
     .media:last-child {
         .wall-entry-controls {
             margin-bottom: 0;
-            margin-left: 50px;
+            margin-left: @commentLeftMargin;
         }
         hr {
             display: none;
@@ -94,6 +97,8 @@
     }
 }
 
+
+
 .comment-container .content_edit {
     margin-left: 50px;
 }
@@ -105,7 +110,8 @@
 }
 
 .comment_edit_content {
-    margin-left: 50px;
+    margin-left: @commentLeftMargin;
+    margin-top: 0;
 }
 
 .comment-message {
@@ -129,6 +135,12 @@
     }
 }
 
+.comment .media-heading a {
+    font-size: 13px;
+    margin-bottom: 3px;
+    font-weight: 500;
+}
+
 // Hide seperator of last comment. Seperator is included in optional comment form
 div.comment > div.media:first-of-type {
     hr.comment-separator {
@@ -146,6 +158,8 @@ hr.comments-start-separator {
 }
 
 div.nested-comments-root {
+    margin-left: 28px;
+
     .ProseMirror-menubar-wrapper {
         z-index: 210;
     }
