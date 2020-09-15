@@ -14,10 +14,10 @@ use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
 
-class ContentTest extends HumHubDbTestCase
+class ContentEditTest extends HumHubDbTestCase
 {
 
-    public function testNewPostIsNotEdited()
+    public function testNewContentIsNotEdited()
     {
         $this->becomeUser('User2');
         $space = Space::findOne(['id' => 2]);
@@ -31,7 +31,7 @@ class ContentTest extends HumHubDbTestCase
         $this->assertFalse($post1->content->isEdited());
     }
 
-    public function testEditedPostIsEdited()
+    public function testEditedContentIsEdited()
     {
         $this->becomeUser('User2');
         $space = Space::findOne(['id' => 2]);
