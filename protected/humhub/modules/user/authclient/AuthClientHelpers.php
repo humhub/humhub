@@ -61,7 +61,7 @@ class AuthClientHelpers
         if ($authClient instanceof interfaces\PrimaryClient) {
             $user->auth_mode = $authClient->getId();
             $user->save();
-        } else {
+        } elseif (isset($attributes['id'])) {
             $auth = Auth::findOne(['source' => $authClient->getId(), 'source_id' => $attributes['id']]);
 
             /**
@@ -74,7 +74,7 @@ class AuthClientHelpers
 
 
             if ($auth === null) {
-                $auth = new \humhub\modules\user\models\Auth([
+                $auth = new Auth([
                     'user_id' => $user->id,
                     'source' => (string)$authClient->getId(),
                     'source_id' => (string)$attributes['id'],
@@ -82,6 +82,8 @@ class AuthClientHelpers
 
                 $auth->save();
             }
+        } else {
+            Yii::error('Could not store auth client without given ID attribute. User: ' . $user->displayName . ' (' . $user->id . ')', 'user');
         }
     }
 
