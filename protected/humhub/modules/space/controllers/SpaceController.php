@@ -45,7 +45,7 @@ class SpaceController extends ContentContainerController
         return [
             'acl' => [
                 'class' => AccessControl::class,
-                'guestAllowedActions' => ['index', 'home', 'stream'],
+                'guestAllowedActions' => ['index', 'home', 'about', 'stream'],
             ]
         ];
     }
