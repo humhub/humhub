@@ -49,7 +49,7 @@ class Menu extends LeftNavigation
         $this->addEntry(new MenuLink([
             'label' => Yii::t('SpaceModule.base', 'Stream'),
             'url' => $this->space->createUrl('/space/space/home'),
-            'icon' => 'fa-bars',
+            'icon' => 'bars',
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState('space', 'space', ['index', 'home']),
         ]));
@@ -57,7 +57,7 @@ class Menu extends LeftNavigation
         $this->addEntry(new MenuLink([
             'label' => Yii::t('SpaceModule.base', 'About'),
             'url' => $this->space->createUrl('/space/space/about'),
-            'icon' => 'fa-id-card-o',
+            'icon' => 'id-card-o',
             'sortOrder' => 90000,
             'isActive' => MenuLink::isActiveState('space', 'space', 'about'),
         ]));
