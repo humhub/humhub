@@ -2,7 +2,7 @@
 
 use humhub\modules\content\widgets\WallEntry;
 
-/* @var $this humhub\components\View */
+/* @var $this humhub\modules\ui\view\components\View */
 
 ?>
 <li>

@@ -16,7 +16,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\AccountSettingsMenu;
 use yii\helpers\Html;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $dataProvider \yii\data\ActiveDataProvider */
 /* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
 /* @var $addModel \humhub\modules\topic\models\Topic */

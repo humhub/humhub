@@ -1,5 +1,5 @@
 <?php
-/* @var $this humhub\components\View */
+/* @var $this humhub\modules\ui\view\components\View */
 ?>
 <li>
     <a href="#" data-action-click="content.permalink" data-content-permalink="<?= $permaLink ?>">

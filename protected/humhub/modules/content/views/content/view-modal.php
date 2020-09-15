@@ -12,7 +12,7 @@ use humhub\modules\content\widgets\PinLink;
 use humhub\modules\stream\assets\StreamAsset;
 use humhub\modules\stream\actions\Stream;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $entry humhub\modules\content\components\ContentActiveRecord */
 ?>
 <?php StreamAsset::register($this); ?>

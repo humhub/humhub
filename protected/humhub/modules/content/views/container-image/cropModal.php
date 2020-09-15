@@ -10,7 +10,7 @@ use yii\helpers\Html;
 use raoul2000\jcrop\JCropWidget;
 use yii\helpers\Json;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $profileImage \humhub\libs\ProfileImage */
 /* @var $model \humhub\models\forms\CropProfileImage */
 /* @var $container \humhub\modules\content\components\ContentContainerController */

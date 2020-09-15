@@ -9,6 +9,7 @@
 namespace humhub\components;
 
 use humhub\components\bootstrap\ModuleAutoLoader;
+use humhub\components\console\Application as ConsoleApplication;
 use humhub\libs\BaseSettingsManager;
 use humhub\models\ModuleEnabled;
 use Yii;
@@ -99,10 +100,10 @@ class ModuleManager extends Component
     /**
      * Registers a module to the manager
      * This is usually done by config.php in modules root folder.
-     * @see \humhub\components\bootstrap\ModuleAutoLoader::bootstrap
-     *
      * @param array $configs
      * @throws InvalidConfigException
+     * @see \humhub\components\bootstrap\ModuleAutoLoader::bootstrap
+     *
      */
     public function registerBulk(array $configs)
     {
@@ -127,7 +128,7 @@ class ModuleManager extends Component
 
         // Check mandatory config options
         if (!isset($config['class']) || !isset($config['id'])) {
-            throw new InvalidConfigException('Module configuration requires an id and class attribute: '.$basePath);
+            throw new InvalidConfigException('Module configuration requires an id and class attribute: ' . $basePath);
         }
 
         $isCoreModule = (isset($config['isCoreModule']) && $config['isCoreModule']);
@@ -196,6 +197,11 @@ class ModuleManager extends Component
                 }
             }
         }
+
+        // Register Console ControllerMap
+        if (Yii::$app instanceof ConsoleApplication && !(empty($config['consoleControllerMap']))) {
+            Yii::$app->controllerMap = ArrayHelper::merge(Yii::$app->controllerMap, $config['consoleControllerMap']);
+        }
     }
 
     /**
@@ -228,7 +234,7 @@ class ModuleManager extends Component
 
 
             if (isset($options['enabled']) && $options['enabled'] === true) {
-                if(!in_array($class, $this->coreModules) && !in_array($id, $this->enabledModules)) {
+                if (!in_array($class, $this->coreModules) && !in_array($id, $this->enabledModules)) {
                     continue;
                 }
             }
@@ -275,12 +281,12 @@ class ModuleManager extends Component
      * Returns weather or not the given module id belongs to an core module.
      *
      * @return bool
-     * @since 1.3.8
      * @throws Exception
+     * @since 1.3.8
      */
     public function isCoreModule($id)
     {
-        if(!$this->hasModule($id)) {
+        if (!$this->hasModule($id)) {
             return false;
         }
 

@@ -1,5 +1,5 @@
 <?php
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 
 /* @var $container \humhub\modules\space\models\Space */
 

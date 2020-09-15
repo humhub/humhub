@@ -8,7 +8,7 @@
 
 use humhub\libs\Html;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $title string */
 /* @var $filters array */
 /* @var $options array */
