@@ -880,7 +880,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     }
 
     /**
-     * @returns boolean
+     * @returns boolean true if this content has been edited, otherwise false
      * @since 1.7
      */
     public function isEdited()
