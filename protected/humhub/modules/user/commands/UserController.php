@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\installer\commands;
+namespace humhub\modules\user\commands;
 
 use Yii;
 use yii\console\Controller;
@@ -36,7 +36,7 @@ class UserController extends Controller
     /**
      * Creates a new user account and adds it to the admin-group
      */
-    public function actionCreateAdminAccount($admin_user', $admin_email, $admin_pass,
+    public function actionCreateAdminAccount($admin_user, $admin_email, $admin_pass,
         $admin_title, $admin_firstname, $admin_lastname)
     {
         $user = $this->createUser($admin_user, $admin_email, $admin_pass, $admin_title, $admin_firstname, $admin_lastname);
