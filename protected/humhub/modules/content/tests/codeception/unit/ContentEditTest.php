@@ -39,10 +39,14 @@ class ContentEditTest extends HumHubDbTestCase
         $post1 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Test']);
         $this->assertTrue($post1->save());
 
+        // Wait a second in order to prevent created_at = edited_at
+        sleep(1);
+
         // Reload content
         $post1 = Post::findOne(['id' => $post1->id]);
         $post1->message = 'Updated Message';
         $this->assertTrue($post1->save());
+
 
         // See https://github.com/humhub/humhub/issues/4381
         $post1->refresh();
