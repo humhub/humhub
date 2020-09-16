@@ -15,10 +15,12 @@ return [
     'id' => 'ldap',
     'class' => \humhub\modules\ldap\Module::class,
     'isCoreModule' => true,
+    'consoleControllerMap' => [
+        'ldap' => 'humhub\modules\ldap\commands\LdapController'
+    ],
     'events' => [
         [AuthenticationMenu::class, AuthenticationMenu::EVENT_INIT, [Events::class, 'onAuthenticationMenu']],
         [Collection::class, Collection::EVENT_BEFORE_CLIENTS_SET, [Events::class, 'onAuthClientCollectionSet']],
-        [Application::class, Application::EVENT_ON_INIT, [Events::class, 'onConsoleApplicationInit']],
     ]
 ];
 ?>

@@ -6,7 +6,7 @@ use humhub\modules\space\widgets\SpaceNameColorInput;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\Button;
 
-/* @var $this \humhub\components\View
+/* @var $this \humhub\modules\ui\view\components\View
  * @var $model \humhub\modules\space\models\Space
  */
 

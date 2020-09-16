@@ -9,7 +9,7 @@
 use humhub\libs\Html;
 use humhub\modules\topic\widgets\TopicPicker;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $title string */
 
 ?>

@@ -199,6 +199,11 @@ class ThemeHelper
     }
 
 
+    /**
+     * @param Theme|null $theme
+     * @return bool
+     * @since 1.4
+     */
     public static function isFluid(Theme $theme = null)
     {
         if ($theme === null) {

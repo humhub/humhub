@@ -538,6 +538,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         if (!$container) {
             $container = $this->container;
         }
+
         return $this->getModel()->isOwner() || Yii::$app->user->can(ManageUsers::class) || $container->can(ManageContent::class);
     }
 
@@ -876,5 +877,14 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     public function getContentDescription()
     {
         return $this->getModel()->getContentDescription();
+    }
+
+    /**
+     * @returns boolean true if this content has been updated, otherwise false
+     * @since 1.7
+     */
+    public function isUpdated()
+    {
+        return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
     }
 }

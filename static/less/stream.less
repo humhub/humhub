@@ -343,48 +343,48 @@
                 padding: 0;
                 margin: 0 0 5px;
 
-                li {
-                    font-size: 12px;
-                    padding: 2px;
+        li {
+          font-size: 12px;
+          padding: 2px;
 
-                    a {
-                        color: @text-color-highlight;
-                    }
-                }
-            }
+          a {
+            color: @text-color-highlight;
+          }
         }
-
-        div.filter-block:last-of-type {
-            ul.filter-list {
-                margin: 0px;
-            }
-        }
+      }
     }
 
-    .filter-panel + .filter-panel {
-        border-left: 2px solid @background-color-page;
+    div.filter-block:last-of-type {
+      ul.filter-list {
+        margin: 0px;
+      }
     }
+  }
+
+  .filter-panel + .filter-panel {
+    border-left: 2px solid @background-color-page;
+  }
 }
 
 
 .stream-entry-loader {
-    float: right;
-    margin-top: 5px;
+  float: right;
+  margin-top: 5px;
 }
 
 .load-suppressed {
-    margin-top: -17px;
-    margin-bottom: 15px;
-    text-align: center;
+  margin-top: -17px;
+  margin-bottom: 15px;
+  text-align: center;
 
-    a {
-        display: inline-block;
-        background-color: white;
-        padding: 5px;
-        border-radius: 0 0 4px 4px;
-        border: 1px solid #ddd;
-        font-size: 11px
-    }
+  a {
+    display: inline-block;
+    background-color: white;
+    padding: 5px;
+    border-radius: 0 0 4px 4px;
+    border: 1px solid #ddd;
+    font-size: 11px
+  }
 }
 
 @media print {
@@ -394,6 +394,6 @@
 
     #wall-stream-filter-nav,
     #contentFormBody {
-        display: none;
+        display:none;
     }
 }
