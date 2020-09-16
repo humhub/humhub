@@ -50,11 +50,11 @@ class ContentEditTest extends HumHubDbTestCase
 
         // See https://github.com/humhub/humhub/issues/4381
         $post1->refresh();
-        $this->assertTrue($post1->content->isEdited());
+        $this->assertTrue($post1->content->isUpdated());
 
         // Reload content
         $post1 = Post::findOne(['id' => $post1->id]);
-        $this->assertTrue($post1->content->isEdited());
+        $this->assertTrue($post1->content->isUpdated());
     }
 
 }
