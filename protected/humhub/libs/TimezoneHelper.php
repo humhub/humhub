@@ -94,7 +94,7 @@ class TimezoneHelper
     }
 
     /**
-     * compare db and MySql Timezones
+     * Compares configured time zone with reported database connection time zone
      *
      * @return boolean
      */
@@ -107,8 +107,8 @@ class TimezoneHelper
             }
             $dbTimeZone = new DateTimeZone($timeZone);
             $dbTimeZoneOffset = $dbTimeZone->getOffset(new DateTime);
-            $offset_prefix = $dbTimeZoneOffset < 0 ? '-' : '+';
-            return self::getMysqlTimeZone() == $offset_prefix.gmdate('H:i', abs($dbTimeZoneOffset));
+            $offsetPrefix = $dbTimeZoneOffset < 0 ? '-' : '+';
+            return self::getMysqlTimeZone() == $offsetPrefix.gmdate('H:i', abs($dbTimeZoneOffset));
         } catch (Exception $e) {
             return false;
         }
