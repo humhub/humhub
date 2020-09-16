@@ -880,10 +880,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     }
 
     /**
-     * @returns boolean true if this content has been edited, otherwise false
+     * @returns boolean true if this content has been updated, otherwise false
      * @since 1.7
      */
-    public function isEdited()
+    public function isUpdated()
     {
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
     }
