@@ -27,7 +27,6 @@ use humhub\libs\DynamicConfig;
  *   php yii installer/write-db-config "$HUMHUB_DB_HOST" "$HUMHUB_DB_NAME" "$HUMHUB_DB_USER" "$HUMHUB_DB_PASSWORD"
  *   php yii installer/install-db
  *   php yii installer/write-site-config "$HUMHUB_NAME" "$HUMHUB_EMAIL"
- *   php yii installer/create-admin-account
  * 
  * @author Luke
  * @author Michael Riedmann
@@ -111,15 +110,19 @@ class InstallController extends Controller
     }
 
     /**
-     * Creates a new user account and adds it to the admin-group
+     * Creates a default admin account.
      */
     public function actionCreateAdminAccount($admin_user='admin', $admin_email='humhub@example.com', $admin_pass='test',
         $admin_title='System Administration', $admin_firstname='Sys', $admin_lastname='Admin')
     {
-        $user = $this->createUser($admin_user, $admin_email, $admin_pass, $admin_title, $admin_firstname, $admin_lastname);
-        $this->addUserToAdminGroup($user);
-
-        return ExitCode::OK;
+        Yii::$app->runAction('user/create-admin-account', [
+            'admin_user' => $admin_user,
+            'admin_email' => $admin_email,
+            'admin_pass' => $admin_pass,
+            'admin_title' => $admin_title,
+            'admin_firstname' => $admin_firstname,
+            'admin_lastname' => $admin_lastname,
+        ]);
     }
 
     /**
@@ -197,51 +200,5 @@ class InstallController extends Controller
             $this->stderr($e->getMessage());
         }
         return false;
-    }
-
-    /**
-     * Creates a new user account.
-     */
-    private function createUser(string $username, string $email, string $pass, string $title, string $firstname, string $lastname): User
-    {
-        $user = new User();
-        $user->username = $username;
-        $user->email = $email;
-        $user->status = User::STATUS_ENABLED;
-        $user->language = '';
-        if (!$user->save()) {
-            throw new Exception("Could not save user");
-        }
-
-        $user->profile->title = $title;
-        $user->profile->firstname = $firstname;
-        $user->profile->lastname = $lastname;
-        $user->profile->save();
-        $this->stdout("User created\n", Console::FG_YELLOW);
-
-        $this->setUserPassword($user, $pass);
-
-        return $user;
-    }
-
-    /**
-     * Sets the password for a user account
-     */
-    private function setUserPassword(User $user, string $pass)
-    {
-        $password = new Password();
-        $password->user_id = $user->id;
-        $password->setPassword($pass);
-        $password->save();
-        $this->stdout("User password reset\n", Console::FG_YELLOW);
-    }
-
-    /**
-     * Adds a user account to the admin-group
-     */
-    private function addUserToAdminGroup(User $user)
-    {
-        Group::getAdminGroup()->addUser($user);
-        $this->stdout("User added to admin group\n", Console::FG_YELLOW);
     }
 }
