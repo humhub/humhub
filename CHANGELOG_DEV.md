@@ -16,3 +16,4 @@ HumHub Changelog
 - Enh #4179: Removed deprecated mysql character set in log table migration
 - Enh #4324: Improved line break for menu entries with many characters
 - Fix #4186: Add Timezone validation rules to admin prerequisite view
+- Enh #4378: Implemented generic ContentContainerActiveRecord::is() function
