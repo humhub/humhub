@@ -67,7 +67,7 @@ class TimezoneHelper
         $timezone_list = [];
 
         foreach ($timezone_offsets as $timezone => $offset) {
-            if($withOffset) {
+            if ($withOffset) {
                 $offset_prefix = $offset < 0 ? '-' : '+';
                 $offset_formatted = gmdate('H:i', abs($offset));
                 $pretty_offset = "UTC${offset_prefix}${offset_formatted}";
@@ -81,36 +81,14 @@ class TimezoneHelper
     }
 
     /**
-     * Get MySql time Zone
+     * Returns the date time from the database connection
      *
-     * @return string
+     * @return DateTime
      */
-    public static function getMysqlTimeZone(): string
+    public static function getDatabaseConnectionTime(): DateTime
     {
-        $timeArr = Yii::$app->db->createCommand('SELECT TIMEDIFF(NOW(),UTC_TIMESTAMP)')->queryOne();
-        $timeArr = explode(':', $timeArr['TIMEDIFF(NOW(),UTC_TIMESTAMP)']);
-        $time = $timeArr[0];
-        return ($time[0] != '-' ? '+'.$time : $time).':'.$timeArr[1];
-    }
 
-    /**
-     * Compares configured time zone with reported database connection time zone
-     *
-     * @return boolean
-     */
-    public static function compareTimeZones(): bool
-    {
-        try {
-            $timeZone = Yii::$app->settings->get('timeZone');
-            if (!$timeZone){
-                return false;
-            }
-            $dbTimeZone = new DateTimeZone($timeZone);
-            $dbTimeZoneOffset = $dbTimeZone->getOffset(new DateTime);
-            $offsetPrefix = $dbTimeZoneOffset < 0 ? '-' : '+';
-            return self::getMysqlTimeZone() == $offsetPrefix.gmdate('H:i', abs($dbTimeZoneOffset));
-        } catch (Exception $e) {
-            return false;
-        }
+        $timestamp = Yii::$app->db->createCommand('SELECT NOW()')->queryScalar();
+        return DateTime::createFromFormat("Y-m-d H:i:s", $timestamp);
     }
 }

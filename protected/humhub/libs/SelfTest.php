@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use DateTime;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
 use Yii;
@@ -412,8 +413,12 @@ class SelfTest
 
         // Timezone Setting
         if (Yii::$app->controller->id != 'setup') {
-            $title = 'Timezone Setting';
-            if (TimezoneHelper::compareTimeZones()) {
+            $dbConnectionTime = TimezoneHelper::getDatabaseConnectionTime();
+            $timeDiffMargin = 60;
+            $timeDiff = abs($dbConnectionTime->getTimestamp() - time());
+
+            $title = 'Settings - Time zone';
+            if ($timeDiff < $timeDiffMargin) {
                 $checks[] = [
                     'title' => Yii::t('base', $title),
                     'state' => 'OK'
@@ -422,6 +427,12 @@ class SelfTest
                 $checks[] = [
                     'title' => Yii::t('base', $title),
                     'state' => 'WARNING',
+                    'hint' => Yii::t('base', 'Database connection time: {dbTime} - Configured time zone: {time}',
+                        [
+                            'dbTime' => Yii::$app->formatter->asTime($dbConnectionTime, 'short'),
+                            'time' => Yii::$app->formatter->asTime(time(), 'short'),
+                        ]
+                    ),
                 ];
             }
         }

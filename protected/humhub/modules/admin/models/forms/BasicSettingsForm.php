@@ -56,10 +56,10 @@ class BasicSettingsForm extends \yii\base\Model
             [['tour', 'dashboardShowProfilePostForm', 'enableFriendshipModule'], 'in', 'range' => [0, 1]],
             [['defaultStreamSort'], 'in', 'range' => array_keys($this->getDefaultStreamSortOptions())],
             [['baseUrl'], function ($attribute, $params, $validator) {
-                    if (substr($this->$attribute, 0, 7) !== 'http://' && substr($this->$attribute, 0, 8) !== 'https://') {
-                        $this->addError($attribute, Yii::t('AdminModule.base', 'Base URL needs to begin with http:// or https://'));
-                    }
-                }],
+                if (substr($this->$attribute, 0, 7) !== 'http://' && substr($this->$attribute, 0, 8) !== 'https://') {
+                    $this->addError($attribute, Yii::t('AdminModule.base', 'Base URL needs to begin with http:// or https://'));
+                }
+            }],
         ];
     }
 
@@ -86,7 +86,10 @@ class BasicSettingsForm extends \yii\base\Model
     public function attributeHints()
     {
         return [
-            'timeZone' => Yii::t('AdminModule.settings', 'Reported database time zone: UTC{timeZone}',  ['timeZone' => TimezoneHelper::getMysqlTimeZone()]),
+            'timeZone' => Yii::t('AdminModule.settings', 'Reported database time: {dateTime}', [
+                    'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime())
+                ]
+            ),
         ];
     }
 
