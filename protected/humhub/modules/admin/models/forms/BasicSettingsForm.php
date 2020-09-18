@@ -6,6 +6,7 @@ use Yii;
 use humhub\libs\DynamicConfig;
 use humhub\modules\space\models\Space;
 use humhub\modules\stream\actions\Stream;
+use humhub\libs\TimezoneHelper;
 
 /**
  * BasicSettingsForm
@@ -76,6 +77,16 @@ class BasicSettingsForm extends \yii\base\Model
             'dashboardShowProfilePostForm' => Yii::t('AdminModule.settings', 'Show user profile post form on dashboard'),
             'enableFriendshipModule' => Yii::t('AdminModule.settings', 'Enable user friendship system'),
             'defaultStreamSort' => Yii::t('AdminModule.settings', 'Default stream content order'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'timeZone' => Yii::t('AdminModule.settings', 'Reported database time zone: UTC{timeZone}',  ['timeZone' => TimezoneHelper::getMysqlTimeZone()]),
         ];
     }
 
