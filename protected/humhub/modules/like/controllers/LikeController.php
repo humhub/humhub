@@ -83,9 +83,6 @@ class LikeController extends ContentAddonController
      */
     public function actionUnlike()
     {
-        if (!$this->module->canLike($this->parentContent)) {
-            throw new ForbiddenHttpException();
-        }
         $this->forcePostRequest();
 
         if (!Yii::$app->user->isGuest) {
