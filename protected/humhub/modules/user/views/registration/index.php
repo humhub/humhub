@@ -24,6 +24,9 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
     $(function () {
         // set cursor to login field
         $('#User_username').focus();
+
+        // set user time zone val
+        $('#user-time_zone').val(Intl.DateTimeFormat().resolvedOptions().timeZone);
     })
 
     // Shake panel after wrong validation
