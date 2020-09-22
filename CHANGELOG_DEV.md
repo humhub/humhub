@@ -16,3 +16,4 @@ HumHub Changelog
 - Enh #4179: Removed deprecated mysql character set in log table migration
 - Enh #4324: Improved line break for menu entries with many characters
 - Enh #4378: Implemented generic ContentContainerActiveRecord::is() function
+- Enh #4310: Add "Can Like" Permission 
