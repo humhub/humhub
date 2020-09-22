@@ -54,7 +54,7 @@
         <!-- end: second top navigation bar -->
 
         <?= $content; ?>
-
+        
         <?php $this->endBody() ?>
     </body>
 </html>

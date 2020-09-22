@@ -98,6 +98,7 @@ class AppAsset extends WebStaticAssetBundle
     public $js = [
         'js/desktop-notify-min.js',
         'js/desktop-notify-config.js',
+        'js/form-empty-check.js',
     ];
 
     /**

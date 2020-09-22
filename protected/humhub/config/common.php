@@ -136,8 +136,8 @@ $config = [
                 'mysql' => 'humhub\components\db\MysqlSchema'
             ],
             'dsn' => 'mysql:host=localhost;dbname=humhub',
-            'username' => '',
-            'password' => '',
+            'username' => 'admin',
+            'password' => 'root',
             'charset' => 'utf8mb4',
             'enableSchemaCache' => true,
             'on afterOpen' => ['humhub\libs\Helpers', 'SqlMode'],
