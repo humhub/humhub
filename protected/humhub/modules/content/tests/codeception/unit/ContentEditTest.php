@@ -24,11 +24,11 @@ class ContentEditTest extends HumHubDbTestCase
 
         $post1 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Test']);
         $this->assertTrue($post1->save());
-        $this->assertFalse($post1->content->isEdited());
+        $this->assertFalse($post1->content->isUpdated());
 
         // Reload content
         $post1 = Post::findOne(['id' => $post1->id]);
-        $this->assertFalse($post1->content->isEdited());
+        $this->assertFalse($post1->content->isUpdated());
     }
 
     public function testEditedContentIsEdited()
@@ -48,8 +48,6 @@ class ContentEditTest extends HumHubDbTestCase
         $this->assertTrue($post1->save());
 
 
-        // See https://github.com/humhub/humhub/issues/4381
-        $post1->refresh();
         $this->assertTrue($post1->content->isUpdated());
 
         // Reload content
