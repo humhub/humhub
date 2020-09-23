@@ -11,6 +11,7 @@ namespace humhub\components;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\file\components\FileManager;
+use yii\db\Expression;
 
 /**
  * Description of ActiveRecord
@@ -51,6 +52,19 @@ class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
         }
 
         return parent::beforeSave($insert);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($this->hasAttribute('created_at') && $this->created_at instanceof Expression) {
+            $this->created_at = date('Y-m-d G:i:s');
+        }
+
+        if($this->hasAttribute('updated_at') && $this->updated_at instanceof Expression) {
+            $this->updated_at = date('Y-m-d G:i:s');
+        }
+
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
