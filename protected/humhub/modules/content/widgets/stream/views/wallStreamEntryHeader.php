@@ -2,6 +2,7 @@
 
 use humhub\libs\Html;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\widgets\ArchivedIcon;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\content\widgets\UpdatedIcon;
@@ -23,8 +24,8 @@ $container = $model->content->container;
 ?>
 
 <div class="stream-entry-icon-list">
-    <?php if($renderOptions->isPinned($model)) :?>
-        <?= Icon::get('map-pin', ['htmlOptions' =>['class' => 'icon-pin tt', 'title' => Yii::t('ContentModule.base', 'Pinned')]])?>
+    <?php if ($renderOptions->isPinned($model)) : ?>
+        <?= Icon::get('map-pin', ['htmlOptions' => ['class' => 'icon-pin tt', 'title' => Yii::t('ContentModule.base', 'Pinned')]]) ?>
     <?php endif; ?>
 </div>
 
@@ -47,7 +48,7 @@ $container = $model->content->container;
     <div class="media-heading">
         <?= $title ?>
 
-        <?php  if ($renderOptions->isShowContainerInformation($model)): ?>
+        <?php if ($renderOptions->isShowContainerInformation($model)): ?>
             <span class="viaLink">
                 <?= Icon::get('caret-right') ?>
                 <?= Html::containerLink($model->content->container) ?>
@@ -57,7 +58,7 @@ $container = $model->content->container;
 
     <div class="media-subheading">
 
-        <?php if($renderOptions->isShowTargetSpaceImage($model)) : ?>
+        <?php if ($renderOptions->isShowTargetSpaceImage($model)) : ?>
             <?= SpaceImage::widget([
                 'space' => $container,
                 'width' => 20,
@@ -67,7 +68,7 @@ $container = $model->content->container;
             ]) ?>
         <?php endif; ?>
 
-        <?php if($renderOptions->isShowAuthorLinkInSubHeadLine($model)) : ?>
+        <?php if ($renderOptions->isShowAuthorLinkInSubHeadLine($model)) : ?>
             <?= Html::containerLink($model->content->createdBy, ['class' => 'wall-entry-container-link']) ?> |
         <?php endif ?>
 
@@ -75,11 +76,13 @@ $container = $model->content->container;
             <?= TimeAgo::widget(['timestamp' => $model->content->created_at]) ?>
         </a> &middot;
 
-        <?php if($model->content->isUpdated()) : ?>
+        <?php if ($model->content->isUpdated()) : ?>
             <?= UpdatedIcon::getByDated($model->content->updated_at) ?>
         <?php endif; ?>
 
-       <?= VisibilityIcon::getByModel($model) ?>
+        <?= VisibilityIcon::getByModel($model) ?>
+
+        <?= ArchivedIcon::getByModel($model) ?>
     </div>
 </div>
 

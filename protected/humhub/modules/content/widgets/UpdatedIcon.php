@@ -11,12 +11,6 @@ class UpdatedIcon extends Icon
 {
     const ICON_NAME = 'clock-o';
 
-    public function init()
-    {
-
-        parent::init();
-    }
-
     public static function getByDated($updateDate)
     {
         return static::get(static::ICON_NAME,  ['htmlOptions' => [
