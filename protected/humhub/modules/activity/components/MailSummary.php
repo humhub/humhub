@@ -144,7 +144,6 @@ class MailSummary extends Component
         $stream = new DashboardStreamAction('stream', Yii::$app->controller);
         $stream->activity = true;
         $stream->limit = $this->maxActivityCount;
-        $stream->mode = DashboardStreamAction::MODE_ACTIVITY;
         $stream->user = $this->user;
         $stream->init();
         $stream->activeQuery->andWhere(['>', 'content.created_at', $this->getLastSummaryDate()]);
