@@ -169,7 +169,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
      * @inheritDoc
      * @throws Exception
      */
-    protected function renderBodyLayout()
+    protected function renderBody()
     {
         return $this->render($this->layoutBody, [
             'model' => $this->model,

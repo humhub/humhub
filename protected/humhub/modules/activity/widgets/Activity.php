@@ -38,7 +38,7 @@ class Activity extends StreamEntryWidget
      * @return string rendered wall entry body without the layoutRoot wrapper
      * @throws Exception
      */
-    protected function renderBodyLayout()
+    protected function renderBody()
     {
         $cacheKey = 'activity_wall_out_' . Yii::$app->language . '_' . $this->id;
 

@@ -52,7 +52,7 @@ abstract class StreamEntryWidget extends JsWidget
     /**
      * @return string rendered wall entry body without the layoutRoot wrapper
      */
-    abstract protected function renderBodyLayout();
+    abstract protected function renderBody();
 
     /**
      * @inheritDoc
@@ -127,7 +127,7 @@ abstract class StreamEntryWidget extends JsWidget
         return $this->render($this->layoutRoot, [
             'model' => $this->model,
             'rootElement' => $this->rootElement,
-            'bodyLayout' => $this->renderBodyLayout(),
+            'bodyLayout' => $this->renderBody(),
             'options' => $this->getOptions()
         ]);
     }
