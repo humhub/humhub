@@ -202,7 +202,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
      */
     protected function renderTitle()
     {
-        return Html::containerLink($this->model->createdBy);
+        return Html::containerLink($this->model->content->createdBy);
     }
 
     /**
