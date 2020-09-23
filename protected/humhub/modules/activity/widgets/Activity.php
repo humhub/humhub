@@ -9,10 +9,11 @@
 namespace humhub\modules\activity\widgets;
 
 use humhub\modules\activity\components\ActivityWebRenderer;
+use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\activity\models\Activity as ActivityModel;
+use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use Yii;
-use humhub\modules\content\widgets\WallEntry;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentAddonActiveRecord;
+use yii\base\Exception;
 
 /**
  * ActivityWidget shows an activity.
@@ -21,28 +22,43 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * @package humhub.modules_core.activity
  * @since 0.5
  */
-class Activity extends WallEntry
+class Activity extends StreamEntryWidget
 {
 
-    protected $themePath = 'modules/activity';
+    /**
+     * @var ActivityModel is the current activity object.
+     */
+    public $model;
+
+    public $rootElement = 'li';
+
+    public $jsWidget = 'activity.ActivityStreamEntry';
 
     /**
-     * @var \humhub\modules\activity\models\Activity is the current activity object.
+     * @return string rendered wall entry body without the layoutRoot wrapper
+     * @throws Exception
      */
-    public $activity;
-
-    /**
-     * @var integer If the Widget is linked to a wall entry id
-     */
-    public $wallEntryId = 0;
-
-    /**
-     * Runs the Widget
-     */
-    public function run()
+    protected function renderBodyLayout()
     {
-        // The render logic is overwritten by models\Activity::getWallOut()
-        return '';
+        $cacheKey = 'activity_wall_out_' . Yii::$app->language . '_' . $this->id;
+
+        $activity = $this->model->getActivityBaseClass();
+
+        $output = '';
+
+        if ($activity instanceof BaseActivity) {
+            $renderer = new ActivityWebRenderer();
+            $output = $renderer->render($activity);
+            Yii::$app->cache->set($cacheKey, $output);
+        }
+
+        return $output;
     }
 
+    public function getAttributes()
+    {
+        return [
+            'class' => 'activity-entry'
+        ];
+    }
 }

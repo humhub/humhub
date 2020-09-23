@@ -8,6 +8,7 @@
 
 namespace humhub\modules\dashboard\components\actions;
 
+use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use Yii;
 use yii\db\Query;
 use humhub\modules\dashboard\Module;
@@ -28,6 +29,9 @@ use humhub\modules\content\models\Content;
 class DashboardStreamAction extends ActivityStreamAction
 {
 
+    /**
+     * @inheritDoc
+     */
     public $activity = false;
 
     /**
@@ -42,6 +46,14 @@ class DashboardStreamAction extends ActivityStreamAction
         } else {
             $this->setupUserFilter();
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function initStreamEntryOptions()
+    {
+        return parent::initStreamEntryOptions()->viewMode(StreamEntryOptions::VIEW_CONTEXT_DASHBOARD);
     }
 
     public function setupGuestFilter()

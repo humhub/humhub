@@ -62,6 +62,7 @@
 
     .wall-entry-header {
 
+        color: @text-color-highlight;
         position:relative;
         padding-bottom:@wallEntryInnerPadding;
         margin-bottom:@wallEntryInnerPadding;
@@ -73,7 +74,7 @@
         }
 
         .wall-entry-container-link {
-            color: @info;
+            color: @link;
         }
 
         .stream-entry-icon-list {
@@ -140,6 +141,9 @@
     }
 
     .wall-entry-body {
+        .wall-entry-content {
+            margin-bottom:5px;
+        }
         .wall-entry-topics {
             margin-bottom:10px;
             a {
@@ -151,11 +155,19 @@
                 //color: @info;
                 //border:1px solid @info;
                 color: @text-color-secondary;
-                border:1px solid @text-color-secondary;
+                border:1px solid lighten(@text-color-secondary, 25%);
                 border-radius: 4px;
             }
         }
         padding-left:50px;
+    }
+
+    .wall-stream-footer {
+        .wall-stream-addons {
+            .files {
+                margin-bottom: 5px;
+            }
+        }
     }
 
     .content {
@@ -217,11 +229,9 @@
     }
 }
 
-.wall-entry-controls,
 .wall-entry-controls a {
     font-size: 11px;
-    font-weight: 600;
-    color: @info !important;
+    color: @link !important;
     margin-top: 10px;
     margin-bottom: 0;
 }

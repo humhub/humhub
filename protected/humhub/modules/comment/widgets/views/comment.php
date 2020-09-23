@@ -1,6 +1,7 @@
 <?php
 
 use humhub\libs\Html;
+use humhub\modules\content\widgets\UpdatedIcon;
 use humhub\widgets\TimeAgo;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\user\widgets\Image as UserImage;
@@ -65,14 +66,14 @@ $module = Yii::$app->getModule('comment');
             </li>
         </ul>
     <?php endif; ?>
-    <?= UserImage::widget(['user' => $user, 'width' => 40, 'htmlOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $user->contentcontainer_id]]); ?>
+    <?= UserImage::widget(['user' => $user, 'width' => 25, 'htmlOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $user->contentcontainer_id]]); ?>
     <div>
         <div class="media-body">
-            <h4 class="media-heading"><?= Html::containerLink($user); ?>
-                <small><?= TimeAgo::widget(['timestamp' => $createdAt]); ?>
-                    <?php if ($updatedAt !== null): ?>
-                        &middot; <span class="tt"
-                                       title="<?= Yii::$app->formatter->asDateTime($updatedAt); ?>"><?= Yii::t('ContentModule.base', 'Updated'); ?></span>
+            <h4 class="media-heading">
+                <?= Html::containerLink($user) ?>
+                <small>&middot <?= TimeAgo::widget(['timestamp' => $createdAt]) ?>
+                    <?php if ($comment->isUpdated()): ?>
+                        &middot <?= UpdatedIcon::getByDated($comment->updated_at) ?>
                     <?php endif; ?>
                 </small>
             </h4>
@@ -93,7 +94,7 @@ $module = Yii::$app->getModule('comment');
             <?= LikeLink::widget(['object' => $comment]); ?>
         </div>
 
-        <div class="nested-comments-root" style="margin-left:42px">
+        <div class="nested-comments-root">
             <?= Comments::widget(['object' => $comment]); ?>
         </div>
     </div>

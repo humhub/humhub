@@ -9,6 +9,7 @@
 namespace humhub\modules\activity\models;
 
 use humhub\modules\activity\components\BaseActivity;
+
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
@@ -17,6 +18,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\activity\components\ActivityWebRenderer;
 use humhub\components\behaviors\PolymorphicRelation;
 use yii\db\IntegrityException;
+use humhub\modules\activity\widgets\Activity as ActivityStreamEntryWidget;
 
 /**
  * This is the model class for table "activity".
@@ -35,7 +37,7 @@ class Activity extends ContentActiveRecord
     /**
      * @inheritdoc
      */
-    public $wallEntryClass = 'humhub\modules\activity\widgets\Activity';
+    public $wallEntryClass = ActivityStreamEntryWidget::class;
 
     /**
      * @inheritdoc
@@ -109,27 +111,6 @@ class Activity extends ContentActiveRecord
         ]);
         $result->record = $this; // If we include the record in createObject, it somehow loses activerecord data (id etc...)
         return $result;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getWallOut($params = [])
-    {
-        $cacheKey = 'activity_wall_out_' . Yii::$app->language . '_' . $this->id;
-        $output = false;
-
-        if ($output === false) {
-            $activity = $this->getActivityBaseClass();
-            if ($activity !== null) {
-                $renderer = new ActivityWebRenderer();
-                $output = $renderer->render($activity);
-                Yii::$app->cache->set($cacheKey, $output);
-                return $output;
-            }
-        }
-
-        return $output;
     }
 
     /**

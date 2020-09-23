@@ -1,4 +1,5 @@
 .panel {
+    .text-break();
     border: none;
     background-color: @background-color-main;
     box-shadow: 0 0 3px #dadada;
@@ -7,6 +8,7 @@
     border-radius: 4px;
     position: relative;
     margin-bottom: 15px;
+
     h1 {
         font-size: 16px;
         font-weight: 300;
@@ -25,7 +27,10 @@
         padding: 10px;
         font-size: 13px;
         p {
-            color: @text-color-highlight;
+            color: @text-color-main;
+            a {
+                color: @link;
+            }
         }
         .usersearch-statuses,
         .spacesearch-visibilities {

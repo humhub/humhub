@@ -39,6 +39,10 @@
             color: darken(@info, 20%);
         }
     }
+
+    .post-file-list {
+        background-color: @background-color-page;
+    }
 }
 
 .comment.guest-mode {
@@ -63,6 +67,11 @@
         bottom: 2px;
         right: 5px;
         z-index:300;
+
+        button {
+            background-color: @link;
+            color: @text-color-contrast !important;
+        }
     }
 
     .has-error + .comment-buttons {
@@ -77,8 +86,8 @@
         float: left;
         padding: 6px 10px;
         background: transparent !important;
-        .fa {
-            color: @background3;
+        i {
+            color: @link;;
         }
     }
     .fileinput-button:hover .fa {
@@ -116,7 +125,7 @@
 
 .comment-message {
     overflow:hidden;
-    overflow-wrap: break-word;
+    .text-break();
 }
 
 .comment-create-input-group {
@@ -135,8 +144,9 @@
     }
 }
 
-.comment .media-heading a {
+.comment .media .media-body h4.media-heading a  {
     font-size: 13px;
+    color: @link;
     margin-bottom: 3px;
     font-weight: 500;
 }

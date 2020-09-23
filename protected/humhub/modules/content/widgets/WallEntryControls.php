@@ -2,6 +2,9 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
+use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\widgets\Menu;
 use yii\helpers\ArrayHelper;
@@ -17,12 +20,12 @@ class WallEntryControls extends Menu
 {
 
     /**
-     * @var \humhub\modules\content\components\ContentActiveRecord
+     * @var ContentActiveRecord
      */
     public $object;
 
     /**
-     * @var WallEntry
+     * @var WallEntry|WallStreamEntryWidget
      */
     public $wallEntryWidget;
 
@@ -30,6 +33,19 @@ class WallEntryControls extends Menu
      * @inheritdoc
      */
     public $template = '@content/widgets/views/wallEntryControls';
+
+    /**
+     * @var WallStreamEntryOptions
+     */
+    public $renderOptions;
+
+    public function init()
+    {
+        if(!$this->renderOptions && $this->wallEntryWidget instanceof WallStreamEntryWidget) {
+            $this->renderOptions = $this->wallEntryWidget->renderOptions;
+        }
+        parent::init();
+    }
 
     /**
      * @inheritdoc
@@ -45,6 +61,15 @@ class WallEntryControls extends Menu
         }
 
         return parent::run();
+    }
+
+    public function addEntry(MenuEntry $entry)
+    {
+        if($this->renderOptions && $this->renderOptions->isContextMenuEntryDisabled($entry)) {
+            return;
+        }
+
+        parent::addEntry($entry);
     }
 
     /**

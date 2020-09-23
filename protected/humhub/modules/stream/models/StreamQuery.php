@@ -2,7 +2,6 @@
 
 namespace humhub\modules\stream\models;
 
-use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\stream\models\filters\StreamQueryFilter;
 use Yii;
 use yii\base\InvalidConfigException;

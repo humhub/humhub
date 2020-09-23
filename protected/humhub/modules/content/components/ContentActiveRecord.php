@@ -9,6 +9,8 @@
 namespace humhub\modules\content\components;
 
 use humhub\modules\content\models\Movable;
+use humhub\modules\content\widgets\stream\StreamEntryWidget;
+use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicLabel;
 use humhub\modules\user\behaviors\Followable;
@@ -313,24 +315,25 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * Returns the wall output widget of this content.
      *
      * @param array $params optional parameters for WallEntryWidget
+     * @deprecated since 1.7 use renderStreamEntry()
      * @return string
-     * @throws \Exception
      */
     public function getWallOut($params = [])
     {
-        if(!empty($this->wallEntryClass)) {
-            $params['contentObject'] = $this;
-            return call_user_func($this->wallEntryClass.'::widget', $params);
+        if(is_subclass_of($this->wallEntryClass, StreamEntryWidget::class, true)) {
+            $params['model'] = $this;
+        } else if(!empty($this->wallEntryClass)) {
+            $params['contentObject'] = $this; // legacy WallEntry widget
         }
 
-        return "";
+        return call_user_func($this->wallEntryClass.'::widget', $params);
     }
 
     /**
      * Returns an instance of the assigned wall entry widget instance. This can be used to check matadata fields
      * of the related widget.
      *
-     * @return null|WallEntry for this class by wallEntryClass property , null will be
+     * @return null|WallEntry|WallStreamEntryWidget for this class by wallEntryClass property , null will be
      * returned if this wallEntryClass is empty
      */
     public function getWallEntryWidget()

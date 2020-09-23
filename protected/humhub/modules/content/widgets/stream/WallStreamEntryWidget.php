@@ -3,8 +3,8 @@
 
 namespace humhub\modules\content\widgets\stream;
 
-
-use humhub\modules\content\helpers\ContentContainerHelper;
+use Exception;
+use humhub\libs\Html;
 use humhub\modules\content\widgets\ArchiveLink;
 use humhub\modules\content\widgets\DeleteLink;
 use humhub\modules\content\widgets\EditLink;
@@ -15,19 +15,72 @@ use humhub\modules\content\widgets\PinLink;
 use humhub\modules\content\widgets\VisibilityLink;
 use humhub\modules\dashboard\controllers\DashboardController;
 use humhub\modules\space\models\Space;
-use humhub\modules\stream\actions\Stream;
-use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\DropdownDivider;
-use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\user\widgets\Image as UserImage;
 use Yii;
+use yii\helpers\Url;
 
 /**
- * Class WallStreamEntryWidget
+ * Base widget class used to render stream entries for the wall stream.
+ *
+ * Subclasses of this abstract widget are usually assigned to a content type class in the [[ContentActiveRecord::$wallEntryClass]]
+ * property.
+ *
+ * By means of the [[WallStreamEntryRenderOptions]] instance in [[static::$renderOptions]] the appearance of the wall entry
+ * can be influenced by:
+ *
+ * ### Disabling specific addons:
+ *
+ * ```php
+ * public function init()
+ * {
+ *     parent::init();
+ *     // Disable all addons
+ *     $this->renderOptions->disableAddons();
+ * }
+ * ```
+ *
+ * ```php
+ * public function init()
+ * {
+ *     parent::init();
+ *     // Disable the file attachment addon
+ *     $this->renderOptions->disableAttachmentAddon();
+ * }
+ * ```
+ *
+ * ### Disable context menu entries
+ *
+ * ```php
+ * public function init()
+ * {
+ *     parent::init();
+ *     // Disable the whole context menu
+ *     $this->renderOptions->disableContextMenu();
+ * }
+ * ```
+ *
+ * ```php
+ * public function init()
+ * {
+ *     parent::init();
+ *      // Disable all default context menu entries
+ *     $this->renderOptions
+ *       ->disableContextDelete()
+ *       ->disableContextEdit()
+ *       ->disableContextPermalink()
+ *       ->disableContextTopics()
+ *       ->disableContextSwitchVisibility()
+ *       ->disableContextSwitchNotification()
+ *       ->disableContextMove()
+ *       ->disableContextMenu();
+ * }
+ * ```
  * @package humhub\modules\content\widgets\stream
  * @since 1.7
+ * @see WallStreamEntryOptions
  */
-abstract class WallStreamEntryWidget extends BaseStreamEntryWidget
+abstract class WallStreamEntryWidget extends StreamEntryWidget
 {
     /**
      * Edit form is loaded to the wallentry itself.
@@ -44,12 +97,13 @@ abstract class WallStreamEntryWidget extends BaseStreamEntryWidget
      */
     const EDIT_MODE_MODAL = 'modal';
 
+
     /**
      * Route to edit the content
      *
      * @var string
      */
-    public $editRoute = "";
+    public $editRoute;
 
     /**
      * Defines the way the edit of this wallentry is displayed.
@@ -58,25 +112,68 @@ abstract class WallStreamEntryWidget extends BaseStreamEntryWidget
      */
     public $editMode = self::EDIT_MODE_INLINE;
 
-    const RENDER_OPTION_ADDONS = 'addons';
-    const RENDER_OPTION_CONTROLS = 'controls';
-    const RENDER_OPTION_CONTAINERINFO = 'containerInfo';
-    const RENDER_OPTION_JUSTEDITED = 'justEdited';
+    /**
+     * @var string defines the view used to render the entry body layout
+     */
+    public $layoutBody = '@content/widgets/stream/views/wallStreamEntryBodyLayout';
 
-    public $layoutMain = '@content/widgets/stream/views/wallStreamEntryLayout';
-    public $layoutHeader =  '@content/widgets/stream/views/wallStreamEntryHeader';
-    public $layoutFooter =  '@content/widgets/stream/views/wallStreamEntryFooter';
+    /**
+     * @var string defines the view used to render the entry header
+     */
+    public $layoutHeader = '@content/widgets/stream/views/wallStreamEntryHeader';
 
+    /**
+     * @var string defines the view used to render the entry footer
+     */
+    public $layoutFooter = '@content/widgets/stream/views/wallStreamEntryFooter';
+
+    /**
+     * @var WallStreamEntryOptions
+     */
+    public $renderOptions;
+
+    /**
+     * @inheritDoc
+     */
+    protected $renderOptionClass = WallStreamEntryOptions::class;
+
+    /**
+     * @return string returns the content type specific part of this wall entry (e.g. post content)
+     */
     abstract protected function renderContent();
 
     /**
-     * @return string
-     * @throws \Exception
+     * @inheritDoc
      */
-    protected function renderContentLayout()
+    public function init()
     {
-        return $this->render($this->layoutMain, [
+        parent::init();
+        if (!$this->renderOptions) {
+            $this->renderOptions = (new WallStreamEntryOptions);
+        }
+
+        if ($this->renderOptions->isViewMode(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH)) {
+            // Disable all except permalink
+            $this->renderOptions
+                ->disableContextDelete()
+                ->disableContextEdit()
+                ->disableContextTopics()
+                ->disableContextSwitchVisibility()
+                ->disableContextSwitchNotification()
+                ->disableContextMove()
+                ->disableContextMenuEntry(DropdownDivider::class);
+        }
+    }
+
+    /**
+     * @inheritDoc
+     * @throws Exception
+     */
+    protected function renderBodyLayout()
+    {
+        return $this->render($this->layoutBody, [
             'model' => $this->model,
+            'renderOptions' => $this->renderOptions,
             'content' => $this->renderContent(),
             'header' => $this->renderHeader(),
             'footer' => $this->renderFooter()
@@ -84,105 +181,96 @@ abstract class WallStreamEntryWidget extends BaseStreamEntryWidget
     }
 
     /**
-     * @return string
-     * @throws \Exception
+     * @return string renders the header section of this wall entry with context menu
+     * @throws Exception
      */
     protected function renderHeader()
     {
         return $this->render($this->layoutHeader, [
             'model' => $this->model,
-            'isPinned' => $this->isPinned(),
+            'renderOptions' => $this->renderOptions,
             'headImage' => $this->renderHeadImage(),
-            'showContainerInfo' => $this->isShowContainerInfo(),
-            'controlsOptions' =>  $this->getRenderOptions(static::RENDER_OPTION_CONTROLS, [])
+            'title' => $this->renderTitle(),
+            'permaLink' => $this->getPermaLink()
         ]);
     }
 
-    private function isShowContainerInfo()
+    /**
+     * @return string the title part of this wall entry used in the header section. Note, the return value will NOT be encoded.
+     * Therefore you can pass in HTML as links. By default a container link to the author with the displayName of the author
+     * is returned.
+     */
+    protected function renderTitle()
     {
-        $container = $this->model->content->container;
-
-        if(!$container) {
-            return false;
-        }
-
-        if($container->is($this->model->content->createdBy)) {
-            return false;
-        }
-
-        return $this->getRenderOptions(static::RENDER_OPTION_CONTAINERINFO, !$this->model->content->container->is(ContentContainerHelper::getCurrent()));
+        return Html::containerLink($this->model->createdBy);
     }
 
     /**
-     * @return string
-     * @throws \Exception
+     * @return string the permalink of this content model
+     */
+    protected function getPermaLink()
+    {
+        return Url::to(['/content/perma', 'id' => $this->model->content->id]);
+    }
+
+    /**
+     * @return string renders the title image of the header section
+     * @throws Exception
      */
     protected function renderHeadImage()
     {
-        return $this->renderIconImage();
-        $user = $this->model->content->createdBy;
-        $container = $this->model->content->container;
-
-        $result = UserImage::widget([
-            'user' => $user,
-            'width' => 40,
-            'htmlOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $user->contentcontainer_id]
-        ]);
-
-        return $result;
-/*
-        if ( $container instanceof Space && $this->isShowContainerInfo()) {
-            $result .= SpaceImage::widget([
-                'space' => $container,
-                'width' => 20,
-                'htmlOptions' => ['class' => 'img-space'],
-                'link' => 'true',
-                'linkOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $container->contentcontainer_id],
-            ]);
-        }
-
-        return $result;*/
+        return $this->renderAuthorHeadImage();
     }
 
-    protected function renderIconImage()
+    /**
+     * @return string renders the author image for the header section
+     * @throws Exception
+     */
+    protected function renderAuthorHeadImage()
     {
-        $icons = [
-            'calendar',
-            'question-circle-o',
-            'question-circle',
-            'file-o',
-            'tasks',
-        ];
-
-        return Icon::get($icons[array_rand($icons)], ['fixedWidth' => true])->asString();
+        return UserImage::widget([
+            'user' => $this->model->content->createdBy,
+            'width' => 40,
+            'htmlOptions' => ['class' => 'pull-left']
+        ]);
     }
 
+
+    /**
+     * @return string renders the footer section with wall entry addons
+     */
     protected function renderFooter()
     {
-        // addonOptions can be an array or false
-        $addonOptions = $this->getRenderOptions(static::RENDER_OPTION_ADDONS, []);
-
-        if(is_array($addonOptions)) {
-            $addonOptions = array_merge($addonOptions, ['object' => $this->model]);
-        } else if($addonOptions !== false) {
-            $addonOptions = ['object' => $this->model];
-        }
-
         return $this->render($this->layoutFooter, [
             'model' => $this->model,
-            'addonOptions' => $addonOptions
+            'renderOptions' => $this->renderOptions
         ]);
     }
 
     /**
-     * Returns an array of context menu items either in form of a single array:
+     * Returns an array of context menu items:
      *
-     * ['label' => 'mylabel', 'icon' => 'fa-myicon', 'data-action-click' => 'myaction', ...]
+     * Add additional entries:
      *
-     * or as widget type definition:
+     * ```php
+     * $result = parent::getContextMenu();
      *
-     * [MyWidget::class, [...], [...]]
+     * // Add menu entry by instance (recommended)
+     * $result[] = new MySpecialMenuEntry(['model' => $this->model, 'sortOrder'  => 210]);
      *
+     * // Add by widget class and definition (deprecated)
+     * $result[] = [MyWidget::class, ['model' => $this->model], ['sortOrder' => 210]];
+     * ```
+     *
+     * Sometimes you want to provide a custom menu item for e.g. edit or delete.
+     * This can be achieved by:
+     *
+     * ```php
+     * $this->renderOptions->disableContextEdit()->disableContextDelete();
+     * $result = parent::getContextMenu();
+     * $result[] = new MySpecialEditLink(['model' => $this->model, 'sortOrder'  => 100]);
+     * $result[] = new MySpecialDeleteLink(['model' => $this->model, 'sortOrder'  => 300]);
+     * ```
      * If an [[editRoute]] is set this function will include an edit button.
      * The edit logic can be changed by changing the [[editMode]].
      *
@@ -191,46 +279,22 @@ abstract class WallStreamEntryWidget extends BaseStreamEntryWidget
      */
     public function getContextMenu()
     {
-        $result = [];
+        $result = [
+            [PermaLink::class, ['content' => $this->model], ['sortOrder' => 200]],
+            [DeleteLink::class, ['content' => $this->model], ['sortOrder' => 300]],
+            new DropdownDivider(['sortOrder' => 350]),
+            [VisibilityLink::class, ['contentRecord' => $this->model], ['sortOrder' => 400]],
+            [NotificationSwitchLink::class, ['content' => $this->model], ['sortOrder' => 500]],
+            [PinLink::class, ['content' => $this->model], ['sortOrder' => 600]],
+            [MoveContentLink::class, ['model' => $this->model], ['sortOrder' => 700]],
+            [ArchiveLink::class, ['content' => $this->model], ['sortOrder' => 800]]
+        ];
 
         if (!empty($this->getEditUrl())) {
-            $this->addControl($result, [EditLink::class, ['model' => $this->model, 'mode' => $this->editMode, 'url' => $this->getEditUrl()], ['sortOrder' => 100]]);
+            $result[] = [EditLink::class, ['model' => $this->model, 'mode' => $this->editMode, 'url' => $this->getEditUrl()], ['sortOrder' => 100]];
         }
-
-        $this->addControl($result, [PermaLink::class, ['content' => $this->model], ['sortOrder' => 200]]);
-
-        $this->addControl($result, [DeleteLink::class, ['content' => $this->model], ['sortOrder' => 300]]);
-
-        $this->addControl($result, new DropdownDivider(['sortOrder' => 350]));
-        $this->addControl($result, [VisibilityLink::class, ['contentRecord' => $this->model], ['sortOrder' => 400]]);
-        $this->addControl($result, [NotificationSwitchLink::class, ['content' => $this->model], ['sortOrder' => 500]]);
-        $this->addControl($result, [PinLink::class, ['content' => $this->model], ['sortOrder' => 600]]);
-        $this->addControl($result, [MoveContentLink::class, ['model' => $this->model], ['sortOrder' => 700]]);
-        $this->addControl($result, [ArchiveLink::class, ['content' => $this->model], ['sortOrder' => 800]]);
-
-        /*if (isset($this->controlsOptions['add'])) {
-            foreach ($this->controlsOptions['add'] as $linkOptions) {
-                $this->addControl($result, $linkOptions);
-            }
-        }*/
 
         return $result;
-    }
-
-    protected function addControl(&$result, $entry)
-    {
-        $entryClass = null;
-        if ($entry instanceof MenuEntry) {
-            $entryClass = get_class($entry);
-        } elseif (is_array($entry) && isset($entry[0])) {
-            $entryClass = $entry[0];
-        }
-
-       /* if (isset($this->controlsOptions['prevent']) && $entryClass && in_array($entryClass, $this->controlsOptions['prevent'])) {
-            return;
-        }*/
-
-        $result[] = $entry;
     }
 
     /**
@@ -250,9 +314,21 @@ abstract class WallStreamEntryWidget extends BaseStreamEntryWidget
         }
 
         $params = ['id' => $this->model->id];
+
         if (Yii::$app->controller instanceof DashboardController) {
-            $params['from'] = Stream::FROM_DASHBOARD;
+            $params['from'] = StreamEntryOptions::VIEW_CONTEXT_DASHBOARD;
         }
+
         return $this->model->content->container->createUrl($this->editRoute, $params);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAttributes()
+    {
+        return [
+            'class' => $this->renderOptions->isPinned($this->model) ? 'wall-entry pinned-entry' : 'wall-entry'
+        ];
     }
 }

@@ -36,9 +36,7 @@ humhub.module('activity', function (module, require, $) {
     var instance;
 
 
-    var ActivityStreamEntry = stream.StreamEntry.extend(function (id) {
-        stream.StreamEntry.call(this, id);
-    });
+    var ActivityStreamEntry = stream.StreamEntry.extend();
 
     ActivityStreamEntry.prototype.delete = function () {/* Not implemented */};
     ActivityStreamEntry.prototype.edit = function () {/* Not implemented */};

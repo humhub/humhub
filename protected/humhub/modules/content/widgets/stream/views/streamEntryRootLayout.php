@@ -6,12 +6,12 @@ use humhub\modules\ui\view\components\View;
 /* @var $this View */
 /* @var $rootElement string */
 /* @var $options array */
-/* @var $contentLayout $string */
+/* @var $bodyLayout $string */
 ?>
 
 <?= Html::beginTag($rootElement,  $options)?>
 
-    <?= $contentLayout ?>
+    <?= $bodyLayout ?>
 
 <?= Html::endTag($rootElement) ?>
 
