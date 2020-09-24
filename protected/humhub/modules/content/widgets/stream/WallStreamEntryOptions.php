@@ -51,7 +51,7 @@ class WallStreamEntryOptions extends StreamEntryOptions
 
     private $justEdited = false;
 
-    public $contextMenuOptions = [];
+    private $contextMenuOptions = [];
     private $disableContextMenu = false;
 
     private $disableSubHeadlineAuthor = false;
@@ -78,7 +78,7 @@ class WallStreamEntryOptions extends StreamEntryOptions
 
     public function isShowAuthorLinkInSubHeadLine(ContentActiveRecord $model)
     {
-        !$this->disableSubHeadlineAuthor && !$model->content->container->is($model->content->createdBy);
+        return !$this->disableSubHeadlineAuthor && !$model->content->container->is($model->content->createdBy);
     }
 
     public function isShowContainerInformation(ContentActiveRecord $model)
@@ -98,7 +98,7 @@ class WallStreamEntryOptions extends StreamEntryOptions
         return !$this->isViewMode(static::VIEW_CONTEXT_CONTAINER);
     }
 
-    public function setJustEdited($val = true)
+    public function justEdited($val = true)
     {
         $this->justEdited = $val;
     }
