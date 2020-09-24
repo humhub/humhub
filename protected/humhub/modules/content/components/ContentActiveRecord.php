@@ -315,7 +315,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * Returns the wall output widget of this content.
      *
      * @param array $params optional parameters for WallEntryWidget
-     * @deprecated since 1.7 use renderStreamEntry()
+     * @deprecated since 1.7 use StreamEntryWidget::renderStreamEntry()
      * @return string
      */
     public function getWallOut($params = [])

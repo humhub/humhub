@@ -37,19 +37,30 @@ class StreamEntryOptions extends Model
     /**
      * @var string the active view mode of this stream entry
      */
-    private $viewMode;
+    public $viewMode;
 
     /**
      * @var string used to overwrite the widget class while rendering
      */
-    private $entryWidgetClass = null;
+    public $widgetClass = null;
 
-    public function __construct(StreamEntryOptions $base = null, $config = [])
+    /**
+     * StreamEntryOptions constructor.
+     * @param StreamEntryOptions|array|null $base
+     * @param array $config
+     */
+    public function __construct($base = null, $config = [])
     {
+        if(is_array($base)) {
+            $config = $base;
+            $base = null;
+        }
+
         if($base) {
             $this->viewMode = $base->viewMode;
-            $this->entryWidgetClass = $base->entryWidgetClass;
+            $this->widgetClass = $base->widgetClass;
         }
+
         parent::__construct($config);
     }
 
@@ -65,15 +76,15 @@ class StreamEntryOptions extends Model
      * @param $entryWidgetClass
      * @return StreamEntryOptions
      */
-    public function overWriteStreamWidgetClass($entryWidgetClass)
+    public function overwriteWidgetClass($entryWidgetClass)
     {
-        $this->entryWidgetClass = $entryWidgetClass;
+        $this->widgetClass = $entryWidgetClass;
         return $this;
     }
 
     public function getStreamEntryWidgetClass()
     {
-        return $this->entryWidgetClass;
+        return $this->widgetClass;
     }
 
     /**
@@ -85,6 +96,11 @@ class StreamEntryOptions extends Model
     {
         $this->viewMode = $viewMode;
         return $this;
+    }
+
+    public function getViewMode()
+    {
+        return $this->viewMode;
     }
 
     public function isViewMode($viewMode) {
