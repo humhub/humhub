@@ -7,7 +7,7 @@
 
 use yii\bootstrap\Html;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $options [] */
 /* @var $selection [] */
 /* @var $items [] */

@@ -8,8 +8,10 @@
 
 namespace humhub\modules\user\controllers;
 
+use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\controllers\ContainerImageController;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\web\HttpException;
@@ -28,20 +30,20 @@ class ImageController extends ContainerImageController
     {
         $legacyUserGuid = Yii::$app->request->get('userGuid');
 
-        if($legacyUserGuid) {
+        if ($legacyUserGuid) {
             $this->validContentContainerClasses = null;
             $this->requireContainer = false;
         }
 
         parent::init();
 
-        if($legacyUserGuid) {
+        if ($legacyUserGuid) {
             $contentContainerModel = ContentContainer::findOne(['guid' => $legacyUserGuid]);
             if ($contentContainerModel !== null) {
                 $this->contentContainer = $contentContainerModel->getPolymorphicRelation();
             }
 
-            if(!$this->contentContainer) {
+            if (!$this->contentContainer) {
                 throw new HttpException(404);
             }
         }
@@ -56,7 +58,7 @@ class ImageController extends ContainerImageController
 
     public function validateAccess($rule, $access)
     {
-        if(!static::canEditProfileImage($this->contentContainer)) {
+        if (!static::canEditProfileImage($this->contentContainer)) {
             $access->code = 401;
             $access->reason = 'Not authorized!';
             return false;
@@ -67,14 +69,22 @@ class ImageController extends ContainerImageController
 
     public static function canEditProfileImage(User $userProfile)
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return false;
         }
 
-        if($userProfile->is(Yii::$app->user->getIdentity())) {
+        /** @var User $user */
+        $user = Yii::$app->user->getIdentity();
+
+        if ($userProfile->is($user)) {
             return true;
         }
 
-        return (Yii::$app->user->isAdmin() && Yii::$app->getModule('user')->adminCanChangeUserProfileImages);
+        if (Yii::$app->getModule('user')->adminCanChangeUserProfileImages &&
+            $user->permissionManager->can(ManageUsers::class)) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -14,7 +14,7 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\helpers\MembershipHelper;
 use Yii;
 use yii\base\BaseObject;
-use yii\web\HttpException;
+use humhub\components\Event;
 
 /**
  * Events provides callbacks for all defined module events.
@@ -27,7 +27,7 @@ class Events extends BaseObject
     /**
      * On rebuild of the search index, rebuild all space records
      *
-     * @param type $event
+     * @param Event $event
      */
     public static function onSearchRebuild($event)
     {
@@ -61,12 +61,6 @@ class Events extends BaseObject
             // Avoid activities
             $membership->delete();
         }
-    }
-
-    public static function onConsoleApplicationInit($event)
-    {
-        $application = $event->sender;
-        $application->controllerMap['space'] = commands\SpaceController::class;
     }
 
     /**

@@ -205,8 +205,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $scenarios = parent::scenarios();
         $scenarios['login'] = ['username', 'password'];
         $scenarios['editAdmin'] = ['username', 'email', 'status'];
-        $scenarios['registration_email'] = ['username', 'email'];
-        $scenarios['registration'] = ['username'];
+        $scenarios['registration_email'] = ['username', 'email', 'time_zone'];
+        $scenarios['registration'] = ['username', 'time_zone'];
 
         return $scenarios;
     }
@@ -616,22 +616,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
 
         return $this->is(Yii::$app->user->getIdentity());
-    }
-
-    /**
-     * Checks if the given $user instance shares the same identity with this
-     * user instance.
-     *
-     * @param \humhub\modules\user\models\User $user
-     * @return boolean
-     */
-    public function is(User $user = null)
-    {
-        if (!$user) {
-            return false;
-        }
-
-        return $user->id === $this->id;
     }
 
     /**

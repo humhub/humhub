@@ -6,8 +6,8 @@ use humhub\components\console\Application;
 return [
     'id' => 'ui',
     'class' => \humhub\modules\ui\Module::class,
-    'isCoreModule' => true,
-    'events' => [
-        [Application::class, Application::EVENT_ON_INIT, ['humhub\modules\ui\Events', 'onConsoleApplicationInit']],
-    ]
+    'consoleControllerMap' => [
+        'theme' => '\humhub\modules\ui\commands\ThemeController'
+    ],
+    'isCoreModule' => true
 ];

@@ -6,7 +6,7 @@
  *
  */
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 
 use humhub\modules\topic\widgets\TopicPicker;
 

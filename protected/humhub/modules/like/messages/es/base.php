@@ -1,7 +1,7 @@
 <?php
 return array (
   ' likes this.' => 'le gusta.',
-  '<strong>Users</strong> who like this' => '<strong>Usuarios</strong> que les gusta esto',
+  '<strong>Users</strong> who like this' => '<strong>Usuarios</strong> a los que les gusta esto',
   'Like' => 'Me gusta',
   'Unlike' => 'Ya no me gusta',
   'You' => 'Tú',
