@@ -17,3 +17,4 @@ HumHub Changelog
 - Enh #4324: Improved line break for menu entries with many characters
 - Enh #4378: Implemented generic ContentContainerActiveRecord::is() function
 - Enh #4310: Add "Can Like" Permission 
+- Fix #4385: Tour broken when profile start page is changed
