@@ -34,6 +34,7 @@ $submitUrl = $post->content->container->createUrl('/post/post/edit', $submitPara
 
                 <?= UploadButton::widget([
                     'id' => 'post_upload_' . $post->id,
+                    'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
                     'model' => $post,
                     'dropZone' => '#post_edit_' . $post->id . ':parent',
                     'preview' => '#post_upload_preview_' . $post->id,
