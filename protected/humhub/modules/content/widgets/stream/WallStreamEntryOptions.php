@@ -47,20 +47,21 @@ class WallStreamEntryOptions extends StreamEntryOptions
     const VIEW_CONTEXT_SEARCH = 'search';
 
     private $addonOptions = [];
-    private $disableAddons = false;
-
-    private $justEdited = false;
-
     private $contextMenuOptions = [];
-    private $disableContextMenu = false;
 
-    private $disableSubHeadlineAuthor = false;
+    public $disableAddons = false;
 
-    private $disableTargetSpaceImage = true;
+    public $justEdited = false;
 
-    public function disableSubHeadlineAuthor()
+    public $disableContextMenu = false;
+
+    public $enableSubHeadlineAuthor = false;
+
+    public $disableTargetSpaceImage = true;
+
+    public function enableSubHeadlineAuthor()
     {
-        $this->disableSubHeadlineAuthor = true;
+        $this->enableSubHeadlineAuthor = true;
     }
 
     public function disableTargetSpaceImage()
@@ -78,24 +79,7 @@ class WallStreamEntryOptions extends StreamEntryOptions
 
     public function isShowAuthorLinkInSubHeadLine(ContentActiveRecord $model)
     {
-        return !$this->disableSubHeadlineAuthor && !$model->content->container->is($model->content->createdBy);
-    }
-
-    public function isShowContainerInformation(ContentActiveRecord $model)
-    {
-        if(!$model->content->container) {
-            return false;
-        }
-
-        if($model->content->container->is($model->content->createdBy)) {
-            return false;
-        }
-
-        if(!ContentContainerHelper::getCurrent()) {
-            return true;
-        }
-
-        return !$this->isViewMode(static::VIEW_CONTEXT_CONTAINER);
+        return $this->enableSubHeadlineAuthor && !$model->content->container->is($model->content->createdBy);
     }
 
     public function justEdited($val = true)

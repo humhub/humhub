@@ -53,7 +53,7 @@ class DashboardStreamAction extends ActivityStreamAction
      */
     public function initStreamEntryOptions()
     {
-        return parent::initStreamEntryOptions()->viewMode(StreamEntryOptions::VIEW_CONTEXT_DASHBOARD);
+        return parent::initStreamEntryOptions()->viewContext(StreamEntryOptions::VIEW_CONTEXT_DASHBOARD);
     }
 
     public function setupGuestFilter()

@@ -159,7 +159,7 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                             <?php try {  ?>
                                 <?php if ($result instanceof ContentActiveRecord) : ?>
                                     <?= StreamEntryWidget::renderStreamEntry($result,
-                                        (new WallStreamEntryOptions())->viewMode(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH))?>
+                                        (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH))?>
                                 <?php elseif ($result instanceof ContentContainerActiveRecord) : ?>
                                     <?= $result->getWallOut() ?>
                                 <?php else: ?>

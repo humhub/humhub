@@ -19,25 +19,36 @@ use yii\base\Model;
  */
 class StreamEntryOptions extends Model
 {
+
+    /**
+     * Used when rendering the entry in default context e.g. in a container stream (default)
+     */
+    const VIEW_CONTEXT_DEFAULT = 'default';
+
     /**
      * Used when rendering the entry on the dashboard
      */
     const VIEW_CONTEXT_DASHBOARD = 'dashboard';
 
     /**
-     * Used when rendering the entry outside of its container (similar to dashboard)
+     * Used when rendering the entry on the search stream
      */
-    const VIEW_CONTEXT_GLOBAL = 'global';
+    const VIEW_CONTEXT_SEARCH = 'search';
 
     /**
-     * Used when rendering the entry in the context of its container (default)
+     * Used when rendering the entry e.g. as single stream entry
      */
-    const VIEW_CONTEXT_CONTAINER = 'container';
+    const VIEW_CONTEXT_DETAIL = 'detail';
 
     /**
-     * @var string the active view mode of this stream entry
+     * Used when rendering the entry in a modal
      */
-    public $viewMode;
+    const VIEW_CONTEXT_MODAL = 'modal';
+
+    /**
+     * @var string the active view context used for the stream entry rendering
+     */
+    public $viewContext;
 
     /**
      * @var string used to overwrite the widget class while rendering
@@ -57,7 +68,7 @@ class StreamEntryOptions extends Model
         }
 
         if($base) {
-            $this->viewMode = $base->viewMode;
+            $this->viewContext = $base->viewContext;
             $this->widgetClass = $base->widgetClass;
         }
 
@@ -67,8 +78,8 @@ class StreamEntryOptions extends Model
     public function init()
     {
         parent::init();
-        if(!$this->viewMode) {
-            $this->viewMode = Yii::$app->request->get('from', static::VIEW_CONTEXT_CONTAINER);
+        if(!$this->viewContext) {
+            $this->viewContext = Yii::$app->request->getViewContext() ?? static::VIEW_CONTEXT_DEFAULT;
         }
     }
 
@@ -92,31 +103,75 @@ class StreamEntryOptions extends Model
      * @param $viewMode
      * @return $this
      */
-    public function viewMode($viewMode)
+    public function viewContext($viewMode)
     {
-        $this->viewMode = $viewMode;
+        $this->viewContext = $viewMode;
         return $this;
     }
 
-    public function getViewMode()
+    /**
+     * @return string returns the active view context
+     */
+    public function getViewContext()
     {
-        return $this->viewMode;
+        return $this->viewContext;
     }
 
-    public function isViewMode($viewMode) {
-        return $this->viewMode === $viewMode;
+    /**
+     * Checks the active view mode against the $viewModes parameter.
+     * The $viewModes parameter can either be an array of view modes or a single view mode string.
+     * This function returns true, if one of the given view modes is active.
+     *
+     * @param string|array $viewMode
+     * @return bool
+     */
+    public function isViewContext($viewContexts) {
+        if(!is_array($viewContexts)) {
+            return $this->viewContext === $viewContexts;
+        }
+
+        foreach ($viewContexts as $viewContext) {
+            if($this->viewContext === $viewContext) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if additional container information should be displayed in the current context. This usually should be the
+     * case if the entry is rendered outside of the related container stream.
+     *
+     * @param ContentActiveRecord $model
+     * @return bool
+     */
+    public function isShowContainerInformation(ContentActiveRecord $model)
+    {
+        if(!$model->content->container) {
+            return false;
+        }
+
+        if($model->content->container->is($model->content->createdBy)) {
+            return false;
+        }
+
+        if(!ContentContainerHelper::getCurrent()) {
+            return true;
+        }
+
+        return !$this->isViewContext(static::VIEW_CONTEXT_DEFAULT);
     }
 
     /**
      * @param ContentActiveRecord $model
-     * @return bool whether or not this entry should be displayed as pinned
+     * @return bool whether or not this entry should be displayed as pinned in the current context
      */
     public function isPinned(ContentActiveRecord $model)
     {
         $currentContainer = ContentContainerHelper::getCurrent();
         $content = $model->content;
         return $currentContainer
-            && $this->isViewMode(static::VIEW_CONTEXT_CONTAINER)
+            && $this->isViewContext(static::VIEW_CONTEXT_DEFAULT)
             && $content->isPinned()
             && $currentContainer->contentcontainer_id === $content->contentcontainer_id;
     }

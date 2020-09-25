@@ -152,7 +152,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
             $this->renderOptions = (new WallStreamEntryOptions);
         }
 
-        if ($this->renderOptions->isViewMode(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH)) {
+        if ($this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH)) {
             // Disable all except permalink
             $this->renderOptions
                 ->disableContextDelete()

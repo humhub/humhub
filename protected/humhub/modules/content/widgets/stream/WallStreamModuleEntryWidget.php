@@ -20,7 +20,7 @@ abstract class WallStreamModuleEntryWidget extends WallStreamEntryWidget
     public function init()
     {
         parent::init();
-        $this->renderOptions->disableTargetSpaceImage();
+        $this->renderOptions->disableTargetSpaceImage()->enableSubHeadlineAuthor();
     }
 
     /**

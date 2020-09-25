@@ -29,6 +29,7 @@ class Yii extends \yii\BaseYii
  * @property-read \humhub\components\AssetManager $assetManager
  * @property-read \humhub\modules\user\authclient\Collection $authClientCollection
  * @property-read \yii\queue\Queue $queue
+ * @property-read \humhub\components\Request $request
  * @property-read \humhub\components\UrlManager $urlManager
  * @property-read \humhub\modules\live\components\Sender $live
  * @property-read \yii\mutex\Mutex $mutex

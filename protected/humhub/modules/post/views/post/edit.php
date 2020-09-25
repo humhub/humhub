@@ -11,13 +11,9 @@ use yii\bootstrap\ActiveForm;
 /* @var  $from string */
 /* @var  $submitUrl string */
 
-$submitParams = ['id' => $post->id];
-if (! empty($from)) {
-    $submitParams['from'] = $from;
-}
-$submitUrl = $post->content->container->createUrl('/post/post/edit', $submitParams);
-
+$submitUrl = $post->content->container->createUrl('/post/post/edit', ['id' => $post->id]);
 ?>
+
 <div class="content content_edit" id="post_edit_<?= $post->id; ?>">
     <?php $form = ActiveForm::begin(['id' => 'post-edit-form_' . $post->id]); ?>
 
@@ -42,7 +38,7 @@ $submitUrl = $post->content->container->createUrl('/post/post/edit', $submitPara
                     'max' => Yii::$app->getModule('content')->maxAttachedFiles
                 ]) ?>
 
-                <?= Button::defaultType(Yii::t('base', 'Save'))->action('editSubmit', $submitUrl)->submit()->cssClass(' btn-comment-submit')->sm(); ?>
+                <?= Button::defaultType(Yii::t('base', 'Save'))->action('editSubmit', $submitUrl)->submit()->cssClass(' btn-comment-submit')->sm() ?>
 
             </div>
         </div>

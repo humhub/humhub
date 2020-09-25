@@ -21,6 +21,7 @@ use humhub\modules\web\pwa\widgets\LayoutHeader;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\CoreJsConfig;
 use humhub\widgets\LayoutAddons;
+use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use yii\bootstrap\BootstrapAsset;
 use yii\helpers\ArrayHelper;
 use Yii;
@@ -64,6 +65,33 @@ class View extends \yii\web\View
      * @var array contains already pre-loaded asset urls.
      */
     private static $preloaded = [];
+
+    /**
+     * A viewContext is a simple string value which usually is set by a controller to define the context of a resulting view.
+     * If a viewContext is set, it will be sent to the client in case of pjax and full page loads. The HumHub Client API
+     * will then use the viewContext in all ajax (non pjax) requests as HTTP request header `HUMHUB-VIEW-CONTEXT`
+     * until the next pjax or full page load.
+     *
+     * The viewContext is usually used to influence the view, e.g. a viewContext 'modal' indicates that the resulting view
+     * will be contained in a modal, a 'dashboard' context will indicate that the ajax request was sent from the dashboard.
+     *
+     * A controller usually sets the viewContext within the init function e.g.:
+     *
+     * ```php
+     * public function init()
+     * {
+     *   parent::init();
+     *   $this->view->setViewContext('dashboard');
+     * }
+     * ```
+     *
+     * Note: This variable won't contain the value of the request header but is only used to set the client viewContext.
+     * Use `Yii::$app->request->getViewContext()` to determine the active viewContext of a request.
+     *
+     * @var string defines a view context used in ajax requests
+     * @since 1.7
+     */
+    private static $viewContext;
 
     /**
      * Sets current page title
@@ -395,6 +423,7 @@ class View extends \yii\web\View
         }
 
         if (Yii::$app->request->isPjax) {
+            $this->registerViewContext();
             echo LayoutAddons::widget();
             $this->flushJsConfig();
         }
@@ -410,9 +439,20 @@ class View extends \yii\web\View
 
         // Add LayoutAddons and jsConfig registered by addons
         echo LayoutAddons::widget();
+        $this->registerViewContext();
         $this->flushJsConfig();
 
         return parent::endBody();
+    }
+
+    /**
+     * Registers the client viewContext.
+     */
+    private function registerViewContext()
+    {
+        if(!empty(static::$viewContext)) {
+            $this->registerJs('humhub.modules.ui.view.setViewContext("'.static::$viewContext.'")', View::POS_END, 'viewContext');
+        }
     }
 
     /**
@@ -450,6 +490,11 @@ class View extends \yii\web\View
         }
 
         return '';
+    }
+
+    public function setViewContext($vctx)
+    {
+        static::$viewContext = $vctx;
     }
 
 }

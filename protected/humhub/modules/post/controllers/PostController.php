@@ -45,11 +45,8 @@ class PostController extends ContentContainerController
         });
     }
 
-    public function actionEdit()
+    public function actionEdit($id)
     {
-        $id = Yii::$app->request->get('id');
-        $from = Yii::$app->request->get('from', '');
-
         $model = Post::findOne(['id' => $id]);
 
         if (!$model->content->canEdit()) {
@@ -68,7 +65,6 @@ class PostController extends ContentContainerController
 
         return $this->renderAjax('edit', [
             'post' => $model,
-            'from' => $from === StreamEntryOptions::VIEW_CONTEXT_DASHBOARD ? $from : null
         ]);
     }
 

@@ -8,15 +8,19 @@
 
 namespace humhub\modules\dashboard\controllers;
 
+use humhub\components\behaviors\AccessControl;
 use humhub\components\Controller;
 use humhub\modules\dashboard\components\actions\DashboardStreamAction;
 use Yii;
 
 class DashboardController extends Controller
 {
+    const VIEW_CONTEXT = 'dashboard';
+
     public function init()
     {
         $this->appendPageTitle(Yii::t('DashboardModule.base', 'Dashboard'));
+        $this->view->setViewContext(static::VIEW_CONTEXT);
         return parent::init();
     }
 
@@ -27,7 +31,7 @@ class DashboardController extends Controller
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::class,
+                'class' => AccessControl::class,
                 'guestAllowedActions' => [
                     'index',
                     'stream'

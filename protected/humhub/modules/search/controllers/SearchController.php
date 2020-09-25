@@ -25,6 +25,7 @@ use humhub\modules\search\engine\Search;
  */
 class SearchController extends Controller
 {
+    const VIEW_CONTEXT = 'search';
 
     /**
      * @var string the current search keyword
@@ -37,6 +38,7 @@ class SearchController extends Controller
     public function init()
     {
         $this->appendPageTitle(\Yii::t('SearchModule.base', 'Search'));
+        $this->view->setViewContext(static::VIEW_CONTEXT);
         return parent::init();
     }
 
