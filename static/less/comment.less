@@ -87,13 +87,17 @@
         padding: 6px 10px;
         background: transparent !important;
         i {
-            color: @link !important;
+            color: @text-color-soft2;
+        }
+        i:hover {
+            color: @link;
         }
     }
-    .fileinput-button:hover .fa {
-        background: transparent !important;
-        color: @background4;
+
+    .fileinput-button:hover i {
+        color: @link;
     }
+
     .fileinput-button:active {
         box-shadow: none !important;
     }
