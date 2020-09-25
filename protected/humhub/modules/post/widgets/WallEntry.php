@@ -21,9 +21,12 @@ class WallEntry extends WallStreamEntryWidget
      */
     public $editRoute = '/post/post/edit';
 
-
     protected function renderContent()
     {
-        return $this->render('wallEntry', ['post' => $this->model, 'justEdited' => $this->renderOptions->isJustEdited()]);
+        return $this->render('wallEntry', [
+            'post' => $this->model,
+            'justEdited' => $this->renderOptions->isJustEdited(), // compatibility for themed legacy views
+            'renderOptions' => $this->renderOptions
+        ]);
     }
 }

@@ -106,7 +106,7 @@ abstract class Stream extends Action
      * Entry id of the top stream entry used for update requests
      *
      * @var int
-     * @deprecated since 1.7 use $streamQuery->from
+     * @deprecated since 1.7 use $streamQuery->to
      */
     public $to;
 
@@ -273,7 +273,7 @@ abstract class Stream extends Action
         }
 
         if($this->streamEntryWidgetClass) {
-            $this->streamEntryOptions->overWriteStreamWidgetClass($this->streamEntryWidgetClass);
+            $this->streamEntryOptions->overwriteWidgetClass($this->streamEntryWidgetClass);
         }
     }
 
@@ -282,7 +282,11 @@ abstract class Stream extends Action
      */
     protected function initStreamEntryOptions()
     {
-        return new StreamEntryOptions();
+        $instance = new StreamEntryOptions();
+        if($this->streamQuery->isSingleContentQuery()) {
+            $instance->viewContext(StreamEntryOptions::VIEW_CONTEXT_DETAIL);
+        }
+        return $instance;
     }
 
     /**
