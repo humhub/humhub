@@ -104,6 +104,7 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
             this.$.html(this.editor.render());
             additions.applyTo(this.$, {filter: ['highlightCode']});
             this.$.find('table').wrap('<div class="table-responsive"></div>');
+            this.$.trigger('afterRender');
         }
 
         // See https://github.com/ProseMirror/prosemirror/issues/432

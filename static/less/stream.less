@@ -133,9 +133,17 @@
         }
 
         .media-subheading {
-            i {
-                margin-right:2px;
+            i.fa-caret-right {
+                margin: 0 2px;
             }
+
+            .wall-entry-icons {
+                display: inline-block;
+                i {
+                    margin-right:2px;
+                }
+            }
+
             .time, i, span {
                 font-size: 11px;
                 white-space: nowrap;
@@ -148,6 +156,13 @@
         padding-left:50px;
         .wall-entry-content {
             margin-bottom:5px;
+
+            .post-short-text {
+                font-size: 1.6em;
+                .emoji {
+                    width: 20px;
+                }
+            }
         }
         .wall-entry-topics {
             margin-bottom:10px;
