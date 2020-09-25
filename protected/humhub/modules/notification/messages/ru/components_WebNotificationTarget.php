@@ -1,5 +1,9 @@
 <?php
+/**
+ * Translation: Paul (https://paul.bid) paulbid@protonmail.com
+ * 
+ */
 return array (
-  'E-Mail' => 'e-mail',
-  'Web' => '',
+  'E-Mail' => 'Email',
+  'Web' => 'Сайт',
 );

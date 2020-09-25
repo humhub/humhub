@@ -1,5 +1,9 @@
 <?php
+/**
+ * Translation: Paul (https://paul.bid) paulbid@protonmail.com
+ * 
+ */
 return array (
-  'Pinned' => 'Закрепить',
+  'Pinned' => 'Закреплено',
   'Unpinned' => 'Открепить',
 );
