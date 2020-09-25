@@ -77,6 +77,11 @@ class CropProfileImage extends Model
     public $boxWidth = '440';
 
     /**
+     * @var boolean
+     */
+    public $keySupport = false;
+
+    /**
      * @var string
      * @since 1.4
      */
@@ -108,7 +113,8 @@ class CropProfileImage extends Model
             'bgColor' =>  $this->bgColor,
             'bgOpacity' => $this->bgOpacity,
             'boxWidth' => $this->boxWidth,
-            'onChange' => new JsExpression('function(c){ $("#cropX").val(c.x);$("#cropY").val(c.y);$("#cropW").val(c.w);$("#cropH").val(c.h); }')
+            'onChange' => new JsExpression('function(c){ $("#cropX").val(c.x);$("#cropY").val(c.y);$("#cropW").val(c.w);$("#cropH").val(c.h); }'),
+            'keySupport' => $this->keySupport,
         ];
     }
 

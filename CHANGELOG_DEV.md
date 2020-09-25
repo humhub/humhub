@@ -18,3 +18,4 @@ HumHub Changelog
 - Fix #4186: Add Timezone validation rules to admin prerequisite view
 - Enh #4378: Implemented generic ContentContainerActiveRecord::is() function
 - Enh #4310: Add "Can Like" Permission 
+- Fix #4111: Issues Cropping Images
