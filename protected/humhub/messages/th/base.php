@@ -59,6 +59,7 @@ return [
     'Copy to clipboard' => '',
     'Could not find content of addon!' => '',
     'Could not find requested page.' => '',
+    'Database connection time: {dbTime} - Configured time zone: {time}' => '',
     'Delete' => '',
     'Do you really want to perform this action?' => '',
     'Edit' => '',

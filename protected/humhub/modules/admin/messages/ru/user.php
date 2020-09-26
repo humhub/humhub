@@ -94,4 +94,54 @@ return [
     'You can only delete empty categories!' => 'Вы можете удалять только пустые категории!',
     'You cannot delete yourself!' => 'Вы не можете удалить себя!',
     'never' => 'никогда',
+    'Active users' => '',
+    'Add Groups...' => '',
+    'All the personal data of this user will be irrevocably deleted.' => '',
+    'Are you really sure that you want to disable this user?' => '',
+    'Are you really sure that you want to enable this user?' => '',
+    'Are you really sure that you want to impersonate this user?' => '',
+    'Are you sure that you want to delete following user?' => '',
+    'Confirm user deletion' => '',
+    'Default content of the registration approval email' => '',
+    'Default content of the registration denial email' => '',
+    'Delete all contributions of this user' => '',
+    'Delete invitation' => '',
+    'Delete invitation?' => '',
+    'Delete spaces which are owned by this user' => '',
+    'Deleted invitation' => '',
+    'Deleted users' => '',
+    'Disabled users' => '',
+    'Do not change placeholders like {displayName} if you want them to be automatically filled by the system. To reset the email content fields with the system default, leave them empty.' => '',
+    'Edit category' => '',
+    'Hello {displayName},<br><br>
+Your account has been activated.<br><br>
+Click here to login:<br>
+{loginLink}<br><br>
+
+Kind Regards<br>
+{AdminName}<br><br>' => '',
+    'Hello {displayName},<br><br>
+Your account request has been declined.<br><br>
+
+Kind Regards<br>
+{AdminName} <br><br> ' => '',
+    'If this option is not selected, the ownership of the spaces will be transferred to your account.' => '',
+    'Impersonate' => '',
+    'Include captcha in registration form' => '',
+    'Invite not found!' => '',
+    'List pending registrations' => '',
+    'Member since' => '',
+    'Permanently delete' => '',
+    'Resend invitation email' => '',
+    'Search by name, email or id.' => '',
+    'Select Groups' => '',
+    'Send invitation email' => '',
+    'Send invitation email again?' => '',
+    'The following list contains all pending sign-ups and invites.' => '',
+    'The user is the owner of these spaces:' => '',
+    'This user owns no spaces.' => '',
+    'User deletion process queued.' => '',
+    'User is already a member of this group.' => '',
+    'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => '',
+    'View profile' => '',
 ];
