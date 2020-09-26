@@ -2,6 +2,7 @@
 namespace humhub\modules\ui\icon\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\ui\Module;
 use Yii;
 use humhub\libs\Html;
 use humhub\modules\ui\icon\components\IconProvider;
@@ -702,7 +703,6 @@ class Icon extends Widget
      */
     public $lib;
 
-
     /**
      * Can be used to get an Icon instance from an unknown format.
      *
@@ -731,10 +731,14 @@ class Icon extends Widget
     {
         if($icon instanceof static) {
             return Yii::configure($icon, $options);
-        } else if(is_string($icon)) {
+        }
+
+        if(is_string($icon)) {
             $options['name'] = $icon;
             return new Icon($options);
-        } else if(is_array($icon)) {
+        }
+
+        if(is_array($icon)) {
             return new Icon($icon);
         }
 
@@ -816,6 +820,8 @@ class Icon extends Widget
         if($this->getId(false)) {
             $this->htmlOptions['id'] = $this->id;
         }
+
+        $this->name = Module::getModuleInstance()->getIconAlias($this->name);
 
         return IconFactory::getInstance()->render($this);
     }

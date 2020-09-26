@@ -2,6 +2,7 @@
 
 use humhub\libs\Html;
 use humhub\modules\content\widgets\UpdatedIcon;
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\TimeAgo;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\user\widgets\Image as UserImage;
@@ -38,7 +39,7 @@ $module = Yii::$app->getModule('comment');
             <li class="dropdown ">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"
                    aria-label="<?= Yii::t('base', 'Toggle comment menu'); ?>" aria-haspopup="true">
-                    <i class="fa fa-angle-down"></i>
+                    <?= Icon::get('dropdownToggle') ?>
                 </a>
 
                 <ul class="dropdown-menu pull-right">
