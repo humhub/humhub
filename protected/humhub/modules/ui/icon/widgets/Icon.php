@@ -676,6 +676,12 @@ class Icon extends Widget
     public $ariaHidden = false;
 
     /**
+     * @var string aria-label
+     * @var since 1.7
+     */
+    public $ariaLabel;
+
+    /**
      * @var array
      */
     public $htmlOptions = [];
@@ -684,6 +690,12 @@ class Icon extends Widget
      * @var string css color
      */
     public $color;
+
+    /**
+     * @var string a tooltip text
+     * @since 1.7
+     */
+    public $tooltip;
 
     /**
      * @var string explicitly define a icon library, if not defined the default icon provider is used
@@ -819,6 +831,34 @@ class Icon extends Widget
     }
 
     /**
+     * @param $size string
+     * @since 1.7
+     * @return $this
+     */
+    public function ariaLabel($ariaLabel)
+    {
+        $this->ariaLabel = $ariaLabel;
+        return $this;
+    }
+
+    /**
+     * @param string tooltip text
+     * @param string $ariaLabel additional aria-label information (tooltip text is used as fallback)
+     * @return $this
+     * @since 1.7
+     */
+    public function tooltip($tooltip, $ariaLabel = null)
+    {
+        $this->tooltip = $tooltip;
+        if($ariaLabel) {
+            $this->ariaLabel = $ariaLabel;
+        } elseif (!$this->ariaLabel) {
+            $this->ariaLabel = $tooltip;
+        }
+        return $this;
+    }
+
+    /**
      * @param bool $active
      * @return $this
      */
@@ -868,6 +908,7 @@ class Icon extends Widget
 
     /**
      * @param bool $active
+     * @deprecated since 1.7 this is automatically set since 1.7
      */
     public function ariaHidden($active = true)
     {
@@ -926,7 +967,8 @@ class Icon extends Widget
             'listItem' => $this->listItem,
             'right' => $this->right,
             'left' => $this->left,
-            'ariaHidden' => $this->ariaHidden,
+            'tooltip' => $this->tooltip,
+            'ariaLabel' => $this->ariaLabel,
             'border' => $this->border,
             'htmlOptions' => $this->htmlOptions,
             'color' => $this->color,

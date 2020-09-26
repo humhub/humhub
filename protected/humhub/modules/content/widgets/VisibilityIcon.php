@@ -22,9 +22,9 @@ class VisibilityIcon extends Icon
     const ICON_GROUP = 'users';
     const ICON_PRIVATE = 'lock';
 
-    public static function getByModel(ContentActiveRecord $model, $options = [])
+    public static function getByModel(ContentActiveRecord $model)
     {
-        return static::get(static::getVisibilityIcon($model), static::getVisibilityIconOptions($model, $options));
+        return static::get(static::getVisibilityIcon($model))->tooltip(static::getVisibilityTitle($model));
     }
 
     private static function getVisibilityIcon(ContentActiveRecord $model)
@@ -34,18 +34,6 @@ class VisibilityIcon extends Icon
         }
 
         return $model->content->isPublic() ? static::ICON_PUBLIC : static::ICON_GROUP;
-    }
-
-    private static function getVisibilityIconOptions(ContentActiveRecord $model, $options = [])
-    {
-        if(!isset($options['htmlOptions'])) {
-            $options['htmlOptions'] = [];
-        }
-
-        Html::addCssClass($options['htmlOptions'], 'tt');
-        $options['htmlOptions']['title'] = static::getVisibilityTitle($model);
-
-        return $options;
     }
 
     private static function getVisibilityTitle(ContentActiveRecord $model)
@@ -59,7 +47,7 @@ class VisibilityIcon extends Icon
 
 
         if(!$container) { // private global
-            return Yii::t('ContentModule.base', 'Can be seen by all members of this network.');
+            return Yii::t('ContentModule.base', 'Can be seen by everyone.');
         }
 
         if($model->content->container instanceof Space) {
@@ -68,11 +56,26 @@ class VisibilityIcon extends Icon
         }
 
         if($model->content->container instanceof User) {
-            $isFriendShipActive = Yii::$app->getModule('friendship')->settings->get('enable');
+            $iamAuthor =  $model->content->createdBy->is(Yii::$app->user->getIdentity());
+            $isMyProfile =  $model->content->container->is(Yii::$app->user->getIdentity());
 
-            return $isFriendShipActive
-                ? Yii::t('ContentModule.base', 'Can be seen by you and your friends')
-                : Yii::t('ContentModule.base', 'Can only be seen by you');
+            if(Yii::$app->getModule('friendship')->settings->get('enable')) {
+                return $isMyProfile
+                    ?  Yii::t('ContentModule.base', 'Can only be seen by you and your friends')
+                    : Yii::t('ContentModule.base', 'Can only be seen by you and friends of {displayName}',
+                        ['displayName' => Html::encode($model->content->container->getDisplayName())]);
+            }
+
+            // Private no friendships
+            if($isMyProfile) {
+                return $iamAuthor
+                    ?  Yii::t('ContentModule.base', 'Can only be seen by you') // My own private profile post
+                    :  Yii::t('ContentModule.base', 'Can be seen by you and {displayName}',
+                        ['displayName' => Html::encode($model->content->createdBy->getDisplayName())]); // Someone posted private content on my profile
+            }
+
+            // My private content on another users profile
+            return Yii::t('ContentModule.base', 'Can be seen by you and {displayName}', ['displayName' => Html::encode($model->content->container->getDisplayName())]);
         }
 
         return '';

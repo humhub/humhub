@@ -4,14 +4,15 @@ use humhub\libs\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\ArchivedIcon;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
-use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\content\widgets\UpdatedIcon;
+use humhub\modules\content\widgets\VisibilityIcon;
+use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\TimeAgo;
-use humhub\modules\content\widgets\VisibilityIcon;
 
 /* @var $this View */
 /* @var $model ContentActiveRecord */
@@ -48,12 +49,12 @@ $container = $model->content->container;
     <div class="media-heading">
         <?= $title ?>
 
-        <?php if ($renderOptions->isShowContainerInformation($model)): ?>
+        <?php /* if ($renderOptions->isShowContainerInformation($model)): ?>
             <span class="viaLink">
                 <?= Icon::get('caret-right') ?>
                 <?= Html::containerLink($model->content->container) ?>
             </span>
-        <?php endif; ?>
+        <?php endif; */ ?>
     </div>
 
     <div class="media-subheading">
@@ -69,20 +70,30 @@ $container = $model->content->container;
         <?php endif; ?>
 
         <?php if ($renderOptions->isShowAuthorLinkInSubHeadLine($model)) : ?>
-            <?= Html::containerLink($model->content->createdBy, ['class' => 'wall-entry-container-link']) ?> |
+            <?= Yii::t('ContentModule.base', 'by {author}', ['author' => Html::containerLink($model->content->createdBy, ['class' => 'wall-entry-container-link'])]) ?>
         <?php endif ?>
+
+        <?php if ($renderOptions->isShowContainerInformation($model)) : ?>
+            <?php if ($model->content->container instanceof Space) : ?>
+                <?= Yii::t('ContentModule.base', 'in {space}', ['space' => Html::containerLink($model->content->container, ['class' => 'wall-entry-container-link'])]) ?>
+            <?php elseif ($model->content->container instanceof User): ?>
+                <?= Yii::t('ContentModule.base', 'on {profile}', ['profile' => Html::containerLink($model->content->container, ['class' => 'wall-entry-container-link'])]) ?>
+            <?php endif; ?>
+        <?php endif; ?>
 
         <a href="<?= $permaLink ?>">
             <?= TimeAgo::widget(['timestamp' => $model->content->created_at]) ?>
         </a> &middot;
 
-        <?php if ($model->content->isUpdated()) : ?>
-            <?= UpdatedIcon::getByDated($model->content->updated_at) ?>
-        <?php endif; ?>
+        <div class="wall-entry-icons">
+            <?php if ($model->content->isUpdated()) : ?>
+                <?= UpdatedIcon::getByDated($model->content->updated_at) ?>
+            <?php endif; ?>
 
-        <?= VisibilityIcon::getByModel($model) ?>
+            <?= VisibilityIcon::getByModel($model) ?>
 
-        <?= ArchivedIcon::getByModel($model) ?>
+            <?= ArchivedIcon::getByModel($model) ?>
+        </div>
     </div>
 </div>
 

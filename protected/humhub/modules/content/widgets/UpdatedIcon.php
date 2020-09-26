@@ -13,10 +13,8 @@ class UpdatedIcon extends Icon
 
     public static function getByDated($updateDate)
     {
-        return static::get(static::ICON_NAME,  ['htmlOptions' => [
-            'class' => 'tt',
-            'title' => Yii::t('ContentModule.base', 'Last updated {time}', ['time' => Yii::$app->formatter->asDateTime($updateDate)])
-        ]]);
+        return static::get(static::ICON_NAME)
+            ->tooltip(Yii::t('ContentModule.base', 'Last updated {time}', ['time' => Yii::$app->formatter->asDateTime($updateDate)]));
     }
 
 }

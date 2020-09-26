@@ -18,10 +18,8 @@ class ArchivedIcon extends Icon
             return '';
         }
 
-        return static::get(static::ICON_NAME,  ['htmlOptions' => [
-            'class' => 'tt archived',
-            'title' => Yii::t('ContentModule.base', 'Archived')
-        ]]);
+        return static::get(static::ICON_NAME)
+            ->tooltip(Yii::t('ContentModule.base', 'Archived'), Yii::t('ContentModule.aria', 'This content is archived'));
     }
 
 }
