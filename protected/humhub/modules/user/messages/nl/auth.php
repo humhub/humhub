@@ -42,6 +42,7 @@ return array (
   'Reset password' => 'Reset wachtwoord',
   'Sign in' => 'Aanmelden',
   'To log in with your new account, click the button below.' => 'Om aan te melden met uw nieuwe account, klikt u op onderstaande knop.',
+  'User or Password incorrect.' => 'Gebruiker of wachtwoord is onjuist.',
   'We’ve sent you an email containing a link that will allow you to reset your password.' => 'We hebben u een e-mail gestuurd met een link waarmee u uw wachtwoord opnieuw kan instellen.',
   'Your email' => 'uw e-mailadres',
   'Your password' => 'Uw wachtwoord',

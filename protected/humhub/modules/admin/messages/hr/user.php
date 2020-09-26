@@ -131,5 +131,17 @@ return [
     'never' => 'nikada',
     'Delete invitation' => '',
     'Edit category' => '',
+    'Hello {displayName},<br><br>
+Your account has been activated.<br><br>
+Click here to login:<br>
+{loginLink}<br><br>
+
+Kind Regards<br>
+{AdminName}<br><br>' => '',
+    'Hello {displayName},<br><br>
+Your account request has been declined.<br><br>
+
+Kind Regards<br>
+{AdminName} <br><br> ' => '',
     'Send invitation email' => '',
 ];
