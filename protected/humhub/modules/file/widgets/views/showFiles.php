@@ -33,7 +33,14 @@ foreach($files as $file) {
     <!-- Show Images as Thumbnails -->
 
     <?php if($showPreview) :?>
-        <div class="post-files clearfix" id="post-files-<?= $object->getUniqueId(); ?>">
+        <div class="post-files clearfix" id="post-files-<?= $object->getUniqueId() ?>">
+
+            <?php if(!empty($audios)) : ?>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <?= JPlayerPlaylistWidget::widget(['playlist' => $audios]) ?>
+                </div>
+            <?php endif; ?>
+
             <?php foreach ($videos as $video): ?>
                 <?php if (FileHelper::getExtension($video->file_name) === 'webm'): ?>
                     <div class="col-xs-12 col-sm-12 col-md-12">
@@ -70,16 +77,6 @@ foreach($files as $file) {
                     </a>
                 </div>
             <?php endforeach; ?>
-
-            <?php $playlist = [] ?>
-
-            <?php foreach ($files as $file): ?>
-                <?php if (FileHelper::getExtension($file->file_name) === 'mp3') : ?>
-                    <?php $playlist[] = $file ?>
-                <?php endif; ?>
-            <?php endforeach; ?>
-
-            <?= JPlayerPlaylistWidget::widget(['playlist' => $playlist]) ?>
 
         </div>
     <?php endif; ?>
