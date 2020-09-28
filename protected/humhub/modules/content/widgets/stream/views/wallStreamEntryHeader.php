@@ -70,20 +70,25 @@ $container = $model->content->container;
         <?php endif; ?>
 
         <?php if ($renderOptions->isShowAuthorLinkInSubHeadLine($model)) : ?>
-            <?= Yii::t('ContentModule.base', 'by {author}', ['author' => Html::containerLink($model->content->createdBy, ['class' => 'wall-entry-container-link'])]) ?>
+            <?= Html::containerLink($model->content->createdBy, ['class' => 'wall-entry-container-link']) ?>
         <?php endif ?>
 
         <?php if ($renderOptions->isShowContainerInformation($model)) : ?>
-            <?php if ($model->content->container instanceof Space) : ?>
-                <?= Yii::t('ContentModule.base', 'in {space}', ['space' => Html::containerLink($model->content->container, ['class' => 'wall-entry-container-link'])]) ?>
-            <?php elseif ($model->content->container instanceof User): ?>
-                <?= Yii::t('ContentModule.base', 'on {profile}', ['profile' => Html::containerLink($model->content->container, ['class' => 'wall-entry-container-link'])]) ?>
-            <?php endif; ?>
+            <?php if ($renderOptions->isShowAuthorLinkInSubHeadLine($model)) : ?>
+                <?= Icon::get('caret-right') ?>
+                <?= Html::containerLink($model->content->container, ['class' => 'wall-entry-container-link']) ?>
+            <?php else : ?>
+                <?= Html::containerLink($model->content->container, ['class' => 'wall-entry-container-link']) ?>
+            <?php endif ?>
+        <?php endif; ?>
+
+        <?php if ($renderOptions->isShowAuthorLinkInSubHeadLine($model) ||$renderOptions->isShowContainerInformation($model)) : ?>
+            &middot;
         <?php endif; ?>
 
         <a href="<?= $permaLink ?>">
             <?= TimeAgo::widget(['timestamp' => $model->content->created_at]) ?>
-        </a> &middot;
+        </a>
 
         <div class="wall-entry-icons">
             <?php if ($model->content->isUpdated()) : ?>
