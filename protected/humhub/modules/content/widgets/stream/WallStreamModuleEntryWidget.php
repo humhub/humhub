@@ -38,7 +38,7 @@ abstract class WallStreamModuleEntryWidget extends WallStreamEntryWidget
      */
     protected function renderHeadImage()
     {
-        return $this->renderIconImage();
+        return Html::a( $this->renderIconImage(), $this->getPermaLink());
     }
 
     /**
