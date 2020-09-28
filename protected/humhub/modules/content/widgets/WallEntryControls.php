@@ -3,6 +3,7 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\ui\menu\MenuEntry;
@@ -45,6 +46,15 @@ class WallEntryControls extends Menu
             $this->renderOptions = $this->wallEntryWidget->renderOptions;
         }
         parent::init();
+    }
+
+    public function getViewContext()
+    {
+        if(!$this->renderOptions) {
+            return StreamEntryOptions::VIEW_CONTEXT_DEFAULT;
+        }
+
+        return $this->renderOptions->getViewContext();
     }
 
     /**
