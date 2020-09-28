@@ -57,7 +57,6 @@ humhub.module('stream.Stream', function (module, require, $) {
     var StreamLoader = function (stream) {
         this.stream = stream;
     };
-
     StreamLoader.prototype.show = function (show) {
         if (show !== false && !this.stream.$content.find('.loader').length) {
             loader.remove(this.stream.$content);
@@ -482,12 +481,13 @@ humhub.module('stream.Stream', function (module, require, $) {
             // apply additions to elements and fade them in.
             additions.applyTo($elements);
 
-            $elements.imagesLoaded(function () {
+            setTimeout(function() {
                 $.when($elements.hide().css('opacity', 1).fadeIn('fast')).then(function () {
                     that.onChange();
                     resolve();
                 });
             });
+
         });
 
     };
