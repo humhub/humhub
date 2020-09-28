@@ -79,7 +79,7 @@ class WallStreamEntryOptions extends StreamEntryOptions
 
     public function isShowAuthorLinkInSubHeadLine(ContentActiveRecord $model)
     {
-        return $this->enableSubHeadlineAuthor && !$model->content->container->is($model->content->createdBy);
+        return $this->enableSubHeadlineAuthor;
     }
 
     public function justEdited($val = true)
