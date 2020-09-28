@@ -165,6 +165,7 @@ class StreamEntryOptions extends Model
     /**
      * @param ContentActiveRecord $model
      * @return bool whether or not this entry should be displayed as pinned in the current context
+     * @throws \yii\base\Exception
      */
     public function isPinned(ContentActiveRecord $model)
     {
@@ -173,6 +174,7 @@ class StreamEntryOptions extends Model
         return $currentContainer
             && $this->isViewContext(static::VIEW_CONTEXT_DEFAULT)
             && $content->isPinned()
+            && !$content->isArchived()
             && $currentContainer->contentcontainer_id === $content->contentcontainer_id;
     }
 
