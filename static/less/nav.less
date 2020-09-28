@@ -132,12 +132,19 @@ ul.tab-menu-settings {
 
 .nav-pills.preferences {
   .dropdown .dropdown-toggle {
-    color: @text-color-soft;
+    i {
+          color: @info;
+          font-size:15px;
+          font-weight:600;
+    }
   }
   .dropdown.open {
     .dropdown-toggle,
     .dropdown-toggle:hover {
       background-color: @primary;
+        i {
+            color: @text-color-contrast;
+        }
     }
   }
 }
