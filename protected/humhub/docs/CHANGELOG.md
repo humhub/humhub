@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.6.5 (Unreleased)
+------------------
+- Fix #4396: Submitting only picture in comment results in debug error.
+
+
 1.6.4 (Unreleased)
 ------------------
 
