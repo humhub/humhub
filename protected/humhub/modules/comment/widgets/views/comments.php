@@ -22,7 +22,7 @@ use humhub\libs\Html;
         <?php if ($isLimited): ?>
             <a href="#" class="show show-all-link" data-ui-loader data-action-click="comment.showAll"
                data-action-url="<?= Url::to(['/comment/comment/show', 'objectModel' => $objectModel, 'objectId' => $objectId]) ?>">
-                <?= Yii::t('CommentModule.base', 'Show all {total} comments.', ['{total}' => $total]) ?>
+                <?= Yii::t('CommentModule.base', 'Show all {total} comments', ['{total}' => $total]) ?>
             </a>
             <hr class="comments-start-separator">
         <?php endif; ?>

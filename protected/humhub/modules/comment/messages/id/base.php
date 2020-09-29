@@ -31,7 +31,7 @@ return [
     'Insufficent permissions!' => 'Izin tidak memadai!',
     'Read full comment...' => 'Baca full komentar..',
     'Send' => 'Kirim',
-    'Show all {total} comments.' => 'Lihat semua {total} komentar.',
+    'Show all {total} comments' => 'Lihat semua {total} komentar',
     'Show {count} more comments' => 'Lihat {count} komentar lainnya',
     'The comment must not be empty!' => 'Komentar tidak boleh kosong',
     'Whenever a new comment was written.' => 'Kapanpun sebuah komentar baru telah ditulis',

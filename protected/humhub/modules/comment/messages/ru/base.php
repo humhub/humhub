@@ -31,7 +31,7 @@ return [
     'Insufficent permissions!' => 'Недостаточно прав!',
     'Read full comment...' => 'Прочитать полный комментарий...',
     'Send' => 'Отправить',
-    'Show all {total} comments.' => 'Показать все {total} комментарии',
+    'Show all {total} comments' => 'Показать все {total} комментарии',
     'Show {count} more comments' => 'Показать {count} комментариев',
     'The comment must not be empty!' => 'Комментарий не должен быть пустым!',
     'Whenever a new comment was written.' => 'Всякий раз, когда был написан новый комментарий.',
