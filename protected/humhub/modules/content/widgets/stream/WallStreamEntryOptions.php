@@ -38,6 +38,7 @@ use yii\base\Model;
  *
  * ```
  * @package humhub\modules\content\widgets\stream
+ * @since 1.7
  */
 class WallStreamEntryOptions extends StreamEntryOptions
 {
@@ -46,118 +47,231 @@ class WallStreamEntryOptions extends StreamEntryOptions
      */
     const VIEW_CONTEXT_SEARCH = 'search';
 
+    /**
+     * @var array contains option settings for wall entry addons widgets, e.g. used to disable widgets
+     */
     private $addonOptions = [];
-    private $contextMenuOptions = [];
 
+    /**
+     * @var array contains options settings for the wall entry controls menu, e.g. used to disable certain menu items
+     */
+    private $controlsMenuOptions = [];
+
+    /**
+     * @var bool If true, all wall entry addons are disabled
+     */
     public $disableAddons = false;
 
+    /**
+     * @var bool Flag indicating whether or not this content was just edited
+     */
     public $justEdited = false;
 
-    public $disableContextMenu = false;
+    /**
+     * @var bool if true, the whole wall entry controls will not be rendered
+     */
+    public $disableControlsMenu = false;
 
+    /**
+     * @var bool whether or not the author name should be rendered in the sub headline, other conditions nee
+     */
     public $enableSubHeadlineAuthor = false;
 
-    public $disableTargetSpaceImage = true;
+    /**
+     * @var bool whether or not the container information should be rendered in the main title
+     */
+    public $enableContainerInformationInTitle = false;
 
-    public function enableSubHeadlineAuthor()
+    /**
+     * Defines if the sub headline author information should be enabled
+     * @param bool $val
+     * @return $this
+     */
+    public function enableSubHeadlineAuthor($val = true)
     {
-        $this->enableSubHeadlineAuthor = true;
-    }
-
-    public function disableTargetSpaceImage()
-    {
-        $this->disableTargetSpaceImage = true;
+        $this->enableSubHeadlineAuthor = $val;
         return $this;
     }
 
-    public function isShowTargetSpaceImage(ContentActiveRecord $model)
-    {
-        return !$this->disableTargetSpaceImage
-            && $model->content->container instanceof Space
-            && $this->isShowContainerInformation($model);
-    }
-
-    public function isShowAuthorLinkInSubHeadLine(ContentActiveRecord $model)
+    /**
+     * Checks if the author information should be rendered in the sub headline for the given $model
+     * @param ContentActiveRecord $model
+     * @return bool
+     */
+    public function isShowAuthorInformationInSubHeadLine(ContentActiveRecord $model)
     {
         return $this->enableSubHeadlineAuthor;
     }
 
+    /**
+     * Defines if the content was just edited or not.
+     * @param bool $val
+     * @return $this
+     */
     public function justEdited($val = true)
     {
         $this->justEdited = $val;
+        return $this;
     }
 
+    /**
+     * @return bool checks if the content was just edited or not.
+     */
     public function isJustEdited()
     {
         return $this->justEdited;
     }
 
-    public function disableContextMenu()
+    /**
+     * Defines if the controls menu should be disabled or not.
+     * @return $this
+     */
+    public function disableControlsMenu($val = true)
     {
-        $this->disableContextMenu = true;
+        $this->disableControlsMenu = $val;
         return $this;
     }
 
-    public function isContextMenuDisabled()
+    /**
+     * @return bool checks if the controls menu was disabled.
+     */
+    public function isControlsMenuDisabled()
     {
-        return $this->disableContextMenu;
+        return $this->disableControlsMenu;
     }
 
-    public function disableContextEdit()
+    /**
+     * Disables the controls menu edit entry
+     * @return WallStreamEntryOptions
+     */
+    public function disableControlsEntryEdit()
     {
-        return $this->disableContextMenuEntry(EditLink::class);
+        return $this->disableControlsEntry(EditLink::class);
     }
 
-    public function disableContextTopics()
+    /**
+     * Disables the controls menu topic entry
+     * @return WallStreamEntryOptions
+     */
+    public function disableControlsEntryTopics()
     {
-        return $this->disableContextMenuEntry(ContentTopicButton::class);
+        return $this->disableControlsEntry(ContentTopicButton::class);
     }
 
-    public function disableContextPermalink()
+    /**
+     * Disables the controls menu permalink entry
+     * @return WallStreamEntryOptions
+     */
+    public function disableControlsEntryPermalink()
     {
-        return $this->disableContextMenuEntry(PermaLink::class);
+        return $this->disableControlsEntry(PermaLink::class);
     }
 
-    public function disableContextDelete()
+    /**
+     * Disables the controls menu delete entry
+     * @return WallStreamEntryOptions
+     */
+    public function disableControlsEntryDelete()
     {
-        return $this->disableContextMenuEntry(DeleteLink::class);
+        return $this->disableControlsEntry(DeleteLink::class);
     }
 
-    public function disableContextSwitchVisibility()
+    /**
+     * Disables the controls menu visibility switch
+     * @return WallStreamEntryOptions
+     */
+    public function disableControlsEntrySwitchVisibility()
     {
-        return $this->disableContextMenuEntry(VisibilityLink::class);
+        return $this->disableControlsEntry(VisibilityLink::class);
     }
 
-    public function disableContextSwitchNotification()
+    /**
+     * Disables the controls menu notification switch
+     * @return WallStreamEntryOptions
+     */
+    public function disableControlsEntrySwitchNotification()
     {
-        return $this->disableContextMenuEntry(NotificationSwitchLink::class);
+        return $this->disableControlsEntry(NotificationSwitchLink::class);
     }
 
-    public function disableContextPin()
+    /**
+     * Disables the controls menu pin entry
+     * @return WallStreamEntryOptions
+     */
+    public function disableControlsEntryPin()
     {
-        return $this->disableContextMenuEntry(PinLink::class);
+        return $this->disableControlsEntry(PinLink::class);
     }
 
-    public function disableContextMove()
+    /**
+     * Disables the controls menu move entry
+     * @return WallStreamEntryOptions
+     */
+    public function disableControlsEntryMove()
     {
-        return $this->disableContextMenuEntry(MoveContentLink::class);
+        return $this->disableControlsEntry(MoveContentLink::class);
     }
 
-    public function disableContextArchive()
+    /**
+     * Disables the controls menu archive entry
+     * @return WallStreamEntryOptions
+     */
+    public function disableControlsEntryArchive()
     {
-        return $this->disableContextMenuEntry(ArchiveLink::class);
+        return $this->disableControlsEntry(ArchiveLink::class);
     }
 
+    /**
+     * Disables a given menu entry either by widget class or id.
+     * @param $menuEntryIdentity
+     * @return $this
+     */
+    public function disableControlsEntry($menuEntryIdentity)
+    {
+        $this->controlsMenuOptions[$menuEntryIdentity] = false;
+        return $this;
+    }
+
+    /**
+     * Checks if a given menu entry was disabled
+     * @param MenuEntry $entry
+     * @return bool
+     */
     public function isContextMenuEntryDisabled(MenuEntry $entry)
     {
-        return (isset($this->contextMenuOptions[$entry->getId()]) && $this->contextMenuOptions[$entry->getId()] === false)
-            || (isset($this->contextMenuOptions[$entry->getEntryClass()]) && $this->contextMenuOptions[$entry->getEntryClass()] === false);
+        return (isset($this->controlsMenuOptions[$entry->getId()]) && $this->controlsMenuOptions[$entry->getId()] === false)
+            || (isset($this->controlsMenuOptions[$entry->getEntryClass()]) && $this->controlsMenuOptions[$entry->getEntryClass()] === false);
     }
 
-    public function disableContextMenuEntry($menuEntryIdentity)
+    /**
+     * Defines if the container information in the main title should be rendered
+     * @param bool $val
+     * @return $this
+     */
+    public function enableContainerInformationInTitle($val = true)
     {
-        $this->contextMenuOptions[$menuEntryIdentity] = false;
+        $this->enableContainerInformationInTitle = $val;
         return $this;
+    }
+
+    /**
+     * Checks if the container information in the main title was enabled
+     * @param ContentActiveRecord $model
+     * @return bool
+     */
+    public function isShowContainerInformationInTitle(ContentActiveRecord $model)
+    {
+        return $this->enableContainerInformationInTitle && $this->isShowContainerInformation($model);
+    }
+
+    /**
+     * Checks if the container information in sub title should be rendered
+     * @param ContentActiveRecord $model
+     * @return bool
+     */
+    public function isShowContainerInformationInSubTitle(ContentActiveRecord $model)
+    {
+        return $this->isShowContainerInformation($model) && !$this->isShowContainerInformationInTitle($model);
     }
 
     /**
@@ -233,5 +347,4 @@ class WallStreamEntryOptions extends StreamEntryOptions
     {
         return $this->disableAddonWidget(WallEntryLinks::class);
     }
-
 }

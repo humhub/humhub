@@ -17,10 +17,14 @@ abstract class WallStreamModuleEntryWidget extends WallStreamEntryWidget
 {
     const DEFAULT_ICON = 'comment';
 
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         parent::init();
         $this->renderOptions->disableTargetSpaceImage()->enableSubHeadlineAuthor();
+        $this->renderOptions->enableContainerInformationInTitle(false);
     }
 
     /**

@@ -16,6 +16,7 @@ use humhub\modules\content\widgets\VisibilityLink;
 use humhub\modules\dashboard\controllers\DashboardController;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\menu\DropdownDivider;
+use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image as UserImage;
 use Yii;
 use yii\helpers\Url;
@@ -155,13 +156,18 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
         if ($this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH)) {
             // Disable all except permalink
             $this->renderOptions
-                ->disableContextDelete()
-                ->disableContextEdit()
-                ->disableContextTopics()
-                ->disableContextSwitchVisibility()
-                ->disableContextSwitchNotification()
-                ->disableContextMove()
-                ->disableContextMenuEntry(DropdownDivider::class);
+                ->disableControlsEntryDelete()
+                ->disableControlsEntryEdit()
+                ->disableControlsEntryPin()
+                ->disableControlsEntryTopics()
+                ->disableControlsEntrySwitchVisibility()
+                ->disableControlsEntrySwitchNotification()
+                ->disableControlsEntryMove()
+                ->disableControlsEntry(DropdownDivider::class);
+        }
+
+        if($this->model->content->container instanceof User && !$this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_DEFAULT)) {
+            $this->renderOptions->enableContainerInformationInTitle();
         }
     }
 
@@ -253,7 +259,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
      * Add additional entries:
      *
      * ```php
-     * $result = parent::getContextMenu();
+     * $result = parent::getControlsMenuEntries();
      *
      * // Add menu entry by instance (recommended)
      * $result[] = new MySpecialMenuEntry(['model' => $this->model, 'sortOrder'  => 210]);
@@ -277,7 +283,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
      * @return array
      * @since 1.2
      */
-    public function getContextMenu()
+    public function getControlsMenuEntries()
     {
         $result = [
             [PermaLink::class, ['content' => $this->model], ['sortOrder' => 200]],
