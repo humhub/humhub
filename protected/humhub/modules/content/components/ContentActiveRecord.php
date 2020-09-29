@@ -335,6 +335,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      *
      * @return null|WallEntry|WallStreamEntryWidget for this class by wallEntryClass property , null will be
      * returned if this wallEntryClass is empty
+     * @deprecated since 1.7
      */
     public function getWallEntryWidget()
     {

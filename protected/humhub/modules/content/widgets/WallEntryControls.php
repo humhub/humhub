@@ -62,7 +62,11 @@ class WallEntryControls extends Menu
      */
     public function run()
     {
-        foreach ($this->wallEntryWidget->getContextMenu() as $menuItem) {
+        $entries = $this->wallEntryWidget instanceof WallEntry
+            ? $this->wallEntryWidget->getContextMenu()
+            : $this->wallEntryWidget->getControlsMenuEntries();
+
+        foreach ($entries as $menuItem) {
             if (empty($menuItem)) {
                 continue;
             }

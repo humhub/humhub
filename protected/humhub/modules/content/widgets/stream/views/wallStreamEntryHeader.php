@@ -25,7 +25,9 @@ $container = $model->content->container;
 ?>
 
 <div class="stream-entry-icon-list">
-    <?php if ($renderOptions->isPinned($model)) : ?>
+    <?php if ($model->content->isArchived()) : ?>
+        <?= ArchivedIcon::getByModel($model) ?>
+    <?php elseif ($renderOptions->isPinned($model)) : ?>
         <?= Icon::get('map-pin', ['htmlOptions' => ['class' => 'icon-pin tt', 'title' => Yii::t('ContentModule.base', 'Pinned')]]) ?>
     <?php endif; ?>
 </div>
@@ -34,7 +36,7 @@ $container = $model->content->container;
 <div class="stream-entry-loader"></div>
 
 <!-- start: show wall entry options -->
-<?php if (!$renderOptions->isContextMenuDisabled()) : ?>
+<?php if (!$renderOptions->isControlsMenuDisabled()) : ?>
     <?= WallEntryControls::widget(['renderOptions' => $renderOptions, 'object' => $model, 'wallEntryWidget' => $this->context]) ?>
 <?php endif; ?>
 <!-- end: show wall entry options -->
@@ -49,40 +51,29 @@ $container = $model->content->container;
     <div class="media-heading">
         <?= $title ?>
 
-        <?php /* if ($renderOptions->isShowContainerInformation($model)): ?>
+        <?php if ($renderOptions->isShowContainerInformationInTitle($model)) : ?>
             <span class="viaLink">
                 <?= Icon::get('caret-right') ?>
                 <?= Html::containerLink($model->content->container) ?>
             </span>
-        <?php endif; */ ?>
+        <?php endif; ?>
     </div>
 
     <div class="media-subheading">
-
-        <?php if ($renderOptions->isShowTargetSpaceImage($model)) : ?>
-            <?= SpaceImage::widget([
-                'space' => $container,
-                'width' => 20,
-                'htmlOptions' => ['class' => 'img-space'],
-                'link' => 'true',
-                'linkOptions' => ['class' => 'pull-left'],
-            ]) ?>
-        <?php endif; ?>
-
-        <?php if ($renderOptions->isShowAuthorLinkInSubHeadLine($model)) : ?>
+        <?php if ($renderOptions->isShowAuthorInformationInSubHeadLine($model)) : ?>
             <?= Html::containerLink($model->content->createdBy, ['class' => 'wall-entry-container-link']) ?>
         <?php endif ?>
 
-        <?php if ($renderOptions->isShowContainerInformation($model)) : ?>
-            <?php if ($renderOptions->isShowAuthorLinkInSubHeadLine($model)) : ?>
+        <?php if ($renderOptions->isShowContainerInformationInSubTitle($model)) : ?>
+            <?php if ($renderOptions->isShowAuthorInformationInSubHeadLine($model)) : ?>
                 <?= Icon::get('caret-right') ?>
                 <?= Html::containerLink($model->content->container, ['class' => 'wall-entry-container-link']) ?>
-            <?php else : ?>
+            <?php elseif($model->content->container instanceof Space) : ?>
                 <?= Html::containerLink($model->content->container, ['class' => 'wall-entry-container-link']) ?>
-            <?php endif ?>
+            <?php endif; ?>
         <?php endif; ?>
 
-        <?php if ($renderOptions->isShowAuthorLinkInSubHeadLine($model) ||$renderOptions->isShowContainerInformation($model)) : ?>
+        <?php if ($renderOptions->isShowAuthorInformationInSubHeadLine($model) || $renderOptions->isShowContainerInformationInSubTitle($model)) : ?>
             &middot;
         <?php endif; ?>
 
@@ -96,8 +87,6 @@ $container = $model->content->container;
             <?php endif; ?>
 
             <?= VisibilityIcon::getByModel($model) ?>
-
-            <?= ArchivedIcon::getByModel($model) ?>
         </div>
     </div>
 </div>

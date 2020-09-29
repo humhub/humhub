@@ -46,15 +46,6 @@ class ShowFiles extends \yii\base\Widget
             return;
         }
 
-        if ($this->object instanceof ContentActiveRecord) {
-            $widget = $this->object->getWallEntryWidget();
-
-            // File widget disabled in this wall entry
-            if ($widget instanceof WallEntry && $widget->showFiles === false) {
-                return;
-            }
-        }
-
         $hidePreviewFileInfo = ($this->preview) ? Yii::$app->getModule('file')->settings->get('hideImageFileInfo') : false;
 
         return $this->render('showFiles', [
