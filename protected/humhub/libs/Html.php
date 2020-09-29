@@ -185,6 +185,12 @@ class Html extends \yii\bootstrap\Html
         return false;
     }
 
+    public static function addTooltip(&$options, $tooltip)
+    {
+        static::addCssClass($options, 'tt');
+        $options['title'] = $tooltip;
+    }
+
     /**
      * Starts a Bootstrap container tag.
      *
