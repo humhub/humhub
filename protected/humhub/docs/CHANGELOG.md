@@ -1,10 +1,6 @@
 HumHub Changelog
 ================
 
-1.6.5 (Unreleased)
-------------------
-- Fix #4396: Submitting only picture in comment results in debug error.
-
 
 1.6.4 (Unreleased)
 ------------------
@@ -14,7 +10,7 @@ This release also brings a [security update](https://github.com/yiisoft/yii2/sec
 - Fix #4361: Added missing nonce attribute in inline marketplace script
 - Fix #4371: Word break issue in notification dropdown
 - Fix #4384: Upgrade to Yii 2.0.38
-
+- Fix #4396: Submitting only picture in comment results in debug error.
 
 1.6.3 (September 9, 2020)
 -----------------------

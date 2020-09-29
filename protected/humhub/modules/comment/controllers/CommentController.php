@@ -10,6 +10,7 @@ namespace humhub\modules\comment\controllers;
 
 use humhub\components\Controller;
 use humhub\libs\Helpers;
+use humhub\modules\comment\models\forms\CommentForm;
 use humhub\modules\comment\Module;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
@@ -21,7 +22,6 @@ use humhub\components\behaviors\AccessControl;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\widgets\Comment as CommentWidget;
 use humhub\modules\comment\widgets\ShowMore;
-use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 
 /**
@@ -130,22 +130,15 @@ class CommentController extends Controller
         }
 
         return Comment::getDb()->transaction(function ($db) {
-            $message = Yii::$app->request->post('message');
-            $files = Yii::$app->request->post('fileList');
 
-            if (empty(trim($message)) && empty($files)) {
-                throw new BadRequestHttpException(Yii::t('CommentModule.base', 'The comment must not be empty!'));
+            $form = new CommentForm($this->target);
+
+            if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+                $comment = $form->save();
+                return $this->renderAjaxContent(CommentWidget::widget(['comment' => $comment]));
+            } else {
+                return false;
             }
-
-            $comment = new Comment(['message' => $message]);
-            $comment->setPolyMorphicRelation($this->target);
-            $comment->save();
-            $comment->fileManager->attach($files);
-
-            // Reload comment to get populated created_at field
-            $comment->refresh();
-
-            return $this->renderAjaxContent(CommentWidget::widget(['comment' => $comment]));
         });
     }
 
@@ -154,14 +147,26 @@ class CommentController extends Controller
     {
         $comment = Comment::findOne(['id' => Yii::$app->request->get('id')]);
 
+        // Find all file attached to this comment
+        $files = $comment->fileManager->find()->asArray()->all();
+        $fileList = [];
+        $i = 0;
+
+        // Fill up files array
+        foreach ($files as $file) {
+            $fileList[$i] = $file['guid'];
+            $i++;
+        }
+
         if (!$comment->canEdit()) {
             throw new HttpException(403, Yii::t('CommentModule.base', 'Access denied!'));
         }
 
-        if ($comment->load(Yii::$app->request->post()) && $comment->save()) {
+        $form = new CommentForm($this->target, $fileList);
 
-            // Reload comment to get populated updated_at field
-            $comment = Comment::findOne(['id' => $comment->id]);
+        if ($form->load(Yii::$app->request->post(), '') && $form->validate()) {
+
+            $comment = $form->update($comment);
 
             return $this->renderAjaxContent(CommentWidget::widget([
                 'comment' => $comment,

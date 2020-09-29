@@ -57,9 +57,6 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     {
         return [
             [['message'], 'safe'],
-            [['message'], 'required', 'when' => function ($comment) {
-                return !$comment->fileManager->find()->exists();
-            }],
         ];
     }
 
