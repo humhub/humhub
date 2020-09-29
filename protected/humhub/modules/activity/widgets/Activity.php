@@ -30,8 +30,14 @@ class Activity extends StreamEntryWidget
      */
     public $model;
 
+    /**
+     * @inheritDoc
+     */
     public $rootElement = 'li';
 
+    /**
+     * @inheritDoc
+     */
     public $jsWidget = 'activity.ActivityStreamEntry';
 
     /**
@@ -55,6 +61,9 @@ class Activity extends StreamEntryWidget
         return $output;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getAttributes()
     {
         return [

@@ -40,6 +40,9 @@ class WallEntryControls extends Menu
      */
     public $renderOptions;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         if(!$this->renderOptions && $this->wallEntryWidget instanceof WallStreamEntryWidget) {
@@ -48,6 +51,9 @@ class WallEntryControls extends Menu
         parent::init();
     }
 
+    /**
+     * @return string the active view context of the stream entry
+     */
     public function getViewContext()
     {
         if(!$this->renderOptions) {
@@ -77,6 +83,9 @@ class WallEntryControls extends Menu
         return parent::run();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function addEntry(MenuEntry $entry)
     {
         if($this->renderOptions && $this->renderOptions->isContextMenuEntryDisabled($entry)) {
@@ -96,6 +105,13 @@ class WallEntryControls extends Menu
         ];
     }
 
+    /**
+     * Adds an entry by widget class and parameters and entry options
+     *
+     * @param string $className widget class
+     * @param array $params widget options
+     * @param array $options entry options
+     */
     public function addWidget($className, $params = [], $options = []) {
         $sortOrder = isset($options['sortOrder']) ? $options['sortOrder'] : PHP_INT_MAX;
         $cfg = array_merge($options, ['widgetClass' => $className, 'widgetOptions' => $params, 'sortOrder' => $sortOrder]);
@@ -121,7 +137,6 @@ class WallEntryControls extends Menu
             return $menuItem;
         }
 
-        $result = [];
         if (ArrayHelper::isAssociative($menuItem)) { // ['label' => 'xy', 'icon' => ...] -> WallEntryControlLink
             $widgetClass = WallEntryControlLink::class;
             $widgetOptions = ['options' => $menuItem];

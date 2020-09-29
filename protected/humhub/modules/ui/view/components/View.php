@@ -9,24 +9,15 @@
 namespace humhub\modules\ui\view\components;
 
 use humhub\assets\AppAsset;
-use humhub\assets\BlueimpGalleryStyleAsset;
 use humhub\assets\CoreBundleAsset;
-use humhub\assets\HighlightJsStyleAsset;
-use humhub\assets\NProgressStyleAsset;
-use humhub\assets\Select2Asset;
-use humhub\assets\Select2StyleAsset;
 use humhub\components\assets\AssetBundle;
 use humhub\libs\Html;
 use humhub\modules\web\pwa\widgets\LayoutHeader;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\CoreJsConfig;
 use humhub\widgets\LayoutAddons;
-use phpDocumentor\Reflection\DocBlock\Tags\Since;
-use yii\bootstrap\BootstrapAsset;
 use yii\helpers\ArrayHelper;
 use Yii;
-use yii\web\JqueryAsset;
-use yii\web\YiiAsset;
 
 /**
  * Class View
@@ -492,6 +483,11 @@ class View extends \yii\web\View
         return '';
     }
 
+    /**
+     * Sets the currently active viewContext.
+     * @param $vctx
+     * @since 1.7
+     */
     public function setViewContext($vctx)
     {
         static::$viewContext = $vctx;

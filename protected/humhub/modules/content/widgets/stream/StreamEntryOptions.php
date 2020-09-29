@@ -93,6 +93,9 @@ class StreamEntryOptions extends Model
         return $this;
     }
 
+    /**
+     * @return string|null the widget class used to overwrite the default stream entry widget class
+     */
     public function getStreamEntryWidgetClass()
     {
         return $this->widgetClass;

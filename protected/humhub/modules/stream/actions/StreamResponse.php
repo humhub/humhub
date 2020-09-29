@@ -7,17 +7,35 @@ namespace humhub\modules\stream\actions;
 use humhub\modules\stream\models\StreamQuery;
 use humhub\modules\stream\models\StreamSuppressQuery;
 use Yii;
+use yii\base\Exception;
 
+/**
+ * This class is used to build up a stream array or json response used in stream actions.
+ *
+ * @package humhub\modules\stream\actions
+ * @since 1.7
+ */
 class StreamResponse
 {
+    /**
+     * @var array resulting array
+     */
     private $result = [];
+
+    /**
+     * @var array contains the result array of the different entries
+     */
     private $entries = [];
 
     /**
-     * @var StreamQuery
+     * @var StreamQuery the StreamQuery used to fetch the entries
      */
     private $streamQuery;
 
+    /**
+     * StreamResponse constructor.
+     * @param StreamQuery $streamQuery
+     */
     public function __construct(StreamQuery $streamQuery)
     {
         $this->streamQuery = $streamQuery;
@@ -32,6 +50,11 @@ class StreamResponse
         $this->entries[$contentId] = $entry;
     }
 
+    /**
+     * Returns the stream response array.
+     * @return array
+     * @throws Exception
+     */
     public function asArray()
     {
         $this->result['content'] = $this->entries;
@@ -46,12 +69,20 @@ class StreamResponse
         return $this->result;
     }
 
+    /**
+     * Returns the stream action result as json response.
+     * @return \yii\web\Response
+     * @throws Exception
+     */
     public function asJson()
     {
         return Yii::$app->controller->asJson($this->asArray());
     }
 
-    public function isLast($isLast)
+    /**
+     * @param $isLast boolean sets the isLast flag of the response
+     */
+    private function isLast($isLast)
     {
         $this->result['isLast'] = $isLast;
     }

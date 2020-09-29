@@ -12,6 +12,12 @@ use yii\base\Exception;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
 
+/**
+ * Contains legacy stream action functionality.
+ *
+ * @package humhub\modules\stream\actions
+ * @since 1.7
+ */
 trait LegacyStreamTrait
 {
     /**
@@ -92,7 +98,7 @@ trait LegacyStreamTrait
      * @param boolean $partial whether or not to use renderPartial over renderAjax
      * @return string rendered wallentry
      * @throws \Exception
-     * @deprecated since 1.7
+     * @deprecated since 1.7 use StreamEntryWidget::renderEntry() instead
      */
     public static function renderEntry(ContentActiveRecord $record, $options =  [], $partial = true)
     {

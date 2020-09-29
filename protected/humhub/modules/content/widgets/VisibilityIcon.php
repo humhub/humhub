@@ -12,21 +12,52 @@ use humhub\modules\user\models\User;
 use Yii;
 
 /**
- * Class VisibilityIcon
+ * Can be used to create an icon with information about the visibility of a content model.
+ * The icon will be provided with a tooltip containing more detailed information about who is able to view this content.
+ *
+ * Usage:
+ *
+ * ```php
+ * <?= VisibilityIcon::getByModel($model) ?>
+ * ```
+ *
  * @package humhub\modules\content\widgets
  * @since 1.7
  */
 class VisibilityIcon extends Icon
 {
+    /**
+     * Icon name used for all public content
+     */
     const ICON_PUBLIC = 'globe';
+
+    /**
+     * Icon name used for group level content e.g. space / friends
+     */
     const ICON_GROUP = 'users';
+
+    /**
+     * Icon name used for private content profile content (without friendships active)
+     */
     const ICON_PRIVATE = 'lock';
 
+    /**
+     * Returns an visibility icon with tooltip for the given $model.
+     *
+     * @param ContentActiveRecord $model
+     * @return Icon
+     */
     public static function getByModel(ContentActiveRecord $model)
     {
         return static::get(static::getVisibilityIcon($model))->tooltip(static::getVisibilityTitle($model));
     }
 
+    /**
+     * Returns the visibility icon name for the given $model.
+     *
+     * @param ContentActiveRecord $model
+     * @return string
+     */
     private static function getVisibilityIcon(ContentActiveRecord $model)
     {
         if($model->content->container instanceof User && $model->content->isPrivate() && !Yii::$app->getModule('friendship')->settings->get('enable')) {
@@ -36,6 +67,13 @@ class VisibilityIcon extends Icon
         return $model->content->isPublic() ? static::ICON_PUBLIC : static::ICON_GROUP;
     }
 
+    /**
+     * Determines the tooltip text for the given $model.
+     *
+     * @param ContentActiveRecord $model
+     * @return string
+     * @throws \Throwable
+     */
     private static function getVisibilityTitle(ContentActiveRecord $model)
     {
         $container = $model->content->container;

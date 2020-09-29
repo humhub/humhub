@@ -23,6 +23,9 @@ class Module extends \humhub\components\Module
      */
     public $isCoreModule = true;
 
+    /**
+     * @var array contains all available icon aliases
+     */
     public $iconAlias = [
         'dropdownToggle' => 'angle-down'
     ];

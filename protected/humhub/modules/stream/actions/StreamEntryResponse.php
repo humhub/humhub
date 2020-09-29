@@ -12,14 +12,38 @@ use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 
+/**
+ * This class is used to build the stream entry array or json response used in stream actions.
+ *
+ * @package humhub\modules\stream\actions
+ * @since 1.7
+ */
 class StreamEntryResponse extends Model
 {
+    /**
+     * @var int content id
+     */
     public $id;
+
+    /**
+     * @var string content guid
+     */
     public $guid;
+
+    /**
+     * @var string rendered stream entry
+     */
     public $output;
+
+    /**
+     * @var boolean content pinned flag
+     */
     public $pinned;
+
+    /**
+     * @var boolean content archived flag
+     */
     public $archived;
-    public $content;
 
     /**
      * @param Content $content

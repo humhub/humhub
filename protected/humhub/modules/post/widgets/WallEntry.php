@@ -21,6 +21,9 @@ class WallEntry extends WallStreamEntryWidget
      */
     public $editRoute = '/post/post/edit';
 
+    /**
+     * @inheritdoc
+     */
     protected function renderContent()
     {
         return $this->render('wallEntry', [
