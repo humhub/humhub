@@ -68,7 +68,7 @@ class ProfileController extends ContentContainerController
      */
     public function actionIndex()
     {
-        if (!Yii::$app->request->get('tour') && $this->module->profileDefaultRoute !== null) {
+        if ($this->module->profileDefaultRoute !== null) {
             return $this->redirect(Url::to([$this->module->profileDefaultRoute, 'container' => $this->getUser()]));
         }
 
