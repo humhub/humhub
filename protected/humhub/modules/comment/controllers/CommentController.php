@@ -133,9 +133,8 @@ class CommentController extends Controller
 
             $form = new CommentForm($this->target);
 
-            if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-                $comment = $form->save();
-                return $this->renderAjaxContent(CommentWidget::widget(['comment' => $comment]));
+            if ($form->load(Yii::$app->request->post()) && $form->create()) {
+                return $this->renderAjaxContent(CommentWidget::widget(['comment' => $form->comment]));
             } else {
                 return false;
             }
@@ -164,12 +163,9 @@ class CommentController extends Controller
 
         $form = new CommentForm($this->target, $fileList);
 
-        if ($form->load(Yii::$app->request->post(), '') && $form->validate()) {
-
-            $comment = $form->update($comment);
-
+        if ($form->load(Yii::$app->request->post()) && $form->update($comment)) {
             return $this->renderAjaxContent(CommentWidget::widget([
-                'comment' => $comment,
+                'comment' => $form->comment,
                 'justEdited' => true
             ]));
         } else if (Yii::$app->request->post()) {
