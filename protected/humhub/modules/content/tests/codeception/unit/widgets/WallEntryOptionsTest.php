@@ -69,7 +69,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
 
     public function testDisableControlsMove()
     {
-        $this->testDisableControlsItem('Move',
+        $this->testDisableControlsItem('Move content',
             (new WallStreamEntryOptions)->disableControlsEntryMove());
     }
 

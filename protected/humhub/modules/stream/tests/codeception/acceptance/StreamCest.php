@@ -39,7 +39,7 @@ class StreamCest
         $I->see('Confirm post deletion');
         $I->click('Delete', '#globalModalConfirm');
 
-        $I->seeSuccess('The content has been deleted');
+        $I->waitForElementNotVisible($newEntrySelector);
     }
 
     /**
@@ -188,7 +188,7 @@ class StreamCest
         $I->fillField($newEntrySelector . ' [contenteditable]', 'This is my edited post!');
         $I->click('Save', $newEntrySelector);
 
-        $I->seeSuccess('Saved');
+        $I->wait(1);
         $I->seeElement($newEntrySelector);
         $I->see('This is my edited post!', $newEntrySelector);
     }
