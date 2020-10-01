@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\ui\icon\widgets\Icon;
-use yii\helpers\Html;
+use humhub\libs\Html;
 use yii\helpers\Url;
 
 /* @var $modules [] */
@@ -21,7 +21,8 @@ use yii\helpers\Url;
 
     <?php if (empty($modules)): ?>
         <br>
-        <div class="alert alert-success"><?= Icon::get('check')?> <?= Yii::t('MarketplaceModule.base', 'All modules are up to date!'); ?></div>
+        <div
+            class="alert alert-success"><?= Icon::get('check') ?> <?= Yii::t('MarketplaceModule.base', 'All modules are up to date!'); ?></div>
     <?php endif; ?>
 
     <?php foreach ($modules as $module): ?>
@@ -59,7 +60,7 @@ use yii\helpers\Url;
     <?php endforeach; ?>
 </div>
 
-<script>
+<script <?= Html::nonce(); ?>>
     $('#chkBeta').change(function () {
         $('#betaSwitchForm').submit();
     });
