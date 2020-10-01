@@ -9,7 +9,7 @@ This release also brings a [security update](https://github.com/yiisoft/yii2/sec
 - Fix #4361: Added missing nonce attribute in inline marketplace script
 - Fix #4371: Word break issue in notification dropdown
 - Fix #4384: Upgrade to Yii 2.0.38
-
+- Fix #4403 Space Picker Double HTML Encode
 
 1.6.3 (September 9, 2020)
 -----------------------
