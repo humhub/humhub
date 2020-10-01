@@ -68,6 +68,10 @@ class WallEntryControls extends Menu
      */
     public function run()
     {
+        if($this->renderOptions->isControlsMenuDisabled()) {
+            return '';
+        }
+
         $entries = $this->wallEntryWidget instanceof WallEntry
             ? $this->wallEntryWidget->getContextMenu()
             : $this->wallEntryWidget->getControlsMenuEntries();

@@ -285,16 +285,25 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
      */
     public function getControlsMenuEntries()
     {
+        if($this->renderOptions->isViewContext([WallStreamEntryOptions::VIEW_CONTEXT_SEARCH])) {
+            return [
+                [PermaLink::class, ['content' => $this->model], ['sortOrder' => 200]]
+            ];
+        }
+
         $result = [
             [PermaLink::class, ['content' => $this->model], ['sortOrder' => 200]],
             [DeleteLink::class, ['content' => $this->model], ['sortOrder' => 300]],
             new DropdownDivider(['sortOrder' => 350]),
             [VisibilityLink::class, ['contentRecord' => $this->model], ['sortOrder' => 400]],
             [NotificationSwitchLink::class, ['content' => $this->model], ['sortOrder' => 500]],
-            [PinLink::class, ['content' => $this->model], ['sortOrder' => 600]],
             [MoveContentLink::class, ['model' => $this->model], ['sortOrder' => 700]],
             [ArchiveLink::class, ['content' => $this->model], ['sortOrder' => 800]]
         ];
+
+        if($this->renderOptions->isViewContext([WallStreamEntryOptions::VIEW_CONTEXT_DEFAULT, WallStreamEntryOptions::VIEW_CONTEXT_DETAIL])) {
+            $result[] =  [PinLink::class, ['content' => $this->model], ['sortOrder' => 600]];
+        }
 
         if (!empty($this->getEditUrl())) {
             $result[] = [EditLink::class, ['model' => $this->model, 'mode' => $this->editMode, 'url' => $this->getEditUrl()], ['sortOrder' => 100]];
