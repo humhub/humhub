@@ -4,6 +4,10 @@ HumHub Changelog
 1.6.4 (Unreleased)
 ------------------
 - Fix #4361: Added missing nonce attribute in inline marketplace script
+- Enh: Added long_description to Space
+- Enh: Added `humhub\modules\space\widgets\MyMembership` to manage render user state in a space
+- Enh: Added `humhub\modules\space\widgets\CustomSidebar` to manage displaying pre added widgets to sidebar
+- Enh #4370: Added About page to SpaceController
 
 
 1.6.3 (September 9, 2020)
