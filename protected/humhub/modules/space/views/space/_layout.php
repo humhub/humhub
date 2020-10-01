@@ -2,6 +2,7 @@
 
 use humhub\modules\space\widgets\Header;
 use humhub\modules\space\widgets\Menu;
+use humhub\modules\space\widgets\NonMembersMenu;
 use humhub\modules\space\widgets\SpaceContent;
 use humhub\widgets\FooterMenu;
 
@@ -24,7 +25,12 @@ $space = $context->contentContainer;
     </div>
     <div class="row space-content">
         <div class="col-md-2 layout-nav-container">
-            <?= Menu::widget(['space' => $space]); ?>
+            <?php
+            if ($space->isMember())
+                echo Menu::widget(['space' => $space]);
+            else
+                echo NonMembersMenu::widget(['space' => $space]); //for stream page
+            ?>
         </div>
         <div class="col-md-<?= ($this->hasSidebar()) ? '7' : '10' ?> layout-content-container">
             <?= SpaceContent::widget(['contentContainer' => $space, 'content' => $content]) ?>

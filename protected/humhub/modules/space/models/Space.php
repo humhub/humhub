@@ -36,6 +36,7 @@ use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\Group;
 use humhub\modules\space\widgets\Wall;
 use humhub\modules\space\widgets\Members;
+use humhub\modules\user\models\User as UserModel;
 use Yii;
 
 /**
@@ -183,6 +184,24 @@ class Space extends ContentContainerActiveRecord implements Searchable
             'visibility' => Yii::t('SpaceModule.manage', 'Choose the security level for this workspace to define the visibleness.'),
             'join_policy' => Yii::t('SpaceModule.manage', 'Choose the kind of membership you want to provide for this workspace.'),
             'default_content_visibility' => Yii::t('SpaceModule.manage', 'Choose if new content should be public or private by default')
+        ];
+    }
+
+    public static function visibilityOptions()
+    {
+        return [
+            self::VISIBILITY_NONE => Yii::t('SpaceModule.base', 'Private (Invisible)'),
+            self::VISIBILITY_REGISTERED_ONLY => Yii::t('SpaceModule.base', 'Public (Registered users only)'),
+            self::VISIBILITY_ALL => Yii::t('SpaceModule.base', 'Visible for all (members and guests)'),
+        ];
+    }
+
+    public static function joinPolicyOptions()
+    {
+        return [
+            self::JOIN_POLICY_NONE => Yii::t('SpaceModule.base', 'Only by invite'),
+            self::JOIN_POLICY_APPLICATION => Yii::t('SpaceModule.base', 'Invite and request'),
+            self::JOIN_POLICY_FREE => Yii::t('SpaceModule.base', 'Everyone can enter'),
         ];
     }
 
@@ -635,4 +654,22 @@ class Space extends ContentContainerActiveRecord implements Searchable
         return Content::VISIBILITY_PRIVATE;
     }
 
+    public function getPrivilegedGroupUsers()
+    {
+        $owner = $this->getOwnerUser()->one();
+        $groups[self::USERGROUP_OWNER][] = $owner;
+
+        $query = Membership::find()->joinWith('user');
+        $query->andWhere(['IN', 'group_id', [self::USERGROUP_ADMIN, self::USERGROUP_MODERATOR]]);
+        $query->andWhere('space_id = ' . $this->id);
+        $query->andWhere('user_id != ' . $owner->id);
+        $query->andWhere(['user.status' => UserModel::STATUS_ENABLED]);
+        $query->orderBy(new \yii\db\Expression('FIELD(space_membership.group_id, "' . self::USERGROUP_ADMIN . '", "' . self::USERGROUP_MODERATOR . '")'));
+
+        foreach ($query->all() as $membership) {
+            $groups[$membership->group_id][] = $membership->user;
+        }
+
+        return $groups;
+    }
 }

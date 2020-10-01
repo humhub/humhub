@@ -43,7 +43,7 @@ class SpaceController extends ContentContainerController
         return [
             'acl' => [
                 'class' => AccessControl::class,
-                'guestAllowedActions' => ['index', 'home', 'stream']
+                'guestAllowedActions' => ['index', 'home', 'stream', 'about']
             ]
         ];
     }
@@ -166,4 +166,16 @@ class SpaceController extends ContentContainerController
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 
+    /**
+     * About space page
+     */
+    public function actionAbout()
+    {
+        $space = $this->getSpace();
+
+        return $this->render('about', [
+            'space' => $space,
+            'userGroups' => $space->getPrivilegedGroupUsers(),
+        ]);
+    }
 }
