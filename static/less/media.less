@@ -74,6 +74,16 @@
             a {
                 color: @text-color-highlight;
             }
+            a:hover {
+                color: darken(@text-color-highlight,90%);
+            }
+            a:active,
+            a.active {
+                color: lighten(@text-color-highlight,20%);
+            }
+            a:focus {
+                color: darken(@text-color-highlight,90%);
+            }
             small,
             small a {
                 font-size: 11px;
@@ -83,7 +93,6 @@
                 margin-right: 35px;
             }
         }
-
         .content a {
             word-break: break-all;
         }

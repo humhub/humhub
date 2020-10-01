@@ -1,18 +1,25 @@
 //
 // General
 // --------------------------------------------------
+
 body {
   padding-top: 130px;
   background-color: @background-color-page;
   color: @text-color-main;
   font-family: 'Open Sans', sans-serif;
-  a,
-  a:hover,
-  a:focus,
-  a:active,
-  a.active {
+  a {
     color: @text-color-highlight;
     text-decoration: none;
+  };
+  a:hover {
+    color: darken(@text-color-highlight,90%);
+  }
+  a:active,
+  a.active {
+    color: lighten(@text-color-highlight,20%);
+  }
+  a:focus {
+    color: darken(@text-color-highlight,90%);
   }
 }
 
