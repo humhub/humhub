@@ -165,18 +165,6 @@ humhub.module('ui.view', function (module, require, $) {
         return $topBar.position().top + $topBar.height();
     };
 
-    var scrollToView = function() {
-        var theme = require('ui.theme', true);
-
-        if(object.isFunction(theme.getContentTop)) {
-            return theme.getContentTop();
-        }
-
-        var $topBar = $('#topbar-second');
-
-        return $topBar.position().top + $topBar.height();
-    };
-
     module.export({
         init: init,
         unload: unload,

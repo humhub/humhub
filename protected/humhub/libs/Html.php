@@ -185,6 +185,13 @@ class Html extends \yii\bootstrap\Html
         return false;
     }
 
+    /**
+     * Adds a tooltip to the given options array.
+     * Note, this will overwrite the title attribute.
+     *
+     * @param $options
+     * @param $tooltip
+     */
     public static function addTooltip(&$options, $tooltip)
     {
         static::addCssClass($options, 'tt');

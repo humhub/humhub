@@ -86,6 +86,11 @@ class StreamEntryResponse extends Model
         ]))->asArray();
     }
 
+    /**
+     * Returns the stream entry response array.
+     * @return array
+     * @throws Exception
+     */
     public function asArray()
     {
         return [
@@ -97,6 +102,11 @@ class StreamEntryResponse extends Model
         ];
     }
 
+    /**
+     * Returns the stream action result as json response.
+     * @return \yii\web\Response
+     * @throws Exception
+     */
     public function asJson()
     {
         return Yii::$app->controller->asJson($this->asArray());
