@@ -111,4 +111,23 @@ class FileManager extends Component
         }
     }
 
+    /**
+     * Returns an array of files assigned to the record
+     *
+     * @return array
+     */
+    public function findAssignedToRecord()
+    {
+        $files =  File::find()->andWhere(['object_id' => $this->record->getPrimaryKey(), 'object_model' =>  get_class($this->record)])->asArray()->all();
+        $fileList = [];
+        $i = 0;
+
+        // Fill up files array
+        foreach ($files as $file) {
+            $fileList[$i] = $file['guid'];
+            $i++;
+        }
+
+        return $fileList;
+    }
 }

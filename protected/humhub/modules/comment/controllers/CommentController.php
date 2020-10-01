@@ -147,15 +147,7 @@ class CommentController extends Controller
         $comment = Comment::findOne(['id' => Yii::$app->request->get('id')]);
 
         // Find all file attached to this comment
-        $files = $comment->fileManager->find()->asArray()->all();
-        $fileList = [];
-        $i = 0;
-
-        // Fill up files array
-        foreach ($files as $file) {
-            $fileList[$i] = $file['guid'];
-            $i++;
-        }
+        $fileList = $comment->fileManager->findAssignedToRecord();
 
         if (!$comment->canEdit()) {
             throw new HttpException(403, Yii::t('CommentModule.base', 'Access denied!'));
