@@ -223,8 +223,7 @@ class StreamCest
         $I->see('Confirm post deletion');
         $I->click('Delete', '#globalModalConfirm');
 
-        $I->seeSuccess('The content has been deleted');
-        $I->see('This space is still empty!');
+        $I->waitForText('This space is still empty!');
         $I->dontSeeElement('#wall-stream-filter-nav');
     }
 
