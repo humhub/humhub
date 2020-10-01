@@ -4,7 +4,7 @@ HumHub Changelog
 1.6.4 (Unreleased)
 ------------------
 - Fix #4361: Added missing nonce attribute in inline marketplace script
-
+- Fix #4403 Space Picker Double HTML Encode
 
 1.6.3 (September 9, 2020)
 -----------------------
