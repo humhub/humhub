@@ -27,6 +27,7 @@ use humhub\widgets\Button;
 
         <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model]) ?>
         <?= $form->field($model, 'description')->textarea(['rows' => 6]); ?>
+        <?= $form->field($model, 'long_description')->textarea(['rows' => 6]); ?>
         <?= $form->field($model, 'tags')->textInput(['maxlength' => 200]); ?>
 
         <?= Button::save()->submit() ?>
