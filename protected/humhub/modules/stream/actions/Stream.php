@@ -131,6 +131,13 @@ abstract class Stream extends Action
     public $filters = [];
 
     /**
+     * Can be used to append or overwrite filter handlers without the need of overwriting the stream class.
+     * @var array
+     * @since 1.7
+     */
+    public $filterHandlers = [];
+
+    /**
      * Optional stream user
      * if no user is specified, the current logged in user will be used.
      *
@@ -232,9 +239,12 @@ abstract class Stream extends Action
      * Subclasses may overwrite this function in order to do some last settings on the StreamQuery instance.
      *
      * When overriding this method, make sure you call the parent implementation at the beginning of your function.
+     * @throws \yii\base\InvalidConfigException
      */
     protected function beforeApplyFilters()
     {
+        $this->streamQuery->addFilterHandlers($this->filterHandlers);
+
         // Merge configured filters set for this action with request filters.
         $this->streamQuery->addFilter($this->filters);
 

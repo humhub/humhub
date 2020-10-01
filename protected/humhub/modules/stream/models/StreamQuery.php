@@ -597,6 +597,25 @@ class StreamQuery extends Model
     }
 
     /**
+     * Can be used to add multiple filter handlers at once.
+     *
+     * @see self::addFilterHandler
+     * @param $handlers
+     * @param bool $overwrite
+     * @return string[]|StreamQueryFilter[]
+     * @throws InvalidConfigException
+     */
+    public function addFilterHandlers($handlers, $overwrite = true)
+    {
+        $result = [];
+        foreach ($handlers as $handler) {
+            $result[] = $this->addFilterHandler($handler, $overwrite);
+        }
+
+        return $result;
+    }
+
+    /**
      * Can be used to remove filters by filter class.
      *
      * @param $handler

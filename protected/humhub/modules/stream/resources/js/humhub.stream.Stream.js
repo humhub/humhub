@@ -17,8 +17,9 @@ humhub.module('stream.Stream', function (module, require, $) {
     var string = util.string;
     var Widget = require('ui.widget').Widget;
     var additions = require('ui.additions');
-    var StreamEntry =  require('stream').StreamEntry;
-    var Filter =  require('ui.filter').Filter;
+    var StreamEntry = require('stream').StreamEntry;
+    var filterModule =  require('ui.filter');
+    var Filter = filterModule.Filter;
     var StreamRequest =  require('stream').StreamRequest;
     var loader = require('ui.loader');
     var event = require('event');
@@ -208,7 +209,15 @@ humhub.module('stream.Stream', function (module, require, $) {
     };
 
     Stream.prototype.initFilter = function () {
-        this.filter = this.options.filter || new Filter();
+        if(this.options.filter) {
+            this.filter = this.options.filter;
+        } else {
+            this.filter = filterModule.findFilterByComponent(this) || new Filter();
+        }
+
+        if(object.isString(this.filter)) {
+            this.filter = Widget.instance(this.filter);
+        }
 
         var that = this;
         this.filter.on('afterChange', function () {
