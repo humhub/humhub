@@ -95,7 +95,7 @@ class UserPickerField extends BasePicker
      */
     protected function getItemText($item)
     {
-        return Html::encode($item->displayName);
+        return $item->displayName;
     }
 
     /**
