@@ -11,7 +11,7 @@ use humhub\modules\ui\filter\widgets\FilterPanel;
 use humhub\widgets\Button;
 use yii\helpers\Html;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $panels [] */
 /* @var $options [] */
 

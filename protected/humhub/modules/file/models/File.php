@@ -192,7 +192,7 @@ class File extends FileCompat
     /**
      * Returns the StorageManager
      *
-     * @return \humhub\modules\file\components\StorageManager
+     * @return \humhub\modules\file\components\StorageManagerInterface
      * @throws \yii\base\InvalidConfigException
      */
     public function getStore()

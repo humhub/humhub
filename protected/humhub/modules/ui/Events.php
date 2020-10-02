@@ -15,10 +15,5 @@ namespace humhub\modules\ui;
  */
 class Events
 {
-    public static function onConsoleApplicationInit($event)
-    {
-        $application = $event->sender;
-        $application->controllerMap['theme'] = commands\ThemeController::class;
-    }
 
 }

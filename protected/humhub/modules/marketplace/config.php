@@ -16,8 +16,10 @@ return [
     'id' => 'marketplace',
     'class' => Module::class,
     'isCoreModule' => true,
+    'consoleControllerMap' => [
+        'module' => 'humhub\modules\marketplace\commands\MarketplaceController'
+    ],
     'events' => [
-        ['humhub\components\console\Application', 'onInit', [Events::class, 'onConsoleApplicationInit']],
         [ModuleMenu::class, ModuleMenu::EVENT_INIT, [Events::class, 'onAdminModuleMenuInit']],
         [CronController::class, CronController::EVENT_ON_HOURLY_RUN, [Events::class, 'onHourlyCron']],
     ]
