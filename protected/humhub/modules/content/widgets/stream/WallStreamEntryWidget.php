@@ -156,7 +156,6 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
         if ($this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH) || $this->model->content->isArchived()) {
             // Disable all except permalink
             $this->renderOptions
-                ->disableControlsEntryDelete()
                 ->disableControlsEntryEdit()
                 ->disableControlsEntryPin()
                 ->disableControlsEntryTopics()
@@ -164,6 +163,10 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
                 ->disableControlsEntrySwitchNotification()
                 ->disableControlsEntryMove()
                 ->disableControlsEntry(DropdownDivider::class);
+        }
+
+        if($this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH)) {
+            $this->renderOptions->disableControlsEntryDelete();
         }
 
         if($this->model->content->container instanceof User && !$this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_DEFAULT)) {
