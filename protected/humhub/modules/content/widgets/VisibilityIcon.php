@@ -86,7 +86,7 @@ class VisibilityIcon extends Icon
 
 
         if(!$container) { // private global
-            return Yii::t('ContentModule.base', 'Can be seen by everyone');
+            return Yii::t('ContentModule.base', 'Visible to all signed in users');
         }
 
         if($model->content->container instanceof Space) {
