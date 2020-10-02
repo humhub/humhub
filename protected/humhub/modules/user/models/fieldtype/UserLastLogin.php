@@ -11,12 +11,12 @@ namespace humhub\modules\user\models\fieldtype;
 use humhub\libs\Html;
 
 /**
- * UserMemberSince is a virtual profile field
- * that displays the user member since information
+ * UserLastLogin is a virtual profile field
+ * that displays the user last login dati
  *
  * @since 1.6
  */
-class UserMemberSince extends BaseTypeVirtual
+class UserLastLogin extends BaseTypeVirtual
 {
 
     /**
@@ -24,12 +24,12 @@ class UserMemberSince extends BaseTypeVirtual
      */
     public function getVirtualUserValue($user, $raw = true)
     {
-        if (empty($user->created_at)) {
+        if (empty($user->last_login)) {
             return '';
         }
 
         if ($raw) {
-            return Html::encode($user->created_at);
+            return Html::encode($user->last_login);
         }
     }
 }

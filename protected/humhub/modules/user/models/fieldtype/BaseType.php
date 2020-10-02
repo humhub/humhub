@@ -87,6 +87,7 @@ class BaseType extends Model
             UserEmail::class => Yii::t('UserModule.profile', 'E-mail address of the user'),
             UserName::class => Yii::t('UserModule.profile', 'Username'),
             UserMemberSince::class => Yii::t('UserModule.profile', 'User member since'),
+            UserLastLogin::class => Yii::t('UserModule.profile', 'User last login'),
         ], $this->fieldTypes);
 
         return $fieldTypes;
