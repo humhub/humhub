@@ -8,6 +8,7 @@ use humhub\libs\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\icon\widgets\Icon;
+use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
 
@@ -46,6 +47,7 @@ class VisibilityIcon extends Icon
      *
      * @param ContentActiveRecord $model
      * @return Icon
+     * @throws \Throwable
      */
     public static function getByModel(ContentActiveRecord $model)
     {
@@ -119,7 +121,7 @@ class VisibilityIcon extends Icon
 
     private static function getPublicVisibilityText()
     {
-        return User::isGuestAccessEnabled()
+        return AuthHelper::isGuestAccessEnabled()
             ? Yii::t('ContentModule.base', 'Visible also to unregistered users')
             : Yii::t('ContentModule.base', 'Visible to all signed in users');
     }
