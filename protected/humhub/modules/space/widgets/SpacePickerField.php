@@ -52,7 +52,7 @@ class SpacePickerField extends BasePicker
      */
     protected function getItemText($item)
     {
-        return Html::encode($item->getDisplayName());
+        return $item->getDisplayName();
     }
 
     /**
