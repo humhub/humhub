@@ -7,6 +7,7 @@ HumHub Changelog
 This release also brings a [security update](https://github.com/yiisoft/yii2/security/advisories/GHSA-699q-wcff-g9mj) of the Yii2 framework. HumHub itself and the modules provided by our offical marketplace are not affected by this bug.
 
 - Fix #4361: Added missing nonce attribute in inline marketplace script
+- Fix #4363: Open file modal throws permission denied for unauthenticated users in guest mode
 - Fix #4371: Word break issue in notification dropdown
 - Fix #4384: Upgrade to Yii 2.0.38
 - Fix #4403 Space Picker Double HTML Encode
