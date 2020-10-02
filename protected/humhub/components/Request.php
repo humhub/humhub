@@ -19,6 +19,10 @@ use Yii;
  */
 class Request extends \yii\web\Request
 {
+    /**
+     * Http header name for view context information
+     * @see \humhub\modules\ui\view\components\View::$viewContext
+     */
     const HEADER_VIEW_CONTEXT = 'HUMHUB-VIEW-CONTEXT';
 
     /**
@@ -38,6 +42,9 @@ class Request extends \yii\web\Request
         }
     }
 
+    /**
+     * @return string|null the value of http header `HUMHUB-VIEW-CONTEXT`
+     */
     public function getViewContext()
     {
         return $this->getHeaders()->get(static::HEADER_VIEW_CONTEXT);

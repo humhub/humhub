@@ -11,12 +11,20 @@ namespace humhub\modules\dashboard\controllers;
 use humhub\components\behaviors\AccessControl;
 use humhub\components\Controller;
 use humhub\modules\dashboard\components\actions\DashboardStreamAction;
+use humhub\modules\ui\view\components\View;
 use Yii;
 
 class DashboardController extends Controller
 {
+    /**
+     * View context used for the dashboard view
+     * @see View::$viewContext
+     */
     const VIEW_CONTEXT = 'dashboard';
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->appendPageTitle(Yii::t('DashboardModule.base', 'Dashboard'));

@@ -25,6 +25,10 @@ use humhub\modules\search\engine\Search;
  */
 class SearchController extends Controller
 {
+    /**
+     * View context used for the search view
+     * @see View::$viewContext
+     */
     const VIEW_CONTEXT = 'search';
 
     /**

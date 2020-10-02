@@ -75,6 +75,9 @@ class StreamEntryOptions extends Model
         parent::__construct($config);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         parent::init();
