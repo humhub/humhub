@@ -20,3 +20,7 @@ HumHub Changelog
 - Enh #4310: Add "Can Like" Permission 
 - Fix #4111: Issues Cropping Images
 - Fix #4385: Tour broken when profile start page is changed
+- Enh: Added long_description to Space
+- Enh: Added `humhub\modules\space\widgets\MyMembership` to manage render user state in a space
+- Enh: Added `humhub\modules\space\widgets\CustomSidebar` to manage displaying pre added widgets to sidebar
+- Enh #4370: Added About page to SpaceController
