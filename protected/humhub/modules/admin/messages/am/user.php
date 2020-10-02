@@ -123,6 +123,18 @@ return [
     'Edit profile category' => '',
     'Edit profile field' => '',
     'Edit user: {name}' => '',
+    'Hello {displayName},<br><br>
+Your account has been activated.<br><br>
+Click here to login:<br>
+{loginLink}<br><br>
+
+Kind Regards<br>
+{AdminName}<br><br>' => '',
+    'Hello {displayName},<br><br>
+Your account request has been declined.<br><br>
+
+Kind Regards<br>
+{AdminName} <br><br> ' => '',
     'Here you can create or edit profile categories and fields.' => '',
     'Include captcha in registration form' => '',
     'Manage profile attributes' => '',

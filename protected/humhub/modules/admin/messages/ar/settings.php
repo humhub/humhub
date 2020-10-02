@@ -124,5 +124,6 @@ return [
     'You\'re using no icon at the moment. Upload your logo now.' => 'أنت لا تستخدم أي رمز في الوقت الحالي. قم بتحميل شعارك الآن.',
     'You\'re using no logo at the moment. Upload your logo now.' => 'أنت لا تستخدم أي شعار في الوقت الحالي. قم بتحميل شعارك الآن.',
     'never' => 'أبدا',
+    'Reported database time: {dateTime}' => '',
     'Saved and sent test email to: {address}' => '',
 ];

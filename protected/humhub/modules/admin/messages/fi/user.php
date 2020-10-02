@@ -132,4 +132,16 @@ return [
     'You cannot delete yourself!' => 'Et voi poistaa itseäsi!',
     'never' => 'ei koskaan',
     'Edit category' => '',
+    'Hello {displayName},<br><br>
+Your account has been activated.<br><br>
+Click here to login:<br>
+{loginLink}<br><br>
+
+Kind Regards<br>
+{AdminName}<br><br>' => '',
+    'Hello {displayName},<br><br>
+Your account request has been declined.<br><br>
+
+Kind Regards<br>
+{AdminName} <br><br> ' => '',
 ];

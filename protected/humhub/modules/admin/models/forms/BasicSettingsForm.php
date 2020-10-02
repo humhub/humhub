@@ -6,6 +6,7 @@ use Yii;
 use humhub\libs\DynamicConfig;
 use humhub\modules\space\models\Space;
 use humhub\modules\stream\actions\Stream;
+use humhub\libs\TimezoneHelper;
 
 /**
  * BasicSettingsForm
@@ -55,10 +56,10 @@ class BasicSettingsForm extends \yii\base\Model
             [['tour', 'dashboardShowProfilePostForm', 'enableFriendshipModule'], 'in', 'range' => [0, 1]],
             [['defaultStreamSort'], 'in', 'range' => array_keys($this->getDefaultStreamSortOptions())],
             [['baseUrl'], function ($attribute, $params, $validator) {
-                    if (substr($this->$attribute, 0, 7) !== 'http://' && substr($this->$attribute, 0, 8) !== 'https://') {
-                        $this->addError($attribute, Yii::t('AdminModule.base', 'Base URL needs to begin with http:// or https://'));
-                    }
-                }],
+                if (substr($this->$attribute, 0, 7) !== 'http://' && substr($this->$attribute, 0, 8) !== 'https://') {
+                    $this->addError($attribute, Yii::t('AdminModule.base', 'Base URL needs to begin with http:// or https://'));
+                }
+            }],
         ];
     }
 
@@ -76,6 +77,19 @@ class BasicSettingsForm extends \yii\base\Model
             'dashboardShowProfilePostForm' => Yii::t('AdminModule.settings', 'Show user profile post form on dashboard'),
             'enableFriendshipModule' => Yii::t('AdminModule.settings', 'Enable user friendship system'),
             'defaultStreamSort' => Yii::t('AdminModule.settings', 'Default stream content order'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'timeZone' => Yii::t('AdminModule.settings', 'Reported database time: {dateTime}', [
+                    'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime())
+                ]
+            ),
         ];
     }
 

@@ -119,6 +119,7 @@ return [
     'Fixed format (dd/mm/yyyy) - Example: {example}' => '',
     'Mobile appearance' => '',
     'Prevent client caching of following scripts' => '',
+    'Reported database time: {dateTime}' => '',
     'Save & Test' => '',
     'Saved and sent test email to: {address}' => '',
     'Test message' => '',

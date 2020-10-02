@@ -124,5 +124,6 @@ return [
     'You\'re using no icon at the moment. Upload your logo now.' => 'Você não está usando nenhum ícone no momento. Faça o upload do seu logotipo agora.',
     'You\'re using no logo at the moment. Upload your logo now.' => 'Você não está usando uma logomarca atualmente. Envie sua logomarca agora.',
     'never' => 'nunca',
+    'Reported database time: {dateTime}' => '',
     'Saved and sent test email to: {address}' => '',
 ];
