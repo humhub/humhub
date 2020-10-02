@@ -18,7 +18,7 @@ use humhub\modules\user\widgets\Image;
             <?= Yii::t('SpaceModule.base', '<strong>Description</strong>') ?>
             <div data-ui-markdown data-ui-show-more
                  data-read-more-text="<?= Yii::t('SpaceModule.base', 'Read More') ?>">
-                <?= RichText::output($space->long_description) ?>
+                <?= RichText::output(empty($space->long_description) ? $space->description : $space->long_description) ?>
             </div>
         </div>
         <br>
