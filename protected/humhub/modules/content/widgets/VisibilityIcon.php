@@ -79,18 +79,16 @@ class VisibilityIcon extends Icon
         $container = $model->content->container;
 
         if($model->content->isPublic()) {
-            // TODO better guest mode distinction
-            return Yii::t('ContentModule.base', 'Can be seen by everyone');
+            return static::getPublicVisibilityText();
         }
 
 
         if(!$container) { // private global
-            return Yii::t('ContentModule.base', 'Can be seen by everyone.');
+            return Yii::t('ContentModule.base', 'Can be seen by everyone');
         }
 
         if($model->content->container instanceof Space) {
-            // TODO more specific message for guest mode?
-            return Yii::t('ContentModule.base', 'Can be seen by all space members');
+            return Yii::t('ContentModule.base', 'Visible to all Space members');
         }
 
         if($model->content->container instanceof User) {
@@ -99,24 +97,31 @@ class VisibilityIcon extends Icon
 
             if(Yii::$app->getModule('friendship')->settings->get('enable')) {
                 return $isMyProfile
-                    ?  Yii::t('ContentModule.base', 'Can only be seen by you and your friends')
-                    : Yii::t('ContentModule.base', 'Can only be seen by you and friends of {displayName}',
+                    ?  Yii::t('ContentModule.base', 'Visible to your friends')
+                    : Yii::t('ContentModule.base', 'Visible to friends of {displayName}',
                         ['displayName' => Html::encode($model->content->container->getDisplayName())]);
             }
 
             // Private no friendships
             if($isMyProfile) {
                 return $iamAuthor
-                    ?  Yii::t('ContentModule.base', 'Can only be seen by you') // My own private profile post
-                    :  Yii::t('ContentModule.base', 'Can be seen by you and {displayName}',
+                    ?  Yii::t('ContentModule.base', 'Visible only to you') // My own private profile post
+                    :  Yii::t('ContentModule.base', 'Visible to you and {displayName}',
                         ['displayName' => Html::encode($model->content->createdBy->getDisplayName())]); // Someone posted private content on my profile
             }
 
             // My private content on another users profile
-            return Yii::t('ContentModule.base', 'Can be seen by you and {displayName}', ['displayName' => Html::encode($model->content->container->getDisplayName())]);
+            return Yii::t('ContentModule.base', 'Visible to you and {displayName}', ['displayName' => Html::encode($model->content->container->getDisplayName())]);
         }
 
         return '';
+    }
+
+    private static function getPublicVisibilityText()
+    {
+        return User::isGuestAccessEnabled()
+            ? Yii::t('ContentModule.base', 'Visible also to unregistered users')
+            : Yii::t('ContentModule.base', 'Visible to all signed in users');
     }
 
 }
