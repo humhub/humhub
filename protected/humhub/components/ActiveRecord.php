@@ -54,6 +54,9 @@ class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
         return parent::beforeSave($insert);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function afterSave($insert, $changedAttributes)
     {
         if ($this->hasAttribute('created_at') && $this->created_at instanceof Expression) {
