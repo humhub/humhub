@@ -3,10 +3,11 @@
 namespace humhub\modules\like\widgets;
 
 use Yii;
-use humhub\modules\like\models\Like;
 use yii\helpers\Url;
 use yii\helpers\Html;
-
+use humhub\modules\like\Module;
+use humhub\modules\like\models\Like as LikeModel;
+use humhub\modules\content\components\ContentActiveRecord;
 /**
  * This widget is used to show a like link inside the wall entry controls.
  *
@@ -19,7 +20,7 @@ class LikeLink extends \yii\base\Widget
     /**
      * The Object to be liked
      *
-     * @var type
+     * @var LikeModel|ContentActiveRecord
      */
     public $object;
 
@@ -33,8 +34,11 @@ class LikeLink extends \yii\base\Widget
         }
 
         $currentUserLiked = false;
+        /** @var Module $module */
+        $module = Yii::$app->getModule('like');
+        $canLike = $module->canLike($this->object);
 
-        $likes = Like::GetLikes($this->object->className(), $this->object->id);
+        $likes = LikeModel::GetLikes(get_class($this->object), $this->object->id);
         foreach ($likes as $like) {
             if ($like->user->id == Yii::$app->user->id) {
                 $currentUserLiked = true;
@@ -42,13 +46,14 @@ class LikeLink extends \yii\base\Widget
         }
 
         return $this->render('likeLink', [
+                    'canLike' => $canLike,
                     'object' => $this->object,
                     'likes' => $likes,
                     'currentUserLiked' => $currentUserLiked,
                     'id' => $this->object->getUniqueId(),
-                    'likeUrl' => Url::to(['/like/like/like', 'contentModel' => $this->object->className(), 'contentId' => $this->object->id]),
-                    'unlikeUrl' => Url::to(['/like/like/unlike', 'contentModel' => $this->object->className(), 'contentId' => $this->object->id]),
-                    'userListUrl' => Url::to(['/like/like/user-list', 'contentModel' => $this->object->className(), 'contentId' => $this->object->getPrimaryKey()]),
+                    'likeUrl' => Url::to(['/like/like/like', 'contentModel' => get_class($this->object), 'contentId' => $this->object->id]),
+                    'unlikeUrl' => Url::to(['/like/like/unlike', 'contentModel' => get_class($this->object), 'contentId' => $this->object->id]),
+                    'userListUrl' => Url::to(['/like/like/user-list', 'contentModel' => get_class($this->object), 'contentId' => $this->object->getPrimaryKey()]),
                     'title' => $this->generateLikeTitleText($currentUserLiked, $likes)
         ]);
     }

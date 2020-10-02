@@ -50,7 +50,7 @@ use humhub\libs\Html;
     <?php endif; ?>
 </div>
 
-<script>
+<script <?= Html::nonce(); ?>>
     $('#categorySelect').change(function () {
         $('#filterForm').submit();
     });

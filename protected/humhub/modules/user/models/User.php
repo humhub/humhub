@@ -619,22 +619,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
-     * Checks if the given $user instance shares the same identity with this
-     * user instance.
-     *
-     * @param \humhub\modules\user\models\User $user
-     * @return boolean
-     */
-    public function is(User $user = null)
-    {
-        if (!$user) {
-            return false;
-        }
-
-        return $user->id === $this->id;
-    }
-
-    /**
      * @inheritdoc
      */
     public function canAccessPrivateContent(User $user = null)

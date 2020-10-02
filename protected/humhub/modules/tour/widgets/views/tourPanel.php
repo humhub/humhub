@@ -42,7 +42,7 @@ use yii\helpers\Url;
                 </a>
             </li>
             <li class="<?php if ($profile == 1) : ?>completed<?php endif; ?>">
-                <a href="<?php echo Yii::$app->user->getIdentity()->createUrl('//user/profile', ['tour' => 'true']); ?>" data-pjax-prevent>
+                <a href="<?php echo Yii::$app->user->getIdentity()->createUrl('//user/profile/home', ['tour' => 'true']); ?>" data-pjax-prevent>
                     <i class="fa fa-play-circle-o"></i><?php echo Yii::t('TourModule.base', '<strong>Guide:</strong> User profile'); ?>
                 </a>
             </li>

@@ -81,6 +81,7 @@ return [
     'An unknown error occurred while uploading.' => '',
     'An unknown error occurred while uploading. Hint: check your upload_max_filesize and post_max_size php settings.' => '',
     'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '',
+    'Database connection time: {dbTime} - Configured time zone: {time}' => '',
     'Error while running your last action (Invalid request method).' => '',
     'Error:' => '',
     'It looks like you may have taken the wrong turn.' => '',

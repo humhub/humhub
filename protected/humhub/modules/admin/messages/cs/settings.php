@@ -121,6 +121,7 @@ return [
     'Mobile appearance' => '',
     'Prevent client caching of following scripts' => '',
     'Redis' => '',
+    'Reported database time: {dateTime}' => '',
     'Saved and sent test email to: {address}' => '',
     'Test message' => '',
     'Use the default swipe to show sidebar on a mobile device' => '',

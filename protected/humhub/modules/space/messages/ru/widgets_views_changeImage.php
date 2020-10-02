@@ -1,5 +1,9 @@
 <?php
+/**
+ * Translation: Paul (https://paul.bid) paulbid@protonmail.com
+ * 
+ */
 return array (
-  'Change image' => 'Сменить иконку',
-  'Current space image' => 'Иконка пространства',
+  'Change image' => 'Сменить изображение',
+  'Current space image' => 'Изображение сообщества',
 );
