@@ -131,9 +131,9 @@ class CommentController extends Controller
 
         return Comment::getDb()->transaction(function ($db) {
 
-            $form = new CommentForm($this->target);
+            $form = new CommentForm($this->target, new Comment(['message' => Yii::$app->request->post('message')]));
 
-            if ($form->load(Yii::$app->request->post()) && $form->create()) {
+            if ($form->load(Yii::$app->request->post()) && $form->save()) {
                 return $this->renderAjaxContent(CommentWidget::widget(['comment' => $form->comment]));
             } else {
                 return false;
@@ -146,16 +146,13 @@ class CommentController extends Controller
     {
         $comment = Comment::findOne(['id' => Yii::$app->request->get('id')]);
 
-        // Find all file attached to this comment
-        $fileList = $comment->fileManager->findAll();
-
         if (!$comment->canEdit()) {
             throw new HttpException(403, Yii::t('CommentModule.base', 'Access denied!'));
         }
 
-        $form = new CommentForm($this->target, $fileList);
+        $form = new CommentForm($this->target, $comment);
 
-        if ($form->load(Yii::$app->request->post()) && $form->update($comment)) {
+        if ($form->load(Yii::$app->request->post()) && $form->update()) {
             return $this->renderAjaxContent(CommentWidget::widget([
                 'comment' => $form->comment,
                 'justEdited' => true

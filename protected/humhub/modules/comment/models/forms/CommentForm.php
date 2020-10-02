@@ -15,19 +15,32 @@ use yii\web\ServerErrorHttpException;
  */
 class CommentForm extends yii\base\Model
 {
+    /**
+     * Comment message
+     * @var string
+     */
     public $message;
+
+    /**
+     * The list of files attached to a comment
+     * @var array
+     */
     public $fileList;
+
+    /**
+     * @var Comment The model to comment
+     */
     public $comment;
 
     /**
-     * @var Comment|ContentActiveRecord The model to comment
+     * @var Comment|ContentActiveRecord The model to comment or other active content
      */
     public $target;
 
-    public function __construct($target, $fileList = null)
+    public function __construct($target, $comment)
     {
         $this->target = $target;
-        $this->fileList = $fileList;
+        $this->comment = $comment;
         parent::__construct();
     }
 
@@ -38,7 +51,7 @@ class CommentForm extends yii\base\Model
     {
         return [
             [['message'], 'required', 'isEmpty' => function ($message) {
-                $hasFile = !is_null($this->fileList) && !empty($this->fileList) ? true : false;
+                $hasFile = !empty($this->fileList) || (!$this->comment->isNewRecord && $this->comment->fileManager->find()->count());
 
                 //check if message empty and attached file exists
                 if (empty($message) && !$hasFile) {
@@ -79,47 +92,35 @@ class CommentForm extends yii\base\Model
         return '';
     }
 
-    /**
-     * Creates the form
-     *
-     * @return Comment|boolean
-     */
-    public function create()
-    {
-        $comment = new Comment(['message' => $this->message]);
-        return $this->save($comment);
-    }
 
     /**
      * Updates the form
      *
-     * @param Comment $comment
-     * @return Comment|boolean
+     * @return boolean
      */
-    public function update($comment)
+    public function update()
     {
-        $comment->message = $this->message;
-        return $this->save($comment);
+        $this->comment->message = $this->message;
+        return $this->save();
     }
 
 
     /**
      * Saves the form
      *
-     * @param Comment $comment
-     * @return Comment|boolean
+     * @return boolean
      */
-    public function save($comment)
+    public function save()
     {
-        $comment->setPolyMorphicRelation($this->target);
+        /**@var Comment $this->comment*/
+        $this->comment->setPolyMorphicRelation($this->target);
 
         //check if model saved
-        if ($comment->save()) {
-            $comment->fileManager->attach($this->fileList);
+        if ($this->comment->save()) {
+            $this->comment->fileManager->attach($this->fileList);
 
             // Reload comment to get populated created_at field
-            $comment->refresh();
-            $this->comment = $comment;
+            $this->comment->refresh();
             return true;
         } else {
             return false;
