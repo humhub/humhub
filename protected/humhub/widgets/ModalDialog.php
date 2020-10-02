@@ -17,7 +17,7 @@ class ModalDialog extends Modal
     /**
      * @var
      */
-    private $dialogClass;
+    public $dialogClass;
 
     /**
      * @inheritdoc

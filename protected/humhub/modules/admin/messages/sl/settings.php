@@ -95,6 +95,7 @@ return [
     'Port number' => '',
     'Prevent client caching of following scripts' => '',
     'Redis' => '',
+    'Reported database time: {dateTime}' => '',
     'SMTP Options' => '',
     'Save' => '',
     'Save & Flush Caches' => '',

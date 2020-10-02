@@ -94,7 +94,7 @@ class Modal extends JsWidget
     public $show = false;
 
     /**
-     * Defines if the modal should be shown at startup
+     * Defines if the text should be centered
      * @var boolean
      */
     public $centerText = false;

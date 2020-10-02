@@ -3,7 +3,12 @@ HumHub Changelog
 
 1.6.4 (Unreleased)
 ------------------
+
+This release also brings a [security update](https://github.com/yiisoft/yii2/security/advisories/GHSA-699q-wcff-g9mj) of the Yii2 framework. HumHub itself and the modules provided by our offical marketplace are not affected by this bug.
+
 - Fix #4361: Added missing nonce attribute in inline marketplace script
+- Fix #4371: Word break issue in notification dropdown
+- Fix #4384: Upgrade to Yii 2.0.38
 - Enh: Added long_description to Space
 - Enh: Added `humhub\modules\space\widgets\MyMembership` to manage render user state in a space
 - Enh: Added `humhub\modules\space\widgets\CustomSidebar` to manage displaying pre added widgets to sidebar

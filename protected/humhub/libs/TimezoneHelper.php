@@ -10,6 +10,8 @@ namespace humhub\libs;
 
 use DateTime;
 use DateTimeZone;
+use Yii;
+use yii\db\Exception;
 
 /**
  * TimezoneHelpers
@@ -65,7 +67,7 @@ class TimezoneHelper
         $timezone_list = [];
 
         foreach ($timezone_offsets as $timezone => $offset) {
-            if($withOffset) {
+            if ($withOffset) {
                 $offset_prefix = $offset < 0 ? '-' : '+';
                 $offset_formatted = gmdate('H:i', abs($offset));
                 $pretty_offset = "UTC${offset_prefix}${offset_formatted}";
@@ -76,5 +78,17 @@ class TimezoneHelper
         }
 
         return $timezone_list;
+    }
+
+    /**
+     * Returns the date time from the database connection
+     *
+     * @return DateTime
+     */
+    public static function getDatabaseConnectionTime(): DateTime
+    {
+
+        $timestamp = Yii::$app->db->createCommand('SELECT NOW()')->queryScalar();
+        return DateTime::createFromFormat("Y-m-d H:i:s", $timestamp);
     }
 }
