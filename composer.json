@@ -14,8 +14,11 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=7.0.0",
+        "ext-exif": "*",
         "ext-zip": "*",
         "cebe/markdown": "1.0.2",
+        "codeception/phpunit-wrapper": ">6.0.15 <6.1.0 | ^6.6.1 | ^7.7.1 | ^8.1.1 | ^9.0",
+        "codeception/stub": "^2.0 | ^3.0",
         "firebase/php-jwt": "^5.0",
         "jbroadway/urlify": "^1.0",
         "kartik-v/yii2-widgets": "*",
@@ -49,7 +52,7 @@
         "raoul2000/yii2-jcrop-widget": "*",
         "twig/twig": "^1.0",
         "xj/yii2-jplayer-widget": "*",
-        "yiisoft/yii2": "~2.0.35",
+        "yiisoft/yii2": "2.0.38",
         "yiisoft/yii2-authclient": "~2.2.0",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-httpclient": "~2.0.0",
@@ -59,10 +62,7 @@
         "yiisoft/yii2-redis": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "zendframework/zend-http": "*",
-        "zendframework/zend-ldap": "^2.5",
-        "codeception/phpunit-wrapper": ">6.0.15 <6.1.0 | ^6.6.1 | ^7.7.1 | ^8.1.1 | ^9.0",
-        "codeception/stub": "^2.0 | ^3.0",
-        "ext-exif": "*"
+        "zendframework/zend-ldap": "^2.5"
     },
     "require-dev": {
         "codeception/codeception": "^4.0",

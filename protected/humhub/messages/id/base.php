@@ -89,6 +89,7 @@ return [
     'An unexpected error occurred. If this keeps happening, please contact a site administrator.' => '',
     'An unexpected server error occurred. If this keeps happening, please contact a site administrator.' => '',
     'An unknown error occurred while uploading. Hint: check your upload_max_filesize and post_max_size php settings.' => '',
+    'Database connection time: {dbTime} - Configured time zone: {time}' => '',
     'Profile dropdown' => '',
     'The requested resource could not be found.' => '',
     'The space has been unarchived.' => '',

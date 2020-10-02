@@ -15,7 +15,11 @@ HumHub Changelog
 - Enh #4331: Added 'break-all' stylesheet option to stream entry layouts
 - Enh #4179: Removed deprecated mysql character set in log table migration
 - Enh #4324: Improved line break for menu entries with many characters
+- Fix #4186: Add Timezone validation rules to admin prerequisite view
 - Enh #4378: Implemented generic ContentContainerActiveRecord::is() function
+- Enh #4310: Add "Can Like" Permission 
+- Fix #4111: Issues Cropping Images
+- Fix #4385: Tour broken when profile start page is changed
 - Enh #3882: Rework of wall stream entry widget design and API
 - Enh #3882: Introduction of alternative `WallStreamModuleEntry` widget for collaborative content types
 - Chg #4397: Deprecated old wall entry widget and related stream logic (see `humhub\modules\stream\actions\LegacyStreamTrait.php`)
