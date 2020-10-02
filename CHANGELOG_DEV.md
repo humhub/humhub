@@ -19,3 +19,4 @@ HumHub Changelog
 - Enh #4378: Implemented generic ContentContainerActiveRecord::is() function
 - Enh #4310: Add "Can Like" Permission 
 - Fix #4111: Issues Cropping Images
+- Fix #4385: Tour broken when profile start page is changed
