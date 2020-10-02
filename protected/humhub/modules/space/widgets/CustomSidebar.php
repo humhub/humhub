@@ -18,7 +18,7 @@ class CustomSidebar extends Sidebar
     /**
      * @var array
      */
-    public $customWidget;
+    public $customWidgets;
 
     public function init()
     {
@@ -27,7 +27,7 @@ class CustomSidebar extends Sidebar
         if (!$this->baseWidgets)
             $this->widgets = [];
 
-        foreach ($this->customWidget as $widget) {
+        foreach ($this->customWidgets as $widget) {
             $this->widgets[] = $widget;
         }
     }

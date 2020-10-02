@@ -187,6 +187,9 @@ class Space extends ContentContainerActiveRecord implements Searchable
         ];
     }
 
+    /**
+     * @return array
+     */
     public static function visibilityOptions()
     {
         return [
@@ -196,6 +199,9 @@ class Space extends ContentContainerActiveRecord implements Searchable
         ];
     }
 
+    /**
+     * @return array
+     */
     public static function joinPolicyOptions()
     {
         return [
@@ -654,6 +660,11 @@ class Space extends ContentContainerActiveRecord implements Searchable
         return Content::VISIBILITY_PRIVATE;
     }
 
+    /**
+     * Returns space privileged groups and their members` User model in array
+     *
+     * @return array
+     */
     public function getPrivilegedGroupUsers()
     {
         $owner = $this->getOwnerUser()->one();

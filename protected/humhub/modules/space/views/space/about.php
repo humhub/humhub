@@ -96,7 +96,7 @@ use humhub\modules\user\widgets\Image;
 
 <?php
 $this->beginBlock('sidebar'); ?>
-<?= CustomSidebar::widget(['space' => $space, 'baseWidgets' => false, 'customWidget' => [
+<?= CustomSidebar::widget(['space' => $space, 'baseWidgets' => false, 'customWidgets' => [
     [MyMembership::class, ['space' => $space], ['sortOrder' => 10]],
     [Members::class, ['space' => $space], ['sortOrder' => 20]]
 ]]);
