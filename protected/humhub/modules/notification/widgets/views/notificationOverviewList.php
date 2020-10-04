@@ -10,7 +10,7 @@ use yii\helpers\Html;
             <?php try  { ?>
                 <?= $notification->render() ?>
             <?php } catch(\Throwable $t) {
-                Yii::warning($t);
+                Yii::warning($t, 'notification');
             }?>
         <?php endforeach; ?>
         <?php if (empty($notifications)) : ?>
