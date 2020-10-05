@@ -24,6 +24,10 @@ use humhub\modules\user\assets\UserAsset;
  */
 class StreamAsset extends AssetBundle
 {
+    public $publishOptions = [
+        'forceCopy' => true
+    ];
+
     /**
      * @inheritdoc
      */
