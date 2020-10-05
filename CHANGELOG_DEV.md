@@ -19,3 +19,4 @@ HumHub Changelog
 - Enh #4378: Implemented generic ContentContainerActiveRecord::is() function
 - Enh #4310: Add "Can Like" Permission 
 - Fix #4111: Issues Cropping Images
+- Enh #4283: Implemented UserMemberSince and UserLastLogin user's profile virtual fields 
