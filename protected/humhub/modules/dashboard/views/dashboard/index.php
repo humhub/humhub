@@ -12,7 +12,7 @@ use humhub\libs\Html;
 
 ?>
 
-<?= Html::beginContainer(); ?>
+<?= Html::beginContainer() ?>
 <div class="row">
     <div class="col-md-8 layout-content-container">
         <?= DashboardContent::widget([
@@ -35,4 +35,4 @@ use humhub\libs\Html;
         <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>
     </div>
 </div>
-<?= Html::endContainer(); ?>
+<?= Html::endContainer() ?>

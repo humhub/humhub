@@ -31,7 +31,7 @@ return [
     'Insufficent permissions!' => 'Manglende tillatelse.',
     'Read full comment...' => 'Les hele kommentaren...',
     'Send' => 'Send',
-    'Show all {total} comments.' => 'Vis alle {total} kommentarer.',
+    'Show all {total} comments' => 'Vis alle {total} kommentarer',
     'Show {count} more comments' => 'Vis {count} flere kommentarer',
     'The comment must not be empty!' => 'Kommentaren kan ikke være tom.',
     'Whenever a new comment was written.' => 'når noen skriver en kommentar i en av dine grupper',

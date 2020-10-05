@@ -30,7 +30,7 @@ return [
     'Insufficent permissions!' => 'Manglende adgang',
     'Read full comment...' => 'Læs fuld kommentar...',
     'Send' => 'Send',
-    'Show all {total} comments.' => 'Vis alle {total} kommentarer.',
+    'Show all {total} comments' => 'Vis alle {total} kommentarer',
     'Show {count} more comments' => 'Vis {count} yderligere kommentarer',
     'The comment must not be empty!' => 'Kommentaren må ikke være tom!',
     'Whenever a new comment was written.' => 'Når som helst en ny kommentar blev skrevet.',

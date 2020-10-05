@@ -31,7 +31,7 @@ return [
     'Insufficent permissions!' => 'Nedovoljno dopuštenje!',
     'Read full comment...' => 'Pročitaj sve..',
     'Send' => 'Pošalji',
-    'Show all {total} comments.' => 'Prikaži sve {total} komentare.',
+    'Show all {total} comments' => 'Prikaži sve {total} komentare',
     'Show {count} more comments' => 'Prikaži {count} više komentara',
     'Whenever a new comment was written.' => 'Kad god je napisan novi komentar.',
     'Write a new comment...' => 'Napiši novi komentar...',

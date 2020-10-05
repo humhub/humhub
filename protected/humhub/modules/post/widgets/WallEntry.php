@@ -8,10 +8,12 @@
 
 namespace humhub\modules\post\widgets;
 
+use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
+
 /**
  * @inheritdoc
  */
-class WallEntry extends \humhub\modules\content\widgets\WallEntry
+class WallEntry extends WallStreamEntryWidget
 {
 
     /**
@@ -22,9 +24,12 @@ class WallEntry extends \humhub\modules\content\widgets\WallEntry
     /**
      * @inheritdoc
      */
-    public function run()
+    protected function renderContent()
     {
-        return $this->render('wallEntry', ['post' => $this->contentObject, 'justEdited' => $this->justEdited]);
+        return $this->render('wallEntry', [
+            'post' => $this->model,
+            'justEdited' => $this->renderOptions->isJustEdited(), // compatibility for themed legacy views
+            'renderOptions' => $this->renderOptions
+        ]);
     }
-
 }

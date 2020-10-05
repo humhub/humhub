@@ -23,6 +23,32 @@ class Module extends \humhub\components\Module
      */
     public $isCoreModule = true;
 
+    /**
+     * @var array contains all available icon aliases
+     */
+    public $iconAlias = [
+        'dropdownToggle' => 'angle-down'
+    ];
+
+    /**
+     * @return static
+     */
+    public static function getModuleInstance()
+    {
+        /* @var $module static*/
+        $module =  Yii::$app->getModule('ui');
+        return $module;
+    }
+
+    /**
+     * @param $name
+     * @return string|null
+     */
+    public function getIconAlias($name)
+    {
+        return $this->iconAlias[$name] ?? $name;
+    }
+
 
     /**
      * @inheritdoc

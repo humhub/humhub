@@ -186,6 +186,19 @@ class Html extends \yii\bootstrap\Html
     }
 
     /**
+     * Adds a tooltip to the given options array.
+     * Note, this will overwrite the title attribute.
+     *
+     * @param $options
+     * @param $tooltip
+     */
+    public static function addTooltip(&$options, $tooltip)
+    {
+        static::addCssClass($options, 'tt');
+        $options['title'] = $tooltip;
+    }
+
+    /**
      * Starts a Bootstrap container tag.
      *
      * @param $fluid null|boolean if null fluid will be used if supported by active theme

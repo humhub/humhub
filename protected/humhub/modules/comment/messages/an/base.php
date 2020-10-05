@@ -31,7 +31,7 @@ return [
     'Insufficent permissions!' => 'Premisos insuficients!',
     'Read full comment...' => 'Leyer tot o comentario',
     'Send' => 'Ninviar',
-    'Show all {total} comments.' => 'Veyer totz os {total} comentarios.',
+    'Show all {total} comments' => 'Veyer totz os {total} comentarios',
     'Show {count} more comments' => 'Veyer {count} comentarios mas',
     'Whenever a new comment was written.' => 'Quan un comentario s\'ha publicau.',
     'Write a new comment...' => 'Escribir un nuevo comentario...',

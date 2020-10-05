@@ -26,7 +26,7 @@ return [
     'Edit' => '編集',
     'Insufficent permissions!' => '権限が不十分です！',
     'Send' => '送信',
-    'Show all {total} comments.' => '合計{total}コメントを、すべて表示します。',
+    'Show all {total} comments' => '合計{total}コメントを、すべて表示します。',
     'Write a new comment...' => '新規コメントを書く...',
     'comment' => 'コメント',
     '{displayName} wrote a new comment ' => '{displayName}さんが新しいコメントを書きました ',

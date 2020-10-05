@@ -62,7 +62,7 @@ class StreamViewer extends JsWidget
     public $messageStreamEmptyWithFilters = "";
 
     /**
-     * 
+     *
      * @var string the CSS Class(es) for empty stream error with enabled filters
      */
     public $messageStreamEmptyWithFiltersCss = "";
@@ -97,6 +97,7 @@ class StreamViewer extends JsWidget
      * @inheritdoc
      */
     public $init = true;
+
 
     /**
      * @inheritdoc
@@ -169,9 +170,12 @@ class StreamViewer extends JsWidget
             throw new InvalidConfigException('You need to set the streamAction attribute to use this widget!');
         }
 
-        $filterNav = ($this->showFilters && !empty($this->streamFilterNavigation)) ? call_user_func($this->streamFilterNavigation.'::widget', [
-            'definition' => $this->filters
-        ]) : '';
+        $filterNav = ($this->showFilters && !empty($this->streamFilterNavigation))
+            ? call_user_func($this->streamFilterNavigation.'::widget', [
+                'definition' => $this->filters,
+                'componentId' => $this->getId(true)
+            ])
+            : '';
 
         return $this->render($this->view, [
                 'filterNav' => $filterNav,

@@ -32,7 +32,7 @@ return [
     'Read full comment...' => '',
     'Reply' => '',
     'Send' => '',
-    'Show all {total} comments.' => '',
+    'Show all {total} comments' => '',
     'Show {count} more comments' => '',
     'The comment must not be empty!' => '',
     'Whenever a new comment was written.' => '',

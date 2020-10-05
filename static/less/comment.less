@@ -1,10 +1,23 @@
 //
 // Comments
 // --------------------------------------------------
+
+@commentLeftMargin:35px;
+
 .comment-container {
     margin-top: 10px;
     .wall-entry-controls {
-        margin-left: 50px;
+        margin-left: @commentLeftMargin;
+    }
+}
+
+@media (max-width: 767px) {
+    .comment {
+        .post-files {
+            img {
+                height: 100px;
+            }
+        }
     }
 }
 
@@ -27,6 +40,7 @@
     .jp-progress {
         background-color: #dbdcdd !important;
     }
+
     .jp-play-bar {
         background: #cacaca;
     }
@@ -36,13 +50,17 @@
             color: darken(@info, 20%);
         }
     }
+
+    .post-file-list {
+        background-color: @background-color-page;
+    }
 }
 
 .comment.guest-mode {
     .media:last-child {
         .wall-entry-controls {
             margin-bottom: 0;
-            margin-left: 50px;
+            margin-left: @commentLeftMargin;
         }
         hr {
             display: none;
@@ -60,6 +78,11 @@
         bottom: 2px;
         right: 5px;
         z-index:300;
+
+        button {
+            background-color: @link !important;
+            color: @text-color-contrast !important;
+        }
     }
 
     .has-error + .comment-buttons {
@@ -74,14 +97,18 @@
         float: left;
         padding: 6px 10px;
         background: transparent !important;
-        .fa {
-            color: @background3;
+        i {
+            color: @text-color-soft2;
+        }
+        i:hover {
+            color: @link;
         }
     }
-    .fileinput-button:hover .fa {
-        background: transparent !important;
-        color: @background4;
+
+    .fileinput-button:hover i {
+        color: @link;
     }
+
     .fileinput-button:active {
         box-shadow: none !important;
     }
@@ -94,6 +121,8 @@
     }
 }
 
+
+
 .comment-container .content_edit {
     margin-left: 50px;
 }
@@ -105,12 +134,13 @@
 }
 
 .comment_edit_content {
-    margin-left: 50px;
+    margin-left: @commentLeftMargin;
+    margin-top: 0;
 }
 
 .comment-message {
     overflow:hidden;
-    overflow-wrap: break-word;
+    .text-break();
 }
 
 .comment-create-input-group {
@@ -127,6 +157,13 @@
     .comment-buttons {
         right: 22px;
     }
+}
+
+.comment .media .media-body h4.media-heading a  {
+    font-size: 13px;
+    color: @text-color-highlight;
+    margin-bottom: 3px;
+    font-weight: 500;
 }
 
 // Hide seperator of last comment. Seperator is included in optional comment form
@@ -146,6 +183,8 @@ hr.comments-start-separator {
 }
 
 div.nested-comments-root {
+    margin-left: 28px;
+
     .ProseMirror-menubar-wrapper {
         z-index: 210;
     }

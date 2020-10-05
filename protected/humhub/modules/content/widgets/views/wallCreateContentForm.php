@@ -72,11 +72,12 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
 
                 <?php
                 $uploadButton = UploadButton::widget([
-                            'id' => 'contentFormFiles',
-                            'progress' => '#contentFormFiles_progress',
-                            'preview' => '#contentFormFiles_preview',
-                            'dropZone' => '#contentFormBody',
-                            'max' => Yii::$app->getModule('content')->maxAttachedFiles
+                    'id' => 'contentFormFiles',
+                    'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
+                    'progress' => '#contentFormFiles_progress',
+                    'preview' => '#contentFormFiles_preview',
+                    'dropZone' => '#contentFormBody',
+                    'max' => Yii::$app->getModule('content')->maxAttachedFiles
                 ]);
                 ?>
                 <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>

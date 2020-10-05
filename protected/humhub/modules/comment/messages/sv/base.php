@@ -31,7 +31,7 @@ return [
     'Insufficent permissions!' => 'Otillräckliga rättigheter!',
     'Read full comment...' => 'Läs hela kommentaren...',
     'Send' => 'Skicka',
-    'Show all {total} comments.' => 'Visa alla {total} kommentarer.',
+    'Show all {total} comments' => 'Visa alla {total} kommentarer',
     'Show {count} more comments' => 'Visa {count} fler kommentarer',
     'The comment must not be empty!' => 'Kommentaren kan inte vara tom!',
     'Whenever a new comment was written.' => 'När en kommentar var skriven.',

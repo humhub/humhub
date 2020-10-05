@@ -20,4 +20,18 @@ HumHub Changelog
 - Enh #4310: Add "Can Like" Permission 
 - Fix #4111: Issues Cropping Images
 - Fix #4385: Tour broken when profile start page is changed
+- Enh #3882: Rework of wall stream entry widget design and API
+- Enh #3882: Introduction of alternative `WallStreamModuleEntry` widget for collaborative content types
+- Chg #4397: Deprecated old wall entry widget and related stream logic (see `humhub\modules\stream\actions\LegacyStreamTrait.php`)
+- Fix #4391: ActiveRecord `created_at` and `updated_at` contains invalid value after save
+- Chg #4397: Default theme color alignment and new `@link` color variable
+- Enh #4419: Implementation of view context http header `HUMHUB-VIEW-CONTEXT`
+- Fix #4420: Uncaught Throwable destroys search layout
+- Enh #4421: Added `Html::addTooltip()` to add tooltips to an option array
+- Fix #4422: Invalid Html semantic in activity stream (`li` wrapped by `a`)
+- Enh #4423: Implemented icon alias configuration in ui module class
+- Enh #4424: Posts content with short text is emphasized
+- Enh #4425: Use of accessibility compatible icon tooltips
+- Fix #4408: JPlayer on mobile overflows stream content
+- Fix #4382: Use of proper word break style
 - Fix #3566: Bug in models/filetype/CheckboxList.php
