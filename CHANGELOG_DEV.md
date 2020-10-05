@@ -34,3 +34,4 @@ HumHub Changelog
 - Enh #4425: Use of accessibility compatible icon tooltips
 - Fix #4408: JPlayer on mobile overflows stream content
 - Fix #4382: Use of proper word break style
+- Fix #3566: Bug in models/filetype/CheckboxList.php
