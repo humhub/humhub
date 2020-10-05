@@ -20,3 +20,4 @@ HumHub Changelog
 - Enh #4310: Add "Can Like" Permission 
 - Fix #4111: Issues Cropping Images
 - Fix #4385: Tour broken when profile start page is changed
+- Fix #3566: Bug in models/filetype/CheckboxList.php

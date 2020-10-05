@@ -188,8 +188,10 @@ class CheckboxList extends BaseType
 
             $options = $this->getSelectItems();
             $translatedValues = [];
-
-            foreach (explode("\n", $value) as $v) {
+            if (is_string($value)) {
+                $value = explode("\n", $value);
+            }
+            foreach ($value as $v) {
                 if ($v === 'other' && !empty($user->profile->$internalNameOther)) {
                     $translatedValues[] = Html::encode($user->profile->$internalNameOther);
                 } elseif (isset($options[$v])) {
