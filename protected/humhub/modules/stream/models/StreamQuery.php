@@ -3,6 +3,7 @@
 namespace humhub\modules\stream\models;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\stream\models\filters\PollsStreamFilter;
 use humhub\modules\stream\models\filters\StreamQueryFilter;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -131,6 +132,7 @@ class StreamQuery extends Model
      */
     public $filterHandlers = [
         DefaultStreamFilter::class,
+        PollsStreamFilter::class,
         TopicStreamFilter::class,
         ContentTypeStreamFilter::class,
         OriginatorStreamFilter::class,

@@ -13,6 +13,8 @@ This release also brings a [security update](https://github.com/yiisoft/yii2/sec
 - Fix #4384: Upgrade to Yii 2.0.38
 - Fix #4403: Space Picker Double HTML Encode
 - Fix #4385: Tour broken when profile start page is changed
+- Fix #60:   "No answered yet" filter not working
+
 
 
 1.6.3 (September 9, 2020)
