@@ -35,3 +35,4 @@ HumHub Changelog
 - Fix #4408: JPlayer on mobile overflows stream content
 - Fix #4382: Use of proper word break style
 - Fix #3566: Bug in models/filetype/CheckboxList.php
+- Enh #4401: Allow to use less variable name in value of another less variable
