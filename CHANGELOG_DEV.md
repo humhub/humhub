@@ -37,3 +37,8 @@ HumHub Changelog
 - Fix #3566: Bug in models/filetype/CheckboxList.php
 - Enh #4401: Allow to use less variable name in value of another less variable
 - Fix #4434: Fix title quoting for space icons in widget “Member in these spaces”
+- Enh #4370: Add "summary" to `Space` model
+- Enh #4370: Add `humhub\modules\space\widgets\MyMembership` to manage render user state in a space
+- Enh #4370: Add `humhub\modules\space\widgets\AboutPageSidebar` to manage about page sidebar
+- Enh #4370: Add `About Space` page 
+
