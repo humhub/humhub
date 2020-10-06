@@ -45,6 +45,7 @@ use Yii;
  * @property string $guid
  * @property string $name
  * @property string $description
+ * @property string $summary
  * @property string $url
  * @property integer $join_policy
  * @property integer $visibility
@@ -119,7 +120,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
         $rules = [
             [['join_policy', 'visibility', 'status', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
             [['name'], 'required'],
-            [['description', 'tags', 'color'], 'string'],
+            [['description', 'summary', 'tags', 'color'], 'string'],
             [['join_policy'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'checkVisibility'],
@@ -145,7 +146,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     {
         $scenarios = parent::scenarios();
 
-        $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'tags', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
+        $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'summary', 'tags', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
         $scenarios[static::SCENARIO_CREATE] = ['name', 'color', 'description', 'join_policy', 'visibility'];
         $scenarios[static::SCENARIO_SECURITY_SETTINGS] = ['default_content_visibility', 'join_policy', 'visibility'];
 
@@ -162,6 +163,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             'name' => Yii::t('SpaceModule.base', 'Name'),
             'color' => Yii::t('SpaceModule.base', 'Color'),
             'description' => Yii::t('SpaceModule.base', 'Description'),
+            'summary' => Yii::t('SpaceModule.base', 'Summary'),
             'join_policy' => Yii::t('SpaceModule.base', 'Join Policy'),
             'visibility' => Yii::t('SpaceModule.base', 'Visibility'),
             'status' => Yii::t('SpaceModule.base', 'Status'),
