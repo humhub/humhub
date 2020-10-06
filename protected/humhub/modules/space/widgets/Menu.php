@@ -46,15 +46,26 @@ class Menu extends LeftNavigation
 
         $this->panelTitle = Yii::t('SpaceModule.base', '<strong>Space</strong> menu');
 
+        parent::init();
+
+        if (!$this->space->isMember())
+            $this->entries = [];
+
         $this->addEntry(new MenuLink([
             'label' => Yii::t('SpaceModule.base', 'Stream'),
             'url' => $this->space->createUrl('/space/space/home'),
-            'icon' => 'fa-bars',
+            'icon' => 'bars',
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState('space', 'space', ['index', 'home']),
         ]));
 
-        parent::init();
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('SpaceModule.base', 'About Space'),
+            'url' => $this->space->createUrl('/space/space/about'),
+            'icon' => 'info-circle',
+            'sortOrder' => 100,
+            'isActive' => MenuLink::isActiveState('space', 'space', ['about']),
+        ]));
     }
 
     /**
