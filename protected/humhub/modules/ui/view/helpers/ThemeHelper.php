@@ -144,7 +144,7 @@ class ThemeHelper
             $variables = ArrayHelper::merge($variables, LessHelper::parseLessVariables(LessHelper::getVariableFile($theme)));
         }
 
-        return $variables;
+        return LessHelper::updateLinkedLessVariables($variables);
     }
 
 
