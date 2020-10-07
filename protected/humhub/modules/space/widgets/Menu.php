@@ -48,7 +48,7 @@ class Menu extends LeftNavigation
 
         parent::init();
 
-        if (!$this->space->isMember())
+        if (!$this->space->isMember() && $this->space->visibility == Space::VISIBILITY_NONE)
             $this->entries = [];
 
         $this->addEntry(new MenuLink([
