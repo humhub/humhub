@@ -37,3 +37,4 @@ HumHub Changelog
 - Fix #3566: Bug in models/filetype/CheckboxList.php
 - Enh #4401: Allow to use less variable name in value of another less variable
 - Fix #4434: Fix title quoting for space icons in widget “Member in these spaces”
+- Fix #4428: Replace db Expression time now with func date('Y-m-d G:i:s')
