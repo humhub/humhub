@@ -6,6 +6,7 @@ namespace humhub\modules\stream\actions;
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use Yii;
 use yii\base\Exception;
@@ -115,7 +116,8 @@ trait LegacyStreamTrait
 
 
         if(is_subclass_of($record->wallEntryClass, WallStreamEntryWidget::class, true)) {
-            return $record->getWallOut($options);
+            // This was added just in case we somehow run this with a new wall entry widget
+            return StreamEntryWidget::renderStreamEntry($record);
         }
 
         return static::renderLegacyWallEntry( $record, $options, $partial);

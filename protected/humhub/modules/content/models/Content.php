@@ -206,7 +206,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             }
         }
 
-        $this->stream_sort_date = new \yii\db\Expression('NOW()');
+        $this->stream_sort_date = date('Y-m-d G:i:s');
 
         if ($this->created_by == "") {
             throw new Exception("Could not save content without created_by!");
@@ -853,7 +853,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function updateStreamSortTime()
     {
-        $this->updateAttributes(['stream_sort_date' => new \yii\db\Expression('NOW()')]);
+        $this->updateAttributes(['stream_sort_date' => date('Y-m-d G:i:s')]);
     }
 
     /**

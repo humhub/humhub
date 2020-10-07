@@ -84,7 +84,7 @@ class RegistrationController extends Controller
             // Autologin when user is enabled (no approval required)
             if ($registration->getUser()->status === User::STATUS_ENABLED) {
                 Yii::$app->user->switchIdentity($registration->models['User']);
-                $registration->models['User']->updateAttributes(['last_login' => new \yii\db\Expression('NOW()')]);
+                $registration->models['User']->updateAttributes(['last_login' => date('Y-m-d G:i:s')]);
                 if (Yii::$app->request->getIsAjax()) {
                     return $this->htmlRedirect(Yii::$app->user->returnUrl);
                 }
