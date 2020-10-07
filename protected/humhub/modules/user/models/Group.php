@@ -220,11 +220,12 @@ class Group extends ActiveRecord
      * @param User $user user id or user model
      * @param bool $isManager mark as group manager
      * @throws \yii\base\InvalidConfigException
+     * @return bool true - on success adding user, false - if already member or cannot be added by some reason
      */
     public function addUser($user, $isManager = false)
     {
         if ($this->isMember($user)) {
-            return;
+            return false;
         }
 
         $userId = ($user instanceof User) ? $user->id : $user;
@@ -240,7 +241,10 @@ class Group extends ActiveRecord
                 ->about($this)
                 ->from(Yii::$app->user->identity)
                 ->send(User::findOne(['id' => $userId]));
+            return true;
         }
+
+        return false;
     }
 
     /**
