@@ -12,7 +12,6 @@ use Yii;
 use yii\base\ErrorException;
 use yii\db\ActiveRecord;
 use yii\base\Exception;
-use yii\db\Expression;
 use humhub\libs\UUID;
 use humhub\modules\user\components\CheckPasswordValidator;
 
@@ -55,7 +54,7 @@ class Password extends ActiveRecord
 
     public function beforeSave($insert)
     {
-        $this->created_at = new Expression('NOW()');
+        $this->created_at = date('Y-m-d G:i:s');
 
         return parent::beforeSave($insert);
     }

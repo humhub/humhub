@@ -15,7 +15,6 @@ use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use yii\authclient\ClientInterface;
-use yii\db\Expression;
 
 /**
  * Description of User
@@ -198,7 +197,7 @@ class User extends \yii\web\User
      */
     public function afterLogin($identity, $cookieBased, $duration)
     {
-        $identity->updateAttributes(['last_login' => new Expression('NOW()')]);
+        $identity->updateAttributes(['last_login' => date('Y-m-d G:i:s')]);
 
         parent::afterLogin($identity, $cookieBased, $duration);
     }
