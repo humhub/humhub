@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use humhub\libs\Html;
+use Yii;
 
 /**
  * UserMemberSince is a virtual profile field
@@ -28,8 +29,6 @@ class UserMemberSince extends BaseTypeVirtual
             return '';
         }
 
-        if ($raw) {
-            return Html::encode($user->created_at);
-        }
+        return Yii::$app->formatter->asDate($user->created_at,'long');
     }
 }
