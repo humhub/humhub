@@ -86,6 +86,8 @@ class BaseType extends Model
             CheckboxList::class => Yii::t('UserModule.profile', 'Checkbox List'),
             UserEmail::class => Yii::t('UserModule.profile', 'E-mail address of the user'),
             UserName::class => Yii::t('UserModule.profile', 'Username'),
+            UserMemberSince::class => Yii::t('UserModule.profile', 'Creation date of the user'),
+            UserLastLogin::class => Yii::t('UserModule.profile', 'Last login date of the user'),
         ], $this->fieldTypes);
 
         return $fieldTypes;

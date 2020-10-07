@@ -19,6 +19,7 @@ HumHub Changelog
 - Enh #4378: Implemented generic ContentContainerActiveRecord::is() function
 - Enh #4310: Add "Can Like" Permission 
 - Fix #4111: Issues Cropping Images
+- Enh #4283: Implemented UserMemberSince and UserLastLogin user's profile virtual fields 
 - Fix #4385: Tour broken when profile start page is changed
 - Enh #3882: Rework of wall stream entry widget design and API
 - Enh #3882: Introduction of alternative `WallStreamModuleEntry` widget for collaborative content types
