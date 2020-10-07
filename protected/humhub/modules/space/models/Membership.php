@@ -146,7 +146,7 @@ class Membership extends ActiveRecord
      */
     public function updateLastVisit()
     {
-        $this->last_visit = new \yii\db\Expression('NOW()');
+        $this->last_visit = date('Y-m-d G:i:s');
         $this->update(false, ['last_visit']);
     }
 
