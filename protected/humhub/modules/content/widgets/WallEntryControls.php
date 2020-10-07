@@ -47,7 +47,10 @@ class WallEntryControls extends Menu
     {
         if(!$this->renderOptions && $this->wallEntryWidget instanceof WallStreamEntryWidget) {
             $this->renderOptions = $this->wallEntryWidget->renderOptions;
+        } else if(!$this->renderOptions) {
+            $this->renderOptions = new WallStreamEntryOptions();
         }
+
         parent::init();
     }
 
