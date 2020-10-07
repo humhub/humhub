@@ -28,7 +28,7 @@ use yii\helpers\Url;
 
             <!-- start: show wall entry options -->
             <?php if ($renderControls) : ?>
-                <?= WallEntryControls::widget(['object' => $object, 'wallEntryWidget' => $wallEntryWidget]); ?>
+                <?= WallEntryControls::widget(['object' => $object, 'wallEntryWidget' => $wallEntryWidget]) ?>
             <?php endif; ?>
             <!-- end: show wall entry options -->
 

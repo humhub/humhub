@@ -232,7 +232,7 @@ class Group extends ActiveRecord
         $newGroupUser = new GroupUser();
         $newGroupUser->user_id = $userId;
         $newGroupUser->group_id = $this->id;
-        $newGroupUser->created_at = new \yii\db\Expression('NOW()');
+        $newGroupUser->created_at = date('Y-m-d G:i:s');
         $newGroupUser->created_by = Yii::$app->user->id;
         $newGroupUser->is_group_manager = $isManager;
         if ($newGroupUser->save() && !Yii::$app->user->isGuest) {

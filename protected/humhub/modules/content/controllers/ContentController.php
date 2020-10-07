@@ -9,6 +9,7 @@
 namespace humhub\modules\content\controllers;
 
 use humhub\modules\content\Module;
+use humhub\modules\stream\actions\StreamEntryResponse;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
@@ -42,30 +43,6 @@ class ContentController extends Controller
                 'class' => AccessControl::class,
             ]
         ];
-    }
-
-    public function actionViewModal($id)
-    {
-        $content = Content::findOne(['id' => $id]);
-
-        if (!$content) {
-            throw new NotFoundHttpException();
-        }
-
-        if (!$content->canView()) {
-            throw new ForbiddenHttpException();
-        }
-
-        if (!Yii::$app->request->isAjax) {
-            return $this->redirect(['/content/perma', 'id' => $content->id]);
-        }
-
-        $entry = $content->getPolymorphicRelation();
-        if ($entry === null) {
-            throw new HttpException(500);
-        }
-
-        return $this->renderAjax('view-modal', ['entry' => $entry]);
     }
 
     /**
@@ -174,13 +151,16 @@ class ContentController extends Controller
     public function actionReload($id)
     {
         $content = Content::findOne(['id' => $id]);
+
         if (!$content) {
             throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
-        } elseif (!$content->canView()) {
+        }
+
+        if (!$content->canView()) {
             throw new HttpException(403);
         }
 
-        return $this->asJson(Stream::getContentResultEntry($content, false));
+        return StreamEntryResponse::getAsJson($content);
     }
 
     /**
@@ -188,7 +168,11 @@ class ContentController extends Controller
      *
      * @param type $id content id
      * @return Response
+     * @throws Exception
      * @throws HttpException
+     * @throws InvalidConfigException
+     * @throws \Throwable
+     * @throws \yii\db\IntegrityException
      */
     public function actionToggleVisibility($id)
     {

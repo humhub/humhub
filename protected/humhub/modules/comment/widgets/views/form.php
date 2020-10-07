@@ -48,6 +48,7 @@ $isHidden = ($objectModel === \humhub\modules\comment\models\Comment::class);
         <div class="comment-buttons">
             <?= UploadButton::widget([
                 'id' => 'comment_create_upload_' . $id,
+                'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
                 'options' => ['class' => 'main_comment_upload'],
                 'progress' => '#comment_create_upload_progress_' . $id,
                 'preview' => '#comment_create_upload_preview_' . $id,

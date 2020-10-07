@@ -9,6 +9,8 @@
 namespace humhub\modules\content\components;
 
 use humhub\modules\content\models\Movable;
+use humhub\modules\content\widgets\stream\StreamEntryWidget;
+use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicLabel;
 use humhub\modules\user\behaviors\Followable;
@@ -27,25 +29,30 @@ use yii\base\InvalidConfigException;
 /**
  * ContentActiveRecord is the base ActiveRecord [[\yii\db\ActiveRecord]] for Content.
  *
- * Each instance automatically belongs to a [[\humhub\modules\content\models\Content]] record which is accessible via the content attribute.
- * This relations will be automatically added/updated and is also available before this record is inserted.
+ * Each instance automatically is related to a [[\humhub\modules\content\models\Content]] record which is accessible via
+ * the `$model->content` attribute.
  *
- * The Content record/model holds all neccessary informations/methods like:
- * - Related ContentContainer (must be set before save!)
+ * The Content record contains metadata as:
+ * - Related ContentContainer
  * - Visibility
- * - Meta information (created_at, created_by, ...)
- * - Wall handling, archiving, pinning, ...
+ * - Permission function as: `canEdit`, 'canView', 'canMove', ...
+ * - Meta information: created_at, created_by, updated_at, updated_by
+ * - State: archived, pinned, ...
  *
- * Before adding a new ContentActiveRecord instance, you need at least assign an ContentContainer.
- *
- * Example:
+ * Most content types will be related to one [[ContentContainerActiveRecord]] as in the following example:
  *
  * ```php
- * $post = new Post();
- * $post->content->container = $space;
- * $post->content->visibility = Content::VISIBILITY_PRIVATE; // optional
- * $post->message = "Hello world!";
+ * // Create a post related to a given $space
+ * $post = new Post($space, ['message' => "Hello world!"]);
  * $post->save();
+ * ```
+ *
+ * If your content type supports not being related to a container you can create global content records as follows:
+ *
+ * ```php
+ * // Create a global content type without container relation
+ * $myContentModel = new SomeGlobalContentType(['someField' => 'someValue']);
+ * $myContentModel->save()
  * ```
  *
  * Note: If the underlying Content record cannot be saved or validated an Exception will thrown.
@@ -59,10 +66,10 @@ use yii\base\InvalidConfigException;
 class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
 {
     /**
-     * @see \humhub\modules\content\widgets\WallEntry
-     * @var string the WallEntry widget class
+     * @see StreamEntryWidget
+     * @var string the StreamEntryWidget widget class
      */
-    public $wallEntryClass = "";
+    public $wallEntryClass;
 
     /**
      * @var boolean should the originator automatically follows this content when saved.
@@ -313,25 +320,27 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * Returns the wall output widget of this content.
      *
      * @param array $params optional parameters for WallEntryWidget
+     * @deprecated since 1.7 use StreamEntryWidget::renderStreamEntry()
      * @return string
-     * @throws \Exception
      */
     public function getWallOut($params = [])
     {
-        if(!empty($this->wallEntryClass)) {
-            $params['contentObject'] = $this;
-            return call_user_func($this->wallEntryClass.'::widget', $params);
+        if(is_subclass_of($this->wallEntryClass, StreamEntryWidget::class, true)) {
+            $params['model'] = $this;
+        } else if(!empty($this->wallEntryClass)) {
+            $params['contentObject'] = $this; // legacy WallEntry widget
         }
 
-        return "";
+        return call_user_func($this->wallEntryClass.'::widget', $params);
     }
 
     /**
      * Returns an instance of the assigned wall entry widget instance. This can be used to check matadata fields
      * of the related widget.
      *
-     * @return null|WallEntry for this class by wallEntryClass property , null will be
+     * @return null|WallEntry|WallStreamEntryWidget for this class by wallEntryClass property , null will be
      * returned if this wallEntryClass is empty
+     * @deprecated since 1.7
      */
     public function getWallEntryWidget()
     {

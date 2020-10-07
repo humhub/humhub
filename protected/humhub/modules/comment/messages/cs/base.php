@@ -31,7 +31,7 @@ return [
     'Insufficent permissions!' => 'Nedostatečná oprávnění!',
     'Read full comment...' => 'Přečíst celý komentář',
     'Send' => 'Odeslat',
-    'Show all {total} comments.' => 'Zobrazit všech {total} komentářů.',
+    'Show all {total} comments' => 'Zobrazit všech {total} komentářů',
     'Show {count} more comments' => 'Zobrazit dalších {count} komentářů',
     'Whenever a new comment was written.' => 'Kdykoli byl napsán nový komentář.',
     'Write a new comment...' => 'Napište komentář...',

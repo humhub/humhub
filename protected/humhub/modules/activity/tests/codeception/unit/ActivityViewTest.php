@@ -5,6 +5,7 @@ namespace humhub\modules\activity\tests\codeception\unit;
 use humhub\modules\activity\tests\codeception\activities\TestActivityDefaultLayout;
 use humhub\modules\activity\tests\codeception\activities\TestViewActivity;
 use humhub\modules\activity\tests\codeception\activities\TestActivity;
+use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\post\models\Post;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -17,7 +18,7 @@ class ActivityViewTest extends HumHubDbTestCase
             ->about(Post::findOne(['id' => 1]))->create();
 
         $this->assertNotNull($activity->record);
-        $wallout = $activity->record->getWallOut();
+        $wallout = StreamEntryWidget::renderStreamEntry($activity->record);
         $this->assertContains('My special activity view layout', $wallout);
         $this->assertContains('My special activity view content', $wallout);
     }
@@ -28,7 +29,7 @@ class ActivityViewTest extends HumHubDbTestCase
             ->about(Post::findOne(['id' => 1]))->create();
 
         $this->assertNotNull($activity->record);
-        $wallout = $activity->record->getWallOut();
+        $wallout = StreamEntryWidget::renderStreamEntry($activity->record);
         $this->assertContains('My special activity view layout without view', $wallout);
         $this->assertContains('Content of no view activity', $wallout);
     }
@@ -39,7 +40,7 @@ class ActivityViewTest extends HumHubDbTestCase
             ->about(Post::findOne(['id' => 1]))->create();
 
         $this->assertNotNull($activity->record);
-        $wallout = $activity->record->getWallOut();
+        $wallout = StreamEntryWidget::renderStreamEntry($activity->record);
         $this->assertContains('Content of default layout activity', $wallout);
         $this->assertContains('media-object img-rounded', $wallout);
     }

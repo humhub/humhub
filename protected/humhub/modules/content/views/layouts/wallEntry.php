@@ -12,6 +12,8 @@ use humhub\modules\activity\models\Activity;
  * @var string $jsWidget js widget component
  * @var Content $entry the wall entry to display
  * @var String $content the output of the content object (wallOut)
+ *
+ * @deprecated since 1.7 This view is only used for deprecated WallEntry widgets
  */
 
 $container = ContentContainerHelper::getCurrent();

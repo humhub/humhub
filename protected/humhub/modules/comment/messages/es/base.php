@@ -15,7 +15,7 @@ return array (
   'Read full comment...' => 'Leer el comentario completo...',
   'Reply' => 'Responder',
   'Send' => 'Enviar',
-  'Show all {total} comments.' => 'Ver los {total} comentarios.',
+  'Show all {total} comments' => 'Ver los {total} comentarios',
   'Show {count} more comments' => 'Mostrar {count} comentarios más',
   'The comment must not be empty!' => '¡El comentario no debe estar vacío!',
   'Whenever a new comment was written.' => 'Cuando un nuevo comentario sea escrito.',

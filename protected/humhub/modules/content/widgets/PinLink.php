@@ -36,7 +36,7 @@ class PinLink extends \yii\base\Widget
     {
 
         // Show pin links only inside content container streams
-        if (!Yii::$app->controller instanceof ContentContainerController || !$this->content->content->canPin()) {
+        if (!$this->content->content->canPin()) {
             return;
         }
 

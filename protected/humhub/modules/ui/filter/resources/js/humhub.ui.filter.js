@@ -291,9 +291,25 @@ humhub.module('ui.filter', function(module, require, $) {
         return $input.data('filter-type');
     };
 
+    var findFilterByComponent = function(component) {
+        var $component = object.isJQuery(component) ? component : component.$;
+        var componentId = $component.attr('id');
+        if(!componentId) {
+            return null;
+        }
+
+        var $filter = $(['[data-filter-component-id="'+componentId+'"]']);
+        if($filter.length) {
+            return Widget.instance($filter[0]);
+        }
+
+        return null;
+    };
+
     module.export({
         Filter: Filter,
         FilterInput: FilterInput,
+        findFilterByComponent: findFilterByComponent,
         addFilterType: addFilterType
     });
 });

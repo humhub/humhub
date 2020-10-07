@@ -15,7 +15,7 @@ return array (
   'Read full comment...' => 'Lire le commentaire complet...',
   'Reply' => 'Répondre',
   'Send' => 'Envoyer',
-  'Show all {total} comments.' => 'Afficher les commentaires précédents',
+  'Show all {total} comments' => 'Afficher les commentaires précédents',
   'Show {count} more comments' => 'Afficher {count,plural,=1{le commentaire restant} other{# autres commentaires}}',
   'The comment must not be empty!' => 'Le commentaire ne doit pas être vide !',
   'Whenever a new comment was written.' => 'Chaque fois qu\'un nouveau commentaire a été écrit.',

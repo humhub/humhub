@@ -57,15 +57,24 @@ class FontAwesomeIconProvider implements IconProvider
             Html::addCssClass($options, 'fa-border');
         }
 
-        if($icon->ariaHidden) {
-            $options['aria-hidden'] = 'true';
+        $options['aria-hidden'] = 'true';
+
+        $ariaElement = '';
+
+        if($icon->tooltip) {
+            $options['role'] = 'img';
+            Html::addTooltip($options, $icon->tooltip);
+            $ariaLabel = $icon->ariaLabel ?? $icon->tooltip;
+            $ariaElement = Html::tag('span', $ariaLabel, ['class' => 'sr-only']);
         }
 
         if($icon->color) {
             Html::addCssStyle($options, ['color' => $icon->color]);
         }
 
-        return Html::beginTag('i', $options).Html::endTag('i');
+
+
+        return Html::beginTag('i', $options).Html::endTag('i') . $ariaElement;
     }
 
     /**

@@ -2,6 +2,7 @@
 namespace humhub\modules\ui\icon\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\ui\Module;
 use Yii;
 use humhub\libs\Html;
 use humhub\modules\ui\icon\components\IconProvider;
@@ -676,6 +677,12 @@ class Icon extends Widget
     public $ariaHidden = false;
 
     /**
+     * @var string aria-label
+     * @var since 1.7
+     */
+    public $ariaLabel;
+
+    /**
      * @var array
      */
     public $htmlOptions = [];
@@ -686,10 +693,15 @@ class Icon extends Widget
     public $color;
 
     /**
+     * @var string a tooltip text
+     * @since 1.7
+     */
+    public $tooltip;
+
+    /**
      * @var string explicitly define a icon library, if not defined the default icon provider is used
      */
     public $lib;
-
 
     /**
      * Can be used to get an Icon instance from an unknown format.
@@ -719,10 +731,14 @@ class Icon extends Widget
     {
         if($icon instanceof static) {
             return Yii::configure($icon, $options);
-        } else if(is_string($icon)) {
+        }
+
+        if(is_string($icon)) {
             $options['name'] = $icon;
             return new Icon($options);
-        } else if(is_array($icon)) {
+        }
+
+        if(is_array($icon)) {
             return new Icon($icon);
         }
 
@@ -805,6 +821,8 @@ class Icon extends Widget
             $this->htmlOptions['id'] = $this->id;
         }
 
+        $this->name = Module::getModuleInstance()->getIconAlias($this->name);
+
         return IconFactory::getInstance()->render($this);
     }
 
@@ -815,6 +833,34 @@ class Icon extends Widget
     public function size($size)
     {
         $this->size = $size;
+        return $this;
+    }
+
+    /**
+     * @param $size string
+     * @since 1.7
+     * @return $this
+     */
+    public function ariaLabel($ariaLabel)
+    {
+        $this->ariaLabel = $ariaLabel;
+        return $this;
+    }
+
+    /**
+     * @param string tooltip text
+     * @param string $ariaLabel additional aria-label information (tooltip text is used as fallback)
+     * @return $this
+     * @since 1.7
+     */
+    public function tooltip($tooltip, $ariaLabel = null)
+    {
+        $this->tooltip = $tooltip;
+        if($ariaLabel) {
+            $this->ariaLabel = $ariaLabel;
+        } elseif (!$this->ariaLabel) {
+            $this->ariaLabel = $tooltip;
+        }
         return $this;
     }
 
@@ -868,6 +914,7 @@ class Icon extends Widget
 
     /**
      * @param bool $active
+     * @deprecated since 1.7 this is automatically set since 1.7
      */
     public function ariaHidden($active = true)
     {
@@ -926,7 +973,8 @@ class Icon extends Widget
             'listItem' => $this->listItem,
             'right' => $this->right,
             'left' => $this->left,
-            'ariaHidden' => $this->ariaHidden,
+            'tooltip' => $this->tooltip,
+            'ariaLabel' => $this->ariaLabel,
             'border' => $this->border,
             'htmlOptions' => $this->htmlOptions,
             'color' => $this->color,

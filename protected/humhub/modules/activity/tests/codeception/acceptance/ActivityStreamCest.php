@@ -64,7 +64,7 @@ class ActivityStreamCest
         $I->see('Confirm post deletion');
         $I->click('Delete', '#globalModalConfirm');
 
-        $I->seeSuccess('The content has been deleted');
+        $I->waitForElementNotVisible($newEntrySelector);
 
         $I->amUser2(true);
         $I->waitForText('There are no activities yet.', null, '#activityStream');

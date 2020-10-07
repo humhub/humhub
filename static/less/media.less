@@ -21,8 +21,8 @@
     }
 
     li.new {
-        border-left: 3px solid lighten(@info, 30%);
-        background-color: lighten(@info, 30%);
+        border-left: 3px solid @info;
+        background-color: lighten(@info, 45%);
     }
     li:hover,
         li.selected {
@@ -67,7 +67,7 @@
         overflow: hidden !important;
         font-size: 13px;
         white-space: normal;
-        word-break: break-all;
+        .text-break();
 
         h4.media-heading {
             font-size: 14px;
