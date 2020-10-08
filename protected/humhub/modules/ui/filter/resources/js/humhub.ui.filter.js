@@ -262,7 +262,7 @@ humhub.module('ui.filter', function(module, require, $) {
         var result = true;
         if(options.exclude) {
             if(object.isArray(options.exclude)) {
-                result = options.exclude.indexOf(input.getCategory()) <= 0;
+                result = options.exclude.indexOf(input.getCategory()) < 0;
             } else {
                 result = input.getCategory() !== options.exclude;
             }
