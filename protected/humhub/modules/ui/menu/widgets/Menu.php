@@ -87,7 +87,6 @@ abstract class Menu extends JsWidget
         }
 
 
-
         return $this->render($this->template, $this->getViewParams());
     }
 
@@ -115,7 +114,7 @@ abstract class Menu extends JsWidget
      */
     public function getSortedEntries()
     {
-        return Sort::sort($this->entries);
+        return Sort::sort($this->entries, 'sortOrder', 9000);
     }
 
     /**
@@ -141,7 +140,7 @@ abstract class Menu extends JsWidget
         }
 
         foreach ($this->entries as $entry) {
-            if(!$entry instanceof MenuLink) {
+            if (!$entry instanceof MenuLink) {
                 continue;
             }
 
@@ -162,7 +161,7 @@ abstract class Menu extends JsWidget
     public function getEntryById($id)
     {
         foreach ($this->entries as $entry) {
-            if(!$entry instanceof MenuEntry) {
+            if (!$entry instanceof MenuEntry) {
                 continue;
             }
 
@@ -207,8 +206,8 @@ abstract class Menu extends JsWidget
      */
 
     /**
-     * @deprecated since 1.4
      * @param array $entryArray
+     * @deprecated since 1.4
      */
     public function addItem($entryArray)
     {
@@ -217,8 +216,8 @@ abstract class Menu extends JsWidget
     }
 
     /**
-     * @deprecated since 1.4 not longer supported!
      * @return array item group
+     * @deprecated since 1.4 not longer supported!
      */
     public function addItemGroup($itemGroup)
     {
@@ -226,8 +225,8 @@ abstract class Menu extends JsWidget
     }
 
     /**
-     * @deprecated since 1.4
      * @return array the item group
+     * @deprecated since 1.4
      */
     public function getItemGroups()
     {
@@ -237,14 +236,14 @@ abstract class Menu extends JsWidget
     }
 
     /**
-     * @deprecated since 1.4
      * @return array the menu items as array list
+     * @deprecated since 1.4
      */
     public function getItems($group = '')
     {
         $items = [];
         foreach ($this->entries as $entry) {
-            if($entry instanceof MenuLink) {
+            if ($entry instanceof MenuLink) {
                 $items[] = $entry->toArray();
             }
         }
@@ -265,7 +264,7 @@ abstract class Menu extends JsWidget
     {
         $result = [];
         foreach ($this->getSortedEntries() as $entry) {
-            if((!$filterVisible || $entry->isVisible()) && (!$type || get_class($entry) === $type || is_subclass_of($entry, $type))) {
+            if ((!$filterVisible || $entry->isVisible()) && (!$type || get_class($entry) === $type || is_subclass_of($entry, $type))) {
                 $result[] = $entry;
             }
         }
@@ -281,7 +280,7 @@ abstract class Menu extends JsWidget
     public function getFirstEntry($type = null, $filterVisible = false)
     {
         $entries = $this->getEntries($type, $filterVisible);
-        if(count($entries)) {
+        if (count($entries)) {
             return $entries[0];
         }
 
@@ -354,8 +353,8 @@ abstract class Menu extends JsWidget
     }
 
     /**
-     * @deprecated since 1.4
      * @return array the menu entry as array
+     * @deprecated since 1.4
      */
     public function getActive()
     {
@@ -368,8 +367,8 @@ abstract class Menu extends JsWidget
     }
 
     /**
-     * @deprecated since 1.4
      * @param $url string the URL or route
+     * @deprecated since 1.4
      */
     public function deleteItemByUrl($url)
     {

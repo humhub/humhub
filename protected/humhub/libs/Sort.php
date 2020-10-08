@@ -10,11 +10,11 @@ namespace humhub\libs;
 
 class Sort
 {
-    public static function sort(&$arr, $field = 'sortOrder')
+    public static function sort(&$arr, $field = 'sortOrder', $default = PHP_INT_MAX)
     {
-        usort($arr, function($a, $b) use ($field) {
-            $sortA = static::getSortValue($a, $field);
-            $sortB = static::getSortValue($b, $field);
+        usort($arr, function ($a, $b) use ($field, $default) {
+            $sortA = static::getSortValue($a, $field, $default);
+            $sortB = static::getSortValue($b, $field, $default);
 
             if ($sortA == $sortB) {
                 return 0;
@@ -28,14 +28,14 @@ class Sort
         return $arr;
     }
 
-    private static function getSortValue($obj, $field)
+    private static function getSortValue($obj, $field, $default)
     {
-        if(is_array($obj) && isset($obj[$field])) {
-            return $obj[$field] === null ? PHP_INT_MAX : $obj[$field];
+        if (is_array($obj) && isset($obj[$field])) {
+            return $obj[$field] === null ? $default : $obj[$field];
         }
 
-        if(property_exists($obj, $field)) {
-            return $obj->$field === null ? PHP_INT_MAX : $obj->$field;
+        if (property_exists($obj, $field)) {
+            return $obj->$field === null ? $default : $obj->$field;
         }
 
         return PHP_INT_MAX;
