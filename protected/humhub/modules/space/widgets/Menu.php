@@ -11,6 +11,7 @@ namespace humhub\modules\space\widgets;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\Module;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\LeftNavigation;
 use Yii;
@@ -36,7 +37,7 @@ class Menu extends LeftNavigation
      */
     public function init()
     {
-        if(!$this->space) {
+        if (!$this->space) {
             $this->space = ContentContainerHelper::getCurrent(Space::class);
         }
 
@@ -59,13 +60,18 @@ class Menu extends LeftNavigation
             'isActive' => MenuLink::isActiveState('space', 'space', ['index', 'home']),
         ]));
 
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('SpaceModule.base', 'About Space'),
-            'url' => $this->space->createUrl('/space/space/about'),
-            'icon' => 'info-circle',
-            'sortOrder' => 100,
-            'isActive' => MenuLink::isActiveState('space', 'space', ['about']),
-        ]));
+        /** @var Module $module */
+        $module = Yii::$app->getModule('space');
+
+        if (!$module->hideAboutPage) {
+            $this->addEntry(new MenuLink([
+                'label' => Yii::t('SpaceModule.base', 'About'),
+                'url' => $this->space->createUrl('/space/space/about'),
+                'icon' => 'info-circle',
+                'sortOrder' => 100,
+                'isActive' => MenuLink::isActiveState('space', 'space', ['about']),
+            ]));
+        }
     }
 
     /**
