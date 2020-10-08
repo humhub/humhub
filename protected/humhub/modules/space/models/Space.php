@@ -193,6 +193,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
 
     /**
      * @return array
+     * @since 1.7
      */
     public static function visibilityOptions()
     {
@@ -205,6 +206,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
 
     /**
      * @return array
+     * @since 1.7
      */
     public static function joinPolicyOptions()
     {
@@ -668,6 +670,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
      * Returns space privileged groups and their members` User model in array
      *
      * @return array
+     * @since 1.7
      */
     public function getPrivilegedGroupUsers()
     {

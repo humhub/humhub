@@ -10,6 +10,12 @@ use humhub\widgets\TimeAgo;
 use Yii;
 use yii\base\Widget;
 
+/**
+ * User Membership State In A Space Snippet
+ *
+ * @author Faeze
+ * @since 1.7
+ */
 class MyMembership extends Widget
 {
     /** @var Space */
