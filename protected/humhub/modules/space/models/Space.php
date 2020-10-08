@@ -679,7 +679,6 @@ class Space extends ContentContainerActiveRecord implements Searchable
         $query->andWhere('space_id = ' . $this->id);
         $query->andWhere('user_id != ' . $owner->id);
         $query->andWhere(['user.status' => UserModel::STATUS_ENABLED]);
-        $query->orderBy(new \yii\db\Expression('FIELD(space_membership.group_id, "' . self::USERGROUP_ADMIN . '", "' . self::USERGROUP_MODERATOR . '")'));
 
         foreach ($query->all() as $membership) {
             $groups[$membership->group_id][] = $membership->user;
