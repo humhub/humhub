@@ -676,8 +676,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
 
         $query = Membership::find()->joinWith('user');
         $query->andWhere(['IN', 'group_id', [self::USERGROUP_ADMIN, self::USERGROUP_MODERATOR]]);
-        $query->andWhere('space_id = ' . $this->id);
-        $query->andWhere('user_id != ' . $owner->id);
+        $query->andWhere(['space_id' => $this->id]);
+        $query->andWhere(['!=', 'user_id', $owner->id]);
         $query->andWhere(['user.status' => UserModel::STATUS_ENABLED]);
 
         foreach ($query->all() as $membership) {
