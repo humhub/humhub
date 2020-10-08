@@ -134,7 +134,6 @@ humhub.module('stream.wall', function (module, require, $) {
         var isContainer = this.isSpaceStream() || this.isUserStream();
 
 
-
         if (!isDashboard && !isContainer) {
             return false;
         }
@@ -380,7 +379,7 @@ humhub.module('stream.wall', function (module, require, $) {
     };
 
     WallStreamFilter.prototype.updateFilterCount = function () {
-        var count = this.getActiveFilterCount({exclude:'sort'});
+        var count = this.getActiveFilterCount({exclude: ['sort', 'scope']});
 
         var $filterToggle = this.$.find('.wall-stream-filter-toggle');
         var $filterCount = $filterToggle.find('.filterCount');
