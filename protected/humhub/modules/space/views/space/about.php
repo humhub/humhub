@@ -36,6 +36,7 @@ use humhub\modules\user\widgets\Image;
                         <div class="media-body">
                             <?php foreach ($userGroups[Space::USERGROUP_OWNER] as $user) {
                                 echo Image::widget([
+                                    'showTooltip' => true,
                                     'user' => $user, 'width' => 40,
                                     'htmlOptions' => ['style' => 'padding: 3px'],
                                     'imageOptions' => ['style' => 'border:1px solid ' . $this->theme->variable('success')]
@@ -57,6 +58,7 @@ use humhub\modules\user\widgets\Image;
                         <div class="media-body">
                             <?php foreach ($userGroups[Space::USERGROUP_ADMIN] as $user) {
                                 echo Image::widget([
+                                    'showTooltip' => true,
                                     'user' => $user, 'width' => 40,
                                     'htmlOptions' => ['style' => 'padding: 3px'],
                                     'imageOptions' => ['style' => 'border:1px solid ' . $this->theme->variable('success')]
@@ -76,6 +78,7 @@ use humhub\modules\user\widgets\Image;
                 <div class="media-body">
                     <?php foreach ($userGroups[Space::USERGROUP_MODERATOR] as $user) {
                         echo Image::widget([
+                            'showTooltip' => true,
                             'user' => $user, 'width' => 40,
                             'htmlOptions' => ['style' => 'padding: 3px'],
                             'imageOptions' => ['style' => 'border:1px solid ' . $this->theme->variable('success')]
