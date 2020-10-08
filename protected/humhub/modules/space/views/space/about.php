@@ -13,7 +13,7 @@ use humhub\modules\user\widgets\Image;
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?= Yii::t('SpaceModule.base', '<strong>About</strong> this Space') ?>
+        <?= Yii::t('SpaceModule.base', '<strong>About</strong> <strong>{spaceName}</strong>', ['spaceName' => $space->name]) ?>
     </div>
     <div class="panel-body">
         <?php if ($space->about || $space->description): ?>
