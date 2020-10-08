@@ -3,16 +3,16 @@
 use yii\db\Migration;
 
 /**
- * Class m200930_151638_add_summary
+ * Class m200930_151639_add_about
  */
-class m200930_151638_add_summary extends Migration
+class m200930_151639_add_about extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->addColumn('space', 'summary', 'text after description');
+        $this->addColumn('space', 'about', 'text after description');
     }
 
     /**
@@ -20,7 +20,7 @@ class m200930_151638_add_summary extends Migration
      */
     public function safeDown()
     {
-        echo "m200930_151638_add_summary cannot be reverted.\n";
+        echo "m200930_151639_add_about cannot be reverted.\n";
 
         return false;
     }
@@ -32,7 +32,7 @@ class m200930_151638_add_summary extends Migration
     }
     public function down()
     {
-        echo "m200930_151638_add_summary cannot be reverted.\n";
+        echo "m200930_151639_add_about cannot be reverted.\n";
         return false;
     }
     */

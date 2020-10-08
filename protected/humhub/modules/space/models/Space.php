@@ -46,7 +46,7 @@ use Yii;
  * @property string $guid
  * @property string $name
  * @property string $description
- * @property string $summary
+ * @property string $about
  * @property string $url
  * @property integer $join_policy
  * @property integer $visibility
@@ -121,7 +121,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
         $rules = [
             [['join_policy', 'visibility', 'status', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
             [['name'], 'required'],
-            [['description', 'summary', 'tags', 'color'], 'string'],
+            [['description', 'about', 'tags', 'color'], 'string'],
+            [['description'], 'string', 'max' => 100],
             [['join_policy'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'checkVisibility'],
@@ -132,7 +133,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
         ];
 
         if (Yii::$app->getModule('space')->useUniqueSpaceNames) {
-            $rules[] = [['name'], 'unique', 'targetClass' => static::class, 'when' => function($model) {
+            $rules[] = [['name'], 'unique', 'targetClass' => static::class, 'when' => function ($model) {
                 return $model->isAttributeChanged('name');
             }];
         }
@@ -147,7 +148,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     {
         $scenarios = parent::scenarios();
 
-        $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'summary', 'tags', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
+        $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'about', 'tags', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
         $scenarios[static::SCENARIO_CREATE] = ['name', 'color', 'description', 'join_policy', 'visibility'];
         $scenarios[static::SCENARIO_SECURITY_SETTINGS] = ['default_content_visibility', 'join_policy', 'visibility'];
 
@@ -164,7 +165,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             'name' => Yii::t('SpaceModule.base', 'Name'),
             'color' => Yii::t('SpaceModule.base', 'Color'),
             'description' => Yii::t('SpaceModule.base', 'Description'),
-            'summary' => Yii::t('SpaceModule.base', 'Summary'),
+            'about' => Yii::t('SpaceModule.base', 'About'),
             'join_policy' => Yii::t('SpaceModule.base', 'Join Policy'),
             'visibility' => Yii::t('SpaceModule.base', 'Visibility'),
             'status' => Yii::t('SpaceModule.base', 'Status'),
@@ -178,12 +179,15 @@ class Space extends ContentContainerActiveRecord implements Searchable
         ];
     }
 
+
     public function attributeHints()
     {
         return [
             'visibility' => Yii::t('SpaceModule.manage', 'Choose the security level for this workspace to define the visibleness.'),
             'join_policy' => Yii::t('SpaceModule.manage', 'Choose the kind of membership you want to provide for this workspace.'),
-            'default_content_visibility' => Yii::t('SpaceModule.manage', 'Choose if new content should be public or private by default')
+            'default_content_visibility' => Yii::t('SpaceModule.manage', 'Choose if new content should be public or private by default'),
+            'description' => Yii::t('SpaceModule.base', 'Max. 100 characters.'),
+            'about' => Yii::t('SpaceModule.base', 'Shown on About Page.'),
         ];
     }
 
@@ -516,7 +520,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     {
         $user = !$user && !Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : $user;
 
-        if(!$user) {
+        if (!$user) {
             return false;
         }
 
