@@ -13,7 +13,7 @@ use humhub\modules\user\widgets\Image;
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?= Yii::t('SpaceModule.base', '<strong>About</strong> <strong>{spaceName}</strong>', ['spaceName' => $space->name]) ?>
+        <?= Yii::t('SpaceModule.base', '<strong>About</strong> the Space') ?>
     </div>
     <div class="panel-body">
         <?php if ($space->about || $space->description): ?>
@@ -31,7 +31,7 @@ use humhub\modules\user\widgets\Image;
             <div class="col-md-4">
                 <?php if (!empty($userGroups[Space::USERGROUP_OWNER])): ?>
                     <div class="media">
-                        <div class="media-heading"><p></ü><strong><?= Yii::t('SpaceModule.base', 'Owner'); ?></strong>
+                        <div class="media-heading"><p><strong><?= Yii::t('SpaceModule.base', 'Owner'); ?></strong>
                             </p></div>
                         <div class="media-body">
                             <?php foreach ($userGroups[Space::USERGROUP_OWNER] as $user) {

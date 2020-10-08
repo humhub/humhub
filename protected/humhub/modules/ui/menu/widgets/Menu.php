@@ -12,6 +12,7 @@ use humhub\components\Event;
 use humhub\libs\Sort;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\BaseStack;
 use humhub\widgets\JsWidget;
 use Yii;
 use yii\helpers\Url;
@@ -114,7 +115,7 @@ abstract class Menu extends JsWidget
      */
     public function getSortedEntries()
     {
-        return Sort::sort($this->entries, 'sortOrder', 9000);
+        return Sort::sort($this->entries, 'sortOrder', BaseStack::DEFAULT_SORT_ORDER);
     }
 
     /**

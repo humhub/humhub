@@ -27,6 +27,9 @@ class BaseStack extends Widget
     const EVENT_INIT = 'init';
     const EVENT_RUN = 'run';
 
+    /**
+     * Default value for the sort order if no sort order value is specified in the widget.
+     */
     const DEFAULT_SORT_ORDER = 9000;
 
     /**
@@ -119,7 +122,7 @@ class BaseStack extends Widget
     protected function getWidgets()
     {
 
-        usort($this->widgets, function($a, $b) {
+        usort($this->widgets, function ($a, $b) {
             $sortA = (isset($a[2]['sortOrder'])) ? $a[2]['sortOrder'] : static::DEFAULT_SORT_ORDER;
             $sortB = (isset($b[2]['sortOrder'])) ? $b[2]['sortOrder'] : static::DEFAULT_SORT_ORDER;
 
