@@ -84,6 +84,11 @@ class Module extends \humhub\components\Module
                 $legitimation[Content::VISIBILITY_PUBLIC][] = $space->contentContainerRecord->id;
             }
 
+            // Collect users which the user follows
+            foreach (Follow::getFollowedUserQuery($user)->all() as $followedUser) {
+                $legitimation[Content::VISIBILITY_PUBLIC][] = $followedUser->contentContainerRecord->id;
+            }
+
             Yii::$app->cache->set(self::$legitimateCachePrefix . $user->id, $legitimation);
             Yii::$app->live->driver->onContentContainerLegitimationChanged($user, $legitimation);
         };
