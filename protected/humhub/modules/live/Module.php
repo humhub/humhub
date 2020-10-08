@@ -50,7 +50,7 @@ class Module extends \humhub\components\Module
     {
         $legitimation = Yii::$app->cache->get(self::$legitimateCachePrefix . $user->id);
 
-        if ($legitimation === false) {
+        if (!$cached || $legitimation === false) {
             $legitimation = [
                 Content::VISIBILITY_PUBLIC => [],
                 Content::VISIBILITY_PRIVATE => [],
