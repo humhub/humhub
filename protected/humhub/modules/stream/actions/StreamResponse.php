@@ -18,19 +18,29 @@ use yii\base\Exception;
 class StreamResponse
 {
     /**
+     * @var array contains the result array of the different entries
+     */
+    public $entries = [];
+
+    /**
+     * @var array contains the order of entries
+     */
+    public $entryOrder = [];
+
+    /**
      * @var array resulting array
      */
     private $result = [];
 
     /**
-     * @var array contains the result array of the different entries
-     */
-    private $entries = [];
-
-    /**
      * @var StreamQuery the StreamQuery used to fetch the entries
      */
     private $streamQuery;
+
+    /**
+     * @var int
+     */
+    private $lastContentId;
 
     /**
      * StreamResponse constructor.
@@ -42,12 +52,24 @@ class StreamResponse
     }
 
     /**
-     * @param $contentId
+     * @param $entryId
      * @param array $entry
+     * @param int $index
      */
-    public function addEntry($contentId, $entry)
+    public function addEntry($entry, $index = null)
     {
-        $this->entries[$contentId] = $entry;
+        $entryId = $entry['id'];
+        $this->entries[$entryId] = $entry;
+
+        if($index !== null) {
+            array_splice( $this->entryOrder, $index, 0, $entryId );
+        } else {
+            $this->entryOrder[] = $entryId;
+        }
+
+        if(!$index && isset($entry['isContent']) && $entry['isContent']) {
+            $this->lastContentId = $entry['id'];
+        }
     }
 
     /**
@@ -58,8 +80,8 @@ class StreamResponse
     public function asArray()
     {
         $this->result['content'] = $this->entries;
-        $this->result['contentOrder'] = array_keys($this->entries);
-        $this->result['lastContentId'] = end($this->result['contentOrder']);
+        $this->result['contentOrder'] = $this->entryOrder;
+        $this->result['lastContentId'] = $this->lastContentId;
         $this->isLast(count($this->entries) < $this->streamQuery->limit);
 
         if ($this->streamQuery instanceof StreamSuppressQuery && !$this->streamQuery->isSingleContentQuery()) {

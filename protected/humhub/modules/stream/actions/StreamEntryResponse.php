@@ -46,6 +46,11 @@ class StreamEntryResponse extends Model
     public $archived;
 
     /**
+     * @var bool
+     */
+    public $isContent;
+
+    /**
      * @param Content $content
      * @param StreamEntryOptions|null $renderOptions
      * @param null $widgetOptions
@@ -55,7 +60,7 @@ class StreamEntryResponse extends Model
      */
     public static function getAsJson(Content $content, StreamEntryOptions $renderOptions = null, $widgetOptions = null)
     {
-        return Yii::$app->controller->asJson(static::getAsArray($content, $renderOptions, $widgetOptions));
+        return Yii::$app->controller->asJson(static::getContentAsArray($content, $renderOptions, $widgetOptions));
     }
 
     /**
@@ -67,7 +72,7 @@ class StreamEntryResponse extends Model
      * @throws IntegrityException
      * @throws \Exception
      */
-    public static function getAsArray(Content $content, StreamEntryOptions $renderOptions = null, $widgetOptions = null)
+    public static function getContentAsArray(Content $content, StreamEntryOptions $renderOptions = null, $widgetOptions = null)
     {
         $model = $content->getModel();
 
@@ -82,7 +87,8 @@ class StreamEntryResponse extends Model
             'guid' => $content->guid,
             'output' => Yii::$app->controller->renderAjaxContent($streamEntry),
             'pinned' => (boolean) $content->pinned,
-            'archived' => (boolean) $content->archived
+            'archived' => (boolean) $content->archived,
+            'isContent' => true
         ]))->asArray();
     }
 
@@ -98,7 +104,8 @@ class StreamEntryResponse extends Model
             'guid' => $this->guid,
             'output' => $this->output,
             'pinned' => (boolean) $this->pinned,
-            'archived' => (boolean) $this->archived
+            'archived' => (boolean) $this->archived,
+            'isContent' => (boolean) $this->isContent,
         ];
     }
 

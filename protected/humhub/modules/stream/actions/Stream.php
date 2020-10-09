@@ -8,6 +8,7 @@
 
 namespace humhub\modules\stream\actions;
 
+use humhub\modules\stream\events\StreamResponseEvent;
 use Yii;
 use yii\base\Action;
 use yii\base\Exception;
@@ -43,17 +44,23 @@ abstract class Stream extends Action
     use LegacyStreamTrait;
 
     /**
-     * @event ActionEvent Event triggered before this action is run.
-     * This can be used for example to customize [[activeQuery]] before it gets executed.
-     * @since 1.1.1
+     * @event ActionEvent Event triggered before stream filter handlers are applied
+     * This can be used for adding filters.
+     * @since 1.7
      */
-    const EVENT_BEFORE_RUN = 'beforeRun';
+    const EVENT_BEFORE_APPLY_FILTERS = 'beforeApplyFilters';
 
     /**
-     * @event ActionEvent Event triggered after this action is run.
-     * @since 1.1.1
+     * @event ActionEvent Event triggered after stream filter handlers are applied
+     * This can be used for last modifications to the query.
+     * @since 1.7
      */
-    const EVENT_AFTER_RUN = 'afterRun';
+    const EVENT_AFTER_APPLY_FILTERS = 'afterApplyFilters';
+
+    /**
+     *  @since 1.7
+     */
+    const EVENT_AFTER_FETCH = 'afterQueryFetch';
 
     /**
      * Sort by creation sort value
@@ -164,7 +171,7 @@ abstract class Stream extends Action
      * @var StreamQuery
      * @since 1.2
      */
-    protected $streamQuery;
+    public $streamQuery;
 
     /**
      * @var string suppress similar content types in a row
@@ -261,6 +268,8 @@ abstract class Stream extends Action
         if (empty($this->streamQuery->sort)) {
             $this->streamQuery->sort = $this->sort;
         }
+
+        $this->trigger(self::EVENT_BEFORE_APPLY_FILTERS);
     }
 
     /**
@@ -285,6 +294,8 @@ abstract class Stream extends Action
         if($this->streamEntryWidgetClass) {
             $this->streamEntryOptions->overwriteWidgetClass($this->streamEntryWidgetClass);
         }
+
+        $this->trigger(self::EVENT_AFTER_APPLY_FILTERS);
     }
 
     /**
@@ -300,20 +311,6 @@ abstract class Stream extends Action
     }
 
     /**
-     * This method is called right before `run()` is executed.
-     * You may override this method to do preparation work for the action run.
-     * If the method returns false, it will cancel the action.
-     *
-     * @return boolean whether to run the action.
-     */
-    protected function beforeRun()
-    {
-        $event = new ActionEvent($this);
-        $this->trigger(self::EVENT_BEFORE_RUN, $event);
-        return $event->isValid;
-    }
-
-    /**
      * @inheritdoc
      * @throws \Throwable
      */
@@ -324,22 +321,13 @@ abstract class Stream extends Action
         foreach ($this->streamQuery->all() as $content) {
             $streamEntry = $this->getStreamEntryResult($content, $this->streamEntryOptions);
             if($streamEntry) {
-                $response->addEntry($content->id, $streamEntry);
+                $response->addEntry($streamEntry);
             }
         }
 
-        return $response->asJson();
-    }
+        $this->trigger(static::EVENT_AFTER_FETCH, new StreamResponseEvent(['response' => $response]));
 
-    /**
-     * This method is called right after `run()` is executed.
-     * You may override this method to do post-processing work for the action run.
-     */
-    protected function afterRun()
-    {
-        $this->beforeApplyFilters();
-        $event = new ActionEvent($this);
-        $this->trigger(self::EVENT_AFTER_RUN, $event);
+        return $response->asJson();
     }
 
     /**
@@ -359,7 +347,7 @@ abstract class Stream extends Action
                 return static::getContentResultEntry($content);
             }
 
-            return StreamEntryResponse::getAsArray($content, $options);
+            return StreamEntryResponse::getContentAsArray($content, $options);
         } catch (\Throwable $e) {
             // Don't kill the stream action in prod environments in case the rendering of an entry fails.
             if (YII_ENV_PROD) {
