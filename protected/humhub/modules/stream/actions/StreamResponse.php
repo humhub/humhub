@@ -53,11 +53,16 @@ class StreamResponse
 
     /**
      * @param $entryId
-     * @param array $entry
+     * @param array|StreamEntryResponse $entry
      * @param int $index
+     * @throws Exception
      */
     public function addEntry($entry, $index = null)
     {
+        if($entry instanceof StreamEntryResponse) {
+            $entry = $entry->asArray();
+        }
+
         $entryId = $entry['id'];
         $this->entries[$entryId] = $entry;
 

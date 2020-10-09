@@ -347,7 +347,7 @@ abstract class Stream extends Action
                 return static::getContentResultEntry($content);
             }
 
-            return StreamEntryResponse::getContentAsArray($content, $options);
+            return StreamEntryResponse::getAsArray($content, $options);
         } catch (\Throwable $e) {
             // Don't kill the stream action in prod environments in case the rendering of an entry fails.
             if (YII_ENV_PROD) {

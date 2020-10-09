@@ -146,7 +146,7 @@ class WallCreateContentForm extends Widget
             }
 
             $record->fileManager->attach(Yii::$app->request->post('fileList'));
-            return StreamEntryResponse::getContentAsArray($record->content);
+            return StreamEntryResponse::getAsArray($record->content);
         }
 
         return ['errors' => $record->getErrors()];
