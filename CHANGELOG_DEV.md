@@ -41,3 +41,4 @@ HumHub Changelog
 - Fix #4428: Replace db Expression time now with func date('Y-m-d G:i:s')
 - Fix #4452: `humhub.ui.filter.getActiveFilterCount` returns wrong value with exclude array option
 - Fix #4452: Ignore `scope` profile filter in stream filter count and hasActiveFilters
+- Fix #4451: PHP Deprecated Warning in ProsemirrorRichText::replaceLinkExtension
