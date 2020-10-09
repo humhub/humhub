@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.6.4 (Unreleased)
-------------------
+1.6.4 (October 9, 2020)
+-----------------------
 
 This release also brings a [security update](https://github.com/yiisoft/yii2/security/advisories/GHSA-699q-wcff-g9mj) of the Yii2 framework. HumHub itself and the modules provided by our offical marketplace are not affected by this bug.
 
