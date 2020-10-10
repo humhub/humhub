@@ -1,4 +1,5 @@
 <?php
+
 namespace humhub\modules\ui\icon\widgets;
 
 use humhub\components\Widget;
@@ -729,16 +730,16 @@ class Icon extends Widget
      */
     public static function get($icon, $options = [])
     {
-        if($icon instanceof static) {
+        if ($icon instanceof static) {
             return Yii::configure($icon, $options);
         }
 
-        if(is_string($icon)) {
+        if (is_string($icon)) {
             $options['name'] = $icon;
             return new Icon($options);
         }
 
-        if(is_array($icon)) {
+        if (is_array($icon)) {
             return new Icon($icon);
         }
 
@@ -750,8 +751,8 @@ class Icon extends Widget
      *
      * @param null $providerId
      * @return string[]
-     * @see IconFactory::getNames()
      * @throws \yii\base\InvalidConfigException
+     * @see IconFactory::getNames()
      */
     public static function getNames($providerId = null)
     {
@@ -790,8 +791,8 @@ class Icon extends Widget
             ? substr($this->name, 3, strlen($this->name))
             : $this->name;
 
-        if($this->color) {
-            switch($this->color) {
+        if ($this->color) {
+            switch ($this->color) {
                 case 'default':
                     $this->color = $this->view->theme->variable('default');
                     break;
@@ -817,7 +818,7 @@ class Icon extends Widget
             }
         }
 
-        if($this->getId(false)) {
+        if ($this->getId(false)) {
             $this->htmlOptions['id'] = $this->id;
         }
 
@@ -838,8 +839,8 @@ class Icon extends Widget
 
     /**
      * @param $size string
-     * @since 1.7
      * @return $this
+     * @since 1.7
      */
     public function ariaLabel($ariaLabel)
     {
@@ -856,7 +857,7 @@ class Icon extends Widget
     public function tooltip($tooltip, $ariaLabel = null)
     {
         $this->tooltip = $tooltip;
-        if($ariaLabel) {
+        if ($ariaLabel) {
             $this->ariaLabel = $ariaLabel;
         } elseif (!$this->ariaLabel) {
             $this->ariaLabel = $tooltip;
@@ -890,7 +891,7 @@ class Icon extends Widget
      */
     public function right($active = true)
     {
-        if($active) {
+        if ($active) {
             $this->left(false);
         }
 
@@ -904,7 +905,7 @@ class Icon extends Widget
      */
     public function left($active = true)
     {
-        if($active) {
+        if ($active) {
             $this->right(false);
         }
 
@@ -988,17 +989,21 @@ class Icon extends Widget
      */
     public function asString()
     {
-        return (string) $this;
+        return (string)$this;
     }
 
     /**
      * @return string
-     * @throws \Exception
      */
     public function __toString()
     {
-        $result = $this::widget($this->asArray());
+        try {
+            $result = $this::widget($this->asArray());
+            return $result ?: '';
+        } catch (\Exception $e) {
+            Yii::error($e);
+        }
 
-        return $result ? $result : '';
+        return '';
     }
 }

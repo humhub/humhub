@@ -50,7 +50,7 @@ class Module extends \humhub\components\Module
     {
         $legitimation = Yii::$app->cache->get(self::$legitimateCachePrefix . $user->id);
 
-        if ($legitimation === false) {
+        if (!$cached || $legitimation === false) {
             $legitimation = [
                 Content::VISIBILITY_PUBLIC => [],
                 Content::VISIBILITY_PRIVATE => [],
@@ -82,6 +82,11 @@ class Module extends \humhub\components\Module
             // Collect spaces which the users follows
             foreach (Follow::getFollowedSpacesQuery($user)->all() as $space) {
                 $legitimation[Content::VISIBILITY_PUBLIC][] = $space->contentContainerRecord->id;
+            }
+
+            // Collect users which the user follows
+            foreach (Follow::getFollowedUserQuery($user)->all() as $followedUser) {
+                $legitimation[Content::VISIBILITY_PUBLIC][] = $followedUser->contentContainerRecord->id;
             }
 
             Yii::$app->cache->set(self::$legitimateCachePrefix . $user->id, $legitimation);
