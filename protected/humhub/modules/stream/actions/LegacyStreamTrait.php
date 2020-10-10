@@ -8,6 +8,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use yii\db\ActiveQuery;
@@ -32,6 +33,31 @@ trait LegacyStreamTrait
      * @deprecated since 1.7 use StreamQuery->query()
      */
     public $activeQuery;
+
+    /**
+     * Optional stream user
+     * if no user is specified, the current logged in user will be used.
+     *
+     * @var User
+     * @deprecated since 1.7 use StreamQuery->user
+     */
+    public $user;
+
+    /**
+     * First wall entry id to deliver
+     *
+     * @var int
+     * @deprecated since 1.7 use $streamQuery->from
+     */
+    public $from;
+
+    /**
+     * Entry id of the top stream entry used for update requests
+     *
+     * @var int
+     * @deprecated since 1.7 use $streamQuery->to
+     */
+    public $to;
 
     /**
      * Returns an array contains all information required to display a content

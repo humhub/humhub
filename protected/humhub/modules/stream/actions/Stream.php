@@ -12,14 +12,11 @@ use humhub\modules\stream\events\StreamResponseEvent;
 use Yii;
 use yii\base\Action;
 use yii\base\Exception;
-use yii\base\ActionEvent;
-
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\stream\models\StreamQuery;
 use humhub\modules\stream\models\WallStreamQuery;
 use humhub\modules\content\models\Content;
-use humhub\modules\user\models\User;
 
 /**
  * Stream is the basic action for content streams.
@@ -44,20 +41,22 @@ abstract class Stream extends Action
     use LegacyStreamTrait;
 
     /**
-     * @event ActionEvent Event triggered before stream filter handlers are applied
+     * @event Event triggered before stream filter handlers are applied
      * This can be used for adding filters.
      * @since 1.7
      */
     const EVENT_BEFORE_APPLY_FILTERS = 'beforeApplyFilters';
 
     /**
-     * @event ActionEvent Event triggered after stream filter handlers are applied
+     * @event Event triggered after stream filter handlers are applied
      * This can be used for last modifications to the query.
      * @since 1.7
      */
     const EVENT_AFTER_APPLY_FILTERS = 'afterApplyFilters';
 
     /**
+     * @event Event triggered after query fetch, can be used to manipulate the
+     * stream response. E.g. inject additional entries.
      *  @since 1.7
      */
     const EVENT_AFTER_FETCH = 'afterQueryFetch';
@@ -92,6 +91,7 @@ abstract class Stream extends Action
 
     /**
      * Maximum wall entries per request
+     * @deprecated since 1.7 not in use
      */
     const MAX_LIMIT = 50;
 
@@ -100,22 +100,6 @@ abstract class Stream extends Action
      * @since 1.2
      */
     public $contentId;
-
-    /**
-     * First wall entry id to deliver
-     *
-     * @var int
-     * @deprecated since 1.7 use $streamQuery->from
-     */
-    public $from;
-
-    /**
-     * Entry id of the top stream entry used for update requests
-     *
-     * @var int
-     * @deprecated since 1.7 use $streamQuery->to
-     */
-    public $to;
 
     /**
      * Sorting Mode
@@ -138,19 +122,11 @@ abstract class Stream extends Action
     public $filters = [];
 
     /**
-     * Can be used to append or overwrite filter handlers without the need of overwriting the stream class.
+     * Can be used to append or overwrite filter handlers without the need of overwriting the StreamQuery class.
      * @var array
      * @since 1.7
      */
     public $filterHandlers = [];
-
-    /**
-     * Optional stream user
-     * if no user is specified, the current logged in user will be used.
-     *
-     * @var User
-     */
-    public $user;
 
     /**
      * Used to filter the stream content entry classes against a given array.
@@ -171,7 +147,7 @@ abstract class Stream extends Action
      * @var StreamQuery
      * @since 1.2
      */
-    public $streamQuery;
+    protected $streamQuery;
 
     /**
      * @var string suppress similar content types in a row
@@ -190,6 +166,7 @@ abstract class Stream extends Action
 
     /**
      * @inheritdoc
+     * @throws \yii\base\InvalidConfigException
      */
     public function init()
     {
@@ -198,6 +175,9 @@ abstract class Stream extends Action
         $this->excludes = array_merge($this->excludes, Yii::$app->getModule('stream')->streamExcludes);
 
         $this->streamQuery = $this->initQuery();
+
+        // Just make sure legacy user property is available
+        $this->user = $this->streamQuery->user;
 
         if (!Yii::$app->request->isConsoleRequest) {
             $this->streamQuery->load(Yii::$app->request->get());
@@ -234,8 +214,10 @@ abstract class Stream extends Action
     protected function initQuery($options = [])
     {
         $streamQueryClass = $this->streamQueryClass;
+
         /* @var $instance StreamQuery */
         $instance = $streamQueryClass::find();
+        $instance->forUser(Yii::$app->user->identity);
         $instance->setAttributes($options, false);
         return $instance;
     }
@@ -358,5 +340,13 @@ abstract class Stream extends Action
         }
 
         return null;
+    }
+
+    /**
+     * @return StreamQuery
+     */
+    public function getStreamQuery()
+    {
+        return $this->streamQuery;
     }
 }
