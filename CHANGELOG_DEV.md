@@ -43,3 +43,4 @@ HumHub Changelog
 - Enh #3994: Live event legitimation consider `cached` argument in processing data
 - Fix #4452: `humhub.ui.filter.getActiveFilterCount` returns wrong value with exclude array option
 - Fix #4452: Ignore `scope` profile filter in stream filter count and hasActiveFilters
+- Fix #4451: PHP Deprecated Warning in ProsemirrorRichText::replaceLinkExtension
