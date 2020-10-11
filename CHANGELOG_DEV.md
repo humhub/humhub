@@ -45,3 +45,4 @@ HumHub Changelog
 - Fix #4452: Ignore `scope` profile filter in stream filter count and hasActiveFilters
 - Fix #4456: PHP8 deprecated warning for LessHelper::updateVariables()
 - Fix #4451: PHP Deprecated Warning in ProsemirrorRichText::replaceLinkExtension
+- Enh #4195: Increased scaled logo size for high res displays
