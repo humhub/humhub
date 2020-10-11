@@ -204,6 +204,11 @@
     @import "print.less";
 }
 
+@prev-custom: false;
+& when not(@prev-custom) {
+    @import "custom.less";
+}
+
 @import "../css/select2Theme/build.less";
 
 // LEGACY/DEPRECATED User- & Space picker
