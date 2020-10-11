@@ -43,3 +43,5 @@ HumHub Changelog
 - Enh #3994: Live event legitimation consider `cached` argument in processing data
 - Fix #4452: `humhub.ui.filter.getActiveFilterCount` returns wrong value with exclude array option
 - Fix #4452: Ignore `scope` profile filter in stream filter count and hasActiveFilters
+- Enh #4469: Added TextConverter maximum length
+- Enh #4469: Added file converter id attribute
