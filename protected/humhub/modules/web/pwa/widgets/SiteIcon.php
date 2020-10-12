@@ -55,6 +55,11 @@ class SiteIcon extends Widget
      */
     public static function getUrl($size, $autoResize = true)
     {
+        $manualUploadedFile = Yii::getAlias('@webroot/uploads/icon/' . static::buildFileName($size));
+        if(file_exists($manualUploadedFile)) {
+            return Yii::getAlias('@web/uploads/icon/' . static::buildFileName($size)) . '?v=' . filemtime($manualUploadedFile);
+        }
+
         $file = self::getFile($size);
         if (file_exists($file)) {
             return Yii::getAlias(Yii::$app->assetManager->baseUrl) . '/siteicons/' . static::buildFileName($size) . '?v=' . filemtime($file);
