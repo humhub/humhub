@@ -26,17 +26,20 @@ class TimeAgo extends \yii\base\Widget
     /**
      * @var int|bool defines if the timeAgo calculation shold only be used within a certain time interval in seconds.
      * (default Yii::$app->params['formatter']['timeAgoBefore'])
+     * @since 1.7
      */
     public $timeAgoBefore;
 
     /**
      * @var int|bool defines if the time information should only be added within a certain time interval in seconds this
      * is only used if the timeAgo calculation is not active. (default Yii::$app->params['formatter']['timeAgoHideTimeAfter'])
+     * @since 1.7
      */
     public $hideTimeAfter;
 
     /**
      * @var bool defines if a static render method should be used (default Yii::$app->params['formatter']['timeAgoStatic'])
+     * @since 1.7
      */
     public $staticTimeAgo;
 
