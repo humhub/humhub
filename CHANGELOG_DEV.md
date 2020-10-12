@@ -46,3 +46,4 @@ HumHub Changelog
 - Fix #4456: PHP8 deprecated warning for LessHelper::updateVariables()
 - Fix #4451: PHP Deprecated Warning in ProsemirrorRichText::replaceLinkExtension
 - Enh #4195: Increased scaled logo size for high res displays
+- Enh #4458: Remove cacert.pem in order to avoid curl error
