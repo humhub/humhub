@@ -43,4 +43,12 @@ HumHub Changelog
 - Enh #4370: Add `humhub\modules\space\widgets\MyMembership` to manage render user state in a space
 - Enh #4370: Add `humhub\modules\space\widgets\AboutPageSidebar` to manage about page sidebar
 - Enh #4370: Add `About Space` page 
-
+- Enh #3994: Live event legitimation array include followed users
+- Enh #3994: Live event legitimation consider `cached` argument in processing data
+- Fix #4452: `humhub.ui.filter.getActiveFilterCount` returns wrong value with exclude array option
+- Fix #4452: Ignore `scope` profile filter in stream filter count and hasActiveFilters
+- Fix #4456: PHP8 deprecated warning for LessHelper::updateVariables()
+- Fix #4451: PHP Deprecated Warning in ProsemirrorRichText::replaceLinkExtension
+- Enh #4195: Increased scaled logo size for high res displays
+- Enh #3889: Prevent automatically resized site icons by manually added files (e.g. `/upload/icon/180x180.png`)
+- Enh #4458: Remove cacert.pem in order to avoid curl error

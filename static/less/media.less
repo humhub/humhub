@@ -8,6 +8,7 @@
         position: relative;
         border-left: 3px solid white;
         font-size: 12px;
+
         a {
             color: @text-color-highlight;
         }
@@ -24,8 +25,9 @@
         border-left: 3px solid @info;
         background-color: lighten(@info, 45%);
     }
+
     li:hover,
-        li.selected {
+    li.selected {
         background-color: @background-color-secondary;
         border-left: 3px solid @info;
     }
@@ -44,7 +46,7 @@
 .media-left,
 .media > .pull-left {
     padding-right: 0;
-    margin-right:10px;
+    margin-right: 10px;
 }
 
 .media:after {
@@ -58,11 +60,13 @@
         font-size: 11px;
         color: @text-color-soft;
     }
+
     .img-space {
         position: absolute;
         top: 35px;
         left: 35px;
     }
+
     .media-body {
         overflow: hidden !important;
         font-size: 13px;
@@ -73,14 +77,17 @@
             font-size: 14px;
             font-weight: 500;
             color: @text-color-highlight;
+
             a {
                 color: @text-color-highlight;
             }
+
             small,
             small a {
                 font-size: 11px;
                 color: @text-color-soft;
             }
+
             .content {
                 margin-right: 35px;
             }
@@ -97,18 +104,22 @@
             margin-bottom: 5px;
             min-height: 15px;
         }
+
         .module-controls {
             font-size: 85%;
+
             a {
                 color: @info;
             }
         }
     }
+
     .content {
         a {
             color: @info;
         }
     }
+
     .content .files a {
         color: @text-color-highlight;
     }
@@ -121,13 +132,13 @@
 #blueimp-gallery {
     .slide {
         img {
-            max-height:80%;
+            max-height: 80%;
         }
     }
 }
 
 
-audio,canvas,progress,video {
+audio, canvas, progress, video {
     display: inline-block;
     vertical-align: baseline;
     max-width: 100%;
