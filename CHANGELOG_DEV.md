@@ -47,3 +47,4 @@ HumHub Changelog
 - Fix #4451: PHP Deprecated Warning in ProsemirrorRichText::replaceLinkExtension
 - Enh #4195: Increased scaled logo size for high res displays
 - Enh #3889: Prevent automatically resized site icons by manually added files (e.g. `/upload/icon/180x180.png`)
+- Enh #4458: Remove cacert.pem in order to avoid curl error
