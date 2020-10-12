@@ -15,13 +15,15 @@ use humhub\modules\content\widgets\stream\StreamEntryWidget;
 /**
  * This class is used to build the stream entry array or json response used in stream actions.
  *
+ * The stream entry result should at least contain an unique `id` (usually the content id) and the rendered stream `output`.
+ *
  * @package humhub\modules\stream\actions
  * @since 1.7
  */
 class StreamEntryResponse extends Model
 {
     /**
-     * @var int content id
+     * @var int|string content id
      */
     public $id;
 
@@ -44,16 +46,6 @@ class StreamEntryResponse extends Model
      * @var boolean content archived flag
      */
     public $archived;
-
-    /**
-     * @var bool
-     */
-    public $isContent;
-
-    /**
-     * @var bool
-     */
-    public $isInjected;
 
     /**
      * @param Content $content
@@ -93,7 +85,6 @@ class StreamEntryResponse extends Model
             'output' => Yii::$app->controller->renderAjaxContent($streamEntry),
             'pinned' => (boolean) $content->pinned,
             'archived' => (boolean) $content->archived,
-            'isContent' => true
         ]))->asArray();
     }
 
@@ -109,9 +100,7 @@ class StreamEntryResponse extends Model
             'guid' => $this->guid,
             'output' => $this->output,
             'pinned' => (boolean) $this->pinned,
-            'archived' => (boolean) $this->archived,
-            'isContent' => (boolean) $this->isContent,
-            'isInjected' => (boolean) $this->isInjected,
+            'archived' => (boolean) $this->archived
         ];
     }
 

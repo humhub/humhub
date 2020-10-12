@@ -52,12 +52,16 @@ class StreamResponse
     }
 
     /**
-     * @param $entryId
+     * Adds entries to the response by providing either an response array or a StreamEntryResponse instance.
+     * An $entry array needs at least to provide a `id` and `output` value. When injecting an entry outside of the
+     * stream query result the $injectIndex should be set to either an existing result index or to true. This will
+     * make sure the injected entry will be ignored in the stream flow (load more).
+     *
      * @param array|StreamEntryResponse $entry
-     * @param int $index
+     * @param bool|int $injectIndex
      * @throws Exception
      */
-    public function addEntry($entry, $index = null)
+    public function addEntry($entry, $injectIndex = false)
     {
         if($entry instanceof StreamEntryResponse) {
             $entry = $entry->asArray();
@@ -66,13 +70,13 @@ class StreamResponse
         $entryId = $entry['id'];
         $this->entries[$entryId] = $entry;
 
-        if($index !== null) {
-            array_splice( $this->entryOrder, $index, 0, $entryId );
+        if(is_int($injectIndex)) {
+            array_splice( $this->entryOrder, $injectIndex, 0, $entryId );
         } else {
             $this->entryOrder[] = $entryId;
         }
 
-        if(!$index && isset($entry['isContent']) && $entry['isContent']) {
+        if($injectIndex === false) {
             $this->lastContentId = $entry['id'];
         }
     }
