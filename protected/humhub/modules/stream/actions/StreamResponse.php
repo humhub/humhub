@@ -18,19 +18,29 @@ use yii\base\Exception;
 class StreamResponse
 {
     /**
+     * @var array contains the result array of the different entries
+     */
+    public $entries = [];
+
+    /**
+     * @var array contains the order of entries
+     */
+    public $entryOrder = [];
+
+    /**
      * @var array resulting array
      */
     private $result = [];
 
     /**
-     * @var array contains the result array of the different entries
-     */
-    private $entries = [];
-
-    /**
      * @var StreamQuery the StreamQuery used to fetch the entries
      */
     private $streamQuery;
+
+    /**
+     * @var int
+     */
+    private $lastContentId;
 
     /**
      * StreamResponse constructor.
@@ -42,12 +52,33 @@ class StreamResponse
     }
 
     /**
-     * @param $contentId
-     * @param array $entry
+     * Adds entries to the response by providing either an response array or a StreamEntryResponse instance.
+     * An $entry array needs at least to provide a `id` and `output` value. When injecting an entry outside of the
+     * stream query result the $injectIndex should be set to either an existing result index or to true. This will
+     * make sure the injected entry will be ignored in the stream flow (load more).
+     *
+     * @param array|StreamEntryResponse $entry
+     * @param bool|int $injectIndex
+     * @throws Exception
      */
-    public function addEntry($contentId, $entry)
+    public function addEntry($entry, $injectIndex = false)
     {
-        $this->entries[$contentId] = $entry;
+        if($entry instanceof StreamEntryResponse) {
+            $entry = $entry->asArray();
+        }
+
+        $entryId = $entry['id'];
+        $this->entries[$entryId] = $entry;
+
+        if(is_int($injectIndex)) {
+            array_splice( $this->entryOrder, $injectIndex, 0, $entryId );
+        } else {
+            $this->entryOrder[] = $entryId;
+        }
+
+        if($injectIndex === false) {
+            $this->lastContentId = $entry['id'];
+        }
     }
 
     /**
@@ -58,8 +89,8 @@ class StreamResponse
     public function asArray()
     {
         $this->result['content'] = $this->entries;
-        $this->result['contentOrder'] = array_keys($this->entries);
-        $this->result['lastContentId'] = end($this->result['contentOrder']);
+        $this->result['contentOrder'] = $this->entryOrder;
+        $this->result['lastContentId'] = $this->lastContentId;
         $this->isLast(count($this->entries) < $this->streamQuery->limit);
 
         if ($this->streamQuery instanceof StreamSuppressQuery && !$this->streamQuery->isSingleContentQuery()) {
