@@ -31,7 +31,7 @@ class FileController extends \yii\console\Controller
         $fileSize = 0;
         $fileSizes = [];
         /** @var File $file */
-        foreach (File::find()->all() as $file) {
+        foreach (File::find()->each() as $file) {
             $fileSize += filesize($file->store->get());
             foreach ($file->store->getVariants() as $variant) {
                 if (!isset($fileSizes[$variant])) {
@@ -65,7 +65,7 @@ class FileController extends \yii\console\Controller
         $this->stdout('Deleting automatically created file variants:');
 
         /** @var File $file */
-        foreach (File::find()->all() as $file) {
+        foreach (File::find()->each() as $file) {
             foreach ($file->store->getVariants() as $variant) {
                 $file->store->delete($variant);
                 $this->stdout('.');
@@ -85,7 +85,7 @@ class FileController extends \yii\console\Controller
         $this->stdout('Downscaling uploaded files:');
 
         /** @var File $file */
-        foreach (File::find()->all() as $file) {
+        foreach (File::find()->each() as $file) {
             ImageHelper::downscaleImage($file);
             $this->stdout('.');
         }
