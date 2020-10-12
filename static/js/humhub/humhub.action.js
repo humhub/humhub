@@ -719,6 +719,7 @@ humhub.module('action', function(module, require, $) {
 
         var that = this;
         event.finish = function() {
+            _removeLoaderFromEventTarget(event);
             _removeLoaderFromEventTarget(event.originalEvent);
             that.unblock($trigger);
         };
@@ -733,6 +734,10 @@ humhub.module('action', function(module, require, $) {
     var _removeLoaderFromEventTarget = function(evt) {
         if(evt && evt.target) {
             loader.reset(evt.target);
+        }
+
+        if(evt && evt.$trigger) {
+            loader.reset(evt.$trigger);
         }
     };
 
