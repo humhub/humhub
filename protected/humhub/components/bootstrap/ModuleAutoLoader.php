@@ -74,7 +74,7 @@ class ModuleAutoLoader implements BootstrapInterface
             try {
                 /** @noinspection PhpIncludeInspection */
                 $modules[$folder] = require $folder . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 Yii::error($e);
             }
         }
