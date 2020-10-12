@@ -56,6 +56,11 @@ class StreamEntryOptions extends Model
     public $widgetClass = null;
 
     /**
+     * @var bool
+     */
+    public $isInjected = false;
+
+    /**
      * StreamEntryOptions constructor.
      * @param StreamEntryOptions|array|null $base
      * @param array $config
@@ -84,6 +89,24 @@ class StreamEntryOptions extends Model
         if(!$this->viewContext) {
             $this->viewContext = Yii::$app->request->getViewContext() ?? static::VIEW_CONTEXT_DEFAULT;
         }
+    }
+
+    /**
+     * @param bool $val
+     * @return $this
+     */
+    public function injected($val = true)
+    {
+        $this->isInjected = $val;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInjected()
+    {
+        return $this->isInjected;
     }
 
     /**
@@ -178,6 +201,7 @@ class StreamEntryOptions extends Model
         $currentContainer = ContentContainerHelper::getCurrent();
         $content = $model->content;
         return $currentContainer
+            && !$this->isInjected()
             && $this->isViewContext(static::VIEW_CONTEXT_DEFAULT)
             && $content->isPinned()
             && !$content->isArchived()
