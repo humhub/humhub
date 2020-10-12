@@ -55,3 +55,4 @@ HumHub Changelog
 - Enh #3978: Added option to compress and resize images automatically on upload
 - Enh #3889: Prevent automatically resized site icons by manually added files (e.g. `/upload/icon/180x180.png`)
 - Enh #4458: Remove cacert.pem in order to avoid curl error
+- Fix #4474: Loader not removed from event trigger
