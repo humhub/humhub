@@ -29,7 +29,7 @@ abstract class MenuEntry extends BaseObject
     protected $id;
 
     /**
-     * @var int the sort order
+     * @var int the sort order. a value between 0 and 10000
      */
     protected $sortOrder;
 
