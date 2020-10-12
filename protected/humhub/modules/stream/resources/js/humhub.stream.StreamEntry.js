@@ -258,6 +258,10 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         });
     };
 
+    StreamEntry.prototype.isPinned = function (evt) {
+        return this.$.is('[data-stream-pinned="1"]');
+    };
+
     /**
      * Pins this entry to the top of the stream.
      * @param evt
