@@ -48,3 +48,4 @@ HumHub Changelog
 - Enh #4195: Increased scaled logo size for high res displays
 - Enh #4469: Added TextConverter maximum length
 - Enh #4469: Added file converter id attribute
+- Enh #3978: Added option to compress and resize images automatically on upload
