@@ -165,6 +165,11 @@ abstract class Stream extends Action
     public $streamEntryOptions;
 
     /**
+     * @var string can be used to set view context in request
+     */
+    public $viewContext;
+
+    /**
      * @inheritdoc
      * @throws \yii\base\InvalidConfigException
      */
@@ -178,6 +183,10 @@ abstract class Stream extends Action
 
         // Just make sure legacy user property is available
         $this->user = $this->streamQuery->user;
+
+        if(!$this->viewContext) {
+            $this->viewContext = Yii::$app->request->get('viewContext');
+        }
 
         if (!Yii::$app->request->isConsoleRequest) {
             $this->streamQuery->load(Yii::$app->request->get());
@@ -286,9 +295,11 @@ abstract class Stream extends Action
     protected function initStreamEntryOptions()
     {
         $instance = new StreamEntryOptions();
-        if($this->streamQuery->isSingleContentQuery()) {
-            $instance->viewContext(StreamEntryOptions::VIEW_CONTEXT_DETAIL);
+
+        if($this->viewContext) {
+            $instance->viewContext($this->viewContext);
         }
+
         return $instance;
     }
 

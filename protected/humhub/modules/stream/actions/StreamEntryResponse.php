@@ -51,6 +51,11 @@ class StreamEntryResponse extends Model
     public $isContent;
 
     /**
+     * @var bool
+     */
+    public $isInjected;
+
+    /**
      * @param Content $content
      * @param StreamEntryOptions|null $renderOptions
      * @param null $widgetOptions
@@ -106,6 +111,7 @@ class StreamEntryResponse extends Model
             'pinned' => (boolean) $this->pinned,
             'archived' => (boolean) $this->archived,
             'isContent' => (boolean) $this->isContent,
+            'isInjected' => (boolean) $this->isInjected,
         ];
     }
 
