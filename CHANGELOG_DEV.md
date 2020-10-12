@@ -46,3 +46,4 @@ HumHub Changelog
 - Fix #4456: PHP8 deprecated warning for LessHelper::updateVariables()
 - Fix #4451: PHP Deprecated Warning in ProsemirrorRichText::replaceLinkExtension
 - Enh #4195: Increased scaled logo size for high res displays
+- Enh #3889: Prevent resized site icon like `/assets/siteicons/180x180.png` by manually uploaded file from `/upload/icon/180x180.png`
