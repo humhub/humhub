@@ -61,19 +61,19 @@ class Module extends \humhub\components\Module
 
     /**
      * @since 1.7
-     * @var string The JPEG quality for uploaded JPEG images. From 0 to 100.
+     * @var int The JPEG quality for uploaded JPEG images. From 0 to 100.
      */
     public $imageJpegQuality = null;
 
     /**
      * @since 1.7
-     * @var string The PNG compression level for uploaded PNG images. From 0 to 9.
+     * @var int The PNG compression level for uploaded PNG images. From 0 to 9.
      */
     public $imagePngCompressionLevel = null;
 
     /**
      * @since 1.7
-     * @var string The WebP quality for uploaded WebP files. From 0 to 100.
+     * @var int The WebP quality for uploaded WebP files. From 0 to 100.
      */
     public $imageWebpQuality = null;
 }
