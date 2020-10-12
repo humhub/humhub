@@ -45,3 +45,4 @@ HumHub Changelog
 - Fix #4452: Ignore `scope` profile filter in stream filter count and hasActiveFilters
 - Enh #4469: Added TextConverter maximum length
 - Enh #4469: Added file converter id attribute
+- Enh #3978: Added option to compress and resize images automatically on upload

@@ -9,6 +9,7 @@
 namespace humhub\modules\file\actions;
 
 use humhub\libs\Html;
+use humhub\modules\file\libs\ImageHelper;
 use Yii;
 use yii\base\Action;
 use yii\web\UploadedFile;
@@ -88,7 +89,7 @@ class UploadAction extends Action
 
         $file->setUploadedFile($uploadedFile);
 
-        if($hideInStream) {
+        if ($hideInStream) {
             $file->show_in_stream = false;
         }
 
@@ -96,6 +97,7 @@ class UploadAction extends Action
             if ($this->record !== null) {
                 $this->record->fileManager->attach($file);
             }
+            $this->afterFileUpload($file);
             return array_merge(['error' => false], FileHelper::getFileInfos($file));
         } else {
             return $this->getErrorResponse($file);
@@ -105,6 +107,18 @@ class UploadAction extends Action
     protected function isHideInStreamRequest()
     {
         return (Yii::$app->request->post('hideInStream') == 1) || (Yii::$app->request->get('hideInStream') == 1);
+    }
+
+
+    /**
+     * Is called after a file has been successfully uploaded and saved.
+     *
+     * @param File $file
+     * @since 1.7
+     */
+    protected function afterFileUpload(File $file)
+    {
+        ImageHelper::downscaleImage($file);
     }
 
     /**
@@ -150,8 +164,8 @@ class UploadAction extends Action
         return [
             'error' => true,
             'errors' => $errorMessage,
-            'name' =>  Html::encode($file->file_name),
-            'size' =>  Html::encode($file->size)
+            'name' => Html::encode($file->file_name),
+            'size' => Html::encode($file->size)
         ];
     }
 
