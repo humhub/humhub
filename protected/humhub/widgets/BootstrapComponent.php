@@ -11,6 +11,7 @@ namespace humhub\widgets;
 use humhub\components\Widget;
 use humhub\libs\Html;
 use humhub\modules\ui\icon\widgets\Icon;
+use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -399,12 +400,17 @@ abstract class BootstrapComponent extends Widget
 
     /**
      * @return string
-     * @throws \Exception
      */
     public function __toString()
     {
-        $result = $this::widget($this->getWidgetOptions());
-        return $result ?: '';
+        try {
+            $result = $this::widget($this->getWidgetOptions());
+            return $result ?: '';
+        } catch (\Exception $e) {
+            Yii::error($e);
+        }
+
+        return '';
     }
 
     /**

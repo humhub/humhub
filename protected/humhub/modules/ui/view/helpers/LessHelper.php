@@ -33,7 +33,7 @@ class LessHelper
      * @param array $variables
      * @param $file
      */
-    public static function updateVariables($variables = [], $file)
+    public static function updateVariables($variables, $file)
     {
         $content = file_get_contents($file);
         foreach ($variables as $key => $value) {
@@ -83,6 +83,7 @@ class LessHelper
      *     @thirdColor: @secondColor;
      *
      * @param array $variables
+     * @since 1.7
      * @return array $variables
      */
     public static function updateLinkedLessVariables($variables)

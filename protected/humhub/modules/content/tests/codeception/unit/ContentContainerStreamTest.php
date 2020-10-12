@@ -78,7 +78,7 @@ class ContentContainerStreamTest extends HumHubDbTestCase
 
         $wallEntries = $action->activeQuery->all();
 
-        $wallEntryIds = array_map(create_function('$entry', 'return $entry->id;'), $wallEntries);
+        $wallEntryIds = array_map(static function($entry) {return $entry->id; }, $wallEntries);
 
         return $wallEntryIds;
     }

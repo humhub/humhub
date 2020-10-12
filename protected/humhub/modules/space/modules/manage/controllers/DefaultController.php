@@ -9,6 +9,7 @@
 namespace humhub\modules\space\modules\manage\controllers;
 
 use humhub\modules\content\components\ContentContainerControllerAccess;
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\space\components\UrlRule;
 use Yii;
 use humhub\modules\space\models\Space;
@@ -50,6 +51,7 @@ class DefaultController extends Controller
         $space->scenario = 'edit';
 
         if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
+            RichText::postProcess($space->about, $space);
             $this->view->saved();
             return $this->redirect($space->createUrl('index'));
         }

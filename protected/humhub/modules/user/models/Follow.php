@@ -175,6 +175,26 @@ class Follow extends \yii\db\ActiveRecord
     }
 
     /**
+     * @param \humhub\modules\user\models\User $user
+     * @param null $withNotifications
+     * @return ActiveQueryUser
+     */
+    public static function getFollowedUserQuery(User $user, $withNotifications = null)
+    {
+        $subQuery = self::find()
+            ->where(['user_follow.user_id' => $user->id, 'user_follow.object_model' => User::class])
+            ->andWhere('user_follow.object_id=user.id');
+
+        if ($withNotifications === true) {
+            $subQuery->andWhere(['user_follow.send_notifications' => 1]);
+        } elseif ($withNotifications === false) {
+            $subQuery->andWhere(['user_follow.send_notifications' => 0]);
+        }
+
+        return User::find()->where(['exists', $subQuery]);
+    }
+
+    /**
      * Returns all active users following the given $target record.
      * If $withNotifications is set only follower with the given send_notifications setting are returned.
      *
