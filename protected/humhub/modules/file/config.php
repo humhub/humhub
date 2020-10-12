@@ -13,6 +13,9 @@ return [
     'id' => 'file',
     'class' => Module::class,
     'isCoreModule' => true,
+    'consoleControllerMap' => [
+        'file' => 'humhub\modules\file\commands\FileController'
+    ],
     'events' => [
         ['class' => WallEntryAddons::class, 'event' => WallEntryAddons::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryAddonInit']],
         ['class' => CronController::class, 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => [Events::class, 'onCronDailyRun']],
