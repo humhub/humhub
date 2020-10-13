@@ -51,12 +51,16 @@ class CommentForm extends yii\base\Model
     {
         return [
             [['message'], 'required', 'isEmpty' => function ($message) {
-                $hasFile = !empty($this->fileList) || (!$this->comment->isNewRecord && $this->comment->fileManager->find()->count());
-
-                //check if message empty and attached file exists
-                if (empty($message) && !$hasFile) {
-                    throw new ServerErrorHttpException(Yii::t('CommentModule.base', 'The comment must not be empty!'));
+                if (!empty($message)) {
+                    return false;
                 }
+
+                // Allow empty message only with file attachments
+                if (!empty($this->fileList) || (!$this->comment->isNewRecord && $this->comment->fileManager->find()->count())) {
+                    return false;
+                }
+
+                throw new ServerErrorHttpException(Yii::t('CommentModule.base', 'The comment must not be empty!'));
             }],
             [['fileList'], 'safe'],
         ];
@@ -112,7 +116,7 @@ class CommentForm extends yii\base\Model
      */
     public function save()
     {
-        /**@var Comment $this->comment*/
+        /**@var Comment $this ->comment */
         $this->comment->setPolyMorphicRelation($this->target);
 
         //check if model saved
