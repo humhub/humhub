@@ -60,3 +60,5 @@ HumHub Changelog
 - Fix #4474: Loader not removed from event trigger
 - Enh #4476: Reworked TimeAgo widget
 - Chng #4482: Removed old legacy richtext editor which is deprecated since v1.3
+- Enh #4475: Add Console UserAdmin Command
+
