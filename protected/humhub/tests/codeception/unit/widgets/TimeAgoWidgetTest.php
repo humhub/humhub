@@ -77,9 +77,9 @@ class TimeAgoWidgetTest extends HumHubDbTestCase
     public function testHideTimeAfterMatches()
     {
         // TS outside of default 172800 but default deactivated
-        $ts = DateTime::createFromFormat("Y-m-d H:i:s", "2018-10-12 12:00:00")->getTimestamp();
+        $ts = DateTime::createFromFormat('Y-m-d H:i:s', '2018-10-12 12:00:00')->getTimestamp();
         $result = TimeAgo::widget(['timestamp' => $ts]);
-        $this->assertContains('<span title="Oct 12, 2018 - 12:00 PM">Oct 12, 2018</span></span>', $result);
+        $this->assertContains('Oct 12, 2018</time>', $result);
     }
 
     public function testHideTimeAfterNotMatches()
@@ -87,15 +87,15 @@ class TimeAgoWidgetTest extends HumHubDbTestCase
         // TS outside of default 172800 but default deactivated
         $ts = (new DateTime())->setTime(12,00,00)->getTimestamp();
         $result = TimeAgo::widget(['timestamp' => $ts, 'timeAgoBefore' => 1]);
-        $this->assertContains('<span title="Oct 12, 2020 - 12:00 PM">Oct 12, 2020 - 12:00 PM</span></span>', $result);
+        $this->assertContains('12:00 PM</time>', $result);
     }
 
     public function testHideTimeAfterDeactivated()
     {
         // TS outside of default 172800 but default deactivated
-        $ts = DateTime::createFromFormat("Y-m-d H:i:s", "2018-10-12 12:00:00")->getTimestamp();
+        $ts = DateTime::createFromFormat('Y-m-d H:i:s', '2018-10-12 12:00:00')->getTimestamp();
         $result = TimeAgo::widget(['timestamp' => $ts, 'hideTimeAfter' => false]);
-        $this->assertContains('<span title="Oct 12, 2018 - 12:00 PM">Oct 12, 2018 - 12:00 PM</span>', $result);
+        $this->assertContains('Oct 12, 2018 - 12:00 PM</time>', $result);
     }
 
     private function assertTimeAgoActive($result)

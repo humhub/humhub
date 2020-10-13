@@ -12,7 +12,7 @@ use Yii;
 
 /**
  * Shows a given date & time as automatically updating fuzzy timestamps (e.g. "4 minutes ago" or "about 1 day ago").
- * 
+ *
  * @author luke
  */
 class TimeAgo extends \yii\base\Widget
@@ -50,6 +50,18 @@ class TimeAgo extends \yii\base\Widget
     {
         parent::init();
 
+        if($this->hideTimeAfter === null) {
+            $this->hideTimeAfter = Yii::$app->params['formatter']['timeAgoHideTimeAfter'];
+        }
+
+        if($this->timeAgoBefore === null) {
+            $this->timeAgoBefore = Yii::$app->params['formatter']['timeAgoBefore'];
+        }
+
+        if($this->staticTimeAgo === null) {
+            $this->staticTimeAgo = Yii::$app->params['formatter']['timeAgoStatic'];
+        }
+
         // Make sure we get an timestamp in server tz
         if (is_numeric($this->timestamp)) {
             $this->timestamp = date('Y-m-d H:i:s', $this->timestamp);
@@ -79,8 +91,7 @@ class TimeAgo extends \yii\base\Widget
      */
     private function isRenderStatic()
     {
-        $timeAgoStatic = $this->staticTimeAgo !== null ?  $this->staticTimeAgo : Yii::$app->params['formatter']['timeAgoStatic'];
-        return $timeAgoStatic;
+        return $this->staticTimeAgo;
     }
 
     /**
@@ -89,7 +100,8 @@ class TimeAgo extends \yii\base\Widget
      */
     private function renderStatic()
     {
-        return '<span class="time"><span title="tt ' . $this->getFullDateTime() . '">' . Yii::$app->formatter->asRelativeTime($this->timestamp) . '</span></span>';
+        $isoDate =  date("c", $this->timestamp);
+        return '<time class="tt time timeago" datetime="'.$isoDate.'" title="' .$this->getFullDateTime() . '">' . Yii::$app->formatter->asRelativeTime($this->timestamp) . '</time>';
     }
 
     /**
@@ -98,18 +110,7 @@ class TimeAgo extends \yii\base\Widget
      */
     private function isTimeAgoElapsed($elapsed)
     {
-        $timeAgoBefore = $this->timeAgoBefore !== null ? $this->timeAgoBefore : Yii::$app->params['formatter']['timeAgoBefore'];
-        return $timeAgoBefore !== false && $elapsed >= $timeAgoBefore;
-    }
-
-    /**
-     * @param $elapsed
-     * @return bool
-     */
-    private function isHideTimeAfter($elapsed)
-    {
-        $timeAgoHideTimeAfter = $this->hideTimeAfter !== null ? $this->hideTimeAfter : Yii::$app->params['formatter']['timeAgoHideTimeAfter'];
-        return $timeAgoHideTimeAfter === false || $elapsed >= $timeAgoHideTimeAfter;
+        return $this->timeAgoBefore !== false && $elapsed >= $this->timeAgoBefore;
     }
 
     /**
@@ -122,13 +123,23 @@ class TimeAgo extends \yii\base\Widget
     public function renderDateTime($elapsed)
     {
         // Show time when within specified range
-        if (!$this->isHideTimeAfter($elapsed)) {
-            $date = $this->getFullDateTime();
-        } else {
+        if ($this->isHideTimeAfter($elapsed)) {
             $date = Yii::$app->formatter->asDate($this->timestamp, 'medium');
+        } else {
+            $date = $this->getFullDateTime();
         }
 
-        return '<span class="tt time"><span title="' . $this->getFullDateTime() . '">' . $date . '</span></span>';
+        $isoDate =  date("c", $this->timestamp);
+        return '<time class="tt time timeago" datetime="'.$isoDate.'" title="' .$this->getFullDateTime() . '">' . $date . '</time>';
+    }
+
+    /**
+     * @param $elapsed
+     * @return bool
+     */
+    private function isHideTimeAfter($elapsed)
+    {
+        return $this->hideTimeAfter !== false && $elapsed >= $this->hideTimeAfter;
     }
 
 
@@ -140,11 +151,6 @@ class TimeAgo extends \yii\base\Widget
      */
     public function renderTimeAgo()
     {
-       // $this->getView()->registerJs('$(".time").timeago();', \yii\web\View::POS_END, 'timeago');
-
-       // return '<span class="tt timeago time" data-ui-addition="timeago" title="' . date("c", $this->timestamp) . '">' . $this->getFullDateTime() . '</span>';
-
-
         // Convert timestamp to ISO 8601
         $date =  date("c", $this->timestamp);
         return '<time class="tt time timeago" data-ui-addition="timeago" datetime="'.$date.'" title="' .$this->getFullDateTime() . '">' . $this->getFullDateTime() . '</time>';
