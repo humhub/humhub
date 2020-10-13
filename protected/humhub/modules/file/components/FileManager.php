@@ -56,7 +56,7 @@ class FileManager extends Component
                 continue;
             }
 
-            if($file->isAssignedTo($this->record)) {
+            if ($file->isAssignedTo($this->record)) {
                 continue;
             }
 
@@ -81,7 +81,7 @@ class FileManager extends Component
      */
     public function find()
     {
-        return File::find()->andWhere(['object_id' => $this->record->getPrimaryKey(), 'object_model' =>  get_class($this->record)]);
+        return File::find()->andWhere(['object_id' => $this->record->getPrimaryKey(), 'object_model' => get_class($this->record)]);
     }
 
     /**
@@ -109,25 +109,5 @@ class FileManager extends Component
         } else {
             return $this->find()->andWhere(['show_in_stream' => 0])->all();
         }
-    }
-
-    /**
-     * Returns an array of files assigned to the record
-     *
-     * @return array
-     */
-    public function findAssignedToRecord()
-    {
-        $files =  File::find()->andWhere(['object_id' => $this->record->getPrimaryKey(), 'object_model' =>  get_class($this->record)])->asArray()->all();
-        $fileList = [];
-        $i = 0;
-
-        // Fill up files array
-        foreach ($files as $file) {
-            $fileList[$i] = $file['guid'];
-            $i++;
-        }
-
-        return $fileList;
     }
 }
