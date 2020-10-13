@@ -35,15 +35,6 @@ trait LegacyStreamTrait
     public $activeQuery;
 
     /**
-     * Optional stream user
-     * if no user is specified, the current logged in user will be used.
-     *
-     * @var User
-     * @deprecated since 1.7 use StreamQuery->user
-     */
-    public $user;
-
-    /**
      * First wall entry id to deliver
      *
      * @var int
