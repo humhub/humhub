@@ -9,13 +9,15 @@
 namespace humhub\widgets;
 
 use Yii;
+use yii\base\InvalidConfigException;
+use yii\base\Widget;
 
 /**
  * Shows a given date & time as automatically updating fuzzy timestamps (e.g. "4 minutes ago" or "about 1 day ago").
  *
  * @author luke
  */
-class TimeAgo extends \yii\base\Widget
+class TimeAgo extends Widget
 {
 
     /**
@@ -96,7 +98,7 @@ class TimeAgo extends \yii\base\Widget
 
     /**
      * @return string
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     private function renderStatic()
     {
@@ -116,9 +118,9 @@ class TimeAgo extends \yii\base\Widget
     /**
      * Show full date
      *
-     * @param int $elasped time in seconds
+     * @param $elapsed
      * @return string output of full date and time
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function renderDateTime($elapsed)
     {
@@ -147,7 +149,7 @@ class TimeAgo extends \yii\base\Widget
      * Render TimeAgo Javascript
      *
      * @return string timeago span
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function renderTimeAgo()
     {
@@ -161,7 +163,7 @@ class TimeAgo extends \yii\base\Widget
      * Returns full date as text
      *
      * @return string
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     protected function getFullDateTime()
     {
