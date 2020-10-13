@@ -30,7 +30,7 @@
         "npm-asset/blueimp-gallery": "2.36.0",
         "npm-asset/bootstrap-markdown": "2.10.*",
         "npm-asset/bootstrap-tour": "0.11.0",
-        "npm-asset/clipboard-polyfill": "*",
+        "npm-asset/clipboard-polyfill": "3.0.*",
         "npm-asset/font-awesome": "^4.7.0",
         "npm-asset/humhub-prosemirror-richtext": "1.0.26",
         "npm-asset/imagesloaded": "*",
@@ -73,6 +73,7 @@
         "codeception/specify": "^1.0",
         "codeception/verify": "~0.5.0 || ~1.1.0",
         "symfony/browser-kit": ">=2.7 <=4.2.4",
+        "phpcompatibility/php-compatibility": "*",
         "yiisoft/yii2-debug": "~2.1.0",
         "yiisoft/yii2-faker": "~2.0.0",
         "yiisoft/yii2-gii": "~2.1.0"
@@ -97,7 +98,7 @@
     "scripts": {
         "post-create-project-cmd": [
             "yii\\composer\\Installer::postCreateProject"
-        ]
+        ],
     },
     "extra": {
         "yii\\composer\\Installer::postCreateProject": {
