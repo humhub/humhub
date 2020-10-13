@@ -131,17 +131,19 @@ class DashboardStreamAction extends ActivityStreamAction
             ->where('cc.pk=' . $this->user->id . ' AND cc.class=:userClass');
         $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($wallIdsSql)[0];
 
+        $query = $this->streamQuery->query();
+
         // Manual Union (https://github.com/yiisoft/yii2/issues/7992)
-        $this->activeQuery->andWhere('contentcontainer.id IN (' . $union . ') OR contentcontainer.id IS NULL', [':spaceClass' => Space::class, ':userClass' => User::class]);
+        $query->andWhere('contentcontainer.id IN (' . $union . ') OR contentcontainer.id IS NULL', [':spaceClass' => Space::class, ':userClass' => User::class]);
 
         /**
          * Begin visibility checks regarding the content container
          */
-        $this->activeQuery->leftJoin(
+        $query->leftJoin(
             'space_membership', 'contentcontainer.pk=space_membership.space_id AND space_membership.user_id=:userId AND space_membership.status=:status', ['userId' => $this->user->id, ':status' => Membership::STATUS_MEMBER]
         );
         if ($friendshipEnabled) {
-            $this->activeQuery->leftJoin(
+            $query->leftJoin(
                 'user_friendship', 'contentcontainer.pk=user_friendship.user_id AND user_friendship.friend_user_id=:userId', ['userId' => $this->user->id]
             );
         }
@@ -159,7 +161,7 @@ class DashboardStreamAction extends ActivityStreamAction
         // User can see private and public of his own profile (also when not created by hisself)
         $condition .= ' (content.visibility = 0 AND content.contentcontainer_id=:userContentContainerId) ';
 
-        $this->activeQuery->andWhere($condition, [
+        $query->andWhere($condition, [
             ':userId' => $this->user->id,
             ':userModel' => User::class,
             ':spaceModel' => Space::class,
