@@ -58,3 +58,4 @@ HumHub Changelog
 - Enh #4467: Inject stream entries by event (experimental)
 - Fix #4473: Catch all Throwables when loading module configuration
 - Fix #4474: Loader not removed from event trigger
+- Enh #4476: Reworked TimeAgo widget

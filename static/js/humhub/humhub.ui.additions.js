@@ -180,6 +180,10 @@ humhub.module('ui.additions', function (module, require, $) {
             $match.autosize();
         });
 
+        module.register('timeago', function($match) {
+            $match.timeago();
+        });
+
         module.register('select2', '[data-ui-select2]', function ($match) {
             $match.select2({theme: "humhub"});
         });
