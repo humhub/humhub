@@ -98,7 +98,7 @@
     "scripts": {
         "post-create-project-cmd": [
             "yii\\composer\\Installer::postCreateProject"
-        ],
+        ]
     },
     "extra": {
         "yii\\composer\\Installer::postCreateProject": {
