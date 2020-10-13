@@ -81,6 +81,8 @@ $container = $model->content->container;
             <?= TimeAgo::widget(['timestamp' => $model->content->created_at]) ?>
         </a>
 
+        &middot;
+
         <div class="wall-entry-icons">
             <?php if ($model->content->isUpdated()) : ?>
                 <?= UpdatedIcon::getByDated($model->content->updated_at) ?>
