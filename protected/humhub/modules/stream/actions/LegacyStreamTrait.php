@@ -181,7 +181,7 @@ trait LegacyStreamTrait
      */
     protected function isInitialRequest()
     {
-        return $this->from === null && $this->to === null && $this->limit != 1;
+        return $this->from === null && $this->to === null && $this->limit !== 1;
     }
 
     private function setDeprecatedActionProperties()

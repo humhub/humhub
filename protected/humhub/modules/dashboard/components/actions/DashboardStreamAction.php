@@ -76,8 +76,9 @@ class DashboardStreamAction extends ActivityStreamAction
             ->where('user.status=1 AND user.visibility = ' . User::VISIBILITY_ALL);
         $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($publicProfilesSql)[0];
 
-        $this->activeQuery->andWhere('content.contentcontainer_id IN (' . $union . ') OR content.contentcontainer_id IS NULL', [':spaceClass' => Space::class, ':userClass' => User::class]);
-        $this->activeQuery->andWhere(['content.visibility' => Content::VISIBILITY_PUBLIC]);
+        $query = $this->getStreamQuery()->query();
+        $query->andWhere('content.contentcontainer_id IN (' . $union . ') OR content.contentcontainer_id IS NULL', [':spaceClass' => Space::class, ':userClass' => User::class]);
+        $query->andWhere(['content.visibility' => Content::VISIBILITY_PUBLIC]);
     }
 
     public function setupUserFilter()
