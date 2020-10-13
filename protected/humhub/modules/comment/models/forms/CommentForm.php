@@ -126,9 +126,9 @@ class CommentForm extends yii\base\Model
             // Reload comment to get populated created_at field
             $this->comment->refresh();
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     public function getComment()
