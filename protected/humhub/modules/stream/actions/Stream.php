@@ -9,6 +9,7 @@
 namespace humhub\modules\stream\actions;
 
 use humhub\modules\stream\events\StreamResponseEvent;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Action;
 use yii\base\Exception;
@@ -96,6 +97,13 @@ abstract class Stream extends Action
     const MAX_LIMIT = 50;
 
     /**
+     * Optional stream user if no user is specified, the current logged in user will be used.
+     *
+     * @var User
+     */
+    public $user;
+
+    /**
      * Used to load single content entries.
      * @since 1.2
      */
@@ -177,12 +185,13 @@ abstract class Stream extends Action
     {
         parent::init();
 
+        if(!$this->user) {
+            $this->user = Yii::$app->user->identity;
+        }
+
         $this->excludes = array_merge($this->excludes, Yii::$app->getModule('stream')->streamExcludes);
 
         $this->streamQuery = $this->initQuery();
-
-        // Just make sure legacy user property is available
-        $this->user = $this->streamQuery->user;
 
         if(!$this->viewContext) {
             $this->viewContext = Yii::$app->request->get('viewContext');
@@ -226,7 +235,7 @@ abstract class Stream extends Action
 
         /* @var $instance StreamQuery */
         $instance = $streamQueryClass::find();
-        $instance->forUser(Yii::$app->user->identity);
+        $instance->forUser($this->user);
         $instance->setAttributes($options, false);
         return $instance;
     }

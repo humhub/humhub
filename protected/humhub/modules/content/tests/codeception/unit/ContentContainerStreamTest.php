@@ -76,7 +76,7 @@ class ContentContainerStreamTest extends HumHubDbTestCase
         $action->contentContainer = $container;
         $action->limit = $limit;
 
-        $wallEntries = $action->activeQuery->all();
+        $wallEntries = $action->getStreamQuery()->all();
 
         $wallEntryIds = array_map(static function($entry) {return $entry->id; }, $wallEntries);
 

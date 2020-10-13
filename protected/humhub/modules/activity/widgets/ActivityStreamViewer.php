@@ -23,6 +23,11 @@ class ActivityStreamViewer extends StreamViewer
     /**
      * @inheritDoc
      */
+    public $streamFilterNavigation = null;
+
+    /**
+     * @inheritDoc
+     */
     public function __construct(array $config = [])
     {
         $defaults = [

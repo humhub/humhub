@@ -368,7 +368,7 @@ class StreamQuery extends Model
      */
     public function query($build = false)
     {
-        if ($build) {
+        if ($build && !$this->_built) {
             $this->setupQuery();
         }
 
