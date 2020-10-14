@@ -227,8 +227,8 @@ class CoreJsConfig extends Widget
                 ],
                 'ui.showMore' => [
                     'text' => [
-                        'readMore' => Yii::t('PostModule.base', 'Read full post...'),
-                        'readLess' => Yii::t('PostModule.base', 'Collapse'),
+                        'readMore' => Yii::t('UiModule.base', 'Read more'),
+                        'readLess' => Yii::t('UiModule.base', 'Collapse'),
                     ]
                 ],
                 'ui.panel' => [
