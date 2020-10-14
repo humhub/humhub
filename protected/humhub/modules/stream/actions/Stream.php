@@ -193,12 +193,12 @@ abstract class Stream extends Action
 
         $this->streamQuery = $this->initQuery();
 
-        if(!$this->viewContext) {
-            $this->viewContext = Yii::$app->request->get('viewContext');
-        }
-
         if (!Yii::$app->request->isConsoleRequest) {
             $this->streamQuery->load(Yii::$app->request->get());
+
+            if(!$this->viewContext) {
+                $this->viewContext = Yii::$app->request->get('viewContext');
+            }
         }
 
         $this->beforeApplyFilters();
