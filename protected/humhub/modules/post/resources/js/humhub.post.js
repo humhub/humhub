@@ -10,7 +10,7 @@ humhub.module('post', function(module, require, $) {
             var $rtContent = $(this).children();
             var $first = $rtContent.first();
 
-            if($rtContent.length === 1 && $first.is('p') && $first.text().length < 150) {
+            if($rtContent.length === 1 && $first.is('p') && $first.text().length < 150 && !$first.find('br').length) {
                 that.$.addClass('post-short-text');
             }
         })
@@ -19,5 +19,4 @@ humhub.module('post', function(module, require, $) {
     module.export({
         Post: Post
     });
-
 });

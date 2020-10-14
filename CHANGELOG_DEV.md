@@ -61,3 +61,6 @@ HumHub Changelog
 - Enh #4476: Reworked TimeAgo widget
 - Chg #4482: Removed old legacy richtext editor which is deprecated since v1.3
 - Enh #3851: Migrate components from ZendFramework to Laminas
+- Chg #4482: Removed old legacy richtext editor which is deprecated since v1.3
+- Fix #4354: Set `about` as target url of space invitation notification
+- Fix #4493: Removed legacy ControllerAccess in notification ListController
