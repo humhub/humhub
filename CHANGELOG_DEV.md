@@ -64,3 +64,4 @@ HumHub Changelog
 - Chg #4482: Removed old legacy richtext editor which is deprecated since v1.3
 - Fix #4354: Set `about` as target url of space invitation notification
 - Fix #4493: Removed legacy ControllerAccess in notification ListController
+- Chng #4509: Removed `humhub\modules\space\widgets\Picker` which is deprecated since v1.2
