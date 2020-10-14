@@ -18,8 +18,7 @@ use humhub\modules\user\widgets\Image;
     <div class="panel-body">
         <?php if ($space->about || $space->description): ?>
             <div>
-                <div data-ui-markdown data-ui-show-more
-                     data-read-more-text="<?= Yii::t('SpaceModule.base', 'Read More') ?>">
+                <div data-ui-markdown data-ui-show-more data-collapse-at="600">
                     <?= RichText::output(empty($space->about) ? $space->description : $space->about) ?>
                 </div>
             </div>
