@@ -59,4 +59,5 @@ HumHub Changelog
 - Fix #4473: Catch all Throwables when loading module configuration
 - Fix #4474: Loader not removed from event trigger
 - Enh #4476: Reworked TimeAgo widget
-- Chng #4482: Removed old legacy richtext editor which is deprecated since v1.3
+- Chg #4482: Removed old legacy richtext editor which is deprecated since v1.3
+- Enh #3851: Migrate components from ZendFramework to Laminas
