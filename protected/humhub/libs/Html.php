@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\web\security\helpers\Security;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -114,7 +115,7 @@ class Html extends \yii\bootstrap\Html
         }
 
         if (!isset($options['showIcon']) || $options['showIcon'] === true) {
-            $label = '<i class="fa fa-arrow-left aria-hidden="true"></i> ' . $label;
+            $label = Icon::get('back')->asString().' '. $label;
         }
 
         if (empty($url)) {

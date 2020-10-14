@@ -36,7 +36,7 @@ class Events
             'id' => 'dashboard',
             'label' => Yii::t('DashboardModule.base', 'Dashboard'),
             'url' => ['/dashboard/dashboard'],
-            'icon' => 'tachometer',
+            'icon' => 'dashboard',
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState('dashboard')
         ]));

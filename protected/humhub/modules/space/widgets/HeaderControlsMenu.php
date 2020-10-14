@@ -9,6 +9,7 @@
 namespace humhub\modules\space\widgets;
 
 use humhub\modules\space\models\Space;
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\DropdownMenu;
@@ -31,7 +32,7 @@ class HeaderControlsMenu extends DropdownMenu
     /**
      * @inheritdoc
      */
-    public $label = '<i class="fa fa-cog"></i>';
+    public $label;
 
     /**
      * @inheritdoc
@@ -43,6 +44,11 @@ class HeaderControlsMenu extends DropdownMenu
      */
     public function init()
     {
+        parent::init();
+
+        if(!$this->label) {
+            $this->label = Icon::get('controls');
+        }
 
         if ($this->template === '@humhub/widgets/views/dropdownNavigation') {
             $this->template = '@ui/menu/widgets/views/dropdown-menu.php';
@@ -107,7 +113,7 @@ class HeaderControlsMenu extends DropdownMenu
                 $this->addEntry(new MenuLink([
                     'label' => Yii::t('SpaceModule.manage', 'Cancel Membership'),
                     'url' => $this->space->createUrl('/space/membership/revoke-membership'),
-                    'icon' => 'times',
+                    'icon' => 'remove',
                     'sortOrder' => 700,
                     'htmlOptions' => ['data-method' => 'POST']
                 ]));

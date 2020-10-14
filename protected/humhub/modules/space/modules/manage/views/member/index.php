@@ -1,5 +1,6 @@
 <?php
 
+use humhub\widgets\Button;
 use humhub\widgets\GridView;
 use yii\bootstrap\ActiveForm;
 use humhub\modules\space\models\Space;
@@ -101,13 +102,10 @@ use yii\helpers\Html;
                                 return false;
                             },
                             'delete' => function ($url, $model) use($space) {
-                                $url = ['/space/manage/member/remove', 'userGuid' => $model->user->guid, 'container' => $space];
-                                return Html::a('<i class="fa fa-times"></i>', $url, [
-                                            'title' => Yii::t('SpaceModule.manage', 'Remove from space'),
-                                            'class' => 'btn btn-danger btn-xs tt',
-                                            'data-method' => 'POST',
-                                            'data-confirm' => 'Are you really sure?'
-                                ]);
+                                return Button::danger()->tooltip(Yii::t('SpaceModule.manage', 'Remove from space'))
+                                    ->link(['/space/manage/member/remove', 'userGuid' => $model->user->guid, 'container' => $space])
+                                    ->options(['data-method' => 'POST', 'data-confirm' => Yii::t('SpaceModule.manage', 'Are you sure you want to remove this member.') ])
+                                    ->icon('remove')->xs();
                             }
                         ],
                     ],
