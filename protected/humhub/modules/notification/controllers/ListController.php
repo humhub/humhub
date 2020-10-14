@@ -8,6 +8,7 @@
 
 namespace humhub\modules\notification\controllers;
 
+use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\notification\models\Notification;
 use Yii;
@@ -20,16 +21,13 @@ use yii\db\IntegrityException;
  */
 class ListController extends Controller
 {
-
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function behaviors()
+    public function getAccessRules()
     {
         return [
-            'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::class,
-            ]
+            [ControllerAccess::RULE_LOGGED_IN_ONLY]
         ];
     }
 
