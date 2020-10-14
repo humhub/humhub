@@ -12,10 +12,9 @@ HumHub Changelog
 - Fix #4230: Auto enable "Hide file info (name, size) for images on wall" option
 - Chg: Move CHANGELOG to humhub root
 - Fix #4330: Allow users with permission ManageUsers to modify profile images
-- Enh #4331: Added 'break-all' stylesheet option to stream entry layouts
 - Enh #4179: Removed deprecated mysql character set in log table migration
 - Enh #4324: Improved line break for menu entries with many characters
-- Fix #4186: Add Timezone validation rules to admin prerequisite view
+- Enh #4186: Add Timezone validation rules to admin prerequisite view
 - Enh #4378: Implemented generic ContentContainerActiveRecord::is() function
 - Enh #4310: Add "Can Like" Permission 
 - Fix #4111: Issues Cropping Images
@@ -39,12 +38,12 @@ HumHub Changelog
 - Enh #4401: Allow to use less variable name in value of another less variable
 - Fix #4434: Fix title quoting for space icons in widget “Member in these spaces”
 - Fix #4428: Replace db Expression time now with func date('Y-m-d G:i:s')
-- Enh #4370: Add "summary" to `Space` model
+- Enh #4370: Add "about" to `Space` model
 - Enh #4370: Add `humhub\modules\space\widgets\MyMembership` to manage render user state in a space
 - Enh #4370: Add `humhub\modules\space\widgets\AboutPageSidebar` to manage about page sidebar
 - Enh #4370: Add `About Space` page 
-- Enh #3994: Live event legitimation array include followed users
-- Enh #3994: Live event legitimation consider `cached` argument in processing data
+- Fix #3994: Live event legitimation array include followed users
+- Fix #3994: Live event legitimation consider `cached` argument in processing data
 - Fix #4452: `humhub.ui.filter.getActiveFilterCount` returns wrong value with exclude array option
 - Fix #4452: Ignore `scope` profile filter in stream filter count and hasActiveFilters
 - Fix #4456: PHP8 deprecated warning for LessHelper::updateVariables()
@@ -61,7 +60,6 @@ HumHub Changelog
 - Enh #4476: Reworked TimeAgo widget
 - Chg #4482: Removed old legacy richtext editor which is deprecated since v1.3
 - Enh #3851: Migrate components from ZendFramework to Laminas
-- Chg #4482: Removed old legacy richtext editor which is deprecated since v1.3
 - Fix #4354: Set `about` as target url of space invitation notification
 - Fix #4493: Removed legacy ControllerAccess in notification ListController
 - Chng #4509: Removed `humhub\modules\space\widgets\Picker` which is deprecated since v1.2
