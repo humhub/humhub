@@ -188,6 +188,10 @@ class StreamEntryOptions extends Model
             return true;
         }
 
+        if(!ContentContainerHelper::getCurrent()->is($model->content->container)) {
+            return true;
+        }
+
         return !$this->isViewContext(static::VIEW_CONTEXT_DEFAULT);
     }
 
