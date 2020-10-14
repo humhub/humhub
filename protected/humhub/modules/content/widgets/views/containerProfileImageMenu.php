@@ -37,7 +37,7 @@ if (!isset($confirmBody)) {
         ->cssClass('profile-image-edit profile-image-crop') ?>
 
     <?= Button::danger()
-        ->icon('times')
+        ->icon('remove')
         ->action('delete', $deleteUrl)
         ->style($editButtonStyle)->sm()
         ->loader(false)

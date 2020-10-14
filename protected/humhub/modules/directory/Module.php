@@ -8,6 +8,7 @@
 
 namespace humhub\modules\directory;
 
+use humhub\modules\ui\menu\MenuLink;
 use Yii;
 use yii\helpers\Url;
 use humhub\modules\user\models\Group;
@@ -84,14 +85,14 @@ class Module extends \humhub\components\Module
         $module = Yii::$app->getModule('directory');
 
         if($module->canAccess()) {
-            $event->sender->addItem([
-                'label' => Yii::t('DirectoryModule.base', 'Directory'),
+            $event->sender->addEntry(new MenuLink([
                 'id' => 'directory',
-                'icon' => '<i class="fa fa-book"></i>',
-                'url' => Url::to(['/directory/directory']),
+                'icon' => 'directory',
+                'label' => Yii::t('DirectoryModule.base', 'Directory'),
+                'url' => ['/directory/directory'],
                 'sortOrder' => 400,
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'directory'),
-            ]);
+                'isActive' =>  MenuLink::isActiveState('directory'),
+            ]));
         }
     }
 
@@ -111,7 +112,7 @@ class Module extends \humhub\components\Module
 
     /**
      * Show groups in directory
-     * 
+     *
      * @return boolean
      */
     public function isGroupListingEnabled()
