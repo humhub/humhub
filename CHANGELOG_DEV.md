@@ -61,3 +61,4 @@ HumHub Changelog
 - Enh #4476: Reworked TimeAgo widget
 - Chng #4482: Removed old legacy richtext editor which is deprecated since v1.3
 - Fix #4354: Set `about` as target url of space invitation notification
+- Chng #4482: Removed `humhub\modules\space\widgets\Picker` which is deprecated since v1.2
