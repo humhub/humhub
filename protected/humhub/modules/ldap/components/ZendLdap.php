@@ -4,13 +4,13 @@
 namespace humhub\modules\ldap\components;
 
 
-use Zend\Ldap\Ldap;
-use Zend\Ldap\Filter;
-use Zend\Ldap\Dn;
-use Zend\Ldap\Exception;
-use Zend\Ldap\Exception\LdapException;
+use Laminas\Ldap\Ldap;
+use Laminas\Ldap\Filter;
+use Laminas\Ldap\Dn;
+use Laminas\Ldap\Exception;
+use Laminas\Ldap\Exception\LdapException;
 use Traversable;
-use Zend\Ldap\ErrorHandler;
+use Laminas\Ldap\ErrorHandler;
 
 
 class ZendLdap extends Ldap

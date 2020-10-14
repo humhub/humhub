@@ -13,7 +13,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.0.0",
+        "php": ">=7.1",
         "ext-exif": "*",
         "ext-zip": "*",
         "cebe/markdown": "1.0.2",
@@ -22,6 +22,9 @@
         "firebase/php-jwt": "^5.0",
         "jbroadway/urlify": "^1.0",
         "kartik-v/yii2-widgets": "*",
+        "laminas/laminas-escaper": "^2.6",
+        "laminas/laminas-ldap": "^2.10",
+        "matthewbdaly/zendsearch": "^0.0.3",
         "mistic100/randomcolor": "^1.0",
         "npm-asset/animate.css": "*",
         "npm-asset/at.js": "^1.5.1",
@@ -47,7 +50,6 @@
         "npm-asset/socket.io-client": "^2.0",
         "npm-asset/swiped-events": "1.0.9",
         "npm-asset/timeago": "^1.6.3",
-        "nqxcode/zendsearch": "^2.0",
         "phpoffice/phpspreadsheet": "^1.0",
         "raoul2000/yii2-jcrop-widget": "*",
         "twig/twig": "^1.0",
@@ -60,9 +62,9 @@
         "yiisoft/yii2-jui": "~2.0.0",
         "yiisoft/yii2-queue": "~2.3.0",
         "yiisoft/yii2-redis": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0",
-        "zendframework/zend-http": "*",
-        "zendframework/zend-ldap": "^2.5"
+        "yiisoft/yii2-swiftmailer": "~2.0.0"
+    },
+    "replace": {
     },
     "require-dev": {
         "codeception/codeception": "^4.0",
@@ -86,9 +88,6 @@
     ],
     "config": {
         "process-timeout": 1800,
-        "platform": {
-            "php": "7.0"
-        },
         "vendor-dir": "protected/vendor",
         "sort-packages": true,
         "fxp-asset": {

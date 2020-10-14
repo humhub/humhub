@@ -613,7 +613,7 @@ humhub.module('stream.Stream', function (module, require, $) {
     };
 
     Stream.prototype.hasActiveFilters = function () {
-        return this.filter && this.filter.getActiveFilterCount({exclude: ['sort', 'scope']}) > 0;
+        return this.filter && this.filter.getActiveFilterCount({exclude: ['sort']}) > 0;
     };
 
     /**
