@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e5c7697ad9c0ba898947571a6d75d03",
+    "content-hash": "6f764ec1f379884bb513e7adbdc8dc55",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -2166,6 +2166,51 @@
             "time": "2020-08-28T17:11:00+00:00"
         },
         {
+            "name": "matthewbdaly/zendsearch",
+            "version": "0.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/matthewbdaly/ZendSearch.git",
+                "reference": "34d9dd608bd4cc81e20470b69761629741471e77"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/matthewbdaly/ZendSearch/zipball/34d9dd608bd4cc81e20470b69761629741471e77",
+                "reference": "34d9dd608bd4cc81e20470b69761629741471e77",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "replace": {
+                "zendframework/zendsearch": "2.*"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^7.0",
+                "psy/psysh": "^0.9.9",
+                "rector/rector": "^0.4.12",
+                "squizlabs/php_codesniffer": "^3.4",
+                "vimeo/psalm": "^3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "ZendSearch": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "A fork of zendframework/zendsearch, with some tweaks to make it work in PHP 7",
+            "keywords": [
+                "lucene",
+                "zf2"
+            ],
+            "time": "2019-09-28T11:03:49+00:00"
+        },
+        {
             "name": "mistic100/randomcolor",
             "version": "1.0.4",
             "source": {
@@ -3024,42 +3069,6 @@
             "license": [
                 "MIT"
             ]
-        },
-        {
-            "name": "nqxcode/zendsearch",
-            "version": "v2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nqxcode/ZendSearch.git",
-                "reference": "8ad687b36ad4dd1b8007f0812e5cf73d360cb858"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nqxcode/ZendSearch/zipball/8ad687b36ad4dd1b8007f0812e5cf73d360cb858",
-                "reference": "8ad687b36ad4dd1b8007f0812e5cf73d360cb858",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "zendframework/zend-stdlib": "2.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "ZendSearch": "library/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "a general purpose text search engine written entirely in PHP 5",
-            "homepage": "http://packages.zendframework.com/",
-            "keywords": [
-                "lucene",
-                "zf2"
-            ],
-            "time": "2015-06-12T14:16:08+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -5953,125 +5962,6 @@
                 "yii2"
             ],
             "time": "2017-05-01T08:29:00+00:00"
-        },
-        {
-            "name": "zendframework/zend-hydrator",
-            "version": "1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zendframework/zend-hydrator.git",
-                "reference": "22652e1661a5a10b3f564cf7824a2206cf5a4a65"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-hydrator/zipball/22652e1661a5a10b3f564cf7824a2206cf5a4a65",
-                "reference": "22652e1661a5a10b3f564cf7824a2206cf5a4a65",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.5 || ^7.0",
-                "zendframework/zend-stdlib": "^2.7 || ^3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "^2.0@dev",
-                "zendframework/zend-eventmanager": "^2.6.2 || ^3.0",
-                "zendframework/zend-filter": "^2.6",
-                "zendframework/zend-inputfilter": "^2.6",
-                "zendframework/zend-serializer": "^2.6.1",
-                "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3"
-            },
-            "suggest": {
-                "zendframework/zend-eventmanager": "^2.6.2 || ^3.0, to support aggregate hydrator usage",
-                "zendframework/zend-filter": "^2.6, to support naming strategy hydrator usage",
-                "zendframework/zend-serializer": "^2.6.1, to use the SerializableStrategy",
-                "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3, to support hydrator plugin manager usage"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-release-1.0": "1.0-dev",
-                    "dev-release-1.1": "1.1-dev",
-                    "dev-master": "2.0-dev",
-                    "dev-develop": "2.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zend\\Hydrator\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "homepage": "https://github.com/zendframework/zend-hydrator",
-            "keywords": [
-                "hydrator",
-                "zf2"
-            ],
-            "abandoned": "laminas/laminas-hydrator",
-            "time": "2016-02-18T22:38:26+00:00"
-        },
-        {
-            "name": "zendframework/zend-stdlib",
-            "version": "2.7.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zendframework/zend-stdlib.git",
-                "reference": "0e44eb46788f65e09e077eb7f44d2659143bcc1f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/0e44eb46788f65e09e077eb7f44d2659143bcc1f",
-                "reference": "0e44eb46788f65e09e077eb7f44d2659143bcc1f",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.5 || ^7.0",
-                "zendframework/zend-hydrator": "~1.1"
-            },
-            "require-dev": {
-                "athletic/athletic": "~0.1",
-                "fabpot/php-cs-fixer": "1.7.*",
-                "phpunit/phpunit": "~4.0",
-                "zendframework/zend-config": "~2.5",
-                "zendframework/zend-eventmanager": "~2.5",
-                "zendframework/zend-filter": "~2.5",
-                "zendframework/zend-inputfilter": "~2.5",
-                "zendframework/zend-serializer": "~2.5",
-                "zendframework/zend-servicemanager": "~2.5"
-            },
-            "suggest": {
-                "zendframework/zend-eventmanager": "To support aggregate hydrator usage",
-                "zendframework/zend-filter": "To support naming strategy hydrator usage",
-                "zendframework/zend-serializer": "Zend\\Serializer component",
-                "zendframework/zend-servicemanager": "To support hydrator plugin manager usage"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-release-2.7": "2.7-dev",
-                    "dev-master": "3.0-dev",
-                    "dev-develop": "3.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zend\\Stdlib\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "homepage": "https://github.com/zendframework/zend-stdlib",
-            "keywords": [
-                "stdlib",
-                "zf2"
-            ],
-            "abandoned": "laminas/laminas-stdlib",
-            "time": "2016-04-12T21:17:31+00:00"
         }
     ],
     "packages-dev": [
