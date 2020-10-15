@@ -23,6 +23,7 @@
         "jbroadway/urlify": "^1.0",
         "kartik-v/yii2-widgets": "*",
         "laminas/laminas-escaper": "^2.6",
+        "laminas/laminas-http": "^2.13",
         "laminas/laminas-ldap": "^2.10",
         "matthewbdaly/zendsearch": "^0.0.3",
         "mistic100/randomcolor": "^1.0",
