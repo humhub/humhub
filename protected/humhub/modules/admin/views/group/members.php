@@ -1,33 +1,41 @@
 <?php
 
+use humhub\modules\admin\assets\AdminGroupAsset;
+use humhub\modules\admin\models\forms\AddGroupMemberForm;
+use humhub\modules\admin\models\UserSearch;
+use humhub\modules\user\models\Group;
+use humhub\widgets\Button;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use humhub\widgets\GridView;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\grid\DisplayNameColumn;
+use humhub\modules\user\widgets\UserPickerField;
 
-\humhub\modules\admin\assets\AdminGroupAsset::register($this);
+/* @var $group Group */
+/* @var $addGroupMemberForm AddGroupMemberForm */
+/* @var $searchModel UserSearch */
+
+AdminGroupAsset::register($this);
 ?>
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
 <div class="panel-body">
-    <div class="row">
+     <div class="row">
         <div class="form-group col-md-6">
             <?php $form = ActiveForm::begin(['action' => ['/admin/group/add-members']]); ?>
             <div class="input-group select2-humhub-append">
-                <?=
-                humhub\modules\user\widgets\UserPickerField::widget([
+                <?= UserPickerField::widget([
                     'model' => $addGroupMemberForm,
                     'attribute' => 'userGuids',
                     'url' => Url::to(['/admin/group/new-member-search', 'id' => $group->id]),
                     'placeholder' => Yii::t('AdminModule.user', 'Add new members...'),
                     'focus' => true,
-                ])
-                ?>
+                ]) ?>
                 <?= Html::activeHiddenInput($addGroupMemberForm, 'groupId', ['value' => $group->id]) ?>
                 <span class="input-group-btn">
-                    <button type="submit" class="btn btn-primary" style="height:40px;" data-ui-loader><i class="fa fa-plus"></i></button>
+                    <?= Button::primary()->submit()->style('height:40px')->icon('add') ?>
                 </span>
             </div>
             <?php ActiveForm::end(); ?>
@@ -39,7 +47,7 @@ use humhub\modules\user\grid\DisplayNameColumn;
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                 </span>
-            </div>     
+            </div>
             <?php ActiveForm::end(); ?>
         </div>
     </div>
@@ -86,11 +94,11 @@ use humhub\modules\user\grid\DisplayNameColumn;
                             return false;
                         },
                         'delete' => function($url, $model) use ($group) {
-                            return Html::a('<i class="fa fa-times"></i>', '#', [
-                                        'data-action-click' => 'admin.group.removeMember',
-                                        'data-action-url' => Url::to(['remove-group-user', 'id' => $group->id, 'userId' => $model->id]),
-                                        'title' => Yii::t('AdminModule.user', 'Remove from group'),
-                                        'class' => 'btn btn-danger btn-xs tt']);
+                            return Button::danger()
+                                ->tooltip(Yii::t('AdminModule.user', 'Remove from group'))
+                                ->action('admin.group.removeMember', Url::to(['remove-group-user', 'id' => $group->id, 'userId' => $model->id]))
+                                ->icon('remove')->xs()
+                                ->confirm();
                         }
                     ],
                 ],

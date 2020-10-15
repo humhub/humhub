@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 <div class="panel-body">
 
     <div class="pull-right">
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.user', 'Add new user'), ['/admin/user/add'], ['class' => 'btn btn-success btn-sm', 'data-ui-loader' => '']); ?>
+        <?= Button::success(Yii::t('AdminModule.user', 'Add new user'))->icon('add')->sm()->link(['/admin/user/add']) ?>
         <?= ExportButton::widget(['filter' => 'UserSearch']) ?>
     </div>
 

@@ -17,7 +17,7 @@ use yii\console\ExitCode;
 use yii\console\widgets\Table;
 use yii\db\Expression;
 use yii\helpers\Console;
-use Zend\Ldap\Ldap;
+use Laminas\Ldap\Ldap;
 
 /**
  * Console tools for manage Ldap

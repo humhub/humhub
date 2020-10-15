@@ -27,7 +27,18 @@ class Module extends \humhub\components\Module
      * @var array contains all available icon aliases
      */
     public $iconAlias = [
-        'dropdownToggle' => 'angle-down'
+        'dropdownToggle' => 'angle-down',
+        'edit' => 'pencil',
+        'delete' => 'trash',
+        'dashboard' => 'tachometer',
+        'directory' => 'book',
+        'back' => 'arrow-left',
+        'add' => 'plus',
+        'invite' => 'paper-plane',
+        'remove' => 'times',
+        'controls' => 'cog',
+        'about' => 'info-circle',
+        'stream' => 'bars'
     ];
 
     /**

@@ -47,11 +47,11 @@ $module = Yii::$app->getModule('comment');
                         <li>
                             <a href="#" class="comment-edit-link" data-action-click="edit"
                                data-action-url="<?= $editUrl ?>">
-                                <i class="fa fa-pencil"></i> <?= Yii::t('CommentModule.base', 'Edit') ?>
+                                <?= Icon::get('edit')?> <?= Yii::t('CommentModule.base', 'Edit') ?>
                             </a>
                             <a href="#" class="comment-cancel-edit-link" data-action-click="cancelEdit"
                                data-action-url="<?= $loadUrl ?>" style="display:none;">
-                                <i class="fa fa-pencil"></i> <?= Yii::t('CommentModule.base', 'Cancel Edit') ?>
+                                <?= Icon::get('edit')?> <?= Yii::t('CommentModule.base', 'Cancel Edit') ?>
                             </a>
                         </li>
                     <?php endif; ?>
@@ -59,7 +59,7 @@ $module = Yii::$app->getModule('comment');
                     <?php if ($canDelete): ?>
                         <li>
                             <a href="#" data-action-click="delete">
-                                <i class="fa fa-trash-o"></i> <?= Yii::t('CommentModule.base', 'Delete') ?>
+                                <?= Icon::get('delete') ?> <?= Yii::t('CommentModule.base', 'Delete') ?>
                             </a>
                         </li>
                     <?php endif; ?>

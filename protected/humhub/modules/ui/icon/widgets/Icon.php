@@ -985,11 +985,16 @@ class Icon extends Widget
 
     /**
      * @return string
-     * @throws \Exception
      */
     public function asString()
     {
-        return (string)$this;
+        try {
+            return (string) $this;
+        } catch (\Throwable $e) {
+            Yii::error($e);
+        }
+
+        return '';
     }
 
     /**
@@ -1000,7 +1005,7 @@ class Icon extends Widget
         try {
             $result = $this::widget($this->asArray());
             return $result ?: '';
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Yii::error($e);
         }
 

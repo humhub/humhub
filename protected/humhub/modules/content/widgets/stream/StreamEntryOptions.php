@@ -87,7 +87,11 @@ class StreamEntryOptions extends Model
     {
         parent::init();
         if(!$this->viewContext) {
-            $this->viewContext = Yii::$app->request->getViewContext() ?? static::VIEW_CONTEXT_DEFAULT;
+            if (Yii::$app->request->isConsoleRequest) {
+                $this->viewContext = static::VIEW_CONTEXT_DEFAULT;
+            } else {
+                $this->viewContext = Yii::$app->request->getViewContext() ?? static::VIEW_CONTEXT_DEFAULT;
+            }
         }
     }
 
@@ -185,6 +189,10 @@ class StreamEntryOptions extends Model
         }
 
         if(!ContentContainerHelper::getCurrent()) {
+            return true;
+        }
+
+        if(!ContentContainerHelper::getCurrent()->is($model->content->container)) {
             return true;
         }
 

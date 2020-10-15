@@ -71,7 +71,7 @@ $iconUrl = SiteIcon::getUrl(140);
 
                 <?= Button::danger()->id('admin-delete-logo-image')
                     ->action('admin.deletePageLogo', Url::to(['/admin/setting/delete-logo-image']))
-                    ->style(LogoImage::hasImage() ? '' : 'display:none')->icon('times')->sm()->loader(false) ?>
+                    ->style(LogoImage::hasImage() ? '' : 'display:none')->icon('remove')->sm()->loader(false) ?>
             </div>
         </div>
     </div>
@@ -88,7 +88,7 @@ $iconUrl = SiteIcon::getUrl(140);
 
                 <?= Button::danger()->id('admin-delete-icon-image')
                     ->action('admin.deletePageIcon', Url::to(['/admin/setting/delete-icon-image']))
-                    ->style(SiteIcon::hasImage() ? '' : 'display:none')->icon('times')->sm()->loader(false) ?>
+                    ->style(SiteIcon::hasImage() ? '' : 'display:none')->icon('remove')->sm()->loader(false) ?>
             </div>
         </div>
     </div>
