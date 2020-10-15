@@ -56,7 +56,7 @@ class FileManager extends Component
                 continue;
             }
 
-            if($file->isAssignedTo($this->record)) {
+            if ($file->isAssignedTo($this->record)) {
                 continue;
             }
 
@@ -81,7 +81,7 @@ class FileManager extends Component
      */
     public function find()
     {
-        return File::find()->andWhere(['object_id' => $this->record->getPrimaryKey(), 'object_model' =>  get_class($this->record)]);
+        return File::find()->andWhere(['object_id' => $this->record->getPrimaryKey(), 'object_model' => get_class($this->record)]);
     }
 
     /**
@@ -110,5 +110,4 @@ class FileManager extends Component
             return $this->find()->andWhere(['show_in_stream' => 0])->all();
         }
     }
-
 }

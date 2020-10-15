@@ -65,4 +65,5 @@ HumHub Changelog
 - Enh #3851: Migrate components from ZendFramework to Laminas
 - Fix #4354: Set `about` as target url of space invitation notification
 - Fix #4493: Removed legacy ControllerAccess in notification ListController
-- Chg #4509: Removed `humhub\modules\space\widgets\Picker` which is deprecated since v1.2
+- Chng #4509: Removed `humhub\modules\space\widgets\Picker` which is deprecated since v1.2
+- Fix #4396: Submitting only picture in comment results in debug error.

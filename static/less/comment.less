@@ -89,7 +89,7 @@
     }
 
     .has-error + .comment-buttons {
-        bottom: 24px !important;
+        bottom: 19px !important;
     }
 
     .btn-comment-submit {
@@ -127,9 +127,8 @@
     }
 }
 
-
 .comment-container .content_edit {
-    margin-left: 50px;
+    margin-left: @commentLeftMargin;
 }
 
 .comment-container {
@@ -155,6 +154,10 @@
         .ProseMirror {
             padding-right: 72px;
         }
+    }
+
+    .form-group, .help-block {
+        margin:0;
     }
 }
 
