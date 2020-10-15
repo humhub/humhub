@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => '<strong>Подтвердите</strong> удаление комментария',
-    'Access denied!' => 'Доступ запрещен!',
     'Cancel' => 'Отменить',
     'Cancel Edit' => 'Отменить Изменение',
     'Comment' => 'Комментарий',
@@ -28,7 +27,6 @@ return [
     'Do you really want to delete this comment?' => 'Вы действительно хотите удалить этот комментарий?',
     'Edit' => 'Редактировать',
     'Edit your comment...' => 'Редактировать Ваш комментарий...',
-    'Insufficent permissions!' => 'Недостаточно прав!',
     'Read full comment...' => 'Прочитать комментарий полностью...',
     'Send' => 'Отправить',
     'Show all {total} comments' => 'Показать все комментарии в количестве {total} штук',
@@ -36,9 +34,9 @@ return [
     'The comment must not be empty!' => 'Комментарий не должен быть пустым!',
     'Whenever a new comment was written.' => 'Всякий раз, когда был написан новый комментарий.',
     'Write a new comment...' => 'Написать новый комментарий...',
-    'You are not allowed to comment.' => 'Вы не можете комментировать.',
     'comment' => 'Комментарий',
     '{displayName} wrote a new comment ' => '{displayName} прокомментировал(а)',
+    'Comment could not be saved!' => '',
     'Reply' => '',
     'Write a new reply...' => '',
 ];

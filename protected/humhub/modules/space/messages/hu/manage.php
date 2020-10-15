@@ -68,9 +68,9 @@ return [
     'Unarchive' => 'Archiválás megszüntetése',
     'e.g. example for {baseUrl}/s/example' => 'pl. példa erre: {baseUrl}/s/pelda',
     'never' => 'soha',
-    'space description' => 'Közösség leírása',
     'the default start page of this space for members' => 'az alapértelmezett kezdőoldal ezen közösség tagjainak',
     'the default start page of this space for visitors' => 'az alapértelmezett kezdőoldal ezen közösség látogatóinak',
+    'Are you sure you want to remove this member.' => '',
     'Invited By' => '',
     'Please type the name of the space to proceed.' => '',
 ];

@@ -38,6 +38,7 @@ return [
     'Add <strong>Modules</strong>' => '',
     'Advanced access settings' => '',
     'Archive' => '',
+    'Are you sure you want to remove this member.' => '',
     'Are you sure, that you want to delete this space? All published content will be removed!' => '',
     'Are you sure? *ALL* module data for this space will be deleted!' => '',
     'As owner of this space you can transfer this role to another administrator in space.' => '',
@@ -70,7 +71,6 @@ return [
     'This option will show new content from this space at your dashboard' => '',
     'Transfer ownership' => '',
     'e.g. example for {baseUrl}/s/example' => '',
-    'space description' => '',
     'the default start page of this space for members' => '',
     'the default start page of this space for visitors' => '',
 ];

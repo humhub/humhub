@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => '<strong>Potvrdi</strong> brisanje komentara',
-    'Access denied!' => 'Pristup odbijen!',
     'Cancel' => 'Poništi',
     'Cancel Edit' => 'Poniši uređivanje',
     'Comment' => 'Komentar',
@@ -28,7 +27,6 @@ return [
     'Do you really want to delete this comment?' => 'Želite li obrisati ovaj komentar?',
     'Edit' => 'Uredi',
     'Edit your comment...' => 'Uredi svoj komentar...',
-    'Insufficent permissions!' => 'Nedovoljno dopuštenje!',
     'Read full comment...' => 'Pročitaj sve..',
     'Send' => 'Pošalji',
     'Show all {total} comments' => 'Prikaži sve {total} komentare',
@@ -37,8 +35,8 @@ return [
     'Write a new comment...' => 'Napiši novi komentar...',
     'comment' => 'komentar',
     '{displayName} wrote a new comment ' => '{displayName} napisao je novi komentar',
+    'Comment could not be saved!' => '',
     'Reply' => '',
     'The comment must not be empty!' => '',
     'Write a new reply...' => '',
-    'You are not allowed to comment.' => '',
 ];
