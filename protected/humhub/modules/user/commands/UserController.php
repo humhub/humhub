@@ -16,7 +16,7 @@ use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Group;
 
 /**
- * Console User management
+ * Console User Management
  *
  * Example usage:
  *   php yii user/create "john.doe" "jd@example.com" "John" "Doe"
@@ -68,7 +68,7 @@ class UserController extends Controller
     }
 
     /**
-     * Sets the password for a user account
+     * Sets the password for an user account.
      */
     public function actionSetPassword(string $username, string $password)
     {
@@ -89,7 +89,7 @@ class UserController extends Controller
     }
 
     /**
-     * Add user to the admin group
+     * Add user to the admin group.
      */
     public function actionMakeAdmin(string $username)
     {
