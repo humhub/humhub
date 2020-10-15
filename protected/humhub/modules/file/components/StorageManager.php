@@ -32,7 +32,7 @@ class StorageManager extends Component implements StorageManagerInterface
     /**
      * @var string storage base path
      */
-    protected $storagePath = '@webroot/uploads/file';
+    protected $storagePath = '@filestore';
 
     /**
      * @var integer file mode

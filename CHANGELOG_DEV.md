@@ -1,7 +1,7 @@
 HumHub Changelog
 ================
 
-1.7.0-beta.1 (October 15, 2020)
+1.7.0-beta.1 (October 16, 2020)
 -------------------------------
 
 - Fix #4327: Internationalization of user approval/decline message text
@@ -67,3 +67,4 @@ HumHub Changelog
 - Fix #4493: Removed legacy ControllerAccess in notification ListController
 - Chng #4509: Removed `humhub\modules\space\widgets\Picker` which is deprecated since v1.2
 - Fix #4396: Submitting only picture in comment results in debug error.
+- Enh #4469: Added alias for file uploads folder
