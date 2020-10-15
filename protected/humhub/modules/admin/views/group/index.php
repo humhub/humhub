@@ -1,14 +1,19 @@
 <?php
 
+use humhub\libs\ActionColumn;
+use humhub\modules\admin\models\GroupSearch;
+use humhub\modules\admin\widgets\GroupMenu;
+use humhub\widgets\Link;
 use yii\helpers\Url;
-use yii\helpers\Html;
 use humhub\widgets\GridView;
+
+/* @var $searchModel GroupSearch*/
 ?>
 <div class="panel-body">
     <div class="pull-right">
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.user', 'Create new group'), Url::to(['edit']), ['class' => 'btn btn-sm btn-success']); ?>
+        <?= Link::success(Yii::t('AdminModule.user', 'Create new group'))->href(Url::to(['edit']))->sm()->icon('add') ?>
     </div>
-    
+
     <h4><?= Yii::t('AdminModule.user', 'Manage groups'); ?></h4>
 
     <div class="help-block">
@@ -16,12 +21,11 @@ use humhub\widgets\GridView;
     </div>
 </div>
 
-<?= \humhub\modules\admin\widgets\GroupMenu::widget(); ?>
+<?= GroupMenu::widget() ?>
 
 <div class="panel-body">
 
-    <?php
-    echo GridView::widget([
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'tableOptions' => ['class' => 'table table-hover'],
@@ -38,7 +42,7 @@ use humhub\widgets\GridView;
                 }
             ],
             [
-                'class' => \humhub\libs\ActionColumn::class,
+                'class' => ActionColumn::class,
                 'actions' => function($group, $key, $index) {
                     /* @var $group \humhub\modules\user\models\Group */
                     if($group->is_admin_group && !Yii::$app->user->isAdmin()) {
@@ -54,6 +58,5 @@ use humhub\widgets\GridView;
                 }
             ],
         ],
-    ]);
-    ?>
+    ]) ?>
 </div>

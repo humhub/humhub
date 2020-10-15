@@ -56,8 +56,7 @@ class DirectoryController extends Controller
     {
         return [
             'stream' => [
-                'class' => UserPostsStreamAction::class,
-                'mode' => UserPostsStreamAction::MODE_NORMAL,
+                'class' => UserPostsStreamAction::class
             ],
         ];
     }

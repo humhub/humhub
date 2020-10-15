@@ -31,7 +31,7 @@ return [
     'Insufficent permissions!' => 'Permisiuni insuficiente!',
     'Read full comment...' => 'Citește tot comentariul...',
     'Send' => 'Trimite',
-    'Show all {total} comments.' => 'Afișează toate cele {total} comentarii.',
+    'Show all {total} comments' => 'Afișează toate cele {total} comentarii',
     'Show {count} more comments' => 'Afișează încă {count} comentarii',
     'The comment must not be empty!' => 'Comentariul nu poate fi gol!',
     'Whenever a new comment was written.' => 'Oricând un comentariu a fost scris.',

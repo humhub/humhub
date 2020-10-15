@@ -9,6 +9,7 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\content\widgets\WallEntry;
 use humhub\modules\file\converter\PreviewImage;
 use Yii;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -43,15 +44,6 @@ class ShowFiles extends \yii\base\Widget
     {
         if(!$this->active) {
             return;
-        }
-
-        if ($this->object instanceof ContentActiveRecord) {
-            $widget = $this->object->getWallEntryWidget();
-
-            // File widget disabled in this wall entry
-            if ($widget->showFiles === false) {
-                return;
-            }
         }
 
         $hidePreviewFileInfo = ($this->preview) ? Yii::$app->getModule('file')->settings->get('hideImageFileInfo') : false;

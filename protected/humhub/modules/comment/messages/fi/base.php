@@ -31,7 +31,7 @@ return [
     'Insufficent permissions!' => 'Ei lupaa!',
     'Read full comment...' => 'Lue koko kommentti',
     'Send' => 'Lähetä',
-    'Show all {total} comments.' => 'Näytä kaikki {total} kommenttia.',
+    'Show all {total} comments' => 'Näytä kaikki {total} kommenttia.',
     'Show {count} more comments' => 'Näytä {count} lisää',
     'The comment must not be empty!' => 'Komenttikenttä ei voi olla tyhjä!',
     'Whenever a new comment was written.' => 'Aina kun uusi kommentti kirjoitettaan.',

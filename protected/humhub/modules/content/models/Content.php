@@ -28,6 +28,7 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
+use yii\db\Expression;
 use yii\db\IntegrityException;
 use yii\helpers\Url;
 
@@ -205,7 +206,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             }
         }
 
-        $this->stream_sort_date = new \yii\db\Expression('NOW()');
+        $this->stream_sort_date = date('Y-m-d G:i:s');
 
         if ($this->created_by == "") {
             throw new Exception("Could not save content without created_by!");
@@ -238,7 +239,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
                 'originator' => $this->createdBy->guid,
                 'contentContainerId' => $this->container->contentContainerRecord->id,
                 'visibility' => $this->visibility,
-                'sourceClass' => $contentSource->className(),
+                'sourceClass' => get_class($contentSource),
                 'sourceId' => $contentSource->getPrimaryKey(),
                 'silent' => $this->isMuted(),
                 'streamChannel' => $this->stream_channel,
@@ -247,7 +248,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             ]));
         }
 
-        return parent::afterSave($insert, $changedAttributes);
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
@@ -852,7 +853,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function updateStreamSortTime()
     {
-        $this->updateAttributes(['stream_sort_date' => new \yii\db\Expression('NOW()')]);
+        $this->updateAttributes(['stream_sort_date' => date('Y-m-d G:i:s')]);
     }
 
     /**

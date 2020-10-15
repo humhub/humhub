@@ -1,10 +1,24 @@
 //
 // Comments
 // --------------------------------------------------
+
+@commentLeftMargin: 35px;
+
 .comment-container {
     margin-top: 10px;
+
     .wall-entry-controls {
-        margin-left: 50px;
+        margin-left: @commentLeftMargin;
+    }
+}
+
+@media (max-width: 767px) {
+    .comment {
+        .post-files {
+            img {
+                height: 100px;
+            }
+        }
     }
 }
 
@@ -20,13 +34,15 @@
     }
 
     /*-- Since v1.2 overflow: visible */
+
     .media-body {
-        overflow:visible;
+        overflow: visible;
     }
 
     .jp-progress {
         background-color: #dbdcdd !important;
     }
+
     .jp-play-bar {
         background: #cacaca;
     }
@@ -36,14 +52,19 @@
             color: darken(@info, 20%);
         }
     }
+
+    .post-file-list {
+        background-color: @background-color-page;
+    }
 }
 
 .comment.guest-mode {
     .media:last-child {
         .wall-entry-controls {
             margin-bottom: 0;
-            margin-left: 50px;
+            margin-left: @commentLeftMargin;
         }
+
         hr {
             display: none;
         }
@@ -59,11 +80,16 @@
         position: absolute;
         bottom: 2px;
         right: 5px;
-        z-index:300;
+        z-index: 300;
+
+        button {
+            background-color: @link !important;
+            color: @text-color-contrast !important;
+        }
     }
 
     .has-error + .comment-buttons {
-        bottom: 24px !important;
+        bottom: 19px !important;
     }
 
     .btn-comment-submit {
@@ -74,28 +100,35 @@
         float: left;
         padding: 6px 10px;
         background: transparent !important;
-        .fa {
-            color: @background3;
+
+        i {
+            color: @text-color-soft2;
+        }
+
+        i:hover {
+            color: @link;
         }
     }
-    .fileinput-button:hover .fa {
-        background: transparent !important;
-        color: @background4;
+
+    .fileinput-button:hover i {
+        color: @link;
     }
+
     .fileinput-button:active {
         box-shadow: none !important;
     }
 }
 
 .post-richtext-input-group {
-    position:relative;
+    position: relative;
+
     .comment-buttons {
-        bottom:7px !important;
+        bottom: 7px !important;
     }
 }
 
 .comment-container .content_edit {
-    margin-left: 50px;
+    margin-left: @commentLeftMargin;
 }
 
 .comment-container {
@@ -105,21 +138,26 @@
 }
 
 .comment_edit_content {
-    margin-left: 50px;
+    margin-left: @commentLeftMargin;
+    margin-top: 0;
 }
 
 .comment-message {
-    overflow:hidden;
-    overflow-wrap: break-word;
+    overflow: hidden;
+    .text-break();
 }
 
 .comment-create-input-group {
-    position:relative;
+    position: relative;
 
     .ProsemirrorEditor {
         .ProseMirror {
             padding-right: 72px;
         }
+    }
+
+    .form-group, .help-block {
+        margin:0;
     }
 }
 
@@ -127,6 +165,13 @@
     .comment-buttons {
         right: 22px;
     }
+}
+
+.comment .media .media-body h4.media-heading a {
+    font-size: 13px;
+    color: @text-color-highlight;
+    margin-bottom: 3px;
+    font-weight: 500;
 }
 
 // Hide seperator of last comment. Seperator is included in optional comment form
@@ -146,6 +191,8 @@ hr.comments-start-separator {
 }
 
 div.nested-comments-root {
+    margin-left: 28px;
+
     .ProseMirror-menubar-wrapper {
         z-index: 210;
     }
@@ -155,11 +202,11 @@ div.nested-comments-root {
     }
 
     hr.comments-start-separator {
-        display:none;
+        display: none;
     }
 
     a.show-all-link {
-        margin-top:10px;
+        margin-top: 10px;
     }
 
     div.comment {
@@ -176,8 +223,8 @@ div.nested-comments-root {
     }
 
     div.comment-container {
-        margin-top:0;
-        padding-bottom:0;
-        padding-top:0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-top: 0;
     }
 }

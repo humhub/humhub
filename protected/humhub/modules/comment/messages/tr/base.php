@@ -31,7 +31,7 @@ return [
     'Insufficent permissions!' => 'Yetersiz izinler!',
     'Read full comment...' => 'Yorumu tam okuyun ...',
     'Send' => 'Gönder',
-    'Show all {total} comments.' => '{total} diğer yorumu gör',
+    'Show all {total} comments' => '{total} diğer yorumu gör',
     'Show {count} more comments' => 'Daha {count} fazla yorum göster',
     'The comment must not be empty!' => 'Yorum boş olmamalı!',
     'Whenever a new comment was written.' => 'Ne zaman yeni bir yorum yazılmış',

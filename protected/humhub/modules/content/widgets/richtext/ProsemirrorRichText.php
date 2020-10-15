@@ -280,7 +280,7 @@ class ProsemirrorRichText extends AbstractRichText
      * @param $extension string|null extension string if not given all extension types will be included
      * @return mixed
      */
-    public static function replaceLinkExtension($text, $extension = null, $callback)
+    public static function replaceLinkExtension($text, $extension, $callback)
     {
         return preg_replace_callback(static::getLinkExtensionPattern($extension), $callback, $text);
     }
@@ -291,6 +291,10 @@ class ProsemirrorRichText extends AbstractRichText
      */
     protected static function getLinkExtensionPattern($extension = '[a-zA-Z]+')
     {
+        if($extension === null) {
+            $extension  = '[a-zA-Z]+';
+        }
+
         return '/(?<!\\\\)\[([^\]]*)\]\(('.$extension.'):{1}([^\)\s]*)(?:\s")?([^"]*)?(?:")?[^\)]*\)/is';
     }
 

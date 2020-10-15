@@ -30,7 +30,7 @@ class DashboardStreamTest extends HumHubDbTestCase
         $post1->content->container = Yii::$app->user->getIdentity();
         $post1->content->visibility = Content::VISIBILITY_PRIVATE;
         $post1->save();
-        
+
         $w1 = $post1->content->id;
 
         $post2 = new Post();
@@ -38,12 +38,12 @@ class DashboardStreamTest extends HumHubDbTestCase
         $post2->content->container = Yii::$app->user->getIdentity();
         $post2->content->visibility = Content::VISIBILITY_PUBLIC;
         $post2->save();
-        
+
         $w2 = $post2->content->id;
 
         $this->becomeUser('Admin');
         $ids = $this->getStreamActionIds(2);
-        
+
         $this->assertFalse(in_array($w1, $ids));
         $this->assertTrue(in_array($w2, $ids));
     }
@@ -101,7 +101,7 @@ class DashboardStreamTest extends HumHubDbTestCase
         $post2->content->visibility = Content::VISIBILITY_PUBLIC;
         $post2->save();
         $w2 = $post2->content->id;
-        
+
         $this->assertEquals($this->getStreamActionIds(2), [$w2, $w1]);
 
         $this->becomeUser('User3');
@@ -140,10 +140,10 @@ class DashboardStreamTest extends HumHubDbTestCase
         $action = new DashboardStreamAction('stream', Yii::$app->controller, [
             'limit' => $limit,
         ]);
-        
+
         $action->init();
-        
-        $streamEntries = $action->activeQuery->all();
-        return array_map(create_function('$entry', 'return $entry->id;'), $streamEntries);
+
+        $streamEntries = $action->getStreamQuery()->all();
+        return  array_map(static function($entry) {return $entry->id; }, $streamEntries);
     }
 }

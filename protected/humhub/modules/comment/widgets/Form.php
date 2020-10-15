@@ -30,6 +30,11 @@ class Form extends Widget
     public $object;
 
     /**
+     * @var Comment|null can be provided if comment validation failed, otherwise a dummy model will be created
+     */
+    public $model;
+
+    /**
      * Executes the widget.
      */
     public function run()
@@ -45,10 +50,15 @@ class Form extends Widget
             return '';
         }
 
+        if(!$this->model) {
+            $this->model = new CommentModel();
+        }
+
         return $this->render('form', [
             'objectModel' => get_class($this->object),
             'objectId' => $this->object->getPrimaryKey(),
             'id' => $this->object->getUniqueId(),
+            'model' => $this->model,
             'isNestedComment' => ($this->object instanceof CommentModel)
         ]);
     }

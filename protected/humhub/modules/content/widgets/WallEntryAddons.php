@@ -3,6 +3,7 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\widgets\BaseStack;
 use yii\helpers\ArrayHelper;
 
@@ -35,14 +36,30 @@ class WallEntryAddons extends BaseStack
      * ]
      * ```
      * @var array
+     * @deprecated since 1.7 use WallStreamEntryOptions
     */
     public $widgetOptions = [];
+
+    /**
+     * @var WallStreamEntryOptions
+     */
+    public $renderOptions;
 
     /**
      * @inheritdoc
      */
     public function addWidget($className, $params = [], $options = [])
     {
+        if($this->renderOptions) {
+            if($this->renderOptions->isAddonDisabled($className)) {
+                return;
+            }
+
+            if(is_array($this->renderOptions->getAddonWidgetOptions($className))) {
+                $params = ArrayHelper::merge($params, $this->renderOptions->getAddonWidgetOptions($className));
+            }
+        }
+
         if(isset($this->widgetOptions[$className])) {
             $params = ArrayHelper::merge($params, $this->widgetOptions[$className]);
         }

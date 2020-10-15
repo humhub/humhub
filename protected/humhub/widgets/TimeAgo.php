@@ -9,13 +9,15 @@
 namespace humhub\widgets;
 
 use Yii;
+use yii\base\InvalidConfigException;
+use yii\base\Widget;
 
 /**
  * Shows a given date & time as automatically updating fuzzy timestamps (e.g. "4 minutes ago" or "about 1 day ago").
- * 
+ *
  * @author luke
  */
-class TimeAgo extends \yii\base\Widget
+class TimeAgo extends Widget
 {
 
     /**
@@ -24,11 +26,43 @@ class TimeAgo extends \yii\base\Widget
     public $timestamp;
 
     /**
+     * @var int|bool defines if the timeAgo calculation shold only be used within a certain time interval in seconds.
+     * (default Yii::$app->params['formatter']['timeAgoBefore'])
+     * @since 1.7
+     */
+    public $timeAgoBefore;
+
+    /**
+     * @var int|bool defines if the time information should only be added within a certain time interval in seconds this
+     * is only used if the timeAgo calculation is not active. (default Yii::$app->params['formatter']['timeAgoHideTimeAfter'])
+     * @since 1.7
+     */
+    public $hideTimeAfter;
+
+    /**
+     * @var bool defines if a static render method should be used (default Yii::$app->params['formatter']['timeAgoStatic'])
+     * @since 1.7
+     */
+    public $staticTimeAgo;
+
+    /**
      * @inheritdoc
      */
     public function init()
     {
         parent::init();
+
+        if($this->hideTimeAfter === null) {
+            $this->hideTimeAfter = Yii::$app->params['formatter']['timeAgoHideTimeAfter'];
+        }
+
+        if($this->timeAgoBefore === null) {
+            $this->timeAgoBefore = Yii::$app->params['formatter']['timeAgoBefore'];
+        }
+
+        if($this->staticTimeAgo === null) {
+            $this->staticTimeAgo = Yii::$app->params['formatter']['timeAgoStatic'];
+        }
 
         // Make sure we get an timestamp in server tz
         if (is_numeric($this->timestamp)) {
@@ -42,9 +76,12 @@ class TimeAgo extends \yii\base\Widget
      */
     public function run()
     {
-        $elapsed = time() - $this->timestamp;
+        if($this->isRenderStatic()) {
+            return $this->renderStatic();
+        }
 
-        if (Yii::$app->params['formatter']['timeAgoBefore'] !== false && $elapsed >= Yii::$app->params['formatter']['timeAgoBefore']) {
+        $elapsed = time() - $this->timestamp;
+        if ($this->isTimeAgoElapsed($elapsed)) {
             return $this->renderDateTime($elapsed);
         }
 
@@ -52,46 +89,81 @@ class TimeAgo extends \yii\base\Widget
     }
 
     /**
-     * Render TimeAgo Javascript
-     * 
-     * @return string timeago span
+     * @return bool
      */
-    public function renderTimeAgo()
+    private function isRenderStatic()
     {
-        // Use static timeago
-        if (Yii::$app->params['formatter']['timeAgoStatic']) {
-            return '<span class="time"><span title="' . $this->getFullDateTime() . '">' . Yii::$app->formatter->asRelativeTime($this->timestamp) . '</span></span>';
-        }
+        return $this->staticTimeAgo;
+    }
 
-        // Convert timestamp to ISO 8601
-        $this->timestamp = date("c", $this->timestamp);
+    /**
+     * @return string
+     * @throws InvalidConfigException
+     */
+    private function renderStatic()
+    {
+        $isoDate =  date("c", $this->timestamp);
+        return '<time class="tt time timeago" datetime="'.$isoDate.'" title="' .$this->getFullDateTime() . '">' . Yii::$app->formatter->asRelativeTime($this->timestamp) . '</time>';
+    }
 
-        $this->getView()->registerJs('$(".time").timeago();', \yii\web\View::POS_END, 'timeago');
-        return '<span class="time" title="' . $this->timestamp . '">' . $this->getFullDateTime() . '</span>';
+    /**
+     * @param $elapsed
+     * @return bool
+     */
+    private function isTimeAgoElapsed($elapsed)
+    {
+        return $this->timeAgoBefore !== false && $elapsed >= $this->timeAgoBefore;
     }
 
     /**
      * Show full date
-     * 
-     * @param int $elasped time in seconds
+     *
+     * @param $elapsed
      * @return string output of full date and time
+     * @throws InvalidConfigException
      */
     public function renderDateTime($elapsed)
     {
         // Show time when within specified range
-        if (Yii::$app->params['formatter']['timeAgoHideTimeAfter'] === false || $elapsed <= Yii::$app->params['formatter']['timeAgoHideTimeAfter']) {
-            $date = $this->getFullDateTime();
-        } else {
+        if ($this->isHideTimeAfter($elapsed)) {
             $date = Yii::$app->formatter->asDate($this->timestamp, 'medium');
+        } else {
+            $date = $this->getFullDateTime();
         }
 
-        return '<span class="time"><span title="' . $this->getFullDateTime() . '">' . $date . '</span></span>';
+        $isoDate =  date("c", $this->timestamp);
+        return '<time class="tt time timeago" datetime="'.$isoDate.'" title="' .$this->getFullDateTime() . '">' . $date . '</time>';
     }
 
     /**
+     * @param $elapsed
+     * @return bool
+     */
+    private function isHideTimeAfter($elapsed)
+    {
+        return $this->hideTimeAfter !== false && $elapsed >= $this->hideTimeAfter;
+    }
+
+
+    /**
+     * Render TimeAgo Javascript
+     *
+     * @return string timeago span
+     * @throws InvalidConfigException
+     */
+    public function renderTimeAgo()
+    {
+        // Convert timestamp to ISO 8601
+        $date =  date("c", $this->timestamp);
+        return '<time class="tt time timeago" data-ui-addition="timeago" datetime="'.$date.'" title="' .$this->getFullDateTime() . '">' . $this->getFullDateTime() . '</time>';
+    }
+
+
+    /**
      * Returns full date as text
-     * 
+     *
      * @return string
+     * @throws InvalidConfigException
      */
     protected function getFullDateTime()
     {

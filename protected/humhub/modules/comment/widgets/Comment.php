@@ -40,11 +40,6 @@ class Comment extends Widget
         $loadUrl = Url::to(['/comment/comment/load',
             'objectModel' => $this->comment->object_model, 'objectId' => $this->comment->object_id, 'id' => $this->comment->id]);
 
-        $updatedAt = null;
-        if (!empty($this->comment->updated_at) && $this->comment->created_at != $this->comment->updated_at) {
-            $updatedAt = $this->comment->updated_at;
-        }
-
         return $this->render('comment', [
             'comment' => $this->comment,
             'user' => $this->comment->user,
@@ -53,7 +48,6 @@ class Comment extends Widget
             'editUrl' => $editUrl,
             'loadUrl' => $loadUrl,
             'createdAt' => $this->comment->created_at,
-            'updatedAt' => $updatedAt,
             'canEdit' => $this->comment->canEdit(),
             'canDelete' => $this->comment->canDelete(),
         ]);

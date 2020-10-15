@@ -8,6 +8,8 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\modules\content\widgets\stream\StreamEntryWidget;
+use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\dashboard\controllers\DashboardController;
 use humhub\modules\stream\actions\Stream;
 use humhub\modules\ui\menu\DropdownDivider;
@@ -25,6 +27,7 @@ use humhub\modules\content\components\ContentContainerController;
  * @see \humhub\modules\content\components\ContentActiveRecord
  * @since 0.20
  * @author luke
+ * @deprecated since 1.7 use WallStreamEntryWidget
  */
 class WallEntry extends Widget
 {
@@ -163,7 +166,7 @@ class WallEntry extends Widget
 
         $params = ['id' => $this->contentObject->id];
         if (Yii::$app->controller instanceof DashboardController) {
-            $params['from'] = Stream::FROM_DASHBOARD;
+            $params['from'] = StreamEntryOptions::VIEW_CONTEXT_DASHBOARD;
         }
         return $this->contentObject->content->container->createUrl($this->editRoute, $params);
     }

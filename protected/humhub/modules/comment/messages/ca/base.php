@@ -32,7 +32,7 @@ return [
     'Insufficent permissions!' => 'No tens suficients privilegis!',
     'Read full comment...' => 'Llegir el comentari sencer',
     'Send' => 'Envia',
-    'Show all {total} comments.' => 'Mostra tots els {total} comentaris.',
+    'Show all {total} comments' => 'Mostra tots els {total} comentaris',
     'Show {count} more comments' => 'Vore els següents {count} comentaris',
     'Whenever a new comment was written.' => 'Un nou comentari per sempre fou escrit',
     'Write a new comment...' => 'Escriu un nou comentari...',

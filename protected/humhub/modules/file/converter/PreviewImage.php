@@ -49,6 +49,15 @@ class PreviewImage extends BaseConverter
         parent::init();
     }
 
+
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return 'preview-image';
+    }
+
     /**
      * @inheritdoc
      */
@@ -60,7 +69,6 @@ class PreviewImage extends BaseConverter
 
         return Html::img($this->getUrl(), ['class' => 'animated fadeIn', 'alt' => $this->getAltText()]);
     }
-
 
     protected function getAltText($file = null)
     {

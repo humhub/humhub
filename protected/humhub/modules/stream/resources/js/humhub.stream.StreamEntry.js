@@ -76,7 +76,6 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         promise.then(function ($confirm) {
             if ($confirm) {
                 that.$.remove(); // Make sure to remove the wallentry node.
-                streamModule.log.success('success.delete');
             }
         }).catch(function (err) {
             module.log.error(err, true);
@@ -195,7 +194,6 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         }).status({
             200: function (response) {
                 that.$.html(response.html);
-                streamModule.log.success('success.edit');
                 that.apply();
                 that.highlight();
             },
@@ -250,7 +248,6 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         client.post(evt).then(function (response) {
             if (response.success) {
                 that.reload();
-                streamModule.log.success('saved');
             } else {
                 module.log.error(response, true);
                 that.loader(false);
@@ -259,6 +256,10 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
             that.loader(false);
             module.log.error(e, true);
         });
+    };
+
+    StreamEntry.prototype.isPinned = function (evt) {
+        return this.$.is('[data-stream-pinned="1"]');
     };
 
     /**

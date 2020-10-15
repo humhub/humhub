@@ -31,7 +31,7 @@ return [
     'Insufficent permissions!' => 'Permissões insuficientes!',
     'Read full comment...' => 'Ler o comentário completo...',
     'Send' => 'Enviar',
-    'Show all {total} comments.' => 'Mostrar todos {total} comentários.',
+    'Show all {total} comments' => 'Mostrar todos {total} comentários',
     'Show {count} more comments' => 'Mostrar mais {count} comentários',
     'The comment must not be empty!' => 'O comentário não deve estar vazio!',
     'Whenever a new comment was written.' => 'Sempre que um novo comentário foi escrito.',

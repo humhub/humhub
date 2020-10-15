@@ -2,7 +2,6 @@
 
 namespace humhub\modules\stream\models;
 
-use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\stream\models\filters\StreamQueryFilter;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -369,7 +368,7 @@ class StreamQuery extends Model
      */
     public function query($build = false)
     {
-        if ($build) {
+        if ($build && !$this->_built) {
             $this->setupQuery();
         }
 
@@ -595,6 +594,25 @@ class StreamQuery extends Model
 
         $handler = $this->prepareHandler($handler);
         return $this->filterHandlers[] = $handler;
+    }
+
+    /**
+     * Can be used to add multiple filter handlers at once.
+     *
+     * @see self::addFilterHandler
+     * @param $handlers
+     * @param bool $overwrite
+     * @return string[]|StreamQueryFilter[]
+     * @throws InvalidConfigException
+     */
+    public function addFilterHandlers($handlers, $overwrite = true)
+    {
+        $result = [];
+        foreach ($handlers as $handler) {
+            $result[] = $this->addFilterHandler($handler, $overwrite);
+        }
+
+        return $result;
     }
 
     /**

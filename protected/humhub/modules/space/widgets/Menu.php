@@ -11,6 +11,7 @@ namespace humhub\modules\space\widgets;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\Module;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\LeftNavigation;
 use Yii;
@@ -36,7 +37,7 @@ class Menu extends LeftNavigation
      */
     public function init()
     {
-        if(!$this->space) {
+        if (!$this->space) {
             $this->space = ContentContainerHelper::getCurrent(Space::class);
         }
 
@@ -46,16 +47,44 @@ class Menu extends LeftNavigation
 
         $this->panelTitle = Yii::t('SpaceModule.base', '<strong>Space</strong> menu');
 
+        parent::init();
+
+        // For private Spaces without membership, show only the About Page in the menu.
+        // This is necessary for the invitation process otherwise there is no access in this case anyway.
+        if (!$this->space->isMember() && $this->space->visibility == Space::VISIBILITY_NONE) {
+            $this->entries = [];
+            $this->addAboutPage();
+            return;
+        }
+
         $this->addEntry(new MenuLink([
             'label' => Yii::t('SpaceModule.base', 'Stream'),
             'url' => $this->space->createUrl('/space/space/home'),
-            'icon' => 'fa-bars',
+            'icon' => 'stream',
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState('space', 'space', ['index', 'home']),
         ]));
 
-        parent::init();
+        /** @var Module $module */
+        $module = Yii::$app->getModule('space');
+
+        if (!$module->hideAboutPage) {
+            $this->addAboutPage();
+        }
     }
+
+    private function addAboutPage()
+    {
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('SpaceModule.base', 'About'),
+            'url' => $this->space->createUrl('/space/space/about'),
+            'icon' => 'about',
+            'sortOrder' => 10000,
+            'isActive' => MenuLink::isActiveState('space', 'space', ['about']),
+        ]));
+
+    }
+
 
     /**
      * Searches for urls of modules which are activated for the current space

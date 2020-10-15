@@ -17,8 +17,9 @@ humhub.module('stream.Stream', function (module, require, $) {
     var string = util.string;
     var Widget = require('ui.widget').Widget;
     var additions = require('ui.additions');
-    var StreamEntry =  require('stream').StreamEntry;
-    var Filter =  require('ui.filter').Filter;
+    var StreamEntry = require('stream').StreamEntry;
+    var filterModule =  require('ui.filter');
+    var Filter = filterModule.Filter;
     var StreamRequest =  require('stream').StreamRequest;
     var loader = require('ui.loader');
     var event = require('event');
@@ -209,7 +210,15 @@ humhub.module('stream.Stream', function (module, require, $) {
     };
 
     Stream.prototype.initFilter = function () {
-        this.filter = this.options.filter || new Filter();
+        if(this.options.filter) {
+            this.filter = this.options.filter;
+        } else {
+            this.filter = filterModule.findFilterByComponent(this) || new Filter();
+        }
+
+        if(object.isString(this.filter)) {
+            this.filter = Widget.instance(this.filter);
+        }
 
         var that = this;
         this.filter.on('afterChange', function () {
@@ -223,6 +232,7 @@ humhub.module('stream.Stream', function (module, require, $) {
 
         this.state.firstRequest = new StreamRequest(this, {
             contentId: contentId,
+            viewContext: contentId ? 'detail' : null,
             limit: this.options.initLoadCount
         });
 
@@ -362,7 +372,6 @@ humhub.module('stream.Stream', function (module, require, $) {
     Stream.prototype.addResponseEntries = function (request, options) {
         options = $.extend(request.options, options || {});
         var that = this;
-        var result = '';
 
         this.removeResponseEntries(request);
         var $result = $(request.getResultHtml());
@@ -411,13 +420,11 @@ humhub.module('stream.Stream', function (module, require, $) {
      * @param respectPinned
      */
     Stream.prototype.prependEntry = function (html, respectPinned) {
-        // Some streams do not support pinned posts order e.g. dashboard, in this case we can ignore pinned post order
-        respectPinned = respectPinned && this.options.pinSupport;
-        if (respectPinned) {
-            var $pinned = this.$.find('[data-stream-pinned="1"]:last');
-            if ($pinned.length) {
-                return this.after(html, $pinned);
-            }
+        var firstEntry = this.firstEntry(respectPinned);
+        if(firstEntry) {
+            return firstEntry.isPinned()
+                ? this.after(html, firstEntry.$)
+                : this.before(html, firstEntry.$);
         }
 
         return this._streamEntryAnimation(html, function ($html) {
@@ -438,13 +445,24 @@ humhub.module('stream.Stream', function (module, require, $) {
     };
 
     /**
+     * Appends the given entry html to the stream after the given entryNode the entry node can either.
+     *
+     * @param html
+     * @param $entryNode
+     */
+    Stream.prototype.before = function (html, $entryNode) {
+        return this._streamEntryAnimation(html, function ($html) {
+            $entryNode.before($html);
+        });
+    };
+
+    /**
      * Appends an entry html to the end of the stream content.
      * @param html
      */
     Stream.prototype.appendEntry = function (html) {
-        var that = this;
         return this._streamEntryAnimation(html, function ($html) {
-            var $streamEnd = that.$content.find('.stream-end:first');
+            var $streamEnd = this.$content.find('.stream-end:first');
             if ($streamEnd.length) {
                 $streamEnd.before($html)
             } else {
@@ -482,12 +500,13 @@ humhub.module('stream.Stream', function (module, require, $) {
             // apply additions to elements and fade them in.
             additions.applyTo($elements);
 
-            $elements.imagesLoaded(function () {
+            setTimeout(function() {
                 $.when($elements.hide().css('opacity', 1).fadeIn('fast')).then(function () {
                     that.onChange();
                     resolve();
                 });
             });
+
         });
 
     };
@@ -594,7 +613,7 @@ humhub.module('stream.Stream', function (module, require, $) {
     };
 
     Stream.prototype.hasActiveFilters = function () {
-        return this.filter && this.filter.getActiveFilterCount({exclude: 'sort'}) > 0;
+        return this.filter && this.filter.getActiveFilterCount({exclude: ['sort']}) > 0;
     };
 
     /**
@@ -667,11 +686,22 @@ humhub.module('stream.Stream', function (module, require, $) {
      * Returns a StreamEntry instance for a given content id.
      * @returns StreamEntry
      * @param ignorePinned
+     * @param ignoreInjected
      */
-    Stream.prototype.firstEntry = function(ignorePinned) {
-        return ignorePinned
-            ? this.entry(this.$.find('[data-stream-entry]:not([data-stream-pinned="1"]):first'))
-            : this.entry(this.$.find('[data-stream-entry]:first'));
+    Stream.prototype.firstEntry = function(ignorePinned, ignoreInjected) {
+        var selector = '[data-stream-entry]';
+
+        if(ignorePinned) {
+            selector += ':not([data-stream-pinned="1"])';
+        }
+
+        if(ignoreInjected !== false) {
+            selector += ':not([data-stream-injected])';
+        }
+
+        selector += ':first';
+
+        return this.entry(this.$.find(selector));
     };
 
     /**

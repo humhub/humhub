@@ -57,7 +57,6 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     {
         return [
             [['message'], 'safe'],
-            [['message'], 'required'],
         ];
     }
 

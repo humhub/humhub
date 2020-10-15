@@ -2,7 +2,6 @@
 
 use yii\db\Schema;
 use yii\db\Query;
-use yii\db\Expression;
 use humhub\components\Migration;
 
 class m160229_162959_multiusergroups extends Migration
@@ -41,7 +40,7 @@ class m160229_162959_multiusergroups extends Migration
             'is_admin_group' => '1',
             'show_at_registration' => '0',
             'show_at_directory' => '0',
-            'created_at' => new Expression('NOW()')
+            'created_at' => date('Y-m-d G:i:s')
         ]);
 
         // Determine administration group id

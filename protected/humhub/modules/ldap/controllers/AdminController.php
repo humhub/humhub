@@ -14,8 +14,8 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\ldap\models\LdapSettings;
 use humhub\modules\user\authclient\LdapAuth;
 use Yii;
-use Zend\Ldap\Exception\LdapException;
-use Zend\Ldap\Ldap;
+use Laminas\Ldap\Exception\LdapException;
+use Laminas\Ldap\Ldap;
 
 
 /**

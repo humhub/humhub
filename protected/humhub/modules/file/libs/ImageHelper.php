@@ -10,7 +10,11 @@ namespace humhub\modules\file\libs;
 
 
 use humhub\modules\file\models\File;
+use humhub\modules\file\Module;
 use Imagine\Image\ImageInterface;
+use Yii;
+use yii\base\InvalidConfigException;
+use yii\imagine\Image;
 
 /**
  * Class ImageHelper
@@ -56,4 +60,76 @@ class ImageHelper
             }
         }
     }
+
+    /**
+     * Scales down a file image if necessary.
+     * The limits can be defined in the File Module class.
+     *
+     * @param $file File
+     * @since 1.7
+     */
+    public static function downscaleImage($file)
+    {
+        if (substr($file->mime_type, 0, 6) !== 'image/') {
+            return;
+        }
+
+        /** @var Module $module */
+        $module = Yii::$app->getModule('file');
+
+        // Is used to avoid saving without any configured scaling option.
+        $isModified = false;
+
+        $imagineOptions = [];
+        if ($file->mime_type === 'image/jpeg') {
+            if (!empty($module->imageJpegQuality)) {
+                $imagineOptions['jpeg_quality'] = $module->imageJpegQuality;
+                $isModified = true;
+            }
+            $imagineOptions['format'] = 'jpeg';
+        } elseif ($file->mime_type === 'image/png') {
+            if (!empty($module->imagePngCompressionLevel)) {
+                $imagineOptions['png_compression_level'] = $module->imagePngCompressionLevel;
+                $isModified = true;
+            }
+            $imagineOptions['format'] = 'png';
+        } elseif ($file->mime_type === 'image/webp') {
+            if (!empty($module->imageWebpQuality)) {
+                $imagineOptions['webp_quality'] = $module->imageWebpQuality;
+                $isModified = true;
+            }
+            $imagineOptions = ['format' => 'webp'];
+        } elseif ($file->mime_type === 'image/gif') {
+            $imagineOptions = ['format' => 'gif'];
+        } else {
+            return;
+        }
+
+        $image = Image::getImagine()->open($file->store->get());
+        static::fixJpegOrientation($image, $file);
+
+        if ($module->imageMaxResolution !== null) {
+            $maxResolution = explode('x', $module->imageMaxResolution, 2);
+            if (empty($maxResolution)) {
+                throw new InvalidConfigException('Invalid max. image resolution configured!');
+            }
+
+            if ($image->getSize()->getWidth() > $maxResolution[0]) {
+                $image->resize($image->getSize()->widen($maxResolution[0]));
+                $isModified = true;
+            }
+
+            if ($image->getSize()->getHeight() > $maxResolution[1]) {
+                $image->resize($image->getSize()->heighten($maxResolution[1]));
+                $isModified = true;
+            }
+        }
+
+        if ($isModified) {
+            $image->save($file->store->get(), $imagineOptions);
+            $file->updateAttributes(['size' => filesize($file->store->get())]);
+        }
+
+    }
+
 }

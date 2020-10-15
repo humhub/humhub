@@ -10,14 +10,21 @@ humhub.module('comment', function (module, require, $) {
 
     Form.prototype.submit = function (evt) {
         var that = this;
-        client.submit(evt, {dataType: 'html'}).then(function (response) {
-            var richText = that.getRichtext();
-            that.addComment(response.html);
-            that.getInput().val('').trigger('autosize.resize');
-            richText.$.trigger('clear');
-            that.getUpload().reset();
-        }).catch(function (err) {
-            module.log.error(err, true);
+        client.submit(evt, {dataType: 'html'}).status({
+            200: function (response) {
+                var richText = that.getRichtext();
+                that.addComment(response.html);
+                that.getInput().val('').trigger('autosize.resize');
+                richText.$.trigger('clear');
+                that.getUpload().reset();
+                that.$.find('.form-group').removeClass('has-error');
+                that.$.find('.help-block-error').html('');
+            },
+            400: function (response) {
+                that.replace(response.html);
+            }
+        }).catch(function (e) {
+            module.log.error(e, true);
         });
     };
 
@@ -142,7 +149,6 @@ humhub.module('comment', function (module, require, $) {
                 that.highlight();
                 that.$.find('.comment-cancel-edit-link:first').hide();
                 that.$.find('.comment-edit-link:first').show();
-                module.log.success('success.saved');
             },
             400: function (response) {
                 that.setEditContent(response.html);
@@ -252,6 +258,7 @@ humhub.module('comment', function (module, require, $) {
         if (visible && !evt.$target.children('.comment_create').is(':visible')) {
             evt.$target.children('.comment_create').slideToggle(undefined, function() {
                 evt.$target.find('.humhub-ui-richtext').trigger('focus');
+
             });
             return;
         }
@@ -264,8 +271,8 @@ humhub.module('comment', function (module, require, $) {
 
         $form.show();
 
-        evt.$target.slideToggle(undefined, function() {
-            evt.$target.find('.humhub-ui-richtext').trigger('focus');
+        evt.$target.slideToggle('fast', function() {
+            evt.$target.find('.humhub-ui-richtext:last').trigger('focus');
         });
     };
 

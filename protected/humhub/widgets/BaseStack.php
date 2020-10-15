@@ -28,12 +28,17 @@ class BaseStack extends Widget
     const EVENT_RUN = 'run';
 
     /**
+     * Default value for the sort order if no sort order value is specified in the widget.
+     */
+    const DEFAULT_SORT_ORDER = 9000;
+
+    /**
      * Holds all added widgets
      *
      * Array
      *  [0] Classname
      *  [1] Params Arrays
-     *  [2] Additional Options
+     *  [2] Additional Options e.g. sortOrder (0-10000)
      *
      * @var array
      */
@@ -117,9 +122,9 @@ class BaseStack extends Widget
     protected function getWidgets()
     {
 
-        usort($this->widgets, function($a, $b) {
-            $sortA = (isset($a[2]['sortOrder'])) ? $a[2]['sortOrder'] : 100;
-            $sortB = (isset($b[2]['sortOrder'])) ? $b[2]['sortOrder'] : 100;
+        usort($this->widgets, function ($a, $b) {
+            $sortA = (isset($a[2]['sortOrder'])) ? $a[2]['sortOrder'] : static::DEFAULT_SORT_ORDER;
+            $sortB = (isset($b[2]['sortOrder'])) ? $b[2]['sortOrder'] : static::DEFAULT_SORT_ORDER;
 
             if ($sortA == $sortB) {
                 return 0;
@@ -143,7 +148,7 @@ class BaseStack extends Widget
     public function addWidget($className, $params = [], $options = [])
     {
         if (!isset($options['sortOrder'])) {
-            $options['sortOrder'] = 100;
+            $options['sortOrder'] = static::DEFAULT_SORT_ORDER;
         }
 
         $this->widgets[] = [

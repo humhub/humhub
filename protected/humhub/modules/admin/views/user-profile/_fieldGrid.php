@@ -15,10 +15,10 @@ use yii\helpers\Url;
 
 
 <?= Button::success(Yii::t('AdminModule.user', 'Add new field'))
-    ->icon('plus')->sm()->link(Url::to(['edit-field', 'categoryId' => $category->id]))->right()->style('margin-left:5px') ?>
+    ->icon('add')->sm()->link(Url::to(['edit-field', 'categoryId' => $category->id]))->right()->style('margin-left:5px') ?>
 
 <?= Button::primary(Yii::t('AdminModule.user', 'Edit category'))
-    ->icon('pencil')->sm()->link(Url::to(['edit-category', 'id' => $category->id]))->right() ?>
+    ->icon('edit')->sm()->link(Url::to(['edit-category', 'id' => $category->id]))->right() ?>
 
 
 <?= GridView::widget([
@@ -81,7 +81,7 @@ use yii\helpers\Url;
                 },
                 'update' => function ($url, $category) {
                     /* @var $model ProfileField */
-                    return Button::primary()->icon('pencil')->link(Url::to(['edit-field', 'id' => $category->id]))->sm();
+                    return Button::primary()->icon('edit')->link(Url::to(['edit-field', 'id' => $category->id]))->sm();
                 },
             ],
         ],

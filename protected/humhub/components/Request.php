@@ -8,6 +8,7 @@
 
 namespace humhub\components;
 
+use humhub\models\Setting;
 use Yii;
 
 /**
@@ -18,13 +19,18 @@ use Yii;
  */
 class Request extends \yii\web\Request
 {
+    /**
+     * Http header name for view context information
+     * @see \humhub\modules\ui\view\components\View::$viewContext
+     */
+    const HEADER_VIEW_CONTEXT = 'HUMHUB-VIEW-CONTEXT';
 
     /**
      * @inheritdoc
      */
     public function init()
     {
-        if (\humhub\models\Setting::isInstalled()) {
+        if (Setting::isInstalled()) {
             $secret = Yii::$app->settings->get('secret');
             if ($secret != "") {
                 $this->cookieValidationKey = $secret;
@@ -34,5 +40,13 @@ class Request extends \yii\web\Request
         if ($this->cookieValidationKey == '') {
             $this->cookieValidationKey = 'installer';
         }
+    }
+
+    /**
+     * @return string|null the value of http header `HUMHUB-VIEW-CONTEXT`
+     */
+    public function getViewContext()
+    {
+        return $this->getHeaders()->get(static::HEADER_VIEW_CONTEXT);
     }
 }

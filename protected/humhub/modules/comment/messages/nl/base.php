@@ -15,7 +15,7 @@ return array (
   'Read full comment...' => 'Lees het volledige bericht...',
   'Reply' => 'Antwoord',
   'Send' => 'Verstuur',
-  'Show all {total} comments.' => 'Toon alle {total} reacties.',
+  'Show all {total} comments' => 'Toon alle {total} reacties',
   'Show {count} more comments' => 'Toon nog {count} reacties',
   'The comment must not be empty!' => 'De opmerking mag niet leeg zijn!',
   'Whenever a new comment was written.' => 'Wanneer er een nieuwe reactie is geschreven.',
