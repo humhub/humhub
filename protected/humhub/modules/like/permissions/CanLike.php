@@ -41,12 +41,12 @@ class CanLike extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
-    protected $title = 'Add Like';
+    protected $title;
 
     /**
      * @inheritdoc
      */
-    protected $description = 'Allows the user to add likes';
+    protected $description;
 
     /**
      * @inheritdoc
@@ -57,8 +57,8 @@ class CanLike extends \humhub\libs\BasePermission
     {
         parent::__construct($config);
 
-        $this->title = \Yii::t('LikeModule.permissions', 'Add Like');
-        $this->description = \Yii::t('LikeModule.permissions', 'Allows the user to add likes');
+        $this->title = \Yii::t('LikeModule.permissions', 'Can like');
+        $this->description = \Yii::t('LikeModule.permissions', 'Allows user to like content');
     }
 
 }
