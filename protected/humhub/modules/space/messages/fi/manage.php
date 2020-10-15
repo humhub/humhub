@@ -69,8 +69,8 @@ return [
     'Unarchive' => 'Poista arkistosta',
     'e.g. example for {baseUrl}/s/example' => 'esim. esimerkki {baseUrl} esimerkille',
     'never' => 'Ei koskaan',
-    'space description' => 'sivun kuvaus',
     'the default start page of this space for members' => 'Sivu joka näkyy jäsenille ensimmäisenä',
     'the default start page of this space for visitors' => 'Sivu joka näkyy vierailioille ensimmäisenä',
+    'Are you sure you want to remove this member.' => '',
     'Please type the name of the space to proceed.' => '',
 ];

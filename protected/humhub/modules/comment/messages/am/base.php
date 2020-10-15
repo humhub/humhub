@@ -17,18 +17,17 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Access denied!' => 'ትዕዛዝዎ ተቀባይነት አላገኘም!',
     'Cancel' => 'ይቅር',
     'Cancel Edit' => 'አርትዖቱ ይቅር',
     'Delete' => 'አስወግድ',
     'Edit' => 'ማስተካከያ',
     '<strong>Confirm</strong> comment deleting' => '',
     'Comment' => '',
+    'Comment could not be saved!' => '',
     'Comment has been deleted' => '',
     'Comments' => '',
     'Do you really want to delete this comment?' => '',
     'Edit your comment...' => '',
-    'Insufficent permissions!' => '',
     'Read full comment...' => '',
     'Reply' => '',
     'Send' => '',
@@ -38,7 +37,6 @@ return [
     'Whenever a new comment was written.' => '',
     'Write a new comment...' => '',
     'Write a new reply...' => '',
-    'You are not allowed to comment.' => '',
     'comment' => '',
     '{displayName} wrote a new comment ' => '',
 ];

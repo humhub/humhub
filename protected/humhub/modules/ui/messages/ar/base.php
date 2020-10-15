@@ -18,4 +18,6 @@
  */
 return [
     'User Interface' => 'واجهة المستخدم',
+    'Collapse' => '',
+    'Read more' => '',
 ];

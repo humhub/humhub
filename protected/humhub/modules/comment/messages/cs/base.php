@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => '<strong>Potvrďte</strong> smazání komentáře',
-    'Access denied!' => 'Přístup odepřen!',
     'Cancel' => 'Zrušit',
     'Cancel Edit' => 'Zrušit úpravy',
     'Comment' => 'Komentovat',
@@ -28,7 +27,6 @@ return [
     'Do you really want to delete this comment?' => 'Opravdu chcete smazat tento komentář?',
     'Edit' => 'Upravit',
     'Edit your comment...' => 'Upravit komentář...',
-    'Insufficent permissions!' => 'Nedostatečná oprávnění!',
     'Read full comment...' => 'Přečíst celý komentář',
     'Send' => 'Odeslat',
     'Show all {total} comments' => 'Zobrazit všech {total} komentářů',
@@ -37,8 +35,8 @@ return [
     'Write a new comment...' => 'Napište komentář...',
     'comment' => 'Komentář',
     '{displayName} wrote a new comment ' => '{displayName} napsal(a) nový komentář',
+    'Comment could not be saved!' => '',
     'Reply' => '',
     'The comment must not be empty!' => '',
     'Write a new reply...' => '',
-    'You are not allowed to comment.' => '',
 ];
