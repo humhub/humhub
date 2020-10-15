@@ -35,7 +35,7 @@ $isHidden = ($objectModel === Comment::class);
 
     <hr>
 
-    <?php $form = ActiveForm::begin() ?>
+    <?php $form = ActiveForm::begin(['action' => $submitUrl]) ?>
 
     <?= Html::hiddenInput('objectModel', $objectModel) ?>
     <?= Html::hiddenInput('objectId', $objectId) ?>

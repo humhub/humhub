@@ -18,7 +18,6 @@ humhub.module('comment', function (module, require, $) {
                 richText.$.trigger('clear');
                 that.getUpload().reset();
                 that.$.find('.form-group').removeClass('has-error');
-            debugger;
                 that.$.find('.help-block-error').html('');
             },
             400: function (response) {
