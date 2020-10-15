@@ -92,7 +92,10 @@
         "sort-packages": true,
         "fxp-asset": {
             "enabled": false
-        }
+        },
+	"platform": {
+	    "php": "7.1"
+	}
     },
     "scripts": {
         "post-create-project-cmd": [
