@@ -91,6 +91,7 @@ return [
     'Add:' => '',
     'All' => '',
     'Could not find requested page.' => '',
+    'Database connection time: {dbTime} - Configured time zone: {time}' => '',
     'Export' => '',
     'Please type at least {count} characters' => '',
     'Powered by {name}' => '',

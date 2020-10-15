@@ -1,6 +1,7 @@
 <?php
 
-use humhub\components\View;
+use humhub\modules\ui\icon\widgets\Icon;
+use humhub\modules\ui\view\components\View;
 use humhub\modules\directory\permissions\AccessDirectory;
 use humhub\modules\space\assets\SpaceChooserAsset;
 use humhub\modules\space\models\Membership;
@@ -62,16 +63,16 @@ $canAccessDirectory = $directoryModule->active && Yii::$app->user->can(AccessDir
             <form action="" class="dropdown-controls">
                 <div <?php if($canAccessDirectory) : ?>class="input-group"<?php endif; ?>>
                     <input type="text" id="space-menu-search" class="form-control" autocomplete="off"
-                           placeholder="<?= Yii::t('SpaceModule.chooser', 'Search'); ?>"
-                           title="<?= Yii::t('SpaceModule.chooser', 'Search for spaces'); ?>">
+                           placeholder="<?= Yii::t('SpaceModule.chooser', 'Search') ?>"
+                           title="<?= Yii::t('SpaceModule.chooser', 'Search for spaces') ?>">
                     <?php if($canAccessDirectory) : ?>
                         <span id="space-directory-link" class="input-group-addon" >
-                            <a href="<?= Url::to(['/directory/directory/spaces']); ?>">
-                                <i class="fa fa-book"></i>
+                            <a href="<?= Url::to(['/directory/directory/spaces']) ?>">
+                                <?= Icon::get('directory')?>
                             </a>
                         </span>
                     <?php endif; ?>
-                    <div class="search-reset" id="space-search-reset"><i class="fa fa-times-circle"></i></div>
+                    <div class="search-reset" id="space-search-reset"><?= Icon::get('times-circle') ?></div>
                 </div>
             </form>
         </li>

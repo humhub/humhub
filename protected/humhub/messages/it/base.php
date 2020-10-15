@@ -24,6 +24,7 @@ return [
     'Actions' => 'Azioni',
     'Add:' => 'Aggiungi:',
     'Administration' => 'Amministrazione',
+    'All' => 'Tutti',
     'Allow' => 'Consenti',
     'An error occurred while handling your last action. (Handler not found).' => 'Si è verificato un errore durante l\'ultima azione. (Handler non trovato)',
     'An unexpected error occurred while loading the search result.' => 'Si è verificato un errore caricando i risultati ricerca.',
@@ -97,5 +98,5 @@ return [
     'Upload' => 'Carica',
     'Upload file' => 'Carica file',
     'You are not allowed to run this action.' => 'Non hai i permessi per questa azione.',
-    'All' => '',
+    'Database connection time: {dbTime} - Configured time zone: {time}' => '',
 ];

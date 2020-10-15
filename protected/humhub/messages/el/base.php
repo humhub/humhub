@@ -97,5 +97,6 @@ return [
     'Upload file' => 'Μεταφόρτωση αρχείου',
     'You are not allowed to run this action.' => 'Δεν σου επιτρέπεται η εκτέλεση αυτής της ενέργειας.',
     'All' => '',
+    'Database connection time: {dbTime} - Configured time zone: {time}' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',
 ];

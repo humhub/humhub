@@ -31,7 +31,7 @@ return [
     'Insufficent permissions!' => 'مجوز ناکافی!',
     'Read full comment...' => 'خواندن همه‌ی دیدگاه...',
     'Send' => 'فرستادن',
-    'Show all {total} comments.' => 'نمایش همه‌ی {total} دیدگاه.',
+    'Show all {total} comments' => 'نمایش همه‌ی {total} دیدگاه.',
     'Show {count} more comments' => 'نمایش {count} دیدگاه بیشتر',
     'The comment must not be empty!' => 'دیدگاه نباید خالی باشد!',
     'Whenever a new comment was written.' => 'هرگاه که یک دیدگاه تازه نوشته شد.',

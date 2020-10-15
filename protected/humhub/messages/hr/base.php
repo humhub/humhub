@@ -24,6 +24,7 @@ return [
     'Actions' => 'Akcije',
     'Add:' => 'Dodaj:',
     'Administration' => 'Administracija',
+    'All' => 'Sve',
     'Allow' => 'Dopusti',
     'An error occurred while handling your last action. (Handler not found).' => 'Došlo je do pogreške pri rukovanju vašom posljednjom radnjom. (Handler nije pronađen).',
     'An unexpected error occurred while loading the search result.' => 'Došlo je do neočekivane pogreške prilikom učitavanja rezultata pretraživanja.',
@@ -96,6 +97,6 @@ return [
     'Upload' => 'Dodaj',
     'Upload file' => 'Dodaj datoteku',
     'You are not allowed to run this action.' => 'Nije vam dozvoljena ova akcija.',
-    'All' => '',
+    'Database connection time: {dbTime} - Configured time zone: {time}' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',
 ];

@@ -141,30 +141,33 @@ class MailSummary extends Component
      */
     public function getActivities()
     {
-        $stream = new DashboardStreamAction('stream', Yii::$app->controller);
-        $stream->activity = true;
-        $stream->limit = $this->maxActivityCount;
-        $stream->mode = DashboardStreamAction::MODE_ACTIVITY;
-        $stream->user = $this->user;
+        $stream = new DashboardStreamAction('stream', Yii::$app->controller , [
+            'activity' => true,
+            'limit' => $this->maxActivityCount,
+            'user' => $this->user,
+        ]);
+
         $stream->init();
-        $stream->activeQuery->andWhere(['>', 'content.created_at', $this->getLastSummaryDate()]);
+
+        $query = $stream->getStreamQuery()->query();
+        $query->andWhere(['>', 'content.created_at', $this->getLastSummaryDate()]);
 
         // Handle suppressed activities
         $suppressedActivities = $this->getSuppressedActivities();
         if (!empty($suppressedActivities)) {
-            $stream->activeQuery->leftJoin('activity ax', 'ax.id=content.object_id');
-            $stream->activeQuery->andWhere(['NOT IN', 'ax.class', $suppressedActivities]);
+            $query->leftJoin('activity ax', 'ax.id=content.object_id');
+            $query->andWhere(['NOT IN', 'ax.class', $suppressedActivities]);
         }
 
         // Handle defined content container mode
         $limitContainer = $this->getLimitContentContainers();
         if (!empty($limitContainer)) {
             $mode = ($this->getLimitContentContainerMode() == MailSummaryForm::LIMIT_MODE_INCLUDE) ? 'IN' : 'NOT IN';
-            $stream->activeQuery->andWhere([$mode, 'content.contentcontainer_id', $limitContainer]);
+            $query->andWhere([$mode, 'content.contentcontainer_id', $limitContainer]);
         }
 
         $activities = [];
-        foreach ($stream->activeQuery->all() as $content) {
+        foreach ($stream->getStreamQuery()->all() as $content) {
             try {
                 $activity = $content->getPolymorphicRelation();
                 if ($activity instanceof Activity) {

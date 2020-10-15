@@ -1,5 +1,6 @@
 <?php
 
+use humhub\widgets\Button;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use humhub\compat\CActiveForm;
@@ -9,7 +10,7 @@ use humhub\compat\CHtml;
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
 <div class="clearfix">
-    <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.settings', 'Back to overview'), Url::to(['setting/oembed']), ['class' => 'btn btn-default pull-right']); ?>
+    <?= Button::back(Url::to(['setting/oembed']),  Yii::t('AdminModule.settings', 'Back to overview')) ?>
     <h4 class="pull-left">
         <?php
         if ($prefix == "") {

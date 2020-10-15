@@ -43,4 +43,13 @@ class WidgetMenuEntry extends MenuEntry
             Yii::error($e);
         }
     }
+
+    /**
+     * @inheritDoc
+     * @since 1.7
+     */
+    public function getEntryClass()
+    {
+        return $this->widgetClass;
+    }
 }

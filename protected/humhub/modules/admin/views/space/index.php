@@ -2,6 +2,7 @@
 
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
+use humhub\widgets\ModalButton;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use humhub\modules\admin\widgets\SpaceGridView;
@@ -11,11 +12,13 @@ use humhub\modules\admin\grid\SpaceImageColumn;
 use humhub\modules\admin\models\SpaceSearch;
 use yii\helpers\Url;
 
+/* @var $searchModel SpaceSearch*/
 ?>
 
-<?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('AdminModule.space', 'Add new space'), ['/space/create'], ['class' => 'btn btn-sm btn-success pull-right', 'data-target' => '#globalModal']); ?>
+<?= ModalButton::success(Yii::t('AdminModule.space', 'Add new space'))->load(['/space/create'])
+    ->icon('add')->right()->sm() ?>
 
-<h4><?= Yii::t('AdminModule.space', 'Overview'); ?></h4>
+<h4><?= Yii::t('AdminModule.space', 'Overview') ?></h4>
 <div class="help-block">
     <?= Yii::t('AdminModule.space', 'This overview contains a list of each space with actions to view, edit and delete spaces.'); ?>
 </div>

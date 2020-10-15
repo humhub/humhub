@@ -9,7 +9,7 @@ return array (
   'Database migration results:' => '',
   'Delayed' => '',
   'Displaying {count} entries per page.' => '',
-  'Done' => '',
+  'Done' => 'Klart',
   'Driver' => '',
   'Error' => 'Error',
   'Flush entries' => '',

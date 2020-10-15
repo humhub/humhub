@@ -8,6 +8,8 @@
 
 namespace humhub\modules\post\controllers;
 
+use humhub\modules\content\widgets\stream\StreamEntryWidget;
+use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\post\models\Post;
@@ -43,11 +45,8 @@ class PostController extends ContentContainerController
         });
     }
 
-    public function actionEdit()
+    public function actionEdit($id)
     {
-        $id = Yii::$app->request->get('id');
-        $from = Yii::$app->request->get('from', '');
-
         $model = Post::findOne(['id' => $id]);
 
         if (!$model->content->canEdit()) {
@@ -58,13 +57,7 @@ class PostController extends ContentContainerController
             // Reload record to get populated updated_at field
             if ($model->validate() && $model->save()) {
                 $model = Post::findOne(['id' => $id]);
-                $options = [];
-                if ($from === Stream::FROM_DASHBOARD) {
-                    $options['controlsOptions'] = [
-                        'showContentContainer' => true
-                    ];
-                }
-                return $this->renderAjaxContent($model->getWallOut($options));
+                return $this->renderAjaxContent(StreamEntryWidget::renderStreamEntry($model));
             } else {
                 Yii::$app->response->statusCode = 400;
             }
@@ -72,7 +65,6 @@ class PostController extends ContentContainerController
 
         return $this->renderAjax('edit', [
             'post' => $model,
-            'from' => $from === Stream::FROM_DASHBOARD ? $from : null
         ]);
     }
 

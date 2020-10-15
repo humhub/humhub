@@ -31,7 +31,7 @@ return [
     'Insufficent permissions!' => 'Ανεπαρκή δικαιώματα!',
     'Read full comment...' => 'Διαβάστε το πλήρες σχόλιο ...',
     'Send' => 'Στείλε',
-    'Show all {total} comments.' => 'Εμφάνιση όλων των {total} σχολίων.',
+    'Show all {total} comments' => 'Εμφάνιση όλων των {total} σχολίων',
     'Show {count} more comments' => 'Εμφάνιση {count} επιπλέον σχολίων',
     'The comment must not be empty!' => 'Το σχόλιο δεν πρέπει να είναι κενό!',
     'Whenever a new comment was written.' => 'Κάθε φορά που γράφετε ένα νέο σχόλιο.',

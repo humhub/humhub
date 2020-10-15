@@ -28,7 +28,7 @@ class ContentTest extends ContentModelTest
         $this->assertEquals($this->testContent->archived, 0);
         $this->assertNotEmpty($this->testContent->created_at);
         $this->assertEquals($this->testContent->created_by, Yii::$app->user->id);
-        $this->assertNotEmpty($this->testContent->updated_at);
+        $this->assertIsString($this->testContent->updated_at);
         $this->assertEquals($this->testContent->updated_by, Yii::$app->user->id);
         $this->assertEquals($this->testContent->updated_at, $this->testContent->created_at);
         $this->assertEquals($this->testContent->stream_channel,Content::STREAM_CHANNEL_DEFAULT);

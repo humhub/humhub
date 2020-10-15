@@ -26,7 +26,7 @@ use yii\helpers\Html;
                         'class' => 'tt',
                         'data-toggle' => 'tooltip',
                         'data-placement' => 'top',
-                        'title' => Html::encode($space->name),
+                        'title' => $space->name,
                     ]
                 ]);
                 ?>

@@ -101,6 +101,7 @@ return [
     'Save & Test' => 'Salva e testa',
     'Saved' => 'Salvato',
     'Saved and flushed cache' => 'Cache salvata e attivata',
+    'Saved and sent test email to: {address}' => 'Email di prova salvata e inviata a: {address}',
     'Server' => 'Server',
     'Server Timezone' => 'Fuso orario server',
     'Show introduction tour for new users' => 'Mostra il tour di introduzione ai nuovi utenti',
@@ -115,6 +116,7 @@ return [
     'Url Prefix without http:// or https:// (e.g. youtube.com)' => 'Prefisso URL senza http:// o https:// (es. youtube.com)',
     'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Applica %url% come placeholder per gli URL. Il formato deve essere JSON. (es. http://www.youtube.com/oembed?url=%url%&amp;format=json)',
     'Use X-Sendfile for File Downloads' => 'Usa X-Sendfile per scaricare i file',
+    'Use the default swipe to show sidebar on a mobile device' => 'Utilizzare lo scorrimento predefinito per mostrare la barra laterale su un dispositivo mobile',
     'User' => 'Utente',
     'User Settings' => 'Impostazioni Utenti',
     'Username' => 'Username',
@@ -123,6 +125,5 @@ return [
     'You\'re using no icon at the moment. Upload your logo now.' => 'Non stai usando una icona al momento, carica il tuo logo ora.',
     'You\'re using no logo at the moment. Upload your logo now.' => 'Non stai usando nessun logo al momento, carica il tuo logo ora.',
     'never' => 'mai',
-    'Saved and sent test email to: {address}' => '',
-    'Use the default swipe to show sidebar on a mobile device' => '',
+    'Reported database time: {dateTime}' => '',
 ];

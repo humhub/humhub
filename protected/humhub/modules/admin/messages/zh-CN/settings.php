@@ -120,6 +120,7 @@ return [
     'PHP APC(u) Extension missing - Type not available!' => '',
     'Prevent client caching of following scripts' => '',
     'Redis' => '',
+    'Reported database time: {dateTime}' => '',
     'Save & Test' => '',
     'Saved and sent test email to: {address}' => '',
     'Test message' => '',

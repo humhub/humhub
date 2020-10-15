@@ -14,6 +14,9 @@ return [
     'urlManagerRules' => [
         ['class' => 'humhub\modules\user\components\UrlRule']
     ],
+    'consoleControllerMap' => [
+        'user' => 'humhub\modules\user\commands\UserController'
+    ],
     'events' => [
         ['class' => Search::class, 'event' => Search::EVENT_ON_REBUILD, 'callback' => [Events::class, 'onSearchRebuild']],
         ['class' => ContentActiveRecord::class, 'event' => ContentActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onContentDelete']],

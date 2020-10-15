@@ -1,12 +1,12 @@
 <?php
 
-use yii\helpers\Url;
+use humhub\modules\ui\icon\widgets\Icon;
 
-/* @var $this humhub\components\View */
+/* @var $this humhub\modules\ui\view\components\View */
 ?>
 <li>
     <!-- load modal confirm widget -->
     <a  href="#" data-action-click="delete">
-           <i class="fa fa-trash-o"></i> <?= Yii::t('ContentModule.base', 'Delete') ?> 
+        <?= Icon::get('delete') ?> <?= Yii::t('ContentModule.base', 'Delete') ?>
     </a>
 </li>

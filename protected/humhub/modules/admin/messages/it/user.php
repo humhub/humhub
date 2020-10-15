@@ -20,7 +20,7 @@ return [
     '<strong>Information</strong>' => '<strong>Informazioni</strong>',
     '<strong>Settings</strong> and Configuration' => '<strong>Impostazioni</strong> e Configurazione',
     '<strong>User</strong> administration' => 'Amministrazione <strong>Utente</strong>',
-    'Accept user: <strong>{displayName}</strong> ' => 'Accetta utente: <strong>{displayName}</strong> ',
+    'Accept user: <strong>{displayName}</strong> ' => 'Accetta utente: <strong>{displayName}</strong>',
     'Account Request for \'{displayName}\' has been approved.' => 'La richiesta account per \'{displayName}\'  è stata approvata',
     'Account Request for \'{displayName}\' has been declined.' => 'La richiesta account per \'{displayName}\'  è stata rifiutata',
     'Actions' => 'Azioni',
@@ -62,6 +62,7 @@ return [
     'Disabled' => 'Disabilitato',
     'Disabled users' => 'Utenti disabilitati',
     'Do not change placeholders like {displayName} if you want them to be automatically filled by the system. To reset the email content fields with the system default, leave them empty.' => 'Non modificare segnaposti come {displayName} se vuoi che vengano automaticamente compilati dal sistema. Per ripristinare i campi del contenuto dell\'email con il valore predefinito del sistema, lasciali vuoti.',
+    'Edit category' => 'Modifica categoria',
     'Edit profile category' => 'Modifica categoria profilo',
     'Edit profile field' => 'Modifica campo profilo',
     'Edit user: {name}' => 'Modifica utente: {name}',
@@ -131,5 +132,16 @@ return [
     'You can only delete empty categories!' => 'Puoi cancellare solo categorie vuote!',
     'You cannot delete yourself!' => 'Non puoi eliminare te stesso!',
     'never' => 'mai',
-    'Edit category' => '',
+    'Hello {displayName},<br><br>
+Your account has been activated.<br><br>
+Click here to login:<br>
+{loginLink}<br><br>
+
+Kind Regards<br>
+{AdminName}<br><br>' => '',
+    'Hello {displayName},<br><br>
+Your account request has been declined.<br><br>
+
+Kind Regards<br>
+{AdminName} <br><br> ' => '',
 ];

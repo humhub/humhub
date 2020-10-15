@@ -24,6 +24,7 @@ return [
     'Actions' => 'Handlinger',
     'Add:' => 'Legg til:',
     'Administration' => 'Administrasjon',
+    'All' => 'Alt',
     'Allow' => 'Tillat',
     'An error occurred while handling your last action. (Handler not found).' => 'En feil oppstod (Handler not found).',
     'An unexpected error occurred while loading the search result.' => 'En uventet feil oppstod ved lasting av søkeresultat.',
@@ -96,6 +97,6 @@ return [
     'Upload' => 'Last opp',
     'Upload file' => 'Last opp fil',
     'You are not allowed to run this action.' => 'Du har ikke tillatelse til å utføre denne handlingen.',
-    'All' => '',
+    'Database connection time: {dbTime} - Configured time zone: {time}' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',
 ];

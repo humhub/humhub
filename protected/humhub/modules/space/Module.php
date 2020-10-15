@@ -55,6 +55,12 @@ class Module extends \humhub\components\Module
     public $minimumSpaceUrlLength = 2;
 
     /**
+     * @var bool hide about page in space menu
+     * @since 1.7
+     */
+    public $hideAboutPage = false;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
@@ -83,14 +89,14 @@ class Module extends \humhub\components\Module
      */
     public function getNotifications()
     {
-       return [
-           'humhub\modules\space\notifications\ApprovalRequest',
-           'humhub\modules\space\notifications\ApprovalRequestAccepted',
-           'humhub\modules\space\notifications\ApprovalRequestDeclined',
-           'humhub\modules\space\notifications\Invite',
-           'humhub\modules\space\notifications\InviteAccepted',
-           'humhub\modules\space\notifications\InviteDeclined'
-       ];
+        return [
+            'humhub\modules\space\notifications\ApprovalRequest',
+            'humhub\modules\space\notifications\ApprovalRequestAccepted',
+            'humhub\modules\space\notifications\ApprovalRequestDeclined',
+            'humhub\modules\space\notifications\Invite',
+            'humhub\modules\space\notifications\InviteAccepted',
+            'humhub\modules\space\notifications\InviteDeclined'
+        ];
     }
 
 }

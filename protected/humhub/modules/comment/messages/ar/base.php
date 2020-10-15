@@ -31,7 +31,7 @@ return [
     'Insufficent permissions!' => 'ليست لديك الصلاحيات اللازمة!',
     'Read full comment...' => 'قراءة التعليق الكامل ...',
     'Send' => 'ارسل',
-    'Show all {total} comments.' => 'عرض كل الـ {total} رداً',
+    'Show all {total} comments' => 'عرض كل الـ {total} رداً',
     'Show {count} more comments' => 'عرض المزيد من الردود {count}',
     'The comment must not be empty!' => 'يجب ألا يكون التعليق فارغًا!',
     'Whenever a new comment was written.' => 'كلما تم كتابة تعليق جديد.',

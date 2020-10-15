@@ -20,16 +20,38 @@ use humhub\modules\content\components\ContentContainerController;
 class ContentContainerHelper
 {
     /**
+     * @var ContentContainerActiveRecord container
+     * @since 1.7
+     */
+    private static $container;
+
+    /**
      * @param string|null $type type filter available since 1.4
      * @return ContentContainerActiveRecord|null currently active container from app context.
      */
     public static function getCurrent($type = null)
     {
-        $controller = Yii::$app->controller;
-        if($controller instanceof ContentContainerController) {
-            return (!$type || get_class($controller->contentContainer) === $type) ? $controller->contentContainer : null;
+        if(!static::$container) {
+            $controller = Yii::$app->controller;
+            if($controller instanceof ContentContainerController) {
+                static::$container =  $controller->contentContainer;
+            }
         }
 
-        return null;
+        if(static::$container && $type && !is_a(static::$container,  $type)) {
+            return null;
+        }
+
+        return static::$container;
+    }
+
+    /**
+     * Can be used to manually set the current container context.
+     * @param ContentContainerActiveRecord|null $container
+     * @since 1.7
+     */
+    public static function setCurrent(ContentContainerActiveRecord $container = null)
+    {
+        static::$container = $container;
     }
 }

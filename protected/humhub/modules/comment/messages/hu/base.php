@@ -31,7 +31,7 @@ return [
     'Insufficent permissions!' => 'Elégtelen jogosultságok!',
     'Read full comment...' => 'Az egész hozzászólás megtekintése...',
     'Send' => 'Mehet',
-    'Show all {total} comments.' => 'Mind a(z) {total} hozzászólás megtekintése.',
+    'Show all {total} comments' => 'Mind a(z) {total} hozzászólás megtekintése',
     'Show {count} more comments' => 'Még {count} hozzászólás megjelenítése',
     'The comment must not be empty!' => 'A hozzászólás nem lehet üres!',
     'Whenever a new comment was written.' => 'Amikor új hozzászólás érkezik.',

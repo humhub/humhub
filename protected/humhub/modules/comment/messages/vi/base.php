@@ -31,7 +31,7 @@ return [
     'Insufficent permissions!' => 'Không đủ quyền!',
     'Read full comment...' => 'Đọc toàn bộ nội dung comment...',
     'Send' => 'Gửi',
-    'Show all {total} comments.' => 'Hiển thị toàn bộ {total} comments.',
+    'Show all {total} comments' => 'Hiển thị toàn bộ {total} comments',
     'Show {count} more comments' => 'Hiển thị thêm {count} comments',
     'The comment must not be empty!' => 'Bình luận không được phép rỗng!',
     'Whenever a new comment was written.' => 'Bất kể khi nào một comment mới được viết',

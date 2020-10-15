@@ -1,5 +1,5 @@
 <?php
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $canInviteExternal bool */
 /* @var $canManageMembers bool */
 /* @var $submitText string */

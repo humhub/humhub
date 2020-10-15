@@ -15,7 +15,7 @@ use humhub\modules\search\controllers\SearchController;
 use humhub\modules\file\converter\TextConverter;
 
 /**
- * 
+ *
  * @package humhub.modules_core.file.widgets
  * @since 1.2
  */
@@ -98,6 +98,13 @@ class FilePreview extends JsWidget
         ];
     }
 
+    public function getAttributes()
+    {
+        return [
+            'class' => 'well post-file-list'
+        ];
+    }
+
     protected function getFileData()
     {
         $files = $this->getFiles();
@@ -143,7 +150,7 @@ class FilePreview extends JsWidget
 
     /**
      * Checks whether the file should be highlighed in the results or not.
-     * 
+     *
      * @param File $file
      * @return boolean is highlighed
      */

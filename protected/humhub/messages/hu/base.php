@@ -24,6 +24,7 @@ return [
     'Actions' => 'Műveletek',
     'Add:' => 'Hozzáadás:',
     'Administration' => 'Adminisztráció',
+    'All' => 'Minden',
     'Allow' => 'Engedélyezés',
     'An error occurred while handling your last action. (Handler not found).' => 'Egy hiba merült fel a legutóbbi művelet elvégzésekor. (Handler nem található)',
     'An unexpected error occurred while loading the search result.' => 'Váratlan hiba merült fel a keresés eredményeinek betöltése közben.',
@@ -96,7 +97,7 @@ return [
     'Upload' => 'Feltöltés',
     'Upload file' => 'Fájl feltöltése',
     'You are not allowed to run this action.' => 'Nincs engedélyed, hogy ezt a műveletet végrehajsd.',
-    'All' => '',
+    'Database connection time: {dbTime} - Configured time zone: {time}' => '',
     'Powered by {name}' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',
 ];

@@ -1,10 +1,16 @@
 <?php
 
 use humhub\libs\Html;
+use humhub\modules\admin\widgets\GroupManagerMenu;
+use humhub\modules\user\models\Group;
+use humhub\widgets\Button;
+
+/* @var $group Group */
+
 ?>
 <div class="panel-body">
     <div class="pull-right">
-        <?= Html::backButton(['index'], ['label' => Yii::t('AdminModule.base', 'Back to overview')]); ?>
+        <?= Button::back(['index'], Yii::t('AdminModule.base', 'Back to overview'))?>
     </div>
 
     <?php if (!$group->isNewRecord) : ?>
@@ -22,7 +28,7 @@ use humhub\libs\Html;
     <?php if ($group->is_admin_group) : ?>
         <div class="pull-right"><span class="label label-danger"><?= Yii::t('AdminModule.base', 'Administrative group'); ?></span>&nbsp;&nbsp;</div>
     <?php endif; ?>
-    <?= \humhub\modules\admin\widgets\GroupManagerMenu::widget(['group' => $group]); ?>
+    <?= GroupManagerMenu::widget(['group' => $group]); ?>
 <?php endif; ?>
 
 <?= $content; ?>

@@ -63,12 +63,6 @@ class m141106_185632_log_init extends Migration
         foreach ($this->getDbTargets() as $target) {
             $this->db = $target->db;
 
-            $tableOptions = null;
-            if ($this->db->driverName === 'mysql') {
-                // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
-                $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci';
-            }
-
             $this->createTable($target->logTable, [
                 'id' => $this->bigPrimaryKey(),
                 'level' => $this->integer(),
@@ -76,7 +70,7 @@ class m141106_185632_log_init extends Migration
                 'log_time' => $this->double(),
                 'prefix' => $this->text(),
                 'message' => $this->text(),
-            ], $tableOptions);
+            ]);
 
             $this->createIndex('idx_log_level', $target->logTable, 'level');
             $this->createIndex('idx_log_category', $target->logTable, 'category');

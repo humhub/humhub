@@ -10,7 +10,7 @@ use yii\helpers\Html;
 use raoul2000\jcrop\JCropWidget;
 use yii\helpers\Json;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $profileImage \humhub\libs\ProfileImage */
 /* @var $model \humhub\models\forms\CropProfileImage */
 /* @var $container \humhub\modules\content\components\ContentContainerController */
@@ -56,13 +56,8 @@ $model->cropSetSelect = Json::decode('['.$cropSelect.']');
             <style>
                 /* Dirty Workaround against bootstrap and jcrop */
                 #profile-image-crop-modal img {
-                    max-width: none;
+                    max-width: 100%;
                 }
-
-                #profile-image-crop-modal .jcrop-keymgr {
-                    display: none !important;
-                }
-
             </style>
 
             <div id="cropimage">
@@ -70,7 +65,7 @@ $model->cropSetSelect = Json::decode('['.$cropSelect.']');
 
                 <?= JCropWidget::widget([
                     'selector' => '#crop-profile-image',
-                    'pluginOptions' => $model->getPluginOptions()
+                    'pluginOptions' => $model->getPluginOptions(),
                 ]); ?>
             </div>
 

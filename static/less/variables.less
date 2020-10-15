@@ -7,12 +7,16 @@
 //
 // Colors for buttons status etc.
 // --------------------------------------------------
-@default: #ededed;
-@primary: #708fa0;
-@info: #6fdbe8;
+@default: #f3f3f3;
+@primary: #435f6f;
+@info: #21A1B3;
+//@info: #1a808f;
 @success: #97d271;
-@warning: #fdd198;
-@danger: #ff8989;
+@warning: #f8b763;
+@danger: #FC4A64;
+
+//@link: darken(@info, 10%);
+@link: @info;
 
 
 //
@@ -20,16 +24,16 @@
 // --------------------------------------------------
 
 // Default body text color.
-@text-color-main: #777;
+@text-color-main: #555;
 
 // used for some icons and buttons etc. - former @font2
 @text-color-secondary: #7a7a7a;
 
 // highlighted text like some active links hovered links etc. - former @font3
-@text-color-highlight: #555;
+@text-color-highlight: #000;
 
 // side information like dates, placeholder, some dropdown headers - former @font4
-@text-color-soft: #bebebe;
+@text-color-soft: #555555;
 
 // also side information wall entry links (like/comment), help blocks in forms etc.  - former @font5
 @text-color-soft2: #aeaeae;
@@ -40,7 +44,6 @@
 // used as contrast color for @primary, @info, @success, @warning, @danger backgrounds for buttons etc.
 // Note that @default does not use a contrast color @default is normally combined with @text-color-secondary
 @text-color-contrast: #fff;
-
 
 
 //
@@ -79,7 +82,7 @@
 
 // Alert box danger (used in forms)
 @background-color-danger: #fff6f6;
-@text-color-danger:  #ff8989;
+@text-color-danger: #ff8989;
 @border-color-danger: #ff8989;
 
 //
@@ -88,5 +91,5 @@
 
 // Mail Fonts
 @mail-font-url: 'http://fonts.googleapis.com/css?family=Open+Sans:300,100,400,600';
-@mail-font-family: 'Open Sans',Arial,Tahoma,Helvetica,sans-serif;
+@mail-font-family: 'Open Sans', Arial, Tahoma, Helvetica, sans-serif;
 

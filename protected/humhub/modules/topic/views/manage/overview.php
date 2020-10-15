@@ -16,7 +16,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\AccountSettingsMenu;
 use yii\helpers\Html;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $dataProvider \yii\data\ActiveDataProvider */
 /* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
 /* @var $addModel \humhub\modules\topic\models\Topic */
@@ -40,8 +40,8 @@ use yii\helpers\Html;
             <div class="input-group">
                 <?= Html::activeTextInput($addModel, 'name', ['style' => 'height:36px', 'class' => 'form-control', 'placeholder' => Yii::t('TopicModule.base', 'Add Topic')]) ?>
                 <span class="input-group-btn">
-                        <?= Button::defaultType()->icon('fa-plus')->loader()->submit() ?>
-                    </span>
+                    <?= Button::defaultType()->icon('add')->loader()->submit() ?>
+                </span>
             </div>
         </div>
         <?php ActiveForm::end(); ?>
@@ -59,7 +59,7 @@ use yii\helpers\Html;
                     'buttons' => [
                         'update' => function ($url, $model) use ($contentContainer) {
                             /* @var $model \humhub\modules\topic\models\Topic */
-                            return ModalButton::primary()->load($contentContainer->createUrl('edit', ['id' => $model->id]))->icon('fa-pencil')->xs()->loader(false);
+                            return ModalButton::primary()->load($contentContainer->createUrl('edit', ['id' => $model->id]))->icon('edit')->xs()->loader(false);
                         },
                         'view' => function ($url, $model) use ($contentContainer) {
                             /* @var $model \humhub\modules\topic\models\Topic */
@@ -67,7 +67,7 @@ use yii\helpers\Html;
                         },
                         'delete' => function ($url, $model) use ($contentContainer) {
                             /* @var $model \humhub\modules\topic\models\Topic */
-                            return Button::danger()->icon('fa-times')->action('topic.removeOverviewTopic', $contentContainer->createUrl('delete', ['id' => $model->id]))->confirm(
+                            return Button::danger()->icon('delete')->action('topic.removeOverviewTopic', $contentContainer->createUrl('delete', ['id' => $model->id]))->confirm(
                                 Yii::t('TopicModule.base', '<strong>Confirm</strong> topic deletion'),
                                 Yii::t('TopicModule.base', 'Do you really want to delete this topic?'),
                                 Yii::t('base', 'Delete'))->xs()->loader(false);

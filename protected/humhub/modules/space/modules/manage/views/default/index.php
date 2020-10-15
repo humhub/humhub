@@ -1,12 +1,13 @@
 <?php
 
+use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 use humhub\modules\space\widgets\SpaceNameColorInput;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\Button;
 
-/* @var $this \humhub\components\View
+/* @var $this \humhub\modules\ui\view\components\View
  * @var $model \humhub\modules\space\models\Space
  */
 
@@ -26,7 +27,8 @@ use humhub\widgets\Button;
         <?php $form = ActiveForm::begin(['options' => ['id' => 'spaceIndexForm'], 'enableClientValidation' => false]); ?>
 
         <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model]) ?>
-        <?= $form->field($model, 'description')->textarea(['rows' => 6]); ?>
+        <?= $form->field($model, 'description')->textInput(); ?>
+        <?= $form->field($model, 'about')->widget(RichTextField::class); ?>
         <?= $form->field($model, 'tags')->textInput(['maxlength' => 200]); ?>
 
         <?= Button::save()->submit() ?>

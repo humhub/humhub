@@ -116,6 +116,7 @@ return [
     'Old logs can significantly increase the size of your database while providing little information.' => '',
     'PHP reported a maximum of {maxUploadSize} MB' => '',
     'Prevent client caching of following scripts' => '',
+    'Reported database time: {dateTime}' => '',
     'Save & Test' => '',
     'Saved and sent test email to: {address}' => '',
     'Test message' => '',

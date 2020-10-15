@@ -3,7 +3,7 @@
 use humhub\modules\marketplace\models\Licence;
 use yii\helpers\Url;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $licence Licence */
 
 ?>

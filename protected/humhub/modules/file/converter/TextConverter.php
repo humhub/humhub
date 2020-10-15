@@ -23,9 +23,9 @@ class TextConverter extends BaseConverter
 
     /**
      * List of installed text conversion converters
-     * 
+     *
      * Example:
-     * 
+     *
      * ```
      * [
      *      'cmd' => '/usr/bin/pdftotext -q -enc UTF-8 {fileName} {outputFileName}',
@@ -36,10 +36,23 @@ class TextConverter extends BaseConverter
      *      'except' => ['image/']
      * ]
      * ```
-     * 
+     *
      * @var array
      */
     public $converter = [];
+
+    /**
+     * @var int maximum text file size in byte
+     */
+    public $maxTextFileSize = 3.2e+7;
+
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return 'text';
+    }
 
     /**
      * @inheritdoc
@@ -92,7 +105,7 @@ class TextConverter extends BaseConverter
 
     /**
      * Returns the first matching converter for the file
-     * 
+     *
      * @return array the converter definitions
      */
     public function getConverter()
@@ -124,17 +137,27 @@ class TextConverter extends BaseConverter
 
     /**
      * Returns the file content as text
-     * 
+     *
      * @return string the text output
      */
     public function getContentAsText()
     {
         $fileName = $this->getFilename();
+
         $convertedFile = $this->file->store->get($fileName);
 
         if (is_file($convertedFile)) {
+
+            // Reduce file size to max text length
+            if (filesize($convertedFile) > $this->maxTextFileSize) {
+                $fp = fopen($convertedFile, "r+");
+                ftruncate($fp, $this->maxTextFileSize);
+                fclose($fp);
+            }
+
             return file_get_contents($convertedFile);
         }
+
         return null;
     }
 

@@ -7,7 +7,11 @@ use yii\helpers\Html;
 <?= Html::beginTag('div', $options) ?>
     <?= Html::beginTag('ul', ['class' => 'media-list']) ?>
         <?php foreach ($notifications as $notification) : ?>
-            <?= $notification->render(); ?>
+            <?php try  { ?>
+                <?= $notification->render() ?>
+            <?php } catch(\Throwable $t) {
+                Yii::warning($t, 'notification');
+            }?>
         <?php endforeach; ?>
         <?php if (empty($notifications)) : ?>
             <?= Yii::t('NotificationModule.base', 'No notifications found!'); ?>

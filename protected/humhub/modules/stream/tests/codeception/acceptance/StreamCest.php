@@ -39,7 +39,7 @@ class StreamCest
         $I->see('Confirm post deletion');
         $I->click('Delete', '#globalModalConfirm');
 
-        $I->seeSuccess('The content has been deleted');
+        $I->waitForElementNotVisible($newEntrySelector);
     }
 
     /**
@@ -78,8 +78,7 @@ class StreamCest
 
         $I->waitForElementVisible($newEntrySelector, 20);
         $I->expectTo('see my archived post');
-        $I->see('This is my stream test post', '.wall-entry');
-        $I->see('Archived', $newEntrySelector);
+        $I->waitForText('This is my stream test post', null,'.wall-entry');
 
         $I->amGoingTo('unarchive this post again');
 
@@ -97,7 +96,6 @@ class StreamCest
         $I->waitForElementVisible('[data-filter-id="entry_archived"]');
         $I->click('[data-filter-id="entry_archived"]');
         $I->waitForElementVisible($newEntrySelector);
-        $I->dontSee('Archived', $newEntrySelector);
 
         $I->amGoingTo('archive the post again with include archived filter');
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
@@ -140,14 +138,12 @@ class StreamCest
         $I->click('Pin', $newEntrySelector);
 
         $I->waitForText('This is my first stream test post!', null, '.s2_streamContent div:nth-child(1)');
-        $I->see('Pinned', $newEntrySelector);
 
         $I->amGoingTo('unpin my first entry');
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->waitForText('Unpin', 10);
         $I->click('Unpin', $newEntrySelector);
         $I->waitForText('This is my second stream test post!', null, '.s2_streamContent div:nth-child(1)');
-        $I->dontSee('Pinned', $newEntrySelector);
     }
 
     /**
@@ -192,7 +188,7 @@ class StreamCest
         $I->fillField($newEntrySelector . ' [contenteditable]', 'This is my edited post!');
         $I->click('Save', $newEntrySelector);
 
-        $I->seeSuccess('Saved');
+        $I->wait(1);
         $I->seeElement($newEntrySelector);
         $I->see('This is my edited post!', $newEntrySelector);
     }
@@ -227,8 +223,7 @@ class StreamCest
         $I->see('Confirm post deletion');
         $I->click('Delete', '#globalModalConfirm');
 
-        $I->seeSuccess('The content has been deleted');
-        $I->see('This space is still empty!');
+        $I->waitForText('This space is still empty!');
         $I->dontSeeElement('#wall-stream-filter-nav');
     }
 

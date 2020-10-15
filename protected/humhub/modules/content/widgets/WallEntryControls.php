@@ -2,6 +2,10 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\widgets\stream\StreamEntryOptions;
+use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
+use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\widgets\Menu;
 use yii\helpers\ArrayHelper;
@@ -17,12 +21,12 @@ class WallEntryControls extends Menu
 {
 
     /**
-     * @var \humhub\modules\content\components\ContentActiveRecord
+     * @var ContentActiveRecord
      */
     public $object;
 
     /**
-     * @var WallEntry
+     * @var WallEntry|WallStreamEntryWidget
      */
     public $wallEntryWidget;
 
@@ -32,11 +36,50 @@ class WallEntryControls extends Menu
     public $template = '@content/widgets/views/wallEntryControls';
 
     /**
+     * @var WallStreamEntryOptions
+     */
+    public $renderOptions;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        if(!$this->renderOptions && $this->wallEntryWidget instanceof WallStreamEntryWidget) {
+            $this->renderOptions = $this->wallEntryWidget->renderOptions;
+        } else if(!$this->renderOptions) {
+            $this->renderOptions = new WallStreamEntryOptions();
+        }
+
+        parent::init();
+    }
+
+    /**
+     * @return string the active view context of the stream entry
+     */
+    public function getViewContext()
+    {
+        if(!$this->renderOptions) {
+            return StreamEntryOptions::VIEW_CONTEXT_DEFAULT;
+        }
+
+        return $this->renderOptions->getViewContext();
+    }
+
+    /**
      * @inheritdoc
      */
     public function run()
     {
-        foreach ($this->wallEntryWidget->getContextMenu() as $menuItem) {
+        if($this->renderOptions->isControlsMenuDisabled()) {
+            return '';
+        }
+
+        $entries = $this->wallEntryWidget instanceof WallEntry
+            ? $this->wallEntryWidget->getContextMenu()
+            : $this->wallEntryWidget->getControlsMenuEntries();
+
+        foreach ($entries as $menuItem) {
             if (empty($menuItem)) {
                 continue;
             }
@@ -50,6 +93,18 @@ class WallEntryControls extends Menu
     /**
      * @inheritdoc
      */
+    public function addEntry(MenuEntry $entry)
+    {
+        if($this->renderOptions && $this->renderOptions->isContextMenuEntryDisabled($entry)) {
+            return;
+        }
+
+        parent::addEntry($entry);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getAttributes()
     {
         return [
@@ -57,6 +112,13 @@ class WallEntryControls extends Menu
         ];
     }
 
+    /**
+     * Adds an entry by widget class and parameters and entry options
+     *
+     * @param string $className widget class
+     * @param array $params widget options
+     * @param array $options entry options
+     */
     public function addWidget($className, $params = [], $options = []) {
         $sortOrder = isset($options['sortOrder']) ? $options['sortOrder'] : PHP_INT_MAX;
         $cfg = array_merge($options, ['widgetClass' => $className, 'widgetOptions' => $params, 'sortOrder' => $sortOrder]);
@@ -82,7 +144,6 @@ class WallEntryControls extends Menu
             return $menuItem;
         }
 
-        $result = [];
         if (ArrayHelper::isAssociative($menuItem)) { // ['label' => 'xy', 'icon' => ...] -> WallEntryControlLink
             $widgetClass = WallEntryControlLink::class;
             $widgetOptions = ['options' => $menuItem];

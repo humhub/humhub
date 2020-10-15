@@ -88,6 +88,13 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     const USERGROUP_GUEST = 'u_guest';
 
     /**
+     * Scenarios
+     */
+    const SCENARIO_EDIT_ADMIN = 'editAdmin';
+    const SCENARIO_LOGIN = 'login';
+    const SCENARIO_REGISTRATION = 'registration';
+
+    /**
      * @event Event an event that is triggered when the user visibility is checked via [[isVisible()]].
      */
     const EVENT_CHECK_VISIBILITY = 'checkVisibility';
@@ -205,8 +212,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $scenarios = parent::scenarios();
         $scenarios['login'] = ['username', 'password'];
         $scenarios['editAdmin'] = ['username', 'email', 'status'];
-        $scenarios['registration_email'] = ['username', 'email'];
-        $scenarios['registration'] = ['username'];
+        $scenarios['registration_email'] = ['username', 'email', 'time_zone'];
+        $scenarios['registration'] = ['username', 'time_zone'];
 
         return $scenarios;
     }
@@ -367,8 +374,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Specifies whether the user should appear in user lists or in the search.
      *
-     * @since 1.2.3
      * @return boolean is visible
+     * @since 1.2.3
      */
     public function isVisible()
     {
@@ -398,8 +405,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     /**
      *
-     * @since 1.3
      * @throws Exception
+     * @since 1.3
      */
     public function softDelete()
     {
@@ -619,22 +626,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
-     * Checks if the given $user instance shares the same identity with this
-     * user instance.
-     *
-     * @param \humhub\modules\user\models\User $user
-     * @return boolean
-     */
-    public function is(User $user = null)
-    {
-        if (!$user) {
-            return false;
-        }
-
-        return $user->id === $this->id;
-    }
-
-    /**
      * @inheritdoc
      */
     public function canAccessPrivateContent(User $user = null)
@@ -755,7 +746,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             return true;
         }
 
-        if((new PermissionManager(['subject' => $this]))->can([ManageUsers::class, ManageGroups::class])) {
+        if ((new PermissionManager(['subject' => $this]))->can([ManageUsers::class, ManageGroups::class])) {
             return true;
         }
 

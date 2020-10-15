@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use humhub\widgets\Button;
 use yii\grid\Column;
 use yii\helpers\Url;
 use humhub\libs\Html;
@@ -52,7 +53,8 @@ class ActionColumn extends Column
         }
 
         $html = Html::beginTag('div', ['class' => 'btn-group dropdown-navigation']);
-        $html .= Html::button('<i class="fa fa-cog"></i> <span class="caret"></span>', ['class' => 'btn btn-default dropdown-toggle', 'data-toggle' => 'dropdown']);
+        $html .= Button::defaultType('<span class="caret"></span>')->cssClass('dropdown-toggle')
+            ->options(['data-toggle' => 'dropdown'])->icon('controls')->loader(false);
         $html .= Html::beginTag('ul', ['class' => 'dropdown-menu pull-right']);
         foreach ($actions as $title => $url) {
             if ($url === '---') {
@@ -89,7 +91,7 @@ class ActionColumn extends Column
 
     /**
      * Builds the URL for a given Action
-     * 
+     *
      * @param array $url
      * @param \yii\base\Model $model
      * @return string the url

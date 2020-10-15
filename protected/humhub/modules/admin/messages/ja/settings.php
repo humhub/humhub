@@ -101,6 +101,7 @@ return [
     'Save & Test' => '保存してテストメールを送信',
     'Saved' => '保存完了',
     'Saved and flushed cache' => '保存しキャッシュをクリア',
+    'Saved and sent test email to: {address}' => '保存してテストメールを送信：{address}',
     'Server' => 'サーバー',
     'Server Timezone' => 'サーバーのタイムゾーン',
     'Show introduction tour for new users' => '新規ユーザーのための機能紹介ツアーを表示',
@@ -124,5 +125,5 @@ return [
     'You\'re using no icon at the moment. Upload your logo now.' => '現在、アイコンを使用していません。今すぐアイコンをアップロードしてください。',
     'You\'re using no logo at the moment. Upload your logo now.' => '現在、ロゴを使用していません。今すぐロゴをアップロードしてください。',
     'never' => '保存しない',
-    'Saved and sent test email to: {address}' => '',
+    'Reported database time: {dateTime}' => '',
 ];

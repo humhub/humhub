@@ -8,20 +8,17 @@
 
 namespace tests\codeception\unit\modules\content;
 
-use humhub\modules\comment\permissions\CreateComment;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\ContentContainerPermission;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\tests\codeception\unit\TestContent;
 use humhub\modules\content\tests\codeception\unit\TestContentManagePermission;
-use Yii;
 use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
 use humhub\modules\post\models\Post;
 
 use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
-use humhub\modules\stream\actions\ContentContainerStream;
 
 class ContentActiveRecordTest extends HumHubDbTestCase
 {

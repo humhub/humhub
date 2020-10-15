@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Content' => 'Контент',
+    'Author' => 'Автор',
+    'Content' => 'Запись',
+    'Content Type' => 'Тип записи',
     'Sorting' => 'Сортировка',
     'Topic' => 'Тема',
-    'Visibility' => 'Отображение',
-    'Author' => '',
-    'Content Type' => '',
+    'Visibility' => 'Видимость',
     'Scope' => '',
 ];

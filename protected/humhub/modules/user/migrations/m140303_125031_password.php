@@ -31,7 +31,7 @@ class m140303_125031_password extends Migration
                 ->all();
         foreach ($rows as $row) {
             $password = str_replace('___enc___', '', $row['password']);
-            $this->update('user_password', ['user_id' => $row['id'], 'password' => $password, 'algorithm' => $algorithm, 'salt' => Yii::$app->settings->get('secret'), 'created_at' => new \yii\db\Expression('NOW()')]);
+            $this->update('user_password', ['user_id' => $row['id'], 'password' => $password, 'algorithm' => $algorithm, 'salt' => Yii::$app->settings->get('secret'), 'created_at' => date('Y-m-d G:i:s')]);
         }
         $this->dropColumn('user', 'password');
     }

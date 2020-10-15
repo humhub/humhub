@@ -10,6 +10,7 @@ namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\stream\actions\Stream;
+use humhub\modules\stream\actions\StreamEntryResponse;
 use humhub\modules\topic\models\Topic;
 use Yii;
 use yii\web\HttpException;
@@ -145,7 +146,7 @@ class WallCreateContentForm extends Widget
             }
 
             $record->fileManager->attach(Yii::$app->request->post('fileList'));
-            return Stream::getContentResultEntry($record->content);
+            return StreamEntryResponse::getAsArray($record->content);
         }
 
         return ['errors' => $record->getErrors()];

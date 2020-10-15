@@ -13,7 +13,7 @@ return array (
   'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}' => '',
   'This space is archived' => '',
   'To search for other spaces, type at least {count} characters.' => '',
-  'You are a member of this space' => '',
+  'You are a member of this space' => 'Ești membru al acestui spațiu',
   'You are following this space' => '',
   '{n,plural,=1{# new entry} other{# new entries}} since your last visit' => '',
 );

@@ -28,7 +28,7 @@ return [
     'Edit your comment...' => 'Redaguokite komentarą...',
     'Insufficent permissions!' => 'Neturite reikalingų leidimų!',
     'Send' => 'Išsiųsti',
-    'Show all {total} comments.' => 'Rodyti visus {total} komentarus.',
+    'Show all {total} comments' => 'Rodyti visus {total} komentarus',
     'Show {count} more comments' => 'Rodyti {count} daugiau komentarų',
     'Write a new comment...' => 'Parašykite naują komentarą...',
     'comment' => 'Komentaras',

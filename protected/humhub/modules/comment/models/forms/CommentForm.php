@@ -16,12 +16,6 @@ use yii\web\ServerErrorHttpException;
 class CommentForm extends yii\base\Model
 {
     /**
-     * Comment message
-     * @var string
-     */
-    public $message;
-
-    /**
      * The list of files attached to a comment
      * @var array
      */
@@ -37,10 +31,10 @@ class CommentForm extends yii\base\Model
      */
     public $target;
 
-    public function __construct($target, $comment)
+    public function __construct($target, $comment = null)
     {
         $this->target = $target;
-        $this->comment = $comment;
+        $this->comment = $comment ?? new Comment();
         parent::__construct();
     }
 
@@ -50,18 +44,6 @@ class CommentForm extends yii\base\Model
     public function rules()
     {
         return [
-            [['message'], 'required', 'isEmpty' => function ($message) {
-                if (!empty($message)) {
-                    return false;
-                }
-
-                // Allow empty message only with file attachments
-                if (!empty($this->fileList) || (!$this->comment->isNewRecord && $this->comment->fileManager->find()->count())) {
-                    return false;
-                }
-
-                throw new ServerErrorHttpException(Yii::t('CommentModule.base', 'The comment must not be empty!'));
-            }],
             [['fileList'], 'safe'],
         ];
     }
@@ -71,69 +53,67 @@ class CommentForm extends yii\base\Model
      */
     public function load($data, $formName = null)
     {
-        // When user updates comment $data contain 'Comment', otherwise not
-        if (isset($data['Comment'])) {
-            $data['message'] = $data['Comment']['message'];
-            unset($data['Comment']);
+        return parent::load($data, $formName) | $this->comment->load($data);
+    }
+
+    /**
+     * @param null $attributeNames
+     * @param bool $clearErrors
+     * @return bool
+     * @throws ServerErrorHttpException
+     */
+    public function validate($attributeNames = null, $clearErrors = true)
+    {
+        if(!empty($attributeNames)) {
+            return parent::validate($attributeNames, $clearErrors);
         }
 
-        if (!parent::load($data, $formName)) {
-            return false;
+        if(!$this->comment->validate() || !parent::validate($attributeNames, $clearErrors)) {
+            $this->comment->addError('message', Yii::t('CommentModule.base', 'Comment could not be saved!'));
         }
 
-        if (!$this->validate()) {
-            return false;
-        } else {
+        if (!empty($this->comment->message)) {
             return true;
         }
+
+        // Allow empty message only with file attachments
+        if (!empty($this->fileList) || (!$this->comment->isNewRecord && $this->comment->fileManager->find()->count())) {
+            return true;
+        }
+
+        $this->comment->addError('message', Yii::t('CommentModule.base', 'The comment must not be empty!'));
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function formName()
-    {
-        return '';
-    }
-
-
-    /**
-     * Updates the form
-     *
-     * @return boolean
-     */
-    public function update()
-    {
-        $this->comment->message = $this->message;
-        return $this->save();
-    }
-
 
     /**
      * Saves the form
      *
      * @return boolean
+     * @throws ServerErrorHttpException
      */
     public function save()
     {
-        /**@var Comment $this ->comment */
+        if(!$this->validate()) {
+            return false;
+        }
+
         $this->comment->setPolyMorphicRelation($this->target);
 
         //check if model saved
         if ($this->comment->save()) {
             $this->comment->fileManager->attach($this->fileList);
-
-            // Reload comment to get populated created_at field
-            $this->comment->refresh();
             return true;
         }
+
+        $this->comment->addError('message', Yii::t('CommentModule.base', 'Comment could not be saved!'));
 
         return false;
     }
 
-    public function getComment()
+    /**
+     * @return string
+     */
+    public function formName()
     {
-        return $this->comment;
+        return '';
     }
-
 }
