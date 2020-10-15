@@ -67,3 +67,4 @@ HumHub Changelog
 - Fix #4493: Removed legacy ControllerAccess in notification ListController
 - Chng #4509: Removed `humhub\modules\space\widgets\Picker` which is deprecated since v1.2
 - Fix #4396: Submitting only picture in comment results in debug error.
+- Fix #4504: Fix `hasSidebar()` for empty sidebar

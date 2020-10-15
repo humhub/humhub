@@ -20,22 +20,21 @@ use yii\helpers\Url;
 
         </div>
     </div>
+    <script <?= \humhub\libs\Html::nonce() ?>>
+        function toggleUp() {
+            $('.pups').slideUp("fast", function () {
+                // Animation complete.
+                $('#collapse').hide();
+                $('#expand').show();
+            });
+        }
+
+        function toggleDown() {
+            $('.pups').slideDown("fast", function () {
+                // Animation complete.
+                $('#expand').hide();
+                $('#collapse').show();
+            });
+        }
+    </script>
 <?php endif; ?>
-
-<script <?= \humhub\libs\Html::nonce() ?>>
-    function toggleUp() {
-        $('.pups').slideUp("fast", function () {
-            // Animation complete.
-            $('#collapse').hide();
-            $('#expand').show();
-        });
-    }
-
-    function toggleDown() {
-        $('.pups').slideDown("fast", function () {
-            // Animation complete.
-            $('#expand').hide();
-            $('#collapse').show();
-        });
-    }
-</script>

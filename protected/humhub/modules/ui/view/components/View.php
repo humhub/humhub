@@ -465,7 +465,7 @@ class View extends \yii\web\View
      */
     public function hasSidebar()
     {
-        return (isset($this->blocks[static::BLOCK_SIDEBAR]));
+        return (isset($this->blocks[static::BLOCK_SIDEBAR]) && !ctype_space($this->blocks[static::BLOCK_SIDEBAR]));
     }
 
 
