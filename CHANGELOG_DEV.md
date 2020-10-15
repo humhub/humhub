@@ -1,8 +1,9 @@
 HumHub Changelog
 ================
 
-1.7.0 (Unreleased)
------------------------
+1.7.0-beta.1 (October 15, 2020)
+-------------------------------
+
 - Fix #4327: Internationalization of user approval/decline message text
 - Fix #4139: Dashboard post input on mobile cuts editor menu
 - Fix #4328: Top navigation overlaps post input richtext menu on dashboard page
@@ -58,10 +59,10 @@ HumHub Changelog
 - Fix #4473: Catch all Throwables when loading module configuration
 - Fix #4474: Loader not removed from event trigger
 - Enh #4476: Reworked TimeAgo widget
-- Chng #4482: Removed old legacy richtext editor which is deprecated since v1.3
+- Chg #4482: Removed old legacy richtext editor which is deprecated since v1.3
 - Enh #4475: Add Console UserAdmin Command
 - Chg #4482: Removed old legacy richtext editor which is deprecated since v1.3
 - Enh #3851: Migrate components from ZendFramework to Laminas
 - Fix #4354: Set `about` as target url of space invitation notification
 - Fix #4493: Removed legacy ControllerAccess in notification ListController
-- Chng #4509: Removed `humhub\modules\space\widgets\Picker` which is deprecated since v1.2
+- Chg #4509: Removed `humhub\modules\space\widgets\Picker` which is deprecated since v1.2
