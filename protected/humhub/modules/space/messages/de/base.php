@@ -87,7 +87,7 @@ return array (
   'Settings' => 'Einstellungen',
   'Settings could not be saved!' => 'Einstellungen konnten nicht gespeichert werden!',
   'Show all' => 'Alle anzeigen',
-  'Shown on About Page.' => '',
+  'Shown on About Page.' => 'Wird auf Informationsseite angezeigt.',
   'Sorry, you are not allowed to leave this space!' => 'Sorry, aber du kannst diesen Space nicht verlassen.',
   'Space' => 'Space',
   'Space Visibility' => 'Space Sichtbarkeit',
