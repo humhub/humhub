@@ -4,6 +4,7 @@ HumHub Changelog
 1.7.0-beta.2 (Unreleased)
 -------------------------
 - Fix #4504: Fix `hasSidebar()` for empty sidebar
+- Fix #4526: `HeaderControlsMenu::init` called twice
 
 
 1.7.0-beta.1 (October 16, 2020)

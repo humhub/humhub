@@ -148,7 +148,5 @@ class HeaderControlsMenu extends DropdownMenu
                 ]));
             }
         }
-
-        return parent::init();
     }
 }
