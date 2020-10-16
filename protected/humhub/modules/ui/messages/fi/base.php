@@ -18,4 +18,6 @@
  */
 return [
     'User Interface' => 'Käyttöliittymä',
+    'Collapse' => '',
+    'Read more' => '',
 ];

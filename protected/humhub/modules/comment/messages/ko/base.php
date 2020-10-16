@@ -18,17 +18,16 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => '',
-    'Access denied!' => '',
     'Cancel' => '',
     'Cancel Edit' => '',
     'Comment' => '',
+    'Comment could not be saved!' => '',
     'Comment has been deleted' => '',
     'Comments' => '',
     'Delete' => '',
     'Do you really want to delete this comment?' => '',
     'Edit' => '',
     'Edit your comment...' => '',
-    'Insufficent permissions!' => '',
     'Read full comment...' => '',
     'Reply' => '',
     'Send' => '',
@@ -38,7 +37,6 @@ return [
     'Whenever a new comment was written.' => '',
     'Write a new comment...' => '',
     'Write a new reply...' => '',
-    'You are not allowed to comment.' => '',
     'comment' => '',
     '{displayName} wrote a new comment ' => '',
 ];

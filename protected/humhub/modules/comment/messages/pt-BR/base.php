@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => '<strong>Confirmar</strong> exclusão de comentário',
-    'Access denied!' => 'Acesso negado!',
     'Cancel' => 'Cancelar',
     'Cancel Edit' => 'Cancelar Alteração',
     'Comment' => 'Comentar',
@@ -28,7 +27,6 @@ return [
     'Do you really want to delete this comment?' => 'Você realmente deseja apagar este comentário?',
     'Edit' => 'Alterar',
     'Edit your comment...' => 'Editar seu comentário...',
-    'Insufficent permissions!' => 'Permissões insuficientes!',
     'Read full comment...' => 'Ler o comentário completo...',
     'Send' => 'Enviar',
     'Show all {total} comments' => 'Mostrar todos {total} comentários',
@@ -36,9 +34,9 @@ return [
     'The comment must not be empty!' => 'O comentário não deve estar vazio!',
     'Whenever a new comment was written.' => 'Sempre que um novo comentário foi escrito.',
     'Write a new comment...' => 'Escreva um novo comentário...',
-    'You are not allowed to comment.' => 'Você não tem permissão para comentar.',
     'comment' => 'Comentário',
     '{displayName} wrote a new comment ' => '{displayName} escreveu um novo comentário',
+    'Comment could not be saved!' => '',
     'Reply' => '',
     'Write a new reply...' => '',
 ];

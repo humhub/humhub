@@ -68,9 +68,9 @@ return [
     'Unarchive' => 'Arşivden çıkar',
     'e.g. example for {baseUrl}/s/example' => 'ör: {baseUrl}/s/örnek',
     'never' => 'asla',
-    'space description' => 'mekan açıklaması',
     'the default start page of this space for members' => 'sayfa üyeleri için gösterilecek varsayılan giriş sayfası',
     'the default start page of this space for visitors' => 'misafirler için gösterilecek varsayılan giriş sayfası',
+    'Are you sure you want to remove this member.' => '',
     'Invited By' => '',
     'Please type the name of the space to proceed.' => '',
 ];

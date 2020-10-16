@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => '<strong>Vahvista</strong> kommentin poistaminen',
-    'Access denied!' => 'Sinulla ei ole oikeuksia!',
     'Cancel' => 'Peruuta',
     'Cancel Edit' => 'Peruuta Muokkaus',
     'Comment' => 'Kommentoi',
@@ -28,7 +27,6 @@ return [
     'Do you really want to delete this comment?' => 'Haluatko varmasti poistaa tämän kommentin?',
     'Edit' => 'Muokkaa',
     'Edit your comment...' => 'Muokkaa komenttia...',
-    'Insufficent permissions!' => 'Ei lupaa!',
     'Read full comment...' => 'Lue koko kommentti',
     'Send' => 'Lähetä',
     'Show all {total} comments' => 'Näytä kaikki {total} kommenttia.',
@@ -36,9 +34,9 @@ return [
     'The comment must not be empty!' => 'Komenttikenttä ei voi olla tyhjä!',
     'Whenever a new comment was written.' => 'Aina kun uusi kommentti kirjoitettaan.',
     'Write a new comment...' => 'Kirjoita uusi kommentti...',
-    'You are not allowed to comment.' => 'Et voi kommentoida.',
     'comment' => 'Kommentti',
     '{displayName} wrote a new comment ' => '{displayName} kirjoittaa uutta komenttia',
+    'Comment could not be saved!' => '',
     'Reply' => '',
     'Write a new reply...' => '',
 ];

@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add Like' => '',
-    'Allows the user to add likes' => '',
+    'Allows user to like content' => '',
+    'Can like' => '',
 ];

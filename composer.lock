@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8c0ab36f897eff8189a2db829ca0330a",
+    "content-hash": "4f9aff23264e76d73e62ea202d64e205",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -256,6 +256,38 @@
             ],
             "description": "Flexible Stub wrapper for PHPUnit's Mock Builder",
             "time": "2019-08-10T16:20:53+00:00"
+        },
+        {
+            "name": "container-interop/container-interop",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/container-interop/container-interop.git",
+                "reference": "79cbf1341c22ec75643d841642dd5d6acd83bdb8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/container-interop/container-interop/zipball/79cbf1341c22ec75643d841642dd5d6acd83bdb8",
+                "reference": "79cbf1341c22ec75643d841642dd5d6acd83bdb8",
+                "shasum": ""
+            },
+            "require": {
+                "psr/container": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Interop\\Container\\": "src/Interop/Container/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
+            "homepage": "https://github.com/container-interop/container-interop",
+            "abandoned": "psr/container",
+            "time": "2017-02-14T19:40:03+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -1823,6 +1855,64 @@
             "time": "2019-12-31T16:43:30+00:00"
         },
         {
+            "name": "laminas/laminas-http",
+            "version": "2.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laminas/laminas-http.git",
+                "reference": "33b7942f51ce905ce9bfc8bf28badc501d3904b5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-http/zipball/33b7942f51ce905ce9bfc8bf28badc501d3904b5",
+                "reference": "33b7942f51ce905ce9bfc8bf28badc501d3904b5",
+                "shasum": ""
+            },
+            "require": {
+                "laminas/laminas-loader": "^2.5.1",
+                "laminas/laminas-stdlib": "^3.2.1",
+                "laminas/laminas-uri": "^2.5.2",
+                "laminas/laminas-validator": "^2.10.1",
+                "laminas/laminas-zendframework-bridge": "^1.0",
+                "php": "^5.6 || ^7.0"
+            },
+            "replace": {
+                "zendframework/zend-http": "^2.11.2"
+            },
+            "require-dev": {
+                "laminas/laminas-coding-standard": "~1.0.0",
+                "laminas/laminas-config": "^3.1 || ^2.6",
+                "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.3"
+            },
+            "suggest": {
+                "paragonie/certainty": "For automated management of cacert.pem"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Laminas\\Http\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Provides an easy interface for performing Hyper-Text Transfer Protocol (HTTP) requests",
+            "homepage": "https://laminas.dev",
+            "keywords": [
+                "http",
+                "http client",
+                "laminas"
+            ],
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
+            ],
+            "time": "2020-08-18T17:11:58+00:00"
+        },
+        {
             "name": "laminas/laminas-ldap",
             "version": "2.10.3",
             "source": {
@@ -1878,6 +1968,235 @@
                 "ldap"
             ],
             "time": "2020-03-29T13:06:47+00:00"
+        },
+        {
+            "name": "laminas/laminas-loader",
+            "version": "2.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laminas/laminas-loader.git",
+                "reference": "5d01c2c237ae9e68bec262f339947e2ea18979bc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-loader/zipball/5d01c2c237ae9e68bec262f339947e2ea18979bc",
+                "reference": "5d01c2c237ae9e68bec262f339947e2ea18979bc",
+                "shasum": ""
+            },
+            "require": {
+                "laminas/laminas-zendframework-bridge": "^1.0",
+                "php": "^5.6 || ^7.0"
+            },
+            "replace": {
+                "zendframework/zend-loader": "self.version"
+            },
+            "require-dev": {
+                "laminas/laminas-coding-standard": "~1.0.0",
+                "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.6.x-dev",
+                    "dev-develop": "2.7.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laminas\\Loader\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Autoloading and plugin loading strategies",
+            "homepage": "https://laminas.dev",
+            "keywords": [
+                "laminas",
+                "loader"
+            ],
+            "time": "2019-12-31T17:18:27+00:00"
+        },
+        {
+            "name": "laminas/laminas-stdlib",
+            "version": "3.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laminas/laminas-stdlib.git",
+                "reference": "2b18347625a2f06a1a485acfbc870f699dbe51c6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-stdlib/zipball/2b18347625a2f06a1a485acfbc870f699dbe51c6",
+                "reference": "2b18347625a2f06a1a485acfbc870f699dbe51c6",
+                "shasum": ""
+            },
+            "require": {
+                "laminas/laminas-zendframework-bridge": "^1.0",
+                "php": "^5.6 || ^7.0"
+            },
+            "replace": {
+                "zendframework/zend-stdlib": "self.version"
+            },
+            "require-dev": {
+                "laminas/laminas-coding-standard": "~1.0.0",
+                "phpbench/phpbench": "^0.13",
+                "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.2.x-dev",
+                    "dev-develop": "3.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laminas\\Stdlib\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "SPL extensions, array utilities, error handlers, and more",
+            "homepage": "https://laminas.dev",
+            "keywords": [
+                "laminas",
+                "stdlib"
+            ],
+            "time": "2019-12-31T17:51:15+00:00"
+        },
+        {
+            "name": "laminas/laminas-uri",
+            "version": "2.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laminas/laminas-uri.git",
+                "reference": "6be8ce19622f359b048ce4faebf1aa1bca73a7ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-uri/zipball/6be8ce19622f359b048ce4faebf1aa1bca73a7ff",
+                "reference": "6be8ce19622f359b048ce4faebf1aa1bca73a7ff",
+                "shasum": ""
+            },
+            "require": {
+                "laminas/laminas-escaper": "^2.5",
+                "laminas/laminas-validator": "^2.10",
+                "laminas/laminas-zendframework-bridge": "^1.0",
+                "php": "^5.6 || ^7.0"
+            },
+            "replace": {
+                "zendframework/zend-uri": "self.version"
+            },
+            "require-dev": {
+                "laminas/laminas-coding-standard": "~1.0.0",
+                "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.7.x-dev",
+                    "dev-develop": "2.8.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laminas\\Uri\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "A component that aids in manipulating and validating » Uniform Resource Identifiers (URIs)",
+            "homepage": "https://laminas.dev",
+            "keywords": [
+                "laminas",
+                "uri"
+            ],
+            "time": "2019-12-31T17:56:00+00:00"
+        },
+        {
+            "name": "laminas/laminas-validator",
+            "version": "2.13.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laminas/laminas-validator.git",
+                "reference": "93593684e70b8ed1e870cacd34ca32b0c0ace185"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-validator/zipball/93593684e70b8ed1e870cacd34ca32b0c0ace185",
+                "reference": "93593684e70b8ed1e870cacd34ca32b0c0ace185",
+                "shasum": ""
+            },
+            "require": {
+                "container-interop/container-interop": "^1.1",
+                "laminas/laminas-stdlib": "^3.2.1",
+                "laminas/laminas-zendframework-bridge": "^1.0",
+                "php": "^7.1"
+            },
+            "replace": {
+                "zendframework/zend-validator": "^2.13.0"
+            },
+            "require-dev": {
+                "laminas/laminas-cache": "^2.6.1",
+                "laminas/laminas-coding-standard": "~1.0.0",
+                "laminas/laminas-config": "^2.6",
+                "laminas/laminas-db": "^2.7",
+                "laminas/laminas-filter": "^2.6",
+                "laminas/laminas-http": "^2.5.4",
+                "laminas/laminas-i18n": "^2.6",
+                "laminas/laminas-math": "^2.6",
+                "laminas/laminas-servicemanager": "^2.7.5 || ^3.0.3",
+                "laminas/laminas-session": "^2.8",
+                "laminas/laminas-uri": "^2.5",
+                "phpunit/phpunit": "^7.5.20 || ^8.5.2",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0",
+                "psr/http-message": "^1.0"
+            },
+            "suggest": {
+                "laminas/laminas-db": "Laminas\\Db component, required by the (No)RecordExists validator",
+                "laminas/laminas-filter": "Laminas\\Filter component, required by the Digits validator",
+                "laminas/laminas-i18n": "Laminas\\I18n component to allow translation of validation error messages",
+                "laminas/laminas-i18n-resources": "Translations of validator messages",
+                "laminas/laminas-math": "Laminas\\Math component, required by the Csrf validator",
+                "laminas/laminas-servicemanager": "Laminas\\ServiceManager component to allow using the ValidatorPluginManager and validator chains",
+                "laminas/laminas-session": "Laminas\\Session component, ^2.8; required by the Csrf validator",
+                "laminas/laminas-uri": "Laminas\\Uri component, required by the Uri and Sitemap\\Loc validators",
+                "psr/http-message": "psr/http-message, required when validating PSR-7 UploadedFileInterface instances via the Upload and UploadFile validators"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.13.x-dev",
+                    "dev-develop": "2.14.x-dev"
+                },
+                "laminas": {
+                    "component": "Laminas\\Validator",
+                    "config-provider": "Laminas\\Validator\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laminas\\Validator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Validation classes for a wide range of domains, and the ability to chain validators to create complex validation criteria",
+            "homepage": "https://laminas.dev",
+            "keywords": [
+                "laminas",
+                "validator"
+            ],
+            "time": "2020-03-31T18:57:01+00:00"
         },
         {
             "name": "laminas/laminas-zendframework-bridge",
@@ -3698,6 +4017,55 @@
                 "xunit"
             ],
             "time": "2020-01-08T08:45:45+00:00"
+        },
+        {
+            "name": "psr/container",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/container.git",
+                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Container\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common Container Interface (PHP FIG PSR-11)",
+            "homepage": "https://github.com/php-fig/container",
+            "keywords": [
+                "PSR-11",
+                "container",
+                "container-interface",
+                "container-interop",
+                "psr"
+            ],
+            "time": "2017-02-14T16:28:37+00:00"
         },
         {
             "name": "psr/simple-cache",

@@ -69,8 +69,8 @@ return [
     'Unarchive' => 'Hủy lưu trữ',
     'e.g. example for {baseUrl}/s/example' => 'ví dụ: {baseUrl}/s/example',
     'never' => 'không bao giờ',
-    'space description' => 'Mô tả Diễn đàn',
     'the default start page of this space for members' => 'trang chủ mặc định của diễn đàn này dành cho thành viên',
     'the default start page of this space for visitors' => 'trang chủ mặc định của diễn đàn này dành cho khách thăm',
+    'Are you sure you want to remove this member.' => '',
     'Please type the name of the space to proceed.' => '',
 ];

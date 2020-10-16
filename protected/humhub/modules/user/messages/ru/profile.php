@@ -124,8 +124,10 @@ return [
     'You need to login to view this user profile!' => 'Вы должны войти, чтобы посмотреть профиль этого пользователя!',
     'YouTube URL' => 'Канал на YouTube',
     'Zip' => 'Почтовый индекс',
+    'Creation date of the user' => '',
     'E-Mail' => '',
     'E-mail address of the user' => '',
     'Invalid!' => '',
+    'Last login date of the user' => '',
     'Username' => '',
 ];
