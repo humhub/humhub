@@ -4,6 +4,8 @@ use humhub\modules\space\assets\SpaceAsset;
 use humhub\libs\Helpers;
 use yii\helpers\Url;
 
+/* @var $availableModules array available modules for space*/
+
 SpaceAsset::register($this);
 
 ?>
