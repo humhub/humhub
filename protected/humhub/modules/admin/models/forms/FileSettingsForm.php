@@ -56,7 +56,7 @@ class FileSettingsForm extends \yii\base\Model
             'useXSendfile' => Yii::t('AdminModule.settings', 'Use X-Sendfile for File Downloads'),
             'maxPreviewImageWidth' => Yii::t('AdminModule.settings', 'Maximum preview image width (in pixels, optional)'),
             'maxPreviewImageHeight' => Yii::t('AdminModule.settings', 'Maximum preview image height (in pixels, optional)'),
-            'hideImageFileInfo' => Yii::t('AdminModule.settings', 'Hide file info (name, size) for images on wall'),
+            'hideImageFileInfo' => Yii::t('AdminModule.settings', 'Hide file info (name, size) on wall'),
             'allowedExtensions' => Yii::t('AdminModule.settings', 'Allowed file extensions'),
         ];
     }

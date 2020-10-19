@@ -404,7 +404,7 @@ humhub.module('file', function (module, require, $) {
             that.delete(file);
         });
 
-        if(!(this.isImage(file) && this.options.hideImageFileInfo)) {
+        if(!(this.options.hideImageFileInfo)) {
             $file.fadeIn();
         }
     };
