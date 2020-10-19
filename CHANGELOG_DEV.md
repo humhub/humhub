@@ -7,6 +7,8 @@ HumHub Changelog
 - Fix #4526: `HeaderControlsMenu::init` called twice
 - Fix #4529: Aligned default dropdown text size
 - Fix: Allowing guest like permission
+- Fix #4534: In profile checkbox field, `Other:` not translatable 
+
 
 1.7.0-beta.1 (October 16, 2020)
 -------------------------------
