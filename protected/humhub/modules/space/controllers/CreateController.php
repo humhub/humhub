@@ -137,17 +137,20 @@ class CreateController extends Controller
         $space = Space::find()->where(['id' => $space_id])->one();
 
         //search through all modules to find module not set as default
-        $hasModuleNotSetAsDefault = Setting::find()
-            ->where(['name' => 'moduleManager.defaultState.Space'])
-            ->andWhere(['IN', 'module_id', array_keys($space->getAvailableModules())])
-            ->andWhere(['<>', 'value', 2])
-            ->asArray()
-            ->count();
+        $availableModules = $space->getAvailableModules();
+        foreach ($availableModules as $moduleId => $module) {
+            if (($space->isModuleEnabled($moduleId) && !$space->canDisableModule($moduleId)) ||
+                (!$space->isModuleEnabled($moduleId) && !$space->canEnableModule($moduleId)) ||
+                ($space->isModuleAlwaysActive($moduleId))
+            ) {
+                unset($availableModules[$moduleId]);
+            }
+        }
 
-        if (count($space->getAvailableModules()) == 0 || !$hasModuleNotSetAsDefault) {
+        if (count($availableModules) == 0 /*|| !$hasModuleNotSetAsDefault*/) {
             return $this->actionInvite($space);
         } else {
-            return $this->renderAjax('modules', ['space' => $space, 'availableModules' => $space->getAvailableModules()]);
+            return $this->renderAjax('modules', ['space' => $space, 'availableModules' => $availableModules]);
         }
     }
 
