@@ -6,7 +6,7 @@ HumHub Changelog
 - Fix #4504: Fix `hasSidebar()` for empty sidebar
 - Fix #4526: `HeaderControlsMenu::init` called twice
 - Fix #4529: Aligned default dropdown text size
-- Fix: Allowing guest like permission
+- Fix #4533: Removed "Can Like" permission from permission settings for "Not registered users"
 - Fix #4534: In profile checkbox field, `Other:` not translatable 
 
 
