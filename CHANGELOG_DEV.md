@@ -75,4 +75,4 @@ HumHub Changelog
 - Chng #4509: Removed `humhub\modules\space\widgets\Picker` which is deprecated since v1.2
 - Fix #4396: Submitting only picture in comment results in debug error.
 - Enh #4469: Added alias for file uploads folder
-- Enh #4448: Hide all preview files if `Hide file info` setting is active
+- Enh #4448: exclude all media files preview if `excludeMediaFilesPreview` setting is active

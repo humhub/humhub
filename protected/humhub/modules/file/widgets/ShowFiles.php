@@ -46,14 +46,14 @@ class ShowFiles extends \yii\base\Widget
             return;
         }
 
-        $hidePreviewFileInfo = ($this->preview) ? Yii::$app->getModule('file')->settings->get('hideImageFileInfo') : false;
+        $excludeMediaFilesPreview = ($this->preview) ? Yii::$app->getModule('file')->settings->get('excludeMediaFilesPreview') : false;
 
         return $this->render('showFiles', [
                     'files' => $this->object->fileManager->findStreamFiles(),
                     'object' => $this->object,
                     'previewImage' => new PreviewImage(),
                     'showPreview' => $this->preview,
-                    'hideImageFileInfo' => $hidePreviewFileInfo
+                    'excludeMediaFilesPreview' => $excludeMediaFilesPreview
         ]);
     }
 
