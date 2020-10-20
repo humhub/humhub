@@ -6,6 +6,13 @@ use Yii;
 
 /**
  * FileSettingsForm
+ * @property integer $maxFileSize
+ * @property integer $maxPreviewImageWidth
+ * @property integer $maxPreviewImageHeight
+ * @property integer $excludeMediaFilesPreview Exclude media files from stream attachment list
+ * @property integer $useXSendfile
+ * @property string $allowedExtensions
+ *
  * @since 0.5
  */
 class FileSettingsForm extends \yii\base\Model
@@ -56,7 +63,7 @@ class FileSettingsForm extends \yii\base\Model
             'useXSendfile' => Yii::t('AdminModule.settings', 'Use X-Sendfile for File Downloads'),
             'maxPreviewImageWidth' => Yii::t('AdminModule.settings', 'Maximum preview image width (in pixels, optional)'),
             'maxPreviewImageHeight' => Yii::t('AdminModule.settings', 'Maximum preview image height (in pixels, optional)'),
-            'excludeMediaFilesPreview' => Yii::t('AdminModule.settings', 'Exclude media files in stream attachment list'),
+            'excludeMediaFilesPreview' => Yii::t('AdminModule.settings', 'Exclude media files from stream attachment list'),
             'allowedExtensions' => Yii::t('AdminModule.settings', 'Allowed file extensions'),
         ];
     }
