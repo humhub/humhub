@@ -121,10 +121,16 @@ input[type=select] {
     }
 }
 
-
+// Todo find better place for this selector
 span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
     pointer-events: none;
     cursor: default;
     text-decoration: none;
     color: lightgrey;
 }
+
+.panel-body a[data-toggle], .modal-body a[data-toggle] {
+    color:@link;
+}
+
+
