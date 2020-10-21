@@ -6,7 +6,13 @@ HumHub Changelog
 - Fix #4504: Fix `hasSidebar()` for empty sidebar
 - Fix #4526: `HeaderControlsMenu::init` called twice
 - Fix #4529: Aligned default dropdown text size
-- Fix: Allowing guest like permission
+- Fix #4533: Removed "Can Like" permission from permission settings for "Not registered users"
+- Fix #4534: In profile checkbox field, `Other:` not translatable 
+- Fix #4547: Fixed wall stream entry header title text style
+- Fix #3980: Empty stream on permalink for content a user is not allowed to access
+- Enh #4448: Exclude all media preview files from file list if `excludeMediaFilesPreview` setting is active
+- Fix #4542: Ignore displaying `Member Since` for empty created_at membership
+
 
 1.7.0-beta.1 (October 16, 2020)
 -------------------------------
@@ -75,4 +81,3 @@ HumHub Changelog
 - Chng #4509: Removed `humhub\modules\space\widgets\Picker` which is deprecated since v1.2
 - Fix #4396: Submitting only picture in comment results in debug error.
 - Enh #4469: Added alias for file uploads folder
-- Enh #4448: exclude all media files preview if `excludeMediaFilesPreview` setting is active
