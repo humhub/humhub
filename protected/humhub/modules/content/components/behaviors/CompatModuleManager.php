@@ -66,9 +66,4 @@ class CompatModuleManager extends Behavior
     {
         return $this->moduleManager->disable($moduleId);
     }
-
-    public function isModuleAlwaysActive($id)
-    {
-        return $this->moduleManager->isAlwaysActive($id);
-    }
 }
