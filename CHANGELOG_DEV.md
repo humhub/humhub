@@ -9,6 +9,7 @@ HumHub Changelog
 - Fix #4533: Removed "Can Like" permission from permission settings for "Not registered users"
 - Fix #4534: In profile checkbox field, `Other:` not translatable 
 - Fix #4547: Fixed wall stream entry header title text style
+- Fix #3980: Empty stream on permalink for content a user is not allowed to access
 
 
 1.7.0-beta.1 (October 16, 2020)

@@ -320,16 +320,56 @@ abstract class Stream extends Action
     {
         $response = new StreamResponse($this->streamQuery);
 
-        foreach ($this->streamQuery->all() as $content) {
-            $streamEntry = $this->getStreamEntryResult($content, $this->streamEntryOptions);
-            if($streamEntry) {
-                $response->addEntry($streamEntry);
-            }
+        $entries = $this->streamQuery->all();
+
+        if(!empty($entries)) {
+            $this->addResponseEntries($entries, $response);
+        } else {
+            $this->handleEmptyResponse($response);
         }
 
         $this->trigger(static::EVENT_AFTER_FETCH, new StreamResponseEvent(['response' => $response]));
 
         return $response->asJson();
+    }
+
+    /**
+     * Adds entries to the response.
+     *
+     * @param StreamResponse $response
+     * @throws Exception
+     * @throws \Throwable
+     * @since 1.7
+     */
+    private function addResponseEntries($entries, StreamResponse $response)
+    {
+        foreach ($entries as $content) {
+            $streamEntry = $this->getStreamEntryResult($content, $this->streamEntryOptions);
+            if($streamEntry) {
+                $response->addEntry($streamEntry);
+            }
+        }
+    }
+
+    /**
+     * Adds an error message to the stream response in certain cases.
+     *
+     * @param StreamResponse $response
+     * @throws Exception
+     * @throws \Throwable
+     * @since 1.7
+     */
+    private function handleEmptyResponse(StreamResponse $response)
+    {
+        if($this->streamQuery->isSingleContentQuery()) {
+            $content = Content::findOne(['id' => $this->streamQuery->contentId]);
+            if(!$content) {
+                $response->setError(400, Yii::t('StreamModule.base', 'The content could not be found.'));
+            } elseif (!$content->canView()) {
+                $response->setError(403, Yii::t('StreamModule.base', 'You are not allowed to view this content.'));
+            }
+        }
+        // Otherwise the content could not be found due to active filter
     }
 
     /**
