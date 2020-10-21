@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #4529: Aligned default dropdown text size
 - Fix #4533: Removed "Can Like" permission from permission settings for "Not registered users"
 - Fix #4534: In profile checkbox field, `Other:` not translatable 
+- Fix #4547: Fixed wall stream entry header title text style
 
 
 1.7.0-beta.1 (October 16, 2020)
