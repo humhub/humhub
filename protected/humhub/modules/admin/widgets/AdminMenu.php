@@ -11,6 +11,7 @@ namespace humhub\modules\admin\widgets;
 use humhub\modules\admin\permissions\ManageCategories;
 use humhub\modules\admin\permissions\ManageChallenges;
 use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\admin\permissions\ManageMarketplaces;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageSpaces;
@@ -89,6 +90,17 @@ class AdminMenu extends BaseMenu
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'challenge'),
                 'isVisible' => Yii::$app->user->can([
                     new ManageChallenges(),
+                ]),
+            ]);
+            $this->addItem([
+                'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Marketplaces'),
+                'id' => 'marketplaces',
+                'url' => Url::toRoute('/admin/marketplace/index'),
+                'icon' => '<i class="fa fa-shopping-basket"></i>',
+                'sortOrder' => 400,
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'marketplace'),
+                'isVisible' => Yii::$app->user->can([
+                    new ManageMarketplaces(),
                 ]),
             ]);
         }

@@ -27,14 +27,14 @@ class CategoryMenu extends BaseMenu
     public function init()
     {
         $this->addItem([
-            'label' => Yii::t('AdminModule.views_space_index', 'Crowdfunding'),
+            'label' => Yii::t('AdminModule.views_space_index', 'Projects Categories'),
             'url' => Url::toRoute(['/admin/category/index-funding']),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'category' && Yii::$app->controller->action->id == 'index-funding'),
             'isVisible' => Yii::$app->user->can(new ManageSpaces())
         ]);
         $this->addItem([
-            'label' => Yii::t('AdminModule.views_space_index', 'Marketplace'),
+            'label' => Yii::t('AdminModule.views_space_index', 'Products Categories'),
             'url' => Url::toRoute(['/admin/category/index-marketplace']),
             'sortOrder' => 200,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'category' && Yii::$app->controller->action->id == 'index-marketplace'),

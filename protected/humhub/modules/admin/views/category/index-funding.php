@@ -11,7 +11,7 @@ use yii\data\ActiveDataProvider;
 
 <h4><?= Yii::t('AdminModule.views_category_funding-index', 'Overview'); ?></h4>
 <div class="help-block">
-    <?= Yii::t('AdminModule.views_category_funding-index', 'This overview contains a list of category space with action delete.'); ?>
+    <?= Yii::t('AdminModule.views_category_funding-index', 'This overview contains the list of crowdfunding projects categories with delete action.'); ?>
 </div>
 
 <div class="table-responsive">

@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://coinsence.org/
- * @copyright Copyright (c) 2018 Coinsence
+ * @copyright Copyright (c) 2020 Coinsence
  * @license https://www.humhub.com/licences
  *
  * @author Daly Ghaith <daly.ghaith@gmail.com>
@@ -13,9 +13,9 @@ use Yii;
 use humhub\libs\ActionColumn;
 
 /**
- * ChallengeActionColumn
+ * MarketplaceActionColumn
  */
-class ChallengeActionColumn extends ActionColumn
+class MarketplaceActionColumn extends ActionColumn
 {
 
     /**
@@ -23,7 +23,7 @@ class ChallengeActionColumn extends ActionColumn
      */
     protected function renderDataCellContent($model, $key, $index)
     {
-        $actions[Yii::t('AdminModule.challenge', 'Edit')] = ['edit', 'linkOptions' => ['data-target' => '#globalModal']];
+        $actions[Yii::t('AdminModule.marketplace', 'Edit')] = ['edit', 'linkOptions' => ['data-target' => '#globalModal']];
 
         $this->actions = $actions;
 

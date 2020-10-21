@@ -82,10 +82,12 @@ class CategoryController extends Controller
             return $this->forbidden();
         }
 
-        $categories = [];
+        $dataProvider = new ActiveDataProvider([
+            'query' => Category::find()->where(['type' => Category::TYPE_MARKETPLACE])
+        ]);
 
         return $this->render('index-marketplace', [
-            'fundingCategories' => $categories,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

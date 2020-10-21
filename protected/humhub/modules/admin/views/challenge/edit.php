@@ -9,7 +9,6 @@ use humhub\widgets\ModalDialog;
 /**
  * @var Challenge $model
  */
-
 ?>
 
 <?php ModalDialog::begin(['header' => Yii::t('AdminModule.views_challenge_edit', 'Edit Challenge'), 'closable' => false]) ?>
@@ -34,7 +33,7 @@ use humhub\widgets\ModalDialog;
 </div>
 
 <div class="modal-footer">
-    <?= ModalButton::submitModal(null, Yii::t('AdminModule.views_category_create', 'Save')); ?>
+    <?= ModalButton::submitModal(null, Yii::t('AdminModule.views_challenge_edit', 'Save')); ?>
     <?= ModalButton::cancel(); ?>
 </div>
 <?php ActiveForm::end(); ?>

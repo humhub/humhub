@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://coinsence.org/
- * @copyright Copyright (c) 2018 Coinsence
+ * @copyright Copyright (c) 2020 Coinsence
  * @license https://www.humhub.com/licences
  *
  * @author Daly Ghaith <daly.ghaith@gmail.com>
@@ -12,9 +12,9 @@ namespace humhub\modules\admin\grid;
 use Yii;
 
 /**
- * ChallengeStatusColumn
+ * MarketplaceStatusColumn
  */
-class ChallengeStatusColumn extends SpaceBaseColumn
+class MarketplaceStatusColumn extends SpaceBaseColumn
 {
 
     /**

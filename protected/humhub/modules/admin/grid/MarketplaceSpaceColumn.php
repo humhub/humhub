@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://coinsence.org/
- * @copyright Copyright (c) 2018 Coinsence
+ * @copyright Copyright (c) 2020 Coinsence
  * @license https://www.humhub.com/licences
  *
  * @author Daly Ghaith <daly.ghaith@gmail.com>
@@ -9,14 +9,14 @@
 
 namespace humhub\modules\admin\grid;
 
+use humhub\modules\space\widgets\Image as SpaceImage;
 use Yii;
 
 /**
- * ChallengeStatusColumn
+ * MarketplaceSpaceColumn
  */
-class ChallengeStatusColumn extends SpaceBaseColumn
+class MarketplaceSpaceColumn extends SpaceBaseColumn
 {
-
     /**
      * @inheritdoc
      */
@@ -25,11 +25,11 @@ class ChallengeStatusColumn extends SpaceBaseColumn
         parent::init();
 
         if ($this->attribute === null) {
-            $this->attribute = 'status';
+            $this->attribute = 'space_id';
         }
 
         if ($this->label === null) {
-            $this->label = Yii::t('AdminModule.base', 'Status');
+            $this->label = Yii::t('AdminModule.base', 'Space');
         }
 
         $this->options['style'] = 'width:300px';
@@ -40,9 +40,7 @@ class ChallengeStatusColumn extends SpaceBaseColumn
      */
     protected function renderDataCellContent($model, $key, $index)
     {
-        return $model->status ?
-            '<div> <i class="fa fa-check-circle-o fa-2x" aria-hidden="true" style="color: green"></i> </div>':
-            '<div> <i class="fa fa-times-circle-o fa-2x" aria-hidden="true" style="color: red"></i> </div>';
+        return SpaceImage::widget(['space' => $model->getSpace()->one(), 'width' => 34, 'link' => true]);
     }
 
 }
