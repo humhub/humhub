@@ -53,7 +53,7 @@ class InitialData
         Yii::$app->getModule('file')->settings->set('maxFileSize', '1048576' * 5);
         Yii::$app->getModule('file')->settings->set('maxPreviewImageWidth', '200');
         Yii::$app->getModule('file')->settings->set('maxPreviewImageHeight', '200');
-        Yii::$app->getModule('file')->settings->set('hideImageFileInfo', '1');
+        Yii::$app->getModule('file')->settings->set('excludeMediaFilesPreview', '1');
 
         // Caching
         Yii::$app->settings->set('cache.class', 'yii\caching\FileCache');
