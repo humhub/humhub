@@ -22,21 +22,6 @@ use humhub\modules\content\models\ContentContainer;
 class ContentContainerModuleManager extends \yii\base\Component
 {
     /**
-     * @var integer Module option "set as default" is in activated state
-     */
-    const STATE_ACTIVATED = 0;
-
-    /**
-     * @var integer Module option "set as default" is in deactivated state
-     */
-    const STATE_DEACTIVATED = 1;
-
-    /**
-     * @var integer Module option "set as default" is in always active state
-     */
-    const STATE_ALWAYS_ACTIVE = 2;
-
-    /**
      * @var \humhub\modules\content\components\ContentContainerActiveRecord
      */
     public $contentContainer;
@@ -292,15 +277,5 @@ class ContentContainerModuleManager extends \yii\base\Component
         }
 
         return $query;
-    }
-
-    /**
-     * Check module for "set as default" state as "Always active"
-     * @param $id
-     * @return bool
-     */
-    public function isAlwaysActive($id)
-    {
-        return self::getDefaultState($this->contentContainer->className(), $id) === self::STATE_ALWAYS_ACTIVE;
     }
 }

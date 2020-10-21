@@ -11,6 +11,7 @@ namespace humhub\modules\space\controllers;
 use humhub\components\Controller;
 use humhub\components\behaviors\AccessControl;
 use humhub\models\Setting;
+use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\components\ContentContainerModuleManager;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\permissions\CreatePrivateSpace;
@@ -136,21 +137,11 @@ class CreateController extends Controller
     {
         $space = Space::find()->where(['id' => $space_id])->one();
 
-        //search through all modules to find module not set as default
-        $availableModules = $space->getAvailableModules();
-        foreach ($availableModules as $moduleId => $module) {
-            if (($space->isModuleEnabled($moduleId) && !$space->canDisableModule($moduleId)) ||
-                (!$space->isModuleEnabled($moduleId) && !$space->canEnableModule($moduleId)) ||
-                ($space->isModuleAlwaysActive($moduleId))
-            ) {
-                unset($availableModules[$moduleId]);
-            }
-        }
-
-        if (count($availableModules) == 0 /*|| !$hasModuleNotSetAsDefault*/) {
+        $installableModules = ContentContainerModule::getInstallableModules($space);
+        if (count($installableModules) == 0) {
             return $this->actionInvite($space);
         } else {
-            return $this->renderAjax('modules', ['space' => $space, 'availableModules' => $availableModules]);
+            return $this->renderAjax('modules', ['space' => $space, 'availableModules' => $installableModules]);
         }
     }
 
