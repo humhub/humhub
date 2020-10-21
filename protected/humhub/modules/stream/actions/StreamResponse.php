@@ -43,12 +43,12 @@ class StreamResponse
     private $lastContentId;
 
     /**
-     * @var
+     * @var string
      */
     public $error;
 
     /**
-     * @var
+     * @var int
      */
     public $errorCode;
 
@@ -92,8 +92,9 @@ class StreamResponse
     }
 
     /**
-     * Can be used to set error information
-     * @param $msg
+     * Can be used to set error information.
+     * @param $code int
+     * @param $msg string
      */
     public function setError($code, $msg)
     {
