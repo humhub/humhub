@@ -578,7 +578,7 @@ humhub.module('stream.Stream', function (module, require, $) {
         this.$.find('.streamMessage').remove();
 
         if(!this.isShowSingleEntry()) {
-            let message = (hasActiveFilters) ? this.options.streamEmptyFilterMessage : this.options.streamEmptyMessage;
+            var message = (hasActiveFilters) ? this.options.streamEmptyFilterMessage : this.options.streamEmptyMessage;
             this.setStreamMessage(message, hasActiveFilters);
         }
 
