@@ -13,6 +13,7 @@ HumHub Changelog
 - Enh #4448: Exclude all media preview files from file list if `excludeMediaFilesPreview` setting is active
 - Fix #4542: Ignore displaying `Member Since` for empty created_at membership
 - Fix #4549: Handle invalid timezone validation in registration process
+- Fix #4554: Code blocks in comments uses same background color
 
 
 1.7.0-beta.1 (October 16, 2020)
