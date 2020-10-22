@@ -5,6 +5,7 @@ HumHub Changelog
 ------------------
 
 - Fix #4555: Default password validation error message missing translation and wrong min. characters
+- Fix #4494: Empty "Add Modules" step on space creation when all modules are always enabled
 
 
 1.6.4 (October 9, 2020)
