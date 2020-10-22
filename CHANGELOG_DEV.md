@@ -14,6 +14,8 @@ HumHub Changelog
 - Fix #4542: Ignore displaying `Member Since` for empty created_at membership
 - Fix #4549: Handle invalid timezone validation in registration process
 - Enh #4531: Remove wall entry left padding on mobile 
+- Fix #4554: Code blocks in comments uses same background color
+
 
 1.7.0-beta.1 (October 16, 2020)
 -------------------------------
