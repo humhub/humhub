@@ -12,6 +12,7 @@ HumHub Changelog
 - Fix #3980: Empty stream on permalink for content a user is not allowed to access
 - Enh #4448: Exclude all media preview files from file list if `excludeMediaFilesPreview` setting is active
 - Fix #4542: Ignore displaying `Member Since` for empty created_at membership
+- Fix #4549: Handle invalid timezone validation in registration process
 
 
 1.7.0-beta.1 (October 16, 2020)
