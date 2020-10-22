@@ -8,8 +8,12 @@
 
 namespace humhub\modules\user\controllers;
 
+use humhub\modules\space\MemberEvent;
+use humhub\modules\space\models\Membership;
 use Yii;
+use yii\authclient\BaseClient;
 use yii\base\Exception;
+use yii\db\Expression;
 use yii\web\HttpException;
 use yii\authclient\ClientInterface;
 use humhub\components\Controller;
@@ -55,12 +59,15 @@ class RegistrationController extends Controller
         $registration = new Registration();
 
         /**
-         * @var \yii\authclient\BaseClient
+         * @var BaseClient
          */
         $authClient = null;
+        $userInvite = null;
         $inviteToken = Yii::$app->request->get('token', '');
 
         if ($inviteToken != '') {
+            $userInvite = Invite::findOne(['token' => $inviteToken]);
+
             $this->handleInviteRegistration($inviteToken, $registration);
         } elseif (Yii::$app->session->has('authClient')) {
             $authClient = Yii::$app->session->get('authClient');
@@ -73,16 +80,24 @@ class RegistrationController extends Controller
         if ($registration->submitted('save') && $registration->validate() && $registration->register($authClient)) {
             Yii::$app->session->remove('authClient');
 
+            if ($userInvite) {
+                if ($space = $userInvite->getSpace()->one()) {
+                    MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_ADDED, new MemberEvent([
+                        'space' => $space, 'user' => User::findOne(['email' => $registration->getUser()->email])
+                    ]));
+                }
+            }
+
             // Autologin when user is enabled (no approval required)
             if ($registration->getUser()->status === User::STATUS_ENABLED) {
                 Yii::$app->user->switchIdentity($registration->models['User']);
-                $registration->models['User']->updateAttributes(['last_login' => new \yii\db\Expression('NOW()')]);
+                $registration->models['User']->updateAttributes(['last_login' => new Expression('NOW()')]);
                 return $this->redirect(['/p/welcome-page']);
             }
 
             return $this->render('success', [
-                        'form' => $registration,
-                        'needApproval' => ($registration->getUser()->status === User::STATUS_NEED_APPROVAL)
+                'form' => $registration,
+                'needApproval' => ($registration->getUser()->status === User::STATUS_NEED_APPROVAL)
             ]);
         }
 
@@ -107,7 +122,7 @@ class RegistrationController extends Controller
     }
 
     /**
-     * @param \yii\authclient\BaseClient $authClient
+     * @param BaseClient $authClient
      * @param Registration $registration
      * @return boolean already all registration data gathered
      * @throws Exception
