@@ -1,6 +1,12 @@
 HumHub Changelog
 ================
 
+1.6.5 (Unreleased)
+------------------
+
+- Fix #4555: Default password validation error message missing translation and wrong min. characters
+
+
 1.6.4 (October 9, 2020)
 -----------------------
 
