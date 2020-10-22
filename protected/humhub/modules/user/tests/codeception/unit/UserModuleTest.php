@@ -24,7 +24,7 @@ class UserModuleTest extends HumHubDbTestCase
         ], $module->getNotifications());
 
         $this->assertEquals([
-            '/^.{5,255}$/' => 'Password needs to be at least 8 characters long.',
+            '/^.{5,255}$/' => 'Password needs to be at least 5 characters long.',
         ], $module->getPasswordStrength());
 
         $module->passwordStrength = [
