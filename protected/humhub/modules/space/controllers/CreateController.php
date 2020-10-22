@@ -135,10 +135,11 @@ class CreateController extends Controller
      */
     public function actionModules($space_id)
     {
-        $space = Space::find()->where(['id' => $space_id])->one();
+        $space = Space::find()->where(['id' => (int)$space_id])->one();
 
-        $installableModules = ContentContainerModule::getInstallableModules($space);
-        if (count($installableModules) == 0) {
+        $installableModules = $space->moduleManager->getInstallable();
+
+        if (count($installableModules) === 0) {
             return $this->actionInvite($space);
         } else {
             return $this->renderAjax('modules', ['space' => $space, 'availableModules' => $installableModules]);
