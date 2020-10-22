@@ -162,7 +162,7 @@ class Module extends \humhub\components\Module
     }
 
     /**
-     * @var array defines default additional rules for password validation
+     * @return array the default rules for password validation
      */
     private function getDefaultPasswordStrength()
     {
