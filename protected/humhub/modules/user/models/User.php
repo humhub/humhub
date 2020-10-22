@@ -152,7 +152,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['status', 'created_by', 'updated_by', 'visibility'], 'integer'],
             [['tags'], 'string'],
             [['guid'], 'string', 'max' => 45],
-            [['time_zone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
+            [['time_zone'], 'validateTimeZone'],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
             [['email'], 'unique'],
@@ -163,6 +163,19 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             }],
             [['guid'], 'unique'],
         ];
+    }
+
+    /**
+     * Validate attribute time zone
+     * Force time zone to NULL if browser's time zone cannot be found on server side
+     *
+     * @param string $attribute
+     */
+    public function validateTimeZone($attribute, $params)
+    {
+        if (!in_array($this->$attribute, \DateTimeZone::listIdentifiers())) {
+            $this->$attribute = null;
+        }
     }
 
     /**
