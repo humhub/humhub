@@ -219,25 +219,4 @@ class ContentContainerModule extends Module
         return [];
     }
 
-    /**
-     * This method is called to find all modules which available and set as default
-     *
-     * @param $container
-     * @return mixed
-     * @since 1.7
-     */
-    public static function getInstallableModules($container)
-    {
-        $availableModules = $container->getAvailableModules();
-        foreach ($availableModules as $moduleId => $module) {
-            if (($container->isModuleEnabled($moduleId) && !$container->canDisableModule($moduleId)) ||
-                (!$container->isModuleEnabled($moduleId) && !$container->canEnableModule($moduleId))
-            ) {
-                unset($availableModules[$moduleId]);
-            }
-        }
-        return $availableModules;
-    }
 }
-
-
