@@ -163,6 +163,7 @@ class Module extends \humhub\components\Module
 
     /**
      * @return array the default rules for password validation
+     * @since 1.6.5
      */
     private function getDefaultPasswordStrength()
     {

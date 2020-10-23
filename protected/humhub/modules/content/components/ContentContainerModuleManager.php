@@ -170,7 +170,8 @@ class ContentContainerModuleManager extends \yii\base\Component
      * Unlike `getAvailable()` it does not contain any modules which cannot be disabled or enabled.
      *
      * @return ContentContainerModule[] a list of modules
-     * @since 1.7
+     * @throws \yii\base\Exception
+     * @since 1.6.5
      */
     public function getInstallable()
     {
