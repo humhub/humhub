@@ -76,11 +76,6 @@ class Module extends \humhub\components\Module
             return false;
         }
 
-        // Only allow one level of subcomments
-        if ($object instanceof Comment && $object->object_model === Comment::class) {
-            return false;
-        }
-
         $content = $object->content;
 
         if ($content->container instanceof Space) {
