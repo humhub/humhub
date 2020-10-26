@@ -16,7 +16,8 @@ HumHub Changelog
 - Enh #4531: Remove wall entry left padding on mobile 
 - Fix #4554: Code blocks in comments uses same background color
 - Fix #4574: Different style between clickable and non clickable space/user counter
-- Fix #4575: Increased text size of "Read more" link on short-text post 
+- Fix #4575: Increased text size of "Read more" link on short-text post
+- Fix #4581: Users see content of archived spaces on dashboard
 
 
 1.7.0-beta.1 (October 16, 2020)

@@ -66,7 +66,9 @@ class DashboardStreamAction extends ActivityStreamAction
             ->select(["contentcontainer.id"])
             ->from('space')
             ->leftJoin('contentcontainer', 'space.id=contentcontainer.pk AND contentcontainer.class=:spaceClass')
-            ->where('space.visibility=' . Space::VISIBILITY_ALL);
+            ->where('space.visibility=' . Space::VISIBILITY_ALL)
+            ->andWhere('space.status='. Space::STATUS_ENABLED);
+
         $union = Yii::$app->db->getQueryBuilder()->build($publicSpacesSql)[0];
 
         $publicProfilesSql = (new Query())
