@@ -12,6 +12,8 @@ use yii\db\Query;
 
 /**
  * Stream filter handling dashboard content stream visibility for members of the network.
+ *
+ * @since 1.8
  */
 class DashboardMemberStreamFilter extends StreamQueryFilter
 {

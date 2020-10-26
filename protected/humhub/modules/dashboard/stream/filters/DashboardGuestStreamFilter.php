@@ -11,6 +11,8 @@ use yii\db\Query;
 
 /**
  * Stream filter handling dashboard content stream visibility of guest users.
+ *
+ * @since 1.8
  */
 class DashboardGuestStreamFilter extends StreamQueryFilter
 {
