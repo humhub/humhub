@@ -5,6 +5,7 @@ namespace dashboard;
 
 
 use humhub\modules\content\models\Content;
+use humhub\modules\dashboard\Module;
 use humhub\modules\dashboard\stream\DashboardStreamQuery;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
@@ -16,7 +17,30 @@ class DashboardStreamTest extends HumHubDbTestCase
 {
     public function _before()
     {
+        parent::_before();
         Content::deleteAll();
+    }
+
+    public function _after()
+    {
+        $this->disableAutoIncludeProfilePosts();
+        $this->enableFriendships(false);
+        parent::_after();
+    }
+
+    public function disableAutoIncludeProfilePosts()
+    {
+        Yii::$app->getModule('dashboard')->autoIncludeProfilePosts = null;
+    }
+
+    public function enableAutoIncludeProfilePostsAll()
+    {
+        Yii::$app->getModule('dashboard')->autoIncludeProfilePosts = Module::STREAM_AUTO_INCLUDE_PROFILE_POSTS_ALWAYS;
+    }
+
+    public function enableAutoIncludeProfilePostsAdmin()
+    {
+        Yii::$app->getModule('dashboard')->autoIncludeProfilePosts = Module::STREAM_AUTO_INCLUDE_PROFILE_POSTS_ADMIN_ONLY;
     }
 
     /**
@@ -27,6 +51,7 @@ class DashboardStreamTest extends HumHubDbTestCase
     {
         return Space::findOne(['visibility' => $visibility, 'status' => Space::STATUS_ENABLED]);
     }
+
 
     /**
      * @param $visibility
@@ -44,9 +69,9 @@ class DashboardStreamTest extends HumHubDbTestCase
      * @throws \Throwable
      * @throws \yii\base\Exception
      */
-    public function createContent($visibility, $container = null)
+    public function createContent($visibility, $container = null, $authorUserName = 'Admin')
     {
-        $this->becomeUser('Admin');
+        $this->becomeUser($authorUserName);
         $post = new Post(['message' => 'Test Content']);
 
         if($container) {
