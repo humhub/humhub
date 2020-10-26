@@ -10,6 +10,9 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use yii\db\Query;
 
+/**
+ * Stream filter handling dashboard content stream visibility for members of the network.
+ */
 class DashboardMemberStreamFilter extends StreamQueryFilter
 {
     /**

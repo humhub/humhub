@@ -11,7 +11,7 @@ use humhub\modules\user\models\User;
  * The behavior of this query can be switching by changing the `activity` flag.
  *
  * @package humhub\modules\activity\stream
- * @since 1.7
+ * @since 1.8
  */
 class ActivityStreamQuery extends ContentContainerStreamQuery
 {

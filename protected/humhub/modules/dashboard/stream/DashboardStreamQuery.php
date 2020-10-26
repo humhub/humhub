@@ -9,7 +9,7 @@ use humhub\modules\dashboard\stream\filters\DashboardMemberStreamFilter;
 /**
  * Class DashboardStreamQuery
  *
- * @since 1.7
+ * @since 1.8
  */
 class DashboardStreamQuery extends ActivityStreamQuery
 {
