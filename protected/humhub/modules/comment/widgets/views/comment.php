@@ -47,11 +47,11 @@ $module = Yii::$app->getModule('comment');
                         <li>
                             <a href="#" class="comment-edit-link" data-action-click="edit"
                                data-action-url="<?= $editUrl ?>">
-                                <?= Icon::get('edit')?> <?= Yii::t('CommentModule.base', 'Edit') ?>
+                                <?= Icon::get('edit') ?> <?= Yii::t('CommentModule.base', 'Edit') ?>
                             </a>
                             <a href="#" class="comment-cancel-edit-link" data-action-click="cancelEdit"
                                data-action-url="<?= $loadUrl ?>" style="display:none;">
-                                <?= Icon::get('edit')?> <?= Yii::t('CommentModule.base', 'Cancel Edit') ?>
+                                <?= Icon::get('edit') ?> <?= Yii::t('CommentModule.base', 'Cancel Edit') ?>
                             </a>
                         </li>
                     <?php endif; ?>
@@ -90,6 +90,8 @@ $module = Yii::$app->getModule('comment');
 
         <div class="wall-entry-controls">
             <?php if ($module->canComment($comment)): ?>
+                <?= CommentLink::widget(['object' => $comment]); ?>&nbsp;&nbsp;&middot;&nbsp;
+            <?php elseif ($module->isSubComment($comment) && $module->canComment($module->getParent($comment))): ?>
                 <?= CommentLink::widget(['object' => $comment]); ?>&nbsp;&nbsp;&middot;&nbsp;
             <?php endif; ?>
             <?= LikeLink::widget(['object' => $comment]); ?>

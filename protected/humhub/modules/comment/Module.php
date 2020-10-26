@@ -72,7 +72,12 @@ class Module extends \humhub\components\Module
      */
     public function canComment($object)
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+
+        // Only allow one level of subcomments
+        if ($this->isSubComment($object)) {
             return false;
         }
 
@@ -90,6 +95,31 @@ class Module extends \humhub\components\Module
         }
 
         return true;
+    }
+
+    /**
+     * Checks if given content object is a subcomment
+     *
+     * @param $object
+     * @return bool
+     */
+    public function isSubComment($object)
+    {
+        if ($object instanceof Comment && $object->object_model === Comment::class) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Return parent of given content object
+     *
+     * @param $object
+     * @return ContentActiveRecord
+     */
+    public function getParent($object)
+    {
+        return $object->object_model::findOne($object->object_id);
     }
 
 }

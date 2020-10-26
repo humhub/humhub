@@ -12,6 +12,9 @@ use humhub\components\assets\AssetBundle;
 
 class CommentAsset extends AssetBundle
 {
+    public $publishOptions = [
+        'forceCopy' => true
+    ];
 
     /**
      * @inheritdoc

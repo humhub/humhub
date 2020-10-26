@@ -257,7 +257,7 @@ humhub.module('comment', function (module, require, $) {
         var $form;
         var target;
 
-        function focusOnForm() {
+        function focusOnForm(target, userName) {
             target.find('.humhub-ui-richtext:last').trigger('focus');
             target.find('.humhub-ui-richtext').find('p').text(userName);
             target.find('.humhub-ui-richtext:last').trigger('focus');
@@ -271,7 +271,7 @@ humhub.module('comment', function (module, require, $) {
             return;
         }
 
-        // Check witch 'Replay' button pressed under first or second level of comments
+        // Check which 'Replay' button is pressed under first or second level of comments
         if (evt.$target.parents('.nested-comments-root').length !== 2) {
             target = evt.$target;
             $form = target.children('.comment_create');

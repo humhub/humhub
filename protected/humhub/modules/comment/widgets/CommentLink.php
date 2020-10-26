@@ -55,10 +55,6 @@ class CommentLink extends Widget
             $this->mode = self::MODE_INLINE;
         }
 
-        if (!$module->canComment($this->object)) {
-            return '';
-        }
-
         return $this->render('link', [
             'id' => $this->object->getUniqueId(),
             'mode' => $this->mode,
