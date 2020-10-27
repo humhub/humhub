@@ -35,7 +35,7 @@ class Members extends Widget
     /**
      * @var boolean order members by membership date
      */
-    public $orderByNew;
+    public $orderByNewest;
 
     /**
      * @inheritdoc
@@ -64,7 +64,7 @@ class Members extends Widget
     {
         $query = Membership::getSpaceMembersQuery($this->space)->active()->visible();
         $query->limit($this->maxMembers);
-        if ($this->orderByNew)
+        if ($this->orderByNewest)
             $query->orderBy('space_membership.created_at Desc');
         else
             $query->orderBy(new Expression('FIELD(space_membership.group_id, "' . Space::USERGROUP_OWNER . '", "' . Space::USERGROUP_MODERATOR . '", "' . Space::USERGROUP_MEMBER . '")'));
