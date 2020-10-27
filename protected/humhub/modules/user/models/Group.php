@@ -15,6 +15,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use Yii;
 
+
 /**
  * This is the model class for table "group".
  *
@@ -35,6 +36,7 @@ use Yii;
  * @property Space|null $defaultSpace
  * @property Space|null $space
  * @property GroupUsers[] groupUsers
+ * @property GroupSpaces[] groupSpaces
  */
 class Group extends ActiveRecord
 {
@@ -92,11 +94,15 @@ class Group extends ActiveRecord
     }
 
     /**
-     * @return null|Space
+     * @return null|Space[]
+     * @since 1.7
      */
-    public function getDefaultSpace()
+    public function getDefaultSpaces()
     {
-        return Space::findOne(['id' => $this->space_id]);
+        return Space::find()
+            ->innerJoin('group_spaces', 'space.id = group_spaces.space_id')
+            ->where(['group_spaces.group_id' => $this->id])
+            ->all();
     }
 
     public function beforeSave($insert)
@@ -357,4 +363,13 @@ class Group extends ActiveRecord
         ])->all();
     }
 
+    /**
+     * Returns all GroupSpaces relations for this group as ActiveQuery.
+     * @return \yii\db\ActiveQuery
+     * @since 1.7
+     */
+    public function getGroupSpaces()
+    {
+        return $this->hasMany(GroupSpaces::class, ['group_id' => 'id']);
+    }
 }

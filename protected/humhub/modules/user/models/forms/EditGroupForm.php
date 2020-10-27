@@ -2,9 +2,11 @@
 namespace humhub\modules\user\models\forms;
 
 use humhub\modules\user\models\Group;
+use humhub\modules\user\models\GroupSpaces;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\GroupUser;
+use Yii;
 
 /**
  * Description of EditGroupForm
@@ -25,22 +27,11 @@ class EditGroupForm extends Group
         return $rules;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function beforeSave($insert)
+    public function attributeLabels()
     {
-        // When on edit form scenario, save also defaultSpaceGuid/managerGuids
-        if (empty($this->defaultSpaceGuid)) {
-            $this->space_id = null;
-        } else {
-            $space = Space::findOne(['guid' => $this->defaultSpaceGuid[0]]);
-            if ($space !== null) {
-                $this->space_id = $space->id;
-            }
-        }
-
-        return parent::beforeSave($insert);
+        return [
+            'defaultSpaceGuid' => 'Default Space(s)',
+        ];
     }
 
     /**
@@ -54,6 +45,23 @@ class EditGroupForm extends Group
 
         $this->addNewManagers();
         $this->removeOldManagers();
+
+        //clear GroupSpaces
+        $group_spaces = GroupSpaces::find()->where(['group_id'=>$this->id])->all();
+        foreach ($group_spaces as $group_space){
+            $group_space->delete();
+        }
+
+        // Save GroupSpaces for this group
+        if (!empty($this->defaultSpaceGuid)) {
+            foreach ($this->defaultSpaceGuid as $space_guid){
+                $space = Space::findOne(['guid' => $space_guid]);
+                $group_spaces = new GroupSpaces();
+                $group_spaces->group_id = $this->id;
+                $group_spaces->space_id = $space->id;
+                $group_spaces->save();
+            }
+        }
 
         parent::afterSave($insert, $changedAttributes);
     }
@@ -73,7 +81,7 @@ class EditGroupForm extends Group
     }
 
     protected function removeOldManagers()
-    {        
+    {
         //Remove admins not contained in the selection
         foreach ($this->getManager()->all() as $manager) {
             if (!in_array($manager->guid, $this->managerGuids)) {

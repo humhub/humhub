@@ -89,6 +89,7 @@ class GroupController extends Controller
 
         if ($group->load(Yii::$app->request->post()) && $group->validate() && $group->save()) {
             $this->view->saved();
+            Yii::error($group->id);
             if ($wasNew) {
                 return $this->redirect([
                     '/admin/group/manage-group-users',
@@ -237,7 +238,6 @@ class GroupController extends Controller
         $group = Group::findOne(Yii::$app->request->get('id'));
 
 
-
         $subQuery = (new Query())->select('*')->from(GroupUser::tableName() . ' g')->where([
             'and',
             'g.user_id=user.id',
@@ -262,7 +262,7 @@ class GroupController extends Controller
     {
         $group = Group::findOne($id);
 
-        if(!$group) {
+        if (!$group) {
             throw new HttpException(404, Yii::t('AdminModule.user', 'Group not found!'));
         }
 
@@ -276,11 +276,11 @@ class GroupController extends Controller
 
     public function checkGroupAccess($group)
     {
-        if(!$group) {
+        if (!$group) {
             throw new HttpException(404, Yii::t('AdminModule.user', 'Group not found!'));
         }
 
-        if($group->is_admin_group && !Yii::$app->user->isAdmin()) {
+        if ($group->is_admin_group && !Yii::$app->user->isAdmin()) {
             throw new HttpException(403);
         }
     }

@@ -82,8 +82,11 @@ class GroupUser extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
-            if ($this->group !== null && $this->group->space !== null) {
-                $this->group->space->addMember($this->user->id);
+            if ($this->group !== null && $this->group->groupSpaces !== null) {
+                foreach ($this->group->groupSpaces as $group_space) {
+                    /**@var GroupUser $user**/
+                    $group_space->space->addMember($this->user->id);
+                }
             }
             if ($this->user !== null) {
                 $this->user->updateSearch();
