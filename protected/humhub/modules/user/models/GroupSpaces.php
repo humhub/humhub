@@ -69,7 +69,9 @@ class GroupSpaces extends \yii\db\ActiveRecord
             if ($this->group !== null && $this->space !== null) {
                 foreach ($this->group->groupUsers as $user) {
                     /**@var GroupUser $user**/
-                    $this->space->addMember($user->user_id);
+                    foreach ($this->group->groupSpaces as $group_space) {
+                        $group_space->space->addMember($user->user_id);
+                    }
                 }
             }
         }
