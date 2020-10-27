@@ -251,45 +251,50 @@ humhub.module('comment', function (module, require, $) {
         });
     };
 
-    var toggleComment = function (evt) {
-        var visible = evt.$target.is(':visible');
-        var userName = '@' + evt.$target.closest('.media').find('.media-heading a').html() + ' ';
-        var $form;
-        var target;
-
-        function focusOnForm(target, userName) {
-            target.find('.humhub-ui-richtext:last').trigger('focus');
-            target.find('.humhub-ui-richtext').find('p').text(userName);
-            target.find('.humhub-ui-richtext:last').trigger('focus');
-        }
+    function toggleComment(target, isSlideToggle) {
+        var visible = target.is(':visible');
 
         // Comments are shown but form is not visible yet --> Toggle form only
-        if (visible && !evt.$target.children('.comment_create').is(':visible')) {
-            evt.$target.children('.comment_create').slideToggle(undefined, function() {
-                focusOnForm(evt.$target, userName);
+        if (visible && !target.children('.comment_create').is(':visible')) {
+            target.children('.comment_create').slideToggle(undefined, function () {
+                target.find('.humhub-ui-richtext').trigger('focus');
             });
             return;
         }
 
-        // Check which 'Replay' button is pressed under first or second level of comments
-        if (evt.$target.parents('.nested-comments-root').length !== 2) {
-            target = evt.$target;
-            $form = target.children('.comment_create');
-            $form.show();
-            target.slideToggle('fast', function () {
-                focusOnForm(target, userName);
-            });
-        } else {
-            target = evt.$target.closest('.comment').closest('.comment-container');
-            $form = target.children('.comment_create');
-            $form.show();
-            focusOnForm(target, userName);
-        }
+        var $form = target.children('.comment_create');
 
-        if (!evt.$target.find('.comment .media').length && !evt.$target.closest('[data-action-component="comment.Comment"]').length) {
+        if (!target.find('.comment .media').length && !target.closest('[data-action-component="comment.Comment"]').length) {
             $form.find('hr').hide();
         }
 
+        $form.show();
+
+        if (isSlideToggle) {
+            target.slideToggle();
+        }
+
+        target.find('.humhub-ui-richtext').trigger('focus');
+    }
+
+    var toggleCommentHandler = function (evt) {
+        var target;
+        var userName = '@' + evt.$target.closest('.media').find('.media-heading a').html() + ' ';
+
+        // Only one level of subcomments allowed. If Replay button is pressed under second level of comments then toggle parent first level.
+        if (evt.$target.parents('.nested-comments-root').length < 2) {
+            //toggle child comment
+            target = evt.$target;
+            toggleComment(target, true);
+        } else {
+            //toggle parent comment
+            target = evt.$target.closest('.comment').closest('.comment-container');
+            toggleComment(target, false);
+        }
+
+        target.find('.humhub-ui-richtext:last').trigger('focus');
+        target.find('.humhub-ui-richtext').find('p').text(userName);
+        target.find('.humhub-ui-richtext:last').trigger('focus');
     };
 
     var scrollActive = function (evt) {
@@ -308,6 +313,6 @@ humhub.module('comment', function (module, require, $) {
         scrollInactive: scrollInactive,
         showAll: showAll,
         showMore: showMore,
-        toggleComment: toggleComment
+        toggleComment: toggleCommentHandler
     });
 });
