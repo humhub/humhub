@@ -10,6 +10,7 @@ use humhub\modules\file\widgets\ShowFiles;
 use humhub\modules\like\widgets\LikeLink;
 use humhub\modules\comment\widgets\CommentLink;
 use humhub\modules\comment\widgets\Comments;
+use humhub\modules\comment\models\Comment;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $comment \humhub\modules\comment\models\Comment */
@@ -91,7 +92,7 @@ $module = Yii::$app->getModule('comment');
         <div class="wall-entry-controls">
             <?php if ($module->canComment($comment)): ?>
                 <?= CommentLink::widget(['object' => $comment]); ?>&nbsp;&nbsp;&middot;&nbsp;
-            <?php elseif ($module->isSubComment($comment) && $module->canComment($module->getParent($comment))): ?>
+            <?php elseif (Comment::isSubComment($comment) && $module->canComment($comment->content->getPolymorphicRelation())): ?>
                 <?= CommentLink::widget(['object' => $comment]); ?>&nbsp;&nbsp;&middot;&nbsp;
             <?php endif; ?>
             <?= LikeLink::widget(['object' => $comment]); ?>

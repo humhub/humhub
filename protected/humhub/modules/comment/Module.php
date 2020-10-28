@@ -77,7 +77,7 @@ class Module extends \humhub\components\Module
         }
 
         // Only allow one level of subcomments
-        if ($this->isSubComment($object)) {
+        if (Comment::isSubComment($object)) {
             return false;
         }
 
@@ -98,28 +98,14 @@ class Module extends \humhub\components\Module
     }
 
     /**
-     * Checks if given content object is a subcomment
-     *
-     * @param $object
-     * @return bool
-     */
-    public function isSubComment($object)
-    {
-        if ($object instanceof Comment && $object->object_model === Comment::class) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Return parent of given content object
      *
      * @param $object
      * @return ContentActiveRecord
+     * @since 1.8
      */
     public function getParent($object)
     {
         return $object->object_model::findOne($object->object_id);
     }
-
 }
