@@ -12,16 +12,32 @@ class m201025_095247_spaces_of_users_group extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('group_spaces', [
+        $this->createTable('group_space', [
             'id' => 'pk',
             'space_id' => 'int(11) NOT NULL',
             'group_id' => 'int(11) NOT NULL',
         ], '');
 
         // Add indexes and foreign keys
-        $this->createIndex('idx-group_spaces', 'group_spaces', ['space_id', 'group_id'], true);
-        $this->addForeignKey('fk-group_spaces-space', 'group_spaces', 'space_id', 'space', 'id', 'CASCADE');
-        $this->addForeignKey('fk-group_spaces-group', 'group_spaces', 'group_id', '`group`', 'id', 'CASCADE');
+        $this->createIndex('idx-group_space', 'group_space', ['space_id', 'group_id'], true);
+        $this->addForeignKey('fk-group_space-space', 'group_space', 'space_id', 'space', 'id', 'CASCADE');
+        $this->addForeignKey('fk-group_space-group', 'group_space', 'group_id', '`group`', 'id', 'CASCADE');
+
+        //Old default group migration here.
+        $rows = (new \yii\db\Query())
+            ->select("*")
+            ->from('group')
+            ->where(['is not', 'group.space_id', new \yii\db\Expression('NULL')])
+            ->all();
+        foreach ($rows as $row) {
+
+            $this->insert('group_space', [
+                'space_id' => $row['space_id'],
+                'group_id' => $row['id'],
+            ]);
+        }
+
+
     }
 
     /**
@@ -29,7 +45,7 @@ class m201025_095247_spaces_of_users_group extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('group_spaces');
+        $this->dropTable('group_space');
     }
 
 }

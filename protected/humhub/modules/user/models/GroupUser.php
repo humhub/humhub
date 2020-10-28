@@ -83,8 +83,8 @@ class GroupUser extends ActiveRecord
     {
         if ($insert) {
             if ($this->group !== null && $this->group->groupSpaces !== null) {
-                foreach ($this->group->groupSpaces as $group_space) {
-                    $group_space->space->addMember($this->user->id);
+                foreach ($this->group->groupSpaces as $groupSpace) {
+                    $groupSpace->space->addMember($this->user->id);
                 }
             }
             if ($this->user !== null) {

@@ -2,7 +2,7 @@
 namespace humhub\modules\user\models\forms;
 
 use humhub\modules\user\models\Group;
-use humhub\modules\user\models\GroupSpaces;
+use humhub\modules\user\models\GroupSpace;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\GroupUser;
@@ -46,20 +46,20 @@ class EditGroupForm extends Group
         $this->addNewManagers();
         $this->removeOldManagers();
 
-        //clear GroupSpaces
-        $group_spaces = GroupSpaces::find()->where(['group_id'=>$this->id])->all();
-        foreach ($group_spaces as $group_space){
-            $group_space->delete();
+        //clear GroupSpace
+        $groupSpaces = GroupSpace::find()->where(['group_id'=>$this->id])->all();
+        foreach ($groupSpaces as $groupSpace){
+            $groupSpace->delete();
         }
 
-        // Save GroupSpaces for this group
+        // Save GroupSpace for this group
         if (!empty($this->defaultSpaceGuid)) {
-            foreach ($this->defaultSpaceGuid as $space_guid){
-                $space = Space::findOne(['guid' => $space_guid]);
-                $group_spaces = new GroupSpaces();
-                $group_spaces->group_id = $this->id;
-                $group_spaces->space_id = $space->id;
-                $group_spaces->save();
+            foreach ($this->defaultSpaceGuid as $spaceGuid){
+                $space = Space::findOne(['guid' => $spaceGuid]);
+                $groupSpaces = new GroupSpace();
+                $groupSpaces->group_id = $this->id;
+                $groupSpaces->space_id = $space->id;
+                $groupSpaces->save();
             }
         }
 

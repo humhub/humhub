@@ -89,7 +89,7 @@ class GroupController extends Controller
 
         if ($group->load(Yii::$app->request->post()) && $group->validate() && $group->save()) {
             $this->view->saved();
-            Yii::error($group->id);
+
             if ($wasNew) {
                 return $this->redirect([
                     '/admin/group/manage-group-users',
@@ -260,7 +260,7 @@ class GroupController extends Controller
 
     public function actionAdminUserSearch($keyword, $id)
     {
-        $group = Group::findOne($id);
+        $group = Group::findOne(['id' => $id]);
 
         if (!$group) {
             throw new HttpException(404, Yii::t('AdminModule.user', 'Group not found!'));

@@ -36,7 +36,7 @@ use Yii;
  * @property Space|null $defaultSpace
  * @property Space|null $space
  * @property GroupUsers[] groupUsers
- * @property GroupSpaces[] groupSpaces
+ * @property GroupSpace[] groupSpaces
  */
 class Group extends ActiveRecord
 {
@@ -95,13 +95,13 @@ class Group extends ActiveRecord
 
     /**
      * @return null|Space[]
-     * @since 1.7
+     * @since 1.8
      */
     public function getDefaultSpaces()
     {
         return Space::find()
-            ->innerJoin('group_spaces', 'space.id = group_spaces.space_id')
-            ->where(['group_spaces.group_id' => $this->id])
+            ->innerJoin('group_space', 'space.id = group_space.space_id')
+            ->where(['group_space.group_id' => $this->id])
             ->all();
     }
 
@@ -257,6 +257,8 @@ class Group extends ActiveRecord
      * Removes a user from the group.
      * @param User|string $user userId or user model
      * @return bool
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function removeUser($user)
     {
@@ -364,12 +366,12 @@ class Group extends ActiveRecord
     }
 
     /**
-     * Returns all GroupSpaces relations for this group as ActiveQuery.
+     * Returns all GroupSpace relations for this group as ActiveQuery.
      * @return \yii\db\ActiveQuery
-     * @since 1.7
+     * @since 1.8
      */
     public function getGroupSpaces()
     {
-        return $this->hasMany(GroupSpaces::class, ['group_id' => 'id']);
+        return $this->hasMany(GroupSpace::class, ['group_id' => 'id']);
     }
 }

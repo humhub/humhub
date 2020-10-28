@@ -30,7 +30,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\helpers\AuthHelper;
-use humhub\modules\user\models\GroupSpaces;
+use humhub\modules\user\models\GroupSpace;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\Invite;
@@ -692,13 +692,13 @@ class Space extends ContentContainerActiveRecord implements Searchable
     }
 
     /**
-     * Gets query for [[GroupSpaces]].
+     * Gets query for [[GroupSpace]].
      *
      * @return \yii\db\ActiveQuery
-     * @since 1.7
+     * @since 1.8
      */
     public function getGroupSpaces()
     {
-         return $this->hasMany(GroupSpaces::class, ['space_id' => 'id']);
+         return $this->hasMany(GroupSpace::class, ['space_id' => 'id']);
     }
 }
