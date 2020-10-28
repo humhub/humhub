@@ -22,27 +22,27 @@ class DashboardGuestStreamFilter extends StreamQueryFilter
      */
     public function apply()
     {
+        $this->query->andWhere(['content.visibility' => Content::VISIBILITY_PUBLIC]);
+
         /**
          * For guests collect all contentcontainer_ids of "guest" public spaces / user profiles.
          * Generally show only public content
          */
         $publicSpacesSql = (new Query())
-            ->select(["contentcontainer.id"])
+            ->select(["contentcontainer_id"])
             ->from('space')
-            ->leftJoin('contentcontainer', 'space.id=contentcontainer.pk AND contentcontainer.class=:spaceClass')
-            ->where('space.visibility=' . Space::VISIBILITY_ALL)
-            ->andWhere('space.status='. Space::STATUS_ENABLED);
-
-        $union = Yii::$app->db->getQueryBuilder()->build($publicSpacesSql)[0];
+            ->where(['space.visibility' =>  Space::VISIBILITY_ALL])
+            ->andWhere(['space.status' => Space::STATUS_ENABLED]);
 
         $publicProfilesSql = (new Query())
-            ->select("contentcontainer.id")
+            ->select("contentcontainer_id")
             ->from('user')
-            ->leftJoin('contentcontainer', 'user.id=contentcontainer.pk AND contentcontainer.class=:userClass')
-            ->where('user.status=1 AND user.visibility = ' . User::VISIBILITY_ALL);
-        $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($publicProfilesSql)[0];
+            ->where(['user.status' => +User::STATUS_ENABLED])
+            ->andWhere(['user.visibility' =>  User::VISIBILITY_ALL]);
 
-        $this->query->andWhere('content.contentcontainer_id IN (' . $union . ') OR content.contentcontainer_id IS NULL', [':spaceClass' => Space::class, ':userClass' => User::class]);
-        $this->query->andWhere(['content.visibility' => Content::VISIBILITY_PUBLIC]);
-    }
+        $this->query->andFilterWhere(['OR',
+            ['IN', 'content.contentcontainer_id', $publicSpacesSql],
+            ['IN', 'content.contentcontainer_id', $publicProfilesSql],
+            'content.contentcontainer_id IS NULL',
+        ]); }
 }
