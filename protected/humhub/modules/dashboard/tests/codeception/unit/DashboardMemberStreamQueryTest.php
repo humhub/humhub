@@ -51,6 +51,8 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
         $space = Space::findOne(['id' => 1]);
         $space->updateAttributes(['visibility' => $spaceVisibility]);
 
+        static::assertTrue($space->isMember($user->id));
+
         $content = $this->createContent($contentVisibility, $space);
         $stream = $this->fetchDashboardContent($user);
         static::assertCount(1, $stream);

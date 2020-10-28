@@ -44,5 +44,6 @@ class DashboardGuestStreamFilter extends StreamQueryFilter
             ['IN', 'content.contentcontainer_id', $publicSpacesSql],
             ['IN', 'content.contentcontainer_id', $publicProfilesSql],
             'content.contentcontainer_id IS NULL',
-        ]); }
+        ]);
+    }
 }
