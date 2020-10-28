@@ -35,7 +35,7 @@ use Yii;
  * @property User[] $manager
  * @property Space|null $defaultSpace
  * @property Space|null $space
- * @property GroupUsers[] groupUsers
+ * @property GroupUser[] groupUsers
  * @property GroupSpace[] groupSpaces
  */
 class Group extends ActiveRecord
