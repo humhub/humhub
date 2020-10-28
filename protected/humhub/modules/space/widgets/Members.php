@@ -34,7 +34,7 @@ class Members extends Widget
 
     /**
      * @var boolean order members by membership date
-     * @sicne 1.7
+     * @sicne 1.8
      */
     public $orderByNewest;
 
