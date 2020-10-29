@@ -96,16 +96,4 @@ class Module extends \humhub\components\Module
 
         return true;
     }
-
-    /**
-     * Return parent of given content object
-     *
-     * @param $object
-     * @return ContentActiveRecord
-     * @since 1.8
-     */
-    public function getParent($object)
-    {
-        return $object->object_model::findOne($object->object_id);
-    }
 }
