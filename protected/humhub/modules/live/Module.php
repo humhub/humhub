@@ -8,12 +8,14 @@
 
 namespace humhub\modules\live;
 
+use humhub\modules\space\models\Space;
 use Yii;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Follow;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\models\Membership;
+use yii\db\Query;
 
 /**
  * Live module provides a live channel to the users browser.
@@ -67,31 +69,26 @@ class Module extends \humhub\components\Module
             $legitimation[Content::VISIBILITY_OWNER][] = $user->contentContainerRecord->id;
 
             // Collect user space membership with private content visibility
-            $spaces = Membership::getUserSpaces($user->id);
-            foreach ($spaces as $space) {
-                $legitimation[Content::VISIBILITY_PRIVATE][] = $space->contentContainerRecord->id;
+
+            $privateContainerQuery = Membership::getMemberSpaceContainerIdQuery($user);
+
+            if (Yii::$app->getModule('friendship')->isEnabled) {
+                $privateContainerQuery->union(Friendship::getFriendshipContainerIdQuery($user), true);
             }
 
-            // Include friends
-            if (Yii::$app->getModule('friendship')->isEnabled) {
-                foreach (Friendship::getFriendsQuery($user)->all() as $friend) {
-                    $legitimation[Content::VISIBILITY_PRIVATE][] = $friend->contentContainerRecord->id;
-                }
+
+            foreach ($privateContainerQuery->all() as $arr) {
+                $legitimation[Content::VISIBILITY_PRIVATE][] = (int) $arr['contentcontainer_id'];
             }
 
             // Collect spaces which the users follows
-            foreach (Follow::getFollowedSpacesQuery($user)->all() as $space) {
-                $legitimation[Content::VISIBILITY_PUBLIC][] = $space->contentContainerRecord->id;
-            }
-
-            // Collect users which the user follows
-            foreach (Follow::getFollowedUserQuery($user)->all() as $followedUser) {
-                $legitimation[Content::VISIBILITY_PUBLIC][] = $followedUser->contentContainerRecord->id;
+            foreach (Follow::getFollowedContainerIdQuery($user)->all() as $arr) {
+                $legitimation[Content::VISIBILITY_PUBLIC][] = (int) $arr['id'];
             }
 
             Yii::$app->cache->set(self::$legitimateCachePrefix . $user->id, $legitimation);
             Yii::$app->live->driver->onContentContainerLegitimationChanged($user, $legitimation);
-        };
+        }
 
         return $legitimation;
     }
@@ -101,5 +98,4 @@ class Module extends \humhub\components\Module
         Yii::$app->cache->delete(self::$legitimateCachePrefix . $user->id);
         $this->getLegitimateContentContainerIds($user);
     }
-
 }
