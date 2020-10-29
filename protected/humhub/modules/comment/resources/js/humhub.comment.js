@@ -289,12 +289,11 @@ humhub.module('comment', function (module, require, $) {
             //toggle parent comment
             target = evt.$target.closest('.comment').closest('.comment-container');
             toggleComment(target, false);
+            var richtext = Widget.instance(target.find('.ProsemirrorEditor:last'));
+            var mentioning = require('ui.richtext.prosemirror').buildMentioning(evt.$target.closest('.media').find('.media-heading a'));
+            richtext.editor.init(mentioning);
+            richtext.$.trigger('focus');
         }
-
-        var richtext = Widget.instance(target.find('.ProsemirrorEditor:last'));
-        var mentioning = require('ui.richtext.prosemirror').buildMentioning(evt.$target.closest('.media').find('.media-heading a'));
-        richtext.editor.init(mentioning);
-        richtext.$.trigger('focus');
     };
 
     var scrollActive = function (evt) {
