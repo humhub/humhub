@@ -61,25 +61,6 @@ class GroupSpace extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
-     */
-    public function afterSave($insert, $changedAttributes)
-    {
-        if ($insert) {
-            if ($this->group !== null && $this->space !== null) {
-                foreach ($this->group->groupUsers as $user) {
-                    /**@var GroupUser $user**/
-                    foreach ($this->group->groupSpaces as $groupSpace) {
-                        $groupSpace->space->addMember($user->user_id);
-                    }
-                }
-            }
-        }
-
-        parent::afterSave($insert, $changedAttributes);
-    }
-
-    /**
      * Gets query for [[Group]].
      *
      * @return \yii\db\ActiveQuery
