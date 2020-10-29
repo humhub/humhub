@@ -279,7 +279,6 @@ humhub.module('comment', function (module, require, $) {
 
     var toggleCommentHandler = function (evt) {
         var target;
-        var userName = '@' + evt.$target.closest('.media').find('.media-heading a').html() + ' ';
 
         // Only one level of subcomments allowed. If Replay button is pressed under second level of comments then toggle parent first level.
         if (evt.$target.parents('.nested-comments-root').length < 2) {
@@ -292,9 +291,10 @@ humhub.module('comment', function (module, require, $) {
             toggleComment(target, false);
         }
 
-        target.find('.humhub-ui-richtext:last').trigger('focus');
-        target.find('.humhub-ui-richtext').find('p').text(userName);
-        target.find('.humhub-ui-richtext:last').trigger('focus');
+        var richtext = Widget.instance(target.find('.ProsemirrorEditor:last'));
+        var mentioning = require('ui.richtext.prosemirror').buildMentioning(evt.$target.closest('.media').find('.media-heading a'));
+        richtext.editor.init(mentioning);
+        richtext.$.trigger('focus');
     };
 
     var scrollActive = function (evt) {
