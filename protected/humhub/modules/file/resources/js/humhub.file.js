@@ -404,13 +404,17 @@ humhub.module('file', function (module, require, $) {
             that.delete(file);
         });
 
-        if(!(this.isImage(file) && this.options.hideImageFileInfo)) {
+        if(!(this.isMedia(file) && this.options.excludeMediaFilesPreview)) {
             $file.fadeIn();
         }
     };
 
     Preview.prototype.isImage = function (file) {
         return file.mimeIcon === 'mime-image';
+    };
+
+    Preview.prototype.isMedia = function (file) {
+        return ['mime-image', 'mime-video', 'mime-audio'].includes(file.mimeIcon);
     };
 
     Preview.prototype.getTemplate = function (file) {

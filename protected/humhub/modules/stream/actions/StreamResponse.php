@@ -43,6 +43,16 @@ class StreamResponse
     private $lastContentId;
 
     /**
+     * @var string
+     */
+    public $error;
+
+    /**
+     * @var int
+     */
+    public $errorCode;
+
+    /**
      * StreamResponse constructor.
      * @param StreamQuery $streamQuery
      */
@@ -82,6 +92,18 @@ class StreamResponse
     }
 
     /**
+     * Can be used to set error information.
+     * @param $code int
+     * @param $msg string
+     */
+    public function setError($code, $msg)
+    {
+        $this->error = $msg;
+        $this->errorCode = $code;
+    }
+
+
+    /**
      * Returns the stream response array.
      * @return array
      * @throws Exception
@@ -97,6 +119,15 @@ class StreamResponse
             $this->result['contentSuppressions'] = $this->streamQuery->getSuppressions();
             $this->result['lastContentId'] = $this->streamQuery->getLastContentId();
         }
+
+        if($this->error) {
+            $this->result['error'] = $this->error;
+        }
+
+        if($this->errorCode) {
+            $this->result['errorCode'] = $this->errorCode;
+        }
+
         return $this->result;
     }
 

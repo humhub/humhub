@@ -34,7 +34,7 @@ class MyMembership extends Widget
 
         return $this->render('myMembership', [
             'role' => $this->space->getUserGroup(),
-            'memberSince' => empty($membership) ? '-' : TimeAgo::widget(['timestamp' => $membership->created_at])
+            'memberSince' => empty($membership) || empty($membership->created_at) ? null : TimeAgo::widget(['timestamp' => $membership->created_at])
         ]);
     }
 }

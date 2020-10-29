@@ -14,6 +14,8 @@ use humhub\widgets\PanelMenu;
     <div class="panel-body">
 
         <p><b><?= Yii::t('SpaceModule.base', 'Role') ?>: </b><?= ucfirst($role) ?></p>
-        <p><b><?= Yii::t('SpaceModule.base', 'Member since') ?>: </b><?= $memberSince ?></p>
+        <?php if (!empty($memberSince)): ?>
+            <p><b><?= Yii::t('SpaceModule.base', 'Member since') ?>: </b><?= $memberSince ?></p>
+        <?php endif; ?>
     </div>
 </div>

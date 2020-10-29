@@ -53,8 +53,8 @@ $fileModule = Yii::$app->getModule('file');
 <div class="form-group">
     <div class="checkbox">
         <label>
-            <?= $form->checkBox($model, 'hideImageFileInfo', ['disabled' => $fileModule->settings->isFixed('hideImageFileInfo')]); ?>
-            <?= $model->getAttributeLabel('hideImageFileInfo'); ?>
+            <?= $form->checkBox($model, 'excludeMediaFilesPreview', ['disabled' => $fileModule->settings->isFixed('excludeMediaFilesPreview')]); ?>
+            <?= $model->getAttributeLabel('excludeMediaFilesPreview'); ?>
         </label>
     </div>
 </div>

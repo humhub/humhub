@@ -9,7 +9,7 @@ use yii\helpers\Html;
 /* @var  $files \humhub\modules\file\models\File[] */
 /* @var  $previewImage \humhub\modules\file\converter\PreviewImage */
 /* @var  $object \humhub\components\ActiveRecord */
-/* @var  $hideImageFileInfo boolean */
+/* @var  $excludeMediaFilesPreview boolean */
 
 $videoExtensions = ['webm', 'mp4', 'ogv', 'mov'];
 $images = [];
@@ -86,7 +86,7 @@ $oneThirdColumnClass = 'col-media col-xs-6 col-sm-4 col-md-4';
 
     <!-- Show List of all files -->
     <?= FilePreview::widget([
-        'hideImageFileInfo' => $hideImageFileInfo,
+        'excludeMediaFilesPreview' => $excludeMediaFilesPreview,
         'items' => $files,
         'model' => $object,
     ]) ?>
