@@ -381,5 +381,6 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
         static::assertEquals($content->id, $stream[0]->id);
     }
 
+    // TODO: TEST DISABLE SHOW_AT_DASHBOARD
     // TODO: TEST VISIBILITY AS AUTHOR, author should see his content in any case
 }
