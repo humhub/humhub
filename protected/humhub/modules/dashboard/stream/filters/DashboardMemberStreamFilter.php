@@ -3,8 +3,10 @@
 namespace humhub\modules\dashboard\stream\filters;
 
 use humhub\modules\dashboard\Module;
+use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\models\Membership;
 use humhub\modules\stream\models\filters\StreamQueryFilter;
+use humhub\modules\user\models\Follow;
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -29,8 +31,6 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
     {
         $friendshipEnabled = Yii::$app->getModule('friendship')->getIsEnabled();
 
-       $this->filterContainerIds($friendshipEnabled);
-
         /**
          * Begin visibility checks regarding the content container
          */
@@ -40,11 +40,13 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
 
         if ($friendshipEnabled) {
             $this->query->leftJoin(
-                'user_friendship', 'contentcontainer.pk=user_friendship.user_id AND user_friendship.friend_user_id=:userId'
+                'user_friendship', 'contentcontainer.pk=user_friendship.user_id AND user_friendship.friend_user_id=:userId AND contentcontainer.class=:userModel'
             );
         }
 
-        $visibilityCondition = ['OR',
+        $this->filterContainerIds($friendshipEnabled);
+
+        $visibilityOrCondition = ['OR',
             // Public content
             '(content.visibility = 1 OR content.visibility IS NULL)',
             // User can see his own private content
@@ -55,7 +57,11 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
             '(contentcontainer.class=:spaceModel AND content.visibility = 0 AND space_membership.status = :spaceMembershipStatus)',
         ];
 
-        $this->query->andWhere($visibilityCondition, [
+        if($friendshipEnabled) {
+            $visibilityOrCondition[] = '(content.visibility=0 AND user_friendship.id IS NOT NULL)';
+        }
+
+        $this->query->andWhere($visibilityOrCondition, [
             ':userId' => $this->user->id,
             ':spaceMembershipStatus' => Membership::STATUS_MEMBER,
             ':spaceEnabledStatus' => Space::STATUS_ENABLED,
@@ -77,25 +83,15 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
         $containerIdCondition = ['OR'];
 
         // INCLUDE FOLLOWED SPACES AND USERS
-        $containerIdCondition[] =  ['IN', 'contentcontainer.id', (new Query())
-            ->select(["contentcontainer.id"])
-            ->from('user_follow')
-            ->leftJoin('contentcontainer', 'contentcontainer.pk = user_follow.object_id AND contentcontainer.class = user_follow.object_model')
-            ->where(['user_follow.user_id' => $this->user->id])
-            ->andWhere($isFollowAllProfileActive
-                ? ['user_follow.object_model' => Space::class]
-                : ['OR', ['user_follow.object_model' => Space::class], ['user_follow.object_model' => User::class]]
-            )];
+        $containerIdCondition[] =  ['IN', 'contentcontainer.id',
+            Follow::getFollowedContainerIdQuery($this->user, $isFollowAllProfileActive ? Space::class : null)
+        ];
+
 
         // INCLUDE MEMBER SPACES
-        $containerIdCondition[] =  ['IN', 'contentcontainer.id', (new Query())
-            ->select("contentcontainer.id")
-            ->from('space_membership')
-            ->leftJoin('space sm', 'sm.id = space_membership.space_id AND sm.status = :spaceEnabledStatus')
-            ->leftJoin('contentcontainer', 'contentcontainer.pk = sm.id AND contentcontainer.class = :spaceModel')
-            ->where(['space_membership.user_id' => $this->user->id])
-            ->andWhere(['space_membership.show_at_dashboard' => 1])];
-
+        $containerIdCondition[] =  ['IN', 'contentcontainer.id',
+            Membership::getMemberSpaceContainerIdQuery($this->user)->andWhere('sm.show_at_dashboard = 1')
+        ];
 
         if ($isFollowAllProfileActive) {
             // INCLUDE ALL USER PROFILES
@@ -103,12 +99,7 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
             $containerIdCondition[] =  ['IN', 'contentcontainer.id', (new Query())->select(["allusers.contentcontainer_id"])->from('user allusers')];
         } else if($friendshipEnabled) {
             // INCLUDE FRIEND USERS
-            $containerIdCondition[] =  ['IN', 'contentcontainer.id', (new Query())
-                ->select(["ufr.contentcontainer_id"])
-                ->from('user ufr')
-                ->leftJoin('user_friendship recv', 'ufr.id = recv.friend_user_id AND recv.user_id = :userId')
-                ->leftJoin('user_friendship snd', 'ufr.id = snd.user_id AND snd.friend_user_id = :userId')
-                ->where('recv.id IS NOT NULL AND snd.id IS NOT NULL')];
+            $containerIdCondition[] =  ['IN', 'contentcontainer.id', Friendship::getFriendshipContainerIdQuery($this->user)];
         }
 
         // INCLUDE OWN CONTAINER (in case not already included in follow all query)
@@ -126,7 +117,7 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
     {
         /* @var $dashboardModule Module */
         $dashboardModule = Yii::$app->getModule('dashboard');
-        return $dashboardModule->autoIncludeProfilePosts == Module::STREAM_AUTO_INCLUDE_PROFILE_POSTS_ALWAYS
-            || ($dashboardModule->autoIncludeProfilePosts == Module::STREAM_AUTO_INCLUDE_PROFILE_POSTS_ADMIN_ONLY && $this->user->isSystemAdmin());
+        return $dashboardModule->autoIncludeProfilePosts === Module::STREAM_AUTO_INCLUDE_PROFILE_POSTS_ALWAYS
+            || ($dashboardModule->autoIncludeProfilePosts === Module::STREAM_AUTO_INCLUDE_PROFILE_POSTS_ADMIN_ONLY && $this->user->isSystemAdmin());
     }
 }
