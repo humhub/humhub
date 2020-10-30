@@ -96,6 +96,7 @@ return [
     'invited you to join {name}.' => 'دعاك للانضمام إلى {name}.',
     'invited you to join {space} on {name}.' => 'دعاك للانضمام إلى {space} على {name}.',
     'or' => 'أو',
+    'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show all content' => '',
     'Source' => '',

@@ -90,6 +90,7 @@ return [
     'Change Username' => '',
     'Missing E-Mail Attribute from AuthClient.' => '',
     'Missing ID AuthClient Attribute from AuthClient.' => '',
+    'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show all content' => '',
     'Source' => '',

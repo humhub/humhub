@@ -86,6 +86,7 @@ return [
     'Number field options' => '',
     'One option per line. Key=>Value Format (e.g. yes=>Yes)' => '',
     'Only alphanumeric characters allowed!' => '',
+    'Other:' => '',
     'Phone Private' => '',
     'Phone Work' => '',
     'Please select:' => '',

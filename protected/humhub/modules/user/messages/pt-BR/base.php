@@ -95,6 +95,7 @@ return [
     'invited you to join {name}.' => 'convidou você para participar de {name}.',
     'invited you to join {space} on {name}.' => 'Convidou você para participar de {space} em {name}.',
     'or' => 'ou',
+    'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show all content' => '',
 ];

@@ -85,6 +85,7 @@ return [
     'Auth Mode' => '',
     'Missing E-Mail Attribute from AuthClient.' => '',
     'Missing ID AuthClient Attribute from AuthClient.' => '',
+    'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show At Directory' => '',
     'Show At Registration' => '',

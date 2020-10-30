@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invalid user state: thi' => '',
+    'Invalid user state: {state}' => '',
     'User not found!' => '',
 ];

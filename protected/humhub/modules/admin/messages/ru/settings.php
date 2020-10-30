@@ -69,7 +69,6 @@ return [
     'HTML tracking code' => 'HTML код счётчика',
     'Here you can configurate the registration behaviour and additinal user settings of your social network.' => 'Здесь Вы можете настроить поведение при регистрации и дополнительные настройки пользователей Вашей социальной сети.',
     'Here you can configure basic settings of your social network.' => 'Здесь Вы можете настроить основные параметры Вашей социальной сети.',
-    'Hide file info (name, size) for images on wall' => 'Скрывать информацию о файле (имя, размер) для изображений на стене',
     'Horizontal scrolling images on a mobile device' => 'Горизонтальная прокрутка изображений на мобильном устройстве',
     'Icon upload' => 'Загрузить иконку сайта (favicon)',
     'If not set, height will default to 200px.' => 'Если не установлено, высота по умолчанию будет 200px.',
@@ -124,6 +123,7 @@ return [
     'You\'re using no icon at the moment. Upload your logo now.' => 'На данный момент Вы не используете иконку. Загрузить иконку сейчас.',
     'You\'re using no logo at the moment. Upload your logo now.' => 'На данный момент Вы не используете логотип. Загрузить логотип сейчас.',
     'never' => 'никогда',
+    'Exclude media files from stream attachment list' => '',
     'Reported database time: {dateTime}' => '',
     'Saved and sent test email to: {address}' => '',
 ];
