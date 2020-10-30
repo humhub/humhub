@@ -126,6 +126,37 @@ class PendingRegistrationsController extends Controller
     }
 
     /**
+     * Delete all or selected invitation
+     *
+     * @param integer $id
+     * @return string
+     * @throws HttpException
+     * @throws \Throwable
+     */
+    public function actionDeleteAll()
+    {
+        if (Yii::$app->request->isPost) {
+            $ids = Yii::$app->request->post('id');
+            if (!empty($ids)){
+              foreach ($ids as $id) {
+                  $invitation = Invite::findOne(['id'=>$id]);
+                  $invitation->delete();
+              }
+              $message = 'Deleted all selected invitations';
+            } else {
+                Invite::deleteAll();
+                $message ='Deleted all invitations';
+            }
+            $this->view->success(Yii::t(
+                'AdminModule.user',
+                $message
+            ));
+            return $this->redirect(['index']);
+        }
+        return $this->render('delete-all');
+    }
+
+    /**
      * Return array with columns for data export
      * @return array
      */

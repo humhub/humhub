@@ -6,6 +6,10 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /** @var $searchModel \humhub\modules\admin\models\PendingRegistrationSearch */
+/** @var $dataProvider yii\data\ActiveDataProvider */
+/** @var $types array */
+
+\humhub\modules\admin\assets\AdminPendingRegistrationsAsset::register($this);
 ?>
 
 <div class="panel-body">
@@ -20,6 +24,9 @@ use yii\helpers\Url;
     </div>
 
     <div class="pull-right">
+        <?php if ($dataProvider->totalCount > 0): ?>
+            <?= Html::a(Yii::t('AdminModule.user', 'Delete All'), Url::toRoute(['/admin/pending-registrations/delete-all']), ['class' => 'btn btn-danger btn-delete']); ?>
+        <?php endif; ?>
         <?= humhub\libs\Html::backButton(
             ['/admin/user/index'],
             ['label' => Yii::t('AdminModule.base', 'Back to user overview')]
@@ -30,7 +37,15 @@ use yii\helpers\Url;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'id' => 'grid',
         'columns' => [
+            [
+                'class' => 'yii\grid\CheckboxColumn',
+                'cssClass' => 'select-on-check-one',
+                'checkboxOptions' => function ($data) {
+                    return ['id' => $data->id];
+                },
+            ],
             'email',
             'originator.username',
             'language',
