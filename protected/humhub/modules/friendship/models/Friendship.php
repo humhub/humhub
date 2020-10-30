@@ -180,9 +180,10 @@ class Friendship extends \humhub\components\ActiveRecord
     public static function getFriendshipContainerIdQuery(User $user)
     {
         return (new Query())
-            ->select(["ufr.contentcontainer_id"])
+            ->select('ufr.contentcontainer_id AS id')
             ->distinct()
             ->from('user ufr')
+            ->indexBy('id')
             ->innerJoin('user_friendship recv', 'ufr.id = recv.friend_user_id AND recv.user_id = :userId', [':userId' => $user->id])
             ->innerJoin('user_friendship snd', 'ufr.id = snd.user_id AND snd.friend_user_id = :userId', [':userId' => $user->id]);
     }

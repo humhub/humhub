@@ -211,10 +211,11 @@ class Follow extends ActiveRecord
     public static function getFollowedContainerIdQuery(User $user, $containerClass = null)
     {
         return (new Query())
-            ->select(["contentcontainer.id"])
+            ->select("contentcontainer.id AS id")
             ->from('user_follow')
             ->innerJoin('contentcontainer', 'contentcontainer.pk = user_follow.object_id AND contentcontainer.class = user_follow.object_model')
             ->where(['user_follow.user_id' => $user->id])
+            ->indexBy('id')
             ->andWhere($containerClass
                     ? ['user_follow.object_model' => $containerClass]
                     : ['OR', ['user_follow.object_model' => Space::class], ['user_follow.object_model' => User::class]]);

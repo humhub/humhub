@@ -346,10 +346,11 @@ class Membership extends ActiveRecord
     public static function getMemberSpaceContainerIdQuery(User $user)
     {
         return (new Query())
-            ->select("space.contentcontainer_id")
+            ->select("space.contentcontainer_id AS id")
             ->from('space')
             ->innerJoin('space_membership sm', 'space.id = sm.space_id')
             ->where('sm.user_id = :userId', [':userId' => $user->id])
+            ->indexBy('id')
             ->andWhere('space.status = :spaceStatusEnabled', [':spaceStatusEnabled' =>  Space::STATUS_ENABLED]);
     }
 
