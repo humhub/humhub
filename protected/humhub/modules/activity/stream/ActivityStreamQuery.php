@@ -25,6 +25,9 @@ class ActivityStreamQuery extends ContentContainerStreamQuery
      */
     public $pinnedContentSupport = false;
 
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         parent::init();
@@ -34,6 +37,9 @@ class ActivityStreamQuery extends ContentContainerStreamQuery
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function afterApplyFilters()
     {
         if($this->activity) {

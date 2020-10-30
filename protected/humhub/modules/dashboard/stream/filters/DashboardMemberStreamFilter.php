@@ -31,7 +31,7 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
     {
         $this->joinWithSubscribedContainers();
         $this->filterSubscribedContainer();
-        $this->filterByContentVisibility();
+        $this->filterContentVisibility();
         $this->query->addParams([
             ':userId' => $this->user->id,
             ':spaceMembershipStatus' => Membership::STATUS_MEMBER,
@@ -99,7 +99,7 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
     /**
      * Filters content by visibility
      */
-    private function filterByContentVisibility()
+    private function filterContentVisibility()
     {
         $visibilityOrCondition = ['OR'];
 
