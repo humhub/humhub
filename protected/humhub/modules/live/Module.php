@@ -69,21 +69,19 @@ class Module extends \humhub\components\Module
             $legitimation[Content::VISIBILITY_OWNER][] = $user->contentContainerRecord->id;
 
             // Collect user space membership with private content visibility
-
             $privateContainerQuery = Membership::getMemberSpaceContainerIdQuery($user);
 
-            if (Yii::$app->getModule('friendship')->isEnabled) {
+            if (Yii::$app->getModule('friendship')->getIsEnabled()) {
                 $privateContainerQuery->union(Friendship::getFriendshipContainerIdQuery($user), true);
             }
 
-
-            foreach ($privateContainerQuery->all() as $arr) {
-                $legitimation[Content::VISIBILITY_PRIVATE][] = (int) $arr['contentcontainer_id'];
+            foreach ($privateContainerQuery->all() as $id => $value) {
+                $legitimation[Content::VISIBILITY_PRIVATE][] = $id;
             }
 
-            // Collect spaces which the users follows
-            foreach (Follow::getFollowedContainerIdQuery($user)->all() as $arr) {
-                $legitimation[Content::VISIBILITY_PUBLIC][] = (int) $arr['id'];
+            // Collect spaces and users which the users follows
+            foreach (Follow::getFollowedContainerIdQuery($user)->all() as $id => $value) {
+                $legitimation[Content::VISIBILITY_PUBLIC][] = $id;
             }
 
             Yii::$app->cache->set(self::$legitimateCachePrefix . $user->id, $legitimation);
