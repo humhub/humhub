@@ -1,6 +1,12 @@
 HumHub Changelog
 ================
 
+
+1.7.0 (Unreleased)
+------------------
+- Fix #4590: Page loader color contrast too low 
+
+
 1.7.0-beta.2 (October 26, 2020)
 -------------------------------
 - Fix #4504: Fix `hasSidebar()` for empty sidebar
