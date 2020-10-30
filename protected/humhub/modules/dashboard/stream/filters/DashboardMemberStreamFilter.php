@@ -29,37 +29,76 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
      */
     public function apply()
     {
-        $friendshipEnabled = Yii::$app->getModule('friendship')->getIsEnabled();
+        $this->joinWithSubscribedContainers();
+        $this->filterSubscribedContainer();
+        $this->filterByContentVisibility();
+    }
 
+    private function joinWithSubscribedContainers()
+    {
         /**
          * Begin visibility checks regarding the content container
          */
         $this->query->leftJoin(
-            'space_membership', 'contentcontainer.pk=space_membership.space_id AND space_membership.user_id=:userId AND space_membership.status=:spaceMembershipStatus'
+            'space_membership', 'contentcontainer.pk = space_membership.space_id AND space_membership.user_id = :userId AND space_membership.status = :spaceMembershipStatus'
         );
 
-        if ($friendshipEnabled) {
+        $this->query->leftJoin(
+            'user_follow', 'contentcontainer.pk = user_follow.object_id AND contentcontainer.class = user_follow.object_model AND user_follow.user_id = :userId'
+        );
+
+        if ($this->isFriendShipEnabled()) {
             $this->query->leftJoin(
-                'user_friendship', 'contentcontainer.pk=user_friendship.user_id AND user_friendship.friend_user_id=:userId AND contentcontainer.class=:userModel'
+                'user_friendship', 'contentcontainer.pk = user_friendship.user_id AND contentcontainer.class = :userModel AND user_friendship.friend_user_id = :userId'
             );
         }
+    }
 
-        $this->filterContainerIds($friendshipEnabled);
+    private function isFriendShipEnabled()
+    {
+        return Yii::$app->getModule('friendship')->getIsEnabled();
+    }
 
-        $visibilityOrCondition = ['OR',
-            // Public content
-            '(content.visibility = 1 OR content.visibility IS NULL)',
-            // User can see his own private content
-            '(content.visibility = 0 AND content.contentcontainer_id = :userContentContainerId)',
-            // User can see private content on profiles if he is author
-            '(contentcontainer.class=:userModel AND content.visibility = 0 AND content.created_by = :userId)',
-            // User can see private content on spaces he is member of
-            '(contentcontainer.class=:spaceModel AND content.visibility = 0 AND space_membership.status = :spaceMembershipStatus)',
+    private function filterSubscribedContainer()
+    {
+        $containerFilterOrContidion = ['OR',
+            'contentcontainer.id = :userContentContainerId',
+            'space_membership.user_id IS NOT NULL',
+            'user_follow.id IS NOT NULL'
         ];
 
-        if($friendshipEnabled) {
-            $visibilityOrCondition[] = '(content.visibility=0 AND user_friendship.id IS NOT NULL)';
+        if($this->isFriendShipEnabled()) {
+            $containerFilterOrContidion[] = 'user_friendship.id IS NOT NULL';
         }
+
+        if($this->isFollowAllProfilesActive()) {
+            $containerFilterOrContidion = 'contentcontainer.class = :userModel';
+        }
+
+        // Filter out non subscribed container
+        $this->query->andWhere($containerFilterOrContidion);
+    }
+
+    private function filterByContentVisibility()
+    {
+        $visibilityOrCondition = ['OR'];
+
+        // Public content
+        $visibilityOrCondition[] = '(content.visibility = 1 OR content.visibility IS NULL)';
+
+        // Private content can be seen on my own container, member spaces and friends or if the user is the author
+        $privateVisibilityOrCondition = '(content.visibility = 0 AND ( ';
+        $privateVisibilityOrCondition .= 'content.created_by = :userId ';
+        $privateVisibilityOrCondition .= 'OR content.contentcontainer_id = :userContentContainerId ';
+        $privateVisibilityOrCondition .= 'OR space_membership.user_id IS NOT NULL ';
+
+        if($this->isFriendShipEnabled()) {
+            $privateVisibilityOrCondition .= 'OR user_friendship.id IS NOT NULL ';
+        }
+
+        $privateVisibilityOrCondition .= '))';
+
+        $visibilityOrCondition[] = $privateVisibilityOrCondition;
 
         $this->query->andWhere($visibilityOrCondition, [
             ':userId' => $this->user->id,
@@ -69,48 +108,6 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
             ':spaceModel' => Space::class,
             ':userContentContainerId' => $this->user->contentcontainer_id
         ]);
-    }
-
-    /**
-     * Includes all container we want to consider in the dashboard query for the given user.
-     *
-     * @param $friendshipEnabled
-     */
-    private function filterContainerIds($friendshipEnabled)
-    {
-        $isFollowAllProfileActive = $this->isFollowAllProfilesActive();
-
-        $containerIdCondition = ['OR'];
-
-        // INCLUDE FOLLOWED SPACES AND USERS
-        $containerIdCondition[] =  ['IN', 'contentcontainer.id',
-            Follow::getFollowedContainerIdQuery($this->user, $isFollowAllProfileActive ? Space::class : null)
-        ];
-
-
-        // INCLUDE MEMBER SPACES
-        $containerIdCondition[] =  ['IN', 'contentcontainer.id',
-            Membership::getMemberSpaceContainerIdQuery($this->user)->andWhere('sm.show_at_dashboard = 1')
-        ];
-
-        if ($isFollowAllProfileActive) {
-            // INCLUDE ALL USER PROFILES
-            // TODO: get rid of user follower related queries in this case
-            $containerIdCondition[] =  ['IN', 'contentcontainer.id', (new Query())->select(["allusers.contentcontainer_id"])->from('user allusers')];
-        } else if($friendshipEnabled) {
-            // INCLUDE FRIEND USERS
-            $containerIdCondition[] =  ['IN', 'contentcontainer.id', Friendship::getFriendshipContainerIdQuery($this->user)];
-        }
-
-        // INCLUDE OWN CONTAINER (in case not already included in follow all query)
-        if(!$isFollowAllProfileActive) {
-            $containerIdCondition[] =  ['contentcontainer.id' => $this->user->contentcontainer_id];
-        }
-
-        // Add Global content
-        $containerIdCondition[] = 'content.contentcontainer_id IS NULL';
-
-        $this->query->andFilterWhere($containerIdCondition);
     }
 
     private function isFollowAllProfilesActive()
