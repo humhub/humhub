@@ -17,39 +17,47 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
 
     public function testSpaceMemberDoesSeePublicContentOnPublicSpace()
     {
-        $this->assertSpaceMemberCanSee(Space::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC);
+        $this->assertSpaceMemberDoesSee(Space::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC);
     }
 
     public function testSpaceMemberDoesSeePrivateContentOnPublicSpace()
     {
-        $this->assertSpaceMemberCanSee(Space::VISIBILITY_ALL, Content::VISIBILITY_PRIVATE);
+        $this->assertSpaceMemberDoesSee(Space::VISIBILITY_ALL, Content::VISIBILITY_PRIVATE);
     }
 
     public function testSpaceMemberDoesSeePublicContentOnUsersOnlySpace()
     {
-        $this->assertSpaceMemberCanSee(Space::VISIBILITY_REGISTERED_ONLY, Content::VISIBILITY_PUBLIC);
+        $this->assertSpaceMemberDoesSee(Space::VISIBILITY_REGISTERED_ONLY, Content::VISIBILITY_PUBLIC);
     }
 
     public function testSpaceMemberDoesSeePrivateContentOnUsersOnlySpace()
     {
-        $this->assertSpaceMemberCanSee(Space::VISIBILITY_REGISTERED_ONLY, Content::VISIBILITY_PRIVATE);
+        $this->assertSpaceMemberDoesSee(Space::VISIBILITY_REGISTERED_ONLY, Content::VISIBILITY_PRIVATE);
     }
 
     public function testSpaceMemberDoesSeePublicContentOnPrivateSpace()
     {
-        $this->assertSpaceMemberCanSee(Space::VISIBILITY_NONE, Content::VISIBILITY_PUBLIC);
+        $this->assertSpaceMemberDoesSee(Space::VISIBILITY_NONE, Content::VISIBILITY_PUBLIC);
     }
 
     public function testSpaceMemberDoesSeePrivateContentOnPrivateSpace()
     {
-        $this->assertSpaceMemberCanSee(Space::VISIBILITY_NONE, Content::VISIBILITY_PRIVATE);
+        $this->assertSpaceMemberDoesSee(Space::VISIBILITY_NONE, Content::VISIBILITY_PRIVATE);
     }
 
-    private function assertSpaceMemberCanSee($spaceVisibility, $contentVisibility)
+    public function testSpaceMemberDoesNotSeeContentOnSpaceWithoutShowAtDashboard()
+    {
+        $this->assertSpaceMemberDoesNotSee(Space::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, 0);
+    }
+
+    private function assertSpaceMemberDoesSee($spaceVisibility, $contentVisibility, $show_at_dahsboard = 1)
     {
         $user = User::findOne(['id' => 3]);
         $space = Space::findOne(['id' => 1]);
         $space->updateAttributes(['visibility' => $spaceVisibility]);
+
+        $membership = $space->getMembership($user->id);
+        $membership->updateAttributes(['show_at_dashboard' => $show_at_dahsboard]);
 
         static::assertTrue($space->isMember($user->id));
 
@@ -57,6 +65,22 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
         $stream = $this->fetchDashboardContent($user);
         static::assertCount(1, $stream);
         static::assertEquals($content->id, $stream[0]->id);
+    }
+
+    private function assertSpaceMemberDoesNotSee($spaceVisibility, $contentVisibility, $show_at_dahsboard = 1)
+    {
+        $user = User::findOne(['id' => 3]);
+        $space = Space::findOne(['id' => 1]);
+        $space->updateAttributes(['visibility' => $spaceVisibility]);
+
+        $membership = $space->getMembership($user->id);
+        $membership->updateAttributes(['show_at_dashboard' => $show_at_dahsboard]);
+
+        static::assertTrue($space->isMember($user->id));
+
+        $content = $this->createContent($contentVisibility, $space);
+        $stream = $this->fetchDashboardContent($user);
+        static::assertCount(0, $stream);
     }
 
     /**
