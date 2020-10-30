@@ -2,6 +2,7 @@
 
 namespace humhub\modules\dashboard\stream\filters;
 
+use humhub\modules\content\models\Content;
 use humhub\modules\dashboard\Module;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\models\Membership;
@@ -38,6 +39,8 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
             ':spaceEnabledStatus' => Space::STATUS_ENABLED,
             ':userModel' => User::class,
             ':spaceModel' => Space::class,
+            ':visibilityPrivate' => Content::VISIBILITY_PRIVATE,
+            ':visibilityPublic' => Content::VISIBILITY_PUBLIC,
             ':userContentContainerId' => $this->user->contentcontainer_id
         ]);
     }
@@ -104,21 +107,20 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
         $visibilityOrCondition = ['OR'];
 
         // Public content
-        $visibilityOrCondition[] = '(content.visibility = 1 OR content.visibility IS NULL)';
+        $visibilityOrCondition[] = ['OR', 'content.visibility = :visibilityPublic', 'content.visibility IS NULL'];
 
-        // Private content can be seen on own container, member spaces and friends or if the user is the author
-        $privateVisibilityOrCondition = '(content.visibility = 0 AND ( ';
-        $privateVisibilityOrCondition .= 'content.created_by = :userId ';
-        $privateVisibilityOrCondition .= 'OR content.contentcontainer_id = :userContentContainerId ';
-        $privateVisibilityOrCondition .= 'OR space_membership.user_id IS NOT NULL ';
+        // Private content can be seen on own container, member spaces, friend profiles or if the user is the author
+        $privateVisibilityOrCondition = ['OR',
+            'content.created_by = :userId',
+            'content.contentcontainer_id = :userContentContainerId',
+            'space_membership.user_id IS NOT NULL'
+        ];
 
         if($this->isFriendShipEnabled()) {
-            $privateVisibilityOrCondition .= 'OR user_friendship.id IS NOT NULL ';
+            $privateVisibilityOrCondition[] = 'user_friendship.id IS NOT NULL ';
         }
 
-        $privateVisibilityOrCondition .= '))';
-
-        $visibilityOrCondition[] = $privateVisibilityOrCondition;
+        $visibilityOrCondition[] = ['AND', 'content.visibility = :visibilityPrivate',  $privateVisibilityOrCondition];
 
         $this->query->andWhere($visibilityOrCondition);
     }
