@@ -2,16 +2,13 @@
 
 namespace humhub\modules\dashboard\stream\filters;
 
+use Yii;
 use humhub\modules\content\models\Content;
 use humhub\modules\dashboard\Module;
-use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\models\Membership;
 use humhub\modules\stream\models\filters\StreamQueryFilter;
-use humhub\modules\user\models\Follow;
-use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use yii\db\Query;
 
 /**
  * Stream filter handling dashboard content stream visibility for members of the network.
@@ -78,7 +75,7 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
      */
     private function filterSubscribedContainer()
     {
-        // By default we subscribe to own container, space memberships and following container
+        // We subscribe to own container, space memberships and following container
         $containerFilterOrContidion = ['OR',
             'space_membership.user_id IS NOT NULL',
             'user_follow.id IS NOT NULL' // In case of "include follow all profiles", this will only include space follows

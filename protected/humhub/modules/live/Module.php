@@ -41,9 +41,8 @@ class Module extends \humhub\components\Module
      * There are three separeted lists by visibility level:
      *  - Content::VISIBILITY_PUBLIC [1,2,3,4]   (Public visibility only)
      *  - Content::VISIBILITY_PRIVATE [5,6,7]    (Public and private visibility)
-     *  - Content::VISIBILITY_OWNER (10)          (No visibility, direct to the user)
+     *  - Content::VISIBILITY_OWNER (10)         (No visibility, direct to the user)
      *
-     * @todo Add user to user following
      * @param User $user the User
      * @param boolean $cached use caching
      * @return array multi dimensional array of user content container ids
@@ -65,12 +64,13 @@ class Module extends \humhub\components\Module
                 return $legitimation;
             }
 
-            // Add users own content container (user == contentcontainer)
+            // Add users own content container
             $legitimation[Content::VISIBILITY_OWNER][] = $user->contentContainerRecord->id;
 
-            // Collect user space membership with private content visibility
+            // Add member space container of the user
             $privateContainerQuery = Membership::getMemberSpaceContainerIdQuery($user);
 
+            // Add friend container if friendship module is active
             if (Yii::$app->getModule('friendship')->getIsEnabled()) {
                 $privateContainerQuery->union(Friendship::getFriendshipContainerIdQuery($user), true);
             }
@@ -79,7 +79,7 @@ class Module extends \humhub\components\Module
                 $legitimation[Content::VISIBILITY_PRIVATE][] = $id;
             }
 
-            // Collect spaces and users which the users follows
+            // User sees public content of spaces and profiles the users follows
             foreach (Follow::getFollowedContainerIdQuery($user)->all() as $id => $value) {
                 $legitimation[Content::VISIBILITY_PUBLIC][] = $id;
             }
