@@ -4,7 +4,8 @@ HumHub Changelog
 
 1.7.0 (Unreleased)
 ------------------
-- Fix #4590: Page loader color contrast too low 
+- Fix #4590: Page loader color contrast too low
+- Enh #3414: Allow to change user passwords by admin
 
 
 1.7.0-beta.2 (October 26, 2020)
