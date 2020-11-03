@@ -24,6 +24,7 @@ return [
     'Actions' => 'Toiminnot',
     'Add:' => 'Lisää:',
     'Administration' => 'Hallinta',
+    'All' => 'Kaikki',
     'Allow' => 'Salli',
     'An error occurred while handling your last action. (Handler not found).' => 'Viimeisen toiminnon käsittelyssä tapahtui virhe. (Käsiteltävää ei löydy).',
     'An unexpected error occurred while loading the search result.' => 'Hakutuloksen lataamisen aikana tapahtui odottamaton virhe.',
@@ -96,6 +97,6 @@ return [
     'Upload' => 'Lataa',
     'Upload file' => 'Lataa tiedosto',
     'You are not allowed to run this action.' => 'Et voi käyttää tätä toimintoa.',
-    'All' => '',
+    'Database connection time: {dbTime} - Configured time zone: {time}' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',
 ];

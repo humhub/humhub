@@ -29,7 +29,7 @@ abstract class MenuEntry extends BaseObject
     protected $id;
 
     /**
-     * @var int the sort order
+     * @var int the sort order. a value between 0 and 10000
      */
     protected $sortOrder;
 
@@ -246,5 +246,14 @@ abstract class MenuEntry extends BaseObject
     {
         $this->sortOrder = $sortOrder;
         return $this;
+    }
+
+    /**
+     * @return string the class name of this entry can be used to identify the entry if no id is given
+     * @since 1.7
+     */
+    public function getEntryClass()
+    {
+        return get_class($this);
     }
 }

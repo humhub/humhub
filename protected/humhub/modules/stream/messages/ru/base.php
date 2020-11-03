@@ -17,5 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Show {i} more.' => '',
+    'Show {i} more.' => 'Показать ещё {i}',
+    'The content could not be found.' => '',
+    'You are not allowed to view this content.' => '',
 ];

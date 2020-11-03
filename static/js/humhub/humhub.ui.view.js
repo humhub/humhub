@@ -4,6 +4,8 @@ humhub.module('ui.view', function (module, require, $) {
     var title;
     var state = {};
 
+    var viewContext = null;
+
     var prevSwipeDelay = false;
     var prevSwipe = false;
 
@@ -56,11 +58,24 @@ humhub.module('ui.view', function (module, require, $) {
             setTimeout(initMobileSidebar, 50);
         }
 
-        module.log.debug('Current view state', state);
+        module.log.debug('View state', state);
+        module.log.debug('View context', viewContext);
+    };
+
+    var unload = function() {
+        setViewContext(null);
     };
 
     var isSwipeAllowed = function() {
         return !prevSwipeDelay && !prevSwipe;
+    };
+
+    var setViewContext = function(vctx) {
+        viewContext = vctx;
+    };
+
+    var getViewContext = function() {
+        return viewContext;
     };
 
     var isActiveScroll = function() {
@@ -152,6 +167,7 @@ humhub.module('ui.view', function (module, require, $) {
 
     module.export({
         init: init,
+        unload: unload,
         sortOrder: 100,
         isSmall: isSmall,
         preventSwipe: preventSwipe,
@@ -164,6 +180,8 @@ humhub.module('ui.view', function (module, require, $) {
         getContentTop: getContentTop,
         // This function is called by controller itself
         setState: setState,
+        getViewContext : getViewContext,
+        setViewContext: setViewContext,
         getState: function () {
             return $.extend({}, state);
         },

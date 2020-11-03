@@ -40,7 +40,7 @@ return array (
   'Delete invitation?' => 'Supprimer l\'invitation ?',
   'Delete spaces which are owned by this user' => 'Supprimer les espaces détenus par cet utilisateur',
   'Deleted invitation' => 'Invitation supprimée',
-  'Deleted users' => 'Supprimer l\'utilisateur',
+  'Deleted users' => 'Utilisateurs supprimés',
   'Disable' => 'Désactiver',
   'Disabled' => 'Désactivé',
   'Disabled users' => 'Utilisateurs désactivés',
@@ -56,6 +56,18 @@ return array (
   'Group not found!' => 'Groupe non trouvé !',
   'Group user not found!' => 'Groupe d\'utilisateur non trouvé !',
   'Groups' => 'Groupes',
+  'Hello {displayName},<br><br>
+Your account has been activated.<br><br>
+Click here to login:<br>
+{loginLink}<br><br>
+
+Kind Regards<br>
+{AdminName}<br><br>' => 'Bonjour {displayName},<br><br>Votre compte est actif.<br><br>Cliquez ici pour vous connecter:<br>{loginLink}<br><br>Cordialement,<br> {AdminName}<br><br>',
+  'Hello {displayName},<br><br>
+Your account request has been declined.<br><br>
+
+Kind Regards<br>
+{AdminName} <br><br> ' => 'Bonjour {displayName},<br><br>Votre demande de création de compte a été refusée.<br><br>Cordialement,<br> {AdminName}<br><br>',
   'Here you can create or edit profile categories and fields.' => 'Vous pouvez créer ou modifier ici les catégories et les champs de profil.',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Si cette option n\'est pas sélectionnée, le propriétaire des espaces sera transféré sur votre compte.',
   'Impersonate' => 'Incarner',

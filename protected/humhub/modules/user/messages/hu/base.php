@@ -68,6 +68,7 @@ return [
     'Sign up' => 'Feliratkozás',
     'Sign up now' => 'Iratkozz fel most',
     'Sort order' => 'Rendezési sorrend',
+    'Source' => 'Forrás',
     'Space ID' => 'A közösség azonosítója',
     'Status' => 'Státusz',
     'Tags' => 'Címkék',
@@ -93,8 +94,8 @@ return [
     'invited you to join {space} on {name}.' => 'meghivott, hogy csatlakozz ehhez: {space} itt: {name}.',
     'or' => 'vagy',
     'Change Username' => '',
+    'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show all content' => '',
-    'Source' => '',
     'Username contains invalid characters.' => '',
 ];

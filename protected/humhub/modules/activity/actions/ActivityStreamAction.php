@@ -8,6 +8,8 @@
 
 namespace humhub\modules\activity\actions;
 
+use humhub\modules\content\widgets\stream\StreamEntryOptions;
+use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\stream\actions\ContentContainerStream;
 use humhub\modules\stream\models\ContentContainerStreamQuery;
 use humhub\modules\user\models\User;
@@ -31,11 +33,21 @@ class ActivityStreamAction extends ContentContainerStream
     public $activity = true;
 
     /**
+     * @return StreamEntryOptions
+     */
+    public function initStreamEntryOptions()
+    {
+        return $this->activity
+            ? new StreamEntryOptions()
+            : new WallStreamEntryOptions();
+    }
+
+    /**
      * @inheritDoc
      */
-    protected function setActionSettings()
+    protected function beforeApplyFilters()
     {
-        parent::setActionSettings();
+        parent::beforeApplyFilters();
 
         if(!$this->activity) {
             return;

@@ -7,6 +7,9 @@ humhub.module('client', function (module, require, $) {
     var event = require('event');
     var action = require('action');
     var additions = require('ui.additions');
+    var view = require('ui.view');
+
+    var HEADER_VIEW_CONTEXT = 'HUMHUB-VIEW-CONTEXT';
 
     /**
      * Response Wrapper Object for easily accessing common data
@@ -212,6 +215,15 @@ humhub.module('client', function (module, require, $) {
             cfg = {'success': cfg};
         }
 
+        var viewContext = cfg.viewContext ||  view.getViewContext();
+
+        if(viewContext) {
+            if(!cfg['headers']) {
+                cfg['headers'] = {};
+            }
+            cfg['headers'][HEADER_VIEW_CONTEXT] = viewContext
+        }
+
         var requestXhr = null;
 
         var promise = new Promise(function (resolve, reject) {
@@ -368,28 +380,47 @@ humhub.module('client', function (module, require, $) {
             return;
         }
 
-        var state = $form.serialize();
+        $form.data('state', serializeFormState($form));
 
         msg = msg || module.text('warn.onBeforeLoad');
 
         $form.on('submit', function() {
+            $form.data('state', null);
             offBeforeLoad();
         });
 
         // Note some browser do not support custom messages for this event.
         $(window).on('beforeunload.humhub_client', function () {
-            if ($form.serialize() !== state) {
+            if (formStateChanged($form)) {
                 return msg;
             }
         });
 
         $(document).on('pjax:beforeSend.humhub_client', function(evt) {
-            if ($form.serialize() !== state && !window.confirm(msg)) {
-                evt.preventDefault();
-            } else {
+            if(unloadForm($form, msg)) {
+                $form.data('state', null);
                 offBeforeLoad();
+            } else {
+                evt.preventDefault();
             }
         })
+    };
+
+    var serializeFormState = function($form) {
+        return $form.find(':not([data-prevent-statechange])').serialize();
+    };
+
+    var unloadForm = function($form, msg) {
+        return !formStateChanged($form) || confirmUnload(msg)
+    };
+
+    var formStateChanged = function($form) {
+        return $form.data('state') && $form.data('state') !== serializeFormState($form);
+    };
+
+    var confirmUnload = function(msg) {
+        msg = msg || module.text('warn.onBeforeLoad');
+        return window.confirm(msg)
     };
 
     var offBeforeLoad = function() {
@@ -439,6 +470,7 @@ humhub.module('client', function (module, require, $) {
         Response: Response,
         onBeforeLoad: onBeforeLoad,
         offBeforeLoad: offBeforeLoad,
+        unloadForm: unloadForm,
         redirect: redirect
     });
 });

@@ -26,6 +26,7 @@ return array (
   'Copy to clipboard' => 'In die Zwischenablage kopieren',
   'Could not find content of addon!' => 'Der Inhalt des Addons konnte nicht gefunden werden!',
   'Could not find requested page.' => 'Die angeforderte Seite kann nicht gefunden werden.',
+  'Database connection time: {dbTime} - Configured time zone: {time}' => 'Zeitzone der Datenbank: {dbTime} - Zeitzone der Applikation: {time}',
   'Default' => 'Standard',
   'Delete' => 'Löschen',
   'Deny' => 'Ablehnen',

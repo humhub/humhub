@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\topic\widgets\TopicPicker;
+use humhub\modules\ui\icon\widgets\Icon;
 use yii\helpers\Html;
 use humhub\modules\content\assets\ContentFormAsset;
 use humhub\modules\file\widgets\FilePreview;
@@ -72,11 +73,12 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
 
                 <?php
                 $uploadButton = UploadButton::widget([
-                            'id' => 'contentFormFiles',
-                            'progress' => '#contentFormFiles_progress',
-                            'preview' => '#contentFormFiles_preview',
-                            'dropZone' => '#contentFormBody',
-                            'max' => Yii::$app->getModule('content')->maxAttachedFiles
+                    'id' => 'contentFormFiles',
+                    'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
+                    'progress' => '#contentFormFiles_progress',
+                    'preview' => '#contentFormFiles_preview',
+                    'dropZone' => '#contentFormBody',
+                    'max' => Yii::$app->getModule('content')->maxAttachedFiles
                 ]);
                 ?>
                 <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>
@@ -92,10 +94,11 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
                     <ul class="nav nav-pills preferences" style="right: 0; top: 5px;">
                         <li class="dropdown">
                             <a class="dropdown-toggle" style="padding: 5px 10px;" data-toggle="dropdown" href="#" aria-label="<?= Yii::t('base', 'Toggle post menu'); ?>" aria-haspopup="true">
-                                <i class="fa fa-cogs"></i></a>
+                                <?= Icon::get('cogs')?>
+                            </a>
                             <ul class="dropdown-menu pull-right">
                                 <li>
-                                    <?= Link::withAction(Yii::t('ContentModule.base', 'Notify members'), 'notifyUser')->icon('fa-bell')?>
+                                    <?= Link::withAction(Yii::t('ContentModule.base', 'Notify members'), 'notifyUser')->icon('bell')?>
                                 </li>
                                 <?php if(TopicPicker::showTopicPicker($contentContainer)) : ?>
                                     <li>
@@ -105,7 +108,7 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
                                 <?php if ($canSwitchVisibility): ?>
                                     <li>
                                         <?= Link::withAction(Yii::t('ContentModule.base', 'Make public'), 'changeVisibility')
-                                            ->id('contentForm_visibility_entry')->icon('fa-unlock') ?>
+                                            ->id('contentForm_visibility_entry')->icon('unlock') ?>
                                     </li>
                                 <?php endif; ?>
                             </ul>

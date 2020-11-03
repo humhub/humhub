@@ -19,6 +19,7 @@
 return [
     'Account Request for \'{displayName}\' has been approved.' => '\'{displayName}\' 님의 계정 요청이 승인되었습니다.',
     'Account Request for \'{displayName}\' has been declined.' => '\'{displayName}\' 님의 계정 요청이 거부되었습니다.',
+    'Actions' => 'Acțiuni',
     'All the personal data of this user will be irrevocably deleted.' => 'Toate datele personale ale acestui utilizator vor fi irevocabil șterse.',
     'Cancel' => 'Anulează',
     'Could not load category.' => '카테고리 로드 실패',
@@ -28,8 +29,10 @@ return [
     'Group not found!' => '그룹을 찾지 못했습니다!',
     'Groups' => 'Grupuri',
     'LDAP' => 'LDAP',
+    'Members' => 'Membri',
     'Message' => '메세지',
     'Save' => 'Salvează',
+    'Send invite' => 'Trimite invitație',
     'Settings' => 'Impostatii',
     'Subject' => '제목',
     'The user is the owner of these spaces:' => 'Utilizatorul este proprietarul acestor spații:',
@@ -44,7 +47,6 @@ return [
     '<strong>Settings</strong> and Configuration' => '',
     '<strong>User</strong> administration' => '',
     'Accept user: <strong>{displayName}</strong> ' => '',
-    'Actions' => '',
     'Active users' => '',
     'Add Groups...' => '',
     'Add new category' => '',
@@ -86,6 +88,18 @@ return [
     'General' => '',
     'Group Manager' => '',
     'Group user not found!' => '',
+    'Hello {displayName},<br><br>
+Your account has been activated.<br><br>
+Click here to login:<br>
+{loginLink}<br><br>
+
+Kind Regards<br>
+{AdminName}<br><br>' => '',
+    'Hello {displayName},<br><br>
+Your account request has been declined.<br><br>
+
+Kind Regards<br>
+{AdminName} <br><br> ' => '',
     'Here you can create or edit profile categories and fields.' => '',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => '',
     'Impersonate' => '',
@@ -97,7 +111,6 @@ return [
     'Manage groups' => '',
     'Manage profile attributes' => '',
     'Member since' => '',
-    'Members' => '',
     'Members can invite external users by email' => '',
     'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)' => '',
     'New approval requests' => '',
@@ -119,7 +132,6 @@ return [
     'Send & save' => '',
     'Send invitation email' => '',
     'Send invitation email again?' => '',
-    'Send invite' => '',
     'The following list contains all pending sign-ups and invites.' => '',
     'The following list contains all registered users awaiting an approval.' => '',
     'This overview contains a list of each registered user with actions to view, edit and delete users.' => '',

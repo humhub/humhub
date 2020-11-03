@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => 'Yorum silme işlemini <strong>onayla</strong>',
-    'Access denied!' => 'Erişim engellendi!',
     'Cancel' => 'İptal',
     'Cancel Edit' => 'İptal Düzenle',
     'Comment' => 'Yorum',
@@ -28,17 +27,16 @@ return [
     'Do you really want to delete this comment?' => 'Bu yorumu silmek istediğine emin misin?',
     'Edit' => 'Düzenle',
     'Edit your comment...' => 'Yorumunu düzenle...',
-    'Insufficent permissions!' => 'Yetersiz izinler!',
     'Read full comment...' => 'Yorumu tam okuyun ...',
     'Send' => 'Gönder',
-    'Show all {total} comments.' => '{total} diğer yorumu gör',
+    'Show all {total} comments' => '{total} diğer yorumu gör',
     'Show {count} more comments' => 'Daha {count} fazla yorum göster',
     'The comment must not be empty!' => 'Yorum boş olmamalı!',
     'Whenever a new comment was written.' => 'Ne zaman yeni bir yorum yazılmış',
     'Write a new comment...' => 'Yeni bir yorum yaz...',
-    'You are not allowed to comment.' => 'Yorum yapmanıza izin verilmiyor.',
     'comment' => 'Yorum',
     '{displayName} wrote a new comment ' => '{displayName} yeni bir yorum yazdı',
+    'Comment could not be saved!' => '',
     'Reply' => '',
     'Write a new reply...' => '',
 ];

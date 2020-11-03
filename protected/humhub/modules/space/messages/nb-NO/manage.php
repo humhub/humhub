@@ -68,9 +68,9 @@ return [
     'Unarchive' => 'Ta ut fra arkiv',
     'e.g. example for {baseUrl}/s/example' => 'f.eks. eksempel for {baseUrl}/s/eksempel',
     'never' => 'aldri',
-    'space description' => 'Gruppebeskrivelse',
     'the default start page of this space for members' => 'standard startside for denne gruppens brukere',
     'the default start page of this space for visitors' => 'standard startsiden for denne gruppens gjester',
+    'Are you sure you want to remove this member.' => '',
     'Invited By' => '',
     'Please type the name of the space to proceed.' => '',
 ];

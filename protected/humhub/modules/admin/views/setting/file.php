@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $this \humhub\components\View
+ * @var $this \humhub\modules\ui\view\components\View
  * @var \humhub\modules\admin\models\forms\FileSettingsForm $model
  * @var float $maxUploadSize
  * @var string $maxUploadSizeText
@@ -53,8 +53,8 @@ $fileModule = Yii::$app->getModule('file');
 <div class="form-group">
     <div class="checkbox">
         <label>
-            <?= $form->checkBox($model, 'hideImageFileInfo', ['disabled' => $fileModule->settings->isFixed('hideImageFileInfo')]); ?>
-            <?= $model->getAttributeLabel('hideImageFileInfo'); ?>
+            <?= $form->checkBox($model, 'excludeMediaFilesPreview', ['disabled' => $fileModule->settings->isFixed('excludeMediaFilesPreview')]); ?>
+            <?= $model->getAttributeLabel('excludeMediaFilesPreview'); ?>
         </label>
     </div>
 </div>

@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => 'تأكيد حذف الرد',
-    'Access denied!' => 'لم يتم السماح!',
     'Cancel' => 'إلغاء',
     'Cancel Edit' => 'إلغاء تحرير',
     'Comment' => 'رد',
@@ -28,17 +27,16 @@ return [
     'Do you really want to delete this comment?' => 'هل انت متأكد من رغبتك في حذف هذا الرد؟',
     'Edit' => 'تحرير',
     'Edit your comment...' => 'تحرير الرد...',
-    'Insufficent permissions!' => 'ليست لديك الصلاحيات اللازمة!',
     'Read full comment...' => 'قراءة التعليق الكامل ...',
     'Send' => 'ارسل',
-    'Show all {total} comments.' => 'عرض كل الـ {total} رداً',
+    'Show all {total} comments' => 'عرض كل الـ {total} رداً',
     'Show {count} more comments' => 'عرض المزيد من الردود {count}',
     'The comment must not be empty!' => 'يجب ألا يكون التعليق فارغًا!',
     'Whenever a new comment was written.' => 'كلما تم كتابة تعليق جديد.',
     'Write a new comment...' => 'كتابة رد جديد...',
-    'You are not allowed to comment.' => 'لا يسمح لك بالتعليق.',
     'comment' => 'رد',
     '{displayName} wrote a new comment ' => '{displayName} قام بكتابة رد جديد',
+    'Comment could not be saved!' => '',
     'Reply' => '',
     'Write a new reply...' => '',
 ];

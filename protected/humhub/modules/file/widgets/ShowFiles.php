@@ -9,6 +9,7 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\content\widgets\WallEntry;
 use humhub\modules\file\converter\PreviewImage;
 use Yii;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -45,23 +46,14 @@ class ShowFiles extends \yii\base\Widget
             return;
         }
 
-        if ($this->object instanceof ContentActiveRecord) {
-            $widget = $this->object->getWallEntryWidget();
-
-            // File widget disabled in this wall entry
-            if ($widget->showFiles === false) {
-                return;
-            }
-        }
-
-        $hidePreviewFileInfo = ($this->preview) ? Yii::$app->getModule('file')->settings->get('hideImageFileInfo') : false;
+        $excludeMediaFilesPreview = ($this->preview) ? Yii::$app->getModule('file')->settings->get('excludeMediaFilesPreview') : false;
 
         return $this->render('showFiles', [
                     'files' => $this->object->fileManager->findStreamFiles(),
                     'object' => $this->object,
                     'previewImage' => new PreviewImage(),
                     'showPreview' => $this->preview,
-                    'hideImageFileInfo' => $hidePreviewFileInfo
+                    'excludeMediaFilesPreview' => $excludeMediaFilesPreview
         ]);
     }
 

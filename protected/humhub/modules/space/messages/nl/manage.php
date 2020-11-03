@@ -12,6 +12,7 @@ return array (
   'Add <strong>Modules</strong>' => '<strong>Modules</strong> toevoegen',
   'Advanced access settings' => 'Geavanceerde instellingen voor toegang',
   'Archive' => 'Archiveren',
+  'Are you sure you want to remove this member.' => 'Weet u zeker dat u dit lid wilt verwijderen?',
   'Are you sure, that you want to delete this space? All published content will be removed!' => 'Bent u zeker dat u deze ruimte wilt verwijderen? Alle gepubliceerde berichten zullen verwijderd worden!',
   'Are you sure? *ALL* module data for this space will be deleted!' => 'Bent u zeker? *ALLE* module data voor deze ruimte zal verwijderd worden!',
   'As owner of this space you can transfer this role to another administrator in space.' => 'Als eigenaar van deze ruimte  kunt u deze rol overdragen naar een andere administrator in deze ruimte.',
@@ -53,7 +54,6 @@ return array (
   'Unarchive' => 'Dearchiveer',
   'e.g. example for {baseUrl}/s/example' => 'Dat is bijvoorbeeld voor {baseUrl}/s/voorbeeld',
   'never' => 'nooit',
-  'space description' => 'Ruimte beschrijving',
   'the default start page of this space for members' => 'De standaard startpagina voor leden van deze ruimte.',
   'the default start page of this space for visitors' => 'De standaard startpagina voor bezoekers van deze ruimte.',
 );

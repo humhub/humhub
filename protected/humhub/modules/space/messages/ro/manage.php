@@ -18,7 +18,9 @@
  */
 return [
     '<strong>Security</strong> settings' => 'Securitate',
+    'Actions' => 'Acțiuni',
     'Delete' => 'Șterge',
+    'Members' => 'Membri',
     'Modules' => 'App',
     'Next' => 'Inainte',
     'Security' => 'Securitate',
@@ -29,11 +31,11 @@ return [
     '<strong>Members</strong>' => '',
     '<strong>Space</strong> Modules' => '',
     '<strong>Space</strong> settings' => '',
-    'Actions' => '',
     'Activated' => '',
     'Add <strong>Modules</strong>' => '',
     'Advanced access settings' => '',
     'Archive' => '',
+    'Are you sure you want to remove this member.' => '',
     'Are you sure, that you want to delete this space? All published content will be removed!' => '',
     'Are you sure? *ALL* module data for this space will be deleted!' => '',
     'As owner of this space you can transfer this role to another administrator in space.' => '',
@@ -49,7 +51,6 @@ return [
     'Enhance this space with modules.' => '',
     'Hide posts on dashboard' => '',
     'Invited By' => '',
-    'Members' => '',
     'Owner' => '',
     'Pending Approvals' => '',
     'Pending Invites' => '',
@@ -70,7 +71,6 @@ return [
     'Transfer ownership' => '',
     'e.g. example for {baseUrl}/s/example' => '',
     'never' => '',
-    'space description' => '',
     'the default start page of this space for members' => '',
     'the default start page of this space for visitors' => '',
 ];

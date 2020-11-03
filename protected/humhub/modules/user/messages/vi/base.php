@@ -69,6 +69,7 @@ return [
     'Sign up' => 'Đăng ký',
     'Sign up now' => 'Đăng ký ngay',
     'Sort order' => 'Thứ tự sắp xếp',
+    'Source' => 'Nguồn',
     'Space ID' => 'ID diễn đàn',
     'Status' => 'Trạng thái',
     'Tags' => 'Thẻ',
@@ -94,7 +95,7 @@ return [
     'invited you to join {name}.' => 'đã mời bạn tham gia {name}.',
     'invited you to join {space} on {name}.' => 'đã mời bạn tham gia diễn đàn {space} trên {name}.',
     'or' => 'hoặc',
+    'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show all content' => '',
-    'Source' => '',
 ];

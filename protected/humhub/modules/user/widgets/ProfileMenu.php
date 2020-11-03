@@ -50,7 +50,7 @@ class ProfileMenu extends LeftNavigation
         if (!$module->profileDisableStream) {
             $this->addEntry(new MenuLink([
                 'label' => Yii::t('UserModule.profile', 'Stream'),
-                'icon' => 'bars',
+                'icon' => 'stream',
                 'url' => $this->user->createUrl('//user/profile/home'),
                 'sortOrder' => 200,
                 'isActive' => MenuLink::isActiveState('user', 'profile', ['index', 'home'])
@@ -59,7 +59,7 @@ class ProfileMenu extends LeftNavigation
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.profile', 'About'),
-            'icon' => 'info-circle',
+            'icon' => 'about',
             'url' => $this->user->createUrl('/user/profile/about'),
             'sortOrder' => 300,
             'isActive' => MenuLink::isActiveState('user', 'profile', 'about'),

@@ -56,6 +56,18 @@ return array (
   'Group not found!' => 'グループが見つかりません！',
   'Group user not found!' => 'グループユーザーが見つかりません！',
   'Groups' => 'グループ',
+  'Hello {displayName},<br><br>
+Your account has been activated.<br><br>
+Click here to login:<br>
+{loginLink}<br><br>
+
+Kind Regards<br>
+{AdminName}<br><br>' => 'こんにちは{displayName}、<br><br>アカウントがアクティブ化されました。<br><br>ログインするにはここをクリックしてください：<br> {loginLink} <br><br>よろしくお願いします<br> {AdminName} <br><br>',
+  'Hello {displayName},<br><br>
+Your account request has been declined.<br><br>
+
+Kind Regards<br>
+{AdminName} <br><br> ' => 'こんにちは{displayName}、<br><br>アカウントリクエストは拒否されました。<br><br>よろしくお願いいたします。<br> {AdminName} <br><br>',
   'Here you can create or edit profile categories and fields.' => 'ここでは、プロフィールのカテゴリや設定を作成・編集できます。',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'このオプションが選択されていない場合、スペースの所有権がアカウントに転送されます。',
   'Impersonate' => '代替ログイン',

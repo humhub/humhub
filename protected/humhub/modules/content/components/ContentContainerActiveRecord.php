@@ -155,6 +155,24 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     }
 
     /**
+     * Compares this container with the given $container instance. If the $container is null this function will always
+     * return false. Null values are accepted in order to safely enable calls as `$user->is(Yii::$app->user->getIdentity())`
+     * which would otherwise fail in case of guest users.
+     *
+     * @param ContentContainerActiveRecord|null $container
+     * @return bool
+     * @since 1.7
+     */
+    public function is(ContentContainerActiveRecord $container = null)
+    {
+        if (!$container || !($container instanceof self)) {
+            return false;
+        }
+
+        return $container->contentcontainer_id === $this->contentcontainer_id;
+    }
+
+    /**
      * @inheritdoc
      */
     public function afterSave($insert, $changedAttributes)

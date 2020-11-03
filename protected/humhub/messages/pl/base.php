@@ -26,6 +26,7 @@ return array (
   'Copy to clipboard' => 'Kopiuj do schowka',
   'Could not find content of addon!' => 'Nie znaleziono zawartości dodatku!',
   'Could not find requested page.' => 'Nie znaleziono strony.',
+  'Database connection time: {dbTime} - Configured time zone: {time}' => 'Czas połączenia z bazą danych: {dbTime} - Ustawiona strefa czasowa: {time}',
   'Default' => 'Domyślny',
   'Delete' => 'Usuń',
   'Deny' => 'Odmów',

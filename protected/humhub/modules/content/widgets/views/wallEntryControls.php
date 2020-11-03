@@ -2,8 +2,9 @@
 
 use humhub\libs\Html;
 use humhub\modules\content\widgets\LegacyWallEntryControlLink;
+use humhub\modules\ui\icon\widgets\Icon;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $menu \humhub\modules\ui\menu\widgets\DropdownMenu */
 /* @var $entries \humhub\modules\ui\menu\MenuEntry[] */
 /* @var $options [] */
@@ -13,7 +14,7 @@ use humhub\modules\content\widgets\LegacyWallEntryControlLink;
     <li class="dropdown ">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"
            aria-label="<?= Yii::t('base', 'Toggle stream entry menu'); ?>" aria-haspopup="true">
-            <i class="fa fa-angle-down"></i>
+            <?= Icon::get('dropdownToggle') ?>
         </a>
 
         <ul class="dropdown-menu pull-right">

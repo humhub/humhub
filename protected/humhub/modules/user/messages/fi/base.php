@@ -69,6 +69,7 @@ return [
     'Sign up' => 'Rekistyröidy',
     'Sign up now' => 'Rekisteröidy nyt',
     'Sort order' => 'Lajittelujärjestys',
+    'Source' => 'Lähdekoodi',
     'Space ID' => 'Sivun ID',
     'Status' => 'Tila',
     'Tags' => 'Tägit',
@@ -94,7 +95,7 @@ return [
     'invited you to join {name}.' => 'kutsui sinut liittymään {name}',
     'invited you to join {space} on {name}.' => 'kutsui sinut liittymään {space} {name}.',
     'or' => 'tai',
+    'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show all content' => '',
-    'Source' => '',
 ];

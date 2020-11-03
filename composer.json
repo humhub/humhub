@@ -13,7 +13,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.0.0",
+        "php": ">=7.1",
         "ext-exif": "*",
         "ext-zip": "*",
         "cebe/markdown": "1.0.2",
@@ -22,6 +22,10 @@
         "firebase/php-jwt": "^5.0",
         "jbroadway/urlify": "^1.0",
         "kartik-v/yii2-widgets": "*",
+        "laminas/laminas-escaper": "^2.6",
+        "laminas/laminas-http": "^2.13",
+        "laminas/laminas-ldap": "^2.10",
+        "matthewbdaly/zendsearch": "^0.0.3",
         "mistic100/randomcolor": "^1.0",
         "npm-asset/animate.css": "*",
         "npm-asset/at.js": "^1.5.1",
@@ -30,7 +34,7 @@
         "npm-asset/blueimp-gallery": "2.36.0",
         "npm-asset/bootstrap-markdown": "2.10.*",
         "npm-asset/bootstrap-tour": "0.11.0",
-        "npm-asset/clipboard-polyfill": "*",
+        "npm-asset/clipboard-polyfill": "3.0.*",
         "npm-asset/font-awesome": "^4.7.0",
         "npm-asset/humhub-prosemirror-richtext": "1.0.26",
         "npm-asset/imagesloaded": "*",
@@ -47,7 +51,6 @@
         "npm-asset/socket.io-client": "^2.0",
         "npm-asset/swiped-events": "1.0.9",
         "npm-asset/timeago": "^1.6.3",
-        "nqxcode/zendsearch": "^2.0",
         "phpoffice/phpspreadsheet": "^1.0",
         "raoul2000/yii2-jcrop-widget": "*",
         "twig/twig": "^1.0",
@@ -60,9 +63,9 @@
         "yiisoft/yii2-jui": "~2.0.0",
         "yiisoft/yii2-queue": "~2.3.0",
         "yiisoft/yii2-redis": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0",
-        "zendframework/zend-http": "*",
-        "zendframework/zend-ldap": "^2.5"
+        "yiisoft/yii2-swiftmailer": "~2.0.0"
+    },
+    "replace": {
     },
     "require-dev": {
         "codeception/codeception": "^4.0",
@@ -73,6 +76,7 @@
         "codeception/specify": "^1.0",
         "codeception/verify": "~0.5.0 || ~1.1.0",
         "symfony/browser-kit": ">=2.7 <=4.2.4",
+        "phpcompatibility/php-compatibility": "*",
         "yiisoft/yii2-debug": "~2.1.0",
         "yiisoft/yii2-faker": "~2.0.0",
         "yiisoft/yii2-gii": "~2.1.0"
@@ -85,14 +89,15 @@
     ],
     "config": {
         "process-timeout": 1800,
-        "platform": {
-            "php": "7.0"
-        },
         "vendor-dir": "protected/vendor",
         "sort-packages": true,
         "fxp-asset": {
             "enabled": false
-        }
+        },
+        "platform-check": false,
+	"platform": {
+	    "php": "7.1"
+	}
     },
     "scripts": {
         "post-create-project-cmd": [

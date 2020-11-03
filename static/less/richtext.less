@@ -14,12 +14,12 @@
         max-height: none !important;
     }
 
-  .ProseMirror {
-    position:static;
-    overflow:auto;
-    height: 100%;
-    height: calc(100% - 26px);
-  }
+    .ProseMirror {
+        position: static;
+        overflow: auto;
+        height: 100%;
+        height: calc(100% - 26px);
+    }
 
     .ProseMirror-menubar {
         position: static !important;
@@ -280,11 +280,11 @@
         -moz-box-sizing: border-box;
         box-sizing: border-box;
         overflow: visible;
-        margin-top: -26px;
+        margin-top: -25px;
         background: white;
-        border: 1px solid @background3;
+        border: 1px solid @text-color-soft2;
         border-bottom: 0;
-        border-top: 2px solid @background3;
+        border-top: 1px solid @text-color-soft2;
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
         float: left;
@@ -293,7 +293,7 @@
 
     @-moz-document url-prefix() {
         .ProseMirror-menubar {
-            margin-top: -27px;
+            margin-top: -26px;
         }
     }
 }
@@ -460,7 +460,7 @@
     }
 
     .ProseMirror [data-mention] {
-        color: @info
+        color: @link
     }
 
     .ProseMirror {
@@ -650,15 +650,27 @@
 [data-ui-richtext] {
     overflow-x: auto;
     overflow-wrap: break-word;
+
     a {
-        color: @info
+        color: @link
     }
 }
 
 @media screen and (max-width: 768px) {
+
     .ProsemirrorEditor.focusMenu {
+        .form-control:focus {
+            border-top-right-radius: 0 !important;
+        }
         .ProseMirror-menubar {
             min-height: 1em;
+            margin-top: 0;
+        }
+    }
+
+    .ProsemirrorEditor.focusMenu {
+        .humhub-ui-richtext {
+            margin-top: 0;
         }
     }
 }

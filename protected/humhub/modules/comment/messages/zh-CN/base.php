@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => '<strong>确认</strong> 删除评论',
-    'Access denied!' => '禁止访问',
     'Cancel' => '取消',
     'Cancel Edit' => '取消编辑',
     'Comment' => '评论',
@@ -28,17 +27,16 @@ return [
     'Do you really want to delete this comment?' => '你真的想删除这条评论？',
     'Edit' => '编辑',
     'Edit your comment...' => '编辑你的评论...',
-    'Insufficent permissions!' => '权限不足！',
     'Read full comment...' => '阅读完整的评论...',
     'Send' => '发 送',
-    'Show all {total} comments.' => '显示所有 {total} 条评论',
+    'Show all {total} comments' => '显示所有 {total} 条评论',
     'Show {count} more comments' => '再展示 {count} 条评论',
     'Whenever a new comment was written.' => '每当一个新的评论被书写',
     'Write a new comment...' => '写新评论...',
     'comment' => '评论',
     '{displayName} wrote a new comment ' => '{displayName} 发表了一条新评论 ',
+    'Comment could not be saved!' => '',
     'Reply' => '',
     'The comment must not be empty!' => '',
     'Write a new reply...' => '',
-    'You are not allowed to comment.' => '',
 ];

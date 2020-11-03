@@ -77,17 +77,22 @@ label.control-label {
 }
 
 // Placeholder text
+
+::placeholder {
+    color: @text-color-soft3 !important;
+}
+
 ::-webkit-input-placeholder {
-    color: @text-color-soft !important;
+    color: @text-color-soft3 !important;
 }
 
 ::-moz-placeholder {
-    color: @text-color-soft !important;
+    color: @text-color-soft3 !important;
 }
 
 /* firefox 19+ */
 :-ms-input-placeholder {
-    color: @text-color-soft !important;
+    color: @text-color-soft3 !important;
 }
 
 /* hide native password reveal icons */

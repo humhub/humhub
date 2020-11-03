@@ -41,6 +41,7 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
 
     StreamRequest.prototype.initOptions = function(options) {
         this.contentId = this.options.contentId;
+        this.viewContext = this.options.viewContext;
         this.loader = object.defaultValue(this.options.loader, !object.isDefined(this.options.insertAfter));
         this.url = object.defaultValue(this.options.url, this.stream.options.stream);
         this.limit = object.defaultValue(this.options.limit, this.stream.options.loadCount);
@@ -122,6 +123,10 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
                 data[this.buildRequestDataKey('to')] = this.to;
             }
             data[this.buildRequestDataKey('limit')] = this.limit;
+        }
+
+        if(this.viewContext) {
+            data['viewContext'] = this.viewContext;
         }
 
         data[this.buildRequestDataKey('contentId')] = this.contentId;

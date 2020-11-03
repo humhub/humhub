@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => '<strong>Επιβεβαίωση strong&gt; σχόλιο διαγραφής</strong>',
-    'Access denied!' => 'Η πρόσβαση απορρίφθηκε!',
     'Cancel' => 'Ακύρωση',
     'Cancel Edit' => 'Ακύρωση επεξεργασίας',
     'Comment' => 'Σχόλιο',
@@ -28,17 +27,16 @@ return [
     'Do you really want to delete this comment?' => 'Θέλετε πραγματικά να διαγράψετε αυτό το σχόλιο;',
     'Edit' => 'Επεξεργασία',
     'Edit your comment...' => 'Επεξεργασία σχολίου ...',
-    'Insufficent permissions!' => 'Ανεπαρκή δικαιώματα!',
     'Read full comment...' => 'Διαβάστε το πλήρες σχόλιο ...',
     'Send' => 'Στείλε',
-    'Show all {total} comments.' => 'Εμφάνιση όλων των {total} σχολίων.',
+    'Show all {total} comments' => 'Εμφάνιση όλων των {total} σχολίων',
     'Show {count} more comments' => 'Εμφάνιση {count} επιπλέον σχολίων',
     'The comment must not be empty!' => 'Το σχόλιο δεν πρέπει να είναι κενό!',
     'Whenever a new comment was written.' => 'Κάθε φορά που γράφετε ένα νέο σχόλιο.',
     'Write a new comment...' => 'Γράψτε νέο σχόλιο ...',
-    'You are not allowed to comment.' => 'Δεν επιτρέπεται να σχολιάσετε.',
     'comment' => 'Σχόλιο',
     '{displayName} wrote a new comment ' => '{displayName} έγραψε ένα νέο σχόλιο',
+    'Comment could not be saved!' => '',
     'Reply' => '',
     'Write a new reply...' => '',
 ];

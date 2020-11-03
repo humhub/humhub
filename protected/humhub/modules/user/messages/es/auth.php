@@ -42,6 +42,7 @@ return array (
   'Reset password' => 'Reiniciar contraseña',
   'Sign in' => 'Iniciar sesión',
   'To log in with your new account, click the button below.' => 'Para iniciar sesión con tu nueva cuenta, haz clic en el botón de abajo.',
+  'User or Password incorrect.' => 'Usuario o contraseña incorrectos.',
   'We’ve sent you an email containing a link that will allow you to reset your password.' => 'Te hemos enviado un correo electrónico que contiene un enlace que te permitirá reiniciar tu contraseña.',
   'Your email' => 'tu correo electrónico',
   'Your password' => 'Tu clave',

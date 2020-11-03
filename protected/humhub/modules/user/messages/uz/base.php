@@ -57,6 +57,7 @@ return [
     'No users found.' => '',
     'Notifications' => '',
     'Password' => '',
+    'Password needs to be at least {chars} characters long.' => '',
     'Permission' => '',
     'Profile' => '',
     'Profile posts only' => '',

@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => '<strong>Konfimasi</strong> menghapus komentar',
-    'Access denied!' => 'Akses ditolak!',
     'Cancel' => 'Batal',
     'Cancel Edit' => 'Batal Ubah',
     'Comment' => 'Komentar',
@@ -28,17 +27,16 @@ return [
     'Do you really want to delete this comment?' => 'Apakah anda yakin ingin menghapus komentar ini?',
     'Edit' => 'Ubah',
     'Edit your comment...' => 'Ubah komentar anda...',
-    'Insufficent permissions!' => 'Izin tidak memadai!',
     'Read full comment...' => 'Baca full komentar..',
     'Send' => 'Kirim',
-    'Show all {total} comments.' => 'Lihat semua {total} komentar.',
+    'Show all {total} comments' => 'Lihat semua {total} komentar',
     'Show {count} more comments' => 'Lihat {count} komentar lainnya',
     'The comment must not be empty!' => 'Komentar tidak boleh kosong',
     'Whenever a new comment was written.' => 'Kapanpun sebuah komentar baru telah ditulis',
     'Write a new comment...' => 'Tulis komentar baru...',
-    'You are not allowed to comment.' => 'Anda tidak diizinkan berkomentar',
     'comment' => 'Komentar',
     '{displayName} wrote a new comment ' => '{displayName} menulis komentar baru',
+    'Comment could not be saved!' => '',
     'Reply' => '',
     'Write a new reply...' => '',
 ];

@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => '<strong>Apstiprini</strong> komentāra dzēšanu',
-    'Access denied!' => 'Pieeja liegta',
     'Cancel' => 'Atcelt',
     'Cancel Edit' => 'Atcelt rediģēšanu',
     'Comment' => 'Komentāri',
@@ -28,17 +27,16 @@ return [
     'Do you really want to delete this comment?' => 'Vai tiešām vēlies dzēst šo komentāru?',
     'Edit' => 'Rediģēt',
     'Edit your comment...' => 'Rediģēt savu komentāru...',
-    'Insufficent permissions!' => 'Nepietiekamas tiesības!',
     'Read full comment...' => 'Lasīt visu komentāru...',
     'Send' => 'Sūtīt',
-    'Show all {total} comments.' => 'Rādīt visus {total} komentārus.',
+    'Show all {total} comments' => 'Rādīt visus {total} komentārus',
     'Show {count} more comments' => 'Rādīt vēl {count} komentārus',
     'Whenever a new comment was written.' => 'Ikreiz, kad jauns komentārs tika uzrakstīts.',
     'Write a new comment...' => 'Rakstīt jaunu komentāru...',
     'comment' => 'komentārs',
     '{displayName} wrote a new comment ' => '{displayName} uzrakstīja jaunu komentāru',
+    'Comment could not be saved!' => '',
     'Reply' => '',
     'The comment must not be empty!' => '',
     'Write a new reply...' => '',
-    'You are not allowed to comment.' => '',
 ];

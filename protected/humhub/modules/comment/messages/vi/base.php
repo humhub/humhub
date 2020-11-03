@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => '<strong>Xác nhận</strong> xóa comment',
-    'Access denied!' => 'Từ chối truy cập!',
     'Cancel' => 'Hủy',
     'Cancel Edit' => 'Hủy chỉnh sửa',
     'Comment' => 'Comment',
@@ -28,17 +27,16 @@ return [
     'Do you really want to delete this comment?' => 'Bạn thực sự muốn xóa comment này?',
     'Edit' => 'Chỉnh sửa',
     'Edit your comment...' => 'Chỉnh sửa comment của bạn...',
-    'Insufficent permissions!' => 'Không đủ quyền!',
     'Read full comment...' => 'Đọc toàn bộ nội dung comment...',
     'Send' => 'Gửi',
-    'Show all {total} comments.' => 'Hiển thị toàn bộ {total} comments.',
+    'Show all {total} comments' => 'Hiển thị toàn bộ {total} comments',
     'Show {count} more comments' => 'Hiển thị thêm {count} comments',
     'The comment must not be empty!' => 'Bình luận không được phép rỗng!',
     'Whenever a new comment was written.' => 'Bất kể khi nào một comment mới được viết',
     'Write a new comment...' => 'Viết bình luận mới...',
-    'You are not allowed to comment.' => 'Bạn không có quyền bình luận.',
     'comment' => 'bình luận',
     '{displayName} wrote a new comment ' => '{displayName} đã viết bình luận mới',
+    'Comment could not be saved!' => '',
     'Reply' => '',
     'Write a new reply...' => '',
 ];

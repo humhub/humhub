@@ -350,8 +350,13 @@ humhub.module('file', function (module, require, $) {
 
         var that = this;
         $.each(files, function (i, file) {
-            that.add(file);
+            that.add(file)
         });
+
+        // Note we are not using :visible since the preview itself may not visible on init
+        if(!this.$.find('.file-preview-item:not(.hiddenFile)').length) {
+            this.$.hide();
+        }
     };
 
     Preview.prototype.getFileCount = function () {
@@ -393,20 +398,26 @@ humhub.module('file', function (module, require, $) {
                     }
                 });
             }
-        };
+        }
 
         var that = this;
         $file.find('.file_upload_remove_link').on('click', function () {
             that.delete(file);
         });
 
-        if(!(this.isImage(file) && this.options.hideImageFileInfo)) {
+        if(!(this.isMedia(file) && this.options.excludeMediaFilesPreview)) {
             $file.fadeIn();
+        } else {
+            $file.addClass('hiddenFile');
         }
     };
 
     Preview.prototype.isImage = function (file) {
         return file.mimeIcon === 'mime-image';
+    };
+
+    Preview.prototype.isMedia = function (file) {
+        return ['mime-image', 'mime-video', 'mime-audio'].includes(file.mimeIcon);
     };
 
     Preview.prototype.getTemplate = function (file) {
@@ -492,10 +503,10 @@ humhub.module('file', function (module, require, $) {
     };
 
     Preview.template = {
-        root: '<ul class="files" style="list-style:none; margin:0;padding:0"></ul>',
-        file_edit: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content">{name}&nbsp;&nbsp;<span class="file_upload_remove_link" data-ui-loader><i class="fa fa-trash-o"></i>&nbsp;</span></li>',
-        file: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content"><span class="{highlight}">{openLink}</span><span class="time file-fileInfo" style="padding-right: 20px;"> - {size_format}</span></li>',
-        file_image: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" style="padding-left:24px;display:none;"><span class="file-preview-content {highlight}">{openLink}<span class="time file-fileInfo" style="padding-right: 20px;"> - {size_format}</span></li>',
+        root: '<ul class="files"></ul>',
+        file_edit: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" ><span class="file-preview-content">{name}&nbsp;&nbsp;<span class="file_upload_remove_link" data-ui-loader><i class="fa fa-trash-o"></i>&nbsp;</span></li>',
+        file: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}"><span class="file-preview-content"><span class="{highlight}">{openLink}</span><span class="time file-fileInfo"> - {size_format}</span></li>',
+        file_image: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}"><span class="file-preview-content {highlight}">{openLink}<span class="time file-fileInfo"> - {size_format}</span></li>',
         popover: '<img alt="{name}" src="{thumbnailUrl}" />'
     };
 

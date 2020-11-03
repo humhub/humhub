@@ -42,6 +42,7 @@ return array (
   'Reset password' => 'Passwort zurücksetzen',
   'Sign in' => 'Einloggen',
   'To log in with your new account, click the button below.' => 'Um dich mit deinem neuen Benutzerkonto einzuloggen, klicke unten auf den Button.',
+  'User or Password incorrect.' => 'Benutzername oder Passwort inkorrekt',
   'We’ve sent you an email containing a link that will allow you to reset your password.' => 'Wir haben dir eine E-Mail mit einem Link geschickt, mit dem du dein Passwort zurücksetzen kannst.',
   'Your email' => 'Deine E-Mail',
   'Your password' => 'Dein Passwort',

@@ -17,20 +17,19 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Access denied!' => 'アクセスが拒否されました！',
     'Cancel' => 'キャンセル',
     'Cancel Edit' => '編集を中止',
     'Comment' => 'コメント',
     'Comments' => 'コメント',
     'Delete' => '削除',
     'Edit' => '編集',
-    'Insufficent permissions!' => '権限が不十分です！',
     'Send' => '送信',
-    'Show all {total} comments.' => '合計{total}コメントを、すべて表示します。',
+    'Show all {total} comments' => '合計{total}コメントを、すべて表示します。',
     'Write a new comment...' => '新規コメントを書く...',
     'comment' => 'コメント',
     '{displayName} wrote a new comment ' => '{displayName}さんが新しいコメントを書きました ',
     '<strong>Confirm</strong> comment deleting' => '',
+    'Comment could not be saved!' => '',
     'Comment has been deleted' => '',
     'Do you really want to delete this comment?' => '',
     'Edit your comment...' => '',
@@ -40,5 +39,4 @@ return [
     'The comment must not be empty!' => '',
     'Whenever a new comment was written.' => '',
     'Write a new reply...' => '',
-    'You are not allowed to comment.' => '',
 ];

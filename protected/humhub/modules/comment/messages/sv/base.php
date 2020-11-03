@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => '<strong>Bekräfta</strong> borttagning av kommentar',
-    'Access denied!' => 'Tillträde nekas!',
     'Cancel' => 'Avbryt',
     'Cancel Edit' => 'Radera ändring',
     'Comment' => 'Kommentar',
@@ -28,17 +27,16 @@ return [
     'Do you really want to delete this comment?' => 'Vill du verkligen ta bort kommentaren?',
     'Edit' => 'Ändra',
     'Edit your comment...' => 'Redigera din kommentar...',
-    'Insufficent permissions!' => 'Otillräckliga rättigheter!',
     'Read full comment...' => 'Läs hela kommentaren...',
     'Send' => 'Skicka',
-    'Show all {total} comments.' => 'Visa alla {total} kommentarer.',
+    'Show all {total} comments' => 'Visa alla {total} kommentarer',
     'Show {count} more comments' => 'Visa {count} fler kommentarer',
     'The comment must not be empty!' => 'Kommentaren kan inte vara tom!',
     'Whenever a new comment was written.' => 'När en kommentar var skriven.',
     'Write a new comment...' => 'Skriv en ny kommentar...',
-    'You are not allowed to comment.' => 'Du har inte rättighet att kommentera.',
     'comment' => 'Kommentar',
     '{displayName} wrote a new comment ' => '{displayName} skrev en kommentar',
+    'Comment could not be saved!' => '',
     'Reply' => '',
     'Write a new reply...' => '',
 ];

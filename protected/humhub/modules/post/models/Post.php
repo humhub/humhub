@@ -10,6 +10,7 @@ namespace humhub\modules\post\models;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\post\permissions\CreatePost;
+use humhub\modules\post\widgets\WallEntry;
 use Yii;
 use humhub\libs\MarkdownPreview;
 use humhub\modules\content\widgets\richtext\RichText;
@@ -33,7 +34,7 @@ class Post extends ContentActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
-    public $wallEntryClass = 'humhub\modules\post\widgets\WallEntry';
+    public $wallEntryClass = WallEntry::class;
 
     /**
      * @inheritdoc

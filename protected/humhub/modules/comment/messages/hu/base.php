@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => 'Biztosan <strong>törölni akarod</strong> a hozzászólást?',
-    'Access denied!' => 'Nincs hozzáférésed!',
     'Cancel' => 'Mégsem',
     'Cancel Edit' => 'Szerkesztés visszavonása',
     'Comment' => 'Hozzászólás',
@@ -28,17 +27,16 @@ return [
     'Do you really want to delete this comment?' => 'Valóban törölni akarod ezt a hozzászólást?',
     'Edit' => 'Szerkesztés',
     'Edit your comment...' => 'Hozzászólásod szerkesztése...',
-    'Insufficent permissions!' => 'Elégtelen jogosultságok!',
     'Read full comment...' => 'Az egész hozzászólás megtekintése...',
     'Send' => 'Mehet',
-    'Show all {total} comments.' => 'Mind a(z) {total} hozzászólás megtekintése.',
+    'Show all {total} comments' => 'Mind a(z) {total} hozzászólás megtekintése',
     'Show {count} more comments' => 'Még {count} hozzászólás megjelenítése',
     'The comment must not be empty!' => 'A hozzászólás nem lehet üres!',
     'Whenever a new comment was written.' => 'Amikor új hozzászólás érkezik.',
     'Write a new comment...' => 'Új hozzászólás...',
-    'You are not allowed to comment.' => 'Nem engedélyezett számodra a kommentelés.',
     'comment' => 'hozzászólás',
     '{displayName} wrote a new comment ' => '{displayName} hozzászólt',
+    'Comment could not be saved!' => '',
     'Reply' => '',
     'Write a new reply...' => '',
 ];

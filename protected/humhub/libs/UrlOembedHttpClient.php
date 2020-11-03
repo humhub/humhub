@@ -25,8 +25,8 @@ class UrlOembedHttpClient implements UrlOembedClient
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_TIMEOUT, 15);
 
-        // Not available when open_basedir or safe_mode is set.
-        if (!function_exists('ini_get') || !ini_get('open_basedir') || !ini_get('safe_mode')) {
+        // Not available when open_basedir is set.
+        if (!function_exists('ini_get') || !ini_get('open_basedir')) {
             curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         }
 

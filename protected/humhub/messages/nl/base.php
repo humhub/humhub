@@ -26,6 +26,7 @@ return array (
   'Copy to clipboard' => 'Kopieer naar klembord',
   'Could not find content of addon!' => 'Kan de inhoud van deze addon niet vinden!',
   'Could not find requested page.' => 'Kan de opgevraagde pagina niet vinden.',
+  'Database connection time: {dbTime} - Configured time zone: {time}' => 'Database verbindingstijd: {dbTime} - in tijdzone: {time}',
   'Default' => 'Standaard',
   'Delete' => 'Verwijder',
   'Deny' => 'Weigeren',

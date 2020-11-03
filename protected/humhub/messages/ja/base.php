@@ -26,6 +26,7 @@ return array (
   'Copy to clipboard' => 'クリップボードにコピー',
   'Could not find content of addon!' => 'アドオンのコンテンツを見つけることができませんでした！',
   'Could not find requested page.' => '要求されたページが見つかりませんでした。',
+  'Database connection time: {dbTime} - Configured time zone: {time}' => 'データベース接続時間：{dbTime}-構成されたタイムゾーン：{time}',
   'Default' => 'デフォルト',
   'Delete' => '削除',
   'Deny' => '拒否',

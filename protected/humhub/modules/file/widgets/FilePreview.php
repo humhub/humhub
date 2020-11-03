@@ -15,7 +15,7 @@ use humhub\modules\search\controllers\SearchController;
 use humhub\modules\file\converter\TextConverter;
 
 /**
- * 
+ *
  * @package humhub.modules_core.file.widgets
  * @since 1.2
  */
@@ -43,9 +43,9 @@ class FilePreview extends JsWidget
     public $attribute;
 
     /**
-     * @var bool weather or not to hide image files
+     * @var bool weather or not to hide media files
      */
-    public $hideImageFileInfo = false;
+    public $excludeMediaFilesPreview = false;
 
     /**
      * @var bool weather or not the file previe is editable
@@ -94,7 +94,14 @@ class FilePreview extends JsWidget
             'prevent-popover' => $this->preventPopover,
             'popover-position' => $this->popoverPosition,
             'file-edit' => $this->edit,
-            'hide-image-file-info' => $this->hideImageFileInfo
+            'exclude-media-files-preview' => (int) $this->excludeMediaFilesPreview
+        ];
+    }
+
+    public function getAttributes()
+    {
+        return [
+            'class' => 'well post-file-list'
         ];
     }
 
@@ -143,7 +150,7 @@ class FilePreview extends JsWidget
 
     /**
      * Checks whether the file should be highlighed in the results or not.
-     * 
+     *
      * @param File $file
      * @return boolean is highlighed
      */

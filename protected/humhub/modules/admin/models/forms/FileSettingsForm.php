@@ -6,6 +6,13 @@ use Yii;
 
 /**
  * FileSettingsForm
+ * @property integer $maxFileSize
+ * @property integer $maxPreviewImageWidth
+ * @property integer $maxPreviewImageHeight
+ * @property integer $excludeMediaFilesPreview Exclude media files from stream attachment list
+ * @property integer $useXSendfile
+ * @property string $allowedExtensions
+ *
  * @since 0.5
  */
 class FileSettingsForm extends \yii\base\Model
@@ -14,7 +21,7 @@ class FileSettingsForm extends \yii\base\Model
     public $maxFileSize;
     public $maxPreviewImageWidth;
     public $maxPreviewImageHeight;
-    public $hideImageFileInfo;
+    public $excludeMediaFilesPreview;
     public $useXSendfile;
     public $allowedExtensions;
 
@@ -30,7 +37,7 @@ class FileSettingsForm extends \yii\base\Model
         $this->maxFileSize = $settingsManager->get('maxFileSize') / 1024 / 1024;
         $this->maxPreviewImageWidth = $settingsManager->get('maxPreviewImageWidth');
         $this->maxPreviewImageHeight = $settingsManager->get('maxPreviewImageHeight');
-        $this->hideImageFileInfo = $settingsManager->get('hideImageFileInfo');
+        $this->excludeMediaFilesPreview = $settingsManager->get('excludeMediaFilesPreview');
         $this->useXSendfile = $settingsManager->get('useXSendfile');
         $this->allowedExtensions = $settingsManager->get('allowedExtensions');
     }
@@ -42,7 +49,7 @@ class FileSettingsForm extends \yii\base\Model
     {
         return [
             [['allowedExtensions'], 'match', 'pattern' => '/^[A-Za-z0-9_,]+$/u'],
-            [['maxFileSize', 'useXSendfile', 'maxPreviewImageWidth', 'maxPreviewImageHeight', 'hideImageFileInfo'], 'integer'],
+            [['maxFileSize', 'useXSendfile', 'maxPreviewImageWidth', 'maxPreviewImageHeight', 'excludeMediaFilesPreview'], 'integer'],
         ];
     }
 
@@ -56,7 +63,7 @@ class FileSettingsForm extends \yii\base\Model
             'useXSendfile' => Yii::t('AdminModule.settings', 'Use X-Sendfile for File Downloads'),
             'maxPreviewImageWidth' => Yii::t('AdminModule.settings', 'Maximum preview image width (in pixels, optional)'),
             'maxPreviewImageHeight' => Yii::t('AdminModule.settings', 'Maximum preview image height (in pixels, optional)'),
-            'hideImageFileInfo' => Yii::t('AdminModule.settings', 'Hide file info (name, size) for images on wall'),
+            'excludeMediaFilesPreview' => Yii::t('AdminModule.settings', 'Exclude media files from stream attachment list'),
             'allowedExtensions' => Yii::t('AdminModule.settings', 'Allowed file extensions'),
         ];
     }
@@ -73,7 +80,7 @@ class FileSettingsForm extends \yii\base\Model
         $settingsManager->set('maxFileSize', $this->maxFileSize * 1024 * 1024);
         $settingsManager->set('maxPreviewImageWidth', $this->maxPreviewImageWidth);
         $settingsManager->set('maxPreviewImageHeight', $this->maxPreviewImageHeight);
-        $settingsManager->set('hideImageFileInfo', $this->hideImageFileInfo);
+        $settingsManager->set('excludeMediaFilesPreview', $this->excludeMediaFilesPreview);
         $settingsManager->set('useXSendfile', $this->useXSendfile);
         $settingsManager->set('allowedExtensions', strtolower($this->allowedExtensions));
 

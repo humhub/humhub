@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => '<strong>تایید</strong> حذف دیدگاه',
-    'Access denied!' => 'عدم دسترسی!',
     'Cancel' => 'انصراف',
     'Cancel Edit' => 'انصراف از ویرایش',
     'Comment' => 'دیدگاه',
@@ -28,17 +27,16 @@ return [
     'Do you really want to delete this comment?' => 'آیا واقعا می‌خواهید این دیدگاه را حذف کنید؟',
     'Edit' => 'ویرایش',
     'Edit your comment...' => 'دیدگاه خود را ویرایش کنید. . .',
-    'Insufficent permissions!' => 'مجوز ناکافی!',
     'Read full comment...' => 'خواندن همه‌ی دیدگاه...',
     'Send' => 'فرستادن',
-    'Show all {total} comments.' => 'نمایش همه‌ی {total} دیدگاه.',
+    'Show all {total} comments' => 'نمایش همه‌ی {total} دیدگاه.',
     'Show {count} more comments' => 'نمایش {count} دیدگاه بیشتر',
     'The comment must not be empty!' => 'دیدگاه نباید خالی باشد!',
     'Whenever a new comment was written.' => 'هرگاه که یک دیدگاه تازه نوشته شد.',
     'Write a new comment...' => 'یک دیدگاه جدید بنویسید. . .',
-    'You are not allowed to comment.' => 'شما مجاز به نظر دادن نیستید.',
     'comment' => 'دیدگاه',
     '{displayName} wrote a new comment ' => '{displayName} یک دیدگاه جدید نوشت',
+    'Comment could not be saved!' => '',
     'Reply' => '',
     'Write a new reply...' => '',
 ];

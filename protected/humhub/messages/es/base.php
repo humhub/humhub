@@ -26,6 +26,7 @@ return array (
   'Copy to clipboard' => 'Copiar al portapapeles',
   'Could not find content of addon!' => '¡No se pudo encontrar el contenido del complemento!',
   'Could not find requested page.' => 'No se ha encontrado la página solicitada',
+  'Database connection time: {dbTime} - Configured time zone: {time}' => 'Hora de conexión a la base de datos: {dbTime} - Zona horaria configurada: {time}',
   'Default' => 'Por Defecto',
   'Delete' => 'Borrar',
   'Deny' => 'Denegar',

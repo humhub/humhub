@@ -68,6 +68,7 @@ return [
     'Sign up' => 'Registrer deg',
     'Sign up now' => 'Registrer deg nå',
     'Sort order' => 'Sorteringsrekkefølge',
+    'Source' => 'Kilde',
     'Space ID' => 'Gruppe ID',
     'Status' => 'Status',
     'Tags' => 'Tags',
@@ -93,8 +94,8 @@ return [
     'invited you to join {space} on {name}.' => 'inviterer deg til å bli med i gruppen {space} på {name}.',
     'or' => 'eller',
     'Change Username' => '',
+    'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show all content' => '',
-    'Source' => '',
     'Username contains invalid characters.' => '',
 ];

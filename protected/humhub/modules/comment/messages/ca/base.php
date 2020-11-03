@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => '<strong>Confirma</strong> que vols esborrar el comentari',
-    'Access denied!' => 'S\'ha denegat l\'accés!',
     'Cancel' => 'Cancel·la',
     'Cancel Edit' => 'Cancel·lar edició',
     'Comment' => 'Comenta',
@@ -29,17 +28,16 @@ return [
     'Do you really want to delete this comment?' => 'Segur que vols esborrar aquest comentari?',
     'Edit' => 'Editar',
     'Edit your comment...' => 'Edita el teu comentari...',
-    'Insufficent permissions!' => 'No tens suficients privilegis!',
     'Read full comment...' => 'Llegir el comentari sencer',
     'Send' => 'Envia',
-    'Show all {total} comments.' => 'Mostra tots els {total} comentaris.',
+    'Show all {total} comments' => 'Mostra tots els {total} comentaris',
     'Show {count} more comments' => 'Vore els següents {count} comentaris',
     'Whenever a new comment was written.' => 'Un nou comentari per sempre fou escrit',
     'Write a new comment...' => 'Escriu un nou comentari...',
     'comment' => 'el comentari',
     '{displayName} wrote a new comment ' => '{displayName} ha comentat ',
+    'Comment could not be saved!' => '',
     'Reply' => '',
     'The comment must not be empty!' => '',
     'Write a new reply...' => '',
-    'You are not allowed to comment.' => '',
 ];

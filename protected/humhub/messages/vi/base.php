@@ -24,6 +24,7 @@ return [
     'Actions' => 'Hành động',
     'Add:' => 'Thêm:',
     'Administration' => 'Quản trị',
+    'All' => 'Tất cả',
     'Allow' => 'Cho phép',
     'An error occurred while handling your last action. (Handler not found).' => 'Có lỗi xảy ra khi xử lý (Không tìm thấy trình xử lý)',
     'An unexpected error occurred while loading the search result.' => 'Có lỗi xảy ra khi tải về kết quả tìm kiếm.',
@@ -96,6 +97,6 @@ return [
     'Upload' => 'Upload',
     'Upload file' => 'Upload tệp tin',
     'You are not allowed to run this action.' => 'Bạn không được phép thực thi hành động này.',
-    'All' => '',
+    'Database connection time: {dbTime} - Configured time zone: {time}' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',
 ];

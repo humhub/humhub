@@ -16,7 +16,7 @@ foreach (ProfileFieldCategory::find()->orderBy('sort_order')->all() as $category
 }
 
 $categoryItems[] = [
-    'label' => Icon::get('plus', [
+    'label' => Icon::get('add', [
         'htmlOptions' => [
             'title' => Yii::t('AdminModule.user', 'Add new category'),
             'class' => 'tt'

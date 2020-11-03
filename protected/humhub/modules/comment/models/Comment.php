@@ -57,7 +57,6 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     {
         return [
             [['message'], 'safe'],
-            [['message'], 'required'],
         ];
     }
 
@@ -290,5 +289,15 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         }
 
         return false;
+    }
+
+    /**
+     * TODO: Unify with Content::isUpdated() see https://github.com/humhub/humhub/pull/4380
+     * @returns boolean true if this comment has been updated, otherwise false
+     * @since 1.7
+     */
+    public function isUpdated()
+    {
+        return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
     }
 }

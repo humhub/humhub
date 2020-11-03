@@ -23,6 +23,8 @@ use yii\base\Exception;
  * These are always belongs to a Content object.
  *
  * Mandatory fields:
+ * - object_model
+ * - object_id
  * - created_by
  * - created_at
  * - updated_by

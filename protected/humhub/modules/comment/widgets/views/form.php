@@ -1,53 +1,61 @@
 <?php
 
+use humhub\modules\content\Module;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\ui\view\components\View;
 use humhub\widgets\Button;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\FilePreview;
+use humhub\modules\comment\models\Comment;
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this View */
 /* @var $objectModel string */
 /* @var $objectId integer */
+/* @var $model Comment */
 /* @var $id string unique object id */
 /* @var $isNestedComment boolean */
+/** @var Module $contentModule */
 
-/** @var \humhub\modules\content\Module $contentModule */
 $contentModule = Yii::$app->getModule('content');
 $submitUrl = Url::to(['/comment/comment/post']);
 
-$placeholder = ($isNestedComment) ? Yii::t('CommentModule.base', 'Write a new reply...') : Yii::t('CommentModule.base', 'Write a new comment...');
+$placeholder = ($isNestedComment)
+    ? Yii::t('CommentModule.base', 'Write a new reply...')
+    : Yii::t('CommentModule.base', 'Write a new comment...');
 
 // Hide the comment form for sub comments until the button is clicked
-$isHidden = ($objectModel === \humhub\modules\comment\models\Comment::class);
+$isHidden = ($objectModel === Comment::class);
 ?>
 
-<div id="comment_create_form_<?= $id; ?>" class="comment_create" data-ui-widget="comment.Form"
+<div id="comment_create_form_<?= $id ?>" class="comment_create" data-ui-widget="comment.Form"
      style="<?php if ($isHidden): ?>display:none<?php endif; ?>">
 
     <hr>
 
-    <?= Html::beginForm('#'); ?>
-    <?= Html::hiddenInput('objectModel', $objectModel); ?>
-    <?= Html::hiddenInput('objectId', $objectId); ?>
+    <?php $form = ActiveForm::begin(['action' => $submitUrl]) ?>
+
+    <?= Html::hiddenInput('objectModel', $objectModel) ?>
+    <?= Html::hiddenInput('objectId', $objectId) ?>
 
     <div class="comment-create-input-group">
-        <?= RichTextField::widget([
+        <?= $form->field($model, 'message')->widget(RichTextField::class, [
             'id' => 'newCommentForm_' . $id,
             'layout' => RichTextField::LAYOUT_INLINE,
             'pluginOptions' => ['maxHeight' => '300px'],
             'placeholder' => $placeholder,
-            'name' => 'message',
             'events' => [
                 'scroll-active' => 'comment.scrollActive',
                 'scroll-inactive' => 'comment.scrollInactive'
             ]
-        ]); ?>
+        ])->label(false) ?>
 
         <div class="comment-buttons">
             <?= UploadButton::widget([
                 'id' => 'comment_create_upload_' . $id,
+                'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
                 'options' => ['class' => 'main_comment_upload'],
                 'progress' => '#comment_create_upload_progress_' . $id,
                 'preview' => '#comment_create_upload_preview_' . $id,
@@ -67,7 +75,7 @@ $isHidden = ($objectModel === \humhub\modules\comment\models\Comment::class);
         'id' => 'comment_create_upload_preview_' . $id,
         'options' => ['style' => 'margin-top:10px'],
         'edit' => true
-    ]); ?>
+    ]) ?>
 
-    <?= Html::endForm(); ?>
+    <?php ActiveForm::end() ?>
 </div>

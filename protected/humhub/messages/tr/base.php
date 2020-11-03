@@ -24,6 +24,7 @@ return [
     'Actions' => 'Eylemler',
     'Add:' => 'Ekle:',
     'Administration' => 'Yönetim',
+    'All' => 'Hepsi',
     'Allow' => 'İzin ver',
     'An error occurred while handling your last action. (Handler not found).' => 'Son işleminiz gerçekleştirilirken bir hata oluştu. (İşleyici bulunamadı).',
     'An unexpected error occurred while loading the search result.' => 'Arama sonuçlarını yüklerken beklenmeyen bir hata oluştu.',
@@ -96,6 +97,6 @@ return [
     'Upload' => 'Yükle',
     'Upload file' => 'Dosya yükle',
     'You are not allowed to run this action.' => 'Bu işlemi yapmaya izniniz yok.',
-    'All' => '',
+    'Database connection time: {dbTime} - Configured time zone: {time}' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',
 ];

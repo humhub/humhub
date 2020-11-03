@@ -18,7 +18,6 @@
  */
 return [
     '<strong>Confirm</strong> comment deleting' => '<strong>Confirma</strong> que quiers borrar o comentario.',
-    'Access denied!' => 'Acceso denegado!',
     'Cancel' => 'Cancelar',
     'Cancel Edit' => 'Cancelar la edición',
     'Comment' => 'Comentar',
@@ -28,17 +27,16 @@ return [
     'Do you really want to delete this comment?' => 'Seguro que quiers borrar o comentario?',
     'Edit' => 'Editar',
     'Edit your comment...' => 'Editar comentario...',
-    'Insufficent permissions!' => 'Premisos insuficients!',
     'Read full comment...' => 'Leyer tot o comentario',
     'Send' => 'Ninviar',
-    'Show all {total} comments.' => 'Veyer totz os {total} comentarios.',
+    'Show all {total} comments' => 'Veyer totz os {total} comentarios',
     'Show {count} more comments' => 'Veyer {count} comentarios mas',
     'Whenever a new comment was written.' => 'Quan un comentario s\'ha publicau.',
     'Write a new comment...' => 'Escribir un nuevo comentario...',
     'comment' => 'Comentar',
     '{displayName} wrote a new comment ' => '{displayName} escribió un nuevo comentario.',
+    'Comment could not be saved!' => '',
     'Reply' => '',
     'The comment must not be empty!' => '',
     'Write a new reply...' => '',
-    'You are not allowed to comment.' => '',
 ];

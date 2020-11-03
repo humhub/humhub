@@ -70,4 +70,8 @@ class Invite extends BaseNotification
         ]);
     }
 
+    public function getUrl()
+    {
+        return $this->source->createUrl('/space/space/about');
+    }
 }

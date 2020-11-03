@@ -11,6 +11,7 @@ namespace humhub\components;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\file\components\FileManager;
+use yii\db\Expression;
 
 /**
  * Description of ActiveRecord
@@ -35,7 +36,7 @@ class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
     {
         if ($insert) {
             if ($this->hasAttribute('created_at') && $this->created_at == "") {
-                $this->created_at = new \yii\db\Expression('NOW()');
+                $this->created_at = date('Y-m-d G:i:s');
             }
 
             if (isset(Yii::$app->user) && $this->hasAttribute('created_by') && $this->created_by == "") {
@@ -44,13 +45,29 @@ class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
         }
 
         if ($this->hasAttribute('updated_at')) {
-            $this->updated_at = new \yii\db\Expression('NOW()');
+            $this->updated_at = date('Y-m-d G:i:s');
         }
         if (isset(Yii::$app->user) && $this->hasAttribute('updated_by')) {
             $this->updated_by = Yii::$app->user->id;
         }
 
         return parent::beforeSave($insert);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($this->hasAttribute('created_at') && $this->created_at instanceof Expression) {
+            $this->created_at = date('Y-m-d G:i:s');
+        }
+
+        if($this->hasAttribute('updated_at') && $this->updated_at instanceof Expression) {
+            $this->updated_at = date('Y-m-d G:i:s');
+        }
+
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
