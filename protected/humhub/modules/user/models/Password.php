@@ -35,6 +35,7 @@ class Password extends ActiveRecord
     public $newPassword;
     public $newPasswordConfirm;
     public $defaultAlgorithm = '';
+    public $mustChangePassword = 1;
 
     public function init()
     {
@@ -85,6 +86,7 @@ class Password extends ActiveRecord
             [['newPassword', 'newPasswordConfirm', 'currentPassword'], 'required', 'on' => 'changePassword'],
             [['newPassword'], 'unequalsCurrentPassword', 'on' => 'changePassword'],
             [['newPasswordConfirm'], 'compare', 'compareAttribute' => 'newPassword', 'on' => ['registration', 'changePassword']],
+            [['mustChangePassword'], 'integer'],
         ];
     }
 
@@ -110,7 +112,7 @@ class Password extends ActiveRecord
             $scenarios['changePassword'][] = 'currentPassword';
         }
 
-        $scenarios['registration'] = ['newPassword', 'newPasswordConfirm'];
+        $scenarios['registration'] = ['newPassword', 'newPasswordConfirm', 'mustChangePassword'];
 
         return $scenarios;
     }
@@ -129,7 +131,8 @@ class Password extends ActiveRecord
             'salt' => 'Salt',
             'created_at' => 'Created At',
             'newPassword' => Yii::t('UserModule.base', 'New password'),
-            'newPasswordConfirm' => Yii::t('UserModule.base', 'Confirm new password')
+            'newPasswordConfirm' => Yii::t('UserModule.base', 'Confirm new password'),
+            'mustChangePassword' => Yii::t('UserModule.base', 'Force to change this password on first log in'),
         ];
     }
 

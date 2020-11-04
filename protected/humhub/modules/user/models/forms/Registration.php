@@ -14,6 +14,7 @@ use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
+use humhub\modules\user\Module;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -33,6 +34,11 @@ class Registration extends HForm
      * @var boolean show password creation form
      */
     public $enablePasswordForm = true;
+
+    /**
+     * @var boolean show checkbox to force to change password on first log in
+     */
+    public $enableMustChangePassword = false;
 
     /**
      * @var boolean show e-mail field
@@ -148,7 +154,7 @@ class Registration extends HForm
      */
     protected function getPasswordFormDefinition()
     {
-        return [
+        $form = [
             'type' => 'form',
             'elements' => [
                 'newPassword' => [
@@ -163,6 +169,16 @@ class Registration extends HForm
                 ],
             ],
         ];
+
+        if ($this->enableMustChangePassword) {
+            $form['elements']['mustChangePassword'] = [
+                'type' => 'checkbox',
+                'class' => 'form-control',
+                'maxlength' => 255,
+            ];
+        }
+
+        return $form;
     }
 
     protected function getGroupFormDefinition()
@@ -275,7 +291,13 @@ class Registration extends HForm
                 // Save User Password
                 $this->models['Password']->user_id = $this->models['User']->id;
                 $this->models['Password']->setPassword($this->models['Password']->newPassword);
-                $this->models['Password']->save();
+                if ($this->models['Password']->save() &&
+                    $this->enableMustChangePassword &&
+                    $this->models['Password']->mustChangePassword) {
+                    /* @var Module $module */
+                    $module = Yii::$app->getModule('user');
+                    $module->settings->contentContainer($this->models['User'])->set('mustChangePassword', true);
+                }
             }
 
             if ($authClient !== null) {
