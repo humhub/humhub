@@ -146,10 +146,11 @@ class AccessControl extends ActionFilter
         $this->controllerAccess = $this->getControllerAccess($this->rules);
 
         if (!$this->controllerAccess->run()) {
-            if ($this->controllerAccess->code == 401) {
+            if (isset($this->controllerAccess->codeCallback) &&
+                method_exists($this, $this->controllerAccess->codeCallback)) {
+                return call_user_func([$this, $this->controllerAccess->codeCallback]);
+            } else if ($this->controllerAccess->code == 401) {
                 return $this->loginRequired();
-            } else if ($this->controllerAccess->code == 403) {
-                return $this->mustChangePassword();
             } else {
                 $this->forbidden();
             }

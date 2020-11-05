@@ -22,6 +22,11 @@ class DelegateAccessValidator extends ActionAccessValidator
 
     public $handler;
 
+    /**
+     * @var string Name of callback method to run after failed validation
+     */
+    public $codeCallback;
+
     protected function validate($rule)
     {
         $handler = $this->handler;

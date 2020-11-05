@@ -202,6 +202,11 @@ class ControllerAccess extends BaseObject
     public $code;
 
     /**
+     * @var string Name of callback method to run after failed validation
+     */
+    public $codeCallback;
+
+    /**
      * @var Controller owner object of this ControllerAccess the owner is mainly used to find custom validation handler
      */
     public $owner;
@@ -242,7 +247,7 @@ class ControllerAccess extends BaseObject
             self::RULE_MUST_CHANGE_PASSWORD => 'validateMustChangePassword',
             'reason' => Yii::t('error', 'You must change password.'),
             'code' => 403,
-            'handler' => 'mustChangePassword',
+            'codeCallback' => 'mustChangePassword',
         ]);
 
         // We don't set code 401 since we want to show an error instead of redirecting to login
@@ -344,6 +349,9 @@ class ControllerAccess extends BaseObject
             if (!$validator->run()) {
                 $this->reason = (!$this->reason) ? $validator->getReason() : $this->reason;
                 $this->code = (!$this->code) ? $validator->getCode(): $this->code;
+                if (isset($validator->codeCallback)) {
+                    $this->codeCallback = $validator->codeCallback;
+                }
                 return false;
             }
         }
