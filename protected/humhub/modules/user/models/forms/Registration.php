@@ -14,7 +14,6 @@ use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
-use humhub\modules\user\Module;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -294,9 +293,7 @@ class Registration extends HForm
                 if ($this->models['Password']->save() &&
                     $this->enableMustChangePassword &&
                     $this->models['Password']->mustChangePassword) {
-                    /* @var Module $module */
-                    $module = Yii::$app->getModule('user');
-                    $module->settings->contentContainer($this->models['User'])->set('mustChangePassword', true);
+                    $this->models['User']->setMustChangePassword();
                 }
             }
 

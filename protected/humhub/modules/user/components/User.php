@@ -36,6 +36,11 @@ class User extends \yii\web\User
      */
     protected $permissionManager = null;
 
+    /**
+     * @var string URL to force user to change password
+     */
+    public $mustChangePasswordUrl = '/user/must-change-password';
+
     public function isAdmin()
     {
         if ($this->isGuest) {
@@ -220,6 +225,23 @@ class User extends \yii\web\User
     {
         $this->trigger(self::EVENT_BEFORE_SWITCH_IDENTITY, new UserEvent(['user' => $identity]));
         parent::switchIdentity($identity, $duration);
+    }
+
+    /**
+     * @return bool Check if current page is already URL to forcing user to change password
+     */
+    public function isMustChangePasswordUrl()
+    {
+        return Yii::$app->requestedRoute === trim($this->mustChangePasswordUrl, '/');
+    }
+
+    /**
+     * Determines if this user must change the password.
+     * @return boolean
+     */
+    function mustChangePassword()
+    {
+        return !$this->isGuest && $this->getIdentity()->mustChangePassword();
     }
 
 }

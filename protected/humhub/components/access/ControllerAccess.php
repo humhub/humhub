@@ -148,6 +148,11 @@ class ControllerAccess extends BaseObject
     const RULE_UNAPPROVED_USER = 'unapprovedUser';
 
     /**
+     * Check guest if user must change password
+     */
+    const RULE_MUST_CHANGE_PASSWORD = 'mustChangePassword';
+
+    /**
      * Check guest if request method is post
      */
     const RULE_POST = 'post';
@@ -163,6 +168,7 @@ class ControllerAccess extends BaseObject
     protected $fixedRules = [
         [self::RULE_DISABLED_USER],
         [self::RULE_UNAPPROVED_USER],
+        [self::RULE_MUST_CHANGE_PASSWORD],
     ];
 
     /**
@@ -230,6 +236,13 @@ class ControllerAccess extends BaseObject
             self::RULE_LOGGED_IN_ONLY => 'validateLoggedInOnly',
             'reason' => Yii::t('error', 'Login required for this section.'),
             'code' => 401
+        ]);
+
+        $this->registerValidator([
+            self::RULE_MUST_CHANGE_PASSWORD => 'validateMustChangePassword',
+            'reason' => Yii::t('error', 'You must change password.'),
+            'code' => 403,
+            'handler' => 'mustChangePassword',
         ]);
 
         // We don't set code 401 since we want to show an error instead of redirecting to login
@@ -467,5 +480,13 @@ class ControllerAccess extends BaseObject
     public function isAdmin()
     {
         return !$this->isGuest() && $this->user->isSystemAdmin();
+    }
+
+    /**
+     * @return bool checks if the current user must change password
+     */
+    public function validateMustChangePassword()
+    {
+        return $this->isGuest() || Yii::$app->user->isMustChangePasswordUrl() || !$this->user->mustChangePassword();
     }
 }

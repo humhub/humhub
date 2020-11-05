@@ -11,8 +11,8 @@ namespace humhub\components\behaviors;
 use humhub\components\access\ControllerAccess;
 use Yii;
 use yii\base\ActionFilter;
-use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
+use yii\web\Response;
 
 /**
  * Handles the AccessControl for a Controller.
@@ -148,6 +148,8 @@ class AccessControl extends ActionFilter
         if (!$this->controllerAccess->run()) {
             if ($this->controllerAccess->code == 401) {
                 return $this->loginRequired();
+            } else if ($this->controllerAccess->code == 403) {
+                return $this->mustChangePassword();
             } else {
                 $this->forbidden();
             }
@@ -203,7 +205,7 @@ class AccessControl extends ActionFilter
     }
 
     /**
-     * @throws ForbiddenHttpException
+     * @throws HttpException
      */
     protected function forbidden()
     {
@@ -219,5 +221,15 @@ class AccessControl extends ActionFilter
         Yii::$app->user->loginRequired();
 
         return false;
+    }
+
+    /**
+     * @return Response Redirect user to force to change password
+     */
+    protected function mustChangePassword()
+    {
+        if (!Yii::$app->user->isMustChangePasswordUrl()) {
+            return Yii::$app->getResponse()->redirect(Yii::$app->user->mustChangePasswordUrl);
+        }
     }
 }

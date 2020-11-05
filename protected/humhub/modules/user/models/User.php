@@ -803,4 +803,33 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         return Content::VISIBILITY_PUBLIC;
     }
 
+    /**
+     * Check if the User must change password
+     *
+     * @return bool
+     */
+    public function mustChangePassword()
+    {
+        /* @var Module $module */
+        $module = Yii::$app->getModule('user');
+        return (bool)$module->settings->contentContainer($this)->get('mustChangePassword');
+    }
+
+    /**
+     * Set/Unset User to force change password
+     *
+     * @param bool true - force user to change password, false - don't require to change password
+     */
+    public function setMustChangePassword($state = true)
+    {
+        /* @var Module $module */
+        $module = Yii::$app->getModule('user');
+        $container = $module->settings->contentContainer($this);
+        if ($state) {
+            $container->set('mustChangePassword', true);
+        } else {
+            $container->delete('mustChangePassword');
+        }
+    }
+
 }
