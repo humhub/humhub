@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.7.0 (Unreleased)
+------------------------
+- Fix #4607: Changed grid size of image preview on fluid themes
+
 
 1.7.0 (November 4, 2020)
 ------------------------
