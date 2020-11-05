@@ -7,7 +7,11 @@ humhub.module('live', function (module, require, $) {
         if (user.isGuest()) {
             return;
         }
-        
+
+        if (user.mustChangePassword()) {
+            return;
+        }
+
         try {
             var clientType = require(module.config.client.type);
             if (clientType) {

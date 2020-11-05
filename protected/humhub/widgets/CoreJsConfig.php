@@ -33,7 +33,7 @@ class CoreJsConfig extends Widget
         } else {
             $userConfig = ['isGuest' => true];
         }
-
+        $userConfig['mustChangePassword'] = Yii::$app->user->mustChangePassword();
         $userConfig['locale'] = Yii::$app->formatter->locale;
 
         $this->getView()->registerJsConfig(
