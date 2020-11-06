@@ -123,7 +123,7 @@ class UserController extends Controller
         // Add User Form
         $definition['elements']['User'] = [
             'type' => 'form',
-            'title' => 'Account',
+            'title' => Yii::t('AdminModule.user', 'Account'),
             'elements' => [
                 'username' => [
                     'type' => 'text',
@@ -164,7 +164,7 @@ class UserController extends Controller
         if ($canEditAdminFields) {
             $definition['elements']['Password'] = [
                 'type' => 'form',
-                'title' => 'Change Password',
+                'title' => Yii::t('AdminModule.user', 'Password'),
                 'elements' => [
                     'newPassword' => [
                         'type' => 'password',
