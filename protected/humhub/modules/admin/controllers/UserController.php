@@ -111,7 +111,10 @@ class UserController extends Controller
         $profile = $user->profile;
 
         if ($canEditAdminFields) {
-            $password = PasswordEditForm::findOne(['user_id' => $user->id]);
+            if (!($password = PasswordEditForm::findOne(['user_id' => $user->id]))) {
+                $password = new PasswordEditForm();
+                $password->user_id = $user->id;
+            }
         }
 
         // Build Form Definition
