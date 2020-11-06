@@ -35,7 +35,7 @@ class Password extends ActiveRecord
     public $newPassword;
     public $newPasswordConfirm;
     public $defaultAlgorithm = '';
-    public $mustChangePassword = 1;
+    public $mustChangePassword;
 
     public function init()
     {
@@ -86,7 +86,7 @@ class Password extends ActiveRecord
             [['newPassword', 'newPasswordConfirm', 'currentPassword'], 'required', 'on' => 'changePassword'],
             [['newPassword'], 'unequalsCurrentPassword', 'on' => 'changePassword'],
             [['newPasswordConfirm'], 'compare', 'compareAttribute' => 'newPassword', 'on' => ['registration', 'changePassword']],
-            [['mustChangePassword'], 'integer'],
+            [['mustChangePassword'], 'boolean'],
         ];
     }
 

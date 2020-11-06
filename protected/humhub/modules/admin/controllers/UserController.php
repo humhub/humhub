@@ -115,6 +115,7 @@ class UserController extends Controller
                 $password = new PasswordEditForm();
                 $password->user_id = $user->id;
             }
+            $password->mustChangePassword = $user->mustChangePassword();
         }
 
         // Build Form Definition
@@ -176,6 +177,11 @@ class UserController extends Controller
                         'class' => 'form-control',
                         'maxlength' => 45,
                     ],
+                    'mustChangePassword' => [
+                        'type' => 'checkbox',
+                        'class' => 'form-control',
+                        'label' => Yii::t('UserModule.base', 'Must change password at next login'),
+                    ],
                 ],
             ];
         }
@@ -211,8 +217,11 @@ class UserController extends Controller
         }
 
         if ($form->submitted('save') && $form->validate()) {
-            if ($canEditAdminFields && !empty($password->newPassword)) {
-                $password->setPassword($password->newPassword);
+            if ($canEditAdminFields) {
+                if (!empty($password->newPassword)) {
+                    $password->setPassword($password->newPassword);
+                }
+                $user->setMustChangePassword($password->mustChangePassword);
             }
             if ($form->save()) {
                 $this->view->saved();

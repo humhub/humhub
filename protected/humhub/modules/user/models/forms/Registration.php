@@ -173,7 +173,6 @@ class Registration extends HForm
             $form['elements']['mustChangePassword'] = [
                 'type' => 'checkbox',
                 'class' => 'form-control',
-                'maxlength' => 255,
             ];
         }
 
@@ -222,6 +221,10 @@ class Registration extends HForm
         $this->models['GroupUser'] = $this->getGroupUser();
         if ($this->enablePasswordForm) {
             $this->models['Password'] = $this->getPassword();
+            if (!isset($this->models['Password']->mustChangePassword)) {
+                // Enable the checkbox by default on new user form:
+                $this->models['Password']->mustChangePassword = true;
+            }
         }
 
         return true;
@@ -291,9 +294,8 @@ class Registration extends HForm
                 $this->models['Password']->user_id = $this->models['User']->id;
                 $this->models['Password']->setPassword($this->models['Password']->newPassword);
                 if ($this->models['Password']->save() &&
-                    $this->enableMustChangePassword &&
-                    $this->models['Password']->mustChangePassword) {
-                    $this->models['User']->setMustChangePassword();
+                    $this->enableMustChangePassword) {
+                    $this->models['User']->setMustChangePassword($this->models['Password']->mustChangePassword);
                 }
             }
 
