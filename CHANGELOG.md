@@ -6,6 +6,7 @@ HumHub Changelog
 ------------------------
 - Fix #4590: Page loader color contrast too low 
 - Fix #4599: File preview not visible if initialized in background
+- Fix #4612: Dashboard wall stream entry displays user name in sub title in post style layout
 
 
 1.7.0-beta.2 (October 26, 2020)
