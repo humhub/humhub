@@ -36,9 +36,11 @@ class MustChangePasswordController extends Controller
             return $this->goHome();
         }
 
-        $model = new Password();
+        if (!($model = Password::findOne(['user_id' => Yii::$app->user->id]))) {
+            $model = new Password();
+            $model->user_id = Yii::$app->user->id;
+        }
         $model->scenario = 'changePassword';
-        $model->user_id = Yii::$app->user->id;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->setPassword($model->newPassword);
