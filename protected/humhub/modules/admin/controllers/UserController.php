@@ -11,6 +11,7 @@ use humhub\compat\HForm;
 use humhub\components\export\DateTimeColumn;
 use humhub\components\export\SpreadsheetExport;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\models\forms\PasswordEditForm;
 use humhub\modules\admin\models\forms\UserDeleteForm;
 use humhub\modules\admin\models\forms\UserEditForm;
 use humhub\modules\admin\models\UserSearch;
@@ -103,9 +104,18 @@ class UserController extends Controller
             throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));
         }
 
+        $canEditAdminFields = Yii::$app->user->isAdmin() || !$user->isSystemAdmin();
+
         $user->scenario = 'editAdmin';
         $user->profile->scenario = Profile::SCENARIO_EDIT_ADMIN;
         $profile = $user->profile;
+
+        if ($canEditAdminFields) {
+            if (!($password = PasswordEditForm::findOne(['user_id' => $user->id]))) {
+                $password = new PasswordEditForm();
+                $password->user_id = $user->id;
+            }
+        }
 
         // Build Form Definition
         $definition = [];
@@ -113,7 +123,7 @@ class UserController extends Controller
         // Add User Form
         $definition['elements']['User'] = [
             'type' => 'form',
-            'title' => 'Account',
+            'title' => Yii::t('AdminModule.user', 'Account'),
             'elements' => [
                 'username' => [
                     'type' => 'text',
@@ -138,7 +148,7 @@ class UserController extends Controller
             ],
         ];
 
-        if (Yii::$app->user->isAdmin() || !$user->isSystemAdmin()) {
+        if ($canEditAdminFields) {
             $definition['elements']['User']['elements']['status'] = [
                 'type' => 'dropdownlist',
                 'class' => 'form-control',
@@ -146,6 +156,26 @@ class UserController extends Controller
                     User::STATUS_ENABLED => Yii::t('AdminModule.user', 'Enabled'),
                     User::STATUS_DISABLED => Yii::t('AdminModule.user', 'Disabled'),
                     User::STATUS_NEED_APPROVAL => Yii::t('AdminModule.user', 'Unapproved'),
+                ],
+            ];
+        }
+
+        // Change Password Form
+        if ($canEditAdminFields) {
+            $definition['elements']['Password'] = [
+                'type' => 'form',
+                'title' => Yii::t('AdminModule.user', 'Password'),
+                'elements' => [
+                    'newPassword' => [
+                        'type' => 'password',
+                        'class' => 'form-control',
+                        'maxlength' => 45,
+                    ],
+                    'newPasswordConfirm' => [
+                        'type' => 'password',
+                        'class' => 'form-control',
+                        'maxlength' => 45,
+                    ],
                 ],
             ];
         }
@@ -163,7 +193,7 @@ class UserController extends Controller
 
         ];
 
-        if (Yii::$app->user->isAdmin() || !$user->isSystemAdmin()) {
+        if ($canEditAdminFields) {
             if (!$user->isCurrentUser()) {
                 $definition['buttons']['delete'] = [
                     'type' => 'submit',
@@ -176,8 +206,14 @@ class UserController extends Controller
         $form = new HForm($definition);
         $form->models['User'] = $user;
         $form->models['Profile'] = $profile;
+        if ($canEditAdminFields) {
+            $form->models['Password'] = $password;
+        }
 
         if ($form->submitted('save') && $form->validate()) {
+            if ($canEditAdminFields && !empty($password->newPassword)) {
+                $password->setPassword($password->newPassword);
+            }
             if ($form->save()) {
                 $this->view->saved();
                 return $this->redirect(['/admin/user']);
