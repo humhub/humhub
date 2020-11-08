@@ -16,6 +16,13 @@ class AdminPendingRegistrationsAsset extends AssetBundle
     /**
      * @inheritdoc
      */
+    public $publishOptions = [
+        'forceCopy' => true
+    ];
+
+    /**
+     * @inheritdoc
+     */
     public $jsOptions = [
         'position' => View::POS_END
     ];
@@ -25,7 +32,7 @@ class AdminPendingRegistrationsAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.admin.pending.registrations.js'
+        'js/humhub.admin.PendingRegistrations.js'
     ];
 
 }

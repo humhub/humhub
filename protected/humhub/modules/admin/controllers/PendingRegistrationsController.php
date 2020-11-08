@@ -126,7 +126,7 @@ class PendingRegistrationsController extends Controller
     }
 
     /**
-     * Delete all or selected invitation
+     * Delete all invitations
      *
      * @param integer $id
      * @return string
@@ -136,24 +136,38 @@ class PendingRegistrationsController extends Controller
     public function actionDeleteAll()
     {
         if (Yii::$app->request->isPost) {
-            $ids = Yii::$app->request->post('id');
-            if (!empty($ids)){
-              foreach ($ids as $id) {
-                  $invitation = Invite::findOne(['id'=>$id]);
-                  $invitation->delete();
-              }
-              $message = 'Deleted all selected invitations';
-            } else {
-                Invite::deleteAll();
-                $message ='Deleted all invitations';
-            }
+               Invite::deleteAll();
             $this->view->success(Yii::t(
                 'AdminModule.user',
-                $message
+                'Deleted all invitations'
             ));
-            return $this->redirect(['index']);
         }
-        return $this->render('delete-all');
+        return $this->redirect(['index']);
+    }
+    /**
+     * Delete all or selected invitation
+     *
+     * @param integer $id
+     * @return string
+     * @throws HttpException
+     * @throws \Throwable
+     */
+    public function actionDeleteAllSelected()
+    {
+        if (Yii::$app->request->isPost) {
+            $ids = Yii::$app->request->post('id');
+            if (!empty($ids)) {
+                foreach ($ids as $id) {
+                    $invitation = Invite::findOne(['id' => $id]);
+                    $invitation->delete();
+                }
+                $this->view->success(Yii::t(
+                    'AdminModule.user',
+                    'Deleted all selected invitations'
+                ));
+            }
+        }
+        return $this->redirect(['index']);
     }
 
     /**
