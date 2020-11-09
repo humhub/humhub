@@ -148,6 +148,8 @@ class AccessControl extends ActionFilter
         if (!$this->controllerAccess->run()) {
             if (isset($this->controllerAccess->codeCallback) &&
                 method_exists($this, $this->controllerAccess->codeCallback)) {
+                // Call a specific function for current action filter,
+                // may be used to filter a logged in user for some restriction e.g. "must change password"
                 return call_user_func([$this, $this->controllerAccess->codeCallback]);
             } else if ($this->controllerAccess->code == 401) {
                 return $this->loginRequired();
