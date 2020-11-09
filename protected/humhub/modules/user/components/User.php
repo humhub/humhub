@@ -37,9 +37,9 @@ class User extends \yii\web\User
     protected $permissionManager = null;
 
     /**
-     * @var string URL to force user to change password
+     * @var string Route to force user to change password
      */
-    public $mustChangePasswordUrl = '/user/must-change-password';
+    public $mustChangePasswordRoute = '/user/must-change-password';
 
     public function isAdmin()
     {
@@ -232,7 +232,7 @@ class User extends \yii\web\User
      */
     public function isMustChangePasswordUrl()
     {
-        return Yii::$app->requestedRoute === trim($this->mustChangePasswordUrl, '/');
+        return Yii::$app->requestedRoute === trim($this->mustChangePasswordRoute, '/');
     }
 
     /**
