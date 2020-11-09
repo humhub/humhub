@@ -230,7 +230,7 @@ class AccessControl extends ActionFilter
     protected function mustChangePassword()
     {
         if (!Yii::$app->user->isMustChangePasswordUrl()) {
-            return Yii::$app->getResponse()->redirect(Yii::$app->user->mustChangePasswordUrl);
+            return Yii::$app->getResponse()->redirect(Yii::$app->user->mustChangePasswordRoute);
         }
     }
 }
