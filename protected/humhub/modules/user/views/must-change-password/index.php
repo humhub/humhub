@@ -25,12 +25,12 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Change password');
 
                 <p><?= Yii::t('UserModule.auth', 'Please change your password.'); ?></p>
 
-                <?php echo $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45]); ?>
+                <?= $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45]); ?>
                 <hr>
 
-                <?php echo $form->field($model, 'newPassword')->passwordInput(['maxlength' => 45]); ?>
+                <?= $form->field($model, 'newPassword')->passwordInput(['maxlength' => 45]); ?>
 
-                <?php echo $form->field($model, 'newPasswordConfirm')->passwordInput(['maxlength' => 45]); ?>
+                <?= $form->field($model, 'newPasswordConfirm')->passwordInput(['maxlength' => 45]); ?>
 
                 <hr>
                 <?= Html::submitButton(Yii::t('UserModule.auth', 'Change password'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
