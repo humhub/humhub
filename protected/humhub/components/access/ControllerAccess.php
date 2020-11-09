@@ -247,7 +247,7 @@ class ControllerAccess extends BaseObject
             self::RULE_MUST_CHANGE_PASSWORD => 'validateMustChangePassword',
             'reason' => Yii::t('error', 'You must change password.'),
             'code' => 403,
-            'codeCallback' => 'mustChangePassword',
+            'codeCallback' => 'forceChangePassword',
         ]);
 
         // We don't set code 401 since we want to show an error instead of redirecting to login
