@@ -1,22 +1,19 @@
 HumHub Changelog
 ================
 
-1.7.0 (Unreleased)
-------------------------
-- Fix #4607: Changed grid size of image preview on fluid themes
-
 
 1.7.1 (Unreleased)
 ------------------
 - Fix #4612: Dashboard wall stream entry displays user name in sub title in post style layout
 - Fix #4614: Profile Image crop broken
+- Fix #4607: Changed grid size of image preview on fluid themes
+- Fix #4609: Error on downscale command
 
 
 1.7.0 (November 4, 2020)
 ------------------------
 - Fix #4590: Page loader color contrast too low 
 - Fix #4599: File preview not visible if initialized in background
-- Fix #4609: Error on downscale command
 
 
 1.7.0-beta.2 (October 26, 2020)
