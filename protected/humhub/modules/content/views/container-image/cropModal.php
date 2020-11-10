@@ -63,7 +63,7 @@ $model->cropSetSelect = Json::decode('['.$cropSelect.']');
                 }
             </style>
 
-            <div id="cropimage">
+            <div id="cropimage" style="overflow:hidden;">
                 <?= Html::img($profileImage->getUrl('_org'), ['id' => 'crop-profile-image']) ?>
 
                 <?= JCropWidget::widget([
