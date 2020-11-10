@@ -180,7 +180,7 @@ class UserController extends Controller
                     'mustChangePassword' => [
                         'type' => 'checkbox',
                         'class' => 'form-control',
-                        'label' => Yii::t('UserModule.base', 'Must change password at next login'),
+                        'label' => Yii::t('UserModule.base', 'Must set a new password'),
                     ],
                 ],
             ];
