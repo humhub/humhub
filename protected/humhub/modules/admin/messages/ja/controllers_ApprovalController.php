@@ -18,5 +18,5 @@
  */
 return [
     'User not found!' => 'ユーザーが見つかりませんでした。',
-    'Invalid user state: thi' => '',
+    'Invalid user state: {state}' => '',
 ];

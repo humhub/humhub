@@ -93,6 +93,7 @@ return [
     'invited you to join {space} on {name}.' => 'pozvao vas je da se pridružite {space} na {name}.',
     'or' => 'ili',
     'Change Username' => '',
+    'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show all content' => '',
     'Source' => '',

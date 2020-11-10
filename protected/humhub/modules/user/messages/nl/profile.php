@@ -36,6 +36,7 @@ return [
     'Country' => 'Land',
     'Created at' => 'Aangemaakt op',
     'Created by' => 'Aangemaakt door',
+    'Creation date of the user' => 'Aanmaakdatum van de gebruiker',
     'Custom' => 'Extra',
     'Date' => 'Datum',
     'Date(-time) field options' => 'Datum (en tijd) veld opties',
@@ -67,6 +68,7 @@ return [
     'Invalid field type!' => 'Ongeldig veldtype!',
     'Invalid!' => 'Ongeldig!',
     'LDAP Attribute' => 'LDAP Attribuut',
+    'Last login date of the user' => 'Laatste aanmelddatum van de gebruiker',
     'Last name' => 'Achternaam',
     'LinkedIn URL' => 'LinkedIn URL',
     'MSN' => 'MSN',
@@ -128,6 +130,5 @@ return [
     'You need to login to view this user profile!' => 'U moet ingelogd zijn om dit profiel te bekijken!',
     'YouTube URL' => 'YouTube URL',
     'Zip' => 'Postcode',
-    'Creation date of the user' => '',
-    'Last login date of the user' => '',
+    'Other:' => '',
 ];

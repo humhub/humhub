@@ -83,6 +83,7 @@ return [
     'Change Username' => '',
     'Manager' => '',
     'Missing ID AuthClient Attribute from AuthClient.' => '',
+    'Password needs to be at least {chars} characters long.' => '',
     'Permission' => '',
     'Profile posts only' => '',
     'Register now and participate!' => '',

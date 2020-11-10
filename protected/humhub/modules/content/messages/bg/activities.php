@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Contents' => '',
-  'Whenever a new content (e.g. post) has been created.' => '',
-  '{displayName} created a new {contentTitle}.' => '',
+  'Contents' => 'Съдържание',
+  'Whenever a new content (e.g. post) has been created.' => 'Винаги, когато е създадено ново съдържание (например публикация).',
+  '{displayName} created a new {contentTitle}.' => '{displayName} създаде нов {contentTitle}.',
 );
