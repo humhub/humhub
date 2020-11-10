@@ -80,6 +80,7 @@ return [
     'Missing E-Mail Attribute from AuthClient.' => '',
     'Missing ID AuthClient Attribute from AuthClient.' => '',
     'Name' => '',
+    'Password needs to be at least {chars} characters long.' => '',
     'Permission' => '',
     'Profile posts only' => '',
     'Show At Directory' => '',

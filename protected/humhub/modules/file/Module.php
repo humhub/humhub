@@ -76,4 +76,16 @@ class Module extends \humhub\components\Module
      * @var int The WebP quality for uploaded WebP files. From 0 to 100.
      */
     public $imageWebpQuality = null;
+
+    /**
+     * @since 1.7
+     * @var int The maximum height of generated preview image files in px.
+     */
+    public $imagePreviewMaxHeight = 400;
+
+    /**
+     * @since 1.7
+     * @var int The maximum width of generated preview image files in px.
+     */
+    public $imagePreviewMaxWidth = 400;
 }

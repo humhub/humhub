@@ -69,7 +69,6 @@ return [
     'HTML tracking code' => '@HTML tracking code@',
     'Here you can configurate the registration behaviour and additinal user settings of your social network.' => 'هنا يمكنك تكوين سلوك التسجيل وإعدادات المستخدم الإضافية لشبكتك الاجتماعية.',
     'Here you can configure basic settings of your social network.' => 'هنا يمكنك تكوين الإعدادات الأساسية لشبكتك الاجتماعية.',
-    'Hide file info (name, size) for images on wall' => 'إخفاء اسماء وأحجام الصور على الجداريات',
     'Horizontal scrolling images on a mobile device' => 'صور التمرير الأفقي على جهاز محمول',
     'Icon upload' => 'تحميل الرمز',
     'If not set, height will default to 200px.' => 'في حالة عدم التعيين ، سيكون الارتفاع افتراضيًا إلى 200 بكسل.',
@@ -124,6 +123,7 @@ return [
     'You\'re using no icon at the moment. Upload your logo now.' => 'أنت لا تستخدم أي رمز في الوقت الحالي. قم بتحميل شعارك الآن.',
     'You\'re using no logo at the moment. Upload your logo now.' => 'أنت لا تستخدم أي شعار في الوقت الحالي. قم بتحميل شعارك الآن.',
     'never' => 'أبدا',
+    'Exclude media files from stream attachment list' => '',
     'Reported database time: {dateTime}' => '',
     'Saved and sent test email to: {address}' => '',
 ];

@@ -60,6 +60,7 @@ return [
     'My Account' => '',
     'No users found.' => '',
     'Notifications' => '',
+    'Password needs to be at least {chars} characters long.' => '',
     'Permission' => '',
     'Profile' => '',
     'Profile posts only' => '',

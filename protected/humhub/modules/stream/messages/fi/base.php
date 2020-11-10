@@ -18,4 +18,6 @@
  */
 return [
     'Show {i} more.' => 'Näytä {i} lisää.',
+    'The content could not be found.' => '',
+    'You are not allowed to view this content.' => '',
 ];
