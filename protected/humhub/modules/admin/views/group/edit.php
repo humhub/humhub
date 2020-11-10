@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\ui\form\widgets\SortOrderField;
+use humhub\widgets\Button;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -25,6 +26,14 @@ use humhub\modules\space\widgets\SpacePickerField;
         ])
         ?>
     <?php endif; ?>
+
+    <div class="reassign-spaces">
+        <?=Button::primary(Yii::t('AdminModule.user', 'Reassign spaces'))
+            ->action('admin.PendingRegistrations.deleteAll', Url::toRoute(['/admin/group/reassign-default-spaces']))
+            ->cssClass('reassign')
+            ->confirm('<b>Reassign</b> default spaces to all users?','Do you really want to reassign default spaces to all users?');?>
+        <div class="help-block">Reassign default spaces to all users</div>
+    </div>
 
     <?php if ($isManagerApprovalSetting && !$group->is_admin_group): ?>
         <?php $url = ($group->isNewRecord) ? null : Url::to(['/admin/group/admin-user-search', 'id' => $group->id]); ?>

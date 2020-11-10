@@ -285,4 +285,8 @@ class GroupController extends Controller
         }
     }
 
+    public function actionReassignDefaultSpaces()
+    {
+        Yii::error('test actionReassignDefaultSpaces !!!');
+    }
 }
