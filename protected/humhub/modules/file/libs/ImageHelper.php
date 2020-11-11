@@ -57,6 +57,11 @@ class ImageHelper
                         $image->rotate(-90);
                         break;
                 }
+
+                if ($image instanceof \Imagine\Imagick\Image) {
+                    /** @var \Imagine\Imagick\Image $image */
+                    $image->getImagick()->setImageOrientation(1);
+                }
             }
         }
     }

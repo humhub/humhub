@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #4614: Profile Image crop broken
 - Fix #4607: Changed grid size of image preview on fluid themes
 - Fix #4609: Error on downscale command
+- Fix #4621: Wrong image orientation on downscaling with imagick
 
 
 1.7.0 (November 4, 2020)
