@@ -9,6 +9,7 @@ HumHub Changelog
 - Fix #4607: Changed grid size of image preview on fluid themes
 - Fix #4609: Error on downscale command
 - Fix #4621: Wrong image orientation on downscaling with imagick
+- Fix #4628: Fixed stream gallery ratio issues on fluid themes
 
 
 1.7.0 (November 4, 2020)
