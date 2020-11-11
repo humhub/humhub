@@ -65,6 +65,34 @@ ul.files {
     }
 }
 
+& when (@isFluid) {
+    @media  (min-width: 1200px) and (max-width: 1700px) {
+        .post-files img {
+            height: 100px;
+        }
+    }
+
+    @media (min-width: 992px) and (max-width: 1199px) {
+        .post-files img {
+            height: 80px;
+        }
+    }
+
+    @media (max-width: 991px) {
+        .post-files img {
+            height: 100px;
+        }
+    }
+}
+
+& when not(@isFluid) {
+    @media (max-width: 650px) {
+        .post-files img {
+            height: 100px;
+        }
+    }
+}
+
 
 .post-file-list {
     padding: 10px;
@@ -75,6 +103,7 @@ ul.files {
         color: @link;
     }
 }
+
 
 #wallStream.mobile {
     .post-files {
