@@ -32,6 +32,8 @@ class MustChangePasswordController extends Controller
      */
     public function actionIndex()
     {
+        Yii::$app->getModule('live')->isActive = false;
+
         if (!Yii::$app->user->mustChangePassword()) {
             return $this->goHome();
         }

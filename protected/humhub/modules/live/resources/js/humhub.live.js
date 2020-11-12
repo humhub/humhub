@@ -1,14 +1,9 @@
 humhub.module('live', function (module, require, $) {
     var object = require('util').object;
-    var user = require('user');
     var liveClient;
 
     var init = function () {
-        if (user.isGuest()) {
-            return;
-        }
-
-        if (user.mustChangePassword()) {
+        if (!module.config.isActive) {
             return;
         }
 
