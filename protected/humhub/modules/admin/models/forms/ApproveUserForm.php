@@ -224,7 +224,7 @@ class ApproveUserForm extends \yii\base\Model
      *
      * @param string $userDisplayName
      * @param string $adminDisplayName
-     * @param string $loginUrl
+     * @param string $loginLink
      * @return string
      */
     public static function getDefaultApprovalMessage($userDisplayName = '{displayName}', $adminDisplayName = '{AdminName}', $loginLink = '{loginLink}')
