@@ -171,6 +171,7 @@ class ApproveUserForm extends \yii\base\Model
         );
 
         $loginLink = Html::a(urldecode(Url::to(["/user/auth/login"], true)), Url::to(["/user/auth/login"], true));
+        $loginURL = urldecode(Url::to(["/user/auth/login"], true));
         $userName =  Html::encode($this->user->displayName);
         $adminName =  Html::encode($this->admin->displayName);
 
@@ -179,6 +180,7 @@ class ApproveUserForm extends \yii\base\Model
                 '{displayName}' => $userName,
                 '{AdminName}' => $adminName,
                 '{loginLink}' => $loginLink,
+                '{loginURL}' => $loginURL
             ]);
         } else {
             $this->message = static::getDefaultApprovalMessage($userName, $adminName, $loginLink);
