@@ -88,7 +88,7 @@ class GroupSpace extends \yii\db\ActiveRecord
     {
         if ($this->group !== null && $this->space !== null) {
             foreach ($this->group->groupUsers as $user) {
-                foreach ($this->group->groupSpaces as $group_space) {
+                foreach ($this as $group_space) {
                     $group_space->space->addMember($user->user_id);
                 }
             }

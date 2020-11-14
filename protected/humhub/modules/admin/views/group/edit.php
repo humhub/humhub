@@ -8,6 +8,7 @@ use yii\helpers\Html;
 use humhub\compat\CHtml;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\modules\space\widgets\SpacePickerField;
+
 ?>
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
@@ -28,16 +29,13 @@ use humhub\modules\space\widgets\SpacePickerField;
     <?php endif; ?>
 
     <div class="reassign-spaces">
-        <?=Button::primary(Yii::t('AdminModule.user', 'Reassign spaces'))
-            ->action('admin.PendingRegistrations.deleteAll', Url::toRoute(['/admin/group/reassign-default-spaces']))
-            ->cssClass('reassign')
-            ->confirm('<b>Reassign</b> default spaces to all users?','Do you really want to reassign default spaces to all users?');?>
+        <?= CHtml::a(Yii::t('AdminModule.user', 'Reassign All'), Url::toRoute(['/admin/group/reassign-all', 'id' => $group->id]), ['class' => 'btn btn-primary btn-reassign']); ?>
         <div class="help-block">Reassign default spaces to all users</div>
     </div>
 
     <?php if ($isManagerApprovalSetting && !$group->is_admin_group): ?>
         <?php $url = ($group->isNewRecord) ? null : Url::to(['/admin/group/admin-user-search', 'id' => $group->id]); ?>
-        <?=  UserPickerField::widget([
+        <?= UserPickerField::widget([
             'form' => $form,
             'model' => $group,
             'attribute' => 'managerGuids',
@@ -63,6 +61,6 @@ use humhub\modules\space\widgets\SpacePickerField;
         echo Html::a(Yii::t('AdminModule.user', 'Delete'), Url::toRoute(['/admin/group/delete', 'id' => $group->id]), ['class' => 'btn btn-danger', 'data-method' => 'POST']);
     }
     ?>
-<?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 </div>
 <?php $this->endContent(); ?>

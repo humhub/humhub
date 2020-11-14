@@ -285,8 +285,24 @@ class GroupController extends Controller
         }
     }
 
-    public function actionReassignDefaultSpaces()
+    public function actionReassignAll($id)
     {
-        Yii::error('test actionReassignDefaultSpaces !!!');
+        $group = Group::findOne(['id' => $id]);
+
+        if (Yii::$app->request->isPost) {
+            foreach ($group->groupUsers as $user) {
+                foreach ($group->groupSpaces as $group_space) {
+                    $group_space->space->addMember($user->user_id);
+                }
+            }
+
+            $this->view->success(Yii::t(
+                'AdminModule.user',
+                'Reassigned spaces to all users'
+            ));
+
+            return $this->redirect(['edit', 'id' => $group->id]);
+        }
+        return $this->render('reassign-all', ['model' => $group]);
     }
 }
