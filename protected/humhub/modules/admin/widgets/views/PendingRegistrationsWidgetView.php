@@ -52,10 +52,15 @@ AdminPendingRegistrationsAsset::register($this);
             'checkboxOptions' => function ($data) {
                 return ['id' => $data->id];
             },
+            'contentOptions' => ['style' => 'width:auto; white-space: normal;'],
         ],
         'email',
         'originator.username',
-        'language',
+        [
+            'attribute' => 'language',
+            'contentOptions' => ['style' => 'width:80px; white-space: normal;'],
+        ],
+
         'created_at',
         [
             'attribute' => 'source',
