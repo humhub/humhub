@@ -7,6 +7,7 @@ namespace admin\widgets;
 use humhub\modules\admin\models\PendingRegistrationSearch;
 use humhub\modules\wiki\helpers\Url;
 use humhub\widgets\JsWidget;
+use Yii;
 use yii\data\ActiveDataProvider;
 
 class PendingRegistrations extends JsWidget
@@ -49,6 +50,9 @@ class PendingRegistrations extends JsWidget
     {
         return [
             'url-delete-selected' => Url::to(['pending-registrations/delete-all-selected']),
+            'url-delete-all' => Url::to(['pending-registrations/delete-all']),
+            'note-delete-selected' => Yii::t('AdminModule.base','Delete selected rows'),
+            'note-delete-all' => Yii::t('AdminModule.base','Delete all'),
         ];
     }
 }
