@@ -23,16 +23,21 @@ AdminPendingRegistrationsAsset::register($this);
     </div>
 
     <div class="pull-right">
+
         <?php if ($dataProvider->totalCount > 0): ?>
             <?=Button::danger(Yii::t('AdminModule.user', 'Delete All'))
                 ->action('admin.PendingRegistrations.deleteAll', Url::toRoute(['/admin/pending-registrations/delete-all']))
-                ->cssClass('delete-all')->
+                ->cssClass('delete-all btn-sm')->
                 confirm('<b>Delete</b> pending registrations?','Do you really want to delete pending registrations?');?>
         <?php endif; ?>
         <?= humhub\libs\Html::backButton(
             ['/admin/user/index'],
-            ['label' => Yii::t('AdminModule.base', 'Back to user overview')]
+            [
+                'label' => Yii::t('AdminModule.base', 'Back to user overview'),
+                'class'=> 'btn-sm'
+            ]
         ) ?>
+
         <?= ExportButton::widget(['filter' => 'PendingRegistrationSearch']) ?>
     </div>
 
