@@ -2,23 +2,14 @@ humhub.module('admin.PendingRegistrations', function (module, require, $) {
     var object = require('util').object;
     var Widget = require('ui.widget').Widget;
     var client = require('client');
-    var urlDeleteSelected;
-    var urlDeleteAll;
-    var noteDeleteSelected;
-    var noteDeleteAll;
 
+    var PendingRegistrations = Widget.extend();
 
-    var PendingRegistrations = function (node, options) {
-        Widget.call(this, node, options);
-    };
-
-    object.inherits(PendingRegistrations, Widget);
-
-    PendingRegistrations.deleteAllSelected = function (evt) {
+    PendingRegistrations.prototype.deleteAllSelected = function (evt) {
         client.post(evt).then(function () {
             var keys = $("#grid").yiiGridView("getSelectedRows");
             $.ajax({
-                url: urlDeleteSelected,
+                url: this.options.urlDeleteSelected,
                 type: "POST",
                 data: {id: keys},
             })
@@ -27,43 +18,26 @@ humhub.module('admin.PendingRegistrations', function (module, require, $) {
         })
     };
 
-    PendingRegistrations.deleteAll = function (evt) {
+    PendingRegistrations.prototype.deleteAll = function (evt) {
         client.post(evt).then(function () {
-            that.reload();
+            client.reload();
         }).catch(function (e) {
             module.log.error(e, true);
         })
     };
 
-    function hasChecked($checkBoxes) {
-        var result = false;
-        $checkBoxes.each(function () {
-            if ($(this).prop("checked")) {
-                result = true;
-                return false;
-            }
-        });
-        return result;
-    }
-
     PendingRegistrations.prototype.init = function () {
-        urlDeleteSelected = this.options.urlDeleteSelected;
-        urlDeleteAll = this.options.urlDeleteAll;
-        noteDeleteSelected = this.options.noteDeleteSelected;
-        noteDeleteAll = this.options.noteDeleteAll;
-
+        var that = this;
         this.$.find("input").change(function () {
-
-            var $checkBoxes = $('.regular-checkbox');
-
-            if (hasChecked($checkBoxes)) {
-                $('.delete-all').html('Delete selected rows')
-                $('.delete-all').attr('data-action-click', 'admin.PendingRegistrations.deleteAllSelected');
-                $('.delete-all').attr('data-action-click-url', urlDeleteSelected);
+            var $selection = that.$.find(':checked')
+            if ($selection.length > 1) {
+                $('.delete-all').html(that.options.noteDeleteSelected);
+                $('.delete-all').attr('data-action-click', 'deleteAllSelected');
+                $('.delete-all').attr('data-action-click-url', that.options.urlDeleteSelected);
             } else {
-                $('.delete-all').html('Delete all')
-                $('.delete-all').attr('data-action-click', 'admin.PendingRegistrations.deleteAll');
-                $('.delete-all').attr('data-action-click-url', urlDeleteAll);
+                $('.delete-all').html(that.options.noteDeleteAll);
+                $('.delete-all').attr('data-action-click', 'deleteAll');
+                $('.delete-all').attr('data-action-click-url', that.options.urlDeleteAll);
             }
         });
     };

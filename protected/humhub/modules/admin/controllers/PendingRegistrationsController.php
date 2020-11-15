@@ -91,6 +91,7 @@ class PendingRegistrationsController extends Controller
      */
     public function actionResend($id)
     {
+        $this->forcePostRequest();
         $invite = $this->findInviteById($id);
         if (Yii::$app->request->isPost) {
             $invite->sendInviteMail();
@@ -113,6 +114,7 @@ class PendingRegistrationsController extends Controller
      */
     public function actionDelete($id)
     {
+        $this->forcePostRequest();
         $invite = $this->findInviteById($id);
         if (Yii::$app->request->isPost) {
             $invite->delete();
@@ -139,7 +141,7 @@ class PendingRegistrationsController extends Controller
                Invite::deleteAll();
             $this->view->success(Yii::t(
                 'AdminModule.user',
-                'Deleted all invitations'
+                'All invitations have been deleted'
             ));
         }
         return $this->redirect(['index']);
@@ -155,7 +157,9 @@ class PendingRegistrationsController extends Controller
     public function actionDeleteAllSelected()
     {
         if (Yii::$app->request->isPost) {
+            Yii::error('098098098098098098777777777777');
             $ids = Yii::$app->request->post('id');
+            Yii::error($ids);
             if (!empty($ids)) {
                 foreach ($ids as $id) {
                     $invitation = Invite::findOne(['id' => $id]);
@@ -163,7 +167,7 @@ class PendingRegistrationsController extends Controller
                 }
                 $this->view->success(Yii::t(
                     'AdminModule.user',
-                    'Deleted all selected invitations'
+                    'Selected invitations have been deleted'
                 ));
             }
         }

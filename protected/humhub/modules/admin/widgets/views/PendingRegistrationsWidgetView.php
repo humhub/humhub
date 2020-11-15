@@ -26,7 +26,7 @@ AdminPendingRegistrationsAsset::register($this);
 
         <?php if ($dataProvider->totalCount > 0): ?>
             <?=Button::danger(Yii::t('AdminModule.user', 'Delete All'))
-                ->action('admin.PendingRegistrations.deleteAll', Url::toRoute(['/admin/pending-registrations/delete-all']))
+                ->action('deleteAll', Url::toRoute(['/admin/pending-registrations/delete-all']))
                 ->cssClass('delete-all btn-sm')->
                 confirm('<b>Delete</b> pending registrations?','Do you really want to delete pending registrations?');?>
         <?php endif; ?>
@@ -77,18 +77,17 @@ AdminPendingRegistrationsAsset::register($this);
             'template' => '{resend} {delete}',
             'buttons' => [
                 'resend' => function ($url, $model, $key) {
-                    return Html::a(
-                        '<i class="fa fa-envelope"></i>',
-                        Url::to(['resend', 'id' => $model->id]),
-                        ['class' => 'btn btn-primary btn-xs tt']
-                    );
+                    return Button::primary()
+                        ->action('client.post', Url::to(['resend', 'id' => $model->id]))
+                        ->icon('envelope')
+                        ->xs();
                 },
                 'delete' => function ($url, $model, $key) {
-                    return Html::a(
-                        '<i class="fa fa-trash"></i>',
-                        Url::to(['delete', 'id' => $model->id]),
-                        ['class' => 'btn btn-primary btn-xs tt']
-                    );
+                    return
+                        Button::primary()
+                            ->action('client.post', Url::to(['delete', 'id' => $model->id]))
+                            ->icon('trash')
+                            ->xs();
                 },
             ],
         ],

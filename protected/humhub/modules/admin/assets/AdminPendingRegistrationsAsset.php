@@ -2,18 +2,21 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2020 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\admin\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 use yii\web\View;
 
 class AdminPendingRegistrationsAsset extends AssetBundle
 {
-
+    public $publishOptions = [
+        'forceCopy' => true
+    ];
+    
     /**
      * @inheritdoc
      */
