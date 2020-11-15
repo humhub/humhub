@@ -38,6 +38,21 @@ use humhub\modules\space\widgets\SpacePickerField;
         ?>
     <?php endif; ?>
 
+    <strong><?= Yii::t('AdminModule.user', 'Users notification'); ?></strong>
+    <br>
+    <br>
+
+    <?= $form->field($group, 'notify_users')->checkbox(); ?>
+    <div class="help-block">
+    <?= Yii::t(
+        'AdminModule.user',
+        'Notify users about adding to the group'
+    ) ?>
+
+    <br>
+    <br>
+
+    </div>
     <strong><?= Yii::t('AdminModule.user', 'Visibility'); ?></strong>
     <br>
     <br>

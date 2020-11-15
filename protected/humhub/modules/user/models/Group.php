@@ -30,6 +30,7 @@ use Yii;
  * @property string $updated_at
  * @property integer $updated_by
  * @property integer $is_admin_group
+ * @property integer $notify_users
  *
  * @property User[] $manager
  * @property Space|null $defaultSpace
@@ -55,7 +56,7 @@ class Group extends ActiveRecord
     public function rules()
     {
         return [
-            [['space_id', 'sort_order'], 'integer'],
+            [['space_id', 'sort_order', 'notify_users'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 45],
             ['show_at_registration', 'validateShowAtRegistration'],
@@ -88,6 +89,7 @@ class Group extends ActiveRecord
             'show_at_registration' => Yii::t('UserModule.base', 'Show At Registration'),
             'show_at_directory' => Yii::t('UserModule.base', 'Show At Directory'),
             'sort_order' => Yii::t('UserModule.base', 'Sort order'),
+            'notify_users' => Yii::t('UserModule.base', 'Notify Users'),
         ];
     }
 
@@ -237,10 +239,12 @@ class Group extends ActiveRecord
         $newGroupUser->created_by = Yii::$app->user->id;
         $newGroupUser->is_group_manager = $isManager;
         if ($newGroupUser->save() && !Yii::$app->user->isGuest) {
-            IncludeGroupNotification::instance()
-                ->about($this)
-                ->from(Yii::$app->user->identity)
-                ->send(User::findOne(['id' => $userId]));
+            if($this->notify_users){
+                IncludeGroupNotification::instance()
+                    ->about($this)
+                    ->from(Yii::$app->user->identity)
+                    ->send(User::findOne(['id' => $userId]));
+            }
             return true;
         }
 
