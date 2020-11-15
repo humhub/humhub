@@ -30,7 +30,7 @@ class EditGroupForm extends Group
     public function attributeLabels()
     {
         return [
-            'defaultSpaceGuid' => 'Default Space(s)',
+            'defaultSpaceGuid' => Yii::t('AdminModule.space', 'Default Space(s)'),
         ];
     }
 
