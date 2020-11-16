@@ -94,6 +94,7 @@ return [
     'invited you to join {name}.' => 'приглашает Вас присоединиться к {name}.',
     'invited you to join {space} on {name}.' => 'приглашает Вас присоединиться к сообществу {space} на {name}',
     'or' => 'или',
+    'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show all content' => '',
     'Source' => '',

@@ -69,7 +69,6 @@ return [
     'HTML tracking code' => 'Codice HTML per il tracciamento',
     'Here you can configurate the registration behaviour and additinal user settings of your social network.' => 'Qui puoi configurare la registrazione e ulteriori impostazioni utenti del tuo social network.',
     'Here you can configure basic settings of your social network.' => 'Qui puoi configurare le impostazioni base del tuo social network.',
-    'Hide file info (name, size) for images on wall' => 'Nascondi informazioni file (nome, dimensione) delle immagini sulla bacheca',
     'Horizontal scrolling images on a mobile device' => 'Scorrimento orizzontale delle immagini per dispositivi mobile',
     'Icon upload' => 'Carica icona',
     'If not set, height will default to 200px.' => 'Se non configurata, l\'altezza predefinita sarà 200px.',
@@ -95,6 +94,7 @@ return [
     'Port number' => 'Numero porta',
     'Prevent client caching of following scripts' => 'Blocca la cache del client per i seguenti script',
     'Redis' => 'Redis',
+    'Reported database time: {dateTime}' => 'Ora database segnalata: {dateTime}',
     'SMTP Options' => 'Opzioni SMTP',
     'Save' => 'Salva',
     'Save & Flush Caches' => 'Salva e svuota Cache',
@@ -125,5 +125,5 @@ return [
     'You\'re using no icon at the moment. Upload your logo now.' => 'Non stai usando una icona al momento, carica il tuo logo ora.',
     'You\'re using no logo at the moment. Upload your logo now.' => 'Non stai usando nessun logo al momento, carica il tuo logo ora.',
     'never' => 'mai',
-    'Reported database time: {dateTime}' => '',
+    'Exclude media files from stream attachment list' => '',
 ];

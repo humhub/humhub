@@ -55,18 +55,19 @@ $model->cropSetSelect = Json::decode('['.$cropSelect.']');
         <div class="modal-body">
             <style>
                 /* Dirty Workaround against bootstrap and jcrop */
-                #profile-image-crop-modal img {
-                    max-width: 100%;
+
+                #profile-image-crop-modal .jcrop-keymgr, #profile-image-crop-modal label {
+                    opacity:0
                 }
             </style>
 
-            <div id="cropimage">
+            <div id="cropimage" style="overflow: hidden">
                 <?= Html::img($profileImage->getUrl('_org'), ['id' => 'crop-profile-image']) ?>
 
                 <?= JCropWidget::widget([
                     'selector' => '#crop-profile-image',
                     'pluginOptions' => $model->getPluginOptions(),
-                ]); ?>
+                ]) ?>
             </div>
 
         </div>

@@ -69,7 +69,6 @@ return [
     'HTML tracking code' => 'Código de rastreamento HTML',
     'Here you can configurate the registration behaviour and additinal user settings of your social network.' => 'Aqui você pode configurar o comportamento de registro e configurações adicionais de usuário de sua rede social.',
     'Here you can configure basic settings of your social network.' => 'Aqui você pode configurar as definições básicas de sua rede social.',
-    'Hide file info (name, size) for images on wall' => 'Ocultar informações do arquivo (nome, tamanho) para imagens no muro',
     'Horizontal scrolling images on a mobile device' => 'Imagens de rolagem horizontal em um dispositivo móvel',
     'Icon upload' => 'Upload de ícone',
     'If not set, height will default to 200px.' => 'Caso não esteja marcado, a altura padrão se tornará 200 pixels.',
@@ -124,6 +123,7 @@ return [
     'You\'re using no icon at the moment. Upload your logo now.' => 'Você não está usando nenhum ícone no momento. Faça o upload do seu logotipo agora.',
     'You\'re using no logo at the moment. Upload your logo now.' => 'Você não está usando uma logomarca atualmente. Envie sua logomarca agora.',
     'never' => 'nunca',
+    'Exclude media files from stream attachment list' => '',
     'Reported database time: {dateTime}' => '',
     'Saved and sent test email to: {address}' => '',
 ];

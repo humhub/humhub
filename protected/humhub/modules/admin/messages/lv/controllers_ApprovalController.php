@@ -18,5 +18,5 @@
  */
 return [
     'User not found!' => 'Lietotājs nav atrasts!',
-    'Invalid user state: thi' => '',
+    'Invalid user state: {state}' => '',
 ];

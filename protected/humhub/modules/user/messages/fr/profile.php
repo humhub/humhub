@@ -36,6 +36,7 @@ return [
     'Country' => 'Pays',
     'Created at' => 'Créé le',
     'Created by' => 'Créé par',
+    'Creation date of the user' => 'Date de création',
     'Custom' => 'Personnalisé',
     'Date' => 'Date',
     'Date(-time) field options' => 'Options de date et heure',
@@ -67,6 +68,7 @@ return [
     'Invalid field type!' => 'Type de champ invalide.',
     'Invalid!' => 'invalide.',
     'LDAP Attribute' => 'Attributs LDAP',
+    'Last login date of the user' => 'Dernière connexion',
     'Last name' => 'Nom',
     'LinkedIn URL' => 'Lien LinkedIn',
     'MSN' => 'MSN',
@@ -128,6 +130,5 @@ return [
     'You need to login to view this user profile!' => 'Vous devrez être connecté pour voir ce profil.',
     'YouTube URL' => 'Lien YouTube',
     'Zip' => 'Code postal',
-    'Creation date of the user' => '',
-    'Last login date of the user' => '',
+    'Other:' => '',
 ];
