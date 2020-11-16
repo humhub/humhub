@@ -2,6 +2,7 @@
 
 namespace humhub\modules\dashboard\stream\filters;
 
+use humhub\modules\friendship\models\Friendship;
 use Yii;
 use humhub\modules\content\models\Content;
 use humhub\modules\dashboard\Module;
@@ -114,7 +115,11 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
         ];
 
         if($this->isFriendShipEnabled()) {
-            $privateVisibilityOrCondition[] = 'user_friendship.id IS NOT NULL ';
+            // Friend users can see private content, but only in case friendship was accepted
+            $privateVisibilityOrCondition[] = ['AND',
+                'user_friendship.id IS NOT NULL',
+                'EXISTS (SELECT id from user_friendship uf where uf.friend_user_id = user_friendship.user_id AND uf.user_id = user_friendship.friend_user_id)'
+            ];
         }
 
         $visibilityOrCondition[] = ['AND', 'content.visibility = :visibilityPrivate',  $privateVisibilityOrCondition];

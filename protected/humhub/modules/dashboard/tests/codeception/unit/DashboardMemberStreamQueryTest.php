@@ -388,14 +388,27 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
         $this->assertFriendUserDoesSeeProfileContent(Content::VISIBILITY_PRIVATE);
     }
 
-    private function assertFriendUserDoesSeeProfileContent($contentVisibility)
+    public function testFriendRequestedUserDoesNotSeePublicContent()
+    {
+        $this->assertFriendUserDoesNotSeeProfileContent(Content::VISIBILITY_PUBLIC, true);
+    }
+
+    public function testFriendRequestedUserDoesNotSeePrivateContent()
+    {
+        $this->assertFriendUserDoesNotSeeProfileContent(Content::VISIBILITY_PRIVATE, true);
+    }
+
+    private function assertFriendUserDoesSeeProfileContent($contentVisibility, $requested = false)
     {
         $this->enableFriendships();
         $user1 = User::findOne(['id' => 2]);
         $user2 = User::findOne(['id' => 3]);
 
-        static::assertTrue(Friendship::add($user1, $user2));
         static::assertTrue(Friendship::add($user2, $user1));
+
+        if(!$requested) {
+            static::assertTrue(Friendship::add($user1, $user2));
+        }
 
         $content = $this->createContent($contentVisibility, $user1, $user1->username);
 
@@ -403,6 +416,25 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
 
         static::assertCount(1, $stream);
         static::assertEquals($content->id, $stream[0]->id);
+    }
+
+    private function assertFriendUserDoesNotSeeProfileContent($contentVisibility, $requested = false)
+    {
+        $this->enableFriendships();
+        $user1 = User::findOne(['id' => 2]);
+        $user2 = User::findOne(['id' => 3]);
+
+        static::assertTrue(Friendship::add($user2, $user1));
+
+        if(!$requested) {
+            static::assertTrue(Friendship::add($user1, $user2));
+        }
+
+        $this->createContent($contentVisibility, $user1, $user1->username);
+
+        $stream = $this->fetchDashboardContent($user2);
+
+        static::assertCount(0, $stream);
     }
 
     // TODO: TEST DISABLE SHOW_AT_DASHBOARD
