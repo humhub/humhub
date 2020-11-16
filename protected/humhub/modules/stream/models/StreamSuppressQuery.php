@@ -83,7 +83,7 @@ class StreamSuppressQuery extends StreamQuery
     /**
      * @since 1.8
      */
-    public function isSuppressionActive()
+    protected function isSuppressionActive()
     {
         return !($this->preventSuppression || $this->limit < 3 || $this->isSingleContentQuery());
     }
