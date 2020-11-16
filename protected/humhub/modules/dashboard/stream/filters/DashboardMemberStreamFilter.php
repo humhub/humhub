@@ -35,6 +35,7 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
             ':userId' => $this->user->id,
             ':spaceMembershipStatus' => Membership::STATUS_MEMBER,
             ':spaceEnabledStatus' => Space::STATUS_ENABLED,
+            ':userEnabledStatus' => User::STATUS_ENABLED,
             ':userModel' => User::class,
             ':spaceModel' => Space::class,
             ':visibilityPrivate' => Content::VISIBILITY_PRIVATE,
@@ -48,14 +49,26 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
      */
     private function joinWithSubscribedContainers()
     {
+        // Join with enabled space containers
         $this->query->leftJoin(
-            'space_membership', 'contentcontainer.pk = space_membership.space_id AND space_membership.user_id = :userId AND space_membership.show_at_dashboard = 1 AND space_membership.status = :spaceMembershipStatus'
+            'space as spaceContainer',
+            'spaceContainer.id = contentcontainer.pk AND contentcontainer.class = :spaceModel AND spaceContainer.status = :spaceEnabledStatus'
+        );
+
+        // Join with enabled user containers
+        $this->query->leftJoin(
+            'user AS userContainer',
+            'userContainer.id = contentcontainer.pk AND contentcontainer.class = :userModel AND userContainer.status = :userEnabledStatus'
+        );
+
+        $this->query->leftJoin(
+            'space_membership', 'space_membership.space_id = spaceContainer.id AND space_membership.user_id = :userId AND space_membership.show_at_dashboard = 1 AND space_membership.status = :spaceMembershipStatus'
         );
 
         if($this->isFollowAllProfilesActive()) {
             // In order to prevent duplicates we only join with space follows in this case
             $this->query->leftJoin(
-                'user_follow', 'contentcontainer.pk = user_follow.object_id AND contentcontainer.class = user_follow.object_model AND contentcontainer.class = :spaceModel AND user_follow.user_id = :userId'
+                'user_follow', 'user_follow.object_id = spaceContainer.id AND user_follow.object_model = :spaceModel AND user_follow.user_id = :userId'
             );
         } else {
             // Otherwise join with all container follows
@@ -66,7 +79,7 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
 
         if ($this->isFriendShipEnabled()) {
             $this->query->leftJoin(
-                'user_friendship', 'contentcontainer.pk = user_friendship.user_id AND contentcontainer.class = :userModel AND user_friendship.friend_user_id = :userId'
+                'user_friendship', 'userContainer.id = user_friendship.user_id AND user_friendship.friend_user_id = :userId'
             );
         }
     }
@@ -76,6 +89,9 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
      */
     private function filterSubscribedContainer()
     {
+        // Only include global content or content from enabled space and user container
+        $this->query->andWhere('content.contentcontainer_id IS NULL OR userContainer.id IS NOT NULL OR spaceContainer.id IS NOT NULL');
+
         // We subscribe to own container, space memberships and following container
         $containerFilterOrContidion = ['OR',
             'space_membership.user_id IS NOT NULL',

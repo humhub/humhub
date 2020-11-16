@@ -37,7 +37,7 @@ class DashboardGuestStreamFilter extends StreamQueryFilter
         $publicProfilesSql = (new Query())
             ->select("contentcontainer_id")
             ->from('user')
-            ->where(['user.status' => +User::STATUS_ENABLED])
+            ->where(['user.status' => User::STATUS_ENABLED])
             ->andWhere(['user.visibility' =>  User::VISIBILITY_ALL]);
 
         $this->query->andFilterWhere(['OR',

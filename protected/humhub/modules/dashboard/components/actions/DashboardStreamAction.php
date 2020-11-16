@@ -10,16 +10,7 @@ namespace humhub\modules\dashboard\components\actions;
 
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\dashboard\stream\DashboardStreamQuery;
-use humhub\modules\dashboard\stream\filters\DashboardGuestStreamFilter;
-use humhub\modules\dashboard\stream\filters\DashboardMemberStreamFilter;
-use Yii;
-use yii\db\Query;
-use humhub\modules\dashboard\Module;
 use humhub\modules\activity\actions\ActivityStreamAction;
-use humhub\modules\user\models\User;
-use humhub\modules\space\models\Space;
-use humhub\modules\space\models\Membership;
-use humhub\modules\content\models\Content;
 
 /**
  * DashboardStreamAction
