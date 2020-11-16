@@ -8,3 +8,4 @@ HumHub Changelog
 - Enh #4347: Add `hideMembersSidebar` to make members sidebar optional in space stream page
 - Enh #4579: Optimized dashboard stream query
 - Enh #4579: Optimized live legitimation id queries
+- Enh #4579: Added `dashboard\Module::$guestFilterClass` and `$memberFilterClass` to replace dashboard filter class
