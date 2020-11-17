@@ -157,8 +157,9 @@ class PendingRegistrationsController extends Controller
     public function actionDeleteAllSelected()
     {
         if (Yii::$app->request->isPost) {
-            Yii::error('098098098098098098777777777777');
+
             $ids = Yii::$app->request->post('id');
+            Yii::error(Yii::$app->request->post());
             Yii::error($ids);
             if (!empty($ids)) {
                 foreach ($ids as $id) {

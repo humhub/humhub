@@ -6,10 +6,11 @@ humhub.module('admin.PendingRegistrations', function (module, require, $) {
     var PendingRegistrations = Widget.extend();
 
     PendingRegistrations.prototype.deleteAllSelected = function (evt) {
+        var that = this;
         client.post(evt).then(function () {
             var keys = $("#grid").yiiGridView("getSelectedRows");
             $.ajax({
-                url: this.options.urlDeleteSelected,
+                url: that.options.urlDeleteSelected,
                 type: "POST",
                 data: {id: keys},
             })
@@ -19,9 +20,7 @@ humhub.module('admin.PendingRegistrations', function (module, require, $) {
     };
 
     PendingRegistrations.prototype.deleteAll = function (evt) {
-        client.post(evt).then(function () {
-            client.reload();
-        }).catch(function (e) {
+        client.post(evt).catch(function () {
             module.log.error(e, true);
         })
     };

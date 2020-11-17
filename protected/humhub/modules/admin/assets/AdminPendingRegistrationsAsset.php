@@ -13,10 +13,6 @@ use yii\web\View;
 
 class AdminPendingRegistrationsAsset extends AssetBundle
 {
-    public $publishOptions = [
-        'forceCopy' => true
-    ];
-    
     /**
      * @inheritdoc
      */
