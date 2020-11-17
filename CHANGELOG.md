@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #4621: Wrong image orientation on downscaling with imagick
 - Fix #4628: Fixed stream gallery ratio issues on fluid themes
 - Fix #4636: Jplayer overflow on mobile stream
+- Fix #4591: Registration error text "You are already logged in!" not translatable
 
 
 1.7.0 (November 4, 2020)
