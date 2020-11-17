@@ -46,7 +46,7 @@ use humhub\modules\space\widgets\SpacePickerField;
     <div class="help-block">
     <?= Yii::t(
         'AdminModule.user',
-        'Notify users about adding to the group'
+        'Notify users when adding them to this group'
     ) ?>
 
     <br>
