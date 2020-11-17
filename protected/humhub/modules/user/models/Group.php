@@ -30,6 +30,7 @@ use Yii;
  * @property string $updated_at
  * @property integer $updated_by
  * @property integer $is_admin_group
+ * @property integer $notify_users
  *
  * @property User[] $manager
  * @property Space|null $defaultSpace
@@ -55,7 +56,7 @@ class Group extends ActiveRecord
     public function rules()
     {
         return [
-            [['space_id', 'sort_order'], 'integer'],
+            [['space_id', 'sort_order', 'notify_users'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 45],
             ['show_at_registration', 'validateShowAtRegistration'],
@@ -64,7 +65,7 @@ class Group extends ActiveRecord
 
     public function validateShowAtRegistration($attribute, $params)
     {
-        if($this->is_admin_group && $this->show_at_registration) {
+        if ($this->is_admin_group && $this->show_at_registration) {
             $this->addError($attribute, 'Admin group can\'t be a registration group!');
         }
     }
@@ -88,6 +89,19 @@ class Group extends ActiveRecord
             'show_at_registration' => Yii::t('UserModule.base', 'Show At Registration'),
             'show_at_directory' => Yii::t('UserModule.base', 'Show At Directory'),
             'sort_order' => Yii::t('UserModule.base', 'Sort order'),
+            'notify_users' => Yii::t('UserModule.base', 'Enable Notifications'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'notify_users' => Yii::t('AdminModule.user', 'Send notifications to users when added to or removed from the group.'),
+            'show_at_registration' => Yii::t('AdminModule.user', 'Make the group selectable at registration.'),
+            'show_at_directory' => Yii::t('AdminModule.user', 'Add a seperate page for the group to the directory.'),
         ];
     }
 
@@ -219,8 +233,8 @@ class Group extends ActiveRecord
      *
      * @param User $user user id or user model
      * @param bool $isManager mark as group manager
-     * @throws \yii\base\InvalidConfigException
      * @return bool true - on success adding user, false - if already member or cannot be added by some reason
+     * @throws \yii\base\InvalidConfigException
      */
     public function addUser($user, $isManager = false)
     {
@@ -237,10 +251,12 @@ class Group extends ActiveRecord
         $newGroupUser->created_by = Yii::$app->user->id;
         $newGroupUser->is_group_manager = $isManager;
         if ($newGroupUser->save() && !Yii::$app->user->isGuest) {
-            IncludeGroupNotification::instance()
-                ->about($this)
-                ->from(Yii::$app->user->identity)
-                ->send(User::findOne(['id' => $userId]));
+            if ($this->notify_users) {
+                IncludeGroupNotification::instance()
+                    ->about($this)
+                    ->from(Yii::$app->user->identity)
+                    ->send(User::findOne(['id' => $userId]));
+            }
             return true;
         }
 
@@ -278,9 +294,9 @@ class Group extends ActiveRecord
      * Notifies groups admins for approval of new user via e-mail.
      * This should be done after a new user is created and approval is required.
      *
-     * @todo Create message template, move message into translation
      * @param User $user
      * @return true|void
+     * @todo Create message template, move message into translation
      */
     public static function notifyAdminsForUserApproval($user)
     {
