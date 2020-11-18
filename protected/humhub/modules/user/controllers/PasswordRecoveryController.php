@@ -84,11 +84,13 @@ class PasswordRecoveryController extends Controller
         $model->scenario = 'registration';
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            Yii::$app->getModule('user')->settings->contentContainer($user)->delete('passwordRecoveryToken');
             $model->user_id = $user->id;
             $model->setPassword($model->newPassword);
-            $model->save();
-            return $this->render('reset_success');
+            
+            if ($model->save()) {
+                Yii::$app->getModule('user')->settings->contentContainer($user)->delete('passwordRecoveryToken');
+                return $this->render('reset_success');
+            }
         }
 
         return $this->render('reset', ['model' => $model]);
