@@ -79,21 +79,6 @@ class GroupSpace extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Space::class, ['id' => 'space_id']);
     }
-
-    /**
-     * Reassign the group members to all default spaces.
-     *
-     */
-    public function ReassignDefaultSpacesToAllUsers()
-    {
-        if ($this->group !== null && $this->space !== null) {
-            foreach ($this->group->groupUsers as $user) {
-                foreach ($this as $group_space) {
-                    $group_space->space->addMember($user->user_id);
-                }
-            }
-        }
-    }
 }
 
 
