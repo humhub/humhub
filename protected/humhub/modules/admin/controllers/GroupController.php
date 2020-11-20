@@ -300,9 +300,8 @@ class GroupController extends Controller
                 'AdminModule.user',
                 'Reassigned spaces to all users'
             ));
-
-            return $this->redirect(['edit', 'id' => $group->id]);
         }
-        return $this->render('reassign-all', ['model' => $group]);
+
+        return $this->redirect(['edit', 'id' => $group->id]);
     }
 }

@@ -29,7 +29,7 @@ use humhub\modules\space\widgets\SpacePickerField;
     <?php endif; ?>
 
     <div class="reassign-spaces">
-        <?= CHtml::a(Yii::t('AdminModule.user', 'Reassign All'), Url::toRoute(['/admin/group/reassign-all', 'id' => $group->id]), ['class' => 'btn btn-primary btn-reassign']); ?>
+        <?= Html::a(Yii::t('AdminModule.modules', 'Reassign All'), Url::to(['/admin/group/reassign-all', 'id' => $group->id]), ['class' => 'btn btn-primary btn-reassign', 'data-method' => 'POST', 'data-confirm' => Yii::t('AdminModule.modules', 'Are you sure? Reassign default spaces to all users?')]); ?>
         <div class="help-block">Reassign default spaces to all users</div>
     </div>
 
