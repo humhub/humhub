@@ -94,6 +94,16 @@ class Group extends ActiveRecord
     }
 
     /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'reassign-all-help' => Yii::t('AdminModule.settings','Reassign default spaces to all users'),
+        ];
+    }
+
+    /**
      * @return null|Space[]
      * @since 1.8
      */

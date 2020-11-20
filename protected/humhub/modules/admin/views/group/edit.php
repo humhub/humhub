@@ -1,11 +1,9 @@
 <?php
 
 use humhub\modules\ui\form\widgets\SortOrderField;
-use humhub\widgets\Button;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
-use yii\helpers\Html;
-use humhub\compat\CHtml;
+use humhub\libs\Html;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\modules\space\widgets\SpacePickerField;
 
@@ -30,7 +28,7 @@ use humhub\modules\space\widgets\SpacePickerField;
 
     <div class="reassign-spaces">
         <?= Html::a(Yii::t('AdminModule.modules', 'Reassign All'), Url::to(['/admin/group/reassign-all', 'id' => $group->id]), ['class' => 'btn btn-primary btn-reassign', 'data-method' => 'POST', 'data-confirm' => Yii::t('AdminModule.modules', 'Are you sure? Reassign default spaces to all users?')]); ?>
-        <div class="help-block">Reassign default spaces to all users</div>
+        <div class="help-block"><?=$group->attributeHints()['reassign-all-help']?></div>
     </div>
 
     <?php if ($isManagerApprovalSetting && !$group->is_admin_group): ?>
@@ -54,7 +52,7 @@ use humhub\modules\space\widgets\SpacePickerField;
     <?= $form->field($group, 'show_at_directory')->checkbox(); ?>
     <?= $form->field($group, 'sort_order')->widget(SortOrderField::class) ?>
 
-    <?= CHtml::submitButton(Yii::t('AdminModule.user', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+    <?= Html::submitButton(Yii::t('AdminModule.user', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
     <?php
     if ($showDeleteButton) {
