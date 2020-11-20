@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\controllers;
 
+use admin\jobs\ReassignAllDefaultSpaces;
 use humhub\components\Response;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\AddGroupMemberForm;
@@ -287,21 +288,30 @@ class GroupController extends Controller
 
     public function actionReassignAll($id)
     {
-        $group = Group::findOne(['id' => $id]);
+//        $group = Group::findOne(['id' => $id]);
+//
+//        if (Yii::$app->request->isPost) {
+//            foreach ($group->groupUsers as $user) {
+//                foreach ($group->groupSpaces as $group_space) {
+//                    $group_space->space->addMember($user->user_id);
+//                }
+//            }
+//
+//            $this->view->success(Yii::t(
+//                'AdminModule.user',
+//                'Reassigned spaces to all users'
+//            ));
+//        }
 
-        if (Yii::$app->request->isPost) {
-            foreach ($group->groupUsers as $user) {
-                foreach ($group->groupSpaces as $group_space) {
-                    $group_space->space->addMember($user->user_id);
-                }
-            }
-
-            $this->view->success(Yii::t(
-                'AdminModule.user',
-                'Reassigned spaces to all users'
-            ));
+        $job = new ReassignAllDefaultSpaces();
+        if (\humhub\modules\queue\helpers\QueueHelper::isQueued($job)) {
+            print "Reassign process is already queued or running!\n";
+            return false;
         }
 
-        return $this->redirect(['edit', 'id' => $group->id]);
+        $job->group_id = $id;
+        Yii::$app->queue->push($job);
+
+        return $this->redirect(['edit', 'id' => $id]);
     }
 }
