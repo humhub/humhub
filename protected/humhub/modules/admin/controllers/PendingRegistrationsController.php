@@ -138,7 +138,7 @@ class PendingRegistrationsController extends Controller
     public function actionDeleteAll()
     {
         if (Yii::$app->request->isPost) {
-               Invite::deleteAll();
+            Invite::deleteAll();
             $this->view->success(Yii::t(
                 'AdminModule.user',
                 'All invitations have been deleted'
@@ -146,6 +146,7 @@ class PendingRegistrationsController extends Controller
         }
         return $this->redirect(['index']);
     }
+
     /**
      * Delete all or selected invitation
      *
