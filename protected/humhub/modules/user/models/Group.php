@@ -15,6 +15,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use Yii;
 
+
 /**
  * This is the model class for table "group".
  *
@@ -35,7 +36,8 @@ use Yii;
  * @property User[] $manager
  * @property Space|null $defaultSpace
  * @property Space|null $space
- * @property GroupUsers[] groupUsers
+ * @property GroupUser[] groupUsers
+ * @property GroupSpace[] groupSpaces
  */
 class Group extends ActiveRecord
 {
@@ -106,11 +108,15 @@ class Group extends ActiveRecord
     }
 
     /**
-     * @return null|Space
+     * @return null|Space[]
+     * @since 1.8
      */
-    public function getDefaultSpace()
+    public function getDefaultSpaces()
     {
-        return Space::findOne(['id' => $this->space_id]);
+        return Space::find()
+            ->innerJoin('group_space', 'space.id = group_space.space_id')
+            ->where(['group_space.group_id' => $this->id])
+            ->all();
     }
 
     public function beforeSave($insert)
@@ -267,6 +273,8 @@ class Group extends ActiveRecord
      * Removes a user from the group.
      * @param User|string $user userId or user model
      * @return bool
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function removeUser($user)
     {
@@ -373,4 +381,13 @@ class Group extends ActiveRecord
         ])->all();
     }
 
+    /**
+     * Returns all GroupSpace relations for this group as ActiveQuery.
+     * @return \yii\db\ActiveQuery
+     * @since 1.8
+     */
+    public function getGroupSpaces()
+    {
+        return $this->hasMany(GroupSpace::class, ['group_id' => 'id']);
+    }
 }

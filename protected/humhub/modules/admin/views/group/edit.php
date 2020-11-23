@@ -20,8 +20,8 @@ use humhub\modules\space\widgets\SpacePickerField;
             'form' => $form,
             'model' => $group,
             'attribute' => 'defaultSpaceGuid',
-            'selection' => $group->defaultSpace,
-            'maxSelection' => 1,
+            'selection' => $group->defaultSpaces,
+            'maxSelection' => 1000,
         ])
         ?>
     <?php endif; ?>
