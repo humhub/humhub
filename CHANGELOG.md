@@ -12,7 +12,7 @@ HumHub Changelog
 - Fix #4628: Fixed stream gallery ratio issues on fluid themes
 - Fix #4636: Jplayer overflow on mobile stream
 - Fix #4591: Registration error text "You are already logged in!" not translatable
-
+- Fix #4630: Transfer default content of user approve/decline email to approve/decline form
 
 1.7.0 (November 4, 2020)
 ------------------------
