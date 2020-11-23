@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace admin\jobs;
+namespace humhub\modules\admin\jobs;
 
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
@@ -24,7 +24,7 @@ class ReassignAllDefaultSpaces extends ActiveJob implements ExclusiveJobInterfac
     /**
      * @var int group id
      */
-    public $group_id;
+    public $groupId;
 
     /**
      * @var int maximum 2 hours
@@ -36,7 +36,7 @@ class ReassignAllDefaultSpaces extends ActiveJob implements ExclusiveJobInterfac
      */
     public function run()
     {
-        $group = Group::findOne(['id' => $this->group_id]);
+        $group = Group::findOne(['id' => $this->groupId]);
 
         foreach ($group->groupUsers as $user) {
             foreach ($group->groupSpaces as $group_space) {
@@ -47,7 +47,7 @@ class ReassignAllDefaultSpaces extends ActiveJob implements ExclusiveJobInterfac
 
     public function getExclusiveJobId()
     {
-        return 'admin.reassign-default-spaces';
+        return 'admin.reassign-default-spaces-for-group-id-' . $this->groupId;
     }
 
     /**
