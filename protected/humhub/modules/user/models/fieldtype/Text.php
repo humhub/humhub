@@ -67,7 +67,7 @@ class Text extends BaseType
     /**
      * Rules for validating the Field Type Settings Form
      *
-     * @return type
+     * @return array
      */
     public function rules()
     {
@@ -82,7 +82,7 @@ class Text extends BaseType
      * Returns Form Definition for edit/create this field.
      *
      * @param array $definition
-     * @return Array Form Definition
+     * @return array Form Definition
      */
     public function getFormDefinition($definition = [])
     {
@@ -91,12 +91,6 @@ class Text extends BaseType
                         'type' => 'form',
                         'title' => Yii::t('UserModule.profile', 'Text Field Options'),
                         'elements' => [
-                            'maxLength' => [
-                                'type' => 'text',
-                                'maxlength' => 32,
-                                'label' => Yii::t('UserModule.profile', 'Maximum length'),
-                                'class' => 'form-control',
-                            ],
                             'validator' => [
                                 'label' => Yii::t('UserModule.profile', 'Validator'),
                                 'type' => 'dropdownlist',
@@ -153,8 +147,8 @@ class Text extends BaseType
     /**
      * Returns the Field Rules, to validate users input
      *
-     * @param type $rules
-     * @return type
+     * @param array $rules
+     * @return array
      */
     public function getFieldRules($rules = [])
     {

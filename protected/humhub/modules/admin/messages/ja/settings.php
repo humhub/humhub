@@ -69,7 +69,6 @@ return [
     'HTML tracking code' => 'HTMLのトラッキングコード',
     'Here you can configurate the registration behaviour and additinal user settings of your social network.' => 'ここでは、ソーシャルネットワークの登録動作や追加のユーザー設定を行うことができます。',
     'Here you can configure basic settings of your social network.' => 'ここでは、ソーシャルネットワークの基本的な設定を行うことができます。',
-    'Hide file info (name, size) for images on wall' => 'ウォールで画像のファイル情報（名前、サイズ）を隠す',
     'Horizontal scrolling images on a mobile device' => 'モバイル端末では画像を横スクロールにする',
     'Icon upload' => 'アイコンのアップロード',
     'If not set, height will default to 200px.' => '設定されていない場合、高さは200pxになります。',
@@ -95,6 +94,7 @@ return [
     'Port number' => 'ポート番号',
     'Prevent client caching of following scripts' => '以下のスクリプトのクライアントキャッシュを防止',
     'Redis' => 'Redis',
+    'Reported database time: {dateTime}' => '報告されたデータベース時間：{dateTime}',
     'SMTP Options' => 'SMTPオプション',
     'Save' => '保存',
     'Save & Flush Caches' => '保存してキャッシュをクリア',
@@ -125,5 +125,5 @@ return [
     'You\'re using no icon at the moment. Upload your logo now.' => '現在、アイコンを使用していません。今すぐアイコンをアップロードしてください。',
     'You\'re using no logo at the moment. Upload your logo now.' => '現在、ロゴを使用していません。今すぐロゴをアップロードしてください。',
     'never' => '保存しない',
-    'Reported database time: {dateTime}' => '',
+    'Exclude media files from stream attachment list' => '',
 ];

@@ -127,6 +127,7 @@ return [
     'Last login date of the user' => '',
     'Markdown' => '',
     'Must contain at least one character.' => '',
+    'Other:' => '',
     'This profile is no longer available!' => '',
     'This will add an additional input element for custom values' => '',
     'YouTube URL' => '',

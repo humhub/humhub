@@ -62,6 +62,7 @@ return [
     'New password' => '',
     'No users found.' => '',
     'Password' => '',
+    'Password needs to be at least {chars} characters long.' => '',
     'Permission' => '',
     'Profile' => '',
     'Profile posts only' => '',

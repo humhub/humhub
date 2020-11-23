@@ -66,7 +66,9 @@ class DashboardStreamAction extends ActivityStreamAction
             ->select(["contentcontainer.id"])
             ->from('space')
             ->leftJoin('contentcontainer', 'space.id=contentcontainer.pk AND contentcontainer.class=:spaceClass')
-            ->where('space.visibility=' . Space::VISIBILITY_ALL);
+            ->where('space.visibility=' . Space::VISIBILITY_ALL)
+            ->andWhere('space.status='. Space::STATUS_ENABLED);
+
         $union = Yii::$app->db->getQueryBuilder()->build($publicSpacesSql)[0];
 
         $publicProfilesSql = (new Query())
@@ -101,7 +103,7 @@ class DashboardStreamAction extends ActivityStreamAction
         $spaceMemberships = (new Query())
             ->select("contentcontainer.id")
             ->from('space_membership')
-            ->leftJoin('space sm', 'sm.id=space_membership.space_id')
+            ->leftJoin('space sm', 'sm.id=space_membership.space_id AND sm.status='.Space::STATUS_ENABLED)
             ->leftJoin('contentcontainer', 'contentcontainer.pk=sm.id AND contentcontainer.class = :spaceClass')
             ->where('space_membership.user_id=' . $this->user->id . ' AND space_membership.show_at_dashboard = 1');
         $union .= " UNION " . Yii::$app->db->getQueryBuilder()->build($spaceMemberships)[0];
