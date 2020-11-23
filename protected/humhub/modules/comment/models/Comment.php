@@ -142,6 +142,14 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         $mentionedUsers = (isset($processResult['mentioning'])) ? $processResult['mentioning'] : [];
 
         if ($insert) {
+            $parent = $this->object_model::findOne(['id', $this->object_id]);
+
+            $followersToStay = [
+                $parent->user,
+                $this->user,
+                $this->getCommentedRecord()->owner,
+            ];
+
             $followerQuery = $this->getCommentedRecord()->getFollowers(null, true, true);
 
             // Remove mentioned users from followers query to avoid double notification
@@ -149,6 +157,12 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
                 $followerQuery->andWhere(['NOT IN', 'user.id', array_map(function (User $user) {
                     return $user->id;
                 }, $mentionedUsers)]);
+            }
+            //Allow followers participated in current comment replay and parent object owner only
+            if (count($followersToStay) !== 0) {
+                $followerQuery->andWhere(['IN', 'user.id', array_map(function (User $user) {
+                    return $user->id;
+                }, $followersToStay)]);
             }
 
             // Update updated_at etc..
