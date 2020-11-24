@@ -8,7 +8,7 @@
 
 namespace humhub\modules\admin\controllers;
 
-use admin\jobs\ReassignAllDefaultSpaces;
+use humhub\modules\admin\jobs\ReassignAllDefaultSpaces;
 use humhub\components\Response;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\AddGroupMemberForm;
