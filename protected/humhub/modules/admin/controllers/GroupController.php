@@ -16,6 +16,7 @@ use humhub\modules\admin\models\GroupSearch;
 use humhub\modules\admin\models\UserSearch;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\queue\helpers\QueueHelper;
 use humhub\modules\user\models\forms\EditGroupForm;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupUser;
@@ -289,12 +290,11 @@ class GroupController extends Controller
     public function actionReassignAll($id)
     {
         $job = new ReassignAllDefaultSpaces();
-        if (\humhub\modules\queue\helpers\QueueHelper::isQueued($job)) {
-            print "Reassign process is already queued or running!\n";
-            return false;
+        if (QueueHelper::isQueued($job)) {
+            return $this->render('reassign-already-running', ['groupId'=>$id]);
         }
 
-        $job->group_id = $id;
+        $job->groupId = $id;
         Yii::$app->queue->push($job);
 
         return $this->redirect(['edit', 'id' => $id]);
