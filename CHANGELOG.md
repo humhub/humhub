@@ -14,6 +14,7 @@ HumHub Changelog
 - Fix #4591: Registration error text "You are already logged in!" not translatable
 - Fix #4630: Transfer default content of user approve/decline email to approve/decline form
 - Fix #4638: Profile settings do not accept birthdate in russian format
+- Fix #4596: Set `autocomplete="off"` on date picker fields
 
 1.7.0 (November 4, 2020)
 ------------------------
