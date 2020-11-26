@@ -13,6 +13,8 @@ HumHub Changelog
 - Fix #4636: Jplayer overflow on mobile stream
 - Fix #4591: Registration error text "You are already logged in!" not translatable
 - Fix #4630: Transfer default content of user approve/decline email to approve/decline form
+- Fix #4650: `adminCanChangeUserProfileImages` option has no effect
+- Fix #4660: Topic stream filter leads to stream entry duplication in combination with stream suppression
 - Fix #4638: Profile settings do not accept birthdate in russian format
 - Fix #4596: Set `autocomplete="off"` on date picker fields
 
