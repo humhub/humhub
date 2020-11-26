@@ -43,7 +43,6 @@ class TopicStreamFilter extends StreamQueryFilter
             ->from('content_tag_relation')
             ->where(['and', 'content_tag_relation.content_id = content.id', ['in', 'content_tag_relation.tag_id', $this->topics]]);
 
-        $this->query->innerJoin('content_tag_relation', 'content.id = content_tag_relation.content_id');
         $this->query->andWhere( ['=', new Expression('('.count($this->topics).')'), $subQuery]);
     }
 }
