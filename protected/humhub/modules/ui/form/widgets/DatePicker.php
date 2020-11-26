@@ -8,6 +8,7 @@
 
 namespace humhub\modules\ui\form\widgets;
 
+use humhub\assets\DatePickerRussianLanguageAsset;
 use Yii;
 use yii\helpers\FormatConverter;
 use yii\helpers\Json;
@@ -76,11 +77,6 @@ class DatePicker extends BaseDatePicker
 
         $language = $this->language ? $this->language : Yii::$app->language;
 
-        // Patch for https://github.com/humhub/humhub/issues/4638, this patch is also reflected in DBDateValidator
-        if($language === 'ru' && $this->dateFormat === 'medium') {
-            $this->dateFormat = 'short';
-        }
-
         echo $this->renderWidget() . "\n";
 
         $containerID = $this->inline ? $this->containerOptions['id'] : $this->options['id'];
@@ -92,19 +88,11 @@ class DatePicker extends BaseDatePicker
         }
 
         if ($this->pickerLanguage !== 'en-US' && $this->pickerLanguage !== 'en') {
-            $view = $this->getView();
-
-            $assetBundle = DatePickerLanguageAsset::register($view);
-            if(substr($this->pickerLanguage, 0 , 2) === 'en') {
-                $assetBundle->autoGenerate = false;
-                $assetBundle->js[] = "ui/i18n/datepicker-$this->pickerLanguage.js";
-            } else {
-                $assetBundle->language = $this->pickerLanguage;
-            }
+            $this->registerLanguageAsset();
 
             $options = Json::htmlEncode($this->clientOptions);
             $this->pickerLanguage = Html::encode($this->pickerLanguage);
-            $view->registerJs("jQuery('#{$containerID}').datepicker($.extend({}, $.datepicker.regional['{$this->pickerLanguage}'], $options));");
+            $this->getView()->registerJs("jQuery('#{$containerID}').datepicker($.extend({}, $.datepicker.regional['{$this->pickerLanguage}'], $options));");
         } else {
             $this->registerClientOptions('datepicker', $containerID);
         }
@@ -113,4 +101,20 @@ class DatePicker extends BaseDatePicker
         JuiAsset::register($this->getView());
     }
 
+    private function registerLanguageAsset()
+    {
+
+        if($this->pickerLanguage === 'ru') {
+            DatePickerRussianLanguageAsset::register($this->getView());
+            return;
+        }
+
+        $assetBundle = DatePickerLanguageAsset::register($this->getView());
+        if(substr($this->pickerLanguage, 0 , 2) === 'en') {
+            $assetBundle->autoGenerate = false;
+            $assetBundle->js[] = "ui/i18n/datepicker-$this->pickerLanguage.js";
+        } else {
+            $assetBundle->language = $this->pickerLanguage;
+        }
+    }
 }
