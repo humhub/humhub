@@ -72,10 +72,18 @@ class DatePicker extends BaseDatePicker
          * to load a fallback language e.g. for `en-GB` -> 'en'.
          */
 
+        $this->options['autocomplete'] = 'off';
+
+        $language = $this->language ? $this->language : Yii::$app->language;
+
+        // Patch for https://github.com/humhub/humhub/issues/4638, this patch is also reflected in DBDateValidator
+        if($language === 'ru' && $this->dateFormat === 'medium') {
+            $this->dateFormat = 'short';
+        }
+
         echo $this->renderWidget() . "\n";
 
         $containerID = $this->inline ? $this->containerOptions['id'] : $this->options['id'];
-        $language = $this->language ? $this->language : Yii::$app->language;
 
         if (strncmp($this->dateFormat, 'php:', 4) === 0) {
             $this->clientOptions['dateFormat'] = FormatConverter::convertDatePhpToJui(substr($this->dateFormat, 4));

@@ -62,6 +62,11 @@ class DbDateValidator extends DateValidator
      */
     public function validateAttribute($model, $attribute)
     {
+        // Patch for https://github.com/humhub/humhub/issues/4638, this patch is also reflected in DatePicker widget
+        if($this->locale === 'ru' && $this->format === 'medium') {
+            $this->format = 'short';
+        }
+
         // If the date is already in system format, we do not need any further translation or parsing
         if(DateHelper::isInDbFormat($model->$attribute, $this->isDateOnly())) {
             return;
