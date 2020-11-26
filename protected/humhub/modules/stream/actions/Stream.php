@@ -227,16 +227,14 @@ abstract class Stream extends Action
      *
      * @param array $options instance attribute options
      * @return StreamQuery
+     * @throws \yii\base\InvalidConfigException
      * @since 1.6
      */
     protected function initQuery($options = [])
     {
-        $streamQueryClass = $this->streamQueryClass;
-
-        /* @var $instance StreamQuery */
-        $instance = $streamQueryClass::find();
+        $options['class'] = $this->streamQueryClass;
+        $instance = Yii::createObject($options);
         $instance->forUser($this->user);
-        $instance->setAttributes($options, false);
         return $instance;
     }
 
