@@ -112,7 +112,7 @@ class DatePicker extends BaseDatePicker
         $assetBundle = DatePickerLanguageAsset::register($this->getView());
         if(substr($this->pickerLanguage, 0 , 2) === 'en') {
             $assetBundle->autoGenerate = false;
-            $assetBundle->js[] = "ui/i18n/datepicker-$this->pickerLanguage.js";
+            $assetBundle->js[] = "ui/i18n/datepicker-{$this->pickerLanguage}.js";
         } else {
             $assetBundle->language = $this->pickerLanguage;
         }
