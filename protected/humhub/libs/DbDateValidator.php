@@ -67,7 +67,6 @@ class DbDateValidator extends DateValidator
             return;
         }
 
-
         $timeValue = $this->getTimeValue($model);
         $timestamp = $this->parseDateTimeValue($model->$attribute, $timeValue);
 
