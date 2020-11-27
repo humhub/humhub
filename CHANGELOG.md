@@ -43,6 +43,7 @@ HumHub Changelog
 - Fix #4575: Increased text size of "Read more" link on short-text post 
 - Fix #4559: Don’t check platform php extensions by composer v2
 - Fix #4581: Users see content of archived spaces on dashboard
+- Fix #4666: Richtext attachment of multiple files without title fails
 
 
 1.7.0-beta.1 (October 16, 2020)
