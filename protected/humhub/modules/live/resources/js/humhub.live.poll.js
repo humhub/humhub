@@ -10,6 +10,10 @@ humhub.module('live.poll', function (module, require, $) {
 
     var DEFAULT_IDLE_INTERVAL = 20;
 
+    var EVENT_TYPE_REQUEST = 'request';
+    var EVENT_TYPE_FOCUS = 'focus';
+    var EVENT_TYPE_UPDATE = 'update';
+
     var counter = {
         requests: 0,
         updates: 0
@@ -27,6 +31,7 @@ humhub.module('live.poll', function (module, require, $) {
         this.options.idleFactor = options.idleFactor || DEFAULT_IDLE_FACTOR;
         this.options.idleInterval = options.idleDelay || DEFAULT_IDLE_INTERVAL;
         this.options.initTime = options.initTime || Date.now();
+
         this.init();
     };
 
@@ -36,6 +41,7 @@ humhub.module('live.poll', function (module, require, $) {
             return;
         }
 
+        this.subscriberId = this.generateSubscriberId();
         this.delay = this.options.minInterval;
         this.call = this.update.bind(this);
         this.handle = this.handleUpdate.bind(this);
@@ -43,7 +49,7 @@ humhub.module('live.poll', function (module, require, $) {
 
         $(window)
             .on('blur', this.updateIdle.bind(this))
-            .on('focus',this.stopIdle.bind(this));
+            .on('focus',this.onWindowFocus.bind(this));
 
         $(document).on('mousemove keydown mousedown touchstart', this.stopIdle.bind(this));
 
@@ -51,6 +57,10 @@ humhub.module('live.poll', function (module, require, $) {
         this.startIdleTimer();
 
         this.initBroadCast();
+    };
+
+    PollClient.prototype.generateSubscriberId = function () {
+        return  '_' + Math.random().toString(36).substr(2, 9);
     };
 
     PollClient.prototype.initBroadCast = function () {
@@ -65,18 +75,34 @@ humhub.module('live.poll', function (module, require, $) {
                 return;
             }
 
+            if(evt.data.subscriberId === this.subscriberId) {
+                // We triggered the event, so nothing todo
+                return;
+            }
+
+            console.log(evt.data);
+
             if(this.idle) {
                 // Seems this is an inactive tab, so let others do the job...
                 this.setDelay(this.options.maxInterval);
+                this.resetPollTimeout();
             }
 
-            if(evt.data.type === 'request') {
-                // Another tab just started a request, so delay the timeout
-                this.resetPollTimeout();
-            } else if(this.lastTs < evt.data.queryTime) {
-                // We received a response from another tab
-                console.log('update from channel '+evt.data.queryTime);
-                this.handleUpdate(evt.data);
+            switch (evt.data.type) {
+                case EVENT_TYPE_REQUEST:
+                    // Another tab just started a request, so delay the timeout
+                    this.resetPollTimeout();
+                    break;
+                case EVENT_TYPE_FOCUS:
+                    // Another tab was focused, so
+                    this.setDelay(this.options.maxInterval);
+                    this.resetPollTimeout();
+                    break;
+                case EVENT_TYPE_UPDATE:
+                    // We received a response from another tab
+                    console.log('update from channel '+evt.data.queryTime);
+                    this.handleUpdate(evt.data);
+                    break;
             }
         }
     };
@@ -99,6 +125,15 @@ humhub.module('live.poll', function (module, require, $) {
     /**
      * Stops the idle behavior by resetting the delay to the min delay
      */
+    PollClient.prototype.onWindowFocus = function () {
+        this.stopIdle();
+        this.broadCast(EVENT_TYPE_FOCUS);
+    };
+
+
+    /**
+     * Stops the idle behavior by resetting the delay to the min delay
+     */
     PollClient.prototype.stopIdle = function () {
         this.idle = false;
 
@@ -115,7 +150,6 @@ humhub.module('live.poll', function (module, require, $) {
      * Updates the delay by means of the idleFactor.
      */
     PollClient.prototype.updateIdle = function () {
-        console.log(counter);
         this.idle = true;
 
         if (this.delay < this.options.maxInterval) {
@@ -125,13 +159,20 @@ humhub.module('live.poll', function (module, require, $) {
         if (this.delay > this.options.maxInterval) {
             this.setDelay(this.options.maxInterval);
         }
+
+        console.log({
+            request: counter.requests,
+            updates: counter.updates,
+            delay: this.delay,
+            idle: this.idle
+        });
     };
 
     /**
      * Runs an live update call and resets the timeout.
      */
     PollClient.prototype.update = function () {
-        this.broadCast({type: 'request'});
+        this.broadCast(EVENT_TYPE_REQUEST);
         counter.requests++;
         client.get(this.getCallOptions())
                 .then(this.handle)
@@ -154,16 +195,31 @@ humhub.module('live.poll', function (module, require, $) {
      * Handles the live update response.
      */
     PollClient.prototype.handleUpdate = function (response) {
-        // Do we already have a more recent update?
+
         if(this.lastTs >= response.queryTime) {
+            // We already have a more recent update
             return;
         }
 
+        if(this.subscriberId === response.subscriberId) {
+            // Just to make sure we do not handle our own broadcast event
+            return;
+        }
+
+        // used for debugging only
         counter.updates++;
+
         this.lastTs = response.queryTime;
 
         this.resetPollTimeout();
-        this.broadCast(response);
+
+        if(!response.subscriberId) {
+            // If subscriberId is present, this data was already sent
+            this.broadCast(EVENT_TYPE_UPDATE, {
+                queryTime: response.queryTime,
+                events: response.events
+            });
+        }
 
         this.triggerEventUpdates(response);
     };
@@ -185,13 +241,17 @@ humhub.module('live.poll', function (module, require, $) {
         }
     };
 
-    PollClient.prototype.broadCast = function (response) {
-        if(this.channel) {
-            this.channel.postMessage({
-                queryTime: response.queryTime,
-                events: response.events
-            });
+    PollClient.prototype.broadCast = function (type, data) {
+        data = data || {};
+
+        if(!this.channel || data.subscriberId) {
+            return;
         }
+
+        data.subscriberId = this.subscriberId;
+        data.type = type;
+
+        this.channel.postMessage(data);
     };
 
     /**
