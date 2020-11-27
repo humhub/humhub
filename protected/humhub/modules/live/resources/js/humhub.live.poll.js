@@ -7,7 +7,6 @@ humhub.module('live.poll', function (module, require, $) {
     var DEFAULT_MAX_INTERVAL = 45;
 
     var DEFAULT_IDLE_FACTOR = 0.1;
-
     var DEFAULT_IDLE_INTERVAL = 20;
 
     var EVENT_TYPE_REQUEST = 'request';
@@ -46,6 +45,7 @@ humhub.module('live.poll', function (module, require, $) {
         this.delay = this.options.minInterval;
         this.call = this.update.bind(this);
         this.handle = this.handleUpdate.bind(this);
+        this.handleError = this.handleUpdateError.bind(this);
         this.lastTs = this.options.initTime;
 
         $(window)
@@ -85,8 +85,7 @@ humhub.module('live.poll', function (module, require, $) {
 
             if(!this.focus) {
                 // Seems this is an inactive tab, so let others do the job...
-                this.setDelay(this.options.maxInterval);
-                this.resetPollTimeout();
+                this.resetPollTimeout(this.options.maxInterval);
             }
 
             switch (evt.data.type) {
@@ -95,9 +94,8 @@ humhub.module('live.poll', function (module, require, $) {
                     this.resetPollTimeout();
                     break;
                 case EVENT_TYPE_FOCUS:
-                    // Another tab was focused, so
-                    this.setDelay(this.options.maxInterval);
-                    this.resetPollTimeout();
+                    // Another tab was focused, so increase delay and reset timeout
+                    this.resetPollTimeout(this.options.maxInterval);
                     break;
                 case EVENT_TYPE_UPDATE:
                     // We received a response from another tab
@@ -128,8 +126,13 @@ humhub.module('live.poll', function (module, require, $) {
     /**
      * Resets current timeout if set and starts polling with current delay
      */
-    PollClient.prototype.resetPollTimeout = function () {
+    PollClient.prototype.resetPollTimeout = function (delay) {
         clearTimeout(this.timeout);
+
+        if(delay) {
+            this.setDelay(delay);
+        }
+
         this.timeout = setTimeout(this.call, this.getDelay());
     };
 
@@ -180,9 +183,11 @@ humhub.module('live.poll', function (module, require, $) {
     PollClient.prototype.update = function () {
         this.broadCast(EVENT_TYPE_REQUEST);
         counter.requests++;
+
         client.get(this.getCallOptions())
-                .then(this.handle)
-                .catch(_handleUpdateError);
+            .then(this.handle)
+            .catch(this.handleError);
+
     };
 
     /**
@@ -282,8 +287,13 @@ humhub.module('live.poll', function (module, require, $) {
         return result;
     };
 
-    var _handleUpdateError = function (e) {
-        module.log.error(e);
+    PollClient.prototype.handleUpdateError = function (e) {
+        if(!navigator.onLine) {
+            this.resetPollTimeout(this.options.maxInterval);
+            module.log.info('Poll request blocked due to offline status');
+        } else {
+            module.log.error(e);
+        }
     };
 
     /**
