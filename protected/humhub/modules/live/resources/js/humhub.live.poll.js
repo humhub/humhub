@@ -3,7 +3,7 @@ humhub.module('live.poll', function (module, require, $) {
     var event = require('event');
     var object = require('util').object;
 
-    var DEFAULT_MIN_INTERVAL = 15;
+    var DEFAULT_MIN_INTERVAL = 10;
     var DEFAULT_MAX_INTERVAL = 45;
 
     var DEFAULT_IDLE_FACTOR = 0.1;
@@ -42,16 +42,17 @@ humhub.module('live.poll', function (module, require, $) {
         }
 
         this.subscriberId = this.generateSubscriberId();
+        this.focus = true;
         this.delay = this.options.minInterval;
         this.call = this.update.bind(this);
         this.handle = this.handleUpdate.bind(this);
         this.lastTs = this.options.initTime;
 
         $(window)
-            .on('blur', this.updateIdle.bind(this))
+            .on('blur', this.onWindowBlur.bind(this))
             .on('focus',this.onWindowFocus.bind(this));
 
-        $(document).on('mousemove keydown mousedown touchstart', this.stopIdle.bind(this));
+        $(document).on('mousemove keydown mousedown touchstart', object.debounce(() => this.stopIdle(), 200));
 
         this.resetPollTimeout();
         this.startIdleTimer();
@@ -82,7 +83,7 @@ humhub.module('live.poll', function (module, require, $) {
 
             console.log(evt.data);
 
-            if(this.idle) {
+            if(!this.focus) {
                 // Seems this is an inactive tab, so let others do the job...
                 this.setDelay(this.options.maxInterval);
                 this.resetPollTimeout();
@@ -108,6 +109,23 @@ humhub.module('live.poll', function (module, require, $) {
     };
 
     /**
+     * Handler called once the window was focused
+     */
+    PollClient.prototype.onWindowFocus = function () {
+        this.focus = true;
+        this.stopIdle();
+        this.broadCast(EVENT_TYPE_FOCUS);
+    };
+
+    /**
+     * Handler called once the window was blurred
+     */
+    PollClient.prototype.onWindowBlur = function () {
+        this.focus = false;
+        this.updateIdle();
+    };
+
+    /**
      * Resets current timeout if set and starts polling with current delay
      */
     PollClient.prototype.resetPollTimeout = function () {
@@ -125,23 +143,13 @@ humhub.module('live.poll', function (module, require, $) {
     /**
      * Stops the idle behavior by resetting the delay to the min delay
      */
-    PollClient.prototype.onWindowFocus = function () {
-        this.stopIdle();
-        this.broadCast(EVENT_TYPE_FOCUS);
-    };
-
-
-    /**
-     * Stops the idle behavior by resetting the delay to the min delay
-     */
     PollClient.prototype.stopIdle = function () {
-        this.idle = false;
-
-        var currentDelay = this.delay;
         this.setDelay(this.options.minInterval);
 
+        console.log('stopIdle');
+
         // Make sure we do not have to wait too long after idle end.
-        if (currentDelay > 25) {
+        if (new Date() - this.lastTs > this.options.minInterval) {
             this.resetPollTimeout();
         }
     };
@@ -150,8 +158,6 @@ humhub.module('live.poll', function (module, require, $) {
      * Updates the delay by means of the idleFactor.
      */
     PollClient.prototype.updateIdle = function () {
-        this.idle = true;
-
         if (this.delay < this.options.maxInterval) {
             this.setDelay(Math.ceil(this.delay + (this.delay * this.options.idleFactor)));
         }
@@ -164,7 +170,7 @@ humhub.module('live.poll', function (module, require, $) {
             request: counter.requests,
             updates: counter.updates,
             delay: this.delay,
-            idle: this.idle
+            focus: this.focus
         });
     };
 
