@@ -2,8 +2,8 @@ HumHub Changelog
 ================
 
 
-1.7.1 (Unreleased)
-------------------
+1.7.1 (November 27, 2020)
+-------------------------
 - Fix #4612: Dashboard wall stream entry displays user name in sub title in post style layout
 - Fix #4614: Profile Image crop broken
 - Fix #4607: Changed grid size of image preview on fluid themes
@@ -17,6 +17,7 @@ HumHub Changelog
 - Fix #4660: Topic stream filter leads to stream entry duplication in combination with stream suppression
 - Fix #4638: Profile settings do not accept birthdate in russian format
 - Fix #4596: Set `autocomplete="off"` on date picker fields
+
 
 1.7.0 (November 4, 2020)
 ------------------------
