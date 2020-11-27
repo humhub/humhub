@@ -295,7 +295,7 @@ class ProsemirrorRichText extends AbstractRichText
             $extension  = '[a-zA-Z]+';
         }
 
-        return '/(?<!\\\\)\[([^\]]*)\]\(('.$extension.'):{1}([^\)\s]*)(?:\s")?([^"]*)?(?:")?[^\)]*\)/is';
+        return '/(?<!\\\\)\[([^\]]*)\]\(('.$extension.'):{1}([^\)\s]*)(?:\s")?([^")]*)?(?:")?[^\)]*\)/is';
     }
 
     /**
