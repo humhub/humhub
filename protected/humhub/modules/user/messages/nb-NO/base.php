@@ -94,6 +94,7 @@ return [
     'invited you to join {space} on {name}.' => 'inviterer deg til å bli med i gruppen {space} på {name}.',
     'or' => 'eller',
     'Change Username' => '',
+    'Enable Notifications' => '',
     'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show all content' => '',

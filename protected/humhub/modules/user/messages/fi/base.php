@@ -95,6 +95,7 @@ return [
     'invited you to join {name}.' => 'kutsui sinut liittymään {name}',
     'invited you to join {space} on {name}.' => 'kutsui sinut liittymään {space} {name}.',
     'or' => 'tai',
+    'Enable Notifications' => '',
     'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show all content' => '',

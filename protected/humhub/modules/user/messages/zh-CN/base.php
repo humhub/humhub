@@ -86,6 +86,7 @@ return [
     'invited you to join {space} on {name}.' => '邀请你加入 {space} 的 {name}.',
     'or' => '或者',
     'Change Username' => '',
+    'Enable Notifications' => '',
     'Missing E-Mail Attribute from AuthClient.' => '',
     'Missing ID AuthClient Attribute from AuthClient.' => '',
     'Password needs to be at least {chars} characters long.' => '',

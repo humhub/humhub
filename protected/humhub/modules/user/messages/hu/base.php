@@ -94,6 +94,7 @@ return [
     'invited you to join {space} on {name}.' => 'meghivott, hogy csatlakozz ehhez: {space} itt: {name}.',
     'or' => 'vagy',
     'Change Username' => '',
+    'Enable Notifications' => '',
     'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show all content' => '',
