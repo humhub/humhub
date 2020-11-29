@@ -2,8 +2,8 @@ HumHub Changelog
 ================
 
 
-1.7.1 (Unreleased)
-------------------
+1.7.1 (November 27, 2020)
+-------------------------
 - Fix #4612: Dashboard wall stream entry displays user name in sub title in post style layout
 - Fix #4614: Profile Image crop broken
 - Fix #4607: Changed grid size of image preview on fluid themes
@@ -12,6 +12,11 @@ HumHub Changelog
 - Fix #4628: Fixed stream gallery ratio issues on fluid themes
 - Fix #4636: Jplayer overflow on mobile stream
 - Fix #4591: Registration error text "You are already logged in!" not translatable
+- Fix #4630: Transfer default content of user approve/decline email to approve/decline form
+- Fix #4650: `adminCanChangeUserProfileImages` option has no effect
+- Fix #4660: Topic stream filter leads to stream entry duplication in combination with stream suppression
+- Fix #4638: Profile settings do not accept birthdate in russian format
+- Fix #4596: Set `autocomplete="off"` on date picker fields
 
 
 1.7.0 (November 4, 2020)
@@ -39,6 +44,7 @@ HumHub Changelog
 - Fix #4575: Increased text size of "Read more" link on short-text post 
 - Fix #4559: Don’t check platform php extensions by composer v2
 - Fix #4581: Users see content of archived spaces on dashboard
+- Fix #4666: Richtext attachment of multiple files without title fails
 
 
 1.7.0-beta.1 (October 16, 2020)

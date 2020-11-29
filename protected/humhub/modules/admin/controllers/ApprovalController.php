@@ -97,6 +97,7 @@ class ApprovalController extends Controller
     public function actionApprove($id)
     {
         $model = new ApproveUserForm($id);
+        $model->setApprovalDefaults();
         if($model->load(Yii::$app->request->post()) && $model->approve()) {
             return $this->redirect(['index']);
         }
@@ -110,6 +111,7 @@ class ApprovalController extends Controller
     public function actionDecline($id)
     {
         $model = new ApproveUserForm($id);
+        $model->setDeclineDefaults();
         if($model->load(Yii::$app->request->post()) && $model->decline()) {
             return $this->redirect(['index']);
         }
