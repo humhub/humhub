@@ -27,7 +27,7 @@ return array (
   'Don\'t receive notifications for new content' => 'Non ricevere notifiche per contenuti nuovi',
   'Enable' => 'Abilita',
   'Enhance this space with modules.' => 'Potenzia questo spazio con i moduli',
-  'Hide posts on dashboard' => 'Nascondi post nella baacheca',
+  'Hide posts on dashboard' => 'Nascondi i post sulla bacheca',
   'Invited By' => 'Invitato da',
   'Members' => 'Membri',
   'Modules' => 'Moduli',
