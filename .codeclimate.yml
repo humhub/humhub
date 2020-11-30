@@ -10,12 +10,12 @@ plugins:
             standard: phpcs.xml.dist
 exclude_patterns:
     - '**/messages/'
-    - config/
-    - **/node_modules/
-    - **/test/
-    - **/tests/
-    - **/vendor/
-    - **/*_test.go
-    - **/*.d.ts
-    - static/assets/
-    - assets/
+    - 'config/'
+    - '**/node_modules/'
+    - '**/test/'
+    - '**/tests/'
+    - '**/vendor/'
+    - '**/*_test.go'
+    - '**/*.d.ts'
+    - 'static/assets/'
+    - 'assets/'
