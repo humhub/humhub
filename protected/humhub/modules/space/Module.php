@@ -67,15 +67,15 @@ class Module extends \humhub\components\Module
     {
         if ($contentContainer instanceof models\Space) {
             return [
-                new permissions\InviteUsers(),
+                new permissions\InviteUsers(['contentContainer' => $contentContainer]),
             ];
         } elseif ($contentContainer instanceof User) {
             return [];
         }
 
         return [
-            new permissions\CreatePrivateSpace(),
-            new permissions\CreatePublicSpace(),
+            new permissions\CreatePrivateSpace(['contentContainer' => $contentContainer]),
+            new permissions\CreatePublicSpace(['contentContainer' => $contentContainer]),
         ];
     }
 

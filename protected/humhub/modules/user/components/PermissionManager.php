@@ -346,6 +346,7 @@ class PermissionManager extends Component
 
         $permissions = [];
         foreach ($this->getPermissions() as $permission) {
+            /** @var $permission BasePermission */
             if ($returnOnlyChangeable && !$permission->canChangeState($groupId)) {
                 continue;
             }
@@ -366,6 +367,7 @@ class PermissionManager extends Component
                 ],
                 'changeable' => $permission->canChangeState($groupId),
                 'state' => $this->getGroupState($groupId, $permission, false),
+                'contentContainer' => $permission->contentContainer,
             ];
         }
         return $permissions;
