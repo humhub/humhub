@@ -10,5 +10,5 @@ plugins:
             standard: phpcs.xml.dist
 exclude_patterns:
     - '**/messages/'
-    - '**/codeception/_support/_generated/'
+    - '**/codeception/'
     - static/assets/
