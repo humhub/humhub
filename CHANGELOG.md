@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.7.2 (Unreleased)
+-------------------------
+- Fix #4668: table-responsive tables do not overflow due to default word break style
+
 
 1.7.1 (November 27, 2020)
 -------------------------
