@@ -9,7 +9,7 @@ use tests\codeception\_support\HumHubDbTestCase;
 
 class RichtextExtensionTest extends HumHubDbTestCase
 {
-    public function testStripHtml()
+    public function testScanMultipleFileGuid()
     {
         $text = '[img3.jpg](http://humhub.com "img)3.jpg" xasdfjpös0as) 
 
