@@ -4,6 +4,7 @@ HumHub Changelog
 1.7.2 (Unreleased)
 -------------------------
 - Fix #4668: table-responsive tables do not overflow due to default word break style
+- Fix #4679: Richtext extension scan does not include full title if title contains a `)`
 
 
 1.7.1 (November 27, 2020)
@@ -21,6 +22,7 @@ HumHub Changelog
 - Fix #4660: Topic stream filter leads to stream entry duplication in combination with stream suppression
 - Fix #4638: Profile settings do not accept birthdate in russian format
 - Fix #4596: Set `autocomplete="off"` on date picker fields
+- Fix #4666: Richtext attachment of multiple files without title fails
 
 
 1.7.0 (November 4, 2020)
@@ -48,7 +50,6 @@ HumHub Changelog
 - Fix #4575: Increased text size of "Read more" link on short-text post 
 - Fix #4559: Don’t check platform php extensions by composer v2
 - Fix #4581: Users see content of archived spaces on dashboard
-- Fix #4666: Richtext attachment of multiple files without title fails
 
 
 1.7.0-beta.1 (October 16, 2020)
