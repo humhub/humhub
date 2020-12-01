@@ -1,8 +1,14 @@
 name: PHP Codeception Tests
 
 on:
-    - pull_request
-    - push
+    push:
+        branches:
+            - master
+            - develop
+    pull_request:
+        branches:
+            - master
+            - develop
 
 jobs:
     tests:
