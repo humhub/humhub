@@ -37,7 +37,7 @@ class Module extends \humhub\components\Module
     {
         if ($contentContainer instanceof Space) {
             return [
-                new permissions\CreateComment()
+                new permissions\CreateComment(['contentContainer' => $contentContainer])
             ];
         }
 

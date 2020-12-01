@@ -82,12 +82,12 @@ class Module extends \humhub\components\Module
         }
 
         return [
-            new permissions\ManageModules(),
-            new permissions\ManageSettings(),
-            new permissions\SeeAdminInformation(),
-            new permissions\ManageUsers(),
-            new permissions\ManageGroups(),
-            new permissions\ManageSpaces(),
+            new permissions\ManageModules(['contentContainer' => $contentContainer]),
+            new permissions\ManageSettings(['contentContainer' => $contentContainer]),
+            new permissions\SeeAdminInformation(['contentContainer' => $contentContainer]),
+            new permissions\ManageUsers(['contentContainer' => $contentContainer]),
+            new permissions\ManageGroups(['contentContainer' => $contentContainer]),
+            new permissions\ManageSpaces(['contentContainer' => $contentContainer]),
         ];
     }
 
