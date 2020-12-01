@@ -11,7 +11,7 @@ use yii\helpers\Url;
 ?>
 <h4><?= Yii::t('AdminModule.space', 'Default Space Permissions'); ?></h4>
 <div class="help-block">
-    <?= Yii::t('AdminModule.space', 'Here you can define default permissions for new spaces. These settings overwrite default permissions from config file and can be overwritten for each individual space.'); ?>
+    <?= Yii::t('AdminModule.space', 'Here you can define default permissions for spaces. These settings overwrite default permissions from config file and can be overwritten for each individual space.'); ?>
     <br><br>
     <?= Yii::t('AdminModule.space', 'Permissions are assigned to different user-roles. To edit a default permission, select the user-role you want to edit and change the drop-down value of the given permission.'); ?>
 </div>
