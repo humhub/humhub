@@ -59,7 +59,7 @@ class UserPermissionsController extends Controller
             'contentcontainer_class' => User::class,
         ]);
 
-        $groups = (new User())->getUserGroups();
+        $groups = User::getUserGroups();
 
         $groupId = Yii::$app->request->get('groupId', User::USERGROUP_USER);
         if (!array_key_exists($groupId, $groups)) {

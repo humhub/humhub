@@ -304,7 +304,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns user groups
      */
-    public function getUserGroups()
+    public static function getUserGroups()
     {
         return [];
     }

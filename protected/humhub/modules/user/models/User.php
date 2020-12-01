@@ -779,7 +779,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      *
      * @return array user groups
      */
-    public function getUserGroups()
+    public static function getUserGroups()
     {
         $groups = [];
 

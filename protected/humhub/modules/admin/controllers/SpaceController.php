@@ -146,7 +146,7 @@ class SpaceController extends Controller
             'contentcontainer_class' => Space::class,
         ]);
 
-        $groups = (new Space())->getUserGroups();
+        $groups = Space::getUserGroups();
 
         $groupId = Yii::$app->request->get('groupId', Space::USERGROUP_MEMBER);
         if (!array_key_exists($groupId, $groups)) {
