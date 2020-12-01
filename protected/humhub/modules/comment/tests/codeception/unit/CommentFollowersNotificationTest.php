@@ -42,7 +42,6 @@ class CommentFollowersNotificationTest extends HumHubDbTestCase
 
         /**
          * Send notifications to only these followers:
-         * author of the current comment
          * author of the parent comment
          * author of the commented record
          */
