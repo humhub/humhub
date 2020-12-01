@@ -11,6 +11,7 @@ namespace humhub\modules\content\components;
 use humhub\libs\BasePermission;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\content\models\ContentContainerDefaultPermission;
+use Yii;
 
 /**
  * @inheritdoc
@@ -70,6 +71,16 @@ class ContentContainerDefaultPermissionManager extends PermissionManager
     {
         return \humhub\modules\content\models\ContentContainerDefaultPermission::find()
             ->where(['contentcontainer_class' => $this->contentcontainer_class]);
+    }
+
+    /**
+     * @inerhitdoc
+     */
+    public function setGroupState($groupId, $permission, $state)
+    {
+        parent::setGroupState($groupId, $permission, $state);
+        // Clear default permissions cache after updating of each state:
+        Yii::$app->cache->delete('defaultPermissions:'.$this->contentcontainer_class);
     }
 
 }

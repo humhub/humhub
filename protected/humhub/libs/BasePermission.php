@@ -183,15 +183,22 @@ class BasePermission extends BaseObject
             return null;
         }
 
-        $contentContainerDefaultPermission = ContentContainerDefaultPermission::find()
-            ->select('state')
-            ->where(['contentcontainer_class' => get_class($this->contentContainer)])
-            ->andWhere(['group_id' => $groupId])
-            ->andWhere(['module_id' => $this->moduleId])
-            ->andWhere(['permission_id' => static::class])
-            ->scalar();
-        if ($contentContainerDefaultPermission !== false) {
-            return (int) $contentContainerDefaultPermission;
+        // Cache default permissions per Content Container Type(Space/User):
+        $cachedDefaultPermissions = Yii::$app->cache->getOrSet( 'defaultPermissions:'.get_class($this->contentContainer), function () use ($groupId) {
+            $records = ContentContainerDefaultPermission::find()
+                ->select(['group_id', 'module_id', 'permission_id', 'state'])
+                ->where(['contentcontainer_class' => get_class($this->contentContainer)])
+                ->all();
+            $permissions = [];
+            foreach ($records as $permission) {
+                /* @var $permission ContentContainerDefaultPermission  */
+                $permissions[$permission->group_id][$permission->module_id][$permission->permission_id] = $permission->state;
+            }
+            return $permissions;
+        });
+
+        if (isset($cachedDefaultPermissions[$groupId][$this->moduleId][static::class])) {
+            return (int) $cachedDefaultPermissions[$groupId][$this->moduleId][static::class];
         }
 
         return null;
