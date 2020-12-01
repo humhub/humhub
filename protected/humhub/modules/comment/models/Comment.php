@@ -142,14 +142,6 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         $mentionedUsers = (isset($processResult['mentioning'])) ? $processResult['mentioning'] : [];
 
         if ($insert) {
-            $parent = $this->object_model::findOne(['id', $this->object_id]);
-
-            $followersToStay = [
-                $parent->user,
-                $this->user,
-                $this->getCommentedRecord()->owner,
-            ];
-
             $followerQuery = $this->getCommentedRecord()->getFollowers(null, true, true);
 
             // Remove mentioned users from followers query to avoid double notification
@@ -158,11 +150,27 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
                     return $user->id;
                 }, $mentionedUsers)]);
             }
-            //Allow followers participated in current comment replay and parent object owner only
-            if (count($followersToStay) !== 0) {
-                $followerQuery->andWhere(['IN', 'user.id', array_map(function (User $user) {
-                    return $user->id;
-                }, $followersToStay)]);
+
+            if ($this::isSubComment($this)) {
+                $parent = $this->object_model::findOne(['id', $this->object_id]);
+                $parentUser = User::findOne(['id' => $parent->created_by]);
+
+                /**
+                 * Send notifications to only these followers:
+                 * author of the parent comment
+                 * author of the commented record
+                 */
+                $followersShouldReceiveNotification = [
+                    $parentUser, // author of the parent comment
+                    $this->getCommentedRecord()->owner, // author of the commented record
+                ];
+
+                //Allow followers participated in current comment replay and parent object owner only
+                if (count($followersShouldReceiveNotification) !== 0) {
+                    $followerQuery->andWhere(['IN', 'user.id', array_map(function (User $user) {
+                        return $user->id;
+                    }, $followersShouldReceiveNotification)]);
+                }
             }
 
             // Update updated_at etc..
@@ -313,5 +321,17 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     public function isUpdated()
     {
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
+    }
+
+    /**
+     * Checks if given content object is a subcomment
+     *
+     * @param $object
+     * @return bool
+     * @since 1.8
+     */
+    public static function isSubComment($object)
+    {
+        return $object instanceof Comment && $object->object_model === Comment::class;
     }
 }

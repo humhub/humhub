@@ -47,10 +47,8 @@ class CommentFollowersNotificationTest extends HumHubDbTestCase
          * author of the commented record
          */
         $followersShouldReceiveNotification = [
-            $comment->user, // author of the current comment
             $parentUser, // author of the parent comment
             $comment->getCommentedRecord()->owner, // author of the commented record
-            1, // id od admin  user in test db
         ];
 
         $this->assertNotEmpty($followersShouldReceiveNotification, 'Followers who should receive notification array is empty!');
