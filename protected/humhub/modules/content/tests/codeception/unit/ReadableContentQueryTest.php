@@ -33,10 +33,8 @@ class ReadableContentQueryTest extends HumHubDbTestCase
     {
         parent::_before();
 
-        // TODO: would be cleaner to somehow exclude this from default fixtures
-        foreach (Post::find()->all() as $post) {
-            $post->delete();
-        }
+        Post::deleteAll();
+        Content::deleteAll();
 
         $this->posts = [];
 
