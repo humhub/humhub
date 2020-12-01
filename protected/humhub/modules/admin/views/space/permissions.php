@@ -6,7 +6,7 @@ use yii\helpers\Url;
 
 /* @var $defaultPermissionManager \humhub\modules\content\components\ContentContainerDefaultPermissionManager */
 /* @var $groups array */
-/* @var $groupId int */
+/* @var $groupId string */
 
 ?>
 <h4><?= Yii::t('AdminModule.space', 'Default Space Permissions'); ?></h4>

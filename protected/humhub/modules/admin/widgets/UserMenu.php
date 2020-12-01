@@ -79,6 +79,14 @@ class UserMenu extends TabMenu
             'isVisible' => Yii::$app->user->can(ManageGroups::class)
         ]));
 
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.user', 'Default Permissions'),
+            'url' => ['/admin/user-permissions'],
+            'sortOrder' => 600,
+            'isActive' => MenuLink::isActiveState('admin', 'user-permissions'),
+            'isVisible' => Yii::$app->user->can(ManageGroups::class)
+        ]));
+
         parent::init();
     }
 

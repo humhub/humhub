@@ -617,7 +617,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
 
         // Add guest groups if enabled
         if (AuthHelper::isGuestAccessEnabled()) {
-            $groups[self::USERGROUP_GUEST] = 'Guests';
+            $groups[self::USERGROUP_GUEST] = Yii::t('SpaceModule.base', 'Guests');
         }
 
         return $groups;
