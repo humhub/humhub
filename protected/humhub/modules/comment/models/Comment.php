@@ -9,6 +9,8 @@
 namespace humhub\modules\comment\models;
 
 use humhub\modules\comment\Module;
+use humhub\modules\user\behaviors\Followable;
+use humhub\modules\user\components\ActiveQueryUser;
 use Yii;
 use yii\base\Exception;
 use yii\db\ActiveRecord;
@@ -151,25 +153,32 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
                 }, $mentionedUsers)]);
             }
 
-            if ($this::isSubComment($this)) {
-                $parent = $this->object_model::findOne(['id', $this->object_id]);
-                $parentUser = User::findOne(['id' => $parent->created_by]);
+            if ($this->object_model === Comment::class) {
+                /** @var Comment $parent */
+                $parent = $this->getPolymorphicRelation();
+
+                $followersOfParentComment = Comment::find()->where(['object_model' => Comment::class, 'object_id' => $parent->id])->all();
+
+                $followersShouldReceiveNotification = [];
+
+                //add all parent comment followers to should receive notification array
+                foreach ($followersOfParentComment as $follower) {
+                    /**@var Comment $follower */
+                    $followersShouldReceiveNotification[] = $follower->created_by;
+                }
 
                 /**
                  * Send notifications to only these followers:
+                 * all followers of parent comment
                  * author of the parent comment
                  * author of the commented record
                  */
-                $followersShouldReceiveNotification = [
-                    $parentUser, // author of the parent comment
-                    $this->getCommentedRecord()->owner, // author of the commented record
-                ];
+                $followersShouldReceiveNotification[] = $parent->created_by; // author of the parent comment
+                $followersShouldReceiveNotification[] = $this->getCommentedRecord()->owner->id; // author of the commented record
 
                 //Allow followers participated in current comment replay and parent object owner only
                 if (count($followersShouldReceiveNotification) !== 0) {
-                    $followerQuery->andWhere(['IN', 'user.id', array_map(function (User $user) {
-                        return $user->id;
-                    }, $followersShouldReceiveNotification)]);
+                    $followerQuery->andWhere(['IN', 'user.id', $followersShouldReceiveNotification]);
                 }
             }
 
@@ -321,17 +330,5 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     public function isUpdated()
     {
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
-    }
-
-    /**
-     * Checks if given content object is a subcomment
-     *
-     * @param $object
-     * @return bool
-     * @since 1.8
-     */
-    public static function isSubComment($object)
-    {
-        return $object instanceof Comment && $object->object_model === Comment::class;
     }
 }
