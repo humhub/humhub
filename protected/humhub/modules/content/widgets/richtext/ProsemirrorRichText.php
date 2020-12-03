@@ -11,8 +11,10 @@ namespace humhub\modules\content\widgets\richtext;
 use humhub\libs\EmojiMap;
 use humhub\libs\Helpers;
 use humhub\libs\ParameterEvent;
-use humhub\modules\content\assets\ProseMirrorRichTextAsset;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\content\widgets\richtext\extensions\MentioningExtension;
+use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
+use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
@@ -133,6 +135,11 @@ class ProsemirrorRichText extends AbstractRichText
     /**
      * @inheritdoc
      */
+    protected static $converterClass = ProsemirrorRichTextConverter::class;
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();
@@ -233,7 +240,7 @@ class ProsemirrorRichText extends AbstractRichText
     public static function parseMentionings($text, $edit = false)
     {
         // $match[0]: markdown, $match[1]: name, $match[2]: extension(mention) $match[3]: guid, $match[4]: url
-        return static::replaceLinkExtension($text, 'mention', function($match) use ($edit) {
+        return MentioningExtension::replace($text, function($match) use ($edit) {
             $contentContainer = ContentContainer::findOne(['guid' => $match[3]]);
             $notFoundResult = '['.$match[1].'](mention:'.$match[2].' "#")';
 
@@ -259,46 +266,6 @@ class ProsemirrorRichText extends AbstractRichText
     }
 
     /**
-     * Can be used to scan for link extensions of the form [<text>](<extension>:<url> "<title>") in which the actual meaning
-     * of the placeholders is up to the extension itself.
-     *
-     * @param $text string rich text content to parse
-     * @param $extension string|null extension string if not given all extension types will be included
-     * @return array
-     */
-    public static function scanLinkExtension($text, $extension = null)
-    {
-        preg_match_all(static::getLinkExtensionPattern($extension), $text, $match, PREG_SET_ORDER);
-        return $match;
-    }
-
-    /**
-     * Can be used to scan and replace link extensions of the form [<text>](<extension>:<url> "<title>") in which the actual meaning
-     * of the placeholders is up to the extension itself.
-     *
-     * @param $text string rich text content to parse
-     * @param $extension string|null extension string if not given all extension types will be included
-     * @return mixed
-     */
-    public static function replaceLinkExtension($text, $extension, $callback)
-    {
-        return preg_replace_callback(static::getLinkExtensionPattern($extension), $callback, $text);
-    }
-
-    /**
-     * @param string $extension the extension to parse, if not set all extensions are included
-     * @return string the regex pattern for a given extension or all extension if no specific extension string is given
-     */
-    protected static function getLinkExtensionPattern($extension = '[a-zA-Z]+')
-    {
-        if($extension === null) {
-            $extension  = '[a-zA-Z]+';
-        }
-
-        return '/(?<!\\\\)\[([^\]]*)\]\(('.$extension.'):{1}([^\)\s]*)(?:\s")?([^"]*)?(?:")?[^\)]*\)/is';
-    }
-
-    /**
      * Checks if the compatibility mode is enabled.
      * The compatibility mode is only required, if old content is present and won't be activated for new installations.
      *
@@ -307,5 +274,57 @@ class ProsemirrorRichText extends AbstractRichText
     public function isCompatibilityMode()
     {
         return Yii::$app->getModule('content')->settings->get('richtextCompatMode', 1);
+    }
+
+    private static $extensions = [
+        'mention' => MentioningExtension::class
+    ];
+
+    public static function addExtension($extensionKey, $extensionClass)
+    {
+        return static::$extensions[$extensionKey] = $extensionClass;
+    }
+
+    /**
+     * @param string $extension
+     * @return RichTextExtension|null
+     */
+    public static function getExtension(string $extensionKey) : ?RichTextExtension
+    {
+        if(isset(static::$extensions[$extensionKey])) {
+            $extensionClass = static::$extensions[$extensionKey];
+            return call_user_func($extensionClass.'::instance');
+        }
+
+        return null;
+    }
+
+    /**
+     * Can be used to scan for link extensions of the form [<text>](<extension>:<url> "<title>") in which the actual meaning
+     * of the placeholders is up to the extension itself.
+     *
+     * @param $text string rich text content to parse
+     * @param $extension string|null extension string if not given all extension types will be included
+     * @return array
+     * @deprecated since 1.8 use `ProsemirrorRichTextConverter::scanLinkExtension()`
+     */
+    public static function scanLinkExtension($text, $extension = null)
+    {
+        return RichTextLinkExtension::scanLinkExtension($text, $extension);
+    }
+
+    /**
+     * Can be used to scan and replace link extensions of the form [<text>](<extension>:<url> "<title>") in which the actual meaning
+     * of the placeholders is up to the extension itself.
+     *
+     * @param $text string rich text content to parse
+     * @param $extension string|null extension string if not given all extension types will be included
+     * @param callable $callback
+     * @return mixed
+     * @deprecated since 1.8 use `ProsemirrorRichTextConverter::replaceLinkExtension()`
+     */
+    public static function replaceLinkExtension(string $text, $extension, callable $callback)
+    {
+        return RichTextLinkExtension::replaceLinkExtension($text, $extension, $callback);
     }
 }

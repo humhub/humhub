@@ -67,7 +67,7 @@ abstract class RichText extends AbstractRichText
     /**
      * @return string
      */
-    public static function getProcessorClass()
+    public static function getProcessorClass() : string
     {
         return call_user_func(Yii::$app->params['richText']['class'].'::getProcessorClass');
     }
@@ -75,8 +75,17 @@ abstract class RichText extends AbstractRichText
     /**
      * @return string
      */
-    public static function getEditorClass()
+    public static function getEditorClass() : string
     {
         return call_user_func(Yii::$app->params['richText']['class'].'::getEditorClass');
+    }
+
+    /**
+     * @return string
+     * @since 1.8
+     */
+    public static function getConverterClass() : string
+    {
+        return call_user_func(Yii::$app->params['richText']['class'].'::getConverterClass');
     }
 }

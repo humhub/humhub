@@ -8,10 +8,9 @@
 
 namespace humhub\modules\content\widgets\richtext;
 
+use humhub\libs\Html;
 use Yii;
 use humhub\components\Event;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\widgets\JsWidget;
 use yii\base\InvalidArgumentException;
 use yii\db\ActiveRecord;
@@ -65,6 +64,24 @@ abstract class AbstractRichText extends JsWidget
      * @event \humhub\modules\search\events\ParameterEvent with parameter 'output'
      */
     const EVENT_BEFORE_OUTPUT = 'beforeOutput';
+
+    /**
+     * Converter output format for html output
+     * @since 1.8
+     */
+    const FORMAT_HTML = 'html';
+
+    /**
+     * Converter output format for plaintext output
+     * @since 1.8
+     */
+    const FORMAT_PLAINTEXT = 'plaintext';
+
+    /**
+     * Converter output format for markdown output
+     * @since 1.8
+     */
+    const FORMAT_MARKDOWN = 'markdown';
 
     /**
      * @var string defines a preset of rich text features and settings
@@ -137,6 +154,12 @@ abstract class AbstractRichText extends JsWidget
     protected static $processorClass;
 
     /**
+     * @var string [[AbstractRichTextConverter]] subclass, used for converting the richtext to other output formats
+     * @since 1.8
+     */
+    protected static $converterClass;
+
+    /**
      * @var mixed can be used to identify the related record
      */
     public $record;
@@ -144,7 +167,8 @@ abstract class AbstractRichText extends JsWidget
     /**
      * @inheritdoc
      */
-    public function init() {
+    public function init()
+    {
         parent::init();
         if(!static::$editorClass || ! static::$processorClass) {
             throw new InvalidArgumentException('No editor or processor class set for rich text '.static::class);
@@ -208,7 +232,7 @@ abstract class AbstractRichText extends JsWidget
      * @return AbstractRichTextProcessor the related post-processor
      * @throws \yii\base\InvalidConfigException
      */
-    public static function getProcessor($text, $record, $attribute = null)
+    public static function getProcessor($text, $record, $attribute = null) : AbstractRichTextProcessor
     {
         return Yii::createObject([
             'class' => static::getProcessorClass(),
@@ -218,17 +242,36 @@ abstract class AbstractRichText extends JsWidget
     }
 
     /**
+     * @return AbstractRichTextConverter the related post-processor
+     * @throws \yii\base\InvalidConfigException
+     * @since 1.8
+     */
+    public static function getConverter() : AbstractRichTextConverter
+    {
+        return Yii::createObject(['class' => static::getConverterClass()]);
+    }
+
+    /**
      * @return string
      */
-    public static function getProcessorClass()
+    public static function getProcessorClass() : string
     {
         return static::$processorClass;
     }
 
     /**
      * @return string
+     * @since 1.8
      */
-    public static function getEditorClass()
+    public static function getConverterClass() : string
+    {
+        return static::$converterClass;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getEditorClass() : string
     {
         return static::$editorClass;
     }
@@ -243,10 +286,47 @@ abstract class AbstractRichText extends JsWidget
      * @return string render result
      * @throws \Exception
      */
-    public static function output($text, $config = [])
+    public static function output($text, $config = []) : string
     {
         $config['text'] = $text;
         return static::widget($config);
+    }
+
+    /**
+     * Converts the richtext content to a given output format.
+     *
+     * The following formats are supported
+     *
+     * - 'plaintext': Translates the richtext to unencoded plain text
+     * - 'markdown': Translates the richtext to plain markdown without specific richtext features
+     * - 'html': Translates the richtext to HTML
+     *
+     * In case of 'html' you can switch from only supporting basic HTML (e.g. used for mails) to extended HTML support by
+     * setting the 'minimal' option to true. The result may differ between different RichText implementations.
+     *
+     * @param string $content
+     * @param string $format
+     * @param array $options
+     * @return string
+     * @throws \yii\base\InvalidConfigException
+     * @since 1.8
+     * @see AbstractRichTextConverter
+     */
+    public static function convert(string $content, $format = self::FORMAT_PLAINTEXT, $options = []) : string
+    {
+        $converter = static::getConverter();
+
+        switch ($format) {
+            case static::FORMAT_HTML:
+                $minimal = isset($options['minimal']) ? $options['minimal'] : true;
+                return $converter->convertToHtml($content, $minimal, $options);
+            case static::FORMAT_MARKDOWN:
+                return $converter->convertToMarkdown($content, $options);
+            case static::FORMAT_PLAINTEXT:
+                return $converter->convertToPlaintext($content, $options);
+            default:
+                return Html::encode($converter->convertToPlaintext($content, $options));
+        }
     }
 
     /**
@@ -260,7 +340,7 @@ abstract class AbstractRichText extends JsWidget
      * @return string render result
      * @throws \Exception
      */
-    public static function preview($text, $maxLength = 0)
+    public static function preview($text, $maxLength = 0) : string
     {
         $config['maxLength'] = $maxLength;
         $config['minimal'] = true;
