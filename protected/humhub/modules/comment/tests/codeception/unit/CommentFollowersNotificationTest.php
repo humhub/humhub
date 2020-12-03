@@ -30,7 +30,6 @@ class CommentFollowersNotificationTest extends HumHubDbTestCase
 
         //check up for sent emails at least one
         $this->assertMailSent(1, 'Comment Notification Mail sent');
-
     }
 
     public function testSubCommentReplyNotification()
@@ -64,7 +63,7 @@ class CommentFollowersNotificationTest extends HumHubDbTestCase
         $this->assertNotEmpty($comment->getCommentedRecord()->getFollowers(null, true, true), 'Followers for this comment not found');
 
         //check up parent object of current comment
-        /** @var Comment $parent*/
+        /** @var Comment $parent */
         $parent = $comment->getPolymorphicRelation();
 
         $this->assertNotEmpty($parent->created_by, 'Parent object created by user id is empty!');
@@ -74,6 +73,5 @@ class CommentFollowersNotificationTest extends HumHubDbTestCase
 
         //check up for sent emails at least one
         $this->assertMailSent(1, 'Comment Notification Mail sent');
-
     }
 }
