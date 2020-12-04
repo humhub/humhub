@@ -77,7 +77,6 @@ class GroupController extends Controller
      */
     public function actionEdit()
     {
-
         // Create Group Edit Form
         $group = EditGroupForm::findOne(['id' => Yii::$app->request->get('id')]);
 
@@ -91,12 +90,26 @@ class GroupController extends Controller
 
         if ($group->load(Yii::$app->request->post()) && $group->validate() && $group->save()) {
             $this->view->saved();
-
             if ($wasNew) {
                 return $this->redirect([
                     '/admin/group/manage-group-users',
                     'id' => $group->id,
                 ]);
+            } else {
+                if (!empty(Yii::$app->request->post('submitReassignAll'))) {
+                    $this->view->success(Yii::t(
+                        'base',
+                        'Reassigned'
+                    ));
+
+                    $job = new ReassignAllDefaultSpaces();
+                    if (QueueHelper::isQueued($job)) {
+                        return $this->render('reassign-already-running', ['groupId' => $group->id]);
+                    }
+
+                    $job->groupId = $group->id;
+                    Yii::$app->queue->push($job);
+                }
             }
         }
 
@@ -287,16 +300,8 @@ class GroupController extends Controller
         }
     }
 
-    public function actionReassignAll($id)
+    public function actionReassignAll($group)
     {
-        $job = new ReassignAllDefaultSpaces();
-        if (QueueHelper::isQueued($job)) {
-            return $this->render('reassign-already-running', ['groupId'=>$id]);
-        }
 
-        $job->groupId = $id;
-        Yii::$app->queue->push($job);
-
-        return $this->redirect(['edit', 'id' => $id]);
     }
 }

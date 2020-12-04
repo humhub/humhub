@@ -27,8 +27,9 @@ use humhub\modules\space\widgets\SpacePickerField;
     <?php endif; ?>
 
     <div class="reassign-spaces">
-        <?= Html::a(Yii::t('AdminModule.user', 'Reassign All'), Url::to(['/admin/group/reassign-all', 'id' => $group->id]), ['class' => 'btn btn-primary btn-reassign', 'data-method' => 'POST', 'data-confirm' => Yii::t('AdminModule.modules', 'Are you sure? Reassign default spaces to all users?')]); ?>
-        <div class="help-block"><?=$group->attributeHints()['reassign-all-help']?></div>
+        <!--        , Url::to(['/admin/group/reassign-all', 'id' => $group->id]-->
+        <?= Html::submitButton(Yii::t('AdminModule.user', 'Reassign All'), ['name' => 'submitReassignAll', 'value' => 'reassign-all', 'class' => 'btn btn-primary btn-reassign', 'data-method' => 'POST', 'data-confirm' => Yii::t('AdminModule.modules', 'Are you sure? Reassign default spaces to all users?')]); ?>
+        <div class="help-block"><?= $group->attributeHints()['reassign-all-help'] ?></div>
     </div>
 
     <?php if ($isManagerApprovalSetting && !$group->is_admin_group): ?>
