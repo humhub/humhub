@@ -8,14 +8,15 @@
 use humhub\widgets\PoweredBy;
 use yii\helpers\Html;
 
+foreach ($items as $item) {
+	$itemsHtml[] = Html::a($item['label'], $item['url']);
+}
 ?>
 
 <?php if ($numItems > 0): ?>
     <div class="text-center footer-nav">
         <small>
-            <?php foreach ($items as $item): ?>
-                <?= Html::a($item['label'], $item['url']); ?>&nbsp;&middot;&nbsp;
-            <?php endforeach; ?>
+        	<?= implode('&nbsp;&middot;&nbsp', $itemsHtml) ?>
             <?= PoweredBy::widget(); ?>
         </small>
     </div>
