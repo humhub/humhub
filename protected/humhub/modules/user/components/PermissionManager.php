@@ -207,7 +207,7 @@ class PermissionManager extends Component
      * @param string $groupId
      * @param BasePermission $permission
      * @param boolean $returnDefaultState
-     * @return string the state
+     * @return string|int the state
      */
     private function getSingleGroupState($groupId, BasePermission $permission, $returnDefaultState = true)
     {
@@ -223,10 +223,22 @@ class PermissionManager extends Component
         }
 
         if ($returnDefaultState) {
-            return $permission->getDefaultState($groupId);
+            return $this->getSingleGroupDefaultState($groupId, $permission);
         }
 
         return '';
+    }
+
+    /**
+     * Returns the group default state
+     *
+     * @param string $groupId
+     * @param BasePermission $permission
+     * @return string|int the state
+     */
+    protected function getSingleGroupDefaultState($groupId, BasePermission $permission)
+    {
+        return $permission->getDefaultState($groupId);
     }
 
     /**
@@ -352,7 +364,7 @@ class PermissionManager extends Component
             }
 
             $defaultState = BasePermission::getLabelForState(BasePermission::STATE_DEFAULT) . ' - '
-                . BasePermission::getLabelForState($permission->getDefaultState($groupId));
+                . BasePermission::getLabelForState($this->getSingleGroupDefaultState($groupId, $permission));
 
             $permissions[] = [
                 'id' => $permission->id,

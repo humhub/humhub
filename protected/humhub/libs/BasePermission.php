@@ -8,7 +8,6 @@
 
 namespace humhub\libs;
 
-use humhub\modules\content\models\ContentContainerDefaultPermission;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
@@ -143,11 +142,6 @@ class BasePermission extends BaseObject
      */
     public function getDefaultState($groupId)
     {
-        $defaultStoredState = $this->getDefaultStoredState($groupId);
-        if ($defaultStoredState !== null) {
-            return $defaultStoredState;
-        }
-
         $configuredState = $this->getConfiguredState($groupId);
         if ($configuredState !== null) {
             return $configuredState;
@@ -158,50 +152,6 @@ class BasePermission extends BaseObject
         }
 
         return (int) (in_array($groupId, $this->defaultAllowedGroups));
-    }
-
-    /**
-     * Returns the default state stored in DB per container type.
-     * This method returns null in case the default state for this permission or group is not stored in DB yet.
-     *
-     * @param int $groupId
-     * @return int|null
-     * @since 1.8
-     */
-    protected function getDefaultStoredState($groupId)
-    {
-        if ($this->contentContainer === null ||
-            !is_object($this->contentContainer)) {
-            // Content Container must be defined to get default permission per column `contentcontainer_class`
-            return null;
-        }
-
-        if ($this->contentContainer->isNewRecord) {
-            // Exclude default permission of the Container,
-            // in order to display the option "Default - Allow/Deny" from
-            // config file/class and not from stored value in DB
-            return null;
-        }
-
-        // Cache default permissions per Content Container Type(Space/User):
-        $cachedDefaultPermissions = Yii::$app->cache->getOrSet( 'defaultPermissions:'.get_class($this->contentContainer), function () use ($groupId) {
-            $records = ContentContainerDefaultPermission::find()
-                ->select(['group_id', 'module_id', 'permission_id', 'state'])
-                ->where(['contentcontainer_class' => get_class($this->contentContainer)])
-                ->all();
-            $permissions = [];
-            foreach ($records as $permission) {
-                /* @var $permission ContentContainerDefaultPermission  */
-                $permissions[$permission->group_id][$permission->module_id][$permission->permission_id] = $permission->state;
-            }
-            return $permissions;
-        });
-
-        if (isset($cachedDefaultPermissions[$groupId][$this->moduleId][static::class])) {
-            return (int) $cachedDefaultPermissions[$groupId][$this->moduleId][static::class];
-        }
-
-        return null;
     }
 
     /**

@@ -8,7 +8,6 @@
 
 namespace humhub\modules\content\components;
 
-use humhub\libs\BasePermission;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\content\models\ContentContainerDefaultPermission;
 use Yii;
@@ -33,25 +32,6 @@ class ContentContainerDefaultPermissionManager extends PermissionManager
             return $module->getPermissions(new $this->contentcontainer_class);
         }
         return [];
-    }
-
-    /**
-     * @inerhitdoc
-     */
-    public function createPermissionArray($groupId, $returnOnlyChangeable = false)
-    {
-        $permissions = parent::createPermissionArray($groupId, $returnOnlyChangeable);
-
-        foreach ($permissions as $p => $permission) {
-            /** @var $permission BasePermission */
-            if ($permission['contentContainer'] === null) {
-                // Force to don't allow changing of default permission if module still
-                // doesn't initialize the permission with Content Container properly
-                $permissions[$p]['changeable'] = false;
-            }
-        }
-
-        return $permissions;
     }
 
     /**
