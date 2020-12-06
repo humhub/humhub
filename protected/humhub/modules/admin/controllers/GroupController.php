@@ -104,11 +104,11 @@ class GroupController extends Controller
 
                     $job = new ReassignAllDefaultSpaces();
                     if (QueueHelper::isQueued($job)) {
-                        return $this->render('reassign-already-running', ['groupId' => $group->id]);
+                        $this->view->setStatusMessage('success', Yii::t('AdminModule.information', 'The Space memberships of this group will be reassigned. This process can take up to several minutes.'));
+                    } else {
+                        $job->groupId = $group->id;
+                        Yii::$app->queue->push($job);
                     }
-
-                    $job->groupId = $group->id;
-                    Yii::$app->queue->push($job);
                 }
             }
         }

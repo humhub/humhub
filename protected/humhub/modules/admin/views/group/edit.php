@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\ui\form\widgets\SortOrderField;
+use humhub\widgets\Button;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use humhub\libs\Html;
@@ -27,9 +28,8 @@ use humhub\modules\space\widgets\SpacePickerField;
     <?php endif; ?>
 
     <div class="reassign-spaces">
-        <!--        , Url::to(['/admin/group/reassign-all', 'id' => $group->id]-->
-        <?= Html::submitButton(Yii::t('AdminModule.user', 'Reassign All'), ['name' => 'submitReassignAll', 'value' => 'reassign-all', 'class' => 'btn btn-primary btn-reassign', 'data-method' => 'POST', 'data-confirm' => Yii::t('AdminModule.modules', 'Are you sure? Reassign default spaces to all users?')]); ?>
-        <div class="help-block"><?= $group->attributeHints()['reassign-all-help'] ?></div>
+        <?= Html::submitButton(Yii::t('AdminModule.user', 'Reassign All'), ['name' => 'submitReassignAll', 'value' => 'reassign-all', 'class' => 'btn btn-primary btn-reassign', 'data-method' => 'POST', 'data-confirm' => Yii::t('AdminModule.modules', 'Are you sure? All members of this group will be reassigned to all specified Spaces.')]); ?>
+        <div class="help-block"><?= Yii::t('AdminModule.settings', 'Reassign default spaces to all users') ?></div>
     </div>
 
     <?php if ($isManagerApprovalSetting && !$group->is_admin_group): ?>
@@ -53,8 +53,8 @@ use humhub\modules\space\widgets\SpacePickerField;
     <?= $form->field($group, 'show_at_directory')->checkbox(); ?>
     <?= $form->field($group, 'sort_order')->widget(SortOrderField::class) ?>
 
-    <?= Html::submitButton(Yii::t('AdminModule.base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
-
+    <!--    <? //= Html::submitButton(Yii::t('AdminModule.base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>-->
+    <?= Button::save()->submit(); ?>
     <?php
     if ($showDeleteButton) {
         echo Html::a(Yii::t('AdminModule.user', 'Delete'), Url::toRoute(['/admin/group/delete', 'id' => $group->id]), ['class' => 'btn btn-danger', 'data-method' => 'POST']);
