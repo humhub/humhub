@@ -79,7 +79,7 @@ class CropProfileImage extends Model
     /**
      * @var boolean
      */
-    public $keySupport = true;
+    public $keySupport = false;
 
     /**
      * @var string
