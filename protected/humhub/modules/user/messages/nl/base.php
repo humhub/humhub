@@ -57,6 +57,7 @@ return [
     'No users found.' => 'Geen gebruikers gevonden.',
     'Notifications' => 'Meldingen',
     'Password' => 'Wachtwoord',
+    'Password needs to be at least {chars} characters long.' => 'Wachtwoord moet minstens {chars} tekens lang zijn.',
     'Permission' => 'Toestemming',
     'Profile' => 'Profiel',
     'Profile posts only' => 'Alleen profielberichten',
@@ -97,5 +98,5 @@ return [
     'invited you to join {name}.' => 'heeft uw uitgenodigd om lid te worden van {name}.',
     'invited you to join {space} on {name}.' => 'nodigt u uit om deel te nemen aan {space} op {name}.',
     'or' => 'of',
-    'Password needs to be at least {chars} characters long.' => '',
+    'Enable Notifications' => '',
 ];

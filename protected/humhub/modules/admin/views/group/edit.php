@@ -20,8 +20,8 @@ use humhub\modules\space\widgets\SpacePickerField;
             'form' => $form,
             'model' => $group,
             'attribute' => 'defaultSpaceGuid',
-            'selection' => $group->defaultSpace,
-            'maxSelection' => 1,
+            'selection' => $group->defaultSpaces,
+            'maxSelection' => 1000,
         ])
         ?>
     <?php endif; ?>
@@ -38,9 +38,8 @@ use humhub\modules\space\widgets\SpacePickerField;
         ?>
     <?php endif; ?>
 
-    <strong><?= Yii::t('AdminModule.user', 'Visibility'); ?></strong>
-    <br>
-    <br>
+    <?= $form->field($group, 'notify_users')->checkbox(); ?>
+
     <?php if (!$group->is_admin_group): ?>
         <?= $form->field($group, 'show_at_registration')->checkbox(); ?>
     <?php endif; ?>

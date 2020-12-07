@@ -57,6 +57,7 @@ return [
     'No users found.' => 'Aucun utilisateur trouvé.',
     'Notifications' => 'Notifications',
     'Password' => 'Mot de passe',
+    'Password needs to be at least {chars} characters long.' => 'Le mot de passe doit contenir {chars} caractères minimum.',
     'Permission' => 'Permissions',
     'Profile' => 'Profil',
     'Profile posts only' => 'Publications sur le profil utilisateur uniquement',
@@ -97,5 +98,5 @@ return [
     'invited you to join {name}.' => 'vous a invité à rejoindre {name}.',
     'invited you to join {space} on {name}.' => 'vous a invité à rejoindre {space} sur {name}.',
     'or' => 'ou',
-    'Password needs to be at least {chars} characters long.' => '',
+    'Enable Notifications' => '',
 ];

@@ -83,6 +83,7 @@ return [
     'or' => 'يا',
     'Allows access to your about page with personal information' => '',
     'Auth Mode' => '',
+    'Enable Notifications' => '',
     'Missing E-Mail Attribute from AuthClient.' => '',
     'Missing ID AuthClient Attribute from AuthClient.' => '',
     'Password needs to be at least {chars} characters long.' => '',

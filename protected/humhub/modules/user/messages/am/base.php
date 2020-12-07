@@ -53,6 +53,7 @@ return [
     'Disconnect account' => '',
     'E-Mail is already in use! - Try forgot password.' => '',
     'Email' => '',
+    'Enable Notifications' => '',
     'Follow' => '',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => '',
     'Last Login' => '',

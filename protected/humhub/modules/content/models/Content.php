@@ -57,7 +57,7 @@ use yii\helpers\Url;
  * @property integer $object_id
  * @property integer $visibility
  * @property integer $pinned
- * @property string $archived
+ * @property integer $archived
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
