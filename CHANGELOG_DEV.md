@@ -9,4 +9,4 @@ HumHub Changelog
 - Enh #4585: Group notifications must be enabled explicitly
 - Fix #4646: Clean up duplicated array keys
 - Enh #242: Allow multiple default spaces for groups
-- PR #48: Improve "Admin Can View All" Feature
+- Enh #48: Improve "Admin Can View All" Feature
