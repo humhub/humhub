@@ -12,7 +12,9 @@ use humhub\libs\EmojiMap;
 use humhub\libs\Helpers;
 use humhub\libs\ParameterEvent;
 use humhub\modules\content\models\ContentContainer;
-use humhub\modules\content\widgets\richtext\extensions\MentioningExtension;
+use humhub\modules\content\widgets\richtext\extensions\mentioning\FileExtension;
+use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
+use humhub\modules\content\widgets\richtext\extensions\mentioning\OembedExtension;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
 use humhub\modules\space\models\Space;
@@ -277,7 +279,9 @@ class ProsemirrorRichText extends AbstractRichText
     }
 
     private static $extensions = [
-        'mention' => MentioningExtension::class
+        MentioningExtension::class,
+        FileExtension::class,
+        OembedExtension::class
     ];
 
     public static function addExtension($extensionKey, $extensionClass)
@@ -297,6 +301,19 @@ class ProsemirrorRichText extends AbstractRichText
         }
 
         return null;
+    }
+
+    /**
+     * @return RichTextLinkExtension[]
+     */
+    public static function getExtensions()
+    {
+        $result = [];
+        foreach (static::$extensions as $extension) {
+            $result[] = call_user_func($extension.'::instance');
+        }
+
+        return $result;
     }
 
     /**

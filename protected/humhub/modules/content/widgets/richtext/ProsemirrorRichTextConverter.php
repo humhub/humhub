@@ -7,6 +7,7 @@ namespace humhub\modules\content\widgets\richtext;
 use humhub\libs\EmojiMap;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtensionMatch;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
+use humhub\modules\content\widgets\richtext\parsers\RichTextToPlainTextConverter;
 
 class ProsemirrorRichTextConverter extends AbstractRichTextConverter
 {
@@ -68,9 +69,21 @@ class ProsemirrorRichTextConverter extends AbstractRichTextConverter
      */
     public function convertToPlaintext(string $content, array $options = []): string
     {
-        $result = static::convertLinksToPlainText($content);
-        $result = static::convertEmojiToUtf8($result);
-        return (new PlaintextMarkdownParser)->parse($result);
+        $result = static::convertEmojiToUtf8($content);
+       // $result = static::purifyLinks($result);
+        return (new RichTextToPlainTextConverter)->parse($result);
+    }
+
+    /**
+     * Purifies links from extensions as image size extensions, otherwise
+     * @param $text
+     * @return mixed
+     */
+    public static function purifyLinks($text)
+    {
+        return RichTextLinkExtension::replaceLinkExtension($text, null, function(RichTextExtensionMatch $match) {
+            return RichTextLinkExtension::buildLink($match->getText(), $match->getUrl(), $match->getTitle());
+        });
     }
 
     public static function convertEmojiToUtf8($text)
@@ -85,18 +98,5 @@ class ProsemirrorRichTextConverter extends AbstractRichTextConverter
 
             return $result;
         }, $text);
-    }
-
-    private static function convertLinksToPlainText($content)
-    {
-        return RichTextLinkExtension::replaceLinkExtension($content, null, static function(RichTextExtensionMatch $match) {
-            $extension = ProsemirrorRichText::getExtension($match->getExtensionKey());
-
-            if($extension) {
-                return $extension->toPlainText($match);
-            }
-
-            return RichTextLinkExtension::instance()->toPlainText($match);
-        });
     }
 }

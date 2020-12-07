@@ -62,10 +62,23 @@ abstract class RichTextExtension extends Model
     }
 
     /**
+     * Callback
+     * @param string $text
+     * @return string
+     */
+    public function onBeforeParse(string $text) : string {
+       return $text;
+    }
+
+    public function onAfterParse(string $text) : string {
+        return $text;
+    }
+
+    /**
      * @param RichTextExtensionMatch $match
      * @return string
      */
-    public abstract function toPlainText(RichTextExtensionMatch $match) : string;
+    public abstract function toPlainText(array $match) : string;
 
     /**
      * @param RichTextExtensionMatch $match

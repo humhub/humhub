@@ -23,7 +23,7 @@ class RichTextEmojiExtensionMatch extends RichTextExtensionMatch
      * Returns the text content of the extension match if supported
      * @return string
      */
-    public function getContent(): ?string
+    public function getText(): ?string
     {
         return $this->getByIndex(1);
     }
@@ -62,7 +62,7 @@ class RichTextEmojiExtensionMatch extends RichTextExtensionMatch
      */
     public function getTitle(): string
     {
-        return $this->getContent();
+        return $this->getText();
     }
 
     public function getAsUtf8() : string

@@ -3,11 +3,15 @@
 namespace humhub\modules\content\widgets\richtext\extensions\link;
 
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
-use humhub\modules\content\widgets\richtext\parsers\PlaintextMarkdownParser;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtensionMatch;
 
 class RichTextLinkExtension extends RichTextExtension
 {
+    const BLOCK_KEY_URL = 'url';
+    const BLOCK_KEY_TITLE = 'title';
+    const BLOCK_KEY_MD = 'orig';
+    const BLOCK_KEY_TEXT = 'text';
+
     /**
      * Can be used to scan for link extensions of the form [<text>](<extension>:<url> "<title>") in which the actual meaning
      * of the placeholders is up to the extension itself.
@@ -39,15 +43,30 @@ class RichTextLinkExtension extends RichTextExtension
      * @param RichTextExtensionMatch $match
      * @return string
      */
-    public function toPlainText(RichTextExtensionMatch $match) : string
+    public function toPlainText(array $block) : string
     {
-        return static::convertToPlainText($match->getContent(), $match->getUrl());
+        return static::convertToPlainText($block[static::BLOCK_KEY_TEXT], $block[static::BLOCK_KEY_URL]);
     }
 
-    public static function convertToPlainText($linkContent, $url)
+    public static function convertToPlainText($text, $url)
     {
-        $content = (new PlaintextMarkdownParser)->parse($linkContent);
-        return trim(strip_tags($content)).'('.$url.')';
+        if(!static::validateNonExtensionUrl($url)) {
+            return strip_tags($text);
+        }
+
+        return trim(strip_tags($text)).'('.$url.')';
+    }
+
+    public static function validateNonExtensionUrl($url)
+    {
+        $protocols = ['http', 'https', 'mailto', '#', 'ftp', 'ftps', '/'];
+        foreach ($protocols as $protocol) {
+            if(strpos($url, $protocol . ':') === 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -66,6 +85,29 @@ class RichTextLinkExtension extends RichTextExtension
     public function getRegex(): string
     {
         return static::getLinkExtensionPattern($this->key);
+    }
+
+    public function validateExtensionUrl(string $url) : bool
+    {
+        return strpos($url, $this->key . ':') === 0;
+    }
+
+    public static function buildLink(string $text, string $url, string $title = null) : string
+    {
+        if(!$title) {
+            return '['.$text.']('.$url.')';
+        }
+
+        return '['.$text.']('.$url.' "'.$title.'")';
+    }
+
+    public function cutExtensionKeyFromUrl(string $url) : string
+    {
+        if(!$this->validateExtensionUrl($url)) {
+            return $url;
+        }
+
+        return substr($url, strlen($this->key . ':'));
     }
 
     /**

@@ -29,7 +29,7 @@ abstract class RichTextExtensionMatch extends Model
      * Returns the text content of the extension match if supported
      * @return string
      */
-    public abstract function getContent() : ?string;
+    public abstract function getText() : ?string;
 
     /**
      * Returns the extension key

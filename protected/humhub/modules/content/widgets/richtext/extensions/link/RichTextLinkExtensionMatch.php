@@ -27,7 +27,7 @@ class RichTextLinkExtensionMatch extends RichTextExtensionMatch
         return $this->getByIndex(static::LINK_REGEX_GROUP_FULL);
     }
 
-    public function getContent() : string
+    public function getText() : string
     {
         return $this->getByIndex(static::LINK_REGEX_GROUP_CONTENT);
     }
