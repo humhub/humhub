@@ -47,6 +47,7 @@ class IncludeAllContributionsFilter extends ContentContainerStreamFilter
 
         $queryUser = $this->streamQuery->user;
 
+        // TODO: Refactor to unify with ActiveQueryContent::readable()
         $this->query->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::class]);
         $this->query->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::class]);
 
