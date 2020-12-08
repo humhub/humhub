@@ -42,8 +42,7 @@ $model->cropSetSelect = Json::decode('['.$cropSelect.']');
     'id' => 'profile-image-crop-modal',
     'header' => Yii::t('SpaceModule.views_admin_cropImage', '<strong>Modify</strong> image'),
     'animation' => 'fadeIn',
-    'size' => 'small'])
-?>
+    'size' => 'small']) ?>
 
     <?php $form = ActiveForm::begin(['id' => 'profile-image-crop-modal-form']); ?>
         <?= $form->errorSummary($model); ?>
@@ -56,11 +55,15 @@ $model->cropSetSelect = Json::decode('['.$cropSelect.']');
             <style>
                 /* Dirty Workaround against bootstrap and jcrop */
                 #profile-image-crop-modal img {
-                    max-width: 100%;
+                    max-width: none;
+                }
+
+                #profile-image-crop-modal .jcrop-keymgr, #profile-image-crop-modal label {
+                    opacity:0
                 }
             </style>
 
-            <div id="cropimage">
+            <div id="cropimage" style="overflow:hidden;">
                 <?= Html::img($profileImage->getUrl('_org'), ['id' => 'crop-profile-image']) ?>
 
                 <?= JCropWidget::widget([

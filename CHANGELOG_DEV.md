@@ -10,3 +10,7 @@ HumHub Changelog
 - Fix #4646: Clean up duplicated array keys
 - Enh #242: Allow multiple default spaces for groups
 - Enh #48: Improve "Admin Can View All" Feature
+- Fix #4692: Fix visibility of the button "Add new space"
+- Enh #4579: Optimized dashboard stream query
+- Enh #4579: Optimized live legitimation id queries
+- Enh #4579: Added `dashboard\Module::$guestFilterClass` and `$memberFilterClass` to replace dashboard filter class
