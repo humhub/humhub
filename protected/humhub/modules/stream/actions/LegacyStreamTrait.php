@@ -194,12 +194,12 @@ trait LegacyStreamTrait
         $this->setupFilters();
     }
     /**
-     * @deprecated since 1.7 use afterStreamQueryBuild
+     * @deprecated since 1.7 use Stream::beforeApplyFilters()
      */
     public function setupCriteria(){}
 
     /**
-     * @deprecated since 1.7 use afterStreamQueryBuild
+     * @deprecated since 1.7 use Stream::beforeApplyFilters()
      */
     public function setupFilters(){ }
 
