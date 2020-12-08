@@ -41,32 +41,36 @@ $isHidden = ($objectModel === Comment::class);
     <?= Html::hiddenInput('objectId', $objectId) ?>
 
     <div class="comment-create-input-group">
-        <?= $form->field($model, 'message')->widget(RichTextField::class, [
-            'id' => 'newCommentForm_' . $id,
-            'layout' => RichTextField::LAYOUT_INLINE,
-            'pluginOptions' => ['maxHeight' => '300px'],
-            'placeholder' => $placeholder,
-            'events' => [
-                'scroll-active' => 'comment.scrollActive',
-                'scroll-inactive' => 'comment.scrollInactive'
-            ]
-        ])->label(false) ?>
-
+        <!-- <div style="display: flex; align-items: flex-end;flex-wrap: nowrap; flex-direction: row"> -->
+        <!--    <div style="flex: 1"> -->
+            <?= $form->field($model, 'message')->widget(RichTextField::class, [
+                'id' => 'newCommentForm_' . $id,
+                'layout' => RichTextField::LAYOUT_INLINE,
+                'pluginOptions' => ['maxHeight' => '300px'],
+                'placeholder' => $placeholder,
+                'events' => [
+                    'scroll-active' => 'comment.scrollActive',
+                    'scroll-inactive' => 'comment.scrollInactive'
+                ]
+            ])->label(false) ?>
+        <!--   </div> -->
         <div class="comment-buttons">
-            <?= UploadButton::widget([
-                'id' => 'comment_create_upload_' . $id,
-                'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
-                'options' => ['class' => 'main_comment_upload'],
-                'progress' => '#comment_create_upload_progress_' . $id,
-                'preview' => '#comment_create_upload_preview_' . $id,
-                'dropZone' => '#comment_create_form_' . $id,
-                'max' => $contentModule->maxAttachedFiles
-            ]); ?>
+                <?= UploadButton::widget([
+                    'id' => 'comment_create_upload_' . $id,
+                    'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
+                    'options' => ['class' => 'main_comment_upload'],
+                    'progress' => '#comment_create_upload_progress_' . $id,
+                    'preview' => '#comment_create_upload_preview_' . $id,
+                    'dropZone' => '#comment_create_form_' . $id,
+                    'max' => $contentModule->maxAttachedFiles
+                ]) ?>
 
-            <?= Button::defaultType(Yii::t('CommentModule.base', 'Send'))
-                ->cssClass('btn-comment-submit')
-                ->action('submit', $submitUrl)->submit()->sm() ?>
-        </div>
+                <?= Button::defaultType()
+                    ->icon('paper-plane')
+                    ->cssClass('btn-comment-submit')
+                    ->action('submit', $submitUrl)->submit()->sm() ?>
+            </div>
+        <!--  </div> -->
     </div>
 
     <div id="comment_create_upload_progress_<?= $id ?>" style="display:none;margin:10px 0px;"></div>
