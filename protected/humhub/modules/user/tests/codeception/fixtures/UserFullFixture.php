@@ -9,6 +9,7 @@
 
 namespace humhub\modules\user\tests\codeception\fixtures;
 
+use humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture;
 use yii\test\ActiveFixture;
 
 class UserFullFixture extends ActiveFixture
@@ -17,12 +18,13 @@ class UserFullFixture extends ActiveFixture
     public $tableName = 'user_mentioning';
     public $depends = [
         UserFixture::class,
-        'humhub\modules\user\tests\codeception\fixtures\UserProfileFixture',
-        'humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture',
-        'humhub\modules\user\tests\codeception\fixtures\UserPasswordFixture',
-        'humhub\modules\user\tests\codeception\fixtures\UserFollowFixture',
+        UserProfileFixture::class,
+        ContentContainerFixture::class,
+        UserPasswordFixture::class,
+        UserFollowFixture::class,
         InviteFixture::class,
-        'humhub\modules\user\tests\codeception\fixtures\GroupFixture'
+        GroupSpaceFixture::class,
+        GroupFixture::class,
     ];
 
 }
