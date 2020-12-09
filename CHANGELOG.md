@@ -5,6 +5,7 @@ HumHub Changelog
 -------------------------
 - Fix #4668: table-responsive tables do not overflow due to default word break style
 - Fix #4679: Richtext extension scan does not include full title if title contains a `)`
+- Fix #4700: Deep Links from Microsoft Office Documents
 
 
 1.7.1 (November 27, 2020)
