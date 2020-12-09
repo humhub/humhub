@@ -302,9 +302,4 @@ class GroupController extends Controller
             throw new HttpException(403);
         }
     }
-
-    public function actionReassignAll($group)
-    {
-
-    }
 }
