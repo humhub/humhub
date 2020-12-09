@@ -97,14 +97,17 @@ class GroupController extends Controller
                 ]);
             } else {
                 if (!empty(Yii::$app->request->post('submitReassignAll'))) {
-                    $this->view->success(Yii::t(
-                        'base',
-                        'Reassigned'
-                    ));
+
+                    $this->view->info(Yii::t('AdminModule.user', 'Default space reassignment job was queued.'));
 
                     $job = new ReassignAllDefaultSpaces();
                     if (QueueHelper::isQueued($job)) {
-                        $this->view->setStatusMessage('success', Yii::t('AdminModule.information', 'The Space memberships of this group will be reassigned. This process can take up to several minutes.'));
+                        $this->view->info(
+                            Yii::t(
+                                'AdminModule.information',
+                                'Default space reassignment job already is queued. This process can take up to several minutes.'
+                            )
+                        );
                     } else {
                         $job->groupId = $group->id;
                         Yii::$app->queue->push($job);
