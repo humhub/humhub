@@ -105,6 +105,8 @@ class AdminMenu extends LeftNavigation
 
     /**
      * @inheritdoc
+     * @deprecated since 1.4
+     * @warning Use addEntry(new MenuLink()) instead of this deprecated method
      */
     public function addItem($entryArray)
     {
