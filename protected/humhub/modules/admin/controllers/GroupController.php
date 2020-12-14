@@ -101,7 +101,7 @@ class GroupController extends Controller
                     }
 
                     $this->view->info(Yii::t('AdminModule.user',
-                        'The Space memberships of all group members will be updated. This may take a several minutes.'));
+                        'The Space memberships of all group members will be updated. This may take up to several minutes.'));
                 }
             }
         }

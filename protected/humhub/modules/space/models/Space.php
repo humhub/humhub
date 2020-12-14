@@ -323,12 +323,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
         }
 
         Invite::deleteAll(['space_invite_id' => $this->id]);
-
-        // Delete the corresponding entries of the table group_space
-        if (!empty($this->id)){
-            $groupSpace = GroupSpace::findOne(['space_id'=>$this->id]);
-            $groupSpace->delete();
-        }
+        GroupSpace::deleteAll(['space_id' => $this->id]);
 
         return parent::beforeDelete();
     }

@@ -34,7 +34,7 @@ class EditGroupForm extends Group
     {
         return [
             'defaultSpaceGuid' => Yii::t('AdminModule.space', 'Default Space(s)'),
-            'updateSpaceMemberships'  => Yii::t('AdminModule.space', 'Update Space memberships also for existing members.'),
+            'updateSpaceMemberships' => Yii::t('AdminModule.space', 'Update Space memberships also for existing members.'),
         ];
     }
 
@@ -50,21 +50,24 @@ class EditGroupForm extends Group
         $this->addNewManagers();
         $this->removeOldManagers();
 
-        //clear GroupSpace
-        $groupSpaces = GroupSpace::find()->where(['group_id' => $this->id])->all();
-        foreach ($groupSpaces as $groupSpace) {
-            $groupSpace->delete();
+        $existingSpaceIds = GroupSpace::find()->where(['group_id' => $this->id])->select('space_id')->column();
+        $newSpaceIds = [];
+        foreach ($this->defaultSpaceGuid as $spaceGuid) {
+            $space = Space::findOne(['guid' => $spaceGuid]);
+            if ($space !== null) {
+                $newSpaceIds[] = $space->id;
+            }
         }
 
-        // Save GroupSpace for this group
-        if (!empty($this->defaultSpaceGuid)) {
-            foreach ($this->defaultSpaceGuid as $spaceGuid) {
-                $space = Space::findOne(['guid' => $spaceGuid]);
-                $groupSpaces = new GroupSpace();
-                $groupSpaces->group_id = $this->id;
-                $groupSpaces->space_id = $space->id;
-                $groupSpaces->save();
-            }
+        foreach (array_diff($existingSpaceIds, $newSpaceIds) as $spaceId) {
+            GroupSpace::deleteAll(['space_id' => $spaceId, 'group_id' => $this->id]);
+        }
+
+        foreach (array_diff($newSpaceIds, $existingSpaceIds) as $spaceId) {
+            $groupSpaces = new GroupSpace();
+            $groupSpaces->group_id = $this->id;
+            $groupSpaces->space_id = $spaceId;
+            $groupSpaces->save();
         }
 
         parent::afterSave($insert, $changedAttributes);

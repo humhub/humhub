@@ -69,18 +69,14 @@ class Group extends ActiveRecord
      */
     public function beforeDelete()
     {
-        // Delete the corresponding entries of the table group_space
-        if (!empty($this->id)){
-            $groupSpace = GroupSpace::findOne(['group_id'=>$this->id]);
-            $groupSpace->delete();
-        }
+        GroupSpace::deleteAll(['group_id' => $this->id]);
 
         return parent::beforeDelete();
     }
 
     public function validateShowAtRegistration($attribute, $params)
     {
-        if($this->is_admin_group && $this->show_at_registration) {
+        if ($this->is_admin_group && $this->show_at_registration) {
             $this->addError($attribute, 'Admin group can\'t be a registration group!');
         }
     }
@@ -238,8 +234,8 @@ class Group extends ActiveRecord
      *
      * @param User $user user id or user model
      * @param bool $isManager mark as group manager
-     * @throws \yii\base\InvalidConfigException
      * @return bool true - on success adding user, false - if already member or cannot be added by some reason
+     * @throws \yii\base\InvalidConfigException
      */
     public function addUser($user, $isManager = false)
     {
@@ -299,9 +295,9 @@ class Group extends ActiveRecord
      * Notifies groups admins for approval of new user via e-mail.
      * This should be done after a new user is created and approval is required.
      *
-     * @todo Create message template, move message into translation
      * @param User $user
      * @return true|void
+     * @todo Create message template, move message into translation
      */
     public static function notifyAdminsForUserApproval($user)
     {
