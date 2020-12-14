@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\components\Application;
+use humhub\modules\ui\menu\MenuEntry;
 use Yii;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\admin\permissions\ManageSpaces;
@@ -26,6 +27,7 @@ use humhub\modules\admin\permissions\ManageGroups;
  * is displayed in the UserAccountMenu.
  *
  * The visibility of module menu entries should always be made based on the 'ManageModules' permission.
+ * If a MenuEntry has no specified visibility, the permission `ManageModules` is automatically used.
  *
  * Example menu entry:
  *
@@ -150,5 +152,18 @@ class AdminMenu extends LeftNavigation
         if (Yii::$app instanceof Application) {
             Yii::$app->session->remove(static::SESSION_CAN_SEE_ADMIN_SECTION);
         }
+    }
+
+    /**
+     * @inheritDoc
+     * @notice If the MenuEntry has not specified visibility, the Permission ManageModules is automatically used.
+     */
+    public function addEntry(MenuEntry $entry)
+    {
+        if ($entry->getIsVisible() === null) {
+            $entry->setIsVisible(Yii::$app->user->can(ManageModules::class));
+        }
+
+        parent::addEntry($entry);
     }
 }
