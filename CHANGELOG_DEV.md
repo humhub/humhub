@@ -1,6 +1,3 @@
-HumHub Changelog
-================
-
 1.8.0 (Unreleased)
 ------------------
 - Enh #3414: Allow to change user passwords by admin
@@ -13,3 +10,4 @@ HumHub Changelog
 - Enh #4579: Optimized dashboard stream query
 - Enh #4579: Optimized live legitimation id queries
 - Enh #4579: Added `dashboard\Module::$guestFilterClass` and `$memberFilterClass` to replace dashboard filter class
+- Enh #4586: Rebuild group default Space Mapping 

@@ -58,11 +58,21 @@ class Group extends ActiveRecord
     public function rules()
     {
         return [
-            [['space_id', 'sort_order', 'notify_users'], 'integer'],
+            [['sort_order', 'notify_users'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 45],
             ['show_at_registration', 'validateShowAtRegistration'],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeDelete()
+    {
+        GroupSpace::deleteAll(['group_id' => $this->id]);
+
+        return parent::beforeDelete();
     }
 
     public function validateShowAtRegistration($attribute, $params)
@@ -79,7 +89,6 @@ class Group extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'space_id' => Yii::t('UserModule.base', 'Space ID'),
             'name' => Yii::t('UserModule.base', 'Name'),
             'defaultSpaceGuid' => Yii::t('UserModule.base', 'Default Space'),
             'managerGuids' => Yii::t('UserModule.base', 'Manager'),
