@@ -19,11 +19,16 @@ use yii\web\HttpException;
 
 class PendingRegistrationsController extends Controller
 {
+
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         $this->subLayout = '@admin/views/layouts/user';
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Pending user registrations'));
-        return parent::init();
+
+        parent::init();
     }
 
     /**
@@ -41,6 +46,9 @@ class PendingRegistrationsController extends Controller
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function actionIndex()
     {
         $searchModel = new PendingRegistrationSearch();
@@ -59,6 +67,7 @@ class PendingRegistrationsController extends Controller
 
     /**
      * Export user list as csv or xlsx
+     *
      * @param string $format supported format by phpspreadsheet
      * @return \yii\web\Response
      * @throws \PhpOffice\PhpSpreadsheet\Exception
@@ -139,9 +148,10 @@ class PendingRegistrationsController extends Controller
     {
         if (Yii::$app->request->isPost) {
             Invite::deleteAll();
+
             $this->view->success(Yii::t(
                 'AdminModule.user',
-                'All invitations have been deleted'
+                'All open registration invitations were successfully deleted.'
             ));
         }
         return $this->redirect(['index']);
@@ -169,7 +179,7 @@ class PendingRegistrationsController extends Controller
                 }
                 $this->view->success(Yii::t(
                     'AdminModule.user',
-                    'Selected invitations have been deleted'
+                    'The selected open registration invitations were successfully deleted.'
                 ));
             }
         }

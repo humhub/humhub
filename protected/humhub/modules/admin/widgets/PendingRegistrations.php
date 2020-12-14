@@ -1,23 +1,41 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2020 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
-namespace admin\widgets;
-
+namespace humhub\modules\admin\widgets;
 
 use humhub\modules\admin\models\PendingRegistrationSearch;
-use humhub\modules\wiki\helpers\Url;
+use yii\helpers\Url;
 use humhub\widgets\JsWidget;
 use Yii;
 use yii\data\ActiveDataProvider;
 
+
+/**
+ * PendingRegistrations shows a grid view of all open/pending UserInvites
+ *
+ * @since 1.8
+ * @package humhub\modules\admin\widgets
+ */
 class PendingRegistrations extends JsWidget
 {
+    /**
+     * @inheritdoc
+     */
     public $jsWidget = 'admin.PendingRegistrations';
 
-    /** @var ActiveDataProvider */
+    /**
+     * @var ActiveDataProvider
+     */
     public $dataProvider;
 
-    /** @var PendingRegistrationSearch */
+    /**
+     * @var PendingRegistrationSearch
+     */
     public $searchModel;
 
     /**
@@ -26,11 +44,17 @@ class PendingRegistrations extends JsWidget
      */
     public $types;
 
+    /**
+     * @inheritdoc
+     */
     public $init = true;
 
+    /**
+     * @inheritDoc
+     */
     public function run()
     {
-        return $this->render('PendingRegistrationsWidgetView',
+        return $this->render('pending-registrations',
             [
                 'dataProvider' => $this->dataProvider,
                 'searchModel' => $this->searchModel,
@@ -39,6 +63,9 @@ class PendingRegistrations extends JsWidget
             ]);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getAttributes()
     {
         return [
@@ -46,13 +73,16 @@ class PendingRegistrations extends JsWidget
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getData()
     {
         return [
             'url-delete-selected' => Url::to(['pending-registrations/delete-all-selected']),
             'url-delete-all' => Url::to(['pending-registrations/delete-all']),
-            'note-delete-selected' => Yii::t('AdminModule.base','Delete selected rows'),
-            'note-delete-all' => Yii::t('AdminModule.base','Delete all'),
+            'note-delete-selected' => Yii::t('AdminModule.base', 'Delete selected rows'),
+            'note-delete-all' => Yii::t('AdminModule.base', 'Delete all'),
         ];
     }
 }

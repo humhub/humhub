@@ -18,7 +18,6 @@ use Yii;
  *
  * @since 1.8
  */
-
 class CleanupPendingRegistrations extends ActiveJob
 {
     /**

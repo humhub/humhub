@@ -19,6 +19,10 @@ class AdminPendingRegistrationsAsset extends AssetBundle
     public $jsOptions = [
         'position' => View::POS_END
     ];
+
+    /**
+     * @inheritdoc
+     */
     public $sourcePath = '@admin/resources';
 
     /**

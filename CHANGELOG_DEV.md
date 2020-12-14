@@ -15,7 +15,7 @@ HumHub Changelog
 - Fix #4549: Handle invalid timezone validation in registration process
 - Enh #4531: Remove wall entry left padding on mobile 
 - Fix #4554: Code blocks in comments uses same background color
-- Enh #4225: Delete pending registrations automatically
+- Enh #4225: Delete open/pending registration invites automatically after a period of time
 
 1.7.0-beta.1 (October 16, 2020)
 -------------------------------
