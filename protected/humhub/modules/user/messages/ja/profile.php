@@ -120,6 +120,7 @@ return [
     'Last login date of the user' => '',
     'Must contain at least one character.' => '',
     'Only alphanumeric characters allowed!' => '',
+    'Other:' => '',
     'Possible values' => '',
     'Profile Field Category' => '',
     'Regular Expression: Error message' => '',

@@ -353,7 +353,8 @@ humhub.module('file', function (module, require, $) {
             that.add(file)
         });
 
-        if(!this.$.find('.file-preview-item:visible').length) {
+        // Note we are not using :visible since the preview itself may not visible on init
+        if(!this.$.find('.file-preview-item:not(.hiddenFile)').length) {
             this.$.hide();
         }
     };
@@ -406,6 +407,8 @@ humhub.module('file', function (module, require, $) {
 
         if(!(this.isMedia(file) && this.options.excludeMediaFilesPreview)) {
             $file.fadeIn();
+        } else {
+            $file.addClass('hiddenFile');
         }
     };
 

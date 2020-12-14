@@ -18,6 +18,7 @@
  */
 return [
     '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>Este espaço está vazio!</b><br>Comece a escrever alguma coisa aqui...',
+    'About' => 'Sobre',
     'Close' => 'Fechar',
     'Delete' => 'Apagar',
     'Description' => 'Descrição',
@@ -35,7 +36,6 @@ return [
     '<strong>Space</strong> followers' => '',
     '<strong>Space</strong> members' => '',
     '<strong>Space</strong> menu' => '',
-    'About' => '',
     'Accept' => '',
     'Accept Invite' => '',
     'Add users without invitation' => '',
@@ -63,6 +63,7 @@ return [
     'Everyone can enter' => '',
     'Follow' => '',
     'Followers' => '',
+    'Hide Members sidebar in the stream page.' => '',
     'Homepage' => '',
     'Homepage (Guests)' => '',
     'Invite' => '',

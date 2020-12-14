@@ -9,6 +9,7 @@
 namespace humhub\modules\file\converter;
 
 use humhub\modules\file\libs\ImageHelper;
+use humhub\modules\file\Module;
 use Imagine\Image\ImageInterface;
 use Yii;
 use humhub\modules\file\models\File;
@@ -40,11 +41,11 @@ class PreviewImage extends BaseConverter
      */
     public function init()
     {
-        $maxPreviewImageWidth = Yii::$app->getModule('file')->settings->get('maxPreviewImageWidth');
-        $maxPreviewImageHeight = Yii::$app->getModule('file')->settings->get('maxPreviewImageHeight');
+        /** @var Module $module */
+        $module = Yii::$app->getModule('file');
 
-        $this->options['width'] = $maxPreviewImageWidth ? $maxPreviewImageWidth : 200;
-        $this->options['height'] = $maxPreviewImageHeight ? $maxPreviewImageHeight : 200;
+        $this->options['width'] = $module->imagePreviewMaxWidth;
+        $this->options['height'] = $module->imagePreviewMaxHeight;
 
         parent::init();
     }

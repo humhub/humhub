@@ -99,6 +99,7 @@ return [
     'Number field options' => '',
     'One option per line. Key=>Value Format (e.g. yes=>Yes)' => '',
     'Only alphanumeric characters allowed!' => '',
+    'Other:' => '',
     'Please select:' => '',
     'Possible values' => '',
     'Profile Field Category' => '',

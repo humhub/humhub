@@ -21,7 +21,6 @@ use humhub\modules\content\models\ContentContainer;
  */
 class ContentContainerModuleManager extends \yii\base\Component
 {
-
     /**
      * @var \humhub\modules\content\components\ContentContainerActiveRecord
      */
@@ -85,7 +84,7 @@ class ContentContainerModuleManager extends \yii\base\Component
     public function isEnabled($id)
     {
         // Workaround for core post module
-        if($id === 'post') {
+        if ($id === 'post') {
             return true;
         }
 
@@ -158,12 +157,35 @@ class ContentContainerModuleManager extends \yii\base\Component
 
         foreach (Yii::$app->moduleManager->getModules() as $id => $module) {
             if ($module instanceof ContentContainerModule && Yii::$app->hasModule($module->id) &&
-                    $module->hasContentContainerType($this->contentContainer->className())) {
+                $module->hasContentContainerType($this->contentContainer->className())) {
                 $this->_available[$module->id] = $module;
             }
         }
 
         return $this->_available;
+    }
+
+    /**
+     * Returns a list of modules that can be installed by the ContentContainer.
+     * Unlike `getAvailable()` it does not contain any modules which cannot be disabled or enabled.
+     *
+     * @return ContentContainerModule[] a list of modules
+     * @throws \yii\base\Exception
+     * @since 1.6.5
+     */
+    public function getInstallable()
+    {
+
+        $availableModules = $this->getAvailable();
+        foreach ($availableModules as $moduleId => $module) {
+            if (($this->isEnabled($moduleId) && !$this->canDisable($moduleId)) ||
+                (!$this->isEnabled($moduleId) && !$this->canEnable($moduleId))
+            ) {
+                unset($availableModules[$moduleId]);
+            }
+        }
+        return $availableModules;
+
     }
 
     /**
@@ -178,8 +200,8 @@ class ContentContainerModuleManager extends \yii\base\Component
     /**
      * Returns an array of all module states.
      *
-     * @see Module
      * @return array a list of modules with the corresponding state
+     * @see Module
      */
     protected function getStates()
     {
@@ -228,16 +250,16 @@ class ContentContainerModuleManager extends \yii\base\Component
         if ($state === null) {
             return null;
         } else {
-            return (int) $state;
+            return (int)$state;
         }
     }
 
     /**
      * Returns an Module record instance for the given module id
      *
-     * @see Module
      * @param string $id the module id
      * @return ContentContainerModuleState
+     * @see Module
      */
     protected function getModuleStateRecord($id)
     {
@@ -271,7 +293,7 @@ class ContentContainerModuleManager extends \yii\base\Component
         $contentContainerClasses = [\humhub\modules\user\models\User::class, \humhub\modules\space\models\Space::class];
         foreach ($contentContainerClasses as $class) {
             $reflect = new ReflectionClass($class);
-            $defaultState = (int) $moduleSettings->get('moduleManager.defaultState.' . $reflect->getShortName());
+            $defaultState = (int)$moduleSettings->get('moduleManager.defaultState.' . $reflect->getShortName());
             if ($defaultState === ContentContainerModuleState::STATE_ENABLED || $defaultState === ContentContainerModuleState::STATE_FORCE_ENABLED) {
                 $query->orWhere(['contentcontainer.class' => $class]);
             }
@@ -279,5 +301,4 @@ class ContentContainerModuleManager extends \yii\base\Component
 
         return $query;
     }
-
 }

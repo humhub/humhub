@@ -87,10 +87,10 @@ class Password extends ActiveRecord
             [['newPasswordConfirm'], 'compare', 'compareAttribute' => 'newPassword', 'on' => ['registration', 'changePassword']],
         ];
     }
-    
+
     /**
      * The new password has to be unequal to the current password.
-     * 
+     *
      * @param type $attribute
      * @param type $params
      */
@@ -197,7 +197,7 @@ class Password extends ActiveRecord
             foreach ($additionalRules as $pattern => $message) {
                 $errorMessage = $userModule->isCustomPasswordStrength() ?
                     Yii::t('UserModule.custom', $message) :
-                    Yii::t('UserModule.base', $message);
+                    $message;
                 try {
                     preg_match($pattern, $this->$attribute, $matches);
                     if (! count($matches)) {

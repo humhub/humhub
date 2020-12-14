@@ -73,6 +73,18 @@ return [
     'Group not found!' => 'グループが見つかりません！',
     'Group user not found!' => 'グループユーザーが見つかりません！',
     'Groups' => 'グループ',
+    'Hello {displayName},<br><br>
+Your account has been activated.<br><br>
+Click here to login:<br>
+{loginLink}<br><br>
+
+Kind Regards<br>
+{AdminName}<br><br>' => 'こんにちは{displayName}、<br><br>アカウントがアクティブ化されました。<br><br>ログインするにはここをクリックしてください：<br> {loginLink} <br><br>よろしくお願いします<br> {AdminName} <br><br>',
+    'Hello {displayName},<br><br>
+Your account request has been declined.<br><br>
+
+Kind Regards<br>
+{AdminName} <br><br> ' => 'こんにちは{displayName}、<br><br>アカウントリクエストは拒否されました。<br><br>よろしくお願いいたします。<br> {AdminName} <br><br>',
     'Here you can create or edit profile categories and fields.' => 'ここでは、プロフィールのカテゴリや設定を作成・編集できます。',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'このオプションが選択されていない場合、スペースの所有権がアカウントに転送されます。',
     'Impersonate' => '代替ログイン',
@@ -125,23 +137,15 @@ return [
     'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'ユーザーをグループ（チーム、部門など）に登録できます。グループ用のスペース設定、管理、権限設定もできます。',
     'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => 'このオプションを使用すると、このユーザーの投稿（コンテンツ、コメントなど）は完全に削除されます。',
     'View profile' => 'プロフィールを見る',
-    'Visibility' => '可視性',
     'Visible for members only' => 'メンバーだけに見える',
     'Visible for members+guests' => 'メンバー＋ゲストにも見える',
     'Yes' => 'はい',
     'You can only delete empty categories!' => 'あなたしか参加していないカテゴリを削除することができます！',
     'You cannot delete yourself!' => '自分自身を削除することはできません！',
     'never' => '保存しない',
-    'Hello {displayName},<br><br>
-Your account has been activated.<br><br>
-Click here to login:<br>
-{loginLink}<br><br>
-
-Kind Regards<br>
-{AdminName}<br><br>' => '',
-    'Hello {displayName},<br><br>
-Your account request has been declined.<br><br>
-
-Kind Regards<br>
-{AdminName} <br><br> ' => '',
+    'Account' => '',
+    'Add a seperate page for the group to the directory.' => '',
+    'Make the group selectable at registration.' => '',
+    'Password' => '',
+    'Send notifications to users when added to or removed from the group.' => '',
 ];

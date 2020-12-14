@@ -935,6 +935,7 @@ class Icon extends Widget
 
     /**
      * @param string|array $style
+     * @return $this
      */
     public function style($style)
     {
@@ -944,6 +945,7 @@ class Icon extends Widget
 
     /**
      * @param string $color
+     * @return $this
      */
     public function color($color)
     {

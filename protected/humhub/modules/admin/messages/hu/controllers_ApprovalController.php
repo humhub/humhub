@@ -18,5 +18,5 @@
  */
 return [
     'User not found!' => 'Felhasználó nem található!',
-    'Invalid user state: thi' => '',
+    'Invalid user state: {state}' => '',
 ];
