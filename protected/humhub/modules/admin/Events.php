@@ -51,6 +51,7 @@ class Events extends \yii\base\BaseObject
     public static function onCronDailyRun($event)
     {
         Yii::$app->queue->push(new jobs\CleanupLog());
+        Yii::$app->queue->push(new jobs\CleanupPendingRegistrations());
         Yii::$app->queue->push(new jobs\CheckForNewVersion());
     }
 

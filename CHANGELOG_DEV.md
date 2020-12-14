@@ -11,3 +11,4 @@
 - Enh #4579: Optimized live legitimation id queries
 - Enh #4579: Added `dashboard\Module::$guestFilterClass` and `$memberFilterClass` to replace dashboard filter class
 - Enh #4586: Rebuild group default Space Mapping 
+- Enh #4225: Delete open/pending registration invites automatically after a period of time
