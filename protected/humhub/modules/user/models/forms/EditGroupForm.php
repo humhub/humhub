@@ -1,4 +1,5 @@
 <?php
+
 namespace humhub\modules\user\models\forms;
 
 use humhub\modules\user\models\Group;
@@ -18,11 +19,13 @@ class EditGroupForm extends Group
 
     public $managerGuids = [];
     public $defaultSpaceGuid = [];
+    public $updateSpaceMemberships = false;
 
     public function rules()
     {
         $rules = parent::rules();
         $rules[] = [['name'], 'required'];
+        $rules[] = [['updateSpaceMemberships'], 'boolean'];
         $rules[] = [['managerGuids', 'show_at_registration', 'show_at_directory', 'defaultSpaceGuid'], 'safe'];
         return $rules;
     }
@@ -31,6 +34,7 @@ class EditGroupForm extends Group
     {
         return [
             'defaultSpaceGuid' => Yii::t('AdminModule.space', 'Default Space(s)'),
+            'updateSpaceMemberships'  => Yii::t('AdminModule.space', 'Update Space memberships also for existing members.'),
         ];
     }
 
@@ -47,14 +51,14 @@ class EditGroupForm extends Group
         $this->removeOldManagers();
 
         //clear GroupSpace
-        $groupSpaces = GroupSpace::find()->where(['group_id'=>$this->id])->all();
-        foreach ($groupSpaces as $groupSpace){
+        $groupSpaces = GroupSpace::find()->where(['group_id' => $this->id])->all();
+        foreach ($groupSpaces as $groupSpace) {
             $groupSpace->delete();
         }
 
         // Save GroupSpace for this group
         if (!empty($this->defaultSpaceGuid)) {
-            foreach ($this->defaultSpaceGuid as $spaceGuid){
+            foreach ($this->defaultSpaceGuid as $spaceGuid) {
                 $space = Space::findOne(['guid' => $spaceGuid]);
                 $groupSpaces = new GroupSpace();
                 $groupSpaces->group_id = $this->id;

@@ -8,8 +8,7 @@
 
 namespace humhub\modules\admin\controllers;
 
-use humhub\modules\admin\jobs\ReassignAllDefaultSpaces;
-use humhub\components\Response;
+use humhub\modules\admin\jobs\ReassignGroupDefaultSpaces;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\AddGroupMemberForm;
 use humhub\modules\admin\models\GroupSearch;
@@ -23,7 +22,6 @@ use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserPicker;
 use Yii;
-use yii\db\Exception;
 use yii\db\Query;
 use yii\web\HttpException;
 
@@ -96,22 +94,14 @@ class GroupController extends Controller
                     'id' => $group->id,
                 ]);
             } else {
-                if (!empty(Yii::$app->request->post('submitReassignAll'))) {
-
-                    $this->view->info(Yii::t('AdminModule.user', 'Default space reassignment job was queued.'));
-
-                    $job = new ReassignAllDefaultSpaces();
-                    if (QueueHelper::isQueued($job)) {
-                        $this->view->info(
-                            Yii::t(
-                                'AdminModule.information',
-                                'Default space reassignment job already is queued. This process can take up to several minutes.'
-                            )
-                        );
-                    } else {
-                        $job->groupId = $group->id;
+                if (!empty($group->updateSpaceMemberships)) {
+                    $job = new ReassignGroupDefaultSpaces(['groupId' => $group->id]);
+                    if (!QueueHelper::isQueued($job)) {
                         Yii::$app->queue->push($job);
                     }
+
+                    $this->view->info(Yii::t('AdminModule.user',
+                        'The Space memberships of all group members will be updated. This may take a several minutes.'));
                 }
             }
         }

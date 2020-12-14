@@ -26,12 +26,9 @@ use humhub\modules\space\widgets\SpacePickerField;
         ])
         ?>
     <?php endif; ?>
-
-    <div class="reassign-spaces">
-        <?= Html::submitButton(Yii::t('AdminModule.user', 'Reassign All'), ['name' => 'submitReassignAll', 'value' => 'reassign-all', 'class' => 'btn btn-primary btn-reassign', 'data-method' => 'POST', 'data-confirm' => Yii::t('AdminModule.modules', 'Are you sure? All members of this group will be reassigned to all specified Spaces.')]); ?>
-        <div class="help-block"><?= Yii::t('AdminModule.settings', 'Reassign default spaces to all users') ?></div>
-    </div>
-
+    <?php if (!$group->isNewRecord): ?>
+        <?= $form->field($group, 'updateSpaceMemberships')->checkbox(); ?>
+    <?php endif; ?>
     <?php if ($isManagerApprovalSetting && !$group->is_admin_group): ?>
         <?php $url = ($group->isNewRecord) ? null : Url::to(['/admin/group/admin-user-search', 'id' => $group->id]); ?>
         <?= UserPickerField::widget([
