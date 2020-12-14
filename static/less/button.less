@@ -231,3 +231,34 @@
         background: lighten(@warning, 5%) !important;
     }
 }
+
+.btn-link {
+    color: @link !important;
+
+    &:hover,
+    &:focus {
+        color: darken(@link, 2%);
+        text-decoration: none;
+    }
+
+    &:active,
+    &.active {
+        outline: 0;
+        color: darken(@link, 2%) !important;
+    }
+}
+
+.btn-link[disabled],
+.btn-link.disabled {
+    color: lighten(@link, 5%);
+
+    &:hover,
+    &:focus {
+        color: lighten(@link, 5%);
+    }
+
+    &:active,
+    &.active {
+        color: lighten(@link, 5%) !important;
+    }
+}

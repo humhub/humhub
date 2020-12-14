@@ -18,6 +18,8 @@
  */
 return [
     '<strong>Space</strong> followers' => '<strong>Vietas</strong> sekotāji',
+    'About' => 'Par',
+    'Admin' => 'Administrācija',
     'Archived' => 'Arhivēts',
     'Cancel' => 'Atcelt',
     'Close' => 'Aizvērt',
@@ -61,11 +63,9 @@ return [
     '<strong>Request</strong> space membership' => '',
     '<strong>Space</strong> members' => '',
     '<strong>Space</strong> menu' => '',
-    'About' => '',
     'Accept' => '',
     'Accept Invite' => '',
     'Add users without invitation' => '',
-    'Admin' => '',
     'Administrator:' => '',
     'Administrators' => '',
     'Application message' => '',
@@ -82,6 +82,7 @@ return [
     'Email addresses' => '',
     'Follow' => '',
     'Followers' => '',
+    'Hide Members sidebar in the stream page.' => '',
     'Homepage' => '',
     'Homepage (Guests)' => '',
     'Invite' => '',

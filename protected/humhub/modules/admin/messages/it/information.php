@@ -27,7 +27,7 @@ return array (
   'Re-Run tests' => 'Rilancia il test',
   'Reserved' => 'Riservato',
   'Search index rebuild in progress.' => 'Ricostruzione indice di ricerca in corso.',
-  'Search term...' => 'Cerca termine',
+  'Search term...' => 'Cerca termine...',
   'See installation manual for more details.' => 'Vedi manuale di installazione per ulteriori dettagli.',
   'Select category..' => 'Seleziona categoria...',
   'Select day' => 'Seleziona un giorno',

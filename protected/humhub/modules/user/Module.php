@@ -112,13 +112,6 @@ class Module extends \humhub\components\Module
     public $passwordStrength = [];
 
     /**
-     * @var array defines default additional rules for password validation
-     */
-    private $defaultPasswordStrength = [
-        '/^.{5,255}$/' => 'Password needs to be at least 8 characters long.',
-    ];
-
-    /**
      * @var bool disable profile stream
      * @since 1.6
      */
@@ -163,9 +156,20 @@ class Module extends \humhub\components\Module
     public function getPasswordStrength()
     {
         if (empty($this->passwordStrength)) {
-            $this->passwordStrength = $this->defaultPasswordStrength;
+            $this->passwordStrength = $this->getDefaultPasswordStrength();
         }
         return $this->passwordStrength;
+    }
+
+    /**
+     * @return array the default rules for password validation
+     * @since 1.6.5
+     */
+    private function getDefaultPasswordStrength()
+    {
+        return [
+            '/^.{5,255}$/' => Yii::t('UserModule.base', 'Password needs to be at least {chars} characters long.', ['chars' => 5]),
+        ];
     }
 
     /**
@@ -173,6 +177,6 @@ class Module extends \humhub\components\Module
      */
     public function isCustomPasswordStrength()
     {
-        return $this->defaultPasswordStrength !== $this->getPasswordStrength();
+        return $this->getDefaultPasswordStrength() !== $this->getPasswordStrength();
     }
 }

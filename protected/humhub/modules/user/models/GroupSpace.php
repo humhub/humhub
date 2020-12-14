@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\modules\space\models\Space;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "group_spaces".
@@ -16,15 +17,11 @@ use humhub\modules\space\models\Space;
  * @property int $id
  * @property int $space_id
  * @property int $group_id
- * @property string|null $created_at
- * @property int|null $created_by
- * @property string|null $updated_at
- * @property int|null $updated_by
  *
  * @property Group $group
  * @property Space $space
  */
-class GroupSpace extends \yii\db\ActiveRecord
+class GroupSpace extends ActiveRecord
 {
     /**
      * {@inheritdoc}

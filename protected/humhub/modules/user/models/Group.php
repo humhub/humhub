@@ -31,6 +31,7 @@ use Yii;
  * @property string $updated_at
  * @property integer $updated_by
  * @property integer $is_admin_group
+ * @property integer $notify_users
  *
  * @property User[] $manager
  * @property Space|null $defaultSpace
@@ -57,7 +58,7 @@ class Group extends ActiveRecord
     public function rules()
     {
         return [
-            [['sort_order'], 'integer'],
+            [['sort_order', 'notify_users'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 45],
             ['show_at_registration', 'validateShowAtRegistration'],
@@ -99,6 +100,19 @@ class Group extends ActiveRecord
             'show_at_registration' => Yii::t('UserModule.base', 'Show At Registration'),
             'show_at_directory' => Yii::t('UserModule.base', 'Show At Directory'),
             'sort_order' => Yii::t('UserModule.base', 'Sort order'),
+            'notify_users' => Yii::t('UserModule.base', 'Enable Notifications'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'notify_users' => Yii::t('AdminModule.user', 'Send notifications to users when added to or removed from the group.'),
+            'show_at_registration' => Yii::t('AdminModule.user', 'Make the group selectable at registration.'),
+            'show_at_directory' => Yii::t('AdminModule.user', 'Add a seperate page for the group to the directory.'),
         ];
     }
 
@@ -252,10 +266,12 @@ class Group extends ActiveRecord
         $newGroupUser->created_by = Yii::$app->user->id;
         $newGroupUser->is_group_manager = $isManager;
         if ($newGroupUser->save() && !Yii::$app->user->isGuest) {
-            IncludeGroupNotification::instance()
-                ->about($this)
-                ->from(Yii::$app->user->identity)
-                ->send(User::findOne(['id' => $userId]));
+            if ($this->notify_users) {
+                IncludeGroupNotification::instance()
+                    ->about($this)
+                    ->from(Yii::$app->user->identity)
+                    ->send(User::findOne(['id' => $userId]));
+            }
             return true;
         }
 

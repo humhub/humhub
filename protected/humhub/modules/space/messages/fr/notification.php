@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Receive Notifications of Space Membership events.' => 'Recevoir des notifications lors d\'événements à propos des membres des espaces (invitation, etc.)',
+  'Receive Notifications of Space Membership events.' => 'Recevoir une notification lors d\'événements à propos des membres des espaces (invitation, etc.)',
   'Space Membership' => 'Adhésion aux espaces',
   'View Online' => 'Voir en ligne',
   'You were added to Space {spaceName}' => 'Vous avez été ajouté à l\'espace {spaceName}',

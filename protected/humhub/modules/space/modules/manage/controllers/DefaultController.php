@@ -65,6 +65,7 @@ class DefaultController extends Controller
         $space->scenario = 'edit';
         $space->indexUrl = Yii::$app->getModule('space')->settings->space()->get('indexUrl');
         $space->indexGuestUrl = Yii::$app->getModule('space')->settings->space()->get('indexGuestUrl');
+        $space->hideMembersSidebar = Yii::$app->getModule('space')->settings->space()->get('hideMembersSidebar');
 
         if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
             $this->view->saved();

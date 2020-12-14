@@ -80,8 +80,7 @@ class ImageController extends ContainerImageController
             return true;
         }
 
-        if (Yii::$app->getModule('user')->adminCanChangeUserProfileImages &&
-            $user->permissionManager->can(ManageUsers::class)) {
+        if (Yii::$app->getModule('user')->adminCanChangeUserProfileImages && Yii::$app->user->can(ManageUsers::class)) {
             return true;
         }
 

@@ -57,6 +57,11 @@ class ImageHelper
                         $image->rotate(-90);
                         break;
                 }
+
+                if ($image instanceof \Imagine\Imagick\Image) {
+                    /** @var \Imagine\Imagick\Image $image */
+                    $image->getImagick()->setImageOrientation(1);
+                }
             }
         }
     }
@@ -105,7 +110,13 @@ class ImageHelper
             return;
         }
 
-        $image = Image::getImagine()->open($file->store->get());
+        try {
+            $image = Image::getImagine()->open($file->store->get());
+        } catch (\Exception $ex) {
+            Yii::error('Could not open image ' . $file->store->get() . '. Error: ' . $ex->getMessage(), 'file');
+            return;
+        }
+
         static::fixJpegOrientation($image, $file);
 
         if ($module->imageMaxResolution !== null) {

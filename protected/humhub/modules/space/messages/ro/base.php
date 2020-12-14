@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'About' => 'Despre',
+    'Admin' => 'Admin',
     'Archived' => 'Arhivat',
     'Cancel' => 'Anulează',
     'Close' => 'Închide',
@@ -47,11 +49,9 @@ return [
     '<strong>Space</strong> followers' => '',
     '<strong>Space</strong> members' => '',
     '<strong>Space</strong> menu' => '',
-    'About' => '',
     'Accept' => '',
     'Accept Invite' => '',
     'Add users without invitation' => '',
-    'Admin' => '',
     'Administrator:' => '',
     'Administrators' => '',
     'Application message' => '',
@@ -71,6 +71,7 @@ return [
     'Everyone can enter' => '',
     'Follow' => '',
     'Followers' => '',
+    'Hide Members sidebar in the stream page.' => '',
     'Homepage' => '',
     'Homepage (Guests)' => '',
     'Invite and request' => '',

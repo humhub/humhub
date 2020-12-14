@@ -210,7 +210,7 @@ class ThemeHelper
             $theme = Yii::$app->view->theme;
         }
 
-        return !empty($theme->variable('isFluid'));
+        return $theme->variable('isFluid') == 'true';
     }
 
 }
