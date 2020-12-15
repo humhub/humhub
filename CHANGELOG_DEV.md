@@ -1,6 +1,3 @@
-HumHub Changelog
-================
-
 1.8.0 (Unreleased)
 ------------------
 - Enh #3414: Allow to change user passwords by admin
@@ -9,3 +6,9 @@ HumHub Changelog
 - Enh #4585: Group notifications must be enabled explicitly
 - Fix #4646: Clean up duplicated array keys
 - Enh #242: Allow multiple default spaces for groups
+- Fix #4692: Fix visibility of the button "Add new space"
+- Enh #4579: Optimized dashboard stream query
+- Enh #4579: Optimized live legitimation id queries
+- Enh #4579: Added `dashboard\Module::$guestFilterClass` and `$memberFilterClass` to replace dashboard filter class
+- Enh #4586: Rebuild group default Space Mapping 
+- Enh #4225: Delete open/pending registration invites automatically after a period of time

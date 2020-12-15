@@ -227,16 +227,14 @@ abstract class Stream extends Action
      *
      * @param array $options instance attribute options
      * @return StreamQuery
+     * @throws \yii\base\InvalidConfigException
      * @since 1.6
      */
     protected function initQuery($options = [])
     {
-        $streamQueryClass = $this->streamQueryClass;
-
-        /* @var $instance StreamQuery */
-        $instance = $streamQueryClass::find();
+        $options['class'] = $this->streamQueryClass;
+        $instance = Yii::createObject($options);
         $instance->forUser($this->user);
-        $instance->setAttributes($options, false);
         return $instance;
     }
 
@@ -244,6 +242,17 @@ abstract class Stream extends Action
      * This function is called right before the StreamQuery is built and all filters are applied.
      * At this point the StreamQuery has already been loaded with request data.
      * Subclasses may overwrite this function in order to do some last settings on the StreamQuery instance.
+     *
+     * When overriding this method, make sure you call the parent implementation like the following:
+     *
+     * ```php
+     * public function beforeApplyFilters()
+     * {
+     *     // Add some filters here
+     *
+     *     parent::beforeApplyFilters();
+     * }
+     * ```
      *
      * When overriding this method, make sure you call the parent implementation at the beginning of your function.
      * @throws \yii\base\InvalidConfigException
@@ -276,6 +285,17 @@ abstract class Stream extends Action
      * This function is called after the StreamQuery was build and all filters are applied. At this point changing
      * most StreamQuery settings as filters won't have any effect. Since the query is not yet executed the
      * StreamQuery->query() can still be used for custom query conditions.
+     *
+     * When overriding this method, make sure you call the parent implementation like the following:
+     *
+     * ```php
+     * public function afterApplyFilters()
+     * {
+     *     // Manipulate query...
+     *
+     *     parent::afterApplyFilters();
+     * }
+     * ```
      *
      * When overriding this method, make sure you call the parent implementation at the beginning of your function.
      */

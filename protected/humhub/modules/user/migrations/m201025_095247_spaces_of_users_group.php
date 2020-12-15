@@ -37,6 +37,7 @@ class m201025_095247_spaces_of_users_group extends Migration
             ]);
         }
 
+        $this->dropColumn('group', 'space_id');
 
     }
 

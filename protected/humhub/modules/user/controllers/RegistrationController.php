@@ -46,7 +46,7 @@ class RegistrationController extends Controller
     public function beforeAction($action)
     {
         if (!Yii::$app->user->isGuest) {
-            throw new HttpException(401, 'Your are already logged in! - Logout first!');
+            throw new HttpException(401, Yii::t('UserModule.base', 'Your are already logged in! - Logout first!'));
         }
 
         return parent::beforeAction($action);
@@ -92,8 +92,8 @@ class RegistrationController extends Controller
             }
 
             return $this->render('success', [
-                        'form' => $registration,
-                        'needApproval' => ($registration->getUser()->status === User::STATUS_NEED_APPROVAL)
+                'form' => $registration,
+                'needApproval' => ($registration->getUser()->status === User::STATUS_NEED_APPROVAL)
             ]);
         }
 

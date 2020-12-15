@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\modules\user\models\User;
 use humhub\modules\content\models\Content;
 use Yii;
+use yii\db\Query;
 
 /**
  * This is the model class for table "space_membership".
@@ -194,6 +195,7 @@ class Membership extends ActiveRecord
      * Returns a list of all spaces' ids of the given userId
      *
      * @param integer $userId
+     * @return array|mixed
      * @since 1.2.5
      */
     public static function getUserSpaceIds($userId = '')
@@ -332,6 +334,24 @@ class Membership extends ActiveRecord
         $query->andWhere(['space_id' => $space->id])->defaultOrder();
 
         return $query;
+    }
+
+    /**
+     * Selects the container id of spaces the given users is a member of.
+     *
+     * @param User $user
+     * @return Query
+     * @since 1.8
+     */
+    public static function getMemberSpaceContainerIdQuery(User $user)
+    {
+        return (new Query())
+            ->select("space.contentcontainer_id AS id")
+            ->from('space')
+            ->innerJoin('space_membership sm', 'space.id = sm.space_id')
+            ->where('sm.user_id = :userId', [':userId' => $user->id])
+            ->indexBy('id')
+            ->andWhere('space.status = :spaceStatusEnabled', [':spaceStatusEnabled' =>  Space::STATUS_ENABLED]);
     }
 
     /**

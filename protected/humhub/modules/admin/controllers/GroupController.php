@@ -8,20 +8,20 @@
 
 namespace humhub\modules\admin\controllers;
 
-use humhub\components\Response;
+use humhub\modules\admin\jobs\ReassignGroupDefaultSpaces;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\AddGroupMemberForm;
 use humhub\modules\admin\models\GroupSearch;
 use humhub\modules\admin\models\UserSearch;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\queue\helpers\QueueHelper;
 use humhub\modules\user\models\forms\EditGroupForm;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserPicker;
 use Yii;
-use yii\db\Exception;
 use yii\db\Query;
 use yii\web\HttpException;
 
@@ -75,7 +75,6 @@ class GroupController extends Controller
      */
     public function actionEdit()
     {
-
         // Create Group Edit Form
         $group = EditGroupForm::findOne(['id' => Yii::$app->request->get('id')]);
 
@@ -89,12 +88,21 @@ class GroupController extends Controller
 
         if ($group->load(Yii::$app->request->post()) && $group->validate() && $group->save()) {
             $this->view->saved();
-
             if ($wasNew) {
                 return $this->redirect([
                     '/admin/group/manage-group-users',
                     'id' => $group->id,
                 ]);
+            } else {
+                if (!empty($group->updateSpaceMemberships)) {
+                    $job = new ReassignGroupDefaultSpaces(['groupId' => $group->id]);
+                    if (!QueueHelper::isQueued($job)) {
+                        Yii::$app->queue->push($job);
+                    }
+
+                    $this->view->info(Yii::t('AdminModule.user',
+                        'The Space memberships of all group members will be updated. This may take up to several minutes.'));
+                }
             }
         }
 
@@ -284,5 +292,4 @@ class GroupController extends Controller
             throw new HttpException(403);
         }
     }
-
 }

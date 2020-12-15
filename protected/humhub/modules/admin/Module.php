@@ -63,6 +63,11 @@ class Module extends \humhub\components\Module
     ];
 
     /**
+     * @var int seconds before delete old pending registrations messages
+     */
+    public $cleanupPendingRegistrationInterval = 60 * 60 * 24 * 90;
+
+    /**
      * @inheritdoc
      */
     public function getName()
