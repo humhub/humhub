@@ -236,6 +236,15 @@ class MentionTest extends HumHubDbTestCase
     {
         $comment = $this->createPostAndMentionNonMemberInItsComment('Admin', 'User1', 0);
 
+        $this->becomeUser('User2');
+
+        $replyComment = new Comment([
+            'message' => 'Hey',
+            'object_model' => Comment::class,
+            'object_id' => $comment->id
+        ]);
+        $replyComment->save();
+
         $this->becomeUser('Admin');
 
         $post = Post::findOne(['id' => $comment->object_id]);

@@ -96,6 +96,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
     const SCENARIO_EDIT = 'edit';
     const SCENARIO_SECURITY_SETTINGS = 'security_settings';
 
+    const EVENT_SPACE_VISIBILITY_CHANGED = 'spaceVisibilityChanged';
+
     /**
      * @inheritdoc
      */
@@ -259,6 +261,10 @@ class Space extends ContentContainerActiveRecord implements Searchable
             $activity->source = $this;
             $activity->originator = $user;
             $activity->create();
+        }
+
+        if ($this->visibility != $changedAttributes['visibility']) {
+            $this->trigger(self::EVENT_SPACE_VISIBILITY_CHANGED);
         }
 
         Yii::$app->cache->delete('userSpaces_' . $user->id);

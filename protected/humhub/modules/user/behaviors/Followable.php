@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\behaviors;
 
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\Follow;
@@ -71,6 +72,10 @@ class Followable extends Behavior
         if ($follow === null) {
             $follow = new Follow(['user_id' => $userId]);
             $follow->setPolyMorphicRelation($this->owner);
+
+            if ($this->owner instanceof ContentActiveRecord) {
+                $follow->active = $this->owner->content->canView($userId);
+            }
         }
 
         $follow->send_notifications = $withNotifications;
@@ -159,9 +164,10 @@ class Followable extends Behavior
      * @param CDbCriteria $eCriteria e.g. for limit the result
      * @param boolean $withNotifications only return followers with enabled notifications
      * @param boolean $returnQuery only return the query instead of User objects
+     * @param null|boolean $active
      * @return Users[]|ActiveQueryUser the user objects or the active query
      */
-    public function getFollowers($query = null, $withNotification = false, $returnQuery = false)
+    public function getFollowers($query = null, $withNotification = false, $returnQuery = false, $active = null)
     {
 
         if ($query === null) {
@@ -177,6 +183,10 @@ class Followable extends Behavior
 
         if ($withNotification) {
             $query->andWhere('user_follow.send_notifications=1');
+        }
+
+        if ($active !== null) {
+            $query->andWhere('user_follow.active = :active', [':active' => $active ? 1 : 0]);
         }
 
         if ($returnQuery) {
