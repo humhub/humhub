@@ -160,7 +160,7 @@ class AdminMenu extends LeftNavigation
      */
     public function addEntry(MenuEntry $entry)
     {
-        if ($entry->getIsVisible() === null) {
+        if (!$entry->isVisibilitySet()) {
             $entry->setIsVisible(Yii::$app->user->can(ManageModules::class));
         }
 

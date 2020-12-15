@@ -232,15 +232,14 @@ abstract class MenuEntry extends BaseObject
     }
 
     /**
-     * Returns the value of the isVisible property. If the value is not set, null is returned.
-     * To query visibility, use the method `isVisible()`.
+     * Checks whether the visibility of the menu entry was explicitly set.
      *
-     * @return bool|null
+     * @return bool
      * @since 1.8
      */
-    public function getIsVisible()
+    public function isVisibilitySet()
     {
-        return $this->isVisible;
+        return ($this->isVisible !== null);
     }
 
     /**
