@@ -261,6 +261,12 @@ class Space extends ContentContainerActiveRecord implements Searchable
             $activity->create();
         }
 
+        if ($this->visibility != $changedAttributes['visibility']) {
+            if ($this->visibility == Space::VISIBILITY_NONE) {
+                Content::updateAll(['visibility' => Content::VISIBILITY_PRIVATE], ['contentcontainer_id' => $this->contentcontainer_id]);
+            }
+        }
+
         Yii::$app->cache->delete('userSpaces_' . $user->id);
     }
 
