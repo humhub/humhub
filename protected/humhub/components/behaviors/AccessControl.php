@@ -228,6 +228,7 @@ class AccessControl extends ActionFilter
 
     /**
      * @return Response Redirect user to force to change password
+     * @since 1.8
      */
     protected function forceChangePassword()
     {

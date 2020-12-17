@@ -16,7 +16,7 @@ use Yii;
 /**
  * Must Change Password
  *
- * @since 1.7
+ * @since 1.8
  */
 class MustChangePasswordController extends Controller
 {

@@ -149,6 +149,7 @@ class ControllerAccess extends BaseObject
 
     /**
      * Check guest if user must change password
+     * @since 1.8
      */
     const RULE_MUST_CHANGE_PASSWORD = 'mustChangePassword';
 

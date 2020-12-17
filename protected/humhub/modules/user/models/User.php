@@ -806,6 +806,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Check if the User must change password
      *
+     * @since 1.8
      * @return bool
      */
     public function mustChangePassword()
@@ -818,6 +819,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Set/Unset User to force change password
      *
+     * @since 1.8
      * @param bool true - force user to change password, false - don't require to change password
      */
     public function setMustChangePassword($state = true)
