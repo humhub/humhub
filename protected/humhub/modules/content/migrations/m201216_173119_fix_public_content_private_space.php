@@ -18,8 +18,8 @@ class m201216_173119_fix_public_content_private_space extends Migration
         $query->innerJoin('space', 'space.contentcontainer_id = content.contentcontainer_id');
         $query->andWhere('space.visibility = :visibility', [':visibility' => Space::VISIBILITY_NONE]);
 
-        foreach ($query->all() as $contact) {
-            $contact->updateAttributes(['visibility' => Content::VISIBILITY_PRIVATE]);
+        foreach ($query->all() as $content) {
+            $content->updateAttributes(['visibility' => Content::VISIBILITY_PRIVATE]);
         }
     }
 
