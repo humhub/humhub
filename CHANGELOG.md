@@ -6,8 +6,10 @@ HumHub Changelog
 - Fix #4668: table-responsive tables do not overflow due to default word break style
 - Fix #4679: Richtext extension scan does not include full title if title contains a `)`
 - Fix #4714: Use HTTPS protocol for default OEmbed endpoint URLs
-- Fix #4649: SSuccess message although password save error
+- Fix #4649: Success message rendered although password validation failed
 - Fix #4717: Repsonsive layout alignment issue on small screens
+- Fix #4717: Repsonsive layout alignment issue on small screens
+- Fix #4715: Call to `Content::canArchive()` throws error on global content
 
 
 1.7.1 (November 27, 2020)
