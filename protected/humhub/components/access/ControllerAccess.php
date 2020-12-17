@@ -204,6 +204,7 @@ class ControllerAccess extends BaseObject
 
     /**
      * @var string Name of callback method to run after failed validation
+     * @since 1.8
      */
     public $codeCallback;
 
@@ -492,6 +493,7 @@ class ControllerAccess extends BaseObject
     }
 
     /**
+     * @since 1.8
      * @return bool checks if the current user must change password
      */
     public function validateMustChangePassword()

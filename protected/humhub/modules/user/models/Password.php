@@ -127,12 +127,12 @@ class Password extends ActiveRecord
             'user_id' => 'User ID',
             'algorithm' => 'Algorithm',
             'password' => Yii::t('UserModule.base', 'Password'),
-            'currentPassword' => Yii::t('UserModule.base', 'Current Password'),
+            'currentPassword' => Yii::t('UserModule.base', 'Current password'),
             'salt' => 'Salt',
             'created_at' => 'Created At',
             'newPassword' => Yii::t('UserModule.base', 'New password'),
             'newPasswordConfirm' => Yii::t('UserModule.base', 'Confirm new password'),
-            'mustChangePassword' => Yii::t('UserModule.base', 'Force to change this password on first log in'),
+            'mustChangePassword' => Yii::t('UserModule.base', 'Force password change upon first login'),
         ];
     }
 

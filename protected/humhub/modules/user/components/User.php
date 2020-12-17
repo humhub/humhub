@@ -38,6 +38,7 @@ class User extends \yii\web\User
 
     /**
      * @var string Route to force user to change password
+     * @since 1.8
      */
     public $mustChangePasswordRoute = '/user/must-change-password';
 
