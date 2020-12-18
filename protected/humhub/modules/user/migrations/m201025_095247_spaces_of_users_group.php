@@ -37,16 +37,9 @@ class m201025_095247_spaces_of_users_group extends Migration
             ]);
         }
 
-        $columnData = $this
-            ->getDb()
-            ->getSchema()
-            ->getTableSchema('group')
-            ->getColumn('space_id');
-
-        if ($columnData) {
-            // Columns exists, do something!
-            $this->dropForeignKey('fk_group-space_id', 'group');
+        try {
             $this->dropColumn('group', 'space_id');
+        } catch (\Exception $e) {
         }
     }
 
