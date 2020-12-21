@@ -515,4 +515,13 @@ return [
             'defer',
         ],
     ],
+    'humhub\\,odules\\space\\assets\\SpaceSettingAsset' => [
+        'sourcePath' => null,
+        'js' => [],
+        'css' => [],
+        'depends' => [
+            'humhub\\modules\\space\\assets\\SpaceAsset',
+            'defer',
+        ],
+    ]
 ];
