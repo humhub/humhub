@@ -27,7 +27,7 @@ SpaceSettingAsset::register($this);
 
         <?php
         $visibilities = [
-            Space::VISIBILITY_NONE => Yii::t('SpaceModule.base', 'Private (Invisible, All Contents becomes private)'),
+            Space::VISIBILITY_NONE => Yii::t('SpaceModule.base', 'Private'),
             Space::VISIBILITY_REGISTERED_ONLY => Yii::t('SpaceModule.base', 'Public (Registered users only)')
         ];
         if (AuthHelper::isGuestAccessEnabled()) {
