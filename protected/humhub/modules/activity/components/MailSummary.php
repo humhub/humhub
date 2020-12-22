@@ -70,6 +70,21 @@ class MailSummary extends Component
             return false;
         }
 
+        // Check if the user already received at least one notification in the same period:
+        if ($lastSent = (int) static::getModule()->settings->user($this->user)->get('mailSummaryLast')) {
+            $intervalTimes = [
+                self::INTERVAL_WEEKLY => 604800,
+                self::INTERVAL_DAILY  => 86400,
+                self::INTERVAL_HOURLY => 3600,
+            ];
+            $intervalTime = isset($intervalTimes[$this->interval]) ? time() - $intervalTimes[$this->interval] : 0;
+            if ($lastSent > $intervalTime) {
+                // Don't send twice in the same period even if new content exists,
+                // this may occurs on abort and start the queue/cron job again.
+                return false;
+            }
+        }
+
         Yii::$app->i18n->setUserLocale($this->user);
 
         $outputHtml = '';
