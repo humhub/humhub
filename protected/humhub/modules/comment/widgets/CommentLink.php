@@ -61,8 +61,9 @@ class CommentLink extends Widget
             'objectModel' => get_class($this->object),
             'objectId' => $this->object->getPrimaryKey(),
             'commentCount' => CommentModel::GetCommentCount(get_class($this->object), $this->object->getPrimaryKey()),
-            'isNestedComment' => ($this->object instanceof CommentModel)
-
+            'isNestedComment' => ($this->object instanceof CommentModel),
+            'comment' => $this->object,
+            'module' => $module
         ]);
     }
 }

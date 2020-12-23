@@ -90,11 +90,7 @@ $module = Yii::$app->getModule('comment');
         </div>
 
         <div class="wall-entry-controls">
-            <?php if ($module->canComment($comment)): ?>
-                <?= CommentLink::widget(['object' => $comment]); ?>&nbsp;&nbsp;&middot;&nbsp;
-            <?php elseif (Comment::isSubComment($comment) && $module->canComment($comment->content->getPolymorphicRelation())): ?>
-                <?= CommentLink::widget(['object' => $comment]); ?>&nbsp;&nbsp;&middot;&nbsp;
-            <?php endif; ?>
+            <?= CommentLink::widget(['object' => $comment]); ?>&nbsp;&nbsp;&middot;&nbsp;
             <?= LikeLink::widget(['object' => $comment]); ?>
         </div>
 
