@@ -7,6 +7,7 @@ HumHub Changelog
 - Fix #4526: `HeaderControlsMenu::init` called twice
 - Fix #4529: Aligned default dropdown text size
 - Enh #4416: Added replay to sub comments
+- Enh #4571: humhub/libs/Html::containerLink() now adds a "data-guid" attribute
 
 1.7.0-beta.1 (October 16, 2020)
 -------------------------------
