@@ -26,19 +26,18 @@ $commentCountSpan = Html::tag('span', ' (' . $commentCount . ')', [
 $label = ($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('CommentModule.base', "Comment");
 
 ?>
-<?php if ($module->canComment($comment) || Comment::isSubComment($comment) && $module->canComment($comment->content->getPolymorphicRelation())): ?>
-    <?php if ($mode == CommentLink::MODE_POPUP): ?>
-        <?php $url = Url::to(['/comment/comment/show', 'objectModel' => $objectModel, 'objectId' => $objectId, 'mode' => 'popup']); ?>
-        <a href="#" data-action-click="ui.modal.load" data-action-url="<?= $url ?>">
-            <?= $label . ' (' . $commentCount . ')' ?>
-        </a>
-    <?php elseif (Yii::$app->user->isGuest): ?>
-        <?= Html::a(
-            $label . $commentCountSpan,
-            Yii::$app->user->loginUrl,
-            ['data-target' => '#globalModal']) ?>
-    <?php else : ?>
-        <?= Button::asLink($label . $commentCountSpan)
-            ->action('comment.toggleComment', null, '#comment_' . $id) ?>
-    <?php endif; ?>
+<?php if ($mode == CommentLink::MODE_POPUP): ?>
+    <?php $url = Url::to(['/comment/comment/show', 'objectModel' => $objectModel, 'objectId' => $objectId, 'mode' => 'popup']); ?>
+    <a href="#" data-action-click="ui.modal.load" data-action-url="<?= $url ?>">
+        <?= $label . ' (' . $commentCount . ')' ?>
+    </a>
+<?php elseif (Yii::$app->user->isGuest): ?>
+    <?= Html::a(
+        $label . $commentCountSpan,
+        Yii::$app->user->loginUrl,
+        ['data-target' => '#globalModal']) ?>
+<?php else : ?>
+    <?= Button::asLink($label . $commentCountSpan)
+        ->action('comment.toggleComment', null, '#comment_' . $id) ?>
 <?php endif; ?>
+
