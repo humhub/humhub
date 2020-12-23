@@ -2,7 +2,7 @@
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
+ * @since 1.8
  */
 humhub.module('ui.richtext.prosemirror', function(module, require, $) {
 
