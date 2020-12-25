@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\space\assets\SpaceSettingAsset;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
 use humhub\modules\user\helpers\AuthHelper;
@@ -8,6 +9,8 @@ use yii\bootstrap\ActiveForm;
 use humhub\libs\Html;
 
 /* @var $model Space */
+
+SpaceSettingAsset::register($this);
 ?>
 
 <div class="panel panel-default">
@@ -31,7 +34,7 @@ use humhub\libs\Html;
             $visibilities[Space::VISIBILITY_ALL] = Yii::t('SpaceModule.base', 'Visible for all (members and guests)');
         }
         ?>
-        <?= $form->field($model, 'visibility')->dropDownList($visibilities); ?>
+        <?= $form->field($model, 'visibility')->dropDownList($visibilities, ['data-action-change' => 'space.settings.confirmVisibilityChange']); ?>
 
         <?php $joinPolicies = [0 => Yii::t('SpaceModule.base', 'Only by invite'), 1 => Yii::t('SpaceModule.base', 'Invite and request'), 2 => Yii::t('SpaceModule.base', 'Everyone can enter')]; ?>
         <?= $form->field($model, 'join_policy')->dropDownList($joinPolicies, ['disabled' => $model->visibility == Space::VISIBILITY_NONE]); ?>
@@ -48,12 +51,3 @@ use humhub\libs\Html;
     </div>
 </div>
 
-<script <?= Html::nonce() ?>>
-    $('#space-visibility').on('change', function() {
-        if (this.value == 0) {
-            $('#space-join_policy, #space-default_content_visibility').val('0').prop('disabled', true);
-        } else {
-            $('#space-join_policy, #space-default_content_visibility').val('0').prop('disabled', false);
-        }
-    });
-</script>
