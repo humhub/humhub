@@ -7,6 +7,7 @@ use humhub\modules\comment\permissions\CreateComment;
 use humhub\modules\comment\notifications\NewComment;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use Yii;
 
 /**
@@ -35,7 +36,7 @@ class Module extends \humhub\components\Module
      */
     public function getPermissions($contentContainer = null)
     {
-        if ($contentContainer instanceof Space) {
+        if ($contentContainer) {
             return [
                 new permissions\CreateComment()
             ];
@@ -72,7 +73,7 @@ class Module extends \humhub\components\Module
      */
     public function canComment($object)
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return false;
         }
 
@@ -83,7 +84,7 @@ class Module extends \humhub\components\Module
 
         $content = $object->content;
 
-        if ($content->container instanceof Space) {
+        if ($content->container) {
             $space = $content->container;
             if (!$space->permissionManager->can(CreateComment::class)) {
                 return false;
