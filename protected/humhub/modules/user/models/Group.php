@@ -31,6 +31,7 @@ use Yii;
  * @property string $updated_at
  * @property integer $updated_by
  * @property integer $is_admin_group
+ * @property integer $is_default_group
  * @property integer $notify_users
  *
  * @property User[] $manager
@@ -58,7 +59,7 @@ class Group extends ActiveRecord
     public function rules()
     {
         return [
-            [['sort_order', 'notify_users'], 'integer'],
+            [['sort_order', 'notify_users', 'is_default_group'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 45],
             ['show_at_registration', 'validateShowAtRegistration'],
@@ -101,6 +102,7 @@ class Group extends ActiveRecord
             'show_at_directory' => Yii::t('UserModule.base', 'Show At Directory'),
             'sort_order' => Yii::t('UserModule.base', 'Sort order'),
             'notify_users' => Yii::t('UserModule.base', 'Enable Notifications'),
+            'is_default_group' => Yii::t('UserModule.base', 'Default Group'),
         ];
     }
 
@@ -113,6 +115,7 @@ class Group extends ActiveRecord
             'notify_users' => Yii::t('AdminModule.user', 'Send notifications to users when added to or removed from the group.'),
             'show_at_registration' => Yii::t('AdminModule.user', 'Make the group selectable at registration.'),
             'show_at_directory' => Yii::t('AdminModule.user', 'Add a seperate page for the group to the directory.'),
+            'is_default_group' => Yii::t('UserModule.base', 'Default Group for users who are not assigned to any other group.'),
         ];
     }
 
@@ -135,6 +138,20 @@ class Group extends ActiveRecord
         }
 
         return parent::beforeSave($insert);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($this->is_default_group) {
+            // Only single group can be default:
+            Group::updateAll(['is_default_group' => '0'], ['!=', 'id', $this->id]);
+        }
+
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**

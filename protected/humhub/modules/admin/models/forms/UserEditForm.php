@@ -148,7 +148,7 @@ class UserEditForm extends User
 
         $result = [];
         foreach ($groups as $group) {
-            $result[$group->id] = $group->name;
+            $result[$group->id] = $group->name . ($group->is_default_group ? ' (' . Yii::t('AdminModule.base', 'Default') . ')' : '');
         }
 
         return $result;

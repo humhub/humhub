@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\ui\form\widgets\SortOrderField;
+use humhub\modules\user\models\Group;
 use humhub\widgets\Button;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
@@ -8,6 +9,7 @@ use humhub\libs\Html;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\modules\space\widgets\SpacePickerField;
 
+/* @var Group $group */
 ?>
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
@@ -48,6 +50,7 @@ use humhub\modules\space\widgets\SpacePickerField;
     <?php endif; ?>
     <?= $form->field($group, 'show_at_directory')->checkbox(); ?>
     <?= $form->field($group, 'sort_order')->widget(SortOrderField::class) ?>
+    <?= $form->field($group, 'is_default_group')->checkbox(); ?>
 
     <?= Button::save()->submit(); ?>
     <?php

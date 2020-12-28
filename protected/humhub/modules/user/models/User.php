@@ -35,6 +35,7 @@ use Yii;
 use yii\base\Exception;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
+use yii\db\Query;
 use yii\web\IdentityInterface;
 
 /**
@@ -324,12 +325,28 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
+     * Returns default Group as ActiveQuery
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDefaultGroup()
+    {
+        return Group::find()->where(['is_default_group' => 1]);
+    }
+
+    /**
      * Returns all Group relations of this user as ActiveQuery
      * @return \yii\db\ActiveQuery
      */
     public function getGroups()
     {
-        return $this->hasMany(Group::class, ['id' => 'group_id'])->via('groupUsers');
+        $groups = $this->hasMany(Group::class, ['id' => 'group_id'])->via('groupUsers');
+
+        if ($groups->count() == 0) {
+            // Try to use default Group automatically:
+            $groups = $this->hasMany(Group::class, ['id' => 'id'])->via('defaultGroup');
+        }
+
+        return $groups;
     }
 
     /**
