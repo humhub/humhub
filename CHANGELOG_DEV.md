@@ -13,4 +13,5 @@
 - Enh #4586: Rebuild group default Space Mapping 
 - Enh #4225: Delete open/pending registration invites automatically after a period of time
 - Enh #4738: Allow CanComment permission also on profile level
+- Enh #4749: Add Migration helper to determine installation state
 
