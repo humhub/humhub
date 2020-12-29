@@ -37,9 +37,11 @@ class m201025_095247_spaces_of_users_group extends Migration
             ]);
         }
 
-        try {
+        try{
+            $this->dropForeignKey('fk_group-space_id', 'group');
             $this->dropColumn('group', 'space_id');
-        } catch (\Exception $e) {
+        } catch (\Exception $e){
+            Yii::error($e->getMessage());
         }
     }
 
@@ -48,6 +50,8 @@ class m201025_095247_spaces_of_users_group extends Migration
      */
     public function safeDown()
     {
+        $this->addColumn('group', 'space_id', $this->integer(10)->defaultValue(null));
+        $this->addForeignKey('fk_group-space_id', 'group', 'space_id', 'space', 'id', 'CASCADE', 'CASCADE');
         $this->dropTable('group_space');
     }
 
