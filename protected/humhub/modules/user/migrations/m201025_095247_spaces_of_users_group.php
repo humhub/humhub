@@ -1,6 +1,7 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
+
 
 /**
  * Class m201025_095247_spaces_of_users_group
@@ -37,12 +38,12 @@ class m201025_095247_spaces_of_users_group extends Migration
             ]);
         }
 
-        try{
+        try {
             $this->dropForeignKey('fk_group-space_id', 'group');
-            $this->dropColumn('group', 'space_id');
-        } catch (\Exception $e){
-            Yii::error($e->getMessage());
+        } catch (\Exception $e) {
         }
+
+        $this->safeDropColumn('group', 'space_id');
     }
 
     /**
