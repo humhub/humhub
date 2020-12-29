@@ -10,6 +10,7 @@ namespace humhub\modules\like;
 
 use humhub\components\ActiveRecord;
 use humhub\components\Event;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\like\models\Like;
 use Yii;
 
@@ -93,6 +94,12 @@ class Events extends \yii\base\BaseObject
     public static function onWallEntryLinksInit($event)
     {
         if (!static::getModule()->isEnabled) {
+            return;
+        }
+
+        if (!isset($event->sender->object->content->container) ||
+            !($event->sender->object->content->container instanceof ContentContainerActiveRecord) ||
+            !$event->sender->object->content->container->can(new permissions\CanLike())) {
             return;
         }
 
