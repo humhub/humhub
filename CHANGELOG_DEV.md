@@ -13,4 +13,4 @@
 - Enh #4586: Rebuild group default Space Mapping 
 - Enh #4225: Delete open/pending registration invites automatically after a period of time
 - Enh #4738: Allow CanComment permission also on profile level
-
+- Fix #4743: Hide "Like" link when no permission "Can like"
