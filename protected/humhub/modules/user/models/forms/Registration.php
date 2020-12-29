@@ -167,20 +167,11 @@ class Registration extends HForm
 
     protected function getGroupFormDefinition()
     {
-        $groupModels = \humhub\modules\user\models\Group::getRegistrationGroups();
-        $defaultUserGroup = Yii::$app->getModule('user')->settings->get('auth.defaultUserGroup');
-        $groupFieldType = "dropdownlist";
+        $groupModels = Group::getRegistrationGroups();
 
-        if ($defaultUserGroup != "") {
-            $groupFieldType = "hidden";
-        } elseif (count($groupModels) == 1) {
-            $groupFieldType = "hidden";
-            $defaultUserGroup = $groupModels[0]->id;
-        }
-
-        if (!$defaultUserGroup && empty($groupModels)) {
-            $groupFieldType = "hidden";
-        }
+        $groupFieldType = (Yii::$app->getModule('user')->settings->get('auth.showRegistrationUserGroup') && count($groupModels) > 1)
+            ? 'dropdownlist'
+            : 'hidden'; // TODO: Completely hide the element instead of current <input type="hidden">
 
         return [
             'type' => 'form',
@@ -190,7 +181,7 @@ class Registration extends HForm
                     'type' => $groupFieldType,
                     'class' => 'form-control',
                     'items' => ArrayHelper::map($groupModels, 'id', 'name'),
-                    'value' => $defaultUserGroup,
+                    'value' => Yii::$app->getModule('user')->getDefaultGroupId(),
                 ]
             ]
         ];
@@ -352,7 +343,7 @@ class Registration extends HForm
             $this->_groupUser->scenario = GroupUser::SCENARIO_REGISTRATION;
 
             // assign default value for group_id
-            $registrationGroups = \humhub\modules\user\models\Group::getRegistrationGroups();
+            $registrationGroups = Group::getRegistrationGroups();
             if (count($registrationGroups) == 1) {
                 $this->_groupUser->group_id = $registrationGroups[0]->id;
             }

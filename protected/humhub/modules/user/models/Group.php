@@ -385,17 +385,16 @@ class Group extends ActiveRecord
      */
     public static function getRegistrationGroups()
     {
-        $groups = [];
+        if (Yii::$app->getModule('user')->settings->get('auth.showRegistrationUserGroup')) {
+            return self::find()
+                ->where(['show_at_registration' => 1, 'is_admin_group' => 0])
+                ->orderBy('name ASC')
+                ->all();
+        }
 
-        $defaultGroup = Yii::$app->getModule('user')->settings->get('auth.defaultUserGroup');
-        if ($defaultGroup != '') {
-            $group = self::findOne(['id' => $defaultGroup]);
-            if ($group !== null) {
-                $groups[] = $group;
-                return $groups;
-            }
-        } else {
-            $groups = self::find()->where(['show_at_registration' => 1, 'is_admin_group' => 0])->orderBy('name ASC')->all();
+        $groups = [];
+        if ($defaultGroup = Yii::$app->getModule('user')->getDefaultGroup()) {
+            $groups[] = $defaultGroup;
         }
 
         return $groups;

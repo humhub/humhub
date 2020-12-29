@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\models\forms;
 
 use humhub\modules\user\models\Group;
+use humhub\modules\user\Module;
 use Yii;
 use humhub\libs\DynamicConfig;
 
@@ -22,6 +23,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
     public $internalAllowAnonymousRegistration;
     public $internalRequireApprovalAfterRegistration;
     public $internalUsersCanInvite;
+    public $showRegistrationUserGroup;
     public $defaultUserGroup;
     public $defaultUserIdleTimeoutSec;
     public $allowGuestAccess;
@@ -37,12 +39,15 @@ class AuthenticationSettingsForm extends \yii\base\Model
     {
         parent::init();
 
-        $settingsManager = Yii::$app->getModule('user')->settings;
+        /* @var $module Module */
+        $module = Yii::$app->getModule('user');
+        $settingsManager = $module->settings;
 
         $this->internalUsersCanInvite = $settingsManager->get('auth.internalUsersCanInvite');
         $this->internalRequireApprovalAfterRegistration = $settingsManager->get('auth.needApproval');
         $this->internalAllowAnonymousRegistration = $settingsManager->get('auth.anonymousRegistration');
-        $this->defaultUserGroup = $settingsManager->get('auth.defaultUserGroup');
+        $this->showRegistrationUserGroup = $settingsManager->get('auth.showRegistrationUserGroup');
+        $this->defaultUserGroup = $module->getDefaultGroupId();
         $this->defaultUserIdleTimeoutSec = $settingsManager->get('auth.defaultUserIdleTimeoutSec');
         $this->allowGuestAccess = $settingsManager->get('auth.allowGuestAccess');
         $this->showCaptureInRegisterForm = $settingsManager->get('auth.showCaptureInRegisterForm');
@@ -57,7 +62,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
     public function rules()
     {
         return [
-            [['internalUsersCanInvite', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess', 'showCaptureInRegisterForm'], 'boolean'],
+            [['internalUsersCanInvite', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess', 'showCaptureInRegisterForm', 'showRegistrationUserGroup'], 'boolean'],
             ['defaultUserGroup', 'exist', 'targetAttribute' => 'id', 'targetClass' => Group::class],
             ['defaultUserProfileVisibility', 'in', 'range' => [1, 2]],
             ['defaultUserIdleTimeoutSec', 'integer', 'min' => 20],
@@ -74,6 +79,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
             'internalRequireApprovalAfterRegistration' => Yii::t('AdminModule.user', 'Require group admin approval after registration'),
             'internalAllowAnonymousRegistration' => Yii::t('AdminModule.user', 'Anonymous users can register'),
             'internalUsersCanInvite' => Yii::t('AdminModule.user', 'Members can invite external users by email'),
+            'showRegistrationUserGroup' => Yii::t('AdminModule.user', 'Show Group Dropdown during registration'),
             'defaultUserGroup' => Yii::t('AdminModule.user', 'Default user group for new users'),
             'defaultUserIdleTimeoutSec' => Yii::t('AdminModule.user', 'Default user idle timeout, auto-logout (in seconds, optional)'),
             'allowGuestAccess' => Yii::t('AdminModule.user', 'Allow limited access for non-authenticated users (guests)'),
@@ -91,12 +97,15 @@ class AuthenticationSettingsForm extends \yii\base\Model
      */
     public function save()
     {
-        $settingsManager = Yii::$app->getModule('user')->settings;
+        /* @var $module Module */
+        $module = Yii::$app->getModule('user');
+        $settingsManager = $module->settings;
 
         $settingsManager->set('auth.internalUsersCanInvite', $this->internalUsersCanInvite);
         $settingsManager->set('auth.needApproval', $this->internalRequireApprovalAfterRegistration);
         $settingsManager->set('auth.anonymousRegistration', $this->internalAllowAnonymousRegistration);
-        $settingsManager->set('auth.defaultUserGroup', $this->defaultUserGroup);
+        $settingsManager->set('auth.showRegistrationUserGroup', $this->showRegistrationUserGroup);
+        $module->setDefaultGroup($this->defaultUserGroup);
         $settingsManager->set('auth.defaultUserIdleTimeoutSec', $this->defaultUserIdleTimeoutSec);
         $settingsManager->set('auth.allowGuestAccess', $this->allowGuestAccess);
 
