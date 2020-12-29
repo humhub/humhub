@@ -137,6 +137,11 @@ class Group extends ActiveRecord
             $this->sort_order = 100;
         }
 
+        if ($this->is_default_group && $this->is_admin_group) {
+            // Admin group cannot be default
+            $this->is_default_group = 0;
+        }
+
         return parent::beforeSave($insert);
     }
 
