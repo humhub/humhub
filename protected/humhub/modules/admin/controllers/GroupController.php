@@ -108,7 +108,7 @@ class GroupController extends Controller
 
         return $this->render('edit', [
             'group' => $group,
-            'showDeleteButton' => (!$group->isNewRecord && !$group->is_admin_group),
+            'showDeleteButton' => (!$group->isNewRecord && !$group->is_admin_group && !$group->is_default_group),
             'isCreateForm' => $group->isNewRecord,
             'isManagerApprovalSetting' => Yii::$app->getModule('user')->settings->get('auth.needApproval'),
         ]);
@@ -188,10 +188,19 @@ class GroupController extends Controller
 
         $this->checkGroupAccess($group);
 
-        //Double check to get sure we don't remove the admin group
-        if (!$group->is_admin_group) {
-            $group->delete();
+        // Double check to get sure we don't remove the admin group:
+        if ($group->is_admin_group) {
+            $this->view->error(Yii::t('AdminModule.user', 'Administrator group could not be deleted!'));
+            return $this->redirect(['/admin/group/edit', 'id' => $group->id]);
         }
+
+        // Double check to get sure we don't remove the default group:
+        if ($group->is_default_group) {
+            $this->view->error(Yii::t('AdminModule.user', 'Default group could not be deleted!'));
+            return $this->redirect(['/admin/group/edit', 'id' => $group->id]);
+        }
+
+        $group->delete();
 
         return $this->redirect(['/admin/group']);
     }

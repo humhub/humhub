@@ -10,7 +10,6 @@ namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
-use humhub\modules\directory\widgets\GroupUsers;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use Yii;
@@ -63,6 +62,7 @@ class Group extends ActiveRecord
             [['description'], 'string'],
             [['name'], 'string', 'max' => 45],
             ['show_at_registration', 'validateShowAtRegistration'],
+            ['is_default_group', 'validateIsDefaultGroup'],
         ];
     }
 
@@ -80,6 +80,21 @@ class Group extends ActiveRecord
     {
         if ($this->is_admin_group && $this->show_at_registration) {
             $this->addError($attribute, 'Admin group can\'t be a registration group!');
+        }
+    }
+
+    /**
+     * Validate default group
+     * @param string $attribute
+     */
+    public function validateIsDefaultGroup($attribute)
+    {
+        if ($this->is_admin_group && $this->is_default_group) {
+            $this->addError($attribute, 'Admin group can\'t be a default group!');
+        }
+
+        if ($this->getOldAttribute($attribute) && !$this->is_default_group) {
+            $this->addError($attribute, 'One group must be a default!');
         }
     }
 
@@ -135,6 +150,11 @@ class Group extends ActiveRecord
     {
         if (empty($this->sort_order)) {
             $this->sort_order = 100;
+        }
+
+        if ($this->getOldAttribute('is_default_group') && !$this->is_default_group) {
+            $this->is_default_group = 1;
+            return false;
         }
 
         if ($this->is_default_group && $this->is_admin_group) {
