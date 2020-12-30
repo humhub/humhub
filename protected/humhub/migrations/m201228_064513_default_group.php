@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\user\models\Group;
+use humhub\modules\user\models\User;
 use yii\db\Migration;
 
 /**
@@ -37,10 +38,14 @@ class m201228_064513_default_group extends Migration
         if ($group->save()) {
             // Assign users to the Default Group who were not assigned to any other group before:
             $this->execute('INSERT INTO group_user (user_id, group_id, created_at, updated_at)
-                SELECT user.id, ' . $group->id . ', NOW(), NOW()
+                SELECT user.id, :defaultGroupId, NOW(), NOW()
                   FROM user
                   LEFT JOIN group_user ON group_user.user_id = user.id
-                 WHERE group_user.id IS NULL');
+                 WHERE group_user.id IS NULL
+                   AND user.status != :userStatusSoftDeleted', [
+                ':defaultGroupId' => $group->id,
+                ':userStatusSoftDeleted' => User::STATUS_SOFT_DELETED,
+            ]);
         }
 
         // Remove old setting:
