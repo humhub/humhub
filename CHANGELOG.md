@@ -5,6 +5,7 @@ HumHub Changelog
 -------------------------
 - Fix #4668: table-responsive tables do not overflow due to default word break style
 - Fix #4679: Richtext extension scan does not include full title if title contains a `)`
+- Fix #4703: SSO login drops no warning if AuthClient cannot be stored
 - Fix #4700: Deep Links from Microsoft Office Documents
 - Fix #4714: Use HTTPS protocol for default OEmbed endpoint URLs
 - Fix #4727: Nav tabs with data-toggle are styled in link color
