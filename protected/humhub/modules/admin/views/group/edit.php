@@ -57,7 +57,11 @@ use humhub\modules\space\widgets\SpacePickerField;
     <?= Button::save()->submit(); ?>
     <?php
     if ($showDeleteButton) {
-        echo Html::a(Yii::t('AdminModule.user', 'Delete'), Url::toRoute(['/admin/group/delete', 'id' => $group->id]), ['class' => 'btn btn-danger', 'data-method' => 'POST']);
+        echo Html::a(Yii::t('AdminModule.user', 'Delete'), Url::toRoute(['/admin/group/delete', 'id' => $group->id]), [
+            'class' => 'btn btn-danger',
+            'data-method' => 'POST',
+            'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure? Users who are not assigned to another group are automatically assigned to the default group.'),
+        ]);
     }
     ?>
     <?php ActiveForm::end(); ?>
