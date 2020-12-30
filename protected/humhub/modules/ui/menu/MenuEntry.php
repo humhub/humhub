@@ -39,9 +39,9 @@ abstract class MenuEntry extends BaseObject
     protected $htmlOptions = [];
 
     /**
-     * @var bool
+     * @var bool|null
      */
-    protected $isVisible = true;
+    protected $isVisible = null;
 
     /**
      * @var bool mark this entry as active
@@ -69,8 +69,9 @@ abstract class MenuEntry extends BaseObject
      * @param array $extraHtmlOptions
      * @return string
      */
-    public function render($extraHtmlOptions = []) {
-        if(!$this->isVisible) {
+    public function render($extraHtmlOptions = [])
+    {
+        if (!$this->isVisible()) {
             return '';
         }
 
@@ -112,33 +113,33 @@ abstract class MenuEntry extends BaseObject
      */
     public function setIsActiveState($moduleId, $controllerIds = [], $actionIds = [])
     {
-        $this->isActive = static::isActiveState($moduleId,$controllerIds,$actionIds);
+        $this->isActive = static::isActiveState($moduleId, $controllerIds, $actionIds);
         return $this;
     }
 
     public static function isActiveState($moduleId = null, $controllerIds = [], $actionIds = [])
     {
-         if($moduleId && (!Yii::$app->controller->module || Yii::$app->controller->module->id !== $moduleId)) {
+        if ($moduleId && (!Yii::$app->controller->module || Yii::$app->controller->module->id !== $moduleId)) {
             return false;
         }
 
-        if(empty($controllerIds) && empty($actionIds)) {
+        if (empty($controllerIds) && empty($actionIds)) {
             return true;
         }
 
-        if($controllerIds && !is_array($controllerIds)) {
+        if ($controllerIds && !is_array($controllerIds)) {
             $controllerIds = [$controllerIds];
         }
 
-        if(!empty($controllerIds) && !in_array(Yii::$app->controller->id, $controllerIds)) {
+        if (!empty($controllerIds) && !in_array(Yii::$app->controller->id, $controllerIds)) {
             return false;
         }
 
-        if($actionIds && !is_array($actionIds)) {
+        if ($actionIds && !is_array($actionIds)) {
             $actionIds = [$actionIds];
         }
 
-        if(!empty($actionIds) && !in_array(Yii::$app->controller->action->id, $actionIds)) {
+        if (!empty($actionIds) && !in_array(Yii::$app->controller->action->id, $actionIds)) {
             return false;
         }
 
@@ -183,11 +184,11 @@ abstract class MenuEntry extends BaseObject
     {
         $options = $this->htmlOptions;
 
-        if(isset($extraOptions['class'])) {
+        if (isset($extraOptions['class'])) {
             Html::addCssClass($options, $extraOptions['class']);
         }
 
-        if(isset($extraOptions['style'])) {
+        if (isset($extraOptions['style'])) {
             Html::addCssStyle($options, $extraOptions['style']);
         }
 
@@ -195,7 +196,7 @@ abstract class MenuEntry extends BaseObject
             Html::addCssClass($options, 'active');
         }
 
-        if($this->getId()) {
+        if ($this->getId()) {
             $options['data-menu-id'] = $this->id;
         }
 
@@ -217,7 +218,7 @@ abstract class MenuEntry extends BaseObject
      */
     public function isVisible()
     {
-        return $this->isVisible;
+        return !($this->isVisible === false);
     }
 
     /**
@@ -228,6 +229,17 @@ abstract class MenuEntry extends BaseObject
     {
         $this->isVisible = $isVisible;
         return $this;
+    }
+
+    /**
+     * Checks whether the visibility of the menu entry was explicitly set.
+     *
+     * @return bool
+     * @since 1.8
+     */
+    public function isVisibilitySet()
+    {
+        return ($this->isVisible !== null);
     }
 
     /**
