@@ -43,7 +43,7 @@ return array (
   'Everyone can enter' => 'Iedereen kan lid worden',
   'Follow' => 'Volgen',
   'Followers' => 'Volgers',
-  'Hide Members sidebar in the stream page.' => '',
+  'Hide Members sidebar in the stream page.' => 'Verberg de zijbalk met de leden op de dashboardpagina.',
   'Homepage' => 'Startpagina',
   'Homepage (Guests)' => 'Startpagina (Gasten)',
   'Invite' => 'Uitnodigen',
