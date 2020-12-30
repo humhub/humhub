@@ -325,28 +325,12 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
-     * Returns default Group as ActiveQuery
-     * @return \yii\db\ActiveQuery
-     */
-    public function getDefaultGroup()
-    {
-        return Group::find()->where(['is_default_group' => 1]);
-    }
-
-    /**
      * Returns all Group relations of this user as ActiveQuery
      * @return \yii\db\ActiveQuery
      */
     public function getGroups()
     {
-        $groups = $this->hasMany(Group::class, ['id' => 'group_id'])->via('groupUsers');
-
-        if ($groups->count() == 0) {
-            // Try to use default Group automatically:
-            $groups = $this->hasMany(Group::class, ['id' => 'id'])->via('defaultGroup');
-        }
-
-        return $groups;
+        return $this->hasMany(Group::class, ['id' => 'group_id'])->via('groupUsers');
     }
 
     /**

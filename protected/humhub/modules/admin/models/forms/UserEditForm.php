@@ -56,6 +56,14 @@ class UserEditForm extends User
     /**
      * @inheritdoc
      */
+    public function rules()
+    {
+        return array_merge(parent::rules(), [['groupSelection', 'required']]);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), ['groupSelection' => $this->getGroupLabel()]);

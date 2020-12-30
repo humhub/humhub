@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
+use humhub\modules\user\Module;
 use Yii;
 
 
@@ -165,7 +166,6 @@ class Group extends ActiveRecord
         return parent::beforeSave($insert);
     }
 
-
     /**
      * @inheritdoc
      */
@@ -177,6 +177,42 @@ class Group extends ActiveRecord
         }
 
         parent::afterSave($insert, $changedAttributes);
+
+
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+        /* @var $module Module */
+        $module = Yii::$app->getModule('user');
+        if ($defaultGroup = $module->getDefaultGroup()) {
+            $defaultGroup->assignDefaultGroup();
+        }
+
+        parent::afterDelete();
+    }
+
+    /**
+     * Assign users to this Default Group who were not assigned to any other group before
+     */
+    public function assignDefaultGroup()
+    {
+        if (empty($this->id) || !$this->is_default_group || $this->is_admin_group) {
+            return;
+        }
+
+        Yii::$app->getDb()->createCommand('INSERT INTO group_user (user_id, group_id, created_at, updated_at)
+            SELECT user.id, :defaultGroupId, NOW(), NOW()
+              FROM user
+              LEFT JOIN group_user ON group_user.user_id = user.id
+             WHERE group_user.id IS NULL
+               AND user.status != :userStatusSoftDeleted', [
+            ':defaultGroupId' => $this->id,
+            ':userStatusSoftDeleted' => User::STATUS_SOFT_DELETED,
+        ])->execute();
     }
 
     /**
