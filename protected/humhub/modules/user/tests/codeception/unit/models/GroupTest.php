@@ -58,7 +58,7 @@ class GroupTest extends HumHubDbTestCase
 
     public function testSingleDefaultSpaces()
     {
-        $group = Group::findOne(['id' => 1]);
+        $group = Group::findOne(['id' => 2]);
         $defaultSpaces = $group->getDefaultSpaces();
         static::assertCount(1, $defaultSpaces);
         static::assertEquals(1, $defaultSpaces[0]->id);
@@ -150,6 +150,7 @@ class GroupTest extends HumHubDbTestCase
         $group = Group::findOne(['name' => 'Moderators']);
         $user = User::findOne(['username' => 'User1']);
         $user2 = User::findOne(['username' => 'User2']);
+        $group->notify_users = true;
         $group->addUser($user2);
         $group->addUser($user);
 
