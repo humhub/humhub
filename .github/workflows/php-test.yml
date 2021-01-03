@@ -94,9 +94,6 @@ jobs:
             - name: Install npm dependencies
               run: npm install
 
-            - name: Install Grunt
-              run: npm install -g grunt-cli
-
             - name: Build production assets
               run: grunt build-assets
 
