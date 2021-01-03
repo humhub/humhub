@@ -95,7 +95,7 @@ jobs:
               run: npm install
 
             - name: Install Grunt
-              run: npm install -g grunt-cli
+              run: sudo npm install -g grunt-cli
 
             - name: Build production assets
               run: grunt build-assets
