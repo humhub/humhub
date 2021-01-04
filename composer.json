@@ -13,7 +13,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2",
         "ext-exif": "*",
         "ext-zip": "*",
         "cebe/markdown": "1.0.2",
@@ -96,7 +96,7 @@
         },
         "platform-check": false,
 	"platform": {
-	    "php": "7.1"
+	    "php": "7.2"
 	}
     },
     "scripts": {
