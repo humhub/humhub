@@ -79,7 +79,7 @@ class TimeAgoWidgetTest extends HumHubDbTestCase
         // TS outside of default 172800 but default deactivated
         $ts = DateTime::createFromFormat('Y-m-d H:i:s', '2018-10-12 12:00:00')->getTimestamp();
         $result = TimeAgo::widget(['timestamp' => $ts]);
-        $this->assertContains('Oct 12, 2018</time>', $result);
+        $this->assertStringContainsString('Oct 12, 2018</time>', $result);
     }
 
     public function testHideTimeAfterNotMatches()
@@ -87,7 +87,7 @@ class TimeAgoWidgetTest extends HumHubDbTestCase
         // TS outside of default 172800 but default deactivated
         $ts = (new DateTime())->setTime(12,00,00)->getTimestamp();
         $result = TimeAgo::widget(['timestamp' => $ts, 'timeAgoBefore' => 1]);
-        $this->assertContains('12:00 PM</time>', $result);
+        $this->assertStringContainsString('12:00 PM</time>', $result);
     }
 
     public function testHideTimeAfterDeactivated()
@@ -95,17 +95,17 @@ class TimeAgoWidgetTest extends HumHubDbTestCase
         // TS outside of default 172800 but default deactivated
         $ts = DateTime::createFromFormat('Y-m-d H:i:s', '2018-10-12 12:00:00')->getTimestamp();
         $result = TimeAgo::widget(['timestamp' => $ts, 'hideTimeAfter' => false]);
-        $this->assertContains('Oct 12, 2018 - 12:00 PM</time>', $result);
+        $this->assertStringContainsString('Oct 12, 2018 - 12:00 PM</time>', $result);
     }
 
     private function assertTimeAgoActive($result)
     {
-        $this->assertContains('data-ui-addition="timeago"', $result);
+        $this->assertStringContainsString('data-ui-addition="timeago"', $result);
     }
 
     private function assertTimeAgoNotActive($result)
     {
-        $this->assertNotContains('data-ui-addition="timeago"', $result);
+        $this->assertStringNotContainsString('data-ui-addition="timeago"', $result);
     }
 
 }

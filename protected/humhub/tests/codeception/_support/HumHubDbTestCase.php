@@ -43,9 +43,11 @@ class HumHubDbTestCase extends Unit
 
     public $time;
 
-    protected function setUp()
+
+    protected function setUp(): void
     {
         parent::setUp();
+
         $webRoot = dirname(dirname(__DIR__)) . '/../../..';
         Yii::setAlias('@webroot', realpath($webRoot));
         $this->initModules();

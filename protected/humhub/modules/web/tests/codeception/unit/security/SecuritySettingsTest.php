@@ -46,7 +46,7 @@ class SecuritySettingsTest extends WebSecurityTest
 
         $this->assertNotNull(Security::getNonce());
 
-        $this->assertContains(Security::getNonce(), $csp);
+        $this->assertStringContainsString(Security::getNonce(), $csp);
 
         // Make sure the csp/nonce does not change
         $this->assertEquals($csp, $settings->getCSPHeader());

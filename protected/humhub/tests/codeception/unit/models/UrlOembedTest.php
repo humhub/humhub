@@ -38,7 +38,7 @@ class UrlOembedTest extends HumHubDbTestCase
     {
         $result = UrlOembedMock::getOEmbed(UrlOembedMock::TEST_VIDEO_URL_A);
         $this->assertNotNull($result);
-        $this->assertContains(UrlOembedMock::TEST_VIDEO_A_PREVIEW, $result);
+        $this->assertStringContainsString(UrlOembedMock::TEST_VIDEO_A_PREVIEW, $result);
         $this->assertEquals(1, $this->getOembedRecordCount());
     }
 

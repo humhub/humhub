@@ -34,7 +34,7 @@ class SpaceContentPermissionTest extends HumHubDbTestCase
     public $publicPost;
     public $space;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->becomeUser('Admin');
@@ -183,7 +183,8 @@ class SpaceContentPermissionTest extends HumHubDbTestCase
         $this->assertFalse($this->privatePost->content->canEdit());
     }
 
-    protected function setSpaceVisibility($visibility) {
+    protected function setSpaceVisibility($visibility)
+    {
         $this->space->visibility = $visibility;
         $this->space->save();
     }
@@ -191,7 +192,8 @@ class SpaceContentPermissionTest extends HumHubDbTestCase
     /**
      * Used for resetting the permissionmanager cache etc.
      */
-    protected function reloadPosts() {
+    protected function reloadPosts()
+    {
         $this->privatePost = Post::findOne(['id' => $this->privatePost->id]);
         $this->publicPost = Post::findOne(['id' => $this->publicPost->id]);
     }
