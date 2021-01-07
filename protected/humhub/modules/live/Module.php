@@ -36,6 +36,11 @@ class Module extends \humhub\components\Module
     public static $legitimateCachePrefix = 'live.contentcontainerId.legitmation.';
 
     /**
+     * @var bool Activity flag, useful for JS config
+     */
+    public $isActive = true;
+
+    /**
      * Returns an array of content container ids which belongs to the given user.
      *
      * There are three separeted lists by visibility level:
