@@ -12,6 +12,7 @@ HumHub Changelog
 - Fix #4649: Success message rendered although password validation failed
 - Fix #4717: Repsonsive layout alignment issue on small screens
 - Fix #4715: Call to `Content::canArchive()` throws error on global content
+- Fix #4743: Hide "Like" link when no permission "Can like"
 
 
 1.7.1 (November 27, 2020)
