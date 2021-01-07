@@ -1,4 +1,4 @@
 <?php
 return array (
-  'E-Mail Summaries' => 'Резюмета от електронна поща',
+  'E-Mail Summaries' => 'Резюмета по електронна поща',
 );

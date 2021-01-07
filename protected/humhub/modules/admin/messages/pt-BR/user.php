@@ -125,13 +125,14 @@ return [
     'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'Os usuários podem pertencer a diferentes grupos (p. ex. equipes, departamentos etc.) com normas específicas de espaço, gerentes de grupo e permissões.',
     'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => 'Usando essa opção, quaisquer contribuições (por exemplo, conteúdo, comentários ou curtidas) desse usuário serão irrevogavelmente excluídas.',
     'View profile' => 'Ver perfil',
-    'Visibility' => 'Visibilidade',
     'Visible for members only' => 'Visível apenas para membros',
     'Visible for members+guests' => 'Vísivel para membros e visitantes',
     'Yes' => 'Sim',
     'You can only delete empty categories!' => 'Você só pode apagar categorias vazias!',
     'You cannot delete yourself!' => 'Você não pode se deletar!',
     'never' => 'nunca',
+    'Account' => '',
+    'Add a seperate page for the group to the directory.' => '',
     'Hello {displayName},<br><br>
 Your account has been activated.<br><br>
 Click here to login:<br>
@@ -144,4 +145,7 @@ Your account request has been declined.<br><br>
 
 Kind Regards<br>
 {AdminName} <br><br> ' => '',
+    'Make the group selectable at registration.' => '',
+    'Password' => '',
+    'Send notifications to users when added to or removed from the group.' => '',
 ];

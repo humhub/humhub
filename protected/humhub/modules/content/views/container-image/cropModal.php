@@ -18,20 +18,20 @@ use yii\helpers\Json;
 
 if($profileImage instanceof ProfileBannerImage) {
     $model->aspectRatio  = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-banner-ratio', 6.3)
-        : $this->theme->variable('user-profile-banner-ratio', 6.3);
+        ? $this->theme->variable('space-profile-banner-ratio', $profileImage->getAspectRatio())
+        : $this->theme->variable('user-profile-banner-ratio', $profileImage->getAspectRatio());
 
     $cropSelect  = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-banner-crop', '0, 0, 267, 48')
-        : $this->theme->variable('user-profile-banner-crop', '0, 0, 267, 48');
+        ? $this->theme->variable('space-profile-banner-crop', '0, 0, ' . $profileImage->width() . ', ' . $profileImage->height())
+        : $this->theme->variable('user-profile-banner-crop', '0, 0, ' . $profileImage->width() . ', ' . $profileImage->height());
 } else {
     $model->aspectRatio  = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-image-ratio', 1)
-        : $this->theme->variable('user-profile-image-ratio', 1);
+        ? $this->theme->variable('space-profile-image-ratio', $profileImage->getAspectRatio())
+        : $this->theme->variable('user-profile-image-ratio', $profileImage->getAspectRatio());
 
     $cropSelect  = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-image-crop', '0, 0, 100, 100')
-        : $this->theme->variable('user-profile-image-crop', '0, 0, 100, 100');
+        ? $this->theme->variable('space-profile-image-crop', '0, 0, ' . $profileImage->width() . ', ' . $profileImage->height())
+        : $this->theme->variable('user-profile-image-crop', '0, 0, ' . $profileImage->width() . ', ' . $profileImage->height());
 }
 
 $model->cropSetSelect = Json::decode('['.$cropSelect.']');
@@ -42,8 +42,7 @@ $model->cropSetSelect = Json::decode('['.$cropSelect.']');
     'id' => 'profile-image-crop-modal',
     'header' => Yii::t('SpaceModule.views_admin_cropImage', '<strong>Modify</strong> image'),
     'animation' => 'fadeIn',
-    'size' => 'small'])
-?>
+    'size' => 'small']) ?>
 
     <?php $form = ActiveForm::begin(['id' => 'profile-image-crop-modal-form']); ?>
         <?= $form->errorSummary($model); ?>
@@ -56,11 +55,15 @@ $model->cropSetSelect = Json::decode('['.$cropSelect.']');
             <style>
                 /* Dirty Workaround against bootstrap and jcrop */
                 #profile-image-crop-modal img {
-                    max-width: 100%;
+                    max-width: none;
+                }
+
+                #profile-image-crop-modal .jcrop-keymgr, #profile-image-crop-modal label {
+                    opacity:0
                 }
             </style>
 
-            <div id="cropimage">
+            <div id="cropimage" style="overflow:hidden;">
                 <?= Html::img($profileImage->getUrl('_org'), ['id' => 'crop-profile-image']) ?>
 
                 <?= JCropWidget::widget([

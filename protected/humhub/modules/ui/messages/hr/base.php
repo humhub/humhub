@@ -1,6 +1,6 @@
 <?php
 return array (
   'Collapse' => 'Spusti',
-  'Read more' => '',
-  'User Interface' => '',
+  'Read more' => 'Pročitaj više',
+  'User Interface' => 'Korisničko sučelje',
 );

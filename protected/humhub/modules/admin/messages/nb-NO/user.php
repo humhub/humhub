@@ -124,13 +124,14 @@ return [
     'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'Brukere kan tilordnes forskjellige grupper (for eksempel lag, avdelinger etc.) med spesifikke standardrom, gruppeledere og tillatelser.',
     'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => 'Ved hjelp av dette alternativet vil eventuelle bidrag (for eksempel innhold, kommentarer eller liker) av denne brukeren bli slettet permanent.',
     'View profile' => 'Vis profil',
-    'Visibility' => 'Synlighet',
     'Visible for members only' => 'Synlig kun for medlemmer',
     'Visible for members+guests' => 'Synlig for medlemmer + gjester',
     'Yes' => 'Ja',
     'You can only delete empty categories!' => 'Du kan kun slette tomme kategorier!',
     'You cannot delete yourself!' => 'Du kan ikke slette din egen bruker.',
     'never' => 'Aldri',
+    'Account' => '',
+    'Add a seperate page for the group to the directory.' => '',
     'Edit category' => '',
     'Hello {displayName},<br><br>
 Your account has been activated.<br><br>
@@ -144,4 +145,7 @@ Your account request has been declined.<br><br>
 
 Kind Regards<br>
 {AdminName} <br><br> ' => '',
+    'Make the group selectable at registration.' => '',
+    'Password' => '',
+    'Send notifications to users when added to or removed from the group.' => '',
 ];

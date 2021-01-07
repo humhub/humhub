@@ -81,6 +81,7 @@ return [
     'You\'re not registered.' => 'Kayıtlı değilsin.',
     'or' => 'veya',
     'Change Username' => '',
+    'Enable Notifications' => '',
     'Manager' => '',
     'Missing ID AuthClient Attribute from AuthClient.' => '',
     'Password needs to be at least {chars} characters long.' => '',

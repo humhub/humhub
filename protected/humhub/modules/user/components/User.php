@@ -229,6 +229,7 @@ class User extends \yii\web\User
     }
 
     /**
+     * @since 1.8
      * @return bool Check if current page is already URL to forcing user to change password
      */
     public function isMustChangePasswordUrl()
@@ -238,6 +239,7 @@ class User extends \yii\web\User
 
     /**
      * Determines if this user must change the password.
+     * @since 1.8
      * @return boolean
      */
     function mustChangePassword()
@@ -245,4 +247,18 @@ class User extends \yii\web\User
         return !$this->isGuest && $this->getIdentity()->mustChangePassword();
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function loginRequired($checkAjax = true, $checkAcceptHeader = true)
+    {
+        // Fix 4700: Handle Microsoft Office Probe Requests
+        if (strpos(Yii::$app->request->getUserAgent(), 'Microsoft Office') !== false) {
+            Yii::$app->response->setStatusCode(200);
+            Yii::$app->response->data = Yii::$app->controller->htmlRedirect(Yii::$app->request->getAbsoluteUrl());
+            return Yii::$app->getResponse();
+        }
+
+        return parent::loginRequired($checkAjax, $checkAcceptHeader);
+    }
 }

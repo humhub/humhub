@@ -63,6 +63,7 @@ return [
     'Default Space' => '',
     'Disconnect account' => '',
     'E-Mail is already in use! - Try forgot password.' => '',
+    'Enable Notifications' => '',
     'Follow' => '',
     'General' => '',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => '',

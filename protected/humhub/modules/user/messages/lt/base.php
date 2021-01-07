@@ -67,6 +67,7 @@ return [
     'Currently in use' => '',
     'Delete Account' => '',
     'Disconnect account' => '',
+    'Enable Notifications' => '',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => '',
     'Last Login' => '',
     'Manager' => '',

@@ -18,18 +18,6 @@ body {
     }
 }
 
-@media (max-width: 920px) {
-    body {
-        padding-top: 115px;
-    }
-}
-
-@media (min-width: 768px) and (max-width: 920px) {
-    body {
-        padding-top: 120px;
-    }
-}
-
 a:hover {
     text-decoration: none;
 }
@@ -106,12 +94,14 @@ input[type=select] {
     overflow: hidden;
 }
 
-@media (min-width: 768px) and (max-width: 920px) {
-    #topbar-first, #topbar-second {
-        .container {
-            padding-left: 10px;
-            padding-right: 20px;
-        }
+@media (min-width: 768px) and (max-width: 991px) {
+    .layout-nav-container, .layout-content-container {
+        color:#123456;
+        padding: 0 15px;
+    }
+
+    body {
+        padding-top: 120px;
     }
 }
 
@@ -135,6 +125,14 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 
 .showMore {
     font-size:13px;
+}
+
+.table-responsive {
+    word-wrap: normal;
+    overflow-wrap: normal;
+    word-break: normal;
+    -moz-hyphens: none;
+    hyphens: none;
 }
 
 

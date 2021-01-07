@@ -88,6 +88,7 @@ return [
     'invited you to join {space} on {name}.' => '{name} Vás pozval/a k připojení k prostoru {space}',
     'or' => 'nebo',
     'Change Username' => '',
+    'Enable Notifications' => '',
     'Missing E-Mail Attribute from AuthClient.' => '',
     'Missing ID AuthClient Attribute from AuthClient.' => '',
     'Password needs to be at least {chars} characters long.' => '',

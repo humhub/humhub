@@ -404,7 +404,7 @@ class SpaceModelMembership extends Behavior
         $user = User::findOne(['id' => $userId]);
         $membership = $this->getMembership($userId);
 
-        if ($membership == null) {
+        if ($membership === null) {
             // Add Membership
             $membership = new Membership([
                 'space_id' => $this->owner->id,

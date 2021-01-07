@@ -20,7 +20,7 @@ return [
     '<strong>Information</strong>' => '<strong>Informacija</strong>',
     '<strong>Settings</strong> and Configuration' => '<strong>Postavke</strong> i konfiguracija',
     '<strong>User</strong> administration' => '<strong>Korisnička</strong> administracija',
-    'Accept user: <strong>{displayName}</strong> ' => 'Prihvati korisnika: <strong>{displayName}</strong> ',
+    'Accept user: <strong>{displayName}</strong> ' => 'Prihvati korisnika: <strong>{displayName}</strong>',
     'Account Request for \'{displayName}\' has been approved.' => 'Zahtjev za račun \'{displayName}\' je odobren.',
     'Account Request for \'{displayName}\' has been declined.' => 'Zahtjev za račun \'{displayName}\' je odbijen.',
     'Actions' => 'Akcije',
@@ -53,6 +53,7 @@ return [
     'Default user profile visibility' => 'Vidljivost zadanog profila korisnika',
     'Delete' => 'Obriši',
     'Delete all contributions of this user' => 'Izbrišite sve doprinose ovog korisnika',
+    'Delete invitation' => 'Izbriši pozivnicu',
     'Delete invitation?' => 'Želite li izbrisati pozivnicu?',
     'Delete spaces which are owned by this user' => 'Brisanje prostora koji su u vlasništvu ovog korisnika',
     'Deleted invitation' => 'Izbrisana pozivnica',
@@ -61,6 +62,7 @@ return [
     'Disabled' => 'Onemogućeno',
     'Disabled users' => 'Korisnici s invaliditetom',
     'Do not change placeholders like {displayName} if you want them to be automatically filled by the system. To reset the email content fields with the system default, leave them empty.' => 'Nemojte mijenjati zamjenske oznake poput {displayName} ako želite da ih automatski popuni sustav. Da biste resetirali polja sadržaja e-pošte s zadanim postavkama sustava, ostavite ih praznima.',
+    'Edit category' => 'Uredi kategoriju',
     'Edit profile category' => 'Obriši kategoriju profila',
     'Edit profile field' => 'Uredi polje profila',
     'Edit user: {name}' => 'Uredi korisnika: {name}',
@@ -71,6 +73,18 @@ return [
     'Group not found!' => 'Grupa nije pronađena!',
     'Group user not found!' => 'Korisnik grupe nije pronađen!',
     'Groups' => 'Grupe',
+    'Hello {displayName},<br><br>
+Your account has been activated.<br><br>
+Click here to login:<br>
+{loginLink}<br><br>
+
+Kind Regards<br>
+{AdminName}<br><br>' => 'Pozdrav, {displayName},<br><br> Vaš račun je aktiviran.<br><br> Kliknite ovdje za prijavu:<br> {loginLink}<br><br> Lijepi pozdrav<br> {AdminName}<br><br>',
+    'Hello {displayName},<br><br>
+Your account request has been declined.<br><br>
+
+Kind Regards<br>
+{AdminName} <br><br> ' => 'Pozdrav, {displayName},<br><br> Zahtjev za vaš račun je odbijen.<br><br> Lijepi pozdrav<br> {AdminName} <br><br>',
     'Here you can create or edit profile categories and fields.' => 'Ovdje možete kreirati ili urediti profile kategorija i polja.',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Ako ova opcija nije odabrana, vlasništvo nad prostorima bit će preneseno na vaš račun.',
     'Impersonate' => 'Predstavljati',
@@ -105,6 +119,7 @@ return [
     'Search by name, email or id.' => 'Pretraživanje po imenu, e-pošti ili ID-u.',
     'Select Groups' => 'Odaberi grupe',
     'Send & save' => 'Pošalji i spremi',
+    'Send invitation email' => 'Pošaljite pozivnicu e-mailom',
     'Send invitation email again?' => 'Ponovno poslati pozivnicu e-poštom?',
     'Send invite' => 'Pošalji poziv',
     'Settings' => 'Postavke',
@@ -122,26 +137,15 @@ return [
     'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'Korisnici se mogu dodijeliti različitim grupama (npr. Timovima, odjelima itd.) s određenim standardnim prostorima, upraviteljima grupe i dozvolama.',
     'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => 'Koristeći ovu opciju, svi doprinosi (npr. Sadržaj, komentari ili slični) ovog korisnika bit će neopozivo izbrisani.',
     'View profile' => 'Pogledaj profil',
-    'Visibility' => 'Vidljivost',
     'Visible for members only' => 'Vidljivo samo za članove',
     'Visible for members+guests' => 'Vidljivo za članove+goste',
     'Yes' => 'Da',
     'You can only delete empty categories!' => 'Možete obrisati samo prazne kategorije!',
     'You cannot delete yourself!' => 'Ne možete sami izbrisati!',
     'never' => 'nikada',
-    'Delete invitation' => '',
-    'Edit category' => '',
-    'Hello {displayName},<br><br>
-Your account has been activated.<br><br>
-Click here to login:<br>
-{loginLink}<br><br>
-
-Kind Regards<br>
-{AdminName}<br><br>' => '',
-    'Hello {displayName},<br><br>
-Your account request has been declined.<br><br>
-
-Kind Regards<br>
-{AdminName} <br><br> ' => '',
-    'Send invitation email' => '',
+    'Account' => '',
+    'Add a seperate page for the group to the directory.' => '',
+    'Make the group selectable at registration.' => '',
+    'Password' => '',
+    'Send notifications to users when added to or removed from the group.' => '',
 ];
