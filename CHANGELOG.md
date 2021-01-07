@@ -5,12 +5,15 @@ HumHub Changelog
 -------------------------
 - Fix #4668: table-responsive tables do not overflow due to default word break style
 - Fix #4679: Richtext extension scan does not include full title if title contains a `)`
+- Fix #4703: SSO login drops no warning if AuthClient cannot be stored
+- Fix #4700: Deep Links from Microsoft Office Documents
 - Fix #4714: Use HTTPS protocol for default OEmbed endpoint URLs
 - Fix #4727: Nav tabs with data-toggle are styled in link color
 - Fix #4649: Success message rendered although password validation failed
 - Fix #4717: Repsonsive layout alignment issue on small screens
 - Fix #4715: Call to `Content::canArchive()` throws error on global content
 - Fix #4744: Banner image orientation not being processed
+- Fix #4743: Hide "Like" link when no permission "Can like"
 
 
 1.7.1 (November 27, 2020)
