@@ -12,6 +12,7 @@ HumHub Changelog
 - Fix #4649: Success message rendered although password validation failed
 - Fix #4717: Repsonsive layout alignment issue on small screens
 - Fix #4715: Call to `Content::canArchive()` throws error on global content
+- Fix #4744: Banner image orientation not being processed
 - Fix #4743: Hide "Like" link when no permission "Can like"
 
 
