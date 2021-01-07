@@ -11,6 +11,7 @@ namespace humhub\components\behaviors;
 use humhub\components\access\ControllerAccess;
 use Yii;
 use yii\base\ActionFilter;
+use yii\helpers\Url;
 use yii\web\HttpException;
 use yii\web\Response;
 
@@ -233,7 +234,7 @@ class AccessControl extends ActionFilter
     protected function forceChangePassword()
     {
         if (!Yii::$app->user->isMustChangePasswordUrl()) {
-            return Yii::$app->getResponse()->redirect(Yii::$app->user->mustChangePasswordRoute);
+            return Yii::$app->getResponse()->redirect(Url::toRoute(Yii::$app->user->mustChangePasswordRoute));
         }
     }
 }
