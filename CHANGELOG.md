@@ -14,7 +14,7 @@ HumHub Changelog
 - Fix #4715: Call to `Content::canArchive()` throws error on global content
 - Fix #4744: Banner image orientation not being processed
 - Fix #4743: Hide "Like" link when no permission "Can like"
-- Fix #56: Restrict HTML tags in Space name
+- Fix #56: Use only letters and digits from Space name for logo acronym
 
 
 1.7.1 (November 27, 2020)
