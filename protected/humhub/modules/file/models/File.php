@@ -152,10 +152,15 @@ class File extends FileCompat
 
     /**
      * Save hash
+     *
+     * @since 1.8
      */
-    private function saveHash()
+    public function saveHash()
     {
-        $this->updateAttributes(['hash_sha1' => sha1_file($this->getStore()->get())]);
+        $this->hash_sha1 = sha1_file($this->getStore()->get());
+        if (!$this->isNewRecord) {
+            $this->updateAttributes(['hash_sha1' => $this->hash_sha1]);
+        }
     }
 
     /**
