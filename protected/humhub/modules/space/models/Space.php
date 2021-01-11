@@ -121,6 +121,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
         $rules = [
             [['join_policy', 'visibility', 'status', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
             [['name'], 'required'],
+            [['name'], 'checkName'],
             [['description', 'about', 'tags', 'color'], 'string'],
             [['description'], 'string', 'max' => 100],
             [['join_policy'], 'in', 'range' => [0, 1, 2]],
@@ -139,6 +140,17 @@ class Space extends ContentContainerActiveRecord implements Searchable
         }
 
         return $rules;
+    }
+
+    /**
+     * Validator for Space name
+     *
+     * @param string $attribute
+     */
+    public function checkName($attribute) {
+        if ($this->$attribute !== strip_tags($this->$attribute)) {
+            $this->addError($attribute, Yii::t('SpaceModule.base', 'Cannot use HTML tags in space name!'));
+        }
     }
 
     /**

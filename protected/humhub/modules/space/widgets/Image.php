@@ -94,9 +94,11 @@ class Image extends BaseImage
     {
         $acronym = '';
 
-        foreach (explode(" ", $this->space->name) as $w) {
-            if (mb_strlen($w) >= 1) {
-                $acronym .= mb_substr($w, 0, 1);
+        $spaceName = preg_replace('/[<>]+/', '', $this->space->name);
+
+        foreach (explode(' ', $spaceName) as $word) {
+            if (mb_strlen($word) >= 1) {
+                $acronym .= mb_substr($word, 0, 1);
             }
         }
 
