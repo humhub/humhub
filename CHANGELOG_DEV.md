@@ -1,5 +1,6 @@
 1.8.0 (Unreleased)
 ------------------
+
 - Enh #3996: Force password change on first log in for users created by admin
 - Enh #3996: Allow admin to change option "Must change password" for existing users
 - Enh #3414: Allow to change user passwords by admin
@@ -12,8 +13,9 @@
 - Enh #4579: Optimized dashboard stream query
 - Enh #4579: Optimized live legitimation id queries
 - Enh #4579: Added `dashboard\Module::$guestFilterClass` and `$memberFilterClass` to replace dashboard filter class
-- Enh #4586: Rebuild group default Space Mapping 
+- Enh #4586: Rebuild group default Space Mapping
 - Enh #4225: Delete open/pending registration invites automatically after a period of time
 - Fix #4718: Fix space or profile banner size after crop
 - Enh #4738: Allow CanComment permission also on profile level
 - Enh #4749: Add Migration helper to determine installation state
+- Enh #4770: Added CLI commands for Professional Edition licence management
