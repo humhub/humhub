@@ -31,7 +31,7 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * @property string $updated_at
  * @property integer $updated_by
  * @property integer $show_in_stream
- * @property string $hash
+ * @property string $hash_sha1
  *
  * @property \humhub\modules\user\models\User $createdBy
  * @property \humhub\modules\file\components\StorageManager $store
@@ -130,7 +130,7 @@ class File extends FileCompat
         }
 
         $params['guid'] = $this->guid;
-        $params['hash'] = $this->getHash(8);
+        $params['hash_sha1'] = $this->getHash(8);
         array_unshift($params, '/file/file/download');
         return Url::to($params, $absolute);
     }
@@ -143,11 +143,11 @@ class File extends FileCompat
      */
     public function getHash($length = 0)
     {
-        if (empty($this->hash)) {
+        if (empty($this->hash_sha1)) {
             $this->saveHash();
         }
 
-        return $length ? substr($this->hash, 0, $length) : $this->hash;
+        return $length ? substr($this->hash_sha1, 0, $length) : $this->hash_sha1;
     }
 
     /**
@@ -155,7 +155,7 @@ class File extends FileCompat
      */
     private function saveHash()
     {
-        $this->updateAttributes(['hash' => sha1_file($this->getStore()->get())]);
+        $this->updateAttributes(['hash_sha1' => sha1_file($this->getStore()->get())]);
     }
 
     /**

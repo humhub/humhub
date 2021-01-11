@@ -12,7 +12,7 @@ class m210111_105355_hash extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('file', 'hash', $this->string(32)->null());
+        $this->addColumn('file', 'hash_sha1', $this->string(32)->null());
     }
 
     /**
@@ -20,6 +20,6 @@ class m210111_105355_hash extends Migration
      */
     public function safeDown()
     {
-        $this->dropColumn('file', 'hash');
+        $this->dropColumn('file', 'hash_sha1');
     }
 }
