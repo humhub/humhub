@@ -40,6 +40,11 @@ use humhub\compat\CHtml;
     <br>
     <?= $form->field($model, 'enableFriendshipModule')->checkbox(); ?>
 
+    <strong><?= Yii::t('AdminModule.settings', 'Maintenance mode'); ?></strong>
+    <br>
+    <br>
+    <?= $form->field($model, 'maintenanceMode')->checkbox(); ?>
+
     <hr>
 
     <?= CHtml::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
