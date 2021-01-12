@@ -92,8 +92,8 @@ $module = Yii::$app->getModule('comment');
         <div class="wall-entry-controls">
             <?= CommentEntryControls::widget([
                 'widgets' => [
-                    [CommentLink::class, ['object' => $comment], ['sortOrder' => 1]],
-                    [LikeLink::class, ['object' => $comment], ['sortOrder' => 2]],
+                    [CommentLink::class, ['object' => $comment], ['sortOrder' => 100]],
+                    [LikeLink::class, ['object' => $comment], ['sortOrder' => 200]],
                 ],
             ]); ?>
         </div>
