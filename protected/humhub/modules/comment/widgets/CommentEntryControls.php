@@ -12,6 +12,7 @@ use humhub\widgets\BaseStack;
 
 /**
  * CommentEntryControls
+ * @since 1.8
  */
 class CommentEntryControls extends BaseStack
 {
