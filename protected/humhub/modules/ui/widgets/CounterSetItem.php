@@ -7,7 +7,7 @@
 
 namespace humhub\modules\ui\widgets;
 
-use humhub\components\i18n\Formatter;
+use Yii;
 use yii\base\BaseObject;
 
 
@@ -55,7 +55,7 @@ class CounterSetItem extends BaseObject
      */
     public function getShortValue()
     {
-        return (new Formatter())->asShortInteger($this->value);
+        return Yii::$app->formatter->asShortInteger($this->value);
     }
 
 }

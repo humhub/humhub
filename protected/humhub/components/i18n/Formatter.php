@@ -90,7 +90,7 @@ class Formatter extends \yii\i18n\Formatter
      */
     public function asShortInteger($value, $options = [], $textOptions = [])
     {
-        list($params, $position) = $this->formatNumber($value, null, 4, 1000, $options, $textOptions);
+        list($params, $position) = $this->formatNumber($value, null, 2, 1000, $options, $textOptions);
         $params['nFormatted'] = floor($params['nFormatted']);
 
         switch ($position) {
@@ -100,12 +100,8 @@ class Formatter extends \yii\i18n\Formatter
                 return Yii::t('base', '{nFormatted}K', $params, $this->language); // Thousand
             case 2:
                 return Yii::t('base', '{nFormatted}M', $params, $this->language); // Million
-            case 3:
-                return Yii::t('base', '{nFormatted}B', $params, $this->language); // Billion
-            case 4:
-                return Yii::t('base', '{nFormatted}T', $params, $this->language); // Trillion
             default:
-                return Yii::t('base', '{nFormatted}Q', $params, $this->language); // Quadrillion
+                return Yii::t('base', '{nFormatted}B', $params, $this->language); // Billion
         }
     }
 }
