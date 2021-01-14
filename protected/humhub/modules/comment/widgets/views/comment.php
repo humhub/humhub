@@ -8,8 +8,6 @@ use humhub\widgets\TimeAgo;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\file\widgets\ShowFiles;
-use humhub\modules\like\widgets\LikeLink;
-use humhub\modules\comment\widgets\CommentLink;
 use humhub\modules\comment\widgets\Comments;
 
 /* @var $this \humhub\modules\ui\view\components\View */
