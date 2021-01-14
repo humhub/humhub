@@ -3,7 +3,7 @@
 use humhub\compat\HForm;
 use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
-use yii\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 
 /* @var $hForm HForm */
 ?>
@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
         <h4 class="pull-left"><?= Yii::t('AdminModule.user', 'Add new user') ?></h4>
     </div>
     <br>
-    <?php $form = ActiveForm::begin(['options' => ['data-ui-widget' => 'ui.form.TabbedForm', 'data-ui-init' => '']]); ?>
+    <?php $form = ActiveForm::begin(['options' => ['data-ui-widget' => 'ui.form.TabbedForm', 'data-ui-init' => ''], 'acknowledge' => true]); ?>
         <?= $hForm->render($form); ?>
     <?php ActiveForm::end(); ?>
 </div>

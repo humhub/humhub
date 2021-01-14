@@ -1,17 +1,18 @@
 <?php
 
 use humhub\modules\ui\form\widgets\SortOrderField;
-use yii\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\compat\CHtml;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\modules\space\widgets\SpacePickerField;
+
 ?>
 
-<?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
+<?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group, 'acknowledge' => true]) ?>
 <div class="panel-body">
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
     <?= $form->field($group, 'name'); ?>
     <?= $form->field($group, 'description')->textarea(['rows' => 5]); ?>
 
@@ -28,7 +29,7 @@ use humhub\modules\space\widgets\SpacePickerField;
 
     <?php if ($isManagerApprovalSetting && !$group->is_admin_group): ?>
         <?php $url = ($group->isNewRecord) ? null : Url::to(['/admin/group/admin-user-search', 'id' => $group->id]); ?>
-        <?=  UserPickerField::widget([
+        <?= UserPickerField::widget([
             'form' => $form,
             'model' => $group,
             'attribute' => 'managerGuids',
@@ -54,6 +55,6 @@ use humhub\modules\space\widgets\SpacePickerField;
         echo Html::a(Yii::t('AdminModule.user', 'Delete'), Url::toRoute(['/admin/group/delete', 'id' => $group->id]), ['class' => 'btn btn-danger', 'data-method' => 'POST']);
     }
     ?>
-<?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 </div>
 <?php $this->endContent(); ?>

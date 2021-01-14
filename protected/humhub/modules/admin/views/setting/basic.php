@@ -1,7 +1,7 @@
 <?php
 
 use humhub\libs\TimezoneHelper;
-use yii\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\compat\CHtml;
 
 ?>
@@ -14,7 +14,7 @@ use humhub\compat\CHtml;
 
     <br>
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
     <?= $form->field($model, 'name'); ?>
 

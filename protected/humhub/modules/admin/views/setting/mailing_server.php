@@ -12,7 +12,7 @@ use humhub\widgets\Button;
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
-<?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
 <?= $form->errorSummary($model); ?>
 

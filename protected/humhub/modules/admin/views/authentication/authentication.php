@@ -1,6 +1,6 @@
 <?php
 
-use yii\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\compat\CHtml;
 use humhub\models\Setting;
 
@@ -11,7 +11,7 @@ $userModule = Yii::$app->getModule('user');
 
 <?php $this->beginContent('@admin/views/authentication/_authenticationLayout.php') ?>
 <div class="panel-body">
-    <?php $form = ActiveForm::begin(['id' => 'authentication-settings-form']); ?>
+    <?php $form = ActiveForm::begin(['id' => 'authentication-settings-form', 'acknowledge' => true]); ?>
 
     <?= $form->errorSummary($model); ?>
 

@@ -1,20 +1,22 @@
 <?php
 
-use humhub\compat\CActiveForm;
+use humhub\compat\CAcknowledgeActiveForm;
 use humhub\compat\CHtml;
 use humhub\models\Setting;
+
 ?>
 
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
-<?php $form = CActiveForm::begin(); ?>
+<?php $form = CAcknowledgeActiveForm::begin(['acknowledge' => true]); ?>
 
 <?= $form->errorSummary($model); ?>
 
 <div class="form-group">
     <div class="checkbox">
         <label>
-            <?= $form->checkBox($model, 'enabled', ['readonly' => Yii::$app->settings->isFixed('proxy.enabled')]); echo $model->getAttributeLabel('enabled'); ?>
+            <?= $form->checkBox($model, 'enabled', ['readonly' => Yii::$app->settings->isFixed('proxy.enabled')]);
+            echo $model->getAttributeLabel('enabled'); ?>
         </label>
     </div>
 </div>
@@ -55,6 +57,6 @@ use humhub\models\Setting;
 <?= CHtml::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
 <?= \humhub\widgets\DataSaved::widget(); ?>
-<?php CActiveForm::end(); ?>
+<?php CAcknowledgeActiveForm::end(); ?>
 
 <?php $this->endContent(); ?>
