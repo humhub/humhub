@@ -15,7 +15,19 @@ use humhub\widgets\BaseStack;
 use yii\helpers\ArrayHelper;
 
 /**
- * CommentEntryControls
+ * The ContentObjectLinks widget is used to display standard links for module content that implements its own detail view.
+ * As an example, this is used at the end of a wiki page view.
+ *
+ * By default, the links for Comments and Likes are enabled here.
+ *
+ * Usage (in View file):
+ * ```php
+ * echo ContentObjectLinks::widget([
+ *         'object' => $contentObject,
+ *         'widgetParams' => [CommentLink::class => ['mode' => CommentLink::MODE_POPUP]],
+ * ]);
+ * ```
+ *
  * @since 1.8
  */
 class ContentObjectLinks extends BaseStack
