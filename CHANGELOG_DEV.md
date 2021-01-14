@@ -18,4 +18,6 @@
 - Enh #4738: Allow CanComment permission also on profile level
 - Enh #4749: Add Migration helper to determine installation state
 - Enh #4752: Added file column `hash_sha1` to avoid caching problems
+- Enh #4751: Hide separator between widgets `LikeLink` and `CommentLink`
+- Enh #4751: New `ContentObjectLinks` widget for the detail views of module content
 - Enh #4754: Shorten high member numbers
