@@ -3,7 +3,7 @@
 use humhub\libs\Html;
 use humhub\modules\content\widgets\UpdatedIcon;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\modules\comment\widgets\CommentEntryControls;
+use humhub\modules\comment\widgets\CommentEntryLinks;
 use humhub\widgets\TimeAgo;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\user\widgets\Image as UserImage;
@@ -90,12 +90,7 @@ $module = Yii::$app->getModule('comment');
         </div>
 
         <div class="wall-entry-controls">
-            <?= CommentEntryControls::widget([
-                'widgets' => [
-                    [CommentLink::class, ['object' => $comment], ['sortOrder' => 100]],
-                    [LikeLink::class, ['object' => $comment], ['sortOrder' => 200]],
-                ],
-            ]); ?>
+            <?= CommentEntryLinks::widget(['object' => $comment]); ?>
         </div>
 
         <div class="nested-comments-root">
