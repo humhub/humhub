@@ -98,8 +98,6 @@ class Events extends BaseObject
     {
         $event->sender->addWidget(widgets\WallEntryLinks::class, [
             'object' => $event->sender->object,
-            'seperator' => '&nbsp;&nbsp;&middot;&nbsp;',
-            'template' => '<div class="wall-entry-controls wall-entry-links">{content}</div>',
         ], ['sortOrder' => 10]
         );
     }
