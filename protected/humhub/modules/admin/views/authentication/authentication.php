@@ -1,8 +1,7 @@
 <?php
 
 use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\compat\CHtml;
-use humhub\models\Setting;
+use yii\helpers\Html;
 
 /** @var \humhub\modules\user\Module $userModule */
 $userModule = Yii::$app->getModule('user');
@@ -41,7 +40,7 @@ $userModule = Yii::$app->getModule('user');
 
     <hr>
 
-    <?= CHtml::submitButton(Yii::t('AdminModule.user', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+    <?= Html::submitButton(Yii::t('AdminModule.user', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
     <?= \humhub\widgets\DataSaved::widget(); ?>
     <?php ActiveForm::end(); ?>
