@@ -34,6 +34,12 @@ use humhub\modules\user\widgets\AuthChoice;
             <div class="tab-content">
                 <div class="tab-pane <?= (!isset($_POST['Invite'])) ? "active" : ""; ?>" id="login">
 
+                    <?php if (Yii::$app->session->hasFlash('error')): ?>
+                        <div class="alert alert-danger" role="alert">
+                            <?= Yii::$app->session->getFlash('error') ?>
+                        </div>
+                    <?php endif; ?>
+
                     <?php if (AuthChoice::hasClients()): ?>
                         <?= AuthChoice::widget([]) ?>
                     <?php else: ?>
@@ -41,7 +47,8 @@ use humhub\modules\user\widgets\AuthChoice;
                             <p><?= Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password."); ?></p>
                         <?php else: ?>
                             <p><?= Yii::t('UserModule.auth', "Please login with your username/email and password."); ?></p>
-                        <?php endif; ?>                    <?php endif; ?>
+                        <?php endif; ?>
+                    <?php endif; ?>
 
                     <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
                     <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.auth', 'username or email')]); ?>

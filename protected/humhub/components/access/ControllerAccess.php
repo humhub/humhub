@@ -244,6 +244,12 @@ class ControllerAccess extends BaseObject
             'reason' => Yii::t('error', 'Login required for this section.'),
             'code' => 401
         ]);
+        $this->registerValidator([
+            self::RULE_LOGGED_IN_ONLY => 'validateMaintenanceMode',
+            'reason' => Yii::t('error', 'Only admins have an access to the site on maintenance mode.'),
+            'code' => 403,
+            'codeCallback' => 'checkMaintenanceMode',
+        ]);
 
         $this->registerValidator([
             self::RULE_MUST_CHANGE_PASSWORD => 'validateMustChangePassword',
@@ -499,5 +505,14 @@ class ControllerAccess extends BaseObject
     public function validateMustChangePassword()
     {
         return $this->isGuest() || Yii::$app->user->isMustChangePasswordUrl() || !$this->user->mustChangePassword();
+    }
+
+    /**
+     * @since 1.8
+     * @return bool makes sure the current user has an access on maintenance mode
+     */
+    public function validateMaintenanceMode()
+    {
+        return !Yii::$app->settings->get('maintenanceMode') || $this->isAdmin();
     }
 }

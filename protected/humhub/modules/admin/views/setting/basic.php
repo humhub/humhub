@@ -1,9 +1,25 @@
 <?php
 
 use humhub\libs\TimezoneHelper;
+use humhub\modules\admin\assets\AdminAsset;
+use humhub\modules\admin\models\forms\BasicSettingsForm;
 use yii\widgets\ActiveForm;
 use humhub\compat\CHtml;
 
+/* @var BasicSettingsForm $model */
+
+$this->registerJsConfig('admin', $adminSettingsJsConfig = ['text' => [
+    'maintenanceMode.header' => Yii::t('AdminModule.settings', '<strong>Maintenance</strong> mode'),
+    'maintenanceMode.question.enable' => '<div class="alert alert-danger">'
+        . Yii::t('AdminModule.settings', '<strong>WARNING:</strong> All non admin users will be logged out automatically after you save the settings form with enabled maintenance mode!')
+        . '</div>'
+        . Yii::t('AdminModule.settings', 'Do you really want to enable maintenance mode?'),
+    'maintenanceMode.button.enable' => Yii::t('AdminModule.settings', 'Enable'),
+    'maintenanceMode.question.disable' => Yii::t('AdminModule.settings', 'Are you sure all works have been done and the maintenance mode can be disable?'),
+    'maintenanceMode.button.disable' => Yii::t('AdminModule.settings', 'Disable'),
+]]);
+
+AdminAsset::register($this);
 ?>
 
 <div class="panel-body">
@@ -43,7 +59,12 @@ use humhub\compat\CHtml;
     <strong><?= Yii::t('AdminModule.settings', 'Maintenance mode'); ?></strong>
     <br>
     <br>
-    <?= $form->field($model, 'maintenanceMode')->checkbox(); ?>
+    <?= $form->field($model, 'maintenanceMode')->checkbox([
+        'data-action-click' => 'admin.changeMaintenanceMode',
+        'data-action-confirm-header' => $adminSettingsJsConfig['text']['maintenanceMode.header'],
+        'data-action-confirm' => $adminSettingsJsConfig['text']['maintenanceMode.question.' . ($model->maintenanceMode ? 'disable' : 'enable')],
+        'data-action-confirm-text' => $adminSettingsJsConfig['text']['maintenanceMode.button.' . ($model->maintenanceMode ? 'disable' : 'enable')],
+    ]); ?>
 
     <hr>
 

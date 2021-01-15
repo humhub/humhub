@@ -237,4 +237,19 @@ class AccessControl extends ActionFilter
             return Yii::$app->getResponse()->redirect(Url::toRoute(Yii::$app->user->mustChangePasswordRoute));
         }
     }
+
+    /**
+     * Log out all non admin users when maintenance mode is active
+     *
+     * @return Response Redirect to home page
+     * @since 1.8
+     */
+    protected function checkMaintenanceMode()
+    {
+        if (Yii::$app->settings->get('maintenanceMode') && !Yii::$app->user->isGuest) {
+            Yii::$app->user->logout();
+            Yii::$app->getView()->warn(Yii::t('error', 'You have been logged out automatically because only admins have an access to the site on maintenance mode!'));
+            return Yii::$app->getResponse()->redirect(Yii::$app->getHomeUrl());
+        }
+    }
 }

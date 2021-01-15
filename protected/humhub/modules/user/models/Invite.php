@@ -112,6 +112,11 @@ class Invite extends ActiveRecord
 
     public function selfInvite()
     {
+        if (Yii::$app->settings->get('maintenanceMode')) {
+            Yii::$app->getView()->warn(Yii::t('error', 'Only admins have an access to the site on maintenance mode.'));
+            return false;
+        }
+
         $this->source = self::SOURCE_SELF;
         $this->language = Yii::$app->language;
 
@@ -228,7 +233,7 @@ class Invite extends ActiveRecord
      */
     public function allowSelfInvite()
     {
-        return (Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration'));
+        return (!Yii::$app->settings->get('maintenanceMode') && Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration'));
     }
 
     public function showCaptureInRegisterForm()

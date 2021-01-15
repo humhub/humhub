@@ -103,6 +103,10 @@ class AuthController extends Controller
             }
         }
 
+        if (Yii::$app->settings->get('maintenanceMode')) {
+            Yii::$app->session->setFlash('error', Yii::t('error', 'Only admins have an access to the site on maintenance mode.'));
+        }
+
         if (Yii::$app->request->isAjax) {
             return $this->renderAjax('login_modal', ['model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()]);
         }
@@ -129,6 +133,10 @@ class AuthController extends Controller
 
         // Login existing user
         $user = AuthClientHelpers::getUserByAuthClient($authClient);
+
+        if (Yii::$app->settings->get('maintenanceMode') && !$user->isSystemAdmin()) {
+            return $this->redirect(['/user/auth/login']);
+        }
 
         if ($user !== null) {
             return $this->login($user, $authClient);
