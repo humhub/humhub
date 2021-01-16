@@ -79,6 +79,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     const STREAM_CHANNEL_DEFAULT = 'default';
 
+    const EVENT_CONTENT_VISIBILITY_CHANGED = 'contentVisibilityChanged';
+
     /**
      * A array of user objects which should informed about this new content.
      *
@@ -246,6 +248,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner
                 'contentId' => $this->id,
                 'insert' => $insert
             ]));
+        }
+
+        if ($this->visibility != $changedAttributes['visibility']) {
+            $this->trigger(self::EVENT_CONTENT_VISIBILITY_CHANGED);
         }
 
         parent::afterSave($insert, $changedAttributes);

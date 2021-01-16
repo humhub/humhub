@@ -29,6 +29,7 @@ use humhub\modules\space\models\Space;
  * @property integer $object_id
  * @property integer $user_id
  * @property integer $send_notifications
+ * @property integer $active
  */
 class Follow extends ActiveRecord
 {
@@ -85,7 +86,7 @@ class Follow extends ActiveRecord
         return [
             [['object_model', 'object_id', 'user_id'], 'required'],
             [['object_id', 'user_id'], 'integer'],
-            [['send_notifications'], 'boolean'],
+            [['send_notifications', 'active'], 'boolean'],
             [['object_model'], 'string', 'max' => 100]
         ];
     }

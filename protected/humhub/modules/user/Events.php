@@ -2,7 +2,10 @@
 
 namespace humhub\modules\user;
 
+use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\space\MemberEvent;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Profile;
@@ -154,4 +157,63 @@ class Events extends BaseObject
         Yii::$app->queue->push(new jobs\DeleteExpiredSessions());
     }
 
+    /**
+     * @param \yii\base\Event $event
+     */
+    public function onSpaceVisibilityChanged($event)
+    {
+        /** @var Space $space */
+        $space = $event->sender;
+
+        $query = Follow::find();
+        $query->innerJoin('content', 'user_follow.object_model = content.object_model and user_follow.object_id = content.object_id and content.contentcontainer_id = :contentcontainer_id', [
+            ':contentcontainer_id' => $space->contentcontainer_id
+        ]);
+        $query->leftJoin('space_membership', 'user_follow.user_id=space_membership.user_id and space_membership.space_id = :space_id', [
+            ':space_id' => $space->id
+        ]);
+        $query->where('space_membership.status != 3 or space_membership.status is null');
+
+        /** @var Follow $follow */
+        foreach ($query->all() as $follow) {
+            $content = Content::findOne(['object_model' => $follow->object_model, 'object_id' => $follow->object_id]);
+            $follow->active = $content->canView($follow->user_id);
+            $follow->updateAttributes(['active']);
+        }
+    }
+
+    /**
+     * @param \yii\base\Event $event
+     */
+    public function onContentVisibilityChanged($event)
+    {
+        /** @var Content $content */
+        $content = $event->sender;
+
+        $follows = Follow::findAll(['object_model' => $content->object_model, 'object_id' => $content->object_id]);
+        foreach ($follows as $follow) {
+            $follow->active = $content->canView($follow->user_id);
+            $follow->updateAttributes(['active']);
+        }
+    }
+
+    /**
+     * On add/remove a space membership
+     *
+     * @param MemberEvent $event
+     */
+    public function onMemberEvent(MemberEvent $event)
+    {
+        $query = Follow::find();
+        $query->innerJoin('content', 'user_follow.object_model = content.object_model and user_follow.object_id = content.object_id and user_id = :user_id and content.contentcontainer_id = :contentcontainer_id', [
+            ':contentcontainer_id' => $event->space->contentcontainer_id,
+            ':user_id' => $event->user->id
+        ]);
+
+        foreach ($query->all() as $follow) {
+            $content = Content::findOne(['object_model' => $follow->object_model, 'object_id' => $follow->object_id]);
+            $follow->active = $content->canView($follow->user_id);
+            $follow->updateAttributes(['active']);
+        }
+    }
 }

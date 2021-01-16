@@ -39,4 +39,9 @@ return [
     ['space_id' => '5', 'user_id' => '1', 'originator_user_id' => null, 'status' => '3', 'request_message' => null, 'last_visit' => '2014-08-08 06:49:57', 'group_id' => 'admin', 'created_at' => '2014-08-08 05:36:05', 'created_by' => '1', 'updated_at' => '2014-08-08 05:36:05', 'updated_by' => '1'],
     ['space_id' => '5', 'user_id' => '2', 'originator_user_id' => null, 'status' => '3', 'request_message' => null, 'last_visit' => '2014-08-08 06:49:57', 'group_id' => 'member', 'created_at' => '2014-08-08 05:36:05', 'created_by' => '1', 'updated_at' => '2014-08-08 05:36:05', 'updated_by' => '1'],
 
+    // User 1 & 2 & 3  are Member of Space 6
+    ['space_id' => '6', 'user_id' => '1', 'originator_user_id' => null, 'status' => '3', 'request_message' => null, 'last_visit' => '2014-08-08 06:49:57', 'group_id' => 'admin', 'created_at' => '2014-08-08 05:36:05', 'created_by' => '1', 'updated_at' => '2014-08-08 05:36:05', 'updated_by' => '1'],
+    ['space_id' => '6', 'user_id' => '2', 'originator_user_id' => null, 'status' => '3', 'request_message' => null, 'last_visit' => null, 'group_id' => 'member', 'created_at' => '2014-08-10 16:55:41', 'created_by' => null, 'updated_at' => null, 'updated_by' => null],
+    ['space_id' => '6', 'user_id' => '3', 'originator_user_id' => null, 'status' => '3', 'request_message' => null, 'last_visit' => null, 'group_id' => 'member', 'created_at' => '2014-08-10 16:55:41', 'created_by' => null, 'updated_at' => null, 'updated_by' => null],
+
 ];
