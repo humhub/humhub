@@ -9,6 +9,7 @@
 namespace humhub\modules\marketplace\components;
 
 use humhub\components\ModuleEvent;
+use humhub\libs\Helpers;
 use humhub\libs\HttpClient;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\marketplace\Module;
@@ -88,6 +89,7 @@ class OnlineModuleManager extends Component
 
         Yii::$app->moduleManager->flushCache();
         Yii::$app->moduleManager->register($modulesPath . DIRECTORY_SEPARATOR . $moduleId);
+        Helpers::ClearBytecode();
     }
 
 

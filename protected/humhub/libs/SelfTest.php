@@ -318,6 +318,21 @@ class SelfTest
             ];
         }
 
+        // Checks GraphicsMagick Extension
+        $title = 'PHP - Sockets Extension';
+
+        if (function_exists('socket_accept')) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'WARNING',
+                'hint' => 'Optional - Required for RoadRunner Support'
+            ];
+        }
 
         $memoryLimit = ini_get('memory_limit');
         if (preg_match('/^(\d+)(.)$/', $memoryLimit, $m)) {

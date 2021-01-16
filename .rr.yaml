@@ -3,6 +3,9 @@ http:
     workers:
         command: "php protected/rr"
         numWorkers: 2
+rpc:
+    enable: true
+    listen: tcp://127.0.0.1:6001
 static:
     dir: "."
     forbid: [ ".php", ".htaccess", "protected/", "uploads/file/"]

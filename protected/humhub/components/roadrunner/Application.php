@@ -28,6 +28,9 @@ class Application extends \humhub\components\Application
         $config['components']['response']['class'] = Response::class;
         $config['components']['request']['class'] = Request::class;
 
+        $config['components']['urlManager']['showScriptName'] = false;
+        $config['components']['urlManager']['enablePrettyUrl'] = true;
+
         return parent::__construct($config);
     }
 

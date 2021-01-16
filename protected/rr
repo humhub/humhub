@@ -39,6 +39,12 @@ while ($req = $psr7->acceptRequest()) {
 
 }
 
+function rr_restartWorkers()
+{
+    $rpc = new Goridge\RPC(new Spiral\Goridge\SocketRelay("127.0.0.1", 6001));
+    $rpc->call("http.Reset", true);
+}
+
 
 function setGlobals(ServerRequestInterface $req)
 {
