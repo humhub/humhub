@@ -1,0 +1,70 @@
+#!/usr/bin/env php
+<?php
+
+use Psr\Http\Message\ServerRequestInterface;
+use Spiral\Goridge;
+use Spiral\RoadRunner;
+
+ini_set('display_errors', 'stderr');
+
+defined('YII_DEBUG') or define('YII_DEBUG', true);
+defined('YII_ENV') or define('YII_ENV', 'dev');
+
+require(__DIR__ . '/vendor/autoload.php');
+require(__DIR__ . '/vendor/yiisoft/yii2/Yii.php');
+
+$worker = new RoadRunner\Worker(new Goridge\StreamRelay(STDIN, STDOUT));
+$psr7 = new RoadRunner\PSR7Client($worker);
+
+$config = yii\helpers\ArrayHelper::merge(
+    require(__DIR__ . '/humhub/config/common.php'),
+    require(__DIR__ . '/humhub/config/web.php'),
+    (is_readable(__DIR__ . '/config/dynamic.php')) ? require(__DIR__ . '/config/dynamic.php') : [],
+    require(__DIR__ . '/config/common.php'),
+    require(__DIR__ . '/config/web.php')
+);
+
+while ($req = $psr7->acceptRequest()) {
+    try {
+        setGlobals($req);
+        $application = new humhub\components\roadrunner\Application($config);
+        $response = $application->run();
+        $psr7->respond($response);
+
+        $application->db->close();
+    } catch (\Throwable $e) {
+        $psr7->getWorker()->error((string)$e);
+    }
+    \Yii::getLogger()->flush(true);
+
+}
+
+
+function setGlobals(ServerRequestInterface $req)
+{
+    $_GET = $req->getQueryParams();
+    $_POST = $req->getParsedBody();
+    $_COOKIE = $req->getCookieParams();
+    $_SERVER = $req->getServerParams();
+    $_SERVER['PHP_SELF'] = '/';
+    $_SERVER['SERVER_PORT'] = $req->getUri()->getPort();
+    $_SERVER['SERVER_NAME'] = $req->getUri()->getHost();
+    $_SERVER['REQUEST_METHOD'] = $req->getMethod();
+    if ($req->getUri()->getScheme() === 'https') {
+        $_SERVER['https'] = 'on';
+    }
+    foreach ($req->getHeaders() as $n => $v) {
+        foreach ($v as $v1) {
+            $_SERVER['HTTP_' . $n] = $v1;
+        }
+    }
+
+    $ct = $req->getHeader('Content-Type');
+    if (!empty($ct)) {
+        $_SERVER['CONTENT_TYPE'] = $ct[0];
+    }
+    $_SERVER['SCRIPT_FILENAME'] = dirname(dirname(__FILE__)) . '/index.php';
+    $_SERVER['PHP_SELF'] = '/index.php';
+    $_SERVER['SCRIPT_NAME'] = '/index.php';
+
+}

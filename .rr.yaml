@@ -1,0 +1,10 @@
+http:
+    address: 0.0.0.0:8007
+    workers:
+        command: "php protected/rr"
+        numWorkers: 2
+static:
+    dir: "."
+    forbid: [ ".php", ".htaccess", "protected/", "uploads/file/"]
+    response:
+        "X-Powered-By": "HumHub"
