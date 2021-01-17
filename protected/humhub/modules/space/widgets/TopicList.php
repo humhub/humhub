@@ -42,7 +42,7 @@ class TopicList extends LeftNavigation
         }
 
 
-        $this->panelTitle = "étiquettes";
+        $this->panelTitle = "<b>" . Yii::t('TopicModule.base', 'Topics') . "</b>";
         $topics = Topic::findByContainer($this->space)->all();
 
         foreach ($topics as $topic) {
@@ -50,7 +50,7 @@ class TopicList extends LeftNavigation
             $this->addEntry(new MenuLink([
                 'label' => $topic->name,
                 'url' => $topic->getUrl(),
-              //  'icon' => 'fa-bars',
+                'icon' => 'fa-tag',
                 'sortOrder' => $topic->sort_order,
             ]));
          }
