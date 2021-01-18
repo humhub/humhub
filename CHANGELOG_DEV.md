@@ -22,3 +22,4 @@
 - Enh #4751: Hide separator between widgets `LikeLink` and `CommentLink`
 - Enh #4751: New `ContentObjectLinks` widget for the detail views of module content
 - Enh #4754: Shorten high member numbers
+- Enh #4781: Change allowed characters in username
