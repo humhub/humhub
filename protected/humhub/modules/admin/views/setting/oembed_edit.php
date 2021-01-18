@@ -3,8 +3,7 @@
 use humhub\widgets\Button;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use humhub\compat\CActiveForm;
-use humhub\compat\CHtml;
+use humhub\modules\ui\form\widgets\ActiveForm;
 ?>
 
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
@@ -24,26 +23,24 @@ use humhub\compat\CHtml;
 
 <br>
 
-<?php $form = CActiveForm::begin(['id' => 'authentication-settings-form']); ?>
+<?php $form = ActiveForm::begin(['id' => 'authentication-settings-form']); ?>
 
 
 <?= $form->errorSummary($model); ?>
 
 <div class="form-group">
-    <?= $form->labelEx($model, 'prefix'); ?>
-    <?= $form->textField($model, 'prefix', ['class' => 'form-control']); ?>
+    <?= $form->field($model, 'prefix')->textInput(['class' => 'form-control']); ?>
     <p class="help-block"><?= Yii::t('AdminModule.settings', 'Url Prefix without http:// or https:// (e.g. youtube.com)'); ?></p>
 </div>
 
 <div class="form-group">
-    <?= $form->labelEx($model, 'endpoint'); ?>
-    <?= $form->textField($model, 'endpoint', ['class' => 'form-control']); ?>
+    <?= $form->field($model, 'endpoint')->textInput(['class' => 'form-control']); ?>
     <p class="help-block"><?= Yii::t('AdminModule.settings', 'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)'); ?></p>
 </div>
 
 
-<?= CHtml::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
-<?php CActiveForm::end(); ?>
+<?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+<?php ActiveForm::end(); ?>
 
 <?php if ($prefix != ""): ?>
     <?= Html::a(Yii::t('AdminModule.settings', 'Delete'), Url::to(['oembed-delete', 'prefix' => $prefix]), ['class' => 'btn btn-danger pull-right', 'data-method' => 'POST']); ?>

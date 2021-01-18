@@ -7,7 +7,7 @@ use humhub\modules\user\models\Group;
 use humhub\widgets\Button;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\GridView;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\grid\DisplayNameColumn;
@@ -24,7 +24,7 @@ AdminGroupAsset::register($this);
 <div class="panel-body">
      <div class="row">
         <div class="form-group col-md-6">
-            <?php $form = ActiveForm::begin(['action' => ['/admin/group/add-members']]); ?>
+            <?php $form = ActiveForm::begin(['action' => ['/admin/group/add-members'], 'acknowledge' => true]); ?>
             <div class="input-group select2-humhub-append">
                 <?= UserPickerField::widget([
                     'model' => $addGroupMemberForm,

@@ -2,7 +2,7 @@
 
 use humhub\libs\TimezoneHelper;
 use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\compat\CHtml;
+use yii\helpers\Html;
 
 ?>
 
@@ -42,7 +42,7 @@ use humhub\compat\CHtml;
 
     <hr>
 
-    <?= CHtml::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+    <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
     <!-- show flash message after saving -->
     <?php \humhub\widgets\DataSaved::widget(); ?>
