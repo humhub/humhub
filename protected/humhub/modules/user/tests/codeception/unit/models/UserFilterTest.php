@@ -33,7 +33,7 @@ class UserFilterTest extends HumHubDbTestCase
     {
         $users = UserFilter::filter(User::find(), 'Admin', 5);
 
-        $this->assertEquals(1, count($users));
+        $this->assertEquals(2, count($users));
         $this->assertEquals('Admin', $users[0]->username);
     }
 
