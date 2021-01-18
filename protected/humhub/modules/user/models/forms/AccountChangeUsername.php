@@ -41,7 +41,7 @@ class AccountChangeUsername extends \yii\base\Model
             ['newUsername', 'required'],
             ['newUsername', 'string', 'min' => $userModule->minimumUsernameLength, 'max' => $userModule->maximumUsernameLength],
             ['newUsername', 'unique', 'targetAttribute' => 'username', 'targetClass' => User::class, 'message' => '{attribute} "{value}" is already in use!'],
-            ['newUsername', 'match', 'not' => true, 'pattern' => '/[\x00-\x1f\x7f]/', 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false],
+            ['newUsername', 'match', 'not' => true, 'pattern' => '/[\x00-\x1f\x7f\/]/', 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false],
             ['newUsername', 'trim'],
         ];
 
