@@ -664,6 +664,17 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
+     * Checks if the user is allowed to view all content
+     *
+     * @since 1.8
+     * @return bool
+     */
+    public function canViewAllContent()
+    {
+        return Yii::$app->getModule('content')->adminCanViewAllContent && $this->isSystemAdmin();
+    }
+
+    /**
      * @inheritdoc
      */
     public function getWallOut()
