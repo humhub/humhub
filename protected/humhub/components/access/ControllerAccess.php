@@ -246,7 +246,7 @@ class ControllerAccess extends BaseObject
         ]);
         $this->registerValidator([
             self::RULE_LOGGED_IN_ONLY => 'validateMaintenanceMode',
-            'reason' => Yii::t('error', 'Only admins have an access to the site on maintenance mode.'),
+            'reason' => Yii::t('error', 'Only admins have access to the site on maintenance mode.'),
             'code' => 403,
             'codeCallback' => 'checkMaintenanceMode',
         ]);

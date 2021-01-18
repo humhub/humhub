@@ -113,7 +113,7 @@ class Invite extends ActiveRecord
     public function selfInvite()
     {
         if (Yii::$app->settings->get('maintenanceMode')) {
-            Yii::$app->getView()->warn(Yii::t('error', 'Only admins have an access to the site on maintenance mode.'));
+            Yii::$app->getView()->warn(Yii::t('error', 'Only admins have access to the site on maintenance mode.'));
             return false;
         }
 
