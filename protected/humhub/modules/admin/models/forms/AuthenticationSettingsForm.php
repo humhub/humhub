@@ -24,7 +24,6 @@ class AuthenticationSettingsForm extends \yii\base\Model
     public $internalRequireApprovalAfterRegistration;
     public $internalUsersCanInvite;
     public $showRegistrationUserGroup;
-    public $defaultUserGroup;
     public $defaultUserIdleTimeoutSec;
     public $allowGuestAccess;
     public $showCaptureInRegisterForm;
@@ -47,7 +46,6 @@ class AuthenticationSettingsForm extends \yii\base\Model
         $this->internalRequireApprovalAfterRegistration = $settingsManager->get('auth.needApproval');
         $this->internalAllowAnonymousRegistration = $settingsManager->get('auth.anonymousRegistration');
         $this->showRegistrationUserGroup = $settingsManager->get('auth.showRegistrationUserGroup');
-        $this->defaultUserGroup = $module->getDefaultGroupId();
         $this->defaultUserIdleTimeoutSec = $settingsManager->get('auth.defaultUserIdleTimeoutSec');
         $this->allowGuestAccess = $settingsManager->get('auth.allowGuestAccess');
         $this->showCaptureInRegisterForm = $settingsManager->get('auth.showCaptureInRegisterForm');
@@ -63,7 +61,6 @@ class AuthenticationSettingsForm extends \yii\base\Model
     {
         return [
             [['internalUsersCanInvite', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess', 'showCaptureInRegisterForm', 'showRegistrationUserGroup'], 'boolean'],
-            ['defaultUserGroup', 'exist', 'targetAttribute' => 'id', 'targetClass' => Group::class],
             ['defaultUserProfileVisibility', 'in', 'range' => [1, 2]],
             ['defaultUserIdleTimeoutSec', 'integer', 'min' => 20],
             [['registrationApprovalMailContent', 'registrationDenialMailContent'], 'string']
@@ -79,8 +76,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
             'internalRequireApprovalAfterRegistration' => Yii::t('AdminModule.user', 'Require group admin approval after registration'),
             'internalAllowAnonymousRegistration' => Yii::t('AdminModule.user', 'Anonymous users can register'),
             'internalUsersCanInvite' => Yii::t('AdminModule.user', 'Members can invite external users by email'),
-            'showRegistrationUserGroup' => Yii::t('AdminModule.user', 'Show Group Dropdown during registration'),
-            'defaultUserGroup' => Yii::t('AdminModule.user', 'Default user group for new users'),
+            'showRegistrationUserGroup' => Yii::t('AdminModule.user', 'Show group selection at registration'),
             'defaultUserIdleTimeoutSec' => Yii::t('AdminModule.user', 'Default user idle timeout, auto-logout (in seconds, optional)'),
             'allowGuestAccess' => Yii::t('AdminModule.user', 'Allow limited access for non-authenticated users (guests)'),
             'showCaptureInRegisterForm' => Yii::t('AdminModule.user', 'Include captcha in registration form'),
@@ -105,7 +101,6 @@ class AuthenticationSettingsForm extends \yii\base\Model
         $settingsManager->set('auth.needApproval', $this->internalRequireApprovalAfterRegistration);
         $settingsManager->set('auth.anonymousRegistration', $this->internalAllowAnonymousRegistration);
         $settingsManager->set('auth.showRegistrationUserGroup', $this->showRegistrationUserGroup);
-        $module->setDefaultGroup($this->defaultUserGroup);
         $settingsManager->set('auth.defaultUserIdleTimeoutSec', $this->defaultUserIdleTimeoutSec);
         $settingsManager->set('auth.allowGuestAccess', $this->allowGuestAccess);
 
