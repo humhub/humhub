@@ -60,10 +60,11 @@ class Module extends \humhub\components\Module
     public $adminCanChangeUserProfileImages = false;
 
     /**
-     * @var string Regexp for username
+     * @var string Regular expression to check username characters
+     * @note Example to allow more characters: /^[\p{L}\d_\-@#$%^&*\(\)\[\]\{\}+=<>:;,.?!|~"\'\\\\]+$/iu
      * @since 1.8
      */
-    public $usernameRegexp = '/^[\p{L}\d_\-@#$%^&*\(\)\[\]\{\}+=<>:;,.?!|~"\'\\\\]+$/iu';
+    public $validUsernameRegexp = '/^[\p{L}\d_\-@]+$/iu';
 
     /**
      * @var int maximum username length
