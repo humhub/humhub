@@ -149,7 +149,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['username'], 'unique'],
             [['username'], 'string', 'max' => $userModule->maximumUsernameLength, 'min' => $userModule->minimumUsernameLength],
             // Client validation is disable due to invalid client pattern validation
-            [['username'], 'match', 'not' => true, 'pattern' => '/[\x00-\x1f\x7f]/', 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false],
+            [['username'], 'match', 'pattern' => $userModule->validUsernameRegexp, 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false],
             [['status', 'created_by', 'updated_by', 'visibility'], 'integer'],
             [['tags'], 'string'],
             [['guid'], 'string', 'max' => 45],
@@ -665,6 +665,17 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
+     * Checks if the user is allowed to view all content
+     *
+     * @since 1.8
+     * @return bool
+     */
+    public function canViewAllContent()
+    {
+        return Yii::$app->getModule('content')->adminCanViewAllContent && $this->isSystemAdmin();
+    }
+
+    /**
      * @inheritdoc
      */
     public function getWallOut()
@@ -802,6 +813,37 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     {
         // TODO: Implement same logic as for Spaces
         return Content::VISIBILITY_PUBLIC;
+    }
+
+    /**
+     * Check if the User must change password
+     *
+     * @since 1.8
+     * @return bool
+     */
+    public function mustChangePassword()
+    {
+        /* @var Module $module */
+        $module = Yii::$app->getModule('user');
+        return (bool)$module->settings->contentContainer($this)->get('mustChangePassword');
+    }
+
+    /**
+     * Set/Unset User to force change password
+     *
+     * @since 1.8
+     * @param bool true - force user to change password, false - don't require to change password
+     */
+    public function setMustChangePassword($state = true)
+    {
+        /* @var Module $module */
+        $module = Yii::$app->getModule('user');
+        $container = $module->settings->contentContainer($this);
+        if ($state) {
+            $container->set('mustChangePassword', true);
+        } else {
+            $container->delete('mustChangePassword');
+        }
     }
 
 }

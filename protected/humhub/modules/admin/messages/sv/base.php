@@ -52,6 +52,8 @@ return [
     'Administrative group' => '',
     'Base URL needs to begin with http:// or https://' => '',
     'Cronjobs' => '',
+    'Delete all' => '',
+    'Delete selected rows' => '',
     'Design' => '',
     'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',
     'Logging' => '',

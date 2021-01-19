@@ -33,6 +33,9 @@ $bannerProgressBarPadding = $container->getProfileBannerImage()->hasImage() ? '9
 $bannerUpload = Upload::withName($coverUploadName, ['url' => $coverUploadUrl]);
 
 $profileImageUpload = Upload::withName($imageUploadName, ['url' => $imageUploadUrl]);
+
+$profileImageWidth = $container->getProfileImage()->width() - 10;
+$profileImageHeight = $container->getProfileImage()->height() - 10;
 ?>
 
 <?= Html::beginTag('div', $options) ?>
@@ -67,14 +70,14 @@ $profileImageUpload = Upload::withName($imageUploadName, ['url' => $imageUploadU
         <?php endif; ?>
     </div>
 
-    <div class="image-upload-container profile-user-photo-container" style="width: 140px; height: 140px;">
+    <div class="image-upload-container profile-user-photo-container" style="width: <?= $profileImageWidth ?>px; height: <?= $profileImageHeight ?>px;">
 
         <?php if ($container->getProfileImage()->hasImage()) : ?>
             <a data-ui-gallery="spaceHeader" href="<?= $container->profileImage->getUrl('_org') ?>">
-                <?= $container->getProfileImage()->render( 140,  ['class' => 'img-profile-header-background profile-user-photo', 'link' => false]) ?>
+                <?= $container->getProfileImage()->render($profileImageWidth, ['class' => 'img-profile-header-background profile-user-photo', 'link' => false]) ?>
             </a>
         <?php else : ?>
-            <?= $container->getProfileImage()->render(140, ['class' => 'img-profile-header-background profile-user-photo']) ?>
+            <?= $container->getProfileImage()->render($profileImageHeight, ['class' => 'img-profile-header-background profile-user-photo']) ?>
         <?php endif; ?>
 
         <?php if ($canEdit) : ?>

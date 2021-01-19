@@ -49,6 +49,8 @@ return [
     'Back to user overview' => '',
     'Base URL needs to begin with http:// or https://' => '',
     'Cronjobs' => '',
+    'Delete all' => '',
+    'Delete selected rows' => '',
     'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',
     'Information' => '',
     'Invited by' => '',

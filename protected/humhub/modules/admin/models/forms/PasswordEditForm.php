@@ -27,7 +27,7 @@ class PasswordEditForm extends Password
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_EDIT_ADMIN] = ['newPassword', 'newPasswordConfirm'];
+        $scenarios[self::SCENARIO_EDIT_ADMIN] = ['newPassword', 'newPasswordConfirm', 'mustChangePassword'];
 
         return $scenarios;
     }
