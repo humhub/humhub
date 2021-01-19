@@ -158,6 +158,11 @@ class Group extends ActiveRecord
             return false;
         }
 
+        if ($this->show_at_registration && $this->is_admin_group) {
+            // Admin group cannot be shown at registration
+            $this->show_at_registration = 0;
+        }
+
         if ($this->is_default_group && $this->is_admin_group) {
             // Admin group cannot be default
             $this->is_default_group = 0;
