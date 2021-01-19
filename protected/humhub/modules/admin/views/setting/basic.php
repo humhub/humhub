@@ -65,6 +65,7 @@ AdminAsset::register($this);
         'data-action-confirm' => $adminSettingsJsConfig['text']['maintenanceMode.question.' . ($model->maintenanceMode ? 'disable' : 'enable')],
         'data-action-confirm-text' => $adminSettingsJsConfig['text']['maintenanceMode.button.' . ($model->maintenanceMode ? 'disable' : 'enable')],
     ]); ?>
+    <?= $form->field($model, 'maintenanceModeInfo')->label(false)->textInput(['disabled' => !$model->maintenanceMode]); ?>
 
     <hr>
 

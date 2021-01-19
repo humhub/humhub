@@ -1,9 +1,16 @@
 <?php
 
+use humhub\modules\user\models\forms\Login;
+use humhub\modules\user\models\Invite;
 use yii\captcha\Captcha;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use humhub\modules\user\widgets\AuthChoice;
+
+/* @var $canRegister boolean */
+/* @var $model Login */
+/* @var $invite Invite */
+/* @var $info string */
 ?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
@@ -37,6 +44,12 @@ use humhub\modules\user\widgets\AuthChoice;
                     <?php if (Yii::$app->session->hasFlash('error')): ?>
                         <div class="alert alert-danger" role="alert">
                             <?= Yii::$app->session->getFlash('error') ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (!empty($info)): ?>
+                        <div class="alert alert-info" role="alert">
+                            <?= $info ?>
                         </div>
                     <?php endif; ?>
 

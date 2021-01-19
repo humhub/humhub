@@ -24,6 +24,7 @@ class BasicSettingsForm extends \yii\base\Model
     public $dashboardShowProfilePostForm;
     public $enableFriendshipModule;
     public $maintenanceMode;
+    public $maintenanceModeInfo;
 
     /**
      * @inheritdoc
@@ -37,6 +38,7 @@ class BasicSettingsForm extends \yii\base\Model
         $this->defaultLanguage = Yii::$app->settings->get('defaultLanguage');
         $this->timeZone = Yii::$app->settings->get('timeZone');
         $this->maintenanceMode = Yii::$app->settings->get('maintenanceMode');
+        $this->maintenanceModeInfo = Yii::$app->settings->get('maintenanceModeInfo');
 
         $this->dashboardShowProfilePostForm = Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm');
         $this->tour = Yii::$app->getModule('tour')->settings->get('enable');
@@ -62,6 +64,7 @@ class BasicSettingsForm extends \yii\base\Model
                     $this->addError($attribute, Yii::t('AdminModule.base', 'Base URL needs to begin with http:// or https://'));
                 }
             }],
+            ['maintenanceModeInfo', 'safe'],
         ];
     }
 
@@ -93,6 +96,7 @@ class BasicSettingsForm extends \yii\base\Model
                     'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime())
                 ]
             ),
+            'maintenanceModeInfo' => Yii::t('AdminModule.settings', 'Maintenance mode info to display on the login page.'),
         ];
     }
 
@@ -107,6 +111,7 @@ class BasicSettingsForm extends \yii\base\Model
         Yii::$app->settings->set('defaultLanguage', $this->defaultLanguage);
         Yii::$app->settings->set('timeZone', $this->timeZone);
         Yii::$app->settings->set('maintenanceMode', $this->maintenanceMode);
+        Yii::$app->settings->set('maintenanceModeInfo', $this->maintenanceModeInfo);
 
         Yii::$app->getModule('dashboard')->settings->set('showProfilePostForm', $this->dashboardShowProfilePostForm);
         Yii::$app->getModule('tour')->settings->set('enable', $this->tour);

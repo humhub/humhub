@@ -14,6 +14,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 /* @var $canRegister boolean */
 /* @var $model Login */
 /* @var $invite Invite */
+/* @var $info string */
 ?>
 
 <div class="container" style="text-align: center;">
@@ -30,6 +31,12 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
             <?php if (Yii::$app->session->hasFlash('error')): ?>
                 <div class="alert alert-danger" role="alert">
                     <?= Yii::$app->session->getFlash('error') ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (!empty($info)): ?>
+                <div class="alert alert-info" role="alert">
+                    <?= $info ?>
                 </div>
             <?php endif; ?>
 

@@ -103,15 +103,22 @@ class AuthController extends Controller
             }
         }
 
+        $loginParams = [
+            'model' => $login,
+            'invite' => $invite,
+            'canRegister' => $invite->allowSelfInvite(),
+        ];
+
         if (Yii::$app->settings->get('maintenanceMode')) {
             Yii::$app->session->setFlash('error', Yii::t('error', 'Only admins have access to the site on maintenance mode.'));
+            $loginParams['info'] = Yii::$app->settings->get('maintenanceModeInfo');
         }
 
         if (Yii::$app->request->isAjax) {
-            return $this->renderAjax('login_modal', ['model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()]);
+            return $this->renderAjax('login_modal', $loginParams);
         }
 
-        return $this->render('login', ['model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()]);
+        return $this->render('login', $loginParams);
     }
 
     /**
