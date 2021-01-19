@@ -43,6 +43,8 @@ return [
     'Basic' => '',
     'Caching' => '',
     'Cronjobs' => '',
+    'Delete all' => '',
+    'Delete selected rows' => '',
     'Design' => '',
     'Files' => '',
     'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',

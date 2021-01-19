@@ -8,7 +8,7 @@
 use humhub\libs\Html;
 
 /* @var $this \humhub\modules\ui\view\components\View */
-/* @var $counters \humhub\modules\ui\widgets\CounterItem[] */
+/* @var $counters \humhub\modules\ui\widgets\CounterSetItem[] */
 
 ?>
 
@@ -20,7 +20,7 @@ use humhub\libs\Html;
         <?php endif; ?>
 
         <div class="pull-left entry">
-            <span class="count"><?= $counter->value; ?></span>
+            <span class="count"><?= $counter->getShortValue(); ?></span>
             <br>
             <span class="title"><?= $counter->label; ?></span>
         </div>

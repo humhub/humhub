@@ -23,6 +23,7 @@ return [
     'Login required for this section.' => '',
     'You are not allowed to perform this action.' => '',
     'You are not permitted to access this section.' => '',
+    'You must change password.' => '',
     'You need admin permissions to access this section.' => '',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => '',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => '',
