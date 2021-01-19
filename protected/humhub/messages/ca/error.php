@@ -17,13 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<strong>Login</strong> required' => '<strong>Inici de sessió</strong> requerit',
     'An internal server error occurred.' => '',
     'Guest mode not active, please login first.' => '',
     'Login required for this section.' => '',
     'You are not allowed to perform this action.' => '',
     'You are not permitted to access this section.' => '',
+    'You must change password.' => '',
     'You need admin permissions to access this section.' => '',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => '',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => '',
-    '<strong>Login</strong> required' => '<strong>Inici de sessió</strong> requerit',
 ];

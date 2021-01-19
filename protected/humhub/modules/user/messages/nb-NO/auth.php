@@ -68,6 +68,10 @@ return [
     'email' => 'e-post',
     'password' => 'passord',
     'username or email' => 'brukernavn eller e-post',
+    '<strong>Change</strong> Password' => '',
+    'Confirm' => '',
+    'Due to security reasons you are required to change your password in order to access the platform.' => '',
     'Group' => '',
+    'Log out' => '',
     'User or Password incorrect.' => '',
 ];
