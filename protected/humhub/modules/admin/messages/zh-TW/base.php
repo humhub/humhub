@@ -35,6 +35,8 @@ return [
     'Basic' => '',
     'Caching' => '',
     'Cronjobs' => '',
+    'Delete all' => '',
+    'Delete selected rows' => '',
     'Design' => '',
     'Files' => '',
     'General' => '',

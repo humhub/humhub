@@ -64,4 +64,6 @@ return [
     'Userprofiles' => 'Brukerprofiler',
     'Users' => 'Brukere',
     '<strong>Module </strong> administration' => '',
+    'Delete all' => '',
+    'Delete selected rows' => '',
 ];

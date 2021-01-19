@@ -17,6 +17,8 @@ return array (
   'Basic' => 'Основни',
   'Caching' => 'Кеширане',
   'Cronjobs' => 'Cronjobs (периодични фонови задачи)',
+  'Delete all' => 'Изтриване на всички',
+  'Delete selected rows' => 'Изтриване на избраните редове',
   'Design' => 'Дизайн',
   'Files' => 'Файлове',
   'General' => 'Общ',

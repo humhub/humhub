@@ -145,7 +145,11 @@ Kind Regards<br>
     'never' => 'jamais',
     'Account' => '',
     'Add a seperate page for the group to the directory.' => '',
+    'All open registration invitations were successfully deleted.' => '',
+    'Delete All' => '',
     'Make the group selectable at registration.' => '',
     'Password' => '',
     'Send notifications to users when added to or removed from the group.' => '',
+    'The Space memberships of all group members will be updated. This may take up to several minutes.' => '',
+    'The selected open registration invitations were successfully deleted.' => '',
 ];

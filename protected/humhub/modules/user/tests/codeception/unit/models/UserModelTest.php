@@ -50,6 +50,20 @@ class UserModelTest extends HumHubDbTestCase
         $this->assertFalse($user->super_admin);
     }
 
+    public function testCheckCanViewAllContent()
+    {
+        $admin = User::findOne(['username' => 'Admin']);
+        $this->assertFalse($admin->canViewAllContent());
+
+        $user = User::findOne(['username' => 'User1']);
+        $this->assertFalse($user->canViewAllContent());
+
+        Yii::$app->getModule('content')->adminCanViewAllContent = true;
+
+        $this->assertTrue($admin->canViewAllContent());
+        $this->assertFalse($user->canViewAllContent());
+    }
+
     public function testGetProfileInfo()
     {
         $user = new User();

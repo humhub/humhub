@@ -17,13 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Guest mode not active, please login first.' => '',
-    'Login required for this section.' => '',
-    'You are not permitted to access this section.' => '',
-    'You need admin permissions to access this section.' => '',
-    'Your user account has not been approved yet, please try again later or contact a network administrator.' => '',
-    'Your user account is inactive, please login with an active account or contact a network administrator.' => '',
     '<strong>Login</strong> required' => 'يجب عليك <strong>تسجيل الدخول</strong> ',
     'An internal server error occurred.' => 'حدث خطأ داخلي في الخادم',
     'You are not allowed to perform this action.' => 'غير مسموح لك بتنفيذ هذا الإجراء.',
+    'Guest mode not active, please login first.' => '',
+    'Login required for this section.' => '',
+    'You are not permitted to access this section.' => '',
+    'You must change password.' => '',
+    'You need admin permissions to access this section.' => '',
+    'Your user account has not been approved yet, please try again later or contact a network administrator.' => '',
+    'Your user account is inactive, please login with an active account or contact a network administrator.' => '',
 ];
