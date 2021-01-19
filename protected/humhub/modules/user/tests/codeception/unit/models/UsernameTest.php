@@ -24,7 +24,7 @@ class UsernameTest extends HumHubDbTestCase
         $user->username = 'test/slash';
         $this->assertFalse($user->validate('username'));
         $user->username = '123890AßäöüÄÖÜĆ_-@#$%^&*()[]{}+=<>:;,.?!|~"\'\\';
-        $this->assertTrue($user->validate('username'));
+        $this->assertFalse($user->validate('username'));
         $user->username = 'user@example.com';
         $this->assertTrue($user->validate('username'));
         $user->username = 'user-name';
