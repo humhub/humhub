@@ -19,6 +19,7 @@
 - Fix #4718: Fix space or profile banner size after crop
 - Enh #4738: Allow CanComment permission also on profile level
 - Enh #4749: Add Migration helper to determine installation state
+- Enh #4750: OAuth: Automatically link OAuth Account with same e-mail address
 - Enh #4706: Marketplace: Possibility to prohibit modules via the configuration
 - Enh #4770: Added CLI commands for Professional Edition licence management
 - Enh #4752: Added file column `hash_sha1` to avoid caching problems
