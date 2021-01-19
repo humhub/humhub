@@ -18,6 +18,7 @@
 - Enh #4225: Delete open/pending registration invites automatically after a period of time
 - Fix #4718: Fix space or profile banner size after crop
 - Enh #4738: Allow CanComment permission also on profile level
+- Enh #4511: Default group for users who are not assigned to any other group
 - Enh #4749: Add Migration helper to determine installation state
 - Enh #4611: Added console command to display LDAP attributes of a user
 - Enh #4750: OAuth: Automatically link OAuth Account with same e-mail address
