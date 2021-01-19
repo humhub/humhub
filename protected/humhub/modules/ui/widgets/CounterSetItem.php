@@ -7,6 +7,7 @@
 
 namespace humhub\modules\ui\widgets;
 
+use Yii;
 use yii\base\BaseObject;
 
 
@@ -47,6 +48,14 @@ class CounterSetItem extends BaseObject
     public function hasLink()
     {
         return (!empty($this->url));
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortValue()
+    {
+        return Yii::$app->formatter->asShortInteger($this->value);
     }
 
 }

@@ -9,6 +9,7 @@
 - Enh #4585: Group notifications must be enabled explicitly
 - Fix #4646: Clean up duplicated array keys
 - Enh #242: Allow multiple default spaces for groups
+- Enh #48: Improve "Admin Can View All" Feature
 - Fix #4692: Fix visibility of the button "Add new space"
 - Enh #4579: Optimized dashboard stream query
 - Enh #4579: Optimized live legitimation id queries
@@ -19,3 +20,8 @@
 - Enh #4738: Allow CanComment permission also on profile level
 - Enh #4749: Add Migration helper to determine installation state
 - Enh #4770: Added CLI commands for Professional Edition licence management
+- Enh #4752: Added file column `hash_sha1` to avoid caching problems
+- Enh #4751: Hide separator between widgets `LikeLink` and `CommentLink`
+- Enh #4751: New `ContentObjectLinks` widget for the detail views of module content
+- Enh #4754: Shorten high member numbers
+- Enh #4781: Change allowed characters in username
