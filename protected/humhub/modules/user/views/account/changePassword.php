@@ -1,13 +1,13 @@
 <?php
 
-use yii\bootstrap\ActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\bootstrap\Html;
 ?>
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php'); ?>
     <div class="help-block">
          <?php echo Yii::t('UserModule.account', 'Your current password can be changed here.') ?>
     </div>
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
     <?php if ($model->isAttributeSafe('currentPassword')): ?>
         <?php echo $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45]); ?>

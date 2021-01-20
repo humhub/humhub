@@ -2,7 +2,7 @@
 
 use humhub\libs\Html;
 use humhub\widgets\Button;
-use yii\bootstrap\ActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 
 /* @var $model \humhub\modules\admin\models\forms\SpaceSettingsForm */
 /* @var $joinPolicyOptions array */
@@ -15,7 +15,7 @@ use yii\bootstrap\ActiveForm;
     <?= Yii::t('AdminModule.space', 'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.'); ?>
 </div>
 
-<?php $form = ActiveForm::begin(['id' => 'space-settings-form']); ?>
+<?php $form = ActiveForm::begin(['id' => 'space-settings-form', 'acknowledge' => true]); ?>
 
 <?= humhub\modules\space\widgets\SpacePickerField::widget([
     'form' => $form,

@@ -16,6 +16,8 @@ use humhub\modules\user\widgets\UserPickerField;
 /* @var $group Group */
 /* @var $addGroupMemberForm AddGroupMemberForm */
 /* @var $searchModel UserSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $isManagerApprovalSetting boolean */
 
 AdminGroupAsset::register($this);
 ?>
@@ -23,8 +25,8 @@ AdminGroupAsset::register($this);
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
 <div class="panel-body">
      <div class="row">
-        <div class="form-group col-md-6">
-            <?php $form = ActiveForm::begin(['action' => ['/admin/group/add-members'], 'acknowledge' => true]); ?>
+        <div class="col-md-6">
+            <?php $form = ActiveForm::begin(['action' => ['/admin/group/add-members']]); ?>
             <div class="input-group select2-humhub-append">
                 <?= UserPickerField::widget([
                     'model' => $addGroupMemberForm,

@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\ui\form\widgets\ActiveForm;
+use yii\helpers\Html;
 
 /* @var $model \humhub\modules\notification\models\forms\NotificationSettings */
 ?>
@@ -20,7 +21,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
         'showSpaces' => true
     ]) ?>
     <br/>
-    <button type="submit" class="btn btn-primary" data-ui-loader><?= Yii::t('base', 'Save'); ?></button>
+    <?= Html::submitButton(Yii::t('base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
     <?php ActiveForm::end(); ?>
 </div>
 

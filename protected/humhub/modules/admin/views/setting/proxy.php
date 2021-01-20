@@ -7,41 +7,31 @@ use yii\helpers\Html;
 
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
-<?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
+<?php $form = ActiveForm::begin(); ?>
 
 <?= $form->errorSummary($model); ?>
 
-<div class="form-group">
-    <div class="checkbox">
-        <?= $form->field($model, 'enabled')->checkbox(['readonly' => Yii::$app->settings->isFixed('proxy.enabled')]); ?>
-    </div>
+<div class="checkbox">
+    <?= $form->field($model, 'enabled')->checkbox(['readonly' => Yii::$app->settings->isFixed('proxy.enabled')]); ?>
 </div>
 
 <hr>
-<div class="form-group">
-    <?= $form->field($model, 'server')->textInput(['class' => 'form-control']); ?>
-</div>
 
-<div class="form-group">
-    <?= $form->field($model, 'port')->textInput(['class' => 'form-control']); ?>
-</div>
+<?= $form->field($model, 'server')->textInput(['class' => 'form-control']); ?>
+
+<?= $form->field($model, 'port')->textInput(['class' => 'form-control']); ?>
+
 
 <?php if (defined('CURLOPT_PROXYUSERNAME')) { ?>
-    <div class="form-group">
-        <?= $form->field($model, 'user')->textInput(['class' => 'form-control']); ?>
-    </div>
+    <?= $form->field($model, 'user')->textInput(['class' => 'form-control']); ?>
 <?php } ?>
 
 <?php if (defined('CURLOPT_PROXYPASSWORD')) { ?>
-    <div class="form-group">
-        <?= $form->field($model, 'password')->textInput(['class' => 'form-control']); ?>
-    </div>
+    <?= $form->field($model, 'password')->textInput(['class' => 'form-control']); ?>
 <?php } ?>
 
 <?php if (defined('CURLOPT_NOPROXY')) { ?>
-    <div class="form-group">
-        <?= $form->field($model, 'noproxy')->textarea(['class' => 'form-control', 'rows' => '4']); ?>
-    </div>
+    <?= $form->field($model, 'noproxy')->textarea(['class' => 'form-control', 'rows' => '4']); ?>
 <?php } ?>
 
 <hr>

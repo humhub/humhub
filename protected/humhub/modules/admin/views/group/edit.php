@@ -2,11 +2,15 @@
 
 use humhub\modules\ui\form\widgets\SortOrderField;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\user\models\forms\EditGroupForm;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\modules\space\widgets\SpacePickerField;
 
+/* @var $isManagerApprovalSetting boolean */
+/* @var $showDeleteButton boolean */
+/* @var $group EditGroupForm */
 ?>
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group, 'acknowledge' => true]) ?>

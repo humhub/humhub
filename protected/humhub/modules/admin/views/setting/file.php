@@ -20,22 +20,16 @@ $fileModule = Yii::$app->getModule('file');
 
 <?= $form->errorSummary($model); ?>
 
-<div class="form-group">
-    <?= $form->field($model, 'maxFileSize')->textInput(['class' => 'form-control', 'readonly' => $fileModule->settings->isFixed('maxFileSize')]); ?>
-    <p class="help-block" <?= ($model->maxFileSize > $maxUploadSize) ? 'style="color:' . $this->theme->variable('danger') . ' !important"' : '' ?>>
-        <?= Yii::t('AdminModule.settings', 'PHP reported a maximum of {maxUploadSize} MB', ['{maxUploadSize}' => $maxUploadSizeText]); ?>
-    </p>
-</div>
+<?= $form->field($model, 'maxFileSize')->textInput(['class' => 'form-control', 'readonly' => $fileModule->settings->isFixed('maxFileSize')]); ?>
+<p class="help-block" <?= ($model->maxFileSize > $maxUploadSize) ? 'style="color:' . $this->theme->variable('danger') . ' !important"' : '' ?>>
+    <?= Yii::t('AdminModule.settings', 'PHP reported a maximum of {maxUploadSize} MB', ['{maxUploadSize}' => $maxUploadSizeText]); ?>
+</p>
 
-<div class="form-group">
-            <?= $form->field($model, 'useXSendfile')->checkbox(['disabled' => $fileModule->settings->isFixed('useXSendfile')]); ?>
-            <?= $form->field($model, 'excludeMediaFilesPreview')->checkbox(['disabled' => $fileModule->settings->isFixed('excludeMediaFilesPreview')]); ?>
-</div>
+<?= $form->field($model, 'useXSendfile')->checkbox(['disabled' => $fileModule->settings->isFixed('useXSendfile')]); ?>
+<?= $form->field($model, 'excludeMediaFilesPreview')->checkbox(['disabled' => $fileModule->settings->isFixed('excludeMediaFilesPreview')]); ?>
 
-<div class="form-group">
-    <?= $form->field($model, 'allowedExtensions')->textarea( ['class' => 'form-control']); ?>
-    <p class="help-block"><?= Yii::t('AdminModule.settings', 'Comma separated list. Leave empty to allow all.'); ?></p>
-</div>
+<?= $form->field($model, 'allowedExtensions')->textarea(['class' => 'form-control']); ?>
+<p class="help-block"><?= Yii::t('AdminModule.settings', 'Comma separated list. Leave empty to allow all.'); ?></p>
 
 <hr>
 

@@ -3,6 +3,9 @@
 use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Html;
 
+/* @var $logsCount integer */
+/* @var $dating string */
+/* @var $limitAgeOptions array */
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
@@ -15,7 +18,7 @@ use yii\helpers\Html;
 </p>
 <br>
 
-<?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
+<?php $form = ActiveForm::begin(); ?>
 
 <?= $form->errorSummary($model); ?>
 
