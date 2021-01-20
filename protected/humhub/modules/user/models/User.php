@@ -787,6 +787,30 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
+     * Return user groups
+     *
+     * @return array user groups
+     */
+    public static function getUserGroups()
+    {
+        $groups = [];
+
+        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+            $groups[self::USERGROUP_FRIEND] = Yii::t('UserModule.account', 'Your friends');
+            $groups[self::USERGROUP_USER] = Yii::t('UserModule.account', 'Other users');
+        } else {
+            $groups[self::USERGROUP_USER] = Yii::t('UserModule.account', 'Users');
+        }
+
+        // Add guest groups if enabled
+        if (AuthHelper::isGuestAccessEnabled()) {
+            $groups[self::USERGROUP_GUEST] = Yii::t('UserModule.account', 'Not registered users');
+        }
+
+        return $groups;
+    }
+
+    /**
      * TODO: deprecated
      * @inheritdoc
      */

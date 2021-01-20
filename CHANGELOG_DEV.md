@@ -9,6 +9,7 @@
 - Enh #4585: Group notifications must be enabled explicitly
 - Fix #4646: Clean up duplicated array keys
 - Enh #242: Allow multiple default spaces for groups
+- Enh #4670: Editable default permissions for Content Containers(Space and User)
 - Enh #48: Improve "Admin Can View All" Feature
 - Fix #4692: Fix visibility of the button "Add new space"
 - Enh #4579: Optimized dashboard stream query
