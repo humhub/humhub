@@ -103,7 +103,7 @@ class Module extends \humhub\components\Module
     {
         if (!$contentContainer) {
             return [
-                new AccessDirectory(['contentContainer' => $contentContainer]),
+                new AccessDirectory(),
             ];
         }
 

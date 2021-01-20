@@ -32,8 +32,8 @@ class Module extends \humhub\components\Module
     {
         if ($contentContainer instanceof Space) {
             return [
-                new AddTopic(['contentContainer' => $contentContainer]),
-                new ManageTopics(['contentContainer' => $contentContainer]),
+                new AddTopic(),
+                new ManageTopics(),
             ];
         }
 

@@ -46,7 +46,7 @@ class Module extends \humhub\components\Module
     {
         if(isset($contentContainer)) {
             return [
-                new permissions\CanLike(['contentContainer' => $contentContainer])
+                new permissions\CanLike()
             ];
         }
 

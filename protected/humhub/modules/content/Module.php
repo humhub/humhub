@@ -108,8 +108,8 @@ class Module extends \humhub\components\Module
         if ($contentContainer !== null) {
             return [
                 // Note: we do not return CreatePrivateContent Permission since its not writable at the moment
-                new permissions\ManageContent(['contentContainer' => $contentContainer]),
-                new permissions\CreatePublicContent(['contentContainer' => $contentContainer])
+                new permissions\ManageContent(),
+                new permissions\CreatePublicContent()
             ];
         }
 

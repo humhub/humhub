@@ -124,7 +124,7 @@ class Module extends \humhub\components\Module
     {
         if ($contentContainer instanceof models\User) {
             return [
-                new permissions\ViewAboutPage(['contentContainer' => $contentContainer]),
+                new permissions\ViewAboutPage(),
             ];
         }
 
