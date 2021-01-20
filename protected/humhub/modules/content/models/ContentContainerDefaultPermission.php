@@ -43,19 +43,4 @@ class ContentContainerDefaultPermission extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'permission_id' => 'Permission ID',
-            'contentcontainer_class' => 'Contentcontainer Class',
-            'group_id' => 'Role ID',
-            'module_id' => 'Module ID',
-            'class' => 'Class',
-            'state' => 'State',
-        ];
-    }
-
 }
