@@ -353,7 +353,8 @@ humhub.module('file', function (module, require, $) {
             that.add(file)
         });
 
-        if(!this.$.find('.file-preview-item:visible').length) {
+        // Note we are not using :visible since the preview itself may not visible on init
+        if(!this.$.find('.file-preview-item:not(.hiddenFile)').length) {
             this.$.hide();
         }
     };
@@ -404,13 +405,19 @@ humhub.module('file', function (module, require, $) {
             that.delete(file);
         });
 
-        if(!(this.isImage(file) && this.options.hideImageFileInfo)) {
+        if(!(this.isMedia(file) && this.options.excludeMediaFilesPreview)) {
             $file.fadeIn();
+        } else {
+            $file.addClass('hiddenFile');
         }
     };
 
     Preview.prototype.isImage = function (file) {
         return file.mimeIcon === 'mime-image';
+    };
+
+    Preview.prototype.isMedia = function (file) {
+        return ['mime-image', 'mime-video', 'mime-audio'].includes(file.mimeIcon);
     };
 
     Preview.prototype.getTemplate = function (file) {

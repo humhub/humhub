@@ -3,6 +3,7 @@
 use humhub\libs\ActionColumn;
 use humhub\modules\admin\models\GroupSearch;
 use humhub\modules\admin\widgets\GroupMenu;
+use humhub\modules\user\models\Group;
 use humhub\widgets\Link;
 use yii\helpers\Url;
 use humhub\widgets\GridView;
@@ -30,21 +31,28 @@ use humhub\widgets\GridView;
         'filterModel' => $searchModel,
         'tableOptions' => ['class' => 'table table-hover'],
         'columns' => [
-            'name',
+            [
+                'attribute' => 'name',
+                'format' => 'html',
+                'value' => function (Group $group) {
+                    return $group->name .
+                        ($group->is_default_group ? ' <span class="badge">' . Yii::t('AdminModule.user', 'Default') . '</span>' : '');
+                }
+            ],
             'description',
             [
                 'attribute' => 'members',
                 'label' => Yii::t('AdminModule.user', 'Members'),
                 'format' => 'raw',
                 'options' => ['style' => 'text-align:center;'],
-                'value' => function ($data) {
+                'value' => function (Group $data) {
                     return $data->getGroupUsers()->count();
                 }
             ],
             [
                 'class' => ActionColumn::class,
                 'actions' => function($group, $key, $index) {
-                    /* @var $group \humhub\modules\user\models\Group */
+                    /* @var $group Group */
                     if($group->is_admin_group && !Yii::$app->user->isAdmin()) {
                         return [];
                     }

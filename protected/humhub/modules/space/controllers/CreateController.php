@@ -10,6 +10,9 @@ namespace humhub\modules\space\controllers;
 
 use humhub\components\Controller;
 use humhub\components\behaviors\AccessControl;
+use humhub\models\Setting;
+use humhub\modules\content\components\ContentContainerModule;
+use humhub\modules\content\components\ContentContainerModuleManager;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
@@ -132,12 +135,14 @@ class CreateController extends Controller
      */
     public function actionModules($space_id)
     {
-        $space = Space::find()->where(['id' => $space_id])->one();
+        $space = Space::find()->where(['id' => (int)$space_id])->one();
 
-        if (count($space->getAvailableModules()) == 0) {
+        $installableModules = $space->moduleManager->getInstallable();
+
+        if (count($installableModules) === 0) {
             return $this->actionInvite($space);
         } else {
-            return $this->renderAjax('modules', ['space' => $space, 'availableModules' => $space->getAvailableModules()]);
+            return $this->renderAjax('modules', ['space' => $space, 'availableModules' => $installableModules]);
         }
     }
 

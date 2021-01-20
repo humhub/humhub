@@ -18,5 +18,5 @@
  */
 return [
     'User not found!' => 'ተጠቃሚው አልተገኙም!',
-    'Invalid user state: thi' => '',
+    'Invalid user state: {state}' => '',
 ];

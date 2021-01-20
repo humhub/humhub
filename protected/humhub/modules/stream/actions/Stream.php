@@ -227,16 +227,14 @@ abstract class Stream extends Action
      *
      * @param array $options instance attribute options
      * @return StreamQuery
+     * @throws \yii\base\InvalidConfigException
      * @since 1.6
      */
     protected function initQuery($options = [])
     {
-        $streamQueryClass = $this->streamQueryClass;
-
-        /* @var $instance StreamQuery */
-        $instance = $streamQueryClass::find();
+        $options['class'] = $this->streamQueryClass;
+        $instance = Yii::createObject($options);
         $instance->forUser($this->user);
-        $instance->setAttributes($options, false);
         return $instance;
     }
 
@@ -244,6 +242,17 @@ abstract class Stream extends Action
      * This function is called right before the StreamQuery is built and all filters are applied.
      * At this point the StreamQuery has already been loaded with request data.
      * Subclasses may overwrite this function in order to do some last settings on the StreamQuery instance.
+     *
+     * When overriding this method, make sure you call the parent implementation like the following:
+     *
+     * ```php
+     * public function beforeApplyFilters()
+     * {
+     *     // Add some filters here
+     *
+     *     parent::beforeApplyFilters();
+     * }
+     * ```
      *
      * When overriding this method, make sure you call the parent implementation at the beginning of your function.
      * @throws \yii\base\InvalidConfigException
@@ -276,6 +285,17 @@ abstract class Stream extends Action
      * This function is called after the StreamQuery was build and all filters are applied. At this point changing
      * most StreamQuery settings as filters won't have any effect. Since the query is not yet executed the
      * StreamQuery->query() can still be used for custom query conditions.
+     *
+     * When overriding this method, make sure you call the parent implementation like the following:
+     *
+     * ```php
+     * public function afterApplyFilters()
+     * {
+     *     // Manipulate query...
+     *
+     *     parent::afterApplyFilters();
+     * }
+     * ```
      *
      * When overriding this method, make sure you call the parent implementation at the beginning of your function.
      */
@@ -320,16 +340,56 @@ abstract class Stream extends Action
     {
         $response = new StreamResponse($this->streamQuery);
 
-        foreach ($this->streamQuery->all() as $content) {
-            $streamEntry = $this->getStreamEntryResult($content, $this->streamEntryOptions);
-            if($streamEntry) {
-                $response->addEntry($streamEntry);
-            }
+        $entries = $this->streamQuery->all();
+
+        if(!empty($entries)) {
+            $this->addResponseEntries($entries, $response);
+        } else {
+            $this->handleEmptyResponse($response);
         }
 
         $this->trigger(static::EVENT_AFTER_FETCH, new StreamResponseEvent(['response' => $response]));
 
         return $response->asJson();
+    }
+
+    /**
+     * Adds entries to the response.
+     *
+     * @param StreamResponse $response
+     * @throws Exception
+     * @throws \Throwable
+     * @since 1.7
+     */
+    private function addResponseEntries($entries, StreamResponse $response)
+    {
+        foreach ($entries as $content) {
+            $streamEntry = $this->getStreamEntryResult($content, $this->streamEntryOptions);
+            if($streamEntry) {
+                $response->addEntry($streamEntry);
+            }
+        }
+    }
+
+    /**
+     * Adds an error message to the stream response in certain cases.
+     *
+     * @param StreamResponse $response
+     * @throws Exception
+     * @throws \Throwable
+     * @since 1.7
+     */
+    private function handleEmptyResponse(StreamResponse $response)
+    {
+        if($this->streamQuery->isSingleContentQuery()) {
+            $content = Content::findOne(['id' => $this->streamQuery->contentId]);
+            if(!$content) {
+                $response->setError(400, Yii::t('StreamModule.base', 'The content could not be found.'));
+            } elseif (!$content->canView()) {
+                $response->setError(403, Yii::t('StreamModule.base', 'You are not allowed to view this content.'));
+            }
+        }
+        // Otherwise the content could not be found due to active filter
     }
 
     /**

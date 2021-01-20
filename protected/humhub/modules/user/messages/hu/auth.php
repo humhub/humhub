@@ -68,6 +68,10 @@ return [
     'email' => 'Email cím',
     'password' => 'Jelszó',
     'username or email' => 'Felhasználónév vagy email cím',
+    '<strong>Change</strong> Password' => '',
+    'Confirm' => '',
+    'Due to security reasons you are required to change your password in order to access the platform.' => '',
+    'Log out' => '',
     'Please enter the letters from the image.' => '',
     'User or Password incorrect.' => '',
 ];

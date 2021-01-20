@@ -32,8 +32,8 @@ class ArchiveLink extends \yii\base\Widget
      */
     public function run()
     {
-        if (!$this->content->content->canArchive() || $this->content->content->getContainer()->isArchived()) {
-            return;
+        if (!$this->content->content->canArchive()) {
+            return '';
         }
 
         return $this->render('archiveLink', [

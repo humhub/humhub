@@ -130,4 +130,5 @@ return [
     'E-mail address of the user' => '',
     'Invalid!' => '',
     'Last login date of the user' => '',
+    'Other:' => '',
 ];

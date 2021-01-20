@@ -47,12 +47,6 @@
         background: #cacaca;
     }
 
-    .content {
-        a {
-            color: darken(@info, 20%);
-        }
-    }
-
     .post-file-list {
         background-color: @background-color-page;
     }
@@ -134,6 +128,10 @@
 .comment-container {
     .media {
         overflow: visible;
+    }
+
+    [data-ui-richtext] pre, [data-ui-richtext] pre code.hljs {
+        background-color: darken(@background-color-secondary, 5%);
     }
 }
 

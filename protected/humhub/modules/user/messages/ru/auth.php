@@ -59,6 +59,7 @@ return [
     'Reset password' => 'Сброс пароля',
     'Sign in' => 'Войти',
     'To log in with your new account, click the button below.' => 'Чтобы войти под своей новой учётной записью, нажмите на кнопку ниже.',
+    'User or Password incorrect.' => 'Неверное имя пользователя или пароль',
     'We’ve sent you an email containing a link that will allow you to reset your password.' => 'Мы отправили вам электронное письмо со ссылкой, которая позволит Вам сбросить пароль.',
     'Your email' => 'Ваш email',
     'Your password' => 'Ваш пароль',
@@ -69,5 +70,8 @@ return [
     'email' => 'Email',
     'password' => 'Пароль',
     'username or email' => 'Имя пользователя или email',
-    'User or Password incorrect.' => '',
+    '<strong>Change</strong> Password' => '',
+    'Confirm' => '',
+    'Due to security reasons you are required to change your password in order to access the platform.' => '',
+    'Log out' => '',
 ];

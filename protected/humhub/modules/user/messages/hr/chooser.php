@@ -5,7 +5,7 @@ return array (
   'Load more' => 'Učitaj još',
   'No users found for the given query.' => 'Nije pronađen nijedan korisnik za zadani upit.',
   'Please enter at least {n} character' => 'Unesite najmanje {n} znak',
-  'Select {n,plural,=1{item} other{items}}' => 'Odaberite {n, plural,=1{item} other{items}}',
+  'Select {n,plural,=1{item} other{items}}' => 'Odaberite {n,plural,=1{item} other{items}}',
   'Select {n,plural,=1{user} other{users}}' => 'Odaberite {n,plural,=1{user} other{users}}',
   'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => 'Ovo polje dozvoljava samo maksimum od {n,plural,=1{# item} other{# items}}.',
   'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Ovo polje dozvoljava samo maksimalno {n,plural,=1{# user} other{# users}}.',

@@ -1,7 +1,7 @@
 <?php
 
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m140705_065525_emailing_settings extends Migration
 {
@@ -51,8 +51,7 @@ class m140705_065525_emailing_settings extends Migration
         $this->dropColumn('user', 'receive_email_messaging');
         $this->dropColumn('user', 'receive_email_activities');
 
-        if (\humhub\models\Setting::isInstalled()) {
-
+        if (!$this->isInitialInstallation()) {
             $this->insert('setting', [
                 'name' => 'receive_email_activities',
                 'value' => '1',

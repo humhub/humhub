@@ -28,8 +28,7 @@ StreamAsset::register($this);
 <!-- DIV for a normal wall stream -->
 <div class="s2_stream">
     <div class="back_button_holder" style="display:none">
-        <?= Button::primary(Yii::t('ContentModule.base', 'Back to stream'))->action('init')->loader(false); ?>
-        <br><br>
+        <?= Button::primary(Yii::t('ContentModule.base', 'Back to stream'))->action('init')->loader(false)->sm(); ?>
     </div>
     <div class="s2_streamContent" data-stream-content></div>
 </div>

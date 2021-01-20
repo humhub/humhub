@@ -17,11 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Spaces' => 'אזורים',
     '<strong>Manage</strong> spaces' => '',
     'Add new space' => '',
     'Change owner' => '',
     'Default Content Visiblity' => '',
     'Default Join Policy' => '',
+    'Default Space(s)' => '',
     'Default Visibility' => '',
     'Default space' => '',
     'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => '',
@@ -33,6 +35,6 @@ return [
     'Search by name, description, id or owner.' => '',
     'Settings' => '',
     'Space Settings' => '',
-    'Spaces' => '',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => '',
+    'Update Space memberships also for existing members.' => '',
 ];

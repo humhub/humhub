@@ -18,5 +18,5 @@
  */
 return [
     'User not found!' => 'Bruger ikke fundet!',
-    'Invalid user state: thi' => '',
+    'Invalid user state: {state}' => '',
 ];

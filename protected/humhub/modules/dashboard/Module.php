@@ -8,6 +8,10 @@
 
 namespace humhub\modules\dashboard;
 
+use humhub\modules\dashboard\stream\filters\DashboardGuestStreamFilter;
+use humhub\modules\dashboard\stream\filters\DashboardMemberStreamFilter;
+use Yii;
+
 /**
  * Dashboard Module
  *
@@ -43,5 +47,29 @@ class Module extends \humhub\components\Module
      * @var boolean hides the activities sidebar widget
      */
     public $hideActivitySidebarWidget = false;
+
+    /**
+     * Dashboard stream query filter class used for guest users
+     * @var string
+     * @since 1.8
+     */
+    public $guestFilterClass = DashboardGuestStreamFilter::class;
+
+    /**
+     * Dashboard stream query filter class used for members of the network
+     * @var string
+     * @since 1.8
+     */
+    public $memberFilterClass = DashboardMemberStreamFilter::class;
+
+    /**
+     * @return static
+     */
+    public static function getModuleInstance()
+    {
+        /* @var $module static */
+        $module = Yii::$app->getModule('dashboard');
+        return $module;
+    }
 
 }

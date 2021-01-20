@@ -16,6 +16,7 @@ class ContentContainerFixture extends ActiveFixture
     public $dataFile = '@modules/content/tests/codeception/fixtures/data/contentcontainer.php';
     
     public $depends = [
+        'humhub\modules\content\tests\codeception\fixtures\ContentContainerDefaultPermissionFixture',
         'humhub\modules\content\tests\codeception\fixtures\ContentContainerPermissionFixture',
         'humhub\modules\content\tests\codeception\fixtures\ContentContainerSettingFixture',
         'humhub\modules\content\tests\codeception\fixtures\ContentContainerModuleFixture'

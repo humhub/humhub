@@ -1,6 +1,144 @@
 HumHub Changelog
 ================
 
+1.7.2 (Unreleased)
+-------------------------
+- Fix #4668: table-responsive tables do not overflow due to default word break style
+- Fix #4679: Richtext extension scan does not include full title if title contains a `)`
+- Fix #4703: SSO login drops no warning if AuthClient cannot be stored
+- Fix #4700: Deep Links from Microsoft Office Documents
+- Fix #4714: Use HTTPS protocol for default OEmbed endpoint URLs
+- Fix #4727: Nav tabs with data-toggle are styled in link color
+- Fix #4649: Success message rendered although password validation failed
+- Fix #4717: Repsonsive layout alignment issue on small screens
+- Fix #4715: Call to `Content::canArchive()` throws error on global content
+- Fix #4744: Banner image orientation not being processed
+- Fix #4743: Hide "Like" link when no permission "Can like"
+- Fix #4768: Use only letters and digits from Space name for logo acronym (Thanks to @jrckmcsb) 
+
+
+1.7.1 (November 27, 2020)
+-------------------------
+- Fix #4612: Dashboard wall stream entry displays user name in sub title in post style layout
+- Fix #4614: Profile Image crop broken
+- Fix #4607: Changed grid size of image preview on fluid themes
+- Fix #4609: Error on downscale command
+- Fix #4621: Wrong image orientation on downscaling with imagick
+- Fix #4628: Fixed stream gallery ratio issues on fluid themes
+- Fix #4636: Jplayer overflow on mobile stream
+- Fix #4591: Registration error text "You are already logged in!" not translatable
+- Fix #4630: Transfer default content of user approve/decline email to approve/decline form
+- Fix #4650: `adminCanChangeUserProfileImages` option has no effect
+- Fix #4660: Topic stream filter leads to stream entry duplication in combination with stream suppression
+- Fix #4638: Profile settings do not accept birthdate in russian format
+- Fix #4596: Set `autocomplete="off"` on date picker fields
+- Fix #4666: Richtext attachment of multiple files without title fails
+
+
+1.7.0 (November 4, 2020)
+------------------------
+- Fix #4590: Page loader color contrast too low 
+- Fix #4599: File preview not visible if initialized in background
+
+
+1.7.0-beta.2 (October 26, 2020)
+-------------------------------
+- Fix #4504: Fix `hasSidebar()` for empty sidebar
+- Fix #4526: `HeaderControlsMenu::init` called twice
+- Fix #4529: Aligned default dropdown text size
+- Fix #4533: Removed "Can Like" permission from permission settings for "Not registered users"
+- Fix #4534: In profile checkbox field, `Other:` not translatable 
+- Fix #4547: Fixed wall stream entry header title text style
+- Fix #3980: Empty stream on permalink for content a user is not allowed to access
+- Enh #4448: Exclude all media preview files from file list if `excludeMediaFilesPreview` setting is active
+- Fix #4542: Ignore displaying `Member Since` for empty created_at membership
+- Fix #4549: Handle invalid timezone validation in registration process
+- Enh #4531: Remove wall entry left padding on mobile 
+- Fix #4554: Code blocks in comments uses same background color
+- Fix #4574: Different style between clickable and non clickable space/user counter
+- Fix #4575: Increased text size of "Read more" link on short-text post
+- Fix #4575: Increased text size of "Read more" link on short-text post 
+- Fix #4559: Don’t check platform php extensions by composer v2
+- Fix #4581: Users see content of archived spaces on dashboard
+
+
+1.7.0-beta.1 (October 16, 2020)
+-------------------------------
+
+- Fix #4327: Internationalization of user approval/decline message text
+- Fix #4139: Dashboard post input on mobile cuts editor menu
+- Fix #4328: Top navigation overlaps post input richtext menu on dashboard page
+- Fix #4257: Notification dropdown text breaks after notification image on mobile
+- Enh #4341: Simplified console controller map 
+- Fix #4272: Guess timezone for new accounts
+- Fix #4230: Auto enable "Hide file info (name, size) for images on wall" option
+- Chg: Move CHANGELOG to humhub root
+- Fix #4330: Allow users with permission ManageUsers to modify profile images
+- Enh #4179: Removed deprecated mysql character set in log table migration
+- Enh #4324: Improved line break for menu entries with many characters
+- Enh #4186: Add Timezone validation rules to admin prerequisite view
+- Enh #4378: Implemented generic ContentContainerActiveRecord::is() function
+- Enh #4310: Add "Can Like" Permission 
+- Fix #4111: Issues Cropping Images
+- Enh #4283: Implemented UserMemberSince and UserLastLogin user's profile virtual fields 
+- Fix #4385: Tour broken when profile start page is changed
+- Enh #3882: Rework of wall stream entry widget design and API
+- Enh #3882: Introduction of alternative `WallStreamModuleEntry` widget for collaborative content types
+- Chg #4397: Deprecated old wall entry widget and related stream logic (see `humhub\modules\stream\actions\LegacyStreamTrait.php`)
+- Fix #4391: ActiveRecord `created_at` and `updated_at` contains invalid value after save
+- Chg #4397: Default theme color alignment and new `@link` color variable
+- Enh #4419: Implementation of view context http header `HUMHUB-VIEW-CONTEXT`
+- Fix #4420: Uncaught Throwable destroys search layout
+- Enh #4421: Added `Html::addTooltip()` to add tooltips to an option array
+- Fix #4422: Invalid Html semantic in activity stream (`li` wrapped by `a`)
+- Enh #4423: Implemented icon alias configuration in ui module class
+- Enh #4424: Posts content with short text is emphasized
+- Enh #4425: Use of accessibility compatible icon tooltips
+- Fix #4408: JPlayer on mobile overflows stream content
+- Fix #4382: Use of proper word break style
+- Fix #3566: Bug in models/filetype/CheckboxList.php
+- Enh #4401: Allow to use less variable name in value of another less variable
+- Fix #4434: Fix title quoting for space icons in widget “Member in these spaces”
+- Fix #4428: Replace db Expression time now with func date('Y-m-d G:i:s')
+- Enh #4370: Add "about" to `Space` model
+- Enh #4370: Add `humhub\modules\space\widgets\MyMembership` to manage render user state in a space
+- Enh #4370: Add `humhub\modules\space\widgets\AboutPageSidebar` to manage about page sidebar
+- Enh #4370: Add `About Space` page 
+- Fix #3994: Live event legitimation array include followed users
+- Fix #3994: Live event legitimation consider `cached` argument in processing data
+- Fix #4452: `humhub.ui.filter.getActiveFilterCount` returns wrong value with exclude array option
+- Fix #4452: Ignore `scope` profile filter in stream filter count and hasActiveFilters
+- Fix #4456: PHP8 deprecated warning for LessHelper::updateVariables()
+- Fix #4451: PHP Deprecated Warning in ProsemirrorRichText::replaceLinkExtension
+- Enh #4195: Increased scaled logo size for high res displays
+- Enh #4469: Added TextConverter maximum length
+- Enh #4469: Added file converter id attribute
+- Enh #3978: Added option to compress and resize images automatically on upload
+- Enh #3889: Prevent automatically resized site icons by manually added files (e.g. `/upload/icon/180x180.png`)
+- Enh #4458: Remove cacert.pem in order to avoid curl error
+- Enh #4467: Inject stream entries by event (experimental)
+- Fix #4473: Catch all Throwables when loading module configuration
+- Fix #4474: Loader not removed from event trigger
+- Enh #4476: Reworked TimeAgo widget
+- Chg #4482: Removed old legacy richtext editor which is deprecated since v1.3
+- Enh #4475: Add Console UserAdmin Command
+- Chg #4482: Removed old legacy richtext editor which is deprecated since v1.3
+- Enh #3851: Migrate components from ZendFramework to Laminas
+- Fix #4354: Set `about` as target url of space invitation notification
+- Fix #4493: Removed legacy ControllerAccess in notification ListController
+- Chng #4509: Removed `humhub\modules\space\widgets\Picker` which is deprecated since v1.2
+- Fix #4396: Submitting only picture in comment results in debug error.
+- Enh #4469: Added alias for file uploads folder
+- Fix #4513: Make like counter clickable in first like
+
+
+1.6.5 (Unreleased)
+------------------
+
+- Fix #4555: Default password validation error message missing translation and wrong min. characters
+- Fix #4494: Empty "Add Modules" step on space creation when all modules are always enabled
+
+
 1.6.4 (October 9, 2020)
 -----------------------
 

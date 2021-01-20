@@ -4,6 +4,8 @@ use humhub\modules\space\assets\SpaceAsset;
 use humhub\libs\Helpers;
 use yii\helpers\Url;
 
+/* @var $availableModules array available modules for space*/
+
 SpaceAsset::register($this);
 
 ?>
@@ -19,13 +21,7 @@ SpaceAsset::register($this);
 
             <div class="row">
 
-                <?php foreach ($availableModules as $moduleId => $module) :
-
-                    if (($space->isModuleEnabled($moduleId) && !$space->canDisableModule($moduleId)) ||
-                        (!$space->isModuleEnabled($moduleId) && !$space->canEnableModule($moduleId))) {
-                        continue;
-                    }
-                    ?>
+                <?php foreach ($availableModules as $moduleId => $module) :?>
                     <div class="col-md-6">
                         <div class="media well well-small ">
                             <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"

@@ -386,9 +386,9 @@ class AccountController extends BaseAccountController
         if ($userPassword->load(Yii::$app->request->post()) && $userPassword->validate()) {
             $userPassword->user_id = Yii::$app->user->id;
             $userPassword->setPassword($userPassword->newPassword);
-            $userPassword->save();
-
-            return $this->render('changePassword_success');
+            if ($userPassword->save()) {
+                return $this->render('changePassword_success');
+            }
         }
 
         return $this->render('changePassword', ['model' => $userPassword]);

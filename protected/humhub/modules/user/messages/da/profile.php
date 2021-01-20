@@ -125,6 +125,7 @@ return [
     'Last login date of the user' => '',
     'Markdown' => '',
     'Must contain at least one character.' => '',
+    'Other:' => '',
     'Searchable' => '',
     'Supported ISO3166 country codes' => '',
     'This profile is no longer available!' => '',

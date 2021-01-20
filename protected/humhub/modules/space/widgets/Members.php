@@ -33,6 +33,12 @@ class Members extends Widget
     public $space;
 
     /**
+     * @var boolean order members by membership date
+     * @since 1.8
+     */
+    public $orderByNewest;
+
+    /**
      * @inheritdoc
      */
     public function run()
@@ -59,7 +65,11 @@ class Members extends Widget
     {
         $query = Membership::getSpaceMembersQuery($this->space)->active()->visible();
         $query->limit($this->maxMembers);
-        $query->orderBy(new Expression('FIELD(space_membership.group_id, "' . Space::USERGROUP_OWNER . '", "' . Space::USERGROUP_MODERATOR . '", "' . Space::USERGROUP_MEMBER . '")'));
+        if ($this->orderByNewest) {
+            $query->orderBy('space_membership.created_at Desc');
+        } else {
+            $query->orderBy(new Expression('FIELD(space_membership.group_id, "' . Space::USERGROUP_OWNER . '", "' . Space::USERGROUP_MODERATOR . '", "' . Space::USERGROUP_MEMBER . '")'));
+        }
 
         return $query;
     }

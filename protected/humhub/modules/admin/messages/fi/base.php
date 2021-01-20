@@ -64,4 +64,6 @@ return [
     'User posts' => 'Käyttäjien sivut',
     'Userprofiles' => 'Käyttäjä profiili',
     'Users' => 'Käyttäjät',
+    'Delete all' => '',
+    'Delete selected rows' => '',
 ];

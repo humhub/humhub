@@ -13,19 +13,19 @@ class GroupTest extends HumHubDbTestCase
 {
     public function testReturnTableName()
     {
-        $this->assertEquals('group', Group::tableName());
+        static::assertEquals('group', Group::tableName());
     }
 
     public function testReturnArrayOfRules()
     {
         $model = new Group();
-        $this->assertTrue(is_array($model->rules()));
+        static::assertTrue(is_array($model->rules()));
     }
 
     public function testReturnArrayOfAttributeLabels()
     {
         $model = new Group();
-        $this->assertTrue(is_array($model->attributeLabels()));
+        static::assertTrue(is_array($model->attributeLabels()));
     }
 
     public function testSaveGroup()
@@ -37,35 +37,52 @@ class GroupTest extends HumHubDbTestCase
             'space_id' => Space::findOne(['name' => 'Space 1'])->id
         ], '');
 
-        $this->assertTrue($model->validate());
-        $this->assertTrue($model->save());
+        static::assertTrue($model->validate());
+        static::assertTrue($model->save());
     }
 
-    public function testReturnDefaultSpace()
+    public function testNonDefaultGroup()
     {
-        $group = Group::findOne(['name' => 'Administrator']);
-        $this->assertEquals($group->space_id, $group->getDefaultSpace()->id);
+        $group = Group::findOne(['id' => 1]);
+        static::assertEmpty($group->getDefaultSpaces());
+    }
+
+    public function testMultipleDefaultGroups()
+    {
+        $group = Group::findOne(['id' => 3]);
+        $defaultSpaces = $group->getDefaultSpaces();
+        static::assertCount(2, $defaultSpaces);
+        static::assertEquals(1, $defaultSpaces[0]->id);
+        static::assertEquals(2, $defaultSpaces[1]->id);
+    }
+
+    public function testSingleDefaultSpaces()
+    {
+        $group = Group::findOne(['id' => 2]);
+        $defaultSpaces = $group->getDefaultSpaces();
+        static::assertCount(1, $defaultSpaces);
+        static::assertEquals(1, $defaultSpaces[0]->id);
     }
 
     public function testReturnAdminGroup()
     {
         $group = Group::findOne(['name' => 'Administrator']);
-        $this->assertEquals($group, Group::getAdminGroup());
+        static::assertEquals($group, Group::getAdminGroup());
     }
 
     public function testReturnAdminGroupId()
     {
         $group = Group::findOne(['name' => 'Administrator']);
-        $this->assertEquals($group->id, Group::getAdminGroupId());
+        static::assertEquals($group->id, Group::getAdminGroupId());
     }
 
     public function testCheckIfGroupHasManager()
     {
         $group = Group::findOne(['name' => 'Administrator']);
-        $this->assertFalse($group->hasManager());
+        static::assertFalse($group->hasManager());
 
         $group = Group::findOne(['name' => 'Moderators']);
-        $this->assertTrue($group->hasManager());
+        static::assertTrue($group->hasManager());
     }
 
     public function testCheckIfUserIsGroupManager()
@@ -73,14 +90,14 @@ class GroupTest extends HumHubDbTestCase
         $group = Group::findOne(['name' => 'Moderators']);
         $user = User::findOne(['username' => 'User1']);
         $user2 = User::findOne(['username' => 'User2']);
-        $this->assertFalse($group->isManager($user));
-        $this->assertTrue($group->isManager($user2));
+        static::assertFalse($group->isManager($user));
+        static::assertTrue($group->isManager($user2));
     }
 
     public function testCheckIfGroupHasUsers()
     {
         $group = Group::findOne(['name' => 'Moderators']);
-        $this->assertTrue($group->hasUsers());
+        static::assertTrue($group->hasUsers());
     }
 
     public function testCheckIfUserIsGroupMember()
@@ -88,43 +105,43 @@ class GroupTest extends HumHubDbTestCase
         $group = Group::findOne(['name' => 'Moderators']);
         $user = User::findOne(['username' => 'Admin']);
         $user2 = User::findOne(['username' => 'User2']);
-        $this->assertFalse($group->isMember($user));
-        $this->assertTrue($group->isMember($user2));
+        static::assertFalse($group->isMember($user));
+        static::assertTrue($group->isMember($user2));
     }
 
     public function testReturnRegistrationGroups()
     {
         $groups = Group::getRegistrationGroups();
-        $this->assertTrue(is_array($groups));
-        $this->assertEquals($groups, Group::find()->where(['is_admin_group' => 0, 'show_at_registration' => 1])->orderBy('name ASC')->all());
+        static::assertTrue(is_array($groups));
+        static::assertEquals($groups, Group::find()->where(['is_admin_group' => 0, 'show_at_registration' => 1])->orderBy('name ASC')->all());
 
         $groupUsers = Group::findOne(['name' => 'Users']);
-        Yii::$app->getModule('user')->settings->set('auth.defaultUserGroup', $groupUsers->id);
+        Yii::$app->getModule('user')->setDefaultGroup($groupUsers->id);
         $groups = Group::getRegistrationGroups();
-        $this->assertTrue(is_array($groups));
-        $this->assertEquals($groups, [$groupUsers]);
+        static::assertTrue(is_array($groups));
+        static::assertEquals($groups, [$groupUsers]);
     }
 
     public function testExcludeAdminGroupFromRegistration()
     {
         $adminGroup = Group::findOne(['is_admin_group' => 1]);
         $adminGroup->show_at_registration = 1;
-        $this->assertFalse($adminGroup->save());
+        static::assertFalse($adminGroup->save());
 
         // Force show at registration for admin group
         $adminGroup->updateAttributes(['show_at_registration' => 1]);
         $adminGroup = Group::findOne(['is_admin_group' => 1]);
-        $this->assertEquals(1, $adminGroup->show_at_registration);
+        static::assertEquals(1, $adminGroup->show_at_registration);
 
         $groups = Group::getRegistrationGroups();
-        $this->assertEquals($groups, Group::find()->where(['is_admin_group' => 0, 'show_at_registration' => 1])->orderBy('name ASC')->all());
+        static::assertEquals($groups, Group::find()->where(['is_admin_group' => 0, 'show_at_registration' => 1])->orderBy('name ASC')->all());
     }
 
     public function testReturnDirectoryGroups()
     {
         $groups = Group::getDirectoryGroups();
-        $this->assertTrue(is_array($groups));
-        $this->assertEquals($groups, Group::find()->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC])->all());
+        static::assertTrue(is_array($groups));
+        static::assertEquals($groups, Group::find()->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC])->all());
     }
 
     public function testAddUserToGroup()
@@ -133,6 +150,7 @@ class GroupTest extends HumHubDbTestCase
         $group = Group::findOne(['name' => 'Moderators']);
         $user = User::findOne(['username' => 'User1']);
         $user2 = User::findOne(['username' => 'User2']);
+        $group->notify_users = true;
         $group->addUser($user2);
         $group->addUser($user);
 
@@ -145,14 +163,14 @@ class GroupTest extends HumHubDbTestCase
         $group = Group::findOne(['name' => 'Moderators']);
         $user = User::findOne(['username' => 'User1']);
         $user2 = User::findOne(['username' => 'User2']);
-        $this->assertFalse($group->removeUser($user));
-        $this->assertTrue((boolean) $group->removeUser($user2));
+        static::assertFalse($group->removeUser($user));
+        static::assertTrue((boolean) $group->removeUser($user2));
     }
 
     public function testReturnSpaceRelationship()
     {
         $model = new Group();
-        $this->assertTrue($model->getSpace() instanceof ActiveQuery);
+        static::assertTrue($model->getSpace() instanceof ActiveQuery);
     }
 
     public function testNotifyAdminsForUserApproval()
@@ -166,7 +184,7 @@ class GroupTest extends HumHubDbTestCase
 
         $registrationGroup = Group::findOne(['name' => 'Moderators']);
         $user2->registrationGroupId = $registrationGroup->id;
-        $this->assertTrue(Group::notifyAdminsForUserApproval($user2));
+        static::assertTrue(Group::notifyAdminsForUserApproval($user2));
         $this->assertSentEmail($registrationGroup->getManager()->count());
         $this->assertEqualsLastEmailSubject('New user needs approval');
 

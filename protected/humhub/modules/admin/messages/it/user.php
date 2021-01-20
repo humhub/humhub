@@ -73,6 +73,18 @@ return [
     'Group not found!' => 'Gruppo non trovato!',
     'Group user not found!' => 'Gruppo utente non trovato!',
     'Groups' => 'Gruppi',
+    'Hello {displayName},<br><br>
+Your account has been activated.<br><br>
+Click here to login:<br>
+{loginLink}<br><br>
+
+Kind Regards<br>
+{AdminName}<br><br>' => 'Ciao {displayName},<br><br> il tuo account è stato attivato.<br><br> Clicca qui per collegarti:<br> {loginLink}<br><br> Saluti <br> {AdminName}<br><br>',
+    'Hello {displayName},<br><br>
+Your account request has been declined.<br><br>
+
+Kind Regards<br>
+{AdminName} <br><br> ' => 'Ciao {displayName},<br><br> la richiesta di attivazione del tuo account è stata respinta.<br><br> Saluti <br> {AdminName} <br><br>',
     'Here you can create or edit profile categories and fields.' => 'Qui puoi creare o modificare le categorie del profilo e i campi',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Se l\'opzione non è selezionata, la proprietà di questo spazio verrà trasferita al tuo account.',
     'Impersonate' => 'Impersonifica',
@@ -125,23 +137,19 @@ return [
     'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'Gli utenti possono essere assegnati a gruppi differenti gruppi con degli spazi predefiniti, gruppi, manager e permessi.',
     'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => 'Con questa opzione ogni contenuto di questo utente verrà permanentemente eliminato. (post, commenti, like)',
     'View profile' => 'Visualizza profilo',
-    'Visibility' => 'Visibilità',
     'Visible for members only' => 'Visibile solo per i membri',
     'Visible for members+guests' => 'Visibile per i membri e gli ospiti',
     'Yes' => 'Sì',
     'You can only delete empty categories!' => 'Puoi cancellare solo categorie vuote!',
     'You cannot delete yourself!' => 'Non puoi eliminare te stesso!',
     'never' => 'mai',
-    'Hello {displayName},<br><br>
-Your account has been activated.<br><br>
-Click here to login:<br>
-{loginLink}<br><br>
-
-Kind Regards<br>
-{AdminName}<br><br>' => '',
-    'Hello {displayName},<br><br>
-Your account request has been declined.<br><br>
-
-Kind Regards<br>
-{AdminName} <br><br> ' => '',
+    'Account' => '',
+    'Add a seperate page for the group to the directory.' => '',
+    'All open registration invitations were successfully deleted.' => '',
+    'Delete All' => '',
+    'Make the group selectable at registration.' => '',
+    'Password' => '',
+    'Send notifications to users when added to or removed from the group.' => '',
+    'The Space memberships of all group members will be updated. This may take up to several minutes.' => '',
+    'The selected open registration invitations were successfully deleted.' => '',
 ];

@@ -165,7 +165,7 @@ class CheckboxList extends BaseType
         }
 
         if ($this->allowOther) {
-            $items['other'] = Yii::t($this->profileField->getTranslationCategory(), 'Other:');
+            $items['other'] = Yii::t('UserModule.profile', 'Other:');
         }
 
         return $items;

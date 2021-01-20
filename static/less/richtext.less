@@ -290,6 +290,12 @@
         float: left;
 
     }
+
+    @-moz-document url-prefix() {
+        .ProseMirror-menubar {
+            margin-top: -26px;
+        }
+    }
 }
 
 .ProsemirrorEditor {
@@ -454,7 +460,7 @@
     }
 
     .ProseMirror [data-mention] {
-        color: @info
+        color: @link
     }
 
     .ProseMirror {
@@ -646,12 +652,16 @@
     overflow-wrap: break-word;
 
     a {
-        color: @info
+        color: @link
     }
 }
 
 @media screen and (max-width: 768px) {
+
     .ProsemirrorEditor.focusMenu {
+        .form-control:focus {
+            border-top-right-radius: 0 !important;
+        }
         .ProseMirror-menubar {
             min-height: 1em;
             margin-top: 0;

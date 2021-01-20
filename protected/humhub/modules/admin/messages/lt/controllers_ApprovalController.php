@@ -18,5 +18,5 @@
  */
 return [
     'User not found!' => 'Vartotojas nerastas!',
-    'Invalid user state: thi' => '',
+    'Invalid user state: {state}' => '',
 ];

@@ -51,9 +51,7 @@ class InitialData
 
         // File
         Yii::$app->getModule('file')->settings->set('maxFileSize', '1048576' * 5);
-        Yii::$app->getModule('file')->settings->set('maxPreviewImageWidth', '200');
-        Yii::$app->getModule('file')->settings->set('maxPreviewImageHeight', '200');
-        Yii::$app->getModule('file')->settings->set('hideImageFileInfo', '1');
+        Yii::$app->getModule('file')->settings->set('excludeMediaFilesPreview', '1');
 
         // Caching
         Yii::$app->settings->set('cache.class', 'yii\caching\FileCache');
@@ -438,6 +436,7 @@ class InitialData
         $group->name = "Users";
         $group->description = "Example Group by Installer";
         $group->show_at_directory = false;
+        $group->is_default_group = 1;
         $group->save();
     }
 

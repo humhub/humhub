@@ -366,8 +366,8 @@ humhub.module('stream.Stream', function (module, require, $) {
      *
      *  If no specific options is set, the entries are just appended to the bottom of the stream content.
      *
-     * @param {type} response
-     * @returns {unresolved}
+     * @param request
+     * @param options
      */
     Stream.prototype.addResponseEntries = function (request, options) {
         options = $.extend(request.options, options || {});
@@ -377,6 +377,7 @@ humhub.module('stream.Stream', function (module, require, $) {
         var $result = $(request.getResultHtml());
 
         if(!$result.length) {
+            that.onChange(request);
             return Promise.resolve();
         }
 
@@ -545,15 +546,20 @@ humhub.module('stream.Stream', function (module, require, $) {
         });
     };
 
-    Stream.prototype.onChange = function () {
+    Stream.prototype.onChange = function (request) {
         var hasEntries = this.hasEntries();
 
         this.$.find('.streamMessage').remove();
 
         if(!hasEntries && this.isShowSingleEntry()) {
-            // e.g. after content deletion in single entry stream
-            var that = this;
-            setTimeout(function() {that.init()}, 50);
+            // we only show an error if we load a single entry we are not allowed to view, otherwise just reload the stream
+            if(request && request.response && request.response.errorCode && request.response.errorCode === 403) {
+                this.setStreamMessage(request.response.error);
+            } else {
+                // e.g. after content deletion in single entry stream
+                var that = this;
+                setTimeout(function() {that.init()}, 50);
+            }
         } else if (!hasEntries) {
             this.onEmptyStream();
         } else if (this.isShowSingleEntry()) {
@@ -572,10 +578,8 @@ humhub.module('stream.Stream', function (module, require, $) {
         this.$.find('.streamMessage').remove();
 
         if(!this.isShowSingleEntry()) {
-            this.$content.append(string.template(this.static('templates').streamMessage, {
-                message: (hasActiveFilters) ? this.options.streamEmptyFilterMessage : this.options.streamEmptyMessage,
-                cssClass: (hasActiveFilters) ? this.options.streamEmptyFilterClass : this.options.streamEmptyClass,
-            }));
+            var message = (hasActiveFilters) ? this.options.streamEmptyFilterMessage : this.options.streamEmptyMessage;
+            this.setStreamMessage(message, hasActiveFilters);
         }
 
         if(!hasActiveFilters) {
@@ -583,6 +587,13 @@ humhub.module('stream.Stream', function (module, require, $) {
         } else {
             this.filter.show();
         }
+    };
+
+    Stream.prototype.setStreamMessage = function (message, $filter) {
+        this.$content.append(string.template(this.static('templates').streamMessage, {
+            message: message,
+            cssClass: ($filter) ? this.options.streamEmptyFilterClass : this.options.streamEmptyClass,
+        }));
     };
 
     Stream.prototype.onSingleEntryStream = function () {
