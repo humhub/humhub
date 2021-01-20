@@ -36,7 +36,7 @@ class DefaultPermissionsTest extends HumHubDbTestCase
         $spacePermission = $spacePermissionManager->getById(get_class($testPermission), $testPermission->getModuleId());
         $this->assertNotNull($spacePermission);
 
-        $this->assertEquals($spacePermission->getDefaultState($testGroupId), $testState);
+        $this->assertEquals($spacePermissionManager->getSingleGroupDefaultState($testGroupId, $spacePermission), $testState);
     }
 
     public function testSetDefaultUserPermission()
@@ -64,6 +64,6 @@ class DefaultPermissionsTest extends HumHubDbTestCase
         $userPermission = $userPermissionManager->getById(get_class($testPermission), $testPermission->getModuleId());
         $this->assertNotNull($userPermission);
 
-        $this->assertEquals($userPermission->getDefaultState($testGroupId), $testState);
+        $this->assertEquals($userPermissionManager->getSingleGroupDefaultState($testGroupId, $userPermission), $testState);
     }
 }
