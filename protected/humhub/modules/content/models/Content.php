@@ -815,7 +815,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         }
 
         // Check system admin can see all content module configuration
-        if ($user->isSystemAdmin() && Yii::$app->getModule('content')->adminCanViewAllContent) {
+        if ($user->canViewAllContent()) {
             return true;
         }
 

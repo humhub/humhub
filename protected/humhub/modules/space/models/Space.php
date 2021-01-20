@@ -600,7 +600,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
      *
      * @return array user groups
      */
-    public function getUserGroups()
+    public static function getUserGroups()
     {
         $groups = [
             self::USERGROUP_OWNER => Yii::t('SpaceModule.base', 'Owner'),
@@ -612,7 +612,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
 
         // Add guest groups if enabled
         if (AuthHelper::isGuestAccessEnabled()) {
-            $groups[self::USERGROUP_GUEST] = 'Guests';
+            $groups[self::USERGROUP_GUEST] = Yii::t('SpaceModule.base', 'Guests');
         }
 
         return $groups;

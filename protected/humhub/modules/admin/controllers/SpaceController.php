@@ -10,6 +10,7 @@ namespace humhub\modules\admin\controllers;
 
 use humhub\modules\admin\models\forms\SpaceSettingsForm;
 use humhub\modules\admin\models\SpaceSearch;
+use humhub\modules\content\components\ContentContainerDefaultPermissionManager;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
@@ -134,6 +135,40 @@ class SpaceController extends Controller
                     'contentVisibilityOptions' => $contentVisibilityOptions
                         ]
         );
+    }
+
+    /**
+     * Default Space Permissions
+     */
+    public function actionPermissions()
+    {
+        $defaultPermissionManager = new ContentContainerDefaultPermissionManager([
+            'contentcontainer_class' => Space::class,
+        ]);
+
+        $groups = Space::getUserGroups();
+
+        $groupId = Yii::$app->request->get('groupId', Space::USERGROUP_MEMBER);
+        if (!array_key_exists($groupId, $groups)) {
+            throw new HttpException(500, 'Invalid group id given!');
+        }
+
+        // Handle permission state change
+        if (Yii::$app->request->post('dropDownColumnSubmit')) {
+            Yii::$app->response->format = 'json';
+            $permission = $defaultPermissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
+            if ($permission === null) {
+                throw new HttpException(500, 'Could not find permission!');
+            }
+            $defaultPermissionManager->setGroupState($groupId, $permission, Yii::$app->request->post('state'));
+            return [];
+        }
+
+        return $this->render('permissions', [
+            'defaultPermissionManager' => $defaultPermissionManager,
+            'groups' => $groups,
+            'groupId' => $groupId,
+        ]);
     }
 
 }

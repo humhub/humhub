@@ -35,6 +35,7 @@ use Yii;
 use yii\base\Exception;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
+use yii\db\Query;
 use yii\web\IdentityInterface;
 
 /**
@@ -148,7 +149,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['username'], 'unique'],
             [['username'], 'string', 'max' => $userModule->maximumUsernameLength, 'min' => $userModule->minimumUsernameLength],
             // Client validation is disable due to invalid client pattern validation
-            [['username'], 'match', 'not' => true, 'pattern' => '/[\x00-\x1f\x7f]/', 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false],
+            [['username'], 'match', 'pattern' => $userModule->validUsernameRegexp, 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false],
             [['status', 'created_by', 'updated_by', 'visibility'], 'integer'],
             [['tags'], 'string'],
             [['guid'], 'string', 'max' => 45],
@@ -664,6 +665,17 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
+     * Checks if the user is allowed to view all content
+     *
+     * @since 1.8
+     * @return bool
+     */
+    public function canViewAllContent()
+    {
+        return Yii::$app->getModule('content')->adminCanViewAllContent && $this->isSystemAdmin();
+    }
+
+    /**
      * @inheritdoc
      */
     public function getWallOut()
@@ -772,6 +784,30 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function getAuths()
     {
         return $this->hasMany(Auth::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Return user groups
+     *
+     * @return array user groups
+     */
+    public static function getUserGroups()
+    {
+        $groups = [];
+
+        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+            $groups[self::USERGROUP_FRIEND] = Yii::t('UserModule.account', 'Your friends');
+            $groups[self::USERGROUP_USER] = Yii::t('UserModule.account', 'Other users');
+        } else {
+            $groups[self::USERGROUP_USER] = Yii::t('UserModule.account', 'Users');
+        }
+
+        // Add guest groups if enabled
+        if (AuthHelper::isGuestAccessEnabled()) {
+            $groups[self::USERGROUP_GUEST] = Yii::t('UserModule.account', 'Not registered users');
+        }
+
+        return $groups;
     }
 
     /**

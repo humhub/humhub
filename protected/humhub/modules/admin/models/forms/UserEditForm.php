@@ -56,6 +56,14 @@ class UserEditForm extends User
     /**
      * @inheritdoc
      */
+    public function rules()
+    {
+        return array_merge(parent::rules(), [['groupSelection', 'required']]);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), ['groupSelection' => $this->getGroupLabel()]);
@@ -148,7 +156,7 @@ class UserEditForm extends User
 
         $result = [];
         foreach ($groups as $group) {
-            $result[$group->id] = $group->name;
+            $result[$group->id] = $group->name . ($group->is_default_group ? ' (' . Yii::t('AdminModule.base', 'Default') . ')' : '');
         }
 
         return $result;
