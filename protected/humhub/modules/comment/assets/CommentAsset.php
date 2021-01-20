@@ -12,7 +12,6 @@ use humhub\components\assets\AssetBundle;
 
 class CommentAsset extends AssetBundle
 {
-
     /**
      * @inheritdoc
      */

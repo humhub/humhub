@@ -116,7 +116,7 @@ class GroupTest extends HumHubDbTestCase
         static::assertEquals($groups, Group::find()->where(['is_admin_group' => 0, 'show_at_registration' => 1])->orderBy('name ASC')->all());
 
         $groupUsers = Group::findOne(['name' => 'Users']);
-        Yii::$app->getModule('user')->settings->set('auth.defaultUserGroup', $groupUsers->id);
+        Yii::$app->getModule('user')->setDefaultGroup($groupUsers->id);
         $groups = Group::getRegistrationGroups();
         static::assertTrue(is_array($groups));
         static::assertEquals($groups, [$groupUsers]);

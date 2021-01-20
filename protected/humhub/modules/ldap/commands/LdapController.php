@@ -245,6 +245,42 @@ class LdapController extends \yii\console\Controller
 
 
     /**
+     * Shows all returned user attributes provided by the LDAP connection.
+     *
+     * @param string $user the username (inserted into the LoginFilter)
+     * @param string $id the auth client id (default: ldap)
+     * @return int status code
+     * @since 1.8
+     */
+    public function actionShowUser($user, $id = 'ldap')
+    {
+        $this->stdout("*** LDAP User Details for \"" . $user . "\" for AuthClient ID: " . $id . "\n\n");
+
+        try {
+            $ldapAuthClient = $this->getAuthClient($id);
+
+            $dn = $ldapAuthClient->getLdap()->getCanonicalAccountName($user, Ldap::ACCTNAME_FORM_DN);
+            $x = $ldapAuthClient->getAuthClientInstance($ldapAuthClient->getLdap()->getEntry($dn));
+
+            $rows = [];
+            foreach ($x->getUserAttributes() as $name => $value) {
+                if (empty(mb_detect_encoding($value))) {
+                    $value = '-Binary-';
+                }
+                $rows[] = [$name, $value];
+            }
+
+            echo Table::widget(['headers' => ['LDAP Attribute Name', 'Value'], 'rows' => $rows]) . "\n\n";
+        } catch (Exception $ex) {
+            $this->stderr("Error: " . $ex->getMessage() . "\n\n");
+            return ExitCode::UNSPECIFIED_ERROR;
+        }
+
+        return ExitCode::OK;
+    }
+
+
+    /**
      * @param $id
      * @return LdapAuth
      */

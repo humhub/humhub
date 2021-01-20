@@ -76,7 +76,7 @@ class Module extends \humhub\components\Module
         }
 
         // Only allow one level of subcomments
-        if ($object instanceof Comment && $object->object_model === Comment::class) {
+        if (Comment::isSubComment($object)) {
             return false;
         }
 
@@ -94,5 +94,4 @@ class Module extends \humhub\components\Module
 
         return true;
     }
-
 }
