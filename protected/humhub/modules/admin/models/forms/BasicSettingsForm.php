@@ -96,7 +96,7 @@ class BasicSettingsForm extends \yii\base\Model
                     'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime())
                 ]
             ),
-            'maintenanceModeInfo' => Yii::t('AdminModule.settings', 'Maintenance mode info to display on the login page.'),
+            'maintenanceModeInfo' => Yii::t('AdminModule.settings', 'Add custom info text for maintenance mode. Displayed on the login page.'),
         ];
     }
 

@@ -9,14 +9,15 @@ use humhub\compat\CHtml;
 /* @var BasicSettingsForm $model */
 
 $this->registerJsConfig('admin', $adminSettingsJsConfig = ['text' => [
-    'maintenanceMode.header' => Yii::t('AdminModule.settings', '<strong>Maintenance</strong> mode'),
-    'maintenanceMode.question.enable' => '<div class="alert alert-danger">'
-        . Yii::t('AdminModule.settings', '<strong>WARNING:</strong> All non admin users will be logged out automatically after you save the settings form with enabled maintenance mode!')
-        . '</div>'
-        . Yii::t('AdminModule.settings', 'Do you really want to enable maintenance mode?'),
-    'maintenanceMode.button.enable' => Yii::t('AdminModule.settings', 'Enable'),
-    'maintenanceMode.question.disable' => Yii::t('AdminModule.settings', 'Are you sure all works have been done and the maintenance mode can be disable?'),
-    'maintenanceMode.button.disable' => Yii::t('AdminModule.settings', 'Disable'),
+    'maintenanceMode.header' => Yii::t('AdminModule.settings', '<strong>Maintenance</strong> Mode'),
+    'maintenanceMode.question.enable' => Yii::t('AdminModule.settings',
+            'Activate maintenance mode and disable access to the platform for non-admin users?<br><br>') .
+        '<div class="alert alert-danger">' .
+        Yii::t('AdminModule.settings', '<strong>Warning:</strong> All users will be immediately logged out, except admins.') .
+        '</div>',
+    'maintenanceMode.button.enable' => Yii::t('AdminModule.settings', 'Activate'),
+    'maintenanceMode.question.disable' => Yii::t('AdminModule.settings', 'Deactivate maintenance mode and enable all users to access the platform again?'),
+    'maintenanceMode.button.disable' => Yii::t('AdminModule.settings', 'Deactivate'),
 ]]);
 
 AdminAsset::register($this);

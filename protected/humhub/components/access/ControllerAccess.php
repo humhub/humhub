@@ -246,7 +246,7 @@ class ControllerAccess extends BaseObject
         ]);
         $this->registerValidator([
             self::RULE_LOGGED_IN_ONLY => 'validateMaintenanceMode',
-            'reason' => Yii::t('error', 'Only admins have access to the site on maintenance mode.'),
+            'reason' => ControllerAccess::getMaintenanceModeWarningText(),
             'code' => 403,
             'codeCallback' => 'checkMaintenanceMode',
         ]);
@@ -356,7 +356,7 @@ class ControllerAccess extends BaseObject
 
             if (!$validator->run()) {
                 $this->reason = (!$this->reason) ? $validator->getReason() : $this->reason;
-                $this->code = (!$this->code) ? $validator->getCode(): $this->code;
+                $this->code = (!$this->code) ? $validator->getCode() : $this->code;
                 if (isset($validator->codeCallback)) {
                     $this->codeCallback = $validator->codeCallback;
                 }
@@ -394,7 +394,7 @@ class ControllerAccess extends BaseObject
             ]);
         }
 
-        throw new InvalidArgumentException('Invalid validator settings given for rule '.$ruleName);
+        throw new InvalidArgumentException('Invalid validator settings given for rule ' . $ruleName);
     }
 
     /**
@@ -474,7 +474,7 @@ class ControllerAccess extends BaseObject
     {
         return $this->isGuest() ||
             ($this->user->status !== User::STATUS_DISABLED &&
-            $this->user->status !== User::STATUS_SOFT_DELETED);
+                $this->user->status !== User::STATUS_SOFT_DELETED);
     }
 
     /**
@@ -499,8 +499,8 @@ class ControllerAccess extends BaseObject
     }
 
     /**
-     * @since 1.8
      * @return bool checks if the current user must change password
+     * @since 1.8
      */
     public function validateMustChangePassword()
     {
@@ -508,11 +508,22 @@ class ControllerAccess extends BaseObject
     }
 
     /**
-     * @since 1.8
      * @return bool makes sure the current user has an access on maintenance mode
+     * @since 1.8
      */
     public function validateMaintenanceMode()
     {
         return !Yii::$app->settings->get('maintenanceMode') || $this->isAdmin();
     }
+
+    /**
+     * @return string returns the maintenance mode warning text
+     * @since 1.8
+     */
+    public static function getMaintenanceModeWarningText()
+    {
+        return Yii::t('error', 'Maintenance mode is active. Only Administrators can access the platform.') .
+            ' ' . Yii::$app->settings->get('maintenanceModeInfo', '');
+    }
+
 }

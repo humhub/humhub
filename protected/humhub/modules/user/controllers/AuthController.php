@@ -110,8 +110,7 @@ class AuthController extends Controller
         ];
 
         if (Yii::$app->settings->get('maintenanceMode')) {
-            Yii::$app->session->setFlash('error', Yii::t('error', 'Only admins have access to the site on maintenance mode.'));
-            $loginParams['info'] = Yii::$app->settings->get('maintenanceModeInfo');
+            Yii::$app->session->setFlash('error', ControllerAccess::getMaintenanceModeWarningText());
         }
 
         if (Yii::$app->request->isAjax) {

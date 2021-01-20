@@ -34,12 +34,6 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                 </div>
             <?php endif; ?>
 
-            <?php if (!empty($info)): ?>
-                <div class="alert alert-info" role="alert">
-                    <?= $info ?>
-                </div>
-            <?php endif; ?>
-
             <?php if (AuthChoice::hasClients()): ?>
                 <?= AuthChoice::widget([]) ?>
             <?php else: ?>

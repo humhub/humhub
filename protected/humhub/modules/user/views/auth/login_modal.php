@@ -47,13 +47,7 @@ use humhub\modules\user\widgets\AuthChoice;
                         </div>
                     <?php endif; ?>
 
-                    <?php if (!empty($info)): ?>
-                        <div class="alert alert-info" role="alert">
-                            <?= $info ?>
-                        </div>
-                    <?php endif; ?>
-
-                    <?php if (AuthChoice::hasClients()): ?>
+                   <?php if (AuthChoice::hasClients()): ?>
                         <?= AuthChoice::widget([]) ?>
                     <?php else: ?>
                         <?php if ($canRegister) : ?>
