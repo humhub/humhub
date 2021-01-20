@@ -145,6 +145,7 @@ class Html extends \yii\bootstrap\Html
     public static function containerLink(ContentContainerActiveRecord $container, $options = [])
     {
         $options['data-contentcontainer-id'] = $container->contentcontainer_id;
+        $options['data-guid'] = $container->guid;
 
         if ($container instanceof Space) {
             return static::a(static::encode($container->name), $container->getUrl(), $options);

@@ -55,18 +55,17 @@ class CommentLink extends Widget
             $this->mode = self::MODE_INLINE;
         }
 
-        if (!$module->canComment($this->object)) {
-            return '';
+        if ($module->canComment($this->object) || CommentModel::isSubComment($this->object) && $module->canComment($this->object->content->getPolymorphicRelation())){
+            return $this->render('link', [
+                'id' => $this->object->getUniqueId(),
+                'mode' => $this->mode,
+                'objectModel' => get_class($this->object),
+                'objectId' => $this->object->getPrimaryKey(),
+                'commentCount' => CommentModel::GetCommentCount(get_class($this->object), $this->object->getPrimaryKey()),
+                'isNestedComment' => ($this->object instanceof CommentModel),
+                'comment' => $this->object,
+                'module' => $module
+            ]);
         }
-
-        return $this->render('link', [
-            'id' => $this->object->getUniqueId(),
-            'mode' => $this->mode,
-            'objectModel' => get_class($this->object),
-            'objectId' => $this->object->getPrimaryKey(),
-            'commentCount' => CommentModel::GetCommentCount(get_class($this->object), $this->object->getPrimaryKey()),
-            'isNestedComment' => ($this->object instanceof CommentModel)
-
-        ]);
     }
 }

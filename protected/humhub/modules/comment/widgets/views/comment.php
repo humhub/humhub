@@ -9,6 +9,7 @@ use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\file\widgets\ShowFiles;
 use humhub\modules\comment\widgets\Comments;
+use humhub\modules\comment\models\Comment;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $comment \humhub\modules\comment\models\Comment */
@@ -46,11 +47,11 @@ $module = Yii::$app->getModule('comment');
                         <li>
                             <a href="#" class="comment-edit-link" data-action-click="edit"
                                data-action-url="<?= $editUrl ?>">
-                                <?= Icon::get('edit')?> <?= Yii::t('CommentModule.base', 'Edit') ?>
+                                <?= Icon::get('edit') ?> <?= Yii::t('CommentModule.base', 'Edit') ?>
                             </a>
                             <a href="#" class="comment-cancel-edit-link" data-action-click="cancelEdit"
                                data-action-url="<?= $loadUrl ?>" style="display:none;">
-                                <?= Icon::get('edit')?> <?= Yii::t('CommentModule.base', 'Cancel Edit') ?>
+                                <?= Icon::get('edit') ?> <?= Yii::t('CommentModule.base', 'Cancel Edit') ?>
                             </a>
                         </li>
                     <?php endif; ?>
