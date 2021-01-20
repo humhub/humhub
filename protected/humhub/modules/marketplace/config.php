@@ -17,7 +17,8 @@ return [
     'class' => Module::class,
     'isCoreModule' => true,
     'consoleControllerMap' => [
-        'module' => 'humhub\modules\marketplace\commands\MarketplaceController'
+        'module' => 'humhub\modules\marketplace\commands\MarketplaceController',
+        'professional-edition' => 'humhub\modules\marketplace\commands\ProfessionalEditionController'
     ],
     'events' => [
         [ModuleMenu::class, ModuleMenu::EVENT_INIT, [Events::class, 'onAdminModuleMenuInit']],

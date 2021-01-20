@@ -92,10 +92,6 @@ class Events extends \yii\base\BaseObject
      */
     public static function onWallEntryLinksInit($event)
     {
-        if (!static::getModule()->isEnabled) {
-            return;
-        }
-
         $event->sender->addWidget(widgets\LikeLink::class, ['object' => $event->sender->object], ['sortOrder' => 10]);
     }
 

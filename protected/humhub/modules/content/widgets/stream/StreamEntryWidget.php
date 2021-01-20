@@ -62,6 +62,9 @@ abstract class StreamEntryWidget extends JsWidget
         if(!$this->renderOptions || !is_a($this->renderOptions, $this->renderOptionClass, true)) {
             $optionClass = $this->renderOptionClass;
             $this->renderOptions = new $optionClass($this->renderOptions);
+        } else {
+            // Make sure we are using an own instance of renderOptions
+           $this->renderOptions = clone $this->renderOptions;
         }
     }
 

@@ -323,12 +323,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
         }
 
         Invite::deleteAll(['space_invite_id' => $this->id]);
-
-        // When this workspace is used in a group as default workspace, delete the link
-        foreach (Group::findAll(['space_id' => $this->id]) as $group) {
-            $group->space_id = '';
-            $group->save();
-        }
+        GroupSpace::deleteAll(['space_id' => $this->id]);
 
         return parent::beforeDelete();
     }

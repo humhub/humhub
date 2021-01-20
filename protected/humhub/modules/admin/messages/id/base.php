@@ -56,6 +56,8 @@ return [
     'Appearance' => '',
     'Back to user overview' => '',
     'Base URL needs to begin with http:// or https://' => '',
+    'Delete all' => '',
+    'Delete selected rows' => '',
     'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',
     'Information' => '',
     'Invite' => '',

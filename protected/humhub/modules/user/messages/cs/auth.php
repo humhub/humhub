@@ -68,6 +68,10 @@ return [
     'email' => 'E-mailová adresa',
     'password' => 'Heslo',
     'username or email' => 'Uživatelské jméno nebo e-mail',
+    '<strong>Change</strong> Password' => '',
+    'Confirm' => '',
+    'Due to security reasons you are required to change your password in order to access the platform.' => '',
+    'Log out' => '',
     'Please enter the letters from the image.' => '',
     'User or Password incorrect.' => '',
 ];
