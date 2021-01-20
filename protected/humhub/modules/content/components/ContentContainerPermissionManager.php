@@ -75,7 +75,7 @@ class ContentContainerPermissionManager extends PermissionManager
      * @param BasePermission $permission
      * @return string|int the state
      */
-    protected function getSingleGroupDefaultState($groupId, BasePermission $permission)
+    public function getSingleGroupDefaultState($groupId, BasePermission $permission)
     {
         $defaultStoredState = $this->getDefaultStoredState($groupId, $permission);
         if ($defaultStoredState !== null) {
