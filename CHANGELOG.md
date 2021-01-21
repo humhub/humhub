@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.7.2 (Unreleased)
--------------------------
+1.7.2 (January 21, 2021)
+------------------------
 - Fix #4668: table-responsive tables do not overflow due to default word break style
 - Fix #4679: Richtext extension scan does not include full title if title contains a `)`
 - Fix #4703: SSO login drops no warning if AuthClient cannot be stored
