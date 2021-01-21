@@ -104,11 +104,21 @@ class AuthController extends Controller
             }
         }
 
-        if (Yii::$app->request->isAjax) {
-            return $this->renderAjax('login_modal', ['model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()]);
+        $loginParams = [
+            'model' => $login,
+            'invite' => $invite,
+            'canRegister' => $invite->allowSelfInvite(),
+        ];
+
+        if (Yii::$app->settings->get('maintenanceMode')) {
+            Yii::$app->session->setFlash('error', ControllerAccess::getMaintenanceModeWarningText());
         }
 
-        return $this->render('login', ['model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()]);
+        if (Yii::$app->request->isAjax) {
+            return $this->renderAjax('login_modal', $loginParams);
+        }
+
+        return $this->render('login', $loginParams);
     }
 
     /**
@@ -127,9 +137,13 @@ class AuthController extends Controller
             AuthClientHelpers::storeAuthClientForUser($authClient, Yii::$app->user->getIdentity());
             return $this->redirect(['/user/account/connected-accounts']);
         }
-
+      
         $user = AuthClientHelpers::getUserByAuthClient($authClient);
 
+        if (Yii::$app->settings->get('maintenanceMode') && !$user->isSystemAdmin()) {
+            return $this->redirect(['/user/auth/login']);
+        }
+      
         // Check if e-mail is already in use with another auth method
         if ($user === null && isset($attributes['email'])) {
             $user = User::findOne(['email' => $attributes['email']]);

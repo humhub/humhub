@@ -23,6 +23,8 @@ class BasicSettingsForm extends \yii\base\Model
     public $defaultStreamSort;
     public $dashboardShowProfilePostForm;
     public $enableFriendshipModule;
+    public $maintenanceMode;
+    public $maintenanceModeInfo;
 
     /**
      * @inheritdoc
@@ -35,6 +37,8 @@ class BasicSettingsForm extends \yii\base\Model
         $this->baseUrl = Yii::$app->settings->get('baseUrl');
         $this->defaultLanguage = Yii::$app->settings->get('defaultLanguage');
         $this->timeZone = Yii::$app->settings->get('timeZone');
+        $this->maintenanceMode = Yii::$app->settings->get('maintenanceMode');
+        $this->maintenanceModeInfo = Yii::$app->settings->get('maintenanceModeInfo');
 
         $this->dashboardShowProfilePostForm = Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm');
         $this->tour = Yii::$app->getModule('tour')->settings->get('enable');
@@ -53,13 +57,14 @@ class BasicSettingsForm extends \yii\base\Model
             ['name', 'string', 'max' => 150],
             ['defaultLanguage', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
             ['timeZone', 'in', 'range' => \DateTimeZone::listIdentifiers()],
-            [['tour', 'dashboardShowProfilePostForm', 'enableFriendshipModule'], 'in', 'range' => [0, 1]],
+            [['tour', 'dashboardShowProfilePostForm', 'enableFriendshipModule', 'maintenanceMode'], 'in', 'range' => [0, 1]],
             [['defaultStreamSort'], 'in', 'range' => array_keys($this->getDefaultStreamSortOptions())],
             [['baseUrl'], function ($attribute, $params, $validator) {
                 if (substr($this->$attribute, 0, 7) !== 'http://' && substr($this->$attribute, 0, 8) !== 'https://') {
                     $this->addError($attribute, Yii::t('AdminModule.base', 'Base URL needs to begin with http:// or https://'));
                 }
             }],
+            ['maintenanceModeInfo', 'safe'],
         ];
     }
 
@@ -77,6 +82,7 @@ class BasicSettingsForm extends \yii\base\Model
             'dashboardShowProfilePostForm' => Yii::t('AdminModule.settings', 'Show user profile post form on dashboard'),
             'enableFriendshipModule' => Yii::t('AdminModule.settings', 'Enable user friendship system'),
             'defaultStreamSort' => Yii::t('AdminModule.settings', 'Default stream content order'),
+            'maintenanceMode' => Yii::t('AdminModule.settings', 'Enable maintenance mode'),
         ];
     }
 
@@ -90,6 +96,7 @@ class BasicSettingsForm extends \yii\base\Model
                     'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime())
                 ]
             ),
+            'maintenanceModeInfo' => Yii::t('AdminModule.settings', 'Add custom info text for maintenance mode. Displayed on the login page.'),
         ];
     }
 
@@ -103,6 +110,8 @@ class BasicSettingsForm extends \yii\base\Model
         Yii::$app->settings->set('baseUrl', $this->baseUrl);
         Yii::$app->settings->set('defaultLanguage', $this->defaultLanguage);
         Yii::$app->settings->set('timeZone', $this->timeZone);
+        Yii::$app->settings->set('maintenanceMode', $this->maintenanceMode);
+        Yii::$app->settings->set('maintenanceModeInfo', $this->maintenanceModeInfo);
 
         Yii::$app->getModule('dashboard')->settings->set('showProfilePostForm', $this->dashboardShowProfilePostForm);
         Yii::$app->getModule('tour')->settings->set('enable', $this->tour);

@@ -26,4 +26,5 @@ return [
     ['name' => 'colorSuccess', 'value' => '#97d271', 'module_id' => 'base'],
     ['name' => 'colorDanger', 'value' => '#ff8989', 'module_id' => 'base'],
     ['name' => 'defaultLanguage', 'value' => 'en-US', 'module_id' => 'base'],
+    ['name' => 'maintenanceMode', 'value' => '0', 'module_id' => 'base'],
 ];

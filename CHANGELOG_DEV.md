@@ -26,10 +26,10 @@
 - Enh #4706: Marketplace: Possibility to prohibit modules via the configuration
 - Enh #4770: Added CLI commands for Professional Edition licence management
 - Enh #4752: Added file column `hash_sha1` to avoid caching problems
+- Enh #3345: Maintenance mode
 - Enh #4751: Hide separator between widgets `LikeLink` and `CommentLink`
 - Enh #4751: New `ContentObjectLinks` widget for the detail views of module content
 - Enh #4754: Shorten high member numbers
 - Enh #4781: Change allowed characters in username
 - Enh #4416: Added replay to sub comments
 - Enh #4571: humhub/libs/Html::containerLink() now adds a "data-guid" attribute
-

@@ -1,9 +1,26 @@
 <?php
 
 use humhub\libs\TimezoneHelper;
+use humhub\modules\admin\assets\AdminAsset;
+use humhub\modules\admin\models\forms\BasicSettingsForm;
 use yii\widgets\ActiveForm;
 use humhub\compat\CHtml;
 
+/* @var BasicSettingsForm $model */
+
+$this->registerJsConfig('admin', $adminSettingsJsConfig = ['text' => [
+    'maintenanceMode.header' => Yii::t('AdminModule.settings', '<strong>Maintenance</strong> Mode'),
+    'maintenanceMode.question.enable' => Yii::t('AdminModule.settings',
+            'Activate maintenance mode and disable access to the platform for non-admin users?<br><br>') .
+        '<div class="alert alert-danger">' .
+        Yii::t('AdminModule.settings', '<strong>Warning:</strong> All users will be immediately logged out, except admins.') .
+        '</div>',
+    'maintenanceMode.button.enable' => Yii::t('AdminModule.settings', 'Activate'),
+    'maintenanceMode.question.disable' => Yii::t('AdminModule.settings', 'Deactivate maintenance mode and enable all users to access the platform again?'),
+    'maintenanceMode.button.disable' => Yii::t('AdminModule.settings', 'Deactivate'),
+]]);
+
+AdminAsset::register($this);
 ?>
 
 <div class="panel-body">
@@ -39,6 +56,17 @@ use humhub\compat\CHtml;
     <br>
     <br>
     <?= $form->field($model, 'enableFriendshipModule')->checkbox(); ?>
+
+    <strong><?= Yii::t('AdminModule.settings', 'Maintenance mode'); ?></strong>
+    <br>
+    <br>
+    <?= $form->field($model, 'maintenanceMode')->checkbox([
+        'data-action-click' => 'admin.changeMaintenanceMode',
+        'data-action-confirm-header' => $adminSettingsJsConfig['text']['maintenanceMode.header'],
+        'data-action-confirm' => $adminSettingsJsConfig['text']['maintenanceMode.question.' . ($model->maintenanceMode ? 'disable' : 'enable')],
+        'data-action-confirm-text' => $adminSettingsJsConfig['text']['maintenanceMode.button.' . ($model->maintenanceMode ? 'disable' : 'enable')],
+    ]); ?>
+    <?= $form->field($model, 'maintenanceModeInfo')->label(false)->textInput(['disabled' => !$model->maintenanceMode]); ?>
 
     <hr>
 
