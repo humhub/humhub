@@ -69,5 +69,9 @@ return [
     'email' => 'e-mail',
     'password' => 'senha',
     'username or email' => 'usuário ou e-mail',
+    '<strong>Change</strong> Password' => '',
+    'Confirm' => '',
+    'Due to security reasons you are required to change your password in order to access the platform.' => '',
+    'Log out' => '',
     'User or Password incorrect.' => '',
 ];

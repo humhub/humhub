@@ -31,6 +31,7 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  * @property string $updated_at
  * @property integer $updated_by
  * @property integer $show_in_stream
+ * @property string $hash_sha1
  *
  * @property \humhub\modules\user\models\User $createdBy
  * @property \humhub\modules\file\components\StorageManager $store
@@ -88,6 +89,18 @@ class File extends FileCompat
     /**
      * @inheritdoc
      */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            $this->saveHash();
+        }
+
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function beforeDelete()
     {
         $this->store->delete();
@@ -117,8 +130,37 @@ class File extends FileCompat
         }
 
         $params['guid'] = $this->guid;
+        $params['hash_sha1'] = $this->getHash(8);
         array_unshift($params, '/file/file/download');
         return Url::to($params, $absolute);
+    }
+
+    /**
+     * Get hash
+     *
+     * @param int Return number of first chars of the file hash, 0 - unlimit
+     * @return string
+     */
+    public function getHash($length = 0)
+    {
+        if (empty($this->hash_sha1)) {
+            $this->saveHash();
+        }
+
+        return $length ? substr($this->hash_sha1, 0, $length) : $this->hash_sha1;
+    }
+
+    /**
+     * Save hash
+     *
+     * @since 1.8
+     */
+    public function saveHash()
+    {
+        $this->hash_sha1 = sha1_file($this->getStore()->get());
+        if (!$this->isNewRecord) {
+            $this->updateAttributes(['hash_sha1' => $this->hash_sha1]);
+        }
     }
 
     /**

@@ -143,14 +143,15 @@ class BasePermission extends BaseObject
     public function getDefaultState($groupId)
     {
         $configuredState = $this->getConfiguredState($groupId);
-
         if ($configuredState !== null) {
             return $configuredState;
-        } elseif ($this->defaultState == self::STATE_ALLOW) {
-            return self::STATE_ALLOW;
-        } else {
-            return (int) (in_array($groupId, $this->defaultAllowedGroups));
         }
+
+        if ($this->defaultState == self::STATE_ALLOW) {
+            return self::STATE_ALLOW;
+        }
+
+        return (int) (in_array($groupId, $this->defaultAllowedGroups));
     }
 
     /**

@@ -5,12 +5,14 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\forms\EditGroupForm;
 use yii\helpers\Url;
 use yii\helpers\Html;
+use humhub\widgets\Button;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\modules\space\widgets\SpacePickerField;
 
 /* @var $isManagerApprovalSetting boolean */
 /* @var $showDeleteButton boolean */
 /* @var $group EditGroupForm */
+
 ?>
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group, 'acknowledge' => true]) ?>
@@ -24,12 +26,14 @@ use humhub\modules\space\widgets\SpacePickerField;
             'form' => $form,
             'model' => $group,
             'attribute' => 'defaultSpaceGuid',
-            'selection' => $group->defaultSpace,
-            'maxSelection' => 1,
+            'selection' => $group->defaultSpaces,
+            'maxSelection' => 1000,
         ])
         ?>
     <?php endif; ?>
-
+    <?php if (!$group->isNewRecord): ?>
+        <?= $form->field($group, 'updateSpaceMemberships')->checkbox(); ?>
+    <?php endif; ?>
     <?php if ($isManagerApprovalSetting && !$group->is_admin_group): ?>
         <?php $url = ($group->isNewRecord) ? null : Url::to(['/admin/group/admin-user-search', 'id' => $group->id]); ?>
         <?= UserPickerField::widget([
@@ -42,20 +46,25 @@ use humhub\modules\space\widgets\SpacePickerField;
         ?>
     <?php endif; ?>
 
-    <strong><?= Yii::t('AdminModule.user', 'Visibility'); ?></strong>
-    <br>
-    <br>
+    <?= $form->field($group, 'notify_users')->checkbox(); ?>
+
     <?php if (!$group->is_admin_group): ?>
         <?= $form->field($group, 'show_at_registration')->checkbox(); ?>
     <?php endif; ?>
     <?= $form->field($group, 'show_at_directory')->checkbox(); ?>
     <?= $form->field($group, 'sort_order')->widget(SortOrderField::class) ?>
+    <?php if (!$group->is_admin_group): ?>
+        <?= $form->field($group, 'is_default_group')->checkbox(['disabled' => (bool) $group->is_default_group]); ?>
+    <?php endif; ?>
 
-    <?= Html::submitButton(Yii::t('AdminModule.user', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
-
+    <?= Button::save()->submit(); ?>
     <?php
     if ($showDeleteButton) {
-        echo Html::a(Yii::t('AdminModule.user', 'Delete'), Url::toRoute(['/admin/group/delete', 'id' => $group->id]), ['class' => 'btn btn-danger', 'data-method' => 'POST']);
+        echo Html::a(Yii::t('AdminModule.user', 'Delete'), Url::toRoute(['/admin/group/delete', 'id' => $group->id]), [
+            'class' => 'btn btn-danger',
+            'data-method' => 'POST',
+            'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure? Users who are not assigned to another group are automatically assigned to the default group.'),
+        ]);
     }
     ?>
     <?php ActiveForm::end(); ?>

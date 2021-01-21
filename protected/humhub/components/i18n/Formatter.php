@@ -10,6 +10,7 @@ namespace humhub\components\i18n;
 
 use IntlDateFormatter;
 use Yii;
+use yii\base\InvalidArgumentException;
 
 /**
  * @inheritdoc
@@ -76,5 +77,31 @@ class Formatter extends \yii\i18n\Formatter
             return strpos($pattern, 'a') !== false;
         }
         return false;
+    }
+
+    /**
+     * Formats the value as short integer number by removing any decimal and thousand digits without rounding.
+     *
+     * @param mixed $value the value to be formatted.
+     * @param array $options optional configuration for the number formatter. This parameter will be merged with [[numberFormatterOptions]].
+     * @param array $textOptions optional configuration for the number formatter. This parameter will be merged with [[numberFormatterTextOptions]].
+     * @return string the formatted result, e.g. 5K, 123M, 42B, 9T, 1Q
+     * @throws InvalidArgumentException if the input value is not numeric or the formatting failed.
+     */
+    public function asShortInteger($value, $options = [], $textOptions = [])
+    {
+        list($params, $position) = $this->formatNumber($value, null, 2, 1000, $options, $textOptions);
+        $params['nFormatted'] = floor($params['nFormatted']);
+
+        switch ($position) {
+            case 0:
+                return $params['nFormatted'];
+            case 1:
+                return Yii::t('base', '{nFormatted}K', $params, $this->language); // Thousand
+            case 2:
+                return Yii::t('base', '{nFormatted}M', $params, $this->language); // Million
+            default:
+                return Yii::t('base', '{nFormatted}B', $params, $this->language); // Billion
+        }
     }
 }

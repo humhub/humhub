@@ -118,13 +118,20 @@
     .select2-search__field {
         outline: 0;
 
+        &::placeholder {
+            color: @input-color-placeholder;
+            font-weight: normal;
+        }
+
         &::-webkit-input-placeholder {
             color: @input-color-placeholder;
+            font-weight: normal;
         }
 
         /* Firefox 18- */
         &:-moz-placeholder {
             color: @input-color-placeholder;
+            font-weight: normal;
         }
 
         /**
@@ -134,11 +141,13 @@
          */
         &::-moz-placeholder {
             color: @input-color-placeholder;
+            font-weight: normal;
             opacity: 1;
         }
 
         &:-ms-input-placeholder {
             color: @input-color-placeholder;
+            font-weight: normal;
         }
     }
 
@@ -452,7 +461,7 @@
             img, div {
                 margin-right:5px;
             }
-            
+
             span.no-image {
                 line-height:27px;
                 padding-left:5px;
@@ -462,7 +471,7 @@
                 margin: 0px 2px;
                 line-height:27px;
             }
-            
+
             .picker-close {
                 cursor: pointer;
             }
