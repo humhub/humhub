@@ -37,6 +37,8 @@ class MaintenanceModeCest
         $I->expectTo('see login');
         $I->waitForText('Maintenance mode');
         $I->dontSee('DIRECTORY');
+
+        Yii::$app->settings->set('maintenanceMode', 0);
     }
 
 }
