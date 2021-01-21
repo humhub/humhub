@@ -154,6 +154,11 @@ class ControllerAccess extends BaseObject
     const RULE_MUST_CHANGE_PASSWORD = 'mustChangePassword';
 
     /**
+     * Maintenance mode is active
+     */
+    const RULE_MAINTENANCE_MODE= 'maintenance';
+
+    /**
      * Check guest if request method is post
      */
     const RULE_POST = 'post';
@@ -245,12 +250,11 @@ class ControllerAccess extends BaseObject
             'code' => 401
         ]);
         $this->registerValidator([
-            self::RULE_LOGGED_IN_ONLY => 'validateMaintenanceMode',
+            self::RULE_MAINTENANCE_MODE => 'validateMaintenanceMode',
             'reason' => ControllerAccess::getMaintenanceModeWarningText(),
             'code' => 403,
             'codeCallback' => 'checkMaintenanceMode',
         ]);
-
         $this->registerValidator([
             self::RULE_MUST_CHANGE_PASSWORD => 'validateMustChangePassword',
             'reason' => Yii::t('error', 'You must change password.'),
