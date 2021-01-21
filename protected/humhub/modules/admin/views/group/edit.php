@@ -15,7 +15,7 @@ use humhub\modules\space\widgets\SpacePickerField;
 
 ?>
 
-<?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group, 'acknowledge' => true]) ?>
+<?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
 <div class="panel-body">
     <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
     <?= $form->field($group, 'name'); ?>
