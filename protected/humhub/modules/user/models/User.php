@@ -885,8 +885,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     {
         if ($isFailedLogin) {
             $this->getSettings()->set('failedLoginAttemptsCount', $this->getSettings()->get('failedLoginAttemptsCount') + 1);
+            $this->delayLoginAfterFailedAttempt();
         } else {
             $this->getSettings()->delete('failedLoginAttemptsCount');
+            $this->getSettings()->delete('nextLoginPossibleTime');
         }
     }
 
@@ -909,6 +911,30 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
                 '{failedLoginAttemptsCount}' => $failedLoginAttemptsCount
             ]));
         }
+    }
+
+    /**
+     * @since 1.8
+     */
+    protected function delayLoginAfterFailedAttempt()
+    {
+        /* @var $module Module */
+        $module = Yii::$app->getModule('user');
+
+        $delaySeconds = $this->getSettings()->get('failedLoginAttemptsCount') <= 5
+            ? $module->failedLoginDelayMin
+            : $module->failedLoginDelayMax;
+
+        $this->getSettings()->set('nextLoginPossibleTime', time() + $delaySeconds);
+    }
+
+    /**
+     * @since 1.8
+     * @return boolean
+     */
+    public function isDelayedLoginAction()
+    {
+        return $this->getSettings()->get('nextLoginPossibleTime') >= time();
     }
 
 }

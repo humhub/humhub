@@ -200,7 +200,9 @@ class AuthController extends Controller
     {
         $redirectUrl = ['/user/auth/login'];
         $success = false;
-        if ($user->status == User::STATUS_ENABLED) {
+        if ($user->isDelayedLoginAction()) {
+            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account is delayed because of failed login attempt, please try later.'));
+        } elseif ($user->status == User::STATUS_ENABLED) {
             $duration = 0;
             if (
                 ($authClient instanceof BaseFormAuth && $authClient->login->rememberMe) ||
