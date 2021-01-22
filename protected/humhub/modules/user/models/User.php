@@ -870,4 +870,29 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
     }
 
+    /**
+     * @since 1.8
+     * @param boolean
+     */
+    public function saveFailedLoginAttempts($isFailedLogin = true)
+    {
+        /* @var Module $module */
+        $module = Yii::$app->getModule('user');
+        $container = $module->settings->contentContainer($this);
+
+        if ($isFailedLogin) {
+            $container->set('failedLoginAttemptsCount', $container->get('failedLoginAttemptsCount') + 1);
+        } else {
+            $container->delete('failedLoginAttemptsCount');
+        }
+    }
+
+    /**
+     * @since 1.8
+     */
+    public function resetFailedLoginAttempts()
+    {
+        $this->saveFailedLoginAttempts(false);
+    }
+
 }

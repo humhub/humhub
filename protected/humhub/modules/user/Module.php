@@ -126,6 +126,16 @@ class Module extends \humhub\components\Module
     public $profileDisableStream = false;
 
     /**
+     * @var int If the number of attempts is more than 1 then wait [3] seconds
+     */
+    public $failedLoginDelayMin = 3;
+
+    /**
+     * @var int If the number of attempts is more than AuthenticationSettingsForm->failedLoginAttempts then wait [10] seconds
+     */
+    public $failedLoginDelayMax = 10;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
