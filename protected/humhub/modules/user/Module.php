@@ -131,7 +131,7 @@ class Module extends \humhub\components\Module
     public $failedLoginDelayMin = 3;
 
     /**
-     * @var int If the number of attempts is more than AuthenticationSettingsForm->failedLoginAttempts then wait [10] seconds
+     * @var int If the number of attempts is more than 5 then wait [10] seconds
      */
     public $failedLoginDelayMax = 10;
 
