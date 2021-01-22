@@ -14,6 +14,7 @@ use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\behaviors\CompatModuleManager;
 use humhub\modules\content\components\behaviors\SettingsBehavior;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\search\events\SearchAddEvent;
@@ -840,6 +841,17 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
+     * @param string Module id
+     * @return ContentContainerSettingsManager
+     */
+    public function getSettings($moduleId = 'user')
+    {
+        /* @var $module Module */
+        $module = Yii::$app->getModule($moduleId);
+        return $module->settings->contentContainer($this);
+    }
+
+    /**
      * Check if the User must change password
      *
      * @since 1.8
@@ -847,9 +859,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function mustChangePassword()
     {
-        /* @var Module $module */
-        $module = Yii::$app->getModule('user');
-        return (bool)$module->settings->contentContainer($this)->get('mustChangePassword');
+        return (bool)$this->getSettings()->get('mustChangePassword');
     }
 
     /**
@@ -860,13 +870,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function setMustChangePassword($state = true)
     {
-        /* @var Module $module */
-        $module = Yii::$app->getModule('user');
-        $container = $module->settings->contentContainer($this);
         if ($state) {
-            $container->set('mustChangePassword', true);
+            $this->getSettings()->set('mustChangePassword', true);
         } else {
-            $container->delete('mustChangePassword');
+            $this->getSettings()->delete('mustChangePassword');
         }
     }
 
@@ -876,14 +883,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function saveFailedLoginAttempts($isFailedLogin = true)
     {
-        /* @var Module $module */
-        $module = Yii::$app->getModule('user');
-        $container = $module->settings->contentContainer($this);
-
         if ($isFailedLogin) {
-            $container->set('failedLoginAttemptsCount', $container->get('failedLoginAttemptsCount') + 1);
+            $this->getSettings()->set('failedLoginAttemptsCount', $this->getSettings()->get('failedLoginAttemptsCount') + 1);
         } else {
-            $container->delete('failedLoginAttemptsCount');
+            $this->getSettings()->delete('failedLoginAttemptsCount');
         }
     }
 
@@ -893,6 +896,19 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function resetFailedLoginAttempts()
     {
         $this->saveFailedLoginAttempts(false);
+    }
+
+    /**
+     * @since 1.8
+     */
+    public function reportAboutFailedLoginAttempts()
+    {
+        $failedLoginAttemptsCount = (int)$this->getSettings()->get('failedLoginAttemptsCount');
+        if ($failedLoginAttemptsCount > 0) {
+            Yii::$app->getView()->warn(Yii::t('UserModule.base', 'Someone tried to log in {failedLoginAttemptsCount} times to your account.', [
+                '{failedLoginAttemptsCount}' => $failedLoginAttemptsCount
+            ]));
+        }
     }
 
 }
