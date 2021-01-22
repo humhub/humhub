@@ -10,6 +10,7 @@ namespace humhub\modules\user\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\components\Response;
 use humhub\modules\user\models\User;
 use humhub\modules\user\authclient\AuthAction;
 use humhub\modules\user\models\Invite;
@@ -135,23 +136,27 @@ class AuthController extends Controller
         }
 
         if (!$authClient instanceof ApprovalBypass && !Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration')) {
+            Yii::warning('Could not register user automatically: Anonymous registration disabled. AuthClient: ' . get_class($authClient), 'user');
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', "You're not registered."));
             return $this->redirect(['/user/auth/login']);
         }
 
         // Check if E-Mail is given
         if (!isset($attributes['email']) && Yii::$app->getModule('user')->emailRequired) {
+            Yii::warning('Could not register user automatically: AuthClient ' . get_class($authClient) . ' provided no E-Mail attribute.', 'user');
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Missing E-Mail Attribute from AuthClient.'));
             return $this->redirect(['/user/auth/login']);
         }
 
         if (!isset($attributes['id'])) {
+            Yii::warning('Could not register user automatically: AuthClient ' . get_class($authClient) . ' provided no ID attribute.', 'user');
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Missing ID AuthClient Attribute from AuthClient.'));
             return $this->redirect(['/user/auth/login']);
         }
 
         // Check if e-mail is already taken
         if (isset($attributes['email']) && User::findOne(['email' => $attributes['email']]) !== null) {
+            Yii::warning('Could not register user automatically: AuthClient ' . get_class($authClient) . ' email (' . $attributes['email'] . ') already taken.', 'user');
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.'));
             return $this->redirect(['/user/auth/login']);
         }
