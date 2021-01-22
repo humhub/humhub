@@ -905,7 +905,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     {
         $failedLoginAttemptsCount = (int)$this->getSettings()->get('failedLoginAttemptsCount');
         if ($failedLoginAttemptsCount > 0) {
-            Yii::$app->getView()->warn(Yii::t('UserModule.base', 'Someone tried to log in {failedLoginAttemptsCount} times to your account.', [
+            Yii::$app->getView()->warn(Yii::t('UserModule.base', 'Unsuccessful login attempts since last login: {failedLoginAttemptsCount}', [
                 '{failedLoginAttemptsCount}' => $failedLoginAttemptsCount
             ]));
         }
