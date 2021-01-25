@@ -2,6 +2,7 @@
 
 namespace humhub\modules\user\models\forms;
 
+use humhub\modules\user\assets\UserAsset;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Model;
@@ -103,6 +104,16 @@ class Login extends Model
             $this->addError('password', Yii::t('UserModule.auth', 'User or Password incorrect.'));
         }
 
+        if ($this->isDelayed()) {
+            UserAsset::register(Yii::$app->view);
+            Yii::$app->view->registerJs(
+                'humhub.require("user.login").delayLoginAction('
+                . $this->getDelayedTime() . ',
+                 "' . Yii::t('UserModule.auth', 'Please wait') . '",
+                 "#login-button")'
+            );
+        }
+
         // Delete current password value
         $this->password = '';
 
@@ -110,8 +121,8 @@ class Login extends Model
     }
 
     /**
-     * @since 1.8
      * @return User
+     * @since 1.8
      */
     public function getUser()
     {
@@ -122,19 +133,19 @@ class Login extends Model
     }
 
     /**
-     * @since 1.8
      * @return integer
+     * @since 1.8
      */
-    public function getDelayedTime()
+    private function getDelayedTime()
     {
         return $this->getUser() ? $this->getUser()->getDelayedLoginTime() : 0;
     }
 
     /**
-     * @since 1.8
      * @return boolean
+     * @since 1.8
      */
-    public function isDelayed()
+    private function isDelayed()
     {
         return $this->getUser() ? $this->getUser()->isDelayedLoginAction() : false;
     }

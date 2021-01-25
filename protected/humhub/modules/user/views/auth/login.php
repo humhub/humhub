@@ -1,7 +1,6 @@
 <?php
 
 use humhub\libs\Html;
-use humhub\modules\user\assets\UserAsset;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\Invite;
 use yii\captcha\Captcha;
@@ -16,10 +15,6 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 /* @var $model Login */
 /* @var $invite Invite */
 /* @var $info string */
-
-if ($model->isDelayed()) {
-    UserAsset::register($this);
-}
 ?>
 
 <div class="container" style="text-align: center;">
@@ -112,10 +107,6 @@ if ($model->isDelayed()) {
     $(function () {
         // set cursor to login field
         $('#login_username').focus();
-
-        <?php if ($model->isDelayed()) : ?>
-        humhub.require('user.login').delayLoginAction(<?= $model->getDelayedTime() ?>, '#login-button');
-        <?php endif; ?>
     });
 
     // Shake panel after wrong validation
