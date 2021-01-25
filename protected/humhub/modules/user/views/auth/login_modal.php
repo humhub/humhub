@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\user\assets\UserAsset;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\Invite;
 use yii\captcha\Captcha;
@@ -11,6 +12,10 @@ use humhub\modules\user\widgets\AuthChoice;
 /* @var $model Login */
 /* @var $invite Invite */
 /* @var $info string */
+
+if ($model->isDelayed()) {
+    UserAsset::register($this);
+}
 ?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
@@ -115,7 +120,6 @@ use humhub\modules\user\widgets\AuthChoice;
 <script <?= \humhub\libs\Html::nonce() ?>>
     $(document).on('humhub:ready', function () {
         $('#login_username').focus();
-
     });
 
     $('.tab-register a').on('shown.bs.tab', function (e) {
@@ -125,5 +129,9 @@ use humhub\modules\user\widgets\AuthChoice;
     $('.tab-login a').on('shown.bs.tab', function (e) {
         $('#login_username').focus();
     })
+
+    <?php if ($model->isDelayed()) : ?>
+    humhub.require('user.login').delayLoginAction(<?= $model->getDelayedTime() ?>, '#loginBtn');
+    <?php endif; ?>
 
 </script>

@@ -2,6 +2,7 @@
 
 namespace humhub\modules\user\models\forms;
 
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Model;
 use humhub\modules\user\authclient\BaseFormAuth;
@@ -32,6 +33,11 @@ class Login extends Model
      * @var \yii\authclient\BaseClient auth client used to authenticate
      */
     public $authClient = null;
+
+    /**
+     * @var User User of the auth client
+     */
+    protected $authUser = null;
 
     /**
      * @inheritdoc
@@ -83,6 +89,11 @@ class Login extends Model
                     // Delete password after successful auth
                     $this->password = '';
 
+                    if ($this->isDelayed()) {
+                        $this->addError('password', Yii::t('UserModule.base', 'Your account is delayed because of failed login attempt, please try later.'));
+                        break;
+                    }
+
                     return;
                 }
             }
@@ -96,6 +107,36 @@ class Login extends Model
         $this->password = '';
 
         parent::afterValidate();
+    }
+
+    /**
+     * @since 1.8
+     * @return User
+     */
+    public function getUser()
+    {
+        if (!$this->authUser) {
+            $this->authUser = $this->authClient ? $this->authClient->getUser() : null;
+        }
+        return $this->authUser;
+    }
+
+    /**
+     * @since 1.8
+     * @return integer
+     */
+    public function getDelayedTime()
+    {
+        return $this->getUser() ? $this->getUser()->getDelayedLoginTime() : 0;
+    }
+
+    /**
+     * @since 1.8
+     * @return boolean
+     */
+    public function isDelayed()
+    {
+        return $this->getUser() ? $this->getUser()->isDelayedLoginAction() : false;
     }
 
 }

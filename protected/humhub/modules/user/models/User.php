@@ -930,11 +930,20 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     /**
      * @since 1.8
+     * @return integer
+     */
+    public function getDelayedLoginTime()
+    {
+        return $this->getSettings()->get('nextLoginPossibleTime') - time();
+    }
+
+    /**
+     * @since 1.8
      * @return boolean
      */
     public function isDelayedLoginAction()
     {
-        return $this->getSettings()->get('nextLoginPossibleTime') >= time();
+        return $this->getDelayedLoginTime() > 0;
     }
 
 }

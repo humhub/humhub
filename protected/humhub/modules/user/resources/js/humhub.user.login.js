@@ -15,8 +15,22 @@ humhub.module('user.login', function(module, require, $) {
         });
 
     };
+
+    var delayLoginAction = function(delaySeconds, buttonSelector) {
+        var originalLoginButtonText = $(buttonSelector).html();
+        $(buttonSelector).html(delaySeconds).prop('disabled', true);
+
+        var delayTimer = setInterval(() => {
+            $(buttonSelector).html(--delaySeconds);
+            if (delaySeconds <= 0) {
+                clearInterval(delayTimer);
+                $(buttonSelector).html(originalLoginButtonText).prop('disabled', false);
+            }
+        }, 1000);
+    }
     
     module.export({
-        init: init
+        init: init,
+        delayLoginAction: delayLoginAction,
     });
 });
