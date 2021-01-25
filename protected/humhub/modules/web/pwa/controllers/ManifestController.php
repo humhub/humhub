@@ -41,7 +41,12 @@ class ManifestController extends Controller
     public function actionIndex()
     {
         $this->handleIcons();
-        $this->handlePwa();
+
+        /** @var Module $module */
+        $module = Yii::$app->getModule('web');
+        if ($module->enableServiceWorker !== false) {
+            $this->handlePwa();
+        }
 
         return $this->asJson($this->manifest);
     }
