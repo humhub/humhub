@@ -17,6 +17,7 @@ use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
 use humhub\modules\user\authclient\interfaces\PrimaryClient;
 use humhub\modules\user\authclient\interfaces\SyncAttributes;
+use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use Yii;
@@ -275,6 +276,9 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         if ($node !== null) {
             $this->setUserAttributes(array_merge(['dn' => $node], $node->getAttributes()));
             return true;
+        } else if($this->login instanceof Login) {
+            $user = User::find()->where(['username' => $this->login->username])->orWhere(['email' => $this->login->username])->one();
+            $this->countFailedLoginAttempts($user);
         }
 
         return false;
