@@ -407,7 +407,6 @@ humhub.module('client', function (module, require, $) {
     };
 
     var serializeFormState = function ($form) {
-        // return $form.find('input, label, select, textarea, button, fieldset, legend, datalist, output, option, optgroup').not('[data-prevent-statechange]').serialize();
         return $form.find('input, select, textarea').not('[data-prevent-statechange]').serialize();
     };
 
