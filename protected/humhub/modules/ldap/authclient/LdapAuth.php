@@ -277,8 +277,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
             $this->setUserAttributes(array_merge(['dn' => $node], $node->getAttributes()));
             return true;
         } else if($this->login instanceof Login) {
-            $user = User::find()->where(['username' => $this->login->username])->orWhere(['email' => $this->login->username])->one();
-            $this->countFailedLoginAttempts($user);
+            $this->countFailedLoginAttempts();
         }
 
         return false;

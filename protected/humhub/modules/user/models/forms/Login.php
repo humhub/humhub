@@ -79,64 +79,41 @@ class Login extends Model
      */
     public function afterValidate()
     {
-        $user = null;
-
         // Loop over enabled authclients
         foreach (Yii::$app->authClientCollection->getClients() as $authClient) {
             if ($authClient instanceof BaseFormAuth) {
                 $authClient->login = $this;
+
+                if ($authClient->isDelayedLoginAction()) {
+                    $this->addError('password', Yii::t('UserModule.base', 'Your account is delayed because of failed login attempt, please try later.'));
+
+                    UserAsset::register(Yii::$app->view);
+                    Yii::$app->view->registerJs(
+                        'humhub.require("user.login").delayLoginAction('
+                        . $authClient->getDelayedLoginTime() . ',
+                         "' . Yii::t('UserModule.auth', 'Please wait') . '",
+                         "#login-button")'
+                    );
+                    break;
+                }
+
                 if ($authClient->auth()) {
                     $this->authClient = $authClient;
 
                     // Delete password after successful auth
                     $this->password = '';
 
-                    if ($this->isDelayed()) {
-                        $this->addError('password', Yii::t('UserModule.base', 'Your account is delayed because of failed login attempt, please try later.'));
-                        break;
-                    }
-
                     return;
                 }
             }
         }
 
-        if ($user === null) {
-            $this->addError('password', Yii::t('UserModule.auth', 'User or Password incorrect.'));
-        }
-
-        if ($this->isDelayed()) {
-            UserAsset::register(Yii::$app->view);
-            Yii::$app->view->registerJs(
-                'humhub.require("user.login").delayLoginAction('
-                . $this->getDelayedTime() . ',
-                 "' . Yii::t('UserModule.auth', 'Please wait') . '",
-                 "#login-button")'
-            );
-        }
+        $this->addError('password', Yii::t('UserModule.auth', 'User or Password incorrect.'));
 
         // Delete current password value
         $this->password = '';
 
         parent::afterValidate();
-    }
-
-    /**
-     * @return integer
-     * @since 1.8
-     */
-    private function getDelayedTime()
-    {
-        return $this->authClient ? $this->authClient->getDelayedLoginTime() : 0;
-    }
-
-    /**
-     * @return boolean
-     * @since 1.8
-     */
-    private function isDelayed()
-    {
-        return $this->getDelayedTime() > 0;
     }
 
 }
