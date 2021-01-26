@@ -3,7 +3,9 @@ HumHub Changelog
 
 1.7.3 (Unreleased)
 ------------------------
-- Fix #4794: Fix CountrySelect definition
+- Fix #4792: Guest access to user profile home page
+- Fix #4794: CountrySelect profile field broken
+
 
 1.7.2 (January 21, 2021)
 ------------------------
