@@ -3,6 +3,7 @@
 namespace humhub\modules\user\models\forms;
 
 use humhub\modules\user\assets\UserAsset;
+use humhub\modules\user\authclient\BaseClient;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Model;
@@ -31,7 +32,7 @@ class Login extends Model
     public $rememberMe = false;
 
     /**
-     * @var \yii\authclient\BaseClient auth client used to authenticate
+     * @var BaseClient auth client used to authenticate
      */
     public $authClient = null;
 
@@ -121,24 +122,12 @@ class Login extends Model
     }
 
     /**
-     * @return User
-     * @since 1.8
-     */
-    public function getUser()
-    {
-        if (!$this->authUser) {
-            $this->authUser = $this->authClient ? $this->authClient->getUser() : null;
-        }
-        return $this->authUser;
-    }
-
-    /**
      * @return integer
      * @since 1.8
      */
     private function getDelayedTime()
     {
-        return $this->getUser() ? $this->getUser()->getDelayedLoginTime() : 0;
+        return $this->authClient ? $this->authClient->getDelayedLoginTime() : 0;
     }
 
     /**
@@ -147,7 +136,7 @@ class Login extends Model
      */
     private function isDelayed()
     {
-        return $this->getUser() ? $this->getUser()->isDelayedLoginAction() : false;
+        return $this->getDelayedTime() > 0;
     }
 
 }
