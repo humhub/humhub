@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.7.3 (Unreleased)
+------------------------
+- Fix #4792: Fix guest access to user profile home page
+
 1.7.2 (January 21, 2021)
 ------------------------
 - Fix #4668: table-responsive tables do not overflow due to default word break style
