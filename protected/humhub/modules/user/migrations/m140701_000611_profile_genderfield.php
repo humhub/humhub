@@ -1,7 +1,7 @@
 <?php
 
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m140701_000611_profile_genderfield extends Migration
 {
@@ -11,13 +11,13 @@ class m140701_000611_profile_genderfield extends Migration
 
         // Check if the installer already ran when not create new profile field
         // (Typically the installer creates initial data.)
-        if (\humhub\models\Setting::isInstalled()) {
+        if (!$this->isInitialInstallation()) {
 
             $row = (new \yii\db\Query())
-                    ->select("*")
-                    ->from('profile_field_category')
-                    ->where(['title' => 'General'])
-                    ->one();
+                ->select("*")
+                ->from('profile_field_category')
+                ->where(['title' => 'General'])
+                ->one();
 
             $categoryId = $row['id'];
             if ($categoryId == "") {

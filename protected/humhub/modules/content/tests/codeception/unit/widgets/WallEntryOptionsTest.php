@@ -5,12 +5,14 @@ namespace humhub\modules\content\tests\codeception\unit\widgets;
 
 
 use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\modules\content\widgets\DeleteLink;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\post\models\Post;
 use humhub\modules\post\widgets\WallEntry;
+use humhub\modules\ui\menu\WidgetMenuEntry;
 use tests\codeception\_support\HumHubDbTestCase;
 
 class WallEntryOptionsTest extends HumHubDbTestCase
@@ -24,6 +26,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
         $this->assertTrue($wallStreamEntryOptions->isViewContext('test'));
         $this->assertEquals(WallEntry::class, $wallStreamEntryOptions->getStreamEntryWidgetClass());
     }
+
 
     public function testDisableControlsEdit()
     {
@@ -133,6 +136,33 @@ class WallEntryOptionsTest extends HumHubDbTestCase
             'object' => $model,
             'wallEntryWidget' => $wallEntry
         ]));
+    }
+
+    public function testWallEntryIsUsingOwnOptionInstance()
+    {
+        $this->becomeUser('admin');
+
+        $model = Post::findOne(['id' => 1]);
+
+        $renderOptions = new WallStreamEntryOptions();
+        $renderOptions->viewContext(StreamEntryOptions::VIEW_CONTEXT_MODAL);
+        $renderOptions->disableControlsEntryEdit();
+
+        $wallEntryA = new WallEntry(['model' => $model, 'renderOptions' => $renderOptions]);
+        $wallEntryB = new WallEntry(['model' => $model, 'renderOptions' => $renderOptions]);
+
+        $wallEntryA->renderOptions->disableControlsEntryDelete();
+
+        static::assertEquals(StreamEntryOptions::VIEW_CONTEXT_MODAL, $wallEntryA->renderOptions->getViewContext());
+        static::assertEquals(StreamEntryOptions::VIEW_CONTEXT_MODAL, $wallEntryB->renderOptions->getViewContext());
+
+        static::assertTrue($wallEntryA->renderOptions->isContextMenuEntryDisabled(new WidgetMenuEntry(['widgetClass' => DeleteLink::class])));
+        static::assertFalse($wallEntryB->renderOptions->isContextMenuEntryDisabled(new WidgetMenuEntry(['widgetClass' => DeleteLink::class])));
+
+        $wallEntryB->renderOptions->viewContext(StreamEntryOptions::VIEW_CONTEXT_DASHBOARD);
+
+        static::assertEquals(StreamEntryOptions::VIEW_CONTEXT_MODAL, $wallEntryA->renderOptions->getViewContext());
+        static::assertEquals(StreamEntryOptions::VIEW_CONTEXT_DASHBOARD, $wallEntryB->renderOptions->getViewContext());
     }
 
     private function assertWallEntryControlsContains($searchStr, $renderOptions)

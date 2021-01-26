@@ -57,6 +57,8 @@ return [
     '<strong>Module </strong> administration' => '',
     '<strong>Warning</strong> incomplete setup!' => '',
     'Appearance' => '',
+    'Delete all' => '',
+    'Delete selected rows' => '',
     'Information' => '',
     'Logs' => '',
     'Notifications' => '',

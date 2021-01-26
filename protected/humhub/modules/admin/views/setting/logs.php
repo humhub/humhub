@@ -3,9 +3,11 @@
 use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Html;
 
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $logsCount integer */
 /* @var $dating string */
 /* @var $limitAgeOptions array */
+/* @var $model \humhub\modules\admin\models\forms\LogFilterForm */
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
@@ -21,15 +23,12 @@ use yii\helpers\Html;
 <?php $form = ActiveForm::begin(); ?>
 
 <?= $form->errorSummary($model); ?>
+<?= $form->field($model, 'logsDateLimit')->dropDownList($limitAgeOptions, ['class' => 'form-control']); ?>
 
-<div class="form-group">
-    <?= $form->field($model, 'logsDateLimit')->dropDownList($limitAgeOptions, ['class' => 'form-control']); ?>
-</div>
 <hr>
 
 <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
-<?= \humhub\widgets\DataSaved::widget(); ?>
 <?php ActiveForm::end(); ?>
 
 <?php $this->endContent(); ?>

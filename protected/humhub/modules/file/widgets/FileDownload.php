@@ -44,7 +44,7 @@ class FileDownload extends Button
         return [
             'data-pjax-prevent' => true,
             'data-file-download' => true,
-            'data-file-url' =>  Url::to(['/file/file/download', 'guid' => $file->guid, 'download' => true], true),
+            'data-file-url' => $file->getUrl(['download' => true], true),
             'data-file-name' => $file->file_name,
             'data-file-mime' => $file->mime_type,
         ];
@@ -52,7 +52,7 @@ class FileDownload extends Button
 
     public static function getUrl(File $file, $download, $scheme)
     {
-        return Url::to(['/file/file/download', 'guid' => $file->guid, 'download' => $download], $scheme);
+        return $file->getUrl(['download' => $download], $scheme);
     }
 
 }

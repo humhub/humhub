@@ -74,7 +74,7 @@ class FileHelper extends \yii\helpers\FileHelper
         if (count($fileHandlers) === 1 && $fileHandlers[0] instanceof DownloadFileHandler) {
             $htmlOptions['target'] = '_blank';
             $htmlOptions = array_merge($htmlOptions,  FileDownload::getFileDataAttributes($file));
-            return Html::a($label, Url::to(['/file/file/download', 'guid' => $file->guid]), $htmlOptions);
+            return Html::a($label, $file->getUrl(), $htmlOptions);
         }
 
         $htmlOptions = array_merge($htmlOptions, ['data-target' => '#globalModal']);

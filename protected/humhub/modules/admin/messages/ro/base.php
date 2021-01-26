@@ -51,6 +51,8 @@ return [
     'Administrative group' => '',
     'Advanced' => '',
     'Appearance' => '',
+    'Delete all' => '',
+    'Delete selected rows' => '',
     'General' => '',
     'Information' => '',
     'Logging' => '',

@@ -11,6 +11,7 @@ namespace humhub\modules\user\models;
 use humhub\components\ActiveRecord;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\Module;
 use Yii;
 use yii\helpers\Url;
 
@@ -134,6 +135,7 @@ class Invite extends ActiveRecord
      */
     public function sendInviteMail()
     {
+        /** @var Module $module */
         $module = Yii::$app->moduleManager->getModule('user');
         $registrationUrl = Url::to(['/user/registration', 'token' => $this->token], true);
 
@@ -150,7 +152,6 @@ class Invite extends ActiveRecord
             $mail->setSubject(Yii::t('UserModule.base', 'Welcome to %appName%', ['%appName%' => Yii::$app->name]));
             $mail->send();
         } elseif ($this->source == self::SOURCE_INVITE && $this->space !== null) {
-
             if ($module->sendInviteMailsInGlobalLanguage) {
                 Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
             }
@@ -176,7 +177,7 @@ class Invite extends ActiveRecord
         } elseif ($this->source == self::SOURCE_INVITE) {
 
             // Switch to systems default language
-            if($module->sendInviteMailsInGlobalLanguage) {
+            if ($module->sendInviteMailsInGlobalLanguage) {
                 Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
             }
 

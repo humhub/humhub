@@ -207,7 +207,7 @@ class PermissionManager extends Component
      * @param string $groupId
      * @param BasePermission $permission
      * @param boolean $returnDefaultState
-     * @return string the state
+     * @return string|int the state
      */
     private function getSingleGroupState($groupId, BasePermission $permission, $returnDefaultState = true)
     {
@@ -223,10 +223,22 @@ class PermissionManager extends Component
         }
 
         if ($returnDefaultState) {
-            return $permission->getDefaultState($groupId);
+            return $this->getSingleGroupDefaultState($groupId, $permission);
         }
 
         return '';
+    }
+
+    /**
+     * Returns the group default state
+     *
+     * @param string $groupId
+     * @param BasePermission $permission
+     * @return string|int the state
+     */
+    protected function getSingleGroupDefaultState($groupId, BasePermission $permission)
+    {
+        return $permission->getDefaultState($groupId);
     }
 
     /**
@@ -346,12 +358,13 @@ class PermissionManager extends Component
 
         $permissions = [];
         foreach ($this->getPermissions() as $permission) {
+            /** @var $permission BasePermission */
             if ($returnOnlyChangeable && !$permission->canChangeState($groupId)) {
                 continue;
             }
 
             $defaultState = BasePermission::getLabelForState(BasePermission::STATE_DEFAULT) . ' - '
-                . BasePermission::getLabelForState($permission->getDefaultState($groupId));
+                . BasePermission::getLabelForState($this->getSingleGroupDefaultState($groupId, $permission));
 
             $permissions[] = [
                 'id' => $permission->id,
@@ -366,6 +379,7 @@ class PermissionManager extends Component
                 ],
                 'changeable' => $permission->canChangeState($groupId),
                 'state' => $this->getGroupState($groupId, $permission, false),
+                'contentContainer' => $permission->contentContainer,
             ];
         }
         return $permissions;

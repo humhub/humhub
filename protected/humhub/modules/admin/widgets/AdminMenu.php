@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\components\Application;
+use humhub\modules\ui\menu\MenuEntry;
 use Yii;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\admin\permissions\ManageSpaces;
@@ -20,19 +21,37 @@ use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageGroups;
 
 /**
- * AdminMenu
+ * AdminMenu implements the navigation in the administration section.
+ *
+ * Please note: Whenever there are entries visible for the current user, the "Administration" menu item
+ * is displayed in the UserAccountMenu.
+ *
+ * The visibility of module menu entries should always be made based on the 'ManageModules' permission.
+ * If a MenuEntry has no specified visibility, the permission `ManageModules` is automatically used.
+ *
+ * Example menu entry:
+ *
+ * ```php
+ * $adminMenuWidget->addEntry(new MenuLink([
+ *     'id' => 'modules',
+ *     'label' => Yii::t('ExampleModule.base', 'Your cool module'),
+ *     'url' => ['/example/module/admin'],
+ *     'icon' => 'rocket',
+ *     'sortOrder' => 500,
+ *     'isActive' => MenuLink::isActiveState('example', 'module'),
+ *     'isVisible' => Yii::$app->user->can(ManageModules::class)
+ *  ]));
+ * ```
  *
  * @author luke
  */
 class AdminMenu extends LeftNavigation
 {
+    const SESSION_CAN_SEE_ADMIN_SECTION = 'user.canSeeAdminSection';
 
     /**
      * @inheritdoc
      */
-    const SESSION_CAN_SEE_ADMIN_SECTION = 'user.canSeeAdminSection';
-
-    public $type = "adminNavigation";
     public $id = "admin-menu";
 
     /**
@@ -104,44 +123,47 @@ class AdminMenu extends LeftNavigation
     }
 
     /**
-     * @inheritdoc
+     * Returns whether the current user can see the admin menu.
+     *
+     * @return bool
      */
-    public function addItem($entryArray)
-    {
-        $entry = MenuLink::createByArray($entryArray);
-
-        if(!isset($entryArray['isVisible'])) {
-            $entry->setIsVisible(Yii::$app->user->isAdmin());
-        }
-
-        $this->addEntry($entry);
-    }
-
     public static function canAccess()
     {
-        if(!(Yii::$app instanceof Application)) {
+        if (!(Yii::$app instanceof Application)) {
             return false;
         }
 
         $canSeeAdminSection = Yii::$app->session->get(static::SESSION_CAN_SEE_ADMIN_SECTION);
         if ($canSeeAdminSection == null) {
-            $canSeeAdminSection = Yii::$app->user->isAdmin() ? true : self::checkNonAdminAccess();
+            $canSeeAdminSection = Yii::$app->user->isAdmin() ?
+                true :
+                !empty((new self())->getEntries(null, true));
             Yii::$app->session->set(static::SESSION_CAN_SEE_ADMIN_SECTION, $canSeeAdminSection);
         }
 
-        return $canSeeAdminSection;
+        return (bool)$canSeeAdminSection;
     }
 
+    /**
+     * Resets the caching, if the current user can see the AdminMenu.
+     */
     public static function reset()
     {
-        if(Yii::$app instanceof Application) {
+        if (Yii::$app instanceof Application) {
             Yii::$app->session->remove(static::SESSION_CAN_SEE_ADMIN_SECTION);
         }
     }
 
-    private static function checkNonAdminAccess()
+    /**
+     * @inheritDoc
+     * @notice If the MenuEntry has not specified visibility, the Permission ManageModules is automatically used.
+     */
+    public function addEntry(MenuEntry $entry)
     {
-        return Yii::$app->user->can([ManageGroups::class, ManageModules::class, ManageSettings::class, ManageUsers::class, SeeAdminInformation::class]);
-    }
+        if (!$entry->isVisibilitySet()) {
+            $entry->setIsVisible(Yii::$app->user->can(ManageModules::class));
+        }
 
+        parent::addEntry($entry);
+    }
 }

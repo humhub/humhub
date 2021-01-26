@@ -18,6 +18,7 @@
  */
 return [
     '<strong>Administration</strong> menu' => '<strong>Administracijski</strong> izbornik',
+    '<strong>Module </strong> administration' => 'Administracija <strong>modula</strong>',
     '<strong>Warning</strong> incomplete setup!' => '<strong>Upozorenje</strong> nedovršene postavke!',
     'About' => 'U vezi',
     'Admin' => 'Admin',
@@ -63,5 +64,6 @@ return [
     'User posts' => 'Postovi korisnika',
     'Userprofiles' => 'Korisnički profili',
     'Users' => 'Korisnici',
-    '<strong>Module </strong> administration' => '',
+    'Delete all' => '',
+    'Delete selected rows' => '',
 ];

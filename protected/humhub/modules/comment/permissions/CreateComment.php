@@ -9,6 +9,7 @@
 namespace humhub\modules\comment\permissions;
 
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 
 /**
  * CreateComment Permission
@@ -25,6 +26,9 @@ class CreateComment extends \humhub\libs\BasePermission
         Space::USERGROUP_MODERATOR,
         Space::USERGROUP_MEMBER,
         Space::USERGROUP_USER,
+        User::USERGROUP_USER,
+        User::USERGROUP_SELF,
+        User::USERGROUP_FRIEND,
     ];
 
     /**
@@ -32,6 +36,7 @@ class CreateComment extends \humhub\libs\BasePermission
      */
     protected $fixedGroups = [
         Space::USERGROUP_GUEST,
+        User::USERGROUP_GUEST,
     ];
 
     /**

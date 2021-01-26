@@ -1,14 +1,14 @@
 <?php
 
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m140907_140822_zip_field_to_text extends Migration
 {
 
     public function up()
     {
-        if (\humhub\models\Setting::isInstalled()) {
+        if (!$this->isInitialInstallation()) {
 
             $this->alterColumn('profile', 'zip', 'VARCHAR(10) DEFAULT NULL');
 
