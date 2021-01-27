@@ -5,6 +5,7 @@ HumHub Changelog
 ------------------------
 - Fix #4792: Guest access to user profile home page
 - Fix #4794: CountrySelect profile field broken
+- Fix #4793: Custom label of HForm field
 
 
 1.7.2 (January 21, 2021)
