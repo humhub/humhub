@@ -162,7 +162,14 @@ class BaseFormAuth extends BaseClient
                 '{failedLoginAttemptsCount}' => $failedLoginAttemptsCount
             ]));
         }
+    }
 
+    /**
+     * Action after successful login action
+     */
+    public function onSuccessLogin()
+    {
+        $this->reportAboutFailedLoginAttempts();
         $this->resetFailedLoginAttempts();
     }
 
