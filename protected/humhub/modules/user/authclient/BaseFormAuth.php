@@ -127,19 +127,14 @@ class BaseFormAuth extends BaseClient
         /* @var $module Module */
         $module = Yii::$app->getModule('user');
 
-
         $attemptsCount = (int)$this->getUserByLogin()->getSettings()->get('failedLoginAttemptsCount', 0);
 
-        // No delay for less than 3 failed attempts.
-        if ($attemptsCount < 3) {
-
-            //TODO: not sure this is neccessary?
-            $this->getUserByLogin()->getSettings()->set('nextLoginPossibleTime', time());
-
-            return;
+        $delaySeconds = 0;
+        foreach ($module->failedLoginDelayTimes as $configAttempts => $configSeconds) {
+            if ($attemptsCount > $configAttempts) {
+                $delaySeconds = $configSeconds;
+            }
         }
-
-        $delaySeconds = $attemptsCount <= 6 ? $module->failedLoginDelayMin : $module->failedLoginDelayMax;
 
         $this->getUserByLogin()->getSettings()->set('nextLoginPossibleTime', time() + $delaySeconds);
     }

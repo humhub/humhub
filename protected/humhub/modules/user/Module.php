@@ -125,15 +125,11 @@ class Module extends \humhub\components\Module
      */
     public $profileDisableStream = false;
 
-    /**
-     * @var int The waiting time after more than 2 incorrect password attempts.
-     */
-    public $failedLoginDelayMin = 5;
-
-    /**
-     * @var int The waiting time after more than 6 incorrect password attempts.
-     */
-    public $failedLoginDelayMax = 20;
+    public $failedLoginDelayTimes = [
+        // No delay for less than 3 failed attempts
+        2 => 10, // Wait 10 seconds after more than 2 incorrect password attempts
+        6 => 20, // Wait 20 seconds after more than 6 incorrect password attempts
+    ];
 
     /**
      * @inheritdoc
