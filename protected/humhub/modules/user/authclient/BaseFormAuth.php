@@ -62,6 +62,8 @@ class BaseFormAuth extends BaseClient
     }
 
     /**
+     * How much seconds current user (who tried to log in by this client auth form) is delayed for login action
+     *
      * @return integer
      * @since 1.8
      */
@@ -73,6 +75,8 @@ class BaseFormAuth extends BaseClient
     }
 
     /**
+     * Check if current user (who tried to log in by this client auth form) is delayed for login action
+     *
      * @return boolean
      * @since 1.8
      */
@@ -82,6 +86,9 @@ class BaseFormAuth extends BaseClient
     }
 
     /**
+     * Increase a counter of failed login attempts
+     * (Used after failed login action)
+     *
      * @since 1.8
      */
     public function countFailedLoginAttempts()
@@ -93,6 +100,9 @@ class BaseFormAuth extends BaseClient
     }
 
     /**
+     * Reset a counter of failed login attempts
+     * (Used after successful login action)
+     *
      * @since 1.8
      */
     public function resetFailedLoginAttempts()
@@ -104,6 +114,8 @@ class BaseFormAuth extends BaseClient
     }
 
     /**
+     * Set data(counter and time) to mark the user is delayed for next login action
+     *
      * @since 1.8
      */
     public function delayLoginAfterFailedAttempt()
@@ -133,6 +145,9 @@ class BaseFormAuth extends BaseClient
     }
 
     /**
+     * Report that the logged in user had some failed attempts
+     * (Used to display the report right after successful login action)
+     *
      * @since 1.8
      */
     public function reportAboutFailedLoginAttempts()
