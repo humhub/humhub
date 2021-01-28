@@ -16,7 +16,7 @@ use humhub\modules\user\models\forms\Login;
 
 /**
  * BaseFormAuth is a base class for AuthClients using the Login Form
- * 
+ *
  * @since 1.1
  */
 class BaseFormAuth extends BaseClient
@@ -34,7 +34,7 @@ class BaseFormAuth extends BaseClient
 
     /**
      * Authenticate the user using the login form.
-     * 
+     *
      * @throws NotSupportedException
      */
     public function auth()
@@ -73,8 +73,8 @@ class BaseFormAuth extends BaseClient
     }
 
     /**
-     * @since 1.8
      * @return boolean
+     * @since 1.8
      */
     public function isDelayedLoginAction()
     {
@@ -115,9 +115,19 @@ class BaseFormAuth extends BaseClient
         /* @var $module Module */
         $module = Yii::$app->getModule('user');
 
-        $delaySeconds = $this->getUserByLogin()->getSettings()->get('failedLoginAttemptsCount') <= 5
-            ? $module->failedLoginDelayMin
-            : $module->failedLoginDelayMax;
+
+        $attemptsCount = (int)$this->getUserByLogin()->getSettings()->get('failedLoginAttemptsCount', 0);
+
+        // No delay for less than 3 failed attempts.
+        if ($attemptsCount < 3) {
+
+            //TODO: not sure this is neccessary?
+            $this->getUserByLogin()->getSettings()->set('nextLoginPossibleTime', time());
+
+            return;
+        }
+
+        $delaySeconds = $attemptsCount <= 6 ? $module->failedLoginDelayMin : $module->failedLoginDelayMax;
 
         $this->getUserByLogin()->getSettings()->set('nextLoginPossibleTime', time() + $delaySeconds);
     }
