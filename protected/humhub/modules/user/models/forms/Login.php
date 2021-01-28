@@ -85,7 +85,7 @@ class Login extends Model
                 $authClient->login = $this;
 
                 if ($authClient->isDelayedLoginAction()) {
-                    $this->addError('password', Yii::t('UserModule.base', 'Your account is delayed because of failed login attempt, please try later.'));
+                    $this->addError('password', Yii::t('UserModule.auth', 'User or Password incorrect.'));
 
                     UserAsset::register(Yii::$app->view);
                     Yii::$app->view->registerJs(
