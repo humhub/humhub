@@ -175,6 +175,9 @@ class BaseFormAuth extends BaseClient
     {
         $this->reportAboutFailedLoginAttempts();
         $this->resetFailedLoginAttempts();
+        // Reset cached User because we don't need this anymore,
+        // but we should reset in order to avoid issues on tests where it may be used by different users after `$I->logout();`
+        $this->loginUser = null;
     }
 
 }

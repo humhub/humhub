@@ -4,10 +4,9 @@ namespace humhub\modules\user\models\forms;
 
 use humhub\modules\user\assets\UserAsset;
 use humhub\modules\user\authclient\BaseClient;
-use humhub\modules\user\models\User;
+use humhub\modules\user\authclient\BaseFormAuth;
 use Yii;
 use yii\base\Model;
-use humhub\modules\user\authclient\BaseFormAuth;
 
 
 /**
@@ -35,11 +34,6 @@ class Login extends Model
      * @var BaseClient auth client used to authenticate
      */
     public $authClient = null;
-
-    /**
-     * @var User User of the auth client
-     */
-    protected $authUser = null;
 
     /**
      * @inheritdoc
