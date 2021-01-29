@@ -80,7 +80,7 @@ class Login extends Model
     public function afterValidate()
     {
         // Loop over enabled authclients
-        $authClientIsDelayed = false;
+        $authClientDelayed = null;
         foreach (Yii::$app->authClientCollection->getClients() as $authClient) {
             if ($authClient instanceof BaseFormAuth) {
                 $authClient->login = $this;
@@ -102,15 +102,18 @@ class Login extends Model
 
                 // User may be delayed during authorization attempt above,
                 // so we need this additional check in order to delay the login form immediately
-                $authClientIsDelayed = $authClient->isDelayedLoginAction();
+                if ($authClient->isDelayedLoginAction()) {
+                    $authClientDelayed = $authClient;
+                }
+
             }
         }
 
-        if ($authClientIsDelayed) {
+        if ($authClientDelayed) {
             UserAsset::register(Yii::$app->view);
             Yii::$app->view->registerJs(
                 'humhub.require("user.login").delayLoginAction('
-                . $authClient->getDelayedLoginTime() . ',
+                . $authClientDelayed->getDelayedLoginTime() . ',
                 "' . Yii::t('UserModule.auth', 'Please wait') . '",
                 "#login-button")'
             );
