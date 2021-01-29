@@ -54,6 +54,7 @@ class BaseFormAuth extends BaseClient
                 ? User::find()
                     ->where(['username' => $this->login->username])
                     ->orWhere(['email' => $this->login->username])
+                    ->andWhere(['auth_mode' => $this->id])
                     ->one()
                 : null;
         }
