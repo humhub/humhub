@@ -86,6 +86,17 @@ class BaseFormAuth extends BaseClient
     }
 
     /**
+     * Get a failed login attempts count
+     *
+     * @since 1.8
+     * @return int
+     */
+    public function getFailedLoginAttemptsCount()
+    {
+        return (int)$this->getUserByLogin()->getSettings()->get('failedLoginAttemptsCount', 0);
+    }
+
+    /**
      * Increase a counter of failed login attempts
      * (Used after failed login action)
      *
@@ -94,7 +105,7 @@ class BaseFormAuth extends BaseClient
     public function countFailedLoginAttempts()
     {
         if ($this->getUserByLogin()) {
-            $this->getUserByLogin()->getSettings()->set('failedLoginAttemptsCount', $this->getUserByLogin()->getSettings()->get('failedLoginAttemptsCount') + 1);
+            $this->getUserByLogin()->getSettings()->set('failedLoginAttemptsCount', $this->getFailedLoginAttemptsCount() + 1);
             $this->delayLoginAfterFailedAttempt();
         }
     }
@@ -127,11 +138,9 @@ class BaseFormAuth extends BaseClient
         /* @var $module Module */
         $module = Yii::$app->getModule('user');
 
-        $attemptsCount = (int)$this->getUserByLogin()->getSettings()->get('failedLoginAttemptsCount', 0);
-
         $delaySeconds = 0;
         foreach ($module->failedLoginDelayTimes as $configAttempts => $configSeconds) {
-            if ($attemptsCount > $configAttempts) {
+            if ($this->getFailedLoginAttemptsCount() > $configAttempts) {
                 $delaySeconds = $configSeconds;
             }
         }
@@ -151,10 +160,9 @@ class BaseFormAuth extends BaseClient
             return;
         }
 
-        $failedLoginAttemptsCount = (int)$this->getUserByLogin()->getSettings()->get('failedLoginAttemptsCount');
-        if ($failedLoginAttemptsCount > 0) {
+        if ($this->getFailedLoginAttemptsCount() > 0) {
             Yii::$app->getView()->warn(Yii::t('UserModule.base', 'Unsuccessful login attempts since last login: {failedLoginAttemptsCount}', [
-                '{failedLoginAttemptsCount}' => $failedLoginAttemptsCount
+                '{failedLoginAttemptsCount}' => $this->getFailedLoginAttemptsCount()
             ]));
         }
     }
