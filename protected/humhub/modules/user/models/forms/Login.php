@@ -87,7 +87,7 @@ class Login extends Model
 
                 if ($authClient->isDelayedLoginAction()) {
                     // Don't even try to do authorization if user is delayed currently
-                    $authClientIsDelayed = true;
+                    $authClientDelayed = $authClient;
                     break;
                 }
 
