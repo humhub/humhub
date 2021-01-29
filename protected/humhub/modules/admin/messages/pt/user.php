@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Anonymous users can register' => 'Utilizadores anónimos não podem se registar',
+    'New users can register' => 'Utilizadores anónimos não podem se registar',
     'Could not load category.' => 'Não é possível carregar esta categoria.',
     'Default user group for new users' => 'Grupo por defeito para novos utilizadores',
     'Delete' => 'Apagar',
@@ -52,7 +52,7 @@ return [
     'Add new user' => '',
     'All open registration invitations were successfully deleted.' => '',
     'All the personal data of this user will be irrevocably deleted.' => '',
-    'Allow limited access for non-authenticated users (guests)' => '',
+    'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => '',
     'Are you really sure that you want to disable this user?' => '',
     'Are you really sure that you want to enable this user?' => '',
     'Are you really sure that you want to impersonate this user?' => '',
