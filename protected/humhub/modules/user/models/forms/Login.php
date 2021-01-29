@@ -80,20 +80,14 @@ class Login extends Model
     public function afterValidate()
     {
         // Loop over enabled authclients
+        $authClientIsDelayed = false;
         foreach (Yii::$app->authClientCollection->getClients() as $authClient) {
             if ($authClient instanceof BaseFormAuth) {
                 $authClient->login = $this;
 
                 if ($authClient->isDelayedLoginAction()) {
-                    $this->addError('password', Yii::t('UserModule.auth', 'User or Password incorrect.'));
-
-                    UserAsset::register(Yii::$app->view);
-                    Yii::$app->view->registerJs(
-                        'humhub.require("user.login").delayLoginAction('
-                        . $authClient->getDelayedLoginTime() . ',
-                         "' . Yii::t('UserModule.auth', 'Please wait') . '",
-                         "#login-button")'
-                    );
+                    // Don't even try to do authorization if user is delayed currently
+                    $authClientIsDelayed = true;
                     break;
                 }
 
@@ -105,7 +99,21 @@ class Login extends Model
 
                     return;
                 }
+
+                // User may be delayed during authorization attempt above,
+                // so we need this additional check in order to delay the login form immediately
+                $authClientIsDelayed = $authClient->isDelayedLoginAction();
             }
+        }
+
+        if ($authClientIsDelayed) {
+            UserAsset::register(Yii::$app->view);
+            Yii::$app->view->registerJs(
+                'humhub.require("user.login").delayLoginAction('
+                . $authClient->getDelayedLoginTime() . ',
+                "' . Yii::t('UserModule.auth', 'Please wait') . '",
+                "#login-button")'
+            );
         }
 
         $this->addError('password', Yii::t('UserModule.auth', 'User or Password incorrect.'));
