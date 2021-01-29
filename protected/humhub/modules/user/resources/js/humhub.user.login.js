@@ -20,7 +20,7 @@ humhub.module('user.login', function (module, require, $) {
         var originalLoginButtonText = $(buttonSelector).html();
         $(buttonSelector).html(message + " (" + delaySeconds + ")").prop('disabled', true);
 
-        var delayTimer = setInterval(() => {
+        var delayTimer = setInterval(function() {
             $(buttonSelector).html(message + " (" + --delaySeconds + ")");
             if (delaySeconds <= 0) {
                 clearInterval(delayTimer);
