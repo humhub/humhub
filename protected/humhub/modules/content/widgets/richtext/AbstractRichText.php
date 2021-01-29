@@ -9,17 +9,18 @@
 namespace humhub\modules\content\widgets\richtext;
 
 use humhub\libs\Html;
+use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use Yii;
 use humhub\components\Event;
 use humhub\widgets\JsWidget;
 use yii\base\InvalidArgumentException;
-use yii\db\ActiveRecord;
+use humhub\components\ActiveRecord;
 
 /**
  * AbstractRichText serves as the base class for rich text implementations.
  *
  * A rich text Widget is used for rendering the output of a rich text and usually is related to an [[AbstractRichTextEditor]] implementation
- * defined by [[editorClass]] and an [[AbstractRichTextProcessor]] implementation for post-processing rich texts defined by [[processorClass]].
+ * defined by [[editorClass]].
  *
  * In order for some features as the _Mentionings_ to work a rich text should only be used for [[ContentActiveRecord]] or [[ContentAddonActiveRecord]] models.
  *
@@ -53,35 +54,43 @@ use yii\db\ActiveRecord;
  */
 abstract class AbstractRichText extends JsWidget
 {
-    const PRESET_DOCUMENT = 'document';
+    public const PRESET_DOCUMENT = 'document';
 
     /**
      * @event Event an event raised after the post-process phase of the rich text.
      */
-    const EVENT_POST_PROCESS = 'postProcess';
+    public const EVENT_POST_PROCESS = 'postProcess';
 
     /**
      * @event \humhub\modules\search\events\ParameterEvent with parameter 'output'
      */
-    const EVENT_BEFORE_OUTPUT = 'beforeOutput';
+    public const EVENT_BEFORE_OUTPUT = 'beforeOutput';
 
     /**
      * Converter output format for html output
      * @since 1.8
      */
-    const FORMAT_HTML = 'html';
+    public const FORMAT_HTML = 'html';
 
     /**
      * Converter output format for plaintext output
      * @since 1.8
      */
-    const FORMAT_PLAINTEXT = 'plaintext';
+    public const FORMAT_PLAINTEXT = 'plaintext';
+
+    /**
+     * Short text format used in previews as notifications and activities.
+     * @since 1.8
+     */
+    public const FORMAT_SHORTTEXT = 'shorttext';
 
     /**
      * Converter output format for markdown output
      * @since 1.8
      */
-    const FORMAT_MARKDOWN = 'markdown';
+    public const FORMAT_MARKDOWN = 'markdown';
+
+
 
     /**
      * @var string defines a preset of rich text features and settings
@@ -148,12 +157,6 @@ abstract class AbstractRichText extends JsWidget
     protected static $editorClass;
 
     /**
-     * @var string [[AbstractRichTextProcessor]] subclass, used for post-processing the rich text content
-     * @see postProcess
-     */
-    protected static $processorClass;
-
-    /**
      * @var string [[AbstractRichTextConverter]] subclass, used for converting the richtext to other output formats
      * @since 1.8
      */
@@ -165,13 +168,18 @@ abstract class AbstractRichText extends JsWidget
     public $record;
 
     /**
+     * @var array of richtext extension classes used for preparing and post processing output and converter result
+     */
+    protected static $extensions = [];
+
+    /**
      * @inheritdoc
      */
     public function init()
     {
         parent::init();
-        if(!static::$editorClass || ! static::$processorClass) {
-            throw new InvalidArgumentException('No editor or processor class set for rich text '.static::class);
+        if(!static::$editorClass) {
+            throw new InvalidArgumentException('No editor class set for rich text '.static::class);
         }
     }
 
@@ -206,15 +214,48 @@ abstract class AbstractRichText extends JsWidget
      */
     public static function postProcess($text, $record, $attribute = null)
     {
-        $processor = static::getProcessor($text,$record, $attribute);
-        $processorResult = $processor->process();
-
-        if($record && $attribute && $processor->text !== $text) {
-            $record->updateAttributes([$attribute => $processor->text]);
+        $result = [];
+        $original = $text;
+        foreach (static::getExtensions() as $extension) {
+            $text = $extension->onPostProcess($text, $record, $attribute, $result);
         }
 
-        Event::trigger(static::class, static::EVENT_POST_PROCESS, new Event(['data' => ['processorClass' => static::$processorClass, 'text' => $text, 'record' => $record]]));
-        return $processorResult;
+        if($record && $attribute && $original !== $text) {
+            $record->updateAttributes([$attribute => $text]);
+        }
+
+
+        Event::trigger(static::class, static::EVENT_POST_PROCESS,
+            new Event(['data' => ['text' => $text, 'record' => $record, 'attribute' => $attribute]]));
+
+        $result['text'] = $text;
+
+        return $result;
+    }
+
+    /**
+     * @param $extensionKey
+     * @param $extensionClass
+     * @return mixed
+     * @since 1.8
+     */
+    public static function addExtension($extensionKey, $extensionClass)
+    {
+        return static::$extensions[$extensionKey] = $extensionClass;
+    }
+
+    /**
+     * @return RichTextExtension[]
+     * @since 1.8
+     */
+    public static function getExtensions()
+    {
+        $result = [];
+        foreach (static::$extensions as $extension) {
+            $result[] = call_user_func($extension.'::instance');
+        }
+
+        return $result;
     }
 
     /**
@@ -225,22 +266,6 @@ abstract class AbstractRichText extends JsWidget
         return call_user_func(static::getEditorClass().'::widget', $config);
     }
 
-
-    /**
-     * @param $text string rich text content to be processed
-     * @param $record ActiveRecord related model holding the rich text
-     * @return AbstractRichTextProcessor the related post-processor
-     * @throws \yii\base\InvalidConfigException
-     */
-    public static function getProcessor($text, $record, $attribute = null) : AbstractRichTextProcessor
-    {
-        return Yii::createObject([
-            'class' => static::getProcessorClass(),
-            'text' => $text,
-            'attribute' => $attribute,
-            'record' => $record]);
-    }
-
     /**
      * @return AbstractRichTextConverter the related post-processor
      * @throws \yii\base\InvalidConfigException
@@ -249,14 +274,6 @@ abstract class AbstractRichText extends JsWidget
     public static function getConverter() : AbstractRichTextConverter
     {
         return Yii::createObject(['class' => static::getConverterClass()]);
-    }
-
-    /**
-     * @return string
-     */
-    public static function getProcessorClass() : string
-    {
-        return static::$processorClass;
     }
 
     /**
@@ -323,6 +340,8 @@ abstract class AbstractRichText extends JsWidget
             case static::FORMAT_MARKDOWN:
                 return $converter->convertToMarkdown($content, $options);
             case static::FORMAT_PLAINTEXT:
+                return $converter->convertToPlaintext($content, $options);
+            case static:: FORMAT_SHORTTEXT:
                 return $converter->convertToPlaintext($content, $options);
             default:
                 return Html::encode($converter->convertToPlaintext($content, $options));

@@ -1,26 +1,51 @@
 <?php
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- *
- */
-
-namespace humhub\modules\content\widgets\richtext;
 
 
+namespace humhub\modules\content\widgets\richtext\extensions;
+
+
+use humhub\components\ActiveRecord;
 use humhub\models\UrlOembed;
+use humhub\modules\content\Module;
+use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use Yii;
+use yii\base\Model;
 use yii\helpers\Html;
 
-class RichTextCompatibilityParser
+class RichTextCompatibilityExtension extends Model implements RichTextExtension
 {
-    public static function parse($text)
+
+    public function onBeforeOutput(ProsemirrorRichText $richtext, string $output): string
     {
-        $text = static::translateEmojis($text);
-        $text = static::translateLinks($text);
-        return static::translateMentionings($text);
+        if(!$this->isCompatibilityMode()) {
+            return $output;
+        }
+
+        $output = static::translateEmojis($output);
+        $output = static::translateLinks($output);
+        return static::translateMentionings($output);
+    }
+
+    public function onAfterOutput(ProsemirrorRichText $richtext, string $output): string
+    {
+        return $output;
+    }
+
+    public function onPostProcess(string $text, ActiveRecord $record, ?string $attribute, array &$result): string
+    {
+        return $text;
+    }
+
+    public function onBeforeConvert(string $text, string $format, array $options = []): string
+    {
+        return $text;
+    }
+
+    public function onAfterConvert(string $text, string $format, array $options = []): string
+    {
+        return $text;
     }
 
     /**
@@ -29,7 +54,7 @@ class RichTextCompatibilityParser
      * @param string $text Contains the complete message
      * @param string $show show smilies or remove it (for activities and notifications)
      */
-    public static function translateEmojis($text)
+    public static function translateEmojis(string $text) : string
     {
         $emojis = [
             "Relaxed", "Yum", "Relieved", "Hearteyes", "Cool", "Smirk",
@@ -89,7 +114,7 @@ class RichTextCompatibilityParser
      * @param $text
      * @return mixed
      */
-    private static function translateLinks($text)
+    private static function translateLinks(string $text) : string
     {
         return preg_replace_callback('/(?<=^|\s)(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s\]\)\\"\'\<]{2,})(?=$|\s)/', function ($hit) {
             $url = $hit[0];
@@ -103,7 +128,7 @@ class RichTextCompatibilityParser
      * @param $text
      * @return mixed
      */
-    private static function translateMentionings($text)
+    private static function translateMentionings(string $text) : string
     {
         return preg_replace_callback('@\@\-([us])([\w\-]*?)($|[\.,:;\'"!\?\s])@', function ($hit) {
             if ($hit[1] == 'u') {
@@ -122,4 +147,16 @@ class RichTextCompatibilityParser
         }, $text);
     }
 
+    /**
+     * Checks if the compatibility mode is enabled.
+     * The compatibility mode is only required, if old content is present and won't be activated for new installations.
+     *
+     * @return bool
+     */
+    private function isCompatibilityMode()
+    {
+        /* @var $module Module  */
+        $module = Yii::$app->getModule('content');
+        return $module->legacyRichTextCompatibility && $module->settings->get('richtextCompatMode', 1);
+    }
 }

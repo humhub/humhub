@@ -4,92 +4,67 @@
 namespace humhub\modules\content\widgets\richtext\extensions;
 
 
-use yii\base\Model;
+use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
+use humhub\components\ActiveRecord;
 
 /**
- * @package humhub\modules\content\widgets\richtext\extensions
+ * A RichTextExtension class can be used to prepare or postprocess a richtext prior of rendering or converting.
+ *
+ * @since 1.8
  */
-abstract class RichTextExtension extends Model
+interface RichTextExtension
 {
     /**
-     * @var string defines the extension key for this type link extensions
-     */
-    public $key;
-
-    /**
-     * @param $text
-     * @return RichTextExtensionMatch[]
-     */
-    public static function scan($text)
-    {
-        return static::instance()->scanExtension($text);
-    }
-
-    /**
-     * @param $text
+     * Callback function called before a richtext output is rendered. This callback can be used to prepare
+     * a richtext widget prior of rendering.
+     *
+     * @param ProsemirrorRichText $richtext
+     * @param string $output
      * @return string
      */
-    public static function replace($text, callable $callback) : string
-    {
-        return static::instance()->replaceExtension($text, $callback);
-    }
+    public function onBeforeOutput(ProsemirrorRichText $richtext, string $output): string;
 
     /**
-     * @param $text
-     * @return RichTextExtensionMatch[]
-     */
-    protected function scanExtension($text)
-    {
-        preg_match_all($this->getRegex(), $text, $matches, PREG_SET_ORDER);
-
-        $result = [];
-        foreach ($matches as $match) {
-            $result[] = $this->initMatch($match);
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param $text
+     * Callback function called after a richtext output is rendered. This callback can be used to postprocess
+     * a richtext widget result.
+     *
+     * @param ProsemirrorRichText $richtext
+     * @param string $output
      * @return string
      */
-    protected function replaceExtension($text, callable $callback)
-    {
-        return preg_replace_callback($this->getRegex(), function($match) use ($callback) {
-            return $callback($this->initMatch($match));
-        }, $text);
-    }
+    public function onAfterOutput(ProsemirrorRichText $richtext, string $output): string;
 
     /**
-     * Callback
+     * Callback function called after a richtext output is rendered. This callback can be used to postprocess
+     * a richtext widget result.
+     *
      * @param string $text
+     * @param ActiveRecord $record
+     * @param string|null $attribute
+     * @param array $result
      * @return string
      */
-    public function onBeforeParse(string $text) : string {
-       return $text;
-    }
-
-    public function onAfterParse(string $text) : string {
-        return $text;
-    }
+    public function onPostProcess(string $text, ActiveRecord $record, ?string $attribute, array &$result): string;
 
     /**
-     * @param RichTextExtensionMatch $match
+     * Callback function called before a converter started to parse the a richtext. This callback can be used
+     * to prepare a richtext prior conversion to a given format.
+     *
+     * @param string $text
+     * @param string $format
+     * @param array $options
      * @return string
      */
-    public abstract function toPlainText(array $match) : string;
+    public function onBeforeConvert(string $text, string $format, array $options = []): string;
 
     /**
-     * @param RichTextExtensionMatch $match
+     * Callback function called after a converter finished processing a richtext. This callback can be used
+     * to preprocess an already converted richtext.
+     *
+     * @param string $text
+     * @param string $format
+     * @param array $options
      * @return string
      */
-    public abstract function initMatch(array $match) : RichTextExtensionMatch;
-
-    /**
-     * @param array $match
-     * @return string
-     */
-    public abstract function getRegex() : string;
-
+    public function onAfterConvert(string $text, string $format, array $options = []): string;
 }

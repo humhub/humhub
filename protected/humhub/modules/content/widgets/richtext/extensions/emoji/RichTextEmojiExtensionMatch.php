@@ -50,7 +50,7 @@ class RichTextEmojiExtensionMatch extends RichTextExtensionMatch
      * Returns an url of this extension match, if supported
      * @return string
      */
-    public function getUrl(): ?string
+    public function getExtensionUrl(): ?string
     {
         //TODO: Maybe generate URL?
         return null;

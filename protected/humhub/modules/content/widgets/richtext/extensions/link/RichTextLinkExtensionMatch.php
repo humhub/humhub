@@ -8,11 +8,12 @@ use humhub\modules\content\widgets\richtext\extensions\RichTextExtensionMatch;
 
 class RichTextLinkExtensionMatch extends RichTextExtensionMatch
 {
-    private const LINK_REGEX_GROUP_FULL = 0;
-    private const LINK_REGEX_GROUP_CONTENT = 1;
-    private const LINK_REGEX_GROUP_EXTENSION_KEY = 2;
-    private const LINK_REGEX_GROUP_EXTENSION_ID = 3;
-    private const LINK_REGEX_GROUP_TITLE = 4;
+    private const INDEX_FULL = 0;
+    private const INDEX_CONTENT = 1;
+    private const INDEX_EXTENSION_KEY = 2;
+    private const INDEX_EXTENSION_ID = 3;
+    private const INDEX_TITLE = 4;
+    private const INDEX_ADDITION = 5;
 
     /**
      * @var array
@@ -24,32 +25,37 @@ class RichTextLinkExtensionMatch extends RichTextExtensionMatch
      */
     public function getFull() : string
     {
-        return $this->getByIndex(static::LINK_REGEX_GROUP_FULL);
+        return $this->getByIndex(static::INDEX_FULL);
     }
 
     public function getText() : string
     {
-        return $this->getByIndex(static::LINK_REGEX_GROUP_CONTENT);
+        return $this->getByIndex(static::INDEX_CONTENT);
     }
 
     public function getExtensionKey() : string
     {
-        return $this->getByIndex(static::LINK_REGEX_GROUP_EXTENSION_KEY);
+        return $this->getByIndex(static::INDEX_EXTENSION_KEY);
     }
 
     public function getExtensionId() : string
     {
-        return $this->getByIndex(static::LINK_REGEX_GROUP_EXTENSION_ID);
+        return $this->getByIndex(static::INDEX_EXTENSION_ID);
     }
 
-    public function getUrl() : string
+    public function getExtensionUrl() : string
     {
         return $this->getExtensionKey() . ':' . $this->getExtensionId();
     }
 
     public function getTitle() : string
     {
-        return $this->getByIndex(static::LINK_REGEX_GROUP_TITLE);
+        return $this->getByIndex(static::INDEX_TITLE);
+    }
+
+    public function getAddition() : string
+    {
+        return $this->getByIndex(static::INDEX_ADDITION);
     }
 
     public function getByIndex(int $index) : string

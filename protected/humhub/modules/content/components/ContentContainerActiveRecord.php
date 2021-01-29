@@ -102,10 +102,12 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 
     /**
      * Should be overwritten by implementation
+     * @param bool $scheme since 1.8
+     * @return string
      */
-    public function getUrl()
+    public function getUrl($scheme = false)
     {
-        return $this->createUrl();
+        return $this->createUrl(null, [], $scheme);
     }
 
     /**

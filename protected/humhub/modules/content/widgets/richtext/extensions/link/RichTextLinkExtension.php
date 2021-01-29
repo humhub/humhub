@@ -2,16 +2,13 @@
 
 namespace humhub\modules\content\widgets\richtext\extensions\link;
 
-use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
+use humhub\components\ActiveRecord;
+use humhub\modules\content\widgets\richtext\extensions\RichTextContentExtension;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtensionMatch;
+use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
 
-class RichTextLinkExtension extends RichTextExtension
+class RichTextLinkExtension extends RichTextContentExtension
 {
-    const BLOCK_KEY_URL = 'url';
-    const BLOCK_KEY_TITLE = 'title';
-    const BLOCK_KEY_MD = 'orig';
-    const BLOCK_KEY_TEXT = 'text';
-
     /**
      * Can be used to scan for link extensions of the form [<text>](<extension>:<url> "<title>") in which the actual meaning
      * of the placeholders is up to the extension itself.
@@ -31,7 +28,7 @@ class RichTextLinkExtension extends RichTextExtension
      *
      * @param $text string rich text content to parse
      * @param $extension string|null extension string if not given all extension types will be included
-     * @param callable $callback callable expecting MarkdownLinkMatch[] as first parameter
+     * @param callable $callback callable expecting RichTextExtensionMatch as first parameter
      * @return mixed
      */
     public static function replaceLinkExtension(string $text, $extension, callable $callback)
@@ -43,10 +40,11 @@ class RichTextLinkExtension extends RichTextExtension
      * @param RichTextExtensionMatch $match
      * @return string
      */
-    public function toPlainText(array $block) : string
+    public function initMatch(array $match) : RichTextExtensionMatch
     {
-        return static::convertToPlainText($block[static::BLOCK_KEY_TEXT], $block[static::BLOCK_KEY_URL]);
+        return new RichTextLinkExtensionMatch(['match' => $match]);
     }
+
 
     public static function convertToPlainText($text, $url)
     {
@@ -67,15 +65,6 @@ class RichTextLinkExtension extends RichTextExtension
         }
 
         return false;
-    }
-
-    /**
-     * @param RichTextExtensionMatch $match
-     * @return string
-     */
-    public function initMatch(array $match) : RichTextExtensionMatch
-    {
-        return new RichTextLinkExtensionMatch(['match' => $match]);
     }
 
     /**
@@ -101,6 +90,19 @@ class RichTextLinkExtension extends RichTextExtension
         return '['.$text.']('.$url.' "'.$title.'")';
     }
 
+    public static function buildExtensionLink(string $text, string $extensionId, string $title = null, string $addition = '') : string
+    {
+        if(!empty($addition)) {
+            $addition = ' '.$addition;
+        }
+
+        if(!$title) {
+            return '['.$text.']('.static::instance()->key.':'.$extensionId.$addition.')';
+        }
+
+        return '['.$text.']('.static::instance()->key.':'.$extensionId.' "'.$title.'"'.$addition.')';
+    }
+
     public function cutExtensionKeyFromUrl(string $url) : string
     {
         if(!$this->validateExtensionUrl($url)) {
@@ -120,7 +122,25 @@ class RichTextLinkExtension extends RichTextExtension
             $extension  = '[a-zA-Z-_]+';
         }
 
-        // [<text>](<extension>:<id> "<title>")
-        return '/(?<!\\\\)!?\[([^\]]*)\]\(('.$extension.'):{1}([^\)\s]*)(?:\s)?(?:"([^"]*)")?[^\)]*\)/is';
+        // [<text>](<extension>:<id> "<title>" <addition>   )
+        return '/(?<!\\\\)!?\[([^\]]*)\]\(('.$extension.'):{1}([^\)\s]*)(?:\s)?(?:"([^"]*)")?(?:\s)?([^\)]*)\)/is';
+    }
+
+    public function onBeforeConvert(string $text, string $format, array $options = []): string
+    {
+        return $text;
+    }
+
+    public function onBeforeConvertLink(LinkParserBlock $linkBlock): void
+    {
+        // TODO: Implement onBeforeConvertLink() method.
+    }
+
+    public function onBeforeOutput(ProsemirrorRichText $richtext, string $output): string {
+        return $output;
+    }
+
+    public function onAfterOutput(ProsemirrorRichText $richtext, string $output): string  {
+        return $output;
     }
 }

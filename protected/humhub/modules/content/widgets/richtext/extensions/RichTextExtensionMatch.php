@@ -47,13 +47,19 @@ abstract class RichTextExtensionMatch extends Model
      * Returns an url of this extension match, if supported
      * @return string
      */
-    public abstract function getUrl() : ?string;
+    public abstract function getExtensionUrl() : ?string;
 
     /**
      * Returns a title of this extension match if supported
      * @return string
      */
     public abstract function getTitle() : string;
+
+    /**
+     * Returns an addition of this extension match if supported
+     * @return string
+     */
+    public abstract function getAddition() : string;
 
     /**
      * Returns the value of a given match index or null

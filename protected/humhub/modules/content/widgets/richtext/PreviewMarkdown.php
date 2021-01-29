@@ -12,7 +12,7 @@ use humhub\libs\Markdown;
 /**
  * Class PreviewMarkdown
  * @package humhub\modules\content\widgets\richtext
- * @deprecated since 1.8 use `Richtext::convert()` for richtext or a parser from `humhub\modules\content\widgets\richtext\parsers` for
+ * @deprecated since 1.8 use `Richtext::convert()` for richtext or a parser from `humhub\modules\content\widgets\richtext\converter` for
  * plain markdown parsing.
  */
 class PreviewMarkdown extends Markdown

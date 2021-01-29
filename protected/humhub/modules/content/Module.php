@@ -75,6 +75,13 @@ class Module extends \humhub\components\Module
     public $maxPinnedProfileContent = 2;
 
     /**
+     * If true richtext extensions (oembed, emojis, mentionings) of legacy richtext (< v1.3) are supported.
+     * @var bool
+     * @since 1.8
+     */
+    public $legacyRichTextCompatibility = true;
+
+    /**
      * @param ContentContainerActiveRecord $container
      * @since 1.6
      * @return int

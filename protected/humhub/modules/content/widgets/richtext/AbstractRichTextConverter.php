@@ -43,7 +43,7 @@ abstract class AbstractRichTextConverter extends BaseObject
      * @param array $options
      * @return string
      */
-   public abstract function convertToHtml(string $content, bool $minimal = true, array $options = []) : string;
+    abstract public function convertToHtml(string $content, bool $minimal = true, array $options = []): string;
 
     /**
      * Converts the given rich-text content to plain markdown.
@@ -60,7 +60,7 @@ abstract class AbstractRichTextConverter extends BaseObject
      * @param array $options
      * @return mixed
      */
-   public abstract function convertToMarkdown(string $content, array $options = []) : string;
+    abstract public function convertToMarkdown(string $content, array $options = []): string;
 
     /**
      * Converts the given rich-text content to non html encoded plain text.
@@ -74,5 +74,20 @@ abstract class AbstractRichTextConverter extends BaseObject
      * @param array $options
      * @return mixed
      */
-   public abstract function convertToPlaintext(string $content, array $options = []) : string;
+    abstract public function convertToPlaintext(string $content, array $options = []): string;
+
+    /**
+     * Converts the given rich-text content to html encoded short text preview. The short text should not contain any
+     * html elements and no breaks
+     *
+     * A proper implementation of this function is mandatory.
+     *
+     * The $options array may be used to manipulate the result.
+     * The supported options may differ between richtext implementations.
+     *
+     * @param string $content
+     * @param array $options
+     * @return mixed
+     */
+    abstract public function convertToShortText(string $content, array $options = []): string;
 }

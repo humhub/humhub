@@ -11,17 +11,15 @@ namespace humhub\modules\content\widgets\richtext;
 use humhub\libs\EmojiMap;
 use humhub\libs\Helpers;
 use humhub\libs\ParameterEvent;
-use humhub\modules\content\models\ContentContainer;
+use humhub\modules\content\widgets\richtext\extensions\emoji\RichTextEmojiExtension;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\FileExtension;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\OembedExtension;
+use humhub\modules\content\widgets\richtext\extensions\RichTextCompatibilityExtension;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
-use humhub\modules\space\models\Space;
-use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Html;
-use humhub\models\UrlOembed;
 
 /**
  * The ProsemirrorRichText is a [Prosemirror](https://prosemirror.net) and [Markdown-it](https://github.com/markdown-it/markdown-it)
@@ -110,19 +108,9 @@ use humhub\models\UrlOembed;
 class ProsemirrorRichText extends AbstractRichText
 {
     /**
-     * @var int defines the maximum amount of oembeds allowed in a single richtext
-     */
-    public static $maxOembed = 10;
-
-    /**
      * @inheritdoc
      */
     public $jsWidget = 'ui.richtext.prosemirror.RichText';
-
-    /**
-     * @var array holds included oembeds used for rendering
-     */
-    private $oembeds = [];
 
     /**
      * @inheritdoc
@@ -132,12 +120,19 @@ class ProsemirrorRichText extends AbstractRichText
     /**
      * @inheritdoc
      */
-    protected static $processorClass = ProsemirrorRichTextProcessor::class;
+    protected static $converterClass = ProsemirrorRichTextConverter::class;
 
     /**
-     * @inheritdoc
+     * @var string[]
+     * @since 1.8
      */
-    protected static $converterClass = ProsemirrorRichTextConverter::class;
+    protected static $extensions = [
+        RichTextCompatibilityExtension::class,
+        MentioningExtension::class,
+        FileExtension::class,
+        OembedExtension::class,
+        RichTextEmojiExtension::class
+    ];
 
     /**
      * @inheritdoc
@@ -146,6 +141,7 @@ class ProsemirrorRichText extends AbstractRichText
     {
         parent::init();
         if($this->edit) {
+            // In edit mode we only render a hidden rich text element
             $this->visible = false;
         }
     }
@@ -158,41 +154,43 @@ class ProsemirrorRichText extends AbstractRichText
             return $this->renderMinimal();
         }
 
-        if($this->isCompatibilityMode()) {
-            $this->text = RichTextCompatibilityParser::parse($this->text);
+        $output = $this->parseOutput();
+
+        // E.g. when initializing empty editor
+        if(empty($output)) {
+            return $output;
         }
 
-        $oembedCount = 0;
-        foreach (static::scanLinkExtension($this->text, 'oembed') as $match) {
-            if(isset($match[3]) && $oembedCount < static::$maxOembed) {
-                $oembedPreview =  UrlOembed::getOEmbed($match[3]);
-                if(!empty($oembedPreview)) {
-                    $oembedCount++;
-                    $this->oembeds[$match[3]] = $oembedPreview;
-                }
-            }
+        foreach (static::getExtensions() as $extension) {
+            $output = $extension->onBeforeOutput($this, $output);
         }
-
-        $this->text = $this->parseOutput();
 
         if ($this->maxLength > 0) {
-            $this->text = Helpers::truncateText($this->text, $this->maxLength);
+            $output = Helpers::truncateText($this->text, $this->maxLength);
         }
 
-        $this->content = Html::encode($this->text);
-        $output = parent::run() . $this->buildOembedOutput();
+        $this->content = Html::encode($output);
+
+        $output = parent::run();
+
+        foreach (static::getExtensions() as $extension) {
+            $output = $extension->onAfterOutput($this, $output);
+        }
+
         $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
 
         return trim($output);
-
     }
 
     /**
-     * @since v1.3.2
+     * Prior of 1.8 this function was used for preparing the richtext output. In 1.8 we richtext extensions should be
+     * used to manipulate the richtext output.
+     *
+     * @return string
+     * @deprecated since 1.8 use `RichTextExtension::onBeforeOutput()` to manipulate output
      */
-    protected function parseOutput()
-    {
-        return static::parseMentionings($this->text, $this->edit);
+    protected function parseOutput() {
+        return $this->text;
     }
 
     /**
@@ -217,103 +215,6 @@ class ProsemirrorRichText extends AbstractRichText
 
             return $result;
         }, $text);
-    }
-
-    /**
-     * @return string html extension holding the actual oembed dom nodes which will be embedded into the rich text
-     */
-    public function buildOembedOutput()
-    {
-        $result = '';
-        foreach ($this->oembeds as $url => $oembed) {
-            $result .= Html::tag('div', $oembed, ['data-oembed' => Html::encode($url)]);
-        }
-
-        return Html::tag('div', $result, ['class' => 'richtext-oembed-container', 'style' => 'display:none']);
-    }
-
-    /**
-     * Parses the given text for mentionings and replaces them with possibly updated values (e.g. name).
-     *
-     * @param $text string rich text content to parse
-     * @param $edit bool if not in edit mode deleted or inactive users will be rendered differently
-     * @return mixed
-     */
-    public static function parseMentionings($text, $edit = false)
-    {
-        // $match[0]: markdown, $match[1]: name, $match[2]: extension(mention) $match[3]: guid, $match[4]: url
-        return MentioningExtension::replace($text, function($match) use ($edit) {
-            $contentContainer = ContentContainer::findOne(['guid' => $match[3]]);
-            $notFoundResult = '['.$match[1].'](mention:'.$match[2].' "#")';
-
-            if(!$contentContainer || !$contentContainer->getPolymorphicRelation()) {
-                // If no user or space was found we leave out the url in the non edit mode.
-                return $edit ?  '['.$match[1].'](mention:'.$match[3].' "'.$match[4].'")' : $notFoundResult;
-            }
-
-            $container = $contentContainer->getPolymorphicRelation();
-
-            if($container instanceof User) {
-                return $container->isActive()
-                    ?  '['.$container->getDisplayName().'](mention:'.$container->guid.' "'.$container->getUrl().'")'
-                    : $notFoundResult;
-            }
-
-            if($container instanceof Space) {
-                return '['.$container->name.'](mention:'.$container->guid.' "'.$container->getUrl().'")';
-            }
-
-            return '';
-        });
-    }
-
-    /**
-     * Checks if the compatibility mode is enabled.
-     * The compatibility mode is only required, if old content is present and won't be activated for new installations.
-     *
-     * @return bool
-     */
-    public function isCompatibilityMode()
-    {
-        return Yii::$app->getModule('content')->settings->get('richtextCompatMode', 1);
-    }
-
-    private static $extensions = [
-        MentioningExtension::class,
-        FileExtension::class,
-        OembedExtension::class
-    ];
-
-    public static function addExtension($extensionKey, $extensionClass)
-    {
-        return static::$extensions[$extensionKey] = $extensionClass;
-    }
-
-    /**
-     * @param string $extension
-     * @return RichTextExtension|null
-     */
-    public static function getExtension(string $extensionKey) : ?RichTextExtension
-    {
-        if(isset(static::$extensions[$extensionKey])) {
-            $extensionClass = static::$extensions[$extensionKey];
-            return call_user_func($extensionClass.'::instance');
-        }
-
-        return null;
-    }
-
-    /**
-     * @return RichTextLinkExtension[]
-     */
-    public static function getExtensions()
-    {
-        $result = [];
-        foreach (static::$extensions as $extension) {
-            $result[] = call_user_func($extension.'::instance');
-        }
-
-        return $result;
     }
 
     /**

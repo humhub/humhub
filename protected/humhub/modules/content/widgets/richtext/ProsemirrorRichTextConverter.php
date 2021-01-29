@@ -4,10 +4,9 @@
 namespace humhub\modules\content\widgets\richtext;
 
 
-use humhub\libs\EmojiMap;
-use humhub\modules\content\widgets\richtext\extensions\RichTextExtensionMatch;
-use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
-use humhub\modules\content\widgets\richtext\parsers\RichTextToPlainTextConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 
 class ProsemirrorRichTextConverter extends AbstractRichTextConverter
 {
@@ -32,7 +31,7 @@ class ProsemirrorRichTextConverter extends AbstractRichTextConverter
      */
     public function convertToHtml(string $content, bool $minimal = true, array $options = []): string
     {
-        return '';
+        return (new RichTextToHtmlConverter($options))->parse($content);
     }
 
     /**
@@ -52,7 +51,7 @@ class ProsemirrorRichTextConverter extends AbstractRichTextConverter
      */
     public function convertToMarkdown(string $content, array $options = []): string
     {
-        return '';
+        return (new RichTextToMarkdownConverter($options))->parse($content);
     }
 
     /**
@@ -69,34 +68,8 @@ class ProsemirrorRichTextConverter extends AbstractRichTextConverter
      */
     public function convertToPlaintext(string $content, array $options = []): string
     {
-        $result = static::convertEmojiToUtf8($content);
-       // $result = static::purifyLinks($result);
-        return (new RichTextToPlainTextConverter)->parse($result);
+        return (new RichTextToPlainTextConverter($options))->parse($content);
     }
 
-    /**
-     * Purifies links from extensions as image size extensions, otherwise
-     * @param $text
-     * @return mixed
-     */
-    public static function purifyLinks($text)
-    {
-        return RichTextLinkExtension::replaceLinkExtension($text, null, function(RichTextExtensionMatch $match) {
-            return RichTextLinkExtension::buildLink($match->getText(), $match->getUrl(), $match->getTitle());
-        });
-    }
 
-    public static function convertEmojiToUtf8($text)
-    {
-        // Note the ; was used in the legacy editor
-        return preg_replace_callback('/[:|;](([A-Za-z0-9])+)[:|;]/', function($match)  {
-            $result =  $match[0];
-
-            if(isset($match[1])) {
-                $result = array_key_exists(strtolower($match[1]), EmojiMap::MAP) ?  EmojiMap::MAP[strtolower($match[1])] : $result;
-            }
-
-            return $result;
-        }, $text);
-    }
 }

@@ -17,7 +17,7 @@ use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 
 
-class RichTextPlaintextConverterTest extends HumHubDbTestCase
+class RichTextMarkdownConverterTest extends HumHubDbTestCase
 {
     /*
      * Links
@@ -30,7 +30,17 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Link](https://www.humhub.com/de)',
-            "Test Link(https://www.humhub.com/de)");
+            "Test [Link](https://www.humhub.com/de)");
+    }
+
+    /**
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function testConvertLinkWithTitleToText()
+    {
+        $this->assertConversionResult(
+            'Test [Link](https://www.humhub.com/de "Link Title")',
+            'Test [Link](https://www.humhub.com/de "Link Title")');
     }
 
     /**
@@ -40,7 +50,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Link &< Link](https://www.humhub.com/de)',
-            "Test Link &< Link(https://www.humhub.com/de)");
+            "Test [Link &< Link](https://www.humhub.com/de)");
     }
 
     /**
@@ -50,7 +60,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Link](/p/site)',
-            "Test Link(http://localhost/p/site)");
+            "Test [Link](http://localhost/p/site)");
     }
 
     /**
@@ -60,7 +70,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Link &< Link](/p/site)',
-            "Test Link &< Link(http://localhost/p/site)");
+            "Test [Link &< Link](http://localhost/p/site)");
     }
 
     /**
@@ -70,17 +80,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [](/p/site)',
-            "Test (http://localhost/p/site)");
-    }
-
-    /**
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function testInvalidProtocolLinkToText()
-    {
-        $this->assertConversionResult(
-            'Test [Invalid Url](javascript:alert(1))',
-            "Test Invalid Url");
+            "Test [](http://localhost/p/site)");
     }
 
     /**
@@ -90,7 +90,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [**Bold** Url](http://localhost/p/site)',
-            "Test Bold Url(http://localhost/p/site)");
+            "Test [**Bold** Url](http://localhost/p/site)");
     }
 
     /**
@@ -107,7 +107,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Test Mail](mailto:test@test.com)',
-            'Test Test Mail(mailto:test@test.com)');
+            'Test [Test Mail](mailto:test@test.com)');
     }
 
     /*
@@ -121,7 +121,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Alt Text](https://www.humhub.com/static/img/logo.png)',
-            "Test Alt Text(https://www.humhub.com/static/img/logo.png)");
+            "Test ![Alt Text](https://www.humhub.com/static/img/logo.png)");
     }
 
     /**
@@ -131,7 +131,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Alt & < Text](https://www.humhub.com/static/img/logo.png)',
-            "Test Alt & < Text(https://www.humhub.com/static/img/logo.png)");
+            "Test ![Alt & < Text](https://www.humhub.com/static/img/logo.png)");
     }
 
     /**
@@ -141,7 +141,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Alt Text](/static/img/logo.png)',
-            "Test Alt Text(http://localhost/static/img/logo.png)");
+            "Test ![Alt Text](http://localhost/static/img/logo.png)");
     }
 
     /**
@@ -151,7 +151,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Alt & < Text](/static/img/logo.png)',
-            "Test Alt & < Text(http://localhost/static/img/logo.png)");
+            "Test ![Alt & < Text](http://localhost/static/img/logo.png)");
     }
 
     /**
@@ -161,7 +161,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Image Label](http://localhost/static/img/logo.png "Image Title")',
-            "Test Image Label(http://localhost/static/img/logo.png)");
+            "Test ![Image Label](http://localhost/static/img/logo.png \"Image Title\")");
     }
 
     /**
@@ -171,7 +171,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image](http://localhost/static/img/logo.png "img6.jpg" =150x)',
-            "Test Scaled Image(http://localhost/static/img/logo.png)");
+            'Test ![Scaled Image](http://localhost/static/img/logo.png "img6.jpg")');
     }
 
     /**
@@ -181,7 +181,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image](http://localhost/static/img/logo.png =150x)',
-            "Test Scaled Image(http://localhost/static/img/logo.png)");
+            "Test ![Scaled Image](http://localhost/static/img/logo.png)");
     }
 
     /**
@@ -191,7 +191,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image>](http://localhost/static/img/logo.png =150x)',
-            "Test Scaled Image(http://localhost/static/img/logo.png)");
+            "Test ![Scaled Image](http://localhost/static/img/logo.png)");
     }
 
     /**
@@ -201,7 +201,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image<](http://localhost/static/img/logo.png =150x)',
-            "Test Scaled Image(http://localhost/static/img/logo.png)");
+            "Test ![Scaled Image](http://localhost/static/img/logo.png)");
     }
 
     /**
@@ -211,7 +211,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image><](http://localhost/static/img/logo.png =150x)',
-            "Test Scaled Image(http://localhost/static/img/logo.png)");
+            "Test ![Scaled Image](http://localhost/static/img/logo.png)");
     }
 
     /*
@@ -222,7 +222,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "Test ![Alt & < Text](/static/img/logo.png) \n This is another line",
-            "Test Alt & < Text(http://localhost/static/img/logo.png) \n This is another line");
+            "Test ![Alt & < Text](http://localhost/static/img/logo.png) \n This is another line");
     }
 
     /*
@@ -256,7 +256,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             'Test mention ' . MentioningExtension::buildMentioning($user),
-            "Test mention " . $user->getDisplayName() . "(" . $user->createUrl(null, [], true) . ")");
+            "Test mention [" . $user->getDisplayName() . "](" . $user->createUrl(null, [], true) . ")");
     }
 
     public function testMentionNotFound()
@@ -282,7 +282,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             'Test mention [](mention:' . $user->guid . ')',
-            "Test mention " . $user->getDisplayName() . "(" . $user->createUrl(null, [], true) . ")");
+            "Test mention [" . $user->getDisplayName() . "](" . $user->createUrl(null, [], true) . ")");
     }
 
     /*
@@ -303,7 +303,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
         static::assertTrue($file->save());
         $this->assertConversionResult(
             'Test file [Test File](file-guid:xyz)',
-            "Test file Test File(" . $file->getUrl(null, true) . ")");
+            "Test file [Test File](" . $file->getUrl(null, true) . ")");
     }
 
     public function testFileNotFound()
@@ -328,7 +328,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
         static::assertTrue($file->save());
         $this->assertConversionResult(
             'Test file ![Test File](file-guid:xyz)',
-            "Test file Test File(" . $file->getUrl(null, true) . ")");
+            "Test file ![Test File](" . $file->getUrl(null, true) . ")");
     }
 
     public function testImageFileWithRightAlign()
@@ -346,7 +346,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
         static::assertTrue($file->save());
         $this->assertConversionResult(
             'Test file ![Test File>](file-guid:xyz)',
-            "Test file Test File(" . $file->getUrl(null, true) . ")");
+            "Test file ![Test File](" . $file->getUrl(null, true) . ")");
     }
 
     public function testImageFileWithLeftAlign()
@@ -364,7 +364,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
         static::assertTrue($file->save());
         $this->assertConversionResult(
             'Test file ![Test File<](file-guid:xyz)',
-            "Test file Test File(" . $file->getUrl(null, true) . ")");
+            "Test file ![Test File](" . $file->getUrl(null, true) . ")");
     }
 
     public function testImageFileWithCenterAlign()
@@ -382,7 +382,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
         static::assertTrue($file->save());
         $this->assertConversionResult(
             'Test file ![Test File><](file-guid:xyz)',
-            "Test file Test File(" . $file->getUrl(null, true) . ")");
+            "Test file ![Test File](" . $file->getUrl(null, true) . ")");
     }
 
     public function testImageFileNotFound()
@@ -400,7 +400,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             '[https://www.youtube.com/watch?v=xxxy](oembed:https://www.youtube.com/watch?v=xxxy)',
-            'https://www.youtube.com/watch?v=xxxy');
+            '[https://www.youtube.com/watch?v=xxxy](https://www.youtube.com/watch?v=xxxy)');
     }
 
     /*
@@ -410,42 +410,42 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'This is **bold**',
-            "This is bold");
+            "This is **bold**");
     }
 
     public function testConvertMarkBold2()
     {
         $this->assertConversionResult(
             'This is __bold__',
-            "This is bold");
+            "This is **bold**");
     }
 
     public function testConvertMarkItalic1()
     {
         $this->assertConversionResult(
             'This is _italic_',
-            "This is italic");
+            "This is _italic_");
     }
 
     public function testConvertMarkItalic2()
     {
         $this->assertConversionResult(
             'This is *italic*',
-            "This is italic");
+            "This is _italic_");
     }
 
     public function testConvertMarkInlineCode()
     {
         $this->assertConversionResult(
             'This is `inline code`',
-            "This is inline code");
+            "This is `inline code`");
     }
 
     public function testConvertMarkStrike()
     {
         $this->assertConversionResult(
             'This is ~~strikethrough text~~',
-            "This is strikethrough text");
+            "This is ~~strikethrough text~~");
     }
 
     /*
@@ -497,7 +497,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "This is a list\n\n- First Element\n   - First Sub Element\n      - Second **Level Sub** Element\n- Second Element",
-            "This is a list\n\n- First Element\n   - First Sub Element\n      - Second Level Sub Element\n- Second Element");
+            "This is a list\n\n- First Element\n   - First Sub Element\n      - Second **Level Sub** Element\n- Second Element");
     }
 
     /*
@@ -513,7 +513,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | **right**-aligned | $1600 |",
-            "| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | right-aligned | $1600 |");
+            "| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | **right**-aligned | $1600 |");
     }
 
 
@@ -670,7 +670,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
             $expected = $markdown;
         }
 
-        $result = RichText::convert($markdown, RichText::FORMAT_PLAINTEXT);
+        $result = RichText::convert($markdown, RichText::FORMAT_MARKDOWN);
         // Currently relative image
         static::assertEquals($expected, $result);
     }
