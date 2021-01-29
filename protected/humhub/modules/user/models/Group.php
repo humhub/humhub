@@ -131,7 +131,7 @@ class Group extends ActiveRecord
             'notify_users' => Yii::t('AdminModule.user', 'Send notifications to users when added to or removed from the group.'),
             'show_at_registration' => Yii::t('AdminModule.user', 'Make the group selectable at registration.'),
             'show_at_directory' => Yii::t('AdminModule.user', 'Add a seperate page for the group to the directory.'),
-            'is_default_group' => Yii::t('UserModule.base', 'Default Group for users who are not assigned to any other group.'),
+            'is_default_group' => Yii::t('AdminModule.user', 'Applied to new or existing users without any other group membership.'),
         ];
     }
 

@@ -10,6 +10,7 @@ namespace humhub\modules\admin\models\forms;
 
 use humhub\modules\file\Module;
 use humhub\modules\file\validators\ImageSquareValidator;
+use humhub\modules\stream\actions\Stream;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use Yii;
 use yii\base\Model;
@@ -35,6 +36,8 @@ class DesignSettingsForm extends Model
     public $dateInputDisplayFormat;
     public $horImageScrollOnMobile;
     public $useDefaultSwipeOnMobile;
+    public $defaultStreamSort;
+
 
     /**
      * @inheritdoc
@@ -52,6 +55,8 @@ class DesignSettingsForm extends Model
         $this->dateInputDisplayFormat = Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat');
         $this->horImageScrollOnMobile = $settingsManager->get('horImageScrollOnMobile');
         $this->useDefaultSwipeOnMobile = $settingsManager->get('useDefaultSwipeOnMobile');
+        $this->defaultStreamSort = Yii::$app->getModule('stream')->settings->get('defaultSort');
+
     }
 
     /**
@@ -68,6 +73,7 @@ class DesignSettingsForm extends Model
             [['displayName', 'spaceOrder'], 'safe'],
             [['horImageScrollOnMobile', 'useDefaultSwipeOnMobile'], 'boolean'],
             ['logo', 'image', 'extensions' => 'png, jpg, jpeg',  'minWidth' => 100, 'minHeight' => 120],
+            [['defaultStreamSort'], 'in', 'range' => array_keys($this->getDefaultStreamSortOptions())],
             ['icon', 'image', 'extensions' => 'png, jpg, jpeg',  'minWidth' => 256, 'minHeight' => 256],
             ['icon', ImageSquareValidator::class],
             ['dateInputDisplayFormat', 'in', 'range' => ['', 'php:d/m/Y']],
@@ -147,6 +153,8 @@ class DesignSettingsForm extends Model
         $settingsManager->set('horImageScrollOnMobile', $this->horImageScrollOnMobile);
         $settingsManager->set('useDefaultSwipeOnMobile', $this->useDefaultSwipeOnMobile);
 
+        Yii::$app->getModule('stream')->settings->set('defaultSort', $this->defaultStreamSort);
+
         if ($this->logo) {
             LogoImage::set($this->logo);
         }
@@ -158,6 +166,18 @@ class DesignSettingsForm extends Model
         DynamicConfig::rewrite();
 
         return true;
+    }
+
+    /**
+     * Returns available options for defaultStreamSort attribute
+     * @return array
+     */
+    public function getDefaultStreamSortOptions()
+    {
+        return [
+            Stream::SORT_CREATED_AT => Yii::t('AdminModule.settings', 'Sort by creation date'),
+            Stream::SORT_UPDATED_AT => Yii::t('AdminModule.settings', 'Sort by update date'),
+        ];
     }
 
 }
