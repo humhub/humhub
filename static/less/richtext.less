@@ -17,7 +17,6 @@
     .ProseMirror {
         position: static;
         overflow: auto;
-        height: 100%;
         height: calc(100% - 26px);
     }
 
@@ -431,11 +430,11 @@
 
     // Prevent first paragraph to stetch the input
     .ProseMirror p:first-child {
-        margin: 0px;
+        margin: 0;
     }
 
     .ProseMirror p:first-child + * {
-        margin-top: 1em;
+        //margin-top: 1em;
     }
 
     .ProsemirrorEditor {
@@ -641,7 +640,7 @@
     }
 
     .emoji-nav-item.cur {
-        border-left: 0px;
+        border-left: 0;
         border-top: 2px solid @info;
     }
 }
