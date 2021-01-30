@@ -25,7 +25,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
 <br>
 
-<?php $form = ActiveForm::begin(['id' => 'authentication-settings-form']); ?>
+<?php $form = ActiveForm::begin(['id' => 'authentication-settings-form', 'acknowledge' => true]); ?>
 
 <?= $form->errorSummary($model); ?>
 
