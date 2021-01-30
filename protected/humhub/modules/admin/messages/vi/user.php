@@ -32,8 +32,8 @@ return [
     'Add new members...' => 'Thêm các thành viên mới...',
     'Add new user' => 'Thêm người dùng mới',
     'All the personal data of this user will be irrevocably deleted.' => 'Tất cả các dữ liệu cá nhân của người dùng này sẽ bị xóa không thể khôi phục.',
-    'Allow limited access for non-authenticated users (guests)' => 'Cho phép truy cập có giới hạn tới các người dùng chưa đăng nhập (khách)',
-    'Anonymous users can register' => 'Cho phép đăng ký tự do',
+    'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'Cho phép truy cập có giới hạn tới các người dùng chưa đăng nhập (khách)',
+    'New users can register' => 'Cho phép đăng ký tự do',
     'Are you really sure that you want to disable this user?' => 'Bạn có chắc chắn muốn ngưng kích hoạt người dùng này?',
     'Are you really sure that you want to enable this user?' => 'Bạn có chắc muốn kích hoạt người dùng này?',
     'Are you really sure that you want to impersonate this user?' => 'Bạn có chắc chắn muốn mạo danh người dùng này?',
@@ -124,13 +124,16 @@ return [
     'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'Người dùng có thể được gán vào các nhóm khác nhau (VD: Điều hành viên, nhân viên, Khách hàng, Đối tác...) với các diễn đàn tiêu chuẩn cụ thể, quản lý nhóm và các quyền cụ thể.',
     'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => 'Sử dụng option này, mọi cống hiến của thành viên này (VD: nội dung, bình luận, like...) sẽ bị xóa vĩnh viễn ko thể khôi phục.',
     'View profile' => 'Xem hồ sơ',
-    'Visibility' => 'Hiển thị',
     'Visible for members only' => 'Chỉ hiển thị cho thành viên',
     'Visible for members+guests' => 'Chỉ hiển thị cho Thành viên và Khách',
     'Yes' => 'Đồng ý',
     'You can only delete empty categories!' => 'Bạn chỉ có thể xóa một chuyên mục rỗng!',
     'You cannot delete yourself!' => 'Bạn không thể tự xóa chính mình!',
     'never' => 'không bao giờ',
+    'Account' => '',
+    'Add a seperate page for the group to the directory.' => '',
+    'All open registration invitations were successfully deleted.' => '',
+    'Delete All' => '',
     'Edit category' => '',
     'Hello {displayName},<br><br>
 Your account has been activated.<br><br>
@@ -144,4 +147,9 @@ Your account request has been declined.<br><br>
 
 Kind Regards<br>
 {AdminName} <br><br> ' => '',
+    'Make the group selectable at registration.' => '',
+    'Password' => '',
+    'Send notifications to users when added to or removed from the group.' => '',
+    'The Space memberships of all group members will be updated. This may take up to several minutes.' => '',
+    'The selected open registration invitations were successfully deleted.' => '',
 ];

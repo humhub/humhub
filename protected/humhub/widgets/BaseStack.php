@@ -81,19 +81,18 @@ class BaseStack extends Widget
 
         $content = '';
 
-        $i = 0;
+        $hasContent = false;
         foreach ($this->getWidgets() as $widget) {
-            $i++;
-
             $widgetClass = $widget[0];
 
             $out = $widgetClass::widget($widget[1]);
 
             if (!empty($out)) {
-                $content .= $out;
-                if ($i != count($this->getWidgets())) {
+                if ($hasContent) {
                     $content .= $this->seperator;
                 }
+                $hasContent = true;
+                $content .= $out;
             }
         }
 

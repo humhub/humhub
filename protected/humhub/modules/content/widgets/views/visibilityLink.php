@@ -8,11 +8,11 @@
 <li>
     <?php if($content->isPrivate()) :?>
         <a href="#"  class="makePublicLink" data-action-click="toggleVisibility" data-action-url="<?= $toggleLink ?>">
-            <i class="fa fa-unlock makePublic"></i> <?= Yii::t('ContentModule.base', 'Make public') ?>
+            <i class="fa fa-unlock makePublic"></i> <?= Yii::t('ContentModule.base', 'Change to "Public"') ?>
         </a>
     <?php else: ?>
         <a href="#" class="makePriavteLink" data-action-click="toggleVisibility" data-action-url="<?= $toggleLink ?>">
-            <i class="fa fa-lock makePrivate"></i> <?= Yii::t('ContentModule.base', 'Make private') ?>
+            <i class="fa fa-lock makePrivate"></i> <?= Yii::t('ContentModule.base', 'Change to "Private"') ?>
         </a>
     <?php endif; ?>
 </li>

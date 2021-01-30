@@ -10,6 +10,7 @@ namespace humhub\modules\user\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\components\Response;
 use humhub\modules\user\models\User;
 use humhub\modules\user\authclient\AuthAction;
 use humhub\modules\user\models\Invite;
@@ -103,11 +104,21 @@ class AuthController extends Controller
             }
         }
 
-        if (Yii::$app->request->isAjax) {
-            return $this->renderAjax('login_modal', ['model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()]);
+        $loginParams = [
+            'model' => $login,
+            'invite' => $invite,
+            'canRegister' => $invite->allowSelfInvite(),
+        ];
+
+        if (Yii::$app->settings->get('maintenanceMode')) {
+            Yii::$app->session->setFlash('error', ControllerAccess::getMaintenanceModeWarningText());
         }
 
-        return $this->render('login', ['model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()]);
+        if (Yii::$app->request->isAjax) {
+            return $this->renderAjax('login_modal', $loginParams);
+        }
+
+        return $this->render('login', $loginParams);
     }
 
     /**
@@ -126,9 +137,21 @@ class AuthController extends Controller
             AuthClientHelpers::storeAuthClientForUser($authClient, Yii::$app->user->getIdentity());
             return $this->redirect(['/user/account/connected-accounts']);
         }
-
-        // Login existing user
+      
         $user = AuthClientHelpers::getUserByAuthClient($authClient);
+
+        if (Yii::$app->settings->get('maintenanceMode') && !$user->isSystemAdmin()) {
+            return $this->redirect(['/user/auth/login']);
+        }
+      
+        // Check if e-mail is already in use with another auth method
+        if ($user === null && isset($attributes['email'])) {
+            $user = User::findOne(['email' => $attributes['email']]);
+            if ($user !== null) {
+                // Map current auth method to user with same e-mail address
+                AuthClientHelpers::storeAuthClientForUser($authClient, $user);
+            }
+        }
 
         if ($user !== null) {
             return $this->login($user, $authClient);
@@ -147,12 +170,6 @@ class AuthController extends Controller
 
         if (!isset($attributes['id'])) {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Missing ID AuthClient Attribute from AuthClient.'));
-            return $this->redirect(['/user/auth/login']);
-        }
-
-        // Check if e-mail is already taken
-        if (isset($attributes['email']) && User::findOne(['email' => $attributes['email']]) !== null) {
-            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.'));
             return $this->redirect(['/user/auth/login']);
         }
 

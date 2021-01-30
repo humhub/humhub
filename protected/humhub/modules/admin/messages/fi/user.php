@@ -32,8 +32,8 @@ return [
     'Add new members...' => 'Lisää jäseniä...',
     'Add new user' => 'Lisää uusi käyttäjä',
     'All the personal data of this user will be irrevocably deleted.' => 'Kaikki tiedot tullaan poistamaan tältä tililtä ikuisesti.',
-    'Allow limited access for non-authenticated users (guests)' => 'Salli rajoitetun käytön muille kuin todennetuille käyttäjille (vieraille)',
-    'Anonymous users can register' => 'Anonyymit käyttäjät voivat rekisteröityä',
+    'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'Salli rajoitetun käytön muille kuin todennetuille käyttäjille (vieraille)',
+    'New users can register' => 'Anonyymit käyttäjät voivat rekisteröityä',
     'Are you really sure that you want to disable this user?' => 'Haluatko varmasti sulkea tämän käyttäjän?',
     'Are you really sure that you want to enable this user?' => 'Haluatko varmasti avata tämän käyttäjän?',
     'Are you really sure that you want to impersonate this user?' => 'Haluatko varmasti siirtyä tämän käyttäjän tiliin?',
@@ -124,13 +124,16 @@ return [
     'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'Käyttäjiä voidaan siirtää eri ryhmiin (esim. Johtajat, tarpojat  jne.) Ja tiettyihin rooleihin kuten johtajiin ja ryhmäläisiin',
     'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => 'Tämä vaihtoehto poistaa tämän käyttäjän kaikken (sisällön, kommentit ja tykkäykset) lopulisesti.',
     'View profile' => 'Näytä profiili',
-    'Visibility' => 'Näkyvyys',
     'Visible for members only' => 'Näkyy vain jäsenille',
     'Visible for members+guests' => 'Näkyy jäsenille ja vieraille',
     'Yes' => 'Kyllä',
     'You can only delete empty categories!' => 'Voit ainoastaan postaa tyhjiä kategorioita',
     'You cannot delete yourself!' => 'Et voi poistaa itseäsi!',
     'never' => 'ei koskaan',
+    'Account' => '',
+    'Add a seperate page for the group to the directory.' => '',
+    'All open registration invitations were successfully deleted.' => '',
+    'Delete All' => '',
     'Edit category' => '',
     'Hello {displayName},<br><br>
 Your account has been activated.<br><br>
@@ -144,4 +147,9 @@ Your account request has been declined.<br><br>
 
 Kind Regards<br>
 {AdminName} <br><br> ' => '',
+    'Make the group selectable at registration.' => '',
+    'Password' => '',
+    'Send notifications to users when added to or removed from the group.' => '',
+    'The Space memberships of all group members will be updated. This may take up to several minutes.' => '',
+    'The selected open registration invitations were successfully deleted.' => '',
 ];

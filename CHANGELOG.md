@@ -1,6 +1,39 @@
 HumHub Changelog
 ================
 
+1.7.2 (Unreleased)
+-------------------------
+- Fix #4668: table-responsive tables do not overflow due to default word break style
+- Fix #4679: Richtext extension scan does not include full title if title contains a `)`
+- Fix #4703: SSO login drops no warning if AuthClient cannot be stored
+- Fix #4700: Deep Links from Microsoft Office Documents
+- Fix #4714: Use HTTPS protocol for default OEmbed endpoint URLs
+- Fix #4727: Nav tabs with data-toggle are styled in link color
+- Fix #4649: Success message rendered although password validation failed
+- Fix #4717: Repsonsive layout alignment issue on small screens
+- Fix #4715: Call to `Content::canArchive()` throws error on global content
+- Fix #4744: Banner image orientation not being processed
+- Fix #4743: Hide "Like" link when no permission "Can like"
+- Fix #4768: Use only letters and digits from Space name for logo acronym (Thanks to @jrckmcsb) 
+
+
+1.7.1 (November 27, 2020)
+-------------------------
+- Fix #4612: Dashboard wall stream entry displays user name in sub title in post style layout
+- Fix #4614: Profile Image crop broken
+- Fix #4607: Changed grid size of image preview on fluid themes
+- Fix #4609: Error on downscale command
+- Fix #4621: Wrong image orientation on downscaling with imagick
+- Fix #4628: Fixed stream gallery ratio issues on fluid themes
+- Fix #4636: Jplayer overflow on mobile stream
+- Fix #4591: Registration error text "You are already logged in!" not translatable
+- Fix #4630: Transfer default content of user approve/decline email to approve/decline form
+- Fix #4650: `adminCanChangeUserProfileImages` option has no effect
+- Fix #4660: Topic stream filter leads to stream entry duplication in combination with stream suppression
+- Fix #4638: Profile settings do not accept birthdate in russian format
+- Fix #4596: Set `autocomplete="off"` on date picker fields
+- Fix #4666: Richtext attachment of multiple files without title fails
+
 
 1.7.0 (November 4, 2020)
 ------------------------

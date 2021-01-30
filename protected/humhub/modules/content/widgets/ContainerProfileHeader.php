@@ -3,6 +3,7 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\modules\user\controllers\ImageController;
 use Yii;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
@@ -91,8 +92,8 @@ class ContainerProfileHeader extends JsWidget
         $this->classPrefix = 'profile';
 
         if(!Yii::$app->user->isGuest) {
-            $canEditAsAdmin = (Yii::$app->user->isAdmin() && Yii::$app->getModule('user')->adminCanChangeUserProfileImages);
-            $this->canEdit = Yii::$app->user->identity->is($this->container) || $canEditAsAdmin;
+            /** @TODO move this out of ImageController layer... */
+            $this->canEdit = ImageController::canEditProfileImage($this->container);
         }
     }
 

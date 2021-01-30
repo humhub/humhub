@@ -27,8 +27,8 @@ $this->registerJsConfig('content.form', [
     'defaultVisibility' => $defaultVisibility,
     'disabled' => ($contentContainer instanceof Space && $contentContainer->isArchived()),
     'text' => [
-        'makePrivate' => Yii::t('ContentModule.base', 'Make private'),
-        'makePublic' => Yii::t('ContentModule.base', 'Make public'),
+        'makePrivate' => Yii::t('ContentModule.base', 'Change to "Private"'),
+        'makePublic' => Yii::t('ContentModule.base', 'Change to "Public"'),
         'info.archived' => Yii::t('ContentModule.base', 'This space is archived.')
 ]]);
 
@@ -107,7 +107,7 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
                                 <?php endif; ?>
                                 <?php if ($canSwitchVisibility): ?>
                                     <li>
-                                        <?= Link::withAction(Yii::t('ContentModule.base', 'Make public'), 'changeVisibility')
+                                        <?= Link::withAction(Yii::t('ContentModule.base', 'Change to "Public"'), 'changeVisibility')
                                             ->id('contentForm_visibility_entry')->icon('unlock') ?>
                                     </li>
                                 <?php endif; ?>

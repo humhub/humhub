@@ -1,0 +1,119 @@
+name: PHP Codeception Tests
+
+on:
+    push:
+        branches:
+            - master
+            - develop
+    pull_request:
+        branches:
+            - master
+            - develop
+
+jobs:
+    tests:
+        name: PHP ${{ matrix.php-version }}-mysql-${{ matrix.mysql-version }}
+        env:
+            extensions: curl, intl, pdo, pdo_mysql, zip, exif, fileinfo, mbstring, gd
+            key: cache-v1
+
+        runs-on: ${{ matrix.os }}
+
+        strategy:
+            matrix:
+                os:
+                    - ubuntu-latest
+
+                php-version:
+                    - "7.2"
+                    - "7.3"
+                    - "7.4"
+
+                mysql-version:
+                    - "5.7"
+
+        services:
+            mysql:
+                image: mysql:${{ matrix.mysql-version }}
+                env:
+                    MYSQL_DATABASE: humhub_test
+                    MYSQL_ROOT_PASSWORD: root
+                ports:
+                    - 3306:3306
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+
+            - name: Setup cache environment
+              id: cache-env
+              uses: shivammathur/cache-extensions@v1
+              with:
+                php-version: ${{ matrix.php-version }}
+                extensions: ${{ env.extensions }}
+                key: ${{ env.key }}
+
+            - name: Cache extensions
+              uses: actions/cache@v1
+              with:
+                path: ${{ steps.cache-env.outputs.dir }}
+                key: ${{ steps.cache-env.outputs.key }}
+                restore-keys: ${{ steps.cache-env.outputs.key }}
+
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-version }}
+                  extensions: ${{ env.extensions }}
+                  ini-values: date.timezone='UTC'
+
+            - name: Determine composer cache directory
+              if: matrix.os == 'ubuntu-latest'
+              run: echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
+
+            - name: Validate composer.json and composer.lock
+              run: composer validate
+
+            - name: Cache dependencies installed with composer
+              uses: actions/cache@v1
+              with:
+                path: ${{ env.COMPOSER_CACHE_DIR }}
+                key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
+                restore-keys: |
+                            php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
+
+            - name: Install dependencies with composer
+              run: composer update --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi
+
+            - name: Verify MySQL connection from host
+              run: |
+                sudo apt-get install -y mysql-client
+                mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -proot -e "SHOW DATABASES"
+
+            - name: Install npm dependencies
+              run: npm install
+
+            - name: Build production assets
+              run: grunt build-assets
+
+            - name: Run migrations
+              run: php protected/humhub/tests/codeception/bin/yii migrate/up --includeModuleMigrations=1 --interactive=0
+
+            - name: Run installer
+              run: php protected/humhub/tests/codeception/bin/yii installer/auto
+
+            - name: Rebuild search index
+              run: php protected/humhub/tests/codeception/bin/yii search/rebuild
+
+            - name: Run test server
+              run: php --server 127.0.0.1:8080 &>/tmp/phpserver.log &
+
+            - name: Setup chromedriver
+              run: chromedriver --url-base=/wd/hub &
+
+            - name: Valdiate test server
+              run: sleep 5 && curl --fail --head http://127.0.0.1:8080/index-test.php
+
+            - name: Run test suite
+              run: grunt test -build -env=github

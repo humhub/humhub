@@ -32,8 +32,8 @@ return [
     'Add new members...' => 'Προσθήκη νέου μέλους',
     'Add new user' => 'Προσθήκη νέου χρήστη',
     'All the personal data of this user will be irrevocably deleted.' => 'Όλα τα προσωπικά δεδομένα αυτού του χρήστη θα διαγραφούν αμετάκλητα.',
-    'Allow limited access for non-authenticated users (guests)' => 'Να επιτρέπεται περιορισμένη πρόσβαση για μη πιστοποιημένους χρήστες (επισκέπτες)',
-    'Anonymous users can register' => 'Οι ανώνυμοι χρήστες μπορούν να εγγραφούν',
+    'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'Να επιτρέπεται περιορισμένη πρόσβαση για μη πιστοποιημένους χρήστες (επισκέπτες)',
+    'New users can register' => 'Οι ανώνυμοι χρήστες μπορούν να εγγραφούν',
     'Are you really sure that you want to disable this user?' => 'Είστε πραγματικά βέβαιος ότι θέλετε να απενεργοποιήσετε αυτόν τον χρήστη;',
     'Are you really sure that you want to enable this user?' => 'Είστε πραγματικά βέβαιος ότι θέλετε να ενεργοποιήσετε αυτόν τον χρήστη;',
     'Are you really sure that you want to impersonate this user?' => 'Είστε πραγματικά βέβαιος ότι θέλετε να εκπροσωπεύσετε αυτόν τον χρήστη;',
@@ -124,13 +124,16 @@ return [
     'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'Οι χρήστες μπορούν να εγγραφούν σε διαφορετικές ομάδες (π.χ. ομάδες, τμήματα κ.λπ.) με συγκεκριμένους τυπικούς χώρους, διαχειριστές ομάδας και δικαιώματα.',
     'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => 'Χρησιμοποιώντας αυτήν την επιλογή, όλες οι συνεισφορές (π.χ. περιεχόμενο, σχόλια ή επισημάνσεις) αυτού του χρήστη θα διαγραφούν αμετάκλητα.',
     'View profile' => 'Προβολή προφίλ',
-    'Visibility' => 'Ορατότητα',
     'Visible for members only' => 'Ορατό μόνο για μέλη',
     'Visible for members+guests' => 'Ορατό για μέλη + επισκέπτες',
     'Yes' => 'Ναί',
     'You can only delete empty categories!' => 'Μπορείς να διαγράψεις μόνο άδειες κατηγορίες!',
     'You cannot delete yourself!' => 'Δεν μπορείς να διαγράψεις τον εαυτό σου!',
     'never' => 'ποτέ',
+    'Account' => '',
+    'Add a seperate page for the group to the directory.' => '',
+    'All open registration invitations were successfully deleted.' => '',
+    'Delete All' => '',
     'Edit category' => '',
     'Hello {displayName},<br><br>
 Your account has been activated.<br><br>
@@ -144,4 +147,9 @@ Your account request has been declined.<br><br>
 
 Kind Regards<br>
 {AdminName} <br><br> ' => '',
+    'Make the group selectable at registration.' => '',
+    'Password' => '',
+    'Send notifications to users when added to or removed from the group.' => '',
+    'The Space memberships of all group members will be updated. This may take up to several minutes.' => '',
+    'The selected open registration invitations were successfully deleted.' => '',
 ];

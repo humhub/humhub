@@ -63,6 +63,7 @@ class UpdateController extends Controller
      * @throws HttpException
      * @throws \yii\base\Exception
      * @throws \yii\base\InvalidConfigException
+     * @throws \yii\base\ErrorException
      */
     public function actionInstall()
     {

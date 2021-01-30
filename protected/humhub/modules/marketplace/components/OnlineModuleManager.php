@@ -191,7 +191,6 @@ class OnlineModuleManager extends Component
      */
     public function getModules($cached = true)
     {
-
         if (!$cached) {
             $this->_modules = null;
             Yii::$app->cache->delete('onlineModuleManager_modules');
@@ -201,10 +200,19 @@ class OnlineModuleManager extends Component
             return $this->_modules;
         }
 
+        /** @var Module $module */
+        $module = Yii::$app->getModule('marketplace');
+
         $this->_modules = Yii::$app->cache->get('onlineModuleManager_modules');
         if ($this->_modules === null || !is_array($this->_modules)) {
-            $settings = Yii::$app->getModule('marketplace')->settings;
-            $this->_modules = HumHubAPI::request('v1/modules/list', ['includeBetaVersions' => (boolean)$settings->get('includeBetaUpdates')]);
+            $this->_modules = HumHubAPI::request('v1/modules/list', [
+                'includeBetaVersions' => (boolean)$module->settings->get('includeBetaUpdates')
+            ]);
+
+            foreach ($module->moduleBlacklist as $blacklistedModuleId) {
+                unset($this->_modules[$blacklistedModuleId]);
+            }
+
             Yii::$app->cache->set('onlineModuleManager_modules', $this->_modules, Yii::$app->settings->get('cache.expireTime'));
         }
 
@@ -261,11 +269,21 @@ class OnlineModuleManager extends Component
 
     /**
      * Returns an array of informations about a module
+     *
+     * @return array
      */
     public function getModuleInfo($moduleId)
     {
-        $settings = Yii::$app->getModule('marketplace')->settings;
-        return HumHubAPI::request('v1/modules/info', ['id' => $moduleId, 'includeBetaVersions' => (boolean)$settings->get('includeBetaUpdates')]);
+        /** @var Module $module */
+        $module = Yii::$app->getModule('marketplace');
+
+        if (in_array($moduleId, $module->moduleBlacklist)) {
+            return [];
+        }
+
+        return HumHubAPI::request('v1/modules/info', [
+            'id' => $moduleId, 'includeBetaVersions' => (boolean)$module->settings->get('includeBetaUpdates')
+        ]);
     }
 
 }

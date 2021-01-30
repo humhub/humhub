@@ -32,8 +32,8 @@ return [
     'Add new members...' => 'Yeni üye ekle...',
     'Add new user' => 'Yeni kullanıcı Ekle',
     'All the personal data of this user will be irrevocably deleted.' => 'Bu kullanıcının tüm kişisel verileri geri alınamaz bir şekilde silinecektir.',
-    'Allow limited access for non-authenticated users (guests)' => 'Kimliği doğrulanmamış kullanıcılar için sınırlı erişime izin ver (misafir)',
-    'Anonymous users can register' => 'Anonim kullanıcılar kayıt olabilir',
+    'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'Kimliği doğrulanmamış kullanıcılar için sınırlı erişime izin ver (misafir)',
+    'New users can register' => 'Anonim kullanıcılar kayıt olabilir',
     'Are you really sure that you want to disable this user?' => 'Bu kullanıcıyı devre dışı bırakmak istediğinden emin misin?',
     'Are you really sure that you want to enable this user?' => 'Bu kullanıcıyı etkinleştirmek istediğinizden gerçekten emin misiniz?',
     'Are you really sure that you want to impersonate this user?' => 'Bu kullanıcıyı taklit etmek istediğinden emin misin?',
@@ -124,13 +124,16 @@ return [
     'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'Kullanıcılar belirli standart alanlar, grup yöneticileri ve izinlerle farklı gruplara (ör. Ekipler, bölümler vb.) atanabilir.',
     'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => 'Bu seçeneğin kullanılmasıyla, bu kullanıcının katkıları (örn: içerik, yorumlar veya beğeniler) geri alınamaz bir şekilde silinir.',
     'View profile' => 'Profili Görüntüle',
-    'Visibility' => 'Görünüm',
     'Visible for members only' => 'Sadece üyelere görünür',
     'Visible for members+guests' => 'Üyeler+misafirler için görünür',
     'Yes' => 'Evet',
     'You can only delete empty categories!' => 'Sadece boş kategorileri silebilirsiniz!',
     'You cannot delete yourself!' => 'Kendini silemezsin!',
     'never' => 'asla',
+    'Account' => '',
+    'Add a seperate page for the group to the directory.' => '',
+    'All open registration invitations were successfully deleted.' => '',
+    'Delete All' => '',
     'Edit category' => '',
     'Hello {displayName},<br><br>
 Your account has been activated.<br><br>
@@ -144,4 +147,9 @@ Your account request has been declined.<br><br>
 
 Kind Regards<br>
 {AdminName} <br><br> ' => '',
+    'Make the group selectable at registration.' => '',
+    'Password' => '',
+    'Send notifications to users when added to or removed from the group.' => '',
+    'The Space memberships of all group members will be updated. This may take up to several minutes.' => '',
+    'The selected open registration invitations were successfully deleted.' => '',
 ];

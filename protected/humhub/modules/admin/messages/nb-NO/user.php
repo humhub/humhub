@@ -32,8 +32,8 @@ return [
     'Add new members...' => 'Legg til nye medlemmer...',
     'Add new user' => 'Legg til en ny bruker',
     'All the personal data of this user will be irrevocably deleted.' => 'Alle personlige data for denne brukeren vil bli slettet. Dette kan ikke angres.',
-    'Allow limited access for non-authenticated users (guests)' => 'Tillat begrenset tilgang for ikke-godkjente brukere (gjester)',
-    'Anonymous users can register' => 'Anonyme brukere kan registrere seg',
+    'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'Tillat begrenset tilgang for ikke-godkjente brukere (gjester)',
+    'New users can register' => 'Anonyme brukere kan registrere seg',
     'Are you really sure that you want to disable this user?' => 'Er du sikker på at du vil deaktivere denne brukeren?',
     'Are you really sure that you want to enable this user?' => 'Er du sikker på at du vil aktivere denne brukeren?',
     'Are you really sure that you want to impersonate this user?' => 'Er du virkelig sikker på at du vil etterligne denne brukeren?',
@@ -124,13 +124,16 @@ return [
     'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'Brukere kan tilordnes forskjellige grupper (for eksempel lag, avdelinger etc.) med spesifikke standardrom, gruppeledere og tillatelser.',
     'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => 'Ved hjelp av dette alternativet vil eventuelle bidrag (for eksempel innhold, kommentarer eller liker) av denne brukeren bli slettet permanent.',
     'View profile' => 'Vis profil',
-    'Visibility' => 'Synlighet',
     'Visible for members only' => 'Synlig kun for medlemmer',
     'Visible for members+guests' => 'Synlig for medlemmer + gjester',
     'Yes' => 'Ja',
     'You can only delete empty categories!' => 'Du kan kun slette tomme kategorier!',
     'You cannot delete yourself!' => 'Du kan ikke slette din egen bruker.',
     'never' => 'Aldri',
+    'Account' => '',
+    'Add a seperate page for the group to the directory.' => '',
+    'All open registration invitations were successfully deleted.' => '',
+    'Delete All' => '',
     'Edit category' => '',
     'Hello {displayName},<br><br>
 Your account has been activated.<br><br>
@@ -144,4 +147,9 @@ Your account request has been declined.<br><br>
 
 Kind Regards<br>
 {AdminName} <br><br> ' => '',
+    'Make the group selectable at registration.' => '',
+    'Password' => '',
+    'Send notifications to users when added to or removed from the group.' => '',
+    'The Space memberships of all group members will be updated. This may take up to several minutes.' => '',
+    'The selected open registration invitations were successfully deleted.' => '',
 ];

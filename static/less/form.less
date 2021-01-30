@@ -70,6 +70,8 @@ select.form-control:not([multiple]) {
 
 label {
     font-weight: normal;
+    margin-bottom: 0;
+    height: 17px;
 }
 
 label.control-label {
@@ -310,3 +312,44 @@ a.label-warning:hover {
 .bootstrap-timepicker-widget .form-control {
     padding: 0;
 }
+
+.form-collapsible-fields {
+    margin-bottom: 12px;
+    border-left: 3px solid @primary;
+    background-color: #F4F4F4;
+}
+
+.form-collapsible-fields-label {
+    margin-bottom: 0px;
+    padding: 12px;
+}
+
+.form-collapsible-fields fieldset {
+    padding-top: 15px;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.form-collapsible-fields.opened {
+    fieldset {
+        display: block;
+    }
+
+    .iconClose {
+        display: inline;
+    }
+
+    .iconOpen {
+        display: none;
+    }
+}
+
+.form-collapsible-fields.closed {
+    fieldset, .iconClose {
+        display: none;
+    }
+    .iconOpen {
+        display: inline;
+    }
+}
+

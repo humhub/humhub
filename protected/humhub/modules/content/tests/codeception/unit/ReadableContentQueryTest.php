@@ -17,8 +17,17 @@ class ReadableContentQueryTest extends HumHubDbTestCase
      * @var User
      */
     private $user;
+
+    /**
+     * @var Space
+     */
     private $publicSpace;
+
+    /**
+     * @var Space
+     */
     private $privateSpace;
+
     private $globalPublicPost;
     private $globalPrivatePost;
     private $publicSpacePublicPost;
@@ -33,10 +42,8 @@ class ReadableContentQueryTest extends HumHubDbTestCase
     {
         parent::_before();
 
-        // TODO: would be cleaner to somehow exclude this from default fixtures
-        foreach (Post::find()->all() as $post) {
-            $post->delete();
-        }
+        Post::deleteAll();
+        Content::deleteAll();
 
         $this->posts = [];
 
@@ -178,6 +185,28 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertCount(0, $posts);
     }
 
+    public function testPublicSpaceContentAsAdminNotMemberCannotViewAllContent()
+    {
+        $this->becomeUser('AdminNotMember');
+
+        $this->posts = Post::find()->contentContainer($this->publicSpace)->readable()->all();
+
+        $this->assertPostCount(1);
+        $this->assertInPosts($this->publicSpacePublicPost);
+    }
+
+    public function testPublicSpaceContentAsAdminNotMemberCanViewAllContent()
+    {
+        Yii::$app->getModule('content')->adminCanViewAllContent = true;
+        $this->becomeUser('AdminNotMember');
+
+        $this->posts = Post::find()->contentContainer($this->publicSpace)->readable()->all();
+
+        $this->assertPostCount(2);
+        $this->assertInPosts($this->publicSpacePublicPost);
+        $this->assertInPosts($this->publicSpacePrivatePost);
+    }
+
     public function testPrivateSpaceContentAsMember()
     {
         $this->becomeUser('User1');
@@ -209,6 +238,27 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertPostCount(0);
     }
 
+    public function testPrivateSpaceContentAsAdminNotMemberCannotViewAllContent()
+    {
+        $this->becomeUser('AdminNotMember');
+
+        $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
+
+        $this->assertPostCount(0);
+    }
+
+    public function testPrivateSpaceContentAsAdminNotMemberCanViewAllContent()
+    {
+        Yii::$app->getModule('content')->adminCanViewAllContent = true;
+        $this->becomeUser('AdminNotMember');
+
+        $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
+
+        $this->assertPostCount(2);
+        $this->assertInPosts($this->privateSpacePublicPost);
+        $this->assertInPosts($this->privateSpacePrivatePost);
+    }
+
     public function testProfileContentOfGlobalUserAsOwner()
     {
         $this->becomeUser('User2');
@@ -224,6 +274,30 @@ class ReadableContentQueryTest extends HumHubDbTestCase
     public function testProfileContentOfMembersOnlyUserAsOwner()
     {
         $this->becomeUser('User2');
+        $this->user->updateAttributes(['visibility' => User::VISIBILITY_REGISTERED_ONLY]);
+
+        $this->posts = Post::find()->contentContainer($this->user)->readable()->all();
+
+        $this->assertPostCount(2);
+        $this->assertInPosts($this->profilePublicPost);
+        $this->assertInPosts($this->profilePrivatePost);
+    }
+
+    public function testProfileContentOfMembersOnlyUserAsAdminCannotViewAllContent()
+    {
+        $this->becomeUser('Admin');
+        $this->user->updateAttributes(['visibility' => User::VISIBILITY_REGISTERED_ONLY]);
+
+        $this->posts = Post::find()->contentContainer($this->user)->readable()->all();
+
+        $this->assertPostCount(1);
+        $this->assertInPosts($this->profilePublicPost);
+    }
+
+    public function testProfileContentOfMembersOnlyUserAsAdminCanViewAllContent()
+    {
+        Yii::$app->getModule('content')->adminCanViewAllContent = true;
+        $this->becomeUser('Admin');
         $this->user->updateAttributes(['visibility' => User::VISIBILITY_REGISTERED_ONLY]);
 
         $this->posts = Post::find()->contentContainer($this->user)->readable()->all();

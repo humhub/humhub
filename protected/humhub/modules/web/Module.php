@@ -21,7 +21,6 @@ use humhub\modules\web\pwa\controllers\ServiceWorkerController;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */
@@ -31,6 +30,12 @@ class Module extends \humhub\components\Module
      * @var mixed web security settings
      */
     public $security;
+
+    /**
+     * @since 1.8
+     * @var boolean Disable Service Worker and PWA Support
+     */
+    public $enableServiceWorker = true;
 
     /**
      * @inheritdoc

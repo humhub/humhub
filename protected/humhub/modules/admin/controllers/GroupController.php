@@ -8,20 +8,20 @@
 
 namespace humhub\modules\admin\controllers;
 
-use humhub\components\Response;
+use humhub\modules\admin\jobs\ReassignGroupDefaultSpaces;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\AddGroupMemberForm;
 use humhub\modules\admin\models\GroupSearch;
 use humhub\modules\admin\models\UserSearch;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\queue\helpers\QueueHelper;
 use humhub\modules\user\models\forms\EditGroupForm;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserPicker;
 use Yii;
-use yii\db\Exception;
 use yii\db\Query;
 use yii\web\HttpException;
 
@@ -75,7 +75,6 @@ class GroupController extends Controller
      */
     public function actionEdit()
     {
-
         // Create Group Edit Form
         $group = EditGroupForm::findOne(['id' => Yii::$app->request->get('id')]);
 
@@ -94,12 +93,22 @@ class GroupController extends Controller
                     '/admin/group/manage-group-users',
                     'id' => $group->id,
                 ]);
+            } else {
+                if (!empty($group->updateSpaceMemberships)) {
+                    $job = new ReassignGroupDefaultSpaces(['groupId' => $group->id]);
+                    if (!QueueHelper::isQueued($job)) {
+                        Yii::$app->queue->push($job);
+                    }
+
+                    $this->view->info(Yii::t('AdminModule.user',
+                        'The Space memberships of all group members will be updated. This may take up to several minutes.'));
+                }
             }
         }
 
         return $this->render('edit', [
             'group' => $group,
-            'showDeleteButton' => (!$group->isNewRecord && !$group->is_admin_group),
+            'showDeleteButton' => (!$group->isNewRecord && !$group->is_admin_group && !$group->is_default_group),
             'isCreateForm' => $group->isNewRecord,
             'isManagerApprovalSetting' => Yii::$app->getModule('user')->settings->get('auth.needApproval'),
         ]);
@@ -179,10 +188,19 @@ class GroupController extends Controller
 
         $this->checkGroupAccess($group);
 
-        //Double check to get sure we don't remove the admin group
-        if (!$group->is_admin_group) {
-            $group->delete();
+        // Double check to get sure we don't remove the admin group:
+        if ($group->is_admin_group) {
+            $this->view->error(Yii::t('AdminModule.user', 'Administrator group could not be deleted!'));
+            return $this->redirect(['/admin/group/edit', 'id' => $group->id]);
         }
+
+        // Double check to get sure we don't remove the default group:
+        if ($group->is_default_group) {
+            $this->view->error(Yii::t('AdminModule.user', 'Default group could not be deleted!'));
+            return $this->redirect(['/admin/group/edit', 'id' => $group->id]);
+        }
+
+        $group->delete();
 
         return $this->redirect(['/admin/group']);
     }
@@ -237,7 +255,6 @@ class GroupController extends Controller
         $group = Group::findOne(Yii::$app->request->get('id'));
 
 
-
         $subQuery = (new Query())->select('*')->from(GroupUser::tableName() . ' g')->where([
             'and',
             'g.user_id=user.id',
@@ -260,9 +277,9 @@ class GroupController extends Controller
 
     public function actionAdminUserSearch($keyword, $id)
     {
-        $group = Group::findOne($id);
+        $group = Group::findOne(['id' => $id]);
 
-        if(!$group) {
+        if (!$group) {
             throw new HttpException(404, Yii::t('AdminModule.user', 'Group not found!'));
         }
 
@@ -276,13 +293,12 @@ class GroupController extends Controller
 
     public function checkGroupAccess($group)
     {
-        if(!$group) {
+        if (!$group) {
             throw new HttpException(404, Yii::t('AdminModule.user', 'Group not found!'));
         }
 
-        if($group->is_admin_group && !Yii::$app->user->isAdmin()) {
+        if ($group->is_admin_group && !Yii::$app->user->isAdmin()) {
             throw new HttpException(403);
         }
     }
-
 }

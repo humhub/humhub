@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Account</strong> settings' => '<strong>Benutzerkonto</strong>-Einstellungen',
+  '<strong>Account</strong> settings' => '<strong>Benutzerkonto</strong>',
   '<strong>Confirm</strong></strong> your new email address' => '<strong>Bestätige</strong> deine neue E-Mail Adresse',
   '<strong>Security</strong> settings' => '<strong>Sicherheits</strong>-Einstellungen',
   '<strong>User</strong> modules' => '<strong>Benutzer</strong>-Module',

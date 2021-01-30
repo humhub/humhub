@@ -1,9 +1,16 @@
 <?php
 
+use humhub\modules\user\models\forms\Login;
+use humhub\modules\user\models\Invite;
 use yii\captcha\Captcha;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use humhub\modules\user\widgets\AuthChoice;
+
+/* @var $canRegister boolean */
+/* @var $model Login */
+/* @var $invite Invite */
+/* @var $info string */
 ?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
@@ -34,14 +41,21 @@ use humhub\modules\user\widgets\AuthChoice;
             <div class="tab-content">
                 <div class="tab-pane <?= (!isset($_POST['Invite'])) ? "active" : ""; ?>" id="login">
 
-                    <?php if (AuthChoice::hasClients()): ?>
+                    <?php if (Yii::$app->session->hasFlash('error')): ?>
+                        <div class="alert alert-danger" role="alert">
+                            <?= Yii::$app->session->getFlash('error') ?>
+                        </div>
+                    <?php endif; ?>
+
+                   <?php if (AuthChoice::hasClients()): ?>
                         <?= AuthChoice::widget([]) ?>
                     <?php else: ?>
                         <?php if ($canRegister) : ?>
                             <p><?= Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password."); ?></p>
                         <?php else: ?>
                             <p><?= Yii::t('UserModule.auth', "Please login with your username/email and password."); ?></p>
-                        <?php endif; ?>                    <?php endif; ?>
+                        <?php endif; ?>
+                    <?php endif; ?>
 
                     <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
                     <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.auth', 'username or email')]); ?>

@@ -5,9 +5,10 @@ return array (
   'Change owner' => 'Besitzer ändern',
   'Default Content Visiblity' => 'Standard Inhalts-Sichtbarkeit',
   'Default Join Policy' => 'Standard Beitrittsrichtlinie',
+  'Default Space(s)' => '',
   'Default Visibility' => 'Standard Sichtbarkeit',
   'Default space' => 'Standardspace',
-  'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => 'Hier können die allgemeinen Einstellungen für neue Spaces festlegen. Diese Einstellungen können für jeden einzelnen Space überschrieben werden.',
+  'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => 'Hier legst du die Voreinstellungen für Spaces fest. Wenn du einen neuen Space anlegst, kannst du diese natürlich beim Erstellprozess individuell anpassen.',
   'Invalid space' => 'Ungültiger Space',
   'Manage members' => 'Mitglieder verwalten',
   'Manage modules' => 'Module verwalten',
@@ -18,4 +19,5 @@ return array (
   'Space Settings' => 'Space Einstellungen',
   'Spaces' => 'Spaces',
   'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Diese Übersicht enthält eine Liste der einzelnen Spaces mit Aktionen zum Anzeigen, Bearbeiten und Löschen von Spaces.',
+  'Update Space memberships also for existing members.' => '',
 );
