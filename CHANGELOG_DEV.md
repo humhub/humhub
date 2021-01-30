@@ -36,3 +36,4 @@
 - Enh #4787: Always enable Space Membership Web Notifications
 - Enh #4795: Added support for collapsible form fields
 - Enh #4796: Added option to disable PWA/ServiceWorker support
+- Enh #4098: Disable richtext compat mode by default on new installations + configure by module configuration

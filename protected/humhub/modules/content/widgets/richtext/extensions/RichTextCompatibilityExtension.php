@@ -157,6 +157,6 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
     {
         /* @var $module Module  */
         $module = Yii::$app->getModule('content');
-        return $module->legacyRichTextCompatibility && $module->settings->get('richtextCompatMode', 1);
+        return $module->richtextCompatMode && $module->settings->get('richtextCompatMode', 1);
     }
 }
