@@ -7,6 +7,13 @@ namespace humhub\modules\content\widgets\richtext\extensions\emoji;
 use humhub\libs\EmojiMap;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtensionMatch;
 
+/**
+ * Richtext emoji extension match contains the result of the following emoji format:
+ *
+ * :<emojiName>:
+ *
+ * @package humhub\modules\content\widgets\richtext\extensions\emoji
+ */
 class RichTextEmojiExtensionMatch extends RichTextExtensionMatch
 {
 
@@ -17,15 +24,6 @@ class RichTextEmojiExtensionMatch extends RichTextExtensionMatch
     public function getFull(): string
     {
         return $this->getByIndex(0);
-    }
-
-    /**
-     * Returns the text content of the extension match if supported
-     * @return string
-     */
-    public function getText(): ?string
-    {
-        return $this->getByIndex(1);
     }
 
     /**
@@ -43,30 +41,15 @@ class RichTextEmojiExtensionMatch extends RichTextExtensionMatch
      */
     public function getExtensionId(): ?string
     {
-        return null;
+        return $this->getByIndex(1);
     }
 
     /**
-     * Returns an url of this extension match, if supported
+     * Returns the full match string
      * @return string
      */
-    public function getExtensionUrl(): ?string
+    public function getEmojiName(): string
     {
-        //TODO: Maybe generate URL?
-        return null;
-    }
-
-    /**
-     * Returns a title of this extension match if supported
-     * @return string
-     */
-    public function getTitle(): string
-    {
-        return $this->getText();
-    }
-
-    public function getAsUtf8() : string
-    {
-        return EmojiMap::MAP[$this->getTitle()] ?? '';
+        return $this->getExtensionId();
     }
 }

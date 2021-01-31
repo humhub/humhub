@@ -54,8 +54,6 @@ use humhub\components\ActiveRecord;
  */
 abstract class AbstractRichText extends JsWidget
 {
-    public const PRESET_DOCUMENT = 'document';
-
     /**
      * @event Event an event raised after the post-process phase of the rich text.
      */
@@ -63,8 +61,15 @@ abstract class AbstractRichText extends JsWidget
 
     /**
      * @event \humhub\modules\search\events\ParameterEvent with parameter 'output'
+     * @since 1.8
      */
     public const EVENT_BEFORE_OUTPUT = 'beforeOutput';
+
+    /**
+     * @event \humhub\modules\search\events\ParameterEvent with parameter 'output'
+     * @since 1.8
+     */
+    public const EVENT_AFTER_OUTPUT = 'afterOutput';
 
     /**
      * Converter output format for html output
@@ -89,8 +94,6 @@ abstract class AbstractRichText extends JsWidget
      * @since 1.8
      */
     public const FORMAT_MARKDOWN = 'markdown';
-
-
 
     /**
      * @var string defines a preset of rich text features and settings
@@ -169,6 +172,7 @@ abstract class AbstractRichText extends JsWidget
 
     /**
      * @var array of richtext extension classes used for preparing and post processing output and converter result
+     * @since 1.8
      */
     protected static $extensions = [];
 

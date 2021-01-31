@@ -6,6 +6,13 @@ namespace humhub\modules\content\widgets\richtext\extensions\link;
 
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtensionMatch;
 
+/**
+ * An richtext link extension match contains the parser result of a richtext extension link of the following format:
+ *
+ * [<content>](<extension_key>:<extension_id> "<title>" <addition>)
+ *
+ * @package humhub\modules\content\widgets\richtext\extensions\link
+ */
 class RichTextLinkExtensionMatch extends RichTextExtensionMatch
 {
     private const INDEX_FULL = 0;
@@ -53,7 +60,7 @@ class RichTextLinkExtensionMatch extends RichTextExtensionMatch
         return $this->getByIndex(static::INDEX_TITLE);
     }
 
-    public function getAddition() : string
+    public function getAddition() : ?string
     {
         return $this->getByIndex(static::INDEX_ADDITION);
     }

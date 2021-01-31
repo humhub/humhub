@@ -26,40 +26,16 @@ abstract class RichTextExtensionMatch extends Model
     public abstract function getFull() : string;
 
     /**
-     * Returns the text content of the extension match if supported
-     * @return string
-     */
-    public abstract function getText() : ?string;
-
-    /**
      * Returns the extension key
      * @return string
      */
     public abstract function getExtensionKey() : string;
 
     /**
-     * Returns the id of this extension match, if supported
+     * Returns the id of this extension match, the id usually identifies this instance e.g. an url
      * @return string
      */
     public abstract function getExtensionId() : ?string;
-
-    /**
-     * Returns an url of this extension match, if supported
-     * @return string
-     */
-    public abstract function getExtensionUrl() : ?string;
-
-    /**
-     * Returns a title of this extension match if supported
-     * @return string
-     */
-    public abstract function getTitle() : string;
-
-    /**
-     * Returns an addition of this extension match if supported
-     * @return string
-     */
-    public abstract function getAddition() : string;
 
     /**
      * Returns the value of a given match index or null

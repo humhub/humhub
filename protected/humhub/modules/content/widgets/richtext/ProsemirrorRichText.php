@@ -14,7 +14,7 @@ use humhub\libs\ParameterEvent;
 use humhub\modules\content\widgets\richtext\extensions\emoji\RichTextEmojiExtension;
 use humhub\modules\content\widgets\richtext\extensions\file\FileExtension;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
-use humhub\modules\content\widgets\richtext\extensions\mentioning\OembedExtension;
+use humhub\modules\content\widgets\richtext\extensions\oembed\OembedExtension;
 use humhub\modules\content\widgets\richtext\extensions\RichTextCompatibilityExtension;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
 use yii\helpers\Html;
@@ -159,6 +159,8 @@ class ProsemirrorRichText extends AbstractRichText
             return $output;
         }
 
+        $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
+
         foreach (static::getExtensions() as $extension) {
             $output = $extension->onBeforeOutput($this, $output);
         }
@@ -167,15 +169,16 @@ class ProsemirrorRichText extends AbstractRichText
             $output = Helpers::truncateText($this->text, $this->maxLength);
         }
 
+        // Wrap encoded output in root div
         $this->content = Html::encode($output);
-
         $output = parent::run();
 
         foreach (static::getExtensions() as $extension) {
             $output = $extension->onAfterOutput($this, $output);
         }
 
-        $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
+        $this->trigger(self::EVENT_AFTER_OUTPUT, new ParameterEvent(['output' => &$output]));
+
 
         return trim($output);
     }

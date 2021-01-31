@@ -129,7 +129,7 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     /**
      * @inheritDoc
      */
-    public function parse($text)
+    public function parse($text): string
     {
         try {
             $text = $this->onBeforeParse($text);

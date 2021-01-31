@@ -3,10 +3,17 @@
 namespace humhub\modules\content\widgets\richtext\extensions\emoji;
 
 use humhub\libs\EmojiMap;
+use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use humhub\modules\content\widgets\richtext\extensions\RichTextContentExtension;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtensionMatch;
 use humhub\components\ActiveRecord;
 
+/**
+ * The emoji richtext extension is responsible for replacing richtext emoji syntax like :smile: to utf8 characters when
+ * converting a richtext to other formats.
+ *
+ * @package humhub\modules\content\widgets\richtext\extensions\emoji
+ */
 class RichTextEmojiExtension extends RichTextContentExtension
 {
 
@@ -29,15 +36,16 @@ class RichTextEmojiExtension extends RichTextContentExtension
     public static function convertEmojiToUtf8($text) : string
     {
         // Note the ; was used in the legacy editor
-        return preg_replace_callback(static::REGEX, function($match)  {
-            $result =  $match[0];
-
-            if(isset($match[1])) {
-                $result = array_key_exists(strtolower($match[1]), EmojiMap::MAP) ?  EmojiMap::MAP[strtolower($match[1])] : $result;
+        return static::replace($text, function(RichTextEmojiExtensionMatch $match) {
+            if(!empty($match->getEmojiName())) {
+                $name = $match->getEmojiName();
+                return array_key_exists(strtolower($name), EmojiMap::MAP)
+                    ? EmojiMap::MAP[strtolower($name)]
+                    : $match->getFull();
             }
 
-            return $result;
-        }, $text);
+            return $match->getFull();
+        });
     }
 
     /**
@@ -45,7 +53,7 @@ class RichTextEmojiExtension extends RichTextContentExtension
      */
     public function initMatch(array $match): RichTextExtensionMatch
     {
-        return new RichTextEmojiExtensionMatch($match);
+        return new RichTextEmojiExtensionMatch(['match' => $match]);
     }
 
     /**

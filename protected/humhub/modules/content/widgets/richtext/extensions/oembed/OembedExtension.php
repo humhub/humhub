@@ -1,6 +1,6 @@
 <?php
 
-namespace humhub\modules\content\widgets\richtext\extensions\mentioning;
+namespace humhub\modules\content\widgets\richtext\extensions\oembed;
 
 use humhub\models\UrlOembed;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
