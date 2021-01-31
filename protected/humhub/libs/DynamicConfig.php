@@ -70,13 +70,7 @@ class DynamicConfig extends BaseObject
         $configFile = self::getConfigFilePath();
         file_put_contents($configFile, $content);
 
-        if (function_exists('opcache_invalidate')) {
-            opcache_invalidate($configFile);
-        }
-
-        if (function_exists('apc_compile_file')) {
-            apc_compile_file($configFile);
-        }
+        Helpers::ClearBytecode($configFile);
     }
 
     /**

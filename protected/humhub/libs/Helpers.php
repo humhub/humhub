@@ -272,4 +272,32 @@ class Helpers
         }
     }
 
+    /**
+     * Clears script bytecode in shared memory.
+     * For example, this is necessary for the dynamic configuration file or marketplace modules.
+     * If no file parameter was passed, all caches will be cleared.
+     *
+     * @param $file |null
+     * @since 1.8
+     */
+    public static function ClearBytecode($file = null)
+    {
+        if ($file !== null) {
+            if (function_exists('opcache_invalidate')) {
+                opcache_invalidate($file, true);
+            }
+
+            if (function_exists('apc_compile_file')) {
+                apc_compile_file($file);
+            }
+        } else {
+            if (function_exists('opcache_reset')) {
+                opcache_reset();
+            }
+        }
+        if (function_exists('rr_restartWorkers')) {
+            rr_restartWorkers();
+        }
+    }
+
 }
