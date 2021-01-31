@@ -9,6 +9,7 @@
 namespace tests\codeception\unit\modules\content\widgets;
 
 use humhub\libs\EmojiMap;
+use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\file\models\File;
@@ -30,8 +31,34 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Link](https://www.humhub.com/de)',
-            '<p>Test <a href="https://www.humhub.com/de">Link</a></p>');
+            '<p>Test <a href="https://www.humhub.com/de" target="_blank" rel="nofollow noreferrer noopener">Link</a></p>');
     }
+
+    public function testConvertLinkWithCustomTargetToHtml()
+    {
+        $this->assertConversionResult(
+            'Test [Link](https://www.humhub.com/de)',
+            '<p>Test <a href="https://www.humhub.com/de" target="_self" rel="nofollow noreferrer noopener">Link</a></p>',
+            [RichTextToHtmlConverter::OPTION_LINK_TARGET =>  '_self']);
+    }
+
+    public function testConvertLinkAsText()
+    {
+        $this->assertConversionResult(
+            'Test [Link](https://www.humhub.com/de)',
+            '<p>Test Link</p>',
+            [RichTextToHtmlConverter::OPTION_LINK_AS_TEXT =>  '_self']);
+    }
+
+    public function testConvertLinkWithoutTargetToHtml()
+    {
+        $this->assertConversionResult(
+            'Test [Link](https://www.humhub.com/de)',
+            '<p>Test <a href="https://www.humhub.com/de">Link</a></p>',
+            [RichTextToHtmlConverter::OPTION_PREV_LINK_TARGET =>  true]);
+    }
+
+
 
     /**
      * @throws \yii\base\InvalidConfigException
@@ -40,7 +67,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Link](https://www.humhub.com/de "Link Title")',
-            '<p>Test <a href="https://www.humhub.com/de" title="Link Title">Link</a></p>');
+            '<p>Test <a href="https://www.humhub.com/de" target="_blank" title="Link Title" rel="nofollow noreferrer noopener">Link</a></p>');
     }
 
     /**
@@ -50,7 +77,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Link &< Link](https://www.humhub.com/de)',
-            '<p>Test <a href="https://www.humhub.com/de">Link &amp;&lt; Link</a></p>');
+            '<p>Test <a href="https://www.humhub.com/de" target="_blank" rel="nofollow noreferrer noopener">Link &amp;&lt; Link</a></p>');
     }
 
     /**
@@ -60,7 +87,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Link](/p/site)',
-            '<p>Test <a href="http://localhost/p/site">Link</a></p>');
+            '<p>Test <a href="http://localhost/p/site" target="_blank" rel="nofollow noreferrer noopener">Link</a></p>');
     }
 
     /**
@@ -70,7 +97,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Link &< Link](/p/site)',
-            '<p>Test <a href="http://localhost/p/site">Link &amp;&lt; Link</a></p>');
+            '<p>Test <a href="http://localhost/p/site" target="_blank" rel="nofollow noreferrer noopener">Link &amp;&lt; Link</a></p>');
     }
 
     /**
@@ -80,7 +107,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [](/p/site)',
-            '<p>Test <a href="http://localhost/p/site"></a></p>');
+            '<p>Test <a href="http://localhost/p/site" target="_blank" rel="nofollow noreferrer noopener"></a></p>');
     }
 
     /**
@@ -90,7 +117,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [**Bold** Link](http://localhost/p/site)',
-            '<p>Test <a href="http://localhost/p/site"><strong>Bold</strong> Link</a></p>');
+            '<p>Test <a href="http://localhost/p/site" target="_blank" rel="nofollow noreferrer noopener"><strong>Bold</strong> Link</a></p>');
     }
 
     /**
@@ -107,7 +134,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Test Mail](mailto:test@test.com)',
-            '<p>Test <a href="mailto:test@test.com">Test Mail</a></p>');
+            '<p>Test <a href="mailto:test@test.com" target="_blank" rel="noreferrer noopener">Test Mail</a></p>');
     }
 
     /*
@@ -122,6 +149,38 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
         $this->assertConversionResult(
             'Test ![Alt Text](https://www.humhub.com/static/img/logo.png)',
             '<p>Test <img src="https://www.humhub.com/static/img/logo.png" alt="Alt Text"></p>');
+    }
+
+    public function testConvertImageAsLink()
+    {
+        $this->assertConversionResult(
+            'Test ![Alt Text](https://www.humhub.com/static/img/logo.png)',
+            '<p>Test <a href="https://www.humhub.com/static/img/logo.png" target="_blank" rel="nofollow noreferrer noopener">Alt Text</a></p>',
+        [RichTextToHtmlConverter::OPTION_IMAGE_AS_LINK => true]);
+    }
+
+    public function testConvertImageWithoutTitleAsLink()
+    {
+        $this->assertConversionResult(
+            'Test ![](https://www.humhub.com/static/img/logo.png)',
+            '<p>Test <a href="https://www.humhub.com/static/img/logo.png" target="_blank" rel="nofollow noreferrer noopener">https://www.humhub.com/static/img/logo.png</a></p>',
+            [RichTextToHtmlConverter::OPTION_IMAGE_AS_LINK => true]);
+    }
+
+    public function testConvertImageAsText()
+    {
+        $this->assertConversionResult(
+            'Test ![Alt Text](https://www.humhub.com/static/img/logo.png)',
+            '<p>Test Alt Text</p>',
+            [RichTextToHtmlConverter::OPTION_IMAGE_AS_LINK => true, RichTextToHtmlConverter::OPTION_LINK_AS_TEXT => true]);
+    }
+
+    public function testConvertImageWithoutTitleAsText()
+    {
+        $this->assertConversionResult(
+            'Test ![](https://www.humhub.com/static/img/logo.png)',
+            '<p>Test https://www.humhub.com/static/img/logo.png</p>',
+            [RichTextToHtmlConverter::OPTION_IMAGE_AS_LINK => true, RichTextToHtmlConverter::OPTION_LINK_AS_TEXT => true]);
     }
 
     /**
@@ -236,7 +295,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             'Test mention ' . MentioningExtension::buildMentioning($user),
-            '<p>Test mention <a href="http://localhost/index-test.php?r=user%2Fprofile&amp;cguid=01e50e0d-82cd-41fc-8b0c-552392f5839c">Admin Tester</a></p>');
+            '<p>Test mention <a href="http://localhost/index-test.php?r=user%2Fprofile&amp;cguid=01e50e0d-82cd-41fc-8b0c-552392f5839c" target="_blank" rel="nofollow noreferrer noopener">Admin Tester</a></p>');
     }
 
     public function testMentionNotFound()
@@ -280,7 +339,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             'Test file [Test File](file-guid:xyz)',
-            '<p>Test file <a href="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=xyz&amp;hash_sha1=xxx">Test File</a></p>');
+            '<p>Test file <a href="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=xyz&amp;hash_sha1=xxx" target="_blank" rel="nofollow noreferrer noopener">Test File</a></p>');
     }
 
     public function testFileNotFound()
@@ -397,7 +456,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             '[https://www.youtube.com/watch?v=xxxy](oembed:https://www.youtube.com/watch?v=xxxy)',
-            '<p><a href="https://www.youtube.com/watch?v=xxxy">https://www.youtube.com/watch?v=xxxy</a></p>');
+            '<p><a href="https://www.youtube.com/watch?v=xxxy" target="_blank" rel="nofollow noreferrer noopener">https://www.youtube.com/watch?v=xxxy</a></p>');
     }
 
     /*
@@ -538,6 +597,13 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
         $this->assertConversionResult(
             "| Tables | Are | Cool |\n| ------------- |:-------------:| -----:|\n| col 3 is | right-aligned | $1600 |",
             $expected);
+    }
+
+    public function testConvertExcludeTable()
+    {
+        $this->assertConversionResult(
+            "| Tables | Are | Cool |\n| ------------- |:-------------:| -----:|\n| col 3 is | right-aligned | $1600 |",
+            '', ['exclude' => ['table']]);
     }
 
     public function testConvertTableWithInlineMark()
@@ -726,7 +792,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
 
     private function assertConversionResult($markdown, $expected = null, $options = [])
     {
-        if (!$expected) {
+        if ($expected === null) {
             $expected = $markdown;
         }
 

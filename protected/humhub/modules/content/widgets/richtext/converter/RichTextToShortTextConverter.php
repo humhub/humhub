@@ -20,6 +20,7 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
      * @inheritdoc
      */
     public $identifyTable = true;
+
     /**
      * @inheritdoc
      */

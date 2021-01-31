@@ -27,6 +27,13 @@ use yii\helpers\Url;
  *
  * The output parser output will be purified and can safely be used.
  *
+ * Available options:
+ *
+ *  - `exclude`: Exclude certain blocks or extensions from being rendered
+ *  - `linkTarget`: Change link `target` (default `_blank`)
+ *  - `prevLinkTarget`: Removes `target` and `rel` attribute from all links
+ *  - `linkAsText`: Renders links as plain text
+ *
  * @since 1.8
  */
 class RichTextToHtmlConverter extends BaseRichTextConverter
@@ -75,6 +82,11 @@ class RichTextToHtmlConverter extends BaseRichTextConverter
         return HtmlPurifier::process($text, function ($config) {
             // Make sure we use non xhtml tags, unfortunately HTML5 is not supported by html purifier
             $config->set('HTML.Doctype', $this->doctype);
+
+            if(!$this->getOption('prevLinkTarget', false)) {
+                $config->set('HTML.Nofollow', true);
+            }
+
             $config->set('HTML.Allowed', $this->htmlAllowed);
             $config->set('HTML.AllowedAttributes', $this->htmlAllowedAttributes);
             $config->set('URI.AllowedSchemes',$this->allowedSchemes);

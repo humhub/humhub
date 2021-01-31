@@ -115,6 +115,13 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
      * Images
      */
 
+    public function testConvertImageAsLink()
+    {
+        $this->assertConversionResult(
+            'Test ![Alt Text](https://www.humhub.com/static/img/logo.png)',
+            "Test https://www.humhub.com/static/img/logo.png");
+    }
+
     /**
      * @throws \yii\base\InvalidConfigException
      */

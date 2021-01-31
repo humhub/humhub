@@ -10,10 +10,12 @@ namespace humhub\modules\content\widgets\richtext\converter;
 
 use cebe\markdown\GithubMarkdown;
 use humhub\components\Event;
+use humhub\libs\Html;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
+use Yii;
 
 /**
  * This class serves as base class for richtext converters used to convert HumHub richtext to other formats. The base
@@ -34,6 +36,31 @@ use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
  */
 abstract class BaseRichTextConverter extends GithubMarkdown
 {
+    /**
+     * Option key for excluding blocks or extensions
+     */
+    const OPTION_EXCLUDE = 'exclude';
+
+    /**
+     * Option key for overwriting default link target _blank
+     */
+    const OPTION_LINK_TARGET = 'linkTarget';
+
+    /**
+     * Option key used for rendering links as plain text
+     */
+    const OPTION_LINK_AS_TEXT = 'linkAsText';
+
+    /**
+     * Option key used for rendering images as links
+     */
+    const OPTION_IMAGE_AS_LINK = 'imageAsLink';
+
+    /**
+     * Option key for preventing link target attribute
+     */
+    const OPTION_PREV_LINK_TARGET = 'prevLinkTarget';
+
     /**
      * @inheritdoc
      */
@@ -104,9 +131,14 @@ abstract class BaseRichTextConverter extends GithubMarkdown
      */
     public function parse($text)
     {
-        $text = $this->onBeforeParse($text);
-        $text = parent::parse($text);
-        return $this->onAfterParse($text);
+        try {
+            $text = $this->onBeforeParse($text);
+            $text = parent::parse($text);
+            return $this->onAfterParse($text);
+        } catch (\Throwable $t) {
+            Yii::error($t);
+            return '[ParserError]';
+        }
     }
 
     /**
@@ -305,12 +337,12 @@ REGEXP;
 
     private function getExcludes()
     {
-        return $this->getOption('exclude', []);
+        return $this->getOption(static::OPTION_EXCLUDE, []);
     }
 
     public function getOption(string $key, $default = null)
     {
-        return isset($this->options[$key]) ?: $default;
+        return isset($this->options[$key]) ? $this->options[$key] : $default;
     }
 
     protected function renderImage($block)
@@ -318,7 +350,15 @@ REGEXP;
         $text = $block['text'];
 
         // Remove image alignment extension from image alt text
-        $block['text'] =  preg_replace('/>?<?$/', '', $text);
+        $block['text'] = preg_replace('/>?<?$/', '', $text);
+
+        if($this->getOption(static::OPTION_IMAGE_AS_LINK, false)) {
+            $text = empty($block['text']) ? $block['url'] : $block['text'];
+            $linkBlock = $block;
+            $linkBlock[0] = 'link';
+            $linkBlock['text'] = [['text', $text]];
+            return $this->renderPlainLink(new LinkParserBlock(['block' => $linkBlock]));
+        }
 
         return $this->renderLinkOrImage(new LinkParserBlock([
             'block' => $block,
@@ -349,7 +389,26 @@ REGEXP;
      * @return string
      */
     protected function renderPlainLink(LinkParserBlock $linkBlock) : string {
-        return parent::renderLink($linkBlock->block);
+        $block = $linkBlock->block;
+
+        if (isset($block['refkey'])) {
+            if (($ref = $this->lookupReference($block['refkey'])) !== false) {
+                $block = array_merge($block, $ref);
+            } else {
+                return $block['orig'];
+            }
+        }
+
+        if($this->getOption(static::OPTION_LINK_AS_TEXT, false)) {
+            return $this->renderAbsy($block['text']);
+        }
+
+        $target = Html::encode($this->getOption(static::OPTION_LINK_TARGET, '_blank'));
+        $targetAttr = !$this->getOption(static::OPTION_PREV_LINK_TARGET, false) ? " target=\"$target\"" : '';
+
+        return '<a href="' . htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8') . '"'. $targetAttr
+            . (empty($block['title']) ? '' : ' title="' . htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
+            . '>' . $this->renderAbsy($block['text']) . '</a>';
     }
 
     /**
