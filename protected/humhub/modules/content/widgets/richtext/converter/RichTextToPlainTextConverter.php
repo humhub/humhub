@@ -43,6 +43,11 @@ class RichTextToPlainTextConverter extends RichTextToMarkdownConverter
     public $format = ProsemirrorRichText::FORMAT_PLAINTEXT;
 
     /**
+     * @inheritdoc
+     */
+    public $identifyQuote = true;
+
+    /**
      * @inheritDoc
      */
     protected function renderPlainLink(LinkParserBlock $linkBlock) : string
@@ -69,5 +74,29 @@ class RichTextToPlainTextConverter extends RichTextToMarkdownConverter
     protected function renderEmail($block)
     {
         return $block[1];
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * Allows escaping newlines to create line breaks.
+     *
+     * Parses for hard breaks as `FirstLine\\\nSecondLine`
+     *
+     * @see https://github.com/cebe/markdown/issues/169
+     * @marker \
+     */
+    protected function parseEscape($text)
+    {
+        # If the backslash is followed by a newline.
+        # Note: GFM doesn't allow spaces after the backslash.
+        if (isset($text[1]) && $text[1] === "\n") {
+            # Here we just skip the  escape, since we have a new line anyways
+            return [["text", ''], 1];
+        }
+
+        # Otherwise parse the sequence normally
+        return parent::parseEscape($text);
+
     }
 }

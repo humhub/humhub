@@ -69,6 +69,12 @@ abstract class BaseRichTextConverter extends GithubMarkdown
      */
     protected $extensions = [];
 
+    /**
+     * @var bool whether or not to support `\\\n` backslash breaks
+     * @see https://github.com/cebe/markdown/issues/169
+     */
+    protected $escapeBackslashBreak = true;
+
 
     /**
      * BaseRichTextParser constructor.
@@ -98,7 +104,6 @@ abstract class BaseRichTextConverter extends GithubMarkdown
      */
     public function parse($text)
     {
-        $this->length = 0;
         $text = $this->onBeforeParse($text);
         $text = parent::parse($text);
         return $this->onAfterParse($text);
@@ -127,6 +132,9 @@ abstract class BaseRichTextConverter extends GithubMarkdown
         $evt = new Event(['result' => $text]);
         Event::trigger($this, static::EVENT_BEFORE_PARSE, $evt);
         $text = $evt->result;
+
+        // Remove leading new backslash new lines e.g. "Test\\\n" -> "Test"
+        $text = preg_replace('/\\\\(\n|\r){1,2}$/',  '', $text);
 
         foreach ($this->extensions as $extension) {
             $text = $extension->onBeforeConvert($text, $this->format, $this->options);
@@ -182,15 +190,16 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     /**
      * @inheritDoc
      *
-     * Allows escaping newlines to create line breaks.
+     * Parses for backslash hard breaks as `FirstLine\\\nSecondLine` if [[escapeBackslashBreak]] is active (default)
      *
      * @marker \
+     * @see https://github.com/cebe/markdown/issues/169
      */
     protected function parseEscape($text)
     {
         # If the backslash is followed by a newline.
         # Note: GFM doesn't allow spaces after the backslash.
-        if ($text[1] === "\n") {
+        if ($this->escapeBackslashBreak && $text[1] === "\n") {
             $br = $this->html5 ? "<br>\n" : "<br />\n";
             # Return the line break
             return [["text", $br], 2];

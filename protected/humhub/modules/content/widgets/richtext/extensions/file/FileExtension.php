@@ -1,6 +1,6 @@
 <?php
 
-namespace humhub\modules\content\widgets\richtext\extensions\mentioning;
+namespace humhub\modules\content\widgets\richtext\extensions\file;
 
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;

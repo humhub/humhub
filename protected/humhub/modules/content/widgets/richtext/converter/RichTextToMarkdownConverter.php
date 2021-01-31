@@ -7,15 +7,9 @@
 
 namespace humhub\modules\content\widgets\richtext\converter;
 
-
-use cebe\markdown\GithubMarkdown;
-use cebe\markdown\inline\LinkTrait;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
-use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtensionMatch;
-use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
-use yii\helpers\Url;
 
 /**
  * This parser can be used to convert HumHub richtext to plain markdown by removing special richtext markdown syntax.
@@ -54,6 +48,23 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
     protected const INLINE_CODE_WRAPPER = '`';
 
     /**
+     * @var bool
+     */
+    protected $escapeBackslashBreak = false;
+
+    /**
+     * @var bool whether or not tables should be parsed, in case subclasses want to overwrite `renderTable()`, this flag
+     * needs to be set to true
+     */
+    protected $identifyTable = false;
+
+    /**
+     * @var bool whether or not quotes should be parsed, in case subclasses want to overwrite `renderQuote()`, this flag
+     * needs to be set to true
+     */
+    protected $identifyQuote = false;
+
+    /**
      * @inheritdoc
      */
     public $format = ProsemirrorRichText::FORMAT_MARKDOWN;
@@ -61,7 +72,7 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
     /**
      * @inheritDoc
      */
-    public function onAfterParse($text) : string
+    protected function onAfterParse($text) : string
     {
         return trim(parent::onAfterParse($text));
     }
@@ -80,6 +91,7 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
      * `>` mark parser is disabled by removing marker in php doc
      */
     protected function parseGt($text) { /* Not implemented */}
+
 
     /**
      * @inheritDoc
@@ -280,7 +292,7 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
 
 
     /**
-     * Deactivates table parsing, just leave the markdown syntax as is for tables.
+     * Deactivates table parsing in caste [[identifyTable]] flag is false (default).
      * @param $line
      * @param $lines
      * @param $current
@@ -288,8 +300,23 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
      */
     protected function identifyTable($line, $lines, $current)
     {
-        return false;
+        return $this->identifyTable
+            ? parent::identifyTable($line, $lines, $current)
+            : false;
     }
+
+    /**
+     * Deactivates quote parsing in caste [[identifyQuote]] flag is false (default).
+     * @param $line
+     * @return false
+     */
+    protected function identifyQuote($line)
+    {
+        return $this->identifyQuote
+            ? parent::identifyQuote($line)
+            : false;
+    }
+
 
     /**
      * Deactivated by removing marker

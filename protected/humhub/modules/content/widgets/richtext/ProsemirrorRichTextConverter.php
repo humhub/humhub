@@ -7,6 +7,7 @@ namespace humhub\modules\content\widgets\richtext;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 
 class ProsemirrorRichTextConverter extends AbstractRichTextConverter
 {
@@ -72,4 +73,8 @@ class ProsemirrorRichTextConverter extends AbstractRichTextConverter
     }
 
 
+    public function convertToShortText(string $content, array $options = []): string
+    {
+        return (new RichTextToShortTextConverter($options))->parse($content);
+    }
 }

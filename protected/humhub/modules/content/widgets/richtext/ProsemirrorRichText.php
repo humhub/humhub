@@ -12,13 +12,11 @@ use humhub\libs\EmojiMap;
 use humhub\libs\Helpers;
 use humhub\libs\ParameterEvent;
 use humhub\modules\content\widgets\richtext\extensions\emoji\RichTextEmojiExtension;
-use humhub\modules\content\widgets\richtext\extensions\mentioning\FileExtension;
+use humhub\modules\content\widgets\richtext\extensions\file\FileExtension;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\OembedExtension;
 use humhub\modules\content\widgets\richtext\extensions\RichTextCompatibilityExtension;
-use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
-use Yii;
 use yii\helpers\Html;
 
 /**

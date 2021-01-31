@@ -78,7 +78,7 @@ abstract class AbstractRichTextConverter extends BaseObject
 
     /**
      * Converts the given rich-text content to html encoded short text preview. The short text should not contain any
-     * html elements and no breaks
+     * html elements and no breaks.
      *
      * A proper implementation of this function is mandatory.
      *
