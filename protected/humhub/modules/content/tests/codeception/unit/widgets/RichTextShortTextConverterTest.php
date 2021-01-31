@@ -37,6 +37,16 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     /**
      * @throws \yii\base\InvalidConfigException
      */
+    public function testConvertTextWithMaxLength()
+    {
+        $this->assertConversionResult(
+            '123456789',
+            "12345...", ['maxLength' => 5]);
+    }
+
+    /**
+     * @throws \yii\base\InvalidConfigException
+     */
     public function testConvertLinkWithSpecialCharToShortText()
     {
         $this->assertConversionResult(
@@ -708,13 +718,13 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
             "");
     }
 
-    private function assertConversionResult($markdown, $expected = null)
+    private function assertConversionResult($markdown, $expected = null, $options = [])
     {
         if ($expected === null) {
             $expected = $markdown;
         }
 
-        $result = RichText::convert($markdown, RichText::FORMAT_SHORTTEXT);
+        $result = RichText::convert($markdown, RichText::FORMAT_SHORTTEXT, $options);
         // Currently relative image
         static::assertEquals($expected, $result);
     }

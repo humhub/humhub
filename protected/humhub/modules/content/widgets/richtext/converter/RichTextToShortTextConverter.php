@@ -4,6 +4,7 @@
 namespace humhub\modules\content\widgets\richtext\converter;
 
 
+use humhub\libs\Helpers;
 use humhub\libs\Html;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
@@ -11,6 +12,8 @@ use Yii;
 
 class RichTextToShortTextConverter extends RichTextToPlainTextConverter
 {
+    const OPTION_MAX_LENGTH = 'maxLength';
+
     /**
      * @inheritdoc
      */
@@ -88,8 +91,9 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
      */
     protected function onAfterParse($text) : string
     {
-        // Remove leading slashes
-        //$text = preg_replace('/\\\\(\n|\r){1,2}/',  ' ', $text);
-        return Html::encode(parent::onAfterParse($text));
+        $result = parent::onAfterParse($text);
+        $maxLength =  $this->getOption(static::OPTION_MAX_LENGTH, 0);
+        $result = ($maxLength > 0) ? Helpers::truncateText($result, $maxLength) : $result;
+        return Html::encode($result);
     }
 }

@@ -149,7 +149,7 @@ class ProsemirrorRichText extends AbstractRichText
      */
     public function run() {
         if($this->minimal) {
-            return $this->renderMinimal();
+            return static::convert($this->text, static::FORMAT_SHORTTEXT, ['maxLength' => $this->maxLength]);
         }
 
         $output = $this->parseOutput();
@@ -165,6 +165,7 @@ class ProsemirrorRichText extends AbstractRichText
             $output = $extension->onBeforeOutput($this, $output);
         }
 
+        // Can be removed in a future version, richtext should not be cut anymore, only text or shorttext version should be cut
         if ($this->maxLength > 0) {
             $output = Helpers::truncateText($this->text, $this->maxLength);
         }
@@ -179,7 +180,6 @@ class ProsemirrorRichText extends AbstractRichText
 
         $this->trigger(self::EVENT_AFTER_OUTPUT, new ParameterEvent(['output' => &$output]));
 
-
         return trim($output);
     }
 
@@ -192,16 +192,6 @@ class ProsemirrorRichText extends AbstractRichText
      */
     protected function parseOutput() {
         return $this->text;
-    }
-
-    /**
-     * @return string truncated and stripped text
-     */
-    protected function renderMinimal() {
-        $result = preg_replace('/\\\\(\n|\r){1,2}/',  ' ', $this->text);
-        $result = strip_tags((new PreviewMarkdown())->parse($result));
-        $result = $this->toUTF8Emoji($result);
-        return  trim(Html::encode(($this->maxLength > 0) ? Helpers::truncateText($result, $this->maxLength) : $result));
     }
 
     protected function toUTF8Emoji($text)

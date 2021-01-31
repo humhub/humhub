@@ -124,11 +124,15 @@ abstract class AbstractRichText extends JsWidget
     /**
      * @var boolean enables the minimal rendering mode used for example for previews, this mode should take the
      * [[maxLenght]] setting into account for truncating the preview content.
+     *
+     * @deprecated since 1.8 use shorttext converter instead
      */
     public $minimal = false;
 
     /**
      * @var int setting used to truncate the rich text content, usually related to [[minimal]] mode and used for previews
+     *
+     * @deprecated since 1.8 use shorttext converter instead
      */
     public $maxLength = 0;
 

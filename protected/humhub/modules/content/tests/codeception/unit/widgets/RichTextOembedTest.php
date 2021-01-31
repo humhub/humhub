@@ -8,14 +8,8 @@
 
 namespace tests\codeception\unit\modules\content\widgets;
 
-use humhub\libs\EmojiMap;
 use humhub\models\UrlOembed;
-use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
-use humhub\modules\content\widgets\richtext\extensions\mentioning\OembedExtension;
-use humhub\modules\content\widgets\richtext\RichText;
-use humhub\modules\file\models\File;
-use humhub\modules\post\models\Post;
-use humhub\modules\user\models\User;
+use humhub\modules\content\widgets\richtext\extensions\oembed\OembedExtension;
 use tests\codeception\_support\HumHubDbTestCase;
 
 
