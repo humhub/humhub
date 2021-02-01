@@ -81,8 +81,6 @@ humhub.module('live.poll', function (module, require, $) {
                 return;
             }
 
-            console.log(evt.data);
-
             if(!this.focus) {
                 // Seems this is an inactive tab, so let others do the job...
                 this.resetPollTimeout(this.options.maxInterval);
@@ -99,7 +97,6 @@ humhub.module('live.poll', function (module, require, $) {
                     break;
                 case EVENT_TYPE_UPDATE:
                     // We received a response from another tab
-                    console.log('update from channel '+evt.data.queryTime);
                     this.handleUpdate(evt.data);
                     break;
             }
@@ -149,8 +146,6 @@ humhub.module('live.poll', function (module, require, $) {
     PollClient.prototype.stopIdle = function () {
         this.setDelay(this.options.minInterval);
 
-        console.log('stopIdle');
-
         // Make sure we do not have to wait too long after idle end.
         if (new Date() - this.lastTs > this.options.minInterval) {
             this.resetPollTimeout();
@@ -168,13 +163,6 @@ humhub.module('live.poll', function (module, require, $) {
         if (this.delay > this.options.maxInterval) {
             this.setDelay(this.options.maxInterval);
         }
-
-        console.log({
-            request: counter.requests,
-            updates: counter.updates,
-            delay: this.delay,
-            focus: this.focus
-        });
     };
 
     /**
