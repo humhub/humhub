@@ -118,6 +118,10 @@
         if (location.protocol !== link.protocol || location.hostname !== link.hostname)
             return
 
+        // Ignore normal link from modal window in order to close the modal
+        if (link.href !== '#' && link.href.length && $link.closest('.modal').length)
+            return
+
         // Ignore case when a hash is being tacked on the current URL
         if (link.href.indexOf('#') > -1 && stripHash(link) == stripHash(location))
             return
