@@ -64,4 +64,6 @@ return [
     'User posts' => 'Contenu de l\'utilisateur',
     'Userprofiles' => 'Profils utilisateurs',
     'Users' => 'Utilisateurs',
+    'Delete all' => '',
+    'Delete selected rows' => '',
 ];

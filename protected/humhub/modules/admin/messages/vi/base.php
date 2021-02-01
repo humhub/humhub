@@ -64,4 +64,6 @@ return [
     'User posts' => 'Bài đăng',
     'Userprofiles' => 'Hồ sơ người dùng',
     'Users' => 'Người dùng',
+    'Delete all' => '',
+    'Delete selected rows' => '',
 ];

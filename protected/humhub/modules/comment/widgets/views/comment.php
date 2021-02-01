@@ -3,13 +3,13 @@
 use humhub\libs\Html;
 use humhub\modules\content\widgets\UpdatedIcon;
 use humhub\modules\ui\icon\widgets\Icon;
+use humhub\modules\comment\widgets\CommentEntryLinks;
 use humhub\widgets\TimeAgo;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\file\widgets\ShowFiles;
-use humhub\modules\like\widgets\LikeLink;
-use humhub\modules\comment\widgets\CommentLink;
 use humhub\modules\comment\widgets\Comments;
+use humhub\modules\comment\models\Comment;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $comment \humhub\modules\comment\models\Comment */
@@ -47,11 +47,11 @@ $module = Yii::$app->getModule('comment');
                         <li>
                             <a href="#" class="comment-edit-link" data-action-click="edit"
                                data-action-url="<?= $editUrl ?>">
-                                <?= Icon::get('edit')?> <?= Yii::t('CommentModule.base', 'Edit') ?>
+                                <?= Icon::get('edit') ?> <?= Yii::t('CommentModule.base', 'Edit') ?>
                             </a>
                             <a href="#" class="comment-cancel-edit-link" data-action-click="cancelEdit"
                                data-action-url="<?= $loadUrl ?>" style="display:none;">
-                                <?= Icon::get('edit')?> <?= Yii::t('CommentModule.base', 'Cancel Edit') ?>
+                                <?= Icon::get('edit') ?> <?= Yii::t('CommentModule.base', 'Cancel Edit') ?>
                             </a>
                         </li>
                     <?php endif; ?>
@@ -89,10 +89,7 @@ $module = Yii::$app->getModule('comment');
         </div>
 
         <div class="wall-entry-controls">
-            <?php if ($module->canComment($comment)): ?>
-                <?= CommentLink::widget(['object' => $comment]); ?>&nbsp;&nbsp;&middot;&nbsp;
-            <?php endif; ?>
-            <?= LikeLink::widget(['object' => $comment]); ?>
+            <?= CommentEntryLinks::widget(['object' => $comment]); ?>
         </div>
 
         <div class="nested-comments-root">

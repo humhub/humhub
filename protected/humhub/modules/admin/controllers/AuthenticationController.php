@@ -62,23 +62,6 @@ class AuthenticationController extends Controller
             $this->view->saved();
         }
 
-        // Build Group Dropdown
-        $groups = [
-            '' => Yii::t(
-                'AdminModule.settings',
-                'None - shows dropdown in user registration.'
-            )
-        ];
-
-        foreach (Group::find()->all() as $group) {
-            if (!$group->is_admin_group) {
-                $groups[$group->id] = Html::encode($group->name);
-            }
-        }
-
-        return $this->render('authentication', [
-            'model' => $form,
-            'groups' => $groups
-        ]);
+        return $this->render('authentication', ['model' => $form]);
     }
 }

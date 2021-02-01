@@ -116,7 +116,7 @@ trait LegacyStreamTrait
      * @param boolean $partial whether or not to use renderPartial over renderAjax
      * @return string rendered wallentry
      * @throws \Exception
-     * @deprecated since 1.7 use StreamEntryWidget::renderEntry() instead
+     * @deprecated since 1.7 use StreamEntryWidget::renderStreamEntry() instead
      */
     public static function renderEntry(ContentActiveRecord $record, $options =  [], $partial = true)
     {
@@ -194,12 +194,12 @@ trait LegacyStreamTrait
         $this->setupFilters();
     }
     /**
-     * @deprecated since 1.7 use afterStreamQueryBuild
+     * @deprecated since 1.7 use Stream::beforeApplyFilters()
      */
     public function setupCriteria(){}
 
     /**
-     * @deprecated since 1.7 use afterStreamQueryBuild
+     * @deprecated since 1.7 use Stream::beforeApplyFilters()
      */
     public function setupFilters(){ }
 

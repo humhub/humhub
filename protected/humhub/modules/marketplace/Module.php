@@ -57,6 +57,12 @@ class Module extends BaseModule
     public $hideLegacyModules = true;
 
     /**
+     * @since 1.8
+     * @var array A list of module ids that cannot be installed.
+     */
+    public $moduleBlacklist = [];
+
+    /**
      * @inheritdoc
      */
     public function getName()

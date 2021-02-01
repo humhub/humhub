@@ -32,8 +32,8 @@ return [
     'Add new members...' => 'Új tagok hozzáadása',
     'Add new user' => 'Új felhasználó hozzáadása',
     'All the personal data of this user will be irrevocably deleted.' => 'A felhasználó összes személyes adata visszavonhatatlanul törölve lesz.',
-    'Allow limited access for non-authenticated users (guests)' => 'Engedélyezze a nem hitelesített felhasználók (vendégek) korlátozott hozzáférését',
-    'Anonymous users can register' => 'Névtelen felhasználók is regisztrálhatnak',
+    'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'Engedélyezze a nem hitelesített felhasználók (vendégek) korlátozott hozzáférését',
+    'New users can register' => 'Névtelen felhasználók is regisztrálhatnak',
     'Are you really sure that you want to disable this user?' => 'Biztos vagy benne, hogy letiltod ezt a felhasználót?',
     'Are you really sure that you want to enable this user?' => 'Biztos vagy benne, hogy engedélyezed ezt a felhasználót?',
     'Are you really sure that you want to impersonate this user?' => 'Biztos vagy benne, hogy meg akarod személyesíteni ezt a felhasználót?',
@@ -124,13 +124,16 @@ return [
     'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'A felhasználók különböző csoportokhoz (pl. csapatok, osztályok stb.) rendelhetők,  amelyek saját szabványos közösségekkel, csoport adminokkal és engedélyekkel rendelkeznek.',
     'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => 'Ennek az opciónak a használatával visszavonhatatlanul törlődnek a felhasználó hozzájárulásai (például tartalmai, megjegyzései vagy kedvelései).',
     'View profile' => 'Profil törlése',
-    'Visibility' => 'Láthatóság',
     'Visible for members only' => 'Csak a tagok számára látható',
     'Visible for members+guests' => 'A tagok és vendégek számára is látható',
     'Yes' => 'Igen',
     'You can only delete empty categories!' => 'Csak üres kategóriák törölhetők!',
     'You cannot delete yourself!' => 'Nem törölheted magad!',
     'never' => 'soha',
+    'Account' => '',
+    'Add a seperate page for the group to the directory.' => '',
+    'All open registration invitations were successfully deleted.' => '',
+    'Delete All' => '',
     'Edit category' => '',
     'Hello {displayName},<br><br>
 Your account has been activated.<br><br>
@@ -144,4 +147,9 @@ Your account request has been declined.<br><br>
 
 Kind Regards<br>
 {AdminName} <br><br> ' => '',
+    'Make the group selectable at registration.' => '',
+    'Password' => '',
+    'Send notifications to users when added to or removed from the group.' => '',
+    'The Space memberships of all group members will be updated. This may take up to several minutes.' => '',
+    'The selected open registration invitations were successfully deleted.' => '',
 ];

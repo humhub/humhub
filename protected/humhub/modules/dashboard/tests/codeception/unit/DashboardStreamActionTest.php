@@ -7,12 +7,11 @@ use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
 use humhub\modules\post\models\Post;
 use humhub\modules\dashboard\components\actions\DashboardStreamAction;
-use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 
 use humhub\modules\content\models\Content;
 
-class DashboardStreamTest extends HumHubDbTestCase
+class DashboardStreamActionTest extends HumHubDbTestCase
 {
 
     use Specify;

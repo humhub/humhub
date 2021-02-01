@@ -10,10 +10,11 @@ namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
-use humhub\modules\directory\widgets\GroupUsers;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
+use humhub\modules\user\Module;
 use Yii;
+
 
 /**
  * This is the model class for table "group".
@@ -30,11 +31,14 @@ use Yii;
  * @property string $updated_at
  * @property integer $updated_by
  * @property integer $is_admin_group
+ * @property integer $is_default_group
+ * @property integer $notify_users
  *
  * @property User[] $manager
  * @property Space|null $defaultSpace
  * @property Space|null $space
- * @property GroupUsers[] groupUsers
+ * @property GroupUser[] groupUsers
+ * @property GroupSpace[] groupSpaces
  */
 class Group extends ActiveRecord
 {
@@ -55,17 +59,43 @@ class Group extends ActiveRecord
     public function rules()
     {
         return [
-            [['space_id', 'sort_order'], 'integer'],
+            [['sort_order', 'notify_users', 'is_default_group'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 45],
             ['show_at_registration', 'validateShowAtRegistration'],
+            ['is_default_group', 'validateIsDefaultGroup'],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeDelete()
+    {
+        GroupSpace::deleteAll(['group_id' => $this->id]);
+
+        return parent::beforeDelete();
     }
 
     public function validateShowAtRegistration($attribute, $params)
     {
-        if($this->is_admin_group && $this->show_at_registration) {
+        if ($this->is_admin_group && $this->show_at_registration) {
             $this->addError($attribute, 'Admin group can\'t be a registration group!');
+        }
+    }
+
+    /**
+     * Validate default group
+     * @param string $attribute
+     */
+    public function validateIsDefaultGroup($attribute)
+    {
+        if ($this->is_admin_group && $this->is_default_group) {
+            $this->addError($attribute, 'Admin group can\'t be a default group!');
+        }
+
+        if ($this->getOldAttribute($attribute) && !$this->is_default_group) {
+            $this->addError($attribute, 'One group must be a default!');
         }
     }
 
@@ -76,7 +106,6 @@ class Group extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'space_id' => Yii::t('UserModule.base', 'Space ID'),
             'name' => Yii::t('UserModule.base', 'Name'),
             'defaultSpaceGuid' => Yii::t('UserModule.base', 'Default Space'),
             'managerGuids' => Yii::t('UserModule.base', 'Manager'),
@@ -88,15 +117,34 @@ class Group extends ActiveRecord
             'show_at_registration' => Yii::t('UserModule.base', 'Show At Registration'),
             'show_at_directory' => Yii::t('UserModule.base', 'Show At Directory'),
             'sort_order' => Yii::t('UserModule.base', 'Sort order'),
+            'notify_users' => Yii::t('UserModule.base', 'Enable Notifications'),
+            'is_default_group' => Yii::t('UserModule.base', 'Default Group'),
         ];
     }
 
     /**
-     * @return null|Space
+     * @inheritdoc
      */
-    public function getDefaultSpace()
+    public function attributeHints()
     {
-        return Space::findOne(['id' => $this->space_id]);
+        return [
+            'notify_users' => Yii::t('AdminModule.user', 'Send notifications to users when added to or removed from the group.'),
+            'show_at_registration' => Yii::t('AdminModule.user', 'Make the group selectable at registration.'),
+            'show_at_directory' => Yii::t('AdminModule.user', 'Add a seperate page for the group to the directory.'),
+            'is_default_group' => Yii::t('AdminModule.user', 'Applied to new or existing users without any other group membership.'),
+        ];
+    }
+
+    /**
+     * @return null|Space[]
+     * @since 1.8
+     */
+    public function getDefaultSpaces()
+    {
+        return Space::find()
+            ->innerJoin('group_space', 'space.id = group_space.space_id')
+            ->where(['group_space.group_id' => $this->id])
+            ->all();
     }
 
     public function beforeSave($insert)
@@ -105,7 +153,71 @@ class Group extends ActiveRecord
             $this->sort_order = 100;
         }
 
+        if ($this->getOldAttribute('is_default_group') && !$this->is_default_group) {
+            $this->is_default_group = 1;
+            return false;
+        }
+
+        if ($this->show_at_registration && $this->is_admin_group) {
+            // Admin group cannot be shown at registration
+            $this->show_at_registration = 0;
+        }
+
+        if ($this->is_default_group && $this->is_admin_group) {
+            // Admin group cannot be default
+            $this->is_default_group = 0;
+        }
+
         return parent::beforeSave($insert);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($this->is_default_group) {
+            // Only single group can be default:
+            Group::updateAll(['is_default_group' => '0'], ['!=', 'id', $this->id]);
+        }
+
+        parent::afterSave($insert, $changedAttributes);
+
+
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+        /* @var $module Module */
+        $module = Yii::$app->getModule('user');
+        if ($defaultGroup = $module->getDefaultGroup()) {
+            $defaultGroup->assignDefaultGroup();
+        }
+
+        parent::afterDelete();
+    }
+
+    /**
+     * Assign users to this Default Group who were not assigned to any other group before
+     */
+    public function assignDefaultGroup()
+    {
+        if (empty($this->id) || !$this->is_default_group || $this->is_admin_group) {
+            return;
+        }
+
+        Yii::$app->getDb()->createCommand('INSERT INTO group_user (user_id, group_id, created_at, updated_at)
+            SELECT user.id, :defaultGroupId, NOW(), NOW()
+              FROM user
+              LEFT JOIN group_user ON group_user.user_id = user.id
+             WHERE group_user.id IS NULL
+               AND user.status != :userStatusSoftDeleted', [
+            ':defaultGroupId' => $this->id,
+            ':userStatusSoftDeleted' => User::STATUS_SOFT_DELETED,
+        ])->execute();
     }
 
     /**
@@ -219,8 +331,8 @@ class Group extends ActiveRecord
      *
      * @param User $user user id or user model
      * @param bool $isManager mark as group manager
-     * @throws \yii\base\InvalidConfigException
      * @return bool true - on success adding user, false - if already member or cannot be added by some reason
+     * @throws \yii\base\InvalidConfigException
      */
     public function addUser($user, $isManager = false)
     {
@@ -237,10 +349,12 @@ class Group extends ActiveRecord
         $newGroupUser->created_by = Yii::$app->user->id;
         $newGroupUser->is_group_manager = $isManager;
         if ($newGroupUser->save() && !Yii::$app->user->isGuest) {
-            IncludeGroupNotification::instance()
-                ->about($this)
-                ->from(Yii::$app->user->identity)
-                ->send(User::findOne(['id' => $userId]));
+            if ($this->notify_users) {
+                IncludeGroupNotification::instance()
+                    ->about($this)
+                    ->from(Yii::$app->user->identity)
+                    ->send(User::findOne(['id' => $userId]));
+            }
             return true;
         }
 
@@ -251,6 +365,8 @@ class Group extends ActiveRecord
      * Removes a user from the group.
      * @param User|string $user userId or user model
      * @return bool
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function removeUser($user)
     {
@@ -278,9 +394,9 @@ class Group extends ActiveRecord
      * Notifies groups admins for approval of new user via e-mail.
      * This should be done after a new user is created and approval is required.
      *
-     * @todo Create message template, move message into translation
      * @param User $user
      * @return true|void
+     * @todo Create message template, move message into translation
      */
     public static function notifyAdminsForUserApproval($user)
     {
@@ -330,17 +446,16 @@ class Group extends ActiveRecord
      */
     public static function getRegistrationGroups()
     {
-        $groups = [];
+        if (Yii::$app->getModule('user')->settings->get('auth.showRegistrationUserGroup')) {
+            return self::find()
+                ->where(['show_at_registration' => 1, 'is_admin_group' => 0])
+                ->orderBy('name ASC')
+                ->all();
+        }
 
-        $defaultGroup = Yii::$app->getModule('user')->settings->get('auth.defaultUserGroup');
-        if ($defaultGroup != '') {
-            $group = self::findOne(['id' => $defaultGroup]);
-            if ($group !== null) {
-                $groups[] = $group;
-                return $groups;
-            }
-        } else {
-            $groups = self::find()->where(['show_at_registration' => 1, 'is_admin_group' => 0])->orderBy('name ASC')->all();
+        $groups = [];
+        if ($defaultGroup = Yii::$app->getModule('user')->getDefaultGroup()) {
+            $groups[] = $defaultGroup;
         }
 
         return $groups;
@@ -357,4 +472,13 @@ class Group extends ActiveRecord
         ])->all();
     }
 
+    /**
+     * Returns all GroupSpace relations for this group as ActiveQuery.
+     * @return \yii\db\ActiveQuery
+     * @since 1.8
+     */
+    public function getGroupSpaces()
+    {
+        return $this->hasMany(GroupSpace::class, ['group_id' => 'id']);
+    }
 }

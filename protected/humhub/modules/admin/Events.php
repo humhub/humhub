@@ -28,6 +28,8 @@ class Events extends \yii\base\BaseObject
      */
     public static function onDashboardSidebarInit($event)
     {
+        $event->sender->addWidget(widgets\MaintenanceModeWarning::class, [], ['sortOrder' => 0]);
+
         if (Yii::$app->user->isGuest) {
             return;
         }
@@ -51,6 +53,7 @@ class Events extends \yii\base\BaseObject
     public static function onCronDailyRun($event)
     {
         Yii::$app->queue->push(new jobs\CleanupLog());
+        Yii::$app->queue->push(new jobs\CleanupPendingRegistrations());
         Yii::$app->queue->push(new jobs\CheckForNewVersion());
     }
 

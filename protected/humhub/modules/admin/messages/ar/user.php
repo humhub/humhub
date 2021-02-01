@@ -32,8 +32,8 @@ return [
     'Add new members...' => 'إضافة أعضاء جدد ...',
     'Add new user' => 'أضف مستخدم جديد',
     'All the personal data of this user will be irrevocably deleted.' => 'سيتم حذف جميع البيانات الشخصية لهذا المستخدم بشكل لا رجعة فيه.',
-    'Allow limited access for non-authenticated users (guests)' => 'السماح بالدخول المحدود للزوار و الأعضاء الغير مفعلين بعد',
-    'Anonymous users can register' => 'الزوار يستطيعون التسجيل',
+    'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'السماح بالدخول المحدود للزوار و الأعضاء الغير مفعلين بعد',
+    'New users can register' => 'الزوار يستطيعون التسجيل',
     'Are you really sure that you want to disable this user?' => 'هل أنت متأكد من أنك تريد تعطيل هذا المستخدم؟',
     'Are you really sure that you want to enable this user?' => 'هل أنت متأكد بالفعل أنك تريد تمكين هذا المستخدم؟',
     'Are you really sure that you want to impersonate this user?' => 'هل أنت متأكد حقًا من أنك تريد انتحال هوية هذا المستخدم؟',
@@ -124,13 +124,16 @@ return [
     'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'يمكن تعيين المستخدمين إلى مجموعات مختلفة (مثل الفرق والأقسام وما إلى ذلك) مع مساحات قياسية محددة ومديري المجموعات والأذونات.',
     'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => 'باستخدام هذا الخيار ، سيتم حذف أي مساهمات (مثل المحتويات أو التعليقات أو الإعجابات) لهذا المستخدم نهائيًا.',
     'View profile' => 'عرض الصفحة الشخصية',
-    'Visibility' => 'الرؤية',
     'Visible for members only' => 'مرئي للأعضاء فقط',
     'Visible for members+guests' => 'مرئي للأعضاء + الضيوف',
     'Yes' => 'نعم',
     'You can only delete empty categories!' => 'يمكنك حذف الأقسام الفارغة فقط!',
     'You cannot delete yourself!' => 'لا تستطيع حذف نفسك!',
     'never' => 'أبدا',
+    'Account' => '',
+    'Add a seperate page for the group to the directory.' => '',
+    'All open registration invitations were successfully deleted.' => '',
+    'Delete All' => '',
     'Edit category' => '',
     'Hello {displayName},<br><br>
 Your account has been activated.<br><br>
@@ -144,4 +147,9 @@ Your account request has been declined.<br><br>
 
 Kind Regards<br>
 {AdminName} <br><br> ' => '',
+    'Make the group selectable at registration.' => '',
+    'Password' => '',
+    'Send notifications to users when added to or removed from the group.' => '',
+    'The Space memberships of all group members will be updated. This may take up to several minutes.' => '',
+    'The selected open registration invitations were successfully deleted.' => '',
 ];

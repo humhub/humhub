@@ -55,7 +55,7 @@ return array (
   'Open' => 'Öffnen',
   'Please type at least 3 characters' => 'Bitte mindestens 3 Zeichen eingeben',
   'Please type at least {count} characters' => 'Bitte wenigstens {count} Zeichen eingeben',
-  'Powered by {name}' => 'Unterstützt von {name}',
+  'Powered by {name}' => 'Powered by {name}',
   'Profile dropdown' => 'Profil Dropdown',
   'Profile picture of {displayName}' => 'Profilbild von {displayName}',
   'Save' => 'Speichern',

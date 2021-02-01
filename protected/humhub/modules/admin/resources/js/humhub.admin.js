@@ -123,12 +123,22 @@ humhub.module('admin', function (module, require, $) {
 
     };
 
+    var changeMaintenanceMode = function (evt) {
+        evt.$trigger.prop('checked', !evt.$trigger.prop('checked'));
+        // Switch modal window text to another mode
+        evt.$trigger.data('action-confirm', module.text('maintenanceMode.question.' + (evt.$trigger.prop('checked') ? 'disable' : 'enable')));
+        evt.$trigger.data('action-confirm-text', module.text('maintenanceMode.button.' + (evt.$trigger.prop('checked') ? 'disable' : 'enable')));
+        // Disable/Enable maintenance mode info input:
+        $('input[name="BasicSettingsForm[maintenanceModeInfo]"]').prop('disabled', !evt.$trigger.prop('checked'));
+    };
+
     module.export({
         init: init,
         initOnPjaxLoad: true,
         deletePageLogo: deletePageLogo,
         changeLogo: changeLogo,
         deletePageIcon: deletePageIcon,
-        changeIcon: changeIcon
+        changeIcon: changeIcon,
+        changeMaintenanceMode: changeMaintenanceMode,
     });
 });

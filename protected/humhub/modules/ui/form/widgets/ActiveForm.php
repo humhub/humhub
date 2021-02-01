@@ -9,6 +9,9 @@
 namespace humhub\modules\ui\form\widgets;
 
 
+use humhub\libs\Html;
+use humhub\modules\ui\icon\widgets\Icon;
+
 /**
  * ActiveForm
  *
@@ -40,6 +43,44 @@ class ActiveForm extends \yii\bootstrap\ActiveForm
         if ($this->acknowledge) {
             $this->options['data-ui-addition'] = 'acknowledgeForm';
         }
+    }
+
+    /**
+     * Starts a section of collapsible form fields.
+     * Make sure that the `endCollapsibleFields` method is also called afterwards.
+     * It is not possible to nest these sections.
+     *
+     * @param $title string the title of the form field group
+     * @return string
+     * @since 1.8
+     */
+    public function beginCollapsibleFields($title, $isClosed = true)
+    {
+        $cssClass = ($isClosed) ? 'closed' : 'opened';
+
+        return
+            Html::beginTag('div', ['class' => 'form-collapsible-fields ' . $cssClass, 'data-ui-widget' => 'ui.form.elements.FormFieldsCollapsible', 'data-ui-init' => 1]) .
+            Html::tag('div',
+                Html::tag('div',
+                    Icon::get('plus', ['htmlOptions' => ['class' => 'iconOpen']]) .
+                    Icon::get('minus', ['htmlOptions' => ['class' => 'iconClose']]) . '&nbsp;&nbsp;',
+                    ['class' => 'pull-left']
+                ) .
+                Html::label($title, null, ['class' => 'control-label'])
+                , ['class' => 'form-collapsible-fields-label', 'data-action-click' => 'clickCollab', 'data-toggle' => 'tab']) .
+            Html::beginTag('fieldset');
+    }
+
+    /**
+     * Starts a section of collapsible form fields.
+     *
+     * @return string
+     * @since 1.8
+     */
+    public function endCollapsibleFields()
+    {
+        return Html::endTag('fieldset') .
+            Html::endTag('div');
     }
 
 }
