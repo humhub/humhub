@@ -33,6 +33,7 @@
 - Enh #4781: Change allowed characters in username
 - Enh #4416: Added replay to sub comments
 - Enh #4571: humhub/libs/Html::containerLink() now adds a "data-guid" attribute
+- Enh #4791: Delay failed login attempts
 - Enh #4787: Always enable Space Membership Web Notifications
 - Enh #4795: Added support for collapsible form fields
 - Enh #4796: Added option to disable PWA/ServiceWorker support
