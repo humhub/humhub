@@ -36,3 +36,4 @@
 - Enh #4787: Always enable Space Membership Web Notifications
 - Enh #4795: Added support for collapsible form fields
 - Enh #4796: Added option to disable PWA/ServiceWorker support
+- Enh #3733: Forbid to open AJAX actions as separate page

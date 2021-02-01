@@ -48,7 +48,8 @@ class MembershipController extends ContentContainerController
                     'search-invite',
                     'switch-dashboard-display'
                     ]
-            ]
+            ],
+            [ContentContainerControllerAccess::RULE_AJAX_ONLY => ['members-list']],
         ];
     }
 

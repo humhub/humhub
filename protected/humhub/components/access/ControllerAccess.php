@@ -169,6 +169,11 @@ class ControllerAccess extends BaseObject
     const RULE_JSON = 'json';
 
     /**
+     * Only AJAX request is allowed for the actions
+     */
+    const RULE_AJAX_ONLY = 'onlyAjax';
+
+    /**
      * @var array fixed rules will always be added to the current rule set
      */
     protected $fixedRules = [
@@ -276,6 +281,11 @@ class ControllerAccess extends BaseObject
             'code' => 405
         ]);
         $this->registerValidator([self::RULE_JSON => 'validateJsonResponse']);
+        $this->registerValidator([
+            self::RULE_AJAX_ONLY => 'validateAjaxOnlyRequest',
+            'reason' => Yii::t('error', 'The specified URL cannot be called directly.'),
+            'code' => 405
+        ]);
     }
 
     /**
@@ -459,6 +469,14 @@ class ControllerAccess extends BaseObject
     public function validatePostRequest()
     {
         return Yii::$app->request->isPost;
+    }
+
+    /**
+     * @return mixed checks if the current request is an ajax request
+     */
+    public function validateAjaxOnlyRequest()
+    {
+        return Yii::$app->request->isAjax;
     }
 
     /**
