@@ -22,6 +22,7 @@ humhub.module('ui.modal', function (module, require, $) {
     var loader = require('ui.loader');
     var client = require('client', true);
     var Widget = require('ui.widget').Widget;
+    var pjax = require('client.pjax');
 
     //Keeps track of all initialized modals
     var modals = {};
@@ -542,6 +543,17 @@ humhub.module('ui.modal', function (module, require, $) {
 
     var init = function () {
         module.global = Modal.instance('#globalModal');
+
+        if (pjax.isActive()) {
+            $('.modal').each(function () {
+                var modal = Modal.instance(this);
+                if (modal && typeof modal.close === 'function') {
+                    modal.close();
+                }
+            });
+            return; //skip other init code in case of pjax
+        }
+
         module.global.$.on('hidden.bs.modal', function (e) {
             module.global.reset();
         });
@@ -749,6 +761,7 @@ humhub.module('ui.modal', function (module, require, $) {
 
     module.export({
         init: init,
+        initOnPjaxLoad: true,
         sortOrder: 100,
         confirm: confirm,
         Modal: Modal,

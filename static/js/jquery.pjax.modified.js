@@ -126,15 +126,6 @@
         if (event.isDefaultPrevented())
             return
 
-        // Close a modal window if the link with provided URL is opened from the modal window
-        // in order to display the loaded page content in background under the modal
-        if (link.href.length && link.href !== '#') {
-            var linkModal = $link.closest('.modal');
-            if (linkModal.length && typeof linkModal.modal === 'function') {
-                linkModal.modal('hide');
-            }
-        }
-
         var defaults = {
             url: link.href,
             container: $link.attr('data-pjax'),
