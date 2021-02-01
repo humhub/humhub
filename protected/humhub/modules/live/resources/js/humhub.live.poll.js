@@ -74,33 +74,34 @@ humhub.module('live.poll', function (module, require, $) {
 
         this.channel = new BroadcastChannel('live.poll');
 
-        this.channel.onmessage = (evt) => {
+        var that = this;
+        this.channel.onmessage = function(evt) {
             if(!evt.data) {
                 return;
             }
 
-            if(evt.data.subscriberId === this.subscriberId) {
+            if(evt.data.subscriberId === that.subscriberId) {
                 // We triggered the event, so nothing todo
                 return;
             }
 
-            if(!this.focus) {
+            if(!that.focus) {
                 // Seems this is an inactive tab, so let others do the job...
-                this.resetPollTimeout(this.options.maxInterval);
+                that.resetPollTimeout(that.options.maxInterval);
             }
 
             switch (evt.data.type) {
                 case EVENT_TYPE_REQUEST:
                     // Another tab just started a request, so delay the timeout
-                    this.resetPollTimeout();
+                    that.resetPollTimeout();
                     break;
                 case EVENT_TYPE_FOCUS:
                     // Another tab was focused, so increase delay and reset timeout
-                    this.resetPollTimeout(this.options.maxInterval);
+                    that.resetPollTimeout(this.options.maxInterval);
                     break;
                 case EVENT_TYPE_UPDATE:
                     // We received a response from another tab
-                    this.handleUpdate(evt.data);
+                    that.handleUpdate(evt.data);
                     break;
             }
         }
