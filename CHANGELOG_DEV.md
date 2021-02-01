@@ -36,4 +36,5 @@
 - Enh #4787: Always enable Space Membership Web Notifications
 - Enh #4795: Added support for collapsible form fields
 - Enh #4796: Added option to disable PWA/ServiceWorker support
+- Fix #4752: Fix saving hash of a deleted file from disk
 - Enh #4671: Implemented live poll result sharing by BroadCastChannel
