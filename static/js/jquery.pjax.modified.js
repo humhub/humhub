@@ -118,10 +118,6 @@
         if (location.protocol !== link.protocol || location.hostname !== link.hostname)
             return
 
-        // Ignore normal link from modal window in order to close the modal
-        if (link.href !== '#' && link.href.length && $link.closest('.modal').length)
-            return
-
         // Ignore case when a hash is being tacked on the current URL
         if (link.href.indexOf('#') > -1 && stripHash(link) == stripHash(location))
             return
@@ -129,6 +125,15 @@
         // Ignore event with default prevented
         if (event.isDefaultPrevented())
             return
+
+        // Close a modal window if the link with provided URL is opened from the modal window
+        // in order to display the loaded page content in background under the modal
+        if (link.href.length && link.href !== '#') {
+            var linkModal = $link.closest('.modal');
+            if (linkModal.length && typeof linkModal.modal === 'function') {
+                linkModal.modal('hide');
+            }
+        }
 
         var defaults = {
             url: link.href,

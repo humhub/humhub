@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #4793: Form labels (HForm) are not displayed correctly
 - Fix #4569: Prevent double module registration
 - Fix #4389: Require to check a checkbox if the profile field is required
+- Fix #2950: Close modal window on click link with url in href
 
 
 1.7.2 (January 21, 2021)
