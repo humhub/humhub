@@ -52,7 +52,10 @@ humhub.module('live.poll', function (module, require, $) {
             .on('blur', this.onWindowBlur.bind(this))
             .on('focus',this.onWindowFocus.bind(this));
 
-        $(document).on('mousemove keydown mousedown touchstart', object.debounce(() => this.stopIdle(), 200));
+        var that = this;
+        $(document).on('mousemove keydown mousedown touchstart', object.debounce(function(that) {
+            that.stopIdle();
+        }, 200));
 
         this.resetPollTimeout();
         this.startIdleTimer();
