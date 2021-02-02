@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #4793: Form labels (HForm) are not displayed correctly
 - Fix #4569: Prevent double module registration
 - Fix #4389: Require to check a checkbox if the profile field is required
+- Fix #4281: Update space chooser after following a space
 
 
 1.7.2 (January 21, 2021)
