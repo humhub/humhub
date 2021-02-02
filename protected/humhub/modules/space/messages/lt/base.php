@@ -112,6 +112,7 @@ return [
     'Default' => '',
     'Default content visibility' => '',
     'Done' => '',
+    'Guests' => '',
     'Hide Members sidebar in the stream page.' => '',
     'Homepage' => '',
     'Homepage (Guests)' => '',

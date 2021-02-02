@@ -64,6 +64,8 @@ return [
     'User posts' => 'Felhasználói bejegyzések',
     'Userprofiles' => 'Felhasználói profilok',
     'Users' => 'Felhasználók',
+    '<strong>Maintenance</strong> Mode' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
 ];

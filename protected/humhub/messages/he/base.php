@@ -99,4 +99,7 @@ return [
     'You are not allowed to run this action.' => 'אתה לא מורשה לבצע פעולה זו',
     'Database connection time: {dbTime} - Configured time zone: {time}' => '',
     'Powered by {name}' => '',
+    '{nFormatted}B' => '',
+    '{nFormatted}K' => '',
+    '{nFormatted}M' => '',
 ];

@@ -64,6 +64,8 @@ return [
     'User posts' => 'Postovi korisnika',
     'Userprofiles' => 'Korisnički profili',
     'Users' => 'Korisnici',
+    '<strong>Maintenance</strong> Mode' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
 ];

@@ -26,5 +26,7 @@ return [
     'You need admin permissions to access this section.' => 'Engedélyre van szükséged, hogy ehhez a szekcióhoz hozzáférhess.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'A felhasználói fiókod még nincs jóváhagyva. Kérjük, próbálkozz később vagy lépj kapcsolatba egy hálózati adminisztrátorral.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'A felhasználói fiókod inaktív. Kérjük, jelentkezz be egy aktív fiókkal vagy lépj kapcsolatba egy hálózati adminisztrátorral.',
+    'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => '',
+    'Maintenance mode is active. Only Administrators can access the platform.' => '',
     'You must change password.' => '',
 ];

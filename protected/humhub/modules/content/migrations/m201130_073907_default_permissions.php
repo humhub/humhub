@@ -15,7 +15,7 @@ class m201130_073907_default_permissions extends Migration
     {
         $this->createTable('contentcontainer_default_permission', [
             'permission_id' =>  $this->string(150)->notNull(),
-            'contentcontainer_class' => Schema::TYPE_STRING,
+            'contentcontainer_class' => $this->char(60)->notNull(),
             'group_id' =>  $this->string(50)->notNull(),
             'module_id' => $this->string(50)->notNull(),
             'class' => Schema::TYPE_STRING,

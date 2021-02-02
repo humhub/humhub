@@ -78,7 +78,6 @@ return [
     'Updated by' => 'تم التحديث بواسطة',
     'User' => 'المستخدم',
     'User has been invited.' => 'تمت دعوة المستخدم.',
-    'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'المستخدم مع نفس عنوان البريد الإلكتروني موجود مسبقاً لكن غير مرتبط لكم. تسجيل الدخول باستخدام البريد الإلكتروني الخاص بك أولاً لربطه.',
     'Username' => 'اسم المستخدم',
     'Username contains invalid characters.' => 'اسم المستخدم فيه أحرف غير صالحة.',
     'View your about page' => 'عرض الصفحة الخاصة بك',
@@ -95,6 +94,7 @@ return [
     'invited you to join {space} on {name}.' => 'دعاك للانضمام إلى {space} على {name}.',
     'or' => 'أو',
     'Current password' => '',
+    'Default Group' => '',
     'Enable Notifications' => '',
     'Force password change upon first login' => '',
     'Force password change upon next login' => '',
@@ -103,5 +103,6 @@ return [
     'Profile posts only' => '',
     'Show all content' => '',
     'Source' => '',
+    'Unsuccessful login attempts since last login: {failedLoginAttemptsCount}' => '',
     'Your are already logged in! - Logout first!' => '',
 ];

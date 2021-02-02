@@ -60,6 +60,7 @@ return [
     'Everyone can enter' => 'Todo el mundo puede entrar',
     'Follow' => 'Seguir',
     'Followers' => 'Seguidores',
+    'Hide Members sidebar in the stream page.' => 'Ocultar la barra lateral de Miembros en la página de actividad.',
     'Homepage' => 'Página de inicio',
     'Homepage (Guests)' => 'Página de inicio (invitados)',
     'Invite' => 'Invitar',
@@ -142,5 +143,5 @@ return [
     '{count} members' => '{count} miembros',
     '{email} is already registered!' => '¡{email} ya está registrado!',
     '{email} is not valid!' => '¡{email} no es válido!',
-    'Hide Members sidebar in the stream page.' => '',
+    'Guests' => '',
 ];

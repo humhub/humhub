@@ -67,6 +67,7 @@ return [
     'Please click on the link below to view request:' => '',
     'Please enter the letters from the image.' => '',
     'Please use the following link within the next day to reset your password.' => '',
+    'Please wait' => '',
     'Registration successful' => '',
     'Reset Password' => '',
     'To log in with your new account, click the button below.' => '',

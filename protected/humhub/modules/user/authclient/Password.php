@@ -47,11 +47,13 @@ class Password extends BaseFormAuth implements interfaces\PrimaryClient
      */
     public function auth()
     {
-        $user = User::find()->where(['username' => $this->login->username])->orWhere(['email' => $this->login->username])->one();
+        $user = $this->getUserByLogin();
 
         if ($user !== null && $user->currentPassword !== null && $user->currentPassword->validatePassword($this->login->password)) {
             $this->setUserAttributes(['id' => $user->id]);
             return true;
+        } else {
+            $this->countFailedLoginAttempts();
         }
 
         return false;

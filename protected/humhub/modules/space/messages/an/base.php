@@ -81,6 +81,7 @@ return [
     'Done' => '',
     'Email addresses' => '',
     'Everyone can enter' => '',
+    'Guests' => '',
     'Hide Members sidebar in the stream page.' => '',
     'Homepage' => '',
     'Homepage (Guests)' => '',

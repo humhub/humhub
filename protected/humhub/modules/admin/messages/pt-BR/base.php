@@ -64,6 +64,8 @@ return [
     'User posts' => 'Mensagens de usuários',
     'Userprofiles' => 'Perfis de usuário',
     'Users' => 'Usuários',
+    '<strong>Maintenance</strong> Mode' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
 ];

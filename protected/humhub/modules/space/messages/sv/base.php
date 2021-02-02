@@ -126,6 +126,7 @@ return [
     '<strong>Invite</strong> members' => '',
     '<strong>Request</strong> space membership' => '',
     'Admin' => '',
+    'Guests' => '',
     'Hide Members sidebar in the stream page.' => '',
     'Max. 100 characters.' => '',
     'Member since' => '',

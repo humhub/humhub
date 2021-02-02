@@ -26,5 +26,7 @@ return [
     'You need admin permissions to access this section.' => 'このセクションにアクセスするには管理者権限が必要です。',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'あなたのアカウントはまだ承認されていません。後でやり直すか、ネットワーク管理者に連絡してください。',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'あなたのユーザーアカウントは無効です。有効なアカウントでログインするか、ネットワーク管理者に連絡してください。',
+    'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => '',
+    'Maintenance mode is active. Only Administrators can access the platform.' => '',
     'You must change password.' => '',
 ];

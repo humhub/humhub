@@ -34,6 +34,8 @@ return [
     'Basic' => 'Básica',
     'Caching' => 'Caché',
     'Cronjobs' => 'Tareas programadas',
+    'Delete all' => 'Eliminarlas todas',
+    'Delete selected rows' => 'Eliminar las filas seleccionadas',
     'Design' => 'Diseño',
     'Files' => 'Archivos',
     'General' => 'General',
@@ -64,6 +66,6 @@ return [
     'User posts' => 'Publicaciones de usuario',
     'Userprofiles' => 'Perfiles de usuario',
     'Users' => 'Usuarios',
-    'Delete all' => '',
-    'Delete selected rows' => '',
+    '<strong>Maintenance</strong> Mode' => '',
+    'Default' => '',
 ];

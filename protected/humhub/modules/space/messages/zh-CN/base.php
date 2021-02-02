@@ -129,6 +129,7 @@ return [
     'Add users without invitation' => '',
     'Administrator:' => '',
     'Decline Invite' => '',
+    'Guests' => '',
     'Hide Members sidebar in the stream page.' => '',
     'Max. 100 characters.' => '',
     'Member since' => '',

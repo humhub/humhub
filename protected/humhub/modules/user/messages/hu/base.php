@@ -76,7 +76,6 @@ return [
     'Updated by' => 'Frissítette',
     'User' => 'Felhasználó',
     'User has been invited.' => 'Felhasználó meghívva.',
-    'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'Már létezik egy felhasználó ezzel az email címmel, de nincsen veled összekapcsolva. Először lépj be az email címeddel, majd össze tudod kapcsolni őket.',
     'Username' => 'Felhasználónév',
     'View your about page' => 'Láthassa az \'Rólam\' oldaladat',
     'Visibility' => 'Láthatóság',
@@ -93,6 +92,7 @@ return [
     'or' => 'vagy',
     'Change Username' => '',
     'Current password' => '',
+    'Default Group' => '',
     'Enable Notifications' => '',
     'Force password change upon first login' => '',
     'Force password change upon next login' => '',
@@ -100,6 +100,7 @@ return [
     'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show all content' => '',
+    'Unsuccessful login attempts since last login: {failedLoginAttemptsCount}' => '',
     'Username contains invalid characters.' => '',
     'Your are already logged in! - Logout first!' => '',
 ];

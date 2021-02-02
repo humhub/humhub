@@ -26,5 +26,7 @@ return [
     'You need admin permissions to access this section.' => 'Bạn cần quyền quản trị để truy cập khu vực này',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Tài khoản của bạn chưa được duyệt, vui lòng thử lại sau hoặc liên hệ với quản trị hệ thống để được hỗ trợ.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Tài khoản của bạn bị ngưng kích hoạt, vui lòng đăng nhập bằng tài khoản đã được kích hoạt hoặc liên hệ quản trị hệ thống để được hỗ trợ.',
+    'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => '',
+    'Maintenance mode is active. Only Administrators can access the platform.' => '',
     'You must change password.' => '',
 ];

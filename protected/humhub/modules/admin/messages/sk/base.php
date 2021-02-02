@@ -18,6 +18,7 @@
  */
 return [
     '<strong>Administration</strong> menu' => '',
+    '<strong>Maintenance</strong> Mode' => '',
     '<strong>Module </strong> administration' => '',
     '<strong>Warning</strong> incomplete setup!' => '',
     'About' => '',
@@ -34,6 +35,7 @@ return [
     'Basic' => '',
     'Caching' => '',
     'Cronjobs' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
     'Design' => '',

@@ -18,9 +18,9 @@ use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\authclient\AuthClientHelpers;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\authclient\BaseFormAuth;
+use humhub\modules\user\authclient\BaseClient;
 use humhub\modules\user\models\Session;
 use Yii;
-use yii\authclient\BaseClient;
 use yii\web\Cookie;
 use humhub\modules\user\events\UserEvent;
 
@@ -124,7 +124,7 @@ class AuthController extends Controller
     /**
      * Handle successful authentication
      *
-     * @param \yii\authclient\BaseClient $authClient
+     * @param BaseClient $authClient
      * @return Response
      * @throws \Throwable
      */
@@ -193,7 +193,7 @@ class AuthController extends Controller
      * Login user
      *
      * @param User $user
-     * @param \yii\authclient\BaseClient $authClient
+     * @param BaseClient $authClient
      * @return Response the current response object
      */
     protected function login($user, $authClient)
@@ -226,6 +226,7 @@ class AuthController extends Controller
 
         if ($success) {
             $this->trigger(static::EVENT_AFTER_LOGIN, new UserEvent(['user' => Yii::$app->user->identity]));
+            $authClient->onSuccessLogin();
         }
 
         return $result;

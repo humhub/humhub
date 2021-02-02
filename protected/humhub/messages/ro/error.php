@@ -26,5 +26,7 @@ return [
     'You need admin permissions to access this section.' => 'Îți trebuie permisiuni de administrator pentru a accesa această secțiune.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Contul tău de utilizator nu a fost aprobat încă, te rugăm să încerci mai târziu sau ia legătura cu un administrator al rețelei.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Contul tău de utilizator este inactiv, te rugăm să te conectezi cu un cont activ sau ia legătura cu un administrator al rețelei.',
+    'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => '',
+    'Maintenance mode is active. Only Administrators can access the platform.' => '',
     'You must change password.' => '',
 ];

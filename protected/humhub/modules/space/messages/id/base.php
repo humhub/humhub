@@ -80,6 +80,7 @@ return [
     'Do you really want to delete your profile image?' => '',
     'Do you really want to delete your title image?' => '',
     'Done' => '',
+    'Guests' => '',
     'Hide Members sidebar in the stream page.' => '',
     'Homepage' => '',
     'Homepage (Guests)' => '',

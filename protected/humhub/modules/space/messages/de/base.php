@@ -131,7 +131,7 @@ return [
     'Users' => 'Benutzer',
     'Users has been invited.' => 'Benutzer wurden eingeladen.',
     'Visibility' => 'Sichtbarkeit',
-    'Visible for all (members and guests)' => 'Sichtbar für alle (auch nicht registrierte Besucher)',
+    'Visible for all (members and guests)' => 'Sichtbar für alle (auch ohne Benutzerkonto)',
     'You are not allowed to join this space!' => 'Du darfst diesem Space nicht betreten!',
     'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.' => 'Du kannst auch externe Benutzer einladen, die noch nicht registriert sind. Gib einfach ihre E-Mail-Adressen ein, durch Kommata getrennt.',
     'You cannot create private visible spaces!' => 'Du kannst keine privaten Spaces erstellen!',
@@ -142,5 +142,6 @@ return [
     '{count} members' => '{count} Mitglieder',
     '{email} is already registered!' => '{email} ist bereits registriert!',
     '{email} is not valid!' => '{email} ist ungültig!',
+    'Guests' => '',
     'Hide Members sidebar in the stream page.' => '',
 ];
