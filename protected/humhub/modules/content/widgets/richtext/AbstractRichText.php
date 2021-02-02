@@ -344,8 +344,7 @@ abstract class AbstractRichText extends JsWidget
 
         switch ($format) {
             case static::FORMAT_HTML:
-                $minimal = isset($options['minimal']) ? $options['minimal'] : true;
-                return $converter->convertToHtml($content, $minimal, $options);
+                return $converter->convertToHtml($content, $options);
             case static::FORMAT_MARKDOWN:
                 return $converter->convertToMarkdown($content, $options);
             case static::FORMAT_PLAINTEXT:
@@ -370,8 +369,6 @@ abstract class AbstractRichText extends JsWidget
      */
     public static function preview($text, $maxLength = 0) : string
     {
-        $config['maxLength'] = $maxLength;
-        $config['minimal'] = true;
-        return static::output($text, $config);
+        return static::convert($text, static::FORMAT_SHORTTEXT, ['maxLength' => $maxLength]);
     }
 }

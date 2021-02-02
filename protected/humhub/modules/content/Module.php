@@ -77,9 +77,8 @@ class Module extends \humhub\components\Module
     /**
      * If true richtext extensions (oembed, emojis, mentionings) of legacy richtext (< v1.3) are supported.
      *
-     * Note: both, this module configuration as well ass the `richtextCompatMode` module setting needs to be active, which
-     * is the default for instances installed with HumHub < 1.8. Since HumHub 1.8 the `richtextCompatMode` module setting
-     * is disabled on new installations by default.
+     * Note: In case the `richtextCompatMode` module db setting is also set, both settings need to be activated. New
+     * installations since HumHub 1.8 deactivate the compat mode by default by module db setting.
      *
      * @var bool
      * @since 1.8

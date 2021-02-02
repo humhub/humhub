@@ -14,8 +14,21 @@ use Yii;
 use yii\base\Model;
 use yii\helpers\Html;
 
+/**
+ * This extension is used to support legacy richtext format (HumHub <1.3).
+ *
+ * The legacy format uses a different syntax for emoji, mentioning, oembed.
+ *
+ * This conversion can be deactivated either by module configuration or by module db setting `richtextCompatMode`.
+ *
+ * @package humhub\modules\content\widgets\richtext\extensions
+ */
 class RichTextCompatibilityExtension extends Model implements RichTextExtension
 {
+    /**
+     * Content module db setting used to deactivate this feature
+     */
+    const DB_SETTING_KEY = 'richtextCompatMode';
 
     public function onBeforeOutput(ProsemirrorRichText $richtext, string $output): string
     {
@@ -28,31 +41,12 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
         return static::translateMentionings($output);
     }
 
-    public function onAfterOutput(ProsemirrorRichText $richtext, string $output): string
-    {
-        return $output;
-    }
-
-    public function onPostProcess(string $text, ActiveRecord $record, ?string $attribute, array &$result): string
-    {
-        return $text;
-    }
-
-    public function onBeforeConvert(string $text, string $format, array $options = []): string
-    {
-        return $text;
-    }
-
-    public function onAfterConvert(string $text, string $format, array $options = []): string
-    {
-        return $text;
-    }
-
     /**
      * Replace emojis from text to img tag
      *
      * @param string $text Contains the complete message
      * @param string $show show smilies or remove it (for activities and notifications)
+     * @return string
      */
     public static function translateEmojis(string $text) : string
     {
@@ -157,6 +151,38 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
     {
         /* @var $module Module  */
         $module = Yii::$app->getModule('content');
-        return $module->richtextCompatMode && $module->settings->get('richtextCompatMode', 1);
+        return $module->richtextCompatMode && $module->settings->get(static::DB_SETTING_KEY, 1);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onAfterOutput(ProsemirrorRichText $richtext, string $output): string
+    {
+        return $output;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onPostProcess(string $text, ActiveRecord $record, ?string $attribute, array &$result): string
+    {
+        return $text;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onBeforeConvert(string $text, string $format, array $options = []): string
+    {
+        return $text;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onAfterConvert(string $text, string $format, array $options = []): string
+    {
+        return $text;
     }
 }

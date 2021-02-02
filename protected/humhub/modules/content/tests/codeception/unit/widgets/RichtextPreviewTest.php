@@ -16,7 +16,7 @@ class RichtextPreviewTest extends HumHubDbTestCase
 {
     public function testStripHtml()
     {
-        $this->assertEquals('Test', RichText::preview('<b>Test</b>'));
+        $this->assertEquals('&lt;b&gt;Test&lt;/b&gt;', RichText::preview('<b>Test</b>'));
     }
 
     public function testNewLine()
@@ -27,13 +27,11 @@ class RichtextPreviewTest extends HumHubDbTestCase
     public function testAmpEntity()
     {
         $this->assertEquals('test &amp; test', RichText::preview('test & test'));
-        $this->assertEquals('test & test', html_entity_decode(RichText::preview('test & test'), ENT_QUOTES, 'UTF-8'));
     }
 
     public function testQuoteEntity()
     {
         $this->assertEquals('test &#039; test', RichText::preview('test \' test'));
-        $this->assertEquals('test \' test', html_entity_decode(RichText::preview('test \' test'), ENT_QUOTES, 'UTF-8'));
     }
 
     public function testSimpleLink()
@@ -44,6 +42,11 @@ class RichtextPreviewTest extends HumHubDbTestCase
     public function testEmoji()
     {
         $this->assertEquals('Test: 😃', RichText::preview('Test: :smiley:'));
+    }
+
+    public function testMultipleEmoji()
+    {
+        $this->assertEquals('Test: 😃 😍 👎', RichText::preview('Test: :smiley: :heart_eyes: :-1:'));
     }
 
     public function testMentioning()

@@ -194,20 +194,6 @@ class ProsemirrorRichText extends AbstractRichText
         return $this->text;
     }
 
-    protected function toUTF8Emoji($text)
-    {
-        // Note the ; was used in the legacy editor
-        return preg_replace_callback('/[:|;](([A-Za-z0-9])+)[:|;]/', function($match)  {
-            $result =  $match[0];
-
-            if(isset($match[1])) {
-                $result = array_key_exists(strtolower($match[1]), EmojiMap::MAP) ?  EmojiMap::MAP[strtolower($match[1])] : $result;
-            }
-
-            return $result;
-        }, $text);
-    }
-
     /**
      * Can be used to scan for link extensions of the form [<text>](<extension>:<url> "<title>") in which the actual meaning
      * of the placeholders is up to the extension itself.

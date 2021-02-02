@@ -31,7 +31,6 @@ abstract class AbstractRichTextConverter extends BaseObject
      * If `$minimal = true` (default) the HTML result should only support a minimal set HTML text features
      * and avoid embedding complex elements as oembeds or iframes. Minimal output may be used in mails and previews.
      *
-     * If `$minimal = false` the HTML result should support and translate as many richtext features as possible.
      *
      * If not supported, this function should at least return a HTML encoded version of `convertToPlaintext()`
      *
@@ -43,7 +42,7 @@ abstract class AbstractRichTextConverter extends BaseObject
      * @param array $options
      * @return string
      */
-    abstract public function convertToHtml(string $content, bool $minimal = true, array $options = []): string;
+    abstract public function convertToHtml(string $content, array $options = []): string;
 
     /**
      * Converts the given rich-text content to plain markdown.
@@ -78,12 +77,12 @@ abstract class AbstractRichTextConverter extends BaseObject
 
     /**
      * Converts the given rich-text content to html encoded short text preview. The short text should not contain any
-     * html elements and no breaks.
+     * html elements.
      *
      * A proper implementation of this function is mandatory.
      *
-     * The $options array may be used to manipulate the result.
-     * The supported options may differ between richtext implementations.
+     * The $options array may be used to manipulate the result. This converter should support a `maxLength` option
+     * in order to cut the result. This is used for example in previews of a rich text.
      *
      * @param string $content
      * @param array $options
