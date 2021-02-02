@@ -23,7 +23,7 @@ class ProsemirrorRichTextConverter extends AbstractRichTextConverter
      */
     public function convertToHtml(string $content, array $options = []): string
     {
-        return (new RichTextToHtmlConverter($options))->parse($content);
+        return RichTextToHtmlConverter::process($content, $options);
     }
 
     /**
@@ -31,7 +31,7 @@ class ProsemirrorRichTextConverter extends AbstractRichTextConverter
      */
     public function convertToMarkdown(string $content, array $options = []): string
     {
-        return (new RichTextToMarkdownConverter($options))->parse($content);
+        return RichTextToMarkdownConverter::process($content, $options);
     }
 
     /**
@@ -39,7 +39,7 @@ class ProsemirrorRichTextConverter extends AbstractRichTextConverter
      */
     public function convertToPlaintext(string $content, array $options = []): string
     {
-        return (new RichTextToPlainTextConverter($options))->parse($content);
+        return RichTextToPlainTextConverter::process($content, $options);
     }
 
     /**
@@ -47,6 +47,6 @@ class ProsemirrorRichTextConverter extends AbstractRichTextConverter
      */
     public function convertToShortText(string $content, array $options = []): string
     {
-        return (new RichTextToShortTextConverter($options))->parse($content);
+        return RichTextToShortTextConverter::process($content, $options);
     }
 }

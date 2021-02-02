@@ -16,6 +16,7 @@ use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtensio
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
 use Yii;
+use yii\base\InvalidArgumentException;
 
 /**
  * This class serves as base class for richtext converters used to convert HumHub richtext to other formats. The base
@@ -113,6 +114,18 @@ abstract class BaseRichTextConverter extends GithubMarkdown
         foreach (ProsemirrorRichText::getExtensions() as $extension) {
             $this->addExtension($extension);
         }
+    }
+
+    /**
+     * Converts markdown into HTML.
+     *
+     * @param string $text the richtext to parse
+     * @return string the parser result
+     */
+    public static function process($text, $options = [])
+    {
+        $parser = new static($options);
+        return $parser->parse($text);
     }
 
     /**
