@@ -157,7 +157,12 @@ class File extends FileCompat
      */
     public function saveHash()
     {
-        $this->hash_sha1 = sha1_file($this->getStore()->get());
+        $filePath = $this->getStore()->get();
+        if (!is_file($filePath)) {
+            return;
+        }
+
+        $this->hash_sha1 = sha1_file($filePath);
         if (!$this->isNewRecord) {
             $this->updateAttributes(['hash_sha1' => $this->hash_sha1]);
         }
