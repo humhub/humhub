@@ -71,6 +71,7 @@ return [
     'Please click on the link below to view request:' => '',
     'Please enter the letters from the image.' => '',
     'Please login with your username/email and password.' => '',
+    'Please wait' => '',
     'Remember me' => '',
     'User or Password incorrect.' => '',
     'a new user {displayName} needs approval.' => '',

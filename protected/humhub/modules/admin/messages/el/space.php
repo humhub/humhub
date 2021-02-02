@@ -35,6 +35,10 @@ return [
     'Space Settings' => 'Ρυθμίσεις χώρου',
     'Spaces' => 'Χώροι',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Αυτή η επισκόπηση περιέχει μια λίστα με κάθε χώρο με ενέργειες για προβολή, επεξεργασία και διαγραφή κενών.',
+    'Default Permissions' => '',
+    'Default Space Permissions' => '',
     'Default Space(s)' => '',
+    'Here you can define default permissions for spaces. These settings overwrite default permissions from config file and can be overwritten for each individual space.' => '',
+    'Permissions are assigned to different user-roles. To edit a default permission, select the user-role you want to edit and change the drop-down value of the given permission.' => '',
     'Update Space memberships also for existing members.' => '',
 ];

@@ -63,7 +63,9 @@ return [
     'User posts' => 'Brukerinnlegg',
     'Userprofiles' => 'Brukerprofiler',
     'Users' => 'Brukere',
+    '<strong>Maintenance</strong> Mode' => '',
     '<strong>Module </strong> administration' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
 ];

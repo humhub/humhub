@@ -114,6 +114,7 @@ return [
     'Administrators' => '',
     'Decline Invite' => '',
     'Default content visibility' => '',
+    'Guests' => '',
     'Hide Members sidebar in the stream page.' => '',
     'Homepage' => '',
     'Homepage (Guests)' => '',

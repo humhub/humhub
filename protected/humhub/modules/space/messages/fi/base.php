@@ -137,6 +137,7 @@ return [
     '{email} is not valid!' => '{email} ei ole pätevä!',
     '<strong>About</strong> the Space' => '',
     '<strong>About</strong> your membership' => '',
+    'Guests' => '',
     'Hide Members sidebar in the stream page.' => '',
     'Max. 100 characters.' => '',
     'Moderator' => '',

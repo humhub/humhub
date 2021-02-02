@@ -26,5 +26,7 @@ return [
     'You need admin permissions to access this section.' => 'Você precisa ser administrador para acessar essa seção.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Sua conta não foi aprovada ainda, por favor tente novamente mais tarde ou contate um administrador.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Sua conta está inativa, por favor entre com uma conta ativa ou contate um administrador.',
+    'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => '',
+    'Maintenance mode is active. Only Administrators can access the platform.' => '',
     'You must change password.' => '',
 ];

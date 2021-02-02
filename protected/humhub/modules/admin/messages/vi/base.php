@@ -64,6 +64,8 @@ return [
     'User posts' => 'Bài đăng',
     'Userprofiles' => 'Hồ sơ người dùng',
     'Users' => 'Người dùng',
+    '<strong>Maintenance</strong> Mode' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
 ];

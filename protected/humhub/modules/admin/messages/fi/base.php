@@ -64,6 +64,8 @@ return [
     'User posts' => 'Käyttäjien sivut',
     'Userprofiles' => 'Käyttäjä profiili',
     'Users' => 'Käyttäjät',
+    '<strong>Maintenance</strong> Mode' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
 ];

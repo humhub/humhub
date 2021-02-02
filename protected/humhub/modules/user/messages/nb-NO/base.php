@@ -76,7 +76,6 @@ return [
     'Updated by' => 'Oppdatert av',
     'User' => 'Bruker',
     'User has been invited.' => 'Bruker har blitt invitert.',
-    'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'En bruker med denne e-post-adressen eksisterer allerede og er ikke linket til deg. Logg inn med din e-post-adresse og tilknytt konto først.',
     'Username' => 'Brukernavn',
     'View your about page' => 'Se din side.',
     'Visibility' => 'Synlighet',
@@ -93,6 +92,7 @@ return [
     'or' => 'eller',
     'Change Username' => '',
     'Current password' => '',
+    'Default Group' => '',
     'Enable Notifications' => '',
     'Force password change upon first login' => '',
     'Force password change upon next login' => '',
@@ -100,6 +100,7 @@ return [
     'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show all content' => '',
+    'Unsuccessful login attempts since last login: {failedLoginAttemptsCount}' => '',
     'Username contains invalid characters.' => '',
     'Your are already logged in! - Logout first!' => '',
 ];

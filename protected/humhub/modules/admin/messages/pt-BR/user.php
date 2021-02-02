@@ -33,7 +33,6 @@ return [
     'Add new user' => 'Adicionar novo usuário',
     'All the personal data of this user will be irrevocably deleted.' => 'Todos os dados pessoais deste usuário serão irrevogavelmente excluídos.',
     'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'Permitir acesso limitado para usuários não autenticados (convidados)',
-    'New users can register' => 'Usuários anônimos podem se registrar',
     'Are you really sure that you want to disable this user?' => 'Tem certeza de que deseja desabilitar esse usuário?',
     'Are you really sure that you want to enable this user?' => 'Você tem certeza de que deseja habilitar esse usuário?',
     'Are you really sure that you want to impersonate this user?' => 'Você tem certeza de que deseja se passar por esse usuário?',
@@ -48,7 +47,6 @@ return [
     'Decline & delete user: <strong>{displayName}</strong>' => 'Recusar e apagar o usuário: <strong>{displayName}</strong>',
     'Default content of the registration approval email' => 'Conteúdo padrão do e-mail de aprovação de registro',
     'Default content of the registration denial email' => 'Conteúdo padrão do e-mail de negação de registro',
-    'Default user group for new users' => 'Grupo de usuário padrão para novos usuários',
     'Default user idle timeout, auto-logout (in seconds, optional)' => 'Tempo padrão de ócio para logout (em segundos, opcional)',
     'Default user profile visibility' => 'Visibilidade padrão do perfil do usuário',
     'Delete' => 'Apagar',
@@ -90,6 +88,7 @@ return [
     'Message' => 'Mensagem',
     'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)' => 'Valor mínimo é de 20 segundos. Se não for definido, a sessão será interrompida após 1400 segundos (24 minutos), independentemente da atividade (tempo limite de sessão padrão)',
     'New approval requests' => 'Novas solicitações de aprovação',
+    'New users can register' => 'Usuários anônimos podem se registrar',
     'No' => 'Não',
     'No value found!' => 'Nenhum valor encontrado!',
     'One or more user needs your approval as group admin.' => 'Um ou mais usuários necessitam da sua aprovação como administrador de grupo.',
@@ -133,7 +132,14 @@ return [
     'never' => 'nunca',
     'Account' => '',
     'Add a seperate page for the group to the directory.' => '',
+    'Administrator group could not be deleted!' => '',
     'All open registration invitations were successfully deleted.' => '',
+    'Applied to new or existing users without any other group membership.' => '',
+    'Are you really sure? Users who are not assigned to another group are automatically assigned to the default group.' => '',
+    'Default' => '',
+    'Default Permissions' => '',
+    'Default User Permissions' => '',
+    'Default group could not be deleted!' => '',
     'Delete All' => '',
     'Hello {displayName},<br><br>
 Your account has been activated.<br><br>
@@ -147,9 +153,12 @@ Your account request has been declined.<br><br>
 
 Kind Regards<br>
 {AdminName} <br><br> ' => '',
+    'Here you can define default permissions for user account per different user-types. These settings overwrite default permissions from config file and can be overwritten for each individual account security settings.' => '',
     'Make the group selectable at registration.' => '',
     'Password' => '',
+    'Permissions are assigned to different user-types. To edit a default permission, select the user-types you want to edit and change the drop-down value of the given permission.' => '',
     'Send notifications to users when added to or removed from the group.' => '',
+    'Show group selection at registration' => '',
     'The Space memberships of all group members will be updated. This may take up to several minutes.' => '',
     'The selected open registration invitations were successfully deleted.' => '',
 ];
