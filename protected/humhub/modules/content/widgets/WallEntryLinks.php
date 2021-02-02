@@ -24,7 +24,7 @@ class WallEntryLinks extends \humhub\widgets\BaseStack
     /**
      * @inheritdoc
      */
-    public $seperator = '&nbsp;&nbsp;&middot;&nbsp;';
+    public $seperator = '&nbsp;&middot;&nbsp;';
 
     /**
      * @inheritdoc
