@@ -97,6 +97,7 @@ use yii\web\Controller;
  *  - **strict**: Will check for guest users against the guest users allowed setting
  *  - **post**: Will only accept post requests for the given actions
  *  - **json**: Will handle json result requests by setting `Yii::$app->response->format = 'json'`
+ *  - **ajax**: Allows only AJAX requests. See: `Yii::$app->request->isAjax`
  *  - **disabledUser**: Checks if the given user is a disabled user **(fixed)**
  *  - **unapprovedUser**: Checks if the given user is a unapproved user **(fixed)**
  *
@@ -171,7 +172,7 @@ class ControllerAccess extends BaseObject
     /**
      * Only AJAX request is allowed for the actions
      */
-    const RULE_AJAX_ONLY = 'onlyAjax';
+    const RULE_AJAX_ONLY = 'ajax';
 
     /**
      * @var array fixed rules will always be added to the current rule set
