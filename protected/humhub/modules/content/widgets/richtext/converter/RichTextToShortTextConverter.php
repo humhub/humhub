@@ -12,7 +12,15 @@ use Yii;
 
 class RichTextToShortTextConverter extends RichTextToPlainTextConverter
 {
-    const OPTION_MAX_LENGTH = 'maxLength';
+    /**
+     * Option can be used to trim a text to a certain length
+     */
+    public const OPTION_MAX_LENGTH = 'maxLength';
+
+    /**
+     * Option can be used to preserve spaces and new lines in the converter result (default false)
+     */
+    public const OPTIONS_PRESERVE_SPACES = 'preserveNewlines';
 
     /**
      * @inheritdoc
@@ -28,6 +36,11 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
      * @inheritdoc
      */
     public $identifyQuote = true;
+
+    /**
+     * @var array
+     */
+    public static $cache = [];
 
     /**
      * @inheritDoc
@@ -92,8 +105,18 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
     protected function onAfterParse($text) : string
     {
         $result = parent::onAfterParse($text);
+
+        if(!$this->getOption(static::OPTIONS_PRESERVE_SPACES, false)) {
+            $result  = trim(preg_replace('/\s+/', ' ', $result));
+        }
+
         $maxLength =  $this->getOption(static::OPTION_MAX_LENGTH, 0);
-        $result = ($maxLength > 0) ? Helpers::truncateText($result, $maxLength) : $result;
+
+        if($maxLength > 0) {
+            $result = Helpers::truncateText($result, $maxLength);
+            $result = Helpers::trimText($result, $maxLength);
+        }
+
         return Html::encode($result);
     }
 }

@@ -10,6 +10,7 @@ namespace tests\codeception\unit\modules\content\widgets;
 
 use humhub\libs\EmojiMap;
 use humhub\libs\Html;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\file\models\File;
@@ -240,7 +241,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "Paragraph1\n\nParagraph2",
-            "Paragraph1\n\nParagraph2");
+            "Paragraph1 Paragraph2");
     }
 
     /*
@@ -491,49 +492,49 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "This is a list\n\n1. First Element\n2. Second Element",
-            "This is a list\n\n1. First Element\n2. Second Element");
+            "This is a list 1. First Element 2. Second Element");
     }
 
     public function testConvertOrderedSubList()
     {
         $this->assertConversionResult(
             "This is a list\n\n1 First Element\n   1 First Sub Element\n2 Second Element",
-            "This is a list\n\n1 First Element\n   1 First Sub Element\n2 Second Element");
+            "This is a list 1 First Element 1 First Sub Element 2 Second Element");
     }
 
     public function testConvertOrderedMultipleSubItems()
     {
         $this->assertConversionResult(
             "This is a list\n\n1 First Element\n   1 First Sub Element\n   2 Second Sub Element\n2 Second Element",
-            "This is a list\n\n1 First Element\n   1 First Sub Element\n   2 Second Sub Element\n2 Second Element");
+            "This is a list 1 First Element 1 First Sub Element 2 Second Sub Element 2 Second Element");
     }
 
     public function testConvertUnorderedList()
     {
         $this->assertConversionResult(
             "This is a list\n\n- First Element\n- Second Element",
-            "This is a list\n\n- First Element\n- Second Element");
+            "This is a list - First Element - Second Element");
     }
 
     public function testConvertUnorderedSubList()
     {
         $this->assertConversionResult(
             "This is a list\n\n- First Element\n   - First Sub Element\n- Second Element",
-            "This is a list\n\n- First Element\n   - First Sub Element\n- Second Element");
+            "This is a list - First Element - First Sub Element - Second Element");
     }
 
     public function testConvertUnorderedMultipleSubItems()
     {
         $this->assertConversionResult(
             "This is a list\n\n- First Element\n   - First Sub Element\n   - Second Sub Element\n- Second Element",
-            "This is a list\n\n- First Element\n   - First Sub Element\n   - Second Sub Element\n- Second Element");
+            "This is a list - First Element - First Sub Element - Second Sub Element - Second Element");
     }
 
     public function testConvertUnorderedMultipleLevelSubItems()
     {
         $this->assertConversionResult(
             "This is a list\n\n- First Element\n   - First Sub Element\n      - Second **Level Sub** Element\n- Second Element",
-            "This is a list\n\n- First Element\n   - First Sub Element\n      - Second Level Sub Element\n- Second Element");
+            "This is a list - First Element - First Sub Element - Second Level Sub Element - Second Element");
     }
 
     /*
@@ -579,7 +580,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "> This is a quote \n>\n> > within a quote",
-            "This is a quote \n\nwithin a quote");
+            "This is a quote within a quote");
     }
 
     /*
@@ -644,7 +645,14 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "Test\\\nBreak",
-            "Test\nBreak");
+            "Test Break");
+    }
+
+    public function testHardBreakWithPreserveOption()
+    {
+        $this->assertConversionResult(
+            "Test\\\nBreak",
+            "Test\nBreak", [RichTextToShortTextConverter::OPTIONS_PRESERVE_SPACES => true]);
     }
 
     public function testHardBreakWithoutNewLine()
@@ -659,7 +667,14 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             "This is <br> was a hard line break",
-            "This is \n was a hard line break");
+            "This is was a hard line break");
+    }
+
+    public function testHtmlBreakWithPreserveOption()
+    {
+        $this->assertConversionResult(
+            "This is <br> was a hard line break",
+            "This is \n was a hard line break", [RichTextToShortTextConverter::OPTIONS_PRESERVE_SPACES => true]);
     }
 
     public function testMultipleHtmlBreak()
@@ -667,7 +682,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             'This is <br> was a hard <br /> line break',
-            "This is \n was a hard \n line break");
+            "This is was a hard line break");
     }
 
     public function testConvertBreakInHtmlBlock()
@@ -675,7 +690,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             "<div>This is <br> html</div>",
-            "&lt;div&gt;This is \n html&lt;/div&gt;");
+            "&lt;div&gt;This is html&lt;/div&gt;");
     }
 
     /*
@@ -686,7 +701,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             "Paragraph1\n\nParagraph2\n\nParagraph3 with\nnew line",
-            "Paragraph1\n\nParagraph2\n\nParagraph3 with\nnew line");
+            "Paragraph1 Paragraph2 Paragraph3 with new line");
     }
 
     public function testCodeBlockAfterParagraph()
@@ -694,7 +709,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             "Paragraph1\n\n```\ncode block\n```",
-            "Paragraph1\n\n[Code Block]");
+            "Paragraph1 [Code Block]");
     }
 
     public function testParagraphAfterCodeBlock()
@@ -702,10 +717,8 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             "```\ncode block\n```\n\nParagraph1",
-            "[Code Block]\n\nParagraph1");
+            "[Code Block] Paragraph1");
     }
-
-
 
     /*
      * HR

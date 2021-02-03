@@ -8,6 +8,7 @@
 
 namespace humhub\widgets\mails;
 
+use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use Yii;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\components\rendering\ViewPathRenderer;
@@ -25,27 +26,27 @@ class MailContentEntry extends \yii\base\Widget
 {
 
     /**
-     * @var \humhub\modules\user\models\User content originator 
+     * @var \humhub\modules\user\models\User content originator
      */
     public $originator;
-    
+
     /**
-     * @var string|Viewable|ContentOwner content to render 
+     * @var string|Viewable|ContentOwner content to render
      */
     public $content;
-    
+
     /**
      * @var \humhub\modules\space\models\Space space of content (optional)
      */
     public $space;
-    
-    /** 
-     * @var string content date 
+
+    /**
+     * @var string content date
      */
     public $date;
-    
+
     /**
-     * @var boolean will render the content as comment 
+     * @var boolean will render the content as comment
      */
     public $isComment;
 
@@ -66,7 +67,12 @@ class MailContentEntry extends \yii\base\Widget
                 Yii::error($e);
             }
         } elseif ($this->content instanceof ContentOwner) {
-            $content = RichText::preview($this->content->getContentDescription());
+
+            $content = RichTextToHtmlConverter::process($this->content->getContentDescription(), [
+                RichTextToHtmlConverter::OPTION_IMAGE_AS_URL => true,
+                RichTextToHtmlConverter::OPTION_LINK_AS_TEXT => true,
+            ]);
+
             if(!$this->originator) {
                 $this->originator = $this->content->content->createdBy;
             }

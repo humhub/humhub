@@ -67,7 +67,7 @@ class MentioningExtension extends RichTextLinkExtension
             return;
         }
 
-        $linkBlock->setBlock($container->getDisplayName(), $container->createUrl(null, [], true));
+        $linkBlock->setBlock('@'.$container->getDisplayName(), $container->createUrl(null, [], true));
     }
 
     private function findContainer($guid) : ?ContentContainerActiveRecord

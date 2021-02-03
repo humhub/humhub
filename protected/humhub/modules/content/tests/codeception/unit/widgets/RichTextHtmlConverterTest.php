@@ -10,6 +10,7 @@ namespace tests\codeception\unit\modules\content\widgets;
 
 use humhub\libs\EmojiMap;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\file\models\File;
@@ -295,7 +296,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             'Test mention ' . MentioningExtension::buildMentioning($user),
-            '<p>Test mention <a href="http://localhost/index-test.php?r=user%2Fprofile&amp;cguid=01e50e0d-82cd-41fc-8b0c-552392f5839c" target="_blank" rel="nofollow noreferrer noopener">Admin Tester</a></p>');
+            '<p>Test mention <a href="http://localhost/index-test.php?r=user%2Fprofile&amp;cguid=01e50e0d-82cd-41fc-8b0c-552392f5839c" target="_blank" rel="nofollow noreferrer noopener">@Admin Tester</a></p>');
     }
 
     public function testMentionNotFound()
@@ -599,6 +600,21 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
             $expected);
     }
 
+    /**
+     * @skip see https://stackoverflow.com/questions/57800619/htmlpurifier-keeps-removing-my-tables-what-is-the-right-config
+     * Tables without tbody are not allowed in HTML spec
+     */
+    public function testConvertTableWithoutTd()
+    {
+        $expected = "<table>\r\n<thead>\r\n<tr><th>Tables </th><th>Are </th><th>Cool</th></tr>\r\n</thead>\r\n";
+        $expected .= "<tbody>\r\n</tbody>\r\n";
+        $expected .= "</table>";
+
+        $this->assertConversionResult(
+            "| Tables | Are | Cool |\n| ------------- |:-------------:| -----:|\n",
+            $expected);
+    }
+
     public function testConvertExcludeTable()
     {
         $this->assertConversionResult(
@@ -777,7 +793,18 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
             "<pre><code>code block\r\n</code></pre>\r\n<p>Paragraph1</p>");
     }
 
+    public function testCachedResult()
+    {
+        $this->assertConversionResult('TestXY', '<p>TestXY</p>', [RichTextToHtmlConverter::OPTION_CACHE_KEY => 'myResult']);
+        $this->assertConversionResult('', '<p>TestXY</p>', [RichTextToHtmlConverter::OPTION_CACHE_KEY => 'myResult']);
+    }
 
+    public function testMixedConverterCachedResult()
+    {
+        $this->assertConversionResult('TestXY', '<p>TestXY</p>', [RichTextToHtmlConverter::OPTION_CACHE_KEY => 'myResult']);
+        $test = RichText::convert('TestXY', RichText::FORMAT_PLAINTEXT, [RichTextToHtmlConverter::OPTION_CACHE_KEY => 'myResult']);
+        static::assertEquals('TestXY', $test);
+    }
 
     /*
      * HR

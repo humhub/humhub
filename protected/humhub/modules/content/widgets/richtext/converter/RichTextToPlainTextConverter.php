@@ -10,6 +10,7 @@ namespace humhub\modules\content\widgets\richtext\converter;
 
 use cebe\markdown\GithubMarkdown;
 use cebe\markdown\inline\LinkTrait;
+use humhub\libs\Helpers;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtensionMatch;
@@ -38,6 +39,11 @@ class RichTextToPlainTextConverter extends RichTextToMarkdownConverter
     protected const INLINE_CODE_WRAPPER = '';
 
     /**
+     * Option can be used to trim a text to a certain length
+     */
+    public const OPTION_MAX_LENGTH = 'maxLength';
+
+    /**
      * @inheritdoc
      */
     public $format = ProsemirrorRichText::FORMAT_PLAINTEXT;
@@ -46,6 +52,11 @@ class RichTextToPlainTextConverter extends RichTextToMarkdownConverter
      * @inheritdoc
      */
     public $identifyQuote = true;
+
+    /**
+     * @var array
+     */
+    public static $cache = [];
 
     /**
      * @inheritDoc
@@ -97,6 +108,21 @@ class RichTextToPlainTextConverter extends RichTextToMarkdownConverter
 
         # Otherwise parse the sequence normally
         return parent::parseEscape($text);
+    }
 
+    /**
+     * @inheritDoc
+     */
+    protected function onAfterParse($text) : string
+    {
+        $result = parent::onAfterParse($text);
+        $maxLength = $this->getOption(static::OPTION_MAX_LENGTH, 0);
+
+        if($maxLength > 0) {
+            $result = Helpers::truncateText($result, $maxLength);
+            $result = Helpers::trimText($result, $maxLength);
+        }
+
+        return $result;
     }
 }

@@ -43,7 +43,7 @@ class ApprovalRequestDeclined extends BaseNotification
      */
     public function getMailSubject()
     {
-        return strip_tags($this->html());
+        return $this->getInfoText($this->originator->displayName, $this->source->name);
     }
 
     /**
@@ -51,9 +51,16 @@ class ApprovalRequestDeclined extends BaseNotification
      */
     public function html()
     {
+        return $this->getInfoText(
+            Html::tag('strong', Html::encode($this->originator->displayName)),
+            Html::tag('strong', Html::encode($this->source->name)));
+    }
+
+    private function getInfoText($displayName, $spaceName)
+    {
         return Yii::t('SpaceModule.notification', '{displayName} declined your membership request for the space {spaceName}', [
-                    '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                    '{spaceName}' => Html::tag('strong', Html::encode($this->source->name))
+            '{displayName}' => $displayName,
+            '{spaceName}' => $spaceName
         ]);
     }
 

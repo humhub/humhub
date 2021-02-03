@@ -70,6 +70,11 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
     public $format = ProsemirrorRichText::FORMAT_MARKDOWN;
 
     /**
+     * @var array
+     */
+    public static $cache = [];
+
+    /**
      * @inheritDoc
      */
     protected function onAfterParse($text) : string

@@ -69,6 +69,11 @@ class RichTextToHtmlConverter extends BaseRichTextConverter
     public $format = ProsemirrorRichText::FORMAT_HTML;
 
     /**
+     * @var array
+     */
+    public static $cache = [];
+
+    /**
      * @inheritDoc
      */
     protected function onAfterParse($text) : string
@@ -90,7 +95,10 @@ class RichTextToHtmlConverter extends BaseRichTextConverter
             $config->set('HTML.Allowed', $this->htmlAllowed);
             $config->set('HTML.AllowedAttributes', $this->htmlAllowedAttributes);
             $config->set('URI.AllowedSchemes',$this->allowedSchemes);
-            $config->getHTMLDefinition(true)->addAttribute('a', 'target', 'Text');
+
+            $htmlDefinition = $config->getHTMLDefinition(true);
+
+            $htmlDefinition->addAttribute('a', 'target', 'Text');
         });
     }
 

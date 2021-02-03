@@ -58,9 +58,19 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     const OPTION_IMAGE_AS_LINK = 'imageAsLink';
 
     /**
+     * Option key used for rendering images as url links
+     */
+    const OPTION_IMAGE_AS_URL = 'imageAsText';
+
+    /**
      * Option key for preventing link target attribute
      */
     const OPTION_PREV_LINK_TARGET = 'prevLinkTarget';
+
+    /**
+     * Cache key can be used to cache parser results
+     */
+    const OPTION_CACHE_KEY = 'cacheKey';
 
     /**
      * @inheritdoc
@@ -96,6 +106,11 @@ abstract class BaseRichTextConverter extends GithubMarkdown
      * @var RichTextExtension[]
      */
     protected $extensions = [];
+
+    /**
+     * @var array
+     */
+    public static $cache = [];
 
     /**
      * @var bool whether or not to support `\\\n` backslash breaks
@@ -145,9 +160,22 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     public function parse($text): string
     {
         try {
-            $text = $this->onBeforeParse($text);
-            $text = parent::parse($text);
-            return $this->onAfterParse($text);
+
+            $cacheKey = $this->getOption(static::OPTION_CACHE_KEY, null);
+
+            if($cacheKey && isset(static::$cache[$cacheKey])) {
+                return static::$cache[$cacheKey];
+            }
+
+            $result = $this->onBeforeParse($text);
+            $result = parent::parse($result);
+            $result = $this->onAfterParse($result);
+
+            if($cacheKey) {
+                static::$cache[$cacheKey] = $result;
+            }
+
+            return $result;
         } catch (\Throwable $t) {
             Yii::error($t);
             return '[ParserError]';
@@ -364,6 +392,10 @@ REGEXP;
 
         // Remove image alignment extension from image alt text
         $block['text'] = preg_replace('/>?<?$/', '', $text);
+
+        if($this->getOption(static::OPTION_IMAGE_AS_URL, false)) {
+            return Html::encode($block['url']);
+        }
 
         if($this->getOption(static::OPTION_IMAGE_AS_LINK, false)) {
             $text = empty($block['text']) ? $block['url'] : $block['text'];

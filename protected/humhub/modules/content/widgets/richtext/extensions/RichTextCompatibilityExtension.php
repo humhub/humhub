@@ -30,6 +30,9 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
      */
     const DB_SETTING_KEY = 'richtextCompatMode';
 
+    /**
+     * @inheritdoc
+     */
     public function onBeforeOutput(ProsemirrorRichText $richtext, string $output): string
     {
         if(!$this->isCompatibilityMode()) {
