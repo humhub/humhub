@@ -12,6 +12,8 @@ use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\libs\Helpers;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use Yii;
 use yii\helpers\Html;
 use humhub\modules\user\models\User;
@@ -329,19 +331,43 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     {
         if (!$this->hasContent() && !$content) {
             return null;
-        } elseif (!$content) {
+        }
+
+        if (!$content) {
             $content = $this->source;
         }
 
-        $truncatedDescription = $this->getContentPreview($content, 60);
+        $info = $this->getContentPreview($content, 60);
 
-        if (empty($truncatedDescription)) {
+        if(empty($info)) {
             return null;
         }
 
-        $trimmed = Helpers::trimText($truncatedDescription, 60);
+        return ($withContentName) ? Html::encode($content->getContentName()). ' "' . $info . '"' : $info;
+    }
 
-        return ($withContentName) ? Html::encode($content->getContentName()). ' "' . $trimmed . '"' : $trimmed;
+    /**
+     * Returns a short preview text of the content. The max length can be defined by setting
+     * $maxLength (60 by default).
+     *
+     *  If no $content is provided the contentPreview of $source is returned.
+     *
+     * @param ContentOwner $content
+     * @param int $maxLength
+     * @return string|null
+     * @throws Exception
+     */
+    public function getContentPreview(ContentOwner $content = null, $maxLength = 60)
+    {
+        if (!$this->hasContent() && !$content) {
+            return null;
+        }
+
+        if (!$content) {
+            $content = $this->source;
+        }
+
+        return RichTextToShortTextConverter::process($content->getContentDescription(), ['maxLength' => $maxLength]);
     }
 
     /**
@@ -363,59 +389,15 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     {
         if (!$this->hasContent() && !$content) {
             return null;
-        } elseif (!$content) {
+        }
+
+        if (!$content) {
             $content = $this->source;
         }
 
-        $truncatedDescription = $this->getContentPlainTextPreview($content, 60);
+        $info = $this->getContentPlainTextPreview($content);
 
-        if (empty($truncatedDescription)) {
-            return null;
-        }
-
-        $trimmed = Helpers::trimText($truncatedDescription, 60);
-
-        return ($withContentName) ? Html::encode($content->getContentName()). ' "' . $trimmed . '"' : $trimmed;
-    }
-
-    /**
-     * Returns the content name of $content or if not $content is provided of the
-     * notification source.
-     *
-     * @param ContentOwner $content
-     * @return string|null
-     */
-    public function getContentName(ContentOwner $content = null)
-    {
-        if (!$this->hasContent() && !$content) {
-            return null;
-        } elseif (!$content) {
-            $content = $this->source;
-        }
-
-        return $content->getContentName();
-    }
-
-    /**
-     * Returns a short preview text of the content. The max length can be defined by setting
-     * $maxLength (25 by default).
-     *
-     *  If no $content is provided the contentPreview of $source is returned.
-     *
-     * @param ContentOwner $content
-     * @param int $maxLength
-     * @return string|null
-     * @throws Exception
-     */
-    public function getContentPreview(ContentOwner $content = null, $maxLength = 25)
-    {
-        if (!$this->hasContent() && !$content) {
-            return null;
-        } elseif (!$content) {
-            $content = $this->source;
-        }
-
-        return RichText::preview($content->getContentDescription(), $maxLength);
+        return ($withContentName) ? $content->getContentName(). ' "' . $info . '"' : $info;
     }
 
     /**
@@ -432,15 +414,43 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
      * @throws Exception
      * @since 1.4
      */
-    public function getContentPlainTextPreview(ContentOwner $content = null, $maxLength = 25)
+    public function getContentPlainTextPreview(ContentOwner $content = null, $maxLength = 60)
     {
+        if (!$this->hasContent() && !$content) {
+            return null;
+        }
+
+        if (!$content) {
+            $content = $this->source;
+        }
+
         try {
-            return html_entity_decode( $this->getContentPreview($content, $maxLength), ENT_QUOTES, 'UTF-8');
+            return RichTextToPlainTextConverter::process($content->getContentDescription(), ['maxLength' => $maxLength]);
         } catch(\Exception $e) {
             Yii::error($e);
         }
 
         return '';
+    }
+
+    /**
+     * Returns the content name of $content or if not $content is provided of the
+     * notification source.
+     *
+     * @param ContentOwner $content
+     * @return string|null
+     */
+    public function getContentName(ContentOwner $content = null)
+    {
+        if (!$this->hasContent() && !$content) {
+            return null;
+        }
+
+        if (!$content) {
+            $content = $this->source;
+        }
+
+        return $content->getContentName();
     }
 
     /**

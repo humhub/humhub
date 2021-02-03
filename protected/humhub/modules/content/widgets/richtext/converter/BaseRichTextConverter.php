@@ -160,20 +160,24 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     public function parse($text): string
     {
         try {
-
+            $result = null;
             $cacheKey = $this->getOption(static::OPTION_CACHE_KEY, null);
 
             if($cacheKey && isset(static::$cache[$cacheKey])) {
-                return static::$cache[$cacheKey];
+                $result = static::$cache[$cacheKey];
             }
 
-            $result = $this->onBeforeParse($text);
-            $result = parent::parse($result);
+            if($result === null) {
+                $result = $this->onBeforeParse($text);
+                $result = parent::parse($result);
+
+                // We cache the whole parser result, this way we can reuse the same result e.g. for different maxLength
+                // or other post processes
+                if($cacheKey) {
+                    static::$cache[$cacheKey] = $result;
+                }
+            }
             $result = $this->onAfterParse($result);
-
-            if($cacheKey) {
-                static::$cache[$cacheKey] = $result;
-            }
 
             return $result;
         } catch (\Throwable $t) {
