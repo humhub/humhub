@@ -14,16 +14,16 @@ use yii\helpers\Url;
 AdminAsset::register($this);
 
 $this->registerJsConfig('admin', $adminSettingsJsConfig = ['text' => [
-    'enableProfilePermissions.header' => Yii::t('AdminModule.settings', '<strong>Profile</strong> Permissions'),
-    'enableProfilePermissions.question.enable' => Yii::t('AdminModule.settings', 'Allow users to set individual permissions for their own profile?'),
-    'enableProfilePermissions.button.enable' => Yii::t('AdminModule.settings', 'Allow'),
+    'enableProfilePermissions.header' => Yii::t('AdminModule.user', '<strong>Profile</strong> Permissions'),
+    'enableProfilePermissions.question.enable' => Yii::t('AdminModule.user', 'Allow users to set individual permissions for their own profile?'),
+    'enableProfilePermissions.button.enable' => Yii::t('AdminModule.user', 'Allow'),
 
-    'enableProfilePermissions.question.disable' => Yii::t('AdminModule.settings',
+    'enableProfilePermissions.question.disable' => Yii::t('AdminModule.user',
             'Deactivate individual profile permissions?<br><br>') .
         '<div class="alert alert-danger">' .
-        Yii::t('AdminModule.settings', '<strong>Warning:</strong> All individual profile permission settings are reset to the default values!') .
+        Yii::t('AdminModule.user', '<strong>Warning:</strong> All individual profile permission settings are reset to the default values!') .
         '</div>',
-    'enableProfilePermissions.button.disable' => Yii::t('AdminModule.settings', 'Deactivate & Reset'),
+    'enableProfilePermissions.button.disable' => Yii::t('AdminModule.user', 'Deactivate & Reset'),
 ]]);
 
 /** @var \humhub\modules\user\Module $userModule */
