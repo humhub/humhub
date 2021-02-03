@@ -52,7 +52,6 @@ return [
     'Pending user registrations' => 'Ventende brukerregistreringer',
     'Permissions' => 'Tilatelser',
     'Proxy' => 'Proxy',
-    'Security' => 'Sikkerhet',
     'Self test' => 'Selvtest',
     'Settings' => 'Innstillinger',
     'Sign up' => 'Meld deg på',

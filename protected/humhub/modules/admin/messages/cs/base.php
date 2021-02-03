@@ -45,7 +45,6 @@ return [
     'OEmbed providers' => 'Poskytovatelé obsahu',
     'Permissions' => 'Práva',
     'Proxy' => 'Proxy',
-    'Security' => 'Zabezpečení',
     'Self test' => 'Vlastní test',
     'Settings' => 'Nastavení',
     'Sign up' => 'Dokončit registraci',

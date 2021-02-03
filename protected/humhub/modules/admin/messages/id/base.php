@@ -39,7 +39,6 @@ return [
     'Pending user registrations' => 'Pendaftaran tertunda',
     'Permissions' => 'Perizinan',
     'Proxy' => 'Proxy',
-    'Security' => 'Keamanan',
     'Self test' => 'Self test',
     'Settings' => 'Pengaturan',
     'Sign up' => 'Daftar',

@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'تسجيلات المستخدم المعلقة',
     'Permissions' => 'أذونات',
     'Proxy' => 'تفويض',
-    'Security' => 'الأمان',
     'Self test' => 'اختبار ذاتي',
     'Settings' => 'الإعدادات',
     'Sign up' => 'تسجيل',

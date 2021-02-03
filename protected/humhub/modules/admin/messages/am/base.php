@@ -44,7 +44,6 @@ return [
     'Pending user registrations' => 'የተጠቃሚ ምዝገባው በጥበቃ ላይ ነው',
     'Permissions' => 'ፈቃዶች',
     'Proxy' => 'ተኪ',
-    'Security' => 'ደህንነት',
     'Self test' => 'የራስ ፍተሻ',
     'Settings' => 'ማስተካከያዎች',
     'Sign up' => 'ይመዝገቡ',

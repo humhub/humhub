@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'Пользователи ожидающие подтверждения',
     'Permissions' => 'Доступ',
     'Proxy' => 'Прокси',
-    'Security' => 'Безопасность',
     'Self test' => 'Самопроверка',
     'Settings' => 'Настройки',
     'Sign up' => 'Зарегистрироваться',

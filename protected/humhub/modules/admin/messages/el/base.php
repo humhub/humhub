@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'Αναμονή εγγραφής χρήστη',
     'Permissions' => 'Δικαιώματα',
     'Proxy' => 'Πληρεξούσιο',
-    'Security' => 'Ασφάλεια',
     'Self test' => 'Τεστ αυτοαξιολογισης',
     'Settings' => 'Ρυθμίσεις',
     'Sign up' => 'Εγγραφή',

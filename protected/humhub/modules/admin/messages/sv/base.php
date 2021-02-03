@@ -39,7 +39,6 @@ return [
     'Notifications' => 'Notiser',
     'OEmbed' => 'OEmbed',
     'Proxy' => 'Proxy',
-    'Security' => 'Säkerhet',
     'Settings' => 'Inställningar',
     'Spaces' => 'Nätverk',
     'Statistics' => 'Statistik',

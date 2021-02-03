@@ -57,7 +57,6 @@ return [
     'Pending user registrations' => '',
     'Permissions' => '',
     'Proxy' => '',
-    'Security' => '',
     'Self test' => '',
     'Settings' => '',
     'Sign up' => '',

@@ -55,7 +55,6 @@ return [
     'Pending user registrations' => 'Чакащи регистрации на потребители',
     'Permissions' => 'Разрешения',
     'Proxy' => 'Прокси',
-    'Security' => 'Сигурност',
     'Self test' => 'Самопроверка',
     'Settings' => 'Настройки',
     'Sign up' => 'Регистрирай се',

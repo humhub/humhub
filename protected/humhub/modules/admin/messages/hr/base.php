@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'Prijava na čekanju korisnika',
     'Permissions' => 'Dozvole',
     'Proxy' => 'Proxy',
-    'Security' => 'Sigurnost',
     'Self test' => 'Samoprovjera',
     'Settings' => 'Postavke',
     'Sign up' => 'Upiši se',

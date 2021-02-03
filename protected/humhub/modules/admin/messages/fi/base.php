@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'Odottaa rekisteröitymistä',
     'Permissions' => 'Käyttöoikeudet',
     'Proxy' => 'Proxy',
-    'Security' => 'Turvallisuus',
     'Self test' => 'Testi',
     'Settings' => 'Asetukset',
     'Sign up' => 'Rekistöidy',

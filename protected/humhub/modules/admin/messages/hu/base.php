@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'Függőben lévő felhasználói regisztrációk',
     'Permissions' => 'Engedélyek',
     'Proxy' => 'Proxy',
-    'Security' => 'Biztonság',
     'Self test' => 'Öntesztelés',
     'Settings' => 'Beállítások',
     'Sign up' => 'Feliratkozás',

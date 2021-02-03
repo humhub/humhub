@@ -39,7 +39,6 @@ return [
     'Notifications' => 'Notificari',
     'Open documentation' => 'Deschideți documentația',
     'Proxy' => 'Proxy',
-    'Security' => 'Securitate',
     'Settings' => 'Impostatii',
     'Sign up' => 'Inregistreaza-te',
     'Spaces' => 'Spatii',

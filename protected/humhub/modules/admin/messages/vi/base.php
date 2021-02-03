@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'Đăng ký đang chờ duyệt',
     'Permissions' => 'Quyền truy cập',
     'Proxy' => 'Proxy',
-    'Security' => 'Bảo mật',
     'Self test' => 'Tự kiểm thử',
     'Settings' => 'Cài đặt',
     'Sign up' => 'Đăng ký',

@@ -38,7 +38,6 @@ return [
     'OEmbed providers' => 'OEmbed provaideri',
     'Permissions' => 'Atļaujas',
     'Proxy' => 'Proxy',
-    'Security' => 'Drošība',
     'Self test' => 'Paštests',
     'Settings' => 'Uzstādījumi',
     'Spaces' => 'Vietas',

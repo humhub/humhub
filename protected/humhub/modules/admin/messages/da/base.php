@@ -35,7 +35,6 @@ return [
     'Modules' => 'Moduler',
     'Notifications' => 'Notifikationer',
     'Proxy' => 'Proxy',
-    'Security' => 'Sikkerhed',
     'Settings' => 'Indstillinger',
     'Sign up' => 'Opret',
     'Spaces' => 'Sider',

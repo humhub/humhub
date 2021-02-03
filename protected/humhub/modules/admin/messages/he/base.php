@@ -20,7 +20,6 @@ return [
     'Administration' => 'ניהול',
     'Groups' => 'קבוצות',
     'Modules' => 'מודולים',
-    'Security' => 'אבטחה',
     'Spaces' => 'אזורים',
     'Users' => 'משתמשים',
     '<strong>Administration</strong> menu' => '',

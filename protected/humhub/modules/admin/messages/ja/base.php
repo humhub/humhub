@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => '保留中のユーザー登録',
     'Permissions' => '権限',
     'Proxy' => 'プロキシ',
-    'Security' => 'セキュリティ',
     'Self test' => 'セルフテスト',
     'Settings' => '設定',
     'Sign up' => 'サインアップ',

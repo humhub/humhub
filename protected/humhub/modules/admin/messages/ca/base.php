@@ -41,7 +41,6 @@ return [
     'OEmbed providers' => 'Proveïdors OEmbed',
     'Pending user registrations' => 'Registres d\'usuaris pendents',
     'Proxy' => 'Proxy',
-    'Security' => 'Seguretat',
     'Self test' => 'Auto test',
     'Settings' => 'Configuració',
     'Sign up' => 'Registra\'t',

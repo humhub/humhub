@@ -55,7 +55,6 @@ return [
     'Pending user registrations' => 'Wachtende gebruikersregistraties',
     'Permissions' => 'Permissies',
     'Proxy' => 'Proxy',
-    'Security' => 'Beveiliging',
     'Self test' => 'Zelf-test',
     'Settings' => 'Instellingen',
     'Sign up' => 'Registreer',

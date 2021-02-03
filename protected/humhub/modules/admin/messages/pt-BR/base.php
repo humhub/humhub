@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'Registros de usuários pendentes',
     'Permissions' => 'Permissões',
     'Proxy' => 'Proxy',
-    'Security' => 'Segurança',
     'Self test' => 'Auto teste',
     'Settings' => 'Configurações',
     'Sign up' => 'Registre-se',

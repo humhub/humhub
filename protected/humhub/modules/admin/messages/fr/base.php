@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'Utilisateur(s) en attente d\'enregistrement',
     'Permissions' => 'Permissions',
     'Proxy' => 'Serveur Proxy',
-    'Security' => 'Sécurité',
     'Self test' => 'Tests automatiques',
     'Settings' => 'Paramètres',
     'Sign up' => 'S\'inscrire',

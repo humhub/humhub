@@ -44,7 +44,6 @@ return [
     'OEmbed providers' => 'OEmbed 供应商',
     'Permissions' => '权限',
     'Proxy' => '代理',
-    'Security' => '安全',
     'Self test' => '自检',
     'Settings' => '设置',
     'Sign up' => '注 册',

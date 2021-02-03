@@ -23,7 +23,6 @@ return [
     'Groups' => 'Grupos',
     'Modules' => 'Modulos',
     'Notifications' => 'Notificacions',
-    'Security' => 'Seguranza',
     'Settings' => 'Achustes',
     'Sign up' => 'Rechistrar-se',
     'Spaces' => 'Espacios',

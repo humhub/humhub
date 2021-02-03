@@ -51,7 +51,6 @@ return [
     'Pending user registrations' => 'نام‌نویسی‌های در انتظار',
     'Permissions' => 'مجوزها',
     'Proxy' => 'پراکسی',
-    'Security' => 'امنیت',
     'Self test' => 'خودآزمون',
     'Settings' => 'تنظیمات',
     'Sign up' => 'نام‌نویسی',

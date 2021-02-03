@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'Bekleyen kullanıcı kayıtları',
     'Permissions' => 'İzinler',
     'Proxy' => 'Proxy',
-    'Security' => 'Güvenlik',
     'Self test' => 'Test et',
     'Settings' => 'Ayarlar',
     'Sign up' => 'Kaydol',
