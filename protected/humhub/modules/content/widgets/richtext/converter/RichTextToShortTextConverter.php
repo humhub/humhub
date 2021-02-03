@@ -104,18 +104,13 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
      */
     protected function onAfterParse($text) : string
     {
-        $result = parent::onAfterParse($text);
+        $result = $text;
 
         if(!$this->getOption(static::OPTIONS_PRESERVE_SPACES, false)) {
             $result  = trim(preg_replace('/\s+/', ' ', $result));
         }
 
-        $maxLength =  $this->getOption(static::OPTION_MAX_LENGTH, 0);
-
-        if($maxLength > 0) {
-            $result = Helpers::truncateText($result, $maxLength);
-            $result = Helpers::trimText($result, $maxLength);
-        }
+        $result = parent::onAfterParse($text);
 
         return Html::encode($result);
     }

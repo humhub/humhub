@@ -10,6 +10,7 @@ namespace tests\codeception\unit\modules\content\widgets;
 
 use humhub\libs\EmojiMap;
 use humhub\libs\Html;
+use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use humhub\modules\content\widgets\richtext\RichText;
@@ -311,7 +312,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (\Throwable $e ) {
+        } catch (\Throwable $e) {
             // Need to catch since hash saving will fail
         }
 
@@ -342,13 +343,13 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (\Throwable $e ) {
+        } catch (\Throwable $e) {
             // Need to catch since hash saving will fail
         }
 
         $this->assertConversionResult(
             'Test file ![Test File](file-guid:xyz)',
-            "Test file ".Html::encode($file->getUrl()));
+            "Test file " . Html::encode($file->getUrl()));
     }
 
     public function testImageFileWithRightAlign()
@@ -366,13 +367,13 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (\Throwable $e ) {
+        } catch (\Throwable $e) {
             // Need to catch since hash saving will fail
         }
 
         $this->assertConversionResult(
             'Test file ![Test File>](file-guid:xyz)',
-            "Test file ".Html::encode($file->getUrl()));
+            "Test file " . Html::encode($file->getUrl()));
     }
 
     public function testImageFileWithLeftAlign()
@@ -390,13 +391,13 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (\Throwable $e ) {
+        } catch (\Throwable $e) {
             // Need to catch since hash saving will fail
         }
 
         $this->assertConversionResult(
             'Test file ![Test File<](file-guid:xyz)',
-            "Test file ".Html::encode($file->getUrl()));
+            "Test file " . Html::encode($file->getUrl()));
     }
 
     public function testImageFileWithCenterAlign()
@@ -414,12 +415,12 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (\Throwable $e ) {
+        } catch (\Throwable $e) {
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(
             'Test file ![Test File><](file-guid:xyz)',
-            "Test file ".Html::encode($file->getUrl()));
+            "Test file " . Html::encode($file->getUrl()));
     }
 
     public function testImageFileNotFound()
@@ -544,7 +545,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | right-aligned | $1600 |"
-            ,"[Table]");
+            , "[Table]");
     }
 
     public function testConvertTableWithInlineMark()
@@ -729,6 +730,44 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
         $this->assertConversionResult(
             "---",
             "");
+    }
+
+
+    public function testCache()
+    {
+        // Tags are not stripped since the richtext does not support html and interprets html as normal text
+        $this->assertConversionResult(
+            "```\ncode block\n```\n\nParagraph1",
+            "[Code Block] Paragraph1", [RichTextToShortTextConverter::OPTION_CACHE_KEY => 'test1']);
+
+        $this->assertConversionResult(
+            "IgnoreSinceCached...",
+            "[Code Block] Paragraph1", [RichTextToShortTextConverter::OPTION_CACHE_KEY => 'test1']);
+    }
+
+    public function testCacheWithDifferentMaxLength()
+    {
+
+        $this->assertConversionResult(
+            "This is a long text we will truncate",
+            "This is a...", [
+            RichTextToShortTextConverter::OPTION_CACHE_KEY => 'test2',
+            RichTextToShortTextConverter::OPTION_MAX_LENGTH => 11
+            ]);
+
+        $this->assertConversionResult(
+            "IgnoreSinceCached...",
+            "This is a long text...", [
+            RichTextToShortTextConverter::OPTION_CACHE_KEY => 'test2',
+            RichTextToShortTextConverter::OPTION_MAX_LENGTH => 19
+            ]);
+    }
+
+    public function testMixedConverterCachedResult()
+    {
+        $this->assertConversionResult('TestXY', 'TestXY', [RichTextToHtmlConverter::OPTION_CACHE_KEY => 'myResult']);
+        $test = RichText::convert('ShouldNotBeCached', RichText::FORMAT_PLAINTEXT, [RichTextToHtmlConverter::OPTION_CACHE_KEY => 'myResult']);
+        static::assertEquals('ShouldNotBeCached', $test);
     }
 
     private function assertConversionResult($markdown, $expected = null, $options = [])

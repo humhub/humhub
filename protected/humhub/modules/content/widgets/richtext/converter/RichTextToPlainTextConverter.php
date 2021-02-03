@@ -120,7 +120,6 @@ class RichTextToPlainTextConverter extends RichTextToMarkdownConverter
 
         if($maxLength > 0) {
             $result = Helpers::truncateText($result, $maxLength);
-            $result = Helpers::trimText($result, $maxLength);
         }
 
         return $result;
