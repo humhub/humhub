@@ -9,8 +9,12 @@ use yii\helpers\Url;
 /* @var $groupId string */
 
 ?>
+
+
+<?php $this->beginContent('@admin/views/authentication/_authenticationLayout.php') ?>
+
 <div class="panel-body">
-    <h4><?= Yii::t('AdminModule.user', 'Default User Permissions'); ?></h4>
+    <h4><?= Yii::t('AdminModule.user', 'Default Profile Permissions'); ?></h4>
     <div class="help-block">
         <?= Yii::t('AdminModule.user', 'Here you can define default permissions for user account per different user-types. These settings overwrite default permissions from config file and can be overwritten for each individual account security settings.'); ?>
         <br><br>
@@ -33,3 +37,5 @@ use yii\helpers\Url;
         <?= PermissionGridEditor::widget(['permissionManager' => $defaultPermissionManager, 'groupId' => $groupId]); ?>
     </div>
 </div>
+
+<?php $this->endContent() ?>
