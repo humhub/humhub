@@ -9,8 +9,10 @@ namespace humhub\modules\content\widgets\richtext\converter;
 
 
 use cebe\markdown\GithubMarkdown;
+use humhub\components\ActiveRecord;
 use humhub\components\Event;
 use humhub\libs\Html;
+use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
@@ -38,32 +40,38 @@ use yii\base\InvalidArgumentException;
 abstract class BaseRichTextConverter extends GithubMarkdown
 {
     /**
-     * Option key for excluding blocks or extensions
+     * Option key for excluding blocks or extensions.
+     * Note, this option affects the cached result.
      */
     const OPTION_EXCLUDE = 'exclude';
 
     /**
-     * Option key for overwriting default link target _blank
+     * Option key for overwriting default link target _blank.
+     * Note, this option affects the cached result.
      */
     const OPTION_LINK_TARGET = 'linkTarget';
 
     /**
-     * Option key used for rendering links as plain text
+     * Option key used for rendering links as plain text.
+     * Note, this option affects the cached result.
      */
     const OPTION_LINK_AS_TEXT = 'linkAsText';
 
     /**
-     * Option key used for rendering images as links
+     * Option key used for rendering images as links.
+     * Note, this option affects the cached result.
      */
     const OPTION_IMAGE_AS_LINK = 'imageAsLink';
 
     /**
-     * Option key used for rendering images as url links
+     * Option key used for rendering images as url links.
+     * Note, this option affects the cached result.
      */
     const OPTION_IMAGE_AS_URL = 'imageAsText';
 
     /**
-     * Option key for preventing link target attribute
+     * Option key for preventing link target attribute.
+     * Note, this option affects the cached result.
      */
     const OPTION_PREV_LINK_TARGET = 'prevLinkTarget';
 
@@ -141,6 +149,48 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     {
         $parser = new static($options);
         return $parser->parse($text);
+    }
+
+    /**
+     * Builds a cache key for a given content. When using this function with specific parser options a $prefix should be
+     * provided in order to not interfere with other parser results.
+     *
+     * Options only affecting the result within the `onAfterParse` will not alter the cached result and therefore can
+     * be used without prefix.
+     *
+     * @param ContentOwner $content
+     * @param string|null $prefix a prefix used for use-cases with specific parser options to not interfere with other results
+     * @return string
+     */
+    public static function buildCacheKeyForContent(ContentOwner $content, $prefix = null)
+    {
+        $result = 'content_'.$content->content->id;
+        return $prefix ? $prefix.'_'.$result : $result;
+    }
+
+    /**
+     * Builds a cache key for a given record. When using this function with specific parser options a $prefix should be
+     * provided in order to not interfere with other parser results.
+     *
+     * Options only affecting the result within the `onAfterParse` will not alter the cached result and therefore can
+     * be used without prefix.
+     *
+     * @param ContentOwner $content
+     * @param string|null $prefix a prefix used for use-cases with specific parser options to not interfere with other results
+     * @return string
+     */
+    public static function buildCacheKeyForRecord(ActiveRecord $record, $prefix = null)
+    {
+        $result = get_class($record).'_'.$record->getUniqueId();
+        return $prefix ? $prefix.'_'.$result : $result;
+    }
+
+    /**
+     * This function can be used to flush existing parser result caches of this converter class
+     */
+    public static function flushCache()
+    {
+        static::$cache = [];
     }
 
     /**

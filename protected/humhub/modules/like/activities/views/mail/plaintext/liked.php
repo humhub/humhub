@@ -1,9 +1,11 @@
 <?php
 
-use yii\helpers\Html;
+use humhub\modules\user\models\User;
 
-echo strip_tags(Yii::t('LikeModule.activities', '{userDisplayName} likes {contentTitle}', [
-    '{userDisplayName}' => Html::encode($originator->displayName),
+/* @var $originator User */
+/* @var $preview string */
+
+echo Yii::t('LikeModule.activities', '{userDisplayName} likes {contentTitle}', [
+    '{userDisplayName}' => $originator->displayName,
     '{contentTitle}' => $preview,
-]));
-?>
+]);

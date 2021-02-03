@@ -11,7 +11,9 @@ namespace humhub\components;
 use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\libs\Helpers;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\widgets\richtext\converter\BaseRichTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use Yii;
@@ -272,7 +274,7 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     {
         $html = $this->html();
 
-        return !empty($html) ? strip_tags($html) : null;
+        return !empty($html) ? html_entity_decode(strip_tags($html)) : null;
     }
 
     /**
@@ -339,11 +341,11 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
 
         $info = $this->getContentPreview($content, 60);
 
-        if(empty($info)) {
+        if (empty($info)) {
             return null;
         }
 
-        return ($withContentName) ? Html::encode($content->getContentName()). ' "' . $info . '"' : $info;
+        return ($withContentName) ? Html::encode($content->getContentName()) . ' "' . $info . '"' : $info;
     }
 
     /**
@@ -367,7 +369,10 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
             $content = $this->source;
         }
 
-        return RichTextToShortTextConverter::process($content->getContentDescription(), ['maxLength' => $maxLength]);
+        return RichTextToShortTextConverter::process($content->getContentDescription(), [
+            RichTextToShortTextConverter::OPTION_MAX_LENGTH => $maxLength,
+            RichTextToShortTextConverter::OPTION_CACHE_KEY => RichTextToShortTextConverter::buildCacheKeyForContent($content),
+        ]);
     }
 
     /**
@@ -397,12 +402,12 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
 
         $info = $this->getContentPlainTextPreview($content);
 
-        return ($withContentName) ? $content->getContentName(). ' "' . $info . '"' : $info;
+        return ($withContentName) ? $content->getContentName() . ' "' . $info . '"' : $info;
     }
 
     /**
      * Returns a short preview text of the content in plain text. The max length can be defined by setting
-     * $maxLength (25 by default).
+     * $maxLength (60 by default).
      *
      *  If no $content is provided the contentPreview of $source is returned.
      *
@@ -425,13 +430,17 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
         }
 
         try {
-            return RichTextToPlainTextConverter::process($content->getContentDescription(), ['maxLength' => $maxLength]);
-        } catch(\Exception $e) {
+            return RichTextToPlainTextConverter::process($content->getContentDescription(), [
+                RichTextToPlainTextConverter::OPTION_MAX_LENGTH => $maxLength,
+                RichTextToPlainTextConverter::OPTION_CACHE_KEY => RichTextToPlainTextConverter::buildCacheKeyForContent($content),
+            ]);
+        } catch (\Exception $e) {
             Yii::error($e);
         }
 
         return '';
     }
+
 
     /**
      * Returns the content name of $content or if not $content is provided of the
@@ -458,7 +467,8 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
      *
      * @return bool
      */
-    public function validate() {
+    public function validate()
+    {
         if (empty($this->source) && $this->requireSource) {
             return false;
         }
@@ -473,10 +483,10 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     /**
      * Serializes the $source and $originator fields.
      *
-     * @see ActiveRecord::serialize() for the serialization of your $source
+     * @return string
      * @link http://php.net/manual/en/function.serialize.php
      * @since 1.2
-     * @return string
+     * @see ActiveRecord::serialize() for the serialization of your $source
      */
     public function serialize()
     {
@@ -500,16 +510,16 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     /**
      * Unserializes the given string, calls the init() function and sets the $source and $originator fields (and $record indirectyl).
      *
-     * @see ActiveRecord::unserialize() for the serialization of your $source
-     * @link http://php.net/manual/en/function.unserialize.php
      * @param string $serialized
+     * @link http://php.net/manual/en/function.unserialize.php
+     * @see ActiveRecord::unserialize() for the serialization of your $source
      */
     public function unserialize($serialized)
     {
         $this->init();
         $unserializedArr = unserialize($serialized);
 
-        if(isset($unserializedArr['originator_id'])) {
+        if (isset($unserializedArr['originator_id'])) {
             $user = User::findOne(['id' => $unserializedArr['originator_id']]);
             if ($user !== null) {
                 $this->from($user);

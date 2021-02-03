@@ -13,12 +13,8 @@ use Yii;
 class RichTextToShortTextConverter extends RichTextToPlainTextConverter
 {
     /**
-     * Option can be used to trim a text to a certain length
-     */
-    public const OPTION_MAX_LENGTH = 'maxLength';
-
-    /**
-     * Option can be used to preserve spaces and new lines in the converter result (default false)
+     * Option can be used to preserve spaces and new lines in the converter result (default false).
+     * Note, this option will not affect cached results and therefore does not require a special cache key.
      */
     public const OPTIONS_PRESERVE_SPACES = 'preserveNewlines';
 
@@ -110,7 +106,7 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
             $result  = trim(preg_replace('/\s+/', ' ', $result));
         }
 
-        $result = parent::onAfterParse($text);
+        $result = parent::onAfterParse($result);
 
         return Html::encode($result);
     }

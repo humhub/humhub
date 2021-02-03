@@ -8,9 +8,8 @@
 
 namespace humhub\widgets\mails;
 
-use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use Yii;
-use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\components\rendering\ViewPathRenderer;
 use humhub\components\rendering\Viewable;
 use humhub\modules\content\interfaces\ContentOwner;
@@ -67,10 +66,10 @@ class MailContentEntry extends \yii\base\Widget
                 Yii::error($e);
             }
         } elseif ($this->content instanceof ContentOwner) {
-
             $content = RichTextToHtmlConverter::process($this->content->getContentDescription(), [
                 RichTextToHtmlConverter::OPTION_IMAGE_AS_URL => true,
                 RichTextToHtmlConverter::OPTION_LINK_AS_TEXT => true,
+                RichTextToHtmlConverter::OPTION_CACHE_KEY => RichTextToHtmlConverter::buildCacheKeyForContent($this->content, 'mail_entry'),
             ]);
 
             if(!$this->originator) {

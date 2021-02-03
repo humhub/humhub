@@ -32,14 +32,34 @@ use yii\helpers\Url;
  */
 class RichTextToPlainTextConverter extends RichTextToMarkdownConverter
 {
+    /**
+     * @inheritdoc
+     */
     protected const IMAGE_SUFFIX = '';
+
+    /**
+     * @inheritdoc
+     */
     protected const BOLD_WRAPPER = '';
+
+    /**
+     * @inheritdoc
+     */
     protected const EMPHASIZE_WRAPPER = '';
+
+    /**
+     * @inheritdoc
+     */
     protected const STRIKE_WRAPPER = '';
+
+    /**
+     * @inheritdoc
+     */
     protected const INLINE_CODE_WRAPPER = '';
 
     /**
-     * Option can be used to trim a text to a certain length
+     * Option can be used to trim a text to a certain length.
+     * Note, this option will not affect cached results and therefore does not require a special cache key.
      */
     public const OPTION_MAX_LENGTH = 'maxLength';
 

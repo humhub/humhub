@@ -1,10 +1,19 @@
 <?php
 
-use yii\helpers\Html;
+use humhub\modules\user\models\User;
+
+/* @var $user User */
+/* @var $newUsername string */
+
+$text = Yii::t('UserModule.account',
+    'You have successfully changed your username.<br>Your new username is {newUsername}.',
+    ['{newUsername}' =>$newUsername]);
+
+$text = str_replace("<br>", "\n", $text);
 ?>
-<?php echo strip_tags(Yii::t('UserModule.account', 'Your username has been changed')); ?>
+<?= Yii::t('UserModule.account', 'Your username has been changed') ?>
 
 
-<?php echo strip_tags(Yii::t('UserModule.account', 'Hello')); ?> <?php echo Html::encode($user->displayName); ?>,
+<?= Yii::t('UserModule.account', 'Hello') ?> <?= $user->displayName ?>,
 
-<?php echo strip_tags(str_replace("<br>", "\n", Yii::t('UserModule.account', 'You have successfully changed your username.<br>Your new username is {newUsername}.', ['{newUsername}' => Html::encode($newUsername)]))); ?>
+<?= $text ?>
