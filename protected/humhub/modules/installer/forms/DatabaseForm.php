@@ -24,6 +24,11 @@ class DatabaseForm extends \yii\base\Model
     public $hostname;
 
     /**
+     * @var integer port
+     */
+    public $port;
+
+    /**
      * @var string username
      */
     public $username;
@@ -46,6 +51,7 @@ class DatabaseForm extends \yii\base\Model
         return [
             [['hostname', 'username', 'database'], 'required'],
             ['password', 'safe'],
+            ['port', 'integer'],
         ];
     }
 
@@ -56,6 +62,7 @@ class DatabaseForm extends \yii\base\Model
     {
         return [
             'hostname' => Yii::t('InstallerModule.base', 'Hostname'),
+            'port' => Yii::t('InstallerModule.base', 'Port'),
             'username' => Yii::t('InstallerModule.base', 'Username'),
             'password' => Yii::t('InstallerModule.base', 'Password'),
             'database' => Yii::t('InstallerModule.base', 'Name of Database'),

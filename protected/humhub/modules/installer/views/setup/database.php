@@ -2,7 +2,9 @@
 
 use humhub\compat\CActiveForm;
 use humhub\libs\Html;
+use humhub\modules\installer\forms\DatabaseForm;
 
+/* @var DatabaseForm $model */
 ?>
 
 <div id="database-form" class="panel panel-default animated fadeIn">
@@ -23,6 +25,13 @@ use humhub\libs\Html;
             <?php echo $form->textField($model, 'hostname', ['class' => 'form-control', 'id' => 'hostname']); ?>
             <p class="help-block"><?php echo Yii::t('InstallerModule.base', 'Hostname of your MySQL Database Server (e.g. localhost if MySQL is running on the same machine)'); ?></p>
             <?php echo $form->error($model, 'hostname'); ?>
+        </div>
+        <hr/>
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'port'); ?>
+            <?php echo $form->textField($model, 'port', ['class' => 'form-control', 'id' => 'port']); ?>
+            <p class="help-block"><?php echo Yii::t('InstallerModule.base', 'Optional: Port of your MySQL Database Server. Leave empty to use default port.'); ?></p>
+            <?php echo $form->error($model, 'port'); ?>
         </div>
         <hr/>
         <div class="form-group">
