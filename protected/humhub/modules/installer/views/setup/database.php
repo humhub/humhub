@@ -54,6 +54,11 @@ use humhub\modules\installer\forms\DatabaseForm;
             <p class="help-block"><?php echo Yii::t('InstallerModule.base', 'The name of the database you want to run HumHub in.'); ?></p>
             <?php echo $form->error($model, 'database'); ?>
         </div>
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'create'); ?>
+            <?php echo $form->checkBox($model, 'create', ['class' => 'form-control']); ?>
+            <?php echo $form->error($model, 'create'); ?>
+        </div>
 
         <?php if ($errorMessage) { ?>
             <div class="alert alert-danger">

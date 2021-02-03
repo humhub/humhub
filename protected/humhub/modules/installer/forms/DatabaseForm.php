@@ -44,6 +44,11 @@ class DatabaseForm extends \yii\base\Model
     public $database;
 
     /**
+     * @var string Create database if it doesn't exist
+     */
+    public $create;
+
+    /**
      * @inheritdoc
      */
     public function rules()
@@ -52,6 +57,7 @@ class DatabaseForm extends \yii\base\Model
             [['hostname', 'username', 'database'], 'required'],
             ['password', 'safe'],
             ['port', 'integer'],
+            ['create', 'in', 'range' => [0, 1]],
         ];
     }
 
@@ -66,6 +72,7 @@ class DatabaseForm extends \yii\base\Model
             'username' => Yii::t('InstallerModule.base', 'Username'),
             'password' => Yii::t('InstallerModule.base', 'Password'),
             'database' => Yii::t('InstallerModule.base', 'Name of Database'),
+            'create' => Yii::t('InstallerModule.base', 'Create the database if it doesn\'t exist yet.'),
         ];
     }
 
