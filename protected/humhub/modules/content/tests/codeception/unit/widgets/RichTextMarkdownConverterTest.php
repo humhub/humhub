@@ -245,7 +245,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             'Test mention ' . MentioningExtension::buildMentioning($user),
-            "Test mention [" . $user->getDisplayName() . "](" . $user->createUrl(null, [], true) . ")");
+            "Test mention [@" . $user->getDisplayName() . "](" . $user->createUrl(null, [], true) . ")");
     }
 
     public function testMentionNotFound()
@@ -271,7 +271,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             'Test mention [](mention:' . $user->guid . ')',
-            "Test mention [" . $user->getDisplayName() . "](" . $user->createUrl(null, [], true) . ")");
+            "Test mention [@" . $user->getDisplayName() . "](" . $user->createUrl(null, [], true) . ")");
     }
 
     /*

@@ -42,8 +42,8 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     public function testConvertTextWithMaxLength()
     {
         $this->assertConversionResult(
-            '123456789',
-            "12345...", ['maxLength' => 5]);
+            'Test text truncation',
+            "Test...", ['maxLength' => 5]);
     }
 
     /**
@@ -265,7 +265,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             'Test mention ' . MentioningExtension::buildMentioning($user),
-            "Test mention " . $user->getDisplayName());
+            "Test mention @" . $user->getDisplayName());
     }
 
     public function testMentionNotFound()
@@ -291,7 +291,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             'Test mention [](mention:' . $user->guid . ')',
-            "Test mention " . $user->getDisplayName());
+            "Test mention @" . $user->getDisplayName());
     }
 
     /*

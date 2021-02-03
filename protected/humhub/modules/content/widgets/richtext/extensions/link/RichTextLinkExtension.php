@@ -49,10 +49,10 @@ class RichTextLinkExtension extends RichTextContentExtension
     public static function convertToPlainText($text, $url)
     {
         if(!static::validateNonExtensionUrl($url)) {
-            return strip_tags($text);
+            return $text;
         }
 
-        return trim(strip_tags($text)).'('.$url.')';
+        return trim($text).'('.$url.')';
     }
 
     public static function validateNonExtensionUrl($url)
