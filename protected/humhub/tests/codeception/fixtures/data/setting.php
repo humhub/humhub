@@ -27,4 +27,5 @@ return [
     ['name' => 'colorDanger', 'value' => '#ff8989', 'module_id' => 'base'],
     ['name' => 'defaultLanguage', 'value' => 'en-US', 'module_id' => 'base'],
     ['name' => 'maintenanceMode', 'value' => '0', 'module_id' => 'base'],
+    ['name' => 'enableProfilePermissions', 'value' => '1', 'module_id' => 'user'],
 ];
