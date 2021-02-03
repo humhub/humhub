@@ -573,7 +573,7 @@ class SelfTest
             }
             $checks[] = [
                 'title' => Yii::t('base', $title) . ' - ' . $driver,
-                'state' => 'ERROR',
+                'state' => 'WARNING',
                 'hint' => 'Allowed drivers: ' . implode(', ', $allowedDriverTitles),
             ];
             return $checks;
