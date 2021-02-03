@@ -70,7 +70,6 @@ class InviteModelTest extends HumHubDbTestCase
 
         Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', true);
         Yii::$app->user->setIdentity($user);
-        Yii::$app->language = 'en_US';
 
         $model->sendInviteMail();
         $model->delete();
@@ -92,8 +91,6 @@ class InviteModelTest extends HumHubDbTestCase
 
         Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', true);
         Yii::$app->user->setIdentity($user);
-        Yii::$app->language = 'en_US';
-
         $model->sendInviteMail();
         $model->delete();
 
