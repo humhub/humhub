@@ -120,7 +120,6 @@ humhub.module('admin', function (module, require, $) {
                 $('#admin-icon-file-upload').trigger('click');
             });
         }
-
     };
 
     var changeMaintenanceMode = function (evt) {
@@ -132,6 +131,20 @@ humhub.module('admin', function (module, require, $) {
         $('input[name="BasicSettingsForm[maintenanceModeInfo]"]').prop('disabled', !evt.$trigger.prop('checked'));
     };
 
+    var changeIndividualProfilePermissions = function (evt) {
+        evt.finish();
+        evt.$trigger.prop('checked', !evt.$trigger.prop('checked'));
+        evt.$trigger.data('action-confirm', module.text('enableProfilePermissions.question.' + (evt.$trigger.prop('checked') ? 'disable' : 'enable')));
+        evt.$trigger.data('action-confirm-text', module.text('enableProfilePermissions.button.' + (evt.$trigger.prop('checked') ? 'disable' : 'enable')));
+        $.ajax({
+            url: evt.$trigger.data('action-url'),
+            type: "POST",
+            data: {isEnabled: evt.$trigger.prop('checked')},
+        }).done(function (data) {
+            module.log.success('success.saved');
+        });
+    };
+
     module.export({
         init: init,
         initOnPjaxLoad: true,
@@ -140,5 +153,6 @@ humhub.module('admin', function (module, require, $) {
         deletePageIcon: deletePageIcon,
         changeIcon: changeIcon,
         changeMaintenanceMode: changeMaintenanceMode,
+        changeIndividualProfilePermissions: changeIndividualProfilePermissions,
     });
 });
