@@ -28,6 +28,9 @@ class ContentContainerDefaultPermissionManager extends PermissionManager
      */
     protected function getModulePermissions(\yii\base\Module $module)
     {
+        if ($module instanceof ContentContainerModule && method_exists($module, 'getContainerPermissions')) {
+            return $module->getContainerPermissions(new $this->contentcontainer_class);
+        }
         if ($module instanceof \humhub\components\Module) {
             return $module->getPermissions(new $this->contentcontainer_class);
         }
