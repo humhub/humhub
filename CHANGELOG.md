@@ -9,6 +9,7 @@ HumHub Changelog
 - Fix #4569: Prevent double module registration
 - Fix #4389: Require to check a checkbox if the profile field is required
 - Fix #3687: Disable profile field type for existing record
+- Fix #4825: Make settings index(name, module_id) unique
 
 
 1.7.2 (January 21, 2021)
