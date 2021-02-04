@@ -77,7 +77,6 @@ return [
     'Updated by' => 'Atualizado por',
     'User' => 'Usuário',
     'User has been invited.' => 'O usuário foi convidado.',
-    'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'Um usuário com o mesmo e-mail já existe, mas não está vinculado a você. Faça login usando seu e-mail primeiro para vinculá-lo.',
     'Username' => 'Nome de usuário',
     'Username contains invalid characters.' => 'Nome de usuário contém caracteres inválidos.',
     'View your about page' => 'Ver sua página de informações',
@@ -94,6 +93,7 @@ return [
     'invited you to join {space} on {name}.' => 'Convidou você para participar de {space} em {name}.',
     'or' => 'ou',
     'Current password' => '',
+    'Default Group' => '',
     'Enable Notifications' => '',
     'Force password change upon first login' => '',
     'Force password change upon next login' => '',
@@ -101,5 +101,6 @@ return [
     'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show all content' => '',
+    'Unsuccessful login attempts since last login: {failedLoginAttemptsCount}' => '',
     'Your are already logged in! - Logout first!' => '',
 ];

@@ -166,12 +166,11 @@ class ProfileField extends ActiveRecord
      */
     public function getFormDefinition()
     {
-
         $categories = ProfileFieldCategory::find()->orderBy('sort_order')->all();
         $profileFieldTypes = new fieldtype\BaseType();
         $isVirtualField = (!$this->isNewRecord && $this->getFieldType()->isVirtual);
 
-        $definition = [
+        return [
             'ProfileField' => [
                 'type' => 'form',
                 #'showErrorSummary' => true,
@@ -180,6 +179,7 @@ class ProfileField extends ActiveRecord
                         'type' => 'text',
                         'maxlength' => 32,
                         'class' => 'form-control',
+                        'readonly' => !$this->isNewRecord, // Cannot be changed for existing record
                     ],
                     'title' => [
                         'type' => 'text',
@@ -237,17 +237,10 @@ class ProfileField extends ActiveRecord
                         'items' => $profileFieldTypes->getFieldTypes(),
                         'htmlOptions' => ['options' => $profileFieldTypes->getFieldTypeItemOptions()],
                         'class' => 'form-control',
+                        'readonly' => !$this->isNewRecord, // Cannot be changed for existing record
                     ],
                 ]
             ]];
-
-        // Field Type and Internal Name cannot be changed for existing records
-        // So disable these fields.
-        if (!$this->isNewRecord) {
-            $definition['ProfileField']['elements']['field_type_class']['disabled'] = true;
-            $definition['ProfileField']['elements']['internal_name']['readonly'] = true;
-        }
-        return $definition;
     }
 
     /**

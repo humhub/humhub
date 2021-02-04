@@ -137,6 +137,7 @@ return [
     '<strong>About</strong> the Space' => '',
     '<strong>About</strong> your membership' => '',
     'Decline Invite' => '',
+    'Guests' => '',
     'Hide Members sidebar in the stream page.' => '',
     'Max. 100 characters.' => '',
     'Moderator' => '',

@@ -71,6 +71,7 @@ return [
     'Everyone can enter' => '',
     'Follow' => '',
     'Followers' => '',
+    'Guests' => '',
     'Hide Members sidebar in the stream page.' => '',
     'Homepage' => '',
     'Homepage (Guests)' => '',

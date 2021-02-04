@@ -73,5 +73,6 @@ return [
     'Due to security reasons you are required to change your password in order to access the platform.' => '',
     'Log out' => '',
     'Please enter the letters from the image.' => '',
+    'Please wait' => '',
     'User or Password incorrect.' => '',
 ];

@@ -142,5 +142,6 @@ return [
     '{count} members' => '{count} membri',
     '{email} is already registered!' => '{email} è già registrato!',
     '{email} is not valid!' => '{email} non è valida!',
+    'Guests' => '',
     'Hide Members sidebar in the stream page.' => '',
 ];

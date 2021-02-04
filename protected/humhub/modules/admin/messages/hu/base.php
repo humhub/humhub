@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'Függőben lévő felhasználói regisztrációk',
     'Permissions' => 'Engedélyek',
     'Proxy' => 'Proxy',
-    'Security' => 'Biztonság',
     'Self test' => 'Öntesztelés',
     'Settings' => 'Beállítások',
     'Sign up' => 'Feliratkozás',
@@ -64,6 +63,8 @@ return [
     'User posts' => 'Felhasználói bejegyzések',
     'Userprofiles' => 'Felhasználói profilok',
     'Users' => 'Felhasználók',
+    '<strong>Maintenance</strong> Mode' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
 ];

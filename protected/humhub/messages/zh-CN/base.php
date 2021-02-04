@@ -99,4 +99,7 @@ return [
     'Toggle post menu' => '',
     'Toggle stream entry menu' => '',
     'Upload file' => '',
+    '{nFormatted}B' => '',
+    '{nFormatted}K' => '',
+    '{nFormatted}M' => '',
 ];

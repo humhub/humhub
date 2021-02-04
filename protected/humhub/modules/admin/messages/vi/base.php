@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'Đăng ký đang chờ duyệt',
     'Permissions' => 'Quyền truy cập',
     'Proxy' => 'Proxy',
-    'Security' => 'Bảo mật',
     'Self test' => 'Tự kiểm thử',
     'Settings' => 'Cài đặt',
     'Sign up' => 'Đăng ký',
@@ -64,6 +63,8 @@ return [
     'User posts' => 'Bài đăng',
     'Userprofiles' => 'Hồ sơ người dùng',
     'Users' => 'Người dùng',
+    '<strong>Maintenance</strong> Mode' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
 ];

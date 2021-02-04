@@ -76,7 +76,6 @@ return [
     'Updated by' => 'Обновлено пользователем',
     'User' => 'Пользователь',
     'User has been invited.' => 'Пользователь был приглашён.',
-    'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'Пользователь с таким же адресом электронной почты уже существует, но не связан с Вами. Войдите, используя Вашу электронную почту, чтобы привязать её.',
     'Username' => 'Имя пользователя',
     'Username contains invalid characters.' => 'Имя пользователя содержит недопустимые символы.',
     'View your about page' => 'Просмотр Вашей страницы «Обо мне»',
@@ -93,6 +92,7 @@ return [
     'invited you to join {space} on {name}.' => 'приглашает Вас присоединиться к сообществу {space} на {name}',
     'or' => 'или',
     'Current password' => '',
+    'Default Group' => '',
     'Enable Notifications' => '',
     'Force password change upon first login' => '',
     'Force password change upon next login' => '',
@@ -101,5 +101,6 @@ return [
     'Profile posts only' => '',
     'Show all content' => '',
     'Source' => '',
+    'Unsuccessful login attempts since last login: {failedLoginAttemptsCount}' => '',
     'Your are already logged in! - Logout first!' => '',
 ];

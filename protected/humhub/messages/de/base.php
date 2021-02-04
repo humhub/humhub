@@ -82,4 +82,7 @@ return array (
   'Upload' => 'Hochladen',
   'Upload file' => 'Datei hochladen',
   'You are not allowed to run this action.' => 'Du hast keine Berechtigung, diese Aktion auszuführen.',
+  '{nFormatted}B' => '{nFormatted} Mrd.',
+  '{nFormatted}K' => '{nFormatted} Tsd.',
+  '{nFormatted}M' => '{nFormatted} Mio.',
 );

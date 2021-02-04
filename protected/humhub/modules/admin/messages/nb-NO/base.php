@@ -52,7 +52,6 @@ return [
     'Pending user registrations' => 'Ventende brukerregistreringer',
     'Permissions' => 'Tilatelser',
     'Proxy' => 'Proxy',
-    'Security' => 'Sikkerhet',
     'Self test' => 'Selvtest',
     'Settings' => 'Innstillinger',
     'Sign up' => 'Meld deg på',
@@ -63,7 +62,9 @@ return [
     'User posts' => 'Brukerinnlegg',
     'Userprofiles' => 'Brukerprofiler',
     'Users' => 'Brukere',
+    '<strong>Maintenance</strong> Mode' => '',
     '<strong>Module </strong> administration' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
 ];

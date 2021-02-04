@@ -53,7 +53,7 @@ class SettingController extends Controller
             'mailing' => Yii::t('AdminModule.base', 'Mailing'),
             'mailing-server' => Yii::t('AdminModule.base', 'Mailing'),
             'design' => Yii::t('AdminModule.base', 'Design'),
-            'security' => Yii::t('AdminModule.base', 'Security'),
+            'permissions' => Yii::t('AdminModule.base', 'Permissions'),
             'file' => Yii::t('AdminModule.base', 'Files'),
             'cronjobs' => Yii::t('AdminModule.base', 'Cronjobs'),
             'proxy' => Yii::t('AdminModule.base', 'Proxy'),

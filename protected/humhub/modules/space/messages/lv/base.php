@@ -82,6 +82,7 @@ return [
     'Email addresses' => '',
     'Follow' => '',
     'Followers' => '',
+    'Guests' => '',
     'Hide Members sidebar in the stream page.' => '',
     'Homepage' => '',
     'Homepage (Guests)' => '',

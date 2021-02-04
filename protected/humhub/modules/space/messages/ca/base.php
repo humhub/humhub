@@ -97,6 +97,7 @@ return [
     'Do you really want to delete your title image?' => '',
     'Done' => '',
     'Email addresses' => '',
+    'Guests' => '',
     'Hide Members sidebar in the stream page.' => '',
     'Homepage' => '',
     'Homepage (Guests)' => '',

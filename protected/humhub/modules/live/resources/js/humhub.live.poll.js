@@ -53,7 +53,7 @@ humhub.module('live.poll', function (module, require, $) {
             .on('focus',this.onWindowFocus.bind(this));
 
         var that = this;
-        $(document).on('mousemove keydown mousedown touchstart', object.debounce(function(that) {
+        $(document).on('mousemove keydown mousedown touchstart', object.debounce(function() {
             that.stopIdle();
         }, 200));
 

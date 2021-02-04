@@ -135,6 +135,7 @@ return [
     '<strong>About</strong> your membership' => '',
     'Add users without invitation' => '',
     'Decline Invite' => '',
+    'Guests' => '',
     'Hide Members sidebar in the stream page.' => '',
     'Max. 100 characters.' => '',
     'Moderator' => '',

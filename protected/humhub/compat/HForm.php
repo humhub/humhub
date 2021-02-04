@@ -251,15 +251,10 @@ class HForm extends \yii\base\Component
                 $options = array_merge($options, $definition['htmlOptions']);
             }
 
-            $showLabel = !isset($definition['label']) || $definition['label'] !== false;
-
             if (isset($definition['type'])) {
                 switch ($definition['type']) {
                     case 'text':
                         $field = $this->form->field($model, $name)->textInput($options);
-                        if (!$showLabel) {
-                            $field->label(false);
-                        }
                         break;
                     case 'multiselectdropdown':
                         $field = $this->form->field($model, $name)->widget(MultiSelect::class, [
@@ -269,9 +264,6 @@ class HForm extends \yii\base\Component
                         break;
                     case 'dropdownlist':
                         $field = $this->form->field($model, $name)->dropDownList($definition['items'], $options);
-                        if (!empty($options['label'])) {
-                            $field->label($options['label']);
-                        }
                         break;
                     case 'checkbox':
                         if (isset($options['readOnly']) && $options['readOnly']) {
@@ -299,13 +291,10 @@ class HForm extends \yii\base\Component
                         }
 
                         $field = $this->form->field($model, $name)->textarea($options);
-
-                        if (!$showLabel) {
-                            $field->label(false);
-                        }
                         break;
                     case 'hidden':
-                        $field = $this->form->field($model, $name)->hiddenInput($options)->label(false);
+                        $field = $this->form->field($model, $name)->hiddenInput($options);
+                        $definition['label'] = false;
                         break;
                     case 'password':
                         $field = $this->form->field($model, $name)->passwordInput($options);
@@ -344,6 +333,10 @@ class HForm extends \yii\base\Component
                         break;
                     default:
                         return "Field Type " . $definition['type'] . " not supported by Compat HForm";
+                }
+
+                if (isset($definition['label'])) {
+                    $field->label($definition['label']);
                 }
 
                 if (!empty($definition['hint']) && $field instanceof ActiveField) {

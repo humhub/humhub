@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'Αναμονή εγγραφής χρήστη',
     'Permissions' => 'Δικαιώματα',
     'Proxy' => 'Πληρεξούσιο',
-    'Security' => 'Ασφάλεια',
     'Self test' => 'Τεστ αυτοαξιολογισης',
     'Settings' => 'Ρυθμίσεις',
     'Sign up' => 'Εγγραφή',
@@ -64,6 +63,8 @@ return [
     'User posts' => 'Δημοσιεύσεις χρήστη',
     'Userprofiles' => 'Προφίλ χρήστη',
     'Users' => 'Χρήστες',
+    '<strong>Maintenance</strong> Mode' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
 ];

@@ -118,6 +118,7 @@ return [
     'Cancel pending membership application' => '',
     'Decline Invite' => '',
     'Do you really want to delete your title image?' => '',
+    'Guests' => '',
     'Hide Members sidebar in the stream page.' => '',
     'Max. 100 characters.' => '',
     'Moderator' => '',
