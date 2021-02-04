@@ -227,6 +227,7 @@ abstract class BaseRichTextConverter extends GithubMarkdown
                     static::$cache[$cacheKey] = $result;
                 }
             }
+
             $result = $this->onAfterParse($result);
 
             return $result;

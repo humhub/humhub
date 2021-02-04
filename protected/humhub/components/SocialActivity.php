@@ -8,23 +8,20 @@
 
 namespace humhub\components;
 
+use Yii;
+use yii\base\BaseObject;
+use yii\helpers\Html;
+use yii\helpers\Json;
+use yii\helpers\Url;
 use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
-use humhub\libs\Helpers;
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\widgets\richtext\converter\BaseRichTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
-use Yii;
-use yii\helpers\Html;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\interfaces\ContentOwner;
-use humhub\modules\content\widgets\richtext\RichText;
-use yii\helpers\Json;
-use yii\helpers\Url;
 
 /**
  * This class represents a social Activity triggered within the network.
@@ -39,7 +36,7 @@ use yii\helpers\Url;
  * @since 1.1
  * @author buddha
  */
-abstract class SocialActivity extends \yii\base\BaseObject implements rendering\Viewable, \Serializable
+abstract class SocialActivity extends BaseObject implements rendering\Viewable, \Serializable
 {
 
     /**

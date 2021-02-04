@@ -42,8 +42,18 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     public function testConvertTextWithMaxLength()
     {
         $this->assertConversionResult(
-            'Test text truncation',
+            'Test **text** truncation',
             "Test...", ['maxLength' => 5]);
+    }
+
+    /**
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function testConvertMultiParagraphWithMaxLength()
+    {
+        $this->assertConversionResult(
+            "Test **bold text** truncation\n\nNew Paragraph",
+            "Test bold text truncation New...", ['maxLength' => 30]);
     }
 
     /**
@@ -749,7 +759,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
 
         $this->assertConversionResult(
-            "This is a long text we will truncate",
+            "This **is a long** text we will truncate",
             "This is a...", [
             RichTextToShortTextConverter::OPTION_CACHE_KEY => 'test2',
             RichTextToShortTextConverter::OPTION_MAX_LENGTH => 11

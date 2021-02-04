@@ -33,6 +33,16 @@ use yii\helpers\Url;
 class RichTextToPlainTextConverter extends RichTextToMarkdownConverter
 {
     /**
+     * @var int inline text counter used to skip block parsing if maxLength is reached
+     */
+    private $textCount = 0;
+
+    /**
+     * @var bool if true will skip further block parsing, this flag set if textCount reaches maxLength
+     */
+    private $skipBlocks = false;
+
+    /**
      * @inheritdoc
      */
     protected const IMAGE_SUFFIX = '';
@@ -88,6 +98,49 @@ class RichTextToPlainTextConverter extends RichTextToMarkdownConverter
         }
 
         return RichTextLinkExtension::convertToPlainText($linkBlock->getParsedText(), $linkBlock->getUrl());
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function parseInline($text)
+    {
+        $paragraph = parent::parseInline($text);
+
+        $maxLength = $this->getOption(static::OPTION_MAX_LENGTH, 0);
+
+        // In case of a given cache key, we need to make sure to parse and cache the full text
+        if(!$maxLength || $this->getOption(static::OPTION_CACHE_KEY, null)) {
+            return $paragraph;
+        }
+
+        foreach ($paragraph as $inline) {
+            if(isset($inline[0], $inline[1]) && $inline[0] === 'text') {
+                $this->textCount += strlen($inline[1]);
+                if($this->textCount > $maxLength) {
+                    $this->skipBlocks = true;
+                }
+            }
+        }
+
+        return $paragraph;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function parseBlock($lines, $current)
+    {
+        if($this->skipBlocks) {
+            return [false, count($lines)];
+        }
+
+        // TODO: directly exclude blocks from option
+        // identify block type for this line
+        $blockType = $this->detectLineType($lines, $current);
+
+        // call consume method for the detected block type to consume further lines
+        return $this->{'consume' . $blockType}($lines, $current);
     }
 
     /**
