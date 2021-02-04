@@ -51,6 +51,6 @@ class RichtextPreviewTest extends HumHubDbTestCase
 
     public function testMentioning()
     {
-        $this->assertEquals('Test: Admin Tester', RichText::preview('Test: [Admin Tester](mention:01e50e0d-82cd-41fc-8b0c-552392f5839c "/humhub/develop/index.php?r=user%2Fprofile&cguid=01e50e0d-82cd-41fc-8b0c-552392f5839c")'));
+        $this->assertEquals('Test: @Admin Tester', RichText::preview('Test: [Admin Tester](mention:01e50e0d-82cd-41fc-8b0c-552392f5839c "/humhub/develop/index.php?r=user%2Fprofile&cguid=01e50e0d-82cd-41fc-8b0c-552392f5839c")'));
     }
 }

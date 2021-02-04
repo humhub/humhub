@@ -8,6 +8,7 @@
 
 namespace tests\codeception\unit\modules\content\widgets;
 
+use cebe\markdown\GithubMarkdown;
 use humhub\libs\EmojiMap;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
@@ -40,7 +41,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
         $this->assertConversionResult(
             'Test [Link](https://www.humhub.com/de)',
             '<p>Test <a href="https://www.humhub.com/de" target="_self" rel="nofollow noreferrer noopener">Link</a></p>',
-            [RichTextToHtmlConverter::OPTION_LINK_TARGET =>  '_self']);
+            [RichTextToHtmlConverter::OPTION_LINK_TARGET => '_self']);
     }
 
     public function testConvertLinkAsText()
@@ -48,7 +49,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
         $this->assertConversionResult(
             'Test [Link](https://www.humhub.com/de)',
             '<p>Test Link</p>',
-            [RichTextToHtmlConverter::OPTION_LINK_AS_TEXT =>  '_self']);
+            [RichTextToHtmlConverter::OPTION_LINK_AS_TEXT => '_self']);
     }
 
     public function testConvertLinkWithoutTargetToHtml()
@@ -56,9 +57,8 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
         $this->assertConversionResult(
             'Test [Link](https://www.humhub.com/de)',
             '<p>Test <a href="https://www.humhub.com/de">Link</a></p>',
-            [RichTextToHtmlConverter::OPTION_PREV_LINK_TARGET =>  true]);
+            [RichTextToHtmlConverter::OPTION_PREV_LINK_TARGET => true]);
     }
-
 
 
     /**
@@ -157,7 +157,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
         $this->assertConversionResult(
             'Test ![Alt Text](https://www.humhub.com/static/img/logo.png)',
             '<p>Test <a href="https://www.humhub.com/static/img/logo.png" target="_blank" rel="nofollow noreferrer noopener">Alt Text</a></p>',
-        [RichTextToHtmlConverter::OPTION_IMAGE_AS_LINK => true]);
+            [RichTextToHtmlConverter::OPTION_IMAGE_AS_LINK => true]);
     }
 
     public function testConvertImageWithoutTitleAsLink()
@@ -334,7 +334,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (\Throwable $e ) {
+        } catch (\Throwable $e) {
             // Need to catch since hash saving will fail
         }
 
@@ -365,7 +365,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (\Throwable $e ) {
+        } catch (\Throwable $e) {
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(
@@ -388,12 +388,21 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (\Throwable $e ) {
+        } catch (\Throwable $e) {
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(
             'Test file ![Test File>](file-guid:xyz)',
             '<p>Test file <img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=xyz&amp;hash_sha1=xxx" alt="Test File"></p>');
+    }
+
+    public function testDataImage()
+    {
+        // DATA images currently not supported
+        $this->assertConversionResult(
+            '![](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==)',
+            '<p></p>'
+        );
     }
 
     public function testImageFileWithLeftAlign()
@@ -411,7 +420,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (\Throwable $e ) {
+        } catch (\Throwable $e) {
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(
@@ -434,7 +443,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (\Throwable $e ) {
+        } catch (\Throwable $e) {
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(
@@ -589,14 +598,32 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     /*
     * Tables
     */
-    public function testConvertTableA()
+    public function testConvertTableWithAlignment()
     {
-        $expected = "<table>\r\n<thead>\r\n<tr><th>Tables </th><th>Are </th><th>Cool</th></tr>\r\n</thead>\r\n";
-        $expected .= "<tbody>\r\n<tr><td>col 3 is </td><td>right-aligned </td><td>$1600</td></tr>\r\n</tbody>\r\n";
+        $expected = "<table>\r\n<thead>\r\n<tr><th>Tables</th><th align=\"center\">Are</th><th align=\"right\">Cool</th></tr>\r\n</thead>\r\n";
+        $expected .= "<tbody>\r\n<tr><td>col 3 is</td><td align=\"center\">right-aligned</td><td align=\"right\">$1600</td></tr>\r\n</tbody>\r\n";
         $expected .= "</table>";
 
         $this->assertConversionResult(
             "| Tables | Are | Cool |\n| ------------- |:-------------:| -----:|\n| col 3 is | right-aligned | $1600 |",
+            $expected);
+    }
+
+   /*
+    * Tables
+    */
+
+    /**
+     * @skip see https://github.com/cebe/markdown/issues/179
+     */
+    public function testConvertTableWithoutBodyAtEnd()
+    {
+        $expected = "<table>\r\n<thead>\r\n<tr><th>Tables</th><th>Are</th><th>Cool</th></tr>\r\n</thead>\r\n";
+        $expected .= "<tbody>\r\n</tbody>\r\n";
+        $expected .= "</table>";
+
+        $this->assertConversionResult(
+            "| Tables | Are | Cool |\n| ------------- | ------------- | ----- |",
             $expected);
     }
 
@@ -606,30 +633,30 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
      */
     public function testConvertTableWithoutTd()
     {
-        $expected = "<table>\r\n<thead>\r\n<tr><th>Tables </th><th>Are </th><th>Cool</th></tr>\r\n</thead>\r\n";
+        $expected = "<table>\r\n<thead>\r\n<tr><th>Tables</th><th>Are</th><th>Cool</th></tr>\r\n</thead>\r\n";
         $expected .= "<tbody>\r\n</tbody>\r\n";
         $expected .= "</table>";
 
         $this->assertConversionResult(
-            "| Tables | Are | Cool |\n| ------------- |:-------------:| -----:|\n",
+            "| Tables | Are | Cool |\n| ------------- | ------------- | ----- |\n",
             $expected);
     }
 
     public function testConvertExcludeTable()
     {
         $this->assertConversionResult(
-            "| Tables | Are | Cool |\n| ------------- |:-------------:| -----:|\n| col 3 is | right-aligned | $1600 |",
+            "| Tables | Are | Cool |\n| ------------- | ------------- | ----- |\n| col 3 is | right-aligned | $1600 |",
             '', ['exclude' => ['table']]);
     }
 
     public function testConvertTableWithInlineMark()
     {
-        $expected = "<table>\r\n<thead>\r\n<tr><th>Tables </th><th>Are </th><th>Cool</th></tr>\r\n</thead>\r\n";
-        $expected .= "<tbody>\r\n<tr><td>col 3 is </td><td><strong>right</strong>-aligned </td><td>$1600</td></tr>\r\n</tbody>\r\n";
+        $expected = "<table>\r\n<thead>\r\n<tr><th>Tables</th><th>Are</th><th>Cool</th></tr>\r\n</thead>\r\n";
+        $expected .= "<tbody>\r\n<tr><td>col 3 is</td><td><strong>right</strong>-aligned</td><td>$1600</td></tr>\r\n</tbody>\r\n";
         $expected .= "</table>";
 
         $this->assertConversionResult(
-            "Tables | Are | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is | **right**-aligned | $1600 |",
+            "Tables | Are | Cool  |\n| ------------- | ------------- | ----- |\n| col 3 is | **right**-aligned | $1600 |",
             $expected);
     }
 
