@@ -51,7 +51,7 @@ return array (
   'Enabled OEmbed providers' => 'Aktivierte OEmbed Anbieter',
   'Encryption' => 'Verschlüsselung',
   'Endpoint Url' => 'Ziel-Url',
-  'Exclude media files from stream attachment list' => '',
+  'Exclude media files from stream attachment list' => 'Mediendateien nicht zusätzlich als Anhänge von Beiträgen aufführen',
   'File' => 'Datei',
   'Firstname Lastname (e.g. John Doe)' => 'Vorname Nachname (z. B. Max Mustermann)',
   'Fixed format (dd/mm/yyyy) - Example: {example}' => 'Festes Format (dd/mm/yyyy) - Beispiel: {example}',
