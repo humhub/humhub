@@ -19,7 +19,7 @@ return array (
   'Add new members...' => 'Mitglieder hinzufügen ...',
   'Add new user' => 'Neuen Benutzer hinzufügen',
   'Administrator group could not be deleted!' => '',
-  'All open registration invitations were successfully deleted.' => '',
+  'All open registration invitations were successfully deleted.' => 'Alle ausstehenden Registrierungen wurden gelöscht.',
   'All the personal data of this user will be irrevocably deleted.' => 'Alle persönlichen Daten dieses Benutzers werden unwiderruflich gelöscht.',
   'Allow' => 'Erlauben',
   'Allow users to set individual permissions for their own profile?' => 'Erlaube Benutzern individuelle Berechtigungen für ihr eigenes Profil zu setzen?',
