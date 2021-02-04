@@ -70,10 +70,17 @@ class ModuleAutoLoader implements BootstrapInterface
         }
 
         $modules = [];
+        $moduleIdFolders = [];
         foreach ($folders as $folder) {
             try {
                 /** @noinspection PhpIncludeInspection */
-                $modules[$folder] = require $folder . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
+                $moduleConfig = require $folder . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
+                if (isset($moduleIdFolders[$moduleConfig['id']])) {
+                    Yii::error('Duplicated module "' . $moduleConfig['id'] . '"(' . $folder . ') is already loaded from the folder "' . $moduleIdFolders[$moduleConfig['id']] . '"');
+                } else {
+                    $modules[$folder] = $moduleConfig;
+                    $moduleIdFolders[$moduleConfig['id']] = $folder;
+                }
             } catch (\Throwable $e) {
                 Yii::error($e);
             }
