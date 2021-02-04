@@ -4,7 +4,7 @@ return array (
   'An internal server error occurred.' => 'Es ist ein interner Fehler aufgetreten.',
   'Guest mode not active, please login first.' => 'Gastmodus nicht aktiv, bitte zuerst einloggen.',
   'Login required for this section.' => 'Für diesen Abschnitt ist ein Login erforderlich',
-  'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => '',
+  'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => 'Wartungsmodus aktiviert: Du wurdest automatisch abgemeldet und hast keinen Zugriff mehr auf die Plattform, bis die Wartungsarbeiten abgeschlossen wurden.',
   'Maintenance mode is active. Only Administrators can access the platform.' => 'Aktiver Wartungsmodus: Nur Administratoren haben Zugriff',
   'You are not allowed to perform this action.' => 'Du hast keine Berechtigung für diesen Vorgang.',
   'You are not permitted to access this section.' => 'Du hast keinen Zugriff auf diesen Bereich.',

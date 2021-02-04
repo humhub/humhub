@@ -34,11 +34,11 @@ return [
     'Default Permissions' => '',
     'Default Space Permissions' => '',
     'Default Space(s)' => '',
-    'Here you can define default permissions for spaces. These settings overwrite default permissions from config file and can be overwritten for each individual space.' => '',
+    'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => '',
     'Manage members' => '',
     'Manage modules' => '',
     'Open space' => '',
-    'Permissions are assigned to different user-roles. To edit a default permission, select the user-role you want to edit and change the drop-down value of the given permission.' => '',
+    'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => '',
     'Search by name, description, id or owner.' => '',
     'Update Space memberships also for existing members.' => '',
 ];
