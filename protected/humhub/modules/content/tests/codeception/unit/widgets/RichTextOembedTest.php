@@ -23,15 +23,30 @@ class RichTextOembedTest extends HumHubDbTestCase
     {
         parent::_before();
 
-        (new UrlOembed([
+        static::assertTrue((new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt1',
             'preview' => 'yt1'
-        ]))->save();
+        ]))->save());
 
-        (new UrlOembed([
+        static::assertTrue((new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt2',
             'preview' => 'yt2'
-        ]))->save();
+        ]))->save());
+    }
+
+    public function testScanSingleOembed()
+    {
+        $result = OembedExtension::scanLinkExtension('[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)');
+        static::assertCount(1, $result);
+        static::assertEquals($result[0]->getExtensionId(), 'https://www.youtube.com/watch?v=yt1');
+    }
+
+    public function testLoadOembed()
+    {
+        $result = OembedExtension::scanLinkExtension('[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)');
+        $oembed = UrlOembed::getOEmbed($result[0]->getExtensionId());
+        static::assertNotNull($oembed);
+        static::assertEquals($oembed, 'yt1');
     }
 
     /**
