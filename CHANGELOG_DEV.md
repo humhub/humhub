@@ -1,5 +1,5 @@
-1.8.0 (Unreleased)
-------------------
+1.8.0-beta.1 (February 4, 2021)
+-------------------------------
 
 - Enh #3996: Force password change on first log in for users created by admin
 - Enh #3996: Allow admin to change option "Must change password" for existing users
@@ -47,3 +47,4 @@
 - Enh #4686: Implemented richtext converter to following formats: plaintext, shorttext, html, plain markdown
 - Enh #4686: Enhanced richtext extension API for convterting and post-processing
 - Enh #4686: Added caching mechanism for richtext converter results
+
