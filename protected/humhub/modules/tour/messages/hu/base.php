@@ -17,7 +17,7 @@ return array (
   'End guide' => 'Bemutató befejezése',
   'Get to know your way around the site\'s most important features with the following guides:' => 'Tudj meg mindent, amire szükséged van az oldal használatához. Nézd meg a következő bemutatókat:',
   'Hide my year of birth' => 'Születési évem elrejtése',
-  'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => '',
+  'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => 'Kedves <strong>%firstname%</strong>, köszönjük, hogy a(z) %community% oldalt használod.',
   'Next »' => 'Előre >>',
   'Ok' => 'Rendben',
   'Save and close' => 'Ment és bezár',
