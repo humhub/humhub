@@ -851,7 +851,9 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
         $result = RichText::convert($markdown, RichText::FORMAT_HTML, $options);
 
         // Currently relative image
-        static::assertEquals($expected, trim($result));
+        static::assertEquals(
+            trim(preg_replace('/\s+/', ' ', $expected)),
+            trim(preg_replace('/\s+/', ' ', $result)));
     }
 
 }

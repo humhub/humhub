@@ -21,6 +21,8 @@ class RichTextOembedTest extends HumHubDbTestCase
 
     public function _before()
     {
+        parent::_before();
+
         (new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt1',
             'preview' => 'yt1'
@@ -30,8 +32,6 @@ class RichTextOembedTest extends HumHubDbTestCase
             'url' => 'https://www.youtube.com/watch?v=yt2',
             'preview' => 'yt2'
         ]))->save();
-
-        parent::_before();
     }
 
     /**
@@ -39,7 +39,7 @@ class RichTextOembedTest extends HumHubDbTestCase
      */
     public function testParseSingleOembed()
     {
-        $text = '[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)';
+        $text = "[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)";
         $oembeds = OembedExtension::parseOembeds($text);
         static::assertCount(1, $oembeds);
         static::assertEquals('yt1', $oembeds['https://www.youtube.com/watch?v=yt1']);
@@ -50,7 +50,7 @@ class RichTextOembedTest extends HumHubDbTestCase
      */
     public function testParseMultipleOembeds()
     {
-        $text = '[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)\n\n[https://www.youtube.com/watch?v=yt2](oembed:https://www.youtube.com/watch?v=yt2)';
+        $text = "[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)\n\n[https://www.youtube.com/watch?v=yt2](oembed:https://www.youtube.com/watch?v=yt2)";
         $oembeds = OembedExtension::parseOembeds($text);
         static::assertCount(2, $oembeds);
         static::assertEquals('yt1', $oembeds['https://www.youtube.com/watch?v=yt1']);
@@ -62,7 +62,7 @@ class RichTextOembedTest extends HumHubDbTestCase
      */
     public function testParseOembedsWithMax()
     {
-        $text = '[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)\n\n[https://www.youtube.com/watch?v=yt2](oembed:https://www.youtube.com/watch?v=yt2)';
+        $text = "[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)\n\n[https://www.youtube.com/watch?v=yt2](oembed:https://www.youtube.com/watch?v=yt2)";
         $oembeds = OembedExtension::parseOembeds($text, 1);
         static::assertCount(1, $oembeds);
         static::assertEquals('yt1', $oembeds['https://www.youtube.com/watch?v=yt1']);
@@ -73,7 +73,7 @@ class RichTextOembedTest extends HumHubDbTestCase
      */
     public function testParseOembedsWithZeroMax()
     {
-        $text = '[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)\n\n[https://www.youtube.com/watch?v=yt2](oembed:https://www.youtube.com/watch?v=yt2)';
+        $text = "[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)\n\n[https://www.youtube.com/watch?v=yt2](oembed:https://www.youtube.com/watch?v=yt2)";
         $oembeds = OembedExtension::parseOembeds($text, 0);
         static::assertCount(0, $oembeds);
     }
