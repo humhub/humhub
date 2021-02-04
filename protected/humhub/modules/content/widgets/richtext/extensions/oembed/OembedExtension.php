@@ -75,7 +75,7 @@ class OembedExtension extends RichTextLinkExtension
                 $oembedPreview =  UrlOembed::getOEmbed($match->getExtensionId());
                 if(!empty($oembedPreview)) {
                     $oembedCount++;
-                    $result[] = $oembedPreview;
+                    $result[$match->getExtensionId()] = $oembedPreview;
                 }
             }
 
