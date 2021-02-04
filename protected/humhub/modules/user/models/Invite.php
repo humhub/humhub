@@ -151,7 +151,7 @@ class Invite extends ActiveRecord
             $mail->send();
         } elseif ($this->source == self::SOURCE_INVITE && $this->space !== null) {
 
-            if ($module->sendInviteMailsInGlobalLanguage && !empty(Yii::$app->settings->get('defaultLanguage'))) {
+            if ($module->sendInviteMailsInGlobalLanguage) {
                 Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
             }
 
