@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'Odottaa rekisteröitymistä',
     'Permissions' => 'Käyttöoikeudet',
     'Proxy' => 'Proxy',
-    'Security' => 'Turvallisuus',
     'Self test' => 'Testi',
     'Settings' => 'Asetukset',
     'Sign up' => 'Rekistöidy',
@@ -64,6 +63,8 @@ return [
     'User posts' => 'Käyttäjien sivut',
     'Userprofiles' => 'Käyttäjä profiili',
     'Users' => 'Käyttäjät',
+    '<strong>Maintenance</strong> Mode' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
 ];

@@ -100,4 +100,7 @@ return [
     'Text has been copied to clipboard' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',
     'Time Zone' => '',
+    '{nFormatted}B' => '',
+    '{nFormatted}K' => '',
+    '{nFormatted}M' => '',
 ];

@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'Prijava na čekanju korisnika',
     'Permissions' => 'Dozvole',
     'Proxy' => 'Proxy',
-    'Security' => 'Sigurnost',
     'Self test' => 'Samoprovjera',
     'Settings' => 'Postavke',
     'Sign up' => 'Upiši se',
@@ -64,6 +63,8 @@ return [
     'User posts' => 'Postovi korisnika',
     'Userprofiles' => 'Korisnički profili',
     'Users' => 'Korisnici',
+    '<strong>Maintenance</strong> Mode' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
 ];

@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => '保留中のユーザー登録',
     'Permissions' => '権限',
     'Proxy' => 'プロキシ',
-    'Security' => 'セキュリティ',
     'Self test' => 'セルフテスト',
     'Settings' => '設定',
     'Sign up' => 'サインアップ',
@@ -64,6 +63,8 @@ return [
     'User posts' => 'ユーザー投稿',
     'Userprofiles' => 'ユーザープロフィール',
     'Users' => 'ユーザー',
+    '<strong>Maintenance</strong> Mode' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
 ];

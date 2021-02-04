@@ -61,6 +61,23 @@ Module successfully enabled!
     'Updating module...' => 'モジュールの更新中...',
     'Version:' => 'バージョン：',
     'search for available modules online' => 'オンライン上でモジュールを探す',
+    '
+No active Professional Edition license found!
+' => '',
+    '
+PROFESSIONAL EDITION
+' => '',
+    '
+The license could not be activated:
+' => '',
+    '
+The license was successfully activated!
+
+' => '',
+    '
+The license was successfully removed!
+
+' => '',
     '<strong>Activate</strong> your Professional Edition' => '',
     'All {moduleId} module content will be deleted. Continue?' => '',
     'Buy' => '',

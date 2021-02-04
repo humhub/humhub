@@ -99,4 +99,7 @@ return [
     'Database connection time: {dbTime} - Configured time zone: {time}' => '',
     'Powered by {name}' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',
+    '{nFormatted}B' => '',
+    '{nFormatted}K' => '',
+    '{nFormatted}M' => '',
 ];

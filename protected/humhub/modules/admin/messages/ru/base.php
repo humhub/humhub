@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'Пользователи ожидающие подтверждения',
     'Permissions' => 'Доступ',
     'Proxy' => 'Прокси',
-    'Security' => 'Безопасность',
     'Self test' => 'Самопроверка',
     'Settings' => 'Настройки',
     'Sign up' => 'Зарегистрироваться',
@@ -64,6 +63,8 @@ return [
     'User posts' => 'Сообщения пользователей',
     'Userprofiles' => 'Профили пользователей',
     'Users' => 'Пользователи',
+    '<strong>Maintenance</strong> Mode' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
 ];

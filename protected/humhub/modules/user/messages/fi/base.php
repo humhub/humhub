@@ -77,7 +77,6 @@ return [
     'Updated by' => 'Päivittänyt',
     'User' => 'Käyttäjä',
     'User has been invited.' => 'Käyttäjä on kutsuttu.',
-    'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'Käyttäjä, jolla on sama sähköpostiosoite, on jo olemassa, mutta sitä ei ole linkitetty sinuun. Kirjaudu ensin sähköpostiisi linkin kautta.',
     'Username' => 'Käyttäjänimi',
     'Username contains invalid characters.' => 'Käyttäjätunnus sisältää virheellisiä merkkejä.',
     'View your about page' => 'Katso tietoja sivusi',
@@ -94,6 +93,7 @@ return [
     'invited you to join {space} on {name}.' => 'kutsui sinut liittymään {space} {name}.',
     'or' => 'tai',
     'Current password' => '',
+    'Default Group' => '',
     'Enable Notifications' => '',
     'Force password change upon first login' => '',
     'Force password change upon next login' => '',
@@ -101,5 +101,6 @@ return [
     'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show all content' => '',
+    'Unsuccessful login attempts since last login: {failedLoginAttemptsCount}' => '',
     'Your are already logged in! - Logout first!' => '',
 ];

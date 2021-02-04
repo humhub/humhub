@@ -86,7 +86,16 @@ class Checkbox extends BaseType
      */
     public function getFieldRules($rules = [])
     {
-        $rules[] = [$this->profileField->internal_name, 'in', 'range' => [0, 1]];
+        $profileField = $this->profileField;
+        if ($profileField->required) {
+            $rules[] = [$profileField->internal_name, function($attribute) use ($profileField) {
+                if (!$this->$attribute) {
+                    $this->addError($attribute, Yii::t('UserModule.profile', '{attribute} is required!', ['{attribute}' => $profileField->title]));
+                }
+            }];
+        } else {
+            $rules[] = [$profileField->internal_name, 'in', 'range' => [0, 1]];
+        }
         return parent::getFieldRules($rules);
     }
 

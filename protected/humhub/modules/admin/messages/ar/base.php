@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'تسجيلات المستخدم المعلقة',
     'Permissions' => 'أذونات',
     'Proxy' => 'تفويض',
-    'Security' => 'الأمان',
     'Self test' => 'اختبار ذاتي',
     'Settings' => 'الإعدادات',
     'Sign up' => 'تسجيل',
@@ -64,6 +63,8 @@ return [
     'User posts' => 'منشورات المستخدم',
     'Userprofiles' => 'الصفحة الرئيسية',
     'Users' => 'المستخدمين',
+    '<strong>Maintenance</strong> Mode' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
 ];

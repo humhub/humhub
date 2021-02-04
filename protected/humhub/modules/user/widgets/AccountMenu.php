@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\modules\user\Module;
 use Yii;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\LeftNavigation;
@@ -56,14 +57,18 @@ class AccountMenu extends LeftNavigation
             'isActive' => MenuLink::isActiveState('user', 'account', 'edit-settings')
         ]));
 
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.account', 'Security'),
-            'id' => 'account-settings-security',
-            'icon' => 'lock',
-            'url' => ['/user/account/security'],
-            'sortOrder' => 115,
-            'isActive' => MenuLink::isActiveState('user', 'account', 'security')
-        ]));
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+        if (!empty($module->settings->get('enableProfilePermissions'))) {
+            $this->addEntry(new MenuLink([
+                'label' => Yii::t('UserModule.account', 'Permissions'),
+                'id' => 'account-settings-permissions',
+                'icon' => 'lock',
+                'url' => ['/user/account/permissions'],
+                'sortOrder' => 115,
+                'isActive' => MenuLink::isActiveState('user', 'account', 'permissions')
+            ]));
+        }
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.account', 'Modules'),

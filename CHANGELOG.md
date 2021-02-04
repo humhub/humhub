@@ -1,8 +1,19 @@
 HumHub Changelog
 ================
 
-1.7.2 (Unreleased)
--------------------------
+1.7.3 (Unreleased)
+------------------------
+- Fix #4792: Guest access to user profile home page
+- Fix #4794: CountrySelect profile field broken
+- Fix #4793: Form labels (HForm) are not displayed correctly
+- Fix #4569: Prevent double module registration
+- Fix #4389: Require to check a checkbox if the profile field is required
+- Fix #3687: Disable profile field type for existing record
+- Fix #4825: Make settings index(name, module_id) unique
+
+
+1.7.2 (January 21, 2021)
+------------------------
 - Fix #4668: table-responsive tables do not overflow due to default word break style
 - Fix #4679: Richtext extension scan does not include full title if title contains a `)`
 - Fix #4703: SSO login drops no warning if AuthClient cannot be stored
@@ -14,7 +25,8 @@ HumHub Changelog
 - Fix #4715: Call to `Content::canArchive()` throws error on global content
 - Fix #4744: Banner image orientation not being processed
 - Fix #4743: Hide "Like" link when no permission "Can like"
-- Fix #4768: Use only letters and digits from Space name for logo acronym (Thanks to @jrckmcsb) 
+- Fix #4768: Use only letters and digits from Space name for logo acronym (Thanks to @jrckmcsb)
+- Fix #3617: Deny slashes in usernames
 
 
 1.7.1 (November 27, 2020)

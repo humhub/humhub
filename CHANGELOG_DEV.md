@@ -37,6 +37,13 @@
 - Enh #4787: Always enable Space Membership Web Notifications
 - Enh #4795: Added support for collapsible form fields
 - Enh #4796: Added option to disable PWA/ServiceWorker support
+- Enh #4808: Improved richtext styles
 - Fix #4752: Fix saving hash of a deleted file from disk
 - Enh #4671: Implemented live poll result sharing by BroadCastChannel
-- Enh #4098: Disable richtext compat mode by default on new installations + configure by module configuration
+- Enh #4829: Renamed account "Security" page and make it optional
+- Enh #4818: Added database related checks (Driver, Collation, Table Engine)
+- Fix #3662: Encoding issues in mails
+- Enh #4686: Implemented richtext converter to following formats: plaintext, shorttext, html, plain markdown
+- Enh #4686: Enhanced richtext extension API for convterting and post-processing
+- Enh #4686: Added caching mechanism for richtext converter results
+
