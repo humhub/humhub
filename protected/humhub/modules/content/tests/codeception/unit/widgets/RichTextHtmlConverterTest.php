@@ -8,10 +8,8 @@
 
 namespace tests\codeception\unit\modules\content\widgets;
 
-use cebe\markdown\GithubMarkdown;
 use humhub\libs\EmojiMap;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
-use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\file\models\File;
@@ -520,9 +518,9 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     public function testConvertOrderedList()
     {
         $expected = "<p>This is a list</p>\r\n";
-        $expected .= "<ol>\r\n";
-        $expected .= "<li>First Element</li>\r\n";
-        $expected .= "<li>Second Element</li>\r\n";
+        $expected .= "<ol>".PHP_EOL ."";
+        $expected .= "<li>First Element</li>".PHP_EOL ."";
+        $expected .= "<li>Second Element</li>".PHP_EOL ."";
         $expected .= "</ol>";
 
         $this->assertConversionResult(
@@ -532,10 +530,10 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
 
     public function testConvertUnorderedList()
     {
-        $expected = "<p>This is a list</p>\r\n";
-        $expected .= "<ul>\r\n";
-        $expected .= "<li>First Element</li>\r\n";
-        $expected .= "<li>Second Element</li>\r\n";
+        $expected = "<p>This is a list</p>".PHP_EOL ."";
+        $expected .= "<ul>".PHP_EOL ."";
+        $expected .= "<li>First Element</li>".PHP_EOL ."";
+        $expected .= "<li>Second Element</li>".PHP_EOL ."";
         $expected .= "</ul>";
 
         $this->assertConversionResult(
@@ -545,13 +543,13 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
 
     public function testConvertUnorderedSubList()
     {
-        $expected = "<p>This is a list</p>\r\n";
-        $expected .= "<ul>\r\n";
-        $expected .= "<li>First Element<ul>\r\n";
-        $expected .= "<li>First Sub Element</li>\r\n";
-        $expected .= "</ul>\r\n";
-        $expected .= "</li>\r\n";
-        $expected .= "<li>Second Element</li>\r\n";
+        $expected = "<p>This is a list</p>".PHP_EOL;
+        $expected .= "<ul>".PHP_EOL;
+        $expected .= "<li>First Element<ul>".PHP_EOL;
+        $expected .= "<li>First Sub Element</li>".PHP_EOL;
+        $expected .= "</ul>".PHP_EOL;
+        $expected .= "</li>".PHP_EOL;
+        $expected .= "<li>Second Element</li>".PHP_EOL;
         $expected .= "</ul>";
 
         $this->assertConversionResult(
@@ -561,14 +559,14 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
 
     public function testConvertUnorderedMultipleSubItems()
     {
-        $expected = "<p>This is a list</p>\r\n";
-        $expected .= "<ul>\r\n";
-        $expected .= "<li>First Element<ul>\r\n";
-        $expected .= "<li>First Sub Element</li>\r\n";
-        $expected .= "<li>Second Sub Element</li>\r\n";
-        $expected .= "</ul>\r\n";
-        $expected .= "</li>\r\n";
-        $expected .= "<li>Second Element</li>\r\n";
+        $expected = "<p>This is a list</p>".PHP_EOL;
+        $expected .= "<ul>".PHP_EOL;
+        $expected .= "<li>First Element<ul>".PHP_EOL;
+        $expected .= "<li>First Sub Element</li>".PHP_EOL;
+        $expected .= "<li>Second Sub Element</li>".PHP_EOL;
+        $expected .= "</ul>".PHP_EOL;
+        $expected .= "</li>".PHP_EOL;
+        $expected .= "<li>Second Element</li>".PHP_EOL;
         $expected .= "</ul>";
 
         $this->assertConversionResult(
@@ -578,16 +576,16 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
 
     public function testConvertUnorderedMultipleLevelSubItems()
     {
-        $expected = "<p>This is a list</p>\r\n";
-        $expected .= "<ul>\r\n";
-        $expected .= "<li>First Element<ul>\r\n";
-        $expected .= "<li>First Sub Element<ul>\r\n";
-        $expected .= "<li>Second <strong>Level Sub</strong> Element</li>\r\n";
-        $expected .= "</ul>\r\n";
-        $expected .= "</li>\r\n";
-        $expected .= "</ul>\r\n";
-        $expected .= "</li>\r\n";
-        $expected .= "<li>Second Element</li>\r\n";
+        $expected = "<p>This is a list</p>".PHP_EOL;
+        $expected .= "<ul>".PHP_EOL;
+        $expected .= "<li>First Element<ul>".PHP_EOL;
+        $expected .= "<li>First Sub Element<ul>".PHP_EOL;
+        $expected .= "<li>Second <strong>Level Sub</strong> Element</li>".PHP_EOL;
+        $expected .= "</ul>".PHP_EOL;
+        $expected .= "</li>".PHP_EOL;
+        $expected .= "</ul>".PHP_EOL;
+        $expected .= "</li>".PHP_EOL;
+        $expected .= "<li>Second Element</li>".PHP_EOL;
         $expected .= "</ul>";
 
         $this->assertConversionResult(
@@ -600,8 +598,8 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     */
     public function testConvertTableWithAlignment()
     {
-        $expected = "<table>\r\n<thead>\r\n<tr><th>Tables</th><th align=\"center\">Are</th><th align=\"right\">Cool</th></tr>\r\n</thead>\r\n";
-        $expected .= "<tbody>\r\n<tr><td>col 3 is</td><td align=\"center\">right-aligned</td><td align=\"right\">$1600</td></tr>\r\n</tbody>\r\n";
+        $expected = "<table>".PHP_EOL ."<thead>".PHP_EOL ."<tr><th>Tables</th><th align=\"center\">Are</th><th align=\"right\">Cool</th></tr>".PHP_EOL ."</thead>".PHP_EOL;
+        $expected .= "<tbody>".PHP_EOL ."<tr><td>col 3 is</td><td align=\"center\">right-aligned</td><td align=\"right\">$1600</td></tr>".PHP_EOL ."</tbody>".PHP_EOL;
         $expected .= "</table>";
 
         $this->assertConversionResult(
@@ -618,8 +616,8 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
      */
     public function testConvertTableWithoutBodyAtEnd()
     {
-        $expected = "<table>\r\n<thead>\r\n<tr><th>Tables</th><th>Are</th><th>Cool</th></tr>\r\n</thead>\r\n";
-        $expected .= "<tbody>\r\n</tbody>\r\n";
+        $expected = "<table>".PHP_EOL ."<thead>".PHP_EOL ."<tr><th>Tables</th><th>Are</th><th>Cool</th></tr>".PHP_EOL ."</thead>".PHP_EOL;
+        $expected .= "<tbody>".PHP_EOL ."</tbody>".PHP_EOL;
         $expected .= "</table>";
 
         $this->assertConversionResult(
@@ -633,8 +631,8 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
      */
     public function testConvertTableWithoutTd()
     {
-        $expected = "<table>\r\n<thead>\r\n<tr><th>Tables</th><th>Are</th><th>Cool</th></tr>\r\n</thead>\r\n";
-        $expected .= "<tbody>\r\n</tbody>\r\n";
+        $expected = "<table>".PHP_EOL ."<thead>".PHP_EOL ."<tr><th>Tables</th><th>Are</th><th>Cool</th></tr>".PHP_EOL ."</thead>".PHP_EOL;
+        $expected .= "<tbody>".PHP_EOL ."</tbody>".PHP_EOL;
         $expected .= "</table>";
 
         $this->assertConversionResult(
@@ -651,8 +649,8 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
 
     public function testConvertTableWithInlineMark()
     {
-        $expected = "<table>\r\n<thead>\r\n<tr><th>Tables</th><th>Are</th><th>Cool</th></tr>\r\n</thead>\r\n";
-        $expected .= "<tbody>\r\n<tr><td>col 3 is</td><td><strong>right</strong>-aligned</td><td>$1600</td></tr>\r\n</tbody>\r\n";
+        $expected = "<table>".PHP_EOL ."<thead>".PHP_EOL ."<tr><th>Tables</th><th>Are</th><th>Cool</th></tr>".PHP_EOL ."</thead>".PHP_EOL;
+        $expected .= "<tbody>".PHP_EOL ."<tr><td>col 3 is</td><td><strong>right</strong>-aligned</td><td>$1600</td></tr>".PHP_EOL ."</tbody>".PHP_EOL;
         $expected .= "</table>";
 
         $this->assertConversionResult(
@@ -679,14 +677,14 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "> This is a quote",
-            "<blockquote><p>This is a quote</p>\r\n</blockquote>");
+            "<blockquote><p>This is a quote</p>".PHP_EOL ."</blockquote>");
     }
 
     public function testConvertBlockNestedQuote()
     {
         $this->assertConversionResult(
             "> This is a quote \n>\n> > within a quote",
-            "<blockquote><p>This is a quote </p>\r\n<blockquote><p>within a quote</p>\r\n</blockquote>\r\n</blockquote>");
+            "<blockquote><p>This is a quote </p>".PHP_EOL ."<blockquote><p>within a quote</p>".PHP_EOL ."</blockquote>".PHP_EOL ."</blockquote>");
     }
 
     /*
@@ -696,14 +694,14 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "```\nThis is a code block\n```",
-            "<pre><code>This is a code block\r\n</code></pre>");
+            "<pre><code>This is a code block".PHP_EOL ."</code></pre>");
     }
 
     public function testConvertBlockCodeBlockWithLanguage()
     {
         $this->assertConversionResult(
             "```html\n<b>This is a code block</b>\n```",
-            "<pre><code class=\"language-html\">&lt;b&gt;This is a code block&lt;/b&gt;\r\n</code></pre>");
+            "<pre><code class=\"language-html\">&lt;b&gt;This is a code block&lt;/b&gt;".PHP_EOL ."</code></pre>");
     }
 
     /*
@@ -759,7 +757,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "Test\\\nBreak",
-            "<p>Test<br>\r\nBreak</p>");
+            "<p>Test<br>".PHP_EOL ."Break</p>");
     }
 
     public function testHtmlBreak()
@@ -783,14 +781,14 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             "<div>This is <br> html</div>",
-            "<p>&lt;div&gt;This is <br>\r\n html&lt;/div&gt;</p>");
+            "<p>&lt;div&gt;This is <br>".PHP_EOL ." html&lt;/div&gt;</p>");
     }
 
     public function testParagraph()
     {
         $this->assertConversionResult(
             "Paragraph1\n\nParagraph2",
-            "<p>Paragraph1</p>\r\n<p>Paragraph2</p>");
+            "<p>Paragraph1</p>".PHP_EOL ."<p>Paragraph2</p>");
     }
 
     /*
@@ -801,7 +799,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             "Paragraph1\n\nParagraph2\n\nParagraph3 with\\\nnew line",
-            "<p>Paragraph1</p>\r\n<p>Paragraph2</p>\r\n<p>Paragraph3 with<br>\r\nnew line</p>");
+            "<p>Paragraph1</p>".PHP_EOL ."<p>Paragraph2</p>".PHP_EOL ."<p>Paragraph3 with<br>".PHP_EOL ."new line</p>");
     }
 
     public function testCodeBlockAfterParagraph()
@@ -809,7 +807,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             "Paragraph1\n\n```\ncode block\n```",
-            "<p>Paragraph1</p>\r\n<pre><code>code block\r\n</code></pre>");
+            "<p>Paragraph1</p>".PHP_EOL ."<pre><code>code block".PHP_EOL ."</code></pre>");
     }
 
     public function testParagraphAfterCodeBlock()
@@ -817,7 +815,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             "```\ncode block\n```\n\nParagraph1",
-            "<pre><code>code block\r\n</code></pre>\r\n<p>Paragraph1</p>");
+            "<pre><code>code block".PHP_EOL ."</code></pre>".PHP_EOL ."<p>Paragraph1</p>");
     }
 
     public function testCachedResult()
