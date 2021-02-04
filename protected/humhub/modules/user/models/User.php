@@ -150,7 +150,9 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['username'], 'unique'],
             [['username'], 'string', 'max' => $userModule->maximumUsernameLength, 'min' => $userModule->minimumUsernameLength],
             // Client validation is disable due to invalid client pattern validation
-            [['username'], 'validateUsername', 'enableClientValidation' => false],
+            [['username'], 'match', 'pattern' => $userModule->validUsernameRegexp, 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false, 'when' => function ($model, $attribute) {
+                return $model->getAttribute($attribute) !== $model->getOldAttribute($attribute);
+            }],
             [['status', 'created_by', 'updated_by', 'visibility'], 'integer'],
             [['tags'], 'string'],
             [['guid'], 'string', 'max' => 45],
@@ -165,22 +167,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             }],
             [['guid'], 'unique'],
         ];
-    }
-
-    /**
-     * Validate username only on updating old username
-     *
-     * @param string $attribute
-     */
-    public function validateUsername($attribute)
-    {
-        /* @var $userModule \humhub\modules\user\Module */
-        $userModule = Yii::$app->getModule('user');
-
-        if ($this->getAttribute($attribute) !== $this->getOldAttribute($attribute) &&
-            !preg_match($userModule->validUsernameRegexp, $this->getAttribute($attribute))) {
-            $this->addError($attribute, Yii::t('UserModule.base', 'Username contains invalid characters.'));
-        }
     }
 
     /**
