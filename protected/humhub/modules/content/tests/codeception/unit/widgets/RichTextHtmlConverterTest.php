@@ -852,8 +852,8 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
 
         // Currently relative image
         static::assertEquals(
-            trim(preg_replace('/\s+/', '', $expected)),
-            trim(preg_replace('/\s+/', '', $result)));
+            trim(str_replace(["\n", "\r"], '', $expected)),
+            trim(str_replace(["\n", "\r"], '', $result)));
     }
 
 }
