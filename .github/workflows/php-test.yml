@@ -15,7 +15,7 @@ jobs:
         name: PHP ${{ matrix.php-version }}-mysql-${{ matrix.mysql-version }}
         env:
             extensions: curl, intl, pdo, pdo_mysql, zip, exif, fileinfo, mbstring, gd
-            key: cache-v1
+            key: cache-v2
 
         runs-on: ${{ matrix.os }}
 

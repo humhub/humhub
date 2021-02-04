@@ -44,7 +44,7 @@ class ContentCreated extends BaseNotification
      */
     public function html()
     {
-        if($this->source->content->container instanceof User && $this->record->user->is($this->source->content->container)) {
+        if ($this->source->content->container instanceof User && $this->record->user->is($this->source->content->container)) {
             return Yii::t('ContentModule.notifications', '{displayName} posted on your profile {contentTitle}.', [
                 'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
                 'contentTitle' => $this->getContentInfo($this->source, false)
@@ -68,21 +68,27 @@ class ContentCreated extends BaseNotification
         $space = $this->getSpace();
         if ($space) {
             if ($this->isExplicitNotifyUser($user)) {
-                return Yii::t('ContentModule.notifications', '{originator} notifies you about {contentInfo} in {space}', ['originator' => Html::encode($this->originator->displayName),
-                            'space' => Html::encode($space->displayName),
-                            'contentInfo' => $contentInfo]);
+                return Yii::t('ContentModule.notifications', '{originator} notifies you about {contentInfo} in {space}', [
+                    'originator' => $this->originator->displayName,
+                    'space' => $space->displayName,
+                    'contentInfo' => $contentInfo]);
             }
-            return Yii::t('ContentModule.notifications', '{originator} just wrote {contentInfo} in space {space}', ['originator' => Html::encode($this->originator->displayName),
-                        'space' => Html::encode($space->displayName),
-                        'contentInfo' => $contentInfo]);
-        } else {
-            if ($this->isExplicitNotifyUser($user)) {
-                return Yii::t('ContentModule.notifications', '{originator} notifies you about {contentInfo}', ['originator' => Html::encode($this->originator->displayName),
-                            'contentInfo' => $contentInfo]);
-            }
-            return Yii::t('ContentModule.notifications', '{originator} just wrote {contentInfo}', ['originator' => Html::encode($this->originator->displayName),
-                        'contentInfo' => $contentInfo]);
+
+            return Yii::t('ContentModule.notifications', '{originator} just wrote {contentInfo} in space {space}', [
+                'originator' => $this->originator->displayName,
+                'space' => $space->displayName,
+                'contentInfo' => $contentInfo]);
         }
+
+        if ($this->isExplicitNotifyUser($user)) {
+            return Yii::t('ContentModule.notifications', '{originator} notifies you about {contentInfo}', [
+                'originator' => $this->originator->displayName,
+                'contentInfo' => $contentInfo]);
+        }
+
+        return Yii::t('ContentModule.notifications', '{originator} just wrote {contentInfo}', [
+            'originator' => $this->originator->displayName,
+            'contentInfo' => $contentInfo]);
     }
 
     protected function isExplicitNotifyUser(User $user)

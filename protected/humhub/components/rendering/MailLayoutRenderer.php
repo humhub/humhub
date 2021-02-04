@@ -41,7 +41,7 @@ class MailLayoutRenderer extends LayoutRenderer
         // exclude the view only embed the viewable text to the textlayout.
         $params['content'] = $viewable->text();
 
-        return strip_tags($textRenderer->render($viewable, $params));
+        return html_entity_decode(strip_tags($textRenderer->render($viewable, $params)));
     }
 
     /**

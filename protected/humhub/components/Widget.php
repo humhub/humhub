@@ -60,7 +60,7 @@ class Widget extends \yii\base\Widget
             $widget = Yii::createObject($config);
             $out = '';
             if ($widget->beforeRun()) {
-                $result = (empty($widget->widgetLayout)) ?  $widget->run() : $widget->render($widget->widgetLayout, $widget->getLayoutViewParams()); ;
+                $result = (empty($widget->widgetLayout)) ?  $widget->run() : $widget->render($widget->widgetLayout, $widget->getLayoutViewParams());
                 $out = $widget->afterRun($result);
             }
         } catch (\Throwable $e) {

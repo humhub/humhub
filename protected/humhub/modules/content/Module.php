@@ -75,6 +75,17 @@ class Module extends \humhub\components\Module
     public $maxPinnedProfileContent = 2;
 
     /**
+     * If true richtext extensions (oembed, emojis, mentionings) of legacy richtext (< v1.3) are supported.
+     *
+     * Note: In case the `richtextCompatMode` module db setting is also set, both settings need to be activated. New
+     * installations since HumHub 1.8 deactivate the compat mode by default by module db setting.
+     *
+     * @var bool
+     * @since 1.8
+     */
+    public $richtextCompatMode = true;
+
+    /**
      * @param ContentContainerActiveRecord $container
      * @since 1.6
      * @return int
