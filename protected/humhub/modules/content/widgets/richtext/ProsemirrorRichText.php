@@ -205,7 +205,13 @@ class ProsemirrorRichText extends AbstractRichText
      */
     public static function scanLinkExtension($text, $extension = null)
     {
-        return RichTextLinkExtension::scanLinkExtension($text, $extension);
+        $matches = [];
+        $result = RichTextLinkExtension::scanLinkExtension($text, $extension);
+        foreach ($result as $match) {
+            $matches[] = $match->match;
+        }
+
+        return $matches;
     }
 
     /**
