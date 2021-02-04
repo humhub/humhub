@@ -42,3 +42,4 @@
 - Enh #4671: Implemented live poll result sharing by BroadCastChannel
 - Enh #4829: Renamed account "Security" page and make it optional
 - Enh #4818: Added database related checks (Driver, Collation, Table Engine)
+- Fix #4831: Validate username by pattern only on change or for new users
