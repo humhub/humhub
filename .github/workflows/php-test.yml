@@ -116,4 +116,4 @@ jobs:
               run: sleep 5 && curl --fail --head http://127.0.0.1:8080/index-test.php
 
             - name: Run test suite
-              run: grunt test -build -env=github
+              run: grunt test -build -module=content -env=github
