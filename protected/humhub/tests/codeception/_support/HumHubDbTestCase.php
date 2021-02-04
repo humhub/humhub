@@ -2,6 +2,7 @@
 
 namespace tests\codeception\_support;
 
+use humhub\models\UrlOembed;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
@@ -71,6 +72,7 @@ class HumHubDbTestCase extends Unit
         RichTextToHtmlConverter::flushCache();
         RichTextToPlainTextConverter::flushCache();
         RichTextToMarkdownConverter::flushCache();
+        UrlOembed::flush();
     }
 
     protected function deleteMails()
