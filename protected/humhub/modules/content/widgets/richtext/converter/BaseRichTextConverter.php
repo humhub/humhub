@@ -81,6 +81,11 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     const OPTION_CACHE_KEY = 'cacheKey';
 
     /**
+     * Maximum entries in the cache
+     */
+    const MAX_CACHE_ENTRIES = 200;
+
+    /**
      * @inheritdoc
      */
     public $html5 = true;
@@ -223,7 +228,7 @@ abstract class BaseRichTextConverter extends GithubMarkdown
 
                 // We cache the whole parser result, this way we can reuse the same result e.g. for different maxLength
                 // or other post processes
-                if($cacheKey) {
+                if($cacheKey && count(static::$cache) < static::MAX_CACHE_ENTRIES) {
                     static::$cache[$cacheKey] = $result;
                 }
             }
