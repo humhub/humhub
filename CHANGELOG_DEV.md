@@ -1,5 +1,12 @@
-1.8.0 (Unreleased)
-------------------
+1.8.0-beta.2 (Unreleased)
+-------------------------------
+
+- Fix #4828: Display default permissions of all modules even if they are deactivated by default
+
+
+
+1.8.0-beta.1 (February 4, 2021)
+-------------------------------
 
 - Enh #3996: Force password change on first log in for users created by admin
 - Enh #3996: Allow admin to change option "Must change password" for existing users
@@ -42,4 +49,3 @@
 - Enh #4671: Implemented live poll result sharing by BroadCastChannel
 - Enh #4829: Renamed account "Security" page and make it optional
 - Enh #4818: Added database related checks (Driver, Collation, Table Engine)
-- Fix #4828: Display default permissions of all modules even if they are deactivated by default
