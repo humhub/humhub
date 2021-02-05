@@ -2,6 +2,7 @@
 -------------------------------
 
 - Fix #4828: Display default permissions of all modules even if they are deactivated by default
+- Fix #4842: Prerequisites Test - Improved database version detection for MariaDB
 
 
 1.8.0-beta.1 (February 4, 2021)
