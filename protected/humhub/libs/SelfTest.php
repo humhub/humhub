@@ -545,11 +545,12 @@ class SelfTest
      */
     public static function getDatabaseResults($checks = [])
     {
-        if (!Yii::$app->getDb()->isActive) {
+        $driver = self::getDatabaseDriverInfo();
+
+        if (!$driver) {
             return $checks;
         }
 
-        $driver = self::getDatabaseDriverInfo();
         $recommendedCollation = 'utf8mb4';
         $recommendedEngine = 'InnoDB';
 
@@ -676,10 +677,14 @@ class SelfTest
     }
 
     /**
-     * @return array
+     * @return array|false
      */
     public static function getDatabaseDriverInfo()
     {
+        if (!Yii::$app->getDb()->getIsActive()) {
+            return false;
+        }
+
         $driver = ['version' => Yii::$app->getDb()->getServerVersion()];
 
         $supportedDrivers = self::getSupportedDatabaseDrivers();
