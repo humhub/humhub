@@ -1,10 +1,12 @@
 <?php
 
-use yii\helpers\Html;
+use humhub\modules\user\models\Follow;
+use humhub\modules\user\models\User;
 
-echo strip_tags(Yii::t('ActivityModule.base', '{user1} now follows {user2}.', [
-    '{user1}' => Html::encode($originator->displayName),
-    '{user2}' => Html::encode($source->getTarget()->displayName),
-]));
+/* @var $originator User */
+/* @var $source Follow */
 
-?>
+echo Yii::t('ActivityModule.base', '{user1} now follows {user2}.', [
+    '{user1}' => $originator->displayName,
+    '{user2}' => $source->getTarget()->displayName,
+]);

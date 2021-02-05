@@ -39,7 +39,7 @@ class ApprovalRequest extends BaseNotification
 
     /**
      * Sets the approval request message for this notification.
-     * 
+     *
      * @param string $message
      */
     public function withMessage($message)
@@ -65,8 +65,8 @@ class ApprovalRequest extends BaseNotification
     public function getMailSubject()
     {
         return Yii::t('SpaceModule.notification', '{displayName} requests membership for the space {spaceName}', [
-                    '{displayName}' => Html::encode($this->originator->displayName),
-                    '{spaceName}' => Html::encode($this->source->name)
+                    '{displayName}' => $this->originator->displayName,
+                    '{spaceName}' => $this->source->name
         ]);
     }
 

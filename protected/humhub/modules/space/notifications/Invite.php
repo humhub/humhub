@@ -54,9 +54,17 @@ class Invite extends BaseNotification
     /**
      *  @inheritdoc
      */
+    public function getUrl()
+    {
+        return $this->source->createUrl('/space/space/about');
+    }
+
+    /**
+     *  @inheritdoc
+     */
     public function getMailSubject()
     {
-        return strip_tags($this->html());
+        return $this->getInfoText($this->originator->displayName, $this->getSpace()->displayName);
     }
 
     /**
@@ -64,14 +72,18 @@ class Invite extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('SpaceModule.notification', '{displayName} invited you to the space {spaceName}', [
-                    '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                    '{spaceName}' => Html::tag('strong', Html::encode($this->getSpace()->name))
-        ]);
+        return $this->getInfoText(Html::tag('strong',
+            Html::encode($this->originator->displayName)), Html::tag('strong',
+            Html::encode($this->getSpace()->displayName)));
+
     }
 
-    public function getUrl()
+    private function getInfoText($displayName, $spaceName)
     {
-        return $this->source->createUrl('/space/space/about');
+        return Yii::t('SpaceModule.notification', '{displayName} invited you to the space {spaceName}', [
+            '{displayName}' => $displayName,
+            '{spaceName}' => $spaceName
+        ]);
+
     }
 }

@@ -18,10 +18,10 @@ use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\authclient\AuthClientHelpers;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\authclient\BaseFormAuth;
-use humhub\modules\user\authclient\BaseClient;
 use humhub\modules\user\models\Session;
 use Yii;
 use yii\web\Cookie;
+use yii\authclient\BaseClient;
 use humhub\modules\user\events\UserEvent;
 
 /**
@@ -137,13 +137,13 @@ class AuthController extends Controller
             AuthClientHelpers::storeAuthClientForUser($authClient, Yii::$app->user->getIdentity());
             return $this->redirect(['/user/account/connected-accounts']);
         }
-      
+
         $user = AuthClientHelpers::getUserByAuthClient($authClient);
 
         if (Yii::$app->settings->get('maintenanceMode') && !$user->isSystemAdmin()) {
             return $this->redirect(['/user/auth/login']);
         }
-      
+
         // Check if e-mail is already in use with another auth method
         if ($user === null && isset($attributes['email'])) {
             $user = User::findOne(['email' => $attributes['email']]);

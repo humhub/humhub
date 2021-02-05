@@ -154,7 +154,7 @@ Kind Regards<br>
     'Deactivate individual profile permissions?' => '',
     'Default' => '',
     'Default Profile Permissions' => '',
-    'Default group could not be deleted!' => '',
+    'Default groups can not be deleted!' => '',
     'Delete All' => '',
     'Enable individual profile permissions' => '',
     'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => '',
@@ -164,6 +164,6 @@ Kind Regards<br>
     'Send notifications to users when added to or removed from the group.' => '',
     'Show group selection at registration' => '',
     'The Space memberships of all group members will be updated. This may take up to several minutes.' => '',
-    'The selected open registration invitations were successfully deleted.' => '',
+    'The selected invitations have been successfully deleted!' => '',
     'This option allows you to determine whether users may set individual permissions for their own profiles.' => '',
 ];

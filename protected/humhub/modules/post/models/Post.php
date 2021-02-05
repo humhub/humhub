@@ -118,7 +118,7 @@ class Post extends ContentActiveRecord implements Searchable
      */
     public function getContentDescription()
     {
-        return (new MarkdownPreview())->parse($this->message);
+        return $this->message;
     }
 
     /**

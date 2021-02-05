@@ -45,7 +45,7 @@ class SpaceMenu extends TabMenu
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.space', 'Default Permissions'),
+            'label' => Yii::t('AdminModule.space', 'Permissions'),
             'url' => Url::toRoute(['/admin/space/permissions']),
             'sortOrder' => 300,
             'isActive' => MenuLink::isActiveState('admin', 'space', 'permissions'),

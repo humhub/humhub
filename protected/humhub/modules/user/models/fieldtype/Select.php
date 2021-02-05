@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * ProfileFieldTypeSelect handles numeric profile fields.
@@ -47,7 +48,7 @@ class Select extends BaseType
      */
     public function getFormDefinition($definition = [])
     {
-        return parent::getFormDefinition([
+        return parent::getFormDefinition(ArrayHelper::merge([
                     get_class($this) => [
                         'type' => 'form',
                         'title' => Yii::t('UserModule.profile', 'Select field options'),
@@ -59,7 +60,7 @@ class Select extends BaseType
                                 'hint' => Yii::t('UserModule.profile', 'One option per line. Key=>Value Format (e.g. yes=>Yes)')
                             ],
                         ]
-        ]]);
+        ]], $definition));
     }
 
     /**

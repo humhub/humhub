@@ -1,5 +1,6 @@
 <?php
 
+use humhub\widgets\TimeAgo;
 use yii\helpers\Html;
 
 /* @var $space \humhub\modules\space\models\Space */
@@ -34,12 +35,12 @@ use yii\helpers\Html;
                             </a>
                             <?php if ($date) : ?>
                                 <span style="font-size: 11px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-soft', '#bebebe') ?>; font-weight:300; text-align:left; ">
-                                    <?= \humhub\widgets\TimeAgo::widget(['timestamp' => $date]) ?>
+                                    <?= TimeAgo::widget(['timestamp' => $date]) ?>
                                 </span>
                             <?php endif; ?>
                              <?php if ($space && !$isComment) : ?>
                                 <span style="font-size: 11px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-soft', '#bebebe') ?>; font-weight:300; text-align:left;">
-                                    <?= Yii::t('ContentModule.base', 'in'); ?>
+                                    <?= Yii::t('ContentModule.base', 'in') ?>
                                 </span>
                                 <span style="font-size: 11px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-soft', '#bebebe') ?>; font-weight:bold; text-align:left;">
                                      <a style="font-size: 11px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-soft', '#bebebe') ?>; font-weight:bold; text-align:left; " href="<?= $space->createUrl(null, [], true) ?>">

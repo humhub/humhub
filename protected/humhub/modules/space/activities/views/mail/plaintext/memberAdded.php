@@ -1,10 +1,13 @@
 <?php
 
-use yii\helpers\Html;
+use humhub\modules\user\models\User;
 use humhub\libs\Helpers;
 
-echo strip_tags(Yii::t('ActivityModule.base', "{displayName} joined the space {spaceName}", [
-    '{displayName}' => Html::encode($originator->displayName),
-    '{spaceName}' => '"' . Html::encode(Helpers::truncateText($source->name, 40)) . '"'
-]));
+/* @var $originator User */
+/* @var $source \humhub\modules\space\models\Space */
+
+echo Yii::t('ActivityModule.base', "{displayName} joined the space {spaceName}", [
+    '{displayName}' => $originator->displayName,
+    '{spaceName}' => '"' . Helpers::truncateText($source->name, 40) . '"'
+]);
 ?>

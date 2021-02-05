@@ -242,9 +242,9 @@ class User extends \yii\web\User
      * @since 1.8
      * @return boolean
      */
-    function mustChangePassword()
+    public function mustChangePassword()
     {
-        return !$this->isGuest && $this->getIdentity()->mustChangePassword();
+        return !$this->isGuest && $this->getIdentity() && $this->getIdentity()->mustChangePassword();
     }
 
     /**

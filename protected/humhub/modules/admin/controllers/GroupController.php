@@ -196,7 +196,7 @@ class GroupController extends Controller
 
         // Double check to get sure we don't remove the default group:
         if ($group->is_default_group) {
-            $this->view->error(Yii::t('AdminModule.user', 'Default group could not be deleted!'));
+            $this->view->error(Yii::t('AdminModule.user', 'Default groups can not be deleted!'));
             return $this->redirect(['/admin/group/edit', 'id' => $group->id]);
         }
 

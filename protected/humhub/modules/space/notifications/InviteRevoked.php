@@ -53,7 +53,7 @@ class InviteRevoked extends BaseNotification
 
     public function getMailSubject()
     {
-        return strip_tags($this->html());
+        return $this->getInfoText($this->originator->displayName, $this->getSpace()->name);
     }
 
     /**
@@ -61,10 +61,16 @@ class InviteRevoked extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('SpaceModule.notification', '{displayName} revoked your invitation for the space {spaceName}', [
-            '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),
-            '{spaceName}' => Html::tag('strong', Html::encode($this->getSpace()->name))
-        ]);
+        return $this->getInfoText(
+            Html::tag('strong', Html::encode($this->originator->displayName)),
+            Html::tag('strong', Html::encode($this->getSpace()->name)));
     }
 
+    private function getInfoText($displayName, $spaceName)
+    {
+        return Yii::t('SpaceModule.notification', '{displayName} revoked your invitation for the space {spaceName}', [
+            '{displayName}' => $displayName,
+            '{spaceName}' => $spaceName
+        ]);
+    }
 }

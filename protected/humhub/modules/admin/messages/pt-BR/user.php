@@ -142,7 +142,7 @@ return [
     'Deactivate individual profile permissions?' => '',
     'Default' => '',
     'Default Profile Permissions' => '',
-    'Default group could not be deleted!' => '',
+    'Default groups can not be deleted!' => '',
     'Delete All' => '',
     'Enable individual profile permissions' => '',
     'Hello {displayName},<br><br>
@@ -164,6 +164,6 @@ Kind Regards<br>
     'Send notifications to users when added to or removed from the group.' => '',
     'Show group selection at registration' => '',
     'The Space memberships of all group members will be updated. This may take up to several minutes.' => '',
-    'The selected open registration invitations were successfully deleted.' => '',
+    'The selected invitations have been successfully deleted!' => '',
     'This option allows you to determine whether users may set individual permissions for their own profiles.' => '',
 ];

@@ -56,7 +56,7 @@ class Followed extends BaseNotification
      */
     public function getMailSubject()
     {
-        return strip_tags($this->html());
+        return $this->getInfoText($this->originator->displayName);
     }
 
     /**
@@ -64,11 +64,13 @@ class Followed extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('UserModule.notification', '{displayName} is now following you.', [
-                    'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-        ]);
+        return $this->getInfoText(Html::tag('strong', Html::encode($this->originator->displayName)));
     }
 
+    public function getInfoText($displayName)
+    {
+        return Yii::t('UserModule.notification', '{displayName} is now following you.', [
+            'displayName' => $displayName,
+        ]);
+    }
 }
-
-?>
