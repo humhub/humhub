@@ -2,6 +2,7 @@
 -------------------------------
 
 - Fix #4828: Display default permissions of all modules even if they are deactivated by default
+- Fix #4841: Fix misplaced notification filters
 
 
 1.8.0-beta.1 (February 4, 2021)
