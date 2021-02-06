@@ -1,10 +1,10 @@
 <?php
 return array (
-  ' likes this.' => '',
-  '<strong>Users</strong> who like this' => '',
-  'Like' => '',
-  'Unlike' => '',
-  'You' => '',
-  'You like this.' => '',
-  'and {count} more like this.' => '',
+  ' likes this.' => 'laicar isto.',
+  '<strong>Users</strong> who like this' => '<strong>Pessoa</strong> que laicou isto',
+  'Like' => 'Laicar',
+  'Unlike' => 'Deslaicar',
+  'You' => 'Tu',
+  'You like this.' => 'Tu laicas isto.',
+  'and {count} more like this.' => 'e {count} laicaram isto.',
 );
