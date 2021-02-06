@@ -922,7 +922,7 @@
             maxCacheLength: 20,
             version: findVersion
         }
-        $(window).on('popstate.pjax', onPjaxPopstate)
+       // $(window).on('popstate.pjax', onPjaxPopstate)
     }
 
 // Disable pushState behavior.
