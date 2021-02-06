@@ -20,7 +20,6 @@ use Yii;
  * This is the model class for table "group".
  *
  * @property integer $id
- * @property integer $space_id
  * @property string $name
  * @property string $description
  * @property string $created_at
@@ -387,7 +386,7 @@ class Group extends ActiveRecord
      */
     public function getSpace()
     {
-        return $this->hasOne(Space::class, ['id' => 'space_id']);
+        return (count($this->defaultSpaces) >0) ? $this->defaultSpaces[0] : null;
     }
 
     /**
