@@ -61,7 +61,7 @@ class UserPermissionsController extends Controller
     public function actionIndex()
     {
         $defaultPermissionManager = new ContentContainerDefaultPermissionManager([
-            'contentcontainer_class' => User::class,
+            'contentContainerClass' => User::class,
         ]);
 
         $groups = User::getUserGroups();
