@@ -6,4 +6,10 @@
  * @see http://docs.humhub.org/dev-environment.html
  */
 return [
+    'components' => [
+        'urlManager' => [
+            'showScriptName' => false,
+            'enablePrettyUrl' => true,
+        ],
+    ]
 ];
