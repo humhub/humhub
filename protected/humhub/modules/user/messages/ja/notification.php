@@ -6,6 +6,6 @@ return array (
   'Receive Notifications when someone mentioned you in a post.' => '返信されたときに通知を受け取る',
   'View Online' => 'オンラインで見る',
   '{displayName} is now following you.' => '{displayName} があなたをフォローしました',
-  '{displayName} just mentioned you in {contentTitle} "{preview}"' => '',
-  '{displayName} mentioned you in {contentTitle}.' => '',
+  '{displayName} just mentioned you in {contentTitle} "{preview}"' => '{displayName}が {contentTitle} "{preview}" であなたに言及しました',
+  '{displayName} mentioned you in {contentTitle}.' => '{displayName} が {contentTitle} であなたに言及しました。',
 );

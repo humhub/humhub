@@ -5,6 +5,6 @@ return array (
   'View Online' => 'Ver online',
   '{displayNames} likes your {contentTitle}.' => '{displayNames} laicou o teu {contentTitle}.',
   '{displayNames} likes {contentTitle}.' => '{displayNames} laicou {contentTitle}.',
-  '{displayName} likes your {contentTitle}.' => '{displayName} laicou o teu conteúdo {contentTitle}.',
+  '{displayName} likes your {contentTitle}.' => '{displayName} laicou o teu {contentTitle}.',
   '{displayName} likes {contentTitle}.' => '{displayName} laicou {contentTitle}.',
 );

@@ -2,18 +2,18 @@
 return array (
   '
 Module successfully disabled!
-' => 'Módulo desativado!',
+' => 'Módulo desactivado!',
   '
 Module successfully enabled!
-' => 'Módulo ativado!',
+' => 'Módulo activado!',
   '--- Disable module: {moduleId} ---
 
-' => '--- Desaticar módulo: {moduleId} ---',
+' => '--- Desactivar módulo: {moduleId} ---',
   '--- Enable module: {moduleId} ---
 
-' => '--- Ativar módulo: {moduleId} ---',
+' => '--- Activar módulo: {moduleId} ---',
   'Module not found or activated!
-' => 'Módulo não encontrado nem ativado!',
+' => 'Módulo não encontrado nem activado!',
   'Module not found!
 ' => 'Módulo não encontrado!',
 );
