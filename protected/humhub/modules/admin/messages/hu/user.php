@@ -127,7 +127,7 @@ Kind Regards<br>
   'Settings' => 'Beállítások',
   'Show group selection at registration' => 'Csoportválasztás megjelenítése a regisztrációkor',
   'Subject' => 'Téma',
-  'The Space memberships of all group members will be updated. This may take up to several minutes.' => '',
+  'The Space memberships of all group members will be updated. This may take up to several minutes.' => 'Az összes csoporttag területi tagsága frissül. Ez akár néhány percet igénybe vehet.',
   'The following list contains all pending sign-ups and invites.' => 'Az alábbi lista tartalmazza az összes folyamatban lévő feliratkozást és meghívást.',
   'The following list contains all registered users awaiting an approval.' => 'Az alábbi lista tartalmazza a jóváhagyásra váró regisztrált felhasználókat.',
   'The selected invitations have been successfully deleted!' => 'A kiválasztott meghívókat sikeresen töröltük!',

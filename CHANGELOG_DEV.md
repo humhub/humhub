@@ -2,6 +2,8 @@
 -------------------------
 
 - Fix #4853: Removed obsolete Group::getSpace() relation
+- Fix #4828: Display default permissions of all modules even if they are deactivated by default
+- Fix #4842: Prerequisites Test - Improved database version detection for MariaDB
 
 
 1.8.0-beta.1 (February 4, 2021)
@@ -53,4 +55,3 @@
 - Enh #4686: Implemented richtext converter to following formats: plaintext, shorttext, html, plain markdown
 - Enh #4686: Enhanced richtext extension API for convterting and post-processing
 - Enh #4686: Added caching mechanism for richtext converter results
-

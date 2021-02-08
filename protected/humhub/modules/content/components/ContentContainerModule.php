@@ -202,7 +202,7 @@ class ContentContainerModule extends Module
      * @see ContentContainerModule::getPermissions()
      * @since 1.3.11
      */
-    protected function getContainerPermissions($contentContainer = null)
+    public function getContainerPermissions($contentContainer = null)
     {
         return [];
     }
