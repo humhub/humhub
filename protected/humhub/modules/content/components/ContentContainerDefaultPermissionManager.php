@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\components\Module;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\content\models\ContentContainerDefaultPermission;
 use Yii;
@@ -28,7 +29,7 @@ class ContentContainerDefaultPermissionManager extends PermissionManager
      */
     protected function getModulePermissions(\yii\base\Module $module)
     {
-        if ($module instanceof ContentContainerModule && method_exists($module, 'getContainerPermissions')) {
+        if ($module instanceof ContentContainerModule) {
             $containerPermissions = $module->getContainerPermissions(new $this->contentcontainer_class);
             if (!empty($containerPermissions)) {
                 // Don't try to find container permissions in the ContentContainerModule::getPermissions() below
@@ -39,7 +40,7 @@ class ContentContainerDefaultPermissionManager extends PermissionManager
 
         // Try to find container permissions in the parent/general method Module::getPermissions()
         // because the module was not updated to use proper method ContentContainerModule::getContainerPermissions() yet
-        if ($module instanceof \humhub\components\Module) {
+        if ($module instanceof Module) {
             return $module->getPermissions(new $this->contentcontainer_class);
         }
 
@@ -72,7 +73,7 @@ class ContentContainerDefaultPermissionManager extends PermissionManager
     {
         parent::setGroupState($groupId, $permission, $state);
         // Clear default permissions cache after updating of each state:
-        Yii::$app->cache->delete('defaultPermissions:'.$this->contentcontainer_class);
+        Yii::$app->cache->delete('defaultPermissions:' . $this->contentcontainer_class);
     }
 
 }
