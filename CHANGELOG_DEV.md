@@ -3,6 +3,7 @@
 
 - Fix #4853: Removed obsolete Group::getSpace() relation
 - Fix #4828: Display default permissions of all modules even if they are deactivated by default
+- Fix #4841: Fix misplaced notification filters
 - Fix #4842: Prerequisites Test - Improved database version detection for MariaDB
 
 
