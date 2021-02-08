@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Likes' => 'Gostos',
-  'Whenever someone likes something (e.g. a post or comment).' => 'Sempre que alguém gosta de algo (ex. um post ou um comentário)',
-  '{userDisplayName} likes {contentTitle}' => '{userDisplayName} gosta {contentTitle}',
+  'Likes' => 'Laiques',
+  'Whenever someone likes something (e.g. a post or comment).' => 'Sempre que alguém laica algo (p.ex. uma posta ou comentário).',
+  '{userDisplayName} likes {contentTitle}' => '{userDisplayName} laica {contentTitle}',
 );

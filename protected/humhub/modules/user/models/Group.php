@@ -36,7 +36,6 @@ use Yii;
  *
  * @property User[] $manager
  * @property Space|null $defaultSpace
- * @property Space|null $space
  * @property GroupUser[] groupUsers
  * @property GroupSpace[] groupSpaces
  */
@@ -380,14 +379,6 @@ class Group extends ActiveRecord
         }
 
         return false;
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSpace()
-    {
-        return $this->hasOne(Space::class, ['id' => 'space_id']);
     }
 
     /**
