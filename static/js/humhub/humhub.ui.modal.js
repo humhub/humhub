@@ -696,6 +696,15 @@ humhub.module('ui.modal', function (module, require, $) {
         });
     };
 
+    var unload = function() {
+        $('.modal').each(function () {
+            var modal = Modal.instance(this);
+            if (modal && typeof modal.close === 'function') {
+                modal.close();
+            }
+        });
+    }
+
     var post = function (evt, options) {
         var id = evt.$trigger.data('modal-id');
         if (!id) {
@@ -756,6 +765,7 @@ humhub.module('ui.modal', function (module, require, $) {
         get: get,
         post: post,
         load: load,
+        unload: unload,
         show: show,
         submit: submit
     });
