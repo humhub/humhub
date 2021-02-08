@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #4793: Form labels (HForm) are not displayed correctly
 - Fix #4569: Prevent double module registration
 - Fix #4389: Require to check a checkbox if the profile field is required
+- Fix #4281: Update space chooser after following a space
 - Fix #2950: Close modal window on click link with url in href
 - Fix #3687: Disable profile field type for existing record
 - Fix #4819: Fixed some PHP8 issues. (Updated to Yii 2.0.40 / Imagine 1.0+)
