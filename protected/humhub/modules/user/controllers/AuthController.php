@@ -226,7 +226,9 @@ class AuthController extends Controller
 
         if ($success) {
             $this->trigger(static::EVENT_AFTER_LOGIN, new UserEvent(['user' => Yii::$app->user->identity]));
-            $authClient->onSuccessLogin();
+            if (method_exists($authClient, 'onSuccessLogin')) {
+                $authClient->onSuccessLogin();
+            };
         }
 
         return $result;
