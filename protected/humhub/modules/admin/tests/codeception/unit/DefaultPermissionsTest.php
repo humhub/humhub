@@ -26,7 +26,7 @@ class DefaultPermissionsTest extends HumHubDbTestCase
         $testPermission = new CanLike;
 
         $defaultPermissionManager = new ContentContainerDefaultPermissionManager([
-            'contentcontainer_class' => get_class($space),
+            'contentContainerClass' => get_class($space),
         ]);
         $defaultPermission = $defaultPermissionManager->getById(get_class($testPermission), $testPermission->getModuleId());
         $this->assertNotNull($defaultPermission);
@@ -54,7 +54,7 @@ class DefaultPermissionsTest extends HumHubDbTestCase
         $testPermission = new CanLike;
 
         $defaultPermissionManager = new ContentContainerDefaultPermissionManager([
-            'contentcontainer_class' => get_class($user),
+            'contentContainerClass' => get_class($user),
         ]);
         $defaultPermission = $defaultPermissionManager->getById(get_class($testPermission), $testPermission->getModuleId());
         $this->assertNotNull($defaultPermission);
