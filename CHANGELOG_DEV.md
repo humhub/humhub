@@ -1,3 +1,9 @@
+1.8.0-beta.2 (Unreleased)
+-------------------------
+
+- Fix #4853: Removed obsolete Group::getSpace() relation
+
+
 1.8.0-beta.1 (February 4, 2021)
 -------------------------------
 
