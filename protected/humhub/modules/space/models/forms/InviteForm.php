@@ -201,11 +201,6 @@ class InviteForm extends Model
                         )
                     );
                     continue;
-                } elseif ($membership && $membership->status == Membership::STATUS_APPLICANT) {
-                    $this->addError($attribute, Yii::t('SpaceModule.base',
-                        "User '{username}' is already an applicant of this space!",
-                        ['username' => $user->getDisplayName()]));
-                    continue;
                 }
 
                 $this->invites[] = $user;
