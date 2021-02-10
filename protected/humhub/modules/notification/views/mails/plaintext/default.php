@@ -1,7 +1,12 @@
 <?php $this->beginContent('@notification/views/layouts/mail_plaintext.php', $_params_); ?>
 
-<?= $text; ?>
+<?php
+ /* @var $text string */
+ /* @var $url string */
+?>
+
+<?= $text ?>
 
 
-<?= strip_tags(Yii::t('NotificationModule.base', 'View online:')); ?> <?php echo urldecode($url); ?>
+<?= Yii::t('NotificationModule.base', 'View online:') ?> <?= urldecode($url) ?>
 <?php $this->endContent(); ?>

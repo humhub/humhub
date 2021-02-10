@@ -202,7 +202,7 @@ abstract class BaseNotification extends SocialActivity
     }
 
     /**
-     * Returns the mail subject which will be used in the notification e-mail
+     * Returns a non html encoded mail subject which will be used in the notification e-mail
      *
      * @see \humhub\modules\notification\targets\MailTarget
      * @return string the subject
@@ -379,27 +379,33 @@ abstract class BaseNotification extends SocialActivity
 
     /**
      * Returns the combined display names of a grouped notification.
+     *
      * Examples:
      *      User A and User B
      *      User A and 5 others
      *
+     * @param bool $html if true the result will be encoded and may contain html
      * @return string the display names
      */
-    public function getGroupUserDisplayNames()
+    public function getGroupUserDisplayNames($html = true)
     {
         if ($this->groupCount > 2) {
             list($user) = $this->getGroupLastUsers(1);
+            $displayName = $html ? Html::tag('strong', Html::encode($user->displayName)) : $user->displayName;
             return Yii::t('NotificationModule.base', '{displayName} and {number} others', [
-                'displayName' => Html::tag('strong', Html::encode($user->displayName)),
+                'displayName' => $displayName,
                 'number' => $this->groupCount - 1
             ]);
         }
 
         list($user1, $user2) = $this->getGroupLastUsers(2);
 
+        $displayName1 = $html ? Html::tag('strong', Html::encode($user1->displayName)) : $user1->displayName;
+        $displayName2 = $html ? Html::tag('strong', Html::encode($user2->displayName)) : $user2->displayName;
+
         return Yii::t('NotificationModule.base', '{displayName} and {displayName2}', [
-            'displayName' => Html::tag('strong', Html::encode($user1->displayName)),
-            'displayName2' => Html::tag('strong', Html::encode($user2->displayName)),
+            'displayName' => $displayName1,
+            'displayName2' => $displayName2,
         ]);
     }
 
@@ -438,8 +444,7 @@ abstract class BaseNotification extends SocialActivity
     public function asArray(User $user)
     {
         $result = parent::asArray($user);
-        $result['mailSubject'] = $this->getMailSubject($user);
-
+        $result['mailSubject'] = $this->getMailSubject();
         return $result;
     }
 

@@ -14,6 +14,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 /* @var $canRegister boolean */
 /* @var $model Login */
 /* @var $invite Invite */
+/* @var $info string */
 ?>
 
 <div class="container" style="text-align: center;">

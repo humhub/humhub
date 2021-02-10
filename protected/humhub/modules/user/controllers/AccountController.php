@@ -145,12 +145,15 @@ class AccountController extends BaseAccountController
 
     /**
      * Change Account
-     *
      * @throws \Exception
      * @todo Add Group
      */
-    public function actionSecurity()
+    public function actionPermissions()
     {
+        if (empty($this->module->settings->get('enableProfilePermissions'))) {
+            throw new HttpException(403);
+        }
+
         $groups = [];
         $groupAccessEnabled = AuthHelper::isGuestAccessEnabled();
 
@@ -181,7 +184,7 @@ class AccountController extends BaseAccountController
             return [];
         }
 
-        return $this->render('security', ['user' => $this->getUser(), 'groups' => $groups, 'group' => $currentGroup, 'multipleGroups' => (count($groups) > 1)]);
+        return $this->render('permissions', ['user' => $this->getUser(), 'groups' => $groups, 'group' => $currentGroup, 'multipleGroups' => (count($groups) > 1)]);
     }
 
     public function actionConnectedAccounts()
@@ -212,9 +215,9 @@ class AccountController extends BaseAccountController
         }
 
         return $this->render('connected-accounts', [
-                    'authClients' => $clients,
-                    'currentAuthProviderId' => $currentAuthProviderId,
-                    'activeAuthClientIds' => $activeAuthClientIds
+            'authClients' => $clients,
+            'currentAuthProviderId' => $currentAuthProviderId,
+            'activeAuthClientIds' => $activeAuthClientIds
         ]);
     }
 
@@ -250,7 +253,7 @@ class AccountController extends BaseAccountController
             return $this->redirect(['/user/account/edit-modules']);
         }
 
-        return $this->asJson( ['success' => true]);
+        return $this->asJson(['success' => true]);
     }
 
     /**

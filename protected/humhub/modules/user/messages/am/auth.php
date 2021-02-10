@@ -57,6 +57,7 @@ return [
     'Please enter the letters from the image.' => '',
     'Please login with your username/email and password.' => '',
     'Please use the following link within the next day to reset your password.' => '',
+    'Please wait' => '',
     'Registration successful' => '',
     'Remember me' => '',
     'Reset Password' => '',

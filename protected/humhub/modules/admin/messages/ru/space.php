@@ -35,6 +35,10 @@ return [
     'Space Settings' => 'Настройки сообществ',
     'Spaces' => 'Сообщества',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Содержит список сообществ с возможностью просмотра, редактирования и удаления.',
+    'Default Permissions' => '',
+    'Default Space Permissions' => '',
     'Default Space(s)' => '',
+    'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => '',
+    'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => '',
     'Update Space memberships also for existing members.' => '',
 ];

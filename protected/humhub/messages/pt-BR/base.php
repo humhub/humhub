@@ -99,4 +99,7 @@ return [
     'Upload file' => 'Enviar arquivo',
     'You are not allowed to run this action.' => 'Você não tem permissão para executar esta ação.',
     'Database connection time: {dbTime} - Configured time zone: {time}' => '',
+    '{nFormatted}B' => '',
+    '{nFormatted}K' => '',
+    '{nFormatted}M' => '',
 ];

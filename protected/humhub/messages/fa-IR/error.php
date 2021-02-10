@@ -26,5 +26,7 @@ return [
     'You need admin permissions to access this section.' => 'برای دسترسی به این بخش به مجوز مدیریتی نیاز دارید.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'حساب کاربری شما هنوز تایید نشده است، لطفا دوباره تلاش کنید یا با مدیر تماس بگیرید.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'حساب کاربری شما غیرفعال است، لطفا با یک حساب فعال وارد شوید یا با مدیر تماس بگیرید.',
+    'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => '',
+    'Maintenance mode is active. Only Administrators can access the platform.' => '',
     'You must change password.' => '',
 ];

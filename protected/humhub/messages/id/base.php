@@ -99,4 +99,7 @@ return [
     'Toggle post menu' => '',
     'Toggle stream entry menu' => '',
     'Unsubscribe' => '',
+    '{nFormatted}B' => '',
+    '{nFormatted}K' => '',
+    '{nFormatted}M' => '',
 ];

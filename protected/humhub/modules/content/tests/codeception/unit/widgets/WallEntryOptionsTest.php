@@ -54,7 +54,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
 
     public function testDisableControlsSwitchVisibility()
     {
-        $this->testDisableControlsItem('Make public',
+        $this->testDisableControlsItem('Change to "Public"',
             (new WallStreamEntryOptions)->disableControlsEntrySwitchVisibility());
     }
 
@@ -114,7 +114,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
         $this->assertWallEntryControlsNotContains('Move',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
         $this->assertWallEntryControlsNotContains('Pin to top',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
         $this->assertWallEntryControlsNotContains('Turn on notifications',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
-        $this->assertWallEntryControlsNotContains('Make public',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
+        $this->assertWallEntryControlsNotContains('Change to "Public"',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
     }
 
     private function testDisableControlsItem($searchStr, $renderOptions)

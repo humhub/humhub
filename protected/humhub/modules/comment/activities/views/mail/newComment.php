@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\content\widgets\richtext\RichText;
 use yii\helpers\Html;
 
@@ -12,4 +13,6 @@ echo Yii::t('CommentModule.base', "{displayName} wrote a new comment ", [
 ?>
 <br>
 
-"<?= RichText::preview($source->message); ?>"
+"<?= RichText::preview($source->message, [
+    RichTextToShortTextConverter::OPTION_CACHE_KEY => RichTextToShortTextConverter::buildCacheKeyForRecord($source)
+]) ?>"

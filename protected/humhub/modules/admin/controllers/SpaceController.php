@@ -143,7 +143,7 @@ class SpaceController extends Controller
     public function actionPermissions()
     {
         $defaultPermissionManager = new ContentContainerDefaultPermissionManager([
-            'contentcontainer_class' => Space::class,
+            'contentContainerClass' => Space::class,
         ]);
 
         $groups = Space::getUserGroups();

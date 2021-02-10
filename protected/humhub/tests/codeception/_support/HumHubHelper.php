@@ -3,6 +3,11 @@
 namespace tests\codeception\_support;
 
 use Codeception\Module;
+use humhub\models\UrlOembed;
+use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use Yii;
 
 /**
@@ -19,6 +24,16 @@ class HumHubHelper extends Module
     public function _before(\Codeception\TestInterface $test)
     {
         Yii::$app->getUrlManager()->setScriptUrl('/index-test.php');
+        $this->flushCache();
+    }
+
+    protected function flushCache()
+    {
+        RichTextToShortTextConverter::flushCache();
+        RichTextToHtmlConverter::flushCache();
+        RichTextToPlainTextConverter::flushCache();
+        RichTextToMarkdownConverter::flushCache();
+        UrlOembed::flush();
     }
 
     public function fetchInviteToken($mail) {

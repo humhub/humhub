@@ -41,7 +41,7 @@ class ChangedRolesMembership extends BaseNotification
      */
     public function getMailSubject()
     {
-        return strip_tags($this->html());
+        return $this->getInfoText(false);
     }
 
     /**
@@ -57,19 +57,28 @@ class ChangedRolesMembership extends BaseNotification
      */
     public function html()
     {
+        return $this->getInfoText();
+    }
+
+    private function getInfoText($html = true)
+    {
         $groups = $this->source->space->getUserGroups();
 
         if (!isset($groups[$this->source->group_id])) {
             throw new \Exception('The role ' . $this->source->group_id . ' is wrong for Membership');
         }
 
+        $displayName = $html ? Html::tag('strong', Html::encode($this->originator->displayName)) : $this->originator->displayName;
+        $roleName = $html ? Html::tag('strong', $groups[$this->source->group_id]) : $groups[$this->source->group_id];
+        $spaceName = $html ? Html::tag('strong', Html::encode($this->source->space->getDisplayName())) : $this->source->space->getDisplayName();
+
         return Yii::t(
             'SpaceModule.notification',
             '{displayName} changed your role to {roleName} in the space {spaceName}.',
             [
-                '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                '{roleName}' => Html::tag('strong', $groups[$this->source->group_id]),
-                '{spaceName}' => Html::tag('strong', Html::encode($this->source->space->getDisplayName())),
+                '{displayName}' => $displayName,
+                '{roleName}' => $roleName,
+                '{spaceName}' => $spaceName,
             ]);
     }
 }

@@ -179,7 +179,7 @@ class PendingRegistrationsController extends Controller
                 }
                 $this->view->success(Yii::t(
                     'AdminModule.user',
-                    'The selected open registration invitations were successfully deleted.'
+                    'The selected invitations have been successfully deleted!'
                 ));
             }
         }

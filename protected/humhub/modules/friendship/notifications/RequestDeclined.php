@@ -58,7 +58,7 @@ class RequestDeclined extends BaseNotification
 
     public function getMailSubject()
     {
-        return strip_tags($this->html());
+        return $this->getInfoText($this->originator->displayName);
     }
 
     /**
@@ -66,8 +66,13 @@ class RequestDeclined extends BaseNotification
      */
     public function html()
     {
+        return $this->getInfoText(Html::tag('strong', Html::encode($this->originator->displayName)));
+    }
+
+    private function getInfoText($displayName)
+    {
         return Yii::t('FriendshipModule.notification', '{displayName} declined your friend request.', [
-                    'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
+            'displayName' => $displayName,
         ]);
     }
 

@@ -22,6 +22,8 @@ return [
     'Guest mode not active, please login first.' => 'Gästläge är inte aktivt, vänligen logga in först.',
     'You are not allowed to perform this action.' => 'Du har inte tillåtelse att utföra denna åtgärd.',
     'Login required for this section.' => '',
+    'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => '',
+    'Maintenance mode is active. Only Administrators can access the platform.' => '',
     'You are not permitted to access this section.' => '',
     'You must change password.' => '',
     'You need admin permissions to access this section.' => '',

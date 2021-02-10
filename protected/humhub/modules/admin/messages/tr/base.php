@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'Bekleyen kullanıcı kayıtları',
     'Permissions' => 'İzinler',
     'Proxy' => 'Proxy',
-    'Security' => 'Güvenlik',
     'Self test' => 'Test et',
     'Settings' => 'Ayarlar',
     'Sign up' => 'Kaydol',
@@ -64,6 +63,8 @@ return [
     'User posts' => 'Kullanıcı mesajlar',
     'Userprofiles' => 'Kullanıcı profilleri',
     'Users' => 'Kullanıcılar',
+    '<strong>Maintenance</strong> Mode' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
 ];

@@ -17,7 +17,6 @@
     .ProseMirror {
         position: static;
         overflow: auto;
-        height: 100%;
         height: calc(100% - 26px);
     }
 
@@ -410,32 +409,23 @@
         line-height: 2px;
     }
 
-    .ProseMirror ul, .ProseMirror ol {
-        padding-left: 30px;
-    }
-
-    .ProseMirror blockquote {
-        padding-left: 1em;
-        border-left: 3px solid #eee;
-        margin-left: 0;
-        margin-right: 0;
-    }
-
     .ProseMirror-example-setup-style img {
         cursor: default;
     }
 
     .ProseMirror p {
-        margin-top: 1em;
+        margin-top: 1.2em;
     }
 
     // Prevent first paragraph to stetch the input
+    // Note: this is also applied for li p
     .ProseMirror p:first-child {
-        margin: 0px;
+        margin: 0;
     }
 
-    .ProseMirror p:first-child + * {
-        margin-top: 1em;
+    // Make sure next block after first child does have a margin
+    .ProseMirror > p:first-child + * {
+        margin-top: 1.2em;
     }
 
     .ProsemirrorEditor {
@@ -464,7 +454,6 @@
     }
 
     .ProseMirror {
-        //line-height: 1.2;
         outline: none;
     }
 
@@ -486,7 +475,7 @@
     }
 
     .ProseMirror .placeholder {
-        padding: 0px !important;
+        padding: 0 !important;
         pointer-events: none;
         height: 0;
     }
@@ -641,7 +630,7 @@
     }
 
     .emoji-nav-item.cur {
-        border-left: 0px;
+        border-left: 0;
         border-top: 2px solid @info;
     }
 }
@@ -662,6 +651,7 @@
         .form-control:focus {
             border-top-right-radius: 0 !important;
         }
+
         .ProseMirror-menubar {
             min-height: 1em;
             margin-top: 0;

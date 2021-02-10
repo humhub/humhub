@@ -12,6 +12,12 @@ use cebe\markdown\GithubMarkdown;
 use yii\helpers\Url;
 use humhub\modules\file\models\File;
 
+/**
+ * Class Markdown parser for legacy markdown editor output.
+ *
+ * @package humhub\libs
+ * @deprecated since 1.8 use RichTextToHtmlConverter instead
+ */
 class Markdown extends GithubMarkdown
 {
     protected function handleInternalUrls($url)

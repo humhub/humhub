@@ -8,7 +8,6 @@
 
 namespace humhub\libs;
 
-use DateTime;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
 use Yii;
@@ -31,7 +30,7 @@ class SelfTest
      *  - state (OK, WARNING or ERROR)
      *  - hint
      *
-     * @return Array
+     * @return array
      */
     public static function getResults()
     {
@@ -411,6 +410,9 @@ class SelfTest
             ];
         }
 
+        // Checks Database Data
+        $checks = self::getDatabaseResults($checks);
+
         // Timezone Setting
         if (Yii::$app->controller->id != 'setup') {
             $dbConnectionTime = TimezoneHelper::getDatabaseConnectionTime();
@@ -528,5 +530,196 @@ class SelfTest
         }
 
         return $checks;
+    }
+
+    /**
+     * Get Results of the Application SelfTest for Database part.
+     *
+     * Fields
+     *  - title
+     *  - state (OK, WARNING or ERROR)
+     *  - hint
+     *
+     * @param array Results initialized before
+     * @return array
+     */
+    public static function getDatabaseResults($checks = [])
+    {
+        $driver = self::getDatabaseDriverInfo();
+
+        if (!$driver) {
+            return $checks;
+        }
+
+        $recommendedCollation = 'utf8mb4';
+        $recommendedEngine = 'InnoDB';
+
+        // Checks Database Driver
+        $title = 'Database driver';
+
+        if ($driver['isSupportedDriver']) {
+            $checks[] = [
+                'title' => Yii::t('base', $title) . ' - ' . $driver['title'],
+                'state' => 'OK'
+            ];
+        } else {
+            $allowedDriverTitles = [];
+            foreach(self::getSupportedDatabaseDrivers() as $allowedDriver) {
+                $allowedDriverTitles[] = $allowedDriver['title'];
+            }
+            $checks[] = [
+                'title' => Yii::t('base', $title) . ' - ' . $driver['name'],
+                'state' => 'WARNING',
+                'hint' => 'Supported drivers: ' . implode(', ', $allowedDriverTitles),
+            ];
+            return $checks;
+            // Do NOT check below because the database driver is not supported.
+        }
+
+        // Checks Database Version
+        $title = $driver['title'] . ' - Version - ' . $driver['version'];
+
+        if ($driver['isAllowedVersion']) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'WARNING',
+                'hint' => 'Minimum Version ' . $driver['minVersion'],
+            ];
+        }
+
+        // Checks Database Collation
+        $dbCharset = Yii::$app->getDb()->createCommand('SELECT @@collation_database')->queryScalar();
+        $title = $driver['title'] . ' - Database collation - ' . $dbCharset;
+
+        if (stripos($dbCharset, $recommendedCollation) === 0) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'WARNING',
+                'hint' => 'Recommended collation is ' . $recommendedCollation,
+            ];
+        }
+
+        // Find collations and engines of all tables
+        $dbTables = Yii::$app->getDb()->createCommand('SHOW TABLE STATUS')->queryAll();
+        $tableCollations = [];
+        $tablesWithNotRecommendedCollations = [];
+        $tableEngines = [];
+        $tablesWithNotRecommendedEngines = [];
+        foreach ($dbTables as $dbTable) {
+            if (!in_array($dbTable['Collation'], $tableCollations)) {
+                $tableCollations[] = $dbTable['Collation'];
+            }
+            if (stripos($dbTable['Collation'], $recommendedCollation) !== 0) {
+                $tablesWithNotRecommendedCollations[] = $dbTable['Name'];
+            }
+            if (!in_array($dbTable['Engine'], $tableEngines)) {
+                $tableEngines[] = $dbTable['Engine'];
+            }
+            if (stripos($dbTable['Engine'], $recommendedEngine) !== 0) {
+                $tablesWithNotRecommendedEngines[] = $dbTable['Name'];
+            }
+        }
+
+        // Checks Table Collations
+        $title = $driver['title'] . ' - Table collations - ' . implode(', ', $tableCollations);
+
+        if (empty($tablesWithNotRecommendedCollations)) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'WARNING',
+                'hint' => 'Recommended collation is ' . $recommendedCollation . ' for the tables: ' . implode(', ', $tablesWithNotRecommendedCollations),
+            ];
+        }
+
+        // Checks Table Engines
+        $title = $driver['title'] . ' - Table engines - ' . implode(', ', $tableEngines);
+
+        if (empty($tablesWithNotRecommendedEngines)) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'WARNING',
+                'hint' => 'Recommended engine is ' . $recommendedEngine . ' for the tables: ' . implode(', ', $tablesWithNotRecommendedEngines),
+            ];
+        }
+
+        return $checks;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getSupportedDatabaseDrivers()
+    {
+        return [
+            'mysql' => ['title' => 'MySQL', 'minVersion' => '5.7'],
+            'mariadb' => ['title' => 'MariaDB', 'minVersion' => '10.1'],
+        ];
+    }
+
+    /**
+     * @return array|false
+     */
+    public static function getDatabaseDriverInfo()
+    {
+        if (!Yii::$app->getDb()->getIsActive()) {
+            return false;
+        }
+
+        $driver = ['version' => Yii::$app->getDb()->getServerVersion()];
+
+        $supportedDrivers = self::getSupportedDatabaseDrivers();
+
+        // Firstly parse driver name from version:
+        if (preg_match('/(' . implode('|', array_keys($supportedDrivers)). ')/i', $driver['version'], $verMatch)) {
+            $driver['name'] = strtolower($verMatch[1]);
+        } else {
+            $driver['name'] = Yii::$app->getDb()->getDriverName();
+        }
+
+        $driver['isSupportedDriver'] = isset($supportedDrivers[$driver['name']]);
+
+        if (!$driver['isSupportedDriver']) {
+            return $driver;
+            // Below info can be initialized only for supported drivers.
+        }
+
+        // Append title and min version
+        $driver = array_merge($driver, $supportedDrivers[$driver['name']]);
+
+        // Check min allowed version
+        $driver['isAllowedVersion'] = version_compare($driver['version'], $driver['minVersion'], '>=');
+        // Otherwise try to compare complex version like 5.5.5-10.3.27-MariaDB-0+deb10u1
+        if (!$driver['isAllowedVersion'] &&
+            preg_match_all('/((\d+\.?)+)-/', $driver['version'], $verMatches)) {
+            foreach ($verMatches[1] as $verMatch) {
+                if (version_compare($verMatch, $driver['minVersion'], '>=')) {
+                    // If at least one version is allowed
+                    $driver['isAllowedVersion'] = true;
+                    break;
+                }
+            }
+        }
+
+        return $driver;
     }
 }

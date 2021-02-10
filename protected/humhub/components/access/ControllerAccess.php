@@ -154,6 +154,11 @@ class ControllerAccess extends BaseObject
     const RULE_MUST_CHANGE_PASSWORD = 'mustChangePassword';
 
     /**
+     * Maintenance mode is active
+     */
+    const RULE_MAINTENANCE_MODE= 'maintenance';
+
+    /**
      * Check guest if request method is post
      */
     const RULE_POST = 'post';
@@ -244,7 +249,12 @@ class ControllerAccess extends BaseObject
             'reason' => Yii::t('error', 'Login required for this section.'),
             'code' => 401
         ]);
-
+        $this->registerValidator([
+            self::RULE_MAINTENANCE_MODE => 'validateMaintenanceMode',
+            'reason' => ControllerAccess::getMaintenanceModeWarningText(),
+            'code' => 403,
+            'codeCallback' => 'checkMaintenanceMode',
+        ]);
         $this->registerValidator([
             self::RULE_MUST_CHANGE_PASSWORD => 'validateMustChangePassword',
             'reason' => Yii::t('error', 'You must change password.'),
@@ -350,7 +360,7 @@ class ControllerAccess extends BaseObject
 
             if (!$validator->run()) {
                 $this->reason = (!$this->reason) ? $validator->getReason() : $this->reason;
-                $this->code = (!$this->code) ? $validator->getCode(): $this->code;
+                $this->code = (!$this->code) ? $validator->getCode() : $this->code;
                 if (isset($validator->codeCallback)) {
                     $this->codeCallback = $validator->codeCallback;
                 }
@@ -388,7 +398,7 @@ class ControllerAccess extends BaseObject
             ]);
         }
 
-        throw new InvalidArgumentException('Invalid validator settings given for rule '.$ruleName);
+        throw new InvalidArgumentException('Invalid validator settings given for rule ' . $ruleName);
     }
 
     /**
@@ -468,7 +478,7 @@ class ControllerAccess extends BaseObject
     {
         return $this->isGuest() ||
             ($this->user->status !== User::STATUS_DISABLED &&
-            $this->user->status !== User::STATUS_SOFT_DELETED);
+                $this->user->status !== User::STATUS_SOFT_DELETED);
     }
 
     /**
@@ -493,11 +503,31 @@ class ControllerAccess extends BaseObject
     }
 
     /**
-     * @since 1.8
      * @return bool checks if the current user must change password
+     * @since 1.8
      */
     public function validateMustChangePassword()
     {
         return $this->isGuest() || Yii::$app->user->isMustChangePasswordUrl() || !$this->user->mustChangePassword();
     }
+
+    /**
+     * @return bool makes sure the current user has an access on maintenance mode
+     * @since 1.8
+     */
+    public function validateMaintenanceMode()
+    {
+        return !Yii::$app->settings->get('maintenanceMode') || $this->isAdmin();
+    }
+
+    /**
+     * @return string returns the maintenance mode warning text
+     * @since 1.8
+     */
+    public static function getMaintenanceModeWarningText()
+    {
+        return Yii::t('error', 'Maintenance mode is active. Only Administrators can access the platform.') .
+            ' ' . Yii::$app->settings->get('maintenanceModeInfo', '');
+    }
+
 }

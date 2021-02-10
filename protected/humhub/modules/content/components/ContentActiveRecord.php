@@ -256,7 +256,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     }
 
     /**
-     * Returns a description of this particular content.
+     * @inheritdoc
      *
      * This will be used to create a text preview of the content record. (e.g. in Activities or Notifications)
      * You need to override this method in your content implementation.
@@ -265,6 +265,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function getContentDescription()
     {
+        // TODO: should be abstract this and the whole class...
         return "";
     }
 

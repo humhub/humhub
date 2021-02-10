@@ -126,6 +126,18 @@ class Module extends \humhub\components\Module
     public $profileDisableStream = false;
 
     /**
+     * Account login blocking times after attempted incorrect logins.
+     * Format: Number of tries => Time delay in seconds.
+     * @since 1.8
+     * @var int[]
+     */
+    public $failedLoginDelayTimes = [
+        // No delay for less than 3 failed attempts
+        2 => 10,
+        6 => 20,
+    ];
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)

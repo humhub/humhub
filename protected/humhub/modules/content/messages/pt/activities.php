@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Contents' => '',
-  'Whenever a new content (e.g. post) has been created.' => '',
-  '{displayName} created a new {contentTitle}.' => '',
+  'Contents' => 'Conteúdos',
+  'Whenever a new content (e.g. post) has been created.' => 'Sempre que um novo conteúdo (ex. uma posta) é criado.',
+  '{displayName} created a new {contentTitle}.' => '{displayName} criou um/a novo/a {contentTitle}.',
 );

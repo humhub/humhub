@@ -1,6 +1,7 @@
 <?php
 return array (
   '<strong>Administration</strong> menu' => '<strong>Administratie</strong> menu',
+  '<strong>Maintenance</strong> Mode' => '<strong>Onderhoudsmodus</strong>',
   '<strong>Module </strong> administration' => '<strong>Module </strong> administratie',
   '<strong>Warning</strong> incomplete setup!' => '<strong>Waarschuwing</strong> onvolledige installatie!',
   'About' => 'Over',
@@ -17,6 +18,7 @@ return array (
   'Basic' => 'Basis',
   'Caching' => 'Caching',
   'Cronjobs' => 'Cronjobs',
+  'Default' => 'Standaard',
   'Delete all' => 'Verwijder alles',
   'Delete selected rows' => 'Verwijder de geselecteerde rijen',
   'Design' => 'Ontwerp',
@@ -38,7 +40,6 @@ return array (
   'Pending user registrations' => 'Wachtende gebruikersregistraties',
   'Permissions' => 'Permissies',
   'Proxy' => 'Proxy',
-  'Security' => 'Beveiliging',
   'Self test' => 'Zelf-test',
   'Settings' => 'Instellingen',
   'Sign up' => 'Registreer',

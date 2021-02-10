@@ -72,6 +72,7 @@ return [
     'Password reset' => '',
     'Please enter the letters from the image.' => '',
     'Please use the following link within the next day to reset your password.' => '',
+    'Please wait' => '',
     'User or Password incorrect.' => '',
     'We’ve sent you an email containing a link that will allow you to reset your password.' => '',
 ];

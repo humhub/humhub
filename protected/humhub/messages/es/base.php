@@ -82,4 +82,7 @@ return array (
   'Upload' => 'Subir',
   'Upload file' => 'Cargar archivo',
   'You are not allowed to run this action.' => 'No estás autorizado para realizar esta acción.',
+  '{nFormatted}B' => '{nFormatted}B',
+  '{nFormatted}K' => '{nFormatted}K',
+  '{nFormatted}M' => '{nFormatted}M',
 );

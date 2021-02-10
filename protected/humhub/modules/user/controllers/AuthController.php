@@ -20,8 +20,8 @@ use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\models\Session;
 use Yii;
-use yii\authclient\BaseClient;
 use yii\web\Cookie;
+use yii\authclient\BaseClient;
 use humhub\modules\user\events\UserEvent;
 
 /**
@@ -104,17 +104,27 @@ class AuthController extends Controller
             }
         }
 
-        if (Yii::$app->request->isAjax) {
-            return $this->renderAjax('login_modal', ['model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()]);
+        $loginParams = [
+            'model' => $login,
+            'invite' => $invite,
+            'canRegister' => $invite->allowSelfInvite(),
+        ];
+
+        if (Yii::$app->settings->get('maintenanceMode')) {
+            Yii::$app->session->setFlash('error', ControllerAccess::getMaintenanceModeWarningText());
         }
 
-        return $this->render('login', ['model' => $login, 'invite' => $invite, 'canRegister' => $invite->allowSelfInvite()]);
+        if (Yii::$app->request->isAjax) {
+            return $this->renderAjax('login_modal', $loginParams);
+        }
+
+        return $this->render('login', $loginParams);
     }
 
     /**
      * Handle successful authentication
      *
-     * @param \yii\authclient\BaseClient $authClient
+     * @param BaseClient $authClient
      * @return Response
      * @throws \Throwable
      */
@@ -129,6 +139,10 @@ class AuthController extends Controller
         }
 
         $user = AuthClientHelpers::getUserByAuthClient($authClient);
+
+        if (Yii::$app->settings->get('maintenanceMode') && !$user->isSystemAdmin()) {
+            return $this->redirect(['/user/auth/login']);
+        }
 
         // Check if e-mail is already in use with another auth method
         if ($user === null && isset($attributes['email'])) {
@@ -179,7 +193,7 @@ class AuthController extends Controller
      * Login user
      *
      * @param User $user
-     * @param \yii\authclient\BaseClient $authClient
+     * @param BaseClient $authClient
      * @return Response the current response object
      */
     protected function login($user, $authClient)
@@ -212,6 +226,9 @@ class AuthController extends Controller
 
         if ($success) {
             $this->trigger(static::EVENT_AFTER_LOGIN, new UserEvent(['user' => Yii::$app->user->identity]));
+            if (method_exists($authClient, 'onSuccessLogin')) {
+                $authClient->onSuccessLogin();
+            };
         }
 
         return $result;

@@ -26,5 +26,7 @@ return [
     'You need admin permissions to access this section.' => 'Χρειάζεστε δικαιώματα διαχειριστή για να αποκτήσετε πρόσβαση σε αυτήν την ενότητα.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Ο λογαριασμός χρήστη σας δεν έχει εγκριθεί ακόμη, δοκιμάστε ξανά αργότερα ή επικοινωνήστε με έναν διαχειριστή δικτύου.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Ο λογαριασμός χρήστη είναι ανενεργός, συνδεθείτε με έναν ενεργό λογαριασμό ή επικοινωνήστε με έναν διαχειριστή δικτύου.',
+    'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => '',
+    'Maintenance mode is active. Only Administrators can access the platform.' => '',
     'You must change password.' => '',
 ];

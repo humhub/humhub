@@ -55,7 +55,7 @@ return array (
   'Open' => 'Öffnen',
   'Please type at least 3 characters' => 'Bitte mindestens 3 Zeichen eingeben',
   'Please type at least {count} characters' => 'Bitte wenigstens {count} Zeichen eingeben',
-  'Powered by {name}' => 'Unterstützt von {name}',
+  'Powered by {name}' => 'Powered by {name}',
   'Profile dropdown' => 'Profil Dropdown',
   'Profile picture of {displayName}' => 'Profilbild von {displayName}',
   'Save' => 'Speichern',
@@ -82,4 +82,7 @@ return array (
   'Upload' => 'Hochladen',
   'Upload file' => 'Datei hochladen',
   'You are not allowed to run this action.' => 'Du hast keine Berechtigung, diese Aktion auszuführen.',
+  '{nFormatted}B' => '{nFormatted} Mrd.',
+  '{nFormatted}K' => '{nFormatted} Tsd.',
+  '{nFormatted}M' => '{nFormatted} Mio.',
 );

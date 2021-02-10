@@ -28,6 +28,8 @@ class Events extends \yii\base\BaseObject
      */
     public static function onDashboardSidebarInit($event)
     {
+        $event->sender->addWidget(widgets\MaintenanceModeWarning::class, [], ['sortOrder' => 0]);
+
         if (Yii::$app->user->isGuest) {
             return;
         }

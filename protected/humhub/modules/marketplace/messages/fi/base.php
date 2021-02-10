@@ -47,6 +47,23 @@ Module successfully enabled!
     'Third-party' => 'Kolmanen osapuolen',
     'Version:' => 'Versio:',
     'search for available modules online' => 'etsiä laajennuksia verkosta',
+    '
+No active Professional Edition license found!
+' => '',
+    '
+PROFESSIONAL EDITION
+' => '',
+    '
+The license could not be activated:
+' => '',
+    '
+The license was successfully activated!
+
+' => '',
+    '
+The license was successfully removed!
+
+' => '',
     '<strong>Activate</strong> your Professional Edition' => '',
     'All {moduleId} module content will be deleted. Continue?' => '',
     'Buy' => '',

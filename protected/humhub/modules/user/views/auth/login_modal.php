@@ -1,9 +1,16 @@
 <?php
 
+use humhub\modules\user\models\forms\Login;
+use humhub\modules\user\models\Invite;
 use yii\captcha\Captcha;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use humhub\modules\user\widgets\AuthChoice;
+
+/* @var $canRegister boolean */
+/* @var $model Login */
+/* @var $invite Invite */
+/* @var $info string */
 ?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
@@ -34,14 +41,21 @@ use humhub\modules\user\widgets\AuthChoice;
             <div class="tab-content">
                 <div class="tab-pane <?= (!isset($_POST['Invite'])) ? "active" : ""; ?>" id="login">
 
-                    <?php if (AuthChoice::hasClients()): ?>
+                    <?php if (Yii::$app->session->hasFlash('error')): ?>
+                        <div class="alert alert-danger" role="alert">
+                            <?= Yii::$app->session->getFlash('error') ?>
+                        </div>
+                    <?php endif; ?>
+
+                   <?php if (AuthChoice::hasClients()): ?>
                         <?= AuthChoice::widget([]) ?>
                     <?php else: ?>
                         <?php if ($canRegister) : ?>
                             <p><?= Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password."); ?></p>
                         <?php else: ?>
                             <p><?= Yii::t('UserModule.auth', "Please login with your username/email and password."); ?></p>
-                        <?php endif; ?>                    <?php endif; ?>
+                        <?php endif; ?>
+                    <?php endif; ?>
 
                     <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
                     <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.auth', 'username or email')]); ?>
@@ -50,7 +64,7 @@ use humhub\modules\user\widgets\AuthChoice;
                     <hr>
                     <div class="row">
                         <div class="col-md-4">
-                            <button href="#" id="loginBtn" data-ui-loader type="submit" class="btn btn-primary" data-action-click="ui.modal.submit" data-action-url="<?= Url::to(['/user/auth/login']) ?>">
+                            <button href="#" id="login-button" data-ui-loader type="submit" class="btn btn-primary" data-action-click="ui.modal.submit" data-action-url="<?= Url::to(['/user/auth/login']) ?>">
                                 <?= Yii::t('UserModule.auth', 'Sign in') ?>
                             </button>
 
@@ -101,7 +115,6 @@ use humhub\modules\user\widgets\AuthChoice;
 <script <?= \humhub\libs\Html::nonce() ?>>
     $(document).on('humhub:ready', function () {
         $('#login_username').focus();
-
     });
 
     $('.tab-register a').on('shown.bs.tab', function (e) {
@@ -111,5 +124,4 @@ use humhub\modules\user\widgets\AuthChoice;
     $('.tab-login a').on('shown.bs.tab', function (e) {
         $('#login_username').focus();
     })
-
 </script>

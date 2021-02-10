@@ -53,7 +53,6 @@ return [
     'Pending user registrations' => 'Użytkownicy oczekujący na akceptację',
     'Permissions' => 'Uprawnienia',
     'Proxy' => 'Serwer Proxy',
-    'Security' => 'Bezpieczeństwo',
     'Self test' => 'Auto test',
     'Settings' => 'Ustawienia',
     'Sign up' => 'Zarejestruj się',
@@ -64,6 +63,8 @@ return [
     'User posts' => 'Wpisy użytkowników',
     'Userprofiles' => 'Profile użytkowników',
     'Users' => 'Użytkownicy',
+    '<strong>Maintenance</strong> Mode' => '',
+    'Default' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
 ];

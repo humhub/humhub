@@ -77,7 +77,6 @@ return [
     'Updated by' => 'Cập nhật bởi',
     'User' => 'Người dùng',
     'User has been invited.' => 'Người dùng đã được mời.',
-    'User with the same email already exists but isn\'t linked to you. Login using your email first to link it.' => 'Người dùng với cùng địa chỉ email đã tồn tại nhưng không được liên kết tới bạn. Đăng nhập sử dụng email trước để tạo liên kết.',
     'Username' => 'Tên truy cập',
     'Username contains invalid characters.' => 'Username chứa ký tự không hợp lệ',
     'View your about page' => 'Xem trang giới thiệu của bạn',
@@ -94,6 +93,7 @@ return [
     'invited you to join {space} on {name}.' => 'đã mời bạn tham gia diễn đàn {space} trên {name}.',
     'or' => 'hoặc',
     'Current password' => '',
+    'Default Group' => '',
     'Enable Notifications' => '',
     'Force password change upon first login' => '',
     'Force password change upon next login' => '',
@@ -101,5 +101,6 @@ return [
     'Password needs to be at least {chars} characters long.' => '',
     'Profile posts only' => '',
     'Show all content' => '',
+    'Unsuccessful login attempts since last login: {failedLoginAttemptsCount}' => '',
     'Your are already logged in! - Logout first!' => '',
 ];
