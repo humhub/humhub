@@ -7,6 +7,7 @@
 - Fix #4842: Prerequisites Test - Improved database version detection for MariaDB
 - Fix #4850: New AuthClient method onSuccessLogin() not available on standard OAuths 
 - Fix #4856: Allow to invite users to space with pending membership application
+- Enh #4862: Tag picker for Space and User containers
 
 
 1.8.0-beta.1 (February 4, 2021)

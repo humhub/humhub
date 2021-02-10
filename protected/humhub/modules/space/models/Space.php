@@ -122,7 +122,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
         $rules = [
             [['join_policy', 'visibility', 'status', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
             [['name'], 'required'],
-            [['description', 'about', 'tags', 'color'], 'string'],
+            [['description', 'about', 'color'], 'string'],
+            [['tags'], 'checkTags'],
             [['description'], 'string', 'max' => 100],
             [['join_policy'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'in', 'range' => [0, 1, 2]],
@@ -140,6 +141,17 @@ class Space extends ContentContainerActiveRecord implements Searchable
         }
 
         return $rules;
+    }
+
+    /**
+     * Convert tags array into string on save
+     * @param string $attribute
+     */
+    public function checkTags($attribute)
+    {
+        if (is_array($this->$attribute)) {
+            $this->$attribute = implode(', ', $this->$attribute);
+        }
     }
 
     /**

@@ -59,6 +59,45 @@ class BrowseController extends Controller
     }
 
     /**
+     * Returns space tags list in JSON format filtered by keyword
+     */
+    public function actionSearchTagsJson()
+    {
+        $tags = [];
+        $keyword = trim(Yii::$app->request->get('keyword'));
+
+        if ($keyword === '') {
+            return $this->asJson($tags);
+        }
+
+        $tags[$keyword] = $keyword;
+
+        $spaces = Space::find()
+            ->visible()
+            ->search($keyword, ['space.tags'])
+            ->all();
+
+        /* @var $space Space */
+        foreach ($spaces as $space) {
+            $spaceTags = explode(',', $space->tags);
+            foreach ($spaceTags as $spaceTag) {
+                $spaceTag = trim($spaceTag);
+                $uniqueTag = strtolower($spaceTag);
+                if (!isset($tags[$uniqueTag]) && stripos($spaceTag, $keyword) !== false) {
+                    $tags[$uniqueTag] = $spaceTag;
+                }
+            }
+        }
+
+        foreach ($tags as $t => $tag) {
+            $tags[] = ['id' => $tag, 'text' => $tag];
+            unset($tags[$t]);
+        }
+
+        return $this->asJson($tags);
+    }
+
+    /**
      * @param $spaces Space[] array of spaces
      * @return array
      */
