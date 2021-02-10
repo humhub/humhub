@@ -9,6 +9,8 @@ namespace humhub\modules\content\widgets;
 
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\BasePicker;
+use humhub\modules\user\models\forms\AccountSettings;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
 
@@ -33,6 +35,8 @@ class ContainerTagPicker extends BasePicker
 
         if ($this->model instanceof Space) {
             $this->url = Url::to(['/space/browse/search-tags-json']);
+        } else if($this->model instanceof AccountSettings) {
+            $this->url = Url::to(['/user/account/search-tags-json']);
         }
     }
 
@@ -75,5 +79,49 @@ class ContainerTagPicker extends BasePicker
     protected function getItemImage($item)
     {
         return null;
+    }
+
+    /**
+     * Search tags data from Space/User containers for JSON response
+     *
+     * @param string $contentContainerClass
+     * @param string $keyword
+     * @return array
+     */
+    public static function searchTagsFromContainers($contentContainerClass, $keyword)
+    {
+        $tags = [];
+        $keyword = trim($keyword);
+
+        if ($keyword === '') {
+            return $tags;
+        }
+
+        $tags[$keyword] = $keyword;
+
+        /* @var $contentContainerClass Space|User */
+        $contentContainers = $contentContainerClass::find()
+            ->visible()
+            ->search($keyword, ['tags'])
+            ->all();
+
+        /* @var $contentContainer Space|User */
+        foreach ($contentContainers as $contentContainer) {
+            $containerTags = explode(',', $contentContainer->tags);
+            foreach ($containerTags as $containerTag) {
+                $containerTag = trim($containerTag);
+                $uniqueTag = strtolower($containerTag);
+                if (!isset($tags[$uniqueTag]) && stripos($containerTag, $keyword) !== false) {
+                    $tags[$uniqueTag] = $containerTag;
+                }
+            }
+        }
+
+        foreach ($tags as $t => $tag) {
+            $tags[] = ['id' => $tag, 'text' => $tag];
+            unset($tags[$t]);
+        }
+
+        return $tags;
     }
 }

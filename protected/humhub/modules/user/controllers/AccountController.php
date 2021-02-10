@@ -9,6 +9,7 @@
 namespace humhub\modules\user\controllers;
 
 use humhub\compat\HForm;
+use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\user\authclient\interfaces\PrimaryClient;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\forms\AccountChangeEmail;
@@ -141,6 +142,17 @@ class AccountController extends BaseAccountController
         $col->asort($languages);
 
         return $this->render('editSettings', ['model' => $model, 'languages' => $languages]);
+    }
+
+    /**
+     * Returns user tags list in JSON format filtered by keyword
+     */
+    public function actionSearchTagsJson()
+    {
+        $keyword = Yii::$app->request->get('keyword');
+        $pickerTags = ContainerTagPicker::searchTagsFromContainers(User::class, $keyword);
+
+        return $this->asJson($pickerTags);
     }
 
     /**
