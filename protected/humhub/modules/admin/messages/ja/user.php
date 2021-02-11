@@ -143,7 +143,7 @@ Kind Regards<br>
   'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'ユーザーをグループ（チーム、部門など）に登録できます。グループ用のスペース設定、管理、権限設定もできます。',
   'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => 'このオプションを使用すると、このユーザーの投稿（コンテンツ、コメントなど）は完全に削除されます。',
   'View profile' => 'プロフィールを見る',
-  'ViAdd a separate page for the group to the directory.
+  'Add a separate page for the group to the directory.' => '',
   'Visible for members+guests' => 'メンバー＋ゲストにも見える',
   'Yes' => 'はい',
   'You can only delete empty categories!' => 'あなたしか参加していないカテゴリを削除することができます！',
