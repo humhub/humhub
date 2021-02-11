@@ -98,7 +98,7 @@ return [
     '<strong>Warning:</strong> All individual profile permission settings are reset to the default values!' => '',
     'Account' => '',
     'Active users' => '',
-    'Add a seperate page for the group to the directory.' => '',
+    'Add a separate page for the group to the directory.' => '',
     'Administrator group could not be deleted!' => '',
     'All open registration invitations were successfully deleted.' => '',
     'All the personal data of this user will be irrevocably deleted.' => '',

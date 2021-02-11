@@ -12,7 +12,7 @@ return array (
   'Actions' => 'Tevékenység',
   'Active users' => 'Aktív felhasználók',
   'Add Groups...' => 'Csoportok hozzáadása',
-  'Add a seperate page for the group to the directory.' => 'Egy külön oldal felvétele a csoport számára a könyvtárba.',
+  'Add a separate page for the group to the directory.' => 'Egy külön oldal felvétele a csoport számára a könyvtárba.',
   'Add new category' => 'Új kategória hozzáadása',
   'Add new field' => 'Új mező hozzáadása',
   'Add new group' => 'Új csoport hozzáadása',

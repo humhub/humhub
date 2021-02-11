@@ -112,7 +112,7 @@ return [
     '<strong>Warning:</strong> All individual profile permission settings are reset to the default values!' => '',
     'Account' => '',
     'Actions' => '',
-    'Add a seperate page for the group to the directory.' => '',
+    'Add a separate page for the group to the directory.' => '',
     'Add new category' => '',
     'Add new field' => '',
     'Administrator group could not be deleted!' => '',

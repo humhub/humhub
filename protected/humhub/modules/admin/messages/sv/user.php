@@ -67,7 +67,7 @@ return [
     'Account Request for \'{displayName}\' has been approved.' => '',
     'Account Request for \'{displayName}\' has been declined.' => '',
     'Active users' => '',
-    'Add a seperate page for the group to the directory.' => '',
+    'Add a separate page for the group to the directory.' => '',
     'Add new group' => '',
     'Add new members...' => '',
     'Administrator group could not be deleted!' => '',

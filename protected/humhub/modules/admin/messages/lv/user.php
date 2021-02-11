@@ -64,7 +64,7 @@ return [
     'Account' => '',
     'Actions' => '',
     'Active users' => '',
-    'Add a seperate page for the group to the directory.' => '',
+    'Add a separate page for the group to the directory.' => '',
     'Add new category' => '',
     'Add new field' => '',
     'Add new members...' => '',

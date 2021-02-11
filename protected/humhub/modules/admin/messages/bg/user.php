@@ -27,7 +27,7 @@ return [
     'Actions' => 'Действия',
     'Active users' => 'Активни потребители',
     'Add Groups...' => 'Добави Групи...',
-    'Add a seperate page for the group to the directory.' => 'Добавете отделна страница за групата към директорията.',
+    'Add a separate page for the group to the directory.' => 'Добавете отделна страница за групата към директорията.',
     'Add new category' => 'Добави нова категория',
     'Add new field' => 'Добави ново поле',
     'Add new group' => 'Добави нова група',

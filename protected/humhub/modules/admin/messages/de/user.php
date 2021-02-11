@@ -12,7 +12,7 @@ return array (
   'Actions' => 'Aktionen',
   'Active users' => 'Aktive Benutzer',
   'Add Groups...' => 'Gruppen hinzufügen ...',
-  'Add a seperate page for the group to the directory.' => 'Füge dem Verzeichnis eine eigene Unterseite für die Gruppe hinzu.',
+  'Add a separate page for the group to the directory.' => 'Füge dem Verzeichnis eine eigene Unterseite für die Gruppe hinzu.',
   'Add new category' => 'Neue Kategorie hinzufügen',
   'Add new field' => 'Neues Feld hinzufügen',
   'Add new group' => 'Neue Gruppe erstellen',
