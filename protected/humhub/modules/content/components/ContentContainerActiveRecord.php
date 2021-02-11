@@ -14,6 +14,8 @@ use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\content\models\ContentContainerTag;
+use humhub\modules\content\models\ContentContainerTagRelation;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
@@ -63,6 +65,26 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @var string the default route
      */
     public $defaultRoute = '/';
+
+    /**
+     * @var array Related Tags which should be update after save
+     */
+    public $updatedTags;
+
+    /**
+     * @inheritdoc
+     */
+    public function __get($name)
+    {
+        switch ($name) {
+            // The column `tags` was deleted since 1.8 vesion but we need support this for
+            // old external modules, where it may be used like `$user->tags` or `$space->tags`.
+            case 'tags':
+                return implode(', ', $this->getTags());
+        }
+
+        return parent::__get($name);
+    }
 
     /**
      * Returns the display name of content container
@@ -195,6 +217,8 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
             $this->contentcontainer_id = $contentContainer->id;
             $this->update(false, ['contentcontainer_id']);
         }
+
+        $this->updateTags();
 
         parent::afterSave($insert, $changedAttributes);
     }
@@ -339,6 +363,88 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function isVisibleFor($visibility)
     {
         return $this->visibility == $visibility;
+    }
+
+    /**
+     * Checks if the Content Container has Tags
+     *
+     * @return boolean has tags set
+     */
+    public function hasTags()
+    {
+        return count($this->getTags()) > 0;
+    }
+
+    /**
+     * Returns an array with related Tags
+     *
+     * @return array
+     */
+    public function getTags()
+    {
+        return ContentContainerTag::find()
+            ->select('name')
+            ->leftJoin('contentcontainer_tag_relation', 'id = tag_id')
+            ->where(['contentcontainer_id' => $this->contentcontainer_id])
+            ->andWhere(['contentcontainer_class' => get_class($this)])
+            ->column();
+    }
+
+    /**
+     * Update related tags
+     */
+    protected function updateTags()
+    {
+        if ($this->isNewRecord || !isset($this->updatedTags)) {
+            return;
+        }
+
+        $this->deleteTagRelations();
+
+        if (empty($this->updatedTags)) {
+            return;
+        }
+
+        $existingTags = ContentContainerTag::find()
+            ->select(['id', 'name'])
+            ->where(['IN', 'name', $this->updatedTags])
+            ->andWhere(['contentcontainer_class' => get_class($this)])
+            ->all();
+
+        $existingTagsArray = [];
+        /* @var $existingTag ContentContainerTag */
+        foreach ($existingTags as $existingTag) {
+            $existingTagsArray[$existingTag->name] = $existingTag->id;
+        }
+
+        foreach ($this->updatedTags as $updatedTag) {
+            $newTagRelation = new ContentContainerTagRelation();
+            $newTagRelation->contentcontainer_id = $this->contentcontainer_id;
+            if (isset($existingTagsArray[$updatedTag])) {
+                $newTagRelation->tag_id = $existingTagsArray[$updatedTag];
+            } else {
+                $newTag = new ContentContainerTag();
+                $newTag->name = $updatedTag;
+                $newTag->contentcontainer_class = get_class($this);
+                $newTag->save();
+                $newTagRelation->tag_id = $newTag->id;
+            }
+            $newTagRelation->save();
+        }
+    }
+
+    /**
+     * Delete relations between this Container and Tags
+     */
+    protected function deleteTagRelations()
+    {
+        $tagRelations = ContentContainerTagRelation::find()
+            ->where(['contentcontainer_id' => $this->contentcontainer_id])
+            ->all();
+
+        foreach ($tagRelations as $tagRelation) {
+            $tagRelation->delete();
+        }
     }
 
 }

@@ -65,7 +65,7 @@ class BrowseController extends Controller
     public function actionSearchTagsJson()
     {
         $keyword = Yii::$app->request->get('keyword');
-        $pickerTags = ContainerTagPicker::searchTagsFromContainers(Space::class, $keyword);
+        $pickerTags = ContainerTagPicker::searchTagsByContainerClass(Space::class, $keyword);
 
         return $this->asJson($pickerTags);
     }

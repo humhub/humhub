@@ -30,23 +30,12 @@ class AccountSettings extends \yii\base\Model
     public function rules()
     {
         return [
-            ['tags', 'checkTags'],
+            ['tags', 'safe'],
             [['show_introduction_tour'], 'boolean'],
             [['timeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
             ['visibility', 'in', 'range' => [1, 2]],
         ];
-    }
-
-    /**
-     * Convert tags array into string on save
-     * @param string $attribute
-     */
-    public function checkTags($attribute)
-    {
-        if (is_array($this->$attribute)) {
-            $this->$attribute = implode(', ', $this->$attribute);
-        }
     }
 
     /**

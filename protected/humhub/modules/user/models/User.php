@@ -48,7 +48,6 @@ use yii\web\IdentityInterface;
  * @property string $username
  * @property string $email
  * @property string $auth_mode
- * @property string $tags
  * @property string $language
  * @property string $time_zone
  * @property string $created_at
@@ -154,7 +153,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
                 return $model->getAttribute($attribute) !== $model->getOldAttribute($attribute);
             }],
             [['status', 'created_by', 'updated_by', 'visibility'], 'integer'],
-            [['tags'], 'string'],
+            [['updatedTags'], 'safe'],
             [['guid'], 'string', 'max' => 45],
             [['time_zone'], 'validateTimeZone'],
             [['auth_mode'], 'string', 'max' => 10],
@@ -687,26 +686,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
-     * Checks if user has tags
-     *
-     * @return boolean has tags set
-     */
-    public function hasTags()
-    {
-        return ($this->tags != '');
-    }
-
-    /**
-     * Returns an array with assigned Tags
-     *
-     * @return array tags
-     */
-    public function getTags()
-    {
-        return preg_split("/[;,#]+/", $this->tags);
-    }
-
-    /**
      * Returns an array of informations used by search subsystem.
      * Function is defined in interface ISearchable
      *
@@ -717,7 +696,9 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $attributes = [
             'email' => $this->email,
             'username' => $this->username,
-            'tags' => $this->tags,
+            // TODO: column `tags` was moved into the tables `contentcontainer_tag` and `contentcontainer_tag_relation`,
+            //       try to implement the searching by these tables instead.
+            // 'tags' => $this->tags,
             'firstname' => $this->profile->firstname,
             'lastname' => $this->profile->lastname,
             'title' => $this->profile->title,

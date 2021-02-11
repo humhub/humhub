@@ -7,10 +7,10 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\modules\content\models\ContentContainerTag;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\BasePicker;
 use humhub\modules\user\models\forms\AccountSettings;
-use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
 
@@ -25,6 +25,11 @@ class ContainerTagPicker extends BasePicker
      * @inheritdoc
      */
     public $itemKey = 'name';
+
+    /**
+     * @inheritdoc
+     */
+    public $itemClass = ContentContainerTag::class;
 
     /**
      * @inheritdoc
@@ -53,13 +58,13 @@ class ContainerTagPicker extends BasePicker
 
     public function loadItems($selection = null)
     {
-        if ($selection === '') {
-            return [];
+        if (!is_array($selection)) {
+            $selection = $this->model->getTags();
         }
 
-        $tags = explode(',', $selection);
-        foreach ($tags as $t => $tag) {
-            $tags[$t] = (object)['name' => trim($tag)];
+        $tags = [];
+        foreach ($selection as $tag) {
+            $tags[] = (object)['name' => $tag];
         }
 
         return $tags;
@@ -88,40 +93,21 @@ class ContainerTagPicker extends BasePicker
      * @param string $keyword
      * @return array
      */
-    public static function searchTagsFromContainers($contentContainerClass, $keyword)
+    public static function searchTagsByContainerClass($contentContainerClass, $keyword)
     {
-        $tags = [];
         $keyword = trim($keyword);
 
         if ($keyword === '') {
-            return $tags;
+            return [];
         }
 
-        $tags[$keyword] = $keyword;
-
-        /* @var $contentContainerClass Space|User */
-        $contentContainers = $contentContainerClass::find()
-            ->visible()
-            ->search($keyword, ['tags'])
+        $containerTags = ContentContainerTag::find()
+            ->select(['name AS id', 'name AS text'])
+            ->where(['LIKE', 'name', $keyword])
+            ->andWhere(['contentcontainer_class' => $contentContainerClass])
+            ->asArray()
             ->all();
 
-        /* @var $contentContainer Space|User */
-        foreach ($contentContainers as $contentContainer) {
-            $containerTags = explode(',', $contentContainer->tags);
-            foreach ($containerTags as $containerTag) {
-                $containerTag = trim($containerTag);
-                $uniqueTag = strtolower($containerTag);
-                if (!isset($tags[$uniqueTag]) && stripos($containerTag, $keyword) !== false) {
-                    $tags[$uniqueTag] = $containerTag;
-                }
-            }
-        }
-
-        foreach ($tags as $t => $tag) {
-            $tags[] = ['id' => $tag, 'text' => $tag];
-            unset($tags[$t]);
-        }
-
-        return $tags;
+        return array_merge([['id' => $keyword, 'text' => $keyword]], $containerTags);
     }
 }

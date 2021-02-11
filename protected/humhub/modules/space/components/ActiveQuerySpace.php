@@ -66,8 +66,11 @@ class ActiveQuerySpace extends ActiveQuery
      * @param array $columns
      * @return ActiveQuerySpace the query
      */
-    public function search($keywords, $columns = ['space.name', 'space.description', 'space.tags'])
+    public function search($keywords, $columns = ['space.name', 'space.description'/*, 'space.tags'*/])
     {
+        // TODO: column `tags` was moved into the tables `contentcontainer_tag` and `contentcontainer_tag_relation`,
+        //       try to implement the searching by these tables instead.
+
         if (empty($keywords)) {
             return $this;
         }

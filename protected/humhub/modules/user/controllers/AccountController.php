@@ -120,14 +120,14 @@ class AccountController extends BaseAccountController
             $model->timeZone = Yii::$app->settings->get('timeZone');
         }
 
-        $model->tags = $user->tags;
+        $model->tags = $user->getTags();
         $model->show_introduction_tour = Yii::$app->getModule('tour')->settings->contentContainer($user)->get("hideTourPanel");
         $model->visibility = $user->visibility;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             Yii::$app->getModule('tour')->settings->contentContainer($user)->set('hideTourPanel', $model->show_introduction_tour);
             $user->language = $model->language;
-            $user->tags = $model->tags;
+            $user->updatedTags = $model->tags;
             $user->time_zone = $model->timeZone;
             $user->visibility = $model->visibility;
             $user->save();
@@ -150,7 +150,7 @@ class AccountController extends BaseAccountController
     public function actionSearchTagsJson()
     {
         $keyword = Yii::$app->request->get('keyword');
-        $pickerTags = ContainerTagPicker::searchTagsFromContainers(User::class, $keyword);
+        $pickerTags = ContainerTagPicker::searchTagsByContainerClass(User::class, $keyword);
 
         return $this->asJson($pickerTags);
     }
