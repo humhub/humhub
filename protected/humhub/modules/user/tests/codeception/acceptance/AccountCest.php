@@ -22,7 +22,8 @@ class AccountCest
 
         $I->amGoingTo('fill the basic settings form');
 
-        $I->fillField('#accountsettings-tags', 'Tester, Actor');
+        $I->selectFromPicker('#accountsettings-tags', 'Tester');
+        $I->selectFromPicker('#accountsettings-tags', 'Actor');
         #$I->selectOption('#accountsettings-language', 'Deutsch');
         $I->click('Save');
 
