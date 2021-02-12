@@ -6,7 +6,7 @@
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>">
+<html lang="<?= Yii::$app->language ?>" <?php if(Yii::$app->language == 'ar') echo "dir='rtl'"; ?>>
     <head>
         <title><?= strip_tags($this->pageTitle); ?></title>
         <meta charset="<?= Yii::$app->charset ?>">
