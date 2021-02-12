@@ -8,6 +8,7 @@
 - Fix #4850: New AuthClient method onSuccessLogin() not available on standard OAuths 
 - Fix #4856: Allow to invite users to space with pending membership application
 - Fix #4869: Fix cached comment content in email notification
+- Enh #4868: Reset email summaries / notifications settings for all users
 
 
 1.8.0-beta.1 (February 4, 2021)
