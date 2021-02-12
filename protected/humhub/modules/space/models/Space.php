@@ -170,7 +170,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             'join_policy' => Yii::t('SpaceModule.base', 'Join Policy'),
             'visibility' => Yii::t('SpaceModule.base', 'Visibility'),
             'status' => Yii::t('SpaceModule.base', 'Status'),
-            'tags' => Yii::t('SpaceModule.base', 'Tags'),
+            'updatedTags' => Yii::t('SpaceModule.base', 'Tags'),
             'created_at' => Yii::t('SpaceModule.base', 'Created At'),
             'created_by' => Yii::t('SpaceModule.base', 'Created By'),
             'updated_at' => Yii::t('SpaceModule.base', 'Updated At'),
