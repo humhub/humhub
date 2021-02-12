@@ -395,7 +395,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     protected function updateTags()
     {
-        if ($this->isNewRecord || !isset($this->updatedTags)) {
+        if (!isset($this->updatedTags)) {
             return;
         }
 
