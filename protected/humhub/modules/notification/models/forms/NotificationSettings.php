@@ -8,6 +8,8 @@
 
 namespace humhub\modules\notification\models\forms;
 
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\notification\components\NotificationCategory;
 use Yii;
 use yii\base\Model;
@@ -249,6 +251,38 @@ class NotificationSettings extends Model
         Yii::$app->notification->setSpaces([], $this->user);
 
         return true;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function canResetAllUsers()
+    {
+        return !isset($this->user) && Yii::$app->user->can(ManageUsers::class);
+    }
+
+    /**
+     * Resets all settings stored for all current user
+     */
+    public function resetAllUserSettings()
+    {
+        $notificationSettings = [];
+        foreach ($this->targets() as $target) {
+            foreach ($this->categories() as $category) {
+                $notificationSettings[] = $target->getSettingKey($category);
+            }
+        }
+
+        ContentContainerSetting::deleteAll(['AND',
+            ['module_id' => 'notification'],
+            ['IN', 'name', $notificationSettings],
+        ]);
+
+        // TODO: Reset this for all Users
+        // Yii::$app->notification->setSpaces([], $this->user);
+
+        $settingsManager = Yii::$app->getModule('notification')->settings->user();
+        $settingsManager->reload();
     }
 
 }
