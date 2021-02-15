@@ -347,7 +347,7 @@ class NotificationManager
         Membership::updateAll(['send_notifications' => 0]);
 
         // Delete all selected following spaces
-        Follow::deleteAll(['object_model' => Space::class]);
+        Follow::updateAll(['send_notifications' => 0], ['object_model' => Space::class]);
     }
 
     /**
