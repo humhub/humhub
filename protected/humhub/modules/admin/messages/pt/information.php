@@ -19,7 +19,7 @@ return array (
   'Last run (hourly):' => 'Última execução (hora-a-hora):',
   'Licences' => 'Licenças',
   'Logging' => 'Registos',
-  'Never' => 'Nunca',
+  'Never' => 'fascismo-nunca-mais!',
   'Other' => 'Outrꜵ',
   'Please refer to the documentation to setup the cronjobs and queue workers.' => 'Por favor consulta a documentação para configurar cronjobs e tarefeiros de bicha.',
   'Prerequisites' => 'Pré-requisitos',
