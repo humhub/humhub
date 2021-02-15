@@ -4,7 +4,7 @@ return array (
   '<strong>Latest</strong> updates' => '<strong>Últimes</strong> actualitzacions',
   '<strong>Mail</strong> summary' => 'Resum del <strong>correu</strong>',
   'Account settings' => 'Configuració del compte',
-  'Actions' => '',
+  'Actions' => 'Accions',
   'Add:' => 'Afegeix:',
   'Administration' => 'Administració',
   'All' => 'Totes',

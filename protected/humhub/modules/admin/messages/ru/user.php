@@ -106,7 +106,7 @@ Kind Regards<br>
   'One or more user needs your approval as group admin.' => 'Один или несколько пользователей нуждаются в вашем подтверждении в качестве администратора группы.',
   'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.' => 'Применяется только в том случае, если включен ограниченный доступ для незарегистрированных пользователей. Влияет только на новых пользователей.',
   'Overview' => 'Список пользователей',
-  'Password' => '',
+  'Password' => 'Пароль',
   'Pending approvals' => 'В ожидании подтверждения',
   'Pending user approvals' => 'Ожидает подтверждения пользователей',
   'Permanently delete' => '',

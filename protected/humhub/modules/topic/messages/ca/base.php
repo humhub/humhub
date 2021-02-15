@@ -5,7 +5,7 @@ return array (
   '<strong>Manage</strong> Topics' => '',
   '<strong>Topic</strong> Overview' => '',
   'Add Topic' => 'Afegeix tema',
-  'Color' => '',
+  'Color' => 'Color',
   'Do you really want to delete this topic?' => '',
   'Name' => 'Nom',
   'Sort order' => '',

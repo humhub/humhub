@@ -2,10 +2,10 @@
 return array (
   '<strong>Invite</strong> new people' => '',
   'Click here to create an account:' => '',
-  'Email' => '',
+  'Email' => 'Correu electrònic',
   'Email address(es)' => '',
   'Please add the email addresses of people you want to invite below.' => '',
-  'Send invite' => '',
+  'Send invite' => 'Envia invitació',
   'Separate multiple email addresses by comma.' => '',
   'You\'ve been invited to join %appName%' => '',
   '{email} is already registered!' => '{email} ja està registrat!',
