@@ -109,7 +109,8 @@ class NotificationSettings extends Model
     public function isUserSettingLoaded()
     {
         if ($this->user) {
-            return $this->getSettings()->get('notification.like_email') !== null;
+            return $this->getSettings()->get('enable_html5_desktop_notifications') !== null ||
+                $this->getSettings()->get('notification.like_email') !== null;
         }
 
         return false;
@@ -243,6 +244,7 @@ class NotificationSettings extends Model
         }
 
         $settings = $this->getSettings();
+        $settings->delete('enable_html5_desktop_notifications');
         foreach ($this->targets() as $target) {
             foreach ($this->categories() as $category) {
                 $settings->delete($target->getSettingKey($category));
@@ -266,7 +268,7 @@ class NotificationSettings extends Model
      */
     public function resetAllUserSettings()
     {
-        $notificationSettings = [];
+        $notificationSettings = ['enable_html5_desktop_notifications'];
         foreach ($this->targets() as $target) {
             foreach ($this->categories() as $category) {
                 $notificationSettings[] = $target->getSettingKey($category);
