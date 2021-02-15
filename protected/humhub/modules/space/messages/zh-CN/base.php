@@ -110,7 +110,6 @@ return [
     'Updated By' => '修改人',
     'Updated by' => '修改人',
     'User \'{username}\' is already a member of this space!' => '用户 \'{username}\' 已经是这个空间的成员了!',
-    'User \'{username}\' is already an applicant of this space!' => '用户 \'{username}\' 已经申请了加入这个空间!',
     'User not found!' => '用户未找到',
     'Users' => '用户',
     'Visibility' => '可见性',

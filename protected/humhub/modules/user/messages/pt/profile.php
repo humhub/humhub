@@ -131,4 +131,5 @@ return [
     'Visible' => '',
     'You need to login to view this user profile!' => '',
     'YouTube URL' => '',
+    '{attribute} is required!' => '',
 ];

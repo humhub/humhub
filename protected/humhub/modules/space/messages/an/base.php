@@ -130,7 +130,6 @@ return [
     'To invite users to this space, please type their names below to find and pick them.' => '',
     'Updated by' => '',
     'User \'{username}\' is already a member of this space!' => '',
-    'User \'{username}\' is already an applicant of this space!' => '',
     'User invitations have been added to the queue' => '',
     'User memberships have been added to the queue' => '',
     'Users has been invited.' => '',

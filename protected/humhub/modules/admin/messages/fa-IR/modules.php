@@ -38,10 +38,10 @@ return [
     'Save' => 'ذخیره',
     'Set as default' => 'تنظیم به عنوان پیش‌فرض',
     'Spaces' => 'انجمن‌ها',
-    'This module doesn\'t provide further informations.' => 'این ماژول اطلاعات بیشتری در اختیار نمی‌گذارد.',
     'Uninstall' => 'حذف',
     'User Profiles' => 'پروفایل‌های کاربران',
     'Version:' => 'نسخه:',
     'Legacy' => '',
     'Not maintained or maintenance is about to be discontinued.' => '',
+    'This module doesn\'t provide further information.' => '',
 ];

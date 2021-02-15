@@ -117,7 +117,6 @@ return [
     'Updated By' => 'به‌روزرسانی شده توسط',
     'Updated by' => 'به‌روزرسانی‌شده توسط',
     'User \'{username}\' is already a member of this space!' => 'کاربر «{username}» همین حالا هم عضو این انجمن است!',
-    'User \'{username}\' is already an applicant of this space!' => 'کاربر «{username}» همین حالا هم کارجوی این انجمن است!',
     'User not found!' => 'کاربر یافت نشد!',
     'Users' => 'کاربران',
     'Users has been invited.' => 'کاربر دعوت شده است.',

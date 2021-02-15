@@ -64,5 +64,7 @@ return [
     'Wrap in block quote' => 'Τυλίξτε στήν παράθεση (quote) του μπλοκ',
     'Wrap in bullet list' => 'Τυλίξτε στην λίστα κουκκίδων',
     'Wrap in ordered list' => 'Τυλίξτε σε ταξινομημένη λίστα',
+    '[Code Block]' => '',
     '[Invalid file]' => '',
+    '[Table]' => '',
 ];

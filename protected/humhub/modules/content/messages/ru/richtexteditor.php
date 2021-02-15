@@ -64,5 +64,7 @@ return [
     'Wrap in block quote' => 'Цитата',
     'Wrap in bullet list' => 'Маркированный список',
     'Wrap in ordered list' => 'Упорядоченный список',
+    '[Code Block]' => '',
     '[Invalid file]' => '',
+    '[Table]' => '',
 ];
