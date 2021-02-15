@@ -278,8 +278,7 @@ class NotificationSettings extends Model
             ['IN', 'name', $notificationSettings],
         ]);
 
-        // TODO: Reset this for all Users
-        // Yii::$app->notification->setSpaces([], $this->user);
+        Yii::$app->notification->resetSpaces();
 
         $settingsManager = Yii::$app->getModule('notification')->settings->user();
         $settingsManager->reload();
