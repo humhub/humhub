@@ -287,7 +287,7 @@ abstract class BaseRichTextConverter extends GithubMarkdown
             });
         }
 
-        return '';
+        return parent::renderAbsy($blocks);
     }
 
 
