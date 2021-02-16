@@ -169,7 +169,10 @@ abstract class BaseRichTextConverter extends GithubMarkdown
      */
     public static function buildCacheKeyForContent(ContentOwner $content, $prefix = null)
     {
-        $result = 'content_'.$content->id;
+        $result = 'content_' . $content->content->id;
+        if (isset($content->id)) {
+            $result .= '_' . $content->id;
+        }
         return $prefix ? $prefix.'_'.$result : $result;
     }
 
