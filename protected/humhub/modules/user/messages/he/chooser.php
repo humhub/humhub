@@ -9,6 +9,6 @@ return array (
   'Select {n,plural,=1{user} other{users}}' => '',
   'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => '',
   'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => '',
-  'You reached the maximum number of allowed charachters ({n}).' => '',
+  'You reached the maximum number of allowed characters ({n}).' => '',
   'Your search returned no matches.' => 'החיפוש שלך לא החזיר תוצאות',
 );

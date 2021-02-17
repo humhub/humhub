@@ -13,6 +13,6 @@ return array (
   'Select {n,plural,=1{user} other{users}}' => 'Выберите {n,plural,=1{пользователя} other{пользователей}}',
   'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => 'Это поле поддерживает максимум {n,plural,=1{элемент} other{элементов}}',
   'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Это поле поддерживает максимум {n,plural,=1{пользователя} other{пользователей}}',
-  'You reached the maximum number of allowed charachters ({n}).' => 'Вы достигли максимально допустимого числа символов ({n})',
+  'You reached the maximum number of allowed characters ({n}).' => 'Вы достигли максимально допустимого числа символов ({n})',
   'Your search returned no matches.' => 'Ваш поиск не дал результатов.',
 );
