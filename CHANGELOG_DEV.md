@@ -8,6 +8,8 @@
 - Fix #4850: New AuthClient method onSuccessLogin() not available on standard OAuths 
 - Fix #4856: Allow to invite users to space with pending membership application
 - Fix #4869: Fix cached comment content in email notification
+- Fix #4838: ProsemirrorRichText::replaceLinkExtension() not compatible with HumHub < 1.8
+- Fix #4847: RichText::postProcess(null) throws error
 
 
 1.8.0-beta.1 (February 4, 2021)

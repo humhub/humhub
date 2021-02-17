@@ -225,6 +225,11 @@ abstract class AbstractRichText extends JsWidget
         $result = [];
         $original = $text;
 
+        if(empty($text)) {
+            $result['text'] = $text;
+            return $result;
+        }
+
         foreach (static::getExtensions() as $extension) {
             $text = $extension->onPostProcess($text, $record, $attribute, $result);
         }

@@ -13,6 +13,7 @@ use humhub\libs\Helpers;
 use humhub\libs\ParameterEvent;
 use humhub\modules\content\widgets\richtext\extensions\emoji\RichTextEmojiExtension;
 use humhub\modules\content\widgets\richtext\extensions\file\FileExtension;
+use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtensionMatch;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use humhub\modules\content\widgets\richtext\extensions\oembed\OembedExtension;
 use humhub\modules\content\widgets\richtext\extensions\RichTextCompatibilityExtension;
@@ -220,12 +221,13 @@ class ProsemirrorRichText extends AbstractRichText
      *
      * @param $text string rich text content to parse
      * @param $extension string|null extension string if not given all extension types will be included
-     * @param callable $callback
      * @return mixed
      * @deprecated since 1.8 use `ProsemirrorRichTextConverter::replaceLinkExtension()`
      */
     public static function replaceLinkExtension(string $text, $extension, callable $callback)
     {
-        return RichTextLinkExtension::replaceLinkExtension($text, $extension, $callback);
+        return RichTextLinkExtension::replaceLinkExtension($text, $extension, function (RichTextLinkExtensionMatch $match) use ($callback) {
+            return $callback($match->match);
+        });
     }
 }
