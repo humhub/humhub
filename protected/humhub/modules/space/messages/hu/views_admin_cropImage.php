@@ -1,4 +1,4 @@
 <?php
 return array (
-  '<strong>Modify</strong> image' => '<strong>Kép módosítása</strong>',
+  '<strong>Modify</strong> image' => 'Kép <strong>módosítása</strong>',
 );

@@ -7,7 +7,7 @@ return array (
   'Default Content Visiblity' => 'Tartalom láthatóságának alapértelmezése',
   'Default Join Policy' => 'Csatlakozási irányelv alapértelmezése',
   'Default Space Permissions' => 'Alapértelmezett területi jogosultságok',
-  'Default Space(s)' => 'Alapértelmezett hely(ek)',
+  'Default Space(s)' => 'Alapértelmezett közösségek',
   'Default Visibility' => 'Láthatóság alapértelmezése',
   'Default space' => 'Alapértelmezett közösség',
   'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => 'Itt adhatsz meg alapértelmezett beállításokat az új közösségekhez. Ezek a beállítások minden egyes közösségnél felülírhatók.',
