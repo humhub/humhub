@@ -36,7 +36,8 @@ use humhub\widgets\GridView;
                 'format' => 'html',
                 'value' => function (Group $group) {
                     return $group->name .
-                        ($group->is_default_group ? ' <span class="badge">' . Yii::t('AdminModule.user', 'Default') . '</span>' : '');
+                        ($group->is_default_group ? ' <span class="badge">' . Yii::t('AdminModule.user', 'Default') . '</span>' : '') .
+                        ($group->is_protected ? ' <span class="badge">' . Yii::t('AdminModule.user', 'Protected') . '</span>' : '');
                 }
             ],
             'description',
