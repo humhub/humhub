@@ -1,5 +1,5 @@
-1.8.0-beta.2 (Unreleased)
--------------------------
+1.8.0-beta.2 (February 18, 2021)
+--------------------------------
 
 - Fix #4853: Removed obsolete Group::getSpace() relation
 - Fix #4828: Display default permissions of all modules even if they are deactivated by default
@@ -12,7 +12,7 @@
 - Fix #4838: ProsemirrorRichText::replaceLinkExtension() not compatible with HumHub < 1.8
 - Fix #4847: RichText::postProcess(null) throws error 
 - Fix #4886: Improved styling of aligned richtext images
-- Fix: Fix 'charachters' typo in chooser message
+- Fix #4891: Typo 'charachters' in chooser message
 
 
 1.8.0-beta.1 (February 4, 2021)
