@@ -434,7 +434,7 @@ humhub.module('client', function (module, require, $) {
         if (!isPjax) {
             $(document).on('click', 'a:not([data-target],[data-action-click],[data-toggle])', function(evt) {
                 var href = $(this).attr('href');
-                if(!href || !href.charAt(0) === '#') {
+                if(!href || href.charAt(0) !== '#') {
                     return;
                 }
 
