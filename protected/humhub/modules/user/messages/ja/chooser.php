@@ -9,6 +9,6 @@ return array (
   'Select {n,plural,=1{user} other{users}}' => '{n,plural,=1{user} other{users}} を選択します',
   'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => 'このフィールドでは、最大 {n,plural,=1{＃item} other{＃items}} のみが許可されます。',
   'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'このフィールドでは、最大 {n,plural,=1{＃user} other{＃users}} のみが許可されます。',
-  'You reached the maximum number of allowed charachters ({n}).' => '許可されている文字の最大数 ({n}) に達しました。',
+  'You reached the maximum number of allowed characters ({n}).' => '許可されている文字の最大数 ({n}) に達しました。',
   'Your search returned no matches.' => '何も検索できませんでした',
 );

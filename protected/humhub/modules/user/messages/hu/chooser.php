@@ -9,6 +9,6 @@ return array (
   'Select {n,plural,=1{user} other{users}}' => '{n,plural,=1{user} other{users}} kiválasztása',
   'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => 'Ez a mező maximum {n,plural,=1{# elemet} other{# elemeket}} engedélyez.',
   'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Ez a mező maximum {n,plural,=1{# felhasználó} other{# felhasználókat}} engedélyez.',
-  'You reached the maximum number of allowed charachters ({n}).' => 'Elérted a maximum engedélyezett karakterek számát ({n}).',
+  'You reached the maximum number of allowed characters ({n}).' => 'Elérted a maximum engedélyezett karakterek számát ({n}).',
   'Your search returned no matches.' => 'A keresés nem adott találatot.',
 );

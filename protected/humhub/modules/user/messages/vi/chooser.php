@@ -9,6 +9,6 @@ return array (
   'Select {n,plural,=1{user} other{users}}' => 'Chọn {n,plural,=1{user} other{users}}',
   'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => 'Trường này chỉ cho phép tối đa {n,plural,=1{# item} other{# items}}.',
   'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Trường này chỉ cho phép tối đa {n,plural,=1{# user} other{# users}}.',
-  'You reached the maximum number of allowed charachters ({n}).' => 'Bạn đã đạt tối đa số ký tự cho phép ({n}).',
+  'You reached the maximum number of allowed characters ({n}).' => 'Bạn đã đạt tối đa số ký tự cho phép ({n}).',
   'Your search returned no matches.' => 'Tìm kiếm của bạn không trả về kết quả phù hợp nào.',
 );
