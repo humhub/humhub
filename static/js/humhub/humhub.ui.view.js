@@ -60,6 +60,10 @@ humhub.module('ui.view', function (module, require, $) {
 
         module.log.debug('View state', state);
         module.log.debug('View context', viewContext);
+
+        if(window.location.hash) {
+            toAnchor(window.location.hash);
+        }
     };
 
     var unload = function() {
@@ -165,6 +169,25 @@ humhub.module('ui.view', function (module, require, $) {
         return $topBar.position().top + $topBar.height();
     };
 
+    var toAnchor = function(anchor, replaceState) {
+        var escapedAnchor = $.escapeSelector(anchor.substr(1, anchor.length));
+        var $anchor = $('#'+escapedAnchor+', [name='+escapedAnchor+']').first();
+
+        if(!$anchor.length) {
+            return;
+        }
+
+        $('html, body').animate({
+            scrollTop: $anchor.offset().top - getContentTop()
+        }, 200);
+
+        replaceState = object.isDefined(replaceState) ? replaceState : true;
+
+        if(replaceState && history && history.replaceState) {
+            history.replaceState(null, null, '#'+$anchor.attr('id'));
+        }
+    };
+
     module.export({
         init: init,
         unload: unload,
@@ -177,6 +200,7 @@ humhub.module('ui.view', function (module, require, $) {
         isLarge: isLarge,
         getHeight: getHeight,
         getWidth: getWidth,
+        toAnchor: toAnchor,
         getContentTop: getContentTop,
         // This function is called by controller itself
         setState: setState,
