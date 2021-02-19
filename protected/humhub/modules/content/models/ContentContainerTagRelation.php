@@ -8,6 +8,7 @@
 namespace humhub\modules\content\models;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * Class ContentContainerTagRelation
@@ -33,5 +34,70 @@ class ContentContainerTagRelation extends ActiveRecord
             [['contentcontainer_id', 'tag_id'], 'required'],
             [['contentcontainer_id', 'tag_id'], 'integer'],
         ];
+    }
+
+    /**
+     * Update tag relations of the Content Container
+     *
+     * @param ContentContainerActiveRecord $contentContainer
+     * @param string[]|null $updatedTags
+     */
+    public static function updateByContainer($contentContainer, $updatedTags = null)
+    {
+        if (!is_array($updatedTags)) {
+            if (!isset($contentContainer->updatedTags)) {
+                return;
+            }
+            $updatedTags = $contentContainer->updatedTags;
+        }
+
+        self::deleteByContainer($contentContainer);
+
+        if (empty($updatedTags)) {
+            return;
+        }
+
+        $existingTags = ContentContainerTag::find()
+            ->select(['id', 'name'])
+            ->where(['IN', 'name', $updatedTags])
+            ->andWhere(['contentcontainer_class' => get_class($contentContainer)])
+            ->all();
+
+        $existingTagsArray = [];
+        /* @var $existingTag ContentContainerTag */
+        foreach ($existingTags as $existingTag) {
+            $existingTagsArray[$existingTag->name] = $existingTag->id;
+        }
+
+        foreach ($updatedTags as $updatedTag) {
+            $newTagRelation = new ContentContainerTagRelation();
+            $newTagRelation->contentcontainer_id = $contentContainer->contentcontainer_id;
+            if (isset($existingTagsArray[$updatedTag])) {
+                $newTagRelation->tag_id = $existingTagsArray[$updatedTag];
+            } else {
+                $newTag = new ContentContainerTag();
+                $newTag->name = $updatedTag;
+                $newTag->contentcontainer_class = get_class($contentContainer);
+                $newTag->save();
+                $newTagRelation->tag_id = $newTag->id;
+            }
+            $newTagRelation->save();
+        }
+    }
+
+    /**
+     * Delete tag relations of the Content Container
+     *
+     * @param ContentContainerActiveRecord $contentContainer
+     */
+    public static function deleteByContainer($contentContainer)
+    {
+        $tagRelations = self::find()
+            ->where(['contentcontainer_id' => $contentContainer->contentcontainer_id])
+            ->all();
+
+        foreach ($tagRelations as $tagRelation) {
+            $tagRelation->delete();
+        }
     }
 }

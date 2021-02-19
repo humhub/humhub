@@ -67,7 +67,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public $defaultRoute = '/';
 
     /**
-     * @var array Related Tags which should be update after save
+     * @var array Related Tags which should be updated after save
      */
     public $updatedTags;
 
@@ -218,7 +218,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
             $this->update(false, ['contentcontainer_id']);
         }
 
-        $this->updateTags();
+        ContentContainerTagRelation::updateByContainer($this);
 
         parent::afterSave($insert, $changedAttributes);
     }
@@ -388,65 +388,6 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
             ->where(['contentcontainer_id' => $this->contentcontainer_id])
             ->andWhere(['contentcontainer_class' => get_class($this)])
             ->column();
-    }
-
-    /**
-     * Update related tags
-     *
-     * @since 1.9
-     */
-    protected function updateTags()
-    {
-        if (!isset($this->updatedTags)) {
-            return;
-        }
-
-        $this->deleteTagRelations();
-
-        if (empty($this->updatedTags)) {
-            return;
-        }
-
-        $existingTags = ContentContainerTag::find()
-            ->select(['id', 'name'])
-            ->where(['IN', 'name', $this->updatedTags])
-            ->andWhere(['contentcontainer_class' => get_class($this)])
-            ->all();
-
-        $existingTagsArray = [];
-        /* @var $existingTag ContentContainerTag */
-        foreach ($existingTags as $existingTag) {
-            $existingTagsArray[$existingTag->name] = $existingTag->id;
-        }
-
-        foreach ($this->updatedTags as $updatedTag) {
-            $newTagRelation = new ContentContainerTagRelation();
-            $newTagRelation->contentcontainer_id = $this->contentcontainer_id;
-            if (isset($existingTagsArray[$updatedTag])) {
-                $newTagRelation->tag_id = $existingTagsArray[$updatedTag];
-            } else {
-                $newTag = new ContentContainerTag();
-                $newTag->name = $updatedTag;
-                $newTag->contentcontainer_class = get_class($this);
-                $newTag->save();
-                $newTagRelation->tag_id = $newTag->id;
-            }
-            $newTagRelation->save();
-        }
-    }
-
-    /**
-     * Delete relations between this Container and Tags
-     */
-    protected function deleteTagRelations()
-    {
-        $tagRelations = ContentContainerTagRelation::find()
-            ->where(['contentcontainer_id' => $this->contentcontainer_id])
-            ->all();
-
-        foreach ($tagRelations as $tagRelation) {
-            $tagRelation->delete();
-        }
     }
 
 }
