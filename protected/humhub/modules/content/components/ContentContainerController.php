@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use yii\web\HttpException;
@@ -68,26 +69,17 @@ class ContentContainerController extends Controller
      */
     public function init()
     {
-        parent::init();
+        $this->contentContainer = ContentContainerHelper::getCurrent($this->validContentContainerClasses);
 
-        // Load the ContentContainer
-        $guid = Yii::$app->request->get('cguid', Yii::$app->request->get('sguid', Yii::$app->request->get('uguid')));
-        if (!empty($guid)) {
-            $contentContainerModel = ContentContainer::findOne(['guid' => $guid]);
-            if ($contentContainerModel !== null) {
-                $this->contentContainer = $contentContainerModel->getPolymorphicRelation();
-            }
-        }
-
-        if ($this->validContentContainerClasses !== null) {
-            if ($this->contentContainer === null || !in_array($this->contentContainer->className(), $this->validContentContainerClasses)) {
-                throw new HttpException(400);
-            }
+        if($this->validContentContainerClasses !== null && !$this->contentContainer) {
+            throw new HttpException(400);
         }
 
         if ($this->contentContainer !== null && $this->contentContainer->controllerBehavior) {
             $this->attachBehavior('containerControllerBehavior', ['class' => $this->contentContainer->controllerBehavior]);
         }
+        
+        parent::init();
     }
 
     /**

@@ -29,6 +29,16 @@ class ContentContainerHelper
     private static $CACHE_LIMIT = 500;
 
     private static $cache = [];
+    private static $guidCache = [];
+
+    public static function getContainerByGuid(string $guid)
+    {
+        if(isset(static::$guidCache[$guid])) {
+            return static::$guidCache[$guid];
+        }
+
+        return static::addToCache(ContentContainer::findOne(['guid' => $guid]));
+    }
 
     public static function getContainerByContentContainerId(?int $contentContainerId)
     {
@@ -42,34 +52,51 @@ class ContentContainerHelper
             return static::$cache[$contentContainerId];
         }
 
-        $contentContainer = ContentContainer::findOne(['id' => $contentContainerId]);
-
-        if($contentContainer && count(static::$cache) < static::$CACHE_LIMIT) {
-            $result = $contentContainer->getPolymorphicRelation();
-            static::$cache[$contentContainerId] = $result;
-        }
-
-        return $result;
+        return static::addToCache(ContentContainer::findOne(['id' => $contentContainerId]));
     }
 
-    /**
-     * @param string|null $type type filter available since 1.4
-     * @return ContentContainerActiveRecord|null currently active container from app context.
-     */
-    public static function getCurrent($type = null)
+    private static function addToCache(?ContentContainer $contentContainer) : ?ContentContainerActiveRecord
     {
-        if(!static::$container) {
-            $controller = Yii::$app->controller;
-            if($controller instanceof ContentContainerController) {
-                static::$container =  $controller->contentContainer;
-            }
-        }
-
-        if(static::$container && $type && !is_a(static::$container,  $type)) {
+        if(!$contentContainer) {
             return null;
         }
 
-        return static::$container;
+        $record = $contentContainer->getPolymorphicRelation();
+
+        if($record && count(static::$cache) < static::$CACHE_LIMIT) {
+            static::$cache[$contentContainer->id] = $record;
+            static::$guidCache[$contentContainer->guid] = $record;
+        }
+
+        return $record;
+    }
+
+    /**
+     * @param string|string[]|null| $type can be used to only search for a specific type of container
+     * @return ContentContainerActiveRecord|null currently active container from app context.
+     */
+    public static function getCurrent($type = null) : ?ContentContainerActiveRecord
+    {
+        if(!static::$container) {
+            $guid = Yii::$app->request->get('cguid', Yii::$app->request->get('sguid', Yii::$app->request->get('uguid')));
+            static::$container = static::getContainerByGuid($guid);
+        }
+
+        if(!$type || !static::$container) {
+            return static::$container;
+        }
+
+        if(is_string($type)) {
+            $type = [$type];
+        }
+
+        foreach ($type as $allowedType) {
+            if(is_a(static::$container, $allowedType)) {
+                return static::$container;
+            }
+        }
+
+        return null;
     }
 
     /**
