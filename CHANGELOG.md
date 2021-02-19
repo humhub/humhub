@@ -13,6 +13,7 @@ HumHub Changelog
 - Fix #3687: Disable profile field type for existing record
 - Fix #4819: Fixed some PHP8 issues. (Updated to Yii 2.0.40 / Imagine 1.0+)
 - Fix #4825: Ensure unique setting values (Added unique table index)
+- Fix #4895: Fix js warning of not loaded module space.chooser
 
 
 1.7.2 (January 21, 2021)
