@@ -18,6 +18,7 @@ use yii\helpers\Url;
  * This InputWidget provides a Container Tags Picker
  *
  * @package humhub\modules\content\widgets
+ * @since 1.9
  */
 class ContainerTagPicker extends BasePicker
 {

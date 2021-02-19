@@ -20,7 +20,7 @@ use yii\db\ActiveQuery;
  * @property string $contentcontainer_class
  *
  * @package humhub\modules\content\models
- * @since 1.8
+ * @since 1.9
  */
 class ContentContainerTag extends ActiveRecord
 {

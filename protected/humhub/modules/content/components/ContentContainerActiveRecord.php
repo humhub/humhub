@@ -392,6 +392,8 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 
     /**
      * Update related tags
+     *
+     * @since 1.9
      */
     protected function updateTags()
     {

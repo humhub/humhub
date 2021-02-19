@@ -15,7 +15,7 @@ use humhub\components\ActiveRecord;
  * @property integer $contentcontainer_id
  * @property integer $tag_id
  *
- * @since 1.8
+ * @since 1.9
  */
 class ContentContainerTagRelation extends ActiveRecord
 {
