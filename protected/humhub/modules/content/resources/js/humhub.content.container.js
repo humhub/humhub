@@ -7,7 +7,6 @@
 humhub.module('content.container', function (module, require, $) {
     var client = require('client');
     var additions = require('ui.additions');
-    var chooser = require('space.chooser');
 
     var follow = function(evt) {
         var containerId = evt.$trigger.data('content-container-id');
@@ -15,7 +14,7 @@ humhub.module('content.container', function (module, require, $) {
             if (response.success) {
                 additions.switchButtons(evt.$trigger, $('[data-content-container-id="' + containerId + '"].unfollowButton'));
                 if (response.space) {
-                    chooser.SpaceChooser.instance($('#space-menu-dropdown')).appendItem(response.space);
+                    require('space.chooser').SpaceChooser.instance($('#space-menu-dropdown')).appendItem(response.space);
                 }
             }
         }).catch(function(e) {
@@ -29,7 +28,7 @@ humhub.module('content.container', function (module, require, $) {
             if (response.success) {
                 additions.switchButtons(evt.$trigger, $('[data-content-container-id="' + containerId + '"].followButton'));
                 if (response.space) {
-                    chooser.SpaceChooser.instance($('#space-menu-dropdown')).removeItem(response.space);
+                    require('space.chooser').SpaceChooser.instance($('#space-menu-dropdown')).removeItem(response.space);
                 }
             }
         }).catch(function(e) {
