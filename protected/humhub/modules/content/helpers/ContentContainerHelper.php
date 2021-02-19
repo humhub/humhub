@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\helpers;
 
+use humhub\modules\content\models\ContentContainer;
 use Yii;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerController;
@@ -24,6 +25,32 @@ class ContentContainerHelper
      * @since 1.7
      */
     private static $container;
+
+    private static $CACHE_LIMIT = 500;
+
+    private static $cache = [];
+
+    public static function getContainerByContentContainerId(?int $contentContainerId)
+    {
+        $result = null;
+
+        if($contentContainerId === null) {
+            return $result;
+        }
+
+        if(isset(static::$cache[$contentContainerId])) {
+            return static::$cache[$contentContainerId];
+        }
+
+        $contentContainer = ContentContainer::findOne(['id' => $contentContainerId]);
+
+        if($contentContainer && count(static::$cache) < static::$CACHE_LIMIT) {
+            $result = $contentContainer->getPolymorphicRelation();
+            static::$cache[$contentContainerId] = $result;
+        }
+
+        return $result;
+    }
 
     /**
      * @param string|null $type type filter available since 1.4
