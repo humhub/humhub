@@ -23,7 +23,7 @@ class Label extends BootstrapComponent
 {
 
     /**
-     * @since 1.8
+     * @since 1.9
      */
     public const TYPE_LIGHT = 'light';
 
@@ -36,7 +36,7 @@ class Label extends BootstrapComponent
     /**
      * @param string $text Label text
      * @return static
-     * @since 1.8
+     * @since 1.9
      */
     public static function light($text)
     {
