@@ -1,3 +1,9 @@
+1.8.0 (Unreleased)
+--------------------------------
+
+- Fix #4893: Richtext extension events are ignored when using deprecated maxLength option
+
+
 1.8.0-beta.2 (February 18, 2021)
 --------------------------------
 
