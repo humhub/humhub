@@ -31,6 +31,12 @@ class ContentContainerHelper
     private static $cache = [];
     private static $guidCache = [];
 
+    public static function flushCache()
+    {
+        static::$cache = [];
+        static::$guidCache = [];
+    }
+
     public static function getContainerByGuid(?string $guid)
     {
         if(!$guid) {
