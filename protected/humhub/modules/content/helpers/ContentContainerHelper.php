@@ -31,8 +31,12 @@ class ContentContainerHelper
     private static $cache = [];
     private static $guidCache = [];
 
-    public static function getContainerByGuid(string $guid)
+    public static function getContainerByGuid(?string $guid)
     {
+        if(!$guid) {
+            return null;
+        }
+
         if(isset(static::$guidCache[$guid])) {
             return static::$guidCache[$guid];
         }
@@ -42,10 +46,8 @@ class ContentContainerHelper
 
     public static function getContainerByContentContainerId(?int $contentContainerId)
     {
-        $result = null;
-
         if($contentContainerId === null) {
-            return $result;
+            return null;
         }
 
         if(isset(static::$cache[$contentContainerId])) {
