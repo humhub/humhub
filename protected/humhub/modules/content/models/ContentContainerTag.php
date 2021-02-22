@@ -66,7 +66,7 @@ class ContentContainerTag extends ActiveRecord
     }
 
     /**
-     * Returns Tags realted to the Content Container.
+     * Returns Tags related to the Content Container.
      *
      * @param ContentContainerActiveRecord $contentContainer
      * @return ActiveQuery
