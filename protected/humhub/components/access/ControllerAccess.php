@@ -522,13 +522,16 @@ class ControllerAccess extends BaseObject
     }
 
     /**
+     * @param string $beforeCustomInfo
      * @return string returns the maintenance mode warning text
      * @since 1.8
      */
-    public static function getMaintenanceModeWarningText()
+    public static function getMaintenanceModeWarningText($beforeCustomInfo = ' ')
     {
+        $customInfo = Yii::$app->settings->get('maintenanceModeInfo', '');
+
         return Yii::t('error', 'Maintenance mode is active. Only Administrators can access the platform.') .
-            ' ' . Yii::$app->settings->get('maintenanceModeInfo', '');
+            ($customInfo === '' ? '' : $beforeCustomInfo . $customInfo);
     }
 
 }
