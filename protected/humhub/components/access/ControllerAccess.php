@@ -518,7 +518,9 @@ class ControllerAccess extends BaseObject
      */
     public function validateMaintenanceMode()
     {
-        return !Yii::$app->settings->get('maintenanceMode') || $this->isAdmin() || $this->isGuest();
+        return !Yii::$app->settings->get('maintenanceMode') ||
+            $this->isAdmin() ||
+            ($this->owner->module->id == 'user' && $this->owner->id == 'auth' && $this->owner->action->id == 'login');
     }
 
     /**
