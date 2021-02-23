@@ -156,7 +156,7 @@ class ControllerAccess extends BaseObject
     /**
      * Maintenance mode is active
      */
-    const RULE_MAINTENANCE_MODE= 'maintenance';
+    const RULE_MAINTENANCE_MODE = 'maintenance';
 
     /**
      * Check guest if request method is post
@@ -175,6 +175,7 @@ class ControllerAccess extends BaseObject
         [self::RULE_DISABLED_USER],
         [self::RULE_UNAPPROVED_USER],
         [self::RULE_MUST_CHANGE_PASSWORD],
+        [self::RULE_MAINTENANCE_MODE],
     ];
 
     /**
@@ -517,17 +518,20 @@ class ControllerAccess extends BaseObject
      */
     public function validateMaintenanceMode()
     {
-        return !Yii::$app->settings->get('maintenanceMode') || $this->isAdmin();
+        return !Yii::$app->settings->get('maintenanceMode') || $this->isAdmin() || $this->isGuest();
     }
 
     /**
+     * @param string $beforeCustomInfo
      * @return string returns the maintenance mode warning text
      * @since 1.8
      */
-    public static function getMaintenanceModeWarningText()
+    public static function getMaintenanceModeWarningText($beforeCustomInfo = ' ')
     {
+        $customInfo = Yii::$app->settings->get('maintenanceModeInfo', '');
+
         return Yii::t('error', 'Maintenance mode is active. Only Administrators can access the platform.') .
-            ' ' . Yii::$app->settings->get('maintenanceModeInfo', '');
+            ($customInfo === '' ? '' : $beforeCustomInfo . $customInfo);
     }
 
 }
