@@ -3,6 +3,7 @@
 
 - Fix #4893: Richtext extension events are ignored when using deprecated maxLength option
 - Fix #4896: Error thrown if live poll broadcast focus event is triggered
+- Fix #4907: Positions of Comment / Like links under posts
 
 
 1.8.0-beta.2 (February 18, 2021)
