@@ -4,7 +4,8 @@
 - Fix #4893: Richtext extension events are ignored when using deprecated maxLength option
 - Fix #4896: Error thrown if live poll broadcast focus event is triggered
 - Fix #4907: Positions of Comment / Like links under posts
-- Fix: Auto logout user on maintenance mode
+- Fix #4911: Auto logout user on maintenance mode
+- Fix #4912: Restrict guest access on maintenance mode
 
 
 1.8.0-beta.2 (February 18, 2021)
