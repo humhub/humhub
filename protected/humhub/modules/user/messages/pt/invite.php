@@ -4,7 +4,7 @@ return array (
   'Click here to create an account:' => 'Clica aqui para criar uma conta:',
   'Email' => 'Email',
   'Email address(es)' => 'Endereço(s) de email',
-  'Please add the email addresses of people you want to invite below.' => 'Por favor adiciona abaixo os endereços de email da pessoas que queres convidar',
+  'Please add the email addresses of people you want to invite below.' => 'Por favor adiciona abaixo os endereços de email das pessoas que queres convidar',
   'Send invite' => 'Enviar convite',
   'Separate multiple email addresses by comma.' => 'Separa endereços de email com uma vírgula.',
   'You\'ve been invited to join %appName%' => 'Recebeste um convite para te juntares a %appName%',

@@ -5,7 +5,7 @@ return array (
   'Bold' => 'Negrito',
   'Close' => 'Fechar',
   'Code' => 'Código',
-  'Enter a url (e.g. http://example.com)' => 'Introduz um url (ex. http://example.com)',
+  'Enter a url (e.g. http://example.com)' => 'Introduz um url (ex. http://xkcd.com)',
   'Heading' => 'Cabeçalho',
   'Image' => 'Imagem',
   'Image/File' => 'Imagem/Ficheiro',
