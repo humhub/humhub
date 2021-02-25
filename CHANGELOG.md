@@ -15,6 +15,7 @@ HumHub Changelog
 - Fix #4825: Ensure unique setting values (Added unique table index)
 - Fix #4895: Fix js warning of not loaded module space.chooser
 - Fix #4921: Fix ambiguous column status
+- Fix #4923: Allow non-break space in uploaded file names
 
 
 1.7.2 (January 21, 2021)

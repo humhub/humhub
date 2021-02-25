@@ -22,9 +22,9 @@ class Module extends \humhub\components\Module
     public $isCoreModule = true;
 
     /**
-     * @inheritdoc
+     * @var string Denied characters in file names
      */
-    public $fileNameValidationPattern = '/[\x00-\x1F\x80-\xA0>\/\<":\*?|{}\[\]\\\\\/]/u';
+    public $fileNameValidationPattern = '/[\x00-\x1F\x80-\x9F>\/\<":\*?|{}\[\]\\\\\/]/u';
 
     /**
      * @see components\StorageManagerInterface
