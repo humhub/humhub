@@ -34,59 +34,59 @@ class FileValidatorTest extends HumHubDbTestCase
         $this->assertTrue($this->createFile("test.this.jpg")->validate());
         $this->assertTrue($this->createFile("çore.jpg")->validate());
 
-        $this->assertFalse($this->createFile("testChar\x00.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar\x1f.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar\xc2\x80.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar\xc2\x9f.jpg")->validate());
+        $this->assertValidatedFileName("testChar\x00.jpg", 'testChar_.jpg');
+        $this->assertValidatedFileName("testChar\x1f.jpg", 'testChar_.jpg');
+        $this->assertValidatedFileName("testChar\xc2\x80.jpg", 'testChar_.jpg');
+        $this->assertValidatedFileName("testChar\xc2\x9f.jpg", 'testChar_.jpg');
 
-        $this->assertFalse($this->createFile("testChar\fst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar\nst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar\rst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar\tst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar\0st.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar\1st.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar\2st.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar\3st.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar\4st.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar\5st.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar\6st.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(7) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(8) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(9) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(10) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(11) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(12) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(13) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(14) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(15) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(16) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(17) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(18) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(19) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(20) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(21) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(22) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(23) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(24) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(25) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(26) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(27) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(28) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(29) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(30) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("testChar" . chr(31) . "bst.jpg")->validate());
-        $this->assertFalse($this->createFile("tes|st.jpg")->validate());
-        $this->assertFalse($this->createFile("tes]st.jpg")->validate());
-        $this->assertFalse($this->createFile("tes[st.jpg")->validate());
-        $this->assertFalse($this->createFile("tes{st.jpg")->validate());
-        $this->assertFalse($this->createFile("tes}st.jpg")->validate());
-        $this->assertFalse($this->createFile("tes?st.jpg")->validate());
-        $this->assertFalse($this->createFile("tes:st.jpg")->validate());
-        $this->assertFalse($this->createFile("tes*st.jpg")->validate());
-        $this->assertFalse($this->createFile("tes<st.jpg")->validate());
-        $this->assertFalse($this->createFile("tes>st.jpg")->validate());
+        $this->assertValidatedFileName("testChar\fst.jpg", 'testChar_st.jpg');
+        $this->assertValidatedFileName("testChar\nst.jpg", 'testChar_st.jpg');
+        $this->assertValidatedFileName("testChar\rst.jpg", 'testChar_st.jpg');
+        $this->assertValidatedFileName("testChar\tst.jpg", 'testChar_st.jpg');
+        $this->assertValidatedFileName("testChar\0st.jpg", 'testChar_st.jpg');
+        $this->assertValidatedFileName("testChar\1st.jpg", 'testChar_st.jpg');
+        $this->assertValidatedFileName("testChar\2st.jpg", 'testChar_st.jpg');
+        $this->assertValidatedFileName("testChar\3st.jpg", 'testChar_st.jpg');
+        $this->assertValidatedFileName("testChar\4st.jpg", 'testChar_st.jpg');
+        $this->assertValidatedFileName("testChar\5st.jpg", 'testChar_st.jpg');
+        $this->assertValidatedFileName("testChar\6st.jpg", 'testChar_st.jpg');
+        $this->assertValidatedFileName("testChar" . chr(7) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(8) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(9) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(10) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(11) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(12) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(13) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(14) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(15) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(16) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(17) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(18) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(19) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(20) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(21) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(22) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(23) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(24) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(25) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(26) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(27) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(28) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(29) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(30) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("testChar" . chr(31) . "bst.jpg", 'testChar_bst.jpg');
+        $this->assertValidatedFileName("tes|st.jpg", 'tes_st.jpg');
+        $this->assertValidatedFileName("tes]st.jpg", 'tes_st.jpg');
+        $this->assertValidatedFileName("tes[st.jpg", 'tes_st.jpg');
+        $this->assertValidatedFileName("tes{st.jpg", 'tes_st.jpg');
+        $this->assertValidatedFileName("tes}st.jpg", 'tes_st.jpg');
+        $this->assertValidatedFileName("tes?st.jpg", 'tes_st.jpg');
+        $this->assertValidatedFileName("tes:st.jpg", 'tes_st.jpg');
+        $this->assertValidatedFileName("tes*st.jpg", 'tes_st.jpg');
+        $this->assertValidatedFileName("tes<st.jpg", 'tes_st.jpg');
+        $this->assertValidatedFileName("tes>st.jpg", 'tes_st.jpg');
 
-        $this->assertFalse($this->createFile("<svgonload=alert(1)>.jpg")->validate());
+        $this->assertValidatedFileName("<svgonload=alert(1)>.jpg", '_svgonload=alert(1)_.jpg');
 
         $this->assertTrue($this->createFile("test.jpg.exe")->validate());
         /** @var Module $module */
@@ -101,5 +101,16 @@ class FileValidatorTest extends HumHubDbTestCase
         $file = new FileUpload();
         $file->setUploadedFile(new UploadedFile(['name' => $name]));
         return $file;
+    }
+
+    /**
+     * @param string $sourceFileName
+     * @param string $expectedFileName
+     */
+    protected function assertValidatedFileName($sourceFileName, $expectedFileName)
+    {
+        $file = $this->createFile($sourceFileName);
+        $file->validate();
+        $this->assertEquals($expectedFileName, $file->file_name);
     }
 }
