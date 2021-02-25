@@ -6,6 +6,7 @@
 - Fix #4907: Positions of Comment / Like links under posts
 - Fix #4911: Auto logout user on maintenance mode
 - Fix #4912: Restrict guest access on maintenance mode
+- Fix #4918: Comment richtext gets focused when closing comment section
 
 
 1.8.0-beta.2 (February 18, 2021)
