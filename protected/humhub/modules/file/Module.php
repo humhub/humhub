@@ -22,9 +22,9 @@ class Module extends \humhub\components\Module
     public $isCoreModule = true;
 
     /**
-     * @var string Denied characters in file names
+     * @var string The characters will be replaced in file names with underscore '_' on uploading
      */
-    public $fileNameValidationPattern = '/[\x00-\x1F\x80-\x9F>\/\<":\*?|{}\[\]\\\\\/]/u';
+    public $fileNameValidationPattern = '/[\x00-\x1F\x80-\xA0>\/\<":\*?|{}\[\]\\\\\/]/u';
 
     /**
      * @see components\StorageManagerInterface
