@@ -116,7 +116,6 @@ return [
     'Updated By' => 'Oppdatert Av',
     'Updated by' => 'Oppdatert av',
     'User \'{username}\' is already a member of this space!' => 'Bruker «{username}» er allerede medlem av denne gruppen!',
-    'User \'{username}\' is already an applicant of this space!' => 'Bruker «{username}» har allerede søkt om å få bli medlem!',
     'User invitations have been added to the queue' => 'Invitasjon til brukeren er lagt i køen',
     'User memberships have been added to the queue' => 'Brukerinvitasjonen er lagt i køen',
     'User not found!' => 'Fant ikke bruker!',

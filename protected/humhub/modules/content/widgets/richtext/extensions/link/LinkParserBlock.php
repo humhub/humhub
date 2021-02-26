@@ -7,6 +7,9 @@ namespace humhub\modules\content\widgets\richtext\extensions\link;
 use yii\base\Model;
 use yii\helpers\Url;
 
+/**
+ * <orig> = [<text>](<url> "<title>")
+ */
 class LinkParserBlock extends Model
 {
     const BLOCK_KEY_URL = 'url';

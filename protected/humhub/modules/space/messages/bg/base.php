@@ -125,7 +125,6 @@ return [
     'Updated By' => 'Променено от',
     'Updated by' => 'Променено от',
     'User \'{username}\' is already a member of this space!' => 'Потребителят \'{username}\' вече е член на този раздел!',
-    'User \'{username}\' is already an applicant of this space!' => 'Потребителят \'{username}\' вече е кандидат за този раздел!',
     'User invitations have been added to the queue' => 'Поканите на потребителя са добавени към опашката',
     'User memberships have been added to the queue' => 'Потребителските членства са добавени към опашката',
     'User not found!' => 'Потребителят не е намерен!',

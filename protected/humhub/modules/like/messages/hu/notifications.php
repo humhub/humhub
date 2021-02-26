@@ -5,6 +5,6 @@ return array (
   'View Online' => 'Megtekintés online',
   '{displayNames} likes your {contentTitle}.' => '{displayNames} kedveli ezt: {contentTitle}.',
   '{displayNames} likes {contentTitle}.' => '{displayNames} kedveli ezt: {contentTitle}.',
-  '{displayName} likes your {contentTitle}.' => '{displayName} kedveli {contentTitle} tartalmadat.',
-  '{displayName} likes {contentTitle}.' => '{displayName} kedveli {contentTitle}.',
+  '{displayName} likes your {contentTitle}.' => '{displayName} kedveli ezt: {contentTitle}.',
+  '{displayName} likes {contentTitle}.' => '{displayName} kedveli ezt: {contentTitle}.',
 );

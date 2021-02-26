@@ -136,7 +136,6 @@ return [
     'Space Visibility' => '',
     'This user is already a member of this space.' => '',
     'This user is not a member of this space.' => '',
-    'User \'{username}\' is already an applicant of this space!' => '',
     'User invitations have been added to the queue' => '',
     'User memberships have been added to the queue' => '',
     'Users has been invited.' => '',

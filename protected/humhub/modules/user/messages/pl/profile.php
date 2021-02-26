@@ -131,4 +131,5 @@ return [
     'Creation date of the user' => '',
     'Last login date of the user' => '',
     'Other:' => '',
+    '{attribute} is required!' => '',
 ];

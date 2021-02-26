@@ -64,5 +64,7 @@ return [
     'Wrap in block quote' => 'Paketera i block',
     'Wrap in bullet list' => 'Paketera i punktlista',
     'Wrap in ordered list' => 'Paketera i ordnad lista',
+    '[Code Block]' => '',
     '[Invalid file]' => '',
+    '[Table]' => '',
 ];

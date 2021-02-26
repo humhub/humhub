@@ -2,10 +2,10 @@
 return array (
   '
 Module successfully disabled!
-' => 'A modul sikeresen lekapcsolva!',
+' => 'A modul sikeresen deaktiválva!',
   '
 Module successfully enabled!
-' => 'A modul sikeresen bekapcsolva!',
+' => 'A modul sikeresen aktiválva!',
   '
 No active Professional Edition license found!
 ' => 'Nem található aktív Professional Edition licenc!',
@@ -34,7 +34,7 @@ The license was successfully removed!
   'All modules are up to date!' => 'Minden modul naprakész!',
   'All {moduleId} module content will be deleted. Continue?' => '{moduleId} modul összes tartalma törlődik. Folytatja?',
   'Available updates' => 'Elérhető frissítések',
-  'Browse online' => 'Böngésszen online',
+  'Browse online' => 'Böngéssz online',
   'Buy' => 'Vásárlás',
   'Buy (%price%)' => 'Vásárlás (%price%)',
   'Could not connect to licence server!' => 'Nem sikerült csatlakozni a licenckiszolgálóhoz!',
@@ -47,7 +47,7 @@ The license was successfully removed!
   'Include Community Modules' => 'Tartalmazza a közösségi modulokat',
   'Include beta updates' => 'Tartalmazza a béta frissítéseket',
   'Install' => 'Telepítés',
-  'Installed' => 'Installálva',
+  'Installed' => 'Telepítve',
   'Installed version:' => 'Telepített verzió:',
   'Installing module...' => 'Modul telepítése...',
   'Latest compatible Version:' => 'Legújabb kompatibilis verzió:',
@@ -55,7 +55,7 @@ The license was successfully removed!
   'Latest version:' => 'Legújabb verzió:',
   'Licence Key:' => 'Termékkulcs:',
   'Licence key' => 'Licenckulcs',
-  'Licenced for max. {number} users.' => 'Engedélyezve max. {number} felhasználó.',
+  'Licenced for max. {number} users.' => 'Engedélyezve max. {number} felhasználónak.',
   'Licenced to:' => 'Engedélyezve:',
   'Marketplace' => 'Piactér',
   'Max. users:' => 'Max. felhasználó:',
@@ -65,9 +65,9 @@ The license was successfully removed!
 ' => 'A modul nem található vagy nincs aktiválva!',
   'Module not found!
 ' => 'A modul nem található!',
-  'More info' => 'További információk',
+  'More info' => 'További információ',
   'No compatible module version found!' => 'Nem találtam kompatibilis modulverziót!',
-  'No license key? Find out more about the {pro} or contact us.' => 'Nincs licenckulcs? Tudjon meg többet a {pro}-ről, vagy vegye fel velünk a kapcsolatot.',
+  'No license key? Find out more about the {pro} or contact us.' => 'Nincs licenckulcsod? Tudj meg többet a {pro}-ről, vagy vedd fel velünk a kapcsolatot.',
   'No modules found!' => 'Nincsenek modulok!',
   'No purchased modules found!' => 'Nem található megvásárolt modul!',
   'Ok' => 'Ok',

@@ -110,7 +110,6 @@ return [
     'Updated By' => 'Aktualizoval/a',
     'Updated by' => 'Aktualizoval(a)',
     'User \'{username}\' is already a member of this space!' => 'Uživatele \'{username}\' je již členem tohoto prostoru!',
-    'User \'{username}\' is already an applicant of this space!' => 'Uživatel \'{username}\' je již žadatelem tohoto prostoru!',
     'User not found!' => 'Uživatel nebyl nalezen!',
     'Users' => 'Uživatelé',
     'Visibility' => 'Viditelnost',

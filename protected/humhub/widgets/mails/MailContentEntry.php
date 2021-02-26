@@ -69,7 +69,7 @@ class MailContentEntry extends \yii\base\Widget
             $content = RichTextToHtmlConverter::process($this->content->getContentDescription(), [
                 RichTextToHtmlConverter::OPTION_IMAGE_AS_URL => true,
                 RichTextToHtmlConverter::OPTION_LINK_AS_TEXT => true,
-                RichTextToHtmlConverter::OPTION_CACHE_KEY => RichTextToHtmlConverter::buildCacheKeyForContent($this->content, 'mail_entry_' . $this->content->getContentName() . '_' . $this->content->id),
+                RichTextToHtmlConverter::OPTION_CACHE_KEY => RichTextToHtmlConverter::buildCacheKeyForContent($this->content, 'mail_entry'),
             ]);
 
             if(!$this->originator) {

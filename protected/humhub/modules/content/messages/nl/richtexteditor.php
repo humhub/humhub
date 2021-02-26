@@ -47,5 +47,7 @@ return array (
   'Wrap in block quote' => 'Maak een blokcitaat',
   'Wrap in bullet list' => 'Maak een lijst met opsomtekens',
   'Wrap in ordered list' => 'Maak een genummerde lijst',
+  '[Code Block]' => '[Code Block]',
   '[Invalid file]' => '[Ongeldig bestand]',
+  '[Table]' => '[Table]',
 );
