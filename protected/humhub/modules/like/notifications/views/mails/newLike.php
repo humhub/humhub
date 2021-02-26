@@ -18,7 +18,7 @@
 /* @var html string */
 /* @var text string */
 
-$likedRecord = $viewable->getLikedReccord();
+$likedRecord = $viewable->getLikedRecord();
 ?>
 
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>

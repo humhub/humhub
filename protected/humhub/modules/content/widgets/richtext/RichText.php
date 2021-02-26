@@ -14,7 +14,7 @@ use yii\helpers\ArrayHelper;
 
 /**
  * This class together with the [[RichTextField]] class act as wrapper around the globally configured [[AbstractRichText]]
- * implementation and related [[AbstractRichTextEditor]] as well as [[AbstractRichTextProcessor]] by means of the configuration
+ * implementation and related [[AbstractRichTextEditor]] by means of the configuration
  * parameter `richText`.
  *
  * This class should be used in favor of the actual [[AbstractRichText]] implementations in order to be able to
@@ -65,18 +65,27 @@ abstract class RichText extends AbstractRichText
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public static function getProcessorClass()
+    public static function postProcess($text, $record, $attribute = null)
     {
-        return call_user_func(Yii::$app->params['richText']['class'].'::getProcessorClass');
+        return call_user_func(Yii::$app->params['richText']['class'].'::postProcess', $text, $record, $attribute);
     }
 
     /**
      * @return string
      */
-    public static function getEditorClass()
+    public static function getEditorClass() : string
     {
         return call_user_func(Yii::$app->params['richText']['class'].'::getEditorClass');
+    }
+
+    /**
+     * @return string
+     * @since 1.8
+     */
+    public static function getConverterClass() : string
+    {
+        return call_user_func(Yii::$app->params['richText']['class'].'::getConverterClass');
     }
 }

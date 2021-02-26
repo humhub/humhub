@@ -1,6 +1,7 @@
 <?php
 return array (
   '<strong>Administration</strong> menu' => 'Меню <strong>Администрация</strong>',
+  '<strong>Maintenance</strong> Mode' => '',
   '<strong>Module </strong> administration' => '<strong>Администрация</strong> на Модул',
   '<strong>Warning</strong> incomplete setup!' => '<strong>Предупреждение</strong> незавършена настройка!',
   'About' => 'За',
@@ -17,6 +18,7 @@ return array (
   'Basic' => 'Основни',
   'Caching' => 'Кеширане',
   'Cronjobs' => 'Cronjobs (периодични фонови задачи)',
+  'Default' => 'По подразбиране',
   'Delete all' => 'Изтриване на всички',
   'Delete selected rows' => 'Изтриване на избраните редове',
   'Design' => 'Дизайн',
@@ -38,7 +40,6 @@ return array (
   'Pending user registrations' => 'Чакащи регистрации на потребители',
   'Permissions' => 'Разрешения',
   'Proxy' => 'Прокси',
-  'Security' => 'Сигурност',
   'Self test' => 'Самопроверка',
   'Settings' => 'Настройки',
   'Sign up' => 'Регистрирай се',

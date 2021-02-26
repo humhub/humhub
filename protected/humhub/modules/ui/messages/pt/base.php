@@ -1,6 +1,6 @@
 <?php
 return array (
   'Collapse' => 'Recolher',
-  'Read more' => '',
-  'User Interface' => '',
+  'Read more' => 'Ler mais',
+  'User Interface' => 'Interface humana',
 );

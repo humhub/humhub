@@ -1,6 +1,7 @@
 <?php
 return array (
   '<strong>Administration</strong> menu' => 'Menú de <strong>administración</strong>',
+  '<strong>Maintenance</strong> Mode' => 'Modo <strong>Mantenimiento</strong>',
   '<strong>Module </strong> administration' => 'Administración de <strong>módulos</strong>',
   '<strong>Warning</strong> incomplete setup!' => '<strong>Atención</strong> ¡Configuración incompleta!',
   'About' => 'Acerca de',
@@ -17,6 +18,7 @@ return array (
   'Basic' => 'Básica',
   'Caching' => 'Caché',
   'Cronjobs' => 'Tareas programadas',
+  'Default' => 'Defecto',
   'Delete all' => 'Eliminarlas todas',
   'Delete selected rows' => 'Eliminar las filas seleccionadas',
   'Design' => 'Diseño',
@@ -38,7 +40,6 @@ return array (
   'Pending user registrations' => 'Registros de usuario pendientes',
   'Permissions' => 'Permisos',
   'Proxy' => 'Proxy',
-  'Security' => 'Seguridad',
   'Self test' => 'Auto prueba',
   'Settings' => 'Ajustes',
   'Sign up' => 'Registrarse',

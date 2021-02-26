@@ -34,7 +34,6 @@ return [
     'Save' => 'አስቀምጥ',
     'Set as default' => 'ነባሪ አድርግ',
     'Spaces' => 'ምህዳሮች',
-    'This module doesn\'t provide further informations.' => 'ሞጁሉ ሌሎች ተጨማሪ መረጃዎችን አይሰጥም።',
     'Uninstall' => 'አውርድ',
     'Version:' => 'እትም',
     '%moduleName% - Set as default module' => '',
@@ -43,5 +42,6 @@ return [
     'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => '',
     'Legacy' => '',
     'Not maintained or maintenance is about to be discontinued.' => '',
+    'This module doesn\'t provide further information.' => '',
     'User Profiles' => '',
 ];

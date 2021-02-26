@@ -9,6 +9,6 @@ return array (
   'Select {n,plural,=1{user} other{users}}' => 'Selecteer {n,plural,=1{gebruiker} other{gebruikers}}',
   'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => 'Het maximale aantal is {n,plural,=1{# item} other {# items}}.',
   'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Dit veld kan maximaal {n,plural,=1{# gebruiker} other{# gebruikers}}.',
-  'You reached the maximum number of allowed charachters ({n}).' => 'Het maximale aantal tekens is ({n}).',
+  'You reached the maximum number of allowed characters ({n}).' => 'Het maximale aantal tekens is ({n}).',
   'Your search returned no matches.' => 'Uw zoekopdracht heeft geen overeenkomsten opgeleverd.',
 );

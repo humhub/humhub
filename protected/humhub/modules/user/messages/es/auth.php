@@ -39,6 +39,7 @@ return array (
   'Please enter the letters from the image.' => 'Por favor, introduce las letras que aparecen en la imagen.',
   'Please login with your username/email and password.' => 'Por favor identifíquese con su usuario/correo electrónico y clave.',
   'Please use the following link within the next day to reset your password.' => 'Por favor, utiliza el siguiente enlace en las próximas 24 horas para reiniciar tu contraseña.',
+  'Please wait' => 'por favor espera',
   'Register' => 'Registrarse',
   'Registration successful' => 'Registro completado con éxito',
   'Remember me' => 'Recordarme',

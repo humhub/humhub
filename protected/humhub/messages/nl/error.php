@@ -4,6 +4,8 @@ return array (
   'An internal server error occurred.' => 'Er is een interne serverfout opgetreden.',
   'Guest mode not active, please login first.' => 'Aanmelden als gast is uitgeschakeld,  meld u eerst aan.',
   'Login required for this section.' => 'Aanmelding vereist door dit onderdeel.',
+  'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => 'De onderhoudsmodus is geactiveerd. U bent automatisch uitgelogd en hebt geen toegang meer tot het platform totdat het onderhoud is voltooid.',
+  'Maintenance mode is active. Only Administrators can access the platform.' => 'De onderhoudsmodus is actief. Alleen beheerders hebben toegang tot het platform.',
   'You are not allowed to perform this action.' => 'U mag deze actie niet uitvoeren.',
   'You are not permitted to access this section.' => 'U hebt geen toegang tot dit onderdeel.',
   'You must change password.' => 'U moet uw wachtwoord wijzigen.',

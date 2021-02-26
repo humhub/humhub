@@ -9,6 +9,6 @@ return array (
   'Select {n,plural,=1{user} other{users}}' => 'حدد {n، plural، = 1 {user} آخر {users}}',
   'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => 'يسمح هذا الحقل فقط بـ {n، plural، = 1 {# item} آخر {# items}} كحد أقصى.',
   'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'يسمح هذا الحقل فقط بحد أقصى {n، plural، = 1 {# user} آخر {# users}}.',
-  'You reached the maximum number of allowed charachters ({n}).' => 'لقد وصلت إلى الحد الأقصى لعدد الأحرف المسموح بها ({n}).',
+  'You reached the maximum number of allowed characters ({n}).' => 'لقد وصلت إلى الحد الأقصى لعدد الأحرف المسموح بها ({n}).',
   'Your search returned no matches.' => 'أسفر بحثك عن أي مباراة.',
 );

@@ -39,6 +39,7 @@ return array (
   'Please enter the letters from the image.' => 'Voer de letters uit de afbeelding in.',
   'Please login with your username/email and password.' => 'Meld u aan met uw gebruikersnaam / email en wachtwoord.',
   'Please use the following link within the next day to reset your password.' => 'Gebruik de volgende link binnen 24 uur om uw wachtwoord opnieuw in te stellen.',
+  'Please wait' => 'Wacht even',
   'Register' => 'Registreren',
   'Registration successful' => 'Registratie succesvol',
   'Remember me' => 'Onthoud mij',

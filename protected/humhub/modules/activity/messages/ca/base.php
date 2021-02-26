@@ -1,13 +1,5 @@
 <?php
 return array (
-  '{displayName} created the new space {spaceName}' => '{displayName} ha creat el nou espai {spaceName}',
-  '{displayName} created this space.' => '{displayName} ha creat aquest espai.',
-  '{displayName} joined the space {spaceName}' => '{displayName} s\'ha unit a l\'espai {spaceName}',
-  '{displayName} joined this space.' => '{displayName} s\'ha unit a aquest espai.',
-  '{displayName} left the space {spaceName}' => '{displayName} ha deixat l\'espai {spaceName}',
-  '{displayName} left this space.' => '{displayName} ha deixat aquest espai.',
-  '{spaceName} has been archived' => '',
-  '{spaceName} has been unarchived' => '',
   '<strong>E-Mail</strong> Summaries' => '<strong>Resum</strong> de correu electrònic',
   '<strong>Latest</strong> activities' => '<strong>Activitat</strong> recent',
   'Activities' => 'Activitats',
@@ -33,5 +25,13 @@ return array (
   'Your weekly summary' => 'El teu resum setmanal',
   'see online' => 'veure en línia',
   'via' => 'via',
+  '{displayName} created the new space {spaceName}' => '{displayName} ha creat el nou espai {spaceName}',
+  '{displayName} created this space.' => '{displayName} ha creat aquest espai.',
+  '{displayName} joined the space {spaceName}' => '{displayName} s\'ha unit a l\'espai {spaceName}',
+  '{displayName} joined this space.' => '{displayName} s\'ha unit a aquest espai.',
+  '{displayName} left the space {spaceName}' => '{displayName} ha deixat l\'espai {spaceName}',
+  '{displayName} left this space.' => '{displayName} ha deixat aquest espai.',
+  '{spaceName} has been archived' => '{spaceName} s\'ha arxivat',
+  '{spaceName} has been unarchived' => '{spaceName} s\'ha desarxivat',
   '{user1} now follows {user2}.' => '{user1} ara segueix a {user2}',
 );

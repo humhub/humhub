@@ -1,5 +1,7 @@
 <?php
 
+use humhub\libs\Html;
+use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\user\widgets\PermisionGridModuleFilter;
 use humhub\modules\user\widgets\PermissionGridEditor;
 use yii\helpers\Url;
@@ -8,14 +10,56 @@ use yii\helpers\Url;
 /* @var $groups array */
 /* @var $groupId string */
 
+
+AdminAsset::register($this);
+
+$this->registerJsConfig('admin', $adminSettingsJsConfig = ['text' => [
+    'enableProfilePermissions.header' => Yii::t('AdminModule.user', '<strong>Profile</strong> Permissions'),
+    'enableProfilePermissions.question.enable' => Yii::t('AdminModule.user', 'Allow users to set individual permissions for their own profile?'),
+    'enableProfilePermissions.button.enable' => Yii::t('AdminModule.user', 'Allow'),
+
+    'enableProfilePermissions.question.disable' => Yii::t('AdminModule.user',
+            'Deactivate individual profile permissions?') . '<br><br>' .
+        '<div class="alert alert-danger">' .
+        Yii::t('AdminModule.user', '<strong>Warning:</strong> All individual profile permission settings are reset to the default values!') .
+        '</div>',
+    'enableProfilePermissions.button.disable' => Yii::t('AdminModule.user', 'Deactivate'),
+]]);
+
+/** @var \humhub\modules\user\Module $userModule */
+$userModule = Yii::$app->getModule('user');
+$enabledProfilePermissions = (boolean)$userModule->settings->get('enableProfilePermissions', false);
+
 ?>
+<?php $this->beginContent('@admin/views/authentication/_authenticationLayout.php') ?>
+
 <div class="panel-body">
-    <h4><?= Yii::t('AdminModule.user', 'Default User Permissions'); ?></h4>
     <div class="help-block">
-        <?= Yii::t('AdminModule.user', 'Here you can define default permissions for user account per different user-types. These settings overwrite default permissions from config file and can be overwritten for each individual account security settings.'); ?>
-        <br><br>
-        <?= Yii::t('AdminModule.user', 'Permissions are assigned to different user-types. To edit a default permission, select the user-types you want to edit and change the drop-down value of the given permission.'); ?>
+        <?= Yii::t('AdminModule.user', 'This option allows you to determine whether users may set individual permissions for their own profiles.'); ?>
     </div>
+    <br/>
+    <div class="checkbox">
+        <label for="switchPermissionChkId">
+            <?= Html::checkbox('switchPermissionChkName', $enabledProfilePermissions, [
+                'id' => 'switchPermissionChkId',
+                'data-action-click' => 'admin.changeIndividualProfilePermissions',
+                'data-action-url' => Url::to(['/admin/user-permissions/switch-individual-profile-permissions']),
+                'data-action-confirm-header' => $adminSettingsJsConfig['text']['enableProfilePermissions.header'],
+                'data-action-confirm' => $adminSettingsJsConfig['text']['enableProfilePermissions.question.' . ($enabledProfilePermissions ? 'disable' : 'enable')],
+                'data-action-confirm-text' => $adminSettingsJsConfig['text']['enableProfilePermissions.button.' . ($enabledProfilePermissions ? 'disable' : 'enable')],
+            ]); ?>
+            <?= Yii::t('AdminModule.user', 'Enable individual profile permissions'); ?>
+        </label>
+    </div>
+
+    <br/>
+    <br/>
+
+    <h5><?= Yii::t('AdminModule.user', 'Default Profile Permissions'); ?></h5>
+    <div class="help-block">
+        <?= Yii::t('AdminModule.user', 'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:'); ?>
+    </div>
+    <br/>
 
     <div class="clearfix">
         <?= PermisionGridModuleFilter::widget() ?>
@@ -33,3 +77,5 @@ use yii\helpers\Url;
         <?= PermissionGridEditor::widget(['permissionManager' => $defaultPermissionManager, 'groupId' => $groupId]); ?>
     </div>
 </div>
+
+<?php $this->endContent() ?>

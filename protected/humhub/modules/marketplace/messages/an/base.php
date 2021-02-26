@@ -26,6 +26,23 @@ Module successfully disabled!
     '
 Module successfully enabled!
 ' => '',
+    '
+No active Professional Edition license found!
+' => '',
+    '
+PROFESSIONAL EDITION
+' => '',
+    '
+The license could not be activated:
+' => '',
+    '
+The license was successfully activated!
+
+' => '',
+    '
+The license was successfully removed!
+
+' => '',
     '--- Disable module: {moduleId} ---
 
 ' => '',

@@ -1,6 +1,6 @@
 <?php
 return array (
   'Collapse' => '折りたたむ',
-  'Read more' => '',
+  'Read more' => '続きを読む',
   'User Interface' => 'ユーザーインターフェース',
 );

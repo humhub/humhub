@@ -20,8 +20,8 @@ use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\models\Session;
 use Yii;
-use yii\authclient\BaseClient;
 use yii\web\Cookie;
+use yii\authclient\BaseClient;
 use humhub\modules\user\events\UserEvent;
 
 /**
@@ -124,7 +124,7 @@ class AuthController extends Controller
     /**
      * Handle successful authentication
      *
-     * @param \yii\authclient\BaseClient $authClient
+     * @param BaseClient $authClient
      * @return Response
      * @throws \Throwable
      */
@@ -137,13 +137,13 @@ class AuthController extends Controller
             AuthClientHelpers::storeAuthClientForUser($authClient, Yii::$app->user->getIdentity());
             return $this->redirect(['/user/account/connected-accounts']);
         }
-      
+
         $user = AuthClientHelpers::getUserByAuthClient($authClient);
 
         if (Yii::$app->settings->get('maintenanceMode') && !$user->isSystemAdmin()) {
             return $this->redirect(['/user/auth/login']);
         }
-      
+
         // Check if e-mail is already in use with another auth method
         if ($user === null && isset($attributes['email'])) {
             $user = User::findOne(['email' => $attributes['email']]);
@@ -193,7 +193,7 @@ class AuthController extends Controller
      * Login user
      *
      * @param User $user
-     * @param \yii\authclient\BaseClient $authClient
+     * @param BaseClient $authClient
      * @return Response the current response object
      */
     protected function login($user, $authClient)
@@ -226,6 +226,9 @@ class AuthController extends Controller
 
         if ($success) {
             $this->trigger(static::EVENT_AFTER_LOGIN, new UserEvent(['user' => Yii::$app->user->identity]));
+            if (method_exists($authClient, 'onSuccessLogin')) {
+                $authClient->onSuccessLogin();
+            };
         }
 
         return $result;
