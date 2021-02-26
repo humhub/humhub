@@ -118,7 +118,6 @@ return [
     'Updated By' => 'Zaktualizowana przez',
     'Updated by' => 'Zaktualizowana przez',
     'User \'{username}\' is already a member of this space!' => 'Uzytkownik \'{username}\' jest już członkiem tej strefy!',
-    'User \'{username}\' is already an applicant of this space!' => 'Uzytkownik \'{username}\' już aplikował do tej strefy!',
     'User invitations have been added to the queue' => 'Zaproszenia użytkowników zostały dodane do kolejki',
     'User memberships have been added to the queue' => 'Członkostwo użytkowników zostało dodane do kolejki',
     'User not found!' => 'Użytkownik nie znaleziony!',

@@ -11,8 +11,13 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentContainerDefaultPermissionManager;
+use humhub\modules\content\models\ContentContainerDefaultPermission;
+use humhub\modules\content\models\ContentContainerPermission;
+use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\user\models\User;
+use humhub\modules\user\Module;
 use Yii;
+use yii\db\Expression;
 use yii\web\HttpException;
 
 /**
@@ -56,7 +61,7 @@ class UserPermissionsController extends Controller
     public function actionIndex()
     {
         $defaultPermissionManager = new ContentContainerDefaultPermissionManager([
-            'contentcontainer_class' => User::class,
+            'contentContainerClass' => User::class,
         ]);
 
         $groups = User::getUserGroups();
@@ -83,4 +88,27 @@ class UserPermissionsController extends Controller
             'groupId' => $groupId,
         ]);
     }
+
+    public function actionSwitchIndividualProfilePermissions()
+    {
+        $this->forcePostRequest();
+
+        /** @var Module $userModule */
+        $userModule = Yii::$app->getModule('user');
+        $oldState = (boolean)$userModule->settings->get('enableProfilePermissions', false);
+        $newState = false;
+        if (Yii::$app->request->post('isEnabled') === 'true') {
+            $newState = true;
+        }
+
+        if ($oldState === true && $newState === false) {
+            ContentContainerPermission::deleteAll('contentcontainer_id IN (SELECT contentcontainer_id FROM user)');
+            $userModule->settings->set('enableProfilePermissions', false);
+        } elseif ($oldState === false && $newState === true) {
+            $userModule->settings->set('enableProfilePermissions', true);
+        }
+
+        return $this->asJson(['ok' => true, 'oldState' => $oldState, 'newState' => $newState]);
+    }
+
 }

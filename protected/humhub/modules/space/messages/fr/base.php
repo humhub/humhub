@@ -60,6 +60,7 @@ return [
     'Everyone can enter' => 'Tout le monde peut entrer',
     'Follow' => 'Suivre',
     'Followers' => 'Abonnés',
+    'Guests' => 'Invités',
     'Homepage' => 'Page d\'accueil',
     'Homepage (Guests)' => 'Accueil (Invités)',
     'Invite' => 'Inviter',
@@ -124,7 +125,6 @@ return [
     'Updated By' => 'Mis à jour par',
     'Updated by' => 'Mis à jour par',
     'User \'{username}\' is already a member of this space!' => 'L\'utilisateur "{username}" est déjà membre de cet espace.',
-    'User \'{username}\' is already an applicant of this space!' => 'L\'utilisateur "{username}" a déjà fait une demande d\'adhésion à cet espace.',
     'User invitations have been added to the queue' => 'Les invitations des utilisateurs ont été ajoutées à la file d\'attente',
     'User memberships have been added to the queue' => 'Les adhésions des utilisateurs ont été ajoutées à la file d\'attente',
     'User not found!' => 'Utilisateur introuvable.',
@@ -142,6 +142,5 @@ return [
     '{count} members' => '{count} membres',
     '{email} is already registered!' => '{email} est déjà inscrit.',
     '{email} is not valid!' => '{email} n\'est pas valide.',
-    'Guests' => '',
     'Hide Members sidebar in the stream page.' => '',
 ];

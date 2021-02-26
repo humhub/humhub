@@ -170,7 +170,7 @@ class GroupTest extends HumHubDbTestCase
     public function testReturnSpaceRelationship()
     {
         $model = new Group();
-        static::assertTrue($model->getSpace() instanceof ActiveQuery);
+        static::assertTrue($model->getGroupSpaces() instanceof ActiveQuery);
     }
 
     public function testNotifyAdminsForUserApproval()

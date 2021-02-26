@@ -60,6 +60,7 @@ return [
     'Everyone can enter' => 'Iedereen kan lid worden',
     'Follow' => 'Volgen',
     'Followers' => 'Volgers',
+    'Guests' => 'Gasten',
     'Hide Members sidebar in the stream page.' => 'Verberg de zijbalk met de leden op de dashboardpagina.',
     'Homepage' => 'Startpagina',
     'Homepage (Guests)' => 'Startpagina (Gasten)',
@@ -125,7 +126,6 @@ return [
     'Updated By' => 'Bijgewerkt door',
     'Updated by' => 'Aangepast door',
     'User \'{username}\' is already a member of this space!' => 'Gebruiker \'{username}\' is al lid van deze ruimte!',
-    'User \'{username}\' is already an applicant of this space!' => 'Gebruiker \'{username}\' is al een aanvrager van deze ruimte!',
     'User invitations have been added to the queue' => 'Gebruikersuitnodigingen zijn aan de wachtrij toegevoegd.',
     'User memberships have been added to the queue' => 'Gebruikerslidmaatschappen zijn toegevoegd aan de wachtrij.',
     'User not found!' => 'Gebruiker niet gevonden!',
@@ -143,5 +143,4 @@ return [
     '{count} members' => '{count} leden',
     '{email} is already registered!' => '{email} is reeds geregistreerd!',
     '{email} is not valid!' => '{email} is niet geldig!',
-    'Guests' => '',
 ];

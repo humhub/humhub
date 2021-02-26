@@ -53,7 +53,7 @@ humhub.module('live.poll', function (module, require, $) {
             .on('focus',this.onWindowFocus.bind(this));
 
         var that = this;
-        $(document).on('mousemove keydown mousedown touchstart', object.debounce(function(that) {
+        $(document).on('mousemove keydown mousedown touchstart', object.debounce(function() {
             that.stopIdle();
         }, 200));
 
@@ -97,7 +97,7 @@ humhub.module('live.poll', function (module, require, $) {
                     break;
                 case EVENT_TYPE_FOCUS:
                     // Another tab was focused, so increase delay and reset timeout
-                    that.resetPollTimeout(this.options.maxInterval);
+                    that.resetPollTimeout(that.options.maxInterval);
                     break;
                 case EVENT_TYPE_UPDATE:
                     // We received a response from another tab

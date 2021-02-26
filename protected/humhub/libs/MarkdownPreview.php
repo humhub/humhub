@@ -8,7 +8,6 @@
 
 namespace humhub\libs;
 
-use cebe\markdown\block\CodeTrait;
 use cebe\markdown\block\HeadlineTrait;
 use cebe\markdown\Parser;
 
@@ -17,6 +16,7 @@ use cebe\markdown\Parser;
  * Some elements like images or links will be displayed more clearly.
  *
  * @since 0.11.1
+ * @deprecated since 1.8 use RichTextToPlainTextConverter isntead
  */
 class MarkdownPreview extends Parser
 {

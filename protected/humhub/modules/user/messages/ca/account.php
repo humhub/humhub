@@ -18,9 +18,6 @@
  */
 return [
     '<strong>Account</strong> settings' => '<strong>Configuració</strong> del compte',
-    '<strong>Security</strong> settings' => '
-<strong>Configuració</strong> de seguretat
-',
     '<strong>User</strong> modules' => '<strong>Mòduls</strong> del membre',
     '<strong>User</strong> settings' => '<strong>Configuració</strong> del membre',
     '<strong>Your</strong> profile' => '
@@ -45,7 +42,6 @@ return [
     'Password Recovery' => 'Recuperació de la contrasenya',
     'Profile' => 'Perfil',
     'Save' => 'Desa',
-    'Security' => 'Seguretat',
     'Settings' => 'Configuració',
     'Tags' => 'Etiquetes',
     'Users' => 'Usuaris',
@@ -55,6 +51,7 @@ return [
     'Your password has been successfully changed!' => 'La teva constrasenya s\'ha modificat correctament!',
     '{attribute} "{value}" was not found!' => '{attribute} "{value}" no s\'ha trobat!',
     '<strong>Confirm</strong></strong> your new email address' => '',
+    '<strong>Permissions</strong>' => '',
     'All your personal data will be irrevocably deleted.' => '',
     'Are you sure that you want to delete your account?' => '',
     'Changing the username can make some links unusable, for example old links to the profile.' => '',
@@ -63,14 +60,15 @@ return [
     'Enter your password to continue' => '',
     'Hello' => '',
     'Here you can edit your general profile data, which is visible in the about page of your profile.' => '',
-    'Here you can manage your account permissions for different user-types. To edit a permission, select the user-type you want to edit and change the drop-down value of the given permission.' => '',
     'Hide introduction tour panel on dashboard' => '',
     'Invalid link! Please make sure that you entered the entire url.' => '',
     'New User name' => '',
+    'Permissions' => '',
     'Profile visibility' => '',
     'Registered users only' => '',
     'Save profile' => '',
     'The entered e-mail address is already in use by another user.' => '',
+    'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.' => '',
     'TimeZone' => '',
     'Username has been changed' => '',
     'Visible for all (also unregistered users)' => '',

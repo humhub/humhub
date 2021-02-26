@@ -1,10 +1,10 @@
 <?php
 return array (
-  'Author' => '',
+  'Author' => 'Autor/a',
   'Content' => 'Contingut',
-  'Content Type' => '',
+  'Content Type' => 'Tipus de contingut',
   'Scope' => 'Abast',
   'Sorting' => 'Ordena',
-  'Topic' => '',
+  'Topic' => 'Tema',
   'Visibility' => 'Visibilitat',
 );

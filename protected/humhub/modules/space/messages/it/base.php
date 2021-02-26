@@ -60,6 +60,7 @@ return [
     'Everyone can enter' => 'Ognuno può entrare',
     'Follow' => 'Segui',
     'Followers' => 'Lo seguono',
+    'Guests' => 'Ospiti',
     'Homepage' => 'Homepage',
     'Homepage (Guests)' => 'Homepage (Ospiti)',
     'Invite' => 'Invita',
@@ -124,7 +125,6 @@ return [
     'Updated By' => 'Aggiornato da',
     'Updated by' => 'Aggiornato da',
     'User \'{username}\' is already a member of this space!' => 'L\'utente  \'{username}\' è già membro di questo spazio!',
-    'User \'{username}\' is already an applicant of this space!' => 'L\'utente \'{username}\' vuole già unirsi a questo spazio!',
     'User invitations have been added to the queue' => 'Gli inviti per gli utenti sono stati aggiunti alla lista per l\'approvazione.',
     'User memberships have been added to the queue' => 'La partecipazione è stata aggiunta alla lista per l\'approvazione.',
     'User not found!' => 'Utente non trovato!',
@@ -142,6 +142,5 @@ return [
     '{count} members' => '{count} membri',
     '{email} is already registered!' => '{email} è già registrato!',
     '{email} is not valid!' => '{email} non è valida!',
-    'Guests' => '',
     'Hide Members sidebar in the stream page.' => '',
 ];

@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use yii\helpers\Html;
 
 /* @var $originator \humhub\modules\user\models\User */
@@ -11,5 +12,7 @@ echo Yii::t('ContentModule.activities', '{displayName} created a new {contentTit
     '{contentTitle}' => '<strong>' . Html::encode($source->getContentName()) . '</strong>'
 ]);
 ?>
-<br />
-"<?= RichText::preview($source->getContentDescription()); ?>"
+<br>
+"<?= RichText::preview($source->getContentDescription(), [
+    RichTextToShortTextConverter::OPTION_CACHE_KEY => RichTextToShortTextConverter::buildCacheKeyForContent($source)
+]) ?>"

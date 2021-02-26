@@ -11,13 +11,14 @@ namespace humhub\modules\content\widgets\richtext;
 use humhub\libs\EmojiMap;
 use humhub\libs\Helpers;
 use humhub\libs\ParameterEvent;
-use humhub\modules\content\assets\ProseMirrorRichTextAsset;
-use humhub\modules\content\models\ContentContainer;
-use humhub\modules\space\models\Space;
-use humhub\modules\user\models\User;
-use Yii;
+use humhub\modules\content\widgets\richtext\extensions\emoji\RichTextEmojiExtension;
+use humhub\modules\content\widgets\richtext\extensions\file\FileExtension;
+use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtensionMatch;
+use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
+use humhub\modules\content\widgets\richtext\extensions\oembed\OembedExtension;
+use humhub\modules\content\widgets\richtext\extensions\RichTextCompatibilityExtension;
+use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
 use yii\helpers\Html;
-use humhub\models\UrlOembed;
 
 /**
  * The ProsemirrorRichText is a [Prosemirror](https://prosemirror.net) and [Markdown-it](https://github.com/markdown-it/markdown-it)
@@ -106,19 +107,9 @@ use humhub\models\UrlOembed;
 class ProsemirrorRichText extends AbstractRichText
 {
     /**
-     * @var int defines the maximum amount of oembeds allowed in a single richtext
-     */
-    public static $maxOembed = 10;
-
-    /**
      * @inheritdoc
      */
     public $jsWidget = 'ui.richtext.prosemirror.RichText';
-
-    /**
-     * @var array holds included oembeds used for rendering
-     */
-    private $oembeds = [];
 
     /**
      * @inheritdoc
@@ -128,7 +119,19 @@ class ProsemirrorRichText extends AbstractRichText
     /**
      * @inheritdoc
      */
-    protected static $processorClass = ProsemirrorRichTextProcessor::class;
+    protected static $converterClass = ProsemirrorRichTextConverter::class;
+
+    /**
+     * @var string[]
+     * @since 1.8
+     */
+    protected static $extensions = [
+        RichTextCompatibilityExtension::class,
+        MentioningExtension::class,
+        FileExtension::class,
+        OembedExtension::class,
+        RichTextEmojiExtension::class
+    ];
 
     /**
      * @inheritdoc
@@ -137,6 +140,7 @@ class ProsemirrorRichText extends AbstractRichText
     {
         parent::init();
         if($this->edit) {
+            // In edit mode we only render a hidden rich text element
             $this->visible = false;
         }
     }
@@ -146,116 +150,49 @@ class ProsemirrorRichText extends AbstractRichText
      */
     public function run() {
         if($this->minimal) {
-            return $this->renderMinimal();
+            return static::convert($this->text, static::FORMAT_SHORTTEXT, ['maxLength' => $this->maxLength]);
         }
 
-        if($this->isCompatibilityMode()) {
-            $this->text = RichTextCompatibilityParser::parse($this->text);
+        $output = $this->parseOutput();
+
+        // E.g. when initializing empty editor
+        if(empty($output)) {
+            return $output;
         }
 
-        $oembedCount = 0;
-        foreach (static::scanLinkExtension($this->text, 'oembed') as $match) {
-            if(isset($match[3]) && $oembedCount < static::$maxOembed) {
-                $oembedPreview =  UrlOembed::getOEmbed($match[3]);
-                if(!empty($oembedPreview)) {
-                    $oembedCount++;
-                    $this->oembeds[$match[3]] = $oembedPreview;
-                }
-            }
-        }
-
-        $this->text = $this->parseOutput();
-
-        if ($this->maxLength > 0) {
-            $this->text = Helpers::truncateText($this->text, $this->maxLength);
-        }
-
-        $this->content = Html::encode($this->text);
-        $output = parent::run() . $this->buildOembedOutput();
         $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
 
-        return trim($output);
-
-    }
-
-    /**
-     * @since v1.3.2
-     */
-    protected function parseOutput()
-    {
-        return static::parseMentionings($this->text, $this->edit);
-    }
-
-    /**
-     * @return string truncated and stripped text
-     */
-    protected function renderMinimal() {
-        $result = preg_replace('/\\\\(\n|\r){1,2}/',  ' ', $this->text);
-        $result = strip_tags((new PreviewMarkdown())->parse($result));
-        $result = $this->toUTF8Emoji($result);
-        return  trim(Html::encode(($this->maxLength > 0) ? Helpers::truncateText($result, $this->maxLength) : $result));
-    }
-
-    protected function toUTF8Emoji($text)
-    {
-        // Note the ; was used in the legacy editor
-        return preg_replace_callback('/[:|;](([A-Za-z0-9])+)[:|;]/', function($match)  {
-            $result =  $match[0];
-
-            if(isset($match[1])) {
-                $result = array_key_exists(strtolower($match[1]), EmojiMap::MAP) ?  EmojiMap::MAP[strtolower($match[1])] : $result;
-            }
-
-            return $result;
-        }, $text);
-    }
-
-    /**
-     * @return string html extension holding the actual oembed dom nodes which will be embedded into the rich text
-     */
-    public function buildOembedOutput()
-    {
-        $result = '';
-        foreach ($this->oembeds as $url => $oembed) {
-            $result .= Html::tag('div', $oembed, ['data-oembed' => Html::encode($url)]);
+        foreach (static::getExtensions() as $extension) {
+            $output = $extension->onBeforeOutput($this, $output);
         }
 
-        return Html::tag('div', $result, ['class' => 'richtext-oembed-container', 'style' => 'display:none']);
+        // Can be removed in a future version, richtext should not be cut anymore, only text or shorttext version should be cut
+        if ($this->maxLength > 0) {
+            $output = Helpers::truncateText($output, $this->maxLength);
+        }
+
+        // Wrap encoded output in root div
+        $this->content = Html::encode($output);
+        $output = parent::run();
+
+        foreach (static::getExtensions() as $extension) {
+            $output = $extension->onAfterOutput($this, $output);
+        }
+
+        $this->trigger(self::EVENT_AFTER_OUTPUT, new ParameterEvent(['output' => &$output]));
+
+        return trim($output);
     }
 
     /**
-     * Parses the given text for mentionings and replaces them with possibly updated values (e.g. name).
+     * Prior of 1.8 this function was used for preparing the richtext output. In 1.8 we richtext extensions should be
+     * used to manipulate the richtext output.
      *
-     * @param $text string rich text content to parse
-     * @param $edit bool if not in edit mode deleted or inactive users will be rendered differently
-     * @return mixed
+     * @return string
+     * @deprecated since 1.8 use `RichTextExtension::onBeforeOutput()` to manipulate output
      */
-    public static function parseMentionings($text, $edit = false)
-    {
-        // $match[0]: markdown, $match[1]: name, $match[2]: extension(mention) $match[3]: guid, $match[4]: url
-        return static::replaceLinkExtension($text, 'mention', function($match) use ($edit) {
-            $contentContainer = ContentContainer::findOne(['guid' => $match[3]]);
-            $notFoundResult = '['.$match[1].'](mention:'.$match[2].' "#")';
-
-            if(!$contentContainer || !$contentContainer->getPolymorphicRelation()) {
-                // If no user or space was found we leave out the url in the non edit mode.
-                return $edit ?  '['.$match[1].'](mention:'.$match[3].' "'.$match[4].'")' : $notFoundResult;
-            }
-
-            $container = $contentContainer->getPolymorphicRelation();
-
-            if($container instanceof User) {
-                return $container->isActive()
-                    ?  '['.$container->getDisplayName().'](mention:'.$container->guid.' "'.$container->getUrl().'")'
-                    : $notFoundResult;
-            }
-
-            if($container instanceof Space) {
-                return '['.$container->name.'](mention:'.$container->guid.' "'.$container->getUrl().'")';
-            }
-
-            return '';
-        });
+    protected function parseOutput() {
+        return $this->text;
     }
 
     /**
@@ -265,11 +202,17 @@ class ProsemirrorRichText extends AbstractRichText
      * @param $text string rich text content to parse
      * @param $extension string|null extension string if not given all extension types will be included
      * @return array
+     * @deprecated since 1.8 use `ProsemirrorRichTextConverter::scanLinkExtension()`
      */
     public static function scanLinkExtension($text, $extension = null)
     {
-        preg_match_all(static::getLinkExtensionPattern($extension), $text, $match, PREG_SET_ORDER);
-        return $match;
+        $matches = [];
+        $result = RichTextLinkExtension::scanLinkExtension($text, $extension);
+        foreach ($result as $match) {
+            $matches[] = $match->match;
+        }
+
+        return $matches;
     }
 
     /**
@@ -279,33 +222,12 @@ class ProsemirrorRichText extends AbstractRichText
      * @param $text string rich text content to parse
      * @param $extension string|null extension string if not given all extension types will be included
      * @return mixed
+     * @deprecated since 1.8 use `ProsemirrorRichTextConverter::replaceLinkExtension()`
      */
-    public static function replaceLinkExtension($text, $extension, $callback)
+    public static function replaceLinkExtension(string $text, $extension, callable $callback)
     {
-        return preg_replace_callback(static::getLinkExtensionPattern($extension), $callback, $text);
-    }
-
-    /**
-     * @param string $extension the extension to parse, if not set all extensions are included
-     * @return string the regex pattern for a given extension or all extension if no specific extension string is given
-     */
-    protected static function getLinkExtensionPattern($extension = '[a-zA-Z]+')
-    {
-        if($extension === null) {
-            $extension  = '[a-zA-Z-_]+';
-        }
-
-        return '/(?<!\\\\)\[([^\]]*)\]\(('.$extension.'):{1}([^\)\s]*)(?:\s)?(?:"([^"]*)")?[^\)]*\)/is';
-    }
-
-    /**
-     * Checks if the compatibility mode is enabled.
-     * The compatibility mode is only required, if old content is present and won't be activated for new installations.
-     *
-     * @return bool
-     */
-    public function isCompatibilityMode()
-    {
-        return Yii::$app->getModule('content')->settings->get('richtextCompatMode', 1);
+        return RichTextLinkExtension::replaceLinkExtension($text, $extension, function (RichTextLinkExtensionMatch $match) use ($callback) {
+            return $callback($match->match);
+        });
     }
 }

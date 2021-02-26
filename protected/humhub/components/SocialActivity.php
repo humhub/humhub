@@ -8,19 +8,20 @@
 
 namespace humhub\components;
 
+use Yii;
+use yii\base\BaseObject;
+use yii\helpers\Html;
+use yii\helpers\Json;
+use yii\helpers\Url;
 use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
-use humhub\libs\Helpers;
 use humhub\modules\content\models\Content;
-use Yii;
-use yii\helpers\Html;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\interfaces\ContentOwner;
-use humhub\modules\content\widgets\richtext\RichText;
-use yii\helpers\Json;
-use yii\helpers\Url;
 
 /**
  * This class represents a social Activity triggered within the network.
@@ -35,7 +36,7 @@ use yii\helpers\Url;
  * @since 1.1
  * @author buddha
  */
-abstract class SocialActivity extends \yii\base\BaseObject implements rendering\Viewable, \Serializable
+abstract class SocialActivity extends BaseObject implements rendering\Viewable, \Serializable
 {
 
     /**
@@ -270,7 +271,7 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     {
         $html = $this->html();
 
-        return !empty($html) ? strip_tags($html) : null;
+        return !empty($html) ? html_entity_decode(strip_tags($html)) : null;
     }
 
     /**
@@ -329,19 +330,46 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     {
         if (!$this->hasContent() && !$content) {
             return null;
-        } elseif (!$content) {
+        }
+
+        if (!$content) {
             $content = $this->source;
         }
 
-        $truncatedDescription = $this->getContentPreview($content, 60);
+        $info = $this->getContentPreview($content, 60);
 
-        if (empty($truncatedDescription)) {
+        if (empty($info)) {
             return null;
         }
 
-        $trimmed = Helpers::trimText($truncatedDescription, 60);
+        return ($withContentName) ? Html::encode($content->getContentName()) . ' "' . $info . '"' : $info;
+    }
 
-        return ($withContentName) ? Html::encode($content->getContentName()). ' "' . $trimmed . '"' : $trimmed;
+    /**
+     * Returns a short preview text of the content. The max length can be defined by setting
+     * $maxLength (60 by default).
+     *
+     *  If no $content is provided the contentPreview of $source is returned.
+     *
+     * @param ContentOwner $content
+     * @param int $maxLength
+     * @return string|null
+     * @throws Exception
+     */
+    public function getContentPreview(ContentOwner $content = null, $maxLength = 60)
+    {
+        if (!$this->hasContent() && !$content) {
+            return null;
+        }
+
+        if (!$content) {
+            $content = $this->source;
+        }
+
+        return RichTextToShortTextConverter::process($content->getContentDescription(), [
+            RichTextToShortTextConverter::OPTION_MAX_LENGTH => $maxLength,
+            RichTextToShortTextConverter::OPTION_CACHE_KEY => RichTextToShortTextConverter::buildCacheKeyForContent($content),
+        ]);
     }
 
     /**
@@ -363,20 +391,53 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     {
         if (!$this->hasContent() && !$content) {
             return null;
-        } elseif (!$content) {
+        }
+
+        if (!$content) {
             $content = $this->source;
         }
 
-        $truncatedDescription = $this->getContentPlainTextPreview($content, 60);
+        $info = $this->getContentPlainTextPreview($content);
 
-        if (empty($truncatedDescription)) {
+        return ($withContentName) ? $content->getContentName() . ' "' . $info . '"' : $info;
+    }
+
+    /**
+     * Returns a short preview text of the content in plain text. The max length can be defined by setting
+     * $maxLength (60 by default).
+     *
+     *  If no $content is provided the contentPreview of $source is returned.
+     *
+     * Note: This should only be used for mail subjects and other plain text
+     *
+     * @param ContentOwner $content
+     * @param int $maxLength
+     * @return string|null
+     * @throws Exception
+     * @since 1.4
+     */
+    public function getContentPlainTextPreview(ContentOwner $content = null, $maxLength = 60)
+    {
+        if (!$this->hasContent() && !$content) {
             return null;
         }
 
-        $trimmed = Helpers::trimText($truncatedDescription, 60);
+        if (!$content) {
+            $content = $this->source;
+        }
 
-        return ($withContentName) ? Html::encode($content->getContentName()). ' "' . $trimmed . '"' : $trimmed;
+        try {
+            return RichTextToPlainTextConverter::process($content->getContentDescription(), [
+                RichTextToPlainTextConverter::OPTION_MAX_LENGTH => $maxLength,
+                RichTextToPlainTextConverter::OPTION_CACHE_KEY => RichTextToPlainTextConverter::buildCacheKeyForContent($content),
+            ]);
+        } catch (\Exception $e) {
+            Yii::error($e);
+        }
+
+        return '';
     }
+
 
     /**
      * Returns the content name of $content or if not $content is provided of the
@@ -389,7 +450,9 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     {
         if (!$this->hasContent() && !$content) {
             return null;
-        } elseif (!$content) {
+        }
+
+        if (!$content) {
             $content = $this->source;
         }
 
@@ -397,58 +460,12 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     }
 
     /**
-     * Returns a short preview text of the content. The max length can be defined by setting
-     * $maxLength (25 by default).
-     *
-     *  If no $content is provided the contentPreview of $source is returned.
-     *
-     * @param ContentOwner $content
-     * @param int $maxLength
-     * @return string|null
-     * @throws Exception
-     */
-    public function getContentPreview(ContentOwner $content = null, $maxLength = 25)
-    {
-        if (!$this->hasContent() && !$content) {
-            return null;
-        } elseif (!$content) {
-            $content = $this->source;
-        }
-
-        return RichText::preview($content->getContentDescription(), $maxLength);
-    }
-
-    /**
-     * Returns a short preview text of the content in plain text. The max length can be defined by setting
-     * $maxLength (25 by default).
-     *
-     *  If no $content is provided the contentPreview of $source is returned.
-     *
-     * Note: This should only be used for mail subjects and other plain text
-     *
-     * @param ContentOwner $content
-     * @param int $maxLength
-     * @return string|null
-     * @throws Exception
-     * @since 1.4
-     */
-    public function getContentPlainTextPreview(ContentOwner $content = null, $maxLength = 25)
-    {
-        try {
-            return html_entity_decode( $this->getContentPreview($content, $maxLength), ENT_QUOTES, 'UTF-8');
-        } catch(\Exception $e) {
-            Yii::error($e);
-        }
-
-        return '';
-    }
-
-    /**
      * Validates the existence of required attributes
      *
      * @return bool
      */
-    public function validate() {
+    public function validate()
+    {
         if (empty($this->source) && $this->requireSource) {
             return false;
         }
@@ -463,10 +480,10 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     /**
      * Serializes the $source and $originator fields.
      *
-     * @see ActiveRecord::serialize() for the serialization of your $source
+     * @return string
      * @link http://php.net/manual/en/function.serialize.php
      * @since 1.2
-     * @return string
+     * @see ActiveRecord::serialize() for the serialization of your $source
      */
     public function serialize()
     {
@@ -490,16 +507,16 @@ abstract class SocialActivity extends \yii\base\BaseObject implements rendering\
     /**
      * Unserializes the given string, calls the init() function and sets the $source and $originator fields (and $record indirectyl).
      *
-     * @see ActiveRecord::unserialize() for the serialization of your $source
-     * @link http://php.net/manual/en/function.unserialize.php
      * @param string $serialized
+     * @link http://php.net/manual/en/function.unserialize.php
+     * @see ActiveRecord::unserialize() for the serialization of your $source
      */
     public function unserialize($serialized)
     {
         $this->init();
         $unserializedArr = unserialize($serialized);
 
-        if(isset($unserializedArr['originator_id'])) {
+        if (isset($unserializedArr['originator_id'])) {
             $user = User::findOne(['id' => $unserializedArr['originator_id']]);
             if ($user !== null) {
                 $this->from($user);

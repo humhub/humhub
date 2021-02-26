@@ -36,7 +36,6 @@ use Yii;
  *
  * @property User[] $manager
  * @property Space|null $defaultSpace
- * @property Space|null $space
  * @property GroupUser[] groupUsers
  * @property GroupSpace[] groupSpaces
  */
@@ -130,7 +129,7 @@ class Group extends ActiveRecord
         return [
             'notify_users' => Yii::t('AdminModule.user', 'Send notifications to users when added to or removed from the group.'),
             'show_at_registration' => Yii::t('AdminModule.user', 'Make the group selectable at registration.'),
-            'show_at_directory' => Yii::t('AdminModule.user', 'Add a seperate page for the group to the directory.'),
+            'show_at_directory' => Yii::t('AdminModule.user', 'Add a separate page for the group to the directory.'),
             'is_default_group' => Yii::t('AdminModule.user', 'Applied to new or existing users without any other group membership.'),
         ];
     }
@@ -380,14 +379,6 @@ class Group extends ActiveRecord
         }
 
         return false;
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSpace()
-    {
-        return $this->hasOne(Space::class, ['id' => 'space_id']);
     }
 
     /**

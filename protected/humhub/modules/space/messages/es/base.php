@@ -60,6 +60,7 @@ return [
     'Everyone can enter' => 'Todo el mundo puede entrar',
     'Follow' => 'Seguir',
     'Followers' => 'Seguidores',
+    'Guests' => 'Invitados',
     'Hide Members sidebar in the stream page.' => 'Ocultar la barra lateral de Miembros en la página de actividad.',
     'Homepage' => 'Página de inicio',
     'Homepage (Guests)' => 'Página de inicio (invitados)',
@@ -125,7 +126,6 @@ return [
     'Updated By' => 'Actualizado por',
     'Updated by' => 'Actualizado por',
     'User \'{username}\' is already a member of this space!' => 'El usuario \'{username}\' ya es miembro de este espacio!',
-    'User \'{username}\' is already an applicant of this space!' => 'El usuario\'{username}\' ya es un solicitante de este espacio!',
     'User invitations have been added to the queue' => 'Las invitaciones a los usuarios se han añadido a la cola',
     'User memberships have been added to the queue' => 'Las solicitudes de participación de usuarios han sido añadidas a la cola',
     'User not found!' => '¡Usuario no encotrado!',
@@ -143,5 +143,4 @@ return [
     '{count} members' => '{count} miembros',
     '{email} is already registered!' => '¡{email} ya está registrado!',
     '{email} is not valid!' => '¡{email} no es válido!',
-    'Guests' => '',
 ];

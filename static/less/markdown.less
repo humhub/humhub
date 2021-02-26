@@ -165,8 +165,22 @@
         margin: 5px 0;
     }
 
-    img {
+    img:not(.center-block) {
         max-width: 100%;
+        margin: 0 5px;
+    }
+
+    img.pull-right {
+        margin: 5px 0 0 10px;
+    }
+
+    img.pull-left {
+        margin: 5px 10px 0 0;
+    }
+
+    img.center-block {
+        margin-top: 5px;
+        margin-bottom: 5px;
     }
 
     img[width='100%'] {
@@ -191,11 +205,12 @@
 
         td {
             padding:15px;
-            border-bottom: 1px solid @background3 !important;
+            border: 1px solid @background3 !important;
         }
 
         th {
             padding: 10px 15px;
+            border: 1px solid @background3 !important;
         }
     }
 }

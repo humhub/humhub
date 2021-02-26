@@ -339,6 +339,18 @@ class NotificationManager
     }
 
     /**
+     * Reset the notification space settings for all users
+     */
+    public function resetSpaces()
+    {
+        // Reset notifications for all selected membership spaces
+        Membership::updateAll(['send_notifications' => 0]);
+
+        // Delete all selected following spaces
+        Follow::updateAll(['send_notifications' => 0], ['object_model' => Space::class]);
+    }
+
+    /**
      * Defines the enable_html5_desktop_notifications setting for the given user or global if no user is given.
      *
      * @param integer $value

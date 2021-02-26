@@ -38,10 +38,10 @@ return [
     'Save' => 'Tallenna',
     'Set as default' => 'Oletukseksi',
     'Spaces' => 'Sivut',
-    'This module doesn\'t provide further informations.' => 'Tästä laajennuksesta ei ole lisätietoja.',
     'Uninstall' => 'Poista',
     'User Profiles' => 'Käyttäjien profiilit',
     'Version:' => 'Versio:',
     'Legacy' => '',
     'Not maintained or maintenance is about to be discontinued.' => '',
+    'This module doesn\'t provide further information.' => '',
 ];
