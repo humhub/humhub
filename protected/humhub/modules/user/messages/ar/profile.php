@@ -133,4 +133,5 @@ return [
     'Invalid!' => '',
     'Last login date of the user' => '',
     'Other:' => '',
+    '{attribute} is required!' => '',
 ];

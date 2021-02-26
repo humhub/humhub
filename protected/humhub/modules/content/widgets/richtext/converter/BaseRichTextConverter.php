@@ -12,6 +12,7 @@ use cebe\markdown\GithubMarkdown;
 use humhub\components\ActiveRecord;
 use humhub\components\Event;
 use humhub\libs\Html;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
@@ -169,7 +170,12 @@ abstract class BaseRichTextConverter extends GithubMarkdown
      */
     public static function buildCacheKeyForContent(ContentOwner $content, $prefix = null)
     {
-        $result = 'content_'.$content->content->id;
+        if ($content instanceof ContentAddonActiveRecord) {
+            // prevent cache key for comments to use the same cache key of original content
+            return static::buildCacheKeyForRecord($content);
+        }
+
+        $result = 'content_' . $content->content->id;
         return $prefix ? $prefix.'_'.$result : $result;
     }
 

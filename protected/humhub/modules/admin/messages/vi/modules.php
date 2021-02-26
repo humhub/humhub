@@ -38,10 +38,10 @@ return [
     'Save' => 'Lưu',
     'Set as default' => 'Đặt làm mặc định',
     'Spaces' => 'Các diễn đàn',
-    'This module doesn\'t provide further informations.' => 'Module này không cung cấp thêm thông tin.',
     'Uninstall' => 'Gỡ cài đặt',
     'User Profiles' => 'Trang cá nhân',
     'Version:' => 'Phiên bản:',
     'Legacy' => '',
     'Not maintained or maintenance is about to be discontinued.' => '',
+    'This module doesn\'t provide further information.' => '',
 ];

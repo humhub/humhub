@@ -117,7 +117,6 @@ return [
     'Updated By' => 'Cập nhật bởi',
     'Updated by' => 'Cập nhật bởi',
     'User \'{username}\' is already a member of this space!' => 'User \'{username}\' đã là thành viên của diễn đàn này!',
-    'User \'{username}\' is already an applicant of this space!' => 'User \'{username}\' đã là ứng cử viên của diễn đàn này!',
     'User invitations have been added to the queue' => 'Những lời mời tham gia đã được đưa vào hàng đợi',
     'User memberships have been added to the queue' => 'Danh sách quyền thành viên đã được đưa vào hàng đợi',
     'User not found!' => 'Không tìm thấy người dùng!',

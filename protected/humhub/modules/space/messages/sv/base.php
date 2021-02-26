@@ -104,7 +104,6 @@ return [
     'Updated By' => 'Uppdaterad av',
     'Updated by' => 'Uppdaterad av',
     'User \'{username}\' is already a member of this space!' => 'Användare \'{username}\' är redan medlem i detta nätverk!',
-    'User \'{username}\' is already an applicant of this space!' => 'Användare \'{username}\' är redan inbjuden till detta nätverk!',
     'User not found!' => 'Användaren hittades inte!',
     'Users' => 'Användare',
     'Users has been invited.' => 'Användare har blivit inbjudna',

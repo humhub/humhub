@@ -117,7 +117,6 @@ return [
     'Updated By' => 'Atualizado por',
     'Updated by' => 'Modificado por',
     'User \'{username}\' is already a member of this space!' => 'Usuário \'{username}\' atualmente já é um membro deste espaço!',
-    'User \'{username}\' is already an applicant of this space!' => 'Usuário \'{username}\' atualmente já é um candidato deste espaço!',
     'User invitations have been added to the queue' => 'Convites de usuário foram adicionados à fila',
     'User memberships have been added to the queue' => 'Associações de usuários foram adicionadas à fila',
     'User not found!' => 'Usuário não encontrado!',

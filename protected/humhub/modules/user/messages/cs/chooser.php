@@ -10,6 +10,6 @@ return [
   'Select {n,plural,=1{user} other{users}}' => 'Zvolit {n,plural,=1{user} other{users}}',
   'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => 'Toto pole umožňuje maximálně {n,plural,=1{# item} other{# items}}.',
   'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Toto pole umožňuje maximálně {n,plural,=1{# user} other{# users}}.',
-  'You reached the maximum number of allowed charachters ({n}).' => 'Přesahli jste maximálního povoleného počtu znaků ({n}).',
+  'You reached the maximum number of allowed characters ({n}).' => 'Přesahli jste maximálního povoleného počtu znaků ({n}).',
   'Your search returned no matches.' => 'Vaše vyhledávání neodpovídá žádným výsledkům.',
 ];

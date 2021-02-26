@@ -412,7 +412,7 @@ abstract class BasePicker extends JsInputWidget
             'format-ajax-error' => Yii::t('UserModule.chooser', 'An unexpected error occurred while loading the result.'),
             'load-more' => Yii::t('UserModule.chooser', 'Load more'),
             'input-too-short' => Yii::t('UserModule.chooser', 'Please enter at least {n} character', ['n' => $this->minInput]),
-            'input-too-long' => Yii::t('UserModule.chooser', 'You reached the maximum number of allowed charachters ({n}).', ['n' => $this->maxInput]),
+            'input-too-long' => Yii::t('UserModule.chooser', 'You reached the maximum number of allowed characters ({n}).', ['n' => $this->maxInput]),
             'default-results' => $this->getDefaultResultData()
         ];
 

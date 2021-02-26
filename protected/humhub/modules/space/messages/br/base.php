@@ -130,7 +130,6 @@ return [
     'Updated By' => '',
     'Updated by' => '',
     'User \'{username}\' is already a member of this space!' => '',
-    'User \'{username}\' is already an applicant of this space!' => '',
     'User not found!' => '',
     'Users' => '',
     'Users has been invited.' => '',

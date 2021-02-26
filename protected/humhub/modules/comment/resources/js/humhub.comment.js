@@ -274,7 +274,9 @@ humhub.module('comment', function (module, require, $) {
             target.slideToggle();
         }
 
-        target.find('.humhub-ui-richtext').trigger('focus');
+        if(!visible) {
+            target.find('.humhub-ui-richtext').trigger('focus');
+        }
     }
 
     var toggleCommentHandler = function (evt) {

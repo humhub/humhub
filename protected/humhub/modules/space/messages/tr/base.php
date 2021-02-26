@@ -113,7 +113,6 @@ return [
     'Updated By' => 'Güncelleyen',
     'Updated by' => 'Güncelleyen',
     'User \'{username}\' is already a member of this space!' => '{username} isimli kullanıcı zaten bu sayfa üyesi!',
-    'User \'{username}\' is already an applicant of this space!' => '{username} isimli kullanıcı zaten bu sayfaya üyelik isteğinde bulunmuş!',
     'User invitations have been added to the queue' => 'Kullanıcı davetiyeleri sıraya eklendi',
     'User memberships have been added to the queue' => 'Sıraya kullanıcı üyelikleri eklendi',
     'User not found!' => 'Kullanıcı bulunamadı!',

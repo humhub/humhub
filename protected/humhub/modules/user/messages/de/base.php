@@ -42,7 +42,7 @@ return array (
   'Name' => 'Name',
   'New password' => 'Neues Passwort',
   'No users found.' => 'Keine Benutzer gefunden.',
-  'Notifications' => 'Mitteilungen',
+  'Notifications' => 'Benachrichtigungen',
   'Password' => 'Passwort',
   'Password changed' => 'Passwort geändert',
   'Password needs to be at least {chars} characters long.' => 'Das Passwort muss mindestens {chars} Zeichen lang sein.',
