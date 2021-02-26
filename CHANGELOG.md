@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.7.3 (Unreleased)
-------------------------
+1.7.3 (February 26, 2021)
+-------------------------
 - Fix #4792: Guest access to user profile home page
 - Fix #4794: CountrySelect profile field broken
 - Fix #4793: Form labels (HForm) are not displayed correctly
