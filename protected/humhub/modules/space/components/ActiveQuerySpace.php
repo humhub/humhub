@@ -9,6 +9,7 @@
 
 namespace humhub\modules\space\components;
 
+use humhub\events\ActiveQueryEvent;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
@@ -28,6 +29,11 @@ class ActiveQuerySpace extends ActiveQuery
     const MAX_SEARCH_NEEDLES = 5;
 
     /**
+     * @event Event an event that is triggered when only visible spaces are requested via [[visible()]].
+     */
+    const EVENT_CHECK_VISIBILITY = 'checkVisibility';
+
+    /**
      * Only returns spaces which are visible for this user
      *
      * @param User|null $user
@@ -35,6 +41,8 @@ class ActiveQuerySpace extends ActiveQuery
      */
     public function visible(User $user = null)
     {
+        $this->trigger(self::EVENT_CHECK_VISIBILITY, new ActiveQueryEvent(['query' => $this]));
+
         if ($user === null && !Yii::$app->user->isGuest) {
             try {
                 $user = Yii::$app->user->getIdentity();

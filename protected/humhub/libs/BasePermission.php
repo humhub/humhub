@@ -12,6 +12,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\BaseObject;
+use yii\base\Event;
 use yii\base\Exception;
 
 /**
@@ -21,6 +22,10 @@ use yii\base\Exception;
  */
 class BasePermission extends BaseObject
 {
+    /**
+     * @event Event an event that is triggered when the permission is initialized via [[init()]].
+     */
+    const EVENT_INIT = 'init';
 
     /**
      * Permission States
@@ -85,6 +90,15 @@ class BasePermission extends BaseObject
      * @var \humhub\modules\content\components\ContentContainerActiveRecord
      */
     public $contentContainer = null;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+        Event::trigger($this, self::EVENT_INIT);
+    }
 
     /**
      * Returns the ID
@@ -219,5 +233,14 @@ class BasePermission extends BaseObject
         }
 
         throw new Exception('Invalid permission state');
+    }
+
+    /**
+     * @param array Ids of additional fixed groups
+     */
+    public function addFixedGroups($groupIds) {
+        if (is_array($groupIds) && !empty($groupIds)) {
+            $this->fixedGroups = array_merge($this->fixedGroups, $groupIds);
+        }
     }
 }
