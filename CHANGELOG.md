@@ -1,6 +1,12 @@
 HumHub Changelog
 ================
 
+1.8.1 (Unreleased)
+---------------------
+
+- Fix #4931: Fix highlight parent navigations for sub section "Profile Permissions" (and LDAP)
+
+
 1.8.0 (March 1, 2021)
 ---------------------
 
