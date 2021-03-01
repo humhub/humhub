@@ -11,6 +11,8 @@ namespace humhub\modules\content\models;
 
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use yii\db\ActiveRecord;
 
 /**
@@ -87,6 +89,24 @@ class ContentContainer extends ActiveRecord
     {
         $instance = static::findOne(['guid' => $guid]);
         return $instance ? $instance->getPolymorphicRelation() : null;
+    }
+
+    /**
+     * @param $guid
+     * @return Space|User|ContentContainerActiveRecord|null
+     * @since 1.9
+     */
+    public static function findVisibleRecord($guid)
+    {
+        $instance = static::findOne(['guid' => $guid]);
+
+        if (!$instance) {
+            return null;
+        }
+
+        /* @var Space|User $contentContainerClass */
+        $contentContainerClass = $instance->class;
+        return $contentContainerClass::find()->where(['guid' => $guid])->visible()->one();
     }
 
 }

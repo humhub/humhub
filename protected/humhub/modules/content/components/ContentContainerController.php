@@ -73,10 +73,7 @@ class ContentContainerController extends Controller
         // Load the ContentContainer
         $guid = Yii::$app->request->get('cguid', Yii::$app->request->get('sguid', Yii::$app->request->get('uguid')));
         if (!empty($guid)) {
-            $contentContainerModel = ContentContainer::findOne(['guid' => $guid]);
-            if ($contentContainerModel !== null) {
-                $this->contentContainer = $contentContainerModel->getPolymorphicRelation();
-            }
+            $this->contentContainer = ContentContainer::findVisibleRecord(['guid' => $guid]);
         }
 
         if ($this->validContentContainerClasses !== null) {
