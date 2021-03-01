@@ -8,9 +8,11 @@
 
 namespace humhub\modules\notification\controllers;
 
-use Yii;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\permissions\ManageSettings;
+use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\notification\models\forms\NotificationSettings;
+use Yii;
 
 /**
  * AdminController is for system administrators to set activity e-mail defaults.
@@ -26,7 +28,8 @@ class AdminController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => \humhub\modules\admin\permissions\ManageSettings::class]
+            ['permissions' => ManageSettings::class],
+            ['permissions' => [ManageUsers::class], 'actions' => ['reset-all-users']],
         ];
     }
 
@@ -40,5 +43,18 @@ class AdminController extends Controller
         }
 
         return $this->render('defaults', ['model' => $form]);
+    }
+
+    /**
+     * Resets the overwritten settings of all users to the system defaults
+     */
+    public function actionResetAllUsers()
+    {
+        $this->forcePostRequest();
+        $model = new NotificationSettings();
+        $model->resetAllUserSettings();
+
+        $this->view->saved();
+        $this->redirect(['defaults']);
     }
 }
