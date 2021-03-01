@@ -67,7 +67,8 @@ class AdminMenu extends LeftNavigation
             'url' => ['/admin/user'],
             'icon' => 'user',
             'sortOrder' => 200,
-            'isActive' => MenuLink::isActiveState('admin', ['user', 'group', 'approval', 'authentication', 'user-profile', 'pending-registrations']),
+            'isActive' => MenuLink::isActiveState('admin', ['user', 'group', 'approval', 'authentication', 'user-profile', 'pending-registrations', 'user-permissions']) ||
+                          MenuLink::isActiveState('ldap', 'admin'),
             'isVisible' => Yii::$app->user->can([
                 ManageUsers::class,
                 ManageSettings::class,
