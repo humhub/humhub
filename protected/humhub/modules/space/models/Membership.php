@@ -241,6 +241,7 @@ class Membership extends ActiveRecord
     public static function getUserSpaceQuery(User $user, $memberOnly = true, $withNotifications = null)
     {
         $query = Space::find();
+        $query->visible();
         $query->leftJoin(
             'space_membership',
             'space_membership.space_id=space.id and space_membership.user_id=:userId',
