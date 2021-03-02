@@ -144,36 +144,46 @@ class Followable extends Behavior
     }
 
     /**
+     * Get a query of users which are followers of this object.
+     *
+     * @param ActiveQueryUser $query e.g. for limit the result
+     * @return ActiveQueryUser
+     */
+    public function getFollowersQuery($query = null)
+    {
+        if ($query === null) {
+            $query = User::find();
+        }
+
+        return $query->visible()
+            ->leftJoin('user_follow', 'user.id = user_follow.user_id AND user_follow.object_id=:object_id AND user_follow.object_model = :object_model', [
+                ':object_model' => get_class($this->owner),
+                ':object_id' => $this->owner->getPrimaryKey(),
+            ])
+            ->andWhere('user_follow.user_id IS NOT null');
+    }
+
+    /**
      * Returns the number of users which are followers of this object.
      *
      * @return int
      */
     public function getFollowerCount()
     {
-        return Follow::find()->where(['object_id' => $this->owner->getPrimaryKey(), 'object_model' => $this->owner->className()])->count();
+        return $this->getFollowersQuery()->count();
     }
 
     /**
      * Returns an array of users which are followers of this object.
      *
-     * @param CDbCriteria $eCriteria e.g. for limit the result
+     * @param ActiveQueryUser $query e.g. for limit the result
      * @param boolean $withNotifications only return followers with enabled notifications
      * @param boolean $returnQuery only return the query instead of User objects
-     * @return Users[]|ActiveQueryUser the user objects or the active query
+     * @return User[]|ActiveQueryUser the user objects or the active query
      */
     public function getFollowers($query = null, $withNotification = false, $returnQuery = false)
     {
-
-        if ($query === null) {
-            $query = \humhub\modules\user\models\User::find();
-        }
-
-        $query->leftJoin('user_follow', 'user.id = user_follow.user_id AND user_follow.object_id=:object_id AND user_follow.object_model = :object_model', [
-            ':object_model' => $this->owner->className(),
-            ':object_id' => $this->owner->getPrimaryKey(),
-        ]);
-
-        $query->andWhere('user_follow.user_id IS NOT null');
+        $query = $this->getFollowersQuery($query);
 
         if ($withNotification) {
             $query->andWhere('user_follow.send_notifications=1');
@@ -187,19 +197,32 @@ class Followable extends Behavior
     }
 
     /**
+     * Get a query of objects which the owner object follows
+     *
+     * @param ActiveQueryUser $query e.g. for limit the result
+     * @return ActiveQueryUser
+     */
+    public function getFollowingQuery($query = null)
+    {
+        if ($query === null) {
+            $query = User::find();
+        }
+
+        return $query->visible()
+            ->leftJoin('user_follow', 'user.id=user_follow.object_id AND user_follow.object_model=:object_model', ['object_model' => get_class($this->owner)])
+            ->andWhere(['user_follow.user_id' => $this->owner->id]);
+    }
+
+    /**
      * Returns the number of follows the owner object performed.
      * This is only affects User owner objects!
      *
-     * @param string $objectModel HActiveRecord Classname to restrict Object Classes to (e.g. User)
+     * @param string $objectModel DEPRECATED HActiveRecord Classname to restrict Object Classes to (e.g. User)
      * @return int
      */
-    public function getFollowingCount($objectModel)
+    public function getFollowingCount($objectModel = null)
     {
-        #if (!class_exists($objectModel)) {
-        #    throw new CException("Invalid objectModel parameter given!");
-        #}
-
-        return Follow::find()->where(['user_id' => $this->owner->getPrimaryKey(), 'object_model' => $objectModel])->count();
+        return $this->getFollowingQuery()->count();
     }
 
     /**
@@ -208,16 +231,13 @@ class Followable extends Behavior
      *
      * E.g. Get list of spaces which are the user follows.
      *
-     * @param CDbCriteria $eCriteria e.g. for limit the result
+     * @param ActiveQueryUser $query e.g. for limit the result
      * @param string $objectModel HActiveRecord Classname to restrict Object Classes to (e.g. User)
-     * @return Array
+     * @return User[]
      */
     public function getFollowingObjects($query)
     {
-        $query->leftJoin('user_follow', 'user.id=user_follow.object_id AND user_follow.object_model=:object_model', ['object_model' => $this->owner->className()]);
-        $query->andWhere(['user_follow.user_id' => $this->owner->id]);
-
-        return $query->all();
+        return $this->getFollowingQuery($query)->all();
     }
 
 }
