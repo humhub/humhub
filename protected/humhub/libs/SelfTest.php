@@ -657,7 +657,7 @@ class SelfTest
         } else {
             $checks[] = [
                 'title' => Yii::t('base', $title),
-                'state' => 'WARNING',
+                'state' => 'ERROR',
                 'hint' => 'Recommended engine is ' . $recommendedEngine . ' for the tables: ' . implode(', ', $tablesWithNotRecommendedEngines),
             ];
         }
