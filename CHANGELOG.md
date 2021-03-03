@@ -9,7 +9,7 @@ HumHub Changelog
 - Fix #4936: Fix emoji in sample content
 - Fix #4940: Typo in German translation "Benachrichtigungen"
 - Fix #4942: MemberOf Display in LDAP CLI Show User Details
-- Fix #4942: Broken LDAP PagedSearch with PHP 8+ 
+- Fix #4465: LDAP PHP 8 incompatibility (multiPageSearch)
 
 
 1.8.0 (March 1, 2021)
