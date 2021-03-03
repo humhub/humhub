@@ -139,9 +139,6 @@ class ZendLdap extends Ldap
             } else {
                 $cookie = '';
             }
-
-            print "P";
-
         } while (!empty($cookie));
 
         return $results;
