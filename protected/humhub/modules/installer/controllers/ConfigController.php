@@ -337,7 +337,7 @@ class ConfigController extends Controller
                 Yii::$app->user->switchIdentity($userModel);
 
                 $comment = new \humhub\modules\comment\models\Comment();
-                $comment->message = Yii::t("InstallerModule.base", "Nike – Just buy it. ;Wink;");
+                $comment->message = Yii::t("InstallerModule.base", "Nike – Just buy it. :wink:");
                 $comment->object_model = $post->className();
                 $comment->object_id = $post->getPrimaryKey();
                 $comment->save();
@@ -495,7 +495,7 @@ class ConfigController extends Controller
 
             // Add Some Post to the Space
             $post = new \humhub\modules\post\models\Post();
-            $post->message = Yii::t("InstallerModule.base", "Yay! I've just installed HumHub ;Cool;");
+            $post->message = Yii::t("InstallerModule.base", "Yay! I've just installed HumHub :sunglasses:");
             $post->content->container = $space;
             $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
             $post->save();

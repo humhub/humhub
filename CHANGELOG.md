@@ -6,6 +6,7 @@ HumHub Changelog
 
 - Fix #4931: Fix highlight parent navigations for sub section "Profile Permissions" (and LDAP)
 - Fix #4934: Show error instead of warning when using different MySQL Table Engines
+- Fix #4936: Fix emoji in sample content
 
 
 1.8.0 (March 1, 2021)
