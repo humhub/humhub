@@ -655,6 +655,9 @@ class SelfTest
                 'state' => 'OK'
             ];
         } else {
+            if (count($tableEngines) > 1) {
+                $title .= ' - Varying table engines are not supported.';
+            }
             $checks[] = [
                 'title' => Yii::t('base', $title),
                 'state' => count($tableEngines) > 1 ? 'ERROR' : 'WARNING',
