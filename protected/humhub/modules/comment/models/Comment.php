@@ -142,7 +142,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         $mentionedUsers = (isset($processResult['mentioning'])) ? $processResult['mentioning'] : [];
 
         if ($insert) {
-            $followerQuery = $this->getCommentedRecord()->getFollowers(null, true, true);
+            $followerQuery = $this->getCommentedRecord()->getFollowersWithNotificationQuery();
 
             // Remove mentioned users from followers query to avoid double notification
             if (count($mentionedUsers) !== 0) {

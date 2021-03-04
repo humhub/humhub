@@ -55,7 +55,7 @@ class ProfileHeaderCounterSet extends CounterSet
 
             $this->counters[] = new CounterSetItem([
                 'label' => Yii::t('UserModule.profile', 'Following'),
-                'value' => $this->user->getFollowingCount(User::class),
+                'value' => $this->user->getFollowingCount(),
                 'url' =>  (Yii::$app->user->isGuest) ? null : Url::to(['/user/profile/followed-users-list', 'container' => $this->user]),
                 'linkOptions' => ['data-action-click' => 'ui.modal.load']
             ]);

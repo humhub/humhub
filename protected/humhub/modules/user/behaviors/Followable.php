@@ -164,6 +164,17 @@ class Followable extends Behavior
     }
 
     /**
+     * Get a query of users which are followers with enabled notifications of this object.
+     *
+     * @return ActiveQueryUser
+     */
+    public function getFollowersWithNotificationQuery()
+    {
+        return $this->getFollowersQuery()
+            ->andWhere('user_follow.send_notifications=1');
+    }
+
+    /**
      * Returns the number of users which are followers of this object.
      *
      * @return int
@@ -176,6 +187,7 @@ class Followable extends Behavior
     /**
      * Returns an array of users which are followers of this object.
      *
+     * @deprecated Use $this->getFollowersQuery()->all() instead
      * @param ActiveQueryUser $query e.g. for limit the result
      * @param boolean $withNotifications only return followers with enabled notifications
      * @param boolean $returnQuery only return the query instead of User objects
@@ -231,6 +243,7 @@ class Followable extends Behavior
      *
      * E.g. Get list of spaces which are the user follows.
      *
+     * @deprecated Use $this->getFollowingQuery()->all() instead
      * @param ActiveQueryUser $query e.g. for limit the result
      * @param string $objectModel HActiveRecord Classname to restrict Object Classes to (e.g. User)
      * @return User[]
