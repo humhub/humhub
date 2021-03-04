@@ -264,7 +264,7 @@ class LdapController extends \yii\console\Controller
 
             $rows = [];
             foreach ($x->getUserAttributes() as $name => $value) {
-                if (empty(mb_detect_encoding($value))) {
+                if (!is_array($value) && empty(mb_detect_encoding($value))) {
                     $value = '-Binary-';
                 }
                 $rows[] = [$name, $value];
