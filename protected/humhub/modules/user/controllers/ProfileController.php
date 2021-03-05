@@ -125,27 +125,18 @@ class ProfileController extends ContentContainerController
 
     public function actionFollowerList()
     {
-        $query = User::find();
-        $query->leftJoin('user_follow', 'user.id=user_follow.user_id AND object_model=:userClass AND user_follow.object_id=:userId', [':userClass' => User::class, ':userId' => $this->getUser()->id]);
-        $query->orderBy(['user_follow.id' => SORT_DESC]);
-        $query->andWhere(['IS NOT', 'user_follow.id', new Expression('NULL')]);
-        $query->visible();
-
-        $title = Yii::t('UserModule.base', '<strong>User</strong> followers');
-
-        return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
+        return $this->renderAjaxContent(UserListBox::widget([
+            'query' => $this->getUser()->getFollowersQuery()->orderBy(['user_follow.id' => SORT_DESC]),
+            'title' => Yii::t('UserModule.base', '<strong>User</strong> followers'),
+        ]));
     }
 
     public function actionFollowedUsersList()
     {
-        $query = User::find();
-        $query->leftJoin('user_follow', 'user.id=user_follow.object_id AND object_model=:userClass AND user_follow.user_id=:userId', [':userClass' => User::class, ':userId' => $this->getUser()->id]);
-        $query->orderBy(['user_follow.id' => SORT_DESC]);
-        $query->andWhere(['IS NOT', 'user_follow.id', new Expression('NULL')]);
-        $query->visible();
-
-        $title = Yii::t('UserModule.base', '<strong>Following</strong> user');
-        return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
+        return $this->renderAjaxContent(UserListBox::widget([
+            'query' => $this->getUser()->getFollowingQuery()->orderBy(['user_follow.id' => SORT_DESC]),
+            'title' => Yii::t('UserModule.base', '<strong>Following</strong> user'),
+        ]));
     }
 
     public function actionSpaceMembershipList()
