@@ -10,6 +10,7 @@ namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
+use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\Module;
@@ -483,7 +484,7 @@ class Group extends ActiveRecord
      */
     public function canDelete()
     {
-        return Yii::$app->user->isAdmin() && !(
+        return Yii::$app->user->can(ManageGroups::class) && !(
             $this->isNewRecord ||
             $this->is_admin_group ||
             $this->is_default_group ||
