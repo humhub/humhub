@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Friendship Approved' => '',
+    'Friendship Approved' => 'تمت الموافقة على الصداقة',
 ];

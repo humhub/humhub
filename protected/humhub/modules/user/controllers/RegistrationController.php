@@ -92,7 +92,7 @@ class RegistrationController extends Controller
             if ($registration->getUser()->status === User::STATUS_ENABLED) {
                 Yii::$app->user->switchIdentity($registration->models['User']);
                 $registration->models['User']->updateAttributes(['last_login' => new Expression('NOW()')]);
-                return $this->redirect(['/p/welcome-page']);
+                return $this->redirect(['/home']);
             }
 
             return $this->render('success', [

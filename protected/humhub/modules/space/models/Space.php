@@ -156,7 +156,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
         $scenarios = parent::scenarios();
 
         $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'tags', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
-        $scenarios[static::SCENARIO_CREATE] = ['name', 'color', 'description', 'join_policy', 'visibility'];
+        $scenarios[static::SCENARIO_CREATE] = ['name', 'color', 'description', 'tags', 'join_policy', 'visibility'];
 
         return $scenarios;
     }
@@ -249,6 +249,18 @@ class Space extends ContentContainerActiveRecord implements Searchable
         }
 
         Yii::$app->cache->delete('userSpaces_' . $user->id);
+    }
+
+    /**
+     * @inerhitdoc
+     */
+    public function beforeValidate()
+    {
+        if(is_array($this->tags)){
+            $this->tags = implode(',', $this->tags);
+        }
+
+        return parent::beforeValidate();
     }
 
     /**

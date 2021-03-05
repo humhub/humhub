@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e6a82a28e40c25dc72ba0511b8b47a61",
+    "content-hash": "02a0d086c09432390617c8c9cd63f7c4",
     "packages": [
         {
             "name": "bower-asset/animate.css",
@@ -487,18 +487,21 @@
         },
         {
             "name": "bower-asset/nprogress",
-            "version": "v1.0.0-patch1",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:rstacruz/nprogress.git",
-                "reference": "50c9f8d6ce8fd1e350d5d63a643b1783b5ba7896"
+                "url": "https://github.com/rstacruz/nprogress.git",
+                "reference": "254266ea50c220f6507fa3f2978fc530147c7f06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rstacruz/nprogress/zipball/50c9f8d6ce8fd1e350d5d63a643b1783b5ba7896",
-                "reference": "50c9f8d6ce8fd1e350d5d63a643b1783b5ba7896"
+                "url": "https://api.github.com/repos/rstacruz/nprogress/zipball/254266ea50c220f6507fa3f2978fc530147c7f06",
+                "reference": "254266ea50c220f6507fa3f2978fc530147c7f06"
             },
-            "type": "bower-asset"
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "bower-asset/open-sans-fontface",
@@ -7976,5 +7979,5 @@
     "platform-overrides": {
         "php": "5.6"
     },
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }

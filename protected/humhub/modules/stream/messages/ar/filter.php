@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Author' => '',
-    'Content' => '',
-    'Content Type' => '',
-    'Sorting' => '',
-    'Topic' => '',
-    'Visibility' => '',
+    'Author' => 'المؤلف',
+    'Content' => 'المحتوى',
+    'Content Type' => 'نوع المحتوى',
+    'Sorting' => 'فرز',
+    'Topic' => 'الموضوع',
+    'Visibility' => 'الرؤية',
 ];

@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'As owner you cannot revoke your membership!' => '',
-    'Could not request membership!' => '',
-    'Sorry, you are not allowed to leave this space!' => '',
-    'There is no pending invite!' => '',
-    'This action is only available for workspace members!' => '',
-    'This user is already a member of this space.' => '',
-    'This user is not a member of this space.' => '',
-    'You are not allowed to join this space!' => '',
+    'As owner you cannot revoke your membership!' => 'بصفتك مالكًا لا يمكنك إلغاء عضويتك!',
+    'Could not request membership!' => 'تعذر طلب العضوية!',
+    'Sorry, you are not allowed to leave this space!' => 'معذرة ، غير مسموح لك بمغادرة هذا الفضاء!',
+    'There is no pending invite!' => 'لا توجد دعوة معلقة',
+    'This action is only available for workspace members!' => 'هذا الإجراء متاح فقط لأعضاء فضاء العمل',
+    'This user is already a member of this space.' => 'هذا المستخدم عضو في هذا الفضاء',
+    'This user is not a member of this space.' => 'هذا المستخدم ليس عضوًا في هذا الفضاء',
+    'You are not allowed to join this space!' => 'غير مسموح لك بالانضمام إلى هذا الفضاء',
 ];

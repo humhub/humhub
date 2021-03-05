@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Receive Notifications of Space Membership events.' => '',
-    'Space Membership' => '',
+    'Receive Notifications of Space Membership events.' => 'تلقي إشعارات بأحداث عضوية الفضاء',
+    'Space Membership' => 'عضوية الفضاء',
 ];

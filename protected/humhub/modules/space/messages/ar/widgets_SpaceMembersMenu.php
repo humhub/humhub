@@ -1,7 +1,7 @@
 <?php
 return array (
   'Members' => 'الأعضاء',
-  'Owner' => '',
-  'Pending Approvals' => '',
-  'Pending Invites' => '',
+  'Owner' => 'المالك',
+  'Pending Approvals' => 'الموافقات المعلقة',
+  'Pending Invites' => 'الدعوات المعلقة',
 );

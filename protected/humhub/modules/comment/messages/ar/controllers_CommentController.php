@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You are not allowed to comment.' => '',
+    'You are not allowed to comment.' => 'لا يسمح لك بالتعليق.',
     'Access denied!' => 'لم يتم السماح!',
     'Insufficent permissions!' => 'ليست لديك الصلاحيات اللازمة!',
 ];

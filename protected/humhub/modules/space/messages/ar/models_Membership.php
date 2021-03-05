@@ -1,11 +1,11 @@
 <?php
 return array (
-  'Created At' => '',
-  'Created By' => 'تم وضعه بواسطة',
-  'Last Visit' => '',
-  'Originator User ID' => '',
-  'Request Message' => '',
-  'Status' => '',
-  'Updated At' => '',
-  'Updated By' => '',
+  'Created At' => 'تم الإنشاء في',
+  'Created By' => 'تم وضعه من',
+  'Last Visit' => 'آخر زيارة',
+  'Originator User ID' => 'معرف المستخدم المنشئ',
+  'Request Message' => 'رسالة الطلب',
+  'Status' => 'الحالة',
+  'Updated At' => 'محدث في',
+  'Updated By' => 'تم التحديث من',
 );

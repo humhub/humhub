@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Register now and participate!' => '',
-    'You got an invite' => '',
-    'You\'ve been invited to join {space} on {appName}' => '',
-    'invited you to join {name}.' => '',
-    'invited you to join {space} on {name}.' => '',
+    'Register now and participate!' => 'سجل الآن وشارك',
+    'You got an invite' => 'تلقيت دعوة',
+    'You\'ve been invited to join {space} on {appName}' => 'لقد تمت دعوتك للانضمام',
+    'invited you to join {name}.' => 'دعاك للانضمام إلى {name}',
+    'invited you to join {space} on {name}.' => '{space} دعاك للانضمام إلى {name}',
     'Sign up now' => 'اشترك الان',
 ];

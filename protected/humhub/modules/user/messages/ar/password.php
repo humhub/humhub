@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Your password' => '',
-    'Your password is incorrect!' => '',
+    'Your password' => 'كلمتك السرية',
+    'Your password is incorrect!' => 'كلمتك السرية غير صحيحة',
 ];

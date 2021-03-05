@@ -102,38 +102,3 @@
 .label-danger {
   background-color: @topbar-color-label-danger;
 }
-
-// mail send btn override
-
-.btn[data-action-click-url*="/mail/mail"],
-.btn[href*="/mail/mail"] {
-  background: @btn-default-color-background !important;
-  color: @btn-default-color-text !important;
-  border: 1px solid @btn-default-color-border !important;
-  &:hover,
-  &:focus {
-    background: darken(@btn-default-color-background, 2%) !important;
-    text-decoration: none;
-    color: @btn-default-color-text !important;
-  }
-  &:active,
-  &.active {
-    outline: 0;
-    background: darken(@btn-default-color-background, 5%) !important;
-  }
-}
-
-.btn[data-action-click-url*="/mail/mail"][disabled],
-.btn[data-action-click-url*="/mail/mail"].disabled,
-.btn[href*="/mail/mail"][disabled],
-.btn[href*="/mail/mail"].disabled {
-  background: lighten(@btn-default-color-background, 2%) !important;
-  &:hover,
-  &:focus {
-    background: lighten(@btn-default-color-background, 2%) !important;
-  }
-  &:active,
-  &.active {
-    background: lighten(@btn-default-color-background, 2%) !important;
-  }
-}

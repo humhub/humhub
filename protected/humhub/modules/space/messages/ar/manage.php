@@ -17,13 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'As owner of this space you can transfer this role to another administrator in space.' => '',
-    'Remove from space' => '',
-    'Show all' => '',
-    'Space owner' => '',
-    'The url contains illegal characters!' => '',
-    'Transfer ownership' => '',
-    'e.g. example for {baseUrl}/s/example' => '',
-    'the default start page of this space for members' => '',
-    'the default start page of this space for visitors' => '',
+    'As owner of this space you can transfer this role to another administrator in space.' => 'بصفتك مالكًا لهذه المساحة ، يمكنك نقل هذا الدور إلى مسؤول آخر في الفضاء.',
+    'Remove from space' => 'إزالة من الفضاء',
+    'Show all' => 'إظهار الكل',
+    'Space owner' => 'مالك الفضاء',
+    'The url contains illegal characters!' => 'url يحتوي عنوان على أحرف غير قانونية',
+    'Transfer ownership' => 'نقل الملكية',
+    'e.g. example for {baseUrl}/s/example' => '{baseUrl}/s/example على سبيل المثال ',
+    'the default start page of this space for members' => 'صفحة البداية الافتراضية لهذه المساحة للأعضاء',
+    'the default start page of this space for visitors' => 'صفحة البداية الافتراضية لهذه المساحة للزوار',
 ];

@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'This space is archived.' => '',
+    'This space is archived.' => 'هذه المساحة مؤرشفة.',
     'What\'s on your mind?' => 'ماذا يخطر ببالك؟',
 ];

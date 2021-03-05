@@ -17,10 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Notification</strong> Overview' => '',
-    'Apply' => '',
-    'Mark all as seen' => '',
-    'Module Filter' => '',
-    'No notifications found!' => '',
+    '<strong>Notification</strong> Overview' => 'نظرة عامة',
+    'Apply' => 'تقديم',
+    'Mark all as seen' => 'ضع علامة مقروءة على الكل',
+    'Module Filter' => 'عامل تصفية الوحدة',
+    'No notifications found!' => 'لم يتم العثور على إخطارات',
     'Filter' => 'تصفية',
 ];

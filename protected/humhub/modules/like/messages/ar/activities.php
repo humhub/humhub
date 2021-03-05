@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Likes' => '',
-    'Whenever someone likes something (e.g. a post or comment).' => '',
+    'Likes' => 'التفضيلات',
+    'Whenever someone likes something (e.g. a post or comment).' => 'عندما يفضل شخص شيئًا ما (على سبيل المثال ، منشور أو تعليق).',
 ];

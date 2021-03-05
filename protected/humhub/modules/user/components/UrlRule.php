@@ -44,7 +44,7 @@ class UrlRule extends BaseObject implements UrlRuleInterface
                     $route = "";
                 }
 
-                $url = "u/" . urlencode($username) . "/" . $route;
+                $url = urlencode($username) . "/" . $route;
                 if (!empty($params) && ($query = http_build_query($params)) !== '') {
                     $url .= '?' . $query;
                 }
@@ -60,21 +60,21 @@ class UrlRule extends BaseObject implements UrlRuleInterface
     public function parseRequest($manager, $request)
     {
         $pathInfo = $request->getPathInfo();
-        if (substr($pathInfo, 0, 2) == "u/") {
-            $parts = explode('/', $pathInfo, 3);
-            if (isset($parts[1])) {
-                $user = UserModel::find()->where(['username' => $parts[1]])->one();
+
+            $parts = explode('/', $pathInfo, 2);
+            if (isset($parts[0])) {
+                $user = UserModel::find()->where(['username' => $parts[0]])->one();
                 if ($user !== null) {
-                    if (!isset($parts[2]) || $parts[2] == "") {
-                        $parts[2] = $this->defaultRoute;
+                    if (!isset($parts[1]) || $parts[1] == "") {
+                        $parts[1] = $this->defaultRoute;
                     }
                     $params = $request->get();
                     $params['cguid'] = $user->guid;
 
-                    return [$parts[2], $params];
+                    return [$parts[1], $params];
                 }
             }
-        }
+
         return false;
     }
 

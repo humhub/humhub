@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Allows the user to add comments' => '',
-    'Can manage (e.g. archive, stick, move or delete) arbitrary content' => '',
-    'Create comment' => '',
-    'Manage content' => '',
+    'Allows the user to add comments' => 'يسمح للمستخدم بإضافة تعليقات',
+    'Can manage (e.g. archive, stick, move or delete) arbitrary content' => 'يمكنه إدارة (مثل أرشفة أو لصق أو نقل أو حذف) المحتوى التعسفي',
+    'Create comment' => 'إنشاء تعليق',
+    'Manage content' => 'إدارة المحتوى',
 ];

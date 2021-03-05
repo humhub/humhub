@@ -29,7 +29,7 @@ class HForm extends \yii\base\Component
      * @since 1.2.6
      */
     const EVENT_AFTER_INIT = 'afterInit';
-    
+
     /**
      * @since 1.2.6
      */
@@ -257,7 +257,8 @@ class HForm extends \yii\base\Component
                             'model' => $model,
                             'attribute' => $name,
                             'items' => $definition['items'],
-                            'options' => $definition['options']
+                            'options' => $definition['options'],
+                            'placeholderMore' => isset($definition['placeholderMore'])? $definition['placeholderMore']: ''
                         ]);
                     case 'dropdownlist':
                         return $this->form->field($model, $name)->dropDownList($definition['items'], $options);

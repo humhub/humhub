@@ -1,9 +1,12 @@
 <?php
 
+use humhub\modules\xcoin\models\Tag;
+use kartik\widgets\Select2;
 use yii\bootstrap\ActiveForm;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\modules\space\widgets\SpaceNameColorInput;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 /* @var $model \humhub\modules\space\models\Space */
@@ -20,6 +23,15 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
             <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model]) ?>
 
             <?= $form->field($model, 'description')->textarea(['placeholder' => Yii::t('SpaceModule.views_create_create', 'space description'), 'rows' => '3']); ?>
+
+            <?= $form->field($model, 'tags')->widget(Select2::class, [
+                'model' => $model,
+                'attribute' => 'tags_names',
+                'data' => ArrayHelper::map(Tag::find()->where(['type' => Tag::TYPE_SPACE])->all(), 'name', 'name'),
+                'options' => [
+                    'multiple' => true,
+                ]
+            ])->label(Yii::t('SpaceModule.views_create_create', 'Tags')); ?>
 
             <a data-toggle="collapse" id="access-settings-link" href="#collapse-access-settings" style="font-size: 11px;">
                 <i class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.views_create_create', 'Advanced access settings'); ?>

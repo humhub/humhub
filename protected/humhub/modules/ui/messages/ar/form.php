@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Invalid icon.' => '',
-    'Select icon' => '',
+    'Invalid icon.' => 'رمز غير صالح',
+    'Select icon' => 'تحديد رمز',
 ];

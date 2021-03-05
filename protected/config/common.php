@@ -6,4 +6,16 @@
  * @see http://docs.humhub.org/dev-environment.html
  */
 return [
+    'components' => [
+        'urlManager' => [
+            'showScriptName' => false,
+            'enablePrettyUrl' => true,
+            'rules' => [
+                'marketplace' => 'xcoin/marketplace-overview',
+                'home' => 'dashboard/dashboard',
+            ],
+        ],
+    ],
+    'defaultRoute' => 'xcoin/marketplace-overview',
+    'homeUrl' => '/home',
 ];

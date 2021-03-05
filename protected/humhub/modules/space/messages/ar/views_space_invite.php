@@ -17,16 +17,16 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Invite</strong> members' => '',
-    'Add users without invitation' => '',
-    'Done' => '',
-    'Email addresses' => '',
-    'Invite by email' => '',
-    'New user?' => '',
-    'Pick users' => '',
-    'Select all registered users' => '',
-    'To invite users to this space, please type their names below to find and pick them.' => '',
-    'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.' => '',
+    '<strong>Invite</strong> members' => 'دعوة الأعضاء',
+    'Add users without invitation' => 'إضافة مستخدمين بدون دعوة',
+    'Done' => 'تم',
+    'Email addresses' => 'عناوين البريد الإلكتروني',
+    'Invite by email' => 'دعوة عبر البريد الإلكتروني',
+    'New user?' => 'مستخدم جديد؟',
+    'Pick users' => 'اختيار المستخدمين',
+    'Select all registered users' => 'حدد جميع المستخدمين المسجلين',
+    'To invite users to this space, please type their names below to find and pick them.' => 'لدعوة المستخدمين إلى هذه المساحة ، يرجى كتابة أسمائهم أدناه للعثور عليهم واختيارهم',
+    'You can also invite external users, which are not registered now. Just add their e-mail addresses separated by comma.' => 'يمكنك أيضًا دعوة مستخدمين خارجيين غير مسجلين الآن. فقط أضف عناوين البريد الإلكتروني الخاصة بهم مفصولة بفواصل',
     'Login' => 'تسجيل الدخول',
     'Send' => 'ارسل',
 ];

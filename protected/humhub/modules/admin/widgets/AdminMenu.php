@@ -15,6 +15,7 @@ use humhub\modules\admin\permissions\ManageMarketplaces;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageSpaces;
+use humhub\modules\admin\permissions\ManageTags;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\SeeAdminInformation;
 use humhub\widgets\BaseMenu;
@@ -71,10 +72,21 @@ class AdminMenu extends BaseMenu
 
         if (Yii::$app->hasModule('xcoin')) {
             $this->addItem([
+                'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Tags'),
+                'id' => 'tags',
+                'url' => Url::toRoute('/admin/tag/index-user'),
+                'icon' => '<i class="fa fa-tag"></i>',
+                'sortOrder' => 400,
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'tag'),
+                'isVisible' => Yii::$app->user->can([
+                    new ManageTags(),
+                ]),
+            ]);
+            $this->addItem([
                 'label' => Yii::t('AdminModule.widgets_AdminMenuWidget', 'Categories'),
                 'id' => 'categories',
                 'url' => Url::toRoute('/admin/category/index-funding'),
-                'icon' => '<i class="fa fa-tag"></i>',
+                'icon' => '<i class="fa fa-bookmark"></i>',
                 'sortOrder' => 400,
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'admin' && Yii::$app->controller->id == 'category'),
                 'isVisible' => Yii::$app->user->can([

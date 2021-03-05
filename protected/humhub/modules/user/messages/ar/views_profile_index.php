@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<b>This profile stream is still empty!</b>' => '',
-    '<b>This profile stream is still empty</b><br>Be the first and post something...' => '',
+    '<b>This profile stream is still empty!</b>' => 'صفحة الملف الشخصي هذه لا تزال فارغة',
+    '<b>This profile stream is still empty</b><br>Be the first and post something...' => 'صفحة الملف الشخصي هذه لا تزال فارغة. كن أول من ينشر شيئًا',
     '<b>Your profile stream is still empty</b><br>Get started and post something...' => 'جدار صفحتك يخلو من المحتويات. <br>يمكنك البدء بكتابة شيء ما.',
 ];

@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Friendship' => '',
-    'Receive Notifications for Friendship Request and Approval events.' => '',
+    'Friendship' => 'الصداقة',
+    'Receive Notifications for Friendship Request and Approval events.' => 'تلقي إعلامات لأحداث طلب الصداقة والموافقة عليها',
 ];

@@ -17,14 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Allows the user to create private content' => '',
-    'Allows the user to create public content' => '',
-    'Allows the user to invite new members to the space' => '',
-    'Can create hidden (private) spaces.' => '',
-    'Can create public visible spaces. (Listed in directory)' => '',
-    'Create private content' => '',
-    'Create private space' => '',
-    'Create public content' => '',
-    'Create public space' => '',
-    'Invite users' => '',
+    'Allows the user to create private content' => 'يسمح للمستخدم بإنشاء محتوى خاص',
+    'Allows the user to create public content' => 'يسمح للمستخدم بإنشاء محتوى عام',
+    'Allows the user to invite new members to the space' => 'يسمح للمستخدم بدعوة أعضاء جدد إلى الفضاء',
+    'Can create hidden (private) spaces.' => 'يمكنه إنشاء فضاء مخفي (خاص)',
+    'Can create public visible spaces. (Listed in directory)' => 'يمكن إنشاء فضاء عام مرئي. (مدرج في الدليل)',
+    'Create private content' => 'إنشاء محتوى خاص',
+    'Create private space' => 'إنشاء فضاء خاص',
+    'Create public content' => 'إنشاء محتوى عام',
+    'Create public space' => 'إنشاء فضاء عام',
+    'Invite users' => 'دعوة المستخدمين',
 ];

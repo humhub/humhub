@@ -17,8 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    '<strong>Manage</strong> Categories' => '',
+    '<strong>Manage</strong> Challenges' => '',
+    '<strong>Manage</strong> Marketplaces' => '',
     '<strong>Manage</strong> spaces' => '',
     'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => '',
+    'Products Categories' => '',
+    'Projects Categories' => '',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => '',
     'Overview' => 'نظرة شاملة',
     'Settings' => 'الإعدادات',

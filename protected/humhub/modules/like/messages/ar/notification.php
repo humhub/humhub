@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '{displayNames} likes your {contentTitle}.' => '',
-    '{displayNames} likes {contentTitle}.' => '',
-    '{displayName} likes your {contentTitle}.' => '',
-    '{displayName} likes {contentTitle}.' => '',
+    '{displayNames} likes your {contentTitle}.' => '{contentTitle} معجب بـ {displayName}.',
+    '{displayNames} likes {contentTitle}.' => '{contentTitle} معجب بـ {displayName}.',
+    '{displayName} likes your {contentTitle}.' => '{contentTitle} معجب بـ {displayName}.',
+    '{displayName} likes {contentTitle}.' => '{contentTitle} معجب بـ {displayName}.',
 ];

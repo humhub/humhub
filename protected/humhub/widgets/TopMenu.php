@@ -36,11 +36,6 @@ class TopMenu extends BaseMenu
     public function init()
     {
         parent::init();
-
-        // Don't show top menu if guest access is disabled
-        if (Yii::$app->user->isGuest && !User::isGuestAccessEnabled()) {
-            $this->template = '';
-        }
     }
 
 }

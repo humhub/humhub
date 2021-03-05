@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add Space' => '',
-    'No spaces found for the given query' => '',
-    'Select {n,plural,=1{space} other{spaces}}' => '',
-    'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}' => '',
+    'Add Space' => 'إضافة فضاء ',
+    'No spaces found for the given query' => 'لم يتم العثور على مسافات للاستعلام المحدد',
+    'Select {n,plural,=1{space} other{spaces}}' => '{n,plural,=1{space} other{spaces}} حدد',
+    'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}' => '{n,plural,=1{# space} other{# spaces}} هذا الحقل يسمح فقط بحد أقصى',
 ];

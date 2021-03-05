@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Allow others to create new posts on your profile page' => '',
-    'Allows the user to create posts' => '',
-    'Create post' => '',
+    'Allow others to create new posts on your profile page' => 'السماح للآخرين بإنشاء منشورات جديدة على صفحة ملفك الشخصي',
+    'Allows the user to create posts' => 'يسمح للمستخدم بإنشاء منشورات',
+    'Create post' => 'إنشاء منشور',
 ];

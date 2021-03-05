@@ -1,12 +1,10 @@
 <?php
 return array (
-  'Invites' => '',
-  'New user by e-mail (comma separated)' => '',
-  'User \'{username}\' is already a member of this space!' => '',
-  'User \'{username}\' is already an applicant of this space!' => '',
+  'Invites' => 'دعوات',
+  'New user by e-mail (comma separated)' => 'مستخدم جديد عن طريق البريد الإلكتروني (مفصولة بفواصل)',
+  'User \'{username}\' is already a member of this space!' => 'عضو في هذا الفضاء \'{username}\' المستخدم',
+  'User \'{username}\' is already an applicant of this space!' => 'متقدم في هذا الفضاء \'{username}\' المستخدم',
   'User not found!' => 'لم يتم إيجاد العضو',
-  '{email} is already registered!' => '{email} مسجل بالفعل!
-',
-  '{email} is not valid!' => '{email} غير صحيح!
-',
+  '{email} is already registered!' => 'مسجل {email}',
+  '{email} is not valid!' => 'غير صحيح {email}',
 );

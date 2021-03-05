@@ -17,12 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You were added to Space {spaceName}' => '',
-    '{displayName} accepted your invite for the space {spaceName}' => '',
-    '{displayName} approved your membership for the space {spaceName}' => '',
-    '{displayName} changed your role to {roleName} in the space {spaceName}.' => '',
-    '{displayName} declined your invite for the space {spaceName}' => '',
-    '{displayName} declined your membership request for the space {spaceName}' => '',
-    '{displayName} invited you to the space {spaceName}' => '',
-    '{displayName} requests membership for the space {spaceName}' => '',
+    '{displayName} revoked your invitation for the space {spaceName}' => '',
+    'You were added to Space {spaceName}' => '{spaceName} تمت إضافتك إلى الفضاء',
+    '{displayName} accepted your invite for the space {spaceName}' => '{spaceName} قبل دعوتك للمساحة {displayName}',
+    '{displayName} approved your membership for the space {spaceName}' => '{spaceName} وافق على عضويتك في المساحة {displayName}',
+    '{displayName} changed your role to {roleName} in the space {spaceName}.' => '{spaceName} في الفضاء {roleName} غير دورك إلى {displayName}',
+    '{displayName} declined your invite for the space {spaceName}' => '{spaceName} رفض دعوتك للفضاء  {displayName}',
+    '{displayName} declined your membership request for the space {spaceName}' => '{spaceName} رفض طلب عضويتك للفضاء {displayName}',
+    '{displayName} invited you to the space {spaceName}' => '{spaceName} دعاك إلى الفضاء {displayName}',
+    '{displayName} requests membership for the space {spaceName}' => '{spaceName} يطلب عضوية في الفضاء {displayName}',
 ];

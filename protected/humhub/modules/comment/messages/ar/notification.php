@@ -17,15 +17,15 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '[Deleted]' => '',
-    '{displayNames} commented {contentTitle}' => '',
-    '{displayNames} commented {contentTitle} in space {space}' => '',
-    '{displayNames} commented {contentTitle}.' => '',
-    '{displayNames} just commented your {contentTitle}' => '',
-    '{displayNames} just commented your {contentTitle} in space {space}' => '',
-    '{displayName} commented {contentTitle}' => '',
-    '{displayName} commented {contentTitle} in space {space}' => '',
-    '{displayName} commented {contentTitle}.' => '',
-    '{displayName} just commented your {contentTitle}' => '',
-    '{displayName} just commented your {contentTitle} in space {space}' => '',
+    '[Deleted]' => '[محذوف]',
+    '{displayNames} commented {contentTitle}' => '{contentTitle} علق على {displayNames}',
+    '{displayNames} commented {contentTitle} in space {space}' => '{contentTitle} علق على {displayNames}',
+    '{displayNames} commented {contentTitle}.' => '{contentTitle} علق على {displayNames}',
+    '{displayNames} just commented your {contentTitle}' => '{contentTitle} علق على {displayNames}',
+    '{displayNames} just commented your {contentTitle} in space {space}' => '{space} في الفضاء {contentTitle} علق على {displayNames}',
+    '{displayName} commented {contentTitle}' => '{contentTitle} علق على {displayNames}',
+    '{displayName} commented {contentTitle} in space {space}' => '{space} في الفضاء {contentTitle} علق على {displayNames}',
+    '{displayName} commented {contentTitle}.' => '{contentTitle} علق على {displayNames}',
+    '{displayName} just commented your {contentTitle}' => '{contentTitle} علق على {displayNames}',
+    '{displayName} just commented your {contentTitle} in space {space}' => '{space} في الفضاء {contentTitle} علق على {displayNames}',
 ];

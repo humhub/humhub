@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You' => '',
-    'You like this.' => '',
+    'You' => 'أنت',
+    'You like this.' => 'أنت تحب هذا.',
     ' likes this.' => 'أعجبهم هذا',
     'Like' => 'تفضيل',
     'Unlike' => 'إزالة التفضيل',

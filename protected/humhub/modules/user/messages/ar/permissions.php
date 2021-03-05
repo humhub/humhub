@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Allows access to your about page with personal information' => '',
-    'View your about page' => '',
+    'Allows access to your about page with personal information' => 'يسمح بالوصول إلى صفحتك الخاصة بالمعلومات الشخصية',
+    'View your about page' => 'عرض صفحتك الشخصية',
 ];

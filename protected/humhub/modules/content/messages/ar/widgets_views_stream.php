@@ -24,8 +24,10 @@ return [
     'The content has been archived.' => '',
     'The content has been deleted.' => '',
     'The content has been unarchived.' => '',
+    'Where I\'m involved' => '',
     'With file attachments' => '',
     'Your last edit state has been saved!' => '',
+    'Where I´m involved' => 'التي تشملني',
     'Back to stream' => 'العودة للمحتويات',
     'Created by me' => 'التي كتبتها أنا',
     'Creation time' => 'حسب وقت النشر',
@@ -33,5 +35,4 @@ return [
     'Last update' => 'حسب آخر تعديل',
     'No matches with your selected filters!' => 'لم يتم إيجاد نتائج مطابقة للبحث',
     'Nothing here yet!' => 'لا يوجد شيء هنا بعد!',
-    'Where I´m involved' => 'التي تشملني',
 ];

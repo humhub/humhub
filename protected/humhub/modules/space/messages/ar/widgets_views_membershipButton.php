@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Accept Invite' => '',
-    'Become member' => '',
-    'Cancel pending membership application' => '',
-    'Deny Invite' => '',
-    'Request membership' => '',
+    'Accept Invite' => 'قبول الدعوة',
+    'Become member' => 'كن عضوا',
+    'Cancel pending membership application' => 'إلغاء طلب العضوية المعلق',
+    'Deny Invite' => 'رفض الدعوة',
+    'Request membership' => 'طلب العضوية',
 ];

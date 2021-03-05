@@ -14,6 +14,7 @@ use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
+use humhub\modules\xcoin\models\Tag;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -139,6 +140,20 @@ class Registration extends HForm
                 'class' => 'form-control',
             ];
         }
+
+        $form['elements']['tags'] = [
+            'htmlOptions' => [
+                'placeholder' => Yii::t('UserModule.controllers_AuthController', 'Tags'),
+            ],
+            'type' => 'multiselectdropdown',
+            'class' => 'form-control',
+            'maxlength' => 25,
+            'items' => ArrayHelper::map(Tag::find()->where(['type' => Tag::TYPE_USER])->all(), 'name', 'name'),
+            'options' => [
+                'multiple' => true,
+            ],
+            'placeholderMore' => Yii::t('UserModule.controllers_AuthController', 'Choose tags')
+        ];
 
         return $form;
     }

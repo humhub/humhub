@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Cancel Edit' => '',
-    'Comment has been deleted' => '',
-    'Read full comment...' => '',
+    'Cancel Edit' => 'إلغاء التحرير',
+    'Comment has been deleted' => 'تم حذف التعليق',
+    'Read full comment...' => 'قراءة الرد كاملاً ...',
     '<strong>Confirm</strong> comment deleting' => 'تأكيد حذف الرد',
     'Cancel' => 'إلغاء',
     'Delete' => 'حذف',

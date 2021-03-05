@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Create new space' => '',
-    'My spaces' => '',
-    'No member or following spaces found.' => '',
-    'No result found for the given filter.' => '',
-    'Search for spaces' => '',
-    'To search for other spaces, type at least {count} characters.' => '',
+    'Create new space' => 'إنشاء فضاء جديد',
+    'My spaces' => 'فضاءاتي',
+    'No member or following spaces found.' => 'لم يتم العثور على أي عضو أو فضاءات لاحقة.',
+    'No result found for the given filter.' => 'لم يتم العثور على نتيجة لعامل التصفية المحدد.',
+    'Search for spaces' => 'البحث عن فضاءات',
+    'To search for other spaces, type at least {count} characters.' => 'حرفًا على الأقل {count} للبحث عن فضاءات أخرى ، اكتب',
     'Search' => 'بحث',
 ];

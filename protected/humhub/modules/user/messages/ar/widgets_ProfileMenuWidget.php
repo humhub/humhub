@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Profile</strong> menu' => '',
+  '<strong>Profile</strong> menu' => 'قائمة الملف الشخصي',
   'About' => 'عن',
-  'Stream' => '',
+  'Stream' => 'صفحة النشر',
 );

@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Space has been archived' => '',
-    'Space has been unarchived' => '',
-    'Space member joined' => '',
-    'Space member left' => '',
-    'Whenever a member leaves one of your spaces.' => '',
-    'Whenever a new member joined one of your spaces.' => '',
-    'Whenever a space is archived.' => '',
-    'Whenever a space is unarchived.' => '',
+    'Space has been archived' => 'تم أرشفة الفضاء',
+    'Space has been unarchived' => 'تمت إزالة المساحة من الأرشيف',
+    'Space member joined' => 'انضم عضو في الفضاء',
+    'Space member left' => 'عضو الفضاء غادر',
+    'Whenever a member leaves one of your spaces.' => 'عندما يغادر أحد الأعضاء إحدى مساحاتك',
+    'Whenever a new member joined one of your spaces.' => 'عندما ينضم عضو جديد إلى إحدى مساحتك',
+    'Whenever a space is archived.' => 'عندما يتم أرشفة مساحة',
+    'Whenever a space is unarchived.' => 'عندما يتم إخراج مساحة من الأرشيف',
 ];

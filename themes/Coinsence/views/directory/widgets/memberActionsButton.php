@@ -24,7 +24,7 @@ if (!Yii::$app->user->isGuest && !$user->isCurrentUser() && Yii::$app->getModule
     if ($friendShipState === Friendship::STATE_NONE) {
         echo Html::a('<i class="fa fa-user-plus"></i>&nbsp;&nbsp;' . Yii::t("FriendshipModule.base", "Add Friend"), Url::to(['/friendship/request/add', 'userId' => $user->id]), ['class' => 'btn btn-default btn-sm','data-ui-loader' => '', 'data-method' => 'POST']);
     } elseif ($friendShipState === Friendship::STATE_FRIENDS) {
-        echo Html::a('<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t("FriendshipModule.base", "Friends"), $user->getUrl(), ['class' => 'btn btn-default btn-sm', 'data-ui-loader' => '']);
+        echo Html::a('<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t("FriendshipModule.base", "Friends"), $user->getUrl(), ['class' => 'btn btn-default btn-sm ', 'data-ui-loader' => '']);
     }
 }
 ?>

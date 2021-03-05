@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Following' => '',
-    'Mentionings' => '',
-    'Receive Notifications when someone is following you.' => '',
-    'Receive Notifications when someone mentioned you in a post.' => '',
+    'Following' => 'متابعة',
+    'Mentionings' => 'الإشارات',
+    'Receive Notifications when someone is following you.' => 'تلقي إشعارات عندما يتابعك شخص ما',
+    'Receive Notifications when someone mentioned you in a post.' => 'تلقي إشعارات عندما ذكرك شخص ما في منشور',
 ];

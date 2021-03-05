@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Space is invisible!' => '',
-    'You need to login to view contents of this space!' => '',
+    'Space is invisible!' => 'الفضاء غير مرئي!',
+    'You need to login to view contents of this space!' => 'تحتاج إلى تسجيل الدخول لرؤية محتويات هذه المساحة',
 ];

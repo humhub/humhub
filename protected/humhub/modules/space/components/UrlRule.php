@@ -42,7 +42,7 @@ class UrlRule extends BaseObject implements UrlRuleInterface
 
             $urlPart = static::getUrlBySpaceGuid($params['cguid']);
             if ($urlPart !== null) {
-                $url = "s/" . urlencode($urlPart) . "/" . $route;
+                $url = 'space/' . urlencode($urlPart) . "/" . $route;
                 unset($params['cguid']);
 
                 if (!empty($params) && ($query = http_build_query($params)) !== '') {
@@ -60,7 +60,7 @@ class UrlRule extends BaseObject implements UrlRuleInterface
     public function parseRequest($manager, $request)
     {
         $pathInfo = $request->getPathInfo();
-        if (substr($pathInfo, 0, 2) == "s/") {
+        if (substr($pathInfo, 0, 6) == "space/") {
             $parts = explode('/', $pathInfo, 3);
             if (isset($parts[1])) {
                 $space = Space::find()->where(['guid' => $parts[1]])->orWhere(['url' => $parts[1]])->one();

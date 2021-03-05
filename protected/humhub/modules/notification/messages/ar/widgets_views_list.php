@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Mark all as seen' => '',
-    'Open the notification dropdown menu' => '',
-    'Show all notifications' => '',
-    'There are no notifications yet.' => '',
+    'Mark all as seen' => 'ضع علامة مقروءة على الكل',
+    'Open the notification dropdown menu' => 'افتح القائمة المنسدلة للإشعارات',
+    'Show all notifications' => 'إظهار كافة الإشعارات',
+    'There are no notifications yet.' => 'لا توجد إشعارات حتى الآن',
     'Notifications' => 'التنبيهات',
 ];

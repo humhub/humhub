@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Hello {displayName},' => '',
-    'New user needs approval' => '',
-    'Please click on the link below to view request:' => '',
-    'a new user {displayName} needs approval.' => '',
+    'Hello {displayName},' => 'مرحبًا {displayName}',
+    'New user needs approval' => 'المستخدم الجديد يحتاج إلى موافقة',
+    'Please click on the link below to view request:' => ' الرجاء النقر فوق الارتباط أدناه لعرض الطلب:',
+    'a new user {displayName} needs approval.' => 'إلى الموافقة {displayName} يحتاج المستخدم الجديد ',
 ];

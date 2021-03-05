@@ -1,7 +1,7 @@
 <?php
 return array (
-  'My Space List' => '',
-  'My space summary' => '',
-  'Space directory' => '',
-  'Spaces' => 'الباحات',
+  'My Space List' => 'قائمة الفضاء الخاصة بي',
+  'My space summary' => 'ملخص فضائي',
+  'Space directory' => 'دليل الفضاء',
+  'Spaces' => 'الفضاءات',
 );

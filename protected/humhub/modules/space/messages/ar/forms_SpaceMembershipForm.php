@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Application message' => '',
+  'Application message' => 'رسالة الطلب',
 );

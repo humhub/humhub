@@ -17,14 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Search </strong> results' => '',
-    'Advanced search settings' => '',
-    'All' => '',
-    'Content' => '',
-    'Search for user, spaces and content' => '',
-    'Search only in certain spaces:' => '',
-    'Specify space' => '',
-    'Users' => '',
-    'Your search returned no matches.' => '',
-    'Spaces' => 'الباحات',
+    '<strong>Search </strong> results' => 'نتائج البحث',
+    'Advanced search settings' => 'إعدادات البحث المتقدم',
+    'All' => 'الكل',
+    'Content' => 'المحتوى',
+    'Search for user, spaces and content' => 'البحث عن المستخدم والفضاءات والمحتوى',
+    'Search only in certain spaces:' => 'البحث فقط في فضاءات معينة: ',
+    'Specify space' => 'حدد الفضاء',
+    'Users' => 'المستخدمون',
+    'Your search returned no matches.' => 'لا يوجد لبحثك اي نتائج.',
+    'Spaces' => 'الفضاءات',
 ];

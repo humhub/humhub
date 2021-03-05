@@ -49,16 +49,11 @@ use yii\helpers\Url; ?>
                     <?= \humhub\modules\space\widgets\Chooser::widget(); ?>
                 </div>
 
-                <div class="search hidden-xs">
-                    <?php $form = ActiveForm::begin(['action' => Url::to(['/search']), 'method' => 'GET']); ?>
-                    <div class="form-group form-group-search">
-                        <?= Html::textInput('SearchForm[keyword]', null, ['placeholder' => Yii::t('SearchModule.views_search_index', 'Search for user, spaces and content'),
-                            'title' => Yii::t('SearchModule.views_search_index', 'Search for user, spaces and content'), 'class' => 'form-control', 'id' => 'search-input-field']) ?>
-                        <?php echo Html::submitButton('<i class="fa fa-search"></i>', ['class' => 'btn btn-default btn-sm form-button-search', 'data-ui-loader' => '']); ?>
-                    </div>
-                    <?php ActiveForm::end(); ?>
+                <div class="search pull-right hidden-xs">
+                    <?= \yii\helpers\Html::a(
+                        '<i class="fa fa-search"></i>',
+                        ['/search']) ?>
                 </div>
-
 
             </div>
         </div>

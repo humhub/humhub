@@ -18,8 +18,8 @@
  */
 return [
     '-' => '',
-    '<strong>Manage</strong> members' => '',
-    'Actions' => '',
-    'Role' => '',
-    'never' => '',
+    '<strong>Manage</strong> members' => 'إدارة الأعضاء',
+    'Actions' => 'الإجراءات',
+    'Role' => 'الأدوار',
+    'never' => 'أبدًا',
 ];
