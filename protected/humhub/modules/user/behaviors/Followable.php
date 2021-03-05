@@ -146,21 +146,17 @@ class Followable extends Behavior
     /**
      * Get a query of users which are followers of this object.
      *
-     * @param ActiveQueryUser $query e.g. for limit the result
      * @return ActiveQueryUser
      */
-    public function getFollowersQuery($query = null)
+    public function getFollowersQuery()
     {
-        if ($query === null) {
-            $query = User::find();
-        }
-
-        return $query->visible()
+        return User::find()
             ->leftJoin('user_follow', 'user.id = user_follow.user_id AND user_follow.object_id=:object_id AND user_follow.object_model = :object_model', [
                 ':object_model' => get_class($this->owner),
                 ':object_id' => $this->owner->getPrimaryKey(),
             ])
-            ->andWhere('user_follow.user_id IS NOT null');
+            ->where('user_follow.user_id IS NOT null')
+            ->visible();
     }
 
     /**
@@ -195,10 +191,10 @@ class Followable extends Behavior
      */
     public function getFollowers($query = null, $withNotification = false, $returnQuery = false)
     {
-        $query = $this->getFollowersQuery($query);
-
         if ($withNotification) {
-            $query->andWhere('user_follow.send_notifications=1');
+            $query = $this->getFollowersWithNotificationQuery();
+        } else {
+            $query = $this->getFollowersQuery();
         }
 
         if ($returnQuery) {
@@ -211,18 +207,16 @@ class Followable extends Behavior
     /**
      * Get a query of objects which the owner object follows
      *
-     * @param ActiveQueryUser $query e.g. for limit the result
      * @return ActiveQueryUser
      */
-    public function getFollowingQuery($query = null)
+    public function getFollowingQuery()
     {
-        if ($query === null) {
-            $query = User::find();
-        }
-
-        return $query->visible()
-            ->leftJoin('user_follow', 'user.id=user_follow.object_id AND user_follow.object_model=:object_model', ['object_model' => get_class($this->owner)])
-            ->andWhere(['user_follow.user_id' => $this->owner->id]);
+        return User::find()
+            ->leftJoin('user_follow', 'user.id=user_follow.object_id AND user_follow.object_model=:object_model', [
+                ':object_model' => get_class($this->owner)
+            ])
+            ->where(['user_follow.user_id' => $this->owner->id])
+            ->visible();
     }
 
     /**
@@ -250,7 +244,7 @@ class Followable extends Behavior
      */
     public function getFollowingObjects($query)
     {
-        return $this->getFollowingQuery($query)->all();
+        return $this->getFollowingQuery()->all();
     }
 
 }
