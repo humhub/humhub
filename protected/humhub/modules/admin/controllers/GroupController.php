@@ -304,7 +304,7 @@ class GroupController extends Controller
      * @param Group $group
      * @return string|bool Error message if the Group cannot be deleted, false - if no restrictions to delete the Group
      */
-    protected function getGroupDeleteRestriction($group)
+    private function getGroupDeleteRestriction($group)
     {
         if ($group->is_admin_group) {
             return Yii::t('AdminModule.user', 'Administrator group could not be deleted!');
