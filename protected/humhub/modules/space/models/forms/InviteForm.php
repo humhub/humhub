@@ -116,7 +116,30 @@ class InviteForm extends Model
      */
     public function isQueuedJob()
     {
-        return ($this->withoutInvite || $this->allRegisteredUsers) && Yii::$app->user->can(ManageUsers::class);
+		// Pre-check if adding without invite / adding all members was requested
+		if (!($this->withoutInvite || $this->allRegisteredUsers)) {
+			return false;
+		}
+
+		// If user has permission to manage users, this action is allowed
+		if (Yii::$app->user->can(ManageUsers::class)) {
+			return true;
+		}
+
+		// Allow users to perform this action if this is allowed by config file
+		// Pre-check if user is member of the space in question
+		if (Yii::$app->getModule('space')->membersCanAddWithoutInvite === true) {
+			$membership = Membership::findOne([
+				'space_id' => $this->space->id,
+				'user_id' => Yii::$app->user->identity->id,
+			]);
+
+			if ($membership && $membership->status == Membership::STATUS_MEMBER) {
+				return true;
+			}
+		}
+
+        return false;
     }
 
     public function forceInvite() {
@@ -189,7 +212,10 @@ class InviteForm extends Model
                     continue;
                 }
 
-                $membership = Membership::findOne(['space_id' => $this->space->id, 'user_id' => $user->id]);
+                $membership = Membership::findOne([
+					'space_id' => $this->space->id,
+					'user_id' => $user->id,
+				]);
 
                 if ($membership && $membership->status == Membership::STATUS_MEMBER) {
                     $this->addError(
