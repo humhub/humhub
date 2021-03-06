@@ -114,7 +114,8 @@ class InviteForm extends Model
     /**
      * @return bool checks if user is allowed to add without invite
      */
-    public function isQueuedJob() {
+    public function isQueuedJob()
+    {
         // Pre-check if adding without invite / adding all members was requested
         if (!($this->withoutInvite || $this->allRegisteredUsers)) {
             return false;
@@ -141,7 +142,8 @@ class InviteForm extends Model
         return false;
     }
 
-    public function forceInvite() {
+    public function forceInvite()
+    {
         Yii::$app->queue->push(new AddUsersToSpaceJob([
             'originatorId' => Yii::$app->user->identity->id,
             'forceMembership' => $this->withoutInvite,
@@ -156,7 +158,8 @@ class InviteForm extends Model
      *
      * @throws \yii\base\Exception
      */
-    public function inviteMembers() {
+    public function inviteMembers()
+    {
         foreach ($this->getInvites() as $user) {
             $this->space->inviteMember($user->id, Yii::$app->user->id);
         }
