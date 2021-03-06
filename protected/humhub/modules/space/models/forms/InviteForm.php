@@ -112,32 +112,31 @@ class InviteForm extends Model
     }
 
     /**
-     * @return bool checks if
+     * @return bool checks if user is allowed to add without invite
      */
-    public function isQueuedJob()
-    {
-		// Pre-check if adding without invite / adding all members was requested
-		if (!($this->withoutInvite || $this->allRegisteredUsers)) {
-			return false;
-		}
+    public function isQueuedJob() {
+        // Pre-check if adding without invite / adding all members was requested
+        if (!($this->withoutInvite || $this->allRegisteredUsers)) {
+            return false;
+        }
 
-		// If user has permission to manage users, this action is allowed
-		if (Yii::$app->user->can(ManageUsers::class)) {
-			return true;
-		}
+        // If user has permission to manage users, this action is allowed
+        if (Yii::$app->user->can(ManageUsers::class)) {
+            return true;
+        }
 
-		// Allow users to perform this action if this is allowed by config file
-		// Pre-check if user is member of the space in question
-		if (Yii::$app->getModule('space')->membersCanAddWithoutInvite === true) {
-			$membership = Membership::findOne([
-				'space_id' => $this->space->id,
-				'user_id' => Yii::$app->user->identity->id,
-			]);
+        // Allow users to perform this action if this is allowed by config file
+        // Pre-check if user is member of the space in question
+        if (Yii::$app->getModule('space')->membersCanAddWithoutInvite === true) {
+            $membership = Membership::findOne([
+                'space_id' => $this->space->id,
+                'user_id' => Yii::$app->user->identity->id,
+            ]);
 
-			if ($membership && $membership->status == Membership::STATUS_MEMBER) {
-				return true;
-			}
-		}
+            if ($membership && $membership->status == Membership::STATUS_MEMBER) {
+                return true;
+            }
+        }
 
         return false;
     }
@@ -213,9 +212,9 @@ class InviteForm extends Model
                 }
 
                 $membership = Membership::findOne([
-					'space_id' => $this->space->id,
-					'user_id' => $user->id,
-				]);
+                    'space_id' => $this->space->id,
+                    'user_id' => $user->id,
+                ]);
 
                 if ($membership && $membership->status == Membership::STATUS_MEMBER) {
                     $this->addError(
