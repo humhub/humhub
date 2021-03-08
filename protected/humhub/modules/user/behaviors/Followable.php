@@ -27,12 +27,6 @@ class Followable extends Behavior
 
     private $_followerCache = [];
 
-    public function beforeDelete($event)
-    {
-        UserFollow::model()->deleteAllByAttributes(['object_model' => get_class($this->getOwner()), 'object_id' => $this->getOwner()->getPrimaryKey()]);
-        return parent::beforeValidate($event);
-    }
-
     /**
      * Return the follow record based on the owner record and the given user id
      *
