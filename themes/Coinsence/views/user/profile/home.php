@@ -42,9 +42,13 @@ use humhub\modules\tasks\widgets\MyTasksUser;
 <?php if (!Yii::$app->user->isGuest) : ?>
     <?= Form::widget(['contentContainer' =>  $user]) ?> 
 <?php endif; ?>
-<div class="recentPosts">
-    <h2><?= Yii::t('UserModule.views_profile_home', 'Recent posts'); ?></h2>
-    <?= StreamViewer::widget(['contentContainer' => $user]); ?>
+<div class="recentPosts panel panel-default">
+    <div class="panel-heading">
+        <?= Yii::t('UserModule.views_profile_home', '<strong>Recent</strong> posts'); ?>
+    </div>
+    <div class="panel-body">
+        <?= StreamViewer::widget(['contentContainer' => $user]); ?>
+    </div>
 </div>
 
 <?//= \humhub\widgets\LoaderWidget::widget() ?>
