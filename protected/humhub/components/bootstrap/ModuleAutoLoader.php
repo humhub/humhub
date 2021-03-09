@@ -86,6 +86,23 @@ class ModuleAutoLoader implements BootstrapInterface
             }
         }
 
+        // Overwrite module paths from config
+        foreach (Yii::$app->moduleManager->overwriteModuleBasePath as $overwriteModuleId => $overwriteModulePath) {
+            if (isset($moduleIdFolders[$overwriteModuleId]) && $moduleIdFolders[$overwriteModuleId] != $overwriteModulePath) {
+                try {
+                    $moduleConfig = require $overwriteModulePath . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
+                    Yii::info('Overwrite path of the module "' . $overwriteModuleId . '" to the folder "' . $overwriteModulePath . '"');
+                    // Remove original config
+                    unset($modules[$moduleIdFolders[$overwriteModuleId]]);
+                    // Use config from the overwritten path
+                    $modules[$overwriteModulePath] = $moduleConfig;
+                    $moduleIdFolders[$overwriteModuleId] = $overwriteModulePath;
+                } catch (\Throwable $e) {
+                    Yii::error($e);
+                }
+            }
+        }
+
         return $modules;
     }
 

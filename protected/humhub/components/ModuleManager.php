@@ -81,6 +81,14 @@ class ModuleManager extends Component
     protected $coreModules = [];
 
     /**
+     * List of module paths that should be overwritten
+     * Key - module id, Value - absolute path to module folder
+     *
+     * @var array
+     */
+    public $overwriteModuleBasePath = [];
+
+    /**
      * Module Manager init
      *
      * Loads all enabled moduleId's from database
