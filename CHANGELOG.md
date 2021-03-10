@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #4940: Typo in German translation "Benachrichtigungen"
 - Fix #4942: MemberOf Display in LDAP CLI Show User Details
 - Fix #4465: LDAP PHP 8 incompatibility (multiPageSearch)
+- Enh #4569: Config to overwrite module path
 - Fix #4946: Fix migration of the default permissions
 - Fix #4955: Fix convert emoji with sign "+"
 - Fix #4956: Fix file hash column length
