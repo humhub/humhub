@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #4940: Typo in German translation "Benachrichtigungen"
 - Fix #4942: MemberOf Display in LDAP CLI Show User Details
 - Fix #4465: LDAP PHP 8 incompatibility (multiPageSearch)
+- Fix #4946: Fix migration of the default permissions
 
 
 1.8.0 (March 1, 2021)
