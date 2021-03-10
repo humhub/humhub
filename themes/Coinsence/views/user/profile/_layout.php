@@ -7,8 +7,6 @@ $user = $this->context->contentContainer;
 
 // test begin
 use humhub\modules\user\widgets\ProfileHeader;
-use humhub\modules\xcoin\widgets\ProjectPortfolio;
-use humhub\modules\xcoin\widgets\MarketPlacePortfolio;
 use humhub\modules\user\widgets\ProfileMenu;
 use humhub\modules\xcoin\assets\Assets;
 use humhub\modules\xcoin\models\Challenge;
@@ -18,8 +16,6 @@ use \humhub\modules\xcoin\models\Funding;
 use \yii\helpers\Html;
 use \yii\helpers\Url;
 use humhub\modules\xcoin\models\Product;
-use humhub\modules\activity\widgets\ActivityStreamViewer;
-use humhub\modules\xcoin\widgets\MyRecentActivities;
 use humhub\modules\post\widgets\Form;
 use humhub\modules\stream\widgets\StreamViewer;
 Assets::register($this);
