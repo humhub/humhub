@@ -77,6 +77,7 @@
         "codeception/codeception": "^4.0",
         "codeception/module-asserts": "^1.0",
         "codeception/module-filesystem": "^1.0",
+        "codeception/module-rest": "^1.2",
         "codeception/module-webdriver": "^1.1",
         "codeception/module-yii2": "^1.0",
         "codeception/specify": "^1.0",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "11c96d6ac2179c290c81f666f319ac5f",
+    "content-hash": "8ce4dc3e98c455997a22f12c165d2cd9",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -7861,6 +7861,60 @@
             "time": "2020-10-24T14:46:40+00:00"
         },
         {
+            "name": "codeception/module-rest",
+            "version": "1.2.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Codeception/module-rest.git",
+                "reference": "4c8c6bd75f67a25ff91bdce0d6c135c5e7aa5e10"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Codeception/module-rest/zipball/4c8c6bd75f67a25ff91bdce0d6c135c5e7aa5e10",
+                "reference": "4c8c6bd75f67a25ff91bdce0d6c135c5e7aa5e10",
+                "shasum": ""
+            },
+            "require": {
+                "codeception/codeception": "^4.0",
+                "justinrainbow/json-schema": "~5.2.9",
+                "php": ">=5.6.0 <9.0",
+                "softcreatr/jsonpath": "^0.5 || ^0.7"
+            },
+            "require-dev": {
+                "codeception/lib-innerbrowser": "^1.0",
+                "codeception/util-universalframework": "^1.0"
+            },
+            "suggest": {
+                "aws/aws-sdk-php": "For using AWS Auth"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gintautas Miselis"
+                }
+            ],
+            "description": "REST module for Codeception",
+            "homepage": "http://codeception.com/",
+            "keywords": [
+                "codeception",
+                "rest"
+            ],
+            "support": {
+                "issues": "https://github.com/Codeception/module-rest/issues",
+                "source": "https://github.com/Codeception/module-rest/tree/1.2.8"
+            },
+            "time": "2021-03-02T06:47:59+00:00"
+        },
+        {
             "name": "codeception/module-webdriver",
             "version": "1.2.0",
             "source": {
@@ -8187,6 +8241,76 @@
             "time": "2020-09-30T07:37:11+00:00"
         },
         {
+            "name": "justinrainbow/json-schema",
+            "version": "5.2.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/justinrainbow/json-schema.git",
+                "reference": "2ba9c8c862ecd5510ed16c6340aa9f6eadb4f31b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/2ba9c8c862ecd5510ed16c6340aa9f6eadb4f31b",
+                "reference": "2ba9c8c862ecd5510ed16c6340aa9f6eadb4f31b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "~2.2.20||~2.15.1",
+                "json-schema/json-schema-test-suite": "1.2.0",
+                "phpunit/phpunit": "^4.8.35"
+            },
+            "bin": [
+                "bin/validate-json"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JsonSchema\\": "src/JsonSchema/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bruno Prieto Reis",
+                    "email": "bruno.p.reis@gmail.com"
+                },
+                {
+                    "name": "Justin Rainbow",
+                    "email": "justin.rainbow@gmail.com"
+                },
+                {
+                    "name": "Igor Wiedler",
+                    "email": "igor@wiedler.ch"
+                },
+                {
+                    "name": "Robert Schönthal",
+                    "email": "seroscho@googlemail.com"
+                }
+            ],
+            "description": "A library to validate a json schema.",
+            "homepage": "https://github.com/justinrainbow/json-schema",
+            "keywords": [
+                "json",
+                "schema"
+            ],
+            "support": {
+                "issues": "https://github.com/justinrainbow/json-schema/issues",
+                "source": "https://github.com/justinrainbow/json-schema/tree/5.2.10"
+            },
+            "time": "2020-05-27T16:41:55+00:00"
+        },
+        {
             "name": "opis/closure",
             "version": "3.6.1",
             "source": {
@@ -8468,6 +8592,74 @@
                 "source": "https://github.com/ralouphie/getallheaders/tree/develop"
             },
             "time": "2019-03-08T08:55:37+00:00"
+        },
+        {
+            "name": "softcreatr/jsonpath",
+            "version": "0.7.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SoftCreatR/JSONPath.git",
+                "reference": "e3ae75112a5247e3b27a7e0e72155eae261d8c72"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SoftCreatR/JSONPath/zipball/e3ae75112a5247e3b27a7e0e72155eae261d8c72",
+                "reference": "e3ae75112a5247e3b27a7e0e72155eae261d8c72",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=7.1"
+            },
+            "conflict": {
+                "phpunit/phpunit": "<7.0 || >= 10.0"
+            },
+            "replace": {
+                "flow/jsonpath": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=7.0",
+                "roave/security-advisories": "dev-master",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Flow\\JSONPath\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stephen Frank",
+                    "email": "stephen@flowsa.com",
+                    "homepage": "https://prismaticbytes.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sascha Greuel",
+                    "email": "hello@1-2.dev",
+                    "homepage": "http://1-2.dev",
+                    "role": "Developer"
+                }
+            ],
+            "description": "JSONPath implementation for parsing, searching and flattening arrays",
+            "support": {
+                "email": "hello@1-2.dev",
+                "forum": "https://github.com/SoftCreatR/JSONPath/discussions",
+                "issues": "https://github.com/SoftCreatR/JSONPath/issues",
+                "source": "https://github.com/SoftCreatR/JSONPath"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/softcreatr",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-03-08T14:18:21+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
