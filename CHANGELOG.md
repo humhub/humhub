@@ -1,6 +1,12 @@
 HumHub Changelog
 ================
 
+1.8.2 (Unreleased)
+-------------------
+
+- Fix #4959: Horizontal scrollbar for images
+
+
 1.8.1 (March 12, 2021)
 ----------------------
 
