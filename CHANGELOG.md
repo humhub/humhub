@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.8.1 (Unreleased)
----------------------
+1.8.1 (March 12, 2021)
+----------------------
 
 - Fix #4931: Fix highlight parent navigations for sub section "Profile Permissions" (and LDAP)
 - Fix #4934: Show error instead of warning when using different MySQL Table Engines
