@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\rest\Module;
+use Codeception\Util\HttpCode;
 
 /**
  * Inherited Methods
@@ -21,35 +21,49 @@ class ApiTester extends \Codeception\Actor
 {
     use _generated\ApiTesterActions;
 
-    public function isRestModuleEnabled(): bool
-    {
-        $restModuleId = 'rest';
-
-        /* @var Module $module */
-        $module = Yii::$app->getModule($restModuleId);
-        if (!$module) {
-            return false;
-        }
-
-        Yii::$app->moduleManager->enableModules([$restModuleId]);
-        $enabledModules = Yii::$app->moduleManager->getEnabledModules();
-        if (!isset($enabledModules[$restModuleId])) {
-            return false;
-        }
-
-        $module->settings->set('enabledForAllUsers', true);
-        $module->settings->set('enableBasicAuth', true);
-
-        return true;
-    }
-
     public function amAdmin()
     {
         $this->amUser('Admin', 'test');
     }
 
+    public function amUser1()
+    {
+        $this->amUser('User1', '123qwe');
+    }
+
+    public function amUser2()
+    {
+        $this->amUser('User2', '123qwe');
+    }
+
+    public function amUser3()
+    {
+        $this->amUser('User3', '123qwe');
+    }
+
     public function amUser($user = null, $password = null)
     {
         $this->amHttpAuthenticated($user, $password);
+    }
+
+    public function seeSuccessResponseContainsJson($json = [])
+    {
+        $this->seeResponseCodeIs(HttpCode::OK);
+        $this->seeResponseIsJson();
+        $this->seeResponseContainsJson($json);
+    }
+
+    public function seeForbiddenResponseContainsJson($json = [])
+    {
+        $this->seeResponseCodeIs(HttpCode::FORBIDDEN);
+        $this->seeResponseIsJson();
+        $this->seeResponseContainsJson($json);
+    }
+
+    public function seeBadResponseContainsJson($json = [])
+    {
+        $this->seeResponseCodeIs(HttpCode::BAD_REQUEST);
+        $this->seeResponseIsJson();
+        $this->seeResponseContainsJson($json);
     }
 }
