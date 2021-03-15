@@ -9,6 +9,7 @@ modules:
     enabled:
         - REST
         - Yii2
+        - tests\codeception\_support\DynamicFixtureHelper
     config:
         REST:
             url: 'http://localhost:8080/api/v1/'
