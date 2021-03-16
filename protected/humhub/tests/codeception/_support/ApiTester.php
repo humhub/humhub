@@ -1,6 +1,8 @@
 <?php
 
 use Codeception\Util\HttpCode;
+use humhub\modules\rest\definitions\UserDefinitions;
+use humhub\modules\user\models\User;
 use yii\data\Pagination;
 use yii\web\Link;
 
@@ -177,5 +179,28 @@ class ApiTester extends \Codeception\Actor
     protected function getPaginationUrl($url, $page = 1)
     {
         return '/api/v1/' . trim($url, '/') . '?page=' . (empty($page) ? 1 : $page) . '&per-page=100';
+    }
+
+    /**
+     * Get users definitions by usernames or ids
+     *
+     * @param array $users Usernames or Ids
+     * @return array
+     */
+    public function seeUserDefinitions($users)
+    {
+        $userDefinitions = [];
+
+        foreach ($users as $userIdOrUsername) {
+            $user = User::find()
+                ->where(['id' => $userIdOrUsername])
+                ->orWhere(['username' => $userIdOrUsername])
+                ->one();
+            if ($user) {
+                $userDefinitions[] = UserDefinitions::getUser($user);
+            }
+        }
+
+        $this->seeSuccessResponseContainsJson($userDefinitions);
     }
 }
