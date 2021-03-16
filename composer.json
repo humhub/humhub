@@ -4,7 +4,7 @@
     "keywords": ["humhub", "yii2", "framework"],
     "homepage": "https://www.humhub.org/",
     "type": "project",
-    "license": "AGPL-3.0",
+    "license": "AGPL-3.0-only",
     "support": {
         "issues": "https://github.com/humhub/humhub/issues?state=open",
         "forum": "https://community.humhub.com",
