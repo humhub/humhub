@@ -111,16 +111,15 @@ class ApiTester extends \Codeception\Actor
     }
 
     /**
-     * Send POST API Request and check a response contains the results
+     * Send DELETE API Request and check a response contains the results
      *
      * @param string $url
-     * @param array $deleteData
      * @param array $jsonResults
      * @param array $paginationParams
      */
-    public function seePaginationDeleteResponse($url, $deleteData, $jsonResults = [], $paginationParams = [])
+    public function seePaginationDeleteResponse($url, $jsonResults = [], $paginationParams = [])
     {
-        $this->sendPost($url, $deleteData);
+        $this->sendDelete($url);
         $this->seePaginationResponseContainsJson($url, $jsonResults, $paginationParams);
     }
 
