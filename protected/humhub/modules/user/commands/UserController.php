@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\commands;
 
+use humhub\modules\admin\models\forms\UserDeleteForm;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use humhub\modules\user\models\User;
@@ -72,10 +73,8 @@ class UserController extends Controller
      */
     public function actionSetPassword(string $username, string $password)
     {
-        /** @var User $user */
-        $user = User::find()->where(['username' => $username])->one();
-        if ($user === null) {
-            $this->stderr("Could not find user!\n\n");
+        $user = $this->getUser($username);
+        if (!$user) {
             return ExitCode::UNSPECIFIED_ERROR;
         }
 
@@ -93,10 +92,8 @@ class UserController extends Controller
      */
     public function actionMakeAdmin(string $username)
     {
-        /** @var User $user */
-        $user = User::find()->where(['username' => $username])->one();
-        if ($user === null) {
-            $this->stderr("Could not find user!\n\n");
+        $user = $this->getUser($username);
+        if (!$user) {
             return ExitCode::UNSPECIFIED_ERROR;
         }
 
@@ -104,6 +101,43 @@ class UserController extends Controller
 
         $this->stdout("User with ID " . $user->id . " successfully added to the administrator group!\n\n");
         return ExitCode::OK;
+    }
+
+    /**
+     * Delete a user account.
+     */
+    public function actionDelete(string $username)
+    {
+        $user = $this->getUser($username);
+        if (!$user) {
+            return ExitCode::UNSPECIFIED_ERROR;
+        }
+
+        if ($user->isSystemAdmin()) {
+            $this->stderr("Could not delete administrators!\n\n");
+            return ExitCode::UNSPECIFIED_ERROR;
+        }
+
+        $model = new UserDeleteForm(['user' => $user]);
+        if (!$model->performDelete()) {
+            $this->stderr("Could not delete user!\n\n");
+            return ExitCode::UNSPECIFIED_ERROR;
+        }
+
+        $this->stdout("User with ID " . $user->id . " deletion process queued!\n\n");
+        return ExitCode::OK;
+    }
+
+    private function getUser(string $username)
+    {
+        /** @var User $user */
+        $user = User::find()->where(['username' => $username])->one();
+        if ($user === null) {
+            $this->stderr("Could not find user!\n\n");
+            return false;
+        }
+
+        return $user;
     }
 }
 
