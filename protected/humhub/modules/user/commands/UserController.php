@@ -132,11 +132,6 @@ class UserController extends Controller
             return ExitCode::UNSPECIFIED_ERROR;
         }
 
-        if ($user->isSystemAdmin()) {
-            $this->stderr("Could not delete administrators!\n\n");
-            return ExitCode::UNSPECIFIED_ERROR;
-        }
-
         $model = new UserDeleteForm(['user' => $user]);
 
         if ($this->full) {
@@ -147,7 +142,7 @@ class UserController extends Controller
                 // Delete all spaces which are owned by the user
                 $model->deleteSpaces = true;
             } elseif (count(MembershipHelper::getOwnSpaces($user)) !== 0) {
-                $this->stderr("Could not delete user with own spaces!\n\n");
+                $this->stderr("Could not delete user which is owner of Spaces! (Use --force option to delete its space as well.)\n\n");
                 return ExitCode::UNSPECIFIED_ERROR;
             }
         }
