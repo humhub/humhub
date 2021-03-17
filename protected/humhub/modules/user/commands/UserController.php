@@ -9,6 +9,7 @@
 namespace humhub\modules\user\commands;
 
 use humhub\modules\admin\models\forms\UserDeleteForm;
+use humhub\modules\space\helpers\MembershipHelper;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use humhub\modules\user\models\User;
@@ -31,6 +32,24 @@ use humhub\modules\user\models\Group;
  */
 class UserController extends Controller
 {
+    /**
+     * @var boolean True - Hard Delete, error if Space Owner
+     */
+    public $full;
+
+    /**
+     * @var boolean True - Hard Delete including owned Spaces
+     */
+    public $force;
+
+    public function options($actionID)
+    {
+        if ($actionID == 'delete') {
+            return ['full', 'force'];
+        }
+
+        return [];
+    }
 
     /**
      * Creates a new user account.
@@ -119,6 +138,20 @@ class UserController extends Controller
         }
 
         $model = new UserDeleteForm(['user' => $user]);
+
+        if ($this->full) {
+            // Delete all contributions of the user
+            $model->deleteContributions = true;
+
+            if ($this->force) {
+                // Delete all spaces which are owned by the user
+                $model->deleteSpaces = true;
+            } elseif (count(MembershipHelper::getOwnSpaces($user)) !== 0) {
+                $this->stderr("Could not delete user with own spaces!\n\n");
+                return ExitCode::UNSPECIFIED_ERROR;
+            }
+        }
+
         if (!$model->performDelete()) {
             $this->stderr("Could not delete user!\n\n");
             return ExitCode::UNSPECIFIED_ERROR;
