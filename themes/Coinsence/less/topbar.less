@@ -78,6 +78,34 @@
       }
     }
   }
+
+  // space-menu
+
+  .space-menu {
+    display: none;
+    float: left;
+    & > li {
+      margin: 16px auto;
+    }
+    & > li > a {
+      font-size: 24px;
+      color: #1d1d1d;
+    }
+    & > li > ul > li > a {
+      border-left: 3px solid #fff;
+      background-color: #fff;
+      color: @text-color-highlight;
+    }
+    & > li > ul > li > a:hover,
+    & > li > ul > li > a.active {
+      border-left: 3px solid @info;
+      background-color: @background-color-secondary;
+      color: @text-color-highlight;
+    }
+    & .dropdown-menu {
+      min-width: 250px;
+    }
+  }
   .topbar-brand {
     position: relative;
     z-index: 2;
@@ -176,6 +204,7 @@
     }
   }
   .spaces {
+    float: left;
     .btn-group {
       position: relative;
       text-align: left;
@@ -187,7 +216,7 @@
       & > a {
         font-size: 16px;
         padding: 4px 8px;
-        margin: 11px 2px;
+        margin: 11px 6px;
         display: inline-block;
         border-radius: 2px;
         text-decoration: none;
@@ -195,6 +224,12 @@
 
         .no-space {
           margin: 7px auto;
+        }
+        span {
+          font-weight: bold;
+          margin-left: 8px;
+          margin-right: 4px;
+          color: #555;
         }
       }
 
@@ -208,6 +243,12 @@
   }
   .search-xs {
     margin: 22px 0;
+  }
+  .home {
+    display: inline-block;
+    font-size: 20px;
+    padding: 2px 4px;
+    margin: 17px 2px;
   }
   .topbar-coins {
     .amount {
@@ -229,7 +270,7 @@
   .dropdown-footer {
     margin: 10px 10px 5px;
   }
-  a {
+  .account a {
     color: @topbar-color-link-base;
   }
   .caret {
@@ -296,8 +337,6 @@
   // Space dropdown menu
   #space-menu-dropdown,
   #search-menu-dropdown {
-    left: auto;
-    right: 0;
     width: 400px;
     .media-list {
       max-height: 400px;
@@ -322,26 +361,6 @@
       display: none;
       cursor: pointer;
     }
-  }
-
-  // topbar-menu responsive
-
-  .topbar-menu > li {
-    margin: 16px auto;
-  }
-  .topbar-menu > li > a {
-    font-size: 24px;
-    color: #1d1d1d;
-  }
-  .topbar-menu > li > ul > li > a {
-    border-left: 3px solid #fff;
-    background-color: #fff;
-    color: @text-color-highlight;
-  }
-  .topbar-menu > li > ul > li > a:hover, .topbar-menu > li > ul > li > a.active {
-    border-left: 3px solid @info;
-    background-color: @background-color-secondary;
-    color: @text-color-highlight;
   }
 }
 
