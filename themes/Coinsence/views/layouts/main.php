@@ -63,7 +63,7 @@ use humhub\modules\space\models\Space; ?>
                 <div class="home pull-right hidden-xs">
                     <?= \yii\helpers\Html::a(
                         '<i class="fa fa-home"></i>',
-                        ['/']) ?>
+                        ['/home']) ?>
                 </div>
 
             </div>
