@@ -55,15 +55,11 @@ use humhub\modules\space\models\Space; ?>
                 </div>
 
                 <div class="search pull-right hidden-xs">
-                    <?= \yii\helpers\Html::a(
-                        '<i class="fa fa-search"></i>',
-                        ['/search']) ?>
+                    <?= \yii\helpers\Html::a('<i class="fa fa-search"></i>', ['/search']) ?>
                 </div>
 
                 <div class="home pull-right hidden-xs">
-                    <?= \yii\helpers\Html::a(
-                        '<i class="fa fa-home"></i>',
-                        ['/home']) ?>
+                    <?= \yii\helpers\Html::a('<i class="fa fa-home"></i>', ['/home']) ?>
                 </div>
 
             </div>
@@ -133,7 +129,6 @@ use humhub\modules\space\models\Space; ?>
                         $('#topbar-first .space-menu').show();
                     }
                     space.init = function() {
-                        console.log('humhub:modules:space:init');
                         if(!space.isSpacePage()) {
                             space.options = undefined;
                             $('#topbar-first .space-menu').hide();
