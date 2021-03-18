@@ -52,6 +52,11 @@ class AuthController extends Controller
     /**
      * @inheritdoc
      */
+    protected $doNotInterceptActionIds = ['*'];
+
+    /**
+     * @inheritdoc
+     */
     public function actions()
     {
         return [

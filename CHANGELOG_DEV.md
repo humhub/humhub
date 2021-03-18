@@ -6,4 +6,5 @@
 - Fix #4877: Check for writable uploads/profile_image directory
 - Enh #4868: Reset email summaries / notifications settings for all users
 - Enh #4884: New Space module setting to allow all users to add users without invite
+- Enh #4890: Allow to define actions in a controller which should not be intercepted by other actions
 
