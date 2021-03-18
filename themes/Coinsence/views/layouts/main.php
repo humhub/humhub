@@ -4,9 +4,9 @@
 
 \humhub\assets\AppAsset::register($this);
 
-use yii\bootstrap\ActiveForm;
-use yii\helpers\Html;
-use yii\helpers\Url; ?>
+use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\space\models\Space; ?>
+
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
@@ -24,12 +24,22 @@ use yii\helpers\Url; ?>
         <div id="topbar-first" class="topbar">
             <div class="container">
 
-                <div class="topbar-menu visible-xs-inline-block visible-sm-inline-block pull-left">
-                    <?= \humhub\widgets\TopMenu::widget(); ?>
+                <div class="space-menu">
+                    <li class="dropdown">
+                        <a href="#" id="top-dropdown-menu" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-align-justify"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <?php if (Yii::$app->controller instanceof ContentContainerController && Yii::$app->controller->contentContainer instanceof Space) : ?>
+                                <?= \humhub\modules\space\widgets\Menu::widget() ?>
+                            <?php endif; ?>
+                        </ul>
+                    </li>
                 </div>
 
-                <div class="topbar-brand">
-                    <?= \humhub\widgets\SiteLogo::widget(); ?>
+                <div class="spaces hidden-xs">
+                    <!-- load space chooser widget -->
+                    <?= \humhub\modules\space\widgets\Chooser::widget(); ?>
                 </div>
 
                 <div class="topbar-coins pull-right">
@@ -44,31 +54,18 @@ use yii\helpers\Url; ?>
                     <?= \humhub\widgets\NotificationArea::widget(); ?>
                 </div>
 
-                <div class="spaces pull-right hidden-xs">
-                    <!-- load space chooser widget -->
-                    <?= \humhub\modules\space\widgets\Chooser::widget(); ?>
+                <div class="search pull-right hidden-xs">
+                    <?= \yii\helpers\Html::a('<i class="fa fa-search"></i>', ['/search']) ?>
                 </div>
 
-                <div class="search pull-right hidden-xs">
-                    <?= \yii\helpers\Html::a(
-                        '<i class="fa fa-search"></i>',
-                        ['/search']) ?>
+                <div class="home pull-right hidden-xs">
+                    <?= \yii\helpers\Html::a('<i class="fa fa-home"></i>', ['/home']) ?>
                 </div>
 
             </div>
         </div>
         <!-- end: first top navigation bar -->
 
-        <!-- start: second top navigation bar -->
-        <div id="topbar-second" class="topbar visible-md visible-lg">
-            <div class="container">
-                <ul class="nav" id="top-menu-nav">
-                    <!-- load navigation from widget -->
-                    <?= \humhub\widgets\TopMenu::widget(); ?>
-                </ul>
-            </div>
-        </div>
-        <!-- end: second top navigation bar -->
         <div id="bottombar" class="bottombar visible-xs">
             <div class="container links">
                 <?= \yii\helpers\Html::a(
@@ -124,6 +121,35 @@ use yii\helpers\Url; ?>
                     }
                 })
             });
+            if (humhub.modules.event) {
+                const event = humhub.modules.event;
+                event.on('humhub:modules:space:afterInit', function(evt, space) {
+                    
+                    if (space.isSpacePage()) {
+                        $('#topbar-first .space-menu').show();
+                    }
+                    space.init = function() {
+                        if(!space.isSpacePage()) {
+                            space.options = undefined;
+                            $('#topbar-first .space-menu').hide();
+                        } else {
+                            const nav = $('.space-content .layout-nav-container').html();
+                            $('#topbar-first .space-menu .dropdown-menu').html(nav);
+                            $('#topbar-first .space-menu').show();
+                            $('#topbar-first .space-menu .list-group-item').removeClass('active');
+                            if (
+                                window.location.pathname.includes('/space/space/home') ||
+                                window.location.pathname.includes('/xcoin/')
+                            ) {
+                                $('#topbar-first .space-menu .list-group-item[href="' + window.location.pathname + '"]').removeClass('active').addClass('active');
+                            } else {
+                                $('#topbar-first .space-menu .list-group-item[href*="/space/space/home"]').removeClass('active').addClass('active');
+                            }
+                        }
+                    };
+                });
+            }
+
         </script>
 
         <?= $content; ?>

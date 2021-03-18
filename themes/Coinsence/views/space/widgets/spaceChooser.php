@@ -36,6 +36,7 @@ $this->registerJsConfig('space.chooser', [
                 ]
             ]);
             ?>
+            <span><?= $currentSpace->name ?></span>
             <b class="caret"></b>
         <?php endif; ?>
 
@@ -95,4 +96,24 @@ $this->registerJsConfig('space.chooser', [
         </li>
 
     </ul>
+    <script>
+        if (humhub.modules.event) {
+            const event = humhub.modules.event;
+            event.on('humhub:modules:space:chooser:afterInit', function(evt, spaceChooser) {
+                console.log('humhub:modules:space:chooser:afterInit');
+                /**
+                 * Changes the space chooser icon, for the given space options.
+                 * 
+                 * @param {type} spaceOptions
+                 * @returns {undefined}
+                 */
+                spaceChooser.SpaceChooser.prototype.setSpace = function (space) {
+                    this.setSpaceMessageCount(space, 0);
+                    this._changeMenuButton(space.image + '<span>' + space.name + '</span>' + ' <b class="caret"></b>');
+                };
+                
+            });
+        }
+    </script>
 </li>
+

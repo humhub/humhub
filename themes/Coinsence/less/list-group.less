@@ -27,29 +27,3 @@ a.list-group-item.active:focus {
   background-color: @list-group-color-background;
   border-left: 5px solid @list-group-color-border-left !important;
 }
-
-@media (max-width: 991px) {
-  .list-group {
-    display: inline;
-  }
-
-  .list-group-item {
-    display: inline-block !important;
-    border-radius: 3px !important;
-    margin: 4px 0;
-  }
-
-  .list-group-item {
-    border: solid 1px @list-group-color-responsive-non-active-border !important;
-
-  }
-
-  a.list-group-item:hover,
-  a.list-group-item.active,
-  a.list-group-item.active:hover,
-  a.list-group-item.active:focus {
-    border: solid 1px @list-group-color-responsive-active-border !important;
-    background: white !important;
-    color: @list-group-color-responsive-text !important;
-  }
-}
