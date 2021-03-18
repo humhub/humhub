@@ -35,6 +35,11 @@ class AccountController extends BaseAccountController
     /**
      * @inheritdoc
      */
+    protected $doNotInterceptActionIds = ['delete'];
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->setActionTitles([

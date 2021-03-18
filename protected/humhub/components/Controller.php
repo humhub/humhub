@@ -60,6 +60,12 @@ class Controller extends \yii\web\Controller
     protected $access = StrictAccess::class;
 
     /**
+     * @var string[] List of action ids which should not be intercepted by another actions. Use '*' for all action ids. 
+     * @since 1.9
+     */
+    protected $doNotInterceptActionIds = [];
+
+    /**
      * Returns access rules for the standard access control behavior.
      *
      * @see AccessControl
@@ -283,5 +289,31 @@ class Controller extends \yii\web\Controller
         if (Yii::$app->request->isPjax) {
             \humhub\widgets\TopMenu::setViewState();
         }
+    }
+
+    /**
+     * Check if action cannot be intercepted
+     *
+     * @since 1.9
+     * @param string|null $actionId, NULL - to use current action
+     * @return bool
+     */
+    public function isNotInterceptedAction(string $actionId = null) : bool
+    {
+        if ($actionId === null) {
+            if (isset($this->action->id)) {
+                $actionId = $this->action->id;
+            } else {
+                return false;
+            }
+        }
+
+        foreach ($this->doNotInterceptActionIds as $doNotInterceptActionId) {
+            if ($doNotInterceptActionId === '*' || $doNotInterceptActionId === $actionId) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
