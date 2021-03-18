@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\content\assets;
+namespace humhub\modules\ui\form\assets;
 
 use yii\web\AssetBundle;
 use yii\web\View;
@@ -23,7 +23,7 @@ class CodeMirrorAssetBundle extends AssetBundle
     public $defer = true;
 
     public $jsOptions = ['position' => View::POS_HEAD];
-    public $sourcePath = '@content/resources/codemirror';
+    public $sourcePath = '@ui/form/resources/codemirror';
 
     public $js = [
         'codemirror.js',
