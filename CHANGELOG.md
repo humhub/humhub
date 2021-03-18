@@ -6,6 +6,7 @@ HumHub Changelog
 
 - Fix #4959: Horizontal scrollbar for images
 - Fix #4898: No streamExcludes option when loading single stream entry
+- Enh #4960: Added “codeception/module-rest” for testing of REST API modules
 
 
 1.8.1 (March 12, 2021)
