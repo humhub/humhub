@@ -60,7 +60,7 @@ class Controller extends \yii\web\Controller
     protected $access = StrictAccess::class;
 
     /**
-     * @var string[] List of action ids which should not be intercepted by another actions
+     * @var string[] List of action ids which should not be intercepted by another actions. Use '*' for all action ids. 
      * @since 1.9
      */
     protected $doNotInterceptActionIds = [];
