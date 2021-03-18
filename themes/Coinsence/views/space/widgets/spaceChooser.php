@@ -48,31 +48,6 @@ $this->registerJsConfig('space.chooser', [
 
     <ul class="dropdown-menu" id="space-menu-dropdown">
         <li>
-            <form action="" class="dropdown-controls">
-                <div class="input-group">
-                    <input type="text" id="space-menu-search" class="form-control" autocomplete="off" 
-                           placeholder="<?= Yii::t('SpaceModule.widgets_views_spaceChooser', 'Search'); ?>"
-                           title="<?= Yii::t('SpaceModule.widgets_views_spaceChooser', 'Search for spaces'); ?>">
-                    <span id="space-directory-link" class="input-group-addon" >
-                        <a href="<?= Url::to(['/directory/directory/spaces']); ?>">
-                            <i class="fa fa-book"></i>
-                        </a>
-                    </span>
-                    <div class="search-reset" id="space-search-reset"><i class="fa fa-times-circle"></i></div>
-                </div>
-            </form>
-        </li>
-        <?php if ($canCreateSpace) : ?>
-            <li>
-                <div class="dropdown-header">
-                    <a href="#" class="btn btn-info col-md-12" data-action-click="ui.modal.load" data-action-url="<?= Url::to(['/space/create/create']) ?>">
-                        <?= Yii::t('SpaceModule.widgets_views_spaceChooser', 'Create new space') ?>
-                    </a>
-                </div>
-            </li>
-        <?php endif; ?>
-        <li class="divider"></li>
-        <li>
             <ul class="media-list notLoaded" id="space-menu-spaces">
                 <?php foreach ($memberships as $membership) : ?>
                     <?= SpaceChooserItem::widget([
