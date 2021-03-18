@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user\commands;
 
+use humhub\modules\admin\models\forms\UserDeleteForm;
+use humhub\modules\space\helpers\MembershipHelper;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use humhub\modules\user\models\User;
@@ -30,6 +32,24 @@ use humhub\modules\user\models\Group;
  */
 class UserController extends Controller
 {
+    /**
+     * @var boolean True - Hard Delete, error if Space Owner
+     */
+    public $full;
+
+    /**
+     * @var boolean True - Hard Delete including owned Spaces
+     */
+    public $force;
+
+    public function options($actionID)
+    {
+        if ($actionID == 'delete') {
+            return ['full', 'force'];
+        }
+
+        return [];
+    }
 
     /**
      * Creates a new user account.
@@ -72,10 +92,8 @@ class UserController extends Controller
      */
     public function actionSetPassword(string $username, string $password)
     {
-        /** @var User $user */
-        $user = User::find()->where(['username' => $username])->one();
-        if ($user === null) {
-            $this->stderr("Could not find user!\n\n");
+        $user = $this->getUser($username);
+        if (!$user) {
             return ExitCode::UNSPECIFIED_ERROR;
         }
 
@@ -93,10 +111,8 @@ class UserController extends Controller
      */
     public function actionMakeAdmin(string $username)
     {
-        /** @var User $user */
-        $user = User::find()->where(['username' => $username])->one();
-        if ($user === null) {
-            $this->stderr("Could not find user!\n\n");
+        $user = $this->getUser($username);
+        if (!$user) {
             return ExitCode::UNSPECIFIED_ERROR;
         }
 
@@ -104,6 +120,52 @@ class UserController extends Controller
 
         $this->stdout("User with ID " . $user->id . " successfully added to the administrator group!\n\n");
         return ExitCode::OK;
+    }
+
+    /**
+     * Delete a user account.
+     */
+    public function actionDelete(string $username)
+    {
+        $user = $this->getUser($username);
+        if (!$user) {
+            return ExitCode::UNSPECIFIED_ERROR;
+        }
+
+        $model = new UserDeleteForm(['user' => $user]);
+
+        if ($this->full) {
+            // Delete all contributions of the user
+            $model->deleteContributions = true;
+
+            if ($this->force) {
+                // Delete all spaces which are owned by the user
+                $model->deleteSpaces = true;
+            } elseif (count(MembershipHelper::getOwnSpaces($user)) !== 0) {
+                $this->stderr("Could not delete user which is owner of Spaces! (Use --force option to delete its space as well.)\n\n");
+                return ExitCode::UNSPECIFIED_ERROR;
+            }
+        }
+
+        if (!$model->performDelete()) {
+            $this->stderr("Could not delete user!\n\n");
+            return ExitCode::UNSPECIFIED_ERROR;
+        }
+
+        $this->stdout("User with ID " . $user->id . " deletion process queued!\n\n");
+        return ExitCode::OK;
+    }
+
+    private function getUser(string $username)
+    {
+        /** @var User $user */
+        $user = User::find()->where(['username' => $username])->one();
+        if ($user === null) {
+            $this->stderr("Could not find user!\n\n");
+            return false;
+        }
+
+        return $user;
     }
 }
 
