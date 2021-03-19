@@ -37,7 +37,7 @@ use humhub\modules\space\models\Space; ?>
                     </li>
                 </div>
 
-                <div class="spaces hidden-xs">
+                <div class="spaces">
                     <!-- load space chooser widget -->
                     <?= \humhub\modules\space\widgets\Chooser::widget(); ?>
                 </div>
