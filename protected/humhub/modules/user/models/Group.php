@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
@@ -349,10 +350,13 @@ class Group extends ActiveRecord
         $newGroupUser->is_group_manager = $isManager;
         if ($newGroupUser->save() && !Yii::$app->user->isGuest) {
             if ($this->notify_users) {
+                if (!($user instanceof User)) {
+                    $user = User::findOne(['id' => $user]);
+                }
                 IncludeGroupNotification::instance()
                     ->about($this)
                     ->from(Yii::$app->user->identity)
-                    ->send(User::findOne(['id' => $userId]));
+                    ->send($user);
             }
             return true;
         }
@@ -370,12 +374,21 @@ class Group extends ActiveRecord
     public function removeUser($user)
     {
         $groupUser = $this->getGroupUser($user);
-        if ($groupUser === null) {
+        if (!$groupUser) {
             return false;
         }
 
-        if ($groupUser !== false) {
-            return $groupUser->delete();
+        if ($groupUser->delete()) {
+            if ($this->notify_users) {
+                if (!($user instanceof User)) {
+                    $user = User::findOne(['id' => $user]);
+                }
+                ExcludeGroupNotification::instance()
+                    ->about($this)
+                    ->from(Yii::$app->user->identity)
+                    ->send($user);
+            }
+            return true;
         }
 
         return false;
