@@ -17,11 +17,13 @@ $space = $context->contentContainer;
 
 ?>
 <div class="container space-layout-container">
-    <div class="row">
-        <div class="col-md-12">
-            <?= Header::widget(['space' => $space]); ?>
+    <?php if ($context->module->id !== 'custom_pages'): ?>
+        <div class="row">
+            <div class="col-md-12">
+                <?= Header::widget(['space' => $space]); ?>
+            </div>
         </div>
-    </div>
+    <?php endif; ?>
     <div class="row space-content">
         <div class="col-md-2 layout-nav-container hidden">
             <?= Menu::widget(['space' => $space]); ?>
