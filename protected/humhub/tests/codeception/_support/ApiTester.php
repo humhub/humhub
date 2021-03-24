@@ -3,6 +3,7 @@
 use Codeception\Util\HttpCode;
 use humhub\modules\rest\definitions\UserDefinitions;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\tests\codeception\fixtures\SpaceFixture;
 use humhub\modules\user\models\User;
 use yii\data\Pagination;
 use yii\web\Link;
@@ -26,23 +27,24 @@ class ApiTester extends \Codeception\Actor
 {
     use _generated\ApiTesterActions;
 
-    public $spaces = [
-        '5396d499-20d6-4233-800b-c6c86e5fa34a',
-        '5396d499-20d6-4233-800b-c6c86e5fa34b',
-        '5396d499-20d6-4233-800b-c6c86e5fa34c',
-        '5396d499-20d6-4233-800b-c6c86e5fa34d',
-        '5396d499-20d6-4233-800b-c6c86e5fa34e',
-    ];
+    protected function getFixtureSpace(int $index) : Space
+    {
+        $this->haveFixtures(['space' => SpaceFixture::class]);
+        return $this->grabFixture('space', $index);
+    }
 
     public function enableModule($guid, $moduleId)
     {
         if (is_int($guid)) {
-            $guid = $this->spaces[--$guid];
+            $space = $this->getFixtureSpace(--$guid);
+        } else {
+            $space = Space::findOne(['guid' => $guid]);
         }
 
-        $space = Space::findOne(['guid' => $guid]);
-        $space->enableModule($moduleId);
-        Yii::$app->moduleManager->flushCache();
+        if ($space) {
+            $space->enableModule($moduleId);
+            Yii::$app->moduleManager->flushCache();
+        }
     }
 
     public function amAdmin()
