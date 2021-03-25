@@ -5,9 +5,9 @@ use yii\helpers\Html;
 $this->pageTitle = Yii::t('UserModule.views_auth_createAccount', 'Create Account');
 ?>
 
-<a class="brand" href="/dashboard"><img src="<?= $this->theme->getBaseUrl(); ?>/img/slogan_black.png"></a>
+<a class="brand create-account-brand" href="/dashboard"><img src="<?= $this->theme->getBaseUrl(); ?>/img/slogan_black.png"></a>
 
-<div class="content">
+<div class="content create-account">
 
     <div class="create-account-content col-xs-11 col-md-6" id="create-account-form">
 
