@@ -21,7 +21,7 @@ $this->pageTitle = Yii::t('UserModule.views_auth_createAccount', 'Create Account
     </div>
 
     <div class="labels">
-        <h6>By clicking the button, you agree to our <a href="#">Terms of services</a> and have read and acknowledge our <a href="#">Privacy Policy</a></h6>
+        <h6>By clicking the button, you agree to our <a href="/legal/page/view?pageKey=terms">Terms of services</a> and have read and acknowledge our <a href="/legal/page/view?pageKey=privacy">Privacy Policy</a></h6>
     </div>
 
 </div>
