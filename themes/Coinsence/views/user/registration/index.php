@@ -31,6 +31,9 @@ $this->pageTitle = Yii::t('UserModule.views_auth_createAccount', 'Create Account
     $(function () {
         // set cursor to login field
         $('#User_username').focus();
+
+        // check legal chekboxes
+        $('.regular-checkbox').prop('checked', true);
     });
 
     const $password_toggler = $('<img>', {class: 'toggler', src: '<?= $this->theme->getBaseUrl(); ?>/img/eye.svg'});
