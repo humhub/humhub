@@ -222,7 +222,9 @@ if ($allowModifyProfileBanner || $allowModifyProfileImage) {
         </div>
         <div class="badges col-md-4 mobileView">
             <?php foreach ($user->getTags() as $tag): ?>
-            <span> <?php echo Html::a(Html::encode($tag)); ?></span>
+                <?php if (!empty($tag)) : ?>
+                    <span> <?php echo Html::a(Html::encode($tag)); ?></span>
+                <?php endif; ?>
             <?php endforeach; ?>
 
         </div>
