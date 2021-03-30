@@ -116,7 +116,7 @@ class AccountController extends BaseAccountController
         }
         $model->timeZone = $user->time_zone;
         if ($model->timeZone == "") {
-            $model->timeZone = Yii::$app->settings->get('timeZone');
+            $model->timeZone = Yii::$app->settings->get('defaultTimeZone');
         }
 
         $model->tags = $user->tags;
