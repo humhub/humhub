@@ -436,7 +436,7 @@ abstract class Stream extends Action
     /**
      * @return bool
      */
-    public function isSingleContentRequest()
+    private function isSingleContentRequest()
     {
         if (Yii::$app->request->isConsoleRequest) {
             return false;
