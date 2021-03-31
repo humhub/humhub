@@ -497,7 +497,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             }
         }
 
-        if ($this->time_zone == '') {
+        if (empty($this->time_zone)) {
             $this->time_zone = Yii::$app->settings->get('defaultTimeZone');
         }
 

@@ -99,7 +99,7 @@ class DynamicConfig extends BaseObject
         }
 
         $defaultTimeZone = Yii::$app->settings->get('defaultTimeZone');
-        if ($defaultTimeZone != '') {
+        if (!empty($defaultTimeZone)) {
             $config['timeZone'] = $defaultTimeZone;
             $config['components']['formatter']['defaultTimeZone'] = $defaultTimeZone;
             $config['components']['formatterApp']['defaultTimeZone'] = $defaultTimeZone;
