@@ -2,8 +2,6 @@
 
 use Codeception\Util\HttpCode;
 use humhub\modules\rest\definitions\UserDefinitions;
-use humhub\modules\space\models\Space;
-use humhub\modules\space\tests\codeception\fixtures\SpaceFixture;
 use humhub\modules\user\models\User;
 use yii\data\Pagination;
 use yii\web\Link;
@@ -23,29 +21,9 @@ use yii\web\Link;
  *
  * @SuppressWarnings(PHPMD)
  */
-class ApiTester extends \Codeception\Actor
+class ApiTester extends BaseTester
 {
     use _generated\ApiTesterActions;
-
-    protected function getFixtureSpace(int $index) : Space
-    {
-        $this->haveFixtures(['space' => SpaceFixture::class]);
-        return $this->grabFixture('space', $index);
-    }
-
-    public function enableModule($guid, $moduleId)
-    {
-        if (is_int($guid)) {
-            $space = $this->getFixtureSpace(--$guid);
-        } else {
-            $space = Space::findOne(['guid' => $guid]);
-        }
-
-        if ($space) {
-            $space->enableModule($moduleId);
-            Yii::$app->moduleManager->flushCache();
-        }
-    }
 
     public function amAdmin()
     {
