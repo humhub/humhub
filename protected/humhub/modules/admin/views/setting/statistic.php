@@ -2,6 +2,9 @@
 
 use humhub\compat\CActiveForm;
 use humhub\compat\CHtml;
+use humhub\modules\ui\form\assets\CodeMirrorAssetBundle;
+
+CodeMirrorAssetBundle::register($this);
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
@@ -14,7 +17,7 @@ use humhub\compat\CHtml;
 
 <div class="form-group">
     <?= $form->labelEx($model, 'trackingHtmlCode'); ?>
-    <?= $form->textArea($model, 'trackingHtmlCode', ['class' => 'form-control', 'rows' => '8']); ?>
+    <?= $form->textArea($model, 'trackingHtmlCode', ['class' => 'form-control', 'rows' => '8', 'data-codemirror' => 'text/html']); ?>
 </div>
 <hr>
 

@@ -23,21 +23,21 @@ class CodeMirrorAssetBundle extends AssetBundle
     public $defer = true;
 
     public $jsOptions = ['position' => View::POS_HEAD];
-    public $sourcePath = '@ui/form/resources/codemirror';
+    public $sourcePath = '@vendor/npm-asset/codemirror';
 
     public $js = [
-        'codemirror.js',
+        'lib/codemirror.js',
         'addon/hint/show-hint.js',
         'addon/hint/html-hint.js',
         'addon/hint/xml-hint.js',
-        'mode/xml.js',
-        'mode/javascript.js',
-        'mode/css.js',
-        'mode/htmlmixed.js',
+        'mode/xml/xml.js',
+        'mode/javascript/javascript.js',
+        'mode/css/css.js',
+        'mode/htmlmixed/htmlmixed.js',
     ];
 
     public $css = [
-        'codemirror.css',
+        'lib/codemirror.css',
         'addon/hint/show-hint.css'
     ];
 
