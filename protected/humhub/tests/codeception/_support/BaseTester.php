@@ -12,10 +12,23 @@ use humhub\modules\space\tests\codeception\fixtures\SpaceFixture;
  */
 class BaseTester extends \Codeception\Actor
 {
-    public function getFixtureSpace(int $index) : Space
+    /**
+     * @var Space[]
+     */
+    private $spaces;
+
+    public function getFixtureSpace(int $index) : ?Space
     {
-        $this->haveFixtures(['space' => SpaceFixture::class]);
-        return $this->grabFixture('space', $index);
+        if (method_exists($this, 'haveFixtures') && method_exists($this, 'grabFixture')) {
+            $this->haveFixtures(['space' => SpaceFixture::class]);
+            return $this->grabFixture('space', $index);
+        } else {
+            // Acceptance tests have no the methods above, try to get spaces from DB instead:
+            if (!isset($this->spaces)) {
+                $this->spaces = Space::find()->orderBy('id')->all();
+            }
+            return isset($this->spaces[$index]) ? $this->spaces[$index] : null;
+        }
     }
 
     public function getFixtureSpaceGuid(int $index) : string
