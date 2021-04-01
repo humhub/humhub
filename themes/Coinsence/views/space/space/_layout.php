@@ -17,7 +17,16 @@ $space = $context->contentContainer;
 
 ?>
 <div class="container space-layout-container">
-    <?php if ($context->module->id !== 'custom_pages'): ?>
+    <?php if (
+        !$space->isModuleEnabled('xcoin') ||
+        $context->module->id === 'space' ||
+        $context->module->id === 'manage' ||
+        (
+            $context->module->id === 'xcoin' &&
+            $context->id === 'config'
+        ) ||
+        !Yii::$app->getModule('xcoin')->settings->space()->get('partiallyHideCover', false)
+    ): ?>
         <div class="row">
             <div class="col-md-12">
                 <?= Header::widget(['space' => $space]); ?>
