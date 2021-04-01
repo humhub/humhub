@@ -253,6 +253,20 @@ a.label-warning:hover {
     cursor: not-allowed;
 }
 
+div.form-group {
+    div.checkbox {
+        .help-block {
+            margin-left: 33px;
+        }
+
+        // avoid spacing between checkbox and hint
+        .help-block.help-block-error:empty {
+            display: none;
+        }
+    }
+}
+
+
 //
 // Errror handling
 //
@@ -353,6 +367,7 @@ a.label-warning:hover {
     fieldset, .iconClose {
         display: none;
     }
+
     .iconOpen {
         display: inline;
     }

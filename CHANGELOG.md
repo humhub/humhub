@@ -8,6 +8,9 @@ HumHub Changelog
 - Fix #4898: No streamExcludes option when loading single stream entry
 - Enh #4960: Added “codeception/module-rest” for testing of REST API modules
 - Enh #4976: Added REST API Codeception tester
+- Enh #4967: Module update broken with expired licence key
+- Enh #4972: Fix enabling to send notification on remove user from group
+- Fix #4985: Fix Activity Mail QueryParams on console mode
 
 
 1.8.1 (March 12, 2021)
