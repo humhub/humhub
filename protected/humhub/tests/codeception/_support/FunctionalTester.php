@@ -22,7 +22,7 @@ use yii\helpers\Url;
  *
  * @SuppressWarnings(PHPMD)
  */
-class FunctionalTester extends \Codeception\Actor
+class FunctionalTester extends BaseTester
 {
 
     use _generated\FunctionalTesterActions;
@@ -235,13 +235,6 @@ class FunctionalTester extends \Codeception\Actor
         $this->amOnSpace(4, $path, $params, $post);
     }
 
-    public $spaces = [
-        '5396d499-20d6-4233-800b-c6c86e5fa34a',
-        '5396d499-20d6-4233-800b-c6c86e5fa34b',
-        '5396d499-20d6-4233-800b-c6c86e5fa34c',
-        '5396d499-20d6-4233-800b-c6c86e5fa34d',
-    ];
-
     public function amOnSpace($guid, $path = '/space/space', $params = [], $post = false)
     {
         if(is_bool($params)) {
@@ -254,9 +247,11 @@ class FunctionalTester extends \Codeception\Actor
         }
 
         if(is_int($guid)) {
-            $guid = $this->spaces[--$guid];
+            $guid = $this->getFixtureSpaceGuid(--$guid);
         } else if($guid instanceof Space) {
             $guid = $guid->guid;
+        } else {
+            $guid = '';
         }
 
         $params['cguid'] = $guid;
@@ -286,17 +281,6 @@ class FunctionalTester extends \Codeception\Actor
     public function amOnDashboard()
     {
         tests\codeception\_pages\DashboardPage::openBy($this);
-    }
-
-    public function enableModule($guid, $moduleId)
-    {
-        if(is_int($guid)) {
-            $guid = $this->spaces[--$guid];
-        }
-
-        $space = Space::findOne(['guid' => $guid]);
-        $space->enableModule($moduleId);
-        Yii::$app->moduleManager->flushCache();
     }
 
 }
