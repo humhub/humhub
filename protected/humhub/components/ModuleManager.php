@@ -81,6 +81,19 @@ class ModuleManager extends Component
     protected $coreModules = [];
 
     /**
+     * @var bool Prevent registration of several different modules with the same id.
+     */
+    public $preventDuplicatedModules = true;
+
+    /**
+     * List of module paths that should be overwritten
+     * Key - module id, Value - absolute path to module folder
+     *
+     * @var array
+     */
+    public $overwriteModuleBasePath = [];
+
+    /**
      * Module Manager init
      *
      * Loads all enabled moduleId's from database

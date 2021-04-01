@@ -7,4 +7,4 @@
 - Enh #4868: Reset email summaries / notifications settings for all users
 - Enh #4884: New Space module setting to allow all users to add users without invite
 - Enh #4902: Add codemirror asset bundle
-
+- Enh #4964: New CLI command to delete users 

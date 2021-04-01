@@ -189,7 +189,11 @@ abstract class Stream extends Action
             $this->user = Yii::$app->user->identity;
         }
 
-        $this->excludes = array_merge($this->excludes, Yii::$app->getModule('stream')->streamExcludes);
+        $streamQueryParams = Yii::$app->request->getQueryParam('StreamQuery');
+
+        if (empty($streamQueryParams['contentId'])) {
+            $this->excludes = array_merge($this->excludes, Yii::$app->getModule('stream')->streamExcludes);
+        }
 
         $this->streamQuery = $this->initQuery();
 
