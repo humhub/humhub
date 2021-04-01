@@ -23,9 +23,9 @@ class MailInviteCest
         $I->amUser2();
         $I->amOnSpace1();
         $I->see('Invite');
-        $I->amGoingTo('invte a user by mail');
+        $I->amGoingTo('invite a user by mail');
 
-        $I->sendAjaxPostRequest(Url::to(['/space/membership/invite', 'cguid' => $I->spaces[0]]), ['InviteForm[inviteExternal]' => 'a@test.de,b@test.de']);
+        $I->sendAjaxPostRequest(Url::to(['/space/membership/invite', 'cguid' => $I->getFixtureSpace(0)->guid]), ['InviteForm[inviteExternal]' => 'a@test.de,b@test.de']);
         $I->seeEmailIsSent(2);
 
 

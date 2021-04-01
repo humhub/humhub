@@ -21,7 +21,7 @@ use yii\web\Link;
  *
  * @SuppressWarnings(PHPMD)
  */
-class ApiTester extends \Codeception\Actor
+class ApiTester extends BaseTester
 {
     use _generated\ApiTesterActions;
 
@@ -50,25 +50,61 @@ class ApiTester extends \Codeception\Actor
         $this->amHttpAuthenticated($user, $password);
     }
 
-    public function seeSuccessResponseContainsJson($json = [])
+    public function seeCodeResponseContainsJson($code, $json = [])
     {
-        $this->seeResponseCodeIs(HttpCode::OK);
+        $this->seeResponseCodeIs($code);
         $this->seeResponseIsJson();
         $this->seeResponseContainsJson($json);
+    }
+
+    public function seeSuccessResponseContainsJson($json = [])
+    {
+        $this->seeCodeResponseContainsJson(HttpCode::OK, $json);
     }
 
     public function seeForbiddenResponseContainsJson($json = [])
     {
-        $this->seeResponseCodeIs(HttpCode::FORBIDDEN);
-        $this->seeResponseIsJson();
-        $this->seeResponseContainsJson($json);
+        $this->seeCodeResponseContainsJson(HttpCode::FORBIDDEN, $json);
     }
 
     public function seeBadResponseContainsJson($json = [])
     {
-        $this->seeResponseCodeIs(HttpCode::BAD_REQUEST);
-        $this->seeResponseIsJson();
-        $this->seeResponseContainsJson($json);
+        $this->seeCodeResponseContainsJson(HttpCode::BAD_REQUEST, $json);
+    }
+
+    public function seeNotFoundResponseContainsJson($json = [])
+    {
+        $this->seeCodeResponseContainsJson(HttpCode::NOT_FOUND, $json);
+    }
+
+    public function seeServerErrorResponseContainsJson($json = [])
+    {
+        $this->seeCodeResponseContainsJson(HttpCode::INTERNAL_SERVER_ERROR, $json);
+    }
+
+    public function seeSuccessMessage($message)
+    {
+        $this->seeCodeResponseContainsJson(HttpCode::OK, ['message' => $message]);
+    }
+
+    public function seeForbiddenMessage($message)
+    {
+        $this->seeCodeResponseContainsJson(HttpCode::FORBIDDEN, ['message' => $message]);
+    }
+
+    public function seeBadMessage($message)
+    {
+        $this->seeCodeResponseContainsJson(HttpCode::BAD_REQUEST, ['message' => $message]);
+    }
+
+    public function seeNotFoundMessage($message)
+    {
+        $this->seeCodeResponseContainsJson(HttpCode::NOT_FOUND, ['message' => $message]);
+    }
+
+    public function seeServerErrorMessage($message)
+    {
+        $this->seeCodeResponseContainsJson(HttpCode::INTERNAL_SERVER_ERROR, ['message' => $message]);
     }
 
     /**
@@ -134,10 +170,12 @@ class ApiTester extends \Codeception\Actor
      */
     public function seePaginationResponseContainsJson($url, $jsonResults = [], $paginationParams = [])
     {
+        $jsonResultsCount = count($jsonResults);
+
         $json = array_merge([
-            'total' => count($jsonResults),
+            'total' => $jsonResultsCount,
             'page' => 1,
-            'pages' => 1,
+            'pages' => $jsonResultsCount ? 1 : 0,
         ], $paginationParams);
 
         $json['links'] = $this->getPaginationUrls($url, $json);
