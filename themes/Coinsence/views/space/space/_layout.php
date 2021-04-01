@@ -25,7 +25,7 @@ $space = $context->contentContainer;
             $context->module->id === 'xcoin' &&
             $context->id === 'config'
         ) ||
-        !Yii::$app->getModule('xcoin')->settings->space()->get('partiallyHideCover', false)
+        !Yii::$app->getModule('xcoin')->settings->space()->get('partiallyHideCover', true)
     ): ?>
         <div class="row">
             <div class="col-md-12">
