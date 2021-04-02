@@ -12,10 +12,12 @@ humhub.module('ui.codemirror', function(module, require, $) {
                 return;
             }
             $('textarea[data-codemirror]').each(function() {
-                CodeMirror.fromTextArea(this, {
+                var codeMirrorInstance = CodeMirror.fromTextArea(this, {
                     mode: $(this).data('codemirror'),
                     lineNumbers: true,
+                    extraKeys: {'Ctrl-Space': 'autocomplete'}
                 });
+                $(this).data('codemirror-instance', codeMirrorInstance);
             });
         });
     }

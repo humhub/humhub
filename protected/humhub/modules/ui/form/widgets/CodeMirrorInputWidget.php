@@ -21,7 +21,7 @@ class CodeMirrorInputWidget extends JsInputWidget
     /**
      * @var int defines the HTML rows attribute of the textarea
      */
-    public $rows = 8;
+    public $rows = 15;
 
     /**
      * @var string Style class of the textarea
@@ -32,6 +32,11 @@ class CodeMirrorInputWidget extends JsInputWidget
      * @var string Mode of highlighting the textarea by CodeMirror
      */
     public $mode = 'text/html';
+
+    /**
+     * @var bool
+     */
+    public $spellcheck = true;
 
     public function run()
     {
@@ -54,6 +59,7 @@ class CodeMirrorInputWidget extends JsInputWidget
             'rows' => $this->rows,
             'class' => $this->inputClass,
             'data-codemirror' => $this->mode,
+            'spellcheck' => $this->spellcheck,
         ];
     }
 }
