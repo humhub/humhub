@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\actions;
 
+use humhub\modules\user\models\User;
 use Yii;
 use yii\web\HttpException;
 use yii\base\Action;
@@ -50,7 +51,7 @@ class DownloadAction extends Action
      */
     public function init()
     {
-        $this->loadFile(Yii::$app->request->get('guid'));
+        $this->loadFile(Yii::$app->request->get('guid'), Yii::$app->request->get('token'));
         $this->download = (boolean) Yii::$app->request->get('download', false);
         $this->loadVariant(Yii::$app->request->get('variant', null));
         $this->checkFileExists();
@@ -114,21 +115,39 @@ class DownloadAction extends Action
      * Loads the file by given guid
      *
      * @param string $guid
+     * @param string $token
      * @return File the loaded file instance
      * @throws HttpException
      */
-    protected function loadFile($guid)
+    protected function loadFile($guid, $token = null)
     {
         $file = File::findOne(['guid' => $guid]);
 
         if ($file == null) {
             throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
         }
-        if (!$file->canRead()) {
+        if (!$file->canRead($this->getUserIdByTokenAndFileId($token, $file->id))) {
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
         }
 
         $this->file = $file;
+    }
+
+    /**
+     * Find user by token for the requested file
+     *
+     * @param string $token
+     * @param int $fileId
+     * @return int|null
+     */
+    protected function getUserIdByTokenAndFileId($token, $fileId)
+    {
+        /* @var $user User */
+        $user = User::find()
+            ->where(['MD5(CONCAT(' . $fileId . ', created_at, id))' => $token])
+            ->one();
+
+        return empty($user) ? null : $user->id;
     }
 
     /**

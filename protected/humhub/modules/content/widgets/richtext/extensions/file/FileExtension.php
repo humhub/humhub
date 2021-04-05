@@ -36,7 +36,7 @@ class FileExtension extends RichTextLinkExtension
             return;
         }
 
-        $linkBlock->setBlock($linkBlock->getParsedText(), $file->getUrl());
+        $linkBlock->setBlock($linkBlock->getParsedText(), $file->getUrl(), null, $file->id);
     }
 
     public static function buildFileLink(File $file) : string
