@@ -11,7 +11,7 @@ HumHub Changelog
 - Enh #4967: Module update broken with expired licence key
 - Enh #4972: Fix enabling to send notification on remove user from group
 - Fix #4985: Fix Activity Mail QueryParams on console mode
-- Fix #104: Translate profile field title in admin list
+- Fix #4989: Translate profile field title in admin list
 
 
 1.8.1 (March 12, 2021)
