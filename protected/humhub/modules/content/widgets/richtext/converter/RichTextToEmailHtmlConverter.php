@@ -9,6 +9,8 @@
 namespace humhub\modules\content\widgets\richtext\converter;
 
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
+use humhub\modules\file\actions\DownloadAction;
+use humhub\modules\file\models\File;
 use humhub\modules\user\models\User;
 
 /**
@@ -41,8 +43,11 @@ class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
             return $linkBlock;
         }
 
-        $token = md5($linkBlock->getFileId() . $receiver->created_at . $receiver->id);
-
+        $token = '';
+        $file = File::findOne(['id' => $linkBlock->getFileId()]);
+        if ($file !== null) {
+            $token = DownloadAction::generateDownloadToken($file, $receiver);
+        }
         $linkBlock->setUrl($linkBlock->getUrl() . (strpos($linkBlock->getUrl(), '?') === false ? '?' : '&') . 'token=' . $token);
 
         return $linkBlock;

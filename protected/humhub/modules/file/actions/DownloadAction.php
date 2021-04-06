@@ -8,8 +8,11 @@
 
 namespace humhub\modules\file\actions;
 
+use Firebase\JWT\JWT;
+use humhub\modules\file\Module;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\helpers\Url;
 use yii\web\HttpException;
 use yii\base\Action;
 use humhub\modules\file\models\File;
@@ -52,7 +55,7 @@ class DownloadAction extends Action
     public function init()
     {
         $this->loadFile(Yii::$app->request->get('guid'), Yii::$app->request->get('token'));
-        $this->download = (boolean) Yii::$app->request->get('download', false);
+        $this->download = (boolean)Yii::$app->request->get('download', false);
         $this->loadVariant(Yii::$app->request->get('variant', null));
         $this->checkFileExists();
     }
@@ -63,7 +66,7 @@ class DownloadAction extends Action
      */
     public function beforeRun()
     {
-        if(Yii::$app->request->isPjax) {
+        if (Yii::$app->request->isPjax) {
             throw new HttpException(400, 'File downloads are not allowed with pjax!');
         }
 
@@ -75,10 +78,10 @@ class DownloadAction extends Action
         }
 
         $httpCache = new HttpCache();
-        $httpCache->lastModified = function() {
+        $httpCache->lastModified = function () {
             return Yii::$app->formatter->asTimestamp($this->file->updated_at);
         };
-        $httpCache->etagSeed = function() {
+        $httpCache->etagSeed = function () {
             if (file_exists($this->getStoredFilePath())) {
                 return md5_file($this->getStoredFilePath());
             }
@@ -126,29 +129,19 @@ class DownloadAction extends Action
         if ($file == null) {
             throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
         }
-        if (!$file->canRead($this->getUserIdByTokenAndFileId($token, $file->id))) {
+
+        $user = nulL;
+        if ($token !== null) {
+            $user = static::getUserByDownloadToken($token, $file);
+        }
+
+        if (!$file->canRead($user)) {
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
         }
 
         $this->file = $file;
     }
 
-    /**
-     * Find user by token for the requested file
-     *
-     * @param string $token
-     * @param int $fileId
-     * @return int|null
-     */
-    protected function getUserIdByTokenAndFileId($token, $fileId)
-    {
-        /* @var $user User */
-        $user = User::find()
-            ->where(['MD5(CONCAT(' . $fileId . ', created_at, id))' => $token])
-            ->one();
-
-        return empty($user) ? null : $user->id;
-    }
 
     /**
      * Loads a variant and verifies
@@ -241,4 +234,60 @@ class DownloadAction extends Action
         return $this->file->store->get($this->variant);
     }
 
+    /**
+     * Returns the User model by given JWT token
+     *
+     * @param string $token
+     * @param File $file
+     * @return User|null
+     */
+    public static function getUserByDownloadToken(string $token, File $file)
+    {
+        try {
+            $decoded = JWT::decode($token, static::getDownloadTokenKey(), ['HS256']);
+        } catch (\Exception $ex) {
+            Yii::warning('Could not decode provided JWT token. ' . $ex->getMessage());
+        }
+        if (!empty($decoded['sub']) && !empty($decoded['aud']) && $decoded['aud'] == $file->id) {
+            return User::findOne(['id' => $decoded['sub']]);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns a token to access this file by JWT token
+     *
+     * @param File $file
+     * @param User $user
+     * @return string
+     */
+    public static function generateDownloadToken(File $file, User $user)
+    {
+        $token = [
+            'iss' => 'dld-token-v1',
+            'sub' => Yii::$app->user->id,
+            'aud' => $file->id
+        ];
+        return JWT::encode($token, static::getDownloadTokenKey());
+    }
+
+
+    /**
+     * @return string the secret key for file download tokens
+     * @throws \yii\base\Exception
+     */
+    private static function getDownloadTokenKey()
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('file');
+
+        $key = $module->settings->get('downloadTokenKey');
+        if (empty($key)) {
+            $key = Yii::$app->security->generateRandomString(32);
+            $module->settings->set('downloadTokenKey', $key);
+        }
+
+        return $key;
+    }
 }
