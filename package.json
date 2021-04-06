@@ -12,7 +12,7 @@
     "grunt-contrib-copy": "*",
     "grunt-contrib-cssmin": "^2.1.0",
     "grunt-contrib-less": "^2.0.0",
-    "grunt-contrib-uglify": "^2.3.0",
+    "grunt-contrib-uglify": "^5.0",
     "grunt-shell": "^2.1.0"
   }
 }
