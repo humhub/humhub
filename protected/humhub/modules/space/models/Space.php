@@ -385,7 +385,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             return false;
         }
 
-        // No one can join
+        // Anyone can join
         if ($this->join_policy == self::JOIN_POLICY_FREE) {
             return true;
         }
