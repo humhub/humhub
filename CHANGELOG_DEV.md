@@ -8,3 +8,4 @@
 - Enh #4884: New Space module setting to allow all users to add users without invite
 - Enh #4902: Added CodeMirror form field widget
 - Enh #4964: New CLI command to delete users 
+- Enh #4871: Default timezone for guests

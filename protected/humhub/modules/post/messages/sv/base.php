@@ -5,6 +5,6 @@ return array (
   'Create post' => 'Skapa inlägg',
   'Edit your post...' => 'Ändra ditt inlägg...',
   'This space is archived.' => 'Nätverket är arkiverat.',
-  'What\'s on your mind?' => 'Skriv ett inlägg...',
+  'What\'s on your mind?' => 'Vad tänker du på?',
   'post' => 'inlägg',
 );
