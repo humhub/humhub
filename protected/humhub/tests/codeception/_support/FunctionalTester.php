@@ -235,29 +235,31 @@ class FunctionalTester extends BaseTester
         $this->amOnSpace(4, $path, $params, $post);
     }
 
-    public function amOnSpace($guid, $path = '/space/space', $params = [], $post = false)
+    public function amOnSpace($spaceOrIndexOrGuid, $path = '/space/space', $params = [], $post = false)
     {
-        if(is_bool($params)) {
+        if (is_bool($params)) {
             $post = $params;
             $params = [];
         }
 
-        if(!$path) {
+        if (!$path) {
             $path = '/space/space';
         }
 
-        if(is_int($guid)) {
-            $guid = $this->getFixtureSpaceGuid(--$guid);
-        } else if($guid instanceof Space) {
-            $guid = $guid->guid;
+        if(is_int($spaceOrIndexOrGuid)) {
+            $guid = $this->getFixtureSpaceGuid(--$spaceOrIndexOrGuid);
+        } else if(is_string($spaceOrIndexOrGuid)) {
+            $guid = $spaceOrIndexOrGuid;
+        } else if($spaceOrIndexOrGuid instanceof Space) {
+            $guid = $spaceOrIndexOrGuid->guid;
         } else {
             $guid = '';
         }
 
         $params['cguid'] = $guid;
 
-        if($post) {
-            $route =  array_merge([$path], $params);
+        if ($post) {
+            $route = array_merge([$path], $params);
             $this->sendAjaxPostRequest(Url::toRoute($route), (is_array($post) ? $post : []));
         } else {
             $this->amOnRoute($path, $params);
