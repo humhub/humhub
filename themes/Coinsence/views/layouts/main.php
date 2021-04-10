@@ -58,9 +58,17 @@ use humhub\modules\space\models\Space; ?>
                     <?= \yii\helpers\Html::a('<i class="fa fa-search"></i>', ['/search']) ?>
                 </div>
 
-                <div class="home pull-right hidden-xs">
-                    <?= \yii\helpers\Html::a('<i class="fa fa-home"></i>', ['/home']) ?>
+                <div class="nav-menu pull-right">
+                    <li class="dropdown">
+                        <a href="#" id="top-dropdown-menu" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            <?= \humhub\widgets\TopMenu::widget(); ?>
+                        </ul>
+                    </li>
                 </div>
+                
 
             </div>
         </div>
