@@ -10,7 +10,6 @@ use humhub\modules\xcoin\widgets\UserExperience;
 use humhub\modules\xcoin\widgets\MarketplacePortfolio;
 use humhub\modules\post\widgets\Form;
 use humhub\modules\user\widgets\StreamViewer;
-use humhub\modules\tasks\widgets\MyTasksUser;
 
 ?>
 
@@ -18,7 +17,6 @@ use humhub\modules\tasks\widgets\MyTasksUser;
 <?= UserCoin::widget(['user' => $user, 'cssClass' => 'tabletView']) ?>
 
 <?= UserExperience::widget(['user' => $user, 'htmlOptions' => ['style' => '']]) ?>
-<?= MyTasksUser::widget(['user' => $user,'cssClass' => 'tabletViewTasks'])?>
 
 <?=  MarketplacePortfolio::widget(['user' => $user]); ?>
 
@@ -45,10 +43,6 @@ ProfileSidebar::widget([
         [UserSpaces::class, ['user' => $user], ['sortOrder' => 20]],
         [FriendsPanel::class, ['user' => $user], ['sortOrder' => 30]],
         [UserFollower::class, ['user' => $user], ['sortOrder' => 40]],
-        [MyTasksUser::class,['user' => $user],['sortOrder'=>50]],
-
-        
-
     ]
 ]);
 ?>
