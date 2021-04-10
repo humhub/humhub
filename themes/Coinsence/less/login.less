@@ -12,6 +12,7 @@
   #layout-content {
 
     height: 100%;
+    overflow: auto;
 
   }
 
@@ -48,6 +49,13 @@
 
   }
 
+  .create-account-brand {
+    position: unset;
+    display: block;
+    text-align: center;
+    margin: 20px 0 50px;
+  }
+
   .content {
 
     height: 100%;
@@ -65,6 +73,21 @@
       background-size: cover;
       background-position: 50% 50%;
 
+    }
+
+    &.create-account {
+      height: auto;
+      flex-direction: column;
+
+      .labels {
+        position: unset;
+        margin-top: 60px;
+      }
+
+      .field-registrationchecks-termscheck,
+      .field-registrationchecks-dataprivacycheck {
+        display: none;
+      }
     }
 
     .login-content,
