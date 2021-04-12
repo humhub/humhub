@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use yii\helpers\Html;
 
@@ -13,6 +13,6 @@ echo Yii::t('ContentModule.activities', '{displayName} created a new {contentTit
 ]);
 ?>
 <br>
-"<?= RichText::preview($source->getContentDescription(), [
+"<?= RichTextToHtmlConverter::process($source->getContentDescription(), [
     RichTextToShortTextConverter::OPTION_CACHE_KEY => RichTextToShortTextConverter::buildCacheKeyForContent($source)
 ]) ?>"
