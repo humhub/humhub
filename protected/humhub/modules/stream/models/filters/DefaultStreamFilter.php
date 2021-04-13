@@ -8,9 +8,10 @@
 
 namespace humhub\modules\stream\models\filters;
 
+use humhub\modules\content\models\Content;
+use humhub\modules\space\models\Space;
 use Yii;
 use yii\db\Query;
-use humhub\modules\content\models\Content;
 
 class DefaultStreamFilter extends StreamQueryFilter
 {
@@ -106,13 +107,16 @@ class DefaultStreamFilter extends StreamQueryFilter
 
     protected function unFilterArchived()
     {
-        $this->query->andWhere("(content.archived != 1 OR content.archived IS NULL)");
+        $this->query->leftJoin('space AS spaceArchived', 'contentcontainer.pk = spaceArchived.id AND contentcontainer.class = :spaceClass', [':spaceClass' => Space::class]);
+        $this->query->andWhere('(spaceArchived.status != :statusArchived OR spaceArchived.status IS NULL)', [':statusArchived' => Space::STATUS_ARCHIVED]);
+        $this->query->andWhere('(content.archived != 1 OR content.archived IS NULL)');
         return $this;
     }
 
     protected function filterArchived()
     {
-        $this->query->andWhere("(content.archived = 1)");
+        $this->query->leftJoin('space AS spaceArchived', 'contentcontainer.pk = spaceArchived.id AND contentcontainer.class = :spaceClass', [':spaceClass' => Space::class]);
+        $this->query->andWhere('(content.archived = 1 OR spaceArchived.status = :statusArchived)', [':statusArchived' => Space::STATUS_ARCHIVED]);
         return $this;
     }
 
