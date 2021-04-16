@@ -23,4 +23,11 @@ class AcceptanceTester extends \AcceptanceTester
    /**
     * Define custom actions here
     */
+
+   public function filterStreamArchived()
+   {
+       $this->jsClick('.wall-stream-filter-toggle');
+       $this->jsClick('[data-filter-id=entry_archived]');
+       $this->wait(2);
+   }
 }
