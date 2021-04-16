@@ -12,21 +12,20 @@ class ArchivedCest
         $I->amUser1();
         $I->amOnProfile();
 
+        $archivedContents = ['User 2 Space 2 Post Archived'];
+        $notArchivedContents = [
+            'User 2 Space 2 Post Public',
+            'User 2 Space 2 Post Private',
+            'User 2 Profile Post Public',
+            'User 2 Profile Post Private',
+        ];
+
         // See not archived content on Profile page
-        $I->wait(2);
-        $I->dontSee('User 2 Space 2 Post Archived');
-        $I->see('User 2 Space 2 Post Public');
-        $I->see('User 2 Space 2 Post Private');
-        $I->see('User 2 Profile Post Public');
-        $I->see('User 2 Profile Post Private');
+        $I->dontSeeArchivedContents($archivedContents, $notArchivedContents);
 
         // See only archived content on Profile page
         $I->filterStreamArchived();
-        $I->see('User 2 Space 2 Post Archived');
-        $I->dontSee('User 2 Space 2 Post Public');
-        $I->dontSee('User 2 Space 2 Post Private');
-        $I->dontSee('User 2 Profile Post Public');
-        $I->dontSee('User 2 Profile Post Private');
+        $I->seeArchivedContents($archivedContents, $notArchivedContents);
     }
 
     public function testArchivedSpace(AcceptanceTester $I)
@@ -41,21 +40,22 @@ class ArchivedCest
 
         $I->amOnProfile();
 
+        $archivedContents = [
+            'User 2 Space 2 Post Archived',
+            'User 2 Space 2 Post Public',
+            'User 2 Space 2 Post Private',
+        ];
+        $notArchivedContents = [
+            'User 2 Profile Post Public',
+            'User 2 Profile Post Private',
+        ];
+
         // See not archived content on Profile page
-        $I->wait(2);
-        $I->dontSee('User 2 Space 2 Post Archived');
-        $I->dontSee('User 2 Space 2 Post Public');
-        $I->dontSee('User 2 Space 2 Post Private');
-        $I->see('User 2 Profile Post Public');
-        $I->see('User 2 Profile Post Private');
+        $I->dontSeeArchivedContents($archivedContents, $notArchivedContents);
 
         // See only archived content on Profile page
         $I->filterStreamArchived();
-        $I->see('User 2 Space 2 Post Archived');
-        $I->see('User 2 Space 2 Post Public');
-        $I->see('User 2 Space 2 Post Private');
-        $I->dontSee('User 2 Profile Post Public');
-        $I->dontSee('User 2 Profile Post Private');
+        $I->seeArchivedContents($archivedContents, $notArchivedContents);
     }
 
     public function testSpaceArchivedContent(AcceptanceTester $I)
@@ -65,17 +65,18 @@ class ArchivedCest
         $I->amUser1();
         $I->amOnSpace2();
 
+        $archivedContents = ['User 2 Space 2 Post Archived'];
+        $notArchivedContents = [
+            'User 2 Space 2 Post Public',
+            'User 2 Space 2 Post Private',
+        ];
+
         // See not archived content on Space page
-        $I->wait(2);
-        $I->dontSee('User 2 Space 2 Post Archived');
-        $I->see('User 2 Space 2 Post Public');
-        $I->see('User 2 Space 2 Post Private');
+        $I->dontSeeArchivedContents($archivedContents, $notArchivedContents);
 
         // See only archived content on Space page
         $I->filterStreamArchived();
-        $I->see('User 2 Space 2 Post Archived');
-        $I->dontSee('User 2 Space 2 Post Public');
-        $I->dontSee('User 2 Space 2 Post Private');
+        $I->seeArchivedContents($archivedContents, $notArchivedContents);
     }
 
     public function testDashboardArchivedContent(AcceptanceTester $I)
@@ -85,15 +86,18 @@ class ArchivedCest
         $I->amUser1();
         $I->amOnDashboard();
 
+        $archivedContents = ['User 2 Space 2 Post Archived'];
+        $notArchivedContents = [
+            'User 2 Space 2 Post Public',
+            'User 2 Space 2 Post Private',
+            'Admin Space 2 Post Public',
+            'Admin Space 2 Post Private',
+            'User 2 Profile Post Public',
+            'User 2 Profile Post Private',
+        ];
+
         // See not archived content on Dashboard
-        $I->wait(2);
-        $I->dontSee('User 2 Space 2 Post Archived');
-        $I->see('User 2 Space 2 Post Public');
-        $I->see('User 2 Space 2 Post Private');
-        $I->see('Admin Space 2 Post Public');
-        $I->see('Admin Space 2 Post Private');
-        $I->see('User 2 Profile Post Public');
-        $I->see('User 2 Profile Post Private');
+        $I->dontSeeArchivedContents($archivedContents, $notArchivedContents);
 
         // Archive one content
         $I->jsClick('[data-content-key=10] [data-toggle=dropdown]');
@@ -105,13 +109,43 @@ class ArchivedCest
         $I->amOnSpace(2, '/space/manage');
         $I->click('Archive');
         $I->amOnDashboard();
+        $archivedContents = array_merge($archivedContents, array_slice($notArchivedContents, 0, 4));
+        $notArchivedContents = array_slice($notArchivedContents, 4);
+        $I->dontSeeArchivedContents($archivedContents, $notArchivedContents);
+    }
+
+    public function testDashboardArchivedContentWithFilter(AcceptanceTester $I)
+    {
+        $I->wantTo('ensure that dashboard stream displays archived content.');
+
+        $I->amAdmin();
         $I->wait(2);
-        $I->dontSee('User 2 Space 2 Post Archived');
-        $I->dontSee('User 2 Space 2 Post Public');
-        $I->dontSee('User 2 Space 2 Post Private');
-        $I->dontSee('Admin Space 2 Post Public');
-        $I->dontSee('Admin Space 2 Post Private');
-        $I->see('User 2 Profile Post Public');
-        $I->see('User 2 Profile Post Private');
+
+        // Enable filter panel on Dashboard
+        $I->amOnRoute(['/admin/setting/basic']);
+        $I->wait(2);
+        $I->click('[data-action-click=clickCollab]');
+        $I->click('[for="basicsettingsform-dashboardshowprofilepostform"]');
+        $I->click('Save');
+        $I->seeSuccess('Saved');
+
+        $archivedContents = ['User 2 Space 2 Post Archived'];
+        $notArchivedContents = [
+            'Admin Space 2 Post Private',
+            'Admin Space 2 Post Public',
+            'User 2 Space 2 Post Public',
+            'User 3 Space 1 Post Public',
+            'User 1 Space 1 Post Private',
+            'User 1 Space 1 Post Public',
+            'User 2 Profile Post Public',
+            'User 1 Profile Post Public',
+            'User 1 Profile Post Private',
+        ];
+
+        $I->amOnDashboard();
+        $I->dontSeeArchivedContents($archivedContents, $notArchivedContents);
+
+        $I->filterStreamArchived();
+        $I->seeArchivedContents($archivedContents, $notArchivedContents);
     }
 }

@@ -28,6 +28,31 @@ class AcceptanceTester extends \AcceptanceTester
    {
        $this->jsClick('.wall-stream-filter-toggle');
        $this->jsClick('[data-filter-id=entry_archived]');
-       $this->wait(2);
    }
+
+   public function seeArchivedContents($archivedContents = [], $notArchivedContents = [])
+   {
+       $this->wait(2);
+
+       foreach ($archivedContents as $archivedContent) {
+           $this->see($archivedContent);
+       }
+
+       foreach ($notArchivedContents as $notArchivedContent) {
+           $this->dontSee($notArchivedContent);
+       }
+   }
+
+    public function dontSeeArchivedContents($archivedContents = [], $notArchivedContents = [])
+    {
+        $this->wait(2);
+
+        foreach ($archivedContents as $archivedContent) {
+            $this->dontSee($archivedContent);
+        }
+
+        foreach ($notArchivedContents as $notArchivedContent) {
+            $this->see($notArchivedContent);
+        }
+    }
 }
