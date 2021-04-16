@@ -34,4 +34,6 @@ return [
     ['id' => '12', 'message' => 'Admin Space 2 Post Public', 'url' => null, 'created_at' => '2014-08-08 05:36:06', 'created_by' => '1', 'updated_at' => '2014-08-08 05:36:06', 'updated_by' => '1'],
     ['id' => '13', 'message' => 'Admin Space 2 Post Private', 'url' => null, 'created_at' => '2014-08-08 05:36:06', 'created_by' => '1', 'updated_at' => '2014-08-08 05:36:06', 'updated_by' => '1'],
 
+    ['id' => '14', 'message' => 'User 2 Space 2 Post Archived', 'url' => null, 'created_at' => '2014-08-08 05:36:06', 'created_by' => '2', 'updated_at' => '2014-08-08 05:36:06', 'updated_by' => '2'],
+
 ];
