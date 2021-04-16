@@ -19,16 +19,25 @@ class BaseTester extends \Codeception\Actor
 
     public function getFixtureSpace(int $index) : ?Space
     {
-        if (method_exists($this, 'haveFixtures') && method_exists($this, 'grabFixture')) {
-            $this->haveFixtures(['space' => SpaceFixture::class]);
-            return $this->grabFixture('space', $index);
-        } else {
-            // Acceptance tests have no the methods above, try to get spaces from DB instead:
-            if (!isset($this->spaces)) {
-                $this->spaces = Space::find()->orderBy('id')->all();
-            }
-            return isset($this->spaces[$index]) ? $this->spaces[$index] : null;
+        if (isset($this->spaces[$index])) {
+            return $this->spaces[$index];
         }
+
+        if (method_exists($this, 'haveFixtures') && method_exists($this, 'grabFixture')) {
+            if (!isset($this->spaces)) {
+                // Don't try to load spaces twice because it is delete all space records from related tables
+                $this->haveFixtures(['space' => SpaceFixture::class]);
+            }
+            $this->spaces[$index] = $this->grabFixture('space', $index);
+        } else if (!isset($this->spaces)) {
+            // Acceptance tests have no the methods above, try to get spaces from DB instead:
+            $this->spaces = Space::find()->orderBy('id')->all();
+            if (!isset($this->spaces[$index])) {
+                $this->spaces[$index] = null;
+            }
+        }
+
+        return $this->spaces[$index];
     }
 
     public function getFixtureSpaceGuid(int $index) : string

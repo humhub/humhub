@@ -12,6 +12,8 @@ HumHub Changelog
 - Enh #4972: Fix enabling to send notification on remove user from group
 - Fix #4985: Fix Activity Mail QueryParams on console mode
 - Enh #23: Allow to read image URLs with token param
+- Fix #4989: Translate profile field title in admin list
+- Fix #5002: Fix loading of fixture spaces on tests
 
 
 1.8.1 (March 12, 2021)
