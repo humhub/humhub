@@ -1,13 +1,16 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\dashboard\stream\filters;
 
-use humhub\modules\content\models\ContentContainer;
-use humhub\modules\friendship\models\Friendship;
 use Yii;
 use humhub\modules\content\models\Content;
 use humhub\modules\dashboard\Module;
-use humhub\modules\space\models\Membership;
 use humhub\modules\stream\models\filters\StreamQueryFilter;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -15,7 +18,11 @@ use humhub\modules\user\models\User;
 /**
  * Stream filter handling dashboard content stream visibility for members of the network.
  *
- * @since 1.8
+ * Instead of the standard dashboard filter with complex SQL logic, this alternative filter uses the legitmation
+ * IDs of the Live module.
+ *
+ * @see Module::memberFilterClass
+ * @since 1.9
  */
 class DashboardMemberStreamFilter extends StreamQueryFilter
 {
