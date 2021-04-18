@@ -13,6 +13,7 @@ HumHub Changelog
 - Fix #4985: Fix Activity Mail QueryParams on console mode
 - Fix #4989: Translate profile field title in admin list
 - Fix #5002: Fix loading of fixture spaces on tests
+- Fix #5018: Activity stream problems with many user accounts
 
 
 1.8.1 (March 12, 2021)
