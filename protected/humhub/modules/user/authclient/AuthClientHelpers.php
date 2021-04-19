@@ -138,14 +138,14 @@ class AuthClientHelpers
             if (count($user->getDirtyAttributes()) !== 0 && !$user->save()) {
 
                 Yii::warning('Could not update user (' . $user->id . '). Error: '
-                    . VarDumper::dumpAsString($user->getErrors()), 'ldap');
+                    . VarDumper::dumpAsString($user->getErrors()), 'user');
 
                 return false;
             }
 
             if (count($user->profile->getDirtyAttributes()) !== 0 && !$user->profile->save()) {
                 Yii::warning('Could not update user profile (' . $user->id . '). Error: '
-                    . VarDumper::dumpAsString($user->profile->getErrors()), 'ldap');
+                    . VarDumper::dumpAsString($user->profile->getErrors()), 'user');
                 return false;
             }
         }
