@@ -24,7 +24,8 @@ class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
     /**
      * @inheritdoc
      */
-    protected function renderPlainImage(LinkParserBlock $linkBlock) : string {
+    protected function renderPlainImage(LinkParserBlock $linkBlock): string
+    {
         return parent::renderPlainImage($this->tokenizeBlock($linkBlock));
     }
 
@@ -34,7 +35,7 @@ class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
      * @param LinkParserBlock $linkBlock
      * @return LinkParserBlock
      */
-    protected function tokenizeBlock(LinkParserBlock $linkBlock) : LinkParserBlock
+    protected function tokenizeBlock(LinkParserBlock $linkBlock): LinkParserBlock
     {
         /* @var User $receiver */
         $receiver = $this->getOption('receiver');
@@ -44,10 +45,13 @@ class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
         }
 
         $token = '';
-        $file = File::findOne(['id' => $linkBlock->getFileId()]);
-        if ($file !== null) {
-            $token = DownloadAction::generateDownloadToken($file, $receiver);
+        if ($linkBlock->getFileId() !== null) {
+            $file = File::findOne(['id' => $linkBlock->getFileId()]);
+            if ($file !== null) {
+                $token = DownloadAction::generateDownloadToken($file, $receiver);
+            }
         }
+
         $linkBlock->setUrl($linkBlock->getUrl() . (strpos($linkBlock->getUrl(), '?') === false ? '?' : '&') . 'token=' . $token);
 
         return $linkBlock;
