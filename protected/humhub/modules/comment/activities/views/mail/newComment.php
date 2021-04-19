@@ -13,6 +13,6 @@ echo Yii::t('CommentModule.base', "{displayName} wrote a new comment ", [
 ?>
 <br>
 
-"<?= RichText::preview($source->message, [
+"<?= RichText::preview($source->message, 0, [
     RichTextToShortTextConverter::OPTION_CACHE_KEY => RichTextToShortTextConverter::buildCacheKeyForRecord($source)
 ]) ?>"
