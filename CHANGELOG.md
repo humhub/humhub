@@ -14,7 +14,7 @@ HumHub Changelog
 - Fix #4989: Translate profile field title in admin list
 - Fix #5002: Fix loading of fixture spaces on tests
 - Fix #5018: Activity stream problems with many user accounts
-- Fix #5013: Fix undefined `$_SERVER['SERVER_SOFTWARE']`
+- Fix #5013: XSendFile broken when no SERVER_NAME header provided
 
 
 1.8.1 (March 12, 2021)
