@@ -15,6 +15,7 @@ HumHub Changelog
 - Fix #5002: Fix loading of fixture spaces on tests
 - Fix #5018: Activity stream problems with many user accounts
 - Fix #5013: XSendFile broken when no SERVER_NAME header provided
+- Fix #5017: File CLI Command fails due to manually deleted files
 
 
 1.8.1 (March 12, 2021)
