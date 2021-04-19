@@ -2,12 +2,12 @@
 
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
-use humhub\modules\user\helpers\AuthHelper;
 use humhub\widgets\DataSaved;
 use yii\bootstrap\ActiveForm;
 use humhub\libs\Html;
 
 /* @var $model Space */
+/* @var $visibilities array */
 ?>
 
 <div class="panel panel-default">
@@ -22,15 +22,6 @@ use humhub\libs\Html;
     <div class="panel-body">
         <?php $form = ActiveForm::begin(); ?>
 
-        <?php
-        $visibilities = [
-            Space::VISIBILITY_NONE => Yii::t('SpaceModule.base', 'Private (Invisible)'),
-            Space::VISIBILITY_REGISTERED_ONLY => Yii::t('SpaceModule.base', 'Public (Registered users only)')
-        ];
-        if (AuthHelper::isGuestAccessEnabled()) {
-            $visibilities[Space::VISIBILITY_ALL] = Yii::t('SpaceModule.base', 'Visible for all (members and guests)');
-        }
-        ?>
         <?= $form->field($model, 'visibility')->dropDownList($visibilities); ?>
 
         <?php $joinPolicies = [0 => Yii::t('SpaceModule.base', 'Only by invite'), 1 => Yii::t('SpaceModule.base', 'Invite and request'), 2 => Yii::t('SpaceModule.base', 'Everyone can enter')]; ?>
