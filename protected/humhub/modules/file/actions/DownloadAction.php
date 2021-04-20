@@ -248,8 +248,8 @@ class DownloadAction extends Action
         } catch (\Exception $ex) {
             Yii::warning('Could not decode provided JWT token. ' . $ex->getMessage());
         }
-        if (!empty($decoded['sub']) && !empty($decoded['aud']) && $decoded['aud'] == $file->id) {
-            return User::findOne(['id' => $decoded['sub']]);
+        if (!empty($decoded->sub) && !empty($decoded->aud) && $decoded->aud == $file->id) {
+            return User::findOne(['id' => $decoded->sub]);
         }
 
         return null;
@@ -266,7 +266,7 @@ class DownloadAction extends Action
     {
         $token = [
             'iss' => 'dld-token-v1',
-            'sub' => Yii::$app->user->id,
+            'sub' => $user->id,
             'aud' => $file->id
         ];
         return JWT::encode($token, static::getDownloadTokenKey());
