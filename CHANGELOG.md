@@ -18,6 +18,7 @@ HumHub Changelog
 - Fix #5013: XSendFile broken when no SERVER_NAME header provided
 - Fix #5004: Preview text maxLength issue
 - Fix #5017: File CLI Command fails due to manually deleted files
+- Fix: Space visibility options shown to users without permission
 
 
 1.8.1 (March 12, 2021)
