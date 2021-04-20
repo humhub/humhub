@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.8.2 (Unreleased)
--------------------
+1.8.2 (April 20, 2021)
+----------------------
 
 - Fix #4959: Horizontal scrollbar for images
 - Fix #4898: No streamExcludes option when loading single stream entry
@@ -16,6 +16,7 @@ HumHub Changelog
 - Fix #5002: Fix loading of fixture spaces on tests
 - Fix #5018: Activity stream problems with many user accounts
 - Fix #5013: XSendFile broken when no SERVER_NAME header provided
+- Fix #5004: Preview text maxLength issue
 - Fix #5017: File CLI Command fails due to manually deleted files
 
 
