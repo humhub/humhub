@@ -1,10 +1,6 @@
 HumHub Changelog
 ================
 
-1.8.3 (Unreleased)
-----------------------
-- Fix #4995: Fix read image URLs with token param
-
 
 1.8.2 (April 20, 2021)
 ----------------------
