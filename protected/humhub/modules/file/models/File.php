@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\models;
 
+use humhub\modules\user\models\User;
 use yii\db\ActiveRecord;
 use Yii;
 use yii\helpers\Url;
@@ -173,6 +174,9 @@ class File extends FileCompat
      *
      * If the file is not an instance of HActiveRecordContent or HActiveRecordContentAddon
      * the file is readable for all.
+
+     * @param string|User $userId
+     * @return bool
      */
     public function canRead($userId = "")
     {

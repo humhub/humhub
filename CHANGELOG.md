@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.8.2 (Unreleased)
--------------------
+1.8.2 (April 20, 2021)
+----------------------
 
 - Fix #4959: Horizontal scrollbar for images
 - Fix #4898: No streamExcludes option when loading single stream entry
@@ -11,9 +11,14 @@ HumHub Changelog
 - Enh #4967: Module update broken with expired licence key
 - Enh #4972: Fix enabling to send notification on remove user from group
 - Fix #4985: Fix Activity Mail QueryParams on console mode
+- Enh #23: Allow to read image URLs with token param
 - Fix #4989: Translate profile field title in admin list
 - Fix #5002: Fix loading of fixture spaces on tests
-- Fix #4626: Fix visibility of content in profile stream from archived spaces
+- Fix #5018: Activity stream problems with many user accounts
+- Fix #5013: XSendFile broken when no SERVER_NAME header provided
+- Fix #5004: Preview text maxLength issue
+- Fix #5017: File CLI Command fails due to manually deleted files
+- Fix: Space visibility options shown to users without permission
 
 
 1.8.1 (March 12, 2021)
