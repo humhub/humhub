@@ -113,6 +113,13 @@ class AccessControl extends ActionFilter
     public $guestAllowedActions = [];
 
     /**
+     * Action ids which are allowed even when Guest Mode is disabled
+     *
+     * @var array
+     */
+    public $forceGuestAccess = [];
+
+    /**
      * Only allow admins access to this controller
      *
      * @var boolean
@@ -253,5 +260,16 @@ class AccessControl extends ActionFilter
             }
             return Yii::$app->getResponse()->redirect(['/user/auth/login']);
         }
+    }
+
+    /**
+     * Check if the action should be allowed for guest access even when it is not allowed in system
+     *
+     * @param string $action
+     * @return bool
+     */
+    public function isAllowedGuestAction(string $action) : bool
+    {
+        return in_array($action, $this->forceGuestAccess);
     }
 }

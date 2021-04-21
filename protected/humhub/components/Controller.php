@@ -12,6 +12,7 @@ use humhub\components\access\ControllerAccess;
 use humhub\components\access\StrictAccess;
 use humhub\components\behaviors\AccessControl;
 use Yii;
+use yii\base\Action;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\web\ForbiddenHttpException;
@@ -283,5 +284,20 @@ class Controller extends \yii\web\Controller
         if (Yii::$app->request->isPjax) {
             \humhub\widgets\TopMenu::setViewState();
         }
+    }
+
+    /**
+     * Check if current action should be allowed for guest access even when it is not allowed in system
+     *
+     * @return bool
+     */
+    public function isAllowedGuestAction() : bool
+    {
+        $accessControl = $this->getBehavior('acl');
+        if ($accessControl instanceof AccessControl && $this->action instanceof Action) {
+            return $accessControl->isAllowedGuestAction($this->action->id);
+        }
+
+        return false;
     }
 }

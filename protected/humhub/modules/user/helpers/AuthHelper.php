@@ -12,6 +12,7 @@ namespace humhub\modules\user\helpers;
 
 use humhub\modules\user\Module;
 use Yii;
+use yii\base\Action;
 
 /**
  * Class AuthHelper
@@ -34,6 +35,10 @@ class AuthHelper
 
         if ($module->settings->get('auth.allowGuestAccess')) {
             return true;
+        }
+
+        if (Yii::$app->requestedAction instanceof Action) {
+            return Yii::$app->requestedAction->controller->isAllowedGuestAction();
         }
 
         return false;
