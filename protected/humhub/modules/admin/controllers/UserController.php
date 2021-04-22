@@ -367,7 +367,7 @@ class UserController extends Controller
             return false;
         }
 
-        return Yii::$app->user->isAdmin() && $user->id != Yii::$app->user->getIdentity()->id;
+        return Yii::$app->user->can([new ManageUsers()]) && $user->id != Yii::$app->user->getIdentity()->id;
     }
 
     /**
