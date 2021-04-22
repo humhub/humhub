@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.8.3 (Unreleased)
+----------------------
+- Fix #5015: Fix visibility of admin menu entries which are initialized with deprecated method
+
+
 1.8.2 (April 20, 2021)
 ----------------------
 
