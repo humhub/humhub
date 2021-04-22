@@ -4,7 +4,6 @@ HumHub Changelog
 
 1.8.2 (Unreleased)
 ------------------
-
 - Fix #4959: Horizontal scrollbar for images
 - Fix #4898: No streamExcludes option when loading single stream entry
 - Enh #4960: Added “codeception/module-rest” for testing of REST API modules
@@ -19,7 +18,9 @@ HumHub Changelog
 - Fix #5013: XSendFile broken when no SERVER_NAME header provided
 - Fix #5004: Preview text maxLength issue
 - Fix #5017: File CLI Command fails due to manually deleted files
-- Fix: Space visibility options shown to users without permission
+- Fix #5020: Space visibility options shown to users without permission
+- Enh #5024: Disable text wrapping in stream richtext
+- Fix #5022: Fix assign default group on user registration
 - Fix #5015: Fix visibility of admin menu entries which are initialized with deprecated method
 
 
