@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.8.3 (Unreleased)
+----------------------
+- Enh #5024: Disable text wrapping in stream richtext
+
+
 1.8.2 (April 20, 2021)
 ----------------------
 
