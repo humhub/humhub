@@ -3,8 +3,7 @@ HumHub Changelog
 
 
 1.8.2 (Unreleased)
-----------------------
-
+------------------
 - Fix #4959: Horizontal scrollbar for images
 - Fix #4898: No streamExcludes option when loading single stream entry
 - Enh #4960: Added “codeception/module-rest” for testing of REST API modules
@@ -22,6 +21,7 @@ HumHub Changelog
 - Fix #5020: Space visibility options shown to users without permission
 - Enh #5024: Disable text wrapping in stream richtext
 - Fix #5022: Fix assign default group on user registration
+- Fix #5015: Fix visibility of admin menu entries which are initialized with deprecated method
 
 
 1.8.1 (March 12, 2021)
