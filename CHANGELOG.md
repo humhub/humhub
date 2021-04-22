@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.8.3 (Unreleased)
+----------------------
+- Fix #5022: Fix assign default group on user registration
+
+
 1.8.2 (April 20, 2021)
 ----------------------
 
