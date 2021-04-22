@@ -9,3 +9,4 @@
 - Enh #4964: New CLI command to delete users 
 - Enh #4871: Default timezone for guests
 - Fix #4626: Fix visibility of content in profile stream from archived spaces
+- Cng #5016: Allow impersonate to non sys admin groups (that can manage users)
