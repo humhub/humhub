@@ -19,7 +19,8 @@ HumHub Changelog
 - Fix #5013: XSendFile broken when no SERVER_NAME header provided
 - Fix #5004: Preview text maxLength issue
 - Fix #5017: File CLI Command fails due to manually deleted files
-- Fix: Space visibility options shown to users without permission
+- Fix #5020: Space visibility options shown to users without permission
+- Enh #5024: Disable text wrapping in stream richtext
 - Fix #5022: Fix assign default group on user registration
 
 
