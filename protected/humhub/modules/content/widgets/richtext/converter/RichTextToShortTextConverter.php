@@ -94,6 +94,15 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
     }
 
     /**
+     * @param $block
+     * @return string
+     */
+    protected function renderImage($block)
+    {
+        return Yii::t('ContentModule.richtexteditor', '[Image]')."\n\n";
+    }
+
+    /**
      * @inheritDoc
      */
     protected function renderPlainImage(LinkParserBlock $linkBlock) : string
