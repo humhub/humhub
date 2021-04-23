@@ -8,9 +8,10 @@
 
 namespace humhub\modules\file\controllers;
 
+use humhub\components\access\ControllerAccess;
+use humhub\components\Controller;
 use Yii;
 use yii\web\HttpException;
-use humhub\components\behaviors\AccessControl;
 use humhub\modules\file\actions\DownloadAction;
 use humhub\modules\file\actions\UploadAction;
 use humhub\modules\file\models\File;
@@ -20,19 +21,20 @@ use humhub\modules\file\models\File;
  *
  * @since 0.5
  */
-class FileController extends \humhub\components\Controller
+class FileController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    protected $access = ControllerAccess::class;
 
     /**
      * @inheritdoc
      */
-    public function behaviors()
+    public function getAccessRules()
     {
         return [
-            'acl' => [
-                'class' => AccessControl::class,
-                'guestAllowedActions' => ['download']
-            ],
+            [ControllerAccess::RULE_LOGGED_IN_ONLY => ['upload', 'delete']]
         ];
     }
 
