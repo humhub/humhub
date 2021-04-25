@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user\components;
 
+use humhub\components\UrlManager;
+use humhub\modules\space\models\Space;
 use yii\web\UrlRuleInterface;
 use yii\base\BaseObject;
 use humhub\modules\user\models\User as UserModel;
@@ -95,7 +97,15 @@ class UrlRule extends BaseObject implements UrlRuleInterface
             return static::$userUrlMap[$guid];
         }
 
-        $user = UserModel::findOne(['guid' => $guid]);
+        $user = null;
+        if (UrlManager::$cachedLastContainerRecord !== null && UrlManager::$cachedLastContainerRecord->guid === $guid) {
+            if (UrlManager::$cachedLastContainerRecord instanceof UserModel) {
+                $user = UrlManager::$cachedLastContainerRecord;
+            }
+        } else {
+            $user = UserModel::findOne(['guid' => $guid]);
+        }
+
         static::$userUrlMap[$guid] = $user->username ?? null;
         return static::$userUrlMap[$guid];
     }

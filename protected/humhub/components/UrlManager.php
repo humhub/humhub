@@ -18,6 +18,10 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  */
 class UrlManager extends \yii\web\UrlManager
 {
+    /**
+     * @var ContentContainerActiveRecord
+     */
+    public static $cachedLastContainerRecord;
 
     /**
      * @inheritdoc
@@ -33,7 +37,7 @@ class UrlManager extends \yii\web\UrlManager
 
         if (isset($params['contentContainer']) && $params['contentContainer'] instanceof ContentContainerActiveRecord) {
             $params['cguid'] = $params['contentContainer']->guid;
-
+            static::$cachedLastContainerRecord = $params['contentContainer'];
             unset($params['contentContainer']);
         }
 
