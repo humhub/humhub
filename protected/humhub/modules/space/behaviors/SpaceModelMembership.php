@@ -41,6 +41,11 @@ class SpaceModelMembership extends Behavior
     private $_spaceOwner = null;
 
     /**
+     * @var array cached membership results
+     */
+    private $_memberships = [];
+
+    /**
      * Checks if given userId is Member of this Space.
      *
      * @param integer $userId
@@ -224,7 +229,11 @@ class SpaceModelMembership extends Behavior
             $userId = Yii::$app->user->id;
         }
 
-        return Membership::findOne(['user_id' => $userId, 'space_id' => $this->owner->id]);
+        if (!isset($this->_memberships[$userId])) {
+            $this->_memberships[$userId] = Membership::findOne(['user_id' => $userId, 'space_id' => $this->owner->id]);
+        }
+
+        return $this->_memberships[$userId];
     }
 
     /**
