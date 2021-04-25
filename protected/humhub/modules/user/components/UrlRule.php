@@ -35,7 +35,7 @@ class UrlRule extends BaseObject implements UrlRuleInterface
      */
     public function createUrl($manager, $route, $params)
     {
-        if (isset($params['cguid'])) {
+        if (isset($params['cguid']) && isset($params['cguid-class']) && $params['cguid-class'] === UserModel::class) {
             $username = static::getUrlByUserGuid($params['cguid']);
             if ($username !== null) {
                 unset($params['cguid']);
@@ -77,7 +77,7 @@ class UrlRule extends BaseObject implements UrlRuleInterface
             }
             $params = $request->get();
             $params['cguid'] = $user->guid;
-            return [$parts[2] , $params];
+            return [$parts[2], $params];
         }
 
         return false;
@@ -91,12 +91,12 @@ class UrlRule extends BaseObject implements UrlRuleInterface
      */
     public static function getUrlByUserGuid($guid)
     {
-        if (isset(static::$userUrlMap[$guid])) {
+        if (array_key_exists($guid, static::$userUrlMap)) {
             return static::$userUrlMap[$guid];
         }
 
         $user = UserModel::findOne(['guid' => $guid]);
-        static::$userUrlMap[$guid] = ($user !== null) ? $user->username : null;
+        static::$userUrlMap[$guid] = $user->username ?? null;
         return static::$userUrlMap[$guid];
     }
 

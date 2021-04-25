@@ -87,16 +87,12 @@ class UrlRule extends BaseObject implements UrlRuleInterface
      */
     public static function getUrlBySpaceGuid($guid)
     {
-        if (isset(static::$spaceUrlMap[$guid])) {
+        if (array_key_exists($guid, static::$spaceUrlMap)) {
             return static::$spaceUrlMap[$guid];
         }
 
         $space = Space::findOne(['guid' => $guid]);
-        if ($space !== null) {
-            static::$spaceUrlMap[$space->guid] = ($space->url != '') ? $space->url : $space->guid;
-        } else {
-            static::$spaceUrlMap[$guid] = null;
-        }
+        static::$spaceUrlMap[$guid] = $space->url ?? $space->guid ?? null;
 
         return static::$spaceUrlMap[$guid];
     }

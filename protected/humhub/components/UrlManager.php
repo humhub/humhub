@@ -26,20 +26,15 @@ class UrlManager extends \yii\web\UrlManager
     {
         $params = (array)$params;
 
-        if (isset($params['contentContainer']) &&
-            $params['contentContainer'] instanceof ContentContainerActiveRecord &&
-            $params['contentContainer']->contentContainerRecord !== null
-        ) {
-            $params['cguid'] = $params['contentContainer']->contentContainerRecord->guid;
-            unset($params['contentContainer']);
+        if (isset($params['container']) && $params['container'] instanceof ContentContainerActiveRecord) {
+            $params['contentContainer'] = $params['container'];
+            unset($params['container']);
         }
 
-        if (isset($params['container']) &&
-            $params['container'] instanceof ContentContainerActiveRecord &&
-            $params['container']->contentContainerRecord !== null
-        ) {
-            $params['cguid'] = $params['container']->contentContainerRecord->guid;
-            unset($params['container']);
+        if (isset($params['contentContainer']) && $params['contentContainer'] instanceof ContentContainerActiveRecord) {
+            $params['cguid'] = $params['contentContainer']->guid;
+
+            unset($params['contentContainer']);
         }
 
         return parent::createUrl($params);
