@@ -107,6 +107,41 @@
       min-width: 250px;
     }
   }
+
+  // nav-menu
+  
+  .nav-menu {
+    & > li {
+      margin: 20px auto;
+      list-style: none;
+    }
+    & > li > a {
+      font-size: 20px;
+      color: #1d1d1d;
+    }
+    & > li > a > i {
+      padding-right: 10px;
+      border-right: 1px solid #c7c7c7;
+    }
+    & > li > ul > li > a {
+      border-left: 3px solid #fff;
+      background-color: #fff;
+      color: @text-color-highlight;
+    }
+    & > li > ul > li > a:hover,
+    & > li > ul > li > a.active {
+      border-left: 3px solid @info;
+      background-color: @background-color-secondary;
+      color: @text-color-highlight;
+    }
+    .dropdown-menu li a {
+      font-size: 16px !important;
+      i {
+        font-size: 16px;
+        width: 18px;
+      }
+    }
+  }
   .topbar-brand {
     position: relative;
     z-index: 2;
