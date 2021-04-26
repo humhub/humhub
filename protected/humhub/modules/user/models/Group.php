@@ -451,10 +451,13 @@ class Group extends ActiveRecord
     public static function getRegistrationGroups()
     {
         if (Yii::$app->getModule('user')->settings->get('auth.showRegistrationUserGroup')) {
-            return self::find()
+            $groups = self::find()
                 ->where(['show_at_registration' => 1, 'is_admin_group' => 0])
                 ->orderBy('name ASC')
                 ->all();
+            if (count($groups) > 0) {
+                return $groups;
+            }
         }
 
         $groups = [];

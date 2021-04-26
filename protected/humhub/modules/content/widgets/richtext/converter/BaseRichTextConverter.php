@@ -338,7 +338,7 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     {
         # If the backslash is followed by a newline.
         # Note: GFM doesn't allow spaces after the backslash.
-        if ($this->escapeBackslashBreak && $text[1] === "\n") {
+        if ($this->escapeBackslashBreak && isset($text[1]) && $text[1] === "\n") {
             $br = $this->html5 ? "<br>\n" : "<br />\n";
             # Return the line break
             return [["text", $br], 2];
