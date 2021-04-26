@@ -1,5 +1,5 @@
 <?php
 return array (
   'Pinned' => 'Fastnålad',
-  'Unpinned' => 'Lossad',
+  'Unpinned' => 'Ej fastnålad',
 );

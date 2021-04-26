@@ -672,7 +672,17 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "Test\\\nBreak",
-            "Test\nBreak", [RichTextToShortTextConverter::OPTIONS_PRESERVE_SPACES => true]);
+            "Test\nBreak", [RichTextToShortTextConverter::OPTION_PRESERVE_SPACES => true]);
+    }
+
+    public function testHardBreakWithPreserveAndNL2BROption()
+    {
+        $this->assertConversionResult(
+            "Test\\\nBreak",
+            "Test<br>\nBreak", [
+                RichTextToShortTextConverter::OPTION_PRESERVE_SPACES => true,
+                RichTextToShortTextConverter::OPTION_NL2BR => true
+            ]);
     }
 
     public function testHardBreakWithoutNewLine()
@@ -694,7 +704,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "This is <br> was a hard line break",
-            "This is \n was a hard line break", [RichTextToShortTextConverter::OPTIONS_PRESERVE_SPACES => true]);
+            "This is \n was a hard line break", [RichTextToShortTextConverter::OPTION_PRESERVE_SPACES => true]);
     }
 
     public function testMultipleHtmlBreak()

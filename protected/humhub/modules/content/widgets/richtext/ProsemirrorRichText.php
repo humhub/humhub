@@ -168,7 +168,7 @@ class ProsemirrorRichText extends AbstractRichText
 
         // Can be removed in a future version, richtext should not be cut anymore, only text or shorttext version should be cut
         if ($this->maxLength > 0) {
-            $output = Helpers::truncateText($this->text, $this->maxLength);
+            $output = Helpers::truncateText($output, $this->maxLength);
         }
 
         // Wrap encoded output in root div

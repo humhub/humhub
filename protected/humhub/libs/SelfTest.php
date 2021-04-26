@@ -490,6 +490,23 @@ class SelfTest
             ];
         }
 
+        // Check Profile Image Directory
+        $title = 'Permissions - Profile Image';
+
+        $path = Yii::getAlias('@webroot/uploads/profile_image');
+        if (is_writeable($path)) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'ERROR',
+                'hint' => 'Make ' . $path . " writable for the Webserver/PHP!"
+            ];
+        }
+
         // Check Custom Modules Directory
         $title = 'Permissions - Module Directory';
 
@@ -655,9 +672,12 @@ class SelfTest
                 'state' => 'OK'
             ];
         } else {
+            if (count($tableEngines) > 1) {
+                $title .= ' - Varying table engines are not supported.';
+            }
             $checks[] = [
                 'title' => Yii::t('base', $title),
-                'state' => 'WARNING',
+                'state' => count($tableEngines) > 1 ? 'ERROR' : 'WARNING',
                 'hint' => 'Recommended engine is ' . $recommendedEngine . ' for the tables: ' . implode(', ', $tablesWithNotRecommendedEngines),
             ];
         }

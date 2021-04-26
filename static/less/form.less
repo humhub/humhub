@@ -70,8 +70,13 @@ select.form-control:not([multiple]) {
 
 label {
     font-weight: normal;
-    margin-bottom: 0;
-    height: 17px;
+}
+
+div.PendingRegistrations {
+    thead > tr > th > label, tbody > tr > td > label {
+        margin-bottom: 0;
+        height: 17px;
+    }
 }
 
 label.control-label {
@@ -188,6 +193,20 @@ a.input-field-addon-sm {
     cursor: not-allowed;
 }
 
+div.form-group {
+    div.checkbox {
+        .help-block {
+            margin-left: 33px;
+        }
+
+        // avoid spacing between checkbox and hint
+        .help-block.help-block-error:empty {
+            display: none;
+        }
+    }
+}
+
+
 //
 // Errror handling
 //
@@ -288,6 +307,7 @@ a.input-field-addon-sm {
     fieldset, .iconClose {
         display: none;
     }
+
     .iconOpen {
         display: inline;
     }

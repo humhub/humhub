@@ -2,7 +2,7 @@
 return array (
   ' likes this.' => 'Gillar detta.',
   '<strong>Users</strong> who like this' => '<strong>Användare</strong> som gillar detta',
-  'Like' => 'Like',
+  'Like' => 'Gilla',
   'Unlike' => 'Ogilla',
   'You' => 'Du',
   'You like this.' => 'Du gillar detta.',

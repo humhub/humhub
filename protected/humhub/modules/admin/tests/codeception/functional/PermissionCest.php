@@ -20,9 +20,7 @@ class PermissionCest
 
         AdminPage::openBy($I);
         $I->expectTo('see permission denied message');
-        $I->see('You are not permitted to access this section.');
-
-
+        $I->seeResponseCodeIs(403);
 
         $I->amOnPage(['/admin/information']);
         $I->expectTo('see permission denied message');
