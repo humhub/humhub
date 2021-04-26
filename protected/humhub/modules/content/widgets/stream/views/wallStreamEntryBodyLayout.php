@@ -21,7 +21,7 @@ use humhub\modules\ui\view\components\View;
         </div>
 
         <div class="wall-entry-body">
-            <div class="wall-entry-topics">
+            <div class="topic-label-list">
                 <?php foreach (Topic::findByContent($model->content)->all() as $topic) : ?>
                     <?= TopicLabel::forTopic($topic) ?>
                 <?php endforeach; ?>
