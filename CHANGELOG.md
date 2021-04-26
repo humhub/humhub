@@ -2,8 +2,8 @@ HumHub Changelog
 ================
 
 
-1.8.2 (Unreleased)
-------------------
+1.8.2 (April 26, 2021)
+----------------------
 - Fix #4959: Horizontal scrollbar for images
 - Fix #4898: No streamExcludes option when loading single stream entry
 - Enh #4960: Added “codeception/module-rest” for testing of REST API modules
