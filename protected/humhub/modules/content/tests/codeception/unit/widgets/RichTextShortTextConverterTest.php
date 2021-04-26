@@ -141,7 +141,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Alt Text](https://www.humhub.com/static/img/logo.png)',
-            "Test https://www.humhub.com/static/img/logo.png");
+            'Test [Image]');
     }
 
     /**
@@ -151,7 +151,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Alt Text](https://www.humhub.com/static/img/logo.png)',
-            "Test https://www.humhub.com/static/img/logo.png");
+            'Test [Image]');
     }
 
     /**
@@ -161,7 +161,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Alt & < Text](https://www.humhub.com/static/img/logo.png)',
-            "Test https://www.humhub.com/static/img/logo.png");
+            'Test [Image]');
     }
 
     /**
@@ -171,7 +171,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Alt Text](/static/img/logo.png)',
-            "Test http://localhost/static/img/logo.png");
+            'Test [Image]');
     }
 
     /**
@@ -181,7 +181,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Alt & < Text](/static/img/logo.png)',
-            "Test http://localhost/static/img/logo.png");
+            'Test [Image]');
     }
 
     /**
@@ -191,7 +191,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Image Label](http://localhost/static/img/logo.png "Image Title")',
-            "Test http://localhost/static/img/logo.png");
+            'Test [Image]');
     }
 
     /**
@@ -201,7 +201,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image](http://localhost/static/img/logo.png "img6.jpg" =150x)',
-            "Test http://localhost/static/img/logo.png");
+            'Test [Image]');
     }
 
     /**
@@ -211,7 +211,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image](http://localhost/static/img/logo.png =150x)',
-            "Test http://localhost/static/img/logo.png");
+            'Test [Image]');
     }
 
     /**
@@ -221,7 +221,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image>](http://localhost/static/img/logo.png =150x)',
-            "Test http://localhost/static/img/logo.png");
+            'Test [Image]');
     }
 
     /**
@@ -231,7 +231,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image<](http://localhost/static/img/logo.png =150x)',
-            "Test http://localhost/static/img/logo.png");
+            'Test [Image]');
     }
 
     /**
@@ -241,7 +241,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image><](http://localhost/static/img/logo.png =150x)',
-            "Test http://localhost/static/img/logo.png");
+            'Test [Image]');
     }
 
     /*
@@ -359,7 +359,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             'Test file ![Test File](file-guid:xyz)',
-            "Test file " . Html::encode($file->getUrl()));
+            'Test file [Image]');
     }
 
     public function testImageFileWithRightAlign()
@@ -383,7 +383,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             'Test file ![Test File>](file-guid:xyz)',
-            "Test file " . Html::encode($file->getUrl()));
+            'Test file [Image]');
     }
 
     public function testImageFileWithLeftAlign()
@@ -407,7 +407,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             'Test file ![Test File<](file-guid:xyz)',
-            "Test file " . Html::encode($file->getUrl()));
+            'Test file [Image]');
     }
 
     public function testImageFileWithCenterAlign()
@@ -430,14 +430,14 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
         }
         $this->assertConversionResult(
             'Test file ![Test File><](file-guid:xyz)',
-            "Test file " . Html::encode($file->getUrl()));
+            'Test file [Image]');
     }
 
     public function testImageFileNotFound()
     {
         $this->assertConversionResult(
             'Test file ![Test File><](file-guid:doesNotExist)',
-            "Test file Test File");
+            'Test file [Image]');
     }
 
     public function testDataImage()
@@ -445,7 +445,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
         // DATA images currently not supported
         $this->assertConversionResult(
             '![](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==)',
-            ''
+            '[Image]'
         );
     }
 
