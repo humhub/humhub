@@ -2,7 +2,7 @@
 return array (
   '<strong>Account</strong> settings' => 'Настройки на <strong>акаунт</strong>',
   '<strong>Confirm</strong></strong> your new email address' => '<strong>Потвърдете </strong> новия си имейл адрес',
-  '<strong>Permissions</strong>' => '',
+  '<strong>Permissions</strong>' => '<strong>Разрешения</strong>',
   '<strong>User</strong> modules' => '<strong>Потребителски</strong> модули',
   '<strong>User</strong> settings' => '<strong>Потребителски</strong> настройки',
   '<strong>Your</strong> profile' => '<strong>Вашият</strong> профил',
@@ -43,7 +43,7 @@ return array (
   'Settings' => 'Настройки',
   'Tags' => 'Етикети',
   'The entered e-mail address is already in use by another user.' => 'Въведеният имейл адрес вече се използва от друг потребител.',
-  'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.' => '',
+  'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.' => 'Тези настройки ви позволяват да определите кои разрешения искате да предоставите на посетителите на вашия индивидуален профил. Всеки потребител може свободно да регулира настройките за собствения си профил.',
   'TimeZone' => 'Часова зона',
   'Username has been changed' => 'Потребителското име е променено',
   'Users' => 'Потребители',

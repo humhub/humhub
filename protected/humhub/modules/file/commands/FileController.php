@@ -32,6 +32,10 @@ class FileController extends \yii\console\Controller
         $fileSizes = [];
         /** @var File $file */
         foreach (File::find()->each() as $file) {
+            if (!is_file($file->store->get())) {
+                continue;
+            }
+
             $fileSize += filesize($file->store->get());
             foreach ($file->store->getVariants() as $variant) {
                 if (!isset($fileSizes[$variant])) {

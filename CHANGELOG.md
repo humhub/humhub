@@ -1,12 +1,28 @@
 HumHub Changelog
 ================
 
-1.8.2 (Unreleased)
--------------------
 
+1.8.2 (April 26, 2021)
+----------------------
 - Fix #4959: Horizontal scrollbar for images
 - Fix #4898: No streamExcludes option when loading single stream entry
-- Enh #4958: Add possibility to register purchased modules via CLI
+- Enh #4960: Added “codeception/module-rest” for testing of REST API modules
+- Enh #4976: Added REST API Codeception tester
+- Enh #4967: Module update broken with expired licence key
+- Enh #4972: Fix enabling to send notification on remove user from group
+- Fix #4985: Fix Activity Mail QueryParams on console mode
+- Enh #23: Allow to read image URLs with token param
+- Fix #4989: Translate profile field title in admin list
+- Fix #5002: Fix loading of fixture spaces on tests
+- Fix #5018: Activity stream problems with many user accounts
+- Fix #5013: XSendFile broken when no SERVER_NAME header provided
+- Fix #5004: Preview text maxLength issue
+- Fix #5017: File CLI Command fails due to manually deleted files
+- Fix #5020: Space visibility options shown to users without permission
+- Enh #5024: Disable text wrapping in stream richtext
+- Fix #5022: Fix assign default group on user registration
+- Fix #5015: Fix visibility of admin menu entries which are initialized with deprecated method
+- Fix #5039: RichText converter for some string patterns in HTML format
 
 
 1.8.1 (March 12, 2021)

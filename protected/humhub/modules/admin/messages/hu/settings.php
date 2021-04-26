@@ -70,7 +70,7 @@ return array (
   'Maximum allowed age for logs.' => 'A naplózott fájlok maximális megengedett kora.',
   'Maximum upload file size (in MB)' => 'Legnagyobb feltöltési fájlméret (MB)',
   'Mobile appearance' => 'Mobil megjelenés',
-  'Name of the application' => 'Applikáció neve',
+  'Name of the application' => 'Az alkamazás neve',
   'No Proxy Hosts' => 'Nincsenek proxy hosztok',
   'No caching' => 'Nincs gyorsítótárazás',
   'Notification Settings' => 'Értesítési beállítások',

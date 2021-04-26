@@ -40,6 +40,7 @@ AdminAsset::register($this);
     <?php if (count($allowedLanguages) > 1) : ?>
         <?= $languageDropDown = $form->field($model, 'defaultLanguage')->dropDownList($allowedLanguages, ['data-ui-select2' => '']); ?>
     <?php endif; ?>
+    <?= $form->field($model, 'defaultTimeZone')->dropDownList(TimezoneHelper::generateList(true), ['data-ui-select2' => '', 'disabled' => Yii::$app->settings->isFixed('defaultTimeZone')]); ?>
     <?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(true), ['data-ui-select2' => '', 'disabled' => Yii::$app->settings->isFixed('timeZone')]); ?>
 
     <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Dashboard')); ?>
