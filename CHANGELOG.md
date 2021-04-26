@@ -22,6 +22,7 @@ HumHub Changelog
 - Enh #5024: Disable text wrapping in stream richtext
 - Fix #5022: Fix assign default group on user registration
 - Fix #5015: Fix visibility of admin menu entries which are initialized with deprecated method
+- Fix #5039: RichText converter in HTML format
 
 
 1.8.1 (March 12, 2021)
