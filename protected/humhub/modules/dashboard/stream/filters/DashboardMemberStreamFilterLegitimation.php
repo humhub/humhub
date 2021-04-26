@@ -24,7 +24,7 @@ use humhub\modules\user\models\User;
  * @see Module::memberFilterClass
  * @since 1.9
  */
-class DashboardMemberStreamFilter extends StreamQueryFilter
+class DashboardMemberStreamFilterLegitimation extends StreamQueryFilter
 {
     /**
      * @var User
