@@ -97,12 +97,6 @@ $config = [
         'formatter' => [
             'class' => \humhub\components\i18n\Formatter::class,
         ],
-        /**
-         * Deprecated
-         */
-        'formatterApp' => [
-            'class' => \yii\i18n\Formatter::class,
-        ],
         'cache' => [
             'class' => \yii\caching\DummyCache::class,
         ],
