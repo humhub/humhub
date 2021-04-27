@@ -16,4 +16,4 @@
 - Enh #4958: Add possibility to register purchased modules via CLI
 - Enh #4894: Implemented .label-light variant
 - Enh #5012: Space: Show "Owner" Tab also for SystemAdmins
-- Enh #5045: Remove FormatterApp
+- Enh #5045: Removed deprecated `Yii::$app->formatterApp` component
