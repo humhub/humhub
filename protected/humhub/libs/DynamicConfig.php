@@ -102,8 +102,6 @@ class DynamicConfig extends BaseObject
         if (!empty($defaultTimeZone)) {
             $config['timeZone'] = $defaultTimeZone;
             $config['components']['formatter']['defaultTimeZone'] = $defaultTimeZone;
-            $config['components']['formatterApp']['defaultTimeZone'] = $defaultTimeZone;
-            $config['components']['formatterApp']['timeZone'] = $defaultTimeZone;
         }
 
         // Add Caching
