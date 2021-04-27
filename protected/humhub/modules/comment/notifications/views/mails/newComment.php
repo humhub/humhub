@@ -24,6 +24,7 @@
             <?=
             humhub\widgets\mails\MailCommentEntry::widget([
                 'originator' => $originator,
+                'receiver' => $record->user,
                 'comment' => $comment,
                 'date' => $comment->updated_at,
                 'space' => $space
@@ -50,6 +51,7 @@
             <?=
             humhub\widgets\mails\MailContentEntry::widget([
                 'originator' => $contentRecord->owner,
+                'receiver' => $record->user,
                 'content' => $contentRecord,
                 'date' => $contentRecord->content->updated_at,
                 'space' => $space

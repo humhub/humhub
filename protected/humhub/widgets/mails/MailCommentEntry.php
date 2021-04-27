@@ -24,6 +24,11 @@ class MailCommentEntry extends \yii\base\Widget
      * @var \humhub\modules\user\models\User content originator 
      */
     public $originator;
+
+    /**
+     * @var \humhub\modules\user\models\User notification receiver
+     */
+    public $receiver;
     
     /**
      * @var string|Viewable|ContentOwner content to render 
@@ -48,6 +53,7 @@ class MailCommentEntry extends \yii\base\Widget
 
         return $this->render('mailCommentEntry', [
                     'originator' => $this->originator,
+                    'receiver' => $this->receiver,
                     'comment' => $this->comment,
                     'space' => $this->space,
                     'date' => $this->date
