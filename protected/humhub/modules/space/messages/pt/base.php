@@ -22,7 +22,7 @@ return array (
   'Application message' => 'Mensagem de pedido',
   'Archived' => 'Arquivado',
   'As owner you cannot revoke your membership!' => 'Enquanto responsável, não podes revogar a tua participação!',
-  'Become member' => 'participar!',
+  'Become member' => 'Participar',
   'Cancel' => 'Cancelar',
   'Cancel pending membership application' => 'Cancelar pedido de participação',
   'Close' => 'Fechar',
