@@ -31,6 +31,17 @@ class Application extends \yii\web\Application
     /**
      * @inheritdoc
      */
+    public function __construct($config = [])
+    {
+        // Remove obsolete config params:
+        unset($config['components']['formatterApp']);
+
+        parent::__construct($config);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function bootstrap()
     {
         $request = $this->getRequest();
