@@ -34,7 +34,7 @@ class RichTextToEmailHtmlConverterCest
 
     protected function tokenIsDetectedInImageUrl(string $emailMessage) : bool
     {
-        return (bool) preg_match('/Test comment with image[ =\r\n]+<img.+?src=3D".+?&amp;token=.+?".+?>/is', $emailMessage);
+        return (bool) preg_match('/Test comment with image[ =\r\n]+<img.+?src=(3D)?".+?&amp;token=.+?".+?>/is', $emailMessage);
     }
 
     protected function createFile() : File
