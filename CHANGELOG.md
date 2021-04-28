@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.8.3 (Unreleased)
+----------------------
+- Fix #108: Fix installer on mysql server without default engine InnoDB
+
 
 1.8.2 (April 26, 2021)
 ----------------------
