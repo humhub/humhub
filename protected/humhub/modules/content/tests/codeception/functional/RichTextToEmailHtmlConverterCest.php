@@ -26,8 +26,6 @@ class RichTextToEmailHtmlConverterCest
 
         $I->assertMailSent(1);
 
-        $commentMailText = $I->grabLastSentEmail()->toString();
-
         /** @var Message $mail */
         $mail = $I->grabLastSentEmail();
 
