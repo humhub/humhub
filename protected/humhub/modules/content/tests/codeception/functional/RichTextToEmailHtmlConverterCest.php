@@ -11,6 +11,7 @@ use content\FunctionalTester;
 use humhub\modules\comment\models\forms\CommentForm;
 use humhub\modules\file\models\File;
 use humhub\modules\post\models\Post;
+use yii\swiftmailer\Message;
 
 class RichTextToEmailHtmlConverterCest
 {
@@ -27,17 +28,22 @@ class RichTextToEmailHtmlConverterCest
 
         $commentMailText = $I->grabLastSentEmail()->toString();
 
+        /** @var Message $mail */
+        $mail = $I->grabLastSentEmail();
+
+        $commentMailText = $mail->getSwiftMessage()->getChildren()[0]->getBody();
+
         if (!$this->tokenIsDetectedInImageUrl($commentMailText)) {
             $I->see('Token is not detected in image URL');
         }
     }
 
-    protected function tokenIsDetectedInImageUrl(string $emailMessage) : bool
+    protected function tokenIsDetectedInImageUrl(string $emailMessage): bool
     {
-        return (bool) preg_match('/Test comment with image[ =\r\n]+<img.+?src=(3D)?".+?&amp;token=.+?".+?>/is', $emailMessage);
+        return (bool)preg_match('/Test comment with image[ =\r\n]+<img.+?src=".+?&amp;token=.+?".+?>/is', $emailMessage);
     }
 
-    protected function createFile() : File
+    protected function createFile(): File
     {
         $file = new File([
             'file_name' => 'text.jpg',
@@ -52,7 +58,7 @@ class RichTextToEmailHtmlConverterCest
 
     protected function createComment(File $file)
     {
-        $post = Post::findOne(['id' => 1]);
+        $post = Post::findOne(['id' => 2]);
         $commentForm = new CommentForm($post);
         $commentForm->load([
             'objectModel' => get_class($post),
