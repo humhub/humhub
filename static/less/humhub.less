@@ -204,6 +204,11 @@
     @import "print.less";
 }
 
+@prev-directory: false;
+& when not(@prev-directory) {
+    @import "directory.less";
+}
+
 @import "../css/select2Theme/build.less";
 
 // LEGACY/DEPRECATED User- & Space picker
