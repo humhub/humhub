@@ -20,7 +20,7 @@ class MaintenanceModeCest
         $I->amGoingTo('try to login with correct credentials');
         $loginPage->login('Admin', 'test');
         $I->expectTo('see dashboard');
-        $I->waitForText('DIRECTORY');
+        $I->waitForText('DASHBOARD');
         $I->dontSee('Administration');
     }
 
