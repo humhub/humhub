@@ -75,7 +75,8 @@ class PeopleController extends Controller
             'keyword' => $keyword,
             'group' => $group,
             'users' => $query->offset($pagination->offset)->limit($pagination->limit)->all(),
-            'pagination' => $pagination
+            'pagination' => $pagination,
+            'showInviteButton' => !Yii::$app->user->isGuest && Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite'),
         ]);
     }
 

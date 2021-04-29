@@ -4,6 +4,7 @@ use humhub\modules\user\widgets\PeopleActionsButton;
 use humhub\modules\user\widgets\Image;
 use humhub\modules\user\widgets\PeopleTagList;
 use humhub\widgets\LinkPager;
+use humhub\widgets\ModalButton;
 use yii\helpers\Url;
 
 /* @var $this \yii\web\View */
@@ -11,7 +12,7 @@ use yii\helpers\Url;
 /* @var $group humhub\modules\user\models\Group */
 /* @var $users humhub\modules\user\models\User[] */
 /* @var $pagination yii\data\Pagination */
-
+/* @var $showInviteButton bool */
 ?>
 <div class="panel panel-default">
 
@@ -20,6 +21,11 @@ use yii\helpers\Url;
             <?= Yii::t('UserModule.base', '<strong>Member</strong> directory'); ?>
         <?php else: ?>
             <?= Yii::t('UserModule.base', '<strong>Group</strong> members - {group}', ['{group}' => Html::encode($group->name)]); ?>
+        <?php endif; ?>
+
+        <?php if ($showInviteButton): ?>
+            <?= ModalButton::primary(Yii::t('UserModule.base', 'Send invite'))
+                ->load(['/user/invite'])->icon('invite')->sm()->right() ?>
         <?php endif; ?>
     </div>
 
@@ -39,15 +45,21 @@ use yii\helpers\Url;
             </div>
         </div>
         <?= Html::endForm(); ?>
-
-        <?php if (count($users) == 0): ?>
-            <p><?= Yii::t('UserModule.base', 'No people found!'); ?></p>
-        <?php endif; ?>
     </div>
 
 </div>
 
 <div class="row">
+    <?php if (count($users) == 0): ?>
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <?= Yii::t('UserModule.base', 'No people found!'); ?>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+
     <?php foreach ($users as $user) : ?>
     <div class="card card-people">
         <div class="card-front">

@@ -8,7 +8,6 @@
 
 namespace user\functional;
 
-use humhub\modules\user\models\User;
 use user\FunctionalTester;
 use Yii;
 use yii\helpers\Url;
@@ -23,7 +22,7 @@ class MailInviteCest
 
         $I->amUser2();
         $I->amOnDirectory()->clickMembers();
-        $I->amGoingTo('invte a user by mail');
+        $I->amGoingTo('invite a user by mail');
 
         $I->see('Send invite', 'button');
 
@@ -49,11 +48,11 @@ class MailInviteCest
 
         $I->amOnRoute('/user/registration', ['token' => $token]);
         $I->see('Account registration');
-        $I->fillField( 'User[username]', 'NewUser');
-        $I->fillField(    'Password[newPassword]', 'NewUser123');
-        $I->fillField(    'Password[newPasswordConfirm]', 'NewUser123');
-        $I->fillField(    'Profile[firstname]', 'New');
-        $I->fillField(    'Profile[lastname]', 'User');
+        $I->fillField('User[username]', 'NewUser');
+        $I->fillField('Password[newPassword]', 'NewUser123');
+        $I->fillField('Password[newPasswordConfirm]', 'NewUser123');
+        $I->fillField('Profile[firstname]', 'New');
+        $I->fillField('Profile[lastname]', 'User');
         $I->click('#registration-form [type="submit"]');
 
 
@@ -91,13 +90,12 @@ class MailInviteCest
 
         $I->amOnRoute('/user/registration', ['token' => $token]);
         $I->see('Account registration');
-        $I->fillField( 'User[username]', 'NewUser');
-        $I->fillField(    'Password[newPassword]', 'NewUser123');
-        $I->fillField(    'Password[newPasswordConfirm]', 'NewUser123');
-        $I->fillField(    'Profile[firstname]', 'New');
-        $I->fillField(    'Profile[lastname]', 'User');
+        $I->fillField('User[username]', 'NewUser');
+        $I->fillField('Password[newPassword]', 'NewUser123');
+        $I->fillField('Password[newPasswordConfirm]', 'NewUser123');
+        $I->fillField('Profile[firstname]', 'New');
+        $I->fillField('Profile[lastname]', 'User');
         $I->click('#registration-form [type="submit"]');
-
 
         $I->see('Dashboard');
     }
