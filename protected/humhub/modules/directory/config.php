@@ -7,6 +7,7 @@ return [
     'id' => 'directory',
     'class' => Module::class,
     'isCoreModule' => true,
+    'consoleControllerMap' => ['directory' => 'humhub\modules\directory\commands\DirectoryController'],
     'events' => [
         ['class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => [Module::class, 'onTopMenuInit']],
     ],
