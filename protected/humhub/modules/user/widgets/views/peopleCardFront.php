@@ -23,6 +23,7 @@ use yii\web\View;
         <?= Image::widget([
             'user' => $user,
             'linkOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id],
+            'htmlOptions' => ['class' => 'card-user-image'],
             'width' => 100,
         ]); ?>
         <div class="card-buttons">

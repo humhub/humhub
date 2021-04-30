@@ -62,7 +62,7 @@ PeopleAsset::register($this);
     <?php endif; ?>
 
     <?php foreach ($users as $user) : ?>
-    <div class="card">
+    <div class="card col-lg-3 col-md-4 col-sm-6 col-xs-12">
         <div class="card-people">
             <?= PeopleCard::widget(['user' => $user, 'side' => 'front']); ?>
             <?= PeopleCard::widget(['user' => $user, 'side' => 'back']); ?>

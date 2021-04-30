@@ -35,10 +35,9 @@
 
         > div {
             float: left;
-            width: 330px;
-            max-width: 100%;
+            width: 100%;
             height: 360px;
-            margin: 15px;
+            margin: 15px 0;
             position: relative;
             transition-duration: 0.6s;
             transition-timing-function: ease-in-out;
@@ -135,15 +134,25 @@
             .card-header {
                 padding: 0 16px 24px 16px;
                 margin-top: -58px;
-                position: relative;
-                img {
-                    border: 2px solid #fff;
-                    border-radius: 6px;
+                display: table;
+                width: 100%;
+                .card-user-image {
+                    display: table-cell;
+                    img {
+                        border: 2px solid #fff;
+                        border-radius: 6px;
+                    }
                 }
                 .card-buttons {
-                    position: absolute;
-                    right: 16px;
-                    bottom: 26px;
+                    display: table-cell;
+                    padding-left: 8px;
+                    text-align: right;
+                    vertical-align: bottom;
+                    a {
+                        margin-top: 5px;
+                        white-space: normal;
+                        border: 1px solid #fff;
+                    }
                 }
             }
         }
