@@ -19,3 +19,5 @@
 - Enh #5012: Space: Show "Owner" Tab also for SystemAdmins
 - Enh #5045: Removed deprecated `Yii::$app->formatterApp` component
 - Enh #5026: Tests for tokenized image urls in email message
+- Enh #5049: Required profile field should not be required in administration
+
