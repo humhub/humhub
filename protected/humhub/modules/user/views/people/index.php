@@ -1,8 +1,7 @@
 <?php
 use humhub\libs\Html;
-use humhub\modules\user\widgets\PeopleActionsButton;
-use humhub\modules\user\widgets\Image;
-use humhub\modules\user\widgets\PeopleTagList;
+use humhub\modules\user\assets\PeopleAsset;
+use humhub\modules\user\widgets\PeopleCard;
 use humhub\widgets\LinkPager;
 use humhub\widgets\ModalButton;
 use yii\helpers\Url;
@@ -13,6 +12,8 @@ use yii\helpers\Url;
 /* @var $users humhub\modules\user\models\User[] */
 /* @var $pagination yii\data\Pagination */
 /* @var $showInviteButton bool */
+
+PeopleAsset::register($this);
 ?>
 <div class="panel panel-default">
 
@@ -61,31 +62,10 @@ use yii\helpers\Url;
     <?php endif; ?>
 
     <?php foreach ($users as $user) : ?>
-    <div class="card card-people">
-        <div class="card-front">
-            <div class="card-image<?= $user->getProfileBannerImage()->hasImage() ? '' : ' card-no-image'; ?>" style="background-image: url('<?= $user->getProfileBannerImage()->getUrl() ?>')"></div>
-            <div class="card-header">
-                <?= Image::widget([
-                    'user' => $user,
-                    'linkOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id],
-                    'width' => 100,
-                ]); ?>
-                <div class="card-buttons">
-                    <?= PeopleActionsButton::widget(['user' => $user]); ?>
-                </div>
-            </div>
-            <div class="card-body">
-                <h4><?= Html::containerLink($user); ?></h4>
-                <h5><?= Html::encode($user->profile->title); ?></h5>
-                <?= PeopleTagList::widget(['user' => $user]); ?>
-            </div>
-            <div class="card-footer">
-                <a href="#" class="fa fa-mobile-phone"></a>
-                <a href="#" class="fa fa-comment-o"></a>
-                <a href="#" class="fa fa-envelope-o"></a>
-                <a href="#" class="fa fa-video-camera"></a>
-                <a href="#" class="fa fa-arrow-right pull-right"></a>
-            </div>
+    <div class="card">
+        <div class="card-people">
+            <?= PeopleCard::widget(['user' => $user, 'side' => 'front']); ?>
+            <?= PeopleCard::widget(['user' => $user, 'side' => 'back']); ?>
         </div>
     </div>
     <?php endforeach; ?>

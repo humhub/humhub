@@ -11,7 +11,7 @@ use humhub\libs\Html;
 use yii\helpers\Url;
 
 /* @var $this \yii\web\View */
-/* @var $user humhub\modules\user\models\User */
+/* @var $user \humhub\modules\user\models\User */
 ?>
 
 <?= UserFollowButton::widget([
