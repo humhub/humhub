@@ -15,6 +15,17 @@ return [
                 'home' => 'dashboard/dashboard',
             ],
         ],
+        'log' => [
+            'traceLevel' => YII_DEBUG ? 3 : 0,
+            'targets' => [
+                [
+                    'class' => 'notamedia\sentry\SentryTarget',
+                    'dsn' => $_ENV['SENTRY_DSN'],
+                    'levels' => ['error', 'warning'],
+                    'context' => true,
+                ],
+            ],
+        ],
     ],
     'defaultRoute' => 'xcoin/marketplace-overview',
     'homeUrl' => '/home',

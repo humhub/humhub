@@ -1,4 +1,5 @@
 <?php
+use Symfony\Component\Dotenv\Dotenv;
 
 /**
  * @link https://www.humhub.org/
@@ -23,5 +24,8 @@ $config = yii\helpers\ArrayHelper::merge(
     (is_readable(__DIR__ . '/protected/config/web.php')) ? require(__DIR__ . '/protected/config/web.php') : [],
     (is_readable(__DIR__ . '/protected/config/web.php')) ? require(__DIR__ . '/protected/config/web.php') : []
 );
+
+$dotenv = new Dotenv();
+$dotenv->load(__DIR__.'/.env');
 
 (new humhub\components\Application($config))->run();
