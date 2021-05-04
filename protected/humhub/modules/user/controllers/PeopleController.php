@@ -7,6 +7,7 @@
 
 namespace humhub\modules\user\controllers;
 
+use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
@@ -37,6 +38,16 @@ class PeopleController extends Controller
         ]);
 
         parent::init();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAccessRules()
+    {
+        return [
+            [ControllerAccess::RULE_LOGGED_IN_ONLY]
+        ];
     }
 
     /**

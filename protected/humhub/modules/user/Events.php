@@ -2,7 +2,9 @@
 
 namespace humhub\modules\user;
 
+use humhub\components\Event;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Profile;
@@ -152,6 +154,27 @@ class Events extends BaseObject
     {
         Yii::$app->queue->push(new jobs\SyncUsers());
         Yii::$app->queue->push(new jobs\DeleteExpiredSessions());
+    }
+
+    /**
+     * On build of the TopMenu
+     *
+     * @param Event $event
+     */
+    public static function onTopMenuInit($event)
+    {
+        if (Yii::$app->user->isGuest) {
+            return;
+        }
+
+        $event->sender->addEntry(new MenuLink([
+            'id' => 'people',
+            'icon' => 'users',
+            'label' => Yii::t('UserModule.base', 'People'),
+            'url' => ['/people'],
+            'sortOrder' => 200,
+            'isActive' =>  MenuLink::isActiveState('user', 'people'),
+        ]));
     }
 
 }
