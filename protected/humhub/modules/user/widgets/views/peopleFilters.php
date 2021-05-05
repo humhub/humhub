@@ -6,7 +6,7 @@
  */
 
 use humhub\libs\Html;
-use humhub\modules\user\components\PeopleQuery;
+use humhub\modules\admin\models\forms\PeopleSettingsForm;
 use yii\helpers\Url;
 
 /* @var $filters array */
@@ -24,7 +24,7 @@ use yii\helpers\Url;
         </div>
         <div class="col-md-2">
             <div class="form-search-field-info"><?= Yii::t('UserModule.base', 'Order') ?></div>
-            <?= Html::dropDownList('order', $filters['order'], PeopleQuery::getOrderOptions(), ['data-action-change' => 'people.filterOrder', 'class' => 'form-control form-search-filter']); ?>
+            <?= Html::dropDownList('order', $filters['order'], PeopleSettingsForm::getSortingOptions(), ['data-action-change' => 'people.filterOrder', 'class' => 'form-control form-search-filter']); ?>
         </div>
         <div class="col-md-4 form-search-without-info">
             <?= Html::a(Yii::t('UserModule.base', 'Reset filter'), Url::to(['/people']), ['class' => 'form-search-reset']); ?>

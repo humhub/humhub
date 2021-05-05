@@ -9,8 +9,8 @@ namespace humhub\modules\user\components;
 
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\PeopleFilters;
 use Yii;
-use yii\base\BaseObject;
 use yii\data\Pagination;
 
 /**
@@ -89,9 +89,7 @@ class PeopleQuery extends ActiveQueryUser
 
     public function order()
     {
-        $order = Yii::$app->request->get('order', 'firstname');
-
-        switch ($order) {
+        switch (PeopleFilters::getOrder()) {
             case 'firstname':
                 $this->joinWith('profile');
                 $this->addOrderBy('profile.firstname');
@@ -102,8 +100,8 @@ class PeopleQuery extends ActiveQueryUser
                 $this->addOrderBy('profile.lastname');
                 break;
 
-            case 'username':
-                $this->addOrderBy('username');
+            case 'lastlogin':
+                $this->addOrderBy('last_login DESC');
                 break;
         }
 
@@ -116,15 +114,6 @@ class PeopleQuery extends ActiveQueryUser
         $this->pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->pageSize]);
 
         return $this->offset($this->pagination->offset)->limit($this->pagination->limit);
-    }
-
-    public static function getOrderOptions(): array
-    {
-        return [
-            'firstname' => Yii::t('UserModule.base', 'First name'),
-            'lastname' => Yii::t('UserModule.base', 'Last name'),
-            'username' => Yii::t('UserModule.base', 'Username'),
-        ];
     }
 
 }

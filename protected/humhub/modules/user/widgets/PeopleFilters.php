@@ -8,7 +8,9 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\admin\models\forms\PeopleSettingsForm;
 use Yii;
+use yii\base\BaseObject;
 
 /**
  * PeopleFilters displays the filters on the directory people page
@@ -26,12 +28,17 @@ class PeopleFilters extends Widget
     {
         $filters = [
             'keyword' => Yii::$app->request->get('keyword', ''),
-            'order' => Yii::$app->request->get('order', ''),
+            'order' => self::getOrder(),
         ];
 
         return $this->render('peopleFilters', [
             'filters' => $filters,
         ]);
+    }
+
+    public static function getOrder(): string
+    {
+        return Yii::$app->request->get('order', PeopleCard::config('defaultSorting'));
     }
 
 }

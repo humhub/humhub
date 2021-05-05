@@ -8,6 +8,7 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\admin\models\forms\PeopleSettingsForm;
 use humhub\modules\user\models\User;
 
 /**
@@ -39,6 +40,13 @@ class PeopleCard extends Widget
         return $this->render($view, [
             'user' => $this->user
         ]);
+    }
+
+    public static function config($name): string
+    {
+        $peopleSettingsForm = new PeopleSettingsForm();
+
+        return isset($peopleSettingsForm->$name) ? $peopleSettingsForm->$name : '';
     }
 
 }
