@@ -89,7 +89,7 @@ class PeopleQuery extends ActiveQueryUser
 
     public function order()
     {
-        switch (PeopleFilters::getOrder()) {
+        switch (PeopleFilters::getSorting()) {
             case 'firstname':
                 $this->joinWith('profile');
                 $this->addOrderBy('profile.firstname');

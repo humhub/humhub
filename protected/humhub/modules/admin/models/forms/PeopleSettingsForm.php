@@ -41,7 +41,7 @@ class PeopleSettingsForm extends Model
         // Set default values
         $this->userDetails = Yii::$app->settings->get('people.userDetails', 'full');
         $this->backsideLine1 = Yii::$app->settings->get('people.backsideLine1', 'city');
-        $this->backsideLine2 = Yii::$app->settings->get('people.backsideLine2', 'phone_private');
+        $this->backsideLine2 = Yii::$app->settings->get('people.backsideLine2', 'mobile');
         $this->backsideLine3 = Yii::$app->settings->get('people.backsideLine3', 'email_virtual');
         $this->defaultSorting = Yii::$app->settings->get('people.defaultSorting', 'lastlogin');
     }
@@ -121,7 +121,7 @@ class PeopleSettingsForm extends Model
                 $this->backsideLineOptions[$profileFieldCategory->title] = [];
             }
 
-            $this->backsideLineOptions[$profileFieldCategory->title][$profileField->internal_name] = $profileField->title;
+            $this->backsideLineOptions[$profileFieldCategory->title][$profileField->internal_name] = $profileField->title . ($profileField->visible ? '' : ' (' . Yii::t('AdminModule.user', 'Not visible') . ')');
         }
 
         return $this->backsideLineOptions;

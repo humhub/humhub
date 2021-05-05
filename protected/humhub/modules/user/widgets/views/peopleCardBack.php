@@ -9,6 +9,7 @@ use humhub\libs\Html;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\PeopleActionButtons;
 use humhub\modules\user\widgets\Image;
+use humhub\modules\user\widgets\PeopleBacksideDetails;
 use humhub\modules\user\widgets\PeopleIcons;
 use yii\web\View;
 
@@ -29,10 +30,7 @@ use yii\web\View;
     </div>
     <div class="card-body">
         <div class="card-info">
-            Department Marketing<br>
-            Do-gooder AG<br>
-            089 - 123 456 - 777<br>
-            <a href="mailto:sarah.schuster@Do-gooder.de">sarah.schuster@Do-gooder.de</a>
+            <?= PeopleBacksideDetails::widget(['user' => $user, 'separator' => '<br>']); ?>
         </div>
         <div class="card-buttons">
             <?= PeopleActionButtons::widget(['user' => $user]); ?>

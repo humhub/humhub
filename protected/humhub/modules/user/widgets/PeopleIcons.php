@@ -11,7 +11,7 @@ use humhub\components\Widget;
 use humhub\modules\user\models\User;
 
 /**
- * PeopleActionsButton shows directory options (following or friendship) for listed users
+ * PeopleIcons shows footer icons for people cards
  * 
  * @since 1.9
  * @author Luke

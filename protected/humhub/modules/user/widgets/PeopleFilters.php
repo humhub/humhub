@@ -28,7 +28,7 @@ class PeopleFilters extends Widget
     {
         $filters = [
             'keyword' => Yii::$app->request->get('keyword', ''),
-            'order' => self::getOrder(),
+            'sort' => self::getSorting(),
         ];
 
         return $this->render('peopleFilters', [
@@ -36,9 +36,9 @@ class PeopleFilters extends Widget
         ]);
     }
 
-    public static function getOrder(): string
+    public static function getSorting(): string
     {
-        return Yii::$app->request->get('order', PeopleCard::config('defaultSorting'));
+        return Yii::$app->request->get('sort', PeopleCard::config('defaultSorting'));
     }
 
 }
