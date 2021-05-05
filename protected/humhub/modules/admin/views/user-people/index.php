@@ -5,6 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\libs\Html;
 use humhub\modules\admin\models\forms\PeopleSettingsForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\Button;
@@ -25,9 +26,11 @@ use humhub\widgets\Button;
 
     <?= $form->field($model, 'userDetails')->dropDownList($model->getUserDetailsOptions()); ?>
 
-    <?= $form->field($model, 'backsideLine1')->dropDownList($model->getBacksideLineOptions()); ?>
-    <?= $form->field($model, 'backsideLine2')->dropDownList($model->getBacksideLineOptions()); ?>
-    <?= $form->field($model, 'backsideLine3')->dropDownList($model->getBacksideLineOptions()); ?>
+    <div class="fields-people-settings-backside-lines"<?php if ($model->userDetails == 'front') : ?> style="display:none"<?php endif; ?>>
+        <?= $form->field($model, 'backsideLine1')->dropDownList($model->getBacksideLineOptions()); ?>
+        <?= $form->field($model, 'backsideLine2')->dropDownList($model->getBacksideLineOptions()); ?>
+        <?= $form->field($model, 'backsideLine3')->dropDownList($model->getBacksideLineOptions()); ?>
+    </div>
 
     <?= $form->field($model, 'defaultSorting')->dropDownList(PeopleSettingsForm::getSortingOptions()); ?>
 
@@ -35,3 +38,8 @@ use humhub\widgets\Button;
 
     <?php ActiveForm::end(); ?>
 </div>
+<script <?= Html::nonce() ?>>
+$('select[name="PeopleSettingsForm[userDetails]"]').change(function() {
+    $('.fields-people-settings-backside-lines').toggle($(this).val() !== 'front');
+});
+</script>
