@@ -34,7 +34,7 @@ PeopleAsset::register($this);
 
 </div>
 
-<div class="row">
+<div class="row<?php if (PeopleCard::hasBothSides()) : ?> cards-rotatable<?php endif; ?>">
     <?php if (!$people->exists()): ?>
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -48,8 +48,7 @@ PeopleAsset::register($this);
     <?php foreach ($people->all() as $user) : ?>
     <div class="card col-lg-3 col-md-4 col-sm-6 col-xs-12">
         <div class="card-people">
-            <?= PeopleCard::widget(['user' => $user, 'side' => 'front']); ?>
-            <?= PeopleCard::widget(['user' => $user, 'side' => 'back']); ?>
+            <?= PeopleCard::widget(['user' => $user]); ?>
         </div>
     </div>
     <?php endforeach; ?>

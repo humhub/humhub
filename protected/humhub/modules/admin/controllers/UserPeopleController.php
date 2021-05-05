@@ -33,7 +33,7 @@ class UserPeopleController extends Controller
     {
         parent::init();
 
-        $this->appendPageTitle(Yii::t('AdminModule.base', 'Users'));
+        $this->appendPageTitle(Yii::t('AdminModule.base', 'People'));
         $this->subLayout = '@admin/views/layouts/user';
     }
 
