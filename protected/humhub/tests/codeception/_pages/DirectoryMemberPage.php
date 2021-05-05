@@ -11,6 +11,6 @@ use tests\codeception\_support\BasePage;
 class DirectoryMemberPage extends BasePage
 {
 
-    public $route = 'people';
+    public $route = 'user/people';
 
 }

@@ -171,7 +171,7 @@ class Events extends BaseObject
             'id' => 'people',
             'icon' => 'users',
             'label' => Yii::t('UserModule.base', 'People'),
-            'url' => ['/people'],
+            'url' => ['/user/people'],
             'sortOrder' => 200,
             'isActive' =>  MenuLink::isActiveState('user', 'people'),
         ]));
