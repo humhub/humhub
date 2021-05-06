@@ -65,6 +65,11 @@ class Text extends BaseType
     public $regexpErrorMessage;
 
     /**
+     * @inerhitdoc
+     */
+    public $canBeDirectoryFilter = true;
+
+    /**
      * Rules for validating the Field Type Settings Form
      *
      * @return array

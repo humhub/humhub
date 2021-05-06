@@ -8,9 +8,9 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\components\Widget;
-use humhub\modules\admin\models\forms\PeopleSettingsForm;
+use humhub\libs\Html;
+use humhub\modules\user\models\ProfileField;
 use Yii;
-use yii\base\BaseObject;
 
 /**
  * PeopleFilters displays the filters on the directory people page
@@ -26,19 +26,59 @@ class PeopleFilters extends Widget
      */
     public function run()
     {
-        $filters = [
-            'keyword' => Yii::$app->request->get('keyword', ''),
-            'sort' => self::getSorting(),
-        ];
+        $profileFields = ProfileField::findAll(['directory_filter' => 1]);
 
         return $this->render('peopleFilters', [
-            'filters' => $filters,
+            'profileFields' => $profileFields,
         ]);
     }
 
-    public static function getSorting(): string
+    public static function getDefaultValue(string $filter): string
     {
-        return Yii::$app->request->get('sort', PeopleCard::config('defaultSorting'));
+        switch ($filter) {
+            case 'sort':
+                return PeopleCard::config('defaultSorting');
+        }
+
+        return '';
+    }
+
+    public static function getValue(string $filter)
+    {
+        $defaultValue = self::getDefaultValue($filter);
+
+        if (preg_match('/^(.+?)\[(.+?)\]$/', $filter, $arrayMatch)) {
+            $array = Yii::$app->request->get($arrayMatch[1]);
+            return isset($array[$arrayMatch[2]]) ? $array[$arrayMatch[2]] : $defaultValue;
+        }
+
+        return Yii::$app->request->get($filter, $defaultValue);
+    }
+
+    public static function renderProfileFieldFilter(ProfileField $profileField): string
+    {
+        $profileFieldType = $profileField->getFieldType();
+
+        if (!$profileFieldType) {
+            return '';
+        }
+
+        $definition = $profileFieldType->getFieldFormDefinition();
+        $fieldType = isset($definition[$profileField->internal_name]['type']) ? $definition[$profileField->internal_name]['type'] : null;
+
+        $filterName = 'fields[' . $profileField->internal_name . ']';
+        $filterOptions = ['class' => 'form-control form-search-filter'];
+
+        switch ($fieldType) {
+            case 'text':
+                return Html::textInput($filterName, PeopleFilters::getValue($filterName), $filterOptions);
+            case 'dropdownlist':
+                $filterOptions['data-action-change'] = 'people.applyFilters';
+                $selectItems = array_merge(['' => Yii::t('UserModule.base', 'Any')], $definition[$profileField->internal_name]['items']);
+                return Html::dropDownList($filterName, PeopleFilters::getValue($filterName), $selectItems, $filterOptions);
+        }
+
+        return '';
     }
 
 }

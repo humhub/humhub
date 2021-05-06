@@ -30,6 +30,11 @@ class Select extends BaseType
     public $options;
 
     /**
+     * @inerhitdoc
+     */
+    public $canBeDirectoryFilter = true;
+
+    /**
      * Rules for validating the Field Type Settings Form
      *
      * @return type

@@ -4,12 +4,12 @@ humhub.module('people', function(module, require, $) {
         $(evt.$trigger).closest('.card > div').toggleClass('card-rotated');
     };
 
-    const filterOrder = function(evt) {
+    const applyFilters = function(evt) {
         $(evt.$trigger).closest('form').submit();
     }
 
     module.export({
         rotateCard,
-        filterOrder,
+        applyFilters,
     });
 });

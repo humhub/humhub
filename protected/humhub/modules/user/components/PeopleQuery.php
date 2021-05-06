@@ -7,7 +7,9 @@
 
 namespace humhub\modules\user\components;
 
+use humhub\modules\user\models\fieldtype\Select;
 use humhub\modules\user\models\Group;
+use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\PeopleFilters;
 use Yii;
@@ -54,6 +56,7 @@ class PeopleQuery extends ActiveQueryUser
 
         $this->filterByKeyword();
         $this->filterByGroup();
+        $this->filterByProfileFields();
 
         $this->order();
 
@@ -65,6 +68,50 @@ class PeopleQuery extends ActiveQueryUser
         $keyword = Yii::$app->request->get('keyword', '');
 
         return $this->search($keyword);
+    }
+
+    public function filterByProfileFields()
+    {
+        $fields = Yii::$app->request->get('fields', []);
+
+        // Remove empty filters
+        $fields = array_filter($fields, function($value) {
+            return $value !== '';
+        });
+
+        if (empty($fields)) {
+            return $this;
+        }
+
+        // Skip fields if they are not defined for directory filters
+        $filteredProfileFields = ProfileField::find()
+            ->where(['directory_filter' => 1])
+            ->andWhere(['IN', 'internal_name', array_keys($fields)])
+            ->all();
+        $checkedFilteredFields = [];
+        foreach ($filteredProfileFields as $filteredField) {
+            /* @var $filteredField ProfileField */
+            if (!isset($fields[$filteredField->internal_name])) {
+                // Skip unknown field
+                continue;
+            }
+            $checkedFilteredFields[$filteredField->internal_name] = [
+                'value' => $fields[$filteredField->internal_name],
+                'condition' => $filteredField->getFieldType() instanceof Select ? '=' : 'LIKE',
+            ];
+        }
+
+        if (empty($checkedFilteredFields)) {
+            return $this;
+        }
+
+        $this->joinWith('profile');
+
+        foreach ($checkedFilteredFields as $field => $data) {
+            $this->andWhere([$data['condition'], 'profile.' . $field, $data['value']]);
+        }
+
+        return $this;
     }
 
     public function filterByGroup()
@@ -89,7 +136,7 @@ class PeopleQuery extends ActiveQueryUser
 
     public function order()
     {
-        switch (PeopleFilters::getSorting()) {
+        switch (PeopleFilters::getValue('sort')) {
             case 'firstname':
                 $this->joinWith('profile');
                 $this->addOrderBy('profile.firstname');

@@ -50,7 +50,7 @@ class PeopleTagList extends Widget
         }
 
         foreach ($tags as $tag) {
-            $html .= Html::a(Html::encode($tag), Url::to(['/people', 'keyword' => trim($tag)]), ['class' => 'label label-default']) . '&nbsp';
+            $html .= Html::a(Html::encode($tag), Url::to(['/user/people', 'keyword' => trim($tag)]), ['class' => 'label label-default']) . '&nbsp';
         }
 
         return $html;
