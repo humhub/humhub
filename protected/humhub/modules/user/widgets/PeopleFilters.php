@@ -9,6 +9,7 @@ namespace humhub\modules\user\widgets;
 
 use humhub\components\Widget;
 use humhub\libs\Html;
+use humhub\modules\user\models\Group;
 use humhub\modules\user\models\ProfileField;
 use Yii;
 
@@ -26,9 +27,19 @@ class PeopleFilters extends Widget
      */
     public function run()
     {
+        $groupOptions = [];
+        $groups = Group::findAll(['show_at_directory' => 1]);
+        if ($groups) {
+            $groupOptions[''] = Yii::t('UserModule.base', 'Any');
+            foreach ($groups as $group) {
+                $groupOptions[$group->id] = $group->name;
+            }
+        }
+
         $profileFields = ProfileField::findAll(['directory_filter' => 1]);
 
         return $this->render('peopleFilters', [
+            'groupOptions' => $groupOptions,
             'profileFields' => $profileFields,
         ]);
     }

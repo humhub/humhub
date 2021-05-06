@@ -11,6 +11,7 @@ use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\widgets\PeopleFilters;
 use yii\helpers\Url;
 
+/* @var $groupOptions array */
 /* @var $profileFields ProfileField[] */
 ?>
 
@@ -22,15 +23,21 @@ use yii\helpers\Url;
             <?= Html::textInput('keyword', PeopleFilters::getValue('keyword'), ['class' => 'form-control form-search-filter', 'placeholder' => Yii::t('UserModule.base', 'search for members')]); ?>
             <?= Html::submitButton('<span class="fa fa-search"></span>', ['class' => 'form-button-search']); ?>
         </div>
+        <?php if (count($groupOptions)) : ?>
+        <div class="col-md-2">
+            <div class="form-search-field-info"><?= Yii::t('UserModule.base', 'Group') ?></div>
+            <?= Html::dropDownList('groupId', PeopleFilters::getValue('groupId'), $groupOptions, ['data-action-change' => 'people.applyFilters', 'class' => 'form-control form-search-filter']); ?>
+        </div>
+        <?php endif; ?>
         <div class="col-md-2">
             <div class="form-search-field-info"><?= Yii::t('UserModule.base', 'Sorting') ?></div>
             <?= Html::dropDownList('sort', PeopleFilters::getValue('sort'), PeopleSettingsForm::getSortingOptions(), ['data-action-change' => 'people.applyFilters', 'class' => 'form-control form-search-filter']); ?>
         </div>
         <?php foreach ($profileFields as $profileField) : ?>
-            <div class="col-md-2">
-                <div class="form-search-field-info"><?= Yii::t($profileField->getTranslationCategory(), $profileField->title) ?></div>
-                <?= PeopleFilters::renderProfileFieldFilter($profileField) ?>
-            </div>
+        <div class="col-md-2">
+            <div class="form-search-field-info"><?= Yii::t($profileField->getTranslationCategory(), $profileField->title) ?></div>
+            <?= PeopleFilters::renderProfileFieldFilter($profileField) ?>
+        </div>
         <?php endforeach; ?>
         <div class="col-md-2 form-search-without-info">
             <?= Html::a(Yii::t('UserModule.base', 'Reset filters'), Url::to(['/user/people']), ['class' => 'form-search-reset']); ?>
