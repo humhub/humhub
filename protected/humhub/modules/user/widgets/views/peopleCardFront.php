@@ -18,12 +18,12 @@ use yii\web\View;
 ?>
 
 <div class="card-front">
-    <div class="card-image<?= $user->getProfileBannerImage()->hasImage() ? '' : ' card-no-image'; ?>" style="background-image: url('<?= $user->getProfileBannerImage()->getUrl() ?>')"></div>
+    <div class="card-bg-image<?= $user->getProfileBannerImage()->hasImage() ? '' : ' card-no-bg-image'; ?>" style="background-image: url('<?= $user->getProfileBannerImage()->getUrl() ?>')"></div>
     <div class="card-header">
         <?= Image::widget([
             'user' => $user,
-            'linkOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id],
-            'htmlOptions' => ['class' => 'card-user-image'],
+            'htmlOptions' => ['class' => 'card-image-wrapper'],
+            'linkOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id, 'class' => 'card-image-link'],
             'width' => 100,
         ]); ?>
         <div class="card-buttons">

@@ -140,13 +140,13 @@
         }
 
         .card-front {
-            .card-image {
+            .card-bg-image {
                 width: 100%;
                 height: 99px;
                 background-size: cover;
                 background-position: center;
                 border-radius: 4px 4px 0 0;
-                &.card-no-image {
+                &.card-no-bg-image {
                     border: 1px solid #fff;
                 }
             }
@@ -155,12 +155,13 @@
                 margin-top: -58px;
                 display: table;
                 width: 100%;
-                .card-user-image {
+                .card-image-wrapper {
                     display: table-cell;
-                    img {
-                        border: 2px solid #fff;
-                        border-radius: 6px;
-                    }
+                }
+                .card-image-link {
+                    display: inline-block;
+                    border: 2px solid #fff;
+                    border-radius: 6px;
                 }
                 .card-buttons {
                     display: table-cell;
