@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.8.3 (Unreleased)
+----------------------
+- Fix #29: Fix login form view on browser back button after footer link
+
 
 1.8.2 (April 26, 2021)
 ----------------------
