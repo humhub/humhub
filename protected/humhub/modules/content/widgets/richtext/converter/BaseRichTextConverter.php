@@ -350,6 +350,14 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     }
 
     /**
+     * @inheritdoc
+     */
+    protected function parseImage($markdown)
+    {
+        return parent::parseImage($markdown);
+    }
+
+    /**
      * Extends parent regex patter in order to support extension metadata as image size ![Scaled Image](http://localhost/static/img/logo.png =150x)
      * @param $markdown
      * @return array|bool

@@ -5,6 +5,7 @@ HumHub Changelog
 ----------------------
 - Fix #29: Fix login form view on browser back button after footer link
 - Fix #5066: Fix pin and archive global content without container
+- Fix #5046: Fix a mention link in email html message
 
 
 1.8.2 (April 26, 2021)
