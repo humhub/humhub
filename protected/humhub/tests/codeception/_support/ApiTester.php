@@ -113,9 +113,19 @@ class ApiTester extends BaseTester
      * @param string $url
      * @param array $jsonResults
      * @param array $paginationParams
+     * @param array $urlParams
      */
-    public function seePaginationGetResponse($url, $jsonResults = [], $paginationParams = [])
+    public function seePaginationGetResponse($url, $jsonResults = [], $paginationParams = [], $urlParams = [])
     {
+        $encodedUrlParams = [];
+        foreach ($urlParams as $paramKey => $paramValue) {
+            $encodedUrlParams[] = $paramKey . '=' . urlencode($paramValue);
+        }
+
+        if (!empty($encodedUrlParams)) {
+            $url .= (strpos($url, '?') === false ? '?' : '&') . implode('&', $encodedUrlParams);
+        }
+
         $this->sendGet($url);
         $this->seePaginationResponseContainsJson($url, $jsonResults, $paginationParams);
     }
@@ -216,7 +226,7 @@ class ApiTester extends BaseTester
      */
     protected function getPaginationUrl($url, $page = 1)
     {
-        return '/api/v1/' . trim($url, '/') . '?page=' . (empty($page) ? 1 : $page) . '&per-page=100';
+        return '/api/v1/' . trim($url, '/') . (strpos($url, '?') === false ? '?' : '&') . 'page=' . (empty($page) ? 1 : $page) . '&per-page=100';
     }
 
     /**
