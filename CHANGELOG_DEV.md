@@ -21,3 +21,4 @@
 - Enh #5026: Tests for tokenized image urls in email message
 - Enh #5049: Required profile field should not be required in administration
 - Enh #5065: Add checking for php PCNTL extension
+- Enh #5073: Enhance API tests
