@@ -26,7 +26,7 @@ class HumHubApiTestCest
     protected function enableRestModule()
     {
         /* @var Module $module */
-        $module = Yii::$app->getModule('rest');
+        $module = Yii::$app->moduleManager->getModule('rest');
         if (!$module) {
             return false;
         }

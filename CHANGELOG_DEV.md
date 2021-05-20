@@ -22,3 +22,4 @@
 - Enh #5049: Required profile field should not be required in administration
 - Enh #5065: Add checking for php PCNTL extension
 - Enh #5073: Enhance API tests
+- Fix #5078: Fix enabling of REST module on run API tests
