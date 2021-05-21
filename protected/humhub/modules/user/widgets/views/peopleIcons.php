@@ -6,18 +6,12 @@
  */
 
 use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\PeopleCard;
 use yii\web\View;
 
 /* @var $this View */
 /* @var $user User */
 ?>
 
-<a href="#" class="fa fa-mobile-phone"></a>
-<a href="#" class="fa fa-comment-o"></a>
 <a href="#" class="fa fa-envelope-o"></a>
-<a href="#" class="fa fa-video-camera"></a>
-
-<?php if (PeopleCard::hasBothSides()) : ?>
-    <span class="fa fa-arrow-right card-rotator" data-action-click="people.rotateCard"></span>
-<?php endif; ?>
+<a href="#" class="fa fa-comment-o"></a>
+<a href="#" class="fa fa-mobile-phone"></a>

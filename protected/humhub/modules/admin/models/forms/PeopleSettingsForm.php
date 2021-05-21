@@ -20,16 +20,15 @@ use yii\base\Model;
 class PeopleSettingsForm extends Model
 {
 
-    public $userDetails;
-    public $backsideLine1;
-    public $backsideLine2;
-    public $backsideLine3;
+    public $detail1;
+    public $detail2;
+    public $detail3;
     public $defaultSorting;
 
     /**
-     * @var array Cached options for backside lines from tables of user profile and its categories
+     * @var array Cached options for card details from tables of user profile and its categories
      */
-    private $backsideLineOptions;
+    private $detailOptions;
 
     /**
      * @inheritdoc
@@ -39,10 +38,9 @@ class PeopleSettingsForm extends Model
         parent::init();
 
         // Set default values
-        $this->userDetails = Yii::$app->settings->get('people.userDetails', 'full');
-        $this->backsideLine1 = Yii::$app->settings->get('people.backsideLine1', 'city');
-        $this->backsideLine2 = Yii::$app->settings->get('people.backsideLine2', 'mobile');
-        $this->backsideLine3 = Yii::$app->settings->get('people.backsideLine3', 'email_virtual');
+        $this->detail1 = Yii::$app->settings->get('people.detail1', '');
+        $this->detail2 = Yii::$app->settings->get('people.detail2', '');
+        $this->detail3 = Yii::$app->settings->get('people.detail3', '');
         $this->defaultSorting = Yii::$app->settings->get('people.defaultSorting', 'lastlogin');
     }
 
@@ -52,10 +50,9 @@ class PeopleSettingsForm extends Model
     public function rules()
     {
         return [
-            ['userDetails', 'in', 'range' => array_keys($this->getUserDetailsOptions())],
-            ['backsideLine1', 'in', 'range' => $this->getBacksideLineKeys()],
-            ['backsideLine2', 'in', 'range' => $this->getBacksideLineKeys()],
-            ['backsideLine3', 'in', 'range' => $this->getBacksideLineKeys()],
+            ['detail1', 'in', 'range' => $this->getDetailKeys()],
+            ['detail2', 'in', 'range' => $this->getDetailKeys()],
+            ['detail3', 'in', 'range' => $this->getDetailKeys()],
             ['defaultSorting', 'in', 'range' => array_keys(self::getSortingOptions())],
         ];
     }
@@ -66,10 +63,9 @@ class PeopleSettingsForm extends Model
     public function attributeLabels()
     {
         return [
-            'userDetails' => Yii::t('AdminModule.user', 'User Details'),
-            'backsideLine1' => Yii::t('AdminModule.user', 'Backside Details Line 1'),
-            'backsideLine2' => Yii::t('AdminModule.user', 'Backside Details Line 2'),
-            'backsideLine3' => Yii::t('AdminModule.user', 'Backside Details Line 3'),
+            'detail1' => Yii::t('AdminModule.user', 'Details Line 1'),
+            'detail2' => Yii::t('AdminModule.user', 'Details Line 2'),
+            'detail3' => Yii::t('AdminModule.user', 'Details Line 3'),
             'defaultSorting' => Yii::t('AdminModule.user', 'Default Sorting'),
         ];
     }
@@ -80,10 +76,9 @@ class PeopleSettingsForm extends Model
      */
     public function save()
     {
-        Yii::$app->settings->set('people.userDetails', $this->userDetails);
-        Yii::$app->settings->set('people.backsideLine1', $this->backsideLine1);
-        Yii::$app->settings->set('people.backsideLine2', $this->backsideLine2);
-        Yii::$app->settings->set('people.backsideLine3', $this->backsideLine3);
+        Yii::$app->settings->set('people.detail1', $this->detail1);
+        Yii::$app->settings->set('people.detail2', $this->detail2);
+        Yii::$app->settings->set('people.detail3', $this->detail3);
         Yii::$app->settings->set('people.defaultSorting', $this->defaultSorting);
 
         DynamicConfig::rewrite();
@@ -91,22 +86,13 @@ class PeopleSettingsForm extends Model
         return true;
     }
 
-    public function getUserDetailsOptions(): array
+    public function getDetailOptions(): array
     {
-        return [
-            'full' => Yii::t('AdminModule.user', 'Show full user data'),
-            'front' => Yii::t('AdminModule.user', 'Front only'),
-            'back' => Yii::t('AdminModule.user', 'Back side only'),
-        ];
-    }
-
-    public function getBacksideLineOptions(): array
-    {
-        if (isset($this->backsideLineOptions)) {
-            return $this->backsideLineOptions;
+        if (isset($this->detailOptions)) {
+            return $this->detailOptions;
         }
 
-        $this->backsideLineOptions = ['' => Yii::t('AdminModule.user', 'None')];
+        $this->detailOptions = ['' => Yii::t('AdminModule.user', 'None')];
 
         $profileFields = ProfileField::find()
             ->leftJoin('profile_field_category', 'profile_field_category.id = profile_field_category_id')
@@ -117,20 +103,20 @@ class PeopleSettingsForm extends Model
             /* @var $profileFieldCategory ProfileFieldCategory */
             $profileFieldCategory = $profileField->getCategory()->one();
 
-            if (!isset($this->backsideLineOptions[$profileFieldCategory->title])) {
-                $this->backsideLineOptions[$profileFieldCategory->title] = [];
+            if (!isset($this->detailOptions[$profileFieldCategory->title])) {
+                $this->detailOptions[$profileFieldCategory->title] = [];
             }
 
-            $this->backsideLineOptions[$profileFieldCategory->title][$profileField->internal_name] = $profileField->title . ($profileField->visible ? '' : ' (' . Yii::t('AdminModule.user', 'Not visible') . ')');
+            $this->detailOptions[$profileFieldCategory->title][$profileField->internal_name] = $profileField->title . ($profileField->visible ? '' : ' (' . Yii::t('AdminModule.user', 'Not visible') . ')');
         }
 
-        return $this->backsideLineOptions;
+        return $this->detailOptions;
     }
 
-    private function getBacksideLineKeys(): array
+    private function getDetailKeys(): array
     {
         $keys = [];
-        $options = self::getBacksideLineOptions();
+        $options = self::getDetailOptions();
 
         foreach ($options as $key => $option) {
             if (is_array($option)) {

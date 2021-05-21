@@ -75,7 +75,18 @@
             position: relative;
         }
 
-        .card-front, .card-back {
+        .card-icons .fa {
+            color: #21a1b3;
+            margin-right: 5px;
+            &.fa-mobile-phone {
+                font-size: 22px;
+                line-height: 15px;
+                position: relative;
+                top: 2px;
+            }
+        }
+
+        .card-front {
             width: 100%;
             height: 100%;
             border-radius: 4px;
@@ -88,11 +99,11 @@
         .card-body {
             position: absolute;
             top: 150px;
-            left: 24px;
-            right: 24px;
+            left: 16px;
+            right: 16px;
             bottom: 63px;
             overflow: auto;
-            .card-info {
+            .card-details {
                 color: #57646c;
                 a {
                     color: #21a1b3;
@@ -101,6 +112,9 @@
                         text-decoration: none;
                     }
                 }
+            }
+            .card-tags {
+                margin-top: 20px;
             }
         }
         .card-footer {
@@ -112,43 +126,32 @@
             padding: 16px 0;
             border-top: 1px solid #ddd;
             background: #fff;
-            .fa {
+            &.card-icons .fa {
                 font-size: 20px;
-                color: #21a1b3;
                 margin-right: 24px;
-                &.fa-mobile-phone {
-                    font-size: 28px;
-                    line-height: 15px;
-                    position: relative;
-                    top: 4px;
-                }
-                &.card-rotator {
-                    cursor: pointer;
-                    margin-right: 0;
-                    float: right;
-                }
+            }
+            &.card-buttons {
+                border: none;
             }
         }
         h4 {
             font-size: 16px;
             font-weight: bold;
             line-height: 1.5;
-            margin: 0;
+            margin: 12px 0 0 0;
         }
         h5 {
-            margin-bottom: 30px;
+            margin: 0 0 10px;
         }
 
         .card-front {
             .card-bg-image {
                 width: 100%;
                 height: 99px;
+                background-color: #cfcfcf;
                 background-size: cover;
                 background-position: center;
                 border-radius: 4px 4px 0 0;
-                &.card-no-bg-image {
-                    border: 1px solid #fff;
-                }
             }
             .card-header {
                 padding: 0 16px 24px 16px;
@@ -163,58 +166,21 @@
                     border: 2px solid #fff;
                     border-radius: 6px;
                 }
-                .card-buttons {
+                .card-icons {
                     display: table-cell;
                     padding-left: 8px;
                     text-align: right;
                     vertical-align: bottom;
-                    a {
-                        margin-top: 5px;
-                        white-space: normal;
-                        border: 1px solid #fff;
-                    }
-                }
-            }
-        }
-
-        .card-back {
-            .card-header {
-                padding: 8px 8px 8px 24px;
-                .pull-right {
-                    margin-left: 8px;
-                }
-            }
-            .card-body {
-                top: 116px;
-                .card-buttons {
-                    margin-top: 24px;
+                    font-size: 16px;
                 }
             }
         }
     }
 
-    .cards-rotatable {
-        .card {
-            perspective: 1000px;
-            > div {
-                transition-duration: 0.6s;
-                transition-timing-function: ease-in-out;
-                transform-style: preserve-3d;
-
-                &.card-rotated {
-                    transform: rotateY(180deg);
-                }
-            }
-            .card-front, .card-back {
-                backface-visibility: hidden;
-                transform: rotateX(0deg);
-            }
-            .card-front {
-                z-index: 2;
-            }
-            .card-back {
-                transform: rotateY(180deg);
-            }
-        }
+    .btn-primary {
+        background: #2d3340;
+    }
+    .btn-info {
+        background: #21a1b3;
     }
 }

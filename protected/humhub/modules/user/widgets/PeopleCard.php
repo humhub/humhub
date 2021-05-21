@@ -30,21 +30,9 @@ class PeopleCard extends Widget
      */
     public function run()
     {
-        $html = '';
-
-        if (self::hasFrontSide()) {
-            $html .= $this->render('peopleCardFront', [
-                'user' => $this->user
-            ]);
-        }
-
-        if (self::hasBackSide()) {
-            $html .= $this->render('peopleCardBack', [
-                'user' => $this->user
-            ]);
-        }
-
-        return $html;
+        return $this->render('peopleCard', [
+            'user' => $this->user
+        ]);
     }
 
     public static function config($name): string
@@ -52,21 +40,6 @@ class PeopleCard extends Widget
         $peopleSettingsForm = new PeopleSettingsForm();
 
         return isset($peopleSettingsForm->$name) ? $peopleSettingsForm->$name : '';
-    }
-
-    public static function hasBothSides(): bool
-    {
-        return self::config('userDetails') === 'full';
-    }
-
-    public static function hasFrontSide(): bool
-    {
-        return self::hasBothSides() || self::config('userDetails') == 'front';
-    }
-
-    public static function hasBackSide(): bool
-    {
-        return self::hasBothSides() || self::config('userDetails') == 'back';
     }
 
 }

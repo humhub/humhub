@@ -17,7 +17,7 @@ use yii\web\View;
 ?>
 
 <div class="card-front">
-    <div class="card-bg-image<?= $space->getProfileBannerImage()->hasImage() ? '' : ' card-no-bg-image'; ?>" style="background-image: url('<?= $space->getProfileBannerImage()->getUrl() ?>')"></div>
+    <div class="card-bg-image"<?php if ($space->getProfileBannerImage()->hasImage()) : ?> style="background-image: url('<?= $space->getProfileBannerImage()->getUrl() ?>')"<?php endif; ?>></div>
     <div class="card-header">
         <?= Image::widget([
             'space' => $space,
@@ -31,7 +31,7 @@ use yii\web\View;
         <h5><?= Html::encode($space->description); ?></h5>
         <?= SpacesTagList::widget(['space' => $space]); ?>
     </div>
-    <div class="card-footer">
+    <div class="card-footer card-icons">
         <?= SpacesIcons::widget(['space' => $space]); ?>
     </div>
 </div>

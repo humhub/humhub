@@ -31,6 +31,11 @@ class PeopleTagList extends Widget
     public $maxTags = 5;
 
     /**
+     * @var string Template for tags
+     */
+    public $template = '{tags}';
+
+    /**
      * @inheritdoc
      */
     public function run()
@@ -49,11 +54,15 @@ class PeopleTagList extends Widget
             $tags = array_slice($tags, 0, $this->maxTags);
         }
 
+        if (empty($tags)) {
+            return $html;
+        }
+
         foreach ($tags as $tag) {
             $html .= Html::a(Html::encode($tag), Url::to(['/user/people', 'keyword' => trim($tag)]), ['class' => 'label label-default']) . '&nbsp';
         }
 
-        return $html;
+        return str_replace('{tags}', $html, $this->template);
     }
 
 }

@@ -34,7 +34,7 @@ PeopleAsset::register($this);
 
 </div>
 
-<div class="row<?php if (PeopleCard::hasBothSides()) : ?> cards-rotatable<?php endif; ?>">
+<div class="row">
     <?php if (!$people->exists()): ?>
     <div class="col-md-12">
         <div class="panel panel-default">

@@ -9,6 +9,7 @@ use humhub\libs\Html;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\PeopleActionButtons;
 use humhub\modules\user\widgets\Image;
+use humhub\modules\user\widgets\PeopleDetails;
 use humhub\modules\user\widgets\PeopleIcons;
 use humhub\modules\user\widgets\PeopleTagList;
 use yii\web\View;
@@ -18,7 +19,7 @@ use yii\web\View;
 ?>
 
 <div class="card-front">
-    <div class="card-bg-image<?= $user->getProfileBannerImage()->hasImage() ? '' : ' card-no-bg-image'; ?>" style="background-image: url('<?= $user->getProfileBannerImage()->getUrl() ?>')"></div>
+    <div class="card-bg-image"<?php if ($user->getProfileBannerImage()->hasImage()) : ?> style="background-image: url('<?= $user->getProfileBannerImage()->getUrl() ?>')"<?php endif; ?>></div>
     <div class="card-header">
         <?= Image::widget([
             'user' => $user,
@@ -26,16 +27,24 @@ use yii\web\View;
             'linkOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id, 'class' => 'card-image-link'],
             'width' => 100,
         ]); ?>
-        <div class="card-buttons">
-            <?= PeopleActionButtons::widget(['user' => $user]); ?>
+        <div class="card-icons">
+            <?= PeopleIcons::widget(['user' => $user]); ?>
         </div>
     </div>
     <div class="card-body">
         <h4><?= Html::containerLink($user); ?></h4>
         <h5><?= Html::encode($user->profile->title); ?></h5>
-        <?= PeopleTagList::widget(['user' => $user]); ?>
+        <?= PeopleDetails::widget([
+            'user' => $user,
+            'template' => '<div class="card-details">{lines}</div>',
+            'separator' => '<br>',
+        ]); ?>
+        <?= PeopleTagList::widget([
+            'user' => $user,
+            'template' => '<div class="card-tags">{tags}</div>',
+        ]); ?>
     </div>
-    <div class="card-footer">
-        <?= PeopleIcons::widget(['user' => $user]); ?>
+    <div class="card-footer card-buttons">
+        <?= PeopleActionButtons::widget(['user' => $user]); ?>
     </div>
 </div>

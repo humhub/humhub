@@ -12,12 +12,12 @@ use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 
 /**
- * PeopleBacksideDetails shows details for back side of the people card
+ * PeopleDetails shows details for back side of the people card
  * 
  * @since 1.9
  * @author Luke
  */
-class PeopleBacksideDetails extends Widget
+class PeopleDetails extends Widget
 {
 
     /**
@@ -31,6 +31,11 @@ class PeopleBacksideDetails extends Widget
     public $separator = '<br>';
 
     /**
+     * @var string Template for lines
+     */
+    public $template = '{lines}';
+
+    /**
      * @inheritdoc
      */
     public function run()
@@ -38,12 +43,16 @@ class PeopleBacksideDetails extends Widget
         $lines = [];
 
         for ($i = 1; $i <= 3; $i++) {
-            if ($profileField = $this->getProfileFieldValue(PeopleCard::config('backsideLine' . $i))) {
+            if ($profileField = $this->getProfileFieldValue(PeopleCard::config('detail' . $i))) {
                 $lines[] = $profileField;
             }
         }
 
-        return implode($this->separator, $lines);
+        if (empty($lines)) {
+            return '';
+        }
+
+        return str_replace('{lines}', implode($this->separator, $lines), $this->template);
     }
 
     /**
