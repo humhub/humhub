@@ -47,25 +47,6 @@ humhub.module('ui.view', function (module, require, $) {
         return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     };
 
-    module.initOnPjaxLoad = true;
-
-    var init = function (pjax) {
-        prevSwipeDelay = false;
-        prevSwipe = false;
-        $('body').removeClass('modal-open');
-
-        if(isSmall() || isMedium() && module.config.useDefaultSwipe) {
-            setTimeout(initMobileSidebar, 50);
-        }
-
-        module.log.debug('View state', state);
-        module.log.debug('View context', viewContext);
-    };
-
-    var unload = function() {
-        setViewContext(null);
-    };
-
     var isSwipeAllowed = function() {
         return !prevSwipeDelay && !prevSwipe;
     };
@@ -165,10 +146,80 @@ humhub.module('ui.view', function (module, require, $) {
         return $topBar.position().top + $topBar.height();
     };
 
+    var snapShots = {};
+
+    var snapShot = function(state, callback) {
+        state.snapShot = true;
+        state.replace = object.isDefined(state.replace) ? state.replace : true;
+        state.scrollY = window.scrollY;
+        state.scrollX = window.scrollX;
+        state.url = state.url || window.location;
+        state.title = state.title || document.title;
+
+        snapShots[state.url] = {
+            $content: $('#layout-content').contents(),
+            state: state,
+            callback: callback
+        };
+
+        console.log('snapshot: '+state.url);
+
+        if(state.replace) {
+            history.replaceState(state, state.title, state.url)
+        } else {
+            history.pushState(state, state.title, state.url)
+        }
+    }
+
+    module.initOnPjaxLoad = true;
+
+    var init = function (pjax) {
+        prevSwipeDelay = false;
+        prevSwipe = false;
+        $('body').removeClass('modal-open');
+
+        if(isSmall() || isMedium() && module.config.useDefaultSwipe) {
+            setTimeout(initMobileSidebar, 50);
+        }
+
+        module.log.debug('View state', state);
+        module.log.debug('View context', viewContext);
+
+        if(!pjax) {
+            $(window).off('popstate.pjax');
+            $(window).on('popstate.humhub', function(event) {
+                debugger;
+                if(!event.state) {
+                    return;
+                }
+
+                var snapShot = snapShots[event.state.url];
+                if(snapShot) {
+                    $('#layout-content').html(snapShot.$content);
+                    if(snapShot.callback) {
+                        snapShot.callback.call(snapShot);
+                    }
+
+                    if(snapShot.scrollY || snapShot.scrollY) {
+                        window.scrollTo(snapShot.scrollX, snapShot.scrollY);
+                    }
+
+                } else {
+                    require('client').redirect(event.state.url, {replace: false, push: false});
+                }
+            });
+        }
+    };
+
+    var unload = function() {
+        setViewContext(null);
+    };
+
     module.export({
         init: init,
         unload: unload,
         sortOrder: 100,
+        snapShot: snapShot,
         isSmall: isSmall,
         preventSwipe: preventSwipe,
         isActiveScroll: isActiveScroll,

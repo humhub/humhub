@@ -338,7 +338,7 @@ humhub.module('client', function (module, require, $) {
         redirect(url);
     };
 
-    var redirect = function(url) {
+    var redirect = function(url, options) {
         if(!url) {
             return;
         }
@@ -347,11 +347,10 @@ humhub.module('client', function (module, require, $) {
 
         if (object.isString(url)) {
             if(module.pjax && module.pjax.config.active) {
-                module.pjax.redirect(url);
+                module.pjax.redirect(url, options);
             } else {
                 document.location = url;
             }
-            return;
         }
     };
 

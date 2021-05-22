@@ -19,8 +19,12 @@ humhub.module('client.pjax', function (module, require, $) {
         $.pjax($options);
     };
 
-    var redirect = function(url) {
-        $.pjax({url: url, container: PJAX_CONTAINER_SELECTOR, timeout : module.config.options.timeout});
+    var redirect = function(url, options) {
+        options = options || {};
+        options.url = url;
+        options.container = PJAX_CONTAINER_SELECTOR;
+        options.timeout = module.config.options.timeout;
+        $.pjax(options);
     };
 
     var reload = function() {

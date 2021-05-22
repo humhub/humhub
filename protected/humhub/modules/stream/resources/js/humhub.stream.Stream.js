@@ -23,6 +23,7 @@ humhub.module('stream.Stream', function (module, require, $) {
     var StreamRequest =  require('stream').StreamRequest;
     var loader = require('ui.loader');
     var event = require('event');
+    var view = require('ui.view');
 
     var EVENT_AFTER_ADD_ENTRIES = 'humhub:stream:afterAddEntries';
     var EVENT_BEFORE_ADD_ENTRIES = 'humhub:stream:beforeAddEntries';
@@ -550,6 +551,8 @@ humhub.module('stream.Stream', function (module, require, $) {
         var hasEntries = this.hasEntries();
 
         this.$.find('.streamMessage').remove();
+
+        view.snapShot({instance: this});
 
         if(!hasEntries && this.isShowSingleEntry()) {
             // we only show an error if we load a single entry we are not allowed to view, otherwise just reload the stream
