@@ -432,6 +432,17 @@ humhub.module('client', function (module, require, $) {
 
     var init = function (isPjax) {
         if (!isPjax) {
+            $(document).on('click', 'a:not([href="#"],[data-action-click],[data-target],[data-toggle])', function(evt) {
+                var href = $(this).attr('href');
+                if(!href || href.charAt(0) !== '#') {
+                    return;
+                }
+
+                evt.preventDefault();
+                view.toAnchor(href);
+            });
+
+
             if(module.config.reloadableScripts) {
                 $.extend(yii.reloadableScripts, module.config.reloadableScripts)
             }
