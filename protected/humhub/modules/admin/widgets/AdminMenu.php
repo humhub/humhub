@@ -89,9 +89,24 @@ class AdminMenu extends LeftNavigation
             ])
         ]));
 
+        /** @var Module $module */
+        $module = Yii::$app->getModule('marketplace');
+
+        if (!$module->enabled) {
+            return;
+        }
+
+        $updatesBadge = '';
+        $updatesCount = count($module->onlineModuleManager->getModuleUpdates());
+        if ($updatesCount > 0) {
+            $updatesBadge = '&nbsp;&nbsp;<span class="label label-danger">' . $updatesCount . '</span>';
+        } else {
+            $updatesBadge = '&nbsp;&nbsp;<span class="label label-default">0</span>';
+        }
+
         $this->addEntry(new MenuLink([
             'id' => 'modules',
-            'label' => Yii::t('AdminModule.base', 'Modules'),
+            'label' => Yii::t('AdminModule.base', 'Modules') .$updatesBadge,
             'url' => ['/admin/module'],
             'icon' => 'rocket',
             'sortOrder' => 500,
