@@ -40,9 +40,11 @@ class PeopleFilters extends Widget
             '' => Yii::t('UserModule.base', 'All'),
             'followers' => Yii::t('UserModule.base', 'Followers'),
             'following' => Yii::t('UserModule.base', 'Following'),
-            'friends' => Yii::t('UserModule.base', 'Friends'),
-            'pending_friends' => Yii::t('UserModule.base', 'Pending Friends'),
         ];
+        if (Yii::$app->getModule('friendship')->settings->get('enable')) {
+            $connectionOptions['friends'] = Yii::t('UserModule.base', 'Friends');
+            $connectionOptions['pending_friends'] = Yii::t('UserModule.base', 'Pending Friends');
+        }
 
         $profileFields = ProfileField::findAll(['directory_filter' => 1]);
 

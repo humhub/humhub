@@ -65,14 +65,14 @@ class PeopleQuery extends ActiveQueryUser
         $this->paginate();
     }
 
-    public function filterByKeyword()
+    public function filterByKeyword(): PeopleQuery
     {
         $keyword = Yii::$app->request->get('keyword', '');
 
         return $this->search($keyword);
     }
 
-    public function filterByProfileFields()
+    public function filterByProfileFields(): PeopleQuery
     {
         $fields = Yii::$app->request->get('fields', []);
 
@@ -116,7 +116,7 @@ class PeopleQuery extends ActiveQueryUser
         return $this;
     }
 
-    public function filterByGroup()
+    public function filterByGroup(): PeopleQuery
     {
         $groupId = Yii::$app->request->get('groupId', 0);
 
@@ -131,35 +131,56 @@ class PeopleQuery extends ActiveQueryUser
         return $this;
     }
 
-    public function filterByConnection()
+    public function filterByConnection(): PeopleQuery
     {
         switch (Yii::$app->request->get('connection')) {
             case 'followers':
-                $this->innerJoin('user_follow', 'user_follow.object_model = :user_class AND user_follow.user_id = user.id', [':user_class' => User::class]);
-                $this->andWhere(['user_follow.object_id' => Yii::$app->user->id]);
-                break;
-
+                return $this->filterByConnectionFollowers();
             case 'following':
-                $this->innerJoin('user_follow', 'user_follow.object_model = :user_class AND user_follow.object_id = user.id', [':user_class' => User::class]);
-                $this->andWhere(['user_follow.user_id' => Yii::$app->user->id]);
-                break;
-
+                return $this->filterByConnectionFollowing();
             case 'friends':
-                $this->innerJoin('user_friendship AS uf_current', 'uf_current.friend_user_id = user.id');
-                $this->andWhere(['uf_current.user_id' => Yii::$app->user->id]);
-                $this->innerJoin('user_friendship AS uf_friend', 'uf_friend.user_id = user.id');
-                $this->andWhere(['uf_friend.friend_user_id' => Yii::$app->user->id]);
-                break;
-
+                return $this->filterByConnectionFriends();
             case 'pending_friends':
-                $this->innerJoin('user_friendship AS uf_current', 'uf_current.friend_user_id = user.id');
-                $this->andWhere(['uf_current.user_id' => Yii::$app->user->id]);
-                $this->leftJoin('user_friendship AS uf_friend', 'uf_friend.user_id = user.id');
-                $this->andWhere(['IS', 'uf_friend.friend_user_id', new Expression('NULL')]);
-                break;
+                return $this->filterByConnectionPendingFriends();
         }
 
         return $this;
+    }
+
+    public function filterByConnectionFollowers(): PeopleQuery
+    {
+        return $this->innerJoin('user_follow', 'user_follow.object_model = :user_class AND user_follow.user_id = user.id', [':user_class' => User::class])
+            ->andWhere(['user_follow.object_id' => Yii::$app->user->id]);
+    }
+
+    public function filterByConnectionFollowing(): PeopleQuery
+    {
+        return $this->innerJoin('user_follow', 'user_follow.object_model = :user_class AND user_follow.object_id = user.id', [':user_class' => User::class])
+            ->andWhere(['user_follow.user_id' => Yii::$app->user->id]);
+    }
+
+    public function filterByConnectionFriends(): PeopleQuery
+    {
+        if (!Yii::$app->getModule('friendship')->settings->get('enable')) {
+            return $this;
+        }
+
+        return $this->innerJoin('user_friendship AS uf_current', 'uf_current.friend_user_id = user.id')
+            ->andWhere(['uf_current.user_id' => Yii::$app->user->id])
+            ->innerJoin('user_friendship AS uf_friend', 'uf_friend.user_id = user.id')
+            ->andWhere(['uf_friend.friend_user_id' => Yii::$app->user->id]);
+    }
+
+    public function filterByConnectionPendingFriends(): PeopleQuery
+    {
+        if (!Yii::$app->getModule('friendship')->settings->get('enable')) {
+            return $this;
+        }
+
+        return $this->innerJoin('user_friendship AS uf_current', 'uf_current.friend_user_id = user.id')
+            ->andWhere(['uf_current.user_id' => Yii::$app->user->id])
+            ->leftJoin('user_friendship AS uf_friend', 'uf_friend.user_id = user.id')
+            ->andWhere(['IS', 'uf_friend.friend_user_id', new Expression('NULL')]);
     }
 
     public function isFilteredByGroup(): bool
@@ -167,7 +188,7 @@ class PeopleQuery extends ActiveQueryUser
         return $this->filteredGroup instanceof Group;
     }
 
-    public function order()
+    public function order(): PeopleQuery
     {
         switch (PeopleFilters::getValue('sort')) {
             case 'firstname':
@@ -188,7 +209,7 @@ class PeopleQuery extends ActiveQueryUser
         return $this;
     }
 
-    public function paginate()
+    public function paginate(): PeopleQuery
     {
         $countQuery = clone $this;
         $this->pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->pageSize]);
