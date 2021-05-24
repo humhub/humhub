@@ -53,4 +53,13 @@ class SpacesFilters extends Widget
         ];
     }
 
+    public static function getConnectionOptions(): array
+    {
+        return [
+            '' => Yii::t('SpaceModule.base', 'All'),
+            'member' => Yii::t('SpaceModule.base', 'Member'),
+            'follow' => Yii::t('SpaceModule.base', 'Follow'),
+        ];
+    }
+
 }

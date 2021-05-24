@@ -22,6 +22,10 @@ use yii\helpers\Url;
             <div class="form-search-field-info"><?= Yii::t('SpaceModule.base', 'Sorting') ?></div>
             <?= Html::dropDownList('sort', SpacesFilters::getValue('sort'), SpacesFilters::getSortingOptions(), ['data-action-change' => 'people.applyFilters', 'class' => 'form-control form-search-filter']); ?>
         </div>
+        <div class="col-md-2">
+            <div class="form-search-field-info"><?= Yii::t('SpaceModule.base', 'Connection') ?></div>
+            <?= Html::dropDownList('connection', SpacesFilters::getValue('connection'), SpacesFilters::getConnectionOptions(), ['data-action-change' => 'people.applyFilters', 'class' => 'form-control form-search-filter']); ?>
+        </div>
         <div class="col-md-2 form-search-without-info">
             <?= Html::a(Yii::t('UserModule.base', 'Reset filters'), Url::to(['/space/spaces']), ['class' => 'form-search-reset']); ?>
         </div>

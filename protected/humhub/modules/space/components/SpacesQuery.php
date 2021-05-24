@@ -7,6 +7,7 @@
 
 namespace humhub\modules\space\components;
 
+use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\SpacesFilters;
 use Yii;
@@ -48,20 +49,46 @@ class SpacesQuery extends ActiveQuerySpace
         $this->visible();
 
         $this->filterByKeyword();
+        $this->filterByConnection();
 
         $this->order();
 
         $this->paginate();
     }
 
-    public function filterByKeyword()
+    public function filterByKeyword(): SpacesQuery
     {
         $keyword = Yii::$app->request->get('keyword', '');
 
         return $this->search($keyword);
     }
 
-    public function order()
+    public function filterByConnection(): SpacesQuery
+    {
+        switch (Yii::$app->request->get('connection')) {
+            case 'member':
+                return $this->filterByConnectionMember();
+            case 'follow':
+                return $this->filterByConnectionFollow();
+        }
+
+        return $this;
+    }
+
+    public function filterByConnectionMember(): SpacesQuery
+    {
+        return $this->innerJoin('space_membership', 'space_membership.space_id = space.id')
+            ->andWhere(['space_membership.user_id' => Yii::$app->user->id])
+            ->andWhere(['space_membership.status' => Membership::STATUS_MEMBER]);
+    }
+
+    public function filterByConnectionFollow(): SpacesQuery
+    {
+        return $this->innerJoin('user_follow', 'user_follow.object_model = :space_class AND user_follow.object_id = space.id', [':space_class' => Space::class])
+            ->andWhere(['user_follow.user_id' => Yii::$app->user->id]);
+    }
+
+    public function order(): SpacesQuery
     {
         switch (SpacesFilters::getValue('sort')) {
             case 'name':
@@ -80,7 +107,7 @@ class SpacesQuery extends ActiveQuerySpace
         return $this;
     }
 
-    public function paginate()
+    public function paginate(): SpacesQuery
     {
         $countQuery = clone $this;
         $this->pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->pageSize]);
