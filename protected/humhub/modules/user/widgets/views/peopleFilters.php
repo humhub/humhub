@@ -12,6 +12,7 @@ use humhub\modules\user\widgets\PeopleFilters;
 use yii\helpers\Url;
 
 /* @var $groupOptions array */
+/* @var $connectionOptions array */
 /* @var $profileFields ProfileField[] */
 ?>
 
@@ -32,6 +33,10 @@ use yii\helpers\Url;
         <div class="col-md-2">
             <div class="form-search-field-info"><?= Yii::t('UserModule.base', 'Sorting') ?></div>
             <?= Html::dropDownList('sort', PeopleFilters::getValue('sort'), PeopleSettingsForm::getSortingOptions(), ['data-action-change' => 'people.applyFilters', 'class' => 'form-control form-search-filter']); ?>
+        </div>
+        <div class="col-md-2">
+            <div class="form-search-field-info"><?= Yii::t('UserModule.base', 'Connection') ?></div>
+            <?= Html::dropDownList('connection', PeopleFilters::getValue('connection'), $connectionOptions, ['data-action-change' => 'people.applyFilters', 'class' => 'form-control form-search-filter']); ?>
         </div>
         <?php foreach ($profileFields as $profileField) : ?>
         <div class="col-md-2">

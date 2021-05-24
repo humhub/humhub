@@ -14,6 +14,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\PeopleFilters;
 use Yii;
 use yii\data\Pagination;
+use yii\db\Expression;
 
 /**
  * PeopleQuery is used to query User records on the People page.
@@ -56,6 +57,7 @@ class PeopleQuery extends ActiveQueryUser
 
         $this->filterByKeyword();
         $this->filterByGroup();
+        $this->filterByConnection();
         $this->filterByProfileFields();
 
         $this->order();
@@ -124,6 +126,37 @@ class PeopleQuery extends ActiveQueryUser
                 $this->filteredGroup = $group;
                 $this->isGroupMember($group);
             }
+        }
+
+        return $this;
+    }
+
+    public function filterByConnection()
+    {
+        switch (Yii::$app->request->get('connection')) {
+            case 'followers':
+                $this->innerJoin('user_follow', 'user_follow.object_model = :user_class AND user_follow.user_id = user.id', [':user_class' => User::class]);
+                $this->andWhere(['user_follow.object_id' => Yii::$app->user->id]);
+                break;
+
+            case 'following':
+                $this->innerJoin('user_follow', 'user_follow.object_model = :user_class AND user_follow.object_id = user.id', [':user_class' => User::class]);
+                $this->andWhere(['user_follow.user_id' => Yii::$app->user->id]);
+                break;
+
+            case 'friends':
+                $this->innerJoin('user_friendship AS uf_current', 'uf_current.friend_user_id = user.id');
+                $this->andWhere(['uf_current.user_id' => Yii::$app->user->id]);
+                $this->innerJoin('user_friendship AS uf_friend', 'uf_friend.user_id = user.id');
+                $this->andWhere(['uf_friend.friend_user_id' => Yii::$app->user->id]);
+                break;
+
+            case 'pending_friends':
+                $this->innerJoin('user_friendship AS uf_current', 'uf_current.friend_user_id = user.id');
+                $this->andWhere(['uf_current.user_id' => Yii::$app->user->id]);
+                $this->leftJoin('user_friendship AS uf_friend', 'uf_friend.user_id = user.id');
+                $this->andWhere(['IS', 'uf_friend.friend_user_id', new Expression('NULL')]);
+                break;
         }
 
         return $this;
