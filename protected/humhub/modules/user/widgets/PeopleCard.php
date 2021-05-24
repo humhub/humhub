@@ -26,13 +26,20 @@ class PeopleCard extends Widget
     public $user;
 
     /**
+     * @var string HTML wrapper around card
+     */
+    public $template = '<div class="card card-people col-lg-3 col-md-4 col-sm-6 col-xs-12">{card}</div>';
+
+    /**
      * @inheritdoc
      */
     public function run()
     {
-        return $this->render('peopleCard', [
+        $card = $this->render('peopleCard', [
             'user' => $this->user
         ]);
+
+        return str_replace('{card}', $card, $this->template);
     }
 
     public static function config($name): string

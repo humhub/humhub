@@ -9,8 +9,9 @@ namespace humhub\modules\user\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\modules\mail\helpers\Url;
 use humhub\modules\user\components\PeopleQuery;
-use Yii;
+use humhub\modules\user\widgets\PeopleCard;use Yii;
 
 /**
  * PeopleController displays users directory
@@ -54,10 +55,32 @@ class PeopleController extends Controller
     {
         $peopleQuery = new PeopleQuery();
 
+        $urlParams = Yii::$app->request->getQueryParams();
+        unset($urlParams['page']);
+        array_unshift($urlParams, '/user/people/load-more');
+        $this->getView()->registerJsConfig('people', [
+            'loadMoreUrl' => Url::to($urlParams),
+        ]);
+
         return $this->render('index', [
             'people' => $peopleQuery,
             'showInviteButton' => !Yii::$app->user->isGuest && Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite'),
         ]);
+    }
+
+    /**
+     * Action to load cards for next page by AJAX
+     */
+    public function actionLoadMore()
+    {
+        $peopleQuery = new PeopleQuery();
+
+        $peopleCards = '';
+        foreach ($peopleQuery->all() as $user) {
+            $peopleCards .= PeopleCard::widget(['user' => $user]);
+        }
+
+        return $peopleCards;
     }
 
 }

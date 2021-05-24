@@ -68,11 +68,12 @@
 
     .card {
         > div {
-            float: left;
-            width: 100%;
             height: 360px;
             margin: 15px 0;
             position: relative;
+            border-radius: 4px;
+            background-color: #ffffff;
+            overflow: hidden;
         }
 
         .card-icons .fa {
@@ -84,17 +85,6 @@
                 position: relative;
                 top: 2px;
             }
-        }
-
-        .card-front {
-            width: 100%;
-            height: 100%;
-            border-radius: 4px;
-            background-color: #ffffff;
-            overflow: hidden;
-            position: absolute;
-            top: 0;
-            left: 0;
         }
         .card-body {
             position: absolute;
@@ -144,37 +134,40 @@
             margin: 0 0 10px;
         }
 
-        .card-front {
-            .card-bg-image {
-                width: 100%;
-                height: 99px;
-                background-color: #cfcfcf;
-                background-size: cover;
-                background-position: center;
-                border-radius: 4px 4px 0 0;
+        .card-bg-image {
+            width: 100%;
+            height: 99px;
+            background-color: #cfcfcf;
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px 4px 0 0;
+        }
+        .card-header {
+            padding: 0 16px 24px 16px;
+            margin-top: -58px;
+            display: table;
+            width: 100%;
+            .card-image-wrapper {
+                display: table-cell;
             }
-            .card-header {
-                padding: 0 16px 24px 16px;
-                margin-top: -58px;
-                display: table;
-                width: 100%;
-                .card-image-wrapper {
-                    display: table-cell;
-                }
-                .card-image-link {
-                    display: inline-block;
-                    border: 2px solid #fff;
-                    border-radius: 6px;
-                }
-                .card-icons {
-                    display: table-cell;
-                    padding-left: 8px;
-                    text-align: right;
-                    vertical-align: bottom;
-                    font-size: 16px;
-                }
+            .card-image-link {
+                display: inline-block;
+                border: 2px solid #fff;
+                border-radius: 6px;
+            }
+            .card-icons {
+                display: table-cell;
+                padding-left: 8px;
+                text-align: right;
+                vertical-align: bottom;
+                font-size: 16px;
             }
         }
+    }
+
+    .directory-load-more {
+        text-align: center;
+        padding-bottom: 15px;
     }
 
     .btn-primary {

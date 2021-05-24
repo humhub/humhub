@@ -41,11 +41,7 @@ PeopleAsset::register($this);
     <?php endif; ?>
 
     <?php foreach ($spaces->all() as $space) : ?>
-    <div class="card col-lg-3 col-md-4 col-sm-6 col-xs-12">
-        <div class="card-space">
-            <?= SpacesCard::widget(['space' => $space]); ?>
-        </div>
-    </div>
+        <?= SpacesCard::widget(['space' => $space]); ?>
     <?php endforeach; ?>
 </div>
 

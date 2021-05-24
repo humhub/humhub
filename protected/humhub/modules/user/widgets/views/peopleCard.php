@@ -18,7 +18,7 @@ use yii\web\View;
 /* @var $user User */
 ?>
 
-<div class="card-front">
+<div class="card-panel">
     <div class="card-bg-image"<?php if ($user->getProfileBannerImage()->hasImage()) : ?> style="background-image: url('<?= $user->getProfileBannerImage()->getUrl() ?>')"<?php endif; ?>></div>
     <div class="card-header">
         <?= Image::widget([

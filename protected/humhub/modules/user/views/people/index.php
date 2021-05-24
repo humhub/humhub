@@ -4,6 +4,7 @@ use humhub\modules\user\assets\PeopleAsset;
 use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\widgets\PeopleCard;
 use humhub\modules\user\widgets\PeopleFilters;
+use humhub\widgets\Button;
 use humhub\widgets\LinkPager;
 use humhub\widgets\ModalButton;
 
@@ -46,14 +47,20 @@ PeopleAsset::register($this);
     <?php endif; ?>
 
     <?php foreach ($people->all() as $user) : ?>
-    <div class="card col-lg-3 col-md-4 col-sm-6 col-xs-12">
-        <div class="card-people">
-            <?= PeopleCard::widget(['user' => $user]); ?>
-        </div>
-    </div>
+        <?= PeopleCard::widget(['user' => $user]); ?>
     <?php endforeach; ?>
-</div>
 
-<div class="pagination-container">
-    <?= LinkPager::widget(['pagination' => $people->pagination]); ?>
+    <?php if (!$people->isLastPage()) : ?>
+    <div class="clearfix"></div>
+    <div class="directory-load-more">
+        <?= Button::info(Yii::t('UserModule.base', 'Load more'))
+            ->icon('fa-angle-down')
+            ->sm()
+            ->action('people.loadMore')
+            ->options([
+                'data-current-page' => $people->pagination->getPage() + 1,
+                'data-total-pages' => $people->pagination->getPageCount(),
+            ]) ?>
+    </div>
+    <?php endif; ?>
 </div>
