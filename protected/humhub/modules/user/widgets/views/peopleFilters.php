@@ -49,3 +49,8 @@ use yii\helpers\Url;
         </div>
     </div>
 <?= Html::endForm(); ?>
+<script <?= Html::nonce() ?>>
+$(document).ready(function (){
+    $('input.form-search-filter[name=keyword]').focus();
+})
+</script>
