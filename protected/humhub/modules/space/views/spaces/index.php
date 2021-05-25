@@ -5,17 +5,18 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\assets\DirectoryAsset;
 use humhub\modules\space\components\SpacesQuery;
 use humhub\modules\space\widgets\SpacesCard;
 use humhub\modules\space\widgets\SpacesFilters;
-use humhub\modules\user\assets\PeopleAsset;
+use humhub\widgets\Button;
 use humhub\widgets\LinkPager;
 use yii\web\View;
 
 /* @var $this View */
 /* @var $spaces SpacesQuery */
 
-PeopleAsset::register($this);
+DirectoryAsset::register($this);
 ?>
 <div class="panel panel-default">
 
@@ -43,8 +44,18 @@ PeopleAsset::register($this);
     <?php foreach ($spaces->all() as $space) : ?>
         <?= SpacesCard::widget(['space' => $space]); ?>
     <?php endforeach; ?>
-</div>
 
-<div class="pagination-container">
-    <?= LinkPager::widget(['pagination' => $spaces->pagination]); ?>
+    <?php if (!$spaces->isLastPage()) : ?>
+    <div class="clearfix"></div>
+    <div class="directory-load-more">
+        <?= Button::info(Yii::t('SpaceModule.base', 'Load more'))
+            ->icon('fa-angle-down')
+            ->sm()
+            ->action('directory.loadMore')
+            ->options([
+                'data-current-page' => $spaces->pagination->getPage() + 1,
+                'data-total-pages' => $spaces->pagination->getPageCount(),
+            ]) ?>
+    </div>
+    <?php endif; ?>
 </div>

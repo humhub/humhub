@@ -9,9 +9,9 @@ namespace humhub\modules\user\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\modules\mail\helpers\Url;
 use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\widgets\PeopleCard;use Yii;
+use yii\helpers\Url;
 
 /**
  * PeopleController displays users directory
@@ -58,7 +58,7 @@ class PeopleController extends Controller
         $urlParams = Yii::$app->request->getQueryParams();
         unset($urlParams['page']);
         array_unshift($urlParams, '/user/people/load-more');
-        $this->getView()->registerJsConfig('people', [
+        $this->getView()->registerJsConfig('directory', [
             'loadMoreUrl' => Url::to($urlParams),
         ]);
 

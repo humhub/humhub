@@ -95,7 +95,7 @@ class PeopleFilters extends Widget
             case 'text':
                 return Html::textInput($filterName, PeopleFilters::getValue($filterName), $filterOptions);
             case 'dropdownlist':
-                $filterOptions['data-action-change'] = 'people.applyFilters';
+                $filterOptions['data-action-change'] = 'directory.applyFilters';
                 $selectItems = array_merge(['' => Yii::t('UserModule.base', 'Any')], $definition[$profileField->internal_name]['items']);
                 return Html::dropDownList($filterName, PeopleFilters::getValue($filterName), $selectItems, $filterOptions);
         }

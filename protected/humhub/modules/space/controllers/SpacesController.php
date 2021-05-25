@@ -10,7 +10,9 @@ namespace humhub\modules\space\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\space\components\SpacesQuery;
+use humhub\modules\space\widgets\SpacesCard;
 use Yii;
+use yii\helpers\Url;
 
 /**
  * SpacesController displays users directory
@@ -54,9 +56,31 @@ class SpacesController extends Controller
     {
         $spacesQuery = new SpacesQuery();
 
+        $urlParams = Yii::$app->request->getQueryParams();
+        unset($urlParams['page']);
+        array_unshift($urlParams, '/space/spaces/load-more');
+        $this->getView()->registerJsConfig('directory', [
+            'loadMoreUrl' => Url::to($urlParams),
+        ]);
+
         return $this->render('index', [
             'spaces' => $spacesQuery,
         ]);
+    }
+
+    /**
+     * Action to load cards for next page by AJAX
+     */
+    public function actionLoadMore()
+    {
+        $spaceQuery = new SpacesQuery();
+
+        $spaceCards = '';
+        foreach ($spaceQuery->all() as $space) {
+            $spaceCards .= SpacesCard::widget(['space' => $space]);
+        }
+
+        return $spaceCards;
     }
 
 }

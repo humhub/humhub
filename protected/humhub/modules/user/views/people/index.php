@@ -1,18 +1,17 @@
 <?php
+use humhub\assets\DirectoryAsset;
 use humhub\libs\Html;
-use humhub\modules\user\assets\PeopleAsset;
 use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\widgets\PeopleCard;
 use humhub\modules\user\widgets\PeopleFilters;
 use humhub\widgets\Button;
-use humhub\widgets\LinkPager;
 use humhub\widgets\ModalButton;
 
 /* @var $this \yii\web\View */
 /* @var $people PeopleQuery */
 /* @var $showInviteButton bool */
 
-PeopleAsset::register($this);
+DirectoryAsset::register($this);
 ?>
 <div class="panel panel-default">
 
@@ -56,7 +55,7 @@ PeopleAsset::register($this);
         <?= Button::info(Yii::t('UserModule.base', 'Load more'))
             ->icon('fa-angle-down')
             ->sm()
-            ->action('people.loadMore')
+            ->action('directory.loadMore')
             ->options([
                 'data-current-page' => $people->pagination->getPage() + 1,
                 'data-total-pages' => $people->pagination->getPageCount(),

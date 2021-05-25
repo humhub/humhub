@@ -27,16 +27,16 @@ use yii\helpers\Url;
         <?php if (count($groupOptions)) : ?>
         <div class="col-md-2">
             <div class="form-search-field-info"><?= Yii::t('UserModule.base', 'Group') ?></div>
-            <?= Html::dropDownList('groupId', PeopleFilters::getValue('groupId'), $groupOptions, ['data-action-change' => 'people.applyFilters', 'class' => 'form-control form-search-filter']); ?>
+            <?= Html::dropDownList('groupId', PeopleFilters::getValue('groupId'), $groupOptions, ['data-action-change' => 'directory.applyFilters', 'class' => 'form-control form-search-filter']); ?>
         </div>
         <?php endif; ?>
         <div class="col-md-2">
             <div class="form-search-field-info"><?= Yii::t('UserModule.base', 'Sorting') ?></div>
-            <?= Html::dropDownList('sort', PeopleFilters::getValue('sort'), PeopleSettingsForm::getSortingOptions(), ['data-action-change' => 'people.applyFilters', 'class' => 'form-control form-search-filter']); ?>
+            <?= Html::dropDownList('sort', PeopleFilters::getValue('sort'), PeopleSettingsForm::getSortingOptions(), ['data-action-change' => 'directory.applyFilters', 'class' => 'form-control form-search-filter']); ?>
         </div>
         <div class="col-md-2">
             <div class="form-search-field-info"><?= Yii::t('UserModule.base', 'Connection') ?></div>
-            <?= Html::dropDownList('connection', PeopleFilters::getValue('connection'), $connectionOptions, ['data-action-change' => 'people.applyFilters', 'class' => 'form-control form-search-filter']); ?>
+            <?= Html::dropDownList('connection', PeopleFilters::getValue('connection'), $connectionOptions, ['data-action-change' => 'directory.applyFilters', 'class' => 'form-control form-search-filter']); ?>
         </div>
         <?php foreach ($profileFields as $profileField) : ?>
         <div class="col-md-2">

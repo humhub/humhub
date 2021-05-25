@@ -29,7 +29,7 @@ class SpacesQuery extends ActiveQuerySpace
     /**
      * @var int
      */
-    public $pageSize = 10;
+    public $pageSize = 8;
 
     /**
      * @inheritdoc
@@ -113,6 +113,11 @@ class SpacesQuery extends ActiveQuerySpace
         $this->pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->pageSize]);
 
         return $this->offset($this->pagination->offset)->limit($this->pagination->limit);
+    }
+
+    public function isLastPage(): bool
+    {
+        return $this->pagination->getPage() == $this->pagination->getPageCount() - 1;
     }
 
 }

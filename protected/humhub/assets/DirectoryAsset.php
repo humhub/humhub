@@ -5,23 +5,18 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\user\assets;
+namespace humhub\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\WebStaticAssetBundle;
 use yii\web\View;
 
-class PeopleAsset extends AssetBundle
+class DirectoryAsset extends WebStaticAssetBundle
 {
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@user/resources';
-
-    /**
-     * @inheritdoc
-     */
     public $js = [
-        'js/humhub.people.js',
+        'js/humhub/humhub.directory.js',
     ];
 
     /**

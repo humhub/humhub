@@ -1,4 +1,4 @@
-humhub.module('people', function(module, require, $) {
+humhub.module('directory', function(module, require, $) {
     const client = require('client');
     const loader = require('ui.loader');
 
