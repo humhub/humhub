@@ -26,3 +26,4 @@
 - Enh #5073: Enhance API tests
 - Fix #5078: Fix enabling of REST module on run API tests
 - Enh #4776: Add "acknowledge" option to all relevant forms
+- Fix #4553: Don't resend weekly/daily/hourly mail summary in the same interval
