@@ -10,7 +10,7 @@ humhub.module('directory', function(module, require, $) {
         const urlParams = {page: $(evt.$trigger).data('current-page') + 1};
 
         client.get(module.config.loadMoreUrl, {data: urlParams}).then(function (response) {
-            $(evt.$trigger).parent().prev().before(response.response);
+            $(evt.$trigger).parent().before(response.response);
             if (urlParams.page == $(evt.$trigger).data('total-pages')) {
                 $(evt.$trigger).parent().remove();
             } else {
