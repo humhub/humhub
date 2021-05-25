@@ -29,7 +29,7 @@ class SpacesQuery extends ActiveQuerySpace
     /**
      * @var int
      */
-    public $pageSize = 8;
+    public $pageSize = 18;
 
     /**
      * @inheritdoc
