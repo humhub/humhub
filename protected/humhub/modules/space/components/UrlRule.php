@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\components;
 
+use humhub\components\UrlManager;
 use yii\web\UrlRuleInterface;
 use yii\base\BaseObject;
 use humhub\modules\space\models\Space;
@@ -87,16 +88,20 @@ class UrlRule extends BaseObject implements UrlRuleInterface
      */
     public static function getUrlBySpaceGuid($guid)
     {
-        if (isset(static::$spaceUrlMap[$guid])) {
+        if (array_key_exists($guid, static::$spaceUrlMap)) {
             return static::$spaceUrlMap[$guid];
         }
 
-        $space = Space::findOne(['guid' => $guid]);
-        if ($space !== null) {
-            static::$spaceUrlMap[$space->guid] = ($space->url != '') ? $space->url : $space->guid;
+        $space = null;
+        if (UrlManager::$cachedLastContainerRecord !== null && UrlManager::$cachedLastContainerRecord->guid === $guid) {
+            if (UrlManager::$cachedLastContainerRecord instanceof Space) {
+                $space = UrlManager::$cachedLastContainerRecord;
+            }
         } else {
-            static::$spaceUrlMap[$guid] = null;
+            $space = Space::findOne(['guid' => $guid]);
         }
+
+        static::$spaceUrlMap[$guid] = $space->url ?? $space->guid ?? null;
 
         return static::$spaceUrlMap[$guid];
     }

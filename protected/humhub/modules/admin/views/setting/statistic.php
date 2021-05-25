@@ -2,6 +2,10 @@
 
 use humhub\compat\CActiveForm;
 use humhub\compat\CHtml;
+use humhub\modules\admin\models\forms\StatisticSettingsForm;
+use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
+
+/* @var $model StatisticSettingsForm */
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
@@ -13,8 +17,7 @@ use humhub\compat\CHtml;
 <?= $form->errorSummary($model); ?>
 
 <div class="form-group">
-    <?= $form->labelEx($model, 'trackingHtmlCode'); ?>
-    <?= $form->textArea($model, 'trackingHtmlCode', ['class' => 'form-control', 'rows' => '8']); ?>
+    <?= $form->field($model, 'trackingHtmlCode')->widget(CodeMirrorInputWidget::class); ?>
 </div>
 <hr>
 

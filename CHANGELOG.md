@@ -1,9 +1,14 @@
 HumHub Changelog
 ================
 
+1.8.3 (Unreleased)
+----------------------
+- Fix #29: Fix login form view on browser back button after footer link
+- Fix #5066: Fix pin and archive global content without container
 
-1.8.2 (Unreleased)
-------------------
+
+1.8.2 (April 26, 2021)
+----------------------
 - Fix #4959: Horizontal scrollbar for images
 - Fix #4898: No streamExcludes option when loading single stream entry
 - Enh #4960: Added “codeception/module-rest” for testing of REST API modules
@@ -22,6 +27,7 @@ HumHub Changelog
 - Enh #5024: Disable text wrapping in stream richtext
 - Fix #5022: Fix assign default group on user registration
 - Fix #5015: Fix visibility of admin menu entries which are initialized with deprecated method
+- Fix #5039: RichText converter for some string patterns in HTML format
 
 
 1.8.1 (March 12, 2021)

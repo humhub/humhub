@@ -21,6 +21,13 @@ use humhub\modules\user\models\User;
  */
 class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
 {
+
+    /**
+     * Option key used for rendering images as HTML tag with token
+     * for receiver user to allow see image from email readers
+     */
+    const OPTION_RECEIVER_USER = 'receiver';
+
     /**
      * @inheritdoc
      */
