@@ -22,7 +22,7 @@ class Module extends \humhub\components\Module
     public $isCoreModule = true;
 
     /**
-     * @inheritdoc
+     * @var string The characters will be replaced in file names with underscore '_' on uploading
      */
     public $fileNameValidationPattern = '/[\x00-\x1F\x80-\xA0>\/\<":\*?|{}\[\]\\\\\/]/u';
 

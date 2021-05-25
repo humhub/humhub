@@ -115,6 +115,7 @@ class UserController extends Controller
                 $password = new PasswordEditForm();
                 $password->user_id = $user->id;
             }
+            $password->mustChangePassword = $user->mustChangePassword();
         }
 
         // Build Form Definition
@@ -176,6 +177,11 @@ class UserController extends Controller
                         'class' => 'form-control',
                         'maxlength' => 45,
                     ],
+                    'mustChangePassword' => [
+                        'type' => 'checkbox',
+                        'class' => 'form-control',
+                        'label' => Yii::t('UserModule.base', 'Force password change upon next login'),
+                    ],
                 ],
             ];
         }
@@ -211,8 +217,11 @@ class UserController extends Controller
         }
 
         if ($form->submitted('save') && $form->validate()) {
-            if ($canEditAdminFields && !empty($password->newPassword)) {
-                $password->setPassword($password->newPassword);
+            if ($canEditAdminFields) {
+                if (!empty($password->newPassword)) {
+                    $password->setPassword($password->newPassword);
+                }
+                $user->setMustChangePassword($password->mustChangePassword);
             }
             if ($form->save()) {
                 $this->view->saved();
@@ -235,6 +244,7 @@ class UserController extends Controller
         $registration = new Registration();
         $registration->enableEmailField = true;
         $registration->enableUserApproval = false;
+        $registration->enableMustChangePassword = true;
         if ($registration->submitted('save') && $registration->validate() && $registration->register()) {
             return $this->redirect(['edit', 'id' => $registration->getUser()->id]);
         }
@@ -250,7 +260,7 @@ class UserController extends Controller
     {
         $user = User::findOne(['id' => $id]);
 
-        $this->checkGroupAccess($user);
+        $this->checkUserAccess($user);
 
         if ($user->isCurrentUser()) {
             throw new HttpException(400, Yii::t('AdminModule.user', 'You cannot delete yourself!'));
@@ -264,10 +274,10 @@ class UserController extends Controller
         return $this->render('delete', ['model' => $model]);
     }
 
-    public function checkGroupAccess(User $user = null)
+    public function checkUserAccess(User $user = null)
     {
         if (!$user) {
-            throw new HttpException(404, Yii::t('AdminModule.user', 'Group not found!'));
+            throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));
         }
 
         if ($user->isSystemAdmin() && !Yii::$app->user->isAdmin()) {
@@ -313,7 +323,7 @@ class UserController extends Controller
 
         $user = User::findOne(['id' => $id]);
 
-        $this->checkGroupAccess($user);
+        $this->checkUserAccess($user);
 
         $user->status = User::STATUS_DISABLED;
         $user->save();
@@ -334,7 +344,7 @@ class UserController extends Controller
 
         $user = User::findOne(['id' => $id]);
 
-        $this->checkGroupAccess($user);
+        $this->checkUserAccess($user);
 
         if (!static::canImpersonate($user)) {
             throw new HttpException(403);
@@ -357,7 +367,7 @@ class UserController extends Controller
             return false;
         }
 
-        return Yii::$app->user->isAdmin() && $user->id != Yii::$app->user->getIdentity()->id;
+        return Yii::$app->user->can([new ManageUsers()]) && $user->id != Yii::$app->user->getIdentity()->id;
     }
 
     /**

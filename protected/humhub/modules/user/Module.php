@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user;
 
+use humhub\modules\user\models\Group;
 use Yii;
 
 /**
@@ -58,6 +59,13 @@ class Module extends \humhub\components\Module
      * @see widgets\ProfileHeader
      */
     public $adminCanChangeUserProfileImages = false;
+
+    /**
+     * @var string Regular expression to check username characters
+     * @note Example to allow more characters: /^[\p{L}\d_\-@#$%^&*\(\)\[\]\{\}+=<>:;,.?!|~"\'\\\\]+$/iu
+     * @since 1.8
+     */
+    public $validUsernameRegexp = '/^[\p{L}\d_\-@\.]+$/iu';
 
     /**
      * @var int maximum username length
@@ -116,6 +124,18 @@ class Module extends \humhub\components\Module
      * @since 1.6
      */
     public $profileDisableStream = false;
+
+    /**
+     * Account login blocking times after attempted incorrect logins.
+     * Format: Number of tries => Time delay in seconds.
+     * @since 1.8
+     * @var int[]
+     */
+    public $failedLoginDelayTimes = [
+        // No delay for less than 3 failed attempts
+        2 => 10,
+        6 => 20,
+    ];
 
     /**
      * @inheritdoc
@@ -178,5 +198,37 @@ class Module extends \humhub\components\Module
     public function isCustomPasswordStrength()
     {
         return $this->getDefaultPasswordStrength() !== $this->getPasswordStrength();
+    }
+
+    /**
+     * Get default group
+     * @return Group
+     */
+    public function getDefaultGroup()
+    {
+        return Group::findOne(['is_default_group' => 1, 'is_admin_group' => 0]);
+    }
+
+    /**
+     * Get default group id
+     * @return integer|null
+     */
+    public function getDefaultGroupId()
+    {
+        $defaultGroup = $this->getDefaultGroup();
+        return $defaultGroup ? $defaultGroup->id : null;
+    }
+
+    /**
+     * Set default group
+     * @param int
+     */
+    public function setDefaultGroup($id)
+    {
+        $group = Group::findOne(['id' => $id]);
+        if ($group && !$group->is_admin_group && !$group->is_default_group) {
+            $group->is_default_group = 1;
+            $group->save();
+        }
     }
 }

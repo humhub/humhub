@@ -27,11 +27,16 @@ class Events extends BaseObject
 
     public static function onHourlyCron($event)
     {
-        /** @var Controller $controller */
-        $controller = $event->sender;
+        try {
+            /** @var Controller $controller */
+            $controller = $event->sender;
 
-        $controller->stdout('Optimizing search index...');
-        Yii::$app->search->optimize();
-        $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
+            $controller->stdout("Optimizing search index...\n");
+            Yii::$app->search->optimize();
+            $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
+        } catch (\Throwable $e) {
+            $controller->stderr($e->getMessage()."\n'");
+            Yii::error($e);
+        }
     }
 }

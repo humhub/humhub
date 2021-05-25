@@ -150,7 +150,46 @@ humhub.module('ui.form.elements', function (module, require, $) {
         evt.$trigger.parent().hide();
     };
 
+    var object = require('util').object;
+    var Widget = require('ui.widget').Widget;
 
+    var FormFieldsCollapsible = function (node, options) {
+        Widget.call(this, node, options);
+    };
+
+    object.inherits(FormFieldsCollapsible, Widget);
+
+    FormFieldsCollapsible.component = 'humhub-form-field-collapsible';
+    FormFieldsCollapsible.prototype.validate = function () {
+        return this.$.is('div');
+    };
+
+    FormFieldsCollapsible.prototype.clickCollab = function (evt) {
+        if (this.$.find('fieldset').is(":visible")) {
+            this.hide();
+        } else {
+            this.show();
+        }
+    };
+    FormFieldsCollapsible.prototype.init = function () {
+        if (this.$.find('.error, .has-error').length > 0) {
+            this.show();
+        }
+    };
+
+    FormFieldsCollapsible.prototype.hide = function () {
+        this.$.find('fieldset').attr("aria-hidden","true");
+        this.$.find('fieldset').attr("aria-expanded","false");
+        this.$.addClass('closed');
+        this.$.removeClass('opened');
+    };
+
+    FormFieldsCollapsible.prototype.show = function () {
+        this.$.find('fieldset').attr("aria-hidden","false");
+        this.$.find('fieldset').attr("aria-expanded","true");
+        this.$.addClass('opened');
+        this.$.removeClass('closed');
+    };
 
     module.export({
         init: init,
@@ -158,6 +197,7 @@ humhub.module('ui.form.elements', function (module, require, $) {
         initCheckbox: initCheckbox,
         initRadio: initRadio,
         toggleTimeZoneInput: toggleTimeZoneInput,
-        timeZoneSelected: timeZoneSelected
+        timeZoneSelected: timeZoneSelected,
+        FormFieldsCollapsible: FormFieldsCollapsible
     });
 });

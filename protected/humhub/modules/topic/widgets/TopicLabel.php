@@ -25,6 +25,7 @@ class TopicLabel extends Label
     {
         $link = Link::withAction('', 'topic.addTopic')->options(['data-topic-id' => $topic->id, 'data-topic-url' => $topic->getUrl()]);
 
-        return static::defaultType($topic->name)->sortOrder(20)->color($topic->color)->withLink($link)->icon('fa-star');
+        return static::light($topic->name)->sortOrder(20)->color($topic->color)->withLink($link)->icon('fa-star');
     }
+
 }

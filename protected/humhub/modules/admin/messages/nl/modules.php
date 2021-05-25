@@ -23,7 +23,7 @@ return array (
   'Save' => 'Bewaar',
   'Set as default' => 'Instellen als standaard',
   'Spaces' => 'Ruimtes',
-  'This module doesn\'t provide further informations.' => 'Deze module heeft geen verdere informatie.',
+  'This module doesn\'t provide further information.' => 'Deze module heeft geen verdere informatie.',
   'Uninstall' => 'Deïnstalleren',
   'User Profiles' => 'Gebruikersprofielen',
   'Version:' => 'Versie:',

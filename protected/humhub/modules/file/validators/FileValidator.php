@@ -86,9 +86,7 @@ class FileValidator extends \yii\validators\FileValidator
                 return;
             }
 
-            if(preg_match($pattern, $model->file_name)) {
-                $this->addError($model, $attribute, Yii::t('FileModule.base', 'Invalid file name detected!'));
-            }
+            $model->file_name = preg_replace($pattern, '_', $model->file_name);
 
             if($this->denyDoubleFileExtensions && preg_match('/\.\w{2,3}\.\w{2,3}$/', $model->file_name)) {
                 $this->addError($model, $attribute, Yii::t('FileModule.base', 'Double file extensions are not allowed!'));

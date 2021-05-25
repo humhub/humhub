@@ -19,6 +19,6 @@
  */
 return [
     ['id' => '1', 'space_id' => 1, 'name' => 'Administrator', 'description' => 'Administrator Group', 'created_at' => '2014-08-30 14:03:49', 'created_by' => null, 'updated_at' => null, 'updated_by' => null, 'ldap_dn' => null, 'is_admin_group' => 1],
-    ['id' => '2', 'space_id' => 1, 'name' => 'Users', 'description' => 'Example Group by Installer', 'created_at' => '2014-08-30 14:03:49', 'created_by' => null, 'updated_at' => null, 'updated_by' => null, 'ldap_dn' => null],
+    ['id' => '2', 'space_id' => 1, 'name' => 'Users', 'description' => 'Example Group by Installer', 'created_at' => '2014-08-30 14:03:49', 'created_by' => null, 'updated_at' => null, 'updated_by' => null, 'ldap_dn' => null, 'is_default_group' => 1],
     ['id' => '3', 'space_id' => 1, 'name' => 'Manager', 'description' => 'Manager Group', 'created_at' => '2014-08-30 14:03:49', 'created_by' => null, 'updated_at' => null, 'updated_by' => null, 'ldap_dn' => null]
 ];

@@ -143,7 +143,7 @@ class ProfileFieldModelTest extends HumHubDbTestCase
         $this->assertTrue($model->hasErrors());
 
         $definition = $model->getFormDefinition();
-        $this->assertTrue($definition['ProfileField']['elements']['field_type_class']['disabled']);
+        $this->assertTrue($definition['ProfileField']['elements']['field_type_class']['readonly']);
 
         $model->load($validParams, '');
         $model->validate();

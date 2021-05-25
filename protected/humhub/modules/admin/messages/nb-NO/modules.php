@@ -38,10 +38,10 @@ return [
     'Save' => 'Lagre',
     'Set as default' => 'Sett som default',
     'Spaces' => 'Grupper',
-    'This module doesn\'t provide further informations.' => 'Denne modulen gir ikke ytterligere informasjon.',
     'Uninstall' => 'Avinstaller',
     'User Profiles' => 'Bruker profiler',
     'Version:' => 'Versjon:',
     'Legacy' => '',
     'Not maintained or maintenance is about to be discontinued.' => '',
+    'This module doesn\'t provide further information.' => '',
 ];

@@ -1,6 +1,7 @@
 <?php
 return array (
   '<strong>Administration</strong> menu' => '<strong>Administracijski</strong> izbornik',
+  '<strong>Maintenance</strong> Mode' => '',
   '<strong>Module </strong> administration' => 'Administracija <strong>modula</strong>',
   '<strong>Warning</strong> incomplete setup!' => '<strong>Upozorenje</strong> nedovršene postavke!',
   'About' => 'U vezi',
@@ -17,6 +18,9 @@ return array (
   'Basic' => 'Osnovno',
   'Caching' => 'Caching',
   'Cronjobs' => 'Cronjobs',
+  'Default' => 'Zadano',
+  'Delete all' => '',
+  'Delete selected rows' => '',
   'Design' => 'Dizajn',
   'Files' => 'Datoteke',
   'General' => 'Općenito',
@@ -36,7 +40,6 @@ return array (
   'Pending user registrations' => 'Prijava na čekanju korisnika',
   'Permissions' => 'Dozvole',
   'Proxy' => 'Proxy',
-  'Security' => 'Sigurnost',
   'Self test' => 'Samoprovjera',
   'Settings' => 'Postavke',
   'Sign up' => 'Upiši se',

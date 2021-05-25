@@ -24,7 +24,7 @@ use humhub\widgets\Button;
 
     <div class="panel-body">
 
-        <?php $form = ActiveForm::begin(['options' => ['id' => 'spaceIndexForm'], 'enableClientValidation' => false]); ?>
+        <?php $form = ActiveForm::begin(['options' => ['id' => 'spaceIndexForm'], 'enableClientValidation' => false, 'acknowledge' => true]); ?>
 
         <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model]) ?>
         <?= $form->field($model, 'description')->textInput(); ?>

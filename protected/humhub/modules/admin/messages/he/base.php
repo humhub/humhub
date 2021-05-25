@@ -1,6 +1,7 @@
 <?php
 return array (
   '<strong>Administration</strong> menu' => '',
+  '<strong>Maintenance</strong> Mode' => '',
   '<strong>Module </strong> administration' => '',
   '<strong>Warning</strong> incomplete setup!' => '',
   'About' => '',
@@ -17,6 +18,9 @@ return array (
   'Basic' => '',
   'Caching' => '',
   'Cronjobs' => '',
+  'Default' => 'ברירת מחדל',
+  'Delete all' => '',
+  'Delete selected rows' => '',
   'Design' => '',
   'Files' => '',
   'General' => '',
@@ -36,7 +40,6 @@ return array (
   'Pending user registrations' => '',
   'Permissions' => '',
   'Proxy' => '',
-  'Security' => 'אבטחה',
   'Self test' => '',
   'Settings' => '',
   'Sign up' => '',

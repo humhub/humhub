@@ -35,6 +35,11 @@ class Registration extends HForm
     public $enablePasswordForm = true;
 
     /**
+     * @var boolean show checkbox to force to change password on first log in
+     */
+    public $enableMustChangePassword = false;
+
+    /**
      * @var boolean show e-mail field
      */
     public $enableEmailField = false;
@@ -148,7 +153,7 @@ class Registration extends HForm
      */
     protected function getPasswordFormDefinition()
     {
-        return [
+        $form = [
             'type' => 'form',
             'elements' => [
                 'newPassword' => [
@@ -163,24 +168,24 @@ class Registration extends HForm
                 ],
             ],
         ];
+
+        if ($this->enableMustChangePassword) {
+            $form['elements']['mustChangePassword'] = [
+                'type' => 'checkbox',
+                'class' => 'form-control',
+            ];
+        }
+
+        return $form;
     }
 
     protected function getGroupFormDefinition()
     {
-        $groupModels = \humhub\modules\user\models\Group::getRegistrationGroups();
-        $defaultUserGroup = Yii::$app->getModule('user')->settings->get('auth.defaultUserGroup');
-        $groupFieldType = "dropdownlist";
+        $groupModels = Group::getRegistrationGroups();
 
-        if ($defaultUserGroup != "") {
-            $groupFieldType = "hidden";
-        } elseif (count($groupModels) == 1) {
-            $groupFieldType = "hidden";
-            $defaultUserGroup = $groupModels[0]->id;
-        }
-
-        if (!$defaultUserGroup && empty($groupModels)) {
-            $groupFieldType = "hidden";
-        }
+        $groupFieldType = (Yii::$app->getModule('user')->settings->get('auth.showRegistrationUserGroup') && count($groupModels) > 1)
+            ? 'dropdownlist'
+            : 'hidden'; // TODO: Completely hide the element instead of current <input type="hidden">
 
         return [
             'type' => 'form',
@@ -190,7 +195,7 @@ class Registration extends HForm
                     'type' => $groupFieldType,
                     'class' => 'form-control',
                     'items' => ArrayHelper::map($groupModels, 'id', 'name'),
-                    'value' => $defaultUserGroup,
+                    'value' => Yii::$app->getModule('user')->getDefaultGroupId(),
                 ]
             ]
         ];
@@ -207,6 +212,10 @@ class Registration extends HForm
         $this->models['GroupUser'] = $this->getGroupUser();
         if ($this->enablePasswordForm) {
             $this->models['Password'] = $this->getPassword();
+            if (!isset($this->models['Password']->mustChangePassword)) {
+                // Enable the checkbox by default on new user form:
+                $this->models['Password']->mustChangePassword = true;
+            }
         }
 
         return true;
@@ -275,7 +284,10 @@ class Registration extends HForm
                 // Save User Password
                 $this->models['Password']->user_id = $this->models['User']->id;
                 $this->models['Password']->setPassword($this->models['Password']->newPassword);
-                $this->models['Password']->save();
+                if ($this->models['Password']->save() &&
+                    $this->enableMustChangePassword) {
+                    $this->models['User']->setMustChangePassword($this->models['Password']->mustChangePassword);
+                }
             }
 
             if ($authClient !== null) {
@@ -352,7 +364,7 @@ class Registration extends HForm
             $this->_groupUser->scenario = GroupUser::SCENARIO_REGISTRATION;
 
             // assign default value for group_id
-            $registrationGroups = \humhub\modules\user\models\Group::getRegistrationGroups();
+            $registrationGroups = Group::getRegistrationGroups();
             if (count($registrationGroups) == 1) {
                 $this->_groupUser->group_id = $registrationGroups[0]->id;
             }

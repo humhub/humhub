@@ -1,12 +1,8 @@
 <?php
-/**
- * Translation: Paul (https://paul.bid) paulbid@protonmail.com
- * 
- */
 return array (
   '<strong>Account</strong> settings' => '<strong>Учётная запись</strong>',
   '<strong>Confirm</strong></strong> your new email address' => 'Подтвердите новый email',
-  '<strong>Security</strong> settings' => '<strong>Настройки безопасности</strong>',
+  '<strong>Permissions</strong>' => '',
   '<strong>User</strong> modules' => '<strong>Пользовательские модули</strong>',
   '<strong>User</strong> settings' => '<strong>Настройки сайта</strong>',
   '<strong>Your</strong> profile' => '<strong>Ваш профиль</strong>',
@@ -28,7 +24,6 @@ return array (
   'Enter your password to continue' => 'Введите Ваш пароль для продолжения',
   'Hello' => 'Привет',
   'Here you can edit your general profile data, which is visible in the about page of your profile.' => 'Здесь вы можете редактировать данные Вашего профиля, которые видны на вкладке «Обо мне» в меню Вашего профиля.',
-  'Here you can manage your account permissions for different user-types. To edit a permission, select the user-type you want to edit and change the drop-down value of the given permission.' => 'Здесь Вы можете управлять уровнем приватности и безопасности своей учётной записи для разных типов пользователей. Чтобы редактировать разрешение, выберите вкладку с типом пользователей, которую Вы хотите редактировать, и измените значение того или иного разрешения в раскрывающемся меню.',
   'Hide introduction tour panel on dashboard' => 'Скрыть панель руководств на Вашей домашней странице',
   'Invalid link! Please make sure that you entered the entire url.' => 'Некорректная ссылка! Пожалуйста, убедитесь, что вы ввели правильный URL.',
   'Language' => 'Язык',
@@ -39,15 +34,16 @@ return array (
   'Notifications' => 'Уведомления',
   'Other users' => 'Пользователи сайта',
   'Password Recovery' => 'Восстановление пароля',
+  'Permissions' => 'Доступ',
   'Profile' => 'Профиль',
   'Profile visibility' => 'Видимость профиля',
   'Registered users only' => 'Только для зарегистрированных пользователей',
   'Save' => 'Сохранить',
   'Save profile' => 'Сохранить изменения в профиле',
-  'Security' => 'Безопасность',
   'Settings' => 'Настройки',
   'Tags' => 'Теги',
   'The entered e-mail address is already in use by another user.' => 'Введённый email уже используется другим пользователем.',
+  'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.' => '',
   'TimeZone' => 'Часовой пояс',
   'Username has been changed' => 'Имя пользователя было изменено',
   'Users' => 'Пользователи',

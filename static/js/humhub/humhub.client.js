@@ -28,7 +28,7 @@ humhub.module('client', function (module, require, $) {
                 dataType = 'json';
             } else if (responseType && responseType.indexOf('html') > -1) {
                 dataType = 'html';
-            } else if(!this.isAbort() && !this.isError()){
+            } else if (!this.isAbort() && !this.isError()) {
                 console.error('Unable to determine dataType from response, this may cause problems.');
             }
         }
@@ -110,10 +110,10 @@ humhub.module('client', function (module, require, $) {
         } else if (cfg instanceof $.Event) {
             originalEvent = cfg;
             cfg = {};
-        } else if($form.url) {
+        } else if ($form.url) {
             // Create a post form
             $form = $('<form>', {
-                action:  $form.url,
+                action: $form.url,
                 method: 'post'
             });
             $form.appendTo('body');
@@ -131,9 +131,9 @@ humhub.module('client', function (module, require, $) {
 
 
         var url = cfg.url;
-        if(!url && (originalEvent && originalEvent.url)) {
+        if (!url && (originalEvent && originalEvent.url)) {
             url = originalEvent.url;
-        } else if(!url && $form) {
+        } else if (!url && $form) {
             url = $form.attr('action');
         }
 
@@ -141,7 +141,7 @@ humhub.module('client', function (module, require, $) {
     };
 
     var actionPost = function (evt) {
-        post(evt).catch(function(e) {
+        post(evt).catch(function (e) {
             module.log.error(e, true);
         });
     };
@@ -199,9 +199,9 @@ humhub.module('client', function (module, require, $) {
     };
 
     var json = function (url, cfg, originalEvent) {
-        return new Promise(function(resolve, reject) {
-            get(url,cfg, originalEvent).then(function(response) {
-              resolve(response.data);
+        return new Promise(function (resolve, reject) {
+            get(url, cfg, originalEvent).then(function (response) {
+                resolve(response.data);
             }).catch(reject)
         });
     };
@@ -215,10 +215,10 @@ humhub.module('client', function (module, require, $) {
             cfg = {'success': cfg};
         }
 
-        var viewContext = cfg.viewContext ||  view.getViewContext();
+        var viewContext = cfg.viewContext || view.getViewContext();
 
-        if(viewContext) {
-            if(!cfg['headers']) {
+        if (viewContext) {
+            if (!cfg['headers']) {
                 cfg['headers'] = {};
             }
             cfg['headers'][HEADER_VIEW_CONTEXT] = viewContext
@@ -230,7 +230,7 @@ humhub.module('client', function (module, require, $) {
             cfg = cfg || {};
 
             // allows data-action-data-type="json" on $trigger
-            if(originalEvent && object.isFunction(originalEvent.data)) {
+            if (originalEvent && object.isFunction(originalEvent.data)) {
                 cfg.dataType = originalEvent.data('data-type', cfg.dataType);
             }
 
@@ -276,7 +276,7 @@ humhub.module('client', function (module, require, $) {
 
             var beforeSendHandler = cfg.beforeSend;
             var beforeSend = function (xhr, settings) {
-                if(beforeSendHandler) {
+                if (beforeSendHandler) {
                     beforeSendHandler(xhr, settings);
                 }
 
@@ -318,8 +318,8 @@ humhub.module('client', function (module, require, $) {
             });
         };
 
-        promise.abort = function() {
-            if(requestXhr) {
+        promise.abort = function () {
+            if (requestXhr) {
                 requestXhr.abort();
             }
         };
@@ -338,15 +338,15 @@ humhub.module('client', function (module, require, $) {
         redirect(url);
     };
 
-    var redirect = function(url) {
-        if(!url) {
+    var redirect = function (url) {
+        if (!url) {
             return;
         }
 
         url = object.isString(url) ? url : url.url;
 
         if (object.isString(url)) {
-            if(module.pjax && module.pjax.config.active) {
+            if (module.pjax && module.pjax.config.active) {
                 module.pjax.redirect(url);
             } else {
                 document.location = url;
@@ -361,22 +361,22 @@ humhub.module('client', function (module, require, $) {
         }
     };
 
-    var back = function() {
+    var back = function () {
         history.back();
     };
 
-    var onBeforeLoad = function(form, msg) {
+    var onBeforeLoad = function (form, msg) {
 
         // Only one handler at the same time
         offBeforeLoad();
 
         var $form = $(form);
 
-        if(!$form.is('form')) {
+        if (!$form.is('form')) {
             $form = $form.find('form');
         }
 
-        if(!$form.length  || !$form.is('form')) {
+        if (!$form.length || !$form.is('form')) {
             return;
         }
 
@@ -384,7 +384,7 @@ humhub.module('client', function (module, require, $) {
 
         msg = msg || module.text('warn.onBeforeLoad');
 
-        $form.on('submit', function() {
+        $form.on('submit', function () {
             $form.data('state', null);
             offBeforeLoad();
         });
@@ -396,8 +396,8 @@ humhub.module('client', function (module, require, $) {
             }
         });
 
-        $(document).on('pjax:beforeSend.humhub_client', function(evt) {
-            if(unloadForm($form, msg)) {
+        $(document).on('pjax:beforeSend.humhub_client', function (evt) {
+            if (unloadForm($form, msg)) {
                 $form.data('state', null);
                 offBeforeLoad();
             } else {
@@ -406,24 +406,24 @@ humhub.module('client', function (module, require, $) {
         })
     };
 
-    var serializeFormState = function($form) {
-        return $form.find(':not([data-prevent-statechange])').serialize();
+    var serializeFormState = function ($form) {
+        return $form.find('input, select, textarea').not('[data-prevent-statechange]').serialize();
     };
 
-    var unloadForm = function($form, msg) {
+    var unloadForm = function ($form, msg) {
         return !formStateChanged($form) || confirmUnload(msg)
     };
 
-    var formStateChanged = function($form) {
+    var formStateChanged = function ($form) {
         return $form.data('state') && $form.data('state') !== serializeFormState($form);
     };
 
-    var confirmUnload = function(msg) {
+    var confirmUnload = function (msg) {
         msg = msg || module.text('warn.onBeforeLoad');
         return window.confirm(msg)
     };
 
-    var offBeforeLoad = function() {
+    var offBeforeLoad = function () {
         $(window).off('beforeunload.humhub_client');
         $(document).off('pjax:beforeSend.humhub_client');
     };
@@ -432,7 +432,7 @@ humhub.module('client', function (module, require, $) {
 
     var init = function (isPjax) {
         if (!isPjax) {
-            if(module.config.reloadableScripts) {
+            if (module.config.reloadableScripts) {
                 $.extend(yii.reloadableScripts, module.config.reloadableScripts)
             }
 
@@ -446,7 +446,7 @@ humhub.module('client', function (module, require, $) {
                 });
             });
 
-            additions.register('acknowledgeForm', function($match) {
+            additions.register('acknowledgeForm', function ($match) {
                 onBeforeLoad($match, ($match.data('acknowledgeMessage') || null));
             });
 

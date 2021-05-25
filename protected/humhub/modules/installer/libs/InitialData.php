@@ -436,6 +436,7 @@ class InitialData
         $group->name = "Users";
         $group->description = "Example Group by Installer";
         $group->show_at_directory = false;
+        $group->is_default_group = 1;
         $group->save();
     }
 

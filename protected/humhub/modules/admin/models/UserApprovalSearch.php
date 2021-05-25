@@ -81,11 +81,11 @@ class UserApprovalSearch extends User
 
         $query->administrableBy(Yii::$app->user->getIdentity());
 
-        $query->andWhere(['status' => User::STATUS_NEED_APPROVAL]);
+        $query->andWhere(['user.status' => User::STATUS_NEED_APPROVAL]);
         $query->andFilterWhere(['id' => $this->id]);
-        $query->andFilterWhere(['like', 'id', $this->id]);
-        $query->andFilterWhere(['like', 'username', $this->username]);
-        $query->andFilterWhere(['like', 'email', $this->email]);
+        $query->andFilterWhere(['like', 'user.id', $this->id]);
+        $query->andFilterWhere(['like', 'user.username', $this->username]);
+        $query->andFilterWhere(['like', 'user.email', $this->email]);
         $query->andFilterWhere(['like', 'profile.firstname', $this->getAttribute('profile.firstname')]);
         $query->andFilterWhere(['like', 'profile.lastname', $this->getAttribute('profile.lastname')]);
 
@@ -94,7 +94,7 @@ class UserApprovalSearch extends User
 
     public static function getUserApprovalCount()
     {
-        return User::find()->where(['status' => User::STATUS_NEED_APPROVAL])->count();
+        return User::find()->where(['user.status' => User::STATUS_NEED_APPROVAL])->count();
     }
 
 }

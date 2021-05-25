@@ -1,17 +1,18 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.org/licences
  */
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m140704_080659_installationid extends Migration
 {
     public function up()
     {
-        if (\humhub\models\Setting::isInstalled()) {
+        if (!$this->isInitialInstallation()) {
             $this->insert('setting', [
                 'name' => 'installationId',
                 'value' => md5(uniqid("", true)),

@@ -32,10 +32,10 @@ class EditGroupForm extends Group
 
     public function attributeLabels()
     {
-        return [
+        return array_merge(parent::attributeLabels(), [
             'defaultSpaceGuid' => Yii::t('AdminModule.space', 'Default Space(s)'),
             'updateSpaceMemberships' => Yii::t('AdminModule.space', 'Update Space memberships also for existing members.'),
-        ];
+        ]);
     }
 
     /**
@@ -52,10 +52,12 @@ class EditGroupForm extends Group
 
         $existingSpaceIds = GroupSpace::find()->where(['group_id' => $this->id])->select('space_id')->column();
         $newSpaceIds = [];
-        foreach ($this->defaultSpaceGuid as $spaceGuid) {
-            $space = Space::findOne(['guid' => $spaceGuid]);
-            if ($space !== null) {
-                $newSpaceIds[] = $space->id;
+        if (is_array($this->defaultSpaceGuid)) {
+            foreach ($this->defaultSpaceGuid as $spaceGuid) {
+                $space = Space::findOne(['guid' => $spaceGuid]);
+                if ($space !== null) {
+                    $newSpaceIds[] = $space->id;
+                }
             }
         }
 

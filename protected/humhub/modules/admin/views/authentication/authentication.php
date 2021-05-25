@@ -1,8 +1,7 @@
 <?php
 
-use yii\widgets\ActiveForm;
-use humhub\compat\CHtml;
-use humhub\models\Setting;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use yii\helpers\Html;
 
 /** @var \humhub\modules\user\Module $userModule */
 $userModule = Yii::$app->getModule('user');
@@ -11,7 +10,7 @@ $userModule = Yii::$app->getModule('user');
 
 <?php $this->beginContent('@admin/views/authentication/_authenticationLayout.php') ?>
 <div class="panel-body">
-    <?php $form = ActiveForm::begin(['id' => 'authentication-settings-form']); ?>
+    <?php $form = ActiveForm::begin(['id' => 'authentication-settings-form', 'acknowledge' => true]); ?>
 
     <?= $form->errorSummary($model); ?>
 
@@ -25,7 +24,7 @@ $userModule = Yii::$app->getModule('user');
 
     <?= $form->field($model, 'internalRequireApprovalAfterRegistration')->checkbox(); ?>
 
-    <?= $form->field($model, 'defaultUserGroup')->dropDownList($groups, ['readonly' => $userModule->settings->isFixed('auth.defaultUserGroup')]); ?>
+    <?= $form->field($model, 'showRegistrationUserGroup')->checkbox(); ?>
 
     <?= $form->field($model, 'defaultUserIdleTimeoutSec')->textInput(['readonly' => $userModule->settings->isFixed('auth.defaultUserIdleTimeoutSec')]); ?>
     <p class="help-block"><?= Yii::t('AdminModule.user', 'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)'); ?></p>
@@ -41,7 +40,7 @@ $userModule = Yii::$app->getModule('user');
 
     <hr>
 
-    <?= CHtml::submitButton(Yii::t('AdminModule.user', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+    <?= Html::submitButton(Yii::t('AdminModule.user', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
     <?= \humhub\widgets\DataSaved::widget(); ?>
     <?php ActiveForm::end(); ?>

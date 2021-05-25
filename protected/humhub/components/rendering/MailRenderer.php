@@ -40,7 +40,7 @@ class MailRenderer extends DefaultViewPathRenderer
      *
      * @param \humhub\components\rendering\Viewable $viewable
      * @param array $params
-     * @return type
+     * @return string
      */
     public function renderText(Viewable $viewable, $params = [])
     {
@@ -51,6 +51,6 @@ class MailRenderer extends DefaultViewPathRenderer
             'defaultViewPath' => $this->defaultTextViewPath,
         ]);
 
-        return strip_tags($textRenderer->render($viewable, $params));
+        return html_entity_decode(strip_tags($textRenderer->render($viewable, $params)));
     }
 }

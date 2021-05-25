@@ -1,9 +1,9 @@
 <?php
 return array (
-  '<strong>Administration</strong>' => '',
-  '<strong>Hurray!</strong> That\'s all for now.' => '',
+  '<strong>Administration</strong>' => '<strong>Administration</strong>',
+  '<strong>Hurray!</strong> That\'s all for now.' => '<strong>Hurra!</strong> Det var allt för nu.',
   '<strong>Modules</strong>' => '<strong>Moduler</strong>',
-  'As an admin, you can manage the whole platform from here.<br><br>Apart from the modules, we are not going to go into each point in detail here, as each has its own short description elsewhere.' => '',
-  'You are currently in the tools menu. From here you can access the HumHub online marketplace, where you can install an ever increasing number of tools on-the-fly.<br><br>As already mentioned, the tools increase the features available for your space.' => '',
-  'You have now learned about all the most important features and settings and are all set to start using the platform.<br><br>We hope you and all future users will enjoy using this site. We are looking forward to any suggestions or support you wish to offer for our project. Feel free to contact us via www.humhub.org.<br><br>Stay tuned. :-)' => '',
+  'As an admin, you can manage the whole platform from here.<br><br>Apart from the modules, we are not going to go into each point in detail here, as each has its own short description elsewhere.' => 'Som Admin kan du administrera hela plattformen härifrån. <br><br> Förutom modulerna, kommer vi inte att gå in på detaljer här eftersom varje del har sin egen beskrivning någon annanstans.',
+  'You are currently in the tools menu. From here you can access the HumHub online marketplace, where you can install an ever increasing number of tools on-the-fly.<br><br>As already mentioned, the tools increase the features available for your space.' => 'Du befinner dig i verktygsmenyn. Härifrån når du Humhubs marknadstorg online, där du kan installera ett ständigt växande antal verktyg.<br><br>Som vi redan nämnt, så kan verktygen utöka funktionaliteten i ditt nätverk.',
+  'You have now learned about all the most important features and settings and are all set to start using the platform.<br><br>We hope you and all future users will enjoy using this site. We are looking forward to any suggestions or support you wish to offer for our project. Feel free to contact us via www.humhub.org.<br><br>Stay tuned. :-)' => 'Du har nu fått ta del av de allra viktigaste funktionerna och inställningarna och är nu redo att börja använda plattformen.<br><br>Vi hoppas att du och alla framtida användare kommer att uppskatta att använda den här sajten. Vi ser fram emot både förbättringsförslag eller den support som du har möjlighet att ge vårt projekt. Känn dig välkommen att kontakta oss via www.humhub.org<br><br>Håll ögonen öppna :-)',
 );

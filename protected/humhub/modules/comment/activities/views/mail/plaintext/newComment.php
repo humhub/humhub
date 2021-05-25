@@ -1,15 +1,16 @@
 <?php
 
-use humhub\modules\content\widgets\richtext\RichText;
-use yii\helpers\Html;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 
 /* @var $originator \humhub\modules\user\models\User */
 /* @var $source \humhub\modules\comment\models\Comment */
 
-echo strip_tags(Yii::t('CommentModule.base', "{displayName} wrote a new comment ", [
-    '{displayName}' => Html::encode($originator->displayName)
-]));
+echo Yii::t('CommentModule.base', "{displayName} wrote a new comment ", [
+    '{displayName}' => $originator->displayName
+]);
 
 ?>
 
-"<?= strip_tags(RichText::preview($source->message)); ?>"
+"<?= RichTextToPlainTextConverter::process($source->message, [
+    RichTextToPlainTextConverter::OPTION_CACHE_KEY => RichTextToPlainTextConverter::buildCacheKeyForRecord($source)
+]) ?>"

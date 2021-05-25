@@ -61,7 +61,7 @@ class AuthClientHelpers
         if ($authClient instanceof interfaces\PrimaryClient) {
             $user->auth_mode = $authClient->getId();
             $user->save();
-        } elseif (isset($attributes['id'])) {
+        } elseif (!empty($attributes['id'])) {
             $auth = Auth::findOne(['source' => $authClient->getId(), 'source_id' => $attributes['id']]);
 
             /**
@@ -71,7 +71,6 @@ class AuthClientHelpers
                 $auth->delete();
                 $auth = null;
             }
-
 
             if ($auth === null) {
                 $auth = new Auth([

@@ -2,9 +2,11 @@
 
 namespace humhub\modules\user\models\forms;
 
+use humhub\modules\user\assets\UserAsset;
+use humhub\modules\user\authclient\BaseClient;
+use humhub\modules\user\authclient\BaseFormAuth;
 use Yii;
 use yii\base\Model;
-use humhub\modules\user\authclient\BaseFormAuth;
 
 
 /**
@@ -29,7 +31,7 @@ class Login extends Model
     public $rememberMe = false;
 
     /**
-     * @var \yii\authclient\BaseClient auth client used to authenticate
+     * @var BaseClient auth client used to authenticate
      */
     public $authClient = null;
 
@@ -71,12 +73,18 @@ class Login extends Model
      */
     public function afterValidate()
     {
-        $user = null;
-
         // Loop over enabled authclients
+        $authClientDelayed = null;
         foreach (Yii::$app->authClientCollection->getClients() as $authClient) {
             if ($authClient instanceof BaseFormAuth) {
                 $authClient->login = $this;
+
+                if ($authClient->isDelayedLoginAction()) {
+                    // Don't even try to do authorization if user is delayed currently
+                    $authClientDelayed = $authClient;
+                    break;
+                }
+
                 if ($authClient->auth()) {
                     $this->authClient = $authClient;
 
@@ -85,12 +93,27 @@ class Login extends Model
 
                     return;
                 }
+
+                // User may be delayed during authorization attempt above,
+                // so we need this additional check in order to delay the login form immediately
+                if ($authClient->isDelayedLoginAction()) {
+                    $authClientDelayed = $authClient;
+                }
+
             }
         }
 
-        if ($user === null) {
-            $this->addError('password', Yii::t('UserModule.auth', 'User or Password incorrect.'));
+        if ($authClientDelayed) {
+            UserAsset::register(Yii::$app->view);
+            Yii::$app->view->registerJs(
+                'humhub.require("user.login").delayLoginAction('
+                . $authClientDelayed->getDelayedLoginTime() . ',
+                "' . Yii::t('UserModule.auth', 'Please wait') . '",
+                "#login-button")'
+            );
         }
+
+        $this->addError('password', Yii::t('UserModule.auth', 'User or Password incorrect.'));
 
         // Delete current password value
         $this->password = '';

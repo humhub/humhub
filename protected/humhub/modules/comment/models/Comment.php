@@ -300,4 +300,16 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     {
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
     }
+
+    /**
+     * Checks if given content object is a subcomment
+     *
+     * @param $object
+     * @return bool
+     * @since 1.8
+     */
+    public static function isSubComment($object)
+    {
+        return $object instanceof Comment && $object->object_model === Comment::class;
+    }
 }

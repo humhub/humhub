@@ -41,7 +41,12 @@ class ManifestController extends Controller
     public function actionIndex()
     {
         $this->handleIcons();
-        $this->handlePwa();
+
+        /** @var Module $module */
+        $module = Yii::$app->getModule('web');
+        if ($module->enableServiceWorker !== false) {
+            $this->handlePwa();
+        }
 
         return $this->asJson($this->manifest);
     }
@@ -61,11 +66,14 @@ class ManifestController extends Controller
         $this->manifest['icons'] = [];
 
         foreach ([48, 72, 96, 192, 512] as $size) {
-            $this->manifest['icons'][] = [
-                'src' => SiteIcon::getUrl($size),
-                'type' => 'image/png',
-                'sizes' => $size . 'x' . $size
-            ];
+            $src = SiteIcon::getUrl($size);
+            if (!empty($src)) {
+                $this->manifest['icons'][] = [
+                    'src' => $src,
+                    'type' => 'image/png',
+                    'sizes' => $size . 'x' . $size
+                ];
+            }
         }
     }
 }

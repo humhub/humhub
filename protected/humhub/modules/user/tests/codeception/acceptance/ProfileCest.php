@@ -83,7 +83,7 @@ class ProfileCest
         $I->see('Tester');
 
         $accountSettings = AccountSettingsPage::openBy($I);
-        $accountSettings->clickSecurity();
+        $accountSettings->clickPermissions();
         $I->selectOption('select[data-attribute0*=ViewAboutPage]', 'Deny');
 
         $I->amUser1(true);

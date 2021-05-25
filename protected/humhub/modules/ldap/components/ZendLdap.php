@@ -83,25 +83,66 @@ class ZendLdap extends Ldap
         ErrorHandler::start(E_WARNING);
         $cookie = '';
         $results = [];
-        do {
-            ldap_control_paged_result($resource, $pageSize, true, $cookie);
 
-            $result = ldap_search($resource, $basedn, $filter,
-                $attributes
-            );
-            foreach (ldap_get_entries($resource, $result) as $item) {
-                if (!is_array($item))
-                    continue;
+        if (version_compare(PHP_VERSION, '7.3') >= 0) {
+            $results = $this->ldapSearchPaged($resource, $basedn, $filter, $attributes, 0, $pageSize, $timelimit);
+        } else {
+            do {
+                ldap_control_paged_result($resource, $pageSize, true, $cookie);
 
-                array_push($results, (array)$item);
-            }
-            ldap_control_paged_result_response($resource, $result, $cookie);
-        } while ($cookie);
+                $result = ldap_search($resource, $basedn, $filter,
+                    $attributes
+                );
+                foreach (ldap_get_entries($resource, $result) as $item) {
+                    if (!is_array($item))
+                        continue;
+
+                    array_push($results, (array)$item);
+                }
+                ldap_control_paged_result_response($resource, $result, $cookie);
+            } while ($cookie);
+
+        }
         ErrorHandler::stop();
         if (count($results) == 0) {
             throw new Exception\LdapException($this, 'searching: ' . $filter);
         }
         return $results;
     }
+
+
+    private function ldapSearchPaged($resource, $basedn, $filter, $attributes, $attributesOnly, $sizelimit, $timelimit)
+    {
+        $results = [];
+        $cookie = '';
+
+        // define("LDAP_CONTROL_PAGEDRESULTS", "1.2.840.113556.1.4.319");
+
+        do {
+            $result = ldap_search($resource, $basedn, $filter, $attributes, $attributesOnly, 0, $timelimit, null,
+                [['oid' => '1.2.840.113556.1.4.319', 'value' => ['size' => $sizelimit, 'cookie' => $cookie]]]
+            );
+
+            $errCode = $dn = $errMsg = $refs = null;
+            ldap_parse_result($resource, $result, $errCode, $dn, $errMsg, $refs, $controls);
+
+            foreach (ldap_get_entries($resource, $result) as $item) {
+                if (!is_array($item)) {
+                    continue;
+                }
+
+                array_push($results, (array)$item);
+            }
+
+            if (isset($controls['1.2.840.113556.1.4.319']['value']['cookie'])) {
+                $cookie = $controls['1.2.840.113556.1.4.319']['value']['cookie'];
+            } else {
+                $cookie = '';
+            }
+        } while (!empty($cookie));
+
+        return $results;
+    }
+
 
 }

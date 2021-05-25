@@ -90,6 +90,23 @@ Module successfully enabled!
     'Version:' => 'Версия:',
     'View Changelog' => 'Просмотр журнала изменений',
     'search for available modules online' => 'поиск доступных модулей...',
+    '
+No active Professional Edition license found!
+' => '',
+    '
+PROFESSIONAL EDITION
+' => '',
+    '
+The license could not be activated:
+' => '',
+    '
+The license was successfully activated!
+
+' => '',
+    '
+The license was successfully removed!
+
+' => '',
     'Buy' => '',
     'Could not connect to licence server!' => '',
     'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => '',

@@ -12,11 +12,11 @@ class AccountSettingsPage extends BasePage
 {
 
     public $route = 'user/account/edit';
-    
-    public function clickSecurity()
+
+    public function clickPermissions()
     {
-        $this->actor->click('Security');
-        $this->actor->waitForText('Security settings', 30);
+        $this->actor->click('Permissions');
+        $this->actor->waitForText('These settings allow you to determine', 30);
     }
 
 }

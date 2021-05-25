@@ -371,6 +371,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function canPin()
     {
+        // Currently global content can not be pinned
+        if (!$this->getContainer()) {
+            return false;
+        }
+
         if ($this->isArchived()) {
             return false;
         }
@@ -409,6 +414,16 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function canArchive()
     {
+        // Currently global content can not be archived
+        if (!$this->getContainer()) {
+            return false;
+        }
+
+        // No need to archive content on an archived container, content is marked as archived already
+        if ($this->getContainer()->isArchived()) {
+            return false;
+        }
+
         return $this->getContainer()->permissionManager->can(new ManageContent());
     }
 
@@ -572,9 +587,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      * HActiveRecordContent (e.g. Post) to overwrite this behavior.
      * e.g. in case there is no wall entry available for this content.
      *
-     * @since 0.11.1
      * @param boolean $scheme
      * @return string the URL
+     * @since 0.11.1
      */
     public function getUrl($scheme = false)
     {
@@ -627,8 +642,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      * Relation to ContentContainer model
      * Note: this is not a Space or User instance!
      *
-     * @since 1.1
      * @return \yii\db\ActiveQuery
+     * @since 1.1
      */
     public function getContentContainer()
     {
@@ -638,8 +653,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     /**
      * Returns the ContentTagRelation query.
      *
-     * @since 1.2.2
      * @return \yii\db\ActiveQuery
+     * @since 1.2.2
      */
     public function getTagRelations()
     {
@@ -649,8 +664,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     /**
      * Returns all content related tags ContentTags related to this content.
      *
-     * @since 1.2.2
      * @return \yii\db\ActiveQuery
+     * @since 1.2.2
      */
     public function getTags($tagClass = ContentTag::class)
     {
@@ -660,9 +675,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     /**
      * Adds a new ContentTagRelation for this content and the given $tag instance.
      *
-     * @since 1.2.2
      * @param ContentTag $tag
      * @return bool if the provided tag is part of another ContentContainer
+     * @since 1.2.2
      */
     public function addTag(ContentTag $tag)
     {
@@ -683,8 +698,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     /**
      * Adds the given ContentTag array to this content.
      *
-     * @since 1.3
      * @param $tags ContentTag[]
+     * @since 1.3
      */
     public function addTags($tags)
     {
@@ -770,11 +785,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     /**
      * Checks if user can view this content.
      *
-     * @since 1.1
      * @param User|integer $user
      * @return boolean can view this content
      * @throws Exception
      * @throws \Throwable
+     * @since 1.1
      */
     public function canView($user = null)
     {
@@ -785,7 +800,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         }
 
         // Check global content visibility, private global content is visible for all users
-        if(empty($this->contentcontainer_id) && !Yii::$app->user->isGuest) {
+        if (empty($this->contentcontainer_id) && !Yii::$app->user->isGuest) {
             return true;
         }
 
@@ -805,7 +820,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         }
 
         // Check system admin can see all content module configuration
-        if ($user->isSystemAdmin() && Yii::$app->getModule('content')->adminCanViewAllContent) {
+        if ($user->canViewAllContent()) {
             return true;
         }
 
@@ -833,15 +848,15 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         }
 
         // GLobal content
-        if(!$this->container) {
+        if (!$this->container) {
             return $this->isPublic();
         }
 
-        if($this->container instanceof Space) {
+        if ($this->container instanceof Space) {
             return $this->isPublic() && $this->container->visibility == Space::VISIBILITY_ALL;
         }
 
-        if($this->container instanceof User) {
+        if ($this->container instanceof User) {
             return $this->isPublic() && $this->container->visibility == User::VISIBILITY_ALL;
         }
 

@@ -14,6 +14,7 @@ use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\behaviors\CompatModuleManager;
 use humhub\modules\content\components\behaviors\SettingsBehavior;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\search\events\SearchAddEvent;
@@ -35,6 +36,7 @@ use Yii;
 use yii\base\Exception;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
+use yii\db\Query;
 use yii\web\IdentityInterface;
 
 /**
@@ -148,7 +150,9 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['username'], 'unique'],
             [['username'], 'string', 'max' => $userModule->maximumUsernameLength, 'min' => $userModule->minimumUsernameLength],
             // Client validation is disable due to invalid client pattern validation
-            [['username'], 'match', 'not' => true, 'pattern' => '/[\x00-\x1f\x7f]/', 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false],
+            [['username'], 'match', 'pattern' => $userModule->validUsernameRegexp, 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false, 'when' => function ($model, $attribute) {
+                return $model->getAttribute($attribute) !== $model->getOldAttribute($attribute);
+            }],
             [['status', 'created_by', 'updated_by', 'visibility'], 'integer'],
             [['tags'], 'string'],
             [['guid'], 'string', 'max' => 45],
@@ -493,8 +497,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             }
         }
 
-        if ($this->time_zone == '') {
-            $this->time_zone = Yii::$app->settings->get('timeZone');
+        if (empty($this->time_zone)) {
+            $this->time_zone = Yii::$app->settings->get('defaultTimeZone');
         }
 
         return parent::beforeSave($insert);
@@ -664,6 +668,17 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
+     * Checks if the user is allowed to view all content
+     *
+     * @since 1.8
+     * @return bool
+     */
+    public function canViewAllContent()
+    {
+        return Yii::$app->getModule('content')->adminCanViewAllContent && $this->isSystemAdmin();
+    }
+
+    /**
      * @inheritdoc
      */
     public function getWallOut()
@@ -775,6 +790,30 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
+     * Return user groups
+     *
+     * @return array user groups
+     */
+    public static function getUserGroups()
+    {
+        $groups = [];
+
+        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+            $groups[self::USERGROUP_FRIEND] = Yii::t('UserModule.account', 'Your friends');
+            $groups[self::USERGROUP_USER] = Yii::t('UserModule.account', 'Other users');
+        } else {
+            $groups[self::USERGROUP_USER] = Yii::t('UserModule.account', 'Users');
+        }
+
+        // Add guest groups if enabled
+        if (AuthHelper::isGuestAccessEnabled()) {
+            $groups[self::USERGROUP_GUEST] = Yii::t('UserModule.account', 'Not registered users');
+        }
+
+        return $groups;
+    }
+
+    /**
      * TODO: deprecated
      * @inheritdoc
      */
@@ -801,6 +840,43 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     {
         // TODO: Implement same logic as for Spaces
         return Content::VISIBILITY_PUBLIC;
+    }
+
+    /**
+     * @param string Module id
+     * @return ContentContainerSettingsManager
+     */
+    public function getSettings($moduleId = 'user')
+    {
+        /* @var $module Module */
+        $module = Yii::$app->getModule($moduleId);
+        return $module->settings->contentContainer($this);
+    }
+
+    /**
+     * Check if the User must change password
+     *
+     * @since 1.8
+     * @return bool
+     */
+    public function mustChangePassword()
+    {
+        return (bool)$this->getSettings()->get('mustChangePassword');
+    }
+
+    /**
+     * Set/Unset User to force change password
+     *
+     * @since 1.8
+     * @param bool true - force user to change password, false - don't require to change password
+     */
+    public function setMustChangePassword($state = true)
+    {
+        if ($state) {
+            $this->getSettings()->set('mustChangePassword', true);
+        } else {
+            $this->getSettings()->delete('mustChangePassword');
+        }
     }
 
 }

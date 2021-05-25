@@ -131,4 +131,5 @@ return [
     'XMPP Jabber Address' => '',
     'Xing URL' => '',
     'YouTube URL' => '',
+    '{attribute} is required!' => '',
 ];

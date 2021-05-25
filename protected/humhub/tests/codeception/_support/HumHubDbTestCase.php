@@ -2,14 +2,15 @@
 
 namespace tests\codeception\_support;
 
-use humhub\components\bootstrap\ModuleAutoLoader;
-use humhub\components\Module;
+use humhub\models\UrlOembed;
+use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\live\tests\codeception\fixtures\LiveFixture;
 use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
-use humhub\tests\codeception\fixtures\ModulesEnabledFixture;
 use humhub\tests\codeception\fixtures\UrlOembedFixture;
 use Yii;
-use yii\base\Event;
 use yii\db\ActiveRecord;
 use Codeception\Test\Unit;
 use humhub\libs\BasePermission;
@@ -50,6 +51,7 @@ class HumHubDbTestCase extends Unit
         Yii::setAlias('@webroot', realpath($webRoot));
         $this->initModules();
         $this->reloadSettings();
+        $this->flushCache();
         $this->deleteMails();
     }
 
@@ -62,6 +64,15 @@ class HumHubDbTestCase extends Unit
                 $module->settings->reload();
             }
         }
+    }
+
+    protected function flushCache()
+    {
+        RichTextToShortTextConverter::flushCache();
+        RichTextToHtmlConverter::flushCache();
+        RichTextToPlainTextConverter::flushCache();
+        RichTextToMarkdownConverter::flushCache();
+        UrlOembed::flush();
     }
 
     protected function deleteMails()
