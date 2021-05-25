@@ -18,7 +18,7 @@ use yii\helpers\Url;
     'user' => $user,
     'followOptions' => ['class' => 'btn btn-primary btn-sm'],
     'unfollowOptions' => ['class' => 'btn btn-primary btn-sm active'],
-    'unfollowLabel' => '<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('FriendshipModule.base', 'Unfollow'),
+    'unfollowLabel' => '<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('FriendshipModule.base', 'Following'),
 ]); ?>
 
 <?php
