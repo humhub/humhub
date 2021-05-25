@@ -26,3 +26,4 @@
 - Enh #5073: Enhance API tests
 - Fix #5078: Fix enabling of REST module on run API tests
 - Enh #4776: Add "acknowledge" option to all relevant forms
+- Enh #4757: Updated to PHPUnit 8.5
