@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e25fa2ed3ad8e6c99542573587da0caa",
+    "content-hash": "3d17790ff0c912ffa14abea17f21d942",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -3262,6 +3262,18 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/clipboard-polyfill/-/clipboard-polyfill-3.0.1.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/codemirror",
+            "version": "5.61.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/codemirror/-/codemirror-5.61.0.tgz"
             },
             "type": "npm-asset",
             "license": [
