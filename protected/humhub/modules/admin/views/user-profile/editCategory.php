@@ -21,7 +21,7 @@ use humhub\libs\Html;
     <?php endif; ?>
     <br>
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
     <?= $form->field($category, 'title') ?>
     <?= $form->field($category, 'description')->textarea(['rows' => 5]) ?>

@@ -1,6 +1,6 @@
 <?php
 
-use yii\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Url;
 
 ?>
@@ -13,14 +13,14 @@ use yii\helpers\Url;
         <?= Yii::t('NotificationModule.base', 'Notifications are sent instantly to you to inform you about new activities in your network.'); ?><br />
         <?= Yii::t('NotificationModule.base', 'This view allows you to configure your notification settings by selecting the desired targets for the given notification categories.'); ?>
     </div>
-    
-    <?php $form = ActiveForm::begin(); ?>
+
+    <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
     <?= humhub\modules\notification\widgets\NotificationSettingsForm::widget([
         'model' => $model,
         'form' => $form
     ]) ?>
-    
+
     <br />
     <button type="submit" class="btn btn-primary" data-ui-loader><?= Yii::t('base', 'Save'); ?></button>
     <?php if ($model->isUserSettingLoaded()): ?>

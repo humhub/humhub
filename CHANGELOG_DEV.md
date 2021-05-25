@@ -25,3 +25,4 @@
 - Enh #5065: Add checking for php PCNTL extension
 - Enh #5073: Enhance API tests
 - Fix #5078: Fix enabling of REST module on run API tests
+- Enh #4776: Add "acknowledge" option to all relevant forms

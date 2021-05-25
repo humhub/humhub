@@ -1,7 +1,7 @@
 <?php
 
-use humhub\compat\CActiveForm;
-use humhub\compat\CHtml;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use yii\helpers\Html;
 use humhub\modules\admin\models\forms\StatisticSettingsForm;
 use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
 
@@ -12,7 +12,7 @@ use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
 <p><?= Yii::t('AdminModule.settings', 'You can add a statistic code snippet (HTML) - which will be added to all rendered pages.')?></p>
 <br>
 
-<?php $form = CActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
 <?= $form->errorSummary($model); ?>
 
@@ -21,9 +21,9 @@ use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
 </div>
 <hr>
 
-<?= CHtml::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+<?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
 <?= \humhub\widgets\DataSaved::widget(); ?>
-<?php CActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
 
 <?php $this->endContent(); ?>
