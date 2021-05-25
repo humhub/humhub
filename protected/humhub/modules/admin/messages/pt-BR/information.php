@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<strong>CronJob</strong> Status' => 'Status <strong>CronJob strong&gt;</strong>',
-  '<strong>Queue</strong> Status' => 'Status da <strong>fila strong&gt;</strong>',
+  '<strong>CronJob</strong> Status' => 'Status <strong>CronJob</strong>',
+  '<strong>Queue</strong> Status' => 'Status da <strong>fila</strong>',
   'About HumHub' => 'Sobre HumHub',
   'Background Jobs' => 'Trabalhos em segundo plano',
   'Checking HumHub software prerequisites.' => 'Verificando os pré-requisitos de software HumHub.',

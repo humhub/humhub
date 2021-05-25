@@ -82,4 +82,7 @@ return array (
   'Upload' => 'Μεταφόρτωση',
   'Upload file' => 'Μεταφόρτωση αρχείου',
   'You are not allowed to run this action.' => 'Δεν σου επιτρέπεται η εκτέλεση αυτής της ενέργειας.',
+  '{nFormatted}B' => '{nFormatted}B',
+  '{nFormatted}K' => '{nFormatted}K',
+  '{nFormatted}M' => '{nFormatted}M',
 );

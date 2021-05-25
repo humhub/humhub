@@ -27,15 +27,6 @@ class IndexController extends Controller
      */
     public $adminOnly = false;
 
-    /**
-     * @inheritdoc
-     */
-    public function getAccessRules()
-    {
-        return [
-            ['permissions' => Yii::$app->getModule('admin')->getPermissions()]
-        ];
-    }
 
     /**
      * List all available user groups

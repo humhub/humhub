@@ -1,14 +1,14 @@
 <?php
 return array (
   '<strong>Search </strong> results' => '<strong>Keresési</strong> eredmények',
-  'Advanced search settings' => 'Speciális keresési beállítások',
+  'Advanced search settings' => 'Részletes keresési beállítások',
   'All' => 'Minden',
   'Content' => 'Tartalom',
   'Search' => 'Keresés',
-  'Search for user, spaces and content' => 'Keress felhasználókra, közösségekre vagy tartalmakra',
-  'Search only in certain spaces:' => 'Keresés csak az alábbi közösségekben',
+  'Search for user, spaces and content' => 'Keresés az egész oldalon',
+  'Search only in certain spaces:' => 'Keresés szűkítése az alább közösség(ek)re:',
   'Spaces' => 'Közösségek',
-  'Specify space' => 'Add meg a közösséget',
+  'Specify space' => 'Közösség szűkítése',
   'Users' => 'Felhasználók',
-  'Your search returned no matches.' => 'A keresés nem járt eredménnyel.',
+  'Your search returned no matches.' => 'A keresésed nem adott találatot.',
 );

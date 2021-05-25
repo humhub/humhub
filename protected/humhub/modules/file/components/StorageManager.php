@@ -79,6 +79,7 @@ class StorageManager extends Component implements StorageManagerInterface
         if (is_uploaded_file($file->tempName)) {
             move_uploaded_file($file->tempName, $this->get($variant));
             @chmod($this->get($variant), $this->fileMode);
+            $this->file->saveHash();
         }
     }
 
@@ -89,6 +90,7 @@ class StorageManager extends Component implements StorageManagerInterface
     {
         file_put_contents($this->get($variant), $content);
         @chmod($this->get($variant), $this->fileMode);
+        $this->file->saveHash();
     }
 
     /**

@@ -8,6 +8,9 @@ use yii\helpers\Html;
 use humhub\modules\like\Module;
 use humhub\modules\like\models\Like as LikeModel;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\like\permissions\CanLike;
+
 /**
  * This widget is used to show a like link inside the wall entry controls.
  *
@@ -25,14 +28,25 @@ class LikeLink extends \yii\base\Widget
     public $object;
 
     /**
+     * @inheritdoc
+     */
+    public function beforeRun()
+    {
+        if (!Yii::$app->getModule('like')->isEnabled ||
+            !isset($this->object->content->container) ||
+            !($this->object->content->container instanceof ContentContainerActiveRecord) ||
+            !$this->object->content->container->can(CanLike::class)) {
+            return false;
+        }
+
+        return parent::beforeRun();
+    }
+
+    /**
      * Executes the widget.
      */
     public function run()
     {
-        if (Yii::$app->getModule('like')->isEnabled === false) {
-            return;
-        }
-
         $currentUserLiked = false;
         /** @var Module $module */
         $module = Yii::$app->getModule('like');

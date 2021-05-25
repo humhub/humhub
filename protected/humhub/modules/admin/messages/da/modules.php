@@ -38,10 +38,10 @@ return [
     'Save' => 'Gem',
     'Set as default' => 'Set som standard',
     'Spaces' => 'Sider',
-    'This module doesn\'t provide further informations.' => 'Dette modul har ikke yderligere informationer.',
     'Uninstall' => 'Afinstaller',
     'User Profiles' => 'Bruger profiler',
     'Version:' => 'Version:',
     'Legacy' => '',
     'Not maintained or maintenance is about to be discontinued.' => '',
+    'This module doesn\'t provide further information.' => '',
 ];

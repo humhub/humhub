@@ -129,7 +129,7 @@ class ApprovalCest
         $I->see('Pending user approvals');
 
         $I->see('approvalTest@test.de');
-        $I->amOnRoute('/admin/approval/approve', ['id' => 8]);
+        $I->amOnRoute('/admin/approval/approve', ['id' => 9]);
 
         $I->see('Accept user: approval test');
         $I->click('Send & save');

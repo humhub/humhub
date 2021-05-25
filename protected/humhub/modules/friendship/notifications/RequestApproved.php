@@ -56,7 +56,7 @@ class RequestApproved extends BaseNotification
      */
     public function getMailSubject()
     {
-        return strip_tags($this->html());
+        return $this->getInfoText($this->originator->displayName);
     }
 
     /**
@@ -64,11 +64,13 @@ class RequestApproved extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('FriendshipModule.notification', '{displayName} accepted your friend request.', [
-                    'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-        ]);
+        return $this->getInfoText(Html::tag('strong', Html::encode($this->originator->displayName)));
     }
 
+    private function getInfoText($displayName)
+    {
+        return Yii::t('FriendshipModule.notification', '{displayName} accepted your friend request.', [
+            'displayName' => $displayName,
+        ]);
+    }
 }
-
-?>

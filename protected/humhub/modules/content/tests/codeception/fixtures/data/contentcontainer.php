@@ -30,4 +30,5 @@ return [
     ['id' => 10, 'guid' => '01e50e0d-82cd-41fc-8b0c-552392f5839h', 'class' => 'humhub\modules\user\models\User', 'pk' => '6', 'owner_user_id' => 6],
     ['id' => 11, 'guid' => '01e50e0d-82cd-41fc-8b0c-552392f5839i', 'class' => 'humhub\modules\user\models\User', 'pk' => '7', 'owner_user_id' => 7],
     ['id' => 12, 'guid' => '5396d499-20d6-4233-800b-c6c86e5fa34e', 'class' => 'humhub\modules\space\models\Space', 'pk' => '5', 'owner_user_id' => 1],
+    ['id' => 13, 'guid' => '01e50e0d-82cd-41fc-8b0c-552392f5839j', 'class' => 'humhub\modules\user\models\User', 'pk' => '8', 'owner_user_id' => 8],
 ];

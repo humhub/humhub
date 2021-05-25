@@ -23,7 +23,7 @@ return array (
   'Save' => 'Guardar',
   'Set as default' => 'Establecer como predeterminado',
   'Spaces' => 'Espacios',
-  'This module doesn\'t provide further informations.' => 'Este módulo no proporciona información adicional.',
+  'This module doesn\'t provide further information.' => 'Este módulo no proporciona más información.',
   'Uninstall' => 'Desinstalar',
   'User Profiles' => 'Perfiles de usuarios',
   'Version:' => 'Versión:',

@@ -23,7 +23,7 @@ return array (
   'Save' => 'Zapisz',
   'Set as default' => 'Ustaw jako domyślny',
   'Spaces' => 'Strefy',
-  'This module doesn\'t provide further informations.' => 'Ten moduł nie dostarcza dalszych informacji.',
+  'This module doesn\'t provide further information.' => 'Ten moduł nie zapewnia więcej informacji.',
   'Uninstall' => 'Odinstaluj',
   'User Profiles' => 'Profile użytkownika',
   'Version:' => 'Wersja:',

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models;
 
+use humhub\components\access\ControllerAccess;
 use humhub\components\ActiveRecord;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
@@ -112,6 +113,11 @@ class Invite extends ActiveRecord
 
     public function selfInvite()
     {
+        if (Yii::$app->settings->get('maintenanceMode')) {
+            Yii::$app->getView()->warn(ControllerAccess::getMaintenanceModeWarningText());
+            return false;
+        }
+
         $this->source = self::SOURCE_SELF;
         $this->language = Yii::$app->language;
 
@@ -228,7 +234,7 @@ class Invite extends ActiveRecord
      */
     public function allowSelfInvite()
     {
-        return (Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration'));
+        return (!Yii::$app->settings->get('maintenanceMode') && Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration'));
     }
 
     public function showCaptureInRegisterForm()

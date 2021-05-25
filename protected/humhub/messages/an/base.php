@@ -99,4 +99,7 @@ return [
     'Toggle post menu' => '',
     'Toggle stream entry menu' => '',
     'You are not allowed to run this action.' => '',
+    '{nFormatted}B' => '',
+    '{nFormatted}K' => '',
+    '{nFormatted}M' => '',
 ];

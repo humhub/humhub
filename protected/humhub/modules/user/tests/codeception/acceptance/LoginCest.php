@@ -2,6 +2,7 @@
 
 namespace user\acceptance;
 
+use humhub\modules\user\models\User;
 use tests\codeception\_pages\LoginPage;
 use user\AcceptanceTester;
 
@@ -53,8 +54,8 @@ class LoginCest
 
     public function testUnApprovedUser(AcceptanceTester $I)
     {
-        $user = \humhub\modules\user\models\User::findOne(['id' => 4]);
-        $user->status = \humhub\modules\user\models\User::STATUS_NEED_APPROVAL;
+        $user = User::findOne(['id' => 4]);
+        $user->status = User::STATUS_NEED_APPROVAL;
         $user->save();
 
         $I->wantTo('ensure that unapproved user cannot login');
@@ -62,6 +63,30 @@ class LoginCest
         $loginPage->login('User3', '123qwe');
         $I->expectTo('see validations errors');
         $I->waitForText('Your account is not approved yet!');
+    }
+
+
+
+    public function testChangePassword(AcceptanceTester $I)
+    {
+        $user = User::findOne(['id' => 4]);
+        $user->setMustChangePassword(true);
+        $user->save();
+
+        $I->wantTo('ensure that user need to change password');
+        $loginPage = LoginPage::openBy($I);
+        $loginPage->login('User3', '123qwe');
+
+        $I->expectTo('see password change dialog');
+        $I->waitForText('Due to security reasons');
+        $I->fillField('#password-currentpassword', '123qwe');
+        $I->fillField('#password-newpassword', '321QW12e');
+        $I->fillField('#password-newpasswordconfirm', '321QW12e');
+        $I->click('Confirm');
+
+        $I->expectTo('see dashboard');
+        $I->waitForText('Password changed');
+        $I->see('Latest activities');
     }
 
     //Login by email

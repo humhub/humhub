@@ -25,7 +25,7 @@ $userModule = Yii::$app->getModule('user');
 
     <?= $form->field($model, 'internalRequireApprovalAfterRegistration')->checkbox(); ?>
 
-    <?= $form->field($model, 'defaultUserGroup')->dropDownList($groups, ['readonly' => $userModule->settings->isFixed('auth.defaultUserGroup')]); ?>
+    <?= $form->field($model, 'showRegistrationUserGroup')->checkbox(); ?>
 
     <?= $form->field($model, 'defaultUserIdleTimeoutSec')->textInput(['readonly' => $userModule->settings->isFixed('auth.defaultUserIdleTimeoutSec')]); ?>
     <p class="help-block"><?= Yii::t('AdminModule.user', 'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)'); ?></p>

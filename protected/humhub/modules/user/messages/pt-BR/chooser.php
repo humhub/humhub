@@ -9,6 +9,6 @@ return array (
   'Select {n,plural,=1{user} other{users}}' => 'Selecione {n,plural,=1{usuário} other{usuários}}',
   'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => 'Esse campo permite um máximo de {n,plural,=1{# item} other{# itens}}.',
   'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Esse campo permite um máximo de {n,plural,=1{# usuário} other{# usuários}}.',
-  'You reached the maximum number of allowed charachters ({n}).' => 'Você atingiu o limite máximo de caracteres permitidos ({n}).',
+  'You reached the maximum number of allowed characters ({n}).' => 'Você atingiu o limite máximo de caracteres permitidos ({n}).',
   'Your search returned no matches.' => 'A sua pesquisa não encontrou correspondências.',
 );

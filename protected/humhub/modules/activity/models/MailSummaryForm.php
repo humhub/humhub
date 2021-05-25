@@ -8,6 +8,8 @@
 
 namespace humhub\modules\activity\models;
 
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\content\models\ContentContainerSetting;
 use Yii;
 use yii\base\Model;
 use yii\base\Exception;
@@ -203,6 +205,19 @@ class MailSummaryForm extends Model
     }
 
     /**
+     * @return string[]
+     */
+    public static function getUserSettingNames()
+    {
+        return [
+            'mailSummaryInterval',
+            'mailSummaryLimitSpaces',
+            'mailSummaryLimitSpacesMode',
+            'mailSummaryActivitySuppress',
+        ];
+    }
+
+    /**
      * Resets all settings stored for the current user
      *
      * @throws Exception
@@ -214,10 +229,9 @@ class MailSummaryForm extends Model
         }
 
         $settingsManager = static::getModule()->settings->user($this->user);
-        $settingsManager->delete('mailSummaryInterval');
-        $settingsManager->delete('mailSummaryLimitSpaces');
-        $settingsManager->delete('mailSummaryLimitSpacesMode');
-        $settingsManager->delete('mailSummaryActivitySuppress');
+        foreach (static::getUserSettingNames() as $userSettingName) {
+            $settingsManager->delete($userSettingName);
+        }
     }
 
     /**
@@ -226,6 +240,28 @@ class MailSummaryForm extends Model
     private static function getModule()
     {
         return Yii::$app->getModule('activity');
+    }
+
+    /**
+     * @return boolean
+     */
+    public function canResetAllUsers()
+    {
+        return !isset($this->user) && Yii::$app->user->can(ManageUsers::class);
+    }
+
+    /**
+     * Resets all settings stored for all current user
+     */
+    public function resetAllUserSettings()
+    {
+        ContentContainerSetting::deleteAll(['AND',
+            ['module_id' => static::getModule()->id],
+            ['IN', 'name', static::getUserSettingNames()],
+        ]);
+
+        $settingsManager = static::getModule()->settings->user();
+        $settingsManager->reload();
     }
 
 }

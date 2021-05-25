@@ -14,7 +14,7 @@ $i = 0;
 <div class="text text-center powered">
     <?php if ($numItems > 0): ?>
         <?php foreach ($items as $item): ?>
-            <?= Html::a($item['label'], $item['url']); ?>
+            <?= Html::a($item['label'], $item['url'], ['data-pjax-prevent' => true]); ?>
 
             <?php if (++$i !== $numItems): ?>
                 &nbsp;&middot;&nbsp;

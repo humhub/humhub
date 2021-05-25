@@ -20,6 +20,7 @@ use yii\helpers\Url;
 <?= Button::primary(Yii::t('AdminModule.user', 'Edit category'))
     ->icon('edit')->sm()->link(Url::to(['edit-category', 'id' => $category->id]))->right() ?>
 
+    <br/>
 
 <?= GridView::widget([
     'dataProvider' => new ArrayDataProvider(['allModels' => $category->fields]),
@@ -27,11 +28,16 @@ use yii\helpers\Url;
     'columns' => [
         [
             'attribute' => 'title',
+            'content' => function (ProfileField $model, $key, $index, $that) {
+                return Yii::t($model->getTranslationCategory(), $that->getDataCellValue($model, $key, $index));
+            }
         ],
         [
             'class' => CheckboxColumn::class,
             'label' => Yii::t('UserModule.profile', 'Required'),
             'attribute' => 'required',
+            'options' => ['style' => 'width: fit-content;'],
+            'headerOptions' => ['style' => 'word-break: keep-all; hyphens: none;'],
             'content' => function (ProfileField $model, $key, $index, $that) {
                 if ($model->getFieldType()->isVirtual) {
                     return '';
@@ -42,11 +48,15 @@ use yii\helpers\Url;
         [
             'class' => CheckboxColumn::class,
             'label' => Yii::t('UserModule.profile', 'Visible'),
+            'options' => ['style' => 'width: fit-content;'],
+            'headerOptions' => ['style' => 'word-break: keep-all; hyphens: none'],
             'attribute' => 'visible',
         ],
         [
             'class' => CheckboxColumn::class,
             'label' => Yii::t('UserModule.profile', 'Editable'),
+            'options' => ['style' => 'width: fit-content;'],
+            'headerOptions' => ['style' => 'word-break: keep-all; hyphens: none'],
             'attribute' => 'editable',
             'content' => function (ProfileField $model, $key, $index, $that) {
                 if ($model->getFieldType()->isVirtual) {
@@ -58,6 +68,8 @@ use yii\helpers\Url;
         [
             'class' => CheckboxColumn::class,
             'label' => Yii::t('UserModule.profile', 'Searchable'),
+            'options' => ['style' => 'width: fit-content;'],
+            'headerOptions' => ['style' => 'word-break: keep-all; hyphens: none'],
             'attribute' => 'searchable',
             'content' => function (ProfileField $model, $key, $index, $that) {
                 if ($model->getFieldType()->isVirtual) {
@@ -67,7 +79,7 @@ use yii\helpers\Url;
             }
         ],
         [
-            'header' => Yii::t('base', 'Actions'),
+            'header' => '&nbsp;',
             'class' => ActionColumn::class,
             'options' => ['style' => 'width:56px;'],
             'contentOptions' => ['style' => 'text-align:center'],

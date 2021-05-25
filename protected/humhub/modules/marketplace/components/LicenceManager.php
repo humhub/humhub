@@ -52,11 +52,12 @@ class LicenceManager extends Component
     /**
      * Returns the current licence object
      *
+     * @param boolean $useCache
      * @return Licence
      */
-    public static function get()
+    public static function get($useCache = true)
     {
-        if (static::$_licence === null) {
+        if (static::$_licence === null || !$useCache) {
             static::$_licence = static::create();
             Event::trigger(static::class, static::EVENT_GET_LICENCE);
         }

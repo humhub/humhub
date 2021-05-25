@@ -6,6 +6,23 @@ Module successfully disabled!
   '
 Module successfully enabled!
 ' => 'Модулът е успешно активиран!',
+  '
+No active Professional Edition license found!
+' => 'Не е намерен активен лиценз за професионално издание!',
+  '
+PROFESSIONAL EDITION
+' => 'ПРОФЕСИОНАЛНО ИЗДАНИЕ',
+  '
+The license could not be activated:
+' => 'Лицензът не може да бъде активиран:',
+  '
+The license was successfully activated!
+
+' => 'Лицензът беше успешно активиран!',
+  '
+The license was successfully removed!
+
+' => 'Лицензът беше премахнат успешно!',
   '--- Disable module: {moduleId} ---
 
 ' => '--- Деактивиране на модул: {moduleId} ---',

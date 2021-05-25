@@ -108,7 +108,7 @@ class Events extends Component
      */
     public static function onWallEntryAddonInit($event)
     {
-        $event->sender->addWidget(widgets\Comments::class, ['object' => $event->sender->object], ['sortOrder' => 20]);
+        $event->sender->addWidget(widgets\Comments::class, ['object' => $event->sender->object], ['sortOrder' => 30]);
     }
 
     /**

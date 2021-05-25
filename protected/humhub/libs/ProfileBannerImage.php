@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use humhub\modules\file\libs\ImageHelper;
 use Imagine\Image\Box;
 use Imagine\Image\ManipulatorInterface;
 use yii\imagine\Image;
@@ -74,6 +75,7 @@ class ProfileBannerImage extends ProfileImage
 
         // Make sure original file is max. 800 width
         $image = Image::getImagine()->open($file);
+        ImageHelper::fixJpegOrientation($image, $file);
         if ($image->getSize()->getWidth() > 2000) {
             $image->resize($image->getSize()->widen(2000));
         }

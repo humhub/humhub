@@ -1,14 +1,13 @@
 <?php
-/**
- * Translation: Paul (https://paul.bid) paulbid@protonmail.com
- * 
- */
 return array (
   '<strong>Manage</strong> spaces' => '<strong>Управление сообществами</strong>',
   'Add new space' => 'Добавить новое сообщество',
+  'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'Используя пользовательские роли, вы можете создавать различные группы разрешений в Сообществе. Они также могут быть индивидуализированы авторизованными пользователями для каждого Сообщества и относятся только к этому конкретному Сообществу.',
   'Change owner' => 'Сменить владельца сообщества',
   'Default Content Visiblity' => 'Видимость контента по умолчанию',
   'Default Join Policy' => 'Доступ по умолчанию',
+  'Default Space Permissions' => 'Разрешения сообщества по умолчанию',
+  'Default Space(s)' => 'Сообщество(а) по умолчанию',
   'Default Visibility' => 'Видимость по умолчанию',
   'Default space' => 'Cообщество по умолчанию',
   'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => 'Здесь Вы можете задать настройки по умолчанию для новых сообществ. Эти параметры могут быть изменены для каждого отдельного сообщества.',
@@ -17,9 +16,12 @@ return array (
   'Manage modules' => 'Управление модулями',
   'Open space' => 'Открыть сообщество',
   'Overview' => 'Список сообществ',
+  'Permissions' => 'Доступ',
   'Search by name, description, id or owner.' => 'Поиск по названию, описанию, id или владельцу сообщества',
   'Settings' => 'Настройки',
   'Space Settings' => 'Настройки сообществ',
   'Spaces' => 'Сообщества',
+  'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Эти опции позволяют вам установить разрешения по умолчанию для всех Сообществ. Авторизованные пользователи могут индивидуализировать их для каждого Сообщества. Дальнейшие записи добавляются при установке новых модулей.',
   'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Содержит список сообществ с возможностью просмотра, редактирования и удаления.',
+  'Update Space memberships also for existing members.' => 'Обновление членств в Сообществах также для существующих членов.',
 );

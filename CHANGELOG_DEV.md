@@ -1,17 +1,26 @@
-1.8.0 (Unreleased)
-------------------
-- Enh #3414: Allow to change user passwords by admin
-- Enh #4543: Order members by newest in `about` page
-- Enh #4347: Add `hideMembersSidebar` to make members sidebar optional in space stream page
-- Enh #4585: Group notifications must be enabled explicitly
-- Fix #4646: Clean up duplicated array keys
-- Enh #242: Allow multiple default spaces for groups
-- Fix #4692: Fix visibility of the button "Add new space"
-- Enh #4579: Optimized dashboard stream query
-- Enh #4579: Optimized live legitimation id queries
-- Enh #4579: Added `dashboard\Module::$guestFilterClass` and `$memberFilterClass` to replace dashboard filter class
-- Enh #4586: Rebuild group default Space Mapping 
-- Enh #4225: Delete open/pending registration invites automatically after a period of time
-- Fix #4718: Fix space or profile banner size after crop
-- Enh #4738: Allow CanComment permission also on profile level
-- Enh #4749: Add Migration helper to determine installation state
+1.9.0-beta.1 (Unreleased)
+----------------------------
+
+- Enh #3733: Forbid to open AJAX actions as separate page
+- Enh #677: Allow to create new database and set database port on install
+- Fix #4877: Check for writable uploads/profile_image directory
+- Enh #4868: Reset email summaries / notifications settings for all users
+- Enh #4884: New Space module setting to allow all users to add users without invite
+- Enh #4902: Added CodeMirror form field widget
+- Enh #4964: New CLI command to delete users 
+- Enh #4871: Default timezone for guests
+- Enh #5019: Alternative DashboardMemberStreamFilter based on Legitmation IDs
+- Fix #4626: Fix visibility of content in profile stream from archived spaces
+- Chg #5016: Allow impersonate to non sys admin groups (that can manage users)
+- Enh #4935: Render images in email messages as HTML <img> tag
+- Enh #5037: RichTextToShortTextConverter render image as [Image]
+- Enh #5042: Improved Space/User PrettyURL performance
+- Enh #4958: Add possibility to register purchased modules via CLI
+- Enh #4894: Implemented .label-light variant
+- Enh #5012: Space: Show "Owner" Tab also for SystemAdmins
+- Enh #5045: Removed deprecated `Yii::$app->formatterApp` component
+- Enh #5026: Tests for tokenized image urls in email message
+- Enh #5049: Required profile field should not be required in administration
+- Enh #5065: Add checking for php PCNTL extension
+- Enh #5073: Enhance API tests
+- Fix #5078: Fix enabling of REST module on run API tests

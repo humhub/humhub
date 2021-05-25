@@ -32,10 +32,10 @@ class EditGroupForm extends Group
 
     public function attributeLabels()
     {
-        return [
+        return array_merge(parent::attributeLabels(), [
             'defaultSpaceGuid' => Yii::t('AdminModule.space', 'Default Space(s)'),
             'updateSpaceMemberships' => Yii::t('AdminModule.space', 'Update Space memberships also for existing members.'),
-        ];
+        ]);
     }
 
     /**

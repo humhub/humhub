@@ -38,6 +38,7 @@ class Module extends BaseModule
     /**
      * @var string path to store marketplace modules
      * If the param 'moduleMarketplacePath' is set this value will be used.
+     * Note: The path must also be added to the module autoloader `Yii::$app->params['moduleAutoloadPaths']`.
      */
     public $modulesPath = '@app/modules';
 
@@ -55,6 +56,12 @@ class Module extends BaseModule
      * @var bool
      */
     public $hideLegacyModules = true;
+
+    /**
+     * @since 1.8
+     * @var array A list of module ids that cannot be installed.
+     */
+    public $moduleBlacklist = [];
 
     /**
      * @inheritdoc

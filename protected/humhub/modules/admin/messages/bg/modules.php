@@ -23,7 +23,7 @@ return array (
   'Save' => 'Запази',
   'Set as default' => 'Сложи по подразбиране',
   'Spaces' => 'Раздели',
-  'This module doesn\'t provide further informations.' => 'Този модул не предоставя допълнителна информация.',
+  'This module doesn\'t provide further information.' => 'Този модул не предоставя допълнителна информация.',
   'Uninstall' => 'Деинсталиране',
   'User Profiles' => 'Потребителски Профили',
   'Version:' => 'Версия:',

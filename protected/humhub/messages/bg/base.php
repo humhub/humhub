@@ -82,4 +82,7 @@ return array (
   'Upload' => 'Качване',
   'Upload file' => 'Качи файл',
   'You are not allowed to run this action.' => 'Нямате право да изпълнявате това действие.',
+  '{nFormatted}B' => '{nFormatted}B',
+  '{nFormatted}K' => '{nFormatted}K',
+  '{nFormatted}M' => '{nFormatted}M',
 );

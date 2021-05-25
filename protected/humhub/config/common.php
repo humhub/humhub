@@ -24,7 +24,7 @@ if (!defined('PKCS7_DETACHED')) {
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.7.2',
+    'version' => '1.9.0-dev',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue', 'humhub\modules\ui\view\bootstrap\ThemeLoader'],
     'sourceLanguage' => 'en',
@@ -96,12 +96,6 @@ $config = [
         ],
         'formatter' => [
             'class' => \humhub\components\i18n\Formatter::class,
-        ],
-        /**
-         * Deprecated
-         */
-        'formatterApp' => [
-            'class' => \yii\i18n\Formatter::class,
         ],
         'cache' => [
             'class' => \yii\caching\DummyCache::class,
@@ -211,7 +205,8 @@ $config = [
             'hr' => 'Hrvatski',
             'am' => 'አማርኛ',
             'fi' => 'suomalainen',
-            'he' => 'עברית'
+            'he' => 'עברית',
+            'sq' => 'Shqip'
         ],
         'ldap' => [
             // LDAP date field formats

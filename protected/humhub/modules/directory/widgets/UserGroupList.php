@@ -40,13 +40,16 @@ class UserGroupList extends Widget
      */
     public function run()
     {
-        if (!$this->user->hasGroup()) {
-            return;
+        $directoryGroups = $this->user->getGroups()
+            ->select('name')
+            ->andWhere(['show_at_directory' => 1])
+            ->column();
+
+        if (empty($directoryGroups)) {
+            return '';
         }
 
-        $groupList = implode(', ', array_map(function($g) {
-                    return Html::encode($g->name);
-                }, $this->user->groups));
+        $groupList = implode(', ', array_map([Html::class, 'encode'], $directoryGroups));
 
         return Html::tag($this->tagName, $groupList, $this->htmlOptions);
     }

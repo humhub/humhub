@@ -114,4 +114,5 @@ return array (
   'You need to login to view this user profile!' => 'Трябва да влезете, за да видите този потребителски профил!',
   'YouTube URL' => 'URL адрес на YouTube',
   'Zip' => 'Zip',
+  '{attribute} is required!' => '{attribute} се изисква!',
 );

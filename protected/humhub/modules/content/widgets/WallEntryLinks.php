@@ -21,4 +21,14 @@ class WallEntryLinks extends \humhub\widgets\BaseStack
      */
     public $object = null;
 
+    /**
+     * @inheritdoc
+     */
+    public $seperator = '&nbsp;&middot;&nbsp;';
+
+    /**
+     * @inheritdoc
+     */
+    public $template = '<div class="wall-entry-controls wall-entry-links">{content}</div>';
+
 }

@@ -47,5 +47,7 @@ return array (
   'Wrap in block quote' => 'Als Zitat darstellen',
   'Wrap in bullet list' => 'Als Aufzählungsliste darstellen',
   'Wrap in ordered list' => 'Als nummerierte Liste darstellen',
+  '[Code Block]' => '[Code-Block]',
   '[Invalid file]' => '[Ungültige Datei]',
+  '[Table]' => '[Tabelle]',
 );

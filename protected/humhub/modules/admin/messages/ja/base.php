@@ -1,6 +1,7 @@
 <?php
 return array (
   '<strong>Administration</strong> menu' => '<strong>管理</strong>メニュー',
+  '<strong>Maintenance</strong> Mode' => '<strong>メンテナンス </strong>モード',
   '<strong>Module </strong> administration' => '<strong>モジュール</strong>管理',
   '<strong>Warning</strong> incomplete setup!' => '<strong>警告</strong> 設定が不完全です。',
   'About' => 'About',
@@ -17,6 +18,9 @@ return array (
   'Basic' => '基本',
   'Caching' => 'キャッシュ',
   'Cronjobs' => 'Cronジョブ',
+  'Default' => 'デフォルト',
+  'Delete all' => 'すべて削除',
+  'Delete selected rows' => '選択した行を削除します',
   'Design' => 'デザイン',
   'Files' => 'ファイル',
   'General' => '一般',
@@ -36,7 +40,6 @@ return array (
   'Pending user registrations' => '保留中のユーザー登録',
   'Permissions' => '権限',
   'Proxy' => 'プロキシ',
-  'Security' => 'セキュリティ',
   'Self test' => 'セルフテスト',
   'Settings' => '設定',
   'Sign up' => 'サインアップ',
