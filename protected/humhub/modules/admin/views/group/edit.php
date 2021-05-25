@@ -1,20 +1,23 @@
 <?php
 
 use humhub\modules\ui\form\widgets\SortOrderField;
-use humhub\modules\user\models\Group;
-use humhub\widgets\Button;
-use yii\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\user\models\forms\EditGroupForm;
 use yii\helpers\Url;
-use humhub\libs\Html;
+use yii\helpers\Html;
+use humhub\widgets\Button;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\modules\space\widgets\SpacePickerField;
 
-/* @var Group $group */
+/* @var $isManagerApprovalSetting boolean */
+/* @var $showDeleteButton boolean */
+/* @var $group EditGroupForm */
+
 ?>
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
 <div class="panel-body">
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
     <?= $form->field($group, 'name'); ?>
     <?= $form->field($group, 'description')->textarea(['rows' => 5]); ?>
 

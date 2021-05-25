@@ -2,11 +2,11 @@
 return array (
   '<strong>Manage</strong> spaces' => '<strong>Управление</strong> на раздели',
   'Add new space' => 'Добавяне на нов раздел',
-  'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => '',
+  'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'Използвайки потребителски роли, можете да създадете различни групи разрешения в рамките на Раздела. Те също могат да бъдат индивидуализирани от оторизирани потребители за всяко пространство и са от значение само за това конкретния Раздел.',
   'Change owner' => 'Смяна на собственика',
   'Default Content Visiblity' => 'Видимост на съдържанието по подразбиране',
   'Default Join Policy' => 'Политика за присъединяване по подразбиране',
-  'Default Space Permissions' => '',
+  'Default Space Permissions' => 'Разрешения за раздела по подразбиране',
   'Default Space(s)' => 'Раздел(и) по подразбиране',
   'Default Visibility' => 'Съдържание по подразбиране',
   'Default space' => 'Раздел по подразбиране',
@@ -21,7 +21,7 @@ return array (
   'Settings' => 'Настройки',
   'Space Settings' => 'Настройки на раздела',
   'Spaces' => 'Раздели',
-  'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => '',
+  'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Тези опции ви позволяват да зададете разрешенията по подразбиране за всички Раздели. Упълномощените потребители могат да ги индивидуализират за всяко пространство. Допълнителни записи се добавят с инсталирането на нови модули.',
   'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Този общ преглед съдържа списък на всеки раздел с действия за преглед, редактиране и изтриване на раздели.',
   'Update Space memberships also for existing members.' => 'Актуализирайте членството в раздела също за съществуващи членове.',
 );

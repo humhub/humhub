@@ -34,7 +34,7 @@ class ProfileContentPermissionTest extends HumHubDbTestCase
     public $publicPost;
     public $admin;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->becomeUser('Admin');
@@ -139,7 +139,8 @@ class ProfileContentPermissionTest extends HumHubDbTestCase
         $this->assertFalse($this->privatePost->content->canEdit());
     }
 
-    public function reloadPosts() {
+    public function reloadPosts()
+    {
         $this->privatePost = Post::findOne(['id' => $this->privatePost->id]);
         $this->publicPost = Post::findOne(['id' => $this->publicPost->id]);
     }

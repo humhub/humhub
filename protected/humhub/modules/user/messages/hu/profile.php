@@ -1,6 +1,6 @@
 <?php
 return array (
-  '%y Years' => '% év',
+  '%y Years' => '%y év',
   '<b>This profile stream is still empty!</b>' => '<b>Ez a profil hírfolyam még üres!</b>',
   '<b>This profile stream is still empty</b><br>Be the first and post something...' => '<b>Ez a profil hírfolyam még üres</b><br>Legyél te az első, aki ír valamit...',
   '<b>Your profile stream is still empty</b><br>Get started and post something...' => '<b>A profilod hírfolyama még üres</b><br>Kezdj hozzá, és írj valamit...',
@@ -98,7 +98,7 @@ return array (
   'This profile is no longer available!' => 'Ez a profil már nem elérhető!',
   'This user account is not approved yet!' => 'Ez a fiók még nem lett jóváhagyva!',
   'This will add an additional input element for custom values' => 'Ez egy további bemeneti dobozt hoz létre egyéni értékek megadásához',
-  'Title' => 'Titulus',
+  'Title' => 'Megnevezés',
   'Translation Category ID' => 'Fordítói kategória azonosítója (ID)',
   'Twitter URL' => 'Twitter URL',
   'Type Config' => 'Típus Konfiguráció',

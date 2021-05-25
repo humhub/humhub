@@ -8,11 +8,6 @@
      [
       'defaultTimeZone' => 'Europe/Berlin',
     ],
-    'formatterApp' => 
-     [
-      'defaultTimeZone' => 'Europe/Berlin',
-      'timeZone' => 'Europe/Berlin',
-    ],
     'user' => 
      [
     ],

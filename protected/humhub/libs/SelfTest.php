@@ -159,6 +159,22 @@ class SelfTest
             ];
         }
 
+        // Checks PCNTL Extension
+        $title = 'PHP - PCNTL Extension';
+
+        if (function_exists('pcntl_signal')) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'ERROR',
+                'hint' => 'Install PCNTL Extension'
+            ];
+        }
+
         // Checks EXIF Extension
         $title = 'PHP - EXIF Extension';
 
@@ -477,6 +493,23 @@ class SelfTest
         $title = 'Permissions - Uploads';
 
         $path = Yii::getAlias('@webroot/uploads');
+        if (is_writeable($path)) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'ERROR',
+                'hint' => 'Make ' . $path . " writable for the Webserver/PHP!"
+            ];
+        }
+
+        // Check Profile Image Directory
+        $title = 'Permissions - Profile Image';
+
+        $path = Yii::getAlias('@webroot/uploads/profile_image');
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => Yii::t('base', $title),
