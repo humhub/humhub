@@ -27,9 +27,9 @@ use yii\web\View;
             'linkOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id, 'class' => 'card-image-link'],
             'width' => 100,
         ]); ?>
-        <div class="card-icons">
+        <?php /*<div class="card-icons">
             <?= PeopleIcons::widget(['user' => $user]); ?>
-        </div>
+        </div> */ ?>
     </div>
     <div class="card-body">
         <h4><?= Html::containerLink($user); ?></h4>
