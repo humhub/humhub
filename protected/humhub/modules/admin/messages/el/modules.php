@@ -38,10 +38,10 @@ return [
     'Save' => 'Αποθήκευση',
     'Set as default' => 'Ορισμός ως προεπιλογή',
     'Spaces' => 'Χώρος',
-    'This module doesn\'t provide further informations.' => 'Η ενότητα αυτή δεν παρέχει περαιτέρω πληροφορίες.',
     'Uninstall' => 'Απεγκατάσταση',
     'User Profiles' => 'Προφίλ χρήστη',
     'Version:' => 'Εκδοση:',
     'Legacy' => '',
     'Not maintained or maintenance is about to be discontinued.' => '',
+    'This module doesn\'t provide further information.' => '',
 ];

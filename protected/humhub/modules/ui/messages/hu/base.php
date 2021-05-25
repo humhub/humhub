@@ -1,6 +1,6 @@
 <?php
 return array (
   'Collapse' => 'Összecsukás',
-  'Read more' => 'Olvasson tovább',
+  'Read more' => 'Olvass tovább',
   'User Interface' => 'Felhasználói felület',
 );

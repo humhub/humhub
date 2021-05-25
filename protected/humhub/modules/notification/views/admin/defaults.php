@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\ui\form\widgets\ActiveForm;
-use yii\helpers\Html;
+use humhub\libs\Html;
 
 /* @var $model \humhub\modules\notification\models\forms\NotificationSettings */
 ?>
@@ -15,13 +15,22 @@ use yii\helpers\Html;
         <br/>
     </div>
     <?php $form = ActiveForm::begin(['acknowledge' => true]) ?>
-    <?= humhub\modules\notification\widgets\NotificationSettingsForm::widget([
-        'model' => $model,
-        'form' => $form,
-        'showSpaces' => true
-    ]) ?>
-    <br/>
+        <?= humhub\modules\notification\widgets\NotificationSettingsForm::widget([
+            'model' => $model,
+            'form' => $form,
+            'showSpaces' => true
+        ]) ?>
+        <br />
     <?= Html::submitButton(Yii::t('base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+
+    <?php if ($model->canResetAllUsers()): ?>
+        <?= Html::a(Yii::t('NotificationModule.base', 'Reset for all users'), ['reset-all-users'], [
+            'data-confirm' => Yii::t('NotificationModule.base', 'Do you want to reset the settings concerning notifications for all users?'),
+            'class' => 'btn btn-danger pull-right',
+            'data-method' => 'POST',
+        ]) ?>
+    <?php endif; ?>
+
     <?php ActiveForm::end(); ?>
 </div>
 

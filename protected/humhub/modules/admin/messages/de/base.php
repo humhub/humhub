@@ -33,7 +33,7 @@ return array (
   'Logs' => 'Protokolle',
   'Mailing' => 'Mailing',
   'Modules' => 'Module',
-  'Notifications' => 'Mitteilungen',
+  'Notifications' => 'Benachrichtigungen',
   'OEmbed' => 'OEmbed',
   'OEmbed providers' => 'OEmbed-Provider',
   'Open documentation' => 'Dokumentation öffnen',

@@ -28,7 +28,7 @@ class NonceCest
     {
         $I->amAdmin();
         $I->amOnRoute(['/admin/setting/statistic']);
-        $I->fillField('#statisticsettingsform-trackinghtmlcode', '<script nonce="{{ nonce }}">alert("Tracking Script")</script>');
+        $I->executeJS('_editor = document.querySelectorAll("div.CodeMirror")[0].CodeMirror; _editor.setValue("<script nonce=\"{{ nonce }}\">alert(\"Tracking Script\")</script>");');
         $I->click('Save');
         $I->wait(2);
         $I->seeInPopup("Tracking Script");
@@ -36,9 +36,10 @@ class NonceCest
 
     public function testInvalidStatistic(AcceptanceTester $I)
     {
+        \Yii::$app->settings->set('trackingHtmlCode', '<script>alert("Tracking Script")</script>');
         $I->amAdmin();
         $I->amOnRoute(['/admin/setting/statistic']);
-        $I->fillField('#statisticsettingsform-trackinghtmlcode', '<script>$("body").html("Tracking Script")</script>');
+        $I->executeJS('_editor = document.querySelectorAll("div.CodeMirror")[0].CodeMirror; _editor.setValue("<script>alert(\"Tracking Script\")</script>");');
         $I->click('Save');
         $I->wait(2);
         $I->amOnDashboard();

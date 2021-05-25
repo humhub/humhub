@@ -1,0 +1,19 @@
+# Codeception Test Suite Configuration
+
+# suite for REST API tests.
+# RUN `build` COMMAND AFTER ADDING/REMOVING MODULES.
+
+actor: ApiTester
+class_name: ApiTester
+modules:
+    enabled:
+        - REST
+        - Yii2
+        - tests\codeception\_support\DynamicFixtureHelper
+    config:
+        REST:
+            url: 'http://localhost:8080/api/v1/'
+            depends: Yii2
+            part: Json
+        Yii2:
+            configFile: 'codeception/config/api.php'

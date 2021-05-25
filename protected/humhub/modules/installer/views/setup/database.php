@@ -2,7 +2,9 @@
 
 use humhub\compat\CActiveForm;
 use humhub\libs\Html;
+use humhub\modules\installer\forms\DatabaseForm;
 
+/* @var DatabaseForm $model */
 ?>
 
 <div id="database-form" class="panel panel-default animated fadeIn">
@@ -26,6 +28,13 @@ use humhub\libs\Html;
         </div>
         <hr/>
         <div class="form-group">
+            <?php echo $form->labelEx($model, 'port'); ?>
+            <?php echo $form->textField($model, 'port', ['class' => 'form-control', 'id' => 'port']); ?>
+            <p class="help-block"><?php echo Yii::t('InstallerModule.base', 'Optional: Port of your MySQL Database Server. Leave empty to use default port.'); ?></p>
+            <?php echo $form->error($model, 'port'); ?>
+        </div>
+        <hr/>
+        <div class="form-group">
             <?php echo $form->labelEx($model, 'username'); ?>
             <?php echo $form->textField($model, 'username', ['class' => 'form-control']); ?>
             <p class="help-block"><?php echo Yii::t('InstallerModule.base', 'Your MySQL username'); ?></p>
@@ -44,6 +53,11 @@ use humhub\libs\Html;
             <?php echo $form->textField($model, 'database', ['class' => 'form-control']); ?>
             <p class="help-block"><?php echo Yii::t('InstallerModule.base', 'The name of the database you want to run HumHub in.'); ?></p>
             <?php echo $form->error($model, 'database'); ?>
+        </div>
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'create'); ?>
+            <?php echo $form->checkBox($model, 'create', ['class' => 'form-control']); ?>
+            <?php echo $form->error($model, 'create'); ?>
         </div>
 
         <?php if ($errorMessage) { ?>

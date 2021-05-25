@@ -38,10 +38,10 @@ return [
     'Save' => '保存',
     'Set as default' => '设置为默认',
     'Spaces' => '空间',
-    'This module doesn\'t provide further informations.' => '该模块不能提供进一步的信息。',
     'Uninstall' => '卸载',
     'User Profiles' => '用户属性',
     'Version:' => '版本:',
     'Legacy' => '',
     'Not maintained or maintenance is about to be discontinued.' => '',
+    'This module doesn\'t provide further information.' => '',
 ];

@@ -124,7 +124,6 @@ return [
     'Updated By' => 'Ažurirano od',
     'Updated by' => 'Ažurirano od',
     'User \'{username}\' is already a member of this space!' => 'Korisnik \'{username}\' je već član ovog prostora!',
-    'User \'{username}\' is already an applicant of this space!' => 'Korisnik \'{username}\' je već prijavljen za ovaj prostor!',
     'User invitations have been added to the queue' => 'Korisničke pozivnice dodane su u red čekanja',
     'User memberships have been added to the queue' => 'Članstva korisnika dodana su u red čekanja',
     'User not found!' => 'Korisnik nije pronađen!',

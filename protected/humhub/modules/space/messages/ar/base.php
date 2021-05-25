@@ -117,7 +117,6 @@ return [
     'Updated By' => 'تم التحديث بواسطة',
     'Updated by' => 'تم التحديث بواسطة',
     'User \'{username}\' is already a member of this space!' => 'المستخدم \'{username} \' عضو بالفعل في هذه المساحة!',
-    'User \'{username}\' is already an applicant of this space!' => 'المستخدم \'{username} \' هو بالفعل متقدم لهذه المساحة!',
     'User invitations have been added to the queue' => 'تمت إضافة دعوات المستخدم إلى قائمة الانتظار',
     'User memberships have been added to the queue' => 'تمت إضافة عضويات المستخدم إلى قائمة الانتظار',
     'User not found!' => 'لم يتم إيجاد العضو',

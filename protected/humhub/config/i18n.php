@@ -53,7 +53,8 @@ return [
         'am',
         'fi',
         'br',
-        'he'
+        'he',
+        'sq'
     ],
     // string, the name of the function for translating messages.
     // Defaults to 'Yii::t'. This is used as a mark to find the messages to be
@@ -96,6 +97,8 @@ return [
     'messagePath' => realpath(__DIR__ . '/../messages'),
     // boolean, whether the message file should be overwritten with the merged messages
     'overwrite' => true,
+    'phpFileHeader' => '',
+    'phpDocBlock' => '',
     /*
       // Message categories to ignore
       'ignoreCategories' => [

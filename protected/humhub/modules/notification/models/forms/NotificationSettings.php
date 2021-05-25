@@ -8,6 +8,8 @@
 
 namespace humhub\modules\notification\models\forms;
 
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\notification\components\NotificationCategory;
 use Yii;
 use yii\base\Model;
@@ -107,7 +109,8 @@ class NotificationSettings extends Model
     public function isUserSettingLoaded()
     {
         if ($this->user) {
-            return $this->getSettings()->get('notification.like_email') !== null;
+            return $this->getSettings()->get('enable_html5_desktop_notifications') !== null ||
+                $this->getSettings()->get('notification.like_email') !== null;
         }
 
         return false;
@@ -241,6 +244,7 @@ class NotificationSettings extends Model
         }
 
         $settings = $this->getSettings();
+        $settings->delete('enable_html5_desktop_notifications');
         foreach ($this->targets() as $target) {
             foreach ($this->categories() as $category) {
                 $settings->delete($target->getSettingKey($category));
@@ -249,6 +253,37 @@ class NotificationSettings extends Model
         Yii::$app->notification->setSpaces([], $this->user);
 
         return true;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function canResetAllUsers()
+    {
+        return !isset($this->user) && Yii::$app->user->can(ManageUsers::class);
+    }
+
+    /**
+     * Resets all settings stored for all current user
+     */
+    public function resetAllUserSettings()
+    {
+        $notificationSettings = ['enable_html5_desktop_notifications'];
+        foreach ($this->targets() as $target) {
+            foreach ($this->categories() as $category) {
+                $notificationSettings[] = $target->getSettingKey($category);
+            }
+        }
+
+        ContentContainerSetting::deleteAll(['AND',
+            ['module_id' => 'notification'],
+            ['IN', 'name', $notificationSettings],
+        ]);
+
+        Yii::$app->notification->resetSpaces();
+
+        $settingsManager = Yii::$app->getModule('notification')->settings->user();
+        $settingsManager->reload();
     }
 
 }

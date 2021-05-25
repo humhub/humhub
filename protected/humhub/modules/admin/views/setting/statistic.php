@@ -2,7 +2,10 @@
 
 use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Html;
+use humhub\modules\admin\models\forms\StatisticSettingsForm;
+use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
 
+/* @var $model StatisticSettingsForm */
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
@@ -14,7 +17,7 @@ use yii\helpers\Html;
 <?= $form->errorSummary($model); ?>
 
 <div class="form-group">
-    <?= $form->field($model, 'trackingHtmlCode')->textarea(['class' => 'form-control', 'rows' => '8']); ?>
+    <?= $form->field($model, 'trackingHtmlCode')->widget(CodeMirrorInputWidget::class); ?>
 </div>
 <hr>
 

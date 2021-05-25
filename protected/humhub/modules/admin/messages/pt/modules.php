@@ -1,6 +1,6 @@
 <?php
 return array (
-  '%moduleName% - Set as default module' => '%moduleName% - configurado como módulo padrão',
+  '%moduleName% - Set as default module' => '%moduleName% - configurar como módulo padrão',
   '<strong>Module</strong> details' => '<strong>Detalhes</strong> do módulo',
   'Activated' => 'Activado',
   'Always activated' => 'Activado sempre',
@@ -15,7 +15,7 @@ return array (
   'Enable module...' => 'Activar módulo...',
   'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => 'Aqui podes escolher se um módulo deve ou não ser activado automaticamente num espaço ou página de perfil. Se o módulo deve ser activado, escolhe "activado sempre".',
   'Legacy' => 'Legacy',
-  'Module path %path% is not writeable!' => 'Módulo do Patch %path% não gravável!',
+  'Module path %path% is not writeable!' => 'Módulo do path %path% não gravável!',
   'Modules extend the functionality of HumHub. Here you can install and manage modules from the HumHub Marketplace.' => 'Módulos expandem a funcionalidade do HumHub. Aqui podes instalar e gerir módulos do Mercado HumHub.',
   'More info' => 'Mais informação',
   'No modules installed yet. Install some to enhance the functionality!' => 'Não há módulos instalados. Instala alguns para expandir as funcionalidades!',
@@ -23,7 +23,7 @@ return array (
   'Save' => 'Guardar',
   'Set as default' => 'Definir como padrão',
   'Spaces' => 'Espaços',
-  'This module doesn\'t provide further informations.' => 'Este módulo não fornece mais informações',
+  'This module doesn\'t provide further information.' => 'Este módulo não fornece mais informação.',
   'Uninstall' => 'Desinstalar',
   'User Profiles' => 'Perfis',
   'Version:' => 'Versão:',

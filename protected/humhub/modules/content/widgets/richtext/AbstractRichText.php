@@ -225,6 +225,11 @@ abstract class AbstractRichText extends JsWidget
         $result = [];
         $original = $text;
 
+        if(empty($text)) {
+            $result['text'] = $text;
+            return $result;
+        }
+
         foreach (static::getExtensions() as $extension) {
             $text = $extension->onPostProcess($text, $record, $attribute, $result);
         }
@@ -367,8 +372,11 @@ abstract class AbstractRichText extends JsWidget
      * @return string render result
      * @throws \Exception
      */
-    public static function preview($text, $maxLength = 0) : string
+    public static function preview($text, $maxLength = 0, $config = []): string
     {
-        return static::convert($text, static::FORMAT_SHORTTEXT, ['maxLength' => $maxLength]);
+        if (!empty($maxLength)) {
+            $config['maxLength'] = $maxLength;
+        }
+        return static::convert($text, static::FORMAT_SHORTTEXT, $config);
     }
 }

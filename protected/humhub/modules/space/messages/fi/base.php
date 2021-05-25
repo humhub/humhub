@@ -117,7 +117,6 @@ return [
     'Updated By' => 'Päivittänyt',
     'Updated by' => 'Päivittänyt',
     'User \'{username}\' is already a member of this space!' => 'Käyttäjä \'{username}\' on jo tämän sivun jäsen!',
-    'User \'{username}\' is already an applicant of this space!' => 'Käyttäjä \'{username}\' on jo tämän sivun hakija!',
     'User invitations have been added to the queue' => 'Kutsu on lisätty jonoon',
     'User memberships have been added to the queue' => 'Käyttäjäjäsenyys on lisätty jonoon',
     'User not found!' => 'Käyttäjää ei lyötynyt',

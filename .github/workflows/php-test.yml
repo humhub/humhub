@@ -14,7 +14,7 @@ jobs:
     tests:
         name: PHP ${{ matrix.php-version }}-mysql-${{ matrix.mysql-version }}
         env:
-            extensions: curl, intl, pdo, pdo_mysql, zip, exif, fileinfo, mbstring, gd
+            extensions: curl, intl, pdo, pdo_mysql, zip, exif, fileinfo, mbstring, gd, ldap
             key: cache-v2
 
         runs-on: ${{ matrix.os }}
@@ -89,7 +89,7 @@ jobs:
 
             - name: Verify MySQL connection from host
               run: |
-                sudo apt-get install -y mysql-client
+                sudo apt-get update && sudo apt-get install -y mysql-client
                 mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -proot -e "SHOW DATABASES"
 
             - name: Install npm dependencies

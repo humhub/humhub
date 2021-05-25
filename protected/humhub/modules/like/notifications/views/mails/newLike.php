@@ -9,14 +9,11 @@
 /* @var $url string */
 /* @var $date string */
 /* @var $isNew boolean */
-/* @var $isNew boolean */
 /* @var $originator \humhub\modules\user\models\User */
-/* @var source yii\db\ActiveRecord */
-/* @var contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
-/* @var space humhub\modules\space\models\Space */
-/* @var record \humhub\modules\notification\models\Notification */
-/* @var html string */
-/* @var text string */
+/* @var $source yii\db\ActiveRecord */
+/* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
+/* @var $space humhub\modules\space\models\Space */
+/* @var $record \humhub\modules\notification\models\Notification */
 
 $likedRecord = $viewable->getLikedRecord();
 ?>
@@ -27,6 +24,7 @@ $likedRecord = $viewable->getLikedRecord();
         <td>
             <?=
             humhub\widgets\mails\MailContentEntry::widget([
+                'receiver' => $record->user,
                 'content' => $likedRecord,
                 'date' => $date,
                 'space' => $space

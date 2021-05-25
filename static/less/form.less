@@ -70,8 +70,13 @@ select.form-control:not([multiple]) {
 
 label {
     font-weight: normal;
-    margin-bottom: 0;
-    height: 17px;
+}
+
+div.PendingRegistrations {
+    thead > tr > th > label, tbody > tr > td > label {
+        margin-bottom: 0;
+        height: 17px;
+    }
 }
 
 label.control-label {
@@ -158,66 +163,6 @@ a.input-field-addon-sm {
     margin: 0px;
 }
 
-//
-// Labels
-// --------------------------------------------------
-.label {
-    text-transform: uppercase;
-}
-
-.label {
-    text-transform: uppercase;
-    display: inline-block;
-    padding: 3px 5px 4px;
-    font-weight: 600;
-    font-size: 10px !important;
-    color: white !important;
-    vertical-align: baseline;
-    white-space: nowrap;
-    text-shadow: none;
-}
-
-.label-default {
-    background: @background-color-page;
-    color: @text-color-secondary !important;
-}
-
-a.label-default:hover {
-    background: darken(@background-color-page, 5%) !important;
-}
-
-.label-info {
-    background-color: @info;
-}
-
-a.label-info:hover {
-    background: darken(@info, 5%) !important;
-}
-
-.label-danger {
-    background-color: @danger;
-}
-
-a.label-danger:hover {
-    background: darken(@danger, 5%) !important;
-}
-
-.label-success {
-    background-color: @success;
-}
-
-a.label-success:hover {
-    background: darken(@success, 5%) !important;
-}
-
-.label-warning {
-    background-color: @warning;
-}
-
-a.label-warning:hover {
-    background: darken(@warning, 5%) !important;
-}
-
 // Flatelements
 .regular-checkbox:checked + .regular-checkbox-box {
     border: 2px solid @info;
@@ -247,6 +192,20 @@ a.label-warning:hover {
     border: 2px solid @background3 !important;
     cursor: not-allowed;
 }
+
+div.form-group {
+    div.checkbox {
+        .help-block {
+            margin-left: 33px;
+        }
+
+        // avoid spacing between checkbox and hint
+        .help-block.help-block-error:empty {
+            display: none;
+        }
+    }
+}
+
 
 //
 // Errror handling
@@ -348,6 +307,7 @@ a.label-warning:hover {
     fieldset, .iconClose {
         display: none;
     }
+
     .iconOpen {
         display: inline;
     }

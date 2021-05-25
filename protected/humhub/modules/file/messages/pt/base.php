@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Open</strong> file' => '<strong>Abrir</strong> ficheiro',
-  '<strong>Upload</strong> error' => 'Erro ao <strong>Actualizar</strong>',
+  '<strong>Upload</strong> error' => 'Erro ao <strong>actualizar</strong>',
   'Close' => 'Fechar',
   'Could not find requested file variant!' => 'Não foi possível encontrar a versão do ficheiro solicitada!',
   'Could not find requested file!' => 'Não foi possível encontrar o ficheiro solicitado!',
@@ -15,8 +15,8 @@ return array (
   'Invalid file name detected!' => 'Nome de ficheiro inválido detectado!',
   'Last update by:' => 'Última atualização por:',
   'Size:' => 'Tamanho:',
-  'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'Desculpe, apenas é possível carregar até {n,plural,=1{# file} other{# files}} simultaneamente.',
+  'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'Lamento, apenas é possível carregar até {n,plural,=1{# ficheiro} other{# ficheiros}} simultaneamente.',
   'The uploaded image is not a squared.' => 'A imagem carregada não é quadrada.',
-  'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Este campo carregado apenas permite um máximo de {n,plural,=1{# file} other{# files}}.',
+  'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Este campo apenas permite um máximo de {n,plural,=1{# ficheiro} other{# ficheiros}}.',
   'Upload files' => 'Carregar ficheiros',
 );

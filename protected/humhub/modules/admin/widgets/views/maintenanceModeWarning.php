@@ -15,7 +15,7 @@ use yii\helpers\Url;
 <div class="panel panel-danger panel-invalid">
     <div class="panel-heading"><?= Yii::t('AdminModule.base', '<strong>Maintenance</strong> Mode'); ?></div>
     <div class="panel-body">
-        <p><?= ControllerAccess::getMaintenanceModeWarningText() ?></p>
+        <p><?= ControllerAccess::getMaintenanceModeWarningText('<br>') ?></p>
         <br>
         <?php if (Yii::$app->user->isAdmin()): ?>
             <?= Html::a(Yii::t('AdminModule.base', 'Settings'), Url::toRoute(['/admin/setting']), ['class' => 'btn btn-danger']); ?>

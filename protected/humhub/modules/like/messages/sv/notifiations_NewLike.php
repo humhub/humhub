@@ -1,4 +1,4 @@
 <?php
 return array (
-  'New Like' => 'Nya likes',
+  'New Like' => 'Nya gillanden',
 );

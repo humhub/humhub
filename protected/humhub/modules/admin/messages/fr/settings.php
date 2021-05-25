@@ -8,7 +8,7 @@ return array (
   '6 months' => '6 mois',
   '<strong>Confirm</strong> icon deletion' => '<strong>Confirmer</strong> la suppression de l\'icône',
   '<strong>Confirm</strong> image deletion' => '<strong>Confirmer</strong> la suppression de l\'image',
-  '<strong>Maintenance</strong> Mode' => '',
+  '<strong>Maintenance</strong> Mode' => 'Mode <strong>maintenance</strong>',
   '<strong>Warning:</strong> All users will be immediately logged out, except admins.' => '<strong>Attention:</strong> Tous les utilisateurs seront déconnectés, à l\'exception des administrateurs.',
   'APC(u)' => 'APC(u)',
   'Activate' => 'Activer',
