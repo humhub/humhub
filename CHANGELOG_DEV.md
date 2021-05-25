@@ -10,3 +10,4 @@
 - Enh #4871: Default timezone for guests
 - Fix #4626: Fix visibility of content in profile stream from archived spaces
 - Chg #5016: Allow impersonate to non sys admin groups (that can manage users)
+- Enh #5043: Improved Space Membership lookup caching
