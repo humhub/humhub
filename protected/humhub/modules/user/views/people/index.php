@@ -50,7 +50,6 @@ DirectoryAsset::register($this);
     <?php endforeach; ?>
 
     <?php if (!$people->isLastPage()) : ?>
-    <div class="clearfix"></div>
     <div class="directory-load-more">
         <?= Button::info(Yii::t('UserModule.base', 'Load more'))
             ->icon('fa-angle-down')
