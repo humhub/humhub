@@ -72,10 +72,11 @@ class MailSummary extends Component
 
         // Check if the user already received at least one notification in the same period:
         if ($lastSent = (int) static::getModule()->settings->user($this->user)->get('mailSummaryLast')) {
+            // Periods in which no further e-mail summaries should be sent.
             $intervalTimes = [
-                self::INTERVAL_WEEKLY => 604800,
-                self::INTERVAL_DAILY  => 86400,
-                self::INTERVAL_HOURLY => 3600,
+                self::INTERVAL_WEEKLY => 345600,    // 4days
+                self::INTERVAL_DAILY  => 28800,     // 8hr
+                self::INTERVAL_HOURLY => 1800,      // 30min
             ];
             $intervalTime = isset($intervalTimes[$this->interval]) ? time() - $intervalTimes[$this->interval] : 0;
             if ($lastSent > $intervalTime) {
