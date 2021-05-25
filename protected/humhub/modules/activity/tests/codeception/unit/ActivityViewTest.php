@@ -19,8 +19,8 @@ class ActivityViewTest extends HumHubDbTestCase
 
         $this->assertNotNull($activity->record);
         $wallout = StreamEntryWidget::renderStreamEntry($activity->record);
-        $this->assertContains('My special activity view layout', $wallout);
-        $this->assertContains('My special activity view content', $wallout);
+        $this->assertStringContainsString('My special activity view layout', $wallout);
+        $this->assertStringContainsString('My special activity view content', $wallout);
     }
 
     public function testRenderStreamEntryWithActivityWithoutView()
@@ -30,8 +30,8 @@ class ActivityViewTest extends HumHubDbTestCase
 
         $this->assertNotNull($activity->record);
         $wallout = StreamEntryWidget::renderStreamEntry($activity->record);
-        $this->assertContains('My special activity view layout without view', $wallout);
-        $this->assertContains('Content of no view activity', $wallout);
+        $this->assertStringContainsString('My special activity view layout without view', $wallout);
+        $this->assertStringContainsString('Content of no view activity', $wallout);
     }
 
     public function testRenderWithoutLayoutAndView()
@@ -41,7 +41,7 @@ class ActivityViewTest extends HumHubDbTestCase
 
         $this->assertNotNull($activity->record);
         $wallout = StreamEntryWidget::renderStreamEntry($activity->record);
-        $this->assertContains('Content of default layout activity', $wallout);
-        $this->assertContains('media-object img-rounded', $wallout);
+        $this->assertStringContainsString('Content of default layout activity', $wallout);
+        $this->assertStringContainsString('media-object img-rounded', $wallout);
     }
 }

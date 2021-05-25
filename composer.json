@@ -53,7 +53,6 @@
         "npm-asset/swiped-events": "1.0.9",
         "npm-asset/timeago": "^1.6.3",
         "phpoffice/phpspreadsheet": "^1.0",
-        "phpunit/phpunit": "<8.0",
         "raoul2000/yii2-jcrop-widget": "*",
         "twig/twig": "^1.0",
         "web-token/jwt-checker": ">=1.0 <3.0",

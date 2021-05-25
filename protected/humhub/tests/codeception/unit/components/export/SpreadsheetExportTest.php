@@ -80,8 +80,8 @@ class SpreadsheetExportTest extends Unit
         $this->assertFileExists(self::TEST_FILE, 'Result file does not exist.');
 
         $data = file_get_contents(self::TEST_FILE);
-        $this->assertContains('"Id","Name"', $data, 'Header not present in content.');
-        $this->assertContains('"1","first"', $data, 'Data not present in content.');
-        $this->assertContains('"2","second"', $data, 'Data not present in content.');
+        $this->assertStringContainsString('"Id","Name"', $data, 'Header not present in content.');
+        $this->assertStringContainsString('"1","first"', $data, 'Data not present in content.');
+        $this->assertStringContainsString('"2","second"', $data, 'Data not present in content.');
     }
 }
