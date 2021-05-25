@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Administration</strong> menu' => 'Меню <strong>Администрация</strong>',
-  '<strong>Maintenance</strong> Mode' => '',
+  '<strong>Maintenance</strong> Mode' => 'Режим <strong>Поддръжка</strong>',
   '<strong>Module </strong> administration' => '<strong>Администрация</strong> на Модул',
   '<strong>Warning</strong> incomplete setup!' => '<strong>Предупреждение</strong> незавършена настройка!',
   'About' => 'За',

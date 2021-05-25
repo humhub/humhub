@@ -1,11 +1,11 @@
 <?php
 return array (
-  '<strong>Account</strong> settings' => '<strong>Definições</strong>de conta',
+  '<strong>Account</strong> settings' => '<strong>Definições</strong> de conta',
   '<strong>Confirm</strong></strong> your new email address' => '<strong>Confirmar</strong> o novo endereço email',
   '<strong>Permissions</strong>' => '<strong>Permissões</strong>',
-  '<strong>User</strong> modules' => '<strong>Módulos</strong>do utilizador',
-  '<strong>User</strong> settings' => '<strong>Definições</strong>do utilizador',
-  '<strong>Your</strong> profile' => '<strong>O teu</strong>perfil',
+  '<strong>User</strong> modules' => '<strong>Módulos</strong> do utilizador',
+  '<strong>User</strong> settings' => '<strong>Definições</strong> do utilizador',
+  '<strong>Your</strong> profile' => '<strong>O teu</strong> perfil',
   'All your personal data will be irrevocably deleted.' => 'Todos os teus dados pessoais serão irrevogavelmente apagados.',
   'Are you really sure? *ALL* module data for your profile will be deleted!' => 'Tens a certeza? *TODOS* os dados do módulo do teu perfil serão apagados!',
   'Are you sure that you want to delete your account?' => 'Tens a certeza que queres apagar a tua conta?',

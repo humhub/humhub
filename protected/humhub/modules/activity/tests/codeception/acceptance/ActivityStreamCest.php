@@ -23,7 +23,7 @@ class ActivityStreamCest
 
         $I->amGoingTo('create a new post');
 
-        $newEntrySelector = '[data-content-key="14"]';
+        $newEntrySelector = '[data-content-key="15"]';
 
         $I->createPost('Activity test post!');
 

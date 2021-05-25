@@ -34,6 +34,17 @@ class Application extends \yii\console\Application
     /**
      * @inheritdoc
      */
+    public function __construct($config = [])
+    {
+        // Remove obsolete config params:
+        unset($config['components']['formatterApp']);
+
+        parent::__construct($config);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         if (version_compare(phpversion(), '5.6', '<')) {

@@ -295,6 +295,7 @@ class Membership extends ActiveRecord
         }
 
         $query->joinWith('space')->where(['space_membership.user_id' => $user->id]);
+        $query->joinWith('space.contentContainerRecord');
 
         if ($spaceStatus) {
             $query->andWhere(['space.status' => $spaceStatus]);

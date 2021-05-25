@@ -7,7 +7,6 @@ $default = [
     'name' => 'HumHub Test',
     'language' => 'en-US',
     'params' => [
-        'allowedLanguages' => ['en-US'],
         'installed' => true,
         'settings' => [
             'core' => [

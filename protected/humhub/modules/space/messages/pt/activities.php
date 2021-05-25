@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Space has been archived' => 'o espaço foi arquivado',
-  'Space has been unarchived' => 'o espaço foi desarquivado',
+  'Space has been archived' => 'O espaço foi arquivado',
+  'Space has been unarchived' => 'O espaço foi desarquivado',
   'Space member joined' => 'Participante juntou-se ao espaço',
   'Space member left' => 'Participante saiu do espaço',
   'Whenever a member leaves one of your spaces.' => 'Sempre que um/a participante deixa um dos teus espaços',

@@ -23,5 +23,5 @@ return array (
   'Type' => 'Tipo',
   'View online:' => 'Ver online:',
   '{displayName} and {displayName2}' => '{displayName} e {displayName2}',
-  '{displayName} and {number} others' => '{displayName} e {number} outras',
+  '{displayName} and {number} others' => '{displayName} e {number,plural,=0{mais ninguém} =1{mais uma pessoa} other{mais # pessoas}}',
 );

@@ -9,3 +9,18 @@
 - Enh #4902: Added CodeMirror form field widget
 - Enh #4964: New CLI command to delete users 
 - Enh #4871: Default timezone for guests
+- Enh #5019: Alternative DashboardMemberStreamFilter based on Legitmation IDs
+- Fix #4626: Fix visibility of content in profile stream from archived spaces
+- Chg #5016: Allow impersonate to non sys admin groups (that can manage users)
+- Enh #4935: Render images in email messages as HTML <img> tag
+- Enh #5037: RichTextToShortTextConverter render image as [Image]
+- Enh #5042: Improved Space/User PrettyURL performance
+- Enh #4958: Add possibility to register purchased modules via CLI
+- Enh #4894: Implemented .label-light variant
+- Enh #5012: Space: Show "Owner" Tab also for SystemAdmins
+- Enh #5045: Removed deprecated `Yii::$app->formatterApp` component
+- Enh #5026: Tests for tokenized image urls in email message
+- Enh #5049: Required profile field should not be required in administration
+- Enh #5065: Add checking for php PCNTL extension
+- Enh #5073: Enhance API tests
+- Fix #5078: Fix enabling of REST module on run API tests

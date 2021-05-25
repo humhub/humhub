@@ -102,8 +102,6 @@ class DynamicConfig extends BaseObject
         if (!empty($defaultTimeZone)) {
             $config['timeZone'] = $defaultTimeZone;
             $config['components']['formatter']['defaultTimeZone'] = $defaultTimeZone;
-            $config['components']['formatterApp']['defaultTimeZone'] = $defaultTimeZone;
-            $config['components']['formatterApp']['timeZone'] = $defaultTimeZone;
         }
 
         // Add Caching
@@ -173,6 +171,7 @@ class DynamicConfig extends BaseObject
 
         // Cleanups
         unset($config['components']['db']['charset']);
+        unset($config['components']['formatterApp']);
 
         $config['params']['config_created_at'] = time();
         $config['params']['horImageScrollOnMobile'] = Yii::$app->settings->get('horImageScrollOnMobile');
