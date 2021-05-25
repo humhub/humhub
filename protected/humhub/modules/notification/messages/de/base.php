@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Notification</strong> Overview' => '<strong>Benachrichtigungs</strong>übersicht',
-  '<strong>Notification</strong> Settings' => '<strong>Benachrichtigungs-</strong>einstellungen',
+  '<strong>Notification</strong> Settings' => '<strong>Benachrichtigungen</strong>',
   'Allow desktop notifications by default.' => 'Desktopbenachrichtigungen standardmäßig aktivieren.',
   'Filter' => 'Filter',
   'In this view, you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => 'In dieser Ansicht kannst du die Standardeinstellungen der Benutzer definieren. Die Einstellungen können vom Benutzer in den Einstellungen seines Accounts überschrieben werden.',

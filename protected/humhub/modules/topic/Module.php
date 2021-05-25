@@ -31,7 +31,10 @@ class Module extends \humhub\components\Module
     public function getPermissions($contentContainer = null)
     {
         if ($contentContainer instanceof Space) {
-            return [new AddTopic, new ManageTopics];
+            return [
+                new AddTopic(),
+                new ManageTopics(),
+            ];
         }
 
         return [];

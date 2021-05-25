@@ -1,13 +1,5 @@
 <?php
 return array (
-  '{displayName} created the new space {spaceName}' => '{displayName} kreirao je novi prostor {spaceName}',
-  '{displayName} created this space.' => '{displayName} kreirao je ovaj prostor.',
-  '{displayName} joined the space {spaceName}' => '{displayName} pridružio se prostoru {spaceName}',
-  '{displayName} joined this space.' => '{displayName} pridružio se ovom prostoru.',
-  '{displayName} left the space {spaceName}' => '{displayName} napustio je prostor {spaceName}',
-  '{displayName} left this space.' => '{displayName} napustio je ovaj prostor.',
-  '{spaceName} has been archived' => '{spaceName} je arhiviran',
-  '{spaceName} has been unarchived' => '{spaceName} je uklonjen iz arhive',
   '<strong>E-Mail</strong> Summaries' => '<strong>E-Mail</strong> Sažeci',
   '<strong>Latest</strong> activities' => '<strong>Posljednje</strong> aktivnosti',
   'Activities' => 'Aktivnosti',
@@ -33,5 +25,13 @@ return array (
   'Your weekly summary' => 'Vaš tjedni sažetak',
   'see online' => 'vidjeti online',
   'via' => 'preko',
+  '{displayName} created the new space {spaceName}' => '{displayName} kreirao je novi prostor {spaceName}',
+  '{displayName} created this space.' => '{displayName} kreirao je ovaj prostor.',
+  '{displayName} joined the space {spaceName}' => '{displayName} pridružio se prostoru {spaceName}',
+  '{displayName} joined this space.' => '{displayName} pridružio se ovom prostoru.',
+  '{displayName} left the space {spaceName}' => '{displayName} napustio je prostor {spaceName}',
+  '{displayName} left this space.' => '{displayName} napustio je ovaj prostor.',
+  '{spaceName} has been archived' => '{spaceName} je arhiviran',
+  '{spaceName} has been unarchived' => '{spaceName} je uklonjen iz arhive',
   '{user1} now follows {user2}.' => '{user1} sada prati {user2}.',
 );

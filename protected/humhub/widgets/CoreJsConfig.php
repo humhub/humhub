@@ -33,14 +33,14 @@ class CoreJsConfig extends Widget
         } else {
             $userConfig = ['isGuest' => true];
         }
-
         $userConfig['locale'] = Yii::$app->formatter->locale;
 
         $this->getView()->registerJsConfig(
             [
                 'user' => $userConfig,
                 'live' => [
-                    'client' => Yii::$app->live->driver->getJsConfig()
+                    'client' => Yii::$app->live->driver->getJsConfig(),
+                    'isActive' => Yii::$app->getModule('live')->isActive && !Yii::$app->user->isGuest,
                 ],
                 'client' => [
                     'baseUrl' => Yii::$app->settings->get('baseUrl'),

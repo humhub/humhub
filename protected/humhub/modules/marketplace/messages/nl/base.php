@@ -6,6 +6,23 @@ Module successfully disabled!
   '
 Module successfully enabled!
 ' => 'Module succesvol ingeschakeld!',
+  '
+No active Professional Edition license found!
+' => 'Geen actieve Professional Edition-licentie gevonden!',
+  '
+PROFESSIONAL EDITION
+' => 'PROFESSIONAL EDITION',
+  '
+The license could not be activated:
+' => 'De licentie kan niet worden geactiveerd:',
+  '
+The license was successfully activated!
+
+' => 'De licentie is succesvol geactiveerd!',
+  '
+The license was successfully removed!
+
+' => 'De licentie is succesvol verwijderd!',
   '--- Disable module: {moduleId} ---
 
 ' => '---  Schakel module: {moduleId}  uit ---',

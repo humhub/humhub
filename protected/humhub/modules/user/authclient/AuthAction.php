@@ -15,7 +15,7 @@ use Yii;
  * Extended version of AuthAction with AuthClient support which are not handled
  * by AuthAction directly
  *
- * @sicne 1.1.2
+ * @since 1.1.2
  * @author Luke
  */
 class AuthAction extends \yii\authclient\AuthAction

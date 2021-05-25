@@ -20,7 +20,7 @@ return array (
   'Spaces' => 'Раздели',
   'There are no activities yet.' => 'Все още няма дейности.',
   'Weekly' => 'Ежеседмично',
-  'You will only receive an e-mail if there is something new.' => 'Получи имейл само ако се случи нещо ново.',
+  'You will only receive an e-mail if there is something new.' => 'Получаване на имейл само ако се случи нещо ново.',
   'Your daily summary' => 'Вашето дневно резюме',
   'Your weekly summary' => 'Вашето седмично резюме',
   'see online' => 'вижте онлайн',

@@ -279,4 +279,34 @@ class ProfileImage
 
         return UserImage::widget($widgetOptions);
     }
+
+    /**
+     * Get width
+     *
+     * @return int
+     */
+    public function width()
+    {
+        return $this->width;
+    }
+
+    /**
+     * Get height
+     *
+     * @return int
+     */
+    public function height()
+    {
+        return $this->height;
+    }
+
+    /**
+     * Get aspect ratio
+     *
+     * @return float
+     */
+    public function getAspectRatio()
+    {
+        return $this->width() / $this->height();
+    }
 }

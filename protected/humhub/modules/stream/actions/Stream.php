@@ -8,6 +8,7 @@
 
 namespace humhub\modules\stream\actions;
 
+use humhub\components\Request;
 use humhub\modules\stream\events\StreamResponseEvent;
 use humhub\modules\user\models\User;
 use Yii;
@@ -189,7 +190,9 @@ abstract class Stream extends Action
             $this->user = Yii::$app->user->identity;
         }
 
-        $this->excludes = array_merge($this->excludes, Yii::$app->getModule('stream')->streamExcludes);
+        if (!$this->isSingleContentRequest()) {
+            $this->excludes = array_merge($this->excludes, Yii::$app->getModule('stream')->streamExcludes);
+        }
 
         $this->streamQuery = $this->initQuery();
 
@@ -227,16 +230,14 @@ abstract class Stream extends Action
      *
      * @param array $options instance attribute options
      * @return StreamQuery
+     * @throws \yii\base\InvalidConfigException
      * @since 1.6
      */
     protected function initQuery($options = [])
     {
-        $streamQueryClass = $this->streamQueryClass;
-
-        /* @var $instance StreamQuery */
-        $instance = $streamQueryClass::find();
+        $options['class'] = $this->streamQueryClass;
+        $instance = Yii::createObject($options);
         $instance->forUser($this->user);
-        $instance->setAttributes($options, false);
         return $instance;
     }
 
@@ -430,5 +431,23 @@ abstract class Stream extends Action
     public function getStreamQuery()
     {
         return $this->streamQuery;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isSingleContentRequest()
+    {
+        if (Yii::$app->request->isConsoleRequest) {
+            return false;
+        }
+
+        if (!(Yii::$app->request instanceof Request)) {
+            return false;
+        }
+
+        $streamQueryParams = Yii::$app->request->getQueryParam('StreamQuery');
+
+        return !empty($streamQueryParams['contentId']);
     }
 }

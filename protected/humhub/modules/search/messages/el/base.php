@@ -2,7 +2,7 @@
 return array (
   '<strong>Search </strong> results' => '',
   'Advanced search settings' => '',
-  'All' => '',
+  'All' => 'Όλα',
   'Content' => 'Περιεχόμενο',
   'Search' => 'Αναζήτηση',
   'Search for user, spaces and content' => '',

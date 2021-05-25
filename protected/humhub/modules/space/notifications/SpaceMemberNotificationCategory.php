@@ -63,4 +63,15 @@ class SpaceMemberNotificationCategory extends NotificationCategory
                 return $target->defaultSetting;
         }
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getFixedSettings()
+    {
+        $webTarget = Yii::createObject(WebTarget::class);
+        return [
+            $webTarget->id,
+        ];
+    }
 }

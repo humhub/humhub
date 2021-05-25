@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models\forms;
 
+use humhub\modules\user\Module;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\user\components\CheckPasswordValidator;
@@ -35,13 +36,14 @@ class AccountChangeUsername extends \yii\base\Model
      */
     public function rules()
     {
+        /** @var Module $userModule */
         $userModule = Yii::$app->getModule('user');
 
         $rules = [
             ['newUsername', 'required'],
             ['newUsername', 'string', 'min' => $userModule->minimumUsernameLength, 'max' => $userModule->maximumUsernameLength],
             ['newUsername', 'unique', 'targetAttribute' => 'username', 'targetClass' => User::class, 'message' => '{attribute} "{value}" is already in use!'],
-            ['newUsername', 'match', 'not' => true, 'pattern' => '/[\x00-\x1f\x7f\/]/', 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false],
+            ['newUsername', 'match', 'pattern' => $userModule->validUsernameRegexp, 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false],
             ['newUsername', 'trim'],
         ];
 
@@ -76,7 +78,7 @@ class AccountChangeUsername extends \yii\base\Model
         $mail = Yii::$app->mailer->compose([
             'html' => '@humhub/modules/user/views/mails/ChangeUsername',
             'text' => '@humhub/modules/user/views/mails/plaintext/ChangeUsername'
-                ], [
+        ], [
             'user' => $user,
             'newUsername' => $this->newUsername,
         ]);

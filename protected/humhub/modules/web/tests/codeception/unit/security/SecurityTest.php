@@ -21,9 +21,9 @@ class SecurityTest extends WebSecurityTest
         $nonce = Html::nonce();
         $this->assertNotEmpty($nonce);
 
-        $this->assertContains(Security::getNonce(), $csp);
-        $this->assertContains($nonce, Html::beginTag('script'));
-        $this->assertContains($nonce, Html::script('var a = test;'));
+        $this->assertStringContainsString(Security::getNonce(), $csp);
+        $this->assertStringContainsString($nonce, Html::beginTag('script'));
+        $this->assertStringContainsString($nonce, Html::script('var a = test;'));
     }
 
     public function testHttpHeader()
@@ -31,7 +31,7 @@ class SecurityTest extends WebSecurityTest
         $this->setConfigFile('security.strict.json');
         Security::applyHeader(true);
 
-        $this->assertContains(Security::getNonce(), Yii::$app->response->headers->get(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY));
+        $this->assertStringContainsString(Security::getNonce(), Yii::$app->response->headers->get(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY));
         $this->assertEquals(Yii::$app->response->headers->get(SecuritySettings::HEADER_STRICT_TRANSPORT_SECURITY),  'max-age=31536000');
         $this->assertEquals(Yii::$app->response->headers->get(SecuritySettings::HEADER_X_XSS_PROTECTION), '1; mode=block');
         $this->assertEquals(Yii::$app->response->headers->get(SecuritySettings::HEADER_X_CONTENT_TYPE), 'nosniff');

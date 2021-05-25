@@ -63,6 +63,7 @@ class UpdateController extends Controller
      * @throws HttpException
      * @throws \yii\base\Exception
      * @throws \yii\base\InvalidConfigException
+     * @throws \yii\base\ErrorException
      */
     public function actionInstall()
     {
@@ -77,7 +78,19 @@ class UpdateController extends Controller
             throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
         }
 
+        $moduleInfo = $this->module->onlineModuleManager->getModuleInfo($moduleId);
+
+        if (empty($moduleInfo['latestCompatibleVersion']['downloadUrl'])) {
+            if (!empty($moduleInfo['isPaid'])) {
+                $this->view->setStatusMessage('error', Yii::t('AdminModule.modules', 'License not found or expired. Please contact the module publisher.'));
+            } else {
+                Yii::error('Could not determine module download url from HumHub API response.', 'marketplace');
+            }
+            return $this->redirect(['/marketplace/update/list']);
+        }
+
         $this->module->onlineModuleManager->update($moduleId);
+
 
         try {
             $module->publishAssets(true);

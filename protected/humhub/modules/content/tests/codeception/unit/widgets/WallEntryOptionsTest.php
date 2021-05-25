@@ -54,7 +54,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
 
     public function testDisableControlsSwitchVisibility()
     {
-        $this->testDisableControlsItem('Make public',
+        $this->testDisableControlsItem('Change to "Public"',
             (new WallStreamEntryOptions)->disableControlsEntrySwitchVisibility());
     }
 
@@ -114,7 +114,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
         $this->assertWallEntryControlsNotContains('Move',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
         $this->assertWallEntryControlsNotContains('Pin to top',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
         $this->assertWallEntryControlsNotContains('Turn on notifications',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
-        $this->assertWallEntryControlsNotContains('Make public',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
+        $this->assertWallEntryControlsNotContains('Change to "Public"',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
     }
 
     private function testDisableControlsItem($searchStr, $renderOptions)
@@ -128,11 +128,11 @@ class WallEntryOptionsTest extends HumHubDbTestCase
 
         $wallEntry = new WallEntry(['model' => $model]);
         $result = WallEntryControls::widget(['object' => $model, 'wallEntryWidget' => $wallEntry]);
-        $this->assertContains($searchStr, $result);
+        $this->assertStringContainsString($searchStr, $result);
 
         $wallEntry = new WallEntry(['model' => $model, 'renderOptions' => $renderOptions]);
 
-        $this->assertNotContains($searchStr, WallEntryControls::widget([
+        $this->assertStringNotContainsString($searchStr, WallEntryControls::widget([
             'object' => $model,
             'wallEntryWidget' => $wallEntry
         ]));
@@ -176,7 +176,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
 
         $wallEntry = new WallEntry(['model' => $model, 'renderOptions' => $renderOptions]);
 
-        $this->assertContains($searchStr, WallEntryControls::widget([
+        $this->assertStringContainsString($searchStr, WallEntryControls::widget([
             'object' => $model,
             'wallEntryWidget' => $wallEntry
         ]));
@@ -193,7 +193,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
 
         $wallEntry = new WallEntry(['model' => $model, 'renderOptions' => $renderOptions]);
 
-        $this->assertNotContains($searchStr, WallEntryControls::widget([
+        $this->assertStringNotContainsString($searchStr, WallEntryControls::widget([
             'object' => $model,
             'wallEntryWidget' => $wallEntry
         ]));
@@ -208,7 +208,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
         // In order for pin controls to work
         ContentContainerHelper::setCurrent($model->content->container);
 
-        $this->assertNotContains($searchStr, StreamEntryWidget::renderStreamEntry($model, $renderOptions));
+        $this->assertStringNotContainsString($searchStr, StreamEntryWidget::renderStreamEntry($model, $renderOptions));
     }
 
     private function assertWallEntryContains($searchStr, $renderOptions)
@@ -220,6 +220,6 @@ class WallEntryOptionsTest extends HumHubDbTestCase
         // In order for pin controls to work
         ContentContainerHelper::setCurrent($model->content->container);
 
-        $this->assertContains($searchStr, StreamEntryWidget::renderStreamEntry($model, $renderOptions));
+        $this->assertStringContainsString($searchStr, StreamEntryWidget::renderStreamEntry($model, $renderOptions));
     }
 }

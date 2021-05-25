@@ -9,7 +9,7 @@ class AdditionalPasswordValidationTest extends HumHubDbTestCase
 {
     protected $password;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->password = new Password();
         parent::setUp();

@@ -1,6 +1,6 @@
 <?php
 
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 
 /* @var $overview string */

@@ -97,6 +97,7 @@ use yii\web\Controller;
  *  - **strict**: Will check for guest users against the guest users allowed setting
  *  - **post**: Will only accept post requests for the given actions
  *  - **json**: Will handle json result requests by setting `Yii::$app->response->format = 'json'`
+ *  - **ajax**: Allows only AJAX requests. See: `Yii::$app->request->isAjax`
  *  - **disabledUser**: Checks if the given user is a disabled user **(fixed)**
  *  - **unapprovedUser**: Checks if the given user is a unapproved user **(fixed)**
  *
@@ -148,6 +149,17 @@ class ControllerAccess extends BaseObject
     const RULE_UNAPPROVED_USER = 'unapprovedUser';
 
     /**
+     * Check guest if user must change password
+     * @since 1.8
+     */
+    const RULE_MUST_CHANGE_PASSWORD = 'mustChangePassword';
+
+    /**
+     * Maintenance mode is active
+     */
+    const RULE_MAINTENANCE_MODE = 'maintenance';
+
+    /**
      * Check guest if request method is post
      */
     const RULE_POST = 'post';
@@ -158,11 +170,18 @@ class ControllerAccess extends BaseObject
     const RULE_JSON = 'json';
 
     /**
+     * Only AJAX request is allowed for the actions
+     */
+    const RULE_AJAX_ONLY = 'ajax';
+
+    /**
      * @var array fixed rules will always be added to the current rule set
      */
     protected $fixedRules = [
         [self::RULE_DISABLED_USER],
         [self::RULE_UNAPPROVED_USER],
+        [self::RULE_MUST_CHANGE_PASSWORD],
+        [self::RULE_MAINTENANCE_MODE],
     ];
 
     /**
@@ -194,6 +213,12 @@ class ControllerAccess extends BaseObject
      * @var int http code, can be changed in verify checks for specific error codes
      */
     public $code;
+
+    /**
+     * @var string Name of callback method to run after failed validation
+     * @since 1.8
+     */
+    public $codeCallback;
 
     /**
      * @var Controller owner object of this ControllerAccess the owner is mainly used to find custom validation handler
@@ -231,6 +256,18 @@ class ControllerAccess extends BaseObject
             'reason' => Yii::t('error', 'Login required for this section.'),
             'code' => 401
         ]);
+        $this->registerValidator([
+            self::RULE_MAINTENANCE_MODE => 'validateMaintenanceMode',
+            'reason' => ControllerAccess::getMaintenanceModeWarningText(),
+            'code' => 403,
+            'codeCallback' => 'checkMaintenanceMode',
+        ]);
+        $this->registerValidator([
+            self::RULE_MUST_CHANGE_PASSWORD => 'validateMustChangePassword',
+            'reason' => Yii::t('error', 'You must change password.'),
+            'code' => 403,
+            'codeCallback' => 'forceChangePassword',
+        ]);
 
         // We don't set code 401 since we want to show an error instead of redirecting to login
         $this->registerValidator(GuestAccessValidator::class);
@@ -246,6 +283,11 @@ class ControllerAccess extends BaseObject
             'code' => 405
         ]);
         $this->registerValidator([self::RULE_JSON => 'validateJsonResponse']);
+        $this->registerValidator([
+            self::RULE_AJAX_ONLY => 'validateAjaxOnlyRequest',
+            'reason' => Yii::t('error', 'The specified URL cannot be called directly.'),
+            'code' => 405
+        ]);
     }
 
     /**
@@ -330,7 +372,10 @@ class ControllerAccess extends BaseObject
 
             if (!$validator->run()) {
                 $this->reason = (!$this->reason) ? $validator->getReason() : $this->reason;
-                $this->code = (!$this->code) ? $validator->getCode(): $this->code;
+                $this->code = (!$this->code) ? $validator->getCode() : $this->code;
+                if (isset($validator->codeCallback)) {
+                    $this->codeCallback = $validator->codeCallback;
+                }
                 return false;
             }
         }
@@ -365,7 +410,7 @@ class ControllerAccess extends BaseObject
             ]);
         }
 
-        throw new InvalidArgumentException('Invalid validator settings given for rule '.$ruleName);
+        throw new InvalidArgumentException('Invalid validator settings given for rule ' . $ruleName);
     }
 
     /**
@@ -429,6 +474,14 @@ class ControllerAccess extends BaseObject
     }
 
     /**
+     * @return mixed checks if the current request is an ajax request
+     */
+    public function validateAjaxOnlyRequest()
+    {
+        return Yii::$app->request->isAjax;
+    }
+
+    /**
      * @return bool makes sure the response type is json
      */
     public function validateJsonResponse()
@@ -445,7 +498,7 @@ class ControllerAccess extends BaseObject
     {
         return $this->isGuest() ||
             ($this->user->status !== User::STATUS_DISABLED &&
-            $this->user->status !== User::STATUS_SOFT_DELETED);
+                $this->user->status !== User::STATUS_SOFT_DELETED);
     }
 
     /**
@@ -468,4 +521,38 @@ class ControllerAccess extends BaseObject
     {
         return !$this->isGuest() && $this->user->isSystemAdmin();
     }
+
+    /**
+     * @return bool checks if the current user must change password
+     * @since 1.8
+     */
+    public function validateMustChangePassword()
+    {
+        return $this->isGuest() || Yii::$app->user->isMustChangePasswordUrl() || !$this->user->mustChangePassword();
+    }
+
+    /**
+     * @return bool makes sure the current user has an access on maintenance mode
+     * @since 1.8
+     */
+    public function validateMaintenanceMode()
+    {
+        return !Yii::$app->settings->get('maintenanceMode') ||
+            $this->isAdmin() ||
+            ($this->owner->module->id == 'user' && $this->owner->id == 'auth' && $this->owner->action->id == 'login');
+    }
+
+    /**
+     * @param string $beforeCustomInfo
+     * @return string returns the maintenance mode warning text
+     * @since 1.8
+     */
+    public static function getMaintenanceModeWarningText($beforeCustomInfo = ' ')
+    {
+        $customInfo = Yii::$app->settings->get('maintenanceModeInfo', '');
+
+        return Yii::t('error', 'Maintenance mode is active. Only Administrators can access the platform.') .
+            ($customInfo === '' ? '' : $beforeCustomInfo . $customInfo);
+    }
+
 }

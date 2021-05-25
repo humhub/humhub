@@ -8,11 +8,10 @@
 
 namespace humhub\modules\activity\actions;
 
+use humhub\modules\activity\stream\ActivityStreamQuery;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\stream\actions\ContentContainerStream;
-use humhub\modules\stream\models\ContentContainerStreamQuery;
-use humhub\modules\user\models\User;
 
 /**
  * This action can be used as container related wall- and activity stream. This stream action can be used as wall stream
@@ -25,12 +24,24 @@ use humhub\modules\user\models\User;
  */
 class ActivityStreamAction extends ContentContainerStream
 {
-    const CHANNEL_ACTIVITY = 'activity';
-
     /**
      * @var bool if true the stream will search for activity content
      */
     public $activity = true;
+
+    /**
+     * @inheritDoc
+     */
+    public $streamQueryClass = ActivityStreamQuery::class;
+
+    /**
+     * @inheritDoc
+     */
+    public function initQuery($options = [])
+    {
+        $options['activity'] = $this->activity;
+        return parent::initQuery($options);
+    }
 
     /**
      * @return StreamEntryOptions
@@ -40,28 +51,5 @@ class ActivityStreamAction extends ContentContainerStream
         return $this->activity
             ? new StreamEntryOptions()
             : new WallStreamEntryOptions();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function beforeApplyFilters()
-    {
-        parent::beforeApplyFilters();
-
-        if(!$this->activity) {
-            return;
-        }
-
-        if($this->streamQuery instanceof ContentContainerStreamQuery) {
-            $this->streamQuery->pinnedContentSupport = false;
-        }
-
-        $this->streamQuery->channel(static::CHANNEL_ACTIVITY);
-
-        if ($this->streamQuery->user) {
-            $this->streamQuery->query()->andWhere(['!=', 'user.status', User::STATUS_NEED_APPROVAL]);
-            $this->streamQuery->query()->andWhere('content.created_by != :userId', [':userId' => $this->streamQuery->user->id]);
-        }
     }
 }

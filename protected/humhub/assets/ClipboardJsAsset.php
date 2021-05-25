@@ -29,7 +29,7 @@ class ClipboardJsAsset extends AssetBundle
     public $js = ['clipboard-polyfill.js'];
 
     public $publishOptions = [
-        'only' => ['clipboard-polyfill.js']
+        'only' => ['clipboard-polyfill.js', 'clipboard-polyfill.js.map']
     ];
 
 }

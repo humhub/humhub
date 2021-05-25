@@ -55,8 +55,8 @@ class StreamCest
 
         $I->createPost('This is my stream test post!');
 
-        $newEntrySelector = '[data-content-key="14"]';
-
+        $newEntrySelector = '[data-content-key="15"]';
+        $archivedEntrySelectors = ['[data-content-key="14"]', $newEntrySelector];
 
         $I->waitForElementVisible($newEntrySelector);
         $I->see('This is my stream test post', '.wall-entry');
@@ -82,17 +82,18 @@ class StreamCest
 
         $I->amGoingTo('unarchive this post again');
 
-        $I->click('.preferences .dropdown-toggle', $newEntrySelector);
-        $I->waitForText('Unarchive', 10);
-        $I->click('Unarchive', $newEntrySelector);
+        foreach ($archivedEntrySelectors as $archivedEntrySelector) {
+            $I->click('.preferences .dropdown-toggle', $archivedEntrySelector);
+            $I->waitForText('Unarchive', 10);
+            $I->click('Unarchive', $archivedEntrySelector);
+            $I->seeSuccess('The content has been unarchived.');
+        }
 
         $I->expectTo('See my unarchived post again');
-        $I->seeSuccess('The content has been unarchived.');
         $I->see('No matches with your selected filters!','.streamMessage');
         $I->dontSee('This is my stream test post', '.wall-entry');
 
         $I->amGoingTo('check if my post is visible without archived');
-        $I->click('Filter', '.wall-stream-filter-head');
         $I->waitForElementVisible('[data-filter-id="entry_archived"]');
         $I->click('[data-filter-id="entry_archived"]');
         $I->waitForElementVisible($newEntrySelector);
@@ -118,7 +119,7 @@ class StreamCest
 
         $I->createPost('This is my first stream test post!');
 
-        $newEntrySelector = '[data-content-key="14"]';
+        $newEntrySelector = '[data-content-key="15"]';
 
         $I->waitForElementVisible($newEntrySelector);
         $I->see('This is my first stream test post', '.wall-entry');
@@ -127,7 +128,7 @@ class StreamCest
 
         $I->createPost('This is my second stream test post!');
 
-        $newEntrySelector2 = '[data-content-key="16"]';
+        $newEntrySelector2 = '[data-content-key="17"]';
         $I->waitForElementVisible($newEntrySelector2);
         $I->expectTo('my new post beeing the latest entry');
         $I->waitForText('This is my second stream test post', null, '.s2_streamContent div:nth-child(1)');
@@ -160,7 +161,7 @@ class StreamCest
 
         $I->createPost('This is my first stream test post!');
 
-        $newEntrySelector = '[data-content-key="14"]';
+        $newEntrySelector = '[data-content-key="15"]';
 
         $I->waitForElementVisible($newEntrySelector);
         $I->see('This is my first stream test post', '.wall-entry');
@@ -278,7 +279,7 @@ class StreamCest
         $I->waitForText('Involved Post.');
 
         $I->seeElement('[data-content-key="13"]');
-        $I->seeElement('[data-content-key="14"]');
+        $I->seeElement('[data-content-key="15"]');
     }
 
     /**
@@ -308,7 +309,7 @@ class StreamCest
         $I->see('POST2', '.s2_streamContent > [data-stream-entry]:nth-of-type(4)');
         $I->see('POST1', '.s2_streamContent > [data-stream-entry]:nth-of-type(5)');
 
-        $post4Selector = '[data-stream-entry][data-content-key="20"]';
+        $post4Selector = '[data-stream-entry][data-content-key="21"]';
 
         $I->click('Comment', $post4Selector);
         $I->wait(1);

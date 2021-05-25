@@ -58,6 +58,7 @@ use humhub\widgets\PoweredBy;
 
                 img {
                     display: block !important;
+                    max-width: 100%;
                 }
 
                 table td {

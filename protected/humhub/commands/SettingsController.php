@@ -21,7 +21,7 @@ use yii\console\widgets\Table;
 /**
  * SettingsController provides CLI access to database settings
  *
- * @sicne 1.4
+ * @since 1.4
  * @author Luke
  */
 class SettingsController extends Controller

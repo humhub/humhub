@@ -21,11 +21,12 @@
 namespace humhub\modules\tour\widgets;
 
 use Yii;
+use yii\base\Widget;
 
 /**
  * @author andystrobel
  */
-class Dashboard extends \yii\base\Widget
+class Dashboard extends Widget
 {
 
     public function run()

@@ -99,4 +99,7 @@ return [
     'You are not allowed to run this action.' => 'Du har ikke tillatelse til å utføre denne handlingen.',
     'Database connection time: {dbTime} - Configured time zone: {time}' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',
+    '{nFormatted}B' => '',
+    '{nFormatted}K' => '',
+    '{nFormatted}M' => '',
 ];

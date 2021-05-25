@@ -19,11 +19,16 @@ use yii\web\HttpException;
 
 class PendingRegistrationsController extends Controller
 {
+
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         $this->subLayout = '@admin/views/layouts/user';
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Pending user registrations'));
-        return parent::init();
+
+        parent::init();
     }
 
     /**
@@ -41,6 +46,9 @@ class PendingRegistrationsController extends Controller
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function actionIndex()
     {
         $searchModel = new PendingRegistrationSearch();
@@ -59,6 +67,7 @@ class PendingRegistrationsController extends Controller
 
     /**
      * Export user list as csv or xlsx
+     *
      * @param string $format supported format by phpspreadsheet
      * @return \yii\web\Response
      * @throws \PhpOffice\PhpSpreadsheet\Exception
@@ -91,6 +100,7 @@ class PendingRegistrationsController extends Controller
      */
     public function actionResend($id)
     {
+        $this->forcePostRequest();
         $invite = $this->findInviteById($id);
         if (Yii::$app->request->isPost) {
             $invite->sendInviteMail();
@@ -113,6 +123,7 @@ class PendingRegistrationsController extends Controller
      */
     public function actionDelete($id)
     {
+        $this->forcePostRequest();
         $invite = $this->findInviteById($id);
         if (Yii::$app->request->isPost) {
             $invite->delete();
@@ -123,6 +134,56 @@ class PendingRegistrationsController extends Controller
             return $this->redirect(['index']);
         }
         return $this->render('delete', ['model' => $invite]);
+    }
+
+    /**
+     * Delete all invitations
+     *
+     * @param integer $id
+     * @return string
+     * @throws HttpException
+     * @throws \Throwable
+     */
+    public function actionDeleteAll()
+    {
+        if (Yii::$app->request->isPost) {
+            Invite::deleteAll();
+
+            $this->view->success(Yii::t(
+                'AdminModule.user',
+                'All open registration invitations were successfully deleted.'
+            ));
+        }
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Delete all or selected invitation
+     *
+     * @param integer $id
+     * @return string
+     * @throws HttpException
+     * @throws \Throwable
+     */
+    public function actionDeleteAllSelected()
+    {
+        if (Yii::$app->request->isPost) {
+
+            $ids = Yii::$app->request->post('id');
+            Yii::error(Yii::$app->request->post());
+            Yii::error($ids);
+            if (!empty($ids)) {
+                foreach ($ids as $id) {
+                    $invitation = Invite::findOne(['id' => $id]);
+                    $invitation->delete();
+                }
+                $this->view->success(Yii::t(
+                    'AdminModule.user',
+                    'The selected invitations have been successfully deleted!'
+                ));
+            }
+        }
+        return $this->redirect(['index']);
     }
 
     /**

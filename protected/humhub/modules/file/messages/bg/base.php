@@ -15,8 +15,8 @@ return array (
   'Invalid file name detected!' => 'Открито е невалидно име на файл!',
   'Last update by:' => 'Последна актуализация от:',
   'Size:' => 'Размер:',
-  'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'За съжаление можете да качвате наведнъж само до {n,plural,=1{# file} other{# files}}.',
+  'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'За съжаление можете да качвате наведнъж само до {n,plural,=1{# файл} other{# файла}}.',
   'The uploaded image is not a squared.' => 'Каченото изображение не е на квадрат.',
-  'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Това поле за качване позволява само {n,plural,=1{# file} other{# files}}.',
+  'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Това поле за качване позволява само {n,plural,=1{# файл} other{# файла}}.',
   'Upload files' => 'Качване на файлове',
 );

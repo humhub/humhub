@@ -32,6 +32,12 @@ class AdvancedSettingsSpace extends Space
     public $indexGuestUrl = null;
 
     /**
+     * To hide Members sidebar in the stream page
+     * @var bool
+     */
+    public $hideMembersSidebar = null;
+
+    /**
      * @inheritdoc
      */
     public function rules()
@@ -39,6 +45,7 @@ class AdvancedSettingsSpace extends Space
         $rules = parent::rules();
         $rules[] = [['indexUrl'], 'string'];
         $rules[] = [['indexGuestUrl'], 'string'];
+        $rules[] = [['hideMembersSidebar'], 'integer'];
 
         return $rules;
     }
@@ -51,6 +58,7 @@ class AdvancedSettingsSpace extends Space
         $scenarios = parent::scenarios();
         $scenarios['edit'][] = 'indexUrl';
         $scenarios['edit'][] = 'indexGuestUrl';
+        $scenarios['edit'][] = 'hideMembersSidebar';
 
         return $scenarios;
     }
@@ -63,6 +71,7 @@ class AdvancedSettingsSpace extends Space
         $labels = parent::attributeLabels();
         $labels['indexUrl'] = Yii::t('SpaceModule.base', 'Homepage');
         $labels['indexGuestUrl'] = Yii::t('SpaceModule.base', 'Homepage (Guests)');
+        $labels['hideMembersSidebar'] = Yii::t('SpaceModule.base', 'Hide Members sidebar in the stream page.');
 
         return $labels;
     }
@@ -84,6 +93,13 @@ class AdvancedSettingsSpace extends Space
         } else {
             //Remove entry from db
             Yii::$app->getModule('space')->settings->contentContainer($this)->delete('indexGuestUrl');
+        }
+
+        if ($this->hideMembersSidebar != null) {
+            Yii::$app->getModule('space')->settings->contentContainer($this)->set('hideMembersSidebar', $this->hideMembersSidebar);
+        } else {
+            //Remove entry from db
+            Yii::$app->getModule('space')->settings->contentContainer($this)->delete('hideMembersSidebar');
         }
 
         return parent::afterSave($insert, $changedAttributes);

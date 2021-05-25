@@ -68,7 +68,7 @@ class Mentioned extends BaseNotification
     public function getMailSubject()
     {
         return Yii::t('UserModule.notification', "{displayName} just mentioned you in {contentTitle} \"{preview}\"", [
-                    'displayName' => Html::encode($this->originator->displayName),
+                    'displayName' => $this->originator->displayName,
                     'contentTitle' => $this->getContentName(),
                     'preview' => $this->getContentPlainTextPreview()
         ]);
@@ -84,7 +84,4 @@ class Mentioned extends BaseNotification
                     'contentTitle' => $this->getContentInfo($this->source)
         ]);
     }
-
 }
-
-?>

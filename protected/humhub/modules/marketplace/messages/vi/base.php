@@ -40,6 +40,23 @@ Module successfully enabled!
     'Search' => 'Tìm kiếm',
     'Update' => 'Update',
     'Version:' => 'Phiên bản:',
+    '
+No active Professional Edition license found!
+' => '',
+    '
+PROFESSIONAL EDITION
+' => '',
+    '
+The license could not be activated:
+' => '',
+    '
+The license was successfully activated!
+
+' => '',
+    '
+The license was successfully removed!
+
+' => '',
     '<strong>Activate</strong> your Professional Edition' => '',
     'Add purchased module by licence key' => '',
     'All modules are up to date!' => '',

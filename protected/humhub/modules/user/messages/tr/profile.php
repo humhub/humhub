@@ -131,4 +131,5 @@ return [
     'This profile is no longer available!' => '',
     'This will add an additional input element for custom values' => '',
     'YouTube URL' => '',
+    '{attribute} is required!' => '',
 ];

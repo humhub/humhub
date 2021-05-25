@@ -3,11 +3,15 @@
 
 use yii\helpers\Html;
 
+/* @var $registrationUrl string */
+
 ?>
-<?php echo mb_strtoupper(Yii::t('UserModule.base', 'Welcome to %appName%', ['%appName%' => Html::encode(Yii::$app->name)])); ?>
+<?= mb_strtoupper(Yii::t('UserModule.base', 'Welcome to %appName%', ['%appName%' => Yii::$app->name])) ?>
 
 
-<?php echo strip_tags(Yii::t('UserModule.base', 'Welcome to %appName%. Please click on the button below to proceed with your registration.', ['%appName%' => Html::encode(Yii::$app->name)])); ?>
+<?= Yii::t('UserModule.base',
+    'Welcome to %appName%. Please click on the button below to proceed with your registration.',
+    ['%appName%' => Yii::$app->name]); ?>
 
 
-<?php echo strip_tags(Yii::t('UserModule.base', 'Sign up')); ?>: <?php echo $registrationUrl; ?>
+<?= Yii::t('UserModule.base', 'Sign up') ?>: <?= $registrationUrl ?>

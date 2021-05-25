@@ -8,6 +8,7 @@
 
 namespace humhub\components;
 
+use humhub\models\Setting;
 use Yii;
 
 /**
@@ -20,25 +21,25 @@ class Migration extends \yii\db\Migration
 
     protected function safeCreateTable($table, $columns, $options = null)
     {
-        if(!$this->db->getTableSchema($table, true)) {
+        if (!$this->db->getTableSchema($table, true)) {
             $this->createTable($table, $columns, $options);
         } else {
             if (!$this->compact) {
                 echo "    > skipped create table $table, table does already exist ...\n";
             }
-            Yii::warning("Tried to create an already existing existing table '$table' in migration ".get_class($this));
+            Yii::warning("Tried to create an already existing existing table '$table' in migration " . get_class($this));
         }
     }
 
     protected function safeDropTable($table)
     {
-        if($this->db->getTableSchema($table, true)) {
+        if ($this->db->getTableSchema($table, true)) {
             $this->dropTable($table);
         } else {
             if (!$this->compact) {
                 echo "    > skipped drop table $table, table does not exist ...\n";
             }
-            Yii::warning("Tried to drop a non existing table '$table' in migration ".get_class($this));
+            Yii::warning("Tried to drop a non existing table '$table' in migration " . get_class($this));
         }
     }
 
@@ -47,13 +48,13 @@ class Migration extends \yii\db\Migration
         $tableSchema = $this->db->getTableSchema($table, true);
 
         // If the table does not exists, we want the default exception behavior
-        if(!$tableSchema || in_array($column, $tableSchema->columnNames, true)) {
+        if (!$tableSchema || in_array($column, $tableSchema->columnNames, true)) {
             $this->dropColumn($table, $column);
         } else {
             if (!$this->compact) {
                 echo "    > skipped drop column $column from table $table, column does not exist ...\n";
             }
-            Yii::warning("Tried to drop a non existing column '$column' from table '$table' in migration ".get_class($this));
+            Yii::warning("Tried to drop a non existing column '$column' from table '$table' in migration " . get_class($this));
         }
     }
 
@@ -62,13 +63,13 @@ class Migration extends \yii\db\Migration
         $tableSchema = $this->db->getTableSchema($table, true);
 
         // If the table does not exists, we want the default exception behavior
-        if(!$tableSchema || !in_array($column, $tableSchema->columnNames, true)) {
+        if (!$tableSchema || !in_array($column, $tableSchema->columnNames, true)) {
             $this->addColumn($table, $column, $type);
         } else {
             if (!$this->compact) {
                 echo "    > skipped add column $column from table $table, column does already exist ...\n";
             }
-            Yii::warning("Tried to add an already existing column '$column' on table '$table' in migration ".get_class($this));
+            Yii::warning("Tried to add an already existing column '$column' on table '$table' in migration " . get_class($this));
         }
     }
 
@@ -107,7 +108,7 @@ class Migration extends \yii\db\Migration
          * Use raw query for better performace.
          */
         $updateSql = "
-            UPDATE activity 
+            UPDATE activity
             LEFT JOIN `like` ON like.object_model=activity.object_model AND like.object_id=activity.object_id
             SET activity.object_model=:likeModelClass, activity.object_id=like.id
             WHERE activity.class=:likedActivityClass AND like.id IS NOT NULL and activity.object_model != :likeModelClass
@@ -143,5 +144,16 @@ class Migration extends \yii\db\Migration
     public function insertSilent($table, $columns)
     {
         $this->db->createCommand()->insert($table, $columns)->execute();
+    }
+
+    /**
+     * Returns whether this is a completely new installation with an empty database (installation process).
+     *
+     * @return bool
+     * @since 1.8
+     */
+    protected function isInitialInstallation()
+    {
+        return (!Setting::isInstalled());
     }
 }

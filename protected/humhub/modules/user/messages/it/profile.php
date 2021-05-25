@@ -86,6 +86,7 @@ return [
     'Number field options' => 'Opzioni del campo numero',
     'One option per line. Key=>Value Format (e.g. yes=>Yes)' => 'Una opzione per linea. Chiave - Formato del valore (es. yes - Yes)',
     'Only alphanumeric characters allowed!' => 'Sono permessi solo caratteri alfanumerici!',
+    'Other:' => 'Altro:',
     'Phone Private' => 'Telefono privato',
     'Phone Work' => 'Telefono lavoro',
     'Please select:' => 'Per favore seleziona:',
@@ -130,5 +131,5 @@ return [
     'You need to login to view this user profile!' => 'Devi effettuare l\'accesso per vedere questo profilo!',
     'YouTube URL' => 'Profilo YouTube (URL)',
     'Zip' => 'CAP',
-    'Other:' => '',
+    '{attribute} is required!' => '',
 ];

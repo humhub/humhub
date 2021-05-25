@@ -10,9 +10,10 @@
         <td height="10"></td>
     </tr>
     <tr>
-        <td style="padding-left:10px;">
+        <td style="padding:0 10px;">
             <?= humhub\widgets\mails\MailContentEntry::widget([
                 'originator' => $originator,
+                'receiver' => $receiver,
                 'content' => $comment,
                 'date' => $date,
                 'space' => $space,

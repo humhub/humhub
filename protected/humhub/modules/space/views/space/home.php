@@ -32,11 +32,16 @@ echo StreamViewer::widget([
 
 ?>
 
-<?php $this->beginBlock('sidebar'); ?>
-<?= Sidebar::widget(['space' => $space, 'widgets' => [
+<?php
+$this->beginBlock('sidebar');
+$widgets = [
     [ActivityStreamViewer::class, ['contentContainer' => $space], ['sortOrder' => 10]],
-    [PendingApprovals::class, ['space' => $space], ['sortOrder' => 20]],
-    [Members::class, ['space' => $space], ['sortOrder' => 30]]
-]]);
+    [PendingApprovals::class, ['space' => $space], ['sortOrder' => 20]]
+];
+
+if (!Yii::$app->getModule('space')->settings->contentContainer($space)->get('hideMembersSidebar')) {
+    $widgets[] = [Members::class, ['space' => $space], ['sortOrder' => 30]];
+}
 ?>
+<?= Sidebar::widget(['space' => $space, 'widgets' => $widgets]); ?>
 <?php $this->endBlock(); ?>

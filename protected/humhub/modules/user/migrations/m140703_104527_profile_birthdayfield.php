@@ -1,17 +1,14 @@
 <?php
 
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m140703_104527_profile_birthdayfield extends Migration
 {
 
     public function up()
     {
-        // Check if the installer already ran when not create new profile field
-        // (Typically the installer creates initial data.)
-        if (\humhub\models\Setting::isInstalled()) {
-
+        if (!$this->isInitialInstallation()) {
 
             $row = (new \yii\db\Query())
                     ->select("*")

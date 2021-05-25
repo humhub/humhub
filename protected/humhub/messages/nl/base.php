@@ -82,4 +82,7 @@ return array (
   'Upload' => 'Upload',
   'Upload file' => 'Upload bestand',
   'You are not allowed to run this action.' => 'U mag deze actie niet uitvoeren.',
+  '{nFormatted}B' => '{nFormatted}B',
+  '{nFormatted}K' => '{nFormatted}K',
+  '{nFormatted}M' => '{nFormatted}M',
 );

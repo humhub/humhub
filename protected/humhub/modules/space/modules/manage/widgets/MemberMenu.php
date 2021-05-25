@@ -56,7 +56,7 @@ class MemberMenu extends TabMenu
             ]));
         }
 
-        if ($this->space->isSpaceOwner()) {
+        if ($this->space->isSpaceOwner() || (!Yii::$app->user->isGuest && Yii::$app->user->identity->isSystemAdmin())) {
             $this->addEntry(new MenuLink([
                 'label' => Yii::t('SpaceModule.manage', 'Owner'),
                 'url' => $this->space->createUrl('/space/manage/member/change-owner'),

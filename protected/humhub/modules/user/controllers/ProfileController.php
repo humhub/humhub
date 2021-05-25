@@ -42,7 +42,7 @@ class ProfileController extends ContentContainerController
         return [
             'acl' => [
                 'class' => AccessControl::class,
-                'guestAllowedActions' => ['index', 'stream', 'about']
+                'guestAllowedActions' => ['index', 'stream', 'about', 'home']
             ]
         ];
     }

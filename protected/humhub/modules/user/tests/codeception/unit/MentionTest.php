@@ -26,7 +26,7 @@ class MentionTest extends HumHubDbTestCase
         $post->content->container = $space;
         $post->save();
 
-        ProsemirrorRichText::getProcessor($post->message, $post)->parseMentioning();
+        RichText::postProcess($post->message, $post);
 
         $this->assertHasNotification(Mentioned::class, $post);
         $this->assertMailSent(1, 'Mentioned Notification');

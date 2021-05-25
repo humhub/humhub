@@ -38,10 +38,10 @@ return [
     'Save' => 'Uložit',
     'Set as default' => 'Nastavit jako výchozí',
     'Spaces' => 'Místa',
-    'This module doesn\'t provide further informations.' => 'Tento modul neposkytuje další informace.',
     'Uninstall' => 'Odinstalovat',
     'User Profiles' => 'Profily uživatelů',
     'Version:' => 'Verze:',
     'Legacy' => '',
     'Not maintained or maintenance is about to be discontinued.' => '',
+    'This module doesn\'t provide further information.' => '',
 ];

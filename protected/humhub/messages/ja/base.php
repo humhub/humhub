@@ -82,4 +82,7 @@ return array (
   'Upload' => 'アップロード',
   'Upload file' => 'ファイルをアップロード',
   'You are not allowed to run this action.' => 'この操作を実行することはできません。',
+  '{nFormatted}B' => '{nFormatted}B',
+  '{nFormatted}K' => '{nFormatted}K',
+  '{nFormatted}M' => '{nFormatted}M',
 );

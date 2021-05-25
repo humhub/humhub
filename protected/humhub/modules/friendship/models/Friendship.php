@@ -13,6 +13,8 @@ use humhub\modules\friendship\FriendshipEvent;
 use humhub\modules\friendship\notifications\RequestDeclined;
 use humhub\modules\friendship\notifications\Request;
 use humhub\modules\friendship\notifications\RequestApproved;
+use yii\db\Expression;
+use yii\db\Query;
 
 /**
  * This is the model class for table "user_friendship".
@@ -126,10 +128,10 @@ class Friendship extends \humhub\components\ActiveRecord
 
     /**
      * Returns the friendship state between to users
-     * 
+     *
      * @param User $user
      * @param User $friend
-     * 
+     *
      * @return int the request state see self::STATE_*
      */
     public static function getStateForUser($user, $friend)
@@ -159,13 +161,31 @@ class Friendship extends \humhub\components\ActiveRecord
 
         // Users which received a friend requests from given user
         $query->leftJoin('user_friendship recv', 'user.id=recv.friend_user_id AND recv.user_id=:userId', [':userId' => $user->id]);
-        $query->andWhere(['IS NOT', 'recv.id', new \yii\db\Expression('NULL')]);
+        $query->andWhere(['IS NOT', 'recv.id', new Expression('NULL')]);
 
         // Users which send a friend request to given user
         $query->leftJoin('user_friendship snd', 'user.id=snd.user_id AND snd.friend_user_id=:userId', [':userId' => $user->id]);
-        $query->andWhere(['IS NOT', 'snd.id', new \yii\db\Expression('NULL')]);
+        $query->andWhere(['IS NOT', 'snd.id', new Expression('NULL')]);
 
         return $query;
+    }
+
+    /**
+     * Returns a query selecting container ids of users the given $user has a friendship relation.
+     *
+     * @param User $user
+     * @return Query
+     * @since 1.8
+     */
+    public static function getFriendshipContainerIdQuery(User $user)
+    {
+        return (new Query())
+            ->select('ufr.contentcontainer_id AS id')
+            ->distinct()
+            ->from('user ufr')
+            ->indexBy('id')
+            ->innerJoin('user_friendship recv', 'ufr.id = recv.friend_user_id AND recv.user_id = :userId', [':userId' => $user->id])
+            ->innerJoin('user_friendship snd', 'ufr.id = snd.user_id AND snd.friend_user_id = :userId', [':userId' => $user->id]);
     }
 
     /**
@@ -180,18 +200,18 @@ class Friendship extends \humhub\components\ActiveRecord
 
         // Users which received a friend requests from given user
         $query->leftJoin('user_friendship recv', 'user.id=recv.friend_user_id AND recv.user_id=:userId', [':userId' => $user->id]);
-        $query->andWhere(['IS NOT', 'recv.id', new \yii\db\Expression('NULL')]);
+        $query->andWhere(['IS NOT', 'recv.id', new Expression('NULL')]);
 
         // Users which NOT send a friend request to given user
         $query->leftJoin('user_friendship snd', 'user.id=snd.user_id AND snd.friend_user_id=:userId', [':userId' => $user->id]);
-        $query->andWhere(['IS', 'snd.id', new \yii\db\Expression('NULL')]);
+        $query->andWhere(['IS', 'snd.id', new Expression('NULL')]);
 
         return $query;
     }
 
     /**
      * Returns a query for received and not responded friend requests of an user
-     * 
+     *
      * @param User $user
      * @return \yii\db\ActiveQuery
      */
@@ -201,18 +221,18 @@ class Friendship extends \humhub\components\ActiveRecord
 
         // Users which NOT received a friend requests from given user
         $query->leftJoin('user_friendship recv', 'user.id=recv.friend_user_id AND recv.user_id=:userId', [':userId' => $user->id]);
-        $query->andWhere(['IS', 'recv.id', new \yii\db\Expression('NULL')]);
+        $query->andWhere(['IS', 'recv.id', new Expression('NULL')]);
 
         // Users which send a friend request to given user
         $query->leftJoin('user_friendship snd', 'user.id=snd.user_id AND snd.friend_user_id=:userId', [':userId' => $user->id]);
-        $query->andWhere(['IS NOT', 'snd.id', new \yii\db\Expression('NULL')]);
+        $query->andWhere(['IS NOT', 'snd.id', new Expression('NULL')]);
 
         return $query;
     }
 
     /**
      * Adds a friendship or sends a request
-     * 
+     *
      * @param User $user
      * @param User $friend
      */
@@ -226,7 +246,7 @@ class Friendship extends \humhub\components\ActiveRecord
 
     /**
      * Cancels a friendship or request to a friend
-     * 
+     *
      * @param User $user
      * @param User $friend
      */

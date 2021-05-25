@@ -1,5 +1,7 @@
 <?php
 
+use humhub\modules\space\permissions\CreatePrivateSpace;
+use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\widgets\ModalButton;
@@ -15,8 +17,10 @@ use yii\helpers\Url;
 /* @var $searchModel SpaceSearch*/
 ?>
 
-<?= ModalButton::success(Yii::t('AdminModule.space', 'Add new space'))->load(['/space/create'])
-    ->icon('add')->right()->sm() ?>
+<?php if (Yii::$app->user->can([CreatePublicSpace::class, CreatePrivateSpace::class])) : ?>
+    <?= ModalButton::success(Yii::t('AdminModule.space', 'Add new space'))->load(['/space/create'])
+        ->icon('add')->right()->sm() ?>
+<?php endif; ?>
 
 <h4><?= Yii::t('AdminModule.space', 'Overview') ?></h4>
 <div class="help-block">

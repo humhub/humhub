@@ -18,20 +18,20 @@ use yii\helpers\Json;
 
 if($profileImage instanceof ProfileBannerImage) {
     $model->aspectRatio  = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-banner-ratio', 6.3)
-        : $this->theme->variable('user-profile-banner-ratio', 6.3);
+        ? $this->theme->variable('space-profile-banner-ratio', $profileImage->getAspectRatio())
+        : $this->theme->variable('user-profile-banner-ratio', $profileImage->getAspectRatio());
 
     $cropSelect  = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-banner-crop', '0, 0, 267, 48')
-        : $this->theme->variable('user-profile-banner-crop', '0, 0, 267, 48');
+        ? $this->theme->variable('space-profile-banner-crop', '0, 0, ' . $profileImage->width() . ', ' . $profileImage->height())
+        : $this->theme->variable('user-profile-banner-crop', '0, 0, ' . $profileImage->width() . ', ' . $profileImage->height());
 } else {
     $model->aspectRatio  = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-image-ratio', 1)
-        : $this->theme->variable('user-profile-image-ratio', 1);
+        ? $this->theme->variable('space-profile-image-ratio', $profileImage->getAspectRatio())
+        : $this->theme->variable('user-profile-image-ratio', $profileImage->getAspectRatio());
 
     $cropSelect  = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-image-crop', '0, 0, 100, 100')
-        : $this->theme->variable('user-profile-image-crop', '0, 0, 100, 100');
+        ? $this->theme->variable('space-profile-image-crop', '0, 0, ' . $profileImage->width() . ', ' . $profileImage->height())
+        : $this->theme->variable('user-profile-image-crop', '0, 0, ' . $profileImage->width() . ', ' . $profileImage->height());
 }
 
 $model->cropSetSelect = Json::decode('['.$cropSelect.']');

@@ -82,4 +82,7 @@ return array (
   'Upload' => 'Prześlij',
   'Upload file' => 'Prześlij plik',
   'You are not allowed to run this action.' => 'Nie posiadasz uprawnień do wykonania tej czynności.',
+  '{nFormatted}B' => '{nFormatted}B',
+  '{nFormatted}K' => '{nFormatted}K',
+  '{nFormatted}M' => '{nFormatted}M',
 );

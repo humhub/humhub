@@ -99,4 +99,7 @@ return [
     'Upload' => '',
     'Upload file' => '',
     'You are not allowed to run this action.' => '',
+    '{nFormatted}B' => '',
+    '{nFormatted}K' => '',
+    '{nFormatted}M' => '',
 ];

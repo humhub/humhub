@@ -29,21 +29,25 @@ class ModuleManager extends Component
 {
     /**
      * @event triggered before a module is enabled
+     * @since 1.3
      */
     const EVENT_BEFORE_MODULE_ENABLE = 'beforeModuleEnabled';
 
     /**
      * @event triggered after a module is enabled
+     * @since 1.3
      */
     const EVENT_AFTER_MODULE_ENABLE = 'afterModuleEnabled';
 
     /**
      * @event triggered before a module is disabled
+     * @since 1.3
      */
     const EVENT_BEFORE_MODULE_DISABLE = 'beforeModuleDisabled';
 
     /**
      * @event triggered after a module is disabled
+     * @since 1.3
      */
     const EVENT_AFTER_MODULE_DISABLE = 'afterModuleDisabled';
 
@@ -75,6 +79,19 @@ class ModuleManager extends Component
      * @var array the core module class names
      */
     protected $coreModules = [];
+
+    /**
+     * @var bool Prevent registration of several different modules with the same id.
+     */
+    public $preventDuplicatedModules = true;
+
+    /**
+     * List of module paths that should be overwritten
+     * Key - module id, Value - absolute path to module folder
+     *
+     * @var array
+     */
+    public $overwriteModuleBasePath = [];
 
     /**
      * Module Manager init

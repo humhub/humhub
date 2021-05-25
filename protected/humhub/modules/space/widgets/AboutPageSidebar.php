@@ -17,6 +17,6 @@ class AboutPageSidebar extends Sidebar
         if ($this->space->isMember())
             $this->widgets[] = [MyMembership::class, ['space' => $this->space], ['sortOrder' => 10]];
 
-        $this->widgets[] = [Members::class, ['space' => $this->space], ['sortOrder' => 20]];
+        $this->widgets[] = [Members::class, ['space' => $this->space, 'orderByNewest' => true], ['sortOrder' => 20]];
     }
 }

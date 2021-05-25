@@ -1,6 +1,7 @@
 <?php
 return array (
   '<strong>Administration</strong> menu' => 'منوی <strong>مدیریت</strong>',
+  '<strong>Maintenance</strong> Mode' => '',
   '<strong>Module </strong> administration' => 'مدیریت <strong>ماژول</strong>',
   '<strong>Warning</strong> incomplete setup!' => '',
   'About' => 'درباره‌ی',
@@ -17,6 +18,9 @@ return array (
   'Basic' => 'پایه',
   'Caching' => 'ذخیره در حافظه‌ی موقت',
   'Cronjobs' => 'كرون جاب',
+  'Default' => 'پيش‌فرض',
+  'Delete all' => '',
+  'Delete selected rows' => '',
   'Design' => 'طراحی',
   'Files' => 'فایل‌ها',
   'General' => 'کلی',
@@ -36,7 +40,6 @@ return array (
   'Pending user registrations' => 'نام‌نویسی‌های در انتظار',
   'Permissions' => 'مجوزها',
   'Proxy' => 'پراکسی',
-  'Security' => 'امنیت',
   'Self test' => 'خودآزمون',
   'Settings' => 'تنظیمات',
   'Sign up' => 'نام‌نویسی',

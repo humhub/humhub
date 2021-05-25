@@ -72,7 +72,7 @@ class EmojiMap
         'woozy_face' => '🥴',
         'woozy' => '🥴',
         'dizzy_face' => '😵',
-        'dizzy' => '😵',
+        'dizzy_face_with_spiral_eyes' => '😵‍💫',
         'exploding_head' => '🤯',
         'cowboy_hat_face' => '🤠',
         'partying_face' => '🥳',

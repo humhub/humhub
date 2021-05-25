@@ -57,7 +57,7 @@ use yii\helpers\Url;
  * @property integer $object_id
  * @property integer $visibility
  * @property integer $pinned
- * @property string $archived
+ * @property integer $archived
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
@@ -371,6 +371,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function canPin()
     {
+        // Currently global content can not be pinned
+        if (!$this->getContainer()) {
+            return false;
+        }
+
         if ($this->isArchived()) {
             return false;
         }
@@ -410,12 +415,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     public function canArchive()
     {
         // Currently global content can not be archived
-        if (!$this->contentcontainer_id) {
+        if (!$this->getContainer()) {
             return false;
         }
 
         // No need to archive content on an archived container, content is marked as archived already
-        if ($this->content->content->getContainer()->isArchived()) {
+        if ($this->getContainer()->isArchived()) {
             return false;
         }
 
@@ -815,7 +820,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         }
 
         // Check system admin can see all content module configuration
-        if ($user->isSystemAdmin() && Yii::$app->getModule('content')->adminCanViewAllContent) {
+        if ($user->canViewAllContent()) {
             return true;
         }
 

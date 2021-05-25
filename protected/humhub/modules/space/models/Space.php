@@ -30,6 +30,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\models\GroupSpace;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\Invite;
@@ -322,12 +323,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
         }
 
         Invite::deleteAll(['space_invite_id' => $this->id]);
-
-        // When this workspace is used in a group as default workspace, delete the link
-        foreach (Group::findAll(['space_id' => $this->id]) as $group) {
-            $group->space_id = '';
-            $group->save();
-        }
+        GroupSpace::deleteAll(['space_id' => $this->id]);
 
         return parent::beforeDelete();
     }
@@ -604,7 +600,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
      *
      * @return array user groups
      */
-    public function getUserGroups()
+    public static function getUserGroups()
     {
         $groups = [
             self::USERGROUP_OWNER => Yii::t('SpaceModule.base', 'Owner'),
@@ -616,7 +612,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
 
         // Add guest groups if enabled
         if (AuthHelper::isGuestAccessEnabled()) {
-            $groups[self::USERGROUP_GUEST] = 'Guests';
+            $groups[self::USERGROUP_GUEST] = Yii::t('SpaceModule.base', 'Guests');
         }
 
         return $groups;
@@ -688,5 +684,16 @@ class Space extends ContentContainerActiveRecord implements Searchable
         }
 
         return $groups;
+    }
+
+    /**
+     * Gets query for [[GroupSpace]].
+     *
+     * @return \yii\db\ActiveQuery
+     * @since 1.8
+     */
+    public function getGroupSpaces()
+    {
+         return $this->hasMany(GroupSpace::class, ['space_id' => 'id']);
     }
 }
