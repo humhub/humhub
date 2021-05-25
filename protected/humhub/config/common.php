@@ -160,6 +160,7 @@ $config = [
     'params' => [
         'installed' => false,
         'databaseInstalled' => false,
+        'databaseDefaultStorageEngine' => 'InnoDB',
         'dynamicConfigFile' => '@config/dynamic.php',
         'moduleAutoloadPaths' => ['@app/modules', '@humhub/modules'],
         'availableLanguages' => [
