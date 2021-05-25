@@ -97,6 +97,8 @@ return [
     'messagePath' => realpath(__DIR__ . '/../messages'),
     // boolean, whether the message file should be overwritten with the merged messages
     'overwrite' => true,
+    'phpFileHeader' => '',
+    'phpDocBlock' => '',
     /*
       // Message categories to ignore
       'ignoreCategories' => [
