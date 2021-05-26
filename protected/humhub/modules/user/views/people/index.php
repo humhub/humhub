@@ -34,7 +34,7 @@ DirectoryAsset::register($this);
 
 </div>
 
-<div class="row">
+<div class="row cards">
     <?php if (!$people->exists()): ?>
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -48,17 +48,17 @@ DirectoryAsset::register($this);
     <?php foreach ($people->all() as $user) : ?>
         <?= PeopleCard::widget(['user' => $user]); ?>
     <?php endforeach; ?>
-
-    <?php if (!$people->isLastPage()) : ?>
-    <div class="directory-load-more">
-        <?= Button::info(Yii::t('UserModule.base', 'Load more'))
-            ->icon('fa-angle-down')
-            ->sm()
-            ->action('directory.loadMore')
-            ->options([
-                'data-current-page' => $people->pagination->getPage() + 1,
-                'data-total-pages' => $people->pagination->getPageCount(),
-            ]) ?>
-    </div>
-    <?php endif; ?>
 </div>
+
+<?php if (!$people->isLastPage()) : ?>
+<div class="directory-load-more">
+    <?= Button::info(Yii::t('UserModule.base', 'Load more'))
+        ->icon('fa-angle-down')
+        ->sm()
+        ->action('directory.loadMore')
+        ->options([
+            'data-current-page' => $people->pagination->getPage() + 1,
+            'data-total-pages' => $people->pagination->getPageCount(),
+        ]) ?>
+</div>
+<?php endif; ?>

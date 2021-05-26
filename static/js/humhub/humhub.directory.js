@@ -11,7 +11,7 @@ humhub.module('directory', function(module, require, $) {
 
         client.get(module.config.loadMoreUrl, {data: urlParams}).then(function (response) {
             $('.container-directory .card:hidden').show();
-            $(evt.$trigger).parent().before(response.response);
+            $('.container-directory .cards').append(response.response);
             if (urlParams.page == $(evt.$trigger).data('total-pages')) {
                 // Remove button "Load more" because the last page was loaded
                 $(evt.$trigger).parent().remove();

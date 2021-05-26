@@ -49,7 +49,9 @@ class SpacesTagList extends Widget
 
         $html = '';
         foreach ($tags as $tag) {
-            $html .= Html::a(Html::encode($tag), Url::to(['/space/spaces', 'keyword' => $tag]), ['class' => 'label label-default']) . "&nbsp";
+            if (trim($tag) !== '') {
+                $html .= Html::a(Html::encode($tag), Url::to(['/space/spaces', 'keyword' => trim($tag)]), ['class' => 'label label-default']) . "&nbsp";
+            }
         }
 
         return $html;

@@ -30,7 +30,7 @@ DirectoryAsset::register($this);
 
 </div>
 
-<div class="row">
+<div class="row cards">
     <?php if (!$spaces->exists()): ?>
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -44,17 +44,17 @@ DirectoryAsset::register($this);
     <?php foreach ($spaces->all() as $space) : ?>
         <?= SpacesCard::widget(['space' => $space]); ?>
     <?php endforeach; ?>
-
-    <?php if (!$spaces->isLastPage()) : ?>
-    <div class="directory-load-more">
-        <?= Button::info(Yii::t('SpaceModule.base', 'Load more'))
-            ->icon('fa-angle-down')
-            ->sm()
-            ->action('directory.loadMore')
-            ->options([
-                'data-current-page' => $spaces->pagination->getPage() + 1,
-                'data-total-pages' => $spaces->pagination->getPageCount(),
-            ]) ?>
-    </div>
-    <?php endif; ?>
 </div>
+
+<?php if (!$spaces->isLastPage()) : ?>
+<div class="directory-load-more">
+    <?= Button::info(Yii::t('SpaceModule.base', 'Load more'))
+        ->icon('fa-angle-down')
+        ->sm()
+        ->action('directory.loadMore')
+        ->options([
+            'data-current-page' => $spaces->pagination->getPage() + 1,
+            'data-total-pages' => $spaces->pagination->getPageCount(),
+        ]) ?>
+</div>
+<?php endif; ?>

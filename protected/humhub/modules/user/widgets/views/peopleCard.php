@@ -33,7 +33,9 @@ use yii\web\View;
     </div>
     <div class="card-body">
         <h4><?= Html::containerLink($user); ?></h4>
-        <h5><?= Html::encode($user->profile->title); ?></h5>
+        <?php if (trim($user->profile->title) !== '') : ?>
+            <h5><?= Html::encode($user->profile->title); ?></h5>
+        <?php endif; ?>
         <?= PeopleDetails::widget([
             'user' => $user,
             'template' => '<div class="card-details">{lines}</div>',

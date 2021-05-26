@@ -59,7 +59,13 @@ class PeopleTagList extends Widget
         }
 
         foreach ($tags as $tag) {
-            $html .= Html::a(Html::encode($tag), Url::to(['/user/people', 'keyword' => trim($tag)]), ['class' => 'label label-default']) . '&nbsp';
+            if (trim($tag) !== '') {
+                $html .= Html::a(Html::encode($tag), Url::to(['/user/people', 'keyword' => trim($tag)]), ['class' => 'label label-default']) . '&nbsp';
+            }
+        }
+
+        if ($html === '') {
+            return $html;
         }
 
         return str_replace('{tags}', $html, $this->template);

@@ -66,11 +66,21 @@
         }
     }
 
+    .cards {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
     .card {
-        > div {
-            height: 360px;
+        display: flex;
+        flex-direction: row;
+
+        .card-panel {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
             margin: 15px 0;
-            position: relative;
             border-radius: 4px;
             background-color: #ffffff;
             overflow: hidden;
@@ -87,11 +97,8 @@
             }
         }
         .card-body {
-            position: absolute;
-            top: 150px;
-            left: 16px;
-            right: 16px;
-            bottom: 63px;
+            flex-grow: 1;
+            padding: 0 16px;
             overflow: auto;
             .card-details {
                 color: #57646c;
@@ -108,10 +115,6 @@
             }
         }
         .card-footer {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
             margin: 0 16px;
             padding: 16px 0;
             border-top: 1px solid #ddd;
@@ -143,7 +146,7 @@
             border-radius: 4px 4px 0 0;
         }
         .card-header {
-            padding: 0 16px 24px 16px;
+            padding: 0 16px;
             margin-top: -58px;
             display: table;
             width: 100%;
@@ -166,7 +169,6 @@
     }
 
     .directory-load-more {
-        clear: both;
         display: none;
         text-align: center;
         padding-bottom: 15px;

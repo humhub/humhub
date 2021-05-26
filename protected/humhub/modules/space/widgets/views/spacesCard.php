@@ -28,7 +28,9 @@ use yii\web\View;
     </div>
     <div class="card-body">
         <h4><?= Html::containerLink($space); ?></h4>
-        <h5><?= Html::encode($space->description); ?></h5>
+        <?php if (trim($space->description) !== '') : ?>
+            <h5><?= Html::encode($space->description); ?></h5>
+        <?php endif; ?>
         <?= SpacesTagList::widget(['space' => $space]); ?>
     </div>
     <div class="card-footer card-icons">
