@@ -17,7 +17,12 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
      * Option can be used to preserve spaces and new lines in the converter result (default false).
      * Note, this option will not affect cached results and therefore does not require a special cache key.
      */
-    public const OPTIONS_PRESERVE_SPACES = 'preserveNewlines';
+    public const OPTION_PRESERVE_SPACES = 'preserveNewlines';
+
+    /**
+     * Option can be used in combination with OPTIONS_PRESERVE_SPACES in order to allow breaks inside the short text
+     */
+    public const OPTION_NL2BR = 'nl2br';
 
     /**
      * @inheritdoc
@@ -89,6 +94,15 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
     }
 
     /**
+     * @param $block
+     * @return string
+     */
+    protected function renderImage($block)
+    {
+        return Yii::t('ContentModule.richtexteditor', '[Image]')."\n\n";
+    }
+
+    /**
      * @inheritDoc
      */
     protected function renderPlainImage(LinkParserBlock $linkBlock) : string
@@ -104,12 +118,17 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
     {
         $result = $text;
 
-        if(!$this->getOption(static::OPTIONS_PRESERVE_SPACES, false)) {
+        if(!$this->getOption(static::OPTION_PRESERVE_SPACES, false)) {
             $result  = trim(preg_replace('/\s+/', ' ', $result));
         }
 
         $result = parent::onAfterParse($result);
+        $result = Html::encode($result);
 
-        return Html::encode($result);
+        if($this->getOption(static::OPTION_NL2BR, false)) {
+            $result = nl2br($result, false);
+        }
+
+        return $result;
     }
 }

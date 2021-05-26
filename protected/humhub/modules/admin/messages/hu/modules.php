@@ -23,7 +23,7 @@ return array (
   'Save' => 'Mentés',
   'Set as default' => 'Beállítás alapértelmezettként',
   'Spaces' => 'Közösségek',
-  'This module doesn\'t provide further informations.' => 'Ez a modul nem tartalmaz további információkat.',
+  'This module doesn\'t provide further information.' => 'Ez a modul nem nyújt további információkat.',
   'Uninstall' => 'Eltávolítás',
   'User Profiles' => 'Felhasználói profilok',
   'Version:' => 'Verzió:',

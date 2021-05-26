@@ -116,7 +116,6 @@ return [
     'Updated By' => 'Обновлено',
     'Updated by' => 'Обновлено',
     'User \'{username}\' is already a member of this space!' => 'Пользователь \'{username}\' уже является участником этого сообщества!',
-    'User \'{username}\' is already an applicant of this space!' => 'Пользователь \'{username}\' уже отправил заявку на вступление в это сообщество!',
     'User invitations have been added to the queue' => 'Приглашения на вступления для пользователей добавлены',
     'User memberships have been added to the queue' => 'Пользователи приглашены для вступления',
     'User not found!' => 'Пользователь не найден!',

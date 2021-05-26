@@ -7,12 +7,16 @@ namespace humhub\modules\content\widgets\richtext\extensions\link;
 use yii\base\Model;
 use yii\helpers\Url;
 
+/**
+ * <orig> = [<text>](<url> "<title>")
+ */
 class LinkParserBlock extends Model
 {
     const BLOCK_KEY_URL = 'url';
     const BLOCK_KEY_TITLE = 'title';
     const BLOCK_KEY_MD = 'orig';
     const BLOCK_KEY_TEXT = 'text';
+    const BLOCK_KEY_FILE_ID = 'fileId';
 
     /**
      * @var array
@@ -85,6 +89,16 @@ class LinkParserBlock extends Model
         $this->block[static::BLOCK_KEY_TITLE] = $title;
     }
 
+    public function getFileId() : ?string
+    {
+        return $this->block[static::BLOCK_KEY_FILE_ID] ?? null;
+    }
+
+    public function setFileId(string $fileId = null)
+    {
+        $this->block[static::BLOCK_KEY_FILE_ID] = $fileId;
+    }
+
     public function getParsedText()
     {
         return $this->parsedText;
@@ -95,11 +109,12 @@ class LinkParserBlock extends Model
         $this->parsedText = $text;
     }
 
-    public function setBlock(string $text, string $url, string $title = null)
+    public function setBlock(string $text, string $url, string $title = null, $fileId = null)
     {
         $this->setUrl($url);
         $this->setText($text);
         $this->setTitle($title);
+        $this->setFileId($fileId);
     }
 
     public function invalidate()

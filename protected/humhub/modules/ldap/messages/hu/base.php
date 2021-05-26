@@ -5,7 +5,7 @@ return array (
   'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Meghatározza az alkalmazandó szűrőt, amikor a bejelentkezés megtörténik. A %-ok  helyettesítik a felhasználónevet a bejelentkezési művelet során. Példa: "(sAMAccountName=%s)" or "(uid=%s)"',
   'E-Mail Address Attribute' => 'E-mail cím attribútum',
   'Enable LDAP Support' => 'LDAP támogatás engedélyezése',
-  'Encryption' => 'Enkriptálás',
+  'Encryption' => 'Titkosítás',
   'Fetch/Update Users Automatically' => 'Felhasználók automatikus lekérése/frissítése',
   'Hostname' => 'Hosztnév',
   'ID Attribute' => 'ID attribútum',

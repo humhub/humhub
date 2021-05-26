@@ -9,6 +9,6 @@ return array (
   'Select {n,plural,=1{user} other{users}}' => 'Избери {n,plural,=1{потребител} other{потребители}}',
   'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => 'Това поле позволява максимум {n,plural,=1{# елемент} other{# елемента}}',
   'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Това поле позволява максимум {n,plural,=1{# потребител} other{# потребители}}',
-  'You reached the maximum number of allowed charachters ({n}).' => 'Достигнахте максималния брой разрешени символи ({n}).',
+  'You reached the maximum number of allowed characters ({n}).' => 'Достигнахте максималния брой разрешени символи ({n}).',
   'Your search returned no matches.' => 'Вашето търсене не върна съвпадения.',
 );

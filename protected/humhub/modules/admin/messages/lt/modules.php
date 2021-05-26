@@ -37,11 +37,11 @@ return [
     'Save' => 'Išsaugoti',
     'Set as default' => 'Nustatyti, kaip numatytajį',
     'Spaces' => 'Erdvės',
-    'This module doesn\'t provide further informations.' => 'Šis modulis nesuteikia daugiau informacijos.',
     'Uninstall' => 'Pašalinti',
     'User Profiles' => 'Vartotojų profiliai',
     'Version:' => 'Versija:',
     'Enable module...' => '',
     'Legacy' => '',
     'Not maintained or maintenance is about to be discontinued.' => '',
+    'This module doesn\'t provide further information.' => '',
 ];

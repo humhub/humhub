@@ -114,4 +114,5 @@ return array (
   'You need to login to view this user profile!' => '¡Necesitas iniciar sesión para ver este perfil de usuario!',
   'YouTube URL' => 'Enlace de YouTube',
   'Zip' => 'Código postal',
+  '{attribute} is required!' => 'Se requiere {attribute}!',
 );

@@ -118,9 +118,4 @@ class MentioningExtension extends RichTextLinkExtension
 
         return $text;
     }
-
-    public function onBeforeConvert(string $text, string $format, array $options = []): string
-    {
-        return $text;
-    }
 }

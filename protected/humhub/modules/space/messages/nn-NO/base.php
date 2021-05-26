@@ -126,7 +126,6 @@ return [
     'Updated By' => '',
     'Updated by' => '',
     'User \'{username}\' is already a member of this space!' => '',
-    'User \'{username}\' is already an applicant of this space!' => '',
     'User invitations have been added to the queue' => '',
     'User memberships have been added to the queue' => '',
     'User not found!' => '',

@@ -9,6 +9,6 @@ return array (
   'Select {n,plural,=1{user} other{users}}' => '选择 {n,plural,=1{user} other{users}}',
   'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => '此域最大允许 {n,plural,=1{# item} other{# items}}.',
   'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => '此域最大允许 {n,plural,=1{# user} other{# users}}。',
-  'You reached the maximum number of allowed charachters ({n}).' => '你输入的字符数到了最大限制 ({n})。',
+  'You reached the maximum number of allowed characters ({n}).' => '你输入的字符数到了最大限制 ({n})。',
   'Your search returned no matches.' => '没有找到匹配的数据。',
 );

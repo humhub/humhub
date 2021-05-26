@@ -64,5 +64,7 @@ return [
     'Wrap in block quote' => 'Kääri lohkoa',
     'Wrap in bullet list' => 'Kääri luetteloruutuun',
     'Wrap in ordered list' => 'Kääri tilattuun luetteloon',
+    '[Code Block]' => '',
     '[Invalid file]' => '',
+    '[Table]' => '',
 ];

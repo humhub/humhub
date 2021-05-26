@@ -48,10 +48,11 @@ class ActivityStreamQuery extends ContentContainerStreamQuery
      */
     public function afterApplyFilters()
     {
-        if($this->activity) {
-            $this->channel(self::CHANNEL_ACTIVITY);
+        if ($this->activity) {
+            $this->channel = self::CHANNEL_ACTIVITY;
 
-            $this->query()->andWhere(['!=', 'user.status', User::STATUS_NEED_APPROVAL]);
+            // Note: With the extra null check, the query performs much faster than directly against the status field.
+            $this->query()->andWhere(['OR', 'user.id IS NULL', ['!=', 'user.status', User::STATUS_NEED_APPROVAL]]);
 
             // Exclude own activities
             if ($this->user) {

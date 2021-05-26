@@ -47,5 +47,7 @@ return array (
   'Wrap in block quote' => 'Направи в блок цитат',
   'Wrap in bullet list' => 'Направи в списък с опции',
   'Wrap in ordered list' => 'Направи в подреден списък',
+  '[Code Block]' => '[Блок на кода]',
   '[Invalid file]' => '[Невалиден файл]',
+  '[Table]' => '[Таблица]',
 );

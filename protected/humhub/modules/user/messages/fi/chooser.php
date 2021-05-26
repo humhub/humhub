@@ -9,6 +9,6 @@ return array (
   'Select {n,plural,=1{user} other{users}}' => 'Valitse {n,plural,=1{user} other{users}}',
   'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => 'Tämä kenttä mahdollistaa vain {n,plural,=1{# item} other{# items}}.',
   'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Tämä kenttä mahdollistaa vain {n,plural,=1{# user} other{# users}}.',
-  'You reached the maximum number of allowed charachters ({n}).' => 'Olet saavuttanut merkkiean enimmäismäärän ({n}).',
+  'You reached the maximum number of allowed characters ({n}).' => 'Olet saavuttanut merkkiean enimmäismäärän ({n}).',
   'Your search returned no matches.' => 'Hakusi ei vastannut yhtään tulosta.',
 );

@@ -40,7 +40,7 @@ return [
     'No modules installed yet. Install some to enhance the functionality!' => '',
     'Not maintained or maintenance is about to be discontinued.' => '',
     'Set as default' => '',
-    'This module doesn\'t provide further informations.' => '',
+    'This module doesn\'t provide further information.' => '',
     'Uninstall' => '',
     'User Profiles' => '',
     'Version:' => '',

@@ -42,7 +42,7 @@ return array (
   'Proxy' => 'Proxy',
   'Self test' => 'Öntesztelés',
   'Settings' => 'Beállítások',
-  'Sign up' => 'Feliratkozás',
+  'Sign up' => 'Regisztráció',
   'Spaces' => 'Közösségek',
   'Statistics' => 'Statisztikák',
   'The cron job for the background jobs (queue) does not seem to work properly.' => 'A várakozási sorra (queue) vonatkozó cron-feladat nem működik megfelelően.',

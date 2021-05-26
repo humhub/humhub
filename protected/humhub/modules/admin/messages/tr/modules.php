@@ -38,10 +38,10 @@ return [
     'Save' => 'Kaydet',
     'Set as default' => 'Varsayılan yap',
     'Spaces' => 'Alanlar',
-    'This module doesn\'t provide further informations.' => 'Bu modül daha fazla bilgi içermez.',
     'Uninstall' => 'Kaldır',
     'User Profiles' => 'Kullanıcı profilleri',
     'Version:' => 'Sürüm:',
     'Legacy' => '',
     'Not maintained or maintenance is about to be discontinued.' => '',
+    'This module doesn\'t provide further information.' => '',
 ];

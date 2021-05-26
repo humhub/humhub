@@ -31,7 +31,7 @@ return array (
   'New E-Mail address' => 'Neue E-Mail-Adresse',
   'New User name' => 'Neuer Benutzername',
   'Not registered users' => 'Keine registrierten Benutzer',
-  'Notifications' => 'Benachrichtungen',
+  'Notifications' => 'Benachrichtigungen',
   'Other users' => 'Andere Benutzer',
   'Password Recovery' => 'Passwort-Wiederherstellung',
   'Permissions' => 'Berechtigungen',

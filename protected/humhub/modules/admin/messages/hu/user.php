@@ -12,7 +12,7 @@ return array (
   'Actions' => 'Tevékenység',
   'Active users' => 'Aktív felhasználók',
   'Add Groups...' => 'Csoportok hozzáadása',
-  'Add a seperate page for the group to the directory.' => 'Egy külön oldal felvétele a csoport számára a könyvtárba.',
+  'Add a separate page for the group to the directory.' => 'Egy külön oldal felvétele a csoport számára a könyvtárba.',
   'Add new category' => 'Új kategória hozzáadása',
   'Add new field' => 'Új mező hozzáadása',
   'Add new group' => 'Új csoport hozzáadása',
@@ -76,7 +76,7 @@ Click here to login:<br>
 {loginLink}<br><br>
 
 Kind Regards<br>
-{AdminName}<br><br>' => 'Szia {displayName}!<br><br> A fiókod aktiválva lett.<br><br> A bejelentkezéshez kattitns ide:<br> {loginLink}<br><br> Legjobb üdvözlettel:<br> {AdminName}<br><br>',
+{AdminName}<br><br>' => 'Szia {displayName}!<br><br> A fiókod aktiválva lett.<br><br> A bejelentkezéshez kattitns ide:<br> {loginLink}<br><br> Üdvözlettel:<br> {AdminName}<br><br>',
   'Hello {displayName},<br><br>
 Your account request has been declined.<br><br>
 
@@ -86,7 +86,7 @@ Kind Regards<br>
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Ha az egyedi profilengedélyek nem engedélyezettek, akkor a következő beállítások nem módosíthatók minden felhasználó számára. Ha egyedi profilengedélyek engedélyezettek, akkor a beállításokat csak alapértelmezettként lesznek beállítva, amelyeket a felhasználók testre szabhatnak. Ezután a következő bejegyzések ugyanabban a formában jelennek meg a felhasználói profil beállításaiban:',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Ha ezt az opciót nem választod ki, akkor a közösségek tulajdonjoga átkerül a fiókodba.',
   'Impersonate' => 'Megszemélyesítés',
-  'Include captcha in registration form' => 'Captcha megjelenítése a regisztációs formon',
+  'Include captcha in registration form' => 'Captcha megjelenítése a regisztrációs űrlapon',
   'Invite not found!' => 'A meghívás nem található!',
   'Last login' => 'Utolsó bejelentkezés',
   'List pending registrations' => 'Folyamatban lévő regisztrációk listázása',
@@ -94,15 +94,15 @@ Kind Regards<br>
   'Manage group: {groupName}' => 'Csoport kezelése: {groupName}',
   'Manage groups' => 'Csoportok kezelése',
   'Manage profile attributes' => 'Profil attribútumok kezelése',
-  'Member since' => 'Mióta tag',
+  'Member since' => 'Tagság kezdete',
   'Members' => 'Tagok',
-  'Members can invite external users by email' => 'A tagok meghívhatnak külső felhasználókat emailben',
+  'Members can invite external users by email' => 'A tagok meghívhatnak külső felhasználókat e-mailben',
   'Message' => 'Üzenet',
   'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)' => 'A minimális érték 20 másodperc. Ha nincs beállítva, a munkamenet időtúllépés 1400 másodperc (24 perc) elteltével történik meg, a tevékenységtől függetlenül (alapértelmezett munkamenet időtúllépés) időtúllépés)',
   'New approval requests' => 'Új jóváhagyási kérelmek',
-  'New users can register' => 'Névtelen felhasználók is regisztrálhatnak',
+  'New users can register' => 'Új felhasználók is regisztrálhatnak',
   'No' => 'Nem',
-  'No value found!' => 'Nincs érték!',
+  'No value found!' => 'Nem található adat!',
   'One or more user needs your approval as group admin.' => 'Egy vagy több felhasználónak szüksége van a jóváhagyásodra, mint csoport admin.',
   'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.' => 'Csak akkor alkalmazható, ha engedélyezett a korlátozott hozzáférés a nem hitelesített felhasználók számára. Csak az új felhasználókra vonatkozik.',
   'Overview' => 'Tartalomjegyzék',
@@ -120,7 +120,7 @@ Kind Regards<br>
   'Search by name, email or id.' => 'Keresés név, email vagy azonosító szerint.',
   'Select Groups' => 'Csoportok kiválasztása',
   'Send & save' => 'Küldés és mentés',
-  'Send invitation email' => 'Meghívó email küldése',
+  'Send invitation email' => 'Meghívó e-mail küldése',
   'Send invitation email again?' => 'Meghívólevél újraküldése?',
   'Send invite' => 'Meghívás',
   'Send notifications to users when added to or removed from the group.' => 'Értesítéseket küldése a felhasználóknak, ha felveszik őket a csoportba vagy eltávolítják őket.',
@@ -147,6 +147,6 @@ Kind Regards<br>
   'Visible for members+guests' => 'A tagok és vendégek számára is látható',
   'Yes' => 'Igen',
   'You can only delete empty categories!' => 'Csak üres kategóriák törölhetők!',
-  'You cannot delete yourself!' => 'Nem törölheted magad!',
+  'You cannot delete yourself!' => 'Nem törölheted saját magad!',
   'never' => 'soha',
 );

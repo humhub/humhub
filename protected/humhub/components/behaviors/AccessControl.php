@@ -246,10 +246,12 @@ class AccessControl extends ActionFilter
      */
     protected function checkMaintenanceMode()
     {
-        if (Yii::$app->settings->get('maintenanceMode') && !Yii::$app->user->isGuest) {
-            Yii::$app->user->logout();
-            Yii::$app->getView()->warn(Yii::t('error', 'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.'));
-            return Yii::$app->getResponse()->redirect(Yii::$app->getHomeUrl());
+        if (Yii::$app->settings->get('maintenanceMode')) {
+            if (!Yii::$app->user->isGuest) {
+                Yii::$app->user->logout();
+                Yii::$app->getView()->warn(Yii::t('error', 'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.'));
+            }
+            return Yii::$app->getResponse()->redirect(['/user/auth/login']);
         }
     }
 }

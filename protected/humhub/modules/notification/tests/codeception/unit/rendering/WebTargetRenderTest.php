@@ -22,8 +22,8 @@ class WebTargetRenderTest extends HumHubDbTestCase
         $target = Yii::$app->notification->getTarget(WebTarget::class);
         $renderer = $target->getRenderer();
         $result = $renderer->render($notification);
-        $this->assertContains('New', $result);
-        $this->assertContains('<h1>TestedMailViewNotificationHTML</h1>', $result);
+        $this->assertStringContainsString('New', $result);
+        $this->assertStringContainsString('<h1>TestedMailViewNotificationHTML</h1>', $result);
     }
 
     public function testOverwriteViewFile()
@@ -35,8 +35,8 @@ class WebTargetRenderTest extends HumHubDbTestCase
         $target = Yii::$app->notification->getTarget(WebTarget::class);
         $renderer = $target->getRenderer();
         $result = $renderer->render($notification);
-        $this->assertContains('New', $result);
-        $this->assertContains('<div>Special:<h1>TestedMailViewNotificationHTML</h1></div>', $result);
+        $this->assertStringContainsString('New', $result);
+        $this->assertStringContainsString('<div>Special:<h1>TestedMailViewNotificationHTML</h1></div>', $result);
     }
 
 }
