@@ -696,9 +696,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $attributes = [
             'email' => $this->email,
             'username' => $this->username,
-            // TODO: column `tags` was moved into the tables `contentcontainer_tag` and `contentcontainer_tag_relation`,
-            //       try to implement the searching by these tables instead.
-            // 'tags' => $this->tags,
+            'tags' => implode($this->getTags(), ', '),
             'firstname' => $this->profile->firstname,
             'lastname' => $this->profile->lastname,
             'title' => $this->profile->title,

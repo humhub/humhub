@@ -403,9 +403,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     {
         $attributes = [
             'title' => $this->name,
-            // TODO: column `tags` was moved into the tables `contentcontainer_tag` and `contentcontainer_tag_relation`,
-            //       try to implement the searching by these tables instead.
-            //'tags' => $this->tags,
+            'tags' => implode($this->getTags(), ', '),
             'description' => $this->description
         ];
 
