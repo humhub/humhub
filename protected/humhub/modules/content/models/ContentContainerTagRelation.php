@@ -37,6 +37,22 @@ class ContentContainerTagRelation extends ActiveRecord
     }
 
     /**
+     * Get tag names of the Content Container
+     *
+     * @param ContentContainerActiveRecord $contentContainer
+     * @return string[]
+     */
+    public static function getNamesByContainer($contentContainer)
+    {
+        return ContentContainerTag::find()
+            ->select('name')
+            ->leftJoin('contentcontainer_tag_relation', 'id = tag_id')
+            ->where(['contentcontainer_id' => $contentContainer->contentcontainer_id])
+            ->andWhere(['contentcontainer_class' => get_class($contentContainer)])
+            ->column();
+    }
+
+    /**
      * Update tag relations of the Content Container
      *
      * @param ContentContainerActiveRecord $contentContainer
@@ -83,7 +99,12 @@ class ContentContainerTagRelation extends ActiveRecord
             }
             $newTagRelation->save();
         }
+
+        $contentContainer->contentContainerRecord->updateAttributes([
+            'tags_cached' => implode(', ', ContentContainerTagRelation::getNamesByContainer($contentContainer))
+        ]);
     }
+
 
     /**
      * Delete tag relations of the Content Container

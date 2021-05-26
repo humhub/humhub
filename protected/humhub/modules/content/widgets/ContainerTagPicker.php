@@ -11,6 +11,7 @@ use humhub\modules\content\models\ContentContainerTag;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\BasePicker;
 use humhub\modules\user\models\forms\AccountSettings;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
 
@@ -41,7 +42,7 @@ class ContainerTagPicker extends BasePicker
 
         if ($this->model instanceof Space) {
             $this->url = Url::to(['/space/browse/search-tags-json']);
-        } else if($this->model instanceof AccountSettings) {
+        } else if($this->model instanceof User || $this->model instanceof AccountSettings) {
             $this->url = Url::to(['/user/account/search-tags-json']);
         }
     }
@@ -52,8 +53,8 @@ class ContainerTagPicker extends BasePicker
     protected function getData()
     {
         return array_merge(parent::getData(), [
-            'placeholder-more' => Yii::t('ContentModule.widgets_ContainerTagPicker', 'Add tag...'),
-            'no-result' => Yii::t('ContentModule.widgets_ContainerTagPicker', 'No tags found for the given query'),
+            'placeholder-more' => Yii::t('ContentModule.base', 'Add tag...'),
+            'no-result' => Yii::t('ContentModule.base', 'No tags found for the given query'),
         ]);
     }
 

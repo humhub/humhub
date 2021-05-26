@@ -95,6 +95,7 @@ class ActiveQueryUser extends ActiveQuery
         }
 
         $this->joinWith('profile');
+        $this->joinWith('contentContainerRecord');
 
         if (!is_array($keywords)) {
             $keywords = explode(' ', $keywords);
@@ -118,11 +119,10 @@ class ActiveQueryUser extends ActiveQuery
      */
     private function getSearchableUserFields()
     {
-        // TODO: column `tags` was moved into the tables `contentcontainer_tag` and `contentcontainer_tag_relation`,
-        //       try to implement the searching by these tables instead.
-        $fields = ['user.username', 'user.email'/*, 'user.tags'*/];
+        $fields = ['user.username', 'user.email', 'contentcontainer.tags_cached'];
+
         foreach (ProfileField::findAll(['searchable' => 1]) as $profileField) {
-            if(!($profileField->getFieldType() instanceof BaseTypeVirtual)) {
+            if (!($profileField->getFieldType() instanceof BaseTypeVirtual)) {
                 $fields[] = 'profile.' . $profileField->internal_name;
             }
         }

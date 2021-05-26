@@ -21,6 +21,7 @@ use yii\db\ActiveRecord;
  * @property string $class
  * @property integer $pk
  * @property integer $owner_user_id
+ * @property string $tags_cached readonly, a comma separted list of assigned tags
  * @mixin PolymorphicRelation
  */
 class ContentContainer extends ActiveRecord

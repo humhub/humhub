@@ -403,7 +403,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     {
         $attributes = [
             'title' => $this->name,
-            'tags' => implode($this->getTags(), ', '),
+            'tags' => implode(', ', $this->getTags()),
             'description' => $this->description
         ];
 
@@ -675,6 +675,6 @@ class Space extends ContentContainerActiveRecord implements Searchable
      */
     public function getGroupSpaces()
     {
-         return $this->hasMany(GroupSpace::class, ['space_id' => 'id']);
+        return $this->hasMany(GroupSpace::class, ['space_id' => 'id']);
     }
 }

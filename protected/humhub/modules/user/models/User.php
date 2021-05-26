@@ -669,8 +669,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Checks if the user is allowed to view all content
      *
-     * @since 1.8
      * @return bool
+     * @since 1.8
      */
     public function canViewAllContent()
     {
@@ -696,7 +696,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $attributes = [
             'email' => $this->email,
             'username' => $this->username,
-            'tags' => implode($this->getTags(), ', '),
+            'tags' => implode(', ', $this->getTags()),
             'firstname' => $this->profile->firstname,
             'lastname' => $this->profile->lastname,
             'title' => $this->profile->title,
@@ -835,8 +835,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Check if the User must change password
      *
-     * @since 1.8
      * @return bool
+     * @since 1.8
      */
     public function mustChangePassword()
     {
@@ -846,8 +846,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Set/Unset User to force change password
      *
-     * @since 1.8
      * @param bool true - force user to change password, false - don't require to change password
+     * @since 1.8
      */
     public function setMustChangePassword($state = true)
     {

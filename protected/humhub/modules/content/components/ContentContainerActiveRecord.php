@@ -72,33 +72,18 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public $updatedTags;
 
     /**
-     * @inheritdoc
-     */
-    public function __get($name)
-    {
-        switch ($name) {
-            // The column `tags` was deleted since 1.8 vesion but we need support this for
-            // old external modules, where it may be used like `$user->tags` or `$space->tags`.
-            case 'tags':
-                return implode(', ', $this->getTags());
-        }
-
-        return parent::__get($name);
-    }
-
-    /**
      * Returns the display name of content container
      *
-     * @since 0.11.0
      * @return string
+     * @since 0.11.0
      */
     public abstract function getDisplayName();
 
     /**
      * Returns a descriptive sub title of this container used in the frontend.
      *
-     * @since 1.4
      * @return mixed
+     * @since 1.4
      */
     public abstract function getDisplayNameSub();
 
@@ -239,8 +224,8 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns the related ContentContainer model (e.g. Space or User)
      *
-     * @see ContentContainer
      * @return ContentContainer
+     * @see ContentContainer
      */
     public function getContentContainerRecord()
     {
@@ -265,8 +250,8 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * Note: This method is used to verify ContentContainerPermissions and not GroupPermissions.
      *
      * @param string|string[]|BasePermission $permission
-     * @see PermissionManager::can()
      * @return boolean
+     * @see PermissionManager::can()
      * @since 1.2
      */
     public function can($permission, $params = [], $allowCaching = true)
@@ -302,9 +287,9 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns a ModuleManager
      *
-     * @since 1.3
      * @param User $user
      * @return ModuleManager
+     * @since 1.3
      */
     public function getModuleManager()
     {
@@ -378,16 +363,11 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns an array with related Tags
      *
-     * @return array
+     * @return string[] a list of tag names
      */
     public function getTags()
     {
-        return ContentContainerTag::find()
-            ->select('name')
-            ->leftJoin('contentcontainer_tag_relation', 'id = tag_id')
-            ->where(['contentcontainer_id' => $this->contentcontainer_id])
-            ->andWhere(['contentcontainer_class' => get_class($this)])
-            ->column();
+        return ContentContainerTagRelation::getNamesByContainer($this);
     }
 
 }

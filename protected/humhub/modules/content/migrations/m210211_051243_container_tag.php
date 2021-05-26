@@ -32,6 +32,8 @@ class m210211_051243_container_tag extends Migration
         $this->addForeignKey('fk-contentcontainer-tag-rel-contentcontainer-id', 'contentcontainer_tag_relation', 'contentcontainer_id', 'contentcontainer', 'id', 'CASCADE');
         $this->addForeignKey('fk-contentcontainer-tag-rel-tag-id', 'contentcontainer_tag_relation', 'tag_id', 'contentcontainer_tag', 'id', 'CASCADE');
 
+        $this->addColumn('contentcontainer', 'tags_cached', $this->string()->null());
+
         $this->moveContainerTags(Space::class);
         $this->dropColumn('space', 'tags');
 
@@ -70,6 +72,8 @@ class m210211_051243_container_tag extends Migration
                 ->select('tags')
                 ->where(['id' => $contentContainer->id])
                 ->scalar();
+
+
             $containerTags = preg_split('/[;,#]\s?+/', $containerTags);
             foreach ($containerTags as $tagName) {
                 if (!isset($tags[$tagName])) {
@@ -87,6 +91,14 @@ class m210211_051243_container_tag extends Migration
                     $contentContainerTagRelation->save();
                 }
             }
+
+            // Preset cache field
+            $this->update('contentcontainer',
+                [
+                    'tags_cached' => implode(', ', ContentContainerTagRelation::getNamesByContainer($contentContainer))
+                ],
+                ['id' => $contentContainer->contentcontainer_id]
+            );
         }
     }
 }
