@@ -81,7 +81,10 @@ class ProfileController extends ContentContainerController
             return $this->redirect(Url::to(['/user/profile/about', 'container' => $this->getUser()]));
         }
 
-        return $this->render('home', ['user' => $this->contentContainer]);
+        return $this->render('home', [
+            'user' => $this->contentContainer,
+            'isSingleContentRequest' => !empty(Yii::$app->request->getQueryParam('contentId')),
+        ]);
     }
 
     public function actionAbout()
