@@ -29,3 +29,4 @@
 - Enh #4757: Updated to PHPUnit 8.5
 - Enh #4790: Added more logging on authentication errors
 - Fix #5054: Force InnoDB Table Engine on migration and configuration option
+- Enh #5062: Show user ID on admin user edit page
