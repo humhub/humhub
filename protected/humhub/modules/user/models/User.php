@@ -94,6 +94,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     const SCENARIO_EDIT_ADMIN = 'editAdmin';
     const SCENARIO_LOGIN = 'login';
     const SCENARIO_REGISTRATION = 'registration';
+    const SCENARIO_REGISTRATION_EMAIL = 'registration_email';
+    const SCENARIO_EDIT_ACCOUNT_SETTINGS = 'editAccountSettings';
 
     /**
      * @event Event an event that is triggered when the user visibility is checked via [[isVisible()]].
@@ -158,6 +160,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['time_zone'], 'validateTimeZone'],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
+            ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'string', 'max' => 150],
@@ -226,10 +229,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['login'] = ['username', 'password'];
-        $scenarios['editAdmin'] = ['username', 'email', 'status'];
-        $scenarios['registration_email'] = ['username', 'email', 'time_zone'];
-        $scenarios['registration'] = ['username', 'time_zone'];
+        $scenarios[static::SCENARIO_LOGIN] = ['username', 'password'];
+        $scenarios[static::SCENARIO_EDIT_ADMIN] = ['username', 'email', 'status', 'updatedTags'];
+        $scenarios[static::SCENARIO_EDIT_ACCOUNT_SETTINGS] = ['language', 'visibility', 'time_zone', 'updatedTags'];
+        $scenarios[static::SCENARIO_REGISTRATION_EMAIL] = ['username', 'email', 'time_zone'];
+        $scenarios[static::SCENARIO_REGISTRATION] = ['username', 'time_zone'];
 
         return $scenarios;
     }

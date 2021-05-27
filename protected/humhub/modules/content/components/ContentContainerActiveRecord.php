@@ -203,7 +203,9 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
             $this->update(false, ['contentcontainer_id']);
         }
 
-        ContentContainerTagRelation::updateByContainer($this);
+        if ($this->isAttributeSafe('updatedTags') && $this->updatedTags !== null) {
+            ContentContainerTagRelation::updateByContainer($this, $this->updatedTags);
+        }
 
         parent::afterSave($insert, $changedAttributes);
     }

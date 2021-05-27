@@ -126,6 +126,8 @@ class AccountController extends BaseAccountController
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             Yii::$app->getModule('tour')->settings->contentContainer($user)->set('hideTourPanel', $model->show_introduction_tour);
+
+            $user->scenario = User::SCENARIO_EDIT_ACCOUNT_SETTINGS;
             $user->language = $model->language;
             $user->updatedTags = $model->tags;
             $user->time_zone = $model->timeZone;

@@ -56,26 +56,19 @@ class ContentContainerTagRelation extends ActiveRecord
      * Update tag relations of the Content Container
      *
      * @param ContentContainerActiveRecord $contentContainer
-     * @param string[]|null $updatedTags
+     * @param string[]|null $newTags
      */
-    public static function updateByContainer($contentContainer, $updatedTags = null)
+    public static function updateByContainer($contentContainer, $newTags = null)
     {
-        if (!is_array($updatedTags)) {
-            if (!isset($contentContainer->updatedTags)) {
-                return;
-            }
-            $updatedTags = $contentContainer->updatedTags;
-        }
-
         self::deleteByContainer($contentContainer);
 
-        if (empty($updatedTags)) {
+        if (empty($newTags)) {
             return;
         }
 
         $existingTags = ContentContainerTag::find()
             ->select(['id', 'name'])
-            ->where(['IN', 'name', $updatedTags])
+            ->where(['IN', 'name', $newTags])
             ->andWhere(['contentcontainer_class' => get_class($contentContainer)])
             ->all();
 
@@ -85,7 +78,7 @@ class ContentContainerTagRelation extends ActiveRecord
             $existingTagsArray[$existingTag->name] = $existingTag->id;
         }
 
-        foreach ($updatedTags as $updatedTag) {
+        foreach ($newTags as $updatedTag) {
             $newTagRelation = new ContentContainerTagRelation();
             $newTagRelation->contentcontainer_id = $contentContainer->contentcontainer_id;
             if (isset($existingTagsArray[$updatedTag])) {
