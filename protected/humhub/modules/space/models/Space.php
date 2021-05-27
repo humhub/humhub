@@ -122,7 +122,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             [['join_policy', 'visibility', 'status', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
             [['name'], 'required'],
             [['description', 'about', 'color'], 'string'],
-            [['updatedTags'], 'safe'],
+            [['tagsField'], 'safe'],
             [['description'], 'string', 'max' => 100],
             [['join_policy'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'in', 'range' => [0, 1, 2]],
@@ -149,7 +149,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     {
         $scenarios = parent::scenarios();
 
-        $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'about', 'updatedTags', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
+        $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'about', 'tagsField', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
         $scenarios[static::SCENARIO_CREATE] = ['name', 'color', 'description', 'join_policy', 'visibility'];
         $scenarios[static::SCENARIO_SECURITY_SETTINGS] = ['default_content_visibility', 'join_policy', 'visibility'];
 
@@ -170,7 +170,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             'join_policy' => Yii::t('SpaceModule.base', 'Join Policy'),
             'visibility' => Yii::t('SpaceModule.base', 'Visibility'),
             'status' => Yii::t('SpaceModule.base', 'Status'),
-            'updatedTags' => Yii::t('SpaceModule.base', 'Tags'),
+            'tagsField' => Yii::t('SpaceModule.base', 'Tags'),
             'created_at' => Yii::t('SpaceModule.base', 'Created At'),
             'created_by' => Yii::t('SpaceModule.base', 'Created By'),
             'updated_at' => Yii::t('SpaceModule.base', 'Updated At'),

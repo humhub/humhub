@@ -69,7 +69,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * @var array Related Tags which should be updated after save
      */
-    public $updatedTags;
+    public $tagsField;
 
     /**
      * Returns the display name of content container
@@ -203,8 +203,8 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
             $this->update(false, ['contentcontainer_id']);
         }
 
-        if ($this->isAttributeSafe('updatedTags') && $this->updatedTags !== null) {
-            ContentContainerTagRelation::updateByContainer($this, $this->updatedTags);
+        if ($this->isAttributeSafe('tagsField') && $this->tagsField !== null) {
+            ContentContainerTagRelation::updateByContainer($this, $this->tagsField);
         }
 
         parent::afterSave($insert, $changedAttributes);

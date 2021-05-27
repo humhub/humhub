@@ -129,7 +129,7 @@ class AccountController extends BaseAccountController
 
             $user->scenario = User::SCENARIO_EDIT_ACCOUNT_SETTINGS;
             $user->language = $model->language;
-            $user->updatedTags = $model->tags;
+            $user->tagsField = $model->tags;
             $user->time_zone = $model->timeZone;
             $user->visibility = $model->visibility;
             $user->save();
