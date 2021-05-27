@@ -27,6 +27,7 @@ nbproject
 
 themes/*
 !themes/HumHub
+!themes/Megafan
 
 favicon.ico
 /.settings
