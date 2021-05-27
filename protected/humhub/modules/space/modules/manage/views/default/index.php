@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
@@ -29,7 +30,7 @@ use humhub\widgets\Button;
         <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model]) ?>
         <?= $form->field($model, 'description')->textInput(); ?>
         <?= $form->field($model, 'about')->widget(RichTextField::class); ?>
-        <?= $form->field($model, 'tags')->textInput(['maxlength' => 200]); ?>
+        <?= $form->field($model, 'tagsField')->widget(ContainerTagPicker::class); ?>
 
         <?= Button::save()->submit() ?>
 

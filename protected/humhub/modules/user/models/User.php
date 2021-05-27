@@ -48,7 +48,6 @@ use yii\web\IdentityInterface;
  * @property string $username
  * @property string $email
  * @property string $auth_mode
- * @property string $tags
  * @property string $language
  * @property string $time_zone
  * @property string $created_at
@@ -95,6 +94,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     const SCENARIO_EDIT_ADMIN = 'editAdmin';
     const SCENARIO_LOGIN = 'login';
     const SCENARIO_REGISTRATION = 'registration';
+    const SCENARIO_REGISTRATION_EMAIL = 'registration_email';
+    const SCENARIO_EDIT_ACCOUNT_SETTINGS = 'editAccountSettings';
 
     /**
      * @event Event an event that is triggered when the user visibility is checked via [[isVisible()]].
@@ -154,11 +155,12 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
                 return $model->getAttribute($attribute) !== $model->getOldAttribute($attribute);
             }],
             [['status', 'created_by', 'updated_by', 'visibility'], 'integer'],
-            [['tags'], 'string'],
+            [['tagsField'], 'safe'],
             [['guid'], 'string', 'max' => 45],
             [['time_zone'], 'validateTimeZone'],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
+            ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'string', 'max' => 150],
@@ -227,10 +229,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['login'] = ['username', 'password'];
-        $scenarios['editAdmin'] = ['username', 'email', 'status'];
-        $scenarios['registration_email'] = ['username', 'email', 'time_zone'];
-        $scenarios['registration'] = ['username', 'time_zone'];
+        $scenarios[static::SCENARIO_LOGIN] = ['username', 'password'];
+        $scenarios[static::SCENARIO_EDIT_ADMIN] = ['username', 'email', 'status', 'language', 'tagsField'];
+        $scenarios[static::SCENARIO_EDIT_ACCOUNT_SETTINGS] = ['language', 'visibility', 'time_zone', 'tagsField'];
+        $scenarios[static::SCENARIO_REGISTRATION_EMAIL] = ['username', 'email', 'time_zone'];
+        $scenarios[static::SCENARIO_REGISTRATION] = ['username', 'time_zone'];
 
         return $scenarios;
     }
@@ -670,8 +673,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Checks if the user is allowed to view all content
      *
-     * @since 1.8
      * @return bool
+     * @since 1.8
      */
     public function canViewAllContent()
     {
@@ -687,26 +690,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
-     * Checks if user has tags
-     *
-     * @return boolean has tags set
-     */
-    public function hasTags()
-    {
-        return ($this->tags != '');
-    }
-
-    /**
-     * Returns an array with assigned Tags
-     *
-     * @return array tags
-     */
-    public function getTags()
-    {
-        return preg_split("/[;,#]+/", $this->tags);
-    }
-
-    /**
      * Returns an array of informations used by search subsystem.
      * Function is defined in interface ISearchable
      *
@@ -717,7 +700,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $attributes = [
             'email' => $this->email,
             'username' => $this->username,
-            'tags' => $this->tags,
+            'tags' => implode(', ', $this->getTags()),
             'firstname' => $this->profile->firstname,
             'lastname' => $this->profile->lastname,
             'title' => $this->profile->title,
@@ -856,8 +839,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Check if the User must change password
      *
-     * @since 1.8
      * @return bool
+     * @since 1.8
      */
     public function mustChangePassword()
     {
@@ -867,8 +850,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Set/Unset User to force change password
      *
-     * @since 1.8
      * @param bool true - force user to change password, false - don't require to change password
+     * @since 1.8
      */
     public function setMustChangePassword($state = true)
     {

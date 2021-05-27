@@ -63,14 +63,16 @@ class ActiveQuerySpace extends ActiveQuery
      * Performs a space full text search
      *
      * @param string|array $keywords
-     *
+     * @param array $columns
      * @return ActiveQuerySpace the query
      */
-    public function search($keywords)
+    public function search($keywords, $columns = ['space.name', 'space.description', 'contentcontainer.tags_cached'])
     {
         if (empty($keywords)) {
             return $this;
         }
+
+        $this->joinWith('contentContainerRecord');
 
         if (!is_array($keywords)) {
             $keywords = explode(' ', $keywords);
@@ -78,7 +80,7 @@ class ActiveQuerySpace extends ActiveQuery
 
         foreach (array_slice($keywords, 0, static::MAX_SEARCH_NEEDLES) as $keyword) {
             $conditions = [];
-            foreach (['space.name', 'space.description', 'space.tags'] as $field) {
+            foreach ($columns as $field) {
                 $conditions[] = ['LIKE', $field, $keyword];
             }
             $this->andWhere(array_merge(['OR'], $conditions));
