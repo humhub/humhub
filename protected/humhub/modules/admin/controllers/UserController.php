@@ -126,6 +126,11 @@ class UserController extends Controller
             'type' => 'form',
             'title' => Yii::t('AdminModule.user', 'Account'),
             'elements' => [
+                'id' => [
+                    'type' => 'text',
+                    'class' => 'form-control',
+                    'readonly' => true,
+                ],
                 'username' => [
                     'type' => 'text',
                     'class' => 'form-control',
