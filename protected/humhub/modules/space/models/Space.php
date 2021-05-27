@@ -359,7 +359,6 @@ class Space extends ContentContainerActiveRecord implements Searchable
             return false;
         }
 
-        // No one can join
         if ($this->join_policy == self::JOIN_POLICY_NONE) {
             return false;
         }
@@ -385,7 +384,6 @@ class Space extends ContentContainerActiveRecord implements Searchable
             return false;
         }
 
-        // No one can join
         if ($this->join_policy == self::JOIN_POLICY_FREE) {
             return true;
         }
