@@ -2,18 +2,22 @@
 
 use humhub\modules\friendship\widgets\FriendsPanel;
 use humhub\modules\post\widgets\Form;
+use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\ProfileSidebar;
 use humhub\modules\user\widgets\StreamViewer;
 use humhub\modules\user\widgets\UserFollower;
 use humhub\modules\user\widgets\UserSpaces;
 use humhub\modules\user\widgets\UserTags;
 
+/* @var $user User */
+/* @var $isSingleContentRequest bool */
 ?>
 
+<div data-stream-create-content="stream.wall.WallStream"<?php if ($isSingleContentRequest) : ?> style="display:none"<?php endif; ?>>
+    <?= Form::widget(['contentContainer' => $user]); ?>
+</div>
 
-<?= Form::widget(['contentContainer' => $user]); ?>
 <?= StreamViewer::widget(['contentContainer' => $user]); ?>
-
 
 <?php $this->beginBlock('sidebar'); ?>
 <?=

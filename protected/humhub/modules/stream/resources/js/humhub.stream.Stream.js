@@ -566,6 +566,7 @@ humhub.module('stream.Stream', function (module, require, $) {
             this.onSingleEntryStream();
         } else {
             this.filter.show();
+            $('[data-stream-create-content="' + this.options.uiWidget + '"]').show();
         }
     };
 

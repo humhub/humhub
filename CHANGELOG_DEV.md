@@ -29,3 +29,4 @@
 - Enh #4757: Updated to PHPUnit 8.5
 - Enh #4790: Added more logging on authentication errors
 - Fix #5054: Force InnoDB Table Engine on migration and configuration option
+- Enh #4927: Hide post input field on single entry stream
