@@ -65,7 +65,6 @@ class ContentContainerTagTest extends HumHubDbTestCase
         $user = User::findOne(1);
         ContentContainerTagRelation::updateByContainer($user, ['User Tag 1', 'Tag 2']);
 
-        $this->assertEquals($user->tags, 'User Tag 1, Tag 2');
         $this->assertEquals($user->getTags(), ['User Tag 1', 'Tag 2']);
 
         $this->assertEquals(5, ContentContainerTag::find()->count());
