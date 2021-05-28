@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\modules\space\widgets\SpacesFilters;
+use humhub\widgets\DirectoryFilters;
 
 /* @var $filter string */
 /* @var $data array */
@@ -13,5 +13,5 @@ use humhub\modules\space\widgets\SpacesFilters;
 
 <div class="<?= $data['wrapperClass'] ?>">
     <div class="<?= $data['titleClass'] ?>"><?= $data['title'] ?></div>
-    <?= SpacesFilters::renderFilterInput($filter, $data) ?>
+    <?= DirectoryFilters::renderFilterInput($filter, $data) ?>
 </div>

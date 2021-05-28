@@ -52,6 +52,7 @@ humhub.module('directory', function(module, require, $) {
 
     const init = function() {
         hideLastNotCompletedRow();
+        $('input.form-search-filter[name=keyword]').focus();
     }
 
     module.export({

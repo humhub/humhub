@@ -7,10 +7,9 @@
 
 namespace humhub\modules\space\widgets;
 
-use humhub\components\Widget;
 use humhub\libs\Html;
+use humhub\widgets\DirectoryFilters;
 use Yii;
-use yii\helpers\ArrayHelper;
 
 /**
  * SpacesFilters displays the filters on the directory spaces page
@@ -18,23 +17,14 @@ use yii\helpers\ArrayHelper;
  * @since 1.9
  * @author Luke
  */
-class SpacesFilters extends Widget
+class SpacesFilters extends DirectoryFilters
 {
     /**
-     * @var array Filters
+     * @inheritdoc
      */
-    private $filters = [];
+    public $pageUrl = '/space/spaces';
 
-    public function init()
-    {
-        $this->initDefaultFilters();
-
-        parent::init();
-
-        ArrayHelper::multisort($this->filters, 'sortOrder');
-    }
-
-    private function initDefaultFilters()
+    protected function initDefaultFilters()
     {
         $this->addFilter('keyword', [
                 'title' => Yii::t('SpaceModule.base', 'Free text search in the directory (name, description, tags, etc.)'),
@@ -68,67 +58,6 @@ class SpacesFilters extends Widget
             ]);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function run()
-    {
-        return $this->render('spacesFilters', ['spacesFilters' => $this]);
-    }
-
-    public function renderFilters(): string
-    {
-        $filtersHtml = '';
-        foreach ($this->filters as $filter => $data) {
-            $filtersHtml .= $this->render('spacesFilter', [
-                'filter' => $filter,
-                'data' => array_merge(self::getDefaultFilterData(), $data),
-            ]);
-        }
-        return $filtersHtml;
-    }
-
-    public static function getDefaultFilterData(): array
-    {
-        return [
-            'wrapperClass' => 'col-md-2',
-            'titleClass' => 'form-search-field-info',
-            'inputClass' => 'form-control form-search-filter',
-            'beforeInput' => '',
-            'afterInput' => '',
-        ];
-    }
-
-    public static function renderFilterInput(string $filter, array $data): string
-    {
-        $inputOptions = ['class' => $data['inputClass']];
-
-        if (isset($data['inputOptions'])) {
-            $inputOptions = array_merge($inputOptions, $data['inputOptions']);
-        }
-
-        switch ($data['type']) {
-            case 'dropdown':
-                $inputOptions['data-action-change'] = 'directory.applyFilters';
-                $inputHtml = Html::dropDownList($filter, self::getValue($filter), $data['options'], $inputOptions);
-                break;
-
-            case 'input':
-            default:
-                if (isset($data['placeholder'])) {
-                    $inputOptions['placeholder'] = $data['placeholder'];
-                }
-                $inputHtml = Html::textInput($filter, self::getValue($filter), $inputOptions);
-        }
-
-        return $data['beforeInput'].$inputHtml.$data['afterInput'];
-    }
-
-    public function addFilter(string $filterKey, array $filterData)
-    {
-        $this->filters[$filterKey] = $filterData;
-    }
-
     public static function getDefaultValue(string $filter): string
     {
         switch ($filter) {
@@ -136,14 +65,6 @@ class SpacesFilters extends Widget
                 return 'name';
         }
 
-        return '';
+        return parent::getDefaultValue($filter);
     }
-
-    public static function getValue(string $filter)
-    {
-        $defaultValue = self::getDefaultValue($filter);
-
-        return Yii::$app->request->get($filter, $defaultValue);
-    }
-
 }
