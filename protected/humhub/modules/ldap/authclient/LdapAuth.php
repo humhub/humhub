@@ -157,6 +157,13 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     public $networkTimeout = 30;
 
     /**
+     * @var string[] a list of ignored DNs (lowercase)
+     * @since 1.9
+     */
+    public $ignoredDNs = [];
+
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -276,7 +283,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         if ($node !== null) {
             $this->setUserAttributes(array_merge(['dn' => $node], $node->getAttributes()));
             return true;
-        } else if($this->login instanceof Login) {
+        } else if ($this->login instanceof Login) {
             $this->countFailedLoginAttempts();
         }
 
@@ -476,10 +483,12 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         }
 
         try {
-
             $authClient = null;
             $ids = [];
             foreach ($this->getUserCollection() as $ldapEntry) {
+                if (in_array(strtolower($ldapEntry['dn']), $this->ignoredDNs)) {
+                    continue;
+                }
 
                 $authClient = $this->getAuthClientInstance($ldapEntry);
                 $user = AuthClientHelpers::getUserByAuthClient($authClient);
