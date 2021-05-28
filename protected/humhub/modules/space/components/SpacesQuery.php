@@ -92,15 +92,15 @@ class SpacesQuery extends ActiveQuerySpace
     {
         switch (SpacesFilters::getValue('sort')) {
             case 'name':
-                $this->addOrderBy('name');
+                $this->addOrderBy('space.name');
                 break;
 
             case 'newer':
-                $this->addOrderBy('created_at DESC');
+                $this->addOrderBy('space.created_at DESC');
                 break;
 
             case 'older':
-                $this->addOrderBy('created_at');
+                $this->addOrderBy('space.created_at');
                 break;
         }
 
