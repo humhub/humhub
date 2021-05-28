@@ -34,6 +34,10 @@ class PanelMenu extends Widget
      */
     public $extraMenus = '';
 
+
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         return parent::init();
@@ -45,8 +49,8 @@ class PanelMenu extends Widget
     public function run()
     {
         return $this->render('panelMenu', [
-                    'id' => $this->id,
-                    'extraMenus' => $this->extraMenus,
+            'id' => $this->id,
+            'extraMenus' => $this->extraMenus,
         ]);
     }
 

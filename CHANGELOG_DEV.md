@@ -32,3 +32,6 @@
 - Enh #4862: Tag picker for Space and User containers
 - Enh #4927: Hide post input field on single entry stream
 - Enh #5062: Show user ID on admin user edit page
+- Enh #4848: Include space tags in the space’s “About” page 
+
+  
