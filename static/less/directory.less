@@ -77,6 +77,7 @@
         flex-direction: row;
 
         .card-panel {
+            position: relative;
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -88,7 +89,7 @@
 
         .card-icons .fa {
             color: #21a1b3;
-            margin-right: 5px;
+            margin-left: 5px;
             &.fa-mobile-phone {
                 font-size: 22px;
                 line-height: 15px;
@@ -96,10 +97,50 @@
                 top: 2px;
             }
         }
+
+        .card-bg-image {
+            width: 100%;
+            height: 86px;
+            background-color: #cfcfcf;
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px 4px 0 0;
+        }
+        .card-header {
+            position: absolute;
+            padding: 16px;
+            display: table;
+            width: 100%;
+            .card-image-wrapper {
+                display: table-cell;
+                width: 98px;
+            }
+            .card-image-link {
+                display: inline-block;
+                border: 2px solid #fff;
+                border-radius: 6px;
+            }
+            .card-icons {
+                display: table-cell;
+                padding: 0 0 2px 5px;
+                text-align: right;
+                vertical-align: bottom;
+                font-size: 16px;
+            }
+        }
         .card-body {
             flex-grow: 1;
-            padding: 0 16px;
+            padding: 50px 16px 0 16px;
             overflow: auto;
+            h4 {
+                font-size: 16px;
+                font-weight: bold;
+                line-height: 1.5;
+                margin: 0;
+            }
+            h5 {
+                margin: 0 0 10px;
+            }
             .card-details {
                 color: #57646c;
                 a {
@@ -116,7 +157,7 @@
         }
         .card-footer {
             margin: 0 16px;
-            padding: 16px 0;
+            padding: 24px 0 20px;
             border-top: 1px solid #ddd;
             background: #fff;
             &.card-icons .fa {
@@ -125,45 +166,13 @@
             }
             &.card-buttons {
                 border: none;
-            }
-        }
-        h4 {
-            font-size: 16px;
-            font-weight: bold;
-            line-height: 1.5;
-            margin: 12px 0 0 0;
-        }
-        h5 {
-            margin: 0 0 10px;
-        }
-
-        .card-bg-image {
-            width: 100%;
-            height: 99px;
-            background-color: #cfcfcf;
-            background-size: cover;
-            background-position: center;
-            border-radius: 4px 4px 0 0;
-        }
-        .card-header {
-            padding: 0 16px;
-            margin-top: -58px;
-            display: table;
-            width: 100%;
-            .card-image-wrapper {
-                display: table-cell;
-            }
-            .card-image-link {
-                display: inline-block;
-                border: 2px solid #fff;
-                border-radius: 6px;
-            }
-            .card-icons {
-                display: table-cell;
-                padding-left: 8px;
-                text-align: right;
-                vertical-align: bottom;
-                font-size: 16px;
+                a.btn {
+                    float: left;
+                    margin: 0 8px 4px 0;
+                    &:last-child {
+                        margin-right: 0;
+                    }
+                }
             }
         }
     }
