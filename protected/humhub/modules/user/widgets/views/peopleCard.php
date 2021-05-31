@@ -32,9 +32,9 @@ use yii\web\View;
         </div> */ ?>
     </div>
     <div class="card-body">
-        <h4><?= Html::containerLink($user); ?></h4>
+        <strong class="card-title"><?= Html::containerLink($user); ?></strong>
         <?php if (trim($user->profile->title) !== '') : ?>
-            <h5><?= Html::encode($user->profile->title); ?></h5>
+            <div><?= Html::encode($user->profile->title); ?></div>
         <?php endif; ?>
         <?= PeopleDetails::widget([
             'user' => $user,
@@ -46,7 +46,8 @@ use yii\web\View;
             'template' => '<div class="card-tags">{tags}</div>',
         ]); ?>
     </div>
-    <div class="card-footer card-buttons">
-        <?= PeopleActionButtons::widget(['user' => $user]); ?>
-    </div>
+    <?= PeopleActionButtons::widget([
+        'user' => $user,
+        'template' => '<div class="card-footer">{buttons}</div>',
+    ]); ?>
 </div>

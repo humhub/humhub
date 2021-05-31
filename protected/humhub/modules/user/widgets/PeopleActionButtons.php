@@ -8,6 +8,7 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\user\models\User;
 
 /**
  * PeopleActionsButton shows directory options (following or friendship) for listed users
@@ -19,18 +20,29 @@ class PeopleActionButtons extends Widget
 {
 
     /**
-     * @var \humhub\modules\user\models\User
+     * @var User
      */
     public $user;
+
+    /**
+     * @var string Template for buttons
+     */
+    public $template = '{buttons}';
 
     /**
      * @inheritdoc
      */
     public function run()
     {
-        return $this->render('peopleActionButtons', [
+        $html = $this->render('peopleActionButtons', [
             'user' => $this->user
         ]);
+
+        if (trim($html) === '') {
+            return '';
+        }
+
+        return str_replace('{buttons}', $html, $this->template);
     }
 
 }

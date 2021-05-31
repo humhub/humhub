@@ -89,12 +89,9 @@
 
         .card-icons .fa {
             color: #21a1b3;
-            margin-left: 5px;
-            &.fa-mobile-phone {
-                font-size: 22px;
-                line-height: 15px;
-                position: relative;
-                top: 2px;
+            span {
+                font: 12px 'Open Sans', sans-serif;
+                font-weight: 600;
             }
         }
 
@@ -126,22 +123,28 @@
                 text-align: right;
                 vertical-align: bottom;
                 font-size: 16px;
+                .fa {
+                    color: #21a1b3;
+                    &.fa-mobile-phone {
+                        font-size: 22px;
+                        line-height: 15px;
+                        position: relative;
+                        top: 2px;
+                    }
+                }
             }
         }
         .card-body {
             flex-grow: 1;
-            padding: 44px 16px 0 16px;
+            padding: 44px 16px 24px 16px;
             overflow: auto;
-            h4 {
+            .card-title {
                 font-size: 16px;
                 font-weight: bold;
-                line-height: 1.5;
-                margin: 0;
-            }
-            h5 {
-                margin: 0 0 10px;
+                line-height: 24px;
             }
             .card-details {
+                margin-top: 8px;
                 color: #57646c;
                 a {
                     color: #21a1b3;
@@ -156,23 +159,18 @@
             }
         }
         .card-footer {
-            margin: 0 16px;
-            padding: 24px 0 20px;
-            border-top: 1px solid #ddd;
-            background: #fff;
-            &.card-icons .fa {
-                font-size: 20px;
-                margin-right: 24px;
-            }
-            &.card-buttons {
-                border: none;
-                a.btn {
-                    float: left;
-                    margin: 0 8px 4px 0;
-                    &:last-child {
-                        margin-right: 0;
-                    }
+            padding: 0 16px 20px;
+            a.btn {
+                float: left;
+                margin: 0 8px 4px 0;
+                white-space: normal;
+                hyphens: none;
+                &:last-child {
+                    margin-right: 0;
                 }
+            }
+            .btn-group a.btn {
+                margin-right: 0;
             }
         }
     }

@@ -8,6 +8,7 @@
 use humhub\libs\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
+use humhub\modules\space\widgets\SpacesActionButtons;
 use humhub\modules\space\widgets\SpacesIcons;
 use humhub\modules\space\widgets\SpacesTagList;
 use yii\web\View;
@@ -23,17 +24,24 @@ use yii\web\View;
             'space' => $space,
             'link' => true,
             'linkOptions' => ['data-contentcontainer-id' => $space->contentcontainer_id, 'class' => 'card-image-link'],
-            'width' => 100,
+            'width' => 94,
         ]); ?>
+        <div class="card-icons">
+            <?= SpacesIcons::widget(['space' => $space]); ?>
+        </div>
     </div>
     <div class="card-body">
-        <h4><?= Html::containerLink($space); ?></h4>
+        <strong class="card-title"><?= Html::containerLink($space); ?></strong>
         <?php if (trim($space->description) !== '') : ?>
-            <h5><?= Html::encode($space->description); ?></h5>
+            <div class="card-details"><?= Html::encode($space->description); ?></div>
         <?php endif; ?>
-        <?= SpacesTagList::widget(['space' => $space]); ?>
+        <?= SpacesTagList::widget([
+            'space' => $space,
+            'template' => '<div class="card-tags">{tags}</div>',
+        ]); ?>
     </div>
-    <div class="card-footer card-icons">
-        <?= SpacesIcons::widget(['space' => $space]); ?>
-    </div>
+    <?= SpacesActionButtons::widget([
+        'space' => $space,
+        'template' => '<div class="card-footer">{buttons}</div>',
+    ]); ?>
 </div>

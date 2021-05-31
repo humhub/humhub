@@ -31,6 +31,11 @@ class SpacesTagList extends Widget
     public $maxTags = 5;
 
     /**
+     * @var string Template for tags
+     */
+    public $template = '{tags}';
+
+    /**
      * @inheritdoc
      */
     public function run()
@@ -54,7 +59,11 @@ class SpacesTagList extends Widget
             }
         }
 
-        return $html;
+        if ($html === '') {
+            return $html;
+        }
+
+        return str_replace('{tags}', $html, $this->template);
     }
 
 }
