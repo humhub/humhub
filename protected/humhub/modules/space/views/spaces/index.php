@@ -48,7 +48,7 @@ DirectoryAsset::register($this);
 
 <?php if (!$spaces->isLastPage()) : ?>
 <div class="directory-load-more">
-    <?= Button::info(Yii::t('SpaceModule.base', 'Load more'))
+    <?= Button::primary(Yii::t('SpaceModule.base', 'Load more'))
         ->icon('fa-angle-down')
         ->sm()
         ->action('directory.loadMore')

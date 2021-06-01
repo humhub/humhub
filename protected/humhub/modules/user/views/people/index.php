@@ -52,7 +52,7 @@ DirectoryAsset::register($this);
 
 <?php if (!$people->isLastPage()) : ?>
 <div class="directory-load-more">
-    <?= Button::info(Yii::t('UserModule.base', 'Load more'))
+    <?= Button::primary(Yii::t('UserModule.base', 'Load more'))
         ->icon('fa-angle-down')
         ->sm()
         ->action('directory.loadMore')
