@@ -235,6 +235,7 @@ class Friendship extends \humhub\components\ActiveRecord
      *
      * @param User $user
      * @param User $friend
+     * @return bool
      */
     public static function add($user, $friend)
     {
