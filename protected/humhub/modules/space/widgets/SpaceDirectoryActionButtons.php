@@ -47,7 +47,7 @@ class SpaceDirectoryActionButtons extends Widget
             'options' => [
                 'requestMembership' => ['attrs' => ['class' => 'btn btn-info btn-sm']],
                 'becomeMember' => ['attrs' => ['class' => 'btn btn-info btn-sm']],
-                'acceptInvite' => ['attrs' => ['class' => 'btn btn-info btn-sm'], 'groupClass' => 'btn-group dropup', 'togglerClass' => 'btn btn-info btn-sm'],
+                'acceptInvite' => ['attrs' => ['class' => 'btn btn-info btn-sm'], 'togglerClass' => 'btn btn-info btn-sm'],
                 'cancelPendingMembership' => ['attrs' => ['class' => 'btn btn-danger btn-sm']],
             ],
         ]);
