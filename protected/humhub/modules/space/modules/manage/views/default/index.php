@@ -28,7 +28,7 @@ use humhub\widgets\Button;
         <?php $form = ActiveForm::begin(['options' => ['id' => 'spaceIndexForm'], 'enableClientValidation' => false, 'acknowledge' => true]); ?>
 
         <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model]) ?>
-        <?= $form->field($model, 'description')->textInput(); ?>
+        <?= $form->field($model, 'description')->textInput(['maxlength' => 100]); ?>
         <?= $form->field($model, 'about')->widget(RichTextField::class); ?>
         <?= $form->field($model, 'tagsField')->widget(ContainerTagPicker::class); ?>
 
