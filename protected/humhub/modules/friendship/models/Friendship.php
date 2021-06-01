@@ -241,7 +241,12 @@ class Friendship extends \humhub\components\ActiveRecord
         $friendship = new Friendship();
         $friendship->user_id = $user->id;
         $friendship->friend_user_id = $friend->id;
-        return $friendship->save();
+        if ($friendship->save()) {
+            $friend->follow($user, false);
+            return true;
+        }
+
+        return false;
     }
 
     /**
