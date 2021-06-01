@@ -35,5 +35,4 @@
 - Enh #4848: Include space tags in the space’s “About” page 
 - Enh #5061: Preserve linebreaks and added "ReadMore" option in Logging
 - Enh #4982: Skip DN List to avoid logged ldap errors 
-
-
+- Fix #5088: Set max length for space description input
