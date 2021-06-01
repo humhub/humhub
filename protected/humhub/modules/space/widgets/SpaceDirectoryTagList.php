@@ -12,12 +12,12 @@ use yii\helpers\Url;
 use humhub\components\Widget;
 
 /**
- * SpacesTagList displays the space tags on the directory spaces page
+ * SpaceDirectoryTagList displays the space tags on the directory spaces page
  *
  * @since 1.9
  * @author Luke
  */
-class SpacesTagList extends Widget
+class SpaceDirectoryTagList extends Widget
 {
 
     /**

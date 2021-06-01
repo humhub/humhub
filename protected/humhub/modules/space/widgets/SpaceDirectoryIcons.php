@@ -11,12 +11,12 @@ use humhub\components\Widget;
 use humhub\modules\space\models\Space;
 
 /**
- * SpacesIcons shows footer icons for spaces cards
+ * SpaceDirectoryIcons shows footer icons for spaces cards
  * 
  * @since 1.9
  * @author Luke
  */
-class SpacesIcons extends Widget
+class SpaceDirectoryIcons extends Widget
 {
 
     /**
@@ -29,7 +29,7 @@ class SpacesIcons extends Widget
      */
     public function run()
     {
-        return $this->render('spacesIcons', [
+        return $this->render('spaceDirectoryIcons', [
             'space' => $this->space
         ]);
     }

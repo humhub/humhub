@@ -12,12 +12,12 @@ use humhub\widgets\DirectoryFilters;
 use Yii;
 
 /**
- * SpacesFilters displays the filters on the directory spaces page
+ * SpaceDirectoryFilters displays the filters on the directory spaces page
  *
  * @since 1.9
  * @author Luke
  */
-class SpacesFilters extends DirectoryFilters
+class SpaceDirectoryFilters extends DirectoryFilters
 {
     /**
      * @inheritdoc

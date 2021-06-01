@@ -11,12 +11,12 @@ use humhub\components\Widget;
 use humhub\modules\space\models\Space;
 
 /**
- * SpacesCard shows a space on spaces directory
+ * SpaceDirectoryCard shows a space on spaces directory
  * 
  * @since 1.9
  * @author Luke
  */
-class SpacesCard extends Widget
+class SpaceDirectoryCard extends Widget
 {
 
     /**
@@ -34,7 +34,7 @@ class SpacesCard extends Widget
      */
     public function run()
     {
-        $card = $this->render('spacesCard', [
+        $card = $this->render('spaceDirectoryCard', [
             'space' => $this->space
         ]);
 

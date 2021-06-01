@@ -6,15 +6,15 @@
  */
 
 use humhub\assets\DirectoryAsset;
-use humhub\modules\space\components\SpacesQuery;
-use humhub\modules\space\widgets\SpacesCard;
-use humhub\modules\space\widgets\SpacesFilters;
+use humhub\modules\space\components\SpaceDirectoryQuery;
+use humhub\modules\space\widgets\SpaceDirectoryCard;
+use humhub\modules\space\widgets\SpaceDirectoryFilters;
 use humhub\widgets\Button;
 use humhub\widgets\LinkPager;
 use yii\web\View;
 
 /* @var $this View */
-/* @var $spaces SpacesQuery */
+/* @var $spaces SpaceDirectoryQuery */
 
 DirectoryAsset::register($this);
 ?>
@@ -25,7 +25,7 @@ DirectoryAsset::register($this);
     </div>
 
     <div class="panel-body">
-        <?= SpacesFilters::widget(); ?>
+        <?= SpaceDirectoryFilters::widget(); ?>
     </div>
 
 </div>
@@ -42,7 +42,7 @@ DirectoryAsset::register($this);
     <?php endif; ?>
 
     <?php foreach ($spaces->all() as $space) : ?>
-        <?= SpacesCard::widget(['space' => $space]); ?>
+        <?= SpaceDirectoryCard::widget(['space' => $space]); ?>
     <?php endforeach; ?>
 </div>
 

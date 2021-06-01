@@ -8,9 +8,9 @@
 use humhub\libs\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
-use humhub\modules\space\widgets\SpacesActionButtons;
-use humhub\modules\space\widgets\SpacesIcons;
-use humhub\modules\space\widgets\SpacesTagList;
+use humhub\modules\space\widgets\SpaceDirectoryActionButtons;
+use humhub\modules\space\widgets\SpaceDirectoryIcons;
+use humhub\modules\space\widgets\SpaceDirectoryTagList;
 use yii\web\View;
 
 /* @var $this View */
@@ -27,7 +27,7 @@ use yii\web\View;
             'width' => 94,
         ]); ?>
         <div class="card-icons">
-            <?= SpacesIcons::widget(['space' => $space]); ?>
+            <?= SpaceDirectoryIcons::widget(['space' => $space]); ?>
         </div>
     </div>
     <div class="card-body">
@@ -35,12 +35,12 @@ use yii\web\View;
         <?php if (trim($space->description) !== '') : ?>
             <div class="card-details"><?= Html::encode($space->description); ?></div>
         <?php endif; ?>
-        <?= SpacesTagList::widget([
+        <?= SpaceDirectoryTagList::widget([
             'space' => $space,
             'template' => '<div class="card-tags">{tags}</div>',
         ]); ?>
     </div>
-    <?= SpacesActionButtons::widget([
+    <?= SpaceDirectoryActionButtons::widget([
         'space' => $space,
         'template' => '<div class="card-footer">{buttons}</div>',
     ]); ?>

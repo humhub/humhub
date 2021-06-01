@@ -12,12 +12,12 @@ use humhub\modules\space\models\Space;
 use Yii;
 
 /**
- * SpacesActionButtons shows space directory buttons (following and membership)
+ * SpaceDirectoryActionButtons shows space directory buttons (following and membership)
  * 
  * @since 1.9
  * @author Luke
  */
-class SpacesActionButtons extends Widget
+class SpaceDirectoryActionButtons extends Widget
 {
 
     /**
