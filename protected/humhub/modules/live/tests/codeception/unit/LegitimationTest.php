@@ -65,7 +65,7 @@ class LegitimationTest extends HumHubDbTestCase
         $legitimations = $module->getLegitimateContentContainerIds($user1, false);
 
         static::assertCount(1, $legitimations[Content::VISIBILITY_OWNER]);
-        static::assertCount(0, $legitimations[Content::VISIBILITY_PUBLIC]);
+        static::assertCount(1, $legitimations[Content::VISIBILITY_PUBLIC]);
         static::assertCount(1, $legitimations[Content::VISIBILITY_PRIVATE]);
         static::assertEquals($user2->contentcontainer_id, $legitimations[Content::VISIBILITY_PRIVATE][0]);
         static::assertEquals($user1->contentcontainer_id, $legitimations[Content::VISIBILITY_OWNER][0]);
