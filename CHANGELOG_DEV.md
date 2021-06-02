@@ -36,4 +36,4 @@
 - Enh #5061: Preserve linebreaks and added "ReadMore" option in Logging
 - Enh #4982: Skip DN List to avoid logged ldap errors 
 - Fix #5088: Set max length for space description input
-- Enh #5089: Allow to Follow users independent of Friendship
+- Enh #5089: Allow to Follow users independent of Friendship state
