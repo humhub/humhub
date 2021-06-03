@@ -160,7 +160,7 @@ class MembershipController extends ContentContainerController
 
         $space->removeMember();
 
-        return $this->goHome();
+        return $this->redirect($this->request->getReferrer());
     }
 
     /**
@@ -225,7 +225,7 @@ class MembershipController extends ContentContainerController
             $space->addMember(Yii::$app->user->id);
         }
 
-        return $this->redirect($space->getUrl());
+        return $this->redirect($this->request->getReferrer());
     }
 
     /**

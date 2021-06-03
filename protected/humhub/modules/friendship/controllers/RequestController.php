@@ -54,7 +54,7 @@ class RequestController extends Controller
 
         Friendship::add(Yii::$app->user->getIdentity(), $friend);
 
-        return $this->redirect($friend->getUrl());
+        return $this->redirect($this->request->getReferrer());
     }
 
     /**
@@ -73,7 +73,7 @@ class RequestController extends Controller
 
         Friendship::cancel(Yii::$app->user->getIdentity(), $friend);
 
-        return $this->redirect($friend->getUrl());
+        return $this->redirect($this->request->getReferrer());
     }
 
 }

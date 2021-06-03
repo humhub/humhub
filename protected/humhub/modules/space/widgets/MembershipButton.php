@@ -37,11 +37,11 @@ class MembershipButton extends Widget
         return [
             'requestMembership' => [
                 'title' => Yii::t('SpaceModule.base', 'Join'),
-                'attrs' => ['id' => 'requestMembershipButton', 'class' => 'btn btn-info', 'data-target' => '#globalModal'],
+                'attrs' => ['class' => 'btn btn-info', 'data-space-request-membership' => $this->space->id, 'data-target' => '#globalModal'],
             ],
             'becomeMember' => [
                 'title' => Yii::t('SpaceModule.base', 'Join'),
-                'attrs' => ['id' => 'requestMembershipButton', 'class' => 'btn btn-info', 'data-method' => 'POST'],
+                'attrs' => ['class' => 'btn btn-info', 'data-space-request-membership' => $this->space->id, 'data-method' => 'POST'],
             ],
             'acceptInvite' => [
                 'title' => Yii::t('SpaceModule.base', 'Accept Invite'),
@@ -62,7 +62,9 @@ class MembershipButton extends Widget
                 ],
             ],
             'member' => [
+                'visible' => false,
                 'title' => '<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('SpaceModule.base', 'Member'),
+                'ownerTitle' => '<span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;' . Yii::t('SpaceModule.base', 'Owner'),
                 'attrs' => [
                     'data-method' => 'POST',
                     'data-confirm' => Yii::t('SpaceModule.base', 'Would you like to end your membership in Space {spaceName}?', ['{spaceName}' => '"' . $this->space->getDisplayName() . '"']),
