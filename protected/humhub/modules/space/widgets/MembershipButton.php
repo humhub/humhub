@@ -72,6 +72,20 @@ class MembershipButton extends Widget
         ];
     }
 
+    public function setDefaultOptions(array $defaultOptions)
+    {
+        $this->options = $this->getOptions($defaultOptions);
+    }
+
+    public function getOptions(array $defaultOptions = null): array
+    {
+        if ($defaultOptions === null) {
+            $defaultOptions = $this->getDefaultOptions();
+        }
+
+        return ArrayHelper::merge($defaultOptions, $this->options);
+    }
+
     /**
      * @inheritdoc
      */
@@ -80,7 +94,7 @@ class MembershipButton extends Widget
         return $this->render('membershipButton', [
             'space' => $this->space,
             'membership' => $this->space->getMembership(),
-            'options' => ArrayHelper::merge($this->getDefaultOptions(), $this->options),
+            'options' => $this->getOptions(),
         ]);
     }
 

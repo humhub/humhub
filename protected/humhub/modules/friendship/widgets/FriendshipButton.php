@@ -78,6 +78,20 @@ class FriendshipButton extends \yii\base\Widget
         ];
     }
 
+    public function setDefaultOptions(array $defaultOptions)
+    {
+        $this->options = $this->getOptions($defaultOptions);
+    }
+
+    public function getOptions(array $defaultOptions = null): array
+    {
+        if ($defaultOptions === null) {
+            $defaultOptions = $this->getDefaultOptions();
+        }
+
+        return ArrayHelper::merge($defaultOptions, $this->options);
+    }
+
     /**
      * @inheritdoc
      */
@@ -95,7 +109,7 @@ class FriendshipButton extends \yii\base\Widget
         return $this->render('friendshipButton', [
             'user' => $this->user,
             'friendshipState' => Friendship::getStateForUser(Yii::$app->user->getIdentity(), $this->user),
-            'options' => ArrayHelper::merge($this->getDefaultOptions(), $this->options),
+            'options' => $this->getOptions(),
         ]);
     }
 
