@@ -81,8 +81,6 @@ class PeopleSettingsForm extends Model
         Yii::$app->settings->set('people.detail3', $this->detail3);
         Yii::$app->settings->set('people.defaultSorting', $this->defaultSorting);
 
-        DynamicConfig::rewrite();
-
         return true;
     }
 
