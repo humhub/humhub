@@ -37,9 +37,6 @@ class SpaceDirectoryActionButtons extends Widget
     {
         $html = FollowButton::widget([
             'space' => $this->space,
-            'followOptions' => ['class' => 'btn btn-primary btn-sm'],
-            'unfollowOptions' => ['class' => 'btn btn-primary btn-sm active'],
-            'unfollowLabel' => '<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('FriendshipModule.base', 'Following'),
         ]);
 
         $html .= MembershipButton::widget([
@@ -48,7 +45,8 @@ class SpaceDirectoryActionButtons extends Widget
                 'requestMembership' => ['attrs' => ['class' => 'btn btn-info btn-sm']],
                 'becomeMember' => ['attrs' => ['class' => 'btn btn-info btn-sm']],
                 'acceptInvite' => ['attrs' => ['class' => 'btn btn-info btn-sm'], 'togglerClass' => 'btn btn-info btn-sm'],
-                'cancelPendingMembership' => ['attrs' => ['class' => 'btn btn-danger btn-sm']],
+                'cancelPendingMembership' => ['attrs' => ['class' => 'btn btn-info btn-sm active']],
+                'member' => ['attrs' => ['class' => 'btn btn-info btn-sm active']],
             ],
         ]);
 

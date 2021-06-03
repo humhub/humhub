@@ -8,6 +8,7 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\friendship\widgets\FriendshipButton;
 use humhub\modules\user\models\User;
 
 /**
@@ -34,8 +35,20 @@ class PeopleActionButtons extends Widget
      */
     public function run()
     {
-        $html = $this->render('peopleActionButtons', [
-            'user' => $this->user
+        $html = UserFollowButton::widget([
+            'user' => $this->user,
+            'followOptions' => ['class' => 'btn btn-primary btn-sm'],
+            'unfollowOptions' => ['class' => 'btn btn-primary btn-sm active'],
+        ]);
+
+        $html .= FriendshipButton::widget([
+            'user' => $this->user,
+            'options' => [
+                'friends' => ['attrs' => ['class' => 'btn btn-info btn-sm active']],
+                'addFriend' => ['attrs' => ['class' => 'btn btn-info btn-sm']],
+                'acceptFriendRequest' => ['attrs' => ['class' => 'btn btn-info btn-sm active'], 'togglerClass' => 'btn btn-info btn-sm active'],
+                'cancelFriendRequest' => ['attrs' => ['class' => 'btn btn-info btn-sm active']],
+            ],
         ]);
 
         if (trim($html) === '') {

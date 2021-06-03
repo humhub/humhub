@@ -36,12 +36,12 @@ class MembershipButton extends Widget
     {
         return [
             'requestMembership' => [
-                'title' => Yii::t('SpaceModule.base', 'Request membership'),
-                'attrs' => ['id' => 'requestMembershipButton', 'class' => 'btn btn-primary', 'data-target' => '#globalModal'],
+                'title' => Yii::t('SpaceModule.base', 'Join'),
+                'attrs' => ['id' => 'requestMembershipButton', 'class' => 'btn btn-info', 'data-target' => '#globalModal'],
             ],
             'becomeMember' => [
-                'title' => Yii::t('SpaceModule.base', 'Become member'),
-                'attrs' => ['id' => 'requestMembershipButton', 'class' => 'btn btn-primary', 'data-method' => 'POST'],
+                'title' => Yii::t('SpaceModule.base', 'Join'),
+                'attrs' => ['id' => 'requestMembershipButton', 'class' => 'btn btn-info', 'data-method' => 'POST'],
             ],
             'acceptInvite' => [
                 'title' => Yii::t('SpaceModule.base', 'Accept Invite'),
@@ -54,8 +54,20 @@ class MembershipButton extends Widget
                 'attrs' => ['data-method' => 'POST'],
             ],
             'cancelPendingMembership' => [
-                'title' => Yii::t('SpaceModule.base', 'Cancel pending membership application'),
-                'attrs' => ['data-method' => 'POST', 'class' => 'btn btn-primary'],
+                'title' => '<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;' . Yii::t('SpaceModule.base', 'Pending'),
+                'attrs' => [
+                    'data-method' => 'POST',
+                    'data-confirm' => Yii::t('SpaceModule.base', 'Would you like to withdraw your request to join Space {spaceName}?', ['{spaceName}' => '"' . $this->space->getDisplayName() . '"']),
+                    'class' => 'btn btn-info active',
+                ],
+            ],
+            'member' => [
+                'title' => '<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('SpaceModule.base', 'Member'),
+                'attrs' => [
+                    'data-method' => 'POST',
+                    'data-confirm' => Yii::t('SpaceModule.base', 'Would you like to end your membership in Space {spaceName}?', ['{spaceName}' => '"' . $this->space->getDisplayName() . '"']),
+                    'class' => 'btn btn-info active',
+                ],
             ],
         ];
     }

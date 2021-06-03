@@ -31,4 +31,6 @@ if ($membership === null) {
     <?php
 } elseif ($membership->status == Membership::STATUS_APPLICANT) {
     echo Html::a($options['cancelPendingMembership']['title'], $space->createUrl('/space/membership/revoke-membership'), $options['cancelPendingMembership']['attrs']);
+} elseif ($membership->status == Membership::STATUS_MEMBER) {
+    echo Html::a($options['member']['title'], $space->createUrl('/space/membership/revoke-membership'), $options['member']['attrs']);
 }
