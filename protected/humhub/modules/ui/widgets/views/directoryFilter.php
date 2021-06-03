@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\widgets\DirectoryFilters;
+use humhub\modules\ui\widgets\DirectoryFilters;
 
 /* @var $filter string */
 /* @var $data array */

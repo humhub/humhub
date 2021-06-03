@@ -9,9 +9,9 @@ namespace humhub\modules\user\widgets;
 
 use humhub\libs\Html;
 use humhub\modules\admin\models\forms\PeopleSettingsForm;
+use humhub\modules\ui\widgets\DirectoryFilters;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\ProfileField;
-use humhub\widgets\DirectoryFilters;
 use Yii;
 
 /**

@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\widgets;
+namespace humhub\modules\ui\widgets;
 
 use humhub\components\Widget;
 use humhub\libs\Html;
@@ -46,14 +46,14 @@ abstract class DirectoryFilters extends Widget
      */
     public function run()
     {
-        return $this->render('@humhub/widgets/views/directoryFilters', ['directoryFilters' => $this]);
+        return $this->render('@humhub/modules/ui/widgets/views/directoryFilters', ['directoryFilters' => $this]);
     }
 
     public function renderFilters(): string
     {
         $filtersHtml = '';
         foreach ($this->filters as $filter => $data) {
-            $filtersHtml .= $this->render('@humhub/widgets/views/directoryFilter', [
+            $filtersHtml .= $this->render('@humhub/modules/ui/widgets/views/directoryFilter', [
                 'filter' => $filter,
                 'data' => array_merge(self::getDefaultFilterData(), $data),
             ]);

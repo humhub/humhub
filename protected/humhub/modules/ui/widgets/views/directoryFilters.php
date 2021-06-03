@@ -6,7 +6,7 @@
  */
 
 use humhub\libs\Html;
-use humhub\widgets\DirectoryFilters;
+use humhub\modules\ui\widgets\DirectoryFilters;
 use yii\helpers\Url;
 
 /* @var $directoryFilters DirectoryFilters */
