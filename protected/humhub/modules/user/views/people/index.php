@@ -54,7 +54,6 @@ DirectoryAsset::register($this);
 <div class="directory-load-more">
     <?= Button::primary(Yii::t('UserModule.base', 'Load more'))
         ->icon('fa-angle-down')
-        ->sm()
         ->action('directory.loadMore')
         ->options([
             'data-current-page' => $people->pagination->getPage() + 1,

@@ -50,7 +50,6 @@ DirectoryAsset::register($this);
 <div class="directory-load-more">
     <?= Button::primary(Yii::t('SpaceModule.base', 'Load more'))
         ->icon('fa-angle-down')
-        ->sm()
         ->action('directory.loadMore')
         ->options([
             'data-current-page' => $spaces->pagination->getPage() + 1,
