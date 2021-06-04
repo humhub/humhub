@@ -10,6 +10,7 @@ namespace humhub\modules\user\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\user\components\PeopleQuery;
+use humhub\modules\user\permissions\PeopleAccess;
 use humhub\modules\user\widgets\PeopleCard;use Yii;
 use yii\helpers\Url;
 
@@ -44,7 +45,8 @@ class PeopleController extends Controller
     public function getAccessRules()
     {
         return [
-            [ControllerAccess::RULE_LOGGED_IN_ONLY]
+            [ControllerAccess::RULE_LOGGED_IN_ONLY],
+            ['permissions' => [PeopleAccess::class]],
         ];
     }
 

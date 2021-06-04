@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user;
 
+use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Group;
 use Yii;
 
@@ -146,9 +147,13 @@ class Module extends \humhub\components\Module
             return [
                 new permissions\ViewAboutPage(),
             ];
+        } elseif ($contentContainer instanceof Space) {
+            return [];
         }
 
-        return [];
+        return [
+            new permissions\PeopleAccess(),
+        ];
     }
 
     /**

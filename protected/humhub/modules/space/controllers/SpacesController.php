@@ -10,6 +10,7 @@ namespace humhub\modules\space\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\space\components\SpaceDirectoryQuery;
+use humhub\modules\space\permissions\SpaceDirectoryAccess;
 use humhub\modules\space\widgets\SpaceDirectoryCard;
 use Yii;
 use yii\helpers\Url;
@@ -45,7 +46,8 @@ class SpacesController extends Controller
     public function getAccessRules()
     {
         return [
-            [ControllerAccess::RULE_LOGGED_IN_ONLY]
+            [ControllerAccess::RULE_LOGGED_IN_ONLY],
+            ['permissions' => [SpaceDirectoryAccess::class]],
         ];
     }
 

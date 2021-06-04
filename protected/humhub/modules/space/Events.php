@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space;
 
+use humhub\modules\space\permissions\SpaceDirectoryAccess;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\space\models\Space;
@@ -107,6 +108,10 @@ class Events extends BaseObject
     public static function onTopMenuInit($event)
     {
         if (Yii::$app->user->isGuest) {
+            return;
+        }
+
+        if (!Yii::$app->user->can(SpaceDirectoryAccess::class)) {
             return;
         }
 
