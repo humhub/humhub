@@ -19,9 +19,9 @@
 return [
     'Language' => 'ภาษา',
     'Welcome to %appName%' => 'ยินดีต้อนรับเข้าสู่ %appName%',
-    '<strong>Following</strong> user' => '',
+    '<strong>Following</strong>' => '',
     '<strong>Member</strong> in these spaces' => '',
-    '<strong>User</strong> followers' => '',
+    '<strong>Followers</strong>' => '',
     '<strong>User</strong> tags' => '',
     'Allows access to your about page with personal information' => '',
     'Auth Mode' => '',

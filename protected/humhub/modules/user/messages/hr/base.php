@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => '<strong>Prati</strong> korisnika',
+  '<strong>Following</strong>' => '<strong>Prati</strong> korisnika',
   '<strong>Member</strong> in these spaces' => '<strong>Član</strong> u ovim prostorima',
-  '<strong>User</strong> followers' => '<strong>Korisnikovi</strong> pratitelji',
+  '<strong>Followers</strong>' => '<strong>Korisnikovi</strong> pratitelji',
   '<strong>User</strong> tags' => '<strong>Korisnikovi</strong> tagovi',
   'Allows access to your about page with personal information' => 'Dopusti pristup stranici o sebi s osobnim informacijama',
   'Auth Mode' => 'Način potvrde',

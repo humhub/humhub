@@ -19,9 +19,9 @@
 return [
     'Language' => '언어',
     'Welcome to %appName%' => '%appName%에 오신 것을 환영합니다.',
-    '<strong>Following</strong> user' => '',
+    '<strong>Following</strong>' => '',
     '<strong>Member</strong> in these spaces' => '',
-    '<strong>User</strong> followers' => '',
+    '<strong>Followers</strong>' => '',
     '<strong>User</strong> tags' => '',
     'Allows access to your about page with personal information' => '',
     'Auth Mode' => '',

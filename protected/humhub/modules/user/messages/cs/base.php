@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => '<strong>Koho</strong> sleduji',
+  '<strong>Following</strong>' => '<strong>Koho</strong> sleduji',
   '<strong>Member</strong> in these spaces' => '<strong>Členem</strong> prostorů',
-  '<strong>User</strong> followers' => '<strong>Kdo</strong> mě sleduje',
+  '<strong>Followers</strong>' => '<strong>Kdo</strong> mě sleduje',
   '<strong>User</strong> tags' => '<strong>Štítky</strong> uživatele',
   'Allows access to your about page with personal information' => 'Umožňuje přístup stránce O vás k Vaším informacím.',
   'Auth Mode' => 'Autorizovaný režim',

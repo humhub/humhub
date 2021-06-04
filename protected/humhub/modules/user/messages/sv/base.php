@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => '<strong>Följer</strong> användare',
+  '<strong>Following</strong>' => '<strong>Följer</strong> användare',
   '<strong>Member</strong> in these spaces' => '<strong>Medlem</strong> i dessa nätverk',
-  '<strong>User</strong> followers' => '<strong>Användarens</strong> följare',
+  '<strong>Followers</strong>' => '<strong>Användarens</strong> följare',
   '<strong>User</strong> tags' => '<strong>Användar</strong> taggar',
   'Allows access to your about page with personal information' => 'Tillåter åtkomst till ”Min profil” med personlig information',
   'Auth Mode' => 'Auth läge',
