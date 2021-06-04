@@ -106,7 +106,7 @@ class ProfileField extends ActiveRecord
             'translation_category' => Yii::t('UserModule.profile', 'Translation Category ID'),
             'required' => Yii::t('UserModule.profile', 'Required'),
             'searchable' => Yii::t('UserModule.profile', 'Searchable'),
-            'directory_filter' => Yii::t('UserModule.profile', 'Directory Filter'),
+            'directory_filter' => Yii::t('UserModule.profile', 'Use as Directory filter'),
             'title' => Yii::t('UserModule.profile', 'Title'),
             'description' => Yii::t('UserModule.profile', 'Description'),
             'sort_order' => Yii::t('UserModule.profile', 'Sort order'),

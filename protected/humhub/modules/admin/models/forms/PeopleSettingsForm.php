@@ -63,9 +63,9 @@ class PeopleSettingsForm extends Model
     public function attributeLabels()
     {
         return [
-            'detail1' => Yii::t('AdminModule.user', 'Details Line 1'),
-            'detail2' => Yii::t('AdminModule.user', 'Details Line 2'),
-            'detail3' => Yii::t('AdminModule.user', 'Details Line 3'),
+            'detail1' => Yii::t('AdminModule.user', 'Information 1'),
+            'detail2' => Yii::t('AdminModule.user', 'Information 2'),
+            'detail3' => Yii::t('AdminModule.user', 'Information 3'),
             'defaultSorting' => Yii::t('AdminModule.user', 'Default Sorting'),
         ];
     }

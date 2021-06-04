@@ -31,8 +31,8 @@ class PeopleFilters extends DirectoryFilters
     {
         // Keyword
         $this->addFilter('keyword', [
-            'title' => Yii::t('UserModule.base', 'Free text search in the directory (name, first name, telephone number, etc.)'),
-            'placeholder' => Yii::t('UserModule.base', 'search for members'),
+            'title' => Yii::t('UserModule.base', 'Find people by their profile data or user tags'),
+            'placeholder' => Yii::t('UserModule.base', 'Search...'),
             'type' => 'input',
             'wrapperClass' => 'col-md-6 form-search-filter-keyword',
             'afterInput' => Html::submitButton('<span class="fa fa-search"></span>', ['class' => 'form-button-search']),
@@ -49,7 +49,7 @@ class PeopleFilters extends DirectoryFilters
             }
 
             $this->addFilter('groupId', [
-                'title' => Yii::t('UserModule.base', 'Group'),
+                'title' => Yii::t('UserModule.base', 'User Group'),
                 'type' => 'dropdown',
                 'options' => $groupOptions,
                 'sortOrder' => 200,
@@ -72,10 +72,10 @@ class PeopleFilters extends DirectoryFilters
         ];
         if (Yii::$app->getModule('friendship')->settings->get('enable')) {
             $connectionOptions['friends'] = Yii::t('UserModule.base', 'Friends');
-            $connectionOptions['pending_friends'] = Yii::t('UserModule.base', 'Pending Friends');
+            $connectionOptions['pending_friends'] = Yii::t('UserModule.base', 'Pending Requests');
         }
         $this->addFilter('connection', [
-            'title' => Yii::t('SpaceModule.base', 'Connection'),
+            'title' => Yii::t('SpaceModule.base', 'Status'),
             'type' => 'dropdown',
             'options' => $connectionOptions,
             'sortOrder' => 400,

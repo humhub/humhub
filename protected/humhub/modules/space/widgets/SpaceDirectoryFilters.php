@@ -27,8 +27,8 @@ class SpaceDirectoryFilters extends DirectoryFilters
     protected function initDefaultFilters()
     {
         $this->addFilter('keyword', [
-                'title' => Yii::t('SpaceModule.base', 'Free text search in the directory (name, description, tags, etc.)'),
-                'placeholder' => Yii::t('SpaceModule.base', 'search for spaces'),
+                'title' => Yii::t('SpaceModule.base', 'Find Spaces by their description or by their Tags'),
+                'placeholder' => Yii::t('SpaceModule.base', 'Search...'),
                 'type' => 'input',
                 'wrapperClass' => 'col-md-6 form-search-filter-keyword',
                 'afterInput' => Html::submitButton('<span class="fa fa-search"></span>', ['class' => 'form-button-search']),
@@ -39,20 +39,20 @@ class SpaceDirectoryFilters extends DirectoryFilters
                 'title' => Yii::t('SpaceModule.base', 'Sorting'),
                 'type' => 'dropdown',
                 'options' => [
-                    'name' => Yii::t('SpaceModule.base', 'Name'),
-                    'newer' => Yii::t('SpaceModule.base', 'Newer spaces'),
-                    'older' => Yii::t('SpaceModule.base', 'Older spaces'),
+                    'name' => Yii::t('SpaceModule.base', 'By Name'),
+                    'newer' => Yii::t('SpaceModule.base', 'Newest first'),
+                    'older' => Yii::t('SpaceModule.base', 'Oldest first'),
                 ],
                 'sortOrder' => 200,
             ]);
 
         $this->addFilter('connection', [
-                'title' => Yii::t('SpaceModule.base', 'Connection'),
+                'title' => Yii::t('SpaceModule.base', 'Status'),
                 'type' => 'dropdown',
                 'options' => [
                     '' => Yii::t('SpaceModule.base', 'All'),
                     'member' => Yii::t('SpaceModule.base', 'Member'),
-                    'follow' => Yii::t('SpaceModule.base', 'Follow'),
+                    'follow' => Yii::t('SpaceModule.base', 'Following'),
                 ],
                 'sortOrder' => 300,
             ]);

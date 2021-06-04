@@ -15,9 +15,9 @@ use humhub\widgets\Button;
 
 <div class="panel-body">
 
-    <h4><?= Yii::t('AdminModule.user', 'People Configuration'); ?></h4>
+    <h4><?= Yii::t('AdminModule.user', 'People'); ?></h4>
     <div class="help-block">
-        <?= Yii::t('AdminModule.user', 'Here you can configurate the people page view.'); ?>
+        <?= Yii::t('AdminModule.user', 'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. '); ?>
     </div>
 
     <br />

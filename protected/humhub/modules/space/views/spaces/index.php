@@ -21,7 +21,7 @@ DirectoryAsset::register($this);
 <div class="panel panel-default">
 
     <div class="panel-heading">
-        <?= Yii::t('SpaceModule.base', '<strong>Space</strong> directory'); ?>
+        <?= Yii::t('SpaceModule.base', '<strong>Spaces</strong> directory'); ?>
     </div>
 
     <div class="panel-body">

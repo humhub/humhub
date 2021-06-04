@@ -19,7 +19,7 @@ DirectoryAsset::register($this);
         <?php if ($people->isFilteredByGroup()) : ?>
             <?= Yii::t('UserModule.base', '<strong>Group</strong> members - {group}', ['{group}' => Html::encode($people->filteredGroup->name)]); ?>
         <?php else: ?>
-            <?= Yii::t('UserModule.base', '<strong>Member</strong> directory'); ?>
+            <?= Yii::t('UserModule.base', '<strong>People</strong>'); ?>
         <?php endif; ?>
 
         <?php if ($showInviteButton): ?>
@@ -39,7 +39,7 @@ DirectoryAsset::register($this);
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                <?= Yii::t('UserModule.base', 'No people found!'); ?>
+                <?= Yii::t('UserModule.base', 'No results found! Try other keywords or remove filters.'); ?>
             </div>
         </div>
     </div>
