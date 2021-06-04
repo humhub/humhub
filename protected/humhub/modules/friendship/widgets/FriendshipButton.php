@@ -12,6 +12,8 @@ use humhub\modules\friendship\models\Friendship;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
+use yii\helpers\Url;
 
 /**
  * Displays a membership button between the current and given user.
@@ -37,24 +39,33 @@ class FriendshipButton extends \yii\base\Widget
             'friends' => [
                 'title' => '<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('FriendshipModule.base', 'Friends'),
                 'attrs' => [
-                    'data-method' => 'POST',
-                    'data-confirm' => Yii::t('FriendshipModule.base', 'Would you like to end your friendship with {userName}?', ['{userName}' => '"' . $this->user->getDisplayName() . '"']),
+                    'data-action-click' => 'content.container.relationship',
+                    'data-action-url' => Url::to(['/friendship/request/delete', 'userId' => $this->user->id]),
+                    'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to end your friendship with {userName}?', ['{userName}' => '<strong>' . $this->user->getDisplayName() . '</strong>']),
+                    'data-button-options' => Json::encode($this->options),
+                    'data-ui-loader' => '',
                     'class' => 'btn btn-info active',
                 ],
             ],
             'addFriend' => [
                 'title' => '<span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;' . Yii::t('FriendshipModule.base', 'Friends'),
                 'attrs' => [
-                    'data-method' => 'POST',
-                    'data-confirm' => Yii::t('FriendshipModule.base', 'Would you like to send a friendship request to {userName}?', ['{userName}' => '"' . $this->user->getDisplayName() . '"']),
+                    'data-action-click' => 'content.container.relationship',
+                    'data-action-url' => Url::to(['/friendship/request/add', 'userId' => $this->user->id]),
+                    'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to send a friendship request to {userName}?', ['{userName}' => '<strong>' . $this->user->getDisplayName() . '</strong>']),
+                    'data-button-options' => Json::encode($this->options),
+                    'data-ui-loader' => '',
                     'class' => 'btn btn-info',
                 ],
             ],
             'acceptFriendRequest' => [
                 'title' => '<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;' . Yii::t('FriendshipModule.base', 'Accept Friend Request'),
                 'attrs' => [
-                    'data-method' => 'POST',
-                    'data-confirm' => Yii::t('FriendshipModule.base', 'Would you like to accept the friendship request?'),
+                    'data-action-click' => 'content.container.relationship',
+                    'data-action-url' => Url::to(['/friendship/request/add', 'userId' => $this->user->id]),
+                    'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to accept the friendship request?'),
+                    'data-button-options' => Json::encode($this->options),
+                    'data-ui-loader' => '',
                     'class' => 'btn btn-info active',
                 ],
                 'groupClass' => 'btn-group',
@@ -63,15 +74,20 @@ class FriendshipButton extends \yii\base\Widget
             'denyFriendRequest' => [
                 'title' => '<span class="fa fa-times"></span>&nbsp;&nbsp;' . Yii::t('FriendshipModule.base', 'Deny friend request'),
                 'attrs' => [
-                    'data-method' => 'POST',
-                    'data-confirm' => Yii::t('FriendshipModule.base', 'Would you like to withdraw the friendship request?'),
+                    'data-action-click' => 'content.container.relationship',
+                    'data-action-url' => Url::to(['/friendship/request/delete', 'userId' => $this->user->id]),
+                    'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to withdraw the friendship request?'),
+                    'data-button-options' => Json::encode($this->options),
                 ],
             ],
             'cancelFriendRequest' => [
                 'title' => '<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;' . Yii::t('FriendshipModule.base', 'Pending'),
                 'attrs' => [
-                    'data-method' => 'POST',
-                    'data-confirm' => Yii::t('FriendshipModule.base', 'Would you like to withdraw your friendship request?'),
+                    'data-action-click' => 'content.container.relationship',
+                    'data-action-url' => Url::to(['/friendship/request/delete', 'userId' => $this->user->id]),
+                    'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to withdraw your friendship request?'),
+                    'data-button-options' => Json::encode($this->options),
+                    'data-ui-loader' => '',
                     'class' => 'btn btn-info active',
                 ],
             ],

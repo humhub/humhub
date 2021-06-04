@@ -9,7 +9,6 @@ namespace humhub\modules\space\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\space\models\Space;
-use Yii;
 
 /**
  * SpaceDirectoryActionButtons shows space directory buttons (following and membership)
@@ -46,7 +45,8 @@ class SpaceDirectoryActionButtons extends Widget
                 'becomeMember' => ['attrs' => ['class' => 'btn btn-info btn-sm']],
                 'acceptInvite' => ['attrs' => ['class' => 'btn btn-info btn-sm'], 'togglerClass' => 'btn btn-info btn-sm'],
                 'cancelPendingMembership' => ['attrs' => ['class' => 'btn btn-info btn-sm active']],
-                'member' => ['visible' => true, 'attrs' => ['class' => 'btn btn-info btn-sm active']],
+                'cancelMembership' => ['visible' => true, 'attrs' => ['class' => 'btn btn-info btn-sm active']],
+                'cannotCancelMembership' => ['visible' => true, 'attrs' => ['class' => 'btn btn-info btn-sm active']],
             ],
         ]);
 

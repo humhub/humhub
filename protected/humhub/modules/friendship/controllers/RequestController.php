@@ -11,6 +11,7 @@ namespace humhub\modules\friendship\controllers;
 use humhub\components\Controller;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\friendship\Module;
+use humhub\modules\friendship\widgets\FriendshipButton;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\web\HttpException;
@@ -44,17 +45,11 @@ class RequestController extends Controller
      */
     public function actionAdd()
     {
-        $this->forcePostRequest();
-
-        $friend = User::findOne(['id' => Yii::$app->request->get('userId')]);
-
-        if ($friend === null) {
-            throw new HttpException(404, 'User not found!');
-        }
+        $friend = $this->getFriendUser();
 
         Friendship::add(Yii::$app->user->getIdentity(), $friend);
 
-        return $this->redirect($this->request->getReferrer());
+        return $this->getActionResult($friend);
     }
 
     /**
@@ -62,6 +57,21 @@ class RequestController extends Controller
      * @throws HttpException
      */
     public function actionDelete()
+    {
+        $friend = $this->getFriendUser();
+
+        Friendship::cancel(Yii::$app->user->getIdentity(), $friend);
+
+        return $this->getActionResult($friend);
+    }
+
+    /**
+     * Get friend User from request
+     *
+     * @return User
+     * @throws HttpException
+     */
+    protected function getFriendUser(): User
     {
         $this->forcePostRequest();
 
@@ -71,7 +81,24 @@ class RequestController extends Controller
             throw new HttpException(404, 'User not found!');
         }
 
-        Friendship::cancel(Yii::$app->user->getIdentity(), $friend);
+        return $friend;
+    }
+
+    /**
+     * Get result for the friendship actions
+     *
+     * @param User $user
+     * @return string|\yii\console\Response|\yii\web\Response
+     * @throws \Exception
+     */
+    protected function getActionResult(User $user)
+    {
+        if ($this->request->isAjax) {
+            return FriendshipButton::widget([
+                'user' => $user,
+                'options' => $this->request->post('options', []),
+            ]);
+        }
 
         return $this->redirect($this->request->getReferrer());
     }

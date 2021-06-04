@@ -2,10 +2,16 @@
 
 use humhub\compat\CActiveForm;
 use humhub\libs\Html;
+use humhub\modules\space\models\forms\RequestMembershipForm;
+use humhub\modules\space\models\Space;
+
+/* @var $space Space */
+/* @var $model RequestMembershipForm */
 ?>
 <div class="modal-dialog animated fadeIn">
     <div class="modal-content">
         <?php $form = CActiveForm::begin(); ?>
+        <?= $form->hiddenField($model, 'options') ?>
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
