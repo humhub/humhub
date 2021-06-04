@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => '<strong>Følger</strong> denne brukeren',
+  '<strong>Following</strong>' => '<strong>Følger</strong> denne brukeren',
   '<strong>Member</strong> in these spaces' => '<strong>Medlem</strong> av disse gruppene',
-  '<strong>User</strong> followers' => '<strong>Bruker</strong> sine følgere',
+  '<strong>Followers</strong>' => '<strong>Bruker</strong> sine følgere',
   '<strong>User</strong> tags' => '<strong>Brukertags</strong>',
   'Allows access to your about page with personal information' => 'Gir tilgang til siden din med personlig informasjon.',
   'Auth Mode' => 'Autentisering',

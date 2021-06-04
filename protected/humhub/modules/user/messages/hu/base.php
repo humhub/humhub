@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => 'A felhasználó <strong>követi</strong>',
+  '<strong>Following</strong>' => 'A felhasználó <strong>követi</strong>',
   '<strong>Member</strong> in these spaces' => '<strong>Tag</strong> ezekben a közösségekben',
-  '<strong>User</strong> followers' => 'A felhasználót <strong>követi</strong>',
+  '<strong>Followers</strong>' => 'A felhasználót <strong>követi</strong>',
   '<strong>User</strong> tags' => '<strong>Felhasználó</strong> cimkék',
   'Allows access to your about page with personal information' => 'Hozzáférés biztosítása a személyes információkhoz a \'Rólam\' oldaladon',
   'Auth Mode' => 'Hitelesítés módja',

@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => 'کاربر <strong>دنبال شونده</strong>',
+  '<strong>Following</strong>' => 'کاربر <strong>دنبال شونده</strong>',
   '<strong>Member</strong> in these spaces' => '<strong>عضو</strong> در این انجمن',
-  '<strong>User</strong> followers' => 'دنبال‌کننده‌های <strong>کاربر</strong>',
+  '<strong>Followers</strong>' => 'دنبال‌کننده‌های <strong>کاربر</strong>',
   '<strong>User</strong> tags' => 'تگ‌های <strong>کاربر</strong>',
   'Allows access to your about page with personal information' => '',
   'Auth Mode' => '',

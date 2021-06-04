@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => 'Подписан(а) на:',
+  '<strong>Following</strong>' => 'Подписан(а) на:',
   '<strong>Member</strong> in these spaces' => '<strong>Участник</strong> этих сообществ',
-  '<strong>User</strong> followers' => 'Подписавшиеся:',
+  '<strong>Followers</strong>' => 'Подписавшиеся:',
   '<strong>User</strong> tags' => 'Теги пользователя',
   'Allows access to your about page with personal information' => 'Предоставляет доступ к Вашей странице с личной информацией',
   'Auth Mode' => 'Режим аутентификации',

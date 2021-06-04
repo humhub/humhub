@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => '<strong>Volgt</strong>',
+  '<strong>Following</strong>' => '<strong>Volgt</strong>',
   '<strong>Member</strong> in these spaces' => '<strong>Lid</strong> van deze ruimtes',
-  '<strong>User</strong> followers' => '<strong>Volgers</strong>',
+  '<strong>Followers</strong>' => '<strong>Volgers</strong>',
   '<strong>User</strong> tags' => '<strong>Gebruiker</strong> labels',
   'Allows access to your about page with personal information' => 'Verleen toegang tot mijn pagina met persoonlijke informatie',
   'Auth Mode' => 'Verificatie wijze',
