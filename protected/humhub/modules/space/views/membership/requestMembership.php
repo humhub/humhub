@@ -36,7 +36,7 @@ use humhub\modules\space\models\Space;
                 'label' => Yii::t('SpaceModule.base', 'Send'),
                 'ajaxOptions' => [
                     'type' => 'POST',
-                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
+                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(evt); }'),
                     'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
                     'url' => $space->createUrl('/space/membership/request-membership-form'),
                 ],
