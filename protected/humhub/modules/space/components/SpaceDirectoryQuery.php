@@ -70,6 +70,8 @@ class SpaceDirectoryQuery extends ActiveQuerySpace
                 return $this->filterByConnectionMember();
             case 'follow':
                 return $this->filterByConnectionFollow();
+            case 'none':
+                return $this->filterByConnectionNone();
         }
 
         return $this;
@@ -84,8 +86,19 @@ class SpaceDirectoryQuery extends ActiveQuerySpace
 
     public function filterByConnectionFollow(): SpaceDirectoryQuery
     {
-        return $this->innerJoin('user_follow', 'user_follow.object_model = :space_class AND user_follow.object_id = space.id', [':space_class' => Space::class])
+        return $this->innerJoin('user_follow', 'user_follow.object_model = :spaceClass AND user_follow.object_id = space.id', [':spaceClass' => Space::class])
             ->andWhere(['user_follow.user_id' => Yii::$app->user->id]);
+    }
+
+    public function filterByConnectionNone(): SpaceDirectoryQuery
+    {
+        return $this->andWhere('space.id NOT IN (SELECT space_id FROM space_membership WHERE user_id = :userId AND status = :memberStatus)')
+            ->andWhere('space.id NOT IN (SELECT object_id FROM user_follow WHERE user_id = :userId AND user_follow.object_model = :spaceClass)')
+            ->addParams([
+                ':userId' => Yii::$app->user->id,
+                ':memberStatus' => Membership::STATUS_MEMBER,
+                ':spaceClass' => Space::class,
+            ]);
     }
 
     public function order(): SpaceDirectoryQuery
