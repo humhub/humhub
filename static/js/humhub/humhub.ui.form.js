@@ -1,8 +1,8 @@
-humhub.module('ui.form', function(module, require, $) {
+humhub.module('ui.form', function (module, require, $) {
     var object = require('util').object;
     var Widget = require('ui.widget').Widget;
 
-    var TabbedForm = function(node, options) {
+    var TabbedForm = function (node, options) {
         Widget.call(this, node, options);
     };
 
@@ -10,20 +10,21 @@ humhub.module('ui.form', function(module, require, $) {
 
     TabbedForm.component = 'humhub-tabbed-form';
 
-    TabbedForm.prototype.validate = function() {
+    TabbedForm.prototype.validate = function () {
         return this.$.is('form');
     };
 
-    TabbedForm.prototype.init = function() {
+    TabbedForm.prototype.init = function () {
         this.$.hide();
         var activeTab = 0;
 
         var $tabContent = $('<div class="tab-content"></div>');
         var $tabs = $('<ul id="profile-tabs" class="nav nav-tabs" data-tabs="tabs"></ul>');
         this.$.prepend($tabContent).prepend($tabs);
+        var inputCsrf = $('input[name ="_csrf"]').detach();
 
         var index = 0;
-        $.each(this.getPreparedFieldSets(), function(label, $fieldSet) {
+        $.each(this.getPreparedFieldSets(), function (label, $fieldSet) {
 
             // activate this tab if there are any errors
             if (_hasErrors($fieldSet)) {
@@ -43,7 +44,7 @@ humhub.module('ui.form', function(module, require, $) {
 
             // change tab on tab key for the last input of each tab
             var tabIndex = index;
-            $tabContent.find('.form-control').last().on('keydown', function(e) {
+            $tabContent.find('.form-control').last().on('keydown', function (e) {
                 var keyCode = e.keyCode || e.which;
 
                 if (keyCode === 9) { //Tab
@@ -66,19 +67,20 @@ humhub.module('ui.form', function(module, require, $) {
         }
 
         // focus first input on tab change
-        this.$.find('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+        this.$.find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             var tabId = $(e.target).attr('href'); // newly activated tab
             $(tabId).find('.form-control').first().focus();
         });
 
 
-        this.$.on('submit', function() {
+        this.$.on('submit', function () {
             addValidationListener();
         });
 
         // activate the first tab or the tab with errors
         $tabs.find('a[href="#tab-' + activeTab + '"]').tab('show');
         this.$.fadeIn();
+        inputCsrf.insertBefore($("#profile-tabs"));
     };
 
     /**
@@ -88,12 +90,12 @@ humhub.module('ui.form', function(module, require, $) {
      * @param {type} $form
      * @returns {$lastFieldSet$fieldSet} Array of fieldsets indexed by its label
      */
-    TabbedForm.prototype.getPreparedFieldSets = function() {
+    TabbedForm.prototype.getPreparedFieldSets = function () {
         var result = {};
         var $lastFieldSet;
 
         // Assamble all fieldsets with label
-        this.$.find('fieldset').each(function() {
+        this.$.find('fieldset').each(function () {
             var $fieldSet = $(this).hide();
 
             var legend = $fieldSet.children('legend').text();
@@ -114,13 +116,13 @@ humhub.module('ui.form', function(module, require, $) {
      * @param $fieldSet
      * @returns {boolean}
      */
-    var _hasErrors = function($fieldSet) {
+    var _hasErrors = function ($fieldSet) {
         return $fieldSet.find('.error, .has-error').length > 0;
     };
 
-    var addValidationListener = function() {
+    var addValidationListener = function () {
         // Make sure frontend validation also activates the tab with errors.
-        $(document).off('afterValidate.humhub:ui:tabbedForm').one('afterValidate.humhub:ui:tabbedForm', function(evt, messages, errors) {
+        $(document).off('afterValidate.humhub:ui:tabbedForm').one('afterValidate.humhub:ui:tabbedForm', function (evt, messages, errors) {
             if (errors.length && Widget.exists('ui.form.TabbedForm')) {
                 var index = $(errors[0].container).closest('.tab-pane').data('tab-index');
                 $('a[href="#tab-' + index + '"]').tab('show');
@@ -128,11 +130,11 @@ humhub.module('ui.form', function(module, require, $) {
         });
     };
 
-    var submit = function(evt) {
+    var submit = function (evt) {
         evt.$trigger.closest('form').submit();
     };
 
-    var unload = function() {
+    var unload = function () {
         $(document).off('afterValidate.humhub:ui:tabbedForm');
     };
 

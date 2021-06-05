@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => '<strong>フォロー</strong> ユーザー',
+  '<strong>Following</strong>' => '<strong>フォロー</strong> ユーザー',
   '<strong>Member</strong> in these spaces' => '<strong>スペース</strong> 一覧',
-  '<strong>User</strong> followers' => '<strong>ユーザー</strong> フォロワー',
+  '<strong>Followers</strong>' => '<strong>ユーザー</strong> フォロワー',
   '<strong>User</strong> tags' => '<strong>ユーザー</strong> タグ',
   'Allows access to your about page with personal information' => '他のユーザーが、あなたのプロフィールページを閲覧できるようにする',
   'Auth Mode' => '',

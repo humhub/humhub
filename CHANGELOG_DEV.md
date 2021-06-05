@@ -6,11 +6,13 @@
 - Fix #4877: Check for writable uploads/profile_image directory
 - Enh #4868: Reset email summaries / notifications settings for all users
 - Enh #4884: New Space module setting to allow all users to add users without invite
+- Enh #4902: Added CodeMirror form field widget
 - Enh #4964: New CLI command to delete users 
 - Enh #4871: Default timezone for guests
 - Enh #5019: Alternative DashboardMemberStreamFilter based on Legitmation IDs
 - Fix #4626: Fix visibility of content in profile stream from archived spaces
 - Chg #5016: Allow impersonate to non sys admin groups (that can manage users)
+- Enh #5043: Improved Space Membership lookup caching
 - Enh #4935: Render images in email messages as HTML <img> tag
 - Enh #5037: RichTextToShortTextConverter render image as [Image]
 - Enh #5042: Improved Space/User PrettyURL performance
@@ -19,3 +21,19 @@
 - Enh #5012: Space: Show "Owner" Tab also for SystemAdmins
 - Enh #5045: Removed deprecated `Yii::$app->formatterApp` component
 - Enh #5026: Tests for tokenized image urls in email message
+- Enh #5049: Required profile field should not be required in administration
+- Enh #5065: Add checking for php PCNTL extension
+- Enh #5073: Enhance API tests
+- Fix #5078: Fix enabling of REST module on run API tests
+- Enh #4776: Add "acknowledge" option to all relevant forms
+- Enh #4757: Updated to PHPUnit 8.5
+- Enh #4790: Added more logging on authentication errors
+- Fix #5054: Force InnoDB Table Engine on migration and configuration option
+- Enh #4862: Tag picker for Space and User containers
+- Enh #4927: Hide post input field on single entry stream
+- Enh #5062: Show user ID on admin user edit page
+- Enh #4848: Include space tags in the space’s “About” page 
+- Enh #5061: Preserve linebreaks and added "ReadMore" option in Logging
+- Enh #4982: Skip DN List to avoid logged ldap errors 
+- Fix #5088: Set max length for space description input
+- Enh #5089: Allow to Follow users independent of Friendship state

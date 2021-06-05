@@ -81,7 +81,10 @@ class ProfileController extends ContentContainerController
             return $this->redirect(Url::to(['/user/profile/about', 'container' => $this->getUser()]));
         }
 
-        return $this->render('home', ['user' => $this->contentContainer]);
+        return $this->render('home', [
+            'user' => $this->contentContainer,
+            'isSingleContentRequest' => !empty(Yii::$app->request->getQueryParam('contentId')),
+        ]);
     }
 
     public function actionAbout()
@@ -131,7 +134,7 @@ class ProfileController extends ContentContainerController
         $query->andWhere(['IS NOT', 'user_follow.id', new Expression('NULL')]);
         $query->active();
 
-        $title = Yii::t('UserModule.base', '<strong>User</strong> followers');
+        $title = Yii::t('UserModule.base', '<strong>Followers</strong>');
 
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
@@ -144,7 +147,7 @@ class ProfileController extends ContentContainerController
         $query->andWhere(['IS NOT', 'user_follow.id', new Expression('NULL')]);
         $query->active();
 
-        $title = Yii::t('UserModule.base', '<strong>Following</strong> user');
+        $title = Yii::t('UserModule.base', '<strong>Following</strong>');
         return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
     }
 

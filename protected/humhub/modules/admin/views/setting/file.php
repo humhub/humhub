@@ -7,9 +7,8 @@
  * @var string $currentImageLibrary
  */
 
-use humhub\compat\CActiveForm;
-use humhub\compat\CHtml;
-use humhub\models\Setting;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use yii\helpers\Html;
 
 /** @var \humhub\modules\file\Module $fileModule */
 $fileModule = Yii::$app->getModule('file');
@@ -17,47 +16,28 @@ $fileModule = Yii::$app->getModule('file');
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
-<?php $form = CActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
 <?= $form->errorSummary($model); ?>
 
-<div class="form-group">
-    <?= $form->labelEx($model, 'maxFileSize'); ?>
-    <?= $form->textField($model, 'maxFileSize', ['class' => 'form-control', 'readonly' => $fileModule->settings->isFixed('maxFileSize')]); ?>
-    <p class="help-block" <?= ($model->maxFileSize > $maxUploadSize) ? 'style="color:'.$this->theme->variable('danger').' !important"' : ''?>>
-        <?= Yii::t('AdminModule.settings', 'PHP reported a maximum of {maxUploadSize} MB', ['{maxUploadSize}' => $maxUploadSizeText]); ?>
-    </p>
-</div>
+<?= $form->field($model, 'maxFileSize')->textInput(['class' => 'form-control', 'readonly' => $fileModule->settings->isFixed('maxFileSize')]); ?>
+<p class="help-block" <?= ($model->maxFileSize > $maxUploadSize) ? 'style="color:' . $this->theme->variable('danger') . ' !important"' : '' ?>>
+    <?= Yii::t('AdminModule.settings', 'PHP reported a maximum of {maxUploadSize} MB', ['{maxUploadSize}' => $maxUploadSizeText]); ?>
+</p>
 
-<div class="form-group">
-    <div class="checkbox">
-        <label>
-            <?= $form->checkBox($model, 'useXSendfile', ['disabled' => $fileModule->settings->isFixed('useXSendfile')]); ?>
-            <?= $model->getAttributeLabel('useXSendfile'); ?>
-        </label>
-    </div>
-</div>
+<?= $form->field($model, 'allowedExtensions')->textarea(['class' => 'form-control']); ?>
+<p class="help-block"><?= Yii::t('AdminModule.settings', 'Comma separated list. Leave empty to allow all.'); ?></p>
 
-<div class="form-group">
-    <div class="checkbox">
-        <label>
-            <?= $form->checkBox($model, 'excludeMediaFilesPreview', ['disabled' => $fileModule->settings->isFixed('excludeMediaFilesPreview')]); ?>
-            <?= $model->getAttributeLabel('excludeMediaFilesPreview'); ?>
-        </label>
-    </div>
-</div>
+<br />
 
-<div class="form-group">
-    <?= $form->labelEx($model, 'allowedExtensions'); ?>
-    <?= $form->textField($model, 'allowedExtensions', ['class' => 'form-control']); ?>
-    <p class="help-block"><?= Yii::t('AdminModule.settings', 'Comma separated list. Leave empty to allow all.'); ?></p>
-</div>
+<?= $form->field($model, 'useXSendfile')->checkbox(['disabled' => $fileModule->settings->isFixed('useXSendfile')]); ?>
+<?= $form->field($model, 'excludeMediaFilesPreview')->checkbox(['disabled' => $fileModule->settings->isFixed('excludeMediaFilesPreview')]); ?>
 
 <hr>
 
-<?= CHtml::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+<?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
 <?= \humhub\widgets\DataSaved::widget(); ?>
-<?php CActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
 
 <?php $this->endContent(); ?>

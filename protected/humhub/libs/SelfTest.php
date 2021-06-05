@@ -159,6 +159,22 @@ class SelfTest
             ];
         }
 
+        // Checks PCNTL Extension
+        $title = 'PHP - PCNTL Extension';
+
+        if (function_exists('pcntl_signal')) {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => Yii::t('base', $title),
+                'state' => 'ERROR',
+                'hint' => 'Install PCNTL Extension'
+            ];
+        }
+
         // Checks EXIF Extension
         $title = 'PHP - EXIF Extension';
 

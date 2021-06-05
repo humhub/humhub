@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => 'المستخدم <strong>التالية</strong>',
+  '<strong>Following</strong>' => 'المستخدم <strong>التالية</strong>',
   '<strong>Member</strong> in these spaces' => 'في هذه المساحات <strong>عضو</strong>',
-  '<strong>User</strong> followers' => 'متابعون <strong>المستخدم</strong>',
+  '<strong>Followers</strong>' => 'متابعون <strong>المستخدم</strong>',
   '<strong>User</strong> tags' => 'العلامات <strong>المستخدم</strong>',
   'Allows access to your about page with personal information' => 'يسمح بالوصول إلى صفحتك حول المعلومات الشخصية',
   'Auth Mode' => 'وضع المصادقة',

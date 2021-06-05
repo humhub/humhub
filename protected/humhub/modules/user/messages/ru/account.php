@@ -1,8 +1,8 @@
 <?php
 return array (
   '<strong>Account</strong> settings' => '<strong>Учётная запись</strong>',
-  '<strong>Confirm</strong></strong> your new email address' => 'Подтвердите новый email',
-  '<strong>Permissions</strong>' => '',
+  '<strong>Confirm</strong></strong> your new email address' => '<strong>Подтвердите</strong> новый e-mail адрес',
+  '<strong>Permissions</strong>' => '<strong>Разрешения</strong>',
   '<strong>User</strong> modules' => '<strong>Пользовательские модули</strong>',
   '<strong>User</strong> settings' => '<strong>Настройки сайта</strong>',
   '<strong>Your</strong> profile' => '<strong>Ваш профиль</strong>',
@@ -43,7 +43,7 @@ return array (
   'Settings' => 'Настройки',
   'Tags' => 'Теги',
   'The entered e-mail address is already in use by another user.' => 'Введённый email уже используется другим пользователем.',
-  'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.' => '',
+  'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.' => 'Эти настройки позволяют указать, какие разрешения будут иметь посетители страницы с вашим профилем. Каждый пользователь может устанавливать собственные разрешения для своего профиля.',
   'TimeZone' => 'Часовой пояс',
   'Username has been changed' => 'Имя пользователя было изменено',
   'Users' => 'Пользователи',

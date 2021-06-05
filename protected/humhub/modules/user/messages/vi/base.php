@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => '<strong>Theo</strong> user',
+  '<strong>Following</strong>' => '<strong>Theo</strong> user',
   '<strong>Member</strong> in these spaces' => '<strong>Thành viên</strong> trong những diễn đàn này',
-  '<strong>User</strong> followers' => 'Người theo <strong>User</strong>',
+  '<strong>Followers</strong>' => 'Người theo <strong>User</strong>',
   '<strong>User</strong> tags' => 'Thẻ <strong>Người dùng</strong> (tags)',
   'Allows access to your about page with personal information' => 'Cho phép truy cập tới trang giới thiệu của bạn kèm thông tin cá nhân',
   'Auth Mode' => 'Chế độ xác thực',

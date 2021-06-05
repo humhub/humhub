@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => '<strong>Следващ</strong> потребител',
+  '<strong>Following</strong>' => '<strong>Следващ</strong> потребител',
   '<strong>Member</strong> in these spaces' => '<strong>Членува</strong> в тези потоци',
-  '<strong>User</strong> followers' => '<strong>Последователи</strong>',
+  '<strong>Followers</strong>' => '<strong>Последователи</strong>',
   '<strong>User</strong> tags' => '<strong>Потребителски</strong> етикети',
   'Allows access to your about page with personal information' => 'Позволи достъп до твоята страница с лична информация',
   'Auth Mode' => 'Режим за удостоверяване',

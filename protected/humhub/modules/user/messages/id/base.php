@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Following</strong> user' => '<strong>Mengikuti</strong> pengguna',
+    '<strong>Following</strong>' => '<strong>Mengikuti</strong> pengguna',
     '<strong>Member</strong> in these spaces' => '<strong>Member</strong> di grup ini',
-    '<strong>User</strong> followers' => '<strong>Pengguna</strong> diikuti',
+    '<strong>Followers</strong>' => '<strong>Pengguna</strong> diikuti',
     'Delete' => 'Hapus',
     'Description' => 'Deskripsi',
     'Follow' => 'Mengikuti',

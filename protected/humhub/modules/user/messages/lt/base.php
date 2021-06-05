@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => '<strong>Sekamas</strong> vartotojas',
+  '<strong>Following</strong>' => '<strong>Sekamas</strong> vartotojas',
   '<strong>Member</strong> in these spaces' => '<strong>Narys</strong> šiose erdvėse',
-  '<strong>User</strong> followers' => '<strong>Vartotojo</strong> sekėjai',
+  '<strong>Followers</strong>' => '<strong>Vartotojo</strong> sekėjai',
   '<strong>User</strong> tags' => '<strong>Vartotojo</strong> žymės',
   'Allows access to your about page with personal information' => '',
   'Auth Mode' => '',

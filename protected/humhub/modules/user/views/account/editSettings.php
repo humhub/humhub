@@ -1,16 +1,16 @@
 <?php
 
 use humhub\libs\TimezoneHelper;
+use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\user\helpers\AuthHelper;
-use yii\widgets\ActiveForm;
-use \humhub\compat\CHtml;
+use humhub\modules\ui\form\widgets\ActiveForm;
 ?>
 
 <?php $this->beginContent('@user/views/account/_userSettingsLayout.php') ?>
 
-<?php $form = ActiveForm::begin(['id' => 'basic-settings-form']); ?>
+<?php $form = ActiveForm::begin(['id' => 'basic-settings-form', 'acknowledge' => true]); ?>
 
-<?= $form->field($model, 'tags'); ?>
+<?= $form->field($model, 'tags')->widget(ContainerTagPicker::class); ?>
 
 <?php if (count($languages) > 1) : ?>
     <?= $form->field($model, 'language')->dropDownList($languages, ['data-ui-select2' => '']); ?>

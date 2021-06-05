@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => '关注',
+  '<strong>Following</strong>' => '关注',
   '<strong>Member</strong> in these spaces' => '空间列表',
-  '<strong>User</strong> followers' => '被关注',
+  '<strong>Followers</strong>' => '被关注',
   '<strong>User</strong> tags' => '<strong>用户</strong> 标签',
   'Allows access to your about page with personal information' => '允许访问您的关于页面的个人信息',
   'Auth Mode' => '认证模式',

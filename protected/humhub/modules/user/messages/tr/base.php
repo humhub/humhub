@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => '<strong>Takip edilen</strong> kullanıcı',
+  '<strong>Following</strong>' => '<strong>Takip edilen</strong> kullanıcı',
   '<strong>Member</strong> in these spaces' => '<strong>Üye</strong> mekanları',
-  '<strong>User</strong> followers' => '<strong>Kullanıcı</strong> takipçileri',
+  '<strong>Followers</strong>' => '<strong>Kullanıcı</strong> takipçileri',
   '<strong>User</strong> tags' => '<strong>Kullanıcı</strong> etiketler',
   'Allows access to your about page with personal information' => 'Kişisel bilgileriniz ile ilgili sayfanıza erişime izin verir',
   'Auth Mode' => 'Kimlik Doğrulama Modu',

@@ -6,7 +6,7 @@ use yii\db\Migration;
 /**
  * Class m201217_071828_fix_oembed_setting
  */
-class m201217_071828_fix_oembed_setting extends Migration
+class m201217_081828_fix_oembed_setting extends Migration
 {
     /**
      * {@inheritdoc}

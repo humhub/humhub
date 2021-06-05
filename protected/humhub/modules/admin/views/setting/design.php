@@ -4,9 +4,9 @@ use humhub\libs\LogoImage;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\Button;
-use yii\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use yii\helpers\Html;
 use yii\helpers\Url;
-use humhub\compat\CHtml;
 
 /* @var $model DesignSettingsForm */
 
@@ -35,7 +35,7 @@ $iconUrl = SiteIcon::getUrl(140);
 
     <br>
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data'], 'acknowledge' => true]); ?>
 
     <?= $form->field($model, 'theme')->dropDownList($model->getThemes()); ?>
 
@@ -96,7 +96,7 @@ $iconUrl = SiteIcon::getUrl(140);
     </div>
 
     <hr>
-    <?= CHtml::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+    <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
     <?= \humhub\widgets\DataSaved::widget(); ?>
     <?php ActiveForm::end(); ?>

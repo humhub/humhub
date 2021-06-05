@@ -426,9 +426,9 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
         $this->assertFriendUserDoesNotSeeProfileContent(Content::VISIBILITY_PUBLIC, false, User::STATUS_DISABLED);
     }
 
-    public function testFriendRequestedUserDoesNotSeePublicContent()
+    public function testFriendRequestedUserDoesSeePublicContent()
     {
-        $this->assertFriendUserDoesNotSeeProfileContent(Content::VISIBILITY_PUBLIC, true);
+        $this->assertFriendUserDoesSeeProfileContent(Content::VISIBILITY_PUBLIC, true);
     }
 
     public function testFriendRequestedUserDoesNotSeePrivateContent()

@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => 'Der Benutzer <strong>folgt</strong>',
+  '<strong>Following</strong>' => 'Der Benutzer <strong>folgt</strong>',
   '<strong>Member</strong> in these spaces' => '<strong>Mitglied</strong> in diesen Spaces',
-  '<strong>User</strong> followers' => 'Dem <strong>Benutzer</strong> folgen',
+  '<strong>Followers</strong>' => 'Dem <strong>Benutzer</strong> folgen',
   '<strong>User</strong> tags' => '<strong>Benutzer</strong>-Tags',
   'Allows access to your about page with personal information' => 'Zugriff auf deine Info-Seite mit persönlichen Informationen erlauben',
   'Auth Mode' => 'Auth-Verfahren',

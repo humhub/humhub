@@ -1,8 +1,8 @@
 <?php
 return array (
-  '<strong>Following</strong> user' => '<strong>Seuraa</strong> näitä käyttäjiä',
+  '<strong>Following</strong>' => '<strong>Seuraa</strong> näitä käyttäjiä',
   '<strong>Member</strong> in these spaces' => '<strong>Jäsenenä</strong> näillä sivuilla',
-  '<strong>User</strong> followers' => '<strong>Nämä</strong> käyttäjät seuraavat',
+  '<strong>Followers</strong>' => '<strong>Nämä</strong> käyttäjät seuraavat',
   '<strong>User</strong> tags' => '<strong>Käyttäjän</strong> tägit',
   'Allows access to your about page with personal information' => 'Antaa pääsyn sivusi tietoja osioon',
   'Auth Mode' => 'Luotettu tila',

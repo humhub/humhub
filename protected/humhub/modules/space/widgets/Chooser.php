@@ -23,7 +23,7 @@ class Chooser extends Widget
         $spaceInfo = [];
         $spaceInfo['guid'] = $space->guid;
         $spaceInfo['title'] = $space->name;
-        $spaceInfo['tags'] = Html::encode($space->tags);
+        $spaceInfo['tags'] = Html::encode(implode(', ', $space->getTags()));
         $spaceInfo['image'] = Image::widget(['space' => $space, 'width' => 24]);
         $spaceInfo['link'] = $space->getUrl();
 
@@ -45,10 +45,10 @@ class Chooser extends Widget
         }
 
         return $this->render('spaceChooser', [
-                    'currentSpace' => $this->getCurrentSpace(),
-                    'canCreateSpace' => $this->canCreateSpace(),
-                    'memberships' => $this->getMemberships(),
-                    'followSpaces' => $this->getFollowSpaces()
+            'currentSpace' => $this->getCurrentSpace(),
+            'canCreateSpace' => $this->canCreateSpace(),
+            'memberships' => $this->getMemberships(),
+            'followSpaces' => $this->getFollowSpaces()
         ]);
     }
 
@@ -85,8 +85,8 @@ class Chooser extends Widget
     /**
      * Returns the membership query
      *
-     * @deprecated since version 1.2
      * @return type
+     * @deprecated since version 1.2
      */
     protected function getMembershipQuery()
     {
