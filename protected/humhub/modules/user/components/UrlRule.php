@@ -37,7 +37,7 @@ class UrlRule extends BaseObject implements UrlRuleInterface
      */
     public function createUrl($manager, $route, $params)
     {
-        if (isset($params['cguid']) && isset($params['cguid-class']) && $params['cguid-class'] === UserModel::class) {
+        if (isset($params['cguid'])) {
             $username = static::getUrlByUserGuid($params['cguid']);
             if ($username !== null) {
                 unset($params['cguid']);
@@ -46,7 +46,7 @@ class UrlRule extends BaseObject implements UrlRuleInterface
                     $route = "";
                 }
 
-                $url = "u/" . urlencode($username) . "/" . $route;
+                $url = "u/" . urlencode(mb_strtolower($username)) . "/" . $route;
                 if (!empty($params) && ($query = http_build_query($params)) !== '') {
                     $url .= '?' . $query;
                 }
