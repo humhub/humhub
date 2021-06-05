@@ -2,10 +2,16 @@
 
 use humhub\compat\CActiveForm;
 use humhub\libs\Html;
+use humhub\modules\space\models\forms\RequestMembershipForm;
+use humhub\modules\space\models\Space;
+
+/* @var $space Space */
+/* @var $model RequestMembershipForm */
 ?>
 <div class="modal-dialog animated fadeIn">
     <div class="modal-content">
         <?php $form = CActiveForm::begin(); ?>
+        <?= $form->hiddenField($model, 'options') ?>
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
@@ -30,7 +36,7 @@ use humhub\libs\Html;
                 'label' => Yii::t('SpaceModule.base', 'Send'),
                 'ajaxOptions' => [
                     'type' => 'POST',
-                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
+                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(evt); }'),
                     'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
                     'url' => $space->createUrl('/space/membership/request-membership-form'),
                 ],

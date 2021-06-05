@@ -85,7 +85,20 @@
     &:active,
     &.active {
         outline: 0;
-        background: darken(@primary, 5%) !important;
+        border: 1px solid @primary;
+        padding: 7px 15px;
+        color: @primary !important;
+        background: @text-color-contrast !important;
+        box-shadow: none;
+        &.btn-sm {
+            padding: 3px 7px;
+        }
+    }
+
+    &.active:hover,
+    &.active:focus {
+        border: 1px solid darken(@primary, 5%);
+        color: darken(@primary, 5%) !important;
     }
 }
 
@@ -117,7 +130,20 @@
     &:active,
     &.active {
         outline: 0;
-        background: darken(@info, 5%);
+        border: 1px solid @info;
+        padding: 7px 15px;
+        color: @info !important;
+        background: @text-color-contrast !important;
+        box-shadow: none;
+        &.btn-sm {
+            padding: 3px 7px;
+        }
+    }
+
+    &.active:hover,
+    &.active:focus {
+        border: 1px solid darken(@info, 5%);
+        color: darken(@info, 5%) !important;
     }
 }
 

@@ -46,13 +46,18 @@ class BaseType extends Model
      */
     public $profileField = null;
 
-
     /**
      * @var boolean is a virtual field (readonly)
      * @see BaseTypeVirtual
      * @since 1.6
      */
     public $isVirtual = false;
+
+    /**
+     * @var boolean can be used as directory filter (readonly)
+     * @since 1.9
+     */
+    public $canBeDirectoryFilter = false;
 
     /**
      * Links a ProfileField to the ProfileFieldType.

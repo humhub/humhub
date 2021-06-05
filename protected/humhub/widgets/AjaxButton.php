@@ -68,7 +68,7 @@ class AjaxButton extends Widget
             $return = 'return false';
         }
 
-        $this->view->registerJs("$('#{$this->htmlOptions['id']}').click(function() {
+        $this->view->registerJs("$('#{$this->htmlOptions['id']}').click(function(evt) {
                 $.ajax(" . Json::encode($this->ajaxOptions) . ");
                     {$return};
             });");

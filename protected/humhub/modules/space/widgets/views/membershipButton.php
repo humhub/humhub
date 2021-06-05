@@ -4,27 +4,39 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
 use yii\helpers\Html;
 
+/* @var $membership Membership */
+/* @var $space Space */
+/* @var $options array */
+/* @var $canCancelMembership bool */
+
 if ($membership === null) {
     if ($space->canJoin()) {
         if ($space->join_policy == Space::JOIN_POLICY_APPLICATION) {
-            echo Html::a(Yii::t('SpaceModule.base', 'Request membership'), $space->createUrl('/space/membership/request-membership-form'), ['id' => 'requestMembershipButton', 'class' => 'btn btn-primary', 'data-target' => '#globalModal']);
+            echo Html::a($options['requestMembership']['title'], $options['requestMembership']['url'], $options['requestMembership']['attrs']);
         } else {
-            echo Html::a(Yii::t('SpaceModule.base', 'Become member'), $space->createUrl('/space/membership/request-membership'), ['id' => 'requestMembershipButton', 'class' => 'btn btn-primary', 'data-method' => 'POST']);
+            echo Html::a($options['becomeMember']['title'], '#', $options['becomeMember']['attrs']);
         }
     }
 } elseif ($membership->status == Membership::STATUS_INVITED) {
     ?>
-    <div class="btn-group">
-        <?= Html::a(Yii::t('SpaceModule.base', 'Accept Invite'), $space->createUrl('/space/membership/invite-accept'), ['class' => 'btn btn-info', 'data-method' => 'POST']); ?>
-        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div class="<?= $options['acceptInvite']['groupClass'] ?>">
+        <?= Html::a($options['acceptInvite']['title'], '#', $options['acceptInvite']['attrs']); ?>
+        <button type="button" class="<?= $options['acceptInvite']['togglerClass'] ?> dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">
-            <li><?= Html::a(Yii::t('SpaceModule.base', 'Decline Invite'), $space->createUrl('/space/membership/revoke-membership'), ['data-method' => 'POST']); ?></li>
+            <li><?= Html::a($options['declineInvite']['title'], '#', $options['declineInvite']['attrs']); ?></li>
         </ul>
     </div>
     <?php
 } elseif ($membership->status == Membership::STATUS_APPLICANT) {
-    echo Html::a(Yii::t('SpaceModule.base', 'Cancel pending membership application'), $space->createUrl('/space/membership/revoke-membership'), ['data-method' => 'POST', 'class' => 'btn btn-primary']);
+    echo Html::a($options['cancelPendingMembership']['title'], $space->createUrl('/space/membership/revoke-membership'), $options['cancelPendingMembership']['attrs']);
+} elseif ($membership->status == Membership::STATUS_MEMBER) {
+    if ($canCancelMembership && $options['cancelMembership']['visible']) {
+        echo Html::a($options['cancelMembership']['title'], '#', $options['cancelMembership']['attrs']);
+    } elseif (!$canCancelMembership && $options['cannotCancelMembership']['visible']) {
+        $memberTitle = (!$space->isSpaceOwner() ? $options['cannotCancelMembership']['ownerTitle'] : $options['cannotCancelMembership']['memberTitle']);
+        echo Html::a($memberTitle, $space->createUrl(), $options['cannotCancelMembership']['attrs']);
+    }
 }

@@ -80,6 +80,7 @@ class Module extends \humhub\components\Module
         }
 
         return [
+            new permissions\SpaceDirectoryAccess(),
             new permissions\CreatePrivateSpace(),
             new permissions\CreatePublicSpace(),
         ];

@@ -25,7 +25,7 @@ use humhub\modules\space\widgets\MembershipButton;
                         [FollowButton::class, [
                             'space' => $container,
                             'followOptions' => ['class' => 'btn btn-primary'],
-                            'unfollowOptions' => ['class' => 'btn btn-info']
+                            'unfollowOptions' => ['class' => 'btn btn-primary active']
                         ], ['sortOrder' => 30]]
                     ]]); ?>
                     <?= HeaderControlsMenu::widget(['space' => $container]); ?>

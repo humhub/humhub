@@ -36,6 +36,23 @@ humhub.module('content.container', function (module, require, $) {
         });
     };
 
+    var relationship = function(evt) {
+        var postOptions = {};
+        var buttonOptions = evt.$trigger.data('button-options');
+        if (buttonOptions) {
+            postOptions.data = {options: buttonOptions};
+        }
+        client.post(evt, postOptions).then(function(response) {
+            var oldButton = evt.$trigger;
+            if (oldButton.closest('.btn-group').length) {
+                oldButton = oldButton.closest('.btn-group');
+            }
+            oldButton.replaceWith(response.data);
+        }).catch(function(e) {
+            module.log.error(e, true);
+        });
+    }
+
     var enableModule = function (evt) {
         client.post(evt).then(function (response) {
             if (response.success) {
@@ -79,6 +96,7 @@ humhub.module('content.container', function (module, require, $) {
     module.export({
         follow: follow,
         unfollow: unfollow,
+        relationship: relationship,
         unload: unload,
         guid: guid,
         enableModule: enableModule,

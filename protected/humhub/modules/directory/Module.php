@@ -10,7 +10,6 @@ namespace humhub\modules\directory;
 
 use humhub\modules\ui\menu\MenuLink;
 use Yii;
-use yii\helpers\Url;
 use humhub\modules\user\models\Group;
 use humhub\modules\directory\permissions\AccessDirectory;
 
@@ -22,6 +21,7 @@ use humhub\modules\directory\permissions\AccessDirectory;
  *
  * @package humhub.modules_core.directory
  * @since 0.5
+ * @deprecated since 1.9 but it can be activated temporary by console command `php yii directory/activate`
  */
 class Module extends \humhub\components\Module
 {
@@ -44,7 +44,7 @@ class Module extends \humhub\components\Module
     /**
      * @var bool defines if the directory is active, if not the directory is not visible and can't be accessed
      */
-    public $active = true;
+    public $active = false;
 
     /**
      * @var bool defines if the directory is available for guest users, this flag will only have effect if guest access is allowed and the module is active
@@ -56,6 +56,15 @@ class Module extends \humhub\components\Module
      */
     public $showUserProfilePosts = true;
 
+    /**
+     * @inerhitdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        $this->active = $this->settings->get('isActive', false);
+    }
 
     /**
      * @return bool checks if the current user can access the directory
@@ -101,7 +110,7 @@ class Module extends \humhub\components\Module
      */
     public function getPermissions($contentContainer = null)
     {
-        if (!$contentContainer) {
+        if ($this->active && !$contentContainer) {
             return [
                 new AccessDirectory(),
             ];
