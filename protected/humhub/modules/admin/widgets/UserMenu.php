@@ -30,7 +30,7 @@ class UserMenu extends TabMenu
     public function init()
     {
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.user', 'Users'),
+            'label' => Yii::t('AdminModule.user', 'Overview'),
             'url' => ['/admin/user/index'],
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState('admin', ['user', 'pending-registrations']),
