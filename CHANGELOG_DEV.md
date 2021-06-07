@@ -38,3 +38,4 @@
 - Fix #5088: Set max length for space description input
 - Enh #5089: Allow to Follow users independent of Friendship state
 - Enh #34: Removed membership icon from my Spaces chooser
+- Enh #117: Show/Hide the “Following” buttons depending on updated friendship/membership state after AJAX action

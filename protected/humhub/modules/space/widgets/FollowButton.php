@@ -82,7 +82,7 @@ class FollowButton extends Widget
      */
     public function run()
     {
-        if (Yii::$app->user->isGuest || $this->space->isMember() || $this->space->visibility == Space::VISIBILITY_NONE) {
+        if (Yii::$app->user->isGuest || $this->space->visibility == Space::VISIBILITY_NONE) {
             return;
         }
 
@@ -91,7 +91,10 @@ class FollowButton extends Widget
         $this->unfollowOptions['class'] .= ' unfollowButton';
 
         // Hide inactive button
-        if ($this->space->isFollowedByUser()) {
+        if ($this->space->isMember()) {
+            $this->followOptions['style'] .= ' display:none;';
+            $this->unfollowOptions['style'] .= ' display:none;';
+        } elseif ($this->space->isFollowedByUser()) {
             $this->followOptions['style'] .= ' display:none;';
         } else {
             $this->unfollowOptions['style'] .= ' display:none;';
