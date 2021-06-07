@@ -44,10 +44,22 @@ humhub.module('content.container', function (module, require, $) {
         }
         client.post(evt, postOptions).then(function(response) {
             var oldButton = evt.$trigger;
+
+            // Replace previous button with new
             if (oldButton.closest('.btn-group').length) {
                 oldButton = oldButton.closest('.btn-group');
             }
-            oldButton.replaceWith(response.data);
+            oldButton.hide().after(response.data);
+            var newButton = oldButton.next();
+            oldButton.remove();
+
+            // Show/Hide current buttons if they depend on status of new button
+            if (newButton.data('show-buttons')) {
+                newButton.parent().find(newButton.data('show-buttons')).show();
+            }
+            if (newButton.data('hide-buttons')) {
+                newButton.parent().find(newButton.data('hide-buttons')).hide();
+            }
         }).catch(function(e) {
             module.log.error(e, true);
         });

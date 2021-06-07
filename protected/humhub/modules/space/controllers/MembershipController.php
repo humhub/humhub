@@ -277,9 +277,19 @@ class MembershipController extends ContentContainerController
     protected function getActionResult(Space $space)
     {
         if ($this->request->isAjax) {
+            $options = $this->request->post('options', []);
+
+            // Show/Hide the "Follow"/"Unfollow" buttons depending on updated membership state after AJAX action
+            if ($space->isMember()) {
+                $options['cancelMembership']['attrs']['data-hide-buttons'] = '.followButton, .unfollowButton';
+            } else {
+                $options['becomeMember']['attrs']['data-show-buttons'] = $space->isFollowedByUser() ? '.unfollowButton' : '.followButton';
+                $options['becomeMember']['attrs']['data-hide-buttons'] = $space->isFollowedByUser() ? '.followButton' : '.unfollowButton';
+            }
+
             return MembershipButton::widget([
                 'space' => $space,
-                'options' => $this->request->post('options', []),
+                'options' => $options,
             ]);
         }
 
