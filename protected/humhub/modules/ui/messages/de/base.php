@@ -1,6 +1,8 @@
 <?php
-return array (
-  'Collapse' => 'Einklappen',
-  'Read more' => 'Mehr',
-  'User Interface' => 'Benutzeroberfläche',
-);
+
+return [
+    'Collapse' => 'Einklappen',
+    'Read more' => 'Mehr',
+    'User Interface' => 'Benutzeroberfläche',
+    'Reset filters' => '',
+];

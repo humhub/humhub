@@ -1,6 +1,8 @@
 <?php
-return array (
-  'Collapse' => 'ย่อ',
-  'Read more' => '',
-  'User Interface' => '',
-);
+
+return [
+    'Collapse' => 'ย่อ',
+    'Read more' => '',
+    'Reset filters' => '',
+    'User Interface' => '',
+];

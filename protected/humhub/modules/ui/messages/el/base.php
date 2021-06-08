@@ -1,6 +1,8 @@
 <?php
-return array (
-  'Collapse' => 'Χαμήλωσε',
-  'Read more' => '',
-  'User Interface' => '',
-);
+
+return [
+    'Collapse' => 'Χαμήλωσε',
+    'Read more' => '',
+    'Reset filters' => '',
+    'User Interface' => '',
+];

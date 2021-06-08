@@ -14,6 +14,7 @@ return array (
   'Check again' => 'بررسی مجدد',
   'Congratulations! Everything is ok and ready to start over!' => 'تبریک! همه چیز مناسب و آماده‌ی شروع است!',
   'Create Admin Account' => 'ایجاد حساب کاربری مدیر',
+  'Create the database if it doesn\'t exist yet.' => '',
   'Downloading & Installing Modules...' => 'درحال دانلود و نصب ماژول',
   'External users can register (show registration form on login)' => 'اعضاي خارج از شبكه هم بتوانند عضو شوند',
   'Here you can decide how new, unregistered users can access HumHub.' => 'اينجا مي توانيد تايين كنيد اعضاي جديد مهيا چگونه مي توانند به آن دسترسي داشته باشند',
@@ -33,7 +34,9 @@ return array (
   'Nike – Just buy it. :wink:' => 'Nike – Just buy it. :wink:',
   'Of course, your new social network needs a name. Please change the default name with one you like. (For example the name of your company, organization or club)' => 'شبکه‌ی اجتماعی جدید شما به یک نام نیاز دارد. لطفا نام پیش‌فرض را به نامی که خود دوست دارید تغییر دهید. (برای مثال نام شرکت، سازمان و یا کلوب خود)',
   'Ohh, something went wrong!' => 'یک مشکل به وجود آمد!',
+  'Optional: Port of your MySQL Database Server. Leave empty to use default port.' => '',
   'Password' => 'گذرواژه',
+  'Port' => 'درگاه',
   'Recommended <strong>Modules</strong>' => '
 <strong>ماژول هاي پيشنهادي</strong>',
   'Registered members can invite new users via email' => 'اعضاي حاضر مي توانند با ايميل ديگران را به سايت دعوت كنند',

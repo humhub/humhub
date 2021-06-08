@@ -1,6 +1,8 @@
 <?php
-return array (
-  'Collapse' => 'Spusti',
-  'Read more' => 'Pročitaj više',
-  'User Interface' => 'Korisničko sučelje',
-);
+
+return [
+    'Collapse' => 'Spusti',
+    'Read more' => 'Pročitaj više',
+    'User Interface' => 'Korisničko sučelje',
+    'Reset filters' => '',
+];
