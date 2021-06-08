@@ -21,10 +21,10 @@ return [
     'Allows the user to create public content' => 'يسمح للمستخدم بإنشاء محتوى عام',
     'Allows the user to invite new members to the space' => 'يسمح للمستخدم بدعوة أعضاء جدد إلى الفضاء',
     'Can create hidden (private) spaces.' => 'يمكن إنشاء مساحات مخفية (خاصة).',
-    'Can create public visible spaces. (Listed in directory)' => 'يمكن إنشاء مساحات مرئية عامة. (مدرج في الدليل)',
+    'Can create Spaces visible to all members.' => 'يمكن إنشاء مساحات مرئية عامة. (مدرج في الدليل)',
     'Create private content' => 'إنشاء محتوى خاص',
-    'Create private space' => 'إنشاء مساحة خاصة',
+    'Create Private Spaces' => 'إنشاء مساحة خاصة',
     'Create public content' => 'إنشاء محتوى عام',
-    'Create public space' => 'خلق مساحة عامة',
+    'Create Public Spaces' => 'خلق مساحة عامة',
     'Invite users' => 'قم بدعوة المستخدمين',
 ];

@@ -21,10 +21,10 @@ return [
     'Allows the user to create public content' => '',
     'Allows the user to invite new members to the space' => '',
     'Can create hidden (private) spaces.' => '',
-    'Can create public visible spaces. (Listed in directory)' => '',
+    'Can create Spaces visible to all members.' => '',
     'Create private content' => '',
-    'Create private space' => '',
+    'Create Private Spaces' => '',
     'Create public content' => '',
-    'Create public space' => '',
+    'Create Public Spaces' => '',
     'Invite users' => '',
 ];

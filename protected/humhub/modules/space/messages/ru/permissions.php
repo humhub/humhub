@@ -26,9 +26,9 @@ return [
     'Allows the user to create public content' => 'Позволяет пользователю создавать публичные записи',
     'Allows the user to invite new members to the space' => 'Позволяет пользователю приглашать новых участников в сообщество',
     'Can create hidden (private) spaces.' => 'Можно создавать скрытые (частные/приватные) сообщества.',
-    'Can create public visible spaces. (Listed in directory)' => 'Можно создавать публичные (видимые) сообщества. (Присутствуют в каталоге)',
-    'Create private space' => 'Создать частное сообщество',
+    'Can create Spaces visible to all members.' => 'Можно создавать публичные (видимые) сообщества. (Присутствуют в каталоге)',
+    'Create Private Spaces' => 'Создать частное сообщество',
     'Create public content' => 'Создать публичную запись',
-    'Create public space' => 'Создать публичное сообщество',
+    'Create Public Spaces' => 'Создать публичное сообщество',
     'Invite users' => 'Пригласить пользователей',
 ];

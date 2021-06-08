@@ -19,8 +19,8 @@
 return [
     'Access Admin Information' => '',
     'Can access the \'Administration -> Information\' section.' => '',
-    'Can manage spaces within the \'Administration -> Spaces\' section (create/edit/delete).' => '',
-    'Can manage user- space- and general-settings.' => '',
+    'Can manage Spaces within the \'Administration -> Spaces\' section.' => '',
+    'Can manage general settings.' => '',
     'Can manage users and groups' => '',
     'Can manage users and user profiles.' => '',
     'Can manage modules within the \'Administration ->  Modules\' section.' => '',

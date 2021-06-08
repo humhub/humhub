@@ -22,9 +22,9 @@ return [
     'Allows the user to create public content' => '允许用户创建公共内容',
     'Allows the user to invite new members to the space' => '允许用户邀请新成员进空间',
     'Can create hidden (private) spaces.' => '可以创建私有的空间。',
-    'Can create public visible spaces. (Listed in directory)' => '可以创建公共空间。(展示在目录)',
-    'Create private space' => '创建私有空间',
+    'Can create Spaces visible to all members.' => '可以创建公共空间。(展示在目录)',
+    'Create Private Spaces' => '创建私有空间',
     'Create public content' => '创建公共内容',
-    'Create public space' => '创建公共空间',
+    'Create Public Spaces' => '创建公共空间',
     'Invite users' => '邀请用户',
 ];
