@@ -13,4 +13,4 @@ use yii\web\View;
 /* @var $space Space */
 ?>
 
-<a href="#" class="fa fa-users" data-action-click="ui.modal.load" data-action-url="<?= Url::to(['/space/membership/members-list', 'container' => $space]) ?>"> <span><?= $space->getMemberships()->count() ?></span></a>
+<a href="#" class="fa fa-users" data-action-click="ui.modal.load" data-action-url="<?= Url::to(['/space/membership/members-list', 'container' => $space]) ?>"> <span><?= Yii::$app->formatter->asShortInteger($space->getMemberships()->count()) ?></span></a>
