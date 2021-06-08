@@ -7,10 +7,10 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\modules\user\models\Group;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\ProfileFieldCategory;
 use Yii;
-use humhub\libs\DynamicConfig;
 use yii\base\Model;
 
 /**
@@ -24,6 +24,7 @@ class PeopleSettingsForm extends Model
     public $detail2;
     public $detail3;
     public $defaultSorting;
+    public $defaultSortingGroup;
 
     /**
      * @var array Cached options for card details from tables of user profile and its categories
@@ -41,7 +42,8 @@ class PeopleSettingsForm extends Model
         $this->detail1 = Yii::$app->settings->get('people.detail1', '');
         $this->detail2 = Yii::$app->settings->get('people.detail2', '');
         $this->detail3 = Yii::$app->settings->get('people.detail3', '');
-        $this->defaultSorting = Yii::$app->settings->get('people.defaultSorting', 'lastlogin');
+        $this->defaultSorting = Yii::$app->settings->get('people.defaultSorting', '');
+        $this->defaultSortingGroup = Yii::$app->settings->get('people.defaultSortingGroup', '');
     }
 
     /**
@@ -54,6 +56,7 @@ class PeopleSettingsForm extends Model
             ['detail2', 'in', 'range' => $this->getDetailKeys()],
             ['detail3', 'in', 'range' => $this->getDetailKeys()],
             ['defaultSorting', 'in', 'range' => array_keys(self::getSortingOptions())],
+            ['defaultSortingGroup', 'in', 'range' => array_keys(self::getSortingGroupOptions())],
         ];
     }
 
@@ -67,6 +70,17 @@ class PeopleSettingsForm extends Model
             'detail2' => Yii::t('AdminModule.user', 'Information 2'),
             'detail3' => Yii::t('AdminModule.user', 'Information 3'),
             'defaultSorting' => Yii::t('AdminModule.user', 'Default Sorting'),
+            'defaultSortingGroup' => Yii::t('AdminModule.user', 'Group for sorting option "Default"'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'defaultSortingGroup' => Yii::t('AdminModule.user', 'Users of the selected group will be sorted first. "Last login" is used as additional sorting here for users inside the group and for other users and also if no group is selected.'),
         ];
     }
 
@@ -80,6 +94,7 @@ class PeopleSettingsForm extends Model
         Yii::$app->settings->set('people.detail2', $this->detail2);
         Yii::$app->settings->set('people.detail3', $this->detail3);
         Yii::$app->settings->set('people.defaultSorting', $this->defaultSorting);
+        Yii::$app->settings->set('people.defaultSortingGroup', $this->defaultSortingGroup);
 
         return true;
     }
@@ -130,10 +145,24 @@ class PeopleSettingsForm extends Model
     public static function getSortingOptions(): array
     {
         return [
+            '' => Yii::t('AdminModule.user', 'Default'),
             'firstname' => Yii::t('AdminModule.user', 'First name'),
             'lastname' => Yii::t('AdminModule.user', 'Last name'),
             'lastlogin' => Yii::t('AdminModule.user', 'Last login'),
         ];
+    }
+
+    public static function getSortingGroupOptions(): array
+    {
+        $options = ['' => Yii::t('AdminModule.user', 'None')];
+
+        $groups = Group::find()->orderBy('name')->all();
+        foreach ($groups as $group) {
+            /* @var $group Group */
+            $options[$group->id] = $group->name;
+        }
+
+        return $options;
     }
 
 }
