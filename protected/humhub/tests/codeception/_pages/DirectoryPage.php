@@ -16,7 +16,7 @@ class DirectoryPage extends BasePage
     public function clickMembers()
     {
         if($this->actor instanceof \AcceptanceTester) {
-            $this->actor->waitForText('Member directory', 30);
+            $this->actor->waitForText('People', 30);
         }
     }
 

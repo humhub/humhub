@@ -31,7 +31,7 @@ class InviteCest
         $I->waitForText('Accept Invite', null, '.controls-header');
         $I->dontSee('Admin Space 2 Post Private', '#wallStream');
         $I->click('Accept Invite', '.controls-header');
-        $I->waitForText('Admin Space 2 Post Private', null, '#wallStream');
+        $I->dontSee('Accept Invite');
 
         $I->amUser1(true);
         $I->seeInNotifications('Sara Tester accepted your invite for the space Space 2', true);
@@ -60,7 +60,7 @@ class InviteCest
         $I->click('.dropdown-toggle', '.controls-header');
         $I->waitForText('Decline Invite', null,'.controls-header');
         $I->click('Decline Invite');
-        $I->waitForElementVisible('[data-menu-id="dashboard"].active');
+        $I->waitForText('Join');
 
         $I->amUser1(true);
         $I->seeInNotifications('Sara Tester declined your invite for the space Space 2');
