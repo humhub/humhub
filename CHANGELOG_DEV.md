@@ -40,3 +40,5 @@
 - Enh #34: Removed membership icon from my Spaces chooser
 - Enh #117: Show/Hide the “Following” buttons depending on updated friendship/membership state after AJAX action
 - Enh #5102: Use short number format for Space members count on Space Directory
+- Fix #5101: Fix to allow editabling of not required profile fields
+

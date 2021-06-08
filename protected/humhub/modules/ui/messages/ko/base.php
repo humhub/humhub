@@ -1,6 +1,8 @@
 <?php
-return array (
-  'Collapse' => '접기',
-  'Read more' => '',
-  'User Interface' => '',
-);
+
+return [
+    'Collapse' => '접기',
+    'Read more' => '',
+    'Reset filters' => '',
+    'User Interface' => '',
+];

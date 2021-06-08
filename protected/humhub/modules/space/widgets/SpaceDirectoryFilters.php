@@ -27,7 +27,7 @@ class SpaceDirectoryFilters extends DirectoryFilters
     protected function initDefaultFilters()
     {
         $this->addFilter('keyword', [
-                'title' => Yii::t('SpaceModule.base', 'Find Spaces by their description or by their Tags'),
+                'title' => Yii::t('SpaceModule.base', 'Find Spaces by their description or by their tags'),
                 'placeholder' => Yii::t('SpaceModule.base', 'Search...'),
                 'type' => 'input',
                 'wrapperClass' => 'col-md-6 form-search-filter-keyword',
@@ -50,10 +50,10 @@ class SpaceDirectoryFilters extends DirectoryFilters
                 'title' => Yii::t('SpaceModule.base', 'Status'),
                 'type' => 'dropdown',
                 'options' => [
-                    '' => Yii::t('SpaceModule.base', 'All'),
+                    '' => Yii::t('SpaceModule.base', 'Any'),
                     'member' => Yii::t('SpaceModule.base', 'Member'),
                     'follow' => Yii::t('SpaceModule.base', 'Following'),
-                    'none' => Yii::t('SpaceModule.base', 'Neither member nor following'),
+                    'none' => Yii::t('SpaceModule.base', 'Neither..nor'),
                 ],
                 'sortOrder' => 300,
             ]);

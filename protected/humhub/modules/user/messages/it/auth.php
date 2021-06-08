@@ -29,7 +29,7 @@ return array (
   'If you don\'t use this link within 24 hours, it will expire.' => 'Se non usi questo link entro 24 ore, esso verrà disabilitato.',
   'If you\'re already a member, please login with your username/email and password.' => 'Se sei già un membro, per favore accedi con il tuo username/email e password.',
   'Just enter your e-mail address. We\'ll send you recovery instructions!' => 'Inserisci la tua email. Ti manderemo le istruzioni per recuperare la tua password!',
-  'Log out' => '',
+  'Log out' => 'Esci',
   'Login' => 'Login',
   'New user needs approval' => 'Il nuovo utente ha bisogno di essere approvato',
   'Password recovery' => 'Recupera password',

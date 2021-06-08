@@ -25,12 +25,12 @@ class CreatePrivateSpace extends BasePermission
     /**
      * @inheritdoc
      */
-    protected $title = 'Create private space';
+    protected $title = 'Create Private Spaces';
 
     /**
      * @inheritdoc
      */
-    protected $description = 'Can create hidden (private) spaces.';
+    protected $description = 'Can create hidden (private) Spaces.';
 
     /**
      * @inheritdoc
@@ -45,7 +45,7 @@ class CreatePrivateSpace extends BasePermission
     public function __construct($config = []) {
         parent::__construct($config);
         
-        $this->title = Yii::t('SpaceModule.permissions', 'Create private space');
-        $this->description = Yii::t('SpaceModule.permissions', 'Can create hidden (private) spaces.');
+        $this->title = Yii::t('SpaceModule.permissions', 'Create Private Spaces');
+        $this->description = Yii::t('SpaceModule.permissions', 'Can create hidden (private) Spaces.');
     }    
 }

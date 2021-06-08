@@ -63,12 +63,11 @@ $container = $model->content->container;
         <?php if ($renderOptions->isShowAuthorInformationInSubHeadLine($model)) : ?>
             <?= Html::containerLink($model->content->createdBy, ['class' => 'wall-entry-container-link']) ?>
         <?php endif ?>
-
         <?php if ($renderOptions->isShowContainerInformationInSubTitle($model)) : ?>
             <?php if ($renderOptions->isShowAuthorInformationInSubHeadLine($model)) : ?>
                 <?= Icon::get('caret-right') ?>
                 <?= Html::containerLink($model->content->container, ['class' => 'wall-entry-container-link']) ?>
-            <?php elseif($model->content->container instanceof Space) : ?>
+            <?php elseif ($model->content->container instanceof Space) : ?>
                 <?= Html::containerLink($model->content->container, ['class' => 'wall-entry-container-link']) ?>
             <?php endif; ?>
         <?php endif; ?>
@@ -78,7 +77,7 @@ $container = $model->content->container;
         <?php endif; ?>
 
         <a href="<?= $permaLink ?>">
-            <?= TimeAgo::widget(['timestamp' => $model->content->created_at]) ?>
+            <?= TimeAgo::widget(['timestamp' => $model->content->created_at, 'titlePrefixInfo' => Yii::t('ContentModule.base', 'Created at:') . ' ']) ?>
         </a>
 
         &middot;

@@ -21,7 +21,7 @@ DirectoryAsset::register($this);
 <div class="panel panel-default">
 
     <div class="panel-heading">
-        <?= Yii::t('SpaceModule.base', '<strong>Spaces</strong> directory'); ?>
+        <?= Yii::t('SpaceModule.base', '<strong>Spaces</strong>'); ?>
     </div>
 
     <div class="panel-body">
@@ -35,7 +35,8 @@ DirectoryAsset::register($this);
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                <?= Yii::t('SpaceModule.base', 'No spaces found!'); ?>
+                <strong><?= Yii::t('SpaceModule.base', 'No results found!'); ?></strong><br/>
+                <?= Yii::t('SpaceModule.base', 'Try other keywords or remove filters.'); ?>
             </div>
         </div>
     </div>
