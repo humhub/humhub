@@ -41,4 +41,5 @@
 - Enh #117: Show/Hide the “Following” buttons depending on updated friendship/membership state after AJAX action
 - Enh #5102: Use short number format for Space members count on Space Directory
 - Fix #5101: Fix to allow editabling of not required profile fields
+- Fix #122: Fix button "Load more" initialization on Pjax loading
 
