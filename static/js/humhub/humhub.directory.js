@@ -56,6 +56,7 @@ humhub.module('directory', function(module, require, $) {
     }
 
     module.export({
+        initOnPjaxLoad: true,
         init,
         applyFilters,
         loadMore,
