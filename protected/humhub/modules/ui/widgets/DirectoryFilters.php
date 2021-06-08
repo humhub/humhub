@@ -54,6 +54,7 @@ abstract class DirectoryFilters extends Widget
         $filtersHtml = '';
         foreach ($this->filters as $filter => $data) {
             $filtersHtml .= $this->render('@humhub/modules/ui/widgets/views/directoryFilter', [
+                'directoryFilters' => $this,
                 'filter' => $filter,
                 'data' => array_merge(self::getDefaultFilterData(), $data),
             ]);
@@ -72,7 +73,7 @@ abstract class DirectoryFilters extends Widget
         ];
     }
 
-    public static function renderFilterInput(string $filter, array $data): string
+    public function renderFilterInput(string $filter, array $data): string
     {
         $inputOptions = ['class' => $data['inputClass']];
 
@@ -111,7 +112,7 @@ abstract class DirectoryFilters extends Widget
 
     public static function getValue(string $filter)
     {
-        $defaultValue = self::getDefaultValue($filter);
+        $defaultValue = static::getDefaultValue($filter);
 
         if (preg_match('/^(.+?)\[(.+?)\]$/', $filter, $arrayMatch)) {
             $array = Yii::$app->request->get($arrayMatch[1]);

@@ -11,6 +11,7 @@ use humhub\modules\user\models\fieldtype\Select;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\PeopleCard;
 use humhub\modules\user\widgets\PeopleFilters;
 use Yii;
 use yii\data\Pagination;
@@ -204,6 +205,15 @@ class PeopleQuery extends ActiveQueryUser
             case 'lastlogin':
                 $this->addOrderBy('last_login DESC');
                 break;
+
+            default:
+                $defaultSortingGroupId = PeopleCard::config('defaultSortingGroup');
+                if (empty($defaultSortingGroupId)) {
+                    $this->addOrderBy('last_login DESC');
+                } else {
+                    $this->leftJoin('group_user', 'group_user.user_id = user.id AND group_user.group_id = :defaultGroupId', [':defaultGroupId' => $defaultSortingGroupId]);
+                    $this->addOrderBy('group_user.group_id DESC, last_login DESC');
+                }
         }
 
         return $this;
