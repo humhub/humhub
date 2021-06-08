@@ -27,7 +27,7 @@ class SpaceDirectoryAccess extends BasePermission
      */
     public function getTitle()
     {
-        return Yii::t('SpaceModule.permissions', 'Can Access Space Directory');
+        return Yii::t('SpaceModule.permissions', 'Can Access \'Spaces\'');
     }
 
     /**
@@ -35,6 +35,6 @@ class SpaceDirectoryAccess extends BasePermission
      */
     public function getDescription()
     {
-        return Yii::t('SpaceModule.permissions', 'Can access the space directory section.');
+        return Yii::t('SpaceModule.permissions', 'Can access the \'Spaces\' section.');
     }
 }

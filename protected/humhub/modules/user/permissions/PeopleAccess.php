@@ -27,7 +27,7 @@ class PeopleAccess extends BasePermission
      */
     public function getTitle()
     {
-        return Yii::t('UserModule.permissions', 'Can Access People');
+        return Yii::t('UserModule.permissions', 'Can Access \'People\'');
     }
 
     /**
@@ -35,6 +35,6 @@ class PeopleAccess extends BasePermission
      */
     public function getDescription()
     {
-        return Yii::t('UserModule.permissions', 'Can access the people section.');
+        return Yii::t('UserModule.permissions', 'Can access \'People\' section.');
     }
 }

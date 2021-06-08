@@ -1,4 +1,5 @@
 <?php
+
 use humhub\assets\DirectoryAsset;
 use humhub\libs\Html;
 use humhub\modules\user\components\PeopleQuery;
@@ -36,13 +37,14 @@ DirectoryAsset::register($this);
 
 <div class="row cards">
     <?php if (!$people->exists()): ?>
-    <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <?= Yii::t('UserModule.base', 'No results found! Try other keywords or remove filters.'); ?>
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <strong><?= Yii::t('UserModule.base', 'No results found!'); ?></strong><br/>
+                    <?= Yii::t('UserModule.base', 'Try other keywords or remove filters.'); ?>
+                </div>
             </div>
         </div>
-    </div>
     <?php endif; ?>
 
     <?php foreach ($people->all() as $user) : ?>
@@ -51,13 +53,13 @@ DirectoryAsset::register($this);
 </div>
 
 <?php if (!$people->isLastPage()) : ?>
-<div class="directory-load-more">
-    <?= Button::primary(Yii::t('UserModule.base', 'Load more'))
-        ->icon('fa-angle-down')
-        ->action('directory.loadMore')
-        ->options([
-            'data-current-page' => $people->pagination->getPage() + 1,
-            'data-total-pages' => $people->pagination->getPageCount(),
-        ]) ?>
-</div>
+    <div class="directory-load-more">
+        <?= Button::primary(Yii::t('UserModule.base', 'Load more'))
+            ->icon('fa-angle-down')
+            ->action('directory.loadMore')
+            ->options([
+                'data-current-page' => $people->pagination->getPage() + 1,
+                'data-total-pages' => $people->pagination->getPageCount(),
+            ]) ?>
+    </div>
 <?php endif; ?>
