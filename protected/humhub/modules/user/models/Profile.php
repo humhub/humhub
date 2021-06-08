@@ -223,11 +223,6 @@ class Profile extends ActiveRecord
                 /** @var ProfileField $profileField */
                 $profileField->editable = true;
 
-                // Don't show not required fields
-                if ($profileField->required === 0){
-                    continue;
-                }
-
                 if (!in_array($profileField->internal_name, $safeAttributes)) {
                     if ($profileField->visible && $this->scenario != 'registration') {
                         $profileField->editable = false;
