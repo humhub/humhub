@@ -60,7 +60,7 @@ class PeopleFilters extends DirectoryFilters
         $this->addFilter('sort', [
             'title' => Yii::t('SpaceModule.base', 'Sorting'),
             'type' => 'dropdown',
-            'options' => PeopleSettingsForm::getSortingOptions(),
+            'options' => PeopleSettingsForm::getSortingOptions(true),
             'sortOrder' => 300,
         ]);
 
@@ -127,7 +127,11 @@ class PeopleFilters extends DirectoryFilters
     {
         switch ($filter) {
             case 'sort':
-                return PeopleCard::config('defaultSorting');
+                $defaultSorting = PeopleCard::config('defaultSorting');
+                if ($defaultSorting == '' && !PeopleSettingsForm::isDefaultGroupDefined()) {
+                    return 'lastlogin';
+                }
+                return $defaultSorting;
         }
 
         return '';
