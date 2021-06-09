@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Collapse' => 'Samenvouwen',
-    'Read more' => 'Lees verder',
-    'User Interface' => 'Gebruikersomgeving',
-    'Reset filters' => '',
-];
+return array (
+  'Collapse' => 'Samenvouwen',
+  'Read more' => 'Lees verder',
+  'Reset filters' => 'Filters resetten',
+  'User Interface' => 'Gebruikersomgeving',
+);
