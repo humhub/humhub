@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add topic' => 'Lisää aihe',
+    'Select topic...' => 'Lisää aihe',
     'No topics found for the given query' => 'Aiheita ei lyötynyt haulla',
     'Select {n,plural,=1{topic} other{topics}}' => 'Valitse {n,plural,=1{topic} other{topics}}',
     'This field only allows a maximum of {n,plural,=1{# topic} other{# topics}}' => 'Tämä kenttä salli maksimissaan {n,plural,=1{# topic} other{# topics}}',

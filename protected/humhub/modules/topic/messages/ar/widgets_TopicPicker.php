@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add topic' => 'أضف الموضوع',
+    'Select topic...' => 'أضف الموضوع',
     'No topics found for the given query' => 'لم يتم العثور على مواضيع للاستعلام المحدد',
     'Select {n,plural,=1{topic} other{topics}}' => 'حدد {n,plural,=1{topic} آخر{topics}}',
     'This field only allows a maximum of {n,plural,=1{# topic} other{# topics}}' => 'يسمح هذا الحقل بحد أقصى {n,plural,=1{# topic} آخر{# topics}}',

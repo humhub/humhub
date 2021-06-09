@@ -172,7 +172,7 @@ class WallStreamFilterNavigation extends FilterNavigation
     {
         $this->addFilter([
             'id' => DefaultStreamFilter::FILTER_INVOLVED,
-            'title' => Yii::t('ContentModule.base', 'Where I\'m involved'),
+            'title' => Yii::t('ContentModule.base', 'I\'m involved'),
             'sortOrder' => 100
         ], static::FILTER_BLOCK_BASIC);
 
@@ -184,7 +184,7 @@ class WallStreamFilterNavigation extends FilterNavigation
 
         $this->addFilter([
             'id' => DefaultStreamFilter::FILTER_FILES,
-            'title' => Yii::t('ContentModule.base', 'With file attachments'),
+            'title' => Yii::t('ContentModule.base', 'With attachments'),
             'sortOrder' => 300
         ], static::FILTER_BLOCK_BASIC);
 
@@ -209,7 +209,7 @@ class WallStreamFilterNavigation extends FilterNavigation
                 'class' => RadioFilterInput::class,
                 'radioGroup' => 'visibility',
                 'multiple' => true,
-                'title' => Yii::t('ContentModule.base', 'Only public content'),
+                'title' => Yii::t('ContentModule.base', 'Public'),
                 'sortOrder' => 100
             ], static::FILTER_BLOCK_VISIBILITY);
 
@@ -218,7 +218,7 @@ class WallStreamFilterNavigation extends FilterNavigation
                 'class' => RadioFilterInput::class,
                 'radioGroup' => 'visibility',
                 'multiple' => true,
-                'title' => Yii::t('ContentModule.base', 'Only private content'),
+                'title' => Yii::t('ContentModule.base', 'Private'),
                 'sortOrder' => 200
             ], static::FILTER_BLOCK_VISIBILITY);
         }

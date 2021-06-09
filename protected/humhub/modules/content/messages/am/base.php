@@ -63,7 +63,7 @@ return [
     'Unarchive' => 'ከማህደር አውጣ',
     'Unpin' => 'ንቀል',
     'Updated' => 'ዘምኗል',
-    'With file attachments' => 'ከአባሪ ፋይሎች ጋር',
+    'With attachments' => 'ከአባሪ ፋይሎች ጋር',
     'You do not have the permission to move this content to the given space.' => 'ይህን ይዘት ወደቀረበው ምህዳር ለማዛወር ፈቃድ አላገኙም።',
     'You do not have the permission to move this content.' => 'ይህን ይዘት ለማዛወር ፈቃድ አላገኙም።',
     'Your last edit state has been saved!' => 'ለመጨረሻ ጊዜ አርትዖት ያደረጉት ነገር ተቀምጧል!',
@@ -84,5 +84,5 @@ return [
     'Visible to friends of {displayName}' => '',
     'Visible to you and {displayName}' => '',
     'Visible to your friends' => '',
-    'Where I\'m involved' => '',
+    'I\'m involved' => '',
 ];

@@ -21,7 +21,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add topic' => 'Добавить тему',
+    'Select topic...' => 'Добавить тему',
     'No topics found for the given query' => 'Темы по данному запросу не найдены',
     'Select {n,plural,=1{topic} other{topics}}' => 'Выбрите {n,plural,=1{тему} other{темы}}',
     'This field only allows a maximum of {n,plural,=1{# topic} other{# topics}}' => 'Это поле поддерживает максимум {n,plural,=1{# тему} other{# темы}}',

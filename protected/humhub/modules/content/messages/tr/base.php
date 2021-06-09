@@ -82,7 +82,7 @@ return [
     'Visible to friends of {displayName}' => '',
     'Visible to you and {displayName}' => '',
     'Visible to your friends' => '',
-    'Where I\'m involved' => '',
-    'With file attachments' => '',
+    'I\'m involved' => '',
+    'With attachments' => '',
     'Your last edit state has been saved!' => '',
 ];

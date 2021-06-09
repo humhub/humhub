@@ -55,7 +55,7 @@ return [
     'Unarchive' => 'خروج از بایگانی',
     'Unpin' => 'برداشتن سنجاق',
     'Updated' => 'به‌روزرسانی شده',
-    'With file attachments' => 'با پرونده‌های پیوست',
+    'With attachments' => 'با پرونده‌های پیوست',
     'You do not have the permission to move this content to the given space.' => 'شما مجوز جابجایی این محتوا به انجمن درخواست شده را ندارید.',
     'You do not have the permission to move this content.' => 'شما مجوز جابجایی این محتوا را ندارید.',
     'Your last edit state has been saved!' => 'وضعیت واپسین ویرایش شما ذخیره شده است!',
@@ -84,5 +84,5 @@ return [
     'Visible to friends of {displayName}' => '',
     'Visible to you and {displayName}' => '',
     'Visible to your friends' => '',
-    'Where I\'m involved' => '',
+    'I\'m involved' => '',
 ];
