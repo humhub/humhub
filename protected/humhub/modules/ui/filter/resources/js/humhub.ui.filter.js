@@ -42,6 +42,29 @@ humhub.module('ui.filter', function(module, require, $) {
         return this.$.data('filter-category') || this.getId();
     };
 
+    FilterInput.prototype.updateUrl = function(url) {
+        window.history.pushState(null, "", url
+            .replace(/&{2,}/, '&')
+            .replace(/\?&+/, '?')
+            .replace(/[\?&]+$/, ''));
+    };
+
+    FilterInput.prototype.appendUrlParam = function(param, value) {
+        var url = window.location.href;
+        url += (url.indexOf('?') > -1 ? '&' : '?');
+        url += param + '=' + value;
+        this.updateUrl(url);
+    };
+
+    FilterInput.prototype.removeUrlParam = function(param) {
+        var url = window.location.href;
+        var escapeRegExp = function(escapingString) {
+            return escapingString.replace(/[-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+        }
+        url = url.replace(new RegExp(escapeRegExp(param + '=') + '[^&]+'), '');
+        this.updateUrl(url);
+    };
+
     var TextInput = FilterInput.extend(function($node, filter) {
         FilterInput.call(this, $node, filter);
         this.delay = object.defaultValue(this.$.data('filter-input-delay'), 500);
@@ -88,7 +111,15 @@ humhub.module('ui.filter', function(module, require, $) {
 
     CheckBoxInput.prototype.toggle = function() {
         this.$icon.toggleClass(this.inActiveClass).toggleClass(this.activeClass);
-        this.filter.triggerChange();
+        this.filter.triggerChange(this);
+
+        // Update url in address bar with new state of the filter
+        var urlParam = this.getCategory() + '[' + this.getId() + ']';
+        if (this.isActive()) {
+            this.appendUrlParam(urlParam, '1');
+        } else {
+            this.removeUrlParam(urlParam);
+        }
     };
 
     CheckBoxInput.prototype.deactivate = function() {
