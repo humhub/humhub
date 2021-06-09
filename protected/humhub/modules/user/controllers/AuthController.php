@@ -36,6 +36,11 @@ class AuthController extends Controller
      * after the response is generated.
      */
     const EVENT_AFTER_LOGIN = 'afterLogin';
+    
+    /**
+     * @event Triggered after an successful login but before checking user status
+     */
+    const EVENT_BEFORE_CHECKING_USER_STATUS = 'beforeCheckingUserStatus';
 
     /**
      * @inheritdoc
@@ -203,6 +208,7 @@ class AuthController extends Controller
     {
         $redirectUrl = ['/user/auth/login'];
         $success = false;
+        $this->trigger(static::EVENT_BEFORE_CHECKING_USER_STATUS, new UserEvent(['user' => $user]));
         if ($user->status == User::STATUS_ENABLED) {
             $duration = 0;
             if (
