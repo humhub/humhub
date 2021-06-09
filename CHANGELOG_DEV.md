@@ -1,6 +1,8 @@
 1.9.0-beta.1 (Unreleased)
 ----------------------------
 
+At least version 7.3 is now required as the PHP version!
+
 - Enh #3733: Forbid to open AJAX actions as separate page
 - Enh #677: Allow to create new database and set database port on install
 - Fix #4877: Check for writable uploads/profile_image directory

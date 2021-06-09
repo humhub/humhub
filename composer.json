@@ -13,7 +13,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.2",
+        "php": ">=7.3",
         "ext-exif": "*",
         "ext-zip": "*",
         "ext-intl": "*",
@@ -24,7 +24,7 @@
         "jbroadway/urlify": "^1.0",
         "kartik-v/yii2-widgets": "*",
         "laminas/laminas-escaper": "^2.6",
-        "laminas/laminas-http": "^2.13",
+        "laminas/laminas-http": "^2.14",
         "laminas/laminas-ldap": "^2.10",
         "matthewbdaly/zendsearch": "^0.0.3",
         "mistic100/randomcolor": "^1.0",
@@ -104,7 +104,7 @@
         },
         "platform-check": false,
 	"platform": {
-	    "php": "7.2"
+	    "php": "7.3"
 	}
     },
     "scripts": {

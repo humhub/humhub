@@ -211,8 +211,8 @@ class PeopleQuery extends ActiveQueryUser
                 if (empty($defaultSortingGroupId)) {
                     $this->addOrderBy('last_login DESC');
                 } else {
-                    $this->leftJoin('group_user', 'group_user.user_id = user.id AND group_user.group_id = :defaultGroupId', [':defaultGroupId' => $defaultSortingGroupId]);
-                    $this->addOrderBy('group_user.group_id DESC, last_login DESC');
+                    $this->leftJoin('group_user AS top_group_sorting', 'top_group_sorting.user_id = user.id AND top_group_sorting.group_id = :defaultGroupId', [':defaultGroupId' => $defaultSortingGroupId]);
+                    $this->addOrderBy('top_group_sorting.group_id DESC, last_login DESC');
                 }
         }
 
