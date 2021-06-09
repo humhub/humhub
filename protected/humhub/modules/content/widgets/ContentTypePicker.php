@@ -50,12 +50,19 @@ class ContentTypePicker extends MultiSelect
         foreach ($this->types as $type) {
             $itemKey = $this->getItemKey($item);
 
-            if($type->typeClass === $itemKey) {
+            if ($type->typeClass === $itemKey) {
                 $icon = $type->getIcon();
                 return empty($icon) ? $this->defaultIcon : $icon;
             }
         }
     }
 
+    /**
+     * @inheritdoc
+     */
+    protected function getItemText($item)
+    {
+        return ucfirst(parent::getItemText($item));
+    }
 
 }
