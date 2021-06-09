@@ -58,7 +58,7 @@ return array (
   'Password changed' => 'Passwort geändert',
   'Password needs to be at least {chars} characters long.' => 'Das Passwort muss mindestens {chars} Zeichen lang sein.',
   'Pending Requests' => 'Offene Anfragen',
-  'People' => 'Menschen',
+  'People' => 'Benutzer',
   'Permission' => 'Berechtigung',
   'Profile' => 'Profil',
   'Profile posts only' => 'Nur Profil Beiträge',
