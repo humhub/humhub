@@ -61,7 +61,7 @@ return array (
   'Load more' => 'Mehr laden',
   'Login' => 'Login',
   'Max. 100 characters.' => 'Max. 100 Zeichen.',
-  'Member' => 'Mitglieder',
+  'Member' => 'Mitglied',
   'Member since' => 'Mitglied seit',
   'Members' => 'Mitglieder',
   'Moderator' => 'Moderator',
