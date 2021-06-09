@@ -10,6 +10,7 @@ namespace humhub\modules\admin\models\forms;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\ProfileFieldCategory;
+use humhub\modules\user\widgets\PeopleCard;
 use Yii;
 use yii\base\Model;
 
@@ -70,7 +71,7 @@ class PeopleSettingsForm extends Model
             'detail2' => Yii::t('AdminModule.user', 'Information 2'),
             'detail3' => Yii::t('AdminModule.user', 'Information 3'),
             'defaultSorting' => Yii::t('AdminModule.user', 'Default Sorting'),
-            'defaultSortingGroup' => Yii::t('AdminModule.user', 'Group for sorting option "Default"'),
+            'defaultSortingGroup' => Yii::t('AdminModule.user', 'Prioritised User Group'),
         ];
     }
 
@@ -80,7 +81,7 @@ class PeopleSettingsForm extends Model
     public function attributeHints()
     {
         return [
-            'defaultSortingGroup' => Yii::t('AdminModule.user', 'Users of the selected group will be sorted first. "Last login" is used as additional sorting here for users inside the group and for other users and also if no group is selected.'),
+            'defaultSortingGroup' => Yii::t('AdminModule.user', 'Select a prioritised group whose members are displayed before all others when the sorting option \'Default\' is selected. The users within the group and the users outside the group are additionally sorted by their last login.'),
         ];
     }
 
@@ -142,14 +143,20 @@ class PeopleSettingsForm extends Model
         return $keys;
     }
 
-    public static function getSortingOptions(): array
+    public static function getSortingOptions($checkDefaultGroup = false): array
     {
-        return [
+        $options = [
             '' => Yii::t('AdminModule.user', 'Default'),
             'firstname' => Yii::t('AdminModule.user', 'First name'),
             'lastname' => Yii::t('AdminModule.user', 'Last name'),
             'lastlogin' => Yii::t('AdminModule.user', 'Last login'),
         ];
+
+        if ($checkDefaultGroup && !self::isDefaultGroupDefined()) {
+            unset($options['']);
+        }
+
+        return $options;
     }
 
     public static function getSortingGroupOptions(): array
@@ -163,6 +170,15 @@ class PeopleSettingsForm extends Model
         }
 
         return $options;
+    }
+
+    public static function isDefaultGroupDefined(): bool
+    {
+        $defaultSortingGroupId = PeopleCard::config('defaultSortingGroup');
+
+        return $defaultSortingGroupId && Group::find()
+            ->where(['id' => $defaultSortingGroupId])
+            ->exists();
     }
 
 }
