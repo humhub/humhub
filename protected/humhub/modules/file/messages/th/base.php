@@ -14,8 +14,8 @@ return array (
   'Invalid Mime-Type' => 'Mime-Type ไม่ถูกต้อง',
   'Last update by:' => 'ปรับปรุงล่าสุดโดย:',
   'Size:' => 'ขนาด:',
-  'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => '',
+  'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'ขออภัย คุณสามารถอัปโหลดได้ครั้งละไม่เกิน {n,plural,=1{# file} other{# files}}',
   'The uploaded image is not a squared.' => 'รูปภาพที่อัปโหลดไม่ใช่สี่เหลี่ยมจัตุรัส',
-  'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => '',
+  'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'ช่องอัปโหลดนี้อนุญาตสูงสุด {n,plural,=1{# file} other{# files}} เท่านั้น',
   'Upload files' => 'อัพโหลดไฟล์',
 );

@@ -140,7 +140,7 @@ return array (
   'You need to login to view contents of this space!' => 'คุณต้องเข้าสู่ระบบเพื่อดูเนื้อหาของพื้นที่นี้!',
   'Your request was successfully submitted to the space administrators.' => 'คำขอของคุณถูกส่งไปยังผู้ดูแลพื้นที่เรียบร้อยแล้ว',
   'Your request was successfully submitted to the workspace administrators.' => 'ส่งคำขอของคุณไปยังผู้ดูแลระบบพื้นที่ทำงานเรียบร้อยแล้ว',
-  '{count} members' => '',
+  '{count} members' => '{count} สมาชิก',
   '{email} is already registered!' => '{email} ลงทะเบียนแล้ว!',
   '{email} is not valid!' => '{email} ไม่ถูกต้อง!',
 );

@@ -1,6 +1,6 @@
 <?php
 return array (
-  '-' => '',
+  '-' => '-',
   '<strong>Create</strong> new space' => '<strong>สร้าง</strong> พื้นที่ใหม่',
   '<strong>Manage</strong> members' => '<strong>จัดการ</strong> สมาชิก',
   '<strong>Members</strong>' => '<strong>สมาชิก</strong>',
