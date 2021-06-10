@@ -29,7 +29,7 @@ class SpaceDirectoryQuery extends ActiveQuerySpace
     /**
      * @var int
      */
-    public $pageSize = 18;
+    public $pageSize = 25;
 
     /**
      * @inheritdoc
