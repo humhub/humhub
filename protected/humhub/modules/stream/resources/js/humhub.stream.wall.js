@@ -375,7 +375,7 @@ humhub.module('stream.wall', function (module, require, $) {
         this.getContentTypePicker().remove(evt.$trigger.data('typeId'));
     };
 
-    WallStreamFilter.prototype.triggerChange = function(evt) {
+    WallStreamFilter.prototype.triggerChange = function() {
         this.super('triggerChange');
         this.updateFilterCount();
     };

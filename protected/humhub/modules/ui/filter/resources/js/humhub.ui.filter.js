@@ -20,6 +20,17 @@ humhub.module('ui.filter', function(module, require, $) {
 
     FilterInput.prototype.inputChange = function(evt) {
         this.filter.triggerChange(evt);
+
+        var urlParam = this.getCategory();
+        var values = this.getValue();
+        if (typeof values === 'object') {
+            urlParam += '[]';
+            this.removeUrlParam(urlParam);
+            values.forEach(value => this.appendUrlParam(urlParam, value));
+        } else {
+            this.removeUrlParam(urlParam);
+            this.appendUrlParam(urlParam, values);
+        }
     };
 
     FilterInput.prototype.getId = function() {
@@ -58,7 +69,7 @@ humhub.module('ui.filter', function(module, require, $) {
 
     FilterInput.prototype.removeUrlParam = function(param) {
         var url = window.location.href;
-        url = url.replace(new RegExp(escapeRegExp(param) + '=[^&]+'), '');
+        url = url.replace(new RegExp(escapeRegExp(param) + '=[^&]+', 'g'), '');
         this.updateUrl(url);
     };
 
@@ -66,7 +77,7 @@ humhub.module('ui.filter', function(module, require, $) {
         var url = window.location.href;
         var paramRegExp = '[\?&]' + escapeRegExp(param) + '=';
         if (url.search(new RegExp(paramRegExp + '[^&]*')) > -1) {
-            url = url.replace(new RegExp('(' + paramRegExp + ')[^&]*'), '$1' + value);
+            url = url.replace(new RegExp('(' + paramRegExp + ')[^&]*', 'g'), '$1' + value);
             this.updateUrl(url);
         } else {
             this.appendUrlParam(param, value);
