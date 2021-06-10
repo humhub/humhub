@@ -58,11 +58,19 @@ humhub.module('ui.filter', function(module, require, $) {
 
     FilterInput.prototype.removeUrlParam = function(param) {
         var url = window.location.href;
-        var escapeRegExp = function(escapingString) {
-            return escapingString.replace(/[-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-        }
-        url = url.replace(new RegExp(escapeRegExp(param + '=') + '[^&]+'), '');
+        url = url.replace(new RegExp(escapeRegExp(param) + '=[^&]+'), '');
         this.updateUrl(url);
+    };
+
+    FilterInput.prototype.updateUrlParam = function(param, value) {
+        var url = window.location.href;
+        var paramRegExp = '[\?&]' + escapeRegExp(param) + '=';
+        if (url.search(new RegExp(paramRegExp + '[^&]*')) > -1) {
+            url = url.replace(new RegExp('(' + paramRegExp + ')[^&]*'), '$1' + value);
+            this.updateUrl(url);
+        } else {
+            this.appendUrlParam(param, value);
+        }
     };
 
     var TextInput = FilterInput.extend(function($node, filter) {
@@ -152,6 +160,9 @@ humhub.module('ui.filter', function(module, require, $) {
         }
 
         this.filter.triggerChange();
+
+        // Update url in address bar with new state of the filter
+        this.updateUrlParam(this.getRadioGroup(), this.getId());
     };
 
     RadioInput.prototype.isForce = function() {
@@ -336,6 +347,10 @@ humhub.module('ui.filter', function(module, require, $) {
 
         return null;
     };
+
+    var escapeRegExp = function(escapingString) {
+        return escapingString.replace(/[-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    }
 
     module.export({
         Filter: Filter,
