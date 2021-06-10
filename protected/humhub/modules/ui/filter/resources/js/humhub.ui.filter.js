@@ -20,18 +20,21 @@ humhub.module('ui.filter', function(module, require, $) {
 
     FilterInput.prototype.inputChange = function(evt) {
         this.filter.triggerChange(evt);
+        this.updateUrl();
+    };
 
-        var urlParam = this.getCategory();
-        var values = this.getValue();
+    FilterInput.prototype.updateUrl = function() {
+        let urlParam = this.getCategory();
+        const values = this.getValue();
         if (typeof values === 'object') {
             urlParam += '[]';
-            this.removeUrlParam(urlParam);
-            values.forEach(value => this.appendUrlParam(urlParam, value));
+            Url.removeParam(urlParam);
+            values.forEach(value => Url.appendParam(urlParam, value));
         } else {
-            this.removeUrlParam(urlParam);
-            this.appendUrlParam(urlParam, values);
+            Url.removeParam(urlParam);
+            Url.appendParam(urlParam, values);
         }
-    };
+    }
 
     FilterInput.prototype.getId = function() {
         return this.$.data('filter-id');
@@ -51,37 +54,6 @@ humhub.module('ui.filter', function(module, require, $) {
 
     FilterInput.prototype.getCategory = function() {
         return this.$.data('filter-category') || this.getId();
-    };
-
-    FilterInput.prototype.updateUrl = function(url) {
-        window.history.pushState(null, "", url
-            .replace(/&{2,}/, '&')
-            .replace(/\?&+/, '?')
-            .replace(/[\?&]+$/, ''));
-    };
-
-    FilterInput.prototype.appendUrlParam = function(param, value) {
-        var url = window.location.href;
-        url += (url.indexOf('?') > -1 ? '&' : '?');
-        url += param + '=' + value;
-        this.updateUrl(url);
-    };
-
-    FilterInput.prototype.removeUrlParam = function(param) {
-        var url = window.location.href;
-        url = url.replace(new RegExp(escapeRegExp(param) + '=[^&]+', 'g'), '');
-        this.updateUrl(url);
-    };
-
-    FilterInput.prototype.updateUrlParam = function(param, value) {
-        var url = window.location.href;
-        var paramRegExp = '[\?&]' + escapeRegExp(param) + '=';
-        if (url.search(new RegExp(paramRegExp + '[^&]*')) > -1) {
-            url = url.replace(new RegExp('(' + paramRegExp + ')[^&]*', 'g'), '$1' + value);
-            this.updateUrl(url);
-        } else {
-            this.appendUrlParam(param, value);
-        }
     };
 
     var TextInput = FilterInput.extend(function($node, filter) {
@@ -131,15 +103,17 @@ humhub.module('ui.filter', function(module, require, $) {
     CheckBoxInput.prototype.toggle = function() {
         this.$icon.toggleClass(this.inActiveClass).toggleClass(this.activeClass);
         this.filter.triggerChange(this);
-
-        // Update url in address bar with new state of the filter
-        var urlParam = this.getCategory() + '[' + this.getId() + ']';
-        if (this.isActive()) {
-            this.appendUrlParam(urlParam, '1');
-        } else {
-            this.removeUrlParam(urlParam);
-        }
+        this.updateUrl();
     };
+
+    CheckBoxInput.prototype.updateUrl = function() {
+        const urlParam = this.getCategory() + '[' + this.getId() + ']';
+        if (this.isActive()) {
+            Url.appendParam(urlParam, '1');
+        } else {
+            Url.removeParam(urlParam);
+        }
+    }
 
     CheckBoxInput.prototype.deactivate = function() {
         this.$icon.removeClass(this.activeClass).addClass(this.inActiveClass);
@@ -171,10 +145,12 @@ humhub.module('ui.filter', function(module, require, $) {
         }
 
         this.filter.triggerChange();
-
-        // Update url in address bar with new state of the filter
-        this.updateUrlParam(this.getRadioGroup(), this.getId());
+        this.updateUrl();
     };
+
+    RadioInput.prototype.updateUrl = function() {
+        Url.updateParam(this.getRadioGroup(), this.getId());
+    }
 
     RadioInput.prototype.isForce = function() {
         return this.$.data('radio-force');
@@ -359,9 +335,30 @@ humhub.module('ui.filter', function(module, require, $) {
         return null;
     };
 
-    var escapeRegExp = function(escapingString) {
-        return escapingString.replace(/[-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-    }
+    var Url = {
+        url: () => window.location.href,
+        set: function(url) {
+            window.history.pushState(null, '', this.clear(url));
+        },
+        appendParam: function(param, value) {
+            const separator = (this.url().indexOf('?') > -1 ? '&' : '?');
+            this.set(this.url() + separator + param + '=' + value);
+        },
+        removeParam: function(param) {
+            const paramRegExp = new RegExp('(\\?|&)' + this.escapeRegExp(param) + '=[^&]*', 'g');
+            this.set(this.url().replace(paramRegExp, '$1'));
+        },
+        updateParam: function(param, value) {
+            const paramRegExp = '[\?&]' + this.escapeRegExp(param) + '=';
+            if (this.url().search(new RegExp(paramRegExp + '[^&]*')) > -1) {
+                this.set(this.url().replace(new RegExp('(' + paramRegExp + ')[^&]*', 'g'), '$1' + value));
+            } else {
+                this.appendParam(param, value);
+            }
+        },
+        escapeRegExp: escapingString => escapingString.replace(/[-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"),
+        clear: url => url.replace(/&&/g, '&').replace(/\?&+/, '?').replace(/[?&]+$/, ''),
+    };
 
     module.export({
         Filter: Filter,

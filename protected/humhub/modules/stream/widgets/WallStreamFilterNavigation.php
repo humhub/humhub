@@ -293,7 +293,7 @@ class WallStreamFilterNavigation extends FilterNavigation
             'category' => 'originators',
             'pickerOptions' => [
                 'id' => 'stream-user-picker',
-                'itemKey' => 'id',
+                'itemKey' => 'guid',
                 'name' => 'stream-user-picker'
             ]
         ], static::FILTER_BLOCK_ORIGINATORS);
