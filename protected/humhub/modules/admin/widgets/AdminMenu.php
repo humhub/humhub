@@ -106,7 +106,7 @@ class AdminMenu extends LeftNavigation
 
         $this->addEntry(new MenuLink([
             'id' => 'modules',
-            'label' => Yii::t('AdminModule.base', 'Modules') .$updatesBadge,
+            'label' => Yii::t('AdminModule.base', 'Modules') . $updatesBadge,
             'url' => ['/admin/module'],
             'icon' => 'rocket',
             'sortOrder' => 500,
