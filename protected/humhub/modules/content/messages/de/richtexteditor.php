@@ -31,7 +31,7 @@ return array (
   'Location' => 'Ort',
   'Objects' => 'Objekte',
   'Paragraph' => 'Absätze',
-  'People' => 'Menschen',
+  'People' => 'Benutzer',
   'Rows' => 'Zeilen',
   'Symbols' => 'Symbole',
   'Title' => 'Titel',
