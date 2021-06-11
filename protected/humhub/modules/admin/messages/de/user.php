@@ -116,7 +116,7 @@ Kind Regards<br>
   'Password' => 'Passwort',
   'Pending approvals' => 'Freigabe',
   'Pending user approvals' => 'Ausstehende Freigaben',
-  'People' => 'Benutzer',
+  'People' => 'Mitglieder',
   'Permanently delete' => 'Dauerhaft gelöscht',
   'Permissions' => 'Berechtigungen',
   'Prioritised User Group' => 'Priorisierte Benutzergruppe',

@@ -39,7 +39,7 @@ return array (
   'OEmbed providers' => 'OEmbed-Provider',
   'Open documentation' => 'Dokumentation öffnen',
   'Pending user registrations' => 'Ausstehende Benutzerregistrierungen',
-  'People' => 'Benutzer',
+  'People' => 'Mitglieder',
   'Permissions' => 'Berechtigungen',
   'Proxy' => 'Proxy',
   'Self test' => 'Selbsttest',
