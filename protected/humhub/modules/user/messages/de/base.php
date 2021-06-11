@@ -5,7 +5,7 @@ return array (
   '<strong>Group</strong> members - {group}' => '<strong>Gruppen-</strong>Mitglieder - {group}',
   '<strong>Member</strong> in these spaces' => '<strong>Mitgliedschaften</strong>',
   '<strong>Member</strong> of these Spaces' => '<strong>Mitgliedschaften</strong>',
-  '<strong>People</strong>' => '<strong>Benutzerverzeichnis</strong>',
+  '<strong>People</strong>' => '<strong>Mitgliederverzeichnis</strong>',
   '<strong>User</strong> tags' => '<strong>Tags</strong>',
   'All' => 'Alle',
   'Allows access to your about page with personal information' => 'Zugriff auf deine Info-Seite mit persönlichen Informationen erlauben',
