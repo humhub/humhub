@@ -505,11 +505,25 @@ class StreamQuery extends Model
                     ], [':to' => $this->to]);
             }
         } else {
-            $this->_query->orderBy('content.id DESC');
+            $this->_query->orderBy('content.created_at DESC');
             if (!empty($this->from)) {
-                $this->_query->andWhere("content.id < :from", [':from' => $this->from]);
+                $this->_query->andWhere(
+                    ['or',
+                        "content.created_at < (SELECT created_at FROM content wd WHERE wd.id=:from)",
+                        ['and',
+                            "content.created_at = (SELECT created_at FROM content wd WHERE wd.id=:from)",
+                            "content.id > :from"
+                        ],
+                    ], [':from' => $this->from]);
             } elseif (!empty($this->to)) {
-                $this->_query->andWhere("content.id > :to", [':to' => $this->to]);
+                $this->_query->andWhere(
+                    ['or',
+                        "content.created_at > (SELECT created_at FROM content wd WHERE wd.id=:to)",
+                        ['and',
+                            "content.created_at = (SELECT created_at FROM content wd WHERE wd.id=:to)",
+                            "content.id < :to"
+                        ],
+                    ], [':to' => $this->to]);
             }
         }
     }
