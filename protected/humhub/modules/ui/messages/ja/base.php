@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Collapse' => '折りたたむ',
-    'Read more' => '続きを読む',
-    'User Interface' => 'ユーザーインターフェース',
-    'Reset filters' => '',
-];
+return array (
+  'Collapse' => '折りたたむ',
+  'Read more' => '続きを読む',
+  'Reset filters' => 'リセット',
+  'User Interface' => 'ユーザーインターフェース',
+);

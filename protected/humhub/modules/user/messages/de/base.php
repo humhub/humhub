@@ -65,7 +65,7 @@ return array (
   'Register now and participate!' => 'Jetzt registrieren und teilnehmen!',
   'Search...' => 'Suchen..',
   'Security' => 'Sicherheit',
-  'Send invite' => 'Neue Benutzer einladen',
+  'Send invite' => 'Neue Mitglieder einladen',
   'Settings' => 'Einstellungen',
   'Show At Registration' => 'Bei Registrierung anzeigen',
   'Show all content' => 'Zeige alle Inhalte',
