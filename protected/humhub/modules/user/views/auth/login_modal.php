@@ -92,7 +92,7 @@ use humhub\modules\user\widgets\AuthChoice;
                         <?php if ($invite->showCaptureInRegisterForm()) : ?>
                             <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
                             <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
-                            'captchaAction' => 'auth/captcha',
+                            'captchaAction' => '/user/auth/captcha',
                         ])->label(false); ?>
                         <?php endif; ?>
                         <hr>
