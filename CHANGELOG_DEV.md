@@ -1,7 +1,7 @@
 1.9.0-beta.1 (June 15, 2021)
 ----------------------------
 
-At least version 7.3 is now required as the PHP version!
+Note: HumHub version 1.9+ requires PHP 7.3 or higher!
 
 - Enh #3733: Forbid to open AJAX actions as separate page
 - Enh #677: Allow to create new database and set database port on installation wizard
