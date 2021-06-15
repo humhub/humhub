@@ -48,7 +48,10 @@ abstract class BaseSettingsManager extends Component
             throw new Exception('Could not determine module id');
         }
 
-        $this->loadValues();
+        if (static::isDatabaseInstalled()) {
+            $this->loadValues();
+        }
+
 
         parent::init();
     }
