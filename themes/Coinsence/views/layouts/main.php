@@ -4,8 +4,11 @@
 
 \humhub\assets\AppAsset::register($this);
 
+
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\space\models\Space; ?>
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
+use humhub\modules\xcoin\models\Account; ?>
 
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -55,7 +58,15 @@ use humhub\modules\space\models\Space; ?>
                 </div>
 
                 <div class="search pull-right hidden-xs">
-                    <?= \yii\helpers\Html::a('<i class="fa fa-search"></i>', ['/search']) ?>
+                    <?= \yii\helpers\Html::a(
+                        '<i class="fa fa-exchange"></i>',
+                        [
+                            '/xcoin/transaction/transfer',
+                            'accountId' => Account::findOne(['user_id' => Yii::$app->user->id, 'account_type' => Account::TYPE_DEFAULT])->id,
+                            'container' => User::findOne(['id' => Yii::$app->user->id])
+                        ], [
+                            'data-target' => '#globalModal'
+                        ]) ?>
                 </div>
 
                 <div class="nav-menu pull-right">
