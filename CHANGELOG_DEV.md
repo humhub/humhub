@@ -46,3 +46,4 @@ At least version 7.3 is now required as the PHP version!
 - Enh #123: New sorting option "Default" for people directory page
 - Fix #122: Fix button "Load more" initialization on Pjax loading
 - Enh #5114: Added `EVENT_BEFORE_CHECKING_USER_STATUS` in `AuthController.php` to give the possibility to add an event before checking the user status
+- Fix #5122: RichText::output produces "p" element instead of "div" element 
