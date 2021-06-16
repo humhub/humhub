@@ -8,7 +8,17 @@
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use humhub\modules\xcoin\models\Account; ?>
+use humhub\modules\xcoin\helpers\AccountHelper;
+use humhub\modules\xcoin\models\Account;
+
+
+
+// Xcoin transfer button
+$account = Account::findOne(['user_id' => Yii::$app->user->id, 'account_type' => Account::TYPE_DEFAULT]);
+$userContentContainer = User::findOne(['id' => Yii::$app->user->id]);
+$accountAssetsList = AccountHelper::getAssetsList($account);
+
+?>
 
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -58,15 +68,30 @@ use humhub\modules\xcoin\models\Account; ?>
                 </div>
 
                 <div class="search pull-right hidden-xs">
-                    <?= \yii\helpers\Html::a(
-                        '<i class="fa fa-exchange"></i>',
-                        [
-                            '/xcoin/transaction/transfer',
-                            'accountId' => Account::findOne(['user_id' => Yii::$app->user->id, 'account_type' => Account::TYPE_DEFAULT])->id,
-                            'container' => User::findOne(['id' => Yii::$app->user->id])
-                        ], [
-                            'data-target' => '#globalModal'
-                        ]) ?>
+                    <?php if (!empty($accountAssetsList)): ?>
+                        <?= \yii\helpers\Html::a(
+                            '<i class="fa fa-exchange"></i>',
+                            [
+                                '/xcoin/transaction/transfer',
+                                'accountId' => $account->id,
+                                'container' => $userContentContainer
+                            ], [
+                                'data-target' => '#globalModal'
+                            ]) ?>
+                    <?php else: ?>
+                        <?= \yii\helpers\Html::a(
+                            '<i class="fa fa-exchange" aria-hidden="true"></i>',
+                            ['javascript:;'],
+                            [
+                                'class' => 'btn btn-default',
+                                'disabled' => true,
+                                'data-toggle' => 'tooltip',
+                                'data-placement' => 'right',
+                                'title' => 'No assets available on this account!',
+                                'onclick' => 'return false;'
+                            ]
+                        ) . '&nbsp;' ?>
+                    <?php endif; ?>
                 </div>
 
                 <div class="nav-menu pull-right hidden-xs">
