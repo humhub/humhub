@@ -8,7 +8,7 @@ return array (
   '6 months' => '6 μήνες',
   '<strong>Confirm</strong> icon deletion' => '<strong>Επιβεβαίωση </strong> διαγραφή εικονιδίου',
   '<strong>Confirm</strong> image deletion' => '<strong>Επιβεβαίωση </strong> διαγραφή εικόνας',
-  '<strong>Maintenance</strong> Mode' => '',
+  '<strong>Maintenance</strong> Mode' => 'Λειτουργία <strong>Συντήρησης</strong>',
   '<strong>Warning:</strong> All users will be immediately logged out, except admins.' => '',
   'APC(u)' => 'APC(u)',
   'Activate' => '',

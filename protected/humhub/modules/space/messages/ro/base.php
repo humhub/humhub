@@ -15,7 +15,7 @@ return array (
   '<strong>Space</strong> tags' => '',
   '<strong>Spaces</strong>' => '',
   'About' => 'Despre',
-  'Accept' => '',
+  'Accept' => 'Accept',
   'Accept Invite' => '',
   'Add users without invitation' => '',
   'Admin' => 'Admin',

@@ -2,7 +2,7 @@
 return array (
   '<strong>Followers</strong>' => '',
   '<strong>Following</strong>' => '',
-  '<strong>Group</strong> members - {group}' => '',
+  '<strong>Group</strong> members - {group}' => 'Μέλη <strong>Ομάδας</strong> - {group}',
   '<strong>Member</strong> in these spaces' => '',
   '<strong>Member</strong> of these Spaces' => '',
   '<strong>People</strong>' => '',
@@ -38,7 +38,7 @@ return array (
   'Following' => '',
   'Force password change upon first login' => '',
   'Force password change upon next login' => '',
-  'Friends' => '',
+  'Friends' => 'Φίλοι',
   'General' => 'Γενικά',
   'Here you can connect to external service provider for using external services like a single sign on authentication.' => '',
   'Language' => 'Γλώσσα',

@@ -44,7 +44,7 @@ return array (
   'Loading...' => '',
   'Login' => '',
   'Logo of {appName}' => '',
-  'Logout' => '',
+  'Logout' => 'Shkyç',
   'Menu' => '',
   'Module is not enabled on this content container!' => '',
   'My profile' => '',

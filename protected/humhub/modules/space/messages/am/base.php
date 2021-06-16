@@ -15,7 +15,7 @@ return array (
   '<strong>Space</strong> tags' => '',
   '<strong>Spaces</strong>' => '',
   'About' => 'ስለ',
-  'Accept' => '',
+  'Accept' => 'ተቀበል',
   'Accept Invite' => '',
   'Add users without invitation' => '',
   'Admin' => 'አስተዳዳሪ',
