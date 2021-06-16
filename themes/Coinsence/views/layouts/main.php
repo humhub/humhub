@@ -67,8 +67,8 @@ $accountAssetsList = AccountHelper::getAssetsList($account);
                     <?= \humhub\widgets\NotificationArea::widget(); ?>
                 </div>
 
-                <div class="search pull-right hidden-xs">
-                    <?php if (!empty($accountAssetsList)): ?>
+                <?php if (!empty($accountAssetsList)): ?>
+                    <div class="search pull-right hidden-xs">
                         <?= \yii\helpers\Html::a(
                             '<i class="fa fa-exchange"></i>',
                             [
@@ -78,21 +78,8 @@ $accountAssetsList = AccountHelper::getAssetsList($account);
                             ], [
                                 'data-target' => '#globalModal'
                             ]) ?>
-                    <?php else: ?>
-                        <?= \yii\helpers\Html::a(
-                            '<i class="fa fa-exchange" aria-hidden="true"></i>',
-                            ['javascript:;'],
-                            [
-                                'class' => 'btn btn-default',
-                                'disabled' => true,
-                                'data-toggle' => 'tooltip',
-                                'data-placement' => 'right',
-                                'title' => 'No assets available on this account!',
-                                'onclick' => 'return false;'
-                            ]
-                        ) . '&nbsp;' ?>
-                    <?php endif; ?>
-                </div>
+                    </div>
+                <?php endif; ?>
 
                 <div class="nav-menu pull-right hidden-xs">
                     <li class="dropdown">
