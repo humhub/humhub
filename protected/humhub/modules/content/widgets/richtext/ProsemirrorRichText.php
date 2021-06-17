@@ -224,7 +224,7 @@ class ProsemirrorRichText extends AbstractRichText
      * @return mixed
      * @deprecated since 1.8 use `ProsemirrorRichTextConverter::replaceLinkExtension()`
      */
-    public static function replaceLinkExtension(string $text, $extension, callable $callback)
+    public static function replaceLinkExtension($text, $extension, callable $callback)
     {
         return RichTextLinkExtension::replaceLinkExtension($text, $extension, function (RichTextLinkExtensionMatch $match) use ($callback) {
             return $callback($match->match);
