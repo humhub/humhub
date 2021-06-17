@@ -170,8 +170,8 @@ class SelfTest
         } else {
             $checks[] = [
                 'title' => Yii::t('base', $title),
-                'state' => 'ERROR',
-                'hint' => 'Install PCNTL Extension'
+                'state' => 'WARNING',
+                'hint' => 'Install PCNTL Extension. Required only for CronJobs/CLI mode.'
             ];
         }
 

@@ -3,6 +3,14 @@
 
 Note: HumHub version 1.9+ requires PHP 7.3 or higher!
 
+- Fix #5071: Add CLI hint to PCTL Requirements Warning
+
+
+1.9.0-beta.1 (June 15, 2021)
+----------------------------
+
+Note: HumHub version 1.9+ requires PHP 7.3 or higher!
+
 - Enh #3733: Forbid to open AJAX actions as separate page
 - Enh #677: Allow to create new database and set database port on installation wizard
 - Fix #4877: Check for writable uploads/profile_image directory
