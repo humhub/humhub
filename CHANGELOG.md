@@ -7,7 +7,6 @@ HumHub Changelog
 - Fix #5066: Fix pin and archive global content without container
 - Fix #5107: Fix captcha client validation after request new code
 - Fix #22: Fix misplaced OEmbed provider buttons on general settings form
-- Fix #5128: Prerequisites: Increase PHP Min version to 7.3
 
 
 1.8.2 (April 26, 2021)
