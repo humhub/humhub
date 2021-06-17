@@ -171,7 +171,7 @@ class SelfTest
             $checks[] = [
                 'title' => Yii::t('base', $title),
                 'state' => 'WARNING',
-                'hint' => 'Install PCNTL Extension. Required only for CLI mode.'
+                'hint' => 'Install PCNTL Extension. Required only for CronJobs/CLI mode.'
             ];
         }
 
