@@ -1,3 +1,9 @@
+1.9.0-beta.2 (Unreleased)
+----------------------------
+
+- Fix #5128: Prerequisites: Increase PHP Min version to 7.3
+
+
 1.9.0-beta.1 (June 15, 2021)
 ----------------------------
 
