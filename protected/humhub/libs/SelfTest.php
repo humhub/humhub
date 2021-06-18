@@ -53,13 +53,13 @@ class SelfTest
             $checks[] = [
                 'title' => Yii::t('base', $title),
                 'state' => 'WARNING',
-                'hint' => 'Minimum Version 7.1'
+                'hint' => 'Minimum Version 7.3'
             ];
         } else {
             $checks[] = [
                 'title' => Yii::t('base', $title),
                 'state' => 'ERROR',
-                'hint' => 'Minimum Version 7.1'
+                'hint' => 'Minimum Version 7.3'
             ];
         }
 
