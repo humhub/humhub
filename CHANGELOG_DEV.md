@@ -2,6 +2,7 @@
 ----------------------------
 
 - Fix #5128: Prerequisites: Increase PHP Min version to 7.3
+- Fix #5137: Fix convert to short integer on PHP 8
 
 
 1.9.0-beta.1 (June 15, 2021)
