@@ -184,7 +184,7 @@ class CheckboxList extends BaseType
         $internalNameOther = $internalName . '_other_selection';
 
         $value = $user->profile->$internalName;
-        if (!$raw) {
+        if (!$raw && $value !== null) {
 
             $options = $this->getSelectItems();
             $translatedValues = [];

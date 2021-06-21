@@ -111,21 +111,19 @@ class Checkbox extends BaseType
         ]];
     }
 
-    public function getLabels()
-    {
-        $labels = [];
-        $labels[$this->profileField->internal_name] = Yii::t($this->profileField->getTranslationCategory(), $this->profileField->title);
-        return $labels;
-    }
-
     /**
      * @inheritdoc
      */
     public function getUserValue($user, $raw = true)
     {
         $internalName = $this->profileField->internal_name;
-        return $user->profile->$internalName;
+
+        $value = $user->profile->$internalName;
+        if (!$raw && !empty($value)) {
+            $labels = $this->getLabels();
+            return $labels[$internalName];
+        }
+
+        return $value;
     }
 }
-
-?>
