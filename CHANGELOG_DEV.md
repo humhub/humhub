@@ -2,7 +2,7 @@
 ----------------------------
 
 - Fix #5128: Prerequisites: Increase PHP Min version to 7.3
-
+- Fix #5136: Fix get value of user profile fields with types "Checkbox List" and "Checkbox"
 
 1.9.0-beta.1 (June 15, 2021)
 ----------------------------
