@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Administration</strong> menu' => '<strong>Amministrazione</strong> menù',
-  '<strong>Maintenance</strong> Mode' => '',
+  '<strong>Maintenance</strong> Mode' => 'Modalità <strong>Manutenzione</strong>',
   '<strong>Module </strong> administration' => 'Amministrazione <strong>Modulo </strong>',
   '<strong>Warning</strong> incomplete setup!' => '<strong>Attento</strong> configurazione non completata!',
   'About' => 'Informazioni',
@@ -9,7 +9,7 @@ return array (
   'Administration' => 'Amministrazione',
   'Administrative group' => 'Gruppo amministrazione',
   'Advanced' => 'Avanzate',
-  'Advanced settings' => '',
+  'Advanced settings' => 'Impostazioni avanzate',
   'Appearance' => 'Aspetto',
   'Approval' => 'Approvazione',
   'Authentication' => 'Autenticazione',
@@ -20,8 +20,8 @@ return array (
   'Caching' => 'Caching',
   'Cronjobs' => 'Cronjobs',
   'Default' => 'Predefinito',
-  'Delete all' => '',
-  'Delete selected rows' => '',
+  'Delete all' => 'Elimina tutto',
+  'Delete selected rows' => 'Elimina le righe selezionate',
   'Design' => 'Design',
   'Files' => 'File',
   'General' => 'Generale',

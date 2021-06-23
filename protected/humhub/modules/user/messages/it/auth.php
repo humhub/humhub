@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Account</strong> registration' => 'Registrazione <strong>account</strong>',
-  '<strong>Change</strong> Password' => '',
+  '<strong>Change</strong> Password' => '<strong>Cambia</strong> password',
   '<strong>Change</strong> your password' => '<strong>Modifica</strong> la tua password',
   '<strong>Join</strong> the network' => '<strong>Unisciti</strong> a questo network',
   '<strong>Password</strong> changed!' => '<strong>Password</strong> modificata!',
@@ -19,7 +19,7 @@ return array (
   'Create Account' => 'Crea account',
   'Create account' => 'Crea un account',
   'Don\'t have an account? Join the network by entering your e-mail address.' => 'Non hai un account? Aggiungiti al network inserendo il tuo indirizzo e-mail.',
-  'Due to security reasons you are required to change your password in order to access the platform.' => '',
+  'Due to security reasons you are required to change your password in order to access the platform.' => 'Per motivi di sicurezza è necessario modificare la password per accedere alla piattaforma.',
   'Enter security code above' => 'inserisci il codice di sicurezza qui sotto',
   'Forgot your password?' => 'Hai dimenticato la password?',
   'Go to login page' => 'Vai alla pagina di accesso',
@@ -39,7 +39,7 @@ return array (
   'Please enter the letters from the image.' => 'Per favore, inserire le lettere nell\'immagine',
   'Please login with your username/email and password.' => 'Per favore accedi con il tuo username o email e la tua password.',
   'Please use the following link within the next day to reset your password.' => 'Per favore usa il link seguente entro il prossimo giorno per resettare la tua password.',
-  'Please wait' => '',
+  'Please wait' => 'attendere prego',
   'Register' => 'Registrati',
   'Registration successful' => 'Registrazione avvenuta con successo',
   'Remember me' => 'Ricordami',
