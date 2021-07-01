@@ -47,6 +47,8 @@ class MembershipButton extends Widget
             ],
             'becomeMember' => [
                 'title' => Yii::t('SpaceModule.base', 'Join'),
+                'mode' => 'ajax', // 'ajax' - to use data-action-* options for AJAX request, 'link' - to use button as simple <a> link
+                'url' => '#',
                 'attrs' => [
                     'data-action-click' => 'content.container.relationship',
                     'data-action-url' => $this->space->createUrl('/space/membership/request-membership'),
@@ -128,10 +130,20 @@ class MembershipButton extends Widget
      */
     public function run()
     {
+        $options = $this->getOptions();
+
+        if ($options['becomeMember']['mode'] == 'link') {
+            // Switch button "Join" to link mode
+            $options['becomeMember']['url'] = $options['becomeMember']['attrs']['data-action-url'];
+            $options['becomeMember']['attrs']['data-method'] = 'POST';
+            unset($options['becomeMember']['attrs']['data-action-click']);
+            unset($options['becomeMember']['attrs']['data-action-url']);
+        }
+
         return $this->render('membershipButton', [
             'space' => $this->space,
             'membership' => $this->space->getMembership(),
-            'options' => $this->getOptions(),
+            'options' => $options,
             'canCancelMembership' => !$this->space->isSpaceOwner() && $this->space->canLeave(),
         ]);
     }
