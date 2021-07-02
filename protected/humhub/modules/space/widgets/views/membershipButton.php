@@ -14,7 +14,7 @@ if ($membership === null) {
         if ($space->join_policy == Space::JOIN_POLICY_APPLICATION) {
             echo Html::a($options['requestMembership']['title'], $options['requestMembership']['url'], $options['requestMembership']['attrs']);
         } else {
-            echo Html::a($options['becomeMember']['title'], '#', $options['becomeMember']['attrs']);
+            echo Html::a($options['becomeMember']['title'], $options['becomeMember']['url'], $options['becomeMember']['attrs']);
         }
     }
 } elseif ($membership->status == Membership::STATUS_INVITED) {

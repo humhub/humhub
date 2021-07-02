@@ -79,6 +79,9 @@ use yii\helpers\Url;
             }
         ],
         [
+            'attribute' => 'sort_order',
+        ],
+        [
             'header' => '&nbsp;',
             'class' => ActionColumn::class,
             'options' => ['style' => 'width:56px;'],

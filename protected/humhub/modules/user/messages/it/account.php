@@ -2,7 +2,7 @@
 return array (
   '<strong>Account</strong> settings' => 'Impostazioni <strong>account</strong>',
   '<strong>Confirm</strong></strong> your new email address' => '<strong>Conferma</strong> il tuo nuovo indirizzo email',
-  '<strong>Permissions</strong>' => '',
+  '<strong>Permissions</strong>' => '<strong>Autorizzazioni</strong>',
   '<strong>User</strong> modules' => 'Moduli <strong>utente</strong>',
   '<strong>User</strong> settings' => '<strong>Impostazioni</strong> utente',
   '<strong>Your</strong> profile' => '<strong>Il tuo</strong> profilo',
@@ -43,7 +43,7 @@ return array (
   'Settings' => 'Impostazioni',
   'Tags' => 'Tag',
   'The entered e-mail address is already in use by another user.' => 'La mail inserita è già stata utilizzata da un altro utente.',
-  'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.' => '',
+  'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.' => 'Queste impostazioni ti consentono di determinare quali autorizzazioni vuoi concedere ai visitatori del tuo profilo personale. Ogni utente può regolare liberamente le impostazioni per il proprio profilo.',
   'TimeZone' => 'Fuso orario',
   'Username has been changed' => 'Il nome utente è stato cambiato',
   'Users' => 'Persone',

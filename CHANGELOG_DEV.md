@@ -3,6 +3,10 @@
 
 - Fix #5128: Prerequisites: Increase PHP Min version to 7.3
 - Fix #5135: Remove checking for PCNTL extension (revert #5065 and #5071)
+- Fix #5136: Fix get value of user profile fields with types "Checkbox List" and "Checkbox"
+- Fix #5137: Fix convert to short integer on PHP 8
+- Enh #5144: Show sort order in profile fields settings
+- Fix #5149: Use a link mode for space button "Join" from space header
 
 
 1.9.0-beta.1 (June 15, 2021)
