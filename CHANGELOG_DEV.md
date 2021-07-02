@@ -2,6 +2,7 @@
 ----------------------------
 
 - Fix #5128: Prerequisites: Increase PHP Min version to 7.3
+- Fix #5135: Remove checking for PCNTL extension (revert #5065 and #5071)
 
 
 1.9.0-beta.1 (June 15, 2021)
