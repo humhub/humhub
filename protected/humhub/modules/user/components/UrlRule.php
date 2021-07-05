@@ -8,8 +8,8 @@
 
 namespace humhub\modules\user\components;
 
+use humhub\components\ContentContainerUrlRuleInterface;
 use humhub\components\UrlManager;
-use humhub\modules\space\models\Space;
 use yii\web\UrlRuleInterface;
 use yii\base\BaseObject;
 use humhub\modules\user\models\User as UserModel;
@@ -72,6 +72,7 @@ class UrlRule extends BaseObject implements UrlRuleInterface
             return false;
         }
 
+        /* @var $user UserModel */
         $user = UserModel::find()->where(['username' => $parts[1]])->one();
         if ($user !== null) {
             if (!isset($parts[2]) || $parts[2] == "") {
@@ -79,6 +80,16 @@ class UrlRule extends BaseObject implements UrlRuleInterface
             }
             $params = $request->get();
             $params['cguid'] = $user->guid;
+
+            foreach ($manager->rules as $rule) {
+                if ($rule instanceof ContentContainerUrlRuleInterface) {
+                    $result = $rule->parseContentContainerRequest($user, $manager, $parts[2], $params);
+                    if ($result !== false) {
+                        return $result;
+                    }
+                }
+            }
+
             return [$parts[2], $params];
         }
 

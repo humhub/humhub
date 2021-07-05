@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\components;
 
+use humhub\components\ContentContainerUrlRuleInterface;
 use humhub\components\UrlManager;
 use yii\web\UrlRuleInterface;
 use yii\base\BaseObject;
@@ -64,6 +65,7 @@ class UrlRule extends BaseObject implements UrlRuleInterface
         if (substr($pathInfo, 0, 2) == "s/") {
             $parts = explode('/', $pathInfo, 3);
             if (isset($parts[1])) {
+                /* @var $space Space */
                 $space = Space::find()->where(['guid' => $parts[1]])->orWhere(['url' => $parts[1]])->one();
                 if ($space !== null) {
                     if (!isset($parts[2]) || $parts[2] == "") {
@@ -72,6 +74,15 @@ class UrlRule extends BaseObject implements UrlRuleInterface
 
                     $params = $request->get();
                     $params['cguid'] = $space->guid;
+
+                    foreach ($manager->rules as $rule) {
+                        if ($rule instanceof ContentContainerUrlRuleInterface) {
+                            $result = $rule->parseContentContainerRequest($space, $manager, $parts[2], $params);
+                            if ($result !== false) {
+                                return $result;
+                            }
+                        }
+                    }
 
                     return [$parts[2], $params];
                 }
