@@ -29,4 +29,15 @@ interface ContentContainerUrlRuleInterface
      * If false, it means this rule cannot be used to parse this path info.
      */
     public function parseContentContainerRequest(ContentContainerActiveRecord $container, UrlManager $manager, string $containerUrlPath, array $urlParams);
+
+    /**
+     * Creates a URL according under the Content Container (Space/User) route and parameters.
+     *
+     * @param UrlManager $manager the URL manager
+     * @param string $containerUrlPath Current relative URL path to the Content Container
+     * @param string $route the route. It should not have slashes at the beginning or the end.
+     * @param array $params the parameters
+     * @return string|bool the created URL, or false if this rule cannot be used for creating this URL.
+     */
+    public function createContentContainerUrl(UrlManager $manager, string $containerUrlPath, string $route, array $params);
 }

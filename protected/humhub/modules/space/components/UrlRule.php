@@ -44,8 +44,19 @@ class UrlRule extends BaseObject implements UrlRuleInterface
 
             $urlPart = static::getUrlBySpaceGuid($params['cguid']);
             if ($urlPart !== null) {
-                $url = "s/" . urlencode($urlPart) . "/" . $route;
+                $url = 's/' . urlencode($urlPart);
                 unset($params['cguid']);
+
+                foreach ($manager->rules as $rule) {
+                    if ($rule instanceof ContentContainerUrlRuleInterface) {
+                        $result = $rule->createContentContainerUrl($manager, $url, $route, $params);
+                        if ($result !== false) {
+                            return $result;
+                        }
+                    }
+                }
+
+                $url .= '/' . $route;
 
                 if (!empty($params) && ($query = http_build_query($params)) !== '') {
                     $url .= '?' . $query;

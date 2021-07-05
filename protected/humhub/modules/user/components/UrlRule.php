@@ -40,13 +40,23 @@ class UrlRule extends BaseObject implements UrlRuleInterface
         if (isset($params['cguid'])) {
             $username = static::getUrlByUserGuid($params['cguid']);
             if ($username !== null) {
+                $url = 'u/' . urlencode(mb_strtolower($username));
                 unset($params['cguid']);
 
                 if ($this->defaultRoute == $route) {
-                    $route = "";
+                    $route = '';
                 }
 
-                $url = "u/" . urlencode(mb_strtolower($username)) . "/" . $route;
+                foreach ($manager->rules as $rule) {
+                    if ($rule instanceof ContentContainerUrlRuleInterface) {
+                        $result = $rule->createContentContainerUrl($manager, $url, $route, $params);
+                        if ($result !== false) {
+                            return $result;
+                        }
+                    }
+                }
+
+                $url .= '/' . $route;
                 if (!empty($params) && ($query = http_build_query($params)) !== '') {
                     $url .= '?' . $query;
                 }
