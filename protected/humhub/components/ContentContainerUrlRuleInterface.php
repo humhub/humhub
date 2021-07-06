@@ -11,7 +11,9 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use yii\web\UrlManager;
 
 /**
- * UrlRuleInterface is the interface that should be implemented by URL rule classes.
+ * ContentContainerUrlRuleInterface is the interface that should be implemented by URL rule classes
+ * which handle routes under Content Container path.
+ * For example, if URL `/s/space-url-name/module-id/<title>` should be routed to `/module-id/controller/action?title=<title>`
  *
  * @author luke
  * @since 1.9
