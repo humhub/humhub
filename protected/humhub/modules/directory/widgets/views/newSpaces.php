@@ -9,7 +9,7 @@ use yii\helpers\Html;
     <?php echo humhub\widgets\PanelMenu::widget(['id' => 'new-spaces-panel']); ?>
 
     <div class="panel-heading">
-        <?php echo Yii::t('DirectoryModule.base', '<strong>New</strong> spaces'); ?>
+        <?php echo Yii::t('DirectoryModule.base', '<strong>New</strong> Groups'); ?>
     </div>
     <div class="panel-body">
         <?php foreach ($newSpaces as $space) : ?>

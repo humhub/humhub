@@ -34,7 +34,7 @@ class SpaceActionColumn extends ActionColumn
         $actions[Yii::t('AdminModule.space', 'Manage modules')] = ['open', 'section' => 'modules'];
         $actions[Yii::t('base', 'Delete')] = ['open', 'section' => 'delete'];
         $actions[] = '---';
-        $actions[Yii::t('AdminModule.space', 'Open space')] = ['open'];
+        $actions[Yii::t('AdminModule.space', 'Open Group')] = ['open'];
         $this->actions = $actions;
 
         return parent::renderDataCellContent($model, $key, $index);

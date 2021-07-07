@@ -58,7 +58,7 @@ class SpaceSettingsForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'defaultSpaceGuid' => Yii::t('AdminModule.space', 'Default space'),
+            'defaultSpaceGuid' => Yii::t('AdminModule.space', 'Default Group'),
             'defaultVisibility' => Yii::t('AdminModule.space', 'Default Visibility'),
             'defaultJoinPolicy' => Yii::t('AdminModule.space', 'Default Join Policy'),
             'defaultContentVisibility' => Yii::t('AdminModule.space', 'Default Content Visiblity'),
@@ -77,7 +77,7 @@ class SpaceSettingsForm extends \yii\base\Model
                 if ($spaceGuid != "") {
                     $space = \humhub\modules\space\models\Space::findOne(['guid' => $spaceGuid]);
                     if ($space == null) {
-                        $this->addError($attribute, Yii::t('AdminModule.space', "Invalid space"));
+                        $this->addError($attribute, Yii::t('AdminModule.space', "Invalid Group"));
                     }
                 }
             }

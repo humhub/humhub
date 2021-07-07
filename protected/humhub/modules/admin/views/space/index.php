@@ -18,7 +18,7 @@ use yii\helpers\Url;
 ?>
 
 <?php if (Yii::$app->user->can([CreatePublicSpace::class, CreatePrivateSpace::class])) : ?>
-    <?= ModalButton::success(Yii::t('AdminModule.space', 'Add new space'))->load(['/space/create'])
+    <?= ModalButton::success(Yii::t('AdminModule.space', 'Add new Group'))->load(['/space/create'])
         ->icon('add')->right()->sm() ?>
 <?php endif; ?>
 
