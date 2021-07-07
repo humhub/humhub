@@ -7,6 +7,7 @@
 - Fix #5137: Fix convert to short integer on PHP 8
 - Enh #5144: Show sort order in profile fields settings
 - Fix #5149: Use a link mode for space button "Join" from space header
+- Fix #4830: Fix Prerequisites / Self Test translations
 
 
 1.9.0-beta.1 (June 15, 2021)
