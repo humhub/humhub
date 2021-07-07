@@ -10,7 +10,7 @@ use yii\bootstrap\ActiveForm;
 /* @var $contentVisibilityOptions array */
 
 ?>
-<h4><?= Yii::t('AdminModule.space', 'Space Settings'); ?></h4>
+<h4><?= Yii::t('AdminModule.space', 'Group Settings'); ?></h4>
 <div class="help-block">
     <?= Yii::t('AdminModule.space', 'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.'); ?>
 </div>

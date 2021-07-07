@@ -17,7 +17,7 @@ use humhub\modules\user\widgets\Image;
 
     <div class="panel-heading">
         <?php if ($group === null) : ?>
-            <?= Yii::t('DirectoryModule.base', '<strong>Member</strong> directory'); ?>
+            <?= Yii::t('DirectoryModule.base', '<strong>Friends</strong> directory'); ?>
         <?php else: ?>
             <?= Yii::t('DirectoryModule.base', '<strong>Group</strong> members - {group}', ['{group}' => Html::encode($group->name)]); ?>
         <?php endif; ?>

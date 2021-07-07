@@ -45,7 +45,7 @@ class Menu extends LeftNavigation
             throw new Exception('Could not instance space menu without space!');
         }
 
-        $this->panelTitle = Yii::t('SpaceModule.base', '<strong>Space</strong> menu');
+        $this->panelTitle = Yii::t('SpaceModule.base', '<strong>Group</strong> menu');
 
         parent::init();
 

@@ -11,7 +11,7 @@ humhub\modules\directory\assets\DirectoryAsset::register($this);
     <?= \humhub\widgets\PanelMenu::widget(['id' => 'spaces-statistics-panel']); ?>
 
     <div class="panel-heading">
-        <?= Yii::t('DirectoryModule.base', '<strong>Space</strong> stats'); ?>
+        <?= Yii::t('DirectoryModule.base', '<strong>Group</strong> stats'); ?>
     </div>
 
     <div class="panel-body">
