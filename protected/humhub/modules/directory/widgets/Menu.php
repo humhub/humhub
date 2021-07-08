@@ -29,7 +29,7 @@ class Menu extends LeftNavigation
         /** @var Module $module */
         $module = Yii::$app->getModule('directory');
 
-        $this->panelTitle = Yii::t('DirectoryModule.base', '<strong>Directory</strong> menu');
+        $this->panelTitle = Yii::t('DirectoryModule.base', '<strong>Lists</strong> menu');
 
         if ($module->isGroupListingEnabled()) {
             $this->addEntry(new MenuLink([
@@ -45,7 +45,7 @@ class Menu extends LeftNavigation
         $this->addEntry(new MenuLink([
             'id' => 'directory-members',
             'icon' => 'user',
-            'label' => Yii::t('DirectoryModule.base', 'Members'),
+            'label' => Yii::t('DirectoryModule.base', 'Friends'),
             'url' => ['/directory/directory/members'],
             'sortOrder' => 200,
             'isActive' => MenuLink::isActiveState('directory', 'directory', 'members')
@@ -54,7 +54,7 @@ class Menu extends LeftNavigation
         $this->addEntry(new MenuLink([
             'id' => 'directory-spaces',
             'icon' => 'dot-circle-o',
-            'label' => Yii::t('DirectoryModule.base', 'Spaces'),
+            'label' => Yii::t('DirectoryModule.base', 'Group'),
             'url' => ['/directory/directory/spaces'],
             'sortOrder' => 300,
             'isActive' => MenuLink::isActiveState('directory', 'directory', 'spaces')

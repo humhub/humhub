@@ -19,7 +19,7 @@ use yii\helpers\Url;
 
 SpaceChooserAsset::register($this);
 
-$noSpaceView = '<div class="no-space"><i class="fa fa-dot-circle-o"></i><br>' . Yii::t('SpaceModule.chooser', 'My spaces') . '<b class="caret"></b></div>';
+$noSpaceView = '<div class="no-space"><i class="fa fa-dot-circle-o"></i><br>' . Yii::t('SpaceModule.chooser', 'Group') . '<b class="caret"></b></div>';
 
 $this->registerJsConfig('space.chooser', [
     'noSpace' => $noSpaceView,
@@ -105,7 +105,7 @@ $canAccessDirectory = $directoryModule->active && Yii::$app->user->can(AccessDir
         <li>
             <div class="dropdown-footer">
                 <a href="#" class="btn btn-info col-md-12" data-action-click="ui.modal.load" data-action-url="<?= Url::to(['/space/create/create']) ?>">
-                    <?= Yii::t('SpaceModule.chooser', 'Create new space') ?>
+                    <?= Yii::t('SpaceModule.chooser', 'Create new group') ?>
                 </a>
             </div>
         </li>

@@ -78,7 +78,7 @@ class AdminMenu extends LeftNavigation
 
         $this->addEntry(new MenuLink([
             'id' => 'spaces',
-            'label' => Yii::t('AdminModule.base', 'Spaces'),
+            'label' => Yii::t('AdminModule.base', 'Group'),
             'url' => ['/admin/space'],
             'icon' => 'inbox',
             'sortOrder' => 400,

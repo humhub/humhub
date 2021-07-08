@@ -11,7 +11,7 @@ humhub\modules\directory\assets\DirectoryAsset::register($this);
     <?= PanelMenu::widget(['id' => 'user-statistics-panel']); ?>
 
     <div class="panel-heading">
-        <?= Yii::t('DirectoryModule.base', '<strong>Member</strong> stats'); ?>
+        <?= Yii::t('DirectoryModule.base', '<strong>Friends </strong> stats'); ?>
     </div>
 
     <div class="panel-body">

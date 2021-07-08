@@ -17,7 +17,7 @@ use yii\helpers\Url;
 <div class="panel panel-default">
 
     <div class="panel-heading">
-        <?= Yii::t('DirectoryModule.base', '<strong>Space</strong> directory'); ?>
+        <?= Yii::t('DirectoryModule.base', '<strong>Group</strong> directory'); ?>
     </div>
 
     <div class="panel-body">
