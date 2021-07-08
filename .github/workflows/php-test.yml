@@ -92,9 +92,6 @@ jobs:
                 sudo apt-get update && sudo apt-get install -y mysql-client
                 mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -proot -e "SHOW DATABASES"
 
-            - name: Activate URL rewriting
-              run: cp .htaccess.dist .htaccess
-
             - name: Install npm dependencies
               run: npm install
 
@@ -111,7 +108,7 @@ jobs:
               run: php protected/humhub/tests/codeception/bin/yii search/rebuild
 
             - name: Run test server
-              run: php --server 127.0.0.1:8080 &>/tmp/phpserver.log &
+              run: php --server 127.0.0.1:8080 index-test.php &>/tmp/phpserver.log &
 
             - name: Setup chromedriver
               run: chromedriver --url-base=/wd/hub &

@@ -6,12 +6,6 @@
  * @license https://www.humhub.com/licences
  */
 
-if ((isset($_SERVER['HTTP_SEC_CH_UA']) && strpos($_SERVER['HTTP_SEC_CH_UA'], 'Chromium') !== false)) {
-    // Use special index page with test config when it is run by Chromium driver for acceptance tests
-    require(__DIR__ . '/index-test.php');
-    exit;
-}
-
 // comment out the following two lines when deployed to production
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', 'dev');
