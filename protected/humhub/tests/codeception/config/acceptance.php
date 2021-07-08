@@ -8,6 +8,10 @@ $testConfig = [
         'request' => [
             'cookieValidationKey' => 'test'
         ],
+        'urlManager' => [
+            'showScriptName' => false,
+            'enablePrettyUrl' => true,
+        ],
     ],
     'params' => [
         'dynamicConfigFile' => '@humhub/tests/codeception/config/dynamic.php',
