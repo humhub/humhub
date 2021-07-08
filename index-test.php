@@ -10,6 +10,10 @@ if (!in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
     die('You are not allowed to access this file.');
 }
 
+if (isset($_SERVER['REQUEST_URI']) && preg_match('/\.(?:css|json|js|png|jpg|jpeg|gif|ttf|woff|woff2)(\?.+)?$/i', $_SERVER['REQUEST_URI'])) {
+    return false; // serve the requested resource as-is.
+}
+
 /*defined('YII_DEBUG') or define('YII_DEBUG', true);*/
 defined('YII_ENV') or define('YII_ENV', 'test');
 defined('YII_ENV_TEST') or define('YII_ENV_TEST', true);

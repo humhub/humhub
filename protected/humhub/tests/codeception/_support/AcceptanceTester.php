@@ -278,17 +278,17 @@ class AcceptanceTester extends BaseTester
 
     public function amOnUser1Profile()
     {
-        $this->amOnPage('index-test.php?r=user/profile&uguid=01e50e0d-82cd-41fc-8b0c-552392f5839d');
+        $this->amOnPage('/u/user1/user/profile/home');
     }
 
     public function amOnUser2Profile()
     {
-        $this->amOnPage('index-test.php?r=user/profile&uguid=01e50e0d-82cd-41fc-8b0c-552392f5839e');
+        $this->amOnPage('/u/user2/user/profile/home');
     }
 
     public function amOnUser3Profile()
     {
-        $this->amOnPage('index-test.php?r=user/profile&uguid=01e50e0d-82cd-41fc-8b0c-552392f5839a');
+        $this->amOnPage('/u/user3/user/profile/home');
     }
 
     public function seeInNotifications($text, $click = false)

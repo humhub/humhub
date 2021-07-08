@@ -70,7 +70,7 @@ class ProfileCest
         $I->wantTo('ensure that my profile works as expected.');
 
         $I->amUser2();
-        $I->amOnPage('index-test.php?r=user/profile&uguid=01e50e0d-82cd-41fc-8b0c-552392f5839d');
+        $I->amOnPage('/u/user1/user/profile/home');
 
         $I->expectTo('see the profile of User2');
         $I->see('Follow');
@@ -87,7 +87,7 @@ class ProfileCest
         $I->selectOption('select[data-attribute0*=ViewAboutPage]', 'Deny');
 
         $I->amUser1(true);
-        $I->amOnPage('index-test.php?r=user/profile&uguid=01e50e0d-82cd-41fc-8b0c-552392f5839e');
+        $I->amOnPage('/u/user2/user/profile/home');
         $I->dontSee('About');
     }
 }
