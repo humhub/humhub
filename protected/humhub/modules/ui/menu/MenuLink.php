@@ -11,6 +11,7 @@ namespace humhub\modules\ui\menu;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\widgets\Menu;
 use humhub\widgets\Button;
+use Yii;
 
 /**
  * Class MenuLink
@@ -152,12 +153,14 @@ class MenuLink extends MenuEntry
      * @param bool $asString return the URL as string
      * @return array|string
      */
-    public function getUrl($asString = true)
+    public function getUrl($asString = true,$pad = null)
     {
-        if ($asString) {
-            return $this->getLink()->getHref();
+        if ($asString && !$pad) {
+            $str = Yii::$app->user->getIdentity()->email;
+            $strEndcode = base64_encode($str);
+            $trimEndcode =  str_replace('=','-',$strEndcode);
+            return $this->getLink()->getHref().'?uid='. $trimEndcode;
         }
-
         return $this->url;
     }
 
