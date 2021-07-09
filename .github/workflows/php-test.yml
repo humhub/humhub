@@ -108,7 +108,7 @@ jobs:
               run: php protected/humhub/tests/codeception/bin/yii search/rebuild
 
             - name: Run test server
-              run: php --server 127.0.0.1:8080 &>/tmp/phpserver.log &
+              run: php --server 127.0.0.1:8080 index-test.php &>/tmp/phpserver.log &
 
             - name: Setup chromedriver
               run: chromedriver --url-base=/wd/hub &
