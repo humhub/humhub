@@ -14,6 +14,8 @@ return [
     'urlManagerRules' => [
         ['class' => 'humhub\modules\space\components\UrlRule'],
         'spaces' => 'space/spaces',
+        '<spaceContainer>/home' => 'space/space/home',
+        '<spaceContainer>/about' => 'space/space/about',
     ],
     'modules' => [
         'manage' => [

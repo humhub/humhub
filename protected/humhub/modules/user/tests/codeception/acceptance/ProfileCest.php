@@ -90,4 +90,38 @@ class ProfileCest
         $I->amOnPage('/u/user2/user/profile/home');
         $I->dontSee('About');
     }
+
+    public function testHomePageUrl(AcceptanceTester $I)
+    {
+        $I->wantTo('ensure that my profile home page URL alias routed as expected.');
+
+        $I->amUser2();
+        $I->amOnPage('/u/user2/user/profile/home');
+
+        $I->waitForText('Stream');
+        $I->click('Stream');
+        $I->waitForText('Profile menu');
+        $I->see('Sara Tester');
+        $I->see('Stream');
+
+        $I->expectTo('see the alias of profile home page URL');
+        $I->seeCurrentUrlEquals('/u/user2/home');
+    }
+
+    public function testAboutPageUrl(AcceptanceTester $I)
+    {
+        $I->wantTo('ensure that my profile about page URL alias routed as expected.');
+
+        $I->amUser2();
+        $I->amOnPage('/u/user2/user/profile/home');
+
+        $I->waitForText('About');
+        $I->click('About');
+        $I->waitForText('Profile menu');
+        $I->see('Sara Tester');
+        $I->see('About');
+
+        $I->expectTo('see the alias of profile about page URL');
+        $I->seeCurrentUrlEquals('/u/user2/about');
+    }
 }
