@@ -88,7 +88,7 @@ abstract class ContentContainerUrlRule extends BaseObject implements UrlRuleInte
             return false;
         }
 
-        $url = $this->urlPrefix . '/' . urlencode($urlPart);
+        $url = $this->urlPrefix . '/' . urlencode(mb_strtolower($urlPart));
         unset($params['cguid']);
 
         if ($route == $this->defaultRoute) {
