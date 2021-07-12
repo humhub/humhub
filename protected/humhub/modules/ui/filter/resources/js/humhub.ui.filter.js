@@ -20,7 +20,21 @@ humhub.module('ui.filter', function(module, require, $) {
 
     FilterInput.prototype.inputChange = function(evt) {
         this.filter.triggerChange(evt);
+        this.updateUrl();
     };
+
+    FilterInput.prototype.updateUrl = function() {
+        let urlParam = this.getCategory();
+        const values = this.getValue();
+        if (typeof values === 'object') {
+            urlParam += '[]';
+            Url.removeParam(urlParam);
+            values.forEach(value => Url.appendParam(urlParam, value));
+        } else {
+            Url.removeParam(urlParam);
+            Url.appendParam(urlParam, values);
+        }
+    }
 
     FilterInput.prototype.getId = function() {
         return this.$.data('filter-id');
@@ -88,8 +102,18 @@ humhub.module('ui.filter', function(module, require, $) {
 
     CheckBoxInput.prototype.toggle = function() {
         this.$icon.toggleClass(this.inActiveClass).toggleClass(this.activeClass);
-        this.filter.triggerChange();
+        this.filter.triggerChange(this);
+        this.updateUrl();
     };
+
+    CheckBoxInput.prototype.updateUrl = function() {
+        const urlParam = this.getCategory() + '[' + this.getId() + ']';
+        if (this.isActive()) {
+            Url.appendParam(urlParam, '1');
+        } else {
+            Url.removeParam(urlParam);
+        }
+    }
 
     CheckBoxInput.prototype.deactivate = function() {
         this.$icon.removeClass(this.activeClass).addClass(this.inActiveClass);
@@ -121,7 +145,12 @@ humhub.module('ui.filter', function(module, require, $) {
         }
 
         this.filter.triggerChange();
+        this.updateUrl();
     };
+
+    RadioInput.prototype.updateUrl = function() {
+        Url.updateParam(this.getRadioGroup(), this.getId());
+    }
 
     RadioInput.prototype.isForce = function() {
         return this.$.data('radio-force');
@@ -304,6 +333,31 @@ humhub.module('ui.filter', function(module, require, $) {
         }
 
         return null;
+    };
+
+    var Url = {
+        url: () => window.location.href,
+        set: function(url) {
+            window.history.pushState(null, '', this.clear(url));
+        },
+        appendParam: function(param, value) {
+            const separator = (this.url().indexOf('?') > -1 ? '&' : '?');
+            this.set(this.url() + separator + param + '=' + value);
+        },
+        removeParam: function(param) {
+            const paramRegExp = new RegExp('(\\?|&)' + this.escapeRegExp(param) + '=[^&]*', 'g');
+            this.set(this.url().replace(paramRegExp, '$1'));
+        },
+        updateParam: function(param, value) {
+            const paramRegExp = '[\?&]' + this.escapeRegExp(param) + '=';
+            if (this.url().search(new RegExp(paramRegExp + '[^&]*')) > -1) {
+                this.set(this.url().replace(new RegExp('(' + paramRegExp + ')[^&]*', 'g'), '$1' + value));
+            } else {
+                this.appendParam(param, value);
+            }
+        },
+        escapeRegExp: escapingString => escapingString.replace(/[-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"),
+        clear: url => url.replace(/&&/g, '&').replace(/\?&+/, '?').replace(/[?&]+$/, ''),
     };
 
     module.export({

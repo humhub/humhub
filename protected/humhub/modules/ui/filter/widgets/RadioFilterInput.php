@@ -8,7 +8,7 @@
 
 namespace humhub\modules\ui\filter\widgets;
 
-use yii\helpers\ArrayHelper;
+use Yii;
 
 class RadioFilterInput extends CheckboxFilterInput
 {
@@ -37,6 +37,8 @@ class RadioFilterInput extends CheckboxFilterInput
 
     public function init()
     {
+        parent::init();
+
         if(!$this->style) {
             $this->style = ($this->force) ? static::STYLE_RADIO : static::STYLE_CHECKBOX;
         }
@@ -44,6 +46,17 @@ class RadioFilterInput extends CheckboxFilterInput
         if($this->style === static::STYLE_RADIO) {
             $this->iconActive = 'fa-dot-circle-o';
             $this->iconInActive = 'fa-circle-o';
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function initFromRequest()
+    {
+        $filter = Yii::$app->request->get($this->radioGroup);
+        if ($filter !== null) {
+            $this->checked = ($filter === $this->id);
         }
     }
 
