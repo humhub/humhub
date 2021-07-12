@@ -4,6 +4,7 @@ namespace tests\codeception\_support;
 
 use Codeception\Module;
 use humhub\models\UrlOembed;
+use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
@@ -34,6 +35,7 @@ class HumHubHelper extends Module
         RichTextToPlainTextConverter::flushCache();
         RichTextToMarkdownConverter::flushCache();
         UrlOembed::flush();
+        ContentContainerHelper::flushCache();
     }
 
     public function fetchInviteToken($mail) {
