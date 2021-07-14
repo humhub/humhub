@@ -10,6 +10,7 @@
 - Fix #4830: Fix Prerequisites / Self Test translations
 - Fix #4459: Make UserFollow activity public
 - Enh #3824: Run acceptance tests with pretty URLs
+- Enh #5005: Possibility to invite a registered user to a space by email
 
 
 1.9.0-beta.1 (June 15, 2021)
