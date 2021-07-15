@@ -201,10 +201,11 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
      * @param $model
      * @param $id
      * @param int|null $limit when null the default limit will used
+     * @param int|null $currentCommentId ID of the current Comment which should be visible on the limited result
      *
      * @return Comment[] the comments
      */
-    public static function GetCommentsLimited($model, $id, $limit = null)
+    public static function GetCommentsLimited($model, $id, $limit = null, $currentCommentId = null)
     {
         if ($limit === null) {
             /** @var Module $module */
@@ -220,7 +221,11 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
             $query = Comment::find();
             $query->offset($commentCount - $limit);
-            $query->orderBy('created_at ASC');
+            if (Comment::findOne(['id' => $currentCommentId])) {
+                $query->orderBy('`comment`.`id` <= ' . ($currentCommentId + $limit - 1));
+            } else {
+                $query->orderBy('created_at ASC');
+            }
             $query->limit($limit);
             $query->where(['object_model' => $model, 'object_id' => $id]);
             $query->joinWith('user');

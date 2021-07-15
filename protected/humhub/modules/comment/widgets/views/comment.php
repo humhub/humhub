@@ -21,13 +21,14 @@ use humhub\modules\comment\models\Comment;
 /* @var $canDelete bool */
 /* @var $createdAt string */
 /* @var $updatedAt string */
+/* @var $class string */
 
 /** @var \humhub\modules\comment\Module $module */
 $module = Yii::$app->getModule('comment');
 
 ?>
 
-<div class="media" id="comment_<?= $comment->id; ?>"
+<div class="<?= $class; ?>" id="comment_<?= $comment->id; ?>"
      data-action-component="comment.Comment"
      data-content-delete-url="<?= $deleteUrl ?>">
 

@@ -29,6 +29,16 @@ class Comment extends Widget
     public $justEdited = false;
 
     /**
+     * @var string Default style class of div wrapper around Comment block
+     */
+    public $defaultClass = 'media';
+
+    /**
+     * @var string Additional style class of div wrapper around Comment block
+     */
+    public $additionalClass = '';
+
+    /**
      * @inheritdoc
      */
     public function run()
@@ -50,6 +60,7 @@ class Comment extends Widget
             'createdAt' => $this->comment->created_at,
             'canEdit' => $this->comment->canEdit(),
             'canDelete' => $this->comment->canDelete(),
+            'class' => trim($this->defaultClass . ' ' . $this->additionalClass),
         ]);
     }
 

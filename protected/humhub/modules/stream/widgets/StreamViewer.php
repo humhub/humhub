@@ -131,6 +131,10 @@ class StreamViewer extends JsWidget
             $result['stream-contentid'] = Yii::$app->request->getQueryParam('contentId');
         }
 
+        if (!empty(Yii::$app->request->getQueryParam('commentId'))) {
+            $result['stream-commentid'] = Yii::$app->request->getQueryParam('commentId');
+        }
+
         if (Yii::$app->request->getQueryParam('topicId')) {
             $topic = Topic::findOne((int) Yii::$app->request->getQueryParam('topicId'));
             if ($topic) {
