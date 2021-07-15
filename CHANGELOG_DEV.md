@@ -10,6 +10,7 @@
 - Fix #4830: Fix Prerequisites / Self Test translations
 - Fix #4459: Make UserFollow activity public
 - Enh #3824: Run acceptance tests with pretty URLs
+- Enh #4399: Deep comment link to select and mark comment in content
 
 
 1.9.0-beta.1 (June 15, 2021)
