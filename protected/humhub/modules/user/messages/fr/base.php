@@ -58,7 +58,7 @@ return array (
   'Password changed' => 'Mot de passe mis à jour',
   'Password needs to be at least {chars} characters long.' => 'Le mot de passe doit contenir {chars} caractères minimum.',
   'Pending Requests' => 'Demandes en cours',
-  'People' => 'Utilisateur',
+  'People' => 'Membres',
   'Permission' => 'Permissions',
   'Profile' => 'Profil',
   'Profile posts only' => 'Publications sur le profil utilisateur uniquement',
