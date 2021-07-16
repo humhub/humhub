@@ -700,13 +700,14 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
     width: 280px;
     margin: 0 auto 20px;
     text-align: left;
-    background: #03331D;
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
     border-radius: 16px;
 }
 
 .login-container .panel-body-login {
+    background: #03331D;
+    border-radius: 16px;
     padding-bottom: 0;
 }
 
@@ -1144,7 +1145,7 @@ img {
 }
 
 .panel .panel-body {
-    padding: 10px;
+    padding: 10px; 
     font-size: 13px;
     color:#FFFFFF;
 }
@@ -2071,6 +2072,9 @@ div.required.has-error > label:after {
 
 #create-account-form .panel-body {
     padding: 0 20px 0 20px;
+    background: #03331D;
+    border-radius: 0 0 16px 16px;
+    padding-bottom: 70px;
 }
 
 #create-account-form .control-label {

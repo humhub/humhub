@@ -13,7 +13,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
             </div>
 
             <div class="panel-heading"><?php echo Yii::t('UserModule.auth', '<strong>Account</strong> registration'); ?></div>
-            <div class="panel-body" style="height: 400px">
+            <div class="panel-body">
                 <?php $form = \yii\bootstrap\ActiveForm::begin(['id' => 'registration-form', 'enableClientValidation' => false]); ?>
                 <?= $hForm->render($form); ?>
 
