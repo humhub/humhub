@@ -68,12 +68,12 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
         $('#profile-lastname').attr('maxlength', '50');
 
         $('#label-clubs').click(function() {
-            $('#clubs-list').attr('style', 'opacity: 1');
+            $('#clubs-list').attr('style', 'display: block');
         })
 
         $(document).click(function(event) {
             if ($(event.target).closest("#label-clubs").length == 0) {
-                $('#clubs-list').attr('style', 'opacity: 0');
+                $('#clubs-list').attr('style', 'display:none');
             }
 
         })

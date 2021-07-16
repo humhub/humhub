@@ -653,11 +653,12 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: visible !important;
 }
 
 .container-login #img-logo {
     width: 200px;
-    margin-top: -200px;
+    margin-top: -150px;
 }
 
 .container .user-icon {
@@ -1765,7 +1766,7 @@ ul.tab-menu-settings li.active > a {
 }
 
 .clubs-list-container #clubs-list {
-    opacity: 0;
+   display: none;
     width: 100%;
     width: 100%;
     background: #303A42;
