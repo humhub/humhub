@@ -256,7 +256,7 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
     height: 50px;
     width: 100%;
     padding-left: 15px;
-    padding-right: 15px
+    padding-right: 15px;
     background: linear-gradient(0deg, #011F00, #011F00), #15191D;
 }
 
@@ -482,7 +482,7 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 }
 
 #topbar-first .btn-enter:hover {
-    background-color: #527588
+    background-color: linear-gradient(0deg, #1C2E26, #1C2E26), #1E2429;
 }
 
 #topbar-first .media-list a {
@@ -495,7 +495,7 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 }
 
 #topbar-first .media-list li i.accepted {
-    color: #21A1B3 !important
+    color: #FFFFFF !important
 }
 
 #topbar-first .media-list li i.declined {
@@ -583,7 +583,9 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
     text-transform: uppercase;
     text-align: center
 }
-
+#topbar-second  .nav .open > a, .nav .open > a:hover, .nav .open > a:focus{
+    background: linear-gradient(0deg, #011F00, #011F00), #15191D;
+}
 #topbar-second .nav > li > a:hover, #topbar-second .nav > li > a:active, #topbar-second .nav > li > a:focus {
     border-bottom: 3px solid #1E2429;
     background: linear-gradient(0deg, #011F00, #011F00), #15191D;
@@ -615,7 +617,7 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
     color: #f7f7f7;
 }
 
-#topbar-second .nav > li > a#space-menu {
+#topbar-second .nav > li > a #space-menu {
     padding-right: 13px;
     border-right: 1px solid #15191D
 }
@@ -2657,6 +2659,7 @@ body.modal-open {
     box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
     -webkit-box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(0deg, #011F00, #011F00), #15191D;
     border: none
 }
 
@@ -4401,7 +4404,7 @@ ul.tour-list li.completed a {
 }
 
 .status-bar-content .showMore {
-    color: #21A1B3;
+    color: #FFFFFF;
     float: right;
     margin-left: 10px;
     font-size: .7em;
@@ -4431,7 +4434,7 @@ ul.tour-list li.completed a {
 }
 
 .status-bar-content i.info, .status-bar-content i.debug {
-    color: #21A1B3
+    color: #FFFFFF;
 }
 
 .status-bar-content i.success {
@@ -4439,7 +4442,9 @@ ul.tour-list li.completed a {
 }
 
 .highlight {
-    background-color: #fff8e0
+    background: linear-gradient(
+        0deg
+        , #1C2E26, #1C2E26), #1E2429;
 }
 
 .alert-default {
@@ -4473,7 +4478,7 @@ ul.tour-list li.completed a {
 
 .data-saved {
     padding-left: 10px;
-    color: #21A1B3
+    color: #FFFFFF;
 }
 
 img.bounceIn {
@@ -5400,9 +5405,9 @@ img.bounceIn {
 }
 
 .select2-container--humhub .select2-results__option--highlighted[aria-selected] {
-    background-color: #f7f7f7;
-    border-left: 3px solid #21A1B3;
-    color: #000
+    background: linear-gradient(0deg, #011F00, #011F00), #15191D;
+    border-left: 3px solid  #F2AC59;
+    color: #FFFFFF;
 }
 
 .select2-container--humhub .select2-results__option .select2-results__option {
@@ -5448,7 +5453,7 @@ img.bounceIn {
 }
 
 .select2-container--humhub.select2-container--focus .select2-selection, .select2-container--humhub.select2-container--open .select2-selection {
-    border: 2px solid #21A1B3;
+    border: 2px solid #F2AC59;
     outline: 0;
     box-shadow: none
 }
@@ -5493,11 +5498,14 @@ img.bounceIn {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
     border-color: #d7d7d7;
     overflow-x: hidden;
-    margin-top: -1px
+    margin-top: -1px;
+    background: linear-gradient(0deg, #011F00, #011F00), #15191D;
+    color:white;
 }
 
 .select2-container--humhub .select2-dropdown--above {
     margin-top: 1px
+    background: linear-gradient(0deg, #011F00, #011F00), #15191D;
 }
 
 .select2-container--humhub .select2-results > .select2-results__options {
@@ -5556,13 +5564,16 @@ img.bounceIn {
     padding: 0;
     width: 100%;
     text-overflow: ellipsis;
-    white-space: nowrap
+    white-space: nowrap;
+    background: linear-gradient(0deg, #011F00, #011F00), #15191D;
+    color:#FFFFFF;
 }
 
 .select2-container--humhub .select2-selection--multiple .select2-selection__placeholder {
     color: #999;
     float: left;
-    margin-top: 5px
+    margin-top: 5px;
+    background: linear-gradient(0deg, #011F00, #011F00), #15191D;
 }
 
 .select2-container--humhub .select2-selection--multiple .select2-selection__choice {
@@ -5570,7 +5581,7 @@ img.bounceIn {
     border-radius: 4px;
     cursor: default;
     padding: 0 6px;
-    background-color: #21A1B3;
+    background-color: #F2AC59;
     color: #fff;
     border-radius: 3px;
     font-size: 12px !important;
@@ -5599,13 +5610,14 @@ img.bounceIn {
 }
 
 .select2-container--humhub .select2-selection--multiple .select2-search--inline .select2-search__field {
-    background: transparent;
+    background: linear-gradient(0deg, #011F00, #011F00), #15191D;
     padding: 0 5px;
     width: auto !important;
     height: 32px;
     line-height: 1.42857143;
     margin-top: 0;
-    min-width: 5em
+    min-width: 5em;
+    color: #FFFFFF;
 }
 
 .select2-container--humhub .select2-selection--multiple .select2-selection__choice__remove {
