@@ -108,7 +108,7 @@ class Registration extends HForm
         $this->definition['buttons'] = [
             'save' => [
                 'type' => 'submit',
-                'class' => 'btn btn-primary',
+                'class' => 'btn btn-registry btn-large',
                 'label' => Yii::t('UserModule.auth', 'Create account'),
             ],
         ];

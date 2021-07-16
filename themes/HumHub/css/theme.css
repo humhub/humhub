@@ -1,3 +1,11 @@
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-text-fill-color: #F6F8FA;
+    box-shadow: inset 0 0 0 1000px #011F00 !important;
+}
+
 .colorDefault {
     color: #f3f3f3
 }
@@ -640,12 +648,157 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
     }
 }
 
+.container-login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-login #img-logo {
+    width: 200px;
+    margin-top: -200px;
+}
+
+.container .user-icon {
+    border: 1px solid #F6F8FA;
+    position: absolute;
+    background: #F2AC57;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: -45px;
+    left: calc((280px - 70px) / 2);
+}
+
+.container .user-icon .fa {
+    animation: rotate360 2s ease-in-out infinite;
+    font-size: 35px;
+}
+
+@keyframes rotate360 {
+    0% {
+        transform: none;
+    }
+
+    50% {
+        transform: rotate3d(0, 1, 0, 180deg);
+    }
+
+    100% {
+        transform: rotate3d(0, 1, 0, 360deg);
+    }
+}
+
+.login-container .panel-login {
+    width: 280px;
+    margin: 0 auto 20px;
+    text-align: left;
+    background: #03331D;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    border-radius: 16px;
+}
+
+.login-container .panel-body-login {
+    padding-bottom: 0;
+}
+
+.login-container .panel-body-login .text-line {
+    color: #F6F8FA;
+}
+
+.border-error {
+    border-color: #FC4A64 !important;
+}
+
+.login-container .input-login:not(:placeholder-shown) {
+    border: 1px solid #F6F8FA;
+    background-color: #011F00 !important;
+    color: #F6F8FA !important;
+    font-size: 13px;
+}
+
+.login-container .input-login:placeholder-shown {
+    border: 1px solid #F6F8FA66;
+    background-color: #011F00 !important;
+    color: #F6F8FA !important;
+    font-size: 13px;
+}
+
+.login-container .fa {
+    color: #F6F8FA;
+    transition: opacity .2s linear;
+}
+
+.login-container .fa:hover {
+    opacity: .7;
+}
+
+.login-container .input-login:focus {
+    border: 1px solid #F2AC57 !important;
+}
+
+.login-container .btn-login-container {
+    display: flex;
+    justify-content: center;
+    padding: 0 15px;
+    color: #F6F8FA;
+}
+
+.login-container .question-container {
+    margin-top: 5px;
+    text-align: center;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+}
+
+.login-container .question-container p {
+    color: #F6F8FA !important;
+    opacity: 0.7;
+}
+
+.login-container .question-container a {
+    color: #F2AC57 !important;
+    font-weight: bold;
+    margin-left: 5px;
+    transition: opacity .2s linear;
+}
+
+.login-container .question-container a:hover {
+    opacity: .7;
+}
+
+.login-container .question-container a:focus {
+    outline: 0;
+}
+
+.panel-body-register-successful {
+    border-radius: 0 0 16px 16px;
+    padding: 45px 20px 25px 20px;
+}
+
+.panel-body-register-successful .text-line {
+    color: #F6F8FA;
+}
+
+.login-container .panel .panel-heading,
+.login-container .panel .panel-body {
+    padding: 45px 20px 0 20px;
+}
+
 .login-container {
-    background-color: #435f6f;
-    background-image: linear-gradient(to right, #435f6f 0%, #567a8f 50%, #567a8f 100%), linear-gradient(to right, #4d6d7f 0%, #7fa0b2 51%, #7094a8 100%);
-    background-size: 100% 100%;
+    background: #011F00;
     position: relative;
-    padding-top: 40px
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .login-container #img-logo {
@@ -675,10 +828,6 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
     box-shadow: 0 0 15px #627d92;
     -moz-box-shadow: 0 0 15px #627d92;
     -webkit-box-shadow: 0 0 15px #627d92
-}
-
-.login-container .panel .panel-heading, .login-container .panel .panel-body {
-    padding: 15px
 }
 
 .login-container .panel h1, .login-container .panel h2 {
@@ -964,6 +1113,16 @@ img {
     font-weight: 300;
     margin-top: 0;
     color: #000
+}
+
+.panel-login .panel-heading {
+    font-size: 16px;
+    font-weight: 300;
+    color: white !important;
+    background-color: #03331D !important;
+    border: none;
+    padding: 40px 20px 0 20px !important;
+    border-radius: 16px 16px 0 0 !important;
 }
 
 .panel .panel-heading {
@@ -1556,6 +1715,126 @@ ul.tab-menu-settings li.active > a {
     background: #F2AC57 !important;
 }
 
+.btn-login {
+    width: 100%;
+    border-radius: 8px;
+    background: #F2AC57;
+    color: #F6F8FA !important;
+    transition: opacity .2s linear;
+}
+
+.btn-registry:hover,
+.btn-login:hover {
+    opacity: .7;
+}
+
+.btn-registry {
+    width: 100%;
+    border-radius: 8px;
+    background: #F2AC57;
+    color: #F6F8FA !important;
+    transition: opacity .2s linear;
+    margin-top: 54px;
+}
+
+.clubs-list-container {
+    position: relative;
+    margin-top: -108px;
+}
+
+.clubs-list-container #label-clubs {
+    width: 100%;
+    height: 35px;
+    border: 1px solid #F6F8FA66;
+    background-color: #03331D !important;
+    border-radius: 4px;
+    padding-left: 10px;
+    color: #F6F8FAB3 !important;
+    font-size: 13px;
+}
+
+.clubs-list-container #label-clubs:focus-visible {
+    outline: 0;
+}
+
+.clubs-list-container .drop-down-icon {
+    position: absolute;
+    top: 1px;
+    right: 10px;
+    font-size: 24px;
+}
+
+.clubs-list-container #clubs-list {
+    opacity: 0;
+    width: 100%;
+    width: 100%;
+    background: #303A42;
+    transition: opacity .2s linear;
+}
+
+.clubs-list-container #clubs-list:hover {
+    cursor: pointer;
+}
+
+.clubs-list-container #clubs-list:focus-visible {
+    outline: 0;
+}
+
+.clubs-list-container #clubs-list::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #3A464F;
+}
+
+.clubs-list-container #clubs-list::-webkit-scrollbar {
+    width: 15px;
+    background-color: #3A464F;
+}
+
+.clubs-list-container #clubs-list::-webkit-scrollbar-thumb {
+    background-color: white;
+    border: 3px solid #3A464F;
+}
+
+.clubs-list-container #clubs-list::-webkit-scrollbar-button {
+    background-size: 13px;
+    height: 15px;
+    width: 20px;
+    -webkit-box-shadow: inset 1px 1px 2px rgb(0 0 0 / 20%);
+}
+
+.clubs-list-container #clubs-list::-webkit-scrollbar-button:vertical:increment {
+    background-image: url(https://img.icons8.com/material-rounded/24/ffffff/sort-down.png);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.clubs-list-container #clubs-list::-webkit-scrollbar-button:vertical:decrement {
+    background-image: url(https://img.icons8.com/material-rounded/24/ffffff/sort-up.png);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.clubs-list-container #clubs-list option {
+    font-size: 13px;
+    height: 35px;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.clubs-list-container #clubs-list option:hover {
+    background-color: #1C2E26 !important;
+    cursor: pointer;
+}
+
+.clubs-list-container #clubs-list option:checked,
+.clubs-list-container #clubs-list option:active,
+.clubs-list-container #clubs-list option:focus {
+    background: linear-gradient(0, #F2AC57, #F2AC57) !important;
+    color: #000;
+}
+
 .btn-primary {
     background:  #F2AC57;
     color: #fff !important
@@ -1737,6 +2016,10 @@ div.required.has-error > label:after {
     color: #bac2c7;
 }
 
+.login-container .form-control {
+    background: none !important;
+}
+
 .form-control {
     border: 2px solid #ededed;
     box-shadow: none;
@@ -1745,6 +2028,78 @@ div.required.has-error > label:after {
         0deg
         , #1C2E26, #1C2E26), #1E2429;
     color:#FFFFFF;
+}
+
+#registration-form-captcha {
+    display: none;
+}
+
+#registration-form-captcha .form-control {
+    border: 1px solid #F6F8FA66;
+    background-color: #011F00 !important;
+    color: #F6F8FA !important;
+    font-size: 13px;
+    box-shadow: none;
+    min-height: 35px;
+    margin-top: 10px;
+}
+
+#registration-form-captcha img {
+    width: 100px;
+    border-radius: 8px;
+    margin-top: 10px;
+    transition: opacity .2s linear;
+}
+
+#registration-form-captcha img:hover {
+    opacity: .7;
+    cursor: pointer;
+}
+
+.login-container .form-control {
+    border: 1px solid #F6F8FA66;
+    background-color: #011F00 !important;
+    color: #F6F8FA !important;
+    font-size: 13px;
+    box-shadow: none;
+    min-height: 35px;
+    margin-top: 10px;
+}
+
+#create-account-form .panel-body {
+    padding: 0 20px 0 20px;
+}
+
+#create-account-form .control-label {
+    color: #F6F8FA !important;
+}
+
+#create-account-form fieldset>legend {
+    display: none;
+}
+
+#registration-form fieldset:nth-child(2) {
+    margin-bottom: calc(0.625em - 15px);
+}
+
+#registration-form fieldset:nth-child(3) {
+    display: none;
+}
+
+.humhub-pw-show {
+    top: 0 !important;
+}
+
+#create-account-form fieldset>fieldset>legend {
+    display: block !important;
+    color: #F6F8FA;
+    border: none;
+    margin: 0;
+    font-size: 16px;
+}
+
+#create-account-form .control-label {
+    display: none !important;
 }
 
 .form-control:focus {

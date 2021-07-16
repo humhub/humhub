@@ -17,120 +17,101 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 /* @var $info string */
 ?>
 
-<div class="container" style="text-align: center;">
+<div class="container container-login">
     <?= SiteLogo::widget(['place' => 'login']); ?>
-    <br>
 
-    <div class="panel panel-default animated bounceIn" id="login-form"
-         style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
+    <?php if (!isset($_GET['isSignup'])) : ?>
+        <div class="panel panel-default panel-login" id="login-form">
 
-        <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Please</strong> sign in'); ?></div>
+            <div class="user-icon">
+                <i class="fa fa-user-o" aria-hidden="true"></i>
+            </div>
 
-        <div class="panel-body">
+            <div class="panel-body panel-body-login">
 
-            <?php if (Yii::$app->session->hasFlash('error')): ?>
-                <div class="alert alert-danger" role="alert">
-                    <?= Yii::$app->session->getFlash('error') ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if (AuthChoice::hasClients()): ?>
-                <?= AuthChoice::widget([]) ?>
-            <?php else: ?>
-                <?php if ($canRegister) : ?>
-                    <p><?= Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password."); ?></p>
-                <?php else: ?>
-                    <p><?= Yii::t('UserModule.auth', "Please login with your username/email and password."); ?></p>
+                <?php if (Yii::$app->session->hasFlash('error')) : ?>
+                    <div class="alert alert-danger" role="alert">
+                        <?= Yii::$app->session->getFlash('error') ?>
+                    </div>
                 <?php endif; ?>
-            <?php endif; ?>
 
-            <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]); ?>
-                <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username'), 'aria-label' => $model->getAttributeLabel('username')])->label(false); ?>
-                <?= $form->field($model, 'password')
-                    ->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password'), 'aria-label' => $model->getAttributeLabel('password')])
+                <p class='text-line'><?= Yii::t('UserModule.auth', "Welcome back!"); ?></p>
+
+                <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]); ?>
+                <?= $form->field($model, 'username')
+                    ->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('Username'), 'aria-label' => $model->getAttributeLabel('username'), 'class' => 'form-control input-login', 'maxlength' => '50'])
                     ->label(false); ?>
-                <?= $form->field($model, 'rememberMe')->checkbox(); ?>
+                <?= $form->field($model, 'password')
+                    ->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('Password'), 'aria-label' => $model->getAttributeLabel('password'), 'class' => 'form-control input-login', 'maxlength' => '25'])
+                    ->label(false); ?>
 
-                <hr>
-                <div class="row">
-                    <div class="col-md-4">
-                        <?= Html::submitButton(Yii::t('UserModule.auth', 'Sign in'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary']); ?>
-                    </div>
-                    <div class="col-md-8 text-right">
-                        <small>
-                            <a id="password-recovery-link" href="<?= Url::toRoute('/user/password-recovery'); ?>"
-                               data-pjax-prevent><br><?= Yii::t('UserModule.auth', 'Forgot your password?') ?></a>
-                        </small>
-                    </div>
+                <div class="row btn-login-container">
+                    <?= Html::submitButton(Yii::t('UserModule.auth', 'Login'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-login']); ?>
                 </div>
-            <?php ActiveForm::end(); ?>
-        </div>
-    </div>
-
-    <br>
-
-    <?php if ($canRegister) : ?>
-        <div id="register-form"
-             class="panel panel-default animated bounceInLeft"
-             style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
-
-            <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Sign</strong> up') ?></div>
-
-            <div class="panel-body">
-
-                <p><?= Yii::t('UserModule.auth', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
-
-                <?php $form = ActiveForm::begin(['id' => 'invite-form']); ?>
-                <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
-                <?php if ($invite->showCaptureInRegisterForm()) : ?>
-                    <div id="registration-form-captcha" style="display: none;">
-                        <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
-
-                        <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
-                            'captchaAction' => '/user/auth/captcha',
-                        ])->label(false); ?>
-                    </div>
-                <?php endif; ?>
-                <hr>
-                <?= Html::submitButton(Yii::t('UserModule.auth', 'Register'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
-
+                <div class="row question-container">
+                    <p><?= Yii::t('UserModule.auth', "Don't have an account yet?"); ?></p>
+                    <a id="password-recovery-link" href="<?= Url::toRoute('/user/auth/login?isSignup=true'); ?>" data-pjax-prevent><?= Yii::t('UserModule.auth', "Sign up") ?></a>
+                </div>
                 <?php ActiveForm::end(); ?>
             </div>
         </div>
-
     <?php endif; ?>
 
-    <?= humhub\widgets\LanguageChooser::widget(); ?>
+    <?php if (isset($_GET['isSignup'])) : ?>
+        <?php if ($canRegister) : ?>
+            <div id="register-form" class="panel panel-default panel-login">
+
+                <div class="user-icon">
+                    <i class="fa fa-user-o" aria-hidden="true"></i>
+                </div>
+
+                <div class="panel-body panel-body-login">
+
+                    <p class='text-line'><?= Yii::t('UserModule.auth', "Sign up to join our network."); ?></p>
+
+                    <?php $form = ActiveForm::begin(['id' => 'invite-form']); ?>
+                    <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email'), 'class' => 'form-control input-login'])->label(false); ?>
+                    <?php if ($invite->showCaptureInRegisterForm()) : ?>
+                        <div id="registration-form-captcha">
+                            <div class='text-line'><?= Yii::t('UserModule.auth', 'Please enter letters from the image.'); ?></div>
+
+                            <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
+                                'captchaAction' => '/user/auth/captcha',
+                            ])->label(false); ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="row btn-login-container">
+                        <?= Html::submitButton(Yii::t('UserModule.auth', 'Register'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-login']); ?>
+                    </div>
+
+                    <div class="row question-container">
+                        <p><?= Yii::t('UserModule.auth', "Already have an account?"); ?></p>
+                        <a id="password-recovery-link" href="<?= Url::toRoute('/user/auth/login'); ?>" data-pjax-prevent><?= Yii::t('UserModule.auth', "Sign in") ?></a>
+                    </div>
+
+                    <?php ActiveForm::end(); ?>
+                </div>
+            </div>
+
+        <?php endif; ?>
+    <?php endif; ?>
 </div>
 
 <script <?= Html::nonce() ?>>
-    $(function () {
-        // set cursor to login field
-        $('#login_username').focus();
-    });
-
-    // Shake panel after wrong validation
+    // Change border color after wrong validation
     <?php if ($model->hasErrors()) { ?>
-    $('#login-form').removeClass('bounceIn');
-    $('#login-form').addClass('shake');
-    $('#register-form').removeClass('bounceInLeft');
-    $('#app-title').removeClass('fadeIn');
+        $('#login_username').addClass('border-error');
     <?php } ?>
 
-    // Shake panel after wrong validation
+    // Change border color after wrong validation
     <?php if ($invite->hasErrors()) { ?>
-    $('#register-form').removeClass('bounceInLeft');
-    $('#register-form').addClass('shake');
-    $('#login-form').removeClass('bounceIn');
-    $('#app-title').removeClass('fadeIn');
+        $('#invite-captcha').addClass('border-error');
     <?php } ?>
 
     <?php if ($invite->showCaptureInRegisterForm()) { ?>
-    $('#register-email').on('focus', function () {
-        $('#registration-form-captcha').fadeIn(500);
-    });
+        $('#register-email').on('focus', function() {
+            $('#registration-form-captcha').fadeIn(500);
+        });
     <?php } ?>
-
 </script>
-
-
