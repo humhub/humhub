@@ -22,7 +22,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
                     <div class="drop-down-icon">
                         <i class="fa fa-angle-down" aria-hidden="true"></i>
                     </div>
-                    <select name="clubs" id="clubs-list" size="4">
+                    <select name="clubs" id="clubs-list" size="3">
                         <option value="Berlin" class="club-option">Berlin</option>
                         <option value="Bremen" class="club-option">Bremen</option>
                         <option value="Dortmund" class="club-option">Dortmund</option>
