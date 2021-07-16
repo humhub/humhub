@@ -19,7 +19,7 @@ use yii\helpers\Url;
 
 SpaceChooserAsset::register($this);
 
-$noSpaceView = '<div class="no-space"><i class="fa fa-dot-circle-o"></i><br>' . Yii::t('SpaceModule.chooser', 'Group') . '<b class="caret"></b></div>';
+$noSpaceView = '<div class="no-space"><i class="fa fa-users"></i><br>' . Yii::t('SpaceModule.chooser', 'Group') . '<b class="caret"></b></div>';
 
 $this->registerJsConfig('space.chooser', [
     'noSpace' => $noSpaceView,

@@ -87,7 +87,7 @@ class Module extends \humhub\components\Module
         if($module->canAccess()) {
             $event->sender->addEntry(new MenuLink([
                 'id' => 'directory',
-                'icon' => 'directory',
+                'icon' => 'th-list',
                 'label' => Yii::t('DirectoryModule.base', 'Lists'),
                 'url' => ['/directory/directory'],
                 'sortOrder' => 400,

@@ -9,7 +9,7 @@ use humhub\libs\Html;
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
-                <?= Yii::t('SpaceModule.base', "<strong>Request</strong> space membership"); ?>
+                <?= Yii::t('SpaceModule.base', "<strong>Request</strong> group membership"); ?>
             </h4>
         </div>
         <div class="modal-body">

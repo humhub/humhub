@@ -36,7 +36,7 @@ class Events
             'id' => 'dashboard',
             'label' => Yii::t('DashboardModule.base', 'Home'),
             'url' => ['/dashboard/dashboard'],
-            'icon' => 'dashboard',
+            'icon' => 'home',
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState('dashboard')
         ]));
