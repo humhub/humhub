@@ -1,3 +1,4 @@
+// main: ./build.less
 //
 // Topbar
 // --------------------------------------------------
@@ -109,7 +110,6 @@
   }
 
   // nav-menu
-  
   .nav-menu {
     & > li {
       margin: 20px auto;
@@ -533,6 +533,37 @@
       list-style: none;
     }
 
+  }
+
+  .dropdown-menu.pull-top {
+    top: auto;
+    bottom: 100%;
+  }
+
+  // nav-menu
+  .nav-menu {
+    & > li > a {
+      font-size: 20px;
+      color: #1d1d1d;
+    }
+    & > li > ul > li > a {
+      border-left: 3px solid #fff;
+      background-color: #fff;
+      color: @text-color-highlight;
+    }
+    & > li > ul > li:hover > a,
+    & > li > ul > li.active > a {
+      border-left: 3px solid @info;
+      background-color: @background-color-secondary;
+      color: @text-color-highlight;
+    }
+    .dropdown-menu li a {
+      font-size: 16px !important;
+      i {
+        font-size: 16px;
+        width: 18px;
+      }
+    }
   }
 }
 

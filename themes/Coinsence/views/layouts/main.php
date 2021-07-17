@@ -4,8 +4,21 @@
 
 \humhub\assets\AppAsset::register($this);
 
+
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\space\models\Space; ?>
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
+use humhub\modules\xcoin\helpers\AccountHelper;
+use humhub\modules\xcoin\models\Account;
+
+
+
+// Xcoin transfer button
+$account = Account::findOne(['user_id' => Yii::$app->user->id, 'account_type' => Account::TYPE_DEFAULT]);
+$userContentContainer = User::findOne(['id' => Yii::$app->user->id]);
+$accountAssetsList = AccountHelper::getAssetsList($account);
+
+?>
 
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -54,11 +67,21 @@ use humhub\modules\space\models\Space; ?>
                     <?= \humhub\widgets\NotificationArea::widget(); ?>
                 </div>
 
-                <div class="search pull-right hidden-xs">
-                    <?= \yii\helpers\Html::a('<i class="fa fa-search"></i>', ['/search']) ?>
-                </div>
+                <?php if (!empty($accountAssetsList)): ?>
+                    <div class="search pull-right hidden-xs">
+                        <?= \yii\helpers\Html::a(
+                            '<i class="fa fa-exchange"></i>',
+                            [
+                                '/xcoin/transaction/transfer',
+                                'accountId' => $account->id,
+                                'container' => $userContentContainer
+                            ], [
+                                'data-target' => '#globalModal'
+                            ]) ?>
+                    </div>
+                <?php endif; ?>
 
-                <div class="nav-menu pull-right">
+                <div class="nav-menu pull-right hidden-xs">
                     <li class="dropdown">
                         <a href="#" id="top-dropdown-menu" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-ellipsis-h"></i>
@@ -77,10 +100,6 @@ use humhub\modules\space\models\Space; ?>
         <div id="bottombar" class="bottombar visible-xs">
             <div class="container links">
                 <?= \yii\helpers\Html::a(
-                    '<i class="fa fa-home"></i>',
-                    ['/dashboard/dashboard'],
-                    Yii::$app->requestedRoute == "dashboard/dashboard" ? [ 'class' => ['active', 'home'] ] : ['class' => 'home']); ?>
-                <?= \yii\helpers\Html::a(
                     '<i class="fa fa-bell"></i>',
                     ['/notification/overview'],
                     Yii::$app->requestedRoute == "notification/overview" ? [ 'class' => ['active', 'notifications'] ] : ['class' => 'notifications']); ?>
@@ -90,15 +109,25 @@ use humhub\modules\space\models\Space; ?>
                     Yii::$app->requestedRoute == "mail/mail/index" ? ['class' => ['active', 'messages'] ] : ['class' => 'messages']); ?>
 
                 <?= \yii\helpers\Html::a(
-                    '<i class="fa fa-dot-circle-o"></i>',
-                    ['/directory/spaces'],
-                    Yii::$app->requestedRoute == "directory/spaces" ? [ 'class' => ['active', 'spaces'] ] : ['class' => 'spaces']); ?>
-
-
-                <?= \yii\helpers\Html::a(
-                    '<i class="fa fa-search"></i>',
-                    ['/search/search/index'],
-                    Yii::$app->requestedRoute == "search/search/index" ? [ 'class' => ['active', 'search'] ] : ['class' => 'search']); ?>
+                    '<i class="fa fa-exchange"></i>',
+                    [
+                        '/xcoin/transaction/transfer',
+                        'accountId' => Account::findOne(['user_id' => Yii::$app->user->id, 'account_type' => Account::TYPE_DEFAULT])->id,
+                        'container' => User::findOne(['id' => Yii::$app->user->id])
+                    ], [
+                        'data-target' => '#globalModal'
+                    ]) ?>
+                
+                <div class="nav-menu pull-right">
+                    <li class="dropdown">
+                        <a href="#" id="top-dropdown-menu" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </a>
+                        <ul class="dropdown-menu pull-right pull-top">
+                            <?= \humhub\widgets\TopMenu::widget(); ?>
+                        </ul>
+                    </li>
+                </div>
             </div>
 
         </div>
@@ -117,12 +146,6 @@ use humhub\modules\space\models\Space; ?>
                             break;
                         case '/mail/mail/index':
                             $('#bottombar .links .messages').removeClass('active').addClass('active');
-                            break;
-                        case '/directory/spaces':
-                            $('#bottombar .links .spaces').removeClass('active').addClass('active');
-                            break;
-                        case '/search':
-                            $('#bottombar .links .search').removeClass('active').addClass('active');
                             break;
                         default:
                             break;
