@@ -1,11 +1,12 @@
 <?php
 
+use humhub\modules\user\models\User;
 use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
 use humhub\widgets\PanelMenu;
 use humhub\modules\user\widgets\Image;
 
-/* @var $newUsers \yii\db\ActiveQuery */
+/* @var $newUsers User[] */
 /* @var $showInviteButton boolean */
 /* @var $showMoreButton boolean */
 ?>
@@ -13,10 +14,10 @@ use humhub\modules\user\widgets\Image;
     <?= PanelMenu::widget(['id' => 'new-people-panel']) ?>
 
     <div class="panel-heading">
-        <?= Yii::t('DirectoryModule.base', '<strong>New</strong> people') ?>
+        <?= Yii::t('UserModule.base', '<strong>New</strong> people') ?>
     </div>
     <div class="panel-body">
-        <?php foreach ($newUsers->limit(10)->all() as $user) : ?>
+        <?php foreach ($newUsers as $user) : ?>
             <?= Image::widget(['user' => $user, 'width' => 40, 'showTooltip' => true]) ?>
         <?php endforeach; ?>
 
@@ -25,12 +26,12 @@ use humhub\modules\user\widgets\Image;
         <?php endif; ?>
 
         <?php if ($showInviteButton): ?>
-            <?= ModalButton::primary(Yii::t('DirectoryModule.base', 'Send invite'))
+            <?= ModalButton::primary(Yii::t('UserModule.base', 'Send invite'))
                 ->load(['/user/invite'])->icon('invite')->sm() ?>
         <?php endif; ?>
         <?php if ($showMoreButton): ?>
-            <?= Button::primary(Yii::t('DirectoryModule.base', 'See all'))
-                ->link(['/directory/directory/members'])->icon('list-ul')->sm() ?>
+            <?= Button::primary(Yii::t('UserModule.base', 'See all'))
+                ->link(['/user/people'])->icon('list-ul')->sm() ?>
         <?php endif; ?>
 
     </div>

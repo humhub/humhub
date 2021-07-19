@@ -1,6 +1,6 @@
 <?php
 
-namespace humhub\modules\directory\widgets;
+namespace humhub\modules\space\widgets;
 
 use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
@@ -8,7 +8,7 @@ use humhub\modules\space\models\Membership;
 /**
  * Shows newly created spaces as sidebar widget
  *
- * @package humhub.modules_core.directory.widgets
+ * @package humhub.modules_core.user.widgets
  * @since 0.11
  * @author Luke
  */
@@ -22,10 +22,7 @@ class NewSpaces extends \yii\base\Widget
      */
     public function run()
     {
-
-
         $query = Space::find();
-
 
         /**
          * Show private spaces only if user is member
@@ -47,5 +44,3 @@ class NewSpaces extends \yii\base\Widget
     }
 
 }
-
-?>
