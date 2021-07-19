@@ -1,7 +1,7 @@
 1.9.0 (Unreleased)
 ------------------
 
-- Fix: #5174: Tour module crashes with enabled tags field
+- Fix #5174: Tour module crashes with enabled tags field
 
 
 1.9.0-beta.2 (July 14, 2021)
