@@ -149,6 +149,7 @@ class UserController extends Controller
                         'data-placeholder' => Yii::t('AdminModule.user', 'Select Groups'),
                         'data-placeholder-more' => Yii::t('AdminModule.user', 'Add Groups...')
                     ],
+                    'maxSelection' => 250,
                     'isVisible' => Yii::$app->user->can(new ManageGroups())
                 ],
             ],
