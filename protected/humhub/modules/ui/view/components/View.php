@@ -339,8 +339,11 @@ class View extends \yii\web\View
     {
         if (strpos($url, '?') === false) {
             $file = str_replace('@web', '@webroot', $url);
-            $file = Yii::getAlias($file);
+            if (substr($file, 0, 1) === '/') {
+                $file = '@webroot' . $file;
+            }
 
+            $file = Yii::getAlias($file);
             if (file_exists($file)) {
                 $url .= '?v=' . filemtime($file);
             } else {

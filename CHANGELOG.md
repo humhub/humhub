@@ -1,13 +1,14 @@
 HumHub Changelog
 ================
 
-1.8.3 (Unreleased)
+1.8.3 (July 14, 2021)
 ----------------------
 - Fix #29: Fix login form view on browser back button after footer link
 - Fix #5066: Fix pin and archive global content without container
 - Fix #5107: Fix captcha client validation after request new code
 - Fix #22: Fix misplaced OEmbed provider buttons on general settings form
 - Fix #5130: Don't require type for first param of the function ProsemirrorRichText::replaceLinkExtension()
+- Fix #5155: Open basedir restriction error in with PHP 7.4.21/8.0.8
 
 
 1.8.2 (April 26, 2021)
