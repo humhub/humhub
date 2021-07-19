@@ -1,3 +1,7 @@
+1.9.0 (Unreleased)
+------------------
+
+- Fix #5174: Tour module crashes with enabled tags field
 - Fix #5176: Closing the action confirmation modal window on top close icon 
 
 
@@ -13,6 +17,7 @@
 - Fix #4830: Fix Prerequisites / Self Test translations
 - Fix #4459: Make UserFollow activity public
 - Enh #3824: Run acceptance tests with pretty URLs
+- Enh #5169: Enable more than 50 groups to a user
 
 
 1.9.0-beta.1 (June 15, 2021)
