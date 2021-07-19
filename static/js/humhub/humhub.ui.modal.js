@@ -526,14 +526,13 @@ humhub.module('ui.modal', function (module, require, $) {
         //Init handler
         var that = this;
         if (cfg['handler']) {
-            $confirmButton.one('click', function (evt) {
+            $confirmButton.one('click', function () {
                 that.clear();
                 cfg['handler'](true);
             });
-        }
 
-        if (cfg['handler']) {
-            $cancelButton.one('click', function (evt) {
+            var $closeButtonsIcons = this.$.find('[data-modal-close]');
+            $closeButtonsIcons.one('click', function () {
                 that.clear();
                 cfg['handler'](false);
             });
