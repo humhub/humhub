@@ -466,6 +466,9 @@ humhub.module('stream.Stream', function (module, require, $) {
             var $streamEnd = this.$content.find('.stream-end:first');
             if ($streamEnd.length) {
                 $streamEnd.before($html)
+                if (this.request.response.isLast && module.config.endIndicator) {
+                    $streamEnd.append(module.config.endIndicator);
+                }
             } else {
                 this.$content.append($html);
             }
