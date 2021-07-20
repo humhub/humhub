@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\directory\widgets;
+namespace humhub\modules\user\widgets;
 
 use Yii;
 use humhub\modules\user\models\User;
@@ -51,15 +51,13 @@ class NewMembers extends \yii\base\Widget
      */
     public function run()
     {
-        $newUsers = User::find()->orderBy('created_at DESC')->visible();
+        $newUsers = User::find()->orderBy('created_at DESC')->visible()->limit(10);
 
         return $this->render('newMembers', [
-                    'newUsers' => $newUsers,
+                    'newUsers' => $newUsers->all(),
                     'showMoreButton' => $this->showMoreButton,
                     'showInviteButton' => $this->showInviteButton
         ]);
     }
 
 }
-
-?>

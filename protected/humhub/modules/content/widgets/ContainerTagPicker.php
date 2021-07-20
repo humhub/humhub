@@ -36,6 +36,11 @@ class ContainerTagPicker extends BasePicker
     /**
      * @inheritdoc
      */
+    public $placeholderMore;
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();
@@ -53,7 +58,7 @@ class ContainerTagPicker extends BasePicker
     protected function getData()
     {
         return array_merge(parent::getData(), [
-            'placeholder-more' => Yii::t('ContentModule.base', 'Add tag...'),
+            'placeholder-more' => $this->placeholderMore ?? Yii::t('ContentModule.base', 'Add tag...'),
             'no-result' => Yii::t('ContentModule.base', 'No tags found for the given query'),
         ]);
     }

@@ -3,8 +3,8 @@
 use humhub\libs\Html;
 use humhub\modules\dashboard\widgets\DashboardContent;
 use humhub\modules\dashboard\widgets\Sidebar;
-use humhub\modules\directory\widgets\NewMembers;
-use humhub\modules\directory\widgets\NewSpaces;
+use humhub\modules\space\widgets\NewSpaces;
+use humhub\modules\user\widgets\NewMembers;
 use humhub\widgets\FooterMenu;
 
 ?>
