@@ -826,6 +826,7 @@ span.likeLinkContainer .unlike.disabled {
 .panel-body-register-successful {
     border-radius: 0 0 16px 16px;
     padding: 45px 20px 25px 20px;
+    background-color: #03331D !important;
 }
 
 .panel-body-register-successful .text-line {

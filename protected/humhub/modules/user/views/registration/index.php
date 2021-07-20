@@ -23,20 +23,20 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
                         <i class="fa fa-angle-down" aria-hidden="true"></i>
                     </div>
                     <select name="clubs" id="clubs-list" size="3">
-                        <option value="Berlin" class="club-option">Berlin</option>
-                        <option value="Bremen" class="club-option">Bremen</option>
-                        <option value="Dortmund" class="club-option">Dortmund</option>
-                        <option value="Dresden" class="club-option">Dresden</option>
-                        <option value="Frankfurt" class="club-option">Frankfurt</option>
-                        <option value="Freiburg" class="club-option">Freiburg</option>
-                        <option value="Gelsenkirchen" class="club-option">Gelsenkirchen</option>
-                        <option value="Hamburg" class="club-option">Hamburg</option>
-                        <option value="Hannover" class="club-option">Hannover</option>
-                        <option value="Monchengladbach" class="club-option">Monchengladbach</option>
-                        <option value="Munchen" class="club-option">Munchen</option>
-                        <option value="Nuremberg" class="club-option">Nuremberg</option>
-                        <option value="HamburgPirates" class="club-option">HamburgPirates</option>
-                        <option value="Wolfsburg" class="club-option">Wolfsburg</option>
+                        <option value="1. Berlin" class="club-option">Berlin</option>
+                        <option value="2. Bremen" class="club-option">Bremen</option>
+                        <option value="3. Dortmund" class="club-option">Dortmund</option>
+                        <option value="4. Dresden" class="club-option">Dresden</option>
+                        <option value="5. Frankfurt" class="club-option">Frankfurt</option>
+                        <option value="6. Freiburg" class="club-option">Freiburg</option>
+                        <option value="7. Gelsenkirchen" class="club-option">Gelsenkirchen</option>
+                        <option value="8. Hamburg" class="club-option">Hamburg</option>
+                        <option value="9. Hannover" class="club-option">Hannover</option>
+                        <option value="10. Monchengladbach" class="club-option">Monchengladbach</option>
+                        <option value="11. Munchen" class="club-option">Munchen</option>
+                        <option value="12. Nuremberg" class="club-option">Nuremberg</option>
+                        <option value="13. HamburgPirates" class="club-option">HamburgPirates</option>
+                        <option value="14. Wolfsburg" class="club-option">Wolfsburg</option>
                     </select>
                 </div>
 
