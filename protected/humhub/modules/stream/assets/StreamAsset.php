@@ -14,6 +14,7 @@ use humhub\modules\content\assets\ContentAsset;
 use humhub\modules\content\assets\ContentContainerAsset;
 use humhub\modules\ui\filter\assets\FilterAsset;
 use humhub\modules\user\assets\UserAsset;
+use Yii;
 
 
 /**
@@ -49,5 +50,16 @@ class StreamAsset extends AssetBundle
         CoreExtensionAsset::class
     ];
 
+    /**
+     * @inheritdoc
+     */
+    public static function register($view)
+    {
+        $view->registerJsConfig('stream.Stream', [
+            'endIndicator' => '<div class="text-center"><i class="fa fa-check"></i> ' . Yii::t('StreamModule.base', 'All records loaded.') . '</div>',
+        ]);
+
+        return parent::register($view);
+    }
 
 }
