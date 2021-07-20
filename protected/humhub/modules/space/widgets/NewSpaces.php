@@ -8,7 +8,7 @@ use humhub\modules\space\models\Membership;
 /**
  * Shows newly created spaces as sidebar widget
  *
- * @package humhub.modules_core.user.widgets
+ * @package humhub.modules_core.space.widgets
  * @since 0.11
  * @author Luke
  */
