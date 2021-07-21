@@ -23,20 +23,20 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
                         <i class="fa fa-angle-down" aria-hidden="true"></i>
                     </div>
                     <select name="clubs" id="clubs-list" size="3">
-                        <option value="1. Berlin" class="club-option">Berlin</option>
-                        <option value="2. Bremen" class="club-option">Bremen</option>
-                        <option value="3. Dortmund" class="club-option">Dortmund</option>
-                        <option value="4. Dresden" class="club-option">Dresden</option>
-                        <option value="5. Frankfurt" class="club-option">Frankfurt</option>
-                        <option value="6. Freiburg" class="club-option">Freiburg</option>
-                        <option value="7. Gelsenkirchen" class="club-option">Gelsenkirchen</option>
-                        <option value="8. Hamburg" class="club-option">Hamburg</option>
-                        <option value="9. Hannover" class="club-option">Hannover</option>
-                        <option value="10. Monchengladbach" class="club-option">Monchengladbach</option>
-                        <option value="11. Munchen" class="club-option">Munchen</option>
-                        <option value="12. Nuremberg" class="club-option">Nuremberg</option>
-                        <option value="13. HamburgPirates" class="club-option">HamburgPirates</option>
-                        <option value="14. Wolfsburg" class="club-option">Wolfsburg</option>
+                        <option value="1" id="Berlin" class="club-option">Berlin</option>
+                        <option value="2" id="Bremen" class="club-option">Bremen</option>
+                        <option value="3" id="Dortmund" class="club-option">Dortmund</option>
+                        <option value="4" id="Dresden" class="club-option">Dresden</option>
+                        <option value="5" id="Frankfurt" class="club-option">Frankfurt</option>
+                        <option value="6" id="Freiburg" class="club-option">Freiburg</option>
+                        <option value="7" id="Gelsenkirchen" class="club-option">Gelsenkirchen</option>
+                        <option value="8" id="Hamburg" class="club-option">Hamburg</option>
+                        <option value="9" id="Hannover" class="club-option">Hannover</option>
+                        <option value="10" id="Monchengladbach" class="club-option">Monchengladbach</option>
+                        <option value="11" id="Munchen" class="club-option">Munchen</option>
+                        <option value="12" id="Nuremberg" class="club-option">Nuremberg</option>
+                        <option value="13" id="HamburgPirates" class="club-option">HamburgPirates</option>
+                        <option value="14" id="Wolfsburg" class="club-option">Wolfsburg</option>
                     </select>
                 </div>
 
@@ -79,7 +79,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
         })
 
         $('.club-option').click(function(event) {
-            $('#label-clubs').val(event.target.value)
+            $('#label-clubs').val(event.target.id)
         })
     })
 
