@@ -59,6 +59,7 @@ use yii\web\IdentityInterface;
  * @property integer $visibility
  * @property integer $contentcontainer_id
  * @property Profile $profile
+ * @property Password $currentPassword
  *
  * @property string $displayName
  * @property string $displayNameSub

@@ -43,7 +43,7 @@ class CheckPasswordValidator extends Validator
 
     /**
      * Checks if current user has a password set.
-     * 
+     *
      * @param User $user the user or null for current
      * @return boolean
      */
@@ -57,7 +57,7 @@ class CheckPasswordValidator extends Validator
             return false;
         }
 
-        return ($user->currentPassword !== null);
+        return !empty($user->currentPassword->currentPassword);
     }
 
 }
