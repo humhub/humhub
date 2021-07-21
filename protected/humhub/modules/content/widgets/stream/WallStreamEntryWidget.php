@@ -7,6 +7,7 @@ use Exception;
 use humhub\libs\Html;
 use humhub\modules\content\widgets\ArchiveLink;
 use humhub\modules\content\widgets\DeleteLink;
+use humhub\modules\content\widgets\DisableCommentsLink;
 use humhub\modules\content\widgets\EditLink;
 use humhub\modules\content\widgets\MoveContentLink;
 use humhub\modules\content\widgets\NotificationSwitchLink;
@@ -299,6 +300,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
             [DeleteLink::class, ['content' => $this->model], ['sortOrder' => 300]],
             new DropdownDivider(['sortOrder' => 350]),
             [VisibilityLink::class, ['contentRecord' => $this->model], ['sortOrder' => 400]],
+            [DisableCommentsLink::class, ['contentRecord' => $this->model], ['sortOrder' => 450]],
             [NotificationSwitchLink::class, ['content' => $this->model], ['sortOrder' => 500]],
             [MoveContentLink::class, ['model' => $this->model], ['sortOrder' => 700]],
             [ArchiveLink::class, ['content' => $this->model], ['sortOrder' => 800]]

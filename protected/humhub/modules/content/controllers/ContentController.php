@@ -19,7 +19,6 @@ use humhub\components\Controller;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\components\behaviors\AccessControl;
-use humhub\modules\stream\actions\Stream;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -197,6 +196,68 @@ class ContentController extends Controller
                     'success' => $content->save(),
                     'state' => $content->visibility
         ]);
+    }
+
+    /**
+     * Switch status to disable/enable comments for the given content.
+     *
+     * @param int $id Content id
+     * @param bool $disableComments
+     * @return Response
+     * @throws Exception
+     * @throws HttpException
+     * @throws InvalidConfigException
+     * @throws \Throwable
+     * @throws \yii\db\IntegrityException
+     */
+    public function switchCommentsStatus(int $id, bool $disableComments): Response
+    {
+        $this->forcePostRequest();
+        $content = Content::findOne(['id' => $id]);
+
+        if (!$content) {
+            throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
+        } elseif (!$content->canEdit()) {
+            throw new HttpException(403);
+        }
+
+        $content->disabled_comments = $disableComments;
+
+        return $this->asJson([
+            'success' => $content->save()
+        ]);
+    }
+
+    /**
+     * Disable comments for the given content.
+     *
+     * @param int $id Content id
+     * @return Response
+     * @throws Exception
+     * @throws HttpException
+     * @throws InvalidConfigException
+     * @throws \Throwable
+     * @throws \yii\db\IntegrityException
+     */
+    public function actionDisableComments($id)
+    {
+        return $this->switchCommentsStatus($id, true);
+    }
+
+    /**
+     * Enable comments for the given content.
+     *
+     * @param int $id Content id
+     * @return Response
+     * @throws Exception
+     * @throws HttpException
+     * @throws InvalidConfigException
+     * @throws \Throwable
+     * @throws \yii\db\IntegrityException
+     */
+    public function actionEnableComments($id)
+    {
+        return $this->switchCommentsStatus($id, false);
     }
 
     /**

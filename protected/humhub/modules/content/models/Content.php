@@ -58,6 +58,7 @@ use yii\helpers\Url;
  * @property integer $visibility
  * @property integer $pinned
  * @property integer $archived
+ * @property integer $disabled_comments
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
@@ -322,13 +323,23 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     }
 
     /**
-     * Checks if the content visiblity is set to private.
+     * Checks if the content visibility is set to private.
      *
      * @return boolean
      */
     public function isPrivate()
     {
         return $this->visibility == self::VISIBILITY_PRIVATE;
+    }
+
+    /**
+     * Checks if comments are disabled for the content.
+     *
+     * @return bool
+     */
+    public function isDisabledComments(): bool
+    {
+        return (bool)$this->disabled_comments;
     }
 
     /**
