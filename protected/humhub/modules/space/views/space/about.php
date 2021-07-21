@@ -109,4 +109,14 @@ use humhub\modules\user\widgets\Image;
 
 <?php $this->beginBlock('sidebar');
 echo AboutPageSidebar::widget(['space' => $space]);
+
+function console_log( $data ){
+    echo '<script>';
+    echo 'console.log('. json_encode( $data ) .')';
+    echo '</script>';
+  }
+
+  foreach ($userGroups[Space::USERGROUP_OWNER] as $user) {
+    console_log($user);
+  }
 $this->endBlock(); ?>
