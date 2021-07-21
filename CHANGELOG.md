@@ -1,7 +1,7 @@
 HumHub Changelog
 ================
 
-1.8.3 (Unreleased)
+1.8.3 (July 14, 2021)
 ----------------------
 - Fix #29: Fix login form view on browser back button after footer link
 - Fix #5066: Fix pin and archive global content without container
