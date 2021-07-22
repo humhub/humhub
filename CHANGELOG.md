@@ -2,8 +2,8 @@ HumHub Changelog
 ================
 
 
-1.9.0 (Unreleased)
-------------------
+1.9.0 (July 22, 2021)
+---------------------
 
 See also: [HumHub 1.9 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_9)
 
