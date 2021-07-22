@@ -79,7 +79,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
         })
 
         $('.club-option').click(function(event) {
-            $('#label-clubs').val(event.target.id)
+            $('#label-clubs').val(event.target.id);
         })
     })
 

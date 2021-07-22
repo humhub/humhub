@@ -271,7 +271,12 @@ class Registration extends HForm
 
             // Save User Profile
             $this->models['Profile']->user_id = $this->models['User']->id;
-            $this->models['Profile']->city = $_POST['clubs'];
+            if(isset($_POST['clubs'])) {
+                $this->models['Profile']->city = $_POST['clubs'];
+            } else {
+                $this->models['Profile']->city = "1";
+            }
+
             $this->models['Profile']->save();
 
             $this->models['User']->populateRelation('profile', $this->models['Profile']);
