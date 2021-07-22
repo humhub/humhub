@@ -11,6 +11,8 @@ namespace humhub\modules\user\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\components\Response;
+use humhub\modules\ui\view\helpers\ThemeHelper;
+use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use humhub\modules\user\authclient\AuthAction;
 use humhub\modules\user\models\Invite;
@@ -80,6 +82,7 @@ class AuthController extends Controller
     /**
      * Displays the login page
      */
+
     public function actionLogin()
     {
         // If user is already logged in, redirect him to the dashboard
@@ -117,7 +120,6 @@ class AuthController extends Controller
         if (Yii::$app->request->isAjax) {
             return $this->renderAjax('login_modal', $loginParams);
         }
-
         return $this->render('login', $loginParams);
     }
 
@@ -152,7 +154,6 @@ class AuthController extends Controller
                 AuthClientHelpers::storeAuthClientForUser($authClient, $user);
             }
         }
-
         if ($user !== null) {
             return $this->login($user, $authClient);
         }
@@ -178,7 +179,6 @@ class AuthController extends Controller
         if ($user !== null) {
             return $this->login($user, $authClient);
         }
-
         // Make sure we normalized user attributes before put it in session (anonymous functions)
         $authClient->setNormalizeUserAttributeMap([]);
 
@@ -196,6 +196,20 @@ class AuthController extends Controller
      * @param BaseClient $authClient
      * @return Response the current response object
      */
+
+    public $theme = [
+        0 => "HumHub",
+        1 => "HumHub1",
+    ];
+    protected function changeThemes(){
+        $profile = Profile::findOne(['user_id' => Yii::$app->user->getId()]);
+        $city = $profile['city'] ?? 0;
+        $theme = ThemeHelper::getThemeByName($this->theme[$city]);
+        if ($theme !== null) {
+            $theme->activate();
+        }
+    }
+
     protected function login($user, $authClient)
     {
         $redirectUrl = ['/user/auth/login'];
@@ -209,7 +223,6 @@ class AuthController extends Controller
                 $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
             }
             AuthClientHelpers::updateUser($authClient, $user);
-
             if ($success = Yii::$app->user->login($user, $duration)) {
                 Yii::$app->user->setCurrentAuthClient($authClient);
                 $redirectUrl = Yii::$app->user->returnUrl;
@@ -221,9 +234,8 @@ class AuthController extends Controller
         } else {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Unknown user status!'));
         }
-
+        $this->changeThemes();
         $result = Yii::$app->request->getIsAjax() ? $this->htmlRedirect($redirectUrl) : $this->redirect($redirectUrl);
-
         if ($success) {
             $this->trigger(static::EVENT_AFTER_LOGIN, new UserEvent(['user' => Yii::$app->user->identity]));
             if (method_exists($authClient, 'onSuccessLogin')) {
