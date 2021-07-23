@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use humhub\modules\user\models\Profile;
 use Yii;
 use yii\base\ErrorException;
 use yii\base\Exception;
@@ -57,6 +58,14 @@ class LogoImage
             // Will change in future!
             $maxHeight = 80;
         }
+        $profile = Profile::findOne(['user_id' => Yii::$app->user->getId()]);
+        $city = $profile['city'] ?? 0;
+        switch ($city){
+            case 0:
+                return Url::base(true) . "/uploads/logo_public/logo-new.png";
+            case 1:
+                return Url::base(true) . "/uploads/logo_public/logo-ff.png";
+        }
 
         $file = self::getFile($maxWidth, $maxHeight);
         if (file_exists($file)) {
@@ -86,7 +95,6 @@ class LogoImage
 
         return null;
     }
-
     /**
      * Indicates there is a logo image
      *
