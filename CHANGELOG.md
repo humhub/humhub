@@ -2,6 +2,12 @@ HumHub Changelog
 ================
 
 
+1.9.1 (Unreleased)
+------------------
+
+- Fix #5172: Missing translations for "New Member" and "New Spaces" directory widgets
+
+
 1.9.0 (July 22, 2021)
 ---------------------
 
