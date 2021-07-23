@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\modules\user\models\Profile;
 use Yii;
 
 /**
@@ -29,7 +30,7 @@ class Checkbox extends BaseType
     /**
      * Rules for validating the Field Type Settings Form
      *
-     * @return type
+     * @return array
      */
     public function rules()
     {
@@ -41,7 +42,7 @@ class Checkbox extends BaseType
     /**
      * Returns Form Definition for edit/create this field.
      *
-     * @return Array Form Definition
+     * @return array Form Definition
      */
     public function getFormDefinition($definition = [])
     {
@@ -81,8 +82,8 @@ class Checkbox extends BaseType
     /**
      * Returns the Field Rules, to validate users input
      *
-     * @param type $rules
-     * @return type
+     * @param array $rules
+     * @return array rules
      */
     public function getFieldRules($rules = [])
     {
@@ -92,7 +93,7 @@ class Checkbox extends BaseType
                 if (!$this->$attribute) {
                     $this->addError($attribute, Yii::t('UserModule.profile', '{attribute} is required!', ['{attribute}' => $profileField->title]));
                 }
-            }];
+            }, 'except' => Profile::SCENARIO_EDIT_ADMIN];
         } else {
             $rules[] = [$profileField->internal_name, 'in', 'range' => [0, 1]];
         }

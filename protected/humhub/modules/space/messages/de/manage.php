@@ -54,6 +54,6 @@ return array (
   'Unarchive' => 'Aus dem Archiv',
   'e.g. example for {baseUrl}/s/example' => 'z. B. example für {baseUrl}/s/example',
   'never' => 'Nie',
-  'the default start page of this space for members' => 'Die Standard-Startseite für Mitglieder dieses Space',
-  'the default start page of this space for visitors' => 'Die Standard-Startseite für Gästes dieses Space',
+  'the default start page of this space for members' => 'Die Startseite für Mitglieder dieses Space',
+  'the default start page of this space for visitors' => 'Die Startseite für Nicht-Mitglieder des Spaces',
 );
