@@ -47,53 +47,62 @@ class LogoImage
      * @param bool $autoResize automatically resize to given size if not available yet
      * @return string|null
      */
+    public static $logo = [
+        0 => "logo-new.png",
+        1 => "logo-ff.png",
+        2 => "logo-new.png",
+        3 => "logo-new.png",
+        4 => "logo-new.png",
+        5 => "logo-new.png",
+        6 => "logo-new.png",
+        7 => "logo-new.png",
+        8 => "logo-new.png",
+        9 => "logo-new.png",
+        10 => "logo-new.png",
+        11 => "logo-new.png",
+        12 => "logo-new.png",
+        13 => "logo-new.png",
+    ];
     public static function getUrl($maxWidth = null, $maxHeight = null, $autoResize = true)
     {
-        if ($maxWidth === null) {
-            // Will change in future!
-            $maxWidth = 600;
-        }
-
-        if ($maxHeight === null) {
-            // Will change in future!
-            $maxHeight = 80;
-        }
         $profile = Profile::findOne(['user_id' => Yii::$app->user->getId()]);
         $city = $profile['city'] ?? 0;
-        switch ($city){
-            case 0:
-                return Url::base(true) . "/uploads/logo_public/logo-new.png";
-            case 1:
-                return Url::base(true) . "/uploads/logo_public/logo-ff.png";
-        }
-
-        $file = self::getFile($maxWidth, $maxHeight);
-        if (file_exists($file)) {
-            // Workaround for absolute urls in console applications (Cron)
-            $base = '';
-            if (Yii::$app->request->isConsoleRequest) {
-                $base = Url::base(true);
-            }
-            return $base . Yii::getAlias(Yii::$app->assetManager->baseUrl) . '/logo/' . static::buildFileName($maxWidth, $maxHeight) . '?v=' . filemtime($file);
-        } elseif (static::hasImage() && $autoResize) {
-            try {
-                FileHelper::createDirectory(Yii::getAlias(Yii::$app->assetManager->basePath . DIRECTORY_SEPARATOR . 'logo'));
-            } catch (Exception $e) {
-            }
-
-            $image = Image::getImagine()->open(static::getOriginalFile());
-            if ($image->getSize()->getHeight() > $maxHeight) {
-                $image->resize($image->getSize()->heighten($maxHeight));
-            }
-            if ($image->getSize()->getWidth() > $maxWidth) {
-                $image->resize($image->getSize()->widen($maxWidth));
-            }
-            $image->save($file);
-
-            return static::getUrl($maxWidth, $maxHeight, false);
-        }
-
-        return null;
+        return Url::base(true) . '/uploads/logo_public/'. self::$logo[$city];
+//        if ($maxWidth === null) {
+//            // Will change in future!
+//            $maxWidth = 600;
+//        }
+//
+//        if ($maxHeight === null) {
+//            // Will change in future!
+//            $maxHeight = 80;
+//        }
+//        $file = self::getFile($maxWidth, $maxHeight);
+//        if (file_exists($file)) {
+//            // Workaround for absolute urls in console applications (Cron)
+//            $base = '';
+//            if (Yii::$app->request->isConsoleRequest) {
+//                $base = Url::base(true);
+//            }
+//            return $base . Yii::getAlias(Yii::$app->assetManager->baseUrl) . '/logo/' . static::buildFileName($maxWidth, $maxHeight) . '?v=' . filemtime($file);
+//        } elseif (static::hasImage() && $autoResize) {
+//            try {
+//                FileHelper::createDirectory(Yii::getAlias(Yii::$app->assetManager->basePath . DIRECTORY_SEPARATOR . 'logo'));
+//            } catch (Exception $e) {
+//            }
+//
+//            $image = Image::getImagine()->open(static::getOriginalFile());
+//            if ($image->getSize()->getHeight() > $maxHeight) {
+//                $image->resize($image->getSize()->heighten($maxHeight));
+//            }
+//            if ($image->getSize()->getWidth() > $maxWidth) {
+//                $image->resize($image->getSize()->widen($maxWidth));
+//            }
+//            $image->save($file);
+//
+//            return static::getUrl($maxWidth, $maxHeight, false);
+//        }
+//        return null;
     }
     /**
      * Indicates there is a logo image
