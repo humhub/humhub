@@ -146,6 +146,18 @@ class InitialData
         }
 
         $field = new ProfileField();
+        $field->internal_name = "city";
+        $field->title = 'Club';
+        $field->sort_order = 300;
+        $field->profile_field_category_id = $cGeneral->id;
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Select::class;
+        $field->is_system = 1;
+        if ($field->save()) {
+            $field->fieldType->options = "0=>Berlin\n2=>Bremen\n3=>Dortmund\n4=>Dresden\n1=>Frankfurt\n5=>Freiburg\n6=>Gelsenkirchen\n7=>Hamburg\n8=>Hannover\n9=>Monchengladbach\n10=>Munchen\n11=>Nuremberg\n12=>HamburgPirates\n13=>Wolfsburg";
+            $field->fieldType->save();
+        }
+
+        $field = new ProfileField();
         $field->internal_name = "gender";
         $field->title = 'Gender';
         $field->sort_order = 300;
@@ -178,18 +190,6 @@ class InitialData
         $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         if ($field->save()) {
             $field->fieldType->maxLength = 10;
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "city";
-        $field->title = 'City';
-        $field->sort_order = 600;
-        $field->profile_field_category_id = $cGeneral->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->maxLength = 100;
             $field->fieldType->save();
         }
 
@@ -439,5 +439,4 @@ class InitialData
         $group->is_default_group = 1;
         $group->save();
     }
-
 }
