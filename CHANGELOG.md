@@ -2,8 +2,8 @@ HumHub Changelog
 ================
 
 
-1.9.0 (Unreleased)
-------------------
+1.9.0 (July 22, 2021)
+---------------------
 
 See also: [HumHub 1.9 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_9)
 
@@ -14,6 +14,7 @@ Note: HumHub version 1.9+ requires PHP 7.3 or higher!
 - Fix #5177: Move directory widgets
 - Enh #5049: Required profile field should not be required in administration (Fix for checkbox field type)
 - Fix #5009: Fix video thumbnail on Safari browser
+- Fix #5182: Password field should not be required if user has no password
 
 
 1.9.0-beta.2 (July 14, 2021)
