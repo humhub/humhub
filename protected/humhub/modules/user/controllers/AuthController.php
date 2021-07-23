@@ -200,6 +200,18 @@ class AuthController extends Controller
     public $theme = [
         0 => "HumHub",
         1 => "HumHub1",
+        2 => "HumHub",
+        3 => "HumHub",
+        4 => "HumHub",
+        5 => "HumHub",
+        6 => "HumHub",
+        7 => "HumHub",
+        8 => "HumHub",
+        9 => "HumHub",
+        10 => "HumHub",
+        11 => "HumHub",
+        12 => "HumHub",
+        13 => "HumHub",
     ];
     protected function changeThemes(){
         $profile = Profile::findOne(['user_id' => Yii::$app->user->getId()]);
