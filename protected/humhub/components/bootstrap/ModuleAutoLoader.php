@@ -91,7 +91,7 @@ class ModuleAutoLoader implements BootstrapInterface
             foreach (Yii::$app->moduleManager->overwriteModuleBasePath as $overwriteModuleId => $overwriteModulePath) {
                 if (isset($moduleIdFolders[$overwriteModuleId]) && $moduleIdFolders[$overwriteModuleId] != $overwriteModulePath) {
                     try {
-                        $moduleConfig = include $overwriteModulePath . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE.'2';
+                        $moduleConfig = include $overwriteModulePath . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
                         Yii::info('Overwrite path of the module "' . $overwriteModuleId . '" to the folder "' . $overwriteModulePath . '"');
                         // Remove original config
                         unset($modules[$moduleIdFolders[$overwriteModuleId]]);
