@@ -1039,7 +1039,7 @@ ul.contextMenu li.selected {
 }
 
 .media-list li.new {
-    background-color: #44534C;
+    background-color: #44534C !important;
     border-left: 3px solid #F2AC57;
 }
 
