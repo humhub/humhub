@@ -17,7 +17,22 @@ input:-webkit-autofill:active {
 .borderDefault {
     border-color: #f3f3f3
 }
-
+.panel-heading{
+    background: linear-gradient(0deg, #1C2E26, #1C2E26), #1E2429 !important;
+}
+.conversation-menu .conversation-edit-button{
+    background-color: #f8b763 !important;
+}
+.conversation-menu .time{
+    /*background-color: #f8b763 !important;*/
+    color: #1C2E26 !important;
+}
+.conversation-entry-content{
+    background-color: #f8b763 !important;
+}
+.messagePreviewEntry {
+    background: linear-gradient(0deg, #1C2E26, #1C2E26), #1E2429 !important;
+}
 .colorPrimary {
     color: #435f6f !important
 }
