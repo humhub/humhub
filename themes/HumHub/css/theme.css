@@ -1221,7 +1221,7 @@ img {
     font-size: 16px;
     font-weight: 300;
     color: #FFFFFF;
-    background: #F2AC57;
+    background: #F2AC57 !important;
     border: none;
     padding: 10px;
     border-radius: 4px
