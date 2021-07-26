@@ -73,8 +73,8 @@ class DisableCommentsIcon extends Icon
     private static function getCommentsStatusIconTitle(ContentActiveRecord $model): string
     {
         return $model->content->isDisabledComments()
-            ? Yii::t('ContentModule.base', 'Comments are disabled for this content')
-            : Yii::t('ContentModule.base', 'Comments are enabled for this content');
+            ? Yii::t('ContentModule.base', 'Comments are locked')
+            : Yii::t('ContentModule.base', 'Comments are unlocked');
     }
 
 }

@@ -9,11 +9,11 @@ use humhub\modules\content\models\Content;
 <li>
     <?php if ($content->isDisabledComments()) : ?>
         <a href="#" data-action-click="enableComments" data-action-url="<?= $enableCommentsLink ?>">
-            <i class="fa fa-comment-o"></i> <?= Yii::t('ContentModule.base', 'Enable comments') ?>
+            <i class="fa fa-comment-o"></i> <?= Yii::t('ContentModule.base', 'Unlock comments') ?>
         </a>
     <?php else : ?>
         <a href="#" data-action-click="disableComments" data-action-url="<?= $disableCommentsLink ?>">
-            <i class="fa fa-comment"></i> <?= Yii::t('ContentModule.base', 'Disable comments') ?>
+            <i class="fa fa-comment"></i> <?= Yii::t('ContentModule.base', 'Lock comments') ?>
         </a>
     <?php endif; ?>
 </li>
