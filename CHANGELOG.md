@@ -6,6 +6,7 @@ HumHub Changelog
 ------------------
 
 - Fix #5172: Missing translations for "New Member" and "New Spaces" directory widgets
+- Fix #5195: Fix export users with tags data
 
 
 1.9.0 (July 22, 2021)
