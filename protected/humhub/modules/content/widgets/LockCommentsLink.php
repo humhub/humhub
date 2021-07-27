@@ -32,7 +32,7 @@ class LockCommentsLink extends Widget
     {
         $content = $this->contentRecord->content;
 
-        if (!$content->canEdit()) {
+        if (!$content->canLockComments()) {
             return '';
         }
 

@@ -217,7 +217,7 @@ class ContentController extends Controller
 
         if (!$content) {
             throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
-        } elseif (!$content->canEdit()) {
+        } elseif (!$content->canLockComments()) {
             throw new HttpException(403);
         }
 
