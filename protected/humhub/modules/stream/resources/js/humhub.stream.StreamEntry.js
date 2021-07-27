@@ -265,16 +265,16 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
     StreamEntry.prototype.toggleVisibility = updateContentByActionUrl;
 
     /**
-     * Disable comments for the content
+     * Lock comments for the content
      * @param evt
      */
-    StreamEntry.prototype.disableComments = updateContentByActionUrl;
+    StreamEntry.prototype.lockComments = updateContentByActionUrl;
 
     /**
-     * Enable comments for the content
+     * Unlock comments for the content
      * @param evt
      */
-    StreamEntry.prototype.enableComments = updateContentByActionUrl;
+    StreamEntry.prototype.unlockComments = updateContentByActionUrl;
 
     StreamEntry.prototype.isPinned = function (evt) {
         return this.$.is('[data-stream-pinned="1"]');

@@ -3,7 +3,7 @@
 use humhub\libs\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\ArchivedIcon;
-use humhub\modules\content\widgets\DisableCommentsIcon;
+use humhub\modules\content\widgets\LockCommentsIcon;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\UpdatedIcon;
 use humhub\modules\content\widgets\VisibilityIcon;
@@ -87,7 +87,7 @@ $container = $model->content->container;
             <?php endif; ?>
 
             <?= VisibilityIcon::getByModel($model) ?>
-            <?= DisableCommentsIcon::getByModel($model) ?>
+            <?= LockCommentsIcon::getByModel($model) ?>
         </div>
     </div>
 </div>

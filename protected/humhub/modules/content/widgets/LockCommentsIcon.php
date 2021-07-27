@@ -18,23 +18,23 @@ use Yii;
  * Usage:
  *
  * ```php
- * <?= DisableCommentsIcon::getByModel($model) ?>
+ * <?= LockCommentsIcon::getByModel($model) ?>
  * ```
  *
  * @package humhub\modules\content\widgets
  * @since 1.10
  */
-class DisableCommentsIcon extends Icon
+class LockCommentsIcon extends Icon
 {
     /**
-     * Icon name used for content with disabled comments
+     * Icon name used for content with locked comments
      */
-    const ICON_DISABLED = 'comment-o';
+    const ICON_LOCKED = 'comment-o';
 
     /**
-     * Icon name used for content with enabled comments
+     * Icon name used for content with unlocked comments
      */
-    const ICON_ENABLED = 'comment';
+    const ICON_UNLOCKED = 'comment';
 
     /**
      * Returns a comments status icon with tooltip for the given $model.
@@ -45,7 +45,7 @@ class DisableCommentsIcon extends Icon
      */
     public static function getByModel(ContentActiveRecord $model, bool $displayEnabledIcon = false): string
     {
-        if (!$displayEnabledIcon && !$model->content->isDisabledComments()) {
+        if (!$displayEnabledIcon && !$model->content->isLockedComments()) {
             return '';
         }
 
@@ -60,7 +60,7 @@ class DisableCommentsIcon extends Icon
      */
     private static function getCommentsStatusIcon(ContentActiveRecord $model): string
     {
-        return $model->content->isDisabledComments() ? static::ICON_DISABLED : static::ICON_ENABLED;
+        return $model->content->isLockedComments() ? static::ICON_LOCKED : static::ICON_UNLOCKED;
     }
 
     /**
@@ -72,7 +72,7 @@ class DisableCommentsIcon extends Icon
      */
     private static function getCommentsStatusIconTitle(ContentActiveRecord $model): string
     {
-        return $model->content->isDisabledComments()
+        return $model->content->isLockedComments()
             ? Yii::t('ContentModule.base', 'Comments are locked')
             : Yii::t('ContentModule.base', 'Comments are unlocked');
     }

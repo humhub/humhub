@@ -88,7 +88,7 @@ class Module extends \humhub\components\Module
             }
         }
 
-        if ($content->isDisabledComments()) {
+        if ($content->isLockedComments()) {
             return false;
         }
 

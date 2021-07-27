@@ -333,11 +333,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     }
 
     /**
-     * Checks if comments are disabled for the content.
+     * Checks if comments are locked for the content.
      *
      * @return bool
      */
-    public function isDisabledComments(): bool
+    public function isLockedComments(): bool
     {
         return (bool)$this->disabled_comments;
     }

@@ -12,12 +12,12 @@ use yii\base\Widget;
 use yii\helpers\Url;
 
 /**
- * Disable/Enable comments link for Wall Entries.
+ * Lock/Unlock comments link for Wall Entries.
  *
  * @package humhub.modules_core.wall.widgets
  * @since 1.10
  */
-class DisableCommentsLink extends Widget
+class LockCommentsLink extends Widget
 {
 
     /**
@@ -36,10 +36,10 @@ class DisableCommentsLink extends Widget
             return '';
         }
 
-        return $this->render('disableCommentsLink', [
+        return $this->render('lockCommentsLink', [
             'content' => $content,
-            'disableCommentsLink' => Url::to(['/content/content/disable-comments', 'id' => $content->id]),
-            'enableCommentsLink' => Url::to(['/content/content/enable-comments', 'id' => $content->id]),
+            'lockCommentsLink' => Url::to(['/content/content/lock-comments', 'id' => $content->id]),
+            'unlockCommentsLink' => Url::to(['/content/content/unlock-comments', 'id' => $content->id]),
         ]);
     }
 }

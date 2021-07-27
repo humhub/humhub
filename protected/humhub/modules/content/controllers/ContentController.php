@@ -199,10 +199,10 @@ class ContentController extends Controller
     }
 
     /**
-     * Switch status to disable/enable comments for the given content.
+     * Switch status to lock/unlock comments for the given content.
      *
      * @param int $id Content id
-     * @param bool $disableComments
+     * @param bool $lockComments True to lock comments, False to unlock
      * @return Response
      * @throws Exception
      * @throws HttpException
@@ -210,7 +210,7 @@ class ContentController extends Controller
      * @throws \Throwable
      * @throws \yii\db\IntegrityException
      */
-    public function switchCommentsStatus(int $id, bool $disableComments): Response
+    public function switchCommentsStatus(int $id, bool $lockComments): Response
     {
         $this->forcePostRequest();
         $content = Content::findOne(['id' => $id]);
@@ -221,7 +221,7 @@ class ContentController extends Controller
             throw new HttpException(403);
         }
 
-        $content->disabled_comments = $disableComments;
+        $content->disabled_comments = $lockComments;
 
         return $this->asJson([
             'success' => $content->save()
@@ -229,7 +229,7 @@ class ContentController extends Controller
     }
 
     /**
-     * Disable comments for the given content.
+     * Lock comments for the given content.
      *
      * @param int $id Content id
      * @return Response
@@ -239,13 +239,13 @@ class ContentController extends Controller
      * @throws \Throwable
      * @throws \yii\db\IntegrityException
      */
-    public function actionDisableComments($id)
+    public function actionLockComments($id)
     {
         return $this->switchCommentsStatus($id, true);
     }
 
     /**
-     * Enable comments for the given content.
+     * Unlock comments for the given content.
      *
      * @param int $id Content id
      * @return Response
@@ -255,7 +255,7 @@ class ContentController extends Controller
      * @throws \Throwable
      * @throws \yii\db\IntegrityException
      */
-    public function actionEnableComments($id)
+    public function actionUnlockComments($id)
     {
         return $this->switchCommentsStatus($id, false);
     }
