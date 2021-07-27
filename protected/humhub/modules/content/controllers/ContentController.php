@@ -221,7 +221,7 @@ class ContentController extends Controller
             throw new HttpException(403);
         }
 
-        $content->disabled_comments = $lockComments;
+        $content->locked_comments = $lockComments;
 
         return $this->asJson([
             'success' => $content->save()

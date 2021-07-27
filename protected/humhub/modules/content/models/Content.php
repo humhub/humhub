@@ -58,7 +58,7 @@ use yii\helpers\Url;
  * @property integer $visibility
  * @property integer $pinned
  * @property integer $archived
- * @property integer $disabled_comments
+ * @property integer $locked_comments
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
@@ -339,7 +339,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function isLockedComments(): bool
     {
-        return (bool)$this->disabled_comments;
+        return (bool)$this->locked_comments;
     }
 
     /**
