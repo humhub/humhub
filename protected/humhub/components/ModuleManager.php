@@ -140,7 +140,7 @@ class ModuleManager extends Component
     {
         $filename = $basePath . '/config.php';
         if ($config === null && is_file($filename)) {
-            $config = require $filename;
+            $config = include $filename;
         }
 
         // Check mandatory config options
