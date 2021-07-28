@@ -199,11 +199,20 @@ class Birthday extends BaseType
             }
         }
 
+        $longDate = Yii::$app->formatter->asDate($birthdayDate, 'long');
+
         /*
          * - user set hide age yes
          */
         if ($hideAge === self::HIDE_AGE_YES) {
-            return Yii::$app->formatter->asDate($birthdayDate, 'dd. MMMM');
+            $month = Yii::$app->formatter->asDate($birthdayDate, 'php:F');
+            $day = Yii::$app->formatter->asDate($birthdayDate, 'php:d');
+            if (preg_match('/(' . preg_quote($day) . '.+' . preg_quote($month) . '|' . preg_quote($month) . '.+' . preg_quote($day) . ')/', $longDate, $m)) {
+                return $m[0];
+            }
+
+            $year = Yii::$app->formatter->asDate($birthdayDate, 'php:Y');
+            return preg_replace('/[,\s]*' . preg_quote($year) . '([^\d]+|$)/', '', $longDate);
         }
 
         $ageInYears = Yii::t(
@@ -212,7 +221,7 @@ class Birthday extends BaseType
             ['%y' => $birthdayDate->diff(new \DateTime())->y]
         );
 
-        return Yii::$app->formatter->asDate($birthdayDate, 'long') . ' (' . $ageInYears . ')';
+        return $longDate . ' (' . $ageInYears . ')';
     }
 
     /**
