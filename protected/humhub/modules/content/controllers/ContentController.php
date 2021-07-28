@@ -19,7 +19,6 @@ use humhub\components\Controller;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\components\behaviors\AccessControl;
-use humhub\modules\stream\actions\Stream;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -197,6 +196,68 @@ class ContentController extends Controller
                     'success' => $content->save(),
                     'state' => $content->visibility
         ]);
+    }
+
+    /**
+     * Switch status to lock/unlock comments for the given content.
+     *
+     * @param int $id Content id
+     * @param bool $lockComments True to lock comments, False to unlock
+     * @return Response
+     * @throws Exception
+     * @throws HttpException
+     * @throws InvalidConfigException
+     * @throws \Throwable
+     * @throws \yii\db\IntegrityException
+     */
+    public function switchCommentsStatus(int $id, bool $lockComments): Response
+    {
+        $this->forcePostRequest();
+        $content = Content::findOne(['id' => $id]);
+
+        if (!$content) {
+            throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
+        } elseif (!$content->canLockComments()) {
+            throw new HttpException(403);
+        }
+
+        $content->locked_comments = $lockComments;
+
+        return $this->asJson([
+            'success' => $content->save()
+        ]);
+    }
+
+    /**
+     * Lock comments for the given content.
+     *
+     * @param int $id Content id
+     * @return Response
+     * @throws Exception
+     * @throws HttpException
+     * @throws InvalidConfigException
+     * @throws \Throwable
+     * @throws \yii\db\IntegrityException
+     */
+    public function actionLockComments($id)
+    {
+        return $this->switchCommentsStatus($id, true);
+    }
+
+    /**
+     * Unlock comments for the given content.
+     *
+     * @param int $id Content id
+     * @return Response
+     * @throws Exception
+     * @throws HttpException
+     * @throws InvalidConfigException
+     * @throws \Throwable
+     * @throws \yii\db\IntegrityException
+     */
+    public function actionUnlockComments($id)
+    {
+        return $this->switchCommentsStatus($id, false);
     }
 
     /**

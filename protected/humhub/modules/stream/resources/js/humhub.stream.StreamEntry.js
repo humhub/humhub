@@ -239,10 +239,10 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
     };
 
     /**
-     * Changes the visibility (private/public) of this entry
+     * Update content record by action provided in action URL from attribute [data-action-url]
      * @param evt
      */
-    StreamEntry.prototype.toggleVisibility = function (evt) {
+    var updateContentByActionUrl = function (evt) {
         this.loader();
         var that = this;
         client.post(evt).then(function (response) {
@@ -257,6 +257,24 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
             module.log.error(e, true);
         });
     };
+
+    /**
+     * Changes the visibility (private/public) of this entry
+     * @param evt
+     */
+    StreamEntry.prototype.toggleVisibility = updateContentByActionUrl;
+
+    /**
+     * Lock comments for the content
+     * @param evt
+     */
+    StreamEntry.prototype.lockComments = updateContentByActionUrl;
+
+    /**
+     * Unlock comments for the content
+     * @param evt
+     */
+    StreamEntry.prototype.unlockComments = updateContentByActionUrl;
 
     StreamEntry.prototype.isPinned = function (evt) {
         return this.$.is('[data-stream-pinned="1"]');

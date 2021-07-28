@@ -88,6 +88,10 @@ class Module extends \humhub\components\Module
             }
         }
 
+        if ($content->isLockedComments()) {
+            return false;
+        }
+
         if ($content->isArchived()) {
             return false;
         }
