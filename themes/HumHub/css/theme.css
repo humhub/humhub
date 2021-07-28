@@ -41,6 +41,10 @@ input:-webkit-autofill:active {
     background: #435f6f !important
 }
 
+.content-preview .media-body .text:hover{
+    background: none !important;
+    cursor: pointer;
+}
 .borderPrimary {
     border-color: #435f6f !important
 }
