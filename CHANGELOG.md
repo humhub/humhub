@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #5172: Missing translations for "New Member" and "New Spaces" directory widgets
 - Fix #5195: Fix export users with tags data
 - Fix #5200: Auto creating following for friends
+- Fix #5187: Fix birthday with hidden year in a language-specific format
 - Enh #5189: Reduce minimum character limit for tags to 2 chars
 
 
