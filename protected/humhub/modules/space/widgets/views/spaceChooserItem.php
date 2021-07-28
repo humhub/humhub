@@ -25,6 +25,9 @@ use yii\helpers\Html;
                 </div>
                 <br>
                 <p><?= Html::encode(Helpers::truncateText($space->description, 60)); ?></p>
+                <?php if ($space->hasTags()) : ?>
+                    <p><strong><?= Yii::t('SpaceModule.base', 'Tags')?>:</strong> <?= implode(', ', $space->getTags()); ?></p>
+                <?php endif; ?>
             </div>
         </div>
     </a>
