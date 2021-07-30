@@ -6,24 +6,27 @@ humhub.module('directory', function(module, require, $) {
         $(evt.$trigger).closest('form').submit();
     }
 
-    const loadMore = function(evt) {
-        const urlParams = {page: $(evt.$trigger).data('current-page') + 1};
+    const loadMore = function(directoryEndIndicator) {
+        const urlParams = {page: directoryEndIndicator.data('current-page') + 1};
 
+        $('.directory-end').data('isLoading', true);
+        loader.append(directoryEndIndicator);
         client.get(module.config.loadMoreUrl, {data: urlParams}).then(function (response) {
             $('.container-directory .card:hidden').show();
             $('.container-directory .cards').append(response.response);
-            if (urlParams.page == $(evt.$trigger).data('total-pages')) {
-                // Remove button "Load more" because the last page was loaded
-                $(evt.$trigger).parent().remove();
+            if (urlParams.page == directoryEndIndicator.data('total-pages')) {
+                // Remove the directory end indicator because the last page was loaded
+                directoryEndIndicator.remove();
             } else {
-                $(evt.$trigger).data('current-page', urlParams.page);
+                directoryEndIndicator.data('current-page', urlParams.page);
                 hideLastNotCompletedRow();
             }
         }).catch(function(err) {
             module.log.error(err, true);
             reject();
         }).finally(function() {
-            loader.reset(evt.$trigger);
+            loader.reset(directoryEndIndicator);
+            $('.directory-end').data('isLoading', false);
         });
     }
 
@@ -33,14 +36,11 @@ humhub.module('directory', function(module, require, $) {
             return;
         }
 
-        const loadMoreButton = $('.directory-load-more button');
-        if (loadMoreButton.data('current-page') === loadMoreButton.data('total-pages')) {
+        const directoryEndIndicator = $('.directory-end');
+        if (directoryEndIndicator.data('current-page') === directoryEndIndicator.data('total-pages')) {
             // No reason to hide a not completed row if current page is last
             return;
         }
-
-        // Display button to load more cards
-        loadMoreButton.parent().show();
 
         const cardsPerRow = Math.floor($('.container-directory .row').outerWidth() / $('.container-directory .card:first').width());
         const hideLastCardsNum = cardsNum % cardsPerRow;
@@ -50,15 +50,40 @@ humhub.module('directory', function(module, require, $) {
         }
     }
 
+
+    const preventScrollLoading = function () {
+        return $('.directory-end').data('isLoading');
+    };
+
+    const initScroll = function () {
+        if (!window.IntersectionObserver) {
+            return;
+        }
+
+        const $directoryEndIndicator = $('.directory-end');
+
+        const observer = new IntersectionObserver(function (entries) {
+            if (preventScrollLoading()) {
+                return;
+            }
+
+            if (entries.length && entries[0].isIntersecting) {
+                loadMore($directoryEndIndicator);
+            }
+        });
+
+        observer.observe($directoryEndIndicator[0]);
+    }
+
     const init = function() {
         hideLastNotCompletedRow();
         $('input.form-search-filter[name=keyword]').focus();
+        initScroll();
     }
 
     module.export({
         initOnPjaxLoad: true,
         init,
         applyFilters,
-        loadMore,
     });
 });

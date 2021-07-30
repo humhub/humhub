@@ -5,7 +5,6 @@ use humhub\libs\Html;
 use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\widgets\PeopleCard;
 use humhub\modules\user\widgets\PeopleFilters;
-use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
 
 /* @var $this \yii\web\View */
@@ -53,13 +52,10 @@ DirectoryAsset::register($this);
 </div>
 
 <?php if (!$people->isLastPage()) : ?>
-    <div class="directory-load-more">
-        <?= Button::primary(Yii::t('UserModule.base', 'Load more'))
-            ->icon('fa-angle-down')
-            ->action('directory.loadMore')
-            ->options([
-                'data-current-page' => $people->pagination->getPage() + 1,
-                'data-total-pages' => $people->pagination->getPageCount(),
-            ]) ?>
-    </div>
+    <?= Html::tag('div', '', [
+        'class' => 'directory-end',
+        'data-current-page' => $people->pagination->getPage() + 1,
+        'data-total-pages' => $people->pagination->getPageCount(),
+        'data-ui-loader' => '',
+    ]) ?>
 <?php endif; ?>
