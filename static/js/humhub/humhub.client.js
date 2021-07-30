@@ -380,10 +380,11 @@ humhub.module('client', function (module, require, $) {
 
         msg = msg || module.text('warn.onBeforeLoad');
 
-        $form.on('submit', function () {
+        $form.resetChanges = function() {
             $form.data('state', null);
-            offBeforeLoad();
-        });
+        }
+        $form.on('submit', $form.resetChanges);
+        $form.find('[type=submit]').on('click', $form.resetChanges);
 
         // Note some browser do not support custom messages for this event.
         $(window).on('beforeunload.humhub_client', function () {
@@ -394,7 +395,7 @@ humhub.module('client', function (module, require, $) {
 
         $(document).on('pjax:beforeSend.humhub_client', function (evt) {
             if (unloadForm($form, msg)) {
-                $form.data('state', null);
+                $form.resetChanges();
             } else {
                 evt.preventDefault();
             }
