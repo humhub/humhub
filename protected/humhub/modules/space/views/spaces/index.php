@@ -6,11 +6,10 @@
  */
 
 use humhub\assets\DirectoryAsset;
+use humhub\libs\Html;
 use humhub\modules\space\components\SpaceDirectoryQuery;
 use humhub\modules\space\widgets\SpaceDirectoryCard;
 use humhub\modules\space\widgets\SpaceDirectoryFilters;
-use humhub\widgets\Button;
-use humhub\widgets\LinkPager;
 use yii\web\View;
 
 /* @var $this View */
@@ -48,13 +47,9 @@ DirectoryAsset::register($this);
 </div>
 
 <?php if (!$spaces->isLastPage()) : ?>
-<div class="directory-load-more">
-    <?= Button::primary(Yii::t('SpaceModule.base', 'Load more'))
-        ->icon('fa-angle-down')
-        ->action('directory.loadMore')
-        ->options([
-            'data-current-page' => $spaces->pagination->getPage() + 1,
-            'data-total-pages' => $spaces->pagination->getPageCount(),
-        ]) ?>
-</div>
+    <?= Html::tag('div', '', [
+        'class' => 'directory-end',
+        'data-current-page' => $spaces->pagination->getPage() + 1,
+        'data-total-pages' => $spaces->pagination->getPageCount(),
+    ]) ?>
 <?php endif; ?>
