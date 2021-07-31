@@ -16,7 +16,7 @@ use yii\helpers\Url;
         <div class="panel-body">
             <div class="tags">
                 <?php foreach ($space->getTags() as $tag): ?>
-                    <?= Html::a(Html::encode($tag), Url::to(['/space/spaces', 'keyword' => $tag]), ['class' => 'btn btn-default btn-xs tag']); ?>
+                    <?= Html::a(Html::encode($tag), Url::to(['/spaces', 'keyword' => $tag]), ['class' => 'btn btn-default btn-xs tag']); ?>
                 <?php endforeach; ?>
             </div>
         </div>
