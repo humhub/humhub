@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #5187: Fix birthday with hidden year in a language-specific format
 - Enh #5189: Reduce minimum character limit for tags to 2 chars
 - Enh #5189: Hide tags on space chooser if no keyword inside tags
+- Fix #5215: Fix links to old directory
 
 
 1.9.0 (July 22, 2021)

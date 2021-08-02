@@ -6,8 +6,8 @@ use humhub\components\Widget;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\models\Membership;
+use humhub\modules\space\permissions\SpaceDirectoryAccess;
 use humhub\modules\user\models\Follow;
-use humhub\modules\space\widgets\SpaceChooserItem;
 use Yii;
 use yii\helpers\Html;
 
@@ -47,6 +47,7 @@ class Chooser extends Widget
         return $this->render('spaceChooser', [
             'currentSpace' => $this->getCurrentSpace(),
             'canCreateSpace' => $this->canCreateSpace(),
+            'canAccessDirectory' => Yii::$app->user->can(SpaceDirectoryAccess::class),
             'memberships' => $this->getMemberships(),
             'followSpaces' => $this->getFollowSpaces()
         ]);
