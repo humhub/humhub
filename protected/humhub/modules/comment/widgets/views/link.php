@@ -37,7 +37,7 @@ $label = ($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('Co
         Yii::$app->user->loginUrl,
         ['data-target' => '#globalModal']) ?>
 <?php else : ?>
-    <?= Button::asLink($label . $commentCountSpan)
+    <?= Button::asLink($label . $commentCountSpan)->style('height:40px')->icon('comment')
         ->action('comment.toggleComment', null, '#comment_' . $id) ?>
 <?php endif; ?>
 
