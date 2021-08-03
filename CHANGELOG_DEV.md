@@ -7,3 +7,4 @@
 - Enh #3688: Use Image widget in user list
 - Enh #5194: Confirm leave page for Post & Comment forms
 - Enh #5188: People / Spaces: Endless Scrolling
+- Enh #5216: Separate view document button
