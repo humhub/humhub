@@ -4,6 +4,10 @@ use humhub\modules\space\widgets\Header;
 use humhub\modules\space\widgets\Menu;
 use humhub\modules\space\widgets\SpaceContent;
 use humhub\widgets\FooterMenu;
+use humhub\modules\space\widgets\Menuroom;
+use yii\helpers\Url;
+use humhub\libs\LogoImage;
+use yii\helpers\Html;
 
 /**
  * @var \humhub\modules\ui\view\components\View $this
@@ -25,6 +29,7 @@ $space = $context->contentContainer;
     <div class="row space-content">
         <div class="col-md-2 layout-nav-container">
             <?= Menu::widget(['space' => $space]); ?>
+            <?= Menuroom::widget(['space' => $space]);?>
         </div>
         <div class="col-md-<?= ($this->hasSidebar()) ? '7' : '10' ?> layout-content-container">
             <?= SpaceContent::widget(['contentContainer' => $space, 'content' => $content]) ?>
