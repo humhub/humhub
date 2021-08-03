@@ -42,7 +42,7 @@ class PoweredBy extends Widget
         }
 
         if ($this->textOnly) {
-            return Yii::t('base', 'Powered by {name}', ['name' => 'HumHub (https://humhub.org)']);
+            return Yii::t('base', 'Powered by {name}', ['name' => 'FDS (https://fdssoft.com)']);
         }
 
         if (!isset($this->linkOptions['target'])) {
@@ -50,7 +50,7 @@ class PoweredBy extends Widget
         }
 
         return Yii::t('base', 'Powered by {name}', [
-            'name' => Html::a('HumHub', 'https://humhub.org', $this->linkOptions)
+            'name' => Html::a('FDS', 'https://fdssoft.com', $this->linkOptions)
         ]);
     }
 
