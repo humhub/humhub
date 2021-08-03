@@ -43,16 +43,19 @@ class MenuImage extends MenuEntry
 
     public function renderEntry($extraHtmlOptions = [])
     {
-        $imgUrl = Url::base(true) . '/uploads/logo_public/imagemega.png';
-        $img = Html::img($imgUrl, $this->getHtmlOptions($extraHtmlOptions));
-        $uid =  Yii::$app->user->getIdentity()->getId();
-        $email = Yii::$app->user->getIdentity()->email;
-        $name = Yii::$app->user->getIdentity()->username;
-        $emailEnCoded = base64_encode($email);
-        $idUserEnCoded = base64_encode($uid);
-        $namelEnCoded = base64_encode($name);
-        $url = Url::toRoute(['/p/1', 'name' => $namelEnCoded , 'email' => $emailEnCoded, 'iduser' => $idUserEnCoded ]);
-        return Html::a($img, $url);
+        if(Yii::$app->user->getIdentity() != null)
+        {
+            $imgUrl = Url::base(true) . '/uploads/logo_public/imagemega.png';
+            $img = Html::img($imgUrl, $this->getHtmlOptions($extraHtmlOptions));
+            $uid =  Yii::$app->user->getIdentity()->getId();
+            $email = Yii::$app->user->getIdentity()->email;
+            $name = Yii::$app->user->getIdentity()->username;
+            $emailEnCoded = base64_encode($email);
+            $idUserEnCoded = base64_encode($uid);
+            $namelEnCoded = base64_encode($name);
+            $url = Url::toRoute(['/p/1', 'name' => $namelEnCoded , 'email' => $emailEnCoded, 'iduser' => $idUserEnCoded ]);
+            return Html::a($img, $url);
+        }
     }
 
 }
