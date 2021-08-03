@@ -24,7 +24,6 @@ use humhub\libs\Html;
                data-action-url="<?= Url::to(['/comment/comment/show', 'objectModel' => $objectModel, 'objectId' => $objectId]) ?>">
                 <?= Yii::t('CommentModule.base', 'Show all {total} comments', ['{total}' => $total]) ?>
             </a>
-            <hr class="comments-start-separator">
         <?php endif; ?>
 
         <?php foreach ($comments as $comment) : ?>
