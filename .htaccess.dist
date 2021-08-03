@@ -1,7 +1,9 @@
 # check if RewriteModule is availbale
 <IfModule mod_rewrite.c>
 
-    Options +FollowSymLinks
+    # uncomment if using the AssetManager::linkAssets option 
+    #Options +FollowSymLinks
+    
     RewriteEngine on
 
     # uncomment if you've installed HumHub into a subdirectory relative to your webroot & adjust RewriteBase to match the install point

@@ -366,10 +366,6 @@ humhub.module('client', function (module, require, $) {
     };
 
     var onBeforeLoad = function (form, msg) {
-
-        // Only one handler at the same time
-        offBeforeLoad();
-
         var $form = $(form);
 
         if (!$form.is('form')) {
@@ -384,10 +380,11 @@ humhub.module('client', function (module, require, $) {
 
         msg = msg || module.text('warn.onBeforeLoad');
 
-        $form.on('submit', function () {
+        $form.resetChanges = function() {
             $form.data('state', null);
-            offBeforeLoad();
-        });
+        }
+        $form.on('submit', $form.resetChanges);
+        $form.find('[type=submit]').on('click', $form.resetChanges);
 
         // Note some browser do not support custom messages for this event.
         $(window).on('beforeunload.humhub_client', function () {
@@ -398,8 +395,7 @@ humhub.module('client', function (module, require, $) {
 
         $(document).on('pjax:beforeSend.humhub_client', function (evt) {
             if (unloadForm($form, msg)) {
-                $form.data('state', null);
-                offBeforeLoad();
+                $form.resetChanges();
             } else {
                 evt.preventDefault();
             }
@@ -419,8 +415,23 @@ humhub.module('client', function (module, require, $) {
     };
 
     var confirmUnload = function (msg) {
+        if (!module.confirmedMessages) {
+            module.confirmedMessages = {};
+        }
+
         msg = msg || module.text('warn.onBeforeLoad');
-        return window.confirm(msg)
+
+        if (module.confirmedMessages[msg] && (Date.now() - module.confirmedMessages[msg].time < 100)) {
+            // Don't ask the same confirmation message twice if it was answered recently
+            // because several forms exist on the current page with confirm option
+            return module.confirmedMessages[msg].result;
+        }
+
+        var confirmedResult = window.confirm(msg);
+
+        module.confirmedMessages[msg] = {time: Date.now(), result: confirmedResult};
+
+        return confirmedResult;
     };
 
     var offBeforeLoad = function () {
