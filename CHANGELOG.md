@@ -9,7 +9,7 @@ HumHub Changelog
 - Fix #5195: Fix export users with tags data
 - Fix #5200: Auto creating following for friends
 - Fix #5187: Fix birthday with hidden year in a language-specific format
-- Enh #5189: Reduce minimum character limit for tags to 2 chars
+- Enh #5189: Reduce minimum character limit for space and user tags to 2 chars
 - Enh #5189: Hide tags on space chooser if no keyword inside tags
 - Fix #5215: Fix links to old directory
 
