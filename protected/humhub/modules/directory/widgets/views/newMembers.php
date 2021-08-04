@@ -21,7 +21,6 @@ use humhub\modules\user\widgets\Image;
         <?php endforeach; ?>
 
         <?php if ($showInviteButton || $showMoreButton): ?>
-            <hr />
         <?php endif; ?>
 
         <?php if ($showInviteButton): ?>

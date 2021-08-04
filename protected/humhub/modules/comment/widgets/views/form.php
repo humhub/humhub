@@ -33,8 +33,6 @@ $isHidden = ($objectModel === Comment::class);
 <div id="comment_create_form_<?= $id ?>" class="comment_create" data-ui-widget="comment.Form"
      style="<?php if ($isHidden): ?>display:none<?php endif; ?>">
 
-    <hr>
-
     <?php $form = ActiveForm::begin(['action' => $submitUrl]) ?>
 
     <?= Html::hiddenInput('objectModel', $objectModel) ?>

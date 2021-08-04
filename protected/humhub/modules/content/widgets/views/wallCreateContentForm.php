@@ -67,7 +67,6 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
         <ul id="contentFormError"></ul>
 
         <div class="contentForm_options">
-            <hr>
             <div class="btn_container">
                 <?= Button::info($submitButtonText)->action('submit')->id('post_submit_button')->submit() ?>
 
