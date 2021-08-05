@@ -27,9 +27,9 @@ class ApproveUserFormTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->setApprovalDefaults();
-        $this->assertEquals("Hello UnApproved User,<br><br>\nYour account has been activated.<br><br>\n" .
-            "Click here to login:<br>\n<a href=\"http://localhost/index-test.php?r=user%2Fauth%2Flogin\">http://localhost/index-test.php?r=user/auth/login</a><br><br>\n\n" .
-            "Kind Regards<br>\nAdmin Tester<br><br>", $form->message);
+        $this->assertEquals("Hello UnApproved User,\n\nYour account has been activated.\n\n" .
+            "Click here to login:\nhttp://localhost/index-test.php?r=user%2Fauth%2Flogin\n\n" .
+            "Kind Regards\nAdmin Tester\n\n", $form->message);
 
         $settings = new AuthenticationSettingsForm();
         $this->assertEquals(ApproveUserForm::getDefaultApprovalMessage(), $settings->registrationApprovalMailContent);
@@ -93,10 +93,10 @@ class ApproveUserFormTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->setDeclineDefaults();
-        $this->assertEquals("Hello UnApproved User,<br><br>\n" .
-            "Your account request has been declined.<br><br>\n\n" .
-            "Kind Regards<br>\n" .
-            "Admin Tester <br><br> ", $form->message);
+        $this->assertEquals("Hello UnApproved User,\n\n" .
+            "Your account request has been declined.\n\n" .
+            "Kind Regards\n" .
+            "Admin Tester\n\n", $form->message);
 
         $settings = new AuthenticationSettingsForm();
         $this->assertEquals(ApproveUserForm::getDefaultDeclineMessage(), $settings->registrationDenialMailContent);
