@@ -2,15 +2,13 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use humhub\components\i18n\I18N;
-use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
 use humhub\modules\user\Module;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use humhub\modules\user\models\User;
 use yii\web\ForbiddenHttpException;
-use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -146,7 +144,9 @@ class ApproveUserForm extends \yii\base\Model
 
     public function send()
     {
-        $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], ['message' => $this->message]);
+        $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
+            'message' => RichTextToEmailHtmlConverter::process($this->message)
+        ]);
         $mail->setTo($this->user->email);
         $mail->setSubject($this->subject);
         $mail->send();
@@ -170,8 +170,8 @@ class ApproveUserForm extends \yii\base\Model
             ['{displayName}' => Html::encode($this->user->displayName)]
         );
 
-        $loginLink = Html::a(urldecode(Url::to(["/user/auth/login"], true)), Url::to(["/user/auth/login"], true));
-        $loginURL = urldecode(Url::to(["/user/auth/login"], true));
+        $loginURL = Url::to(['/user/auth/login'], true);
+        $loginLink = Html::a(urldecode($loginURL), $loginURL);
         $userName =  Html::encode($this->user->displayName);
         $adminName =  Html::encode($this->admin->displayName);
 
@@ -180,10 +180,11 @@ class ApproveUserForm extends \yii\base\Model
                 '{displayName}' => $userName,
                 '{AdminName}' => $adminName,
                 '{loginLink}' => $loginLink,
-                '{loginURL}' => $loginURL
+                '{loginURL}' => urldecode($loginURL),
+                '{loginUrl}' => urldecode($loginURL),
             ]);
         } else {
-            $this->message = static::getDefaultApprovalMessage($userName, $adminName, $loginLink);
+            $this->message = static::getDefaultApprovalMessage($userName, $adminName, $loginURL);
         }
 
         Yii::$app->i18n->autosetLocale();
@@ -229,15 +230,17 @@ class ApproveUserForm extends \yii\base\Model
      * @param string $loginUrl
      * @return string
      */
-    public static function getDefaultApprovalMessage($userDisplayName = '{displayName}', $adminDisplayName = '{AdminName}', $loginLink = '{loginLink}')
+    public static function getDefaultApprovalMessage($userDisplayName = '{displayName}', $adminDisplayName = '{AdminName}', $loginUrl = '{loginUrl}')
     {
-        return Yii::t('AdminModule.user', "Hello {displayName},<br><br>\nYour account has been activated.<br><br>\n" .
-            "Click here to login:<br>\n{loginLink}<br><br>\n\n" .
-            "Kind Regards<br>\n{AdminName}<br><br>",
+        return Yii::t('AdminModule.user', "Hello {displayName},\n\n" .
+            "Your account has been activated.\n\n" .
+            "Click here to login:\n{loginUrl}\n\n" .
+            "Kind Regards\n" .
+            "{AdminName}\n\n",
             [
                 '{displayName}' => $userDisplayName,
                 '{AdminName}' => $adminDisplayName,
-                '{loginLink}' => $loginLink,
+                '{loginUrl}' => $loginUrl,
             ]);
     }
 
@@ -250,10 +253,10 @@ class ApproveUserForm extends \yii\base\Model
      */
     public static function getDefaultDeclineMessage($userDisplayName = '{displayName}', $adminDisplayName = '{AdminName}')
     {
-        return Yii::t('AdminModule.user', "Hello {displayName},<br><br>\n" .
-            "Your account request has been declined.<br><br>\n\n" .
-            "Kind Regards<br>\n" .
-            "{AdminName} <br><br> ",
+        return Yii::t('AdminModule.user', "Hello {displayName},\n\n" .
+            "Your account request has been declined.\n\n" .
+            "Kind Regards\n" .
+            "{AdminName}\n\n",
             [
                 '{displayName}' => $userDisplayName,
                 '{AdminName}' => $adminDisplayName,

@@ -8,3 +8,4 @@
 - Enh #5194: Confirm leave page for Post & Comment forms
 - Enh #5188: People / Spaces: Endless Scrolling
 - Enh #5216: Separate view document button
+- Enh #5229: Use RichTextField for user approval messages

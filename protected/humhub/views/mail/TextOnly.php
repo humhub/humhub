@@ -30,13 +30,6 @@ use humhub\modules\ui\mail\DefaultMailStyle; ?>
                                         <td valign="top">
                                             <table border="0" cellspacing="0" cellpadding="0" align="left">
 
-
-                                                <!--start space height -->
-                                                <tr>
-                                                    <td height="15"></td>
-                                                </tr>
-                                                <!--end space height -->
-
                                                 <tr>
                                                     <td style="font-size: 14px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left; ">
 
@@ -44,7 +37,6 @@ use humhub\modules\ui\mail\DefaultMailStyle; ?>
 
                                                     </td>
                                                 </tr>
-
 
                                             </table>
                                         </td>
