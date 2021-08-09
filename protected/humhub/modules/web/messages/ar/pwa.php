@@ -18,6 +18,6 @@
  */
 return [
     'Hm...' => 'جلالة ...',
-    'Please check your internet connection and <a href="?">refresh</a> this page once your are online again!' => 'الرجاء التحقق من اتصالك بالإنترنت و <a href="؟"> تحديث </a> هذه الصفحة بمجرد اتصالك بالإنترنت مرة أخرى!',
+    'Please check your internet connection and <a href="?">refresh</a> this page once you are online again!' => 'الرجاء التحقق من اتصالك بالإنترنت و <a href="؟"> تحديث </a> هذه الصفحة بمجرد اتصالك بالإنترنت مرة أخرى!',
     'Unable to connect to {site}' => 'تعذر الاتصال بـ {site}',
 ];
