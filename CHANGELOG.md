@@ -13,6 +13,8 @@ HumHub Changelog
 - Enh #5189: Hide tags on space chooser if no keyword inside tags
 - Fix #5215: Fix links to old directory
 - Fix #5095: Fix space between URLs and text in notification message
+- Fix #5238: Typo in Offline Page Text 
+
 
 
 1.9.0 (July 22, 2021)
