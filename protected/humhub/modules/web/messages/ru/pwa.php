@@ -22,6 +22,6 @@
  */
 return [
     'Hm...' => 'Хм...',
-    'Please check your internet connection and <a href="?">refresh</a> this page once your are online again!' => 'Проверьте подключение к Интернету и <a href="?">обновите</a> эту страницу, как только Вы снова будете в сети!',
+    'Please check your internet connection and <a href="?">refresh</a> this page once you are online again!' => 'Проверьте подключение к Интернету и <a href="?">обновите</a> эту страницу, как только Вы снова будете в сети!',
     'Unable to connect to {site}' => 'Не удаётся подключиться к {site}',
 ];
