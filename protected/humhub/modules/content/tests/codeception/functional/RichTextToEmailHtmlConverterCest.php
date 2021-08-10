@@ -16,13 +16,14 @@ use yii\swiftmailer\Message;
 class RichTextToEmailHtmlConverterCest
 {
 
-    public function testSendEmailWithImage(FunctionalTester $I)
+    public function testSendEmailWithImageAndLink(FunctionalTester $I)
     {
-        $I->wantTo('see image in email message');
+        $I->wantTo('see image and link in email message');
         $I->amUser1();
 
         $file = $this->createFile();
-        $this->createComment($file);
+        $link = ['url' => 'http://humhub.local/index.html', 'text' => 'Test Link Text'];
+        $this->createComment($file, $link);
 
         $I->assertMailSent(1);
 
@@ -34,11 +35,20 @@ class RichTextToEmailHtmlConverterCest
         if (!$this->tokenIsDetectedInImageUrl($commentMailText)) {
             $I->see('Token is not detected in image URL');
         }
+
+        if (!$this->linkIsDetectedInEmail($commentMailText, $link)) {
+            $I->see('Link is not detected in email message');
+        }
     }
 
     protected function tokenIsDetectedInImageUrl(string $emailMessage): bool
     {
-        return (bool)preg_match('/Test comment with image[ =\r\n]+<img.+?src=".+?&amp;token=.+?".+?>/is', $emailMessage);
+        return (bool)preg_match('/with image[ =\r\n]+<img.+?src=".+?&amp;token=.+?".+?>/is', $emailMessage);
+    }
+
+    protected function linkIsDetectedInEmail(string $emailMessage, array $link): bool
+    {
+        return (bool)preg_match('/with link <a href="' . preg_quote($link['url'], '/') . '".+?>' . preg_quote($link['text'], '/') . '<\/a>/is', $emailMessage);
     }
 
     protected function createFile(): File
@@ -54,14 +64,17 @@ class RichTextToEmailHtmlConverterCest
         return $file;
     }
 
-    protected function createComment(File $file)
+    protected function createComment(File $file, array $link)
     {
         $post = Post::findOne(['id' => 2]);
         $commentForm = new CommentForm($post);
         $commentForm->load([
             'objectModel' => get_class($post),
             'objectId' => $post->id,
-            'Comment' => ['message' => 'Test comment with image ![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->title . '")'],
+            'Comment' => ['message' =>
+                'Test comment with image ![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->title . '") ' .
+                'and with link [' . $link['text'] . '](' . $link['url'] . ')'
+            ],
             'fileList' => [$file->guid],
         ]);
         $commentForm->save();
