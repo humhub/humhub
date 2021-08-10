@@ -39,6 +39,10 @@ class RichTextToEmailHtmlConverterCest
         if (!$this->linkIsDetectedInEmail($commentMailText, $link)) {
             $I->see('Link is not detected in email message');
         }
+
+        if (!$this->linkedImageIsDetectedInEmail($commentMailText, $link)) {
+            $I->see('Linked image is not detected in email message');
+        }
     }
 
     protected function tokenIsDetectedInImageUrl(string $emailMessage): bool
@@ -49,6 +53,11 @@ class RichTextToEmailHtmlConverterCest
     protected function linkIsDetectedInEmail(string $emailMessage, array $link): bool
     {
         return (bool)preg_match('/with link <a href="' . preg_quote($link['url'], '/') . '".+?>' . preg_quote($link['text'], '/') . '<\/a>/is', $emailMessage);
+    }
+
+    protected function linkedImageIsDetectedInEmail(string $emailMessage, array $link): bool
+    {
+        return (bool)preg_match('/with linked image <a href="' . preg_quote($link['url'], '/') . '".+?><img.+?src=".+?&amp;token=.+?".+?><\/a>/is', $emailMessage);
     }
 
     protected function createFile(): File
@@ -73,7 +82,8 @@ class RichTextToEmailHtmlConverterCest
             'objectId' => $post->id,
             'Comment' => ['message' =>
                 'Test comment with image ![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->title . '") ' .
-                'and with link [' . $link['text'] . '](' . $link['url'] . ')'
+                'and with link [' . $link['text'] . '](' . $link['url'] . ')' .
+                'and with linked image [![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->title . '")](' . $link['url'] . ')'
             ],
             'fileList' => [$file->guid],
         ]);
