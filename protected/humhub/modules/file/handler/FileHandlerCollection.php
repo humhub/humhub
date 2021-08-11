@@ -58,7 +58,7 @@ class FileHandlerCollection extends \yii\base\Component
         $this->trigger(self::EVENT_INIT);
 
         // Register Core Handler
-        if ($this->type === self::TYPE_VIEW) {
+        if ($this->type === self::TYPE_EXPORT) {
             $this->register(Yii::createObject(['class' => DownloadFileHandler::class]));
         }
 

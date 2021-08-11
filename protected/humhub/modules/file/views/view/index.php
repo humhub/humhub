@@ -45,7 +45,8 @@ use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 
         <hr />
         <div class="pull-left">
-            <?= FileHandlerButtonDropdown::widget(['handlers' => array_merge($viewHandler, $exportHandler)]); ?>
+            <?= FileHandlerButtonDropdown::widget(['handlers' => $viewHandler]); ?>
+            <?= FileHandlerButtonDropdown::widget(['handlers' => $exportHandler]); ?>
             <?= FileHandlerButtonDropdown::widget(['handlers' => array_merge($editHandler, $importHandler)]); ?>
         </div>
 
