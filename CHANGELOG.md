@@ -12,6 +12,7 @@ HumHub Changelog
 - Enh #5189: Reduce minimum character limit for space and user tags to 2 chars
 - Enh #5189: Hide tags on space chooser if no keyword inside tags
 - Fix #5215: Fix links to old directory
+- Fix #5096: Render links in email notifications
 - Fix #5095: Fix space between URLs and text in notification message
 - Fix #5238: Typo in Offline Page Text 
 
