@@ -16,6 +16,7 @@ HumHub Changelog
 - Fix #5238: Typo in Offline Page Text 
 
 
+
 1.9.0 (July 22, 2021)
 ---------------------
 
