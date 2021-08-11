@@ -10,7 +10,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
 <?php $form = ActiveForm::begin(['id' => 'basic-settings-form', 'acknowledge' => true]); ?>
 
-<?= $form->field($model, 'tags')->widget(ContainerTagPicker::class); ?>
+<?= $form->field($model, 'tags')->widget(ContainerTagPicker::class, ['minInput' => 2]); ?>
 
 <?php if (count($languages) > 1) : ?>
     <?= $form->field($model, 'language')->dropDownList($languages, ['data-ui-select2' => '']); ?>
