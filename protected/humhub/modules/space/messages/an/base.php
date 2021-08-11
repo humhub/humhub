@@ -21,7 +21,6 @@ return [
     'Following' => 'Seguindo',
     'Guests' => ' ',
     'Last Visit' => 'Zaguera visita',
-    'Load more' => 'Cargar mas',
     'Login' => 'Iniciar sesión',
     'Members' => 'Miembros',
     'My Space List' => 'A mía lista d\'espacios',

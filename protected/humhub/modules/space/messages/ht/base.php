@@ -62,7 +62,6 @@ return [
     'Join' => '',
     'Join Policy' => '',
     'Last Visit' => '',
-    'Load more' => '',
     'Max. 100 characters.' => '',
     'Member' => '',
     'Member since' => '',
