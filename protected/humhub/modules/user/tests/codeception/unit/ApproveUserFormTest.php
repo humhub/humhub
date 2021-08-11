@@ -41,7 +41,17 @@ class ApproveUserFormTest extends HumHubDbTestCase
         Yii::$app->user->getIdentity()->setAttribute('language', 'de');
         Yii::$app->i18n->setUserLocale(Yii::$app->user->getIdentity());
 
-        $this->assertEquals('Hallo {displayName},<br /><br /> Dein Konto wurde aktiviert.<br /><br /> Klicke hier um dich einzuloggen:<br /> {loginLink}<br /><br /> Mit freundlichen Grüßen<br /> {AdminName}<br /><br />',
+        $this->assertEquals('Hallo {displayName},
+
+Dein Konto wurde aktiviert.
+
+Klicke hier um dich einzuloggen:
+{loginUrl}
+
+Mit freundlichen Grüßen
+{AdminName}
+
+',
             ApproveUserForm::getDefaultApprovalMessage());
 
         $this->setApprovalMessage(ApproveUserForm::getDefaultApprovalMessage());
@@ -73,7 +83,17 @@ class ApproveUserFormTest extends HumHubDbTestCase
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->user->setAttribute('language', 'de');
         $form->setApprovalDefaults();
-        $this->assertEquals("Hallo UnApproved User,<br /><br /> Dein Konto wurde aktiviert.<br /><br /> Klicke hier um dich einzuloggen:<br /> <a href=\"http://localhost/index-test.php?r=user%2Fauth%2Flogin\">http://localhost/index-test.php?r=user/auth/login</a><br /><br /> Mit freundlichen Grüßen<br /> Admin Tester<br /><br />", $form->message);
+        $this->assertEquals("Hallo UnApproved User,
+
+Dein Konto wurde aktiviert.
+
+Klicke hier um dich einzuloggen:
+http://localhost/index-test.php?r=user%2Fauth%2Flogin
+
+Mit freundlichen Grüßen
+Admin Tester
+
+", $form->message);
     }
 
     public function testDeclineMessageIsSentInUserLanguage()
@@ -85,7 +105,14 @@ class ApproveUserFormTest extends HumHubDbTestCase
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->user->setAttribute('language', 'de');
         $form->setDeclineDefaults();
-        $this->assertEquals("Hallo UnApproved User,<br /><br /> Deine Registrierungsanfrage wurde abgelehnt.<br /><br /> Mit freundlichen Grüßen<br /> Admin Tester <br /><br />", $form->message);
+        $this->assertEquals("Hallo UnApproved User,
+
+Deine Registrierungsanfrage wurde abgelehnt.
+
+Mit freundlichen Grüßen
+Admin Tester
+
+", $form->message);
     }
 
     public function testDefaultDeclineMessage()
