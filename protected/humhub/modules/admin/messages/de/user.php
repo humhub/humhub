@@ -71,18 +71,42 @@ return array (
   'Group not found!' => 'Gruppe nicht gefunden!',
   'Group user not found!' => 'Benutzer in Gruppe nicht gefunden!',
   'Groups' => 'Gruppen',
-  'Hello {displayName},<br><br>
-Your account has been activated.<br><br>
-Click here to login:<br>
-{loginLink}<br><br>
+  'Hello {displayName},
 
-Kind Regards<br>
-{AdminName}<br><br>' => 'Hallo {displayName},<br /><br /> Dein Konto wurde aktiviert.<br /><br /> Klicke hier um dich einzuloggen:<br /> {loginLink}<br /><br /> Mit freundlichen Grüßen<br /> {AdminName}<br /><br />',
-  'Hello {displayName},<br><br>
-Your account request has been declined.<br><br>
+Your account has been activated.
 
-Kind Regards<br>
-{AdminName} <br><br> ' => 'Hallo {displayName},<br /><br /> Deine Registrierungsanfrage wurde abgelehnt.<br /><br /> Mit freundlichen Grüßen<br /> {AdminName} <br /><br />',
+Click here to login:
+{loginUrl}
+
+Kind Regards
+{AdminName}
+
+' => 'Hallo {displayName},
+
+Dein Konto wurde aktiviert.
+
+Klicke hier um dich einzuloggen:
+{loginUrl}
+
+Mit freundlichen Grüßen
+{AdminName}
+
+',
+  'Hello {displayName},
+
+Your account request has been declined.
+
+Kind Regards
+{AdminName}
+
+' => 'Hallo {displayName},
+
+Deine Registrierungsanfrage wurde abgelehnt.
+
+Mit freundlichen Grüßen
+{AdminName}
+
+',
   'Here you can create or edit profile categories and fields.' => 'Hier kannst du neue Profil-Kategorien und Felder erstellen oder bearbeiten.',
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Wenn individuelle Profilberechtigungen erlaubt sind, werden die folgenden Einstellungen lediglich als Standard gesetzt, den die Benutzer individuell anpassen können. Folgende, durch den Benutzer änderbare Optionen, werden zu den Profileinstellungen hinzugefügt:',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Wenn diese Option nicht ausgewählt ist, wirst du Besitzer dieses Space',
