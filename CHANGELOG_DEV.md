@@ -9,3 +9,4 @@
 - Enh #5188: People / Spaces: Endless Scrolling
 - Enh #5216: Separate view document button
 - Enh #5229: Use RichTextField for user approval messages
+- Enh #100: Allow additional toggler for elements with context menu

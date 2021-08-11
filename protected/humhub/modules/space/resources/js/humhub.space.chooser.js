@@ -233,14 +233,20 @@ humhub.module('space.chooser', function (module, require, $) {
             var $item = $(this);
             var itemText = $item.text().toLowerCase();
 
-            // Select the first item if search was successful
+            // Show only space items where a keyword is searched
             if (itemText.search(input) >= 0) {
                 $item.show();
+                // Display space tags only if a keyword is searched inside the tags
+                var $spaceTags = $item.find('.space-tags');
+                if ($spaceTags.length) {
+                    $spaceTags.toggle($spaceTags.text().toLowerCase().search(input) >= 0);
+                }
             } else {
                 $item.hide();
             }
         });
 
+        // Select the first item if search was successful
         SpaceChooser.selectItem(this.getFirstItem());
     };
 

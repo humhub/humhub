@@ -342,7 +342,7 @@ humhub.module('ui.additions', function (module, require, $) {
 
             // Open context menu
             $(this).on("contextmenu",
-                    function (e) {
+                    function (e, togglerEvent) {
                         // return native menu if pressing control
                         if (e.ctrlKey) {
                             return;
@@ -354,8 +354,8 @@ humhub.module('ui.additions', function (module, require, $) {
                         var menuSelector = settings.getMenuSelector.call(this, $(e.target));
 
                         var oParent = $(menuSelector).parent().offsetParent().offset();
-                        var posTop = e.clientY - oParent.top;
-                        var posLeft = e.clientX - oParent.left;
+                        var posTop = (togglerEvent && togglerEvent.clientY ? togglerEvent.clientY : e.clientY) - oParent.top;
+                        var posLeft = (togglerEvent && togglerEvent.clientX ? togglerEvent.clientX : e.clientX) - oParent.left;
 
                         // open menu
                         var $menu = $(menuSelector).data("invokedOn", $(e.target)).show().css({
@@ -371,12 +371,22 @@ humhub.module('ui.additions', function (module, require, $) {
                             settings.menuSelected.call(this, $invokedOn, $selectedMenu, e);
                         });
 
+                        if ($menu.position().left + $menu.outerWidth() > $(window).width()) {
+                            $menu.css('left', $(window).outerWidth() - $menu.width() - 5);
+                        }
+
                         return false;
                     });
 
+            $(document).on('click', '[data-contextmenu-toggler]', function (e) {
+                $(this).closest($(this).data('contextmenu-toggler')).triggerHandler('contextmenu', e);
+            });
+
             // make sure menu closes on any click
-            $(document).click(function () {
-                $('.contextMenu').hide();
+            $(document).click(function (e) {
+                if (!$(e.target).closest('[data-contextmenu-toggler]').length) {
+                    $('.contextMenu').hide();
+                }
             });
         });
 

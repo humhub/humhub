@@ -42,7 +42,7 @@ use humhub\libs\Html;
     <span class="smilie">:-(</span>
     <h1><?= Yii::t('WebModule.pwa', 'Hm...'); ?></h1>
     <h2><?= Yii::t('WebModule.pwa', 'Unable to connect to {site}', ['{site}' => Html::encode(Yii::$app->name)]); ?></h2>
-    <p><?= Yii::t('WebModule.pwa', 'Please check your internet connection and <a href="?">refresh</a> this page once your are online again!'); ?></p>
+    <p><?= Yii::t('WebModule.pwa', 'Please check your internet connection and <a href="?">refresh</a> this page once you are online again!'); ?></p>
 </div>
 </body>
 </html>
