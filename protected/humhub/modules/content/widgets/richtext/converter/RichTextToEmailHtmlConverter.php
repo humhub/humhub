@@ -63,4 +63,18 @@ class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
 
         return $linkBlock;
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function parseLinkOrImage($markdown)
+    {
+        $parsedUrl = parent::parseLinkOrImage($markdown);
+
+        if (is_array($parsedUrl) && isset($parsedUrl[0])) {
+            $parsedUrl[0] = ' ' . $parsedUrl[0] . ' ';
+        }
+
+        return $parsedUrl;
+    }
 }
