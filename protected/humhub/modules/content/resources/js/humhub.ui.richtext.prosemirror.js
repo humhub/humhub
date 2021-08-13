@@ -72,6 +72,36 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
         this.$.find('.humhub-ui-richtext').on('focus', function() {
             that.focus();
         })
+
+        if (this.options.backupInterval) {
+            setInterval(function () {
+                that.backup();
+            }, this.options.backupInterval * 1000);
+        }
+    };
+
+    RichTextEditor.prototype.backup = function() {
+        var currentValue = this.editor.serialize();
+        var isBackuped = typeof this.backupedValue !== 'undefined';
+
+        if (!isBackuped && currentValue === '') {
+            // Don't back up first empty value
+            return;
+        }
+
+        if (isBackuped && currentValue === this.backupedValue) {
+            // Don't back up same content twice
+            return;
+        }
+
+        this.backupedValue = currentValue;
+
+        client.post(this.options.backupUrl, {data: {
+            id: this.getInput().attr('id'),
+            content: currentValue,
+        }}).catch(function(e) {
+            module.log.error(e, true);
+        });
     };
 
     RichTextEditor.prototype.focus = function() {

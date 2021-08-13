@@ -9,6 +9,7 @@
 namespace humhub\modules\content\widgets\richtext;
 
 use humhub\modules\ui\form\widgets\JsInputWidget;
+use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -50,6 +51,8 @@ class AbstractRichTextEditor extends JsInputWidget
 
     const LAYOUT_INLINE = 'inline';
 
+    const BACKUP_SESSION_KEY = 'RichTextEditor.backup';
+
     /**
      * @var string richtext feature preset e.g: 'markdown', 'normal', 'full'
      */
@@ -82,6 +85,25 @@ class AbstractRichTextEditor extends JsInputWidget
      * @var string
      */
     protected $mentioningRoute = "/search/mentioning";
+
+    /**
+     * Back up content each X seconds, 0 - to don't back up
+     * NOTE: If id is not specified for this editor
+     *       then interval will be forced to 0,
+     *       so back up will be disabled,
+     *       because impossible to back up with random id
+     *
+     * @var int
+     */
+    public $backupInterval = 3;
+
+    /**
+     * The url used for the default @ metioning.
+     * If there is no $searchUrl is given, the $searchRoute will be used instead.
+     *
+     * @var string
+     */
+    public $backupRoute = '/content/content/backup';
 
     /**
      * RichText plugin supported for this instance.
@@ -140,9 +162,23 @@ class AbstractRichTextEditor extends JsInputWidget
      */
     public $label = false;
 
-        /**
-         * @inhertidoc
-         */
+    /**
+     * @inhertidoc
+     */
+    public function beforeRun()
+    {
+        if (empty($this->id)) {
+            // No reason to back up a content with random input ID,
+            // because on next page reloading we cannot know previous input ID
+            $this->backupInterval = 0;
+        }
+
+        return parent::beforeRun();
+    }
+
+    /**
+     * @inhertidoc
+     */
     public function run()
     {
         $inputOptions = $this->getInputAttributes();
@@ -238,6 +274,8 @@ class AbstractRichTextEditor extends JsInputWidget
             'exclude' => $this->exclude,
             'include' => $this->include,
             'mentioning-url' => $this->getMentioningUrl(),
+            'backup-interval' => $this->backupInterval,
+            'backup-url' => $this->getBackupUrl(),
             'plugin-options' => $this->pluginOptions,
             'focus' => $this->focus
         ];
@@ -264,5 +302,63 @@ class AbstractRichTextEditor extends JsInputWidget
     public function getMentioningUrl()
     {
         return ($this->mentioningUrl) ? $this->mentioningUrl : Url::to([$this->mentioningRoute]);
+    }
+
+    /**
+     * @return string URL used to back up an entered value in RichText editor
+     */
+    public function getBackupUrl(): string
+    {
+        return Url::to([$this->backupRoute]);
+    }
+
+    /**
+     * Back up value in Sessions
+     *
+     * @param string $inputId
+     * @param string $value
+     */
+    public static function backupValue($inputId, $value)
+    {
+        $backupedValues = Yii::$app->session->get(self::BACKUP_SESSION_KEY, []);
+
+        if ($value === '') {
+            if (isset($backupedValues[$inputId])) {
+                unset($backupedValues[$inputId]);
+            }
+        } else {
+            $backupedValues[$inputId] = $value;
+        }
+
+        if (empty($backupedValues)) {
+            Yii::$app->session->remove(self::BACKUP_SESSION_KEY);
+        } else {
+            Yii::$app->session->set(self::BACKUP_SESSION_KEY, $backupedValues);
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getValue()
+    {
+        $value = parent::getValue();
+        if ($value !== null) {
+            return $value;
+        }
+
+        return $this->getBackupedValue();
+    }
+
+    /**
+     * @return string|null
+     */
+    protected function getBackupedValue(): ?string
+    {
+        $inputAttributes = $this->getInputAttributes();
+        $inputId = $inputAttributes['id'];
+        $backupedValues = Yii::$app->session->get(self::BACKUP_SESSION_KEY);
+
+        return $backupedValues[$inputId] ?? null;
     }
 }

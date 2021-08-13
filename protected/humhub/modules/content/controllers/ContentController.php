@@ -9,6 +9,7 @@
 namespace humhub\modules\content\controllers;
 
 use humhub\modules\content\Module;
+use humhub\modules\content\widgets\richtext\AbstractRichTextEditor;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use Yii;
 use yii\base\Exception;
@@ -339,5 +340,13 @@ class ContentController extends Controller
         }
 
         return $this->asJson($json);
+    }
+
+    /**
+     * Back up content entered in RichText editor
+     */
+    public function actionBackup()
+    {
+        AbstractRichTextEditor::backupValue(Yii::$app->request->post('id'), Yii::$app->request->post('content'));
     }
 }
