@@ -107,7 +107,7 @@ class CoreJsConfig extends Widget
                         'max' => Yii::$app->getModule('content')->maxOembeds
                     ],
                     'mention' => [
-                        'minInput' => 2,
+                        'minInput' => 0,
                         'minInputText' => Yii::t('base', 'Please type at least {count} characters', ['count' => 2])
                     ],
                     'text' => [

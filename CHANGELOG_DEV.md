@@ -10,3 +10,4 @@
 - Enh #5216: Separate view document button
 - Enh #5229: Use RichTextField for user approval messages
 - Enh #100: Allow additional toggler for elements with context menu
+- Enh #5170: Allow 0 for min input size
