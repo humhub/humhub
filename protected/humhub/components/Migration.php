@@ -178,7 +178,7 @@ class Migration extends \yii\db\Migration
     }
 
     /**
-     * Drop an index if it exists in the table
+     * Drop a primary index if it exists in the table
      *
      * @since 1.9.1
      * @param string $index
@@ -188,7 +188,7 @@ class Migration extends \yii\db\Migration
     {
         if (!$this->indexExists('PRIMARY', $table)) {
             if (!$this->compact) {
-                echo "    > skipped drop primary index $index from the table $table, index does not exist ...\n";
+                echo "    > skipped drop primary index $index from the table $table, primary index does not exist ...\n";
             }
             Yii::warning("Tried to drop a non existing primary index '$index' from table '$table' in migration " . get_class($this));
             return;
@@ -216,6 +216,26 @@ class Migration extends \yii\db\Migration
         }
 
         $this->addForeignKey($index, $table, $columns, $refTable, $refColumns, $delete, $update);
+    }
+
+    /**
+     * Drop a foreign if it exists in the table
+     *
+     * @since 1.9.1
+     * @param string $index
+     * @param string $table
+     */
+    protected function safeDropForeignKey($index, $table)
+    {
+        if (!$this->foreignIndexExists($index, $table)) {
+            if (!$this->compact) {
+                echo "    > skipped drop foreign index $index from the table $table, foreign index does not exist ...\n";
+            }
+            Yii::warning("Tried to drop a non existing foreign index '$index' from table '$table' in migration " . get_class($this));
+            return;
+        }
+
+        $this->dropForeignKey($index, $table);
     }
 
     /**
