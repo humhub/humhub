@@ -9,7 +9,6 @@
 namespace humhub\modules\content\widgets\richtext;
 
 use humhub\modules\ui\form\widgets\JsInputWidget;
-use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
