@@ -51,7 +51,7 @@ class AbstractRichTextEditor extends JsInputWidget
 
     const LAYOUT_INLINE = 'inline';
 
-    const BACKUP_SESSION_KEY = 'RichTextEditor.backup';
+    const BACKUP_COOKIE_KEY = 'RichTextEditor.backup';
 
     /**
      * @var string richtext feature preset e.g: 'markdown', 'normal', 'full'
@@ -96,14 +96,6 @@ class AbstractRichTextEditor extends JsInputWidget
      * @var int
      */
     public $backupInterval = 3;
-
-    /**
-     * The url used for the default @ metioning.
-     * If there is no $searchUrl is given, the $searchRoute will be used instead.
-     *
-     * @var string
-     */
-    public $backupRoute = '/content/content/backup';
 
     /**
      * RichText plugin supported for this instance.
@@ -275,7 +267,7 @@ class AbstractRichTextEditor extends JsInputWidget
             'include' => $this->include,
             'mentioning-url' => $this->getMentioningUrl(),
             'backup-interval' => $this->backupInterval,
-            'backup-url' => $this->getBackupUrl(),
+            'backup-cookie-key' => self::BACKUP_COOKIE_KEY,
             'plugin-options' => $this->pluginOptions,
             'focus' => $this->focus
         ];
@@ -302,63 +294,5 @@ class AbstractRichTextEditor extends JsInputWidget
     public function getMentioningUrl()
     {
         return ($this->mentioningUrl) ? $this->mentioningUrl : Url::to([$this->mentioningRoute]);
-    }
-
-    /**
-     * @return string URL used to back up an entered value in RichText editor
-     */
-    public function getBackupUrl(): string
-    {
-        return Url::to([$this->backupRoute]);
-    }
-
-    /**
-     * Back up value in Sessions
-     *
-     * @param string $inputId
-     * @param string $value
-     */
-    public static function backupValue($inputId, $value)
-    {
-        $backupedValues = Yii::$app->session->get(self::BACKUP_SESSION_KEY, []);
-
-        if ($value === '') {
-            if (isset($backupedValues[$inputId])) {
-                unset($backupedValues[$inputId]);
-            }
-        } else {
-            $backupedValues[$inputId] = $value;
-        }
-
-        if (empty($backupedValues)) {
-            Yii::$app->session->remove(self::BACKUP_SESSION_KEY);
-        } else {
-            Yii::$app->session->set(self::BACKUP_SESSION_KEY, $backupedValues);
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getValue()
-    {
-        $value = parent::getValue();
-        if ($value !== null) {
-            return $value;
-        }
-
-        return $this->getBackupedValue();
-    }
-
-    /**
-     * @return string|null
-     */
-    protected function getBackupedValue(): ?string
-    {
-        $inputAttributes = $this->getInputAttributes();
-        $inputId = $inputAttributes['id'];
-        $backupedValues = Yii::$app->session->get(self::BACKUP_SESSION_KEY);
-
-        return $backupedValues[$inputId] ?? null;
     }
 }
