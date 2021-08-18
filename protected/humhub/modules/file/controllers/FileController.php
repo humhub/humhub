@@ -10,6 +10,7 @@ namespace humhub\modules\file\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\modules\file\models\FileContent;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\file\actions\DownloadAction;
@@ -57,12 +58,7 @@ class FileController extends Controller
     {
         $this->forcePostRequest();
 
-        $guid = Yii::$app->request->post('guid');
-        $file = File::findOne(['guid' => $guid]);
-
-        if ($file == null) {
-            throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
-        }
+        $file = $this->getFile();
 
         if (!$file->canDelete()) {
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
@@ -72,6 +68,42 @@ class FileController extends Controller
 
         Yii::$app->response->format = 'json';
         return ['success' => true];
+    }
+
+    public function actionView()
+    {
+        $file = $this->getFile();
+
+        if (!$file->canRead()) {
+            throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
+        }
+
+        return $this->renderAjax('view', [
+            'file' => $file,
+        ]);
+    }
+
+    public function actionEdit()
+    {
+        $file = $this->getFile(FileContent::class);
+
+        if (!$file->canEdit()) {
+            throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
+        }
+
+        return $this->renderAjax('edit', [
+            'file' => $file,
+        ]);
+    }
+
+    private function getFile($class = File::class): File
+    {
+        $file = $class::findOne(['guid' => Yii::$app->request->get('guid')]);
+        if (empty($file)) {
+            throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
+        }
+
+        return $file;
     }
 
 }

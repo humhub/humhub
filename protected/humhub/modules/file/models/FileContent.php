@@ -26,6 +26,16 @@ class FileContent extends File
     /**
      * @inheritdoc
      */
+    public function afterFind()
+    {
+        parent::afterFind();
+
+        $this->newFileContent = file_get_contents($this->getStore()->get());
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function beforeValidate()
     {
         if ($this->newFileContent && $this->size === null) {

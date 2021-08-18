@@ -189,12 +189,29 @@ class File extends FileCompat
     }
 
     /**
-     * Checks if given file can deleted.
+     * Checks if given file can be deleted.
      *
      * If the file is not an instance of ContentActiveRecord or ContentAddonActiveRecord
      * the file is readable for all unless there is method canEdit or canDelete implemented.
+     *
+     * @param int $userId
+     * @return bool
      */
     public function canDelete($userId = null)
+    {
+        return $this->canEdit($userId);
+    }
+
+    /**
+     * Checks if given file can be edited.
+     *
+     * If the file is not an instance of ContentActiveRecord or ContentAddonActiveRecord
+     * the file is readable for all unless there is method canEdit or canDelete implemented.
+     *
+     * @param int $userId
+     * @return bool
+     */
+    public function canEdit($userId = null)
     {
         $object = $this->getPolymorphicRelation();
 

@@ -62,6 +62,11 @@ class FileHandlerCollection extends \yii\base\Component
             $this->register(Yii::createObject(['class' => DownloadFileHandler::class]));
         }
 
+        if ($this->type === self::TYPE_VIEW) {
+            $this->register(Yii::createObject(['class' => ViewFileHandler::class]));
+            $this->register(Yii::createObject(['class' => EditFileHandler::class]));
+        }
+
         $this->sortHandler();
     }
 
