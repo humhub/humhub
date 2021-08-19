@@ -24,7 +24,7 @@ use humhub\widgets\ModalDialog;
             <h3 style="padding-top:0px;margin-top:0px"><?= Html::encode($file->file_name) ?></h3>
             <br />
 
-            <?= $form->field($file, 'newFileContent')->widget(CodeMirrorInputWidget::class)->label(false) ?>
+            <?= $form->field($file, 'newFileContent')->textarea(['rows' => 20])->label(false) ?>
 
             <div class="clearfix"></div>
         </div>
