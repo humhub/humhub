@@ -8,6 +8,7 @@
 use humhub\libs\Html;
 use humhub\modules\file\models\FileContent;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 
@@ -18,19 +19,19 @@ use humhub\widgets\ModalDialog;
         'header' => Yii::t('FileModule.base', '<strong>Edit</strong> file', ['fileName' => Html::encode($file->file_name)]),
         'options' => ['style' => 'width:95%'],
     ]) ?>
-    <?php $form = ActiveForm::begin() ?>
+    <?php $form = ActiveForm::begin(['method' => 'post']) ?>
         <div class="modal-body">
             <h3 style="padding-top:0px;margin-top:0px"><?= Html::encode($file->file_name) ?></h3>
             <br />
 
-            <?= $form->field($file, 'newFileContent')->textarea(['rows' => 10])->label(false) ?>
+            <?= $form->field($file, 'newFileContent')->widget(CodeMirrorInputWidget::class)->label(false) ?>
 
             <div class="clearfix"></div>
         </div>
 
         <div class="modal-footer">
             <hr />
-            <?= ModalButton::save(Yii::t('FileModule.base', 'Save'))->submit()->action('updateFileContent')->left() ?>
+            <?= ModalButton::save(Yii::t('FileModule.base', 'Save'))->submit()->action('file.updateContent')->left() ?>
             <?= ModalButton::cancel(Yii::t('FileModule.base', 'Close'))->right() ?>
         </div>
     <?php ActiveForm::end() ?>

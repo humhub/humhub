@@ -24,6 +24,11 @@ class FileContent extends File
     public $newFileContent = null;
 
     /**
+     * @var bool Require content
+     */
+    public $requireContent = true;
+
+    /**
      * @inheritdoc
      */
     public function afterFind()
@@ -51,7 +56,7 @@ class FileContent extends File
     public function rules()
     {
         $rules = [
-            [['newFileContent'], 'required'],
+            [['newFileContent'], $this->requireContent ? 'required' : 'safe'],
         ];
 
         return array_merge(parent::rules(), $rules);

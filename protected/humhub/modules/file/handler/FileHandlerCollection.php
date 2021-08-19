@@ -8,6 +8,8 @@
 
 namespace humhub\modules\file\handler;
 
+use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\models\File;
 use Yii;
 
 /**
@@ -39,14 +41,19 @@ class FileHandlerCollection extends \yii\base\Component
     public $type;
 
     /**
-     * @var \humhub\modules\file\models\File 
+     * @var File|null
      */
     public $file = null;
 
     /**
-     * @var type 
+     * @var array
      */
     public $handlers = [];
+
+    /**
+     * @var string[] allowed text extensions
+     */
+    public $textExtensions = ['txt', 'log', 'xml'];
 
     /**
      * @inheritdoc
@@ -62,8 +69,11 @@ class FileHandlerCollection extends \yii\base\Component
             $this->register(Yii::createObject(['class' => DownloadFileHandler::class]));
         }
 
-        if ($this->type === self::TYPE_VIEW) {
+        if ($this->isViewableFile()) {
             $this->register(Yii::createObject(['class' => ViewFileHandler::class]));
+        }
+
+        if ($this->isEditableFile()) {
             $this->register(Yii::createObject(['class' => EditFileHandler::class]));
         }
 
@@ -112,6 +122,28 @@ class FileHandlerCollection extends \yii\base\Component
         usort($this->handlers, function(BaseFileHandler $a, BaseFileHandler $b) {
             return strcmp($a->position, $b->position);
         });
+    }
+
+    protected function isTextFile(): bool
+    {
+        return $this->file instanceof File &&
+            in_array(FileHelper::getExtension($this->file->file_name), $this->textExtensions);
+    }
+
+    protected function isViewableFile(): bool
+    {
+        return $this->type === self::TYPE_VIEW &&
+            $this->isTextFile() &&
+            $this->file->canRead() &&
+            is_readable($this->file->getStore()->get());
+    }
+
+    protected function isEditableFile(): bool
+    {
+        return $this->type === self::TYPE_VIEW &&
+            $this->isTextFile() &&
+            $this->file->canEdit() &&
+            is_writable($this->file->getStore()->get());
     }
 
 }

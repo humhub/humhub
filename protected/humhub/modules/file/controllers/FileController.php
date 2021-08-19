@@ -78,6 +78,10 @@ class FileController extends Controller
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
         }
 
+        if (!is_readable($file->getStore()->get())) {
+            throw new HttpException(403, Yii::t('FileModule.base', 'File is not readable!'));
+        }
+
         return $this->renderAjax('view', [
             'file' => $file,
         ]);
@@ -85,10 +89,24 @@ class FileController extends Controller
 
     public function actionEdit()
     {
+        /* @var $file FileContent */
         $file = $this->getFile(FileContent::class);
 
         if (!$file->canEdit()) {
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
+        }
+
+        if (!is_writable($file->getStore()->get())) {
+            throw new HttpException(403, Yii::t('FileModule.base', 'File is not writable!'));
+        }
+
+        $file->requireContent = false;
+        if ($file->load(Yii::$app->request->post())) {
+            if ($file->save()) {
+                return $this->asJson(['result' => Yii::t('FileModule.base', 'Content of the file :fileName has been updated.', [':fileName' => '"' . $file->file_name . '"'])]);
+            } else {
+                return $this->asJson(['error' => Yii::t('FileModule.base', 'File :fileName could not be updated.', [':fileName' => '"' . $file->file_name . '"'])]);
+            }
         }
 
         return $this->renderAjax('edit', [
@@ -96,9 +114,10 @@ class FileController extends Controller
         ]);
     }
 
-    private function getFile($class = File::class): File
+    private function getFile(string $class = File::class): File
     {
-        $file = $class::findOne(['guid' => Yii::$app->request->get('guid')]);
+        $guid = Yii::$app->request->get('guid', Yii::$app->request->post('guid'));
+        $file = $class::findOne(['guid' => $guid]);
         if (empty($file)) {
             throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
         }

@@ -532,12 +532,30 @@ humhub.module('file', function (module, require, $) {
         Upload.instance(evt.$target).trigger('upload');
     };
 
+    var updateContent = function (evt) {
+        client.submit(evt).then(function (response) {
+            if (response.result) {
+                var modal = action.Component.instance(evt.$trigger.closest('.modal'));
+                if (modal) {
+                    modal.clear();
+                    modal.close();
+                }
+                module.log.success(response.result);
+            } else if (response.error) {
+                module.log.error(response, true);
+            }
+        }).catch(function (e) {
+            module.log.error(e, true);
+        });
+    };
+
     module.export({
         init: init,
         actionUpload: upload,
         Upload: Upload,
         Preview: Preview,
         getFileUrl: getFileUrl,
-        filterFileUrl: filterFileUrl
+        filterFileUrl: filterFileUrl,
+        updateContent: updateContent,
     });
 });

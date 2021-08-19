@@ -21,7 +21,7 @@ use humhub\widgets\ModalDialog;
         <h3 style="padding-top:0px;margin-top:0px"><?= Html::encode($file->file_name) ?></h3>
         <br />
 
-        <pre><?= file_get_contents($file->getStore()->get()) ?></pre>
+        <pre><?= htmlentities(file_get_contents($file->getStore()->get())) ?></pre>
 
         <div class="clearfix"></div>
     </div>
