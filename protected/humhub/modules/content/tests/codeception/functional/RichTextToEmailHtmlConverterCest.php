@@ -57,7 +57,7 @@ class RichTextToEmailHtmlConverterCest
 
     protected function linkedImageIsDetectedInEmail(string $emailMessage, array $link): bool
     {
-        return (bool)preg_match('/with linked image <a href="' . preg_quote($link['url'], '/') . '".+?> <img.+?src=".+?&amp;token=.+?".+?><\/a>/is', $emailMessage);
+        return (bool)preg_match('/with linked image <a href="' . preg_quote($link['url'], '/') . '".+?> <img.+?src=".+?&amp;token=.+?".+?> <\/a>/is', $emailMessage);
     }
 
     protected function createFile(): File
