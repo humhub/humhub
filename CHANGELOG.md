@@ -16,7 +16,8 @@ HumHub Changelog
 - Fix #5095: Fix space between URLs and text in notification message
 - Fix #5238: Typo in Offline Page Text
 - Fix #5204: Migration of container tags
-
+- Fix #5238: Typo in Offline Page Text 
+- Fix #5252: Removed "strong&gt;" from the Dutch translations
 
 1.9.0 (July 22, 2021)
 ---------------------
