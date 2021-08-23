@@ -14,9 +14,11 @@ HumHub Changelog
 - Fix #5215: Fix links to old directory
 - Fix #5096: Render links in email notifications
 - Fix #5095: Fix space between URLs and text in notification message
+- Fix #5238: Typo in Offline Page Text
+- Fix #5204: Migration of container tags
 - Fix #5238: Typo in Offline Page Text 
 - Fix #5247: Fix translate with not defined language
-
+- Fix #5252: Removed "strong&gt;" from the Dutch translations
 
 
 1.9.0 (July 22, 2021)

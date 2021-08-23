@@ -52,12 +52,12 @@ class RichTextToEmailHtmlConverterCest
 
     protected function linkIsDetectedInEmail(string $emailMessage, array $link): bool
     {
-        return (bool)preg_match('/with link <a href="' . preg_quote($link['url'], '/') . '".+?>' . preg_quote($link['text'], '/') . '<\/a>/is', $emailMessage);
+        return (bool)preg_match('/with link <a href="' . preg_quote($link['url'], '/') . '".+?> ' . preg_quote($link['text'], '/') . ' <\/a>/is', $emailMessage);
     }
 
     protected function linkedImageIsDetectedInEmail(string $emailMessage, array $link): bool
     {
-        return (bool)preg_match('/with linked image <a href="' . preg_quote($link['url'], '/') . '".+?><img.+?src=".+?&amp;token=.+?".+?><\/a>/is', $emailMessage);
+        return (bool)preg_match('/with linked image <a href="' . preg_quote($link['url'], '/') . '".+?> <img.+?src=".+?&amp;token=.+?".+?> <\/a>/is', $emailMessage);
     }
 
     protected function createFile(): File
