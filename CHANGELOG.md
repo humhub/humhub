@@ -15,7 +15,7 @@ HumHub Changelog
 - Fix #5096: Render links in email notifications
 - Fix #5095: Fix space between URLs and text in notification message
 - Fix #5238: Typo in Offline Page Text 
-- Fix #139: Fix translate with not defined language
+- Fix #5247: Fix translate with not defined language
 
 
 
