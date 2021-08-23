@@ -17,7 +17,9 @@ HumHub Changelog
 - Fix #5238: Typo in Offline Page Text
 - Fix #5204: Migration of container tags
 - Fix #5238: Typo in Offline Page Text 
+- Fix #5247: Fix translate with not defined language
 - Fix #5252: Removed "strong&gt;" from the Dutch translations
+
 
 1.9.0 (July 22, 2021)
 ---------------------
