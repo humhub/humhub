@@ -145,10 +145,6 @@ class I18N extends BaseI18N
                 $this->beforeTranslateCallback->call($this, $category, $message, $params, $language);
         }
 
-        if (empty($language)) {
-            $language = empty(Yii::$app->language) ? 'en-US' : Yii::$app->language;
-        }
-
         return parent::translate($category, $message, $params, $language);
     }
 

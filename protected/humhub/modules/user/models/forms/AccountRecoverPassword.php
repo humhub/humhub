@@ -67,31 +67,29 @@ class AccountRecoverPassword extends Model
      * Sends this user a new password by E-Mail
      *
      */
-    public function recover()
+    public function recover(): bool
     {
-
         $user = User::findOne(['email' => $this->email]);
+        if (!$user) {
+            return false;
+        }
 
         // Switch to users language - if specified
-        if ($user->language !== '') {
-            Yii::$app->language = $user->language;
-        }
+        Yii::$app->setLanguage($user->language);
 
         $token = UUID::v4();
         Yii::$app->getModule('user')->settings->contentContainer($user)->set('passwordRecoveryToken', $token . '.' . time());
 
         $mail = Yii::$app->mailer->compose([
-			'html' => '@humhub/modules/user/views/mails/RecoverPassword',
-			'text' => '@humhub/modules/user/views/mails/plaintext/RecoverPassword'
-		], [
+            'html' => '@humhub/modules/user/views/mails/RecoverPassword',
+            'text' => '@humhub/modules/user/views/mails/plaintext/RecoverPassword'
+        ], [
             'user' => $user,
             'linkPasswordReset' => Url::to(['/user/password-recovery/reset', 'token' => $token, 'guid' => $user->guid], true)
         ]);
         $mail->setTo($user->email);
         $mail->setSubject(Yii::t('UserModule.account', 'Password Recovery'));
-        $mail->send();
-
-        return true;
+        return $mail->send();
     }
 
 }
