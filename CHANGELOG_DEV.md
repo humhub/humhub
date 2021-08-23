@@ -10,4 +10,5 @@
 - Enh #5216: Separate view document button
 - Enh #5229: Use RichTextField for user approval messages
 - Enh #100: Allow additional toggler for elements with context menu
+- Enh #4133: Back up a content of RichText editor
 - Enh #100: Extend upload buttons to use a paste zone

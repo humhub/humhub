@@ -53,8 +53,7 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
         //var options = $.extend({}, this.options, {exclude: ['blockquote', 'bullet_list', 'strong', 'code', 'code_block', 'em', 'image', 'list_item', 'ordered_list', 'heading', 'link', 'clipboard']});
 
         this.editor = new MarkdownEditor(this.$, this.options);
-        var $content = this.$.find('[data-ui-richtext]').text();
-        this.editor.init($content);
+        this.editor.init(this.getInitValue());
 
         if(this.options.focus) {
             this.editor.view.focus();
@@ -72,6 +71,64 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
         this.$.find('.humhub-ui-richtext').on('focus', function() {
             that.focus();
         })
+
+        if (this.options.backupInterval) {
+            setInterval(function () {
+                that.backup();
+            }, this.options.backupInterval * 1000);
+        }
+    };
+
+    RichTextEditor.prototype.getInitValue = function() {
+        var inputId = this.getInput().attr('id');
+        var backup = this.getBackup();
+
+        if (typeof backup[inputId] === 'string' && backup[inputId] !== '') {
+            return backup[inputId];
+        }
+
+        return this.$.find('[data-ui-richtext]').text();
+    }
+
+    RichTextEditor.prototype.getBackup = function() {
+        var backup = $.cookie(this.options.backupCookieKey);
+
+        if (typeof backup === 'string' && backup !== '') {
+            return JSON.parse(backup);
+        }
+
+        return {};
+    }
+
+    RichTextEditor.prototype.backup = function() {
+        var inputId = this.getInput().attr('id');
+        var currentValue = this.editor.serialize();
+        var isBackuped = typeof this.backupedValue !== 'undefined';
+
+        if (!isBackuped && currentValue === '') {
+            // Don't back up first empty value
+            return;
+        }
+
+        if (isBackuped && currentValue === this.backupedValue) {
+            // Don't back up same content twice
+            return;
+        }
+
+        this.backupedValue = currentValue;
+
+        var backup = this.getBackup();
+        if (this.backupedValue === '' && typeof backup[inputId] !== 'undefined') {
+            delete backup[inputId];
+        } else {
+            backup[inputId] = this.backupedValue;
+        }
+
+        if (Object.keys(backup).length) {
+            $.cookie(this.options.backupCookieKey, JSON.stringify(backup));
+        } else {
+            $.cookie(this.options.backupCookieKey, null, {expires: -1});
+        }
     };
 
     RichTextEditor.prototype.focus = function() {
