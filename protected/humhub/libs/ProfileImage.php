@@ -177,10 +177,9 @@ class ProfileImage
         }
 
         // Don't allow to open an image more 128 megapixels
-        if (exif_imagetype($file) === IMAGETYPE_JPEG &&
-            ($exifData = @exif_read_data($file)) &&
-            isset($exifData['COMPUTED']['Width'], $exifData['COMPUTED']['Height']) &&
-            $exifData['COMPUTED']['Width'] * $exifData['COMPUTED']['Height'] > 128 * 1024 * 1024) {
+        if (($imageSize = @getimagesize($file)) &&
+            isset($imageSize[0], $imageSize[1]) &&
+            $imageSize[0] * $imageSize[1] > 128 * 1024 * 1024) {
             throw new Exception('Image more 128 megapixels cannot be processed!');
         }
 
