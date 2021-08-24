@@ -18,6 +18,7 @@ use Imagine\Image\Box;
 use Imagine\Image\ManipulatorInterface;
 use Imagine\Image\Point;
 use Yii;
+use yii\base\Exception;
 use yii\helpers\Url;
 use yii\helpers\FileHelper;
 use yii\imagine\Image;
@@ -167,13 +168,22 @@ class ProfileImage
      * Sets a new profile image by given temp file
      *
      * @param mixed $file CUploadedFile or file path
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function setNew($file)
     {
         if ($file instanceof UploadedFile) {
             $file = $file->tempName;
         }
+
+        // Don't allow to open an image more 128 megapixels
+        if (exif_imagetype($file) === IMAGETYPE_JPEG &&
+            ($exifData = @exif_read_data($file)) &&
+            isset($exifData['COMPUTED']['Width'], $exifData['COMPUTED']['Height']) &&
+            $exifData['COMPUTED']['Width'] * $exifData['COMPUTED']['Height'] > 128 * 1024 * 1024) {
+            throw new Exception('Image more 128 megapixels cannot be processed!');
+        }
+
         $this->delete();
 
         // Convert image to uploaded JPEG, fix orientation and remove additional meta information
