@@ -51,6 +51,8 @@ class WallEntryControls extends Menu
             $this->renderOptions = new WallStreamEntryOptions();
         }
 
+        $this->initControls();
+
         parent::init();
     }
 
@@ -66,13 +68,10 @@ class WallEntryControls extends Menu
         return $this->renderOptions->getViewContext();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function run()
+    public function initControls()
     {
-        if($this->renderOptions->isControlsMenuDisabled()) {
-            return '';
+        if ($this->renderOptions->isControlsMenuDisabled()) {
+            return;
         }
 
         $entries = $this->wallEntryWidget instanceof WallEntry
@@ -85,6 +84,16 @@ class WallEntryControls extends Menu
             }
 
             $this->addEntry($this->getWallEntryLink($menuItem));
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function run()
+    {
+        if ($this->renderOptions->isControlsMenuDisabled()) {
+            return '';
         }
 
         return parent::run();

@@ -88,9 +88,11 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
      * Reloads this stream entry
      */
     StreamEntry.prototype.reload = function () {
-        return this.stream().reloadEntry(this).catch(function (err) {
-            module.log.error(err, true);
-        });
+        if (typeof this.stream() !== 'undefined') {
+            return this.stream().reloadEntry(this).catch(function (err) {
+                module.log.error(err, true);
+            });
+        }
     };
 
     /**
