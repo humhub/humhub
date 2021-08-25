@@ -137,17 +137,35 @@ class Events extends \yii\base\BaseObject
      */
     public static function onCronDailyRun($event)
     {
+        /* @var Module $module */
+        $module = Yii::$app->getModule('notification');
+
         $controller = $event->sender;
 
-        $controller->stdout("Deleting old notifications... ");
-        /**
-         * Delete seen notifications which are older than 2 months
-         */
-        $deleteTime = time() - (60 * 60 * 24 * 31 * 2); // Notifcations which are older as ~ 2 Months
-        foreach (Notification::find()->where(['seen' => 1])->andWhere(['<', 'created_at', date('Y-m-d', $deleteTime)])->each() as $notification) {
-            $notification->delete();
-        }
+        $controller->stdout('Deleting old notifications... ');
+
+        // Delete seen notifications which are older than 2 months
+        self::deleteNotifications(true, $module->deleteSeenNotificationsMonths);
+
+        // Delete unseen notifications which are older than 3 months
+        self::deleteNotifications(false, $module->deleteUnseenNotificationsMonths);
+
         $controller->stdout('done.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
+    }
+
+    /**
+     * Delete notifications after X months
+     *
+     * @param bool $seen
+     * @param int $months
+     * @return int Number of deleted notifications
+     */
+    private static function deleteNotifications(bool $seen, int $months): int
+    {
+        return Notification::deleteAll(['AND',
+            ['seen' => (int)$seen],
+            ['<', 'created_at', date('Y-m-d', mktime(null, null, null, date('m') - $months))],
+        ]);
     }
 
     public static function onActiveRecordDelete($event)
