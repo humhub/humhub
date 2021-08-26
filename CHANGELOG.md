@@ -20,6 +20,7 @@ HumHub Changelog
 - Fix #5247: Fix translate with not defined language
 - Fix #5252: Removed "strong&gt;" from the Dutch translations
 - Enh #5259: Improve logout action
+- Fix #5262: Fix visibility of email requiring on backoffice add user form
 
 
 1.9.0 (July 22, 2021)
