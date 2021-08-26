@@ -249,7 +249,7 @@ class AuthController extends Controller
      */
     public function actionLogout()
     {
-        $this->denyImageRequest();
+        $this->forcePostRequest();
 
         $language = Yii::$app->user->language;
 

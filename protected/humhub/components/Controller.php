@@ -155,23 +155,6 @@ class Controller extends \yii\web\Controller
     }
 
     /**
-     * Throws HttpException in case the request is from src attribute of <img> html tag, otherwise returns true.
-     *
-     * @throws \yii\web\HttpException
-     * @return boolean returns true in case the current request is not
-     */
-    public function denyImageRequest(): bool
-    {
-        if (isset($_SERVER['HTTP_ACCEPT']) &&
-            stripos($_SERVER['HTTP_ACCEPT'], 'text/html') === false &&
-            stripos($_SERVER['HTTP_ACCEPT'], 'image') !== false) {
-            throw new \yii\web\HttpException(405, Yii::t('base', 'Invalid request from image!'));
-        }
-
-        return true;
-    }
-
-    /**
      * Create Redirect for AJAX Requests which output goes into HTML content.
      * Is an alternative method to redirect, for ajax responses.
      */
