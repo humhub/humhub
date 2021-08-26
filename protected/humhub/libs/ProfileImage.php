@@ -176,12 +176,7 @@ class ProfileImage
             $file = $file->tempName;
         }
 
-        // Don't allow to open an image more 128 megapixels
-        if (($imageSize = @getimagesize($file)) &&
-            isset($imageSize[0], $imageSize[1]) &&
-            $imageSize[0] * $imageSize[1] > 128 * 1024 * 1024) {
-            throw new Exception('Image more 128 megapixels cannot be processed!');
-        }
+        ImageHelper::checkMaxDimensions($file);
 
         $this->delete();
 
