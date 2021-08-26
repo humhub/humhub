@@ -36,7 +36,6 @@ use Yii;
 use yii\base\Exception;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
-use yii\db\Query;
 use yii\web\IdentityInterface;
 
 /**
@@ -143,7 +142,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function rules()
     {
-        /* @var $userModule \humhub\modules\user\Module */
+        /* @var $userModule Module */
         $userModule = Yii::$app->getModule('user');
 
         return [
@@ -165,11 +164,30 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'string', 'max' => 150],
-            [['email'], 'required', 'when' => function ($model, $attribute) use ($userModule) {
-                return $userModule->emailRequired;
+            [['email'], 'required', 'when' => function () {
+                return $this->isEmailRequired();
             }],
             [['guid'], 'unique'],
         ];
+    }
+
+    public function isEmailRequired(): bool
+    {
+        /* @var $userModule Module */
+        $userModule = Yii::$app->getModule('user');
+        return $userModule->emailRequired;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isAttributeRequired($attribute)
+    {
+        if ($attribute === 'email') {
+            return $this->isEmailRequired();
+        }
+
+        return parent::isAttributeRequired($attribute);
     }
 
     /**
