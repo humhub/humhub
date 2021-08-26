@@ -93,5 +93,5 @@ class Module extends \humhub\components\Module
      * @since 1.10
      * @var int The maximum megapixels(width*height) of processing image files.
      */
-    public $imageMaxProcessingMP = 16;
+    public $imageMaxProcessingMP = 64;
 }
