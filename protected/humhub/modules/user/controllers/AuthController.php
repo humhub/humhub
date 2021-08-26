@@ -237,7 +237,7 @@ class AuthController extends Controller
             $this->trigger(static::EVENT_AFTER_LOGIN, new UserEvent(['user' => Yii::$app->user->identity]));
             if (method_exists($authClient, 'onSuccessLogin')) {
                 $authClient->onSuccessLogin();
-            };
+            }
         }
 
         return $result;
@@ -245,9 +245,12 @@ class AuthController extends Controller
 
     /**
      * Logouts a User
+     * @throws \yii\web\HttpException
      */
     public function actionLogout()
     {
+        $this->forcePostRequest();
+
         $language = Yii::$app->user->language;
 
         Yii::$app->user->logout();

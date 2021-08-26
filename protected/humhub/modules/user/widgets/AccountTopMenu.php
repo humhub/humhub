@@ -91,6 +91,7 @@ class AccountTopMenu extends Menu
             'icon' => 'sign-out',
             'pjaxEnabled' => false,
             'url' => Url::toRoute('/user/auth/logout'),
+            'htmlOptions' => ['data-method' => 'POST'],
             'sortOrder' => 700,
         ]));
 
