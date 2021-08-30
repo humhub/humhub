@@ -2,8 +2,10 @@ HumHub Changelog
 ================
 
 
-1.9.1 (Unreleased)
-------------------
+1.9.1 (August 30, 2021)
+-----------------------
+
+See also: [HumHub 1.9 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_9)
 
 - Fix #5172: Missing translations for "New Member" and "New Spaces" directory widgets
 - Fix #5195: Fix export users with tags data
@@ -19,7 +21,7 @@ HumHub Changelog
 - Fix #5238: Typo in Offline Page Text 
 - Fix #5247: Fix translate with not defined language
 - Fix #5252: Removed "strong&gt;" from the Dutch translations
-- Enh #5259: Improve logout action
+- Enh #5259: Protection of the logout action by POST method. (Thanks to @avjesadiya13 and @VishnuChebolu for disclosing the problem.)
 - Fix #5262: Fix visibility of email requiring on backoffice add user form
 
 
