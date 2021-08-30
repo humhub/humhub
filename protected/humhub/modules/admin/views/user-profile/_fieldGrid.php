@@ -23,7 +23,7 @@ use yii\helpers\Url;
     <br/>
 
 <?= GridView::widget([
-    'dataProvider' => new ArrayDataProvider(['allModels' => $category->fields]),
+    'dataProvider' => new ArrayDataProvider(['allModels' => $category->fields, 'pagination' => ['pageSize' => 0]]),
     'layout' => '{items}',
     'columns' => [
         [
