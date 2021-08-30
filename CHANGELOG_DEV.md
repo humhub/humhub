@@ -12,5 +12,5 @@
 - Enh #100: Allow additional toggler for elements with context menu
 - Enh #4133: Back up a content of RichText editor
 - Enh #100: Extend upload buttons to use a paste zone
-- Enh #5256: Limit uploading profile images
+- Enh #5256: Limit uploading profile images (Thanks to @tuhin1729 for discovering the issue.) 
 - Enh #5257: Delete old unread notifications
