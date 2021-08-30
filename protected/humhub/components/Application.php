@@ -100,4 +100,16 @@ class Application extends \yii\web\Application
 
         return parent::beforeAction($action);
     }
+
+    /**
+     * Switch current language
+     *
+     * @param string $value
+     */
+    public function setLanguage($value)
+    {
+        if (!empty($value)) {
+            $this->language = $value;
+        }
+    }
 }
