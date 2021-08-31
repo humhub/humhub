@@ -4,8 +4,7 @@ HumHub Changelog
 
 1.9.2 (Unreleased)
 ------------------
-
-
+- Fix #5265: Fix logging filter "Error" when not entries
 
 
 1.9.1 (August 30, 2021)
