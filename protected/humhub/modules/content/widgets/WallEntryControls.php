@@ -9,7 +9,6 @@ use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\widgets\Menu;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 
 /**
  * This widget is responsible for rendering the context menu for wallentries.
@@ -45,15 +44,17 @@ class WallEntryControls extends Menu
      */
     public function init()
     {
+        $this->initRenderOptions();
+        parent::init();
+    }
+
+    public function initRenderOptions()
+    {
         if(!$this->renderOptions && $this->wallEntryWidget instanceof WallStreamEntryWidget) {
             $this->renderOptions = $this->wallEntryWidget->renderOptions;
         } else if(!$this->renderOptions) {
             $this->renderOptions = new WallStreamEntryOptions();
         }
-
-        $this->initControls();
-
-        parent::init();
     }
 
     /**
@@ -95,6 +96,8 @@ class WallEntryControls extends Menu
         if ($this->renderOptions->isControlsMenuDisabled()) {
             return '';
         }
+
+        $this->initControls();
 
         return parent::run();
     }
