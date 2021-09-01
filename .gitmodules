@@ -1,6 +1,3 @@
 [submodule "themes/TheBlackSheepHubTheme"]
 	path = themes/TheBlackSheepHubTheme
 	url = https://github.com/StruxureIO/TheBlackSheepHubTheme.git
-[submodule "protected/modules/bsh_videos"]
-	path = protected/modules/bsh_videos
-	url = https://github.com/StruxureIO/bsh_videos.git
