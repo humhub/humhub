@@ -1,0 +1,3 @@
+[submodule "themes/TheBlackSheepHubTheme"]
+	path = themes/TheBlackSheepHubTheme
+	url = https://github.com/StruxureIO/TheBlackSheepHubTheme.git
