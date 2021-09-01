@@ -88,9 +88,11 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
      * Reloads this stream entry
      */
     StreamEntry.prototype.reload = function () {
-        return this.stream().reloadEntry(this).catch(function (err) {
-            module.log.error(err, true);
-        });
+        if (typeof this.stream() !== 'undefined') {
+            return this.stream().reloadEntry(this).catch(function (err) {
+                module.log.error(err, true);
+            });
+        }
     };
 
     /**
@@ -359,7 +361,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         client.post(evt.url).then(function (response) {
             if (response.success) {
                 // Either just remove entry or reload it in case the stream includes archived entries
-                if (that.stream().filter.isActive('entry_archived')) {
+                if (typeof that.stream().filter === 'undefined' || that.stream().filter.isActive('entry_archived')) {
                     that.reload().then(function () {
                         streamModule.log.success('success.archive', true);
                     });
