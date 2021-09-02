@@ -67,7 +67,7 @@ $accountAssetsList = AccountHelper::getAssetsList($account);
                     <?= \humhub\widgets\NotificationArea::widget(); ?>
                 </div>
 
-                <?php if (!empty($accountAssetsList)): ?>
+                <?php if (!Yii::$app->user->isGuest && !empty($accountAssetsList)): ?>
                     <div class="search pull-right hidden-xs">
                         <?= \yii\helpers\Html::a(
                             '<i class="fa fa-exchange"></i>',
