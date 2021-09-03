@@ -185,7 +185,16 @@ humhub.module('ui.additions', function (module, require, $) {
         });
 
         module.register('select2', '[data-ui-select2]', function ($match) {
-            $match.select2({theme: "humhub"});
+            $match.select2({
+                theme: 'humhub',
+                tags: typeof $match.data('ui-select2-allow-new') !== 'undefined',
+                insertTag: function (data, tag) {
+                    if (typeof $match.data('ui-select2-new-sign') !== 'undefined') {
+                        tag.text += ' ' + $match.data('ui-select2-new-sign');
+                    }
+                    data.unshift(tag);
+                }
+            });
         });
 
         module.register('highlightCode', 'pre code', function($match) {
