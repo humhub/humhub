@@ -8,11 +8,11 @@
 
 namespace humhub\modules\comment\widgets;
 
+use humhub\components\Widget;
 use humhub\modules\comment\Module;
+use humhub\modules\comment\models\Comment as CommentModel;
 use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
-use humhub\modules\comment\models\Comment as CommentModel;
-use humhub\components\Widget;
 use yii\helpers\Url;
 
 /**
@@ -38,7 +38,7 @@ class Form extends Widget
     /**
      * @var string
      */
-    public $mentioningUrl = '/search/mentioning/comment-content-followers';
+    public $mentioningUrl = '/search/mentioning/content';
 
     /**
      * Executes the widget.
@@ -60,22 +60,13 @@ class Form extends Widget
             $this->model = new CommentModel();
         }
 
-        if ($this->object instanceof CommentModel) {
-            // Get parent object of the Comment because users cannot follow to Comment
-            $mentioningFollowObjectModel = $this->object->object_model;
-            $mentioningFollowObjectId = $this->object->object_id;
-        } else {
-            $mentioningFollowObjectModel = get_class($this->object);
-            $mentioningFollowObjectId = $this->object->id;
-        }
-
         return $this->render('form', [
             'objectModel' => get_class($this->object),
             'objectId' => $this->object->getPrimaryKey(),
             'id' => $this->object->getUniqueId(),
             'model' => $this->model,
             'isNestedComment' => ($this->object instanceof CommentModel),
-            'mentioningUrl' => Url::to([$this->mentioningUrl, 'model' => $mentioningFollowObjectModel, 'id' => $mentioningFollowObjectId])
+            'mentioningUrl' => Url::to([$this->mentioningUrl, 'id' => $this->object->content->id]),
         ]);
     }
 

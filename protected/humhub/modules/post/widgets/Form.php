@@ -30,7 +30,7 @@ class Form extends WallCreateContentForm
     /**
      * @var string
      */
-    public $mentioningUrl = '/search/mentioning/post-space-members';
+    public $mentioningUrl = '/search/mentioning/space';
 
     /**
      * @inheritdoc

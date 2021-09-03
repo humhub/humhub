@@ -9,11 +9,14 @@
 namespace humhub\modules\search\controllers;
 
 use humhub\components\Controller;
+use \humhub\modules\comment\Module as CommentModule;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\models\Content;
 use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\search\Module;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\space\widgets\Image as SpaceImage;
@@ -76,7 +79,7 @@ class MentioningController extends Controller
      * @return \yii\web\Response
      * @throws HttpException
      */
-    public function actionPostSpaceMembers()
+    public function actionSpace()
     {
         $spaceId = (int)Yii::$app->request->get('id');
         $keyword = (string)Yii::$app->request->get('keyword');
@@ -87,11 +90,7 @@ class MentioningController extends Controller
         }
 
         // Find space members
-        $users = User::find()
-            ->leftJoin('space_membership', 'user.id = space_membership.user_id')
-            ->andWhere(['space_membership.space_id' => $spaceId])
-            ->andWhere(['space_membership.status' => Membership::STATUS_MEMBER])
-            ->visible()
+        $users = Membership::getSpaceMembersQuery($space)
             ->search($keyword)
             ->limit($this->module->mentioningSearchBoxResultLimit)
             ->orderBy(['space_membership.last_visit' => SORT_DESC])
@@ -115,28 +114,22 @@ class MentioningController extends Controller
      * @throws \yii\base\Exception
      * @throws \yii\base\InvalidConfigException
      */
-    public function actionCommentContentFollowers()
+    public function actionContent()
     {
-        $modelClass = (string)Yii::$app->request->get('model');
-        $modelId = (int)Yii::$app->request->get('id');
+        $contentId = (int)Yii::$app->request->get('id');
         $keyword = (string)Yii::$app->request->get('keyword');
 
-        /** @var \humhub\modules\comment\Module $module */
-        $module = Yii::$app->getModule('comment');
+        /* @var CommentModule $commentModule */
+        $commentModule = Yii::$app->getModule('comment');
 
-        if (!class_exists($modelClass) ||
-            !($object = $modelClass::findOne(['id' => $modelId])) ||
-            !$module->canComment($object)) {
+        if (!($content = Content::findOne(['id' => $contentId])) ||
+            !($object = $content->getModel()) ||
+            !$commentModule->canComment($object)) {
             throw new HttpException(403, 'Access denied!');
         }
 
         // Find users followed to the Content
-        $users = User::find()
-            ->leftJoin('user_follow', 'user.id = user_follow.user_id')
-            ->andWhere(['user_follow.object_model' => $modelClass])
-            ->andWhere(['user_follow.object_id' => $modelId])
-            ->andWhere(['user_follow.send_notifications' => 1])
-            ->visible()
+        $users = Follow::getFollowersQuery($object, true)
             ->search($keyword)
             ->limit($this->module->mentioningSearchBoxResultLimit)
             ->orderBy(['user.last_login' => SORT_DESC])
