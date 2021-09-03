@@ -13,6 +13,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
 use humhub\modules\comment\models\Comment as CommentModel;
 use humhub\components\Widget;
+use yii\helpers\Url;
 
 /**
  * This widget is used include the comments functionality to a wall entry.
@@ -35,6 +36,11 @@ class Form extends Widget
     public $model;
 
     /**
+     * @var string
+     */
+    public $mentioningUrl = '/search/mentioning/comment-content-followers';
+
+    /**
      * Executes the widget.
      */
     public function run()
@@ -50,8 +56,17 @@ class Form extends Widget
             return '';
         }
 
-        if(!$this->model) {
+        if (!$this->model) {
             $this->model = new CommentModel();
+        }
+
+        if ($this->object instanceof CommentModel) {
+            // Get parent object of the Comment because users cannot follow to Comment
+            $mentioningFollowObjectModel = $this->object->object_model;
+            $mentioningFollowObjectId = $this->object->object_id;
+        } else {
+            $mentioningFollowObjectModel = get_class($this->object);
+            $mentioningFollowObjectId = $this->object->id;
         }
 
         return $this->render('form', [
@@ -59,7 +74,8 @@ class Form extends Widget
             'objectId' => $this->object->getPrimaryKey(),
             'id' => $this->object->getUniqueId(),
             'model' => $this->model,
-            'isNestedComment' => ($this->object instanceof CommentModel)
+            'isNestedComment' => ($this->object instanceof CommentModel),
+            'mentioningUrl' => Url::to([$this->mentioningUrl, 'model' => $mentioningFollowObjectModel, 'id' => $mentioningFollowObjectId])
         ]);
     }
 
