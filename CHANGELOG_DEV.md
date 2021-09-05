@@ -10,8 +10,10 @@
 - Enh #5216: Separate view document button
 - Enh #5229: Use RichTextField for user approval messages
 - Enh #100: Allow additional toggler for elements with context menu
+- Enh #5170: Allow 0 for min input size
 - Enh #4133: Back up a content of RichText editor
 - Enh #100: Extend upload buttons to use a paste zone
 - Enh #5257: Delete old unread notifications
+- Fix #5143: Unlimited page size for profile fields
 - Fix #5143: Unlimited page size for profile fields
 - Enh #5269: Allow to add new item on ui selector
