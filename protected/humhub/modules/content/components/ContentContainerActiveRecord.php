@@ -289,13 +289,11 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns a ModuleManager
      *
-     * @param User $user
-     * @return ModuleManager
+     * @return ContentContainerModuleManager
      * @since 1.3
      */
-    public function getModuleManager()
+    public function getModuleManager(): ?ContentContainerModuleManager
     {
-
         if ($this->moduleManager !== null) {
             return $this->moduleManager;
         }

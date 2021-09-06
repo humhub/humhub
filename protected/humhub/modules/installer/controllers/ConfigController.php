@@ -489,8 +489,8 @@ class ConfigController extends Controller
             $space->save();
 
             // activate all available modules for this space
-            foreach ($space->getAvailableModules() as $module) {
-                $space->enableModule($module->id);
+            foreach ($space->moduleManager->getAvailable() as $module) {
+                $space->moduleManager->enable($module->id);
             }
 
             // Add Some Post to the Space

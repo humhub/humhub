@@ -36,13 +36,13 @@ SpaceAsset::register($this);
                                 <a href="#" class="btn btn-sm btn-primary enable"
                                    data-action-click="content.container.enableModule"
                                    data-ui-loader
-                                   <?php if ($space->isModuleEnabled($moduleId)): ?>style="display:none"<?php endif; ?>
+                                   <?php if ($space->moduleManager->isEnabled($moduleId)): ?>style="display:none"<?php endif; ?>
                                    data-action-url="<?= $space->createUrl('/space/manage/module/enable', ['moduleId' => $moduleId]); ?>">
                                     <?= Yii::t('SpaceModule.manage', 'Enable'); ?>
                                 </a>
 
                                 <a href="#" class="btn btn-sm btn-primary disable"
-                                   <?php if (!$space->isModuleEnabled($moduleId)): ?>style="display:none"<?php endif; ?>
+                                   <?php if (!$space->moduleManager->isEnabled($moduleId)): ?>style="display:none"<?php endif; ?>
                                    data-action-click="content.container.disableModule"
                                    data-ui-loader
                                    data-action-url="<?= $space->createUrl('/space/manage/module/disable', ['moduleId' => $moduleId]); ?>">

@@ -240,10 +240,10 @@ class AccountController extends BaseAccountController
      */
     public function actionEditModules()
     {
+        /* @var User $user */
         $user = Yii::$app->user->getIdentity();
-        $availableModules = $user->getAvailableModules();
 
-        return $this->render('editModules', ['user' => $user, 'availableModules' => $availableModules]);
+        return $this->render('editModules', ['user' => $user, 'availableModules' => $user->moduleManager->getAvailable()]);
     }
 
     /**
@@ -259,9 +259,7 @@ class AccountController extends BaseAccountController
         $user = Yii::$app->user->getIdentity();
         $moduleId = Yii::$app->request->get('moduleId');
 
-        if (!$user->isModuleEnabled($moduleId)) {
-            $user->enableModule($moduleId);
-        }
+        $user->moduleManager->enable($moduleId);
 
         if (!Yii::$app->request->isAjax) {
             return $this->redirect(['/user/account/edit-modules']);
@@ -283,9 +281,7 @@ class AccountController extends BaseAccountController
         $user = Yii::$app->user->getIdentity();
         $moduleId = Yii::$app->request->get('moduleId');
 
-        if ($user->isModuleEnabled($moduleId) && $user->canDisableModule($moduleId)) {
-            $user->disableModule($moduleId);
-        }
+        $user->moduleManager->disable($moduleId);
 
         if (!Yii::$app->request->isAjax) {
             return $this->redirect(['/user/account/edit-modules']);
