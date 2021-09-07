@@ -17,3 +17,4 @@
 - Fix #5143: Unlimited page size for profile fields
 - Fix #5143: Unlimited page size for profile fields
 - Enh #5269: Allow to add new item on ui selector
+- Enh #5005: Possibility to invite a registered user to a space by email
