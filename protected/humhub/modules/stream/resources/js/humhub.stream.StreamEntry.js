@@ -88,9 +88,11 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
      * Reloads this stream entry
      */
     StreamEntry.prototype.reload = function () {
-        return this.stream().reloadEntry(this).catch(function (err) {
-            module.log.error(err, true);
-        });
+        if (typeof this.stream() !== 'undefined') {
+            return this.stream().reloadEntry(this).catch(function (err) {
+                module.log.error(err, true);
+            });
+        }
     };
 
     /**
@@ -239,10 +241,10 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
     };
 
     /**
-     * Changes the visibility (private/public) of this entry
+     * Update content record by action provided in action URL from attribute [data-action-url]
      * @param evt
      */
-    StreamEntry.prototype.toggleVisibility = function (evt) {
+    var updateContentByActionUrl = function (evt) {
         this.loader();
         var that = this;
         client.post(evt).then(function (response) {
@@ -257,6 +259,24 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
             module.log.error(e, true);
         });
     };
+
+    /**
+     * Changes the visibility (private/public) of this entry
+     * @param evt
+     */
+    StreamEntry.prototype.toggleVisibility = updateContentByActionUrl;
+
+    /**
+     * Lock comments for the content
+     * @param evt
+     */
+    StreamEntry.prototype.lockComments = updateContentByActionUrl;
+
+    /**
+     * Unlock comments for the content
+     * @param evt
+     */
+    StreamEntry.prototype.unlockComments = updateContentByActionUrl;
 
     StreamEntry.prototype.isPinned = function (evt) {
         return this.$.is('[data-stream-pinned="1"]');
@@ -341,7 +361,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         client.post(evt.url).then(function (response) {
             if (response.success) {
                 // Either just remove entry or reload it in case the stream includes archived entries
-                if (that.stream().filter.isActive('entry_archived')) {
+                if (typeof that.stream().filter === 'undefined' || that.stream().filter.isActive('entry_archived')) {
                     that.reload().then(function () {
                         streamModule.log.success('success.archive', true);
                     });

@@ -8,12 +8,20 @@
 
 namespace humhub\modules\search\controllers;
 
-use Yii;
 use humhub\components\Controller;
+use \humhub\modules\comment\Module as CommentModule;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\models\Content;
+use humhub\modules\post\permissions\CreatePost;
+use humhub\modules\search\Module;
+use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\space\widgets\Image as SpaceImage;
+use Yii;
+use yii\web\HttpException;
 
 /**
  * Controller used for mentioning (user/space) searches
@@ -22,6 +30,11 @@ use humhub\modules\space\widgets\Image as SpaceImage;
  */
 class MentioningController extends Controller
 {
+
+    /**
+     * @var Module $module
+     */
+    public $module;
 
     /**
      * @inheritdoc
@@ -33,37 +46,157 @@ class MentioningController extends Controller
         ];
     }
 
+    /**
+     * Find all users and spaces on mentioning request from RichText editor
+     *
+     * @return \yii\web\Response
+     */
     public function actionIndex()
     {
-        Yii::$app->response->format = 'json';
-
-        $results = [];
         $keyword = (string)Yii::$app->request->get('keyword');
 
-        // Add user results
-        $query = User::find()->visible()->search($keyword);
-        foreach ($query->limit(10)->all() as $container) {
-            $results[] = [
-                'guid' => $container->guid,
-                'type' => 'u',
-                'name' => $container->getDisplayName(),
-                'image' => UserImage::widget(['user' => $container, 'width' => 20]),
-                'link' => $container->getUrl()
-            ];
-        };
+        // Find users
+        $users = User::find()
+            ->visible()
+            ->search($keyword)
+            ->limit($this->module->mentioningSearchBoxResultLimit)
+            ->orderBy(['user.last_login' => SORT_DESC])
+            ->all();
 
-        // Add space results
-        $query = Space::find()->visible()->search($keyword);
-        foreach ($query->limit(10)->all() as $container) {
-            $results[] = [
-                'guid' => $container->guid,
-                'type' => 's',
-                'name' => $container->getDisplayName(),
-                'image' => SpaceImage::widget(['space' => $container, 'width' => 20]),
-                'link' => $container->getUrl()
-            ];
+        $results = [];
+        foreach ($users as $user) {
+            $results[] = $this->getUserResult($user);
         }
+
+        $results = $this->appendMentioningSpaceResults($keyword, $results);
+
         return $this->asJson($results);
+    }
+
+    /**
+     * Find space members on mentioning request from RichText editor on Post form
+     *
+     * @return \yii\web\Response
+     * @throws HttpException
+     */
+    public function actionSpace()
+    {
+        $spaceId = (int)Yii::$app->request->get('id');
+        $keyword = (string)Yii::$app->request->get('keyword');
+
+        $space = Space::findOne(['id' => $spaceId]);
+        if (!$space || !$space->can(CreatePost::class)) {
+            throw new HttpException(403, 'Access denied!');
+        }
+
+        // Find space members
+        $users = Membership::getSpaceMembersQuery($space)
+            ->search($keyword)
+            ->limit($this->module->mentioningSearchBoxResultLimit)
+            ->orderBy(['space_membership.last_visit' => SORT_DESC])
+            ->all();
+
+        $results = [];
+        foreach ($users as $user) {
+            $results[] = $this->getUserResult($user);
+        }
+
+        $results = $this->appendMentioningSpaceResults($keyword, $results);
+
+        return $this->asJson($results);
+    }
+
+    /**
+     * Find users followed to the Content on mentioning request from RichText editor on Comment form
+     *
+     * @return \yii\web\Response
+     * @throws HttpException
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionContent()
+    {
+        $contentId = (int)Yii::$app->request->get('id');
+        $keyword = (string)Yii::$app->request->get('keyword');
+
+        /* @var CommentModule $commentModule */
+        $commentModule = Yii::$app->getModule('comment');
+
+        if (!($content = Content::findOne(['id' => $contentId])) ||
+            !($object = $content->getModel()) ||
+            !$commentModule->canComment($object)) {
+            throw new HttpException(403, 'Access denied!');
+        }
+
+        // Find users followed to the Content
+        $users = Follow::getFollowersQuery($object, true)
+            ->search($keyword)
+            ->limit($this->module->mentioningSearchBoxResultLimit)
+            ->orderBy(['user.last_login' => SORT_DESC])
+            ->all();
+
+        $results = [];
+        foreach ($users as $user) {
+            $results[] = $this->getUserResult($user);
+        }
+
+        $results = $this->appendMentioningSpaceResults($keyword, $results);
+
+        return $this->asJson($results);
+    }
+
+    /**
+     * Add space results if users number is not enough
+     *
+     * @param array $results
+     * @return array
+     */
+    private function appendMentioningSpaceResults(string $keyword, array $results): array
+    {
+        $spaceNum = $this->module->mentioningSearchBoxResultLimit - count($results);
+
+        if ($spaceNum <= 0) {
+            // No need to add spaces because the list is already filled with max number of the results
+            return $results;
+        }
+
+        $spaces = Space::find()
+            ->visible()
+            ->search($keyword)
+            ->limit($spaceNum)
+            ->all();
+        foreach ($spaces as $space) {
+            $results[] = $this->getSpaceResult($space);
+        }
+
+        return $results;
+    }
+
+    private function getContainerResult(ContentContainerActiveRecord $container, array $params): array
+    {
+        return array_merge([
+            'guid' => $container->guid,
+            'type' => null,
+            'name' => $container->getDisplayName(),
+            'image' => null,
+            'link' => $container->getUrl(),
+        ], $params);
+    }
+
+    private function getUserResult(User $user): array
+    {
+        return $this->getContainerResult($user, [
+            'type' => 'u',
+            'image' => UserImage::widget(['user' => $user, 'width' => 20]),
+        ]);
+    }
+
+    private function getSpaceResult(Space $space): array
+    {
+        return $this->getContainerResult($space, [
+            'type' => 's',
+            'image' => SpaceImage::widget(['space' => $space, 'width' => 20]),
+        ]);
     }
 
 }

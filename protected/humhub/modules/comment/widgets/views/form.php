@@ -17,7 +17,8 @@ use humhub\modules\comment\models\Comment;
 /* @var $model Comment */
 /* @var $id string unique object id */
 /* @var $isNestedComment boolean */
-/** @var Module $contentModule */
+/* @var $contentModule Module */
+/* @var $mentioningUrl string */
 
 $contentModule = Yii::$app->getModule('content');
 $submitUrl = Url::to(['/comment/comment/post']);
@@ -35,7 +36,10 @@ $isHidden = ($objectModel === Comment::class);
 
     <hr>
 
-    <?php $form = ActiveForm::begin(['action' => $submitUrl]) ?>
+    <?php $form = ActiveForm::begin([
+        'action' => $submitUrl,
+        'acknowledge' => true,
+    ]) ?>
 
     <?= Html::hiddenInput('objectModel', $objectModel) ?>
     <?= Html::hiddenInput('objectId', $objectId) ?>
@@ -45,6 +49,7 @@ $isHidden = ($objectModel === Comment::class);
             'id' => 'newCommentForm_' . $id,
             'layout' => RichTextField::LAYOUT_INLINE,
             'pluginOptions' => ['maxHeight' => '300px'],
+            'mentioningUrl' => $mentioningUrl,
             'placeholder' => $placeholder,
             'events' => [
                 'scroll-active' => 'comment.scrollActive',

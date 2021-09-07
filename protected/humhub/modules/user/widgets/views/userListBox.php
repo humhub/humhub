@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\user\widgets\Image;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\widgets\AjaxLinkPager;
@@ -21,12 +22,13 @@ use yii\helpers\Html;
         <ul class="media-list">
             <?php foreach ($users as $user) : ?>
                 <li>
-                    <a href="<?= $user->getUrl(); ?>"  data-modal-close="1">
+                    <a href="<?= $user->getUrl(); ?>" data-modal-close="1">
                         <div class="media">
-                            <img class="media-object img-rounded pull-left"
-                                 src="<?= $user->getProfileImage()->getUrl(); ?>" width="50"
-                                 height="50" alt="50x50" data-src="holder.js/50x50"
-                                 style="width: 50px; height: 50px;">
+                            <?= Image::widget([
+                                'user' => $user,
+                                'link' => false,
+                                'htmlOptions' => ['class' => 'media-object pull-left'],
+                            ]) ?>
 
                             <div class="media-body">
                                 <h4 class="media-heading"><?= Html::encode($user->displayName); ?></h4>

@@ -71,18 +71,6 @@ return [
     'Group not found!' => 'Nie znaleziono grupy!',
     'Group user not found!' => 'Użytkownik grupy nie znaleziony!',
     'Groups' => 'Grupy',
-    'Hello {displayName},<br><br>
-Your account has been activated.<br><br>
-Click here to login:<br>
-{loginLink}<br><br>
-
-Kind Regards<br>
-{AdminName}<br><br>' => 'Witaj {displayName},<br><br> Twoje konto zostało aktywowane.<br><br> Kliknij tutaj aby się zalogować:<br> {loginLink}<br><br> Pozdrawiam<br> {AdminName}<br><br>',
-    'Hello {displayName},<br><br>
-Your account request has been declined.<br><br>
-
-Kind Regards<br>
-{AdminName} <br><br> ' => 'Witaj {displayName},<br><br> Twoje prośba o założenie konta została odrzzucona.<br><br> Pozdrawiam<br> {AdminName}<br><br>',
     'Here you can create or edit profile categories and fields.' => 'Tutaj możesz tworzyć i edytowac profile kategorii i pól.',
     'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Jeśli indywidualne pozwolenia profilowe są wyłączone, następujące ustawienia są niezmienne dla wszystkich użytkowników. Jeśli indywidualne ustawienia profilowe są zezwolone, te ustawienia są ustawione jako domyślne i użytkownik może je edytować. Następujące wpisy są wtedy wyświetlone w tej samej formie w ustawieniach profilu użytkownika.',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Jeżeli ta opcja nie jest wybrana, własność stref zostanie przekazana na Twoje konto.',
@@ -153,6 +141,25 @@ Kind Regards<br>
     'You cannot delete yourself!' => 'Nie możesz się usunąć!',
     'never' => 'nigdy',
     'Default Sorting' => '',
+    'Hello {displayName},
+
+Your account has been activated.
+
+Click here to login:
+{loginUrl}
+
+Kind Regards
+{AdminName}
+
+' => '',
+    'Hello {displayName},
+
+Your account request has been declined.
+
+Kind Regards
+{AdminName}
+
+' => '',
     'Information 1' => '',
     'Information 2' => '',
     'Information 3' => '',
@@ -160,5 +167,6 @@ Kind Regards<br>
     'Prioritised User Group' => '',
     'Select a prioritised group whose members are displayed before all others when the sorting option \'Default\' is selected. The users within the group and the users outside the group are additionally sorted by their last login.' => '',
     'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => '',
+    'Send & decline' => '',
     'Will be used as a filter in \'People\'.' => '',
 ];

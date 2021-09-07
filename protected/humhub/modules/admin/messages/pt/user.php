@@ -71,18 +71,6 @@ return [
     'Group not found!' => 'Grupo não encontrado!',
     'Group user not found!' => 'Conta do grupo não encontrada!',
     'Groups' => 'Grupos',
-    'Hello {displayName},<br><br>
-Your account has been activated.<br><br>
-Click here to login:<br>
-{loginLink}<br><br>
-
-Kind Regards<br>
-{AdminName}<br><br>' => 'Olá {displayName},<br><br> A tua conta foi activada. <br><br> Clica aqui para entrar:<br> {loginLink}<br><br> Melhores cumprimentos<br> {AdminName}<br><br>',
-    'Hello {displayName},<br><br>
-Your account request has been declined.<br><br>
-
-Kind Regards<br>
-{AdminName} <br><br> ' => 'Olá {displayName},<br><br> O teu pedido de conta foi rejeitado. <br><br> Melhores cumprimentos<br> {AdminName}<br><br>',
     'Here you can create or edit profile categories and fields.' => 'Aqui podes criar ou editar categorias ou campos do perfil.',
     'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Se permissões de perfil individuais não forem permitidas, as seguintes definições são inalteráveis para todas pessoas. Se forem permitidas, as definições são valores padrão, que podem ser substituídos por valores personalizados. As seguintes entradas são então mostradas da mesma forma nas definições de perfil:',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Se esta opção não for seleccionada ficarás responsável pelo espaço.',
@@ -153,6 +141,25 @@ Kind Regards<br>
     'You cannot delete yourself!' => 'Não te podes apagar a ti próprio!',
     'never' => 'nunca',
     'Default Sorting' => '',
+    'Hello {displayName},
+
+Your account has been activated.
+
+Click here to login:
+{loginUrl}
+
+Kind Regards
+{AdminName}
+
+' => '',
+    'Hello {displayName},
+
+Your account request has been declined.
+
+Kind Regards
+{AdminName}
+
+' => '',
     'Information 1' => '',
     'Information 2' => '',
     'Information 3' => '',
@@ -160,5 +167,6 @@ Kind Regards<br>
     'Prioritised User Group' => '',
     'Select a prioritised group whose members are displayed before all others when the sorting option \'Default\' is selected. The users within the group and the users outside the group are additionally sorted by their last login.' => '',
     'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => '',
+    'Send & decline' => '',
     'Will be used as a filter in \'People\'.' => '',
 ];

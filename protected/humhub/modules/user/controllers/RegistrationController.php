@@ -112,9 +112,7 @@ class RegistrationController extends Controller
         if (!$userInvite) {
             throw new HttpException(404, 'Invalid registration token!');
         }
-        if ($userInvite->language) {
-            Yii::$app->language = $userInvite->language;
-        }
+        Yii::$app->setLanguage($userInvite->language);
         $form->getUser()->email = $userInvite->email;
     }
 

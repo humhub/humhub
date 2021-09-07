@@ -8,6 +8,7 @@
 namespace humhub\modules\admin\controllers;
 
 use humhub\compat\HForm;
+use humhub\components\export\ArrayColumn;
 use humhub\components\export\DateTimeColumn;
 use humhub\components\export\SpreadsheetExport;
 use humhub\modules\admin\components\Controller;
@@ -149,6 +150,7 @@ class UserController extends Controller
                         'data-placeholder' => Yii::t('AdminModule.user', 'Select Groups'),
                         'data-placeholder-more' => Yii::t('AdminModule.user', 'Add Groups...')
                     ],
+                    'maxSelection' => 250,
                     'isVisible' => Yii::$app->user->can(new ManageGroups())
                 ],
             ],
@@ -413,7 +415,10 @@ class UserController extends Controller
             'username',
             'email',
             'auth_mode',
-            'tags',
+            [
+                'class' => ArrayColumn::class,
+                'attribute' => 'tags',
+            ],
             'language',
             'time_zone',
             [

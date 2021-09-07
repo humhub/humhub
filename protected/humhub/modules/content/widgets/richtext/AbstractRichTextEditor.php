@@ -50,6 +50,8 @@ class AbstractRichTextEditor extends JsInputWidget
 
     const LAYOUT_INLINE = 'inline';
 
+    const BACKUP_COOKIE_KEY = 'RichTextEditor.backup';
+
     /**
      * @var string richtext feature preset e.g: 'markdown', 'normal', 'full'
      */
@@ -82,6 +84,17 @@ class AbstractRichTextEditor extends JsInputWidget
      * @var string
      */
     protected $mentioningRoute = "/search/mentioning";
+
+    /**
+     * Back up content each X seconds, 0 - to don't back up
+     * NOTE: If id is not specified for this editor
+     *       then interval will be forced to 0,
+     *       so back up will be disabled,
+     *       because impossible to back up with random id
+     *
+     * @var int
+     */
+    public $backupInterval = 3;
 
     /**
      * RichText plugin supported for this instance.
@@ -140,9 +153,23 @@ class AbstractRichTextEditor extends JsInputWidget
      */
     public $label = false;
 
-        /**
-         * @inhertidoc
-         */
+    /**
+     * @inhertidoc
+     */
+    public function beforeRun()
+    {
+        if (empty($this->id)) {
+            // No reason to back up a content with random input ID,
+            // because on next page reloading we cannot know previous input ID
+            $this->backupInterval = 0;
+        }
+
+        return parent::beforeRun();
+    }
+
+    /**
+     * @inhertidoc
+     */
     public function run()
     {
         $inputOptions = $this->getInputAttributes();
@@ -238,6 +265,8 @@ class AbstractRichTextEditor extends JsInputWidget
             'exclude' => $this->exclude,
             'include' => $this->include,
             'mentioning-url' => $this->getMentioningUrl(),
+            'backup-interval' => $this->backupInterval,
+            'backup-cookie-key' => self::BACKUP_COOKIE_KEY,
             'plugin-options' => $this->pluginOptions,
             'focus' => $this->focus
         ];

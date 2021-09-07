@@ -25,6 +25,11 @@ use yii\helpers\Html;
                 </div>
                 <br>
                 <p><?= Html::encode(Helpers::truncateText($space->description, 60)); ?></p>
+                <?php if ($space->hasTags()) : ?>
+                    <div class="space-tags" style="display:none">
+                        <div class="label label-default"><?= implode('</div> <div class="label label-default">', $space->getTags()); ?></div>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </a>

@@ -30,7 +30,7 @@ use humhub\widgets\Button;
         <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model]) ?>
         <?= $form->field($model, 'description')->textInput(['maxlength' => 100]); ?>
         <?= $form->field($model, 'about')->widget(RichTextField::class); ?>
-        <?= $form->field($model, 'tagsField')->widget(ContainerTagPicker::class); ?>
+        <?= $form->field($model, 'tagsField')->widget(ContainerTagPicker::class, ['minInput' => 2]); ?>
 
         <?= Button::save()->submit() ?>
 

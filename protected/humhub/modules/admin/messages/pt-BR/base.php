@@ -9,7 +9,7 @@ return array (
   'Administration' => 'Administração',
   'Administrative group' => 'Grupo administrativo',
   'Advanced' => 'Avançado',
-  'Advanced settings' => '',
+  'Advanced settings' => 'Configurações avançadas',
   'Appearance' => 'Aparência',
   'Approval' => 'Aprovação',
   'Authentication' => 'Autenticação',
