@@ -8,13 +8,14 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\Menu;
+use humhub\modules\user\models\User;
 use humhub\widgets\ModalButton;
 use Yii;
 use yii\helpers\Url;
-use humhub\modules\admin\widgets\AdminMenu;
 
 /**
  * AccountTopMenu Widget
@@ -94,6 +95,19 @@ class AccountTopMenu extends Menu
             'htmlOptions' => ['data-method' => 'POST'],
             'sortOrder' => 700,
         ]));
+
+        /* @var User $impersonator */
+        if ($impersonator = Yii::$app->user->getImpersonator()) {
+            $this->addEntry(new MenuLink([
+                'label' => Yii::t('base', 'Sign in back as {userName}', ['userName' => $impersonator->displayName]),
+                'id' => 'account-login',
+                'icon' => 'sign-in',
+                'pjaxEnabled' => false,
+                'url' => Url::toRoute('/user/auth/login-impersonator'),
+                'htmlOptions' => ['data-method' => 'POST'],
+                'sortOrder' => 800,
+            ]));
+        }
 
         parent::init();
     }

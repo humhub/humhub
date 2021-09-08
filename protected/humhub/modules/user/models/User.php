@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\behaviors\CompatModuleManager;
@@ -781,6 +782,32 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
 
         return $this->getManagerGroups()->count() > 0;
+    }
+
+    /**
+     * Determines if this user can impersonate the given user.
+     *
+     * @since 1.10
+     * @param self $user
+     * @return bool
+     */
+    public function canImpersonate(self $user): bool
+    {
+        /* @var AdminModule $adminModule */
+        $adminModule = Yii::$app->getModule('admin');
+        if (!$adminModule->allowUserImpersonate) {
+            return false;
+        }
+
+        if (!$this->isSystemAdmin()) {
+            return false;
+        }
+
+        if ($user->id == $this->id) {
+            return false;
+        }
+
+        return (new PermissionManager(['subject' => $this]))->can(ManageUsers::class);
     }
 
     /**

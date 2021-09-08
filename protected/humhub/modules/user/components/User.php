@@ -13,12 +13,13 @@ use humhub\modules\user\authclient\Password;
 use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\models\User as UserModel;
 use Yii;
 use yii\authclient\ClientInterface;
 
 /**
  * Description of User
- * @property \humhub\modules\user\models\User|null $identity
+ * @property UserModel|null $identity
  * @author luke
  */
 class User extends \yii\web\User
@@ -173,6 +174,22 @@ class User extends \yii\web\User
         return true;
     }
 
+    /**
+     * Determines if the current user can impersonate the given user.
+     *
+     * @since 1.10
+     * @param UserModel $user
+     * @return bool
+     */
+    public function canImpersonate(UserModel $user): bool
+    {
+        if ($this->isGuest) {
+            return false;
+        }
+
+        return $this->getIdentity()->canImpersonate($user);
+    }
+
     public function getAuthClients()
     {
         if ($this->_authClients === null) {
@@ -225,6 +242,13 @@ class User extends \yii\web\User
     public function switchIdentity($identity, $duration = 0)
     {
         $this->trigger(self::EVENT_BEFORE_SWITCH_IDENTITY, new UserEvent(['user' => $identity]));
+
+        if (empty($duration)) {
+            // Try to use login duration from the current session, e.g. on impersonate action
+            $cookie = $this->getIdentityAndDurationFromCookie();
+            $duration = empty($cookie['duration']) ? 0 : $cookie['duration'];
+        }
+
         parent::switchIdentity($identity, $duration);
     }
 
@@ -260,5 +284,67 @@ class User extends \yii\web\User
         }
 
         return parent::loginRequired($checkAjax, $checkAcceptHeader);
+    }
+
+    /**
+     * Get admin user who impersonate current user
+     *
+     * @since 1.10
+     * @return UserModel|null
+     */
+    public function getImpersonator(): ?UserModel
+    {
+        if ($this->isGuest) {
+            return null;
+        }
+
+        $impersonator = Yii::$app->session->get('impersonator');
+
+        if (!($impersonator instanceof UserModel)) {
+            return null;
+        }
+
+        if (!$impersonator->canImpersonate($this->getIdentity())) {
+            return null;
+        }
+
+        return $impersonator;
+    }
+
+    /**
+     * Impersonate the given user with storing current user in session in order to sing in back
+     *
+     * @since 1.10
+     * @param UserModel $user
+     * @return bool
+     */
+    public function impersonate(UserModel $user): bool
+    {
+        if (!$this->canImpersonate($user)) {
+            return false;
+        }
+
+        Yii::$app->session->set('impersonator', $this->getIdentity());
+        $this->switchIdentity($user);
+
+        return true;
+    }
+
+    /**
+     * Restore impersonator user from session
+     *
+     * @since 1.10
+     * @return bool
+     */
+    public function restoreImpersonator(): bool
+    {
+        if (!($impersonator = $this->getImpersonator())) {
+            return false;
+        }
+
+        Yii::$app->session->remove('impersonator');
+        $this->switchIdentity($impersonator);
+
+        return true;
     }
 }

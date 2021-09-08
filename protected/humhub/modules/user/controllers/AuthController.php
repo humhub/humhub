@@ -13,6 +13,7 @@ use humhub\components\Controller;
 use humhub\components\Response;
 use humhub\modules\user\models\User;
 use humhub\modules\user\authclient\AuthAction;
+use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\authclient\AuthClientHelpers;
@@ -22,7 +23,6 @@ use humhub\modules\user\models\Session;
 use Yii;
 use yii\web\Cookie;
 use yii\authclient\BaseClient;
-use humhub\modules\user\events\UserEvent;
 
 /**
  * AuthController handles login and logout
@@ -291,6 +291,22 @@ class AuthController extends Controller
         }
 
         return $output;
+    }
+
+    /**
+     * Sign in back to admin User who impersonated the current User
+     *
+     * @return \yii\console\Response|\yii\web\Response
+     */
+    public function actionLoginImpersonator()
+    {
+        $this->forcePostRequest();
+
+        if (Yii::$app->user->restoreImpersonator()) {
+            return $this->redirect(['/admin/user/list']);
+        }
+
+        return $this->goBack();
     }
 
 }
