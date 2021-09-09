@@ -38,8 +38,6 @@ class AcceptanceTester extends \AcceptanceTester
         $this->waitForText('Impersonate');
         $this->click('Impersonate', '.dropdown-navigation.open');
         $this->acceptPopup();
-
-        $this->waitForText($user->displayName);
     }
 
     public function stopImpersonation()

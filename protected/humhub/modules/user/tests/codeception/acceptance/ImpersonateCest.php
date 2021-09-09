@@ -14,6 +14,7 @@ class ImpersonateCest
 
         $I->amGoingTo('impersonate to Sara Tester');
         $I->impersonateUser('User2');
+        $I->waitForText('Sara Tester');
 
         $I->amGoingTo('stop impersonation');
         $I->stopImpersonation();
