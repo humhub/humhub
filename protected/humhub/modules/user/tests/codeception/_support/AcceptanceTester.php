@@ -1,6 +1,8 @@
 <?php
 namespace user;
 
+use humhub\modules\user\models\User;
+
 /**
  * Inherited Methods
  * @method void wantToTest($text)
@@ -23,4 +25,26 @@ class AcceptanceTester extends \AcceptanceTester
    /**
     * Define custom actions here
     */
+
+    public function impersonateUser($userName)
+    {
+        $this->clickAccountDropDown();
+        $this->click('Administration');
+        $this->expectTo('see the users list');
+
+        $user = User::findOne(['username' => $userName]);
+        $this->waitForText('User administration');
+        $this->jsClick('tr[data-key=' . $user->id . '] div.dropdown-navigation button');
+        $this->waitForText('Impersonate');
+        $this->click('Impersonate', '.dropdown-navigation.open');
+        $this->acceptPopup();
+
+        $this->waitForText($user->displayName);
+    }
+
+    public function stopImpersonation()
+    {
+        $this->clickAccountDropDown();
+        $this->click('Stop impersonation');
+    }
 }
