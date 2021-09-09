@@ -96,14 +96,13 @@ class AccountTopMenu extends Menu
             'sortOrder' => 700,
         ]));
 
-        /* @var User $impersonator */
-        if ($impersonator = Yii::$app->user->getImpersonator()) {
+        if (Yii::$app->user->isImpersonated) {
             $this->addEntry(new MenuLink([
-                'label' => Yii::t('base', 'Sign in back as {userName}', ['userName' => $impersonator->displayName]),
+                'label' => Yii::t('base', 'Stop impersonation'),
                 'id' => 'account-login',
                 'icon' => 'sign-in',
                 'pjaxEnabled' => false,
-                'url' => Url::toRoute('/user/auth/login-impersonator'),
+                'url' => Url::toRoute('/user/auth/stop-impersonation'),
                 'htmlOptions' => ['data-method' => 'POST'],
                 'sortOrder' => 800,
             ]));

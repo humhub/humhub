@@ -298,7 +298,7 @@ class AuthController extends Controller
      *
      * @return \yii\console\Response|\yii\web\Response
      */
-    public function actionLoginImpersonator()
+    public function actionStopImpersonation()
     {
         $this->forcePostRequest();
 

@@ -20,6 +20,7 @@ use yii\authclient\ClientInterface;
 /**
  * Description of User
  * @property UserModel|null $identity
+ * @property-read bool $isImpersonated Whether this user is impersonated by admin currently. This property is read-only.
  * @author luke
  */
 class User extends \yii\web\User
@@ -284,6 +285,15 @@ class User extends \yii\web\User
         }
 
         return parent::loginRequired($checkAjax, $checkAcceptHeader);
+    }
+
+    /**
+     * @since 1.10
+     * @return bool True if this user is impersonated by admin currently
+     */
+    public function getIsImpersonated(): bool
+    {
+        return $this->getImpersonator() !== null;
     }
 
     /**
