@@ -19,3 +19,4 @@
 - Enh #5269: Allow to add new item on ui selector
 - Enh #5005: Possibility to invite a registered user to a space by email
 - Enh #3546: Sign in back from impersonate mode
+- Fix #5282: On account creation, registration form has HTML tag set with English language
