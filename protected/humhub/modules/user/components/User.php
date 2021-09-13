@@ -20,7 +20,6 @@ use yii\authclient\ClientInterface;
 /**
  * Description of User
  * @property UserModel|null $identity
- * @property-read bool $isImpersonated Whether this user is impersonated by admin currently. This property is read-only.
  * @author luke
  */
 class User extends \yii\web\User
@@ -43,6 +42,16 @@ class User extends \yii\web\User
      * @since 1.8
      */
     public $mustChangePasswordRoute = '/user/must-change-password';
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            Impersonator::class,
+        ];
+    }
 
     public function isAdmin()
     {
@@ -175,22 +184,6 @@ class User extends \yii\web\User
         return true;
     }
 
-    /**
-     * Determines if the current user can impersonate the given user.
-     *
-     * @since 1.10
-     * @param UserModel $user
-     * @return bool
-     */
-    public function canImpersonate(UserModel $user): bool
-    {
-        if ($this->isGuest) {
-            return false;
-        }
-
-        return $this->getIdentity()->canImpersonate($user);
-    }
-
     public function getAuthClients()
     {
         if ($this->_authClients === null) {
@@ -285,76 +278,5 @@ class User extends \yii\web\User
         }
 
         return parent::loginRequired($checkAjax, $checkAcceptHeader);
-    }
-
-    /**
-     * @since 1.10
-     * @return bool True if this user is impersonated by admin currently
-     */
-    public function getIsImpersonated(): bool
-    {
-        return $this->getImpersonator() !== null;
-    }
-
-    /**
-     * Get admin user who impersonate current user
-     *
-     * @since 1.10
-     * @return UserModel|null
-     */
-    public function getImpersonator(): ?UserModel
-    {
-        if ($this->isGuest) {
-            return null;
-        }
-
-        $impersonator = Yii::$app->session->get('impersonator');
-
-        if (!($impersonator instanceof UserModel)) {
-            return null;
-        }
-
-        if (!$impersonator->canImpersonate($this->getIdentity())) {
-            return null;
-        }
-
-        return $impersonator;
-    }
-
-    /**
-     * Impersonate the given user with storing current user in session in order to sing in back
-     *
-     * @since 1.10
-     * @param UserModel $user
-     * @return bool
-     */
-    public function impersonate(UserModel $user): bool
-    {
-        if (!$this->canImpersonate($user)) {
-            return false;
-        }
-
-        Yii::$app->session->set('impersonator', $this->getIdentity());
-        $this->switchIdentity($user);
-
-        return true;
-    }
-
-    /**
-     * Restore impersonator user from session
-     *
-     * @since 1.10
-     * @return bool
-     */
-    public function restoreImpersonator(): bool
-    {
-        if (!($impersonator = $this->getImpersonator())) {
-            return false;
-        }
-
-        Yii::$app->session->remove('impersonator');
-        $this->switchIdentity($impersonator);
-
-        return true;
     }
 }
