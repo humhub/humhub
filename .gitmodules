@@ -4,3 +4,12 @@
 [submodule "protected/modules/stepstone_vendors"]
 	path = protected/modules/stepstone_vendors
 	url = https://github.com/StruxureIO/stepstone_vendors.git
+[submodule "protected/modules/stepstone_filesbrowser"]
+	path = protected/modules/stepstone_filesbrowser
+	url = https://github.com/StruxureIO/stepstone_filesbrowser.git
+[submodule "protected/modules/stepstone_videos2"]
+	path = protected/modules/stepstone_videos2
+	url = https://github.com/StruxureIO/stepstone_videos2.git
+[submodule "protected/modules/cfiles"]
+	path = protected/modules/cfiles
+	url = https://github.com/humhub/cfiles.git

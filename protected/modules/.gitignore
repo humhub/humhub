@@ -3,3 +3,6 @@
 # Except this file and submodules
 !.gitignore
 !/stepstone_vendors
+!/stepstone_filesbrowser
+!/stepstone_videos2
+!/cfiles
