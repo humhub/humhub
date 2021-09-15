@@ -85,7 +85,10 @@ class StreamSuppressQuery extends StreamQuery
      */
     protected function isSuppressionActive()
     {
-        return !($this->preventSuppression || $this->limit < 3 || $this->isSingleContentQuery());
+        /* @var $streamModule \humhub\modules\stream\Module */
+        $streamModule = Yii::$app->getModule('stream');
+
+        return !($this->preventSuppression || $this->limit <= $streamModule->streamSuppressLimit || $this->isSingleContentQuery());
     }
 
     /**
