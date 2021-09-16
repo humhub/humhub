@@ -8,8 +8,8 @@
 	path = protected/modules/stepstone_filesbrowser
 	url = https://github.com/StruxureIO/stepstone_filesbrowser.git
 [submodule "protected/modules/stepstone_videos2"]
-	path = protected/modules/stepstone_videos2
-	url = https://github.com/StruxureIO/stepstone_videos2.git
+	path = protected/modules/stepstone_videos
+	url = https://github.com/StruxureIO/stepstone_videos.git
 [submodule "protected/modules/cfiles"]
 	path = protected/modules/cfiles
 	url = https://github.com/humhub/cfiles.git
