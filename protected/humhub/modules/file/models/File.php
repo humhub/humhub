@@ -8,12 +8,14 @@
 
 namespace humhub\modules\file\models;
 
-use humhub\modules\user\models\User;
-use yii\db\ActiveRecord;
-use Yii;
-use yii\helpers\Url;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\file\behaviors\Versions;
+use humhub\modules\user\models\User;
+use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "file".
@@ -36,6 +38,12 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  *
  * @property \humhub\modules\user\models\User $createdBy
  * @property \humhub\modules\file\components\StorageManager $store
+ *
+ * Methods of the behavior Versions:
+ * @method ActiveQuery getVersionsQuery()
+ * @method array getVersions()
+ * @method bool switchVersion(int $newVersionFileId)
+ * @method bool isVersion(string $objectClassName, int $versionFileId)
  *
  * Following properties are optional and for module depended use:
  * - title
@@ -83,6 +91,9 @@ class File extends FileCompat
             ],
             [
                 'class' => \humhub\components\behaviors\GUID::class,
+            ],
+            [
+                'class' => Versions::class,
             ],
         ];
     }
