@@ -1,23 +1,137 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9146796e2e868e1e575e135e430e9431",
+    "content-hash": "2611f36eccc9f2da61ee97f26a6cb533",
     "packages": [
+        {
+            "name": "2amigos/qrcode-library",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/2amigos/qrcode-library.git",
+                "reference": "5356f2355c7ba9a9ced67753411c88c2c095deb0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/2amigos/qrcode-library/zipball/5356f2355c7ba9a9ced67753411c88c2c095deb0",
+                "reference": "5356f2355c7ba9a9ced67753411c88c2c095deb0",
+                "shasum": ""
+            },
+            "require": {
+                "bacon/bacon-qr-code": "^1.0",
+                "ext-gd": "*",
+                "khanamiryan/qrcode-detector-decoder": "^1.0",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "codeception/codeception": "*",
+                "codeception/specify": "^0.4.3",
+                "codeception/verify": "^0.3.1",
+                "friendsofphp/php-cs-fixer": "^2.3",
+                "phpmd/phpmd": "@stable",
+                "scrutinizer/ocular": "~1.1",
+                "squizlabs/php_codesniffer": "*",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Da\\QrCode\\": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "2amigOS! Consulting Group",
+                    "email": "hola@2amigos.us",
+                    "homepage": "http://2amigos.us",
+                    "role": "Developer"
+                }
+            ],
+            "description": "QrCode Generator",
+            "homepage": "http://www.2amigos.us/open-source/details/qrcode-library",
+            "keywords": [
+                "2amigos",
+                "component",
+                "extension",
+                "qr",
+                "qrcode",
+                "yii",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2017-08-25T15:23:58+00:00"
+        },
+        {
+            "name": "bacon/bacon-qr-code",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Bacon/BaconQrCode.git",
+                "reference": "5a91b62b9d37cee635bbf8d553f4546057250bee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Bacon/BaconQrCode/zipball/5a91b62b9d37cee635bbf8d553f4546057250bee",
+                "reference": "5a91b62b9d37cee635bbf8d553f4546057250bee",
+                "shasum": ""
+            },
+            "require": {
+                "ext-iconv": "*",
+                "php": "^5.4|^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8"
+            },
+            "suggest": {
+                "ext-gd": "to generate QR code images"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "BaconQrCode": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Ben Scholzen 'DASPRiD'",
+                    "email": "mail@dasprids.de",
+                    "homepage": "http://www.dasprids.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "BaconQrCode is a QR code generator for PHP.",
+            "homepage": "https://github.com/Bacon/BaconQrCode",
+            "time": "2017-10-17T09:59:25+00:00"
+        },
         {
             "name": "bower-asset/animate.css",
             "version": "v4.1.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:daneden/animate.css.git",
+                "url": "https://github.com/animate-css/animate.css.git",
                 "reference": "92f2e1accedf35249e5590bb866cb857f225ff9a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/daneden/animate.css/zipball/92f2e1accedf35249e5590bb866cb857f225ff9a",
-                "reference": "92f2e1accedf35249e5590bb866cb857f225ff9a"
+                "url": "https://api.github.com/repos/animate-css/animate.css/zipball/92f2e1accedf35249e5590bb866cb857f225ff9a",
+                "reference": "92f2e1accedf35249e5590bb866cb857f225ff9a",
+                "shasum": null
             },
             "type": "bower-asset"
         },
@@ -32,7 +146,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/jackmoore/autosize/zipball/64e9f33aba55f6aebcf34e91bc811296089e6ec8",
-                "reference": "64e9f33aba55f6aebcf34e91bc811296089e6ec8"
+                "reference": "64e9f33aba55f6aebcf34e91bc811296089e6ec8",
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.7"
@@ -50,7 +165,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/petkaantonov/bluebird/zipball/df70847b651c7fdc46f774dc6ab5e709d7e005f3",
-                "reference": "df70847b651c7fdc46f774dc6ab5e709d7e005f3"
+                "reference": "df70847b651c7fdc46f774dc6ab5e709d7e005f3",
+                "shasum": null
             },
             "type": "bower-asset",
             "license": [
@@ -68,7 +184,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/blueimp/JavaScript-Canvas-to-Blob/zipball/e618f54e5be896042e5155b9126ebc90bbc55455",
-                "reference": "e618f54e5be896042e5155b9126ebc90bbc55455"
+                "reference": "e618f54e5be896042e5155b9126ebc90bbc55455",
+                "shasum": null
             },
             "type": "bower-asset"
         },
@@ -83,7 +200,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/blueimp/jQuery-File-Upload/zipball/d17e60162b89810ba4096cac1549b8636b289a59",
-                "reference": "d17e60162b89810ba4096cac1549b8636b289a59"
+                "reference": "d17e60162b89810ba4096cac1549b8636b289a59",
+                "shasum": null
             },
             "require": {
                 "bower-asset/blueimp-canvas-to-blob": ">=2.1.1",
@@ -107,7 +225,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/blueimp/JavaScript-Load-Image/zipball/cb5e5d0736101894d22ab1094f2fede402a89be0",
-                "reference": "cb5e5d0736101894d22ab1094f2fede402a89be0"
+                "reference": "cb5e5d0736101894d22ab1094f2fede402a89be0",
+                "shasum": null
             },
             "type": "bower-asset"
         },
@@ -122,7 +241,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/blueimp/JavaScript-Templates/zipball/0d0e03882313cf1c192fb4b68c4c78ab7d7d8c7a",
-                "reference": "0d0e03882313cf1c192fb4b68c4c78ab7d7d8c7a"
+                "reference": "0d0e03882313cf1c192fb4b68c4c78ab7d7d8c7a",
+                "shasum": null
             },
             "type": "bower-asset"
         },
@@ -137,7 +257,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/twbs/bootstrap/zipball/68b0d231a13201eb14acd3dc84e51543d16e5f7e",
-                "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e"
+                "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e",
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.9.1,<4.0"
@@ -158,7 +279,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/refactory-id/bootstrap-markdown/zipball/3f69bb3db5020d29182c2092040f0ad8d390bda7",
-                "reference": "3f69bb3db5020d29182c2092040f0ad8d390bda7"
+                "reference": "3f69bb3db5020d29182c2092040f0ad8d390bda7",
+                "shasum": null
             },
             "require": {
                 "bower-asset/bootstrap": "~3"
@@ -179,7 +301,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/ichord/Caret.js/zipball/2af4966a6bfb61d23eb6da6031add29bb3b14bcb",
-                "reference": "2af4966a6bfb61d23eb6da6031add29bb3b14bcb"
+                "reference": "2af4966a6bfb61d23eb6da6031add29bb3b14bcb",
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.7.0"
@@ -197,7 +320,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/lgarron/clipboard.js/zipball/2ea25ea00523a200f40bbd4ed41df7fbbc629565",
-                "reference": "2ea25ea00523a200f40bbd4ed41df7fbbc629565"
+                "reference": "2ea25ea00523a200f40bbd4ed41df7fbbc629565",
+                "shasum": null
             },
             "type": "bower-asset"
         },
@@ -212,7 +336,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/metafizzy/ev-emitter/zipball/1baa3a03d8e07f665b0eb797661fcc2b0d2a5736",
-                "reference": "1baa3a03d8e07f665b0eb797661fcc2b0d2a5736"
+                "reference": "1baa3a03d8e07f665b0eb797661fcc2b0d2a5736",
+                "shasum": null
             },
             "type": "bower-asset",
             "license": [
@@ -230,7 +355,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/a8386aae19e200ddb0f6845b5feeee5eb7013687",
-                "reference": "a8386aae19e200ddb0f6845b5feeee5eb7013687"
+                "reference": "a8386aae19e200ddb0f6845b5feeee5eb7013687",
+                "shasum": null
             },
             "type": "bower-asset",
             "license": [
@@ -244,13 +370,14 @@
             "version": "3.7.3",
             "source": {
                 "type": "git",
-                "url": "git@github.com:aFarkas/html5shiv.git",
+                "url": "https://github.com/aFarkas/html5shiv.git",
                 "reference": "ed28c56c071bddfe7d635ad88995674957a016be"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/aFarkas/html5shiv/zipball/ed28c56c071bddfe7d635ad88995674957a016be",
-                "reference": "ed28c56c071bddfe7d635ad88995674957a016be"
+                "reference": "ed28c56c071bddfe7d635ad88995674957a016be",
+                "shasum": null
             },
             "type": "bower-asset"
         },
@@ -259,13 +386,14 @@
             "version": "v4.1.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/desandro/imagesloaded.git",
+                "url": "git@github.com:desandro/imagesloaded.git",
                 "reference": "67c4e57453120935180c45c6820e7d3fbd2ea1f9"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/desandro/imagesloaded/zipball/67c4e57453120935180c45c6820e7d3fbd2ea1f9",
-                "reference": "67c4e57453120935180c45c6820e7d3fbd2ea1f9"
+                "reference": "67c4e57453120935180c45c6820e7d3fbd2ea1f9",
+                "shasum": null
             },
             "require": {
                 "bower-asset/ev-emitter": ">=1.0.0,<2.0.0"
@@ -280,13 +408,14 @@
             "version": "3.3.11",
             "source": {
                 "type": "git",
-                "url": "git@github.com:RobinHerbots/Inputmask.git",
+                "url": "https://github.com/RobinHerbots/Inputmask.git",
                 "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/RobinHerbots/Inputmask/zipball/5e670ad62f50c738388d4dcec78d2888505ad77b",
-                "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
+                "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b",
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.7"
@@ -307,7 +436,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/happyworm/jPlayer/zipball/34e55cd7694552447bd0dbc38d886fdc96df0d06",
-                "reference": "34e55cd7694552447bd0dbc38d886fdc96df0d06"
+                "reference": "34e55cd7694552447bd0dbc38d886fdc96df0d06",
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.7.2"
@@ -328,7 +458,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/77d2a51d0520d2ee44173afdf4e40a9201f5964e",
-                "reference": "77d2a51d0520d2ee44173afdf4e40a9201f5964e"
+                "reference": "77d2a51d0520d2ee44173afdf4e40a9201f5964e",
+                "shasum": null
             },
             "type": "bower-asset",
             "license": [
@@ -346,7 +477,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/jquery/jquery-color/zipball/65cf228551a58627915df094827bccaafa8292e2",
-                "reference": "65cf228551a58627915df094827bccaafa8292e2"
+                "reference": "65cf228551a58627915df094827bccaafa8292e2",
+                "shasum": null
             },
             "type": "bower-asset"
         },
@@ -361,7 +493,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/aterrien/jQuery-Knob/zipball/755309e933d326ffaa5a2d758dc377147b766515",
-                "reference": "755309e933d326ffaa5a2d758dc377147b766515"
+                "reference": "755309e933d326ffaa5a2d758dc377147b766515",
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.7.0"
@@ -382,7 +515,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/inuyaksa/jquery.nicescroll/zipball/25737c1a8ecfaccf219a13142d300b64e52e6b58",
-                "reference": "25737c1a8ecfaccf219a13142d300b64e52e6b58"
+                "reference": "25737c1a8ecfaccf219a13142d300b64e52e6b58",
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.8.3"
@@ -400,7 +534,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/mathiasbynens/jquery-placeholder/zipball/bd18712c2f6cc6be2dfd7310a89044b09610057e",
-                "reference": "bd18712c2f6cc6be2dfd7310a89044b09610057e"
+                "reference": "bd18712c2f6cc6be2dfd7310a89044b09610057e",
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.6"
@@ -421,7 +556,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/rmm5t/jquery-timeago/zipball/180864a9c544a49e43719b457250af216d5e4c3a",
-                "reference": "180864a9c544a49e43719b457250af216d5e4c3a"
+                "reference": "180864a9c544a49e43719b457250af216d5e4c3a",
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.4"
@@ -442,7 +578,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/rick20/timeentry/zipball/1d5e51ab2bbe877567ce66511a56d65e1fe82a92",
-                "reference": "1d5e51ab2bbe877567ce66511a56d65e1fe82a92"
+                "reference": "1d5e51ab2bbe877567ce66511a56d65e1fe82a92",
+                "shasum": null
             },
             "type": "bower-asset"
         },
@@ -457,7 +594,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/components/jqueryui/zipball/44ecf3794cc56b65954cc19737234a3119d036cc",
-                "reference": "44ecf3794cc56b65954cc19737234a3119d036cc"
+                "reference": "44ecf3794cc56b65954cc19737234a3119d036cc",
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.6"
@@ -478,7 +616,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/carhartl/jquery-cookie/zipball/7f88a4e631aba8a8c688fd8999ce6b9bcfd50718",
-                "reference": "7f88a4e631aba8a8c688fd8999ce6b9bcfd50718"
+                "reference": "7f88a4e631aba8a8c688fd8999ce6b9bcfd50718",
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.2"
@@ -496,7 +635,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/rstacruz/nprogress/zipball/254266ea50c220f6507fa3f2978fc530147c7f06",
-                "reference": "254266ea50c220f6507fa3f2978fc530147c7f06"
+                "reference": "254266ea50c220f6507fa3f2978fc530147c7f06",
+                "shasum": null
             },
             "type": "bower-asset",
             "license": [
@@ -514,7 +654,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/FontFaceKit/open-sans/zipball/2285c0300e6a4c8b102b98fb030fb38c26aa081c",
-                "reference": "2285c0300e6a4c8b102b98fb030fb38c26aa081c"
+                "reference": "2285c0300e6a4c8b102b98fb030fb38c26aa081c",
+                "shasum": null
             },
             "type": "bower-asset",
             "license": [
@@ -526,13 +667,14 @@
             "version": "2.3.4",
             "source": {
                 "type": "git",
-                "url": "git@github.com:OwlFonk/OwlCarousel2.git",
+                "url": "https://github.com/OwlCarousel2/OwlCarousel2.git",
                 "reference": "af851f9b567630d115930abd5480ffebccc72372"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OwlFonk/OwlCarousel2/zipball/af851f9b567630d115930abd5480ffebccc72372",
-                "reference": "af851f9b567630d115930abd5480ffebccc72372"
+                "url": "https://api.github.com/repos/OwlCarousel2/OwlCarousel2/zipball/af851f9b567630d115930abd5480ffebccc72372",
+                "reference": "af851f9b567630d115930abd5480ffebccc72372",
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.8.3"
@@ -544,13 +686,14 @@
             "version": "v1.3.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/bestiejs/punycode.js.git",
+                "url": "git@github.com:bestiejs/punycode.js.git",
                 "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/bestiejs/punycode.js/zipball/38c8d3131a82567bfef18da09f7f4db68c84f8a3",
-                "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3"
+                "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3",
+                "shasum": null
             },
             "type": "bower-asset"
         },
@@ -565,7 +708,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/ivaynberg/select2/zipball/45f2b83ceed5231afa7b3d5b12b58ad335edd82e",
-                "reference": "45f2b83ceed5231afa7b3d5b12b58ad335edd82e"
+                "reference": "45f2b83ceed5231afa7b3d5b12b58ad335edd82e",
+                "shasum": null
             },
             "type": "bower-asset",
             "license": [
@@ -583,7 +727,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/fk/select2-bootstrap-theme/zipball/1a81f99b47a16d04554c4ec57d5416db4ce2256c",
-                "reference": "1a81f99b47a16d04554c4ec57d5416db4ce2256c"
+                "reference": "1a81f99b47a16d04554c4ec57d5416db4ce2256c",
+                "shasum": null
             },
             "type": "bower-asset"
         },
@@ -598,7 +743,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/yiisoft/jquery-pjax/zipball/aef7b953107264f00234902a3880eb50dafc48be",
-                "reference": "aef7b953107264f00234902a3880eb50dafc48be"
+                "reference": "aef7b953107264f00234902a3880eb50dafc48be",
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.8"
@@ -1013,12 +1159,6 @@
                 "preview",
                 "progress",
                 "upload"
-            ],
-            "funding": [
-                {
-                    "url": "https://opencollective.com/bootstrap-fileinput",
-                    "type": "open_collective"
-                }
             ],
             "time": "2020-07-15T11:34:24+00:00"
         },
@@ -1803,12 +1943,6 @@
                 "widget",
                 "yii2"
             ],
-            "funding": [
-                {
-                    "url": "https://opencollective.com/yii2-widget-select2",
-                    "type": "open_collective"
-                }
-            ],
             "time": "2020-09-28T15:15:52+00:00"
         },
         {
@@ -2193,6 +2327,57 @@
             "time": "2018-10-09T17:40:19+00:00"
         },
         {
+            "name": "khanamiryan/qrcode-detector-decoder",
+            "version": "1.0.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/khanamiryan/php-qrcode-detector-decoder.git",
+                "reference": "04fdd58d86a387065f707dc6d3cc304c719910c1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/khanamiryan/php-qrcode-detector-decoder/zipball/04fdd58d86a387065f707dc6d3cc304c719910c1",
+                "reference": "04fdd58d86a387065f707dc6d3cc304c719910c1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7 | ^7.5 | ^8.0 | ^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Zxing\\": "lib/"
+                },
+                "files": [
+                    "lib/Common/customFunctions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT",
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Ashot Khanamiryan",
+                    "email": "a.khanamiryan@gmail.com",
+                    "homepage": "https://github.com/khanamiryan",
+                    "role": "Developer"
+                }
+            ],
+            "description": "QR code decoder / reader",
+            "homepage": "https://github.com/khanamiryan/php-qrcode-detector-decoder/",
+            "keywords": [
+                "barcode",
+                "qr",
+                "zxing"
+            ],
+            "time": "2021-07-13T18:46:38+00:00"
+        },
+        {
             "name": "kv4nt/yii2-owl-carousel2",
             "version": "v1.0.2",
             "source": {
@@ -2489,7 +2674,9 @@
             "version": "0.8.2",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/after/-/after-0.8.2.tgz"
+                "url": "https://registry.npmjs.org/after/-/after-0.8.2.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset",
             "license": [
@@ -2501,7 +2688,9 @@
             "version": "0.0.7",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/arraybuffer.slice/-/arraybuffer.slice-0.0.7.tgz"
+                "url": "https://registry.npmjs.org/arraybuffer.slice/-/arraybuffer.slice-0.0.7.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset",
             "license": [
@@ -2513,7 +2702,9 @@
             "version": "1.0.1",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/async-limiter/-/async-limiter-1.0.1.tgz"
+                "url": "https://registry.npmjs.org/async-limiter/-/async-limiter-1.0.1.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset",
             "license": [
@@ -2525,7 +2716,9 @@
             "version": "1.5.4",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/at.js/-/at.js-1.5.4.tgz"
+                "url": "https://registry.npmjs.org/at.js/-/at.js-1.5.4.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset",
             "license": [
@@ -2537,7 +2730,9 @@
             "version": "1.0.2",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/backo2/-/backo2-1.0.2.tgz"
+                "url": "https://registry.npmjs.org/backo2/-/backo2-1.0.2.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset",
             "license": [
@@ -2549,7 +2744,9 @@
             "version": "0.1.5",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/base64-arraybuffer/-/base64-arraybuffer-0.1.5.tgz"
+                "url": "https://registry.npmjs.org/base64-arraybuffer/-/base64-arraybuffer-0.1.5.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset"
         },
@@ -2558,7 +2755,9 @@
             "version": "1.0.2",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/better-assert/-/better-assert-1.0.2.tgz"
+                "url": "https://registry.npmjs.org/better-assert/-/better-assert-1.0.2.tgz",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "npm-asset/callsite": "1.0.0"
@@ -2570,7 +2769,9 @@
             "version": "0.0.5",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/blob/-/blob-0.0.5.tgz"
+                "url": "https://registry.npmjs.org/blob/-/blob-0.0.5.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset",
             "license": [
@@ -2582,7 +2783,9 @@
             "version": "1.0.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/callsite/-/callsite-1.0.0.tgz"
+                "url": "https://registry.npmjs.org/callsite/-/callsite-1.0.0.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset"
         },
@@ -2591,7 +2794,9 @@
             "version": "1.0.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/component-bind/-/component-bind-1.0.0.tgz"
+                "url": "https://registry.npmjs.org/component-bind/-/component-bind-1.0.0.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset"
         },
@@ -2600,7 +2805,9 @@
             "version": "1.2.1",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/component-emitter/-/component-emitter-1.2.1.tgz"
+                "url": "https://registry.npmjs.org/component-emitter/-/component-emitter-1.2.1.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset",
             "license": [
@@ -2612,7 +2819,9 @@
             "version": "0.0.3",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/component-inherit/-/component-inherit-0.0.3.tgz"
+                "url": "https://registry.npmjs.org/component-inherit/-/component-inherit-0.0.3.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset"
         },
@@ -2621,7 +2830,9 @@
             "version": "3.1.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/debug/-/debug-3.1.0.tgz"
+                "url": "https://registry.npmjs.org/debug/-/debug-3.1.0.tgz",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "npm-asset/ms": "2.0.0"
@@ -2636,7 +2847,9 @@
             "version": "3.3.2",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/engine.io-client/-/engine.io-client-3.3.2.tgz"
+                "url": "https://registry.npmjs.org/engine.io-client/-/engine.io-client-3.3.2.tgz",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "npm-asset/component-emitter": "1.2.1",
@@ -2661,7 +2874,9 @@
             "version": "2.1.3",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/engine.io-parser/-/engine.io-parser-2.1.3.tgz"
+                "url": "https://registry.npmjs.org/engine.io-parser/-/engine.io-parser-2.1.3.tgz",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "npm-asset/after": "0.8.2",
@@ -2680,7 +2895,9 @@
             "version": "1.0.3",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/has-binary2/-/has-binary2-1.0.3.tgz"
+                "url": "https://registry.npmjs.org/has-binary2/-/has-binary2-1.0.3.tgz",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "npm-asset/isarray": "2.0.1"
@@ -2695,7 +2912,9 @@
             "version": "1.1.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/has-cors/-/has-cors-1.1.0.tgz"
+                "url": "https://registry.npmjs.org/has-cors/-/has-cors-1.1.0.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset",
             "license": [
@@ -2707,7 +2926,9 @@
             "version": "1.0.14",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/humhub-prosemirror-richtext/-/humhub-prosemirror-richtext-1.0.14.tgz"
+                "url": "https://registry.npmjs.org/humhub-prosemirror-richtext/-/humhub-prosemirror-richtext-1.0.14.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset",
             "license": [
@@ -2719,7 +2940,9 @@
             "version": "0.0.1",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/indexof/-/indexof-0.0.1.tgz"
+                "url": "https://registry.npmjs.org/indexof/-/indexof-0.0.1.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset"
         },
@@ -2728,7 +2951,9 @@
             "version": "2.0.1",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/isarray/-/isarray-2.0.1.tgz"
+                "url": "https://registry.npmjs.org/isarray/-/isarray-2.0.1.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset",
             "license": [
@@ -2740,7 +2965,9 @@
             "version": "2.0.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz"
+                "url": "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset",
             "license": [
@@ -2752,7 +2979,9 @@
             "version": "0.0.3",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/object-component/-/object-component-0.0.3.tgz"
+                "url": "https://registry.npmjs.org/object-component/-/object-component-0.0.3.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset"
         },
@@ -2761,7 +2990,9 @@
             "version": "0.0.5",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/parseqs/-/parseqs-0.0.5.tgz"
+                "url": "https://registry.npmjs.org/parseqs/-/parseqs-0.0.5.tgz",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "npm-asset/better-assert": "~1.0.0"
@@ -2776,7 +3007,9 @@
             "version": "0.0.5",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/parseuri/-/parseuri-0.0.5.tgz"
+                "url": "https://registry.npmjs.org/parseuri/-/parseuri-0.0.5.tgz",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "npm-asset/better-assert": "~1.0.0"
@@ -2791,7 +3024,9 @@
             "version": "2.2.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/socket.io-client/-/socket.io-client-2.2.0.tgz"
+                "url": "https://registry.npmjs.org/socket.io-client/-/socket.io-client-2.2.0.tgz",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "npm-asset/backo2": "1.0.2",
@@ -2819,7 +3054,9 @@
             "version": "3.3.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/socket.io-parser/-/socket.io-parser-3.3.0.tgz"
+                "url": "https://registry.npmjs.org/socket.io-parser/-/socket.io-parser-3.3.0.tgz",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "npm-asset/component-emitter": "1.2.1",
@@ -2836,7 +3073,9 @@
             "version": "0.1.4",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/to-array/-/to-array-0.1.4.tgz"
+                "url": "https://registry.npmjs.org/to-array/-/to-array-0.1.4.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset"
         },
@@ -2845,7 +3084,9 @@
             "version": "6.1.4",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/ws/-/ws-6.1.4.tgz"
+                "url": "https://registry.npmjs.org/ws/-/ws-6.1.4.tgz",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "npm-asset/async-limiter": "~1.0.0"
@@ -2860,7 +3101,9 @@
             "version": "1.5.5",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/xmlhttprequest-ssl/-/xmlhttprequest-ssl-1.5.5.tgz"
+                "url": "https://registry.npmjs.org/xmlhttprequest-ssl/-/xmlhttprequest-ssl-1.5.5.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset"
         },
@@ -2869,7 +3112,9 @@
             "version": "0.1.2",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/yeast/-/yeast-0.1.2.tgz"
+                "url": "https://registry.npmjs.org/yeast/-/yeast-0.1.2.tgz",
+                "reference": null,
+                "shasum": null
             },
             "type": "npm-asset",
             "license": [
@@ -2911,6 +3156,49 @@
                 "zf2"
             ],
             "time": "2015-06-12T14:16:08+00:00"
+        },
+        {
+            "name": "odaialali/yii2-qrcode-reader",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/odai-alali/yii2-qrcode-reader.git",
+                "reference": "961000881aad895132f7145f8782c66e24db6b6e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/odai-alali/yii2-qrcode-reader/zipball/961000881aad895132f7145f8782c66e24db6b6e",
+                "reference": "961000881aad895132f7145f8782c66e24db6b6e",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "odaialali\\qrcodereader\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Odai Alali",
+                    "email": "odai.alali@gmail.com"
+                }
+            ],
+            "description": "Yii2 widget for reading qr code using laptop or phone camera",
+            "keywords": [
+                "extension",
+                "javascript",
+                "qrcode",
+                "reader",
+                "yii2"
+            ],
+            "time": "2017-05-05T09:17:38+00:00"
         },
         {
             "name": "phpoffice/phpspreadsheet",
@@ -3354,20 +3642,6 @@
                 "env",
                 "environment"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-10-24T10:57:07+00:00"
         },
         {
@@ -3430,20 +3704,6 @@
                 "polyfill",
                 "portable"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-07-14T12:35:20+00:00"
         },
         {
@@ -3493,20 +3753,6 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-09-02T16:06:40+00:00"
         },
         {
@@ -3876,20 +4122,6 @@
                 "composer",
                 "extension installer",
                 "yii2"
-            ],
-            "funding": [
-                {
-                    "url": "https://github.com/yiisoft",
-                    "type": "github"
-                },
-                {
-                    "url": "https://opencollective.com/yiisoft",
-                    "type": "open_collective"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/yiisoft/yii2-composer",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-06-24T00:04:01+00:00"
         },
@@ -4738,7 +4970,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/twitter/typeahead.js/zipball/588440f66559714280628a4f9799f0c4eb880a4a",
-                "reference": "588440f66559714280628a4f9799f0c4eb880a4a"
+                "reference": "588440f66559714280628a4f9799f0c4eb880a4a",
+                "shasum": null
             },
             "require": {
                 "bower-asset/jquery": ">=1.7"
@@ -6422,12 +6655,6 @@
                 "highlight.php",
                 "syntax"
             ],
-            "funding": [
-                {
-                    "url": "https://github.com/allejo",
-                    "type": "github"
-                }
-            ],
             "time": "2020-10-16T07:43:22+00:00"
         },
         {
@@ -6898,6 +7125,7 @@
             ],
             "description": "Provides a list of PHP built-in functions that operate on resources",
             "homepage": "https://www.github.com/sebastianbergmann/resource-operations",
+            "abandoned": true,
             "time": "2015-07-28T20:34:47+00:00"
         },
         {
@@ -6998,20 +7226,6 @@
             ],
             "description": "Symfony BrowserKit Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-09-02T16:06:40+00:00"
         },
         {
@@ -7084,20 +7298,6 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-09-09T05:09:37+00:00"
         },
         {
@@ -7151,20 +7351,6 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-03-16T08:31:04+00:00"
         },
         {
@@ -7221,20 +7407,6 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-09-08T22:19:14+00:00"
         },
         {
@@ -7292,20 +7464,6 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-09-02T16:06:40+00:00"
         },
         {
@@ -7370,20 +7528,6 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-09-18T12:06:50+00:00"
         },
         {
@@ -7433,20 +7577,6 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-09-02T16:06:40+00:00"
         },
         {
@@ -7518,20 +7648,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-08-04T06:02:08+00:00"
         },
         {
@@ -7599,20 +7715,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-07-14T12:35:20+00:00"
         },
         {
@@ -7675,20 +7777,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-07-14T12:35:20+00:00"
         },
@@ -7753,20 +7841,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-07-14T12:35:20+00:00"
         },
         {
@@ -7825,20 +7899,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-07-14T12:35:20+00:00"
         },
@@ -7899,20 +7959,6 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-09-18T15:58:55+00:00"
         },
         {
@@ -7975,16 +8021,6 @@
                 "documentation",
                 "phpdoc",
                 "yii2"
-            ],
-            "funding": [
-                {
-                    "url": "https://github.com/cebe",
-                    "type": "github"
-                },
-                {
-                    "url": "https://opencollective.com/yiisoft",
-                    "type": "open_collective"
-                }
             ],
             "time": "2020-07-19T23:26:14+00:00"
         },
@@ -8135,7 +8171,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "bower-asset/select2-bootstrap-theme": 10
+        "bower-asset/select2-bootstrap-theme": 10,
+        "odaialali/yii2-qrcode-reader": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -8147,6 +8184,5 @@
     "platform-dev": [],
     "platform-overrides": {
         "php": "5.6"
-    },
-    "plugin-api-version": "1.1.0"
+    }
 }

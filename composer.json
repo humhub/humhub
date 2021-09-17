@@ -16,6 +16,7 @@
         "php": ">=5.6.0",
         "ext-json": "*",
         "ext-zip": "*",
+        "2amigos/qrcode-library": "^1.1",
         "bower-asset/animate.css": "*",
         "bower-asset/autosize": "1.*",
         "bower-asset/bluebird": "^3.3.5",
