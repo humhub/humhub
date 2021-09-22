@@ -28,7 +28,7 @@
 
 # Update on Server
 
-    ssh struxurebsh@74.208.146.162 -p 1022
+    ssh into server
     
     cd TheBlackSheepHub
 
