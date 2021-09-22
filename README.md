@@ -1,3 +1,29 @@
+# Install WIP
+
+
+
+1.  https://docs.humhub.org/docs/develop/environment
+	1.  create database  	
+	1.  	git clone --recurse-submodules https://github.com/StruxureIO/TheBlackSheepHub.git
+	1.  	composer install
+	2.  Run web installer
+
+
+# Update Module
+1.  Update module
+
+		cd "module_directory"
+ 		git checkout master //needed for the first commit
+        git add .
+        git push
+1.  Update Parent  
+  		
+        cd "parent_repo_direcotry" 
+	  	git add .
+        git push
+
+
+
 HumHub - Social Network Kit
 ===========================
 
