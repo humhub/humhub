@@ -26,6 +26,13 @@
         git commit
         git push
 
+# Update on Server
+
+    ssh struxurebsh@74.208.146.162 -p 1022
+    
+    cd TheBlackSheepHub
+
+    git pull --recurse-submodules
 
 
 HumHub - Social Network Kit
