@@ -14,12 +14,14 @@
 
 		cd "module_directory"
  		git checkout master //needed for the first commit
-        git add .
+        git add 
+        git commit
         git push
 1.  Update Parent  
   		
         cd "parent_repo_direcotry" 
-	  	git add .
+	  	git add 
+        git commit
         git push
 
 
