@@ -8,6 +8,8 @@
 	1.  	composer install
 	2.  Run web installer
 
+1.  Install Calendar and External Calendar Modules through "yourhumhubdir"/index.php?r=marketplace%2Fbrowse
+
 
 # Update Module
 1.  Update module
