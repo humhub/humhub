@@ -51,6 +51,11 @@ class ContentVisibilitySelect extends InputWidget
     public $readonly = null;
 
     /**
+     * @var string Property name who is real content owner (For cases when original model is a form model)
+     */
+    public $contentOwner = 'page';
+
+    /**
      * @var Content
      */
     private $_content;
@@ -145,8 +150,8 @@ class ContentVisibilitySelect extends InputWidget
 
         if ($this->model instanceof ContentActiveRecord) {
             $this->_content = $this->model->content;
-        } elseif ($this->model->page instanceof ContentActiveRecord) {
-            $this->_content = $this->model->page->content;
+        } elseif (isset($this->model->{$this->contentOwner}) && $this->model->{$this->contentOwner} instanceof ContentActiveRecord) {
+            $this->_content = $this->model->{$this->contentOwner}->content;
         } elseif ($this->model instanceof Content) {
             $this->_content = $this->model;
         }
