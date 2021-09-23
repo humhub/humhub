@@ -42,7 +42,8 @@ use yii\helpers\Url;
  * Methods of the behavior Versions:
  * @method ActiveQuery getVersionsQuery()
  * @method array getVersions()
- * @method bool switchVersion(int $newVersionFileId)
+ * @method bool makeToCurrentVersion()
+ * @method bool switchToVersionByFileId(int $newVersionFileId)
  * @method bool isVersion(string $objectClassName, int $versionFileId)
  *
  * Following properties are optional and for module depended use:
@@ -278,4 +279,30 @@ class File extends FileCompat
         return self::findAll(['object_model' => $record->className(), 'object_id' => $record->getPrimaryKey()]);
     }
 
+    /**
+     * If the file content has changed, the new file must be set via this method.
+     *
+     * @param File $newFile
+     * @return bool
+     * @since 1.10
+     */
+    public function replaceFileWith(File $newFile): bool
+    {
+        if ($newFile->isNewRecord) {
+            return false;
+        }
+
+        return $this->switchToVersionByFileId($newFile->id);
+    }
+
+    /**
+     * If the file should be set as current/latest version for all old versions of this File by polymorphic relation object
+     *
+     * @return bool
+     * @since 1.10
+     */
+    public function useAsCurrentVersion(): bool
+    {
+        return $this->makeToCurrentVersion();
+    }
 }

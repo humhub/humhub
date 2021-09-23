@@ -7,9 +7,9 @@
 
 namespace humhub\modules\file\behaviors;
 
+use humhub\modules\file\interfaces\AttachedFileVersioningSupport;
 use humhub\modules\file\models\File;
 use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
 use yii\base\Behavior;
 
 /**
@@ -25,18 +25,18 @@ class Versions extends Behavior
      */
     public $owner;
 
-    public function events()
-    {
-        return [
-            ActiveRecord::EVENT_AFTER_INSERT => 'refreshVersions',
-        ];
-    }
-
     /**
-     * Relink all old versions to new inserted File
+     * Make this owner File as current/latest version
+     * (Find all old versions of the File by polymorphic relation object and link them all to the File)
+     *
+     * @return bool
      */
-    public function refreshVersions()
+    public function makeToCurrentVersion(): bool
     {
+        if (!$this->supportVersioning()) {
+            return false;
+        }
+
         $previousVersionFileId = (int)File::find()
             ->select('id')
             ->where(['object_model' => $this->owner->object_model])
@@ -44,7 +44,7 @@ class Versions extends Behavior
             ->andWhere(['!=', 'id', $this->owner->id])
             ->scalar();
 
-        $this->updateVersions($this->owner, $previousVersionFileId);
+        return $this->updateVersions($this->owner, $previousVersionFileId);
     }
 
     /**
@@ -53,8 +53,12 @@ class Versions extends Behavior
      * @param int $newVersionFileId
      * @return bool
      */
-    public function switchVersion(int $newVersionFileId): bool
+    public function switchToVersionByFileId(int $newVersionFileId): bool
     {
+        if (!$this->supportVersioning()) {
+            return false;
+        }
+
         /* @var File $newVersionFile */
         $newVersionFile = File::find()
             ->where(['id' => $newVersionFileId])
@@ -84,7 +88,11 @@ class Versions extends Behavior
      */
     private function updateVersions(File $newVersionFile, int $previousVersionFileId = 0): bool
     {
-        return (bool)File::updateAll([
+        if (empty($newVersionFile->id) || empty($newVersionFile->object_model) || empty($newVersionFile->object_id)) {
+            return false;
+        }
+
+        File::updateAll([
             'object_model' => File::class,
             'object_id' => $newVersionFile->id,
         ], [
@@ -99,6 +107,8 @@ class Versions extends Behavior
                 ['object_id' => $previousVersionFileId],
             ]
         ]);
+
+        return true;
     }
 
     /**
@@ -143,5 +153,15 @@ class Versions extends Behavior
             ->where(['file.id' => $versionFileId])
             ->andWhere(['currentVersion.object_model' => $objectClassName])
             ->exists();
+    }
+
+    /**
+     * Check if the file owner object supports File Versioning
+     *
+     * @return bool
+     */
+    private function supportVersioning(): bool
+    {
+        return ($this->owner->getPolymorphicRelation() instanceof AttachedFileVersioningSupport);
     }
 }
