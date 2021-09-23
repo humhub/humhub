@@ -43,7 +43,7 @@ class PeopleSettingsForm extends Model
         $this->detail1 = Yii::$app->settings->get('people.detail1', '');
         $this->detail2 = Yii::$app->settings->get('people.detail2', '');
         $this->detail3 = Yii::$app->settings->get('people.detail3', '');
-        $this->defaultSorting = Yii::$app->settings->get('people.defaultSorting', '');
+        $this->defaultSorting = Yii::$app->settings->get('people.defaultSorting', 'lastlogin');
         $this->defaultSortingGroup = Yii::$app->settings->get('people.defaultSortingGroup', '');
     }
 
