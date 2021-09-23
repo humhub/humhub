@@ -18,7 +18,7 @@ class FontAwesomeIconProvider implements IconProvider
      */
     public function getId()
     {
-        return 'fa';
+        return 'far';
     }
 
     /**
@@ -31,8 +31,8 @@ class FontAwesomeIconProvider implements IconProvider
 
         $options = $icon->htmlOptions;
 
-        Html::addCssClass($options, 'fa fa-'.$icon->name);
-
+        Html::addCssClass($options, 'far fa-'.$icon->name);
+        
         if($icon->size) {
             Html::addCssClass($options, $this->getIconSizeClass($icon));
         }

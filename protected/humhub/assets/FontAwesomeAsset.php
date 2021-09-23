@@ -21,11 +21,11 @@ class FontAwesomeAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@npm/font-awesome';
+    public $basePath = '@webroot-static';
 
+    public $baseUrl = '@web-static';
     /**
      * @inheritdoc
      */
-    public $css = ['css/font-awesome.min.css'];
-
+    public $css = ['fontawesome-pro/css/all.min.css'];    
 }
