@@ -5,6 +5,7 @@ HumHub Changelog
 1.9.2 (Unreleased)
 ------------------
 - Fix #5265: Fix logging filter "Error" when not entries
+- Fix #5301: Change people default sorting
 
 
 1.9.1 (August 30, 2021)
