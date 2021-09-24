@@ -26,28 +26,6 @@ class Versions extends Behavior
     public $owner;
 
     /**
-     * Make this owner File as current/latest version
-     * (Find all old versions of the File by polymorphic relation object and link them all to the File)
-     *
-     * @return bool
-     */
-    public function makeToCurrentVersion(): bool
-    {
-        if (!$this->supportVersioning()) {
-            return false;
-        }
-
-        $previousVersionFileId = (int)File::find()
-            ->select('id')
-            ->where(['object_model' => $this->owner->object_model])
-            ->andWhere(['object_id' => $this->owner->object_id])
-            ->andWhere(['!=', 'id', $this->owner->id])
-            ->scalar();
-
-        return $this->updateVersions($this->owner, $previousVersionFileId);
-    }
-
-    /**
      * Switch version of this File
      *
      * @param int $newVersionFileId
@@ -59,11 +37,15 @@ class Versions extends Behavior
             return false;
         }
 
+        $polymorphicObject = $this->owner->getPolymorphicRelation();
+
         /* @var File $newVersionFile */
         $newVersionFile = File::find()
             ->where(['id' => $newVersionFileId])
-            ->andWhere(['object_model' => File::class])
-            ->andWhere(['object_id' => $this->owner->id])
+            ->andWhere(['OR',
+                ['AND', ['object_model' => File::class, 'object_id' => $this->owner->id]],
+                ['AND', ['object_model' => get_class($polymorphicObject), 'object_id' => $polymorphicObject->id]]
+            ])
             ->one();
 
         if (!$newVersionFile) {

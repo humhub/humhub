@@ -42,7 +42,6 @@ use yii\helpers\Url;
  * Methods of the behavior Versions:
  * @method ActiveQuery getVersionsQuery()
  * @method array getVersions()
- * @method bool makeToCurrentVersion()
  * @method bool switchToVersionByFileId(int $newVersionFileId)
  * @method bool isVersion(string $objectClassName, int $versionFileId)
  *
