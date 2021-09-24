@@ -400,7 +400,8 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     {
         if ($user === null) {
             if (Yii::$app->user->isGuest) {
-                return true;
+                // TODO: Check user setting "Profile visibility"
+                return false;
             }
 
             $user = Yii::$app->user->getIdentity();
