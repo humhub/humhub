@@ -10,7 +10,6 @@ namespace humhub\modules\file\behaviors;
 use humhub\modules\file\interfaces\AttachedFileVersioningSupport;
 use humhub\modules\file\models\File;
 use yii\base\InvalidArgumentException;
-use yii\base\InvalidCallException;
 use yii\db\ActiveQuery;
 use yii\base\Behavior;
 
@@ -122,7 +121,7 @@ class VersioningSupport extends Behavior
      * @param File $versionFile
      * @return bool
      */
-    public function isVersion(File $versionFile)
+    public function isVersion(File $versionFile): bool
     {
         return ($versionFile->object_id == $this->owner->id && $versionFile->object_model === File::class);
     }

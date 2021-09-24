@@ -288,6 +288,7 @@ class File extends FileCompat
      * If the file content has changed, the new file must be set via this method.
      *
      * @param File $newFile
+     * @return bool
      * @since 1.10
      */
     public function replaceFileWith(File $newFile): bool
@@ -298,15 +299,17 @@ class File extends FileCompat
 
         if ($this->isVersioningEnabled()) {
             // Pass to VersioningSupport Behavior
-            $this->setNewCurrentVersion($newFile->id);
+            return $this->setNewCurrentVersion($newFile->id);
         } else {
             // Switch to newFile and delete the old one
             $newFile->object_id = $this->object_id;
             $newFile->object_model = $this->object_model;
             $newFile->show_in_stream = $this->show_in_stream;
-            $newFile->save();
-
-            $this->delete();
+            if ($newFile->save()) {
+                return (bool)$this->delete();
+            }
         }
+
+        return false;
     }
 }
