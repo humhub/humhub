@@ -5,6 +5,7 @@ HumHub Changelog
 1.9.2 (Unreleased)
 ------------------
 - Fix #5265: Fix logging filter "Error" when not entries
+- Fix #5307: Fix reset of the space homepage settings
 
 
 1.9.1 (August 30, 2021)
