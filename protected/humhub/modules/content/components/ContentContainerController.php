@@ -88,6 +88,10 @@ class ContentContainerController extends Controller
         if ($this->contentContainer !== null && $this->contentContainer->controllerBehavior) {
             $this->attachBehavior('containerControllerBehavior', ['class' => $this->contentContainer->controllerBehavior]);
         }
+
+        if ($this->contentContainer !== null && $this->contentContainer->isBlockedForUser()) {
+            throw new HttpException(400, 'You are blocked for this page!');
+        }
     }
 
     /**

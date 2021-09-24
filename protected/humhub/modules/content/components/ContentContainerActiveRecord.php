@@ -390,4 +390,26 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         return ContentContainerBlockedUsers::getGuidsByContainer($this);
     }
 
+    /**
+     * Check if current container is blocked for the User
+     *
+     * @param User|null $user
+     * @return bool
+     */
+    public function isBlockedForUser(?User $user = null): bool
+    {
+        if ($user === null) {
+            if (Yii::$app->user->isGuest) {
+                return true;
+            }
+
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        return ContentContainerBlockedUsers::find()
+            ->where(['contentcontainer_id' => $this->id])
+            ->andWhere(['user_id' => $user->id])
+            ->exists();
+    }
+
 }
