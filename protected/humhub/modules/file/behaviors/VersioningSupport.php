@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -9,16 +9,18 @@ namespace humhub\modules\file\behaviors;
 
 use humhub\modules\file\interfaces\AttachedFileVersioningSupport;
 use humhub\modules\file\models\File;
+use yii\base\InvalidArgumentException;
+use yii\base\InvalidCallException;
 use yii\db\ActiveQuery;
 use yii\base\Behavior;
 
 /**
- * File Version Behavior
+ * Provides File Versioning Support to the File Model
  *
  * @author Lucas Bartholemy <lucas@bartholemy.com>
  * @since 1.10
  */
-class Versions extends Behavior
+class VersioningSupport extends Behavior
 {
     /**
      * @var File
@@ -26,22 +28,24 @@ class Versions extends Behavior
     public $owner;
 
     /**
-     * Switch version of this File
+     * Sets a new file version.
+     * This file will be the new latest version of the file.
      *
-     * @param int $newVersionFileId
+     * @internal
+     * @param int $newFileId
      * @return bool
      */
-    public function switchToVersionByFileId(int $newVersionFileId): bool
+    public function setNewCurrentVersion(int $newFileId): bool
     {
-        if (!$this->supportVersioning()) {
-            return false;
+        if (!$this->isVersioningEnabled()) {
+            throw new InvalidArgumentException("Versioning is not supported by underlying object.");
         }
 
         $polymorphicObject = $this->owner->getPolymorphicRelation();
 
         /* @var File $newVersionFile */
         $newVersionFile = File::find()
-            ->where(['id' => $newVersionFileId])
+            ->where(['id' => $newFileId])
             ->andWhere(['OR',
                 ['AND', ['object_model' => File::class, 'object_id' => $this->owner->id]],
                 ['AND', ['object_model' => get_class($polymorphicObject), 'object_id' => $polymorphicObject->id]]
@@ -49,7 +53,7 @@ class Versions extends Behavior
             ->one();
 
         if (!$newVersionFile) {
-            return false;
+            throw new InvalidArgumentException("Could find the new file version by id.");
         }
 
         $newVersionFile->object_model = $this->owner->object_model;
@@ -79,12 +83,12 @@ class Versions extends Behavior
             'object_id' => $newVersionFile->id,
         ], [
             'or',
-            [   'and',
+            ['and',
                 ['object_model' => $newVersionFile->object_model],
                 ['object_id' => $newVersionFile->object_id],
                 ['!=', 'id', $newVersionFile->id],
             ],
-            [   'and',
+            ['and',
                 ['object_model' => File::class],
                 ['object_id' => $previousVersionFileId],
             ]
@@ -111,38 +115,25 @@ class Versions extends Behavior
             ]);
     }
 
-    /**
-     * Get all versions including current
-     *
-     * @return File[]
-     */
-    public function getVersions(): array
-    {
-        return $this->getVersionsQuery()->all();
-    }
 
     /**
-     * Check if the requested file is a version of the object
+     * Check if the given file is a version
      *
-     * @param string $objectClassName
-     * @param int $versionFileId
+     * @param File $versionFile
      * @return bool
      */
-    public function isVersion(string $objectClassName, int $versionFileId): bool
+    public function isVersion(File $versionFile)
     {
-        return File::find()
-            ->innerJoin(File::tableName() . ' as currentVersion', 'currentVersion.id = file.object_id')
-            ->where(['file.id' => $versionFileId])
-            ->andWhere(['currentVersion.object_model' => $objectClassName])
-            ->exists();
+        return ($versionFile->object_id == $this->owner->id && $versionFile->object_model === File::class);
     }
+
 
     /**
      * Check if the file owner object supports File Versioning
      *
      * @return bool
      */
-    private function supportVersioning(): bool
+    public function isVersioningEnabled(): bool
     {
         return ($this->owner->getPolymorphicRelation() instanceof AttachedFileVersioningSupport);
     }

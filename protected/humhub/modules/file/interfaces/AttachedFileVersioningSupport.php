@@ -10,7 +10,7 @@ namespace humhub\modules\file\interfaces;
 /**
  * Interface for active records which support File Versioning.
  *
- * @see \humhub\modules\file\behaviors\Versions
+ * @see \humhub\modules\file\behaviors\VersioningSupport
  * @author luke
  * @since 1.10
  */
