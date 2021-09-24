@@ -146,7 +146,7 @@ class DownloadAction extends Action
 
         $this->file = $file;
     }
-L
+
 
     /**
      * Loads a variant and verifies
