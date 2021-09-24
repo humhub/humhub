@@ -14,9 +14,8 @@ use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
-use humhub\modules\content\models\ContentContainerTag;
+use humhub\modules\content\models\ContentContainerBlockedUsers;
 use humhub\modules\content\models\ContentContainerTagRelation;
-use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
@@ -70,6 +69,11 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @var array Related Tags which should be updated after save
      */
     public $tagsField;
+
+    /**
+     * @var array Related Blcoked Users IDs which should be updated after save
+     */
+    public $blockedUsersField;
 
     /**
      * Returns the display name of content container
@@ -205,6 +209,10 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 
         if ($this->isAttributeSafe('tagsField') && $this->tagsField !== null) {
             ContentContainerTagRelation::updateByContainer($this, $this->tagsField);
+        }
+
+        if ($this->isAttributeSafe('blockedUsersField') && $this->blockedUsersField !== null) {
+            ContentContainerBlockedUsers::updateByContainer($this, $this->blockedUsersField);
         }
 
         parent::afterSave($insert, $changedAttributes);
@@ -370,6 +378,16 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function getTags()
     {
         return ContentContainerTagRelation::getNamesByContainer($this);
+    }
+
+    /**
+     * Returns an array with blocked Users
+     *
+     * @return int[] a list of user IDs
+     */
+    public function getBlockedUsers()
+    {
+        return ContentContainerBlockedUsers::getGuidsByContainer($this);
     }
 
 }
