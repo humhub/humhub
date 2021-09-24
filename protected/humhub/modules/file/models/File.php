@@ -294,15 +294,4 @@ class File extends FileCompat
 
         return $this->switchToVersionByFileId($newFile->id);
     }
-
-    /**
-     * If the file should be set as current/latest version for all old versions of this File by polymorphic relation object
-     *
-     * @return bool
-     * @since 1.10
-     */
-    public function useAsCurrentVersion(): bool
-    {
-        return $this->makeToCurrentVersion();
-    }
 }
