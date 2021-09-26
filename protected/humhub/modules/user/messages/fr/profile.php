@@ -95,7 +95,7 @@ return array (
   'Text Area' => 'Texte long',
   'Text Field Options' => 'Options de champ de texte',
   'Text area field options' => 'Options de champ de texte long',
-  'This profile is no longer available!' => 'Ce profile n\'est plus disponible.',
+  'This profile is no longer available!' => 'Ce profil n\'est plus disponible.',
   'This user account is not approved yet!' => 'Ce compte utilisateur n\'a pas encore été approuvé.',
   'This will add an additional input element for custom values' => 'Ceci va ajouter un nouvel élément de saisie pour les valeurs personnalisées',
   'Title' => 'Titre',
