@@ -8,12 +8,16 @@
 
 namespace humhub\modules\file\models;
 
-use humhub\modules\user\models\User;
-use yii\db\ActiveRecord;
-use Yii;
-use yii\helpers\Url;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\file\behaviors\VersioningSupport;
+use humhub\modules\user\models\User;
+use Yii;
+use yii\base\Exception;
+use yii\base\InvalidArgumentException;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "file".
@@ -36,6 +40,12 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  *
  * @property \humhub\modules\user\models\User $createdBy
  * @property \humhub\modules\file\components\StorageManager $store
+ *
+ * Methods of the behavior Versions:
+ * @method ActiveQuery getVersionsQuery()
+ * @method setNewCurrentVersion(int $newVersionFileId)
+ * @method bool isVersion(static $file)
+ * @method bool isVersioningEnabled()
  *
  * Following properties are optional and for module depended use:
  * - title
@@ -84,6 +94,9 @@ class File extends FileCompat
             [
                 'class' => \humhub\components\behaviors\GUID::class,
             ],
+            [
+                'class' => VersioningSupport::class,
+            ],
         ];
     }
 
@@ -105,6 +118,11 @@ class File extends FileCompat
     public function beforeDelete()
     {
         $this->store->delete();
+
+        foreach ($this->getVersionsQuery()->all() as $f) {
+            $f->delete();
+        }
+
         return parent::beforeDelete();
     }
 
@@ -174,7 +192,6 @@ class File extends FileCompat
      *
      * If the file is not an instance of HActiveRecordContent or HActiveRecordContentAddon
      * the file is readable for all.
-
      * @param string|User $userId
      * @return bool
      */
@@ -267,4 +284,32 @@ class File extends FileCompat
         return self::findAll(['object_model' => $record->className(), 'object_id' => $record->getPrimaryKey()]);
     }
 
+    /**
+     * If the file content has changed, the new file must be set via this method.
+     *
+     * @param File $newFile
+     * @return bool
+     * @since 1.10
+     */
+    public function replaceFileWith(File $newFile): bool
+    {
+        if ($newFile->isNewRecord) {
+            throw new InvalidArgumentException('New file cannot be a new record!');
+        }
+
+        if ($this->isVersioningEnabled()) {
+            // Pass to VersioningSupport Behavior
+            return $this->setNewCurrentVersion($newFile->id);
+        } else {
+            // Switch to newFile and delete the old one
+            $newFile->object_id = $this->object_id;
+            $newFile->object_model = $this->object_model;
+            $newFile->show_in_stream = $this->show_in_stream;
+            if ($newFile->save()) {
+                return (bool)$this->delete();
+            }
+        }
+
+        return false;
+    }
 }
