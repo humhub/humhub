@@ -21,4 +21,4 @@
 - Enh #3546: Sign in back from impersonate mode
 - Fix #5282: On account creation, registration form has HTML tag set with English language
 - Enh #5280: Allow to set the number of contents from which "Show {i} more." appears in the stream
-- Enh #5293: File versioning
+- Enh #5293: Added File versioning API
