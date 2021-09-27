@@ -6,6 +6,8 @@ HumHub Changelog
 ------------------
 - Fix #5265: Fix logging filter "Error" when not entries
 - Fix #5285: Layout too wide for container pages without sidebar 
+- Fix #5307: Fix reset of the space homepage settings
+- Fix #5301: Change people default sorting
 
 
 1.9.1 (August 30, 2021)
