@@ -483,34 +483,28 @@ class StreamQuery extends Model
         /**
          * Setup Sorting
          */
-        if ($this->sort == Stream::SORT_UPDATED_AT) {
-            $this->_query->orderBy('content.stream_sort_date DESC');
-            if (!empty($this->from)) {
-                $this->_query->andWhere(
-                    ['or',
-                        "content.stream_sort_date < (SELECT stream_sort_date FROM content wd WHERE wd.id=:from)",
-                        ['and',
-                            "content.stream_sort_date = (SELECT stream_sort_date FROM content wd WHERE wd.id=:from)",
-                            "content.id > :from"
-                        ],
-                    ], [':from' => $this->from]);
-            } elseif (!empty($this->to)) {
-                $this->_query->andWhere(
-                    ['or',
-                        "content.stream_sort_date > (SELECT stream_sort_date FROM content wd WHERE wd.id=:to)",
-                        ['and',
-                            "content.stream_sort_date = (SELECT stream_sort_date FROM content wd WHERE wd.id=:to)",
-                            "content.id < :to"
-                        ],
-                    ], [':to' => $this->to]);
-            }
-        } else {
-            $this->_query->orderBy('content.id DESC');
-            if (!empty($this->from)) {
-                $this->_query->andWhere("content.id < :from", [':from' => $this->from]);
-            } elseif (!empty($this->to)) {
-                $this->_query->andWhere("content.id > :to", [':to' => $this->to]);
-            }
+
+        $sortField = ($this->sort === Stream::SORT_UPDATED_AT) ? 'content.stream_sort_date' : 'content.created_at';
+        $this->_query->orderBy([$sortField => SORT_DESC]);
+
+        if (!empty($this->from)) {
+            $this->_query->andWhere(
+                [' or ',
+                    "{$sortField} < (SELECT {$sortField} FROM content wd WHERE wd.id=:from)",
+                    [' and ',
+                        "{$sortField} = (SELECT {$sortField} FROM content wd WHERE wd.id=:from)",
+                        "content.id > :from"
+                    ],
+                ], [':from' => $this->from]);
+        } elseif (!empty($this->to)) {
+            $this->_query->andWhere(
+                [' or ',
+                    "{$sortField} > (SELECT {$sortField} FROM content wd WHERE wd.id=:to)",
+                    [' and ',
+                        "{$sortField} = (SELECT {$sortField} FROM content wd WHERE wd.id=:to)",
+                        "content.id < :to"
+                    ],
+                ], [':to' => $this->to]);
         }
     }
 
@@ -588,7 +582,7 @@ class StreamQuery extends Model
      */
     public function addFilterHandler($handler, $overwrite = true)
     {
-        if($overwrite) {
+        if ($overwrite) {
             $this->removeFilterHandler($handler);
         }
 
@@ -599,11 +593,11 @@ class StreamQuery extends Model
     /**
      * Can be used to add multiple filter handlers at once.
      *
-     * @see self::addFilterHandler
      * @param $handlers
      * @param bool $overwrite
      * @return string[]|StreamQueryFilter[]
      * @throws InvalidConfigException
+     * @see self::addFilterHandler
      */
     public function addFilterHandlers($handlers, $overwrite = true)
     {
@@ -628,7 +622,7 @@ class StreamQuery extends Model
         $result = [];
         $handlerToRemoveClass = is_string($handlerToRemove) ? $handlerToRemove : get_class($handlerToRemove);
         foreach ($this->filterHandlers as $handler) {
-            if(!is_a($handler, $handlerToRemoveClass, true)) {
+            if (!is_a($handler, $handlerToRemoveClass, true)) {
                 $result[] = $handler;
             }
         }
@@ -648,7 +642,7 @@ class StreamQuery extends Model
     {
         $handlerToRemoveClass = is_string($handlerToRemove) ? $handlerToRemove : get_class($handlerToRemove);
         foreach ($this->filterHandlers as $handler) {
-            if(is_a($handler, $handlerToRemoveClass, true)) {
+            if (is_a($handler, $handlerToRemoveClass, true)) {
                 return $this->prepareHandler($handler);
             }
         }
@@ -662,7 +656,8 @@ class StreamQuery extends Model
      * @throws InvalidConfigException
      * @since 1.6
      */
-    private function prepareHandler($handler)
+    private
+    function prepareHandler($handler)
     {
         if (is_string($handler)) {
             $handler = Yii::createObject([
