@@ -24,3 +24,5 @@
 - Enh #5303: Unassigned files are only accessibily for creator 
 - Enh #5293: Added File versioning API
 - Enh #4399: Changed default @warning color to `#FC4A64`
+- Enh #5302: Improve checkbox widget ContentVisibilitySelect 
+
