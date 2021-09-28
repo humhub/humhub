@@ -222,7 +222,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             $query = Comment::find();
             $query->offset($commentCount - $limit);
             if (Comment::findOne(['id' => $currentCommentId])) {
-                $query->orderBy('`comment`.`id` <= ' . ($currentCommentId + $limit - 1));
+                $query->orderBy('`comment`.`id` <= ' . (intval($currentCommentId) + intval($limit) - 1));
             } else {
                 $query->orderBy('created_at ASC');
             }

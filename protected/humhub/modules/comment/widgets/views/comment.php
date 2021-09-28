@@ -9,10 +9,10 @@ use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\file\widgets\ShowFiles;
 use humhub\modules\comment\widgets\Comments;
-use humhub\modules\comment\models\Comment;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $comment \humhub\modules\comment\models\Comment */
+/* @var $permaUrl string */
 /* @var $deleteUrl string */
 /* @var $editUrl string */
 /* @var $loadUrl string */
@@ -44,6 +44,11 @@ $module = Yii::$app->getModule('comment');
                 </a>
 
                 <ul class="dropdown-menu pull-right">
+                    <li>
+                        <a href="<?= $permaUrl ?>">
+                            <i class="fa fa-link"></i><?= Yii::t('CommentModule.base', 'Permalink') ?>
+                        </a>
+                    </li>
                     <?php if ($canEdit): ?>
                         <li>
                             <a href="#" class="comment-edit-link" data-action-click="edit"
