@@ -119,8 +119,11 @@ class File extends FileCompat
     {
         $this->store->delete();
 
-        foreach ($this->getVersionsQuery()->all() as $f) {
-            $f->delete();
+        $versionFiles = $this->getVersionsQuery()
+            ->andWhere(['!=', 'file.id', $this->id])
+            ->all();
+        foreach ($versionFiles as $versionFile) {
+            $versionFile->delete();
         }
 
         return parent::beforeDelete();
