@@ -16,6 +16,8 @@ use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\ContentContainerBlockedUsers;
 use humhub\modules\content\models\ContentContainerTagRelation;
+use humhub\modules\content\Module;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
@@ -183,6 +185,17 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         }
 
         return $container->contentcontainer_id === $this->contentcontainer_id;
+    }
+
+    /**
+     * @param string Module id
+     * @return ContentContainerSettingsManager
+     */
+    public function getSettings($moduleId = 'space'): ContentContainerSettingsManager
+    {
+        /* @var $module Module */
+        $module = Yii::$app->getModule($moduleId);
+        return $module->settings->contentContainer($this);
     }
 
     /**
@@ -400,17 +413,20 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     {
         if ($user === null) {
             if (Yii::$app->user->isGuest) {
-                // TODO: Check user setting "Profile visibility"
-                return false;
+                $visibilityAll = ($this instanceof Space) ? Space::VISIBILITY_ALL : User::VISIBILITY_ALL;
+                return $this->isVisibleFor($visibilityAll);
             }
 
             $user = Yii::$app->user->getIdentity();
         }
 
-        return ContentContainerBlockedUsers::find()
-            ->where(['contentcontainer_id' => $this->id])
-            ->andWhere(['user_id' => $user->id])
-            ->exists();
+        $blockedUsers = $this->settings->get(ContentContainerBlockedUsers::BLOCKED_USERS_SETTING);
+
+        if (empty($blockedUsers)) {
+            return false;
+        }
+
+        return in_array($user->id, explode(',', $blockedUsers));
     }
 
 }

@@ -21,6 +21,8 @@ use humhub\modules\user\models\User;
  */
 class ContentContainerBlockedUsers extends ActiveRecord
 {
+    const BLOCKED_USERS_SETTING = 'blockedUsers';
+
     public static function tableName()
     {
         return 'contentcontainer_blocked_users';
@@ -68,6 +70,7 @@ class ContentContainerBlockedUsers extends ActiveRecord
 
         $newBlockedUsers = User::find()->where(['IN', 'guid', $newBlockedUserGuids])->all();
 
+        $newBlockedUserIds = [];
         foreach ($newBlockedUsers as $newBlockedUser) {
             /* @var User $newBlockedUser */
             if ($newBlockedUser->is($contentContainer)) {
@@ -76,8 +79,12 @@ class ContentContainerBlockedUsers extends ActiveRecord
             $newBlockedUserRelation = new ContentContainerBlockedUsers();
             $newBlockedUserRelation->contentcontainer_id = $contentContainer->contentcontainer_id;
             $newBlockedUserRelation->user_id = $newBlockedUser->id;
-            $newBlockedUserRelation->save();
+            if ($newBlockedUserRelation->save()) {
+                $newBlockedUserIds[] = $newBlockedUser->id;
+            }
         }
+
+        $contentContainer->settings->set(self::BLOCKED_USERS_SETTING, empty($newBlockedUserIds) ? null : implode(',', $newBlockedUserIds));
     }
 
     /**
@@ -92,5 +99,7 @@ class ContentContainerBlockedUsers extends ActiveRecord
         foreach ($blockedUserRelations as $blockedUserRelation) {
             $blockedUserRelation->delete();
         }
+
+        $contentContainer->settings->delete(self::BLOCKED_USERS_SETTING);
     }
 }
