@@ -15,6 +15,8 @@ return [
     'urlManagerRules' => [
         ['class' => 'humhub\modules\user\components\UrlRule'],
         'people' => 'user/people',
+        '<userContainer>/home' => 'user/profile/home',
+        '<userContainer>/about' => 'user/profile/about',
     ],
     'consoleControllerMap' => [
         'user' => 'humhub\modules\user\commands\UserController'
