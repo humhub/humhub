@@ -113,5 +113,9 @@ class ContentContainerTagRelation extends ActiveRecord
         foreach ($tagRelations as $tagRelation) {
             $tagRelation->delete();
         }
+
+        $contentContainer->contentContainerRecord->updateAttributes([
+            'tags_cached' => null
+        ]);
     }
 }
