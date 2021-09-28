@@ -88,4 +88,10 @@ class Module extends \humhub\components\Module
      * @var int The maximum width of generated preview image files in px.
      */
     public $imagePreviewMaxWidth = 400;
+
+    /**
+     * @since 1.10
+     * @var int The maximum megapixels(width*height) of processing image files.
+     */
+    public $imageMaxProcessingMP = 64;
 }

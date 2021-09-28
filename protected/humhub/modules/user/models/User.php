@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\behaviors\CompatModuleManager;
@@ -36,7 +37,6 @@ use Yii;
 use yii\base\Exception;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
-use yii\db\Query;
 use yii\web\IdentityInterface;
 
 /**
@@ -59,6 +59,7 @@ use yii\web\IdentityInterface;
  * @property integer $visibility
  * @property integer $contentcontainer_id
  * @property Profile $profile
+ * @property Password $currentPassword
  *
  * @property string $displayName
  * @property string $displayNameSub
@@ -142,7 +143,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function rules()
     {
-        /* @var $userModule \humhub\modules\user\Module */
+        /* @var $userModule Module */
         $userModule = Yii::$app->getModule('user');
 
         return [
@@ -164,11 +165,30 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'string', 'max' => 150],
-            [['email'], 'required', 'when' => function ($model, $attribute) use ($userModule) {
-                return $userModule->emailRequired;
+            [['email'], 'required', 'when' => function () {
+                return $this->isEmailRequired();
             }],
             [['guid'], 'unique'],
         ];
+    }
+
+    public function isEmailRequired(): bool
+    {
+        /* @var $userModule Module */
+        $userModule = Yii::$app->getModule('user');
+        return $userModule->emailRequired;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isAttributeRequired($attribute)
+    {
+        if ($attribute === 'email') {
+            return $this->isEmailRequired();
+        }
+
+        return parent::isAttributeRequired($attribute);
     }
 
     /**
@@ -762,6 +782,32 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
 
         return $this->getManagerGroups()->count() > 0;
+    }
+
+    /**
+     * Determines if this user can impersonate the given user.
+     *
+     * @since 1.10
+     * @param self $user
+     * @return bool
+     */
+    public function canImpersonate(self $user): bool
+    {
+        /* @var AdminModule $adminModule */
+        $adminModule = Yii::$app->getModule('admin');
+        if (!$adminModule->allowUserImpersonate) {
+            return false;
+        }
+
+        if (!$this->isSystemAdmin()) {
+            return false;
+        }
+
+        if ($user->id == $this->id) {
+            return false;
+        }
+
+        return (new PermissionManager(['subject' => $this]))->can(ManageUsers::class);
     }
 
     /**

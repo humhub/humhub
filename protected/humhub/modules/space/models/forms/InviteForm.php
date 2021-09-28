@@ -188,6 +188,30 @@ class InviteForm extends Model
     }
 
     /**
+     * Add User to invite list
+     *
+     * @param User $user
+     * @return bool true if user can be added to invite list
+     */
+    private function addUserToInviteList(User $user): bool
+    {
+        $membership = Membership::findOne([
+            'space_id' => $this->space->id,
+            'user_id' => $user->id,
+            'status' => Membership::STATUS_MEMBER,
+        ]);
+
+        if ($membership) {
+            return false;
+        }
+
+        $this->invites[] = $user;
+        $this->inviteIds[] = $user->id;
+
+        return true;
+    }
+
+    /**
      * Form Validator which checks the invite field
      *
      * @param string $attribute
@@ -214,12 +238,7 @@ class InviteForm extends Model
                     continue;
                 }
 
-                $membership = Membership::findOne([
-                    'space_id' => $this->space->id,
-                    'user_id' => $user->id,
-                ]);
-
-                if ($membership && $membership->status == Membership::STATUS_MEMBER) {
+                if (!$this->addUserToInviteList($user)) {
                     $this->addError(
                         $attribute,
                         Yii::t(
@@ -228,11 +247,7 @@ class InviteForm extends Model
                             ['username' => $user->getDisplayName()]
                         )
                     );
-                    continue;
                 }
-
-                $this->invites[] = $user;
-                $this->inviteIds[] = $user->id;
             }
         }
     }
@@ -263,14 +278,11 @@ class InviteForm extends Model
                 }
 
                 $user = User::findOne(['email' => $email]);
-                if ($user != null) {
-                    $this->addError($attribute,
-                        Yii::t('SpaceModule.base', "{email} is already registered!",
-                            ["{email}" => $email]));
-                    continue;
+                if ($user) {
+                    $this->addUserToInviteList($user);
+                } else {
+                    $this->invitesExternal[] = $email;
                 }
-
-                $this->invitesExternal[] = $email;
             }
         }
     }

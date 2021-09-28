@@ -71,18 +71,6 @@ return [
     'Group not found!' => 'Групата не е намерена!',
     'Group user not found!' => 'Потребител на група не е намерен!',
     'Groups' => 'Групи',
-    'Hello {displayName},<br><br>
-Your account has been activated.<br><br>
-Click here to login:<br>
-{loginLink}<br><br>
-
-Kind Regards<br>
-{AdminName}<br><br>' => 'Здравейте, {displayName},<br><br>Вашият акаунт е активиран.<br><br> Щракнете тук, за да влезете:<br>{loginLink}<br><br> С уважение<br> {AdminName}<br><br>',
-    'Hello {displayName},<br><br>
-Your account request has been declined.<br><br>
-
-Kind Regards<br>
-{AdminName} <br><br> ' => 'Здравейте, {displayName},<br><br> Вашата заявка за акаунт беше отказана.<br><br> С уважение<br> {AdminName} <br><br>',
     'Here you can create or edit profile categories and fields.' => 'Тук можете да създавате или редактирате категории и полета на профила.',
     'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Ако разрешенията за индивидуални профили не са разрешени, следните настройки са непроменими за всички потребители. Ако са разрешени разрешения за индивидуален профил, настройките се задават само по подразбиране, като потребителите могат да ги персонализират. След това следните записи се показват в същата форма в настройките на потребителския профил:',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Ако тази опция не е избрана, собствеността върху разделите ще бъде прехвърлена към вашия акаунт.',
@@ -153,6 +141,25 @@ Kind Regards<br>
     'You cannot delete yourself!' => 'Не можете да изтриете себе си!',
     'never' => 'никога',
     'Default Sorting' => '',
+    'Hello {displayName},
+
+Your account has been activated.
+
+Click here to login:
+{loginUrl}
+
+Kind Regards
+{AdminName}
+
+' => '',
+    'Hello {displayName},
+
+Your account request has been declined.
+
+Kind Regards
+{AdminName}
+
+' => '',
     'Information 1' => '',
     'Information 2' => '',
     'Information 3' => '',
@@ -160,5 +167,6 @@ Kind Regards<br>
     'Prioritised User Group' => '',
     'Select a prioritised group whose members are displayed before all others when the sorting option \'Default\' is selected. The users within the group and the users outside the group are additionally sorted by their last login.' => '',
     'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => '',
+    'Send & decline' => '',
     'Will be used as a filter in \'People\'.' => '',
 ];

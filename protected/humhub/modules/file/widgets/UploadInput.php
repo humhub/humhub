@@ -108,6 +108,12 @@ class UploadInput extends JsWidget
     public $dropZone;
 
     /**
+     * Selector of paste zone node.
+     * @var string
+     */
+    public $pasteZone;
+
+    /**
      * File preview js widget selector.
      *
      * @var type
@@ -252,6 +258,10 @@ class UploadInput extends JsWidget
 
         if($this->dropZone) {
             $result['upload-drop-zone'] = $this->dropZone;
+        }
+
+        if($this->pasteZone) {
+            $result['upload-paste-zone'] = $this->pasteZone;
         }
 
         if($this->hideInStream) {

@@ -71,18 +71,25 @@ return array (
   'Group not found!' => 'グループが見つかりません！',
   'Group user not found!' => 'グループユーザーが見つかりません！',
   'Groups' => 'グループ',
-  'Hello {displayName},<br><br>
-Your account has been activated.<br><br>
-Click here to login:<br>
-{loginLink}<br><br>
+  'Hello {displayName},
 
-Kind Regards<br>
-{AdminName}<br><br>' => 'こんにちは{displayName}、<br><br>アカウントがアクティブ化されました。<br><br>ログインするにはここをクリックしてください：<br> {loginLink} <br><br>よろしくお願いします<br> {AdminName} <br><br>',
-  'Hello {displayName},<br><br>
-Your account request has been declined.<br><br>
+Your account has been activated.
 
-Kind Regards<br>
-{AdminName} <br><br> ' => 'こんにちは{displayName}、<br><br>アカウントリクエストは拒否されました。<br><br>よろしくお願いいたします。<br> {AdminName} <br><br>',
+Click here to login:
+{loginUrl}
+
+Kind Regards
+{AdminName}
+
+' => 'こんにちは{displayName}、あなたのアカウントはアクティブ化されました。 ログインするには、ここをクリックしてください：{loginUrl}よろしくお願いします{AdminName}',
+  'Hello {displayName},
+
+Your account request has been declined.
+
+Kind Regards
+{AdminName}
+
+' => 'こんにちは{displayName}、あなたのアカウントリクエストは拒否されました。 よろしくお願いいたします。{AdminName}',
   'Here you can create or edit profile categories and fields.' => 'ここでは、プロフィールのカテゴリや設定を作成・編集できます。',
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => '個々のプロファイルのアクセス許可が許可されていない場合、次の設定はすべてのユーザーに対して変更できません。 個別のプロファイル権限が許可されている場合、設定はユーザーがカスタマイズできるデフォルトとしてのみ設定されます。 次のエントリは、ユーザープロファイル設定に同じ形式で表示されます。',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'このオプションが選択されていない場合、スペースの所有権がアカウントに転送されます。',
@@ -130,6 +137,7 @@ Kind Regards<br>
   'Select Groups' => 'グループを選択',
   'Select a prioritised group whose members are displayed before all others when the sorting option \'Default\' is selected. The users within the group and the users outside the group are additionally sorted by their last login.' => '並べ替えオプション「デフォルト」が選択されているときに、メンバーが他のすべてのメンバーより先に表示される優先グループを選択します。 グループ内のユーザーとグループ外のユーザーは、最終ログインによってさらにソートされます。',
   'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => '「人」概要に表示するユーザー情報を選択します。 個別に作成したものでも、任意のプロファイル フィールドを選択できます。',
+  'Send & decline' => '送信＆拒否',
   'Send & save' => '保存し送信',
   'Send invitation email' => '招待メールを出す',
   'Send invitation email again?' => '招待メールを再度送信しますか？',

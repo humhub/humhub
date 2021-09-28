@@ -71,18 +71,6 @@ return [
     'Group not found!' => 'A csoport nem található!',
     'Group user not found!' => 'A csoport  felhasználója nem található!',
     'Groups' => 'Csoportok',
-    'Hello {displayName},<br><br>
-Your account has been activated.<br><br>
-Click here to login:<br>
-{loginLink}<br><br>
-
-Kind Regards<br>
-{AdminName}<br><br>' => 'Szia {displayName}!<br><br> A fiókod aktiválva lett.<br><br> A bejelentkezéshez kattitns ide:<br> {loginLink}<br><br> Üdvözlettel:<br> {AdminName}<br><br>',
-    'Hello {displayName},<br><br>
-Your account request has been declined.<br><br>
-
-Kind Regards<br>
-{AdminName} <br><br> ' => 'Szia {displayName}!<br><br> A fiókigényed el lett utasítva.<br><br> Üdvözlettel:<br> {AdminName} <br><br>',
     'Here you can create or edit profile categories and fields.' => 'Itt profil-kategóriákat és mezőket hozhatsz létre vagy szerkeszthetsz.',
     'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Ha az egyedi profilengedélyek nem engedélyezettek, akkor a következő beállítások nem módosíthatók minden felhasználó számára. Ha egyedi profilengedélyek engedélyezettek, akkor a beállításokat csak alapértelmezettként lesznek beállítva, amelyeket a felhasználók testre szabhatnak. Ezután a következő bejegyzések ugyanabban a formában jelennek meg a felhasználói profil beállításaiban:',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Ha ezt az opciót nem választod ki, akkor a közösségek tulajdonjoga átkerül a fiókodba.',
@@ -153,6 +141,25 @@ Kind Regards<br>
     'You cannot delete yourself!' => 'Nem törölheted saját magad!',
     'never' => 'soha',
     'Default Sorting' => '',
+    'Hello {displayName},
+
+Your account has been activated.
+
+Click here to login:
+{loginUrl}
+
+Kind Regards
+{AdminName}
+
+' => '',
+    'Hello {displayName},
+
+Your account request has been declined.
+
+Kind Regards
+{AdminName}
+
+' => '',
     'Information 1' => '',
     'Information 2' => '',
     'Information 3' => '',
@@ -160,5 +167,6 @@ Kind Regards<br>
     'Prioritised User Group' => '',
     'Select a prioritised group whose members are displayed before all others when the sorting option \'Default\' is selected. The users within the group and the users outside the group are additionally sorted by their last login.' => '',
     'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => '',
+    'Send & decline' => '',
     'Will be used as a filter in \'People\'.' => '',
 ];

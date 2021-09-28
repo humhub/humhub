@@ -2,8 +2,8 @@
 
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\Button;
-use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use humhub\modules\content\widgets\richtext\RichTextField;
 
@@ -17,9 +17,8 @@ use humhub\modules\content\widgets\richtext\RichTextField;
 $contentModule = Yii::$app->getModule('content');
 
 ?>
-
 <div class="content_edit input-container" id="comment_edit_<?= $comment->id; ?>">
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
     <?= Html::hiddenInput('objectModel', $objectModel); ?>
     <?= Html::hiddenInput('objectId', $objectId); ?>
 

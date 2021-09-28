@@ -1,13 +1,12 @@
 <?php
 
-use humhub\modules\ui\icon\widgets\Icon;
-use humhub\modules\ui\view\components\View;
-use humhub\modules\directory\permissions\AccessDirectory;
 use humhub\modules\space\assets\SpaceChooserAsset;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\SpaceChooserItem;
 use humhub\modules\space\widgets\Image;
+use humhub\modules\ui\icon\widgets\Icon;
+use humhub\modules\ui\view\components\View;
 use yii\helpers\Url;
 
 
@@ -16,6 +15,7 @@ use yii\helpers\Url;
 /* @var $memberships Membership[] */
 /* @var $followSpaces Space[] */
 /* @var $canCreateSpace boolean */
+/* @var $canAccessDirectory boolean */
 
 SpaceChooserAsset::register($this);
 
@@ -30,11 +30,6 @@ $this->registerJsConfig('space.chooser', [
         'info.emptyResult' => Yii::t('SpaceModule.chooser', 'No result found for the given filter.'),
     ],
 ]);
-
-/* @var $directoryModule \humhub\modules\directory\Module */
-$directoryModule = Yii::$app->getModule('directory');
-$canAccessDirectory = $directoryModule->active && Yii::$app->user->can(AccessDirectory::class);
-
 ?>
 
 <li class="dropdown">
@@ -67,7 +62,7 @@ $canAccessDirectory = $directoryModule->active && Yii::$app->user->can(AccessDir
                            title="<?= Yii::t('SpaceModule.chooser', 'Search for spaces') ?>">
                     <?php if($canAccessDirectory) : ?>
                         <span id="space-directory-link" class="input-group-addon" >
-                            <a href="<?= Url::to(['/directory/directory/spaces']) ?>">
+                            <a href="<?= Url::to(['/space/spaces']) ?>">
                                 <?= Icon::get('directory')?>
                             </a>
                         </span>

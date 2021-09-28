@@ -1,10 +1,10 @@
 <?php
 
+use humhub\components\Migration;
 use humhub\modules\content\models\ContentContainerTag;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use yii\db\Expression;
-use yii\db\Migration;
 use humhub\modules\content\models\ContentContainerTagRelation;
 
 /**
@@ -17,28 +17,32 @@ class m210211_051243_container_tag extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('contentcontainer_tag', [
+        $this->safeCreateTable('contentcontainer_tag', [
             'id' => 'pk',
             'name' => $this->string(100)->notNull(),
             'contentcontainer_class' => $this->char(60)->notNull(),
         ]);
-        $this->createIndex('unique-contentcontainer-tag', 'contentcontainer_tag', ['contentcontainer_class', 'name'], true);
+        $this->safeCreateIndex('unique-contentcontainer-tag', 'contentcontainer_tag', ['contentcontainer_class', 'name'], true);
 
-        $this->createTable('contentcontainer_tag_relation', [
+        $this->safeCreateTable('contentcontainer_tag_relation', [
             'contentcontainer_id' => $this->integer()->notNull(),
             'tag_id' => $this->integer()->notNull(),
         ]);
-        $this->addPrimaryKey('pk-contentcontainer-tag-rel', 'contentcontainer_tag_relation', ['contentcontainer_id', 'tag_id']);
-        $this->addForeignKey('fk-contentcontainer-tag-rel-contentcontainer-id', 'contentcontainer_tag_relation', 'contentcontainer_id', 'contentcontainer', 'id', 'CASCADE');
-        $this->addForeignKey('fk-contentcontainer-tag-rel-tag-id', 'contentcontainer_tag_relation', 'tag_id', 'contentcontainer_tag', 'id', 'CASCADE');
+        $this->safeAddPrimaryKey('pk-contentcontainer-tag-rel', 'contentcontainer_tag_relation', ['contentcontainer_id', 'tag_id']);
+        $this->safeAddForeignKey('fk-contentcontainer-tag-rel-contentcontainer-id', 'contentcontainer_tag_relation', 'contentcontainer_id', 'contentcontainer', 'id', 'CASCADE');
+        $this->safeAddForeignKey('fk-contentcontainer-tag-rel-tag-id', 'contentcontainer_tag_relation', 'tag_id', 'contentcontainer_tag', 'id', 'CASCADE');
 
-        $this->addColumn('contentcontainer', 'tags_cached', $this->string()->null());
+        $this->safeAddColumn('contentcontainer', 'tags_cached', $this->string()->null());
 
-        $this->moveContainerTags(Space::class);
-        $this->dropColumn('space', 'tags');
+        if ($this->columnExists('tags', 'space')) {
+            $this->moveContainerTags(Space::class);
+            $this->dropColumn('space', 'tags');
+        }
 
-        $this->moveContainerTags(User::class);
-        $this->dropColumn('user', 'tags');
+        if ($this->columnExists('tags', 'user')) {
+            $this->moveContainerTags(User::class);
+            $this->dropColumn('user', 'tags');
+        }
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use humhub\modules\content\assets\ContainerHeaderAsset;
 use humhub\modules\content\controllers\ContainerImageController;
+use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\file\widgets\Upload;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\ModalButton;
@@ -87,7 +88,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
 
                     <div class="row">
                         <div class="col-md-12">
-                            <?php echo $form->field($user, 'tags')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your skills, knowledge and experience (comma seperated)')]); ?>
+                            <?php echo $form->field($user, 'tags')->widget(ContainerTagPicker::class, ['placeholderMore' => Yii::t('TourModule.base', 'Your skills, knowledge and experience (comma seperated)')]); ?>
                         </div>
                     </div>
 

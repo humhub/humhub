@@ -71,18 +71,25 @@ return array (
   'Group not found!' => 'Groep niet gevonden!',
   'Group user not found!' => 'Groep van de gebruiker niet gevonden',
   'Groups' => 'Groepen',
-  'Hello {displayName},<br><br>
-Your account has been activated.<br><br>
-Click here to login:<br>
-{loginLink}<br><br>
+  'Hello {displayName},
 
-Kind Regards<br>
-{AdminName}<br><br>' => 'Beste {displayName},<br><br>Uw account is geactiveerd.<br><br>Klik hier om u aan te melden<br>{loginLink}<br><br>Met vriendelijke groeten,<br> {AdminName}<br><br>',
-  'Hello {displayName},<br><br>
-Your account request has been declined.<br><br>
+Your account has been activated.
 
-Kind Regards<br>
-{AdminName} <br><br> ' => 'Beste {displayName},<br><br>Uw accountverzoek is afgewezen.<br><br>Met vriendelijke groeten,<br>{AdminName}<br><br>',
+Click here to login:
+{loginUrl}
+
+Kind Regards
+{AdminName}
+
+' => 'Hallo {displayName}, uw account is geactiveerd. Klik hier om in te loggen: {loginUrl} Met vriendelijke groeten {AdminName}',
+  'Hello {displayName},
+
+Your account request has been declined.
+
+Kind Regards
+{AdminName}
+
+' => 'Hallo {displayName}, uw accountverzoek is afgewezen. Met vriendelijke groeten {AdminName}',
   'Here you can create or edit profile categories and fields.' => 'Pas hier de profiel-categorieën en velden aan.',
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Als individuele profielrechten niet zijn toegestaan, kunnen de volgende instellingen niet voor alle gebruikers worden gewijzigd. Als individuele profielrechtenen zijn toegestaan, worden de instellingen alleen ingesteld als standaardwaarden die gebruikers kunnen aanpassen. De volgende vermeldingen worden vervolgens in hetzelfde formulier weergegeven in de gebruikersprofielinstellingen:',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Als deze optie niet is geselecteerd, wordt het eigendom van de spaties overgedragen aan uw account.',
@@ -130,6 +137,7 @@ Kind Regards<br>
   'Select Groups' => 'Groep kiezen ...',
   'Select a prioritised group whose members are displayed before all others when the sorting option \'Default\' is selected. The users within the group and the users outside the group are additionally sorted by their last login.' => 'Selecteer een geprioriteerde groep waarvan de leden voor alle andere worden weergegeven wanneer de sorteeroptie \'Standaard\' is geselecteerd. De gebruikers binnen de groep en de gebruikers buiten de groep worden bovendien gesorteerd op hun laatste login.',
   'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => 'Selecteer welke gebruikersinformatie getoond moet worden in het \'Personen\' overzicht. U kunt alle profielvelden selecteren, zelfs de velden die u individueel hebt gemaakt.',
+  'Send & decline' => 'Verzend en weiger',
   'Send & save' => 'Verzend &amp; bewaar',
   'Send invitation email' => 'Stuur uitnodigingsmail',
   'Send invitation email again?' => 'De uitnodigingsmail opnieuw versturen?',
