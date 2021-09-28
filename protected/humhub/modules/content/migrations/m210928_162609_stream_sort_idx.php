@@ -13,7 +13,7 @@ class m210928_162609_stream_sort_idx extends Migration
     public function safeUp()
     {
         $this->createIndex('idx_stream_created', 'content', 'created_at', false);
-        $this->createIndex('idx_stream_created', 'content', 'stream_sort_date', false);
+        $this->createIndex('idx_stream_updated', 'content', 'stream_sort_date', false);
     }
 
     /**
