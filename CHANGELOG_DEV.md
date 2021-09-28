@@ -27,3 +27,4 @@
 - Enh #4399: Changed default @warning color to `#FC4A64`
 - Enh #5302: Improve checkbox widget ContentVisibilitySelect 
 - Enh #5151: ContentContainer scoped URL Rules
+- Enh #5094: Reflect and reload Stream filters by URL
