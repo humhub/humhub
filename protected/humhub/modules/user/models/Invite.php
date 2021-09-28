@@ -159,7 +159,7 @@ class Invite extends ActiveRecord
             $mail->send();
         } elseif ($this->source == self::SOURCE_INVITE && $this->space !== null) {
             if ($module->sendInviteMailsInGlobalLanguage) {
-                Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
+                Yii::$app->setLanguage(Yii::$app->settings->get('defaultLanguage'));
             }
 
             $mail = Yii::$app->mailer->compose([
@@ -177,14 +177,12 @@ class Invite extends ActiveRecord
             $mail->send();
 
             // Switch back to users language
-            if (Yii::$app->user->language !== '') {
-                Yii::$app->language = Yii::$app->user->language;
-            }
+            Yii::$app->setLanguage(Yii::$app->user->language);
         } elseif ($this->source == self::SOURCE_INVITE) {
 
             // Switch to systems default language
             if ($module->sendInviteMailsInGlobalLanguage) {
-                Yii::$app->language = Yii::$app->settings->get('defaultLanguage');
+                Yii::$app->setLanguage(Yii::$app->settings->get('defaultLanguage'));
             }
 
             $mail = Yii::$app->mailer->compose([
@@ -201,9 +199,7 @@ class Invite extends ActiveRecord
             $mail->send();
 
             // Switch back to users language
-            if (Yii::$app->user->language !== '') {
-                Yii::$app->language = Yii::$app->user->language;
-            }
+            Yii::$app->setLanguage(Yii::$app->user->language);
         }
     }
 

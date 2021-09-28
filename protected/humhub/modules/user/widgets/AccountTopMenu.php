@@ -8,13 +8,14 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\Menu;
+use humhub\modules\user\models\User;
 use humhub\widgets\ModalButton;
 use Yii;
 use yii\helpers\Url;
-use humhub\modules\admin\widgets\AdminMenu;
 
 /**
  * AccountTopMenu Widget
@@ -91,8 +92,21 @@ class AccountTopMenu extends Menu
             'icon' => 'sign-out',
             'pjaxEnabled' => false,
             'url' => Url::toRoute('/user/auth/logout'),
+            'htmlOptions' => ['data-method' => 'POST'],
             'sortOrder' => 700,
         ]));
+
+        if (Yii::$app->user->isImpersonated) {
+            $this->addEntry(new MenuLink([
+                'label' => Yii::t('base', 'Stop impersonation'),
+                'id' => 'account-login',
+                'icon' => 'sign-in',
+                'pjaxEnabled' => false,
+                'url' => Url::toRoute('/user/auth/stop-impersonation'),
+                'htmlOptions' => ['data-method' => 'POST'],
+                'sortOrder' => 800,
+            ]));
+        }
 
         parent::init();
     }

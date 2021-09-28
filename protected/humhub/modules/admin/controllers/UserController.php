@@ -8,6 +8,7 @@
 namespace humhub\modules\admin\controllers;
 
 use humhub\compat\HForm;
+use humhub\components\export\ArrayColumn;
 use humhub\components\export\DateTimeColumn;
 use humhub\components\export\SpreadsheetExport;
 use humhub\modules\admin\components\Controller;
@@ -352,28 +353,11 @@ class UserController extends Controller
 
         $this->checkUserAccess($user);
 
-        if (!static::canImpersonate($user)) {
+        if (!Yii::$app->user->impersonate($user)) {
             throw new HttpException(403);
         }
 
-        Yii::$app->user->switchIdentity($user);
-
         return $this->goHome();
-    }
-
-    /**
-     * Determines if the current user can impersonate given user.
-     *
-     * @param User $user
-     * @return boolean can impersonate
-     */
-    public static function canImpersonate($user)
-    {
-        if (!Yii::$app->getModule('admin')->allowUserImpersonate) {
-            return false;
-        }
-
-        return Yii::$app->user->can([new ManageUsers()]) && $user->id != Yii::$app->user->getIdentity()->id;
     }
 
     /**
@@ -414,7 +398,10 @@ class UserController extends Controller
             'username',
             'email',
             'auth_mode',
-            'tags',
+            [
+                'class' => ArrayColumn::class,
+                'attribute' => 'tags',
+            ],
             'language',
             'time_zone',
             [

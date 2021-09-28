@@ -2,8 +2,10 @@
 
 return [
     '<strong>Information</strong>' => '<strong>Information</strong>',
+    '<strong>Profile</strong> Permissions' => 'Autorisations du <strong>profil</strong>',
     '<strong>Settings</strong> and Configuration' => '<strong>Paramètres</strong> et configuration',
     '<strong>User</strong> administration' => 'Gestion des <strong>utilisateurs</strong>',
+    '<strong>Warning:</strong> All individual profile permission settings are reset to the default values!' => '<strong>Attention:</strong> tous les paramètres d\'autorisation individuels du profil sont réinitialisés!',
     'Accept user: <strong>{displayName}</strong> ' => 'Approuver l\'utilisateur : <strong>{displayName}</strong>',
     'Account' => 'Compte',
     'Account Request for \'{displayName}\' has been approved.' => 'La demande de compte pour "{displayName}" a été acceptée.',
@@ -16,6 +18,8 @@ return [
     'Add new group' => 'Ajouter un groupe',
     'Add new members...' => 'Ajouter des membres...',
     'Add new user' => 'Ajouter un nouvel utilisateur',
+    'Administrator group could not be deleted!' => 'Le groupe Administrateur ne peut pas être supprimé!',
+    'All open registration invitations were successfully deleted.' => 'Toutes les invitations d\'inscription ont été supprimées avec succès.',
     'All the personal data of this user will be irrevocably deleted.' => 'Toutes les données de cet utilisateur seront irrévocablement supprimées.',
     'Allow' => 'Autoriser',
     'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'Autoriser un accès limité pour les utilisateurs non identifiés (visiteurs)',
@@ -33,11 +37,13 @@ return [
     'Deactivate' => 'Désactiver',
     'Decline & delete user: <strong>{displayName}</strong>' => 'Refuser et supprimer l\'utilisateur : <strong>{displayName}</strong>',
     'Default' => 'Par défaut',
+    'Default Sorting' => 'Tri par défaut',
     'Default content of the registration approval email' => 'Contenu du message d\'approbation d\'inscription envoyé par e-mail',
     'Default content of the registration denial email' => 'Contenu du message de refus d\'inscription envoyée par e-mail',
     'Default user idle timeout, auto-logout (in seconds, optional)' => 'Temporisation d\'inactivité par défaut, déconnexion automatique (en secondes, optionnel)',
     'Default user profile visibility' => 'Visibilité par défaut des profils utilisateurs',
     'Delete' => 'Supprimer',
+    'Delete All' => 'Supprimer tout',
     'Delete all contributions of this user' => 'Supprimer toute contribution de cet utilisateur',
     'Delete invitation' => 'Supprimer l’invitation',
     'Delete invitation?' => 'Supprimer l\'invitation ?',
@@ -59,22 +65,13 @@ return [
     'Group not found!' => 'Groupe non trouvé !',
     'Group user not found!' => 'Groupe d\'utilisateur non trouvé !',
     'Groups' => 'Groupes',
-    'Hello {displayName},<br><br>
-Your account has been activated.<br><br>
-Click here to login:<br>
-{loginLink}<br><br>
-
-Kind Regards<br>
-{AdminName}<br><br>' => 'Bonjour {displayName},<br><br>Votre compte est actif.<br><br>Cliquez ici pour vous connecter:<br>{loginLink}<br><br>Cordialement,<br> {AdminName}<br><br>',
-    'Hello {displayName},<br><br>
-Your account request has been declined.<br><br>
-
-Kind Regards<br>
-{AdminName} <br><br> ' => 'Bonjour {displayName},<br><br>Votre demande de création de compte a été refusée.<br><br>Cordialement,<br> {AdminName}<br><br>',
     'Here you can create or edit profile categories and fields.' => 'Vous pouvez créer ou modifier ici les catégories et les champs de profil.',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Si cette option n\'est pas sélectionnée, le propriétaire des espaces sera transféré sur votre compte.',
     'Impersonate' => 'Incarner',
     'Include captcha in registration form' => 'Activer la protection captcha dans le formulaire d\'inscription',
+    'Information 1' => 'Information 1',
+    'Information 2' => 'Information 2',
+    'Information 3' => 'Information 3',
     'Invite not found!' => 'Invitation non trouvée !',
     'Last login' => 'Dernière connexion',
     'Last name' => 'Nom',
@@ -92,6 +89,7 @@ Kind Regards<br>
     'No' => 'Non',
     'No value found!' => 'Aucune valeur trouvée !',
     'None' => 'Aucune',
+    'Not visible' => 'Masquer',
     'One or more user needs your approval as group admin.' => 'Un ou plusieurs utilisateurs sont en attente d\'approbation.',
     'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.' => 'Applicable uniquement quand l\'accès limité pour les utilisateurs non authentifiés est activé. N\'affecte que les nouveaux utilisateurs.',
     'Overview' => 'Vue d\'ensemble',
@@ -101,6 +99,8 @@ Kind Regards<br>
     'People' => 'Utilisateur',
     'Permanently delete' => 'Suppression définitive',
     'Permissions' => 'Permissions',
+    'Prioritised User Group' => 'Groupe utilisateur priorisé',
+    'Profile Permissions' => 'Autorisations du profil',
     'Profiles' => 'Profils',
     'Remove from group' => 'Retirer du groupe',
     'Require group admin approval after registration' => 'L\'approbation d\'un administrateur du groupe est requis après l\'enregistrement',
@@ -113,6 +113,7 @@ Kind Regards<br>
     'Send invitation email again?' => 'Renvoyer l\'invitation par mail ?',
     'Send invite' => 'Envoyer une invitation',
     'Settings' => 'Paramètres',
+    'Show group selection at registration' => 'Afficher le choix du groupe à l\'inscription',
     'Subject' => 'Sujet',
     'The following list contains all pending sign-ups and invites.' => 'Cette liste contient toutes les inscriptions et invitations en attente.',
     'The following list contains all registered users awaiting an approval.' => 'Cette liste contient tous les utilisateurs inscrits qui attendent d\'être approuvés.',
@@ -132,31 +133,38 @@ Kind Regards<br>
     'You can only delete empty categories!' => 'Vous pouvez uniquement supprimer les catégories vides.',
     'You cannot delete yourself!' => 'Vous ne pouvez vous supprimer vous même !',
     'never' => 'jamais',
-    '<strong>Profile</strong> Permissions' => '',
-    '<strong>Warning:</strong> All individual profile permission settings are reset to the default values!' => '',
-    'Administrator group could not be deleted!' => '',
-    'All open registration invitations were successfully deleted.' => '',
     'Allow users to set individual permissions for their own profile?' => '',
     'Applied to new or existing users without any other group membership.' => '',
     'Are you really sure? Users who are not assigned to another group are automatically assigned to the default group.' => '',
     'Deactivate individual profile permissions?' => '',
     'Default Profile Permissions' => '',
-    'Default Sorting' => '',
     'Default groups can not be deleted!' => '',
-    'Delete All' => '',
     'Enable individual profile permissions' => '',
+    'Hello {displayName},
+
+Your account has been activated.
+
+Click here to login:
+{loginUrl}
+
+Kind Regards
+{AdminName}
+
+' => '',
+    'Hello {displayName},
+
+Your account request has been declined.
+
+Kind Regards
+{AdminName}
+
+' => '',
     'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => '',
-    'Information 1' => '',
-    'Information 2' => '',
-    'Information 3' => '',
     'Make the group selectable at registration.' => '',
-    'Not visible' => '',
-    'Prioritised User Group' => '',
-    'Profile Permissions' => '',
     'Select a prioritised group whose members are displayed before all others when the sorting option \'Default\' is selected. The users within the group and the users outside the group are additionally sorted by their last login.' => '',
     'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => '',
+    'Send & decline' => '',
     'Send notifications to users when added to or removed from the group.' => '',
-    'Show group selection at registration' => '',
     'The Space memberships of all group members will be updated. This may take up to several minutes.' => '',
     'The selected invitations have been successfully deleted!' => '',
     'This option allows you to determine whether users may set individual permissions for their own profiles.' => '',

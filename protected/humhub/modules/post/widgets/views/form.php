@@ -2,6 +2,7 @@
 
 use humhub\modules\content\widgets\richtext\RichTextField;
 
+/* @var string $mentioningUrl */
 ?>
 
 <?= RichTextField::widget([
@@ -12,4 +13,5 @@ use humhub\modules\content\widgets\richtext\RichTextField;
     'name' => 'message',
     'disabled' => (property_exists(Yii::$app->controller, 'contentContainer') && Yii::$app->controller->contentContainer->isArchived()),
     'disabledText' => Yii::t("PostModule.base", "This space is archived."),
+    'mentioningUrl' => $mentioningUrl,
 ]); ?>

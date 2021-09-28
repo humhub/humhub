@@ -29,7 +29,6 @@ return [
     'Friends' => 'Amigos',
     'General' => 'Cheneral',
     'Language' => 'Luenga',
-    'Load more' => 'Cargar mas',
     'Modules' => 'Modulos',
     'My Account' => 'Cuenta',
     'New password' => 'Nueva clau',

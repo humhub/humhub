@@ -13,4 +13,9 @@ class Module extends \humhub\components\Module
 
     public $controllerNamespace = 'humhub\modules\search\controllers';
 
+    /**
+     * @var int $mentioningSearchBoxResultLimit Maximum results in mentioning users/spaces box
+     */
+    public $mentioningSearchBoxResultLimit = 6;
+
 }

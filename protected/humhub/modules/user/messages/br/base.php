@@ -47,7 +47,6 @@ return [
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => '',
     'Language' => '',
     'Last Login' => '',
-    'Load more' => '',
     'Manager' => '',
     'Missing E-Mail Attribute from AuthClient.' => '',
     'Missing ID AuthClient Attribute from AuthClient.' => '',
