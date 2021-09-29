@@ -508,7 +508,7 @@ class StreamQuery extends Model
                     ], [':to' => $this->to]);
             }
         } else {
-            $this->_query->orderBy('content.created_at DESC');
+            $this->_query->orderBy('content.created_at DESC,content.id DESC');
             if (!empty($this->from)) {
                 $this->_query->andWhere(
                     ['or',
