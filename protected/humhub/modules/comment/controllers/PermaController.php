@@ -7,8 +7,8 @@
 
 namespace humhub\modules\comment\controllers;
 
+use humhub\components\Controller;
 use humhub\modules\comment\models\Comment;
-use humhub\modules\content\components\ContentContainerController;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -17,7 +17,7 @@ use yii\web\NotFoundHttpException;
  * @package humhub.modules_core.comment.controllers
  * @since 1.10
  */
-class PermaController extends ContentContainerController
+class PermaController extends Controller
 {
 
     /**
@@ -31,7 +31,7 @@ class PermaController extends ContentContainerController
     {
         $comment = Comment::findOne(['id' => $id]);
 
-        if (!$comment) {
+        if (!$comment || !$comment->canRead()) {
             throw new NotFoundHttpException();
         }
 
