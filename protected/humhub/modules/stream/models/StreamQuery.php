@@ -483,29 +483,53 @@ class StreamQuery extends Model
         /**
          * Setup Sorting
          */
-
-        $sortField = ($this->sort === Stream::SORT_UPDATED_AT) ? 'content.stream_sort_date' : 'content.created_at';
-        $this->_query->orderBy([$sortField => SORT_DESC]);
-
-        if (!empty($this->from)) {
-            $this->_query->andWhere(
-                [' or ',
-                    "{$sortField} < (SELECT {$sortField} FROM content wd WHERE wd.id=:from)",
-                    [' and ',
-                        "{$sortField} = (SELECT {$sortField} FROM content wd WHERE wd.id=:from)",
-                        "content.id > :from"
-                    ],
-                ], [':from' => $this->from]);
-        } elseif (!empty($this->to)) {
-            $this->_query->andWhere(
-                [' or ',
-                    "{$sortField} > (SELECT {$sortField} FROM content wd WHERE wd.id=:to)",
-                    [' and ',
-                        "{$sortField} = (SELECT {$sortField} FROM content wd WHERE wd.id=:to)",
-                        "content.id < :to"
-                    ],
-                ], [':to' => $this->to]);
+        /**
+         * Setup Sorting
+         */
+        if ($this->sort == Stream::SORT_UPDATED_AT) {
+            $this->_query->orderBy('content.stream_sort_date DESC');
+            if (!empty($this->from)) {
+                $this->_query->andWhere(
+                    ['or',
+                        "content.stream_sort_date < (SELECT stream_sort_date FROM content wd WHERE wd.id=:from)",
+                        ['and',
+                            "content.stream_sort_date = (SELECT stream_sort_date FROM content wd WHERE wd.id=:from)",
+                            "content.id > :from"
+                        ],
+                    ], [':from' => $this->from]);
+            } elseif (!empty($this->to)) {
+                $this->_query->andWhere(
+                    ['or',
+                        "content.stream_sort_date > (SELECT stream_sort_date FROM content wd WHERE wd.id=:to)",
+                        ['and',
+                            "content.stream_sort_date = (SELECT stream_sort_date FROM content wd WHERE wd.id=:to)",
+                            "content.id < :to"
+                        ],
+                    ], [':to' => $this->to]);
+            }
+        } else {
+            $this->_query->orderBy('content.created_at DESC');
+            if (!empty($this->from)) {
+                $this->_query->andWhere(
+                    ['or',
+                        "content.created_at < (SELECT created_at FROM content wd WHERE wd.id=:from)",
+                        ['and',
+                            "content.created_at = (SELECT created_at FROM content wd WHERE wd.id=:from)",
+                            "content.id > :from"
+                        ],
+                    ], [':from' => $this->from]);
+            } elseif (!empty($this->to)) {
+                $this->_query->andWhere(
+                    ['or',
+                        "content.created_at > (SELECT created_at FROM content wd WHERE wd.id=:to)",
+                        ['and',
+                            "content.created_at = (SELECT created_at FROM content wd WHERE wd.id=:to)",
+                            "content.id < :to"
+                        ],
+                    ], [':to' => $this->to]);
+            }
         }
+
     }
 
     /**
