@@ -1,9 +1,11 @@
 <?php
 
 use humhub\libs\Html;
+use humhub\modules\comment\Module;
 use humhub\modules\content\widgets\UpdatedIcon;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\comment\widgets\CommentEntryLinks;
+use humhub\modules\ui\view\components\View;
 use humhub\widgets\TimeAgo;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\user\widgets\Image as UserImage;
@@ -11,8 +13,8 @@ use humhub\modules\file\widgets\ShowFiles;
 use humhub\modules\comment\widgets\Comments;
 use humhub\modules\comment\models\Comment;
 
-/* @var $this \humhub\modules\ui\view\components\View */
-/* @var $comment \humhub\modules\comment\models\Comment */
+/* @var $this View */
+/* @var $comment Comment */
 /* @var $deleteUrl string */
 /* @var $editUrl string */
 /* @var $loadUrl string */
@@ -22,7 +24,7 @@ use humhub\modules\comment\models\Comment;
 /* @var $createdAt string */
 /* @var $updatedAt string */
 
-/** @var \humhub\modules\comment\Module $module */
+/** @var Module $module */
 $module = Yii::$app->getModule('comment');
 
 ?>
