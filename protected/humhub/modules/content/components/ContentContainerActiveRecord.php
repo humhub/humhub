@@ -431,13 +431,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
             $user = Yii::$app->user->getIdentity();
         }
 
-        $blockedUsers = $this->settings->get(ContentContainerBlockedUsers::BLOCKED_USERS_SETTING);
-
-        if (empty($blockedUsers)) {
-            return false;
-        }
-
-        return in_array($user->id, explode(',', $blockedUsers));
+        return in_array($user->id, $this->getBlockedUserIds());
     }
 
 }

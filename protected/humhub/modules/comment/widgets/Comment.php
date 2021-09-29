@@ -8,8 +8,9 @@
 
 namespace humhub\modules\comment\widgets;
 
-use yii\helpers\Url;
 use humhub\components\Widget;
+use Yii;
+use yii\helpers\Url;
 
 /**
  * This widget is used to show a single comment.
@@ -29,9 +30,39 @@ class Comment extends Widget
     public $justEdited = false;
 
     /**
+     * @var bool True to force show even blocked comment
+     */
+    public $showBlocked = false;
+
+    /**
      * @inheritdoc
      */
     public function run()
+    {
+        return $this->isBlockedAuthor()
+            ? $this->renderBlockedComment()
+            : $this->renderComment();
+    }
+
+    /**
+     * @return string
+     */
+    private function renderBlockedComment(): string
+    {
+        $loadBlockedCommentUrl = Url::to(['/comment/comment/load',
+            'objectModel' => $this->comment->object_model,
+            'objectId' => $this->comment->object_id,
+            'id' => $this->comment->id,
+            'showBlocked' => true,
+        ]);
+
+        return $this->render('commentBlockedUser', [
+            'comment' => $this->comment,
+            'loadBlockedCommentUrl' => $loadBlockedCommentUrl,
+        ]);
+    }
+
+    private function renderComment(): string
     {
         $deleteUrl = Url::to(['/comment/comment/delete',
             'objectModel' => $this->comment->object_model, 'objectId' => $this->comment->object_id, 'id' => $this->comment->id]);
@@ -51,6 +82,24 @@ class Comment extends Widget
             'canEdit' => $this->comment->canEdit(),
             'canDelete' => $this->comment->canDelete(),
         ]);
+    }
+
+    /**
+     * Check if author of the Comment is blocked for the current User
+     *
+     * @return bool
+     */
+    private function isBlockedAuthor(): bool
+    {
+        if ($this->showBlocked) {
+            return false;
+        }
+
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+
+        return Yii::$app->user->getIdentity()->isBlockedForUser($this->comment->createdBy);
     }
 
 }
