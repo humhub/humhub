@@ -46,7 +46,7 @@ $module = Yii::$app->getModule('comment');
                 <li>
                     <a href="<?= $permaUrl ?>"
                        data-action-click="content.permalink" data-content-permalink="<?= $permaUrl ?>"
-                       data-content-permalink-title="<?= Yii::t('CommentModule.base', '<strong>Permalink</strong> to this comment') ?>">
+                       data-content-permalink-title="<?= Html::encode(Yii::t('CommentModule.base', '<strong>Permalink</strong> to this comment')) ?>">
                         <i class="fa fa-link"></i><?= Yii::t('CommentModule.base', 'Permalink') ?>
                     </a>
                 </li>
