@@ -117,7 +117,7 @@ humhub.module('content', function (module, require, $) {
         options.permalink = evt.$trigger.data('content-permalink');
 
         modal.global.set({
-            header: options.head,
+            header: evt.$trigger.data('content-permalink-title') || options.head,
             body: string.template(module.templates.permalinkBody, options),
             footer: string.template(module.templates.permalinkFooter, options),
             size: 'normal'

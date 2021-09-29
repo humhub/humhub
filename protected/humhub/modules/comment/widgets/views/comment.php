@@ -34,45 +34,45 @@ $module = Yii::$app->getModule('comment');
 
     <hr class="comment-separator">
 
-    <?php if ($canEdit || $canDelete) : ?>
-        <div class="comment-entry-loader pull-right"></div>
-        <ul class="nav nav-pills preferences">
-            <li class="dropdown ">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#"
-                   aria-label="<?= Yii::t('base', 'Toggle comment menu'); ?>" aria-haspopup="true">
-                    <?= Icon::get('dropdownToggle') ?>
-                </a>
+    <div class="comment-entry-loader pull-right"></div>
+    <ul class="nav nav-pills preferences">
+        <li class="dropdown ">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"
+               aria-label="<?= Yii::t('base', 'Toggle comment menu'); ?>" aria-haspopup="true">
+                <?= Icon::get('dropdownToggle') ?>
+            </a>
 
-                <ul class="dropdown-menu pull-right">
+            <ul class="dropdown-menu pull-right">
+                <li>
+                    <a href="<?= $permaUrl ?>"
+                       data-action-click="content.permalink" data-content-permalink="<?= $permaUrl ?>"
+                       data-content-permalink-title="<?= Yii::t('CommentModule.base', '<strong>Permalink</strong> to this comment') ?>">
+                        <i class="fa fa-link"></i><?= Yii::t('CommentModule.base', 'Permalink') ?>
+                    </a>
+                </li>
+                <?php if ($canEdit): ?>
                     <li>
-                        <a href="<?= $permaUrl ?>">
-                            <i class="fa fa-link"></i><?= Yii::t('CommentModule.base', 'Permalink') ?>
+                        <a href="#" class="comment-edit-link" data-action-click="edit"
+                           data-action-url="<?= $editUrl ?>">
+                            <?= Icon::get('edit') ?> <?= Yii::t('CommentModule.base', 'Edit') ?>
+                        </a>
+                        <a href="#" class="comment-cancel-edit-link" data-action-click="cancelEdit"
+                           data-action-url="<?= $loadUrl ?>" style="display:none;">
+                            <?= Icon::get('edit') ?> <?= Yii::t('CommentModule.base', 'Cancel Edit') ?>
                         </a>
                     </li>
-                    <?php if ($canEdit): ?>
-                        <li>
-                            <a href="#" class="comment-edit-link" data-action-click="edit"
-                               data-action-url="<?= $editUrl ?>">
-                                <?= Icon::get('edit') ?> <?= Yii::t('CommentModule.base', 'Edit') ?>
-                            </a>
-                            <a href="#" class="comment-cancel-edit-link" data-action-click="cancelEdit"
-                               data-action-url="<?= $loadUrl ?>" style="display:none;">
-                                <?= Icon::get('edit') ?> <?= Yii::t('CommentModule.base', 'Cancel Edit') ?>
-                            </a>
-                        </li>
-                    <?php endif; ?>
+                <?php endif; ?>
 
-                    <?php if ($canDelete): ?>
-                        <li>
-                            <a href="#" data-action-click="delete">
-                                <?= Icon::get('delete') ?> <?= Yii::t('CommentModule.base', 'Delete') ?>
-                            </a>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            </li>
-        </ul>
-    <?php endif; ?>
+                <?php if ($canDelete): ?>
+                    <li>
+                        <a href="#" data-action-click="delete">
+                            <?= Icon::get('delete') ?> <?= Yii::t('CommentModule.base', 'Delete') ?>
+                        </a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </li>
+    </ul>
     <?= UserImage::widget(['user' => $user, 'width' => 25, 'htmlOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $user->contentcontainer_id]]); ?>
     <div>
         <div class="media-body">

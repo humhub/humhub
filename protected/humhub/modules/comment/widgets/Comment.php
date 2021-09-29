@@ -43,7 +43,7 @@ class Comment extends Widget
      */
     public function run()
     {
-        $permaUrl = $this->comment->content->container->createUrl('/comment/perma', ['id' => $this->comment->id]);
+        $permaUrl = $this->comment->content->container->createUrl('/comment/perma', ['id' => $this->comment->id], true);
         $deleteUrl = Url::to(['/comment/comment/delete',
             'objectModel' => $this->comment->object_model, 'objectId' => $this->comment->object_id, 'id' => $this->comment->id]);
         $editUrl = Url::to(['/comment/comment/edit',
