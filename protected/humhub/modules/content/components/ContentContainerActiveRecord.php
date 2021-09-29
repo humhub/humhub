@@ -394,13 +394,24 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     }
 
     /**
-     * Returns an array with blocked Users
+     * Returns an array with GUIDs of the blocked users
+     *
+     * @return string[] a list of user GUIDs
+     */
+    public function getBlockedUserGuids(): array
+    {
+        return ContentContainerBlockedUsers::getGuidsByContainer($this);
+    }
+
+    /**
+     * Returns an array with IDs of the blocked user
      *
      * @return int[] a list of user IDs
      */
-    public function getBlockedUsers()
+    public function getBlockedUserIds(): array
     {
-        return ContentContainerBlockedUsers::getGuidsByContainer($this);
+        $blockedUsers = $this->getSettings()->get(ContentContainerBlockedUsers::BLOCKED_USERS_SETTING);
+        return empty($blockedUsers) ? [] : explode(',', $blockedUsers);
     }
 
     /**
