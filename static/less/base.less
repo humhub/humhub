@@ -43,27 +43,20 @@ hr {
     position: inherit;
 }
 
-.layout-content-container {
-    padding: 0 10px 0 15px;
-}
-
 .layout-nav-container {
     padding: 0 0 0 15px;
 }
 
 .layout-sidebar-container {
-    padding: 0 15px 0 5px;
+    padding: 0 15px 0 0;
 }
 
 @media (max-width: 768px) {
     .layout-nav-container {
+        padding: 0 15px;
         .left-navigation {
             margin-bottom: 0;
         }
-    }
-
-    .layout-nav-container, .layout-content-container {
-        padding: 0 15px;
     }
 }
 
@@ -95,8 +88,7 @@ input[type=select] {
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-    .layout-nav-container, .layout-content-container {
-        color:#123456;
+    .layout-nav-container {
         padding: 0 15px;
     }
 
