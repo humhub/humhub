@@ -70,7 +70,7 @@ humhub.module('directory', function(module, require, $) {
             if (entries.length && entries[0].isIntersecting) {
                 loadMore($directoryEndIndicator);
             }
-        });
+        }, {rootMargin: '1px'});
 
         observer.observe($directoryEndIndicator[0]);
     }
