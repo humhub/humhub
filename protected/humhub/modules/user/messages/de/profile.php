@@ -105,6 +105,7 @@ return array (
   'Updated at' => 'Aktualisiert am',
   'Updated by' => 'Aktualisiert durch',
   'Url' => 'URL',
+  'Use as Directory filter' => 'Als Filter im Verzeichnis verwenden',
   'Username' => 'Benutzername',
   'Validator' => 'Validator',
   'Vimeo URL' => 'Vimeo-URL',
@@ -114,4 +115,5 @@ return array (
   'You need to login to view this user profile!' => 'Sie müssen sich anmelden, um das Profil zu sehen!',
   'YouTube URL' => 'YouTube-URL',
   'Zip' => 'PLZ',
+  '{attribute} is required!' => '{attribute} ist erforderlich!',
 );

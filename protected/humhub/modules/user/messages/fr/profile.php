@@ -95,7 +95,7 @@ return array (
   'Text Area' => 'Texte long',
   'Text Field Options' => 'Options de champ de texte',
   'Text area field options' => 'Options de champ de texte long',
-  'This profile is no longer available!' => 'Ce profile n\'est plus disponible.',
+  'This profile is no longer available!' => 'Ce profil n\'est plus disponible.',
   'This user account is not approved yet!' => 'Ce compte utilisateur n\'a pas encore été approuvé.',
   'This will add an additional input element for custom values' => 'Ceci va ajouter un nouvel élément de saisie pour les valeurs personnalisées',
   'Title' => 'Titre',
@@ -105,6 +105,7 @@ return array (
   'Updated at' => 'Mis à jour le',
   'Updated by' => 'Mis à jour par',
   'Url' => 'URL',
+  'Use as Directory filter' => 'Utiliser comme filtre du répertoire',
   'Username' => 'Identifiant',
   'Validator' => 'Validateur',
   'Vimeo URL' => 'Lien Vimeo',
@@ -114,4 +115,5 @@ return array (
   'You need to login to view this user profile!' => 'Vous devrez être connecté pour voir ce profil.',
   'YouTube URL' => 'Lien YouTube',
   'Zip' => 'Code postal',
+  '{attribute} is required!' => '{attribute} est requis!',
 );

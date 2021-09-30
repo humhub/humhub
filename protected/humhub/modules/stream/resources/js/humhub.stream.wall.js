@@ -292,8 +292,10 @@ humhub.module('stream.wall', function (module, require, $) {
 
         event.on('humhub:topic:updated.wallStream', $.proxy(this.onTopicUpdated, this));
 
-       this.initTopicPicker();
-       this.initContentTypePicker();
+        this.initTopicPicker();
+        this.initContentTypePicker();
+
+        this.initFilterCount();
     };
 
     WallStreamFilter.prototype.initTopicPicker = function() {
@@ -377,6 +379,15 @@ humhub.module('stream.wall', function (module, require, $) {
         this.super('triggerChange');
         this.updateFilterCount();
     };
+
+    WallStreamFilter.prototype.initFilterCount = function () {
+        this.updateFilterCount();
+
+        var activeFiltersCount = parseInt(this.$.find('.filterCount').text().replace(/^.+?(\d+).+?$/, '$1'));
+        if (activeFiltersCount > 0 && this.$.find('.wall-stream-filter-body').is(':hidden')) {
+            this.toggleFilterPanel();
+        }
+    }
 
     WallStreamFilter.prototype.updateFilterCount = function () {
         var count = this.getActiveFilterCount({exclude: ['sort', 'scope']});

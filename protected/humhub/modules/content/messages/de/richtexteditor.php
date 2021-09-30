@@ -31,7 +31,7 @@ return array (
   'Location' => 'Ort',
   'Objects' => 'Objekte',
   'Paragraph' => 'Absätze',
-  'People' => 'Menschen',
+  'People' => 'Mitglieder',
   'Rows' => 'Zeilen',
   'Symbols' => 'Symbole',
   'Title' => 'Titel',
@@ -47,5 +47,8 @@ return array (
   'Wrap in block quote' => 'Als Zitat darstellen',
   'Wrap in bullet list' => 'Als Aufzählungsliste darstellen',
   'Wrap in ordered list' => 'Als nummerierte Liste darstellen',
+  '[Code Block]' => '[Code-Block]',
+  '[Image]' => '[Bild]',
   '[Invalid file]' => '[Ungültige Datei]',
+  '[Table]' => '[Tabelle]',
 );

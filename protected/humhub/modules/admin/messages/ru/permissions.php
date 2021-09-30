@@ -23,8 +23,8 @@
 return [
     'Access Admin Information' => 'Доступ к разделу «Информация» в Панели Управления',
     'Can access the \'Administration -> Information\' section.' => 'Может получить доступ к разделу Панель управления -> «Информация».',
-    'Can manage spaces within the \'Administration -> Spaces\' section (create/edit/delete).' => 'Может управлять сообществами в разделе Панель управления -> «Сообщества» (создание / редактирование / удаление).',
-    'Can manage user- space- and general-settings.' => 'Может управлять пользователями, сообществами и общими настройками сайта.',
+    'Can manage Spaces within the \'Administration -> Spaces\' section.' => 'Может управлять сообществами в разделе Панель управления -> «Сообщества» (создание / редактирование / удаление).',
+    'Can manage general settings.' => 'Может управлять пользователями, сообществами и общими настройками сайта.',
     'Can manage users and groups' => 'Может управлять пользователями и группами пользователей',
     'Can manage users and user profiles.' => 'Может управлять пользователями и их профилями',
     'Can manage modules within the \'Administration ->  Modules\' section.' => 'Может управлять модулями в разделе Панель управления -> «Модули»',

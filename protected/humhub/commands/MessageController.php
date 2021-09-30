@@ -43,6 +43,7 @@ class MessageController extends \yii\console\controllers\MessageController
         ], require($configFile));
 
         $config['sourcePath'] = $module->getBasePath();
+        $this->config = $config;
 
         FileHelper::createDirectory($config['sourcePath'] . '/messages');
 
@@ -67,6 +68,8 @@ class MessageController extends \yii\console\controllers\MessageController
 
             $this->saveMessagesToPHP($messages, $dir, $config['overwrite'], $config['removeUnused'], $config['sort'], false);
         }
+
+
     }
 
     /**

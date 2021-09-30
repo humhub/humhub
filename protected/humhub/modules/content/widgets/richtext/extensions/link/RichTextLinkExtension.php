@@ -26,12 +26,12 @@ class RichTextLinkExtension extends RichTextContentExtension
      * Can be used to scan and replace link extensions of the form [<text>](<extension>:<url> "<title>") in which the actual meaning
      * of the placeholders is up to the extension itself.
      *
-     * @param $text string rich text content to parse
-     * @param $extension string|null extension string if not given all extension types will be included
+     * @param string|null $text rich text content to parse
+     * @param string|null $extension extension string if not given all extension types will be included
      * @param callable $callback callable expecting RichTextExtensionMatch as first parameter
      * @return mixed
      */
-    public static function replaceLinkExtension(string $text, $extension, callable $callback)
+    public static function replaceLinkExtension(?string $text, ?string $extension, callable $callback)
     {
         return (new static(['key' => $extension]))->replaceExtension($text, $callback);
     }

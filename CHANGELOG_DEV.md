@@ -1,62 +1,31 @@
-1.8.0-beta.2 (Unreleased)
--------------------------
+1.10.0-beta.1 (Unreleased)
+--------------------------
 
-- Fix #4853: Removed obsolete Group::getSpace() relation
-- Fix #4828: Display default permissions of all modules even if they are deactivated by default
-- Fix #4841: Fix misplaced notification filters
-- Fix #4842: Prerequisites Test - Improved database version detection for MariaDB
-- Fix #4850: New AuthClient method onSuccessLogin() not available on standard OAuths 
-- Fix #4856: Allow to invite users to space with pending membership application
-- Fix #4869: Fix cached comment content in email notification
+- Enh #4242: More failsave module loading when reading module config
+- Enh #5197: Default .htaccess - Remove Options +FollowSymLinks 
+- Enh #4495: Allow to lock comments per content
+- Enh #3688: Use Image widget in user list
+- Enh #5194: Confirm leave page for Post & Comment forms
+- Enh #5188: People / Spaces: Endless Scrolling
+- Enh #5216: Separate view document button
+- Enh #5229: Use RichTextField for user approval messages
+- Enh #100: Allow additional toggler for elements with context menu
+- Enh #5170: Allow 0 for min input size
+- Enh #4133: Back up a content of RichText editor
+- Enh #100: Extend upload buttons to use a paste zone
+- Enh #5256: Limit uploading profile images (Thanks to @tuhin1729 for discovering the issue.) 
+- Enh #5257: Delete old unread notifications
+- Fix #5143: Unlimited page size for profile fields
+- Fix #5143: Unlimited page size for profile fields
+- Enh #5269: Allow to add new item on ui selector
+- Enh #5005: Possibility to invite a registered user to a space by email
+- Enh #3546: Sign in back from impersonate mode
+- Fix #5282: On account creation, registration form has HTML tag set with English language
+- Enh #5280: Allow to set the number of contents from which "Show {i} more." appears in the stream
+- Enh #5303: Unassigned files are only accessibily for creator 
+- Enh #5293: Added File versioning API
+- Enh #4399: Changed default @warning color to `#FC4A64`
+- Enh #5302: Improve checkbox widget ContentVisibilitySelect 
+- Enh #5151: ContentContainer scoped URL Rules
+- Enh #5094: Reflect and reload Stream filters by URL
 - Enh $4879: Extend group for external users
-
-
-1.8.0-beta.1 (February 4, 2021)
--------------------------------
-
-- Enh #3996: Force password change on first log in for users created by admin
-- Enh #3996: Allow admin to change option "Must change password" for existing users
-- Enh #3414: Allow to change user passwords by admin
-- Enh #4543: Order members by newest in `about` page
-- Enh #4347: Add `hideMembersSidebar` to make members sidebar optional in space stream page
-- Enh #4585: Group notifications must be enabled explicitly
-- Fix #4646: Clean up duplicated array keys
-- Enh #242: Allow multiple default spaces for groups
-- Enh #4670: Editable default permissions for Content Containers(Space and User)
-- Enh #48: Improve "Admin Can View All" Feature
-- Fix #4692: Fix visibility of the button "Add new space"
-- Enh #4579: Optimized dashboard stream query
-- Enh #4579: Optimized live legitimation id queries
-- Enh #4579: Added `dashboard\Module::$guestFilterClass` and `$memberFilterClass` to replace dashboard filter class
-- Enh #4586: Rebuild group default Space Mapping
-- Enh #4225: Delete open/pending registration invites automatically after a period of time
-- Fix #4718: Fix space or profile banner size after crop
-- Enh #4738: Allow CanComment permission also on profile level
-- Enh #4511: Default group for users who are not assigned to any other group
-- Enh #4749: Add Migration helper to determine installation state
-- Enh #4611: Added console command to display LDAP attributes of a user
-- Enh #4750: OAuth: Automatically link OAuth Account with same e-mail address
-- Enh #4706: Marketplace: Possibility to prohibit modules via the configuration
-- Enh #4770: Added CLI commands for Professional Edition licence management
-- Enh #4752: Added file column `hash_sha1` to avoid caching problems
-- Enh #3345: Maintenance mode
-- Enh #4751: Hide separator between widgets `LikeLink` and `CommentLink`
-- Enh #4751: New `ContentObjectLinks` widget for the detail views of module content
-- Enh #4754: Shorten high member numbers
-- Enh #4781: Change allowed characters in username
-- Enh #4416: Added reply to sub comments
-- Enh #4571: humhub/libs/Html::containerLink() now adds a "data-guid" attribute
-- Enh #4791: Delay failed login attempts
-- Enh #4787: Always enable Space Membership Web Notifications
-- Enh #4795: Added support for collapsible form fields
-- Enh #4796: Added option to disable PWA/ServiceWorker support
-- Enh #4808: Improved richtext styles
-- Fix #4752: Fix saving hash of a deleted file from disk
-- Enh #4671: Implemented live poll result sharing by BroadCastChannel
-- Enh #4829: Renamed account "Security" page and make it optional
-- Enh #4818: Added database related checks (Driver, Collation, Table Engine)
-- Fix #4831: Validate username by pattern only on change or for new users
-- Fix #3662: Encoding issues in mails
-- Enh #4686: Implemented richtext converter to following formats: plaintext, shorttext, html, plain markdown
-- Enh #4686: Enhanced richtext extension API for convterting and post-processing
-- Enh #4686: Added caching mechanism for richtext converter results

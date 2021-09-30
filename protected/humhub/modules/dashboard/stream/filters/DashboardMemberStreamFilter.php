@@ -76,12 +76,6 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
                 'user_follow', 'contentcontainer.pk = user_follow.object_id AND contentcontainer.class = user_follow.object_model AND user_follow.user_id = :userId'
             );
         }
-
-        if ($this->isFriendShipEnabled()) {
-            $this->query->leftJoin(
-                'user_friendship', 'userContainer.id = user_friendship.user_id AND user_friendship.friend_user_id = :userId'
-            );
-        }
     }
 
     /**
@@ -104,9 +98,6 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
         } else  {
             // Otherwise only subscribe to own container and friendship containers
             $containerFilterOrContidion[] = 'contentcontainer.id = :userContentContainerId';
-            if($this->isFriendShipEnabled()) {
-                $containerFilterOrContidion[] = 'user_friendship.id IS NOT NULL';
-            }
         }
 
         // Filter out non subscribed container
@@ -131,8 +122,10 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
         ];
 
         if($this->isFriendShipEnabled()) {
-            // Friend users can see private content, but only in case friendship was accepted
+            // Following Friend users can see private content, but only in case friendship was accepted
+            $this->query->leftJoin('user_friendship', 'userContainer.id = user_friendship.user_id AND user_friendship.friend_user_id = :userId');
             $privateVisibilityOrCondition[] = ['AND',
+                'user_follow.id IS NOT NULL',
                 'user_friendship.id IS NOT NULL',
                 'EXISTS (SELECT id from user_friendship uf where uf.friend_user_id = user_friendship.user_id AND uf.user_id = user_friendship.friend_user_id)'
             ];

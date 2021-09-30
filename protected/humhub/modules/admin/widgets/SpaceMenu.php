@@ -29,7 +29,7 @@ class SpaceMenu extends TabMenu
     {
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.space', 'Spaces'),
+            'label' => Yii::t('AdminModule.space', 'Overview'),
             'url' => Url::toRoute(['/admin/space/index']),
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState('admin', 'space', 'index'),

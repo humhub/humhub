@@ -3,8 +3,8 @@
 use humhub\libs\TimezoneHelper;
 use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
-use humhub\compat\CHtml;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use yii\helpers\Html;
 
 /* @var BasicSettingsForm $model */
 
@@ -31,7 +31,7 @@ AdminAsset::register($this);
 
     <br>
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
     <?= $form->field($model, 'name'); ?>
     <?= $form->field($model, 'baseUrl'); ?>
@@ -40,6 +40,7 @@ AdminAsset::register($this);
     <?php if (count($allowedLanguages) > 1) : ?>
         <?= $languageDropDown = $form->field($model, 'defaultLanguage')->dropDownList($allowedLanguages, ['data-ui-select2' => '']); ?>
     <?php endif; ?>
+    <?= $form->field($model, 'defaultTimeZone')->dropDownList(TimezoneHelper::generateList(true), ['data-ui-select2' => '', 'disabled' => Yii::$app->settings->isFixed('defaultTimeZone')]); ?>
     <?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(true), ['data-ui-select2' => '', 'disabled' => Yii::$app->settings->isFixed('timeZone')]); ?>
 
     <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Dashboard')); ?>
@@ -63,7 +64,7 @@ AdminAsset::register($this);
 
     <hr>
 
-    <?= CHtml::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+    <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
     <!-- show flash message after saving -->
     <?php \humhub\widgets\DataSaved::widget(); ?>

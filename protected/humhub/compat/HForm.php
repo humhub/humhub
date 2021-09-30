@@ -259,7 +259,8 @@ class HForm extends \yii\base\Component
                     case 'multiselectdropdown':
                         $field = $this->form->field($model, $name)->widget(MultiSelect::class, [
                             'items' => $definition['items'],
-                            'options' => $definition['options']
+                            'options' => $definition['options'],
+                            'maxSelection' => $definition['maxSelection'] ?? 50,
                         ]);
                         break;
                     case 'dropdownlist':

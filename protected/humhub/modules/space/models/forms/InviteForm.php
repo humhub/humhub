@@ -112,14 +112,38 @@ class InviteForm extends Model
     }
 
     /**
-     * @return bool checks if
+     * @return bool checks if user is allowed to add without invite
      */
     public function isQueuedJob()
     {
-        return ($this->withoutInvite || $this->allRegisteredUsers) && Yii::$app->user->can(ManageUsers::class);
+        // Pre-check if adding without invite / adding all members was requested
+        if (!($this->withoutInvite || $this->allRegisteredUsers)) {
+            return false;
+        }
+
+        // If user has permission to manage users, this action is allowed
+        if (Yii::$app->user->can(ManageUsers::class)) {
+            return true;
+        }
+
+        // Allow users to perform this action if this is allowed by config file
+        // Pre-check if user is member of the space in question
+        if (Yii::$app->getModule('space')->membersCanAddWithoutInvite === true) {
+            $membership = Membership::findOne([
+                'space_id' => $this->space->id,
+                'user_id' => Yii::$app->user->identity->id,
+            ]);
+
+            if ($membership && $membership->status == Membership::STATUS_MEMBER) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    public function forceInvite() {
+    public function forceInvite()
+    {
         Yii::$app->queue->push(new AddUsersToSpaceJob([
             'originatorId' => Yii::$app->user->identity->id,
             'forceMembership' => $this->withoutInvite,
@@ -134,7 +158,8 @@ class InviteForm extends Model
      *
      * @throws \yii\base\Exception
      */
-    public function inviteMembers() {
+    public function inviteMembers()
+    {
         foreach ($this->getInvites() as $user) {
             $this->space->inviteMember($user->id, Yii::$app->user->id);
         }
@@ -160,6 +185,30 @@ class InviteForm extends Model
     public function canInviteExternal()
     {
         return Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite');
+    }
+
+    /**
+     * Add User to invite list
+     *
+     * @param User $user
+     * @return bool true if user can be added to invite list
+     */
+    private function addUserToInviteList(User $user): bool
+    {
+        $membership = Membership::findOne([
+            'space_id' => $this->space->id,
+            'user_id' => $user->id,
+            'status' => Membership::STATUS_MEMBER,
+        ]);
+
+        if ($membership) {
+            return false;
+        }
+
+        $this->invites[] = $user;
+        $this->inviteIds[] = $user->id;
+
+        return true;
     }
 
     /**
@@ -189,9 +238,7 @@ class InviteForm extends Model
                     continue;
                 }
 
-                $membership = Membership::findOne(['space_id' => $this->space->id, 'user_id' => $user->id]);
-
-                if ($membership && $membership->status == Membership::STATUS_MEMBER) {
+                if (!$this->addUserToInviteList($user)) {
                     $this->addError(
                         $attribute,
                         Yii::t(
@@ -200,11 +247,7 @@ class InviteForm extends Model
                             ['username' => $user->getDisplayName()]
                         )
                     );
-                    continue;
                 }
-
-                $this->invites[] = $user;
-                $this->inviteIds[] = $user->id;
             }
         }
     }
@@ -235,14 +278,11 @@ class InviteForm extends Model
                 }
 
                 $user = User::findOne(['email' => $email]);
-                if ($user != null) {
-                    $this->addError($attribute,
-                        Yii::t('SpaceModule.base', "{email} is already registered!",
-                            ["{email}" => $email]));
-                    continue;
+                if ($user) {
+                    $this->addUserToInviteList($user);
+                } else {
+                    $this->invitesExternal[] = $email;
                 }
-
-                $this->invitesExternal[] = $email;
             }
         }
     }

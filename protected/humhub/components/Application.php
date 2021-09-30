@@ -31,6 +31,17 @@ class Application extends \yii\web\Application
     /**
      * @inheritdoc
      */
+    public function __construct($config = [])
+    {
+        // Remove obsolete config params:
+        unset($config['components']['formatterApp']);
+
+        parent::__construct($config);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function bootstrap()
     {
         $request = $this->getRequest();
@@ -88,5 +99,17 @@ class Application extends \yii\web\Application
         \yii\base\Widget::$autoIdPrefix = 'h' . mt_rand(1, 999999) . 'w';
 
         return parent::beforeAction($action);
+    }
+
+    /**
+     * Switch current language
+     *
+     * @param string $value
+     */
+    public function setLanguage($value)
+    {
+        if (!empty($value)) {
+            $this->language = $value;
+        }
     }
 }

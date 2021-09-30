@@ -1,6 +1,8 @@
 <?php
-return array (
-  'Collapse' => 'Zwiń',
-  'Read more' => '',
-  'User Interface' => 'Interfejs Użytkownika',
-);
+
+return [
+    'Collapse' => 'Zwiń',
+    'Read more' => 'Czytaj więcej',
+    'User Interface' => 'Interfejs Użytkownika',
+    'Reset filters' => '',
+];

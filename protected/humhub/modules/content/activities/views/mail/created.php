@@ -13,6 +13,6 @@ echo Yii::t('ContentModule.activities', '{displayName} created a new {contentTit
 ]);
 ?>
 <br>
-"<?= RichText::preview($source->getContentDescription(), [
+"<?= RichText::preview($source->getContentDescription(), 0, [
     RichTextToShortTextConverter::OPTION_CACHE_KEY => RichTextToShortTextConverter::buildCacheKeyForContent($source)
 ]) ?>"

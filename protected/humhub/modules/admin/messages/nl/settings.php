@@ -34,6 +34,7 @@ return array (
   'Deactivate' => 'Deactiveren',
   'Deactivate maintenance mode and enable all users to access the platform again?' => 'Onderhoudsmodus deactiveren en alle gebruikers weer toegang geven?',
   'Default Expire Time (in seconds)' => 'Standaard vervaltijd (in seconden)',
+  'Default Timezone' => 'Standaard tijdzone',
   'Default language' => 'Standaard taal',
   'Default pagination size (Entries per page)' => 'Standaard paginering grootte (Berichten per pagina)',
   'Default stream content order' => 'Standaard inhoud volgorde',

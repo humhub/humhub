@@ -34,6 +34,7 @@ return array (
   'Deactivate' => 'Desactivar',
   'Deactivate maintenance mode and enable all users to access the platform again?' => '¿Desactivar el modo de mantenimiento y permitir que todos los usuarios vuelvan a acceder a la plataforma?',
   'Default Expire Time (in seconds)' => 'Tiempo de expiración por defecto (en segundos)',
+  'Default Timezone' => 'Zona horaria por defecto',
   'Default language' => 'Idioma por defecto',
   'Default pagination size (Entries per page)' => 'Tamaño de paginación por defecto (Entradas por página)',
   'Default stream content order' => 'Orden del contenido de Actividad',

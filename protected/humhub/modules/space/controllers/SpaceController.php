@@ -104,7 +104,8 @@ class SpaceController extends ContentContainerController
         return $this->render('home', [
                     'space' => $space,
                     'canCreatePosts' => $canCreatePosts,
-                    'isMember' => $isMember
+                    'isMember' => $isMember,
+                    'isSingleContentRequest' => !empty(Yii::$app->request->getQueryParam('contentId')),
         ]);
     }
 

@@ -1,60 +1,43 @@
 <?php
 
-use humhub\compat\CActiveForm;
-use humhub\compat\CHtml;
-use humhub\models\Setting;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use yii\helpers\Html;
+
+
+/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $model \humhub\modules\admin\models\forms\LogFilterForm */
 ?>
 
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
-<?php $form = CActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(); ?>
 
 <?= $form->errorSummary($model); ?>
 
-<div class="form-group">
-    <div class="checkbox">
-        <label>
-            <?= $form->checkBox($model, 'enabled', ['readonly' => Yii::$app->settings->isFixed('proxy.enabled')]); echo $model->getAttributeLabel('enabled'); ?>
-        </label>
-    </div>
-</div>
+<?= $form->field($model, 'enabled')->checkbox(['readonly' => Yii::$app->settings->isFixed('proxy.enabled')]); ?>
 
 <hr>
-<div class="form-group">
-    <?= $form->labelEx($model, 'server'); ?>
-    <?= $form->textField($model, 'server', ['class' => 'form-control']); ?>
-</div>
 
-<div class="form-group">
-    <?= $form->labelEx($model, 'port'); ?>
-    <?= $form->textField($model, 'port', ['class' => 'form-control']); ?>
-</div>
+<?= $form->field($model, 'server')->textInput(['class' => 'form-control']); ?>
+
+<?= $form->field($model, 'port')->textInput(['class' => 'form-control']); ?>
+
 
 <?php if (defined('CURLOPT_PROXYUSERNAME')) { ?>
-    <div class="form-group">
-        <?= $form->labelEx($model, 'user'); ?>
-        <?= $form->textField($model, 'user', ['class' => 'form-control']); ?>
-    </div>
+    <?= $form->field($model, 'user')->textInput(['class' => 'form-control']); ?>
 <?php } ?>
 
 <?php if (defined('CURLOPT_PROXYPASSWORD')) { ?>
-    <div class="form-group">
-        <?= $form->labelEx($model, 'password'); ?>
-        <?= $form->textField($model, 'password', ['class' => 'form-control']); ?>
-    </div>
+    <?= $form->field($model, 'password')->textInput(['class' => 'form-control']); ?>
 <?php } ?>
 
 <?php if (defined('CURLOPT_NOPROXY')) { ?>
-    <div class="form-group">
-        <?= $form->labelEx($model, 'noproxy'); ?>
-        <?= $form->textArea($model, 'noproxy', ['class' => 'form-control', 'rows' => '4']); ?>
-    </div>
+    <?= $form->field($model, 'noproxy')->textarea(['class' => 'form-control', 'rows' => '4']); ?>
 <?php } ?>
 
 <hr>
-<?= CHtml::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+<?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
-<?= \humhub\widgets\DataSaved::widget(); ?>
-<?php CActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
 
 <?php $this->endContent(); ?>

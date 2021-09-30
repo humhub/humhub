@@ -13,6 +13,7 @@ use humhub\libs\Helpers;
 use humhub\libs\ParameterEvent;
 use humhub\modules\content\widgets\richtext\extensions\emoji\RichTextEmojiExtension;
 use humhub\modules\content\widgets\richtext\extensions\file\FileExtension;
+use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtensionMatch;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use humhub\modules\content\widgets\richtext\extensions\oembed\OembedExtension;
 use humhub\modules\content\widgets\richtext\extensions\RichTextCompatibilityExtension;
@@ -167,7 +168,7 @@ class ProsemirrorRichText extends AbstractRichText
 
         // Can be removed in a future version, richtext should not be cut anymore, only text or shorttext version should be cut
         if ($this->maxLength > 0) {
-            $output = Helpers::truncateText($this->text, $this->maxLength);
+            $output = Helpers::truncateText($output, $this->maxLength);
         }
 
         // Wrap encoded output in root div
@@ -218,14 +219,16 @@ class ProsemirrorRichText extends AbstractRichText
      * Can be used to scan and replace link extensions of the form [<text>](<extension>:<url> "<title>") in which the actual meaning
      * of the placeholders is up to the extension itself.
      *
-     * @param $text string rich text content to parse
-     * @param $extension string|null extension string if not given all extension types will be included
+     * @param string|null $text string rich text content to parse
+     * @param string|null $extension extension string if not given all extension types will be included
      * @param callable $callback
      * @return mixed
      * @deprecated since 1.8 use `ProsemirrorRichTextConverter::replaceLinkExtension()`
      */
-    public static function replaceLinkExtension(string $text, $extension, callable $callback)
+    public static function replaceLinkExtension(?string $text, ?string $extension, callable $callback)
     {
-        return RichTextLinkExtension::replaceLinkExtension($text, $extension, $callback);
+        return RichTextLinkExtension::replaceLinkExtension($text, $extension, function (RichTextLinkExtensionMatch $match) use ($callback) {
+            return $callback($match->match);
+        });
     }
 }

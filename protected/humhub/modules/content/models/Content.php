@@ -58,6 +58,7 @@ use yii\helpers\Url;
  * @property integer $visibility
  * @property integer $pinned
  * @property integer $archived
+ * @property integer $locked_comments
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
@@ -322,13 +323,23 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     }
 
     /**
-     * Checks if the content visiblity is set to private.
+     * Checks if the content visibility is set to private.
      *
      * @return boolean
      */
     public function isPrivate()
     {
         return $this->visibility == self::VISIBILITY_PRIVATE;
+    }
+
+    /**
+     * Checks if comments are locked for the content.
+     *
+     * @return bool
+     */
+    public function isLockedComments(): bool
+    {
+        return (bool)$this->locked_comments;
     }
 
     /**
@@ -371,6 +382,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function canPin()
     {
+        // Currently global content can not be pinned
+        if (!$this->getContainer()) {
+            return false;
+        }
+
         if ($this->isArchived()) {
             return false;
         }
@@ -410,12 +426,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     public function canArchive()
     {
         // Currently global content can not be archived
-        if (!$this->contentcontainer_id) {
+        if (!$this->getContainer()) {
             return false;
         }
 
         // No need to archive content on an archived container, content is marked as archived already
-        if ($this->content->content->getContainer()->isArchived()) {
+        if ($this->getContainer()->isArchived()) {
             return false;
         }
 
@@ -757,6 +773,21 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         }
 
         return false;
+    }
+
+    /**
+     * Checks if the user can lock comments for this content.
+     *
+     * @return bool
+     * @throws Exception
+     */
+    public function canLockComments(): bool
+    {
+        if (!$this->getContainer()) {
+            return false;
+        }
+
+        return $this->getContainer()->permissionManager->can(ManageContent::class);
     }
 
     /**

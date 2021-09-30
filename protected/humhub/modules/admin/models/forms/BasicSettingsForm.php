@@ -19,6 +19,7 @@ class BasicSettingsForm extends \yii\base\Model
     public $baseUrl;
     public $defaultLanguage;
     public $tour;
+    public $defaultTimeZone;
     public $timeZone;
     public $dashboardShowProfilePostForm;
     public $enableFriendshipModule;
@@ -35,6 +36,7 @@ class BasicSettingsForm extends \yii\base\Model
         $this->name = Yii::$app->settings->get('name');
         $this->baseUrl = Yii::$app->settings->get('baseUrl');
         $this->defaultLanguage = Yii::$app->settings->get('defaultLanguage');
+        $this->defaultTimeZone = Yii::$app->settings->get('defaultTimeZone');
         $this->timeZone = Yii::$app->settings->get('timeZone');
         $this->maintenanceMode = Yii::$app->settings->get('maintenanceMode');
         $this->maintenanceModeInfo = Yii::$app->settings->get('maintenanceModeInfo');
@@ -53,7 +55,7 @@ class BasicSettingsForm extends \yii\base\Model
             [['name', 'baseUrl'], 'required'],
             ['name', 'string', 'max' => 150],
             ['defaultLanguage', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
-            ['timeZone', 'in', 'range' => \DateTimeZone::listIdentifiers()],
+            [['defaultTimeZone', 'timeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             [['tour', 'dashboardShowProfilePostForm', 'enableFriendshipModule', 'maintenanceMode'], 'in', 'range' => [0, 1]],
             [['baseUrl'], function ($attribute, $params, $validator) {
                 if (substr($this->$attribute, 0, 7) !== 'http://' && substr($this->$attribute, 0, 8) !== 'https://') {
@@ -73,6 +75,7 @@ class BasicSettingsForm extends \yii\base\Model
             'name' => Yii::t('AdminModule.settings', 'Name of the application'),
             'baseUrl' => Yii::t('AdminModule.settings', 'Base URL'),
             'defaultLanguage' => Yii::t('AdminModule.settings', 'Default language'),
+            'defaultTimeZone' => Yii::t('AdminModule.settings', 'Default Timezone'),
             'timeZone' => Yii::t('AdminModule.settings', 'Server Timezone'),
             'tour' => Yii::t('AdminModule.settings', 'Show introduction tour for new users'),
             'dashboardShowProfilePostForm' => Yii::t('AdminModule.settings', 'Show user profile post form on dashboard'),
@@ -88,6 +91,10 @@ class BasicSettingsForm extends \yii\base\Model
     public function attributeHints()
     {
         return [
+            'defaultTimeZone' => Yii::t('AdminModule.settings', 'Reported database time: {dateTime}', [
+                    'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime())
+                ]
+            ),
             'timeZone' => Yii::t('AdminModule.settings', 'Reported database time: {dateTime}', [
                     'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime())
                 ]
@@ -106,6 +113,7 @@ class BasicSettingsForm extends \yii\base\Model
         Yii::$app->settings->set('name', $this->name);
         Yii::$app->settings->set('baseUrl', $this->baseUrl);
         Yii::$app->settings->set('defaultLanguage', $this->defaultLanguage);
+        Yii::$app->settings->set('defaultTimeZone', $this->defaultTimeZone);
         Yii::$app->settings->set('timeZone', $this->timeZone);
         Yii::$app->settings->set('maintenanceMode', $this->maintenanceMode);
         Yii::$app->settings->set('maintenanceModeInfo', $this->maintenanceModeInfo);

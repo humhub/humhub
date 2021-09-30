@@ -64,6 +64,7 @@ humhub.module('file', function (module, require, $) {
         return {
             url: this.$.data('url') || this.$.data('upload-url') || module.config.upload.url,
             dropZone: this.getDropZone(),
+            pasteZone: this.getPasteZone(),
             dataType: 'json',
             formData: data,
             autoUpload: false,
@@ -124,6 +125,12 @@ humhub.module('file', function (module, require, $) {
         var dropZone = $(this.$.data('upload-drop-zone'));
         dropZone = (dropZone.length) ? dropZone : this.getTrigger();
         return dropZone;
+    };
+
+    Upload.prototype.getPasteZone = function () {
+        var pasteZone = $(this.$.data('upload-paste-zone'));
+        pasteZone = pasteZone.length ? pasteZone : undefined;
+        return pasteZone;
     };
 
     Upload.prototype.getTrigger = function () {

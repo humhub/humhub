@@ -26,7 +26,7 @@ use yii\bootstrap\Html;
             <tr>
                 <th><?= Yii::t('NotificationModule.base', 'Type') ?></th>
                 <?php foreach ($model->targets() as $target): ?>
-                    <th class="text-center">
+                    <th class="text-center" style="white-space: nowrap">
                         <?= $target->getTitle(); ?>
                     </th>
                 <?php endforeach; ?>

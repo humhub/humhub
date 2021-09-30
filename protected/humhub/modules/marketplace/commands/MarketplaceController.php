@@ -10,6 +10,7 @@ namespace humhub\modules\marketplace\commands;
 
 use humhub\components\Module;
 use humhub\models\ModuleEnabled;
+use humhub\modules\admin\libs\HumHubAPI;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\console\Controller;
@@ -241,6 +242,38 @@ class MarketplaceController extends Controller
         $module->disable();
 
         $this->stdout(Yii::t('MarketplaceModule.base', "\nModule successfully disabled!\n"), Console::FG_GREEN, Console::BOLD);
+        return 0;
+    }
+
+    /**
+     * Registers a given module.
+     *
+     * @param string $licenceKey
+     * @throws \yii\base\ErrorException
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\web\HttpException
+     */
+    public function actionRegister($licenceKey)
+    {
+        if (empty($licenceKey)) {
+            $this->stdout(Yii::t('MarketplaceModule.base', 'Module licence key cannot be empty!' . "\n"), Console::FG_RED, Console::BOLD);
+            return 1;
+        }
+
+        $result = HumHubAPI::request('v1/modules/registerPaid', ['licenceKey' => $licenceKey]);
+
+        if (!isset($result['status'])) {
+            $this->stdout(Yii::t('MarketplaceModule.base', 'Could not connect to HumHub API!' . "\n"), Console::FG_RED, Console::BOLD);
+            return 1;
+        }
+
+        if ($result['status'] != 'ok' && $result['status'] != 'created') {
+            $this->stdout(Yii::t('MarketplaceModule.base', 'Invalid module licence key!' . "\n"), Console::FG_RED, Console::BOLD);
+            return 1;
+        }
+
+        $this->stdout(Yii::t('MarketplaceModule.base', 'Module licence added!' . "\n"), Console::FG_GREEN, Console::BOLD);
         return 0;
     }
 

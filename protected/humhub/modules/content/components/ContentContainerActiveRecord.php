@@ -14,6 +14,8 @@ use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\content\models\ContentContainerTag;
+use humhub\modules\content\models\ContentContainerTagRelation;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
@@ -65,18 +67,23 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public $defaultRoute = '/';
 
     /**
+     * @var array Related Tags which should be updated after save
+     */
+    public $tagsField;
+
+    /**
      * Returns the display name of content container
      *
-     * @since 0.11.0
      * @return string
+     * @since 0.11.0
      */
     public abstract function getDisplayName();
 
     /**
      * Returns a descriptive sub title of this container used in the frontend.
      *
-     * @since 1.4
      * @return mixed
+     * @since 1.4
      */
     public abstract function getDisplayNameSub();
 
@@ -196,6 +203,10 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
             $this->update(false, ['contentcontainer_id']);
         }
 
+        if ($this->isAttributeSafe('tagsField') && $this->tagsField !== null) {
+            ContentContainerTagRelation::updateByContainer($this, $this->tagsField);
+        }
+
         parent::afterSave($insert, $changedAttributes);
     }
 
@@ -215,8 +226,8 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns the related ContentContainer model (e.g. Space or User)
      *
-     * @see ContentContainer
      * @return ContentContainer
+     * @see ContentContainer
      */
     public function getContentContainerRecord()
     {
@@ -241,8 +252,8 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * Note: This method is used to verify ContentContainerPermissions and not GroupPermissions.
      *
      * @param string|string[]|BasePermission $permission
-     * @see PermissionManager::can()
      * @return boolean
+     * @see PermissionManager::can()
      * @since 1.2
      */
     public function can($permission, $params = [], $allowCaching = true)
@@ -278,9 +289,9 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns a ModuleManager
      *
-     * @since 1.3
      * @param User $user
      * @return ModuleManager
+     * @since 1.3
      */
     public function getModuleManager()
     {
@@ -339,6 +350,26 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function isVisibleFor($visibility)
     {
         return $this->visibility == $visibility;
+    }
+
+    /**
+     * Checks if the Content Container has Tags
+     *
+     * @return boolean has tags set
+     */
+    public function hasTags()
+    {
+        return count($this->getTags()) > 0;
+    }
+
+    /**
+     * Returns an array with related Tags
+     *
+     * @return string[] a list of tag names
+     */
+    public function getTags()
+    {
+        return ContentContainerTagRelation::getNamesByContainer($this);
     }
 
 }

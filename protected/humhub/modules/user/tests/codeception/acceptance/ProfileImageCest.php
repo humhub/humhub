@@ -7,7 +7,7 @@ use user\AcceptanceTester;
 class ProfileImageCest
 {
     /**
-     * Create private space
+     * Create Private Spaces
      *
      * @param AcceptanceTester $I
      * @throws \Exception

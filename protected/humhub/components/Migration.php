@@ -43,12 +43,23 @@ class Migration extends \yii\db\Migration
         }
     }
 
-    protected function safeDropColumn($table, $column)
+    /**
+     * Check if the column already exists in the table
+     *
+     * @since 1.9.1
+     * @param string $index
+     * @param string $table
+     * @return bool
+     */
+    protected function columnExists($column, $table): bool
     {
         $tableSchema = $this->db->getTableSchema($table, true);
+        return $tableSchema && in_array($column, $tableSchema->columnNames, true);
+    }
 
-        // If the table does not exists, we want the default exception behavior
-        if (!$tableSchema || in_array($column, $tableSchema->columnNames, true)) {
+    protected function safeDropColumn($table, $column)
+    {
+        if ($this->columnExists($column, $table)) {
             $this->dropColumn($table, $column);
         } else {
             if (!$this->compact) {
@@ -60,10 +71,7 @@ class Migration extends \yii\db\Migration
 
     protected function safeAddColumn($table, $column, $type)
     {
-        $tableSchema = $this->db->getTableSchema($table, true);
-
-        // If the table does not exists, we want the default exception behavior
-        if (!$tableSchema || !in_array($column, $tableSchema->columnNames, true)) {
+        if (!$this->columnExists($column, $table)) {
             $this->addColumn($table, $column, $type);
         } else {
             if (!$this->compact) {
@@ -73,6 +81,162 @@ class Migration extends \yii\db\Migration
         }
     }
 
+    /**
+     * Check if the index already exists in the table
+     *
+     * @since 1.9.1
+     * @param string $index
+     * @param string $table
+     * @return bool
+     */
+    protected function indexExists($index, $table): bool
+    {
+        return (bool) $this->db->createCommand('SHOW KEYS FROM ' . $this->db->quoteTableName($table) .
+            ' WHERE Key_name = ' . $this->db->quoteValue($index))
+            ->queryOne();
+    }
+
+    /**
+     * Check if the foreign index already exists in the table
+     *
+     * @since 1.9.1
+     * @param string $index
+     * @param string $table
+     * @return bool
+     */
+    protected function foreignIndexExists($index, $table): bool
+    {
+        return (bool) $this->db->createCommand('SELECT * FROM information_schema.key_column_usage
+            WHERE REFERENCED_TABLE_NAME IS NOT NULL 
+              AND TABLE_NAME = ' . $this->db->quoteValue($table) . '
+              AND TABLE_SCHEMA = "humhub_develop"
+              AND CONSTRAINT_NAME = ' . $this->db->quoteValue($index))
+            ->queryOne();
+    }
+
+    /**
+     * Create an index if it doesn't exist yet
+     *
+     * @since 1.9.1
+     * @param string $index
+     * @param string $table
+     * @param string|array $columns
+     * @param bool $unique
+     */
+    protected function safeCreateIndex($index, $table, $columns, $unique = false)
+    {
+        if ($this->indexExists($index, $table)) {
+            if (!$this->compact) {
+                echo "    > skipped create index $index in the table $table, index already exists ...\n";
+            }
+            Yii::warning("Tried to create an already existing index '$index' on table '$table' in migration " . get_class($this));
+            return;
+        }
+
+        $this->createIndex($index, $table, $columns, $unique);
+    }
+
+    /**
+     * Drop an index if it exists in the table
+     *
+     * @since 1.9.1
+     * @param string $index
+     * @param string $table
+     */
+    protected function safeDropIndex($index, $table)
+    {
+        if (!$this->indexExists($index, $table)) {
+            if (!$this->compact) {
+                echo "    > skipped drop index $index from the table $table, index does not exist ...\n";
+            }
+            Yii::warning("Tried to drop a non existing index '$index' from table '$table' in migration " . get_class($this));
+            return;
+        }
+
+        $this->dropIndex($index, $table);
+    }
+
+    /**
+     * Add a primary index if it doesn't exist yet
+     *
+     * @since 1.9.1
+     * @param string $index
+     * @param string $table
+     * @param string|array $columns
+     */
+    protected function safeAddPrimaryKey($index, $table, $columns)
+    {
+        if ($this->indexExists('PRIMARY', $table)) {
+            if (!$this->compact) {
+                echo "    > skipped create primary index $index in the table $table, primary index already exists ...\n";
+            }
+            Yii::warning("Tried to create an already existing primary index '$index' on table '$table' in migration " . get_class($this));
+            return;
+        }
+
+        $this->addPrimaryKey($index, $table, $columns);
+    }
+
+    /**
+     * Drop a primary index if it exists in the table
+     *
+     * @since 1.9.1
+     * @param string $index
+     * @param string $table
+     */
+    protected function safeDropPrimaryKey($index, $table)
+    {
+        if (!$this->indexExists('PRIMARY', $table)) {
+            if (!$this->compact) {
+                echo "    > skipped drop primary index $index from the table $table, primary index does not exist ...\n";
+            }
+            Yii::warning("Tried to drop a non existing primary index '$index' from table '$table' in migration " . get_class($this));
+            return;
+        }
+
+        $this->dropPrimaryKey($index, $table);
+    }
+
+    /**
+     * Add a foreign index if it doesn't exist yet
+     *
+     * @since 1.9.1
+     * @param string $index
+     * @param string $table
+     * @param string|array $columns
+     */
+    protected function safeAddForeignKey($index, $table, $columns, $refTable, $refColumns, $delete = null, $update = null)
+    {
+        if ($this->foreignIndexExists($index, $table)) {
+            if (!$this->compact) {
+                echo "    > skipped create foreign index $index in the table $table, foreign index already exists ...\n";
+            }
+            Yii::warning("Tried to create an already existing foreign index '$index' on table '$table' in migration " . get_class($this));
+            return;
+        }
+
+        $this->addForeignKey($index, $table, $columns, $refTable, $refColumns, $delete, $update);
+    }
+
+    /**
+     * Drop a foreign if it exists in the table
+     *
+     * @since 1.9.1
+     * @param string $index
+     * @param string $table
+     */
+    protected function safeDropForeignKey($index, $table)
+    {
+        if (!$this->foreignIndexExists($index, $table)) {
+            if (!$this->compact) {
+                echo "    > skipped drop foreign index $index from the table $table, foreign index does not exist ...\n";
+            }
+            Yii::warning("Tried to drop a non existing foreign index '$index' from table '$table' in migration " . get_class($this));
+            return;
+        }
+
+        $this->dropForeignKey($index, $table);
+    }
 
     /**
      * Renames a class

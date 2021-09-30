@@ -10,6 +10,8 @@ namespace humhub\modules\post\widgets;
 
 use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\post\permissions\CreatePost;
+use humhub\modules\space\models\Space;
+use yii\helpers\Url;
 
 /**
  * This widget is used include the post form.
@@ -26,11 +28,20 @@ class Form extends WallCreateContentForm
     public $submitUrl = '/post/post/post';
 
     /**
+     * @var string
+     */
+    public $mentioningUrl = '/search/mentioning/space';
+
+    /**
      * @inheritdoc
      */
     public function renderForm()
     {
-        return $this->render('form', []);
+        $canCreatePostInSpace = ($this->contentContainer instanceof Space && $this->contentContainer->can(CreatePost::class));
+
+        return $this->render('form', [
+            'mentioningUrl' => $canCreatePostInSpace ? Url::to([$this->mentioningUrl, 'id' => $this->contentContainer->id]) : null,
+        ]);
     }
 
     /**

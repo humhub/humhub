@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Installed' => 'Installálva',
+  'Installed' => 'Telepítve',
 );

@@ -47,5 +47,8 @@ return array (
   'Wrap in block quote' => 'Envelopper dans un bloc de citation',
   'Wrap in bullet list' => 'Envelopper dans une liste à puce',
   'Wrap in ordered list' => 'Envelopper dans une liste ordonnée',
+  '[Code Block]' => '[Bloc de code]',
+  '[Image]' => '[Image]',
   '[Invalid file]' => '[Fichier invalide]',
+  '[Table]' => '[Tableau]',
 );

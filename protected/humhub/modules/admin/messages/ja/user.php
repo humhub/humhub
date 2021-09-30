@@ -12,7 +12,6 @@ return array (
   'Actions' => 'アクション',
   'Active users' => '有効なユーザー',
   'Add Groups...' => 'グループを追加...',
-  'Add a seperate page for the group to the directory.' => 'グループの別のページをディレクトリに追加します。',
   'Add new category' => '新しいカテゴリを追加',
   'Add new field' => '新しいフィールドを追加',
   'Add new group' => '新しいグループを追加',
@@ -42,6 +41,7 @@ return array (
   'Decline & delete user: <strong>{displayName}</strong>' => '削除および辞退したユーザー：<strong>{displayName}</strong>',
   'Default' => 'デフォルト',
   'Default Profile Permissions' => 'デフォルトのプロファイル権限',
+  'Default Sorting' => 'デフォルトのソート',
   'Default content of the registration approval email' => '登録承認メールのデフォルトの内容',
   'Default content of the registration denial email' => '登録拒否メールのデフォルトの内容',
   'Default groups can not be deleted!' => 'デフォルトのグループは削除できません！',
@@ -66,29 +66,41 @@ return array (
   'Enable' => '有効にする',
   'Enable individual profile permissions' => '個々のプロファイルのアクセス許可を有効にする',
   'Enabled' => '使用可能',
+  'First name' => '名前',
   'Group Manager' => 'グループマネージャー',
   'Group not found!' => 'グループが見つかりません！',
   'Group user not found!' => 'グループユーザーが見つかりません！',
   'Groups' => 'グループ',
-  'Hello {displayName},<br><br>
-Your account has been activated.<br><br>
-Click here to login:<br>
-{loginLink}<br><br>
+  'Hello {displayName},
 
-Kind Regards<br>
-{AdminName}<br><br>' => 'こんにちは{displayName}、<br><br>アカウントがアクティブ化されました。<br><br>ログインするにはここをクリックしてください：<br> {loginLink} <br><br>よろしくお願いします<br> {AdminName} <br><br>',
-  'Hello {displayName},<br><br>
-Your account request has been declined.<br><br>
+Your account has been activated.
 
-Kind Regards<br>
-{AdminName} <br><br> ' => 'こんにちは{displayName}、<br><br>アカウントリクエストは拒否されました。<br><br>よろしくお願いいたします。<br> {AdminName} <br><br>',
+Click here to login:
+{loginUrl}
+
+Kind Regards
+{AdminName}
+
+' => 'こんにちは{displayName}、あなたのアカウントはアクティブ化されました。 ログインするには、ここをクリックしてください：{loginUrl}よろしくお願いします{AdminName}',
+  'Hello {displayName},
+
+Your account request has been declined.
+
+Kind Regards
+{AdminName}
+
+' => 'こんにちは{displayName}、あなたのアカウントリクエストは拒否されました。 よろしくお願いいたします。{AdminName}',
   'Here you can create or edit profile categories and fields.' => 'ここでは、プロフィールのカテゴリや設定を作成・編集できます。',
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => '個々のプロファイルのアクセス許可が許可されていない場合、次の設定はすべてのユーザーに対して変更できません。 個別のプロファイル権限が許可されている場合、設定はユーザーがカスタマイズできるデフォルトとしてのみ設定されます。 次のエントリは、ユーザープロファイル設定に同じ形式で表示されます。',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'このオプションが選択されていない場合、スペースの所有権がアカウントに転送されます。',
   'Impersonate' => '代替ログイン',
   'Include captcha in registration form' => '登録フォームにCAPTCHAを含める',
+  'Information 1' => '情報1',
+  'Information 2' => '情報2',
+  'Information 3' => '情報3',
   'Invite not found!' => '招待が見つかりませんでした！',
   'Last login' => '前回のログイン',
+  'Last name' => '姓名',
   'List pending registrations' => '保留中の登録のリスト',
   'Make the group selectable at registration.' => '登録時にグループを選択可能にします。',
   'Manage group: {groupName}' => 'グループ編集: {groupName}',
@@ -103,14 +115,18 @@ Kind Regards<br>
   'New users can register' => '匿名ユーザーの登録',
   'No' => 'いいえ',
   'No value found!' => '値が入力されていません！',
+  'None' => 'なし',
+  'Not visible' => '見えない',
   'One or more user needs your approval as group admin.' => '1つ以上のユーザーがグループの管理者としてあなたの承認を待っています。',
   'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.' => '認証されていないユーザーのアクセスが制限されている場合にのみ適用されます。新規ユーザーにのみ影響します。',
   'Overview' => '概要',
   'Password' => 'パスワード',
   'Pending approvals' => '承認待ち',
   'Pending user approvals' => 'ユーザーの承認待ち',
+  'People' => '人々',
   'Permanently delete' => '完全に削除',
   'Permissions' => '権限',
+  'Prioritised User Group' => '優先ユーザーグループ',
   'Profile Permissions' => 'プロファイルのアクセス許可',
   'Profiles' => 'プロフィール',
   'Remove from group' => 'グループから削除',
@@ -119,6 +135,9 @@ Kind Regards<br>
   'Save' => '保存',
   'Search by name, email or id.' => '名前、メールアドレス、idで検索',
   'Select Groups' => 'グループを選択',
+  'Select a prioritised group whose members are displayed before all others when the sorting option \'Default\' is selected. The users within the group and the users outside the group are additionally sorted by their last login.' => '並べ替えオプション「デフォルト」が選択されているときに、メンバーが他のすべてのメンバーより先に表示される優先グループを選択します。 グループ内のユーザーとグループ外のユーザーは、最終ログインによってさらにソートされます。',
+  'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => '「人」概要に表示するユーザー情報を選択します。 個別に作成したものでも、任意のプロファイル フィールドを選択できます。',
+  'Send & decline' => '送信＆拒否',
   'Send & save' => '保存し送信',
   'Send invitation email' => '招待メールを出す',
   'Send invitation email again?' => '招待メールを再度送信しますか？',
@@ -139,12 +158,12 @@ Kind Regards<br>
   'User deletion process queued.' => 'ユーザー削除プロセスがキューに入れられました。',
   'User is already a member of this group.' => 'ユーザーはすでにこのグループのメンバーです',
   'User not found!' => 'ユーザーが見つかりません',
-  'Users' => 'ユーザー',
   'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'ユーザーをグループ（チーム、部門など）に登録できます。グループ用のスペース設定、管理、権限設定もできます。',
   'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => 'このオプションを使用すると、このユーザーの投稿（コンテンツ、コメントなど）は完全に削除されます。',
   'View profile' => 'プロフィールを見る',
-  'Add a separate page for the group to the directory.' => '',
+  'Visible for members only' => 'メンバーだけに見える',
   'Visible for members+guests' => 'メンバー＋ゲストにも見える',
+  'Will be used as a filter in \'People\'.' => '"人々"でフィルターとして使用されます。',
   'Yes' => 'はい',
   'You can only delete empty categories!' => 'あなたしか参加していないカテゴリを削除することができます！',
   'You cannot delete yourself!' => '自分自身を削除することはできません！',

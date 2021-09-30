@@ -92,6 +92,11 @@ class LdapSettings extends Model
     /**
      * @var string
      */
+    public $ignoredDNs;
+
+    /**
+     * @var string
+     */
     public $idAttribute;
 
     /**
@@ -119,7 +124,7 @@ class LdapSettings extends Model
     {
         return [
             [['enabled', 'refreshUsers', 'usernameAttribute', 'emailAttribute', 'username', 'passwordField', 'hostname', 'port', 'idAttribute'], 'string', 'max' => 255],
-            [['baseDn', 'loginFilter', 'userFilter'], 'string'],
+            [['baseDn', 'loginFilter', 'userFilter', 'ignoredDNs'], 'string'],
             [['usernameAttribute', 'username', 'passwordField', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter', 'idAttribute'], 'required'],
             ['encryption', 'in', 'range' => ['', 'ssl', 'tls']],
         ];
@@ -144,6 +149,7 @@ class LdapSettings extends Model
             'usernameAttribute' => Yii::t('LdapModule.base', 'Username Attribute'),
             'emailAttribute' => Yii::t('LdapModule.base', 'E-Mail Address Attribute'),
             'idAttribute' => Yii::t('LdapModule.base', 'ID Attribute'),
+            'ignoredDNs' => Yii::t('LdapModule.base', 'Ignored LDAP entries'),
         ];
     }
 
@@ -162,7 +168,7 @@ class LdapSettings extends Model
             'emailAttribute' => Yii::t('LdapModule.base', 'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;'),
             'idAttribute' => Yii::t('LdapModule.base', 'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)'),
             'userFilter' => Yii::t('LdapModule.base', 'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;'),
-
+            'ignoredDNs' => Yii::t('LdapModule.base', 'One DN per line which should not be imported automatically.'),
         ];
     }
 
@@ -198,6 +204,7 @@ class LdapSettings extends Model
         $this->emailAttribute = $settings->get('emailAttribute');
         $this->idAttribute = $settings->get('idAttribute');
 
+        $this->ignoredDNs = $settings->get('ignoredDNs');
         $this->refreshUsers = $settings->get('refreshUsers');
     }
 
@@ -224,6 +231,7 @@ class LdapSettings extends Model
         $settings->set('userFilter', $this->userFilter);
         $settings->set('usernameAttribute', $this->usernameAttribute);
         $settings->set('emailAttribute', $this->emailAttribute);
+        $settings->set('ignoredDNs', $this->ignoredDNs);
         $settings->set('idAttribute', $this->idAttribute);
         $settings->set('refreshUsers', $this->refreshUsers);
 
@@ -238,6 +246,8 @@ class LdapSettings extends Model
      */
     public function getLdapAuthDefinition()
     {
+        $this->ignoredDNs = str_replace("\r", '', $this->ignoredDNs);
+
         return [
             'class' => LdapAuth::class,
             'hostname' => $this->hostname,
@@ -249,10 +259,11 @@ class LdapSettings extends Model
             'baseDn' => $this->baseDn,
             'loginFilter' => $this->loginFilter,
             'userFilter' => $this->userFilter,
-            'autoRefreshUsers' => (boolean) $this->refreshUsers,
+            'autoRefreshUsers' => (boolean)$this->refreshUsers,
             'emailAttribute' => $this->emailAttribute,
             'usernameAttribute' => $this->usernameAttribute,
-            'idAttribute' => $this->idAttribute
+            'idAttribute' => $this->idAttribute,
+            'ignoredDNs' => explode("\n", strtolower($this->ignoredDNs))
         ];
     }
 

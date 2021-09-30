@@ -1,6 +1,8 @@
 <?php
-return array (
-  'Collapse' => 'Minska',
-  'Read more' => '',
-  'User Interface' => 'Användargränssnitt',
-);
+
+return [
+    'Collapse' => 'Minska',
+    'Read more' => 'Läs mer',
+    'User Interface' => 'Användargränssnitt',
+    'Reset filters' => '',
+];

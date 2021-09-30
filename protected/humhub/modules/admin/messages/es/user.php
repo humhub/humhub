@@ -12,7 +12,6 @@ return array (
   'Actions' => 'Acciones',
   'Active users' => 'Usuarios activos',
   'Add Groups...' => 'Agregar grupos...',
-  'Add a separate page for the group to the directory.' => 'Añadir al directorio una página aparte para el grupo.',
   'Add new category' => 'Añadir nueva categoría',
   'Add new field' => 'Añadir nuevo campo',
   'Add new group' => 'Agregar un nuevo grupo',
@@ -42,6 +41,7 @@ return array (
   'Decline & delete user: <strong>{displayName}</strong>' => 'Declinar y borrar usuario: <strong>{displayName}</strong>',
   'Default' => 'Predeterminado',
   'Default Profile Permissions' => 'Permisos de perfil predeterminados',
+  'Default Sorting' => 'Orden por defecto',
   'Default content of the registration approval email' => 'Contenido por defecto del mensaje de aceptación del registro',
   'Default content of the registration denial email' => 'Contenido por defecto del mensaje de denegación del registro',
   'Default groups can not be deleted!' => '¡Los grupos predeterminados no se pueden eliminar!',
@@ -66,29 +66,41 @@ return array (
   'Enable' => 'Habilitar',
   'Enable individual profile permissions' => 'Habilitar permisos de perfil individual',
   'Enabled' => 'Habilitado',
+  'First name' => 'Nombre',
   'Group Manager' => 'Administrador de Grupo',
   'Group not found!' => '¡Grupo no encontrado!',
   'Group user not found!' => '¡Usuario de grupo no encontrado!',
   'Groups' => 'Grupos',
-  'Hello {displayName},<br><br>
-Your account has been activated.<br><br>
-Click here to login:<br>
-{loginLink}<br><br>
+  'Hello {displayName},
 
-Kind Regards<br>
-{AdminName}<br><br>' => 'Hola {displayName}, <br><br> Su cuenta ha sido activada. <br><br> Haga clic aquí para iniciar sesión:<br> {loginLink}<br><br> Saludos cordiales<br> {AdminName} <br><br>',
-  'Hello {displayName},<br><br>
-Your account request has been declined.<br><br>
+Your account has been activated.
 
-Kind Regards<br>
-{AdminName} <br><br> ' => 'Hola {displayName},<br><br> Se ha rechazado su solicitud de cuenta.<br><br> Saludos cordiales <br> {AdminName} <br><br>',
+Click here to login:
+{loginUrl}
+
+Kind Regards
+{AdminName}
+
+' => 'Hola {displayName}, Tu cuenta ha sido activada. Haz clic aquí para acceder:: {loginUrl} Gracias {AdminName}',
+  'Hello {displayName},
+
+Your account request has been declined.
+
+Kind Regards
+{AdminName}
+
+' => 'hola {displayName}, Tu petición de cuenta ha sido rechazada. Gracias {AdminName}',
   'Here you can create or edit profile categories and fields.' => 'Aquí puedes crear o editar categorías y campos de perfil.',
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Si no se permiten permisos de perfil individual, la siguiente configuración no se puede cambiar para todos los usuarios. Si se permiten permisos de perfil individual, la configuración solo se establece como valores predeterminados que los usuarios pueden personalizar. Las siguientes entradas se muestran en el mismo formulario en la configuración del perfil de usuario:',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Si no está seleccionada esta opción, la propiedad de los espacios será transferida a tu cuenta.',
   'Impersonate' => 'Asumir identidad',
   'Include captcha in registration form' => 'Incluir captcha en el formulario de registro',
+  'Information 1' => 'Información 1',
+  'Information 2' => 'Información 2',
+  'Information 3' => 'Información 3',
   'Invite not found!' => '¡No se ha encontrado la invitación!',
   'Last login' => 'Último registro',
+  'Last name' => 'Apellido',
   'List pending registrations' => 'Lista de registros pendientes',
   'Make the group selectable at registration.' => 'Permitir que se seleccione el grupo durante el registro.',
   'Manage group: {groupName}' => 'Administrar grupo: {groupName}',
@@ -103,14 +115,18 @@ Kind Regards<br>
   'New users can register' => 'Los usuarios anónimos pueden registrarse',
   'No' => 'No',
   'No value found!' => '¡Valor no encontrado!',
+  'None' => 'Ninguno',
+  'Not visible' => 'No visible',
   'One or more user needs your approval as group admin.' => 'Uno o más usuarios necesita tu aprobación como administrador del grupo.',
   'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.' => 'Sólo aplicable cuando hay acceso limitado activado para los usuarios no autentificados. Sólo afecta a los usuarios nuevos.',
   'Overview' => 'Resumen',
   'Password' => 'Clave',
   'Pending approvals' => 'Aprobaciones pendientes',
   'Pending user approvals' => 'Aprobaciones de usuario pendientes',
+  'People' => 'Gente',
   'Permanently delete' => 'Borrar permanentemente',
   'Permissions' => 'Permisos',
+  'Prioritised User Group' => 'Grupo de usuarios prioritario',
   'Profile Permissions' => 'Permisos de perfil',
   'Profiles' => 'Perfiles',
   'Remove from group' => 'Remover del grupo',
@@ -119,6 +135,9 @@ Kind Regards<br>
   'Save' => 'Guardar',
   'Search by name, email or id.' => 'Buscar por nombre, email o id',
   'Select Groups' => 'Seleccionar grupos',
+  'Select a prioritised group whose members are displayed before all others when the sorting option \'Default\' is selected. The users within the group and the users outside the group are additionally sorted by their last login.' => 'Seleccione un grupo prioritario cuyos miembros serán mostrados antes que los demás cuando se seleccione la ordenación por defecto. Los usuarios de ese grupo y los de fuera del grupo se ordenarán además por su último acceso.',
+  'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => 'Seleccione qué información de usuario será mostrada en la vista de “Personas”. Puede seleccionar cualquier campo del perfil, incluso los que se hayan creado individualmente.',
+  'Send & decline' => 'Enviar y rechazar',
   'Send & save' => 'Enviar y guardar',
   'Send invitation email' => 'Enviar mensaje de invitación',
   'Send invitation email again?' => '¿Reenviar el mensaje de invitación?',
@@ -139,12 +158,12 @@ Kind Regards<br>
   'User deletion process queued.' => 'Se ha encolado el proceso de borrado del usuario.',
   'User is already a member of this group.' => 'Este usuario ya es miembro de este grupo.',
   'User not found!' => '¡Usuario no encontrado!',
-  'Users' => 'Usuarios',
   'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'Los usuarios pueden asignarse a diferentes grupos (por ejemplo, equipos, departamentos, etc.) con espacios estándar específicos, administradores de grupo y permisos.',
   'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => 'Al utilizar esta opción cualquier contribución (p. ej. contenidos, comentarios o “me gusta”) de este usuario se borrará de forma irrecuperable.',
   'View profile' => 'Ver perfil',
   'Visible for members only' => 'Visible para miembros únicamente',
   'Visible for members+guests' => 'Visible para miembros + invitados',
+  'Will be used as a filter in \'People\'.' => 'Se utilizará como filtro en “Personas”.',
   'Yes' => 'Sí',
   'You can only delete empty categories!' => '¡Sólo puedes borrar categorías vacias!',
   'You cannot delete yourself!' => '¡No te puedes borrar a tí mismo!',

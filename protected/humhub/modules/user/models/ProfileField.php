@@ -11,6 +11,8 @@ namespace humhub\modules\user\models;
 use humhub\components\ActiveRecord;
 use humhub\libs\Helpers;
 use humhub\modules\user\models\fieldtype\BaseType;
+use humhub\modules\user\models\fieldtype\Select;
+use humhub\modules\user\models\fieldtype\Text;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -38,6 +40,7 @@ use yii\db\ActiveQuery;
  * @property string $translation_category
  * @property integer $is_system
  * @property integer $searchable
+ * @property integer $directory_filter
  */
 class ProfileField extends ActiveRecord
 {
@@ -64,7 +67,7 @@ class ProfileField extends ActiveRecord
     {
         return [
             [['profile_field_category_id', 'field_type_class', 'internal_name', 'title', 'sort_order'], 'required'],
-            [['profile_field_category_id', 'required', 'editable', 'searchable', 'show_at_registration', 'visible', 'sort_order'], 'integer'],
+            [['profile_field_category_id', 'required', 'editable', 'searchable', 'show_at_registration', 'visible', 'sort_order', 'directory_filter'], 'integer'],
             [['module_id', 'field_type_class', 'title'], 'string', 'max' => 255],
             ['internal_name', 'string', 'max' => 100],
             [['ldap_attribute', 'translation_category'], 'string', 'max' => 255],
@@ -103,6 +106,7 @@ class ProfileField extends ActiveRecord
             'translation_category' => Yii::t('UserModule.profile', 'Translation Category ID'),
             'required' => Yii::t('UserModule.profile', 'Required'),
             'searchable' => Yii::t('UserModule.profile', 'Searchable'),
+            'directory_filter' => Yii::t('UserModule.profile', 'Use as Directory filter'),
             'title' => Yii::t('UserModule.profile', 'Title'),
             'description' => Yii::t('UserModule.profile', 'Description'),
             'sort_order' => Yii::t('UserModule.profile', 'Sort order'),
@@ -169,6 +173,7 @@ class ProfileField extends ActiveRecord
         $categories = ProfileFieldCategory::find()->orderBy('sort_order')->all();
         $profileFieldTypes = new fieldtype\BaseType();
         $isVirtualField = (!$this->isNewRecord && $this->getFieldType()->isVirtual);
+        $canBeDirectoryFilter = (!$this->isNewRecord && $this->getFieldType()->canBeDirectoryFilter);
 
         return [
             'ProfileField' => [
@@ -226,6 +231,10 @@ class ProfileField extends ActiveRecord
                     'searchable' => [
                         'type' => 'checkbox',
                         'isVisible' => (!$isVirtualField)
+                    ],
+                    'directory_filter' => [
+                        'type' => 'checkbox',
+                        'isVisible' => ($canBeDirectoryFilter)
                     ],
                     'profile_field_category_id' => [
                         'type' => 'dropdownlist',

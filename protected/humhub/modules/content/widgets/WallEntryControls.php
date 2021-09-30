@@ -9,7 +9,6 @@ use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\widgets\Menu;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 
 /**
  * This widget is responsible for rendering the context menu for wallentries.
@@ -45,13 +44,17 @@ class WallEntryControls extends Menu
      */
     public function init()
     {
+        $this->initRenderOptions();
+        parent::init();
+    }
+
+    public function initRenderOptions()
+    {
         if(!$this->renderOptions && $this->wallEntryWidget instanceof WallStreamEntryWidget) {
             $this->renderOptions = $this->wallEntryWidget->renderOptions;
         } else if(!$this->renderOptions) {
             $this->renderOptions = new WallStreamEntryOptions();
         }
-
-        parent::init();
     }
 
     /**
@@ -66,13 +69,10 @@ class WallEntryControls extends Menu
         return $this->renderOptions->getViewContext();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function run()
+    public function initControls()
     {
-        if($this->renderOptions->isControlsMenuDisabled()) {
-            return '';
+        if ($this->renderOptions->isControlsMenuDisabled()) {
+            return;
         }
 
         $entries = $this->wallEntryWidget instanceof WallEntry
@@ -86,6 +86,18 @@ class WallEntryControls extends Menu
 
             $this->addEntry($this->getWallEntryLink($menuItem));
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function run()
+    {
+        if ($this->renderOptions->isControlsMenuDisabled()) {
+            return '';
+        }
+
+        $this->initControls();
 
         return parent::run();
     }

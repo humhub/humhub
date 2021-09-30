@@ -74,8 +74,8 @@ class ModuleAutoLoader implements BootstrapInterface
         foreach ($folders as $folder) {
             try {
                 /** @noinspection PhpIncludeInspection */
-                $moduleConfig = require $folder . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
-                if (isset($moduleIdFolders[$moduleConfig['id']])) {
+                $moduleConfig = include $folder . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
+                if (Yii::$app->moduleManager->preventDuplicatedModules && isset($moduleIdFolders[$moduleConfig['id']])) {
                     Yii::error('Duplicated module "' . $moduleConfig['id'] . '"(' . $folder . ') is already loaded from the folder "' . $moduleIdFolders[$moduleConfig['id']] . '"');
                 } else {
                     $modules[$folder] = $moduleConfig;
@@ -83,6 +83,25 @@ class ModuleAutoLoader implements BootstrapInterface
                 }
             } catch (\Throwable $e) {
                 Yii::error($e);
+            }
+        }
+
+        if (Yii::$app->moduleManager->preventDuplicatedModules) {
+            // Overwrite module paths from config
+            foreach (Yii::$app->moduleManager->overwriteModuleBasePath as $overwriteModuleId => $overwriteModulePath) {
+                if (isset($moduleIdFolders[$overwriteModuleId]) && $moduleIdFolders[$overwriteModuleId] != $overwriteModulePath) {
+                    try {
+                        $moduleConfig = include $overwriteModulePath . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
+                        Yii::info('Overwrite path of the module "' . $overwriteModuleId . '" to the folder "' . $overwriteModulePath . '"');
+                        // Remove original config
+                        unset($modules[$moduleIdFolders[$overwriteModuleId]]);
+                        // Use config from the overwritten path
+                        $modules[$overwriteModulePath] = $moduleConfig;
+                        $moduleIdFolders[$overwriteModuleId] = $overwriteModulePath;
+                    } catch (\Throwable $e) {
+                        Yii::error($e);
+                    }
+                }
             }
         }
 

@@ -81,7 +81,10 @@ class ProfileController extends ContentContainerController
             return $this->redirect(Url::to(['/user/profile/about', 'container' => $this->getUser()]));
         }
 
-        return $this->render('home', ['user' => $this->contentContainer]);
+        return $this->render('home', [
+            'user' => $this->contentContainer,
+            'isSingleContentRequest' => !empty(Yii::$app->request->getQueryParam('contentId')),
+        ]);
     }
 
     public function actionAbout()
@@ -127,7 +130,7 @@ class ProfileController extends ContentContainerController
     {
         return $this->renderAjaxContent(UserListBox::widget([
             'query' => $this->getUser()->getFollowersQuery()->orderBy(['user_follow.id' => SORT_DESC]),
-            'title' => Yii::t('UserModule.base', '<strong>User</strong> followers'),
+            'title' => Yii::t('UserModule.base', '<strong>Followers</strong>'),
         ]));
     }
 
@@ -135,7 +138,7 @@ class ProfileController extends ContentContainerController
     {
         return $this->renderAjaxContent(UserListBox::widget([
             'query' => $this->getUser()->getFollowingQuery()->orderBy(['user_follow.id' => SORT_DESC]),
-            'title' => Yii::t('UserModule.base', '<strong>Following</strong> user'),
+            'title' => Yii::t('UserModule.base', '<strong>Following</strong>'),
         ]));
     }
 

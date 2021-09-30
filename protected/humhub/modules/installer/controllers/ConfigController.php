@@ -253,7 +253,7 @@ class ConfigController extends Controller
 
                 // Create second user
                 $userModel = new User();
-                $userModel->scenario = 'registration';
+                $userModel->scenario = User::SCENARIO_EDIT_ADMIN;
                 $profileModel = $userModel->profile;
                 $profileModel->scenario = 'registration';
 
@@ -261,7 +261,7 @@ class ConfigController extends Controller
                 $userModel->username = "david1986";
                 $userModel->email = "david.roberts@example.com";
                 $userModel->language = '';
-                $userModel->tags = "Microsoft Office, Marketing, SEM, Digital Native";
+                $userModel->tagsField = ['Microsoft Office', 'Marketing', 'SEM', 'Digital Native'];
                 $userModel->save();
 
                 $profileImage = new \humhub\libs\ProfileImage($userModel->guid);
@@ -283,7 +283,7 @@ class ConfigController extends Controller
 
                 // Create third user
                 $userModel2 = new User();
-                $userModel2->scenario = 'registration';
+                $userModel2->scenario = User::SCENARIO_EDIT_ADMIN;
                 $profileModel2 = $userModel2->profile;
                 $profileModel2->scenario = 'registration';
 
@@ -291,7 +291,7 @@ class ConfigController extends Controller
                 $userModel2->username = "sara1989";
                 $userModel2->email = "sara.schuster@example.com";
                 $userModel2->language = '';
-                $userModel2->tags = "Yoga, Travel, English, German, French";
+                $userModel2->tagsField = ['Yoga', 'Travel', 'English', 'German', 'French'];
                 $userModel2->save();
 
                 $profileImage2 = new \humhub\libs\ProfileImage($userModel2->guid);
@@ -337,7 +337,7 @@ class ConfigController extends Controller
                 Yii::$app->user->switchIdentity($userModel);
 
                 $comment = new \humhub\modules\comment\models\Comment();
-                $comment->message = Yii::t("InstallerModule.base", "Nike – Just buy it. ;Wink;");
+                $comment->message = Yii::t("InstallerModule.base", "Nike – Just buy it. :wink:");
                 $comment->object_model = $post->className();
                 $comment->object_id = $post->getPrimaryKey();
                 $comment->save();
@@ -388,7 +388,7 @@ class ConfigController extends Controller
 
 
         $userModel = new User();
-        $userModel->scenario = 'registration_email';
+        $userModel->scenario = User::SCENARIO_EDIT_ADMIN;
         $userPasswordModel = new Password();
         $userPasswordModel->scenario = 'registration';
         $profileModel = $userModel->profile;
@@ -453,7 +453,7 @@ class ConfigController extends Controller
 
             $form->models['User']->status = User::STATUS_ENABLED;
             $form->models['User']->language = '';
-            $form->models['User']->tags = 'Administration, Support, HumHub';
+            $form->models['User']->tagsField = ['Administration', 'Support', 'HumHub'];
             $form->models['User']->save();
 
             $form->models['Profile']->user_id = $form->models['User']->id;
@@ -495,7 +495,7 @@ class ConfigController extends Controller
 
             // Add Some Post to the Space
             $post = new \humhub\modules\post\models\Post();
-            $post->message = Yii::t("InstallerModule.base", "Yay! I've just installed HumHub ;Cool;");
+            $post->message = Yii::t("InstallerModule.base", "Yay! I've just installed HumHub :sunglasses:");
             $post->content->container = $space;
             $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
             $post->save();
@@ -527,6 +527,7 @@ class ConfigController extends Controller
             throw new CException("Finished without secret setting!");
         }
 
+        Yii::$app->settings->set('defaultTimeZone', Yii::$app->timeZone);
         Yii::$app->settings->set('timeZone', Yii::$app->timeZone);
 
         // Set to installed

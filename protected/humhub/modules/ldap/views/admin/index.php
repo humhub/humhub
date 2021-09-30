@@ -14,7 +14,7 @@
  */
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 
 ?>
 
@@ -69,6 +69,11 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'emailAttribute')->textInput() ?>
     <?= $form->field($model, 'idAttribute')->textInput() ?>
     <?= $form->field($model, 'refreshUsers')->checkbox() ?>
+
+    <?= $form->beginCollapsibleFields(Yii::t('AdminModule.base', 'Advanced settings')); ?>
+    <?= $form->field($model, 'ignoredDNs')->textarea(['style' => 'white-space:nowrap;']) ?>
+    <?= $form->endCollapsibleFields(); ?>
+
     <hr>
 
     <?= Html::submitButton(Yii::t('base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']) ?>

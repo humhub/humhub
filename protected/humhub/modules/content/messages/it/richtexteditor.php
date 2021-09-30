@@ -47,5 +47,8 @@ return array (
   'Wrap in block quote' => 'Elenco a trattini',
   'Wrap in bullet list' => 'Elennco a pallini',
   'Wrap in ordered list' => 'Elenco in lista ordinata',
+  '[Code Block]' => '[Code Block]',
+  '[Image]' => '[Immagine]',
   '[Invalid file]' => '[file non valido]',
+  '[Table]' => '[Tabella]',
 );

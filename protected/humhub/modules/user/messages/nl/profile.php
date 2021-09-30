@@ -105,6 +105,7 @@ return array (
   'Updated at' => 'Aangepast op',
   'Updated by' => 'Aangepast door',
   'Url' => 'URL',
+  'Use as Directory filter' => 'Gebruiken als indexfilter',
   'Username' => 'Gebruikernaam',
   'Validator' => 'Validatie',
   'Vimeo URL' => 'Vimeo URL',
@@ -114,4 +115,5 @@ return array (
   'You need to login to view this user profile!' => 'U moet ingelogd zijn om dit profiel te bekijken!',
   'YouTube URL' => 'YouTube URL',
   'Zip' => 'Postcode',
+  '{attribute} is required!' => '{attribute} is vereist!',
 );

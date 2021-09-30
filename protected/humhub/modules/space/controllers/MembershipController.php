@@ -18,10 +18,12 @@ use humhub\modules\space\models\forms\RequestMembershipForm;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\permissions\InviteUsers;
+use humhub\modules\space\widgets\MembershipButton;
 use humhub\modules\user\models\UserPicker;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\widgets\ModalClose;
 use Yii;
+use yii\helpers\Json;
 use yii\web\HttpException;
 
 /**
@@ -48,7 +50,8 @@ class MembershipController extends ContentContainerController
                     'search-invite',
                     'switch-dashboard-display'
                     ]
-            ]
+            ],
+            [ContentContainerControllerAccess::RULE_AJAX_ONLY => ['members-list']],
         ];
     }
 
@@ -93,7 +96,7 @@ class MembershipController extends ContentContainerController
 
         $space->addMember(Yii::$app->user->id);
 
-        return $this->htmlRedirect($space->getUrl());
+        return $this->getActionResult($space);
     }
 
     /**
@@ -115,8 +118,17 @@ class MembershipController extends ContentContainerController
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $space->requestMembership(Yii::$app->user->id, $model->message);
-            return $this->renderAjax('requestMembershipSave', ['space' => $space]);
+
+            return $this->renderAjax('requestMembershipSave', [
+                'spaceId' => $space->id,
+                'newMembershipButton' => MembershipButton::widget([
+                    'space' => $space,
+                    'options' => empty($model->options) ? [] : Json::decode($model->options)
+                ]),
+            ]);
         }
+
+        $model->options = $this->request->get('options');
 
         return $this->renderAjax('requestMembership', ['model' => $model, 'space' => $space]);
     }
@@ -159,7 +171,7 @@ class MembershipController extends ContentContainerController
 
         $space->removeMember();
 
-        return $this->goHome();
+        return $this->getActionResult($space);
     }
 
     /**
@@ -224,7 +236,7 @@ class MembershipController extends ContentContainerController
             $space->addMember(Yii::$app->user->id);
         }
 
-        return $this->redirect($space->getUrl());
+        return $this->getActionResult($space);
     }
 
     /**
@@ -253,6 +265,35 @@ class MembershipController extends ContentContainerController
             'query' => Membership::getSpaceMembersQuery($this->getSpace())->visible(),
             'title' => Yii::t('SpaceModule.manage', "<strong>Members</strong>"),
         ]));
+    }
+
+    /**
+     * Get result for the membership actions
+     *
+     * @param Space $space
+     * @return string|\yii\console\Response|\yii\web\Response
+     * @throws \Exception
+     */
+    protected function getActionResult(Space $space)
+    {
+        if ($this->request->isAjax) {
+            $options = $this->request->post('options', []);
+
+            // Show/Hide the "Follow"/"Unfollow" buttons depending on updated membership state after AJAX action
+            if ($space->isMember()) {
+                $options['cancelMembership']['attrs']['data-hide-buttons'] = '.followButton, .unfollowButton';
+            } else {
+                $options['becomeMember']['attrs']['data-show-buttons'] = $space->isFollowedByUser() ? '.unfollowButton' : '.followButton';
+                $options['becomeMember']['attrs']['data-hide-buttons'] = $space->isFollowedByUser() ? '.followButton' : '.unfollowButton';
+            }
+
+            return MembershipButton::widget([
+                'space' => $space,
+                'options' => $options,
+            ]);
+        }
+
+        return $this->redirect($this->request->getReferrer());
     }
 
 }

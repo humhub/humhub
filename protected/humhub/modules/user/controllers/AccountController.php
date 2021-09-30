@@ -9,6 +9,7 @@
 namespace humhub\modules\user\controllers;
 
 use humhub\compat\HForm;
+use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\user\authclient\interfaces\PrimaryClient;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\forms\AccountChangeEmail;
@@ -115,18 +116,20 @@ class AccountController extends BaseAccountController
             $model->language = Yii::$app->settings->get('defaultLanguage');
         }
         $model->timeZone = $user->time_zone;
-        if ($model->timeZone == "") {
-            $model->timeZone = Yii::$app->settings->get('timeZone');
+        if (empty($model->timeZone)) {
+            $model->timeZone = Yii::$app->settings->get('defaultTimeZone');
         }
 
-        $model->tags = $user->tags;
+        $model->tags = $user->getTags();
         $model->show_introduction_tour = Yii::$app->getModule('tour')->settings->contentContainer($user)->get("hideTourPanel");
         $model->visibility = $user->visibility;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             Yii::$app->getModule('tour')->settings->contentContainer($user)->set('hideTourPanel', $model->show_introduction_tour);
+
+            $user->scenario = User::SCENARIO_EDIT_ACCOUNT_SETTINGS;
             $user->language = $model->language;
-            $user->tags = $model->tags;
+            $user->tagsField = $model->tags;
             $user->time_zone = $model->timeZone;
             $user->visibility = $model->visibility;
             $user->save();
@@ -141,6 +144,17 @@ class AccountController extends BaseAccountController
         $col->asort($languages);
 
         return $this->render('editSettings', ['model' => $model, 'languages' => $languages]);
+    }
+
+    /**
+     * Returns user tags list in JSON format filtered by keyword
+     */
+    public function actionSearchTagsJson()
+    {
+        $keyword = Yii::$app->request->get('keyword');
+        $pickerTags = ContainerTagPicker::searchTagsByContainerClass(User::class, $keyword);
+
+        return $this->asJson($pickerTags);
     }
 
     /**

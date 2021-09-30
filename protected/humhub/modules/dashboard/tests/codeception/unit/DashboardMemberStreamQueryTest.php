@@ -60,14 +60,14 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
         $this->assertSpaceMemberDoesNotSee(Space::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, 1 , Space::STATUS_DISABLED);
     }
 
-    private function assertSpaceMemberDoesSee($spaceVisibility, $contentVisibility, $show_at_dahsboard = 1,  $state = Space::STATUS_ENABLED)
+    private function assertSpaceMemberDoesSee($spaceVisibility, $contentVisibility, $showAtDashboard = 1, $state = Space::STATUS_ENABLED)
     {
         $user = User::findOne(['id' => 3]);
         $space = Space::findOne(['id' => 1]);
         $space->updateAttributes(['status' => $state, 'visibility' => $spaceVisibility]);
 
         $membership = $space->getMembership($user->id);
-        $membership->updateAttributes(['show_at_dashboard' => $show_at_dahsboard]);
+        $membership->updateAttributes(['show_at_dashboard' => $showAtDashboard]);
 
         static::assertTrue($space->isMember($user->id));
 
@@ -426,9 +426,9 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
         $this->assertFriendUserDoesNotSeeProfileContent(Content::VISIBILITY_PUBLIC, false, User::STATUS_DISABLED);
     }
 
-    public function testFriendRequestedUserDoesNotSeePublicContent()
+    public function testFriendRequestedUserDoesSeePublicContent()
     {
-        $this->assertFriendUserDoesNotSeeProfileContent(Content::VISIBILITY_PUBLIC, true);
+        $this->assertFriendUserDoesSeeProfileContent(Content::VISIBILITY_PUBLIC, true);
     }
 
     public function testFriendRequestedUserDoesNotSeePrivateContent()

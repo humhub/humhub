@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Hm...' => 'Hm...',
-  'Please check your internet connection and <a href="?">refresh</a> this page once your are online again!' => 'Kérjük, ellenőrizze internetkapcsolatát, és <a href="?">frissítse</a> ezt az oldalt, miután újra online állapotban van!',
-  'Unable to connect to {site}' => 'Nem sikerült csatlakozni a webhelyhez: {site}',
+  'Hm...' => 'Hmm...',
+  'Please check your internet connection and <a href="?">refresh</a> this page once you are online again!' => 'Kérjük, ellenőrizd le az internetkapcsolatod, és <a href="?">frissítsd</a> ezt az oldalt, miután ismét online állapotban vagy!',
+  'Unable to connect to {site}' => 'Nem sikerül csatlakozni a(z) {site} oldalhoz',
 );

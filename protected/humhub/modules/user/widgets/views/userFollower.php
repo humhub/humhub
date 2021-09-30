@@ -12,7 +12,7 @@ use humhub\modules\user\models\User;
         <!-- Display panel menu widget -->
         <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'profile-follower-panel']); ?>
 
-        <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>User</strong> followers'); ?></div>
+        <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>Followers</strong>'); ?></div>
 
         <div class="panel-body">
             <?php foreach ($followers as $follower): ?>
@@ -35,7 +35,7 @@ use humhub\modules\user\models\User;
         <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'profile-following-panel']); ?>
 
         <div class="panel-heading">
-            <?php echo Yii::t('UserModule.base', '<strong>Following</strong> user'); ?>
+            <?php echo Yii::t('UserModule.base', '<strong>Following</strong>'); ?>
         </div>
 
         <div class="panel-body">

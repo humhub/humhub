@@ -7,8 +7,8 @@ return array (
   'Search' => 'Sök',
   'Search for user, spaces and content' => 'Sök efter användare, nätverk och innehåll',
   'Search only in certain spaces:' => 'Sök bara i vissa nätverk:',
-  'Spaces' => 'Nätverk ',
+  'Spaces' => 'Nätverk',
   'Specify space' => 'Ange nätverk',
   'Users' => 'Användare',
-  'Your search returned no matches.' => 'Din sökning returnerade inga träffar.',
+  'Your search returned no matches.' => 'Din sökning genererade inga träffar.',
 );

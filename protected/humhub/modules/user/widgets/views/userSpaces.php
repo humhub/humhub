@@ -9,7 +9,7 @@ use yii\helpers\Html;
         <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'user-spaces-panel']); ?>
 
         <div class="panel-heading">
-            <?php echo Yii::t('UserModule.base', '<strong>Member</strong> in these spaces'); ?>
+            <?php echo Yii::t('UserModule.base', '<strong>Member</strong> of these Spaces'); ?>
         </div>
 
         <div class="panel-body">

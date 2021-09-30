@@ -30,7 +30,7 @@ class ExcludeGroupNotification extends BaseNotification
      */
     public function getUrl()
     {
-        return Url::to(['/directory/directory/groups']);
+        return Url::to(['/user/people']);
     }
 
     /**

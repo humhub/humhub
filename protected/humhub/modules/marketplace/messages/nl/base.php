@@ -37,6 +37,8 @@ The license was successfully removed!
   'Browse online' => 'Blader online',
   'Buy' => 'Kopen',
   'Buy (%price%)' => 'Koop (%price%)',
+  'Could not connect to HumHub API!
+' => 'Kan geen verbinding maken met HumHub API!',
   'Could not connect to licence server!' => 'Kan geen verbinding maken met de licentieserver!',
   'Could not extract module!' => 'Kon module niet uitpakken!',
   'Could not remove old module path!' => 'Kan het oude modulepad niet verwijderen!',
@@ -50,6 +52,8 @@ The license was successfully removed!
   'Installed' => 'Geïnstalleerd',
   'Installed version:' => 'Geïnstalleerde versie:',
   'Installing module...' => 'Module installeren...',
+  'Invalid module licence key!
+' => 'Ongeldige modulelicentiesleutel!',
   'Latest compatible Version:' => 'Nieuwste compatibele versie:',
   'Latest compatible version:' => 'Nieuwste compatibele versie:',
   'Latest version:' => 'Nieuwste versie:',
@@ -61,6 +65,10 @@ The license was successfully removed!
   'Max. users:' => 'Maximale aantal gebruikers:',
   'Module directory %modulePath% is not writeable!' => 'Modulemap %modulePath% is niet schrijfbaar!',
   'Module download failed! (%error%)' => 'Download van module mislukt! (%error%)',
+  'Module licence added!
+' => 'Modulelicentie toegevoegd!',
+  'Module licence key cannot be empty!
+' => 'Modulelicentiesleutel mag niet leeg zijn!',
   'Module not found or activated!
 ' => 'Module niet gevonden of geactiveerd!',
   'Module not found!

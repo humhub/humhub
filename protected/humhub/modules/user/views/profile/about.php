@@ -41,7 +41,7 @@ $categories = $user->profile->getProfileFieldCategories();
                                 </label>
                                 <?php if (strtolower($field->title) == 'about'): ?>
                                     <div class="col-sm-9">
-                                        <p class="form-control-static"><?= RichText::output($field->getUserValue($user, true)) ?></p>
+                                        <div class="form-control-static"><?= RichText::output($field->getUserValue($user, true)) ?></div>
                                     </div>
                                 <?php else: ?>
                                     <div class="col-sm-9">

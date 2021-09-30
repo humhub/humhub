@@ -235,13 +235,19 @@ class Friendship extends \humhub\components\ActiveRecord
      *
      * @param User $user
      * @param User $friend
+     * @return bool
      */
     public static function add($user, $friend)
     {
         $friendship = new Friendship();
         $friendship->user_id = $user->id;
         $friendship->friend_user_id = $friend->id;
-        return $friendship->save();
+        if ($friendship->save()) {
+            $friend->follow($user, false);
+            return true;
+        }
+
+        return false;
     }
 
     /**

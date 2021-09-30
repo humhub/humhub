@@ -52,7 +52,6 @@ use Yii;
  * @property integer $join_policy
  * @property integer $visibility
  * @property integer $status
- * @property string $tags
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
@@ -122,7 +121,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
         $rules = [
             [['join_policy', 'visibility', 'status', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
             [['name'], 'required'],
-            [['description', 'about', 'tags', 'color'], 'string'],
+            [['description', 'about', 'color'], 'string'],
+            [['tagsField'], 'safe'],
             [['description'], 'string', 'max' => 100],
             [['join_policy'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'in', 'range' => [0, 1, 2]],
@@ -149,7 +149,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     {
         $scenarios = parent::scenarios();
 
-        $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'about', 'tags', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
+        $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'about', 'tagsField', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
         $scenarios[static::SCENARIO_CREATE] = ['name', 'color', 'description', 'join_policy', 'visibility'];
         $scenarios[static::SCENARIO_SECURITY_SETTINGS] = ['default_content_visibility', 'join_policy', 'visibility'];
 
@@ -170,7 +170,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             'join_policy' => Yii::t('SpaceModule.base', 'Join Policy'),
             'visibility' => Yii::t('SpaceModule.base', 'Visibility'),
             'status' => Yii::t('SpaceModule.base', 'Status'),
-            'tags' => Yii::t('SpaceModule.base', 'Tags'),
+            'tagsField' => Yii::t('SpaceModule.base', 'Tags'),
             'created_at' => Yii::t('SpaceModule.base', 'Created At'),
             'created_by' => Yii::t('SpaceModule.base', 'Created By'),
             'updated_at' => Yii::t('SpaceModule.base', 'Updated At'),
@@ -359,7 +359,6 @@ class Space extends ContentContainerActiveRecord implements Searchable
             return false;
         }
 
-        // No one can join
         if ($this->join_policy == self::JOIN_POLICY_NONE) {
             return false;
         }
@@ -385,7 +384,6 @@ class Space extends ContentContainerActiveRecord implements Searchable
             return false;
         }
 
-        // No one can join
         if ($this->join_policy == self::JOIN_POLICY_FREE) {
             return true;
         }
@@ -397,38 +395,19 @@ class Space extends ContentContainerActiveRecord implements Searchable
      * Returns an array of informations used by search subsystem.
      * Function is defined in interface ISearchable
      *
-     * @return Array
+     * @return array
      */
     public function getSearchAttributes()
     {
         $attributes = [
             'title' => $this->name,
-            'tags' => $this->tags,
+            'tags' => implode(', ', $this->getTags()),
             'description' => $this->description
         ];
 
         $this->trigger(self::EVENT_SEARCH_ADD, new SearchAddEvent($attributes));
 
         return $attributes;
-    }
-
-    /**
-     * Checks if space has tags
-     *
-     * @return boolean has tags set
-     */
-    public function hasTags()
-    {
-        return ($this->tags != '');
-    }
-
-    /**
-     * Returns an array with assigned Tags
-     */
-    public function getTags()
-    {
-        // split tags string into individual tags
-        return preg_split("/[;,# ]+/", $this->tags);
     }
 
     /**
@@ -694,6 +673,6 @@ class Space extends ContentContainerActiveRecord implements Searchable
      */
     public function getGroupSpaces()
     {
-         return $this->hasMany(GroupSpace::class, ['space_id' => 'id']);
+        return $this->hasMany(GroupSpace::class, ['space_id' => 'id']);
     }
 }

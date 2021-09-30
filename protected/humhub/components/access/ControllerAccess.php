@@ -97,6 +97,7 @@ use yii\web\Controller;
  *  - **strict**: Will check for guest users against the guest users allowed setting
  *  - **post**: Will only accept post requests for the given actions
  *  - **json**: Will handle json result requests by setting `Yii::$app->response->format = 'json'`
+ *  - **ajax**: Allows only AJAX requests. See: `Yii::$app->request->isAjax`
  *  - **disabledUser**: Checks if the given user is a disabled user **(fixed)**
  *  - **unapprovedUser**: Checks if the given user is a unapproved user **(fixed)**
  *
@@ -156,7 +157,7 @@ class ControllerAccess extends BaseObject
     /**
      * Maintenance mode is active
      */
-    const RULE_MAINTENANCE_MODE= 'maintenance';
+    const RULE_MAINTENANCE_MODE = 'maintenance';
 
     /**
      * Check guest if request method is post
@@ -169,12 +170,18 @@ class ControllerAccess extends BaseObject
     const RULE_JSON = 'json';
 
     /**
+     * Only AJAX request is allowed for the actions
+     */
+    const RULE_AJAX_ONLY = 'ajax';
+
+    /**
      * @var array fixed rules will always be added to the current rule set
      */
     protected $fixedRules = [
         [self::RULE_DISABLED_USER],
         [self::RULE_UNAPPROVED_USER],
         [self::RULE_MUST_CHANGE_PASSWORD],
+        [self::RULE_MAINTENANCE_MODE],
     ];
 
     /**
@@ -276,6 +283,11 @@ class ControllerAccess extends BaseObject
             'code' => 405
         ]);
         $this->registerValidator([self::RULE_JSON => 'validateJsonResponse']);
+        $this->registerValidator([
+            self::RULE_AJAX_ONLY => 'validateAjaxOnlyRequest',
+            'reason' => Yii::t('error', 'The specified URL cannot be called directly.'),
+            'code' => 405
+        ]);
     }
 
     /**
@@ -462,6 +474,14 @@ class ControllerAccess extends BaseObject
     }
 
     /**
+     * @return mixed checks if the current request is an ajax request
+     */
+    public function validateAjaxOnlyRequest()
+    {
+        return Yii::$app->request->isAjax;
+    }
+
+    /**
      * @return bool makes sure the response type is json
      */
     public function validateJsonResponse()
@@ -517,17 +537,22 @@ class ControllerAccess extends BaseObject
      */
     public function validateMaintenanceMode()
     {
-        return !Yii::$app->settings->get('maintenanceMode') || $this->isAdmin();
+        return !Yii::$app->settings->get('maintenanceMode') ||
+            $this->isAdmin() ||
+            ($this->owner->module->id == 'user' && $this->owner->id == 'auth' && $this->owner->action->id == 'login');
     }
 
     /**
+     * @param string $beforeCustomInfo
      * @return string returns the maintenance mode warning text
      * @since 1.8
      */
-    public static function getMaintenanceModeWarningText()
+    public static function getMaintenanceModeWarningText($beforeCustomInfo = ' ')
     {
+        $customInfo = Yii::$app->settings->get('maintenanceModeInfo', '');
+
         return Yii::t('error', 'Maintenance mode is active. Only Administrators can access the platform.') .
-            ' ' . Yii::$app->settings->get('maintenanceModeInfo', '');
+            ($customInfo === '' ? '' : $beforeCustomInfo . $customInfo);
     }
 
 }

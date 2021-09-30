@@ -32,6 +32,11 @@ class VisibilityLink extends \yii\base\Widget
     {
         $content = $this->contentRecord->content;
         $contentContainer = $content->container;
+        
+        // If content is global
+        if ($contentContainer === null) {
+            return;
+        }
 
         // Prevent Change to "Public" in private spaces
         if(!$content->canEdit() || (!$content->visibility && !$contentContainer->visibility)) {

@@ -72,6 +72,20 @@ class MigrateController extends \yii\console\controllers\MigrateController
      */
     protected $migrationPathMap = [];
 
+
+    /**
+     * @inerhitdoc
+     */
+    public function beforeAction($action)
+    {
+        // Make sure to define default table storage engine
+        if (in_array(Yii::$app->db->getDriverName(), ['mysql', 'mysqli'], true)) {
+            Yii::$app->db->pdo->exec('SET default_storage_engine=' . Yii::$app->params['databaseDefaultStorageEngine']);
+        }
+        return parent::beforeAction($action);
+    }
+
+
     /**
      * @inheritdoc
      */

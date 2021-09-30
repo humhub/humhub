@@ -1,6 +1,8 @@
 <?php
 /* @var $this yii\web\View */
 /* @var $viewable humhub\modules\user\notifications\Mentioned */
+/* @var $originator \humhub\modules\user\models\User */
+/* @var $record \humhub\modules\notification\models\Notification */
 ?>
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
 
@@ -11,6 +13,7 @@
         <td>
              <?= humhub\widgets\mails\MailCommentEntry::widget([
                 'originator' => $originator,
+                'receiver' => $record->user,
                 'comment' => $comment,
                 'date' => $date,
                 'space' => $space,
@@ -31,6 +34,7 @@
             <?=
             humhub\widgets\mails\MailContentEntry::widget([
                 'originator' => $contentRecord->owner,
+                'receiver' => $record->user,
                 'content' => $contentRecord,
                 'date' => $date,
                 'space' => $space

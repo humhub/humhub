@@ -13,12 +13,13 @@ use humhub\modules\user\authclient\Password;
 use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\models\User as UserModel;
 use Yii;
 use yii\authclient\ClientInterface;
 
 /**
  * Description of User
- * @property \humhub\modules\user\models\User|null $identity
+ * @property UserModel|null $identity
  * @author luke
  */
 class User extends \yii\web\User
@@ -41,6 +42,16 @@ class User extends \yii\web\User
      * @since 1.8
      */
     public $mustChangePasswordRoute = '/user/must-change-password';
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            Impersonator::class,
+        ];
+    }
 
     public function isAdmin()
     {
@@ -225,6 +236,13 @@ class User extends \yii\web\User
     public function switchIdentity($identity, $duration = 0)
     {
         $this->trigger(self::EVENT_BEFORE_SWITCH_IDENTITY, new UserEvent(['user' => $identity]));
+
+        if (empty($duration)) {
+            // Try to use login duration from the current session, e.g. on impersonate action
+            $cookie = $this->getIdentityAndDurationFromCookie();
+            $duration = empty($cookie['duration']) ? 0 : $cookie['duration'];
+        }
+
         parent::switchIdentity($identity, $duration);
     }
 
