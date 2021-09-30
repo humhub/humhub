@@ -7,10 +7,14 @@
 
 namespace humhub\modules\comment\widgets;
 
+use humhub\libs\Html;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\ui\menu\MenuEntry;
+use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\WidgetMenuEntry;
 use humhub\modules\ui\menu\widgets\Menu;
+use Yii;
+use yii\helpers\Url;
 
 /**
  * This widget renders the controls menu for a Comment.
@@ -41,28 +45,42 @@ class CommentControls extends Menu
 
     public function initControls()
     {
-        $entries = $this->getControlsMenuEntries();
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('CommentModule.base', 'Permalink'),
+            'icon' => 'link',
+            'url' => ['/comment/perma', 'id' => $this->comment->id],
+            'htmlOptions' => [
+                'data-action-click' => 'content.permalink',
+                'data-content-permalink' => Url::to(['/comment/perma', 'id' => $this->comment->id], true),
+                'data-content-permalink-title' => Html::encode(Yii::t('CommentModule.base', '<strong>Permalink</strong> to this comment')),
 
-        foreach ($entries as $menuEntry) {
-            if (!empty($menuEntry)) {
-                $this->addEntry($this->getMenuEntry($menuEntry));
-            }
+            ],
+            'sortOrder' => 100,
+        ]));
+
+        if ($this->comment->canEdit()) {
+            $this->addEntry(new EditLink(['sortOrder' => 200, 'comment' => $this->comment]));
+        }
+
+        if ($this->comment->canDelete()) {
+            $deleteUrl = Url::to(['/comment/comment/delete', 'objectModel' => $this->comment->object_model,
+                'objectId' => $this->comment->object_id,
+                'id' => $this->comment->id,
+            ]);
+
+            $this->addEntry(new MenuLink([
+                'label' => Yii::t('CommentModule.base', 'Delete'),
+                'icon' => 'delete',
+                'url' => '#',
+                'htmlOptions' => [
+                    'data-action-click' => 'delete',
+                    'data-content-delete-url' => $deleteUrl,
+                ],
+                'sortOrder' => 300,
+            ]));
         }
     }
 
-    /**
-     * Returns an array of comment menu items:
-     *
-     * @return array
-     */
-    public function getControlsMenuEntries(): array
-    {
-        return [
-            [PermaLink::class, ['comment' => $this->comment], ['sortOrder' => 100]],
-            [EditLink::class, ['comment' => $this->comment], ['sortOrder' => 200]],
-            [DeleteLink::class, ['comment' => $this->comment], ['sortOrder' => 300]],
-        ];
-    }
 
     /**
      * @inheritdoc
@@ -72,32 +90,6 @@ class CommentControls extends Menu
         return [
             'class' => 'nav nav-pills preferences'
         ];
-    }
-
-    /**
-     * Returns the widget definition for the given $menuItem.
-     * The $menuItem can either be given as MenuEntry object or as widget type definition:
-     *
-     * [MyWidget::class, [...], [...]]
-     *
-     * @param array|MenuEntry $menuItem
-     * @return MenuEntry
-     */
-    protected function getMenuEntry($menuItem)
-    {
-        if ($menuItem instanceof MenuEntry) {
-            return $menuItem;
-        }
-
-        $options = isset($menuItem[2]) ? $menuItem[2] : [];
-
-        $cfg = array_merge($options, [
-            'widgetClass' => $menuItem[0],
-            'widgetOptions' => isset($menuItem[1]) ? $menuItem[1] : null,
-            'sortOrder' => isset($options['sortOrder']) ? $options['sortOrder'] : PHP_INT_MAX,
-        ]);
-
-        return new WidgetMenuEntry($cfg);
     }
 
 }

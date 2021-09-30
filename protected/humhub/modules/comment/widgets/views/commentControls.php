@@ -23,7 +23,9 @@ use humhub\modules\ui\menu\MenuEntry;
 
         <ul class="dropdown-menu pull-right">
             <?php foreach ($entries as $entry) : ?>
-                <?= $entry->render() ?>
+                <li>
+                    <?= $entry->render() ?>
+                </li>
             <?php endforeach; ?>
         </ul>
     </li>
