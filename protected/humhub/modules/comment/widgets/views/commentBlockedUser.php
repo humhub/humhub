@@ -22,5 +22,5 @@ use humhub\widgets\Button;
 
     <?= UserImage::widget(['user' => $comment->user, 'width' => 25, 'htmlOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $comment->user->contentcontainer_id]]); ?>
     <?= Yii::t('CommentModule.base', 'Comment of blocked user.') ?>
-    <?= Button::asLink(Yii::t('CommentModule.base', 'Show comment'))->action('showBlocked', $loadBlockedCommentUrl)->xs()->cssClass('text-primary') ?>
+    <?= Button::asLink(Yii::t('CommentModule.base', 'Show'))->action('showBlocked', $loadBlockedCommentUrl)->xs()->cssClass('text-primary') ?>
 </div>
