@@ -52,7 +52,7 @@ class CommentControls extends Menu
             'htmlOptions' => [
                 'data-action-click' => 'content.permalink',
                 'data-content-permalink' => Url::to(['/comment/perma', 'id' => $this->comment->id], true),
-                'data-content-permalink-title' => Html::encode(Yii::t('CommentModule.base', '<strong>Permalink</strong> to this comment')),
+                'data-content-permalink-title' => Yii::t('CommentModule.base', '<strong>Permalink</strong> to this comment'),
 
             ],
             'sortOrder' => 100,
