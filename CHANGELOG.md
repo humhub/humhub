@@ -9,6 +9,7 @@ HumHub Changelog
 - Fix #5307: Fix reset of the space homepage settings
 - Fix #5301: Change people default sorting
 - Fix #5313: Contentcontainer Tags were not cleared when all tags are deleted
+- Fix #5316: Fix filter "I'm involved" on dashboard
 
 
 
