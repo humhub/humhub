@@ -23,7 +23,7 @@ class UserFollower extends \yii\base\Widget
     {
         return $this->render('userFollower', [
             'followers' => $this->user->getFollowersQuery()->limit(16)->all(),
-            'following' => $this->user->getFollowingQuery()->limit(16)->all(),
+            'following' => $this->user->getFollowingQuery(User::find())->limit(16)->all(),
         ]);
     }
 

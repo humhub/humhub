@@ -14,6 +14,7 @@ use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Behavior;
+use yii\db\ActiveQuery;
 
 /**
  * HFollowableBehavior adds following methods to HActiveRecords
@@ -141,6 +142,7 @@ class Followable extends Behavior
      * Get a query of users which are followers of this object.
      *
      * @return ActiveQueryUser
+     * @since 1.10
      */
     public function getFollowersQuery()
     {
@@ -157,6 +159,7 @@ class Followable extends Behavior
      * Get a query of users which are followers with enabled notifications of this object.
      *
      * @return ActiveQueryUser
+     * @since 1.10
      */
     public function getFollowersWithNotificationQuery()
     {
@@ -164,81 +167,19 @@ class Followable extends Behavior
             ->andWhere('user_follow.send_notifications=1');
     }
 
-    /**
-     * Returns the number of users which are followers of this object.
-     *
-     * @return int
-     */
-    public function getFollowerCount()
-    {
-        return $this->getFollowersQuery()->count();
-    }
-
-    /**
-     * Returns an array of users which are followers of this object.
-     *
-     * @deprecated Use $this->getFollowersQuery()->all() instead
-     * @param ActiveQueryUser $query e.g. for limit the result
-     * @param boolean $withNotifications only return followers with enabled notifications
-     * @param boolean $returnQuery only return the query instead of User objects
-     * @return User[]|ActiveQueryUser the user objects or the active query
-     */
-    public function getFollowers($query = null, $withNotification = false, $returnQuery = false)
-    {
-        if ($withNotification) {
-            $query = $this->getFollowersWithNotificationQuery();
-        } else {
-            $query = $this->getFollowersQuery();
-        }
-
-        if ($returnQuery) {
-            return $query;
-        }
-
-        return $query->all();
-    }
 
     /**
      * Get a query of objects which the owner object follows
      *
-     * @return ActiveQueryUser
+     * @param $query ActiveQuery e.g. `$user->getFollowingQuery(Content::find())`
+     * @return ActiveQuery
+     * @since 1.10
      */
-    public function getFollowingQuery()
+    public function getFollowingQuery($query)
     {
-        return User::find()
-            ->leftJoin('user_follow', 'user.id=user_follow.object_id AND user_follow.object_model=:object_model', [
-                ':object_model' => get_class($this->owner)
-            ])
-            ->where(['user_follow.user_id' => $this->owner->id])
-            ->visible();
+        $query->leftJoin('user_follow', 'user.id=user_follow.object_id AND user_follow.object_model=:object_model',
+            ['object_model' => get_class($this->owner)]);
+        $query->andWhere(['user_follow.user_id' => $this->owner->id]);
+        return $query;
     }
-
-    /**
-     * Returns the number of follows the owner object performed.
-     * This is only affects User owner objects!
-     *
-     * @param string $objectModel DEPRECATED HActiveRecord Classname to restrict Object Classes to (e.g. User)
-     * @return int
-     */
-    public function getFollowingCount($objectModel = null)
-    {
-        return $this->getFollowingQuery()->count();
-    }
-
-    /**
-     * Returns an array of object which the owner object follows.
-     * This is only affects User owner objects!
-     *
-     * E.g. Get list of spaces which are the user follows.
-     *
-     * @deprecated Use $this->getFollowingQuery()->all() instead
-     * @param ActiveQueryUser $query e.g. for limit the result
-     * @param string $objectModel HActiveRecord Classname to restrict Object Classes to (e.g. User)
-     * @return User[]
-     */
-    public function getFollowingObjects($query)
-    {
-        return $this->getFollowingQuery()->all();
-    }
-
 }

@@ -53,7 +53,7 @@ class HeaderCounterSet extends CounterSet
         if (!Yii::$app->getModule('space')->disableFollow) {
             $this->counters[] = new CounterSetItem([
                 'label' => Yii::t('SpaceModule.base', 'Followers'),
-                'value' => $this->space->getFollowerCount(),
+                'value' => $this->space->getFollowersQuery()->count(),
                 'url' => (Yii::$app->user->isGuest) ? null :  Url::to(['/space/space/follower-list', 'container' => $this->space]),
                 'linkOptions' => ['data-action-click' => 'ui.modal.load']
             ]);

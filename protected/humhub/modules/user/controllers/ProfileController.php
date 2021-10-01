@@ -137,7 +137,7 @@ class ProfileController extends ContentContainerController
     public function actionFollowedUsersList()
     {
         return $this->renderAjaxContent(UserListBox::widget([
-            'query' => $this->getUser()->getFollowingQuery()->orderBy(['user_follow.id' => SORT_DESC]),
+            'query' => $this->getUser()->getFollowingQuery(User::find())->orderBy(['user_follow.id' => SORT_DESC]),
             'title' => Yii::t('UserModule.base', '<strong>Following</strong>'),
         ]));
     }

@@ -28,4 +28,6 @@
 - Enh #5302: Improve checkbox widget ContentVisibilitySelect 
 - Enh #5151: ContentContainer scoped URL Rules
 - Enh #5094: Reflect and reload Stream filters by URL
-- Enh $4879: Extend group for external users
+- Enh $4879: Refactoring of `Followable` behavior
+- Enh $4879: Added supported of "protected" module groups
+ 

@@ -91,23 +91,4 @@ class ContentContainer extends ActiveRecord
         $instance = static::findOne(['guid' => $guid]);
         return $instance ? $instance->getPolymorphicRelation() : null;
     }
-
-    /**
-     * @param $guid
-     * @return Space|User|ContentContainerActiveRecord|null
-     * @since 1.9
-     */
-    public static function findVisibleRecord($guid)
-    {
-        $instance = static::findOne(['guid' => $guid]);
-
-        if (!$instance) {
-            return null;
-        }
-
-        /* @var Space|User $contentContainerClass */
-        $contentContainerClass = $instance->class;
-        return $contentContainerClass::find()->where(['guid' => $guid])->visible()->one();
-    }
-
 }

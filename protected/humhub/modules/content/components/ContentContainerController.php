@@ -32,7 +32,6 @@ use humhub\modules\content\components\ContentContainerControllerAccess;
  *
  * Based on the current ContentContainer a behavior (defined in ContentContainerActiveRecord::controllerBehavior) will be automatically
  * attached to this controller instance.
-
  * The attached behavior will perform basic access checks, adds the container sublayout and perform other tasks
  * (e.g. the space behavior will update the last visit membership attribute).
  *
@@ -73,7 +72,12 @@ class ContentContainerController extends Controller
         // Load the ContentContainer
         $guid = Yii::$app->request->get('cguid', Yii::$app->request->get('sguid', Yii::$app->request->get('uguid')));
         if (!empty($guid)) {
-            $this->contentContainer = ContentContainer::findVisibleRecord(['guid' => $guid]);
+            if (!empty($guid)) {
+                $contentContainerModel = ContentContainer::findOne(['guid' => $guid]);
+                if ($contentContainerModel !== null) {
+                    $this->contentContainer = $contentContainerModel->getPolymorphicRelation();
+                }
+            }
         }
 
         if ($this->validContentContainerClasses !== null) {
@@ -108,7 +112,7 @@ class ContentContainerController extends Controller
 
         $this->checkModuleIsEnabled();
 
-        if($this->contentContainer) {
+        if ($this->contentContainer) {
             $this->view->registerJsConfig('content.container', [
                 'guid' => $this->contentContainer->guid
             ]);
@@ -126,7 +130,7 @@ class ContentContainerController extends Controller
      */
     public function getAccess()
     {
-        if($this->contentContainer) {
+        if ($this->contentContainer) {
             return new ContentContainerControllerAccess(['contentContainer' => $this->contentContainer]);
         }
 
@@ -141,7 +145,7 @@ class ContentContainerController extends Controller
     protected function checkModuleIsEnabled()
     {
         if ($this->module instanceof ContentContainerModule && $this->contentContainer !== null &&
-                !$this->contentContainer->moduleManager->isEnabled($this->module->id)) {
+            !$this->contentContainer->moduleManager->isEnabled($this->module->id)) {
             throw new HttpException(405, Yii::t('base', 'Module is not enabled on this content container!'));
         }
     }
