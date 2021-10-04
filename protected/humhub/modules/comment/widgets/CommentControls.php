@@ -48,7 +48,7 @@ class CommentControls extends Menu
         $this->addEntry(new MenuLink([
             'label' => Yii::t('CommentModule.base', 'Permalink'),
             'icon' => 'link',
-            'url' => ['/comment/perma', 'id' => $this->comment->id],
+            'url' => '#',
             'htmlOptions' => [
                 'data-action-click' => 'content.permalink',
                 'data-content-permalink' => Url::to(['/comment/perma', 'id' => $this->comment->id], true),
