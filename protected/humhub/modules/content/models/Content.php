@@ -16,6 +16,7 @@ use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
+use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\live\NewContent;
 use humhub\modules\content\permissions\CreatePrivateContent;
@@ -630,6 +631,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         }
     }
 
+    public static $USE_CACHE = false;
+
     /**
      * Returns the content container (e.g. space or user record) of this content
      *
@@ -638,6 +641,15 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function getContainer()
     {
+        if ($this->_container != null) {
+            return $this->_container;
+        }
+
+        if(static::$USE_CACHE) {
+            $this->_container = ContentContainerHelper::getContainerByContentContainerId($this->contentcontainer_id);
+            return $this->_container;
+        }
+
         if ($this->_container != null) {
             return $this->_container;
         }
