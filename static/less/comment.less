@@ -31,6 +31,26 @@
             display: none;
             right: -3px;
         }
+        &.comment-current {
+            background: fadeout(@warning, 75%);
+            padding: 0 5px 5px 5px;
+            margin: 0 -5px -5px -5px;
+            border-radius: 3px;
+            hr {
+                position: relative;
+                top: -6px;
+            }
+            &:first-of-type {
+                padding-top: 5px;
+                margin-top: -5px;
+                > .nav.preferences {
+                    margin-top: 10px;
+                }
+            }
+            > .nav.preferences {
+                margin-right: 10px;
+            }
+        }
     }
 
     /*-- Since v1.2 overflow: visible */
