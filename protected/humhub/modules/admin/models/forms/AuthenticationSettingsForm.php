@@ -78,7 +78,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
             'internalAllowAnonymousRegistration' => Yii::t('AdminModule.user', 'New users can register'),
             'internalUsersCanInvite' => Yii::t('AdminModule.user', 'Members can invite external users by email'),
             'showRegistrationUserGroup' => Yii::t('AdminModule.user', 'Show group selection at registration'),
-            'blockUsers' => Yii::t('AdminModule.user', 'Allow to block users'),
+            'blockUsers' => Yii::t('AdminModule.user', 'Allow users to block each other'),
             'defaultUserIdleTimeoutSec' => Yii::t('AdminModule.user', 'Default user idle timeout, auto-logout (in seconds, optional)'),
             'allowGuestAccess' => Yii::t('AdminModule.user', 'Allow visitors limited access to content without an account (Adds visibility: "Guest")'),
             'showCaptureInRegisterForm' => Yii::t('AdminModule.user', 'Include captcha in registration form'),
