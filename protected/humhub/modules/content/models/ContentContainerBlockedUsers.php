@@ -10,6 +10,8 @@ namespace humhub\modules\content\models;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
+use humhub\modules\user\Module;
+use Yii;
 
 /**
  * Class ContentContainerBlockedUsers
@@ -62,6 +64,12 @@ class ContentContainerBlockedUsers extends ActiveRecord
      */
     public static function updateByContainer(ContentContainerActiveRecord $contentContainer, $newBlockedUserGuids = null)
     {
+        /* @var Module $moduleUser */
+        $moduleUser = Yii::$app->getModule('user');
+        if (!$moduleUser->allowBlockUsers()) {
+            return;
+        }
+
         self::deleteByContainer($contentContainer);
 
         if (empty($newBlockedUserGuids)) {

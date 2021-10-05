@@ -1,10 +1,14 @@
 <?php
 
+use humhub\modules\admin\models\forms\AuthenticationSettingsForm;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\user\Module;
 use yii\helpers\Html;
 
-/** @var \humhub\modules\user\Module $userModule */
+/* @var AuthenticationSettingsForm $model */
+
+/* @var Module $userModule */
 $userModule = Yii::$app->getModule('user');
 
 ?>
@@ -26,6 +30,8 @@ $userModule = Yii::$app->getModule('user');
     <?= $form->field($model, 'internalRequireApprovalAfterRegistration')->checkbox(); ?>
 
     <?= $form->field($model, 'showRegistrationUserGroup')->checkbox(); ?>
+
+    <?= $form->field($model, 'blockUsers')->checkbox(); ?>
 
     <?= $form->field($model, 'defaultUserIdleTimeoutSec')->textInput(['readonly' => $userModule->settings->isFixed('auth.defaultUserIdleTimeoutSec')]); ?>
     <p class="help-block"><?= Yii::t('AdminModule.user', 'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)'); ?></p>

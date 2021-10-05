@@ -19,6 +19,7 @@ use humhub\modules\content\models\ContentContainerTagRelation;
 use humhub\modules\content\Module;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use humhub\modules\user\Module as UserModule;
 use Yii;
 use yii\helpers\Url;
 
@@ -400,7 +401,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getBlockedUserGuids(): array
     {
-        return ContentContainerBlockedUsers::getGuidsByContainer($this);
+        return $this->allowBlockUsers() ? ContentContainerBlockedUsers::getGuidsByContainer($this) : [];
     }
 
     /**
@@ -410,6 +411,10 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getBlockedUserIds(): array
     {
+        if (!$this->allowBlockUsers()) {
+            return [];
+        }
+
         $blockedUsers = $this->getSettings()->get(ContentContainerBlockedUsers::BLOCKED_USERS_SETTING);
         return empty($blockedUsers) ? [] : explode(',', $blockedUsers);
     }
@@ -422,6 +427,10 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function isBlockedForUser(?User $user = null): bool
     {
+        if (!$this->allowBlockUsers()) {
+            return false;
+        }
+
         if ($user === null) {
             if (Yii::$app->user->isGuest) {
                 $visibilityAll = ($this instanceof Space) ? Space::VISIBILITY_ALL : User::VISIBILITY_ALL;
@@ -432,6 +441,19 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         }
 
         return in_array($user->id, $this->getBlockedUserIds());
+    }
+
+    /**
+     * Check the blocking users is allowed by users module
+     *
+     * @return bool
+     */
+    public function allowBlockUsers(): bool
+    {
+        /* @var UserModule $userModule */
+        $userModule = Yii::$app->getModule('user');
+
+        return $userModule->allowBlockUsers();
     }
 
 }

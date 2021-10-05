@@ -39,7 +39,9 @@ use humhub\modules\user\widgets\UserPickerField;
     <?= $form->field($model, 'show_introduction_tour')->checkbox(); ?>
 <?php endif; ?>
 
-<?= $form->field($model, 'blockedUsers')->widget(UserPickerField::class, ['minInput' => 2]); ?>
+<?php if (Yii::$app->getModule('user')->allowBlockUsers()) : ?>
+    <?= $form->field($model, 'blockedUsers')->widget(UserPickerField::class, ['minInput' => 2]); ?>
+<?php endif; ?>
 
 <button class="btn btn-primary" type="submit" data-ui-loader><?= Yii::t('UserModule.account', 'Save') ?></button>
 

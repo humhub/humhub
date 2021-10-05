@@ -132,7 +132,9 @@ class AccountController extends BaseAccountController
             $user->tagsField = $model->tags;
             $user->time_zone = $model->timeZone;
             $user->visibility = $model->visibility;
-            $user->blockedUsersField = $model->blockedUsers;
+            if (Yii::$app->getModule('user')->allowBlockUsers()) {
+                $user->blockedUsersField = $model->blockedUsers;
+            }
             $user->save();
 
             $this->view->saved();
