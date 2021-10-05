@@ -28,7 +28,7 @@ class CommentTest extends HumHubDbTestCase
         $this->assertMailSent(1, 'Comment Notification Mail sent');
         $this->assertEqualsLastEmailSubject('Sara Tester commented post "User 2 Space 2 Post Private" in space Space 2');
         $this->assertNotEmpty($comment->id);
-        $this->assertNotEmpty($comment->content->getPolymorphicRelation()->getFollowers(null, true, true));
+        $this->assertNotEmpty($comment->content->getPolymorphicRelation()->getFollowersWithNotificationQuery());
         
         $this->assertNotNull(\humhub\modules\activity\models\Activity::findOne(['object_model' => Comment::class, 'object_id' => $comment->id]));
         $this->assertNotNull(\humhub\modules\notification\models\Notification::findOne(['source_class' => Comment::class, 'source_pk' => $comment->id]));

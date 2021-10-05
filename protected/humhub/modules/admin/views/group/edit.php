@@ -59,7 +59,7 @@ use humhub\modules\space\widgets\SpacePickerField;
 
     <?= Button::save()->submit(); ?>
     <?php
-    if ($showDeleteButton) {
+    if ($group->canDelete()) {
         echo Html::a(Yii::t('AdminModule.user', 'Delete'), Url::toRoute(['/admin/group/delete', 'id' => $group->id]), [
             'class' => 'btn btn-danger',
             'data-method' => 'POST',

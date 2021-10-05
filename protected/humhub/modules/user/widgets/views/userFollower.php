@@ -3,9 +3,10 @@
 use yii\helpers\Html;
 use humhub\modules\user\models\User;
 
-$followers = $user->getFollowers(User::find()->limit(16));
+/* @var User[] $followers */
+/* @var User[] $following */
 ?>
-<?php if (count($followers) > 0) { ?>
+<?php if (count($followers) > 0) : ?>
     <div class="panel panel-default follower" id="profile-follower-panel">
 
         <!-- Display panel menu widget -->
@@ -25,12 +26,9 @@ $followers = $user->getFollowers(User::find()->limit(16));
             <?php endforeach; ?>
         </div>
     </div>
-<?php } ?>
+<?php endif; ?>
 
-<?php
-$following = $user->getFollowingObjects(User::find()->limit(16));
-?>
-<?php if (count($following) > 0) { ?>
+<?php if (count($following) > 0) : ?>
     <div class="panel panel-default follower" id="profile-following-panel">
 
         <!-- Display panel menu widget -->
@@ -52,5 +50,4 @@ $following = $user->getFollowingObjects(User::find()->limit(16));
             <?php endforeach; ?>
         </div>
     </div>
-
-<?php } ?>
+<?php endif; ?>
