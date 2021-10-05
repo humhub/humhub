@@ -8,7 +8,9 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\web\HttpException;
 use humhub\components\Controller;
@@ -71,14 +73,8 @@ class ContentContainerController extends Controller
 
         // Load the ContentContainer
         $guid = Yii::$app->request->get('cguid', Yii::$app->request->get('sguid', Yii::$app->request->get('uguid')));
-        if (!empty($guid)) {
-            if (!empty($guid)) {
-                $contentContainerModel = ContentContainer::findOne(['guid' => $guid]);
-                if ($contentContainerModel !== null) {
-                    $this->contentContainer = $contentContainerModel->getPolymorphicRelation();
-                }
-            }
-        }
+        $this->contentContainer = $this->getContentContainerByGuid($guid);
+
 
         if ($this->validContentContainerClasses !== null) {
             if ($this->contentContainer === null || !in_array($this->contentContainer->className(), $this->validContentContainerClasses)) {
@@ -90,6 +86,7 @@ class ContentContainerController extends Controller
             $this->attachBehavior('containerControllerBehavior', ['class' => $this->contentContainer->controllerBehavior]);
         }
     }
+
 
     /**
      * @inheritdoc
@@ -150,4 +147,21 @@ class ContentContainerController extends Controller
         }
     }
 
+    /**
+     * @param $guid
+     * @return ContentContainerActiveRecord|null
+     */
+    private function getContentContainerByGuid($guid)
+    {
+        if (!empty($guid)) {
+            $contentContainer = ContentContainer::findOne(['guid' => $guid]);
+            if ($contentContainer !== null) {
+                /* @var Space|User $contentContainerClass */
+                $contentContainerClass = $contentContainer->class;
+                return $contentContainerClass::find()->where(['guid' => $guid])->visible()->one();
+            }
+        }
+
+        return null;
+    }
 }
