@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #5313: Contentcontainer Tags were not cleared when all tags are deleted
 - Fix #5316: Fix filter "I'm involved" on dashboard
 - Fix #5324: Theme Loader broken when module is  provided via string
+- Fix #5327: Fix update container tags by not original model
 
 
 1.9.1 (August 30, 2021)
