@@ -34,7 +34,7 @@ use yii\helpers\Url;
  * @property ContentContainerPermissionManager $permissionManager
  * @property ContentContainerSettingsManager $settings
  * @property ContentContainerModuleManager $moduleManager
- * @property ContentContainerActiveRecord $contentContainerRecord
+ * @property ContentContainer $contentContainerRecord
  *
  * @since 1.0
  * @author Luke
