@@ -8,14 +8,16 @@
 
 namespace humhub\modules\user\components;
 
+use humhub\events\ActiveQueryEvent;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\models\fieldtype\BaseTypeVirtual;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\ProfileField;
-use yii\db\ActiveQuery;
 use humhub\modules\user\models\User as UserModel;
-use humhub\events\ActiveQueryEvent;
+use humhub\modules\user\Module;
+use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * ActiveQueryUser is used to query User records.
@@ -165,6 +167,34 @@ class ActiveQueryUser extends ActiveQuery
 
             $this->andWhere(['IN', 'group.id', $groupIds]);
         }
+
+        return $this;
+    }
+
+    /**
+     * Exclude blocked users for the given $user or for the current User
+     *
+     * @param UserModel $user
+     * @return ActiveQueryUser the query
+     */
+    public function filterBlockedUsers(?UserModel $user = null): ActiveQueryUser
+    {
+        if ($user === null && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        if (!($user instanceof UserModel)) {
+            return $this;
+        }
+
+        /* @var Module $userModule */
+        $userModule = Yii::$app->getModule('user');
+        if (!$userModule->allowBlockUsers()) {
+            return $this;
+        }
+
+        $this->leftJoin('contentcontainer_blocked_users', 'contentcontainer_blocked_users.contentcontainer_id=user.contentcontainer_id AND contentcontainer_blocked_users.user_id=:blockedUserId', [':blockedUserId' => $user->id]);
+        $this->andWhere('contentcontainer_blocked_users.user_id IS NULL');
 
         return $this;
     }
