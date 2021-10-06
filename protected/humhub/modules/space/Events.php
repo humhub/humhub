@@ -111,6 +111,12 @@ class Events extends BaseObject
             return;
         }
 
+        /** @var Module $module */
+        $module = Yii::$app->getModule('space');
+        if ($module->hideSpacesPage) {
+            return;
+        }
+
         if (!Yii::$app->user->can(SpaceDirectoryAccess::class)) {
             return;
         }
@@ -121,7 +127,7 @@ class Events extends BaseObject
             'label' => Yii::t('SpaceModule.base', 'Spaces'),
             'url' => ['/space/spaces'],
             'sortOrder' => 250,
-            'isActive' =>  MenuLink::isActiveState('space', 'spaces'),
+            'isActive' => MenuLink::isActiveState('space', 'spaces'),
         ]));
     }
 

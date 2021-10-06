@@ -31,4 +31,5 @@
 - Enh #5094: Reflect and reload Stream filters by URL
 - Enh $4879: Refactoring of `Followable` behavior
 - Enh $4879: Added supported of "protected" module groups
+- Enh #5330: Added option to hide "Spaces" top menu item
  
