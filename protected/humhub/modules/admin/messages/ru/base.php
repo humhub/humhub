@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Administration</strong> menu' => '<strong>Панель Управления</strong>',
-  '<strong>Maintenance</strong> Mode' => '',
+  '<strong>Maintenance</strong> Mode' => '<strong>Режим</strong> Технического обслуживания',
   '<strong>Module </strong> administration' => '<strong>Управление модулями</strong>',
   '<strong>Warning</strong> incomplete setup!' => '<strong>Предупреждение</ strong>: настройка не завершена!',
   'About' => 'Информация',
@@ -9,7 +9,7 @@ return array (
   'Administration' => 'Панель Управления',
   'Administrative group' => 'Административная группа',
   'Advanced' => 'Дополнительные',
-  'Advanced settings' => '',
+  'Advanced settings' => 'Дополнительные настройки',
   'Appearance' => 'Внешний вид',
   'Approval' => 'Подтверждение',
   'Authentication' => 'Авторизация',
@@ -20,8 +20,8 @@ return array (
   'Caching' => 'Кеширование',
   'Cronjobs' => 'Задания Cron',
   'Default' => 'По умолчанию',
-  'Delete all' => '',
-  'Delete selected rows' => '',
+  'Delete all' => 'Удалить все',
+  'Delete selected rows' => 'Удаление выбранных строк',
   'Design' => 'Дизайн',
   'Files' => 'Файлы',
   'General' => 'Общие',

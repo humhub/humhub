@@ -1,6 +1,7 @@
 1.10.0-beta.1 (Unreleased)
 --------------------------
 
+- Enh #4399: Deep comment link to select and mark comment in content
 - Enh #4242: More failsave module loading when reading module config
 - Enh #5197: Default .htaccess - Remove Options +FollowSymLinks 
 - Enh #4495: Allow to lock comments per content
@@ -13,6 +14,7 @@
 - Enh #5170: Allow 0 for min input size
 - Enh #4133: Back up a content of RichText editor
 - Enh #100: Extend upload buttons to use a paste zone
+- Enh #5256: Limit uploading profile images (Thanks to @tuhin1729 for discovering the issue.) 
 - Enh #5257: Delete old unread notifications
 - Fix #5143: Unlimited page size for profile fields
 - Fix #5143: Unlimited page size for profile fields
@@ -21,3 +23,12 @@
 - Enh #3546: Sign in back from impersonate mode
 - Fix #5282: On account creation, registration form has HTML tag set with English language
 - Enh #5280: Allow to set the number of contents from which "Show {i} more." appears in the stream
+- Enh #5303: Unassigned files are only accessibily for creator 
+- Enh #5293: Added File versioning API
+- Enh #4399: Changed default @warning color to `#FC4A64`
+- Enh #5302: Improve checkbox widget ContentVisibilitySelect 
+- Enh #5151: ContentContainer scoped URL Rules
+- Enh #5094: Reflect and reload Stream filters by URL
+- Enh $4879: Refactoring of `Followable` behavior
+- Enh $4879: Added supported of "protected" module groups
+ 

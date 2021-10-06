@@ -41,6 +41,9 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
 
     StreamRequest.prototype.initOptions = function(options) {
         this.contentId = this.options.contentId;
+        if (this.options.commentId) {
+            this.commentId = this.options.commentId;
+        }
         this.viewContext = this.options.viewContext;
         this.loader = object.defaultValue(this.options.loader, !object.isDefined(this.options.insertAfter));
         this.url = object.defaultValue(this.options.url, this.stream.options.stream);
@@ -130,6 +133,9 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
         }
 
         data[this.buildRequestDataKey('contentId')] = this.contentId;
+        if (this.commentId) {
+            data[this.buildRequestDataKey('commentId')] = this.commentId;
+        }
         data[this.buildRequestDataKey('suppressionsOnly')] = this.suppressionsOnly;
 
         if(this.options.data) {

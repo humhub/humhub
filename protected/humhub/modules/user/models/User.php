@@ -63,6 +63,7 @@ use yii\web\IdentityInterface;
  *
  * @property string $displayName
  * @property string $displayNameSub
+ * @mixin Followable
  */
 class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
 {
@@ -787,9 +788,9 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Determines if this user can impersonate the given user.
      *
-     * @since 1.10
      * @param self $user
      * @return bool
+     * @since 1.10
      */
     public function canImpersonate(self $user): bool
     {

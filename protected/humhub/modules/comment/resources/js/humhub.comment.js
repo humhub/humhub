@@ -121,9 +121,11 @@ humhub.module('comment', function (module, require, $) {
         return Widget.instance(this.$.find('div.humhub-ui-richtext:first'));
     };
 
-    Comment.prototype.delete = function () {
+    Comment.prototype.delete = function (evt) {
         var $form = this.$.parent().siblings('.comment_create');
         var hideHr = !this.isNestedComment() && $form.length && !this.$.siblings('.media').length;
+
+        this.$.data('content-delete-url', evt.$trigger.data('content-delete-url'));
 
         this.super('delete', {modal: module.config.modal.delteConfirm}).then(function ($confirm) {
             if ($confirm) {

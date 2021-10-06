@@ -129,7 +129,7 @@ class FunctionalTester extends BaseTester
                 break;
             case Space::USERGROUP_GUEST:
                 $this->logout();
-                $spaceId = 1;
+                $spaceId = 2;
                 break;
         }
 

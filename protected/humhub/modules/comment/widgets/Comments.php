@@ -36,11 +36,14 @@ class Comments extends Widget
         $objectModel = get_class($this->object);
         $objectId = $this->object->getPrimaryKey();
 
+        $streamQuery = Yii::$app->request->getQueryParam('StreamQuery');
+        $currentCommentId = empty($streamQuery['commentId']) ? null : $streamQuery['commentId'];
+
         // Count all Comments
         $commentCount = CommentModel::GetCommentCount($objectModel, $objectId);
         $comments = [];
         if ($commentCount !== 0) {
-            $comments = CommentModel::GetCommentsLimited($objectModel, $objectId, $module->commentsPreviewMax);
+            $comments = CommentModel::GetCommentsLimited($objectModel, $objectId, $module->commentsPreviewMax, $currentCommentId);
         }
 
         $isLimited = ($commentCount > $module->commentsPreviewMax);
@@ -48,6 +51,7 @@ class Comments extends Widget
         return $this->render('comments', [
             'object' => $this->object,
             'comments' => $comments,
+            'currentCommentId' => $currentCommentId,
             'objectModel' => $objectModel,
             'objectId' => $objectId,
             'id' => $this->object->getUniqueId(),

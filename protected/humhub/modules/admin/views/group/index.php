@@ -4,6 +4,7 @@ use humhub\libs\ActionColumn;
 use humhub\modules\admin\models\GroupSearch;
 use humhub\modules\admin\widgets\GroupMenu;
 use humhub\modules\user\models\Group;
+use humhub\widgets\Label;
 use humhub\widgets\Link;
 use yii\helpers\Url;
 use humhub\widgets\GridView;
@@ -36,7 +37,8 @@ use humhub\widgets\GridView;
                 'format' => 'html',
                 'value' => function (Group $group) {
                     return $group->name .
-                        ($group->is_default_group ? ' <span class="badge">' . Yii::t('AdminModule.user', 'Default') . '</span>' : '');
+                        ($group->is_default_group ? ' ' . Label::defaultType(Yii::t('AdminModule.user', 'Default')) : '') .
+                        ($group->is_protected ? ' ' . Label::defaultType(Yii::t('AdminModule.user', 'Protected')) : '');
                 }
             ],
             'description',

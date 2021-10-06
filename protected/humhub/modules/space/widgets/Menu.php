@@ -8,7 +8,6 @@
 
 namespace humhub\modules\space\widgets;
 
-use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
@@ -114,44 +113,41 @@ class Menu extends LeftNavigation
      */
     public static function getDefaultPageUrl($space)
     {
-        $settings = Yii::$app->getModule('space')->settings;
-
-        $indexUrl = $settings->contentContainer($space)->get('indexUrl');
-        if ($indexUrl !== null) {
-            $pages = static::getAvailablePages();
-            if (isset($pages[$indexUrl])) {
-                return $indexUrl;
-            }
-
-            //Either the module was deactivated or url changed
-            $settings->contentContainer($space)->delete('indexUrl');
-        }
-
-        return null;
+        return static::getAvailablePageUrl($space, 'indexUrl');
     }
 
     /**
-     * Returns space default / homepage
+     * Returns space default / homepage for guests
      *
      * @param $space Space
      * @return string|null the url to redirect or null for default home
      */
     public static function getGuestsDefaultPageUrl($space)
     {
-        $settings = Yii::$app->getModule('space')->settings;
+        return static::getAvailablePageUrl($space, 'indexGuestUrl');
+    }
 
-        $indexUrl = $settings->contentContainer($space)->get('indexGuestUrl');
-        if ($indexUrl !== null) {
-            $pages = static::getAvailablePages();
-            if (isset($pages[$indexUrl])) {
-                return $indexUrl;
-            }
 
-            //Either the module was deactivated or url changed
-            $settings->contentContainer($space)->delete('indexGuestUrl');
+    /**
+     * Get default Space page URL by setting name
+     *
+     * @param Space $space
+     * @param string $pageSettingName
+     * @return string|null
+     */
+    public static function getAvailablePageUrl(Space $space, string $pageSettingName): ?string
+    {
+        /* @var Module $spaceModule */
+        $spaceModule = Yii::$app->getModule('space');
+
+        $indexUrl = $spaceModule->settings->contentContainer($space)->get($pageSettingName);
+        if ($indexUrl === null) {
+            return null;
         }
 
-        return null;
+        $pages = static::getAvailablePages();
+
+        return isset($pages[$indexUrl]) ? $indexUrl : null;
     }
 
 }

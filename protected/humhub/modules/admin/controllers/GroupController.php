@@ -107,7 +107,6 @@ class GroupController extends Controller
 
         return $this->render('edit', [
             'group' => $group,
-            'showDeleteButton' => (!$group->isNewRecord && !$group->is_admin_group && !$group->is_default_group),
             'isCreateForm' => $group->isNewRecord,
             'isManagerApprovalSetting' => Yii::$app->getModule('user')->settings->get('auth.needApproval'),
         ]);
@@ -182,15 +181,9 @@ class GroupController extends Controller
 
         $this->checkGroupAccess($group);
 
-        // Double check to get sure we don't remove the admin group:
-        if ($group->is_admin_group) {
-            $this->view->error(Yii::t('AdminModule.user', 'Administrator group could not be deleted!'));
-            return $this->redirect(['/admin/group/edit', 'id' => $group->id]);
-        }
-
-        // Double check to get sure we don't remove the default group:
-        if ($group->is_default_group) {
-            $this->view->error(Yii::t('AdminModule.user', 'Default groups can not be deleted!'));
+        // Double check to be sure the group has no restriction to be deleted:
+        if (($deleteRestrictionError = $this->getGroupDeleteRestriction($group)) !== false) {
+            $this->view->error($deleteRestrictionError);
             return $this->redirect(['/admin/group/edit', 'id' => $group->id]);
         }
 
@@ -285,6 +278,9 @@ class GroupController extends Controller
         ]));
     }
 
+    /**
+     * @param Group $group
+     */
     public function checkGroupAccess($group)
     {
         if (!$group) {
@@ -294,5 +290,28 @@ class GroupController extends Controller
         if ($group->is_admin_group && !Yii::$app->user->isAdmin()) {
             throw new HttpException(403);
         }
+    }
+
+    /**
+     * Get a restriction message if the Group cannot be deleted
+     *
+     * @param Group $group
+     * @return string|bool Error message if the Group cannot be deleted, false - if no restrictions to delete the Group
+     */
+    private function getGroupDeleteRestriction($group)
+    {
+        if ($group->is_admin_group) {
+            return Yii::t('AdminModule.user', 'Administrator group could not be deleted!');
+        }
+
+        if ($group->is_default_group) {
+            return Yii::t('AdminModule.user', 'Default group can not be deleted!');
+        }
+
+        if ($group->is_protected) {
+            return Yii::t('AdminModule.user', 'Protected group can not be deleted!');
+        }
+
+        return false;
     }
 }

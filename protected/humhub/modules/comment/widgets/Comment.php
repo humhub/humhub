@@ -35,6 +35,16 @@ class Comment extends Widget
     public $showBlocked = false;
 
     /**
+     * @var string Default style class of div wrapper around Comment block
+     */
+    public $defaultClass = 'media';
+
+    /**
+     * @var string Additional style class of div wrapper around Comment block
+     */
+    public $additionalClass = '';
+
+    /**
      * @inheritdoc
      */
     public function run()
@@ -74,13 +84,8 @@ class Comment extends Widget
         return $this->render('comment', [
             'comment' => $this->comment,
             'user' => $this->comment->user,
-            'justEdited' => $this->justEdited,
-            'deleteUrl' => $deleteUrl,
-            'editUrl' => $editUrl,
-            'loadUrl' => $loadUrl,
             'createdAt' => $this->comment->created_at,
-            'canEdit' => $this->comment->canEdit(),
-            'canDelete' => $this->comment->canDelete(),
+            'class' => trim($this->defaultClass . ' ' . $this->additionalClass),
         ]);
     }
 
