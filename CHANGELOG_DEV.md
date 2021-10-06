@@ -32,4 +32,4 @@
 - Enh $4879: Refactoring of `Followable` behavior
 - Enh $4879: Added supported of "protected" module groups
 - Enh #5330: Added option to hide "Spaces" top menu item
- 
+- Enh #5080: Show available module updates directly in admin menu
