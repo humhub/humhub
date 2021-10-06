@@ -244,6 +244,6 @@ class Module extends \humhub\components\Module
      */
     public function allowBlockUsers(): bool
     {
-        return (bool) $this->settings->get('auth.blockUsers', false);
+        return (bool) $this->settings->get('auth.blockUsers', true);
     }
 }
