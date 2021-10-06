@@ -875,9 +875,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * @inheritdoc
      */
-    public function getSettings($moduleId = 'user'): ContentContainerSettingsManager
+    public function getSettings(): ContentContainerSettingsManager
     {
-        return parent::getSettings($moduleId);
+        /* @var $module Module */
+        $module = Yii::$app->getModule('user');
+        return $module->settings->contentContainer($this);
     }
 
     /**

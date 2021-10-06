@@ -189,15 +189,9 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     }
 
     /**
-     * @param string Module id
      * @return ContentContainerSettingsManager
      */
-    public function getSettings($moduleId = 'space'): ContentContainerSettingsManager
-    {
-        /* @var $module Module */
-        $module = Yii::$app->getModule($moduleId);
-        return $module->settings->contentContainer($this);
-    }
+    abstract public function getSettings(): ContentContainerSettingsManager;
 
     /**
      * @inheritdoc
