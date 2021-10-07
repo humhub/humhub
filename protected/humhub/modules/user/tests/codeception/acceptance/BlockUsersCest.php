@@ -9,19 +9,8 @@ class BlockUsersCest
     {
         $I->wantTo('test users blocking');
 
-        $I->amGoingTo('check the users blocking is disabled in system yet');
-        $I->amUser1();
-        $this->isUsersBlockingDisabled($I);
-        $I->amGoingTo('be sure the user "Sara Tester" still is viewable for the user "Peter Tester"');
-        $I->amOnUser2Profile();
-        $I->see('Sara Tester');
-
-        $I->amGoingTo('enable the users blocking');
-        $I->amAdmin(true);
-        $this->enableUsersBlocking($I);
-
-        $I->amGoingTo('check the users blocking is enabled in system');
-        $I->amUser2(true);
+        $I->amGoingTo('check the users blocking is enabled in system by default');
+        $I->amUser2();
         $this->isUsersBlockingEnabled($I);
 
         $I->amGoingTo('block some users for the current user "Sara Tester"');
@@ -38,9 +27,19 @@ class BlockUsersCest
         $I->amUser1(true);
         $I->amOnUser2Profile();
         $I->see('You are blocked for this page!');
+
+        $I->amGoingTo('enable the users blocking');
+        $I->amAdmin(true);
+        $this->disableUsersBlocking($I);
+
+        $I->amUser1(true);
+        $this->isUsersBlockingDisabled($I);
+        $I->amGoingTo('be sure the user "Sara Tester" is viewable for the user "Peter Tester"');
+        $I->amOnUser2Profile();
+        $I->see('Sara Tester');
     }
 
-    private function enableUsersBlocking(AcceptanceTester $I)
+    private function disableUsersBlocking(AcceptanceTester $I)
     {
         $I->amOnPage('/admin/authentication');
         $I->click('[for="authenticationsettingsform-blockusers"]');
