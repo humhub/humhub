@@ -198,6 +198,10 @@ abstract class BaseNotification extends SocialActivity
             return;
         }
 
+        if ($this->isBlockedFromUser($user)) {
+            return;
+        }
+
         Yii::$app->queue->push(new SendNotification(['notification' => $this, 'recipientId' => $user->id]));
     }
 
@@ -221,6 +225,18 @@ abstract class BaseNotification extends SocialActivity
     public function isOriginator(User $user)
     {
         return $this->originator && $this->originator->id === $user->id;
+    }
+
+    /**
+     * Checks if the originator blocked the given $user in order to avoid receive any notifications from the $user.
+     *
+     * @param User $user
+     * @return boolean
+     * @since 1.10
+     */
+    public function isBlockedFromUser(User $user): bool
+    {
+        return $this->originator && $user->isBlockedForUser($this->originator);
     }
 
     /**

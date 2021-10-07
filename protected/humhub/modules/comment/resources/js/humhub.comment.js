@@ -204,6 +204,18 @@ humhub.module('comment', function (module, require, $) {
         this.$.find('.preferences:first').hide();
     };
 
+    Comment.prototype.showBlocked = function (evt) {
+        var that = this;
+        that.loader();
+        client.html(evt).then(function (response) {
+            that.replace(response.html);
+        }).catch(function (err) {
+            module.log.error(err, true);
+        }).finally(function () {
+            that.loader(false);
+        });
+    };
+
     var showAll = function (evt) {
         client.post(evt, {dataType: 'html'}).then(function (response) {
             var $container = evt.$trigger.parent();

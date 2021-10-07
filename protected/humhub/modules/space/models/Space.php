@@ -9,6 +9,7 @@
 namespace humhub\modules\space\models;
 
 use humhub\libs\ProfileImage;
+use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\events\SearchAddEvent;
 use humhub\modules\search\jobs\DeleteDocument;
@@ -16,27 +17,23 @@ use humhub\modules\search\jobs\UpdateDocument;
 use humhub\modules\space\behaviors\SpaceModelMembership;
 use humhub\modules\space\behaviors\SpaceController;
 use humhub\modules\space\components\ActiveQuerySpace;
+use humhub\modules\space\Module;
 use humhub\modules\user\behaviors\Followable;
 use humhub\components\behaviors\GUID;
 use humhub\modules\content\components\behaviors\SettingsBehavior;
 use humhub\modules\content\components\behaviors\CompatModuleManager;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
-use humhub\modules\space\permissions\InviteUsers;
-use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\activities\Created;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
-use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\GroupSpace;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\Invite;
-use humhub\modules\user\models\Group;
 use humhub\modules\space\widgets\Wall;
-use humhub\modules\space\widgets\Members;
 use humhub\modules\user\models\User as UserModel;
 use Yii;
 
@@ -639,6 +636,16 @@ class Space extends ContentContainerActiveRecord implements Searchable
         }
 
         return Content::VISIBILITY_PRIVATE;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSettings(): ContentContainerSettingsManager
+    {
+        /* @var $module Module */
+        $module = Yii::$app->getModule('space');
+        return $module->settings->contentContainer($this);
     }
 
     /**

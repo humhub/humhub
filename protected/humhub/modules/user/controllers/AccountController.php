@@ -21,7 +21,6 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\user\models\forms\AccountDelete;
-use humhub\modules\space\models\Membership;
 
 /**
  * AccountController provides all standard actions for the current logged in
@@ -123,6 +122,7 @@ class AccountController extends BaseAccountController
         $model->tags = $user->getTags();
         $model->show_introduction_tour = Yii::$app->getModule('tour')->settings->contentContainer($user)->get("hideTourPanel");
         $model->visibility = $user->visibility;
+        $model->blockedUsers = $user->getBlockedUserGuids();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             Yii::$app->getModule('tour')->settings->contentContainer($user)->set('hideTourPanel', $model->show_introduction_tour);
@@ -132,6 +132,9 @@ class AccountController extends BaseAccountController
             $user->tagsField = $model->tags;
             $user->time_zone = $model->timeZone;
             $user->visibility = $model->visibility;
+            if (Yii::$app->getModule('user')->allowBlockUsers()) {
+                $user->blockedUsersField = $model->blockedUsers;
+            }
             $user->save();
 
             $this->view->saved();

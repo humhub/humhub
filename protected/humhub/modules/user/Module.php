@@ -236,4 +236,14 @@ class Module extends \humhub\components\Module
             $group->save();
         }
     }
+
+    /**
+     * Check the blocking users is allowed
+     *
+     * @return bool
+     */
+    public function allowBlockUsers(): bool
+    {
+        return (bool) $this->settings->get('auth.blockUsers', true);
+    }
 }

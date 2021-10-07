@@ -182,7 +182,10 @@ class CommentController extends Controller
             throw new ForbiddenHttpException();
         }
 
-        return $this->renderAjaxContent(CommentWidget::widget(['comment' => $comment]));
+        return $this->renderAjaxContent(CommentWidget::widget([
+            'comment' => $comment,
+            'showBlocked' => Yii::$app->request->get('showBlocked'),
+        ]));
     }
 
     /**

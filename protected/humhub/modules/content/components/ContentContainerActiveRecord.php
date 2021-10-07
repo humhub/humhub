@@ -14,10 +14,12 @@ use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
-use humhub\modules\content\models\ContentContainerTag;
+use humhub\modules\content\models\ContentContainerBlockedUsers;
 use humhub\modules\content\models\ContentContainerTagRelation;
+use humhub\modules\content\Module;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use humhub\modules\user\Module as UserModule;
 use Yii;
 use yii\helpers\Url;
 
@@ -70,6 +72,11 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @var array Related Tags which should be updated after save
      */
     public $tagsField;
+
+    /**
+     * @var array Related Blcoked Users IDs which should be updated after save
+     */
+    public $blockedUsersField;
 
     /**
      * Returns the display name of content container
@@ -182,6 +189,11 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     }
 
     /**
+     * @return ContentContainerSettingsManager
+     */
+    abstract public function getSettings(): ContentContainerSettingsManager;
+
+    /**
      * @inheritdoc
      */
     public function afterSave($insert, $changedAttributes)
@@ -205,6 +217,10 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 
         if ($this->isAttributeSafe('tagsField') && $this->tagsField !== null) {
             ContentContainerTagRelation::updateByContainer($this, $this->tagsField);
+        }
+
+        if ($this->isAttributeSafe('blockedUsersField') && $this->blockedUsersField !== null) {
+            ContentContainerBlockedUsers::updateByContainer($this, $this->blockedUsersField);
         }
 
         parent::afterSave($insert, $changedAttributes);
@@ -370,6 +386,68 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function getTags()
     {
         return ContentContainerTagRelation::getNamesByContainer($this);
+    }
+
+    /**
+     * Returns an array with GUIDs of the blocked users
+     *
+     * @return string[] a list of user GUIDs
+     */
+    public function getBlockedUserGuids(): array
+    {
+        return $this->allowBlockUsers() ? ContentContainerBlockedUsers::getGuidsByContainer($this) : [];
+    }
+
+    /**
+     * Returns an array with IDs of the blocked user
+     *
+     * @return int[] a list of user IDs
+     */
+    public function getBlockedUserIds(): array
+    {
+        if (!$this->allowBlockUsers()) {
+            return [];
+        }
+
+        $blockedUsers = $this->getSettings()->get(ContentContainerBlockedUsers::BLOCKED_USERS_SETTING);
+        return empty($blockedUsers) ? [] : explode(',', $blockedUsers);
+    }
+
+    /**
+     * Check if current container is blocked for the User
+     *
+     * @param User|null $user
+     * @return bool
+     */
+    public function isBlockedForUser(?User $user = null): bool
+    {
+        if (!$this->allowBlockUsers()) {
+            return false;
+        }
+
+        if ($user === null) {
+            if (Yii::$app->user->isGuest) {
+                $visibilityAll = ($this instanceof Space) ? Space::VISIBILITY_ALL : User::VISIBILITY_ALL;
+                return $this->isVisibleFor($visibilityAll);
+            }
+
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        return in_array($user->id, $this->getBlockedUserIds());
+    }
+
+    /**
+     * Check the blocking users is allowed by users module
+     *
+     * @return bool
+     */
+    public function allowBlockUsers(): bool
+    {
+        /* @var UserModule $userModule */
+        $userModule = Yii::$app->getModule('user');
+
+        return $userModule->allowBlockUsers();
     }
 
 }
