@@ -61,6 +61,9 @@ humhub.module('directory', function(module, require, $) {
         }
 
         const $directoryEndIndicator = $('.directory-end');
+        if (!$directoryEndIndicator.length) {
+            return;
+        }
 
         const observer = new IntersectionObserver(function (entries) {
             if (preventScrollLoading()) {
