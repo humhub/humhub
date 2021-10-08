@@ -207,10 +207,11 @@ class ModuleManager extends Component
         // Register Event Handlers
         if (isset($config['events'])) {
             foreach ($config['events'] as $event) {
-                if (isset($event['class'])) {
-                    Event::on($event['class'], $event['event'], $event['callback']);
-                } else {
-                    Event::on($event[0], $event[1], $event[2]);
+                $eventClass = $event['class'] ?? $event[0];
+                $eventName = $event['event'] ?? $event[1];
+                $eventHandler = $event['callback'] ?? $event[2];
+                if (method_exists($eventHandler[0], $eventHandler[1])) {
+                    Event::on($eventClass, $eventName, $eventHandler);
                 }
             }
         }
