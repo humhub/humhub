@@ -131,7 +131,7 @@ class MembershipButton extends Widget
     public function run()
     {
         if ($this->space->isBlockedForUser()) {
-            //return '';
+            return '';
         }
 
         $options = $this->getOptions();
