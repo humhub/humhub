@@ -49,6 +49,7 @@ class DefaultController extends Controller
     {
         $space = $this->contentContainer;
         $space->scenario = 'edit';
+        $space->blockedUsersField = $space->getBlockedUserGuids();
 
         if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
             RichText::postProcess($space->about, $space);

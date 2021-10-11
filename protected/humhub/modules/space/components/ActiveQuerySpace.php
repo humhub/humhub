@@ -14,9 +14,9 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
+use humhub\modules\user\Module;
 use Yii;
 use yii\db\ActiveQuery;
-use yii\db\Expression;
 
 
 /**
@@ -93,6 +93,34 @@ class ActiveQuerySpace extends ActiveQuery
             }
             $this->andWhere(array_merge(['OR'], $conditions));
         }
+
+        return $this;
+    }
+
+    /**
+     * Exclude blocked spaces for the given $user or for the current User
+     *
+     * @param User $user
+     * @return ActiveQueryUser the query
+     */
+    public function filterBlockedSpaces(?User $user = null): ActiveQuerySpace
+    {
+        if ($user === null && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        if (!($user instanceof User)) {
+            return $this;
+        }
+
+        /* @var Module $userModule */
+        $userModule = Yii::$app->getModule('user');
+        if (!$userModule->allowBlockUsers()) {
+            return $this;
+        }
+
+        $this->leftJoin('contentcontainer_blocked_users', 'contentcontainer_blocked_users.contentcontainer_id=space.contentcontainer_id AND contentcontainer_blocked_users.user_id=:blockedUserId', [':blockedUserId' => $user->id]);
+        $this->andWhere('contentcontainer_blocked_users.user_id IS NULL');
 
         return $this;
     }

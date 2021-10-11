@@ -130,6 +130,10 @@ class MembershipButton extends Widget
      */
     public function run()
     {
+        if ($this->space->isBlockedForUser()) {
+            //return '';
+        }
+
         $options = $this->getOptions();
 
         if ($options['becomeMember']['mode'] == 'link') {
