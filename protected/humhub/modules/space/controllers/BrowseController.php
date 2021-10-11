@@ -48,7 +48,7 @@ class BrowseController extends Controller
     {
         Yii::$app->response->format = 'json';
 
-        $query = Space::find()->visible();
+        $query = Space::find()->visible()->filterBlockedSpaces();
         $query->search(Yii::$app->request->get('keyword'));
 
         $countQuery = clone $query;
