@@ -48,6 +48,7 @@ class SpaceDirectoryQuery extends ActiveQuerySpace
 
         $this->visible();
 
+        $this->filterBlockedSpaces();
         $this->filterByKeyword();
         $this->filterByConnection();
 

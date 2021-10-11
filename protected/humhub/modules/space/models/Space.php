@@ -119,7 +119,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             [['join_policy', 'visibility', 'status', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
             [['name'], 'required'],
             [['description', 'about', 'color'], 'string'],
-            [['tagsField'], 'safe'],
+            [['tagsField', 'blockedUsersField'], 'safe'],
             [['description'], 'string', 'max' => 100],
             [['join_policy'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'in', 'range' => [0, 1, 2]],
@@ -146,7 +146,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     {
         $scenarios = parent::scenarios();
 
-        $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'about', 'tagsField', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
+        $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'about', 'tagsField', 'blockedUsersField', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
         $scenarios[static::SCENARIO_CREATE] = ['name', 'color', 'description', 'join_policy', 'visibility'];
         $scenarios[static::SCENARIO_SECURITY_SETTINGS] = ['default_content_visibility', 'join_policy', 'visibility'];
 
@@ -173,7 +173,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
             'updated_at' => Yii::t('SpaceModule.base', 'Updated At'),
             'updated_by' => Yii::t('SpaceModule.base', 'Updated by'),
             'ownerUsernameSearch' => Yii::t('SpaceModule.base', 'Owner'),
-            'default_content_visibility' => Yii::t('SpaceModule.base', 'Default content visibility')
+            'default_content_visibility' => Yii::t('SpaceModule.base', 'Default content visibility'),
+            'blockedUsersField' => Yii::t('SpaceModule.base', 'Blocked users'),
         ];
     }
 
@@ -357,6 +358,10 @@ class Space extends ContentContainerActiveRecord implements Searchable
         }
 
         if ($this->join_policy == self::JOIN_POLICY_NONE) {
+            return false;
+        }
+
+        if ($this->isBlockedForUser(User::findOne($userId))) {
             return false;
         }
 

@@ -35,3 +35,4 @@
 - Enh #5080: Show available module updates directly in admin menu
 - Fix #5331: Fix js error on pjax open "Directory" page
 - Enh #5333: Module's events handlers registration: check if method exists
+- Enh #5300: Blocking users for space
