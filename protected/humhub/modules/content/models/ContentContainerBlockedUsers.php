@@ -9,6 +9,7 @@ namespace humhub\modules\content\models;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
@@ -45,8 +46,8 @@ class ContentContainerBlockedUsers extends ActiveRecord
 
     public function validateUser()
     {
-        $blockingUser = User::findOne($this->user_id);
-        $contentContainer = ContentContainer::findOne($this->contentcontainer_id)->getPolymorphicRelation();
+        $blockingUser = $this->getUser();
+        $contentContainer = $this->getContentContainer();
 
         if (!$blockingUser || !$contentContainer) {
             $this->addError('user_id', 'User and container ids should be specified!');
@@ -129,6 +130,48 @@ class ContentContainerBlockedUsers extends ActiveRecord
     }
 
     /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        $this->afterBlockUserForUser();
+        $this->afterBlockUserForSpace();
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * Call additional actions after save a blocked user for a User container
+     */
+    public function afterBlockUserForUser()
+    {
+        $containerUser = $this->getContentContainer();
+        if (!($containerUser instanceof User)) {
+            return;
+        }
+
+        if ($blockedUser = $this->getUser()) {
+            Friendship::cancel($containerUser, $blockedUser);
+            $containerUser->unfollow($blockedUser->id);
+        }
+    }
+
+    /**
+     * Call additional actions after save a blocked user for a Space container
+     */
+    public function afterBlockUserForSpace()
+    {
+        $space = $this->getContentContainer();
+        if (!($space instanceof Space)) {
+            return;
+        }
+
+        if ($blockedUser = $this->getUser()) {
+            $space->removeMember($blockedUser->id);
+            $space->unfollow($blockedUser->id);
+        }
+    }
+
+    /**
      * Delete blocked user relations of the Content Container
      *
      * @param ContentContainerActiveRecord $contentContainer
@@ -142,5 +185,31 @@ class ContentContainerBlockedUsers extends ActiveRecord
         }
 
         $contentContainer->settings->delete(self::BLOCKED_USERS_SETTING);
+    }
+
+    /**
+     * Get Content Container(Space/User) of this relation
+     *
+     * @return ContentContainerActiveRecord|null
+     */
+    public function getContentContainer(): ?ContentContainerActiveRecord
+    {
+        if (empty($this->contentcontainer_id)) {
+            return null;
+        }
+
+        $contentContainer = ContentContainer::findOne($this->contentcontainer_id);
+
+        return $contentContainer ? $contentContainer->getPolymorphicRelation() : null;
+    }
+
+    /**
+     * Get blocked User of this relation
+     *
+     * @return User|null
+     */
+    public function getUser(): ?User
+    {
+        return empty($this->user_id) ? null : User::findOne($this->user_id);
     }
 }
