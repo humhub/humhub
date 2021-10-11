@@ -190,7 +190,7 @@ class AdminMenu extends LeftNavigation
         try {
             $updatesCount = count($module->onlineModuleManager->getModuleUpdates());
             if ($updatesCount > 0) {
-                return '&nbsp;&nbsp;<span class="label label-warning">' . $updatesCount . '</span>';
+                return '&nbsp;&nbsp;<span class="label label-danger">' . $updatesCount . '</span>';
             }
         } catch (\Exception $ex) {
             ;
