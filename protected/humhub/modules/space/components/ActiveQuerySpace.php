@@ -56,7 +56,7 @@ class ActiveQuerySpace extends ActiveQuery
                 ['IN', 'space.visibility', [Space::VISIBILITY_ALL, Space::VISIBILITY_REGISTERED_ONLY]],
                 ['AND',
                     ['=', 'space.visibility', Space::VISIBILITY_NONE],
-                    ['IN', 'space.id', Membership::find()->select('id')->where(['user_id' => $user->id])]
+                    ['IN', 'space.id', Membership::find()->select('space_id')->where(['user_id' => $user->id])]
                 ]
             ]);
         } else {
