@@ -52,18 +52,17 @@ class ActiveQuerySpace extends ActiveQuery
         }
 
         if ($user !== null) {
-
-            $spaceIds = array_map(function (Membership $membership) {
-                return $membership->space_id;
-            }, Membership::findAll(['user_id' => $user->id]));
-
             $this->andWhere(['OR',
-                ['!=', 'space.visibility', Space::VISIBILITY_NONE],
-                ['IN', 'space.id', $spaceIds]
+                ['IN', 'space.visibility', [Space::VISIBILITY_ALL, Space::VISIBILITY_REGISTERED_ONLY]],
+                ['AND',
+                    ['=', 'space.visibility', Space::VISIBILITY_NONE],
+                    ['IN', 'space.id', Membership::find()->select('id')->where(['user_id' => $user->id])]
+                ]
             ]);
         } else {
-            $this->andWhere(['space.visibility' => Space::VISIBILITY_ALL]);
+            $this->andWhere(['!=', 'space.visibility', Space::VISIBILITY_NONE]);
         }
+
         return $this;
     }
 
