@@ -427,8 +427,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 
         if ($user === null) {
             if (Yii::$app->user->isGuest) {
-                $visibilityAll = ($this instanceof Space) ? Space::VISIBILITY_ALL : User::VISIBILITY_ALL;
-                return $this->isVisibleFor($visibilityAll);
+                return false;
             }
 
             $user = Yii::$app->user->getIdentity();
