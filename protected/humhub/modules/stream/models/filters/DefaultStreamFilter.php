@@ -131,8 +131,8 @@ class DefaultStreamFilter extends StreamQueryFilter
     protected function filterInvolved()
     {
         if ($this->streamQuery->user) {
-            $this->query->leftJoin('user_follow', 'content.object_model=user_follow.object_model AND content.object_id=user_follow.object_id AND user_follow.user_id = :userId', ['userId' => $this->streamQuery->user->id]);
-            $this->query->andWhere("user_follow.id IS NOT NULL");
+            $this->query->leftJoin('user_follow AS user_involved', 'content.object_model=user_involved.object_model AND content.object_id=user_involved.object_id AND user_involved.user_id = :userId', ['userId' => $this->streamQuery->user->id]);
+            $this->query->andWhere("user_involved.id IS NOT NULL");
         }
         return $this;
     }
