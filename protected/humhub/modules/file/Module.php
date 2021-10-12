@@ -44,6 +44,15 @@ class Module extends \humhub\components\Module
     ];
 
     /**
+     * @var array Additional MIME types which are not detected correctly by function finfo_file()
+     */
+    public $additionalMimeTypes = [
+        'dotx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'xltx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'potx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    ];
+
+    /**
      * @var bool Prohibit uploads of files with double file extension.
      */
     public $denyDoubleFileExtensions = false;

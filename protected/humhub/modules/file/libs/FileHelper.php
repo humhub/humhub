@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\libs;
 
+use humhub\modules\file\Module;
 use humhub\modules\file\widgets\FileDownload;
 use humhub\libs\Html;
 use humhub\libs\MimeHelper;
@@ -130,6 +131,26 @@ class FileHelper extends \yii\helpers\FileHelper
             'openLink' => FileHelper::createLink($file),
             'thumbnailUrl' => $thumbnailUrl
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getExtensionsByMimeType($mimeType, $magicFile = null)
+    {
+        $extensionsByMimeType = parent::getExtensionsByMimeType($mimeType, $magicFile);
+
+        /* @var Module $module */
+        $module = Yii::$app->getModule('file');
+        if (isset($module->additionalMimeTypes) && is_array($module->additionalMimeTypes)) {
+            foreach ($module->additionalMimeTypes as $additionalExtension => $additionalMimeType) {
+                if ($additionalMimeType === $mimeType) {
+                    $extensionsByMimeType[] = $additionalExtension;
+                }
+            }
+        }
+
+        return $extensionsByMimeType;
     }
 
 }
