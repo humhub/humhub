@@ -12,7 +12,7 @@ HumHub Changelog
 - Fix #5316: Fix filter "I'm involved" on dashboard
 - Fix #5324: Theme Loader broken when module is  provided via string
 - Fix #5327: Fix update container tags by not original model
-- Fix: Fix mime type detection for extensions: dotx, xltx, potx
+- Fix #5342: Fix mime type detection for extensions: dotx, xltx, potx
 
 
 1.9.1 (August 30, 2021)
