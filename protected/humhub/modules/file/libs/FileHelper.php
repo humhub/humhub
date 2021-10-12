@@ -29,6 +29,11 @@ class FileHelper extends \yii\helpers\FileHelper
 {
 
     /**
+     * @inheritdoc
+     */
+    public static $mimeMagicFile = '@humhub/config/mimeTypes.php';
+
+    /**
      * Checks if given fileName has a extension
      * 
      * @param string $fileName the filename
