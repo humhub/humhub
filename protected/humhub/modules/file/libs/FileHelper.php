@@ -79,7 +79,13 @@ class FileHelper extends \yii\helpers\FileHelper
 
         $htmlOptions = array_merge($htmlOptions, ['data-target' => '#globalModal']);
 
-        return Html::a($label, Url::to(['/file/view', 'guid' => $file->guid]), $htmlOptions);
+        $urlOptions = ['/file/view', 'guid' => $file->guid];
+
+        if (!isset($options['showLatestVersion']) || $options['showLatestVersion']) {
+            $urlOptions['showLatestVersion'] = 1;
+        }
+
+        return Html::a($label, Url::to($urlOptions), $htmlOptions);
     }
 
     /**
