@@ -9,7 +9,7 @@ return array (
   'Administration' => 'Adminisztráció',
   'Administrative group' => 'Adminisztratív csoport',
   'Advanced' => 'Haladó',
-  'Advanced settings' => '',
+  'Advanced settings' => 'Speciális beállítások',
   'Appearance' => 'Megjelenés',
   'Approval' => 'Elfogadás',
   'Authentication' => 'Hitelesítés',
