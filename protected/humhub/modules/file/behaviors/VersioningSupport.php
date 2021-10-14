@@ -136,4 +136,22 @@ class VersioningSupport extends Behavior
     {
         return ($this->owner->getPolymorphicRelation() instanceof AttachedFileVersioningSupport);
     }
+
+    /**
+     * Get current version of this File
+     *
+     * @return File
+     */
+    public function getCurrentVersion(): File
+    {
+        if ($this->owner->object_model === File::class) {
+            $currentVersion = File::findOne($this->owner->object_id);
+        }
+
+        if (empty($currentVersion)) {
+            $currentVersion = clone $this->owner;
+        }
+
+        return $currentVersion;
+    }
 }
