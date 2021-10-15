@@ -346,7 +346,7 @@ class PermissionManager extends Component
 
     /**
      * Not used anymore, permissions are now prefetched into $_groupPermissions array
-     * @deprecated since 1.10.0
+     * @deprecated since 1.10
      *
      * @param $groupId
      * @param BasePermission $permission
