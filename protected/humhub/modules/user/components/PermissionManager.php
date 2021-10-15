@@ -15,6 +15,7 @@ use humhub\modules\user\models\User as UserModel;
 use Yii;
 use yii\base\Component;
 use yii\base\Module as BaseModule;
+use yii\db\ActiveRecord;
 
 /**
  * Description of PermissionManager
@@ -41,6 +42,13 @@ class PermissionManager extends Component
      * @var array
      */
     protected $_access = [];
+
+    /**
+     * Cache for permission group states, array is divided into sub array for easier access
+     * map: [{group_id} => [GroupPermission, ...]]
+     * @var array
+     */
+    protected $_groupPermissions = [];
 
     /**
      * Verifies a given $permission or $permission array for a permission subject.
@@ -138,6 +146,7 @@ class PermissionManager extends Component
     public function clear()
     {
         $this->_access = [];
+        $this->_groupPermissions = [];
     }
 
     /**
@@ -187,6 +196,8 @@ class PermissionManager extends Component
      */
     public function getGroupState($groups, BasePermission $permission, $returnDefaultState = 1)
     {
+        $this->prefetchGroups($groups);
+
         if (is_array($groups)) {
             $state = '';
             foreach ($groups as $group) {
@@ -202,6 +213,79 @@ class PermissionManager extends Component
     }
 
     /**
+     * Prefetch permissions for groups, use getPrefetchedStateRecord to get prefetched permission
+     *
+     * @param $groups
+     */
+    protected function prefetchGroups($groups)
+    {
+        if (!$ids = $this->prefetchGatherGroupIds($groups)) {
+            return;
+        }
+
+        // array_fill_keys is done in order to record group ids, even if no records found
+        // recorded group id will not be fetched again
+        $this->_groupPermissions += array_fill_keys($ids, []);
+        $result = $this->getQuery()->andWhere(['group_id' => $ids])->all();
+
+        foreach ($result as $group) {
+            /** @var GroupPermission | ActiveRecord $group */
+            $this->_groupPermissions[$group->group_id][] = $group;
+        }
+    }
+
+    /**
+     * Gets ids from groups array (or string) for query,
+     * prefetched groups ignored and not wil not be included in array
+     *
+     * @param $groups
+     * @param array $ids
+     * @return array|int
+     */
+    protected function prefetchGatherGroupIds($groups, $ids = [])
+    {
+        if (!is_array($groups)) {
+            $groups = [$groups];
+        }
+
+        foreach ($groups as $group) {
+            /** @var Group | string | int $groupIds */
+            $id = $group instanceof Group ? $group->id : $group;
+            if (isset($this->_groupPermissions[$id])) {
+                continue;
+            }
+
+            $ids[] = $id;
+        }
+
+        return $ids;
+    }
+
+    /**
+     * Try to get permission from prefetched array
+     *
+     * @param $groupId
+     * @param BasePermission $permission
+     * @return GroupPermission|null
+     */
+    protected function getPrefetchedStateRecord($groupId, BasePermission $permission)
+    {
+        if (empty($this->_groupPermissions[$groupId])) {
+            return null;
+        }
+
+        foreach ($this->_groupPermissions[$groupId] as $groupPermission) {
+            /** @var $groupPermission GroupPermission */
+            if ($groupPermission->permission_id == $permission->getId()
+                && $groupPermission->module_id == $permission->getModuleId()) {
+                return $groupPermission;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Returns the group state
      *
      * @param string $groupId
@@ -211,15 +295,12 @@ class PermissionManager extends Component
      */
     private function getSingleGroupState($groupId, BasePermission $permission, $returnDefaultState = true)
     {
-        if ($groupId instanceof \humhub\modules\user\models\Group) {
+        if ($groupId instanceof Group) {
             $groupId = $groupId->id;
         }
 
-        // Check if database entry exists
-        $dbRecord = $this->getGroupStateRecord($groupId, $permission);
-
-        if ($dbRecord !== null) {
-            return $dbRecord->state;
+        if ($cached = $this->getPrefetchedStateRecord($groupId, $permission)) {
+            return $cached->state;
         }
 
         if ($returnDefaultState) {
@@ -264,6 +345,9 @@ class PermissionManager extends Component
     }
 
     /**
+     * Not used anymore, permissions are now prefetched into $_groupPermissions array
+     * @deprecated since 1.10
+     *
      * @param $groupId
      * @param BasePermission $permission
      * @return array|null|\yii\db\ActiveRecord
