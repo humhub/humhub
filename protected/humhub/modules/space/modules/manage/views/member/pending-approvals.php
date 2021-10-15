@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\user\widgets\Image;
 use yii\helpers\Html;
 use humhub\widgets\GridView;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;
@@ -19,6 +20,12 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'columns' => [
+                    [
+                        'format' => 'raw',
+                        'value' => static function ($model) {
+                            return Image::widget(['user' => $model->user, 'width' => 25]);
+                        }
+                    ],
                     'user.username',
                     'user.profile.firstname',
                     'user.profile.lastname',
