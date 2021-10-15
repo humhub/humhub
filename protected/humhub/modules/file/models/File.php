@@ -46,6 +46,7 @@ use yii\helpers\Url;
  * @method setNewCurrentVersion(int $newVersionFileId)
  * @method bool isVersion(static $file)
  * @method bool isVersioningEnabled()
+ * @method File getCurrentVersion()
  *
  * Following properties are optional and for module depended use:
  * - title
