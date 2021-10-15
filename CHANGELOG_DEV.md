@@ -36,4 +36,5 @@
 - Fix #5331: Fix js error on pjax open "Directory" page
 - Enh #5333: Module's events handlers registration: check if method exists
 - Enh #5300: Blocking users for space
+- Enh #5349: Filter archived spaces on directory
 - Enh #5350: Show the latest file version

@@ -86,6 +86,9 @@
             margin: 15px 0;
             border-radius: 4px;
             background-color: #ffffff;
+            &.card-archived {
+                filter: opacity(45%);
+            }
         }
 
         .card-icons .fa {
@@ -117,6 +120,10 @@
                 display: inline-block;
                 border: 2px solid #fff;
                 border-radius: 6px;
+            }
+            .card-status {
+                position: absolute;
+                right: 16px;
             }
             .card-icons {
                 display: table-cell;
