@@ -146,6 +146,7 @@ class PermissionManager extends Component
     public function clear()
     {
         $this->_access = [];
+        $this->_groupPermissions = [];
     }
 
     /**
