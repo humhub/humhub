@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\user\widgets\Image;
 use yii\helpers\Html;
 use humhub\widgets\GridView;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;
@@ -20,6 +21,12 @@ use humhub\widgets\TimeAgo;
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'columns' => [
+                    [
+                        'format' => 'raw',
+                        'value' => static function ($model) {
+                            return Image::widget(['user' => $model->user, 'width' => 25]);
+                        }
+                    ],
                     'user.username',
                     'user.profile.firstname',
                     'user.profile.lastname',
@@ -27,10 +34,10 @@ use humhub\widgets\TimeAgo;
                         'attribute' => 'last_visit',
                         'format' => 'raw',
                         'value' => function ($data) use (&$groups) {
-                            if (empty($data->last_visit)) {
+                            if (empty($model->last_visit)) {
                                 return Yii::t('SpaceModule.manage', 'never');
                             }
-                            return TimeAgo::widget(['timestamp' => $data->last_visit]);
+                            return TimeAgo::widget(['timestamp' => $model->last_visit]);
                         }
                     ],
                     [
