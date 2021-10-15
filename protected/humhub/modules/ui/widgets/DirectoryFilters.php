@@ -89,6 +89,7 @@ abstract class DirectoryFilters extends Widget
             case 'dropdown':
             case 'dropdownlist':
                 $inputOptions['data-action-change'] = 'directory.applyFilters';
+                $inputOptions['options'] = ['separator' => ['disabled' => '']];
                 $inputHtml = Html::dropDownList($filter, self::getValue($filter), $data['options'], $inputOptions);
                 break;
 

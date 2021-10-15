@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
@@ -162,7 +163,12 @@ class ContentContainerController extends Controller
             if ($contentContainer !== null) {
                 /* @var Space|User $contentContainerClass */
                 $contentContainerClass = $contentContainer->class;
-                return $contentContainerClass::find()->where(['guid' => $guid])->visible()->one();
+
+                $query = $contentContainerClass::find()->where(['guid' => $guid]);
+                if (!Yii::$app->user->can(new ManageSpaces())) {
+                    $query->visible();
+                }
+                return $query->one();
             }
         }
 

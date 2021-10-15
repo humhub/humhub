@@ -10,6 +10,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
 use humhub\modules\space\widgets\SpaceDirectoryActionButtons;
 use humhub\modules\space\widgets\SpaceDirectoryIcons;
+use humhub\modules\space\widgets\SpaceDirectoryStatus;
 use humhub\modules\space\widgets\SpaceDirectoryTagList;
 use yii\web\View;
 
@@ -17,7 +18,7 @@ use yii\web\View;
 /* @var $space Space */
 ?>
 
-<div class="card-panel">
+<div class="card-panel<?php if ($space->isArchived()) : ?> card-archived<?php endif; ?>">
     <div class="card-bg-image"<?php if ($space->getProfileBannerImage()->hasImage()) : ?> style="background-image: url('<?= $space->getProfileBannerImage()->getUrl() ?>')"<?php endif; ?>></div>
     <div class="card-header">
         <?= Image::widget([
@@ -26,6 +27,7 @@ use yii\web\View;
             'linkOptions' => ['data-contentcontainer-id' => $space->contentcontainer_id, 'class' => 'card-image-link'],
             'width' => 94,
         ]); ?>
+        <?= SpaceDirectoryStatus::widget(['space' => $space]); ?>
         <div class="card-icons">
             <?= SpaceDirectoryIcons::widget(['space' => $space]); ?>
         </div>
