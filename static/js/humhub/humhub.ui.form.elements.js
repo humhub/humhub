@@ -171,7 +171,21 @@ humhub.module('ui.form.elements', function (module, require, $) {
             this.show();
         }
     };
+
     FormFieldsCollapsible.prototype.init = function () {
+        if (!this.$.attr('tabindex')) {
+            this.$.attr('tabindex', 0);
+        }
+
+        var that = this;
+        this.$.on('keyup', function (e) {
+            if(e.which === 9 || !that.$.is(":focus")){
+                return;
+            }
+
+            that.clickCollab();
+        });
+
         if (this.$.find('.error, .has-error').length > 0) {
             this.show();
         }

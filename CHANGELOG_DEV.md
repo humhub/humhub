@@ -38,3 +38,4 @@
 - Enh #5300: Blocking users for space
 - Enh #5349: Filter archived spaces on directory
 - Enh #5350: Show the latest file version
+- Fix #4945: Collapsible-fields now accessible by tab and openable/closable by keypress
