@@ -106,7 +106,7 @@
 }
 
 .regular-checkbox {
-    display: none;
+    opacity: 0;
 }
 
 .regular-checkbox + .regular-checkbox-box {
@@ -118,6 +118,10 @@
     position: relative;
     float: left;
     margin-right: 5px;
+}
+
+.regular-checkbox:focus + .regular-checkbox-box {
+    border: 2px solid #494949;
 }
 
 .regular-checkbox:checked + .regular-checkbox-box {
