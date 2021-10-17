@@ -55,12 +55,6 @@ class VersioningSupport extends Behavior
             throw new InvalidArgumentException("Could find the new file version by id.");
         }
 
-        $newVersionFile->object_model = $this->owner->object_model;
-        $newVersionFile->object_id = $this->owner->object_id;
-        if (!$newVersionFile->save()) {
-            return false;
-        }
-
         return $this->updateVersions($newVersionFile, $this->owner->id);
     }
 

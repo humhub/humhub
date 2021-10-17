@@ -41,12 +41,8 @@ use yii\helpers\Url;
  * @property \humhub\modules\user\models\User $createdBy
  * @property \humhub\modules\file\components\StorageManager $store
  *
- * Methods of the behavior Versions:
- * @method ActiveQuery getVersionsQuery()
- * @method setNewCurrentVersion(int $newVersionFileId)
- * @method bool isVersion(static $file)
- * @method bool isVersioningEnabled()
- * @method File getCurrentVersion()
+ *
+ * @mixin VersioningSupport
  *
  * Following properties are optional and for module depended use:
  * - title
@@ -295,23 +291,36 @@ class File extends FileCompat
      * @return bool
      * @since 1.10
      */
-    public function replaceFileWith(File $newFile): bool
+    public function replaceWithFile(File $newFile): bool
     {
         if ($newFile->isNewRecord) {
             throw new InvalidArgumentException('New file cannot be a new record!');
         }
+
+        $newFile->object_id = $this->object_id;
+        $newFile->object_model = $this->object_model;
+
+        if (empty($newFile->file_name)) {
+            $newFile->file_name = $this->file_name;
+        }
+
+        if (empty($newFile->title)) {
+            $newFile->title = $this->title;
+        }
+
+        if (empty($newFile->mime_type)) {
+            $newFile->mime_type = $this->mime_type;
+        }
+
+        $newFile->show_in_stream = $this->show_in_stream;
+        $newFile->save();
 
         if ($this->isVersioningEnabled()) {
             // Pass to VersioningSupport Behavior
             return $this->setNewCurrentVersion($newFile->id);
         } else {
             // Switch to newFile and delete the old one
-            $newFile->object_id = $this->object_id;
-            $newFile->object_model = $this->object_model;
-            $newFile->show_in_stream = $this->show_in_stream;
-            if ($newFile->save()) {
-                return (bool)$this->delete();
-            }
+            return (bool)$this->delete();
         }
 
         return false;
