@@ -293,10 +293,6 @@ class File extends FileCompat
      */
     public function replaceWithFile(File $newFile): bool
     {
-        if ($newFile->isNewRecord) {
-            throw new InvalidArgumentException('New file cannot be a new record!');
-        }
-
         $newFile->object_id = $this->object_id;
         $newFile->object_model = $this->object_model;
 
@@ -313,7 +309,10 @@ class File extends FileCompat
         }
 
         $newFile->show_in_stream = $this->show_in_stream;
-        $newFile->save();
+
+        if (!$newFile->save()) {
+            return false;
+        }
 
         if ($this->isVersioningEnabled()) {
             // Pass to VersioningSupport Behavior
@@ -322,7 +321,5 @@ class File extends FileCompat
             // Switch to newFile and delete the old one
             return (bool)$this->delete();
         }
-
-        return false;
     }
 }
