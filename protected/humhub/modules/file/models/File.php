@@ -310,16 +310,16 @@ class File extends FileCompat
 
         $newFile->show_in_stream = $this->show_in_stream;
 
-        if (!$newFile->save()) {
-            return false;
-        }
-
         if ($this->isVersioningEnabled()) {
             // Pass to VersioningSupport Behavior
-            return $this->setNewCurrentVersion($newFile->id);
+            return $newFile->save() && $this->setNewCurrentVersion($newFile->id);
         } else {
-            // Switch to newFile and delete the old one
-            return (bool)$this->delete();
+            // Switch newFile to this File
+            $newFile->id = $this->id;
+            $newFile->guid = $this->guid;
+
+            $this->size = $newFile->size;
+            return $this->save();
         }
     }
 }
