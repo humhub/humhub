@@ -1,3 +1,7 @@
+1.11.0 (Unreleased)
+--------------------------
+- Enh #5358: Remove deprecated "Directory" module
+
 1.10.0-beta.1 (Unreleased)
 --------------------------
 
