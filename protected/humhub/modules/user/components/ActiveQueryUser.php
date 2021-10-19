@@ -11,8 +11,8 @@ namespace humhub\modules\user\components;
 use humhub\events\ActiveQueryEvent;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\models\fieldtype\BaseTypeVirtual;
-use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Group;
+use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User as UserModel;
 use humhub\modules\user\Module;
@@ -26,6 +26,13 @@ use yii\db\ActiveQuery;
  */
 class ActiveQueryUser extends ActiveQuery
 {
+    /**
+     * Query keywords will be broken down into array needles with this length
+     * Meaning, if you search for "word1 word2 word3" and MAX_SEARCH_NEEDLES being 2
+     * word3 will be left out, and search will only look for word1, word2.
+     *
+     * @var string
+     */
     const MAX_SEARCH_NEEDLES = 5;
 
     /**
@@ -37,6 +44,28 @@ class ActiveQueryUser extends ActiveQuery
      * @event Event an event that is triggered when only active users are requested via [[active()]].
      */
     const EVENT_CHECK_ACTIVE = 'checkActive';
+
+    /**
+     * For toggling on condition if required
+     * @var bool
+     */
+    protected $cleanUpSymbols = true;
+
+    /**
+     * During search, these characters will be changed or removed.
+     * if key is numeric: value is character that will be replaced to empty string (removed)
+     * If key is string: key is character that will be replaced with value
+     * @var array
+     */
+    protected $cleanUpSymbolsArray = ['\'' => '_', '’' => '_'];
+
+    /**
+     * If during character clean up, any symbols where changed to "_", do not escape it, because in mysql like _ means
+     * any character, this will allow use to find names with ' even if ’ is entered. This array is used apposed to
+     * original LikeConditionBuilder.
+     * @var array
+     */
+    protected $escapingReplacements = ['%' => '\%', '\\' => '\\\\'];
 
     /**
      * Limit to active users
@@ -99,19 +128,69 @@ class ActiveQueryUser extends ActiveQuery
         $this->joinWith('profile');
         $this->joinWith('contentContainerRecord');
 
-        if (!is_array($keywords)) {
-            $keywords = explode(' ', $keywords);
-        }
-
-        foreach (array_slice($keywords, 0, static::MAX_SEARCH_NEEDLES) as $keyword) {
+        foreach ($this->setUpKeywords($keywords) as $keyword) {
             $conditions = [];
+
             foreach ($fields as $field) {
                 $conditions[] = ['LIKE', $field, $keyword];
             }
+
+            $clean = $this->cleanUpSymbols($keyword);
+            if ($clean && $clean !== $keyword) { // if the word was clean up, add it to OR LIKE to maximize results
+                foreach ($fields as $field) {
+                    $conditions[] = ['LIKE', $field, $clean, $this->escapingReplacements];
+                }
+            }
+
             $this->andWhere(array_merge(['OR'], $conditions));
         }
 
         return $this;
+    }
+
+    /**
+     * @param $keywords
+     * @return array
+     */
+    protected function setUpKeywords($keywords){
+
+        if (!is_array($keywords)) {
+            $keywords = explode(' ', $keywords);
+        }
+
+        return array_slice($keywords, 0, static::MAX_SEARCH_NEEDLES);
+    }
+
+    /**
+     * @param $value
+     */
+    public function setCleanUpSymbols($value)
+    {
+        $this->cleanUpSymbols = (bool)$value;
+    }
+
+    /**
+     * @param $text
+     * @return string
+     */
+    protected function cleanUpSymbols($text)
+    {
+        if (!$this->cleanUpSymbols) {
+            return false;
+        }
+
+        foreach ($this->cleanUpSymbolsArray as $key => $cleanUpSymbol) {
+            $replaceWith = '';
+
+            if (!is_numeric($key)) {
+                $replaceWith = $cleanUpSymbol;
+                $cleanUpSymbol = $key;
+            }
+
+            $text = str_replace($cleanUpSymbol, $replaceWith, $text);
+        }
+
+        return $text;
     }
 
     /**
