@@ -1,3 +1,7 @@
+1.11.0 (Unreleased)
+--------------------------
+- Enh #5361: Optimize People directory details query
+
 1.10.0-beta.1 (Unreleased)
 --------------------------
 
