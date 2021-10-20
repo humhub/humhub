@@ -1,3 +1,7 @@
+1.11.0 (Unreleased)
+--------------------------
+- Enh #5363: Optimize duplicated SQL queries on profile edit
+
 1.10.0-beta.1 (Unreleased)
 --------------------------
 
