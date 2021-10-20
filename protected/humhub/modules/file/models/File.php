@@ -8,14 +8,13 @@
 
 namespace humhub\modules\file\models;
 
+use humhub\components\behaviors\GUID;
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\file\behaviors\VersioningSupport;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\base\Exception;
-use yii\base\InvalidArgumentException;
-use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
 
@@ -37,12 +36,14 @@ use yii\helpers\Url;
  * @property integer $updated_by
  * @property integer $show_in_stream
  * @property string $hash_sha1
+ * @property integer $is_deleted
  *
  * @property \humhub\modules\user\models\User $createdBy
  * @property \humhub\modules\file\components\StorageManager $store
  *
- *
  * @mixin VersioningSupport
+ * @mixin GUID
+ * @mixin PolymorphicRelation
  *
  * Following properties are optional and for module depended use:
  * - title
@@ -85,11 +86,11 @@ class File extends FileCompat
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::class,
+                'class' => PolymorphicRelation::class,
                 'mustBeInstanceOf' => [ActiveRecord::class],
             ],
             [
-                'class' => \humhub\components\behaviors\GUID::class,
+                'class' => GUID::class,
             ],
             [
                 'class' => VersioningSupport::class,
@@ -125,6 +126,17 @@ class File extends FileCompat
 
         return parent::beforeDelete();
     }
+
+    /**
+     * Deletes only the data but leaves the record. Thus a history is available for contents without versioning.
+     * @since 1.10
+     */
+    public function softDelete()
+    {
+        $this->store->delete();
+        $this->updateAttributes(['is_deleted' => 1]);
+    }
+
 
     /**
      * Returns the url to this file
@@ -310,16 +322,17 @@ class File extends FileCompat
 
         $newFile->show_in_stream = $this->show_in_stream;
 
-        if ($this->isVersioningEnabled()) {
-            // Pass to VersioningSupport Behavior
-            return $newFile->save() && $this->setNewCurrentVersion($newFile->id);
-        } else {
-            // Switch newFile to this File
-            $newFile->id = $this->id;
-            $newFile->guid = $this->guid;
-
-            $this->size = $newFile->size;
-            return $this->save();
+        if (!$newFile->save()) {
+            Yii::error('Could not save file! ' . print_r($newFile->getErrors()), 'file');
+            return false;
         }
+
+        $this->setNewCurrentVersion($newFile->id);
+
+        if (!$this->isVersioningEnabled()) {
+            $this->softDelete();
+        }
+
+        return true;
     }
 }

@@ -16,7 +16,7 @@ use humhub\modules\file\converter\TextConverter;
 
 /**
  * Events provides callbacks to handle events.
- * 
+ *
  * @author luke
  */
 class Events extends \yii\base\BaseObject
@@ -92,6 +92,11 @@ class Events extends \yii\base\BaseObject
         }
     }
 
+    /**
+     * On delete of an user, check there are files bound to it and delete them
+     *
+     * @param Event $event
+     */
     public static function onUserDelete($event)
     {
         foreach (File::findAll(['created_by' => $event->sender->id]) as $file) {
@@ -102,9 +107,9 @@ class Events extends \yii\base\BaseObject
 
     /**
      * Handles the SearchAttributesEvent and adds related files
-     * 
-     * @since 1.2.3
+     *
      * @param SearchAttributesEvent $event
+     * @since 1.2.3
      */
     public static function onSearchAttributes(SearchAttributesEvent $event)
     {

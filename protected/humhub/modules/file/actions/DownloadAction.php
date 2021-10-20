@@ -126,7 +126,7 @@ class DownloadAction extends Action
     {
         $file = File::findOne(['guid' => $guid]);
 
-        if ($file == null) {
+        if ($file == null || !empty($file->is_deleted)) {
             throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
         }
 
