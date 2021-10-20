@@ -1,3 +1,7 @@
+1.11.0 (Unreleased)
+--------------------------
+- Enh #5352: Remove "NewMembers" widget from Core
+
 1.10.0-beta.1 (Unreleased)
 --------------------------
 
