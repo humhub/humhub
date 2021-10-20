@@ -1,3 +1,7 @@
+1.11.0 (Unreleased)
+--------------------------
+- Enh #5323: Remove deprecated "Setting" classes
+
 1.10.0-beta.1 (Unreleased)
 --------------------------
 
