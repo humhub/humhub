@@ -34,13 +34,14 @@ class Helpers
 
     public static function trimText($text, $length): string
     {
+        $text = trim(preg_replace('#<br */?>#i', ' ', $text));
+
         $length = abs((int)$length);
         if (mb_strlen($text) > $length) {
-            $text = mb_substr($text, 0, $length) . '...';
+            $text = trim(mb_substr($text, 0, $length)) . '...';
         }
-        $text = preg_replace('#<br */?>#i', '', $text);
 
-        return trim($text);
+        return $text;
     }
 
     /**
