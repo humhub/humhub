@@ -60,6 +60,15 @@ class BrowseController extends Controller
     }
 
     /**
+     * @return \yii\web\Response
+     * @throws \Throwable
+     */
+    public function actionSearchLazy()
+    {
+        return $this->asJson(Chooser::getLazyLoadResult());
+    }
+
+    /**
      * Returns space tags list in JSON format filtered by keyword
      */
     public function actionSearchTagsJson()
@@ -77,7 +86,7 @@ class BrowseController extends Controller
     protected function prepareResult($spaces)
     {
         $target = Yii::$app->request->get('target');
-        
+
         $json = [];
         $withChooserItem = ($target === 'chooser');
         foreach ($spaces as $space) {
