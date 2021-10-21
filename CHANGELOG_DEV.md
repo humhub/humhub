@@ -41,3 +41,4 @@
 - Enh #5350: Show the latest file version
 - Enh #4945: Collapsible-fields now accessible by tab and openable/closable by keypress, check-boxes now focusable
 - Enh #5354: Space - pending invites and approvals: add the image of the users
+- Fix #5359: Removed encoding of user's name in UserPicker
