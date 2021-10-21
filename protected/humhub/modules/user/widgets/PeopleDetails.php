@@ -73,18 +73,18 @@ class PeopleDetails extends Widget
             $profileFields = [];
         }
 
-        if (array_key_exists($internalName, $profileFields)) {
-            return $profileFields[$internalName];
+        if (!array_key_exists($internalName, $profileFields)) {
+            $profileFields[$internalName] = ProfileField::find()
+                ->where(['visible' => 1])
+                ->andWhere(['internal_name' => $internalName])
+                ->one();
         }
 
-        $profileField = ProfileField::find()
-            ->where(['visible' => 1])
-            ->andWhere(['internal_name' => $internalName])
-            ->one();
+        if (!$profileFields[$internalName]) {
+            return false;
+        }
 
-        $profileFields[$internalName] = $profileField ? $profileField->getUserValue($this->user, false) : false;
-
-        return $profileFields[$internalName];
+        return $profileFields[$internalName]->getUserValue($this->user, false);
     }
 
 }
