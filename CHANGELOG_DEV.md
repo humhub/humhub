@@ -1,3 +1,7 @@
+1.11.0 (Unreleased)
+--------------------------
+- Enh #5362: Optimize getting of ContentContainer tags
+- 
 1.10.0-beta.1 (Unreleased)
 --------------------------
 
