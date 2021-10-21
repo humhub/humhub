@@ -49,23 +49,14 @@ class ActiveQueryUser extends ActiveQuery
      * For toggling on condition if required
      * @var bool
      */
-    protected $cleanUpSymbols = true;
+    protected $multiCharacterSearch = true;
 
     /**
-     * During search, these characters will be changed or removed.
-     * if key is numeric: value is character that will be replaced to empty string (removed)
-     * If key is string: key is character that will be replaced with value
+     * During search, keyword will be walked through and each character of the set will be changed to another
+     * of the same set to create variants to maximise search.
      * @var array
      */
-    protected $cleanUpSymbolsArray = ['\'' => '_', '’' => '_'];
-
-    /**
-     * If during character clean up, any symbols where changed to "_", do not escape it, because in mysql like _ means
-     * any character, this will allow use to find names with ' even if ’ is entered. This array is used apposed to
-     * original LikeConditionBuilder.
-     * @var array
-     */
-    protected $escapingReplacements = ['%' => '\%', '\\' => '\\\\'];
+    protected $multiCharacterSearchVariants = [['\'', '’', '`'], ['"', '”', '“']];
 
     /**
      * Limit to active users
@@ -121,39 +112,46 @@ class ActiveQueryUser extends ActiveQuery
             return $this;
         }
 
-        if (empty($fields)) {
-            $fields = $this->getSearchableUserFields();
-        }
-
-        $this->joinWith('profile');
-        $this->joinWith('contentContainerRecord');
+        $this->joinWith('profile')->joinWith('contentContainerRecord');
 
         foreach ($this->setUpKeywords($keywords) as $keyword) {
-            $conditions = [];
-
-            foreach ($fields as $field) {
-                $conditions[] = ['LIKE', $field, $keyword];
-            }
-
-            $clean = $this->cleanUpSymbols($keyword);
-            if ($clean && $clean !== $keyword) { // if the word was clean up, add it to OR LIKE to maximize results
-                foreach ($fields as $field) {
-                    $conditions[] = ['LIKE', $field, $clean, $this->escapingReplacements];
-                }
-            }
-
-            $this->andWhere(array_merge(['OR'], $conditions));
+            $this->andWhere(array_merge(['OR'], $this->createKeywordCondition($keyword, $fields)));
         }
 
         return $this;
     }
 
     /**
+     * @param $keyword
+     * @param null $fields
+     * @return array
+     */
+    protected function createKeywordCondition($keyword, $fields = null)
+    {
+        if (empty($fields)) {
+            $fields = $this->getSearchableUserFields();
+        }
+
+        $conditions = [];
+        foreach ($this->prepareKeywordVariants($keyword) as $variant) {
+            $subConditions = [];
+
+            foreach ($fields as $field) {
+                $subConditions[] = ['LIKE', $field, $variant];
+            }
+
+            $conditions[] = array_merge(['OR'], $subConditions);
+        }
+
+        return $conditions;
+    }
+
+    /**
      * @param $keywords
      * @return array
      */
-    protected function setUpKeywords($keywords){
-
+    protected function setUpKeywords($keywords)
+    {
         if (!is_array($keywords)) {
             $keywords = explode(' ', $keywords);
         }
@@ -162,35 +160,54 @@ class ActiveQueryUser extends ActiveQuery
     }
 
     /**
-     * @param $value
+     * This function will look through keyword and prepare other variants of the words according to config
+     * This is used to search for different apostrophes and quotes characters as for now.
+     * Example: word "o'Surname", will create array ["o'Surname", "o’Surname", "o`Surname"]
+     *
+     * @param $keyword
+     * @return array
      */
-    public function setCleanUpSymbols($value)
+    protected function prepareKeywordVariants($keyword)
     {
-        $this->cleanUpSymbols = (bool)$value;
+        $variants = [$keyword];
+
+        foreach ($this->multiCharacterSearchVariants as $set) {
+            foreach ($set as $character) {
+                if (strpos($keyword, $character) === false) {
+                    continue;
+                }
+
+                foreach ($set as $replaceWithCharacter) {
+                    if ($character === $replaceWithCharacter) {
+                        continue;
+                    }
+
+                    $variants[] = str_replace($character, $replaceWithCharacter, $keyword);
+                }
+            }
+        }
+
+        return $variants;
     }
 
     /**
-     * @param $text
-     * @return string
+     * @param $value
+     * @return $this
      */
-    protected function cleanUpSymbols($text)
+    public function setMultiCharacterSearch($value)
     {
-        if (!$this->cleanUpSymbols) {
-            return false;
-        }
+        $this->multiCharacterSearch = (bool)$value;
+        return $this;
+    }
 
-        foreach ($this->cleanUpSymbolsArray as $key => $cleanUpSymbol) {
-            $replaceWith = '';
-
-            if (!is_numeric($key)) {
-                $replaceWith = $cleanUpSymbol;
-                $cleanUpSymbol = $key;
-            }
-
-            $text = str_replace($cleanUpSymbol, $replaceWith, $text);
-        }
-
-        return $text;
+    /**
+     * @param $array
+     * @return $this
+     */
+    public function setMultiCharacterSearchVariants($array)
+    {
+        $this->multiCharacterSearchVariants = $array;
+        return $this;
     }
 
     /**
