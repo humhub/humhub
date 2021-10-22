@@ -148,7 +148,7 @@ class UserPicker
             'guid' => $user->guid,
             'disabled' => $disabled,
             'disabledText' => ($disabled) ? $disabledText : null,
-            'text' => Html::encode($user->displayName),
+            'text' => $user->displayName,
             'image' => $user->getProfileImage()->getUrl(),
             'priority' => ($priority == null) ? 0 : $priority,
             'link' => $user->getUrl()
