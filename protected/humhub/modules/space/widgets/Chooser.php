@@ -23,10 +23,15 @@ use yii\helpers\Url;
  */
 class Chooser extends Widget
 {
-    /** @var bool */
+    /**
+     * @var bool
+     * @since 1.10
+     */
     public $lazyLoad = true;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public $viewName = '@space/widgets/views/spaceChooser';
 
     /**
