@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.9.3 (Unreleased)
+------------------
+- Fix #5372: Text shortening in Japanese broken - Fix truncating of multi-byte strings
+
 
 1.9.2 (October 15, 2021)
 ------------------------
