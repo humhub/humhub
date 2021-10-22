@@ -33,12 +33,12 @@ class ProfileBannerImage extends ProfileImage
     /**
      * @var Integer width of the Image
      */
-    protected $width = 1134;
+    protected $width = 1240;
 
     /**
      * @var Integer height of the Image
      */
-    protected $height = 192;
+    protected $height = 552;
 
     /**
      * @var String folder name inside the uploads directory
