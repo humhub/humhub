@@ -40,6 +40,7 @@
 - Enh #5350: Show the latest file version
 - Enh #4945: Collapsible-fields now accessible by tab and openable/closable by keypress, check-boxes now focusable
 - Enh #5354: Space - pending invites and approvals: add the image of the users
+- Enh #5363: Optimize duplicated SQL queries on profile edit
 - Fix #5360: Mentioning search fails apostrophe in a user's displayName
 - Fix #5359: Removed encoding of user's name in UserPicker
 - Enh #5362: Optimize getting of ContentContainer tags
