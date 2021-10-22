@@ -67,16 +67,24 @@ class PeopleDetails extends Widget
             return false;
         }
 
-        $profileField = ProfileField::find()
-            ->where(['visible' => 1])
-            ->andWhere(['internal_name' => $internalName])
-            ->one();
+        static $profileFields;
 
-        if (!$profileField) {
+        if (!is_array($profileFields)) {
+            $profileFields = [];
+        }
+
+        if (!array_key_exists($internalName, $profileFields)) {
+            $profileFields[$internalName] = ProfileField::find()
+                ->where(['visible' => 1])
+                ->andWhere(['internal_name' => $internalName])
+                ->one();
+        }
+
+        if (!$profileFields[$internalName]) {
             return false;
         }
 
-        return $profileField->getUserValue($this->user, false);
+        return $profileFields[$internalName]->getUserValue($this->user, false);
     }
 
 }

@@ -11,8 +11,6 @@ namespace humhub\modules\user\models;
 use humhub\components\ActiveRecord;
 use humhub\libs\Helpers;
 use humhub\modules\user\models\fieldtype\BaseType;
-use humhub\modules\user\models\fieldtype\Select;
-use humhub\modules\user\models\fieldtype\Text;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -41,6 +39,8 @@ use yii\db\ActiveQuery;
  * @property integer $is_system
  * @property integer $searchable
  * @property integer $directory_filter
+ *
+ * @property-read BaseType $fieldType
  */
 class ProfileField extends ActiveRecord
 {
@@ -148,18 +148,18 @@ class ProfileField extends ActiveRecord
      * @return BaseType
      * @throws \yii\base\Exception
      */
-    public function getFieldType()
+    public function getFieldType(): ?BaseType
     {
-
         if ($this->_fieldType != null)
             return $this->_fieldType;
 
-        if ($this->field_type_class != "" && Helpers::CheckClassType($this->field_type_class, fieldtype\BaseType::class)) {
+        if ($this->field_type_class != '' && Helpers::CheckClassType($this->field_type_class, fieldtype\BaseType::class)) {
             $type = $this->field_type_class;
             $this->_fieldType = new $type;
             $this->_fieldType->setProfileField($this);
             return $this->_fieldType;
         }
+
         return null;
     }
 
@@ -304,12 +304,11 @@ class ProfileField extends ActiveRecord
     /**
      * Returns the users value for this profile field.
      *
-     * @param type $user
-     * @param type $raw
-     *
-     * @return type
+     * @param User $user
+     * @param bool $raw
+     * @return string
      */
-    public function getUserValue(User $user, $raw = true)
+    public function getUserValue(User $user, $raw = true): string
     {
         return $this->fieldType->getUserValue($user, $raw);
     }
