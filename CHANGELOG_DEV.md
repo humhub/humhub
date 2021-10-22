@@ -1,6 +1,5 @@
 1.10.0-beta.1 (Unreleased)
 --------------------------
-
 - Enh #4399: Deep comment link to select and mark comment in content
 - Enh #4242: More failsave module loading when reading module config
 - Enh #5197: Default .htaccess - Remove Options +FollowSymLinks 
@@ -44,5 +43,4 @@
 - Enh #5363: Optimize duplicated SQL queries on profile edit
 - Fix #5360: Mentioning search fails apostrophe in a user's displayName
 - Fix #5359: Removed encoding of user's name in UserPicker
-
-
+- Enh #5362: Optimize getting of ContentContainer tags
