@@ -1,7 +1,3 @@
-1.11.0 (Unreleased)
---------------------------
-- Enh #5363: Optimize duplicated SQL queries on profile edit
-
 1.10.0-beta.1 (Unreleased)
 --------------------------
 
@@ -45,3 +41,5 @@
 - Enh #5350: Show the latest file version
 - Enh #4945: Collapsible-fields now accessible by tab and openable/closable by keypress, check-boxes now focusable
 - Enh #5354: Space - pending invites and approvals: add the image of the users
+- Enh #5363: Optimize duplicated SQL queries on profile edit
+
