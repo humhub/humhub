@@ -18,7 +18,6 @@ class FileHistoryTest extends HumHubDbTestCase
     public function testRecordWithEnabledHistory()
     {
         $file = $this->prepareFile();
-
         $file->getPolymorphicRelation()->fileManagerEnableHistory = true;
 
         $file->setStoredFileContent('V1');
@@ -28,14 +27,25 @@ class FileHistoryTest extends HumHubDbTestCase
         // Test History creation
         $this->assertEquals(2, count($file->historyFiles));
         $this->assertSame('V3', file_get_contents($file->store->get()));
+    }
+
+    public function testRollback()
+    {
+        $file = $this->prepareFile();
+        $file->getPolymorphicRelation()->fileManagerEnableHistory = true;
+
+        $file->setStoredFileContent('V1');
+        $file->setStoredFileContent('V2');
+        $file->setStoredFileContent('V3');
 
         /** @var FileHistory $previousVersion */
-        $previousVersion = FileHistory::find()->andWhere(['file_id' => $file->id])->orderBy(['created_at' => SORT_DESC, 'id' => SORT_DESC])->one();
+        $previousVersion = $file->getHistoryFiles()->one();
 
         // Test Rollback
         $file->setStoredFile($previousVersion->getFileStorePath());
         $this->assertSame('V2', file_get_contents($file->store->get()));
     }
+
 
     public function testRecordWithDisabledHistory()
     {
@@ -53,7 +63,8 @@ class FileHistoryTest extends HumHubDbTestCase
     /**
      * @return File
      */
-    private function prepareFile() {
+    private function prepareFile()
+    {
         $post = Post::findOne(['id' => 1]);
 
         $file = new File();

@@ -103,7 +103,7 @@ class File extends FileCompat
      */
     public function getHistoryFiles()
     {
-        return $this->hasMany(FileHistory::class, ['file_id' => 'id']);
+        return $this->hasMany(FileHistory::class, ['file_id' => 'id'])->orderBy(['created_at' => SORT_DESC, 'id' => SORT_DESC]);
     }
 
     /**
@@ -266,7 +266,7 @@ class File extends FileCompat
     }
 
     /**
-     * Sets a new file content based on an UploadedFile, File or a file path.
+     * Sets a new file content based on an UploadedFile, new File or a file path.
      *
      * @param $file UploadedFile|File|string File object or path
      * @since 1.10
@@ -279,7 +279,7 @@ class File extends FileCompat
             $this->store->set($file);
         } elseif ($file instanceof File) {
             if ($file->isAssigned()) {
-                throw new InvalidArgumentException('Already assigned File records cannot stored as another file.');
+                throw new InvalidArgumentException('Already assigned File records cannot stored as another File record.');
             }
             $this->store->setByPath($file->store->get());
             $file->delete();
