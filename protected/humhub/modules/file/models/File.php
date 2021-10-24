@@ -268,12 +268,13 @@ class File extends FileCompat
     /**
      * Sets a new file content based on an UploadedFile, new File or a file path.
      *
-     * @param $file UploadedFile|File|string File object or path
+     * @param UploadedFile|File|string $file File object or path
+     * @param bool $skipHistoryEntry Skipping the creation of a history entry, even if enabled by the record
      * @since 1.10
      */
-    public function setStoredFile($file)
+    public function setStoredFile($file, $skipHistoryEntry = false)
     {
-        $this->beforeNewStoredFile();
+        $this->beforeNewStoredFile($skipHistoryEntry);
 
         if ($file instanceof UploadedFile) {
             $this->store->set($file);
@@ -290,29 +291,32 @@ class File extends FileCompat
         $this->afterNewStoredFile();
     }
 
+
     /**
      * Sets a new file content by a given string.
      *
-     * @param $content string
+     * @param string $content
+     * @param bool $skipHistoryEntry Skipping the creation of a history entry, even if enabled by the record
      * @since 1.10
      */
-    public function setStoredFileContent($content)
+    public function setStoredFileContent($content, $skipHistoryEntry = false)
     {
-        $this->beforeNewStoredFile();
+        $this->beforeNewStoredFile($skipHistoryEntry);
         $this->store->setContent($content);
         $this->afterNewStoredFile();
     }
 
     /**
      * Steps that must be executed before a new file content is set.
+     * @param bool $skipHistoryEntry Skipping the creation of a history entry, even if enabled by the record
      */
-    private function beforeNewStoredFile()
+    private function beforeNewStoredFile(bool $skipHistoryEntry)
     {
         if ($this->isNewRecord) {
             throw new Exception('File Record must be saved before setting a new file content.');
         }
 
-        if ($this->store->has() && FileHistory::isEnabled($this)) {
+        if ($this->store->has() && FileHistory::isEnabled($this) && !$skipHistoryEntry) {
             FileHistory::createEntryForFile($this);
         }
 
@@ -325,10 +329,9 @@ class File extends FileCompat
     private function afterNewStoredFile()
     {
         if ($this->store->has()) {
-            $this->updateAttributes([
-                'hash_sha1' => sha1_file($this->store->get()),
-                'size' => filesize($this->store->get())
-            ]);
+            $this->hash_sha1 = sha1_file($this->store->get());
+            $this->size = filesize($this->store->get());
+            $this->save();
         }
     }
 }
