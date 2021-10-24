@@ -45,12 +45,10 @@ class FileHistory extends ActiveRecord
     public function rules()
     {
         return [
-            /*
             [['file_id', 'size', 'hash_sha1'], 'required'],
             [['file_id', 'size'], 'integer'],
-            [['hash_sha1'], 'string', 'max' => 32],
+            [['hash_sha1'], 'string', 'max' => 40],
             [['file_id'], 'exist', 'skipOnError' => true, 'targetClass' => File::class, 'targetAttribute' => ['file_id' => 'id']],
-            */
         ];
     }
 
@@ -74,9 +72,20 @@ class FileHistory extends ActiveRecord
         return $this->hasOne(User::class, ['id' => 'created_by']);
     }
 
+    /**
+     * @return string
+     */
     public function getFileStorePath()
     {
-        return $this->file->store->get(static::VARIANT_PREFIX . $this->id);
+        return $this->file->store->get($this->getFileVariantId());
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileVariantId()
+    {
+        return static::VARIANT_PREFIX . $this->id;
     }
 
 
@@ -116,12 +125,8 @@ class FileHistory extends ActiveRecord
             $entry->size = filesize($file->store->get());
         }
         if ($entry->save()) {
-            $file->store->setByPath(
-                $file->store->get(),
-                static::VARIANT_PREFIX . $entry->id
-            );
+            $file->store->setByPath($file->store->get(), $entry->getFileVariantId());
         }
     }
-
 
 }

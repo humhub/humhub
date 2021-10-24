@@ -7,7 +7,6 @@
 
 namespace tests\codeception\unit\modules\file;
 
-use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\models\FileHistory;
 use humhub\modules\post\models\Post;

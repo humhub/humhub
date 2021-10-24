@@ -17,7 +17,7 @@ class m211022_152413_file_history extends Migration
                 'id' => $this->primaryKey(),
                 'file_id' => $this->integer()->notNull(),
                 'size' => $this->bigInteger()->notNull(),
-                'hash_sha1' => $this->string(32)->notNull(),
+                'hash_sha1' => $this->string(40)->notNull(),
                 'created_at' => $this->dateTime(),
                 'created_by' => $this->integer(),
             ]);
