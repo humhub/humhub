@@ -115,6 +115,9 @@ class File extends FileCompat
         return $this->hasMany(FileHistory::class, ['file_id' => 'id'])->orderBy(['created_at' => SORT_DESC, 'id' => SORT_DESC]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function beforeSave($insert)
     {
         $this->old_updated_by = $this->getOldAttribute('updated_by');

@@ -128,8 +128,8 @@ class FileHistory extends ActiveRecord
     {
         $entry = new static;
         $entry->file_id = $file->id;
-        $entry->created_by = $file->old_updated_by;
-        $entry->created_at = $file->old_updated_at;
+        $entry->created_by = empty($file->old_updated_by) ? $file->updated_by : $file->old_updated_by;
+        $entry->created_at = empty($file->old_updated_at) ? $file->updated_at : $file->old_updated_at;
         if ($file->store->has()) {
             $entry->hash_sha1 = sha1_file($file->store->get());
             $entry->size = filesize($file->store->get());
@@ -142,4 +142,13 @@ class FileHistory extends ActiveRecord
         return false;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+        $this->file->store->delete($this->getFileVariantId());
+
+        parent::afterDelete();
+    }
 }
