@@ -75,6 +75,14 @@ class FileHistory extends ActiveRecord
     /**
      * @return string
      */
+    public function getFileUrl()
+    {
+        return $this->file->getUrl($this->getFileVariantId());
+    }
+
+    /**
+     * @return string
+     */
     public function getFileStorePath()
     {
         return $this->file->store->get($this->getFileVariantId());
