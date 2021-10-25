@@ -329,9 +329,12 @@ class File extends FileCompat
     private function afterNewStoredFile()
     {
         if ($this->store->has()) {
-            $this->hash_sha1 = sha1_file($this->store->get());
-            $this->size = filesize($this->store->get());
-            $this->save();
+            $this->updateAttributes([
+                'hash_sha1' => sha1_file($this->store->get()),
+                'size' => filesize($this->store->get()),
+                'created_by' => Yii::$app->user->id,
+                'created_at' => date('Y-m-d G:i:s')
+            ]);
         }
     }
 }
