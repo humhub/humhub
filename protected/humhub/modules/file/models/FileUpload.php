@@ -49,7 +49,7 @@ class FileUpload extends File
             $this->setStoredFile($this->uploadedFile);
         }
 
-        return parent::afterSave($insert, $changedAttributes);
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**

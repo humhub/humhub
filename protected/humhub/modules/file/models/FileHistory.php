@@ -116,17 +116,22 @@ class FileHistory extends ActiveRecord
      * @param File $file
      * @return bool
      */
-    public static function createEntryForFile(File $file)
+    public static function createEntryForFile(File $file): bool
     {
         $entry = new static;
         $entry->file_id = $file->id;
+        $entry->created_by = $file->old_updated_by;
+        $entry->created_at = $file->old_updated_at;
         if ($file->store->has()) {
             $entry->hash_sha1 = sha1_file($file->store->get());
             $entry->size = filesize($file->store->get());
         }
         if ($entry->save()) {
             $file->store->setByPath($file->store->get(), $entry->getFileVariantId());
+            return true;
         }
+
+        return false;
     }
 
 }

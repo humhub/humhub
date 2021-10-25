@@ -53,6 +53,15 @@ use yii\web\UploadedFile;
  */
 class File extends FileCompat
 {
+    /**
+     * @var int $old_updated_by
+     */
+    public $old_updated_by;
+
+    /**
+     * @var string $old_updated_at
+     */
+    public $old_updated_at;
 
     /**
      * @var \humhub\modules\file\components\StorageManagerInterface the storage manager
@@ -106,12 +115,12 @@ class File extends FileCompat
         return $this->hasMany(FileHistory::class, ['file_id' => 'id'])->orderBy(['created_at' => SORT_DESC, 'id' => SORT_DESC]);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function afterSave($insert, $changedAttributes)
+    public function beforeSave($insert)
     {
-        parent::afterSave($insert, $changedAttributes);
+        $this->old_updated_by = $this->getOldAttribute('updated_by');
+        $this->old_updated_at = $this->getOldAttribute('updated_at');
+
+        return parent::beforeSave($insert);
     }
 
     /**
@@ -332,8 +341,6 @@ class File extends FileCompat
             $this->updateAttributes([
                 'hash_sha1' => sha1_file($this->store->get()),
                 'size' => filesize($this->store->get()),
-                'created_by' => Yii::$app->user->id,
-                'created_at' => date('Y-m-d G:i:s')
             ]);
         }
     }
