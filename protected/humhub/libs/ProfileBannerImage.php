@@ -38,7 +38,7 @@ class ProfileBannerImage extends ProfileImage
     /**
      * @var Integer height of the Image
      */
-    protected $height = 192;
+    protected $height = 552;
 
     /**
      * @var String folder name inside the uploads directory
