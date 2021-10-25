@@ -48,3 +48,5 @@
 - Fix #5360: Mentioning search fails apostrophe in a user's displayName
 - Fix #5359: Removed encoding of user's name in UserPicker
 - Enh #5362: Optimize getting of ContentContainer tags
+- Enh #5391: Enabeling ProfileHeaderImages up to max-height: 552px - before 192px
+- Enh $5391: Enabeling ProfileHeaderImages up to max-height: 552px - before 192px
