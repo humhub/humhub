@@ -29,7 +29,7 @@ use humhub\modules\user\models\User;
  */
 class FileHistory extends ActiveRecord
 {
-    const VARIANT_PREFIX = 'file-history-';
+    const VARIANT_PREFIX = 'old-';
 
     /**
      * {@inheritdoc}
