@@ -82,6 +82,7 @@ return [
     'Upload' => 'Încarcă',
     'Upload file' => 'Încarcă fișier',
     'You are not allowed to run this action.' => 'Nu aveți voie să executați această acțiune.',
+    'Stop impersonation' => '',
     '{nFormatted}B' => '',
     '{nFormatted}K' => '',
     '{nFormatted}M' => '',

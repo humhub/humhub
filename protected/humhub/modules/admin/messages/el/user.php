@@ -44,7 +44,6 @@ return [
     'Default Profile Permissions' => 'Προεπιλεγμένα Δικαιώματα Προφίλ',
     'Default content of the registration approval email' => 'Προεπιλεγμένο περιεχόμενο του μηνύματος έγκρισης εγγραφής',
     'Default content of the registration denial email' => 'Προεπιλεγμένο περιεχόμενο του μηνύματος ηλεκτρονικού ταχυδρομείου άρνησης εγγραφής',
-    'Default groups can not be deleted!' => 'Προεπιλεγμένα group δεν δύνανται να διαγραφούν!',
     'Default user idle timeout, auto-logout (in seconds, optional)' => 'Προεπιλεγμένο χρονικό όριο αναμονής για το χρήστη, αυτόματη αποσύνδεση (σε δευτερόλεπτα, προαιρετικό)',
     'Default user profile visibility' => 'Προεπιλεγμένη προβολή προφίλ του χρήστη',
     'Delete' => 'Διαγραφή',
@@ -136,7 +135,9 @@ return [
     'You can only delete empty categories!' => 'Μπορείς να διαγράψεις μόνο άδειες κατηγορίες!',
     'You cannot delete yourself!' => 'Δεν μπορείς να διαγράψεις τον εαυτό σου!',
     'never' => 'ποτέ',
+    'Allow users to block each other' => '',
     'Default Sorting' => '',
+    'Default group can not be deleted!' => '',
     'Hello {displayName},
 
 Your account has been activated.
@@ -164,6 +165,8 @@ Kind Regards
     'Not visible' => '',
     'Prioritised User Group' => '',
     'Profile Permissions' => '',
+    'Protected' => '',
+    'Protected group can not be deleted!' => '',
     'Select a prioritised group whose members are displayed before all others when the sorting option \'Default\' is selected. The users within the group and the users outside the group are additionally sorted by their last login.' => '',
     'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => '',
     'Send & decline' => '',

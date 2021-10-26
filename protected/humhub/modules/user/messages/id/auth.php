@@ -11,7 +11,7 @@ return array (
   '<strong>Registration</strong> successful!' => '',
   '<strong>Sign</strong> up' => '',
   '<strong>Your account</strong> has been successfully created!' => '',
-  'Account' => '',
+  'Account' => 'Akun',
   'After activating your account by the administrator, you will receive a notification by email.' => '',
   'Back' => 'Kembali',
   'Change password' => '',

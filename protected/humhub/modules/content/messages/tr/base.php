@@ -88,5 +88,8 @@ return [
     'Visible to you and {displayName}' => '',
     'Visible to your friends' => '',
     'With attachments' => '',
+    'You cannot block the space owner!' => '',
+    'You cannot block the user of the same container!' => '',
+    'You cannot block yourself!' => '',
     'Your last edit state has been saved!' => '',
 ];

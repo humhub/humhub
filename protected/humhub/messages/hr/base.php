@@ -82,6 +82,7 @@ return [
     'Upload' => 'Dodaj',
     'Upload file' => 'Dodaj datoteku',
     'You are not allowed to run this action.' => 'Nije vam dozvoljena ova akcija.',
+    'Stop impersonation' => '',
     '{nFormatted}B' => '',
     '{nFormatted}K' => '',
     '{nFormatted}M' => '',

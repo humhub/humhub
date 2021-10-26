@@ -82,6 +82,7 @@ return [
     'Upload file' => 'העלה קבצים',
     'You are not allowed to run this action.' => 'אתה לא מורשה לבצע פעולה זו',
     'Powered by {name}' => '',
+    'Stop impersonation' => '',
     '{nFormatted}B' => '',
     '{nFormatted}K' => '',
     '{nFormatted}M' => '',

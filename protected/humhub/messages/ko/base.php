@@ -65,6 +65,7 @@ return [
     'Show less' => '',
     'Show more' => '',
     'Some files could not be uploaded:' => '',
+    'Stop impersonation' => '',
     'Text could not be copied to clipboard' => '',
     'Text has been copied to clipboard' => '',
     'The date has to be in the past.' => '',

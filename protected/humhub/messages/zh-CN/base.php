@@ -73,6 +73,7 @@ return [
     'Profile dropdown' => '',
     'Profile picture of {displayName}' => '',
     'Select Me' => '',
+    'Stop impersonation' => '',
     'Text could not be copied to clipboard' => '',
     'Text has been copied to clipboard' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',

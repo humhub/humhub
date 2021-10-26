@@ -143,6 +143,6 @@ return [
     'Your request was successfully submitted to the space administrators.' => 'La tua richiesta è stata inviata con successo agli amministratori dello spazio.',
     'Your request was successfully submitted to the workspace administrators.' => 'La tua richiesta è stata inviata con successo agli amministratori del workspace.',
     '{count} members' => '{count} membri',
-    '{email} is already registered!' => '{email} è già registrato!',
     '{email} is not valid!' => '{email} non è valida!',
+    'Blocked users' => '',
 ];

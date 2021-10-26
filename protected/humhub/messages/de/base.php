@@ -85,4 +85,5 @@ return [
     '{nFormatted}B' => '{nFormatted} Mrd.',
     '{nFormatted}K' => '{nFormatted} Tsd.',
     '{nFormatted}M' => '{nFormatted} Mio.',
+    'Stop impersonation' => '',
 ];

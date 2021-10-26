@@ -76,6 +76,7 @@ return [
     'No error information given.' => '',
     'Profile dropdown' => '',
     'Select Me' => '',
+    'Stop impersonation' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',
     'Toggle comment menu' => '',
     'Toggle panel menu' => '',

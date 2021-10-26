@@ -74,6 +74,7 @@ return [
     'Profile dropdown' => '',
     'Profile picture of {displayName}' => '',
     'Some files could not be uploaded:' => '',
+    'Stop impersonation' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',
     'Toggle panel menu' => '',
     'Toggle post menu' => '',

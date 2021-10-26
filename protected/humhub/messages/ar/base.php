@@ -67,6 +67,7 @@ return [
     'Select Me' => '',
     'Show less' => '',
     'Some files could not be uploaded:' => '',
+    'Stop impersonation' => '',
     'Text could not be copied to clipboard' => '',
     'Text has been copied to clipboard' => '',
     'The file has been deleted.' => '',

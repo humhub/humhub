@@ -81,6 +81,7 @@ return [
     'Upload' => 'Yükle',
     'Upload file' => 'Dosya yükle',
     'You are not allowed to run this action.' => 'Bu işlemi yapmaya izniniz yok.',
+    'Stop impersonation' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',
     '{nFormatted}B' => '',
     '{nFormatted}K' => '',
