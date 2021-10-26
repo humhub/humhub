@@ -47,7 +47,7 @@ return array (
   'Notify members' => 'Avertir des utilisateurs',
   'Permalink' => 'Permalien',
   'Pin to top' => 'Épingler en haut de page',
-  'Pinned' => 'Mis en avant',
+  'Pinned' => 'Épinglé',
   'Private' => 'Privé',
   'Public' => 'Public',
   'Select type...' => 'Sélectionner le type...',
