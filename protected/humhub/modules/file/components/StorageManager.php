@@ -47,6 +47,14 @@ class StorageManager extends Component implements StorageManagerInterface
     /**
      * @inheritdoc
      */
+    public function has($variant = null): bool
+    {
+        return file_exists($this->get($variant));
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function get($variant = null)
     {
         if ($variant === null) {
@@ -79,7 +87,6 @@ class StorageManager extends Component implements StorageManagerInterface
         if (is_uploaded_file($file->tempName)) {
             move_uploaded_file($file->tempName, $this->get($variant));
             @chmod($this->get($variant), $this->fileMode);
-            $this->file->saveHash();
         }
     }
 
@@ -90,27 +97,34 @@ class StorageManager extends Component implements StorageManagerInterface
     {
         file_put_contents($this->get($variant), $content);
         @chmod($this->get($variant), $this->fileMode);
-        $this->file->saveHash();
     }
 
     /**
      * @inheritdoc
      */
-    public function delete($variant = null)
+    public function setByPath(string $path, $variant = null)
+    {
+        copy($path, $this->get($variant));
+        @chmod($this->get($variant), $this->fileMode);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function delete($variant = null, $except = [])
     {
         if ($variant === null) {
-            $path = $this->getPath();
-
-            // Make really sure, that we dont delete something else :-)
-            if ($this->file->guid != '' && is_dir($path)) {
-                $files = glob($path . DIRECTORY_SEPARATOR . '*');
-                foreach ($files as $file) {
-                    if (is_file($file)) {
-                        FileHelper::unlink($file);
-                    }
+            foreach (FileHelper::findFiles($this->getPath(), ['except' => $except]) as $f) {
+                if (is_file($f)) {
+                    FileHelper::unlink($f);
                 }
-                FileHelper::removeDirectory($path);
             }
+
+            if (empty($except)) {
+                FileHelper::removeDirectory($this->getPath());
+            }
+
         } elseif (is_file($this->get($variant))) {
             FileHelper::unlink($this->get($variant));
         }

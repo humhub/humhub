@@ -8,16 +8,17 @@
 
 namespace humhub\modules\file\models;
 
+use humhub\components\behaviors\GUID;
+use humhub\components\behaviors\PolymorphicRelation;
+use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
-use humhub\modules\file\behaviors\VersioningSupport;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\base\Exception;
 use yii\base\InvalidArgumentException;
-use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
+use yii\db\Exception;
 use yii\helpers\Url;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "file".
@@ -40,9 +41,10 @@ use yii\helpers\Url;
  *
  * @property \humhub\modules\user\models\User $createdBy
  * @property \humhub\modules\file\components\StorageManager $store
+ * @property FileHistory[] $historyFiles
  *
- *
- * @mixin VersioningSupport
+ * @mixin PolymorphicRelation
+ * @mixin GUID
  *
  * Following properties are optional and for module depended use:
  * - title
@@ -51,6 +53,15 @@ use yii\helpers\Url;
  */
 class File extends FileCompat
 {
+    /**
+     * @var int $old_updated_by
+     */
+    public $old_updated_by;
+
+    /**
+     * @var string $old_updated_at
+     */
+    public $old_updated_at;
 
     /**
      * @var \humhub\modules\file\components\StorageManagerInterface the storage manager
@@ -85,28 +96,34 @@ class File extends FileCompat
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::class,
+                'class' => PolymorphicRelation::class,
                 'mustBeInstanceOf' => [ActiveRecord::class],
             ],
             [
-                'class' => \humhub\components\behaviors\GUID::class,
-            ],
-            [
-                'class' => VersioningSupport::class,
+                'class' => GUID::class,
             ],
         ];
     }
 
     /**
+     * Gets query for [[FileHistory]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getHistoryFiles()
+    {
+        return $this->hasMany(FileHistory::class, ['file_id' => 'id'])->orderBy(['created_at' => SORT_DESC, 'id' => SORT_DESC]);
+    }
+
+    /**
      * @inheritdoc
      */
-    public function afterSave($insert, $changedAttributes)
+    public function beforeSave($insert)
     {
-        if ($insert) {
-            $this->saveHash();
-        }
+        $this->old_updated_by = $this->getOldAttribute('updated_by');
+        $this->old_updated_at = $this->getOldAttribute('updated_at');
 
-        parent::afterSave($insert, $changedAttributes);
+        return parent::beforeSave($insert);
     }
 
     /**
@@ -115,13 +132,7 @@ class File extends FileCompat
     public function beforeDelete()
     {
         $this->store->delete();
-
-        $versionFiles = $this->getVersionsQuery()
-            ->andWhere(['!=', 'file.id', $this->id])
-            ->all();
-        foreach ($versionFiles as $versionFile) {
-            $versionFile->delete();
-        }
+        FileHistory::deleteAll(['file_id' => $this->id]);
 
         return parent::beforeDelete();
     }
@@ -162,29 +173,11 @@ class File extends FileCompat
      */
     public function getHash($length = 0)
     {
-        if (empty($this->hash_sha1)) {
-            $this->saveHash();
+        if (empty($this->hash_sha1) && $this->store->has()) {
+            $this->updateAttributes(['hash_sha1' => sha1_file($this->store->get())]);
         }
 
         return $length ? substr($this->hash_sha1, 0, $length) : $this->hash_sha1;
-    }
-
-    /**
-     * Save hash
-     *
-     * @since 1.8
-     */
-    public function saveHash()
-    {
-        $filePath = $this->getStore()->get();
-        if (!is_file($filePath)) {
-            return;
-        }
-
-        $this->hash_sha1 = sha1_file($filePath);
-        if (!$this->isNewRecord) {
-            $this->updateAttributes(['hash_sha1' => $this->hash_sha1]);
-        }
     }
 
     /**
@@ -285,41 +278,88 @@ class File extends FileCompat
     }
 
     /**
-     * If the file content has changed, the new file must be set via this method.
+     * Get File History by ID
      *
-     * @param File $newFile
-     * @return bool
+     * @param int $fileHistoryId
+     * @return FileHistory|null
+     */
+    public function getFileHistoryById($fileHistoryId): ?FileHistory
+    {
+        if (empty($fileHistoryId) || $this->isNewRecord) {
+            return null;
+        }
+
+        return FileHistory::findOne(['id' => $fileHistoryId, 'file_id' => $this->id]);
+    }
+
+    /**
+     * Sets a new file content based on an UploadedFile, new File or a file path.
+     *
+     * @param UploadedFile|File|string $file File object or path
+     * @param bool $skipHistoryEntry Skipping the creation of a history entry, even if enabled by the record
      * @since 1.10
      */
-    public function replaceWithFile(File $newFile): bool
+    public function setStoredFile($file, $skipHistoryEntry = false)
     {
-        $newFile->object_id = $this->object_id;
-        $newFile->object_model = $this->object_model;
+        $this->beforeNewStoredFile($skipHistoryEntry);
 
-        if (empty($newFile->file_name)) {
-            $newFile->file_name = $this->file_name;
+        if ($file instanceof UploadedFile) {
+            $this->store->set($file);
+        } elseif ($file instanceof File) {
+            if ($file->isAssigned()) {
+                throw new InvalidArgumentException('Already assigned File records cannot stored as another File record.');
+            }
+            $this->store->setByPath($file->store->get());
+            $file->delete();
+        } elseif (is_string($file) && is_file($file)) {
+            $this->store->setByPath($file);
         }
 
-        if (empty($newFile->title)) {
-            $newFile->title = $this->title;
+        $this->afterNewStoredFile();
+    }
+
+
+    /**
+     * Sets a new file content by a given string.
+     *
+     * @param string $content
+     * @param bool $skipHistoryEntry Skipping the creation of a history entry, even if enabled by the record
+     * @since 1.10
+     */
+    public function setStoredFileContent($content, $skipHistoryEntry = false)
+    {
+        $this->beforeNewStoredFile($skipHistoryEntry);
+        $this->store->setContent($content);
+        $this->afterNewStoredFile();
+    }
+
+    /**
+     * Steps that must be executed before a new file content is set.
+     * @param bool $skipHistoryEntry Skipping the creation of a history entry, even if enabled by the record
+     */
+    private function beforeNewStoredFile(bool $skipHistoryEntry)
+    {
+        if ($this->isNewRecord) {
+            throw new Exception('File Record must be saved before setting a new file content.');
         }
 
-        if (empty($newFile->mime_type)) {
-            $newFile->mime_type = $this->mime_type;
+        if ($this->store->has() && FileHistory::isEnabled($this) && !$skipHistoryEntry) {
+            FileHistory::createEntryForFile($this);
         }
 
-        $newFile->show_in_stream = $this->show_in_stream;
+        $this->store->delete(null, [FileHistory::VARIANT_PREFIX . '*']);
+    }
 
-        if (!$newFile->save()) {
-            return false;
-        }
-
-        if ($this->isVersioningEnabled()) {
-            // Pass to VersioningSupport Behavior
-            return $this->setNewCurrentVersion($newFile->id);
-        } else {
-            // Switch to newFile and delete the old one
-            return (bool)$this->delete();
+    /**
+     * Steps that must be performed after a new file content has been set.
+     */
+    private function afterNewStoredFile()
+    {
+        if ($this->store->has()) {
+            $this->updateAttributes([
+                'hash_sha1' => sha1_file($this->store->get()),
+                'size' => filesize($this->store->get()),
+            ]);
         }
     }
 }
