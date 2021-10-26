@@ -278,6 +278,21 @@ class File extends FileCompat
     }
 
     /**
+     * Get File History by ID
+     *
+     * @param int $fileHistoryId
+     * @return FileHistory|null
+     */
+    public function getFileHistoryByID($fileHistoryId): ?FileHistory
+    {
+        if (empty($fileHistoryId) || $this->isNewRecord) {
+            return null;
+        }
+
+        return FileHistory::findOne(['id' => $fileHistoryId, 'file_id' => $this->id]);
+    }
+
+    /**
      * Sets a new file content based on an UploadedFile, new File or a file path.
      *
      * @param UploadedFile|File|string $file File object or path
