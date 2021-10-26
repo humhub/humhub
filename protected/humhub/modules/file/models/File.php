@@ -283,7 +283,7 @@ class File extends FileCompat
      * @param int $fileHistoryId
      * @return FileHistory|null
      */
-    public function getFileHistoryByID($fileHistoryId): ?FileHistory
+    public function getFileHistoryById($fileHistoryId): ?FileHistory
     {
         if (empty($fileHistoryId) || $this->isNewRecord) {
             return null;
