@@ -205,21 +205,25 @@ class ContentContainerModuleManager extends \yii\base\Component
      */
     protected function getStates()
     {
-        $states = [];
+        static $states = [];
+
+        if (isset($states[$this->contentContainer->contentcontainer_id])) {
+            return $states[$this->contentContainer->contentcontainer_id];
+        }
 
         // Get states for this contentcontainer from database
         foreach (ContentContainerModuleState::findAll(['contentcontainer_id' => $this->contentContainer->contentcontainer_id]) as $module) {
-            $states[$module->module_id] = $module->module_state;
+            $states[$this->contentContainer->contentcontainer_id][$module->module_id] = $module->module_state;
         }
 
         // Get default states, when no state is stored
         foreach ($this->getAvailable() as $module) {
-            if (!isset($states[$module->id])) {
-                $states[$module->id] = self::getDefaultState($this->contentContainer->className(), $module->id);
+            if (!isset($states[$this->contentContainer->contentcontainer_id][$module->id])) {
+                $states[$this->contentContainer->contentcontainer_id][$module->id] = self::getDefaultState($this->contentContainer->className(), $module->id);
             }
         }
 
-        return $states;
+        return $states[$this->contentContainer->contentcontainer_id];
     }
 
     /**

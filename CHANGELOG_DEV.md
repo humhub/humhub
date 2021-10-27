@@ -1,3 +1,7 @@
+1.10.0-beta.1 (Unreleased)
+--------------------------------
+- Enh #5381: Optimize module states query
+
 1.10.0-beta.1 (October 27, 2021)
 --------------------------------
 
