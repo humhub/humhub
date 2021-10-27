@@ -1,30 +1,30 @@
 1.10.0-beta.1 (October 27, 2021)
 --------------------------------
-- Enh #4399: Deep comment link to select and mark comment in content
-- Enh #4242: More failsave module loading when reading module config
-- Enh #5197: Default .htaccess - Remove Options +FollowSymLinks 
-- Enh #4495: Allow to lock comments per content
-- Enh #3688: Use Image widget in user list
+
+- Enh #4399: Direct deep links to comments and highlighting
+- Enh #4242: More failsafe module loading when reading module config
+- Enh #5197: Default `.htaccess` - Remove `Options +FollowSymLinks` 
+- Enh #4495: Allow locking comments per content
+- Enh #3688: Use `Image` widget in user list
 - Enh #5194: Confirm leave page for Post & Comment forms
-- Enh #5188: People / Spaces: Endless Scrolling
-- Enh #5216: Separate view document button
-- Enh #5229: Use RichTextField for user approval messages
-- Enh #100: Allow additional toggler for elements with context menu
-- Enh #5170: Allow 0 for min input size
-- Enh #4133: Back up a content of RichText editor
+- Enh #5188: People/Spaces: Endless Scrolling
+- Enh #5216: Separate View document button
+- Enh #5229: Use `RichTextField` for user approval messages
+- Enh #100: Allow additional toggle for elements with context menu
+- Enh #5170: `UserPicker`: Allow zero as min input size
+- Enh #4133: Backup a content of `RichTextEditor`
 - Enh #100: Extend upload buttons to use a paste zone
 - Enh #5256: Limit uploading profile images (Thanks to @tuhin1729 for discovering the issue.) 
-- Enh #5257: Delete old unread notifications
+- Enh #5257: Delete old unread notifications of inactive users
 - Fix #5143: Unlimited page size for profile fields
-- Fix #5143: Unlimited page size for profile fields
-- Enh #5269: Allow to add new item on ui selector
+- Enh #5269: Allow adding new item on ui selector
 - Enh #5005: Possibility to invite a registered user to a space by email
 - Enh #3546: Sign in back from impersonate mode
 - Fix #5282: On account creation, registration form has HTML tag set with English language
-- Enh #5280: Allow to set the number of contents from which "Show {i} more." appears in the stream
-- Enh #5303: Unassigned files are only accessibily for creator 
-- Enh #5293: Added File versioning API
-- Enh #4399: Changed default @warning color to `#FC4A64`
+- Enh #5280: Allow to set the number of contents from which `Show {i} more.` appears in the stream
+- Enh #5303: Unassigned files are only accessibly for creator 
+- Enh #5293: Added File History API for versioning
+- Enh #4399: Changed default `@warning` color to `#FC4A64`
 - Enh #5302: Improve checkbox widget ContentVisibilitySelect 
 - Enh #5151: ContentContainer scoped URL Rules
 - Enh #5094: Reflect and reload Stream filters by URL
@@ -36,15 +36,12 @@
 - Enh #5333: Module's events handlers registration: check if method exists
 - Enh #5300: Blocking users for space
 - Enh #5347: Caching added for group permissions (reduced db queries)
-- Enh #5349: Filter archived spaces on directory
-- Enh #5350: Show the latest file version
-- Enh #4945: Collapsible-fields now accessible by tab and openable/closable by keypress, check-boxes now focusable
+- Enh #5349: Archived Spaces on Spaces directory
+- Enh #4945: Collapsible-fields now accessible by tab and enable/closable by keypress, check-boxes now focusable
 - Enh #5354: Space - pending invites and approvals: add the image of the users
 - Enh #5361: Optimize People directory details query
 - Enh #5357: SpaceChooser - lazy load added, widget refactoring.
 - Fix #5360: Mentioning search fails apostrophe in a user's displayName
 - Fix #5359: Removed encoding of user's name in UserPicker
 - Enh #5363: Optimize duplicated SQL queries on profile edit
-- Fix #5360: Mentioning search fails apostrophe in a user's displayName
-- Fix #5359: Removed encoding of user's name in UserPicker
 - Enh #5362: Optimize getting of ContentContainer tags
