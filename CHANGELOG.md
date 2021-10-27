@@ -1,17 +1,22 @@
 HumHub Changelog
 ================
 
-
-1.9.2 (Unreleased)
+1.9.3 (Unreleased)
 ------------------
+- Fix #5372: Text shortening in Japanese broken - Fix truncating of multi-byte strings
+
+
+1.9.2 (October 15, 2021)
+------------------------
 - Fix #5265: Fix logging filter "Error" when not entries
 - Fix #5285: Layout too wide for container pages without sidebar 
 - Fix #5307: Fix reset of the space homepage settings
-- Fix #5301: Change people default sorting
-- Fix #5313: Contentcontainer Tags were not cleared when all tags are deleted
+- Fix #5301: Change people default sorting in administration broken
+- Fix #5313: ContentContainer Tags were not cleared when all tags are deleted
 - Fix #5316: Fix filter "I'm involved" on dashboard
-- Fix #5324: Theme Loader broken when module is  provided via string
+- Fix #5324: Theme Loader broken when module is provided via string
 - Fix #5327: Fix update container tags by not original model
+- Fix #5342: Fix mime type detection for extensions: dotx, xltx, potx
 
 
 1.9.1 (August 30, 2021)
