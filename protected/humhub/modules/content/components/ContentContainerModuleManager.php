@@ -211,6 +211,8 @@ class ContentContainerModuleManager extends \yii\base\Component
             return $states[$this->contentContainer->contentcontainer_id];
         }
 
+        $states[$this->contentContainer->contentcontainer_id] = [];
+
         // Get states for this contentcontainer from database
         foreach (ContentContainerModuleState::findAll(['contentcontainer_id' => $this->contentContainer->contentcontainer_id]) as $module) {
             $states[$this->contentContainer->contentcontainer_id][$module->module_id] = $module->module_state;
