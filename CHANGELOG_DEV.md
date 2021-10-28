@@ -1,3 +1,7 @@
+1.10.0-beta.1 (Unrelased)
+--------------------------------
+- Enh #5403: Confirmation before close a not saved modal form
+
 1.10.0-beta.1 (October 27, 2021)
 --------------------------------
 

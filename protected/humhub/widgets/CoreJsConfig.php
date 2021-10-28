@@ -46,7 +46,8 @@ class CoreJsConfig extends Widget
                     'baseUrl' => Yii::$app->settings->get('baseUrl'),
                     'reloadableScripts' => CacheSettingsForm::getReloadableScriptUrls(),
                     'text' => [
-                        'warn.onBeforeLoad' => Yii::t('base', "There are unsaved changes, do you really want to leave this page?")
+                        'warn.onBeforeLoad' => Yii::t('base', 'There are unsaved changes, do you really want to leave this page?'),
+                        'warn.onBeforeCloseModal' => Yii::t('base', 'There are unsaved changes, do you really want to close this form?'),
                     ]
                 ],
                 'file' => [
