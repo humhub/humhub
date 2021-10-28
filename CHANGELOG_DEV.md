@@ -1,10 +1,11 @@
-1.10.0-beta.2 (Unrelased)
---------------------------------
+1.10.0-beta.2 (Unreleased)
+--------------------------
 - Enh #5403: Confirmation before close a not saved modal form
+- Fix #5401: Fix profile field value result type 
+
 
 1.10.0-beta.1 (October 27, 2021)
 --------------------------------
-
 - Enh #4399: Direct deep links to comments and highlighting
 - Enh #4242: More failsafe module loading when reading module config
 - Enh #5197: Default `.htaccess` - Remove `Options +FollowSymLinks` 
