@@ -48,3 +48,4 @@
 - Fix #5360: Mentioning search fails apostrophe in a user's displayName
 - Fix #5359: Removed encoding of user's name in UserPicker
 - Enh #5362: Optimize getting of ContentContainer tags
+- Enh #4823: Removed CHTML and CActiveForm classes as well as usages (plus refactoring)

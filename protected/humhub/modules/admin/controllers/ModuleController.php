@@ -12,9 +12,6 @@ use humhub\components\Module;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\ModuleSetAsDefaultForm;
 use humhub\modules\content\components\ContentContainerModule;
-use humhub\modules\content\components\ContentContainerModuleManager;
-use humhub\modules\space\models\Space;
-use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use yii\web\HttpException;
@@ -244,13 +241,8 @@ class ModuleController extends Controller
             throw new HttpException(500, 'Invalid module type!');
         }
 
-        $model = new ModuleSetAsDefaultForm();
-        $model->spaceDefaultState = ContentContainerModuleManager::getDefaultState(Space::class, $moduleId);
-        $model->userDefaultState = ContentContainerModuleManager::getDefaultState(User::class, $moduleId);
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            ContentContainerModuleManager::setDefaultState(User::class, $moduleId, $model->userDefaultState);
-            ContentContainerModuleManager::setDefaultState(Space::class, $moduleId, $model->spaceDefaultState);
+        $model = (new ModuleSetAsDefaultForm())->setModule($moduleId);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->renderModalClose();
         }
 
