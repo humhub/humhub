@@ -30,7 +30,7 @@ use humhub\widgets\LoaderWidget;
             <br/>
             <br/>
 
-            <?= $form->field($model, 'message',)->textarea(); ?>
+            <?= $form->field($model, 'message',)->textarea(['id' => 'request-message']); ?>
 
         </div>
         <div class="modal-footer">
