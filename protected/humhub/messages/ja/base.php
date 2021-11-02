@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Confirm</strong> Action' => '<strong>確認</strong> アクション',
+   '<strong>Confirm</strong> Action' => '<strong>確認</strong> アクション',
     '<strong>Latest</strong> updates' => '<strong>最新</strong>情報',
     '<strong>Mail</strong> summary' => '<strong>メール</strong>サマリー',
     'Account settings' => 'アカウント設定',
