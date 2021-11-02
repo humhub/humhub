@@ -85,7 +85,7 @@ class MentioningController extends Controller
     {
         $keyword = (string)Yii::$app->request->get('keyword');
 
-        $space = Space::findOne(['id' => $id]);
+        $space = Space::findOne(['id' => (int) $id]);
         if (!$space || !$space->can(CreatePost::class)) {
             throw new HttpException(403, 'Access denied!');
         }
