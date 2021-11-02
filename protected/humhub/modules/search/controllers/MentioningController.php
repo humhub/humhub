@@ -156,8 +156,6 @@ class MentioningController extends Controller
             $results[] = $this->getUserResult($user);
         }
 
-        $results = $this->appendMentioningSpaceResults($keyword, $results);
-
         return $this->asJson($results);
     }
 
