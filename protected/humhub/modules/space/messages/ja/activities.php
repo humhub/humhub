@@ -1,11 +1,11 @@
 <?php
 return array (
-  'Space has been archived' => 'スペースはアーカイブ化されました',
-  'Space has been unarchived' => 'スペースはアーカイブ化を解除しました',
-  'Space member joined' => 'スペースにメンバーが参加しました',
-  'Space member left' => 'スペースからメンバーが脱退しました',
-  'Whenever a member leaves one of your spaces.' => '',
-  'Whenever a new member joined one of your spaces.' => '',
-  'Whenever a space is archived.' => '',
-  'Whenever a space is unarchived.' => '',
+  'Space has been archived' => 'スペースがアーカイブ化',
+  'Space has been unarchived' => 'スペースがアーカイブ化を解除',
+  'Space member joined' => 'スペースにメンバーが参加',
+  'Space member left' => 'スペースからメンバーが脱退',
+  'Whenever a member leaves one of your spaces.' => 'メンバーがあなたのスペースの1つを離れる時はいつでも',
+  'Whenever a new member joined one of your spaces.' => '新しいメンバーがあなたのスペースの1つに加わった時はいつでも',
+  'Whenever a space is archived.' => 'スペースがアーカイブされた時はいつでも',
+  'Whenever a space is unarchived.' => 'スペースがアーカイブされていない時はいつでも',
 );
