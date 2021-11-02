@@ -17,7 +17,7 @@ return array (
   'Show all {total} comments' => '合計{total}コメントを、すべて表示します。',
   'Show {count} more comments' => '',
   'The comment must not be empty!' => 'コメントは空にはできません。',
-  'Whenever a new comment was written.' => '',
+  'Whenever a new comment was written.' => '新しいコメントが書かれたときはいつでも',
   'Write a new comment...' => '新規コメントを書く...',
   'Write a new reply...' => '新規リプライを書く...',
   'comment' => 'コメント',
