@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Followers</strong>' => '<strong>ユーザー</strong> フォロワー',
+ '<strong>Followers</strong>' => '<strong>ユーザー</strong> フォロワー',
   '<strong>Following</strong>' => '<strong>フォロー</strong> ユーザー',
   '<strong>Group</strong> members - {group}' => '<strong>グループ</strong>のメンバー - {group}',
   '<strong>Member</strong> in these spaces' => '<strong>スペース</strong> 一覧',
@@ -58,7 +58,7 @@ return array (
   'Password' => 'パスワード',
   'Password changed' => '',
   'Password needs to be at least {chars} characters long.' => '',
-  'Pending Requests' => '',
+  'Pending Requests' => '保留中の要求',
   'People' => '人',
   'Permission' => '権限',
   'Profile' => 'プロフィール',
