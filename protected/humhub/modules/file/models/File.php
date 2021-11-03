@@ -208,23 +208,20 @@ class File extends FileCompat
     {
         $object = $this->getPolymorphicRelation();
 
-        if ($object != null) {
-            if ($object instanceof ContentAddonActiveRecord) {
-                /** @var ContentAddonActiveRecord $object */
-                return $object->canEdit($userId);
-            } elseif ($object instanceof ContentActiveRecord) {
-                /** @var ContentActiveRecord $object */
-                return $object->content->canEdit($userId);
-            }
-        }
-
-        if ($object !== null && ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord)) {
-            return $object->content->canEdit($userId);
-        }
-
         // File is not bound to an object
-        if ($object == null) {
+        if ($object === null) {
             return true;
+        }
+
+        if ($object instanceof ContentAddonActiveRecord) {
+            /** @var ContentAddonActiveRecord $object */
+            return $object->canEdit($userId) || $object->content->canEdit($userId);
+        } elseif ($object instanceof ContentActiveRecord) {
+            /** @var ContentActiveRecord $object */
+            return $object->content->canEdit($userId);
+        } elseif ($object instanceof ActiveRecord && method_exists($object, 'canEdit')) {
+            /** @var ActiveRecord $object */
+            return $object->canEdit($userId);
         }
 
         return false;
