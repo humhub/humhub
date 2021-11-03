@@ -3,6 +3,7 @@
 - Enh #5403: Confirmation before close a not saved modal form
 - Fix #5401: Fix profile field value result type 
 - Fix #5402: Fix mentioning search in comment content
+- Enh #5418: Allow to detach file from simple ActiveRecord
 
 
 1.10.0-beta.1 (October 27, 2021)
