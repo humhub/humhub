@@ -365,7 +365,7 @@ humhub.module('client', function (module, require, $) {
         history.back();
     };
 
-    var onBeforeLoad = function (form, msg) {
+    var onBeforeLoad = function (form, msg, msgModal) {
         var $form = $(form);
 
         if (!$form.is('form')) {
@@ -379,6 +379,7 @@ humhub.module('client', function (module, require, $) {
         $form.data('state', serializeFormState($form));
 
         msg = msg || module.text('warn.onBeforeLoad');
+        msgModal = msgModal || module.text('warn.onBeforeCloseModal');
 
         $form.resetChanges = function() {
             $form.data('state', null);
@@ -393,13 +394,21 @@ humhub.module('client', function (module, require, $) {
             }
         });
 
-        $(document).on('pjax:beforeSend.humhub_client', function (evt) {
-            if (unloadForm($form, msg)) {
+        var confirmFormChanges = function (evt, message) {
+            if (unloadForm($form, message)) {
                 $form.resetChanges();
             } else {
                 evt.preventDefault();
             }
-        })
+        }
+
+        $(document).on('pjax:beforeSend.humhub_client', function (evt) {
+            confirmFormChanges(evt, msg);
+        });
+
+        $(document).on('hide.bs.modal', '.modal', function (evt) {
+            confirmFormChanges(evt, msgModal);
+        });
     };
 
     var serializeFormState = function ($form) {

@@ -22,38 +22,29 @@ class Helpers
 
     /**
      * Shorten a text string
+     *
      * @param string $text - Text string you will shorten
      * @param integer $length - Count of characters to show
-     *
-     *
      * @return string
      */
-    public static function truncateText($text, $length)
+    public static function truncateText($text, $length): string
     {
-        $length = abs((int)$length);
-        if (strlen($text) > $length) {
-            $text = preg_replace("/^(.{1,$length})(\s.*|$)/s", '\\1...', $text);
-        }
-        $text = str_replace('<br />', '', $text);
-
-        return trim($text);
+        return self::trimText($text, $length);
     }
 
-    public static function trimText($text, $length)
+    public static function trimText($text, $length): string
     {
+        $text = trim(preg_replace('#<br */?>#i', ' ', $text));
 
         $length = abs((int)$length);
-        $textlength = mb_strlen($text);
-        if ($textlength > $length) {
-            $text = self::substru($text, 0, $textlength - ($textlength - $length));
-            $text .= '...';
+        if (mb_strlen($text) > $length) {
+            $text = trim(mb_substr($text, 0, $length)) . '...';
         }
-        $text = str_replace('<br />', '', $text);
 
-        return trim($text);
+        return $text;
     }
 
-    /*     *
+    /**
      * Compare two arrays values
      * @param array $a - First array to compare against..
      * @param array $b - Second array
@@ -75,13 +66,14 @@ class Helpers
 
     /**
      * Temp Function to use UTF8 SubStr
+     * @deprecated since 1.11 Use mb_substr() instead.
      *
-     * @param type $str
-     * @param type $from
-     * @param type $len
-     * @return type
+     * @param string $str
+     * @param integer $from
+     * @param integer $len
+     * @return string
      */
-    public static function substru($str, $from, $len)
+    public static function substru($str, $from, $len): string
     {
         return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $from . '}' . '((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $len . '}).*#s', '$1', $str);
     }

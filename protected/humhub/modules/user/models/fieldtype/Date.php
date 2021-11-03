@@ -8,8 +8,9 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
-use Yii;
 use humhub\libs\DbDateValidator;
+use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * Date Field
@@ -74,7 +75,7 @@ class Date extends BaseType
     /**
      * @inheritdoc
      */
-    public function getUserValue($user, $raw = true)
+    public function getUserValue(User $user, $raw = true): ?string
     {
         $internalName = $this->profileField->internal_name;
         $date = $user->profile->$internalName;
@@ -86,5 +87,3 @@ class Date extends BaseType
     }
 
 }
-
-?>
