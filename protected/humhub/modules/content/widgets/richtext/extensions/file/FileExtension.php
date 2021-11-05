@@ -55,9 +55,9 @@ class FileExtension extends RichTextLinkExtension
         return $text;
     }
 
-    public function onPostProcess(string $text, ActiveRecord $record, ?string $attribute, array &$result): string
+    public function onPostProcess(string $text, ?ActiveRecord $record, ?string $attribute, array &$result): string
     {
-        if($record->isNewRecord) {
+        if ($record && $record->isNewRecord) {
             // We can't attach files to unpersisted records
             return $text;
         }
@@ -90,13 +90,17 @@ class FileExtension extends RichTextLinkExtension
         return $text;
     }
 
-    private function attach(ActiveRecord $record, $fileGuid)
+    private function attach(?ActiveRecord $record, $fileGuid)
     {
         try {
             $file = File::findOne(['guid' => $fileGuid]);
 
             if(!$file) {
                 return false;
+            }
+
+            if ($record === null) {
+                $record = $file;
             }
 
             $record->fileManager->attach($file);
@@ -113,7 +117,7 @@ class FileExtension extends RichTextLinkExtension
      * @param $dataStr
      * @return bool|FileUpload
      */
-    private function parseBase64Data($dataStr, ActiveRecord $record)
+    private function parseBase64Data($dataStr, ?ActiveRecord $record)
     {
         try {
             preg_match('/^([-\w.]+\/[-\w.+]+);([^,]+),([a-zA-Z0-9\/\r\n+]*={0,2})$/s', $dataStr, $matches);

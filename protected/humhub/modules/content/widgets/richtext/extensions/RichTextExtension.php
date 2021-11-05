@@ -39,12 +39,12 @@ interface RichTextExtension
      * a richtext widget result.
      *
      * @param string $text
-     * @param ActiveRecord $record
+     * @param ActiveRecord|null $record
      * @param string|null $attribute
      * @param array $result
      * @return string
      */
-    public function onPostProcess(string $text, ActiveRecord $record, ?string $attribute, array &$result): string;
+    public function onPostProcess(string $text, ?ActiveRecord $record, ?string $attribute, array &$result): string;
 
     /**
      * Callback function called before a converter started to parse the a richtext. This callback can be used

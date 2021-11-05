@@ -95,7 +95,7 @@ class MentioningExtension extends RichTextLinkExtension
         return static::buildExtensionLink($name, $guid);
     }
 
-    public function onPostProcess(string $text, ActiveRecord $record, ?string $attribute, array &$result): string
+    public function onPostProcess(string $text, ?ActiveRecord $record, ?string $attribute, array &$result): string
     {
         $result[$this->key] = [];
 

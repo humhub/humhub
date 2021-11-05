@@ -215,12 +215,13 @@ abstract class AbstractRichText extends JsWidget
      * Used for the post-processing of the rich text, normally called within [[ContentActiveRecord::afterSave()]]
      * of the related [[ContentActiveRecord]].
      *
-     * @param $text string RichText content
-     * @param ActiveRecord $record
+     * @param string $text RichText content
+     * @param ActiveRecord|null $record
+     * @param string|null $attribute
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    public static function postProcess($text, $record, $attribute = null)
+    public static function postProcess($text, ?ActiveRecord $record = null, ?string $attribute = null)
     {
         $result = [];
         $original = $text;
@@ -237,7 +238,6 @@ abstract class AbstractRichText extends JsWidget
         if($record && $attribute && $original !== $text) {
             $record->updateAttributes([$attribute => $text]);
         }
-
 
         Event::trigger(static::class, static::EVENT_POST_PROCESS,
             new Event(['data' => ['text' => $text, 'record' => $record, 'attribute' => $attribute]]));

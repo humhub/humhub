@@ -83,7 +83,7 @@ abstract class RichTextContentExtension extends Model implements RichTextExtensi
         }, $text);
     }
 
-    public function onPostProcess(string $text, ActiveRecord $record, ?string $attribute, array &$result): string
+    public function onPostProcess(string $text, ?ActiveRecord $record, ?string $attribute, array &$result): string
     {
         return $text;
     }

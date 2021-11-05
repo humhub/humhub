@@ -67,7 +67,7 @@ abstract class RichText extends AbstractRichText
     /**
      * @return array
      */
-    public static function postProcess($text, $record, $attribute = null)
+    public static function postProcess($text, $record = null, $attribute = null)
     {
         return call_user_func(Yii::$app->params['richText']['class'].'::postProcess', $text, $record, $attribute);
     }

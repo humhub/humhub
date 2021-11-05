@@ -168,7 +168,7 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
     /**
      * @inheritdoc
      */
-    public function onPostProcess(string $text, ActiveRecord $record, ?string $attribute, array &$result): string
+    public function onPostProcess(string $text, ?ActiveRecord $record, ?string $attribute, array &$result): string
     {
         return $text;
     }
