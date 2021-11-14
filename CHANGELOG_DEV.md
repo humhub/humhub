@@ -1,8 +1,10 @@
-1.10.0-beta.2 (Unreleased)
---------------------------
+1.10.0-beta.2 (November 12, 2021)
+---------------------------------
 - Enh #5403: Confirmation before close a not saved modal form
 - Fix #5401: Fix profile field value result type 
 - Enh #5391: Enabeling ProfileHeaderImages up to max-height: 552px - before 192px
+- Fix #5402: Fix mentioning search in comment content
+- Enh #5418: Allow to detach file from simple ActiveRecord
 
 1.10.0-beta.1 (October 27, 2021)
 --------------------------------
