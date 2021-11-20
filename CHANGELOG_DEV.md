@@ -1,3 +1,8 @@
+1.10.0-beta.3 (November 12, 2021)
+---------------------------------
+- Fix #5437: Fixed tests for galera compatibility
+
+
 1.10.0-beta.2 (November 12, 2021)
 ---------------------------------
 - Enh #5403: Confirmation before close a not saved modal form
