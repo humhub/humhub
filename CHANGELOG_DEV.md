@@ -52,3 +52,4 @@
 - Fix #5359: Removed encoding of user's name in UserPicker
 - Enh #5363: Optimize duplicated SQL queries on profile edit
 - Enh #5362: Optimize getting of ContentContainer tags
+- Fix #5386: Fixed empty stream in archived space
