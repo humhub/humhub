@@ -1,5 +1,6 @@
-1.10.0-beta.3 (Unreleased)
+1.10.0-beta.3 (November 12, 2021)
 ---------------------------------
+- Enh #5437: Tests with MySQL Galera compatibility
 - Fix #5427: Fix deep comment link with enabled caching
 
 
