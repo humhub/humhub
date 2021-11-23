@@ -1,3 +1,8 @@
+1.10.0-beta.3 (Unreleased)
+---------------------------------
+- Fix #5427: Fix deep comment link with enabled caching
+
+
 1.10.0-beta.2 (November 12, 2021)
 ---------------------------------
 - Enh #5403: Confirmation before close a not saved modal form
