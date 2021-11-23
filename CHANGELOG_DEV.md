@@ -1,6 +1,7 @@
 1.10.0-beta.3 (November 12, 2021)
 ---------------------------------
-- Fix #5437: Fixed tests for galera compatibility
+- Enh #5437: Tests with MySQL Galera compatibility
+- Fix #5427: Fix deep comment link with enabled caching
 
 
 1.10.0-beta.2 (November 12, 2021)
@@ -57,3 +58,4 @@
 - Fix #5359: Removed encoding of user's name in UserPicker
 - Enh #5363: Optimize duplicated SQL queries on profile edit
 - Enh #5362: Optimize getting of ContentContainer tags
+- Fix #5386: Fixed empty stream in archived space

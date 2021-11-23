@@ -213,7 +213,8 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             $limit = $module->commentsPreviewMax;
         }
 
-        $cacheID = sprintf("commentsLimited_%s_%s", $model, $id);
+        $currentCommentId = intval($currentCommentId);
+        $cacheID = sprintf('commentsLimited_%s_%s_%s', $model, $id, $currentCommentId);
         $comments = Yii::$app->cache->get($cacheID);
 
         if ($comments === false) {
@@ -221,8 +222,8 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
             $query = Comment::find();
             $query->offset($commentCount - $limit);
-            if (Comment::findOne(['id' => $currentCommentId])) {
-                $query->orderBy('`comment`.`id` <= ' . (intval($currentCommentId) + intval($limit) - 1));
+            if ($currentCommentId && Comment::findOne(['id' => $currentCommentId])) {
+                $query->orderBy('`comment`.`id` <= ' . ($currentCommentId + intval($limit) - 1));
             } else {
                 $query->orderBy('created_at ASC');
             }
