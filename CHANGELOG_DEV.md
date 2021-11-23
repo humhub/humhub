@@ -1,6 +1,7 @@
 1.10.0-beta.3 (Unreleased)
 ---------------------------------
 - Fix #5427: Fix deep comment link with enabled caching
+- Enh #5298: Space followers widget
 
 
 1.10.0-beta.2 (November 12, 2021)
