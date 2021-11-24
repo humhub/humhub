@@ -10,6 +10,7 @@
 - Fix #5401: Fix profile field value result type 
 - Fix #5402: Fix mentioning search in comment content
 - Enh #5418: Allow to detach file from simple ActiveRecord
+- Enh #5436: Better usage of UserPicker in Form Definition
 
 
 1.10.0-beta.1 (October 27, 2021)
