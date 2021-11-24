@@ -1,10 +1,17 @@
+1.10.0-beta.3 (November 12, 2021)
+---------------------------------
+- Enh #5437: Tests with MySQL Galera compatibility
+- Fix #5427: Fix deep comment link with enabled caching
+- Enh #5435: Allow non modal links in header counter
+- Enh #5436: Better usage of UserPicker in Form Definition
+
+
 1.10.0-beta.2 (November 12, 2021)
 ---------------------------------
 - Enh #5403: Confirmation before close a not saved modal form
 - Fix #5401: Fix profile field value result type 
 - Fix #5402: Fix mentioning search in comment content
 - Enh #5418: Allow to detach file from simple ActiveRecord
-- Enh #5435: Allow non modal links in header counter
 
 
 1.10.0-beta.1 (October 27, 2021)
@@ -53,3 +60,4 @@
 - Fix #5359: Removed encoding of user's name in UserPicker
 - Enh #5363: Optimize duplicated SQL queries on profile edit
 - Enh #5362: Optimize getting of ContentContainer tags
+- Fix #5386: Fixed empty stream in archived space
