@@ -4,6 +4,7 @@
 - Fix #5427: Fix deep comment link with enabled caching
 - Enh #5435: Allow non modal links in header counter
 - Enh #5436: Better usage of UserPicker in Form Definition
+- Fix #5441: No deletion of file variants in CLI tools
 
 
 1.10.0-beta.2 (November 12, 2021)
