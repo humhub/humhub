@@ -2,6 +2,8 @@
 ---------------------------------
 - Enh #5437: Tests with MySQL Galera compatibility
 - Fix #5427: Fix deep comment link with enabled caching
+- Enh #5435: Allow non modal links in header counter
+- Enh #5436: Better usage of UserPicker in Form Definition
 
 
 1.10.0-beta.2 (November 12, 2021)
@@ -10,7 +12,6 @@
 - Fix #5401: Fix profile field value result type 
 - Fix #5402: Fix mentioning search in comment content
 - Enh #5418: Allow to detach file from simple ActiveRecord
-- Enh #5436: Better usage of UserPicker in Form Definition
 
 
 1.10.0-beta.1 (October 27, 2021)
