@@ -19,7 +19,7 @@ return array (
   'One DN per line which should not be imported automatically.' => 'Eine DN pro Zeile, die nicht automatisch importiert werden soll.',
   'Password' => 'Kennwort',
   'Port' => 'Port',
-  'Specify your LDAP-backend used to fetch user accounts.' => 'Legen Sie Ihr LDAP-Backend fest, das zur Erkennung der Benutzerkonten verwendet werden soll.',
+  'Specify your LDAP-backend used to fetch user accounts.' => 'Lege hier dein LDAP-Backend fest, das zur Erkennung der Benutzerkonten verwendet werden soll.',
   'Status: Error! (Message: {message})' => 'Status: Error! (Meldung: {message})',
   'Status: OK! ({userCount} Users)' => 'Status: OK! ({userCount} Benutzer)',
   'Status: Warning! (No users found using the ldap user filter!)' => 'Status: Achtung! (Es wurden keine Benutzer mit dem ldap-Benutzerfilter gefunden!)',

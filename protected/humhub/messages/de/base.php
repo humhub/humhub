@@ -30,7 +30,7 @@ return [
     'Default' => 'Standard',
     'Delete' => 'Löschen',
     'Deny' => 'Ablehnen',
-    'Do you really want to perform this action?' => 'Wollen Sie diese Aktion wirklich ausführen?',
+    'Do you really want to perform this action?' => 'Willst du diese Aktion wirklich ausführen?',
     'Edit' => 'Bearbeiten',
     'Error' => 'Fehler',
     'Error while running your last action (Invalid request method).' => 'Fehler bei der Ausführung der letzten Aktion (Invalid request method).',
