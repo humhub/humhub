@@ -22,7 +22,7 @@ return array (
   'Cronjobs' => 'Cronjobs',
   'Default' => 'Standard',
   'Default group for administrators of this HumHub Installation.' => 'Standardgruppe für Administratoren dieser HumHub Installation',
-  'Default group for all newly registered users of the network.' => 'Standardgruppe für alle neu registrierten Benutzer dieses Netzwerks.',
+  'Default group for all newly registered users of the network.' => 'Standardgruppe für alle neu registrierten Benutzer dieses Netzwerks',
   'Delete all' => 'Alle löschen',
   'Delete selected rows' => 'Ausgewählte Zeilen löschen',
   'Design' => 'Design',
