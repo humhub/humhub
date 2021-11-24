@@ -82,6 +82,7 @@ return [
     'All' => '',
     'Powered by {name}' => '',
     'Stop impersonation' => '',
+    'There are unsaved changes, do you really want to close this form?' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',
     '{nFormatted}B' => '',
     '{nFormatted}K' => '',

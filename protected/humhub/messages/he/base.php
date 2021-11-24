@@ -83,6 +83,7 @@ return [
     'You are not allowed to run this action.' => 'אתה לא מורשה לבצע פעולה זו',
     'Powered by {name}' => '',
     'Stop impersonation' => '',
+    'There are unsaved changes, do you really want to close this form?' => '',
     '{nFormatted}B' => '',
     '{nFormatted}K' => '',
     '{nFormatted}M' => '',

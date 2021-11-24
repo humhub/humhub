@@ -82,6 +82,7 @@ return [
     'Upload file' => 'Upload tệp tin',
     'You are not allowed to run this action.' => 'Bạn không được phép thực thi hành động này.',
     'Stop impersonation' => '',
+    'There are unsaved changes, do you really want to close this form?' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',
     '{nFormatted}B' => '',
     '{nFormatted}K' => '',

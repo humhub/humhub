@@ -83,6 +83,7 @@ return [
     'Upload file' => 'Încarcă fișier',
     'You are not allowed to run this action.' => 'Nu aveți voie să executați această acțiune.',
     'Stop impersonation' => '',
+    'There are unsaved changes, do you really want to close this form?' => '',
     '{nFormatted}B' => '',
     '{nFormatted}K' => '',
     '{nFormatted}M' => '',

@@ -83,6 +83,7 @@ return [
     'Upload file' => 'Загрузить файл',
     'You are not allowed to run this action.' => 'Вы не можете запускать это действие.',
     'Stop impersonation' => '',
+    'There are unsaved changes, do you really want to close this form?' => '',
     '{nFormatted}B' => '',
     '{nFormatted}K' => '',
     '{nFormatted}M' => '',

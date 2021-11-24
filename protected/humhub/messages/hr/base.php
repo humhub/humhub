@@ -83,6 +83,7 @@ return [
     'Upload file' => 'Dodaj datoteku',
     'You are not allowed to run this action.' => 'Nije vam dozvoljena ova akcija.',
     'Stop impersonation' => '',
+    'There are unsaved changes, do you really want to close this form?' => '',
     '{nFormatted}B' => '',
     '{nFormatted}K' => '',
     '{nFormatted}M' => '',

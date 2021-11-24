@@ -73,6 +73,7 @@ return [
     'The requested resource could not be found.' => '',
     'The space has been archived.' => '',
     'The space has been unarchived.' => '',
+    'There are unsaved changes, do you really want to close this form?' => '',
     'There are unsaved changes, do you really want to leave this page?' => '',
     'Time Zone' => '',
     'Toggle comment menu' => '',

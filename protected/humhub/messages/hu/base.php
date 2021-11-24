@@ -87,4 +87,5 @@ return [
     '{nFormatted}K' => '{nFormatted}K',
     '{nFormatted}M' => '{nFormatted}M',
     'Stop impersonation' => '',
+    'There are unsaved changes, do you really want to close this form?' => '',
 ];
