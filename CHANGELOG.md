@@ -1,6 +1,18 @@
 HumHub Changelog
 ================
 
+1.10.0 (November 25, 2021)
+---------------------------------
+
+See also: [HumHub 1.10 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_10) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+- Enh #5437: Tests with MySQL Galera compatibility
+- Fix #5427: Fix deep comment link with enabled caching
+- Enh #5435: Allow non modal links in header counter
+- Enh #5436: Better usage of UserPicker in Form Definition
+- Fix #5441: No deletion of file variants in CLI tools
+
+
 1.9.3 (Unreleased)
 ------------------
 - Fix #5372: Text shortening in Japanese broken - Fix truncating of multi-byte strings
