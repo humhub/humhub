@@ -82,7 +82,6 @@ return [
     'Upload file' => 'Last opp fil',
     'You are not allowed to run this action.' => 'Du har ikke tillatelse til å utføre denne handlingen.',
     'Stop impersonation' => '',
-    'There are unsaved changes, do you really want to close this form?' => '',
     'Unsaved changes will be lost. Do you want to proceed?' => '',
     '{nFormatted}B' => '',
     '{nFormatted}K' => '',

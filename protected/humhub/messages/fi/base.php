@@ -82,7 +82,6 @@ return [
     'Upload file' => 'Lataa tiedosto',
     'You are not allowed to run this action.' => 'Et voi käyttää tätä toimintoa.',
     'Stop impersonation' => '',
-    'There are unsaved changes, do you really want to close this form?' => '',
     'Unsaved changes will be lost. Do you want to proceed?' => '',
     '{nFormatted}B' => '',
     '{nFormatted}K' => '',
