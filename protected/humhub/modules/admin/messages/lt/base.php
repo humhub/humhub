@@ -38,7 +38,7 @@ return [
     'Cronjobs' => '',
     'Default' => '',
     'Default group for administrators of this HumHub Installation' => '',
-    'Default group for all newly registered users of the network.' => '',
+    'Default group for all newly registered users of the network' => '',
     'Delete all' => '',
     'Delete selected rows' => '',
     'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',

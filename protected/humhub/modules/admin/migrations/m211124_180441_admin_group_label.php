@@ -15,7 +15,7 @@ class m211124_180441_admin_group_label extends Migration
         Yii::t('AdminModule.base', 'Administrators');
         Yii::t('AdminModule.base', 'Default group for administrators of this HumHub Installation');
         Yii::t('AdminModule.base', 'Users');
-        Yii::t('AdminModule.base', 'Default group for all newly registered users of the network.');
+        Yii::t('AdminModule.base', 'Default group for all newly registered users of the network');
 
         $this->update(
             'group',
@@ -25,11 +25,9 @@ class m211124_180441_admin_group_label extends Migration
 
         $this->update(
             'group',
-            ['description' => 'Default group for all newly registered users of the network.'],
+            ['description' => 'Default group for all newly registered users of the network'],
             ['description' => 'Example Group by Installer']
         );
-
-
     }
 
     /**

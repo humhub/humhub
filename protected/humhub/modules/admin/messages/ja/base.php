@@ -22,7 +22,7 @@ return array (
   'Cronjobs' => 'Cronジョブ',
   'Default' => 'デフォルト',
   'Default group for administrators of this HumHub Installation' => '',
-  'Default group for all newly registered users of the network.' => '',
+  'Default group for all newly registered users of the network' => '',
   'Delete all' => 'すべて削除',
   'Delete selected rows' => '選択した行を削除します',
   'Design' => 'デザイン',

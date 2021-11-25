@@ -22,7 +22,7 @@ return array (
   'Cronjobs' => 'Cron ütemezett feladatok',
   'Default' => 'Alapértelmezett',
   'Default group for administrators of this HumHub Installation' => '',
-  'Default group for all newly registered users of the network.' => '',
+  'Default group for all newly registered users of the network' => '',
   'Delete all' => 'Az összes törlése',
   'Delete selected rows' => 'A kijelölt sorok törlése',
   'Design' => 'Dizájn',

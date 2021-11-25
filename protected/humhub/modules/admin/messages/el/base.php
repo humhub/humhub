@@ -55,5 +55,5 @@ return [
     'Users' => 'Χρήστες',
     'Administrators' => '',
     'Default group for administrators of this HumHub Installation' => '',
-    'Default group for all newly registered users of the network.' => '',
+    'Default group for all newly registered users of the network' => '',
 ];
