@@ -83,7 +83,7 @@ return [
     'You are not allowed to run this action.' => 'Et voi käyttää tätä toimintoa.',
     'Stop impersonation' => '',
     'There are unsaved changes, do you really want to close this form?' => '',
-    'There are unsaved changes, do you really want to leave this page?' => '',
+    'Unsaved changes will be lost. Do you want to proceed?' => '',
     '{nFormatted}B' => '',
     '{nFormatted}K' => '',
     '{nFormatted}M' => '',

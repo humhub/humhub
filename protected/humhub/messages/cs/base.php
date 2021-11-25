@@ -82,7 +82,7 @@ return [
     'Text could not be copied to clipboard' => '',
     'Text has been copied to clipboard' => '',
     'There are unsaved changes, do you really want to close this form?' => '',
-    'There are unsaved changes, do you really want to leave this page?' => '',
+    'Unsaved changes will be lost. Do you want to proceed?' => '',
     'Time Zone' => '',
     '{nFormatted}B' => '',
     '{nFormatted}K' => '',

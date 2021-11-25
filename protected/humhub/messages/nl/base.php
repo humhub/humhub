@@ -73,7 +73,7 @@ return [
     'The requested resource could not be found.' => 'De gevraagde hulpbron kan niet worden gevonden.',
     'The space has been archived.' => 'De ruimte is gearchiveerd.',
     'The space has been unarchived.' => 'De ruimte is uit het archief gehaald.',
-    'There are unsaved changes, do you really want to leave this page?' => 'Er zijn niet-opgeslagen wijzigingen, wilt u deze pagina echt verlaten?',
+    'Unsaved changes will be lost. Do you want to proceed?' => 'Er zijn niet-opgeslagen wijzigingen, wilt u deze pagina echt verlaten?',
     'Time Zone' => 'Tijdzone',
     'Toggle comment menu' => 'Aan/uit commentaar menu',
     'Toggle panel menu' => 'Aan/uit paneelmenu',

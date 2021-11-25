@@ -45,7 +45,7 @@ return [
     'Search' => 'بحث',
     'Show more' => 'مشاهدة المزيد',
     'The date has to be in the past.' => 'التاريخ يبدوا أنه من الماضي',
-    'There are unsaved changes, do you really want to leave this page?' => 'هناك تغييرات غير محفوظة ، هل تريد حقًا مغادرة هذه الصفحة؟',
+    'Unsaved changes will be lost. Do you want to proceed?' => 'هناك تغييرات غير محفوظة ، هل تريد حقًا مغادرة هذه الصفحة؟',
     'Time Zone' => 'وحدة زمنية',
     'Unsubscribe' => 'ألغ الإشتراك',
     'Upload' => 'رفع',

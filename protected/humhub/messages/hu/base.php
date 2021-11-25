@@ -73,7 +73,7 @@ return [
     'The requested resource could not be found.' => 'A kért tartalom nem található.',
     'The space has been archived.' => 'A közösség archiválásra került.',
     'The space has been unarchived.' => 'Közösség archiválása visszavonva.',
-    'There are unsaved changes, do you really want to leave this page?' => 'Vannak nem mentett változtatások, valóban el akarod hagyni ezt az oldalt?',
+    'Unsaved changes will be lost. Do you want to proceed?' => 'Vannak nem mentett változtatások, valóban el akarod hagyni ezt az oldalt?',
     'Time Zone' => 'Időzóna',
     'Toggle comment menu' => 'Hozzászólások menü engedélyezése',
     'Toggle panel menu' => 'Panel menü engedélyezése',

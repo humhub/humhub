@@ -78,7 +78,7 @@ return [
     'Select Me' => '',
     'Stop impersonation' => '',
     'There are unsaved changes, do you really want to close this form?' => '',
-    'There are unsaved changes, do you really want to leave this page?' => '',
+    'Unsaved changes will be lost. Do you want to proceed?' => '',
     'Toggle comment menu' => '',
     'Toggle panel menu' => '',
     'Toggle post menu' => '',

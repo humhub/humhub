@@ -72,7 +72,7 @@ return [
     'The requested resource could not be found.' => 'Traženi resurs nije moguće pronaći.',
     'The space has been archived.' => 'Prostor je arhiviran.',
     'The space has been unarchived.' => 'Prostor je od-arhiviran.',
-    'There are unsaved changes, do you really want to leave this page?' => 'Postoje nespremljene promjene, želite li zaista napustiti ovu stranicu?',
+    'Unsaved changes will be lost. Do you want to proceed?' => 'Postoje nespremljene promjene, želite li zaista napustiti ovu stranicu?',
     'Time Zone' => 'Vremenska zona',
     'Toggle comment menu' => 'Prebacivanje izbornika komentara',
     'Toggle panel menu' => 'Prebacivanje izbornika na ploči',

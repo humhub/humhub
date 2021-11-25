@@ -73,7 +73,7 @@ return [
     'The requested resource could not be found.' => 'La risorsa richiesta non è stata trovata.',
     'The space has been archived.' => 'Lo spazio è stato archiviato.',
     'The space has been unarchived.' => 'Lo spazio è stato ripristinato.',
-    'There are unsaved changes, do you really want to leave this page?' => 'Hai fatto alcune modifiche senza salvare, vuoi lasciare la pagina lo stesso?',
+    'Unsaved changes will be lost. Do you want to proceed?' => 'Hai fatto alcune modifiche senza salvare, vuoi lasciare la pagina lo stesso?',
     'Time Zone' => 'Fuso orario',
     'Toggle comment menu' => 'Attiva menu Commento',
     'Toggle panel menu' => 'Attiva menu Pannello',

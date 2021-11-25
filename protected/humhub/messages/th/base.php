@@ -72,7 +72,7 @@ return [
     'The requested resource could not be found.' => 'ไม่พบทรัพยากรที่ร้องขอ',
     'The space has been archived.' => 'พื้นที่ถูกเก็บถาวรแล้ว',
     'The space has been unarchived.' => 'ยกเลิกการเก็บพื้นที่แล้ว',
-    'There are unsaved changes, do you really want to leave this page?' => 'มีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก คุณต้องการออกจากหน้านี้จริงหรือ',
+    'Unsaved changes will be lost. Do you want to proceed?' => 'มีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก คุณต้องการออกจากหน้านี้จริงหรือ',
     'Time Zone' => 'เขตเวลา',
     'Toggle comment menu' => 'สลับเมนูความคิดเห็น',
     'Toggle panel menu' => 'สลับเมนูแผง',

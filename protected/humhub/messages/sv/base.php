@@ -72,7 +72,7 @@ return [
     'The requested resource could not be found.' => 'Den efterfrågade resursen kunde inte hittas.',
     'The space has been archived.' => 'Nätverket har arkiverats.',
     'The space has been unarchived.' => 'Nätverket har aktiverats.',
-    'There are unsaved changes, do you really want to leave this page?' => 'Det finns ändringar som inte har sparats. Vill du verkligen lämna den här sidan?',
+    'Unsaved changes will be lost. Do you want to proceed?' => 'Det finns ändringar som inte har sparats. Vill du verkligen lämna den här sidan?',
     'Time Zone' => 'Tidzon',
     'Toggle comment menu' => 'Växla kommentarsmeny',
     'Toggle panel menu' => 'Växla panelmeny',

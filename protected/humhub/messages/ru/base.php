@@ -72,7 +72,7 @@ return [
     'The requested resource could not be found.' => 'Запрошенный ресурс не найден.',
     'The space has been archived.' => 'Пространство было архивировано.',
     'The space has been unarchived.' => 'Пространство было разархивировано.',
-    'There are unsaved changes, do you really want to leave this page?' => 'Есть несохраненные изменения, Вы действительно хотите покинуть эту страницу?',
+    'Unsaved changes will be lost. Do you want to proceed?' => 'Есть несохраненные изменения, Вы действительно хотите покинуть эту страницу?',
     'Time Zone' => 'Часовой пояс',
     'Toggle comment menu' => 'Переключить меню комментариев',
     'Toggle panel menu' => 'Переключить панель меню',

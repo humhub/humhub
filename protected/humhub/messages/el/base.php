@@ -72,7 +72,7 @@ return [
     'The requested resource could not be found.' => 'Δεν ήταν δυνατή η εύρεση του ζητούμενου πόρου.',
     'The space has been archived.' => 'Ο χώρος έχει αρχειοθετηθεί.',
     'The space has been unarchived.' => 'Ο χώρος δεν έχει αρχειοθετηθεί.',
-    'There are unsaved changes, do you really want to leave this page?' => 'Υπάρχουν αλλαγές που δεν έχουν διατηρηθεί, θέλετε σίγουρα να φύγετε από αυτή την σελίδα;',
+    'Unsaved changes will be lost. Do you want to proceed?' => 'Υπάρχουν αλλαγές που δεν έχουν διατηρηθεί, θέλετε σίγουρα να φύγετε από αυτή την σελίδα;',
     'Time Zone' => 'Ζώνη ώρας',
     'Toggle comment menu' => 'Εναλλαγή μενού σχολίων',
     'Toggle panel menu' => 'Εναλλαγή μενού πίνακα',

@@ -76,7 +76,7 @@ return [
     'Some files could not be uploaded:' => '',
     'Stop impersonation' => '',
     'There are unsaved changes, do you really want to close this form?' => '',
-    'There are unsaved changes, do you really want to leave this page?' => '',
+    'Unsaved changes will be lost. Do you want to proceed?' => '',
     'Toggle panel menu' => '',
     'Toggle post menu' => '',
     'Toggle stream entry menu' => '',

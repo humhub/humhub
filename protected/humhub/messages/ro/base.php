@@ -72,7 +72,7 @@ return [
     'The requested resource could not be found.' => 'Resursa cerută nu a putut fi găsită.',
     'The space has been archived.' => 'Spațiul a fost arhivat.',
     'The space has been unarchived.' => 'Spațiul a fost dezarhivat.',
-    'There are unsaved changes, do you really want to leave this page?' => 'Există schimbări nesalvate, sigur dorești să părăsești această pagină?',
+    'Unsaved changes will be lost. Do you want to proceed?' => 'Există schimbări nesalvate, sigur dorești să părăsești această pagină?',
     'Time Zone' => 'Timp Zonal',
     'Toggle comment menu' => 'Comută meniul de comentariu',
     'Toggle panel menu' => 'Comută meniul de panou',
