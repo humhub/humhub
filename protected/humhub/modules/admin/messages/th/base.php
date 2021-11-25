@@ -21,7 +21,7 @@ return array (
   'Caching' => 'เก็บเอาไว้',
   'Cronjobs' => 'Cronjobs',
   'Default' => 'ค่าเริ่มต้น',
-  'Default group for administrators of this HumHub Installation.' => '',
+  'Default group for administrators of this HumHub Installation' => '',
   'Default group for all newly registered users of the network.' => '',
   'Delete all' => 'ลบทั้งหมด',
   'Delete selected rows' => 'ลบแถวที่เลือก',

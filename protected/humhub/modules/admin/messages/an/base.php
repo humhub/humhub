@@ -30,7 +30,7 @@ return [
     'Basic' => '',
     'Caching' => '',
     'Cronjobs' => '',
-    'Default group for administrators of this HumHub Installation.' => '',
+    'Default group for administrators of this HumHub Installation' => '',
     'Default group for all newly registered users of the network.' => '',
     'Delete all' => '',
     'Delete selected rows' => '',

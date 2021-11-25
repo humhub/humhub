@@ -51,9 +51,9 @@ return [
     'The cron job for the background jobs (queue) does not seem to work properly.' => 'Ο Χρονοπρογρ/στής για τις εργασίες υπόβαθρου (στη σειρά) δεν φαίνεται να λειτουργεί σωστά.',
     'The cron job for the regular tasks (cron) does not seem to work properly.' => 'Ο Χρονοπρογρ/στής εργασίας για τις τακτικές εργασίες (cron) δεν φαίνεται να λειτουργεί σωστά.',
     'User posts' => 'Δημοσιεύσεις χρήστη',
-    'Userprofiles' => 'Προφίλ χρήστη',
+  profiles' => 'Προφίλ χρήστη',
     'Users' => 'Χρήστες',
     'Administrators' => '',
-    'Default group for administrators of this HumHub Installation.' => '',
+    'Default group for administrators of this HumHub Installation' => '',
     'Default group for all newly registered users of the network.' => '',
 ];

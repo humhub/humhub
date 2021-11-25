@@ -21,7 +21,7 @@ return array (
   'Caching' => 'Fazer cache',
   'Cronjobs' => 'Tarefas agendadas',
   'Default' => 'Padrão',
-  'Default group for administrators of this HumHub Installation.' => '',
+  'Default group for administrators of this HumHub Installation' => '',
   'Default group for all newly registered users of the network.' => '',
   'Delete all' => 'Apagar tudo',
   'Delete selected rows' => 'Excluir linhas selecionadas',

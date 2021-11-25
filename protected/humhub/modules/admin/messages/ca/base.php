@@ -21,7 +21,7 @@ return array (
   'Caching' => 'Emmagatzematge en memòria cau (caching)',
   'Cronjobs' => 'Treballs del cron (cronjobs)',
   'Default' => 'Per defecte',
-  'Default group for administrators of this HumHub Installation.' => '',
+  'Default group for administrators of this HumHub Installation' => '',
   'Default group for all newly registered users of the network.' => '',
   'Delete all' => '',
   'Delete selected rows' => '',

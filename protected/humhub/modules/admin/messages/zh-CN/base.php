@@ -21,7 +21,7 @@ return array (
   'Caching' => '缓存设置',
   'Cronjobs' => '定时任务',
   'Default' => '默认',
-  'Default group for administrators of this HumHub Installation.' => '',
+  'Default group for administrators of this HumHub Installation' => '',
   'Default group for all newly registered users of the network.' => '',
   'Delete all' => '',
   'Delete selected rows' => '',
