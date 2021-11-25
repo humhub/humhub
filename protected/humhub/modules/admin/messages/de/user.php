@@ -146,7 +146,7 @@ Mit freundlichen Grüßen
   'Protected' => 'Geschützt',
   'Protected group can not be deleted!' => 'Geschützte Gruppe darf nicht gelöscht werden.',
   'Remove from group' => 'Aus Gruppe entfernen',
-  'Require group admin approval after registration' => 'Benötige Freigabe eines Gruppenadministrators nach Registrierung',
+  'Require group admin approval after registration' => 'Freigabeprozess für neue Benutzer aktivieren',
   'Resend invitation email' => 'Einladungs-E-Mail erneut senden',
   'Save' => 'Speichern',
   'Search by name, email or id.' => 'Suche über Name, E-Mail oder ID.',
