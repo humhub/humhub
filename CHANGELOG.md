@@ -1,6 +1,12 @@
 HumHub Changelog
 ================
 
+1.10.1 (Unreleased)
+-------------------
+- Fix #5445: Checkbox view style unaligned  
+
+
+
 1.10.0 (November 25, 2021)
 ---------------------------------
 
