@@ -1,10 +1,14 @@
 HumHub Changelog
 ================
 
-1.10.1 (Unreleased)
--------------------
-- Fix #5445: Checkbox view style unaligned  
+1.10.1 (November 26, 2021)
+--------------------------
 
+See also: [HumHub 1.10 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_10) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+- Fix #5445: Checkbox view style unaligned
+- Fix #5447: Comments disappeard
+- Enh: Updated translations 
 
 
 1.10.0 (November 25, 2021)
