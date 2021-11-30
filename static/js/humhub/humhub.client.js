@@ -395,8 +395,13 @@ humhub.module('client', function (module, require, $) {
         });
 
         var confirmFormChanges = function (evt, message) {
-            if (unloadForm($form, message)) {
-                $form.resetChanges();
+            var form = $(evt.target).find('form');
+            if (!form.length) {
+                return;
+            }
+
+            if (unloadForm(form, message)) {
+                form.data('state', null);
             } else {
                 evt.preventDefault();
             }
