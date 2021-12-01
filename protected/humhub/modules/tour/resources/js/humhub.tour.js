@@ -6,13 +6,16 @@ humhub.module('tour', function (module, requrie, $) {
     var nextUrl;
 
     var start = function (options) {
-       new Tour({
+        new Tour({
             storage: false,
             template: module.config.template,
             steps: options.steps,
             framework: "bootstrap3",
             name: options.name,
             sanitizeWhitelist: {'a' : ['data-action-click']},
+            onShown: function () {
+                $('.tour button[data-role].disabled').remove();
+            },
             onEnd: tourCompleted
         }).start();
 
