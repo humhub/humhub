@@ -5,6 +5,7 @@ HumHub Changelog
 --------------------------
 - Fix #5450: Fix confirmation before close a form with unsaved changes on modal window
 - Fix #5453: Fix migration of default group
+- Enh #5461: Added Event after a new file content (new version) is stored
 
 
 1.10.1 (November 26, 2021)
