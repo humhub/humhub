@@ -9,20 +9,40 @@
 namespace humhub\modules\post\controllers;
 
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
-use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\post\models\Post;
 use humhub\modules\post\permissions\CreatePost;
-use humhub\modules\stream\actions\Stream;
 use Yii;
+use yii\web\HttpException;
 
 /**
- * @package humhub.modules_core.post.controllers
  * @since 0.5
  */
 class PostController extends ContentContainerController
 {
+
+    /**
+     * @param $id
+     * @return string
+     * @throws HttpException
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     */
+    public function actionView($id)
+    {
+        $post = Post::find()->contentContainer($this->contentContainer)->readable()->where(['post.id' => (int)$id])->one();
+
+        if ($post === null) {
+            throw new HttpException(404);
+        }
+
+        return $this->render('view', [
+            'post' => $post,
+            'contentContainer' => $this->contentContainer,
+        ]);
+    }
+
 
     /**
      * @return array|mixed
@@ -40,7 +60,7 @@ class PostController extends ContentContainerController
         $post = new Post($this->contentContainer);
         $post->message = Yii::$app->request->post('message');
 
-        return Post::getDb()->transaction(function($db) use($post) {
+        return Post::getDb()->transaction(function ($db) use ($post) {
             return WallCreateContentForm::create($post, $this->contentContainer);
         });
     }
