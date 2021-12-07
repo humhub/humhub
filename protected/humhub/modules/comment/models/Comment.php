@@ -8,13 +8,10 @@
 
 namespace humhub\modules\comment\models;
 
-use humhub\modules\comment\Module;
-use Yii;
-use yii\base\Exception;
-use yii\db\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\comment\activities\NewComment;
 use humhub\modules\comment\live\NewComment as NewCommentLive;
+use humhub\modules\comment\Module;
 use humhub\modules\comment\notifications\NewComment as NewCommentNotification;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
@@ -23,6 +20,10 @@ use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use Yii;
+use yii\base\Exception;
+use yii\db\ActiveRecord;
+use yii\helpers\Url;
 
 
 /**
@@ -36,6 +37,7 @@ use humhub\modules\user\models\User;
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
+ * @property-read string $url @since 1.10.2
  *
  * @since 0.5
  */
@@ -323,5 +325,21 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     public static function isSubComment($object)
     {
         return $object instanceof Comment && $object->object_model === Comment::class;
+    }
+
+    /**
+     * Get comment permalink URL
+     *
+     * @param bool|string $scheme the URI scheme to use in the generated URL
+     * @return string
+     * @since 1.10.2
+     */
+    public function getUrl($scheme = true): string
+    {
+        if ($this->isNewRecord) {
+            return $this->content->getUrl();
+        }
+
+        return Url::to(['/comment/perma', 'id' => $this->id], $scheme);
     }
 }
