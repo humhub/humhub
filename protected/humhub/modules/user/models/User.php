@@ -800,6 +800,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             return false;
         }
 
+        if (!$this->isSystemAdmin()) {
+            return false;
+        }
+
         if ($user->id == $this->id) {
             return false;
         }
