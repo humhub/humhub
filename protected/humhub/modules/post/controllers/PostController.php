@@ -8,7 +8,9 @@
 
 namespace humhub\modules\post\controllers;
 
+use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
+use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\post\models\Post;
@@ -40,6 +42,7 @@ class PostController extends ContentContainerController
         return $this->render('view', [
             'post' => $post,
             'contentContainer' => $this->contentContainer,
+            'renderOptions' => new StreamEntryOptions(['viewContext' => WallStreamEntryOptions::VIEW_CONTEXT_DETAIL]),
         ]);
     }
 
