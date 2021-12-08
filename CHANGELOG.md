@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.10.3 (Unreleased)
+-------------------------
+- Fix #5465: Fix empty RichText
+
+
 1.10.2 (December 7, 2021)
 -------------------------
 
