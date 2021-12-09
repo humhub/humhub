@@ -4,6 +4,7 @@ HumHub Changelog
 1.10.3 (Unreleased)
 -------------------------
 - Fix #5465: Fix empty RichText
+- Fix #5466: Default `.htaccess.dist` broken
 
 
 1.10.2 (December 7, 2021)
