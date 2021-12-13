@@ -2,18 +2,16 @@
 
 use humhub\modules\comment\widgets\Form;
 use humhub\modules\comment\widgets\Comment;
-use yii\helpers\Url;
 use humhub\libs\Html;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $object \humhub\modules\content\components\ContentActiveRecord */
 /* @var $comments \humhub\modules\comment\models\Comment[] */
 /* @var $currentCommentId int */
-/* @var $objectModel string */
-/* @var $objectId int */
 /* @var $id string unqiue object id */
 /* @var $isLimited boolean */
 /* @var $total int */
+/* @var $showMoreUrl string */
 
 ?>
 <div class="well well-small comment-container" style="display:none;" id="comment_<?= $id; ?>">
@@ -22,7 +20,7 @@ use humhub\libs\Html;
 
         <?php if ($isLimited): ?>
             <a href="#" class="show show-all-link" data-ui-loader data-action-click="comment.showAll"
-               data-action-url="<?= Url::to(['/comment/comment/show', 'objectModel' => $objectModel, 'objectId' => $objectId]) ?>">
+               data-action-url="<?= $showMoreUrl ?>">
                 <?= Yii::t('CommentModule.base', 'Show all {total} comments', ['{total}' => $total]) ?>
             </a>
             <hr class="comments-start-separator">

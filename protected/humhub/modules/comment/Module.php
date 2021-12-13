@@ -30,6 +30,16 @@ class Module extends \humhub\components\Module
     public $commentsPreviewMax = 2;
 
     /**
+     * @var int Maximum comments to load at once on VIEW mode
+     */
+    public $commentsBlockLoadSizeViewMode = 25;
+
+    /**
+     * @var int Maximum comments to show initially on VIEW mode
+     */
+    public $commentsPreviewMaxViewMode = 25;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
