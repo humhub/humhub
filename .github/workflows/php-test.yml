@@ -47,20 +47,20 @@ jobs:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
 
-            - name: Setup cache environment
-              id: cache-env
-              uses: shivammathur/cache-extensions@v1
-              with:
-                php-version: ${{ matrix.php-version }}
-                extensions: ${{ env.extensions }}
-                key: ${{ env.key }}
+#            - name: Setup cache environment
+#              id: cache-env
+#              uses: shivammathur/cache-extensions@v1
+#              with:
+#                php-version: ${{ matrix.php-version }}
+#                extensions: ${{ env.extensions }}
+#                key: ${{ env.key }}
 
-            - name: Cache extensions
-              uses: actions/cache@v1
-              with:
-                path: ${{ steps.cache-env.outputs.dir }}
-                key: ${{ steps.cache-env.outputs.key }}
-                restore-keys: ${{ steps.cache-env.outputs.key }}
+#            - name: Cache extensions
+#              uses: actions/cache@v1
+#              with:
+#                path: ${{ steps.cache-env.outputs.dir }}
+#                key: ${{ steps.cache-env.outputs.key }}
+#                restore-keys: ${{ steps.cache-env.outputs.key }}
 
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
@@ -89,7 +89,7 @@ jobs:
 
             - name: Verify MySQL connection from host
               run: |
-                sudo apt-get update && sudo apt-get install -y mysql-client
+                sudo apt-get update && sudo apt-get install -y mysql-client mysql-common
                 mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -proot -e "SHOW DATABASES"
 
             - name: Install npm dependencies
