@@ -22,7 +22,7 @@ jobs:
         strategy:
             matrix:
                 os:
-                    - ubuntu-20211209.3
+                    - ubuntu-latest
 
                 php-version:
                     - "7.2"
