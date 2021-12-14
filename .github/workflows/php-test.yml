@@ -87,10 +87,10 @@ jobs:
             - name: Install dependencies with composer
               run: composer update --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi
 
-            - name: Verify MySQL connection from host
-              run: |
-                sudo apt-get update && sudo apt-get install -y mysql-client-8.0 mysql-common
-                mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -proot -e "SHOW DATABASES"
+#            - name: Verify MySQL connection from host
+#              run: |
+#                sudo apt-get update && sudo apt-get install -y mysql-client-8.0 mysql-common
+#                mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -proot -e "SHOW DATABASES"
 
             - name: Install npm dependencies
               run: npm install
