@@ -9,6 +9,7 @@
 namespace humhub\widgets;
 
 use Yii;
+use yii\base\Model;
 
 /**
  * Extends `\yii\bootstrap\Tabs` by providing providing view based tab items.
@@ -56,6 +57,11 @@ class Tabs extends \yii\bootstrap\Tabs
     public $navType = 'nav-tabs tab-menu';
 
     /**
+     * @var TabbedForm
+     */
+    public $form;
+
+    /**
      * @inheritdoc
      */
     public function beforeRun()
@@ -63,6 +69,8 @@ class Tabs extends \yii\bootstrap\Tabs
         if (!parent::beforeRun()) {
             return false;
         }
+
+        $this->initTabbedFormItems();
 
         $index = 0;
         foreach ($this->items as $key => $item) {
@@ -88,6 +96,34 @@ class Tabs extends \yii\bootstrap\Tabs
         $this->sortItems();
 
         return true;
+    }
+
+    private function initTabbedFormItems()
+    {
+        if (!($this->form instanceof TabbedForm && $this->form instanceof Model)) {
+            return;
+        }
+
+        $items = $this->form->tabs;
+        if (empty($items)) {
+            return;
+        }
+
+        $this->items = $items;
+
+        if (!$this->form->hasErrors()) {
+            return;
+        }
+
+        // Find first error with field and activate that tab
+        $errorFields = array_keys($this->form->getErrors());
+        foreach ($this->items as $t => $tab) {
+            if (!empty(array_intersect($tab['fields'], $errorFields))) {
+                $this->items[$t]['active'] = true;
+                // Stop on first found error
+                return;
+            }
+        }
     }
 
     /**
