@@ -223,21 +223,35 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         $cacheID = sprintf(static::CACHE_KEY_LIMITED, $model, $id);
         $comments = $useCaching ? Yii::$app->cache->get($cacheID) : false;
 
-        if (!$useCaching || $comments === false) {
-            $commentCount = self::GetCommentCount($model, $id);
-
+        if ($comments === false) {
+            $objectCondition = ['object_model' => $model, 'object_id' => $id];
             $query = Comment::find();
-            $query->offset($commentCount - $limit);
             if ($currentCommentId && Comment::findOne(['id' => $currentCommentId])) {
-                $query->orderBy('`comment`.`id` <= ' . ($currentCommentId + intval($limit) - 1));
+                $nearCommentIds = Comment::find()
+                    ->select('id')
+                    ->where($objectCondition)
+                    ->andWhere(['<=', 'id', $currentCommentId])
+                    ->orderBy('created_at DESC')
+                    ->limit($limit)
+                    ->column();
+                if (count($nearCommentIds) < $limit) {
+                    $newerCommentIds = Comment::find()
+                        ->select('id')
+                        ->where($objectCondition)
+                        ->andWhere(['>', 'id', $currentCommentId])
+                        ->orderBy('created_at ASC')
+                        ->limit($limit - count($nearCommentIds))
+                        ->column();
+                    $nearCommentIds = array_merge($nearCommentIds, $newerCommentIds);
+                }
+                $query->where(['IN', 'id', $nearCommentIds]);
             } else {
-                $query->orderBy('created_at ASC');
+                $query->where($objectCondition);
+                $query->limit($limit);
             }
-            $query->limit($limit);
-            $query->where(['object_model' => $model, 'object_id' => $id]);
-            $query->joinWith('user');
+            $query->orderBy('created_at DESC');
+            $comments = array_reverse($query->all());
 
-            $comments = $query->all();
             if ($useCaching) {
                 Yii::$app->cache->set($cacheID, $comments, Yii::$app->settings->get('cache.expireTime'));
             }
