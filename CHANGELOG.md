@@ -6,7 +6,7 @@ HumHub Changelog
 - Fix #5465: Fix empty RichText
 - Fix #5466: Default `.htaccess.dist` broken
 - Fix #5469: Mixed up title for Space membership button
-- 
+- Fix #5464: Fix comment highlighting on permalink
 
 1.10.2 (December 7, 2021)
 -------------------------
