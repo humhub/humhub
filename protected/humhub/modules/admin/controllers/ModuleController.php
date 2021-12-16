@@ -30,6 +30,11 @@ class ModuleController extends Controller
     /**
      * @inheritdoc
      */
+    public $subLayout = '@admin/views/layouts/module';
+
+    /**
+     * @inheritdoc
+     */
     public $adminOnly = false;
 
     /**
@@ -38,7 +43,6 @@ class ModuleController extends Controller
     public function init()
     {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Modules'));
-        $this->subLayout = '@admin/views/layouts/module';
 
         return parent::init();
     }
@@ -62,6 +66,24 @@ class ModuleController extends Controller
 
     public function actionList()
     {
+        $installedModules = Yii::$app->moduleManager->getModules();
+
+        return $this->render('index', [
+            'installedModules' => $installedModules,
+            'installedModulesCount' => count($installedModules),
+            'deprecatedModuleIds' => $this->getDeprecatedModules(),
+            'marketplaceUrls' => $this->getMarketplaceUrls()
+        ]);
+    }
+
+
+    /**
+     * @deprecated TODO: Remove this after implement new module design
+     */
+    public function actionListOld()
+    {
+        $this->subLayout = '@admin/views/layouts/module-old';
+
         $installedModules = Yii::$app->moduleManager->getModules();
 
         return $this->render('list', [

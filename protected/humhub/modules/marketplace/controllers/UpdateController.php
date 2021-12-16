@@ -28,7 +28,7 @@ class UpdateController extends Controller
     /**
      * @var string
      */
-    public $subLayout = '@admin/views/layouts/module';
+    public $subLayout = '@admin/views/layouts/module-old';
 
     /**
      * @inheritdoc
