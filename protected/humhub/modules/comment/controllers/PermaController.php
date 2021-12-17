@@ -35,10 +35,16 @@ class PermaController extends Controller
             throw new NotFoundHttpException();
         }
 
-        return $this->redirect($comment->content->container->createUrl(null, [
-            'contentId' => $comment->content->id,
-            'commentId' => $comment->id,
-        ]));
+        $content = $comment->content;
+        if ($content->container !== null) {
+            return $this->redirect($content->container->createUrl(null, [
+                'contentId' => $comment->content->id,
+                'commentId' => $comment->id,
+            ]));
+        }
+        if (method_exists($content->getPolymorphicRelation(), 'getUrl')) {
+            return $this->redirect($content->getPolymorphicRelation()->getUrl());
+        }
     }
 
 }
