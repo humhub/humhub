@@ -239,31 +239,60 @@ class ModuleManager extends Component
      */
     public function getModules($options = [])
     {
+        $options = array_merge([
+            'includeCoreModules' => false,
+            'enabled' => false,
+            'returnClass' => false,
+        ], $options);
+
         $modules = [];
-
         foreach ($this->modules as $id => $class) {
-
-            // Skip core modules
-            if (!isset($options['includeCoreModules']) || $options['includeCoreModules'] === false) {
-                if (in_array($class, $this->coreModules)) {
-                    continue;
-                }
+            if (!$options['includeCoreModules'] && in_array($class, $this->coreModules)) {
+                // Skip core modules
+                continue;
             }
 
-
-            if (isset($options['enabled']) && $options['enabled'] === true) {
-                if (!in_array($class, $this->coreModules) && !in_array($id, $this->enabledModules)) {
-                    continue;
-                }
+            if ($options['enabled'] && !in_array($class, $this->coreModules) && !in_array($id, $this->enabledModules)) {
+                // Skip disabled modules
+                continue;
             }
 
-            if (isset($options['returnClass']) && $options['returnClass']) {
+            if ($options['returnClass']) {
                 $modules[$id] = $class;
             } else {
                 $module = $this->getModule($id);
                 if ($module instanceof Module) {
                     $modules[$id] = $module;
                 }
+            }
+        }
+
+        return $modules;
+    }
+
+    public function filterModules(array $modules, $keyword): array
+    {
+        if (!is_scalar($keyword) || $keyword === '') {
+            return $modules;
+        }
+
+        foreach ($modules as $id => $module) {
+            $searchFields = [$id];
+            if ($module instanceof Module) {
+                $searchFields[] = $module->getName();
+                $searchFields[] = $module->getDescription();
+            }
+
+            $keywordFound = false;
+            foreach ($searchFields as $searchField) {
+                if (stripos($searchField, $keyword) !== false) {
+                    $keywordFound = true;
+                    continue;
+                }
+            }
+
+            if (!$keywordFound) {
+                unset($modules[$id]);
             }
         }
 

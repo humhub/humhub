@@ -24,6 +24,11 @@ class ModuleFilters extends DirectoryFilters
      */
     public $pageUrl = '/admin/module/list';
 
+    /**
+     * @inheritdoc
+     */
+    public $paginationUsed = false;
+
     protected function initDefaultFilters()
     {
         $this->addFilter('keyword', [

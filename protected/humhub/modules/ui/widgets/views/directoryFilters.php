@@ -13,7 +13,9 @@ use yii\helpers\Url;
 ?>
 
 <?= Html::beginForm(Url::to([$directoryFilters->pageUrl]), 'get', ['class' => 'form-search']); ?>
-    <?= Html::hiddenInput('page', '1'); ?>
+    <?php if ($directoryFilters->paginationUsed) : ?>
+        <?= Html::hiddenInput('page', '1'); ?>
+    <?php endif; ?>
     <div class="row">
         <?= $directoryFilters->renderFilters() ?>
         <div class="col-md-2 form-search-without-info">

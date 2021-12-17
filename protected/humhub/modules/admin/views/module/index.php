@@ -1,15 +1,14 @@
 <?php
 
+use humhub\components\Module;
 use humhub\modules\admin\assets\ModuleAsset;
 use humhub\modules\admin\widgets\ModuleCard;
 use humhub\modules\admin\widgets\ModuleFilters;
 use humhub\modules\ui\view\components\View;
 
 /* @var $this View */
-/* @var $installedModules array */
+/* @var $filteredInstalledModules Module[] */
 /* @var $installedModulesCount int */
-/* @var $deprecatedModuleIds array */
-/* @var $marketplaceUrls array */
 
 ModuleAsset::register($this);
 ?>
@@ -29,18 +28,22 @@ ModuleAsset::register($this);
 <h4 class="modules-type"><?= Yii::t('AdminModule.modules', 'Installed ({installedCount})', ['installedCount' => $installedModulesCount]) ?></h4>
 
 <div class="row cards">
-    <?php if (!$installedModulesCount): ?>
+    <?php if (empty($filteredInstalledModules)): ?>
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <strong><?= Yii::t('AdminModule.base', 'No modules installed yet. Install some to enhance the functionality!'); ?></strong><br/>
-                    <?= Yii::t('AdminModule.base', 'Try other keywords or remove filters.'); ?>
+                    <?php if ($installedModulesCount) : ?>
+                        <strong><?= Yii::t('AdminModule.base', 'No modules found.'); ?></strong><br/>
+                        <?= Yii::t('AdminModule.base', 'Try other keywords or remove filters.'); ?>
+                    <?php else : ?>
+                        <strong><?= Yii::t('AdminModule.base', 'No modules installed yet. Install some to enhance the functionality!'); ?></strong>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     <?php endif; ?>
 
-    <?php foreach ($installedModules as $module) : ?>
+    <?php foreach ($filteredInstalledModules as $module) : ?>
         <?= ModuleCard::widget(['module' => $module]); ?>
     <?php endforeach; ?>
 </div>

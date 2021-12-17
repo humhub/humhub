@@ -67,12 +67,11 @@ class ModuleController extends Controller
     public function actionList()
     {
         $installedModules = Yii::$app->moduleManager->getModules();
+        $filteredInstalledModules = Yii::$app->moduleManager->filterModules($installedModules, Yii::$app->request->get('keyword'));
 
         return $this->render('index', [
-            'installedModules' => $installedModules,
             'installedModulesCount' => count($installedModules),
-            'deprecatedModuleIds' => $this->getDeprecatedModules(),
-            'marketplaceUrls' => $this->getMarketplaceUrls()
+            'filteredInstalledModules' => $filteredInstalledModules,
         ]);
     }
 

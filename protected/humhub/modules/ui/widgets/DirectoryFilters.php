@@ -13,7 +13,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
- * DirectoryFilters displays the filters on the directory people/spaces pages
+ * DirectoryFilters displays the filters on the directory people/spaces/modules pages
  *
  * @since 1.9
  * @author Luke
@@ -30,6 +30,11 @@ abstract class DirectoryFilters extends Widget
      */
     public $pageUrl;
 
+    /**
+     * @var bool True - if paganation is used for the filtered results
+     * @since 1.11
+     */
+    public $paginationUsed = true;
 
     /**
      * @inheritDoc
