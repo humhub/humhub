@@ -249,7 +249,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
                 $query->where($objectCondition);
                 $query->limit($limit);
             }
-            $query->orderBy('created_at DESC');
+            $query->orderBy('created_at DESC, id dESC');
             $comments = array_reverse($query->all());
 
             if ($useCaching) {
