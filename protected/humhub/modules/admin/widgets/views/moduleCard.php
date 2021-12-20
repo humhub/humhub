@@ -8,6 +8,7 @@
 use humhub\components\Module;
 use humhub\libs\Html;
 use humhub\modules\admin\widgets\ModuleActionButtons;
+use humhub\modules\admin\widgets\ModuleControls;
 
 /* @var $module Module */
 ?>
@@ -19,6 +20,7 @@ use humhub\modules\admin\widgets\ModuleActionButtons;
             'alt' => '94x94',
             'style' => 'width:94px;height:94px',
         ]) ?>
+        <?= ModuleControls::widget(['module' => $module]) ?>
     </div>
     <div class="card-body">
         <div class="card-title"><?= $module->getName() ?></div>
