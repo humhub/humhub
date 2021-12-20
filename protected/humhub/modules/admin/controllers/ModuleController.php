@@ -63,16 +63,9 @@ class ModuleController extends Controller
         return $this->redirect(['/admin/module/list']);
     }
 
-
     public function actionList()
     {
-        $installedModules = Yii::$app->moduleManager->getModules();
-        $filteredInstalledModules = Yii::$app->moduleManager->filterModules($installedModules, Yii::$app->request->get('keyword'));
-
-        return $this->render('index', [
-            'installedModulesCount' => count($installedModules),
-            'filteredInstalledModules' => $filteredInstalledModules,
-        ]);
+        return $this->render('index');
     }
 
 

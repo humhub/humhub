@@ -8,6 +8,7 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\libs\Html;
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\widgets\DirectoryFilters;
 use Yii;
 
@@ -35,8 +36,8 @@ class ModuleFilters extends DirectoryFilters
             'title' => Yii::t('AdminModule.base', 'Search'),
             'placeholder' => Yii::t('AdminModule.base', 'Search...'),
             'type' => 'input',
-            'wrapperClass' => 'col-md-8 form-search-filter-keyword',
-            'afterInput' => Html::submitButton('<span class="fa fa-search"></span>', ['class' => 'form-button-search']),
+            'wrapperClass' => 'col-md-7 form-search-filter-keyword',
+            'afterInput' => Html::submitButton(Icon::get('search'), ['class' => 'form-button-search']),
             'sortOrder' => 100,
         ]);
     }

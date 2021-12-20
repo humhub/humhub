@@ -8,6 +8,10 @@
 
 namespace humhub\modules\marketplace;
 
+use humhub\components\ModuleManager;
+use humhub\modules\admin\widgets\ModuleFilters;
+use humhub\modules\admin\widgets\Modules;
+use humhub\modules\marketplace\models\Module as ModelModule;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\Event;
@@ -78,6 +82,64 @@ class Events extends BaseObject
     {
         Yii::$app->queue->push(new jobs\PeActiveCheckJob());
         Yii::$app->queue->push(new jobs\ModuleCleanupsJob());
+    }
+
+    public static function onAdminModuleFiltersInit($event)
+    {
+        /* @var ModuleFilters $moduleFilters */
+        $moduleFilters = $event->sender;
+
+        /* @var Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+        $marketplaceModule->onlineModuleManager->getModules();
+        $categories = $marketplaceModule->onlineModuleManager->getCategories();
+        if (!empty($categories)) {
+            $moduleFilters->addFilter('categoryId', [
+                'title' => Yii::t('AdminModule.base', 'Categories'),
+                'type' => 'dropdown',
+                'options' => $categories,
+                'wrapperClass' => 'col-md-3',
+                'sortOrder' => 200,
+            ]);
+        }
+    }
+
+    public static function onAdminModulesInit($event)
+    {
+        /* @var Modules $modulesWidget */
+        $modulesWidget = $event->sender;
+
+        /* @var Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+        $onlineModules = $marketplaceModule->onlineModuleManager->getModules();
+
+        foreach ($onlineModules as $o => $onlineModule) {
+            $onlineModule = new ModelModule($onlineModule);
+            if ($onlineModule->isInstalled()) {
+                unset($onlineModules[$o]);
+                continue;
+            }
+            $onlineModules[$o] = $onlineModule;
+        }
+
+        if (empty($onlineModules)) {
+            return;
+        }
+
+        $modulesWidget->addGroup('notInstalled', [
+            'title' => Yii::t('AdminModule.modules', 'Not Installed'),
+            'modules' => Yii::$app->moduleManager->filterModules($onlineModules, Yii::$app->request->get('keyword')),
+            'count' => count($onlineModules),
+            'view' => '@humhub/modules/marketplace/widgets/views/moduleCard',
+        ]);
+    }
+
+    public static function onAdminModuleManagerAfterFilterModules($event)
+    {
+        /* @var ModuleManager $moduleManager */
+        $moduleManager = $event->sender;
+
+        // TODO: Filter by categories and tags
     }
 
 }

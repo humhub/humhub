@@ -52,6 +52,12 @@ class ModuleManager extends Component
     const EVENT_AFTER_MODULE_DISABLE = 'afterModuleDisabled';
 
     /**
+     * @event triggered after filter modules
+     * @since 1.11
+     */
+    const EVENT_AFTER_FILTER_MODULES = 'afterFilterModules';
+
+    /**
      * Create a backup on module folder deletion
      *
      * @var boolean
@@ -272,29 +278,29 @@ class ModuleManager extends Component
 
     public function filterModules(array $modules, $keyword): array
     {
-        if (!is_scalar($keyword) || $keyword === '') {
-            return $modules;
-        }
+        if (is_scalar($keyword) && $keyword !== '') {
+            foreach ($modules as $id => $module) {
+                $searchFields = [$id];
+                if ($module instanceof Module) {
+                    $searchFields[] = $module->getName();
+                    $searchFields[] = $module->getDescription();
+                }
 
-        foreach ($modules as $id => $module) {
-            $searchFields = [$id];
-            if ($module instanceof Module) {
-                $searchFields[] = $module->getName();
-                $searchFields[] = $module->getDescription();
-            }
+                $keywordFound = false;
+                foreach ($searchFields as $searchField) {
+                    if (stripos($searchField, $keyword) !== false) {
+                        $keywordFound = true;
+                        continue;
+                    }
+                }
 
-            $keywordFound = false;
-            foreach ($searchFields as $searchField) {
-                if (stripos($searchField, $keyword) !== false) {
-                    $keywordFound = true;
-                    continue;
+                if (!$keywordFound) {
+                    unset($modules[$id]);
                 }
             }
-
-            if (!$keywordFound) {
-                unset($modules[$id]);
-            }
         }
+
+        $this->trigger(static::EVENT_AFTER_FILTER_MODULES, new Event(['data' => ['modules' => $modules]]));
 
         return $modules;
     }

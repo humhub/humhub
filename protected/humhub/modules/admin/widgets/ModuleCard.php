@@ -20,7 +20,7 @@ class ModuleCard extends Widget
 {
 
     /**
-     * @var Module
+     * @var Module|array
      */
     public $module;
 
@@ -30,11 +30,25 @@ class ModuleCard extends Widget
     public $template = '<div class="card card-module col-lg-3 col-md-4 col-sm-6 col-xs-12">{card}</div>';
 
     /**
+     * @var string
+     */
+    public $view;
+
+    public function init()
+    {
+        parent::init();
+
+        if (empty($this->view)) {
+            $this->view = 'moduleCard';
+        }
+    }
+
+    /**
      * @inheritdoc
      */
     public function run()
     {
-        $card = $this->render('moduleCard', [
+        $card = $this->render($this->view, [
             'module' => $this->module
         ]);
 
