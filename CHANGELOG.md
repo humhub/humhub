@@ -1,10 +1,14 @@
 HumHub Changelog
 ================
 
-1.9.3 (Unreleased)
-------------------
+1.9.3 (December 20, 2021)
+-------------------------
+This release also includes a [security fix](https://github.com/humhub/humhub/security/advisories/GHSA-f5hc-5wfr-7v74). It could have been possible for registered users to become unauthorized members of private Spaces. Thanks to [Huntr](https://huntr.dev/bounties/943dad83-f0ed-4c74-ba81-7dfce7ca0ef2/) and @brenu.
+
 - Fix #5372: Text shortening in Japanese broken - Fix truncating of multi-byte strings
 - Fix #5398: Fix checking of foreign table index
+- Fix #5473: Insufficient member invite check on Space creation 
+
 
 
 1.9.2 (October 15, 2021)
