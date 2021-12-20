@@ -1,12 +1,16 @@
 HumHub Changelog
 ================
 
-1.10.3 (Unreleased)
--------------------------
+1.10.3 (December 20, 2021)
+--------------------------
+
+See also: [HumHub 1.10 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_10) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md).
+
 - Fix #5465: Fix empty RichText
 - Fix #5466: Default `.htaccess.dist` broken
 - Fix #5469: Mixed up title for Space membership button
 - Fix #5464: Fix comment highlighting on permalink
+- Fix #5473: Insufficient member invite check on Space creation 
 
 1.10.2 (December 7, 2021)
 -------------------------
