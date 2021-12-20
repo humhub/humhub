@@ -4,7 +4,7 @@ HumHub Changelog
 1.10.3 (December 20, 2021)
 --------------------------
 
-See also: [HumHub 1.10 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_10) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md).
+See also: [HumHub 1.10 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_10) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md). This release also includes a security fix. It could have been possible for registered users to become unauthorized members of private Spaces. Thanks to [Huntr](https://huntr.dev/bounties/943dad83-f0ed-4c74-ba81-7dfce7ca0ef2/) and @brenu.
 
 - Fix #5465: Fix empty RichText
 - Fix #5466: Default `.htaccess.dist` broken
