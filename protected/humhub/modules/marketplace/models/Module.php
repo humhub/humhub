@@ -158,4 +158,19 @@ class Module extends Model
     {
         return str_replace('-returnToUrl-', Url::to(['/marketplace/purchase/list'], true), $this->checkoutUrl);
     }
+
+    /**
+     * @param string|null $field
+     * @return array|null|string
+     */
+    public function getOnlineInfo(?string $field = null)
+    {
+        $config = (array)$this;
+
+        if ($field === null) {
+            return $config;
+        }
+
+        return $config[$field] ?? null;
+    }
 }

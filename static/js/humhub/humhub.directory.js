@@ -6,6 +6,36 @@ humhub.module('directory', function(module, require, $) {
         $(evt.$trigger).closest('form').submit();
     }
 
+    const selectTag = function (evt) {
+        const filter = $(evt.$trigger).data('filter');
+        const tag = $(evt.$trigger).data('tag');
+        const input = $(evt.$trigger).closest('form').find('input[type=hidden][name=' + filter + ']');
+
+        if (tag === '') {
+            input.val('');
+            applyFilters(evt);
+            return;
+        }
+
+        let currentTags = input.val();
+        currentTags = currentTags === '' ? [] : currentTags.split(',');
+        let newTags = [];
+        let tagIsActive = false;
+        for (let i = 0; i < currentTags.length; i++) {
+            if (currentTags[i] === tag) {
+                tagIsActive = true;
+            } else {
+                newTags.push(currentTags[i]);
+            }
+        }
+        if (!tagIsActive) {
+            newTags.push(tag);
+        }
+
+        input.val(newTags.join(','));
+        applyFilters(evt);
+    }
+
     const loadMore = function(directoryEndIndicator) {
         const urlParams = {page: directoryEndIndicator.data('current-page') + 1};
 
@@ -88,5 +118,6 @@ humhub.module('directory', function(module, require, $) {
         initOnPjaxLoad: true,
         init,
         applyFilters,
+        selectTag,
     });
 });

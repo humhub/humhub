@@ -9,6 +9,7 @@ namespace humhub\modules\ui\widgets;
 
 use humhub\components\Widget;
 use humhub\libs\Html;
+use humhub\widgets\Button;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -96,6 +97,30 @@ abstract class DirectoryFilters extends Widget
                 $inputOptions['data-action-change'] = 'directory.applyFilters';
                 $inputOptions['options'] = ['separator' => ['disabled' => '']];
                 $inputHtml = Html::dropDownList($filter, self::getValue($filter), $data['options'], $inputOptions);
+                break;
+
+            case 'tags':
+                $inputHtml = '';
+                if (empty($data['tags'])) {
+                    break;
+                }
+
+                $activeTags = self::getValue($filter);
+                $inputHtml .= Html::hiddenInput($filter, $activeTags);
+                $activeTags = empty($activeTags) ? [] : explode(',', $activeTags);
+
+                foreach ($data['tags'] as $tagKey => $tagLabel) {
+                    $isActiveTag = (empty($tagKey) && empty($activeTags))
+                        || in_array($tagKey, $activeTags);
+
+                    $inputHtml .= Button::none($tagLabel)
+                        ->options(['class' => 'btn btn-sm btn-info' . ($isActiveTag ? ' active' : '')])
+                        ->action('directory.selectTag')
+                        ->options([
+                            'data-filter' => $filter,
+                            'data-tag' => $tagKey,
+                        ]);
+                }
                 break;
 
             case 'input':

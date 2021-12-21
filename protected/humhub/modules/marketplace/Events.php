@@ -96,13 +96,30 @@ class Events extends BaseObject
         $categories = $marketplaceModule->onlineModuleManager->getCategories();
         if (!empty($categories)) {
             $moduleFilters->addFilter('categoryId', [
-                'title' => Yii::t('AdminModule.base', 'Categories'),
+                'title' => Yii::t('MarketplaceModule.base', 'Categories'),
                 'type' => 'dropdown',
                 'options' => $categories,
                 'wrapperClass' => 'col-md-3',
                 'sortOrder' => 200,
             ]);
         }
+
+        $moduleFilters->addFilter('tags', [
+            'title' => Yii::t('MarketplaceModule.base', 'Tags'),
+            'type' => 'tags',
+            'tags' => [
+                '' => Yii::t('MarketplaceModule.base', 'All'),
+                'installed' => Yii::t('MarketplaceModule.base', 'Installed'),
+                'not_installed' => Yii::t('MarketplaceModule.base', 'Not Installed'),
+                'professional' => Yii::t('MarketplaceModule.base', 'Professional Edition'),
+                'featured' => Yii::t('MarketplaceModule.base', 'Featured'),
+                'official' => Yii::t('MarketplaceModule.base', 'Official'),
+                'partner' => Yii::t('MarketplaceModule.base', 'Partner'),
+                'new' => Yii::t('MarketplaceModule.base', 'New'),
+            ],
+            'wrapperClass' => 'col-md-12 form-search-filter-tags',
+            'sortOrder' => 2000,
+        ]);
     }
 
     public static function onAdminModulesInit($event)
@@ -145,7 +162,8 @@ class Events extends BaseObject
      */
     private static function isFilteredModule($module): bool
     {
-        return self::isFilteredModuleByCategory($module);
+        return self::isFilteredModuleByCategory($module) &&
+            self::isFilteredModuleByTags($module);
     }
 
     /**
@@ -165,5 +183,59 @@ class Events extends BaseObject
         }
 
         return in_array($categoryId, $module->categories);
+    }
+
+    /**
+     * @param CoreModule|ModelModule $module
+     * @return bool
+     */
+    private static function isFilteredModuleByTags($module): bool
+    {
+        $tags = Yii::$app->request->get('tags', null);
+
+        if (empty($tags)) {
+            return true;
+        }
+
+        $tags = explode(',', $tags);
+
+        foreach ($tags as $tag) {
+            switch ($tag) {
+                case 'installed':
+                    if (!Yii::$app->moduleManager->hasModule($module->id)) {
+                        return false;
+                    }
+                    break;
+                case 'not_installed':
+                    if (Yii::$app->moduleManager->hasModule($module->id)) {
+                        return false;
+                    }
+                    break;
+                case 'professional':
+                    if (!$module->isProOnly()) {
+                        return false;
+                    }
+                    break;
+                case 'featured':
+                    if (!$module->getOnlineInfo('featured')) {
+                        return false;
+                    }
+                    break;
+                case 'official':
+                    if (!$module->getOnlineInfo('isCommunity')) {
+                        return false;
+                    }
+                    break;
+                case 'partner':
+                    if (!$module->getOnlineInfo('isThirdParty')) {
+                        return false;
+                    }
+                    break;
+                case 'new':
+                    break;
+            }
+        }
+
+        return true;
     }
 }

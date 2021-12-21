@@ -9,6 +9,7 @@ use humhub\components\Module;
 use humhub\libs\Html;
 use humhub\modules\admin\widgets\ModuleActionButtons;
 use humhub\modules\admin\widgets\ModuleControls;
+use humhub\modules\ui\icon\widgets\Icon;
 
 /* @var $module Module */
 ?>
@@ -23,7 +24,7 @@ use humhub\modules\admin\widgets\ModuleControls;
         <?= ModuleControls::widget(['module' => $module]) ?>
     </div>
     <div class="card-body">
-        <div class="card-title"><?= $module->getName() ?></div>
+        <div class="card-title"><?= $module->getName() . ($module->getOnlineInfo('featured') ? ' ' . Icon::get('star')->color('info') : '') ?></div>
         <div><?= $module->getVersion() ?></div>
         <div><?= $module->getDescription() ?></div>
     </div>

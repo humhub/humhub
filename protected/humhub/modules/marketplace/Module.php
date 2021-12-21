@@ -9,7 +9,6 @@
 namespace humhub\modules\marketplace;
 
 use humhub\components\Module as BaseModule;
-use humhub\models\Setting;
 use humhub\modules\marketplace\components\HumHubApiClient;
 use humhub\modules\marketplace\components\LicenceManager;
 use humhub\modules\marketplace\models\Licence;
@@ -20,6 +19,7 @@ use Yii;
  * The Marketplace modules contains all the capabilities to interact with the offical HumHub marketplace.
  * The core functions are the ability to easily install or update modules from the remote module directory.
  *
+ * @property-read Licence $licence
  * @property OnlineModuleManager $onlineModuleManager
  * @since 1.4
  */

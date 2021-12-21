@@ -67,6 +67,30 @@
             text-decoration: none;
         }
     }
+    .form-search-filter-tags {
+        button {
+            margin: 10px 10px 0 0;
+        }
+        .btn.btn-info{
+            padding-left: 16px;
+            padding-right: 16px;
+            &.active {
+                background: #0397A8 !important;
+                color: #FFF !important;
+            }
+            &:not(.active) {
+                border: 1px solid #435F6F;
+                color: #435F6F !important;
+                background: #FFF;
+                padding: 3px 14px;
+                &:hover {
+                    background: #0397A8 !important;
+                    border: 1px solid #0397A8;
+                    color: #FFF !important;
+                }
+            }
+        }
+    }
 
     .cards {
         display: flex;
