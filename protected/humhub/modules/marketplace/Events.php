@@ -8,6 +8,7 @@
 
 namespace humhub\modules\marketplace;
 
+use humhub\components\Module as CoreModule;
 use humhub\modules\admin\events\ModulesEvent;
 use humhub\modules\admin\widgets\ModuleFilters;
 use humhub\modules\admin\widgets\Modules;
@@ -132,13 +133,37 @@ class Events extends BaseObject
         }
 
         foreach ($event->modules as $m => $module) {
-            if (!($module instanceof ModelModule)) {
-                continue;
-            }
-
-            if (!$module->isFiltered()) {
+            if (!self::isFilteredModule($module)) {
                 unset($event->modules[$m]);
             }
         }
+    }
+
+    /**
+     * @param CoreModule|ModelModule $module
+     * @return bool
+     */
+    private static function isFilteredModule($module): bool
+    {
+        return self::isFilteredModuleByCategory($module);
+    }
+
+    /**
+     * @param CoreModule|ModelModule $module
+     * @return bool
+     */
+    private static function isFilteredModuleByCategory($module): bool
+    {
+        $categoryId = Yii::$app->request->get('categoryId', null);
+
+        if (empty($categoryId)) {
+            return true;
+        }
+
+        if (!is_array($module->categories) || empty($module->categories)) {
+            return false;
+        }
+
+        return in_array($categoryId, $module->categories);
     }
 }

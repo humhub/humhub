@@ -158,24 +158,4 @@ class Module extends Model
     {
         return str_replace('-returnToUrl-', Url::to(['/marketplace/purchase/list'], true), $this->checkoutUrl);
     }
-
-    public function isFiltered(): bool
-    {
-        return $this->isFilteredByCategory();
-    }
-
-    private function isFilteredByCategory(): bool
-    {
-        $categoryId = Yii::$app->request->get('categoryId', null);
-
-        if (empty($categoryId)) {
-            return true;
-        }
-
-        if (!is_array($this->categories) || empty($this->categories)) {
-            return false;
-        }
-
-        return in_array($categoryId, $this->categories);
-    }
 }

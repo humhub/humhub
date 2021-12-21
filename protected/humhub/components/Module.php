@@ -9,7 +9,7 @@
 namespace humhub\components;
 
 use humhub\modules\activity\components\BaseActivity;
-use humhub\modules\activity\models\Activity;
+use humhub\modules\marketplace\Module as MarketplaceModule;
 use Yii;
 use yii\helpers\Json;
 use humhub\models\Setting;
@@ -17,11 +17,13 @@ use humhub\modules\file\libs\FileHelper;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\content\models\ContentContainerSetting;
 use yii\web\AssetBundle;
-use yii\web\HttpException;
 
 /**
  * Base Class for Modules / Extensions
  *
+ * @property-read string $name
+ * @property-read string $description
+ * @property-read array $categories
  * @property SettingsManager $settings
  * @author luke
  */
@@ -31,6 +33,11 @@ class Module extends \yii\base\Module
      * @var array the loaded module.json info file
      */
     private $_moduleInfo = null;
+
+    /**
+     * @var array the cached info loaded from online
+     */
+    private $_onlineInfo = null;
 
     /**
      * @var string The path for module resources (images, javascripts)
@@ -297,6 +304,31 @@ class Module extends \yii\base\Module
         $moduleJson = file_get_contents($this->getBasePath() . DIRECTORY_SEPARATOR . 'module.json');
 
         return Json::decode($moduleJson);
+    }
+
+    public function getOnlineInfo(): ?array
+    {
+        if ($this->_onlineInfo !== null) {
+            return $this->_onlineInfo;
+        }
+
+        /* @var MarketplaceModule $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+        if (!($marketplaceModule instanceof MarketplaceModule)) {
+            return null;
+        }
+
+        $onlineModules = $marketplaceModule->onlineModuleManager->getModules();
+
+        $this->_onlineInfo = isset($onlineModules[$this->id]) ? $onlineModules[$this->id] : [];
+
+        return $this->_onlineInfo;
+    }
+
+    public function getCategories(): array
+    {
+        $onlineInfo = $this->getOnlineInfo();
+        return $onlineInfo['categories'] ?? [];
     }
 
     /**
