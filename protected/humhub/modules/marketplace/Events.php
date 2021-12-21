@@ -8,7 +8,7 @@
 
 namespace humhub\modules\marketplace;
 
-use humhub\components\ModuleManager;
+use humhub\modules\admin\events\ModulesEvent;
 use humhub\modules\admin\widgets\ModuleFilters;
 use humhub\modules\admin\widgets\Modules;
 use humhub\modules\marketplace\models\Module as ModelModule;
@@ -111,16 +111,7 @@ class Events extends BaseObject
 
         /* @var Module $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
-        $onlineModules = $marketplaceModule->onlineModuleManager->getModules();
-
-        foreach ($onlineModules as $o => $onlineModule) {
-            $onlineModule = new ModelModule($onlineModule);
-            if ($onlineModule->isInstalled()) {
-                unset($onlineModules[$o]);
-                continue;
-            }
-            $onlineModules[$o] = $onlineModule;
-        }
+        $onlineModules = $marketplaceModule->onlineModuleManager->getNotInstalledModules();
 
         if (empty($onlineModules)) {
             return;
@@ -128,18 +119,26 @@ class Events extends BaseObject
 
         $modulesWidget->addGroup('notInstalled', [
             'title' => Yii::t('AdminModule.modules', 'Not Installed'),
-            'modules' => Yii::$app->moduleManager->filterModules($onlineModules, Yii::$app->request->get('keyword')),
+            'modules' => Yii::$app->moduleManager->filterModules($onlineModules),
             'count' => count($onlineModules),
             'view' => '@humhub/modules/marketplace/widgets/views/moduleCard',
         ]);
     }
 
-    public static function onAdminModuleManagerAfterFilterModules($event)
+    public static function onAdminModuleManagerAfterFilterModules(ModulesEvent $event)
     {
-        /* @var ModuleManager $moduleManager */
-        $moduleManager = $event->sender;
+        if (!is_array($event->modules)) {
+            return;
+        }
 
-        // TODO: Filter by categories and tags
+        foreach ($event->modules as $m => $module) {
+            if (!($module instanceof ModelModule)) {
+                continue;
+            }
+
+            if (!$module->isFiltered()) {
+                unset($event->modules[$m]);
+            }
+        }
     }
-
 }

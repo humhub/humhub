@@ -9,15 +9,14 @@
 namespace humhub\modules\marketplace\components;
 
 use humhub\components\ModuleEvent;
-use humhub\libs\HttpClient;
 use humhub\modules\admin\libs\HumHubAPI;
+use humhub\modules\marketplace\models\Module as ModelModule;
 use humhub\modules\marketplace\Module;
 use Yii;
 use yii\base\Component;
 use yii\web\HttpException;
 use yii\base\Exception;
 use yii\helpers\FileHelper;
-use humhub\libs\CURLHelper;
 use ZipArchive;
 
 /**
@@ -284,6 +283,27 @@ class OnlineModuleManager extends Component
         return HumHubAPI::request('v1/modules/info', [
             'id' => $moduleId, 'includeBetaVersions' => (boolean)$module->settings->get('includeBetaUpdates')
         ]);
+    }
+
+    /**
+     * Get only not installed modules
+     *
+     * @return ModelModule[]
+     */
+    public function getNotInstalledModules(): array
+    {
+        $modules = $this->getModules();
+
+        foreach ($modules as $o => $module) {
+            $onlineModule = new ModelModule($module);
+            if ($onlineModule->isInstalled()) {
+                unset($modules[$o]);
+                continue;
+            }
+            $modules[$o] = $onlineModule;
+        }
+
+        return $modules;
     }
 
 }

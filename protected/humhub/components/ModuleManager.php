@@ -12,6 +12,7 @@ use humhub\components\bootstrap\ModuleAutoLoader;
 use humhub\components\console\Application as ConsoleApplication;
 use humhub\libs\BaseSettingsManager;
 use humhub\models\ModuleEnabled;
+use humhub\modules\admin\events\ModulesEvent;
 use Yii;
 use yii\base\Component;
 use yii\base\Event;
@@ -276,31 +277,52 @@ class ModuleManager extends Component
         return $modules;
     }
 
-    public function filterModules(array $modules, $keyword): array
+    public function filterModules(array $modules, $filters = []): array
     {
-        if (is_scalar($keyword) && $keyword !== '') {
-            foreach ($modules as $id => $module) {
-                $searchFields = [$id];
-                if ($module instanceof Module) {
-                    $searchFields[] = $module->getName();
-                    $searchFields[] = $module->getDescription();
-                }
+        $filters = array_merge([
+            'keyword' => null,
+        ], $filters);
 
-                $keywordFound = false;
-                foreach ($searchFields as $searchField) {
-                    if (stripos($searchField, $keyword) !== false) {
-                        $keywordFound = true;
-                        continue;
-                    }
-                }
+        $modules = $this->filterModulesByKeyword($modules, $filters['keyword']);
 
-                if (!$keywordFound) {
-                    unset($modules[$id]);
-                }
-            }
+        $modulesEvent = new ModulesEvent(['modules' => $modules]);
+        $this->trigger(static::EVENT_AFTER_FILTER_MODULES, $modulesEvent);
+
+        return $modulesEvent->modules;
+    }
+
+    public function filterModulesByKeyword(array $modules, $keyword = null): array
+    {
+        if ($keyword === null) {
+            $keyword = Yii::$app->request->get('keyword', '');
         }
 
-        $this->trigger(static::EVENT_AFTER_FILTER_MODULES, new Event(['data' => ['modules' => $modules]]));
+        if (!is_scalar($keyword) || $keyword === '') {
+            return $modules;
+        }
+
+        foreach ($modules as $id => $module) {
+            /* @var Module $module */
+            $searchFields = [$id];
+            if (isset($module->name)) {
+                $searchFields[] = $module->name;
+            }
+            if (isset($module->description)) {
+                $searchFields[] = $module->description;
+            }
+
+            $keywordFound = false;
+            foreach ($searchFields as $searchField) {
+                if (stripos($searchField, $keyword) !== false) {
+                    $keywordFound = true;
+                    continue;
+                }
+            }
+
+            if (!$keywordFound) {
+                unset($modules[$id]);
+            }
+        }
 
         return $modules;
     }

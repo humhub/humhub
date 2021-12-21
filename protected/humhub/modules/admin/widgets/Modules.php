@@ -38,7 +38,7 @@ class Modules extends Widget
 
         $this->addGroup('installed', [
             'title' => Yii::t('AdminModule.modules', 'Installed'),
-            'modules' => Yii::$app->moduleManager->filterModules($installedModules, Yii::$app->request->get('keyword')),
+            'modules' => Yii::$app->moduleManager->filterModules($installedModules),
             'count' => count($installedModules),
             'noModulesMessage' => Yii::t('AdminModule.base', 'No modules installed yet. Install some to enhance the functionality!'),
         ]);
