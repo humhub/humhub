@@ -44,6 +44,13 @@ abstract class DirectoryFilters extends Widget
     {
         $this->initDefaultFilters();
 
+        $this->addFilter('reset', [
+            'type' => 'info',
+            'wrapperClass' => 'col-md-2 form-search-without-info',
+            'info' => Html::a(Yii::t('UiModule.base', 'Reset filters'), [$this->pageUrl], ['class' => 'form-search-reset']),
+            'sortOrder' => 10000,
+        ]);
+
         parent::init();
 
         ArrayHelper::multisort($this->filters, 'sortOrder');
@@ -121,6 +128,10 @@ abstract class DirectoryFilters extends Widget
                             'data-tag' => $tagKey,
                         ]);
                 }
+                break;
+
+            case 'info':
+                $inputHtml = $data['info'];
                 break;
 
             case 'input':

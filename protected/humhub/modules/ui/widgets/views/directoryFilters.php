@@ -18,8 +18,5 @@ use yii\helpers\Url;
     <?php endif; ?>
     <div class="row">
         <?= $directoryFilters->renderFilters() ?>
-        <div class="col-md-2 form-search-without-info">
-            <?= Html::a(Yii::t('UiModule.base', 'Reset filters'), Url::to([$directoryFilters->pageUrl]), ['class' => 'form-search-reset']); ?>
-        </div>
     </div>
 <?= Html::endForm(); ?>

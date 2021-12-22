@@ -118,7 +118,7 @@ class Events extends BaseObject
                 'new' => Yii::t('MarketplaceModule.base', 'New'),
             ],
             'wrapperClass' => 'col-md-12 form-search-filter-tags',
-            'sortOrder' => 2000,
+            'sortOrder' => 20000,
         ]);
     }
 
