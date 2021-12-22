@@ -40,6 +40,35 @@ class ModuleControls extends Menu
 
     public function initControls()
     {
+        $this->initInstalledModuleControls();
+
+        if ($marketplaceUrl = $this->getMarketplaceUrl($this->module)) {
+            $this->addEntry(new MenuLink([
+                'id' => 'marketplace-info',
+                'label' => Yii::t('AdminModule.base', 'Information'),
+                'url' => $marketplaceUrl,
+                'htmlOptions' => ['rel' => 'noopener', 'target' => '_blank'],
+                'icon' => 'external-link',
+                'sortOrder' => 500,
+            ]));
+        } else {
+            $this->addEntry(new MenuLink([
+                'id' => 'info',
+                'label' => Yii::t('AdminModule.base', 'Information'),
+                'url' => ['/admin/module/info', 'moduleId' => $this->module->id],
+                'htmlOptions' => ['data-target' => '#globalModal'],
+                'icon' => 'info-circle',
+                'sortOrder' => 600,
+            ]));
+        }
+    }
+
+    private function initInstalledModuleControls()
+    {
+        if (!($this->module instanceof Module)) {
+            return;
+        }
+
         if (Yii::$app->hasModule($this->module->id)) {
             if ($this->module->getConfigUrl() != '') {
                 $this->addEntry(new MenuLink([
@@ -101,29 +130,9 @@ class ModuleControls extends Menu
                 'sortOrder' => 400,
             ]));
         }
-
-        if ($marketplaceUrl = $this->getMarketplaceUrl($this->module)) {
-            $this->addEntry(new MenuLink([
-                'id' => 'marketplace-info',
-                'label' => Yii::t('AdminModule.base', 'Information'),
-                'url' => $marketplaceUrl,
-                'htmlOptions' => ['rel' => 'noopener', 'target' => '_blank'],
-                'icon' => 'external-link',
-                'sortOrder' => 500,
-            ]));
-        } else {
-            $this->addEntry(new MenuLink([
-                'id' => 'info',
-                'label' => Yii::t('AdminModule.base', 'Information'),
-                'url' => ['/admin/module/info', 'moduleId' => $this->module->id],
-                'htmlOptions' => ['data-target' => '#globalModal'],
-                'icon' => 'info-circle',
-                'sortOrder' => 600,
-            ]));
-        }
     }
 
-    private function getMarketplaceUrl(Module $module): ?string
+    private function getMarketplaceUrl($module): ?string
     {
         if (!Yii::$app->hasModule('marketplace')) {
             return false;

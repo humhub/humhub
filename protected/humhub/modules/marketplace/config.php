@@ -8,6 +8,7 @@
 
 use humhub\commands\CronController;
 use humhub\components\ModuleManager;
+use humhub\modules\admin\widgets\ModuleControls;
 use humhub\modules\admin\widgets\ModuleFilters;
 use humhub\modules\admin\widgets\Modules;
 use humhub\modules\marketplace\Events;
@@ -30,5 +31,6 @@ return [
         [ModuleFilters::class, ModuleFilters::EVENT_AFTER_RUN, [Events::class, 'onAdminModuleFiltersAfterRun']],
         [Modules::class, Modules::EVENT_INIT, [Events::class, 'onAdminModulesInit']],
         [ModuleManager::class, ModuleManager::EVENT_AFTER_FILTER_MODULES, [Events::class, 'onAdminModuleManagerAfterFilterModules']],
+        [ModuleControls::class, ModuleControls::EVENT_INIT, [Events::class, 'onAdminModuleControlsInit']],
     ]
 ];

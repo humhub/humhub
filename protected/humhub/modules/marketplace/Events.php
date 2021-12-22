@@ -11,9 +11,11 @@ namespace humhub\modules\marketplace;
 use humhub\components\Module as CoreModule;
 use humhub\modules\admin\events\ModulesEvent;
 use humhub\modules\admin\libs\HumHubAPI;
+use humhub\modules\admin\widgets\ModuleControls;
 use humhub\modules\admin\widgets\ModuleFilters;
 use humhub\modules\admin\widgets\Modules;
 use humhub\modules\marketplace\models\Module as ModelModule;
+use humhub\modules\ui\menu\MenuLink;
 use humhub\widgets\Button;
 use Yii;
 use yii\base\BaseObject;
@@ -270,5 +272,27 @@ class Events extends BaseObject
         }
 
         return true;
+    }
+
+    public static function onAdminModuleControlsInit($event)
+    {
+        /* @var ModuleControls $moduleControls */
+        $moduleControls = $event->sender;
+
+        if (!($moduleControls->module instanceof ModelModule)) {
+            return;
+        }
+
+        if ($moduleControls->module->isThirdParty) {
+            $moduleControls->addEntry(new MenuLink([
+                'id' => 'marketplace-third-party',
+                'label' => Yii::t('MarketplaceModule.base', 'Third-party')
+                    . ($moduleControls->module->isCommunity ? ' - ' . Yii::t('MarketplaceModule.base', 'Community') : ''),
+                'url' => ['/marketplace/browse/thirdparty-disclaimer'],
+                'htmlOptions' => ['data-target' => '#globalModal'],
+                'icon' => 'info-circle',
+                'sortOrder' => 1000,
+            ]));
+        }
     }
 }

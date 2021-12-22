@@ -6,6 +6,7 @@
  */
 
 use humhub\libs\Html;
+use humhub\modules\admin\widgets\ModuleControls;
 use humhub\modules\admin\widgets\ModuleStatus;
 use humhub\modules\marketplace\models\Module;
 use humhub\modules\marketplace\widgets\ModuleActionButtons;
@@ -22,7 +23,7 @@ use humhub\modules\ui\icon\widgets\Icon;
             'alt' => '94x94',
             'style' => 'width:94px;height:94px',
         ]) ?>
-        <?php // ModuleControls::widget(['module' => $module]) ?>
+        <?= ModuleControls::widget(['module' => $module]) ?>
     </div>
     <div class="card-body">
         <div class="card-title"><?= $module->name . ($module->featured ? ' ' . Icon::get('star')->color('info') : '') ?></div>
