@@ -27,6 +27,7 @@ return [
         [ModuleMenu::class, ModuleMenu::EVENT_INIT, [Events::class, 'onAdminModuleMenuInit']],
         [CronController::class, CronController::EVENT_ON_HOURLY_RUN, [Events::class, 'onHourlyCron']],
         [ModuleFilters::class, ModuleFilters::EVENT_INIT, [Events::class, 'onAdminModuleFiltersInit']],
+        [ModuleFilters::class, ModuleFilters::EVENT_AFTER_RUN, [Events::class, 'onAdminModuleFiltersAfterRun']],
         [Modules::class, Modules::EVENT_INIT, [Events::class, 'onAdminModulesInit']],
         [ModuleManager::class, ModuleManager::EVENT_AFTER_FILTER_MODULES, [Events::class, 'onAdminModuleManagerAfterFilterModules']],
     ]

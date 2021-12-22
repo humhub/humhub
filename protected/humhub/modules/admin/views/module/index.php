@@ -23,10 +23,6 @@ DirectoryAsset::register($this);
     <div class="panel-body">
         <?= ModuleFilters::widget(); ?>
     </div>
-    <?php /*
-    <div class="panel-footer">
-        A new HumHub update is available. Install it now to keep your network up to date and to have access to the latest module versions.
-    </div> */ ?>
 </div>
 
 <?= Modules::widget() ?>

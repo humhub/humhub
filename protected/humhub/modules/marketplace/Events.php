@@ -10,9 +10,11 @@ namespace humhub\modules\marketplace;
 
 use humhub\components\Module as CoreModule;
 use humhub\modules\admin\events\ModulesEvent;
+use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\admin\widgets\ModuleFilters;
 use humhub\modules\admin\widgets\Modules;
 use humhub\modules\marketplace\models\Module as ModelModule;
+use humhub\widgets\Button;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\Event;
@@ -120,6 +122,36 @@ class Events extends BaseObject
             'wrapperClass' => 'col-md-12 form-search-filter-tags',
             'sortOrder' => 20000,
         ]);
+    }
+
+    public static function onAdminModuleFiltersAfterRun($event)
+    {
+        $latestVersion = HumHubAPI::getLatestHumHubVersion();
+        if (!$latestVersion) {
+            return;
+        }
+
+        if (version_compare($latestVersion, Yii::$app->version, '>')) {
+            $info = [
+                'class' => 'directory-filters-footer-warning',
+                'icon' => 'info-circle',
+                'info' => Yii::t('MarketplaceModule.base', 'A new HumHub update is available. Install it now to keep your network up to date and to have access to the latest module versions.'),
+                'link' => Button::asLink(Yii::t('MarketplaceModule.base', 'Update HumHub now'), 'https://www.humhub.org')
+                    ->cssClass('btn btn-primary'),
+            ];
+        } else {
+            $info = [
+                'class' => 'directory-filters-footer-info',
+                'icon' => 'check-circle',
+                'info' => Yii::t('MarketplaceModule.base', 'This HumHub installation is up to date!'),
+                'link' => Button::asLink('https://www.humhub.org', 'https://www.humhub.org')
+                    ->cssClass('btn btn-info'),
+            ];
+        }
+
+        /* @var ModuleFilters $moduleFilters */
+        $moduleFilters = $event->sender;
+        $event->result .= $moduleFilters->render('@humhub/modules/marketplace/widgets/views/moduleUpdateInfo', $info);
     }
 
     public static function onAdminModulesInit($event)
