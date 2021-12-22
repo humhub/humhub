@@ -6,6 +6,7 @@
  */
 
 use humhub\libs\Html;
+use humhub\modules\admin\widgets\ModuleStatus;
 use humhub\modules\marketplace\models\Module;
 use humhub\modules\marketplace\widgets\ModuleActionButtons;
 use humhub\modules\ui\icon\widgets\Icon;
@@ -13,6 +14,7 @@ use humhub\modules\ui\icon\widgets\Icon;
 /* @var Module $module */
 ?>
 <div class="card-panel<?php if ($module->isInstalled() || $module->isProOnly()) : ?> module-installed<?php endif; ?>">
+    <?= ModuleStatus::widget(['module' => $module]) ?>
     <div class="card-header">
         <?= Html::img($module->image, [
             'class' => 'media-object img-rounded',

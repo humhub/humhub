@@ -232,6 +232,7 @@ class Events extends BaseObject
                     }
                     break;
                 case 'new':
+                    // TODO: Filter by new status
                     break;
             }
         }

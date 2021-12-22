@@ -9,11 +9,13 @@ use humhub\components\Module;
 use humhub\libs\Html;
 use humhub\modules\admin\widgets\ModuleActionButtons;
 use humhub\modules\admin\widgets\ModuleControls;
+use humhub\modules\admin\widgets\ModuleStatus;
 use humhub\modules\ui\icon\widgets\Icon;
 
 /* @var $module Module */
 ?>
 <div class="card-panel">
+    <?= ModuleStatus::widget(['module' => $module]) ?>
     <div class="card-header">
         <?= Html::img($module->getImage(), [
             'class' => 'media-object img-rounded',

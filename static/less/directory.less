@@ -110,6 +110,7 @@
             margin: 15px 0;
             border-radius: 4px;
             background-color: #ffffff;
+            overflow: hidden;
             &.card-archived {
                 filter: opacity(60%);
             }
@@ -130,6 +131,24 @@
             background-size: cover;
             background-position: center;
             border-radius: 4px 4px 0 0;
+        }
+        .card-status {
+            font-size: 13px;
+            font-weight: bold;
+            padding: 5px 12px;
+            color: #FFF;
+            &.card-status-professional {
+                background: #415F6E;
+            }
+            &.card-status-official, &.card-status-partner {
+                background: #90A1AA;
+            }
+            &.card-status-deprecated {
+                background: #EB0000;
+            }
+            &.card-status-featured, &.card-status-new {
+                background: #21A1B3;
+            }
         }
         .card-header {
             position: absolute;
