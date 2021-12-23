@@ -8,6 +8,7 @@ return [
     'Default Content Visiblity' => 'Видимост на съдържанието по подразбиране',
     'Default Join Policy' => 'Политика за присъединяване по подразбиране',
     'Default Space Permissions' => 'Разрешения за раздела по подразбиране',
+    'Default Space(s)' => 'Раздел(и) по подразбиране',
     'Default Visibility' => 'Съдържание по подразбиране',
     'Default space' => 'Раздел по подразбиране',
     'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => 'Тук можете да дефинирате настройките си по подразбиране за нови раздели. Тези настройки могат да бъдат заменени за всеки отделен раздел.',
@@ -22,4 +23,5 @@ return [
     'Space Settings' => 'Настройки на раздела',
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Тези опции ви позволяват да зададете разрешенията по подразбиране за всички Раздели. Упълномощените потребители могат да ги индивидуализират за всяко пространство. Допълнителни записи се добавят с инсталирането на нови модули.',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Този общ преглед съдържа списък на всеки раздел с действия за преглед, редактиране и изтриване на раздели.',
+    'Update Space memberships also for existing members.' => 'Актуализирайте членството в раздела също за съществуващи членове.',
 ];

@@ -26,6 +26,7 @@ return [
     'User Profiles' => 'Profily uživatelů',
     'Version:' => 'Verze:',
     'Legacy' => '',
+    'License not found or expired. Please contact the module publisher.' => '',
     'Not maintained or maintenance is about to be discontinued.' => '',
     'This module doesn\'t provide further information.' => '',
 ];

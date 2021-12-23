@@ -8,6 +8,7 @@ return [
     'Default Content Visiblity' => 'Domyślna widoczność treści',
     'Default Join Policy' => 'Domyślna polityka dołączania',
     'Default Space Permissions' => 'Domyślne Uprawnienia Strefy',
+    'Default Space(s)' => 'Domyślne Strefy',
     'Default Visibility' => 'Domyślna widoczność',
     'Default space' => 'Domyślna strefa',
     'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => 'Tutaj możesz ustalić Twoje domyślne ustawienia dla nowych stref. Te ustawienia mogą być nadpisane przez każdą strefę.',
@@ -22,4 +23,5 @@ return [
     'Space Settings' => 'Ustawienia Strefy',
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Te opcje pozwolą Ci ustawić domyślne uprawnienia dla wszystkich stref. Autoryzowani użytkownicy będą mieć możliwość dostosowywać te ustawienia w każdej strefie. Więcej wpisów zostanie dodanych po instalacji nowych modułów.',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Ten przegląd zawiera listę wszystkich stref z możliwością ich podglądu, edycji i usunięcia.',
+    'Update Space memberships also for existing members.' => 'Zaktualizuj członkowstwo w strefie dla istniejących członków.',
 ];

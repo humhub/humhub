@@ -57,6 +57,7 @@ return [
     'Maximum upload file size (in MB)' => '最大上传文件大小（MB）',
     'Name of the application' => '应用名称',
     'No Proxy Hosts' => '无代理主机',
+    'Notification Settings' => '通知设置',
     'Old logs can significantly increase the size of your database while providing little information.' => '旧日志会明显增加您的数据库的大小，同时提供很少的信息。',
     'PHP reported a maximum of {maxUploadSize} MB' => 'PHP最大上传大小 {maxUploadSize} MB',
     'Password' => '密码',

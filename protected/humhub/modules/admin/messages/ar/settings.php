@@ -64,6 +64,7 @@ return [
     'Name of the application' => 'اسم النظام',
     'No Proxy Hosts' => 'لا توجد خوادم بروكسي',
     'No caching' => 'لا يوجد تخزين مؤقت',
+    'Notification Settings' => 'إعدادات الإشعار',
     'Old logs can significantly increase the size of your database while providing little information.' => 'يمكن أن تزيد السجلات ld بشكل كبير من حجم قاعدة البيانات الخاصة بك مع توفير القليل من المعلومات.',
     'PHP APC(u) Extension missing - Type not available!' => 'PHP APC (u) ملحق مفقود - النوع غير متوفر!',
     'PHP reported a maximum of {maxUploadSize} MB' => 'أبلغت PHP عن {maxUploadSize} ميغابايت كحد أقصى',

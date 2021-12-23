@@ -26,6 +26,7 @@ return [
     'User Profiles' => '用户属性',
     'Version:' => '版本:',
     'Legacy' => '',
+    'License not found or expired. Please contact the module publisher.' => '',
     'Not maintained or maintenance is about to be discontinued.' => '',
     'This module doesn\'t provide further information.' => '',
 ];

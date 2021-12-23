@@ -27,5 +27,6 @@ return [
     'Uninstall' => 'Désinstaller',
     'User Profiles' => 'Profils utilisateurs',
     'Version:' => 'Version :',
+    'License not found or expired. Please contact the module publisher.' => '',
     'This module doesn\'t provide further information.' => '',
 ];

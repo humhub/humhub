@@ -45,6 +45,7 @@ return [
     'Name of the application' => 'የመተግበሪያው ስም',
     'No Proxy Hosts' => 'የፕሮክሲ አስተናጋጆች የሉም',
     'No caching' => 'ማስቀመጡ ይቅር',
+    'Notification Settings' => 'የማስታወቂያ ማቀናበሪያ',
     'PHP APC(u) Extension missing - Type not available!' => 'የPHP APC(u) መቀጠያው ጠፍቷል - አይነቱ አያገለግልም!',
     'Password' => 'የይለፍ ቃል',
     'Port' => 'መተላለፊያ',

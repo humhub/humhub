@@ -65,6 +65,7 @@ return [
     'Name of the application' => 'Ime aplikacije',
     'No Proxy Hosts' => 'Nema proxy poslužitelja',
     'No caching' => 'Bez caching',
+    'Notification Settings' => 'Postavke obavijesti',
     'Old logs can significantly increase the size of your database while providing little information.' => 'Stari zapisi mogu znatno povećati veličinu vaše baze podataka uz pružanje malih informacija.',
     'PHP APC(u) Extension missing - Type not available!' => 'PHP APC (u) Extension missing - Tip nije dostupan!',
     'PHP reported a maximum of {maxUploadSize} MB' => 'PHP je prijavio maksimum od {maxUploadSize} MB',

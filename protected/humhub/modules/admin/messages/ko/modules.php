@@ -16,6 +16,7 @@ return [
     'Enable module...' => '',
     'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => '',
     'Legacy' => '',
+    'License not found or expired. Please contact the module publisher.' => '',
     'Module path %path% is not writeable!' => '',
     'Modules extend the functionality of HumHub. Here you can install and manage modules from the HumHub Marketplace.' => '',
     'More info' => '',

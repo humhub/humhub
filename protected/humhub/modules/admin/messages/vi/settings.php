@@ -60,6 +60,7 @@ return [
     'Name of the application' => 'Tên của ứng dụng',
     'No Proxy Hosts' => 'Không Proxy Hosts',
     'No caching' => 'Không Caching',
+    'Notification Settings' => 'Cấu hình thông báo',
     'Old logs can significantly increase the size of your database while providing little information.' => 'Nhật ký hệ thống quá cũ có thể làm gia tăng đáng kể kích thước của CSDL trong khi cung cấp không nhiều thông tin cần thiết.',
     'PHP APC(u) Extension missing - Type not available!' => 'PHP APC(u) Extension missing - Type not available!',
     'PHP reported a maximum of {maxUploadSize} MB' => 'PHP reported a maximum of {maxUploadSize} MB',

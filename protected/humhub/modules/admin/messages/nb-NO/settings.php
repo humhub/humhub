@@ -60,6 +60,7 @@ return [
     'Name of the application' => 'Nettsidens navn',
     'No Proxy Hosts' => 'Ingen Proxy tjenere',
     'No caching' => 'Ingen mellomlagring',
+    'Notification Settings' => 'Innstillinger for varsler',
     'Old logs can significantly increase the size of your database while providing little information.' => 'Gamle logger kan øke størrelsen på databasen din betydelig, mens uten at det gir noe ekstra informasjon.',
     'PHP APC(u) Extension missing - Type not available!' => 'PHP APC(u) Utvidelse mangler - Type ikke tilgjengelig.',
     'PHP reported a maximum of {maxUploadSize} MB' => 'PHP rapporterte om maksimum {maxUploadSize} MB',

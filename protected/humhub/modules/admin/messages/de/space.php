@@ -8,6 +8,7 @@ return [
     'Default Content Visiblity' => 'Standard Inhalts-Sichtbarkeit',
     'Default Join Policy' => 'Standard Beitrittsrichtlinie',
     'Default Space Permissions' => 'Voreinstellungen für Spaces',
+    'Default Space(s)' => 'Standard Space(s)',
     'Default Visibility' => 'Standard Sichtbarkeit',
     'Default space' => 'Standardspace',
     'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => 'Hier legst du die Voreinstellungen für Spaces fest. Wenn du einen neuen Space anlegst, kannst du diese natürlich beim Erstellprozess individuell anpassen.',
@@ -22,4 +23,5 @@ return [
     'Space Settings' => 'Space Einstellungen',
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Lege hier die vorgegebenen Berechtigungseinstellungen für alle Spaces fest. Berechtigte Benutzer können diese für jeden einzelnen Space individualisieren. Durch die Installation von zusätzlichen Modulen werden weitere Einträge hinzugefügt.',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Diese Übersicht enthält eine Liste der einzelnen Spaces mit Aktionen zum Anzeigen, Bearbeiten und Löschen von Spaces.',
+    'Update Space memberships also for existing members.' => 'Aktualisiere Space Mitgliedschaften für alle Gruppenmitglieder.',
 ];

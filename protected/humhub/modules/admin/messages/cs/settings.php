@@ -59,6 +59,7 @@ return [
     'Name of the application' => 'Název aplikace',
     'No Proxy Hosts' => 'Bez hostování proxy',
     'No caching' => 'Bez paměti cash',
+    'Notification Settings' => 'Nastavení upozornění',
     'Old logs can significantly increase the size of your database while providing little information.' => 'Staré protokoly mohou podstatně zvýšit velikost vaší databáze a přitom poskytnout jen málo informací.',
     'PHP APC(u) Extension missing - Type not available!' => 'Chybí rozšíření PHP APC(u) - nedostupné!',
     'PHP reported a maximum of {maxUploadSize} MB' => 'Nastavení maximální velikosti souboru v PHP: {maxUploadSize} MB',

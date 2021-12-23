@@ -85,6 +85,7 @@ return [
     'Mobile appearance' => '',
     'No Proxy Hosts' => '',
     'No caching' => '',
+    'Notification Settings' => '',
     'Old logs can significantly increase the size of your database while providing little information.' => '',
     'PHP APC(u) Extension missing - Type not available!' => '',
     'PHP reported a maximum of {maxUploadSize} MB' => '',
