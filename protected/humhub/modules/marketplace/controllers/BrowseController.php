@@ -8,6 +8,7 @@
 namespace humhub\modules\marketplace\controllers;
 
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\marketplace\Module;
 use Yii;
 use yii\web\HttpException;
@@ -21,71 +22,13 @@ use yii\web\HttpException;
 class BrowseController extends Controller
 {
     /**
-     * @var string
-     */
-    public $defaultAction = 'list';
-
-    /**
-     * @var string
-     */
-    public $subLayout = '@admin/views/layouts/module-old';
-
-    /**
      * @inheritdoc
      */
     public function getAccessRules()
     {
         return [
-            ['permissions' => \humhub\modules\admin\permissions\ManageModules::class]
+            ['permissions' => ManageModules::class]
         ];
-    }
-
-    /**
-     * Complete list of all modules
-     */
-    public function actionList()
-    {
-        $keyword = Yii::$app->request->post('keyword', "");
-        $categoryId = (int)Yii::$app->request->post('categoryId', 0);
-        $hideInstalled = (boolean)Yii::$app->request->post('hideInstalled');
-
-        // Include Community Modules Form Submit
-        if (!empty(Yii::$app->request->get('communitySwitch'))) {
-            $this->module->settings->set('includeCommunityModules', (empty(Yii::$app->request->post('includeCommunityModules'))) ? 0 : 1);
-        }
-        $includeCommunityModules = (boolean)$this->module->settings->get('includeCommunityModules');
-
-        $onlineModules = $this->module->onlineModuleManager;
-        $modules = $onlineModules->getModules();
-        $categories = $onlineModules->getCategories();
-
-        foreach ($modules as $i => $module) {
-            if (!empty($categoryId) && !in_array($categoryId, $module['categories'])) {
-                unset($modules[$i]);
-            }
-            if (!empty($keyword) && stripos($module['name'], $keyword) === false && stripos($module['description'], $keyword) === false) {
-                unset($modules[$i]);
-            }
-            if ($hideInstalled && Yii::$app->moduleManager->hasModule($module['id'])) {
-                unset($modules[$i]);
-            }
-            if ($this->module->hideLegacyModules && !empty($module['isDeprecated'])) {
-                unset($modules[$i]);
-            }
-            if (!$includeCommunityModules && !empty($module['isCommunity'])) {
-                unset($modules[$i]);
-            }
-        }
-
-        return $this->render('list', [
-            'modules' => $modules,
-            'keyword' => $keyword,
-            'categories' => $categories,
-            'categoryId' => $categoryId,
-            'hideInstalled' => $hideInstalled,
-            'includeCommunityModules' => $includeCommunityModules,
-            'licence' => $this->module->getLicence()
-        ]);
     }
 
 

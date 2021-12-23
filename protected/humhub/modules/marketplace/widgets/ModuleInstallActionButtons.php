@@ -50,7 +50,7 @@ class ModuleInstallActionButtons extends Widget
             $html .= Button::asLink(Yii::t('MarketplaceModule.base', 'Buy'), $this->module->checkoutUrl)
                 ->cssClass('btn btn-sm btn-primary')
                 ->options(['target' => '_blank']);
-         } elseif (!empty($this->module->price_eur) && !$this->module->purchased) {
+        } elseif (!empty($this->module->price_eur) && !$this->module->purchased) {
             $html .= Button::asLink(Yii::t('MarketplaceModule.base', 'Buy (%price%)', ['%price%' => $this->module->price_eur . '&euro;']), $this->module->checkoutUrl)
                 ->cssClass('btn btn-sm btn-primary')
                 ->options(['target' => '_blank']);
