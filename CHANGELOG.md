@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.10.4 (Unreleased)
+-------------------
+- Fix #5480: `el` language file in Admin section broken
+
+
 1.10.3 (December 20, 2021)
 --------------------------
 
