@@ -13,6 +13,7 @@ use humhub\modules\admin\widgets\ModuleCard;
 /* @var int $count */
 /* @var string $noModulesMessage */
 /* @var string $view */
+/* @var string $moduleTemplate */
 /* @var Module[] $modules */
 ?>
 <h4 class="modules-type"><?= $title ?> (<?= $count ?>)</h4>
@@ -37,6 +38,7 @@ use humhub\modules\admin\widgets\ModuleCard;
         <?= ModuleCard::widget([
             'module' => $module,
             'view' => $view ?? null,
+            'template' => $moduleTemplate ?? null,
         ]); ?>
     <?php endforeach; ?>
 </div>

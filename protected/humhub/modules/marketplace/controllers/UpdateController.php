@@ -86,7 +86,7 @@ class UpdateController extends Controller
             } else {
                 Yii::error('Could not determine module download url from HumHub API response.', 'marketplace');
             }
-            return $this->redirect(['/marketplace/update/list']);
+            return $this->redirect(['/admin/module/list']);
         }
 
         $this->module->onlineModuleManager->update($moduleId);
@@ -98,7 +98,7 @@ class UpdateController extends Controller
             Yii::error($e);
         }
 
-        return $this->redirect(['/marketplace/update/list']);
+        return $this->redirect(['/admin/module/list']);
     }
 
 }

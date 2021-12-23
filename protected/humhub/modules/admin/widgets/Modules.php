@@ -9,6 +9,7 @@ namespace humhub\modules\admin\widgets;
 
 use humhub\components\Widget;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * Modules displays the modules list
@@ -29,7 +30,10 @@ class Modules extends Widget
     public function init()
     {
         $this->initDefaultGroups();
+
         parent::init();
+
+        ArrayHelper::multisort($this->groups, 'sortOrder');
     }
 
     private function initDefaultGroups()
@@ -41,6 +45,7 @@ class Modules extends Widget
             'modules' => Yii::$app->moduleManager->filterModules($installedModules),
             'count' => count($installedModules),
             'noModulesMessage' => Yii::t('AdminModule.base', 'No modules installed yet. Install some to enhance the functionality!'),
+            'sortOrder' => 100,
         ]);
     }
 
@@ -57,8 +62,17 @@ class Modules extends Widget
         $modules = '';
 
         foreach ($this->groups as $groupType => $group) {
+            if (empty($group['count'])) {
+                continue;
+            }
             $group['type'] = $groupType;
-            $modules .= $this->render('moduleGroup', $group);
+            $renderedGroup = $this->render('moduleGroup', $group);
+
+            if (isset($group['groupTemplate'])) {
+                $renderedGroup = str_replace('{group}', $renderedGroup, $group['groupTemplate']);
+            }
+
+            $modules .= $renderedGroup;
         }
 
         return $modules;

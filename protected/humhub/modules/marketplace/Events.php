@@ -163,18 +163,30 @@ class Events extends BaseObject
 
         /* @var Module $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
-        $onlineModules = $marketplaceModule->onlineModuleManager->getNotInstalledModules();
 
-        if (empty($onlineModules)) {
-            return;
+        $updateModules = $marketplaceModule->onlineModuleManager->getAvailableUpdateModules();
+        if ($updateModulesCount = count($updateModules)) {
+            $modulesWidget->addGroup('availableUpdates', [
+                'title' => Yii::t('AdminModule.modules', 'Available Updates'),
+                'modules' => $updateModules,
+                'count' => $updateModulesCount,
+                'view' => '@humhub/modules/marketplace/widgets/views/moduleUpdateCard',
+                'groupTemplate' => '<div class="container-module-updates">{group}</div>',
+                'moduleTemplate' => '<div class="card card-module col-lg-2 col-md-3 col-sm-4 col-xs-6">{card}</div>',
+                'sortOrder' => 10,
+            ]);
         }
 
-        $modulesWidget->addGroup('notInstalled', [
-            'title' => Yii::t('AdminModule.modules', 'Not Installed'),
-            'modules' => Yii::$app->moduleManager->filterModules($onlineModules),
-            'count' => count($onlineModules),
-            'view' => '@humhub/modules/marketplace/widgets/views/moduleCard',
-        ]);
+        $onlineModules = $marketplaceModule->onlineModuleManager->getNotInstalledModules();
+        if ($onlineModulesCount = count($onlineModules)) {
+            $modulesWidget->addGroup('notInstalled', [
+                'title' => Yii::t('AdminModule.modules', 'Not Installed'),
+                'modules' => Yii::$app->moduleManager->filterModules($onlineModules),
+                'count' => $onlineModulesCount,
+                'view' => '@humhub/modules/marketplace/widgets/views/moduleInstallCard',
+                'sortOrder' => 200,
+            ]);
+        }
     }
 
     public static function onAdminModuleManagerAfterFilterModules(ModulesEvent $event)

@@ -27,7 +27,7 @@ class ModuleCard extends Widget
     /**
      * @var string HTML wrapper around card
      */
-    public $template = '<div class="card card-module col-lg-3 col-md-4 col-sm-6 col-xs-12">{card}</div>';
+    public $template;
 
     /**
      * @var string
@@ -37,6 +37,10 @@ class ModuleCard extends Widget
     public function init()
     {
         parent::init();
+
+        if (empty($this->template)) {
+            $this->template = '<div class="card card-module col-lg-3 col-md-4 col-sm-6 col-xs-12">{card}</div>';
+        }
 
         if (empty($this->view)) {
             $this->view = 'moduleCard';

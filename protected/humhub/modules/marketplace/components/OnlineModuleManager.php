@@ -306,4 +306,20 @@ class OnlineModuleManager extends Component
         return $modules;
     }
 
+    /**
+     * Get modules with available update
+     *
+     * @return ModelModule[]
+     */
+    public function getAvailableUpdateModules(): array
+    {
+        $modules = $this->getModuleUpdates(false);
+
+        foreach ($modules as $o => $module) {
+            $modules[$o] = new ModelModule($module);
+        }
+
+        return $modules;
+    }
+
 }

@@ -14,12 +14,12 @@ use humhub\widgets\Button;
 use Yii;
 
 /**
- * ModuleActionsButton shows actions for module
+ * ModuleInstallActionButtons shows actions for not installed module
  * 
  * @since 1.11
  * @author Luke
  */
-class ModuleActionButtons extends Widget
+class ModuleInstallActionButtons extends Widget
 {
 
     /**
