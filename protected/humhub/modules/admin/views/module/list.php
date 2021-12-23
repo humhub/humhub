@@ -6,9 +6,11 @@
  */
 
 use humhub\assets\DirectoryAsset;
+use humhub\libs\Html;
 use humhub\modules\admin\assets\ModuleAsset;
 use humhub\modules\admin\widgets\ModuleFilters;
 use humhub\modules\admin\widgets\Modules;
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\view\components\View;
 
 /* @var $this View */
@@ -19,6 +21,7 @@ DirectoryAsset::register($this);
     <div class="panel panel-default">
         <div class="panel-heading">
             <?= Yii::t('AdminModule.base', '<strong>Module </strong> Administration'); ?>
+            <?= Html::a(Icon::get('cog'), ['/admin/setting'], ['class' => 'module-settings-link']) ?>
         </div>
         <div class="panel-body">
             <?= ModuleFilters::widget(); ?>
