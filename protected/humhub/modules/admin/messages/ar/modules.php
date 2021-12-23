@@ -27,6 +27,5 @@ return [
     'User Profiles' => 'ملفات تعريف المستخدم',
     'Version:' => 'نسخة: ',
     'Deactivated' => '',
-    'License not found or expired. Please contact the module publisher.' => '',
     'This module doesn\'t provide further information.' => '',
 ];

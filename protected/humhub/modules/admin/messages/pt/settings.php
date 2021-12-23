@@ -74,7 +74,6 @@ return [
     'Name of the application' => 'Nome da aplicação',
     'No Proxy Hosts' => 'Sem Hosts de Proxy',
     'No caching' => 'Sem armazenamento em cache',
-    'Notification Settings' => 'Definições de notificações',
     'Old logs can significantly increase the size of your database while providing little information.' => 'Registos antigos podem fazer aumentar o tamanho da base de dados, sem dar grandes informações',
     'PHP APC(u) Extension missing - Type not available!' => 'Extensão PHP APC(u) em falta - tipo indisponível!',
     'PHP reported a maximum of {maxUploadSize} MB' => 'O tamanho máximo permitido pelo PHP é {maxUploadSize} MB',

@@ -74,7 +74,6 @@ return [
     'Name of the application' => 'Име на апликацията',
     'No Proxy Hosts' => 'Няма прокси хостове',
     'No caching' => 'Няма кеширане',
-    'Notification Settings' => 'Настройки за известията',
     'Old logs can significantly increase the size of your database while providing little information.' => 'Старите логове могат значително да увеличат размера на вашата база oт данни, като същевременно предоставят малко информация.',
     'PHP APC(u) Extension missing - Type not available!' => 'PHP APC(u) разширението липсва - Типът не е наличен!',
     'PHP reported a maximum of {maxUploadSize} MB' => 'PHP отчита максимум от {maxUploadSize} MB',

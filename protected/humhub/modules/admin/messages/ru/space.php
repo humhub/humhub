@@ -8,7 +8,6 @@ return [
     'Default Content Visiblity' => 'Видимость контента по умолчанию',
     'Default Join Policy' => 'Доступ по умолчанию',
     'Default Space Permissions' => 'Разрешения сообщества по умолчанию',
-    'Default Space(s)' => 'Сообщество(а) по умолчанию',
     'Default Visibility' => 'Видимость по умолчанию',
     'Default space' => 'Cообщество по умолчанию',
     'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => 'Здесь Вы можете задать настройки по умолчанию для новых сообществ. Эти параметры могут быть изменены для каждого отдельного сообщества.',
@@ -23,5 +22,4 @@ return [
     'Space Settings' => 'Настройки сообществ',
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Эти опции позволяют вам установить разрешения по умолчанию для всех Сообществ. Авторизованные пользователи могут индивидуализировать их для каждого Сообщества. Дальнейшие записи добавляются при установке новых модулей.',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Содержит список сообществ с возможностью просмотра, редактирования и удаления.',
-    'Update Space memberships also for existing members.' => 'Обновление членств в Сообществах также для существующих членов.',
 ];

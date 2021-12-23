@@ -44,7 +44,6 @@ return [
     'Name of the application' => 'Aplikācijas nosaukums',
     'No Proxy Hosts' => 'Nav Proxy hosti',
     'No caching' => 'Bez kešošanas',
-    'Notification Settings' => 'Notifikāciju iestatījumi',
     'PHP APC(u) Extension missing - Type not available!' => 'Trūkst PHP APC(u) paplašinājums - tips nav pieejams!',
     'Password' => 'Parole',
     'Port' => 'Ports',

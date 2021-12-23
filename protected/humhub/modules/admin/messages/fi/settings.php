@@ -61,7 +61,6 @@ return [
     'Name of the application' => 'Nimi',
     'No Proxy Hosts' => 'Ei Proxy Isäntää',
     'No caching' => 'Ei välimuistia',
-    'Notification Settings' => 'Ilmoitus asetukset',
     'Old logs can significantly increase the size of your database while providing little information.' => 'Vanhat lokit voivat merkittävästi kasvattaa tietokannan kokoa!',
     'PHP APC(u) Extension missing - Type not available!' => 'PHP APC Laajennus puuttuu - Tyyppi ei ole saatavilla!',
     'PHP reported a maximum of {maxUploadSize} MB' => 'PHP raportoi maksi tiedostokooksi {maxUploadSize} MT',

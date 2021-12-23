@@ -62,7 +62,6 @@ return [
     'Name of the application' => 'Uygulama adı',
     'No Proxy Hosts' => 'Proxy Sunucu yok',
     'No caching' => 'Önbellek yok',
-    'Notification Settings' => 'Bildirim ayarları',
     'Old logs can significantly increase the size of your database while providing little information.' => 'Eski kayıtlar çok az bilgi sağlarken veritabanınızın boyutunu önemli ölçüde artırabilir.',
     'PHP APC(u) Extension missing - Type not available!' => 'PHP APC(u) Uzantısı eksik - Tür mevcut değil!',
     'PHP reported a maximum of {maxUploadSize} MB' => 'PHP maksimum sunulan {maxUploadSize} MB',

@@ -99,7 +99,6 @@ return [
     'Maximum allowed age for logs.' => '',
     'Mobile appearance' => '',
     'No caching' => '',
-    'Notification Settings' => '',
     'Old logs can significantly increase the size of your database while providing little information.' => '',
     'PHP APC(u) Extension missing - Type not available!' => '',
     'Prevent client caching of following scripts' => '',

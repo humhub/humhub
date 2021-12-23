@@ -27,6 +27,5 @@ return [
     'Uninstall' => 'Удалить',
     'User Profiles' => 'Профили пользователей',
     'Version:' => 'Версия:',
-    'License not found or expired. Please contact the module publisher.' => '',
     'This module doesn\'t provide further information.' => '',
 ];
