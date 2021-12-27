@@ -23,13 +23,59 @@
         .card-title {
             color: #000;
         }
-        .card-footer a.btn {
-            float: none;
+        .card-footer {
+            padding-bottom: 14px;
+            a.btn {
+                float: none;
+            }
+            &.text-right {
+                a.btn {
+                    margin-left: 8px;
+                    margin-right: 0;
+                    &:first-child {
+                        margin-left: 0;
+                    }
+                }
+            }
         }
     }
     .module-settings-link {
         float: right;
         color: #02A1B1;
         font-size: 22px;
+    }
+}
+
+.container-content-modules {
+    width: 100%;
+    padding: 0 18px 5px 5px;
+    h4 {
+        font-size: 16px;
+        color: #000;
+    }
+    .card {
+        width: 100%;
+        padding-right: 3px;
+        .card-panel {
+            margin-top: 3px;
+        }
+    }
+    @media (min-width: 460px) {
+        .card {
+            width: 50%;
+        }
+    }
+    @media (min-width: 656px) {
+        .card {
+            width: 33.33333333%;
+        }
+    }
+    @media (min-width: 768px) {
+        padding: 0 12px 5px 0;
+    }
+    @media (min-width: 1200px) {
+        .card {
+            width: 25%;
+        }
     }
 }

@@ -243,10 +243,15 @@ class AccountController extends BaseAccountController
      */
     public function actionEditModules()
     {
-        $user = Yii::$app->user->getIdentity();
-        $availableModules = $user->getAvailableModules();
+        $this->subLayout = '@humhub/modules/user/views/account/_userModulesLayout';
 
-        return $this->render('editModules', ['user' => $user, 'availableModules' => $availableModules]);
+        /* @var User $user */
+        $user = Yii::$app->user->getIdentity();
+
+        return $this->render('editModules', [
+            'user' => $user,
+            'modules' => $user->getAvailableModules(),
+        ]);
     }
 
     /**
