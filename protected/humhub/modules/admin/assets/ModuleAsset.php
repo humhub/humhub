@@ -24,5 +24,10 @@ class ModuleAsset extends AssetBundle
         'css/modules.css'
     ];
 
-    public $forceCopy = true;
+    /**
+     * @inheritdoc
+     */
+    public $js = [
+        'js/humhub.admin.modules.js'
+    ];
 }

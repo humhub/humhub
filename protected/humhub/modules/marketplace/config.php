@@ -12,7 +12,6 @@ use humhub\modules\admin\widgets\ModuleControls;
 use humhub\modules\admin\widgets\ModuleFilters;
 use humhub\modules\admin\widgets\Modules;
 use humhub\modules\marketplace\Events;
-use humhub\modules\admin\widgets\ModuleMenu;
 use humhub\modules\marketplace\Module;
 
 /** @noinspection MissedFieldInspection */

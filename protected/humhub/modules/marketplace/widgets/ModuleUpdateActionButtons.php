@@ -44,11 +44,7 @@ class ModuleUpdateActionButtons extends Widget
 
         $html .= Button::asLink(Yii::t('MarketplaceModule.base', 'Update'), ['/marketplace/update/install', 'moduleId' => $this->module->id])
             ->cssClass('btn btn-xs btn-info active')
-            ->options([
-                'data-message' => Yii::t('MarketplaceModule.base', 'Updating module...'),
-                'data-loader' => 'modal',
-                'data-method' => 'POST',
-            ]);
+            ->options(['data-action-click' => 'admin.modules.update']);
 
         $html .= Button::asLink(Yii::t('MarketplaceModule.base', 'Changelog'), $this->module->marketplaceUrl . '#changelog')
             ->cssClass('btn btn-xs btn-info')

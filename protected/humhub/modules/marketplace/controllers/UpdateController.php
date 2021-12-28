@@ -57,11 +57,12 @@ class UpdateController extends Controller
 
         if (empty($moduleInfo['latestCompatibleVersion']['downloadUrl'])) {
             if (!empty($moduleInfo['isPaid'])) {
-                $this->view->setStatusMessage('error', Yii::t('AdminModule.modules', 'License not found or expired. Please contact the module publisher.'));
+                $error = Yii::t('AdminModule.modules', 'License not found or expired. Please contact the module publisher.');
             } else {
-                Yii::error('Could not determine module download url from HumHub API response.', 'marketplace');
+                $error = 'Could not determine module download url from HumHub API response.';
+                Yii::error($error, 'marketplace');
             }
-            return $this->redirect(['/admin/module/list']);
+            throw new HttpException(500, $error);
         }
 
         $this->module->onlineModuleManager->update($moduleId);
@@ -72,7 +73,14 @@ class UpdateController extends Controller
             Yii::error($e);
         }
 
-        return $this->redirect(['/admin/module/list']);
+        return $this->asJson([
+            'success' => true,
+            'status' => Yii::t('AdminModule.modules', 'Update successful'),
+            'message' => Yii::t('AdminModule.modules', 'Module "{moduleName}" has been updated to version {newVersion} successfully.', [
+                'moduleName' => $moduleInfo['latestCompatibleVersion']['name'],
+                'newVersion' => $moduleInfo['latestCompatibleVersion']['version'],
+            ]),
+        ]);
     }
 
 }
