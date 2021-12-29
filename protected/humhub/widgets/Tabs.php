@@ -9,7 +9,6 @@
 namespace humhub\widgets;
 
 use Yii;
-use yii\base\Model;
 
 /**
  * Extends `\yii\bootstrap\Tabs` by providing providing view based tab items.
@@ -57,11 +56,6 @@ class Tabs extends \yii\bootstrap\Tabs
     public $navType = 'nav-tabs tab-menu';
 
     /**
-     * @var TabbedForm
-     */
-    public $form;
-
-    /**
      * @inheritdoc
      */
     public function beforeRun()
@@ -70,60 +64,9 @@ class Tabs extends \yii\bootstrap\Tabs
             return false;
         }
 
-        $this->initTabbedFormItems();
-
-        $index = 0;
-        foreach ($this->items as $key => $item) {
-            if (isset($item['view'])) {
-                $view = $item['view'];
-                if ($this->viewPath && strpos($view, '@') === false) {
-                    $view = $this->viewPath . '/'.$item['view'];
-                }
-
-                $this->items[$key]['content'] = $this->render($view, $this->getParams($item));
-                unset($item['view']);
-                unset($item['params']);
-            }
-
-            if (!isset($item['sortOrder'])) {
-                // keep stable sorting by adding counter (otherwise equal sorOrders will destroy index ordering)
-                $this->items[$key]['sortOrder'] = 1000 + ($index * 10);
-            }
-
-            $index++;
-        }
-
         $this->sortItems();
 
         return true;
-    }
-
-    private function initTabbedFormItems()
-    {
-        if (!($this->form instanceof TabbedForm && $this->form instanceof Model)) {
-            return;
-        }
-
-        $items = $this->form->tabs;
-        if (empty($items)) {
-            return;
-        }
-
-        $this->items = $items;
-
-        if (!$this->form->hasErrors()) {
-            return;
-        }
-
-        // Find first error with field and activate that tab
-        $errorFields = array_keys($this->form->getErrors());
-        foreach ($this->items as $t => $tab) {
-            if (!empty(array_intersect($tab['fields'], $errorFields))) {
-                $this->items[$t]['active'] = true;
-                // Stop on first found error
-                return;
-            }
-        }
     }
 
     /**
@@ -172,10 +115,39 @@ class Tabs extends \yii\bootstrap\Tabs
     }
 
     /**
+     * Before sorts the items
+     */
+    protected function beforeSortItems()
+    {
+        $index = 0;
+        foreach ($this->items as $key => $item) {
+            if (isset($item['view'])) {
+                $view = $item['view'];
+                if ($this->viewPath && strpos($view, '@') === false) {
+                    $view = $this->viewPath . '/'.$item['view'];
+                }
+
+                $this->items[$key]['content'] = $this->render($view, $this->getParams($item));
+                unset($item['view']);
+                unset($item['params']);
+            }
+
+            if (!isset($item['sortOrder'])) {
+                // keep stable sorting by adding counter (otherwise equal sorOrders will destroy index ordering)
+                $this->items[$key]['sortOrder'] = 1000 + ($index * 10);
+            }
+
+            $index++;
+        }
+    }
+
+    /**
      * Sorts the item attribute by sortOrder
      */
     private function sortItems()
     {
+        $this->beforeSortItems();
+
         usort($this->items, function ($a, $b) {
             if ($a['sortOrder'] == $b['sortOrder']) {
                 return 0;

@@ -1,20 +1,21 @@
 <?php
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\widgets;
+namespace humhub\modules\ui\form\interfaces;
 
 /**
- * Interface TabbedForm
+ * Interface TabbedFormModel
+ * It is related for Model classes only
  *
  * @property-read array $tabs
  *
  * @since 1.11.0
  */
-interface TabbedForm
+interface TabbedFormModel
 {
     /**
      * Initialize tabs for the Form
