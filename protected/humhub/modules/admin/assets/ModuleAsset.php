@@ -23,11 +23,4 @@ class ModuleAsset extends AssetBundle
     public $css = [
         'css/modules.css'
     ];
-
-    /**
-     * @inheritdoc
-     */
-    public $js = [
-        'js/humhub.admin.modules.js'
-    ];
 }

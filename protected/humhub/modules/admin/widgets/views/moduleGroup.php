@@ -16,7 +16,8 @@ use humhub\modules\admin\widgets\ModuleCard;
 /* @var string $moduleTemplate */
 /* @var Module[] $modules */
 ?>
-<h4 class="modules-type"><?= $title ?> (<?= $count ?>)</h4>
+<h4 class="modules-type"><?= $title ?> (<span class="group-modules-count-<?= $type ?>"><?= $count ?></span>)</h4>
+
 
 <div class="row cards">
     <?php if (empty($modules)): ?>

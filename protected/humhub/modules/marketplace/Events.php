@@ -15,6 +15,7 @@ use humhub\modules\admin\widgets\ModuleControls;
 use humhub\modules\admin\widgets\ModuleFilters;
 use humhub\modules\admin\widgets\Modules;
 use humhub\modules\marketplace\models\Module as ModelModule;
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\widgets\Button;
 use Yii;
@@ -125,12 +126,21 @@ class Events extends BaseObject
 
         $updateModules = $marketplaceModule->onlineModuleManager->getAvailableUpdateModules();
         if ($updateModulesCount = count($updateModules)) {
+            $updateAllButton = Button::info(Yii::t('MarketplaceModule.base', 'Update all'))
+                ->options([
+                    'data-stop-title' => Icon::get('pause') . ' &nbsp; ' . Yii::t('MarketplaceModule.base', 'Stop updating'),
+                    'data-stop-class' => 'btn btn-warning pull-right',
+                ])
+                ->action('marketplace.updateAll')
+                ->loader(false)
+                ->cssClass('active pull-right');
+
             $modulesWidget->addGroup('availableUpdates', [
-                'title' => Yii::t('AdminModule.modules', 'Available Updates'),
+                'title' => Yii::t('MarketplaceModule.base', 'Available Updates'),
                 'modules' => $updateModules,
                 'count' => $updateModulesCount,
                 'view' => '@humhub/modules/marketplace/widgets/views/moduleUpdateCard',
-                'groupTemplate' => '<div class="container-module-updates">{group}</div>',
+                'groupTemplate' => '<div class="container-module-updates">' . $updateAllButton . '{group}</div>',
                 'moduleTemplate' => '<div class="card card-module col-lg-2 col-md-3 col-sm-4 col-xs-6">{card}</div>',
                 'sortOrder' => 10,
             ]);
