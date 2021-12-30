@@ -7,8 +7,7 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\components\Module;
-use humhub\components\Widget;
+use humhub\modules\admin\widgets\ModuleCard as AdminModuleCard;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
@@ -17,7 +16,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  * @since 1.11
  * @author Luke
  */
-class ModuleCard extends Widget
+class ModuleCard extends AdminModuleCard
 {
 
     /**
@@ -26,30 +25,11 @@ class ModuleCard extends Widget
     public $contentContainer;
 
     /**
-     * @var Module
-     */
-    public $module;
-
-    /**
-     * @var string HTML wrapper around card
-     */
-    public $template;
-
-    public function init()
-    {
-        parent::init();
-
-        if (empty($this->template)) {
-            $this->template = '<div class="card card-module col-lg-3 col-md-4 col-sm-6 col-xs-12">{card}</div>';
-        }
-    }
-
-    /**
      * @inheritdoc
      */
     public function run()
     {
-        $card = $this->render('moduleCard', [
+        $card = $this->render($this->view, [
             'module' => $this->module,
             'contentContainer' => $this->contentContainer,
         ]);
