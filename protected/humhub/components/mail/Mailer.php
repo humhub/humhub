@@ -80,6 +80,9 @@ class Mailer extends \yii\swiftmailer\Mailer
         // Set HumHub default from values
         if (empty($message->getFrom())) {
             $message->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
+            if ($replyTo = Yii::$app->settings->get('mailer.systemEmailReplyTo')) {
+                $message->setReplyTo($replyTo);
+            }
         }
 
         if ($this->signingCertificatePath !== null && $this->signingPrivateKeyPath !== null) {
