@@ -33,7 +33,7 @@ foreach ($profileFieldsColumns as $profileField) {
     $columns[] = [
         'attribute' => 'profile.'.$profileField->internal_name,
         'value' => static function (User $model) use ($profileField) {
-            return $profileField->getUserValue($model, false);
+            return $profileField->getUserValue($model);
         }
     ];
 }
@@ -97,13 +97,13 @@ $columns[] = [
 
     <br>
     <?= Html::saveButton(Yii::t('AdminModule.user', 'Approve all selected'), [
-        'class' => 'btn btn-success btn-sm',
+        'class' => 'btn btn-success btn-sm bulk-actions-button',
         'name' => 'action',
         'value' => ApprovalController::ACTION_APPROVE,
     ]) ?>
     &nbsp;
     <?= Html::saveButton(Yii::t('AdminModule.user', 'Decline all selected'), [
-        'class' => 'btn btn-danger btn-sm',
+        'class' => 'btn btn-danger btn-sm bulk-actions-button',
         'name' => 'action',
         'value' => ApprovalController::ACTION_DELINE,
     ]) ?>
@@ -113,9 +113,29 @@ $columns[] = [
 
 <script <?= Html::nonce() ?>>
     $(function (){
+        const selectAllCheckbox = $('#admin-approval-form input[name="select-all"]');
+        const usersCheckbox = $('#admin-approval-form input[name="ids[]"]');
+        const bulkActionsButtons = $('.bulk-actions-button');
+
+        // Enable bulk buttons only when at least one user is selected
+        const updateButtonState = function () {
+            bulkActionsButtons.attr('disabled', 'disabled');
+            usersCheckbox.each(function (){
+                if ($(this).is(":checked")) {
+                    bulkActionsButtons.removeAttr('disabled');
+                }
+            });
+        }
+
+        updateButtonState();
+        usersCheckbox.on('change', function(){
+            updateButtonState();
+        })
+
         // Check or uncheck all users with the header checkbox
-        $('#admin-approval-form input[name="select-all"]').on('change', function(){
-            $('#admin-approval-form input[name="ids[]"]').prop('checked', $(this).is(":checked"));
-        });
+        selectAllCheckbox.on('change', function(){
+            usersCheckbox.prop('checked', $(this).is(":checked"));
+            updateButtonState();
+        })
     });
 </script>

@@ -10,6 +10,7 @@ namespace humhub\modules\admin\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\modules\admin\models\UserApprovalSearch;
+use humhub\modules\admin\Module;
 use humhub\modules\user\models\ProfileField;
 use Yii;
 use yii\web\HttpException;
@@ -102,11 +103,12 @@ class ApprovalController extends Controller
             ->all();
 
         // Get or set screen options
-        $userSettings = Yii::$app->settings->user(Yii::$app->user->identity);
-        $screenProfileFieldsId = $userSettings->getSerialized(self::USER_SETTINGS_SCREEN_KEY, []);
+        /** @var Module $module */
+        $module = Yii::$app->getModule('admin');
+        $module->settings->user()->getSerialized(self::USER_SETTINGS_SCREEN_KEY, []);
         if (Yii::$app->request->post('screenProfileFieldsId')) {
             $screenProfileFieldsId = Yii::$app->request->post('screenProfileFieldsId');
-            $userSettings->setSerialized(self::USER_SETTINGS_SCREEN_KEY, $screenProfileFieldsId);
+            $module->settings->user()->setSerialized(self::USER_SETTINGS_SCREEN_KEY, $screenProfileFieldsId);
         }
         $profileFieldsColumns = !$screenProfileFieldsId ? [] : ProfileField::find()
             ->where(['id' => $screenProfileFieldsId])
@@ -132,7 +134,7 @@ class ApprovalController extends Controller
         $model = new ApproveUserForm($id);
         $model->setApprovalDefaults();
         if($model->load(Yii::$app->request->post()) && $model->approve()) {
-            $this->view->success(Yii::t('AdminModule.controllers_ApprovalController', 'The user has been approved and the email has been sent'));
+            $this->view->success(Yii::t('AdminModule.user', 'The registration was approved and the user was notified by email.'));
             return $this->redirect(['index']);
         }
 
@@ -154,7 +156,7 @@ class ApprovalController extends Controller
         $model = new ApproveUserForm($id);
         $model->setDeclineDefaults();
         if($model->load(Yii::$app->request->post()) && $model->decline()) {
-            $this->view->success(Yii::t('AdminModule.controllers_ApprovalController', 'The user has been declined and the email has been sent'));
+            $this->view->success(Yii::t('AdminModule.user', 'The registration was declined and the user was notified by email.'));
             return $this->redirect(['index']);
         }
 
@@ -177,13 +179,8 @@ class ApprovalController extends Controller
         /** @var array $usersId */
         $usersId = Yii::$app->request->post('ids');
 
-        if (!$action) {
-            $this->view->error(Yii::t('AdminModule.controllers_ApprovalController', 'Please select an action (approve or decline)'));
-            return $this->redirect(['index']);
-        }
-
         if (!$usersId) {
-            $this->view->error(Yii::t('AdminModule.controllers_ApprovalController', 'Please select some users (tick the checkboxes)'));
+            $this->view->error(Yii::t('AdminModule.base', 'No users were selected.'));
             return $this->redirect(['index']);
         }
 
@@ -205,7 +202,7 @@ class ApprovalController extends Controller
     protected function bulkApprove(ApproveUserForm $model)
     {
         if($model->load(Yii::$app->request->post()) && $model->bulkApprove()) {
-            $this->view->success(Yii::t('AdminModule.controllers_ApprovalController', 'Users have been approved and emails have been sent'));
+            $this->view->success(Yii::t('AdminModule.base', 'The registrations were approved and the users were notified by email.'));
             return $this->redirect(['index']);
         }
 
@@ -223,7 +220,7 @@ class ApprovalController extends Controller
     protected function bulkDecline(ApproveUserForm $model)
     {
         if($model->load(Yii::$app->request->post()) && $model->bulkDecline()) {
-            $this->view->success(Yii::t('AdminModule.controllers_ApprovalController', 'Users have been declined and emails have been sent'));
+            $this->view->success(Yii::t('AdminModule.base', 'The registrations were declined and the users were notified by email.'));
             return $this->redirect(['index']);
         }
 

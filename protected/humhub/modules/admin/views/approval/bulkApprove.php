@@ -13,11 +13,11 @@ use yii\helpers\Url;
 ?>
 
 <div class="panel-body">
-    <h4><?= Yii::t('AdminModule.user', 'Accept the following users:') ?></h4>
+    <h4><?= Yii::t('AdminModule.user', 'Approve the following registrations:') ?></h4>
     <ul>
         <?php foreach ($users as $user): ?>
-        <li><strong><?= $user->displayName ?></strong>
-            <?php endforeach; ?>
+            <li><strong><?= Html::encode($user->displayName) ?></strong></li>
+        <?php endforeach; ?>
     </ul>
     <br>
 

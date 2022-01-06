@@ -91,11 +91,11 @@ class ApproveUserForm extends \yii\base\Model
 
         if(!$this->_isBulkAction) {
             if(!($this->user instanceof  User)) {
-                throw new NotFoundHttpException(Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
+                throw new NotFoundHttpException(Yii::t('AdminModule.base', 'User not found!'));
             }
 
             if($this->user->status !== User::STATUS_NEED_APPROVAL) {
-                throw new NotFoundHttpException(Yii::t('AdminModule.controllers_ApprovalController', 'Invalid user state: {state}', ['state' => $this->user->status]));
+                throw new NotFoundHttpException(Yii::t('AdminModule.base', 'Invalid user state: {state}', ['state' => $this->user->status]));
             }
         }
 
