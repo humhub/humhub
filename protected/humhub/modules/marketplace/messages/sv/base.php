@@ -70,10 +70,10 @@ The license was successfully removed!
   'Module licence key cannot be empty!
 ' => '',
   'Module not found or activated!
-' => '',
+' => 'Modulen hittades inte och är inte aktiverad!',
   'Module not found!
-' => '',
-  'More info' => '',
+' => 'Modulen hittades inte!',
+  'More info' => 'Mer information',
   'No compatible module version found!' => '',
   'No license key? Find out more about the {pro} or contact us.' => '',
   'No modules found!' => '',
@@ -93,7 +93,7 @@ The license was successfully removed!
   'Update' => 'Uppdatera',
   'Updating module...' => '',
   'Upgrade to Professional Edition' => '',
-  'Version:' => '',
+  'Version:' => 'Version:',
   'View Changelog' => '',
   'search for available modules online' => '',
 );
