@@ -21,7 +21,7 @@ return array (
   'All open registration invitations were successfully deleted.' => 'Tutti gli inviti di registrazione aperti sono stati eliminati con successo.',
   'All the personal data of this user will be irrevocably deleted.' => 'Tutti di dati personali di questo utente verranno irrimediabilmente eliminati.',
   'Allow' => 'Consenti',
-  'Allow users to block each other' => '',
+  'Allow users to block each other' => 'Consenti agli utenti di bloccarsi a vicenda',
   'Allow users to set individual permissions for their own profile?' => 'Consentire agli utenti di impostare autorizzazioni individuali per il proprio profilo?',
   'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'Consenti accesso limitato per gli utenti non autenticati (guest)',
   'Applied to new or existing users without any other group membership.' => 'Applicato a utenti nuovi o esistenti senza altri membri del gruppo.',
@@ -45,7 +45,7 @@ return array (
   'Default Sorting' => 'Ordinamento predefinito',
   'Default content of the registration approval email' => 'Contenuto predefinito dell\'email per l\'autorizzazione di registrazione di un utente',
   'Default content of the registration denial email' => 'Contenuto predefinito dell\'email per la mancata autorizzazione di registrazione di un utente',
-  'Default group can not be deleted!' => '',
+  'Default group can not be deleted!' => 'Il gruppo predefinito non può essere cancellato!',
   'Default user idle timeout, auto-logout (in seconds, optional)' => 'Tempo standard di timeout per inattività, auto disconnessione (in secondi, facoltativo)',
   'Default user profile visibility' => 'Visibilità predefinita per il profilo utente',
   'Delete' => 'Elimina',
@@ -82,7 +82,7 @@ Click here to login:
 Kind Regards
 {AdminName}
 
-' => '',
+' => 'Salve {displayName}, il tuo account è stato attivato. Clicca qui per accedere : {loginUrl}. Saluti Cordiali, {AdminName}',
   'Hello {displayName},
 
 Your account request has been declined.
@@ -90,7 +90,7 @@ Your account request has been declined.
 Kind Regards
 {AdminName}
 
-' => '',
+' => 'Salve {displayName}, La tua richiesta di Account è stata rifiutata. Saluti Cordiali {AdminName}',
   'Here you can create or edit profile categories and fields.' => 'Qui puoi creare o modificare le categorie del profilo e i campi',
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Se le autorizzazioni del profilo individuale non sono consentite, le seguenti impostazioni non sono modificabili per tutti gli utenti. Se sono consentiti i permessi del profilo individuale, le impostazioni vengono impostate solo come predefinite che gli utenti possono personalizzare. Le seguenti voci vengono quindi visualizzate nello stesso modulo nelle impostazioni del profilo utente:',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Se l\'opzione non è selezionata, la proprietà di questo spazio verrà trasferita al tuo account.',
@@ -131,7 +131,7 @@ Kind Regards
   'Profile Permissions' => 'Permessi del profilo',
   'Profiles' => 'Profili',
   'Protected' => 'Protetto',
-  'Protected group can not be deleted!' => '',
+  'Protected group can not be deleted!' => 'Il gruppo protetto non può essere eliminato',
   'Remove from group' => 'Rimuovi dal gruppo',
   'Require group admin approval after registration' => 'Richiede l\'approvazione dell\'amministratore del gruppo dopo la registrazione',
   'Resend invitation email' => 'Invia di nuovo l\'invito per email',

@@ -41,7 +41,7 @@ return array (
   'Delete' => 'Cancella',
   'Description' => 'Descrizione',
   'Do you really want to delete your profile image?' => 'Vuoi veramente eliminare la tua immagine profilo?',
-  'Do you really want to delete your title image?' => 'Vuoi veramente  eliminare la tua immagine principale?',
+  'Do you really want to delete your title image?' => 'Vuoi veramente eliminare la tua immagine principale?',
   'Done' => 'Fatto',
   'Email addresses' => 'Indirizzo email',
   'Everyone can enter' => 'Ognuno può entrare',
