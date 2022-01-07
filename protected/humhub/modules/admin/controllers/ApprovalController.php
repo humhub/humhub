@@ -10,11 +10,10 @@ namespace humhub\modules\admin\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\modules\admin\models\UserApprovalSearch;
+use humhub\modules\admin\Module;
+use humhub\modules\user\models\ProfileField;
 use Yii;
-use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\web\HttpException;
-use humhub\modules\user\models\User;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\ApproveUserForm;
 
@@ -27,6 +26,11 @@ class ApprovalController extends Controller
      * @inheritdoc
      */
     public $adminOnly = false;
+
+    public const ACTION_APPROVE = 'approve';
+    public const ACTION_DELINE = 'decline';
+
+    public const USER_SETTINGS_SCREEN_KEY = 'admin_approval_screen_profile_fields_id';
 
     /**
      * @inheritdoc
@@ -77,28 +81,60 @@ class ApprovalController extends Controller
         return parent::beforeAction($action);
     }
 
+    /**
+     * @return string
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
+     */
     public function actionIndex()
     {
         $searchModel = new UserApprovalSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        // Get available profile fields for screen options
+        $availableProfileFields = ProfileField::find()
+            ->joinWith('category')
+            ->orderBy([
+                'profile_field_category.sort_order' => SORT_ASC,
+                'profile_field.sort_order'=>SORT_ASC
+            ])
+            ->where(['profile_field.show_at_registration' => true])
+            ->andWhere(['not', ['profile_field.internal_name' => ['firstname', 'lastname']]])
+            ->all();
+
+        // Get or set screen options
+        /** @var Module $module */
+        $module = Yii::$app->getModule('admin');
+        $module->settings->user()->getSerialized(self::USER_SETTINGS_SCREEN_KEY, []);
+        if (Yii::$app->request->post('screenProfileFieldsId')) {
+            $screenProfileFieldsId = Yii::$app->request->post('screenProfileFieldsId');
+            $module->settings->user()->setSerialized(self::USER_SETTINGS_SCREEN_KEY, $screenProfileFieldsId);
+        }
+        $profileFieldsColumns = !$screenProfileFieldsId ? [] : ProfileField::find()
+            ->where(['id' => $screenProfileFieldsId])
+            ->indexBy('id')
+            ->all();
+
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel
+            'searchModel' => $searchModel,
+            'availableProfileFields' => $availableProfileFields,
+            'profileFieldsColumns' => $profileFieldsColumns,
         ]);
     }
 
     /**
      * @param $id
-     * @return string
-     * @throws HttpException
+     * @return string|\yii\console\Response|\yii\web\Response
      * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionApprove($id)
     {
         $model = new ApproveUserForm($id);
         $model->setApprovalDefaults();
         if($model->load(Yii::$app->request->post()) && $model->approve()) {
+            $this->view->success(Yii::t('AdminModule.user', 'The registration was approved and the user was notified by email.'));
             return $this->redirect(['index']);
         }
 
@@ -108,16 +144,88 @@ class ApprovalController extends Controller
         ]);
     }
 
+    /**
+     * @param $id
+     * @return string|\yii\console\Response|\yii\web\Response
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\db\StaleObjectException
+     */
     public function actionDecline($id)
     {
         $model = new ApproveUserForm($id);
         $model->setDeclineDefaults();
         if($model->load(Yii::$app->request->post()) && $model->decline()) {
+            $this->view->success(Yii::t('AdminModule.user', 'The registration was declined and the user was notified by email.'));
             return $this->redirect(['index']);
         }
 
         return $this->render('decline', [
             'model' => $model->user,
+            'approveFormModel' => $model
+        ]);
+    }
+
+    /**
+     * @return string|\yii\console\Response|\yii\web\Response
+     * @throws HttpException
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionBulkActions()
+    {
+        /** @var string $action */
+        $action = Yii::$app->request->post('action');
+        /** @var array $usersId */
+        $usersId = Yii::$app->request->post('ids');
+
+        if (!$usersId) {
+            $this->view->error(Yii::t('AdminModule.base', 'No users were selected.'));
+            return $this->redirect(['index']);
+        }
+
+        $model = new ApproveUserForm($usersId);
+
+        if ($action === self::ACTION_APPROVE) {
+            return $this->bulkApprove($model, $usersId);
+        }
+        if ($action === self::ACTION_DELINE) {
+            return $this->bulkDecline($model, $usersId);
+        }
+        throw new HttpException(400);
+    }
+
+    /**
+     * @param ApproveUserForm $model
+     * @return string|\yii\console\Response|\yii\web\Response
+     */
+    protected function bulkApprove(ApproveUserForm $model)
+    {
+        if($model->load(Yii::$app->request->post()) && $model->bulkApprove()) {
+            $this->view->success(Yii::t('AdminModule.base', 'The registrations were approved and the users were notified by email.'));
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('bulkApprove', [
+            'users' => $model->users,
+            'approveFormModel' => $model
+        ]);
+    }
+
+    /**
+     * @param ApproveUserForm $model
+     * @return string|\yii\console\Response|\yii\web\Response
+     * @throws \Throwable
+     */
+    protected function bulkDecline(ApproveUserForm $model)
+    {
+        if($model->load(Yii::$app->request->post()) && $model->bulkDecline()) {
+            $this->view->success(Yii::t('AdminModule.base', 'The registrations were declined and the users were notified by email.'));
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('bulkDecline', [
+            'users' => $model->users,
             'approveFormModel' => $model
         ]);
     }
