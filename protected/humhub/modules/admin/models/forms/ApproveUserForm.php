@@ -43,11 +43,6 @@ class ApproveUserForm extends \yii\base\Model
     public $message;
 
     /**
-     * @var int
-     */
-    public $confirm;
-
-    /**
      * Is a bulk action on multiple users
      * @var bool
      */
@@ -70,8 +65,7 @@ class ApproveUserForm extends \yii\base\Model
 
         if ($this->_isBulkAction) {
             $this->users = $this->getUsers($usersId);
-        }
-        else {
+        } else {
             $users = $this->getUsers([(int)$usersId]);
             $this->user = reset($users);
         }
@@ -89,21 +83,21 @@ class ApproveUserForm extends \yii\base\Model
     {
         parent::init();
 
-        if(!$this->_isBulkAction) {
-            if(!($this->user instanceof  User)) {
+        if (!$this->_isBulkAction) {
+            if (!($this->user instanceof User)) {
                 throw new NotFoundHttpException(Yii::t('AdminModule.base', 'User not found!'));
             }
 
-            if($this->user->status !== User::STATUS_NEED_APPROVAL) {
+            if ($this->user->status !== User::STATUS_NEED_APPROVAL) {
                 throw new NotFoundHttpException(Yii::t('AdminModule.base', 'Invalid user state: {state}', ['state' => $this->user->status]));
             }
         }
 
-        if(!($this->admin instanceof User)) {
+        if (!($this->admin instanceof User)) {
             throw new ForbiddenHttpException();
         }
 
-        if(!$this->admin->canApproveUsers()) {
+        if (!$this->admin->canApproveUsers()) {
             throw new ForbiddenHttpException();
         }
     }
@@ -128,29 +122,23 @@ class ApproveUserForm extends \yii\base\Model
      */
     public function rules()
     {
+        if ($this->_isBulkAction) {
+            return [];
+        }
+
         return [
-            $this->_isBulkAction ?
-                [['confirm'], 'required', 'requiredValue' => 1] :
-                [['subject', 'message'], 'required'],
+            [['subject', 'message'], 'required'],
         ];
     }
 
     /**
-     * Declares attribute labels.
+     * @inheritDoc
      */
     public function attributeLabels()
     {
         return [
             'subject' => Yii::t('AdminModule.user', 'Subject'),
             'message' => Yii::t('AdminModule.user', 'Message'),
-            'confirm' => Yii::t('AdminModule.user', 'Please confirm'),
-        ];
-    }
-
-    public function attributeHints()
-    {
-        return [
-            'confirm' => Yii::t('AdminModule.user', 'Users will receive a confirmation email'),
         ];
     }
 
@@ -160,11 +148,11 @@ class ApproveUserForm extends \yii\base\Model
      */
     public function approve()
     {
-        if(!$this->message) {
+        if (!$this->message) {
             $this->setApprovalDefaults();
         }
 
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             return false;
         }
 
@@ -183,11 +171,11 @@ class ApproveUserForm extends \yii\base\Model
      */
     public function decline()
     {
-        if(!$this->message) {
+        if (!$this->message) {
             $this->setDeclineDefaults();
         }
 
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             return false;
         }
 
@@ -201,7 +189,7 @@ class ApproveUserForm extends \yii\base\Model
      */
     public function bulkApprove()
     {
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             return false;
         }
 
@@ -219,7 +207,7 @@ class ApproveUserForm extends \yii\base\Model
      */
     public function bulkDecline()
     {
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             return false;
         }
 
@@ -263,8 +251,8 @@ class ApproveUserForm extends \yii\base\Model
 
         $loginURL = Url::to(['/user/auth/login'], true);
         $loginLink = Html::a(urldecode($loginURL), $loginURL);
-        $userName =  Html::encode($this->user->displayName);
-        $adminName =  Html::encode($this->admin->displayName);
+        $userName = Html::encode($this->user->displayName);
+        $adminName = Html::encode($this->admin->displayName);
 
         if (!empty($module->settings->get('auth.registrationApprovalMailContent'))) {
             $this->message = Yii::t('AdminModule.user', $module->settings->get('auth.registrationApprovalMailContent'), [

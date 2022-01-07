@@ -22,7 +22,7 @@ $columns = [
         'header' => Html::checkbox('select-all'),
         'format' => 'raw',
         'value' => static function (User $model) {
-            return Html::checkbox('ids[]', false, ['id' => 'user-select-'.$model->id, 'value' => $model->id]);
+            return Html::checkbox('ids[]', false, ['id' => 'user-select-' . $model->id, 'value' => $model->id]);
         }
     ],
     ['class' => ImageColumn::class],
@@ -31,7 +31,7 @@ $columns = [
 ];
 foreach ($profileFieldsColumns as $profileField) {
     $columns[] = [
-        'attribute' => 'profile.'.$profileField->internal_name,
+        'attribute' => 'profile.' . $profileField->internal_name,
         'value' => static function (User $model) use ($profileField) {
             return $profileField->getUserValue($model);
         }
@@ -40,14 +40,15 @@ foreach ($profileFieldsColumns as $profileField) {
 $columns[] = 'created_at';
 $columns[] = [
     'class' => ActionColumn::class,
+    'options' => ['style' => 'width:105px;'],
     'buttons' => [
-        'view' => function($url, $model) {
+        'view' => function ($url, $model) {
             return Button::defaultType()->link(['/admin/user/edit', 'id' => $model->id])->icon('edit')->sm()->tooltip(Yii::t('AdminModule.user', 'Edit'));
         },
-        'update' => function($url, $model) {
+        'update' => function ($url, $model) {
             return Button::success()->link(['approve', 'id' => $model->id])->icon('check')->sm()->tooltip(Yii::t('AdminModule.user', 'Approve'));
         },
-        'delete' => function($url, $model) {
+        'delete' => function ($url, $model) {
             return Button::danger()->link(['decline', 'id' => $model->id])->icon('times')->sm()->tooltip(Yii::t('AdminModule.user', 'Decline'));
         },
     ],
@@ -57,10 +58,12 @@ $columns[] = [
 <div class="panel-body">
 
     <div class="dropdown pull-right">
-        <?= Button::defaultType()
-            ->icon('cog')
-            ->loader(false)
-            ->options(['data-toggle' => 'dropdown']) ?>
+        <?php if (!empty($availableProfileFields)): ?>
+            <?= Button::defaultType()
+                ->icon('cog')
+                ->loader(false)
+                ->options(['data-toggle' => 'dropdown']) ?>
+        <?php endif; ?>
 
         <?= Html::beginForm('#', 'post', [
             'id' => 'screen-options',
@@ -72,7 +75,7 @@ $columns[] = [
         <li class="divider"></li>
         <div style="padding: 0 15px;">
             <?php foreach ($availableProfileFields as $field): ?>
-                <?= Html::checkbox('screenProfileFieldsId[]', array_key_exists($field->id, $profileFieldsColumns), ['id' => 'profile-select-'.$field->id, 'value' => $field->id, 'label' => Yii::t($field->getTranslationCategory(), $field->title)]) ?>
+                <?= Html::checkbox('screenProfileFieldsId[]', array_key_exists($field->id, $profileFieldsColumns), ['id' => 'profile-select-' . $field->id, 'value' => $field->id, 'label' => Yii::t($field->getTranslationCategory(), $field->title)]) ?>
             <?php endforeach; ?>
             <br>
             <?= Html::saveButton(Yii::t('AdminModule.user', 'Apply')) ?>
@@ -96,23 +99,33 @@ $columns[] = [
     ?>
 
     <br>
-    <?= Html::saveButton(Yii::t('AdminModule.user', 'Approve all selected'), [
-        'class' => 'btn btn-success btn-sm bulk-actions-button',
-        'name' => 'action',
-        'value' => ApprovalController::ACTION_APPROVE,
+    <?= Html::button(Yii::t('AdminModule.user', 'Approve all selected'), [
+        'class' => 'btn btn-success btn-sm bulk-actions-button bulk-actions-button-approve',
+        'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure? The selected users will be approved and notified by e-mail.'),
     ]) ?>
     &nbsp;
-    <?= Html::saveButton(Yii::t('AdminModule.user', 'Decline all selected'), [
-        'class' => 'btn btn-danger btn-sm bulk-actions-button',
-        'name' => 'action',
-        'value' => ApprovalController::ACTION_DELINE,
+    <?= Html::button(Yii::t('AdminModule.user', 'Decline all selected'), [
+        'class' => 'btn btn-danger btn-sm bulk-actions-button bulk-actions-button-decline',
+        'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure? The selected users will be deleted and notified by e-mail.'),
     ]) ?>
 
     <?= Html::endForm() ?>
 </div>
 
 <script <?= Html::nonce() ?>>
-    $(function (){
+    $(function () {
+
+        $('.bulk-actions-button-approve').on('click', function () {
+            $('#admin-approval-form').find("input[name='action']").remove();
+            $('#admin-approval-form').append('<input type="hidden" name="action" value="<?= ApprovalController::ACTION_APPROVE ?>" />');
+            //$('#admin-approval-form').submit();
+        });
+        $('.bulk-actions-button-decline').on('click', function () {
+            $('#admin-approval-form').find("input[name='action']").remove();
+            $('#admin-approval-form').append('<input type="hidden" name="action" value="<?= ApprovalController::ACTION_DELINE ?>" />');
+            //$('#admin-approval-form').submit();
+        });
+
         const selectAllCheckbox = $('#admin-approval-form input[name="select-all"]');
         const usersCheckbox = $('#admin-approval-form input[name="ids[]"]');
         const bulkActionsButtons = $('.bulk-actions-button');
@@ -120,7 +133,7 @@ $columns[] = [
         // Enable bulk buttons only when at least one user is selected
         const updateButtonState = function () {
             bulkActionsButtons.attr('disabled', 'disabled');
-            usersCheckbox.each(function (){
+            usersCheckbox.each(function () {
                 if ($(this).is(":checked")) {
                     bulkActionsButtons.removeAttr('disabled');
                 }
@@ -128,12 +141,12 @@ $columns[] = [
         }
 
         updateButtonState();
-        usersCheckbox.on('change', function(){
+        usersCheckbox.on('change', function () {
             updateButtonState();
         })
 
         // Check or uncheck all users with the header checkbox
-        selectAllCheckbox.on('change', function(){
+        selectAllCheckbox.on('change', function () {
             usersCheckbox.prop('checked', $(this).is(":checked"));
             updateButtonState();
         })
