@@ -13,6 +13,7 @@ use humhub\components\console\Application as ConsoleApplication;
 use humhub\libs\BaseSettingsManager;
 use humhub\models\ModuleEnabled;
 use humhub\modules\admin\events\ModulesEvent;
+use humhub\modules\marketplace\Module as ModuleMarketplace;
 use Yii;
 use yii\base\Component;
 use yii\base\Event;
@@ -416,8 +417,12 @@ class ModuleManager extends Component
         }
 
         // Check is in dynamic/marketplace module folder
-        if (strpos($module->getBasePath(), Yii::getAlias(Yii::$app->getModule('marketplace')->modulesPath)) !== false) {
-            return true;
+        /** @var ModuleMarketplace $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+        if ($marketplaceModule !== null) {
+            if (strpos($module->getBasePath(), Yii::getAlias($marketplaceModule->modulesPath)) !== false) {
+                return true;
+            }
         }
 
         return false;
