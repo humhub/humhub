@@ -69,7 +69,7 @@ class ModuleControls extends Menu
             return;
         }
 
-        if (Yii::$app->hasModule($this->module->id)) {
+        if ($this->module->isActivated) {
             if ($this->module->getConfigUrl() != '') {
                 $this->addEntry(new MenuLink([
                     'id' => 'configure',

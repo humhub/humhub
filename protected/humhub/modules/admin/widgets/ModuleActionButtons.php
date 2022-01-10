@@ -39,7 +39,7 @@ class ModuleActionButtons extends Widget
     {
         $html = '';
 
-        if (Yii::$app->hasModule($this->module->id)) {
+        if ($this->module->isActivated) {
             if ($this->module->getConfigUrl() != '') {
                 $html .= Button::asLink(Yii::t('AdminModule.modules', 'Configure'), $this->module->getConfigUrl())
                     ->cssClass('btn btn-sm btn-info');

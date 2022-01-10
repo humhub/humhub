@@ -25,6 +25,7 @@ use yii\web\AssetBundle;
  * @property-read string $name
  * @property-read string $description
  * @property-read array $categories
+ * @property-read bool $isActivated
  * @property SettingsManager $settings
  * @author luke
  */
@@ -210,6 +211,16 @@ class Module extends \yii\base\Module
     public function getAssetPath()
     {
         return $this->getBasePath() . '/' . $this->resourcesPath;
+    }
+
+    /**
+     * Check this module is activated
+     *
+     * @return bool
+     */
+    public function getIsActivated(): bool
+    {
+        return (bool) Yii::$app->hasModule($this->id);
     }
 
     /**

@@ -40,6 +40,8 @@ class Modules extends Widget
     {
         $installedModules = Yii::$app->moduleManager->getModules();
 
+        ArrayHelper::multisort($installedModules, 'isActivated', SORT_DESC);
+
         $this->addGroup('installed', [
             'title' => Yii::t('AdminModule.modules', 'Installed'),
             'modules' => Yii::$app->moduleManager->filterModules($installedModules),
