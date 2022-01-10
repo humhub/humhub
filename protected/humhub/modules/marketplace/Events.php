@@ -32,10 +32,7 @@ class Events extends BaseObject
      */
     public static function onConsoleApplicationInit($event)
     {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('marketplace');
-
-        if (!$module->enabled) {
+        if (!self::getEnabledMarketplaceModule()) {
             return;
         }
 
@@ -256,12 +253,12 @@ class Events extends BaseObject
                     }
                     break;
                 case 'official':
-                    if (!$module->getOnlineInfo('isCommunity')) {
+                    if ($module->getOnlineInfo('isThirdParty')) {
                         return false;
                     }
                     break;
                 case 'partner':
-                    if (!$module->getOnlineInfo('isThirdParty')) {
+                    if (!$module->getOnlineInfo('isPartner')) {
                         return false;
                     }
                     break;

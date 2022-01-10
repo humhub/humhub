@@ -62,9 +62,9 @@ class ModuleStatus extends Widget
 
         if ($this->module->getOnlineInfo('featured')) {
             $this->_status = 'featured';
-        } else if ($this->module->getOnlineInfo('isCommunity')) {
+        } else if (!$this->module->getOnlineInfo('isThirdParty')) {
             $this->_status = 'official';
-        } else if ($this->module->getOnlineInfo('isThirdParty')) {
+        } else if ($this->module->getOnlineInfo('isPartner')) {
             $this->_status = 'partner';
         } else if ($this->module->getOnlineInfo('isDeprecated')) {
             $this->_status = 'deprecated';

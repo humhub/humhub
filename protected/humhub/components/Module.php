@@ -8,13 +8,14 @@
 
 namespace humhub\components;
 
-use humhub\modules\activity\components\BaseActivity;
-use Yii;
-use yii\helpers\Json;
+use humhub\components\behaviors\OnlineModule;
 use humhub\models\Setting;
+use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\content\models\ContentContainerSetting;
+use Yii;
+use yii\helpers\Json;
 use yii\web\AssetBundle;
 
 /**
@@ -25,6 +26,7 @@ use yii\web\AssetBundle;
  * @property-read array $categories
  * @property-read bool $isActivated
  * @property SettingsManager $settings
+ * @mixin OnlineModule
  * @author luke
  */
 class Module extends \yii\base\Module
@@ -60,7 +62,7 @@ class Module extends \yii\base\Module
     public function behaviors()
     {
         return [
-            behaviors\OnlineModule::class,
+            OnlineModule::class,
         ];
     }
 

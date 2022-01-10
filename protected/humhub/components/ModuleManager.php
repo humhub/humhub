@@ -278,6 +278,13 @@ class ModuleManager extends Component
         return $modules;
     }
 
+    /**
+     * Filter modules by keyword and by additional filters from module event
+     *
+     * @param Module[] $modules
+     * @param array $filters
+     * @return Module[]
+     */
     public function filterModules(array $modules, $filters = []): array
     {
         $filters = array_merge([
@@ -292,6 +299,13 @@ class ModuleManager extends Component
         return $modulesEvent->modules;
     }
 
+    /**
+     * Filter modules by keyword
+     *
+     * @param Module[] $modules
+     * @param null|string $keyword
+     * @return Module[]
+     */
     public function filterModulesByKeyword(array $modules, $keyword = null): array
     {
         if ($keyword === null) {
