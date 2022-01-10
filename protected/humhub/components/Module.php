@@ -9,8 +9,6 @@
 namespace humhub\components;
 
 use humhub\modules\activity\components\BaseActivity;
-use humhub\modules\marketplace\models\Licence;
-use humhub\modules\marketplace\Module as MarketplaceModule;
 use Yii;
 use yii\helpers\Json;
 use humhub\models\Setting;
@@ -37,11 +35,6 @@ class Module extends \yii\base\Module
     private $_moduleInfo = null;
 
     /**
-     * @var array the cached info loaded from online
-     */
-    private $_onlineInfo = null;
-
-    /**
      * @var string The path for module resources (images, javascripts)
      * Also module related assets like README.md and module_image.png should be placed here.
      */
@@ -59,6 +52,16 @@ class Module extends \yii\base\Module
             'class' => SettingsManager::class,
             'moduleId' => $this->id
         ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            behaviors\OnlineModule::class,
+        ];
     }
 
     /**
@@ -316,54 +319,6 @@ class Module extends \yii\base\Module
         $moduleJson = file_get_contents($this->getBasePath() . DIRECTORY_SEPARATOR . 'module.json');
 
         return Json::decode($moduleJson);
-    }
-
-    /**
-     * @param string|null $field
-     * @return array|null|string
-     */
-    public function getOnlineInfo(?string $field = null)
-    {
-        if ($this->_onlineInfo !== null) {
-            return $this->_onlineInfo;
-        }
-
-        /* @var MarketplaceModule $marketplaceModule */
-        $marketplaceModule = Yii::$app->getModule('marketplace');
-        if (!($marketplaceModule instanceof MarketplaceModule && $marketplaceModule->enabled)) {
-            return null;
-        }
-
-        $onlineModules = $marketplaceModule->onlineModuleManager->getModules();
-
-        $this->_onlineInfo = isset($onlineModules[$this->id]) ? $onlineModules[$this->id] : [];
-
-        if ($field === null) {
-            return $this->_onlineInfo;
-        }
-
-        return $this->_onlineInfo[$field] ?? null;
-    }
-
-    public function isProOnly(): bool
-    {
-        if (empty($this->getOnlineInfo('professional_only'))) {
-            return false;
-        }
-
-        /* @var MarketplaceModule */
-        $marketplaceModule = Yii::$app->getModule('marketplace');
-        if (!($marketplaceModule instanceof MarketplaceModule && $marketplaceModule->enabled)) {
-            return false;
-        }
-
-        return $marketplaceModule->licence->type !== Licence::LICENCE_TYPE_PRO;
-    }
-
-    public function getCategories(): array
-    {
-        $onlineInfo = $this->getOnlineInfo();
-        return $onlineInfo['categories'] ?? [];
     }
 
     /**
