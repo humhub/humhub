@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\assets\DirectoryAsset;
+use humhub\assets\CardsAsset;
 use humhub\libs\Html;
 use humhub\modules\admin\assets\ModuleAsset;
 use humhub\modules\admin\widgets\ModuleFilters;
@@ -16,7 +16,7 @@ use humhub\modules\ui\view\components\View;
 /* @var $this View */
 
 ModuleAsset::register($this);
-DirectoryAsset::register($this);
+CardsAsset::register($this);
 ?>
 <div class="panel panel-default">
     <div class="panel-heading">

@@ -1,6 +1,6 @@
 <?php
 
-use humhub\assets\DirectoryAsset;
+use humhub\assets\CardsAsset;
 use humhub\libs\Html;
 use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\widgets\PeopleCard;
@@ -11,7 +11,7 @@ use humhub\widgets\ModalButton;
 /* @var $people PeopleQuery */
 /* @var $showInviteButton bool */
 
-DirectoryAsset::register($this);
+CardsAsset::register($this);
 ?>
 <div class="panel panel-default">
 
