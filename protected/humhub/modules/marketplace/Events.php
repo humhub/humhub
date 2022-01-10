@@ -49,13 +49,23 @@ class Events extends BaseObject
         Yii::$app->queue->push(new jobs\ModuleCleanupsJob());
     }
 
+    public static function getEnabledMarketplaceModule(): ?Module
+    {
+        /* @var Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+
+        return $marketplaceModule->enabled ? $marketplaceModule : null;
+    }
+
     public static function onAdminModuleFiltersInit($event)
     {
+        if (!($marketplaceModule = self::getEnabledMarketplaceModule())) {
+            return;
+        }
+
         /* @var ModuleFilters $moduleFilters */
         $moduleFilters = $event->sender;
 
-        /* @var Module $marketplaceModule */
-        $marketplaceModule = Yii::$app->getModule('marketplace');
         $marketplaceModule->onlineModuleManager->getModules();
         $categories = $marketplaceModule->onlineModuleManager->getCategories();
         if (!empty($categories)) {
@@ -88,6 +98,10 @@ class Events extends BaseObject
 
     public static function onAdminModuleFiltersAfterRun($event)
     {
+        if (!self::getEnabledMarketplaceModule()) {
+            return;
+        }
+
         $latestVersion = HumHubAPI::getLatestHumHubVersion();
         if (!$latestVersion) {
             return;
@@ -118,11 +132,12 @@ class Events extends BaseObject
 
     public static function onAdminModulesInit($event)
     {
+        if (!($marketplaceModule = self::getEnabledMarketplaceModule())) {
+            return;
+        }
+
         /* @var Modules $modulesWidget */
         $modulesWidget = $event->sender;
-
-        /* @var Module $marketplaceModule */
-        $marketplaceModule = Yii::$app->getModule('marketplace');
 
         $updateModules = $marketplaceModule->onlineModuleManager->getAvailableUpdateModules();
         if ($updateModulesCount = count($updateModules)) {
@@ -160,6 +175,10 @@ class Events extends BaseObject
 
     public static function onAdminModuleManagerAfterFilterModules(ModulesEvent $event)
     {
+        if (!self::getEnabledMarketplaceModule()) {
+            return;
+        }
+
         if (!is_array($event->modules)) {
             return;
         }
@@ -257,6 +276,10 @@ class Events extends BaseObject
 
     public static function onAdminModuleControlsInit($event)
     {
+        if (!self::getEnabledMarketplaceModule()) {
+            return;
+        }
+
         /* @var ModuleControls $moduleControls */
         $moduleControls = $event->sender;
 
