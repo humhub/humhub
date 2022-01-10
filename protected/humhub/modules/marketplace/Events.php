@@ -49,7 +49,7 @@ class Events extends BaseObject
         Yii::$app->queue->push(new jobs\ModuleCleanupsJob());
     }
 
-    public static function getEnabledMarketplaceModule(): ?Module
+    private static function getEnabledMarketplaceModule(): ?Module
     {
         /* @var Module $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
