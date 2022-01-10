@@ -330,7 +330,7 @@ class Module extends \yii\base\Module
 
         /* @var MarketplaceModule $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
-        if (!($marketplaceModule instanceof MarketplaceModule)) {
+        if (!($marketplaceModule instanceof MarketplaceModule && $marketplaceModule->enabled)) {
             return null;
         }
 
@@ -353,7 +353,7 @@ class Module extends \yii\base\Module
 
         /* @var MarketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
-        if (!($marketplaceModule instanceof MarketplaceModule)) {
+        if (!($marketplaceModule instanceof MarketplaceModule && $marketplaceModule->enabled)) {
             return false;
         }
 
