@@ -156,10 +156,11 @@ class UrlOembed extends ActiveRecord
             $url = trim($url);
 
             if (static::hasOEmbedSupport($url)) {
-                $urlOembed = null;//static::findExistingOembed($url);
+                $urlOembed = static::findExistingOembed($url);
                 $result = $urlOembed ? $urlOembed->preview : self::loadUrl($url);
 
                 if (!empty($result)) {
+                    $result .= static::confirmContent($url);
                     return trim(preg_replace('/\s+/', ' ', $result));
                 }
             }
@@ -289,9 +290,7 @@ class UrlOembed extends ActiveRecord
                     'url' => Html::encode($url)
                 ],
                 'class' => 'oembed_snippet',
-                'style' => 'display:none',
-            ])
-            . static::confirmContent($url);
+            ]);
         }
         return null;
     }
