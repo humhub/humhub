@@ -8,7 +8,9 @@
 
 namespace humhub\models;
 
-use yii\base\InvalidArgumentException;
+use humhub\modules\ui\icon\widgets\Icon;
+use humhub\modules\user\models\User;
+use humhub\widgets\Button;
 use humhub\events\OembedFetchEvent;
 use humhub\libs\RestrictedCallException;
 use humhub\libs\UrlOembedClient;
@@ -154,7 +156,7 @@ class UrlOembed extends ActiveRecord
             $url = trim($url);
 
             if (static::hasOEmbedSupport($url)) {
-                $urlOembed = static::findExistingOembed($url);
+                $urlOembed = null;//static::findExistingOembed($url);
                 $result = $urlOembed ? $urlOembed->preview : self::loadUrl($url);
 
                 if (!empty($result)) {
@@ -287,9 +289,41 @@ class UrlOembed extends ActiveRecord
                     'url' => Html::encode($url)
                 ],
                 'class' => 'oembed_snippet',
-            ]);
+                'style' => 'display:none',
+            ])
+            . static::confirmContent($url);
         }
         return null;
+    }
+
+    /**
+     * Replace the embedded content with confirmation before display it
+     *
+     * @param string $url
+     * @return string
+     */
+    protected static function confirmContent(string $url): string
+    {
+        if (self::isAllowedDomain($url)) {
+            return '';
+        }
+
+        $html = Html::tag('strong', Yii::t('base', 'Do you want to display the embedded content?')) .
+            Html::tag('br') .
+            Html::tag('strong', $url) .
+            Html::tag('br') .
+            Html::tag('label', '<input type="checkbox">' . Yii::t('base', 'Always show directly content of this domain/source.')) .
+            Html::tag('br') .
+            Button::info(Yii::t('base', 'Yes'))->action('oembed.confirm')->sm();
+
+        $html = Icon::get('info-circle') .
+            Html::tag('div', $html) .
+            Html::tag('div', '', ['class' => 'clearfix']);
+
+        return Html::tag('div', $html, [
+            'data-url' => $url,
+            'class' => 'oembed_confirmation',
+        ]);
     }
 
     /**
@@ -397,6 +431,74 @@ class UrlOembed extends ActiveRecord
     public static function setProviders($providers)
     {
         Yii::$app->settings->set('oembedProviders', Json::encode($providers));
+    }
+
+    /**
+     * Check the domain is always allowed to display for current User
+     *
+     * @param string $url Domain or full URL
+     * @return array
+     */
+    public static function isAllowedDomain(string $url): bool
+    {
+        if (Yii::$app->user->isGuest) {
+            return true;
+        }
+
+        if (preg_match('#^(https?:)?//#i',$url)) {
+            $url = parse_url($url);
+            if (!isset($url['host'])) {
+                return false;
+            }
+            $url = $url['host'];
+        }
+
+        return array_search($url, self::getAllowedDomains()) !== false;
+    }
+
+    /**
+     * Get domains always allowed to be displayed for current User
+     *
+     * @return array
+     */
+    public static function getAllowedDomains(): array
+    {
+        if (Yii::$app->user->isGuest) {
+            return [];
+        }
+
+        /* @var User $user */
+        $user = Yii::$app->user->getIdentity();
+
+        $allowedUrls = $user->settings->get('allowedOembedUrls');
+
+        return empty($allowedUrls) ? [] : explode(',', $allowedUrls);
+    }
+
+    /**
+     * Add a new allowed domain for oembed URLs to the current User settings
+     *
+     * @param string $domain
+     * @return bool
+     */
+    public static function saveAllowedDomain(string $domain): bool
+    {
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+
+        if (self::isAllowedDomain($domain)) {
+            return true;
+        }
+
+        $allowedUrls = self::getAllowedDomains();
+        $allowedUrls[] = $domain;
+
+        /* @var User $user */
+        $user = Yii::$app->user->getIdentity();
+        $user->settings->set('allowedOembedUrls', implode(',', $allowedUrls));
+
+        return true;
     }
 
 }
