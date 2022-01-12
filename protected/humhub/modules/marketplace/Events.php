@@ -231,36 +231,41 @@ class Events extends BaseObject
 
         $onlineModule = new OnlineModule(['module' => $module]);
 
+        $searchInstalled = in_array('installed', $tags);
+        $searchNotInstalled = in_array('not_installed', $tags);
+        if ($searchInstalled && $searchNotInstalled && count($tags) === 2) {
+            // No need to filter when only 2 tags "Installed" and "Not Installed" are selected
+            return true;
+        }
+        if ($searchInstalled && !$searchNotInstalled && !$onlineModule->isInstalled) {
+            // Exclude all NOT Installed modules when requested only Installed modules
+            return false;
+        }
+        if (!$searchInstalled && $searchNotInstalled && $onlineModule->isInstalled) {
+            // Exclude all Installed modules when requested only NOT Installed modules
+            return false;
+        }
+
         foreach ($tags as $tag) {
             switch ($tag) {
-                case 'installed':
-                    if (!$onlineModule->isInstalled) {
-                        return false;
-                    }
-                    break;
-                case 'not_installed':
-                    if ($onlineModule->isInstalled) {
-                        return false;
-                    }
-                    break;
                 case 'professional':
-                    if (!$onlineModule->isProOnly) {
-                        return false;
+                    if ($onlineModule->isProOnly) {
+                        return true;
                     }
                     break;
                 case 'featured':
-                    if (!$onlineModule->isFeatured) {
-                        return false;
+                    if ($onlineModule->isFeatured) {
+                        return true;
                     }
                     break;
                 case 'official':
-                    if ($onlineModule->isThirdParty) {
-                        return false;
+                    if (!$onlineModule->isThirdParty) {
+                        return true;
                     }
                     break;
                 case 'partner':
-                    if (!$onlineModule->isPartner) {
-                        return false;
+                    if ($onlineModule->isPartner) {
+                        return true;
                     }
                     break;
                 case 'new':
@@ -269,7 +274,7 @@ class Events extends BaseObject
             }
         }
 
-        return true;
+        return false;
     }
 
     public static function onAdminModuleControlsInit($event)
