@@ -111,8 +111,24 @@ humhub.module('marketplace', function (module, require, $) {
             .attr('class', updateAllButton.data('orig-class'));
     }
 
+    const registerLicenceKey = function(evt) {
+        const form = evt.$trigger.closest('form');
+        const licenceKey = form.find('input[name=licenceKey]').val();
+
+        loader.set(form);
+
+        client.post(form.attr('action'), {data: {licenceKey}}).then(function (response) {
+            form.closest('.modal-dialog').after(response.html).remove();
+        }).catch(function (err) {
+            module.log.error(err);
+            status.error(err.message);
+            loader.reset(form);
+        });
+    }
+
     module.export({
         update,
         updateAll,
+        registerLicenceKey,
     });
 });

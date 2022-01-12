@@ -285,6 +285,15 @@ class Events extends BaseObject
             return;
         }
 
+        $moduleControls->addEntry(new MenuLink([
+            'id' => 'marketplace-licence-key',
+            'label' => Yii::t('MarketplaceModule.base', 'Add Licence Key'),
+            'url' => ['/marketplace/purchase'],
+            'htmlOptions' => ['data-target' => '#globalModal'],
+            'icon' => 'key',
+            'sortOrder' => 1000,
+        ]));
+
         if ($moduleControls->module->isThirdParty) {
             $moduleControls->addEntry(new MenuLink([
                 'id' => 'marketplace-third-party',
@@ -293,7 +302,7 @@ class Events extends BaseObject
                 'url' => ['/marketplace/browse/thirdparty-disclaimer'],
                 'htmlOptions' => ['data-target' => '#globalModal'],
                 'icon' => 'info-circle',
-                'sortOrder' => 1000,
+                'sortOrder' => 1100,
             ]));
         }
     }
