@@ -13,6 +13,7 @@ use humhub\modules\admin\widgets\ModuleStatus;
 use humhub\modules\ui\icon\widgets\Icon;
 
 /* @var $module Module */
+/* @var $isFeaturedModule bool */
 ?>
 <div class="card-panel">
     <?= ModuleStatus::widget(['module' => $module]) ?>
@@ -26,7 +27,7 @@ use humhub\modules\ui\icon\widgets\Icon;
         <?= ModuleControls::widget(['module' => $module]) ?>
     </div>
     <div class="card-body">
-        <div class="card-title"><?= $module->getName() . ($module->getOnlineInfo('featured') ? ' ' . Icon::get('star')->color('info') : '') ?></div>
+        <div class="card-title"><?= $module->getName() . ($isFeaturedModule ? ' ' . Icon::get('star')->color('info') : '') ?></div>
         <div><?= $module->getVersion() ?></div>
         <div><?= $module->getDescription() ?></div>
     </div>

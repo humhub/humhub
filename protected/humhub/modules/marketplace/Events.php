@@ -9,6 +9,7 @@
 namespace humhub\modules\marketplace;
 
 use humhub\components\Module as CoreModule;
+use humhub\components\OnlineModule;
 use humhub\modules\admin\events\ModulesEvent;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\admin\widgets\ModuleControls;
@@ -209,11 +210,9 @@ class Events extends BaseObject
             return true;
         }
 
-        if (!is_array($module->categories) || empty($module->categories)) {
-            return false;
-        }
+        $moduleCategories = (new OnlineModule(['module' => $module]))->categories;
 
-        return in_array($categoryId, $module->categories);
+        return empty($moduleCategories) ? false : in_array($categoryId, $moduleCategories);
     }
 
     /**
@@ -230,35 +229,37 @@ class Events extends BaseObject
 
         $tags = explode(',', $tags);
 
+        $onlineModule = new OnlineModule(['module' => $module]);
+
         foreach ($tags as $tag) {
             switch ($tag) {
                 case 'installed':
-                    if (!Yii::$app->moduleManager->hasModule($module->id)) {
+                    if (!$onlineModule->isInstalled) {
                         return false;
                     }
                     break;
                 case 'not_installed':
-                    if (Yii::$app->moduleManager->hasModule($module->id)) {
+                    if ($onlineModule->isInstalled) {
                         return false;
                     }
                     break;
                 case 'professional':
-                    if (!$module->isProOnly()) {
+                    if (!$onlineModule->isProOnly) {
                         return false;
                     }
                     break;
                 case 'featured':
-                    if (!$module->getOnlineInfo('featured')) {
+                    if (!$onlineModule->isFeatured) {
                         return false;
                     }
                     break;
                 case 'official':
-                    if ($module->getOnlineInfo('isThirdParty')) {
+                    if ($onlineModule->isThirdParty) {
                         return false;
                     }
                     break;
                 case 'partner':
-                    if (!$module->getOnlineInfo('isPartner')) {
+                    if (!$onlineModule->isPartner) {
                         return false;
                     }
                     break;

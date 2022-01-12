@@ -8,6 +8,7 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\components\Module;
+use humhub\components\OnlineModule;
 use humhub\components\Widget;
 use Yii;
 
@@ -60,15 +61,17 @@ class ModuleStatus extends Widget
             return $this->_status;
         }
 
-        if ($this->module->getOnlineInfo('featured')) {
+        $onlineModule = new OnlineModule(['module' => $this->module]);
+
+        if ($onlineModule->isFeatured) {
             $this->_status = 'featured';
-        } else if (!$this->module->getOnlineInfo('isThirdParty')) {
+        } else if (!$onlineModule->isThirdParty) {
             $this->_status = 'official';
-        } else if ($this->module->getOnlineInfo('isPartner')) {
+        } else if ($onlineModule->isPartner) {
             $this->_status = 'partner';
-        } else if ($this->module->getOnlineInfo('isDeprecated')) {
+        } else if ($onlineModule->isDeprecated) {
             $this->_status = 'deprecated';
-        } else if ($this->module->isProOnly()) {
+        } else if ($onlineModule->isProOnly) {
             $this->_status = 'professional';
         } else {
             $this->_status = false;

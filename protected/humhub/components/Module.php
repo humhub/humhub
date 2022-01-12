@@ -8,7 +8,6 @@
 
 namespace humhub\components;
 
-use humhub\components\behaviors\OnlineModule;
 use humhub\models\Setting;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\content\models\ContentContainerSetting;
@@ -54,16 +53,6 @@ class Module extends \yii\base\Module
             'class' => SettingsManager::class,
             'moduleId' => $this->id
         ]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            OnlineModule::class,
-        ];
     }
 
     /**
