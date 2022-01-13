@@ -47,9 +47,9 @@ class OembedController extends Controller
     }
 
     /**
-     * Confirm to show directly content of the domain/source
+     * Display the hidden embedded content
      */
-    public function actionConfirmUrl()
+    public function actionDisplay()
     {
         $this->forcePostRequest();
 
@@ -58,15 +58,20 @@ class OembedController extends Controller
             throw new HttpException(400, 'URL is not provided!');
         }
 
-        $url = parse_url($url);
-        if (!isset($url['host'])) {
+        $urlData = parse_url($url);
+        if (!isset($urlData['host'])) {
             throw new HttpException(400, 'Wrong URL!');
         }
 
-        UrlOembed::saveAllowedDomain($url['host']);
+        if (Yii::$app->request->post('alwaysShow', false)) {
+            UrlOembed::saveAllowedDomain($urlData['host']);
+        }
+
+        $urlOembed = UrlOembed::findExistingOembed($url);
 
         return $this->asJson([
             'success' => true,
+            'content' => $urlOembed ? $urlOembed->preview : UrlOembed::loadUrl($url)
         ]);
     }
 }

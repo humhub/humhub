@@ -163,7 +163,7 @@ class CoreJsConfig extends Widget
                 ],
                 'oembed' => [
                     'loadUrl' => Url::to(['/oembed']),
-                    'confirmUrl' => Url::to(['/oembed/confirm-url']),
+                    'displayUrl' => Url::to(['/oembed/display']),
                 ],
                 'ui.markdown', [
                 'text' => [

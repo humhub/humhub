@@ -28,8 +28,8 @@ humhub.module('oembed', function(module, require, $) {
         });
     };
 
-    var get = function(url) {
-        var $result = cache[url] ? $(cache[url]) : findSnippetByUrl(url, true);
+    const get = function(url) {
+        const $result = cache[url] ? $(cache[url]) : findSnippetByUrl(url);
 
         if ($result && $result.is('.oembed_snippet,.oembed_confirmation')) {
            return $result;
@@ -38,55 +38,48 @@ humhub.module('oembed', function(module, require, $) {
         return null;
     };
 
-    var findSnippetByUrl = function(url, confirm) {
-        var $dom =  $('[data-oembed="' + $.escapeSelector(util.string.escapeHtml(url, true)) + '"]:first');
-        if ($dom.length && $dom.is('[data-oembed]')) {
-            if (confirm) {
-                var confirmation = $dom.find('.oembed_confirmation');
-                if (confirmation.length) {
-                    return confirmation.clone().show();
-                }
-            }
-            return $dom.find('.oembed_snippet').clone().show();
+    const findSnippetByUrl = function(url) {
+        const $dom = $('[data-oembed="' + $.escapeSelector(util.string.escapeHtml(url, true)) + '"]:first')
+        if (!$dom.length || !$dom.is('[data-oembed]')) {
+            return null;
         }
 
-        return null;
+        const confirmation = $dom.find('.oembed_confirmation');
+        if (confirmation.length) {
+            return confirmation.clone().show();
+        }
+
+        return $dom.find('.oembed_snippet').clone().show();
     }
 
-    var confirm = function(evt) {
-        var confirmation = evt.$trigger.closest('.oembed_confirmation');
+    const display = function(evt) {
+        const confirmation = evt.$trigger.closest('.oembed_confirmation');
         if (!confirmation.length) {
             return;
         }
 
-        if (confirmation.find('input[type=checkbox]:checked').length) {
-            client.post(module.config.confirmUrl, {data: {url: confirmation.data('url')}}).then(function(response) {
-                if (response.success) {
-                    displayContent(confirmation);
-                } else {
-                    module.log.error(response, true);
-                    evt.finish();
-                }
-            }).catch(function(e) {
-                module.log.error(e, true);
-                evt.finish();
-            });
-        } else {
-            displayContent(confirmation);
+        const data = {
+            url: confirmation.data('url'),
+            alwaysShow: confirmation.find('input[type=checkbox]:checked').length ? 1 : 0,
         }
+
+        client.post(module.config.displayUrl, {data}).then(function(response) {
+            if (response.success) {
+                confirmation.after(response.content).remove();
+            } else {
+                module.log.error(response, true);
+                evt.finish();
+            }
+        }).catch(function(e) {
+            module.log.error(e, true);
+            evt.finish();
+        });
     };
 
-    var displayContent = function (confirmation) {
-        var snippet = findSnippetByUrl(confirmation.data('url'), false);
-        if (snippet && snippet.is('.oembed_snippet')) {
-            confirmation.after(snippet).remove();
-        }
-    }
-
     module.export({
-        load: load,
-        get: get,
-        confirm: confirm,
+        load,
+        get,
+        display,
     });
 });
 

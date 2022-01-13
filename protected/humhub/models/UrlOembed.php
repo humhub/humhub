@@ -156,11 +156,15 @@ class UrlOembed extends ActiveRecord
             $url = trim($url);
 
             if (static::hasOEmbedSupport($url)) {
-                $urlOembed = static::findExistingOembed($url);
-                $result = $urlOembed ? $urlOembed->preview : self::loadUrl($url);
+                if (!self::isAllowedDomain($url)) {
+                    $result = self::confirmationContent($url);
+                } else {
+                    $urlOembed = static::findExistingOembed($url);
+                    $result = $urlOembed ? $urlOembed->preview : self::loadUrl($url);
+                }
 
                 if (!empty($result)) {
-                    $result .= static::confirmContent($url);
+
                     return trim(preg_replace('/\s+/', ' ', $result));
                 }
             }
@@ -211,7 +215,7 @@ class UrlOembed extends ActiveRecord
      * @return UrlOembed|null
      * @throws RestrictedCallException
      */
-    protected static function findExistingOembed($url)
+    public static function findExistingOembed($url)
     {
         if (array_key_exists($url, static::$cache)) {
             return static::$cache[$url];
@@ -301,19 +305,15 @@ class UrlOembed extends ActiveRecord
      * @param string $url
      * @return string
      */
-    protected static function confirmContent(string $url): string
+    protected static function confirmationContent(string $url): string
     {
-        if (self::isAllowedDomain($url)) {
-            return '';
-        }
-
         $html = Html::tag('strong', Yii::t('base', 'Do you want to display the embedded content?')) .
             Html::tag('br') .
             Html::tag('strong', $url) .
             Html::tag('br') .
             Html::tag('label', '<input type="checkbox">' . Yii::t('base', 'Always show directly content of this domain/source.')) .
             Html::tag('br') .
-            Button::info(Yii::t('base', 'Yes'))->action('oembed.confirm')->sm();
+            Button::info(Yii::t('base', 'Yes'))->action('oembed.display')->sm();
 
         $html = Icon::get('info-circle') .
             Html::tag('div', $html) .
