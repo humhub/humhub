@@ -8,6 +8,7 @@
 
 namespace humhub\models;
 
+use humhub\modules\admin\models\forms\OEmbedSettingsForm;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
 use humhub\widgets\Button;
@@ -440,6 +441,11 @@ class UrlOembed extends ActiveRecord
      */
     public static function isAllowedDomain(string $url): bool
     {
+        $oembedSettings = new OEmbedSettingsForm();
+        if (!$oembedSettings->requestConfirmation) {
+            return true;
+        }
+
         if (Yii::$app->user->isGuest) {
             return true;
         }
