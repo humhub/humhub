@@ -40,7 +40,6 @@ class OEmbedSettingsForm extends Model
     public function rules()
     {
         return [
-            ['requestConfirmation', 'safe'],
             ['requestConfirmation', 'boolean'],
         ];
     }
