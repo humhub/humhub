@@ -10,6 +10,7 @@ namespace humhub\modules\installer\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\modules\installer\forms\MailingForm;
 use humhub\modules\marketplace\Module;
 use humhub\modules\queue\driver\Sync;
 use humhub\modules\space\models\Space;
@@ -17,6 +18,7 @@ use humhub\modules\user\models\Group;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\BaseObject;
 use yii\base\InvalidConfigException;
 use yii\web\HttpException;
 
@@ -374,6 +376,64 @@ class ConfigController extends Controller
     }
 
     /**
+     * Configure SMTP
+     * Checking given SMTP configuration, writing them into a config file.
+     *
+     */
+    public function actionMailing()
+    {
+        $errorMessage = "";
+
+        $model = new MailingForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->save())
+        {
+            if($model->sendTest)
+            {
+                /** @var User $user */
+                $user = Yii::$app->user->getIdentity();
+
+                try {
+                    $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
+                        'message' => Yii::t('InstallerModule.base', 'Test message')
+                    ]);
+                    $mail->setTo($user->email);
+                    $mail->setSubject(Yii::t('InstallerModule.base', 'Test message'));
+
+                    if ($mail->send()) {
+                        return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
+                    } else {
+                        $errorMessage = Yii::t('InstallerModule.base', 'Could not send test email.');
+                    }
+                } catch (\Exception $e) {
+                    $errorMessage = Yii::t('InstallerModule.base', 'Could not send test email.') . ' ' . $e->getMessage();
+                }
+            } else {
+                return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
+            }
+        }
+
+        // Render Template
+        return $this->render('mailing', ['model' => $model, 'errorMessage' => $errorMessage]);
+    }
+
+    /**
+     * Pretty URLs
+     */
+    public function actionPrettyUrls()
+    {
+        return $this->render('pretty-urls');
+    }
+
+    /**
+     * Crontab
+     */
+    public function actionCron()
+    {
+        return $this->render('cron');
+    }
+
+    /**
      * Setup Administrative User
      *
      * This should be the last step, before the user is created also the
@@ -536,7 +596,7 @@ class ConfigController extends Controller
 
         try {
             Yii::$app->user->logout();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             ;
         }
         return $this->render('finished');

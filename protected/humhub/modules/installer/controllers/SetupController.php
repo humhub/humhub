@@ -130,7 +130,7 @@ class SetupController extends Controller
     }
 
     /**
-     * The init action imports the database structure & inital data
+     * The init action imports the database structure & initial data
      */
     public function actionInit()
     {
