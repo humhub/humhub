@@ -45,6 +45,7 @@ class AccountChangeUsername extends \yii\base\Model
             ['newUsername', 'unique', 'targetAttribute' => 'username', 'targetClass' => User::class, 'message' => '{attribute} "{value}" is already in use!'],
             ['newUsername', 'match', 'pattern' => $userModule->validUsernameRegexp, 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false],
             ['newUsername', 'trim'],
+            [['newUsername'], 'validateForbiddenUsername'],
         ];
 
         if (CheckPasswordValidator::hasPassword()) {
@@ -87,6 +88,17 @@ class AccountChangeUsername extends \yii\base\Model
         $mail->send();
 
         return true;
+    }
+
+    /**
+     * Validate attribute newUsername
+     * @param string $attribute
+     */
+    public function validateForbiddenUsername($attribute, $params)
+    {
+        if(in_array($this->$attribute, Yii::$app->controller->module->forbiddenUsernames)){
+            $this->addError($attribute, Yii::t('UserModule.account', 'You cannot use this username.'));
+        }
     }
 
 }

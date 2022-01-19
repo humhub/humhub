@@ -138,6 +138,18 @@ class Module extends \humhub\components\Module
         6 => 20,
     ];
 
+
+    /**
+     * @var array Forbidden names to register
+     */
+    public $forbiddenUsernames = [
+       'admin',
+       'administrator',
+       'hhadmin',
+       'hhadministrator',
+       'root',
+    ];
+
     /**
      * @inheritdoc
      */
