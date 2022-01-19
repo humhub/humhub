@@ -313,7 +313,7 @@ class UrlOembed extends ActiveRecord
 
         $html = Html::tag('strong', Yii::t('base', 'Allow content from external source')) .
             Html::tag('br') .
-            Yii::t('base', 'Allow content from external source \'{urlPrefix}\'?', ['urlPrefix' => Html::tag('strong', $urlPrefix)]) .
+            Yii::t('base', 'Do you want to enable content from \'{urlPrefix}\'?', ['urlPrefix' => Html::tag('strong', $urlPrefix)]) .
             Html::tag('br') .
             Html::tag('label', '<input type="checkbox">' . Yii::t('base', 'Always allow content from this provider!')) .
             Html::tag('br') .
