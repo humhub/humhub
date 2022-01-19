@@ -50,7 +50,7 @@ class OEmbedSettingsForm extends Model
     public function attributeLabels()
     {
         return [
-            'requestConfirmation' => Yii::t('AdminModule.settings', 'Show Oembed content only after consent'),
+            'requestConfirmation' => Yii::t('AdminModule.settings', 'Embedded content requires the user\'s consent to be loaded'),
         ];
     }
 
