@@ -20,3 +20,33 @@
     width: 100%;
     height: 100%;
 }
+
+.oembed_confirmation {
+    background: #feebb4;
+    border-radius: 4px;
+    padding: 15px;
+    line-height: 30px;
+    i.fa {
+        float: left;
+        color: #02a0b0;
+        background: #FFF;
+        border-radius: 50%;
+        font-size: 30px;
+        line-height: 25px;
+        margin-right: 15px;
+    }
+    > div:not(.clearfix) {
+        float: left;
+    }
+    .regular-checkbox-box {
+        top: 6px;
+    }
+    .regular-checkbox {
+        &:not(:checked) + .regular-checkbox-box {
+            background: #FFF;
+        }
+        &:checked + .regular-checkbox-box:after {
+            top: -8px;
+        }
+    }
+}

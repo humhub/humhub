@@ -16,6 +16,7 @@ use humhub\modules\admin\models\forms\FileSettingsForm;
 use humhub\modules\admin\models\forms\LogsSettingsForm;
 use humhub\modules\admin\models\forms\MailingSettingsForm;
 use humhub\modules\admin\models\forms\OEmbedProviderForm;
+use humhub\modules\admin\models\forms\OEmbedSettingsForm;
 use humhub\modules\admin\models\forms\ProxySettingsForm;
 use humhub\modules\admin\models\forms\StatisticSettingsForm;
 use humhub\modules\admin\permissions\ManageSettings;
@@ -301,9 +302,17 @@ class SettingController extends Controller
     public function actionOembed()
     {
         $providers = UrlOembed::getProviders();
-        return $this->render('oembed',
-            [
-                'providers' => $providers
+        $settings = new OEmbedSettingsForm();
+
+
+        if ($settings->load(Yii::$app->request->post()) && $settings->save()) {
+            $this->view->saved();
+            return $this->redirect(['/admin/setting/oembed']);
+        }
+
+        return $this->render('oembed', [
+                'providers' => $providers,
+                'settings' => $settings,
             ]);
     }
 
