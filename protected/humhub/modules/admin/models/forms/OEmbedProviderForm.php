@@ -11,8 +11,9 @@ use Yii;
 class OEmbedProviderForm extends \yii\base\Model
 {
 
-    public $prefix;
+    public $name;
     public $endpoint;
+    public $pattern;
 
     /**
      * Declares the validation rules.
@@ -20,8 +21,8 @@ class OEmbedProviderForm extends \yii\base\Model
     public function rules()
     {
         return [
-            ['prefix', 'safe'],
-            [['prefix', 'endpoint'], 'required'],
+            [['name', 'pattern', 'endpoint'], 'string'],
+            [['name', 'pattern', 'endpoint'], 'required'],
             ['endpoint', 'url'],
         ];
     }
@@ -34,8 +35,9 @@ class OEmbedProviderForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'prefix' => Yii::t('AdminModule.settings', 'Url Prefix'),
+            'name' => Yii::t('AdminModule.settings', 'Provider Name'),
             'endpoint' => Yii::t('AdminModule.settings', 'Endpoint Url'),
+            'pattern' => Yii::t('AdminModule.settings', 'Url Pattern'),
         ];
     }
 
