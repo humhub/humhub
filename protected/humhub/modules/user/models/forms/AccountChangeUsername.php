@@ -96,7 +96,7 @@ class AccountChangeUsername extends \yii\base\Model
      */
     public function validateForbiddenUsername($attribute, $params)
     {
-        if(in_array($this->$attribute, Yii::$app->controller->module->forbiddenUsernames)){
+        if (in_array(strtolower($this->$attribute), Yii::$app->controller->module->forbiddenUsernames)){
             $this->addError($attribute, Yii::t('UserModule.account', 'You cannot use this username.'));
         }
     }
