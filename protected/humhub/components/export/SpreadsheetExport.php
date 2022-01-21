@@ -12,7 +12,7 @@ use Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 use yii\data\ActiveDataProvider;
-use yii\data\ArrayDataProvider;
+use yii\data\BaseDataProvider;
 use yii\di\Instance;
 use yii\i18n\Formatter;
 
@@ -137,7 +137,7 @@ class SpreadsheetExport extends Component
             ]);
         }
 
-        if ($this->dataProvider instanceof ActiveDataProvider || $this->dataProvider instanceof ArrayDataProvider) {
+        if ($this->dataProvider instanceof BaseDataProvider) {
             $this->dataProvider->setPagination(false);
         }
     }
