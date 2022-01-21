@@ -67,6 +67,11 @@ class MailingForm extends \yii\base\Model
     public $sendTest;
 
     /**
+     * @var string
+     */
+    public $testEmailAddress;
+
+    /**
      * @inheritdoc
      */
     public function rules()
@@ -76,10 +81,14 @@ class MailingForm extends \yii\base\Model
             [['hostname', 'username', 'password', 'encryption'], 'required', 'when' => function ($model) {
                 return $model->transportType == 'smtp';
             }],
+            [['allowSelfSignedCerts', 'sendTest'], 'boolean'],
+            [['systemEmailAddress', 'systemEmailName', 'testEmailAddress'], 'string'],
             ['port', 'integer'],
             ['transportType', 'in', 'range' => array_keys(self::getTransportTypeOtions())],
             ['encryption', 'in', 'range' => array_keys(self::getEncryptionOptions())],
-            [['allowSelfSignedCerts', 'sendTest'], 'boolean']
+            ['testEmailAddress', 'required', 'when' => function ($model) {
+                return $model->sendTest;
+            }]
         ];
     }
 
@@ -98,7 +107,7 @@ class MailingForm extends \yii\base\Model
             'password' => Yii::t('InstallerModule.base', 'Password'),
             'encryption' => Yii::t('InstallerModule.base', 'Encryption'),
             'allowSelfSignedCerts' => Yii::t('InstallerModule.base', 'Allow Self-Signed Certificates'),
-            'sendTest' => Yii::t('InstallerModule.base', 'Send test e-mail to check configuration.'),
+            'testEmailAddress' => Yii::t('InstallerModule.base', 'E-mail address to receive test e-mail'),
         ];
     }
 

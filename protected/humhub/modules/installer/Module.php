@@ -162,28 +162,6 @@ class Module extends \humhub\components\Module
         ];
 
         /**
-         * Step: CronTab
-         */
-        $this->configSteps['cron'] = [
-            'sort' => 210,
-            'url' => Url::to(['/installer/config/cron']),
-            'isCurrent' => function() {
-                return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'cron');
-            },
-        ];
-
-        /**
-         * Step: Pretty URLs
-         */
-        $this->configSteps['pretty-urls'] = [
-            'sort' => 220,
-            'url' => Url::to(['/installer/config/pretty-urls']),
-            'isCurrent' => function() {
-                return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'pretty-urls');
-            },
-        ];
-
-        /**
          * Step: Sample Data
          */
         $this->configSteps['modules'] = [
@@ -202,17 +180,6 @@ class Module extends \humhub\components\Module
             'url' => Url::to(['/installer/config/admin']),
             'isCurrent' => function() {
                 return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'admin');
-            },
-        ];
-
-        /**
-         * Step: Sample Data
-         */
-        $this->configSteps['mailing'] = [
-            'sort' => 410,
-            'url' => Url::to(['/installer/config/mailing']),
-            'isCurrent' => function() {
-                return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'mailing');
             },
         ];
 

@@ -9,12 +9,12 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
 <div id="mailing-form" class="panel panel-default animated fadeIn">
     <div class="panel-heading">
-        <?php echo Yii::t('InstallerModule.base', '<strong>SMTP</strong> Configuration'); ?>
+        <?= Yii::t('InstallerModule.base', '<strong>SMTP</strong> Configuration'); ?>
     </div>
 
     <div class="panel-body">
         <p>
-            <?php echo Yii::t('InstallerModule.base', 'Below you have to enter your SMTP connection details. If you’re not sure about these, please contact your system administrator.'); ?>
+            <?= Yii::t('InstallerModule.base', 'Below you have to enter your SMTP connection details. If you’re not sure about these, please contact your system administrator.'); ?>
         </p>
 
         <?php $form = ActiveForm::begin(); ?>
@@ -48,18 +48,19 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
         </div>
 
-        <?= $form->field($model, 'sendTest')->checkbox() ?>
+        <?= $form->field($model, 'testEmailAddress') ?>
+        <?= Html::submitButton(Yii::t('InstallerModule.base', 'Send Test E-mail'), ['class' => 'btn btn-secondary', 'style' => 'margin-right: .5rem;', 'name' => 'MailingForm[sendTest]', 'value' => 1, 'data-loader' => 'modal', 'data-message' => Yii::t('InstallerModule.base', 'Configuring mailer...')]); ?>
         <hr>
 
         <?php if ($errorMessage) { ?>
             <div class="alert alert-danger">
-                <strong><?php echo Yii::t('InstallerModule.base', 'Ohh, something went wrong!'); ?></strong><br/>
-                <?php echo Html::encode($errorMessage); ?>
+                <strong><?= Yii::t('InstallerModule.base', 'Ohh, something went wrong!'); ?></strong><br/>
+                <?= Html::encode($errorMessage); ?>
             </div>
             <hr>
         <?php } ?>
 
-        <?php echo Html::submitButton(Yii::t('InstallerModule.base', 'Next'), ['class' => 'btn btn-primary', 'data-loader' => "modal", 'data-message' => Yii::t('InstallerModule.base', 'Configuring mailer...')]); ?>
+        <?= Html::submitButton(Yii::t('InstallerModule.base', 'Next'), ['class' => 'btn btn-primary', 'data-loader' => "modal", 'data-message' => Yii::t('InstallerModule.base', 'Configuring mailer...')]); ?>
 
         <?php ActiveForm::end(); ?>
     </div>

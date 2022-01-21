@@ -1,8 +1,10 @@
 <?php
 
-use humhub\modules\installer\forms\SampleDataForm;
+use humhub\modules\installer\forms\CronForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\bootstrap\Html;
+
+/** @var CronForm $model */
 
 ?>
 <div id="cron" class="panel panel-default animated fadeIn">
@@ -17,10 +19,10 @@ use yii\bootstrap\Html;
             <strong><?= Yii::t('InstallerModule.base', 'Cron job setup steps:') ?></strong>
         </p>
         <p>
-            <?= Yii::t('InstallerModule.base', 'Open the crontab of HumHub/PHP process user e.g. <code>www-data</code>.') ?>
+            <?= Yii::t('InstallerModule.base', 'Open the crontab of HumHub/PHP process user e.g. <code>{user}</code>.', ['user' => get_current_user()]) ?>
             <br>
             <kbd>
-                crontab -e -u www-data
+                crontab -e -u <?= get_current_user() ?>
             </kbd>
         </p>
 
@@ -29,20 +31,23 @@ use yii\bootstrap\Html;
             <br>
             <kbd style="display: block; padding: 0.75rem 1rem;">
                 <span>
-                * * * * * /usr/bin/php /var/www/humhub/protected/yii queue/run >/dev/null 2>&1
+                * * * * * <?= substr(get_include_path(), 2) ?> <?= $_SERVER['DOCUMENT_ROOT'] ?>/protected/yii queue/run >/dev/null 2>&1
                 <br>
-                * * * * * /usr/bin/php /var/www/humhub/protected/yii cron/run >/dev/null 2>&1
+                * * * * * <?= substr(get_include_path(), 2) ?> <?= $_SERVER['DOCUMENT_ROOT'] ?>/protected/yii cron/run >/dev/null 2>&1
                 </span>
             </kbd>
         </p>
 
-        <p><?= Yii::t('InstallerModule.base', 'Make sure to replace <code>/var/www/humhub</code> with the path of your HumHub installation.'); ?></p>
-
         <p><?= Yii::t('InstallerModule.base', 'In our documentation we describe this topic in more detail: <a href="{link}">{link}</a>. If you have trouble setting up the job scheduling described in the documentation, please contact your provider to ask for support.', ['link' => 'https://docs.humhub.org/docs/admin/cron-jobs']); ?></p>
 
+        <?php $form = ActiveForm::begin(); ?>
+
+        <?= $form->field($model, 'cron')->checkbox() ?>
         <hr>
 
-        <?= Html::a(Yii::t('base', 'Next'), Yii::$app->getModule('installer')->getNextConfigStepUrl(), ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton(Yii::t('base', 'Next'), ['class' => 'btn btn-primary']) ?>
+
+        <?php ActiveForm::end(); ?>
     </div>
 </div>
 
