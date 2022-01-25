@@ -31,7 +31,7 @@ class PermaController extends Controller
     {
         $comment = Comment::findOne(['id' => $id]);
 
-        if (!$comment || !$comment->canRead()) {
+        if (!$comment || !$comment->content || !$comment->canRead() || !$comment->content->container) {
             throw new NotFoundHttpException();
         }
 
