@@ -4,6 +4,8 @@ use humhub\libs\Html;
 use humhub\modules\installer\forms\MailingForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 
+/* @var string $errorMessage */
+/* @var string $successMessage */
 /* @var MailingForm $model */
 ?>
 
@@ -49,13 +51,19 @@ use humhub\modules\ui\form\widgets\ActiveForm;
         </div>
 
         <?= $form->field($model, 'testEmailAddress') ?>
-        <?= Html::submitButton(Yii::t('InstallerModule.base', 'Send Test E-mail'), ['class' => 'btn btn-secondary', 'style' => 'margin-right: .5rem;', 'name' => 'MailingForm[sendTest]', 'value' => 1, 'data-loader' => 'modal', 'data-message' => Yii::t('InstallerModule.base', 'Configuring mailer...')]); ?>
+        <?= Html::submitButton(Yii::t('InstallerModule.base', 'Send Test E-mail'), ['class' => 'btn btn-secondary', 'style' => 'margin-right: .5rem;', 'name' => 'MailingForm[sendTest]', 'value' => 1, 'data-loader' => 'modal', 'data-message' => Yii::t('InstallerModule.base', 'Sending test email...')]); ?>
         <hr>
 
         <?php if ($errorMessage) { ?>
             <div class="alert alert-danger">
                 <strong><?= Yii::t('InstallerModule.base', 'Ohh, something went wrong!'); ?></strong><br/>
                 <?= Html::encode($errorMessage); ?>
+            </div>
+            <hr>
+        <?php } else if ($successMessage) { ?>
+            <div class="alert alert-success">
+                <strong><?= Yii::t('InstallerModule.base', 'Well done!'); ?></strong><br/>
+                <?= Html::encode($successMessage); ?>
             </div>
             <hr>
         <?php } ?>
@@ -78,7 +86,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
     $('#mailing-form').removeClass('fadeIn');
     $('#mailing-form').addClass('shake');
     <?php } ?>
-    
+
     if ($("#mailingform-transporttype option:selected").val() != 'smtp') {
         $("#smtpOptions").hide();
     }
@@ -102,5 +110,5 @@ use humhub\modules\ui\form\widgets\ActiveForm;
             $("#encryptionOptions").show();
         }
     });
-    
+
 </script>

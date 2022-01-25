@@ -9,15 +9,12 @@
 namespace humhub\modules\installer\controllers;
 
 use humhub\components\access\ControllerAccess;
-use humhub\modules\installer\forms\CronForm;
-use humhub\modules\installer\forms\MailingForm;
-use humhub\modules\user\models\User;
-use Yii;
 use humhub\components\Controller;
-use humhub\modules\installer\forms\DatabaseForm;
 use humhub\libs\DynamicConfig;
 use humhub\modules\admin\widgets\PrerequisitesList;
-use yii\base\BaseObject;
+use humhub\modules\installer\forms\CronForm;
+use humhub\modules\installer\forms\DatabaseForm;
+use Yii;
 
 /**
  * SetupController checks prerequisites and is responsible for database
@@ -156,48 +153,7 @@ class SetupController extends Controller
 
         $this->module->setDatabaseInstalled();
 
-        return $this->redirect(['/installer/setup/mailing']);
-    }
-
-    /**
-     * Configure SMTP
-     * Checking given SMTP configuration, writing them into a config file.
-     *
-     */
-    public function actionMailing()
-    {
-        $errorMessage = "";
-
-        $model = new MailingForm();
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate())
-        {
-            if($model->sendTest)
-            {
-                /** @var User $user */
-                $user = Yii::$app->user->getIdentity();
-
-                try {
-                    $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
-                        'message' => Yii::t('InstallerModule.base', 'Test message')
-                    ]);
-                    $mail->setTo($user->email);
-                    $mail->setSubject(Yii::t('InstallerModule.base', 'Test message'));
-
-                    if (!$mail->send()) {
-                        $errorMessage = Yii::t('InstallerModule.base', 'Could not send test email.');
-                    }
-                } catch (\Exception $e) {
-                    $errorMessage = Yii::t('InstallerModule.base', 'Could not send test email.') . ' ' . $e->getMessage();
-                }
-
-            } else if ($model->save()) {
-                return $this->redirect(['/installer/setup/cron']);
-            }
-        }
-
-        // Render Template
-        return $this->render('mailing', ['model' => $model, 'errorMessage' => $errorMessage]);
+        return $this->redirect(['/installer/setup/cron']);
     }
 
     /**
@@ -207,7 +163,7 @@ class SetupController extends Controller
     {
         $model = new CronForm();
 
-        if($model->load(Yii::$app->request->post()) && $model->validate()) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             return $this->redirect(['/installer/setup/pretty-urls']);
         }
 

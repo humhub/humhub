@@ -86,7 +86,7 @@ class Module extends \humhub\components\Module
             // return the current connection state.
             return Yii::$app->db->getIsActive();
         } catch (Exception $e) {
-            
+
         }
 
         return false;
@@ -169,6 +169,17 @@ class Module extends \humhub\components\Module
             'url' => Url::to(['/installer/config/modules']),
             'isCurrent' => function() {
                 return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'modules');
+            },
+        ];
+
+        /**
+         * Step: Mailing
+         */
+        $this->configSteps['mailing'] = [
+            'sort' => 350,
+            'url' => Url::to(['/installer/config/mailing']),
+            'isCurrent' => function() {
+                return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'mailing');
             },
         ];
 
