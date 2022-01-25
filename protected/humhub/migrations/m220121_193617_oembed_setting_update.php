@@ -13,7 +13,7 @@ class m220121_193617_oembed_setting_update extends Migration
      */
     public function up()
     {
-        $oembedProvidersJson = Json::encode([
+        $oembedProviders = [
             'Facebook Video' => [
                 'pattern' => '/facebook\.com\/(.*)(video)/',
                 'endpoint' => 'https://graph.facebook.com/v12.0/oembed_video?url=%url%&access_token='
@@ -50,16 +50,29 @@ class m220121_193617_oembed_setting_update extends Migration
                 'pattern' => '/slideshare\.net/',
                 'endpoint' => 'https://www.slideshare.net/api/oembed/2?url=%url%&format=json&maxwidth=450'
             ]
-        ]);
+        ];
 
-        $this->delete('setting', ['name' => 'oembedProviders', 'module_id' => 'base']);
-        $this->insert('setting', [
-            'name' => 'oembedProviders',
-            'value' => $oembedProvidersJson,
-            'module_id' => 'base'
-        ]);
+        foreach (\humhub\models\UrlOembed::getProviders() as $providerUrl => $providerEndpoint)
+        {
+            $providerExists = false;
 
-        Yii::$app->settings->set('oembedProviders', $oembedProvidersJson);
+            foreach ($oembedProviders as $provider) {
+                if(preg_match($provider['pattern'], $providerUrl)) {
+                    $providerExists = true;
+                }
+            }
+
+            if(!$providerExists) {
+                $oembedProviders[$providerUrl] = [
+                    'pattern' => '/' . str_replace('.', '\.', $providerUrl) . '/',
+                    'endpoint' => $providerEndpoint
+                ];
+            }
+        }
+
+        $this->update('setting', ['value' => Json::encode($oembedProviders)], ['name' => 'oembedProviders', 'module_id' => 'base']);
+
+        Yii::$app->settings->set('oembedProviders', Json::encode($oembedProviders));
     }
 
     /**
@@ -67,7 +80,7 @@ class m220121_193617_oembed_setting_update extends Migration
      */
     public function down()
     {
-        $oembedProvidersJson =Json::encode([
+        $oembedProvidersJson = Json::encode([
             'twitter.com'    => 'https://publish.twitter.com/oembed?url=%url%&maxwidth=450',
             'instagram.com'  => 'https://graph.facebook.com/v12.0/instagram_oembed?url=%url%&access_token=',
             'vimeo.com'      => 'https://vimeo.com/api/oembed.json?scheme=https&url=%url%&format=json&maxwidth=450',
@@ -77,12 +90,7 @@ class m220121_193617_oembed_setting_update extends Migration
             'slideshare.net' => 'https://www.slideshare.net/api/oembed/2?url=%url%&format=json&maxwidth=450',
         ]);
 
-        $this->delete('setting', ['name' => 'oembedProviders', 'module_id' => 'base']);
-        $this->insert('setting', [
-            'name' => 'oembedProviders',
-            'value' => $oembedProvidersJson,
-            'module_id' => 'base'
-        ]);
+        $this->update('setting', ['value' => $oembedProvidersJson], ['name' => 'oembedProviders', 'module_id' => 'base']);
 
         Yii::$app->settings->set('oembedProviders', $oembedProvidersJson);
     }

@@ -7,3 +7,4 @@
 - Enh #5224: Add reply-to email in the settings
 - Enh #5471: On the pending approval page, add grouped actions and custom columns
 - Enh #5490: Display confirmation message before display embedded content
+- Enh #5510: oEmbed support for other social networks, redesign of oEmbed settings pages

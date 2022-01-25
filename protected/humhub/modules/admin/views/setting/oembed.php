@@ -23,7 +23,7 @@ use yii\helpers\Url;
         <?php foreach ($providers as $providerName => $provider) : ?>
             <div class="oembed-provider-container col-xs-6 col-md-3">
                 <div class="oembed-provider">
-                    <span><?= $providerName ?></span>
+                    <span><?= Html::encode($providerName) ?></span>
                     <?= Html::a(Yii::t('base', 'Edit'), Url::to(['oembed-edit', 'name' => $providerName]), ['data-method' => 'POST', 'class' => 'btn btn-xs btn-link']); ?>
                 </div>
             </div>
