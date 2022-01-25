@@ -237,11 +237,13 @@ class ConfigController extends Controller
     public function actionMailing()
     {
         $model = new MailingForm();
+        $model->systemEmailName = Yii::$app->settings->get('name');
+        $model->systemEmailAddress = 'noreply@' . Yii::$app->request->hostName;
+        $model->transportType = 'php';
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate())
-        {
-            if($model->sendTest)
-            {
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendTest) {
                 try {
                     $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
                         'message' => Yii::t('InstallerModule.base', 'Test message')

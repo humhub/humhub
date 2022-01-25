@@ -11,20 +11,20 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
 <div id="mailing-form" class="panel panel-default animated fadeIn">
     <div class="panel-heading">
-        <?= Yii::t('InstallerModule.base', '<strong>SMTP</strong> Configuration'); ?>
+        <?= Yii::t('InstallerModule.base', '<strong>Email</strong> Configuration'); ?>
     </div>
 
     <div class="panel-body">
         <p>
-            <?= Yii::t('InstallerModule.base', 'Below you have to enter your SMTP connection details. If you’re not sure about these, please contact your system administrator.'); ?>
+            <?= Yii::t('InstallerModule.base', 'Here you can define basic settings for sending emails.'); ?>
         </p>
 
         <?php $form = ActiveForm::begin(); ?>
 
         <hr/>
-        <?= $form->field($model, 'systemEmailAddress') ?>
-        <hr/>
         <?= $form->field($model, 'systemEmailName') ?>
+        <hr/>
+        <?= $form->field($model, 'systemEmailAddress') ?>
         <hr/>
         <?= $form->field($model, 'transportType')->dropDownList(MailingForm::getTransportTypeOtions()) ?>
         <hr>
@@ -49,9 +49,22 @@ use humhub\modules\ui\form\widgets\ActiveForm;
             </div>
 
         </div>
+        <br/>
 
-        <?= $form->field($model, 'testEmailAddress') ?>
-        <?= Html::submitButton(Yii::t('InstallerModule.base', 'Send Test E-mail'), ['class' => 'btn btn-secondary', 'style' => 'margin-right: .5rem;', 'name' => 'MailingForm[sendTest]', 'value' => 1, 'data-loader' => 'modal', 'data-message' => Yii::t('InstallerModule.base', 'Sending test email...')]); ?>
+        <p>
+            <?= Yii::t('InstallerModule.base', 'To verify the settings, you can enter an email address below and send a test email.'); ?>
+        </p>
+
+        <br/>
+        <div class="row ">
+            <div class="col-md-8">
+                <?= $form->field($model, 'testEmailAddress') ?>
+            </div>
+            <div class="col-md-4" style="margin-top:20px;text-align:right">
+                <?= Html::submitButton(Yii::t('InstallerModule.base', 'Send Test Email'), ['class' => 'btn btn-secondary', 'style' => 'margin-right: .5rem;', 'name' => 'MailingForm[sendTest]', 'value' => 1, 'data-loader' => 'modal', 'data-message' => Yii::t('InstallerModule.base', 'Sending test email...')]); ?>
+            </div>
+        </div>
+
         <hr>
 
         <?php if ($errorMessage) { ?>

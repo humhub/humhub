@@ -98,16 +98,16 @@ class MailingForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'systemEmailAddress' => Yii::t('InstallerModule.settings', 'E-Mail sender address'),
-            'systemEmailName' => Yii::t('InstallerModule.settings', 'E-Mail sender name'),
-            'transportType' => Yii::t('InstallerModule.settings', 'Mail Transport Type'),
+            'systemEmailAddress' => Yii::t('InstallerModule.settings', 'Sender address'),
+            'systemEmailName' => Yii::t('InstallerModule.settings', 'Sender name'),
+            'transportType' => Yii::t('InstallerModule.settings', 'Transport Type'),
             'hostname' => Yii::t('InstallerModule.base', 'Hostname'),
             'port' => Yii::t('InstallerModule.base', 'Port'),
             'username' => Yii::t('InstallerModule.base', 'Username'),
             'password' => Yii::t('InstallerModule.base', 'Password'),
             'encryption' => Yii::t('InstallerModule.base', 'Encryption'),
             'allowSelfSignedCerts' => Yii::t('InstallerModule.base', 'Allow Self-Signed Certificates'),
-            'testEmailAddress' => Yii::t('InstallerModule.base', 'E-mail address to receive test e-mail'),
+            'testEmailAddress' => Yii::t('InstallerModule.base', 'Email address'),
         ];
     }
 
@@ -118,9 +118,9 @@ class MailingForm extends \yii\base\Model
     {
         return [
             'systemEmailAddress' => Yii::t('InstallerModule.settings', 'E-Mail address from which e-mails will be sent.'),
-            'systemEmailName' => Yii::t('InstallerModule.settings', 'E-Mail sender name'),
-            'transportType' => Yii::t('InstallerModule.settings', 'Mail Transport Type'),
-            'hostname' => Yii::t('InstallerModule.base', 'Hostname of your SMTP Server'),
+//            'systemEmailName' => Yii::t('InstallerModule.settings', 'E-Mail sender name'),
+            'transportType' => Yii::t('InstallerModule.settings', 'Choose PHP as transport type if you are unsure.'),
+//            'hostname' => Yii::t('InstallerModule.base', 'Hostname of your SMTP Server'),
             'port' => Yii::t('InstallerModule.base', 'Optional: Port of your SMTP Server. Leave empty to use default port.'),
             'username' => Yii::t('InstallerModule.base', 'Your SMTP username'),
             'password' => Yii::t('InstallerModule.base', 'Your SMTP password.'),
