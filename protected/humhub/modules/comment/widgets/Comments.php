@@ -25,6 +25,8 @@ use yii\helpers\Url;
  */
 class Comments extends Widget
 {
+    const VIEW_MODE_COMPACT = 'compact';
+    const VIEW_MODE_FULL = 'full';
 
     /**
      * @var Comment|ContentActiveRecord
@@ -40,6 +42,11 @@ class Comments extends Widget
      * @var Module
      */
     public $module;
+
+    /**
+     * @var string
+     */
+    public $viewMode = self::VIEW_MODE_COMPACT;
 
     /**
      * @inheritdoc
@@ -80,19 +87,20 @@ class Comments extends Widget
         ]);
     }
 
-    private function isViewMode(): bool
+    private function isFullViewMode(): bool
     {
-        return ($this->renderOptions instanceof StreamEntryOptions) && $this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_DETAIL);
+        return $this->viewMode === self::VIEW_MODE_FULL ||
+            (($this->renderOptions instanceof StreamEntryOptions) && $this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_DETAIL));
     }
 
     public function getLimit(): int
     {
-        return $this->isViewMode() ? $this->module->commentsPreviewMaxViewMode : $this->module->commentsPreviewMax;
+        return $this->isFullViewMode() ? $this->module->commentsPreviewMaxViewMode : $this->module->commentsPreviewMax;
     }
 
     public function getPageSize(): int
     {
-        return $this->isViewMode() ? $this->module->commentsBlockLoadSizeViewMode : $this->module->commentsBlockLoadSize;
+        return $this->isFullViewMode() ? $this->module->commentsBlockLoadSizeViewMode : $this->module->commentsBlockLoadSize;
     }
 
     private function getShowMoreUrl(): string
