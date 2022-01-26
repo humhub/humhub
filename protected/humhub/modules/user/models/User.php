@@ -200,7 +200,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function validateForbiddenUsername($attribute, $params)
     {
         if (in_array(strtolower($this->$attribute), Yii::$app->controller->module->forbiddenUsernames)){
-            $this->addError($attribute, Yii::t('UserModule.base', 'You cannot use this username.'));
+            $this->addError($attribute, Yii::t('UserModule.account', 'You cannot use this username.'));
         }
     }
 
