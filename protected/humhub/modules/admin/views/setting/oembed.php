@@ -1,7 +1,13 @@
 <?php
 
+use humhub\modules\admin\models\forms\OEmbedSettingsForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\Button;
 use yii\helpers\Html;
 use yii\helpers\Url;
+
+/* @var array $providers */
+/* @var OEmbedSettingsForm $settings */
 ?>
 
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
@@ -21,5 +27,13 @@ use yii\helpers\Url;
 <?php else: ?>
     <p><strong><?= Yii::t('AdminModule.settings', 'Currently no provider active!'); ?></strong></p>
 <?php endif; ?>
+
+<?php $form = ActiveForm::begin() ?>
+
+    <?= $form->field($settings, 'requestConfirmation')->checkbox() ?>
+
+    <?= Button::primary(Yii::t('AdminModule.settings', 'Save'))->submit() ?>
+
+<?php ActiveForm::end(); ?>
 
 <?php $this->endContent(); ?>

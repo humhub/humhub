@@ -293,6 +293,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             'updated_by' => Yii::t('UserModule.base', 'Updated by'),
             'last_login' => Yii::t('UserModule.base', 'Last Login'),
             'visibility' => Yii::t('UserModule.base', 'Visibility'),
+            'originator.username' => Yii::t('UserModule.base', 'Invited by'),
         ];
     }
 
@@ -352,6 +353,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function getProfile()
     {
         return $this->hasOne(Profile::class, ['user_id' => 'id']);
+    }
+
+    public function getOriginator()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_originator_id'])->viaTable(Invite::tableName(), ['email' => 'email']);
     }
 
     /**

@@ -28,6 +28,7 @@ $columns = [
     ['class' => ImageColumn::class],
     ['class' => DisplayNameColumn::class],
     'email',
+    'originator.username',
 ];
 foreach ($profileFieldsColumns as $profileField) {
     $columns[] = [
