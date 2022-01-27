@@ -245,6 +245,10 @@ class Events extends BaseObject
             // Exclude all Installed modules when requested only NOT Installed modules
             return false;
         }
+        if (($searchInstalled || $searchNotInstalled) && count($tags) === 1) {
+            // No need to next filter when only 1 tag "Installed" or "Not Installed" is selected
+            return true;
+        }
 
         foreach ($tags as $tag) {
             switch ($tag) {
