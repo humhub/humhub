@@ -14,7 +14,7 @@ use yii\helpers\Url;
 
 /**
  * Class Module for not installed module
- * Used in order to initialise module date from array
+ * Used in order to initialise module data from array
  *
  * @property-read string $version
  * @property-read string $image
@@ -82,6 +82,11 @@ class Module extends Model
     /**
      * @var string
      */
+    public $isPartner;
+
+    /**
+     * @var string
+     */
     public $isDeprecated;
 
     /**
@@ -118,6 +123,18 @@ class Module extends Model
      * @var string
      */
     public $checkoutUrl;
+
+    public function __construct($config = [])
+    {
+        foreach ($config as $name => $value) {
+            if (!property_exists($this, $name)) {
+                // Exclude new unknown property from marketplace API to avoid error
+                unset($config[$name]);
+            }
+        }
+
+        parent::__construct($config);
+    }
 
     public function getVersion(): string
     {

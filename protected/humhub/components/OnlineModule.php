@@ -51,6 +51,7 @@ class OnlineModule extends Component
      *        - showDisclaimer
      *        - isThirdParty
      *        - isCommunity
+     *        - isPartner
      *        - isDeprecated
      *        - latestVersion
      *        - moduleImageUrl
@@ -66,21 +67,19 @@ class OnlineModule extends Component
      */
     public function info(?string $field = null)
     {
-        if ($this->_onlineInfo !== null) {
-            return $this->_onlineInfo;
-        }
+        if ($this->_onlineInfo === null) {
+            /* @var MarketplaceModule $marketplaceModule */
+            $marketplaceModule = Yii::$app->getModule('marketplace');
+            if (!($marketplaceModule instanceof MarketplaceModule && $marketplaceModule->enabled)) {
+                return null;
+            }
 
-        /* @var MarketplaceModule $marketplaceModule */
-        $marketplaceModule = Yii::$app->getModule('marketplace');
-        if (!($marketplaceModule instanceof MarketplaceModule && $marketplaceModule->enabled)) {
-            return null;
-        }
-
-        if ($this->module instanceof ModelModule) {
-            $this->_onlineInfo = (array)$this->module;
-        } else {
-            $onlineModules = $marketplaceModule->onlineModuleManager->getModules();
-            $this->_onlineInfo = isset($onlineModules[$this->module->id]) ? $onlineModules[$this->module->id] : [];
+            if ($this->module instanceof ModelModule) {
+                $this->_onlineInfo = (array)$this->module;
+            } else {
+                $onlineModules = $marketplaceModule->onlineModuleManager->getModules();
+                $this->_onlineInfo = isset($onlineModules[$this->module->id]) ? $onlineModules[$this->module->id] : [];
+            }
         }
 
         if ($field === null) {
