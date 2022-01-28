@@ -18,6 +18,7 @@ use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\web\HttpException;
 
 /**
  * ConfigController allows inital configuration of humhub.
@@ -253,7 +254,7 @@ class ConfigController extends Controller
 
                 // Create second user
                 $userModel = new User();
-                $userModel->scenario = 'registration';
+                $userModel->scenario = User::SCENARIO_EDIT_ADMIN;
                 $profileModel = $userModel->profile;
                 $profileModel->scenario = 'registration';
 
@@ -261,7 +262,7 @@ class ConfigController extends Controller
                 $userModel->username = "david1986";
                 $userModel->email = "david.roberts@example.com";
                 $userModel->language = '';
-                $userModel->tags = "Microsoft Office, Marketing, SEM, Digital Native";
+                $userModel->tagsField = ['Microsoft Office', 'Marketing', 'SEM', 'Digital Native'];
                 $userModel->save();
 
                 $profileImage = new \humhub\libs\ProfileImage($userModel->guid);
@@ -283,7 +284,7 @@ class ConfigController extends Controller
 
                 // Create third user
                 $userModel2 = new User();
-                $userModel2->scenario = 'registration';
+                $userModel2->scenario = User::SCENARIO_EDIT_ADMIN;
                 $profileModel2 = $userModel2->profile;
                 $profileModel2->scenario = 'registration';
 
@@ -291,7 +292,7 @@ class ConfigController extends Controller
                 $userModel2->username = "sara1989";
                 $userModel2->email = "sara.schuster@example.com";
                 $userModel2->language = '';
-                $userModel2->tags = "Yoga, Travel, English, German, French";
+                $userModel2->tagsField = ['Yoga', 'Travel', 'English', 'German', 'French'];
                 $userModel2->save();
 
                 $profileImage2 = new \humhub\libs\ProfileImage($userModel2->guid);
@@ -388,7 +389,7 @@ class ConfigController extends Controller
 
 
         $userModel = new User();
-        $userModel->scenario = 'registration_email';
+        $userModel->scenario = User::SCENARIO_EDIT_ADMIN;
         $userPasswordModel = new Password();
         $userPasswordModel->scenario = 'registration';
         $profileModel = $userModel->profile;
@@ -453,7 +454,7 @@ class ConfigController extends Controller
 
             $form->models['User']->status = User::STATUS_ENABLED;
             $form->models['User']->language = '';
-            $form->models['User']->tags = 'Administration, Support, HumHub';
+            $form->models['User']->tagsField = ['Administration', 'Support', 'HumHub'];
             $form->models['User']->save();
 
             $form->models['Profile']->user_id = $form->models['User']->id;
@@ -524,9 +525,10 @@ class ConfigController extends Controller
     {
         // Should not happen
         if (Yii::$app->settings->get('secret') == "") {
-            throw new CException("Finished without secret setting!");
+            throw new HttpException("Finished without secret setting!");
         }
 
+        Yii::$app->settings->set('defaultTimeZone', Yii::$app->timeZone);
         Yii::$app->settings->set('timeZone', Yii::$app->timeZone);
 
         // Set to installed

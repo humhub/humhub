@@ -37,6 +37,8 @@ The license was successfully removed!
   'Browse online' => 'Böngéssz online',
   'Buy' => 'Vásárlás',
   'Buy (%price%)' => 'Vásárlás (%price%)',
+  'Could not connect to HumHub API!
+' => 'Nem tudott csatlakozni a HumHub API-hoz!',
   'Could not connect to licence server!' => 'Nem sikerült csatlakozni a licenckiszolgálóhoz!',
   'Could not extract module!' => 'Modul kibontása sikertelen!',
   'Could not remove old module path!' => 'Nem sikerült eltávolítani a régi modul elérési útját!',
@@ -50,6 +52,8 @@ The license was successfully removed!
   'Installed' => 'Telepítve',
   'Installed version:' => 'Telepített verzió:',
   'Installing module...' => 'Modul telepítése...',
+  'Invalid module licence key!
+' => 'Érvénytelen modul licenckulcs!',
   'Latest compatible Version:' => 'Legújabb kompatibilis verzió:',
   'Latest compatible version:' => 'Legújabb kompatibilis verzió:',
   'Latest version:' => 'Legújabb verzió:',
@@ -61,6 +65,10 @@ The license was successfully removed!
   'Max. users:' => 'Max. felhasználó:',
   'Module directory %modulePath% is not writeable!' => 'A %modulePath% modulkönyvtár nem írható!',
   'Module download failed! (%error%)' => 'Modul letöltése sikertelen! (%error%)',
+  'Module licence added!
+' => 'Modul licenc hozzáadva!',
+  'Module licence key cannot be empty!
+' => 'A modul licenckulcsa nem lehet üres!',
   'Module not found or activated!
 ' => 'A modul nem található vagy nincs aktiválva!',
   'Module not found!

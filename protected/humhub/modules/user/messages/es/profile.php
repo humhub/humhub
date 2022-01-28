@@ -105,6 +105,7 @@ return array (
   'Updated at' => 'Actualizado el',
   'Updated by' => 'Actualizado por',
   'Url' => 'Web',
+  'Use as Directory filter' => 'Utilizar como filtro del Directorio',
   'Username' => 'Nombre de usuario',
   'Validator' => 'Validar',
   'Vimeo URL' => 'Enlace de Vimeo',

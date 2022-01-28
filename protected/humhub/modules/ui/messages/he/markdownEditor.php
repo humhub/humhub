@@ -18,7 +18,7 @@ return array (
   'Preview' => '',
   'Quote' => '',
   'Target' => '',
-  'Title' => '',
+  'Title' => 'כותרת',
   'Title of your link' => '',
   'URL/Link' => '',
   'Unordered List' => '',

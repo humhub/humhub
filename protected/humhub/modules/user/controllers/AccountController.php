@@ -9,6 +9,7 @@
 namespace humhub\modules\user\controllers;
 
 use humhub\compat\HForm;
+use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\user\authclient\interfaces\PrimaryClient;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\forms\AccountChangeEmail;
@@ -20,7 +21,6 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\user\models\forms\AccountDelete;
-use humhub\modules\space\models\Membership;
 
 /**
  * AccountController provides all standard actions for the current logged in
@@ -120,20 +120,26 @@ class AccountController extends BaseAccountController
             $model->language = Yii::$app->settings->get('defaultLanguage');
         }
         $model->timeZone = $user->time_zone;
-        if ($model->timeZone == "") {
-            $model->timeZone = Yii::$app->settings->get('timeZone');
+        if (empty($model->timeZone)) {
+            $model->timeZone = Yii::$app->settings->get('defaultTimeZone');
         }
 
-        $model->tags = $user->tags;
+        $model->tags = $user->getTags();
         $model->show_introduction_tour = Yii::$app->getModule('tour')->settings->contentContainer($user)->get("hideTourPanel");
         $model->visibility = $user->visibility;
+        $model->blockedUsers = $user->getBlockedUserGuids();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             Yii::$app->getModule('tour')->settings->contentContainer($user)->set('hideTourPanel', $model->show_introduction_tour);
+
+            $user->scenario = User::SCENARIO_EDIT_ACCOUNT_SETTINGS;
             $user->language = $model->language;
-            $user->tags = $model->tags;
+            $user->tagsField = $model->tags;
             $user->time_zone = $model->timeZone;
             $user->visibility = $model->visibility;
+            if (Yii::$app->getModule('user')->allowBlockUsers()) {
+                $user->blockedUsersField = $model->blockedUsers;
+            }
             $user->save();
 
             $this->view->saved();
@@ -146,6 +152,17 @@ class AccountController extends BaseAccountController
         $col->asort($languages);
 
         return $this->render('editSettings', ['model' => $model, 'languages' => $languages]);
+    }
+
+    /**
+     * Returns user tags list in JSON format filtered by keyword
+     */
+    public function actionSearchTagsJson()
+    {
+        $keyword = Yii::$app->request->get('keyword');
+        $pickerTags = ContainerTagPicker::searchTagsByContainerClass(User::class, $keyword);
+
+        return $this->asJson($pickerTags);
     }
 
     /**

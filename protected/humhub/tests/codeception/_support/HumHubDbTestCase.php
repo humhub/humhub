@@ -44,9 +44,11 @@ class HumHubDbTestCase extends Unit
 
     public $time;
 
-    protected function setUp()
+
+    protected function setUp(): void
     {
         parent::setUp();
+
         $webRoot = dirname(dirname(__DIR__)) . '/../../..';
         Yii::setAlias('@webroot', realpath($webRoot));
         $this->initModules();
@@ -138,6 +140,7 @@ class HumHubDbTestCase extends Unit
             'content' => ['class' => \humhub\modules\content\tests\codeception\fixtures\ContentFixture::class],
             'notification' => ['class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::class],
             'file' => ['class' => \humhub\modules\file\tests\codeception\fixtures\FileFixture::class],
+            'file_history' => ['class' => \humhub\modules\file\tests\codeception\fixtures\FileHistoryFixture::class],
             'activity' => ['class' => \humhub\modules\activity\tests\codeception\fixtures\ActivityFixture::class],
             'friendship' => ['class' => \humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture::class],
             'live' => [ 'class' => LiveFixture::class]

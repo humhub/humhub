@@ -1,6 +1,8 @@
 <?php
-return array (
-  'Collapse' => '折叠',
-  'Read more' => '',
-  'User Interface' => '',
-);
+
+return [
+    'Collapse' => '折叠',
+    'Read more' => '',
+    'Reset filters' => '',
+    'User Interface' => '',
+];

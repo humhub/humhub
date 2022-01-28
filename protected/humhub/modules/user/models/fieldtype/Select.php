@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -30,9 +31,14 @@ class Select extends BaseType
     public $options;
 
     /**
+     * @inerhitdoc
+     */
+    public $canBeDirectoryFilter = true;
+
+    /**
      * Rules for validating the Field Type Settings Form
      *
-     * @return type
+     * @return array
      */
     public function rules()
     {
@@ -44,7 +50,7 @@ class Select extends BaseType
     /**
      * Returns Form Definition for edit/create this field.
      *
-     * @return Array Form Definition
+     * @return array Form Definition
      */
     public function getFormDefinition($definition = [])
     {
@@ -80,8 +86,8 @@ class Select extends BaseType
     /**
      * Returns the Field Rules, to validate users input
      *
-     * @param type $rules
-     * @return type
+     * @param array $rules
+     * @return array
      */
     public function getFieldRules($rules = [])
     {
@@ -106,7 +112,7 @@ class Select extends BaseType
     /**
      * Returns a list of possible options
      *
-     * @return Array
+     * @return array
      */
     public function getSelectItems()
     {
@@ -126,13 +132,9 @@ class Select extends BaseType
     }
 
     /**
-     * Returns value of option
-     *
-     * @param User $user
-     * @param Boolean $raw Output Key
-     * @return String
+     * @inheritdoc
      */
-    public function getUserValue($user, $raw = true)
+    public function getUserValue(User $user, $raw = true): ?string
     {
         $internalName = $this->profileField->internal_name;
         $value = $user->profile->$internalName;
@@ -148,5 +150,3 @@ class Select extends BaseType
     }
 
 }
-
-?>

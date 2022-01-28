@@ -1,6 +1,8 @@
 <?php
-return array (
-  'Collapse' => 'Thu hẹp',
-  'Read more' => '',
-  'User Interface' => 'Giao diện người dùng',
-);
+
+return [
+    'Collapse' => 'Thu hẹp',
+    'User Interface' => 'Giao diện người dùng',
+    'Read more' => '',
+    'Reset filters' => '',
+];

@@ -1,6 +1,8 @@
 <?php
-return array (
-  'Collapse' => 'Összecsukás',
-  'Read more' => 'Olvass tovább',
-  'User Interface' => 'Felhasználói felület',
-);
+
+return [
+    'Collapse' => 'Összecsukás',
+    'Read more' => 'Olvass tovább',
+    'User Interface' => 'Felhasználói felület',
+    'Reset filters' => '',
+];

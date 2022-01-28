@@ -67,6 +67,12 @@ class Module extends \humhub\components\Module
     public $hideAboutPage = false;
 
     /**
+     * @var bool hide "Spaces" in top menu
+     * @since 1.10
+     */
+    public $hideSpacesPage = false;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
@@ -80,6 +86,7 @@ class Module extends \humhub\components\Module
         }
 
         return [
+            new permissions\SpaceDirectoryAccess(),
             new permissions\CreatePrivateSpace(),
             new permissions\CreatePublicSpace(),
         ];

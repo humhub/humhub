@@ -105,6 +105,7 @@ return array (
   'Updated at' => 'Aangepast op',
   'Updated by' => 'Aangepast door',
   'Url' => 'URL',
+  'Use as Directory filter' => 'Gebruiken als indexfilter',
   'Username' => 'Gebruikernaam',
   'Validator' => 'Validatie',
   'Vimeo URL' => 'Vimeo URL',

@@ -31,6 +31,11 @@ class ActiveForm extends \yii\bootstrap\ActiveForm
      */
     public $fieldClass = ActiveField::class;
 
+    /**
+     * @var bool If user trying to leave unsaved data on the page
+     * this option implements the message box that asks user to save
+     * data of the form before leaving.
+     */
     public $acknowledge = false;
 
     /**

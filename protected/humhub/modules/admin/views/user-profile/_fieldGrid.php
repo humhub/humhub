@@ -23,11 +23,14 @@ use yii\helpers\Url;
     <br/>
 
 <?= GridView::widget([
-    'dataProvider' => new ArrayDataProvider(['allModels' => $category->fields]),
+    'dataProvider' => new ArrayDataProvider(['allModels' => $category->fields, 'pagination' => ['pageSize' => 0]]),
     'layout' => '{items}',
     'columns' => [
         [
             'attribute' => 'title',
+            'content' => function (ProfileField $model, $key, $index, $that) {
+                return Yii::t($model->getTranslationCategory(), $that->getDataCellValue($model, $key, $index));
+            }
         ],
         [
             'class' => CheckboxColumn::class,
@@ -74,6 +77,9 @@ use yii\helpers\Url;
                 }
                 return $that->getDataCellValue($model, $key, $index);
             }
+        ],
+        [
+            'attribute' => 'sort_order',
         ],
         [
             'header' => '&nbsp;',

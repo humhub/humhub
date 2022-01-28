@@ -8,6 +8,7 @@ use humhub\libs\Html;
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $object \humhub\modules\content\components\ContentActiveRecord */
 /* @var $comments \humhub\modules\comment\models\Comment[] */
+/* @var $currentCommentId int */
 /* @var $objectModel string */
 /* @var $objectId int */
 /* @var $id string unqiue object id */
@@ -28,7 +29,10 @@ use humhub\libs\Html;
         <?php endif; ?>
 
         <?php foreach ($comments as $comment) : ?>
-            <?= Comment::widget(['comment' => $comment]); ?>
+            <?= Comment::widget([
+                'comment' => $comment,
+                'additionalClass' => ($currentCommentId == $comment->id ? 'comment-current' : ''),
+            ]); ?>
         <?php endforeach; ?>
     </div>
 

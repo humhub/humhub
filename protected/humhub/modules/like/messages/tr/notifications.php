@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Likes' => '',
+  'Likes' => 'Beğeniler',
   'Receive Notifications when someone likes your content.' => '',
   'View Online' => 'Çevrimiçi Görüntüleme',
   '{displayNames} likes your {contentTitle}.' => '',

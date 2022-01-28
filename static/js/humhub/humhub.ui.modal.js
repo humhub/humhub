@@ -113,13 +113,10 @@ humhub.module('ui.modal', function (module, require, $) {
      * @returns {undefined}
      */
     Modal.prototype.close = function (reset) {
-        var that = this;
-        this.$.fadeOut('fast', function () {
-            that.$.modal('hide');
-            if (reset) {
-                that.reset();
-            }
-        });
+        this.$.modal('hide');
+        if (reset) {
+            this.reset();
+        }
     };
 
     /**
@@ -526,14 +523,13 @@ humhub.module('ui.modal', function (module, require, $) {
         //Init handler
         var that = this;
         if (cfg['handler']) {
-            $confirmButton.one('click', function (evt) {
+            $confirmButton.one('click', function () {
                 that.clear();
                 cfg['handler'](true);
             });
-        }
 
-        if (cfg['handler']) {
-            $cancelButton.one('click', function (evt) {
+            var $closeButtonsIcons = this.$.find('[data-modal-close]');
+            $closeButtonsIcons.one('click', function () {
                 that.clear();
                 cfg['handler'](false);
             });
@@ -558,6 +554,10 @@ humhub.module('ui.modal', function (module, require, $) {
 
         $(document).on('shown.bs.modal', '.modal.in', function (event) {
             _setModalsAndBackdropsOrder();
+        });
+
+        $(document).on('hide.bs.modal', '.modal', function (event) {
+            $(this).addClass('fade');
         });
 
         $(document).on('hidden.bs.modal', '.modal', function (event) {

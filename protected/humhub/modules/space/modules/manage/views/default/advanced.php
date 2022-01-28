@@ -7,7 +7,7 @@ use yii\helpers\Url;
 
 /* @var $this \humhub\modules\ui\view\components\View
  * @var $model \humhub\modules\space\modules\manage\models\AdvancedSettingsSpace
- * @var $indexModuleSection array
+ * @var $indexModuleSelection array
  */
 
 ?>
@@ -23,7 +23,7 @@ use yii\helpers\Url;
 
     <div class="panel-body">
 
-        <?php $form = ActiveForm::begin(['options' => ['id' => 'spaceIndexForm'], 'enableClientValidation' => false]); ?>
+        <?php $form = ActiveForm::begin(['options' => ['id' => 'spaceIndexForm'], 'enableClientValidation' => false, 'acknowledge' => true]); ?>
         <?php if (Yii::$app->urlManager->enablePrettyUrl) : ?>
             <?= $form->field($model, 'url')->hint(Yii::t('SpaceModule.manage', 'e.g. example for {baseUrl}/s/example', ['baseUrl' => Url::base(true)])); ?>
         <?php endif; ?>

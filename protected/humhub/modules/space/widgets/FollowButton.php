@@ -45,7 +45,7 @@ class FollowButton extends Widget
     /**
      * @var array options for unfollow button 
      */
-    public $unfollowOptions = ['class' => 'btn btn-info btn-sm'];
+    public $unfollowOptions = ['class' => 'btn btn-primary btn-sm active'];
 
     /**
      * @inheritdoc
@@ -57,7 +57,7 @@ class FollowButton extends Widget
         }
 
         if ($this->unfollowLabel === null) {
-            $this->unfollowLabel = Yii::t('SpaceModule.base', 'Unfollow');
+            $this->unfollowLabel = '<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('SpaceModule.base', 'Following');
         }
 
         if (!isset($this->followOptions['class'])) {
@@ -82,7 +82,7 @@ class FollowButton extends Widget
      */
     public function run()
     {
-        if (Yii::$app->user->isGuest || $this->space->isMember() || $this->space->visibility == Space::VISIBILITY_NONE) {
+        if (Yii::$app->user->isGuest || $this->space->visibility == Space::VISIBILITY_NONE) {
             return;
         }
 
@@ -91,7 +91,10 @@ class FollowButton extends Widget
         $this->unfollowOptions['class'] .= ' unfollowButton';
 
         // Hide inactive button
-        if ($this->space->isFollowedByUser()) {
+        if ($this->space->isMember()) {
+            $this->followOptions['style'] .= ' display:none;';
+            $this->unfollowOptions['style'] .= ' display:none;';
+        } elseif ($this->space->isFollowedByUser()) {
             $this->followOptions['style'] .= ' display:none;';
         } else {
             $this->unfollowOptions['style'] .= ' display:none;';
@@ -112,6 +115,11 @@ class FollowButton extends Widget
         // Add Action Url
         $this->followOptions['data-ui-loader'] = '';
         $this->unfollowOptions['data-ui-loader'] = '';
+
+        // Confirm action "Unfollow"
+        $this->unfollowOptions['data-action-confirm'] = Yii::t('SpaceModule.base', 'Would you like to unfollow Space {spaceName}?', [
+            '{spaceName}' => '<strong>' . $this->space->getDisplayName() . '</strong>'
+        ]);
 
         $module = Yii::$app->getModule('space');
 

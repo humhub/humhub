@@ -8,6 +8,7 @@
 
 namespace humhub\modules\ui\filter\widgets;
 
+use Yii;
 use yii\helpers\ArrayHelper;
 
 class CheckboxFilterInput extends FilterInput
@@ -32,6 +33,17 @@ class CheckboxFilterInput extends FilterInput
     public $iconInActive = 'fa-square-o';
 
     public $checked = false;
+
+    /**
+     * @inheritdoc
+     */
+    protected function initFromRequest()
+    {
+        $filters = Yii::$app->request->get($this->category);
+        if (!empty($filters[$this->id])) {
+            $this->checked = true;
+        }
+    }
 
     /**
      * @inheritdoc

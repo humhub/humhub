@@ -30,7 +30,7 @@ abstract class BaseTypeVirtual extends BaseType
     /**
      * @inheritdoc
      */
-    final public function getUserValue($user, $raw = true)
+    final public function getUserValue(User $user, $raw = true): ?string
     {
         return $this->getVirtualUserValue($user, $raw);
     }
@@ -64,7 +64,7 @@ abstract class BaseTypeVirtual extends BaseType
      */
     protected static function getHiddenFormFields()
     {
-        return ['searchable', 'required', 'show_at_registration', 'editable'];
+        return ['searchable', 'required', 'show_at_registration', 'editable', 'directory_filter'];
     }
 
     /**
@@ -85,6 +85,7 @@ abstract class BaseTypeVirtual extends BaseType
         $this->profileField->searchable = 0;
         $this->profileField->required = 0;
         $this->profileField->show_at_registration = 0;
+        $this->profileField->directory_filter = 0;
         return parent::save();
     }
 

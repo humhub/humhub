@@ -25,12 +25,12 @@ class CreatePublicSpace extends BasePermission
     /**
      * @inheritdoc
      */
-    protected $title = 'Create public space';
+    protected $title = 'Create Public Spaces';
 
     /**
      * @inheritdoc
      */
-    protected $description = 'Can create public visible spaces. (Listed in directory)';
+    protected $description = 'Can create Spaces visible to all members.';
 
     /**
      * @inheritdoc
@@ -45,8 +45,8 @@ class CreatePublicSpace extends BasePermission
     public function __construct($config = []) {
         parent::__construct($config);
         
-        $this->title = Yii::t('SpaceModule.permissions', 'Create public space');
-        $this->description = Yii::t('SpaceModule.permissions', 'Can create public visible spaces. (Listed in directory)');
+        $this->title = Yii::t('SpaceModule.permissions', 'Create Public Spaces');
+        $this->description = Yii::t('SpaceModule.permissions', 'Can create Spaces visible to all members.');
     }
 
 }

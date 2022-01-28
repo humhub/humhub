@@ -72,6 +72,10 @@ class NotificationManager
                 continue;
             }
 
+            if ($notification->isBlockedFromUser($user)) {
+                continue;
+            }
+
             if (in_array($user->id, $processed)) {
                 continue;
             }

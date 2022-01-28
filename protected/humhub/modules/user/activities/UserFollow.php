@@ -9,6 +9,7 @@
 namespace humhub\modules\user\activities;
 
 use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\content\models\Content;
 
 /**
  * Activity when somebody follows an object
@@ -27,6 +28,11 @@ class UserFollow extends BaseActivity
      * @inheritdoc
      */
     public $viewName = "userFollow";
+
+    /**
+     * @inheritdoc
+     */
+    public $visibility = Content::VISIBILITY_PUBLIC;
 
     /**
      * @inheritdoc

@@ -1,6 +1,8 @@
 <?php
-return array (
-  'Collapse' => 'Свернуть',
-  'Read more' => '',
-  'User Interface' => 'Интерфейс Пользователя',
-);
+
+return [
+    'Collapse' => 'Свернуть',
+    'Read more' => 'Развернуть',
+    'User Interface' => 'Интерфейс Пользователя',
+    'Reset filters' => '',
+];

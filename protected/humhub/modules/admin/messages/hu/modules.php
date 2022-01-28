@@ -15,6 +15,7 @@ return array (
   'Enable module...' => 'Modul bekapcsolása...',
   'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => 'Itt kiválaszthatod, hogy egy modul automatikusan aktiválódjon-e egy közösségben vagy felhasználói profilban. Ha azt szeretnéd, hogy a modul legyen aktiválva, válaszd a "mindig aktiválva" lehetőséget.',
   'Legacy' => 'Örökség',
+  'License not found or expired. Please contact the module publisher.' => 'A licenc nem található vagy lejárt. Kérünk, lépj kapcsolatba a modul kiadójával.',
   'Module path %path% is not writeable!' => 'A(z ) %path% modulútvonal nem írható!',
   'Modules extend the functionality of HumHub. Here you can install and manage modules from the HumHub Marketplace.' => 'A modulok kiterjesztik a HumHub funkcionalitását. Itt modulokat telepíthetsz és kezelhetsz a HumHub piactérről.',
   'More info' => 'További információk',

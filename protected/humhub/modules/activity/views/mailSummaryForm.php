@@ -10,11 +10,11 @@
 /* @var $form humhub\widgets\ActiveForm */
 
 use humhub\libs\Html;
-use yii\bootstrap\ActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\space\widgets\SpacePickerField;
 ?>
 
-<?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
+<?php $form = ActiveForm::begin(['enableClientValidation' => false, 'acknowledge' => true]); ?>
 
     <?= $form->field($model, 'interval')->dropDownList($model->getIntervals()) ?>
     <?= $form->field($model, 'limitSpacesMode')->radioList($model->getLimitSpaceModes()) ?>

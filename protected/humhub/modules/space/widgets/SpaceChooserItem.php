@@ -7,7 +7,7 @@ use Yii;
 
 /**
  * Used to render a single space chooser result.
- * 
+ *
  */
 class SpaceChooserItem extends Widget
 {
@@ -46,25 +46,23 @@ class SpaceChooserItem extends Widget
         $badge = $this->getBadge();
 
         return $this->render('spaceChooserItem', [
-                    'space' => $this->space,
-                    'updateCount' => $this->updateCount,
-                    'visible' => $this->visible,
-                    'badge' => $badge,
-                    'data' => $data
+            'space' => $this->space,
+            'updateCount' => $this->updateCount,
+            'visible' => $this->visible,
+            'badge' => $badge,
+            'data' => $data
         ]);
     }
 
     public function getBadge()
     {
-        if ($this->isMember) {
-            return '<i class="fa fa-users badge-space pull-right type tt" title="' . Yii::t('SpaceModule.chooser', 'You are a member of this space') . '" aria-hidden="true"></i>';
-        } elseif ($this->isFollowing) {
+        if ($this->isFollowing) {
             return '<i class="fa fa-star badge-space pull-right type tt" title="' . Yii::t('SpaceModule.chooser', 'You are following this space') . '" aria-hidden="true"></i>';
         } elseif ($this->space->isArchived()) {
             return '<i class="fa fa-history badge-space pull-right type tt" title="' . Yii::t('SpaceModule.chooser', 'This space is archived') . '" aria-hidden="true"></i>';
         }
     }
-    
+
     public function getDataAttribute()
     {
         if ($this->isMember) {

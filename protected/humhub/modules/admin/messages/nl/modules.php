@@ -15,6 +15,7 @@ return array (
   'Enable module...' => 'Module inschakelen...',
   'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => 'Hier kunt u kiezen of een module automatisch geactiveerd moet worden voor een ruimte of gebruikersprofiel. Als de module moet worden geactiveerd, kies dan "altijd geactiveerd".',
   'Legacy' => 'Achterhaald',
+  'License not found or expired. Please contact the module publisher.' => 'Licentie niet gevonden of is verlopen. Neem contact op met de module-maker.',
   'Module path %path% is not writeable!' => 'Module pad %path% is niet schrijfbaar',
   'Modules extend the functionality of HumHub. Here you can install and manage modules from the HumHub Marketplace.' => 'Modules breiden de functionaliteit van HumHub uit. Hier kunt u de modules van de HumHub marktplaats installeren en beheren.',
   'More info' => 'Meer info',

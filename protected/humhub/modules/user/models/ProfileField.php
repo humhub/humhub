@@ -38,6 +38,9 @@ use yii\db\ActiveQuery;
  * @property string $translation_category
  * @property integer $is_system
  * @property integer $searchable
+ * @property integer $directory_filter
+ *
+ * @property-read BaseType $fieldType
  */
 class ProfileField extends ActiveRecord
 {
@@ -64,7 +67,7 @@ class ProfileField extends ActiveRecord
     {
         return [
             [['profile_field_category_id', 'field_type_class', 'internal_name', 'title', 'sort_order'], 'required'],
-            [['profile_field_category_id', 'required', 'editable', 'searchable', 'show_at_registration', 'visible', 'sort_order'], 'integer'],
+            [['profile_field_category_id', 'required', 'editable', 'searchable', 'show_at_registration', 'visible', 'sort_order', 'directory_filter'], 'integer'],
             [['module_id', 'field_type_class', 'title'], 'string', 'max' => 255],
             ['internal_name', 'string', 'max' => 100],
             [['ldap_attribute', 'translation_category'], 'string', 'max' => 255],
@@ -103,6 +106,7 @@ class ProfileField extends ActiveRecord
             'translation_category' => Yii::t('UserModule.profile', 'Translation Category ID'),
             'required' => Yii::t('UserModule.profile', 'Required'),
             'searchable' => Yii::t('UserModule.profile', 'Searchable'),
+            'directory_filter' => Yii::t('UserModule.profile', 'Use as Directory filter'),
             'title' => Yii::t('UserModule.profile', 'Title'),
             'description' => Yii::t('UserModule.profile', 'Description'),
             'sort_order' => Yii::t('UserModule.profile', 'Sort order'),
@@ -144,18 +148,18 @@ class ProfileField extends ActiveRecord
      * @return BaseType
      * @throws \yii\base\Exception
      */
-    public function getFieldType()
+    public function getFieldType(): ?BaseType
     {
-
         if ($this->_fieldType != null)
             return $this->_fieldType;
 
-        if ($this->field_type_class != "" && Helpers::CheckClassType($this->field_type_class, fieldtype\BaseType::class)) {
+        if ($this->field_type_class != '' && Helpers::CheckClassType($this->field_type_class, fieldtype\BaseType::class)) {
             $type = $this->field_type_class;
             $this->_fieldType = new $type;
             $this->_fieldType->setProfileField($this);
             return $this->_fieldType;
         }
+
         return null;
     }
 
@@ -169,6 +173,7 @@ class ProfileField extends ActiveRecord
         $categories = ProfileFieldCategory::find()->orderBy('sort_order')->all();
         $profileFieldTypes = new fieldtype\BaseType();
         $isVirtualField = (!$this->isNewRecord && $this->getFieldType()->isVirtual);
+        $canBeDirectoryFilter = (!$this->isNewRecord && $this->getFieldType()->canBeDirectoryFilter);
 
         return [
             'ProfileField' => [
@@ -226,6 +231,10 @@ class ProfileField extends ActiveRecord
                     'searchable' => [
                         'type' => 'checkbox',
                         'isVisible' => (!$isVirtualField)
+                    ],
+                    'directory_filter' => [
+                        'type' => 'checkbox',
+                        'isVisible' => ($canBeDirectoryFilter)
                     ],
                     'profile_field_category_id' => [
                         'type' => 'dropdownlist',
@@ -295,12 +304,11 @@ class ProfileField extends ActiveRecord
     /**
      * Returns the users value for this profile field.
      *
-     * @param type $user
-     * @param type $raw
-     *
-     * @return type
+     * @param User $user
+     * @param bool $raw
+     * @return string
      */
-    public function getUserValue(User $user, $raw = true)
+    public function getUserValue(User $user, $raw = true): ?string
     {
         return $this->fieldType->getUserValue($user, $raw);
     }

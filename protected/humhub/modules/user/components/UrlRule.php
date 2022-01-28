@@ -8,96 +8,68 @@
 
 namespace humhub\modules\user\components;
 
-use yii\web\UrlRuleInterface;
-use yii\base\BaseObject;
-use humhub\modules\user\models\User as UserModel;
+use humhub\components\ContentContainerUrlRule;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\user\models\User;
 
 /**
  * User Profile URL Rule
  *
  * @author luke
  */
-class UrlRule extends BaseObject implements UrlRuleInterface
+class UrlRule extends ContentContainerUrlRule
 {
 
     /**
-     * @var array cache map with user guid/username pairs
+     * @inheritdoc
      */
-    protected static $userUrlMap = [];
-
-    /**
-     * @var string default route to space home
-     */
-    public $defaultRoute = 'user/profile';
+    protected $defaultRoute = 'user/profile';
 
     /**
      * @inheritdoc
      */
-    public function createUrl($manager, $route, $params)
+    protected $urlPrefix = 'u';
+
+    /**
+     * @inheritdoc
+     */
+    protected $routePrefixes = ['<contentContainer>', '<userContainer>'];
+
+    /**
+     * @inheritdoc
+     */
+    public static $containerUrlMap = [];
+
+    /**
+     * @inheritdoc
+     */
+    protected static function getContentContainerByUrl(string $url): ?ContentContainerActiveRecord
     {
-        if (isset($params['cguid'])) {
-            $username = static::getUrlByUserGuid($params['cguid']);
-            if ($username !== null) {
-                unset($params['cguid']);
-
-                if ($this->defaultRoute == $route) {
-                    $route = "";
-                }
-
-                $url = "u/" . urlencode($username) . "/" . $route;
-                if (!empty($params) && ($query = http_build_query($params)) !== '') {
-                    $url .= '?' . $query;
-                }
-                return $url;
-            }
-        }
-        return false;
+        return User::find()->where(['username' => $url])->one();
     }
 
     /**
      * @inheritdoc
      */
-    public function parseRequest($manager, $request)
+    protected static function getContentContainerByGuid(string $guid): ?ContentContainerActiveRecord
     {
-        $pathInfo = $request->getPathInfo();
-        if (substr($pathInfo, 0, 2) !== 'u/') {
-            return false;
-        }
-        $parts = explode('/', $pathInfo, 3);
-
-        // Check if username is provided
-        if (!isset($parts[1])) {
-            return false;
-        }
-
-        $user = UserModel::find()->where(['username' => $parts[1]])->one();
-        if ($user !== null) {
-            if (!isset($parts[2]) || $parts[2] == "") {
-                $parts[2] = $this->defaultRoute;
-            }
-            $params = $request->get();
-            $params['cguid'] = $user->guid;
-            return [$parts[2] , $params];
-        }
-
-        return false;
+        return User::findOne(['guid' => $guid]);
     }
 
     /**
-     * Gets usernameby given guid
-     *
-     * @param string $guid
-     * @return string|null the username
+     * @inheritdoc
      */
-    public static function getUrlByUserGuid($guid)
+    protected static function getUrlMapFromContentContainer(ContentContainerActiveRecord $contentContainer): ?string
     {
-        if (isset(static::$userUrlMap[$guid])) {
-            return static::$userUrlMap[$guid];
-        }
+        return $contentContainer->username ?? null;
+    }
 
-        $user = UserModel::findOne(['guid' => $guid]);
-        static::$userUrlMap[$guid] = ($user !== null) ? $user->username : null;
-        return static::$userUrlMap[$guid];
+    /**
+     * @inheritdoc
+     */
+    protected static function isContentContainerInstance(ContentContainerActiveRecord $contentContainer): bool
+    {
+        return ($contentContainer instanceof User);
     }
 
 }

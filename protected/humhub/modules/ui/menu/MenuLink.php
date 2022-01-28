@@ -216,6 +216,10 @@ class MenuLink extends MenuEntry
             $entry->isActive = $item['isActive'];
         }
 
+        if (isset($item['isVisible'])) {
+            $entry->isVisible = $item['isVisible'];
+        }
+
         if (isset($item['htmlOptions'])) {
             $entry->setHtmlOptions($item['htmlOptions']);
         }

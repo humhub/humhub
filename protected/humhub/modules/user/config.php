@@ -6,13 +6,17 @@ use humhub\commands\IntegrityController;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\commands\CronController;
+use humhub\widgets\TopMenu;
 
 return [
     'id' => 'user',
     'class' => \humhub\modules\user\Module::class,
     'isCoreModule' => true,
     'urlManagerRules' => [
-        ['class' => 'humhub\modules\user\components\UrlRule']
+        ['class' => 'humhub\modules\user\components\UrlRule'],
+        'people' => 'user/people',
+        '<userContainer>/home' => 'user/profile/home',
+        '<userContainer>/about' => 'user/profile/about',
     ],
     'consoleControllerMap' => [
         'user' => 'humhub\modules\user\commands\UserController'
@@ -23,6 +27,7 @@ return [
         ['class' => ContentAddonActiveRecord::class, 'event' => ContentAddonActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onContentDelete']],
         ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::class, 'onIntegrityCheck']],
         ['class' => CronController::class, 'event' => CronController::EVENT_ON_HOURLY_RUN, 'callback' => [Events::class, 'onHourlyCron']],
+        ['class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => [Events::class, 'onTopMenuInit']],
     ]
 ];
 ?>

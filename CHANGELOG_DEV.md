@@ -1,10 +1,10 @@
-1.9.0-beta.1 (Unreleased)
-----------------------------
-
-- Enh #3733: Forbid to open AJAX actions as separate page
-- Enh #677: Allow to create new database and set database port on install
-- Fix #4877: Check for writable uploads/profile_image directory
-- Enh #4868: Reset email summaries / notifications settings for all users
-- Enh #4884: New Space module setting to allow all users to add users without invite
+1.11.0-beta.1 (March 1, 2022 - UNRELEASED)
+------------------------------------------
+- Fix #5434: Hide disabled next/prev buttons on guide first/last steps
+- Fix #5456: `canImpersonate` only possible for SystemAdmins
+- Enh #5472: New interface `TabbedFormModel` for activate first tab with error input
+- Enh #5224: Add reply-to email in the settings
+- Enh #5471: On the pending approval page, add grouped actions and custom columns
+- Enh #5490: Display confirmation message before display embedded content
+- Enh #5258: Display who invited the user on the Approval page
 - Enh #4890: Allow to define actions in a controller which should not be intercepted by other actions
-

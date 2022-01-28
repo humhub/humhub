@@ -23,6 +23,7 @@ class AccountSettings extends \yii\base\Model
     public $show_introduction_tour;
     public $visibility;
     public $timeZone;
+    public $blockedUsers;
 
     /**
      * @inheritdoc
@@ -30,7 +31,7 @@ class AccountSettings extends \yii\base\Model
     public function rules()
     {
         return [
-            ['tags', 'string', 'max' => 250],
+            [['tags', 'blockedUsers'], 'safe'],
             [['show_introduction_tour'], 'boolean'],
             [['timeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
@@ -49,6 +50,7 @@ class AccountSettings extends \yii\base\Model
             'show_introduction_tour' => Yii::t('UserModule.account', 'Hide introduction tour panel on dashboard'),
             'timeZone' => Yii::t('UserModule.account', 'TimeZone'),
             'visibility' => Yii::t('UserModule.account', 'Profile visibility'),
+            'blockedUsers' => Yii::t('UserModule.account', 'Blocked users'),
         ];
     }
 

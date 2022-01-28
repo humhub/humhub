@@ -49,6 +49,7 @@ class DefaultController extends Controller
     {
         $space = $this->contentContainer;
         $space->scenario = 'edit';
+        $space->blockedUsersField = $space->getBlockedUserGuids();
 
         if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
             RichText::postProcess($space->about, $space);
@@ -69,7 +70,7 @@ class DefaultController extends Controller
 
         if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
             $this->view->saved();
-            unset(UrlRule::$spaceUrlMap[$space->guid]);
+            unset(UrlRule::$containerUrlMap[$space->guid]);
             return $this->redirect($space->createUrl('advanced'));
         }
 

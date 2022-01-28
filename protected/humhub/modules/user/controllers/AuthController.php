@@ -13,6 +13,7 @@ use humhub\components\Controller;
 use humhub\components\Response;
 use humhub\modules\user\models\User;
 use humhub\modules\user\authclient\AuthAction;
+use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\authclient\AuthClientHelpers;
@@ -22,7 +23,6 @@ use humhub\modules\user\models\Session;
 use Yii;
 use yii\web\Cookie;
 use yii\authclient\BaseClient;
-use humhub\modules\user\events\UserEvent;
 
 /**
  * AuthController handles login and logout
@@ -36,6 +36,11 @@ class AuthController extends Controller
      * after the response is generated.
      */
     const EVENT_AFTER_LOGIN = 'afterLogin';
+    
+    /**
+     * @event Triggered after an successful login but before checking user status
+     */
+    const EVENT_BEFORE_CHECKING_USER_STATUS = 'beforeCheckingUserStatus';
 
     /**
      * @inheritdoc
@@ -163,17 +168,20 @@ class AuthController extends Controller
         }
 
         if (!$authClient instanceof ApprovalBypass && !Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration')) {
+            Yii::warning('Could not register user automatically: Anonymous registration disabled. AuthClient: ' . get_class($authClient), 'user');
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', "You're not registered."));
             return $this->redirect(['/user/auth/login']);
         }
 
         // Check if E-Mail is given
         if (!isset($attributes['email']) && Yii::$app->getModule('user')->emailRequired) {
+            Yii::warning('Could not register user automatically: AuthClient ' . get_class($authClient) . ' provided no E-Mail attribute.', 'user');
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Missing E-Mail Attribute from AuthClient.'));
             return $this->redirect(['/user/auth/login']);
         }
 
         if (!isset($attributes['id'])) {
+            Yii::warning('Could not register user automatically: AuthClient ' . get_class($authClient) . ' provided no ID attribute.', 'user');
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Missing ID AuthClient Attribute from AuthClient.'));
             return $this->redirect(['/user/auth/login']);
         }
@@ -205,6 +213,7 @@ class AuthController extends Controller
     {
         $redirectUrl = ['/user/auth/login'];
         $success = false;
+        $this->trigger(static::EVENT_BEFORE_CHECKING_USER_STATUS, new UserEvent(['user' => $user]));
         if ($user->status == User::STATUS_ENABLED) {
             $duration = 0;
             if (
@@ -233,7 +242,7 @@ class AuthController extends Controller
             $this->trigger(static::EVENT_AFTER_LOGIN, new UserEvent(['user' => Yii::$app->user->identity]));
             if (method_exists($authClient, 'onSuccessLogin')) {
                 $authClient->onSuccessLogin();
-            };
+            }
         }
 
         return $result;
@@ -241,9 +250,12 @@ class AuthController extends Controller
 
     /**
      * Logouts a User
+     * @throws \yii\web\HttpException
      */
     public function actionLogout()
     {
+        $this->forcePostRequest();
+
         $language = Yii::$app->user->language;
 
         Yii::$app->user->logout();
@@ -284,6 +296,22 @@ class AuthController extends Controller
         }
 
         return $output;
+    }
+
+    /**
+     * Sign in back to admin User who impersonated the current User
+     *
+     * @return \yii\console\Response|\yii\web\Response
+     */
+    public function actionStopImpersonation()
+    {
+        $this->forcePostRequest();
+
+        if (Yii::$app->user->restoreImpersonator()) {
+            return $this->redirect(['/admin/user/list']);
+        }
+
+        return $this->goBack();
     }
 
 }

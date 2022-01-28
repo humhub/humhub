@@ -35,7 +35,11 @@ class m201130_073907_default_permissions extends Migration
             $this->dropPrimaryKey($primaryKey, $table);
         }
 
-        $this->addPrimaryKey($primaryKey, $table, ['permission_id', 'group_id', 'module_id', 'contentcontainer_class']);
+        try {
+            $this->addPrimaryKey($primaryKey, $table, ['permission_id', 'group_id', 'module_id', 'contentcontainer_class']);
+        } catch (\Exception $ex) {
+            Yii::error($ex->getMessage());
+        }
     }
 
     /**

@@ -74,6 +74,7 @@ class RegistrationController extends Controller
             $authClient = Yii::$app->session->get('authClient');
             $this->handleAuthClientRegistration($authClient, $registration);
         } else {
+            Yii::warning('Registration failed: No token (query) or authclient (session) found!', 'user');
             Yii::$app->session->setFlash('error', 'Registration failed.');
             return $this->redirect(['/user/auth/login']);
         }
@@ -111,9 +112,7 @@ class RegistrationController extends Controller
         if (!$userInvite) {
             throw new HttpException(404, 'Invalid registration token!');
         }
-        if ($userInvite->language) {
-            Yii::$app->language = $userInvite->language;
-        }
+        Yii::$app->setLanguage($userInvite->language);
         $form->getUser()->email = $userInvite->email;
     }
 

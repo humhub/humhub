@@ -11,6 +11,8 @@ namespace humhub\modules\content\models;
 
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use yii\db\ActiveRecord;
 
 /**
@@ -21,6 +23,7 @@ use yii\db\ActiveRecord;
  * @property string $class
  * @property integer $pk
  * @property integer $owner_user_id
+ * @property string $tags_cached readonly, a comma separted list of assigned tags
  * @mixin PolymorphicRelation
  */
 class ContentContainer extends ActiveRecord
@@ -88,5 +91,4 @@ class ContentContainer extends ActiveRecord
         $instance = static::findOne(['guid' => $guid]);
         return $instance ? $instance->getPolymorphicRelation() : null;
     }
-
 }

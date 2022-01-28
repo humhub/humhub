@@ -12,12 +12,13 @@ use humhub\widgets\Button;
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
-<?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
 <?= $form->errorSummary($model); ?>
 
 <?= $form->field($model, 'systemEmailAddress')->textInput(['readonly' => $settings->isFixed('mailer.systemEmailAddress')]); ?>
 <?= $form->field($model, 'systemEmailName')->textInput(['readonly' => $settings->isFixed('mailer.systemEmailName')]); ?>
+<?= $form->field($model, 'systemEmailReplyTo')->textInput(['readonly' => $settings->isFixed('mailer.systemEmailReplyTo')]); ?>
 <?= $form->field($model, 'transportType')->dropDownList($transportTypes, ['readonly' => $settings->isFixed('mailer.transportType')]); ?>
 
 

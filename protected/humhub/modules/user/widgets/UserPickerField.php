@@ -77,7 +77,7 @@ class UserPickerField extends BasePicker
             $result['placeholder-more'] = $this->placeholder;
         } else {
             $result['placeholder-more'] = ($this->placeholderMore) ? $this->placeholderMore
-                : Yii::t('UserModule.chooser', 'Add more...');
+                : Yii::t('UserModule.chooser', 'Select user...');
         }
 
         $result['no-result'] = Yii::t('UserModule.chooser', 'No users found for the given query.');

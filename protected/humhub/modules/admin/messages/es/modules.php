@@ -15,6 +15,7 @@ return array (
   'Enable module...' => 'Activar módulo...',
   'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => 'Aquí puedes elegir si un módulo debería estar activado automática en un espacio o perfil del usuario o no. Si el módulo debería estar activado, elige "Siempre activado".',
   'Legacy' => 'Anticuado',
+  'License not found or expired. Please contact the module publisher.' => 'No se ha encontrado una licencia o está expirada. Por favor póngase en contacto con el desarrollador del módulo.',
   'Module path %path% is not writeable!' => '¡La ruta del módulo %path% no se puede escribir!',
   'Modules extend the functionality of HumHub. Here you can install and manage modules from the HumHub Marketplace.' => 'Los módulos permiten extender las funcionalidades de HumHub. Aquí puedes instalar y configurar módulos de la HumHub Marketplace.',
   'More info' => 'Más información',

@@ -45,17 +45,23 @@ class HeaderCounterSet extends CounterSet
         $this->counters[] = new CounterSetItem([
             'label' => Yii::t('SpaceModule.base', 'Members'),
             'value' => Membership::getSpaceMembersQuery($this->space)->active()->visible()->count(),
-            'url' => (Yii::$app->user->isGuest) ? null : Url::to(['/space/membership/members-list', 'container' => $this->space]),
-            'linkOptions' => ['data-action-click' => 'ui.modal.load']
+            'url' => '#',
+            'linkOptions' => [
+                'data-action-click' => 'ui.modal.load',
+                'data-action-url' => (Yii::$app->user->isGuest) ? null : Url::to(['/space/membership/members-list', 'container' => $this->space])
+            ]
 
         ]);
 
         if (!Yii::$app->getModule('space')->disableFollow) {
             $this->counters[] = new CounterSetItem([
                 'label' => Yii::t('SpaceModule.base', 'Followers'),
-                'value' => $this->space->getFollowerCount(),
-                'url' => (Yii::$app->user->isGuest) ? null :  Url::to(['/space/space/follower-list', 'container' => $this->space]),
-                'linkOptions' => ['data-action-click' => 'ui.modal.load']
+                'value' => $this->space->getFollowersQuery()->count(),
+                'url' => '#',
+                'linkOptions' => [
+                    'data-action-click' => 'ui.modal.load',
+                    'data-action-url' => (Yii::$app->user->isGuest) ? null : Url::to(['/space/space/follower-list', 'container' => $this->space])
+                ]
             ]);
         }
 

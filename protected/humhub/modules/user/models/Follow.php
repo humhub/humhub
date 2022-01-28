@@ -241,7 +241,7 @@ class Follow extends ActiveRecord
             $subQuery->andWhere(['user_follow.send_notifications' => 0]);
         }
 
-        return User::find()->active()->andWhere(['exists', $subQuery]);
+        return User::find()->visible()->andWhere(['exists', $subQuery]);
     }
 
 }

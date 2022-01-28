@@ -15,6 +15,7 @@ class RequestMembershipForm extends Model
 
     public $space_id;
     public $message;
+    public $options;
 
     /**
      * Declares the validation rules.
@@ -22,7 +23,8 @@ class RequestMembershipForm extends Model
     public function rules()
     {
         return [
-            ['message', 'required']
+            ['message', 'required'],
+            ['options', 'safe'],
         ];
     }
 

@@ -8,6 +8,7 @@
 namespace humhub\modules\admin\controllers;
 
 use humhub\compat\HForm;
+use humhub\components\export\ArrayColumn;
 use humhub\components\export\DateTimeColumn;
 use humhub\components\export\SpreadsheetExport;
 use humhub\modules\admin\components\Controller;
@@ -126,6 +127,11 @@ class UserController extends Controller
             'type' => 'form',
             'title' => Yii::t('AdminModule.user', 'Account'),
             'elements' => [
+                'id' => [
+                    'type' => 'text',
+                    'class' => 'form-control',
+                    'readonly' => true,
+                ],
                 'username' => [
                     'type' => 'text',
                     'class' => 'form-control',
@@ -144,6 +150,7 @@ class UserController extends Controller
                         'data-placeholder' => Yii::t('AdminModule.user', 'Select Groups'),
                         'data-placeholder-more' => Yii::t('AdminModule.user', 'Add Groups...')
                     ],
+                    'maxSelection' => 250,
                     'isVisible' => Yii::$app->user->can(new ManageGroups())
                 ],
             ],
@@ -260,7 +267,7 @@ class UserController extends Controller
     {
         $user = User::findOne(['id' => $id]);
 
-        $this->checkGroupAccess($user);
+        $this->checkUserAccess($user);
 
         if ($user->isCurrentUser()) {
             throw new HttpException(400, Yii::t('AdminModule.user', 'You cannot delete yourself!'));
@@ -274,10 +281,10 @@ class UserController extends Controller
         return $this->render('delete', ['model' => $model]);
     }
 
-    public function checkGroupAccess(User $user = null)
+    public function checkUserAccess(User $user = null)
     {
         if (!$user) {
-            throw new HttpException(404, Yii::t('AdminModule.user', 'Group not found!'));
+            throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));
         }
 
         if ($user->isSystemAdmin() && !Yii::$app->user->isAdmin()) {
@@ -323,7 +330,7 @@ class UserController extends Controller
 
         $user = User::findOne(['id' => $id]);
 
-        $this->checkGroupAccess($user);
+        $this->checkUserAccess($user);
 
         $user->status = User::STATUS_DISABLED;
         $user->save();
@@ -344,30 +351,13 @@ class UserController extends Controller
 
         $user = User::findOne(['id' => $id]);
 
-        $this->checkGroupAccess($user);
+        $this->checkUserAccess($user);
 
-        if (!static::canImpersonate($user)) {
+        if (!Yii::$app->user->impersonate($user)) {
             throw new HttpException(403);
         }
 
-        Yii::$app->user->switchIdentity($user);
-
         return $this->goHome();
-    }
-
-    /**
-     * Determines if the current user can impersonate given user.
-     *
-     * @param User $user
-     * @return boolean can impersonate
-     */
-    public static function canImpersonate($user)
-    {
-        if (!Yii::$app->getModule('admin')->allowUserImpersonate) {
-            return false;
-        }
-
-        return Yii::$app->user->isAdmin() && $user->id != Yii::$app->user->getIdentity()->id;
     }
 
     /**
@@ -408,7 +398,10 @@ class UserController extends Controller
             'username',
             'email',
             'auth_mode',
-            'tags',
+            [
+                'class' => ArrayColumn::class,
+                'attribute' => 'tags',
+            ],
             'language',
             'time_zone',
             [

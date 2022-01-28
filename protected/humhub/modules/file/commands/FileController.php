@@ -10,6 +10,7 @@ namespace humhub\modules\file\commands;
 
 use humhub\modules\file\libs\ImageHelper;
 use humhub\modules\file\models\File;
+use humhub\modules\file\models\FileHistory;
 use Yii;
 use yii\console\widgets\Table;
 
@@ -32,6 +33,10 @@ class FileController extends \yii\console\Controller
         $fileSizes = [];
         /** @var File $file */
         foreach (File::find()->each() as $file) {
+            if (!is_file($file->store->get())) {
+                continue;
+            }
+
             $fileSize += filesize($file->store->get());
             foreach ($file->store->getVariants() as $variant) {
                 if (!isset($fileSizes[$variant])) {
@@ -66,7 +71,7 @@ class FileController extends \yii\console\Controller
 
         /** @var File $file */
         foreach (File::find()->each() as $file) {
-            foreach ($file->store->getVariants() as $variant) {
+            foreach ($file->store->getVariants([FileHistory::VARIANT_PREFIX . '*']) as $variant) {
                 $file->store->delete($variant);
                 $this->stdout('.');
             }

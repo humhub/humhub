@@ -9,6 +9,7 @@
 namespace humhub\modules\ui\filter\widgets;
 
 use humhub\components\Widget;
+use Yii;
 
 /**
  * Widget for rendering a single filter.
@@ -65,6 +66,26 @@ class FilterInput extends Widget
      * @var string view to render the input
      */
     public $view;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+        $this->initFromRequest();
+    }
+
+    /**
+     * Initialize current value from request
+     */
+    protected function initFromRequest()
+    {
+        $filters = Yii::$app->request->get($this->category);
+        if (isset($filters[$this->id])) {
+            $this->value = $filters[$this->id];
+        }
+    }
 
     /**
      * @inheritdoc

@@ -43,6 +43,7 @@ class PermaController extends Controller
     public function actionIndex()
     {
         $id = (int)Yii::$app->request->get('id');
+        $commentId = (int)Yii::$app->request->get('commentId');
 
         $content = Content::findOne(['id' => $id]);
         if ($content !== null) {
@@ -50,7 +51,11 @@ class PermaController extends Controller
             if (method_exists($content->getPolymorphicRelation(), 'getUrl')) {
                 $url = $content->getPolymorphicRelation()->getUrl();
             } elseif ($content->container !== null) {
-                $url = $content->container->createUrl(null, ['contentId' => $id]);
+                $urlParams = ['contentId' => $id];
+                if ($commentId) {
+                    $urlParams['commentId'] = $commentId;
+                }
+                $url = $content->container->createUrl(null, $urlParams);
             }
 
             if (!empty($url)) {

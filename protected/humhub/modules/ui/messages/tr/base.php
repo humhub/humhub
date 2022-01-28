@@ -1,6 +1,8 @@
 <?php
-return array (
-  'Collapse' => 'Gizle',
-  'Read more' => '',
-  'User Interface' => 'Kullanıcı Arabirimi',
-);
+
+return [
+    'Collapse' => 'Gizle',
+    'User Interface' => 'Kullanıcı Arabirimi',
+    'Read more' => '',
+    'Reset filters' => '',
+];

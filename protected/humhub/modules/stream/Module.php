@@ -33,6 +33,11 @@ class Module extends \humhub\components\Module
     public $defaultStreamSuppressQueryIgnore = [\humhub\modules\post\models\Post::class, \humhub\modules\activity\models\Activity::class];
 
     /**
+     * @var int number of contents from which "Show more" appears in the stream
+     */
+    public $streamSuppressLimit = 2;
+
+    /**
      * @var boolean show contents of deactivated users in stream
      */
     public $showDeactivatedUserContent = true;

@@ -8,14 +8,16 @@
 
 namespace humhub\modules\user\components;
 
+use humhub\events\ActiveQueryEvent;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\models\fieldtype\BaseTypeVirtual;
-use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Group;
+use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\ProfileField;
-use yii\db\ActiveQuery;
 use humhub\modules\user\models\User as UserModel;
-use humhub\events\ActiveQueryEvent;
+use humhub\modules\user\Module;
+use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * ActiveQueryUser is used to query User records.
@@ -24,6 +26,13 @@ use humhub\events\ActiveQueryEvent;
  */
 class ActiveQueryUser extends ActiveQuery
 {
+    /**
+     * Query keywords will be broken down into array needles with this length
+     * Meaning, if you search for "word1 word2 word3" and MAX_SEARCH_NEEDLES being 2
+     * word3 will be left out, and search will only look for word1, word2.
+     *
+     * @var string
+     */
     const MAX_SEARCH_NEEDLES = 5;
 
     /**
@@ -35,6 +44,19 @@ class ActiveQueryUser extends ActiveQuery
      * @event Event an event that is triggered when only active users are requested via [[active()]].
      */
     const EVENT_CHECK_ACTIVE = 'checkActive';
+
+    /**
+     * For toggling on condition if required
+     * @var bool
+     */
+    protected $multiCharacterSearch = true;
+
+    /**
+     * During search, keyword will be walked through and each character of the set will be changed to another
+     * of the same set to create variants to maximise search.
+     * @var array
+     */
+    protected $multiCharacterSearchVariants = [['\'', '’', '`'], ['"', '”', '“']];
 
     /**
      * Limit to active users
@@ -90,24 +112,101 @@ class ActiveQueryUser extends ActiveQuery
             return $this;
         }
 
+        $this->joinWith('profile')->joinWith('contentContainerRecord');
+
+        foreach ($this->setUpKeywords($keywords) as $keyword) {
+            $this->andWhere(array_merge(['OR'], $this->createKeywordCondition($keyword, $fields)));
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $keyword
+     * @param null $fields
+     * @return array
+     */
+    protected function createKeywordCondition($keyword, $fields = null)
+    {
         if (empty($fields)) {
             $fields = $this->getSearchableUserFields();
         }
 
-        $this->joinWith('profile');
+        $conditions = [];
+        foreach ($this->prepareKeywordVariants($keyword) as $variant) {
+            $subConditions = [];
 
+            foreach ($fields as $field) {
+                $subConditions[] = ['LIKE', $field, $variant];
+            }
+
+            $conditions[] = array_merge(['OR'], $subConditions);
+        }
+
+        return $conditions;
+    }
+
+    /**
+     * @param $keywords
+     * @return array
+     */
+    protected function setUpKeywords($keywords)
+    {
         if (!is_array($keywords)) {
             $keywords = explode(' ', $keywords);
         }
 
-        foreach (array_slice($keywords, 0, static::MAX_SEARCH_NEEDLES) as $keyword) {
-            $conditions = [];
-            foreach ($fields as $field) {
-                $conditions[] = ['LIKE', $field, $keyword];
+        return array_slice($keywords, 0, static::MAX_SEARCH_NEEDLES);
+    }
+
+    /**
+     * This function will look through keyword and prepare other variants of the words according to config
+     * This is used to search for different apostrophes and quotes characters as for now.
+     * Example: word "o'Surname", will create array ["o'Surname", "o’Surname", "o`Surname"]
+     *
+     * @param $keyword
+     * @return array
+     */
+    protected function prepareKeywordVariants($keyword)
+    {
+        $variants = [$keyword];
+
+        foreach ($this->multiCharacterSearchVariants as $set) {
+            foreach ($set as $character) {
+                if (strpos($keyword, $character) === false) {
+                    continue;
+                }
+
+                foreach ($set as $replaceWithCharacter) {
+                    if ($character === $replaceWithCharacter) {
+                        continue;
+                    }
+
+                    $variants[] = str_replace($character, $replaceWithCharacter, $keyword);
+                }
             }
-            $this->andWhere(array_merge(['OR'], $conditions));
         }
 
+        return $variants;
+    }
+
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function setMultiCharacterSearch($value)
+    {
+        $this->multiCharacterSearch = (bool)$value;
+        return $this;
+    }
+
+    /**
+     * @param $array
+     * @return $this
+     */
+    public function setMultiCharacterSearchVariants($array)
+    {
+        $this->multiCharacterSearchVariants = $array;
         return $this;
     }
 
@@ -118,9 +217,10 @@ class ActiveQueryUser extends ActiveQuery
      */
     private function getSearchableUserFields()
     {
-        $fields = ['user.username', 'user.email', 'user.tags'];
+        $fields = ['user.username', 'user.email', 'contentcontainer.tags_cached'];
+
         foreach (ProfileField::findAll(['searchable' => 1]) as $profileField) {
-            if(!($profileField->getFieldType() instanceof BaseTypeVirtual)) {
+            if (!($profileField->getFieldType() instanceof BaseTypeVirtual)) {
                 $fields[] = 'profile.' . $profileField->internal_name;
             }
         }
@@ -163,6 +263,34 @@ class ActiveQueryUser extends ActiveQuery
 
             $this->andWhere(['IN', 'group.id', $groupIds]);
         }
+
+        return $this;
+    }
+
+    /**
+     * Exclude blocked users for the given $user or for the current User
+     *
+     * @param UserModel $user
+     * @return ActiveQueryUser the query
+     */
+    public function filterBlockedUsers(?UserModel $user = null): ActiveQueryUser
+    {
+        if ($user === null && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        if (!($user instanceof UserModel)) {
+            return $this;
+        }
+
+        /* @var Module $userModule */
+        $userModule = Yii::$app->getModule('user');
+        if (!$userModule->allowBlockUsers()) {
+            return $this;
+        }
+
+        $this->leftJoin('contentcontainer_blocked_users', 'contentcontainer_blocked_users.contentcontainer_id=user.contentcontainer_id AND contentcontainer_blocked_users.user_id=:blockedUserId', [':blockedUserId' => $user->id]);
+        $this->andWhere('contentcontainer_blocked_users.user_id IS NULL');
 
         return $this;
     }

@@ -1,20 +1,23 @@
 <?php
 
 use humhub\modules\ui\form\widgets\SortOrderField;
-use humhub\modules\user\models\Group;
-use humhub\widgets\Button;
-use yii\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\user\models\forms\EditGroupForm;
 use yii\helpers\Url;
-use humhub\libs\Html;
+use yii\helpers\Html;
+use humhub\widgets\Button;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\modules\space\widgets\SpacePickerField;
 
-/* @var Group $group */
+/* @var $isManagerApprovalSetting boolean */
+/* @var $showDeleteButton boolean */
+/* @var $group EditGroupForm */
+
 ?>
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
 <div class="panel-body">
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
     <?= $form->field($group, 'name'); ?>
     <?= $form->field($group, 'description')->textarea(['rows' => 5]); ?>
 
@@ -33,14 +36,7 @@ use humhub\modules\space\widgets\SpacePickerField;
     <?php endif; ?>
     <?php if ($isManagerApprovalSetting && !$group->is_admin_group): ?>
         <?php $url = ($group->isNewRecord) ? null : Url::to(['/admin/group/admin-user-search', 'id' => $group->id]); ?>
-        <?= UserPickerField::widget([
-            'form' => $form,
-            'model' => $group,
-            'attribute' => 'managerGuids',
-            'selection' => $group->manager,
-            'url' => $url
-        ])
-        ?>
+        <?= $form->field($group, 'managerGuids')->widget(UserPickerField::class, ['selection' => $group->manager, 'url' => $url]); ?>
     <?php endif; ?>
 
     <?= $form->field($group, 'notify_users')->checkbox(); ?>
@@ -56,7 +52,7 @@ use humhub\modules\space\widgets\SpacePickerField;
 
     <?= Button::save()->submit(); ?>
     <?php
-    if ($showDeleteButton) {
+    if ($group->canDelete()) {
         echo Html::a(Yii::t('AdminModule.user', 'Delete'), Url::toRoute(['/admin/group/delete', 'id' => $group->id]), [
             'class' => 'btn btn-danger',
             'data-method' => 'POST',

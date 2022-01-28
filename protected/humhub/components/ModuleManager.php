@@ -140,7 +140,7 @@ class ModuleManager extends Component
     {
         $filename = $basePath . '/config.php';
         if ($config === null && is_file($filename)) {
-            $config = require $filename;
+            $config = include $filename;
         }
 
         // Check mandatory config options
@@ -207,10 +207,11 @@ class ModuleManager extends Component
         // Register Event Handlers
         if (isset($config['events'])) {
             foreach ($config['events'] as $event) {
-                if (isset($event['class'])) {
-                    Event::on($event['class'], $event['event'], $event['callback']);
-                } else {
-                    Event::on($event[0], $event[1], $event[2]);
+                $eventClass = $event['class'] ?? $event[0];
+                $eventName = $event['event'] ?? $event[1];
+                $eventHandler = $event['callback'] ?? $event[2];
+                if (method_exists($eventHandler[0], $eventHandler[1])) {
+                    Event::on($eventClass, $eventName, $eventHandler);
                 }
             }
         }

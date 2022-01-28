@@ -75,8 +75,20 @@ abstract class ContainerImageController extends ContentContainerController
         $model = new UploadProfileImage(['image' => isset($files[0]) ? $files[0] : null]);
 
         if ($model->validate()) {
-            $profileImage = $this->getImageByType($type);
-            $profileImage->setNew($model->image);
+            try {
+                $profileImage = $this->getImageByType($type);
+                $profileImage->setNew($model->image);
+            } catch (\Exception $e) {
+                return $this->asJson([
+                    'files' => [
+                        [
+                            'name' => isset($files[0]) ? $files[0]->name : '',
+                            'error' => true,
+                            'errors' => [$e->getMessage()]
+                        ]
+                    ]
+                ]);
+            }
 
             return $this->asJson([
                 'files' => [

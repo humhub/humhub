@@ -12,10 +12,10 @@ use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\notification\models\Notification;
+use humhub\modules\user\models\User;
 use humhub\modules\user\notifications\Mentioned;
 use Yii;
 use yii\bootstrap\Html;
-use humhub\modules\user\models\User;
 
 /**
  * Notification for new comments
@@ -201,5 +201,14 @@ class NewComment extends BaseNotification
         }
 
         return $source->getCommentedRecord();
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getUrl()
+    {
+        return $this->source->url;
     }
 }

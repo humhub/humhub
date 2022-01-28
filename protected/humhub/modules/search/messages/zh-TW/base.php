@@ -3,7 +3,7 @@ return array (
   '<strong>Search </strong> results' => '',
   'Advanced search settings' => '',
   'All' => '',
-  'Content' => '',
+  'Content' => '内容',
   'Search' => '搜尋',
   'Search for user, spaces and content' => '',
   'Search only in certain spaces:' => '',

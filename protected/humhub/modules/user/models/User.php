@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\behaviors\CompatModuleManager;
@@ -36,7 +37,6 @@ use Yii;
 use yii\base\Exception;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
-use yii\db\Query;
 use yii\web\IdentityInterface;
 
 /**
@@ -48,7 +48,6 @@ use yii\web\IdentityInterface;
  * @property string $username
  * @property string $email
  * @property string $auth_mode
- * @property string $tags
  * @property string $language
  * @property string $time_zone
  * @property string $created_at
@@ -60,9 +59,11 @@ use yii\web\IdentityInterface;
  * @property integer $visibility
  * @property integer $contentcontainer_id
  * @property Profile $profile
+ * @property Password $currentPassword
  *
  * @property string $displayName
  * @property string $displayNameSub
+ * @mixin Followable
  */
 class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
 {
@@ -95,6 +96,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     const SCENARIO_EDIT_ADMIN = 'editAdmin';
     const SCENARIO_LOGIN = 'login';
     const SCENARIO_REGISTRATION = 'registration';
+    const SCENARIO_REGISTRATION_EMAIL = 'registration_email';
+    const SCENARIO_EDIT_ACCOUNT_SETTINGS = 'editAccountSettings';
 
     /**
      * @event Event an event that is triggered when the user visibility is checked via [[isVisible()]].
@@ -141,7 +144,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function rules()
     {
-        /* @var $userModule \humhub\modules\user\Module */
+        /* @var $userModule Module */
         $userModule = Yii::$app->getModule('user');
 
         return [
@@ -154,19 +157,39 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
                 return $model->getAttribute($attribute) !== $model->getOldAttribute($attribute);
             }],
             [['status', 'created_by', 'updated_by', 'visibility'], 'integer'],
-            [['tags'], 'string'],
+            [['tagsField', 'blockedUsersField'], 'safe'],
             [['guid'], 'string', 'max' => 45],
             [['time_zone'], 'validateTimeZone'],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
+            ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'string', 'max' => 150],
-            [['email'], 'required', 'when' => function ($model, $attribute) use ($userModule) {
-                return $userModule->emailRequired;
+            [['email'], 'required', 'when' => function () {
+                return $this->isEmailRequired();
             }],
             [['guid'], 'unique'],
         ];
+    }
+
+    public function isEmailRequired(): bool
+    {
+        /* @var $userModule Module */
+        $userModule = Yii::$app->getModule('user');
+        return $userModule->emailRequired;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isAttributeRequired($attribute)
+    {
+        if ($attribute === 'email') {
+            return $this->isEmailRequired();
+        }
+
+        return parent::isAttributeRequired($attribute);
     }
 
     /**
@@ -227,10 +250,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['login'] = ['username', 'password'];
-        $scenarios['editAdmin'] = ['username', 'email', 'status'];
-        $scenarios['registration_email'] = ['username', 'email', 'time_zone'];
-        $scenarios['registration'] = ['username', 'time_zone'];
+        $scenarios[static::SCENARIO_LOGIN] = ['username', 'password'];
+        $scenarios[static::SCENARIO_EDIT_ADMIN] = ['username', 'email', 'status', 'language', 'tagsField'];
+        $scenarios[static::SCENARIO_EDIT_ACCOUNT_SETTINGS] = ['language', 'visibility', 'time_zone', 'tagsField', 'blockedUsersField'];
+        $scenarios[static::SCENARIO_REGISTRATION_EMAIL] = ['username', 'email', 'time_zone'];
+        $scenarios[static::SCENARIO_REGISTRATION] = ['username', 'time_zone'];
 
         return $scenarios;
     }
@@ -257,6 +281,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             'updated_by' => Yii::t('UserModule.base', 'Updated by'),
             'last_login' => Yii::t('UserModule.base', 'Last Login'),
             'visibility' => Yii::t('UserModule.base', 'Visibility'),
+            'originator.username' => Yii::t('UserModule.base', 'Invited by'),
         ];
     }
 
@@ -316,6 +341,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function getProfile()
     {
         return $this->hasOne(Profile::class, ['user_id' => 'id']);
+    }
+
+    public function getOriginator()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_originator_id'])->viaTable(Invite::tableName(), ['email' => 'email']);
     }
 
     /**
@@ -497,8 +527,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             }
         }
 
-        if ($this->time_zone == '') {
-            $this->time_zone = Yii::$app->settings->get('timeZone');
+        if (empty($this->time_zone)) {
+            $this->time_zone = Yii::$app->settings->get('defaultTimeZone');
         }
 
         return parent::beforeSave($insert);
@@ -670,8 +700,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Checks if the user is allowed to view all content
      *
-     * @since 1.8
      * @return bool
+     * @since 1.8
      */
     public function canViewAllContent()
     {
@@ -687,26 +717,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
-     * Checks if user has tags
-     *
-     * @return boolean has tags set
-     */
-    public function hasTags()
-    {
-        return ($this->tags != '');
-    }
-
-    /**
-     * Returns an array with assigned Tags
-     *
-     * @return array tags
-     */
-    public function getTags()
-    {
-        return preg_split("/[;,#]+/", $this->tags);
-    }
-
-    /**
      * Returns an array of informations used by search subsystem.
      * Function is defined in interface ISearchable
      *
@@ -717,7 +727,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $attributes = [
             'email' => $this->email,
             'username' => $this->username,
-            'tags' => $this->tags,
+            'tags' => implode(', ', $this->getTags()),
             'firstname' => $this->profile->firstname,
             'lastname' => $this->profile->lastname,
             'title' => $this->profile->title,
@@ -782,6 +792,28 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
+     * Determines if this user can impersonate the given user.
+     *
+     * @param self $user
+     * @return bool
+     * @since 1.10
+     */
+    public function canImpersonate(self $user): bool
+    {
+        /* @var AdminModule $adminModule */
+        $adminModule = Yii::$app->getModule('admin');
+        if (!$adminModule->allowUserImpersonate) {
+            return false;
+        }
+
+        if ($user->id == $this->id) {
+            return false;
+        }
+
+        return (new PermissionManager(['subject' => $this]))->can(ManageUsers::class);
+    }
+
+    /**
      * @return ActiveQuery
      */
     public function getAuths()
@@ -843,21 +875,20 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
-     * @param string Module id
-     * @return ContentContainerSettingsManager
+     * @inheritdoc
      */
-    public function getSettings($moduleId = 'user')
+    public function getSettings(): ContentContainerSettingsManager
     {
         /* @var $module Module */
-        $module = Yii::$app->getModule($moduleId);
+        $module = Yii::$app->getModule('user');
         return $module->settings->contentContainer($this);
     }
 
     /**
      * Check if the User must change password
      *
-     * @since 1.8
      * @return bool
+     * @since 1.8
      */
     public function mustChangePassword()
     {
@@ -867,8 +898,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Set/Unset User to force change password
      *
-     * @since 1.8
      * @param bool true - force user to change password, false - don't require to change password
+     * @since 1.8
      */
     public function setMustChangePassword($state = true)
     {

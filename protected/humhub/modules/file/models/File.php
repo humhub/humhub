@@ -8,11 +8,17 @@
 
 namespace humhub\modules\file\models;
 
-use yii\db\ActiveRecord;
-use Yii;
-use yii\helpers\Url;
+use humhub\components\behaviors\GUID;
+use humhub\components\behaviors\PolymorphicRelation;
+use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\user\models\User;
+use Yii;
+use yii\base\InvalidArgumentException;
+use yii\db\Exception;
+use yii\helpers\Url;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "file".
@@ -35,6 +41,10 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  *
  * @property \humhub\modules\user\models\User $createdBy
  * @property \humhub\modules\file\components\StorageManager $store
+ * @property FileHistory[] $historyFiles
+ *
+ * @mixin PolymorphicRelation
+ * @mixin GUID
  *
  * Following properties are optional and for module depended use:
  * - title
@@ -43,6 +53,20 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  */
 class File extends FileCompat
 {
+    /**
+     * @event Event that is triggered after a new file content has been stored.
+     */
+    const EVENT_AFTER_NEW_STORED_FILE = 'afterNewStoredFile';
+
+    /**
+     * @var int $old_updated_by
+     */
+    public $old_updated_by;
+
+    /**
+     * @var string $old_updated_at
+     */
+    public $old_updated_at;
 
     /**
      * @var \humhub\modules\file\components\StorageManagerInterface the storage manager
@@ -77,25 +101,34 @@ class File extends FileCompat
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::class,
+                'class' => PolymorphicRelation::class,
                 'mustBeInstanceOf' => [ActiveRecord::class],
             ],
             [
-                'class' => \humhub\components\behaviors\GUID::class,
+                'class' => GUID::class,
             ],
         ];
     }
 
     /**
+     * Gets query for [[FileHistory]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getHistoryFiles()
+    {
+        return $this->hasMany(FileHistory::class, ['file_id' => 'id'])->orderBy(['created_at' => SORT_DESC, 'id' => SORT_DESC]);
+    }
+
+    /**
      * @inheritdoc
      */
-    public function afterSave($insert, $changedAttributes)
+    public function beforeSave($insert)
     {
-        if ($insert) {
-            $this->saveHash();
-        }
+        $this->old_updated_by = $this->getOldAttribute('updated_by');
+        $this->old_updated_at = $this->getOldAttribute('updated_at');
 
-        parent::afterSave($insert, $changedAttributes);
+        return parent::beforeSave($insert);
     }
 
     /**
@@ -104,6 +137,8 @@ class File extends FileCompat
     public function beforeDelete()
     {
         $this->store->delete();
+        FileHistory::deleteAll(['file_id' => $this->id]);
+
         return parent::beforeDelete();
     }
 
@@ -143,29 +178,11 @@ class File extends FileCompat
      */
     public function getHash($length = 0)
     {
-        if (empty($this->hash_sha1)) {
-            $this->saveHash();
+        if (empty($this->hash_sha1) && $this->store->has()) {
+            $this->updateAttributes(['hash_sha1' => sha1_file($this->store->get())]);
         }
 
         return $length ? substr($this->hash_sha1, 0, $length) : $this->hash_sha1;
-    }
-
-    /**
-     * Save hash
-     *
-     * @since 1.8
-     */
-    public function saveHash()
-    {
-        $filePath = $this->getStore()->get();
-        if (!is_file($filePath)) {
-            return;
-        }
-
-        $this->hash_sha1 = sha1_file($filePath);
-        if (!$this->isNewRecord) {
-            $this->updateAttributes(['hash_sha1' => $this->hash_sha1]);
-        }
     }
 
     /**
@@ -173,6 +190,8 @@ class File extends FileCompat
      *
      * If the file is not an instance of HActiveRecordContent or HActiveRecordContentAddon
      * the file is readable for all.
+     * @param string|User $userId
+     * @return bool
      */
     public function canRead($userId = "")
     {
@@ -194,23 +213,20 @@ class File extends FileCompat
     {
         $object = $this->getPolymorphicRelation();
 
-        if ($object != null) {
-            if ($object instanceof ContentAddonActiveRecord) {
-                /** @var ContentAddonActiveRecord $object */
-                return $object->canEdit($userId);
-            } elseif ($object instanceof ContentActiveRecord) {
-                /** @var ContentActiveRecord $object */
-                return $object->content->canEdit($userId);
-            }
-        }
-
-        if ($object !== null && ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord)) {
-            return $object->content->canEdit($userId);
-        }
-
         // File is not bound to an object
-        if ($object == null) {
+        if ($object === null) {
             return true;
+        }
+
+        if ($object instanceof ContentAddonActiveRecord) {
+            /** @var ContentAddonActiveRecord $object */
+            return $object->canEdit($userId) || $object->content->canEdit($userId);
+        } elseif ($object instanceof ContentActiveRecord) {
+            /** @var ContentActiveRecord $object */
+            return $object->content->canEdit($userId);
+        } elseif ($object instanceof ActiveRecord && method_exists($object, 'canEdit')) {
+            /** @var ActiveRecord $object */
+            return $object->canEdit($userId);
         }
 
         return false;
@@ -263,4 +279,91 @@ class File extends FileCompat
         return self::findAll(['object_model' => $record->className(), 'object_id' => $record->getPrimaryKey()]);
     }
 
+    /**
+     * Get File History by ID
+     *
+     * @param int $fileHistoryId
+     * @return FileHistory|null
+     */
+    public function getFileHistoryById($fileHistoryId): ?FileHistory
+    {
+        if (empty($fileHistoryId) || $this->isNewRecord) {
+            return null;
+        }
+
+        return FileHistory::findOne(['id' => $fileHistoryId, 'file_id' => $this->id]);
+    }
+
+    /**
+     * Sets a new file content based on an UploadedFile, new File or a file path.
+     *
+     * @param UploadedFile|File|string $file File object or path
+     * @param bool $skipHistoryEntry Skipping the creation of a history entry, even if enabled by the record
+     * @since 1.10
+     */
+    public function setStoredFile($file, $skipHistoryEntry = false)
+    {
+        $this->beforeNewStoredFile($skipHistoryEntry);
+
+        if ($file instanceof UploadedFile) {
+            $this->store->set($file);
+        } elseif ($file instanceof File) {
+            if ($file->isAssigned()) {
+                throw new InvalidArgumentException('Already assigned File records cannot stored as another File record.');
+            }
+            $this->store->setByPath($file->store->get());
+            $file->delete();
+        } elseif (is_string($file) && is_file($file)) {
+            $this->store->setByPath($file);
+        }
+
+        $this->afterNewStoredFile();
+    }
+
+
+    /**
+     * Sets a new file content by a given string.
+     *
+     * @param string $content
+     * @param bool $skipHistoryEntry Skipping the creation of a history entry, even if enabled by the record
+     * @since 1.10
+     */
+    public function setStoredFileContent($content, $skipHistoryEntry = false)
+    {
+        $this->beforeNewStoredFile($skipHistoryEntry);
+        $this->store->setContent($content);
+        $this->afterNewStoredFile();
+    }
+
+    /**
+     * Steps that must be executed before a new file content is set.
+     * @param bool $skipHistoryEntry Skipping the creation of a history entry, even if enabled by the record
+     */
+    private function beforeNewStoredFile(bool $skipHistoryEntry)
+    {
+        if ($this->isNewRecord) {
+            throw new Exception('File Record must be saved before setting a new file content.');
+        }
+
+        if ($this->store->has() && FileHistory::isEnabled($this) && !$skipHistoryEntry) {
+            FileHistory::createEntryForFile($this);
+        }
+
+        $this->store->delete(null, [FileHistory::VARIANT_PREFIX . '*']);
+    }
+
+    /**
+     * Steps that must be performed after a new file content has been set.
+     */
+    private function afterNewStoredFile()
+    {
+        if ($this->store->has()) {
+            $this->updateAttributes([
+                'hash_sha1' => sha1_file($this->store->get()),
+                'size' => filesize($this->store->get()),
+            ]);
+
+            $this->trigger(self::EVENT_AFTER_NEW_STORED_FILE);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 return array (
   'Collapse' => 'Minska',
-  'Read more' => '',
+  'Read more' => 'Läs mer',
+  'Reset filters' => 'Återställ filter',
   'User Interface' => 'Användargränssnitt',
 );

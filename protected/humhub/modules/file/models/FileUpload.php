@@ -13,7 +13,7 @@ use humhub\modules\file\validators\FileValidator;
 
 /**
  * FileUpload model is used for File uploads handled by the UploadAction via ajax.
- * 
+ *
  * @see \humhub\modules\file\actions\UploadAction
  * @author Luke
  * @inheritdoc
@@ -46,15 +46,15 @@ class FileUpload extends File
     {
         // Store file
         if ($this->uploadedFile !== null && $this->uploadedFile instanceof UploadedFile) {
-            $this->store->set($this->uploadedFile);
+            $this->setStoredFile($this->uploadedFile);
         }
 
-        return parent::afterSave($insert, $changedAttributes);
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
      * Sets uploaded file to this file model
-     * 
+     *
      * @param UploadedFile $uploadedFile
      */
     public function setUploadedFile(UploadedFile $uploadedFile)

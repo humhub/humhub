@@ -37,6 +37,8 @@ The license was successfully removed!
   'Browse online' => 'Encontrar online',
   'Buy' => 'Comprar',
   'Buy (%price%)' => 'Comprar (%price%)',
+  'Could not connect to HumHub API!
+' => 'Não foi possível conectar à API HumHub!',
   'Could not connect to licence server!' => 'Comprar (% price%)',
   'Could not extract module!' => 'Não foi possível extrair módulo!',
   'Could not remove old module path!' => 'Não foi possível remover o caminho do módulo antigo!',
@@ -50,6 +52,8 @@ The license was successfully removed!
   'Installed' => 'Instalado',
   'Installed version:' => 'Versão instalada:',
   'Installing module...' => 'Instalando módulo...',
+  'Invalid module licence key!
+' => 'Chave de licença de módulo inválida!',
   'Latest compatible Version:' => 'Última versão compatível:',
   'Latest compatible version:' => 'Última versão compatível',
   'Latest version:' => 'Última versão',
@@ -61,6 +65,10 @@ The license was successfully removed!
   'Max. users:' => 'Máx. Comercial:',
   'Module directory %modulePath% is not writeable!' => 'O diretório do módulo %modulePath% não é gravável!',
   'Module download failed! (%error%)' => 'Módulo de download falhou!  (%error%)',
+  'Module licence added!
+' => 'Licença de módulo adicionada!',
+  'Module licence key cannot be empty!
+' => 'A chave de licença do módulo não pode estar vazia!',
   'Module not found or activated!
 ' => 'Módulo não encontrado ou ativado!',
   'Module not found!

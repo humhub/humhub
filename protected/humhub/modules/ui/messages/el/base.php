@@ -1,6 +1,7 @@
 <?php
 return array (
   'Collapse' => 'Χαμήλωσε',
-  'Read more' => '',
-  'User Interface' => '',
+  'Read more' => 'Διάβασε περισσότερα',
+  'Reset filters' => 'Επαναφορά φιλτρων',
+  'User Interface' => 'Διεπαφή χρήστη',
 );

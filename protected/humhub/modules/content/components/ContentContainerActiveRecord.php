@@ -14,9 +14,14 @@ use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\content\models\ContentContainerBlockedUsers;
+use humhub\modules\content\models\ContentContainerTagRelation;
+use humhub\modules\content\Module;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use humhub\modules\user\Module as UserModule;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 /**
@@ -32,7 +37,7 @@ use yii\helpers\Url;
  * @property ContentContainerPermissionManager $permissionManager
  * @property ContentContainerSettingsManager $settings
  * @property ContentContainerModuleManager $moduleManager
- * @property ContentContainerActiveRecord $contentContainerRecord
+ * @property ContentContainer $contentContainerRecord
  *
  * @since 1.0
  * @author Luke
@@ -65,18 +70,28 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public $defaultRoute = '/';
 
     /**
+     * @var array Related Tags which should be updated after save
+     */
+    public $tagsField;
+
+    /**
+     * @var array Related Blcoked Users IDs which should be updated after save
+     */
+    public $blockedUsersField;
+
+    /**
      * Returns the display name of content container
      *
-     * @since 0.11.0
      * @return string
+     * @since 0.11.0
      */
     public abstract function getDisplayName();
 
     /**
      * Returns a descriptive sub title of this container used in the frontend.
      *
-     * @since 1.4
      * @return mixed
+     * @since 1.4
      */
     public abstract function getDisplayNameSub();
 
@@ -175,6 +190,11 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     }
 
     /**
+     * @return ContentContainerSettingsManager
+     */
+    abstract public function getSettings(): ContentContainerSettingsManager;
+
+    /**
      * @inheritdoc
      */
     public function afterSave($insert, $changedAttributes)
@@ -196,6 +216,14 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
             $this->update(false, ['contentcontainer_id']);
         }
 
+        if ($this->isAttributeSafe('tagsField') && $this->tagsField !== null) {
+            ContentContainerTagRelation::updateByContainer($this, $this->tagsField);
+        }
+
+        if ($this->isAttributeSafe('blockedUsersField') && $this->blockedUsersField !== null) {
+            ContentContainerBlockedUsers::updateByContainer($this, $this->blockedUsersField);
+        }
+
         parent::afterSave($insert, $changedAttributes);
     }
 
@@ -215,8 +243,8 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns the related ContentContainer model (e.g. Space or User)
      *
-     * @see ContentContainer
      * @return ContentContainer
+     * @see ContentContainer
      */
     public function getContentContainerRecord()
     {
@@ -241,8 +269,8 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * Note: This method is used to verify ContentContainerPermissions and not GroupPermissions.
      *
      * @param string|string[]|BasePermission $permission
-     * @see PermissionManager::can()
      * @return boolean
+     * @see PermissionManager::can()
      * @since 1.2
      */
     public function can($permission, $params = [], $allowCaching = true)
@@ -278,9 +306,9 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns a ModuleManager
      *
-     * @since 1.3
      * @param User $user
      * @return ModuleManager
+     * @since 1.3
      */
     public function getModuleManager()
     {
@@ -339,6 +367,88 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function isVisibleFor($visibility)
     {
         return $this->visibility == $visibility;
+    }
+
+    /**
+     * Checks if the Content Container has Tags
+     *
+     * @return boolean has tags set
+     */
+    public function hasTags()
+    {
+        return count($this->getTags()) > 0;
+    }
+
+    /**
+     * Returns an array with related Tags
+     *
+     * @return string[] a list of tag names
+     */
+    public function getTags(): array
+    {
+        $tags = trim($this->contentContainerRecord->tags_cached);
+        return $tags === '' ? [] : preg_split('/\s*,\s*/', $tags);
+    }
+
+    /**
+     * Returns an array with GUIDs of the blocked users
+     *
+     * @return string[] a list of user GUIDs
+     */
+    public function getBlockedUserGuids(): array
+    {
+        return $this->allowBlockUsers() ? ContentContainerBlockedUsers::getGuidsByContainer($this) : [];
+    }
+
+    /**
+     * Returns an array with IDs of the blocked user
+     *
+     * @return int[] a list of user IDs
+     */
+    public function getBlockedUserIds(): array
+    {
+        if (!$this->allowBlockUsers()) {
+            return [];
+        }
+
+        $blockedUsers = $this->getSettings()->get(ContentContainerBlockedUsers::BLOCKED_USERS_SETTING);
+        return empty($blockedUsers) ? [] : explode(',', $blockedUsers);
+    }
+
+    /**
+     * Check if current container is blocked for the User
+     *
+     * @param User|null $user
+     * @return bool
+     */
+    public function isBlockedForUser(?User $user = null): bool
+    {
+        if (!$this->allowBlockUsers()) {
+            return false;
+        }
+
+        if ($user === null) {
+            if (Yii::$app->user->isGuest) {
+                return false;
+            }
+
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        return in_array($user->id, $this->getBlockedUserIds());
+    }
+
+    /**
+     * Check the blocking users is allowed by users module
+     *
+     * @return bool
+     */
+    public function allowBlockUsers(): bool
+    {
+        /* @var UserModule $userModule */
+        $userModule = Yii::$app->getModule('user');
+
+        return $userModule->allowBlockUsers();
     }
 
 }

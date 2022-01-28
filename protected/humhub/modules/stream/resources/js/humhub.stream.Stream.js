@@ -48,6 +48,13 @@ humhub.module('stream.Stream', function (module, require, $) {
      */
     var DATA_STREAM_CONTENTID = 'stream-contentid';
 
+
+    /**
+     * If a data-stream-commentid is set on the stream the Comment will be marked
+     * @type String
+     */
+    var DATA_STREAM_COMMENTID = 'stream-commentid';
+
     var StreamState = function (stream) {
         this.stream = stream;
         this.lastContentId = 0;
@@ -163,8 +170,9 @@ humhub.module('stream.Stream', function (module, require, $) {
      */
     Stream.prototype.init = function () {
         if (this.state) {
-            // When reloading the stream we ignroe the content id
+            // When reloading the stream we ignore the content id
             this.$.data(DATA_STREAM_CONTENTID, null);
+            this.$.data(DATA_STREAM_COMMENTID, null);
         }
 
         this.state = new StreamState(this);
@@ -229,12 +237,19 @@ humhub.module('stream.Stream', function (module, require, $) {
     Stream.prototype.loadInit = function () {
         // content Id data is only relevant for the first request
         var contentId = this.$.data(DATA_STREAM_CONTENTID);
+        var commentId = this.$.data(DATA_STREAM_COMMENTID);
 
-        this.state.firstRequest = new StreamRequest(this, {
+        var requestData = {
             contentId: contentId,
             viewContext: contentId ? 'detail' : null,
             limit: this.options.initLoadCount
-        });
+        };
+
+        if (commentId) {
+            requestData.commentId = commentId;
+        }
+
+        this.state.firstRequest = new StreamRequest(this, requestData);
 
         return this.state.firstRequest.load();
     };
@@ -566,6 +581,7 @@ humhub.module('stream.Stream', function (module, require, $) {
             this.onSingleEntryStream();
         } else {
             this.filter.show();
+            $('[data-stream-create-content="' + this.options.uiWidget + '"]').show();
         }
     };
 

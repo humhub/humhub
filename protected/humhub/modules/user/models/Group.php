@@ -9,7 +9,9 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
+use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\Module;
@@ -32,6 +34,7 @@ use Yii;
  * @property integer $updated_by
  * @property integer $is_admin_group
  * @property integer $is_default_group
+ * @property integer $is_protected
  * @property integer $notify_users
  *
  * @property User[] $manager
@@ -58,7 +61,7 @@ class Group extends ActiveRecord
     public function rules()
     {
         return [
-            [['sort_order', 'notify_users', 'is_default_group'], 'integer'],
+            [['sort_order', 'notify_users', 'is_default_group', 'is_protected'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 45],
             ['show_at_registration', 'validateShowAtRegistration'],
@@ -114,7 +117,7 @@ class Group extends ActiveRecord
             'updated_at' => Yii::t('UserModule.base', 'Updated at'),
             'updated_by' => Yii::t('UserModule.base', 'Updated by'),
             'show_at_registration' => Yii::t('UserModule.base', 'Show At Registration'),
-            'show_at_directory' => Yii::t('UserModule.base', 'Show At Directory'),
+            'show_at_directory' => Yii::t('UserModule.base', 'Visible'),
             'sort_order' => Yii::t('UserModule.base', 'Sort order'),
             'notify_users' => Yii::t('UserModule.base', 'Enable Notifications'),
             'is_default_group' => Yii::t('UserModule.base', 'Default Group'),
@@ -129,7 +132,7 @@ class Group extends ActiveRecord
         return [
             'notify_users' => Yii::t('AdminModule.user', 'Send notifications to users when added to or removed from the group.'),
             'show_at_registration' => Yii::t('AdminModule.user', 'Make the group selectable at registration.'),
-            'show_at_directory' => Yii::t('AdminModule.user', 'Add a separate page for the group to the directory.'),
+            'show_at_directory' => Yii::t('AdminModule.user', 'Will be used as a filter in \'People\'.'),
             'is_default_group' => Yii::t('AdminModule.user', 'Applied to new or existing users without any other group membership.'),
         ];
     }
@@ -349,10 +352,13 @@ class Group extends ActiveRecord
         $newGroupUser->is_group_manager = $isManager;
         if ($newGroupUser->save() && !Yii::$app->user->isGuest) {
             if ($this->notify_users) {
+                if (!($user instanceof User)) {
+                    $user = User::findOne(['id' => $user]);
+                }
                 IncludeGroupNotification::instance()
                     ->about($this)
                     ->from(Yii::$app->user->identity)
-                    ->send(User::findOne(['id' => $userId]));
+                    ->send($user);
             }
             return true;
         }
@@ -370,12 +376,21 @@ class Group extends ActiveRecord
     public function removeUser($user)
     {
         $groupUser = $this->getGroupUser($user);
-        if ($groupUser === null) {
+        if (!$groupUser) {
             return false;
         }
 
-        if ($groupUser !== false) {
-            return $groupUser->delete();
+        if ($groupUser->delete()) {
+            if ($this->notify_users) {
+                if (!($user instanceof User)) {
+                    $user = User::findOne(['id' => $user]);
+                }
+                ExcludeGroupNotification::instance()
+                    ->about($this)
+                    ->from(Yii::$app->user->identity)
+                    ->send($user);
+            }
+            return true;
         }
 
         return false;
@@ -438,10 +453,13 @@ class Group extends ActiveRecord
     public static function getRegistrationGroups()
     {
         if (Yii::$app->getModule('user')->settings->get('auth.showRegistrationUserGroup')) {
-            return self::find()
+            $groups = self::find()
                 ->where(['show_at_registration' => 1, 'is_admin_group' => 0])
                 ->orderBy('name ASC')
                 ->all();
+            if (count($groups) > 0) {
+                return $groups;
+            }
         }
 
         $groups = [];
@@ -471,5 +489,22 @@ class Group extends ActiveRecord
     public function getGroupSpaces()
     {
         return $this->hasMany(GroupSpace::class, ['group_id' => 'id']);
+    }
+
+
+    /**
+     * Check if this Group can be deleted by current User
+     *
+     * @return bool
+     * @since 1.9
+     */
+    public function canDelete()
+    {
+        return Yii::$app->user->can(ManageGroups::class) && !(
+            $this->isNewRecord ||
+            $this->is_admin_group ||
+            $this->is_default_group ||
+            $this->is_protected
+        );
     }
 }

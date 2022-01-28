@@ -30,6 +30,12 @@ class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
     private $_fileManager;
 
     /**
+     * @var bool enable file history for attached files
+     * @since 1.10
+     */
+    public $fileManagerEnableHistory = false;
+
+    /**
      * @inheritdoc
      */
     public function beforeSave($insert)

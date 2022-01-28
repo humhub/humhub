@@ -70,7 +70,7 @@ class ProfileCest
         $I->wantTo('ensure that my profile works as expected.');
 
         $I->amUser2();
-        $I->amOnPage('index-test.php?r=user/profile&uguid=01e50e0d-82cd-41fc-8b0c-552392f5839d');
+        $I->amOnPage('/u/user1/user/profile/home');
 
         $I->expectTo('see the profile of User2');
         $I->see('Follow');
@@ -87,7 +87,41 @@ class ProfileCest
         $I->selectOption('select[data-attribute0*=ViewAboutPage]', 'Deny');
 
         $I->amUser1(true);
-        $I->amOnPage('index-test.php?r=user/profile&uguid=01e50e0d-82cd-41fc-8b0c-552392f5839e');
+        $I->amOnPage('/u/user2/user/profile/home');
         $I->dontSee('About');
+    }
+
+    public function testHomePageUrl(AcceptanceTester $I)
+    {
+        $I->wantTo('ensure that my profile home page URL alias routed as expected.');
+
+        $I->amUser2();
+        $I->amOnPage('/u/user2/user/profile/home');
+
+        $I->waitForText('Stream');
+        $I->click('Stream');
+        $I->waitForText('Profile menu');
+        $I->see('Sara Tester');
+        $I->see('Stream');
+
+        $I->expectTo('see the alias of profile home page URL');
+        $I->seeCurrentUrlEquals('/u/user2/home');
+    }
+
+    public function testAboutPageUrl(AcceptanceTester $I)
+    {
+        $I->wantTo('ensure that my profile about page URL alias routed as expected.');
+
+        $I->amUser2();
+        $I->amOnPage('/u/user2/user/profile/home');
+
+        $I->waitForText('About');
+        $I->click('About');
+        $I->waitForText('Profile menu');
+        $I->see('Sara Tester');
+        $I->see('About');
+
+        $I->expectTo('see the alias of profile about page URL');
+        $I->seeCurrentUrlEquals('/u/user2/about');
     }
 }

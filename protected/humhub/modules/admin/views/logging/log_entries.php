@@ -53,7 +53,9 @@ use yii\log\Logger;
                         <?= date('r', $entry->log_time) ?>&nbsp;
                         <span class="pull-right"><?= Html::encode($entry->category) ?></span>
                     </h4>
-                    <?= Html::encode($entry->message) ?>
+                    <div data-ui-show-more data-collapse-at="150">
+                        <?= nl2br(Html::encode($entry->message)) ?>
+                    </div>
                 </div>
             </li>
 
