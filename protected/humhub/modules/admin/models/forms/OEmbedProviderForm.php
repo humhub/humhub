@@ -14,6 +14,7 @@ class OEmbedProviderForm extends \yii\base\Model
     public $name;
     public $endpoint;
     public $pattern;
+    public $access_token;
 
     /**
      * Declares the validation rules.
@@ -24,6 +25,10 @@ class OEmbedProviderForm extends \yii\base\Model
             [['name', 'pattern', 'endpoint'], 'string'],
             [['name', 'pattern', 'endpoint'], 'required'],
             ['endpoint', 'url'],
+            ['access_token', 'required', 'when' => function($model) {
+                parse_str($model->endpoint, $query);
+                return isset($query['access_token']);
+            }]
         ];
     }
 
@@ -38,6 +43,7 @@ class OEmbedProviderForm extends \yii\base\Model
             'name' => Yii::t('AdminModule.settings', 'Provider Name'),
             'endpoint' => Yii::t('AdminModule.settings', 'Endpoint Url'),
             'pattern' => Yii::t('AdminModule.settings', 'Url Pattern'),
+            'access_token' => Yii::t('AdminModule.settings', 'Access Token'),
         ];
     }
 

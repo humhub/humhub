@@ -2535,6 +2535,14 @@ div.nested-comments-root div.comment-container {
   padding: 0.75rem;
   margin: 0 0.5rem 0.5rem 0.5rem;
 }
+#oembed-providers .oembed-provider-container .oembed-provider .oembed-provider-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#oembed-providers .oembed-provider-container .oembed-provider .oembed-provider-name .label.label-error {
+  margin-left: 2px;
+}
 #endpoint-parameters {
   display: flex;
   flex-direction: row;

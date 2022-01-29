@@ -10,6 +10,8 @@ use yii\web\View;
 /* @var $name string */
 /** @var OEmbedProviderForm $model */
 
+parse_str($model->endpoint, $query);
+
 $this->registerJs(<<<JS
     function initEndpointInputs() {
         var url = new URL($('#oembedproviderform-endpoint').val());
@@ -18,8 +20,7 @@ $this->registerJs(<<<JS
         $('#endpoint-parameters').html('');
 
         for (var key of url.searchParams.keys()) {
-            if (key !== 'url') {
-
+            if (key !== 'url' && key !== 'access_token') {
                 var value = url.searchParams.get(key);
                 var label = key[0].toUpperCase() + key.substring(1)
                     .replace(/_([a-z])/, function (m, w) {
@@ -35,9 +36,10 @@ $this->registerJs(<<<JS
                     '</div>';
 
                 $('#endpoint-parameters').append(formGroup);
-                $('#' + inputId).on('input change', composeEndpoint);
             }
         }
+
+        $('input[data-param-name]').on('input change', composeEndpoint);
     }
 
     function composeEndpoint() {
@@ -95,6 +97,10 @@ JS, View::POS_LOAD);
 
 <?= $form->field($model, 'endpoint')->textInput(['class' => 'form-control']); ?>
 <p class="help-block"><?= Yii::t('AdminModule.settings', 'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)'); ?></p>
+
+<?php if(isset($query['access_token'])): ?>
+    <?= $form->field($model, 'access_token')->textInput(['class' => 'form-control endpoint-param', 'data-param-name' => 'access_token', 'value' => $query['access_token']]) ?>
+<?php endif; ?>
 
 <div id="endpoint-parameters"></div>
 
