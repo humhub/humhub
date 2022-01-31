@@ -59,7 +59,9 @@ class ModuleStatus extends Widget
 
         $onlineModule = new OnlineModule(['module' => $this->module]);
 
-        if ($onlineModule->isFeatured) {
+        if ($onlineModule->isProOnly) {
+            $this->_status = 'professional';
+        } else if ($onlineModule->isFeatured) {
             $this->_status = 'featured';
         } else if (!$onlineModule->isThirdParty) {
             $this->_status = 'official';
@@ -67,8 +69,6 @@ class ModuleStatus extends Widget
             $this->_status = 'partner';
         } else if ($onlineModule->isDeprecated) {
             $this->_status = 'deprecated';
-        } else if ($onlineModule->isProOnly) {
-            $this->_status = 'professional';
         } else {
             $this->_status = 'none';
         }
