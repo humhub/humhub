@@ -71,6 +71,13 @@ class Text extends BaseType
     public $canBeDirectoryFilter = true;
 
     /**
+     * Prefix - tel://, sip://,xmpp:// etc
+     *
+     * @var String
+     */
+    public $prefix;
+
+    /**
      * Rules for validating the Field Type Settings Form
      *
      * @return array
@@ -78,9 +85,10 @@ class Text extends BaseType
     public function rules()
     {
         return [
-            [['default', 'minLength', 'maxLength', 'validator', 'regexp', 'regexpErrorMessage'], 'safe'],
+            [['default', 'minLength', 'maxLength', 'validator', 'regexp', 'regexpErrorMessage', 'prefix'], 'safe'],
             [['maxLength', 'minLength'], 'integer', 'min' => 1, 'max' => 255],
             [['default'], 'string', 'max' => 255],
+            [['prefix'], 'string', 'max' => 10],
         ];
     }
 
@@ -106,6 +114,11 @@ class Text extends BaseType
                                     self::VALIDATOR_EMAIL => 'E-Mail Address',
                                     self::VALIDATOR_URL => 'URL',
                                 ],
+                            ],
+                            'prefix' => [
+                                'label' => Yii::t('UserModule.profile', 'Prefix (tel:// etc)'),
+                                'type' => 'text',
+                                'class' => 'form-control',
                             ],
                             'minLength' => [
                                 'label' => Yii::t('UserModule.profile', 'Minimum length'),
