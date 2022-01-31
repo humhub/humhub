@@ -46,8 +46,8 @@ class CommentEntryLinks extends BaseStack
         if (!($this->object instanceof Comment)) {
             return;
         }
-        $this->addWidget(CommentLink::class, ['object' => $this->object], ['sortOrder' => 100]);
-        $this->addWidget(LikeLink::class, ['object' => $this->object], ['sortOrder' => 200]);
+        $this->addWidget(CommentLink::class, ['object' => $this->object], ['sortOrder' => 200]);
+        $this->addWidget(LikeLink::class, ['object' => $this->object], ['sortOrder' => 100]);
     }
 
 }
