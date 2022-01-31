@@ -101,7 +101,7 @@ abstract class DirectoryFilters extends Widget
         switch ($data['type']) {
             case 'dropdown':
             case 'dropdownlist':
-                $inputOptions['data-action-change'] = 'directory.applyFilters';
+                $inputOptions['data-action-change'] = 'cards.applyFilters';
                 $inputOptions['options'] = ['separator' => ['disabled' => '']];
                 $inputHtml = Html::dropDownList($filter, self::getValue($filter), $data['options'], $inputOptions);
                 break;
@@ -113,7 +113,8 @@ abstract class DirectoryFilters extends Widget
                 }
 
                 $activeTags = self::getValue($filter);
-                $inputHtml .= Html::hiddenInput($filter, $activeTags);
+                $filterOptions = empty($data['multiple']) ? [] : ['data-multiple' => 1];
+                $inputHtml .= Html::hiddenInput($filter, $activeTags, $filterOptions);
                 $activeTags = empty($activeTags) ? [] : explode(',', $activeTags);
 
                 foreach ($data['tags'] as $tagKey => $tagLabel) {
@@ -122,7 +123,7 @@ abstract class DirectoryFilters extends Widget
 
                     $inputHtml .= Button::none($tagLabel)
                         ->options(['class' => 'btn btn-sm btn-info' . ($isActiveTag ? ' active' : '')])
-                        ->action('directory.selectTag')
+                        ->action('cards.selectTag')
                         ->options([
                             'data-filter' => $filter,
                             'data-tag' => $tagKey,

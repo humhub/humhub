@@ -1,4 +1,4 @@
-humhub.module('directory', function(module, require, $) {
+humhub.module('cards', function(module, require, $) {
     const client = require('client');
     const loader = require('ui.loader');
 
@@ -9,6 +9,7 @@ humhub.module('directory', function(module, require, $) {
     const selectTag = function (evt) {
         const filter = $(evt.$trigger).data('filter');
         const tag = $(evt.$trigger).data('tag');
+        const isMultiple = $(evt.$trigger).data('multiple');
         const input = $(evt.$trigger).closest('form').find('input[type=hidden][name=' + filter + ']');
 
         if (tag === '') {
@@ -24,7 +25,7 @@ humhub.module('directory', function(module, require, $) {
         for (let i = 0; i < currentTags.length; i++) {
             if (currentTags[i] === tag) {
                 tagIsActive = true;
-            } else {
+            } else if (isMultiple) {
                 newTags.push(currentTags[i]);
             }
         }
