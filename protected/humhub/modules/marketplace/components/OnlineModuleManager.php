@@ -292,11 +292,15 @@ class OnlineModuleManager extends Component
      */
     public function getNotInstalledModules(): array
     {
+        /** @var Module $module */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+
         $modules = $this->getModules();
 
         foreach ($modules as $o => $module) {
             $onlineModule = new ModelModule($module);
-            if ($onlineModule->isInstalled()) {
+            if ($onlineModule->isInstalled() ||
+                ($onlineModule->isDeprecated && $marketplaceModule->hideLegacyModules)) {
                 unset($modules[$o]);
                 continue;
             }
