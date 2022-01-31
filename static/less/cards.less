@@ -1,4 +1,4 @@
-.container-directory {
+.container-cards {
     &.container-fluid {
         @media (min-width: 500px) {
             .card {
@@ -138,10 +138,12 @@
             flex-direction: column;
             margin: 15px 0;
             border-radius: 4px;
-            background-color: #ffffff;
             overflow: hidden;
             &.card-archived {
                 filter: opacity(60%);
+            }
+            > div:not(.card-status) {
+                background-color: #ffffff;
             }
         }
 
@@ -166,6 +168,8 @@
             font-weight: bold;
             padding: 5px 12px;
             color: #FFF;
+            min-height: 30px;
+            max-height: 30px;
             &.card-status-professional {
                 background: #415F6E;
             }
@@ -214,6 +218,9 @@
                     }
                 }
             }
+        }
+        .card-status-none + .card-header {
+            border-radius: 4px 4px 0 0;
         }
         .card-body {
             flex-grow: 1;

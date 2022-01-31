@@ -11,7 +11,7 @@ use humhub\modules\ui\view\helpers\ThemeHelper;
 
 ModuleAsset::register($this);
 ?>
-<div class="<?php if (ThemeHelper::isFluid()) : ?>container-fluid<?php else: ?>container<?php endif; ?> container-directory container-modules container-content-modules">
+<div class="<?php if (ThemeHelper::isFluid()) : ?>container-fluid<?php else: ?>container<?php endif; ?> container-cards container-modules container-content-modules">
     <h4><?= Yii::t('SpaceModule.manage', '<strong>Space</strong> Modules'); ?></h4>
 
     <div class="row cards">

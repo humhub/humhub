@@ -45,10 +45,6 @@ class ModuleStatus extends Widget
      */
     public function run()
     {
-        if (empty($this->status)) {
-            return '';
-        }
-
         return str_replace(['{status}', '{class}'], [$this->statusTitle, $this->class], $this->template);
     }
 
@@ -74,7 +70,7 @@ class ModuleStatus extends Widget
         } else if ($onlineModule->isProOnly) {
             $this->_status = 'professional';
         } else {
-            $this->_status = false;
+            $this->_status = 'none';
         }
         // TODO: Implement new status detection
 
@@ -103,7 +99,7 @@ class ModuleStatus extends Widget
 
     public function getClass(): string
     {
-        return empty($this->status) ? '' : 'card-status-' . $this->status;
+        return 'card-status-' . $this->status;
     }
 
 }

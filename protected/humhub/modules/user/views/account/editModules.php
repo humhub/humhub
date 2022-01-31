@@ -11,7 +11,7 @@ use humhub\modules\ui\view\helpers\ThemeHelper;
 
 ModuleAsset::register($this);
 ?>
-<div class="container container-directory container-modules container-content-modules">
+<div class="container container-cards container-modules container-content-modules">
     <h4><?= Yii::t('UserModule.manage', '<strong>User</strong> modules'); ?></h4>
 
     <div class="row cards">

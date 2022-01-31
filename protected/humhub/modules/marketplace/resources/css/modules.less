@@ -45,9 +45,11 @@
     .card {
         padding-right: 1px;
         .card-panel {
-            background: @moduleUpdateCardBg;
             color: #FFF;
             margin-top: 0;
+            > div:not(.card-status) {
+                background: @moduleUpdateCardBg;
+            }
             .card-header {
                 padding: 12px;
             }

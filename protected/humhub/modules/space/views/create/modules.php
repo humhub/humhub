@@ -22,7 +22,7 @@ ModuleAsset::register($this);
             </h4>
         </div>
         <div class="modal-body">
-            <div class="container container-directory container-modules container-create-space-modules">
+            <div class="container container-cards container-modules container-create-space-modules">
                 <div class="row cards">
                     <?php foreach ($availableModules as $moduleId => $module) : ?>
                         <?= ModuleCard::widget([

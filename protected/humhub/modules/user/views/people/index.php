@@ -53,7 +53,7 @@ CardsAsset::register($this);
 
 <?php if (!$people->isLastPage()) : ?>
     <?= Html::tag('div', '', [
-        'class' => 'directory-end',
+        'class' => 'cards-end',
         'data-current-page' => $people->pagination->getPage() + 1,
         'data-total-pages' => $people->pagination->getPageCount(),
         'data-ui-loader' => '',

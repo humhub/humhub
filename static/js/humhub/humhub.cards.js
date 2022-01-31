@@ -37,53 +37,53 @@ humhub.module('cards', function(module, require, $) {
         applyFilters(evt);
     }
 
-    const loadMore = function(directoryEndIndicator) {
-        const urlParams = {page: directoryEndIndicator.data('current-page') + 1};
+    const loadMore = function(cardsEndIndicator) {
+        const urlParams = {page: cardsEndIndicator.data('current-page') + 1};
 
-        $('.directory-end').data('isLoading', true);
-        loader.append(directoryEndIndicator);
+        $('.cards-end').data('isLoading', true);
+        loader.append(cardsEndIndicator);
         client.get(module.config.loadMoreUrl, {data: urlParams}).then(function (response) {
-            $('.container-directory .card:hidden').show();
-            $('.container-directory .cards').append(response.response);
-            if (urlParams.page == directoryEndIndicator.data('total-pages')) {
+            $('.container-cards .card:hidden').show();
+            $('.container-cards .cards').append(response.response);
+            if (urlParams.page == cardsEndIndicator.data('total-pages')) {
                 // Remove the directory end indicator because the last page was loaded
-                directoryEndIndicator.remove();
+                cardsEndIndicator.remove();
             } else {
-                directoryEndIndicator.data('current-page', urlParams.page);
+                cardsEndIndicator.data('current-page', urlParams.page);
                 hideLastNotCompletedRow();
             }
         }).catch(function(err) {
             module.log.error(err, true);
             reject();
         }).finally(function() {
-            loader.reset(directoryEndIndicator);
-            $('.directory-end').data('isLoading', false);
+            loader.reset(cardsEndIndicator);
+            $('.cards-end').data('isLoading', false);
         });
     }
 
     const hideLastNotCompletedRow = function() {
-        const cardsNum = $('.container-directory .card').length;
+        const cardsNum = $('.container-cards .card').length;
         if (!cardsNum) {
             return;
         }
 
-        const directoryEndIndicator = $('.directory-end');
-        if (directoryEndIndicator.data('current-page') === directoryEndIndicator.data('total-pages')) {
+        const cardsEndIndicator = $('.cards-end');
+        if (cardsEndIndicator.data('current-page') === cardsEndIndicator.data('total-pages')) {
             // No reason to hide a not completed row if current page is last
             return;
         }
 
-        const cardsPerRow = Math.floor($('.container-directory .row').outerWidth() / $('.container-directory .card:first').width());
+        const cardsPerRow = Math.floor($('.container-cards .row').outerWidth() / $('.container-cards .card:first').width());
         const hideLastCardsNum = cardsNum % cardsPerRow;
         if (hideLastCardsNum > 0 && cardsNum > cardsPerRow) {
             // Hide cards from not completed row
-            $('.container-directory .card').slice(-hideLastCardsNum).hide();
+            $('.container-cards .card').slice(-hideLastCardsNum).hide();
         }
     }
 
 
     const preventScrollLoading = function () {
-        return $('.directory-end').data('isLoading');
+        return $('.cards-end').data('isLoading');
     };
 
     const initScroll = function () {
@@ -91,8 +91,8 @@ humhub.module('cards', function(module, require, $) {
             return;
         }
 
-        const $directoryEndIndicator = $('.directory-end');
-        if (!$directoryEndIndicator.length) {
+        const $cardsEndIndicator = $('.cards-end');
+        if (!$cardsEndIndicator.length) {
             return;
         }
 
@@ -102,11 +102,11 @@ humhub.module('cards', function(module, require, $) {
             }
 
             if (entries.length && entries[0].isIntersecting) {
-                loadMore($directoryEndIndicator);
+                loadMore($cardsEndIndicator);
             }
         }, {rootMargin: '1px'});
 
-        observer.observe($directoryEndIndicator[0]);
+        observer.observe($cardsEndIndicator[0]);
     }
 
     const init = function() {

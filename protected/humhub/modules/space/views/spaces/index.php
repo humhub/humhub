@@ -48,7 +48,7 @@ CardsAsset::register($this);
 
 <?php if (!$spaces->isLastPage()) : ?>
     <?= Html::tag('div', '', [
-        'class' => 'directory-end',
+        'class' => 'cards-end',
         'data-current-page' => $spaces->pagination->getPage() + 1,
         'data-total-pages' => $spaces->pagination->getPageCount(),
     ]) ?>
