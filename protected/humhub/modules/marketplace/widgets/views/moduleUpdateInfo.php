@@ -13,10 +13,8 @@ use humhub\modules\ui\icon\widgets\Icon;
 /* @var string $link */
 ?>
 <div class="row directory-filters-footer <?= $class ?>">
-    <div class="col-md-1 col-xs-2 filter-footer-icon">
-        <?= Icon::get($icon) ?>
-    </div>
-    <div class="col-md-7 col-xs-10">
+    <div class="col-md-8 col-xs-12">
+        <?= Icon::get($icon, ['htmlOptions' => ['class' => 'filter-footer-icon']]) ?>
         <strong><?= $info ?></strong>
     </div>
     <div class="col-md-4 col-xs-12 text-right">
