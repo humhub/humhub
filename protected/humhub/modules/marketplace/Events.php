@@ -159,15 +159,17 @@ class Events extends BaseObject
             ]);
         }
 
-        $onlineModules = $marketplaceModule->onlineModuleManager->getNotInstalledModules();
-        if ($onlineModulesCount = count($onlineModules)) {
-            $modulesWidget->addGroup('notInstalled', [
-                'title' => Yii::t('AdminModule.modules', 'Not Installed'),
-                'modules' => Yii::$app->moduleManager->filterModules($onlineModules),
-                'count' => $onlineModulesCount,
-                'view' => '@humhub/modules/marketplace/widgets/views/moduleInstallCard',
-                'sortOrder' => 200,
-            ]);
+        if (!$marketplaceModule->isFilteredBySingleTag('installed')) {
+            $onlineModules = $marketplaceModule->onlineModuleManager->getNotInstalledModules();
+            if ($onlineModulesCount = count($onlineModules)) {
+                $modulesWidget->addGroup('notInstalled', [
+                    'title' => Yii::t('AdminModule.modules', 'Not Installed'),
+                    'modules' => Yii::$app->moduleManager->filterModules($onlineModules),
+                    'count' => $onlineModulesCount,
+                    'view' => '@humhub/modules/marketplace/widgets/views/moduleInstallCard',
+                    'sortOrder' => 200,
+                ]);
+            }
         }
     }
 

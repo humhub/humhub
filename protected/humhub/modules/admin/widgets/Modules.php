@@ -8,6 +8,7 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\marketplace\Module;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -38,6 +39,12 @@ class Modules extends Widget
 
     private function initDefaultGroups()
     {
+        /* @var Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+        if ($marketplaceModule->isFilteredBySingleTag('not_installed')) {
+            return;
+        }
+
         $installedModules = Yii::$app->moduleManager->getModules();
 
         ArrayHelper::multisort($installedModules, 'isActivated', SORT_DESC);
