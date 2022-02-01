@@ -14,7 +14,7 @@ use humhub\modules\ui\icon\widgets\Icon;
 
 /* @var Module $module */
 ?>
-<div class="card-panel<?php if ($module->isInstalled() || $module->isProOnly()) : ?> module-installed<?php endif; ?>">
+<div class="card-panel">
     <?= ModuleStatus::widget(['module' => $module]) ?>
     <div class="card-header">
         <?= Html::img($module->image, [

@@ -44,19 +44,27 @@ class ModuleInstallActionButtons extends Widget
         }
 
         if ($this->module->isProOnly()) {
-            $html .= Button::asLink(Icon::get('info-circle') . '&nbsp;&nbsp;' . Yii::t('MarketplaceModule.base', 'Professional Edition'), ['/admin/information'])
-                ->cssClass('btn btn-sm btn-default');
+            $html .= Button::primary(Icon::get('info-circle') . '&nbsp;&nbsp;' . Yii::t('MarketplaceModule.base', 'Professional Edition'))
+                ->link(['/admin/information'])
+                ->sm()
+                ->loader(false)
+                ->tooltip(Yii::t('MarketplaceModule.base', 'This is a Professional Edition module. You do not have the permission to install this module. If you are interested in our product, you can find more information about our Professional Edition by clicking on this button.'));
         } elseif (!empty($this->module->price_request_quote) && !$this->module->purchased) {
-            $html .= Button::asLink(Yii::t('MarketplaceModule.base', 'Buy'), $this->module->checkoutUrl)
-                ->cssClass('btn btn-sm btn-primary')
-                ->options(['target' => '_blank']);
+            $html .= Button::primary(Yii::t('MarketplaceModule.base', 'Buy'))
+                ->link($this->module->checkoutUrl)
+                ->sm()
+                ->options(['target' => '_blank'])
+                ->loader(false);
         } elseif (!empty($this->module->price_eur) && !$this->module->purchased) {
-            $html .= Button::asLink(Yii::t('MarketplaceModule.base', 'Buy (%price%)', ['%price%' => $this->module->price_eur . '&euro;']), $this->module->checkoutUrl)
-                ->cssClass('btn btn-sm btn-primary')
-                ->options(['target' => '_blank']);
+            $html .= Button::primary(Yii::t('MarketplaceModule.base', 'Buy (%price%)', ['%price%' => $this->module->price_eur . '&euro;']))
+                ->loader($this->module->checkoutUrl)
+                ->sm()
+                ->options(['target' => '_blank'])
+                ->loader(false);
         } else {
-            $html .= Button::asLink(Yii::t('MarketplaceModule.base', 'Install'), ['/marketplace/browse/install', 'moduleId' => $this->module->id])
-                ->cssClass('btn btn-sm btn-primary')
+            $html .= Button::primary(Yii::t('MarketplaceModule.base', 'Install'))
+                ->link(['/marketplace/browse/install', 'moduleId' => $this->module->id])
+                ->sm()
                 ->options([
                     'data-method' => 'POST',
                     'data-loader' => 'modal',
