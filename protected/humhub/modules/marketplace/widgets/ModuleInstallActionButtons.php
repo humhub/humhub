@@ -57,7 +57,7 @@ class ModuleInstallActionButtons extends Widget
                 ->loader(false);
         } elseif (!empty($this->module->price_eur) && !$this->module->purchased) {
             $html .= Button::primary(Yii::t('MarketplaceModule.base', 'Buy (%price%)', ['%price%' => $this->module->price_eur . '&euro;']))
-                ->loader($this->module->checkoutUrl)
+                ->link($this->module->checkoutUrl)
                 ->sm()
                 ->options(['target' => '_blank'])
                 ->loader(false);
