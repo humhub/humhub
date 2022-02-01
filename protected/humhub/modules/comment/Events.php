@@ -97,7 +97,7 @@ class Events extends Component
         $module = Yii::$app->getModule('comment');
 
         if ($module->canComment($event->sender->object)) {
-            $event->sender->addWidget(widgets\CommentLink::class, ['object' => $event->sender->object], ['sortOrder' => 30]);
+            $event->sender->addWidget(widgets\CommentLink::class, ['object' => $event->sender->object], ['sortOrder' => 10]);
         }
     }
 
@@ -108,7 +108,7 @@ class Events extends Component
      */
     public static function onWallEntryAddonInit($event)
     {
-        $event->sender->addWidget(widgets\Comments::class, ['object' => $event->sender->object], ['sortOrder' => 40]);
+        $event->sender->addWidget(widgets\Comments::class, ['object' => $event->sender->object], ['sortOrder' => 30]);
     }
 
     /**
