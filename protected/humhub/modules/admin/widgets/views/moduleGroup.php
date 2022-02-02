@@ -18,20 +18,15 @@ use humhub\modules\admin\widgets\ModuleCard;
 ?>
 <h4 class="modules-type"><?= $title ?> (<span class="group-modules-count-<?= $type ?>"><?= $count ?></span>)</h4>
 
-
 <div class="row cards">
-    <?php if (empty($modules)): ?>
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <?php if ($count) : ?>
-                        <strong><?= Yii::t('AdminModule.base', 'No modules found.') ?></strong><br/>
-                        <?= Yii::t('AdminModule.base', 'Try other keywords or remove filters.') ?>
-                    <?php elseif (isset($noModulesMessage)) : ?>
-                        <strong><?= $noModulesMessage ?></strong>
-                    <?php endif; ?>
-                </div>
-            </div>
+    <?php if (empty($modules)) : ?>
+        <div class="col-md-12 cards-no-results">
+            <?php if ($count) : ?>
+                <strong><?= Yii::t('AdminModule.base', 'No modules found.') ?></strong><br/>
+                <?= Yii::t('AdminModule.base', 'Try other keywords or remove filters.') ?>
+            <?php elseif (isset($noModulesMessage)) : ?>
+                <strong><?= $noModulesMessage ?></strong>
+            <?php endif; ?>
         </div>
     <?php endif; ?>
 
