@@ -9,14 +9,16 @@ use humhub\components\Module;
 use humhub\modules\admin\widgets\ModuleCard;
 
 /* @var string $type */
-/* @var string $title */
+/* @var string|bool $title */
 /* @var int $count */
 /* @var string $noModulesMessage */
 /* @var string $view */
 /* @var string $moduleTemplate */
 /* @var Module[] $modules */
 ?>
-<h4 class="modules-type"><?= $title ?> (<span class="group-modules-count-<?= $type ?>"><?= $count ?></span>)</h4>
+<?php if ($title !== false) : ?>
+    <h4 class="modules-type"><?= $title ?> (<span class="group-modules-count-<?= $type ?>"><?= $count ?></span>)</h4>
+<?php endif; ?>
 
 <div class="row cards">
     <?php if (empty($modules)) : ?>

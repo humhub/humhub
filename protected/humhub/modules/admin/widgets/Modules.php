@@ -70,9 +70,26 @@ class Modules extends Widget
     {
         $modules = '';
 
+        $alwaysVisibleGroup = 'availableUpdates';
+        $displaySingleGroup = true;
         foreach ($this->groups as $groupType => $group) {
+            if ($groupType !== $alwaysVisibleGroup && !empty($group['modules'])) {
+                $displaySingleGroup = false;
+                break;
+            }
+        }
+
+        $singleGroupPrinted = false;
+        foreach ($this->groups as $groupType => $group) {
+            if ($singleGroupPrinted) {
+                continue;
+            }
             if (empty($group['count'])) {
                 continue;
+            }
+            if ($displaySingleGroup && $groupType !== $alwaysVisibleGroup) {
+                $singleGroupPrinted = true;
+                $group['title'] = false;
             }
             $group['type'] = $groupType;
             $renderedGroup = $this->render('moduleGroup', $group);
