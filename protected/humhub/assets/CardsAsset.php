@@ -10,13 +10,13 @@ namespace humhub\assets;
 use humhub\components\assets\WebStaticAssetBundle;
 use yii\web\View;
 
-class DirectoryAsset extends WebStaticAssetBundle
+class CardsAsset extends WebStaticAssetBundle
 {
     /**
      * @inheritdoc
      */
     public $js = [
-        'js/humhub/humhub.directory.js',
+        'js/humhub/humhub.cards.js',
     ];
 
     /**

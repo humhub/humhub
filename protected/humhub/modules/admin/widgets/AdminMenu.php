@@ -178,8 +178,7 @@ class AdminMenu extends LeftNavigation
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('marketplace');
-
-        if (!$module->enabled) {
+        if ($module === null || !$module->enabled) {
             return '';
         }
 
