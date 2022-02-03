@@ -19,6 +19,7 @@ use yii\helpers\Url;
  * @property-read string $version
  * @property-read string $image
  * @property-read string $checkoutUrl
+ * @property-read bool $isNonFree
  *
  * @since 1.11
  */
@@ -70,7 +71,7 @@ class Module extends Model
     public $showDisclaimer;
 
     /**
-     * @var string
+     * @var bool
      */
     public $isThirdParty;
 
@@ -80,12 +81,12 @@ class Module extends Model
     public $isCommunity;
 
     /**
-     * @var string
+     * @var bool
      */
     public $isPartner;
 
     /**
-     * @var string
+     * @var bool
      */
     public $isDeprecated;
 
@@ -134,6 +135,11 @@ class Module extends Model
         }
 
         parent::__construct($config);
+    }
+
+    public function getIsNonFree(): bool
+    {
+        return (!empty($this->price_eur) || !empty($this->price_request_quote));
     }
 
     public function getVersion(): string

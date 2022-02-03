@@ -110,7 +110,7 @@ class Events extends BaseObject
                 'class' => 'directory-filters-footer-warning',
                 'icon' => 'info-circle',
                 'info' => Yii::t('MarketplaceModule.base', 'A new HumHub update is available. Install it now to keep your network up to date and to have access to the latest module versions.'),
-                'link' => Button::asLink(Yii::t('MarketplaceModule.base', 'Update HumHub now'), 'https://www.humhub.org')
+                'link' => Button::asLink(Yii::t('MarketplaceModule.base', 'Update HumHub now'), 'https://docs.humhub.org/docs/admin/updating/')
                     ->cssClass('btn btn-primary'),
             ];
         } else {
@@ -118,7 +118,7 @@ class Events extends BaseObject
                 'class' => 'directory-filters-footer-info',
                 'icon' => 'check-circle',
                 'info' => Yii::t('MarketplaceModule.base', 'This HumHub installation is up to date!'),
-                'link' => Button::asLink('https://www.humhub.org', 'https://www.humhub.org')
+                'link' => Button::asLink('https://www.humhub.com', 'https://www.humhub.com')
                     ->cssClass('btn btn-info'),
             ];
         }
@@ -292,24 +292,30 @@ class Events extends BaseObject
         /* @var ModuleControls $moduleControls */
         $moduleControls = $event->sender;
 
-        if (!($moduleControls->module instanceof ModelModule)) {
+        $module = $moduleControls->module;
+
+        if (!($module instanceof ModelModule)) {
             return;
         }
 
-        $moduleControls->addEntry(new MenuLink([
-            'id' => 'marketplace-licence-key',
-            'label' => Yii::t('MarketplaceModule.base', 'Add Licence Key'),
-            'url' => ['/marketplace/purchase'],
-            'htmlOptions' => ['data-target' => '#globalModal'],
-            'icon' => 'key',
-            'sortOrder' => 1000,
-        ]));
+        /** @var \humhub\modules\marketplace\models\Module $module */
 
-        if ($moduleControls->module->isThirdParty) {
+        if ($module->isNonFree) {
+            $moduleControls->addEntry(new MenuLink([
+                'id' => 'marketplace-licence-key',
+                'label' => Yii::t('MarketplaceModule.base', 'Add Licence Key'),
+                'url' => ['/marketplace/purchase'],
+                'htmlOptions' => ['data-target' => '#globalModal'],
+                'icon' => 'key',
+                'sortOrder' => 1000,
+            ]));
+        }
+
+        if ($module->isThirdParty) {
             $moduleControls->addEntry(new MenuLink([
                 'id' => 'marketplace-third-party',
                 'label' => Yii::t('MarketplaceModule.base', 'Third-party')
-                    . ($moduleControls->module->isCommunity ? ' - ' . Yii::t('MarketplaceModule.base', 'Community') : ''),
+                    . ($module->isCommunity ? ' - ' . Yii::t('MarketplaceModule.base', 'Community') : ''),
                 'url' => ['/marketplace/browse/thirdparty-disclaimer'],
                 'htmlOptions' => ['data-target' => '#globalModal'],
                 'icon' => 'info-circle',

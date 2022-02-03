@@ -22,7 +22,6 @@ use yii\web\AssetBundle;
  *
  * @property-read string $name
  * @property-read string $description
- * @property-read array $categories
  * @property-read bool $isActivated
  * @property SettingsManager $settings
  * @mixin OnlineModule
