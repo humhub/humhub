@@ -16,6 +16,7 @@ use humhub\modules\admin\widgets\ModuleControls;
 use humhub\modules\admin\widgets\ModuleFilters;
 use humhub\modules\admin\widgets\Modules;
 use humhub\modules\marketplace\models\Module as ModelModule;
+use humhub\modules\share_between_humhub\helpers\Url;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\widgets\Button;
@@ -106,11 +107,16 @@ class Events extends BaseObject
         }
 
         if (version_compare($latestVersion, Yii::$app->version, '>')) {
+            $updateUrl = 'https://docs.humhub.org/docs/admin/updating/';
+            if (Yii::$app->hasModule('updater')) {
+                $updateUrl = Url::to(['/updater/update']);
+            }
+
             $info = [
                 'class' => 'directory-filters-footer-warning',
                 'icon' => 'info-circle',
                 'info' => Yii::t('MarketplaceModule.base', 'A new HumHub update is available. Install it now to keep your network up to date and to have access to the latest module versions.'),
-                'link' => Button::asLink(Yii::t('MarketplaceModule.base', 'Update HumHub now'), 'https://docs.humhub.org/docs/admin/updating/')
+                'link' => Button::asLink(Yii::t('MarketplaceModule.base', 'Update HumHub now'), $updateUrl)
                     ->cssClass('btn btn-primary'),
             ];
         } else {
