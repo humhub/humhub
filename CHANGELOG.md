@@ -1,12 +1,32 @@
 HumHub Changelog
 ================
 
-1.10.2 (Unreleased)
+1.10.4 (Unreleased)
+-------------------
+- Fix #5480: `el` language file in Admin section broken
+- Fix #5479: Fix ContentContainerPermissionAccess without provided container
+
+
+1.10.3 (December 20, 2021)
 --------------------------
+
+See also: [HumHub 1.10 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_10) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md). This release also includes a [security fix](https://github.com/humhub/humhub/security/advisories/GHSA-f5hc-5wfr-7v74). It could have been possible for registered users to become unauthorized members of private Spaces. Thanks to [Huntr](https://huntr.dev/bounties/943dad83-f0ed-4c74-ba81-7dfce7ca0ef2/) and @brenu.
+
+- Fix #5465: Fix empty RichText
+- Fix #5466: Default `.htaccess.dist` broken
+- Fix #5469: Mixed up title for Space membership button
+- Fix #5464: Fix comment highlighting on permalink
+- Fix #5473: Insufficient member invite check on Space creation 
+
+1.10.2 (December 7, 2021)
+-------------------------
+
+See also: [HumHub 1.10 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_10) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
 - Fix #5450: Fix confirmation before close a form with unsaved changes on modal window
 - Fix #5453: Fix migration of default group
 - Enh #5461: Added Event after a new file content (new version) is stored
-- Enh #5457: Use permalink comment in notification
+- Enh #5457: Use permalink comment in notifications
 
 
 1.10.1 (November 26, 2021)

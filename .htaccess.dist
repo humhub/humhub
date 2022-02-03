@@ -1,8 +1,6 @@
 # check if RewriteModule is availbale
 <IfModule mod_rewrite.c>
-
-    # uncomment if using the AssetManager::linkAssets option 
-    #Options +FollowSymLinks
+    Options +FollowSymLinks
     
     RewriteEngine on
 

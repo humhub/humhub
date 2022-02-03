@@ -8,16 +8,14 @@
 
 namespace humhub\modules\space\controllers;
 
+use Colors\RandomColor;
 use humhub\components\Controller;
 use humhub\components\behaviors\AccessControl;
-use humhub\models\Setting;
-use humhub\modules\content\components\ContentContainerModule;
-use humhub\modules\content\components\ContentContainerModuleManager;
+use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
-use humhub\modules\space\models\forms\InviteForm;
-use Colors\RandomColor;
+use humhub\modules\space\permissions\InviteUsers;
 use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use yii\base\Exception;
@@ -157,6 +155,10 @@ class CreateController extends Controller
 
         if (!$space) {
             throw new HttpException(404);
+        }
+
+        if (!$space->can(InviteUsers::class)) {
+            throw new HttpException(400, 'You are not allowed to invite users to the space!');
         }
 
         $model = new InviteForm(['space' => $space]);
