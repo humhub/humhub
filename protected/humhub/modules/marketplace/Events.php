@@ -16,7 +16,7 @@ use humhub\modules\admin\widgets\ModuleControls;
 use humhub\modules\admin\widgets\ModuleFilters;
 use humhub\modules\admin\widgets\Modules;
 use humhub\modules\marketplace\models\Module as ModelModule;
-use humhub\modules\share_between_humhub\helpers\Url;
+use yii\helpers\Url;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\widgets\Button;
