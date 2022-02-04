@@ -27,7 +27,7 @@ class FriendshipTest extends HumHubDbTestCase
 
         // Request Friendship
         $this->assertTrue(Friendship::add(Yii::$app->user->getIdentity(), $friendUser));
-        $this->assertMailSent(2, 'Friendship request mail sent.');
+        $this->assertMailSent(1, 'Friendship request mail sent.');
 
         $fiendship = Friendship::findOne(['user_id' => Yii::$app->user->id, 'friend_user_id' => 2]);
         $this->assertNotNull($fiendship, 'Friendship model persisted.');
@@ -51,7 +51,7 @@ class FriendshipTest extends HumHubDbTestCase
 
         // Request Friendship
         $this->assertTrue(Friendship::add(Yii::$app->user->getIdentity(), $friendUser));
-        $this->assertMailSent(2, 'Friendship request mail sent.');
+        $this->assertMailSent(1, 'Friendship request mail sent.');
 
         $fiendship = Friendship::findOne(['user_id' => Yii::$app->user->id, 'friend_user_id' => 2]);
         $this->assertNotNull($fiendship, 'Friendship model persisted.');
