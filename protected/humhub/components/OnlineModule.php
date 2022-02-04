@@ -100,13 +100,7 @@ class OnlineModule extends Component
             return false;
         }
 
-        /* @var MarketplaceModule */
-        $marketplaceModule = Yii::$app->getModule('marketplace');
-        if (!($marketplaceModule instanceof MarketplaceModule && $marketplaceModule->enabled)) {
-            return false;
-        }
-
-        return $marketplaceModule->licence->type !== Licence::LICENCE_TYPE_PRO;
+        return true;
     }
 
     public function getIsProOnly(): bool

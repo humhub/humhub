@@ -8,14 +8,16 @@
 namespace humhub\modules\marketplace\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\marketplace\models\Licence;
 use humhub\modules\marketplace\models\Module;
+use humhub\modules\marketplace\Module as MarketplaceModule;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\Button;
 use Yii;
 
 /**
  * ModuleInstallActionButtons shows actions for not installed module
- * 
+ *
  * @since 1.11
  * @author Luke
  */
@@ -43,7 +45,11 @@ class ModuleInstallActionButtons extends Widget
             return '';
         }
 
-        if ($this->module->isProOnly()) {
+        /** @var \humhub\modules\marketplace\Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+        $licence = $marketplaceModule->getLicence();
+
+        if ($this->module->isProOnly() && $licence->type === Licence::LICENCE_TYPE_CE) {
             $html .= Button::primary(Icon::get('info-circle') . '&nbsp;&nbsp;' . Yii::t('MarketplaceModule.base', 'Professional Edition'))
                 ->link(['/admin/information'])
                 ->sm()
