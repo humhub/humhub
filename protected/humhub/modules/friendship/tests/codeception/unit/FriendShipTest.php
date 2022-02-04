@@ -37,7 +37,7 @@ class FriendshipTest extends HumHubDbTestCase
         // Accept friendship
         $this->assertTrue(Friendship::add($friendUser, Yii::$app->user->getIdentity()));
         $this->assertEquals(Friendship::getStateForUser($friendUser, Yii::$app->user->getIdentity()), Friendship::STATE_FRIENDS, 'Check Friend Status');
-        $this->assertMailSent(4, 'Friendship acknowledged mail sent.');
+        $this->assertMailSent(3, 'Friendship acknowledged mail sent.');
     }
 
     public function testDeclineFriendShip()
@@ -61,6 +61,6 @@ class FriendshipTest extends HumHubDbTestCase
         // Cancel request
         Friendship::cancel($friendUser, Yii::$app->user->getIdentity());
         $this->assertEquals(Friendship::getStateForUser($friendUser, Yii::$app->user->getIdentity()), Friendship::STATE_NONE, 'Check Friend Status');
-        $this->assertMailSent(3, 'Friendship acknowledged mail sent.');
+        $this->assertMailSent(2, 'Friendship acknowledged mail sent.');
     }
 }
