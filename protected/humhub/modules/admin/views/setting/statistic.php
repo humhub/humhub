@@ -17,13 +17,15 @@ use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
 <?= $form->errorSummary($model); ?>
 
 <div class="form-group">
-    <?= $form->field($model, 'trackingHtmlCode')->widget(CodeMirrorInputWidget::class); ?>
+    <?= $form->field($model, 'trackingHtmlCode')->widget(CodeMirrorInputWidget::className()); ?>
 </div>
+
 <hr>
 
 <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
 <?= \humhub\widgets\DataSaved::widget(); ?>
+
 <?php ActiveForm::end(); ?>
 
 <?php $this->endContent(); ?>
