@@ -10,3 +10,4 @@
 - Enh #5258: Display who invited the user on the Approval page
 - Enh #4890: Allow to define actions in a controller which should not be intercepted by other actions
 - Enh #5510: oEmbed support for other social networks, redesign of oEmbed settings pages
+- Fix #5534: Statistic input loading problem
