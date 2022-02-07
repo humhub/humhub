@@ -217,7 +217,14 @@ class ActiveQueryUser extends ActiveQuery
      */
     private function getSearchableUserFields()
     {
-        $fields = ['user.username', 'user.email', 'contentcontainer.tags_cached'];
+        $fields = ['user.username', 'contentcontainer.tags_cached'];
+
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if ($module->includeEmailInSearch) {
+            $fields[] = 'user.email';
+        }
 
         foreach (ProfileField::findAll(['searchable' => 1]) as $profileField) {
             if (!($profileField->getFieldType() instanceof BaseTypeVirtual)) {
