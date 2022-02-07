@@ -103,7 +103,7 @@ class ProfileController extends ContentContainerController
         }
 
         $this->forcePostRequest();
-        $this->getUser()->follow(Yii::$app->user->getIdentity(), false);
+        $this->getUser()->follow(Yii::$app->user->getIdentity());
 
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = 'json';
