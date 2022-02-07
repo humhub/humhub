@@ -9,6 +9,7 @@ return array (
   'All your personal data will be irrevocably deleted.' => 'Al uw persoonlijke gegevens worden permanent verwijderd.',
   'Are you really sure? *ALL* module data for your profile will be deleted!' => 'Weet u het echt zeker? *ALLE* modulegegevens voor uw profiel worden verwijderd!',
   'Are you sure that you want to delete your account?' => 'Weet u zeker dat u uw account wilt verwijderen?',
+  'Blocked users' => 'Geblokkeerde gebruikers',
   'Changing the username can make some links unusable, for example old links to the profile.' => 'Het wijzigen van de gebruikersnaam kan sommige links onbruikbaar maken, bijvoorbeeld oude links naar het profiel.',
   'Configure' => 'Configureer',
   'Confirm' => 'Bevestig',

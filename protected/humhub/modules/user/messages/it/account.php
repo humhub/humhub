@@ -9,6 +9,7 @@ return array (
   'All your personal data will be irrevocably deleted.' => 'Tutti i tuoi dati personali verranno definitivamente eliminati.',
   'Are you really sure? *ALL* module data for your profile will be deleted!' => 'Sei veramente sicuro? *Tutti* i dati dei moduli del tuo profilo saranno eliminati!',
   'Are you sure that you want to delete your account?' => 'Sei sicuro di voler eliminare il tuo account?',
+  'Blocked users' => 'Utenti bloccati',
   'Changing the username can make some links unusable, for example old links to the profile.' => 'La modifica del nome utente può rendere inutilizzabili alcuni collegamenti, ad esempio vecchi collegamenti al profilo.',
   'Configure' => 'Configura',
   'Confirm' => 'Conferma',

@@ -116,7 +116,7 @@ class RichTextToPlainTextConverter extends RichTextToMarkdownConverter
 
         foreach ($paragraph as $inline) {
             if(isset($inline[0], $inline[1]) && $inline[0] === 'text') {
-                $this->textCount += strlen($inline[1]);
+                $this->textCount += mb_strlen($inline[1]);
                 if($this->textCount > $maxLength) {
                     $this->skipBlocks = true;
                 }

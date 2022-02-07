@@ -281,6 +281,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             'updated_by' => Yii::t('UserModule.base', 'Updated by'),
             'last_login' => Yii::t('UserModule.base', 'Last Login'),
             'visibility' => Yii::t('UserModule.base', 'Visibility'),
+            'originator.username' => Yii::t('UserModule.base', 'Invited by'),
         ];
     }
 
@@ -340,6 +341,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function getProfile()
     {
         return $this->hasOne(Profile::class, ['user_id' => 'id']);
+    }
+
+    public function getOriginator()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_originator_id'])->viaTable(Invite::tableName(), ['email' => 'email']);
     }
 
     /**
@@ -722,10 +728,14 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             'email' => $this->email,
             'username' => $this->username,
             'tags' => implode(', ', $this->getTags()),
-            'firstname' => $this->profile->firstname,
-            'lastname' => $this->profile->lastname,
-            'title' => $this->profile->title,
         ];
+
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if ($module->includeEmailInSearch) {
+            $attributes['email'] = $this->email;
+        }
 
         // Add user group ids
         $groupIds = array_map(function ($group) {
@@ -797,10 +807,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         /* @var AdminModule $adminModule */
         $adminModule = Yii::$app->getModule('admin');
         if (!$adminModule->allowUserImpersonate) {
-            return false;
-        }
-
-        if (!$this->isSystemAdmin()) {
             return false;
         }
 

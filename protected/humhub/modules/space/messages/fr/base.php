@@ -26,6 +26,7 @@ return array (
   'Application message' => 'Message',
   'Archived' => 'Archivé',
   'As owner you cannot revoke your membership!' => 'En tant que propriétaire, vous ne pouvez pas révoquer votre participation.',
+  'Blocked users' => 'Utilisateurs bloqués',
   'By Name' => 'Par Nom',
   'Cancel' => 'Annuler',
   'Close' => 'Fermer',
@@ -142,6 +143,5 @@ return array (
   'Your request was successfully submitted to the space administrators.' => 'Votre demande a été transmise à l\'administrateur de cet espace.',
   'Your request was successfully submitted to the workspace administrators.' => 'Votre demande d\'adhésion a été envoyée aux administrateurs de cet espace.',
   '{count} members' => '{count} membres',
-  '{email} is already registered!' => '{email} est déjà inscrit.',
   '{email} is not valid!' => '{email} n\'est pas valide.',
 );

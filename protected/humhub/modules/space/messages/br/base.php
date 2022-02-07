@@ -50,6 +50,7 @@ return [
     'Any' => '',
     'Application message' => '',
     'As owner you cannot revoke your membership!' => '',
+    'Blocked users' => '',
     'By Name' => '',
     'Cancel' => '',
     'Color' => '',
@@ -143,6 +144,5 @@ return [
     'You need to login to view contents of this space!' => '',
     'Your request was successfully submitted to the space administrators.' => '',
     'Your request was successfully submitted to the workspace administrators.' => '',
-    '{email} is already registered!' => '',
     '{email} is not valid!' => '',
 ];

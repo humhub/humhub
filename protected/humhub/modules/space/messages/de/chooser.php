@@ -16,6 +16,6 @@ return [
     'This space is archived' => 'Dieser Space ist archiviert',
     'To search for other spaces, type at least {count} characters.' => 'Um nach anderen Spaces zu suchen, bitte wenigstens {count} Zeichen eingeben.',
     'You are following this space' => 'Du folgst diesem Space',
-    '{n,plural,=1{# new entry} other{# new entries}} since your last visit' => '{n,plural,=1{# new entry} other{# new entries}} seit deinem letzten Besuch
+    '{n,plural,=1{# new entry} other{# new entries}} since your last visit' => '{n,plural,=1{# neuer Eintrag} other{# neue Einträge}} seit deinem letzten Besuch
 ',
 ];

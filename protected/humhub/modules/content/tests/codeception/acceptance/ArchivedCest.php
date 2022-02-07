@@ -143,6 +143,8 @@ class ArchivedCest
         ];
 
         $I->amOnDashboard();
+        $I->wait(1);
+        $I->scrollToBottom();
         $I->dontSeeArchivedContents($archivedContents, $notArchivedContents);
 
         $I->filterStreamArchived();

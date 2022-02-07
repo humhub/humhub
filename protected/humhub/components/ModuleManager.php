@@ -12,6 +12,8 @@ use humhub\components\bootstrap\ModuleAutoLoader;
 use humhub\components\console\Application as ConsoleApplication;
 use humhub\libs\BaseSettingsManager;
 use humhub\models\ModuleEnabled;
+use humhub\modules\admin\events\ModulesEvent;
+use humhub\modules\marketplace\Module as ModuleMarketplace;
 use Yii;
 use yii\base\Component;
 use yii\base\Event;
@@ -50,6 +52,12 @@ class ModuleManager extends Component
      * @since 1.3
      */
     const EVENT_AFTER_MODULE_DISABLE = 'afterModuleDisabled';
+
+    /**
+     * @event triggered after filter modules
+     * @since 1.11
+     */
+    const EVENT_AFTER_FILTER_MODULES = 'afterFilterModules';
 
     /**
      * Create a backup on module folder deletion
@@ -239,31 +247,95 @@ class ModuleManager extends Component
      */
     public function getModules($options = [])
     {
+        $options = array_merge([
+            'includeCoreModules' => false,
+            'enabled' => false,
+            'returnClass' => false,
+        ], $options);
+
         $modules = [];
-
         foreach ($this->modules as $id => $class) {
-
-            // Skip core modules
-            if (!isset($options['includeCoreModules']) || $options['includeCoreModules'] === false) {
-                if (in_array($class, $this->coreModules)) {
-                    continue;
-                }
+            if (!$options['includeCoreModules'] && in_array($class, $this->coreModules)) {
+                // Skip core modules
+                continue;
             }
 
-
-            if (isset($options['enabled']) && $options['enabled'] === true) {
-                if (!in_array($class, $this->coreModules) && !in_array($id, $this->enabledModules)) {
-                    continue;
-                }
+            if ($options['enabled'] && !in_array($class, $this->coreModules) && !in_array($id, $this->enabledModules)) {
+                // Skip disabled modules
+                continue;
             }
 
-            if (isset($options['returnClass']) && $options['returnClass']) {
+            if ($options['returnClass']) {
                 $modules[$id] = $class;
             } else {
                 $module = $this->getModule($id);
                 if ($module instanceof Module) {
                     $modules[$id] = $module;
                 }
+            }
+        }
+
+        return $modules;
+    }
+
+    /**
+     * Filter modules by keyword and by additional filters from module event
+     *
+     * @param Module[] $modules
+     * @param array $filters
+     * @return Module[]
+     */
+    public function filterModules(array $modules, $filters = []): array
+    {
+        $filters = array_merge([
+            'keyword' => null,
+        ], $filters);
+
+        $modules = $this->filterModulesByKeyword($modules, $filters['keyword']);
+
+        $modulesEvent = new ModulesEvent(['modules' => $modules]);
+        $this->trigger(static::EVENT_AFTER_FILTER_MODULES, $modulesEvent);
+
+        return $modulesEvent->modules;
+    }
+
+    /**
+     * Filter modules by keyword
+     *
+     * @param Module[] $modules
+     * @param null|string $keyword
+     * @return Module[]
+     */
+    public function filterModulesByKeyword(array $modules, $keyword = null): array
+    {
+        if ($keyword === null) {
+            $keyword = Yii::$app->request->get('keyword', '');
+        }
+
+        if (!is_scalar($keyword) || $keyword === '') {
+            return $modules;
+        }
+
+        foreach ($modules as $id => $module) {
+            /* @var Module $module */
+            $searchFields = [$id];
+            if (isset($module->name)) {
+                $searchFields[] = $module->name;
+            }
+            if (isset($module->description)) {
+                $searchFields[] = $module->description;
+            }
+
+            $keywordFound = false;
+            foreach ($searchFields as $searchField) {
+                if (stripos($searchField, $keyword) !== false) {
+                    $keywordFound = true;
+                    continue;
+                }
+            }
+
+            if (!$keywordFound) {
+                unset($modules[$id]);
             }
         }
 
@@ -359,8 +431,12 @@ class ModuleManager extends Component
         }
 
         // Check is in dynamic/marketplace module folder
-        if (strpos($module->getBasePath(), Yii::getAlias(Yii::$app->getModule('marketplace')->modulesPath)) !== false) {
-            return true;
+        /** @var ModuleMarketplace $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+        if ($marketplaceModule !== null) {
+            if (strpos($module->getBasePath(), Yii::getAlias($marketplaceModule->modulesPath)) !== false) {
+                return true;
+            }
         }
 
         return false;

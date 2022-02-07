@@ -49,9 +49,7 @@ Klicke hier um dich einzuloggen:
 {loginUrl}
 
 Mit freundlichen Grüßen
-{AdminName}
-
-',
+{AdminName}',
             ApproveUserForm::getDefaultApprovalMessage());
 
         $this->setApprovalMessage(ApproveUserForm::getDefaultApprovalMessage());
@@ -91,9 +89,7 @@ Klicke hier um dich einzuloggen:
 http://localhost/index-test.php?r=user%2Fauth%2Flogin
 
 Mit freundlichen Grüßen
-Admin Tester
-
-", $form->message);
+Admin Tester", $form->message);
     }
 
     public function testDeclineMessageIsSentInUserLanguage()
@@ -110,9 +106,7 @@ Admin Tester
 Deine Registrierungsanfrage wurde abgelehnt.
 
 Mit freundlichen Grüßen
-Admin Tester
-
-", $form->message);
+Admin Tester", $form->message);
     }
 
     public function testDefaultDeclineMessage()

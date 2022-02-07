@@ -6,7 +6,7 @@ return array (
   'Content' => 'Contenuti',
   'Search' => 'Cerca',
   'Search for user, spaces and content' => 'Trova  persone, Spazi e contenuti',
-  'Search only in certain spaces:' => 'Cerca solo in alcuni spazi:',
+  'Search only in certain spaces:' => 'Cerca solo in alcuni Spazi:',
   'Spaces' => 'Spazi',
   'Specify space' => 'Indica lo spazio',
   'Users' => 'Persone',

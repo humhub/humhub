@@ -28,28 +28,58 @@ humhub.module('oembed', function(module, require, $) {
         });
     };
 
-    var get = function(url) {
-        var $result = null;
+    const get = function(url) {
+        const $result = cache[url] ? $(cache[url]) : findSnippetByUrl(url);
 
-        if (cache[url]) {
-            $result = $(cache[url]);
-        } else {
-            var $dom =  $('[data-oembed="' + $.escapeSelector(util.string.escapeHtml(url, true)) + '"]:first');
-            if ($dom.length && $dom.is('[data-oembed]')) {
-                $result = $dom.find('.oembed_snippet').clone().show();
-            }
-        }
-
-        if($result && $result.is('.oembed_snippet')) {
+        if ($result && $result.is('.oembed_snippet,.oembed_confirmation')) {
            return $result;
         }
 
         return null;
     };
 
+    const findSnippetByUrl = function(url) {
+        const $dom = $('[data-oembed="' + $.escapeSelector(util.string.escapeHtml(url, true)) + '"]:first')
+        if (!$dom.length || !$dom.is('[data-oembed]')) {
+            return null;
+        }
+
+        const confirmation = $dom.find('.oembed_confirmation');
+        if (confirmation.length) {
+            return confirmation.clone().show();
+        }
+
+        return $dom.find('.oembed_snippet').clone().show();
+    }
+
+    const display = function(evt) {
+        const confirmation = evt.$trigger.closest('.oembed_confirmation');
+        if (!confirmation.length) {
+            return;
+        }
+
+        const data = {
+            url: confirmation.data('url'),
+            alwaysShow: confirmation.find('input[type=checkbox]:checked').length ? 1 : 0,
+        }
+
+        client.post(module.config.displayUrl, {data}).then(function(response) {
+            if (response.success) {
+                confirmation.after(response.content).remove();
+            } else {
+                module.log.error(response, true);
+                evt.finish();
+            }
+        }).catch(function(e) {
+            module.log.error(e, true);
+            evt.finish();
+        });
+    };
+
     module.export({
-        load: load,
-        get: get
+        load,
+        get,
+        display,
     });
 });
 

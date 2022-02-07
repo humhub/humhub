@@ -1,8 +1,8 @@
 <?php
 
+use humhub\components\Migration;
 use humhub\models\Setting;
 use humhub\modules\user\models\Group;
-use yii\db\Migration;
 
 /**
  * Class m201228_064513_default_group
@@ -14,7 +14,7 @@ class m201228_064513_default_group extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('group', 'is_default_group', $this->boolean()->notNull()->defaultValue(0)->after('is_admin_group'));
+        $this->safeAddColumn('group', 'is_default_group', $this->boolean()->notNull()->defaultValue(0)->after('is_admin_group'));
 
         $defaultUserGroupId = Yii::$app->getModule('user')->settings->get('auth.defaultUserGroup');
 
@@ -37,7 +37,7 @@ class m201228_064513_default_group extends Migration
 
             // Make default either old group that is used for new users or new created group above:
             $group->is_default_group = 1;
-            if ($group->save()) {
+            if ($this->saveGroup($group)) {
                 // Assign users to the Default Group who were not assigned to any other group before:
                 $group->assignDefaultGroup();
             }
@@ -52,6 +52,44 @@ class m201228_064513_default_group extends Migration
      */
     public function safeDown()
     {
-        $this->dropColumn('group', 'is_default_group');
+        $this->safeDropColumn('group', 'is_default_group');
+    }
+
+    private function saveGroup(Group $group): bool
+    {
+        return $group->isNewRecord
+            ? $this->insertGroup($group)
+            : $this->updateGroup($group);
+    }
+
+    private function insertGroup(Group $group): bool
+    {
+        $this->insert('group', [
+            'name' => $group->name,
+            'description' => $group->description,
+            'is_default_group' => $group->is_default_group,
+            'created_at' => date('Y-m-d G:i:s'),
+            'created_by' => 1,
+            'updated_at' => date('Y-m-d G:i:s'),
+            'updated_by' => 1,
+        ]);
+
+        if (!$this->db->lastInsertID) {
+            return false;
+        }
+
+        $group->id = $this->db->lastInsertID;
+        $group->setIsNewRecord(false);
+
+        return true;
+    }
+
+    private function updateGroup(Group $group): bool
+    {
+        $this->update('group', [
+            'is_default_group' => $group->is_default_group,
+        ], ['id' => $group->id]);
+
+        return true;
     }
 }

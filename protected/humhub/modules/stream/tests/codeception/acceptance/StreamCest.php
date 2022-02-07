@@ -33,7 +33,7 @@ class StreamCest
         $I->amGoingTo('Delte my new post');
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->wait(1);
-        $I->click('Delete','[data-content-key="12"]');
+        $I->click('Delete', '[data-content-key="12"]');
 
         $I->waitForElementVisible('#globalModalConfirm', 5);
         $I->see('Confirm post deletion');
@@ -78,7 +78,7 @@ class StreamCest
 
         $I->waitForElementVisible($newEntrySelector, 20);
         $I->expectTo('see my archived post');
-        $I->waitForText('This is my stream test post', null,'.wall-entry');
+        $I->waitForText('This is my stream test post', null, '.wall-entry');
 
         $I->amGoingTo('unarchive this post again');
 
@@ -90,7 +90,7 @@ class StreamCest
         }
 
         $I->expectTo('See my unarchived post again');
-        $I->see('No matches with your selected filters!','.streamMessage');
+        $I->see('No matches with your selected filters!', '.streamMessage');
         $I->dontSee('This is my stream test post', '.wall-entry');
 
         $I->amGoingTo('check if my post is visible without archived');
@@ -128,7 +128,7 @@ class StreamCest
 
         $I->createPost('This is my second stream test post!');
 
-        $newEntrySelector2 = '[data-content-key="17"]';
+        $newEntrySelector2 = '[data-stream-entry]:nth-of-type(3)';
         $I->waitForElementVisible($newEntrySelector2);
         $I->expectTo('my new post beeing the latest entry');
         $I->waitForText('This is my second stream test post', null, '.s2_streamContent div:nth-child(1)');
@@ -265,15 +265,16 @@ class StreamCest
 
         $I->click('Comment', $postSelector);
         $I->wait(1);
-        $I->waitForElementVisible($postSelector.' .comment-container', null );
-        $I->fillField($postSelector.' .comment_create .humhub-ui-richtext', 'My Comment');
-        $I->click('Send', $postSelector.' .comment_create');
-        $I->waitForText('My Comment', null, $postSelector.' .comment');
+        $I->waitForElementVisible($postSelector . ' .comment-container', null);
+        $I->fillField($postSelector . ' .comment_create .humhub-ui-richtext', 'My Comment');
+        $I->click('Send', $postSelector . ' .comment_create');
+        $I->waitForText('My Comment', null, $postSelector . ' .comment');
 
 
         $I->amGoingTo('reactivate the involved filter.');
         $I->expectTo('see the commented post after the stream reload.');
 
+        $I->scrollTop();
         $I->click('[data-filter-id="entry_userinvolved"]');
         $I->wait(1);
         $I->waitForText('Involved Post.');
@@ -309,7 +310,7 @@ class StreamCest
         $I->see('POST2', '.s2_streamContent > [data-stream-entry]:nth-of-type(4)');
         $I->see('POST1', '.s2_streamContent > [data-stream-entry]:nth-of-type(5)');
 
-        $post4Selector = '[data-stream-entry][data-content-key="21"]';
+        $post4Selector = '[data-stream-entry]:nth-of-type(2)';
 
         $I->click('Comment', $post4Selector);
         $I->wait(1);
