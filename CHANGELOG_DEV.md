@@ -1,5 +1,5 @@
-1.11.0-beta.1 (March 1, 2022 - UNRELEASED)
-------------------------------------------
+1.11.0 (Unreleased)
+--------------------------
 - Fix #5434: Hide disabled next/prev buttons on guide first/last steps
 - Fix #5456: `canImpersonate` only possible for SystemAdmins
 - Enh #5476: Rework modules administration section
@@ -11,4 +11,4 @@
 - Enh #4890: Allow to define actions in a controller which should not be intercepted by other actions
 - Enh #5510: oEmbed support for other social networks, redesign of oEmbed settings pages
 - Enh #5523: Option to include E-Mail address to search 
-
+- Enh #5352: Remove "NewMembers" widget from Core
