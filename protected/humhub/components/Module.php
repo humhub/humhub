@@ -8,21 +8,23 @@
 
 namespace humhub\components;
 
-use humhub\modules\activity\components\BaseActivity;
-use humhub\modules\activity\models\Activity;
-use Yii;
-use yii\helpers\Json;
 use humhub\models\Setting;
+use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\content\models\ContentContainerSetting;
+use Yii;
+use yii\helpers\Json;
 use yii\web\AssetBundle;
-use yii\web\HttpException;
 
 /**
  * Base Class for Modules / Extensions
  *
+ * @property-read string $name
+ * @property-read string $description
+ * @property-read bool $isActivated
  * @property SettingsManager $settings
+ * @mixin OnlineModule
  * @author luke
  */
 class Module extends \yii\base\Module
@@ -202,6 +204,16 @@ class Module extends \yii\base\Module
     public function getAssetPath()
     {
         return $this->getBasePath() . '/' . $this->resourcesPath;
+    }
+
+    /**
+     * Check this module is activated
+     *
+     * @return bool
+     */
+    public function getIsActivated(): bool
+    {
+        return (bool) Yii::$app->hasModule($this->id);
     }
 
     /**
