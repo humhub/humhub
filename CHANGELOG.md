@@ -6,6 +6,7 @@ HumHub Changelog
 - Fix #5480: `el` language file in Admin section broken
 - Fix #5479: Fix ContentContainerPermissionAccess without provided container
 - Fix #5513: Fix PermaLink controller error for content without container
+- Fix #5517: Don't send "Follows" notification on request friendship
 
 
 1.10.3 (December 20, 2021)
