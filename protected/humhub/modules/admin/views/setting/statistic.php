@@ -4,8 +4,10 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Html;
 use humhub\modules\admin\models\forms\StatisticSettingsForm;
 use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
+use yii\web\View;
 
 /* @var $model StatisticSettingsForm */
+
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
@@ -17,7 +19,7 @@ use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
 <?= $form->errorSummary($model); ?>
 
 <div class="form-group">
-    <?= $form->field($model, 'trackingHtmlCode')->widget(CodeMirrorInputWidget::className()); ?>
+    <?= $form->field($model, 'trackingHtmlCode')->widget(CodeMirrorInputWidget::class); ?>
 </div>
 
 <hr>
@@ -27,5 +29,33 @@ use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
 <?= \humhub\widgets\DataSaved::widget(); ?>
 
 <?php ActiveForm::end(); ?>
+
+<script>
+
+    let initCodeMirrorTimeout = setTimeout(initCodeMirror, 200);
+
+    function initCodeMirror() {
+        if(!$('textarea[data-codemirror]').length) {
+            clearTimeout(initCodeMirrorTimeout);
+        }
+
+        if (typeof CodeMirror !== 'undefined') {
+            $('textarea[data-codemirror]').each(function() {
+                if(typeof $(this).data('codemirror-instance') === 'object') {
+                    $(this).data('codemirror-instance').toTextArea();
+                }
+
+                var codeMirrorInstance = CodeMirror.fromTextArea(this, {
+                    mode: $(this).data('codemirror'),
+                    lineNumbers: true,
+                    extraKeys: {'Ctrl-Space': 'autocomplete'}
+                });
+                $(this).data('codemirror-instance', codeMirrorInstance);
+            });
+
+            clearTimeout(initCodeMirrorTimeout);
+        }
+    }
+</script>
 
 <?php $this->endContent(); ?>
