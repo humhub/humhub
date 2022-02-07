@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\assets\DirectoryAsset;
+use humhub\assets\CardsAsset;
 use humhub\libs\Html;
 use humhub\modules\space\components\SpaceDirectoryQuery;
 use humhub\modules\space\widgets\SpaceDirectoryCard;
@@ -15,7 +15,7 @@ use yii\web\View;
 /* @var $this View */
 /* @var $spaces SpaceDirectoryQuery */
 
-DirectoryAsset::register($this);
+CardsAsset::register($this);
 ?>
 <div class="panel panel-default">
 
@@ -48,7 +48,7 @@ DirectoryAsset::register($this);
 
 <?php if (!$spaces->isLastPage()) : ?>
     <?= Html::tag('div', '', [
-        'class' => 'directory-end',
+        'class' => 'cards-end',
         'data-current-page' => $spaces->pagination->getPage() + 1,
         'data-total-pages' => $spaces->pagination->getPageCount(),
     ]) ?>

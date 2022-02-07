@@ -35,6 +35,7 @@ return [
     'General' => '',
     'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => '',
     'Information' => '',
+    'Invalid user state: {state}' => '',
     'Invite' => '',
     'Invited by' => '',
     'Logging' => '',
@@ -54,6 +55,7 @@ return [
     'Statistics' => '',
     'The cron job for the background jobs (queue) does not seem to work properly.' => '',
     'The cron job for the regular tasks (cron) does not seem to work properly.' => '',
+    'User not found!' => '',
     'User posts' => '',
     'Userprofiles' => '',
 ];

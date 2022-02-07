@@ -7,7 +7,7 @@ return array (
   'Comment' => 'Commenta',
   'Comment could not be saved!' => 'Il commento non può essere salvato!',
   'Comment has been deleted' => 'Il commento è stato eliminato',
-  'Comment of blocked user.' => 'Commento bloccato dall\'utente',
+  'Comment of blocked user.' => 'Commento dell\'utente bloccato',
   'Comments' => 'Commenti',
   'Delete' => 'Cancella',
   'Do you really want to delete this comment?' => 'Vuoi veramente cancellare questo commento?',

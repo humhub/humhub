@@ -335,7 +335,7 @@ abstract class AbstractRichText extends JsWidget
      * In case of 'html' you can switch from only supporting basic HTML (e.g. used for mails) to extended HTML support by
      * setting the 'minimal' option to true. The result may differ between different RichText implementations.
      *
-     * @param string $content
+     * @param string|null $content
      * @param string $format
      * @param array $options
      * @return string
@@ -343,9 +343,13 @@ abstract class AbstractRichText extends JsWidget
      * @since 1.8
      * @see AbstractRichTextConverter
      */
-    public static function convert(string $content, $format = self::FORMAT_PLAINTEXT, $options = []) : string
+    public static function convert(?string $content, $format = self::FORMAT_PLAINTEXT, $options = []) : string
     {
         $converter = static::getConverter();
+
+        if ($content === null) {
+            $content = '';
+        }
 
         switch ($format) {
             case static::FORMAT_HTML:

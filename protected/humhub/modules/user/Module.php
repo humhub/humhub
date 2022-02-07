@@ -139,6 +139,12 @@ class Module extends \humhub\components\Module
     ];
 
     /**
+     * @var string include user's email address in searches
+     * @since 1.11
+     */
+    public $includeEmailInSearch = true;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)

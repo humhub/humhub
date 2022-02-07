@@ -12,7 +12,12 @@ class UrlOembedTest extends HumHubDbTestCase
     {
         parent::_before();
         UrlOembedMock::setClient(new UrlOembedClientMock());
-        UrlOembedMock::setProviders(['test.de' => UrlOembedMock::TEST_PROVIDER_URL_PREFIX.'%url%']);
+        UrlOembedMock::setProviders([
+            'Test.de' => [
+                'pattern' => '/test\.de/',
+                'endpoint' => UrlOembedMock::TEST_PROVIDER_URL_PREFIX.'%url%'
+            ]
+        ]);
         UrlOembedMock::flush();
     }
 

@@ -4,7 +4,7 @@ return array (
   'Allows the user to create posts' => 'Tillåter användaren att skapa inlägg',
   'Create post' => 'Skapa inlägg',
   'Edit your post...' => 'Ändra ditt inlägg...',
-  'This space is archived.' => 'Nätverket är arkiverat.',
+  'This space is archived.' => 'Forumet är arkiverat.',
   'What\'s on your mind?' => 'Vad tänker du på?',
   'post' => 'inlägg',
 );
