@@ -147,7 +147,7 @@ class PermissionCest
 
     public function testCanManageSettings(FunctionalTester $I)
     {
-        $I->wantTo('ensure that see manage groups permission works');
+        $I->wantTo('ensure that see manage settings permission works');
 
         $I->amUser2();
 
@@ -215,7 +215,7 @@ class PermissionCest
 
     public function testCanManageModules(FunctionalTester $I)
     {
-        $I->wantTo('ensure that see manage groups permission works');
+        $I->wantTo('ensure that see manage modules permission works');
 
         $I->amUser2();
 
@@ -229,11 +229,7 @@ class PermissionCest
         $I->expectTo('not to see permission denied message');
         $I->see('Module administration');
 
-        $I->dontSee('Users', '#admin-menu');
-        $I->dontSee('Spaces', '#admin-menu');
-        $I->see('Modules', '#admin-menu');
-        $I->dontSee('Settings', '#admin-menu');
-        $I->dontSee('Information', '#admin-menu');
+        $I->dontSeeElement('#admin-menu');
 
         $I->amOnPage(['/admin/user']);
         $I->see('You are not permitted to access this section.');
@@ -262,7 +258,7 @@ class PermissionCest
 
     public function testCanManageSpaces(FunctionalTester $I)
     {
-        $I->wantTo('ensure that see manage groups permission works');
+        $I->wantTo('ensure that see manage spaces permission works');
 
         $I->amUser2();
 
