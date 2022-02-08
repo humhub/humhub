@@ -31,9 +31,13 @@ class DeleteLink extends \yii\base\Widget
     public function run()
     {
         if ($this->content->content->canEdit()) {
+
+            $isAdmin = \Yii::$app->user->isAdmin() && $this->content->content->created_by !== \Yii::$app->user->id;
+
             return $this->render('deleteLink', [
-                        'model' => $this->content->content->object_model,
-                        'id' => $this->content->content->object_id
+                'model' => $this->content->content->object_model,
+                'id' => $this->content->content->object_id,
+                'isAdmin' => $isAdmin
             ]);
         }
 

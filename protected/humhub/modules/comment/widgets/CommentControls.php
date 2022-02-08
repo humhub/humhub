@@ -60,19 +60,42 @@ class CommentControls extends Menu
         }
 
         if ($this->comment->canDelete()) {
-            $deleteUrl = Url::to(['/comment/comment/delete', 'objectModel' => $this->comment->object_model,
-                'objectId' => $this->comment->object_id,
-                'id' => $this->comment->id,
-            ]);
+            $isAdmin = Yii::$app->user->isAdmin() && $this->comment->created_by !== Yii::$app->user->id;
+
+            if($isAdmin) {
+                $deleteUrl = Url::to(['/comment/comment/admin-delete',
+                    'objectModel' => $this->comment->object_model,
+                    'objectId' => $this->comment->object_id,
+                    'id' => $this->comment->id,
+                ]);
+
+                $loadModalUrl = Url::to(['/comment/comment/get-admin-delete-modal',
+                    'objectModel' => $this->comment->object_model,
+                    'objectId' => $this->comment->object_id,
+                    'id' => $this->comment->id,
+                ]);
+            } else {
+                $deleteUrl = Url::to(['/comment/comment/delete',
+                    'objectModel' => $this->comment->object_model,
+                    'objectId' => $this->comment->object_id,
+                    'id' => $this->comment->id,
+                ]);
+            }
+
+            $htmlOptions = [
+                'data-action-click' => $isAdmin ? 'adminDelete' : 'delete',
+                'data-content-delete-url' => $deleteUrl
+            ];
+
+            if($isAdmin) {
+                $htmlOptions['data-load-modal-url'] = $loadModalUrl;
+            }
 
             $this->addEntry(new MenuLink([
                 'label' => Yii::t('CommentModule.base', 'Delete'),
                 'icon' => 'delete',
                 'url' => '#',
-                'htmlOptions' => [
-                    'data-action-click' => 'delete',
-                    'data-content-delete-url' => $deleteUrl,
-                ],
+                'htmlOptions' => $htmlOptions,
                 'sortOrder' => 300,
             ]));
         }

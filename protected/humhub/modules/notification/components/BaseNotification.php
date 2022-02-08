@@ -268,6 +268,10 @@ abstract class BaseNotification extends SocialActivity
             $notification->originator_user_id = $this->originator->id;
         }
 
+        if(isset($this->message) && !empty($this->message)) {
+            $notification->message = $this->message;
+        }
+
         if (!$notification->save()) {
             Yii::error(
                 'Could not save Notification Record for' .

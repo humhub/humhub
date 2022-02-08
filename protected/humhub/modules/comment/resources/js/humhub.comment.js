@@ -139,6 +139,25 @@ humhub.module('comment', function (module, require, $) {
         });
     };
 
+    Comment.prototype.adminDelete = function (evt) {
+        var $form = this.$.parent().siblings('.comment_create');
+        var hideHr = !this.isNestedComment() && $form.length && !this.$.siblings('.media').length;
+
+        this.$.data('content-delete-url', evt.$trigger.data('content-delete-url'));
+        this.$.data('load-modal-url', evt.$trigger.data('load-modal-url'));
+
+        this.super('adminDelete').then(function ($confirm) {
+            if ($confirm) {
+                module.log.success('success.delete');
+                if (hideHr) {
+                    $form.find('hr').hide();
+                }
+            }
+        }).catch(function (err) {
+            module.log.error(err, true);
+        });
+    }
+
     Comment.prototype.isNestedComment = function () {
         return this.$.closest('.nested-comments-root').length !== 0;
     };
