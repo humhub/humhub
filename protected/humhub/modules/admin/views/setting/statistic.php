@@ -30,32 +30,4 @@ use yii\web\View;
 
 <?php ActiveForm::end(); ?>
 
-<script>
-
-    let initCodeMirrorTimeout = setTimeout(initCodeMirror, 200);
-
-    function initCodeMirror() {
-        if(!$('textarea[data-codemirror]').length) {
-            clearTimeout(initCodeMirrorTimeout);
-        }
-
-        if (typeof CodeMirror !== 'undefined') {
-            $('textarea[data-codemirror]').each(function() {
-                if(typeof $(this).data('codemirror-instance') === 'object') {
-                    $(this).data('codemirror-instance').toTextArea();
-                }
-
-                var codeMirrorInstance = CodeMirror.fromTextArea(this, {
-                    mode: $(this).data('codemirror'),
-                    lineNumbers: true,
-                    extraKeys: {'Ctrl-Space': 'autocomplete'}
-                });
-                $(this).data('codemirror-instance', codeMirrorInstance);
-            });
-
-            clearTimeout(initCodeMirrorTimeout);
-        }
-    }
-</script>
-
 <?php $this->endContent(); ?>
