@@ -223,7 +223,7 @@ class CommentController extends Controller
 
     /**
      * Returns modal content for admin to delete comment
-     * 
+     *
      * @throws NotFoundHttpException
      * @throws ForbiddenHttpException
      */
