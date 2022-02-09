@@ -79,7 +79,7 @@ humhub.module('content', function (module, require, $) {
     Content.prototype.adminDelete = function (options) {
         var that = this;
 
-        var loadModalUrl = that.data(DATA_LOAD_MODAL_URL) || module.config.loadModalUrl;
+        var loadModalUrl = that.data(DATA_LOAD_MODAL_URL) || module.config.adminDeleteModalUrl;
 
         if(!loadModalUrl) {
             that.delete(options);
@@ -98,13 +98,9 @@ humhub.module('content', function (module, require, $) {
                         return;
                     }
 
-                    if(options) {
-                        that.$.data(DATA_CONTENT_DELETE_URL, options.$trigger.data(DATA_CONTENT_DELETE_URL));
-                    }
-
                     var form = modal.globalConfirm.$.find('form')[0];
 
-                    that.adminDeleteContent(form, resolve, reject);
+                    that.deleteContent(resolve, reject, form);
                 });
             }).catch(function (err) {
                 reject(err);
@@ -112,39 +108,27 @@ humhub.module('content', function (module, require, $) {
         });
     };
 
-    Content.prototype.adminDeleteContent = function(form, resolve, reject) {
-        var that = this;
-        that.loader();
-
-        var deleteUrl = that.data(DATA_CONTENT_DELETE_URL) || module.config.adminDeleteUrl;
-        if(deleteUrl) {
-            client.post(deleteUrl, {
-                data: $(form).serializeArray().reduce(function(a, e) {
-                    a[e.name] = e.value;
-                    return a;
-                }),
-            }).then(function (response) {
-                that.remove().then(function () {
-                    resolve(true);
-                });
-            }).catch(function (err) {
-                reject(err);
-            }).finally(function () {
-                that.loader(false);
-            });
-        } else {
-            reject('Content delete was called, but no url could be determined for ' + that.base);
-            that.loader(false);
-        }
-    };
-
-    Content.prototype.deleteContent = function(resolve, reject) {
+    Content.prototype.deleteContent = function(resolve, reject, form) {
         var that = this;
         that.loader();
         var deleteUrl = that.data(DATA_CONTENT_DELETE_URL) || module.config.deleteUrl;
+
+        var postData = {
+            id: that.getKey()
+        };
+
+        if(typeof form !== 'undefined') {
+            Object.assign(postData, {
+                ...$(form).serializeArray().reduce(function(a, e) {
+                    a[e.name] = e.value;
+                    return a;
+                })
+            });
+        }
+
         if (deleteUrl) {
             client.post(deleteUrl, {
-                data: {id: that.getKey()}
+                data: postData
             }).then(function (response) {
                 that.remove().then(function () {
                     resolve(true);

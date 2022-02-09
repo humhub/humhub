@@ -28,12 +28,8 @@ class AdminDeleteModal extends \yii\base\Widget
      */
     public function run()
     {
-        if ($this->model->comment->canDelete()) {
-            return $this->render('adminDeleteModal', [
-                'model' => $this->model,
-            ]);
-        }
-
-        return '';
+        return $this->render('adminDeleteModal', [
+            'model' => $this->model,
+        ]);
     }
 }

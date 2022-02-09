@@ -260,8 +260,7 @@ class CoreJsConfig extends Widget
                     ],
                     'reloadUrl' => Url::to(['/content/content/reload']),
                     'deleteUrl' => Url::to(['/content/content/delete-id']),
-                    'loadModalUrl' => Url::to(['/content/content/get-admin-delete-modal']),
-                    'adminDeleteUrl' => Url::to(['/content/content/admin-delete'])
+                    'adminDeleteModalUrl' => Url::to(['/content/content/get-admin-delete-modal']),
                 ],
                 'stream' => [
                     'horizontalImageScrollOnMobile' => Yii::$app->settings->get('horImageScrollOnMobile'),
@@ -284,8 +283,7 @@ class CoreJsConfig extends Widget
                     ],
                     'text' => [
                         'success.delete' => Yii::t('CommentModule.base', 'Comment has been deleted')
-                    ],
-                    'loadModalUrl' => Url::to(['/comment/comment/get-admin-delete-modal']),
+                    ]
                 ],
                 'space' => [
                     'text' => [

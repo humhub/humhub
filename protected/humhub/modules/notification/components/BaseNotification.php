@@ -13,6 +13,7 @@ use yii\base\InvalidConfigException;
 use yii\bootstrap\Html;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\mail\MessageInterface;
 use humhub\components\SocialActivity;
@@ -72,6 +73,11 @@ abstract class BaseNotification extends SocialActivity
      * @inheritdoc
      */
     public $recordClass = Notification::class;
+
+    /**
+     * @var array|null The Notification payload object
+     */
+    public $payload = null;
 
     /**
      * Priority flag, if set to true, this Notification type will be marked as high priority.
@@ -268,8 +274,8 @@ abstract class BaseNotification extends SocialActivity
             $notification->originator_user_id = $this->originator->id;
         }
 
-        if(isset($this->message) && !empty($this->message)) {
-            $notification->message = $this->message;
+        if ($this->payload) {
+            $notification->payload = Json::encode($this->payload);
         }
 
         if (!$notification->save()) {
@@ -310,6 +316,16 @@ abstract class BaseNotification extends SocialActivity
         }
         $this->originator = $originator;
         $this->record->originator_user_id = $originator->id;
+
+        return $this;
+    }
+
+    /**
+     * Update payload property
+     */
+    public function payload()
+    {
+        $this->record->payload = Json::encode($this->payload);
 
         return $this;
     }

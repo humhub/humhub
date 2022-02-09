@@ -13,6 +13,7 @@ use Yii;
 use yii\bootstrap\Html;
 use humhub\modules\user\models\User;
 use humhub\libs\Helpers;
+use yii\helpers\Json;
 
 /**
  * ContentDeletedNotification is fired when admin deletes a content (e.g. post)
@@ -30,11 +31,6 @@ class ContentDeleted extends BaseNotification
     public $moduleId = 'content';
 
     /**
-     * @var string
-     */
-    public $message;
-
-    /**
      * @inheritdoc
      */
     public function category()
@@ -47,11 +43,29 @@ class ContentDeleted extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('ContentModule.notifications', 'Your content was deleted by {displayName}. Reason: {message}', [
+        $this->payload = Json::decode($this->record->payload);
+
+        return Yii::t('ContentModule.notifications', 'Your {contentTitle} was deleted by {displayName}. Reason: {message}', [
             'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-            'message' => $this->record->message
+            'contentTitle' => $this->payload['contentTitle'],
+            'message' => $this->payload['message']
         ]);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function about($source)
+    {
+        if (!$source) {
+            return $this;
+        }
+
+        $this->payload['contentTitle'] = $this->getContentInfo($source);
+
+        return $this->payload();
+    }
+
 
     /**
      * Set a `message` property
@@ -62,10 +76,9 @@ class ContentDeleted extends BaseNotification
             return $this;
         }
 
-        $this->message = $message;
-        $this->record->message = $message;
+        $this->payload['message'] = $message;
 
-        return $this;
+        return $this->payload();
     }
 }
 

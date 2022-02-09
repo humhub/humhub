@@ -10,7 +10,6 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
 <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
-<?= $form->field($model, 'comment_id')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'message')->textarea(['rows' => 3]) ?>
 
 <?php ActiveForm::end(); ?>

@@ -8,10 +8,13 @@
 
 namespace humhub\modules\content\controllers;
 
+use humhub\components\behaviors\AccessControl;
+use humhub\components\Controller;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\models\forms\AdminDeleteContentForm;
 use humhub\modules\content\Module;
+use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\widgets\AdminDeleteModal;
-use humhub\modules\notification\models\Notification;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use Yii;
 use yii\base\BaseObject;
@@ -19,10 +22,6 @@ use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
-use humhub\components\Controller;
-use humhub\modules\content\models\Content;
-use humhub\modules\content\permissions\CreatePublicContent;
-use humhub\components\behaviors\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -62,7 +61,7 @@ class ContentController extends Controller
         $model = Yii::$app->request->get('model');
 
         // Due to backward compatibility we use the old delete mechanism in case a model parameter is provided
-        $id = (int) ($model != null) ? Yii::$app->request->get('id') : Yii::$app->request->post('id');
+        $id = (int)($model != null) ? Yii::$app->request->get('id') : Yii::$app->request->post('id');
 
         /* @var $contentObjs Content */
         $contentObj = ($model != null) ? Content::Get($model, $id) : Content::findOne(['id' => $id]);
@@ -76,6 +75,19 @@ class ContentController extends Controller
         }
 
         if ($contentObj !== null && $contentObj->delete()) {
+            $form = new AdminDeleteContentForm();
+
+            if ($form->load(Yii::$app->request->post()) && $form->message) {
+                $contentDeleted = \humhub\modules\content\notifications\ContentDeleted::instance()
+                    ->from(Yii::$app->user->getIdentity())
+                    ->about($contentObj)
+                    ->commented($form->message);
+                $contentDeleted->saveRecord($contentObj->createdBy);
+                $contentDeleted->record->updateAttributes([
+                    'send_web_notifications' => 1
+                ]);
+            }
+
             $json = [
                 'success' => true,
                 'uniqueId' => $contentObj->getUniqueId(),
@@ -96,13 +108,9 @@ class ContentController extends Controller
     {
         Yii::$app->response->format = 'json';
 
-        $model = Yii::$app->request->get('model');
+        $id = Yii::$app->request->post('id');
 
-        // Due to backward compatibility we use the old delete mechanism in case a model parameter is provided
-        $id = (int) ($model != null) ? Yii::$app->request->get('id') : Yii::$app->request->post('id');
-
-        /* @var $contentObjs Content */
-        $contentObj = ($model != null) ? Content::Get($model, $id) : Content::findOne(['id' => $id]);
+        $contentObj = Content::findOne(['id' => $id]);
 
         if (!$contentObj) {
             throw new HttpException(404);
@@ -115,48 +123,11 @@ class ContentController extends Controller
         return [
             'header' => Yii::t('ContentModule.base', '<strong>Confirm</strong> post deletion'),
             'body' => AdminDeleteModal::widget([
-                'model' => new AdminDeleteContentForm([
-                    'content' => $contentObj
-                ])
+                'model' => new AdminDeleteContentForm()
             ]),
             'confirmText' => Yii::t('ContentModule.base', 'Delete'),
             'cancelText' => Yii::t('ContentModule.base', 'Cancel'),
         ];
-    }
-
-    /**
-     * Admin deletes someone's content
-     */
-    public function actionAdminDelete()
-    {
-        $form = new AdminDeleteContentForm();
-
-        if($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $content = Content::findOne(['id' => $form->content_id]);
-
-            if (!$content) {
-                throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
-            } else if (!$content->canEdit()) {
-                throw new HttpException(403);
-            }
-
-            if($content->delete()) {
-
-                if($form->message) {
-                    $contentDeleted = \humhub\modules\content\notifications\ContentDeleted::instance()
-                        ->from(Yii::$app->user->getIdentity())
-                        ->commented($form->message);
-                    $contentDeleted->saveRecord($content->createdBy);
-                    $contentDeleted->record->updateAttributes([
-                        'send_web_notifications' => 1
-                    ]);
-                }
-
-                return $this->asJson(['success' => true]);
-            }
-        }
-
-        return $this->asJson(['success' => $form->validate()]);
     }
 
     /**
@@ -172,7 +143,7 @@ class ContentController extends Controller
         $json = [];
         $json['success'] = false;
 
-        $id = (int) Yii::$app->request->get('id', '');
+        $id = (int)Yii::$app->request->get('id', '');
 
         $content = Content::findOne(['id' => $id]);
         if ($content !== null && $content->canArchive()) {
@@ -196,7 +167,7 @@ class ContentController extends Controller
         $json = [];
         $json['success'] = false;   // default
 
-        $id = (int) Yii::$app->request->get('id', '');
+        $id = (int)Yii::$app->request->get('id', '');
 
         $content = Content::findOne(['id' => $id]);
         if ($content !== null && $content->canArchive()) {
@@ -211,11 +182,30 @@ class ContentController extends Controller
     public function actionDeleteId()
     {
         $this->forcePostRequest();
-        $content = Content::findOne(['id' => Yii::$app->request->post('id')]);
+
+        $post = Yii::$app->request->post();
+
+        $content = Content::findOne(['id' => $post['id']]);
+
         if (!$content) {
             throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
-        } elseif (!$content->canEdit()) {
+        }
+
+        if (!$content->canEdit()) {
             throw new HttpException(403);
+        }
+
+        $form = new AdminDeleteContentForm();
+
+        if ($form->load($post) && $form->message) {
+            $contentDeleted = \humhub\modules\content\notifications\ContentDeleted::instance()
+                ->from(Yii::$app->user->getIdentity())
+                ->about($content)
+                ->commented($form->message);
+            $contentDeleted->saveRecord($content->createdBy);
+            $contentDeleted->record->updateAttributes([
+                'send_web_notifications' => 1
+            ]);
         }
 
         return $this->asJson(['success' => $content->delete()]);
@@ -267,8 +257,8 @@ class ContentController extends Controller
         }
 
         return $this->asJson([
-                    'success' => $content->save(),
-                    'state' => $content->visibility
+            'success' => $content->save(),
+            'state' => $content->visibility
         ]);
     }
 
@@ -351,11 +341,11 @@ class ContentController extends Controller
 
         $content = Content::findOne(['id' => Yii::$app->request->get('id', '')]);
 
-        if(!$content) {
+        if (!$content) {
             throw new NotFoundHttpException();
         }
 
-        if(!$content->canPin()) {
+        if (!$content->canPin()) {
             throw new ForbiddenHttpException();
         }
 

@@ -16,6 +16,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\notifications\Mentioned;
 use Yii;
 use yii\bootstrap\Html;
+use yii\helpers\Json;
 
 /**
  * CommentDeletedNotification is fired when admin deletes a comment
@@ -33,11 +34,6 @@ class CommentDeleted extends BaseNotification
     public $moduleId = 'comment';
 
     /**
-     * @var string
-     */
-    public $message;
-
-    /**
      * @inheritdoc
      */
     public function category()
@@ -50,11 +46,29 @@ class CommentDeleted extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('CommentModule.notifications', 'Your comment was deleted by {displayName}. Reason: {message}', [
+        $this->payload = Json::decode($this->record->payload);
+
+        return Yii::t('CommentModule.notifications', 'Your comment under the {contentTitle} was deleted by {displayName}. Reason: {message}', [
             'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-            'message' => $this->record->message
+            'contentTitle' => $this->payload['contentTitle'],
+            'message' => $this->payload['message'],
         ]);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function about($source)
+    {
+        if (!$source) {
+            return $this;
+        }
+
+        $this->payload['contentTitle'] = $this->getContentPlainTextInfo($source->getCommentedRecord());
+
+        return $this->payload();
+    }
+
 
     /**
      * Set a `message` property
@@ -65,9 +79,8 @@ class CommentDeleted extends BaseNotification
             return $this;
         }
 
-        $this->message = $message;
-        $this->record->message = $message;
+        $this->payload['message'] = $message;
 
-        return $this;
+        return $this->payload();
     }
 }

@@ -18,6 +18,7 @@ use humhub\modules\comment\widgets\Form;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\comment\widgets\AdminDeleteModal;
 use Yii;
+use yii\base\BaseObject;
 use yii\data\Pagination;
 use yii\web\HttpException;
 use yii\helpers\Url;
@@ -216,6 +217,21 @@ class CommentController extends Controller
             throw new ForbiddenHttpException();
         }
 
+        $form = new AdminDeleteCommentForm();
+
+        if (Yii::$app->request->isPost && $form->load(Yii::$app->request->post())) {
+            if($form->message) {
+                $commentDeleted = \humhub\modules\comment\notifications\CommentDeleted::instance()
+                    ->from(Yii::$app->user->getIdentity())
+                    ->about($comment)
+                    ->commented($form->message);
+                $commentDeleted->saveRecord($comment->createdBy);
+                $commentDeleted->record->updateAttributes([
+                    'send_web_notifications' => 1
+                ]);
+            }
+        }
+
         $comment->delete();
 
         return $this->asJson(['success' => true]);
@@ -240,50 +256,11 @@ class CommentController extends Controller
         return [
             'header' => Yii::t('CommentModule.base', '<strong>Confirm</strong> comment deletion'),
             'body' => AdminDeleteModal::widget([
-                'model' => new AdminDeleteCommentForm([
-                    'comment' => $comment
-                ])
+                'model' => new AdminDeleteCommentForm()
             ]),
             'confirmText' => Yii::t('CommentModule.base', 'Delete'),
             'cancelText' => Yii::t('CommentModule.base', 'Cancel'),
         ];
-    }
-
-    /**
-     * Admin deletes someone's comment
-     */
-    public function actionAdminDelete()
-    {
-        $this->forcePostRequest();
-
-        $form = new AdminDeleteCommentForm();
-
-        if($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $comment = $this->getComment($form->comment_id);
-
-            if (!$comment) {
-                throw new HttpException(400, Yii::t('CommentModule.base', 'Invalid comment id given!'));
-            } else if (!$comment->canDelete()) {
-                throw new HttpException(403);
-            }
-
-            if($comment->delete()) {
-
-                if($form->message) {
-                    $commentDeleted = \humhub\modules\comment\notifications\CommentDeleted::instance()
-                        ->from(Yii::$app->user->getIdentity())
-                        ->commented($form->message);
-                    $commentDeleted->saveRecord($comment->createdBy);
-                    $commentDeleted->record->updateAttributes([
-                        'send_web_notifications' => 1
-                    ]);
-                }
-
-                return $this->asJson(['success' => true]);
-            }
-        }
-
-        return $this->asJson(['success' => false]);
     }
 
     /**

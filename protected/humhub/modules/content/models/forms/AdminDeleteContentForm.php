@@ -13,28 +13,9 @@ use yii\base\Model;
 class AdminDeleteContentForm extends Model
 {
     /**
-     * @var Content
-     */
-    public $content;
-
-    /**
-     * @var integer
-     */
-    public $content_id;
-
-    /**
      * @var string
      */
     public $message;
-
-    public function init()
-    {
-        if (!empty($this->content)) {
-            $this->content_id = $this->content->id;
-        }
-
-        parent::init();
-    }
 
     /**
      * @inheritdoc
@@ -42,9 +23,7 @@ class AdminDeleteContentForm extends Model
     public function rules()
     {
         return [
-            [['content_id'], 'required'],
             [['message'], 'string'],
-            [['content_id'], 'integer']
         ];
     }
 
