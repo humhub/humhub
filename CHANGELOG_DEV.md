@@ -8,4 +8,4 @@
 - Enh #5471: On the pending approval page, add grouped actions and custom columns
 - Enh #5490: Display confirmation message before display embedded content
 - Enh #5258: Display who invited the user on the Approval page
-- Enh #5475: Validate username
+- Enh #5475: Option for forbidden usernames
