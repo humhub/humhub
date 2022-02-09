@@ -88,11 +88,18 @@ class CommentController extends Controller
 
         $pagination = new Pagination([
             'totalCount' => Comment::GetCommentCount(get_class($this->target), $this->target->getPrimaryKey()),
-            'pageSize' => $this->module->commentsBlockLoadSize
+            'pageSize' => Yii::$app->request->get('pageSize', $this->module->commentsBlockLoadSize)
         ]);
 
-        $query->offset($pagination->offset)->limit($pagination->limit);
+        // If need to load more than 1 page per request
+        $pageNum = Yii::$app->request->get('pageNum', 1);
+
+        $query->offset($pagination->offset)->limit($pagination->limit * $pageNum);
         $comments = array_reverse($query->all());
+
+        if ($pageNum > 1) {
+            $pagination->setPage($pagination->page + $pageNum - 1);
+        }
 
         $output = ShowMore::widget(['pagination' => $pagination, 'object' => $this->target]);
         foreach ($comments as $comment) {

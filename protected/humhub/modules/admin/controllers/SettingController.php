@@ -28,6 +28,7 @@ use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\Log;
 use humhub\modules\notification\models\forms\NotificationSettings;
+use yii\base\BaseObject;
 
 /**
  * SettingController
@@ -358,19 +359,23 @@ class SettingController extends Controller
     {
         $form = new OEmbedProviderForm;
 
-        $prefix = Yii::$app->request->get('prefix');
+        $name = Yii::$app->request->get('name');
         $providers = UrlOembed::getProviders();
 
-        if (isset($providers[$prefix])) {
-            $form->prefix = $prefix;
-            $form->endpoint = $providers[$prefix];
+        if (isset($providers[$name])) {
+            $form->name = $name;
+            $form->endpoint = $providers[$name]['endpoint'];
+            $form->pattern = $providers[$name]['pattern'];
         }
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            if ($prefix && isset($providers[$prefix])) {
-                unset($providers[$prefix]);
+            if ($name && isset($providers[$name])) {
+                unset($providers[$name]);
             }
-            $providers[$form->prefix] = $form->endpoint;
+            $providers[$form->name] = [
+                'endpoint' => $form->endpoint,
+                'pattern' => $form->pattern
+            ];
             UrlOembed::setProviders($providers);
 
             return $this->redirect(
@@ -382,7 +387,7 @@ class SettingController extends Controller
         return $this->render('oembed_edit',
             [
                 'model' => $form,
-                'prefix' => $prefix
+                'name' => $name
             ]);
     }
 
@@ -392,11 +397,11 @@ class SettingController extends Controller
     public function actionOembedDelete()
     {
         $this->forcePostRequest();
-        $prefix = Yii::$app->request->get('prefix');
+        $name = Yii::$app->request->get('name');
         $providers = UrlOembed::getProviders();
 
-        if (isset($providers[$prefix])) {
-            unset($providers[$prefix]);
+        if (isset($providers[$name])) {
+            unset($providers[$name]);
             UrlOembed::setProviders($providers);
         }
         return $this->redirect([

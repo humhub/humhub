@@ -5,7 +5,7 @@ use yii\helpers\Url;
 /* @var $this \humhub\modules\ui\view\components\View */
 
 $isAmind = Yii::$app->user->isAdmin();
-$nextUrl = $isAmind ? Url::to(['/marketplace/browse', 'tour' => 'true']) : '';
+$nextUrl = $isAmind ? Url::to(['/admin/module/list', 'tour' => 'true']) : '';
 ?>
 
 <script <?= \humhub\libs\Html::nonce() ?>>

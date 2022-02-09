@@ -117,9 +117,9 @@ class UrlOembed extends ActiveRecord
      */
     public function getProviderUrl()
     {
-        foreach (static::getProviders() as $providerBaseUrl => $providerAPI) {
-            if (strpos($this->url, $providerBaseUrl) !== false) {
-                return str_replace("%url%", urlencode($this->url), $providerAPI);
+        foreach (static::getProviders() as $provider) {
+            if (preg_match($provider['pattern'], $this->url)) {
+                return str_replace("%url%", urlencode($this->url), $provider['endpoint']);
             }
         }
         return null;
@@ -360,9 +360,9 @@ class UrlOembed extends ActiveRecord
      */
     public static function getProviderByUrl($url)
     {
-        foreach (static::getProviders() as $providerBaseUrl => $providerAPI) {
-            if (strpos($url, $providerBaseUrl) !== false) {
-                return $providerBaseUrl;
+        foreach (static::getProviders() as $provider) {
+            if (preg_match($provider['pattern'], $url)) {
+                return $provider['endpoint'];
             }
         }
 

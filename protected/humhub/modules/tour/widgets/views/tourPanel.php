@@ -48,7 +48,7 @@ use yii\helpers\Url;
             </li>
             <?php if (Yii::$app->user->isAdmin() == true) : ?>
                 <li class="<?php if ($administration == 1) : ?>completed<?php endif; ?>">
-                    <a href="<?php echo Url::to(['/marketplace/browse', 'tour' => 'true']); ?>" data-pjax-prevent>
+                    <a href="<?php echo Url::to(['/admin/module/list', 'tour' => 'true']); ?>" data-pjax-prevent>
                         <i class="fa fa-play-circle-o"></i><?php echo Yii::t('TourModule.base', '<strong>Guide:</strong> Administration (Modules)'); ?>
                     </a>
                 </li>

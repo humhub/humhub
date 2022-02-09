@@ -25,7 +25,44 @@ return [
     ['name' => 'colorInfo', 'value' => '#6fdbe8', 'module_id' => 'base'],
     ['name' => 'colorSuccess', 'value' => '#97d271', 'module_id' => 'base'],
     ['name' => 'colorDanger', 'value' => '#ff8989', 'module_id' => 'base'],
-    ['name' => 'oembedProviders', 'value' => '{"vimeo.com":"http:\/\/vimeo.com\/api\/oembed.json?scheme=https&url=%url%&format=json&maxwidth=450","youtube.com":"http:\/\/www.youtube.com\/oembed?scheme=https&url=%url%&format=json&maxwidth=450","youtu.be":"http:\/\/www.youtube.com\/oembed?scheme=https&url=%url%&format=json&maxwidth=450","soundcloud.com":"https:\/\/soundcloud.com\/oembed?url=%url%&format=json&maxwidth=450","slideshare.net":"https:\/\/www.slideshare.net\/api\/oembed\/2?url=%url%&format=json&maxwidth=450"}', 'module_id' => 'base'],
+    ['name' => 'oembedProviders', 'value' => json_encode([
+        'Facebook Video' => [
+            'pattern' => '/facebook\.com\/(.*)(video)/',
+            'endpoint' => 'https://graph.facebook.com/v12.0/oembed_video?url=%url%&access_token='
+        ],
+        'Facebook Post' => [
+            'pattern' => '/facebook\.com\/(.*)(post|activity|photo|permalink|media|question|note)/',
+            'endpoint' => 'https://graph.facebook.com/v12.0/oembed_post?url=%url%&access_token='
+        ],
+        'Facebook Page' => [
+            'pattern' => '/^(https\:\/\/)*(www\.)*facebook\.com\/((?!video|post|activity|photo|permalink|media|question|note).)*$/',
+            'endpoint' => 'https://graph.facebook.com/v12.0/oembed_post?url=%url%&access_token='
+        ],
+        'Instagram' => [
+            'pattern' => '/instagram\.com/',
+            'endpoint' => 'https://graph.facebook.com/v12.0/instagram_oembed?url=%url%&access_token='
+        ],
+        'Twitter' => [
+            'pattern' => '/twitter\.com/',
+            'endpoint' => 'https://publish.twitter.com/oembed?url=%url%&maxwidth=450'
+        ],
+        'YouTube' => [
+            'pattern' => '/youtube\.com|youtu.be/',
+            'endpoint' => 'https://www.youtube.com/oembed?scheme=https&url=%url%&format=json&maxwidth=450'
+        ],
+        'Soundcloud' => [
+            'pattern' => '/soundcloud\.com/',
+            'endpoint' => 'https://soundcloud.com/oembed?url=%url%&format=json&maxwidth=450'
+        ],
+        'Vimeo' => [
+            'pattern' => '/vimeo\.com/',
+            'endpoint' => 'https://vimeo.com/api/oembed.json?scheme=https&url=%url%&format=json&maxwidth=450'
+        ],
+        'SlideShare' => [
+            'pattern' => '/slideshare\.net/',
+            'endpoint' => 'https://www.slideshare.net/api/oembed/2?url=%url%&format=json&maxwidth=450'
+        ]
+    ]), 'module_id' => 'base'],
     ['name' => 'defaultLanguage', 'value' => 'en-US', 'module_id' => 'base'],
     ['name' => 'maintenanceMode', 'value' => '0', 'module_id' => 'base'],
     ['name' => 'enableProfilePermissions', 'value' => '1', 'module_id' => 'user'],
