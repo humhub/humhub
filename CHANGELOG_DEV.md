@@ -9,6 +9,7 @@
 - Enh #5471: On the pending approval page, add grouped actions and custom columns
 - Enh #5490: Display confirmation message before display embedded content
 - Enh #5258: Display who invited the user on the Approval page
+- Enh #5475: Option for forbidden usernames
 - Enh #4890: Allow to define actions in a controller which should not be intercepted by other actions
 - Enh #5510: oEmbed support for other social networks, redesign of oEmbed settings pages
 - Enh #5523: Option to include E-Mail address to search 

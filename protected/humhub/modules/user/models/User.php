@@ -170,6 +170,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
                 return $this->isEmailRequired();
             }],
             [['guid'], 'unique'],
+            [['username'], 'validateForbiddenUsername',  'on' => [self::SCENARIO_REGISTRATION]],
         ];
     }
 
@@ -190,6 +191,17 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
 
         return parent::isAttributeRequired($attribute);
+    }
+
+    /**
+     * Validate attribute username
+     * @param string $attribute
+     */
+    public function validateForbiddenUsername($attribute, $params)
+    {
+        if (in_array(strtolower($this->$attribute), Yii::$app->controller->module->forbiddenUsernames)){
+            $this->addError($attribute, Yii::t('UserModule.account', 'You cannot use this username.'));
+        }
     }
 
     /**

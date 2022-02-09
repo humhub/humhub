@@ -138,6 +138,13 @@ class Module extends \humhub\components\Module
         6 => 20,
     ];
 
+
+    /**
+     * @var array Forbidden names to register
+     * @since 1.11
+     */
+    public $forbiddenUsernames = [];
+
     /**
      * @var string include user's email address in searches
      * @since 1.11
