@@ -85,7 +85,7 @@ class Modules extends Widget
             if ($singleGroupPrinted) {
                 continue;
             }
-            if (empty($group['count']) || (!$emptyGroupCount && empty($group['modules']))) {
+            if (empty($group['count']) || ($emptyGroupCount === 1 && empty($group['modules']))) {
                 continue;
             }
             if ($displaySingleGroup && $groupType !== $alwaysVisibleGroup) {
