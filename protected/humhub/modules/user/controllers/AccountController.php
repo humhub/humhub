@@ -10,17 +10,20 @@ namespace humhub\modules\user\controllers;
 
 use humhub\compat\HForm;
 use humhub\modules\content\widgets\ContainerTagPicker;
+use humhub\modules\space\helpers\MembershipHelper;
+use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\authclient\interfaces\PrimaryClient;
+use humhub\modules\user\components\BaseAccountController;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\forms\AccountChangeEmail;
 use humhub\modules\user\models\forms\AccountChangeUsername;
+use humhub\modules\user\models\forms\AccountDelete;
+use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\ProfileSettingsAutocomplete;
+use humhub\modules\user\widgets\ProfileSettingsPicker;
 use Yii;
 use yii\web\HttpException;
-use humhub\modules\user\components\BaseAccountController;
-use humhub\modules\user\models\User;
-use humhub\modules\user\authclient\BaseFormAuth;
-use humhub\modules\space\helpers\MembershipHelper;
-use humhub\modules\user\models\forms\AccountDelete;
 
 /**
  * AccountController provides all standard actions for the current logged in
@@ -163,6 +166,14 @@ class AccountController extends BaseAccountController
         $pickerTags = ContainerTagPicker::searchTagsByContainerClass(User::class, $keyword);
 
         return $this->asJson($pickerTags);
+    }
+
+    /**
+     * Returns user tags list in JSON format filtered by keyword
+     */
+    public function actionSearchSettingsJson($field, $keyword = '')
+    {
+        return $this->asJson((new ProfileSettingsAutocomplete)->getAutocompleteSuggestions($field, $keyword));
     }
 
     /**

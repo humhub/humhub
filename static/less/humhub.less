@@ -204,6 +204,11 @@
     @import "cards.less";
 }
 
+@prev-autocomplete: false;
+& when not(@prev-autocomplete) {
+    @import "autocomplete.less";
+}
+
 @import "../css/select2Theme/build.less";
 
 // LEGACY/DEPRECATED User- & Space picker

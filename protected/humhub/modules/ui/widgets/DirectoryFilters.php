@@ -9,6 +9,7 @@ namespace humhub\modules\ui\widgets;
 
 use humhub\components\Widget;
 use humhub\libs\Html;
+use humhub\modules\user\widgets\PeopleFilterAutocomplete;
 use humhub\widgets\Button;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -134,7 +135,9 @@ abstract class DirectoryFilters extends Widget
             case 'info':
                 $inputHtml = $data['info'];
                 break;
-
+            case 'text-autocomplete':
+                $inputHtml = PeopleFilterAutocomplete::widget(['name' => $filter, 'options' => $inputOptions]);
+                break;
             case 'input':
             case 'text':
             default:

@@ -33,7 +33,7 @@ class PeopleFilters extends DirectoryFilters
         $this->addFilter('keyword', [
             'title' => Yii::t('UserModule.base', 'Find people by their profile data or user tags'),
             'placeholder' => Yii::t('UserModule.base', 'Search...'),
-            'type' => 'input',
+            'type' => 'text-autocomplete',
             'wrapperClass' => 'col-md-6 form-search-filter-keyword',
             'afterInput' => Html::submitButton('<span class="fa fa-search"></span>', ['class' => 'form-button-search']),
             'sortOrder' => 100,

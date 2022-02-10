@@ -14,6 +14,8 @@ use humhub\modules\file\components\FileManager;
 use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
 use humhub\modules\ui\form\widgets\SortOrderField;
+use humhub\modules\user\widgets\ProfileSettingsAutocomplete;
+use humhub\modules\user\widgets\ProfileSettingsPicker;
 use Yii;
 use yii\helpers\Html;
 use yii\widgets\ActiveField;
@@ -255,6 +257,9 @@ class HForm extends \yii\base\Component
                 switch ($definition['type']) {
                     case 'text':
                         $field = $this->form->field($model, $name)->textInput($options);
+                        break;
+                    case 'text-autocomplete':
+                        $field = $this->form->field($model, $name)->widget(ProfileSettingsAutocomplete::class, $options);
                         break;
                     case 'multiselectdropdown':
                         $field = $this->form->field($model, $name)->widget(MultiSelect::class, [
