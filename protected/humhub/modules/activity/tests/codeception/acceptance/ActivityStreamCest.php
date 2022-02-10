@@ -46,7 +46,6 @@ class ActivityStreamCest
         $I->see('Peter Tester created a new post "Activity test post!"', '#activityStream');
         $I->click('.activity-entry');
 
-        $I->waitForText('Back to stream', null, '#wallStream');
         $I->waitForText('Activity test post!', null,'.wall-entry');
 
         $I->wantToTest('deleting my post will remove the activity');

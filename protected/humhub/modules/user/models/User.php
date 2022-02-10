@@ -170,6 +170,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
                 return $this->isEmailRequired();
             }],
             [['guid'], 'unique'],
+            [['username'], 'validateForbiddenUsername', 'on' => [self::SCENARIO_REGISTRATION]],
         ];
     }
 
@@ -190,6 +191,20 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
 
         return parent::isAttributeRequired($attribute);
+    }
+
+    /**
+     * Validate attribute username
+     * @param string $attribute
+     */
+    public function validateForbiddenUsername($attribute, $params)
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if (in_array(strtolower($this->$attribute), $module->forbiddenUsernames)) {
+            $this->addError($attribute, Yii::t('UserModule.account', 'You cannot use this username.'));
+        }
     }
 
     /**
@@ -728,10 +743,14 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             'email' => $this->email,
             'username' => $this->username,
             'tags' => implode(', ', $this->getTags()),
-            'firstname' => $this->profile->firstname,
-            'lastname' => $this->profile->lastname,
-            'title' => $this->profile->title,
         ];
+
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if ($module->includeEmailInSearch) {
+            $attributes['email'] = $this->email;
+        }
 
         // Add user group ids
         $groupIds = array_map(function ($group) {

@@ -37,6 +37,7 @@ class ShowMore extends \yii\base\Widget
             '/comment/comment/show',
             'objectModel' => get_class($this->object),
             'objectId' => $this->object->getPrimaryKey(),
+            'pageSize' => $this->pagination->pageSize,
             'page' => $this->pagination->page + 2
         ]);
 
