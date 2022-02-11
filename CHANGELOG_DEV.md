@@ -15,3 +15,4 @@
 - Enh #5523: Option to include E-Mail address to search 
 - Enh #5352: Remove "NewMembers" widget from Core
 - Fix #5478: Avoid permalinks on comments related to a global content (not in a container) to crash.
+- Fix #5547: Remove Google Fonts from E-mails
