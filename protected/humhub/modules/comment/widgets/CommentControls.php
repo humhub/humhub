@@ -69,7 +69,7 @@ class CommentControls extends Menu
             ]);
 
             if($isAdmin) {
-                $loadModalUrl = Url::to(['/comment/comment/get-admin-delete-modal',
+                $adminDeleteModalUrl = Url::to(['/comment/comment/get-admin-delete-modal',
                     'objectModel' => $this->comment->object_model,
                     'objectId' => $this->comment->object_id,
                     'id' => $this->comment->id,
@@ -82,7 +82,7 @@ class CommentControls extends Menu
             ];
 
             if($isAdmin) {
-                $htmlOptions['data-load-modal-url'] = $loadModalUrl;
+                $htmlOptions['data-admin-delete-modal-url'] = $adminDeleteModalUrl;
             }
 
             $this->addEntry(new MenuLink([

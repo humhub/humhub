@@ -75,7 +75,11 @@ abstract class BaseNotification extends SocialActivity
     public $recordClass = Notification::class;
 
     /**
-     * @var array|null The Notification payload object
+     * The optional object that is used for rendering a notification.
+     * Is stored in Notification record as JSON.
+     *
+     * @var array|null
+     * @since 1.11
      */
     public $payload = null;
 
@@ -135,6 +139,10 @@ abstract class BaseNotification extends SocialActivity
             $date = $this->getContent()->updated_at;
         } else {
             $date = null;
+        }
+
+        if(!empty($this->record->payload)) {
+            $this->payload = Json::decode($this->record->payload);
         }
 
         if($this->hasContent()) {

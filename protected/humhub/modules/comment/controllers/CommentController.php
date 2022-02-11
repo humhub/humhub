@@ -45,7 +45,7 @@ class CommentController extends Controller
         return [
             [ControllerAccess::RULE_LOGGED_IN_ONLY => ['post', 'edit', 'delete']],
             [ControllerAccess::RULE_POST => ['post']],
-            [ControllerAccess::RULE_ADMIN_ONLY => ['admin-delete']],
+            [ControllerAccess::RULE_ADMIN_ONLY => ['get-admin-delete-modal']],
         ];
     }
 
@@ -219,22 +219,25 @@ class CommentController extends Controller
 
         $form = new AdminDeleteCommentForm();
 
-        if (Yii::$app->request->isPost && $form->load(Yii::$app->request->post())) {
-            if($form->message) {
-                $commentDeleted = \humhub\modules\comment\notifications\CommentDeleted::instance()
-                    ->from(Yii::$app->user->getIdentity())
-                    ->about($comment)
-                    ->commented($form->message);
-                $commentDeleted->saveRecord($comment->createdBy);
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            if(!$form->validate()) {
+                throw new HttpException(400, Yii::t('ContentModule.base', 'Could not create notification: validation error.'));
+            }
+
+            $commentDeleted = \humhub\modules\comment\notifications\CommentDeleted::instance()
+                ->from(Yii::$app->user->getIdentity())
+                ->about($comment)
+                ->commented($form->message);
+            $commentDeleted->saveRecord($comment->createdBy);
+
+            if($form->notify) {
                 $commentDeleted->record->updateAttributes([
                     'send_web_notifications' => 1
                 ]);
             }
         }
 
-        $comment->delete();
-
-        return $this->asJson(['success' => true]);
+        return $this->asJson(['success' => $comment->delete()]);
     }
 
     /**

@@ -144,7 +144,7 @@ humhub.module('comment', function (module, require, $) {
         var hideHr = !this.isNestedComment() && $form.length && !this.$.siblings('.media').length;
 
         this.$.data('content-delete-url', evt.$trigger.data('content-delete-url'));
-        this.$.data('load-modal-url', evt.$trigger.data('load-modal-url'));
+        this.$.data('admin-delete-modal-url', evt.$trigger.data('admin-delete-modal-url'));
 
         this.super('adminDelete').then(function ($confirm) {
             if ($confirm) {

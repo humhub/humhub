@@ -74,22 +74,29 @@ class ContentController extends Controller
             throw new HttpException(400, Yii::t('ContentModule.base', 'Could not delete content: Access denied!'));
         }
 
-        if ($contentObj !== null && $contentObj->delete()) {
+        if ($contentObj !== null) {
             $form = new AdminDeleteContentForm();
 
-            if ($form->load(Yii::$app->request->post()) && $form->message) {
+            if ($form->load(Yii::$app->request->post())) {
+                if(!$form->validate()) {
+                    throw new HttpException(400, Yii::t('ContentModule.base', 'Could not create notification: validation error.'));
+                }
+
                 $contentDeleted = \humhub\modules\content\notifications\ContentDeleted::instance()
                     ->from(Yii::$app->user->getIdentity())
                     ->about($contentObj)
                     ->commented($form->message);
                 $contentDeleted->saveRecord($contentObj->createdBy);
-                $contentDeleted->record->updateAttributes([
-                    'send_web_notifications' => 1
-                ]);
+
+                if($form->notify) {
+                    $contentDeleted->record->updateAttributes([
+                        'send_web_notifications' => 1
+                    ]);
+                }
             }
 
             $json = [
-                'success' => true,
+                'success' => $contentObj->delete(),
                 'uniqueId' => $contentObj->getUniqueId(),
                 'model' => $model,
                 'pk' => $id

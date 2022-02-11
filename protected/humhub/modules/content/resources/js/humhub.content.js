@@ -16,7 +16,7 @@ humhub.module('content', function (module, require, $) {
 
     var DATA_CONTENT_KEY = "content-key";
     var DATA_CONTENT_DELETE_URL = "content-delete-url";
-    var DATA_LOAD_MODAL_URL = "load-modal-url";
+    var DATA_ADMIN_DELETE_MODAL_URL = "admin-delete-modal-url";
 
 
     Component.addSelector('content-component');
@@ -79,7 +79,7 @@ humhub.module('content', function (module, require, $) {
     Content.prototype.adminDelete = function (options) {
         var that = this;
 
-        var loadModalUrl = that.data(DATA_LOAD_MODAL_URL) || module.config.adminDeleteModalUrl;
+        var loadModalUrl = that.data(DATA_ADMIN_DELETE_MODAL_URL) || module.config.adminDeleteModalUrl;
 
         if(!loadModalUrl) {
             that.delete(options);

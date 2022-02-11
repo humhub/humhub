@@ -16,19 +16,29 @@ class AdminDeleteCommentForm extends yii\base\Model
     public $message;
 
     /**
+     * @var boolean
+     */
+    public $notify;
+
+    /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
+            [['message'], 'required', 'when' => function ($model) {
+                return $model->notify;
+            }],
             [['message'], 'string'],
+            [['notify'], 'boolean']
         ];
     }
 
     public function attributeLabels()
     {
         return [
-            'message' => Yii::t('CommentModule.base', 'Message')
+            'message' => Yii::t('CommentModule.base', 'Message'),
+            'notify' => Yii::t('CommentModule.base', 'Send a notification to the author.')
         ];
     }
 }
