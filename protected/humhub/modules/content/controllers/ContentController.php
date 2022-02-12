@@ -17,7 +17,6 @@ use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\widgets\AdminDeleteModal;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use Yii;
-use yii\base\BaseObject;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\web\ForbiddenHttpException;
@@ -78,17 +77,17 @@ class ContentController extends Controller
             $form = new AdminDeleteContentForm();
 
             if ($form->load(Yii::$app->request->post())) {
-                if(!$form->validate()) {
+                if (!$form->validate()) {
                     throw new HttpException(400, Yii::t('ContentModule.base', 'Could not create notification: validation error.'));
                 }
 
-                $contentDeleted = \humhub\modules\content\notifications\ContentDeleted::instance()
-                    ->from(Yii::$app->user->getIdentity())
-                    ->about($contentObj)
-                    ->commented($form->message);
-                $contentDeleted->saveRecord($contentObj->createdBy);
-
-                if($form->notify) {
+                if ($form->notify) {
+                    $contentDeleted = \humhub\modules\content\notifications\ContentDeleted::instance()
+                        ->from(Yii::$app->user->getIdentity())
+                        ->about($contentObj)
+                        ->commented($form->message);
+                    $contentDeleted->saveRecord($contentObj->createdBy);
+                    
                     $contentDeleted->record->updateAttributes([
                         'send_web_notifications' => 1
                     ]);

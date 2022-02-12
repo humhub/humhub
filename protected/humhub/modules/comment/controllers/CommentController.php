@@ -11,21 +11,20 @@ namespace humhub\modules\comment\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\libs\Helpers;
+use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\models\forms\AdminDeleteCommentForm;
 use humhub\modules\comment\models\forms\CommentForm;
 use humhub\modules\comment\Module;
-use humhub\modules\comment\widgets\Form;
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\comment\widgets\AdminDeleteModal;
-use Yii;
-use yii\base\BaseObject;
-use yii\data\Pagination;
-use yii\web\HttpException;
-use yii\helpers\Url;
-use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\widgets\Comment as CommentWidget;
+use humhub\modules\comment\widgets\Form;
 use humhub\modules\comment\widgets\ShowMore;
+use humhub\modules\content\components\ContentActiveRecord;
+use Yii;
+use yii\data\Pagination;
+use yii\helpers\Url;
 use yii\web\ForbiddenHttpException;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -61,7 +60,7 @@ class CommentController extends Controller
     public function beforeAction($action)
     {
         $modelClass = Yii::$app->request->get('objectModel', Yii::$app->request->post('objectModel'));
-        $modelPk = (int) Yii::$app->request->get('objectId', Yii::$app->request->post('objectId'));
+        $modelPk = (int)Yii::$app->request->get('objectId', Yii::$app->request->post('objectId'));
 
         Helpers::CheckClassType($modelClass, [Comment::class, ContentActiveRecord::class]);
         $this->target = $modelClass::findOne(['id' => $modelPk]);
@@ -213,24 +212,24 @@ class CommentController extends Controller
 
         $comment = $this->getComment($id);
 
-        if(!$comment->canDelete()) {
+        if (!$comment->canDelete()) {
             throw new ForbiddenHttpException();
         }
 
         $form = new AdminDeleteCommentForm();
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            if(!$form->validate()) {
+            if (!$form->validate()) {
                 throw new HttpException(400, Yii::t('ContentModule.base', 'Could not create notification: validation error.'));
             }
 
-            $commentDeleted = \humhub\modules\comment\notifications\CommentDeleted::instance()
-                ->from(Yii::$app->user->getIdentity())
-                ->about($comment)
-                ->commented($form->message);
-            $commentDeleted->saveRecord($comment->createdBy);
+            if ($form->notify) {
+                $commentDeleted = \humhub\modules\comment\notifications\CommentDeleted::instance()
+                    ->from(Yii::$app->user->getIdentity())
+                    ->about($comment)
+                    ->commented($form->message);
+                $commentDeleted->saveRecord($comment->createdBy);
 
-            if($form->notify) {
                 $commentDeleted->record->updateAttributes([
                     'send_web_notifications' => 1
                 ]);
@@ -275,7 +274,7 @@ class CommentController extends Controller
     {
         $comment = Comment::findOne(['id' => $id]);
 
-        if(!$comment) {
+        if (!$comment) {
             throw new NotFoundHttpException();
         }
 
