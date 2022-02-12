@@ -14,8 +14,10 @@ use humhub\modules\user\models\Profile;
 use humhub\modules\user\permissions\PeopleAccess;
 use humhub\modules\user\widgets\PeopleCard;
 use humhub\modules\user\widgets\PeopleFilterAutocomplete;
+use humhub\modules\user\widgets\PeopleFilterPicker;
 use humhub\modules\user\widgets\ProfileSettingsAutocomplete;
 use Yii;
+use yii\base\BaseObject;
 use yii\helpers\Url;
 
 /**
@@ -95,6 +97,14 @@ class PeopleController extends Controller
     public function actionSearchPeopleJson($keyword = null)
     {
         return $this->asJson((new PeopleFilterAutocomplete)->getAutocompleteSuggestions($keyword));
+    }
+
+    /**
+     * Returns people list in JSON format filtered by keyword
+     */
+    public function actionFilterPeopleJson($field, $keyword = null)
+    {
+        return $this->asJson((new PeopleFilterPicker(['itemKey' => $field]))->getSuggestions($keyword));
     }
 
 }

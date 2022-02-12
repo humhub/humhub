@@ -6,8 +6,6 @@ humhub.module('ui.autocomplete', function (module, require, $) {
     var util = require('util');
     var object = util.object;
 
-    var MIN_INPUT_DEFAULT = 3;
-
     var Autocomplete = function (node, options) {
         Widget.call(this, node, options);
     };
@@ -24,15 +22,14 @@ humhub.module('ui.autocomplete', function (module, require, $) {
         var $wrapper = $input.parent();
         var $optionsContainer = $(Autocomplete.template.optionsContainer).appendTo($wrapper);
 
-        $input.on('input change focus', this.suggest, function () {
-
+        $wrapper.on('show.bs.dropdown', function () {
             if($input.val().length < $input.data('min-input')) {
                 if ($wrapper.hasClass('open'))
                     $wrapper.removeClass('open');
-
-                return;
             }
+        });
 
+        $input.on('input change focus', function () {
             client.get($input.data('url'), {
                 data: {
                     keyword: $input.val()

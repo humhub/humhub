@@ -20,6 +20,11 @@ class PeopleFilterAutocomplete extends BaseAutocompleteInput
     /**
      * @inheritdoc
      */
+    public $minInput = 1;
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();

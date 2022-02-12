@@ -369,7 +369,9 @@ abstract class BasePicker extends JsInputWidget
     protected function getAttributes()
     {
         return [
-            'multiple' => 'multiple',
+            'data-multiple' => 'true',
+            'data-tags' => 'true',
+            'data-allow-clear' => 'true',
             'size' => '1',
             'class' => 'form-control',
             'style' => 'width:100%',

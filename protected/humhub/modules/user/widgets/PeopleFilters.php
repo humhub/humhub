@@ -33,10 +33,13 @@ class PeopleFilters extends DirectoryFilters
         $this->addFilter('keyword', [
             'title' => Yii::t('UserModule.base', 'Find people by their profile data or user tags'),
             'placeholder' => Yii::t('UserModule.base', 'Search...'),
-            'type' => 'text-autocomplete',
+            'type' => 'widget',
+            'widget' => PeopleFilterAutocomplete::class,
+            'widgetOptions' => [],
             'wrapperClass' => 'col-md-6 form-search-filter-keyword',
             'afterInput' => Html::submitButton('<span class="fa fa-search"></span>', ['class' => 'form-button-search']),
             'sortOrder' => 100,
+            'inputOptions' => ['data-toggle' => 'dropdown']
         ]);
 
         // Group
@@ -109,6 +112,11 @@ class PeopleFilters extends DirectoryFilters
 
         switch ($fieldType) {
             case 'text':
+                $filterData['type'] = 'widget';
+                $filterData['widget'] = PeopleFilterPicker::class;
+                $filterData['widgetOptions'] = [
+                    'itemKey' => $profileField->internal_name
+                ];
                 break;
 
             case 'dropdownlist':
