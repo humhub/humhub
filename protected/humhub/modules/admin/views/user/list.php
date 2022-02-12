@@ -55,7 +55,12 @@ use yii\widgets\ActiveForm;
             'columns' => [
                 ['class' => ImageColumn::class],
                 ['class' => DisplayNameColumn::class],
-                'email',
+                [
+                    'attribute' => 'email',
+                    'value' => function ($data) {
+                        return $data->hasInvalidEmail() ? '' : $data->email;
+                    }
+                ],
                 [
                     'attribute' => 'last_login',
                     'label' => Yii::t('AdminModule.user', 'Last login'),
