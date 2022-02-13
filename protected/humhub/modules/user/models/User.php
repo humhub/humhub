@@ -183,7 +183,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         return UUID::v4()."@email.invalid";  // Will be an invalid email, see https://en.wikipedia.org/wiki/.invalid
     }
     public function hasInvalidEmail(): bool {
-        return str_contains($this->email, "@email.invalid");
+        return str_ends_with($this->email, ".invalid");  // TLD
     }
 
     public function isEmailRequired(): bool

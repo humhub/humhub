@@ -53,7 +53,7 @@ class BaseFormAuth extends BaseClient
             if (!$this->login instanceof Login) {
                 $this->loginUser = null;
             }
-            else if (str_contains($this->login->username, '@email.invalid')) { 
+            else if (str_ends_with($this->login->username, '.invalid')) {  // TLD
                 $this->loginUser = null;
             }
             else {
