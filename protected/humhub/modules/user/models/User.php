@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\libs\UUID;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageUsers;
@@ -166,12 +167,23 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'string', 'max' => 150],
-            [['email'], 'required', 'when' => function () {
-                return $this->isEmailRequired();
-            }],
             [['guid'], 'unique'],
             [['username'], 'validateForbiddenUsername', 'on' => [self::SCENARIO_REGISTRATION]],
         ];
+
+        if ($this->isEmailRequired())  // HForm does not support 'required' in combination with 'when'.
+            $rules[] = [['email'], 'required'];
+        else
+            $rules[] = [['email'], 'default', 'value' => $this->getInvalidEmail()];
+
+        return $rules;
+    }
+
+    public function getInvalidEmail(): string {
+        return UUID::v4()."@email.invalid";  // Will be an invalid email, see https://en.wikipedia.org/wiki/.invalid
+    }
+    public function hasInvalidEmail(): bool {
+        return str_ends_with($this->email, ".invalid");  // TLD
     }
 
     public function isEmailRequired(): bool
