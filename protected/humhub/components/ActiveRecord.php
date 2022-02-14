@@ -21,7 +21,7 @@ use yii\db\Expression;
  * @property User $updatedBy
  * @author luke
  */
-class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
+class ActiveRecord extends \yii\db\ActiveRecord
 {
 
     /**
@@ -151,14 +151,14 @@ class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
      *
      * @link http://php.net/manual/en/function.serialize.php
      * @since 1.2
-     * @return string
+     * @return array
      */
-    public function serialize()
+    public function __serialize(): array
     {
-        return serialize([
+        return [
             'attributes' => $this->getAttributes(),
             'oldAttributes' => $this->getOldAttributes()
-        ]);
+        ];
     }
 
     /**
@@ -167,13 +167,20 @@ class ActiveRecord extends \yii\db\ActiveRecord implements \Serializable
      * Note: Subclasses have to call $this->init() if overwriting this function.
      *
      * @link http://php.net/manual/en/function.unserialize.php
-     * @param string $serialized
+     * @param array $unserializedArr
      */
-    public function unserialize($serialized)
+    public function __unserialize($unserializedArr)
     {
         $this->init();
-        $unserializedArr = unserialize($serialized);
         $this->setAttributes($unserializedArr['attributes'],false);
-        $this->setOldAttributes($unserializedArr['oldAttributes'],false);
+        $this->setOldAttributes($unserializedArr['oldAttributes']);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAttributeLabel($attribute)
+    {
+        return $attribute === null ? '' : parent::getAttributeLabel($attribute);
     }
 }

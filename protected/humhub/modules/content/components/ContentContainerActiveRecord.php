@@ -386,7 +386,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getTags(): array
     {
-        $tags = trim($this->contentContainerRecord->tags_cached);
+        $tags = is_string($this->contentContainerRecord->tags_cached) ? trim($this->contentContainerRecord->tags_cached) : '';
         return $tags === '' ? [] : preg_split('/\s*,\s*/', $tags);
     }
 
