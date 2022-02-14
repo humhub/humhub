@@ -17,3 +17,4 @@
 - Enh #5352: Remove "NewMembers" widget from Core
 - Fix #5478: Avoid permalinks on comments related to a global content (not in a container) to crash.
 - Fix #5549: Topic icon is missing in TopicPicker search
+- Fix #5556: Formatted output for date fields in "About me" profile area.
