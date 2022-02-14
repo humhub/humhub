@@ -50,16 +50,13 @@ class BaseFormAuth extends BaseClient
     public function getUserByLogin()
     {
         if (!$this->loginUser) {
-            if (!$this->login instanceof Login) {
-                $this->loginUser = null;
-            }
-            else {
-                $this->loginUser = User::find()
+            $this->loginUser = ($this->login instanceof Login)
+                ? User::find()
                     ->where(['username' => $this->login->username])
                     ->orWhere(['email' => $this->login->username])
                     ->andWhere(['auth_mode' => $this->id])
-                    ->one();
-            }
+                    ->one()
+                : null;
         }
 
         return $this->loginUser;
