@@ -39,3 +39,5 @@ favicon.ico
 
 **/tests/codeception/_output/**
 /.php_cs.cache
+
+.DS_Store

@@ -53,9 +53,6 @@ class BaseFormAuth extends BaseClient
             if (!$this->login instanceof Login) {
                 $this->loginUser = null;
             }
-            else if (str_ends_with($this->login->username, '.invalid')) {  // TLD
-                $this->loginUser = null;
-            }
             else {
                 $this->loginUser = User::find()
                     ->where(['username' => $this->login->username])

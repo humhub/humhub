@@ -9,8 +9,6 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\behaviors\GUID;
-use humhub\libs\UUID;
-use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\behaviors\CompatModuleManager;
@@ -173,17 +171,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         if ($this->isEmailRequired())  // HForm does not support 'required' in combination with 'when'.
             $rules[] = [['email'], 'required'];
-        else
-            $rules[] = [['email'], 'default', 'value' => $this->getInvalidEmail()];
 
         return $rules;
-    }
-
-    public function getInvalidEmail(): string {
-        return UUID::v4()."@email.invalid";  // Will be an invalid email, see https://en.wikipedia.org/wiki/.invalid
-    }
-    public function hasInvalidEmail(): bool {
-        return str_ends_with($this->email, ".invalid");  // TLD
     }
 
     public function isEmailRequired(): bool
@@ -556,6 +545,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         if (empty($this->time_zone)) {
             $this->time_zone = Yii::$app->settings->get('defaultTimeZone');
+        }
+
+        if (empty($this->email)) {
+            $this->email = new \yii\db\Expression('NULL');
         }
 
         return parent::beforeSave($insert);
