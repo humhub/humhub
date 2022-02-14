@@ -16,4 +16,5 @@
 - Enh #5523: Option to include E-Mail address to search 
 - Enh #5352: Remove "NewMembers" widget from Core
 - Fix #5478: Avoid permalinks on comments related to a global content (not in a container) to crash.
+- Fix #5549: Topic icon is missing in TopicPicker search
 - Fix #5553: Cannot have two or more users without email when emailRequired is disabled.
