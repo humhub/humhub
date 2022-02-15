@@ -134,7 +134,8 @@ class CommentController extends Controller
 
             return $this->renderAjaxContent(Form::widget([
                 'object' => $this->target,
-                'model' => $form->comment
+                'model' => $form->comment,
+                'isHidden' => false,
             ]));
         });
     }

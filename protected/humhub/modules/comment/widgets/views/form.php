@@ -19,6 +19,7 @@ use humhub\modules\comment\models\Comment;
 /* @var $isNestedComment boolean */
 /* @var $contentModule Module */
 /* @var $mentioningUrl string */
+/* @var $isHidden bool */
 
 $contentModule = Yii::$app->getModule('content');
 $submitUrl = Url::to(['/comment/comment/post']);
@@ -26,9 +27,6 @@ $submitUrl = Url::to(['/comment/comment/post']);
 $placeholder = ($isNestedComment)
     ? Yii::t('CommentModule.base', 'Write a new reply...')
     : Yii::t('CommentModule.base', 'Write a new comment...');
-
-// Hide the comment form for sub comments until the button is clicked
-$isHidden = ($objectModel === Comment::class);
 ?>
 
 <div id="comment_create_form_<?= $id ?>" class="comment_create" data-ui-widget="comment.Form"
