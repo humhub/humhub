@@ -27,7 +27,6 @@ $submitUrl = $post->content->container->createUrl('/post/post/edit', ['id' => $p
             ])->label(false) ?>
 
             <div class="comment-buttons">
-
                 <?= UploadButton::widget([
                     'id' => 'post_upload_' . $post->id,
                     'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
@@ -35,11 +34,14 @@ $submitUrl = $post->content->container->createUrl('/post/post/edit', ['id' => $p
                     'dropZone' => '#post_edit_' . $post->id . ':parent',
                     'preview' => '#post_upload_preview_' . $post->id,
                     'progress' => '#post_upload_progress_' . $post->id,
-                    'max' => Yii::$app->getModule('content')->maxAttachedFiles
-                ]) ?>
-
-                <?= Button::defaultType(Yii::t('base', 'Save'))->action('editSubmit', $submitUrl)->submit()->cssClass(' btn-comment-submit')->sm() ?>
-
+                    'max' => Yii::$app->getModule('content')->maxAttachedFiles,
+                    'cssButtonClass' => 'btn-sm btn-info',
+                ]) .
+                Button::info()
+                    ->icon('send')
+                    ->action('editSubmit', $submitUrl)
+                    ->cssClass(' btn-comment-submit')->sm()
+                    ->submit() ?>
             </div>
         </div>
 

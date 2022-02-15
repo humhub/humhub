@@ -95,11 +95,14 @@
 // fileupload button
 .comment_create,
 .content_edit {
-    .comment-create-input-group {
+    .comment-create-input-group, .post-richtext-input-group {
         display: flex;
         align-items: flex-end;
-        .field-comment-message {
+        .field-comment-message, .field-post-message {
             width: 100%;
+        }
+        .form-group, .help-block {
+            margin:0;
         }
     }
     .comment-buttons {
@@ -119,21 +122,13 @@
         box-shadow: none !important;
     }
     @media (max-width: 414px) {
-        .comment-create-input-group {
+        .comment-create-input-group, .post-richtext-input-group {
             flex-direction: column;
         }
         .comment-buttons {
             padding-bottom: 0 !important;
             padding-top: 6px;
         }
-    }
-}
-
-.post-richtext-input-group {
-    position: relative;
-
-    .comment-buttons {
-        bottom: 7px !important;
     }
 }
 
@@ -159,20 +154,6 @@
 .comment-message {
     overflow: hidden;
     .text-break();
-}
-
-.comment-create-input-group, .post-richtext-input-group {
-    position: relative;
-
-    .ProsemirrorEditor {
-        .ProseMirror {
-            padding-right: 72px;
-        }
-    }
-
-    .form-group, .help-block {
-        margin:0;
-    }
 }
 
 .comment-create-input-group.scrollActive {
