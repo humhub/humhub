@@ -43,10 +43,13 @@ $contentModule = Yii::$app->getModule('content');
                 'dropZone' => '#comment_' . $comment->id,
                 'preview' => '#comment_upload_preview_' . $comment->id,
                 'progress' => '#comment_upload_progress_' . $comment->id,
-                'max' => $contentModule->maxAttachedFiles
-            ]); ?>
-
-            <?= Button::defaultType(Yii::t('base', 'Save'))->cssClass('btn-comment-submit')->action('editSubmit', $submitUrl)->submit()->sm() ?>
+                'max' => $contentModule->maxAttachedFiles,
+                'cssButtonClass' => 'btn-sm btn-info',
+            ]) .
+            Button::info()
+                ->icon('send')
+                ->cssClass('btn-comment-submit')->sm()
+                ->action('editSubmit', $submitUrl)->submit() ?>
         </div>
     </div>
 

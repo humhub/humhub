@@ -95,48 +95,37 @@
 // fileupload button
 .comment_create,
 .content_edit {
-    position: relative;
-
+    .comment-create-input-group {
+        display: flex;
+        align-items: flex-end;
+        .field-comment-message {
+            width: 100%;
+        }
+    }
     .comment-buttons {
-        position: absolute;
-        bottom: 2px;
-        right: 5px;
-        z-index: 300;
-
-        button {
-            background-color: @link !important;
-            color: @text-color-contrast !important;
+        white-space: nowrap;
+        padding-bottom: 6px;
+        .btn {
+            margin-left: 6px;
+            &.fileinput-button {
+                background-color: fade(@link, 60%);
+            }
         }
     }
-
     .has-error + .comment-buttons {
-        bottom: 19px !important;
+        padding-bottom: 22px;
     }
-
-    .btn-comment-submit {
-        margin-top: 3px;
-    }
-
-    .fileinput-button {
-        float: left;
-        padding: 6px 10px;
-        background: transparent !important;
-
-        i {
-            color: @text-color-soft2;
-        }
-
-        i:hover {
-            color: @link;
-        }
-    }
-
-    .fileinput-button:hover i {
-        color: @link;
-    }
-
     .fileinput-button:active {
         box-shadow: none !important;
+    }
+    @media (max-width: 414px) {
+        .comment-create-input-group {
+            flex-direction: column;
+        }
+        .comment-buttons {
+            padding-bottom: 0 !important;
+            padding-top: 6px;
+        }
     }
 }
 

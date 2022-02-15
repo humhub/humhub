@@ -65,12 +65,13 @@ $isHidden = ($objectModel === Comment::class);
                 'progress' => '#comment_create_upload_progress_' . $id,
                 'preview' => '#comment_create_upload_preview_' . $id,
                 'dropZone' => '#comment_create_form_' . $id,
-                'max' => $contentModule->maxAttachedFiles
-            ]); ?>
-
-            <?= Button::defaultType(Yii::t('CommentModule.base', 'Send'))
-                ->cssClass('btn-comment-submit')
-                ->action('submit', $submitUrl)->submit()->sm() ?>
+                'max' => $contentModule->maxAttachedFiles,
+                'cssButtonClass' => 'btn-sm btn-info',
+            ]) .
+            Button::info()
+                ->icon('send')
+                ->cssClass('btn-comment-submit')->sm()
+                ->action('submit', $submitUrl)->submit() ?>
         </div>
     </div>
 
