@@ -1,5 +1,7 @@
 <?php
 
+use humhub\modules\file\handler\BaseFileHandler;
+use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\UploadProgress;
@@ -7,9 +9,10 @@ use humhub\widgets\Button;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use yii\bootstrap\ActiveForm;
 
-/* @var  $post \humhub\modules\post\models\Post */
-/* @var  $from string */
-/* @var  $submitUrl string */
+/* @var $post \humhub\modules\post\models\Post */
+/* @var $from string */
+/* @var $submitUrl string */
+/* @var $fileHandlers BaseFileHandler[] */
 
 $submitUrl = $post->content->container->createUrl('/post/post/edit', ['id' => $post->id]);
 ?>
@@ -26,8 +29,8 @@ $submitUrl = $post->content->container->createUrl('/post/post/edit', ['id' => $p
                 'placeholder' => Yii::t('PostModule.base', 'Edit your post...')
             ])->label(false) ?>
 
-            <div class="comment-buttons">
-                <?= UploadButton::widget([
+            <div class="comment-buttons"><?php
+                $uploadButton = UploadButton::widget([
                     'id' => 'post_upload_' . $post->id,
                     'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
                     'model' => $post,
@@ -36,13 +39,18 @@ $submitUrl = $post->content->container->createUrl('/post/post/edit', ['id' => $p
                     'progress' => '#post_upload_progress_' . $post->id,
                     'max' => Yii::$app->getModule('content')->maxAttachedFiles,
                     'cssButtonClass' => 'btn-sm btn-info',
-                ]) .
-                Button::info()
+                ]);
+                echo FileHandlerButtonDropdown::widget([
+                    'primaryButton' => $uploadButton,
+                    'handlers' => $fileHandlers,
+                    'cssButtonClass' => 'btn-info btn-sm',
+                ]);
+                echo Button::info()
                     ->icon('send')
                     ->action('editSubmit', $submitUrl)
                     ->cssClass(' btn-comment-submit')->sm()
-                    ->submit() ?>
-            </div>
+                    ->submit();
+            ?></div>
         </div>
 
         <?= UploadProgress::widget(['id' => 'post_upload_progress_'.$post->id])?>

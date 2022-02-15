@@ -99,7 +99,7 @@
         display: flex;
         align-items: flex-end;
         .field-comment-message, .field-post-message {
-            width: 100%;
+            flex-grow: 1;
         }
         .form-group, .help-block {
             margin:0;
@@ -108,11 +108,14 @@
     .comment-buttons {
         white-space: nowrap;
         padding-bottom: 6px;
-        .btn {
+        .btn:not(.dropdown-toggle) {
             margin-left: 6px;
-            &.fileinput-button {
-                background-color: fade(@link, 60%);
-            }
+        }
+        .btn.fileinput-button, .fileinput-button + .dropdown-toggle {
+            background-color: fade(@link, 60%);
+        }
+        .btn.dropdown-toggle {
+            margin-left: 0;
         }
     }
     .has-error + .comment-buttons {
@@ -124,6 +127,9 @@
     @media (max-width: 414px) {
         .comment-create-input-group, .post-richtext-input-group {
             flex-direction: column;
+            .field-comment-message, .field-post-message {
+                width: 100%;
+            }
         }
         .comment-buttons {
             padding-bottom: 0 !important;

@@ -15,7 +15,7 @@ use humhub\modules\comment\models\forms\CommentForm;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\widgets\Form;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\models\Content;
+use humhub\modules\file\handler\FileHandlerCollection;
 use Yii;
 use yii\data\Pagination;
 use yii\web\HttpException;
@@ -172,7 +172,8 @@ class CommentController extends Controller
             'comment' => $comment,
             'objectModel' => $comment->object_model,
             'objectId' => $comment->object_id,
-            'submitUrl' => $submitUrl
+            'submitUrl' => $submitUrl,
+            'fileHandlers' => FileHandlerCollection::getByType([FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE]),
         ]);
     }
 

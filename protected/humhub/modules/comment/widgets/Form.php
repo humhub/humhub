@@ -12,6 +12,7 @@ use humhub\components\Widget;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\models\Comment as CommentModel;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\file\handler\FileHandlerCollection;
 use Yii;
 use yii\helpers\Url;
 
@@ -86,6 +87,7 @@ class Form extends Widget
             'isNestedComment' => ($this->object instanceof CommentModel),
             'mentioningUrl' => Url::to([$this->mentioningUrl, 'id' => $this->object->content->id]),
             'isHidden' => $this->isHidden,
+            'fileHandlers' => FileHandlerCollection::getByType([FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE]),
         ]);
     }
 

@@ -1,6 +1,8 @@
 <?php
 
 use humhub\modules\content\Module;
+use humhub\modules\file\handler\BaseFileHandler;
+use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\Button;
@@ -20,6 +22,7 @@ use humhub\modules\comment\models\Comment;
 /* @var $contentModule Module */
 /* @var $mentioningUrl string */
 /* @var $isHidden bool */
+/* @var $fileHandlers BaseFileHandler[] */
 
 $contentModule = Yii::$app->getModule('content');
 $submitUrl = Url::to(['/comment/comment/post']);
@@ -55,8 +58,8 @@ $placeholder = ($isNestedComment)
             ]
         ])->label(false) ?>
 
-        <div class="comment-buttons">
-            <?= UploadButton::widget([
+        <div class="comment-buttons"><?php
+            $uploadButton = UploadButton::widget([
                 'id' => 'comment_create_upload_' . $id,
                 'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
                 'options' => ['class' => 'main_comment_upload'],
@@ -65,12 +68,17 @@ $placeholder = ($isNestedComment)
                 'dropZone' => '#comment_create_form_' . $id,
                 'max' => $contentModule->maxAttachedFiles,
                 'cssButtonClass' => 'btn-sm btn-info',
-            ]) .
-            Button::info()
+            ]);
+            echo FileHandlerButtonDropdown::widget([
+                'primaryButton' => $uploadButton,
+                'handlers' => $fileHandlers,
+                'cssButtonClass' => 'btn-info btn-sm',
+            ]);
+            echo Button::info()
                 ->icon('send')
                 ->cssClass('btn-comment-submit')->sm()
-                ->action('submit', $submitUrl)->submit() ?>
-        </div>
+                ->action('submit', $submitUrl)->submit();
+        ?></div>
     </div>
 
     <div id="comment_create_upload_progress_<?= $id ?>" style="display:none;margin:10px 0px;"></div>

@@ -13,6 +13,7 @@ use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\post\models\Post;
 use humhub\modules\post\permissions\CreatePost;
 use Yii;
@@ -88,6 +89,7 @@ class PostController extends ContentContainerController
 
         return $this->renderAjax('edit', [
             'post' => $model,
+            'fileHandlers' => FileHandlerCollection::getByType([FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE]),
         ]);
     }
 
