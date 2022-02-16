@@ -258,11 +258,11 @@ class CommentController extends Controller
         }
 
         return [
-            'header' => Yii::t('CommentModule.base', '<strong>Confirm</strong> comment deletion'),
+            'header' => Yii::t('CommentModule.base', '<strong>Delete</strong> comment?'),
             'body' => AdminDeleteModal::widget([
                 'model' => new AdminDeleteCommentForm()
             ]),
-            'confirmText' => Yii::t('CommentModule.base', 'Delete'),
+            'confirmText' => Yii::t('CommentModule.base', 'Confirm'),
             'cancelText' => Yii::t('CommentModule.base', 'Cancel'),
         ];
     }

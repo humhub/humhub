@@ -47,7 +47,7 @@ class CommentDeleted extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('CommentModule.notifications', 'Your comment "{commentText}" was deleted by {displayName}. Reason: {reason}', [
+        return Yii::t('CommentModule.notifications', 'Your comment \'{commentText}\' has been deleted by {displayName} for \'{reason}\'', [
             'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
             'commentText' => $this->payload['commentText'],
             'reason' => $this->payload['reason'],

@@ -43,7 +43,7 @@ class ContentDeleted extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('ContentModule.notifications', 'Your {contentTitle} was deleted by {displayName}. Reason: {reason}', [
+        return Yii::t('ContentModule.notifications', 'Your {contentTitle} has been deleted by {displayName} for \'{reason}\'', [
             'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
             'contentTitle' => $this->payload['contentTitle'],
             'reason' => $this->payload['reason']

@@ -39,8 +39,8 @@ class AdminDeleteContentForm extends Model
     public function attributeLabels()
     {
         return [
-            'message' => Yii::t('CommentModule.base', 'Message'),
-            'notify' => Yii::t('CommentModule.base', 'Send a notification to the author.')
+            'message' => Yii::t('CommentModule.base', 'Reason'),
+            'notify' => Yii::t('CommentModule.base', 'Send a notification to author')
         ];
     }
 }

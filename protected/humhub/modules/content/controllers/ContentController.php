@@ -130,11 +130,11 @@ class ContentController extends Controller
         }
 
         return [
-            'header' => Yii::t('ContentModule.base', '<strong>Confirm</strong> post deletion'),
+            'header' => Yii::t('ContentModule.base', '<strong>Delete</strong> post?'),
             'body' => AdminDeleteModal::widget([
                 'model' => new AdminDeleteContentForm()
             ]),
-            'confirmText' => Yii::t('ContentModule.base', 'Delete'),
+            'confirmText' => Yii::t('ContentModule.base', 'Confirm'),
             'cancelText' => Yii::t('ContentModule.base', 'Cancel'),
         ];
     }
