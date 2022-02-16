@@ -53,6 +53,7 @@ $contentModule = Yii::$app->getModule('content');
                 'primaryButton' => $uploadButton,
                 'handlers' => $fileHandlers,
                 'cssButtonClass' => 'btn-info btn-sm',
+                'pullRight' => true,
             ]);
             echo Button::info()
                 ->icon('send')
