@@ -94,14 +94,6 @@ class PeopleController extends Controller
     /**
      * Returns people list in JSON format filtered by keyword
      */
-    public function actionSearchPeopleJson($keyword = null)
-    {
-        return $this->asJson((new PeopleFilterAutocomplete)->getAutocompleteSuggestions($keyword));
-    }
-
-    /**
-     * Returns people list in JSON format filtered by keyword
-     */
     public function actionFilterPeopleJson($field, $keyword = null)
     {
         return $this->asJson((new PeopleFilterPicker(['itemKey' => $field]))->getSuggestions($keyword));

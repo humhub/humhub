@@ -109,7 +109,13 @@ class PeopleFilterPicker extends BasePicker
         return $item->user->getProfileImage();
     }
 
-    public function getSuggestions($keyword)
+    /**
+     * Returns suggestions by keyword
+     *
+     * @param $keyword
+     * @return Profile[]
+     */
+    public function getSuggestions($keyword = '')
     {
         return Profile::find()->select([
                 $this->itemKey . ' AS id',
@@ -120,5 +126,13 @@ class PeopleFilterPicker extends BasePicker
             ->limit(100)
             ->asArray()
             ->all();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getDefaultResultData()
+    {
+        return $this->getSuggestions();
     }
 }

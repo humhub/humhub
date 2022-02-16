@@ -258,9 +258,6 @@ class HForm extends \yii\base\Component
                     case 'text':
                         $field = $this->form->field($model, $name)->textInput($options);
                         break;
-                    case 'text-autocomplete':
-                        $field = $this->form->field($model, $name)->widget(ProfileSettingsAutocomplete::class, $options);
-                        break;
                     case 'multiselectdropdown':
                         $field = $this->form->field($model, $name)->widget(MultiSelect::class, [
                             'items' => $definition['items'],

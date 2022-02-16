@@ -80,7 +80,6 @@ class BaseType extends Model
         $fieldTypes = array_merge([
             Number::class => Yii::t('UserModule.profile', 'Number'),
             Text::class => Yii::t('UserModule.profile', 'Text'),
-            TextAutocomplete::class => Yii::t('UserModule.profile', 'Text Autocomplete'),
             TextArea::class => Yii::t('UserModule.profile', 'Text Area'),
             Select::class => Yii::t('UserModule.profile', 'Select List'),
             Date::class => Yii::t('UserModule.profile', 'Date'),
