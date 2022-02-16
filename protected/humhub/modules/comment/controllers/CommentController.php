@@ -15,14 +15,17 @@ use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\models\forms\AdminDeleteCommentForm;
 use humhub\modules\comment\models\forms\CommentForm;
 use humhub\modules\comment\Module;
+use humhub\modules\comment\notifications\CommentDeleted;
 use humhub\modules\comment\widgets\AdminDeleteModal;
 use humhub\modules\comment\widgets\Comment as CommentWidget;
 use humhub\modules\comment\widgets\Form;
 use humhub\modules\comment\widgets\ShowMore;
 use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
+use yii\base\BaseObject;
 use yii\data\Pagination;
 use yii\helpers\Url;
+use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
@@ -44,7 +47,6 @@ class CommentController extends Controller
         return [
             [ControllerAccess::RULE_LOGGED_IN_ONLY => ['post', 'edit', 'delete']],
             [ControllerAccess::RULE_POST => ['post']],
-            [ControllerAccess::RULE_ADMIN_ONLY => ['get-admin-delete-modal']],
         ];
     }
 
@@ -220,14 +222,14 @@ class CommentController extends Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             if (!$form->validate()) {
-                throw new HttpException(400, Yii::t('ContentModule.base', 'Could not create notification: validation error.'));
+                throw new BadRequestHttpException();
             }
 
             if ($form->notify) {
-                $commentDeleted = \humhub\modules\comment\notifications\CommentDeleted::instance()
+                $commentDeleted = CommentDeleted::instance()
                     ->from(Yii::$app->user->getIdentity())
-                    ->about($comment)
-                    ->commented($form->message);
+                    ->about($comment->getCommentedRecord())
+                    ->payload(['commentText' => (new CommentDeleted())->getContentPreview($comment, 30), 'reason' => $form->message]);
                 $commentDeleted->saveRecord($comment->createdBy);
 
                 $commentDeleted->record->updateAttributes([

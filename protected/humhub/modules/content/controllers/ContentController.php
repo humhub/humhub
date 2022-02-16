@@ -13,14 +13,18 @@ use humhub\components\Controller;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\forms\AdminDeleteContentForm;
 use humhub\modules\content\Module;
+use humhub\modules\content\notifications\ContentDeleted;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\widgets\AdminDeleteModal;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use Yii;
+use yii\base\BaseObject;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
+use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
+use yii\web\NotAcceptableHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -66,11 +70,11 @@ class ContentController extends Controller
         $contentObj = ($model != null) ? Content::Get($model, $id) : Content::findOne(['id' => $id]);
 
         if (!$contentObj) {
-            throw new HttpException(404);
+            throw new NotFoundHttpException();
         }
 
         if (!$contentObj->canEdit()) {
-            throw new HttpException(400, Yii::t('ContentModule.base', 'Could not delete content: Access denied!'));
+            throw new ForbiddenHttpException();
         }
 
         if ($contentObj !== null) {
@@ -78,16 +82,15 @@ class ContentController extends Controller
 
             if ($form->load(Yii::$app->request->post())) {
                 if (!$form->validate()) {
-                    throw new HttpException(400, Yii::t('ContentModule.base', 'Could not create notification: validation error.'));
+                    throw new BadRequestHttpException();
                 }
 
                 if ($form->notify) {
-                    $contentDeleted = \humhub\modules\content\notifications\ContentDeleted::instance()
+                    $contentDeleted = ContentDeleted::instance()
                         ->from(Yii::$app->user->getIdentity())
-                        ->about($contentObj)
-                        ->commented($form->message);
+                        ->payload(['contentTitle' => (new ContentDeleted)->getContentPlainTextInfo($contentObj), 'reason' => $form->message]);
                     $contentDeleted->saveRecord($contentObj->createdBy);
-                    
+
                     $contentDeleted->record->updateAttributes([
                         'send_web_notifications' => 1
                     ]);
@@ -119,7 +122,7 @@ class ContentController extends Controller
         $contentObj = Content::findOne(['id' => $id]);
 
         if (!$contentObj) {
-            throw new HttpException(404);
+            throw new NotFoundHttpException();
         }
 
         if (!$contentObj->canEdit()) {
@@ -194,24 +197,30 @@ class ContentController extends Controller
         $content = Content::findOne(['id' => $post['id']]);
 
         if (!$content) {
-            throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
+            throw new NotFoundHttpException();
         }
 
         if (!$content->canEdit()) {
-            throw new HttpException(403);
+            throw new ForbiddenHttpException();
         }
 
         $form = new AdminDeleteContentForm();
 
-        if ($form->load($post) && $form->message) {
-            $contentDeleted = \humhub\modules\content\notifications\ContentDeleted::instance()
-                ->from(Yii::$app->user->getIdentity())
-                ->about($content)
-                ->commented($form->message);
-            $contentDeleted->saveRecord($content->createdBy);
-            $contentDeleted->record->updateAttributes([
-                'send_web_notifications' => 1
-            ]);
+        if ($form->load($post)) {
+            if (!$form->validate()) {
+                throw new BadRequestHttpException();
+            }
+
+            if($form->notify) {
+                $contentDeleted = ContentDeleted::instance()
+                    ->from(Yii::$app->user->getIdentity())
+                    ->payload(['contentTitle' => (new ContentDeleted)->getContentPlainTextInfo($content), 'reason' => $form->message]);
+                $contentDeleted->saveRecord($content->createdBy);
+
+                $contentDeleted->record->updateAttributes([
+                    'send_web_notifications' => 1
+                ]);
+            }
         }
 
         return $this->asJson(['success' => $content->delete()]);

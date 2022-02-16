@@ -10,6 +10,7 @@ namespace humhub\modules\comment\notifications;
 
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\models\User;
@@ -46,39 +47,11 @@ class CommentDeleted extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('CommentModule.notifications', 'Your comment under the {contentTitle} was deleted by {displayName}. Reason: {message}', [
+        return Yii::t('CommentModule.notifications', 'Your comment "{commentText}" was deleted by {displayName}. Reason: {reason}', [
             'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-            'contentTitle' => $this->payload['contentTitle'],
-            'message' => $this->payload['message'],
+            'commentText' => $this->payload['commentText'],
+            'reason' => $this->payload['reason'],
         ]);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function about($source)
-    {
-        if (!$source) {
-            return $this;
-        }
-
-        $this->payload['contentTitle'] = $this->getContentPlainTextInfo($source->getCommentedRecord());
-
-        return $this->payload();
-    }
-
-
-    /**
-     * Set a `message` property
-     */
-    public function commented($message)
-    {
-        if (!$message) {
-            return $this;
-        }
-
-        $this->payload['message'] = $message;
-
-        return $this->payload();
-    }
 }

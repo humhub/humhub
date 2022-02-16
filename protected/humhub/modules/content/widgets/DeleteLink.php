@@ -32,7 +32,7 @@ class DeleteLink extends \yii\base\Widget
     {
         if ($this->content->content->canEdit()) {
 
-            $isAdmin = \Yii::$app->user->isAdmin() && $this->content->content->created_by !== \Yii::$app->user->id;
+            $isAdmin = $this->content->content->created_by !== \Yii::$app->user->id;
 
             return $this->render('deleteLink', [
                 'model' => $this->content->content->object_model,

@@ -43,40 +43,11 @@ class ContentDeleted extends BaseNotification
      */
     public function html()
     {
-        return Yii::t('ContentModule.notifications', 'Your {contentTitle} was deleted by {displayName}. Reason: {message}', [
+        return Yii::t('ContentModule.notifications', 'Your {contentTitle} was deleted by {displayName}. Reason: {reason}', [
             'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
             'contentTitle' => $this->payload['contentTitle'],
-            'message' => $this->payload['message']
+            'reason' => $this->payload['reason']
         ]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function about($source)
-    {
-        if (!$source) {
-            return $this;
-        }
-
-        $this->payload['contentTitle'] = $this->getContentInfo($source);
-
-        return $this->payload();
-    }
-
-
-    /**
-     * Set a `message` property
-     */
-    public function commented($message)
-    {
-        if (!$message) {
-            return $this;
-        }
-
-        $this->payload['message'] = $message;
-
-        return $this->payload();
     }
 }
 

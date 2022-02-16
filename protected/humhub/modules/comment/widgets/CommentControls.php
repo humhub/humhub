@@ -60,7 +60,7 @@ class CommentControls extends Menu
         }
 
         if ($this->comment->canDelete()) {
-            $isAdmin = Yii::$app->user->isAdmin() && $this->comment->created_by !== Yii::$app->user->id;
+            $isAdmin = $this->comment->created_by !== Yii::$app->user->id;
 
             $deleteUrl = Url::to(['/comment/comment/delete',
                 'objectModel' => $this->comment->object_model,

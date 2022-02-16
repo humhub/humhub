@@ -8,6 +8,7 @@
 
 namespace humhub\modules\notification\components;
 
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\bootstrap\Html;
@@ -331,9 +332,13 @@ abstract class BaseNotification extends SocialActivity
     /**
      * Update payload property
      */
-    public function payload()
+    public function payload($payload)
     {
-        $this->record->payload = Json::encode($this->payload);
+        if (!$payload) {
+            return $this;
+        }
+        $this->payload = $payload;
+        $this->record->payload = $payload;
 
         return $this;
     }
