@@ -166,11 +166,14 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'string', 'max' => 150],
-            [['email'], 'required', 'when' => function () {
-                return $this->isEmailRequired();
-            }],
             [['guid'], 'unique'],
+            [['username'], 'validateForbiddenUsername', 'on' => [self::SCENARIO_REGISTRATION]],
         ];
+
+        if ($this->isEmailRequired())  // HForm does not support 'required' in combination with 'when'.
+            $rules[] = [['email'], 'required'];
+
+        return $rules;
     }
 
     public function isEmailRequired(): bool
@@ -190,6 +193,20 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
 
         return parent::isAttributeRequired($attribute);
+    }
+
+    /**
+     * Validate attribute username
+     * @param string $attribute
+     */
+    public function validateForbiddenUsername($attribute, $params)
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if (in_array(strtolower($this->$attribute), $module->forbiddenUsernames)) {
+            $this->addError($attribute, Yii::t('UserModule.account', 'You cannot use this username.'));
+        }
     }
 
     /**
@@ -529,6 +546,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         if (empty($this->time_zone)) {
             $this->time_zone = Yii::$app->settings->get('defaultTimeZone');
+        }
+
+        if (empty($this->email)) {
+            $this->email = new \yii\db\Expression('NULL');
         }
 
         return parent::beforeSave($insert);

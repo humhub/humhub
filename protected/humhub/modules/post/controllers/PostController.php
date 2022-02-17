@@ -13,10 +13,13 @@ use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\file\handler\FileHandlerCollection;
+use humhub\modules\post\models\forms\PostEditForm;
 use humhub\modules\post\models\Post;
 use humhub\modules\post\permissions\CreatePost;
 use Yii;
 use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * @since 0.5
@@ -70,24 +73,31 @@ class PostController extends ContentContainerController
 
     public function actionEdit($id)
     {
-        $model = Post::findOne(['id' => $id]);
+        $post = Post::findOne(['id' => $id]);
+        if (!$post) {
+            throw new NotFoundHttpException();
+        }
 
-        if (!$model->content->canEdit()) {
+        $model = new PostEditForm(['post' => $post]);
+
+        if (!$post->content->canEdit()) {
             $this->forbidden();
         }
 
         if ($model->load(Yii::$app->request->post())) {
             // Reload record to get populated updated_at field
-            if ($model->validate() && $model->save()) {
-                $model = Post::findOne(['id' => $id]);
-                return $this->renderAjaxContent(StreamEntryWidget::renderStreamEntry($model));
+            if ($model->save()) {
+                $post = Post::findOne(['id' => $id]);
+                return $this->renderAjaxContent(StreamEntryWidget::renderStreamEntry($post));
             } else {
                 Yii::$app->response->statusCode = 400;
             }
         }
 
         return $this->renderAjax('edit', [
-            'post' => $model,
+            'model' => $model,
+            'fileHandlers' => FileHandlerCollection::getByType([FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE]),
+            'submitUrl' => $post->content->container->createUrl('/post/post/edit', ['id' => $post->id]),
         ]);
     }
 

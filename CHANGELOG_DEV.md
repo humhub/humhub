@@ -9,10 +9,15 @@
 - Enh #5471: On the pending approval page, add grouped actions and custom columns
 - Enh #5490: Display confirmation message before display embedded content
 - Enh #5258: Display who invited the user on the Approval page
+- Enh #5475: Option for forbidden usernames
 - Enh #4890: Allow to define actions in a controller which should not be intercepted by other actions
 - Enh #5510: oEmbed support for other social networks, redesign of oEmbed settings pages
+- Fix #5534: Statistic input loading problem
 - Enh #5523: Option to include E-Mail address to search 
 - Enh #5352: Remove "NewMembers" widget from Core
 - Fix #5478: Avoid permalinks on comments related to a global content (not in a container) to crash.
 - Enh #5536: Optional notification w/ reason when admin deletes content/comment
-
+- Fix #5549: Topic icon is missing in TopicPicker search
+- Fix #5556: Formatted output for date fields in "About me" profile area.
+- Fix #5553: Cannot have two or more users without email when emailRequired is disabled.
+- Fix #5564: Close modal button doesn't work after form validation
