@@ -259,7 +259,8 @@ class CoreJsConfig extends Widget
                         ]
                     ],
                     'reloadUrl' => Url::to(['/content/content/reload']),
-                    'deleteUrl' => Url::to(['/content/content/delete-id'])
+                    'deleteUrl' => Url::to(['/content/content/delete-id']),
+                    'adminDeleteModalUrl' => Url::to(['/content/content/get-admin-delete-modal']),
                 ],
                 'stream' => [
                     'horizontalImageScrollOnMobile' => Yii::$app->settings->get('horImageScrollOnMobile'),
