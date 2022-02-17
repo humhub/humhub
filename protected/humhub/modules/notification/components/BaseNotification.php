@@ -76,8 +76,7 @@ abstract class BaseNotification extends SocialActivity
     public $recordClass = Notification::class;
 
     /**
-     * The optional object that is used for rendering a notification.
-     * Is stored in Notification record as JSON.
+     * Additional user data available for the notification
      *
      * @var array|null
      * @since 1.11
@@ -330,7 +329,11 @@ abstract class BaseNotification extends SocialActivity
     }
 
     /**
-     * Update payload property
+     * Set additional data
+     *
+     * @since 1.11
+     * @param $payload
+     * @return $this
      */
     public function payload($payload)
     {

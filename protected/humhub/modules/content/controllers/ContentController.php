@@ -126,11 +126,11 @@ class ContentController extends Controller
         }
 
         if (!$contentObj->canEdit()) {
-            throw new HttpException(400, Yii::t('ContentModule.base', 'Could not delete content: Access denied!'));
+            throw new HttpException(400);
         }
 
         return [
-            'header' => Yii::t('ContentModule.base', '<strong>Delete</strong> post?'),
+            'header' => Yii::t('ContentModule.base', '<strong>Delete</strong> content?'),
             'body' => AdminDeleteModal::widget([
                 'model' => new AdminDeleteContentForm()
             ]),
