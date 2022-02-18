@@ -125,7 +125,7 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
         }
 
         if (Object.keys(backup).length) {
-            $.cookie(this.options.backupCookieKey, JSON.stringify(backup));
+            $.cookie(this.options.backupCookieKey, JSON.stringify(backup), {expires: 120 / 1440/*2 hours*/});
         } else {
             $.cookie(this.options.backupCookieKey, null, {expires: -1});
         }
