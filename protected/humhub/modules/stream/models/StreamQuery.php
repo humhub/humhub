@@ -456,7 +456,7 @@ class StreamQuery extends Model
      */
     protected function checkLimit()
     {
-        if (empty($this->limit) || $this->limit > self::MAX_LIMIT) {
+        if (empty($this->limit)) {
             $this->limit = self::MAX_LIMIT;
         } else {
             $this->limit = (int)$this->limit;
