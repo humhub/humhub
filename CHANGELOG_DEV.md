@@ -21,3 +21,4 @@
 - Fix #5556: Formatted output for date fields in "About me" profile area.
 - Fix #5553: Cannot have two or more users without email when emailRequired is disabled.
 - Fix #5564: Close modal button doesn't work after form validation
+- Fix #5460: Untranslatable string New Updates in Stream

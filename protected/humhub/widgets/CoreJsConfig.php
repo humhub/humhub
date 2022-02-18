@@ -270,7 +270,11 @@ class CoreJsConfig extends Widget
                         'success.unarchive' => Yii::t('ContentModule.base', 'The content has been unarchived.'),
                         'success.delete' => Yii::t('ContentModule.base', 'The content has been deleted.'),
                         'info.editCancel' => Yii::t('ContentModule.base', 'Your last edit state has been saved!'),
+                        'info.updatesAvailable' => Yii::t('ContentModule.base', 'New Updates Available!')
                     ]
+                ],
+                'stream.wall' => [
+                    'updatesAvailable' => Yii::t('ContentModule.base', 'New Updates Available!')
                 ],
                 'comment' => [
                     'modal' => [
