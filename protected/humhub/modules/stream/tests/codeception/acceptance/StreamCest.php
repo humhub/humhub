@@ -25,7 +25,7 @@ class StreamCest
 
         $I->createPost('This is my stream test post!');
 
-        $newEntrySelector = '[data-content-key="12"]';
+        $newEntrySelector = '[data-content-key="15"]';
 
         $I->waitForElementVisible($newEntrySelector);
         $I->see('This is my stream test post', '.wall-entry');
@@ -33,7 +33,7 @@ class StreamCest
         $I->amGoingTo('Delte my new post');
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->wait(1);
-        $I->click('Delete', '[data-content-key="12"]');
+        $I->click('Delete', '[data-content-key="15"]');
 
         $I->waitForElementVisible('#globalModalConfirm', 5);
         $I->see('Confirm post deletion');
