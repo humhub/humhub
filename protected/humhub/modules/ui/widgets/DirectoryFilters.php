@@ -137,6 +137,7 @@ abstract class DirectoryFilters extends Widget
                 $inputHtml = $data['info'];
                 break;
             case 'widget':
+                $inputOptions['data-action-change'] = 'cards.applyFilters';
                 $inputHtml = $data['widget']::widget(array_merge(['name' => $filter, 'options' => $inputOptions], $data['widgetOptions']));
                 break;
             case 'input':
