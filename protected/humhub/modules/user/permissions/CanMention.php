@@ -20,6 +20,11 @@ class CanMention extends \humhub\libs\BasePermission
     /**
      * @inheritdoc
      */
+    public $defaultState = self::STATE_ALLOW;
+
+    /**
+     * @inheritdoc
+     */
     public $defaultAllowedGroups = [
         User::USERGROUP_SELF,
         User::USERGROUP_USER,
@@ -40,20 +45,7 @@ class CanMention extends \humhub\libs\BasePermission
     {
         parent::__construct($config);
         $this->title = \Yii::t('UserModule.base', 'Mentioning');
-        $this->description = \Yii::t('UserModule.base', 'Allows users to @mention you. Select "Deny" to allow only friends to mention you.');
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDefaultState($groupId)
-    {
-        // When friendship is disabled, also allow normal members to mention you
-        if (!Yii::$app->getModule('friendship')->getIsEnabled()) {
-            return self::STATE_ALLOW;
-        }
-
-        return parent::getDefaultState($groupId);
+        $this->description = \Yii::t('UserModule.base', 'Allows other users to mention you, select "Deny" to allow only friends to mention you.');
     }
 
     /**
