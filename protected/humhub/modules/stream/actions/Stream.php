@@ -164,6 +164,12 @@ abstract class Stream extends Action
     public $streamQueryClass = WallStreamQuery::class;
 
     /**
+     * Stream query options array
+     * @var array
+     */
+    public $streamQueryOptions = [];
+
+    /**
      * @var string can be used in special streams to force a specific stream entry widget to be used when rendering
      */
     public $streamEntryWidgetClass;
@@ -194,7 +200,7 @@ abstract class Stream extends Action
             $this->excludes = array_merge($this->excludes, Yii::$app->getModule('stream')->streamExcludes);
         }
 
-        $this->streamQuery = $this->initQuery();
+        $this->streamQuery = $this->initQuery($this->streamQueryOptions);
 
         if (!Yii::$app->request->isConsoleRequest) {
             $this->streamQuery->load(Yii::$app->request->get());

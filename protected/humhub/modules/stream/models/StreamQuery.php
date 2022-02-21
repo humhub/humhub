@@ -42,6 +42,11 @@ class StreamQuery extends Model
     const CHANNEL_ACTIVITY = 'activity';
 
     /**
+     * Scenario without wall entries limit
+     */
+    const SCENARIO_NO_LIMIT = 'scenario_no_limit';
+
+    /**
      * Maximum wall entries per request
      */
     const MAX_LIMIT = 20;
@@ -149,6 +154,15 @@ class StreamQuery extends Model
      */
     protected $_built = false;
 
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+
+        $scenarios[self::SCENARIO_NO_LIMIT] = $scenarios[self::SCENARIO_DEFAULT];
+
+        return $scenarios;
+    }
+
     /**
      * @inheritdoc
      */
@@ -156,7 +170,8 @@ class StreamQuery extends Model
     {
         return [
             [['limit', 'from', 'to', 'contentId'], 'number'],
-            [['sort'], 'safe']
+            [['sort', 'scenario'], 'safe'],
+            [['limit'], 'number', 'on' => self::SCENARIO_DEFAULT, 'max' => self::MAX_LIMIT]
         ];
     }
 
@@ -456,7 +471,7 @@ class StreamQuery extends Model
      */
     protected function checkLimit()
     {
-        if (empty($this->limit)) {
+        if(!$this->validate('limit')) {
             $this->limit = self::MAX_LIMIT;
         } else {
             $this->limit = (int)$this->limit;
