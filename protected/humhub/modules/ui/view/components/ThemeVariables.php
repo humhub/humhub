@@ -114,9 +114,6 @@ class ThemeVariables extends Component
         if (!$this->settingsLoaded) {
             if (empty($this->module->settings->get($this->getSettingKey('primary')))) {
                 $this->storeVariables();
-                if(is_file(Yii::getAlias('@webroot/static/css/open-sans-public.bak'))) {
-                    $this->generatePublicFontFile();
-                }
             }
             $this->settingsLoaded = true;
         }
@@ -135,19 +132,6 @@ class ThemeVariables extends Component
                 $val
             );
         }
-    }
-
-    /**
-     * Generates public font file for emails
-     */
-    protected function generatePublicFontFile()
-    {
-        $fontFilePath = Yii::getAlias('@webroot/static/css/open-sans-public.bak');
-
-        $fontFile = file_get_contents($fontFilePath);
-        $fontFile = str_replace('{baseUrl}', Yii::$app->settings->get('baseUrl'), $fontFile);
-
-        file_put_contents(str_replace('.bak', '.css', $fontFilePath), $fontFile);
     }
 
 }

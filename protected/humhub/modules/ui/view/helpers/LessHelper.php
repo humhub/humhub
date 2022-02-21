@@ -93,24 +93,12 @@ class LessHelper
         }
 
         foreach ($variables as $name => $value) {
-            preg_match('/\@\{(.*)\}/', $value, $matches);
-
-            if (substr($value, 0, 1) != '@' && empty($matches)) {
+            if (substr($value, 0, 1) != '@') {
                 continue;
             }
-
-            if(!empty($matches)) {
-                $linkedVarName = $matches[1];
-            } else {
-                $linkedVarName = substr($value, 1);
-            }
-
+            $linkedVarName = substr($value, 1);
             if (isset($variables[$linkedVarName])) {
-                if(!empty($matches)) {
-                    $variables[$name] = str_replace('@{' . $linkedVarName . '}', $variables[$linkedVarName], $value);
-                } else {
-                    $variables[$name] = $variables[$linkedVarName];
-                }
+                $variables[$name] = $variables[$linkedVarName];
             }
         }
 

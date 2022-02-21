@@ -134,10 +134,7 @@ class ThemeHelper
      */
     public static function getAllVariables(Theme $theme)
     {
-        LessHelper::updateVariables(['baseUrl' => Yii::$app->settings->get('baseUrl')], Yii::getAlias('@webroot-static/less/variables.less'));
-
         $variables = LessHelper::parseLessVariables(Yii::getAlias('@webroot-static/less/variables.less'));
-
         foreach (array_reverse(static::getThemeTree($theme)) as $theme) {
             $eeVariablesFile = $theme->getBasePath() . '/less/enterprise_variables.less';
             if (file_exists($eeVariablesFile)) {
