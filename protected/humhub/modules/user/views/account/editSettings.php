@@ -21,7 +21,7 @@ use humhub\modules\user\widgets\UserPickerField;
     <?= $form->field($model, 'language')->dropDownList($languages, ['data-ui-select2' => '']); ?>
 <?php endif; ?>
 
-<?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(), ['data-ui-select2' => '']); ?>
+<?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(true), ['data-ui-select2' => '']); ?>
 
 <?php if (AuthHelper::isGuestAccessEnabled()): ?>
 

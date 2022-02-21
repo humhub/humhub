@@ -272,6 +272,9 @@ class CoreJsConfig extends Widget
                         'info.editCancel' => Yii::t('ContentModule.base', 'Your last edit state has been saved!'),
                     ]
                 ],
+                'stream.wall' => [
+                    'updatesAvailable' => Yii::t('ContentModule.base', 'New Updates Available!')
+                ],
                 'comment' => [
                     'modal' => [
                         'delteConfirm' => [
