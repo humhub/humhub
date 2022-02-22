@@ -9,7 +9,6 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\permissions\CreatePublicContent;
-use humhub\modules\stream\actions\Stream;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use humhub\modules\topic\models\Topic;
 use Yii;
@@ -88,9 +87,6 @@ class WallCreateContentForm extends Widget
             $canSwitchVisibility = false;
         }
 
-        $fileHandlerImport = FileHandlerCollection::getByType(FileHandlerCollection::TYPE_IMPORT);
-        $fileHandlerCreate = FileHandlerCollection::getByType(FileHandlerCollection::TYPE_CREATE);
-
         return $this->render('@humhub/modules/content/widgets/views/wallCreateContentForm', [
                     'form' => $this->renderForm(),
                     'contentContainer' => $this->contentContainer,
@@ -98,7 +94,7 @@ class WallCreateContentForm extends Widget
                     'submitButtonText' => $this->submitButtonText,
                     'defaultVisibility' => $defaultVisibility,
                     'canSwitchVisibility' => $canSwitchVisibility,
-                    'fileHandlers' => array_merge($fileHandlerCreate, $fileHandlerImport),
+                    'fileHandlers' => FileHandlerCollection::getByType([FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE]),
         ]);
     }
 

@@ -85,14 +85,9 @@ class Module extends \humhub\components\Module
             return false;
         }
 
-        // Only allow one level of subcomments
-        if (Comment::isSubComment($object)) {
-            return false;
-        }
-
         $content = $object->content;
 
-        if($content->container) {
+        if ($content->container) {
             if (!$content->container->permissionManager->can(CreateComment::class)) {
                 return false;
             }

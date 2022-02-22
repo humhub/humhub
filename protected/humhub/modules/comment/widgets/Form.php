@@ -12,6 +12,7 @@ use humhub\components\Widget;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\models\Comment as CommentModel;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\file\handler\FileHandlerCollection;
 use Yii;
 use yii\helpers\Url;
 
@@ -41,6 +42,24 @@ class Form extends Widget
     public $mentioningUrl = '/search/mentioning/content';
 
     /**
+     * @var bool
+     */
+    public $isHidden;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        if ($this->isHidden === null) {
+            // Hide the comment form for sub comments until the button is clicked
+            $this->isHidden = ($this->object instanceof Comment);
+        }
+    }
+
+    /**
      * Executes the widget.
      */
     public function run()
@@ -67,6 +86,8 @@ class Form extends Widget
             'model' => $this->model,
             'isNestedComment' => ($this->object instanceof CommentModel),
             'mentioningUrl' => Url::to([$this->mentioningUrl, 'id' => $this->object->content->id]),
+            'isHidden' => $this->isHidden,
+            'fileHandlers' => FileHandlerCollection::getByType([FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE]),
         ]);
     }
 
