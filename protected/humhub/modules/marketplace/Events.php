@@ -115,15 +115,15 @@ class Events extends BaseObject
             $info = [
                 'class' => 'directory-filters-footer-warning',
                 'icon' => 'info-circle',
-                'info' => Yii::t('MarketplaceModule.base', 'A new HumHub update is available. Install it now to keep your network up to date and to have access to the latest module versions.'),
-                'link' => Button::asLink(Yii::t('MarketplaceModule.base', 'Update HumHub now'), $updateUrl)
+                'info' => Yii::t('MarketplaceModule.base', 'A new update is available (HumHub %version%)!', ['%version%' => $latestVersion]),
+                'link' => Button::asLink(Yii::t('MarketplaceModule.base', 'Learn more'), $updateUrl)
                     ->cssClass('btn btn-primary'),
             ];
         } else {
             $info = [
                 'class' => 'directory-filters-footer-info',
                 'icon' => 'check-circle',
-                'info' => Yii::t('MarketplaceModule.base', 'This HumHub installation is up to date!'),
+                'info' => Yii::t('MarketplaceModule.base', 'Your HumHub installation is up to date!'),
                 'link' => Button::asLink('https://www.humhub.com', 'https://www.humhub.com')
                     ->cssClass('btn btn-info'),
             ];
