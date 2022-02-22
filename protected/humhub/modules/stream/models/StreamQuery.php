@@ -171,6 +171,7 @@ class StreamQuery extends Model
         return [
             [['limit', 'from', 'to', 'contentId'], 'number'],
             [['sort', 'scenario'], 'safe'],
+            [['limit'], 'required'],
             [['limit'], 'number', 'on' => self::SCENARIO_DEFAULT, 'max' => self::MAX_LIMIT]
         ];
     }
