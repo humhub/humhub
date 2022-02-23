@@ -45,7 +45,7 @@ class CanMention extends \humhub\libs\BasePermission
     {
         parent::__construct($config);
         $this->title = \Yii::t('UserModule.base', 'Mentioning');
-        $this->description = \Yii::t('UserModule.base', 'Allows other users to mention you, select "Deny" to allow only friends to mention you.');
+        $this->description = \Yii::t('UserModule.base', 'Allow users to mention you.');
     }
 
     /**
