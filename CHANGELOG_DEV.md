@@ -16,7 +16,14 @@
 - Enh #5523: Option to include E-Mail address to search 
 - Enh #5352: Remove "NewMembers" widget from Core
 - Fix #5478: Avoid permalinks on comments related to a global content (not in a container) to crash.
+- Enh #5536: Optional notification w/ reason when admin deletes content/comment
 - Fix #5549: Topic icon is missing in TopicPicker search
 - Fix #5556: Formatted output for date fields in "About me" profile area.
 - Fix #5553: Cannot have two or more users without email when emailRequired is disabled.
 - Fix #5506: Modal: Close Icon optimization
+- Fix #5564: Close modal button doesn't work after form validation
+- Fix #5533: Users can't live in UTC
+- Fix #5460: Untranslatable string New Updates in Stream
+- Fix #5573: Allow replying for sub comments
+- Fix #5524: Mentioning Permission
+- Fix #5529: Tooltip: improving readability

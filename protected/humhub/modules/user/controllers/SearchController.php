@@ -9,6 +9,7 @@
 namespace humhub\modules\user\controllers;
 
 use humhub\modules\user\models\User;
+use humhub\modules\user\permissions\CanMention;
 use humhub\modules\user\widgets\Image;
 use Yii;
 use yii\web\Controller;
@@ -70,19 +71,19 @@ class SearchController extends Controller
         $query = User::find()->visible()->search((string)Yii::$app->request->get('keyword'));
 
         foreach ($query->limit(10)->all() as $container) {
-            $results[] = [
-                'guid' => $container->guid,
-                'type' => 'u',
-                'name' => $container->getDisplayName(),
-                'image' => Image::widget(['user' => $container, 'width' => 20]),
-                'link' => $container->getUrl()
-            ];
-        };
+            if($container->permissionManager->can(CanMention::class)) {
+                $results[] = [
+                    'guid' => $container->guid,
+                    'type' => 'u',
+                    'name' => $container->getDisplayName(),
+                    'image' => Image::widget(['user' => $container, 'width' => 20]),
+                    'link' => $container->getUrl()
+                ];
+            }
+        }
 
         return $this->asJson($results);
     }
-
-
 }
 
 ?>
