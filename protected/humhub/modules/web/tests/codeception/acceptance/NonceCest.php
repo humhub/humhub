@@ -28,6 +28,7 @@ class NonceCest
     {
         $I->amAdmin();
         $I->amOnRoute(['/admin/setting/statistic']);
+        $I->wait(2);
         $I->executeJS('_editor = document.querySelectorAll("div.CodeMirror")[0].CodeMirror; _editor.setValue("<script nonce=\"{{ nonce }}\">alert(\"Tracking Script\")</script>");');
         $I->click('Save');
         $I->wait(2);
@@ -39,6 +40,7 @@ class NonceCest
         \Yii::$app->settings->set('trackingHtmlCode', '<script>alert("Tracking Script")</script>');
         $I->amAdmin();
         $I->amOnRoute(['/admin/setting/statistic']);
+        $I->wait(2);
         $I->executeJS('_editor = document.querySelectorAll("div.CodeMirror")[0].CodeMirror; _editor.setValue("<script>alert(\"Tracking Script\")</script>");');
         $I->click('Save');
         $I->wait(2);

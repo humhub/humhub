@@ -60,19 +60,36 @@ class CommentControls extends Menu
         }
 
         if ($this->comment->canDelete()) {
-            $deleteUrl = Url::to(['/comment/comment/delete', 'objectModel' => $this->comment->object_model,
+            $isAdmin = $this->comment->created_by !== Yii::$app->user->id;
+
+            $deleteUrl = Url::to(['/comment/comment/delete',
+                'objectModel' => $this->comment->object_model,
                 'objectId' => $this->comment->object_id,
                 'id' => $this->comment->id,
             ]);
+
+            if($isAdmin) {
+                $adminDeleteModalUrl = Url::to(['/comment/comment/get-admin-delete-modal',
+                    'objectModel' => $this->comment->object_model,
+                    'objectId' => $this->comment->object_id,
+                    'id' => $this->comment->id,
+                ]);
+            }
+
+            $htmlOptions = [
+                'data-action-click' => $isAdmin ? 'adminDelete' : 'delete',
+                'data-content-delete-url' => $deleteUrl
+            ];
+
+            if($isAdmin) {
+                $htmlOptions['data-admin-delete-modal-url'] = $adminDeleteModalUrl;
+            }
 
             $this->addEntry(new MenuLink([
                 'label' => Yii::t('CommentModule.base', 'Delete'),
                 'icon' => 'delete',
                 'url' => '#',
-                'htmlOptions' => [
-                    'data-action-click' => 'delete',
-                    'data-content-delete-url' => $deleteUrl,
-                ],
+                'htmlOptions' => $htmlOptions,
                 'sortOrder' => 300,
             ]));
         }
