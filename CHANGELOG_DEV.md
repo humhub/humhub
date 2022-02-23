@@ -25,3 +25,4 @@
 - Fix #5460: Untranslatable string New Updates in Stream
 - Fix #5573: Allow replying for sub comments
 - Fix #5524: Mentioning Permission
+- Fix #5529: Tooltip: improving readability
