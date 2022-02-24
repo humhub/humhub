@@ -153,7 +153,7 @@ class FileExtension extends RichTextLinkExtension
             $fileUpload->updateAttributes(['file_name' => $fileUpload->guid.'.'.$extension]);
 
             // Since the file is not a real upload, FileUpload won't set the content automatically
-            $fileUpload->store->setContent($data);
+            $fileUpload->setStoredFileContent($data);
             $this->attach($record, $fileUpload);
             return $fileUpload;
         } catch (\Throwable $e) {

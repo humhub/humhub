@@ -7,11 +7,8 @@
 
 namespace humhub\modules\comment\widgets;
 
-use humhub\libs\Html;
 use humhub\modules\comment\models\Comment;
-use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\WidgetMenuEntry;
 use humhub\modules\ui\menu\widgets\Menu;
 use Yii;
 use yii\helpers\Url;
@@ -51,7 +48,7 @@ class CommentControls extends Menu
             'url' => '#',
             'htmlOptions' => [
                 'data-action-click' => 'content.permalink',
-                'data-content-permalink' => Url::to(['/comment/perma', 'id' => $this->comment->id], true),
+                'data-content-permalink' => $this->comment->url,
                 'data-content-permalink-title' => Yii::t('CommentModule.base', '<strong>Permalink</strong> to this comment'),
 
             ],
@@ -63,19 +60,36 @@ class CommentControls extends Menu
         }
 
         if ($this->comment->canDelete()) {
-            $deleteUrl = Url::to(['/comment/comment/delete', 'objectModel' => $this->comment->object_model,
+            $isAdmin = $this->comment->created_by !== Yii::$app->user->id;
+
+            $deleteUrl = Url::to(['/comment/comment/delete',
+                'objectModel' => $this->comment->object_model,
                 'objectId' => $this->comment->object_id,
                 'id' => $this->comment->id,
             ]);
+
+            if($isAdmin) {
+                $adminDeleteModalUrl = Url::to(['/comment/comment/get-admin-delete-modal',
+                    'objectModel' => $this->comment->object_model,
+                    'objectId' => $this->comment->object_id,
+                    'id' => $this->comment->id,
+                ]);
+            }
+
+            $htmlOptions = [
+                'data-action-click' => $isAdmin ? 'adminDelete' : 'delete',
+                'data-content-delete-url' => $deleteUrl
+            ];
+
+            if($isAdmin) {
+                $htmlOptions['data-admin-delete-modal-url'] = $adminDeleteModalUrl;
+            }
 
             $this->addEntry(new MenuLink([
                 'label' => Yii::t('CommentModule.base', 'Delete'),
                 'icon' => 'delete',
                 'url' => '#',
-                'htmlOptions' => [
-                    'data-action-click' => 'delete',
-                    'data-content-delete-url' => $deleteUrl,
-                ],
+                'htmlOptions' => $htmlOptions,
                 'sortOrder' => 300,
             ]));
         }

@@ -61,7 +61,7 @@ The license was successfully removed!
   'Licence key' => 'Chiave di licenza',
   'Licenced for max. {number} users.' => 'Licenza per max. {number} utenti.',
   'Licenced to:' => 'Concesso in licenza a:',
-  'Marketplace' => '@@',
+  'Marketplace' => 'Marketplace',
   'Max. users:' => 'Numero utenti massimi:',
   'Module directory %modulePath% is not writeable!' => 'La directory del modulo %modulePath% non è scrivibile!',
   'Module download failed! (%error%)' => 'Scaricamento del modulo fallito! (%error%)',

@@ -59,24 +59,17 @@ $form = ActiveForm::begin([
                 'To invite users to this space, please type their names below to find and pick them.'); ?>
 
             <br><br>
-            <?= UserPickerField::widget([
-                'id' => 'space-invite-user-picker',
-                'form' => $form,
-                'model' => $model,
-                'attribute' => 'invite',
-                'url' => $searchUrl,
-                'disabledItems' => [Yii::$app->user->guid],
-                'focus' => true,
-            ]);
-            ?>
+
+            <?= $form->field($model, 'invite')
+                ->widget(UserPickerField::class, ['disabledItems' => [Yii::$app->user->guid], 'url' => $searchUrl, 'focus' => true, 'id' => 'space-invite-user-picker']); ?>
 
             <?php if ($canAddWithoutInvite) : ?>
-                <br />
+                <br/>
                 <?= $form
-                    ->field($model, 'withoutInvite')
-                    ->label(Yii::t('SpaceModule.base',
-                        'Add users without invitation'))
-                    ->checkbox() ?>
+                ->field($model, 'withoutInvite')
+                ->label(Yii::t('SpaceModule.base',
+                    'Add users without invitation'))
+                ->checkbox() ?>
                 <br/>
 
                 <?= $form

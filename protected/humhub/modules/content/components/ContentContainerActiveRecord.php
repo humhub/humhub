@@ -21,6 +21,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module as UserModule;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 /**
@@ -305,13 +306,11 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns a ModuleManager
      *
-     * @param User $user
-     * @return ModuleManager
+     * @return ContentContainerModuleManager
      * @since 1.3
      */
-    public function getModuleManager()
+    public function getModuleManager(): ?ContentContainerModuleManager
     {
-
         if ($this->moduleManager !== null) {
             return $this->moduleManager;
         }
@@ -383,9 +382,10 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      *
      * @return string[] a list of tag names
      */
-    public function getTags()
+    public function getTags(): array
     {
-        return ContentContainerTagRelation::getNamesByContainer($this);
+        $tags = trim($this->contentContainerRecord->tags_cached);
+        return $tags === '' ? [] : preg_split('/\s*,\s*/', $tags);
     }
 
     /**

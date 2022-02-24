@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\libs;
 
+use humhub\modules\file\Module;
 use humhub\modules\file\widgets\FileDownload;
 use humhub\libs\Html;
 use humhub\libs\MimeHelper;
@@ -30,7 +31,7 @@ class FileHelper extends \yii\helpers\FileHelper
 
     /**
      * Checks if given fileName has a extension
-     * 
+     *
      * @param string $fileName the filename
      * @return boolean has extension
      */
@@ -41,7 +42,7 @@ class FileHelper extends \yii\helpers\FileHelper
 
     /**
      * Returns the extension of a file
-     * 
+     *
      * @param string|File $fileName the filename or File model
      * @return string the extension
      */
@@ -61,7 +62,7 @@ class FileHelper extends \yii\helpers\FileHelper
 
     /**
      * Creates a file with options
-     * 
+     *
      * @since 1.2
      * @param \humhub\modules\file\models\File $file
      * @return string the rendered HTML link
@@ -81,16 +82,12 @@ class FileHelper extends \yii\helpers\FileHelper
 
         $urlOptions = ['/file/view', 'guid' => $file->guid];
 
-        if (!isset($options['showLatestVersion']) || $options['showLatestVersion']) {
-            $urlOptions['showLatestVersion'] = 1;
-        }
-
         return Html::a($label, Url::to($urlOptions), $htmlOptions);
     }
 
     /**
      * Determines the content container of a File record
-     * 
+     *
      * @since 1.2
      * @param File $file
      * @return \humhub\modules\content\components\ContentContainerActiveRecord the content container or null
@@ -111,7 +108,7 @@ class FileHelper extends \yii\helpers\FileHelper
     /**
      * Returns general file infos as array
      * These information are mainly used by the frontend JavaScript application to handle files.
-     * 
+     *
      * @since 1.2
      * @param File $file the file
      * @return array the file infos
@@ -136,6 +133,26 @@ class FileHelper extends \yii\helpers\FileHelper
             'openLink' => FileHelper::createLink($file),
             'thumbnailUrl' => $thumbnailUrl
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getExtensionsByMimeType($mimeType, $magicFile = null)
+    {
+        $extensionsByMimeType = parent::getExtensionsByMimeType($mimeType, $magicFile);
+
+        /* @var Module $module */
+        $module = Yii::$app->getModule('file');
+        if (isset($module->additionalMimeTypes) && is_array($module->additionalMimeTypes)) {
+            foreach ($module->additionalMimeTypes as $additionalExtension => $additionalMimeType) {
+                if ($additionalMimeType === $mimeType) {
+                    $extensionsByMimeType[] = $additionalExtension;
+                }
+            }
+        }
+
+        return $extensionsByMimeType;
     }
 
 }

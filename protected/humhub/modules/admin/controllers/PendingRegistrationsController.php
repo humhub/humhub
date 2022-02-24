@@ -170,8 +170,6 @@ class PendingRegistrationsController extends Controller
         if (Yii::$app->request->isPost) {
 
             $ids = Yii::$app->request->post('id');
-            Yii::error(Yii::$app->request->post());
-            Yii::error($ids);
             if (!empty($ids)) {
                 foreach ($ids as $id) {
                     $invitation = Invite::findOne(['id' => $id]);

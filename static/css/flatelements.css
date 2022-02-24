@@ -107,6 +107,7 @@
 
 .regular-checkbox {
     opacity: 0;
+    width: 0;
 }
 
 .regular-checkbox + .regular-checkbox-box {

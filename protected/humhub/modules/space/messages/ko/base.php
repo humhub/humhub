@@ -30,6 +30,7 @@ return [
     'Application message' => '',
     'Archived' => '',
     'As owner you cannot revoke your membership!' => '',
+    'Blocked users' => '',
     'By Name' => '',
     'Cancel' => '',
     'Color' => '',
@@ -143,6 +144,5 @@ return [
     'Your request was successfully submitted to the space administrators.' => '',
     'Your request was successfully submitted to the workspace administrators.' => '',
     '{count} members' => '',
-    '{email} is already registered!' => '',
     '{email} is not valid!' => '',
 ];

@@ -9,7 +9,6 @@
 namespace humhub\modules\marketplace;
 
 use humhub\components\Module as BaseModule;
-use humhub\models\Setting;
 use humhub\modules\marketplace\components\HumHubApiClient;
 use humhub\modules\marketplace\components\LicenceManager;
 use humhub\modules\marketplace\models\Licence;
@@ -20,6 +19,7 @@ use Yii;
  * The Marketplace modules contains all the capabilities to interact with the offical HumHub marketplace.
  * The core functions are the ability to easily install or update modules from the remote module directory.
  *
+ * @property-read Licence $licence
  * @property OnlineModuleManager $onlineModuleManager
  * @since 1.4
  */
@@ -126,5 +126,24 @@ class Module extends BaseModule
         }
 
         return $this->_humhubApi;
+    }
+
+    /**
+     * Check if the modules list is filtered by single tag
+     *
+     * @param string $tag
+     * @return bool
+     */
+    public function isFilteredBySingleTag(string $tag): bool
+    {
+        $tags = Yii::$app->request->get('tags', null);
+
+        if (empty($tags)) {
+            return false;
+        }
+
+        $tags = explode(',', $tags);
+
+        return count($tags) === 1 && $tags[0] == $tag;
     }
 }

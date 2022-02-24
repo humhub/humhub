@@ -8,8 +8,9 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
-use Yii;
 use humhub\libs\DbDateValidator;
+use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * ProfileFieldTypeDateTime
@@ -105,16 +106,16 @@ class DateTime extends BaseType
     /**
      * @inheritdoc
      */
-    public function getUserValue($user, $raw = true)
+    public function getUserValue(User $user, $raw = true): ?string
     {
-
         $internalName = $this->profileField->internal_name;
-        $date = $user->profile->$internalName;
+        $date = \DateTime::createFromFormat('Y-m-d H:i:s', $user->profile->$internalName,
+            new \DateTimeZone(Yii::$app->formatter->timeZone));
 
-        if ($date == '' || $date == '0000-00-00 00:00:00')
-            return '';
+        if ($date === false)
+            return "";
 
-        return \yii\helpers\Html::encode($date);
+        return $raw ? \yii\helpers\Html::encode($user->profile->$internalName) : Yii::$app->formatter->asDatetime($date, 'long');
     }
 
 }

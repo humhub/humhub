@@ -5,7 +5,9 @@ namespace tests\codeception\_support;
 use Codeception\Module;
 use humhub\modules\activity\tests\codeception\fixtures\ActivityFixture;
 use humhub\modules\content\tests\codeception\fixtures\ContentFixture;
+use humhub\modules\file\models\FileHistory;
 use humhub\modules\file\tests\codeception\fixtures\FileFixture;
+use humhub\modules\file\tests\codeception\fixtures\FileHistoryFixture;
 use humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture;
 use humhub\modules\live\tests\codeception\fixtures\LiveFixture;
 use humhub\modules\notification\tests\codeception\fixtures\NotificationFixture;
@@ -127,6 +129,7 @@ class DynamicFixtureHelper extends Module
             'space_membership' => [ 'class' => SpaceMembershipFixture::class],
             'content' => ['class' => ContentFixture::class],
             'file' => ['class' => FileFixture::class],
+            'file_history' => ['class' => FileHistoryFixture::class],
             'notification' => [ 'class' => NotificationFixture::class],
             'activity' => [ 'class' => ActivityFixture::class],
             'friendship' => ['class' => FriendshipFixture::class],

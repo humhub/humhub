@@ -61,7 +61,7 @@ class SpacesController extends Controller
         $urlParams = Yii::$app->request->getQueryParams();
         unset($urlParams['page']);
         array_unshift($urlParams, '/space/spaces/load-more');
-        $this->getView()->registerJsConfig('directory', [
+        $this->getView()->registerJsConfig('cards', [
             'loadMoreUrl' => Url::to($urlParams),
         ]);
 

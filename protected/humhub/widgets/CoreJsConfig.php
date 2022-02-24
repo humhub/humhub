@@ -46,7 +46,8 @@ class CoreJsConfig extends Widget
                     'baseUrl' => Yii::$app->settings->get('baseUrl'),
                     'reloadableScripts' => CacheSettingsForm::getReloadableScriptUrls(),
                     'text' => [
-                        'warn.onBeforeLoad' => Yii::t('base', "There are unsaved changes, do you really want to leave this page?")
+                        'warn.onBeforeLoad' => Yii::t('base', 'Unsaved changes will be lost. Do you want to proceed?'),
+                        'warn.onBeforeCloseModal' => Yii::t('base', 'Unsaved changes will be lost. Do you want to proceed?'),
                     ]
                 ],
                 'file' => [
@@ -161,7 +162,8 @@ class CoreJsConfig extends Widget
                     ]
                 ],
                 'oembed' => [
-                    'loadUrl' => Url::to(['/oembed'])
+                    'loadUrl' => Url::to(['/oembed']),
+                    'displayUrl' => Url::to(['/oembed/display']),
                 ],
                 'ui.markdown', [
                 'text' => [
@@ -257,7 +259,8 @@ class CoreJsConfig extends Widget
                         ]
                     ],
                     'reloadUrl' => Url::to(['/content/content/reload']),
-                    'deleteUrl' => Url::to(['/content/content/delete-id'])
+                    'deleteUrl' => Url::to(['/content/content/delete-id']),
+                    'adminDeleteModalUrl' => Url::to(['/content/content/get-admin-delete-modal']),
                 ],
                 'stream' => [
                     'horizontalImageScrollOnMobile' => Yii::$app->settings->get('horImageScrollOnMobile'),
@@ -268,6 +271,9 @@ class CoreJsConfig extends Widget
                         'success.delete' => Yii::t('ContentModule.base', 'The content has been deleted.'),
                         'info.editCancel' => Yii::t('ContentModule.base', 'Your last edit state has been saved!'),
                     ]
+                ],
+                'stream.wall' => [
+                    'updatesAvailable' => Yii::t('ContentModule.base', 'New Updates Available!')
                 ],
                 'comment' => [
                     'modal' => [

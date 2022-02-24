@@ -112,7 +112,7 @@ return array (
   'Visible' => 'Sichtbar',
   'XMPP Jabber Address' => 'XMPP Jabber-Addresse',
   'Xing URL' => 'XING-URL',
-  'You need to login to view this user profile!' => 'Sie müssen sich anmelden, um das Profil zu sehen!',
+  'You need to login to view this user profile!' => 'Um dieses Profil sehen zu können musst du einloggt sein!',
   'YouTube URL' => 'YouTube-URL',
   'Zip' => 'PLZ',
   '{attribute} is required!' => '{attribute} ist erforderlich!',

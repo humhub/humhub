@@ -2,52 +2,52 @@
 return array (
   '
 Module successfully disabled!
-' => '',
+' => 'Modulen har inaktiverats!',
   '
 Module successfully enabled!
-' => '',
+' => 'Modulen har aktiverats!',
   '
 No active Professional Edition license found!
-' => '',
+' => 'Ingen aktiv Professional Edition-licens hittades!',
   '
 PROFESSIONAL EDITION
-' => '',
+' => 'PROFESSIONELL UTGÅVA',
   '
 The license could not be activated:
-' => '',
+' => 'Licensen kunde inte aktiveras:',
   '
 The license was successfully activated!
 
-' => '',
+' => 'Licensen har aktiverats!',
   '
 The license was successfully removed!
 
-' => '',
+' => 'Licensen togs bort!',
   '--- Disable module: {moduleId} ---
 
-' => '',
+' => '--- Inaktivera modul: {moduleId} ---',
   '--- Enable module: {moduleId} ---
 
-' => '',
-  '<strong>Activate</strong> your Professional Edition' => '',
-  'Add purchased module by licence key' => '',
-  'All modules are up to date!' => '',
-  'All {moduleId} module content will be deleted. Continue?' => '',
-  'Available updates' => '',
-  'Browse online' => '',
-  'Buy' => '',
-  'Buy (%price%)' => '',
+' => '--- Aktivera modul: {moduleId} ---',
+  '<strong>Activate</strong> your Professional Edition' => '<strong>Aktivera</strong> din PROFESSIONELLA UTGÅVA',
+  'Add purchased module by licence key' => 'Lägg till köpt modul med licensnyckel',
+  'All modules are up to date!' => 'Alla moduler är uppdaterade!',
+  'All {moduleId} module content will be deleted. Continue?' => 'Allt innehåll i {moduleId}-modulen kommer att raderas. Fortsätta?',
+  'Available updates' => 'Tillgängliga uppdateringar',
+  'Browse online' => 'Bläddra online',
+  'Buy' => 'Köp',
+  'Buy (%price%)' => 'Köp (%pris%)',
   'Could not connect to HumHub API!
-' => '',
-  'Could not connect to licence server!' => '',
-  'Could not extract module!' => '',
-  'Could not remove old module path!' => '',
-  'Could not update licence. Error: ' => '',
-  'Download of module failed!' => '',
-  'Edit licence' => '',
-  'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => '',
-  'Include Community Modules' => '',
-  'Include beta updates' => '',
+' => 'Kunde inte ansluta till HumHub API!',
+  'Could not connect to licence server!' => 'Kunde inte ansluta till licensservern!',
+  'Could not extract module!' => 'Kunde inte extrahera modulen!',
+  'Could not remove old module path!' => 'Kunde inte ta bort gammal modulsökväg!',
+  'Could not update licence. Error: ' => 'Det gick inte att uppdatera licensen. Fel:',
+  'Download of module failed!' => 'Nedladdning av modul misslyckades!',
+  'Edit licence' => 'Redigera licens',
+  'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => 'Om denna modul dessutom är markerad som <strong>"Community"</strong> testas den varken eller övervakas den av HumHub-projektteamet.',
+  'Include Community Modules' => 'Inkludera community-moduler',
+  'Include beta updates' => 'Inkludera betauppdateringar',
   'Install' => '',
   'Installed' => 'Installerad',
   'Installed version:' => '',
@@ -70,10 +70,10 @@ The license was successfully removed!
   'Module licence key cannot be empty!
 ' => '',
   'Module not found or activated!
-' => '',
+' => 'Modulen hittades inte och är inte aktiverad!',
   'Module not found!
-' => '',
-  'More info' => '',
+' => 'Modulen hittades inte!',
+  'More info' => 'Mer information',
   'No compatible module version found!' => '',
   'No license key? Find out more about the {pro} or contact us.' => '',
   'No modules found!' => '',
@@ -93,7 +93,7 @@ The license was successfully removed!
   'Update' => 'Uppdatera',
   'Updating module...' => '',
   'Upgrade to Professional Edition' => '',
-  'Version:' => '',
+  'Version:' => 'Version:',
   'View Changelog' => '',
   'search for available modules online' => '',
 );

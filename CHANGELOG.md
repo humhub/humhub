@@ -1,17 +1,139 @@
 HumHub Changelog
 ================
 
+1.10.4 (Unreleased)
+-------------------
+- Fix #5480: `el` language file in Admin section broken
+- Fix #5479: Fix ContentContainerPermissionAccess without provided container
+- Fix #5517: Don't send "Follows" notification on request friendship
 
-1.9.2 (Unreleased)
+
+1.10.3 (December 20, 2021)
+--------------------------
+
+See also: [HumHub 1.10 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_10) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md). This release also includes a [security fix](https://github.com/humhub/humhub/security/advisories/GHSA-f5hc-5wfr-7v74). It could have been possible for registered users to become unauthorized members of private Spaces. Thanks to [Huntr](https://huntr.dev/bounties/943dad83-f0ed-4c74-ba81-7dfce7ca0ef2/) and @brenu.
+
+- Fix #5465: Fix empty RichText
+- Fix #5466: Default `.htaccess.dist` broken
+- Fix #5469: Mixed up title for Space membership button
+- Fix #5464: Fix comment highlighting on permalink
+- Fix #5473: Insufficient member invite check on Space creation 
+
+1.10.2 (December 7, 2021)
+-------------------------
+
+See also: [HumHub 1.10 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_10) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+- Fix #5450: Fix confirmation before close a form with unsaved changes on modal window
+- Fix #5453: Fix migration of default group
+- Enh #5461: Added Event after a new file content (new version) is stored
+- Enh #5457: Use permalink comment in notifications
+
+
+1.10.1 (November 26, 2021)
+--------------------------
+
+See also: [HumHub 1.10 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_10) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+- Fix #5445: Checkbox view style unaligned
+- Fix #5447: Comments disappeard
+- Enh: Updated translations 
+
+
+1.10.0 (November 25, 2021)
+---------------------------------
+
+See also: [HumHub 1.10 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_10) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+- Enh #5437: Tests with MySQL Galera compatibility
+- Fix #5427: Fix deep comment link with enabled caching
+- Enh #5435: Allow non modal links in header counter
+- Enh #5436: Better usage of UserPicker in Form Definition
+- Fix #5441: No deletion of file variants in CLI tools
+- Fix #5443: Fix misplaced checkboxes on installer forms
+
+1.10.0-beta.3 (November 12, 2021)
+---------------------------------
+- Enh #5437: Tests with MySQL Galera compatibility
+- Fix #5427: Fix deep comment link with enabled caching
+- Enh #5435: Allow non modal links in header counter
+- Enh #5436: Better usage of UserPicker in Form Definition
+- Fix #5441: No deletion of file variants in CLI tools
+
+
+1.10.0-beta.2 (November 12, 2021)
+---------------------------------
+- Enh #5403: Confirmation before close a not saved modal form
+- Fix #5401: Fix profile field value result type 
+- Fix #5402: Fix mentioning search in comment content
+- Enh #5418: Allow to detach file from simple ActiveRecord
+
+
+1.10.0-beta.1 (October 27, 2021)
+--------------------------------
+- Enh #4399: Direct deep links to comments and highlighting
+- Enh #4242: More failsafe module loading when reading module config
+- Enh #5197: Default `.htaccess` - Remove `Options +FollowSymLinks` 
+- Enh #4495: Allow locking comments per content
+- Enh #3688: Use `Image` widget in user list
+- Enh #5194: Confirm leave page for Post & Comment forms
+- Enh #5188: People/Spaces: Endless Scrolling
+- Enh #5216: Separate View document button
+- Enh #5229: Use `RichTextField` for user approval messages
+- Enh #100: Allow additional toggle for elements with context menu
+- Enh #5170: `UserPicker`: Allow zero as min input size
+- Enh #4133: Backup a content of `RichTextEditor`
+- Enh #100: Extend upload buttons to use a paste zone
+- Enh #5256: Limit uploading profile images (Thanks to @tuhin1729 for discovering the issue.) 
+- Enh #5257: Delete old unread notifications of inactive users
+- Fix #5143: Unlimited page size for profile fields
+- Enh #5269: Allow adding new item on ui selector
+- Enh #5005: Possibility to invite a registered user to a space by email
+- Enh #3546: Sign in back from impersonate mode
+- Fix #5282: On account creation, registration form has HTML tag set with English language
+- Enh #5280: Allow to set the number of contents from which `Show {i} more.` appears in the stream
+- Enh #5303: Unassigned files are only accessibly for creator 
+- Enh #5293: Added File History API for versioning
+- Enh #4399: Changed default `@warning` color to `#FC4A64`
+- Enh #5302: Improve checkbox widget ContentVisibilitySelect 
+- Enh #5151: ContentContainer scoped URL Rules
+- Enh #5094: Reflect and reload Stream filters by URL
+- Enh $4879: Refactoring of `Followable` behavior
+- Enh $4879: Added supported of "protected" module groups
+- Enh #5330: Added option to hide "Spaces" top menu item
+- Enh #5080: Show available module updates directly in admin menu
+- Fix #5331: Fix js error on pjax open "Directory" page
+- Enh #5333: Module's events handlers registration: check if method exists
+- Enh #5300: Blocking users for space
+- Enh #5347: Caching added for group permissions (reduced db queries)
+- Enh #5349: Archived Spaces on Spaces directory
+- Enh #4945: Collapsible-fields now accessible by tab and enable/closable by keypress, check-boxes now focusable
+- Enh #5354: Space - pending invites and approvals: add the image of the users
+- Enh #5361: Optimize People directory details query
+- Enh #5357: SpaceChooser - lazy load added, widget refactoring.
+- Fix #5360: Mentioning search fails apostrophe in a user's displayName
+- Fix #5359: Removed encoding of user's name in UserPicker
+- Enh #5363: Optimize duplicated SQL queries on profile edit
+- Enh #5362: Optimize getting of ContentContainer tags
+- Fix #5386: Fixed empty stream in archived space
+
+1.9.3 (Unreleased)
 ------------------
+- Fix #5372: Text shortening in Japanese broken - Fix truncating of multi-byte strings
+- Fix #5398: Fix checking of foreign table index
+
+
+1.9.2 (October 15, 2021)
+------------------------
 - Fix #5265: Fix logging filter "Error" when not entries
 - Fix #5285: Layout too wide for container pages without sidebar 
 - Fix #5307: Fix reset of the space homepage settings
-- Fix #5301: Change people default sorting
-- Fix #5313: Contentcontainer Tags were not cleared when all tags are deleted
+- Fix #5301: Change people default sorting in administration broken
+- Fix #5313: ContentContainer Tags were not cleared when all tags are deleted
 - Fix #5316: Fix filter "I'm involved" on dashboard
-- Fix #5324: Theme Loader broken when module is  provided via string
+- Fix #5324: Theme Loader broken when module is provided via string
 - Fix #5327: Fix update container tags by not original model
+- Fix #5342: Fix mime type detection for extensions: dotx, xltx, potx
 
 
 1.9.1 (August 30, 2021)

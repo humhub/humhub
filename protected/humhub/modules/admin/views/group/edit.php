@@ -36,14 +36,7 @@ use humhub\modules\space\widgets\SpacePickerField;
     <?php endif; ?>
     <?php if ($isManagerApprovalSetting && !$group->is_admin_group): ?>
         <?php $url = ($group->isNewRecord) ? null : Url::to(['/admin/group/admin-user-search', 'id' => $group->id]); ?>
-        <?= UserPickerField::widget([
-            'form' => $form,
-            'model' => $group,
-            'attribute' => 'managerGuids',
-            'selection' => $group->manager,
-            'url' => $url
-        ])
-        ?>
+        <?= $form->field($group, 'managerGuids')->widget(UserPickerField::class, ['selection' => $group->manager, 'url' => $url]); ?>
     <?php endif; ?>
 
     <?= $form->field($group, 'notify_users')->checkbox(); ?>

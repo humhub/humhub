@@ -18,6 +18,7 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\User;
+use humhub\modules\user\permissions\CanMention;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use Yii;
@@ -66,7 +67,9 @@ class MentioningController extends Controller
 
         $results = [];
         foreach ($users as $user) {
-            $results[] = $this->getUserResult($user);
+            if($user->permissionManager->can(CanMention::class)) {
+                $results[] = $this->getUserResult($user);
+            }
         }
 
         $results = $this->appendMentioningSpaceResults($keyword, $results);
@@ -77,15 +80,15 @@ class MentioningController extends Controller
     /**
      * Find space members on mentioning request from RichText editor on Post form
      *
+     * @param int $id
      * @return \yii\web\Response
      * @throws HttpException
      */
-    public function actionSpace()
+    public function actionSpace($id)
     {
-        $spaceId = (int)Yii::$app->request->get('id');
         $keyword = (string)Yii::$app->request->get('keyword');
 
-        $space = Space::findOne(['id' => $spaceId]);
+        $space = Space::findOne(['id' => (int) $id]);
         if (!$space || !$space->can(CreatePost::class)) {
             throw new HttpException(403, 'Access denied!');
         }
@@ -121,11 +124,24 @@ class MentioningController extends Controller
         $contentId = (int)Yii::$app->request->get('id');
         $keyword = (string)Yii::$app->request->get('keyword');
 
+        if (!($content = Content::findOne(['id' => $contentId]))) {
+            throw new HttpException(403, 'Access denied!');
+        }
+
+        // Search all users/members on request with at least one char keyword:
+        if ($keyword !== '') {
+            if ($content->container instanceof Space && $content->container->can(CreatePost::class)) {
+                return $this->actionSpace($content->container->id);
+            } else {
+                return $this->actionIndex();
+            }
+        }
+        // Else search content followers only on initial call without provided keyword:
+
         /* @var CommentModule $commentModule */
         $commentModule = Yii::$app->getModule('comment');
 
-        if (!($content = Content::findOne(['id' => $contentId])) ||
-            !($object = $content->getModel()) ||
+        if (!($object = $content->getModel()) ||
             !$commentModule->canComment($object)) {
             throw new HttpException(403, 'Access denied!');
         }
@@ -142,8 +158,6 @@ class MentioningController extends Controller
         foreach ($users as $user) {
             $results[] = $this->getUserResult($user);
         }
-
-        $results = $this->appendMentioningSpaceResults($keyword, $results);
 
         return $this->asJson($results);
     }

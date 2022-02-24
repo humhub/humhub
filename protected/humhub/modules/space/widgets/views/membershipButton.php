@@ -36,7 +36,7 @@ if ($membership === null) {
     if ($canCancelMembership && $options['cancelMembership']['visible']) {
         echo Html::a($options['cancelMembership']['title'], '#', $options['cancelMembership']['attrs']);
     } elseif (!$canCancelMembership && $options['cannotCancelMembership']['visible']) {
-        $memberTitle = (!$space->isSpaceOwner() ? $options['cannotCancelMembership']['ownerTitle'] : $options['cannotCancelMembership']['memberTitle']);
+        $memberTitle = ($space->isSpaceOwner() ? $options['cannotCancelMembership']['ownerTitle'] : $options['cannotCancelMembership']['memberTitle']);
         echo Html::a($memberTitle, $space->createUrl(), $options['cannotCancelMembership']['attrs']);
     }
 }

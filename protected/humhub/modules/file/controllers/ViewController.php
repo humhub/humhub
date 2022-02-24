@@ -40,10 +40,6 @@ class ViewController extends \humhub\components\Controller
         $guid = Yii::$app->request->get('guid');
         $file = File::findOne(['guid' => $guid]);
 
-        if (Yii::$app->request->get('showLatestVersion', false)) {
-            $file = $file->getCurrentVersion();
-        }
-
         if (!$file) {
             throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
         }

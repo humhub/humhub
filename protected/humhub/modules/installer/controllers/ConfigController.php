@@ -18,6 +18,7 @@ use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\web\HttpException;
 
 /**
  * ConfigController allows inital configuration of humhub.
@@ -489,8 +490,8 @@ class ConfigController extends Controller
             $space->save();
 
             // activate all available modules for this space
-            foreach ($space->getAvailableModules() as $module) {
-                $space->enableModule($module->id);
+            foreach ($space->moduleManager->getAvailable() as $module) {
+                $space->moduleManager->enable($module->id);
             }
 
             // Add Some Post to the Space
@@ -524,7 +525,7 @@ class ConfigController extends Controller
     {
         // Should not happen
         if (Yii::$app->settings->get('secret') == "") {
-            throw new CException("Finished without secret setting!");
+            throw new HttpException("Finished without secret setting!");
         }
 
         Yii::$app->settings->set('defaultTimeZone', Yii::$app->timeZone);

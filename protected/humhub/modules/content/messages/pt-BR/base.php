@@ -89,4 +89,7 @@ return [
     'No tags found for the given query' => '',
     'Select type...' => '',
     'Unlock comments' => '',
+    'You cannot block the space owner!' => '',
+    'You cannot block the user of the same container!' => '',
+    'You cannot block yourself!' => '',
 ];
