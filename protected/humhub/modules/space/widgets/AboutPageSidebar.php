@@ -2,8 +2,6 @@
 
 namespace humhub\modules\space\widgets;
 
-use humhub\modules\space\widgets\SpaceTags;
-
 class AboutPageSidebar extends Sidebar
 {
     /**
@@ -20,6 +18,7 @@ class AboutPageSidebar extends Sidebar
             $this->widgets[] = [MyMembership::class, ['space' => $this->space], ['sortOrder' => 10]];
 
         $this->widgets[] = [Members::class, ['space' => $this->space, 'orderByNewest' => true], ['sortOrder' => 20]];
+        $this->widgets[] = [SpaceFollowers::class, ['space' => $this->space], ['sortOrder' => 25]];
         $this->widgets[] = [SpaceTags::class, ['space' => $this->space], ['sortOrder' => 30]];
     }
 }
