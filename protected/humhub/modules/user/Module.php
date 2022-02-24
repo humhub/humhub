@@ -8,8 +8,11 @@
 
 namespace humhub\modules\user;
 
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\like\models\Like;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Group;
+use humhub\modules\user\permissions\CanMention;
 use Yii;
 
 /**
@@ -138,15 +141,34 @@ class Module extends \humhub\components\Module
         6 => 20,
     ];
 
+
+    /**
+     * @var array Forbidden names to register
+     * @since 1.11
+     */
+    public $forbiddenUsernames = [];
+
+    /**
+     * @var string include user's email address in searches
+     * @since 1.11
+     */
+    public $includeEmailInSearch = true;
+
     /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
     {
         if ($contentContainer instanceof models\User) {
-            return [
+            $permissions = [
                 new permissions\ViewAboutPage(),
             ];
+
+            if(Yii::$app->getModule('friendship')->getIsEnabled()) {
+                $permissions[] = new permissions\CanMention();
+            }
+
+            return $permissions;
         } elseif ($contentContainer instanceof Space) {
             return [];
         }
@@ -245,5 +267,26 @@ class Module extends \humhub\components\Module
     public function allowBlockUsers(): bool
     {
         return (bool) $this->settings->get('auth.blockUsers', true);
+    }
+
+    /**
+     * Checks if user can be mentioned
+     *
+     * @param ContentActiveRecord $object
+     * @return boolean can like
+     */
+    public function canMention($object)
+    {
+//        $content = $object->content;
+
+//        if(!isset($content->container)) {
+//            return false;
+//        }
+
+        if ($object->permissionManager->can(CanMention::class)) {
+            return true;
+        }
+
+        return false;
     }
 }

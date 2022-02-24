@@ -25,7 +25,7 @@ class StreamCest
 
         $I->createPost('This is my stream test post!');
 
-        $newEntrySelector = '[data-content-key="12"]';
+        $newEntrySelector = '[data-content-key="15"]';
 
         $I->waitForElementVisible($newEntrySelector);
         $I->see('This is my stream test post', '.wall-entry');
@@ -33,7 +33,7 @@ class StreamCest
         $I->amGoingTo('Delte my new post');
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->wait(1);
-        $I->click('Delete', '[data-content-key="12"]');
+        $I->click('Delete', '[data-content-key="15"]');
 
         $I->waitForElementVisible('#globalModalConfirm', 5);
         $I->see('Confirm post deletion');
@@ -187,7 +187,7 @@ class StreamCest
 
         $I->waitForElementVisible($newEntrySelector . ' .content_edit', 20);
         $I->fillField($newEntrySelector . ' [contenteditable]', 'This is my edited post!');
-        $I->click('Save', $newEntrySelector);
+        $I->click('button[data-action-click=editSubmit]', $newEntrySelector);
 
         $I->wait(1);
         $I->seeElement($newEntrySelector);
@@ -267,7 +267,7 @@ class StreamCest
         $I->wait(1);
         $I->waitForElementVisible($postSelector . ' .comment-container', null);
         $I->fillField($postSelector . ' .comment_create .humhub-ui-richtext', 'My Comment');
-        $I->click('Send', $postSelector . ' .comment_create');
+        $I->click('[data-action-click=submit]', $postSelector . ' .comment_create');
         $I->waitForText('My Comment', null, $postSelector . ' .comment');
 
 
@@ -315,7 +315,7 @@ class StreamCest
         $I->click('Comment', $post4Selector);
         $I->wait(1);
         $I->fillField($post4Selector . ' [contenteditable]', 'My Comment!');
-        $I->click('Send', $post4Selector . ' .comment-buttons');
+        $I->click('[data-action-click=submit]', $post4Selector . ' .comment-buttons');
 
         $I->scrollTop();
 

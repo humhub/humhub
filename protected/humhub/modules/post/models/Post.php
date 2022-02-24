@@ -17,6 +17,7 @@ use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\user\models\User;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "post".
@@ -149,6 +150,14 @@ class Post extends ContentActiveRecord implements Searchable
         }
 
         return '';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUrl()
+    {
+        return Url::to(['/post/post/view', 'id' => $this->id, 'contentContainer' => $this->content->container]);
     }
 
 }

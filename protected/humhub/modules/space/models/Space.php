@@ -295,12 +295,6 @@ class Space extends ContentContainerActiveRecord implements Searchable
      */
     public function beforeDelete()
     {
-        foreach ($this->getAvailableModules() as $moduleId => $module) {
-            if ($this->isModuleEnabled($moduleId)) {
-                $this->disableModule($moduleId);
-            }
-        }
-
         foreach ($this->moduleManager->getEnabled() as $module) {
             $this->moduleManager->disable($module);
         }
