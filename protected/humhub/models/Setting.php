@@ -140,6 +140,8 @@ class Setting extends ActiveRecord
             return ['mailer.systemEmailAddress', 'user'];
         } elseif ($name == 'systemEmailName' && $moduleId == 'mailing') {
             return ['mailer.systemEmailName', 'user'];
+        } elseif ($name == 'systemEmailReplyTo' && $moduleId == 'mailing') {
+            return ['mailer.systemEmailReplyTo', 'user'];
         } elseif ($name == 'enabled' && $moduleId == 'proxy') {
             return ['proxy.enabled', 'base'];
         } elseif ($name == 'server' && $moduleId == 'proxy') {

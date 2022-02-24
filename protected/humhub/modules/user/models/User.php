@@ -166,11 +166,14 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'string', 'max' => 150],
-            [['email'], 'required', 'when' => function () {
-                return $this->isEmailRequired();
-            }],
             [['guid'], 'unique'],
+            [['username'], 'validateForbiddenUsername', 'on' => [self::SCENARIO_REGISTRATION]],
         ];
+
+        if ($this->isEmailRequired())  // HForm does not support 'required' in combination with 'when'.
+            $rules[] = [['email'], 'required'];
+
+        return $rules;
     }
 
     public function isEmailRequired(): bool
@@ -190,6 +193,20 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
 
         return parent::isAttributeRequired($attribute);
+    }
+
+    /**
+     * Validate attribute username
+     * @param string $attribute
+     */
+    public function validateForbiddenUsername($attribute, $params)
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if (in_array(strtolower($this->$attribute), $module->forbiddenUsernames)) {
+            $this->addError($attribute, Yii::t('UserModule.account', 'You cannot use this username.'));
+        }
     }
 
     /**
@@ -281,6 +298,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             'updated_by' => Yii::t('UserModule.base', 'Updated by'),
             'last_login' => Yii::t('UserModule.base', 'Last Login'),
             'visibility' => Yii::t('UserModule.base', 'Visibility'),
+            'originator.username' => Yii::t('UserModule.base', 'Invited by'),
         ];
     }
 
@@ -340,6 +358,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function getProfile()
     {
         return $this->hasOne(Profile::class, ['user_id' => 'id']);
+    }
+
+    public function getOriginator()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_originator_id'])->viaTable(Invite::tableName(), ['email' => 'email']);
     }
 
     /**
@@ -523,6 +546,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         if (empty($this->time_zone)) {
             $this->time_zone = Yii::$app->settings->get('defaultTimeZone');
+        }
+
+        if (empty($this->email)) {
+            $this->email = new \yii\db\Expression('NULL');
         }
 
         return parent::beforeSave($insert);
@@ -722,10 +749,14 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             'email' => $this->email,
             'username' => $this->username,
             'tags' => implode(', ', $this->getTags()),
-            'firstname' => $this->profile->firstname,
-            'lastname' => $this->profile->lastname,
-            'title' => $this->profile->title,
         ];
+
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if ($module->includeEmailInSearch) {
+            $attributes['email'] = $this->email;
+        }
 
         // Add user group ids
         $groupIds = array_map(function ($group) {
@@ -797,10 +828,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         /* @var AdminModule $adminModule */
         $adminModule = Yii::$app->getModule('admin');
         if (!$adminModule->allowUserImpersonate) {
-            return false;
-        }
-
-        if (!$this->isSystemAdmin()) {
             return false;
         }
 

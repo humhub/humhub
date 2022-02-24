@@ -25,6 +25,10 @@ use humhub\modules\live\components\LiveEvent;
  */
 class PollController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    protected $doNotInterceptActionIds = ['*'];
 
     /**
      * @var int maximum events by query

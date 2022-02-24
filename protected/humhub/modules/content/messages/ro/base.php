@@ -89,4 +89,7 @@ return [
     'Visible to friends of {displayName}' => '',
     'Visible to you and {displayName}' => '',
     'Visible to your friends' => '',
+    'You cannot block the space owner!' => '',
+    'You cannot block the user of the same container!' => '',
+    'You cannot block yourself!' => '',
 ];

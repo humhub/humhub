@@ -26,6 +26,7 @@ return array (
   'Application message' => 'Mensaje de la aplicación',
   'Archived' => 'Archivado',
   'As owner you cannot revoke your membership!' => '¡Como propietario no puedes revocar tu suscripción!',
+  'Blocked users' => 'Usuarios bloqueados',
   'By Name' => 'Por nombre',
   'Cancel' => 'Cancelar',
   'Close' => 'Cerrar',
@@ -142,6 +143,5 @@ return array (
   'Your request was successfully submitted to the space administrators.' => 'Tu solicitud ha sido enviada correctamente a los administradores del espacio.',
   'Your request was successfully submitted to the workspace administrators.' => 'Tu solicitud ha sido enviada con éxito a los administradores del espacio.',
   '{count} members' => '{count} miembros',
-  '{email} is already registered!' => '¡{email} ya está registrado!',
   '{email} is not valid!' => '¡{email} no es válido!',
 );

@@ -8,17 +8,30 @@ humhub.module('ui.codemirror', function(module, require, $) {
 
     var init = function () {
         event.on('humhub:ready', function (evt) {
-            if (typeof CodeMirror === 'undefined') {
-                return;
-            }
-            $('textarea[data-codemirror]').each(function() {
-                var codeMirrorInstance = CodeMirror.fromTextArea(this, {
-                    mode: $(this).data('codemirror'),
-                    lineNumbers: true,
-                    extraKeys: {'Ctrl-Space': 'autocomplete'}
-                });
-                $(this).data('codemirror-instance', codeMirrorInstance);
-            });
+            var initCodeMirrorInterval = setInterval(function () {
+
+                if(!$('textarea[data-codemirror]').length) {
+                    clearInterval(initCodeMirrorInterval);
+                }
+
+                if (typeof CodeMirror !== 'undefined') {
+                    $('textarea[data-codemirror]').each(function() {
+                        if(typeof $(this).data('codemirror-instance') === 'object') {
+                            $(this).data('codemirror-instance').toTextArea();
+                        }
+
+                        var codeMirrorInstance = CodeMirror.fromTextArea(this, {
+                            mode: $(this).data('codemirror'),
+                            lineNumbers: true,
+                            extraKeys: {'Ctrl-Space': 'autocomplete'}
+                        });
+                        $(this).data('codemirror-instance', codeMirrorInstance);
+                    });
+
+                    clearInterval(initCodeMirrorInterval);
+                }
+
+            }, 200);
         });
     }
 

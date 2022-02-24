@@ -39,12 +39,12 @@ class FileHandlerCollection extends \yii\base\Component
     public $type;
 
     /**
-     * @var \humhub\modules\file\models\File 
+     * @var \humhub\modules\file\models\File
      */
     public $file = null;
 
     /**
-     * @var type 
+     * @var BaseFileHandler[]
      */
     public $handlers = [];
 
@@ -76,7 +76,7 @@ class FileHandlerCollection extends \yii\base\Component
 
     /**
      * Returns registered handlers by type
-     * 
+     *
      * @param string|array $type or multiple type array
      * @param \humhub\modules\file\models\File $file the file (optional)
      * @return BaseFileHandler[] the registered handlers

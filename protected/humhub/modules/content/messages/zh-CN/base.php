@@ -87,6 +87,9 @@ return [
     'Visible to you and {displayName}' => '',
     'Visible to your friends' => '',
     'With attachments' => '',
+    'You cannot block the space owner!' => '',
+    'You cannot block the user of the same container!' => '',
+    'You cannot block yourself!' => '',
     'You do not have the permission to move this content to the given space.' => '',
     'You do not have the permission to move this content.' => '',
 ];

@@ -9,13 +9,14 @@
 namespace humhub\modules\stream\models\filters;
 
 
+use humhub\modules\stream\models\ContentContainerStreamQuery;
 use humhub\modules\stream\models\StreamQuery;
 use humhub\modules\ui\filter\models\QueryFilter;
 
 abstract class StreamQueryFilter extends QueryFilter
 {
     /**
-     * @var StreamQuery
+     * @var StreamQuery | ContentContainerStreamQuery
      */
     public $streamQuery;
 

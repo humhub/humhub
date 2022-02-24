@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Notification</strong> Overview' => '<strong>Benachrichtigungs</strong>übersicht',
+  '<strong>Notification</strong> Overview' => '<strong>Benachrichtigungsübersicht</strong>',
   '<strong>Notification</strong> Settings' => '<strong>Benachrichtigungen</strong>',
   'Allow desktop notifications by default.' => 'Desktopbenachrichtigungen standardmäßig aktivieren.',
   'Do you want to reset the settings concerning email summaries for all users?' => 'Willst du die Einstellungen bezüglich der E-Mail-Zusammenfassungen für alle Benutzer zurücksetzen?',

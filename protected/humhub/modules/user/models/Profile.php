@@ -94,6 +94,12 @@ class Profile extends ActiveRecord
      */
     public function scenarios()
     {
+        static $scenarios;
+
+        if (!empty($scenarios)) {
+            return $scenarios;
+        }
+
         $scenarios = parent::scenarios();
         $scenarios[static::SCENARIO_EDIT_ADMIN] = [];
         $scenarios[static::SCENARIO_REGISTRATION] = [];
@@ -179,6 +185,12 @@ class Profile extends ActiveRecord
      */
     public function attributeLabels()
     {
+        static $labels;
+
+        if (!empty($labels)) {
+            return $labels;
+        }
+
         $labels = [];
         foreach (ProfileField::find()->all() as $profileField) {
             /** @var ProfileField $profileField */
