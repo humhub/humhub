@@ -311,13 +311,7 @@ class ProfileField extends ActiveRecord
      */
     public function getUserValue(User $user, $raw = true): ?string
     {
-        $data = $this->fieldType->getUserValue($user, $raw);
-
-        if (!empty($this->fieldType->prefix)){
-            $data =Html::a($data, $this->fieldType->prefix.$data);
-        }
-
-        return $data;
+        return $this->fieldType->getUserValue($user, $raw);
     }
 
     /**
