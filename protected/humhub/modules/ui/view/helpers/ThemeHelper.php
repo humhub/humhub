@@ -41,7 +41,7 @@ class ThemeHelper
 
         // Collect themes provided by modules
         foreach (Yii::$app->getModules() as $id => $module) {
-            if (is_array($module)) {
+            if (is_array($module) || is_string($module)) {
                 $module = Yii::$app->getModule($id);
             }
 

@@ -16,6 +16,7 @@ humhub.module('content', function (module, require, $) {
 
     var DATA_CONTENT_KEY = "content-key";
     var DATA_CONTENT_DELETE_URL = "content-delete-url";
+    var DATA_ADMIN_DELETE_MODAL_URL = "admin-delete-modal-url";
 
 
     Component.addSelector('content-component');
@@ -75,13 +76,59 @@ humhub.module('content', function (module, require, $) {
         });
     };
 
-    Content.prototype.deleteContent = function(resolve, reject) {
+    Content.prototype.adminDelete = function (options) {
+        var that = this;
+
+        var loadModalUrl = that.data(DATA_ADMIN_DELETE_MODAL_URL) || module.config.adminDeleteModalUrl;
+
+        if(!loadModalUrl) {
+            that.delete(options);
+            return;
+        }
+
+        return new Promise(function (resolve, reject) {
+            client.post(loadModalUrl, {
+                data: {
+                    id: that.getKey()
+                }
+            }).then(function (response) {
+                modal.confirm(response).then(function ($confirmed) {
+                    if (!$confirmed) {
+                        resolve(false);
+                        return;
+                    }
+
+                    var form = modal.globalConfirm.$.find('form')[0];
+
+                    that.deleteContent(resolve, reject, form);
+                });
+            }).catch(function (err) {
+                reject(err);
+            });
+        });
+    };
+
+    Content.prototype.deleteContent = function(resolve, reject, form) {
         var that = this;
         that.loader();
         var deleteUrl = that.data(DATA_CONTENT_DELETE_URL) || module.config.deleteUrl;
+
+        var postData = {
+            id: that.getKey()
+        };
+
+        if(typeof form !== 'undefined') {
+            Object.assign(postData, {
+                ...$(form).serializeArray().reduce(function(a, e) {
+                    a[e.name] = e.value;
+                    return a;
+                })
+            });
+        }
+
         if (deleteUrl) {
             client.post(deleteUrl, {
-                data: {id: that.getKey()}
+                data: postData
             }).then(function (response) {
                 that.remove().then(function () {
                     resolve(true);
@@ -117,7 +164,7 @@ humhub.module('content', function (module, require, $) {
         options.permalink = evt.$trigger.data('content-permalink');
 
         modal.global.set({
-            header: options.head,
+            header: evt.$trigger.data('content-permalink-title') || options.head,
             body: string.template(module.templates.permalinkBody, options),
             footer: string.template(module.templates.permalinkFooter, options),
             size: 'normal'

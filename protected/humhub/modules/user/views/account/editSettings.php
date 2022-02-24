@@ -4,6 +4,11 @@ use humhub\libs\TimezoneHelper;
 use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\user\models\forms\AccountSettings;
+use humhub\modules\user\widgets\UserPickerField;
+
+/* @var AccountSettings $model */
+/* @var array $languages */
 ?>
 
 <?php $this->beginContent('@user/views/account/_userSettingsLayout.php') ?>
@@ -16,7 +21,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
     <?= $form->field($model, 'language')->dropDownList($languages, ['data-ui-select2' => '']); ?>
 <?php endif; ?>
 
-<?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(), ['data-ui-select2' => '']); ?>
+<?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(true), ['data-ui-select2' => '']); ?>
 
 <?php if (AuthHelper::isGuestAccessEnabled()): ?>
 
@@ -32,6 +37,10 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
 <?php if (Yii::$app->getModule('tour')->settings->get('enable') == 1) : ?>
     <?= $form->field($model, 'show_introduction_tour')->checkbox(); ?>
+<?php endif; ?>
+
+<?php if (Yii::$app->getModule('user')->allowBlockUsers()) : ?>
+    <?= $form->field($model, 'blockedUsers')->widget(UserPickerField::class, ['minInput' => 2]); ?>
 <?php endif; ?>
 
 <button class="btn btn-primary" type="submit" data-ui-loader><?= Yii::t('UserModule.account', 'Save') ?></button>

@@ -48,7 +48,7 @@ class BrowseController extends Controller
     {
         Yii::$app->response->format = 'json';
 
-        $query = Space::find()->visible();
+        $query = Space::find()->visible()->filterBlockedSpaces();
         $query->search(Yii::$app->request->get('keyword'));
 
         $countQuery = clone $query;
@@ -57,6 +57,15 @@ class BrowseController extends Controller
         $query->offset($pagination->offset)->limit($pagination->limit);
 
         return $this->asJson($this->prepareResult($query->all()));
+    }
+
+    /**
+     * @return \yii\web\Response
+     * @throws \Throwable
+     */
+    public function actionSearchLazy()
+    {
+        return $this->asJson(Chooser::getLazyLoadResult());
     }
 
     /**
@@ -77,7 +86,7 @@ class BrowseController extends Controller
     protected function prepareResult($spaces)
     {
         $target = Yii::$app->request->get('target');
-        
+
         $json = [];
         $withChooserItem = ($target === 'chooser');
         foreach ($spaces as $space) {

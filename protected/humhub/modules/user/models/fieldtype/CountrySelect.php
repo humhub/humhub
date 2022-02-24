@@ -78,14 +78,9 @@ class CountrySelect extends Select
     }
 
     /**
-     * Returns value of option
-     *
-     * @param User $user            
-     * @param Boolean $raw
-     *            Output Key
-     * @return String
+     * @inheritdoc
      */
-    public function getUserValue($user, $raw = true)
+    public function getUserValue(User $user, $raw = true): ?string
     {
         $internalName = $this->profileField->internal_name;
         $value = $user->profile->$internalName;

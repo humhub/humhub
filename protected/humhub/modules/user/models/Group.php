@@ -11,6 +11,7 @@ namespace humhub\modules\user\models;
 use humhub\components\ActiveRecord;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
+use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\Module;
@@ -33,6 +34,7 @@ use Yii;
  * @property integer $updated_by
  * @property integer $is_admin_group
  * @property integer $is_default_group
+ * @property integer $is_protected
  * @property integer $notify_users
  *
  * @property User[] $manager
@@ -59,7 +61,7 @@ class Group extends ActiveRecord
     public function rules()
     {
         return [
-            [['sort_order', 'notify_users', 'is_default_group'], 'integer'],
+            [['sort_order', 'notify_users', 'is_default_group', 'is_protected'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 45],
             ['show_at_registration', 'validateShowAtRegistration'],
@@ -487,5 +489,22 @@ class Group extends ActiveRecord
     public function getGroupSpaces()
     {
         return $this->hasMany(GroupSpace::class, ['group_id' => 'id']);
+    }
+
+
+    /**
+     * Check if this Group can be deleted by current User
+     *
+     * @return bool
+     * @since 1.9
+     */
+    public function canDelete()
+    {
+        return Yii::$app->user->can(ManageGroups::class) && !(
+            $this->isNewRecord ||
+            $this->is_admin_group ||
+            $this->is_default_group ||
+            $this->is_protected
+        );
     }
 }

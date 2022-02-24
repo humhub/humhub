@@ -54,6 +54,8 @@ class SpaceDirectoryFilters extends DirectoryFilters
                     'member' => Yii::t('SpaceModule.base', 'Member'),
                     'follow' => Yii::t('SpaceModule.base', 'Following'),
                     'none' => Yii::t('SpaceModule.base', 'Neither..nor'),
+                    'separator' => '———————————',
+                    'archived' => Yii::t('SpaceModule.base', 'Archived'),
                 ],
                 'sortOrder' => 300,
             ]);

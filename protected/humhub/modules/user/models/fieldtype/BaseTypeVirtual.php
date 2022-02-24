@@ -30,7 +30,7 @@ abstract class BaseTypeVirtual extends BaseType
     /**
      * @inheritdoc
      */
-    final public function getUserValue($user, $raw = true)
+    final public function getUserValue(User $user, $raw = true): ?string
     {
         return $this->getVirtualUserValue($user, $raw);
     }

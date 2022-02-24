@@ -56,6 +56,7 @@ class PeopleQuery extends ActiveQueryUser
 
         $this->visible();
 
+        $this->filterBlockedUsers();
         $this->filterByKeyword();
         $this->filterByGroup();
         $this->filterByConnection();

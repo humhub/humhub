@@ -13,6 +13,7 @@ use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
 use Imagine\Image\ImageInterface;
 use Yii;
+use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\imagine\Image;
 
@@ -141,6 +142,29 @@ class ImageHelper
             $file->updateAttributes(['size' => filesize($file->store->get())]);
         }
 
+    }
+
+    /**
+     * @param string $filePath
+     * @return bool
+     * @throws Exception
+     */
+    public static function checkMaxDimensions(string $filePath): bool
+    {
+        /* @var $module Module */
+        $module = Yii::$app->getModule('file');
+
+        // Don't allow to process an image more X megapixels
+        if (!empty($module->imageMaxProcessingMP) &&
+            !empty($filePath) &&
+            is_file($filePath) &&
+            ($imageSize = @getimagesize($filePath)) &&
+            isset($imageSize[0], $imageSize[1]) &&
+            $imageSize[0] * $imageSize[1] > $module->imageMaxProcessingMP * 1024 * 1024) {
+            throw new Exception('Image more ' . $module->imageMaxProcessingMP . ' megapixels cannot be processed!');
+        }
+
+        return true;
     }
 
 }

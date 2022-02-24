@@ -113,6 +113,8 @@ return [
     'Deactivate' => '',
     'Deactivate maintenance mode and enable all users to access the platform again?' => '',
     'Default Timezone' => '',
+    'E-Mail reply-to' => '',
     'Enable maintenance mode' => '',
     'Maintenance mode' => '',
+    'Optional. Default reply address for system emails like notifications.' => '',
 ];

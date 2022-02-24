@@ -31,6 +31,7 @@ use yii\base\Exception;
  * - updated_at
  *
  * @property-read Content $content
+ * @property-read User $user
  * @author Lucas Bartholemy <lucas@bartholemy.com>
  * @package humhub.components
  * @since 0.5

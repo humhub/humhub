@@ -14,6 +14,7 @@ class MailingSettingsForm extends \yii\base\Model
 
     public $systemEmailAddress;
     public $systemEmailName;
+    public $systemEmailReplyTo;
     public $transportType;
     public $hostname;
     public $username;
@@ -41,6 +42,7 @@ class MailingSettingsForm extends \yii\base\Model
         $this->allowSelfSignedCerts = $settingsManager->get('mailer.allowSelfSignedCerts');
         $this->systemEmailAddress = $settingsManager->get('mailer.systemEmailAddress');
         $this->systemEmailName = $settingsManager->get('mailer.systemEmailName');
+        $this->systemEmailReplyTo = $settingsManager->get('mailer.systemEmailReplyTo');
     }
 
     /**
@@ -55,7 +57,7 @@ class MailingSettingsForm extends \yii\base\Model
             ['allowSelfSignedCerts', 'boolean'],
             ['systemEmailAddress', 'email'],
             ['port', 'integer', 'min' => 1, 'max' => 65535],
-            [['transportType', 'hostname', 'username', 'password', 'encryption', 'allowSelfSignedCerts', 'systemEmailAddress', 'systemEmailName'], 'string', 'max' => 255],
+            [['transportType', 'hostname', 'username', 'password', 'encryption', 'allowSelfSignedCerts', 'systemEmailAddress', 'systemEmailName', 'systemEmailReplyTo'], 'string', 'max' => 255],
         ];
     }
 
@@ -67,12 +69,23 @@ class MailingSettingsForm extends \yii\base\Model
         return [
             'systemEmailAddress' => Yii::t('AdminModule.settings', 'E-Mail sender address'),
             'systemEmailName' => Yii::t('AdminModule.settings', 'E-Mail sender name'),
+            'systemEmailReplyTo' => Yii::t('AdminModule.settings', 'E-Mail reply-to'),
             'transportType' => Yii::t('AdminModule.settings', 'Mail Transport Type'),
             'username' => Yii::t('AdminModule.settings', 'Username'),
             'password' => Yii::t('AdminModule.settings', 'Password'),
             'port' => Yii::t('AdminModule.settings', 'Port number'),
             'encryption' => Yii::t('AdminModule.settings', 'Encryption'),
             'allowSelfSignedCerts' => Yii::t('AdminModule.settings', 'Allow Self-Signed Certificates?'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'systemEmailReplyTo' => Yii::t('AdminModule.settings', 'Optional. Default reply address for system emails like notifications.'),
         ];
     }
 
@@ -95,6 +108,7 @@ class MailingSettingsForm extends \yii\base\Model
         $settingsManager->set('mailer.allowSelfSignedCerts', $this->allowSelfSignedCerts);
         $settingsManager->set('mailer.systemEmailAddress', $this->systemEmailAddress);
         $settingsManager->set('mailer.systemEmailName', $this->systemEmailName);
+        $settingsManager->set('mailer.systemEmailReplyTo', $this->systemEmailReplyTo);
 
         \humhub\libs\DynamicConfig::rewrite();
 

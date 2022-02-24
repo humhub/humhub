@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\components\Application;
+use humhub\modules\marketplace\Module;
 use humhub\modules\ui\menu\MenuEntry;
 use Yii;
 use humhub\modules\admin\permissions\ManageModules;
@@ -19,6 +20,7 @@ use humhub\modules\ui\menu\widgets\LeftNavigation;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageGroups;
+use yii\caching\DummyCache;
 
 /**
  * AdminMenu implements the navigation in the administration section.
@@ -68,7 +70,7 @@ class AdminMenu extends LeftNavigation
             'icon' => 'user',
             'sortOrder' => 200,
             'isActive' => MenuLink::isActiveState('admin', ['user', 'group', 'approval', 'authentication', 'user-profile', 'pending-registrations', 'user-permissions', 'user-people']) ||
-                          MenuLink::isActiveState('ldap', 'admin'),
+                MenuLink::isActiveState('ldap', 'admin'),
             'isVisible' => Yii::$app->user->can([
                 ManageUsers::class,
                 ManageSettings::class,
@@ -91,7 +93,7 @@ class AdminMenu extends LeftNavigation
 
         $this->addEntry(new MenuLink([
             'id' => 'modules',
-            'label' => Yii::t('AdminModule.base', 'Modules'),
+            'label' => Yii::t('AdminModule.base', 'Modules') . $this->getMarketplaceUpdatesBadge(),
             'url' => ['/admin/module'],
             'icon' => 'rocket',
             'sortOrder' => 500,
@@ -167,4 +169,33 @@ class AdminMenu extends LeftNavigation
 
         parent::addEntry($entry);
     }
+
+
+    /**
+     * @return string
+     */
+    private function getMarketplaceUpdatesBadge()
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('marketplace');
+        if ($module === null || !$module->enabled) {
+            return '';
+        }
+
+        if (Yii::$app->cache instanceof DummyCache) {
+            return '';
+        }
+
+        try {
+            $updatesCount = count($module->onlineModuleManager->getModuleUpdates());
+            if ($updatesCount > 0) {
+                return '&nbsp;&nbsp;<span class="label label-danger">' . $updatesCount . '</span>';
+            }
+        } catch (\Exception $ex) {
+            ;
+        }
+
+        return '';
+    }
+
 }

@@ -64,7 +64,7 @@ class DefaultStreamFilter extends StreamQueryFilter
 
         if ($this->isFilterActive(self::FILTER_ARCHIVED)) {
             $this->filterArchived();
-        } else if(!$this->streamQuery->isSingleContentQuery()) {
+        } else if (!$this->streamQuery->isSingleContentQuery()) {
             // Only omit archived content by default when we load more than one entry
             $this->unFilterArchived();
         }
@@ -108,8 +108,15 @@ class DefaultStreamFilter extends StreamQueryFilter
     protected function unFilterArchived()
     {
         $this->query->leftJoin('space AS spaceArchived', 'contentcontainer.pk = spaceArchived.id AND contentcontainer.class = :spaceClass', [':spaceClass' => Space::class]);
-        $this->query->andWhere('(spaceArchived.status != :statusArchived OR spaceArchived.status IS NULL)', [':statusArchived' => Space::STATUS_ARCHIVED]);
-        $this->query->andWhere('(content.archived != 1 OR content.archived IS NULL)');
+
+        if (!empty($this->streamQuery->container->contentcontainer_id)) {
+            $this->query->andWhere('(spaceArchived.status != :statusArchived OR spaceArchived.status IS NULL OR spaceArchived.contentcontainer_id = :containerId)',
+                [':statusArchived' => Space::STATUS_ARCHIVED, ':containerId' => $this->streamQuery->container->contentcontainer_id]);
+        } else {
+            $this->query->andWhere('(spaceArchived.status != :statusArchived OR spaceArchived.status IS NULL)', [':statusArchived' => Space::STATUS_ARCHIVED]);
+        }
+
+        $this->query->andWhere('(content.archived != 1 OR content.archived IS NULL OR spaceArchived.status = :statusArchived)', [':statusArchived' => Space::STATUS_ARCHIVED]);
         return $this;
     }
 
@@ -131,8 +138,8 @@ class DefaultStreamFilter extends StreamQueryFilter
     protected function filterInvolved()
     {
         if ($this->streamQuery->user) {
-            $this->query->leftJoin('user_follow', 'content.object_model=user_follow.object_model AND content.object_id=user_follow.object_id AND user_follow.user_id = :userId', ['userId' => $this->streamQuery->user->id]);
-            $this->query->andWhere("user_follow.id IS NOT NULL");
+            $this->query->leftJoin('user_follow AS user_involved', 'content.object_model=user_involved.object_model AND content.object_id=user_involved.object_id AND user_involved.user_id = :userId', ['userId' => $this->streamQuery->user->id]);
+            $this->query->andWhere("user_involved.id IS NOT NULL");
         }
         return $this;
     }

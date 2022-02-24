@@ -48,6 +48,7 @@ class SpaceDirectoryQuery extends ActiveQuerySpace
 
         $this->visible();
 
+        $this->filterBlockedSpaces();
         $this->filterByKeyword();
         $this->filterByConnection();
 
@@ -65,7 +66,11 @@ class SpaceDirectoryQuery extends ActiveQuerySpace
 
     public function filterByConnection(): SpaceDirectoryQuery
     {
-        switch (Yii::$app->request->get('connection')) {
+        $connection = Yii::$app->request->get('connection');
+
+        $this->filterByConnectionArchived($connection === 'archived');
+
+        switch ($connection) {
             case 'member':
                 return $this->filterByConnectionMember();
             case 'follow':
@@ -99,6 +104,13 @@ class SpaceDirectoryQuery extends ActiveQuerySpace
                 ':memberStatus' => Membership::STATUS_MEMBER,
                 ':spaceClass' => Space::class,
             ]);
+    }
+
+    public function filterByConnectionArchived(bool $showArchived = false): SpaceDirectoryQuery
+    {
+        return $this->andWhere('space.status ' . ($showArchived ? '=' : '!=') . ' :spaceStatus', [
+            ':spaceStatus' => Space::STATUS_ARCHIVED,
+        ]);
     }
 
     public function order(): SpaceDirectoryQuery

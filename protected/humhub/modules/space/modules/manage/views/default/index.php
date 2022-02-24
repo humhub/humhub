@@ -6,6 +6,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 use humhub\modules\space\widgets\SpaceNameColorInput;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\Button;
 
 /* @var $this \humhub\modules\ui\view\components\View
@@ -31,6 +32,9 @@ use humhub\widgets\Button;
         <?= $form->field($model, 'description')->textInput(['maxlength' => 100]); ?>
         <?= $form->field($model, 'about')->widget(RichTextField::class); ?>
         <?= $form->field($model, 'tagsField')->widget(ContainerTagPicker::class, ['minInput' => 2]); ?>
+        <?php if (Yii::$app->getModule('user')->allowBlockUsers()) : ?>
+            <?= $form->field($model, 'blockedUsersField')->widget(UserPickerField::class, ['minInput' => 2]); ?>
+        <?php endif; ?>
 
         <?= Button::save()->submit() ?>
 

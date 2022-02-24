@@ -24,7 +24,6 @@ class ModuleController extends Controller
     public function actionIndex()
     {
         $space = $this->getSpace();
-
         return $this->render('index', ['availableModules' => $space->moduleManager->getAvailable(), 'space' => $space]);
     }
 

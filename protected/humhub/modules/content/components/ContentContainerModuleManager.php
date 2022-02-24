@@ -156,7 +156,7 @@ class ContentContainerModuleManager extends \yii\base\Component
         $this->_available = [];
 
         foreach (Yii::$app->moduleManager->getModules() as $id => $module) {
-            if ($module instanceof ContentContainerModule && Yii::$app->hasModule($module->id) &&
+            if ($module instanceof ContentContainerModule && $module->isActivated &&
                 $module->hasContentContainerType($this->contentContainer->className())) {
                 $this->_available[$module->id] = $module;
             }

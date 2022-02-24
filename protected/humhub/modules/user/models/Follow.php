@@ -96,7 +96,7 @@ class Follow extends ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        if ($insert && $this->object_model == User::class) {
+        if ($insert && $this->send_notifications && $this->object_model == User::class) {
             Followed::instance()
                     ->from($this->user)
                     ->about($this)
@@ -241,7 +241,7 @@ class Follow extends ActiveRecord
             $subQuery->andWhere(['user_follow.send_notifications' => 0]);
         }
 
-        return User::find()->active()->andWhere(['exists', $subQuery]);
+        return User::find()->visible()->andWhere(['exists', $subQuery]);
     }
 
 }

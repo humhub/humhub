@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\modules\user\models\User;
 use Yii;
 
 /**
@@ -188,7 +189,10 @@ class Text extends BaseType
         return parent::getFieldRules($rules);
     }
 
-    public function getUserValue($user, $raw = true)
+    /**
+     * @inheritdoc
+     */
+    public function getUserValue(User $user, $raw = true): string
     {
         $internalName = $this->profileField->internal_name;
         $value = $user->profile->$internalName;
@@ -203,5 +207,3 @@ class Text extends BaseType
     }
 
 }
-
-?>

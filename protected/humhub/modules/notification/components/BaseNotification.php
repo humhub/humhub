@@ -8,11 +8,13 @@
 
 namespace humhub\modules\notification\components;
 
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\bootstrap\Html;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\mail\MessageInterface;
 use humhub\components\SocialActivity;
@@ -74,6 +76,14 @@ abstract class BaseNotification extends SocialActivity
     public $recordClass = Notification::class;
 
     /**
+     * Additional user data available for the notification
+     *
+     * @var array|null
+     * @since 1.11
+     */
+    public $payload = null;
+
+    /**
      * Priority flag, if set to true, this Notification type will be marked as high priority.
      * This can be used by a given BaseTarget while handling a Notification.
      *
@@ -129,6 +139,10 @@ abstract class BaseNotification extends SocialActivity
             $date = $this->getContent()->updated_at;
         } else {
             $date = null;
+        }
+
+        if(!empty($this->record->payload)) {
+            $this->payload = Json::decode($this->record->payload);
         }
 
         if($this->hasContent()) {
@@ -198,6 +212,10 @@ abstract class BaseNotification extends SocialActivity
             return;
         }
 
+        if ($this->isBlockedFromUser($user)) {
+            return;
+        }
+
         Yii::$app->queue->push(new SendNotification(['notification' => $this, 'recipientId' => $user->id]));
     }
 
@@ -221,6 +239,18 @@ abstract class BaseNotification extends SocialActivity
     public function isOriginator(User $user)
     {
         return $this->originator && $this->originator->id === $user->id;
+    }
+
+    /**
+     * Checks if the originator blocked the given $user in order to avoid receive any notifications from the $user.
+     *
+     * @param User $user
+     * @return boolean
+     * @since 1.10
+     */
+    public function isBlockedFromUser(User $user): bool
+    {
+        return $this->originator && $user->isBlockedForUser($this->originator);
     }
 
     /**
@@ -250,6 +280,10 @@ abstract class BaseNotification extends SocialActivity
 
         if ($this->originator) {
             $notification->originator_user_id = $this->originator->id;
+        }
+
+        if ($this->payload) {
+            $notification->payload = Json::encode($this->payload);
         }
 
         if (!$notification->save()) {
@@ -290,6 +324,24 @@ abstract class BaseNotification extends SocialActivity
         }
         $this->originator = $originator;
         $this->record->originator_user_id = $originator->id;
+
+        return $this;
+    }
+
+    /**
+     * Set additional data
+     *
+     * @since 1.11
+     * @param $payload
+     * @return $this
+     */
+    public function payload($payload)
+    {
+        if (!$payload) {
+            return $this;
+        }
+        $this->payload = $payload;
+        $this->record->payload = $payload;
 
         return $this;
     }

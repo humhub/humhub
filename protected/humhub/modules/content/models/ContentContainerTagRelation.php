@@ -48,7 +48,7 @@ class ContentContainerTagRelation extends ActiveRecord
             ->select('name')
             ->leftJoin('contentcontainer_tag_relation', 'id = tag_id')
             ->where(['contentcontainer_id' => $contentContainer->contentcontainer_id])
-            ->andWhere(['contentcontainer_class' => get_class($contentContainer)])
+            ->andWhere(['contentcontainer_class' => $contentContainer->contentContainerRecord->class])
             ->column();
     }
 
@@ -69,7 +69,7 @@ class ContentContainerTagRelation extends ActiveRecord
         $existingTags = ContentContainerTag::find()
             ->select(['id', 'name'])
             ->where(['IN', 'name', $newTags])
-            ->andWhere(['contentcontainer_class' => get_class($contentContainer)])
+            ->andWhere(['contentcontainer_class' => $contentContainer->contentContainerRecord->class])
             ->all();
 
         $existingTagsArray = [];
@@ -86,7 +86,7 @@ class ContentContainerTagRelation extends ActiveRecord
             } else {
                 $newTag = new ContentContainerTag();
                 $newTag->name = $updatedTag;
-                $newTag->contentcontainer_class = get_class($contentContainer);
+                $newTag->contentcontainer_class = $contentContainer->contentContainerRecord->class;
                 $newTag->save();
                 $newTagRelation->tag_id = $newTag->id;
             }
@@ -113,5 +113,9 @@ class ContentContainerTagRelation extends ActiveRecord
         foreach ($tagRelations as $tagRelation) {
             $tagRelation->delete();
         }
+
+        $contentContainer->contentContainerRecord->updateAttributes([
+            'tags_cached' => null
+        ]);
     }
 }

@@ -135,6 +135,11 @@ class DownloadAction extends Action
             $user = static::getUserByDownloadToken($token, $file);
         }
 
+        // File is not assigned to any database record (yet)
+        if (empty($file->object_model) && (Yii::$app->user->isGuest || $file->created_by != Yii::$app->user->id)) {
+            throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
+        }
+
         if (!$file->canRead($user)) {
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
         }

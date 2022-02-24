@@ -1,20 +1,32 @@
-1.10.0-beta.1 (Unreleased)
+1.11.0 (Unreleased)
 --------------------------
-
-- Enh #4242: More failsave module loading when reading module config
-- Enh #5197: Default .htaccess - Remove Options +FollowSymLinks 
-- Enh #4495: Allow to lock comments per content
-- Enh #3688: Use Image widget in user list
-- Enh #5194: Confirm leave page for Post & Comment forms
-- Enh #5188: People / Spaces: Endless Scrolling
-- Enh #5216: Separate view document button
-- Enh #5229: Use RichTextField for user approval messages
-- Enh #100: Allow additional toggler for elements with context menu
-- Enh #5170: Allow 0 for min input size
-- Enh #4133: Back up a content of RichText editor
-- Enh #100: Extend upload buttons to use a paste zone
-- Enh #5257: Delete old unread notifications
-- Fix #5143: Unlimited page size for profile fields
-- Fix #5143: Unlimited page size for profile fields
-- Enh #5269: Allow to add new item on ui selector
+- Fix #5434: Hide disabled next/prev buttons on guide first/last steps
+- Fix #5456: `canImpersonate` only possible for SystemAdmins
+- Enh #5462: Added Single Page Post View 
+- Enh #5476: Rework modules administration section
+- Enh #5472: New interface `TabbedFormModel` for activate first tab with error input
+- Enh #5224: Add reply-to email in the settings
+- Enh #5471: On the pending approval page, add grouped actions and custom columns
+- Enh #5490: Display confirmation message before display embedded content
+- Enh #5258: Display who invited the user on the Approval page
+- Enh #5475: Option for forbidden usernames
+- Enh #4890: Allow to define actions in a controller which should not be intercepted by other actions
+- Enh #5510: oEmbed support for other social networks, redesign of oEmbed settings pages
+- Fix #5534: Statistic input loading problem
+- Enh #5523: Option to include E-Mail address to search 
+- Enh #5352: Remove "NewMembers" widget from Core
+- Fix #5478: Avoid permalinks on comments related to a global content (not in a container) to crash.
+- Fix #5547: Remove Google Fonts from E-mails
+- Enh #5536: Optional notification w/ reason when admin deletes content/comment
+- Fix #5549: Topic icon is missing in TopicPicker search
+- Fix #5556: Formatted output for date fields in "About me" profile area.
+- Fix #5553: Cannot have two or more users without email when emailRequired is disabled.
+- Fix #5506: Modal: Close Icon optimization
+- Fix #5564: Close modal button doesn't work after form validation
+- Fix #5533: Users can't live in UTC
+- Fix #5460: Untranslatable string New Updates in Stream
+- Fix #5573: Allow replying for sub comments
+- Fix #5524: Mentioning Permission
+- Fix #5529: Tooltip: improving readability
+- Enh #5298: Added Followers to Space About Page
 - Enh #4558: Deprecate CompatModuleManager

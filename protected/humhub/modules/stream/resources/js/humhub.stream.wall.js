@@ -179,7 +179,7 @@ humhub.module('stream.wall', function (module, require, $) {
         var that = this;
         var appendToStreamTimeout;
 
-        var $badge =  $(WallStream.template.updateBadge);
+        var $badge =  $(string.template(WallStream.template.updateBadge, {text: module.config.updatesAvailable}));
 
         $('body').append($badge);
 
@@ -236,7 +236,7 @@ humhub.module('stream.wall', function (module, require, $) {
 
     WallStream.template = {
         loadSuppressedButton: '<div class="load-suppressed" style="display:none;"><a href="#" data-action-click="loadSuppressed" data-entry-key="{key}" data-action-block="manual" data-ui-loader><i class="fa fa-chevron-down"></i>&nbsp;&nbsp;{message}&nbsp;&nbsp;<span class="badge">{contentName}</span></a></div>',
-        updateBadge: '<div id="streamUpdateBadge" class="animated bounceIn"><span class="label label-info" style="cursor:pointer"><i class="fa fa-arrow-circle-up"></i> New Updates Available!</span></div>'
+        updateBadge: '<div id="streamUpdateBadge" class="animated bounceIn"><span class="label label-info" style="cursor:pointer"><i class="fa fa-arrow-circle-up"></i> {text}</span></div>'
     };
 
     WallStream.prototype.loadSuppressed = function(evt) {
@@ -292,8 +292,10 @@ humhub.module('stream.wall', function (module, require, $) {
 
         event.on('humhub:topic:updated.wallStream', $.proxy(this.onTopicUpdated, this));
 
-       this.initTopicPicker();
-       this.initContentTypePicker();
+        this.initTopicPicker();
+        this.initContentTypePicker();
+
+        this.initFilterCount();
     };
 
     WallStreamFilter.prototype.initTopicPicker = function() {
@@ -377,6 +379,15 @@ humhub.module('stream.wall', function (module, require, $) {
         this.super('triggerChange');
         this.updateFilterCount();
     };
+
+    WallStreamFilter.prototype.initFilterCount = function () {
+        this.updateFilterCount();
+
+        var activeFiltersCount = parseInt(this.$.find('.filterCount').text().replace(/^.+?(\d+).+?$/, '$1'));
+        if (activeFiltersCount > 0 && this.$.find('.wall-stream-filter-body').is(':hidden')) {
+            this.toggleFilterPanel();
+        }
+    }
 
     WallStreamFilter.prototype.updateFilterCount = function () {
         var count = this.getActiveFilterCount({exclude: ['sort', 'scope']});
