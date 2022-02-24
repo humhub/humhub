@@ -11,6 +11,7 @@
 - Enh #5258: Display who invited the user on the Approval page
 - Enh #5475: Option for forbidden usernames
 - Enh #4890: Allow to define actions in a controller which should not be intercepted by other actions
+- Enh #5503: Allow profile fields link prefixes like "tel://" 
 - Enh #5510: oEmbed support for other social networks, redesign of oEmbed settings pages
 - Fix #5534: Statistic input loading problem
 - Enh #5523: Option to include E-Mail address to search 
