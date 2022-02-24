@@ -35,3 +35,4 @@
 - Enh #5323: Remove deprecated "Setting" classes
 - Enh #5381: Optimize module states query
 - Enh #4823: Removed CHTML and CActiveForm classes as well as usages (plus refactoring)
+- Fix #5449: File - Update info after `setStoredFileContent` and `setStoredFile`
