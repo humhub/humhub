@@ -17,11 +17,15 @@ use yii\web\NotFoundHttpException;
  */
 class ApproveUserForm extends \yii\base\Model
 {
-
     /**
      * @var User
      */
     public $user;
+
+    /**
+     * @var User
+     */
+    public $users;
 
     /**
      * @var User
@@ -38,45 +42,77 @@ class ApproveUserForm extends \yii\base\Model
      */
     public $message;
 
-    public function __construct($userId)
+    /**
+     * Is a bulk action on multiple users
+     * @var bool
+     */
+    protected $_isBulkAction = false;
+
+
+    /**
+     * @inerhitdoc
+     * @param $usersId int|string|array
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function __construct($usersId)
     {
         $this->admin = Yii::$app->user->getIdentity();
-        $this->user = $this->getUser($userId);
+
+        if (is_array($usersId)) {
+            $this->_isBulkAction = true;
+        }
+
+        if ($this->_isBulkAction) {
+            $this->users = $this->getUsers($usersId);
+        } else {
+            $users = $this->getUsers([(int)$usersId]);
+            $this->user = reset($users);
+        }
+
         parent::__construct([]);
     }
 
+    /**
+     * @inerhitdoc
+     * @throws \yii\base\InvalidConfigException
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     */
     public function init()
     {
         parent::init();
-        if(!($this->user instanceof  User)) {
-            throw new NotFoundHttpException(Yii::t('AdminModule.controllers_ApprovalController', 'User not found!'));
+
+        if (!$this->_isBulkAction) {
+            if (!($this->user instanceof User)) {
+                throw new NotFoundHttpException(Yii::t('AdminModule.base', 'User not found!'));
+            }
+
+            if ($this->user->status !== User::STATUS_NEED_APPROVAL) {
+                throw new NotFoundHttpException(Yii::t('AdminModule.base', 'Invalid user state: {state}', ['state' => $this->user->status]));
+            }
         }
 
-        if($this->user->status !== User::STATUS_NEED_APPROVAL) {
-            throw new NotFoundHttpException(Yii::t('AdminModule.controllers_ApprovalController', 'Invalid user state: {state}', ['state' => $this->user->status]));
-        }
-
-        if(!($this->admin instanceof User)) {
+        if (!($this->admin instanceof User)) {
             throw new ForbiddenHttpException();
         }
 
-        if(!$this->admin->canApproveUsers()) {
+        if (!$this->admin->canApproveUsers()) {
             throw new ForbiddenHttpException();
         }
     }
 
     /**
-     * @param $id int
-     * @return User|null
+     * @param $ids array
+     * @return array|User|User[]|null
      * @throws \Throwable
      * @throws \yii\base\InvalidConfigException
      */
-    private function getUser($id)
+    private function getUsers($ids)
     {
         return User::find()
-            ->andWhere(['user.id' => (int) $id, 'user.status' => User::STATUS_NEED_APPROVAL])
-            ->administrableBy($this->admin)
-            ->one();
+            ->andWhere(['user.id' => $ids, 'user.status' => User::STATUS_NEED_APPROVAL])
+            ->administrableBy($this->admin)->all();
     }
 
     /**
@@ -86,13 +122,17 @@ class ApproveUserForm extends \yii\base\Model
      */
     public function rules()
     {
+        if ($this->_isBulkAction) {
+            return [];
+        }
+
         return [
             [['subject', 'message'], 'required'],
         ];
     }
 
     /**
-     * Declares attribute labels.
+     * @inheritDoc
      */
     public function attributeLabels()
     {
@@ -108,11 +148,11 @@ class ApproveUserForm extends \yii\base\Model
      */
     public function approve()
     {
-        if(!$this->message) {
+        if (!$this->message) {
             $this->setApprovalDefaults();
         }
 
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             return false;
         }
 
@@ -126,14 +166,16 @@ class ApproveUserForm extends \yii\base\Model
     /**
      * Declines user by sending denial mail and deleting the user.
      * @return bool
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function decline()
     {
-        if(!$this->message) {
+        if (!$this->message) {
             $this->setDeclineDefaults();
         }
 
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             return false;
         }
 
@@ -142,6 +184,45 @@ class ApproveUserForm extends \yii\base\Model
         return true;
     }
 
+    /**
+     * @return bool
+     */
+    public function bulkApprove()
+    {
+        if (!$this->validate()) {
+            return false;
+        }
+
+        foreach ($this->users as $user) {
+            $this->user = $user;
+            $this->setApprovalDefaults();
+            $this->approve();
+        }
+
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function bulkDecline()
+    {
+        if (!$this->validate()) {
+            return false;
+        }
+
+        foreach ($this->users as $user) {
+            $this->user = $user;
+            $this->setApprovalDefaults();
+            $this->decline();
+        }
+
+        return true;
+    }
+
+    /**
+     * @return void
+     */
     public function send()
     {
         $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
@@ -154,9 +235,7 @@ class ApproveUserForm extends \yii\base\Model
 
     /**
      * Sets the subject and message attribute texts for user approval
-     *
-     * @param User $user
-     * @param User $admin
+     * @return void
      */
     public function setApprovalDefaults()
     {
@@ -172,8 +251,8 @@ class ApproveUserForm extends \yii\base\Model
 
         $loginURL = Url::to(['/user/auth/login'], true);
         $loginLink = Html::a(urldecode($loginURL), $loginURL);
-        $userName =  Html::encode($this->user->displayName);
-        $adminName =  Html::encode($this->admin->displayName);
+        $userName = Html::encode($this->user->displayName);
+        $adminName = Html::encode($this->admin->displayName);
 
         if (!empty($module->settings->get('auth.registrationApprovalMailContent'))) {
             $this->message = Yii::t('AdminModule.user', $module->settings->get('auth.registrationApprovalMailContent'), [
@@ -192,9 +271,7 @@ class ApproveUserForm extends \yii\base\Model
 
     /**
      * Sets the subject and message attribute texts for user decline
-     *
-     * @param User $user
-     * @param User $admin
+     * @return void
      */
     public function setDeclineDefaults()
     {

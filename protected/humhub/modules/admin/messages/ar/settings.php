@@ -110,9 +110,11 @@ return [
     'Deactivate' => '',
     'Deactivate maintenance mode and enable all users to access the platform again?' => '',
     'Default Timezone' => '',
+    'E-Mail reply-to' => '',
     'Enable maintenance mode' => '',
     'Exclude media files from stream attachment list' => '',
     'Maintenance mode' => '',
+    'Optional. Default reply address for system emails like notifications.' => '',
     'Reported database time: {dateTime}' => '',
     'Saved and sent test email to: {address}' => '',
 ];

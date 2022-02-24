@@ -434,7 +434,7 @@ class InitialData
 
         $group = new Group();
         $group->name = "Users";
-        $group->description = "Example Group by Installer";
+        $group->description = 'Default group for all newly registered users of the network';
         $group->show_at_directory = false;
         $group->is_default_group = 1;
         $group->save();

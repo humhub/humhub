@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Administration</strong>' => '<strong>Amministrazione</strong>',
-  '<strong>Hurray!</strong> That\'s all for now.' => '<strong>Hurray!</strong> Questo è tutto per ora.',
+  '<strong>Hurray!</strong> That\'s all for now.' => '<strong>Hurrah!</strong> Questo è tutto per ora.',
   '<strong>Modules</strong>' => '<strong>Moduli</strong>',
   'As an admin, you can manage the whole platform from here.<br><br>Apart from the modules, we are not going to go into each point in detail here, as each has its own short description elsewhere.' => 'Come amministratore puoi gestire l\'intera piattaforma da qui.<br><br>Riguardo ai moduli, non andremo nel dettaglio qui, in quanto ognuno ha la sua descrizione breve altrove.',
   'You are currently in the tools menu. From here you can access the HumHub online marketplace, where you can install an ever increasing number of tools on-the-fly.<br><br>As already mentioned, the tools increase the features available for your space.' => 'Ora sei nel menù strumenti. Da qui puoi accedere all\'online market di HumHub, da dove puoi installare un numero sempre crescente di tool on-the-fly.<br><br>Come già accennato, i tool aumentano le funzionalità disponibili per il tuo space.',

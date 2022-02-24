@@ -12,6 +12,7 @@ use humhub\modules\file\models\File;
 use humhub\modules\file\libs\FileHelper;
 use Yii;
 use yii\base\Component;
+use yii\helpers\ArrayHelper;
 use yii\imagine\Image;
 use yii\web\UploadedFile;
 
@@ -67,16 +68,14 @@ class StorageManager extends Component implements StorageManagerInterface
     /**
      * @inheritdoc
      */
-    public function getVariants()
+    public function getVariants($except = [])
     {
-        $variants = [];
-        foreach (scandir($this->getPath()) as $file) {
-            if (!in_array($file, [$this->originalFileName, '.', '..'])) {
-                $variants[] = $file;
-            }
-        }
-
-        return $variants;
+        return array_map(
+            function (string $s): string {
+                return basename($s);
+            },
+            FileHelper::findFiles($this->getPath(), ['except' => ArrayHelper::merge(['file'], $except)])
+        );
     }
 
     /**

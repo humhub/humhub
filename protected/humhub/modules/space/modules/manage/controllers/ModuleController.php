@@ -25,7 +25,10 @@ class ModuleController extends Controller
     {
         $space = $this->getSpace();
 
-        return $this->render('index', ['availableModules' => $space->getAvailableModules(), 'space' => $space]);
+        return $this->render('index', [
+            'space' => $space,
+            'modules' => $space->getAvailableModules(),
+        ]);
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+use humhub\modules\file\handler\BaseFileHandler;
+use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\ui\form\widgets\ActiveForm;
@@ -12,6 +14,7 @@ use humhub\modules\content\widgets\richtext\RichTextField;
 /* @var $objectId integer */
 /* @var $comment \humhub\modules\comment\models\Comment */
 /* @var $submitUrl string */
+/* @var $fileHandlers BaseFileHandler[] */
 
 /** @var \humhub\modules\content\Module $contentModule */
 $contentModule = Yii::$app->getModule('content');
@@ -35,19 +38,28 @@ $contentModule = Yii::$app->getModule('content');
             ]
         ])->label(false) ?>
 
-        <div class="comment-buttons">
-            <?= UploadButton::widget([
+        <div class="comment-buttons"><?php
+            $uploadButton = UploadButton::widget([
                 'id' => 'comment_upload_' . $comment->id,
                 'model' => $comment,
                 'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
                 'dropZone' => '#comment_' . $comment->id,
                 'preview' => '#comment_upload_preview_' . $comment->id,
                 'progress' => '#comment_upload_progress_' . $comment->id,
-                'max' => $contentModule->maxAttachedFiles
-            ]); ?>
-
-            <?= Button::defaultType(Yii::t('base', 'Save'))->cssClass('btn-comment-submit')->action('editSubmit', $submitUrl)->submit()->sm() ?>
-        </div>
+                'max' => $contentModule->maxAttachedFiles,
+                'cssButtonClass' => 'btn-sm btn-info',
+            ]);
+            echo FileHandlerButtonDropdown::widget([
+                'primaryButton' => $uploadButton,
+                'handlers' => $fileHandlers,
+                'cssButtonClass' => 'btn-info btn-sm',
+                'pullRight' => true,
+            ]);
+            echo Button::info()
+                ->icon('send')
+                ->cssClass('btn-comment-submit')->sm()
+                ->action('editSubmit', $submitUrl)->submit();
+        ?></div>
     </div>
 
     <div id="comment_upload_progress_<?= $comment->id ?>" style="display:none; margin:10px 0;"></div>

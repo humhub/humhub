@@ -62,15 +62,17 @@ interface StorageManagerInterface
      * Deletes a stored file (-variant)
      *
      * If not variant is given, also all file variants will be deleted
+     * @param string $variant the variant identifier
+     * @param string[] $except exclude following variants from deletion
      */
     public function delete($variant = null, $except = []);
 
     /**
      * Get file variants
-     *
+     * @param string[] $except exclude following variants from deletion
      * @return array Returns the stored variants of the file
      */
-    public function getVariants();
+    public function getVariants($except = []);
 
     /**
      * Sets the file for this storage manager instance
