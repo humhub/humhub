@@ -1,51 +1,35 @@
-1.10.0-beta.1 (Unreleased)
---------------------------------
+1.11.0 (Unreleased)
+--------------------------
+- Fix #5434: Hide disabled next/prev buttons on guide first/last steps
+- Fix #5456: `canImpersonate` only possible for SystemAdmins
+- Enh #5462: Added Single Page Post View 
+- Enh #5476: Rework modules administration section
+- Enh #5472: New interface `TabbedFormModel` for activate first tab with error input
+- Enh #5224: Add reply-to email in the settings
+- Enh #5471: On the pending approval page, add grouped actions and custom columns
+- Enh #5490: Display confirmation message before display embedded content
+- Enh #5258: Display who invited the user on the Approval page
+- Enh #5475: Option for forbidden usernames
+- Enh #4890: Allow to define actions in a controller which should not be intercepted by other actions
+- Enh #5510: oEmbed support for other social networks, redesign of oEmbed settings pages
+- Fix #5534: Statistic input loading problem
+- Enh #5523: Option to include E-Mail address to search 
+- Enh #5352: Remove "NewMembers" widget from Core
+- Fix #5478: Avoid permalinks on comments related to a global content (not in a container) to crash.
+- Fix #5547: Remove Google Fonts from E-mails
+- Enh #5536: Optional notification w/ reason when admin deletes content/comment
+- Fix #5549: Topic icon is missing in TopicPicker search
+- Fix #5556: Formatted output for date fields in "About me" profile area.
+- Fix #5553: Cannot have two or more users without email when emailRequired is disabled.
+- Fix #5506: Modal: Close Icon optimization
+- Fix #5564: Close modal button doesn't work after form validation
+- Fix #5533: Users can't live in UTC
+- Fix #5460: Untranslatable string New Updates in Stream
+- Fix #5573: Allow replying for sub comments
+- Enh #5358: Remove deprecated "Directory" module
+- Fix #5524: Mentioning Permission
+- Fix #5529: Tooltip: improving readability
+- Enh #5298: Added Followers to Space About Page
+- Enh #4558: Deprecate CompatModuleManager
+- Enh #5323: Remove deprecated "Setting" classes
 - Enh #5381: Optimize module states query
-
-1.10.0-beta.1 (October 27, 2021)
---------------------------------
-
-- Enh #4399: Direct deep links to comments and highlighting
-- Enh #4242: More failsafe module loading when reading module config
-- Enh #5197: Default `.htaccess` - Remove `Options +FollowSymLinks` 
-- Enh #4495: Allow locking comments per content
-- Enh #3688: Use `Image` widget in user list
-- Enh #5194: Confirm leave page for Post & Comment forms
-- Enh #5188: People/Spaces: Endless Scrolling
-- Enh #5216: Separate View document button
-- Enh #5229: Use `RichTextField` for user approval messages
-- Enh #100: Allow additional toggle for elements with context menu
-- Enh #5170: `UserPicker`: Allow zero as min input size
-- Enh #4133: Backup a content of `RichTextEditor`
-- Enh #100: Extend upload buttons to use a paste zone
-- Enh #5256: Limit uploading profile images (Thanks to @tuhin1729 for discovering the issue.) 
-- Enh #5257: Delete old unread notifications of inactive users
-- Fix #5143: Unlimited page size for profile fields
-- Enh #5269: Allow adding new item on ui selector
-- Enh #5005: Possibility to invite a registered user to a space by email
-- Enh #3546: Sign in back from impersonate mode
-- Fix #5282: On account creation, registration form has HTML tag set with English language
-- Enh #5280: Allow to set the number of contents from which `Show {i} more.` appears in the stream
-- Enh #5303: Unassigned files are only accessibly for creator 
-- Enh #5293: Added File History API for versioning
-- Enh #4399: Changed default `@warning` color to `#FC4A64`
-- Enh #5302: Improve checkbox widget ContentVisibilitySelect 
-- Enh #5151: ContentContainer scoped URL Rules
-- Enh #5094: Reflect and reload Stream filters by URL
-- Enh $4879: Refactoring of `Followable` behavior
-- Enh $4879: Added supported of "protected" module groups
-- Enh #5330: Added option to hide "Spaces" top menu item
-- Enh #5080: Show available module updates directly in admin menu
-- Fix #5331: Fix js error on pjax open "Directory" page
-- Enh #5333: Module's events handlers registration: check if method exists
-- Enh #5300: Blocking users for space
-- Enh #5347: Caching added for group permissions (reduced db queries)
-- Enh #5349: Archived Spaces on Spaces directory
-- Enh #4945: Collapsible-fields now accessible by tab and enable/closable by keypress, check-boxes now focusable
-- Enh #5354: Space - pending invites and approvals: add the image of the users
-- Enh #5361: Optimize People directory details query
-- Enh #5357: SpaceChooser - lazy load added, widget refactoring.
-- Fix #5360: Mentioning search fails apostrophe in a user's displayName
-- Fix #5359: Removed encoding of user's name in UserPicker
-- Enh #5363: Optimize duplicated SQL queries on profile edit
-- Enh #5362: Optimize getting of ContentContainer tags

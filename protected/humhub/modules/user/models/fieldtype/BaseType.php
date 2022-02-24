@@ -318,7 +318,7 @@ class BaseType extends Model
      * @param bool $raw
      * @return string
      */
-    public function getUserValue($user, $raw = true)
+    public function getUserValue(User $user, $raw = true): ?string
     {
         $internalName = $this->profileField->internal_name;
 

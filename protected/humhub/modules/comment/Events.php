@@ -9,10 +9,11 @@
 namespace humhub\modules\comment;
 
 use humhub\modules\content\components\ContentActiveRecord;
-use Yii;
+use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\search\events\SearchAttributesEvent;
 use humhub\modules\search\engine\Search;
+use Yii;
 use yii\base\Component;
 use yii\base\Event;
 
@@ -108,7 +109,13 @@ class Events extends Component
      */
     public static function onWallEntryAddonInit($event)
     {
-        $event->sender->addWidget(widgets\Comments::class, ['object' => $event->sender->object], ['sortOrder' => 30]);
+        /* @var WallEntryAddons $wallEntryAddons */
+        $wallEntryAddons = $event->sender;
+
+        $wallEntryAddons->addWidget(widgets\Comments::class, [
+            'object' => $wallEntryAddons->object,
+            'renderOptions' => $wallEntryAddons->renderOptions,
+        ], ['sortOrder' => 30]);
     }
 
     /**

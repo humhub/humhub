@@ -54,6 +54,11 @@ use yii\web\UploadedFile;
 class File extends FileCompat
 {
     /**
+     * @event Event that is triggered after a new file content has been stored.
+     */
+    const EVENT_AFTER_NEW_STORED_FILE = 'afterNewStoredFile';
+
+    /**
      * @var int $old_updated_by
      */
     public $old_updated_by;
@@ -208,23 +213,20 @@ class File extends FileCompat
     {
         $object = $this->getPolymorphicRelation();
 
-        if ($object != null) {
-            if ($object instanceof ContentAddonActiveRecord) {
-                /** @var ContentAddonActiveRecord $object */
-                return $object->canEdit($userId);
-            } elseif ($object instanceof ContentActiveRecord) {
-                /** @var ContentActiveRecord $object */
-                return $object->content->canEdit($userId);
-            }
-        }
-
-        if ($object !== null && ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord)) {
-            return $object->content->canEdit($userId);
-        }
-
         // File is not bound to an object
-        if ($object == null) {
+        if ($object === null) {
             return true;
+        }
+
+        if ($object instanceof ContentAddonActiveRecord) {
+            /** @var ContentAddonActiveRecord $object */
+            return $object->canEdit($userId) || $object->content->canEdit($userId);
+        } elseif ($object instanceof ContentActiveRecord) {
+            /** @var ContentActiveRecord $object */
+            return $object->content->canEdit($userId);
+        } elseif ($object instanceof ActiveRecord && method_exists($object, 'canEdit')) {
+            /** @var ActiveRecord $object */
+            return $object->canEdit($userId);
         }
 
         return false;
@@ -360,6 +362,8 @@ class File extends FileCompat
                 'hash_sha1' => sha1_file($this->store->get()),
                 'size' => filesize($this->store->get()),
             ]);
+
+            $this->trigger(self::EVENT_AFTER_NEW_STORED_FILE);
         }
     }
 }

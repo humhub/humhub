@@ -35,6 +35,11 @@ class AccountController extends BaseAccountController
     /**
      * @inheritdoc
      */
+    protected $doNotInterceptActionIds = ['delete'];
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->setActionTitles([
@@ -243,10 +248,15 @@ class AccountController extends BaseAccountController
      */
     public function actionEditModules()
     {
-        $user = Yii::$app->user->getIdentity();
-        $availableModules = $user->getAvailableModules();
+        $this->subLayout = '@humhub/modules/user/views/account/_userModulesLayout';
 
-        return $this->render('editModules', ['user' => $user, 'availableModules' => $availableModules]);
+        /* @var User $user */
+        $user = Yii::$app->user->getIdentity();
+
+        return $this->render('editModules', [
+            'user' => $user,
+            'modules' => $user->moduleManager->getAvailable(),
+        ]);
     }
 
     /**
@@ -262,9 +272,7 @@ class AccountController extends BaseAccountController
         $user = Yii::$app->user->getIdentity();
         $moduleId = Yii::$app->request->get('moduleId');
 
-        if (!$user->isModuleEnabled($moduleId)) {
-            $user->enableModule($moduleId);
-        }
+        $user->moduleManager->enable($moduleId);
 
         if (!Yii::$app->request->isAjax) {
             return $this->redirect(['/user/account/edit-modules']);
@@ -286,9 +294,7 @@ class AccountController extends BaseAccountController
         $user = Yii::$app->user->getIdentity();
         $moduleId = Yii::$app->request->get('moduleId');
 
-        if ($user->isModuleEnabled($moduleId) && $user->canDisableModule($moduleId)) {
-            $user->disableModule($moduleId);
-        }
+        $user->moduleManager->disable($moduleId);
 
         if (!Yii::$app->request->isAjax) {
             return $this->redirect(['/user/account/edit-modules']);

@@ -12,7 +12,6 @@ use humhub\modules\comment\models\Comment;
 use Yii;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
-use yii\helpers\Url;
 
 /**
  * NewComment activity
@@ -58,7 +57,7 @@ class NewComment extends BaseActivity implements ConfigurableActivityInterface
      */
     public function getUrl()
     {
-        return Url::to(['/comment/perma', 'id' => $this->source->id], true);
+        return $this->source->url;
     }
 
 }
