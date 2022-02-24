@@ -32,3 +32,4 @@
 - Enh #5298: Added Followers to Space About Page
 - Enh #4558: Deprecate CompatModuleManager
 - Enh #5323: Remove deprecated "Setting" classes
+- Enh #5381: Optimize module states query
