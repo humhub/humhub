@@ -26,6 +26,7 @@
 - Fix #5533: Users can't live in UTC
 - Fix #5460: Untranslatable string New Updates in Stream
 - Fix #5573: Allow replying for sub comments
+- Enh #5358: Remove deprecated "Directory" module
 - Fix #5524: Mentioning Permission
 - Fix #5529: Tooltip: improving readability
 - Enh #5298: Added Followers to Space About Page
