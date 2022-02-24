@@ -104,12 +104,12 @@ class Migration extends \yii\db\Migration
      * @param string $table
      * @return bool
      */
-    protected function foreignIndexExists($index, $table): bool
+    protected function foreignIndexExists(string $index, string $table): bool
     {
         return (bool) $this->db->createCommand('SELECT * FROM information_schema.key_column_usage
             WHERE REFERENCED_TABLE_NAME IS NOT NULL 
               AND TABLE_NAME = ' . $this->db->quoteValue($table) . '
-              AND TABLE_SCHEMA = "humhub_develop"
+              AND TABLE_SCHEMA = ' . $this->db->quoteValue($this->getDsnAttribute('dbname')). '
               AND CONSTRAINT_NAME = ' . $this->db->quoteValue($index))
             ->queryOne();
     }
@@ -319,5 +319,19 @@ class Migration extends \yii\db\Migration
     protected function isInitialInstallation()
     {
         return (!Setting::isInstalled());
+    }
+
+    /**
+     * Get data from database dsn config
+     *
+     * @since 1.9.3
+     * @param string $name 'host', 'port', 'dbname'
+     * @return string|null
+     */
+    private function getDsnAttribute(string $name): ?string
+    {
+        return preg_match('/' . preg_quote($name) . '=([^;]*)/', $this->db->dsn, $match)
+            ? $match[1]
+            : null;
     }
 }

@@ -407,7 +407,9 @@ humhub.module('client', function (module, require, $) {
         });
 
         $(document).on('hide.bs.modal', '.modal', function (evt) {
-            confirmFormChanges(evt, msgModal);
+            if ($form.closest('.modal').length) {
+                confirmFormChanges(evt, msgModal);
+            }
         });
     };
 

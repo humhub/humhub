@@ -156,7 +156,7 @@ class ContentContainerModuleManager extends \yii\base\Component
         $this->_available = [];
 
         foreach (Yii::$app->moduleManager->getModules() as $id => $module) {
-            if ($module instanceof ContentContainerModule && Yii::$app->hasModule($module->id) &&
+            if ($module instanceof ContentContainerModule && $module->isActivated &&
                 $module->hasContentContainerType($this->contentContainer->className())) {
                 $this->_available[$module->id] = $module;
             }
@@ -205,21 +205,27 @@ class ContentContainerModuleManager extends \yii\base\Component
      */
     protected function getStates()
     {
-        $states = [];
+        static $states = [];
+
+        if (isset($states[$this->contentContainer->contentcontainer_id])) {
+            return $states[$this->contentContainer->contentcontainer_id];
+        }
+
+        $states[$this->contentContainer->contentcontainer_id] = [];
 
         // Get states for this contentcontainer from database
         foreach (ContentContainerModuleState::findAll(['contentcontainer_id' => $this->contentContainer->contentcontainer_id]) as $module) {
-            $states[$module->module_id] = $module->module_state;
+            $states[$this->contentContainer->contentcontainer_id][$module->module_id] = $module->module_state;
         }
 
         // Get default states, when no state is stored
         foreach ($this->getAvailable() as $module) {
-            if (!isset($states[$module->id])) {
-                $states[$module->id] = self::getDefaultState($this->contentContainer->className(), $module->id);
+            if (!isset($states[$this->contentContainer->contentcontainer_id][$module->id])) {
+                $states[$this->contentContainer->contentcontainer_id][$module->id] = self::getDefaultState($this->contentContainer->className(), $module->id);
             }
         }
 
-        return $states;
+        return $states[$this->contentContainer->contentcontainer_id];
     }
 
     /**

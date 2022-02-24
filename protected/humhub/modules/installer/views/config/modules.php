@@ -3,7 +3,7 @@
 
 use yii\bootstrap\Html;
 
-
+/* @var array $modules */
 ?>
 <div id="name-form" class="panel panel-default animated fadeIn">
 
@@ -19,10 +19,15 @@ use yii\bootstrap\Html;
         <?= Html::beginForm(); ?>
 
         <?php foreach ($modules as $module): ?>
-            <label>
-                <?php echo Html::checkbox('enableModules[' . $module['id'] . ']', true); ?><?php echo $module['name']; ?>
-            </label>
-            <p class="help-block" style="margin: 0 0 10px 23px;"><?php echo $module['description']; ?></p>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <?= Html::checkbox('enableModules[' . $module['id'] . ']', true) ?>
+                        <?= $module['name'] ?>
+                    </label>
+                    <p class="help-block"><?= $module['description'] ?></p>
+                </div>
+            </div>
             <hr>
         <?php endforeach; ?>
 

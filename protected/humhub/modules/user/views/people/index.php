@@ -1,6 +1,6 @@
 <?php
 
-use humhub\assets\DirectoryAsset;
+use humhub\assets\CardsAsset;
 use humhub\libs\Html;
 use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\widgets\PeopleCard;
@@ -11,7 +11,7 @@ use humhub\widgets\ModalButton;
 /* @var $people PeopleQuery */
 /* @var $showInviteButton bool */
 
-DirectoryAsset::register($this);
+CardsAsset::register($this);
 ?>
 <div class="panel panel-default">
 
@@ -53,7 +53,7 @@ DirectoryAsset::register($this);
 
 <?php if (!$people->isLastPage()) : ?>
     <?= Html::tag('div', '', [
-        'class' => 'directory-end',
+        'class' => 'cards-end',
         'data-current-page' => $people->pagination->getPage() + 1,
         'data-total-pages' => $people->pagination->getPageCount(),
         'data-ui-loader' => '',

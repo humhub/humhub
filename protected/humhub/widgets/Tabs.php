@@ -64,27 +64,6 @@ class Tabs extends \yii\bootstrap\Tabs
             return false;
         }
 
-        $index = 0;
-        foreach ($this->items as $key => $item) {
-            if (isset($item['view'])) {
-                $view = $item['view'];
-                if ($this->viewPath && strpos($view, '@') === false) {
-                    $view = $this->viewPath . '/'.$item['view'];
-                }
-
-                $this->items[$key]['content'] = $this->render($view, $this->getParams($item));
-                unset($item['view']);
-                unset($item['params']);
-            }
-
-            if (!isset($item['sortOrder'])) {
-                // keep stable sorting by adding counter (otherwise equal sorOrders will destroy index ordering)
-                $this->items[$key]['sortOrder'] = 1000 + ($index * 10);
-            }
-
-            $index++;
-        }
-
         $this->sortItems();
 
         return true;
@@ -136,10 +115,39 @@ class Tabs extends \yii\bootstrap\Tabs
     }
 
     /**
+     * Before sorts the items
+     */
+    protected function beforeSortItems()
+    {
+        $index = 0;
+        foreach ($this->items as $key => $item) {
+            if (isset($item['view'])) {
+                $view = $item['view'];
+                if ($this->viewPath && strpos($view, '@') === false) {
+                    $view = $this->viewPath . '/'.$item['view'];
+                }
+
+                $this->items[$key]['content'] = $this->render($view, $this->getParams($item));
+                unset($item['view']);
+                unset($item['params']);
+            }
+
+            if (!isset($item['sortOrder'])) {
+                // keep stable sorting by adding counter (otherwise equal sorOrders will destroy index ordering)
+                $this->items[$key]['sortOrder'] = 1000 + ($index * 10);
+            }
+
+            $index++;
+        }
+    }
+
+    /**
      * Sorts the item attribute by sortOrder
      */
     private function sortItems()
     {
+        $this->beforeSortItems();
+
         usort($this->items, function ($a, $b) {
             if ($a['sortOrder'] == $b['sortOrder']) {
                 return 0;

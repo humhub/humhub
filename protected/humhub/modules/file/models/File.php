@@ -54,6 +54,11 @@ use yii\web\UploadedFile;
 class File extends FileCompat
 {
     /**
+     * @event Event that is triggered after a new file content has been stored.
+     */
+    const EVENT_AFTER_NEW_STORED_FILE = 'afterNewStoredFile';
+
+    /**
      * @var int $old_updated_by
      */
     public $old_updated_by;
@@ -357,6 +362,8 @@ class File extends FileCompat
                 'hash_sha1' => sha1_file($this->store->get()),
                 'size' => filesize($this->store->get()),
             ]);
+
+            $this->trigger(self::EVENT_AFTER_NEW_STORED_FILE);
         }
     }
 }

@@ -72,7 +72,7 @@ return array (
   'Topics' => 'Themen',
   'Turn off notifications' => 'Benachrichtigungen abschalten',
   'Turn on notifications' => 'Benachrichtigungen aktivieren',
-  'Unarchive' => 'Aus dem Archiv',
+  'Unarchive' => 'Archivierung aufheben',
   'Unlock comments' => 'Kommentarsektion freigeben',
   'Unpin' => 'Lösen',
   'Updated' => 'Aktualisiert',

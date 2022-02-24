@@ -115,4 +115,6 @@ return [
     'You\'re using no logo at the moment. Upload your logo now.' => 'В момента не използвате лого. Качете вашето лого сега.',
     'never' => 'никога',
     'Default Timezone' => '',
+    'E-Mail reply-to' => '',
+    'Optional. Default reply address for system emails like notifications.' => '',
 ];

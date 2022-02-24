@@ -38,7 +38,7 @@ class Module extends \humhub\components\Module
 
 
     /**
-     * Returns all configurable Activitiess
+     * Returns all configurable Activities
      *
      * @since 1.2
      * @return ConfigurableActivityInterface[] a list of configurable activities

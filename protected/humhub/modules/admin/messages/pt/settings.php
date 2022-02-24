@@ -115,4 +115,6 @@ return [
     'You\'re using no logo at the moment. Upload your logo now.' => 'Não estás a usar um ícone. Carrega um logótipo.',
     'never' => 'nunca',
     'Default Timezone' => '',
+    'E-Mail reply-to' => '',
+    'Optional. Default reply address for system emails like notifications.' => '',
 ];

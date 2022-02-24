@@ -13,6 +13,8 @@ use humhub\modules\ui\widgets\DirectoryFilters;
 ?>
 
 <div class="<?= $data['wrapperClass'] ?>">
-    <div class="<?= $data['titleClass'] ?>"><?= $data['title'] ?></div>
+    <?php if(isset($data['title'])) : ?>
+        <div class="<?= $data['titleClass'] ?>"><?= $data['title'] ?></div>
+    <?php endif; ?>
     <?= $directoryFilters->renderFilterInput($filter, $data) ?>
 </div>
