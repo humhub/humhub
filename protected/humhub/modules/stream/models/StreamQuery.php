@@ -42,11 +42,6 @@ class StreamQuery extends Model
     const CHANNEL_ACTIVITY = 'activity';
 
     /**
-     * Scenario without wall entries limit
-     */
-    const SCENARIO_NO_LIMIT = 'scenario_no_limit';
-
-    /**
      * Maximum wall entries per request
      */
     const MAX_LIMIT = 20;
@@ -154,15 +149,6 @@ class StreamQuery extends Model
      */
     protected $_built = false;
 
-    public function scenarios()
-    {
-        $scenarios = parent::scenarios();
-
-        $scenarios[self::SCENARIO_NO_LIMIT] = $scenarios[self::SCENARIO_DEFAULT];
-
-        return $scenarios;
-    }
-
     /**
      * @inheritdoc
      */
@@ -170,9 +156,7 @@ class StreamQuery extends Model
     {
         return [
             [['limit', 'from', 'to', 'contentId'], 'number'],
-            [['sort', 'scenario'], 'safe'],
-            [['limit'], 'required'],
-            [['limit'], 'number', 'on' => self::SCENARIO_DEFAULT, 'max' => self::MAX_LIMIT]
+            [['sort'], 'safe'],
         ];
     }
 
@@ -472,10 +456,12 @@ class StreamQuery extends Model
      */
     protected function checkLimit()
     {
-        if(!$this->validate('limit')) {
+        if (empty($this->limit)) {
             $this->limit = self::MAX_LIMIT;
-        } else {
+        } else if (Yii::$app->request->isConsoleRequest) {
             $this->limit = (int)$this->limit;
+        } else {
+            $this->limit = ($this->limit > self::MAX_LIMIT) ? self::MAX_LIMIT : (int)$this->limit;
         }
     }
 

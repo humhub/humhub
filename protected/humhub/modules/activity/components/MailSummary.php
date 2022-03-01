@@ -9,7 +9,6 @@
 namespace humhub\modules\activity\components;
 
 use humhub\modules\activity\Module;
-use humhub\modules\stream\models\StreamQuery;
 use Yii;
 use yii\base\Exception;
 use yii\base\Component;
@@ -146,7 +145,6 @@ class MailSummary extends Component
             'activity' => true,
             'limit' => $this->maxActivityCount,
             'user' => $this->user,
-            'streamQueryOptions' => ['scenario' => StreamQuery::SCENARIO_DEFAULT]
         ]);
 
         $stream->init();
