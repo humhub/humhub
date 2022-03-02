@@ -37,4 +37,4 @@
 - Enh #4823: Removed CHTML and CActiveForm classes as well as usages (plus refactoring)
 - Fix #5449: File - Update info after `setStoredFileContent` and `setStoredFile`
 - Enh #5127: LDAP: Reset mapping for single user only
-
+- Enh #5499: Add option to filter by date

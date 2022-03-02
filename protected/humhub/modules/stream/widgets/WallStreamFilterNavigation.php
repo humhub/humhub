@@ -10,8 +10,12 @@ namespace humhub\modules\stream\widgets;
 
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\space\models\Space;
+use humhub\modules\stream\models\filters\DateStreamFilter;
+use humhub\modules\ui\filter\widgets\DatePickerFilterInput;
+use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserPickerField;
+use kartik\widgets\DateTimePicker;
 use Yii;
 use humhub\modules\stream\models\filters\ContentTypeStreamFilter;
 use humhub\modules\stream\models\filters\DefaultStreamFilter;
@@ -28,9 +32,10 @@ use humhub\modules\ui\filter\widgets\FilterNavigation;
  *
  * The default stream filter navigation consists of three panels
  *
- * - [[PANEL_POSITION_LEFT]]
- * - [[PANEL_POSITION_CENTER]]
- * - [[PANEL_POSITION_RIGHT]]
+ * - [[PANEL_COLUMN_1]]
+ * - [[PANEL_COLUMN_2]]
+ * - [[PANEL_COLUMN_3]]
+ * - [[PANEL_COLUMN_4]]
  *
  * and the following blocks and filters:
  *
@@ -59,15 +64,12 @@ use humhub\modules\ui\filter\widgets\FilterNavigation;
 class WallStreamFilterNavigation extends FilterNavigation
 {
     /**
-     * Left panel position
+     * Panel columns
      */
-    const PANEL_POSITION_LEFT = 0;
-
-    /**
-     * Left panel position
-     */
-    const PANEL_POSITION_CENTER = 1;
-    const PANEL_POSITION_RIGHT = 2;
+    const PANEL_COLUMN_1= 0;
+    const PANEL_COLUMN_2 = 1;
+    const PANEL_COLUMN_3 = 2;
+    const PANEL_COLUMN_4 = 3;
 
     const FILTER_BLOCK_BASIC = 'basic';
     const FILTER_BLOCK_VISIBILITY = 'visibility';
@@ -76,6 +78,8 @@ class WallStreamFilterNavigation extends FilterNavigation
     const FILTER_BLOCK_CONTENT_TYPE = 'contentType';
     const FILTER_BLOCK_TOPIC = 'topics';
     const FILTER_BLOCK_ORIGINATORS = 'originators';
+    const FILTER_BLOCK_DATE_FROM = 'dateFrom';
+    const FILTER_BLOCK_DATE_TO = 'dateTo';
 
     const FILTER_USER_INVOVLED = 'entry_userinvolved';
     const FILTER_MINE = 'entry_mine';
@@ -91,6 +95,9 @@ class WallStreamFilterNavigation extends FilterNavigation
 
     const FILTER_SORT_CREATION = 'sort_creation';
     const FILTER_SORT_UPDATE = 'sort_update';
+
+    const FILTER_DATE_FROM = 'date_from';
+    const FILTER_DATE_TO = 'date_to';
 
     public $jsWidget = 'stream.wall.WallStreamFilter';
 
@@ -111,9 +118,10 @@ class WallStreamFilterNavigation extends FilterNavigation
      */
     protected function initFilterPanels()
     {
-        $this->filterPanels[static::PANEL_POSITION_LEFT] = [];
-        $this->filterPanels[static::PANEL_POSITION_CENTER] = [];
-        $this->filterPanels[static::PANEL_POSITION_RIGHT] = [];
+        $this->filterPanels[static::PANEL_COLUMN_1] = [];
+        $this->filterPanels[static::PANEL_COLUMN_2] = [];
+        $this->filterPanels[static::PANEL_COLUMN_3] = [];
+        $this->filterPanels[static::PANEL_COLUMN_4] = [];
     }
 
     /**
@@ -124,33 +132,43 @@ class WallStreamFilterNavigation extends FilterNavigation
         $this->addFilterBlock(static::FILTER_BLOCK_BASIC, [
             'title' => Yii::t('StreamModule.filter', 'Content'),
             'sortOrder' => 100
-        ], static::PANEL_POSITION_LEFT);
+        ], static::PANEL_COLUMN_1);
 
         $this->addFilterBlock(static::FILTER_BLOCK_VISIBILITY, [
             'title' => Yii::t('StreamModule.filter', 'Visibility'),
             'sortOrder' => 200
-        ], static::PANEL_POSITION_LEFT);
+        ], static::PANEL_COLUMN_1);
 
         $this->addFilterBlock(static::FILTER_BLOCK_SORTING, [
             'title' => Yii::t('StreamModule.filter', 'Sorting'),
             'sortOrder' => 100
-        ], static::PANEL_POSITION_CENTER);
+        ], static::PANEL_COLUMN_2);
 
         $this->addFilterBlock(static::FILTER_BLOCK_CONTENT_TYPE, [
             'title' => Yii::t('StreamModule.filter', 'Content Type'),
             'sortOrder' => 100
-        ], static::PANEL_POSITION_RIGHT);
+        ], static::PANEL_COLUMN_3);
 
         $this->addFilterBlock(static::FILTER_BLOCK_ORIGINATORS, [
             'title' => Yii::t('StreamModule.filter', 'Author'),
             'sortOrder' => 200
-        ], static::PANEL_POSITION_RIGHT);
+        ], static::PANEL_COLUMN_3);
+
+        $this->addFilterBlock(static::FILTER_BLOCK_DATE_FROM, [
+            'title' => Yii::t('StreamModule.filter', 'Date from...'),
+            'sortOrder' => 200
+        ], static::PANEL_COLUMN_4);
+
+        $this->addFilterBlock(static::FILTER_BLOCK_DATE_TO, [
+            'title' => Yii::t('StreamModule.filter', 'Date to...'),
+            'sortOrder' => 200
+        ], static::PANEL_COLUMN_4);
 
         if(TopicPicker::showTopicPicker(ContentContainerHelper::getCurrent())) {
             $this->addFilterBlock(static::FILTER_BLOCK_TOPIC, [
                 'title' => Yii::t('StreamModule.filter', 'Topic'),
                 'sortOrder' => 300
-            ], static::PANEL_POSITION_RIGHT);
+            ], static::PANEL_COLUMN_3);
         }
     }
 
@@ -166,6 +184,7 @@ class WallStreamFilterNavigation extends FilterNavigation
        $this->initTopicFilter();
        $this->initContentTypeFilter();
        $this->initOriginatorFilter();
+       $this->initDateFilters();
     }
 
     protected function initBasicFilters()
@@ -297,6 +316,21 @@ class WallStreamFilterNavigation extends FilterNavigation
                 'name' => 'stream-user-picker'
             ]
         ], static::FILTER_BLOCK_ORIGINATORS);
+    }
+
+    private function initDateFilters()
+    {
+        $this->addFilter([
+            'id' => static::FILTER_DATE_FROM,
+            'class' => DatePickerFilterInput::class,
+            'category' => DateStreamFilter::CATEGORY_FROM,
+        ], static::FILTER_BLOCK_DATE_FROM);
+
+        $this->addFilter([
+            'id' => static::FILTER_DATE_TO,
+            'class' => DatePickerFilterInput::class,
+            'category' => DateStreamFilter::CATEGORY_TO,
+        ], static::FILTER_BLOCK_DATE_TO);
     }
 
     public function getAttributes()
