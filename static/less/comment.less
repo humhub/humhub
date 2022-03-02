@@ -101,6 +101,9 @@
         .field-comment-message, .field-post-message {
             flex-grow: 1;
             flex-basis: min-content;
+            [data-ui-markdown] {
+                word-break: break-word !important;
+            }
         }
         .form-group, .help-block {
             margin:0;
