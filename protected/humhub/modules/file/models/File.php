@@ -32,6 +32,7 @@ use yii\web\UploadedFile;
  * @property string $size
  * @property string $object_model
  * @property integer $object_id
+ * @property integer $content_id
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
