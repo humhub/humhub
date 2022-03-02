@@ -27,6 +27,7 @@
 - Fix #5533: Users can't live in UTC
 - Fix #5460: Untranslatable string New Updates in Stream
 - Fix #5573: Allow replying for sub comments
+- Fix #5518: Number of activities reported in the mail summary is always limited to 20
 - Enh #5358: Remove deprecated "Directory" module
 - Fix #5524: Mentioning Permission
 - Fix #5529: Tooltip: improving readability
@@ -38,3 +39,4 @@
 - Fix #5449: File - Update info after `setStoredFileContent` and `setStoredFile`
 - Enh #5127: LDAP: Reset mapping for single user only
 - Fix #5581: Fix long words in comment form
+- Fix #5578: Improved `rememberMe` parameter handling for thirdparty auth provider 
