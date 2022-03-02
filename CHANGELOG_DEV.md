@@ -37,4 +37,4 @@
 - Enh #4823: Removed CHTML and CActiveForm classes as well as usages (plus refactoring)
 - Fix #5449: File - Update info after `setStoredFileContent` and `setStoredFile`
 - Enh #5127: LDAP: Reset mapping for single user only
-- Fix #5578: Microsoft Auth `rememberMe` Checkbox Fix
+- Fix #5578: Improved `rememberMe` parameter handling for thirdparty auth provider 
