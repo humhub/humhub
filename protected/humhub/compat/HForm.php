@@ -14,8 +14,6 @@ use humhub\modules\file\components\FileManager;
 use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
 use humhub\modules\ui\form\widgets\SortOrderField;
-use humhub\modules\user\widgets\ProfileSettingsAutocomplete;
-use humhub\modules\user\widgets\ProfileSettingsPicker;
 use Yii;
 use yii\helpers\Html;
 use yii\widgets\ActiveField;

@@ -86,7 +86,7 @@ class PeopleFilterPicker extends BasePicker
     {
         $result = parent::getData();
         $result['placeholder'] = '';
-        $result['no-result'] = Yii::t('UserModule.chooser', 'No users found for the given query.');
+        $result['no-result'] = Yii::t('UserModule.chooser', 'No results found.');
         $result['maximum-selected'] = '';
         return $result;
     }
