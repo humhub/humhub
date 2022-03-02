@@ -24,11 +24,7 @@ class ModuleController extends Controller
     public function actionIndex()
     {
         $space = $this->getSpace();
-
-        return $this->render('index', [
-            'space' => $space,
-            'modules' => $space->getAvailableModules(),
-        ]);
+        return $this->render('index', ['availableModules' => $space->moduleManager->getAvailable(), 'space' => $space]);
     }
 
     /**
@@ -44,9 +40,7 @@ class ModuleController extends Controller
 
         $moduleId = Yii::$app->request->get('moduleId', '');
 
-        if (!$space->isModuleEnabled($moduleId)) {
-            $space->enableModule($moduleId);
-        }
+        $space->moduleManager->enable($moduleId);
 
         if (!Yii::$app->request->isAjax) {
             return $this->redirect($space->createUrl('/space/manage/module'));
@@ -69,9 +63,7 @@ class ModuleController extends Controller
 
         $moduleId = Yii::$app->request->get('moduleId', '');
 
-        if ($space->isModuleEnabled($moduleId) && $space->canDisableModule($moduleId)) {
-            $space->disableModule($moduleId);
-        }
+        $space->moduleManager->disable($moduleId);
 
         if (!Yii::$app->request->isAjax) {
             return $this->redirect($space->createUrl('/space/manage/module'));

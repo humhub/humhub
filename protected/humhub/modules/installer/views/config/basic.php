@@ -1,32 +1,32 @@
 <?php
 
-use humhub\compat\CActiveForm;
 use humhub\libs\Html;
+use humhub\modules\ui\form\widgets\ActiveForm;
+
+/**
+ * @var $model \humhub\modules\installer\forms\ConfigBasicForm
+ */
+
 ?>
 <div id="name-form" class="panel panel-default animated fadeIn">
 
     <div class="panel-heading">
-        <?php echo Yii::t('InstallerModule.base', 'Social Network <strong>Name</strong>'); ?>
+        <?= Yii::t('InstallerModule.base', 'Social Network <strong>Name</strong>'); ?>
     </div>
 
     <div class="panel-body">
+        <p><?= Yii::t('InstallerModule.base', 'Of course, your new social network needs a name. Please change the default name with one you like. (For example the name of your company, organization or club)'); ?></p>
 
-        <p><?php echo Yii::t('InstallerModule.base', 'Of course, your new social network needs a name. Please change the default name with one you like. (For example the name of your company, organization or club)'); ?></p>
-
-
-        <?php $form = CActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin(); ?>
 
         <div class="form-group">
-            <?php echo $form->labelEx($model, 'name'); ?>
-            <?php echo $form->textField($model, 'name', ['class' => 'form-control']); ?>
-            <?php echo $form->error($model, 'name'); ?>
+            <?= $form->field($model, 'name')->textInput(); ?>
         </div>
-
         <hr>
 
-        <?php echo Html::submitButton(Yii::t('InstallerModule.base', 'Next'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
+        <?= Html::submitButton(Yii::t('InstallerModule.base', 'Next'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
-        <?php CActiveForm::end(); ?>
+        <?php $form::end(); ?>
     </div>
 </div>
 
@@ -38,10 +38,10 @@ use humhub\libs\Html;
     });
 
     // Shake panel after wrong validation
-<?php if ($model->hasErrors()) { ?>
-        $('#name-form').removeClass('fadeIn');
-        $('#name-form').addClass('shake');
-<?php } ?>
+    <?php if ($model->hasErrors()): ?>
+    $('#name-form').removeClass('fadeIn');
+    $('#name-form').addClass('shake');
+    <?php endif; ?>
 
 </script>
 

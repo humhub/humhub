@@ -358,12 +358,10 @@ class File extends FileCompat
     private function afterNewStoredFile()
     {
         if ($this->store->has()) {
-            $this->updateAttributes([
-                'hash_sha1' => sha1_file($this->store->get()),
-                'size' => filesize($this->store->get()),
-            ]);
-
+            $this->hash_sha1 = sha1_file($this->store->get());
+            $this->size = filesize($this->store->get());
             $this->trigger(self::EVENT_AFTER_NEW_STORED_FILE);
+            $this->save();
         }
     }
 }

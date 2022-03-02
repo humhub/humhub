@@ -18,6 +18,7 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\User;
+use humhub\modules\user\permissions\CanMention;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use Yii;
@@ -66,7 +67,9 @@ class MentioningController extends Controller
 
         $results = [];
         foreach ($users as $user) {
-            $results[] = $this->getUserResult($user);
+            if($user->permissionManager->can(CanMention::class)) {
+                $results[] = $this->getUserResult($user);
+            }
         }
 
         $results = $this->appendMentioningSpaceResults($keyword, $results);

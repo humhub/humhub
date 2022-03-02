@@ -1,8 +1,10 @@
 <?php
 
 use humhub\libs\Html;
-use humhub\modules\user\widgets\Image;
-use humhub\modules\directory\widgets\UserTagList;
+use humhub\modules\user\models\User;use humhub\modules\user\widgets\Image;
+use humhub\modules\user\widgets\PeopleTagList;
+
+/* @var User $user */
 ?>
 <div class="panel panel-default">
     <div class="panel-body">
@@ -12,7 +14,7 @@ use humhub\modules\directory\widgets\UserTagList;
             <div class="media-body">
                 <h4 class="media-heading"><?= Html::containerLink($user); ?></h4>
                 <h5><?= Html::encode($user->displayNameSub); ?></h5>
-                <?= UserTagList::widget(['user' => $user]); ?>
+                <?= PeopleTagList::widget(['user' => $user]); ?>
             </div>
         </div>
     </div>

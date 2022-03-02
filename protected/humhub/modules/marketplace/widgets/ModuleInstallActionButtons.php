@@ -50,11 +50,11 @@ class ModuleInstallActionButtons extends Widget
         $licence = $marketplaceModule->getLicence();
 
         if ($this->module->isProOnly() && $licence->type === Licence::LICENCE_TYPE_CE) {
-            $html .= Button::primary(Icon::get('info-circle') . '&nbsp;&nbsp;' . Yii::t('MarketplaceModule.base', 'Professional Edition'))
-                ->link(['/admin/information'])
+            $html .= Button::primary(Icon::get('info-circle') . '&nbsp;&nbsp;' . Yii::t('MarketplaceModule.base', 'Learn more'))
+                ->link('https://www.humhub.com/en/professional-edition')
+                ->options(['target' => '_blank'])
                 ->sm()
-                ->loader(false)
-                ->tooltip(Yii::t('MarketplaceModule.base', 'This is a Professional Edition module. You do not have the permission to install this module. If you are interested in our product, you can find more information about our Professional Edition by clicking on this button.'));
+                ->loader(false);
         } elseif (!empty($this->module->price_request_quote) && !$this->module->purchased) {
             $html .= Button::primary(Yii::t('MarketplaceModule.base', 'Buy'))
                 ->link($this->module->checkoutUrl)
