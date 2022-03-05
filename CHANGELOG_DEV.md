@@ -40,3 +40,5 @@
 - Enh #5127: LDAP: Reset mapping for single user only
 - Fix #5581: Fix long words in comment form
 - Fix #5578: Improved `rememberMe` parameter handling for thirdparty auth provider 
+- Fix #5304: In a button, data-action-cancel-text doesn't work
+
