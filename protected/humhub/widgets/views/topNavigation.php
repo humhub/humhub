@@ -23,7 +23,7 @@ TopNavigationAsset::register($this);
         <?= Yii::t('base', 'Menu'); ?>
         <b class="caret"></b>
     </a>
-    <ul id="top-menu-sub-dropdown" class="dropdown-menu">
+    <ul id="top-menu-sub-dropdown" class="dropdown-menu dropdown-menu-right">
 
     </ul>
 </li>

@@ -27,9 +27,6 @@ humhub.module('ui.topNavigation', function (module, require, $) {
 
         while (isOverflow() && moveNextItemToDropDown($topMenuDropdown)) {}
 
-        // We remove the next dropdown for edgecases, e.g. the scrollbar appears after init
-        moveNextItemToDropDown($topMenuDropdown);
-
         $topBarSecond.css('overflow', '');
         $('#top-menu-sub').find('.dropdown-toggle').dropdown();
 
