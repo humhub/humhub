@@ -1,7 +1,7 @@
 <?php
-namespace user\acceptance;
+namespace space\acceptance;
 
-use user\AcceptanceTester;
+use space\AcceptanceTester;
 
 class SpacesCest
 {
