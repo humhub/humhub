@@ -24,6 +24,8 @@ class AcceptanceTester extends BaseTester
     use _generated\AcceptanceTesterActions;
 
     public $guestAccessAllowed = false;
+    public $guestAccessPeoplePageAllowed = false;
+    public $guestAccessSpacesPageAllowed = false;
 
     public function amAdmin($logout = false)
     {
@@ -117,6 +119,22 @@ class AcceptanceTester extends BaseTester
         $this->click('button.btn-primary', '#authentication-settings-form');
         $this->wait(1);
         $this->guestAccessAllowed = true;
+    }
+
+    public function allowGuestAccessPeoplePage() {
+        $this->amOnRoute(['/admin/authentication']);
+        $this->jsClick('#authenticationsettingsform-allowguestaccesspeoplepage');
+        $this->click('button.btn-primary', '#authentication-settings-form');
+        $this->wait(1);
+        $this->guestAccessPeoplePageAllowed = true;
+    }
+
+    public function allowGuestAccessSpacesPage() {
+        $this->amOnRoute(['/admin/authentication']);
+        $this->jsClick('#authenticationsettingsform-allowguestaccessspacespage');
+        $this->click('button.btn-primary', '#authentication-settings-form');
+        $this->wait(1);
+        $this->guestAccessSpacesPageAllowed = true;
     }
 
     public function amOnRoute($route) {

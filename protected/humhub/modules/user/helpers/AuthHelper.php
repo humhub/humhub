@@ -38,4 +38,38 @@ class AuthHelper
 
         return false;
     }
+
+    /**
+     * Checks if limited access is allowed for unauthenticated users.
+     *
+     * @return boolean
+     */
+    public static function isGuestAccessSpacesPageEnabled()
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if ($module->settings->get('auth.allowGuestAccessSpacesPage')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if limited access is allowed for unauthenticated users.
+     *
+     * @return boolean
+     */
+    public static function isGuestAccessPeoplePageEnabled()
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if ($module->settings->get('auth.allowGuestAccessPeoplePage')) {
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -12,6 +12,7 @@ use humhub\components\Controller;
 use humhub\modules\space\components\SpaceDirectoryQuery;
 use humhub\modules\space\permissions\SpaceDirectoryAccess;
 use humhub\modules\space\widgets\SpaceDirectoryCard;
+use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use yii\helpers\Url;
 
@@ -46,9 +47,21 @@ class SpacesController extends Controller
     public function getAccessRules()
     {
         return [
-            [ControllerAccess::RULE_LOGGED_IN_ONLY],
-            ['permissions' => [SpaceDirectoryAccess::class]],
+            ['validateSpacesAccess', 'actions' => ['index', 'load-more']]
         ];
+    }
+
+    public function validateSpacesAccess($rule, $access)
+    {
+        if (Yii::$app->user->isGuest && AuthHelper::isGuestAccessSpacesPageEnabled()) {
+            return true;
+        }
+
+        if (Yii::$app->user->can(SpaceDirectoryAccess::class)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

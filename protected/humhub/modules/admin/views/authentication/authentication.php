@@ -21,6 +21,12 @@ $userModule = Yii::$app->getModule('user');
 
     <?= $form->field($model, 'allowGuestAccess')->checkbox(); ?>
 
+    <div id="guestAccessSettings" style="padding-left: 10px;">
+        <?= $form->field($model, 'allowGuestAccessSpacesPage')->checkbox(); ?>
+
+        <?= $form->field($model, 'allowGuestAccessPeoplePage')->checkbox(); ?>
+    </div>
+
     <?= $form->field($model, 'internalAllowAnonymousRegistration')->checkbox(); ?>
 
     <?= $form->field($model, 'showCaptureInRegisterForm')->checkbox(); ?>
@@ -53,3 +59,19 @@ $userModule = Yii::$app->getModule('user');
     <?php ActiveForm::end(); ?>
 </div>
 <?php $this->endContent(); ?>
+
+<script <?= \humhub\libs\Html::nonce() ?>>
+
+    if(!<?= (int) $model->allowGuestAccess ?>) {
+        $('#guestAccessSettings').hide();
+    }
+
+    $(document).on('change', '#authenticationsettingsform-allowguestaccess', function () {
+        if ($(this).is(':checked')) {
+            $('#guestAccessSettings').show();
+        } else {
+            $('#guestAccessSettings').hide();
+        }
+    });
+
+</script>

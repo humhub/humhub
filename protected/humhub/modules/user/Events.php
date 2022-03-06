@@ -5,6 +5,7 @@ namespace humhub\modules\user;
 use humhub\components\Event;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Profile;
@@ -164,11 +165,11 @@ class Events extends BaseObject
      */
     public static function onTopMenuInit($event)
     {
-        if (Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest && !AuthHelper::isGuestAccessPeoplePageEnabled()) {
             return;
         }
 
-        if (!Yii::$app->user->can(PeopleAccess::class)) {
+        if (!Yii::$app->user->isGuest && !Yii::$app->user->can(PeopleAccess::class)) {
             return;
         }
 

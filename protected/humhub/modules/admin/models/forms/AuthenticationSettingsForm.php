@@ -26,6 +26,8 @@ class AuthenticationSettingsForm extends \yii\base\Model
     public $blockUsers;
     public $defaultUserIdleTimeoutSec;
     public $allowGuestAccess;
+    public $allowGuestAccessSpacesPage;
+    public $allowGuestAccessPeoplePage;
     public $showCaptureInRegisterForm;
     public $defaultUserProfileVisibility;
     public $registrationApprovalMailContent;
@@ -49,6 +51,8 @@ class AuthenticationSettingsForm extends \yii\base\Model
         $this->blockUsers = $module->allowBlockUsers();
         $this->defaultUserIdleTimeoutSec = $settingsManager->get('auth.defaultUserIdleTimeoutSec');
         $this->allowGuestAccess = $settingsManager->get('auth.allowGuestAccess');
+        $this->allowGuestAccessSpacesPage = $settingsManager->get('auth.allowGuestAccessSpacesPage');
+        $this->allowGuestAccessPeoplePage = $settingsManager->get('auth.allowGuestAccessPeoplePage');
         $this->showCaptureInRegisterForm = $settingsManager->get('auth.showCaptureInRegisterForm');
         $this->defaultUserProfileVisibility = $settingsManager->get('auth.defaultUserProfileVisibility');
         $this->registrationApprovalMailContent = $settingsManager->get('auth.registrationApprovalMailContent', ApproveUserForm::getDefaultApprovalMessage());
@@ -61,7 +65,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
     public function rules()
     {
         return [
-            [['internalUsersCanInvite', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess', 'showCaptureInRegisterForm', 'showRegistrationUserGroup', 'blockUsers'], 'boolean'],
+            [['internalUsersCanInvite', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess', 'allowGuestAccessSpacesPage', 'allowGuestAccessPeoplePage', 'showCaptureInRegisterForm', 'showRegistrationUserGroup', 'blockUsers'], 'boolean'],
             ['defaultUserProfileVisibility', 'in', 'range' => [1, 2]],
             ['defaultUserIdleTimeoutSec', 'integer', 'min' => 20],
             [['registrationApprovalMailContent', 'registrationDenialMailContent'], 'string']
@@ -81,6 +85,8 @@ class AuthenticationSettingsForm extends \yii\base\Model
             'blockUsers' => Yii::t('AdminModule.user', 'Allow users to block each other'),
             'defaultUserIdleTimeoutSec' => Yii::t('AdminModule.user', 'Default user idle timeout, auto-logout (in seconds, optional)'),
             'allowGuestAccess' => Yii::t('AdminModule.user', 'Allow visitors limited access to content without an account (Adds visibility: "Guest")'),
+            'allowGuestAccessSpacesPage' => Yii::t('AdminModule.user', 'Allow guests visit "Spaces" page'),
+            'allowGuestAccessPeoplePage' => Yii::t('AdminModule.user', 'Allow guests visit "People" page'),
             'showCaptureInRegisterForm' => Yii::t('AdminModule.user', 'Include captcha in registration form'),
             'defaultUserProfileVisibility' => Yii::t('AdminModule.user', 'Default user profile visibility'),
             'registrationApprovalMailContent' => Yii::t('AdminModule.user', 'Default content of the registration approval email'),
@@ -106,9 +112,14 @@ class AuthenticationSettingsForm extends \yii\base\Model
         $settingsManager->set('auth.blockUsers', $this->blockUsers);
         $settingsManager->set('auth.defaultUserIdleTimeoutSec', $this->defaultUserIdleTimeoutSec);
         $settingsManager->set('auth.allowGuestAccess', $this->allowGuestAccess);
+        $settingsManager->set('auth.allowGuestAccessSpacesPage', $this->allowGuestAccessSpacesPage);
+        $settingsManager->set('auth.allowGuestAccessPeoplePage', $this->allowGuestAccessPeoplePage);
 
         if ($settingsManager->get('auth.allowGuestAccess')) {
             $settingsManager->set('auth.defaultUserProfileVisibility', $this->defaultUserProfileVisibility);
+        } else {
+            $settingsManager->set('auth.allowGuestAccessSpacesPage', false);
+            $settingsManager->set('auth.allowGuestAccessPeoplePage', false);
         }
 
         if ($settingsManager->get('auth.anonymousRegistration')) {
