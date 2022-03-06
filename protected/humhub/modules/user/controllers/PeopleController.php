@@ -7,16 +7,13 @@
 
 namespace humhub\modules\user\controllers;
 
-use humhub\components\access\ControllerAccess;
-use humhub\components\behaviors\AccessControl;
 use humhub\components\Controller;
-use humhub\modules\space\permissions\SpaceDirectoryAccess;
 use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\permissions\PeopleAccess;
-use humhub\modules\user\widgets\PeopleCard;use Yii;
+use humhub\modules\user\widgets\PeopleCard;
+use Yii;
 use yii\helpers\Url;
-use yii\web\HttpException;
 
 /**
  * PeopleController displays users directory
