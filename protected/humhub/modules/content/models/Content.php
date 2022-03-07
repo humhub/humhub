@@ -703,7 +703,16 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         $this->refresh();
 
         $contentRelation = new ContentTagRelation($this, $tag);
-        return $contentRelation->save();
+
+        if ($contentRelation->save()) {
+            $model = $this->getModel();
+            if($model instanceof ContentActiveRecord) {
+                $model->trigger(ContentActiveRecord::EVENT_AFTER_UPDATE);
+            }
+            return true;
+        }
+
+        return false;
     }
 
     /**

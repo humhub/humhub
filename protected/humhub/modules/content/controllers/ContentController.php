@@ -10,6 +10,7 @@ namespace humhub\modules\content\controllers;
 
 use humhub\components\behaviors\AccessControl;
 use humhub\components\Controller;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\forms\AdminDeleteContentForm;
 use humhub\modules\content\Module;
@@ -269,6 +270,11 @@ class ContentController extends Controller
             $content->visibility = Content::VISIBILITY_PUBLIC;
         } else {
             $content->visibility = Content::VISIBILITY_PRIVATE;
+        }
+
+        $model = $content->getModel();
+        if($model instanceof ContentActiveRecord) {
+            $model->trigger(ContentActiveRecord::EVENT_AFTER_UPDATE);
         }
 
         return $this->asJson([
