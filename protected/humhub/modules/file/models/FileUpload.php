@@ -46,7 +46,10 @@ class FileUpload extends File
     {
         // Store file
         if ($this->uploadedFile !== null && $this->uploadedFile instanceof UploadedFile) {
-            $this->setStoredFile($this->uploadedFile);
+            $uploadedFile = $this->uploadedFile;
+            // Unset the uploaded file in order to avoid twice calling
+            $this->uploadedFile = null;
+            $this->setStoredFile($uploadedFile);
         }
 
         parent::afterSave($insert, $changedAttributes);
