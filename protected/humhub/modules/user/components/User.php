@@ -20,6 +20,7 @@ use yii\authclient\ClientInterface;
 /**
  * Description of User
  * @property UserModel|null $identity
+ * @mixin Impersonator
  * @author luke
  */
 class User extends \yii\web\User
