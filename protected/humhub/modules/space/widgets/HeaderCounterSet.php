@@ -42,7 +42,7 @@ class HeaderCounterSet extends CounterSet
             'value' => $postQuery->count()
         ]);
 
-        if (!Yii::$app->getModule('space')->disableViewMembers) {
+        if (!Yii::$app->getModule('space')->disableMembersCounter) {
         $this->counters[] = new CounterSetItem([
             'label' => Yii::t('SpaceModule.base', 'Members'),
             'value' => Membership::getSpaceMembersQuery($this->space)->active()->visible()->count(),
