@@ -42,3 +42,4 @@
 - Fix #5578: Improved `rememberMe` parameter handling for thirdparty auth provider 
 - Fix #5340: Mobile navigation: width detection problem
 - Fix #5585: Don't force password change on user simulating
+- Fix #5591: Fix people/space cards banner
