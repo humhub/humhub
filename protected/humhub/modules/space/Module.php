@@ -43,6 +43,12 @@ class Module extends \humhub\components\Module
     public $disableFollow = false;
 
     /**
+     * @var boolean defines if the space ability to view members counter is disabled or not.
+     * @since 1.11
+     */
+    public $disableMembersCounter = false;
+
+    /**
      * @var boolean defines if a space members can add anyone the the space without invitation
      * @since 1.8
      */
