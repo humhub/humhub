@@ -5,11 +5,10 @@ use humhub\libs\Html;
 use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\widgets\PeopleCard;
 use humhub\modules\user\widgets\PeopleFilters;
-use humhub\widgets\ModalButton;
+use humhub\modules\user\widgets\PeopleHeadingButtons;
 
 /* @var $this \yii\web\View */
 /* @var $people PeopleQuery */
-/* @var $showInviteButton bool */
 
 CardsAsset::register($this);
 ?>
@@ -22,10 +21,7 @@ CardsAsset::register($this);
             <?= Yii::t('UserModule.base', '<strong>People</strong>'); ?>
         <?php endif; ?>
 
-        <?php if ($showInviteButton): ?>
-            <?= ModalButton::primary(Yii::t('UserModule.base', 'Send invite'))
-                ->load(['/user/invite'])->icon('invite')->sm()->right() ?>
-        <?php endif; ?>
+        <?= PeopleHeadingButtons::widget() ?>
     </div>
 
     <div class="panel-body">
