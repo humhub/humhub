@@ -66,7 +66,6 @@ class PeopleController extends Controller
 
         return $this->render('index', [
             'people' => $peopleQuery,
-            'showInviteButton' => !Yii::$app->user->isGuest && Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite'),
         ]);
     }
 
