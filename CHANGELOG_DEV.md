@@ -40,6 +40,7 @@
 - Enh #5127: LDAP: Reset mapping for single user only
 - Fix #5581: Fix long words in comment form
 - Fix #5578: Improved `rememberMe` parameter handling for thirdparty auth provider 
+- Fix #5304: In a button, data-action-cancel-text doesn't work
 - Fix #5340: Mobile navigation: width detection problem
 - Enh #5432: Possibility to add buttons in the People page with a module
 - Fix #5585: Don't force password change on user simulating
