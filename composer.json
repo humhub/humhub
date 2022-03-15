@@ -62,7 +62,7 @@
         "web-token/jwt-signature-algorithm-hmac": ">=1.0 <3.0",
         "web-token/jwt-signature-algorithm-rsa": ">=1.0 <3.0",
         "xj/yii2-jplayer-widget": "*",
-        "yiisoft/yii2": "2.0.45",
+        "yiisoft/yii2": "dev-master",
         "yiisoft/yii2-authclient": "~2.2.0",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-httpclient": "~2.0.0",
