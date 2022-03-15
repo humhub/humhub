@@ -24,7 +24,7 @@ return array (
   'Enhance your profile with modules.' => 'Potenzia il tuo profilo con i moduli.',
   'Enter your password to continue' => 'Inserisci la tua password per continuare',
   'Hello' => 'Ciao',
-  'Here you can edit your general profile data, which is visible in the about page of your profile.' => 'Qui puoi modificare i tuoi dati generali del profile, che sono visibili nella pagina personale del tuo profilo.',
+  'Here you can edit your general profile data, which is visible in the about page of your profile.' => 'Qui puoi modificare i tuoi dati generali del profilo, che sono visibili nella pagina personale del tuo profilo.',
   'Hide introduction tour panel on dashboard' => 'Nascondi il pannello tour introduttivo sulla bacheca',
   'Invalid link! Please make sure that you entered the entire url.' => 'Link non valido! Assicurati di aver inserito l\'intero URL.',
   'Language' => 'Lingua',

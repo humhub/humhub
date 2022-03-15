@@ -25,7 +25,7 @@ return array (
   'Status: Warning! (No users found using the ldap user filter!)' => 'Attenzione! Non trovo utenti usando il filtro impostato!',
   'The default base DN used for searching for accounts.' => 'La base DN predefinita usata per cercare gli account.',
   'The default credentials password (used only with username above).' => 'Password predefinita (usata solo con lo username qui sopra).',
-  'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'Username credenziale predefinito. Alcuni server richiedono che questo sia nella forma DN. Questo deve essere fornito nella forma DN se il server LDAP richiede un DN per vincolare e il vincolamento dovrebbe essere possible con semplici nomi utente.',
+  'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => 'Il nome utente delle credenziali predefinito. Alcuni server richiedono che questo sia in formato DN. Questo deve essere fornito in forma DN se il server LDAP richiede un DN da associare e l\'associazione dovrebbe essere possibile con nomi utente semplici.',
   'User Filter' => 'Filtro utente',
   'Username' => 'Username',
   'Username Attribute' => 'Attributo Username',
