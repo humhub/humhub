@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\components;
 
+use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\search\libs\SearchHelper;
 use Yii;
@@ -71,7 +72,7 @@ class FileManager extends Component
                 'object_id' => $this->record->getPrimaryKey(),
             ];
 
-            if ($this->record instanceof ContentActiveRecord) {
+            if ($this->record instanceof ContentActiveRecord || $this->record instanceof Comment) {
                 $attributes['content_id'] = $this->record->content->id;
             }
 
