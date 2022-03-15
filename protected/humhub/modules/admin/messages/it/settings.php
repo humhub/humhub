@@ -42,7 +42,7 @@ return array (
   'Display Name (Format)' => 'Mostra nome (Formato)',
   'Dropdown space order' => 'Ordine tendina Space',
   'E-Mail' => 'Email',
-  'E-Mail reply-to' => 'e-mail per rispondi-a',
+  'E-Mail reply-to' => 'E-mail per rispondi-a',
   'E-Mail sender address' => 'Indirizzo del mittente dell\'e-mail',
   'E-Mail sender name' => 'Nome del mittente dell\'e-mail',
   'E.g. http://example.com/humhub' => 'Esempio: http://example.com/humhub',

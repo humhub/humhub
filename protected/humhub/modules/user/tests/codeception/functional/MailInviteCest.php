@@ -24,7 +24,7 @@ class MailInviteCest
         $I->amOnDirectory()->clickMembers();
         $I->amGoingTo('invite a user by mail');
 
-        $I->see('Send invite', 'button');
+        $I->see('Send invite', 'a');
 
         $I->sendAjaxPostRequest(Url::to(['/user/invite']), ['Invite[emails]' => 'a@test.de,b@test.de']);
         $I->seeEmailIsSent(2);

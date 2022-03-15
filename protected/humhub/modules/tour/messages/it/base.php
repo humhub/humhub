@@ -21,7 +21,7 @@ return array (
   'Next »' => 'Successivo »',
   'Ok' => 'Ok',
   'Save and close' => 'Salva e chiudi',
-  'The account menu gives you access to your private settings and allows you to manage your public profile.' => 'Il menuùdi dell\'account ti consente di accedere alle impostazioni private ​​e ti permette di gestire il tuo profilo pubblico.',
+  'The account menu gives you access to your private settings and allows you to manage your public profile.' => 'Il menu dell\'account ti dà accesso alle tue impostazioni private e ti consente di gestire il tuo profilo pubblico.',
   'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.' => 'Questa azione rimuove il pannello di tour dal cruscotto. È possibile riattivarlo su<br />Impostazioni account <i class="fa fa-caret-right"></i> Impostazioni.',
   'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:' => 'Questo è il menù più importante e sarà probabilmente quello che userai più spesso! Accedi a tutti gli space a cui ti sei aggiunto e crea nuovi space qui.<br /><br /> La prossima guida ti mostrerà come:',
   'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.' => 'Sei il primo utente qui.... Yehaaa! Sii un esempio brillante e completa il tuo profilo, <br /> in modo che i futuri utenti sappiano chi è il capo branco qui e a chi possono rivolgersi se hanno domande.',

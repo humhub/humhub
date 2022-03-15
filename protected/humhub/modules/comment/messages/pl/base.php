@@ -1,13 +1,13 @@
 <?php
 return array (
   '<strong>Confirm</strong> comment deleting' => '<strong>Potwierdź</strong> usunięcie komentarza',
-  '<strong>Permalink</strong> to this comment' => '',
+  '<strong>Permalink</strong> to this comment' => '<strong>Link </strong> do tego komentarza',
   'Cancel' => 'Anuluj',
   'Cancel Edit' => 'Anuluj Edycję',
   'Comment' => 'Komentuj',
   'Comment could not be saved!' => 'Komentarz nie może zostać zapisany!',
   'Comment has been deleted' => 'Komentarz został usunięty',
-  'Comment of blocked user.' => '',
+  'Comment of blocked user.' => 'Komentarz zablokowanego użytkownika.',
   'Comments' => 'Komentarze',
   'Delete' => 'Usuń',
   'Do you really want to delete this comment?' => 'Czy naprawdę chcesz usunąć ten komentarz?',
