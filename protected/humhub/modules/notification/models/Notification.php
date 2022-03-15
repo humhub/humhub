@@ -30,6 +30,7 @@ use yii\db\Query;
  * @property integer $desktop_notified
  * @property integer $originator_user_id
  * @property integer $send_web_notifications
+ * @property string $payload
  * @property User|null $originator
  * @property User $user
  *
@@ -73,7 +74,7 @@ class Notification extends ActiveRecord
             $this->seen = 0;
         }
 
-        // Disable web notification by default, they will be enabld within the web target if allowed by the user.
+        // Disable web notification by default, they will be enabled within the web target if allowed by the user.
         if ($this->send_web_notifications === null) {
             $this->send_web_notifications = 0;
         }
@@ -99,6 +100,7 @@ class Notification extends ActiveRecord
                 'integer',
             ],
             [['class', 'source_class'], 'string', 'max' => 100],
+            [['payload'], 'safe']
         ];
     }
 

@@ -95,56 +95,50 @@
 // fileupload button
 .comment_create,
 .content_edit {
-    position: relative;
-
+    .comment-create-input-group, .post-richtext-input-group {
+        display: flex;
+        align-items: flex-end;
+        .field-comment-message, .field-post-message {
+            flex-grow: 1;
+            flex-basis: min-content;
+            [data-ui-markdown] {
+                word-break: break-word !important;
+            }
+        }
+        .form-group, .help-block {
+            margin:0;
+        }
+    }
     .comment-buttons {
-        position: absolute;
-        bottom: 2px;
-        right: 5px;
-        z-index: 300;
-
-        button {
-            background-color: @link !important;
-            color: @text-color-contrast !important;
+        white-space: nowrap;
+        padding-bottom: 6px;
+        .btn:not(.dropdown-toggle) {
+            margin-left: 6px;
+        }
+        .btn.fileinput-button, .fileinput-button + .dropdown-toggle {
+            background-color: fade(@link, 60%);
+        }
+        .btn.dropdown-toggle {
+            margin-left: 0;
         }
     }
-
     .has-error + .comment-buttons {
-        bottom: 19px !important;
+        padding-bottom: 22px;
     }
-
-    .btn-comment-submit {
-        margin-top: 3px;
-    }
-
-    .fileinput-button {
-        float: left;
-        padding: 6px 10px;
-        background: transparent !important;
-
-        i {
-            color: @text-color-soft2;
-        }
-
-        i:hover {
-            color: @link;
-        }
-    }
-
-    .fileinput-button:hover i {
-        color: @link;
-    }
-
     .fileinput-button:active {
         box-shadow: none !important;
     }
-}
-
-.post-richtext-input-group {
-    position: relative;
-
-    .comment-buttons {
-        bottom: 7px !important;
+    @media (max-width: 414px) {
+        .comment-create-input-group, .post-richtext-input-group {
+            flex-direction: column;
+            .field-comment-message, .field-post-message {
+                width: 100%;
+            }
+        }
+        .comment-buttons {
+            padding-bottom: 0 !important;
+            padding-top: 6px;
+        }
     }
 }
 
@@ -170,20 +164,6 @@
 .comment-message {
     overflow: hidden;
     .text-break();
-}
-
-.comment-create-input-group, .post-richtext-input-group {
-    position: relative;
-
-    .ProsemirrorEditor {
-        .ProseMirror {
-            padding-right: 72px;
-        }
-    }
-
-    .form-group, .help-block {
-        margin:0;
-    }
 }
 
 .comment-create-input-group.scrollActive {

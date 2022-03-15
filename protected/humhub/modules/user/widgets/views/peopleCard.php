@@ -33,7 +33,7 @@ use yii\web\View;
     </div>
     <div class="card-body">
         <strong class="card-title"><?= Html::containerLink($user); ?></strong>
-        <?php if (trim($user->profile->title) !== '') : ?>
+        <?php if (is_string($user->profile->title) && trim($user->profile->title) !== '') : ?>
             <div><?= Html::encode($user->profile->title); ?></div>
         <?php endif; ?>
         <?= PeopleDetails::widget([

@@ -60,13 +60,12 @@ class PeopleController extends Controller
         $urlParams = Yii::$app->request->getQueryParams();
         unset($urlParams['page']);
         array_unshift($urlParams, '/user/people/load-more');
-        $this->getView()->registerJsConfig('directory', [
+        $this->getView()->registerJsConfig('cards', [
             'loadMoreUrl' => Url::to($urlParams),
         ]);
 
         return $this->render('index', [
             'people' => $peopleQuery,
-            'showInviteButton' => !Yii::$app->user->isGuest && Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite'),
         ]);
     }
 

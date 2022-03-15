@@ -1,15 +1,18 @@
-<?php $this->beginContent('@admin/views/layouts/main.php') ?>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <?= Yii::t('AdminModule.base', '<strong>Module </strong> administration'); ?>
+<?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
-        <div class="help-block">
-            <?= Yii::t('AdminModule.modules', 'Modules extend the functionality of HumHub. Here you can install and manage modules from the HumHub Marketplace.') ?>
+use humhub\modules\ui\view\helpers\ThemeHelper;
+
+/* @var $content string */
+?>
+<div class="<?php if (ThemeHelper::isFluid()): ?>container-fluid<?php else: ?>container<?php endif; ?> container-cards container-modules">
+    <div class="row">
+        <div class="col-lg-12">
+            <?= $content; ?>
         </div>
-
     </div>
-    <?= \humhub\modules\admin\widgets\ModuleMenu::widget(); ?>
-
-    <?= $content; ?>
 </div>
-<?php $this->endContent(); ?>

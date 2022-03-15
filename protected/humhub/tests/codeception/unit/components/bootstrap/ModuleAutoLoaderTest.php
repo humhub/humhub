@@ -23,7 +23,6 @@ class ModuleAutoLoaderTest extends Unit
         'comment',
         'content',
         'dashboard',
-        'directory',
         'file',
         'friendship',
         'installer',

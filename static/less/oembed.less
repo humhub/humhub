@@ -20,3 +20,77 @@
     width: 100%;
     height: 100%;
 }
+
+.oembed_confirmation {
+    background: #feebb4;
+    border-radius: 4px;
+    padding: 15px;
+    line-height: 30px;
+    i.fa {
+        float: left;
+        color: #02a0b0;
+        background: #FFF;
+        border-radius: 50%;
+        font-size: 30px;
+        line-height: 25px;
+        margin-right: 15px;
+    }
+    > div:not(.clearfix) {
+        float: left;
+    }
+    .regular-checkbox-box {
+        top: 6px;
+    }
+    .regular-checkbox {
+        &:not(:checked) + .regular-checkbox-box {
+            background: #FFF;
+        }
+        &:checked + .regular-checkbox-box:after {
+            top: -8px;
+        }
+    }
+}
+
+#oembed-providers {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0 -0.5rem;
+
+    .oembed-provider-container {
+        padding: 0;
+
+        .oembed-provider {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+            padding: 0.75rem;
+            margin: 0 0.5rem 0.5rem 0.5rem;
+
+            .oembed-provider-name {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .label.label-error {
+                    margin-left: 2px;
+                }
+            }
+        }
+    }
+}
+
+#endpoint-parameters {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+}

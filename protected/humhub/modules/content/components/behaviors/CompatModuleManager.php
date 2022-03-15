@@ -18,6 +18,8 @@ use yii\base\Behavior;
  * @author luke
  *
  * @property \humhub\modules\content\components\ContentContainerActiveRecord $owner
+ *
+ * @deprecated since 1.10.0 use methods of the ContentContainerActiveRecord->moduleManager
  */
 class CompatModuleManager extends Behavior
 {

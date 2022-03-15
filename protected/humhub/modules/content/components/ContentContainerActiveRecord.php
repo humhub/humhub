@@ -306,13 +306,11 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns a ModuleManager
      *
-     * @param User $user
-     * @return ModuleManager
+     * @return ContentContainerModuleManager
      * @since 1.3
      */
-    public function getModuleManager()
+    public function getModuleManager(): ?ContentContainerModuleManager
     {
-
         if ($this->moduleManager !== null) {
             return $this->moduleManager;
         }
@@ -386,7 +384,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getTags(): array
     {
-        $tags = trim($this->contentContainerRecord->tags_cached);
+        $tags = is_string($this->contentContainerRecord->tags_cached) ? trim($this->contentContainerRecord->tags_cached) : '';
         return $tags === '' ? [] : preg_split('/\s*,\s*/', $tags);
     }
 

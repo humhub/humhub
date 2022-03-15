@@ -86,7 +86,7 @@ class PeopleFilters extends DirectoryFilters
         $profileFieldSortOrder = 1000;
         foreach ($profileFields as $profileField) {
             $this->initProfileFieldFilter($profileField, $profileFieldSortOrder);
-            $profileFieldSortOrder += 100;
+            $profileFieldSortOrder += 10;
         }
     }
 
