@@ -333,6 +333,11 @@ class HForm extends \yii\base\Component
                         $field = $this->form->field($model, $name)->widget(SortOrderField::class, $options);
                         break;
                     default:
+                        if (method_exists($definition['type'], 'widget')) {
+                            $field = $this->form->field($model, $name)->widget($definition['type'], $options);
+                            break;
+                        }
+
                         return "Field Type " . $definition['type'] . " not supported by Compat HForm";
                 }
 
