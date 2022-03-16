@@ -29,6 +29,8 @@ use yii\helpers\Json;
 class BaseType extends Model
 {
 
+    const EVENT_INIT = "fieldTypesInit";
+
     /**
      * Holds all profile field types
      *
@@ -58,6 +60,10 @@ class BaseType extends Model
      * @since 1.9
      */
     public $canBeDirectoryFilter = false;
+
+    public function __construct() {
+        $this->trigger(self::EVENT_INIT);
+    }
 
     /**
      * Links a ProfileField to the ProfileFieldType.

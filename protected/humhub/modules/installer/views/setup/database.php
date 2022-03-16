@@ -38,7 +38,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
                 <strong><?= Yii::t('InstallerModule.base', 'Ohh, something went wrong!'); ?></strong><br/>
                 <?= Html::encode($errorMessage); ?>
             </div>
-        <?php endif; ?>
+        <?php } ?>
         <hr/>
 
         <?= Html::submitButton(Yii::t('InstallerModule.base', 'Next'), ['class' => 'btn btn-primary', 'data-loader' => "modal", 'data-message' => Yii::t('InstallerModule.base', 'Initializing database...')]); ?>
