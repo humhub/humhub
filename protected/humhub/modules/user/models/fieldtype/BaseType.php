@@ -166,9 +166,11 @@ class BaseType extends Model
 
     /**
      * Return the Form Element to edit the value of the Field
+     * 
+     * @param User $user If a context exists, the user is passed through here. May be null e.g. when filtering multiple users.
      * @return array
      */
-    public function getFieldFormDefinition()
+    public function getFieldFormDefinition(User $user = null)
     {
         return [
             $this->profileField->internal_name => [
