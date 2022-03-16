@@ -44,3 +44,4 @@
 - Enh #5432: Possibility to add buttons in the People page with a module
 - Fix #5585: Don't force password change on user simulating
 - Fix #5591: Fix people/space cards banner
+- Enh #5560: Possibility to create custom profile field types via modules
