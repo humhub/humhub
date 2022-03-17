@@ -169,14 +169,6 @@ class AccountController extends BaseAccountController
     }
 
     /**
-     * Returns user tags list in JSON format filtered by keyword
-     */
-    public function actionSearchSettingsJson($field, $keyword = '')
-    {
-        return $this->asJson((new ProfileSettingsAutocomplete)->getAutocompleteSuggestions($field, $keyword));
-    }
-
-    /**
      * Change Account
      * @throws \Exception
      * @todo Add Group
