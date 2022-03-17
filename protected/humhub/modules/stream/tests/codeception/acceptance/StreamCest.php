@@ -332,6 +332,42 @@ class StreamCest
         $I->see('POST1', '.s2_streamContent > [data-stream-entry]:nth-of-type(5)');
     }
 
+    /**
+     * @param AcceptanceTester $I
+     * @throws \Exception
+     */
+    public function testDateFilter(AcceptanceTester $I)
+    {
+        $I->amAdmin();
+        $I->amOnSpace1();
+        $I->wantToTest('the stream date filters');
+        $I->amGoingTo('create a new post');
+
+        $I->createPost('POST1');
+        $I->wait(1);
+
+        $I->see('POST1', '.s2_streamContent > [data-stream-entry]:nth-of-type(1)');
+
+        $dateFromFilter = '[data-filter-id="date_from"]';
+        $dateToFilter = '[data-filter-id="date_to"]';
+
+        $I->amGoingTo('filter stream by date from today');
+        $I->jsClick('.wall-stream-filter-toggle');
+        $I->waitForElementVisible($dateFromFilter);
+//        $I->fillField($dateFromFilter, date('m/d/y'));
+        $I->executeJS("$('" . $dateFromFilter . "').val('" . date('m/d/y') . "').change();");
+        $I->wait(5);
+        $I->see('POST1', '.s2_streamContent > [data-stream-entry]:nth-of-type(1)');
+
+        $I->amGoingTo('filter stream by date until yesterday');
+//        $I->fillField($dateFromFilter, '');
+        $I->executeJS("$('" . $dateFromFilter . "').val('').change();");
+//        $I->fillField($dateToFilter, date('m/d/y', strtotime('-1 day')));
+        $I->executeJS("$('" . $dateToFilter . "').val('" . date('m/d/y', strtotime('-1 day')) . "').change();");
+        $I->wait(5);
+        $I->dontSee('POST1');
+    }
+
     // Filtering
     // multi click logic
     // empty form
