@@ -11,6 +11,7 @@ return [
     'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Trường này chỉ cho phép tối đa {n,plural,=1{# user} other{# users}}.',
     'You reached the maximum number of allowed characters ({n}).' => 'Bạn đã đạt tối đa số ký tự cho phép ({n}).',
     'Your search returned no matches.' => 'Tìm kiếm của bạn không trả về kết quả phù hợp nào.',
+    'No results found.' => '',
     'Select user...' => '',
     'Select...' => '',
 ];

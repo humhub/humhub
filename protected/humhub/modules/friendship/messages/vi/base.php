@@ -5,7 +5,6 @@ return [
     '<strong>Pending</strong> friend requests' => 'Yêu cầu kết bạn <strong>đang chờ duyệt</strong>',
     '<strong>Sent</strong> friend requests' => '<strong>Gửi</strong> yêu cầu kết bạn',
     'Accept Friend Request' => 'Chấp nhận yêu cầu kết bạn',
-    'Add Friend' => 'Kết bạn',
     'Deny friend request' => 'Từ chối yêu cầu kết bạn',
     'Friends' => 'Bạn',
     'Friendship' => 'Quan hệ bạn bè',

@@ -85,5 +85,8 @@ return [
     '{nFormatted}B' => '{nFormatted} B',
     '{nFormatted}K' => '{nFormatted} K',
     '{nFormatted}M' => '{nFormatted} M',
+    'Allow content from external source' => '',
+    'Always allow content from this provider!' => '',
+    'Do you want to enable content from \'{urlPrefix}\'?' => '',
     'Stop impersonation' => '',
 ];

@@ -116,5 +116,6 @@ return [
     'YouTube URL' => 'URL адрес на YouTube',
     'Zip' => 'Zip',
     '{attribute} is required!' => '{attribute} се изисква!',
+    'Link Prefix (e.g. https://, mailto:, tel://)' => '',
     'Use as Directory filter' => '',
 ];

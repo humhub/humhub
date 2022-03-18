@@ -65,6 +65,7 @@ return [
     'Show less' => '少なく表示',
     'Show more' => 'もっと見る',
     'Some files could not be uploaded:' => '一部のファイルをアップロードできませんでした：',
+    'Stop impersonation' => 'なりすましを止める',
     'Text could not be copied to clipboard' => 'テキストをクリップボードにコピーできませんでした。',
     'Text has been copied to clipboard' => 'テキストがクリップボードにコピーされました。',
     'The date has to be in the past.' => '日付は過去である必要があります。',
@@ -85,5 +86,7 @@ return [
     '{nFormatted}B' => '{nFormatted}B',
     '{nFormatted}K' => '{nFormatted}K',
     '{nFormatted}M' => '{nFormatted}M',
-    'Stop impersonation' => '',
+    'Allow content from external source' => '',
+    'Always allow content from this provider!' => '',
+    'Do you want to enable content from \'{urlPrefix}\'?' => '',
 ];

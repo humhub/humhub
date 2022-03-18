@@ -57,6 +57,7 @@ return [
     'LDAP Attribute' => '',
     'Last login date of the user' => '',
     'Last name' => '',
+    'Link Prefix (e.g. https://, mailto:, tel://)' => '',
     'LinkedIn URL' => '',
     'MSN' => '',
     'Male' => '',

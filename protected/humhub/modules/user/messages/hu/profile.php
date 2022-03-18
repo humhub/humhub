@@ -116,5 +116,6 @@ return [
     'YouTube URL' => 'YouTube URL',
     'Zip' => 'Irányítószám',
     '{attribute} is required!' => '{attribute} kötelező!',
+    'Link Prefix (e.g. https://, mailto:, tel://)' => '',
     'Use as Directory filter' => '',
 ];

@@ -1,5 +1,5 @@
-1.11.0 (Unreleased)
---------------------------
+1.11.0-beta1 (March 18, 2022)
+-----------------------------
 - Fix #5434: Hide disabled next/prev buttons on guide first/last steps
 - Fix #5456: `canImpersonate` only possible for SystemAdmins
 - Enh #5462: Added Single Page Post View 
@@ -17,6 +17,7 @@
 - Enh #5523: Option to include E-Mail address to search 
 - Enh #5352: Remove "NewMembers" widget from Core
 - Fix #5478: Avoid permalinks on comments related to a global content (not in a container) to crash.
+- Enh #5538: People - Show Text Profile Field Filters as DropDown with AutoComplete 
 - Fix #5547: Remove Google Fonts from E-mails
 - Enh #5536: Optional notification w/ reason when admin deletes content/comment
 - Fix #5549: Topic icon is missing in TopicPicker search
@@ -38,6 +39,7 @@
 - Enh #4823: Removed CHTML and CActiveForm classes as well as usages (plus refactoring)
 - Fix #5449: File - Update info after `setStoredFileContent` and `setStoredFile`
 - Enh #5127: LDAP: Reset mapping for single user only
+- Enh #5522: Add content id in the file table
 - Fix #5581: Fix long words in comment form
 - Fix #5578: Improved `rememberMe` parameter handling for thirdparty auth provider 
 - Fix #5304: In a button, data-action-cancel-text doesn't work
@@ -45,3 +47,4 @@
 - Enh #5432: Possibility to add buttons in the People page with a module
 - Fix #5585: Don't force password change on user simulating
 - Fix #5591: Fix people/space cards banner
+- Enh #5575: Add content topics to search

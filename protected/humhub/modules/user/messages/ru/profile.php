@@ -116,5 +116,6 @@ return [
     'YouTube URL' => 'Канал на YouTube',
     'Zip' => 'Почтовый индекс',
     '{attribute} is required!' => 'Требуется указать {attribute}!',
+    'Link Prefix (e.g. https://, mailto:, tel://)' => '',
     'Use as Directory filter' => '',
 ];

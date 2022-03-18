@@ -7,7 +7,6 @@ return [
     '<strong>Pending</strong> friend requests' => '',
     '<strong>Sent</strong> friend requests' => '',
     'Accept Friend Request' => '',
-    'Add Friend' => '',
     'Deny friend request' => '',
     'Pending' => '',
     'Requests' => '',

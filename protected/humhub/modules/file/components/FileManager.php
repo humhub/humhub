@@ -8,6 +8,8 @@
 
 namespace humhub\modules\file\components;
 
+use humhub\modules\comment\models\Comment;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\search\libs\SearchHelper;
 use Yii;
 use yii\base\Component;
@@ -65,10 +67,16 @@ class FileManager extends Component
                 continue;
             }
 
-            $file->updateAttributes([
+            $attributes = [
                 'object_model' => get_class($this->record),
                 'object_id' => $this->record->getPrimaryKey(),
-            ]);
+            ];
+
+            if ($this->record instanceof ContentActiveRecord || $this->record instanceof Comment) {
+                $attributes['content_id'] = $this->record->content->id;
+            }
+
+            $file->updateAttributes($attributes);
         }
 
         SearchHelper::queueUpdate($this->record);

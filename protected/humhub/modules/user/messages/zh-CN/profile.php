@@ -102,6 +102,7 @@ return [
     'Flickr URL' => '',
     'Invalid!' => '',
     'Last login date of the user' => '',
+    'Link Prefix (e.g. https://, mailto:, tel://)' => '',
     'LinkedIn URL' => '',
     'MSN' => '',
     'Markdown' => '',

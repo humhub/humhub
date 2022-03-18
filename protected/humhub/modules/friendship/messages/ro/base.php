@@ -5,7 +5,6 @@ return [
     '<strong>Pending</strong> friend requests' => 'Cereri de prietenie <strong>În așteptare</strong>',
     '<strong>Sent</strong> friend requests' => 'Cereri de prietenie <strong>Trimise</strong>',
     'Accept Friend Request' => 'Acceptă Cerea De Prietenie',
-    'Add Friend' => 'Adaugă Prieten',
     'Deny friend request' => 'Respinge cererea de prietenie',
     'Friends' => 'Prieteni',
     'Friendship' => 'Prietenie',

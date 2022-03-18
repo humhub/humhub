@@ -3,25 +3,19 @@
 return [
     '<strong>Account</strong> settings' => 'إعدادات <strong> الحساب </strong>',
     '<strong>Confirm</strong></strong> your new email address' => '<strong> تأكد </strong> عنوان بريدك الإلكتروني الجديد',
-    '<strong>User</strong> modules' => 'وحدات <strong> المستخدم </strong>',
     '<strong>User</strong> settings' => '<strong>المستخدم</strong> الإعدادت',
     '<strong>Your</strong> profile' => '<strong>حسابك</strong> الشخصي
 ',
     'All your personal data will be irrevocably deleted.' => 'سيتم حذف جميع بياناتك الشخصية بشكل لا رجعة فيه.',
-    'Are you really sure? *ALL* module data for your profile will be deleted!' => 'هل انت حقا متاكد؟ * سيتم حذف جميع بيانات الوحدة * لملف التعريف الخاص بك!',
     'Are you sure that you want to delete your account?' => 'هل أنت متأكد أنك تريد حذف حسابك؟',
     'Changing the username can make some links unusable, for example old links to the profile.' => 'يمكن أن يؤدي تغيير اسم المستخدم إلى جعل بعض الروابط غير قابلة للاستخدام ، مثل الروابط القديمة للملف الشخصي.',
-    'Configure' => 'إعدادات',
     'Confirm' => 'أكد',
     'Current password' => 'كلمة المرور الحالية',
     'Delete account' => 'حذف الحساب',
-    'Disable' => 'إلغاء التفعيل',
     'Do you really want to delete your icon image?' => 'هل تريد حقًا حذف صورة الرمز الخاصة بك؟',
     'Do you really want to delete your logo image?' => 'هل تريد حقًا حذف صورة شعارك؟',
     'E-Mail' => 'البريد الالكتروني',
     'E-Mail change' => 'تغيير البريد الالكتروني',
-    'Enable' => 'تفعيل',
-    'Enhance your profile with modules.' => 'تعزيز ملف التعريف الخاص بك مع الوحدات.',
     'Hello' => 'مرحبا',
     'Here you can edit your general profile data, which is visible in the about page of your profile.' => 'هنا يمكنك تعديل بيانات ملفك الشخصي العامة ، والتي تكون مرئية في صفحة حول ملفك الشخصي.',
     'Hide introduction tour panel on dashboard' => 'إخفاء لوحة دليل المستخدم في لوحة المعلومات
@@ -70,4 +64,5 @@ return [
     'Blocked users' => '',
     'Enter your password to continue' => '',
     'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.' => '',
+    'You cannot use this username.' => '',
 ];

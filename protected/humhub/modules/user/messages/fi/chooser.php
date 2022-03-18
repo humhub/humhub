@@ -11,6 +11,7 @@ return [
     'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Tämä kenttä mahdollistaa vain {n,plural,=1{# user} other{# users}}.',
     'You reached the maximum number of allowed characters ({n}).' => 'Olet saavuttanut merkkiean enimmäismäärän ({n}).',
     'Your search returned no matches.' => 'Hakusi ei vastannut yhtään tulosta.',
+    'No results found.' => '',
     'Select user...' => '',
     'Select...' => '',
 ];

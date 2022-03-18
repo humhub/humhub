@@ -65,6 +65,7 @@ return [
     'Show less' => 'Pokaż mniej',
     'Show more' => 'Pokaż więcej',
     'Some files could not be uploaded:' => 'Niektóre pliki nie mogą zostać przesłane:',
+    'Stop impersonation' => 'Zatrzymaj podszywanie się',
     'Text could not be copied to clipboard' => 'Tekst nie mógł zostać skopiowany do schowka',
     'Text has been copied to clipboard' => 'Tekst został skopiowany do schowka',
     'The date has to be in the past.' => 'Wpisana data musi być wcześniejsza.',
@@ -85,5 +86,7 @@ return [
     '{nFormatted}B' => '{nFormatted}B',
     '{nFormatted}K' => '{nFormatted}K',
     '{nFormatted}M' => '{nFormatted}M',
-    'Stop impersonation' => '',
+    'Allow content from external source' => '',
+    'Always allow content from this provider!' => '',
+    'Do you want to enable content from \'{urlPrefix}\'?' => '',
 ];

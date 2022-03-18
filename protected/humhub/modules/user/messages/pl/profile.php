@@ -106,6 +106,7 @@ return [
     'Updated at' => 'Zaktualizowane o',
     'Updated by' => 'Zaktualizowane przez',
     'Url' => 'Url',
+    'Use as Directory filter' => 'Użyj filtra Położenie',
     'Username' => 'Nazwa użytkownika',
     'Validator' => 'Walidator',
     'Vimeo URL' => 'URL Vimeo',
@@ -116,5 +117,5 @@ return [
     'YouTube URL' => 'adres YouTube',
     'Zip' => 'Kod pocztowy',
     '{attribute} is required!' => '{attribute} jest wymagany!',
-    'Use as Directory filter' => '',
+    'Link Prefix (e.g. https://, mailto:, tel://)' => '',
 ];
