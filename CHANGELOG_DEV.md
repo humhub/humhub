@@ -47,3 +47,4 @@
 - Enh #5432: Possibility to add buttons in the People page with a module
 - Fix #5585: Don't force password change on user simulating
 - Fix #5591: Fix people/space cards banner
+- Enh #5575: Add content topics to search
