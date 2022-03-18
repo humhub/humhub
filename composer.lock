@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f31e972dda60eec80e5bdd13d88a0967",
+    "content-hash": "c91dac0b163fa9df2164c03bc80afc31",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -6762,12 +6762,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "828c6b4fa1fd002289689f672ffb322c94b01398"
+                "reference": "d0a4969"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/828c6b4fa1fd002289689f672ffb322c94b01398",
-                "reference": "828c6b4fa1fd002289689f672ffb322c94b01398",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/d0a4969",
+                "reference": "d0a4969",
                 "shasum": ""
             },
             "require": {
@@ -6877,7 +6877,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-09T07:02:51+00:00"
+            "time": "2022-03-18T07:09:22+00:00"
         },
         {
             "name": "yiisoft/yii2-authclient",
