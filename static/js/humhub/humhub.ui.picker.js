@@ -33,7 +33,9 @@ humhub.module('ui.picker', function (module, require, $) {
         var that = this;
         return {
             theme: "humhub",
-            multiple: true,
+            multiple: that.$.data('multiple'),
+            tags: that.$.data('tags'),
+            allowClear: true,
             templateSelection: $.proxy(that.templateSelection, that),
             templateResult: $.proxy(that.templateResult, that),
             sorter: that.sortResults,
@@ -199,8 +201,9 @@ humhub.module('ui.picker', function (module, require, $) {
     };
 
     Picker.template = {
-        selectionWithImage: '{imageNode}<span class="picker-text with-image"></span> <i class="fa fa-times-circle picker-close"></i>',
-        selectionNoImage: '<span class="picker-text no-image"></span> <i class="fa fa-times-circle picker-close"></i>',
+        selectionWithImage: '{imageNode}<span class="picker-text with-image"></span>',
+        selectionNoImage: '<span class="picker-text no-image"></span>',
+        selectionClear: ' <i class="fa fa-times-circle picker-close"></i>',
         result: '<a href="#" tabindex="-1" style="margin-right:5px;">{imageNode} <span class="picker-text"></span></a>',
         resultDisabled: '<a href="#" title="{disabledText}" data-placement="right" tabindex="-1" style="margin-right:5px;opacity: 0.4;cursor:not-allowed">{imageNode} <span class="picker-text"></span></a>',
         imageNode: '<img class="img-rounded" src="{image}" alt="" style="width:24px;height:24px;"  height="24" width="24">',
@@ -293,6 +296,10 @@ humhub.module('ui.picker', function (module, require, $) {
         this.prepareItem(item);
 
         var selectionTmpl = (item.image && !item.new) ? Picker.template.selectionWithImage : Picker.template.selectionNoImage;
+
+        if (this.$.data('tags')) {
+            selectionTmpl += Picker.template.selectionClear;
+        }
 
         var $result = $(string.template(selectionTmpl, item));
 
