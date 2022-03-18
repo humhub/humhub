@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>Nessuno ha ancora scritto qualcosa.</b><br>Inizia tu e scrivi qualcosa...',
+  '<b>Nobody has written anything yet.</b><br>Post to get things started...' => '<b>Nessuno ha ancora scritto. </b><br>Inizia tu e scrivi qualcosa...',
   '<b>There are no profile posts yet!</b>' => '<b>Non ci sono ancora articoli dei profili utente!</b>',
   '<strong>Directory</strong> menu' => 'Menù <strong>Elenchi</strong>',
   '<strong>Group</strong> members - {group}' => 'Membri del <strong>Gruppo</strong>- {group}',
@@ -27,7 +27,7 @@ return array (
   'This group has no members yet.' => 'Questo gruppo non ha ancora membri.',
   'Top Group' => 'Gruppo più grande',
   'Total groups' => 'Gruppi totali',
-  'Total spaces' => 'Totale space',
+  'Total spaces' => 'Spazi totali',
   'Total users' => 'Totale utenti',
   'User profile posts' => 'Articoli dei profili utente',
   'You are a member of this space' => 'Fai parte di questo Spazio',

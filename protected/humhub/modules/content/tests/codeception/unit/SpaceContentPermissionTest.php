@@ -43,12 +43,18 @@ class SpaceContentPermissionTest extends HumHubDbTestCase
         $this->space->save();
 
         $this->privatePost = new Post;
+        if (version_compare(PHP_VERSION, '7.4', '<')) {
+            $this->privatePost->silentContentCreation = true;
+        }
         $this->privatePost->message = "Private Space1 Post";
         $this->privatePost->content->setContainer($this->space);
         $this->privatePost->content->visibility = Content::VISIBILITY_PRIVATE;
         $this->privatePost->save();
 
         $this->publicPost = new Post;
+        if (version_compare(PHP_VERSION, '7.4', '<')) {
+            $this->publicPost->silentContentCreation = true;
+        }
         $this->publicPost->message = "Public Space1 Post";
         $this->publicPost->content->setContainer($this->space);
         $this->publicPost->content->visibility = Content::VISIBILITY_PUBLIC;

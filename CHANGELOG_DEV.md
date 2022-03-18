@@ -11,12 +11,14 @@
 - Enh #5258: Display who invited the user on the Approval page
 - Enh #5475: Option for forbidden usernames
 - Enh #4890: Allow to define actions in a controller which should not be intercepted by other actions
+- Enh #5503: Allow profile fields link prefixes like "tel://" 
 - Enh #5510: oEmbed support for other social networks, redesign of oEmbed settings pages
 - Fix #5534: Statistic input loading problem
 - Enh #5523: Option to include E-Mail address to search 
 - Enh #5352: Remove "NewMembers" widget from Core
 - Fix #5478: Avoid permalinks on comments related to a global content (not in a container) to crash.
 - Enh #5538: People - Show Text Profile Field Filters as DropDown with AutoComplete 
+- Fix #5547: Remove Google Fonts from E-mails
 - Enh #5536: Optional notification w/ reason when admin deletes content/comment
 - Fix #5549: Topic icon is missing in TopicPicker search
 - Fix #5556: Formatted output for date fields in "About me" profile area.
@@ -26,5 +28,22 @@
 - Fix #5533: Users can't live in UTC
 - Fix #5460: Untranslatable string New Updates in Stream
 - Fix #5573: Allow replying for sub comments
+- Fix #5518: Number of activities reported in the mail summary is always limited to 20
+- Enh #5358: Remove deprecated "Directory" module
 - Fix #5524: Mentioning Permission
 - Fix #5529: Tooltip: improving readability
+- Enh #5298: Added Followers to Space About Page
+- Enh #4558: Deprecate CompatModuleManager
+- Enh #5323: Remove deprecated "Setting" classes
+- Enh #5381: Optimize module states query
+- Enh #4823: Removed CHTML and CActiveForm classes as well as usages (plus refactoring)
+- Fix #5449: File - Update info after `setStoredFileContent` and `setStoredFile`
+- Enh #5127: LDAP: Reset mapping for single user only
+- Enh #5522: Add content id in the file table
+- Fix #5581: Fix long words in comment form
+- Fix #5578: Improved `rememberMe` parameter handling for thirdparty auth provider 
+- Fix #5304: In a button, data-action-cancel-text doesn't work
+- Fix #5340: Mobile navigation: width detection problem
+- Enh #5432: Possibility to add buttons in the People page with a module
+- Fix #5585: Don't force password change on user simulating
+- Fix #5591: Fix people/space cards banner

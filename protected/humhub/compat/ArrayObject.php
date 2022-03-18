@@ -13,8 +13,7 @@ namespace Zend\Stdlib;
 use ArrayAccess;
 use Countable;
 use IteratorAggregate;
-use Serializable;
-use Zend\Stdlib\Exception\InvalidArgumentException;
+use yii\base\InvalidArgumentException;
 
 /**
  * ***** PHP 7.3 modified variant of ZF2 Array Object *****
@@ -23,7 +22,7 @@ use Zend\Stdlib\Exception\InvalidArgumentException;
  *
  * Extends version-specific "abstract" implementation.
  */
-class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Countable
+class ArrayObject implements IteratorAggregate, ArrayAccess, Countable
 {
     /**
      * Properties of the object have their normal functionality
@@ -83,7 +82,7 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
             return $this->offsetExists($key);
         }
         if (in_array($key, $this->protectedProperties)) {
-            throw new Exception\InvalidArgumentException('$key is a protected property, use a different key');
+            throw new InvalidArgumentException('$key is a protected property, use a different key');
         }
 
         return isset($this->$key);
@@ -102,7 +101,7 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
             return $this->offsetSet($key, $value);
         }
         if (in_array($key, $this->protectedProperties)) {
-            throw new Exception\InvalidArgumentException('$key is a protected property, use a different key');
+            throw new InvalidArgumentException('$key is a protected property, use a different key');
         }
         $this->$key = $value;
     }
@@ -119,7 +118,7 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
             return $this->offsetUnset($key);
         }
         if (in_array($key, $this->protectedProperties)) {
-            throw new Exception\InvalidArgumentException('$key is a protected property, use a different key');
+            throw new InvalidArgumentException('$key is a protected property, use a different key');
         }
         unset($this->$key);
     }
@@ -139,7 +138,7 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
             return $ret;
         }
         if (in_array($key, $this->protectedProperties)) {
-            throw new Exception\InvalidArgumentException('$key is a protected property, use a different key');
+            throw new InvalidArgumentException('$key is a protected property, use a different key');
         }
 
         return $this->$key;
@@ -185,7 +184,7 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
     public function exchangeArray($data)
     {
         if (!is_array($data) && !is_object($data)) {
-            throw new Exception\InvalidArgumentException('Passed variable is not an array or object, using empty array instead');
+            throw new InvalidArgumentException('Passed variable is not an array or object, using empty array instead');
         }
 
         if (is_object($data) && ($data instanceof self || $data instanceof \ArrayObject)) {
@@ -330,11 +329,11 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
     /**
      * Serialize an ArrayObject
      *
-     * @return string
+     * @return array
      */
-    public function serialize()
+    public function __serialize(): array
     {
-        return serialize(get_object_vars($this));
+        return get_object_vars($this);
     }
 
     /**
@@ -371,7 +370,7 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
             }
         }
 
-        throw new Exception\InvalidArgumentException('The iterator class does not exist');
+        throw new InvalidArgumentException('The iterator class does not exist');
     }
 
     /**
@@ -403,12 +402,11 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
     /**
      * Unserialize an ArrayObject
      *
-     * @param string $data
+     * @param array $ar
      * @return void
      */
-    public function unserialize($data)
+    public function __unserialize($ar)
     {
-        $ar = unserialize($data);
         $this->protectedProperties = array_keys(get_object_vars($this));
 
         $this->setFlags($ar['flag']);

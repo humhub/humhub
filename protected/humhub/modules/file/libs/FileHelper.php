@@ -52,6 +52,10 @@ class FileHelper extends \yii\helpers\FileHelper
             $fileName = $fileName->file_name;
         }
 
+        if (!is_string($fileName)) {
+            return '';
+        }
+
         $fileParts = pathinfo($fileName);
         if (isset($fileParts['extension'])) {
             return $fileParts['extension'];

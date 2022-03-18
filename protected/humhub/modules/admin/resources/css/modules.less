@@ -9,6 +9,13 @@
         margin-top: 40px;
     }
     .card-module {
+        .card-panel {
+            background: none;
+            overflow: hidden;
+            > div:not(.card-status) {
+                background-color: #ffffff;
+            }
+        }
         .card-header {
             position: relative;
         }
@@ -97,11 +104,14 @@
     }
 }
 
-.container-create-space-modules {
+.container-create-space-modules.container-cards {
     width: 100%;
     padding: 0;
+    .row.cards {
+        margin-top: 0;
+    }
     .card {
-        .card-panel {
+        .card-panel > div {
             background: #F5F5F5;
         }
     }

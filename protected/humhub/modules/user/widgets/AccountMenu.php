@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
 use humhub\modules\ui\menu\MenuLink;
@@ -70,6 +71,8 @@ class AccountMenu extends LeftNavigation
             ]));
         }
 
+        /* @var User $user */
+        $user = Yii::$app->user->getIdentity();
         $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.account', 'Modules'),
             'id' => 'account-settings-modules',
@@ -77,7 +80,7 @@ class AccountMenu extends LeftNavigation
             'url' => ['/user/account/edit-modules'],
             'sortOrder' => 120,
             'isActive' => MenuLink::isActiveState('user', 'account', 'edit-modules'),
-            'isVisible' => (count(Yii::$app->user->getIdentity()->getAvailableModules()) !== 0)
+            'isVisible' => (count($user->moduleManager->getAvailable()) !== 0)
         ]));
 
         parent::init();

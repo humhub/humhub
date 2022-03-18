@@ -5,7 +5,7 @@ return array (
   '<strong>Getting</strong> Started' => '<strong> Komma </strong> igång',
   '<strong>Guide:</strong> Administration (Modules)' => '<strong> Guide: </strong> Administration (moduler)',
   '<strong>Guide:</strong> Overview' => '<strong>Guide:</strong> Översikt',
-  '<strong>Guide:</strong> Spaces' => '<strong>Guide:</strong> Nätverk',
+  '<strong>Guide:</strong> Spaces' => '<strong>Guide:</strong> Forum',
   '<strong>Guide:</strong> User profile' => '<strong>Guide:</strong> Användarprofil',
   '<strong>Notifications</strong>' => '<strong>Aviseringar</strong>',
   '<strong>Remove</strong> tour panel' => '<strong>Ta bort</strong> guide-panelen',

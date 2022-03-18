@@ -92,9 +92,9 @@ class ApprovalRequest extends BaseNotification
     /**
      * @inheritdoc
      */
-    public function serialize()
+    public function serialize(): array
     {
-        return serialize(['source' => $this->source, 'originator' => $this->originator, 'message' => $this->message]);
+        return ['source' => $this->source, 'originator' => $this->originator, 'message' => $this->message];
     }
 
     /**
