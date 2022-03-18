@@ -33,7 +33,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
         <?= $form->field($model, 'database') ?>
         <?= $form->field($model, 'create')->checkbox() ?>
 
-        <?php if ($errorMessage) { ?>
+        <?php if ($errorMessage): ?>
             <div class="alert alert-danger">
                 <strong><?= Yii::t('InstallerModule.base', 'Ohh, something went wrong!'); ?></strong><br/>
                 <?= Html::encode($errorMessage); ?>
