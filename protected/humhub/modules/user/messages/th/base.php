@@ -6,7 +6,6 @@ return [
     '<strong>Group</strong> members - {group}' => 'สมาชิก <strong>กลุ่ม</strong> - {group}',
     '<strong>Member</strong> in these spaces' => '<strong>สมาชิก</strong> ในช่องว่างเหล่านี้',
     '<strong>Member</strong> of these Spaces' => '<strong>สมาชิก</strong> ของ Spaces เหล่านี้',
-    '<strong>New</strong> people' => '<strong>ใหม่</strong> คน',
     '<strong>People</strong>' => '<strong>คน</strong>',
     '<strong>User</strong> tags' => 'แท็ก<strong>ผู้ใช้</strong>',
     'All' => 'ทั้งหมด',
@@ -66,7 +65,6 @@ return [
     'Register now and participate!' => 'ลงทะเบียนตอนนี้และเข้าร่วม',
     'Search...' => 'ค้นหา...',
     'Security' => 'ความปลอดภัย',
-    'See all' => 'ดูทั้งหมด',
     'Send invite' => 'ส่งคำเชิญ',
     'Settings' => 'การตั้งค่า',
     'Show At Registration' => 'แสดงเมื่อลงทะเบียน',
@@ -104,4 +102,7 @@ return [
     'invited you to join {name}.' => 'เชิญคุณเข้าร่วม {name}',
     'invited you to join {space} on {name}.' => 'เชิญคุณเข้าร่วม {space} ใน {name}',
     'or' => 'หรือ',
+    'Allow users to mention you' => '',
+    'Invited by' => '',
+    'Mentioning' => '',
 ];

@@ -5,7 +5,6 @@ return [
     '<strong>Pending</strong> friend requests' => 'طلبات الصداقة <strong> المعلقة </ strong>',
     '<strong>Sent</strong> friend requests' => 'طلبات الصداقة <strong> المرسلة </ strong>',
     'Accept Friend Request' => 'قبول طلب الصداقة',
-    'Add Friend' => 'أضف صديق',
     'Deny friend request' => 'رفض طلب الصداقة',
     'Friends' => 'اصحاب',
     'Friendship' => 'صداقة',

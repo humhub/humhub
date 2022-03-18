@@ -114,6 +114,7 @@ return [
     'E-mail address of the user' => '',
     'Invalid!' => '',
     'Last login date of the user' => '',
+    'Link Prefix (e.g. https://, mailto:, tel://)' => '',
     'Other:' => '',
     'Use as Directory filter' => '',
     '{attribute} is required!' => '',

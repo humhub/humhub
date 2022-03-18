@@ -6,7 +6,6 @@ return [
     '<strong>Group</strong> members - {group}' => 'Membres du <strong>groupe</strong> - {group}',
     '<strong>Member</strong> in these spaces' => '<strong>Membre</strong> des espaces',
     '<strong>Member</strong> of these Spaces' => '<strong>Membre</strong>',
-    '<strong>New</strong> people' => '<strong>Nouveaux</strong> membres',
     '<strong>People</strong>' => '<strong>Membres</strong>',
     '<strong>User</strong> tags' => 'Mots-clé de <strong>l\'utilisateur</strong>',
     'All' => 'Tous',
@@ -66,7 +65,6 @@ return [
     'Register now and participate!' => 'Inscrivez-vous maintenant et participez !',
     'Search...' => 'Rechercher...',
     'Security' => 'Sécurité',
-    'See all' => 'Voir tous',
     'Send invite' => 'Envoyer l\'invitation',
     'Settings' => 'Réglages',
     'Show At Registration' => 'Afficher lors de l\'inscription',
@@ -104,4 +102,7 @@ return [
     'invited you to join {name}.' => 'vous a invité à rejoindre {name}.',
     'invited you to join {space} on {name}.' => 'vous a invité à rejoindre {space} sur {name}.',
     'or' => 'ou',
+    'Allow users to mention you' => '',
+    'Invited by' => '',
+    'Mentioning' => '',
 ];

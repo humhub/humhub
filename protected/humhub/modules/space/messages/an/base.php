@@ -101,7 +101,6 @@ return [
     'Owner:' => '',
     'Pending' => '',
     'Pick users' => '',
-    'Please shortly introduce yourself, to become a approved member of this workspace.' => '',
     'Please shortly introduce yourself, to become an approved member of this space.' => '',
     'Posts' => '',
     'Private' => '',
@@ -110,7 +109,6 @@ return [
     'Public (Members only)' => '',
     'Public (Registered users only)' => '',
     'Request Message' => '',
-    'Request workspace membership' => '',
     'Role' => '',
     'Search...' => '',
     'See all' => '',
@@ -142,7 +140,6 @@ return [
     'You cannot create private visible spaces!' => '',
     'You cannot create public visible spaces!' => '',
     'Your request was successfully submitted to the space administrators.' => '',
-    'Your request was successfully submitted to the workspace administrators.' => '',
     '{count} members' => '',
     '{email} is not valid!' => '',
 ];

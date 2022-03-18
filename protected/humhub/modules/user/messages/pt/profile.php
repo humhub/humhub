@@ -116,5 +116,6 @@ return [
     'YouTube URL' => 'URL do YouTube',
     'Zip' => 'Código Postal',
     '{attribute} is required!' => '{attribute} é necessário!',
+    'Link Prefix (e.g. https://, mailto:, tel://)' => '',
     'Use as Directory filter' => '',
 ];

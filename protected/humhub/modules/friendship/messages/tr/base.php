@@ -5,7 +5,6 @@ return [
     '<strong>Pending</strong> friend requests' => '<strong>Arkadaş</strong> istekleri',
     '<strong>Sent</strong> friend requests' => '<strong>Gönderilen</strong> İstekler',
     'Accept Friend Request' => 'Onayla',
-    'Add Friend' => 'Arkadaşı Ekle',
     'Deny friend request' => 'İsteği Reddet',
     'Friends' => 'Arkadaşlar',
     'Friendship' => 'Arkadaşlık',

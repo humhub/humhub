@@ -11,6 +11,7 @@ return [
     'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'يسمح هذا الحقل فقط بحد أقصى {n، plural، = 1 {# user} آخر {# users}}.',
     'You reached the maximum number of allowed characters ({n}).' => 'لقد وصلت إلى الحد الأقصى لعدد الأحرف المسموح بها ({n}).',
     'Your search returned no matches.' => 'أسفر بحثك عن أي مباراة.',
+    'No results found.' => '',
     'Select user...' => '',
     'Select...' => '',
 ];

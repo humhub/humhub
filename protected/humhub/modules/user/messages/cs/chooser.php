@@ -11,6 +11,7 @@ return [
     'You reached the maximum number of allowed characters ({n}).' => 'Přesahli jste maximálního povoleného počtu znaků ({n}).',
     'Your search returned no matches.' => 'Vaše vyhledávání neodpovídá žádným výsledkům.',
     'An unexpected error occurred while loading the result.' => '',
+    'No results found.' => '',
     'Select user...' => '',
     'Select...' => '',
 ];

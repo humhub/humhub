@@ -107,6 +107,7 @@ return [
     'Hide age per default' => '',
     'Invalid!' => '',
     'Last login date of the user' => '',
+    'Link Prefix (e.g. https://, mailto:, tel://)' => '',
     'Markdown' => '',
     'Must contain at least one character.' => '',
     'Other:' => '',

@@ -11,6 +11,7 @@ return [
     'You reached the maximum number of allowed characters ({n}).' => '你输入的字符数到了最大限制 ({n})。',
     'Your search returned no matches.' => '没有找到匹配的数据。',
     'An unexpected error occurred while loading the result.' => '',
+    'No results found.' => '',
     'Select user...' => '',
     'Select...' => '',
 ];

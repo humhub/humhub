@@ -5,7 +5,6 @@ return [
     '<strong>Pending</strong> friend requests' => '<strong>Žádosti</strong> o přátelství',
     '<strong>Sent</strong> friend requests' => '<strong>Odeslat</strong> žádost o přátelství',
     'Accept Friend Request' => 'Přijmout žádost',
-    'Add Friend' => 'Přidat přítele',
     'Deny friend request' => 'Odmítnout žádost',
     'Friends' => 'Přátelé',
     'Friendship' => 'Přátelství',

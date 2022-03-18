@@ -5,7 +5,6 @@ return [
     '<strong>Pending</strong> friend requests' => 'בקשות חברות ממתינות',
     '<strong>Sent</strong> friend requests' => 'בקשות חברות שנשלחו',
     'Accept Friend Request' => 'אשר בקשת חברות',
-    'Add Friend' => 'הוסף חבר/ה',
     'Deny friend request' => 'דחה בקשת חברות',
     'Friends' => 'חברים',
     'Friendship' => 'חברות',

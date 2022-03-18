@@ -98,11 +98,9 @@ return [
     'Owner' => '',
     'Pending' => '',
     'Pick users' => '',
-    'Please shortly introduce yourself, to become a approved member of this workspace.' => '',
     'Please shortly introduce yourself, to become an approved member of this space.' => '',
     'Posts' => '',
     'Request Message' => '',
-    'Request workspace membership' => '',
     'Role' => '',
     'Search...' => '',
     'See all' => '',
@@ -143,6 +141,5 @@ return [
     'You cannot create public visible spaces!' => '',
     'You need to login to view contents of this space!' => '',
     'Your request was successfully submitted to the space administrators.' => '',
-    'Your request was successfully submitted to the workspace administrators.' => '',
     '{email} is not valid!' => '',
 ];

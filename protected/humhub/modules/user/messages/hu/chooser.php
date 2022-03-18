@@ -11,6 +11,7 @@ return [
     'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Ez a mező maximum {n,plural,=1{# felhasználó} other{# felhasználókat}} engedélyez.',
     'You reached the maximum number of allowed characters ({n}).' => 'Elérted a maximum engedélyezett karakterek számát ({n}).',
     'Your search returned no matches.' => 'A keresés nem adott találatot.',
+    'No results found.' => '',
     'Select user...' => '',
     'Select...' => '',
 ];

@@ -116,5 +116,6 @@ return [
     'YouTube URL' => 'URL do YouTube',
     'Zip' => 'CEP',
     '{attribute} is required!' => '{attribute} é obrigatório!',
+    'Link Prefix (e.g. https://, mailto:, tel://)' => '',
     'Use as Directory filter' => '',
 ];
