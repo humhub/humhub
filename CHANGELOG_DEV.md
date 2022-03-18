@@ -1,7 +1,3 @@
-1.11.0-beta2 (Unreleased)
------------------------------
-- Enh #5575: Add content topics to search
-
 1.11.0-beta1 (March 18, 2022)
 -----------------------------
 - Fix #5434: Hide disabled next/prev buttons on guide first/last steps
@@ -51,3 +47,4 @@
 - Enh #5432: Possibility to add buttons in the People page with a module
 - Fix #5585: Don't force password change on user simulating
 - Fix #5591: Fix people/space cards banner
+- Enh #5575: Add content topics to search
