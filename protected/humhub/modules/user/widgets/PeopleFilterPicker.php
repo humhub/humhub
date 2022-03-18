@@ -4,8 +4,10 @@ namespace humhub\modules\user\widgets;
 
 use humhub\modules\ui\form\widgets\BasePicker;
 use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -30,10 +32,14 @@ class PeopleFilterPicker extends BasePicker
     public function init()
     {
         $this->itemClass = Profile::class;
-
         $this->url = Url::to([$this->defaultRoute, 'field' => $this->itemKey]);
 
         parent::init();
+
+        $profileField = ProfileField::findOne(['internal_name' => $this->itemKey, 'directory_filter' => 1]);
+        if ($profileField === null) {
+            throw new InvalidConfigException('Invalid filter key');
+        }
     }
 
     /**
@@ -42,7 +48,7 @@ class PeopleFilterPicker extends BasePicker
     protected function getSelectedOptions()
     {
         $get = Yii::$app->request->get('fields');
-        if(isset($get[$this->itemKey])) {
+        if (isset($get[$this->itemKey])) {
             $this->selection[] = $get[$this->itemKey];
         }
 
@@ -105,7 +111,8 @@ class PeopleFilterPicker extends BasePicker
      * @inheritdoc
      * @param Profile $item
      */
-    protected function getItemImage($item) {
+    protected function getItemImage($item)
+    {
         return $item->user->getProfileImage();
     }
 
@@ -118,9 +125,9 @@ class PeopleFilterPicker extends BasePicker
     public function getSuggestions($keyword = '')
     {
         return Profile::find()->select([
-                $this->itemKey . ' AS id',
-                $this->itemKey . ' AS text',
-            ])
+            'id' => $this->itemKey,
+            'text' => $this->itemKey,
+        ])
             ->groupBy($this->itemKey)
             ->where(['LIKE', $this->itemKey, $keyword])
             ->limit(100)
