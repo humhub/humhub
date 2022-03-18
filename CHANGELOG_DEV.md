@@ -16,7 +16,7 @@
 - Enh #5523: Option to include E-Mail address to search 
 - Enh #5352: Remove "NewMembers" widget from Core
 - Fix #5478: Avoid permalinks on comments related to a global content (not in a container) to crash.
-- Enh #5538: Autocomplete Input Widget
+- Enh #5538: People - Show Text Profile Field Filters as DropDown with AutoComplete 
 - Enh #5536: Optional notification w/ reason when admin deletes content/comment
 - Fix #5549: Topic icon is missing in TopicPicker search
 - Fix #5556: Formatted output for date fields in "About me" profile area.
