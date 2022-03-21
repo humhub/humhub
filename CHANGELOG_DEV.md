@@ -1,6 +1,7 @@
 1.11.0-beta.3 (Unreleased)
 --------------------------
 - Fix #5603: Syntax error in database view installer
+- Fix #5605: Fix warning on render ajax content on register file after View::endPage()
 
 
 1.11.0-beta.2 (March 18, 2022)
