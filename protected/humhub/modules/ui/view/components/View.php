@@ -154,6 +154,7 @@ class View extends \yii\web\View
         ob_start();
         ob_implicit_flush(false);
 
+        $this->_isPageEnded = false;
         $this->beginPage();
         $this->head();
         $this->beginBody();
