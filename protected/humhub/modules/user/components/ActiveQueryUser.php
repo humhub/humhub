@@ -66,9 +66,7 @@ class ActiveQueryUser extends ActiveQuery
     public function active()
     {
         $this->trigger(self::EVENT_CHECK_ACTIVE, new ActiveQueryEvent(['query' => $this]));
-
-        $this->andWhere(['user.status' => UserModel::STATUS_ENABLED]);
-        return $this;
+        return $this->andWhere(['user.status' => UserModel::STATUS_ENABLED]);
     }
 
     /**
@@ -81,7 +79,14 @@ class ActiveQueryUser extends ActiveQuery
     public function visible()
     {
         $this->trigger(self::EVENT_CHECK_VISIBILITY, new ActiveQueryEvent(['query' => $this]));
-        return $this->active();
+
+        $allowedVisibilities = [UserModel::VISIBILITY_ALL];
+        if (!Yii::$app->user->isGuest) {
+            $allowedVisibilities[] = UserModel::VISIBILITY_REGISTERED_ONLY;
+        }
+
+        return $this->active()
+            ->andWhere(['IN', 'user.visibility', $allowedVisibilities]);
     }
 
 
