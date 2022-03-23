@@ -272,7 +272,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     {
         $scenarios = parent::scenarios();
         $scenarios[static::SCENARIO_LOGIN] = ['username', 'password'];
-        $scenarios[static::SCENARIO_EDIT_ADMIN] = ['username', 'email', 'status', 'language', 'tagsField'];
+        $scenarios[static::SCENARIO_EDIT_ADMIN] = ['username', 'email', 'status', 'visibility', 'language', 'tagsField'];
         $scenarios[static::SCENARIO_EDIT_ACCOUNT_SETTINGS] = ['language', 'visibility', 'time_zone', 'tagsField', 'blockedUsersField'];
         $scenarios[static::SCENARIO_REGISTRATION_EMAIL] = ['username', 'email', 'time_zone'];
         $scenarios[static::SCENARIO_REGISTRATION] = ['username', 'time_zone'];
