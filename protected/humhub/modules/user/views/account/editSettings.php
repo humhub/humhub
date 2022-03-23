@@ -5,6 +5,7 @@ use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\forms\AccountSettings;
+use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserPickerField;
 
 /* @var AccountSettings $model */
@@ -24,15 +25,10 @@ use humhub\modules\user\widgets\UserPickerField;
 <?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(true), ['data-ui-select2' => '']); ?>
 
 <?php if (AuthHelper::isGuestAccessEnabled()): ?>
-
-    <?php
-    echo $form->field($model, 'visibility')->dropDownList([
-        1 => Yii::t('UserModule.account', 'Registered users only'),
-        2 => Yii::t('UserModule.account', 'Visible for all (also unregistered users)'),
-    ]);
-    ?>
-
-
+    <?= $form->field($model, 'visibility')->dropDownList([
+        User::VISIBILITY_REGISTERED_ONLY => Yii::t('UserModule.account', 'Registered users only'),
+        User::VISIBILITY_ALL => Yii::t('UserModule.account', 'Visible for all (also unregistered users)'),
+    ]); ?>
 <?php endif; ?>
 
 <?php if (Yii::$app->getModule('tour')->settings->get('enable') == 1) : ?>

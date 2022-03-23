@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\models\forms;
 
 use humhub\libs\DynamicConfig;
+use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
 
@@ -62,7 +63,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
     {
         return [
             [['internalUsersCanInvite', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess', 'showCaptureInRegisterForm', 'showRegistrationUserGroup', 'blockUsers'], 'boolean'],
-            ['defaultUserProfileVisibility', 'in', 'range' => [1, 2]],
+            ['defaultUserProfileVisibility', 'in', 'range' => array_keys(User::getVisibilityOptions())],
             ['defaultUserIdleTimeoutSec', 'integer', 'min' => 20],
             [['registrationApprovalMailContent', 'registrationDenialMailContent'], 'string']
         ];

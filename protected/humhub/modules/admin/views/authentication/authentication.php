@@ -3,6 +3,7 @@
 use humhub\modules\admin\models\forms\AuthenticationSettingsForm;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use yii\helpers\Html;
 
@@ -36,7 +37,7 @@ $userModule = Yii::$app->getModule('user');
     <?= $form->field($model, 'defaultUserIdleTimeoutSec')->textInput(['readonly' => $userModule->settings->isFixed('auth.defaultUserIdleTimeoutSec')]); ?>
     <p class="help-block"><?= Yii::t('AdminModule.user', 'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)'); ?></p>
 
-    <?= $form->field($model, 'defaultUserProfileVisibility')->dropDownList([1 => Yii::t('AdminModule.user', 'Visible for members only'), 2 => Yii::t('AdminModule.user', 'Visible for members+guests')], ['readonly' => (!Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess'))]); ?>
+    <?= $form->field($model, 'defaultUserProfileVisibility')->dropDownList(User::getVisibilityOptions(), ['readonly' => (!Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess'))]); ?>
     <p class="help-block"><?= Yii::t('AdminModule.user', 'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.'); ?></p>
 
     <?php if (Yii::$app->getModule('user')->settings->get('auth.needApproval')): ?>
