@@ -54,3 +54,4 @@
 - Fix #5585: Don't force password change on user simulating
 - Fix #5591: Fix people/space cards banner
 - Enh #5575: Add content topics to search
+- Enh #5599: Introduce a variables in the Space model to call ProfileImage and ProfileBannerImage classes
