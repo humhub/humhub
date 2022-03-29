@@ -2,6 +2,7 @@
 --------------------------
 - Fix #5603: Syntax error in database view installer
 - Fix #5608: Remove duplicated field "Hostname" on install
+- Enh #5610: Show menu item "Add Licence Key" for purchased modules
 - Enh #5599: Introduce a variables in the Space model to call ProfileImage and ProfileBannerImage classes
 
 
