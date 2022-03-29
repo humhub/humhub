@@ -2,6 +2,7 @@
 --------------------------
 - Fix #5603: Syntax error in database view installer
 - Fix #5608: Remove duplicated field "Hostname" on install
+- Fix #5612: Fix RichText post process event pass data
 
 
 1.11.0-beta.2 (March 18, 2022)
