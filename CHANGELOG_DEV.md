@@ -3,6 +3,7 @@
 - Fix #5603: Syntax error in database view installer
 - Fix #5608: Remove duplicated field "Hostname" on install
 - Enh #5610: Show menu item "Add Licence Key" for purchased modules
+- Enh #5599: Introduce a variables in the Space model to call ProfileImage and ProfileBannerImage classes
 
 
 1.11.0-beta.2 (March 18, 2022)
@@ -55,4 +56,3 @@
 - Fix #5585: Don't force password change on user simulating
 - Fix #5591: Fix people/space cards banner
 - Enh #5575: Add content topics to search
-- Enh #5599: Introduce a variables in the Space model to call ProfileImage and ProfileBannerImage classes
