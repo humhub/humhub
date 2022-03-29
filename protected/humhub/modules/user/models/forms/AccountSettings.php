@@ -36,7 +36,7 @@ class AccountSettings extends \yii\base\Model
             [['show_introduction_tour'], 'boolean'],
             [['timeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
-            ['visibility', 'in', 'range' => array_keys(User::getVisibilityOptions())],
+            ['visibility', 'in', 'range' => array_keys(User::getVisibilityOptions(false))],
         ];
     }
 

@@ -955,13 +955,18 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         return $options;
     }
 
-    public static function getVisibilityOptions(): array
+    public static function getVisibilityOptions($allowHidden = true): array
     {
-        return [
+        $options = [
             self::VISIBILITY_REGISTERED_ONLY => Yii::t('AdminModule.user', 'Visible for members only'),
             self::VISIBILITY_ALL => Yii::t('AdminModule.user', 'Visible for members+guests'),
-            self::VISIBILITY_HIDDEN => Yii::t('AdminModule.user', 'Invisible'),
         ];
+
+        if ($allowHidden) {
+            $options[self::VISIBILITY_HIDDEN] = Yii::t('AdminModule.user', 'Invisible');
+        }
+
+        return $options;
     }
 
 }
