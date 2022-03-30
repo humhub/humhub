@@ -37,7 +37,7 @@ class PoweredBy extends Widget
     public function run()
     {
 
-        if (isset(Yii::$app->params['hidePoweredBy'])) {
+        if (static::isHidden()) {
             return '';
         }
 
@@ -52,6 +52,11 @@ class PoweredBy extends Widget
         return Yii::t('base', 'Powered by {name}', [
             'name' => Html::a('HumHub', 'https://humhub.org', $this->linkOptions)
         ]);
+    }
+
+    public static function isHidden()
+    {
+        return isset(Yii::$app->params['hidePoweredBy']);
     }
 
 }
