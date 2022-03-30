@@ -5,6 +5,7 @@
 - Fix #5612: Fix RichText post process event pass data
 - Enh #5610: Show menu item "Add Licence Key" for purchased modules
 - Enh #5599: Introduce a variables in the Space model to call ProfileImage and ProfileBannerImage classes
+- Fix #5616: Don't display oEmbed confirmation in text field
 
 
 1.11.0-beta.2 (March 18, 2022)
