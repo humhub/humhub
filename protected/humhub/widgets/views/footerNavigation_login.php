@@ -7,21 +7,29 @@
 
 use yii\helpers\Html;
 use humhub\widgets\PoweredBy;
+use humhub\modules\ui\menu\MenuLink;
 
-$i = 0;
+/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $entries MenuLink[] */
+/* @var $options array */
+/* @var $menu \humhub\widgets\FooterMenu */
+
 ?>
 
 <div class="text text-center powered">
-    <?php if ($numItems > 0): ?>
-        <?php foreach ($items as $item): ?>
-            <?= Html::a($item['label'], $item['url'], ['data-pjax-prevent' => true]); ?>
+    <?php if (!empty($entries)): ?>
+        <div class="footer-nav footer-nav-login">
+            <?php foreach ($entries as $k => $entry): ?>
+                <?php if ($entry instanceof MenuLink): ?>
+                    <?= Html::a($entry->getLabel(), $entry->getUrl(), $entry->getHtmlOptions(['data-pjax-prevent' => true])); ?>
+                <?php endif; ?>
 
-            <?php if (++$i !== $numItems): ?>
-                &nbsp;&middot;&nbsp;
-            <?php endif; ?>
-
-        <?php endforeach; ?>
-        <br/><br/>
+                <?php if (array_key_last($entries) !== $k): ?>
+                    &nbsp;&middot;&nbsp;
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
     <?php endif; ?>
+    <br/>
     <?= PoweredBy::widget(); ?>
 </div>
