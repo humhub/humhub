@@ -63,7 +63,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
     {
         return [
             [['internalUsersCanInvite', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess', 'showCaptureInRegisterForm', 'showRegistrationUserGroup', 'blockUsers'], 'boolean'],
-            ['defaultUserProfileVisibility', 'in', 'range' => array_keys(User::getVisibilityOptions())],
+            ['defaultUserProfileVisibility', 'in', 'range' => array_keys(User::getVisibilityOptions(false))],
             ['defaultUserIdleTimeoutSec', 'integer', 'min' => 20],
             [['registrationApprovalMailContent', 'registrationDenialMailContent'], 'string']
         ];

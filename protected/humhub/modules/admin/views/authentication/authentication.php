@@ -37,7 +37,7 @@ $userModule = Yii::$app->getModule('user');
     <?= $form->field($model, 'defaultUserIdleTimeoutSec')->textInput(['readonly' => $userModule->settings->isFixed('auth.defaultUserIdleTimeoutSec')]); ?>
     <p class="help-block"><?= Yii::t('AdminModule.user', 'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)'); ?></p>
 
-    <?= $form->field($model, 'defaultUserProfileVisibility')->dropDownList(User::getVisibilityOptions(), ['readonly' => (!Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess'))]); ?>
+    <?= $form->field($model, 'defaultUserProfileVisibility')->dropDownList(User::getVisibilityOptions(false), ['readonly' => (!Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess'))]); ?>
     <p class="help-block"><?= Yii::t('AdminModule.user', 'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.'); ?></p>
 
     <?php if (Yii::$app->getModule('user')->settings->get('auth.needApproval')): ?>
