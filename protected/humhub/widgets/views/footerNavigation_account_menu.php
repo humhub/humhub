@@ -5,23 +5,27 @@
  * @license https://www.humhub.com/licences
  */
 
-$i = 0;
+use humhub\libs\Html;
+use humhub\modules\ui\menu\MenuLink;
+
+/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $entries MenuLink[] */
+/* @var $options array */
+/* @var $menu \humhub\widgets\FooterMenu */
+
+
+/**
+ * NOTE: This template is used only in mobile view ports!
+ */
+
 ?>
 
-<?php if ($numItems > 0): ?>
+<?php if (!empty($entries)): ?>
     <li class="divider visible-sm visible-xs"></li>
-
-    <?php foreach ($items as $item): ?>
-        <?php if ($item['label'] == '---'): ?>
-            <li class="divider visible-sm visible-xs"></li>
-        <?php else: ?>
-            <li class="visible-sm visible-xs">
-                <a <?= isset($item['id']) ? 'id="' . $item['id'] . '"' : '' ?>
-                    href="<?= $item['url']; ?>" <?= isset($item['pjax']) && $item['pjax'] === false ? 'data-pjax-prevent' : '' ?>>
-                    <small>
-                        <?= $item['icon'] . ' ' . $item['label']; ?>
-                    </small>
-                </a>
+    <?php foreach ($entries as $k => $entry): ?>
+        <?php if ($entry instanceof MenuLink): ?>
+            <li class="visible-sm visible-xs footer-nav-entry">
+                <?= Html::a($entry->getIcon() . ' ' . $entry->getLabel(), $entry->getUrl(), $entry->getHtmlOptions()); ?>
             </li>
         <?php endif; ?>
     <?php endforeach; ?>

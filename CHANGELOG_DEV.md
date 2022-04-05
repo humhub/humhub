@@ -2,6 +2,12 @@
 --------------------------
 - Fix #5603: Syntax error in database view installer
 - Fix #5605: Fix warning on render ajax content on register file after View::endPage()
+- Fix #5608: Remove duplicated field "Hostname" on install
+- Fix #5612: Fix RichText post process event pass data
+- Enh #5610: Show menu item "Add Licence Key" for purchased modules
+- Enh #5599: Introduce a variables in the Space model to call ProfileImage and ProfileBannerImage classes
+- Enh #5621: Optimize footer views 
+- Fix #5616: Don't display oEmbed confirmation in text field
 
 
 1.11.0-beta.2 (March 18, 2022)

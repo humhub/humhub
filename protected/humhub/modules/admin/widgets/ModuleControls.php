@@ -8,6 +8,7 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\components\Module;
+use humhub\components\OnlineModule;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\Menu;
@@ -128,6 +129,18 @@ class ModuleControls extends Menu
                 ],
                 'icon' => 'trash',
                 'sortOrder' => 400,
+            ]));
+        }
+
+        $onlineModule = new OnlineModule(['module' => $this->module]);
+        if ($onlineModule->info('purchased')) {
+            $this->addEntry(new MenuLink([
+                'id' => 'marketplace-licence-key',
+                'label' => Yii::t('AdminModule.base', 'Add Licence Key'),
+                'url' => ['/marketplace/purchase'],
+                'htmlOptions' => ['data-target' => '#globalModal'],
+                'icon' => 'key',
+                'sortOrder' => 500,
             ]));
         }
     }
