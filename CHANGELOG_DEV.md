@@ -8,6 +8,7 @@
 - Enh #5599: Introduce a variables in the Space model to call ProfileImage and ProfileBannerImage classes
 - Enh #5621: Optimize footer views 
 - Fix #5616: Don't display oEmbed confirmation in text field
+- Fix #5631: Fix enabling module on functional tests
 
 
 1.11.0-beta.2 (March 18, 2022)
