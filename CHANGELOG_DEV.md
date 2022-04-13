@@ -1,5 +1,20 @@
-1.11.0 (Unreleased)
+1.11.0-beta.3 (Unreleased)
 --------------------------
+- Fix #5603: Syntax error in database view installer
+- Fix #5605: Fix warning on render ajax content on register file after View::endPage()
+- Fix #5608: Remove duplicated field "Hostname" on install
+- Fix #5612: Fix RichText post process event pass data
+- Enh #5610: Show menu item "Add Licence Key" for purchased modules
+- Enh #5599: Introduce a variables in the Space model to call ProfileImage and ProfileBannerImage classes
+- Enh #5621: Optimize footer views 
+- Fix #5616: Don't display oEmbed confirmation in text field
+- Fix #5631: Fix enabling module on functional tests
+- Fix #5633: Fix tests NonceCest
+- Fix #5635: Fix cached comments
+
+
+1.11.0-beta.2 (March 18, 2022)
+------------------------------
 - Fix #5434: Hide disabled next/prev buttons on guide first/last steps
 - Fix #5456: `canImpersonate` only possible for SystemAdmins
 - Enh #5462: Added Single Page Post View 
@@ -47,3 +62,4 @@
 - Enh #5432: Possibility to add buttons in the People page with a module
 - Fix #5585: Don't force password change on user simulating
 - Fix #5591: Fix people/space cards banner
+- Enh #5575: Add content topics to search

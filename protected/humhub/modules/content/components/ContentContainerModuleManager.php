@@ -195,19 +195,21 @@ class ContentContainerModuleManager extends \yii\base\Component
     public function flushCache()
     {
         $this->_available = null;
+        $this->getStates(true);
     }
 
     /**
      * Returns an array of all module states.
      *
+     * @param bool True for forcing cached states and load them all from DB
      * @return array a list of modules with the corresponding state
      * @see Module
      */
-    protected function getStates()
+    protected function getStates(bool $forceLoad = false)
     {
         static $states = [];
 
-        if (isset($states[$this->contentContainer->contentcontainer_id])) {
+        if (!$forceLoad && isset($states[$this->contentContainer->contentcontainer_id])) {
             return $states[$this->contentContainer->contentcontainer_id];
         }
 

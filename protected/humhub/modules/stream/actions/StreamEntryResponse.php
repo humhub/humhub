@@ -82,7 +82,7 @@ class StreamEntryResponse extends Model
         return (new static([
             'id' => $content->id,
             'guid' => $content->guid,
-            'output' => Yii::$app->controller->renderAjaxContent($streamEntry),
+            'output' => Yii::$app->controller->renderAjaxPartial($streamEntry),
             'pinned' => (boolean) $content->pinned,
             'archived' => (boolean) $content->archived,
         ]))->asArray();

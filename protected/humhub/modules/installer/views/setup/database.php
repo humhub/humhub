@@ -18,10 +18,6 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($model, 'hostname')->textInput(); ?>
-        <p class="help-block"><?= Yii::t('InstallerModule.base', 'Hostname of your MySQL Database Server (e.g. localhost if MySQL is running on the same machine)'); ?></p>
-        <hr/>
-
         <?= $form->field($model, 'hostname') ?>
         <hr/>
         <?= $form->field($model, 'port') ?>
@@ -33,7 +29,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
         <?= $form->field($model, 'database') ?>
         <?= $form->field($model, 'create')->checkbox() ?>
 
-        <?php if ($errorMessage) { ?>
+        <?php if ($errorMessage): ?>
             <div class="alert alert-danger">
                 <strong><?= Yii::t('InstallerModule.base', 'Ohh, something went wrong!'); ?></strong><br/>
                 <?= Html::encode($errorMessage); ?>

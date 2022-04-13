@@ -56,6 +56,7 @@ class BaseTester extends \Codeception\Actor
 
         if ($space) {
             $space->moduleManager->enable($moduleId);
+            $space->moduleManager->flushCache();
             Yii::$app->moduleManager->flushCache();
         }
     }
