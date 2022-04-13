@@ -10,6 +10,7 @@
 - Fix #5616: Don't display oEmbed confirmation in text field
 - Fix #5631: Fix enabling module on functional tests
 - Fix #5633: Fix tests NonceCest
+- Fix #5635: Fix cached comments
 
 
 1.11.0-beta.2 (March 18, 2022)
