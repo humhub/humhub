@@ -1,5 +1,5 @@
-1.11.0-beta.3 (Unreleased)
---------------------------
+1.11.0-beta.3 (April 13, 2022)
+------------------------------
 - Fix #5603: Syntax error in database view installer
 - Fix #5605: Fix warning on render ajax content on register file after View::endPage()
 - Fix #5608: Remove duplicated field "Hostname" on install
