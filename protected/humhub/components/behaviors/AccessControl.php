@@ -11,9 +11,7 @@ namespace humhub\components\behaviors;
 use humhub\components\access\ControllerAccess;
 use Yii;
 use yii\base\ActionFilter;
-use yii\helpers\Url;
 use yii\web\HttpException;
-use yii\web\Response;
 
 /**
  * Handles the AccessControl for a Controller.
@@ -228,30 +226,38 @@ class AccessControl extends ActionFilter
     }
 
     /**
-     * @return Response Redirect user to force to change password
+     * Force user to redirect to change password
+     *
+     * @return bool
      * @since 1.8
      */
-    protected function forceChangePassword()
+    protected function forceChangePassword(): bool
     {
         if (!Yii::$app->user->isMustChangePasswordUrl()) {
-            return Yii::$app->getResponse()->redirect(Url::toRoute(Yii::$app->user->mustChangePasswordRoute));
+            Yii::$app->getResponse()->redirect([Yii::$app->user->mustChangePasswordRoute]);
+            return false;
         }
+
+        return true;
     }
 
     /**
      * Log out all non admin users when maintenance mode is active
      *
-     * @return Response Redirect to home page
+     * @return bool
      * @since 1.8
      */
-    protected function checkMaintenanceMode()
+    protected function checkMaintenanceMode(): bool
     {
         if (Yii::$app->settings->get('maintenanceMode')) {
             if (!Yii::$app->user->isGuest) {
                 Yii::$app->user->logout();
                 Yii::$app->getView()->warn(Yii::t('error', 'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.'));
             }
-            return Yii::$app->getResponse()->redirect(['/user/auth/login']);
+            Yii::$app->getResponse()->redirect(['/user/auth/login']);
+            return false;
         }
+
+        return true;
     }
 }
