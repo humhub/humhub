@@ -11,6 +11,7 @@
 - Fix #5631: Fix enabling module on functional tests
 - Fix #5633: Fix tests NonceCest
 - Fix #5635: Fix cached comments
+- Fix #5637: Allow update setting "include beta updates" on modules page
 
 
 1.11.0-beta.2 (March 18, 2022)
