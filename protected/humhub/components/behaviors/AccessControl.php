@@ -149,12 +149,13 @@ class AccessControl extends ActionFilter
                 method_exists($this, $this->controllerAccess->codeCallback)) {
                 // Call a specific function for current action filter,
                 // may be used to filter a logged in user for some restriction e.g. "must change password"
-                return call_user_func([$this, $this->controllerAccess->codeCallback]);
+                call_user_func([$this, $this->controllerAccess->codeCallback]);
             } else if ($this->controllerAccess->code == 401) {
-                return $this->loginRequired();
+                $this->loginRequired();
             } else {
                 $this->forbidden();
             }
+            return false;
         }
 
         return parent::beforeAction($action);
@@ -215,39 +216,30 @@ class AccessControl extends ActionFilter
     }
 
     /**
-     * @return bool forces user login
+     * Force user to log in
      */
     protected function loginRequired()
     {
         Yii::$app->user->logout();
         Yii::$app->user->loginRequired();
-
-        return false;
     }
 
     /**
      * Force user to redirect to change password
-     *
-     * @return bool
      * @since 1.8
      */
-    protected function forceChangePassword(): bool
+    protected function forceChangePassword()
     {
         if (!Yii::$app->user->isMustChangePasswordUrl()) {
             Yii::$app->getResponse()->redirect([Yii::$app->user->mustChangePasswordRoute]);
-            return false;
         }
-
-        return true;
     }
 
     /**
      * Log out all non admin users when maintenance mode is active
-     *
-     * @return bool
      * @since 1.8
      */
-    protected function checkMaintenanceMode(): bool
+    protected function checkMaintenanceMode()
     {
         if (Yii::$app->settings->get('maintenanceMode')) {
             if (!Yii::$app->user->isGuest) {
@@ -255,9 +247,6 @@ class AccessControl extends ActionFilter
                 Yii::$app->getView()->warn(Yii::t('error', 'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.'));
             }
             Yii::$app->getResponse()->redirect(['/user/auth/login']);
-            return false;
         }
-
-        return true;
     }
 }
