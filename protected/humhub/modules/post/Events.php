@@ -36,4 +36,11 @@ class Events extends \yii\base\BaseObject
         }
     }
 
+    public static function onAppendRules($event)
+    {
+        $event->result = [
+            [['message'], 'string', 'max' => 3],
+        ];
+    }
+
 }
