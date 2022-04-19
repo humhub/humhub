@@ -11,9 +11,7 @@ namespace humhub\components\behaviors;
 use humhub\components\access\ControllerAccess;
 use Yii;
 use yii\base\ActionFilter;
-use yii\helpers\Url;
 use yii\web\HttpException;
-use yii\web\Response;
 
 /**
  * Handles the AccessControl for a Controller.
@@ -151,12 +149,13 @@ class AccessControl extends ActionFilter
                 method_exists($this, $this->controllerAccess->codeCallback)) {
                 // Call a specific function for current action filter,
                 // may be used to filter a logged in user for some restriction e.g. "must change password"
-                return call_user_func([$this, $this->controllerAccess->codeCallback]);
+                call_user_func([$this, $this->controllerAccess->codeCallback]);
             } else if ($this->controllerAccess->code == 401) {
-                return $this->loginRequired();
+                $this->loginRequired();
             } else {
                 $this->forbidden();
             }
+            return false;
         }
 
         return parent::beforeAction($action);
@@ -217,31 +216,27 @@ class AccessControl extends ActionFilter
     }
 
     /**
-     * @return bool forces user login
+     * Force user to log in
      */
     protected function loginRequired()
     {
         Yii::$app->user->logout();
         Yii::$app->user->loginRequired();
-
-        return false;
     }
 
     /**
-     * @return Response Redirect user to force to change password
+     * Force user to redirect to change password
      * @since 1.8
      */
     protected function forceChangePassword()
     {
         if (!Yii::$app->user->isMustChangePasswordUrl()) {
-            return Yii::$app->getResponse()->redirect(Url::toRoute(Yii::$app->user->mustChangePasswordRoute));
+            Yii::$app->getResponse()->redirect([Yii::$app->user->mustChangePasswordRoute]);
         }
     }
 
     /**
      * Log out all non admin users when maintenance mode is active
-     *
-     * @return Response Redirect to home page
      * @since 1.8
      */
     protected function checkMaintenanceMode()
@@ -251,7 +246,7 @@ class AccessControl extends ActionFilter
                 Yii::$app->user->logout();
                 Yii::$app->getView()->warn(Yii::t('error', 'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.'));
             }
-            return Yii::$app->getResponse()->redirect(['/user/auth/login']);
+            Yii::$app->getResponse()->redirect(['/user/auth/login']);
         }
     }
 }
