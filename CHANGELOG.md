@@ -1,6 +1,13 @@
 HumHub Changelog
 ================
 
+1.9.4 (April 19, 2022)
+----------------------
+This release also fixes a [critical security](https://github.com/humhub/humhub/security/advisories/GHSA-2h35-f226-3f57) issue. Users who were forced to change their password by an administrator could perform unauthorized actions and retrieve other users' data. An update is STRONGLY recommended.
+
+- Fix #5638: Removed return values from `codeCallback`
+
+
 1.9.3 (December 20, 2021)
 -------------------------
 This release also includes a [security fix](https://github.com/humhub/humhub/security/advisories/GHSA-f5hc-5wfr-7v74). It could have been possible for registered users to become unauthorized members of private Spaces. Thanks to [Huntr](https://huntr.dev/bounties/943dad83-f0ed-4c74-ba81-7dfce7ca0ef2/) and @brenu.
@@ -8,7 +15,7 @@ This release also includes a [security fix](https://github.com/humhub/humhub/sec
 - Fix #5372: Text shortening in Japanese broken - Fix truncating of multi-byte strings
 - Fix #5398: Fix checking of foreign table index
 - Fix #5473: Insufficient member invite check on Space creation 
-
+- Fix #5638: Removed return values from `codeCallback`
 
 
 1.9.2 (October 15, 2021)
