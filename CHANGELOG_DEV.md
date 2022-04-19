@@ -1,5 +1,8 @@
 1.11.0-beta.3 (April 13, 2022)
 ------------------------------
+
+Warning: The minimum PHP version is now `PHP 7.4`!
+
 - Fix #5603: Syntax error in database view installer
 - Fix #5605: Fix warning on render ajax content on register file after View::endPage()
 - Fix #5608: Remove duplicated field "Hostname" on install
@@ -15,6 +18,9 @@
 
 1.11.0-beta.2 (March 18, 2022)
 ------------------------------
+
+Warning: The minimum PHP version is now `PHP 7.4`!
+
 - Fix #5434: Hide disabled next/prev buttons on guide first/last steps
 - Fix #5456: `canImpersonate` only possible for SystemAdmins
 - Enh #5462: Added Single Page Post View 
