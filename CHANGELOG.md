@@ -1,8 +1,11 @@
 HumHub Changelog
 ================
 
-1.10.4 (Unreleased)
--------------------
+1.10.4 (April 19, 2022)
+-----------------------
+
+This release also fixes a [critical security](https://github.com/humhub/humhub/security/advisories/GHSA-2h35-f226-3f57) issue. Users who were forced to change their password by an administrator could perform unauthorized actions and retrieve other users' data. An update is STRONGLY recommended.
+
 - Fix #5480: `el` language file in Admin section broken
 - Fix #5479: Fix ContentContainerPermissionAccess without provided container
 - Fix #5513: Fix PermaLink controller error for content without container
