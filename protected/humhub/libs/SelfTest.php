@@ -43,12 +43,12 @@ class SelfTest
 
         // Checks PHP Version
         $title = 'PHP - ' . Yii::t('AdminModule.information', 'Version') . ' - ' . PHP_VERSION;
-        if (version_compare(PHP_VERSION, '7.3', '>=')) {
+        if (version_compare(PHP_VERSION, '7.4', '>=')) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK'
             ];
-        } elseif (version_compare(PHP_VERSION, '7.2', '>=')) {
+        } elseif (version_compare(PHP_VERSION, '7.3', '>=')) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'WARNING',
