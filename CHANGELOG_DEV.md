@@ -1,3 +1,13 @@
+1.11.0 (Unreleased)
+-------------------
+
+See also: HumHub 1.11 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_11) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+Warning: The minimum PHP version is now `PHP 7.4`!
+
+- Fix #5637: Allow update setting "include beta updates" on modules page
+
+
 1.11.0-beta.3 (April 13, 2022)
 ------------------------------
 
@@ -14,7 +24,7 @@ Warning: The minimum PHP version is now `PHP 7.4`!
 - Fix #5631: Fix enabling module on functional tests
 - Fix #5633: Fix tests NonceCest
 - Fix #5635: Fix cached comments
-- Fix #5637: Allow update setting "include beta updates" on modules page
+
 
 
 1.11.0-beta.2 (March 18, 2022)
