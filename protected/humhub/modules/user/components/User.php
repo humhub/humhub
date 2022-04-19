@@ -237,7 +237,7 @@ class User extends \yii\web\User
     {
         $this->trigger(self::EVENT_BEFORE_SWITCH_IDENTITY, new UserEvent(['user' => $identity]));
 
-        if (empty($duration)) {
+        if (empty($duration) && !Yii::$app->request->isConsoleRequest) {
             // Try to use login duration from the current session, e.g. on impersonate action
             $cookie = $this->getIdentityAndDurationFromCookie();
             $duration = empty($cookie['duration']) ? 0 : $cookie['duration'];
