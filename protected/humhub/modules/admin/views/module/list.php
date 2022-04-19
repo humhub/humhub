@@ -22,9 +22,9 @@ CardsAsset::register($this);
     <div class="panel-heading">
         <?= Yii::t('AdminModule.base', '<strong>Module</strong> Administration'); ?>
         <?= Button::asLink(Icon::get('cog'))
-            ->action('ui.modal.load', ['/admin/module/filter-settings'])
+            ->action('ui.modal.load', ['/admin/module/module-settings'])
             ->cssClass('module-settings-icon')
-            ->tooltip(Yii::t('AdminModule.base', 'Module filter settings')) ?>
+            ->tooltip(Yii::t('AdminModule.base', 'Settings')) ?>
     </div>
     <div class="panel-body">
         <?= ModuleFilters::widget(); ?>

@@ -10,7 +10,7 @@ namespace humhub\modules\admin\controllers;
 
 use humhub\components\Module;
 use humhub\modules\admin\components\Controller;
-use humhub\modules\admin\models\forms\ModuleFilterSettingsForm;
+use humhub\modules\admin\models\forms\GeneralModuleSettingsForm;
 use humhub\modules\admin\models\forms\ModuleSetAsDefaultForm;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentContainerModule;
@@ -212,20 +212,20 @@ class ModuleController extends Controller
     }
 
     /**
-     * Module filter settings
+     * Module settings
      * @return string
      */
-    public function actionFilterSettings()
+    public function actionModuleSettings()
     {
-        $moduleFilterSettingsForm = new ModuleFilterSettingsForm();
+        $moduleSettingsForm = new GeneralModuleSettingsForm();
 
-        if ($moduleFilterSettingsForm->load(Yii::$app->request->post()) && $moduleFilterSettingsForm->save()) {
+        if ($moduleSettingsForm->load(Yii::$app->request->post()) && $moduleSettingsForm->save()) {
             $this->view->saved();
             return $this->redirect(['/admin/module/list']);
         }
 
-        return $this->renderAjax('filterSettings', [
-            'settings' => $moduleFilterSettingsForm,
+        return $this->renderAjax('moduleSettings', [
+            'settings' => $moduleSettingsForm,
         ]);
     }
 

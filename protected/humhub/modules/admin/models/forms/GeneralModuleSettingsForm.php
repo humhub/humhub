@@ -17,7 +17,7 @@ use yii\base\Model;
  * @package humhub.modules_core.admin.forms
  * @since 1.11
  */
-class ModuleFilterSettingsForm extends Model
+class GeneralModuleSettingsForm extends Model
 {
     /**
      * @var Module
