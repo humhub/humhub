@@ -9,7 +9,7 @@ HumHub Changelog
 - Fix #5517: Don't send "Follows" notification on request friendship
 - Fix #5563: Limit backup duration of RichText editor for 2 hours
 - Enh #5601: Backup RichText in sessionStorage
-- Fix #5638: Fix must change password
+- Fix #5638: Removed return values from `codeCallback`
 - Fix #5634: Fix tests NonceCest
 
 1.10.3 (December 20, 2021)
