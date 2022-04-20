@@ -6,7 +6,7 @@ See also: HumHub 1.11 - [Release Notes](https://docs.humhub.org/docs/about/relea
 Warning: The minimum PHP version is now `PHP 7.4`!
 
 - Fix #5637: Allow update setting "include beta updates" on modules page
-- Fix #5648: Introduce new configs for min PHP versions
+- Fix #5648: Introduce new config value for min. required PHP version
 
 1.11.0-beta.3 (April 13, 2022)
 ------------------------------
