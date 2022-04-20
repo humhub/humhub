@@ -43,22 +43,22 @@ class SelfTest
 
         // Checks PHP Version
         $title = 'PHP - ' . Yii::t('AdminModule.information', 'Version') . ' - ' . PHP_VERSION;
-        if (version_compare(PHP_VERSION, '7.4', '>=')) {
+        if (version_compare(PHP_VERSION, Yii::$app->minRecommendedPhpVersion, '>=')) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK'
             ];
-        } elseif (version_compare(PHP_VERSION, '7.3', '>=')) {
+        } elseif (version_compare(PHP_VERSION, Yii::$app->minSupportedPhpVersion, '>=')) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'Minimum Version {minVersion}', ['minVersion' => '7.3'])
+                'hint' => Yii::t('AdminModule.information', 'Minimum Version {minVersion}', ['minVersion' => Yii::$app->minSupportedPhpVersion])
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Minimum Version {minVersion}', ['minVersion' => '7.3'])
+                'hint' => Yii::t('AdminModule.information', 'Minimum Version {minVersion}', ['minVersion' => Yii::$app->minSupportedPhpVersion])
             ];
         }
 
