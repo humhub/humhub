@@ -7,7 +7,7 @@ return array (
   'No result found for the given filter.' => 'この文字列では見つかりませんでした',
   'No spaces found for the given query' => 'スペースは見つかりませんでした',
   'Search' => '検索',
-  'Search for spaces' => '',
+  'Search for spaces' => 'スペース内を検索する',
   'Select {n,plural,=1{space} other{spaces}}' => '',
   'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}' => '',
   'This space is archived' => '',
