@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.11.1 (Unreleased)
+-------------------
+- Fix: #5654: Added `laminas/laminas-zendframework-bridge` to legacy support `Zend\Http` usage in 3rd party modules
+
+
 1.11.0 (April 20, 2022)
 -----------------------
 
