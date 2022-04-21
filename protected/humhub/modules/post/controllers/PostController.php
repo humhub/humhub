@@ -101,4 +101,15 @@ class PostController extends ContentContainerController
         ]);
     }
 
+    public function actionValidateNewPost()
+    {
+        $post = new Post();
+
+        if ($post->load(Yii::$app->request->post(), '') && !$post->validate()) {
+            return $this->asJson(['errors' => $post->getErrors()]);
+        }
+
+        return $this->asJson(['success' => true]);
+    }
+
 }

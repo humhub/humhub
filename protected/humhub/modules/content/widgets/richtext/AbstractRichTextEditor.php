@@ -126,6 +126,14 @@ class AbstractRichTextEditor extends JsInputWidget
     public $focus = false;
 
     /**
+     * The url used for additional checking by AJAX request on focus
+     * Form will be submitted to the URL instead of current from attribute "action"
+     *
+     * @var string
+     */
+    public $focusUrl;
+
+    /**
      * Disables the input field.
      * @var boolean
      */
@@ -268,7 +276,8 @@ class AbstractRichTextEditor extends JsInputWidget
             'backup-interval' => $this->backupInterval,
             'backup-cookie-key' => self::BACKUP_COOKIE_KEY,
             'plugin-options' => $this->pluginOptions,
-            'focus' => $this->focus
+            'focus' => $this->focus,
+            'focus-url' => $this->focusUrl
         ];
 
         if(!empty($this->preset)) {

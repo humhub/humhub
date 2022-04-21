@@ -18,13 +18,17 @@ use yii\bootstrap\ActiveForm;
     <?php $form = ActiveForm::begin(['id' => 'post-edit-form_' . $model->post->id]); ?>
 
         <div class="post-richtext-input-group">
-            <?= $form->field($model->post, 'message')->widget(RichTextField::class, [
+            <?= $form->field($model->post, 'message', [
+                //'validateOnChange' => true,
+                'validateOnBlur' => true,
+                'enableAjaxValidation' => true
+            ])/*->widget(RichTextField::class, [
                 'id' => 'post_input_'. $model->post->id,
                 'layout' => RichTextField::LAYOUT_INLINE,
                 'focus' => true,
                 'pluginOptions' => ['maxHeight' => '300px'],
                 'placeholder' => Yii::t('PostModule.base', 'Edit your post...')
-            ])->label(false) ?>
+            ])*/->label(false) ?>
 
             <div class="comment-buttons"><?php
                 $uploadButton = UploadButton::widget([
