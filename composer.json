@@ -26,6 +26,7 @@
         "laminas/laminas-escaper": "^2.6",
         "laminas/laminas-http": "^2.14",
         "laminas/laminas-ldap": "^2.10",
+        "laminas/laminas-zendframework-bridge": "^1.4",
         "matthewbdaly/zendsearch": "^0.0.3",
         "mistic100/randomcolor": "^1.0",
         "npm-asset/animate.css": "*",
