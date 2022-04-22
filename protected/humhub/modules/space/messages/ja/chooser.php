@@ -10,7 +10,7 @@ return array (
   'Search for spaces' => 'スペース内を検索する',
   'Select {n,plural,=1{space} other{spaces}}' => '',
   'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}' => '',
-  'This space is archived' => '',
+  'This space is archived' => 'このスペースはアーカイブされています',
   'To search for other spaces, type at least {count} characters.' => 'スペースを検索するには最低{count}文字必要です',
   'You are following this space' => 'あなたは、このスペースをフォローしています',
   '{n,plural,=1{# new entry} other{# new entries}} since your last visit' => '{n,plural,=1{# new entry} other{# new entries}} 最終ログインからの変化',
