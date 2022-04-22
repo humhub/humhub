@@ -1,9 +1,15 @@
 HumHub Changelog
 ================
 
-1.11.1 (Unreleased)
--------------------
+1.11.1 (April 22, 2022)
+-----------------------
+
+See also: HumHub 1.11 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_11) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+Warning: The minimum PHP version is now `PHP 7.4`!
+
 - Fix: #5654: Added `laminas/laminas-zendframework-bridge` to legacy support `Zend\Http` usage in 3rd party modules
+- Enh: Updated translations
 
 
 1.11.0 (April 20, 2022)
