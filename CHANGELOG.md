@@ -1,6 +1,12 @@
 HumHub Changelog
 ================
 
+
+1.11.2 (Unreleased)
+-------------------
+- Fix #5660: Invidiual modules marked with "Official" label in Marketplace
+
+
 1.11.1 (April 22, 2022)
 -----------------------
 
