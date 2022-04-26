@@ -427,7 +427,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     {
         // Currently global content can not be archived
         if (!$this->getContainer()) {
-            return false;
+            return $this->canEdit();
         }
 
         // No need to archive content on an archived container, content is marked as archived already
@@ -784,7 +784,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     public function canLockComments(): bool
     {
         if (!$this->getContainer()) {
-            return false;
+            return $this->canEdit();
         }
 
         return $this->getContainer()->permissionManager->can(ManageContent::class);
