@@ -121,7 +121,8 @@ class OnlineModule extends Component
 
     public function getIsThirdParty(): bool
     {
-        return (bool) $this->info('isThirdParty');
+        $isThirdParty = $this->info('isThirdParty');
+        return $isThirdParty || $isThirdParty === null;
     }
 
     public function getIsPartner(): bool
