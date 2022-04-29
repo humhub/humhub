@@ -8,12 +8,8 @@
 
 namespace humhub\modules\post;
 
-use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\content\widgets\richtext\AbstractRichText;
-use humhub\modules\content\widgets\richtext\AbstractRichTextEditor;
 use Yii;
 use humhub\modules\post\models\Post;
-use yii\helpers\Url;
 
 /**
  * Event callbacks for the post module
@@ -40,33 +36,11 @@ class Events extends \yii\base\BaseObject
         }
     }
 
-    public static function onPostAppendRules($event)
+    public static function onAppendRules($event)
     {
         $event->result = [
-            [['message'], function ($attribute) {
-                $limitPostsPerDay = rand(1, 10);
-                $alreadyPostedNum = rand(11, 20);
-                if ($this->isNewRecord && $alreadyPostedNum > $limitPostsPerDay) {
-                    $this->addError($attribute, 'You can only create ' . $limitPostsPerDay . ' posts per day.');
-                }
-            }],
+            [['message'], 'string', 'max' => 3],
         ];
-    }
-
-    public static function onRichTextInit($event)
-    {
-        /* @var AbstractRichTextEditor $richTextEditor */
-        $richTextEditor = $event->sender;
-        if ($richTextEditor->id !== 'contentForm_message' ||
-            !isset(Yii::$app->controller) ||
-            !(Yii::$app->controller instanceof ContentContainerController)) {
-            return;
-        }
-
-        /* @var ContentContainerController $controller */
-        $controller = Yii::$app->controller;
-
-        $richTextEditor->focusUrl = $controller->contentContainer->createUrl('/post/post/validate-new-post');
     }
 
 }

@@ -132,41 +132,7 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
     };
 
     RichTextEditor.prototype.focus = function() {
-        var that = this;
-        var form = that.$.closest('form');
-        that.editor.view.focus();
-
-        if (this.options.focusUrl && form.length) {
-            var origActionUrl = form.attr('action');
-            form.attr('action', this.options.focusUrl);
-            client.submit(form).then(function(response) {
-                that.handleErrors(response);
-                form.attr('action', origActionUrl);
-            }).finally(function () {
-                form.attr('action', origActionUrl);
-            });
-        }
-    };
-
-    RichTextEditor.prototype.handleErrors = function(response) {
-        var errors = this.$.find('.help-block.help-block-error');
-        if (errors.length) {
-            errors.remove();
-        }
-        if (typeof response.errors === 'undefined') {
-            this.$.removeClass('has-error');
-            return;
-        }
-
-        this.$.addClass('has-error');
-        this.$.append('<p class="help-block help-block-error"></p>');
-        errors = this.$.find('.help-block.help-block-error');
-        $.each(response.errors, function(fieldName, errorMessage) {
-            $.each(errorMessage, function(key, msg) {
-                var errorsHtml = errors.html();
-                errors.html(errorsHtml === '' ? msg : errorsHtml + '<br>' + msg);
-            });
-        });
+        this.editor.view.focus();
     };
 
     RichTextEditor.prototype.disable = function(tooltip) {
