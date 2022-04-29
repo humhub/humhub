@@ -1,6 +1,8 @@
 <?php
 
+use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\topic\widgets\TopicPicker;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\icon\widgets\Icon;
 use yii\helpers\Html;
 use humhub\modules\content\assets\ContentFormAsset;
@@ -13,9 +15,10 @@ use humhub\modules\file\widgets\UploadProgress;
 use humhub\widgets\Link;
 use humhub\widgets\Button;
 
+/* @var $wallCreateContentForm WallCreateContentForm */
 /* @var $defaultVisibility integer */
+/* @var $validationUrl string */
 /* @var $submitUrl string */
-/* @var $form string */
 /* @var $submitButtonText string */
 /* @var $fileHandlers \humhub\modules\file\handler\BaseFileHandler[] */
 /* @var $canSwitchVisibility boolean */
@@ -38,9 +41,10 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
 
 <div class="panel panel-default clearfix">
     <div class="panel-body" id="contentFormBody" style="display:none;" data-action-component="content.form.CreateForm" >
-        <?= Html::beginForm($submitUrl, 'POST', ['data-ui-addition' => 'acknowledgeForm']); ?>
+        <?php // Html::beginForm($submitUrl, 'POST', ['data-ui-addition' => 'acknowledgeForm']); ?>
+        <?php $form = ActiveForm::begin(['acknowledge' => true, 'validationUrl' => $validationUrl]); ?>
 
-        <?= $form; ?>
+        <?= $wallCreateContentForm->renderForm($form) ?>
 
         <div id="notifyUserContainer" class="form-group" style="margin-top: 15px;display:none;">
             <?= UserPickerField::widget([
@@ -69,7 +73,7 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
         <div class="contentForm_options">
             <hr>
             <div class="btn_container">
-                <?= Button::info($submitButtonText)->action('submit')->id('post_submit_button')->submit() ?>
+                <?= Button::info($submitButtonText)->action('submit', $submitUrl)->id('post_submit_button')->submit() ?>
 
                 <?php
                 $uploadButton = UploadButton::widget([
@@ -122,7 +126,7 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
 
         </div>
         <!-- /contentForm_Options -->
-        <?= Html::endForm(); ?>
+        <?php ActiveForm::end(); ?>
     </div>
     <!-- /panel body -->
 </div> <!-- /panel -->

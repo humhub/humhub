@@ -36,10 +36,16 @@ class Events extends \yii\base\BaseObject
         }
     }
 
-    public static function onAppendRules($event)
+    public static function onPostAppendRules($event)
     {
         $event->result = [
-            [['message'], 'string', 'max' => 3],
+            [['message'], function ($attribute) {
+                $limitPostsPerDay = rand(1, 10);
+                $alreadyPostedNum = rand(11, 20);
+                if ($this->isNewRecord && $alreadyPostedNum > $limitPostsPerDay) {
+                    $this->addError($attribute, 'You can only create ' . $limitPostsPerDay . ' posts per day.');
+                }
+            }],
         ];
     }
 

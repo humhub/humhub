@@ -10,6 +10,6 @@ return [
     'isCoreModule' => true,
     'events' => [
         [IntegrityController::class, IntegrityController::EVENT_ON_RUN, [Events::class, 'onIntegrityCheck']],
-        [Post::class, Post::EVENT_APPEND_RULES, [Events::class, 'onAppendRules']],
+        [Post::class, Post::EVENT_APPEND_RULES, [Events::class, 'onPostAppendRules']],
     ]
 ];
