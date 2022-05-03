@@ -1,9 +1,9 @@
 HumHub Changelog
 ================
 
-
 1.11.2 (Unreleased)
--------------------
+-----------------------
+- Fix: #5652: Fix undefined UrlOembed provider pattern
 - Fix #5660: Individual modules marked with "Official" label in Marketplace
 - Fix #5657: Fix links of user counters in container headers
 
