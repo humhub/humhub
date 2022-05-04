@@ -90,7 +90,7 @@ class ContentAddonController extends Controller
         $target = $modelClass::findOne(['id' => $pk]);
 
         if ($target === null) {
-            throw new HttpException(500, 'Could not find underlying content or content addon record!');
+            throw new HttpException(404, 'Could not find underlying content or content addon record!');
         }
 
         if ($target instanceof ContentAddonActiveRecord) {
