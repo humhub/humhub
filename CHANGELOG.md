@@ -7,6 +7,7 @@ HumHub Changelog
 - Fix #5660: Individual modules marked with "Official" label in Marketplace
 - Fix #5657: Fix links of user counters in container headers
 - Fix #5676: Use 404 page for deleted content request
+- Fix #5679: Fix message on decline multiple users
 
 
 1.11.1 (April 22, 2022)
