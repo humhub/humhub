@@ -12,12 +12,15 @@ use humhub\assets\AppAsset;
 use humhub\assets\CoreBundleAsset;
 use humhub\components\assets\AssetBundle;
 use humhub\libs\Html;
+use humhub\libs\LogoImage;
 use humhub\modules\web\pwa\widgets\LayoutHeader;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\CoreJsConfig;
 use humhub\widgets\LayoutAddons;
-use yii\helpers\ArrayHelper;
 use Yii;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
+use yii\web\Request;
 
 /**
  * Class View
@@ -83,6 +86,122 @@ class View extends \yii\web\View
      * @since 1.7
      */
     private static $viewContext;
+
+
+    /**
+     * @var bool toggles if the component will register the standard HTML tags.
+     */
+    public $registerStandardTags = true;
+
+    /**
+     * @var bool toggles if the component will register the Facebook's OpenGraph tags.
+     */
+    public $registerOpenGraphTags = true;
+
+    /**
+     * @var bool toggles if the component will register the Twitter Cards tags.
+     */
+    public $registerTwitterCardTags = true;
+
+    /**
+     * @var array specifies which properties the component should try to translate.
+     */
+    public $translate = ['title', 'site_name', 'description', 'author', 'keywords'];
+
+    /**
+     * @var string specifies the current page content's author.
+     */
+    public $author;
+
+    /**
+     * @var string specifies the website name
+     * It is set to Yii::app->name by default
+     * @see yii\base\Application::$name
+     */
+    public $site_name;
+
+    /**
+     * @var string specifies the current page url.
+     * Normally the component will set this with Yii::$app->request->absoluteUrl
+     * @see yii\web\Request::$absoluteUrl
+     */
+    public $url;
+
+    /**
+     * @var string description of the current page.
+     * It's normally used for the small portion of text that Google shows on the SERP,
+     * and Facebook or Twitter under the title of the shared content.
+     */
+    public $description;
+
+    public $type;
+
+    public $locale;
+
+    /**
+     * @var string image that will be used to represent the current page.
+     * Facebook and Twitter attach this image to the shared content.
+     */
+    public $image;
+
+    public $robots;
+
+    /**
+     * @var array keywords for the current page.
+     */
+    public $keywords = [];
+
+    public $creator;
+
+    /**
+     * @var string software used to create the current page.
+     * By default set to our favorite one ;-)
+     */
+    public $generator = "Yii2 PHP Framework (www.yiiframework.com)";
+
+    public $date;
+
+    public $data_type;
+
+    public $card;
+
+    /**
+     * @var string specifies the website name
+     * This one is used by Twitter. It is set to Yii::app->name by default
+     * @see yii\base\Application::$name
+     */
+    public $site;
+
+    public $label1;
+
+    public $data1;
+
+    public $label2;
+
+    public $data2;
+
+    private $updated_time;
+
+    /**
+     * @inerhitdoc
+     * Sets some basic metatags according to app configuration if they have not been
+     * set in the main configuration.
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function init()
+    {
+        parent::init();
+
+        $this->site_name = $this->site_name ?: Yii::$app->name;
+        $this->site = $this->site ?: $this->site_name;
+        $this->title = $this->title ?: $this->getPageTitle();
+        $this->url = $this->url ?: (Yii::$app->getRequest() instanceof Request ? Yii::$app->getRequest()->getAbsoluteUrl() : null);
+        $this->date = $this->date ?: Yii::$app->formatter->asDatetime(time());
+        $this->image = Url::to($this->image ?: LogoImage::getUrl(), true);
+
+        $this->translateProperties();
+    }
+
 
     /**
      * Sets current page title
@@ -231,7 +350,7 @@ class View extends \yii\web\View
     {
         $bundle = parent::registerAssetBundle($name, $position);
 
-        if($bundle instanceof AssetBundle && !empty($bundle->preload)) {
+        if ($bundle instanceof AssetBundle && !empty($bundle->preload)) {
             static::$preload = ArrayHelper::merge(static::$preload, $bundle->preload);
         }
 
@@ -240,14 +359,14 @@ class View extends \yii\web\View
 
     protected function registerAssetFiles($name)
     {
-        if(Yii::$app->request->isAjax
+        if (Yii::$app->request->isAjax
             && (in_array($name, AppAsset::STATIC_DEPENDS)
                 || in_array($name, CoreBundleAsset::STATIC_DEPENDS)
                 || in_array($name, [AppAsset::BUNDLE_NAME, CoreBundleAsset::BUNDLE_NAME]))) {
             return;
         }
 
-       return parent::registerAssetFiles($name);
+        return parent::registerAssetFiles($name);
     }
 
     /**
@@ -316,7 +435,25 @@ class View extends \yii\web\View
             SiteIcon::registerMetaTags($this);
             LayoutHeader::registerHeadTags($this);
             parent::registerCsrfMetaTags();
+
+            if ($this->locale === null) {
+                $this->locale = str_replace('-', '_', Yii::$app->language);
+            }
+
+            if ($this->registerStandardTags) {
+                $this->registerStandardMetaTags();
+            }
+
+            if ($this->registerOpenGraphTags) {
+                $this->registerOpenGraphMetaTags();
+            }
+
+            if ($this->registerTwitterCardTags) {
+                $this->registerTwitterCardMetaTags();
+            }
         }
+
+        array_multisort($this->metaTags);
 
         $lines = [];
 
@@ -326,7 +463,7 @@ class View extends \yii\web\View
 
         $this->js[self::POS_HEAD] = null;
 
-        return parent::renderHeadHtml(). (empty($lines) ? '' : implode("\n", $lines));
+        return parent::renderHeadHtml() . (empty($lines) ? '' : implode("\n", $lines));
     }
 
     /**
@@ -336,7 +473,7 @@ class View extends \yii\web\View
     {
         $cacheBustedUrl = $this->addCacheBustQuery($url);
         foreach (static::$preload as $fileName) {
-            if(strpos($url,$fileName)) {
+            if (strpos($url, $fileName)) {
                 $this->registerPreload($cacheBustedUrl, 'script');
             }
         }
@@ -352,7 +489,7 @@ class View extends \yii\web\View
     {
         $cacheBustedUrl = $this->addCacheBustQuery($url);
         foreach (static::$preload as $fileName) {
-            if(strpos($url,$fileName)) {
+            if (strpos($url, $fileName)) {
                 $this->registerPreload($cacheBustedUrl, 'style');
             }
         }
@@ -362,7 +499,7 @@ class View extends \yii\web\View
 
     protected function registerPreload($url, $as)
     {
-        if(!in_array($url, static::$preloaded, true)) {
+        if (!in_array($url, static::$preloaded, true)) {
             $this->registerLinkTag((['rel' => 'preload', 'as' => $as, 'href' => $url]));
             static::$preloaded[] = $url;
         }
@@ -483,8 +620,8 @@ class View extends \yii\web\View
      */
     private function registerViewContext()
     {
-        if(!empty(static::$viewContext)) {
-            $this->registerJs('humhub.modules.ui.view.setViewContext("'.static::$viewContext.'")', View::POS_END, 'viewContext');
+        if (!empty(static::$viewContext)) {
+            $this->registerJs('humhub.modules.ui.view.setViewContext("' . static::$viewContext . '")', View::POS_END, 'viewContext');
         }
     }
 
@@ -533,6 +670,105 @@ class View extends \yii\web\View
     public function setViewContext($vctx)
     {
         static::$viewContext = $vctx;
+    }
+
+
+    /**
+     * Registers the standard HTML metatags.
+     */
+    protected function registerStandardMetaTags()
+    {
+        foreach ((array)$this->keywords as $keyword) {
+            $this->registerMetaTag(['name' => 'article:tag', 'content' => trim($keyword)]);
+        }
+
+        $this->keywords = is_array($this->keywords) ? implode(', ', $this->keywords) : null;
+
+        foreach (['author', 'description', 'robots', 'keywords', 'generator'] as $property) {
+            if ($this->$property) {
+                $this->registerMetaTag(['name' => $property, 'content' => $this->$property]);
+            }
+        }
+
+        $this->registerLinkTag(['rel' => 'canonical', 'href' => $this->url]);
+
+    }
+
+    /**
+     * Registers the Facebook's OpenGraph metatags.
+     */
+    protected function registerOpenGraphMetaTags()
+    {
+
+        $this->updated_time = $this->date;
+
+        foreach (['title', 'url', 'site_name', 'type', 'description', 'locale', 'updated_time'] as $property) {
+            if ($this->$property) {
+                $this->registerMetaTag(['property' => "og:" . $property, 'content' => $this->$property]);
+            }
+
+        }
+
+        if ($this->image !== null) {
+            if (is_array($this->image)) {
+                foreach ($this->image as $key => $value) {
+                    $this->registerMetaTag(['property' => 'og:image', 'content' => $value], 'og:image' . $key);
+                }
+            } else {
+                $this->registerMetaTag(['property' => 'og:image', 'content' => $this->image], 'og:image');
+            }
+
+        }
+    }
+
+
+    /**
+     * Registers the Twitter Cards metatags.
+     */
+    protected function registerTwitterCardMetaTags()
+    {
+        foreach ([
+                     'card',
+                     'title',
+                     'url',
+                     'creator',
+                     'site',
+                     'type',
+                     'description',
+                     'label1',
+                     'data1',
+                     'label2',
+                     'data2'
+                 ] as $property) {
+            if ($this->$property) {
+                $this->registerMetaTag(['name' => "twitter:" . $property, 'content' => $this->$property]);
+            }
+        }
+
+        if ($this->image !== null) {
+            $this->registerMetaTag(['name' => 'twitter:image', 'content' => (is_array($this->image) ? reset($this->image) : $this->image)], 'twitter:image');
+        }
+    }
+
+    /**
+     * Executes the translation tool to find out if there is a translation registered for
+     * the original property value
+     */
+    protected function translateProperties()
+    {
+        foreach ($this->translate as $property) {
+            if ($this->$property !== null) {
+                if (is_array($this->$property)) {
+                    $the_array = $this->$property;
+                    foreach ($the_array as $i => $word) {
+                        $the_array[$i] = Yii::t('app', $word);
+                    }
+                    $this->$property = $the_array;
+                } else {
+                    $this->$property = Yii::t('app', $this->$property);
+                }
+            }
+        }
     }
 
 }
