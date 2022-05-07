@@ -182,26 +182,6 @@ class View extends \yii\web\View
 
     private $updated_time;
 
-    /**
-     * @inerhitdoc
-     * Sets some basic metatags according to app configuration if they have not been
-     * set in the main configuration.
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function init()
-    {
-        parent::init();
-
-        $this->site_name = $this->site_name ?: Yii::$app->name;
-        $this->site = $this->site ?: $this->site_name;
-        $this->title = $this->title ?: $this->getPageTitle();
-        $this->url = $this->url ?: (Yii::$app->getRequest() instanceof Request ? Yii::$app->getRequest()->getAbsoluteUrl() : null);
-        $this->date = $this->date ?: Yii::$app->formatter->asDatetime(time());
-        $this->image = Url::to($this->image ?: LogoImage::getUrl(), true);
-
-        $this->translateProperties();
-    }
-
 
     /**
      * Sets current page title
@@ -435,6 +415,16 @@ class View extends \yii\web\View
             SiteIcon::registerMetaTags($this);
             LayoutHeader::registerHeadTags($this);
             parent::registerCsrfMetaTags();
+
+            // Sets some basic metatags according to app configuration if they have not been set in the main configuration.
+            $this->site_name = $this->site_name ?: Yii::$app->name;
+            $this->site = $this->site ?: $this->site_name;
+            $this->title = $this->title ?: $this->getPageTitle();
+            $this->url = $this->url ?: (Yii::$app->getRequest() instanceof Request ? Yii::$app->getRequest()->getAbsoluteUrl() : null);
+            $this->date = $this->date ?: Yii::$app->formatter->asDatetime(time());
+            $this->image = Url::to($this->image ?: LogoImage::getUrl(), true);
+
+            $this->translateProperties();
 
             if ($this->locale === null) {
                 $this->locale = str_replace('-', '_', Yii::$app->language);
