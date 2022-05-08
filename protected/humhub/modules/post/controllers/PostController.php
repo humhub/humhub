@@ -8,16 +8,18 @@
 
 namespace humhub\modules\post\controllers;
 
+use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\WallCreateContentForm;
-use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\post\models\forms\PostEditForm;
 use humhub\modules\post\models\Post;
 use humhub\modules\post\permissions\CreatePost;
 use Yii;
+use yii\helpers\StringHelper;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
@@ -41,6 +43,8 @@ class PostController extends ContentContainerController
         if ($post === null) {
             throw new HttpException(404);
         }
+
+        $this->view->description = StringHelper::truncate(RichText::convert($post->message, RichText::FORMAT_SHORTTEXT), 200, '[...]');
 
         return $this->render('view', [
             'post' => $post,
