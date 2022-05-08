@@ -13,11 +13,14 @@ use humhub\assets\CoreBundleAsset;
 use humhub\components\assets\AssetBundle;
 use humhub\libs\Html;
 use humhub\libs\LogoImage;
+use humhub\modules\space\models\Space;
 use humhub\modules\web\pwa\widgets\LayoutHeader;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\CoreJsConfig;
 use humhub\widgets\LayoutAddons;
 use Yii;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\Request;
@@ -420,10 +423,27 @@ class View extends \yii\web\View
             $this->site_name = $this->site_name ?: Yii::$app->name;
             $this->site = $this->site ?: $this->site_name;
             $this->title = $this->title ?: $this->getPageTitle();
+            $this->type = $this->type ?: 'website';
             $this->url = $this->url ?: (Yii::$app->getRequest() instanceof Request ? Yii::$app->getRequest()->getAbsoluteUrl() : null);
             $this->date = $this->date ?: Yii::$app->formatter->asDatetime(time());
-            $this->image = Url::to($this->image ?: LogoImage::getUrl(), true);
-
+            $imageUrl = $this->image;
+            // Try to get space image
+            if (
+                !$imageUrl
+                && !empty($this->context->contentContainer)
+                && ($this->context->contentContainer) instanceof Space
+            ) {
+                /** @var Space $space */
+                $space = $this->context->contentContainer;
+                $image = $space->getProfileImage();
+                if ($image->height() > 200 && $image->width() > 200) {
+                    try {
+                        $imageUrl = $image->getUrl();
+                    } catch (InvalidConfigException|Exception $e) {
+                    }
+                }
+            }
+            $this->image = Url::to($imageUrl ?: LogoImage::getUrl(1000, 250), true);
             $this->translateProperties();
 
             if ($this->locale === null) {
