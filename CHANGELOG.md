@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #5657: Fix links of user counters in container headers
 - Fix #5676: Use 404 page for deleted content request
 - Fix #5679: Fix message on decline multiple users
+- Enh #5690: Use primary colors in marketplace modules
 
 
 1.11.1 (April 22, 2022)
