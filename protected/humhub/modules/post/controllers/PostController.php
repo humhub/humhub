@@ -44,7 +44,8 @@ class PostController extends ContentContainerController
             throw new HttpException(404);
         }
 
-        $this->view->description = StringHelper::truncate(RichText::convert($post->message, RichText::FORMAT_SHORTTEXT), 200, '[...]');
+        $this->view->title = $post->getOwner()->getDisplayName() . ' · ' . $this->contentContainer->getDisplayName();
+        $this->view->description = StringHelper::truncate(RichText::convert($post->message, RichText::FORMAT_SHORTTEXT), 195, '[...]');
 
         return $this->render('view', [
             'post' => $post,
