@@ -20,6 +20,7 @@ use humhub\modules\post\permissions\CreatePost;
 use Yii;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
+use yii\widgets\ActiveForm;
 
 /**
  * @since 0.5
@@ -103,13 +104,12 @@ class PostController extends ContentContainerController
 
     public function actionValidateNewPost()
     {
+        $this->forcePostRequest();
+
         $post = new Post();
+        $post->load(Yii::$app->request->post(), 'Post');
 
-        if ($post->load(Yii::$app->request->post(), '') && !$post->validate()) {
-            return $this->asJson(['errors' => $post->getErrors()]);
-        }
-
-        return $this->asJson(['success' => true]);
+        return $this->asJson(ActiveForm::validate($post));
     }
 
 }

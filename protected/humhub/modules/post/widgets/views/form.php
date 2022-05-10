@@ -9,23 +9,15 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 /* @var Post $post */
 ?>
 
-<?= $form->field($post, 'message', [
-    'enableAjaxValidation' => true
-])->textarea()/*->widget(RichTextField::class, [
-    'id' => 'post_input_'. $model->post->id,
-    'layout' => RichTextField::LAYOUT_INLINE,
-    'focus' => true,
-    'pluginOptions' => ['maxHeight' => '300px'],
-    'placeholder' => Yii::t('PostModule.base', 'Edit your post...')
-])*/->label(false) ?>
-
-<?php /* RichTextField::widget([
+<?= $form->field($post, 'message')->widget(RichTextField::class, [
     'id' => 'contentForm_message',
+    'form' => $form,
     'layout' => RichTextField::LAYOUT_INLINE,
     'pluginOptions' => ['maxHeight' => '300px'],
+    'fieldOptions' => ['enableAjaxValidation' => true],
     'placeholder' => Yii::t("PostModule.base", "What's on your mind?"),
     'name' => 'message',
     'disabled' => (property_exists(Yii::$app->controller, 'contentContainer') && Yii::$app->controller->contentContainer->isArchived()),
     'disabledText' => Yii::t("PostModule.base", "This space is archived."),
     'mentioningUrl' => $mentioningUrl,
-]); */ ?>
+])->label(false) ?>

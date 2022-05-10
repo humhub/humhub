@@ -41,7 +41,6 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
 
 <div class="panel panel-default clearfix">
     <div class="panel-body" id="contentFormBody" style="display:none;" data-action-component="content.form.CreateForm" >
-        <?php // Html::beginForm($submitUrl, 'POST', ['data-ui-addition' => 'acknowledgeForm']); ?>
         <?php $form = ActiveForm::begin(['acknowledge' => true, 'validationUrl' => $validationUrl]); ?>
 
         <?= $wallCreateContentForm->renderForm($form) ?>

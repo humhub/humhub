@@ -40,6 +40,7 @@ class Events extends \yii\base\BaseObject
     {
         $event->result = [
             [['message'], function ($attribute) {
+                // TODO: Remove or replace these vars with settings when implementation will be completed:
                 $limitPostsPerDay = rand(1, 10);
                 $alreadyPostedNum = rand(11, 20);
                 if ($this->isNewRecord && $alreadyPostedNum > $limitPostsPerDay) {

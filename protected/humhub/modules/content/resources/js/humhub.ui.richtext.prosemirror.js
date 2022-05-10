@@ -61,7 +61,7 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
 
         var that = this;
         this.$.on('focusout', function() {
-            that.getInput().val(that.editor.serialize());
+            that.getInput().val(that.editor.serialize()).trigger('blur');
         }).on('clear', function() {
             that.editor.clear();
         }).on('focus', function() {
