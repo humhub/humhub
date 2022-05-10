@@ -65,7 +65,7 @@ class PostController extends ContentContainerController
         }
 
         $post = new Post($this->contentContainer);
-        $post->message = Yii::$app->request->post('message');
+        $post->load(Yii::$app->request->post(), 'Post');
 
         return Post::getDb()->transaction(function ($db) use ($post) {
             return WallCreateContentForm::create($post, $this->contentContainer);

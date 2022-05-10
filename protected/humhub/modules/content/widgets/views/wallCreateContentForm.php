@@ -67,8 +67,6 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
         <?= Html::hiddenInput("containerGuid", $contentContainer->guid); ?>
         <?= Html::hiddenInput("containerClass", get_class($contentContainer)); ?>
 
-        <ul id="contentFormError"></ul>
-
         <div class="contentForm_options">
             <hr>
             <div class="btn_container">
