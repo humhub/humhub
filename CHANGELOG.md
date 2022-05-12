@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #5679: Fix message on decline multiple users
 - Enh #5690: Use theme colors in marketplace modules
 - Fix #5689: Check value on colorpicker
+- Fix #5691: Fix attach file to profile markdown field
 
 1.11.1 (April 22, 2022)
 -----------------------
