@@ -1,14 +1,11 @@
 <?php
 
-use humhub\modules\admin\assets\ModuleAsset;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\widgets\ModuleCard;
 use humhub\modules\user\models\User;
 
 /* @var User $user */
 /* @var ContentContainerModule[] $modules */
-
-ModuleAsset::register($this);
 ?>
 <div class="container container-cards container-modules container-content-modules container-content-modules-col-3">
     <h4><?= Yii::t('UserModule.manage', '<strong>Profile</strong> modules'); ?></h4>

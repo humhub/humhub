@@ -71,22 +71,21 @@
         button {
             margin: 10px 10px 0 0;
         }
-        .btn.btn-info{
+        .btn {
             padding-left: 16px;
             padding-right: 16px;
-            &.active {
-                background: #0397A8 !important;
-                color: #FFF !important;
-            }
             &:not(.active) {
-                border: 1px solid #435F6F;
-                color: #435F6F !important;
-                background: #FFF;
                 padding: 3px 14px;
-                &:hover {
-                    background: #0397A8 !important;
-                    border: 1px solid #0397A8;
+            }
+            &.btn-primary {
+                border: 1px solid @primary;
+                &.active, &:not(.active):hover {
+                    background: @primary !important;
                     color: #FFF !important;
+                }
+                &:not(.active) {
+                    background: #FFF;
+                    color: @primary !important;
                 }
             }
         }
@@ -182,7 +181,10 @@
             &.card-status-deprecated {
                 background: #EB0000;
             }
-            &.card-status-featured, &.card-status-new {
+            &.card-status-featured {
+                background: @primary;
+            }
+            &.card-status-new {
                 background: #21A1B3;
             }
         }
