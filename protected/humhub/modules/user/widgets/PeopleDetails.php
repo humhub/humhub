@@ -8,9 +8,9 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\components\Widget;
-use humhub\libs\StringHelper;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
+use yii\helpers\StringHelper;
 
 /**
  * PeopleDetails shows details for back side of the people card
@@ -85,7 +85,7 @@ class PeopleDetails extends Widget
             return false;
         }
 
-        return StringHelper::truncate(profileFields[$internalName]->getUserValue($this->user, false), 200, '...', true);
+        return StringHelper::truncate($profileFields[$internalName]->getUserValue($this->user, false), 200, '...', null, true);
     }
 
 }
