@@ -9,10 +9,6 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
 
 <div class="container" style="text-align: center;">
     <?= SiteLogo::widget(['place' => 'login']) ?>
-    <br>
-    <h1 id="app-title" class="animated fadeIn">
-        <?= Html::encode(Yii::$app->name) ?>
-    </h1>
     <br/>
     <div class="row">
         <div id="create-account-form" class="panel panel-default animated bounceIn"
