@@ -11,6 +11,7 @@ HumHub Changelog
 - Enh #5690: Use theme colors in marketplace modules
 - Fix #5689: Check value on colorpicker
 - Fix #5691: Fix attach file to profile markdown field
+- Fix #5693: Scroll to comment on single view
 
 1.11.1 (April 22, 2022)
 -----------------------
