@@ -10,10 +10,11 @@ namespace humhub\modules\user\widgets;
 use humhub\components\Widget;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
+use yii\helpers\StringHelper;
 
 /**
  * PeopleDetails shows details for back side of the people card
- * 
+ *
  * @since 1.9
  * @author Luke
  */
@@ -84,7 +85,7 @@ class PeopleDetails extends Widget
             return false;
         }
 
-        return $profileFields[$internalName]->getUserValue($this->user, false);
+        return StringHelper::truncate($profileFields[$internalName]->getUserValue($this->user, false), 200, '...', null, true);
     }
 
 }
