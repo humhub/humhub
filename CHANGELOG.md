@@ -12,6 +12,7 @@ HumHub Changelog
 - Fix #5689: Check value on colorpicker
 - Fix #5691: Fix attach file to profile markdown field
 - Fix #5693: Scroll to comment on single view
+- Fix #5704: Don't send notification for non-member of private space
 
 1.11.1 (April 22, 2022)
 -----------------------
