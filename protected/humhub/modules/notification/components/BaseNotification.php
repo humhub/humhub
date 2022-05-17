@@ -283,6 +283,7 @@ abstract class BaseNotification extends SocialActivity
      * Check if the source is a Content from a Space
      *
      * @return bool
+     * @since 1.11.2
      */
     private function isSpaceContent(): bool
     {
