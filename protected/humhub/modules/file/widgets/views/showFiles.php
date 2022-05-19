@@ -28,10 +28,17 @@ foreach($files as $file) {
 }
 
 $fullWidthColumnClass = 'col-media col-xs-12 col-sm-12 col-md-12';
+$halfWidthColumnClass = 'col-media col-xs-6 col-sm-6 col-md-6';
 $nonFluidColumnClass = 'col-media col-xs-3 col-sm-3 col-md-4';
 $fluidColumnClass = 'col-media col-xs-3 col-sm-3 col-md-2';
 
-$galleryColumnClass =  ThemeHelper::isFluid() ? $fluidColumnClass : $nonFluidColumnClass;
+$galleryColumnClass = ThemeHelper::isFluid() ? $fluidColumnClass : $nonFluidColumnClass;
+if (count($images) === 1) {
+    $galleryColumnClass = $fullWidthColumnClass;
+}
+if (count($images) === 2) {
+    $galleryColumnClass = $halfWidthColumnClass;
+}
 ?>
 
 <?php if (count($files) > 0) : ?>
