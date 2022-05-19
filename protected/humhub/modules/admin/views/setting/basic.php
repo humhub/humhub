@@ -34,6 +34,7 @@ AdminAsset::register($this);
     <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
     <?= $form->field($model, 'name'); ?>
+    <?= $form->field($model, 'shortName'); ?>
     <?= $form->field($model, 'baseUrl'); ?>
 
     <?php $allowedLanguages = Yii::$app->i18n->getAllowedLanguages(); ?>

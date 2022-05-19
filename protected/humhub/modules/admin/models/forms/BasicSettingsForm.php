@@ -16,6 +16,7 @@ class BasicSettingsForm extends \yii\base\Model
 {
 
     public $name;
+    public $shortName;
     public $baseUrl;
     public $defaultLanguage;
     public $tour;
@@ -34,6 +35,7 @@ class BasicSettingsForm extends \yii\base\Model
         parent::init();
 
         $this->name = Yii::$app->settings->get('name');
+        $this->shortName = Yii::$app->settings->get('shortName') ?? $this->name;
         $this->baseUrl = Yii::$app->settings->get('baseUrl');
         $this->defaultLanguage = Yii::$app->settings->get('defaultLanguage');
         $this->defaultTimeZone = Yii::$app->settings->get('defaultTimeZone');
@@ -52,8 +54,9 @@ class BasicSettingsForm extends \yii\base\Model
     public function rules()
     {
         return [
-            [['name', 'baseUrl'], 'required'],
+            [['name', 'shortName', 'baseUrl'], 'required'],
             ['name', 'string', 'max' => 150],
+            ['shortName', 'string', 'max' => 15],
             ['defaultLanguage', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
             [['defaultTimeZone', 'timeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             [['tour', 'dashboardShowProfilePostForm', 'enableFriendshipModule', 'maintenanceMode'], 'in', 'range' => [0, 1]],
@@ -73,6 +76,7 @@ class BasicSettingsForm extends \yii\base\Model
     {
         return [
             'name' => Yii::t('AdminModule.settings', 'Name of the application'),
+            'shortName' => Yii::t('AdminModule.settings', 'Short name of the application'),
             'baseUrl' => Yii::t('AdminModule.settings', 'Base URL'),
             'defaultLanguage' => Yii::t('AdminModule.settings', 'Default language'),
             'defaultTimeZone' => Yii::t('AdminModule.settings', 'Default Timezone'),
@@ -111,6 +115,7 @@ class BasicSettingsForm extends \yii\base\Model
     public function save()
     {
         Yii::$app->settings->set('name', $this->name);
+        Yii::$app->settings->set('shortName', $this->shortName);
         Yii::$app->settings->set('baseUrl', $this->baseUrl);
         Yii::$app->settings->set('defaultLanguage', $this->defaultLanguage);
         Yii::$app->settings->set('defaultTimeZone', $this->defaultTimeZone);

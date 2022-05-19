@@ -55,7 +55,7 @@ class ManifestController extends Controller
     {
         $this->manifest['display'] = 'standalone';
         $this->manifest['start_url'] = Url::home(true);
-        $this->manifest['short_name'] = Yii::$app->name;
+        $this->manifest['short_name'] = Yii::$app->settings->get('shortName') ?? Yii::$app->name;
         $this->manifest['name'] = Yii::$app->name;
         $this->manifest['background_color'] = Yii::$app->view->theme->variable('primary');
         $this->manifest['theme_color'] = Yii::$app->view->theme->variable('primary');
