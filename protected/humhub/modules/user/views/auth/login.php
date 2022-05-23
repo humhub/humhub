@@ -78,7 +78,11 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
             <div class="panel-body">
 
-                <p><?= Yii::t('UserModule.auth', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
+                <?php if (AuthChoice::hasClients()): ?>
+                    <?= AuthChoice::widget() ?>
+                <?php else: ?>
+                    <p><?= Yii::t('UserModule.auth', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
+                <?php endif; ?>
 
                 <?php $form = ActiveForm::begin(['id' => 'invite-form']); ?>
                 <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>

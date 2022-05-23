@@ -85,7 +85,12 @@ use humhub\modules\user\widgets\AuthChoice;
                     <div class="tab-pane <?= (isset($_POST['Invite'])) ? "active" : ""; ?>"
                          id="register">
 
-                        <p><?= Yii::t('UserModule.auth', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
+                        <?php if (AuthChoice::hasClients()): ?>
+                            <?= AuthChoice::widget() ?>
+                        <?php else: ?>
+                            <p><?= Yii::t('UserModule.auth', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
+                        <?php endif; ?>
+
                         <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 
                         <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => Yii::t('UserModule.auth', 'email')]); ?>
