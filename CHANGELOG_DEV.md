@@ -14,6 +14,7 @@ Warning: The minimum PHP version is now `PHP 7.4`!
 - Fix #5631: Fix enabling module on functional tests
 - Fix #5633: Fix tests NonceCest
 - Fix #5635: Fix cached comments
+- Enh #5602: Validate new post message by AJAX request
 
 
 1.11.0-beta.2 (March 18, 2022)
