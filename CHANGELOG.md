@@ -14,7 +14,7 @@ HumHub Changelog
 - Fix #5693: Scroll to comment on single view
 - Fix #5709: Fix input size for placeholder length in picker field
 - Fix #5704: Don't send notification for non-member of private space
-- 
+- Fix #5716: Fix saving of OEmbed provider endpoint URL
 
 1.11.1 (April 22, 2022)
 -----------------------
