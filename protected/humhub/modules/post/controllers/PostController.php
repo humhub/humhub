@@ -106,7 +106,7 @@ class PostController extends ContentContainerController
     {
         $this->forcePostRequest();
 
-        $post = new Post();
+        $post = new Post(['scenario' => Post::SCENARIO_AJAX_VALIDATION]);
         $post->load(Yii::$app->request->post(), 'Post');
 
         return $this->asJson(ActiveForm::validate($post));

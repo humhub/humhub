@@ -8,7 +8,6 @@
 
 namespace humhub\modules\post;
 
-use Yii;
 use humhub\modules\post\models\Post;
 
 /**
@@ -46,7 +45,7 @@ class Events extends \yii\base\BaseObject
                 if ($this->isNewRecord && $alreadyPostedNum > $limitPostsPerDay) {
                     $this->addError($attribute, 'You can only create ' . $limitPostsPerDay . ' posts per day.');
                 }
-            }],
+            }, 'skipOnEmpty' => false],
         ];
     }
 
