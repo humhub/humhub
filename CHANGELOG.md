@@ -1,15 +1,15 @@
 HumHub Changelog
 ================
 
-1.11.2 (Unreleased)
------------------------
+1.11.2 (May 30, 2022)
+---------------------
 - Fix: #5652: Fix undefined UrlOembed provider pattern
 - Fix #5660: Individual modules marked with "Official" label in Marketplace
 - Fix #5657: Fix links of user counters in container headers
 - Fix #5676: Use 404 page for deleted content request
 - Fix #5679: Fix message on decline multiple users
 - Enh #5690: Use theme colors in marketplace modules
-- Fix #5689: Check value on colorpicker
+- Fix #5689: Check value on color picker
 - Fix #5691: Fix attach file to profile markdown field
 - Fix #5693: Scroll to comment on single view
 - Fix #5709: Fix input size for placeholder length in picker field
