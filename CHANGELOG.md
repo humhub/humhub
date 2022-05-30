@@ -17,6 +17,7 @@ HumHub Changelog
 - Fix #5716: Fix saving of OEmbed provider endpoint URL
 - Fix #5706: Fix confirmation window for buttons
 - Fix #5724: Deny custom input for UserPicker field
+- Fix #5659: Improve module loading error handling
 
 1.11.1 (April 22, 2022)
 -----------------------
