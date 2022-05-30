@@ -14,7 +14,6 @@ use humhub\modules\ui\form\widgets\ActiveForm;
     'form' => $form,
     'layout' => RichTextField::LAYOUT_INLINE,
     'pluginOptions' => ['maxHeight' => '300px'],
-    'fieldOptions' => ['enableAjaxValidation' => true],
     'placeholder' => Yii::t("PostModule.base", "What's on your mind?"),
     'name' => 'message',
     'disabled' => (property_exists(Yii::$app->controller, 'contentContainer') && Yii::$app->controller->contentContainer->isArchived()),

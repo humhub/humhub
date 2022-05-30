@@ -27,11 +27,6 @@ class Form extends WallCreateContentForm
     /**
      * @inheritdoc
      */
-    public $validationUrl = '/post/post/validate-new-post';
-
-    /**
-     * @inheritdoc
-     */
     public $submitUrl = '/post/post/post';
 
     /**
