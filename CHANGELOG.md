@@ -16,6 +16,7 @@ HumHub Changelog
 - Fix #5704: Don't send notification for non-member of private space
 - Fix #5716: Fix saving of OEmbed provider endpoint URL
 - Fix #5706: Fix confirmation window for buttons
+- Fix #5724: Deny custom input for UserPicker field
 
 1.11.1 (April 22, 2022)
 -----------------------
