@@ -17,7 +17,6 @@ use humhub\widgets\Button;
 
 /* @var $wallCreateContentForm WallCreateContentForm */
 /* @var $defaultVisibility integer */
-/* @var $validationUrl string */
 /* @var $submitUrl string */
 /* @var $submitButtonText string */
 /* @var $fileHandlers \humhub\modules\file\handler\BaseFileHandler[] */
@@ -41,7 +40,7 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
 
 <div class="panel panel-default clearfix">
     <div class="panel-body" id="contentFormBody" style="display:none;" data-action-component="content.form.CreateForm" >
-        <?php $form = ActiveForm::begin(['acknowledge' => true, 'validationUrl' => $validationUrl]); ?>
+        <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
         <?= $wallCreateContentForm->renderForm($form) ?>
 

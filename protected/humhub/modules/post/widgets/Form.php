@@ -43,7 +43,7 @@ class Form extends WallCreateContentForm
 
         return $this->render('form', [
             'form' => $form,
-            'post' => new Post(),
+            'post' => new Post($this->contentContainer),
             'mentioningUrl' => $canCreatePostInSpace ? Url::to([$this->mentioningUrl, 'id' => $this->contentContainer->id]) : null,
         ]);
     }
