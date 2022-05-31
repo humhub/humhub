@@ -53,6 +53,7 @@ return array (
   'LDAP Attribute' => 'LDAP-Attribut',
   'Last login date of the user' => 'Letzter Login des Benutzers',
   'Last name' => 'Nachname',
+  'Link Prefix (e.g. https://, mailto:, tel://)' => 'Link Prefix (z.B. https://, mailto:, tel://)',
   'LinkedIn URL' => 'LinkedIn-URL',
   'MSN' => 'MSN',
   'Male' => 'Männlich',

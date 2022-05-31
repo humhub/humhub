@@ -2,6 +2,7 @@
 return array (
   'An unexpected error occurred while loading the result.' => 'Beim Laden der Ergebnisse ist ein unerwarteter Fehler aufgetreten.',
   'Load more' => 'Mehr laden',
+  'No results found.' => 'Keine Ergebnisse gefunden.',
   'No users found for the given query.' => 'Keine Benutzer für die angegebene Abfrage gefunden.',
   'Please enter at least {n} character' => 'Bitte gebe mindestens {n} Zeichen ein.',
   'Select user...' => 'Benutzer auswählen...',

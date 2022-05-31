@@ -9,6 +9,13 @@
         margin-top: 40px;
     }
     .card-module {
+        .card-panel {
+            background: none;
+            overflow: hidden;
+            > div:not(.card-status) {
+                background-color: #ffffff;
+            }
+        }
         .card-header {
             position: relative;
         }
@@ -42,12 +49,15 @@
             }
         }
     }
-    .module-settings-link {
+    .module-settings-icon {
         float: right;
         color: #02A1B1;
         font-size: 22px;
         line-height: 20px;
         margin: 2px;
+        &:hover {
+            color: #1d8e9d;
+        }
     }
 }
 

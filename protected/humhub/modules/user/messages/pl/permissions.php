@@ -1,6 +1,5 @@
 <?php
-
-return [
-    'Can Access \'People\'' => '',
-    'Can access \'People\' section.' => '',
-];
+return array (
+  'Can Access \'People\'' => 'Ma dostęp do "Ludzie"',
+  'Can access \'People\' section.' => 'Ma dostęp do sekcji "Ludzie".',
+);

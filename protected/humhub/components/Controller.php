@@ -116,6 +116,17 @@ class Controller extends \yii\web\Controller
     }
 
     /**
+     * Renders a string as Ajax including assets without end page so it can be called several times.
+     *
+     * @param string $content
+     * @return string Rendered content
+     */
+    public function renderAjaxPartial(string $content): string
+    {
+        return $this->getView()->renderAjaxPartial($content, $this);
+    }
+
+    /**
      * Renders a static string by applying the layouts (sublayout + layout.
      *
      * @param string $content the static string being rendered

@@ -4,6 +4,7 @@ return [
     'Load more' => 'Cargar mas',
     'Your search returned no matches.' => 'No i hai resultaus pa ista busca',
     'An unexpected error occurred while loading the result.' => '',
+    'No results found.' => '',
     'No users found for the given query.' => '',
     'Please enter at least {n} character' => '',
     'Select user...' => '',

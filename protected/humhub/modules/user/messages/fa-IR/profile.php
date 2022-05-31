@@ -109,6 +109,7 @@ return [
     'E-mail address of the user' => '',
     'Invalid!' => '',
     'Last login date of the user' => '',
+    'Link Prefix (e.g. https://, mailto:, tel://)' => '',
     'Markdown' => '',
     'Must contain at least one character.' => '',
     'Other:' => '',

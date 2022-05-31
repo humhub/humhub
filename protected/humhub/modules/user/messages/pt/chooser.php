@@ -11,6 +11,7 @@ return [
     'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Este campo permite apenas um máximo de {n,plural,=1{# user} other{# users}}.',
     'You reached the maximum number of allowed characters ({n}).' => 'Alcançaste o número máximo de caracteres permitido ({n}).',
     'Your search returned no matches.' => 'A tua pesquisa não tem resultados correspondentes',
+    'No results found.' => '',
     'Select user...' => '',
     'Select...' => '',
 ];

@@ -2,21 +2,15 @@
 
 return [
     '<strong>Account</strong> settings' => '<strong>Configuració</strong> del compte',
-    '<strong>User</strong> modules' => '<strong>Mòduls</strong> del membre',
     '<strong>User</strong> settings' => '<strong>Configuració</strong> del membre',
     '<strong>Your</strong> profile' => '
 <strong>El teu</strong> perfil
 ',
-    'Are you really sure? *ALL* module data for your profile will be deleted!' => 'Estàs segur realment? *ALL* les dades del mòdul del teu perfil s\'eliminaran!',
-    'Configure' => 'Configura',
     'Confirm' => 'Confirma',
     'Current password' => 'Contrasenya actual',
     'Delete account' => 'Elimina el compte',
-    'Disable' => 'Inhabilita',
     'E-Mail' => 'Correu electrònic',
     'E-Mail change' => 'Modificació del correu electrònic',
-    'Enable' => 'Habilita',
-    'Enhance your profile with modules.' => 'Millora el teu perfil utilitzant mòduls.',
     'Language' => 'Llengua',
     'Modules' => 'Mòduls',
     'New E-Mail address' => 'Nou correu electrònic',
@@ -58,6 +52,7 @@ return [
     'Username has been changed' => '',
     'Visible for all (also unregistered users)' => '',
     'You are currently the owner of following spaces:' => '',
+    'You cannot use this username.' => '',
     'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => '',
     'You have successfully changed your username.<br>Your new username is {newUsername}.' => '',
     'You must transfer ownership or delete these spaces before you can delete your account.' => '',

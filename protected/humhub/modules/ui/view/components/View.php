@@ -165,6 +165,46 @@ class View extends \yii\web\View
     }
 
     /**
+     * Renders a string as Ajax including assets without end page so it can be called several times.
+     *
+     * @param string $content
+     * @return string Rendered content
+     */
+    public function renderAjaxPartial(string $content): string
+    {
+        ob_start();
+        ob_implicit_flush(false);
+
+        $this->beginPage();
+        $this->head();
+        $this->beginBody();
+        echo $content;
+        $this->endBody();
+        $this->renderEndPage();
+
+        return ob_get_clean();
+    }
+
+    /**
+     * Render of ending page with all attached assets.
+     * This method doesn't mark a page is ended in order to allow to call it several times.
+     */
+    private function renderEndPage()
+    {
+        $this->trigger(self::EVENT_END_PAGE);
+
+        $content = ob_get_clean();
+
+        echo strtr($content, [
+            self::PH_HEAD => $this->renderHeadHtml(),
+            self::PH_BODY_BEGIN => $this->renderBodyBeginHtml(),
+            self::PH_BODY_END => $this->renderBodyEndHtml(true),
+        ]);
+
+        $this->clear();
+    }
+
+    /**
      * @inheritdoc
      */
     public function renderAjax($view, $params = [], $context = null)
@@ -179,7 +219,6 @@ class View extends \yii\web\View
         $this->beginBody();
         echo $this->renderFile($viewFile, $params, $context);
         $this->endBody();
-
         $this->endPage(true);
 
         return ob_get_clean();

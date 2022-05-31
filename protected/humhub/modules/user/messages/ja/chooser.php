@@ -2,6 +2,7 @@
 return array (
   'An unexpected error occurred while loading the result.' => '結果のロード中に予期しないエラーが発生しました。',
   'Load more' => 'さらに読み込む',
+  'No results found.' => '検索結果は見つかりませんでした',
   'No users found for the given query.' => 'ユーザーが見つかりませんでした',
   'Please enter at least {n} character' => '最低でも {n} 文字を入力してください',
   'Select user...' => 'ユーザーを選択...',

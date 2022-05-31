@@ -917,7 +917,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function mustChangePassword()
     {
-        return (bool)$this->getSettings()->get('mustChangePassword');
+        return !Yii::$app->user->isImpersonated && (bool)$this->getSettings()->get('mustChangePassword');
     }
 
     /**

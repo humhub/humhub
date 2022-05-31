@@ -5,6 +5,7 @@ return [
     'Load more' => 'Carregar més',
     'No users found for the given query.' => 'No s\'ha trobat cap usuari per aquesta consulta.',
     'Your search returned no matches.' => 'La teva cerca no ha donat cap resultat.',
+    'No results found.' => '',
     'Please enter at least {n} character' => '',
     'Select user...' => '',
     'Select {n,plural,=1{item} other{items}}' => '',

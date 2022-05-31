@@ -371,7 +371,7 @@ humhub.module('action', function(module, require, $) {
             // Make sure we are not intercepting an action based link
             var data =  $this.data();
             for(var key in data) {
-                if(string.startsWith(key, 'action') && !string.startsWith(key, 'actionConfirm') && !string.startsWith(key, 'actionMethod')) {
+                if(string.startsWith(key, 'action') && !string.startsWith(key, 'actionConfirm') && !string.startsWith(key, 'actionCancel') && !string.startsWith(key, 'actionMethod')) {
                     return;
                 }
             }

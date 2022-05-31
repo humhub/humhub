@@ -158,7 +158,7 @@ class StreamQuery extends Model
     {
         return [
             [['limit', 'from', 'to', 'contentId'], 'number'],
-            [['sort'], 'safe']
+            [['sort'], 'safe'],
         ];
     }
 
@@ -458,10 +458,12 @@ class StreamQuery extends Model
      */
     protected function checkLimit()
     {
-        if (empty($this->limit) || $this->limit > self::MAX_LIMIT) {
+        if (empty($this->limit)) {
             $this->limit = self::MAX_LIMIT;
-        } else {
+        } else if (Yii::$app->request->isConsoleRequest) {
             $this->limit = (int)$this->limit;
+        } else {
+            $this->limit = ($this->limit > self::MAX_LIMIT) ? self::MAX_LIMIT : (int)$this->limit;
         }
     }
 

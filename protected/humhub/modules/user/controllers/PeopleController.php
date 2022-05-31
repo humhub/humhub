@@ -10,8 +10,12 @@ namespace humhub\modules\user\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\user\components\PeopleQuery;
+use humhub\modules\user\models\Profile;
 use humhub\modules\user\permissions\PeopleAccess;
-use humhub\modules\user\widgets\PeopleCard;use Yii;
+use humhub\modules\user\widgets\PeopleCard;
+use humhub\modules\user\widgets\PeopleFilterPicker;
+use Yii;
+use yii\base\BaseObject;
 use yii\helpers\Url;
 
 /**
@@ -66,7 +70,6 @@ class PeopleController extends Controller
 
         return $this->render('index', [
             'people' => $peopleQuery,
-            'showInviteButton' => !Yii::$app->user->isGuest && Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite'),
         ]);
     }
 
@@ -83,6 +86,15 @@ class PeopleController extends Controller
         }
 
         return $peopleCards;
+    }
+
+
+    /**
+     * Returns people list in JSON format filtered by keyword
+     */
+    public function actionFilterPeopleJson($field, $keyword = null)
+    {
+        return $this->asJson((new PeopleFilterPicker(['itemKey' => $field]))->getSuggestions($keyword));
     }
 
 }

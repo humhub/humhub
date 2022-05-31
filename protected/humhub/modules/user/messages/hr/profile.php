@@ -115,6 +115,7 @@ return [
     'You need to login to view this user profile!' => 'Trebate se prijaviti da možete vidjeti profil korisnika!',
     'YouTube URL' => 'YouTube URL',
     'Zip' => 'Zip',
+    'Link Prefix (e.g. https://, mailto:, tel://)' => '',
     'Use as Directory filter' => '',
     '{attribute} is required!' => '',
 ];

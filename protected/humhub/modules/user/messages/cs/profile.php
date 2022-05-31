@@ -111,6 +111,7 @@ return [
     'E-mail address of the user' => '',
     'Invalid!' => '',
     'Last login date of the user' => '',
+    'Link Prefix (e.g. https://, mailto:, tel://)' => '',
     'Must contain at least one character.' => '',
     'Other:' => '',
     'This profile is no longer available!' => '',

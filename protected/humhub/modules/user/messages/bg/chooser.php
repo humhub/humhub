@@ -11,6 +11,7 @@ return [
     'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Това поле позволява максимум {n,plural,=1{# потребител} other{# потребители}}',
     'You reached the maximum number of allowed characters ({n}).' => 'Достигнахте максималния брой разрешени символи ({n}).',
     'Your search returned no matches.' => 'Вашето търсене не върна съвпадения.',
+    'No results found.' => '',
     'Select user...' => '',
     'Select...' => '',
 ];

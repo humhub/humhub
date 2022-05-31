@@ -370,6 +370,8 @@ abstract class BasePicker extends JsInputWidget
     {
         return [
             'multiple' => 'multiple',
+            'data-multiple' => 'true',
+            'data-tags' => 'true',
             'size' => '1',
             'class' => 'form-control',
             'style' => 'width:100%',

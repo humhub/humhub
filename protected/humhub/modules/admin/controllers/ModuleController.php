@@ -10,6 +10,7 @@ namespace humhub\modules\admin\controllers;
 
 use humhub\components\Module;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\models\forms\GeneralModuleSettingsForm;
 use humhub\modules\admin\models\forms\ModuleSetAsDefaultForm;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentContainerModule;
@@ -210,5 +211,22 @@ class ModuleController extends Controller
         return $this->renderAjax('setAsDefault', ['module' => $module, 'model' => $model]);
     }
 
+    /**
+     * Module settings
+     * @return string
+     */
+    public function actionModuleSettings()
+    {
+        $moduleSettingsForm = new GeneralModuleSettingsForm();
+
+        if ($moduleSettingsForm->load(Yii::$app->request->post()) && $moduleSettingsForm->save()) {
+            $this->view->saved();
+            return $this->redirect(['/admin/module/list']);
+        }
+
+        return $this->renderAjax('moduleSettings', [
+            'settings' => $moduleSettingsForm,
+        ]);
+    }
 
 }

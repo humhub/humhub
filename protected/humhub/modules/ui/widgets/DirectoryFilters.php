@@ -9,6 +9,8 @@ namespace humhub\modules\ui\widgets;
 
 use humhub\components\Widget;
 use humhub\libs\Html;
+use humhub\modules\ui\form\widgets\BasePicker;
+use humhub\modules\user\widgets\PeopleFilterAutocomplete;
 use humhub\widgets\Button;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -84,7 +86,7 @@ abstract class DirectoryFilters extends Widget
         return [
             'wrapperClass' => 'col-md-2',
             'titleClass' => 'form-search-field-info',
-            'inputClass' => 'form-control form-search-filter',
+            'inputClass' => 'form-control',
             'beforeInput' => '',
             'afterInput' => '',
         ];
@@ -134,7 +136,10 @@ abstract class DirectoryFilters extends Widget
             case 'info':
                 $inputHtml = $data['info'];
                 break;
-
+            case 'widget':
+                $inputOptions['data-action-change'] = 'cards.applyFilters';
+                $inputHtml = $data['widget']::widget(array_merge(['name' => $filter, 'options' => $inputOptions], $data['widgetOptions']));
+                break;
             case 'input':
             case 'text':
             default:

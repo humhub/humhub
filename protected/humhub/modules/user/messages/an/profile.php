@@ -65,6 +65,7 @@ return [
     'Invalid!' => '',
     'LDAP Attribute' => '',
     'Last login date of the user' => '',
+    'Link Prefix (e.g. https://, mailto:, tel://)' => '',
     'MSN' => '',
     'Markdown' => '',
     'Maximum length' => '',

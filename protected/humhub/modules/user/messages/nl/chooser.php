@@ -2,6 +2,7 @@
 return array (
   'An unexpected error occurred while loading the result.' => 'Er is een onverwachte fout opgetreden tijdens het laden.',
   'Load more' => 'Meer laden',
+  'No results found.' => 'Geen resultaten gevonden.',
   'No users found for the given query.' => 'Geen gebruikers gevonden met de opgegeven waarden.',
   'Please enter at least {n} character' => 'Toets tenminste {n} tekens in',
   'Select user...' => 'Selecteer gebruiker...',
