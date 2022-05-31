@@ -20,7 +20,6 @@ use humhub\modules\post\permissions\CreatePost;
 use Yii;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
-use yii\widgets\ActiveForm;
 
 /**
  * @since 0.5
@@ -100,16 +99,6 @@ class PostController extends ContentContainerController
             'fileHandlers' => FileHandlerCollection::getByType([FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE]),
             'submitUrl' => $post->content->container->createUrl('/post/post/edit', ['id' => $post->id]),
         ]);
-    }
-
-    public function actionValidateNewPost()
-    {
-        $this->forcePostRequest();
-
-        $post = new Post(['scenario' => Post::SCENARIO_AJAX_VALIDATION]);
-        $post->load(Yii::$app->request->post(), 'Post');
-
-        return $this->asJson(ActiveForm::validate($post));
     }
 
 }
