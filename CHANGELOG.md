@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.11.3 (Unreleased)
+---------------------
+- Fix: #5736: Fix user approving/declining
+
 1.11.2 (May 30, 2022)
 ---------------------
 - Fix: #5652: Fix undefined UrlOembed provider pattern
