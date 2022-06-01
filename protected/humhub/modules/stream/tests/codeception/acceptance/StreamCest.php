@@ -355,7 +355,7 @@ class StreamCest
         $I->jsClick('.wall-stream-filter-toggle');
         $I->waitForElementVisible($dateFromFilter);
 //        $I->fillField($dateFromFilter, date('m/d/y'));
-        $I->executeJS("$('" . $dateFromFilter . "').val('" . date('m/d/y') . "').change();");
+        $I->executeJS("$('" . $dateFromFilter . "').val('" . date('n/j/y') . "').change();");
         $I->wait(5);
         $I->see('POST1', '.s2_streamContent > [data-stream-entry]:nth-of-type(1)');
 
@@ -363,7 +363,7 @@ class StreamCest
 //        $I->fillField($dateFromFilter, '');
         $I->executeJS("$('" . $dateFromFilter . "').val('').change();");
 //        $I->fillField($dateToFilter, date('m/d/y', strtotime('-1 day')));
-        $I->executeJS("$('" . $dateToFilter . "').val('" . date('m/d/y', strtotime('-1 day')) . "').change();");
+        $I->executeJS("$('" . $dateToFilter . "').val('" . date('n/j/y', strtotime('-1 day')) . "').change();");
         $I->wait(5);
         $I->dontSee('POST1');
     }
