@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.11.3 (Unreleased)
 ---------------------
-- Fix #5734: Fix uninstall module with not writable module path
+- Fix #5734: Fix error message when uninstall module and module folder is not writable
 
 1.11.2 (May 30, 2022)
 ---------------------
