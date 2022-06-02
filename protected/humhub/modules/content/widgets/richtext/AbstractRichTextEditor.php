@@ -119,6 +119,12 @@ class AbstractRichTextEditor extends JsInputWidget
     public $pluginOptions = [];
 
     /**
+     * Options for field of active form
+     * @var array
+     */
+    public $fieldOptions = [];
+
+    /**
      * If set to true the picker will be focused automatically.
      *
      * @var boolean
@@ -175,7 +181,7 @@ class AbstractRichTextEditor extends JsInputWidget
         $inputOptions = $this->getInputAttributes();
 
         if ($this->form != null) {
-            $input = $this->form->field($this->model, $this->attribute)->textarea($inputOptions)->label(false);
+            $input = $this->form->field($this->model, $this->attribute, $this->fieldOptions)->textarea($inputOptions)->label(false);
             $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
             $richText = $this->getLabel() . $richText;
         } elseif ($this->model != null) {
@@ -188,7 +194,7 @@ class AbstractRichTextEditor extends JsInputWidget
             $richText = $this->getLabel() . $richText;
         }
 
-        return $input . $richText . $this->prepend();
+        return $richText . $input . $this->prepend();
     }
 
     /**

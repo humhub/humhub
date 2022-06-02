@@ -20,13 +20,9 @@ humhub.module('content.form', function(module, require, $) {
     object.inherits(CreateForm, Widget);
 
     CreateForm.prototype.init = function() {
-        var that = this;
-
         this.$.hide();
         // Hide options by default
         $('.contentForm_options').hide();
-
-        $('#contentFormError').hide();
 
         this.setDefaultVisibility();
         this.$.fadeIn('fast');
@@ -46,8 +42,9 @@ humhub.module('content.form', function(module, require, $) {
     };
 
     CreateForm.prototype.submit = function(evt) {
-        this.$.find("#contentFormError, .preferences, .fileinput-button").hide();
-        this.$.find("#contentFormError li").remove();
+        this.$.find('.preferences, .fileinput-button').hide();
+        this.$.find('.help-block-error').html('');
+        this.$.find('.has-error').removeClass('has-error');
 
         var that = this;
         evt.block = 'manual';
@@ -116,14 +113,12 @@ humhub.module('content.form', function(module, require, $) {
     };
 
     CreateForm.prototype.handleError = function(response) {
-        $('#contentFormError').show();
-        $.each(response.errors, function(fieldName, errorMessage) {
-            // Mark Fields as Error
-            var fieldId = 'contentForm_' + fieldName;
-            $('#' + fieldId).addClass('error');
-            $.each(errorMessage, function(key, msg) {
-                $('#contentFormError').append('<li><i class=\"icon-warning-sign\"></i> ' + msg + '</li>');
-            });
+        var that = this;
+        $.each(response.errors, function(fieldName, errorMessages) {
+            that.$.find('.field-post-' + fieldName).addClass('has-error');
+            var fieldSelector = '.field-contentForm_' + fieldName;
+            that.$.find(fieldSelector + ', ' + fieldSelector + '_input')
+                .find('.help-block-error').html(errorMessages.join('<br>'));
         });
     };
 

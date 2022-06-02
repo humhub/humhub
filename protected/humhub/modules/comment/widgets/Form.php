@@ -77,6 +77,7 @@ class Form extends Widget
 
         if (!$this->model) {
             $this->model = new CommentModel();
+            $this->model->setPolyMorphicRelation($this->object);
         }
 
         return $this->render('form', [

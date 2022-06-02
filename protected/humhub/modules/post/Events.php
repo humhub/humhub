@@ -8,7 +8,6 @@
 
 namespace humhub\modules\post;
 
-use Yii;
 use humhub\modules\post\models\Post;
 
 /**
