@@ -29,6 +29,10 @@ use yii\helpers\Json;
 class BaseType extends Model
 {
 
+    /**
+     * @event Event an event raised after init. Can be used to add custom field types.
+     * @since 1.12
+     */
     const EVENT_INIT = "fieldTypesInit";
 
     /**
@@ -61,7 +65,12 @@ class BaseType extends Model
      */
     public $canBeDirectoryFilter = false;
 
-    public function __construct() {
+    /**
+     * @inheritdoc
+     */
+    public function init() {
+        parent::init();
+
         $this->trigger(self::EVENT_INIT);
     }
 
