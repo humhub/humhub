@@ -8,15 +8,13 @@
 
 namespace humhub\modules\post\models;
 
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\post\permissions\CreatePost;
-use humhub\modules\post\widgets\WallEntry;
-use Yii;
-use humhub\libs\MarkdownPreview;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\post\permissions\CreatePost;
+use humhub\modules\post\widgets\WallEntry;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\user\models\User;
+use Yii;
 use yii\helpers\Url;
 
 /**
@@ -48,6 +46,11 @@ class Post extends ContentActiveRecord implements Searchable
     public $canMove = CreatePost::class;
 
     /**
+     * Scenarios
+     */
+    const SCENARIO_AJAX_VALIDATION = 'ajaxValidation';
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -61,7 +64,7 @@ class Post extends ContentActiveRecord implements Searchable
     public function rules()
     {
         return [
-            [['message'], 'required'],
+            [['message'], 'required', 'except' => self::SCENARIO_AJAX_VALIDATION],
             [['message'], 'string'],
             [['url'], 'string', 'max' => 255]
         ];
