@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.11.3 (Unreleased)
+---------------------
+- Fix #5734: Fix error message when uninstall module and module folder is not writable
+
 1.11.2 (May 30, 2022)
 ---------------------
 - Fix: #5652: Fix undefined UrlOembed provider pattern
