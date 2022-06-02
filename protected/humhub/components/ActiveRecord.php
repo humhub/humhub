@@ -11,7 +11,9 @@ namespace humhub\components;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\file\components\FileManager;
+use yii\base\InvalidConfigException;
 use yii\db\Expression;
+use yii\validators\Validator;
 
 /**
  * Description of ActiveRecord
@@ -34,6 +36,11 @@ class ActiveRecord extends \yii\db\ActiveRecord
      * @since 1.10
      */
     public $fileManagerEnableHistory = false;
+
+    /**
+     * @event Event is used to append rules what defined in [[rules()]].
+     */
+    const EVENT_APPEND_RULES = 'appendRules';
 
     /**
      * @inheritdoc
@@ -182,5 +189,31 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function getAttributeLabel($attribute)
     {
         return $attribute === null ? '' : parent::getAttributeLabel($attribute);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function createValidators()
+    {
+        $validators = parent::createValidators();
+
+        $event = new Event();
+        $this->trigger(self::EVENT_APPEND_RULES, $event);
+
+        if (is_array($event->result)) {
+            foreach ($event->result as $rule) {
+                if ($rule instanceof Validator) {
+                    $validators->append($rule);
+                } elseif (is_array($rule) && isset($rule[0], $rule[1])) { // attributes, validator type
+                    $validator = Validator::createValidator($rule[1], $this, (array)$rule[0], array_slice($rule, 2));
+                    $validators->append($validator);
+                } else {
+                    throw new InvalidConfigException('Invalid validation rule: a rule must specify both attribute names and validator type.');
+                }
+            }
+        }
+
+        return $validators;
     }
 }
