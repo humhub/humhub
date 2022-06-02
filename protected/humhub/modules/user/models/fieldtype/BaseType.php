@@ -31,6 +31,17 @@ class BaseType extends Model
 
     /**
      * @event Event an event raised after init. Can be used to add custom field types.
+     * 
+     * Example config.php:
+     *     'events' => [
+     *         [BaseType::class, BaseType::EVENT_INIT, [Events::class, 'onFieldTypesInit']]
+     *     ]
+     * 
+     * Example Events.php:
+     *     public static function onFieldTypesInit($event) {
+     *         $event->sender->addFieldType(CustomFieldType::class, "Custom field");
+     *     }
+     * 
      * @since 1.12
      */
     const EVENT_INIT = "fieldTypesInit";
