@@ -29,6 +29,16 @@ class Application extends \yii\web\Application
     private $_homeUrl = null;
 
     /**
+     * @var string Minimum PHP version that recommended to work without issues
+     */
+    public $minRecommendedPhpVersion;
+
+    /**
+     * @var string Minimum PHP version that may works but probably with small issues
+     */
+    public $minSupportedPhpVersion;
+
+    /**
      * @inheritdoc
      */
     public function __construct($config = [])

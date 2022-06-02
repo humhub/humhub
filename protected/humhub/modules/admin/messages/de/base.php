@@ -2,10 +2,11 @@
 return array (
   '<strong>Administration</strong> menu' => '<strong>Administrations-</strong>Menü',
   '<strong>Maintenance</strong> Mode' => '<strong>Wartungsmodus</strong>',
-  '<strong>Module </strong> Administration' => '<strong>Modul </strong> Administration',
+  '<strong>Module</strong> Administration' => '<strong>Modul</strong> Administration',
   '<strong>Warning</strong> incomplete setup!' => '<strong>Warnung</strong> Setup unvollständig!',
   'About' => 'Über',
   'Activate' => 'Aktivieren',
+  'Add Licence Key' => 'Lizenzschlüssel hinzufügen',
   'Admin' => 'Admin',
   'Administration' => 'Administration',
   'Administrative group' => 'Administrations-Gruppe',

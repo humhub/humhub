@@ -2,10 +2,11 @@
 return array (
   '<strong>Administration</strong> menu' => '<strong>Administratie</strong> menu',
   '<strong>Maintenance</strong> Mode' => '<strong>Onderhoudsmodus</strong>',
-  '<strong>Module </strong> Administration' => '<strong>Module </strong> Beheer',
+  '<strong>Module</strong> Administration' => '<strong>Module</strong> Beheer',
   '<strong>Warning</strong> incomplete setup!' => '<strong>Waarschuwing</strong> onvolledige installatie!',
   'About' => 'Over',
   'Activate' => 'Activeren',
+  'Add Licence Key' => 'Licentiesleutel toevoegen',
   'Admin' => 'Beheerder',
   'Administration' => 'Beheer',
   'Administrative group' => 'Administratieve groep',

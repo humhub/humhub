@@ -3,10 +3,11 @@
 return [
     '<strong>Administration</strong> menu' => '',
     '<strong>Maintenance</strong> Mode' => '',
-    '<strong>Module </strong> Administration' => '',
+    '<strong>Module</strong> Administration' => '',
     '<strong>Warning</strong> incomplete setup!' => '',
     'About' => '',
     'Activate' => '',
+    'Add Licence Key' => '',
     'Admin' => '',
     'Administration' => '',
     'Administrative group' => '',

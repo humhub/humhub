@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\user\widgets\AuthChoice;
 use yii\helpers\Html;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
@@ -12,6 +13,9 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
         <div id="create-account-form" class="panel panel-default animated bounceIn" style="max-width: 500px; margin: 0 auto 20px; text-align: left;">
             <div class="panel-heading"><?php echo Yii::t('UserModule.auth', '<strong>Account</strong> registration'); ?></div>
             <div class="panel-body">
+                <?php if (AuthChoice::hasClients()): ?>
+                    <?= AuthChoice::widget() ?>
+                <?php endif; ?>
                 <?php $form = \yii\bootstrap\ActiveForm::begin(['id' => 'registration-form', 'enableClientValidation' => false]); ?>
                 <?= $hForm->render($form); ?>
                 <?php \yii\bootstrap\ActiveForm::end(); ?>

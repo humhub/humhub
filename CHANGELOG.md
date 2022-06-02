@@ -1,15 +1,20 @@
 HumHub Changelog
 ================
 
-1.10.4 (Unreleased)
--------------------
+1.10.4 (April 19, 2022)
+-----------------------
+
+This release also fixes a [critical security](https://github.com/humhub/humhub/security/advisories/GHSA-2h35-f226-3f57) issue. Users who were forced to change their password by an administrator could perform unauthorized actions and retrieve other users' data. An update is STRONGLY recommended.
+
 - Fix #5480: `el` language file in Admin section broken
 - Fix #5479: Fix ContentContainerPermissionAccess without provided container
 - Fix #5513: Fix PermaLink controller error for content without container
 - Fix #5517: Don't send "Follows" notification on request friendship
 - Fix #5563: Limit backup duration of RichText editor for 2 hours
 - Enh #5601: Backup RichText in sessionStorage
-
+- Fix #5638: Removed return values from `codeCallback`
+- Fix #5634: Fix tests NonceCest
+- Fix #5644: Fix console command space/assign-all-members
 
 1.10.3 (December 20, 2021)
 --------------------------

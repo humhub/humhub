@@ -1,9 +1,11 @@
 <?php
 return array (
   '%moduleName% - Set as default module' => '%moduleName% est défini comme module par défaut',
+  '<strong>General</strong> Settings' => 'Réglages <strong>généraux</strong>',
   '<strong>Module</strong> details' => 'Détails du <strong>module</strong>',
   'Activate' => 'Activer',
   'Activated' => 'Activé',
+  'Allow module versions in beta status' => 'Autoriser les versions bêta des modules',
   'Always activated' => 'Toujours activé',
   'Are you sure? *ALL* module data will be lost!' => 'Êtes-vous sûr·e ? <strong>*TOUTES*</strong> les données du module seront définitivement perdues !',
   'Are you sure? *ALL* module related data and files will be lost!' => 'Êtes-vous sûr·e ? <strong>*TOUTES*</strong> les données et <strong>*TOUS*</strong> les fichiers du module seront définitivement perdus !',
