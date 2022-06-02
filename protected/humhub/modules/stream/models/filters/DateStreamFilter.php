@@ -37,7 +37,7 @@ class DateStreamFilter extends StreamQueryFilter
 
     public function apply()
     {
-        if(!empty($this->date_filter_from)) {
+        if (!empty($this->date_filter_from)) {
             $this->query->andWhere([
                 '>=',
                 'content.created_at',
@@ -45,11 +45,11 @@ class DateStreamFilter extends StreamQueryFilter
             ]);
         }
 
-        if(!empty($this->date_filter_to)) {
+        if (!empty($this->date_filter_to)) {
             $this->query->andWhere([
                 '<=',
                 'content.created_at',
-                date('Y-m-d 24:00:00', strtotime($this->date_filter_to))
+                date('Y-m-d 23:59:59', strtotime($this->date_filter_to))
             ]);
         }
     }

@@ -8,8 +8,6 @@
 
 namespace humhub\modules\ui\filter\widgets;
 
-use humhub\components\ActiveRecord;
-use humhub\modules\ui\form\widgets\BasePicker;
 use humhub\modules\ui\form\widgets\DatePicker;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -26,19 +24,20 @@ class DatePickerFilterInput extends FilterInput
      */
     public $type = 'date-picker';
 
-    public $datePickerOptions = [];
+    /**
+     * @var string Class of the used DatePicker widget
+     */
+    private $datePickerWidgetClass = DatePicker::class;
 
-    public $datePicker = DatePicker::class;
+    /**
+     * @var array Options for the DatePicker widget
+     */
+    private $datePickerOptions = [];
 
     /**
      * @var string data-action-click handler of the input event
      */
     public $changeAction = 'inputChange';
-
-    protected function getDatePicker(): DatePicker
-    {
-        return new $this->datePicker;
-    }
 
     /**
      * @inheritdoc
@@ -58,10 +57,16 @@ class DatePickerFilterInput extends FilterInput
         $this->options['data-action-change'] = $this->changeAction;
         $this->datePickerOptions['options'] = $this->options;
         $this->datePickerOptions['value'] = $this->value;
+        $this->datePickerOptions['dateFormat'] = 'php:Y-m-d';
     }
 
-    public function getWidgetOptions()
+    /**
+     * @inheritdoc
+     */
+    protected function getWidgetOptions()
     {
-        return ArrayHelper::merge(parent::getWidgetOptions(), ['datePickerClass' => $this->datePicker, 'datePickerOptions' => $this->datePickerOptions]);
+        return ArrayHelper::merge(
+            parent::getWidgetOptions(),
+            ['datePickerClass' => $this->datePickerWidgetClass, 'datePickerOptions' => $this->datePickerOptions]);
     }
 }
