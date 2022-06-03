@@ -1,6 +1,5 @@
 <?php
 
-use humhub\modules\admin\assets\ModuleAsset;
 use humhub\modules\content\widgets\ModuleCard;
 use humhub\modules\space\assets\SpaceAsset;
 use humhub\modules\space\models\Space;
@@ -12,7 +11,6 @@ use yii\helpers\Url;
 /* @var $this View */
 
 SpaceAsset::register($this);
-ModuleAsset::register($this);
 ?>
 <div class="modal-dialog modal-dialog-medium animated fadeIn" style="width:100%;max-width:900px">
     <div class="modal-content">

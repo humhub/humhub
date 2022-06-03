@@ -8,9 +8,9 @@
 
 namespace humhub\modules\user\models;
 
+use humhub\components\ActiveRecord;
 use humhub\modules\user\authclient\AuthClientHelpers;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "profile".
