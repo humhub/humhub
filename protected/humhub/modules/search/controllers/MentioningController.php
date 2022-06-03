@@ -32,6 +32,9 @@ use yii\web\HttpException;
  */
 class MentioningController extends Controller
 {
+    /**
+     * @event ParameterEvent an event raised after searching for space members on mentioning request from RichText editor on Post form, just before sending the results
+     */
     public const EVENT_SPACE_MENTIONING = 'spaceMentioning';
 
     /**
@@ -109,7 +112,7 @@ class MentioningController extends Controller
         }
 
         $results = $this->appendMentioningSpaceResults($keyword, $results);
-        
+
         $evt = new ParameterEvent(['keyword' => $keyword, 'space' => $space, 'results' => $results]);
         ParameterEvent::trigger($this, static::EVENT_SPACE_MENTIONING, $evt);
         $results = $evt->parameters['results'];
