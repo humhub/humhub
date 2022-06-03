@@ -28,7 +28,7 @@ class ApprovalController extends Controller
     public $adminOnly = false;
 
     public const ACTION_APPROVE = 'approve';
-    public const ACTION_DELINE = 'decline';
+    public const ACTION_DECLINE = 'decline';
 
     public const USER_SETTINGS_SCREEN_KEY = 'admin_approval_screen_profile_fields_id';
 
@@ -191,7 +191,7 @@ class ApprovalController extends Controller
         if ($action === self::ACTION_APPROVE && $model->bulkApprove()) {
             $this->view->success(Yii::t('AdminModule.user', 'The registrations were approved and the users were notified by email.'));
             return $this->redirect(['index']);
-        } elseif ($action === self::ACTION_DELINE && $model->bulkDecline()) {
+        } elseif ($action === self::ACTION_DECLINE && $model->bulkDecline()) {
             $this->view->success(Yii::t('AdminModule.user', 'The registrations were declined and the users were notified by email.'));
             return $this->redirect(['index']);
         } else {

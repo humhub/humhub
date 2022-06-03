@@ -32,10 +32,14 @@ class LikeLink extends \yii\base\Widget
      */
     public function beforeRun()
     {
-        if (!Yii::$app->getModule('like')->isEnabled ||
-            !isset($this->object->content->container) ||
-            !($this->object->content->container instanceof ContentContainerActiveRecord) ||
-            !$this->object->content->container->can(CanLike::class)) {
+        if (
+            !Yii::$app->getModule('like')->isEnabled ||
+            (
+                isset($this->object->content->container) &&
+                $this->object->content->container instanceof ContentContainerActiveRecord &&
+                !$this->object->content->container->can(CanLike::class)
+            )
+        ) {
             return false;
         }
 

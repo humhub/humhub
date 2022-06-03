@@ -19,13 +19,6 @@ class Assets extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $css = [
-        'css/modules.css'
-    ];
-
-    /**
-     * @inheritdoc
-     */
     public $js = [
         'js/humhub.marketplace.js'
     ];

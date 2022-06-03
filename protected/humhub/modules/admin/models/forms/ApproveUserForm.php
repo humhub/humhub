@@ -213,7 +213,7 @@ class ApproveUserForm extends \yii\base\Model
 
         foreach ($this->users as $user) {
             $this->user = $user;
-            $this->setApprovalDefaults();
+            $this->setDeclineDefaults();
             $this->decline();
         }
 

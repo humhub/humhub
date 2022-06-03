@@ -119,3 +119,94 @@
         }
     }
 }
+
+// Available Updates container:
+.container-modules.container-fluid {
+    .container-module-updates {
+        @media (min-width: 500px) {
+            .card {
+                width: 33.33333333%;
+            }
+        }
+        @media (min-width: 1000px) {
+            .card {
+                width: 25%;
+            }
+        }
+        @media (min-width: 1300px) {
+            .card {
+                width: 20%;
+            }
+        }
+        @media (min-width: 1600px) {
+            .card {
+                width: 16.66666667%;
+            }
+        }
+        @media (min-width: 1900px) {
+            .card {
+                width: 12.5%;
+            }
+        }
+    }
+}
+
+@moduleUpdateLayoutBg: @primary;
+@moduleUpdateCardBg: darken(@primary, 10);
+.container-module-updates {
+    background: @moduleUpdateLayoutBg;
+    margin-top: 30px;
+    padding: 16px 10px 2px;
+    border-radius: 4px;
+    .row.cards {
+        margin-right: -1px;
+        margin-top: 0;
+    }
+    .modules-type {
+        color: #FFFFFF;
+        margin: 10px 0 30px;
+    }
+    .card {
+        padding-right: 1px;
+        .card-panel {
+            color: #FFF;
+            margin-top: 0;
+            > div:not(.card-status) {
+                background: @moduleUpdateCardBg;
+            }
+            .card-header {
+                padding: 12px;
+            }
+            .card-body {
+                padding: 4px 12px 20px;
+                color: #FFF;
+                .card-title {
+                    color: #FFF;
+                    font-size: 14px;
+                }
+            }
+            .card-footer {
+                padding: 0 12px 12px;
+                .btn-info {
+                    border-radius: 4px;
+                    color: @moduleUpdateLayoutBg !important;
+                    &.active {
+                        border-color: #FFF;
+                    }
+                    &:not(.active) {
+                        padding: 0 4px;
+                        border: 1px solid #FFF;
+                        background: @moduleUpdateCardBg;
+                        color: #FFF !important;
+                        &:hover, &:active {
+                            background: @moduleUpdateLayoutBg !important;
+                        }
+                    }
+                    &[data-update-status=failed] {
+                        border-color: #fc314f;
+                    }
+                }
+            }
+        }
+    }
+}

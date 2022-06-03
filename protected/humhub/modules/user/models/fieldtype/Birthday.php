@@ -133,7 +133,7 @@ class Birthday extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition()
+    public function getFieldFormDefinition(User $user = null)
     {
         return [
             $this->profileField->internal_name => [

@@ -365,7 +365,7 @@ humhub.module('action', function(module, require, $) {
         }
 
         // Handles data-action-confirm non action based links links
-        $(document).on('click', '[href][data-action-confirm]', function(evt) {
+        $(document).on('click', '[data-action-confirm]', function(evt) {
             var $this = $(this);
 
             // Make sure we are not intercepting an action based link
@@ -380,6 +380,9 @@ humhub.module('action', function(module, require, $) {
 
             require('ui.modal').confirm($this).then(function(confirmed) {
                 if(confirmed) {
+                    if ($this.attr('type') === 'submit' && $this.closest('form').length) {
+                        return $this.closest('form').submit();
+                    }
                     var client =  require('client');
                     var url = $this.attr('href');
                     var method = $this.data('action-method') || 'GET';
@@ -388,7 +391,6 @@ humhub.module('action', function(module, require, $) {
                     } else {
                         return $this.is('[data-pjax-prevent]') ?  (document.location = url) : client.pjax.redirect(url);
                     }
-
                 }
             }).finally(function() {
                 loader.reset($this);

@@ -378,14 +378,10 @@ class SettingController extends Controller
             ];
             UrlOembed::setProviders($providers);
 
-            return $this->redirect(
-                [
-                    '/admin/setting/oembed'
-                ]);
+            return $this->redirect(['/admin/setting/oembed']);
         }
 
-        return $this->render('oembed_edit',
-            [
+        return $this->render('oembed_edit', [
                 'model' => $form,
                 'name' => $name
             ]);
