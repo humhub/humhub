@@ -30,6 +30,23 @@ class BaseType extends Model
 {
 
     /**
+     * @event Event an event raised after init. Can be used to add custom field types.
+     * 
+     * Example config.php:
+     *     'events' => [
+     *         [BaseType::class, BaseType::EVENT_INIT, [Events::class, 'onFieldTypesInit']]
+     *     ]
+     * 
+     * Example Events.php:
+     *     public static function onFieldTypesInit($event) {
+     *         $event->sender->addFieldType(CustomFieldType::class, "Custom field");
+     *     }
+     * 
+     * @since 1.12
+     */
+    const EVENT_INIT = "fieldTypesInit";
+
+    /**
      * Holds all profile field types
      *
      * Array
@@ -58,6 +75,15 @@ class BaseType extends Model
      * @since 1.9
      */
     public $canBeDirectoryFilter = false;
+
+    /**
+     * @inheritdoc
+     */
+    public function init() {
+        parent::init();
+
+        $this->trigger(self::EVENT_INIT);
+    }
 
     /**
      * Links a ProfileField to the ProfileFieldType.
@@ -160,9 +186,11 @@ class BaseType extends Model
 
     /**
      * Return the Form Element to edit the value of the Field
+     * 
+     * @param User $user If a context exists, the user is passed through here. May be null e.g. when filtering multiple users.
      * @return array
      */
-    public function getFieldFormDefinition()
+    public function getFieldFormDefinition(User $user = null)
     {
         return [
             $this->profileField->internal_name => [

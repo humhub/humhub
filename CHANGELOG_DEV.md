@@ -5,3 +5,4 @@
 - Enh #5695: Truncate long profile texts in People cards
 - Enh #5602: Added API to inject additional validation rules by modules on demand
 - Enh #5741: Possibility to Like global contents
+- Enh #5560: Possibility to create custom profile field types via modules
