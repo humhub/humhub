@@ -8,17 +8,20 @@
 
 namespace humhub\components\mail;
 
+use Symfony\Component\Mime\Crypto\SMimeSigner;
+
 /**
  * Message
  *
  * @since 1.2
  * @author Luke
  */
-class Message extends \yii\swiftmailer\Message
+class Message extends \yii\symfonymailer\Message
 {
+    /*
     public function setSmimeSigner($signingCertificatePath, $signingPrivateKeyPath, $signingOptions = PKCS7_DETACHED, $extraCerts = null)
 	{
-		$signer = \Swift_Signers_SMimeSigner::newInstance();
+		$signer = SMimeSigner::newInstance();
 
 		$signer->setSignCertificate($signingCertificatePath, $signingPrivateKeyPath, $signingOptions, $extraCerts);
 
@@ -26,4 +29,5 @@ class Message extends \yii\swiftmailer\Message
 
         return $this;
 	}
+    */
 }

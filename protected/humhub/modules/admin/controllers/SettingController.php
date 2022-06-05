@@ -184,21 +184,8 @@ class SettingController extends Controller
             return $this->redirect(['/admin/setting/mailing-server-test']);
         }
 
-        $encryptionTypes = [
-            '' => 'None',
-            'ssl' => 'SSL',
-            'tls' => 'TLS'
-        ];
-        $transportTypes = [
-            'file' => 'File (Use for testing/development)',
-            'php' => 'PHP',
-            'smtp' => 'SMTP'
-        ];
-
         return $this->render('mailing_server', [
             'model' => $form,
-            'encryptionTypes' => $encryptionTypes,
-            'transportTypes' => $transportTypes,
             'settings' => Yii::$app->settings
         ]);
     }
