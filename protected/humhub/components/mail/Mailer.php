@@ -8,6 +8,7 @@
 
 namespace humhub\components\mail;
 
+use Symfony\Component\Mime\Crypto\SMimeSigner;
 use Yii;
 
 /**
@@ -41,6 +42,11 @@ class Mailer extends \yii\symfonymailer\Mailer
     public $signingPrivateKeyPath = null;
 
     /**
+     * @var string|null A passphrase of the private key (if any)
+     */
+    public $signingPrivateKeyPassphrase = null;
+
+    /**
      * @var string|null Path for extra sigining certificates (i.e. intermidiate certificates).
      */
     public $signingExtraCertsPath = null;
@@ -49,6 +55,11 @@ class Mailer extends \yii\symfonymailer\Mailer
      * @var int Bitwise operator options for openssl_pkcs7_sign()
      */
     public $signingOptions = PKCS7_DETACHED;
+
+    /**
+     * @var SMimeSigner|null
+     */
+    private $signer = null;
 
     /**
      * @inheritDoc
@@ -66,8 +77,16 @@ class Mailer extends \yii\symfonymailer\Mailer
         }
 
         if ($this->signingCertificatePath !== null && $this->signingPrivateKeyPath !== null) {
-            $message->setSmimeSigner($this->signingCertificatePath, $this->signingPrivateKeyPath, $this->signingOptions, $this->signingExtraCertsPath);
-
+            if ($this->signer === null) {
+                $this->signer = new SMimeSigner(
+                    $this->signingCertificatePath,
+                    $this->signingPrivateKeyPath,
+                    $this->signingPrivateKeyPassphrase,
+                    $this->signingExtraCertsPath,
+                    $this->signingOptions
+                );
+            }
+            $this->withSigner($this->signer);
         }
 
         return $message;

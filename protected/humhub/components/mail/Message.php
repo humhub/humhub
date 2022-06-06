@@ -8,8 +8,6 @@
 
 namespace humhub\components\mail;
 
-use Symfony\Component\Mime\Crypto\SMimeSigner;
-
 /**
  * Message
  *
@@ -18,16 +16,4 @@ use Symfony\Component\Mime\Crypto\SMimeSigner;
  */
 class Message extends \yii\symfonymailer\Message
 {
-    /*
-    public function setSmimeSigner($signingCertificatePath, $signingPrivateKeyPath, $signingOptions = PKCS7_DETACHED, $extraCerts = null)
-	{
-		$signer = SMimeSigner::newInstance();
-
-		$signer->setSignCertificate($signingCertificatePath, $signingPrivateKeyPath, $signingOptions, $extraCerts);
-
-		$this->getSwiftMessage()->attachSigner($signer);
-
-        return $this;
-	}
-    */
 }
