@@ -47,8 +47,8 @@ class MailingSettingsForm extends Model
         if ($settingsManager->get('mailer.password') != '')
             $this->password = '---invisible---';
 
+        $this->useSmtps = $settingsManager->get('mailer.useSmtps');
         $this->port = $settingsManager->get('mailer.port');
-        $this->useSmtps = $settingsManager->get('mailer.encryption');
         $this->allowSelfSignedCerts = $settingsManager->get('mailer.allowSelfSignedCerts');
         $this->systemEmailAddress = $settingsManager->get('mailer.systemEmailAddress');
         $this->systemEmailName = $settingsManager->get('mailer.systemEmailName');
