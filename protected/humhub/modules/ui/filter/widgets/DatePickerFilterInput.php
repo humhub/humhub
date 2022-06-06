@@ -57,7 +57,6 @@ class DatePickerFilterInput extends FilterInput
         $this->options['data-action-change'] = $this->changeAction;
         $this->datePickerOptions['options'] = $this->options;
         $this->datePickerOptions['value'] = $this->value;
-        $this->datePickerOptions['dateFormat'] = 'php:Y-m-d';
     }
 
     /**

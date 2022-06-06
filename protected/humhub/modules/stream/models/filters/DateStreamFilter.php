@@ -8,6 +8,8 @@
 
 namespace humhub\modules\stream\models\filters;
 
+use Yii;
+
 class DateStreamFilter extends StreamQueryFilter
 {
     const CATEGORY_FROM = 'date_filter_from';
@@ -41,7 +43,7 @@ class DateStreamFilter extends StreamQueryFilter
             $this->query->andWhere([
                 '>=',
                 'content.created_at',
-                date('Y-m-d 00:00:00', strtotime($this->date_filter_from))
+                Yii::$app->formatter->asDate($this->date_filter_from, 'yyyy-MM-dd 00:00:00')
             ]);
         }
 
@@ -49,7 +51,7 @@ class DateStreamFilter extends StreamQueryFilter
             $this->query->andWhere([
                 '<=',
                 'content.created_at',
-                date('Y-m-d 23:59:59', strtotime($this->date_filter_to))
+                Yii::$app->formatter->asDate($this->date_filter_to, 'yyyy-MM-dd 23:59:59')
             ]);
         }
     }
