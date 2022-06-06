@@ -26,7 +26,7 @@ $default = [
     'components' => [
         'mailer' => [
             'messageClass' => \yii\symfonymailer\Message::class,
-s        ],
+        ],
         'urlManager' => [
             'showScriptName' => true,
             'scriptUrl' => '/index-test.php',
