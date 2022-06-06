@@ -43,7 +43,7 @@ class DateStreamFilter extends StreamQueryFilter
             $this->query->andWhere([
                 '>=',
                 'content.created_at',
-                Yii::$app->formatter->asDate($this->date_filter_from, 'yyyy-MM-dd 00:00:00')
+                Yii::$app->formatter->asDate($this->date_filter_from, 'php:Y-m-d') . ' 00:00:00'
             ]);
         }
 
@@ -51,7 +51,7 @@ class DateStreamFilter extends StreamQueryFilter
             $this->query->andWhere([
                 '<=',
                 'content.created_at',
-                Yii::$app->formatter->asDate($this->date_filter_to, 'yyyy-MM-dd 23:59:59')
+                Yii::$app->formatter->asDate($this->date_filter_to, 'php:Y-m-d') . ' 23:59:59'
             ]);
         }
     }
