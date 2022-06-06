@@ -61,6 +61,33 @@ use humhub\widgets\Button;
 </div>
 <div id="dsnOptions">
     <?= $form->field($model, 'dsn')->textInput(['readonly' => $settings->isFixed('mailer.dsn')]); ?>
+
+    <strong><?= Yii::t('AdminModule.settings', 'DSN Examples:'); ?></strong>
+    <ul>
+        <li>SMTP <code>smtp://user:pass@smtp.example.com:25</code></li>
+        <li>Sendmail <code>sendmail://default</code></li>
+        <li>Amazon SES <code>ses+smtp://USERNAME:PASSWORD@default</code>, <code>ses+https://ACCESS_KEY:SECRET_KEY@default</code>,
+            <code>ses+api://ACCESS_KEY:SECRET_KEY@default</code></li>
+        <li>Google Gmail <code>gmail+smtp://USERNAME:PASSWORD@default</code></li>
+        <li>Mailchimp Mandrill <code>mandrill+smtp://USERNAME:PASSWORD@default</code>
+            <code>mandrill+https://KEY@default</code></li>
+        <code>mandrill+api://KEY@default</code></li>
+        <li>Mailgun <code>mailgun+smtp://USERNAME:PASSWORD@default</code>,
+            <code>mailgun+https://KEY:DOMAIN@default</code>,
+            <code>mailgun+api://KEY:DOMAIN@default</code></li>
+        <li>Mailjet <code>mailjet+smtp://ACCESS_KEY:SECRET_KEY@default</code>, <code>mailjet+api://ACCESS_KEY:SECRET_KEY@default</code>
+        </li>
+        <li>Postmark <code>postmark+smtp://ID@default</code>, <code>postmark+api://KEY@default</code></li>
+        <li>Sendgrid <code>sendgrid+smtp://KEY@default</code>, <code>sendgrid+api://KEY@default</code></li>
+        <li>Sendinblue <code>sendinblue+smtp://USERNAME:PASSWORD@default</code>,
+            <code>sendinblue+api://KEY@default</code></li>
+        <li>OhMySMTP <code>ohmysmtp+smtp://API_TOKEN@default</code></li>
+    </ul>
+
+    <?= Yii::t('AdminModule.settings', 'You can find more configuration options here:'); ?> <a
+        href="https://symfony.com/doc/5.4/mailer.html#transport-setup" target="_blank">Symfony Mailer - Transport
+        Setup</a>
+
 </div>
 <hr>
 

@@ -71,12 +71,9 @@ class HumHubHelper extends Module
 
     public function grapLastEmailText()
     {
+        /** @var Message $message */
         $message = $this->getModule('Yii2')->grabLastSentEmail();
-        foreach ($message->getSwiftMessage()->getChildren() as $part) {
-            if ($part->getContentType() === 'text/plain') {
-                return $part->getBody();
-            }
-        }
+        return $message->getTextBody();
     }
 
     /*public function assertEqualsLastEmailSubject($subject)
