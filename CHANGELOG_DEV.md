@@ -6,3 +6,4 @@
 - Enh #5602: Added API to inject additional validation rules by modules on demand
 - Enh #5741: Possibility to Like global contents
 - Enh #5560: Possibility to create custom profile field types via modules
+- Enh #5739: Added Event in MentioningController raised after searching for space members on mentioning request
