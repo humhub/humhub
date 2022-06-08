@@ -8,7 +8,10 @@
 
 namespace humhub\modules\stream\models\filters;
 
+use DateTime;
+use DateTimeZone;
 use Yii;
+use yii\helpers\FormatConverter;
 
 class DateStreamFilter extends StreamQueryFilter
 {
@@ -43,7 +46,7 @@ class DateStreamFilter extends StreamQueryFilter
             $this->query->andWhere([
                 '>=',
                 'content.created_at',
-                Yii::$app->formatter->asDate($this->date_filter_from, 'php:Y-m-d') . ' 00:00:00'
+                $this->formatDateToMysql($this->date_filter_from) . ' 00:00:00'
             ]);
         }
 
@@ -51,8 +54,17 @@ class DateStreamFilter extends StreamQueryFilter
             $this->query->andWhere([
                 '<=',
                 'content.created_at',
-                Yii::$app->formatter->asDate($this->date_filter_to, 'php:Y-m-d') . ' 23:59:59'
+                $this->formatDateToMysql($this->date_filter_to) . ' 23:59:59'
             ]);
         }
+    }
+
+    private function formatDateToMysql(string $date): string
+    {
+        $localeDateFormat = FormatConverter::convertDateIcuToPhp(Yii::$app->formatter->dateInputFormat);
+        $timeZone = new DateTimeZone(Yii::$app->formatter->timeZone);
+
+        return DateTime::createFromFormat($localeDateFormat, $date, $timeZone)
+            ->format('Y-m-d');
     }
 }
