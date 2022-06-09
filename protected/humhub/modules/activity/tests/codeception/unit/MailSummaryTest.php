@@ -9,8 +9,8 @@
 namespace humhub\modules\activity\tests\codeception\unit;
 
 
+use humhub\components\mail\Message;
 use Yii;
-use yii\swiftmailer\Message;
 use Codeception\Module\Yii2;
 use humhub\modules\activity\components\MailSummary;
 use humhub\modules\activity\components\MailSummaryProcessor;

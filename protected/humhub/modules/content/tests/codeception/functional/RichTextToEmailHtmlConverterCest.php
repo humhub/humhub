@@ -11,7 +11,7 @@ use content\FunctionalTester;
 use humhub\modules\comment\models\forms\CommentForm;
 use humhub\modules\file\models\File;
 use humhub\modules\post\models\Post;
-use yii\swiftmailer\Message;
+use yii\symfonymailer\Message;
 
 class RichTextToEmailHtmlConverterCest
 {
@@ -30,7 +30,7 @@ class RichTextToEmailHtmlConverterCest
         /** @var Message $mail */
         $mail = $I->grabLastSentEmail();
 
-        $commentMailText = $mail->getSwiftMessage()->getChildren()[0]->getBody();
+        $commentMailText = $mail->getHtmlBody();
 
         if (!$this->tokenIsDetectedInImageUrl($commentMailText)) {
             $I->see('Token is not detected in image URL');
