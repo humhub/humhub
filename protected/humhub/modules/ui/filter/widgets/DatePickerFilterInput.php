@@ -17,18 +17,8 @@ class DatePickerFilterInput extends FilterInput
     /**
      * @inheritdoc
      */
-    public $view = 'datePickerInput';
-
-    /**
-     * @inheritdoc
-     */
     public $type = 'date-picker';
-
-    /**
-     * @var string Class of the used DatePicker widget
-     */
-    private $datePickerWidgetClass = DatePicker::class;
-
+    
     /**
      * @var array Options for the DatePicker widget
      */
@@ -51,21 +41,21 @@ class DatePickerFilterInput extends FilterInput
     /**
      * @inheritdoc
      */
+    public function run()
+    {
+        $this->prepareOptions();
+
+        return DatePicker::widget($this->datePickerOptions);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function prepareOptions()
     {
         parent::prepareOptions();
         $this->options['data-action-change'] = $this->changeAction;
         $this->datePickerOptions['options'] = $this->options;
         $this->datePickerOptions['value'] = $this->value;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getWidgetOptions()
-    {
-        return ArrayHelper::merge(
-            parent::getWidgetOptions(),
-            ['datePickerClass' => $this->datePickerWidgetClass, 'datePickerOptions' => $this->datePickerOptions]);
     }
 }
