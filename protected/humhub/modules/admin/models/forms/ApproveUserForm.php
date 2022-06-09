@@ -146,21 +146,22 @@ class ApproveUserForm extends \yii\base\Model
      * Approves user by sending approval mail and updating user status and running initial approval logic.
      * @return bool
      */
-    public function approve()
+    public function approve(): bool
     {
         if (!$this->message) {
             $this->setApprovalDefaults();
         }
 
-        if (!$this->validate()) {
-            return false;
+        $this->user->status = User::STATUS_ENABLED;
+
+        if ($this->validate() &&
+            $this->user->save() &&
+            $this->send()) {
+            $this->user->setUpApproved();
+            return true;
         }
 
-        $this->send();
-        $this->user->status = User::STATUS_ENABLED;
-        $this->user->save();
-        $this->user->setUpApproved();
-        return true;
+        return false;
     }
 
     /**
@@ -169,19 +170,15 @@ class ApproveUserForm extends \yii\base\Model
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public function decline()
+    public function decline(): bool
     {
         if (!$this->message) {
             $this->setDeclineDefaults();
         }
 
-        if (!$this->validate()) {
-            return false;
-        }
-
-        $this->send();
-        $this->user->delete();
-        return true;
+        return $this->validate() &&
+            $this->send() &&
+            $this->user->delete();
     }
 
     /**
@@ -221,16 +218,16 @@ class ApproveUserForm extends \yii\base\Model
     }
 
     /**
-     * @return void
+     * @return bool
      */
-    public function send()
+    public function send(): bool
     {
         $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
             'message' => RichTextToEmailHtmlConverter::process($this->message)
         ]);
         $mail->setTo($this->user->email);
         $mail->setSubject($this->subject);
-        $mail->send();
+        return $mail->send();
     }
 
     /**

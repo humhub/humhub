@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.11.3 (Unreleased)
 ---------------------
+- Fix: #5736: Fix status message on user approval 
 - Fix #5734: Fix error message when uninstall module and module folder is not writable
 - Fix #5740: Fix logout action on force change password
 - Fix #5735: OEmbed migration might fail with more complex Endpoint URLs
