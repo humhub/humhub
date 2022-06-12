@@ -574,9 +574,13 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             $this->profile->user_id = $this->id;
         }
 
+        // When insert an "::STATUS_ENABLED" user or update a user from status "::STATUS_NEED_APPROVAL" to "::STATUS_ENABLED"
         if ($this->status == User::STATUS_ENABLED &&
-            ($insert || $changedAttributes['status'] == User::STATUS_NEED_APPROVAL)) {
-            // When insert an approved user or update a user from status "need approval" to "approved"
+            (
+                $insert ||
+                (isset($changedAttributes['status']) && $changedAttributes['status'] == User::STATUS_NEED_APPROVAL)
+            )
+        ) {
             $this->setUpApproved();
         }
 
