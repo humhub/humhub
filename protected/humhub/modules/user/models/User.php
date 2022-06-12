@@ -568,12 +568,16 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $this->updateSearch();
 
         if ($insert) {
-            if ($this->status == User::STATUS_ENABLED) {
-                $this->setUpApproved();
-            } else {
+            if ($this->status == User::STATUS_NEED_APPROVAL) {
                 Group::notifyAdminsForUserApproval($this);
             }
             $this->profile->user_id = $this->id;
+        }
+
+        if ($this->status == User::STATUS_ENABLED &&
+            ($insert || $changedAttributes['status'] == User::STATUS_NEED_APPROVAL)) {
+            // When insert an approved user or update a user from status "need approval" to "approved"
+            $this->setUpApproved();
         }
 
         if (Yii::$app->user->id == $this->id) {
@@ -604,7 +608,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
     }
 
-    public function setUpApproved()
+    private function setUpApproved()
     {
         $userInvite = Invite::findOne(['email' => $this->email]);
 
