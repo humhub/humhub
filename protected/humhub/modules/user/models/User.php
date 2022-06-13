@@ -633,6 +633,14 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         foreach (Space::findAll(['auto_add_new_members' => 1]) as $space) {
             $space->addMember($this->id);
         }
+
+        /* @var $userModule Module */
+        $userModule = Yii::$app->getModule('user');
+
+        // Add User to the default group if no yet
+        if (!$this->hasGroup() && ($defaultGroup = $userModule->getDefaultGroup())) {
+            $defaultGroup->addUser($this);
+        }
     }
 
     /**
