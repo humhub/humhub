@@ -159,7 +159,7 @@ class ApproveUserForm extends \yii\base\Model
         $this->send();
         $this->user->status = User::STATUS_ENABLED;
         $this->user->save();
-        $this->user->setUpApproved();
+
         return true;
     }
 
