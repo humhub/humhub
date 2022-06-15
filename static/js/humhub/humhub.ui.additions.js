@@ -380,8 +380,9 @@ humhub.module('ui.additions', function (module, require, $) {
                             settings.menuSelected.call(this, $invokedOn, $selectedMenu, e);
                         });
 
-                        if ($menu.position().left + $menu.outerWidth() > $(window).width()) {
-                            $menu.css('left', $(window).outerWidth() - $menu.width() - 5);
+                        var menuShift = $menu.offset().left + $menu.outerWidth() - $(window).width();
+                        if (menuShift > 0) {
+                            $menu.css('left', $menu.position().left - menuShift - 5);
                         }
 
                         return false;
