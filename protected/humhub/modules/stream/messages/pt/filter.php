@@ -4,7 +4,7 @@ return array (
   'Content' => 'Conteúdo',
   'Content Type' => 'Tipo de Conteúdo',
   'Scope' => 'Âmbito',
-  'Sorting' => 'Ordenar',
+  'Sorting' => 'Ordenação',
   'Topic' => 'Tópico',
   'Visibility' => 'Visibilidade',
 );

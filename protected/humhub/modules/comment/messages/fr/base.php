@@ -21,7 +21,7 @@ return array (
   'Reply' => 'Répondre',
   'Send a notification to author' => 'Envoyer une notification à l’auteur·e',
   'Show' => 'Montrer',
-  'Show all {total} comments' => 'Afficher les commentaires précédents',
+  'Show all {total} comments' => 'Afficher les {total} commentaires précédents',
   'Show {count} more comments' => 'Afficher {count,plural,=1{le commentaire restant} other{# autres commentaires}}',
   'The comment must not be empty!' => 'Le commentaire ne doit pas être vide !',
   'Whenever a new comment was written.' => 'Chaque fois qu\'un nouveau commentaire a été écrit.',

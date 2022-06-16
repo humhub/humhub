@@ -9,6 +9,7 @@ use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverte
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use Yii;
+use yii\symfonymailer\Message;
 
 /**
  * This helper is used to populate the database with needed fixtures before any tests are run.
@@ -36,24 +37,24 @@ class HumHubHelper extends Module
         UrlOembed::flush();
     }
 
-    public function fetchInviteToken($mail) {
-        if($mail instanceof \yii\mail\MessageInterface) {
-            $mail = $mail->toString();
+    public function fetchInviteToken($mail)
+    {
+        if ($mail instanceof Message) {
+            $mail = $mail->getHtmlBody();
         }
 
-        $mail = preg_replace('/([\r\n=])*/', '', $mail);
-
         $re = [];
-        preg_match('/registration&token3D([A-Za-z0-9_-]{12})/', $mail, $re);
+        preg_match('/token=([A-Za-z0-9_-]{12})\"/', $mail, $re);
 
-        if(!isset($re[1])) {
+        if (!isset($re[1])) {
             $this->assertTrue(false, 'Invite token not found');
         }
 
         return trim($re[1]);
     }
 
-    public function inviteUserByEmail($email) {
+    public function inviteUserByEmail($email)
+    {
         $this->getModule('Yii2')->_loadPage('POST', '/user/invite', ['Invite[emails]' => $email]);
     }
 
@@ -70,12 +71,9 @@ class HumHubHelper extends Module
 
     public function grapLastEmailText()
     {
+        /** @var Message $message */
         $message = $this->getModule('Yii2')->grabLastSentEmail();
-        foreach($message->getSwiftMessage()->getChildren() as $part) {
-            if($part->getContentType() === 'text/plain') {
-                return $part->getBody();
-            }
-        }
+        return $message->getTextBody();
     }
 
     /*public function assertEqualsLastEmailSubject($subject)
@@ -84,17 +82,18 @@ class HumHubHelper extends Module
         $this->assertEquals($subject, $message->getSubject());
     }*/
 
-    public function initModules() {
-        $modules = array_map(function(Module $module) {
+    public function initModules()
+    {
+        $modules = array_map(function (Module $module) {
             return $module->id;
-        },  Yii::$app->moduleManager->getModules());
+        }, Yii::$app->moduleManager->getModules());
 
         Yii::$app->moduleManager->disableModules($modules);
 
-        if(!empty($this->config['modules'])) {
-            foreach($this->config['modules'] as $moduleId) {
+        if (!empty($this->config['modules'])) {
+            foreach ($this->config['modules'] as $moduleId) {
                 $module = Yii::$app->moduleManager->getModule($moduleId);
-                if($module != null) {
+                if ($module != null) {
                     $module->enable();
                 } else {
                     //TODO: throw error ? skip ?...

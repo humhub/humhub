@@ -8,3 +8,5 @@
 - Enh #5560: Possibility to create custom profile field types via modules
 - Enh #5739: Added Event in MentioningController raised after searching for space members on mentioning request
 - Enh #5752: Imrpove Display Name Subtitle Usage and Administration 
+- Enh #5757: Make sure `setupApproved` is always called when status changes
+- Enh #5598: Added `cy` Welsh language
