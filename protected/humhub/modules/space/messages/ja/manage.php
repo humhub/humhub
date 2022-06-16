@@ -8,7 +8,7 @@ return array (
   '<strong>Space</strong> Modules' => '<strong>スペース</strong> のモジュール',
   '<strong>Space</strong> settings' => '<strong>スペース</strong>の設定',
   'Actions' => 'アクション',
-  'Activate' => 'アクティベート',
+  'Activate' => '作動させる',
   'Add <strong>Modules</strong>' => '追加 <strong>モジュール</strong>',
   'Advanced access settings' => '上級者向けのアクセス設定',
   'Archive' => 'アーカイブ',
@@ -49,7 +49,7 @@ return array (
   'Transfer ownership' => '所有者の変更',
   'Unarchive' => 'アーカイブの解除',
   'e.g. example for {baseUrl}/s/example' => '例が {baseUrl}/s/example にあります',
-  'never' => '保存しない',
+  'never' => 'なし',
   'the default start page of this space for members' => 'メンバーがこのスペースにアクセスしたときの画面です',
   'the default start page of this space for visitors' => 'メンバー以外がこのスペースにアクセスしたときの画面です',
 );

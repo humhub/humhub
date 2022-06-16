@@ -1,7 +1,7 @@
 <?php
 return array (
   'Comments' => 'Comentários',
-  'Receive Notifications when someone comments on my own or a following post.' => 'Receber Notificações quando alguém comenta as minhas próprias postas ou postas que eu sigo.',
+  'Receive Notifications when someone comments on my own or a following post.' => 'Receber Notificações quando alguém comenta as minhas próprias publicações ou publicações que eu sigo.',
   'View Online' => 'Ver Online',
   '[Deleted]' => '[Eliminado]',
   '{displayNames} commented {contentTitle}' => '{displayNames} comentaram {contentTitle}',
