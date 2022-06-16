@@ -9,3 +9,4 @@
 - Enh #5739: Added Event in MentioningController raised after searching for space members on mentioning request
 - Enh #5757: Make sure `setupApproved` is always called when status changes
 - Enh #5598: Added `cy` Welsh language
+- Fix #5338: Content topic/visibility changes are  re-indexed in search index

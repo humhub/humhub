@@ -21,6 +21,7 @@ use humhub\modules\content\live\NewContent;
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\helpers\AuthHelper;
@@ -248,6 +249,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner
                 'insert' => $insert
             ]));
         }
+
+        SearchHelper::queueUpdate($contentSource);
 
         parent::afterSave($insert, $changedAttributes);
     }
@@ -701,6 +704,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         }
 
         $this->refresh();
+
+        SearchHelper::queueUpdate($this->getPolymorphicRelation());
 
         $contentRelation = new ContentTagRelation($this, $tag);
         return $contentRelation->save();
