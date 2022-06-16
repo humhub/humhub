@@ -41,7 +41,15 @@ $iconUrl = SiteIcon::getUrl(140);
 
     <?= $form->field($model, 'paginationSize'); ?>
 
-    <?= $form->field($model, 'displayName')->dropDownList(['{username}' => Yii::t('AdminModule.settings', 'Username (e.g. john)'), '{profile.firstname} {profile.lastname}' => Yii::t('AdminModule.settings', 'Firstname Lastname (e.g. John Doe)')]); ?>
+    <div class="row">
+        <div class="col-md-6">
+            <?= $form->field($model, 'displayNameFormat')->dropDownList(['{username}' => Yii::t('AdminModule.settings', 'Username (e.g. john)'), '{profile.firstname} {profile.lastname}' => Yii::t('AdminModule.settings', 'Firstname Lastname (e.g. John Doe)')]); ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'displayNameSubFormat')->dropDownList($model->getDisplayNameSubAttributes()); ?>
+        </div>
+
+    </div>
 
     <?= $form->field($model, 'spaceOrder')->dropDownList(['0' => Yii::t('AdminModule.settings', 'Alphabetical'), '1' => Yii::t('AdminModule.settings', 'Last visit')]); ?>
 
