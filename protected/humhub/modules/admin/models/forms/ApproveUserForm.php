@@ -161,7 +161,6 @@ class ApproveUserForm extends \yii\base\Model
         if ($this->validate() &&
             $this->user->save() &&
             $this->send()) {
-            $this->user->setUpApproved();
             return true;
         }
 
