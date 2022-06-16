@@ -135,9 +135,12 @@ class ApprovalController extends Controller
     {
         $model = new ApproveUserForm($id);
         $model->setApprovalDefaults();
-        if ($model->load(Yii::$app->request->post()) && $model->approve()) {
-            $this->view->success(Yii::t('AdminModule.user', 'The registration was approved and the user was notified by email.'));
-            return $this->redirect(['index']);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->approve()) {
+                $this->view->success(Yii::t('AdminModule.user', 'The registration was approved and the user was notified by email.'));
+                return $this->redirect(['index']);
+            }
+            $this->view->error(Yii::t('AdminModule.user', 'Could not approve the user!'));
         }
 
         return $this->render('approve', [
@@ -157,9 +160,12 @@ class ApprovalController extends Controller
     {
         $model = new ApproveUserForm($id);
         $model->setDeclineDefaults();
-        if ($model->load(Yii::$app->request->post()) && $model->decline()) {
-            $this->view->success(Yii::t('AdminModule.user', 'The registration was declined and the user was notified by email.'));
-            return $this->redirect(['index']);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->decline()) {
+                $this->view->success(Yii::t('AdminModule.user', 'The registration was declined and the user was notified by email.'));
+                return $this->redirect(['index']);
+            }
+            $this->view->error(Yii::t('AdminModule.user', 'Could not decline the user!'));
         }
 
         return $this->render('decline', [

@@ -1,5 +1,6 @@
 <?php
 
+use humhub\models\UrlOembed;
 use yii\db\Migration;
 use yii\helpers\Json;
 
@@ -52,19 +53,18 @@ class m220121_193617_oembed_setting_update extends Migration
             ]
         ];
 
-        foreach (\humhub\models\UrlOembed::getProviders() as $providerUrl => $providerEndpoint)
-        {
+        foreach (UrlOembed::getProviders() as $providerUrl => $providerEndpoint) {
             $providerExists = false;
 
             foreach ($oembedProviders as $provider) {
-                if(preg_match($provider['pattern'], $providerUrl)) {
+                if (preg_match($provider['pattern'], $providerUrl)) {
                     $providerExists = true;
                 }
             }
 
-            if(!$providerExists) {
+            if (!$providerExists) {
                 $oembedProviders[$providerUrl] = [
-                    'pattern' => '/' . str_replace('.', '\.', $providerUrl) . '/',
+                    'pattern' => '/' . preg_quote($providerUrl, '/') . '/',
                     'endpoint' => $providerEndpoint
                 ];
             }
