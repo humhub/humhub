@@ -42,6 +42,8 @@ return [
     'Cancel' => '',
     'Click here to review' => '',
     'Confirm user deletion' => '',
+    'Could not approve the user!' => '',
+    'Could not decline the user!' => '',
     'Could not load category.' => '',
     'Create new group' => '',
     'Create new profile category' => '',
