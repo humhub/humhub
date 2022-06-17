@@ -35,7 +35,7 @@ return array (
   'Rows' => 'Zeilen',
   'Symbols' => 'Symbole',
   'Title' => 'Titel',
-  'Toggle code font' => 'Schriftart ein- bzw. ausschalten',
+  'Toggle code font' => 'Code-Schriftart ein- bzw. ausschalten',
   'Toggle emphasis' => 'Hervorhebung ein- bzw. ausschalten',
   'Toggle strikethrough' => 'Durchgestrichen ein- bzw. ausschalten',
   'Toggle strong style' => 'Fett ein- bzw. ausschalten',

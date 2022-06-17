@@ -49,7 +49,8 @@ class ColorPicker extends JsInputWidget
             $this->attribute = $this->field;
         }
 
-        if($this->hasModel() && !$this->getValue() && $this->randomDefault) {
+        if (($this->hasModel() && !$this->getValue() && $this->randomDefault) ||
+            !$this->isCorrectColorValue()) {
             $attr = $this->attribute;
             $this->model->$attr = RandomColor::one(['luminosity' => 'dark']);
         }
@@ -66,6 +67,11 @@ class ColorPicker extends JsInputWidget
             'container' => $this->container,
             'inputId' => $this->getId(true)
         ]);
+    }
+
+    private function isCorrectColorValue(): bool
+    {
+        return preg_match('/^#[a-f0-9]{3,6}$/i', $this->model->{$this->attribute});
     }
 
 }

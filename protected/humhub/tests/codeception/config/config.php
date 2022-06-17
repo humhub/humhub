@@ -12,7 +12,7 @@ $default = [
             'core' => [
                 'name' => 'HumHub Test',
                 'baseUrl' => 'http://localhost:8080',
-            ]
+            ],
         ]
     ],
     'controllerMap' => [
@@ -25,7 +25,7 @@ $default = [
     ],
     'components' => [
         'mailer' => [
-            'useFileTransport' => true,
+            'messageClass' => \yii\symfonymailer\Message::class,
         ],
         'urlManager' => [
             'showScriptName' => true,
@@ -42,13 +42,13 @@ $default = [
     ]
 ];
 
-$envCfg = dirname(__DIR__).'/../config/env/env.php';
+$envCfg = dirname(__DIR__) . '/../config/env/env.php';
 $env = file_exists($envCfg) ? require($envCfg) : [];
 
 return yii\helpers\ArrayHelper::merge(
-    // Default Test Config
+// Default Test Config
     $default,
-     // User Overwrite
-    require(dirname(__DIR__).'/../config/common.php'),
+    // User Overwrite
+    require(dirname(__DIR__) . '/../config/common.php'),
     $env
 );

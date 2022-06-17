@@ -191,12 +191,18 @@ humhub.module('ui.picker', function (module, require, $) {
             return;
         }
 
+        var input = this.$.data('select2').$selection.find('input');
         if (this.$.children(':selected').length >= this.$.data('maximum-selection-length')) {
-            this.$.data('select2').$selection.find('input').attr('placeholder', null).attr('title', null);
+            input.attr('placeholder', null).attr('title', null);
         } else if (this.$.val()) {
-            this.$.data('select2').$selection.find('input').attr('placeholder', this.options.placeholderMore).attr('title', this.options.placeholderMore);
+            input.attr('placeholder', this.options.placeholderMore).attr('title', this.options.placeholderMore);
         } else {
-            this.$.data('select2').$selection.find('input').attr('placeholder', this.options.placeholder).attr('title', this.options.placeholderMore);
+            input.attr('placeholder', this.options.placeholder).attr('title', this.options.placeholderMore);
+        }
+
+        var placeholder = input.attr('placeholder');
+        if (placeholder.length) {
+            input.attr('size', placeholder.length);
         }
     };
 

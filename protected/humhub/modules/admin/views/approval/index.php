@@ -123,7 +123,7 @@ $columns[] = [
         });
         $('.bulk-actions-button-decline').on('click', function () {
             $('#admin-approval-form').find("input[name='action']").remove();
-            $('#admin-approval-form').append('<input type="hidden" name="action" value="<?= ApprovalController::ACTION_DELINE ?>" />');
+            $('#admin-approval-form').append('<input type="hidden" name="action" value="<?= ApprovalController::ACTION_DECLINE ?>" />');
             //$('#admin-approval-form').submit();
         });
 

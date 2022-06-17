@@ -8,13 +8,8 @@
 
 namespace humhub\components;
 
-use Yii;
-use yii\base\BaseObject;
-use yii\helpers\Html;
-use yii\helpers\Json;
-use yii\helpers\Url;
-use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\comment\models\Comment;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
@@ -22,6 +17,12 @@ use humhub\modules\user\models\User;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\interfaces\ContentOwner;
+use Yii;
+use yii\base\BaseObject;
+use yii\helpers\Html;
+use yii\helpers\Json;
+use yii\helpers\Url;
+use Exception;
 
 /**
  * This class represents a social Activity triggered within the network.
@@ -250,7 +251,9 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
     {
         $url = '#';
 
-        if ($this->hasContent()) {
+        if ($this->source instanceof Comment) {
+            $url = $this->source->getUrl();
+        } else if ($this->hasContent()) {
             $url = $this->getContent()->getUrl();
         } elseif ($this->source instanceof ContentContainerActiveRecord) {
             $url = $this->source->getUrl();

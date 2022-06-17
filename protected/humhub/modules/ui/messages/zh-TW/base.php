@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Collapse' => '折叠',
-    'Read more' => '',
-    'Reset filters' => '',
-    'User Interface' => '',
-];
+return array (
+  'Collapse' => '摺疊',
+  'Read more' => '閱讀更多',
+  'Reset filters' => '重設篩選條件',
+  'User Interface' => '使用者介面',
+);

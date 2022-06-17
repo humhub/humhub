@@ -66,7 +66,11 @@ class NotificationManager
     {
         $processed = [];
         /** @var User $user */
-        foreach ($userQuery->each() as $user) {
+        foreach ($userQuery->each() as $user)
+        {
+            if (in_array($user->id, $processed)) {
+                continue;
+            }
 
             if ($notification->suppressSendToOriginator && $notification->isOriginator($user)) {
                 continue;
@@ -76,7 +80,7 @@ class NotificationManager
                 continue;
             }
 
-            if (in_array($user->id, $processed)) {
+            if ($notification->isBlockedForUser($user)) {
                 continue;
             }
 

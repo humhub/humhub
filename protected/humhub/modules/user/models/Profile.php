@@ -8,9 +8,9 @@
 
 namespace humhub\modules\user\models;
 
+use humhub\components\ActiveRecord;
 use humhub\modules\user\authclient\AuthClientHelpers;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "profile".
@@ -113,7 +113,7 @@ class Profile extends ActiveRecord
 
         foreach (ProfileField::find()->all() as $profileField) {
             // Some fields consist of multiple field definitions (e.g. Birthday)
-            foreach ($profileField->fieldType->getFieldFormDefinition() as $fieldName => $definition) {
+            foreach ($profileField->fieldType->getFieldFormDefinition($this->user) as $fieldName => $definition) {
 
                 // Skip automatically synced attributes (readonly)
                 if (in_array($profileField->internal_name, $syncAttributes)) {
@@ -248,7 +248,7 @@ class Profile extends ActiveRecord
                     $profileField->editable = false;
                 }
 
-                $fieldDefinition = $profileField->fieldType->getFieldFormDefinition();
+                $fieldDefinition = $profileField->fieldType->getFieldFormDefinition($this->user);
 
                 if(isset($fieldDefinition[$profileField->internal_name]) && !empty($profileField->description)) {
                     $fieldDefinition[$profileField->internal_name]['hint'] =  Yii::t($profileFieldCategory->getTranslationCategory(), $profileField->description);

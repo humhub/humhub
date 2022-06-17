@@ -1,6 +1,129 @@
 HumHub Changelog
 ================
 
+1.11.3 (Unreleased)
+---------------------
+- Fix: #5736: Fix status message on user approval 
+- Fix #5734: Fix error message when uninstall module and module folder is not writable
+- Fix #5740: Fix logout action on force change password
+- Fix #5735: OEmbed migration might fail with more complex Endpoint URLs
+- Fix #5760: Fix context menu position on the right window side
+- Fix #5759: Fix tests on enable space module
+
+
+1.11.2 (May 30, 2022)
+---------------------
+- Fix: #5652: Fix undefined UrlOembed provider pattern
+- Fix #5660: Individual modules marked with "Official" label in Marketplace
+- Fix #5657: Fix links of user counters in container headers
+- Fix #5676: Use 404 page for deleted content request
+- Fix #5679: Fix message on decline multiple users
+- Enh #5690: Use theme colors in marketplace modules
+- Fix #5689: Check value on color picker
+- Fix #5691: Fix attach file to profile markdown field
+- Fix #5693: Scroll to comment on single view
+- Fix #5709: Fix input size for placeholder length in picker field
+- Fix #5704: Don't send notification for non-member of private space
+- Fix #5716: Fix saving of OEmbed provider endpoint URL
+- Fix #5706: Fix confirmation window for buttons
+- Fix #5724: Deny custom input for UserPicker field
+- Fix #5659: Improve module loading error handling
+
+1.11.1 (April 22, 2022)
+-----------------------
+
+See also: HumHub 1.11 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_11) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+Warning: The minimum PHP version is now `PHP 7.4`!
+
+- Fix: #5654: Added `laminas/laminas-zendframework-bridge` to legacy support `Zend\Http` usage in 3rd party modules
+- Enh: Updated translations
+
+
+1.11.0 (April 20, 2022)
+-----------------------
+
+See also: HumHub 1.11 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_11) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+Warning: The minimum PHP version is now `PHP 7.4`!
+
+- Fix #5637: Allow update setting "include beta updates" on modules page
+- Fix #5648: Introduce new config value for min. required PHP version
+
+
+1.11.0-beta.3 (April 13, 2022)
+------------------------------
+
+Warning: The minimum PHP version is now `PHP 7.4`!
+
+- Fix #5603: Syntax error in database view installer
+- Fix #5605: Fix warning on render ajax content on register file after View::endPage()
+- Fix #5608: Remove duplicated field "Hostname" on install
+- Fix #5612: Fix RichText post process event pass data
+- Enh #5610: Show menu item "Add Licence Key" for purchased modules
+- Enh #5599: Introduce a variables in the Space model to call ProfileImage and ProfileBannerImage classes
+- Enh #5621: Optimize footer views
+- Fix #5616: Don't display oEmbed confirmation in text field
+- Fix #5631: Fix enabling module on functional tests
+- Fix #5633: Fix tests NonceCest
+- Fix #5635: Fix cached comments
+
+
+1.11.0-beta.2 (March 18, 2022)
+------------------------------
+
+Warning: The minimum PHP version is now `PHP 7.4`!
+
+- Fix #5434: Hide disabled next/prev buttons on guide first/last steps
+- Fix #5456: `canImpersonate` only possible for SystemAdmins
+- Enh #5462: Added Single Page Post View
+- Enh #5476: Rework modules administration section
+- Enh #5472: New interface `TabbedFormModel` for activate first tab with error input
+- Enh #5224: Add reply-to email in the settings
+- Enh #5471: On the pending approval page, add grouped actions and custom columns
+- Enh #5490: Display confirmation message before display embedded content
+- Enh #5258: Display who invited the user on the Approval page
+- Enh #5475: Option for forbidden usernames
+- Enh #4890: Allow to define actions in a controller which should not be intercepted by other actions
+- Enh #5503: Allow profile fields link prefixes like "tel://"
+- Enh #5510: oEmbed support for other social networks, redesign of oEmbed settings pages
+- Fix #5534: Statistic input loading problem
+- Enh #5523: Option to include E-Mail address to search
+- Enh #5352: Remove "NewMembers" widget from Core
+- Fix #5478: Avoid permalinks on comments related to a global content (not in a container) to crash.
+- Enh #5538: People - Show Text Profile Field Filters as DropDown with AutoComplete
+- Fix #5547: Remove Google Fonts from E-mails
+- Enh #5536: Optional notification w/ reason when admin deletes content/comment
+- Fix #5549: Topic icon is missing in TopicPicker search
+- Fix #5556: Formatted output for date fields in "About me" profile area.
+- Fix #5553: Cannot have two or more users without email when emailRequired is disabled.
+- Fix #5506: Modal: Close Icon optimization
+- Fix #5564: Close modal button doesn't work after form validation
+- Fix #5533: Users can't live in UTC
+- Fix #5460: Untranslatable string New Updates in Stream
+- Fix #5573: Allow replying for sub comments
+- Fix #5518: Number of activities reported in the mail summary is always limited to 20
+- Enh #5358: Remove deprecated "Directory" module
+- Fix #5524: Mentioning Permission
+- Fix #5529: Tooltip: improving readability
+- Enh #5298: Added Followers to Space About Page
+- Enh #4558: Deprecate CompatModuleManager
+- Enh #5323: Remove deprecated "Setting" classes
+- Enh #5381: Optimize module states query
+- Enh #4823: Removed CHTML and CActiveForm classes as well as usages (plus refactoring)
+- Fix #5449: File - Update info after `setStoredFileContent` and `setStoredFile`
+- Enh #5127: LDAP: Reset mapping for single user only
+- Enh #5522: Add content id in the file table
+- Fix #5581: Fix long words in comment form
+- Fix #5578: Improved `rememberMe` parameter handling for thirdparty auth provider
+- Fix #5304: In a button, data-action-cancel-text doesn't work
+- Fix #5340: Mobile navigation: width detection problem
+- Enh #5432: Possibility to add buttons in the People page with a module
+- Fix #5585: Don't force password change on user simulating
+- Fix #5591: Fix people/space cards banner
+- Enh #5575: Add content topics to search
+
+
 1.10.4 (April 19, 2022)
 -----------------------
 
