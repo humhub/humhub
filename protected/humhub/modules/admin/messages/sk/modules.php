@@ -3,9 +3,11 @@
 return [
     'Close' => '닫기',
     '%moduleName% - Set as default module' => '',
+    '<strong>General</strong> Settings' => '',
     '<strong>Module</strong> details' => '',
     'Activate' => '',
     'Activated' => '',
+    'Allow module versions in beta status' => '',
     'Always activated' => '',
     'Are you sure? *ALL* module data will be lost!' => '',
     'Are you sure? *ALL* module related data and files will be lost!' => '',

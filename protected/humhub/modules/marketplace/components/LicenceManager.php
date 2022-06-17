@@ -46,7 +46,7 @@ class LicenceManager extends Component
     const SETTING_KEY_PE_MAX_USERS = 'maxUsers';
 
     const PE_FETCH_INTERVAL = 60 * 60 * 2;
-    const PE_FETCH_TOLERANCE = 60 * 60 * 24 * 2;
+    const PE_FETCH_TOLERANCE = 60 * 60 * 24 * 5;
 
 
     /**

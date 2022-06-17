@@ -40,10 +40,10 @@ class ProfileHeaderCounterSet extends CounterSet
             $this->counters[] = new CounterSetItem([
                 'label' => Yii::t('UserModule.profile', 'Friends'),
                 'value' => Friendship::getFriendsQuery($this->user)->count(),
-                'url' => '#',
-                'linkOptions' => [
+                'url' => Yii::$app->user->isGuest ? null : '#',
+                'linkOptions' => Yii::$app->user->isGuest ? [] : [
                     'data-action-click' => 'ui.modal.load',
-                    'data-action-url' => (Yii::$app->user->isGuest) ? null : Url::to(['/friendship/list/popup', 'userId' => $this->user->id])
+                    'data-action-url' => Url::to(['/friendship/list/popup', 'userId' => $this->user->id])
                 ]
             ]);
         }
@@ -52,20 +52,20 @@ class ProfileHeaderCounterSet extends CounterSet
             $this->counters[] = new CounterSetItem([
                 'label' => Yii::t('UserModule.profile', 'Followers'),
                 'value' => $this->user->getFollowersQuery()->count(),
-                'url' => '#',
-                'linkOptions' => [
+                'url' => Yii::$app->user->isGuest ? null : '#',
+                'linkOptions' => Yii::$app->user->isGuest ? [] : [
                     'data-action-click' => 'ui.modal.load',
-                    'data-action-url' => (Yii::$app->user->isGuest) ? null : Url::to(['/user/profile/follower-list', 'container' => $this->user])
+                    'data-action-url' => Url::to(['/user/profile/follower-list', 'container' => $this->user])
                 ]
             ]);
 
             $this->counters[] = new CounterSetItem([
                 'label' => Yii::t('UserModule.profile', 'Following'),
                 'value' => $this->user->getFollowingQuery(User::find())->count(),
-                'url' => '#',
-                'linkOptions' => [
+                'url' => Yii::$app->user->isGuest ? null : '#',
+                'linkOptions' => Yii::$app->user->isGuest ? [] : [
                     'data-action-click' => 'ui.modal.load',
-                    'data-action-url' => (Yii::$app->user->isGuest) ? null : Url::to(['/user/profile/followed-users-list', 'container' => $this->user])
+                    'data-action-url' => Url::to(['/user/profile/followed-users-list', 'container' => $this->user])
                 ]
             ]);
         }
@@ -78,10 +78,10 @@ class ProfileHeaderCounterSet extends CounterSet
         $this->counters[] = new CounterSetItem([
             'label' => Yii::t('UserModule.profile', 'Spaces'),
             'value' => $spaceMembershipCount,
-            'url' => '#',
-            'linkOptions' => [
+            'url' => Yii::$app->user->isGuest ? null : '#',
+            'linkOptions' => Yii::$app->user->isGuest ? [] : [
                 'data-action-click' => 'ui.modal.load',
-                'data-action-url' => (Yii::$app->user->isGuest) ? null : Url::to(['/user/profile/space-membership-list', 'container' => $this->user])
+                'data-action-url' => Url::to(['/user/profile/space-membership-list', 'container' => $this->user])
             ]
         ]);
 

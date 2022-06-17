@@ -145,7 +145,7 @@ class Events extends BaseObject
 
         $updateModules = $marketplaceModule->onlineModuleManager->getAvailableUpdateModules();
         if ($updateModulesCount = count($updateModules)) {
-            $updateAllButton = Button::info(Yii::t('MarketplaceModule.base', 'Update all'))
+            $updateAllButton = Button::primary(Yii::t('MarketplaceModule.base', 'Update all'))
                 ->options([
                     'data-stop-title' => Icon::get('pause') . ' &nbsp; ' . Yii::t('MarketplaceModule.base', 'Stop updating'),
                     'data-stop-class' => 'btn btn-warning pull-right',

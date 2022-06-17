@@ -81,8 +81,8 @@ class RequestMembershipCest
         $I->see('Pending Approvals');
         $I->click('Pending Approvals');
 
-        $I->waitForText('Reject');
-        $I->click('Reject');
+        $I->waitForText('Decline');
+        $I->click('Decline');
 
         $I->waitForElementVisible('#wallStream');
         $I->dontSeeInNotifications('Peter Tester requests membership for the space Space 1');

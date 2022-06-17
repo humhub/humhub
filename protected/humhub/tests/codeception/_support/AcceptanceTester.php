@@ -254,7 +254,7 @@ class AcceptanceTester extends BaseTester
     {
         $this->amOnSpace($guid, '/space/manage/module');
         $this->seeElement('.enable-module-'.$moduleId);
-        $this->click('.enable-module-'.$moduleId);
+        $this->jsClick('.enable-module-'.$moduleId);
         $this->waitForElement('.disable-module-'.$moduleId);
         $this->amOnSpace($guid);
     }

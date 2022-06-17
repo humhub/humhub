@@ -221,9 +221,9 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         $useCaching = empty($currentCommentId);// No need to cache comments for deep single comment view
 
         $cacheID = sprintf(static::CACHE_KEY_LIMITED, $model, $id);
-        $comments = $useCaching ? Yii::$app->cache->get($cacheID) : false;
+        $comments = $useCaching ? Yii::$app->cache->get($cacheID) : [];
 
-        if ($comments === false) {
+        if (!isset($comments[$limit]) || !is_array($comments[$limit])) {
             $objectCondition = ['object_model' => $model, 'object_id' => $id];
             $query = Comment::find();
             if ($currentCommentId && Comment::findOne(['id' => $currentCommentId])) {
@@ -250,14 +250,14 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
                 $query->limit($limit);
             }
             $query->orderBy('created_at DESC, id dESC');
-            $comments = array_reverse($query->all());
+            $comments[$limit] = array_reverse($query->all());
 
             if ($useCaching) {
                 Yii::$app->cache->set($cacheID, $comments, Yii::$app->settings->get('cache.expireTime'));
             }
         }
 
-        return $comments;
+        return $comments[$limit];
     }
 
     /**

@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Add Topics' => 'Adicionar tópicos',
-  'Manage Topics' => 'Gerir tópicos',
+  'Add Topics' => 'Adicionar Tópicos',
+  'Manage Topics' => 'Gerir Tópicos',
 );

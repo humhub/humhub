@@ -8,7 +8,17 @@
 
 namespace humhub\modules\notification\components;
 
-use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
+use humhub\components\SocialActivity;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\notification\jobs\SendBulkNotification;
+use humhub\modules\notification\jobs\SendNotification;
+use humhub\modules\notification\models\Notification;
+use humhub\modules\notification\targets\BaseTarget;
+use humhub\modules\notification\targets\WebTarget;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\components\ActiveQueryUser;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\bootstrap\Html;
@@ -17,14 +27,6 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\mail\MessageInterface;
-use humhub\components\SocialActivity;
-use humhub\modules\notification\jobs\SendBulkNotification;
-use humhub\modules\notification\jobs\SendNotification;
-use humhub\modules\notification\models\Notification;
-use humhub\modules\notification\targets\BaseTarget;
-use humhub\modules\notification\targets\WebTarget;
-use humhub\modules\user\components\ActiveQueryUser;
-use humhub\modules\user\models\User;
 
 
 /**
@@ -216,6 +218,10 @@ abstract class BaseNotification extends SocialActivity
             return;
         }
 
+        if ($this->isBlockedForUser($user)) {
+            return;
+        }
+
         Yii::$app->queue->push(new SendNotification(['notification' => $this, 'recipientId' => $user->id]));
     }
 
@@ -251,6 +257,39 @@ abstract class BaseNotification extends SocialActivity
     public function isBlockedFromUser(User $user): bool
     {
         return $this->originator && $user->isBlockedForUser($this->originator);
+    }
+
+    /**
+     * Checks if the source is blocked for the receiver $user.
+     * For example, if the $user is not a member of a private Space
+     *
+     * @param User $user
+     * @return bool
+     * @since 1.11.2
+     */
+    public function isBlockedForUser(User $user): bool
+    {
+        if ($this->isSpaceContent()) {
+            /* @var Space $space */
+            $space = $this->source->content->container;
+            return $space->visibility === Space::VISIBILITY_NONE &&
+                !$space->isMember($user);
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the source is a Content from a Space
+     *
+     * @return bool
+     * @since 1.11.2
+     */
+    private function isSpaceContent(): bool
+    {
+        return ($this->source instanceof ContentActiveRecord ||
+                $this->source instanceof ContentAddonActiveRecord) &&
+            $this->source->content->container instanceof Space;
     }
 
     /**

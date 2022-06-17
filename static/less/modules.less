@@ -1,0 +1,212 @@
+.container-modules {
+    .modules-type {
+        font-size: 16px;
+        font-weight: bold;
+        color: #000;
+        margin: 70px 0 40px;
+    }
+    .row.cards {
+        margin-top: 40px;
+    }
+    .card-module {
+        .card-panel {
+            background: none;
+            overflow: hidden;
+            > div:not(.card-status) {
+                background-color: #ffffff;
+            }
+        }
+        .card-header {
+            position: relative;
+        }
+        .card-body {
+            padding-top: 8px;
+            font-size: 13px;
+            color: #6C787E;
+            > div {
+                padding-bottom: 8px;
+                &:last-child {
+                    padding-bottom: 0;
+                }
+            }
+        }
+        .card-title {
+            color: #000;
+        }
+        .card-footer {
+            padding-bottom: 14px;
+            a.btn {
+                float: none;
+            }
+            &.text-right {
+                a.btn {
+                    margin-left: 8px;
+                    margin-right: 0;
+                    &:first-child {
+                        margin-left: 0;
+                    }
+                }
+            }
+        }
+    }
+    .module-settings-icon {
+        float: right;
+        color: #02A1B1;
+        font-size: 22px;
+        line-height: 20px;
+        margin: 2px;
+        &:hover {
+            color: #1d8e9d;
+        }
+    }
+}
+
+.container-content-modules {
+    width: 100%;
+    padding: 0 18px 5px 5px;
+    h4 {
+        font-size: 16px;
+        color: #000;
+    }
+    .card {
+        width: 100%;
+        padding-right: 3px;
+        .card-panel {
+            margin-top: 3px;
+        }
+    }
+    @media (min-width: 460px) {
+        .card {
+            width: 50%;
+        }
+    }
+    @media (min-width: 656px) {
+        .card {
+            width: 33.33333333%;
+        }
+    }
+    @media (min-width: 768px) {
+        padding: 0 12px 5px 0;
+    }
+    @media (min-width: 1200px) {
+        .card {
+            width: 25%;
+        }
+    }
+    &.container-content-modules-col-3 {
+        @media (min-width: 460px) {
+            .card {
+                width: 50%;
+            }
+        }
+        @media (min-width: 656px) {
+            .card {
+                width: 33.33333333%;
+            }
+        }
+    }
+}
+
+.container-create-space-modules.container-cards {
+    width: 100%;
+    padding: 0;
+    .row.cards {
+        margin-top: 0;
+    }
+    .card {
+        .card-panel > div {
+            background: #F5F5F5;
+        }
+    }
+}
+
+// Available Updates container:
+.container-modules.container-fluid {
+    .container-module-updates {
+        @media (min-width: 500px) {
+            .card {
+                width: 33.33333333%;
+            }
+        }
+        @media (min-width: 1000px) {
+            .card {
+                width: 25%;
+            }
+        }
+        @media (min-width: 1300px) {
+            .card {
+                width: 20%;
+            }
+        }
+        @media (min-width: 1600px) {
+            .card {
+                width: 16.66666667%;
+            }
+        }
+        @media (min-width: 1900px) {
+            .card {
+                width: 12.5%;
+            }
+        }
+    }
+}
+
+@moduleUpdateLayoutBg: @primary;
+@moduleUpdateCardBg: darken(@primary, 10);
+.container-module-updates {
+    background: @moduleUpdateLayoutBg;
+    margin-top: 30px;
+    padding: 16px 10px 2px;
+    border-radius: 4px;
+    .row.cards {
+        margin-right: -1px;
+        margin-top: 0;
+    }
+    .modules-type {
+        color: #FFFFFF;
+        margin: 10px 0 30px;
+    }
+    .card {
+        padding-right: 1px;
+        .card-panel {
+            color: #FFF;
+            margin-top: 0;
+            > div:not(.card-status) {
+                background: @moduleUpdateCardBg;
+            }
+            .card-header {
+                padding: 12px;
+            }
+            .card-body {
+                padding: 4px 12px 20px;
+                color: #FFF;
+                .card-title {
+                    color: #FFF;
+                    font-size: 14px;
+                }
+            }
+            .card-footer {
+                padding: 0 12px 12px;
+                .btn-info {
+                    border-radius: 4px;
+                    color: @moduleUpdateLayoutBg !important;
+                    &.active {
+                        border-color: #FFF;
+                    }
+                    &:not(.active) {
+                        padding: 0 4px;
+                        border: 1px solid #FFF;
+                        background: @moduleUpdateCardBg;
+                        color: #FFF !important;
+                        &:hover, &:active {
+                            background: @moduleUpdateLayoutBg !important;
+                        }
+                    }
+                    &[data-update-status=failed] {
+                        border-color: #fc314f;
+                    }
+                }
+            }
+        }
+    }
+}

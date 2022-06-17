@@ -184,21 +184,8 @@ class SettingController extends Controller
             return $this->redirect(['/admin/setting/mailing-server-test']);
         }
 
-        $encryptionTypes = [
-            '' => 'None',
-            'ssl' => 'SSL',
-            'tls' => 'TLS'
-        ];
-        $transportTypes = [
-            'file' => 'File (Use for testing/development)',
-            'php' => 'PHP',
-            'smtp' => 'SMTP'
-        ];
-
         return $this->render('mailing_server', [
             'model' => $form,
-            'encryptionTypes' => $encryptionTypes,
-            'transportTypes' => $transportTypes,
             'settings' => Yii::$app->settings
         ]);
     }
@@ -378,14 +365,10 @@ class SettingController extends Controller
             ];
             UrlOembed::setProviders($providers);
 
-            return $this->redirect(
-                [
-                    '/admin/setting/oembed'
-                ]);
+            return $this->redirect(['/admin/setting/oembed']);
         }
 
-        return $this->render('oembed_edit',
-            [
+        return $this->render('oembed_edit', [
                 'model' => $form,
                 'name' => $name
             ]);

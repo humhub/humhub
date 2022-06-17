@@ -11,4 +11,3 @@ return [
         [IntegrityController::class, IntegrityController::EVENT_ON_RUN, [Events::class, 'onIntegrityCheck']],
     ]
 ];
-?>

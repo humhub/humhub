@@ -6,21 +6,23 @@
  */
 
 use humhub\assets\CardsAsset;
-use humhub\libs\Html;
-use humhub\modules\admin\assets\ModuleAsset;
 use humhub\modules\admin\widgets\ModuleFilters;
 use humhub\modules\admin\widgets\Modules;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\view\components\View;
+use humhub\widgets\Button;
 
 /* @var $this View */
 
-ModuleAsset::register($this);
 CardsAsset::register($this);
 ?>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?= Yii::t('AdminModule.base', '<strong>Module </strong> Administration'); ?>
+        <?= Yii::t('AdminModule.base', '<strong>Module</strong> Administration'); ?>
+        <?= Button::asLink(Icon::get('cog'))
+            ->action('ui.modal.load', ['/admin/module/module-settings'])
+            ->cssClass('module-settings-icon')
+            ->tooltip(Yii::t('AdminModule.base', 'Settings')) ?>
     </div>
     <div class="panel-body">
         <?= ModuleFilters::widget(); ?>

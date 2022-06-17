@@ -1,56 +1,14 @@
-1.11.0-beta.3 (Unreleased)
---------------------------
-- Fix #5603: Syntax error in database view installer
+1.12.0 (Unreleased)
+-------------------
+- Enh #5655: Possibility to archive and lock comments on global contents
+- Enh #3593: Allow SSO provider to register and auto create username on registration 
+- Enh #5695: Truncate long profile texts in People cards
+- Enh #5602: Added API to inject additional validation rules by modules on demand
+- Enh #5741: Possibility to Like global contents
+- Enh #5560: Possibility to create custom profile field types via modules
+- Enh #5739: Added Event in MentioningController raised after searching for space members on mentioning request
+- Enh #5752: Imrpove Display Name Subtitle Usage and Administration 
+- Enh #5757: Make sure `setupApproved` is always called when status changes
+- Enh #5598: Added `cy` Welsh language
+- Fix #5338: Content topic/visibility changes are  re-indexed in search index
 - Enh #5535: Invisible users
-
-
-1.11.0-beta.2 (March 18, 2022)
-------------------------------
-- Fix #5434: Hide disabled next/prev buttons on guide first/last steps
-- Fix #5456: `canImpersonate` only possible for SystemAdmins
-- Enh #5462: Added Single Page Post View 
-- Enh #5476: Rework modules administration section
-- Enh #5472: New interface `TabbedFormModel` for activate first tab with error input
-- Enh #5224: Add reply-to email in the settings
-- Enh #5471: On the pending approval page, add grouped actions and custom columns
-- Enh #5490: Display confirmation message before display embedded content
-- Enh #5258: Display who invited the user on the Approval page
-- Enh #5475: Option for forbidden usernames
-- Enh #4890: Allow to define actions in a controller which should not be intercepted by other actions
-- Enh #5503: Allow profile fields link prefixes like "tel://" 
-- Enh #5510: oEmbed support for other social networks, redesign of oEmbed settings pages
-- Fix #5534: Statistic input loading problem
-- Enh #5523: Option to include E-Mail address to search 
-- Enh #5352: Remove "NewMembers" widget from Core
-- Fix #5478: Avoid permalinks on comments related to a global content (not in a container) to crash.
-- Enh #5538: People - Show Text Profile Field Filters as DropDown with AutoComplete 
-- Fix #5547: Remove Google Fonts from E-mails
-- Enh #5536: Optional notification w/ reason when admin deletes content/comment
-- Fix #5549: Topic icon is missing in TopicPicker search
-- Fix #5556: Formatted output for date fields in "About me" profile area.
-- Fix #5553: Cannot have two or more users without email when emailRequired is disabled.
-- Fix #5506: Modal: Close Icon optimization
-- Fix #5564: Close modal button doesn't work after form validation
-- Fix #5533: Users can't live in UTC
-- Fix #5460: Untranslatable string New Updates in Stream
-- Fix #5573: Allow replying for sub comments
-- Fix #5518: Number of activities reported in the mail summary is always limited to 20
-- Enh #5358: Remove deprecated "Directory" module
-- Fix #5524: Mentioning Permission
-- Fix #5529: Tooltip: improving readability
-- Enh #5298: Added Followers to Space About Page
-- Enh #4558: Deprecate CompatModuleManager
-- Enh #5323: Remove deprecated "Setting" classes
-- Enh #5381: Optimize module states query
-- Enh #4823: Removed CHTML and CActiveForm classes as well as usages (plus refactoring)
-- Fix #5449: File - Update info after `setStoredFileContent` and `setStoredFile`
-- Enh #5127: LDAP: Reset mapping for single user only
-- Enh #5522: Add content id in the file table
-- Fix #5581: Fix long words in comment form
-- Fix #5578: Improved `rememberMe` parameter handling for thirdparty auth provider 
-- Fix #5304: In a button, data-action-cancel-text doesn't work
-- Fix #5340: Mobile navigation: width detection problem
-- Enh #5432: Possibility to add buttons in the People page with a module
-- Fix #5585: Don't force password change on user simulating
-- Fix #5591: Fix people/space cards banner
-- Enh #5575: Add content topics to search

@@ -80,6 +80,16 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public $blockedUsersField;
 
     /**
+     * @var string
+     */
+    public $profileImageClass = ProfileImage::class;
+
+    /**
+     * @var string
+     */
+    public $profileBannerImageClass = ProfileBannerImage::class;
+
+    /**
      * Returns the display name of content container
      *
      * @return string
@@ -102,7 +112,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getProfileImage()
     {
-        return new ProfileImage($this);
+        return new $this->profileImageClass($this);
     }
 
     /**
@@ -112,7 +122,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getProfileBannerImage()
     {
-        return new ProfileBannerImage($this);
+        return new $this->profileBannerImageClass($this);
     }
 
     /**

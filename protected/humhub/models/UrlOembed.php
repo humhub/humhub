@@ -118,7 +118,7 @@ class UrlOembed extends ActiveRecord
     public function getProviderUrl()
     {
         foreach (static::getProviders() as $provider) {
-            if (preg_match($provider['pattern'], $this->url)) {
+            if (isset($provider['pattern']) && preg_match($provider['pattern'], $this->url)) {
                 return str_replace("%url%", urlencode($this->url), $provider['endpoint']);
             }
         }
@@ -143,9 +143,10 @@ class UrlOembed extends ActiveRecord
      *  - A fetch counter restriction exceeded
      *
      * @param string $url
+     * @param bool $forceAllowedDomain true - to don't check the domain and always display media content
      * @return string|null
      */
-    public static function getOEmbed($url)
+    public static function getOEmbed($url, bool $forceAllowedDomain = false)
     {
         $oembedFetchEvent = new OembedFetchEvent(['url' => $url]);
         (new UrlOembed())->trigger(static::EVENT_FETCH, $oembedFetchEvent);
@@ -157,7 +158,7 @@ class UrlOembed extends ActiveRecord
             $url = trim($url);
 
             if (static::hasOEmbedSupport($url)) {
-                if (!self::isAllowedDomain($url)) {
+                if (!$forceAllowedDomain && !self::isAllowedDomain($url)) {
                     $result = self::confirmationContent($url);
                 } else {
                     $urlOembed = static::findExistingOembed($url);
@@ -361,7 +362,7 @@ class UrlOembed extends ActiveRecord
     public static function getProviderByUrl($url)
     {
         foreach (static::getProviders() as $provider) {
-            if (preg_match($provider['pattern'], $url)) {
+            if (isset($provider['pattern']) && preg_match($provider['pattern'], $url)) {
                 return $provider['endpoint'];
             }
         }

@@ -483,7 +483,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
      */
     public function getProfileImage()
     {
-        return new ProfileImage($this, 'default_space');
+        return new $this->profileImageClass($this, 'default_space');
     }
 
     /**

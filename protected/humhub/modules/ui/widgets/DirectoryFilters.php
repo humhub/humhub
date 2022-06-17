@@ -9,8 +9,6 @@ namespace humhub\modules\ui\widgets;
 
 use humhub\components\Widget;
 use humhub\libs\Html;
-use humhub\modules\ui\form\widgets\BasePicker;
-use humhub\modules\user\widgets\PeopleFilterAutocomplete;
 use humhub\widgets\Button;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -124,7 +122,7 @@ abstract class DirectoryFilters extends Widget
                         || in_array($tagKey, $activeTags);
 
                     $inputHtml .= Button::none($tagLabel)
-                        ->options(['class' => 'btn btn-sm btn-info' . ($isActiveTag ? ' active' : '')])
+                        ->options(['class' => 'btn btn-sm btn-primary' . ($isActiveTag ? ' active' : '')])
                         ->action('cards.selectTag')
                         ->options([
                             'data-filter' => $filter,

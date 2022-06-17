@@ -64,6 +64,16 @@ class UserPickerField extends BasePicker
     /**
      * @inheritdoc
      */
+    protected function getAttributes()
+    {
+        return array_merge(parent::getAttributes(), [
+            'data-tags' => 'false',
+        ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function getData()
     {
         $result = parent::getData();

@@ -40,14 +40,20 @@ class Module extends \humhub\components\Module
     /**
      * Returns all configurable Activities
      *
-     * @since 1.2
      * @return ConfigurableActivityInterface[] a list of configurable activities
+     * @since 1.2
      */
     public static function getConfigurableActivities()
     {
         $activities = [];
         foreach (Yii::$app->getModules(false) as $moduleId => $module) {
-            $module = Yii::$app->getModule($moduleId);
+            try {
+                $module = Yii::$app->getModule($moduleId);
+            } catch (\Exception $ex) {
+                Yii::error('Could not load module to determine activites! Module: ' . $moduleId . ' Error: ' . $ex->getMessage(), 'activity');
+                continue;
+            }
+
             if ($module instanceof \humhub\components\Module) {
                 foreach ($module->getActivityClasses() as $class) {
                     $activity = new $class;

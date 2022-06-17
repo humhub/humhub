@@ -95,9 +95,9 @@ class CountrySelect extends Select
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition()
+    public function getFieldFormDefinition(User $user = null)
     {
-        $definition = parent::getFieldFormDefinition();
+        $definition = parent::getFieldFormDefinition($user);
         $definition[$this->profileField->internal_name]['htmlOptions'] = ['data-ui-select2' => true, 'style' => 'width:100%'];
         return $definition;
     }

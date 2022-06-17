@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\User;
 use Yii;
 
 /**
@@ -59,7 +60,7 @@ class MarkdownEditor extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition()
+    public function getFieldFormDefinition(User $user = null)
     {
         return [$this->profileField->internal_name => [
                 'type' => 'markdown',

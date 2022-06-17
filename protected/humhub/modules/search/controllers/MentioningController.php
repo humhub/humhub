@@ -9,6 +9,7 @@
 namespace humhub\modules\search\controllers;
 
 use humhub\components\Controller;
+use humhub\libs\ParameterEvent;
 use \humhub\modules\comment\Module as CommentModule;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
@@ -31,6 +32,10 @@ use yii\web\HttpException;
  */
 class MentioningController extends Controller
 {
+    /**
+     * @event ParameterEvent an event raised after searching for space members on mentioning request from RichText editor on Post form, just before sending the results
+     */
+    public const EVENT_SPACE_MENTIONING = 'spaceMentioning';
 
     /**
      * @var Module $module
@@ -108,6 +113,10 @@ class MentioningController extends Controller
         }
 
         $results = $this->appendMentioningSpaceResults($keyword, $results);
+
+        $evt = new ParameterEvent(['keyword' => $keyword, 'space' => $space, 'results' => $results]);
+        ParameterEvent::trigger($this, static::EVENT_SPACE_MENTIONING, $evt);
+        $results = $evt->parameters['results'];
 
         return $this->asJson($results);
     }

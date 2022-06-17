@@ -573,12 +573,20 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $this->updateSearch();
 
         if ($insert) {
-            if ($this->status == User::STATUS_ENABLED) {
-                $this->setUpApproved();
-            } else {
+            if ($this->status == User::STATUS_NEED_APPROVAL) {
                 Group::notifyAdminsForUserApproval($this);
             }
             $this->profile->user_id = $this->id;
+        }
+
+        // When insert an "::STATUS_ENABLED" user or update a user from status "::STATUS_NEED_APPROVAL" to "::STATUS_ENABLED"
+        if ($this->status == User::STATUS_ENABLED &&
+            (
+                $insert ||
+                (isset($changedAttributes['status']) && $changedAttributes['status'] == User::STATUS_NEED_APPROVAL)
+            )
+        ) {
+            $this->setUpApproved();
         }
 
         if (Yii::$app->user->id == $this->id) {
@@ -609,7 +617,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
     }
 
-    public function setUpApproved()
+    private function setUpApproved()
     {
         $userInvite = Invite::findOne(['email' => $this->email]);
 
@@ -629,6 +637,14 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         // Auto Add User to the default spaces
         foreach (Space::findAll(['auto_add_new_members' => 1]) as $space) {
             $space->addMember($this->id);
+        }
+
+        /* @var $userModule Module */
+        $userModule = Yii::$app->getModule('user');
+
+        // Add User to the default group if no yet
+        if (!$this->hasGroup() && ($defaultGroup = $userModule->getDefaultGroup())) {
+            $defaultGroup->addUser($this);
         }
     }
 
@@ -677,8 +693,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             return call_user_func($module->displayNameSubCallback, $this);
         }
 
-        if ($this->profile !== null && $this->profile->hasAttribute('title')) {
-            return $this->profile->title;
+        $attributeName = Yii::$app->settings->get('displayNameSubFormat');
+
+        if ($this->profile !== null && $this->profile->hasAttribute($attributeName)) {
+            return $this->profile->getAttribute($attributeName);
         }
 
         return '';

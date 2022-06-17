@@ -38,8 +38,11 @@ use humhub\libs\Html;
 </div>
 
 <script <?= Html::nonce() ?>>
-    <?php if (count($comments) != 0): ?>
+<?php if (count($comments) != 0): ?>
     // make comments visible at this point to fixing autoresizing issue for textareas in Firefox
     $('#comment_<?= $id; ?>').show();
-    <?php endif;  ?>
+<?php endif; ?>
+<?php if (!empty($currentCommentId)) : ?>
+    $('#comment_<?= $currentCommentId ?>').get(0).scrollIntoView();
+<?php endif; ?>
 </script>

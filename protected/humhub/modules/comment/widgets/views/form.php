@@ -48,6 +48,7 @@ $placeholder = ($isNestedComment)
     <div class="comment-create-input-group">
         <?= $form->field($model, 'message')->widget(RichTextField::class, [
             'id' => 'newCommentForm_' . $id,
+            'form' => $form,
             'layout' => RichTextField::LAYOUT_INLINE,
             'pluginOptions' => ['maxHeight' => '300px'],
             'mentioningUrl' => $mentioningUrl,

@@ -85,11 +85,7 @@ class Module extends \humhub\components\Module
     {
         $content = $object->content;
 
-        if(!isset($content->container)) {
-            return false;
-        }
-
-        if (!$content->container->can(new permissions\CanLike())) {
+        if (isset($content->container) && !$content->container->can(new permissions\CanLike())) {
             return false;
         }
 

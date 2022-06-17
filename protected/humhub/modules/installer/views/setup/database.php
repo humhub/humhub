@@ -18,10 +18,6 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($model, 'hostname')->textInput(); ?>
-        <p class="help-block"><?= Yii::t('InstallerModule.base', 'Hostname of your MySQL Database Server (e.g. localhost if MySQL is running on the same machine)'); ?></p>
-        <hr/>
-
         <?= $form->field($model, 'hostname') ?>
         <hr/>
         <?= $form->field($model, 'port') ?>
@@ -38,7 +34,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
                 <strong><?= Yii::t('InstallerModule.base', 'Ohh, something went wrong!'); ?></strong><br/>
                 <?= Html::encode($errorMessage); ?>
             </div>
-        <?php endif; ?>
+        <?php } ?>
         <hr/>
 
         <?= Html::submitButton(Yii::t('InstallerModule.base', 'Next'), ['class' => 'btn btn-primary', 'data-loader' => "modal", 'data-message' => Yii::t('InstallerModule.base', 'Initializing database...')]); ?>

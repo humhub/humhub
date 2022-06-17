@@ -3,7 +3,6 @@
 use humhub\modules\admin\models\forms\OEmbedProviderForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\Button;
-use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
 
@@ -50,7 +49,7 @@ $this->registerJs(<<<JS
             url.searchParams.set($(this).attr('data-param-name'), $(this).val());
         });
 
-        endpointInput.val(url.toString());
+        endpointInput.val(decodeURI(url.toString()));
     }
 
     $('#oembedproviderform-endpoint').on('input change', function () {
@@ -104,12 +103,16 @@ JS, View::POS_LOAD);
 
 <div id="endpoint-parameters"></div>
 
-<?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
-<?php ActiveForm::end(); ?>
+<?= Button::primary(Yii::t('AdminModule.settings', 'Save'))->submit(); ?>
 
 <?php if (!empty($name)): ?>
-    <?= Html::a(Yii::t('AdminModule.settings', 'Delete'), Url::to(['oembed-delete', 'name' => $name]), ['class' => 'btn btn-danger pull-right', 'data-method' => 'POST']); ?>
+    <?= Button::danger(Yii::t('AdminModule.settings', 'Delete'))
+        ->link(['oembed-delete', 'name' => $name])
+        ->confirm()
+        ->right()
+        ->options(['data-method' => 'POST']) ?>
 <?php endif; ?>
 
+<?php ActiveForm::end(); ?>
 
-<?php $this->endContent(); ?>
+<?php $this->endContent();
