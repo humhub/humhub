@@ -1,7 +1,6 @@
 <?php
-
-return [
-    'Activated' => '',
-    'Configure' => '',
-    'Enable' => '',
-];
+return array (
+  'Activated' => 'Đã được kích hoạt',
+  'Configure' => 'Cấu hình',
+  'Enable' => 'Kích hoạt',
+);

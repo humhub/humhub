@@ -1,7 +1,6 @@
 <?php
-
-return [
-    'Activated' => '',
-    'Configure' => '',
-    'Enable' => '',
-];
+return array (
+  'Activated' => 'Aktiválva',
+  'Configure' => 'Konfiguráció',
+  'Enable' => 'Engedélyezés',
+);

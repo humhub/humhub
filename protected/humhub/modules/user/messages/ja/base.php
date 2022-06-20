@@ -79,7 +79,7 @@ return array (
   'Source' => 'ソース',
   'Status' => 'ステータス',
   'Tags' => 'タグ',
-  'Try other keywords or remove filters.' => '',
+  'Try other keywords or remove filters.' => '他のキーワードを試すかフィルターを削除してください.',
   'Unknown user status!' => 'ユーザーステータス不明！',
   'Unsuccessful login attempts since last login: {failedLoginAttemptsCount}' => '',
   'Updated at' => 'で更新',

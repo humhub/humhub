@@ -1,7 +1,6 @@
 <?php
-
-return [
-    'Activated' => '',
-    'Configure' => '',
-    'Enable' => '',
-];
+return array (
+  'Activated' => 'Aktif',
+  'Configure' => 'Yapılandırma',
+  'Enable' => 'Etkinleştirme',
+);
