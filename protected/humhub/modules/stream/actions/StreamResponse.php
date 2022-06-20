@@ -120,12 +120,16 @@ class StreamResponse
             $this->result['lastContentId'] = $this->streamQuery->getLastContentId();
         }
 
-        if($this->error) {
+        if ($this->error) {
             $this->result['error'] = $this->error;
         }
 
-        if($this->errorCode) {
+        if ($this->errorCode) {
             $this->result['errorCode'] = $this->errorCode;
+        }
+
+        if ($this->streamQuery->hasErrors()) {
+            $this->result['filterErrors'] = $this->streamQuery->getErrors();
         }
 
         return $this->result;

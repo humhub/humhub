@@ -565,8 +565,11 @@ humhub.module('stream.Stream', function (module, require, $) {
         var hasEntries = this.hasEntries();
 
         this.$.find('.streamMessage').remove();
+        this.clearFilterErrors();
 
-        if(!hasEntries && this.isShowSingleEntry()) {
+        if (this.hasFilterErrors()) {
+            this.displayFilterErrors();
+        } else if (!hasEntries && this.isShowSingleEntry()) {
             // we only show an error if we load a single entry we are not allowed to view, otherwise just reload the stream
             if(request && request.response && request.response.errorCode && request.response.errorCode === 403) {
                 this.setStreamMessage(request.response.error);
@@ -610,6 +613,35 @@ humhub.module('stream.Stream', function (module, require, $) {
             message: message,
             cssClass: ($filter) ? this.options.streamEmptyFilterClass : this.options.streamEmptyClass,
         }));
+    };
+
+    Stream.prototype.hasFilterErrors = function () {
+        return this.request &&
+            this.request.response &&
+            typeof this.request.response.filterErrors === 'object';
+    };
+
+    Stream.prototype.displayFilterErrors = function () {
+        if (!this.hasFilterErrors()) {
+            return;
+        }
+
+        var errors = this.request.response.filterErrors;
+
+        for (var filter in errors) {
+            var filterInput = this.filter.$.find('[data-filter-category="' + filter + '"]');
+            if (filterInput.length) {
+                filterInput.parent()
+                    .addClass('has-error')
+                    .append('<div class="help-block help-block-error">' + errors[filter] + '</div>');
+            }
+        }
+    };
+
+    Stream.prototype.clearFilterErrors = function () {
+        this.filter.$.find('[data-filter-category]').parent()
+            .removeClass('has-error')
+            .find('div.help-block.help-block-error').remove();
     };
 
     Stream.prototype.onSingleEntryStream = function () {

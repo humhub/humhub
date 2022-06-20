@@ -45,6 +45,22 @@ abstract class Filter extends Model
         }
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function load($data, $formName = null)
+    {
+        if (!parent::load($data, $formName)) {
+            return false;
+        }
+
+        if (!parent::validate()) {
+            $this->streamQuery->addErrors($this->getErrors());
+        }
+
+        return true;
+    }
+
     public function formName() {
         return $this->formName ? $this->formName : parent::formName();
     }
