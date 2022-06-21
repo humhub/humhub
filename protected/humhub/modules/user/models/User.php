@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models;
 
+use humhub\components\access\GuestAccessValidator;
 use humhub\components\behaviors\GUID;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
@@ -977,8 +978,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     {
         $options = [
             self::VISIBILITY_REGISTERED_ONLY => Yii::t('AdminModule.user', 'Visible for members only'),
-            self::VISIBILITY_ALL => Yii::t('AdminModule.user', 'Visible for members+guests'),
         ];
+
+        if (AuthHelper::isGuestAccessEnabled()) {
+            $options[self::VISIBILITY_ALL] = Yii::t('AdminModule.user', 'Visible for members+guests');
+        }
 
         if ($allowHidden) {
             $options[self::VISIBILITY_HIDDEN] = Yii::t('AdminModule.user', 'Invisible');
