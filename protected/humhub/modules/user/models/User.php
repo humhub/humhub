@@ -8,7 +8,6 @@
 
 namespace humhub\modules\user\models;
 
-use humhub\components\access\GuestAccessValidator;
 use humhub\components\behaviors\GUID;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
