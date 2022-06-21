@@ -1,10 +1,13 @@
 <?php
-return array (
-  'Author' => '',
-  'Content' => 'Зміст',
-  'Content Type' => '',
-  'Scope' => '',
-  'Sorting' => '',
-  'Topic' => '',
-  'Visibility' => '',
-);
+
+return [
+    'Content' => 'Зміст',
+    'Author' => '',
+    'Content Type' => '',
+    'Date from' => '',
+    'Date to' => '',
+    'Scope' => '',
+    'Sorting' => '',
+    'Topic' => '',
+    'Visibility' => '',
+];

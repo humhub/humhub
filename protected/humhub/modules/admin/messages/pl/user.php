@@ -190,4 +190,6 @@ Pozdrawiam, {AdminName}',
     'never' => 'nigdy',
     'Could not approve the user!' => '',
     'Could not decline the user!' => '',
+    'Deleted' => '',
+    'Invisible' => '',
 ];

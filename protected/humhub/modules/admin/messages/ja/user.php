@@ -182,6 +182,8 @@ Kind Regards
     'Apply' => '',
     'Could not approve the user!' => '',
     'Could not decline the user!' => '',
+    'Deleted' => '',
+    'Invisible' => '',
     'No users were selected.' => '',
     'Select the profile fields you want to add as columns' => '',
     'The registration was approved and the user was notified by email.' => '',
