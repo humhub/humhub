@@ -162,6 +162,7 @@ return [
     'Could not decline the user!' => '',
     'Decline all selected' => '',
     'Default group can not be deleted!' => '',
+    'Deleted' => '',
     'Hello {displayName},
 
 Your account has been activated.
@@ -181,6 +182,7 @@ Kind Regards
 {AdminName}
 
 ' => '',
+    'Invisible' => '',
     'No users were selected.' => '',
     'Protected group can not be deleted!' => '',
     'Select the profile fields you want to add as columns' => '',

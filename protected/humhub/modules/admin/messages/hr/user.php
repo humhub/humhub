@@ -145,6 +145,7 @@ return [
     'Default Sorting' => '',
     'Default group can not be deleted!' => '',
     'Delete All' => '',
+    'Deleted' => '',
     'Enable individual profile permissions' => '',
     'Hello {displayName},
 
@@ -169,6 +170,7 @@ Kind Regards
     'Information 1' => '',
     'Information 2' => '',
     'Information 3' => '',
+    'Invisible' => '',
     'Make the group selectable at registration.' => '',
     'No users were selected.' => '',
     'Not visible' => '',

@@ -201,4 +201,6 @@ Mit freundlichen Grüßen
     'never' => 'Nie',
     'Could not approve the user!' => '',
     'Could not decline the user!' => '',
+    'Deleted' => '',
+    'Invisible' => '',
 ];

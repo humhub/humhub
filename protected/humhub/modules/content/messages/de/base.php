@@ -1,6 +1,6 @@
 <?php
 return array (
-  '(Also visible to non-members of this space)' => '(Kann auch von Benutzern gesehen werden, die kein Mitglied des Spaces sind.)',
+  '(Also visible to non-members of this space)' => '(Für Nutzer, die nicht Mitglied des Spaces sind, sichtbar.)',
   '<strong>Confirm</strong> post deletion' => '<strong>Bestätige</strong> Beitragslöschung',
   '<strong>Delete</strong> content?' => '<strong>Inhalt</strong> löschen?',
   '<strong>Move</strong> content' => 'Inhalt <strong>verschieben</strong>',

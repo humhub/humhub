@@ -148,6 +148,7 @@ return [
     'Decline all selected' => '',
     'Default Sorting' => '',
     'Default group can not be deleted!' => '',
+    'Deleted' => '',
     'Hello {displayName},
 
 Your account has been activated.
@@ -171,6 +172,7 @@ Kind Regards
     'Information 1' => '',
     'Information 2' => '',
     'Information 3' => '',
+    'Invisible' => '',
     'Make the group selectable at registration.' => '',
     'No users were selected.' => '',
     'Not visible' => '',

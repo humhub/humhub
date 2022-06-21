@@ -188,4 +188,6 @@ Kind Regards
     'never' => 'Nunca',
     'Could not approve the user!' => '',
     'Could not decline the user!' => '',
+    'Deleted' => '',
+    'Invisible' => '',
 ];
