@@ -154,15 +154,16 @@ class WallStreamFilterNavigation extends FilterNavigation
             'sortOrder' => 200
         ], static::PANEL_COLUMN_3);
 
+        $this->addFilterBlock(static::FILTER_BLOCK_DATE_FROM, [
+            'title' => Yii::t('StreamModule.filter', 'Date from'),
+            'sortOrder' => 100
+        ], static::PANEL_COLUMN_4);
+
         $this->addFilterBlock(static::FILTER_BLOCK_DATE_TO, [
             'title' => Yii::t('StreamModule.filter', 'Date to'),
             'sortOrder' => 200
         ], static::PANEL_COLUMN_4);
 
-        $this->addFilterBlock(static::FILTER_BLOCK_DATE_FROM, [
-            'title' => Yii::t('StreamModule.filter', 'Date from'),
-            'sortOrder' => 200
-        ], static::PANEL_COLUMN_4);
 
         if(TopicPicker::showTopicPicker(ContentContainerHelper::getCurrent())) {
             $this->addFilterBlock(static::FILTER_BLOCK_TOPIC, [
