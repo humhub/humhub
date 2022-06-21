@@ -160,11 +160,13 @@ class UserController extends Controller
             $definition['elements']['User']['elements']['status'] = [
                 'type' => 'dropdownlist',
                 'class' => 'form-control',
-                'items' => [
-                    User::STATUS_ENABLED => Yii::t('AdminModule.user', 'Enabled'),
-                    User::STATUS_DISABLED => Yii::t('AdminModule.user', 'Disabled'),
-                    User::STATUS_NEED_APPROVAL => Yii::t('AdminModule.user', 'Unapproved'),
-                ],
+                'items' => User::getStatusOptions(false),
+            ];
+
+            $definition['elements']['User']['elements']['visibility'] = [
+                'type' => 'dropdownlist',
+                'class' => 'form-control',
+                'items' => User::getVisibilityOptions(),
             ];
         }
 

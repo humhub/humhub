@@ -100,6 +100,7 @@ class MentioningController extends Controller
 
         // Find space members
         $users = Membership::getSpaceMembersQuery($space)
+            ->visible()
             ->search($keyword)
             ->filterBlockedUsers()
             ->limit($this->module->mentioningSearchBoxResultLimit)
