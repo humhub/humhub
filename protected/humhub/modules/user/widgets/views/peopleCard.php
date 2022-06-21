@@ -19,7 +19,8 @@ use yii\web\View;
 ?>
 
 <div class="card-panel">
-    <div class="card-bg-image"<?php if ($user->getProfileBannerImage()->hasImage()) : ?> style="background-image: url('<?= $user->getProfileBannerImage()->getUrl() ?>')"<?php endif; ?>></div>
+    <div
+        class="card-bg-image"<?php if ($user->getProfileBannerImage()->hasImage()) : ?> style="background-image: url('<?= $user->getProfileBannerImage()->getUrl() ?>')"<?php endif; ?>></div>
     <div class="card-header">
         <?= Image::widget([
             'user' => $user,
@@ -33,8 +34,8 @@ use yii\web\View;
     </div>
     <div class="card-body">
         <strong class="card-title"><?= Html::containerLink($user); ?></strong>
-        <?php if (is_string($user->profile->title) && trim($user->profile->title) !== '') : ?>
-            <div><?= Html::encode($user->profile->title); ?></div>
+        <?php if (!empty($user->displayNameSub)) : ?>
+            <div><?= Html::encode($user->displayNameSub); ?></div>
         <?php endif; ?>
         <?= PeopleDetails::widget([
             'user' => $user,
