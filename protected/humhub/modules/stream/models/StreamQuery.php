@@ -3,6 +3,7 @@
 namespace humhub\modules\stream\models;
 
 use humhub\modules\stream\models\filters\BlockedUsersStreamFilter;
+use humhub\modules\stream\models\filters\DateStreamFilter;
 use humhub\modules\stream\models\filters\StreamQueryFilter;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -135,6 +136,7 @@ class StreamQuery extends Model
         ContentTypeStreamFilter::class,
         OriginatorStreamFilter::class,
         BlockedUsersStreamFilter::class,
+        DateStreamFilter::class
     ];
 
     /**

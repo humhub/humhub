@@ -44,7 +44,7 @@ class ProfileStreamFilterNavigation extends WallStreamFilterNavigation
         $this->addFilterBlock('scope', [
             'title' => Yii::t('StreamModule.filter', 'Scope'),
             'sortOrder' => 90
-        ], static::PANEL_POSITION_CENTER);
+        ], static::PANEL_COLUMN_2);
     }
 
     /**
