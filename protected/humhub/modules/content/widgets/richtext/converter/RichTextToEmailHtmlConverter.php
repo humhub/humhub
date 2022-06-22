@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\widgets\richtext\converter;
 
+use humhub\libs\Html;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\file\actions\DownloadAction;
 use humhub\modules\file\models\File;
@@ -76,5 +77,21 @@ class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
         }
 
         return $parsedUrl;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function renderAutoUrl($block)
+    {
+        return Html::a($block[1], $block[1], ['target' => '_blank']);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function renderParagraph($block)
+    {
+        return '<p>' . nl2br($this->renderAbsy($block['content'])) . "</p>\n";
     }
 }

@@ -13,4 +13,5 @@
 - Enh #5598: Added `cy` Welsh language
 - Fix #5338: Content topic/visibility changes are  re-indexed in search index
 - Enh #5535: Invisible users
-- Enh #5747: Switch Mailer Library to `Symfony Mailer` 
+- Enh #5747: Switch Mailer Library to `Symfony Mailer`
+- Fix #5766: Fix email markdown format
