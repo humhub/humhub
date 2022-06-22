@@ -14,3 +14,4 @@
 - Fix #5338: Content topic/visibility changes are  re-indexed in search index
 - Enh #5535: Invisible users
 - Enh #5747: Switch Mailer Library to `Symfony Mailer` 
+- Enh #5769: Added more right margin on wall entries
