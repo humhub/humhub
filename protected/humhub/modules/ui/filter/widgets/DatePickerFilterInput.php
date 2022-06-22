@@ -8,9 +8,10 @@
 
 namespace humhub\modules\ui\filter\widgets;
 
+use DateTime;
 use humhub\modules\ui\form\widgets\DatePicker;
 use Yii;
-use yii\helpers\ArrayHelper;
+use yii\helpers\FormatConverter;
 
 class DatePickerFilterInput extends FilterInput
 {
@@ -36,6 +37,11 @@ class DatePickerFilterInput extends FilterInput
     {
         $filter = Yii::$app->request->get($this->category);
         $this->value = $filter;
+
+        if (!isset($this->options['placeholder'])) {
+            $this->options['placeholder'] = (new DateTime())
+                ->format(FormatConverter::convertDateIcuToPhp(Yii::$app->formatter->dateInputFormat));
+        }
     }
 
     /**
