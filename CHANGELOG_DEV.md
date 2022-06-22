@@ -15,3 +15,5 @@
 - Enh #5535: Invisible users
 - Enh #5747: Switch Mailer Library to `Symfony Mailer` 
 - Enh #5767: Display placeholder for date filter
+- Enh #5747: Switch Mailer Library to `Symfony Mailer`
+- Fix #5765: Fix rendering content form on external modules
