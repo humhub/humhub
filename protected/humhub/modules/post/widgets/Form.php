@@ -35,17 +35,35 @@ class Form extends WallCreateContentForm
     public $mentioningUrl = '/search/mentioning/space';
 
     /**
-     * @inheritdoc
+     * Get params for form rendering
+     *
+     * @param array $additionalParams
+     * @return array
      */
-    public function renderForm(ActiveForm $form): string
+    public function getRenderParams(array $additionalParams = []): array
     {
         $canCreatePostInSpace = ($this->contentContainer instanceof Space && $this->contentContainer->can(CreatePost::class));
 
-        return $this->render('form', [
-            'form' => $form,
+        return array_merge([
             'post' => new Post($this->contentContainer),
             'mentioningUrl' => $canCreatePostInSpace ? Url::to([$this->mentioningUrl, 'id' => $this->contentContainer->id]) : null,
-        ]);
+        ], $additionalParams);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderForm(): string
+    {
+        return $this->render('form', $this->getRenderParams());
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderActiveForm(ActiveForm $form): string
+    {
+        return $this->render('form', $this->getRenderParams(['form' => $form]));
     }
 
     /**
