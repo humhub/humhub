@@ -15,3 +15,8 @@
 - Enh #5535: Invisible users
 - Enh #5747: Switch Mailer Library to `Symfony Mailer`
 - Fix #5766: Fix email markdown format
+- Enh #5747: Switch Mailer Library to `Symfony Mailer` 
+- Enh #5769: Added more right margin on wall entries
+- Enh #5767: Display placeholder for date filter
+- Enh #5747: Switch Mailer Library to `Symfony Mailer`
+- Fix #5765: Fix rendering content form on external modules
