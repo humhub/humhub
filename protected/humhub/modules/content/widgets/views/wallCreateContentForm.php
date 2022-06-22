@@ -42,7 +42,7 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
     <div class="panel-body" id="contentFormBody" style="display:none;" data-action-component="content.form.CreateForm" >
         <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
-        <?= $wallCreateContentForm->renderForm($form) ?>
+        <?= $wallCreateContentForm->renderActiveForm($form) ?>
 
         <div id="notifyUserContainer" class="form-group" style="margin-top: 15px;display:none;">
             <?= UserPickerField::widget([

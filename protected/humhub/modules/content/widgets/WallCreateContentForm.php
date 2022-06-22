@@ -68,12 +68,22 @@ class WallCreateContentForm extends Widget
     /**
      * Returns the custom form implementation.
      *
-     * @param ActiveForm
      * @return string
      */
-    public function renderForm(ActiveForm $form): string
+    public function renderForm()
     {
         return '';
+    }
+
+    /**
+     * Returns the custom form implementation.
+     *
+     * @param ActiveForm $form
+     * @return string
+     */
+    public function renderActiveForm(ActiveForm $form): string
+    {
+        return $this->renderForm();
     }
 
     /**
