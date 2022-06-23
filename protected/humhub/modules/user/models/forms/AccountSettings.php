@@ -46,12 +46,19 @@ class AccountSettings extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'tags' => Yii::t('UserModule.account', 'Tags'),
+            'tags' => Yii::t('UserModule.account', 'Profile Tags'),
             'language' => Yii::t('UserModule.account', 'Language'),
             'show_introduction_tour' => Yii::t('UserModule.account', 'Hide introduction tour panel on dashboard'),
             'timeZone' => Yii::t('UserModule.account', 'TimeZone'),
             'visibility' => Yii::t('UserModule.account', 'Profile visibility'),
             'blockedUsers' => Yii::t('UserModule.account', 'Blocked users'),
+        ];
+    }
+
+    public function attributeHints()
+    {
+        return [
+            'tags' => Yii::t('UserModule.account', 'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.'),
         ];
     }
 

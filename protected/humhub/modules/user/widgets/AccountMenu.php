@@ -29,7 +29,7 @@ class AccountMenu extends LeftNavigation
      */
     public function init()
     {
-        $this->panelTitle = Yii::t('UserModule.account', '<strong>Account</strong> settings');
+        $this->panelTitle = Yii::t('UserModule.account', '<strong>User</strong> Account');
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.account', 'Profile'),
@@ -50,7 +50,7 @@ class AccountMenu extends LeftNavigation
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.account', 'Settings'),
+            'label' => Yii::t('UserModule.account', 'Account Settings'),
             'id' => 'account-settings-settings',
             'icon' => 'wrench',
             'url' => ['/user/account/edit-settings'],
