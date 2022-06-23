@@ -1,9 +1,7 @@
 <?php
 
 return [
-    '<strong>Account</strong> settings' => '<strong>Postavke</strong> računa',
     '<strong>Confirm</strong></strong> your new email address' => '<strong>Potvrdite</strong> vašu novu email adresu',
-    '<strong>User</strong> settings' => '<strong>Korisničke</strong> postavke',
     '<strong>Your</strong> profile' => '<strong>Vaš</strong> profil',
     'All your personal data will be irrevocably deleted.' => 'Svi vaši osobni podaci bit će neopozivo izbrisani.',
     'Are you sure that you want to delete your account?' => 'Jeste li sigurni da želite izbrisati svoj račun?',
@@ -34,8 +32,6 @@ return [
     'Registered users only' => 'Samo registrirani korisnici',
     'Save' => 'Spremi',
     'Save profile' => 'Spremi profil',
-    'Settings' => 'Postavke',
-    'Tags' => 'Tagovi',
     'The entered e-mail address is already in use by another user.' => 'Unesena e-mail adresa već je u upotrebi.',
     'TimeZone' => 'Vremenska zona',
     'Username has been changed' => 'Korisničko ime je promijenjeno',
@@ -56,8 +52,14 @@ return [
     'Your username has been changed' => 'Vaše korisničko ime je promijenjeno',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Vaše korisničko ime uspješno je promijenjeno.<br>Upravo smo vam poslali e-mail s novim informacijama.',
     '{attribute} "{value}" was not found!' => '{attribute} "{value}" nije pronađen!',
+    '<strong>Account</strong> Settings' => '',
     '<strong>Permissions</strong>' => '',
+    '<strong>User</strong> Account' => '',
+    'Account Settings' => '',
+    'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.' => '',
     'Blocked users' => '',
+    'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => '',
+    'Profile Tags' => '',
     'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.' => '',
     'You cannot use this username.' => '',
 ];

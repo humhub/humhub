@@ -1,9 +1,7 @@
 <?php
 
 return [
-    '<strong>Account</strong> settings' => 'إعدادات <strong> الحساب </strong>',
     '<strong>Confirm</strong></strong> your new email address' => '<strong> تأكد </strong> عنوان بريدك الإلكتروني الجديد',
-    '<strong>User</strong> settings' => '<strong>المستخدم</strong> الإعدادت',
     '<strong>Your</strong> profile' => '<strong>حسابك</strong> الشخصي
 ',
     'All your personal data will be irrevocably deleted.' => 'سيتم حذف جميع بياناتك الشخصية بشكل لا رجعة فيه.',
@@ -36,8 +34,6 @@ return [
     'Registered users only' => 'الأعضاء المسجلين والمفعلين',
     'Save' => 'حفظ',
     'Save profile' => 'حفظ الحساب',
-    'Settings' => 'الإعدادات',
-    'Tags' => 'الأوسمة',
     'The entered e-mail address is already in use by another user.' => 'عنوان البريد الإلكتروني تم إدخاله مسبقاً قيد الاستخدام من قبل مستخدم آخر.
 ',
     'TimeZone' => 'التوقيت الزمني',
@@ -60,9 +56,15 @@ return [
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'تم تغيير اسم المستخدم الخاص بك بنجاح. <br> لقد أرسلنا لك للتو رسالة بريد إلكتروني تحتوي على معلومات جديدة.',
     '{attribute} "{value}" was not found!' => '{attribute} "{value}" غير موجود!
 ',
+    '<strong>Account</strong> Settings' => '',
     '<strong>Permissions</strong>' => '',
+    '<strong>User</strong> Account' => '',
+    'Account Settings' => '',
+    'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.' => '',
     'Blocked users' => '',
+    'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => '',
     'Enter your password to continue' => '',
+    'Profile Tags' => '',
     'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.' => '',
     'You cannot use this username.' => '',
 ];

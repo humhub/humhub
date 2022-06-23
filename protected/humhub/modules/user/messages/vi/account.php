@@ -1,9 +1,7 @@
 <?php
 
 return [
-    '<strong>Account</strong> settings' => 'Thiết lập <strong>Tài khoản</strong>',
     '<strong>Confirm</strong></strong> your new email address' => '<strong>Xác nhận</strong> địa chỉ email mới của bạn',
-    '<strong>User</strong> settings' => 'Cài đặt <strong>Người dùng</strong>',
     '<strong>Your</strong> profile' => 'Hồ sơ <strong>của bạn</strong>',
     'All your personal data will be irrevocably deleted.' => 'Tất cả dữ liệu cá nhân của bạn sẽ bị xóa vĩnh viễn.',
     'Are you sure that you want to delete your account?' => 'Bạn có chắc muốn xóa tài khoản của mình?',
@@ -34,8 +32,6 @@ return [
     'Registered users only' => 'Chỉ dành cho người đã đăng ký tài khoản',
     'Save' => 'Lưu',
     'Save profile' => 'Lưu thông tin',
-    'Settings' => 'Cài đặt',
-    'Tags' => 'Tags',
     'The entered e-mail address is already in use by another user.' => 'Địa chỉ e -mail này đã được sử dụng bởi người dùng khác .',
     'TimeZone' => 'Múi giờ',
     'Username has been changed' => 'Username đã được thay đổi',
@@ -55,8 +51,14 @@ return [
     'Your username has been changed' => 'Username của bạn đã được đổi.',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Username của bạn đã được đổi thành công. <br /> Chúng tôi vừa gửi một email tới địa chỉ email của bạn về thông tin tài khoản mới này.',
     '{attribute} "{value}" was not found!' => '{attribute} không tìm thấy "{value}"',
+    '<strong>Account</strong> Settings' => '',
     '<strong>Permissions</strong>' => '',
+    '<strong>User</strong> Account' => '',
+    'Account Settings' => '',
+    'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.' => '',
     'Blocked users' => '',
+    'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => '',
+    'Profile Tags' => '',
     'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.' => '',
     'You cannot use this username.' => '',
     'Your current username is <b>{username}</b>. You can change your current username here.' => '',
