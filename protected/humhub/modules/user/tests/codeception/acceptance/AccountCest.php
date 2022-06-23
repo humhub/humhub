@@ -60,7 +60,7 @@ class AccountCest
         $I->click('Edit account');
         $I->waitForText('User Account');
         $I->click('Account Settings');
-        $I->waitForText('Account Settings');
+        $I->waitForText('Basic Settings');
 
         $I->click('Notifications'); //Notification tab
         $I->waitForText('Notification Settings');
