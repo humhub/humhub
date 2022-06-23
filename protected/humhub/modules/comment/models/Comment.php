@@ -222,6 +222,9 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
         $cacheID = sprintf(static::CACHE_KEY_LIMITED, $model, $id);
         $comments = $useCaching ? Yii::$app->cache->get($cacheID) : [];
+        if (!is_array($comments)) {
+            $comments = [];
+        }
 
         if (!isset($comments[$limit]) || !is_array($comments[$limit])) {
             $objectCondition = ['object_model' => $model, 'object_id' => $id];

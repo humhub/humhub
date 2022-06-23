@@ -9,6 +9,7 @@ HumHub Changelog
 - Fix #5735: OEmbed migration might fail with more complex Endpoint URLs
 - Fix #5760: Fix context menu position on the right window side
 - Fix #5759: Fix tests on enable space module
+- Fix #5773: Fix PHP 8 incompatibility with conversion false to array
 
 
 1.11.2 (May 30, 2022)
