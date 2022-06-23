@@ -18,7 +18,7 @@ class AccountCest
         $I->waitForText('User Account');
         $I->click('Account Settings');
 
-        $I->waitForText('Account Settings');
+        $I->waitForText('Basic Settings');
 
         $I->amGoingTo('fill the basic settings form');
 
