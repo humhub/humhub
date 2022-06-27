@@ -1,10 +1,8 @@
 <?php
 
 return [
-    '<strong>Account</strong> settings' => 'การตั้งค่า<strong>บัญชี</strong>',
     '<strong>Confirm</strong></strong> your new email address' => '<strong>ยืนยัน</strong> ที่อยู่อีเมลใหม่ของคุณ',
     '<strong>Permissions</strong>' => '<strong>การอนุญาต</strong>',
-    '<strong>User</strong> settings' => 'การตั้งค่า<strong>ผู้ใช้</strong>',
     '<strong>Your</strong> profile' => '<strong>โปรไฟล์ของคุณ</strong>',
     'All your personal data will be irrevocably deleted.' => 'ข้อมูลส่วนบุคคลทั้งหมดของคุณจะถูกลบโดยไม่สามารถเพิกถอนได้',
     'Are you sure that you want to delete your account?' => 'คุณแน่ใจหรือไม่ว่าต้องการลบบัญชีของคุณ',
@@ -35,8 +33,6 @@ return [
     'Registered users only' => 'ผู้ใช้ที่ลงทะเบียนเท่านั้น',
     'Save' => 'บันทึก',
     'Save profile' => 'จัดเก็บรายละเอียด',
-    'Settings' => 'การตั้งค่า',
-    'Tags' => 'แท็ก',
     'The entered e-mail address is already in use by another user.' => 'ที่อยู่อีเมลที่ป้อนถูกใช้โดยผู้ใช้รายอื่นแล้ว',
     'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.' => 'การตั้งค่าเหล่านี้ช่วยให้คุณกำหนดได้ว่าคุณต้องการให้สิทธิ์ใดแก่ผู้เยี่ยมชมโปรไฟล์ของคุณเอง ผู้ใช้แต่ละคนสามารถปรับการตั้งค่าสำหรับโปรไฟล์ของตนเองได้อย่างอิสระ',
     'TimeZone' => 'เขตเวลา',
@@ -60,6 +56,12 @@ return [
     'Your username has been changed' => 'ชื่อผู้ใช้ของคุณมีการเปลี่ยนแปลง',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'ชื่อผู้ใช้ของคุณได้รับการเปลี่ยนเรียบร้อยแล้ว <br> เราเพิ่งส่งอีเมลแจ้งข้อมูลใหม่ถึงคุณ',
     '{attribute} "{value}" was not found!' => 'ไม่พบ {attribute} "{value}"!',
+    '<strong>Account</strong> Settings' => '',
+    '<strong>User</strong> Account' => '',
+    'Account Settings' => '',
+    'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.' => '',
     'Blocked users' => '',
+    'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => '',
+    'Profile Tags' => '',
     'You cannot use this username.' => '',
 ];

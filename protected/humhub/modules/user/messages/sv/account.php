@@ -1,10 +1,8 @@
 <?php
 
 return [
-    '<strong>Account</strong> settings' => '<strong>Konto</strong> inställningar',
     '<strong>Confirm</strong></strong> your new email address' => '<strong>Bekräfta</strong> din nya e-postadress',
     '<strong>Permissions</strong>' => '<strong>Behörigheter</strong>',
-    '<strong>User</strong> settings' => '<strong>Användar</strong> inställningar',
     '<strong>Your</strong> profile' => '<strong>Din</strong> profil',
     'All your personal data will be irrevocably deleted.' => 'All din personliga data kommer att raderas oåterkalleligt.',
     'Are you sure that you want to delete your account?' => 'Är du säker på att du vill radera ditt konto?',
@@ -36,8 +34,6 @@ return [
     'Registered users only' => 'Endast registrerade användare',
     'Save' => 'Spara',
     'Save profile' => 'Spara profil',
-    'Settings' => 'Inställningar',
-    'Tags' => 'Taggar',
     'The entered e-mail address is already in use by another user.' => 'Den angivna e-post adressen används redan av en annan användare.',
     'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.' => 'Med dessa inställningar kan du bestämma vilka behörigheter du vill att de som besöker din profil ska ha. Varje användare kan fritt justera inställningarna för sin egen profil.',
     'TimeZone' => 'Tidszon',
@@ -59,5 +55,11 @@ return [
     'Your username has been changed' => 'Ditt användarnamn har ändrats',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Ditt användarnamn har ändrats. <br> Vi har precis skickat ett e-postmeddelande till dig med ny information.',
     '{attribute} "{value}" was not found!' => '{attribute} "{value}" kunde inte hittas!',
+    '<strong>Account</strong> Settings' => '',
+    '<strong>User</strong> Account' => '',
+    'Account Settings' => '',
+    'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.' => '',
+    'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => '',
+    'Profile Tags' => '',
     'You cannot use this username.' => '',
 ];

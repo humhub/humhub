@@ -1,8 +1,6 @@
 <?php
 
 return [
-    '<strong>Account</strong> settings' => '<strong>Configuració</strong> del compte',
-    '<strong>User</strong> settings' => '<strong>Configuració</strong> del membre',
     '<strong>Your</strong> profile' => '
 <strong>El teu</strong> perfil
 ',
@@ -20,20 +18,23 @@ return [
     'Password Recovery' => 'Recuperació de la contrasenya',
     'Profile' => 'Perfil',
     'Save' => 'Desa',
-    'Settings' => 'Configuració',
-    'Tags' => 'Etiquetes',
     'Users' => 'Usuaris',
     'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.' => 'Acabem d\'enviar un correu electrònic de confirmació a la teva nova adreça. <br /> Si us plau, segueix les instruccions.',
     'Your e-mail address has been successfully changed to {email}.' => 'El nou correu electrònic associat és {email}.',
     'Your friends' => 'Els teus amics',
     'Your password has been successfully changed!' => 'La teva constrasenya s\'ha modificat correctament!',
     '{attribute} "{value}" was not found!' => '{attribute} "{value}" no s\'ha trobat!',
+    '<strong>Account</strong> Settings' => '',
     '<strong>Confirm</strong></strong> your new email address' => '',
     '<strong>Permissions</strong>' => '',
+    '<strong>User</strong> Account' => '',
+    'Account Settings' => '',
+    'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.' => '',
     'All your personal data will be irrevocably deleted.' => '',
     'Are you sure that you want to delete your account?' => '',
     'Blocked users' => '',
     'Changing the username can make some links unusable, for example old links to the profile.' => '',
+    'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => '',
     'Do you really want to delete your icon image?' => '',
     'Do you really want to delete your logo image?' => '',
     'Enter your password to continue' => '',
@@ -43,6 +44,7 @@ return [
     'Invalid link! Please make sure that you entered the entire url.' => '',
     'New User name' => '',
     'Permissions' => '',
+    'Profile Tags' => '',
     'Profile visibility' => '',
     'Registered users only' => '',
     'Save profile' => '',

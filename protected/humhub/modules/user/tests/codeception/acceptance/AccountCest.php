@@ -15,10 +15,10 @@ class AccountCest
         $I->amOnProfile();
 
         $I->click('Edit account');
-        $I->waitForText('Account settings');
-        $I->click('Settings');
+        $I->waitForText('User Account');
+        $I->click('Account Settings');
 
-        $I->waitForText('User settings');
+        $I->waitForText('Basic Settings');
 
         $I->amGoingTo('fill the basic settings form');
 
@@ -58,9 +58,9 @@ class AccountCest
         $I->amOnProfile();
 
         $I->click('Edit account');
-        $I->waitForText('Account settings');
-        $I->click('Settings');
-        $I->waitForText('User settings');
+        $I->waitForText('User Account');
+        $I->click('Account Settings');
+        $I->waitForText('Basic Settings');
 
         $I->click('Notifications'); //Notification tab
         $I->waitForText('Notification Settings');

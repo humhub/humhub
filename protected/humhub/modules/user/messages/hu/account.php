@@ -1,10 +1,8 @@
 <?php
 
 return [
-    '<strong>Account</strong> settings' => '<strong>Fiók</strong> beállítások',
     '<strong>Confirm</strong></strong> your new email address' => '<strong>Erősitsd meg</strong> az új e-mail címed',
     '<strong>Permissions</strong>' => '<strong>Engedélyek</strong>',
-    '<strong>User</strong> settings' => '<strong>Felhasználói</strong> beállítások',
     '<strong>Your</strong> profile' => '<strong>Te</strong> profilod',
     'All your personal data will be irrevocably deleted.' => 'Az összes személyes adatod végérvényesen törölve lesz.',
     'Are you sure that you want to delete your account?' => 'Biztos, hogy törölni szeretnéd a fiókodat?',
@@ -35,8 +33,6 @@ return [
     'Registered users only' => 'Csak regisztrált felhasználóknak',
     'Save' => 'Mentés',
     'Save profile' => 'Profil mentése',
-    'Settings' => 'Beállítások',
-    'Tags' => 'Címkék',
     'The entered e-mail address is already in use by another user.' => 'A megadott e-mail címet egy másik felhasználó használja.',
     'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.' => 'Ezek a beállítások lehetővé teszik annak meghatározását, hogy mely engedélyeket kívánja megadni a látogatóknak a saját egyéni profiljában. Minden felhasználó szabadon módosíthatja a saját profiljának beállításait.',
     'TimeZone' => 'Időzóna',
@@ -58,6 +54,12 @@ return [
     'Your username has been changed' => 'A felhasználóneved megváltozott',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'A felhasználónevedet sikeresen megváltoztattad.<br>Küldtünk neked egy e-mailt az új információkkal.',
     '{attribute} "{value}" was not found!' => '{attribute} "{value}" nem található!',
+    '<strong>Account</strong> Settings' => '',
+    '<strong>User</strong> Account' => '',
+    'Account Settings' => '',
+    'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.' => '',
     'Blocked users' => '',
+    'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => '',
+    'Profile Tags' => '',
     'You cannot use this username.' => '',
 ];
