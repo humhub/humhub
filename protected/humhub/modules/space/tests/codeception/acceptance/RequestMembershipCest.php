@@ -24,7 +24,7 @@ class RequestMembershipCest
         $I->seeElement('[data-space-request-membership]');
         $I->click('[data-space-request-membership]');
 
-        $I->waitForText('Request space membership', null,'#globalModal');
+        $I->waitForText('Request Membership', null,'#globalModal');
         $I->fillField('#request-message', 'Hi, I want to join this space.');
         $I->click('Send', '#globalModal');
         $I->waitForText('Your request was successfully submitted to the space administrators.');
@@ -60,7 +60,7 @@ class RequestMembershipCest
         $I->seeElement('[data-space-request-membership]');
         $I->click('[data-space-request-membership]');
 
-        $I->waitForText('Request space membership', null,'#globalModal');
+        $I->waitForText('Request Membership', null,'#globalModal');
         $I->fillField('#request-message', 'Hi, I want to join this space.');
         $I->click('Send', '#globalModal');
         $I->waitForText('Your request was successfully submitted to the space administrators.');
@@ -106,7 +106,7 @@ class RequestMembershipCest
         $I->seeElement('[data-space-request-membership]');
         $I->click('[data-space-request-membership]');
 
-        $I->waitForText('Request space membership', null,'#globalModal');
+        $I->waitForText('Request Membership', null,'#globalModal');
         $I->fillField('#request-message', 'Hi, I want to join this space.');
         $I->click('Send', '#globalModal');
         $I->waitForText('Your request was successfully submitted to the space administrators.');
