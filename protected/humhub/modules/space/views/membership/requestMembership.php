@@ -20,17 +20,17 @@ use humhub\widgets\LoaderWidget;
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
-                <?= Yii::t('SpaceModule.base', "<strong>Request</strong> space membership"); ?>
+                <?= Yii::t('SpaceModule.base', '<strong>Request</strong> Membership'); ?>
             </h4>
         </div>
         <div class="modal-body">
 
-            <?= Yii::t('SpaceModule.base', 'Please shortly introduce yourself, to become an approved member of this space.'); ?>
+            <?= Yii::t('SpaceModule.base', 'Access to this Space is restricted. Please introduce yourself to become a member.'); ?>
 
             <br/>
             <br/>
 
-            <?= $form->field($model, 'message',)->textarea(['id' => 'request-message']); ?>
+            <?= $form->field($model, 'message',)->textarea(['id' => 'request-message', 'placeholder' => Yii::t('SpaceModule.base', 'I want to become a member because...')]); ?>
 
         </div>
         <div class="modal-footer">
@@ -48,7 +48,7 @@ use humhub\widgets\LoaderWidget;
                 ]
             ]); ?>
 
-            <button type="button" class="btn btn-primary" data-dismiss="modal">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
                 <?= Yii::t('SpaceModule.base', 'Close'); ?>
             </button>
 
