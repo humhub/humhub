@@ -1,7 +1,7 @@
 <?php
 return array (
   'Add Space' => 'Lägg till forum',
-  'Create new space' => 'Skapa nytt forum',
+  'Create Space' => 'Skapa nytt forum',
   'My spaces' => 'Mina forum',
   'No member or following spaces found.' => 'Inga medlemmar eller personer som följer forumet funna.',
   'No result found for the given filter.' => 'Inget resultat hittades med det valda filtret.',

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Create new space' => 'Creyar nuevo espacio',
+    'Create Space' => 'Creyar nuevo espacio',
     'My spaces' => 'Espacios',
     'No member or following spaces found.' => 'No s\'han trobau espacios que sigas u que sías miembro.',
     'Search' => 'Buscar',

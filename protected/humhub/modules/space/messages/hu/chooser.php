@@ -2,7 +2,7 @@
 
 return [
     'Add Space' => 'Közösség hozzáadása',
-    'Create new space' => 'Új közösség létrehozása',
+    'Create Space' => 'Új közösség létrehozása',
     'My spaces' => 'Közösségeim',
     'No member or following spaces found.' => 'Nem található tag és közösség sem.',
     'No result found for the given filter.' => 'Nincs eredmény ezekkel a szűrési feltételekkel.',

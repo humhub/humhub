@@ -2,7 +2,7 @@
 
 return [
     'Add Space' => 'Pievienot vietu',
-    'Create new space' => 'Izveidot jaunu vietu',
+    'Create Space' => 'Izveidot jaunu vietu',
     'My spaces' => 'Manas vietas',
     'No member or following spaces found.' => 'Nav dalībnieku sekojošajām vietām.',
     'No result found for the given filter.' => 'Nav rezultātu dotajam filtram.',

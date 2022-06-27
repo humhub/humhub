@@ -1,7 +1,7 @@
 <?php
 return array (
   'Add Space' => 'スペース追加',
-  'Create new space' => 'スペースを作成する',
+  'Create Space' => 'スペースを作成する',
   'My spaces' => 'マイスペース',
   'No member or following spaces found.' => '',
   'No result found for the given filter.' => 'この文字列では見つかりませんでした',

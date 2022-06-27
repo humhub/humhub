@@ -1,7 +1,7 @@
 <?php
 return array (
   '-' => '-',
-  '<strong>Create</strong> new space' => 'Új közösség <strong>létrehozása</strong>',
+  '<strong>Create</strong> Space' => 'Új közösség <strong>létrehozása</strong>',
   '<strong>Manage</strong> members' => 'Tagok <strong>kezelése</strong>',
   '<strong>Members</strong>' => '<strong>Tagok</strong>',
   '<strong>Security</strong> settings' => '<strong>Biztonsági</strong> beállítások',

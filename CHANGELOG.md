@@ -1,14 +1,16 @@
 HumHub Changelog
 ================
 
-1.11.3 (Unreleased)
----------------------
+1.11.3 (June 27, 2022)
+----------------------
 - Fix: #5736: Fix status message on user approval 
 - Fix #5734: Fix error message when uninstall module and module folder is not writable
 - Fix #5740: Fix logout action on force change password
 - Fix #5735: OEmbed migration might fail with more complex Endpoint URLs
 - Fix #5760: Fix context menu position on the right window side
 - Fix #5759: Fix tests on enable space module
+- Fix #5773: Fix PHP 8 incompatibility with conversion false to array
+- Fix #5775: Missing encoding of profile labels in profile field administration
 
 
 1.11.2 (May 30, 2022)

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Create new space' => 'Sukurti naują erdvę',
+    'Create Space' => 'Sukurti naują erdvę',
     'My spaces' => 'Mano erdvės',
     'Search' => 'Ieškoti',
     'Add Space' => '',

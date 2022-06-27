@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Create</strong> new space' => '<strong>创建</strong> 新空间',
+    '<strong>Create</strong> Space' => '<strong>创建</strong> 新空间',
     '<strong>Manage</strong> members' => '<strong>管理</strong> 成员',
     '<strong>Members</strong>' => '<strong>成员</strong>',
     '<strong>Security</strong> settings' => '<strong>安全</strong> 设置',

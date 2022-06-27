@@ -10,7 +10,7 @@ return [
     'Security' => 'Securitate',
     'Unarchive' => 'Dezarhivează',
     '-' => '',
-    '<strong>Create</strong> new space' => '',
+    '<strong>Create</strong> Space' => '',
     '<strong>Manage</strong> members' => '',
     '<strong>Members</strong>' => '',
     '<strong>Space</strong> Modules' => '',

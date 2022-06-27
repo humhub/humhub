@@ -11,7 +11,7 @@ return [
     'Unarchive' => 'Atarhivēt',
     'never' => 'nekad',
     '-' => '',
-    '<strong>Create</strong> new space' => '',
+    '<strong>Create</strong> Space' => '',
     '<strong>Manage</strong> members' => '',
     '<strong>Security</strong> settings' => '',
     '<strong>Space</strong> Modules' => '',

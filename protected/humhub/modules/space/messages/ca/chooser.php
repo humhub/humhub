@@ -2,7 +2,7 @@
 
 return [
     'Add Space' => 'Crea l\'espai',
-    'Create new space' => 'Crea un nou espai',
+    'Create Space' => 'Crea un nou espai',
     'My spaces' => 'Els meus espais',
     'No spaces found for the given query' => 'No s\'ha trobat cap espai per a aquesta consulta',
     'Search' => 'Cerca',

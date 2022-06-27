@@ -2,7 +2,7 @@
 
 return [
     'Add Space' => 'Dodaj prostor',
-    'Create new space' => 'Kreiraj novi prostor',
+    'Create Space' => 'Kreiraj novi prostor',
     'My spaces' => 'Moji prostori',
     'No member or following spaces found.' => 'Nije pronađen nijedan član ili praćeni prostor',
     'No result found for the given filter.' => 'Nije pronađen nijedan rezultat za određeni filtar.',

@@ -2,7 +2,7 @@
 
 return [
     'Add Space' => 'افزودن انجمن',
-    'Create new space' => 'ساخت انجمن جدید',
+    'Create Space' => 'ساخت انجمن جدید',
     'My spaces' => 'انجمن‌های من',
     'Search' => 'جستجو',
     'Search for spaces' => 'جستجوی انجمن‌ها',

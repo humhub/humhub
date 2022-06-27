@@ -2,7 +2,7 @@
 
 return [
     'Add Space' => 'Добавить сообщество',
-    'Create new space' => 'Создать новое сообщество',
+    'Create Space' => 'Создать новое сообщество',
     'My spaces' => 'Мои сообщества',
     'No member or following spaces found.' => 'Не найдены участники или подписчики сообществ.',
     'No result found for the given filter.' => 'Ничего не найдено по полученному запросу',

@@ -2,7 +2,7 @@
 
 return [
     'Add Space' => 'Thêm diễn đàn',
-    'Create new space' => 'Tạo diễn đàn mới',
+    'Create Space' => 'Tạo diễn đàn mới',
     'My spaces' => 'Các diễn đàn của tôi',
     'No member or following spaces found.' => 'Không tìm thấy thành viên hoặc diễn đàn nào mà bạn theo.',
     'No result found for the given filter.' => 'Không tìm thấy kết quả',

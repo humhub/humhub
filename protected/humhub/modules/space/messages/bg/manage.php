@@ -1,7 +1,7 @@
 <?php
 return array (
   '-' => '-',
-  '<strong>Create</strong> new space' => '<strong>Създай</strong> нов раздел',
+  '<strong>Create</strong> Space' => '<strong>Създай</strong> нов раздел',
   '<strong>Manage</strong> members' => '<strong>Управлявай</strong> членове',
   '<strong>Members</strong>' => '<strong>Членове</strong>',
   '<strong>Security</strong> settings' => '<strong></strong>',

@@ -2,7 +2,7 @@
 
 return [
     'Add Space' => 'Lisää Sivu',
-    'Create new space' => 'Lisää uusi sivu',
+    'Create Space' => 'Lisää uusi sivu',
     'My spaces' => 'Sivut',
     'No member or following spaces found.' => 'Sivulta ei löytynyt hakemaasi jäsentä tai seuraajaa.',
     'No result found for the given filter.' => 'Ei tulosta annetusta suodattimesta.',

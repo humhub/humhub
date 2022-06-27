@@ -2,7 +2,7 @@
 
 return [
     'Add Space' => '增加空间',
-    'Create new space' => '创建新空间',
+    'Create Space' => '创建新空间',
     'My spaces' => '<strong>我的空间</strong>',
     'No member or following spaces found.' => '没有找到成员或者关注的空间。',
     'No result found for the given filter.' => '没有找到符合筛选条件的记录。',

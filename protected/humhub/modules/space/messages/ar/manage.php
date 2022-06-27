@@ -2,7 +2,7 @@
 
 return [
     '-' => '-',
-    '<strong>Create</strong> new space' => 'مساحة جديدة <strong>خلق</strong>',
+    '<strong>Create</strong> Space' => 'مساحة جديدة <strong>خلق</strong>',
     '<strong>Manage</strong> members' => 'أفراد <strong>يدير</strong>',
     '<strong>Members</strong>' => '<strong>أفراد</strong>',
     '<strong>Security</strong> settings' => '<strong>الأمان</strong> الاعدادات

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Create</strong> new space' => '<strong>Opret</strong> ny side',
+    '<strong>Create</strong> Space' => '<strong>Opret</strong> ny side',
     '<strong>Manage</strong> members' => '<strong>Administrer</strong> brugere',
     '<strong>Members</strong>' => '<strong>Brugere</strong',
     '<strong>Security</strong> settings' => '<strong>Sikkerheds</strong> indstillinger',
