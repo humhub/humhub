@@ -29,7 +29,7 @@ use yii\helpers\Url;
         [
             'attribute' => 'title',
             'content' => function (ProfileField $model, $key, $index, $that) {
-                return Yii::t($model->getTranslationCategory(), $that->getDataCellValue($model, $key, $index));
+                return htmlentities(Yii::t($model->getTranslationCategory(), $that->getDataCellValue($model, $key, $index)));
             }
         ],
         [
