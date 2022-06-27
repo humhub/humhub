@@ -2,7 +2,7 @@
 
 return [
     'Add Space' => 'Přidat prostor',
-    'Create new space' => 'Vytvořit nový prostor',
+    'Create Space' => 'Vytvořit nový prostor',
     'My spaces' => 'Mé prostory',
     'No member or following spaces found.' => 'Žádný člen nebo následující prostory nebyly nalezeny.',
     'No result found for the given filter.' => 'Pro daný filtr nebyl nalezen žádný výsledek.',

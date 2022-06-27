@@ -2,7 +2,7 @@
 
 return [
     'Add Space' => 'Добави Раздел',
-    'Create new space' => 'Създай нов раздел',
+    'Create Space' => 'Създай нов раздел',
     'My spaces' => 'Моите раздели',
     'No member or following spaces found.' => 'Няма намерен член или раздел.',
     'No result found for the given filter.' => 'Не е намерен резултат за дадения филтър.',

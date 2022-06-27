@@ -2,7 +2,7 @@
 
 return [
     '-' => '-',
-    '<strong>Create</strong> new space' => '<strong>Tạo</strong> diễn đàn mới',
+    '<strong>Create</strong> Space' => '<strong>Tạo</strong> diễn đàn mới',
     '<strong>Manage</strong> members' => '<strong>Quản lý</strong> thành viên',
     '<strong>Members</strong>' => '<strong>Thành viên</strong>',
     '<strong>Security</strong> settings' => 'Thiết lập <strong>Bảo mật</strong>',

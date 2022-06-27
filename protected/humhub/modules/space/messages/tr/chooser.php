@@ -2,7 +2,7 @@
 
 return [
     'Add Space' => 'Mekan ekle',
-    'Create new space' => 'Yeni mekan aç',
+    'Create Space' => 'Yeni mekan aç',
     'My spaces' => 'Mekanlarım',
     'No spaces found for the given query' => 'Verilen sorgu için mekan bulunamadı',
     'Search' => 'Arama',

@@ -67,7 +67,7 @@ use yii\helpers\Url;
                 <div class="dropdown-footer">
                     <a href="#" class="btn btn-info col-md-12" data-action-click="ui.modal.load"
                        data-action-url="<?= Url::to(['/space/create/create']) ?>">
-                        <?= Yii::t('SpaceModule.chooser', 'Create new space') ?>
+                        <?= Yii::t('SpaceModule.chooser', 'Create Space') ?>
                     </a>
                 </div>
             </li>

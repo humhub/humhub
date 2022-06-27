@@ -2,7 +2,7 @@
 
 return [
     'Add Space' => 'Añadir espacio',
-    'Create new space' => 'Crear nuevo espacio',
+    'Create Space' => 'Crear nuevo espacio',
     'My spaces' => 'Mis espacios',
     'No member or following spaces found.' => 'No se han encontrado miembros o espacios que esté siguiendo.',
     'No result found for the given filter.' => 'No se han encontrado resultados para ese filtro.',

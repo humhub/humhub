@@ -2,7 +2,7 @@
 
 return [
     'Add Space' => 'أضف مسافة',
-    'Create new space' => 'إنشاء مساحة جديدة',
+    'Create Space' => 'إنشاء مساحة جديدة',
     'My spaces' => 'مساحاتي',
     'No member or following spaces found.' => 'لم يتم العثور على أي عضو أو مسافات تالية.',
     'No result found for the given filter.' => 'لم يتم العثور على نتيجة لمرشح معين.',

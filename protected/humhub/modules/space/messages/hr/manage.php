@@ -2,7 +2,7 @@
 
 return [
     '-' => '-',
-    '<strong>Create</strong> new space' => '<strong>Kreiraj</strong> novi prostor',
+    '<strong>Create</strong> Space' => '<strong>Kreiraj</strong> novi prostor',
     '<strong>Manage</strong> members' => '<strong>Upravljaj</strong> članovima',
     '<strong>Members</strong>' => '<strong>Članovi</strong>',
     '<strong>Security</strong> settings' => '<strong>Sigurnosne</strong> postavke',

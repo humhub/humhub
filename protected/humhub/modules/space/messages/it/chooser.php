@@ -1,7 +1,7 @@
 <?php
 return array (
   'Add Space' => 'Aggiungi spazio',
-  'Create new space' => 'Crea un nuovo spazio',
+  'Create Space' => 'Crea un nuovo spazio',
   'My spaces' => 'I miei spazi',
   'No member or following spaces found.' => 'Nessun membro o spazi seguiti trovati',
   'No result found for the given filter.' => 'Nessun risultato per questo filtro.',

@@ -3,7 +3,7 @@
 return [
     'Search' => 'ፈልግ',
     'Add Space' => '',
-    'Create new space' => '',
+    'Create Space' => '',
     'My spaces' => '',
     'No member or following spaces found.' => '',
     'No result found for the given filter.' => '',

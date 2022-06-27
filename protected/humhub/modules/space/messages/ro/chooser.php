@@ -4,7 +4,7 @@ return [
     'My spaces' => 'Spațiile mele',
     'Search' => 'Căutare',
     'Add Space' => '',
-    'Create new space' => '',
+    'Create Space' => '',
     'No member or following spaces found.' => '',
     'No result found for the given filter.' => '',
     'No spaces found for the given query' => '',

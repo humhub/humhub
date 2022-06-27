@@ -2,7 +2,7 @@
 
 return [
     '-' => '-',
-    '<strong>Create</strong> new space' => '<strong>Luo</strong> uusi sivu',
+    '<strong>Create</strong> Space' => '<strong>Luo</strong> uusi sivu',
     '<strong>Manage</strong> members' => '<strong>Hallinnoi</strong> sivun jäseniä',
     '<strong>Members</strong>' => '<strong>Jäsenet</strong>',
     '<strong>Security</strong> settings' => '<strong>Suojaus</strong> asetukset',

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Create new space' => 'Tilføj ny side',
+    'Create Space' => 'Tilføj ny side',
     'My spaces' => 'Mine sider',
     'Search' => 'Søg',
     'Add Space' => '',

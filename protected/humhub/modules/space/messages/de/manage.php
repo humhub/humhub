@@ -1,7 +1,7 @@
 <?php
 return array (
   '-' => '–',
-  '<strong>Create</strong> new space' => 'Neuen Space <strong>erstellen</strong>',
+  '<strong>Create</strong> Space' => 'Neuen Space <strong>erstellen</strong>',
   '<strong>Manage</strong> members' => 'Mitglieder <strong>verwalten</strong>',
   '<strong>Members</strong>' => '<strong>Mitglieder</strong>',
   '<strong>Security</strong> settings' => '<strong>Sicherheits</strong>-Einstellungen',

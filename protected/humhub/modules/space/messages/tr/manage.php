@@ -2,7 +2,7 @@
 
 return [
     '-' => '-',
-    '<strong>Create</strong> new space' => '<strong>Yeni</strong> mekan oluştur',
+    '<strong>Create</strong> Space' => '<strong>Yeni</strong> mekan oluştur',
     '<strong>Manage</strong> members' => 'Üyeleri yönet',
     '<strong>Members</strong>' => '<strong>Üyeler</strong>',
     '<strong>Security</strong> settings' => '<strong>Güvenlik</strong> ayarları',

@@ -2,7 +2,7 @@
 
 return [
     '-' => '-',
-    '<strong>Create</strong> new space' => '<strong>Skapa</strong> nytt forum',
+    '<strong>Create</strong> Space' => '<strong>Skapa</strong> nytt forum',
     '<strong>Manage</strong> members' => '<strong>Hantera</strong> medlemmar',
     '<strong>Members</strong>' => '<strong>Medlemmar</strong>',
     '<strong>Security</strong> settings' => '<strong>Säkerhetsinställningar</strong>',

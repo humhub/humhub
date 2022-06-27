@@ -2,7 +2,7 @@
 
 return [
     'Add Space' => 'Legg til gruppe',
-    'Create new space' => 'Lag en ny gruppe',
+    'Create Space' => 'Lag en ny gruppe',
     'My spaces' => 'Mine grupper',
     'No member or following spaces found.' => 'Ingen medlemmer ble funnet i følgende grupper:',
     'No result found for the given filter.' => 'Ingen resultater.',

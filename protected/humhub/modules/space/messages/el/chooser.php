@@ -1,7 +1,7 @@
 <?php
 return array (
   'Add Space' => 'Προσθήκη Χώρου',
-  'Create new space' => 'Δημιουργία νέου χώρου',
+  'Create Space' => 'Δημιουργία νέου χώρου',
   'My spaces' => 'Οι χώροι μου',
   'No member or following spaces found.' => 'Δεν βρέθηκε μέλος ή ακόλουθος χώρου.',
   'No result found for the given filter.' => 'Δεν βρέθηκαν αποτελέσματα για το συγκεκριμένο φίλτρο.',

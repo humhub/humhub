@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Create</strong> new space' => '<strong>Vytvořit</strong> nový prostor',
+    '<strong>Create</strong> Space' => '<strong>Vytvořit</strong> nový prostor',
     '<strong>Manage</strong> members' => '<strong>Spravovat</strong> členy',
     '<strong>Members</strong>' => '<strong>Členové</strong>',
     '<strong>Security</strong> settings' => '<strong>Bezpečnostní</strong> nastavení',

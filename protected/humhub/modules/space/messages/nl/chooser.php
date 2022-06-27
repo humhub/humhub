@@ -2,7 +2,7 @@
 
 return [
     'Add Space' => 'Voeg een ruimte toe',
-    'Create new space' => 'Maak een nieuwe ruimte aan',
+    'Create Space' => 'Maak een nieuwe ruimte aan',
     'My spaces' => 'Mijn ruimtes',
     'No member or following spaces found.' => 'Geen enkel lid of volgende ruimtes gevonden.',
     'No result found for the given filter.' => 'Geen resultaat gevonden door het opgegeven filter.',

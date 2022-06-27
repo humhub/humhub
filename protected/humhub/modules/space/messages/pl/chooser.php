@@ -2,7 +2,7 @@
 
 return [
     'Add Space' => 'Dodaj Strefę',
-    'Create new space' => 'Utwórz nową strefę',
+    'Create Space' => 'Utwórz nową strefę',
     'My spaces' => 'Moje strefy',
     'No member or following spaces found.' => 'Brak członków lub obserwujących strefę.',
     'No result found for the given filter.' => 'Nie znaleziono wyników dla wybranego filtra.',

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Create</strong> new space' => '<strong>Sukurti</strong> naują erdvę',
+    '<strong>Create</strong> Space' => '<strong>Sukurti</strong> naują erdvę',
     '<strong>Space</strong> Modules' => '<strong>Erdvės</strong> Moduliai',
     'Advanced access settings' => 'Išplėstiniai prieigos nustatymai',
     'Archive' => 'Archyvas',

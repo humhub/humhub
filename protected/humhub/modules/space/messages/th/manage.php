@@ -2,7 +2,7 @@
 
 return [
     '-' => '-',
-    '<strong>Create</strong> new space' => '<strong>สร้าง</strong> พื้นที่ใหม่',
+    '<strong>Create</strong> Space' => '<strong>สร้าง</strong> พื้นที่ใหม่',
     '<strong>Manage</strong> members' => '<strong>จัดการ</strong> สมาชิก',
     '<strong>Members</strong>' => '<strong>สมาชิก</strong>',
     '<strong>Security</strong> settings' => '<strong>ความปลอดภัย</strong> การตั้งค่า',

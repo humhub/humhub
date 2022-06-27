@@ -1,7 +1,7 @@
 <?php
 return array (
   '-' => '-',
-  '<strong>Create</strong> new space' => '<strong>新規作成</strong> スペース',
+  '<strong>Create</strong> Space' => '<strong>新規作成</strong> スペース',
   '<strong>Manage</strong> members' => 'メンバーの<strong>管理</strong>',
   '<strong>Members</strong>' => '<strong>メンバー</strong>',
   '<strong>Security</strong> settings' => '<strong>セキュリティ</strong>の設定',
