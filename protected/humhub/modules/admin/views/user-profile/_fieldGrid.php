@@ -8,6 +8,7 @@ use humhub\modules\admin\grid\CheckboxColumn;
 use yii\data\ArrayDataProvider;
 use yii\grid\ActionColumn;
 use yii\helpers\Url;
+use yii\helpers\Html;
 
 /* @var $category ProfileFieldCategory */
 
@@ -29,7 +30,7 @@ use yii\helpers\Url;
         [
             'attribute' => 'title',
             'content' => function (ProfileField $model, $key, $index, $that) {
-                return Yii::t($model->getTranslationCategory(), $that->getDataCellValue($model, $key, $index));
+                return Html::encode(Yii::t($model->getTranslationCategory(), $that->getDataCellValue($model, $key, $index)));
             }
         ],
         [
