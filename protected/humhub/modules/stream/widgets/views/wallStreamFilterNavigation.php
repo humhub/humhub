@@ -36,7 +36,6 @@ $panelColumn4Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_4])
                     <?= FilterPanel::widget(['blocks' => $panelColumn1Blocks, 'span' => count($panels)])?>
                     <?= FilterPanel::widget(['blocks' => $panelColumn2Blocks, 'span' => count($panels)])?>
                     <?= FilterPanel::widget(['blocks' => $panelColumn3Blocks, 'span' => count($panels)])?>
-                    <?= FilterPanel::widget(['blocks' => $panelColumn4Blocks, 'span' => count($panels)])?>
                 </div>
             </div>
         </div>
