@@ -159,7 +159,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             }],
             [['created_by', 'updated_by'], 'integer'],
             [['status'], 'in', 'range' => array_keys(self::getStatusOptions())],
-            [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions())],
+            [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => Profile::SCENARIO_EDIT_ADMIN],
             [['tagsField', 'blockedUsersField'], 'safe'],
             [['guid'], 'string', 'max' => 45],
             [['time_zone'], 'validateTimeZone'],

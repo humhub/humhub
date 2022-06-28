@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models\forms;
 
+use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
 
@@ -36,7 +37,8 @@ class AccountSettings extends \yii\base\Model
             [['show_introduction_tour'], 'boolean'],
             [['timeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
-            ['visibility', 'in', 'range' => array_keys(User::getVisibilityOptions(false))],
+            ['visibility', 'in', 'range' => array_keys(User::getVisibilityOptions(false)),
+                'when' => function () {return AuthHelper::isGuestAccessEnabled();}],
         ];
     }
 
@@ -60,6 +62,11 @@ class AccountSettings extends \yii\base\Model
         return [
             'tags' => Yii::t('UserModule.account', 'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.'),
         ];
+    }
+
+    public function getTags(): array
+    {
+        return is_array($this->tags) ? $this->tags : [];
     }
 
 }
