@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.11.4 (Unreleased)
+----------------------
+- Fix #5776: Hide beta modules on disabled filter
+
 1.11.3 (June 27, 2022)
 ----------------------
 - Fix: #5736: Fix status message on user approval 
