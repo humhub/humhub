@@ -20,3 +20,4 @@
 - Enh #5767: Display placeholder for date filter
 - Enh #5747: Switch Mailer Library to `Symfony Mailer`
 - Fix #5765: Fix rendering content form on external modules
+- Fix #5780: Don't hide icon "close" on picker
