@@ -12,6 +12,7 @@ use humhub\components\Widget;
 use humhub\modules\space\models\Space;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 use yii\helpers\Json;
 
 /**
@@ -96,7 +97,7 @@ class MembershipButton extends Widget
                 'attrs' => [
                     'data-action-click' => 'content.container.relationship',
                     'data-action-url' => $this->space->createUrl('/space/membership/revoke-membership'),
-                    'data-action-confirm' => Yii::t('SpaceModule.base', 'Would you like to end your membership in Space {spaceName}?', ['{spaceName}' => '<strong>' . $this->space->getDisplayName() . '</strong>']),
+                    'data-action-confirm' => Yii::t('SpaceModule.base', 'Would you like to end your membership in Space {spaceName}?', ['{spaceName}' => '<strong>' . Html::encode($this->space->getDisplayName()) . '</strong>']),
                     'data-button-options' => Json::encode($this->options),
                     'data-ui-loader' => '',
                     'class' => 'btn btn-info active',
