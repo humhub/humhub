@@ -300,6 +300,7 @@ class OnlineModuleManager extends Component
         foreach ($modules as $o => $module) {
             $onlineModule = new ModelModule($module);
             if ($onlineModule->isInstalled() ||
+                !$onlineModule->latestCompatibleVersion ||
                 ($onlineModule->isDeprecated && $marketplaceModule->hideLegacyModules)) {
                 unset($modules[$o]);
                 continue;
