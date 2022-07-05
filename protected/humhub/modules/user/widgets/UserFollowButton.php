@@ -10,7 +10,6 @@ namespace humhub\modules\user\widgets;
 
 use Yii;
 use yii\bootstrap\Html;
-use humhub\modules\friendship\models\Friendship;
 
 /**
  * UserFollowButton
@@ -113,7 +112,7 @@ class UserFollowButton extends \yii\base\Widget
 
         // Confirm action "Unfollow"
         $this->unfollowOptions['data-action-confirm'] = Yii::t('SpaceModule.base', 'Would you like to unfollow {userName}?', [
-            '{userName}' => '<strong>' . $this->user->getDisplayName() . '</strong>'
+            '{userName}' => '<strong>' . Html::encode($this->user->getDisplayName()) . '</strong>'
         ]);
 
         $module = Yii::$app->getModule('user');
