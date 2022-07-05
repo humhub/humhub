@@ -118,7 +118,7 @@ class FollowButton extends Widget
 
         // Confirm action "Unfollow"
         $this->unfollowOptions['data-action-confirm'] = Yii::t('SpaceModule.base', 'Would you like to unfollow Space {spaceName}?', [
-            '{spaceName}' => '<strong>' . $this->space->getDisplayName() . '</strong>'
+            '{spaceName}' => '<strong>' . Html::encode($this->space->getDisplayName()) . '</strong>'
         ]);
 
         $module = Yii::$app->getModule('space');
