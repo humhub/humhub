@@ -4,6 +4,7 @@ HumHub Changelog
 1.11.4 (Unreleased)
 ----------------------
 - Fix #5776: Hide beta modules on disabled filter
+- Fix #5799: Incorrect selection when multiple custom filters are in place 
 - Fix #5780: Don't hide icon "remove item" on picker
 
 1.11.3 (June 27, 2022)
