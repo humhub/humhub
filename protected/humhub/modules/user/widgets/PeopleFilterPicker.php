@@ -3,6 +3,7 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\modules\ui\form\widgets\BasePicker;
+use humhub\modules\user\models\User;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
 use Yii;
@@ -130,9 +131,12 @@ class PeopleFilterPicker extends BasePicker
     public function getSuggestions($keyword = '')
     {
         if (empty($this->defaultResults)) {
-            return Profile::find()->select(['id' => $this->itemKey, 'text' => $this->itemKey])
+            return User::find()
+                ->select(['id' => $this->itemKey, 'text' => $this->itemKey])
+                ->visible()
+                ->joinWith('profile')
+                ->andWhere(['LIKE', $this->itemKey, $keyword])
                 ->groupBy($this->itemKey)
-                ->where(['LIKE', $this->itemKey, $keyword])
                 ->limit(100)
                 ->asArray()
                 ->all();
