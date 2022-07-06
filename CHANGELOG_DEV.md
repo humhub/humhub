@@ -1,6 +1,6 @@
-1.12.1 (Unreleased)
+1.12.0-beta.2 (Unreleased)
 -----------------------------
-- Enh #5788: Picker for country filter on "People" page
+- Enh #5788: Limit picker results for country filter on "People" page
 
 1.12.0-beta.1 (June 27, 2022)
 -----------------------------
