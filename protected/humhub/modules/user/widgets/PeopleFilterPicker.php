@@ -5,10 +5,8 @@ namespace humhub\modules\user\widgets;
 use humhub\modules\ui\form\widgets\BasePicker;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
-use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /**
@@ -40,6 +38,13 @@ class PeopleFilterPicker extends BasePicker
         if ($profileField === null) {
             throw new InvalidConfigException('Invalid filter key');
         }
+
+        if (empty($this->defaultResults)) {
+            $definition = $profileField->fieldType->getFieldFormDefinition();
+            if (isset($definition[$profileField->internal_name]['type']) && $definition[$profileField->internal_name]['type'] === 'dropdownlist') {
+                $this->defaultResults = $definition[$profileField->internal_name]['items'];
+            }
+        }
     }
 
     /**
@@ -64,7 +69,7 @@ class PeopleFilterPicker extends BasePicker
 
             $result[$this->itemKey] = [
                 'data-id' => $item,
-                'data-text' => $item
+                'data-text' => isset($this->defaultResults[$item]) ? $this->defaultResults[$item] : $item
             ];
         }
         return $result;
@@ -119,20 +124,33 @@ class PeopleFilterPicker extends BasePicker
     /**
      * Returns suggestions by keyword
      *
-     * @param $keyword
+     * @param string $keyword
      * @return Profile[]
      */
     public function getSuggestions($keyword = '')
     {
-        return Profile::find()->select([
-            'id' => $this->itemKey,
-            'text' => $this->itemKey,
-        ])
-            ->groupBy($this->itemKey)
-            ->where(['LIKE', $this->itemKey, $keyword])
-            ->limit(100)
-            ->asArray()
-            ->all();
+        if (empty($this->defaultResults)) {
+            return Profile::find()->select(['id' => $this->itemKey, 'text' => $this->itemKey])
+                ->groupBy($this->itemKey)
+                ->where(['LIKE', $this->itemKey, $keyword])
+                ->limit(100)
+                ->asArray()
+                ->all();
+        }
+
+        $result = [];
+        foreach ($this->defaultResults as $itemKey => $itemText) {
+            if ($keyword !== '' && stripos($itemText, $keyword) === false) {
+                continue;
+            }
+
+            $result[] = [
+                'data-id' => $itemKey,
+                'data-text' => $itemText
+            ];
+        }
+
+        return $result;
     }
 
     /**

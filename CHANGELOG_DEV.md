@@ -1,3 +1,7 @@
+1.12.1 (Unreleased)
+-----------------------------
+- Enh #5788: Picker for country filter on "People" page
+
 1.12.0-beta.1 (June 27, 2022)
 -----------------------------
 - Enh #5655: Possibility to archive and lock comments on global contents
