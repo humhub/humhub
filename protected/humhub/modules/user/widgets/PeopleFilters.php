@@ -109,15 +109,12 @@ class PeopleFilters extends DirectoryFilters
 
         switch ($fieldType) {
             case 'text':
+            case 'dropdownlist':
                 $filterData['type'] = 'widget';
                 $filterData['widget'] = PeopleFilterPicker::class;
                 $filterData['widgetOptions'] = [
                     'itemKey' => $profileField->internal_name
                 ];
-                break;
-
-            case 'dropdownlist':
-                $filterData['options'] = array_merge(['' => Yii::t('UserModule.base', 'Any')], $definition[$profileField->internal_name]['items']);
                 break;
 
             default:

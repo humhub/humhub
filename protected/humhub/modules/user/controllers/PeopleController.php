@@ -10,12 +10,10 @@ namespace humhub\modules\user\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\user\components\PeopleQuery;
-use humhub\modules\user\models\Profile;
 use humhub\modules\user\permissions\PeopleAccess;
 use humhub\modules\user\widgets\PeopleCard;
 use humhub\modules\user\widgets\PeopleFilterPicker;
 use Yii;
-use yii\base\BaseObject;
 use yii\helpers\Url;
 
 /**
