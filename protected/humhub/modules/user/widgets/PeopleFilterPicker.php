@@ -124,15 +124,22 @@ class PeopleFilterPicker extends BasePicker
      */
     public function getSuggestions($keyword = '')
     {
-        return Profile::find()->select([
+        $suggestions = Profile::find()->select([
             'id' => $this->itemKey,
             'text' => $this->itemKey,
         ])
             ->groupBy($this->itemKey)
             ->where(['LIKE', $this->itemKey, $keyword])
-            ->limit(100)
-            ->asArray()
-            ->all();
+            ->limit(100);
+
+        // Limit by active and visible users:
+        $suggestions->innerJoin('user', 'user.id = profile.user_id')
+            ->andWhere(['user.status' => User::STATUS_ENABLED]);
+        if (Yii::$app->user->isGuest) {
+            $suggestions->andWhere(['user.visibility' => User::VISIBILITY_ALL]);
+        }
+
+        return $suggestions->asArray()->all();
     }
 
     /**
