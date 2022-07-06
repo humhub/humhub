@@ -3,7 +3,11 @@ humhub.module('cards', function(module, require, $) {
     const loader = require('ui.loader');
 
     const applyFilters = function(evt) {
-        $(evt.$trigger).closest('form').submit();
+        const form = $(evt.$trigger).closest('form');
+        form.find('select[data-select2-id] option[data-id]').each(function() {
+            $(this).val($(this).data('id'));
+        });
+        form.submit();
     }
 
     const selectTag = function (evt) {
