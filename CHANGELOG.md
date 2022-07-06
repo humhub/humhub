@@ -1,8 +1,13 @@
 HumHub Changelog
 ================
 
-1.11.4 (Unreleased)
-----------------------
+1.11.4 (July 6, 2022)
+---------------------
+
+This release also fixes a [security](https://github.com/humhub/humhub/security/advisories/GHSA-p7h3-73v7-959c) issue. 
+HumHub was vulnerable to a stored Cross-Site Scripting (XSS) vulnerability. For exploitation, the user would need a permission to administer Spaces.
+An update is STRONGLY recommended.
+
 - Fix #5776: Hide beta modules on disabled filter
 - Fix #5799: Incorrect selection when multiple custom filters are in place 
 - Fix #5780: Don't hide icon "remove item" on picker
