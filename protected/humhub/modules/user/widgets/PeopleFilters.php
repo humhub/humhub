@@ -102,22 +102,19 @@ class PeopleFilters extends DirectoryFilters
         $fieldType = isset($definition[$profileField->internal_name]['type']) ? $definition[$profileField->internal_name]['type'] : null;
 
         $filterData = [
-            'title' => Yii::t($profileField->getTranslationCategory(), $profileField->title),
+            'title' => Html::encode(Yii::t($profileField->getTranslationCategory(), $profileField->title)),
             'type' => $fieldType,
             'sortOrder' => $sortOrder,
         ];
 
         switch ($fieldType) {
             case 'text':
+            case 'dropdownlist':
                 $filterData['type'] = 'widget';
                 $filterData['widget'] = PeopleFilterPicker::class;
                 $filterData['widgetOptions'] = [
                     'itemKey' => $profileField->internal_name
                 ];
-                break;
-
-            case 'dropdownlist':
-                $filterData['options'] = array_merge(['' => Yii::t('UserModule.base', 'Any')], $definition[$profileField->internal_name]['items']);
                 break;
 
             default:

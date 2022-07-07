@@ -1,6 +1,13 @@
 HumHub Changelog
 ================
 
+1.11.4 (Unreleased)
+----------------------
+- Fix #5776: Hide beta modules on disabled filter
+- Fix #5799: Incorrect selection when multiple custom filters are in place 
+- Fix #5780: Don't hide icon "remove item" on picker
+- Fix #5800: Hide data of disabled users on picker filters on "People" page
+
 1.11.3 (June 27, 2022)
 ----------------------
 - Fix: #5736: Fix status message on user approval 
