@@ -1,3 +1,7 @@
+1.12.1 (Unreleased)
+-----------------------------
+- Fix #5779: Fix user settings updating on disabled visibility "Guest"
+
 1.12.0-beta.1 (June 27, 2022)
 -----------------------------
 - Enh #5655: Possibility to archive and lock comments on global contents
