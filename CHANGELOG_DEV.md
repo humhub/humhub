@@ -1,6 +1,7 @@
 1.12.0-beta.2 (Unreleased)
 -----------------------------
 - Enh #5788: Limit picker results for country filter on "People" page
+- Fix #5779: Fix user settings updating on disabled visibility "Guest"
 
 1.12.0-beta.1 (June 27, 2022)
 -----------------------------
