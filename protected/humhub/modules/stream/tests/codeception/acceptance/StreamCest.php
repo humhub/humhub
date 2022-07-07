@@ -359,7 +359,7 @@ class StreamCest
         $I->amGoingTo('filter stream by date until yesterday');
         $I->executeJS("$('" . $dateFromFilter . "').val('').change();");
         $I->executeJS("$('" . $dateToFilter . "').val('" . date('n/j/y', strtotime('-1 day')) . "').change();");
-        $I->waitForElement('.s2_streamContent > .stream-end');
+        $I->waitForElement('.s2_streamContent > .stream-end', 20);
         $I->dontSee($postTitle, '.s2_streamContent');
     }
 
