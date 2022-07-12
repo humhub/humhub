@@ -1,6 +1,14 @@
 HumHub Changelog
 ================
 
+1.10.5 (July 12, 2022)
+----------------------
+
+This release also fixes a security issue. HumHub was vulnerable to a stored Cross-Site Scripting (XSS) vulnerability. For exploitation, the user would need a permission to administer Spaces. An update is STRONGLY recommended.
+
+- Fix #5791: Fix XSS in membership confirmation
+
+
 1.10.4 (April 19, 2022)
 -----------------------
 
