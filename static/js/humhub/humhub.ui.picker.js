@@ -201,7 +201,7 @@ humhub.module('ui.picker', function (module, require, $) {
         }
 
         var placeholder = input.attr('placeholder');
-        if (placeholder.length) {
+        if (typeof placeholder !== 'undefined' && placeholder.length) {
             input.attr('size', placeholder.length);
         }
     };
