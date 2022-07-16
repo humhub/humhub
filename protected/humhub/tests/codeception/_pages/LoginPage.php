@@ -26,9 +26,10 @@ class LoginPage extends BasePage
         $this->actor->fillField('Login[password]', $password);
         $this->actor->click('#login-button');
     }
-    
+
     public function selfInvite($email)
     {
+        $this->actor->fillField('Invite[email]', $email);
         $this->actor->submitForm('#invite-form', ['Invite' => [
             'email' => $email
        ]]);
