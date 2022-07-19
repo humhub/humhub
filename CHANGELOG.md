@@ -1,6 +1,13 @@
 HumHub Changelog
 ================
 
+
+1.11.5 (Unreleased)
+---------------------
+
+- Fix #5806: Alignments for People filters with Select2 mode 
+
+
 1.11.4 (July 6, 2022)
 ---------------------
 
