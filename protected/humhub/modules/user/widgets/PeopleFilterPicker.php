@@ -84,6 +84,7 @@ class PeopleFilterPicker extends BasePicker
         return [
             'data-multiple' => 'false',
             'data-tags' => 'false',
+            'data-clearable' => 'false',
             'size' => '1',
             'class' => 'form-control',
             'style' => 'width:100%',
