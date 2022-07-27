@@ -164,7 +164,7 @@ class Events extends \yii\base\BaseObject
     {
         return Notification::deleteAll(['AND',
             ['seen' => (int)$seen],
-            ['<', 'created_at', date('Y-m-d', mktime(null, null, null, date('m') - $months))],
+            ['<', 'created_at', date('Y-m-d', mktime(0, 0, 0, date('m') - $months))],
         ]);
     }
 

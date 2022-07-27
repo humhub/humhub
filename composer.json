@@ -56,7 +56,7 @@
         "npm-asset/timeago": "^1.6.3",
         "phpoffice/phpspreadsheet": "^1.0",
         "raoul2000/yii2-jcrop-widget": "*",
-        "twig/twig": "^1.0",
+        "twig/twig": "^3.4.1",
         "web-token/jwt-checker": ">=1.0 <3.0",
         "web-token/jwt-signature": ">=1.0 <3.0",
         "web-token/jwt-signature-algorithm-ecdsa": ">=1.0 <3.0",
