@@ -152,7 +152,7 @@ class ActiveField extends \yii\bootstrap\ActiveField
      * @param array $regularOptions
      * @return array
      */
-    protected function applyRegularSingleStyle(array $options, array $regularOptions): array
+    private function applyRegularSingleStyle(array $options, array $regularOptions): array
     {
         $options['class'] = isset($options['class']) ? $options['class'] . $regularOptions['inputClass'] : $regularOptions['inputClass'];
 
@@ -170,7 +170,7 @@ class ActiveField extends \yii\bootstrap\ActiveField
      * @param array $options
      * @return $this
      */
-    protected function applyRegularListStyle(array $options): self
+    private function applyRegularListStyle(array $options): self
     {
         if (!isset($this->parts['{input}'])) {
             return $this;
@@ -220,7 +220,7 @@ class ActiveField extends \yii\bootstrap\ActiveField
      * @param array $options
      * @return string
      */
-    protected function getRegularBox(array $options = []): string
+    private function getRegularBox(array $options = []): string
     {
         $checkboxOptions = [];
         $checkboxOptions['class'] = $options['boxClass'] ?? 'regular-checkbox-box';
