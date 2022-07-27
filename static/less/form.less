@@ -164,34 +164,34 @@ a.input-field-addon-sm {
 }
 
 // Flatelements
-.regular-checkbox:focus + .regular-checkbox-box {
+.regular-checkbox:focus + .regular-checkbox-box, input[type=checkbox]:focus {
     border: 2px solid @text-color-highlight !important;
 }
 
-.regular-checkbox:checked + .regular-checkbox-box {
+.regular-checkbox:checked + .regular-checkbox-box, input[type=checkbox]:checked {
     border: 2px solid @info;
     background: @info;
     color: white;
 }
 
-.regular-checkbox-box.disabled {
+.regular-checkbox-box.disabled, input[type=checkbox]:disabled {
     background: @background3 !important;
     border: 2px solid @background3 !important;
     cursor: not-allowed;
 }
 
-.regular-radio:checked + .regular-radio-button:after {
+.regular-radio:checked + .regular-radio-button:after, input[type=radio]:checked::after {
     background: @info;
 }
 
-.regular-radio:checked + .regular-radio-button {
+.regular-radio:checked + .regular-radio-button, input[type=radio]:checked {
     background-color: transparent;
     color: #99a1a7;
     border: 2px solid @background3;
     margin-right: 5px;
 }
 
-.regular-radio-button.disabled {
+.regular-radio-button.disabled, input[type=radio]:disabled {
     background: @background3 !important;
     border: 2px solid @background3 !important;
     cursor: not-allowed;
