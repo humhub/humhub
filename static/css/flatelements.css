@@ -110,8 +110,9 @@
     width: 0;
 }
 
-.regular-checkbox + .regular-checkbox-box {
-    background-color: none;
+.regular-checkbox + .regular-checkbox-box, input[type=checkbox] {
+    -webkit-appearance: none;
+    background: none;
     border: 2px solid #ccc;
     padding: 7px;
     border-radius: 3px;
@@ -121,17 +122,18 @@
     margin-right: 5px;
 }
 
-.regular-checkbox:focus + .regular-checkbox-box {
+.regular-checkbox:focus + .regular-checkbox-box, input[type=checkbox]:focus {
     border: 2px solid #494949;
+    outline: none;
 }
 
-.regular-checkbox:checked + .regular-checkbox-box {
+.regular-checkbox:checked + .regular-checkbox-box, input[type=checkbox]:checked {
     border: 2px solid #428bca;
     background: #428bca;
     color: white;
 }
 
-.regular-checkbox:checked + .regular-checkbox-box:after {
+.regular-checkbox:checked + .regular-checkbox-box:after, input[type=checkbox]:checked::after {
     content: '\2714';
     font-size: 14px;
     position: absolute;
@@ -139,6 +141,10 @@
     left: 1px;
     color: white;
     -webkit-transition: margin 0.2s ease-in 0s;
+}
+
+input[type=checkbox].regular-checkbox, input[type=checkbox].regular-checkbox:focus {
+    position: absolute;
 }
 
 .regular-checkbox-clear {
@@ -153,13 +159,13 @@
     padding-left: 0;
 }
 
-.regular-radio {
+.regular-radio, input[type=radio].regular-radio {
     display: none;
 }
 
-.regular-radio + .regular-radio-button {
+.regular-radio + .regular-radio-button, input[type=radio] {
     -webkit-appearance: none;
-    background-color: none;
+    background: none;
     border: 2px solid #ccc;
     padding: 7px;
     border-radius: 50px;
@@ -169,7 +175,7 @@
     float: left;
 }
 
-.regular-radio:checked + .regular-radio-button:after {
+.regular-radio:checked + .regular-radio-button:after, input[type=radio]:checked::after {
     content: ' ';
     width: 8px;
     height: 8px;
@@ -182,8 +188,8 @@
     font-size: 32px;
 }
 
-.regular-radio:checked + .regular-radio-button {
-    background-color: none;
+.regular-radio:checked + .regular-radio-button, input[type=radio]:checked {
+    background: none;
     color: #99a1a7;
     border: 2px solid #ccc;
     margin-right: 5px;

@@ -64,7 +64,7 @@ humhub.module('ui.form.elements', function (module, require, $) {
 
     var initCheckbox = function ($input) {
 
-        if ($input.data('form_element') || $input.hasClass('hidden')) {
+        if ($input.data('form_element') || $input.hasClass('regular-checkbox') || $input.hasClass('hidden')) {
             return;
         }
 
@@ -91,7 +91,7 @@ humhub.module('ui.form.elements', function (module, require, $) {
     };
 
     var initRadio = function ($input) {
-        if ($input.data('form_element')) {
+        if ($input.data('form_element') || $input.hasClass('regular-radio')) {
             return;
         }
 
