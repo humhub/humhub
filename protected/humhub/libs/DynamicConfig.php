@@ -161,6 +161,8 @@ class DynamicConfig extends BaseObject
             }
             if (Yii::$app->settings->get('mailer.port')) {
                 $mail['transport']['port'] = (int)Yii::$app->settings->get('mailer.port');
+            } else {
+                $mail['transport']['port'] = 25;
             }
             if (Yii::$app->settings->get('mailer.username')) {
                 $mail['transport']['username'] = Yii::$app->settings->get('mailer.username');

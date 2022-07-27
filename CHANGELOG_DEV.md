@@ -2,6 +2,7 @@
 -----------------------------
 - Enh #5788: Limit picker results for country filter on "People" page
 - Fix #5779: Fix user settings updating on disabled visibility "Guest"
+- Fix #5807: SMTP Mail component not loading with empty `Port` config value 
 
 1.12.0-beta.1 (June 27, 2022)
 -----------------------------
