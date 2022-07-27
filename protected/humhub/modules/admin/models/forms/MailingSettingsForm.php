@@ -66,7 +66,7 @@ class MailingSettingsForm extends Model
             [['allowSelfSignedCerts', 'useSmtps'], 'boolean'],
             ['systemEmailAddress', 'email'],
             ['port', 'integer', 'min' => 1, 'max' => 65535],
-            ['hostname', 'required', 'when' => function ($model) {
+            [['hostname', 'port'], 'required', 'when' => function ($model) {
                 return $model->transportType === self::TRANSPORT_SMTP;
             }],
             ['dsn', 'required', 'when' => function ($model) {

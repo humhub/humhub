@@ -5,7 +5,8 @@ HumHub Changelog
 1.11.5 (Unreleased)
 ---------------------
 
-- Fix #5806: Alignments for People filters with Select2 mode 
+- Fix #5806: Alignments for People filters with Select2 mode
+- Fix #5813: Fix deprecated null value for hour param in `mktime()`
 
 
 1.11.4 (July 6, 2022)
