@@ -66,7 +66,7 @@
         "symfony/postmark-mailer": "^5.4",
         "symfony/sendgrid-mailer": "^5.4",
         "symfony/sendinblue-mailer": "^5.4",
-        "twig/twig": "^1.0",
+        "twig/twig": "^3.4.1",
         "web-token/jwt-checker": ">=1.0 <3.0",
         "web-token/jwt-signature": ">=1.0 <3.0",
         "web-token/jwt-signature-algorithm-ecdsa": ">=1.0 <3.0",
