@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.12.1 (Unreleased)
+----------------------
+- Fix #5822: Fix content width in mobile view
+
 1.12.0 (July 27, 2022)
 ----------------------
 
