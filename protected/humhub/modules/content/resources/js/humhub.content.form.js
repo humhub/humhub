@@ -22,6 +22,7 @@ humhub.module('content.form', function(module, require, $) {
     CreateForm.prototype.init = function() {
         this.$.hide();
         // Hide options by default
+        $('#contentFormMenu').hide();
         $('.contentForm_options').hide();
 
         this.setDefaultVisibility();
@@ -34,6 +35,7 @@ humhub.module('content.form', function(module, require, $) {
                     return;
                 }
 
+                $('#contentFormMenu').fadeIn();
                 $('.contentForm_options').fadeIn();
             });
         } else {
@@ -72,6 +74,7 @@ humhub.module('content.form', function(module, require, $) {
      */
     CreateForm.prototype.resetForm = function() {
         // Reset Form (Empty State)
+        $('#contentFormMenu').hide();
         $('.contentForm_options').hide();
         var $contentForm = $('.contentForm');
         $contentForm.filter(':text').val('');

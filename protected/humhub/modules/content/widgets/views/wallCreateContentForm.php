@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\content\widgets\WallCreateContentForm;
+use humhub\modules\content\widgets\WallCreateContentMenu;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\icon\widgets\Icon;
@@ -37,6 +38,8 @@ $this->registerJsConfig('content.form', [
 $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl('/space/membership/search') : null;
 
 ?>
+
+<?= WallCreateContentMenu::widget() ?>
 
 <div class="panel panel-default clearfix">
     <div class="panel-body" id="contentFormBody" style="display:none;" data-action-component="content.form.CreateForm" >

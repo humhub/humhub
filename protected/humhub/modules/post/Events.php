@@ -8,7 +8,10 @@
 
 namespace humhub\modules\post;
 
+use humhub\modules\content\widgets\WallCreateContentMenu;
 use humhub\modules\post\models\Post;
+use humhub\modules\ui\menu\MenuLink;
+use Yii;
 
 /**
  * Event callbacks for the post module
@@ -33,6 +36,19 @@ class Events extends \yii\base\BaseObject
                 }
             }
         }
+    }
+
+    public static function onInitWallCreateContentMenu($event)
+    {
+        /* @var WallCreateContentMenu $menu */
+        $menu = $event->sender;
+
+        $menu->addEntry(new MenuLink([
+            'label' => Yii::t('PostModule.base', 'Post'),
+            'url' => '#',
+            'sortOrder' => 100,
+            'isActive' => true,
+        ]));
     }
 
 }
