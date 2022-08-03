@@ -549,9 +549,10 @@ REGEXP;
 
         if (is_array($lines) && count($lines) > 0 && !empty($result[0]['items'])) {
             $result[0]['origNums'] = [];
-            foreach ($lines as $l => $line) {
+            $i = array_keys($result[0]['items'])[0];
+            foreach ($lines as $line) {
                 if (preg_match('/^(\d+)\./', $line, $num)) {
-                    $result[0]['origNums'][$l + 1] = $num[1];
+                    $result[0]['origNums'][$i++] = $num[1];
                 }
             }
         }
