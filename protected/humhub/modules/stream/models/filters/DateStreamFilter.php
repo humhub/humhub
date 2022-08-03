@@ -70,9 +70,10 @@ class DateStreamFilter extends StreamQueryFilter
     {
         $localeDateFormat = FormatConverter::convertDateIcuToPhp(Yii::$app->formatter->dateInputFormat);
         $timeZone = new DateTimeZone(Yii::$app->formatter->timeZone);
+        $dateTime = DateTime::createFromFormat($localeDateFormat, $date, $timeZone);
+        $mysqlDateFormat = 'Y-m-d';
 
-        return DateTime::createFromFormat($localeDateFormat, $date, $timeZone)
-            ->format('Y-m-d');
+        return $dateTime ? $dateTime->format($mysqlDateFormat) : date($mysqlDateFormat);
     }
 
     private function isFilteredFrom(): bool
