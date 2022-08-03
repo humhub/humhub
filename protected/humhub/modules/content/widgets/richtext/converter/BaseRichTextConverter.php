@@ -539,4 +539,23 @@ REGEXP;
     {
         return preg_replace('/\<br(\s*)?\/?\>/i', "\n", $text);
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function consumeOl($lines, $current)
+    {
+        $result = parent::consumeOl($lines, $current);
+
+        if (is_array($lines) && count($lines) > 0 && !empty($result[0]['items'])) {
+            $result[0]['origNums'] = [];
+            foreach ($lines as $l => $line) {
+                if (preg_match('/^(\d+)\./', $line, $num)) {
+                    $result[0]['origNums'][$l + 1] = $num[1];
+                }
+            }
+        }
+
+        return $result;
+    }
 }
