@@ -30,7 +30,7 @@ class Events extends BaseObject
      */
     public static function onSearchRebuild($event)
     {
-        foreach (User::find()->visible()->each() as $user) {
+        foreach (User::find()->active()->each() as $user) {
             Yii::$app->search->add($user);
         }
     }
