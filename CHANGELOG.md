@@ -5,6 +5,7 @@ HumHub Changelog
 ----------------------
 - Fix #5822: Fix content width in mobile view
 - Fix #5825: Fix format date to mysql on date stream filter
+- Fix #5832: Exception in file open dialog when last update user no longer exists 
 - Fix #5814: Fix numerated lists in mail summary content
 - Fix #5830: Fix cron job of search index rebuilding
 
