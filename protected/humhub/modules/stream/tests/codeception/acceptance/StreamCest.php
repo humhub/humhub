@@ -7,8 +7,9 @@
 
 namespace stream\acceptance;
 
-use humhub\modules\content\models\Content;
+use DateTime;
 use stream\AcceptanceTester;
+use Yii;
 
 class StreamCest
 {
@@ -344,18 +345,21 @@ class StreamCest
         $I->amGoingTo('create a new post');
 
         $postTitle = 'Post for test date filter';
+        $today = Yii::$app->formatter->asDate(new DateTime(), 'short');
+        $yesterday = Yii::$app->formatter->asDate((new DateTime())->modify('-1 day'), 'short');
+
         $I->createPost($postTitle);
         $I->waitForText($postTitle, null, '.s2_streamContent');
 
         $I->amGoingTo('filter stream by date from today');
         $I->jsClick('.wall-stream-filter-toggle');
         $I->waitForElementVisible('[data-filter-id=date_from]');
-        $I->fillDateFilter('date_from', date('n/j/y'));
+        $I->fillDateFilter('date_from', $today);
         $I->waitForText($postTitle, 10, '.s2_streamContent');
 
         $I->amGoingTo('filter stream by date until yesterday');
         $I->fillDateFilter('date_from', '');
-        $I->fillDateFilter('date_to', date('n/j/y', strtotime('-1 day')));
+        $I->fillDateFilter('date_to', $yesterday);
         $I->waitForElement('.s2_streamContent > .stream-end', 10);
         $I->dontSee($postTitle, '.s2_streamContent');
     }
