@@ -23,4 +23,10 @@ class AcceptanceTester extends \AcceptanceTester
    /**
     * Define custom actions here
     */
+
+    public function fillDateFilter($field, $value) {
+        $this->fillField('[data-filter-id=' . $field . ']', $value);
+        // Focus out the filled date input in order to run the filtering:
+        $this->click('.filter-block strong');
+    }
 }
