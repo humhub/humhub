@@ -104,7 +104,10 @@
         "platform-check": false,
 	"platform": {
 	    "php": "7.2"
-	}
+	},
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        }
     },
     "scripts": {
         "post-create-project-cmd": [
