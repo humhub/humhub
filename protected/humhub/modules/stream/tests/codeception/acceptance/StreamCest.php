@@ -347,19 +347,16 @@ class StreamCest
         $I->createPost($postTitle);
         $I->waitForText($postTitle, null, '.s2_streamContent');
 
-        $dateFromFilter = '[data-filter-id="date_from"]';
-        $dateToFilter = '[data-filter-id="date_to"]';
-
         $I->amGoingTo('filter stream by date from today');
         $I->jsClick('.wall-stream-filter-toggle');
-        $I->waitForElementVisible($dateFromFilter);
-        $I->executeJS("$('" . $dateFromFilter . "').val('" . date('n/j/y') . "').change();");
-        $I->waitForText($postTitle, 30, '.s2_streamContent');
+        $I->waitForElementVisible('[data-filter-id=date_from]');
+        $I->fillDateFilter('date_from', date('n/j/y'));
+        $I->waitForText($postTitle, 10, '.s2_streamContent');
 
         $I->amGoingTo('filter stream by date until yesterday');
-        $I->executeJS("$('" . $dateFromFilter . "').val('').change();");
-        $I->executeJS("$('" . $dateToFilter . "').val('" . date('n/j/y', strtotime('-1 day')) . "').change();");
-        $I->waitForElement('.s2_streamContent > .stream-end', 20);
+        $I->fillDateFilter('date_from', '');
+        $I->fillDateFilter('date_to', date('n/j/y', strtotime('-1 day')));
+        $I->waitForElement('.s2_streamContent > .stream-end', 10);
         $I->dontSee($postTitle, '.s2_streamContent');
     }
 
