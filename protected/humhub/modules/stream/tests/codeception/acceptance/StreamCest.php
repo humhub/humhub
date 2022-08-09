@@ -355,7 +355,7 @@ class StreamCest
         $I->jsClick('.wall-stream-filter-toggle');
         $I->waitForElementVisible('[data-filter-id=date_from]');
         $I->fillDateFilter('date_from', $today);
-        $I->waitForText($postTitle, 10, '.s2_streamContent');
+        $I->waitForText($postTitle, null, '.s2_streamContent');
 
         $I->amGoingTo('filter stream by date until yesterday');
         $I->fillDateFilter('date_from', '');
