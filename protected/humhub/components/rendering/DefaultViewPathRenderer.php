@@ -58,7 +58,7 @@ class DefaultViewPathRenderer extends \humhub\components\rendering\ViewPathRende
     {
         $viewFile = parent::getViewFile($viewable);
 
-        if (!file_exists($viewFile) && $this->defaultViewPath) {
+        if (($viewFile === null || !file_exists($viewFile)) && $this->defaultViewPath) {
             $viewFile = Yii::getAlias($this->defaultViewPath) . '/' . $this->suffix($viewable->getViewName());
         }
 
