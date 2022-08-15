@@ -45,14 +45,6 @@ abstract class Filter extends Model
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function load($data, $formName = null)
-    {
-        return parent::load($data, $formName) && parent::validate();
-    }
-
     public function formName() {
         return $this->formName ?: parent::formName();
     }

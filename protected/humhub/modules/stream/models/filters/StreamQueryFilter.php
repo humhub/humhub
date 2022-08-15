@@ -32,4 +32,20 @@ abstract class StreamQueryFilter extends QueryFilter
     {
         return $this->formName ?: 'StreamQuery';
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function load($data, $formName = null)
+    {
+        if (!parent::load($data, $formName)) {
+            return false;
+        }
+
+        if (!parent::validate()) {
+            $this->streamQuery->addErrors($this->getErrors());
+        }
+
+        return true;
+    }
 }
