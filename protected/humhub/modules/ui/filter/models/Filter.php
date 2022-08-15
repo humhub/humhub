@@ -28,6 +28,11 @@ abstract class Filter extends Model
      */
     public $autoLoad = self::AUTO_LOAD_ALL;
 
+    /**
+     * @var bool True - if data was loaded at least one time
+     */
+    protected $isLoaded = false;
+
     public abstract function apply();
 
     public function init() {
@@ -35,7 +40,7 @@ abstract class Filter extends Model
             return;
         }
 
-        if($this->autoLoad === static::AUTO_LOAD_ALL) {
+        if ($this->autoLoad === static::AUTO_LOAD_ALL) {
             $this->load(Yii::$app->request->get());
             $this->load(Yii::$app->request->post());
         } elseif($this->autoLoad === static::AUTO_LOAD_GET) {
@@ -47,6 +52,19 @@ abstract class Filter extends Model
 
     public function formName() {
         return $this->formName ?: parent::formName();
+    }
+
+    /**
+     * @inheridoc
+     */
+    public function load($data, $formName = null)
+    {
+        if (parent::load($data, $formName)) {
+            $this->isLoaded = true;
+            return true;
+        }
+
+        return false;
     }
 
 }
