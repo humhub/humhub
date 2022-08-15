@@ -26,10 +26,23 @@ abstract class StreamQueryFilter extends QueryFilter
     public $autoLoad = self::AUTO_LOAD_GET;
 
     /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        if ($this->isLoaded && !parent::validate()) {
+            $this->streamQuery->addErrors($this->getErrors());
+        }
+    }
+
+    /**
      * @inheritDoc
      */
     public function formName()
     {
         return $this->formName ?: 'StreamQuery';
     }
+
 }
