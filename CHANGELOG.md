@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.12.1 (Unreleased)
-----------------------
+1.12.1 (August 15, 2022)
+------------------------
 - Fix #5822: Fix content width in mobile view
 - Fix #5825: Fix format date to mysql on date stream filter
 - Fix #5832: Exception in file open dialog when last update user no longer exists 
