@@ -50,19 +50,11 @@ abstract class Filter extends Model
      */
     public function load($data, $formName = null)
     {
-        if (!parent::load($data, $formName)) {
-            return false;
-        }
-
-        if (!parent::validate()) {
-            $this->streamQuery->addErrors($this->getErrors());
-        }
-
-        return true;
+        return parent::load($data, $formName) && parent::validate();
     }
 
     public function formName() {
-        return $this->formName ? $this->formName : parent::formName();
+        return $this->formName ?: parent::formName();
     }
 
 }
