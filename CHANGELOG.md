@@ -9,6 +9,7 @@ HumHub Changelog
 - Fix #5814: Fix numerated lists in mail summary content
 - Fix #5830: Fix cron job of search index rebuilding
 - Fix #5838: Fix deprecated null value for `file_exists()` on PHP 8.1
+- Enh #5846: Improved PHP minimum version checks
 - Fix #5845: Fix unknown `streamQuery` on load `Filter`
 
 1.12.0 (July 27, 2022)
