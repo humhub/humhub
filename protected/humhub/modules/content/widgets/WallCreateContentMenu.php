@@ -44,14 +44,35 @@ class WallCreateContentMenu extends Menu
     public $visibleEntriesNum = 2;
 
     /**
+     * @var WallCreateContentForm|null
+     */
+    public $form;
+
+    /**
+     * @var bool Visible by default depending on property `$this->form->displayMenu`
+     */
+    public $isVisible;
+
+    /**
      * @inheritdoc
      */
     public function init()
     {
+        parent::init();
+
+        if ($this->isVisible === null) {
+            $this->isVisible = ($this->form instanceof WallCreateContentForm) && $this->form->displayMenu;
+        }
+
+        if (!$this->isVisible) {
+            return;
+        }
+
         // TODO: Remove after implement in modules
         $this->initTempTestModulesEntries();
 
-        parent::init();
+        // Make this widget visible only when two and more entries
+        $this->isVisible = count($this->entries) > 1;
     }
 
     private function initTempTestModulesEntries()
@@ -104,10 +125,6 @@ class WallCreateContentMenu extends Menu
      */
     public function run()
     {
-        if (count($this->entries) < 2) {
-            return '';
-        }
-
-        return parent::run();
+        return $this->isVisible ? parent::run() : '';
     }
 }

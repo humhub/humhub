@@ -35,6 +35,11 @@ class Form extends WallCreateContentForm
     public $mentioningUrl = '/search/mentioning/space';
 
     /**
+     * @inheritdoc
+     */
+    public $displayMenu = true;
+
+    /**
      * Get params for form rendering
      *
      * @param array $additionalParams

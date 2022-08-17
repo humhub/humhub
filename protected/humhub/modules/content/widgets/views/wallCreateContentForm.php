@@ -39,7 +39,7 @@ $pickerUrl = ($contentContainer instanceof Space) ? $contentContainer->createUrl
 
 ?>
 
-<?= WallCreateContentMenu::widget() ?>
+<?= WallCreateContentMenu::widget(['form' => $wallCreateContentForm]) ?>
 
 <div class="panel panel-default clearfix">
     <div class="panel-body" id="contentFormBody" style="display:none;" data-action-component="content.form.CreateForm" >

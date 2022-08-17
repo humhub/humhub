@@ -51,6 +51,11 @@ class WallCreateContentForm extends Widget
     protected $form = "";
 
     /**
+     * @var bool Display menu above this form in order to select a content type like Post, Poll, Task and etc.
+     */
+    public $displayMenu = false;
+
+    /**
      * @inheritdoc
      */
     public function init()
