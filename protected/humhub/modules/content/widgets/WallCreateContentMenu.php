@@ -26,6 +26,16 @@ class WallCreateContentMenu extends Menu
     /**
      * @inheritdoc
      */
+    public $jsWidget = 'content.form.CreateFormMenu';
+
+    /**
+     * @inheritdoc
+     */
+    public $init = true;
+
+    /**
+     * @inheritdoc
+     */
     public $template = 'wallCreateContentMenu';
 
     /**
@@ -90,7 +100,7 @@ class WallCreateContentMenu extends Menu
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function run()
     {

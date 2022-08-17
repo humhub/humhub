@@ -21,21 +21,22 @@ humhub.module('content.form', function(module, require, $) {
 
     CreateForm.prototype.init = function() {
         this.$.hide();
+        this.menu = this.$.parent().prev('#contentFormMenu');
         // Hide options by default
-        $('#contentFormMenu').hide();
         $('.contentForm_options').hide();
 
         this.setDefaultVisibility();
         this.$.fadeIn('fast');
 
         if(!module.config['disabled']) {
+            var that = this;
             $('#contentFormBody').on('click.humhub:content:form dragover.humhub:content:form', function(evt) {
                 // Prevent fading in for topic remove button clicks
                 if($(evt.target).closest('.topic-remove-label').length) {
                     return;
                 }
 
-                $('#contentFormMenu').fadeIn();
+                that.menu.fadeIn();
                 $('.contentForm_options').fadeIn();
             });
         } else {
@@ -74,7 +75,7 @@ humhub.module('content.form', function(module, require, $) {
      */
     CreateForm.prototype.resetForm = function() {
         // Reset Form (Empty State)
-        $('#contentFormMenu').hide();
+        this.hide();
         $('.contentForm_options').hide();
         var $contentForm = $('.contentForm');
         $contentForm.filter(':text').val('');
@@ -171,6 +172,34 @@ humhub.module('content.form', function(module, require, $) {
         }
     };
 
+    const CreateFormMenu = Widget.extend();
+
+    CreateFormMenu.prototype.init = function() {
+        this.$.hide();
+        this.topMenu = this.$.find('ul.nav');
+        this.subMenu = this.$.find('li.content-create-menu-more');
+        this.initSubMenu();
+    }
+
+    CreateFormMenu.prototype.initSubMenu = function () {
+        const subItems = this.subMenu.find('li');
+        if (!subItems.length) {
+            return;
+        }
+
+        const that = this;
+        that.topMenu.find('li:not(.content-create-menu-more)').click(function () {
+            // Activate the currently clicked item
+            that.topMenu.find('li,a').removeClass('active');
+            $(this).addClass('active').find('a').addClass('active');
+            if ($(this).parent().hasClass('dropdown-menu')) {
+                // Move item from sub menu to top menu
+                that.subMenu.find('ul').prepend(that.subMenu.prev());
+                that.subMenu.before($(this));
+            }
+        });
+    }
+
     var init = function() {
         var $root = $(CREATE_FORM_ROOT_SELECTOR);
         if($root.length) {
@@ -184,6 +213,7 @@ humhub.module('content.form', function(module, require, $) {
 
     module.export({
         CreateForm: CreateForm,
+        CreateFormMenu: CreateFormMenu,
         instance: instance,
         init: init,
         initOnPjaxLoad: true,
