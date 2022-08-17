@@ -206,7 +206,7 @@ class MemberController extends Controller
         Yii::$app->queue->push(new RemoveAllMembersFromSpaceJob([
             'spaceId' => $space->id,
         ]));
-        $this->view->success(Yii::t('SpaceModule.manage', 'Added removal of all members to queue jobs'));
+        $this->view->success(Yii::t('SpaceModule.manage', 'Removal of members queued'));
         $this->redirect($space->createUrl('index'));
     }
 }
