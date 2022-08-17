@@ -9,6 +9,7 @@
 namespace humhub\modules\space\modules\manage\controllers;
 
 use humhub\modules\content\components\ContentContainerControllerAccess;
+use humhub\modules\space\modules\manage\jobs\RemoveAllMembersFromSpaceJob;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\space\models\Space;
@@ -196,4 +197,16 @@ class MemberController extends Controller
         ]);
     }
 
+    /**
+     * @return void
+     */
+    public function actionRemoveAll()
+    {
+        $space = $this->getSpace();
+        Yii::$app->queue->push(new RemoveAllMembersFromSpaceJob([
+            'spaceId' => $space->id,
+        ]));
+        $this->view->success(Yii::t('SpaceModule.manage', 'Removal of members queued'));
+        $this->redirect($space->createUrl('index'));
+    }
 }
