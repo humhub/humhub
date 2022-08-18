@@ -1,14 +1,27 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\modules\user\models\User;
+use humhub\widgets\Link;
 use humhub\widgets\PanelMenu;
 use humhub\modules\user\widgets\Image;
 use humhub\modules\space\models\Space;
-?>
+use yii\helpers\Html;
 
+/* @var User[] $users */
+/* @var bool $showListButton */
+/* @var string $urlMembersList */
+/* @var array $privilegedUserIds */
+/* @var int $totalMemberCount */
+/* @var array $showListOptions */
+?>
 <div class="panel panel-default members" id="space-members-panel">
-    <?= PanelMenu::widget(['id' => 'space-members-panel']); ?>
-    <div class="panel-heading"><?= Yii::t('SpaceModule.base', '<strong>Space</strong> members'); ?> (<?= $totalMemberCount ?>)</div>
+    <?= PanelMenu::widget([
+        'id' => 'space-members-panel',
+        'extraMenus' => Html::tag('li', Link::asLink(Yii::t('SpaceModule.base', 'Show as List'))->icon('list')->options($showListOptions)),
+    ]); ?>
+    <div class="panel-heading"<?= Html::renderTagAttributes($showListOptions + ['style' => 'cursor:pointer']) ?>>
+        <?= Yii::t('SpaceModule.base', '<strong>Space</strong> members'); ?> (<?= $totalMemberCount ?>)
+    </div>
     <div class="panel-body">
         <?php foreach ($users as $user) : ?>
             <?php
