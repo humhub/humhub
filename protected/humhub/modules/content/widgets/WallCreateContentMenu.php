@@ -7,12 +7,13 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\ui\menu\widgets\Menu;
-use Yii;
 
 /**
  * WallCreateContentMenu is the widget for Menu above wall create content Form
+ *
+ * @property-read ContentContainerActiveRecord $contentContainer
  * @author luke
  * @since 1.13.0
  */
@@ -68,56 +69,8 @@ class WallCreateContentMenu extends Menu
             return;
         }
 
-        // TODO: Remove after implement in modules
-        $this->initTempTestModulesEntries();
-
         // Make this widget visible only when two and more entries
         $this->isVisible = count($this->entries) > 1;
-    }
-
-    private function initTempTestModulesEntries()
-    {
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('ContentModule.base', 'Poll'),
-            'url' => '#',
-            'sortOrder' => 200,
-            'icon' => 'bar-chart',
-        ]));
-
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('ContentModule.base', 'Tasks'),
-            'url' => '#',
-            'sortOrder' => 300,
-            'icon' => 'tasks',
-        ]));
-
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('ContentModule.base', 'Wiki'),
-            'url' => '#',
-            'sortOrder' => 400,
-            'icon' => 'book',
-        ]));
-
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('ContentModule.base', 'Calendar'),
-            'url' => '#',
-            'sortOrder' => 400,
-            'icon' => 'calendar',
-        ]));
-
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('ContentModule.base', 'Meetings'),
-            'url' => '#',
-            'sortOrder' => 400,
-            'icon' => 'calendar-o',
-        ]));
-
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('ContentModule.base', 'News'),
-            'url' => '#',
-            'sortOrder' => 400,
-            'icon' => 'newspaper-o',
-        ]));
     }
 
     /**
@@ -126,5 +79,14 @@ class WallCreateContentMenu extends Menu
     public function run()
     {
         return $this->isVisible ? parent::run() : '';
+    }
+
+    public function getContentContainer(): ?ContentContainerActiveRecord
+    {
+        return isset($this->form, $this->form->contentContainer) &&
+            $this->form instanceof WallCreateContentForm &&
+            $this->form->contentContainer instanceof ContentContainerActiveRecord
+            ? $this->form->contentContainer
+            : null;
     }
 }

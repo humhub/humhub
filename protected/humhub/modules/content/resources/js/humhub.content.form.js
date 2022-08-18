@@ -10,6 +10,7 @@ humhub.module('content.form', function(module, require, $) {
     var client = require('client');
     var event = require('event');
     var Widget = require('ui.widget').Widget;
+    var loader = require('ui.loader');
 
     var instance;
 
@@ -178,6 +179,7 @@ humhub.module('content.form', function(module, require, $) {
         this.$.hide();
         this.topMenu = this.$.find('ul.nav');
         this.subMenu = this.$.find('li.content-create-menu-more');
+        this.formPanel = this.$.parent().find('.panel');
         this.initSubMenu();
     }
 
@@ -197,6 +199,19 @@ humhub.module('content.form', function(module, require, $) {
                 that.subMenu.find('ul').prepend(that.subMenu.prev());
                 that.subMenu.before($(this));
             }
+            loader.set(that.formPanel);
+        });
+    }
+
+    CreateFormMenu.prototype.loadForm = function (evt) {
+        const that = this;
+        client.get(evt).then(function(response) {
+            that.formPanel.replaceWith(response.html);
+            that.formPanel = that.$.parent().find('.panel');
+            Widget.instance(that.formPanel.find(CREATE_FORM_ROOT_SELECTOR));
+        }).catch(function(e) {
+            module.log.error(e, true);
+            loader.reset(that.formPanel);
         });
     }
 

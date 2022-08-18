@@ -112,7 +112,7 @@ class Controller extends \yii\web\Controller
      */
     public function renderAjaxContent($content)
     {
-        return $this->getView()->renderAjaxContent($content, $this);
+        return $this->getView()->renderAjaxContent($content);
     }
 
     /**
@@ -123,7 +123,7 @@ class Controller extends \yii\web\Controller
      */
     public function renderAjaxPartial(string $content): string
     {
-        return $this->getView()->renderAjaxPartial($content, $this);
+        return $this->getView()->renderAjaxPartial($content);
     }
 
     /**
