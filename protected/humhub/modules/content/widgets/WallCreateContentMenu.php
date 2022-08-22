@@ -111,13 +111,13 @@ class WallCreateContentMenu extends Menu
             switch ($wallEntryWidget->editMode) {
                 case WallStreamEntryWidget::EDIT_MODE_INLINE:
                     $menuOptions['htmlOptions'] = [
-                        'data-action-click' => 'ui.modal.post',
+                        'data-action-click' => $wallEntryWidget->menuAction ?? 'loadForm',
                         'data-action-url' => $this->contentContainer->createUrl($wallEntryWidget->createRoute),
                     ];
                     break;
                 case WallStreamEntryWidget::EDIT_MODE_MODAL:
                     $menuOptions['htmlOptions'] = [
-                        'data-action-click' => 'loadForm',
+                        'data-action-click' => $wallEntryWidget->menuAction ?? 'ui.modal.post',
                         'data-action-url' => $this->contentContainer->createUrl($wallEntryWidget->createRoute),
                     ];
                     break;

@@ -148,6 +148,11 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     /**
      * @var string
      */
+    public $menuAction;
+
+    /**
+     * @var string
+     */
     public $menuIcon;
 
     /**
