@@ -17,6 +17,7 @@ use humhub\modules\ui\menu\MenuEntry;
 <?= Html::beginTag('div', $options) ?>
     <ul class="nav nav-tabs">
     <?php foreach ($entries as $e => $entry) : ?>
+        <?php $entry->setIsActive($e === 0) ?>
         <li<?= $entry->getIsActive() ? ' class="active"' : '' ?>>
             <?= $entry->render() ?>
         </li>
