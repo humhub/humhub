@@ -219,4 +219,15 @@ class ContentContainerModule extends Module
         return [];
     }
 
+    /**
+     * This method is called to determine classes of Content models which can be posted on wall.
+     *
+     * @param ContentContainerActiveRecord|null $contentContainer
+     * @return array
+     */
+    public function getContentClasses(?ContentContainerActiveRecord $contentContainer = null): array
+    {
+        return [];
+    }
+
 }

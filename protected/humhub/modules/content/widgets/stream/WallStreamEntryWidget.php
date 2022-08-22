@@ -99,6 +99,12 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
      */
     const EDIT_MODE_MODAL = 'modal';
 
+    /**
+     * Route to create a content
+     *
+     * @var string
+     */
+    public $createRoute;
 
     /**
      * Route to edit the content
@@ -138,6 +144,16 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
      * @inheritDoc
      */
     protected $renderOptionClass = WallStreamEntryOptions::class;
+
+    /**
+     * @var string
+     */
+    public $menuIcon;
+
+    /**
+     * @var int
+     */
+    public $menuSortOrder;
 
     /**
      * @return string returns the content type specific part of this wall entry (e.g. post content)

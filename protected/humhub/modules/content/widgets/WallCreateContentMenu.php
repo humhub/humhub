@@ -7,8 +7,12 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
+use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\Menu;
+use Yii;
 
 /**
  * WallCreateContentMenu is the widget for Menu above wall create content Form
@@ -69,8 +73,66 @@ class WallCreateContentMenu extends Menu
             return;
         }
 
+        $this->initEntries();
+
         // Make this widget visible only when two and more entries
         $this->isVisible = count($this->entries) > 1;
+    }
+
+    private function initEntries()
+    {
+        if (!$this->contentContainer) {
+            return;
+        }
+
+        foreach (Yii::$app->moduleManager->getContentClasses($this->contentContainer) as $i => $contentClass) {
+            $content = new $contentClass;
+            if (!($content instanceof ContentActiveRecord)) {
+                continue;
+            }
+
+            $wallEntryWidget = $content->getWallEntryWidget();
+            if (!($wallEntryWidget instanceof WallStreamEntryWidget)) {
+                continue;
+            }
+
+            if (!$content->content->canEdit()) {
+                return;
+            }
+
+            $menuOptions = [
+                'label' => $content->getContentName(),
+                'icon' => $wallEntryWidget->menuIcon,
+                'url' => '#',
+                'sortOrder' => $wallEntryWidget->menuSortOrder,
+                'isActive' => $i === 0,
+            ];
+
+            switch ($wallEntryWidget->editMode) {
+                case WallStreamEntryWidget::EDIT_MODE_INLINE:
+                    $menuOptions['htmlOptions'] = [
+                        'data-action-click' => 'ui.modal.post',
+                        'data-action-url' => $this->contentContainer->createUrl($wallEntryWidget->createRoute),
+                    ];
+                    break;
+                case WallStreamEntryWidget::EDIT_MODE_MODAL:
+                    $menuOptions['htmlOptions'] = [
+                        'data-action-click' => 'loadForm',
+                        'data-action-url' => $this->contentContainer->createUrl($wallEntryWidget->createRoute),
+                    ];
+                    break;
+                case WallStreamEntryWidget::EDIT_MODE_NEW_WINDOW:
+                    $menuOptions['url'] = $this->contentContainer->createUrl($wallEntryWidget->createRoute);
+                    break;
+                default:
+                    $menuOptions = false;
+                    break;
+            }
+
+            if ($menuOptions) {
+                $this->addEntry(new MenuLink($menuOptions));
+            }
+        }
     }
 
     /**

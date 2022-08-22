@@ -358,7 +358,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
 
         if($this->wallEntryClass) {
             $class = $this->wallEntryClass;
-            $widget = new $class;
+            $widget = new $class(['model' => $this]);
             return $widget;
         }
 

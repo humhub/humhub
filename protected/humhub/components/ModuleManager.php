@@ -13,6 +13,8 @@ use humhub\components\console\Application as ConsoleApplication;
 use humhub\libs\BaseSettingsManager;
 use humhub\models\ModuleEnabled;
 use humhub\modules\admin\events\ModulesEvent;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\marketplace\Module as ModuleMarketplace;
 use Yii;
 use yii\base\Component;
@@ -552,5 +554,24 @@ class ModuleManager extends Component
                 $module->disable();
             }
         }
+    }
+
+    /**
+     * This method is called to determine classes of Content models which can be posted on wall.
+     *
+     * @param ContentContainerActiveRecord|null $contentContainer
+     * @return array
+     */
+    public function getContentClasses(?ContentContainerActiveRecord $contentContainer = null): array
+    {
+        $contentClasses = [];
+
+        foreach ($this->getModules(['includeCoreModules' => true, 'enabled' => true]) as $module) {
+            if ($module instanceof ContentContainerModule) {
+                $contentClasses = array_merge($contentClasses, $module->getContentClasses($contentContainer));
+            }
+        }
+
+        return $contentClasses;
     }
 }

@@ -15,11 +15,22 @@ use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
  */
 class WallEntry extends WallStreamEntryWidget
 {
+    /**
+     * Route to create a content
+     *
+     * @var string
+     */
+    public $createRoute = '/post/post/form';
 
     /**
      * @inheritdoc
      */
     public $editRoute = '/post/post/edit';
+
+    /**
+     * @inheritdoc
+     */
+    public $menuSortOrder = 100;
 
     /**
      * @inheritdoc
