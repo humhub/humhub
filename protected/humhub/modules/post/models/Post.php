@@ -53,6 +53,11 @@ class Post extends ContentActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
+    protected $createPermission = CreatePost::class;
+
+    /**
+     * @inheritdoc
+     */
     public static function tableName()
     {
         return 'post';

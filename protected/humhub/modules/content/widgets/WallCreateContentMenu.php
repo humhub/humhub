@@ -86,7 +86,7 @@ class WallCreateContentMenu extends Menu
         }
 
         foreach (Yii::$app->moduleManager->getContentClasses($this->contentContainer) as $i => $contentClass) {
-            $content = new $contentClass;
+            $content = new $contentClass($this->contentContainer);
             if (!($content instanceof ContentActiveRecord)) {
                 continue;
             }
@@ -97,7 +97,7 @@ class WallCreateContentMenu extends Menu
             }
 
             if (!$content->content->canEdit()) {
-                return;
+                continue;
             }
 
             $menuOptions = [
