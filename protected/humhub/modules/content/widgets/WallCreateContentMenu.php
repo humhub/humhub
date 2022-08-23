@@ -102,7 +102,7 @@ class WallCreateContentMenu extends Menu
 
             $menuOptions = [
                 'label' => $content->getContentName(),
-                'icon' => $wallEntryWidget->menuIcon,
+                'icon' => $content->getIcon(),
                 'url' => '#',
                 'sortOrder' => $wallEntryWidget->menuSortOrder,
                 'isActive' => $i === 0,
