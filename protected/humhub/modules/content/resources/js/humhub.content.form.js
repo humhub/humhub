@@ -180,31 +180,25 @@ humhub.module('content.form', function(module, require, $) {
         this.topMenu = this.$.find('ul.nav');
         this.subMenu = this.$.find('li.content-create-menu-more');
         this.formPanel = this.$.parent().find('.panel');
-        this.initSubMenu();
     }
 
-    CreateFormMenu.prototype.initSubMenu = function () {
-        const subItems = this.subMenu.find('li');
-        if (!subItems.length) {
-            return;
-        }
+    CreateFormMenu.prototype.activateMenu = function (evt) {
+        this.topMenu.find('li,a').removeClass('active');
+        evt.$trigger.addClass('active').find('a').addClass('active');
 
-        const that = this;
-        that.topMenu.find('li:not(.content-create-menu-more)').click(function () {
-            // Activate the currently clicked item
-            that.topMenu.find('li,a').removeClass('active');
-            $(this).addClass('active').find('a').addClass('active');
-            if ($(this).parent().hasClass('dropdown-menu')) {
-                // Move item from sub menu to top menu
-                that.subMenu.find('ul').prepend(that.subMenu.prev());
-                that.subMenu.before($(this));
-            }
-            loader.set(that.formPanel);
-        });
+        if (evt.$trigger.closest('ul.dropdown-menu').length) {
+            // Move item from sub menu to top menu
+            this.subMenu.find('ul').prepend(this.subMenu.prev());
+            this.subMenu.before(evt.$trigger.parent());
+        }
     }
 
     CreateFormMenu.prototype.loadForm = function (evt) {
         const that = this;
+
+        loader.set(that.formPanel);
+        that.activateMenu(evt);
+
         client.get(evt).then(function(response) {
             that.formPanel.replaceWith(response.html);
             that.formPanel = that.$.parent().find('.panel');
