@@ -96,6 +96,10 @@ class WallCreateContentMenu extends Menu
                 continue;
             }
 
+            if (empty($wallEntryWidget->createRoute)) {
+                continue;
+            }
+
             if (!$content->content->canEdit()) {
                 continue;
             }
