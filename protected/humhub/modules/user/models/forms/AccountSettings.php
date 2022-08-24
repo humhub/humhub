@@ -39,7 +39,7 @@ class AccountSettings extends Model
             [['timeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
             ['visibility', 'in', 'range' => array_keys($this->getVisibilityOptions()),
-                'when' => function (self $model) {return $model->isVisibilityEditable();}],
+                'when' => function (self $model) {return $model->isVisibilityViewable() && $model->isVisibilityEditable();}],
         ];
     }
 
