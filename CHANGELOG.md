@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.12.2 (Unreleased)
+-------------------
+- Fix #5851: Admin User Settings cannot saved 
+
+
 1.12.1 (August 15, 2022)
 ------------------------
 - Fix #5822: Fix content width in mobile view
