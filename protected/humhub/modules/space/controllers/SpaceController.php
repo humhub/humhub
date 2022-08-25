@@ -10,6 +10,7 @@ namespace humhub\modules\space\controllers;
 
 use humhub\modules\content\components\ContentContainerController;
 use humhub\components\behaviors\AccessControl;
+use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Chooser;
 use humhub\modules\user\models\User;
@@ -98,7 +99,7 @@ class SpaceController extends ContentContainerController
     public function actionHome()
     {
         $space = $this->contentContainer;
-        $canCreatePosts = $space->permissionManager->can(new CreatePost());
+        $canCreatePosts = (new Post($space))->content->canEdit();
         $isMember = $space->isMember();
 
         return $this->render('home', [

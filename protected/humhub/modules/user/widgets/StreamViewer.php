@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\modules\post\models\Post;
 use Yii;
 use humhub\modules\stream\widgets\StreamViewer as BaseStreamViewer;
 use humhub\modules\user\models\User;
@@ -44,7 +45,7 @@ class StreamViewer extends BaseStreamViewer
     {
         parent::init();
 
-        $canCreatePost = $this->contentContainer->permissionManager->can(CreatePost::class);
+        $canCreatePost = (new Post($this->contentContainer))->content->canEdit();
 
         if (empty($this->messageStreamEmptyCss) && $canCreatePost) {
             $this->messageStreamEmptyCss = 'placeholder-empty-stream';

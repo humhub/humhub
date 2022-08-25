@@ -47,10 +47,11 @@ class Form extends WallCreateContentForm
      */
     public function getRenderParams(array $additionalParams = []): array
     {
-        $canCreatePostInSpace = ($this->contentContainer instanceof Space && $this->contentContainer->can(CreatePost::class));
+        $post = new Post($this->contentContainer);
+        $canCreatePostInSpace = ($this->contentContainer instanceof Space && $post->content->canEdit());
 
         return array_merge([
-            'post' => new Post($this->contentContainer),
+            'post' => $post,
             'mentioningUrl' => $canCreatePostInSpace ? Url::to([$this->mentioningUrl, 'id' => $this->contentContainer->id]) : null,
         ], $additionalParams);
     }
@@ -76,8 +77,8 @@ class Form extends WallCreateContentForm
      */
     public function run()
     {
-        if (!$this->contentContainer->permissionManager->can(new CreatePost())) {
-            return;
+        if (!(new Post($this->contentContainer))->content->canEdit()) {
+            return '';
         }
 
         return parent::run();

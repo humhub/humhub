@@ -13,6 +13,7 @@ use humhub\libs\ParameterEvent;
 use \humhub\modules\comment\Module as CommentModule;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\modules\post\models\Post;
 use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\search\Module;
 use humhub\modules\space\models\Membership;
@@ -94,7 +95,7 @@ class MentioningController extends Controller
         $keyword = (string)Yii::$app->request->get('keyword');
 
         $space = Space::findOne(['id' => (int) $id]);
-        if (!$space || !$space->can(CreatePost::class)) {
+        if (!$space || !(new Post($space))->content->canEdit()) {
             throw new HttpException(403, 'Access denied!');
         }
 
@@ -140,7 +141,7 @@ class MentioningController extends Controller
 
         // Search all users/members on request with at least one char keyword:
         if ($keyword !== '') {
-            if ($content->container instanceof Space && $content->container->can(CreatePost::class)) {
+            if ($content->container instanceof Space && (new Post($content->container))->content->canEdit()) {
                 return $this->actionSpace($content->container->id);
             } else {
                 return $this->actionIndex();
