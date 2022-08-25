@@ -105,7 +105,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * @var string permission instance
      * @since 1.13.0
      */
-    protected $createPermission = CreatePublicContent::class;
+    protected $createPermission = ManageContent::class;
 
     /**
      * Holds an extra manage permission by providing one of the following

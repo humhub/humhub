@@ -146,14 +146,14 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     protected $renderOptionClass = WallStreamEntryOptions::class;
 
     /**
-     * @var string
+     * @var string Action for menu of create form on wall stream
      */
-    public $menuAction;
+    public $createFormMenuAction;
 
     /**
-     * @var int
+     * @var int Sort order of create form and tab menu on wall stream
      */
-    public $menuSortOrder;
+    public $createFormSortOrder;
 
     /**
      * @return string returns the content type specific part of this wall entry (e.g. post content)

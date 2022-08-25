@@ -60,12 +60,13 @@ class PostController extends ContentContainerController
      */
     public function actionPost()
     {
+        $post = new Post($this->contentContainer);
+
         // Check createPost Permission
-        if (!$this->contentContainer->getPermissionManager()->can(new CreatePost())) {
+        if (!$post->content->canEdit()) {
             return [];
         }
 
-        $post = new Post($this->contentContainer);
         $post->load(Yii::$app->request->post(), 'Post');
 
         return Post::getDb()->transaction(function ($db) use ($post) {
@@ -105,7 +106,7 @@ class PostController extends ContentContainerController
 
     public function actionForm()
     {
-        if (!$this->contentContainer->getPermissionManager()->can(CreatePost::class)) {
+        if (!(new Post($this->contentContainer))->content->canEdit()) {
             throw new ForbiddenHttpException();
         }
 
