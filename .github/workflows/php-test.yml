@@ -43,6 +43,10 @@ jobs:
                 options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
         steps:
+            - name: Start Selenium
+              run: |
+                docker run --detach --net=host --shm-size="2g" selenium/standalone-chrome
+          
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
 
@@ -109,8 +113,8 @@ jobs:
             - name: Run test server
               run: php --server 127.0.0.1:8080 index-test.php &>/tmp/phpserver.log &
 
-            - name: Setup chromedriver
-              run: chromedriver --url-base=/wd/hub &
+#            - name: Setup chromedriver
+#              run: chromedriver --url-base=/wd/hub &
 
             - name: Valdiate test server
               run: sleep 5 && curl --fail --head http://127.0.0.1:8080/index-test.php
