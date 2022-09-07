@@ -54,7 +54,7 @@ class WallCreateContentMenu extends Menu
     public $form;
 
     /**
-     * @var bool Visible by default depending on property `$this->form->displayMenu`
+     * @var bool Visible by default depending on property `$this->form->displayContentTabs`
      */
     public $isVisible;
 
@@ -66,7 +66,7 @@ class WallCreateContentMenu extends Menu
         parent::init();
 
         if ($this->isVisible === null) {
-            $this->isVisible = ($this->form instanceof WallCreateContentForm) && $this->form->displayMenu;
+            $this->isVisible = ($this->form instanceof WallCreateContentForm) && $this->form->displayContentTabs;
         }
 
         if (!$this->isVisible) {

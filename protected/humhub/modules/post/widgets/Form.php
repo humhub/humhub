@@ -37,7 +37,7 @@ class Form extends WallCreateContentForm
     /**
      * @inheritdoc
      */
-    public $displayMenu = true;
+    public $displayContentTabs = true;
 
     /**
      * Get params for form rendering
