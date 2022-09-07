@@ -4,6 +4,7 @@ HumHub Changelog
 1.12.2 (Unreleased)
 -------------------
 - Fix #5851: Admin User Settings cannot saved 
+- Fix #5856: Fix SMTPS Config Migration
 
 
 1.12.1 (August 15, 2022)

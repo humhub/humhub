@@ -15,7 +15,7 @@ class m220606_205507_mailer_settings extends Migration
     {
         $setting = Setting::findOne(['name' => 'mailer.encryption', 'module_id' => 'base']);
         if ($setting !== null) {
-            if ($setting->value === 'tls' || $setting->value === 'ssl') {
+            if ($setting->value === 'ssl') {
                 Yii::$app->settings->set('mailer.useSmtps', true);
             }
             $setting->delete();
