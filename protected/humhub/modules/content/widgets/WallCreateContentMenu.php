@@ -91,6 +91,10 @@ class WallCreateContentMenu extends Menu
                 continue;
             }
 
+            if (!$content->content->container->moduleManager->isEnabled($content->getModuleId())) {
+                continue;
+            }
+
             $wallEntryWidget = $content->getWallEntryWidget();
             if (!($wallEntryWidget instanceof WallStreamEntryWidget)) {
                 continue;
