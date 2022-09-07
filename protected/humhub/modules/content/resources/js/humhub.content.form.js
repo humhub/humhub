@@ -76,7 +76,6 @@ humhub.module('content.form', function(module, require, $) {
      */
     CreateForm.prototype.resetForm = function() {
         // Reset Form (Empty State)
-        this.hide();
         $('.contentForm_options').hide();
         var $contentForm = $('.contentForm');
         $contentForm.filter(':text').val('');
