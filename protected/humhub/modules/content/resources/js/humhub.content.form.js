@@ -202,7 +202,9 @@ humhub.module('content.form', function(module, require, $) {
         client.get(evt).then(function(response) {
             that.formPanel.replaceWith(response.html);
             that.formPanel = that.$.parent().find('.panel');
-            Widget.instance(that.formPanel.find(CREATE_FORM_ROOT_SELECTOR));
+            that.formPanel.find('[data-action-component], [data-ui-widget]').each(function () {
+                Widget.instance($(this));
+            });
         }).catch(function(e) {
             module.log.error(e, true);
             loader.reset(that.formPanel);
