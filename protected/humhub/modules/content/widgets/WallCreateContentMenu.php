@@ -115,22 +115,23 @@ class WallCreateContentMenu extends Menu
                 'sortOrder' => $wallEntryWidget->createFormSortOrder,
                 'isActive' => $i === 0,
             ];
+            $url = $this->contentContainer->createUrl($wallEntryWidget->createRoute);
 
             switch ($wallEntryWidget->editMode) {
                 case WallStreamEntryWidget::EDIT_MODE_INLINE:
                     $menuOptions['htmlOptions'] = [
-                        'data-action-click' => $wallEntryWidget->menuAction ?? 'loadForm',
-                        'data-action-url' => $this->contentContainer->createUrl($wallEntryWidget->createRoute),
+                        'data-action-click' => $wallEntryWidget->createFormMenuAction ?? 'loadForm',
+                        'data-action-url' => $url,
                     ];
                     break;
                 case WallStreamEntryWidget::EDIT_MODE_MODAL:
                     $menuOptions['htmlOptions'] = [
-                        'data-action-click' => $wallEntryWidget->menuAction ?? 'ui.modal.post',
-                        'data-action-url' => $this->contentContainer->createUrl($wallEntryWidget->createRoute),
+                        'data-action-click' => $wallEntryWidget->createFormMenuAction ?? 'ui.modal.post',
+                        'data-action-url' => $url,
                     ];
                     break;
                 case WallStreamEntryWidget::EDIT_MODE_NEW_WINDOW:
-                    $menuOptions['url'] = $this->contentContainer->createUrl($wallEntryWidget->createRoute);
+                    $menuOptions['url'] = $url;
                     break;
                 default:
                     $menuOptions = false;
