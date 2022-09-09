@@ -10,6 +10,9 @@ on:
             - master
             - develop
 
+permissions:
+  contents: read
+
 jobs:
     tests:
         name: PHP ${{ matrix.php-version }}-mysql-${{ matrix.mysql-version }}
