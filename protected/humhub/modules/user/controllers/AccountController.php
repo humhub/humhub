@@ -416,6 +416,7 @@ class AccountController extends BaseAccountController
             $userPassword->user_id = Yii::$app->user->id;
             $userPassword->setPassword($userPassword->newPassword);
             if ($userPassword->save()) {
+                Yii::$app->session->invalidateOtherSessions();
                 return $this->render('changePassword_success');
             }
         }

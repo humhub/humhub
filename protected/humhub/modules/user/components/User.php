@@ -280,4 +280,19 @@ class User extends \yii\web\User
 
         return parent::loginRequired($checkAjax, $checkAcceptHeader);
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getIdentityAndDurationFromCookie()
+    {
+        $data = parent::getIdentityAndDurationFromCookie();
+
+        if (isset($data['identity']) && Yii::$app->session->isInvalidated()) {
+            unset($data['identity']);
+            $this->removeIdentityCookie();
+        }
+
+        return $data;
+    }
 }

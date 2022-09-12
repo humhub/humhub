@@ -84,4 +84,38 @@ class Session extends DbSession
         return true;
     }
 
+    /**
+     * Invalidate Sessions of the current User started in other browsers
+     */
+    public function invalidateOtherSessions()
+    {
+        if (Yii::$app->user->isGuest) {
+            return;
+        }
+
+        // Set column "expire" to NULL, and on next restoring Session from Cookie such DB Sessions will be destroyed
+        $this->db->createCommand()
+            ->update($this->sessionTable,
+                ['expire' => new Expression('NULL')],
+                ['AND', ['user_id' => Yii::$app->user->id], ['!=', 'id', $this->id]])
+            ->execute();
+    }
+
+    /**
+     * Check if the Session is invalidated
+     *
+     * @return bool
+     */
+    public function isInvalidated(): bool
+    {
+        $expire = (new Query)
+            ->select(['expire'])
+            ->from($this->sessionTable)
+            ->where(['id' => $this->id])
+            ->createCommand($this->db)
+            ->queryScalar();
+
+        return $expire === null;
+    }
+
 }
