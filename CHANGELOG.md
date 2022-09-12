@@ -5,6 +5,7 @@ HumHub Changelog
 -------------------
 - Fix #5851: Admin User Settings cannot saved 
 - Fix #5856: Fix SMTPS Config Migration
+- Enh #5860: Invalidate active sessions after password changing
 
 
 1.12.1 (August 15, 2022)
