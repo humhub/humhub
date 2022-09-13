@@ -33,6 +33,42 @@ class View extends \yii\web\View
     const BLOCK_SIDEBAR = 'sidebar';
 
     /**
+     * The type metadata to preview the content with Open Graph protocol
+     * @var string
+     */
+    public $metaType;
+
+    /**
+     * The URL metadata to preview the content with Open Graph protocol
+     * @var string
+     */
+    public $metaUrl;
+
+    /**
+     * The date metadata to preview the content with Open Graph protocol
+     * @var string
+     */
+    public $metaDate;
+
+    /**
+     * The image metadata to preview the content with Open Graph protocol
+     * @var string
+     */
+    public $metaImage;
+
+    /**
+     * The title metadata to preview the content with Open Graph protocol
+     * @var string
+     */
+    public $metaTitle;
+
+    /**
+     * The description metadata to preview the content with Open Graph protocol
+     * @var string
+     */
+    public $metaDescription;
+
+    /**
      * @var string page title
      * @see View::setPageTitle
      */
