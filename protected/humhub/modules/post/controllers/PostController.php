@@ -14,12 +14,14 @@ use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\WallCreateContentForm;
+use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\post\models\forms\PostEditForm;
 use humhub\modules\post\models\Post;
 use humhub\modules\post\permissions\CreatePost;
 use Yii;
 use yii\helpers\StringHelper;
+use yii\imagine\Image;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
@@ -47,6 +49,19 @@ class PostController extends ContentContainerController
         // Add metadata to view to preview the content with Open Graph protocol
         $this->view->metaTitle = $post->getOwner()->getDisplayName() . ' · ' . $this->contentContainer->getDisplayName();
         $this->view->metaDescription = StringHelper::truncate(RichText::convert($post->message, RichText::FORMAT_SHORTTEXT), 195, '[...]');
+        $previewImage = new PreviewImage();
+        foreach ($post->fileManager->findAll() as $file) {
+            if (
+                file_exists($file->store->get())
+                && $previewImage->applyFile($file) // File is an image
+            ) {
+                $originalImage = Image::getImagine()->open($file->store->get());
+                if ($originalImage && $originalImage->getSize()->getHeight() > 200 && $originalImage->getSize()->getWidth() > 200) { // 200px is the minimum size for Facebook
+                    $this->view->metaImage = $file->getUrl();
+                }
+                break;
+            }
+        }
 
         return $this->render('view', [
             'post' => $post,
