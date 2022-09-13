@@ -179,6 +179,7 @@ class DynamicConfig extends BaseObject
         } elseif ($transportType === MailingSettingsForm::TRANSPORT_DSN) {
             $mail['transport']['dsn'] = Yii::$app->settings->get('mailer.dsn');
         } elseif ($transportType === MailingSettingsForm::TRANSPORT_FILE) {
+            unset($mail['transport']);
             $mail['useFileTransport'] = true;
         }
 
