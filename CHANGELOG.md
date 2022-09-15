@@ -1,14 +1,22 @@
 HumHub Changelog
 ================
 
-1.12.1 (Unreleased)
-----------------------
+1.12.2 (Unreleased)
+-------------------
+- Fix #5851: Admin User Settings cannot saved 
+- Fix #5856: Fix SMTPS Config Migration
+
+
+1.12.1 (August 15, 2022)
+------------------------
 - Fix #5822: Fix content width in mobile view
 - Fix #5825: Fix format date to mysql on date stream filter
 - Fix #5832: Exception in file open dialog when last update user no longer exists 
 - Fix #5814: Fix numerated lists in mail summary content
 - Fix #5830: Fix cron job of search index rebuilding
 - Fix #5838: Fix deprecated null value for `file_exists()` on PHP 8.1
+- Enh #5846: Improved PHP minimum version checks
+- Fix #5845: Fix unknown `streamQuery` on load `Filter`
 
 1.12.0 (July 27, 2022)
 ----------------------
