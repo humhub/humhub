@@ -114,7 +114,7 @@ class WallCreateContentMenu extends Menu
                 'label' => $content->getContentName(),
                 'icon' => $content->getIcon(),
                 'url' => '#',
-                'sortOrder' => $wallEntryWidget->createFormSortOrder,
+                'sortOrder' => $wallEntryWidget->createFormSortOrder ?? '9999999-' . $content->getContentName(),
                 'isActive' => $i === 0,
             ];
             $url = $this->contentContainer->createUrl($wallEntryWidget->createRoute);

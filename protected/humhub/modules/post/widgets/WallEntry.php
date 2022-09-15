@@ -30,7 +30,7 @@ class WallEntry extends WallStreamEntryWidget
     /**
      * @inheritdoc
      */
-    public $createFormSortOrder = 100;
+    public $createFormSortOrder = 0;
 
     /**
      * @inheritdoc
