@@ -108,6 +108,8 @@ class WallCreateContentMenu extends Menu
                 continue;
             }
 
+            $wallEntryWidget->registerCreateContentMenuAssets();
+
             $menuOptions = [
                 'label' => $content->getContentName(),
                 'icon' => $content->getIcon(),
