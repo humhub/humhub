@@ -99,6 +99,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     const SCENARIO_REGISTRATION = 'registration';
     const SCENARIO_REGISTRATION_EMAIL = 'registration_email';
     const SCENARIO_EDIT_ACCOUNT_SETTINGS = 'editAccountSettings';
+    const SCENARIO_APPROVE = 'approve';
 
     /**
      * @event Event an event that is triggered when the user visibility is checked via [[isVisible()]].
@@ -165,7 +166,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['time_zone'], 'validateTimeZone'],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
-            ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
+            ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages()), 'except' => self::SCENARIO_APPROVE],
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'string', 'max' => 150],

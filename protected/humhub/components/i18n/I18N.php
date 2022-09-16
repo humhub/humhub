@@ -193,6 +193,26 @@ class I18N extends BaseI18N
     }
 
     /**
+     * Check if the provided or browser language is allowed in system, otherwise return default language
+     *
+     * @since 1.12.2
+     * @param string|null $language NULL - to get a language from browser
+     * @return string|null
+     */
+    public function getAllowedLanguage(?string $language = null): ?string
+    {
+        if (empty($language)) {
+            $language = Yii::$app->language;
+        }
+
+        if (array_key_exists($language, $this->getAllowedLanguages())) {
+            return $language;
+        }
+
+        return Yii::$app->settings->get('defaultLanguage');
+    }
+
+    /**
      * @inheritdoc
      */
     public function format($message, $params, $language)
