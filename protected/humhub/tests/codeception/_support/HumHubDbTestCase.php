@@ -47,9 +47,11 @@ class HumHubDbTestCase extends Unit
 
     protected function setUp(): void
     {
-        parent::setUp();
+        if (\Yii::$app !== null) {
+            \Yii::$app->db->trigger('afterOpen');
+        }
 
-        \Yii::$app->db->trigger('afterOpen');
+        parent::setUp();
 
         $webRoot = dirname(dirname(__DIR__)) . '/../../..';
         Yii::setAlias('@webroot', realpath($webRoot));
