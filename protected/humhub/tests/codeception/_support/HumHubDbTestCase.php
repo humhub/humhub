@@ -49,6 +49,8 @@ class HumHubDbTestCase extends Unit
     {
         parent::setUp();
 
+        \Yii::$app->db->trigger('afterOpen');
+
         $webRoot = dirname(dirname(__DIR__)) . '/../../..';
         Yii::setAlias('@webroot', realpath($webRoot));
         $this->initModules();
