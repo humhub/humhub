@@ -108,8 +108,6 @@ class WallCreateContentMenu extends Menu
                 continue;
             }
 
-            $wallEntryWidget->registerCreateContentMenuAssets();
-
             $menuOptions = [
                 'label' => $content->getContentName(),
                 'icon' => $content->getIcon(),
@@ -128,7 +126,7 @@ class WallCreateContentMenu extends Menu
                     break;
                 case WallStreamEntryWidget::EDIT_MODE_MODAL:
                     $menuOptions['htmlOptions'] = [
-                        'data-action-click' => $wallEntryWidget->createFormMenuAction ?? 'ui.modal.post',
+                        'data-action-click' => $wallEntryWidget->createFormMenuAction ?? 'ui.modal.load',
                         'data-action-url' => $url,
                     ];
                     break;

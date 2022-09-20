@@ -367,13 +367,4 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
             'class' => $this->renderOptions->isPinned($this->model) ? 'wall-entry pinned-entry' : 'wall-entry'
         ];
     }
-
-    /**
-     * Register assets that are required for menu item of content creating
-     *
-     * @since 1.13
-     */
-    public function registerCreateContentMenuAssets()
-    {
-    }
 }
