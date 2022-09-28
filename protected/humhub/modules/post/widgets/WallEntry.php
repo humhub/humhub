@@ -35,6 +35,11 @@ class WallEntry extends WallStreamEntryWidget
     /**
      * @inheritdoc
      */
+    public $createFormClass = Form::class;
+
+    /**
+     * @inheritdoc
+     */
     protected function renderContent()
     {
         return $this->render('wallEntry', [

@@ -5,7 +5,7 @@
  */
 
 use humhub\modules\activity\widgets\ActivityStreamViewer;
-use humhub\modules\post\widgets\Form;
+use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\PendingApprovals;
 use humhub\modules\space\widgets\Members;
@@ -28,7 +28,7 @@ if ($canCreatePosts) {
 ?>
 
 <div data-stream-create-content="stream.wall.WallStream"<?php if ($isSingleContentRequest) : ?> style="display:none"<?php endif; ?>>
-    <?= Form::widget(['contentContainer' => $space]); ?>
+    <?= WallCreateContentForm::widget(['contentContainer' => $space]); ?>
 </div>
 
 <?= StreamViewer::widget([

@@ -10,7 +10,6 @@ namespace humhub\modules\post\widgets;
 
 use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\post\models\Post;
-use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Url;
@@ -33,11 +32,6 @@ class Form extends WallCreateContentForm
      * @var string
      */
     public $mentioningUrl = '/search/mentioning/space';
-
-    /**
-     * @inheritdoc
-     */
-    public $displayContentTabs = true;
 
     /**
      * Get params for form rendering

@@ -37,13 +37,23 @@ humhub.module('content.form', function(module, require, $) {
                     return;
                 }
 
-                that.menu.fadeIn();
+                that.showMenu();
                 $('.contentForm_options').fadeIn();
             });
         } else {
             $('#contentFormBody').find('.humhub-ui-richtext').trigger('disable');
         }
     };
+
+    CreateForm.prototype.showMenu = function() {
+        this.menu.find('li,a').removeClass('active');
+        const firstMenuWithForm = this.menu.find('a[data-action-click=loadForm]:eq(0)');
+        if (firstMenuWithForm.length) {
+            firstMenuWithForm.addClass('active')
+                .parent().addClass('active');
+        }
+        this.menu.fadeIn();
+    }
 
     CreateForm.prototype.submit = function(evt) {
         this.$.find('.preferences, .fileinput-button').hide();

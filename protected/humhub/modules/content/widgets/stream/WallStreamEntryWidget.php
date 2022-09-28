@@ -5,6 +5,7 @@ namespace humhub\modules\content\widgets\stream;
 
 use Exception;
 use humhub\libs\Html;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\ArchiveLink;
 use humhub\modules\content\widgets\DeleteLink;
 use humhub\modules\content\widgets\LockCommentsLink;
@@ -154,6 +155,11 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
      * @var int Sort order of create form and tab menu on wall stream
      */
     public $createFormSortOrder;
+
+    /**
+     * @var string Class name of the Form to create a Content from wall stream
+     */
+    public $createFormClass;
 
     /**
      * @return string returns the content type specific part of this wall entry (e.g. post content)
@@ -366,5 +372,38 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
         return [
             'class' => $this->renderOptions->isPinned($this->model) ? 'wall-entry pinned-entry' : 'wall-entry'
         ];
+    }
+
+    /**
+     * Get Wall Entry Widget by Content
+     *
+     * @param ContentActiveRecord $content
+     * @return WallStreamEntryWidget|null
+     */
+    public static function getByContent(ContentActiveRecord $content): ?WallStreamEntryWidget
+    {
+        if (!$content->content->container->moduleManager->isEnabled($content->getModuleId())) {
+            return null;
+        }
+
+        $wallEntryWidget = $content->getWallEntryWidget();
+        if (!($wallEntryWidget instanceof WallStreamEntryWidget)) {
+            return null;
+        }
+
+        if (empty($wallEntryWidget->createRoute)) {
+            return null;
+        }
+
+        if (!$content->content->canEdit()) {
+            return null;
+        }
+
+        return $wallEntryWidget;
+    }
+
+    public function hasCreateForm(): bool
+    {
+        return !empty($this->createFormClass);
     }
 }

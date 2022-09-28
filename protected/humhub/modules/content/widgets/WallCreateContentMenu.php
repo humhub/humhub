@@ -85,26 +85,14 @@ class WallCreateContentMenu extends Menu
             return;
         }
 
-        foreach (Yii::$app->moduleManager->getContentClasses($this->contentContainer) as $i => $contentClass) {
+        foreach (Yii::$app->moduleManager->getContentClasses($this->contentContainer) as $contentClass) {
             $content = new $contentClass($this->contentContainer);
             if (!($content instanceof ContentActiveRecord)) {
                 continue;
             }
 
-            if (!$content->content->container->moduleManager->isEnabled($content->getModuleId())) {
-                continue;
-            }
-
-            $wallEntryWidget = $content->getWallEntryWidget();
-            if (!($wallEntryWidget instanceof WallStreamEntryWidget)) {
-                continue;
-            }
-
-            if (empty($wallEntryWidget->createRoute)) {
-                continue;
-            }
-
-            if (!$content->content->canEdit()) {
+            $wallEntryWidget = WallStreamEntryWidget::getByContent($content);
+            if (!$wallEntryWidget) {
                 continue;
             }
 
@@ -113,7 +101,6 @@ class WallCreateContentMenu extends Menu
                 'icon' => $content->getIcon(),
                 'url' => '#',
                 'sortOrder' => $wallEntryWidget->createFormSortOrder ?? '9999999-' . $content->getContentName(),
-                'isActive' => $i === 0,
             ];
             $url = $this->contentContainer->createUrl($wallEntryWidget->createRoute);
 
