@@ -133,7 +133,7 @@ class ModuleControls extends Menu
         }
 
         $onlineModule = new OnlineModule(['module' => $this->module]);
-        if ($onlineModule->info('purchased')) {
+        if ($onlineModule->isNonFree) {
             $this->addEntry(new MenuLink([
                 'id' => 'marketplace-licence-key',
                 'label' => Yii::t('AdminModule.base', 'Add Licence Key'),
