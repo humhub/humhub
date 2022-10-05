@@ -22,6 +22,7 @@ use yii\base\Component;
  * @property-read bool $isThirdParty
  * @property-read bool $isPartner
  * @property-read bool $isDeprecated
+ * @property-read bool $isNonFree
  * @property-read array $categories
  *
  * @author Lucas Bartholemy <lucas@bartholemy.com>
@@ -133,5 +134,10 @@ class OnlineModule extends Component
     public function getIsDeprecated(): bool
     {
         return (bool) $this->info('isDeprecated');
+    }
+
+    public function getIsNonFree(): bool
+    {
+        return $this->info('purchased') || $this->info('price_eur') || $this->info('price_request_quote');
     }
 }
