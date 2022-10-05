@@ -24,6 +24,8 @@ use humhub\modules\user\components\CheckPasswordValidator;
  * @property string $password
  * @property string $salt
  * @property string $created_at
+ *
+ * @property-read User $user
  */
 class Password extends ActiveRecord
 {
@@ -185,6 +187,7 @@ class Password extends ActiveRecord
         $this->salt = UUID::v4();
         $this->algorithm = $this->defaultAlgorithm;
         $this->password = $this->hashPassword($newPassword);
+        $this->user->auth_key = Yii::$app->security->generateRandomString(32);
     }
 
     public function getUser()
@@ -210,6 +213,17 @@ class Password extends ActiveRecord
                     throw new ErrorException("Wrong regexp in additional password rules. Target: '{$pattern}'");
                 }
             }
+        }
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($this->user->isAttributeChanged('auth_key') &&
+            $this->user->save() &&
+            $this->user->isCurrentUser()) {
+            Yii::$app->user->switchIdentity($this->user);
         }
     }
 
