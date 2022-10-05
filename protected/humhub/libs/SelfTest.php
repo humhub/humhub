@@ -453,7 +453,7 @@ class SelfTest
                 $checks[] = [
                     'title' => $title,
                     'state' => 'WARNING',
-                    'hint' => Yii::t('AdminModule.information', 'Base URL should be: {currentBaseUrl}',
+                    'hint' => Yii::t('AdminModule.information', 'Detected URL: {currentBaseUrl}',
                         ['currentBaseUrl' => $currentBaseUrl]
                     ),
                 ];
