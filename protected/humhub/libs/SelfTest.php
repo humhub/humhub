@@ -432,6 +432,32 @@ class SelfTest
                     ),
                 ];
             }
+
+            $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Base URL');
+            $sslPort = 443;
+            $httpPort = 80;
+            $scheme = $_SERVER['REQUEST_SCHEME'] ?? (
+                isset($_SERVER['HTTPS'])
+                    ? ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1 || $_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
+                    : ($_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http'));
+            $currentBaseUrl = $scheme . '://' . $_SERVER['HTTP_HOST']
+                . (($scheme === 'https' && $_SERVER['SERVER_PORT'] == $sslPort) ||
+                ($scheme === 'http' && $_SERVER['SERVER_PORT'] == $httpPort) ? '' : ':' . $_SERVER['SERVER_PORT'])
+                . ($_SERVER['BASE'] ?? '');
+            if ($currentBaseUrl === Yii::$app->settings->get('baseUrl')) {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'OK'
+                ];
+            } else {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'WARNING',
+                    'hint' => Yii::t('AdminModule.information', 'Base URL should be: {currentBaseUrl}',
+                        ['currentBaseUrl' => $currentBaseUrl]
+                    ),
+                ];
+            }
         }
 
         // Check Runtime Directory
