@@ -118,10 +118,7 @@ class AccountController extends BaseAccountController
         $user = Yii::$app->user->getIdentity();
 
         $model = new \humhub\modules\user\models\forms\AccountSettings();
-        $model->language = $user->language;
-        if ($model->language == "") {
-            $model->language = Yii::$app->settings->get('defaultLanguage');
-        }
+        $model->language = Yii::$app->i18n->getAllowedLanguage($user->language);
         $model->timeZone = $user->time_zone;
         if (empty($model->timeZone)) {
             $model->timeZone = Yii::$app->settings->get('defaultTimeZone');

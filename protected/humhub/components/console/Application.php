@@ -57,8 +57,12 @@ class Application extends \yii\console\Application
      */
     public function init()
     {
-        if (version_compare(phpversion(), '5.6', '<')) {
-            throw new Exception('Installed PHP Version is too old! Required minimum version is PHP 5.6 (Installed: ' . phpversion() . ')');
+        if (version_compare(phpversion(), $this->minSupportedPhpVersion, '<')) {
+            throw new Exception(sprintf(
+                'Installed PHP Version is too old! Required minimum version is PHP %s (Installed: %s)',
+                $this->minSupportedPhpVersion,
+                phpversion()
+            ));
         }
 
         if (BaseSettingsManager::isDatabaseInstalled()) {

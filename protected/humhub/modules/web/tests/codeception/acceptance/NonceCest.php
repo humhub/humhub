@@ -30,7 +30,7 @@ class NonceCest
         $I->amOnRoute(['/admin/setting/statistic']);
         $I->wait(2);
         $I->executeJS('_editor = document.querySelectorAll("div.CodeMirror")[0].CodeMirror; _editor.setValue("<script nonce=\"{{ nonce }}\">$(\".field-statisticsettingsform-trackinghtmlcode\").after(\'<div id=\"test_tracking_script\">Tracking Script</div>\')</script>");');
-        $I->click('Save');
+        $I->jsClick('button[type=submit]');
         $I->wait(2);
         $I->see("Tracking Script", '#test_tracking_script');
     }
@@ -42,7 +42,7 @@ class NonceCest
         $I->amOnRoute(['/admin/setting/statistic']);
         $I->wait(2);
         $I->executeJS('_editor = document.querySelectorAll("div.CodeMirror")[0].CodeMirror; _editor.setValue("<script>alert(\"Tracking Script\")</script>");');
-        $I->click('Save');
+        $I->jsClick('button[type=submit]');
         $I->wait(2);
         $I->amOnDashboard();
         $I->dontSee("Tracking Script");

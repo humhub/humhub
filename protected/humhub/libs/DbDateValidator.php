@@ -78,7 +78,7 @@ class DbDateValidator extends DateValidator
             $this->addError($model, $attribute, $this->tooBig, ['max' => $this->maxString]);
         } else {
             // If there is no error, and attribute is not yet in DB Format - convert to DB
-            $date = new \DateTime(null, new \DateTimeZone('UTC'));
+            $date = new \DateTime('now', new \DateTimeZone('UTC'));
             $date->setTimestamp($timestamp);
 
             if ($timeValue) {

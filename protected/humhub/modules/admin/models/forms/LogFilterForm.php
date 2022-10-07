@@ -66,19 +66,6 @@ class LogFilterForm extends Model
     private $query;
 
     /**
-     * @inheritDoc
-     */
-    public function init()
-    {
-        if($this->levels === null) {
-            $this->levels = [Logger::LEVEL_ERROR];
-        }
-
-        parent::init();
-    }
-
-
-    /**
      * @inheritdoc
      */
     public function rules()

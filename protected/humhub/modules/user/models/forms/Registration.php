@@ -261,7 +261,7 @@ class Registration extends HForm
             return false;
         }
 
-        $this->models['User']->language = Yii::$app->language;
+        $this->models['User']->language = Yii::$app->i18n->getAllowedLanguage();
         if ($this->enableUserApproval) {
             $this->models['User']->status = User::STATUS_NEED_APPROVAL;
             $this->models['User']->registrationGroupId = $this->models['GroupUser']->group_id;

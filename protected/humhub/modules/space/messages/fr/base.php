@@ -53,7 +53,7 @@ return array (
   'Hide Members sidebar in the stream page.' => 'Masquer la barre latérale des Membres sur la page du flux',
   'Homepage' => 'Page d\'accueil',
   'Homepage (Guests)' => 'Accueil (Invités)',
-  'I want to become a member because...' => '',
+  'I want to become a member because...' => 'Je souhaite devenir membre car…',
   'Invite' => 'Inviter',
   'Invite and request' => 'Sur invitation et demande',
   'Invite by email' => 'Inviter par e-mail',
