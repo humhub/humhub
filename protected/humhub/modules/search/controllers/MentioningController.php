@@ -14,7 +14,6 @@ use \humhub\modules\comment\Module as CommentModule;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\post\models\Post;
-use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\search\Module;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
