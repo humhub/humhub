@@ -9,3 +9,4 @@ HumHub Changelog
 - Enh #5864: Use Base URL from general settings for all generated absolute URLs
 - Enh #5872: Invalidate active sessions after password changing
 - Enh #5820: Selftest for base URL
+- Enh #5891: Improve select2 width on people filters

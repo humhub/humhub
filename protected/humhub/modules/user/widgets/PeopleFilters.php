@@ -112,6 +112,7 @@ class PeopleFilters extends DirectoryFilters
             case 'dropdownlist':
                 $filterData['type'] = 'widget';
                 $filterData['widget'] = PeopleFilterPicker::class;
+                $filterData['inputOptions'] = ['data-dropdown-auto-width' => 'true'];
                 $filterData['widgetOptions'] = [
                     'itemKey' => $profileField->internal_name
                 ];
