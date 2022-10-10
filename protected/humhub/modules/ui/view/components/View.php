@@ -107,10 +107,11 @@ class View extends \yii\web\View
      * Sets current page title
      *
      * @param string $title
+     * @param bool $prepend
      */
-    public function setPageTitle($title)
+    public function setPageTitle($title, $prepend = false)
     {
-        $this->_pageTitle = $title;
+        $this->_pageTitle = ($prepend) ? $title . ' - ' . $this->_pageTitle : $title;
     }
 
     /**

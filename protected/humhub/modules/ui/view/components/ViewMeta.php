@@ -8,54 +8,54 @@
 
 namespace humhub\modules\ui\view\components;
 
-use humhub\libs\LogoImage;
-use humhub\modules\space\models\Space;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\file\models\File;
 use Yii;
 use yii\base\BaseObject;
-use yii\base\Exception;
 use yii\base\InvalidConfigException;
-use yii\helpers\Url;
-use yii\imagine\Image;
 use yii\web\Request;
 
 
 class ViewMeta extends BaseObject
 {
     /**
+     * @var ContentActiveRecord
+     */
+    private $content;
+
+
+    /**
      * The type metadata to preview the content with Open Graph protocol
      * @var string
      */
-    public $metaType;
+    private $contentType;
 
     /**
      * The URL metadata to preview the content with Open Graph protocol
      * @var string
      */
-    public $metaUrl;
+    private $url;
 
     /**
      * The date metadata to preview the content with Open Graph protocol
      * @var string
      */
-    public $metaDate;
+    private $lastUpdateAt;
 
     /**
-     * The image metadata to preview the content with Open Graph protocol
-     * @var string
+     * @var File[]
      */
-    public $metaImage;
+    private $images;
 
     /**
-     * The title metadata to preview the content with Open Graph protocol
      * @var string
      */
-    public $metaTitle;
+    private $title;
 
     /**
-     * The description metadata to preview the content with Open Graph protocol
      * @var string
      */
-    public $metaDescription;
+    public $description;
 
     public function registerMetaTags(View $view)
     {
@@ -73,28 +73,30 @@ class ViewMeta extends BaseObject
      */
     private function addMetaTags(View $view)
     {
-        // Type
-        $this->metaType = $this->metaType ?: 'website';
+        if (empty($this->title)) {
+            $this->title = $view->getPageTitle();
+        }
 
-        // URL
-        $this->metaUrl = $this->metaUrl ?: (Yii::$app->getRequest() instanceof Request ? Yii::$app->getRequest()->getAbsoluteUrl() : null);
-        $view->registerLinkTag(['rel' => 'canonical', 'href' => $this->metaUrl]);
+        $this->contentType = $this->contentType ?: 'website';
 
-        // Date
+        $this->url = $this->url ?: (Yii::$app->getRequest() instanceof Request ? Yii::$app->getRequest()->getAbsoluteUrl() : null);
+        $view->registerLinkTag(['rel' => 'canonical', 'href' => $this->url]);
+
+        if (!empty($this->description)) {
+            $view->registerMetaTag(['name' => 'description', 'content' => str_replace("\n", '', $this->description)]);
+        }
+
         try {
-            $this->metaDate = $this->metaDate ?: Yii::$app->formatter->asDatetime(time());
+            $this->lastUpdateAt = $this->lastUpdateAt ?: Yii::$app->formatter->asDatetime(time());
         } catch (InvalidConfigException $e) {
         }
 
         // Image
-        $imageUrl = $this->metaImage;
-        // Try to get space image
-        if (
-            !$imageUrl
-            && isset($view->context->contentContainer)
-            && $view->context->contentContainer instanceof Space
+
+        /*
+        $imageUrl = $this->images;
+        if (!$imageUrl && isset($view->context->contentContainer)  && $view->context->contentContainer instanceof Space
         ) {
-            /** @var Space $space */
             $space = $view->context->contentContainer;
             $image = $space->getProfileImage();
             try {
@@ -108,15 +110,8 @@ class ViewMeta extends BaseObject
             }
         }
         // Else, get logo image
-        $this->metaImage = Url::to($imageUrl ?: LogoImage::getUrl(1000, 250), true);
-
-        // Title
-        $this->metaTitle = $this->metaTitle ?: $view->title;
-
-        // Description
-        if ($this->metaDescription) {
-            $view->registerMetaTag(['name' => 'description', 'content' => $this->metaDescription]);
-        }
+        $this->images = Url::to($imageUrl ?: LogoImage::getUrl(1000, 250), true);
+        */
 
         return $view;
     }
@@ -128,22 +123,28 @@ class ViewMeta extends BaseObject
      */
     private function registerOpenGraphMetaTags(View $view)
     {
-        $view->registerMetaTag(['property' => 'og:title', 'content' => $this->metaTitle]);
-        $view->registerMetaTag(['property' => 'og:url', 'content' => $this->metaUrl]);
+        $view->registerMetaTag(['property' => 'og:title', 'content' => $this->title]);
+        $view->registerMetaTag(['property' => 'og:url', 'content' => $this->url]);
         $view->registerMetaTag(['property' => 'og:site_name', 'content' => Yii::$app->name]);
-        $view->registerMetaTag(['property' => 'og:type', 'content' => $this->metaType]);
-        $view->registerMetaTag(['property' => 'og:description', 'content' => $this->metaDescription]);
-        $view->registerMetaTag(['property' => 'og:updated_time', 'content' => $this->metaDate]);
+        $view->registerMetaTag(['property' => 'og:type', 'content' => $this->contentType]);
+        if (!empty($this->description)) {
+            $view->registerMetaTag(['property' => 'og:description', 'content' => $this->description]);
+        }
+        if (!empty($this->lastUpdateAt)) {
+            $view->registerMetaTag(['property' => 'og:updated_time', 'content' => $this->lastUpdateAt]);
+        }
 
-        if ($this->metaImage !== null) {
-            if (is_array($this->metaImage)) {
-                foreach ($this->metaImage as $key => $value) {
+        /*
+        if ($this->images !== null) {
+            if (is_array($this->images)) {
+                foreach ($this->images as $key => $value) {
                     $view->registerMetaTag(['property' => 'og:image', 'content' => $value], 'og:image' . $key);
                 }
             } else {
-                $view->registerMetaTag(['property' => 'og:image', 'content' => $this->metaImage], 'og:image');
+                $view->registerMetaTag(['property' => 'og:image', 'content' => $this->images], 'og:image');
             }
         }
+        */
     }
 
 
@@ -154,20 +155,78 @@ class ViewMeta extends BaseObject
      */
     private function registerTwitterMetaTags(View $view)
     {
-        $view->registerMetaTag(['property' => 'twitter:title', 'content' => $this->metaTitle]);
-        $view->registerMetaTag(['property' => 'twitter:url', 'content' => $this->metaUrl]);
+        $view->registerMetaTag(['property' => 'twitter:title', 'content' => $this->title]);
+        $view->registerMetaTag(['property' => 'twitter:url', 'content' => $this->url]);
         $view->registerMetaTag(['property' => 'twitter:site', 'content' => Yii::$app->name]);
-        $view->registerMetaTag(['property' => 'twitter:type', 'content' => $this->metaType]);
-        $view->registerMetaTag(['property' => 'twitter:description', 'content' => $this->metaDescription]);
-
-        if ($this->metaImage !== null) {
+        $view->registerMetaTag(['property' => 'twitter:type', 'content' => $this->contentType]);
+        if (!empty($this->description)) {
+            $view->registerMetaTag(['property' => 'twitter:description', 'content' => $this->description]);
+        }
+        /*
+        if ($this->images !== null) {
             $view->registerMetaTag([
                 'name' => 'twitter:image', 'content' => (
-                is_array($this->metaImage) ?
-                    reset($this->metaImage) : $this->metaImage
+                is_array($this->images) ?
+                    reset($this->images) : $this->images
                 )
             ], 'twitter:image');
         }
+        */
     }
+
+    public function setContent(ContentActiveRecord $post)
+    {
+        $this->lastUpdateAt = $post->content->updated_at;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return File[]
+     */
+    public function getImages(): array
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param File[] $images
+     */
+    public function setImages(array $images): void
+    {
+        $this->images = $images;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle(string $title): void
+    {
+        $this->title = $title;
+    }
+
 
 }
