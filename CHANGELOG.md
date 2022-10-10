@@ -9,7 +9,7 @@ HumHub Changelog
 - Fix #5875: LDAP user creation broken without email address
 - Fix #5877: Fix wrong empty profile stream message
 - Fix #5874: Fix adding licence key after removing it from marketplace
-
+- Enh #5891: Improve select2 width on people filters
 
 1.12.1 (August 15, 2022)
 ------------------------
