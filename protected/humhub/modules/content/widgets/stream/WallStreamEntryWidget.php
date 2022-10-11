@@ -157,7 +157,8 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     public $createFormSortOrder;
 
     /**
-     * @var string Class name of the Form to create a Content from wall stream
+     * @var string Class name of the Form to create a Content from wall stream,
+     *             The class must be based on humhub\modules\content\widgets\WallCreateContentForm
      */
     public $createFormClass;
 
