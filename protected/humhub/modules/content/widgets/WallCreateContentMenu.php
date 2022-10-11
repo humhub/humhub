@@ -19,7 +19,7 @@ use Yii;
  *
  * @property-read ContentContainerActiveRecord $contentContainer
  * @author luke
- * @since 1.13.0
+ * @since 1.13
  */
 class WallCreateContentMenu extends Menu
 {

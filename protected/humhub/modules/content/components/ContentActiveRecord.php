@@ -103,7 +103,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      *  - BasePermission instance
      *
      * @var string permission instance
-     * @since 1.13.0
+     * @since 1.13
      */
     protected $createPermission = ManageContent::class;
 
@@ -286,7 +286,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     /**
      * Returns the $createPermission settings interpretable by an PermissionManager instance.
      *
-     * @since 1.13.0
+     * @since 1.13
      * @see ContentActiveRecord::$createPermission
      * @return null|object|string
      */
@@ -300,7 +300,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     /**
      * Determines weather or not this records has an additional createPermission set.
      *
-     * @since 1.13.0
+     * @since 1.13
      * @return boolean
      */
     public function hasCreatePermission()
@@ -325,7 +325,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     /**
      * Returns the permission value interpretable by an PermissionManager instance.
      *
-     * @since 1.13.0
+     * @since 1.13
      * @see ContentActiveRecord::$managePermission, ContentActiveRecord::$createPermission
      * @param string|array|null
      * @return null|object|string
