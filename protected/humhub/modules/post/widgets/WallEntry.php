@@ -20,7 +20,7 @@ class WallEntry extends WallStreamEntryWidget
      *
      * @var string
      */
-    public $createRoute = '/post/post/form';
+    public $createRoute = '/post/post/create-form';
 
     /**
      * @inheritdoc
