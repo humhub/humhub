@@ -111,6 +111,7 @@ return [
     'Select all registered users' => '',
     'Settings could not be saved!' => '',
     'Show all' => '',
+    'Show as List' => '',
     'Shown on About Page.' => '',
     'Sorry, you are not allowed to leave this space!' => '',
     'Sorting' => '',

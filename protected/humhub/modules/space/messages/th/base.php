@@ -143,4 +143,5 @@ return [
     '{email} is not valid!' => '{email} ไม่ถูกต้อง!',
     'Blocked users' => '',
     'I want to become a member because...' => '',
+    'Show as List' => '',
 ];
