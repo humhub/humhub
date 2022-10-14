@@ -298,7 +298,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     }
 
     /**
-     * Determines weather or not this records has an additional createPermission set.
+     * Determines whether or not the record has an additional createPermission set.
      *
      * @since 1.13
      * @return boolean

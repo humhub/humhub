@@ -14,15 +14,14 @@ use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\ui\form\widgets\ActiveForm;
-use Yii;
-use yii\web\HttpException;
 use humhub\components\Widget;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\file\handler\FileHandlerCollection;
+use Yii;
+use yii\web\HttpException;
 
 /**
  * WallCreateContentForm is the base widget to create  "quick" create content forms above Stream/Wall.
@@ -38,19 +37,9 @@ class WallCreateContentForm extends Widget
     public $submitUrl;
 
     /**
-     * @var string submit button text
-     */
-    public $submitButtonText;
-
-    /**
      * @var ContentContainerActiveRecord this content will belong to
      */
     public $contentContainer;
-
-    /**
-     * @var string form implementation
-     */
-    protected $form = "";
 
     /**
      * @var bool Display menu above this form in order to select a content type like Post, Poll, Task and etc.
@@ -62,14 +51,11 @@ class WallCreateContentForm extends Widget
      */
     public function init()
     {
-        if ($this->submitButtonText == "")
-            $this->submitButtonText = Yii::t('ContentModule.base', 'Submit');
-
-        if ($this->contentContainer == null || !$this->contentContainer instanceof ContentContainerActiveRecord) {
-            throw new HttpException(500, "No Content Container given!");
+        if (!($this->contentContainer instanceof ContentContainerActiveRecord)) {
+            throw new HttpException(500, 'No Content Container given!');
         }
 
-        return parent::init();
+        parent::init();
     }
 
     /**
@@ -100,20 +86,14 @@ class WallCreateContentForm extends Widget
     {
         if ($this->contentContainer->visibility !== Space::VISIBILITY_NONE && $this->contentContainer->can(CreatePublicContent::class)) {
             $defaultVisibility = $this->contentContainer->getDefaultContentVisibility();
-            $canSwitchVisibility = true;
         } else {
             $defaultVisibility = Content::VISIBILITY_PRIVATE;
-            $canSwitchVisibility = false;
         }
 
         return $this->render('@humhub/modules/content/widgets/views/wallCreateContentForm', [
-                    'wallCreateContentForm' => $this,
-                    'contentContainer' => $this->contentContainer,
-                    'submitUrl' => $this->contentContainer->createUrl($this->submitUrl),
-                    'submitButtonText' => $this->submitButtonText,
-                    'defaultVisibility' => $defaultVisibility,
-                    'canSwitchVisibility' => $canSwitchVisibility,
-                    'fileHandlers' => FileHandlerCollection::getByType([FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE]),
+            'wallCreateContentForm' => $this,
+            'contentContainer' => $this->contentContainer,
+            'defaultVisibility' => $defaultVisibility,
         ]);
     }
 
