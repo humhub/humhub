@@ -41,13 +41,13 @@ $categories = $user->profile->getProfileFieldCategories();
                                 </label>
                                 <?php if (strtolower($field->title) == 'about'): ?>
                                     <div class="col-sm-9">
-                                        <div class="form-control-static"><?= RichText::output($field->getUserValue($user, true)) ?></div>
+                                        <div class="form-control-static markdown-render"><?= RichText::output($field->getUserValue($user, true)) ?></div>
                                     </div>
                                 <?php else: ?>
                                     <div class="col-sm-9">
                                         <?php if ($field->field_type_class == MarkdownEditor::class): ?>
                                             <p class="form-control-static" style="min-height: 0 !important;padding-top:0;">
-                                                <?= RichText::output($field->getUserValue($user, true)) ?>
+                                                <div class="markdown-render"><?= RichText::output($field->getUserValue($user, true)) ?></div>
                                             </p>
                                         <?php else: ?>
                                             <p class="form-control-static"><?= $field->getUserValue($user, false) ?></p>
