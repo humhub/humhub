@@ -18,6 +18,7 @@ use Yii;
  * WallCreateContentMenu is the widget for Menu above wall create content Form
  *
  * @property-read ContentContainerActiveRecord $contentContainer
+ * @property-read bool $isVisible
  * @author luke
  * @since 1.13
  */
@@ -54,34 +55,21 @@ class WallCreateContentMenu extends Menu
     public $form;
 
     /**
-     * @var bool Visible by default depending on property `$this->form->displayContentTabs`
-     */
-    public $isVisible;
-
-    /**
      * @inheritdoc
      */
     public function init()
     {
         parent::init();
-
-        if ($this->isVisible === null) {
-            $this->isVisible = ($this->form instanceof WallCreateContentForm) && $this->form->displayContentTabs;
-        }
-
-        if (!$this->isVisible) {
-            return;
-        }
-
         $this->initEntries();
-
-        // Make this widget visible only when two and more entries
-        $this->isVisible = count($this->entries) > 1;
     }
 
     private function initEntries()
     {
-        if (!$this->contentContainer) {
+        if (!empty($this->entries)) {
+            return;
+        }
+
+        if (!($this->contentContainer instanceof ContentContainerActiveRecord)) {
             return;
         }
 
@@ -131,6 +119,23 @@ class WallCreateContentMenu extends Menu
         }
     }
 
+    public function getIsVisible(): bool
+    {
+        $this->initEntries();
+        $countEntries = count($this->entries);
+        $hasEntryWithForm = self::canCreateEntry($this->contentContainer, 'form');;
+
+        if ($hasEntryWithForm && $countEntries > 1) {
+            return true;
+        }
+
+        if (!$hasEntryWithForm && $countEntries > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * @inheritdoc
      */
@@ -146,5 +151,48 @@ class WallCreateContentMenu extends Menu
             $this->form->contentContainer instanceof ContentContainerActiveRecord
             ? $this->form->contentContainer
             : null;
+    }
+
+    /**
+     * Check if current User has a permission to create at least one entry on wall stream
+     *
+     * @param ContentContainerActiveRecord|null $contentContainer
+     * @param string $type 'any', 'form' - Entries which are created from Form, 'noform' - Entries which are created without form(like modal window or new page)
+     * @return bool
+     */
+    public static function canCreateEntry(?ContentContainerActiveRecord $contentContainer, string $type = 'any'): bool
+    {
+        if (!($contentContainer instanceof ContentContainerActiveRecord)) {
+            return false;
+        }
+
+        foreach (Yii::$app->moduleManager->getContentClasses($contentContainer) as $contentClass) {
+            $content = new $contentClass($contentContainer);
+            if (!($content instanceof ContentActiveRecord)) {
+                continue;
+            }
+
+            $wallEntryWidget = WallStreamEntryWidget::getByContent($content);
+            if (!$wallEntryWidget) {
+                continue;
+            }
+
+            switch ($type) {
+                case 'any':
+                    return true;
+                case 'form':
+                    if ($wallEntryWidget->hasCreateForm()) {
+                        return true;
+                    }
+                    break;
+                case 'noform':
+                    if (!$wallEntryWidget->hasCreateForm()) {
+                        return true;
+                    }
+                    break;
+            }
+        }
+
+        return false;
     }
 }

@@ -10,14 +10,13 @@ namespace humhub\modules\space\controllers;
 
 use humhub\modules\content\components\ContentContainerController;
 use humhub\components\behaviors\AccessControl;
-use humhub\modules\post\models\Post;
+use humhub\modules\content\widgets\WallCreateContentMenu;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Chooser;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\stream\actions\ContentContainerStream;
 use humhub\modules\space\widgets\Menu;
-use humhub\modules\post\permissions\CreatePost;
 use Yii;
 use yii\web\HttpException;
 use yii\db\Expression;
@@ -99,14 +98,12 @@ class SpaceController extends ContentContainerController
     public function actionHome()
     {
         $space = $this->contentContainer;
-        $canCreatePosts = (new Post($space))->content->canEdit();
-        $isMember = $space->isMember();
 
         return $this->render('home', [
-                    'space' => $space,
-                    'canCreatePosts' => $canCreatePosts,
-                    'isMember' => $isMember,
-                    'isSingleContentRequest' => !empty(Yii::$app->request->getQueryParam('contentId')),
+            'space' => $space,
+            'canCreateEntries' => WallCreateContentMenu::canCreateEntry($space),
+            'isMember' => $space->isMember(),
+            'isSingleContentRequest' => !empty(Yii::$app->request->getQueryParam('contentId')),
         ]);
     }
 

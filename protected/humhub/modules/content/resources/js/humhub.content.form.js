@@ -185,10 +185,13 @@ humhub.module('content.form', function(module, require, $) {
     const CreateFormMenu = Widget.extend();
 
     CreateFormMenu.prototype.init = function() {
-        this.$.hide();
         this.topMenu = this.$.find('ul.nav');
         this.subMenu = this.$.find('li.content-create-menu-more');
         this.formPanel = this.$.parent().find('.panel');
+        if (!this.formPanel.find('form').length) {
+            this.$.fadeIn();
+            this.$.addClass('menu-without-form');
+        }
     }
 
     CreateFormMenu.prototype.activateMenu = function (evt) {
