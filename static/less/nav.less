@@ -334,4 +334,21 @@ ul.tab-menu-settings {
             }
         }
     }
+
+    @media (max-width: 480px) {
+        .nav-tabs {
+            display: flex;
+            width: 100%;
+            > li {
+                flex-grow: 1;
+                text-align: center;
+                &.content-create-menu-more {
+                    flex-grow: 0.3;
+                    > i.fa {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
 }
