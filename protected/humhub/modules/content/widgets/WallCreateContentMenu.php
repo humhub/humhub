@@ -121,6 +121,12 @@ class WallCreateContentMenu extends Menu
 
     public function getIsVisible(): bool
     {
+        if ($this->form instanceof WallCreateContentForm &&
+            get_class($this->form) !== WallCreateContentForm::class &&
+            !$this->form->displayContentTabs) {
+            return false;
+        }
+
         $this->initEntries();
         $countEntries = count($this->entries);
         $hasEntryWithForm = self::canCreateEntry($this->contentContainer, 'form');;
