@@ -128,11 +128,15 @@ humhub.module('content.form', function(module, require, $) {
 
     CreateForm.prototype.handleError = function(response) {
         var that = this;
+        var model = that.$.find('.form-group:first').attr('class').replace(/^.+field-([^-]+).+$/, '$1');
         $.each(response.errors, function(fieldName, errorMessages) {
-            that.$.find('.field-post-' + fieldName).addClass('has-error');
-            var fieldSelector = '.field-contentForm_' + fieldName;
-            that.$.find(fieldSelector + ', ' + fieldSelector + '_input')
-                .find('.help-block-error').html(errorMessages.join('<br>'));
+            var fieldSelector = '.field-' + model + '-' + fieldName;
+            var inputSelector = '.field-contentForm_' + fieldName;
+            var multiInputSelector = '[name="' + fieldName + '[]"]';
+            that.$.find(fieldSelector).addClass('has-error');
+            that.$.find(fieldSelector + ', ' + inputSelector + ', ' + inputSelector + '_input')
+                .find('.help-block-error:first').html(errorMessages.join('<br>'));
+            that.$.find(multiInputSelector).closest('.form-group').addClass('has-error');
         });
     };
 
