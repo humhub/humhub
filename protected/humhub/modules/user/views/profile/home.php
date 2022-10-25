@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\content\widgets\WallCreateContentForm;
+use humhub\modules\content\widgets\WallCreateContentFormContainer;
 use humhub\modules\friendship\widgets\FriendsPanel;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\ProfileSidebar;
@@ -14,7 +14,7 @@ use humhub\modules\user\widgets\UserTags;
 ?>
 
 <div data-stream-create-content="stream.wall.WallStream"<?php if ($isSingleContentRequest) : ?> style="display:none"<?php endif; ?>>
-    <?= WallCreateContentForm::widget(['contentContainer' => $user]); ?>
+    <?= WallCreateContentFormContainer::widget(['contentContainer' => $user]); ?>
 </div>
 
 <?= StreamViewer::widget(['contentContainer' => $user]); ?>

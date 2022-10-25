@@ -5,7 +5,7 @@
  */
 
 use humhub\modules\activity\widgets\ActivityStreamViewer;
-use humhub\modules\content\widgets\WallCreateContentForm;
+use humhub\modules\content\widgets\WallCreateContentFormContainer;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\PendingApprovals;
 use humhub\modules\space\widgets\Members;
@@ -28,7 +28,7 @@ if ($canCreateEntries) {
 
 <?php if ($canCreateEntries && !$isSingleContentRequest) : ?>
     <div data-stream-create-content="stream.wall.WallStream">
-        <?= WallCreateContentForm::widget(['contentContainer' => $space]); ?>
+        <?= WallCreateContentFormContainer::widget(['contentContainer' => $space]); ?>
     </div>
 <?php endif; ?>
 

@@ -8,9 +8,7 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\libs\Sort;
 use humhub\modules\content\permissions\CreatePublicContent;
-use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\ui\form\widgets\ActiveForm;
@@ -28,7 +26,7 @@ use yii\web\HttpException;
  *
  * @author luke
  */
-class WallCreateContentForm extends Widget
+abstract class WallCreateContentForm extends Widget
 {
 
     /**
@@ -40,11 +38,6 @@ class WallCreateContentForm extends Widget
      * @var ContentContainerActiveRecord this content will belong to
      */
     public $contentContainer;
-
-    /**
-     * @var bool Display menu above this form in order to select a content type like Post, Poll, Task and etc.
-     */
-    public $displayContentTabs = false;
 
     /**
      * @inheritdoc
@@ -145,66 +138,6 @@ class WallCreateContentForm extends Widget
         }
 
         return ['errors' => $record->getErrors()];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public static function widget($config = [])
-    {
-        return get_called_class() === WallCreateContentForm::class
-            ? self::renderTopSortedForm($config)
-            : parent::widget($config);
-    }
-
-    /**
-     * Render top sorted Form
-     *
-     * @param array $config
-     * @return string
-     * @throws \Exception
-     */
-    public static function renderTopSortedForm($config = [])
-    {
-        if (empty($config['contentContainer']) || !($config['contentContainer'] instanceof ContentContainerActiveRecord)) {
-            return parent::widget($config);
-        }
-
-        $forms = [];
-        foreach (Yii::$app->moduleManager->getContentClasses($config['contentContainer']) as $contentClass) {
-            $content = new $contentClass($config['contentContainer']);
-            if (!($content instanceof ContentActiveRecord)) {
-                continue;
-            }
-
-            $wallEntryWidget = WallStreamEntryWidget::getByContent($content);
-            if (!$wallEntryWidget) {
-                continue;
-            }
-
-            if (!$wallEntryWidget->hasCreateForm()) {
-                continue;
-            }
-
-            $forms[] = [
-                'class' => $wallEntryWidget->createFormClass,
-                'sortOrder' => $wallEntryWidget->createFormSortOrder ?? '9999999-' . $content->getContentName(),
-            ];
-        }
-
-        if (empty($forms)) {
-            return parent::widget($config);
-        }
-
-        Sort::sort($forms);
-
-        if (!isset($config['displayContentTabs'])) {
-            $config['displayContentTabs'] = true;
-        }
-
-        foreach ($forms as $form) {
-            return $form['class']::widget($config);
-        }
     }
 
 }

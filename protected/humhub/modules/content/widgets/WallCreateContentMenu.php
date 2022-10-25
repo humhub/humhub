@@ -17,7 +17,6 @@ use Yii;
 /**
  * WallCreateContentMenu is the widget for Menu above wall create content Form
  *
- * @property-read ContentContainerActiveRecord $contentContainer
  * @property-read bool $isVisible
  * @author luke
  * @since 1.13
@@ -50,9 +49,9 @@ class WallCreateContentMenu extends Menu
     public $visibleEntriesNum = 2;
 
     /**
-     * @var WallCreateContentForm|null
+     * @var ContentContainerActiveRecord this content will belong to
      */
-    public $form;
+    public $contentContainer;
 
     /**
      * @inheritdoc
@@ -118,15 +117,8 @@ class WallCreateContentMenu extends Menu
             }
         }
     }
-
     public function getIsVisible(): bool
     {
-        if ($this->form instanceof WallCreateContentForm &&
-            get_class($this->form) !== WallCreateContentForm::class &&
-            !$this->form->displayContentTabs) {
-            return false;
-        }
-
         $this->initEntries();
         $countEntries = count($this->entries);
         $hasEntryWithForm = self::canCreateEntry($this->contentContainer, 'form');;
@@ -148,15 +140,6 @@ class WallCreateContentMenu extends Menu
     public function run()
     {
         return $this->isVisible ? parent::run() : '';
-    }
-
-    public function getContentContainer(): ?ContentContainerActiveRecord
-    {
-        return isset($this->form, $this->form->contentContainer) &&
-            $this->form instanceof WallCreateContentForm &&
-            $this->form->contentContainer instanceof ContentContainerActiveRecord
-            ? $this->form->contentContainer
-            : null;
     }
 
     /**

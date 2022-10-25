@@ -112,7 +112,6 @@ class PostController extends ContentContainerController
 
         return $this->renderAjaxPartial(Form::widget([
             'contentContainer' => $this->contentContainer,
-            'displayContentTabs' => false
         ]));
     }
 
