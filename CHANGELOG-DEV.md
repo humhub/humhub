@@ -11,3 +11,4 @@ HumHub Changelog
 - Enh #5820: Selftest for base URL
 - Enh #5891: Improve select2 width on people filters
 - Fix #5903: ContentContainerModule::getEnabledContentContainers() returns an empty array
+- Enh #5908: New filter ActiveQueryUser->available()
