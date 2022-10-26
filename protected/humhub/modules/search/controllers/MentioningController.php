@@ -63,9 +63,8 @@ class MentioningController extends Controller
 
         // Find users
         $users = User::find()
-            ->visible()
+            ->available()
             ->search($keyword)
-            ->filterBlockedUsers()
             ->limit($this->module->mentioningSearchBoxResultLimit)
             ->orderBy(['user.last_login' => SORT_DESC])
             ->all();
@@ -100,9 +99,8 @@ class MentioningController extends Controller
 
         // Find space members
         $users = Membership::getSpaceMembersQuery($space)
-            ->visible()
+            ->available()
             ->search($keyword)
-            ->filterBlockedUsers()
             ->limit($this->module->mentioningSearchBoxResultLimit)
             ->orderBy(['space_membership.last_visit' => SORT_DESC])
             ->all();
@@ -159,7 +157,7 @@ class MentioningController extends Controller
         // Find users followed to the Content
         $users = Follow::getFollowersQuery($object, true)
             ->search($keyword)
-            ->filterBlockedUsers()
+            ->available()
             ->limit($this->module->mentioningSearchBoxResultLimit)
             ->orderBy(['user.last_login' => SORT_DESC])
             ->all();
