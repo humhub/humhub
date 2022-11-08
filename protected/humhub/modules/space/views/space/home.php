@@ -5,7 +5,7 @@
  */
 
 use humhub\modules\activity\widgets\ActivityStreamViewer;
-use humhub\modules\post\widgets\Form;
+use humhub\modules\content\widgets\WallCreateContentFormContainer;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\PendingApprovals;
 use humhub\modules\space\widgets\Members;
@@ -13,12 +13,11 @@ use humhub\modules\space\widgets\Sidebar;
 use humhub\modules\stream\widgets\StreamViewer;
 
 /* @var $space Space */
-/* @var $canCreatePosts bool */
+/* @var $canCreateEntries bool */
 /* @var $isMember bool */
 /* @var $isSingleContentRequest bool */
 
-$emptyMessage = '';
-if ($canCreatePosts) {
+if ($canCreateEntries) {
     $emptyMessage = Yii::t('SpaceModule.base', '<b>This space is still empty!</b><br>Start by posting something here...');
 } elseif ($isMember) {
     $emptyMessage = Yii::t('SpaceModule.base', '<b>This space is still empty!</b>');
@@ -27,15 +26,17 @@ if ($canCreatePosts) {
 }
 ?>
 
-<div data-stream-create-content="stream.wall.WallStream"<?php if ($isSingleContentRequest) : ?> style="display:none"<?php endif; ?>>
-    <?= Form::widget(['contentContainer' => $space]); ?>
-</div>
+<?php if ($canCreateEntries && !$isSingleContentRequest) : ?>
+    <div data-stream-create-content="stream.wall.WallStream">
+        <?= WallCreateContentFormContainer::widget(['contentContainer' => $space]); ?>
+    </div>
+<?php endif; ?>
 
 <?= StreamViewer::widget([
     'contentContainer' => $space,
     'streamAction' => '/space/space/stream',
     'messageStreamEmpty' => $emptyMessage,
-    'messageStreamEmptyCss' => ($canCreatePosts) ? 'placeholder-empty-stream' : '',
+    'messageStreamEmptyCss' => $canCreateEntries ? 'placeholder-empty-stream' : '',
 ]); ?>
 
 <?php

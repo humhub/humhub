@@ -12,6 +12,7 @@ use ReflectionClass;
 use Yii;
 use humhub\modules\content\models\ContentContainerModuleState;
 use humhub\modules\content\models\ContentContainer;
+use yii\base\InvalidConfigException;
 
 /**
  * ModuleManager handles modules of a content container.
@@ -142,6 +143,7 @@ class ContentContainerModuleManager extends \yii\base\Component
                 $enabled[] = $id;
             }
         }
+        $enabled[] = 'post';
 
         return $enabled;
     }
@@ -311,4 +313,29 @@ class ContentContainerModuleManager extends \yii\base\Component
 
         return $query;
     }
+
+    /**
+     * This method is called to determine classes of Content models which can be posted on wall.
+     *
+     * @since 1.13
+     * @param ContentContainerActiveRecord|null $contentContainer
+     * @return ContentActiveRecord[]
+     */
+    public function getContentClasses(): array
+    {
+        $contentClasses = [];
+        foreach ($this->getEnabled() as $moduleId) {
+            $module = Yii::$app->getModule($moduleId);
+            foreach ($module->getContentClasses($this->contentContainer) as $class) {
+                $content = new $class($this->contentContainer);
+                if (!($content instanceof ContentActiveRecord)) {
+                    throw new InvalidConfigException($class . ' must be instance of ContentActiveRecord!');
+                }
+                $contentClasses[] = $content;
+            }
+        }
+
+        return $contentClasses;
+    }
+
 }

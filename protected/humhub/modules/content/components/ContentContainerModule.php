@@ -231,4 +231,14 @@ class ContentContainerModule extends Module
         return [];
     }
 
+    /**
+     * Returns all content classes provided by the module.
+     *
+     * @return array
+     */
+    public function getContentClasses(): array
+    {
+        return [];
+    }
+
 }
