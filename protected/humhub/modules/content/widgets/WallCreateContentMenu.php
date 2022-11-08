@@ -80,7 +80,7 @@ class WallCreateContentMenu extends Menu
             }
 
             $menuOptions = [
-                'label' => $content->getContentName(),
+                'label' => ucfirst($content->getContentName()),
                 'icon' => $content->getIcon(),
                 'url' => '#',
                 'sortOrder' => $wallEntryWidget->createFormSortOrder ?? '9999999-' . $content->getContentName(),
