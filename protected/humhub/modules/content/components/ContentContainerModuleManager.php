@@ -317,6 +317,7 @@ class ContentContainerModuleManager extends \yii\base\Component
     /**
      * This method is called to determine classes of Content models which can be posted on wall.
      *
+     * @since 1.13
      * @param ContentContainerActiveRecord|null $contentContainer
      * @return ContentActiveRecord[]
      */

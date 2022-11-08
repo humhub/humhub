@@ -9,7 +9,6 @@
 namespace humhub\modules\content\components;
 
 use humhub\modules\content\models\Movable;
-use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\topic\models\Topic;

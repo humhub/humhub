@@ -13,7 +13,6 @@ use humhub\components\console\Application as ConsoleApplication;
 use humhub\libs\BaseSettingsManager;
 use humhub\models\ModuleEnabled;
 use humhub\modules\admin\events\ModulesEvent;
-use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\marketplace\Module as ModuleMarketplace;
 use Yii;
 use yii\base\Component;

@@ -46,7 +46,7 @@ class WallCreateContentMenu extends Menu
     /**
      * @var int What first menu entries should be visible as tabs top level, rest entries will be grouped into sub-menu
      */
-    public $visibleEntriesNum = 2;
+    public $visibleEntriesNum = 3;
 
     /**
      * @var ContentContainerActiveRecord this content will belong to
