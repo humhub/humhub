@@ -101,6 +101,7 @@ return array (
   'Settings' => 'Réglages',
   'Settings could not be saved!' => 'Les paramètres ne peuvent être enregistrés.',
   'Show all' => 'Afficher tout',
+  'Show as List' => 'Afficher sous forme de liste',
   'Shown on About Page.' => 'Affiché sur la page "À propos"',
   'Sorry, you are not allowed to leave this space!' => 'Désolé, vous n\'êtes pas autorisé à quitter cet espace.',
   'Sorting' => 'Trier',

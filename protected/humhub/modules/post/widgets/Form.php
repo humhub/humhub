@@ -10,7 +10,6 @@ namespace humhub\modules\post\widgets;
 
 use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\post\models\Post;
-use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Url;
@@ -42,11 +41,13 @@ class Form extends WallCreateContentForm
      */
     public function getRenderParams(array $additionalParams = []): array
     {
-        $canCreatePostInSpace = ($this->contentContainer instanceof Space && $this->contentContainer->can(CreatePost::class));
+        $post = new Post($this->contentContainer);
+        $canCreatePostInSpace = ($this->contentContainer instanceof Space && $post->content->canEdit());
 
         return array_merge([
-            'post' => new Post($this->contentContainer),
+            'post' => $post,
             'mentioningUrl' => $canCreatePostInSpace ? Url::to([$this->mentioningUrl, 'id' => $this->contentContainer->id]) : null,
+            'submitUrl' => $this->submitUrl,
         ], $additionalParams);
     }
 
@@ -71,8 +72,8 @@ class Form extends WallCreateContentForm
      */
     public function run()
     {
-        if (!$this->contentContainer->permissionManager->can(new CreatePost())) {
-            return;
+        if (!(new Post($this->contentContainer))->content->canEdit()) {
+            return '';
         }
 
         return parent::run();

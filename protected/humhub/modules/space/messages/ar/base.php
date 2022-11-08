@@ -136,6 +136,7 @@ return [
     'Pending' => '',
     'Search...' => '',
     'Settings could not be saved!' => '',
+    'Show as List' => '',
     'Shown on About Page.' => '',
     'Space Visibility' => '',
     'Try other keywords or remove filters.' => '',

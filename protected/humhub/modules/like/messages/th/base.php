@@ -1,10 +1,10 @@
 <?php
 return array (
-  ' likes this.' => 'ชอบสิ่งนี้',
-  '<strong>Users</strong> who like this' => '<strong>ผู้ใช้</strong>ที่ชอบสิ่งนี้',
-  'Like' => 'ชอบ',
-  'Unlike' => 'ไม่เหมือน',
+  ' likes this.' => 'ถูกใจสิ่งนี้',
+  '<strong>Users</strong> who like this' => '<strong>ผู้ใช้</strong>ที่ถูกใจสิ่งนี้',
+  'Like' => 'ถูกใจ',
+  'Unlike' => 'ไม่ถูกใจ',
   'You' => 'คุณ',
-  'You like this.' => 'คุณชอบสิ่งนี้',
+  'You like this.' => 'คุณถูกใจสิ่งนี้',
   'and {count} more like this.' => 'และอีก {count} แบบนี้',
 );

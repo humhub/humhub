@@ -17,7 +17,9 @@ use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\post\models\forms\PostEditForm;
 use humhub\modules\post\models\Post;
 use humhub\modules\post\permissions\CreatePost;
+use humhub\modules\post\widgets\Form;
 use Yii;
+use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
@@ -58,12 +60,13 @@ class PostController extends ContentContainerController
      */
     public function actionPost()
     {
+        $post = new Post($this->contentContainer);
+
         // Check createPost Permission
-        if (!$this->contentContainer->getPermissionManager()->can(new CreatePost())) {
+        if (!$post->content->canEdit()) {
             return [];
         }
 
-        $post = new Post($this->contentContainer);
         $post->load(Yii::$app->request->post(), 'Post');
 
         return Post::getDb()->transaction(function ($db) use ($post) {
@@ -99,6 +102,17 @@ class PostController extends ContentContainerController
             'fileHandlers' => FileHandlerCollection::getByType([FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE]),
             'submitUrl' => $post->content->container->createUrl('/post/post/edit', ['id' => $post->id]),
         ]);
+    }
+
+    public function actionCreateForm()
+    {
+        if (!(new Post($this->contentContainer))->content->canEdit()) {
+            throw new ForbiddenHttpException();
+        }
+
+        return $this->renderAjaxPartial(Form::widget([
+            'contentContainer' => $this->contentContainer,
+        ]));
     }
 
 }

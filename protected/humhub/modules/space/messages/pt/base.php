@@ -143,4 +143,5 @@ return [
     '{count} members' => '{count} membros',
     '{email} is not valid!' => '{email} não é válido!',
     'I want to become a member because...' => '',
+    'Show as List' => '',
 ];
