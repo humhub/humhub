@@ -8,6 +8,7 @@
 
 namespace humhub\modules\marketplace\commands;
 
+use humhub\components\SettingsManager;
 use humhub\modules\marketplace\components\LicenceManager;
 use humhub\modules\marketplace\models\Licence;
 use Yii;
@@ -38,13 +39,16 @@ class ProfessionalEditionController extends Controller
      */
     public function actionInfo()
     {
-        $l = LicenceManager::get(false);
+        $l = LicenceManager::get();
 
         if ($l->type === Licence::LICENCE_TYPE_PRO) {
-            LicenceManager::fetch();
-            $this->stdout(Yii::t('MarketplaceModule.base', "\nPROFESSIONAL EDITION\n"), Console::FG_GREY, Console::BOLD);
+            /** @var SettingsManager $settings */
+            $settings = Yii::$app->getModule('marketplace')->settings;
+
+            $this->stdout(Yii::t('MarketplaceModule.base', "PROFESSIONAL EDITION")."\n\n", Console::FG_GREY, Console::BOLD);
             $this->stdout('Licenced to: ' . $l->licencedTo . "\n");
             $this->stdout('Maximum users: ' . $l->maxUsers . "\n");
+            $this->stdout('Last update: ' . Yii::$app->formatter->asDatetime($settings->get(LicenceManager::SETTING_KEY_PE_LAST_FETCH)) . "\n");
         } else {
             $this->stdout(Yii::t('MarketplaceModule.base', "\nNo active Professional Edition license found!\n"), Console::FG_RED, Console::BOLD);
         }
@@ -73,6 +77,16 @@ class ProfessionalEditionController extends Controller
             }
         }
         $this->stdout("\n\n");
+    }
+
+    /**
+     * Updates the license status via the license server
+     */
+    public function actionUpdate()
+    {
+        LicenceManager::get(false);
+        LicenceManager::fetch();
+        return $this->actionInfo();
     }
 
     /**
