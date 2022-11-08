@@ -14,3 +14,4 @@ HumHub Changelog
 - Enh #5894: Remove EE from Licence Manager 
 - Fix #5903: ContentContainerModule::getEnabledContentContainers() returns an empty array
 - Enh #5908: New filter ActiveQueryUser->available()
+- Enh #5785: Adding option for custom .well-known routes
