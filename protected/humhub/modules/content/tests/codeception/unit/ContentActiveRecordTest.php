@@ -49,6 +49,8 @@ class ContentActiveRecordTest extends HumHubDbTestCase
         $space = Space::findOne(['id' => 3]);
 
         $model = new TestContent($space, Content::VISIBILITY_PUBLIC);
+        $model->isNewRecord = false;
+
         $model->setManagePermission([ManageContent::class]);
 
         $this->becomeUser('User1');
