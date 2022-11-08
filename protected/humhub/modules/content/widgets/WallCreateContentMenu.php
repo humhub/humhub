@@ -72,11 +72,7 @@ class WallCreateContentMenu extends Menu
             return;
         }
 
-        foreach (Yii::$app->moduleManager->getContentClasses($this->contentContainer) as $contentClass) {
-            $content = new $contentClass($this->contentContainer);
-            if (!($content instanceof ContentActiveRecord)) {
-                continue;
-            }
+        foreach ($this->contentContainer->moduleManager->getContentClasses() as $content) {
 
             $wallEntryWidget = WallStreamEntryWidget::getByContent($content);
             if (!$wallEntryWidget) {
@@ -117,6 +113,7 @@ class WallCreateContentMenu extends Menu
             }
         }
     }
+
     public function getIsVisible(): bool
     {
         $this->initEntries();
@@ -155,12 +152,7 @@ class WallCreateContentMenu extends Menu
             return false;
         }
 
-        foreach (Yii::$app->moduleManager->getContentClasses($contentContainer) as $contentClass) {
-            $content = new $contentClass($contentContainer);
-            if (!($content instanceof ContentActiveRecord)) {
-                continue;
-            }
-
+        foreach ($contentContainer->moduleManager->getContentClasses() as $content) {
             $wallEntryWidget = WallStreamEntryWidget::getByContent($content);
             if (!$wallEntryWidget) {
                 continue;

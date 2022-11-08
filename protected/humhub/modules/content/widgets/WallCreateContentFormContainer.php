@@ -58,11 +58,7 @@ class WallCreateContentFormContainer extends Widget
     public function getTopSortedFormClass(): ?string
     {
         $forms = [];
-        foreach (Yii::$app->moduleManager->getContentClasses($this->contentContainer) as $contentClass) {
-            $content = new $contentClass($this->contentContainer);
-            if (!($content instanceof ContentActiveRecord)) {
-                continue;
-            }
+        foreach ($this->contentContainer->moduleManager->getContentClasses() as $content) {
 
             $wallEntryWidget = WallStreamEntryWidget::getByContent($content);
             if (!$wallEntryWidget) {
