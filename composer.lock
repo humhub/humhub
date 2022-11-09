@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f62fb05972b35b62fedb8ed5ec89fb60",
+    "content-hash": "187ae602aea8580da30b0939384b47b7",
     "packages": [
         {
             "name": "async-aws/core",
@@ -135,7 +135,7 @@
             "version": "v3.4.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/twbs/bootstrap.git",
+                "url": "git@github.com:twbs/bootstrap.git",
                 "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e"
             },
             "dist": {
@@ -8574,16 +8574,16 @@
         },
         {
             "name": "yiisoft/yii2",
-            "version": "2.0.46",
+            "version": "2.0.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "d73259c3bc886648a6875109f9f09cddeff03708"
+                "reference": "fa89647a2d2c5de1c12c65eb94084404f52a6059"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/d73259c3bc886648a6875109f9f09cddeff03708",
-                "reference": "d73259c3bc886648a6875109f9f09cddeff03708",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/fa89647a2d2c5de1c12c65eb94084404f52a6059",
+                "reference": "fa89647a2d2c5de1c12c65eb94084404f52a6059",
                 "shasum": ""
             },
             "require": {
@@ -8639,7 +8639,7 @@
                 {
                     "name": "Carsten Brandt",
                     "email": "mail@cebe.cc",
-                    "homepage": "https://www.cebe.cc/",
+                    "homepage": "https://cebe.cc/",
                     "role": "Core framework development"
                 },
                 {
@@ -8672,11 +8672,11 @@
                 "yii2"
             ],
             "support": {
-                "forum": "https://forum.yiiframework.com/",
+                "forum": "https://www.yiiframework.com/forum/",
                 "irc": "ircs://irc.libera.chat:6697/yii",
                 "issues": "https://github.com/yiisoft/yii2/issues?state=open",
                 "source": "https://github.com/yiisoft/yii2",
-                "wiki": "https://www.yiiframework.com/wiki"
+                "wiki": "https://www.yiiframework.com/wiki/"
             },
             "funding": [
                 {
@@ -8692,7 +8692,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-18T22:18:45+00:00"
+            "time": "2021-12-30T07:50:56+00:00"
         },
         {
             "name": "yiisoft/yii2-authclient",
