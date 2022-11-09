@@ -60,7 +60,7 @@ class Controller extends \yii\web\Controller
     protected $access = StrictAccess::class;
 
     /**
-     * @var string[] List of action ids which should not be intercepted by another actions. Use '*' for all action ids. 
+     * @var string[] List of action ids which should not be intercepted by another actions. Use '*' for all action ids.
      * @since 1.9
      */
     protected $doNotInterceptActionIds = [];
@@ -215,7 +215,7 @@ class Controller extends \yii\web\Controller
             }
 
             if (!empty($this->pageTitle)) {
-                $this->getView()->pageTitle = $this->pageTitle;
+                $this->getView()->setPageTitle($this->pageTitle);
             }
 
             if (!Yii::$app->request->isAjax || Yii::$app->request->isPjax) {

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\post\controllers;
 
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
@@ -28,7 +29,6 @@ use yii\web\NotFoundHttpException;
  */
 class PostController extends ContentContainerController
 {
-
     /**
      * @param $id
      * @return string
@@ -38,11 +38,19 @@ class PostController extends ContentContainerController
      */
     public function actionView($id)
     {
-        $post = Post::find()->contentContainer($this->contentContainer)->readable()->where(['post.id' => (int)$id])->one();
+        /** @var Post $post */
+        $post = Post::find()
+            ->contentContainer($this->contentContainer)
+            ->readable()->where(['post.id' => (int)$id])->one();
 
         if ($post === null) {
             throw new HttpException(404);
         }
+
+        $this->view->setPageTitle(Yii::t('PostModule.base', 'Post'), true);
+        $this->view->meta->setContent($post);
+        $this->view->meta->setDescription(RichTextToPlainTextConverter::process($post->message));
+        $this->view->meta->setImages($post->fileManager->findAll());
 
         return $this->render('view', [
             'post' => $post,
