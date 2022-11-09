@@ -2,27 +2,47 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2022 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\ui\view\components;
 
+use humhub\libs\LogoImage;
+use humhub\libs\StringHelper;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\file\models\File;
 use Yii;
 use yii\base\BaseObject;
-use yii\base\InvalidConfigException;
+use yii\helpers\Url;
 use yii\web\Request;
 
-
+/**
+ * Metadata Service for the View class.
+ * Handles standard meta tags, OpenGraph tags and Twitter Card tags.
+ *
+ * Example usage in controller:
+ * ```
+ * $this->view->setPageTitle(Yii::t('PostModule.base', 'Post'), true);
+ * $this->view->meta->setContent($post);
+ * $this->view->meta->setDescription(RichTextToPlainTextConverter::process($post->message));
+ * $this->view->meta->setImages($post->fileManager->findAll());
+ * ```
+ *
+ * @since 1.13
+ */
 class ViewMeta extends BaseObject
 {
+    /**
+     * @var View
+     */
+    public $view;
+
     /**
      * @var ContentActiveRecord
      */
     private $content;
-
 
     /**
      * The type metadata to preview the content with Open Graph protocol
@@ -37,15 +57,10 @@ class ViewMeta extends BaseObject
     private $url;
 
     /**
-     * The date metadata to preview the content with Open Graph protocol
-     * @var string
+     * The Preview Image Urls
+     * @var string[]
      */
-    private $lastUpdateAt;
-
-    /**
-     * @var File[]
-     */
-    private $images;
+    private $images = [];
 
     /**
      * @var string
@@ -57,128 +72,24 @@ class ViewMeta extends BaseObject
      */
     public $description;
 
-    public function registerMetaTags(View $view)
-    {
-        $this->addMetaTags($view);
-        $this->registerOpenGraphMetaTags($view);
-        $this->registerTwitterMetaTags($view);
-    }
-
-
     /**
-     * Add metadata to view to preview the content with Open Graph protocol
-     *
-     * @param View $view
-     * @return View
+     * Called by View to register Tags before rendering
      */
-    private function addMetaTags(View $view)
+    public function registerMetaTags()
     {
-        if (empty($this->title)) {
-            $this->title = $view->getPageTitle();
-        }
-
-        $this->contentType = $this->contentType ?: 'website';
-
-        $this->url = $this->url ?: (Yii::$app->getRequest() instanceof Request ? Yii::$app->getRequest()->getAbsoluteUrl() : null);
-        $view->registerLinkTag(['rel' => 'canonical', 'href' => $this->url]);
-
-        if (!empty($this->description)) {
-            $view->registerMetaTag(['name' => 'description', 'content' => str_replace("\n", '', $this->description)]);
-        }
-
-        try {
-            $this->lastUpdateAt = $this->lastUpdateAt ?: Yii::$app->formatter->asDatetime(time());
-        } catch (InvalidConfigException $e) {
-        }
-
-        // Image
-
-        /*
-        $imageUrl = $this->images;
-        if (!$imageUrl && isset($view->context->contentContainer)  && $view->context->contentContainer instanceof Space
-        ) {
-            $space = $view->context->contentContainer;
-            $image = $space->getProfileImage();
-            try {
-                if (file_exists($image->getPath('_org'))) {
-                    $originalImage = Image::getImagine()->open($image->getPath('_org'));
-                    if ($originalImage && $originalImage->getSize()->getHeight() > 200 && $originalImage->getSize()->getWidth() > 200) { // 200px is the minimum size for Facebook
-                        $imageUrl = $image->getUrl('_org');
-                    }
-                }
-            } catch (Exception $e) {
-            }
-        }
-        // Else, get logo image
-        $this->images = Url::to($imageUrl ?: LogoImage::getUrl(1000, 250), true);
-        */
-
-        return $view;
+        $this->setDefaults();
+        $this->addMetaTags();
+        $this->registerOpenGraphMetaTags();
+        $this->registerTwitterMetaTags();
     }
 
     /**
-     * Register metadata to preview the content on Facebook and other compatible websites
-     * @param View $view
-     * @return void
+     * @param ContentActiveRecord $content
      */
-    private function registerOpenGraphMetaTags(View $view)
+    public function setContent(ContentActiveRecord $content)
     {
-        $view->registerMetaTag(['property' => 'og:title', 'content' => $this->title]);
-        $view->registerMetaTag(['property' => 'og:url', 'content' => $this->url]);
-        $view->registerMetaTag(['property' => 'og:site_name', 'content' => Yii::$app->name]);
-        $view->registerMetaTag(['property' => 'og:type', 'content' => $this->contentType]);
-        if (!empty($this->description)) {
-            $view->registerMetaTag(['property' => 'og:description', 'content' => $this->description]);
-        }
-        if (!empty($this->lastUpdateAt)) {
-            $view->registerMetaTag(['property' => 'og:updated_time', 'content' => $this->lastUpdateAt]);
-        }
-
-        /*
-        if ($this->images !== null) {
-            if (is_array($this->images)) {
-                foreach ($this->images as $key => $value) {
-                    $view->registerMetaTag(['property' => 'og:image', 'content' => $value], 'og:image' . $key);
-                }
-            } else {
-                $view->registerMetaTag(['property' => 'og:image', 'content' => $this->images], 'og:image');
-            }
-        }
-        */
+        $this->content = $content;
     }
-
-
-    /**
-     * Register metadata to preview the content on Twitter
-     * @param View $view
-     * @return void
-     */
-    private function registerTwitterMetaTags(View $view)
-    {
-        $view->registerMetaTag(['property' => 'twitter:title', 'content' => $this->title]);
-        $view->registerMetaTag(['property' => 'twitter:url', 'content' => $this->url]);
-        $view->registerMetaTag(['property' => 'twitter:site', 'content' => Yii::$app->name]);
-        $view->registerMetaTag(['property' => 'twitter:type', 'content' => $this->contentType]);
-        if (!empty($this->description)) {
-            $view->registerMetaTag(['property' => 'twitter:description', 'content' => $this->description]);
-        }
-        /*
-        if ($this->images !== null) {
-            $view->registerMetaTag([
-                'name' => 'twitter:image', 'content' => (
-                is_array($this->images) ?
-                    reset($this->images) : $this->images
-                )
-            ], 'twitter:image');
-        }
-        */
-    }
-
-    public function setContent(ContentActiveRecord $post)
-    {
-        $this->lastUpdateAt = $post->content->updated_at;
-    }
-
 
     /**
      * @return string
@@ -197,7 +108,7 @@ class ViewMeta extends BaseObject
     }
 
     /**
-     * @return File[]
+     * @return string[]
      */
     public function getImages(): array
     {
@@ -205,11 +116,18 @@ class ViewMeta extends BaseObject
     }
 
     /**
-     * @param File[] $images
+     * Sets an array of File or Image URLs
+     *
+     * @param File[]|string $images
      */
     public function setImages(array $images): void
     {
-        $this->images = $images;
+        $previewImage = new PreviewImage();
+        foreach ($images as $image) {
+            if ($previewImage->applyFile($image)) {
+                $this->images[] = $image->getUrl();
+            }
+        }
     }
 
     /**
@@ -228,5 +146,99 @@ class ViewMeta extends BaseObject
         $this->title = $title;
     }
 
+    /**
+     * Automatically sets default values
+     */
+    private function setDefaults()
+    {
+        if (empty($this->title)) {
+            $this->title = $this->view->getPageTitle();
+        }
 
+        if (empty($this->contentType)) {
+            $this->contentType = 'website';
+        }
+
+        if (empty($this->url) && Yii::$app->getRequest() instanceof Request) {
+            $this->url = Yii::$app->getRequest()->getAbsoluteUrl();
+        }
+
+        if (empty($this->images)) {
+            // Use ContentContainer Image
+            $contentContainer = ($this->content !== null) ? $this->content->content->container : null;
+            if ($contentContainer === null && isset($view->context->contentContainer)) {
+                $contentContainer = $view->context->contentContainer;
+            }
+            if ($contentContainer !== null && $contentContainer->getProfileImage()->hasImage()) {
+                $this->images[] = Url::to($contentContainer->getProfileImage()->getUrl(), true);
+            }
+
+            // Fallback to Site Logo
+            if (LogoImage::hasImage()) {
+                $this->images[] = Url::to(LogoImage::getUrl(600, 600), true);
+            }
+        }
+    }
+
+    /**
+     * Add metadata to view to preview the content with Open Graph protocol
+     */
+    private function addMetaTags()
+    {
+        $this->view->registerLinkTag(['rel' => 'canonical', 'href' => $this->url]);
+
+        if (!empty($this->description)) {
+            $this->view->registerMetaTag([
+                'name' => 'description',
+                'content' => str_replace("\n", '', StringHelper::truncate($this->description, 255))
+            ]);
+        }
+    }
+
+    /**
+     * Register metadata to preview the content on Facebook and other compatible websites
+     *
+     * @return void
+     */
+    private function registerOpenGraphMetaTags()
+    {
+        $this->view->registerMetaTag(['property' => 'og:url', 'content' => $this->url]);
+        $this->view->registerMetaTag(['property' => 'og:site_name', 'content' => Yii::$app->name]);
+        $this->view->registerMetaTag(['property' => 'og:type', 'content' => $this->contentType]);
+
+        if (!empty($this->title)) {
+            $this->view->registerMetaTag(['property' => 'og:title', 'content' => StringHelper::truncate($this->title, 70)]);
+        }
+        if (!empty($this->description)) {
+            $this->view->registerMetaTag(['property' => 'og:description', 'content' => StringHelper::truncate($this->description, 200)]);
+        }
+
+        if (count($this->images) > 0) {
+            $this->view->registerMetaTag(['name' => 'og:image', 'content' => $this->images[0]]);
+        }
+    }
+
+    /**
+     * Register metadata to preview the content on Twitter
+     *
+     * @return void
+     */
+    private function registerTwitterMetaTags()
+    {
+        $this->view->registerMetaTag(['property' => 'twitter:url', 'content' => $this->url]);
+        $this->view->registerMetaTag(['property' => 'twitter:site', 'content' => Yii::$app->name]);
+        $this->view->registerMetaTag(['property' => 'twitter:type', 'content' => $this->contentType]);
+
+        if (!empty($this->title)) {
+            $this->view->registerMetaTag(['property' => 'twitter:title', 'content' => StringHelper::truncate($this->title, 70)]);
+        }
+        if (!empty($this->description)) {
+            $this->view->registerMetaTag([
+                'property' => 'twitter:description',
+                'content' => StringHelper::truncate($this->description, 200)]);
+        }
+        if (count($this->images) > 0) {
+            $this->view->registerMetaTag(['name' => 'twitter:image', 'content' => $this->images[0]]);
+        }
+    }
 }

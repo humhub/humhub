@@ -96,7 +96,7 @@ class View extends \yii\web\View
     public function getMeta()
     {
         if ($this->_viewMeta === null) {
-            $this->_viewMeta = new ViewMeta();
+            $this->_viewMeta = new ViewMeta(['view' => $this]);
         }
 
         return $this->_viewMeta;
