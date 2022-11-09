@@ -10,6 +10,7 @@ namespace humhub\modules\content\models;
 
 use Yii;
 use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "contentcontainer_module".
@@ -17,6 +18,8 @@ use yii\db\ActiveRecord;
  * @property integer $contentcontainer_id
  * @property string $module_id
  * @property integer $module_state
+ *
+ * @property ContentContainer $contentContainer
  */
 class ContentContainerModuleState extends ActiveRecord
 {
@@ -50,5 +53,14 @@ class ContentContainerModuleState extends ActiveRecord
         ];
 
         return $labels ? $states : array_keys($states);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getContentContainer()
+    {
+        return $this
+            ->hasOne(ContentContainer::class, ['id' => 'contentcontainer_id']);
     }
 }

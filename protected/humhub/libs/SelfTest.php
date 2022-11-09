@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
 use Yii;
@@ -432,6 +433,32 @@ class SelfTest
                     ),
                 ];
             }
+
+            $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Base URL');
+            $sslPort = 443;
+            $httpPort = 80;
+            $scheme = $_SERVER['REQUEST_SCHEME'] ?? (
+                isset($_SERVER['HTTPS'])
+                    ? ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1 || $_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
+                    : ($_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http'));
+            $currentBaseUrl = $scheme . '://' . $_SERVER['HTTP_HOST']
+                . (($scheme === 'https' && $_SERVER['SERVER_PORT'] == $sslPort) ||
+                ($scheme === 'http' && $_SERVER['SERVER_PORT'] == $httpPort) ? '' : ':' . $_SERVER['SERVER_PORT'])
+                . ($_SERVER['BASE'] ?? '');
+            if ($currentBaseUrl === Yii::$app->settings->get('baseUrl')) {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'OK'
+                ];
+            } else {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'WARNING',
+                    'hint' => Yii::t('AdminModule.information', 'Detected URL: {currentBaseUrl}',
+                        ['currentBaseUrl' => $currentBaseUrl]
+                    ),
+                ];
+            }
         }
 
         // Check Runtime Directory
@@ -515,7 +542,7 @@ class SelfTest
                 'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path])
             ];
         }
-        // Check Custom Modules Directory
+        // Check Dynamic Config is Writable
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Dynamic Config');
         $path = Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
         if (!is_file($path)) {
@@ -532,6 +559,20 @@ class SelfTest
                 'title' => $title,
                 'state' => 'ERROR',
                 'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path])
+            ];
+        }
+
+        // Check HumHub Marketplace API Connection
+        $title = Yii::t('AdminModule.information', 'HumHub') . ' - ' . Yii::t('AdminModule.information', 'Marketplace API Connection');
+        if (empty(HumHubAPI::getLatestHumHubVersion(false))) {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'WARNING'
+            ];
+        } else {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'OK'
             ];
         }
 

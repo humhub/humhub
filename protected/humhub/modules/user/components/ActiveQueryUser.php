@@ -307,4 +307,16 @@ class ActiveQueryUser extends ActiveQuery
         return $this;
     }
 
+    /**
+     * Filter users which are available for the given $user or for the current User
+     *
+     * @since 1.13
+     * @param UserModel|null $user
+     * @return ActiveQueryUser
+     */
+    public function available(?UserModel $user = null): ActiveQueryUser
+    {
+        return $this->visible()->filterBlockedUsers($user);
+    }
+
 }

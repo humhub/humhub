@@ -48,9 +48,12 @@ return [
     'the default start page of this space for members' => 'standard startside for denne gruppens brukere',
     'the default start page of this space for visitors' => 'standard startsiden for denne gruppens gjester',
     'Activate' => '',
+    'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',
     'Are you sure you want to remove this member.' => '',
     'Choose the modules you want to use for this Space. If you are undecided, you can also activate them later on via the Space settings.' => '',
     'Choose the modules you want to use for this Space. In order for the modules to be available to you here, they must have been previously installed by administrators of the network using the admin panel. If you cannot deactivate individual modules, it is because they have been set as the default for the entire network.' => '',
     'Invited By' => '',
     'Please type the name of the space to proceed.' => '',
+    'Removal of members queued' => '',
+    'Remove all members' => '',
 ];

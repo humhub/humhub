@@ -56,6 +56,7 @@ use yii\web\IdentityInterface;
  * @property integer $updated_by
  * @property string $last_login
  * @property string $authclient_id
+ * @property string $auth_key
  * @property integer $visibility
  * @property integer $contentcontainer_id
  * @property Profile $profile
@@ -181,6 +182,9 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         return $rules;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function isEmailRequired(): bool
     {
         /* @var $userModule Module */
@@ -347,7 +351,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     public function getAuthKey()
     {
-        return $this->guid;
+        return $this->auth_key ?: $this->guid;
     }
 
     public function validateAuthKey($authKey)
@@ -555,7 +559,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
 
         if (empty($this->email)) {
-            $this->email = new \yii\db\Expression('NULL');
+            $this->email = null;
         }
 
         return parent::beforeSave($insert);
