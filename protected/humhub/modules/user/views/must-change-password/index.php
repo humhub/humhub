@@ -25,8 +25,11 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Change password');
 
                 <p><?= Yii::t('UserModule.auth', 'Due to security reasons you are required to change your password in order to access the platform.'); ?></p>
 
-                <?= $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45]); ?>
-                <hr>
+
+                <?php if ($model->isAttributeSafe('currentPassword')): ?>
+                    <?= $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45]); ?>
+                    <hr>
+                <?php endif; ?>
 
                 <?= $form->field($model, 'newPassword')->passwordInput(['maxlength' => 45]); ?>
                 <?= $form->field($model, 'newPasswordConfirm')->passwordInput(['maxlength' => 45]); ?>
