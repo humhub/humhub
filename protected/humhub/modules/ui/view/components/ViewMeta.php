@@ -20,7 +20,11 @@ use yii\web\Request;
 
 /**
  * Metadata Service for the View class.
- * Handles standard meta tags, OpenGraph tags and Twitter Card tags.
+ *
+ * Supports:
+ *  - standard meta tags
+ *  - OpenGraph tags
+ *  - Twitter Card tags
  *
  * Example usage in controller:
  * ```
@@ -70,7 +74,7 @@ class ViewMeta extends BaseObject
     /**
      * @var string
      */
-    public $description;
+    private $description;
 
     /**
      * Called by View to register Tags before rendering
@@ -166,9 +170,10 @@ class ViewMeta extends BaseObject
         if (empty($this->images)) {
             // Use ContentContainer Image
             $contentContainer = ($this->content !== null) ? $this->content->content->container : null;
-            if ($contentContainer === null && isset($view->context->contentContainer)) {
-                $contentContainer = $view->context->contentContainer;
+            if ($contentContainer === null && isset($this->view->context->contentContainer)) {
+                $contentContainer = $this->view->context->contentContainer;
             }
+
             if ($contentContainer !== null && $contentContainer->getProfileImage()->hasImage()) {
                 $this->images[] = Url::to($contentContainer->getProfileImage()->getUrl(), true);
             }
