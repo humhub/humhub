@@ -51,10 +51,10 @@ class HumHubAPI
      *
      * @return string latest HumHub Version
      */
-    public static function getLatestHumHubVersion()
+    public static function getLatestHumHubVersion($useCache = true)
     {
         $latestVersion = Yii::$app->cache->get('latestVersion');
-        if ($latestVersion === false) {
+        if (!$useCache || $latestVersion === false) {
             $info = self::request('v1/modules/getLatestVersion');
 
             if (isset($info['latestVersion'])) {

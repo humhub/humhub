@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
 use Yii;
@@ -541,7 +542,7 @@ class SelfTest
                 'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path])
             ];
         }
-        // Check Custom Modules Directory
+        // Check Dynamic Config is Writable
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Dynamic Config');
         $path = Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
         if (!is_file($path)) {
@@ -558,6 +559,20 @@ class SelfTest
                 'title' => $title,
                 'state' => 'ERROR',
                 'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path])
+            ];
+        }
+
+        // Check HumHub Marketplace API Connection
+        $title = Yii::t('AdminModule.information', 'HumHub') . ' - ' . Yii::t('AdminModule.information', 'Marketplace API Connection');
+        if (empty(HumHubAPI::getLatestHumHubVersion(false))) {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'WARNING'
+            ];
+        } else {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'OK'
             ];
         }
 

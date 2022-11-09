@@ -15,3 +15,4 @@ HumHub Changelog
 - Fix #5903: ContentContainerModule::getEnabledContentContainers() returns an empty array
 - Enh #5908: New filter ActiveQueryUser->available()
 - Enh #5785: Adding option for custom .well-known routes
+- Enh #5100: Added SelfTest for HumHub API connectivity
