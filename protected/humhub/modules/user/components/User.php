@@ -45,6 +45,25 @@ class User extends \yii\web\User
     public $mustChangePasswordRoute = '/user/must-change-password';
 
     /**
+     * @var bool automatically sets cookie secure flag when on secure connection
+     * @since 1.13
+     */
+    public $autoSetCookieSecureFlag = true;
+
+    /**
+     * @inheritDoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        if ($this->autoSetCookieSecureFlag && Yii::$app->request->isSecureConnection) {
+            $this->identityCookie['secure'] = true;
+        }
+    }
+
+
+    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -248,8 +267,8 @@ class User extends \yii\web\User
     }
 
     /**
-     * @since 1.8
      * @return bool Check if current page is already URL to forcing user to change password
+     * @since 1.8
      */
     public function isMustChangePasswordUrl()
     {
@@ -258,8 +277,8 @@ class User extends \yii\web\User
 
     /**
      * Determines if this user must change the password.
-     * @since 1.8
      * @return boolean
+     * @since 1.8
      */
     public function mustChangePassword()
     {
