@@ -35,6 +35,8 @@ class Request extends \yii\web\Request
      */
     public function init()
     {
+        parent::init();
+
         if (Setting::isInstalled()) {
             $secret = Yii::$app->settings->get('secret');
             if ($secret != "") {
@@ -42,15 +44,22 @@ class Request extends \yii\web\Request
             }
         }
 
-        if ($this->autoSetCookieSecureFlag && $this->isSecureConnection) {
-            $this->csrfCookie['secure'] = true;
-        }
-
         if ($this->cookieValidationKey == '') {
             $this->cookieValidationKey = 'installer';
         }
+
     }
 
+    /**
+     * @inheritDoc
+     */
+    protected function createCsrfCookie($token)
+    {
+        if ($this->autoSetCookieSecureFlag && $this->isSecureConnection) {
+            $this->csrfCookie['secure'] = true;
+        }
+        return parent::createCsrfCookie($token);
+    }
 
     /**
      * @return string|null the value of http header `HUMHUB-VIEW-CONTEXT`

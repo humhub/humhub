@@ -46,6 +46,7 @@ $config = [
             'class' => \humhub\modules\user\components\Session::class,
             'cookieParams' => [
                 'sameSite' => PHP_VERSION_ID >= 70300 ? yii\web\Cookie::SAME_SITE_LAX : null,
+                'httpOnly' => true
             ],
         ],
     ],
