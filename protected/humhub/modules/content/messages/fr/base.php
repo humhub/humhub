@@ -71,7 +71,7 @@ return array (
   'This content type can\'t be moved.' => 'Ce contenu ne peut être déplacé.',
   'This space is archived.' => 'Cet espace est archivé',
   'This space is not visible!' => 'Cet espace n\'est pas visible.',
-  'Topics' => 'Sujets',
+  'Topics' => 'Étiquettes',
   'Turn off notifications' => 'Désactiver les notifications',
   'Turn on notifications' => 'Activer les notifications',
   'Unarchive' => 'Désarchiver',

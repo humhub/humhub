@@ -157,14 +157,9 @@ class ApproveUserForm extends \yii\base\Model
         }
 
         $this->user->status = User::STATUS_ENABLED;
+        $this->user->setScenario(User::SCENARIO_APPROVE);
 
-        if ($this->validate() &&
-            $this->user->save() &&
-            $this->send()) {
-            return true;
-        }
-
-        return false;
+        return $this->user->save() && $this->send();
     }
 
     /**

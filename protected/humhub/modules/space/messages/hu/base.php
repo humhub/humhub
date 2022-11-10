@@ -138,6 +138,7 @@ return [
     'Newest first' => '',
     'Oldest first' => '',
     'Search...' => '',
+    'Show as List' => '',
     'Try other keywords or remove filters.' => '',
     'Would you like to end your membership in Space {spaceName}?' => '',
     'Would you like to unfollow Space {spaceName}?' => '',

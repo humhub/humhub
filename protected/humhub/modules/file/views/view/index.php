@@ -33,7 +33,7 @@ use humhub\modules\file\widgets\FileHandlerButtonDropdown;
         <p style="line-height:20px">
             <strong><?= Yii::t('FileModule.base', 'Size:'); ?></strong> <?= Yii::$app->formatter->asShortSize($file->size, 1); ?><br />
             <strong><?= Yii::t('FileModule.base', 'Created by:'); ?></strong> <?= Html::encode($file->createdBy->displayName); ?> (<?= Yii::$app->formatter->asDatetime($file->created_at, 'short'); ?>)<br />
-            <?php if (!empty($file->updated_at) && $file->updated_at != $file->created_at) : ?>
+            <?php if (!empty($file->updatedBy) && $file->updated_at != $file->created_at) : ?>
                 <strong><?= Yii::t('FileModule.base', 'Last update by:') ?></strong> <?= Html::encode($file->updatedBy->displayName); ?> (<?= Yii::$app->formatter->asDatetime($file->updated_at, 'short'); ?>)<br/>
             <?php endif; ?>
         </p>

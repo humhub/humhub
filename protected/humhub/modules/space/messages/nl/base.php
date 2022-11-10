@@ -54,6 +54,7 @@ return [
     'Hide Members sidebar in the stream page.' => 'Verberg de zijbalk met de leden op de dashboardpagina.',
     'Homepage' => 'Startpagina',
     'Homepage (Guests)' => 'Startpagina (Gasten)',
+    'I want to become a member because...' => 'Ik wil lid worden omdat...',
     'Invite' => 'Uitnodigen',
     'Invite and request' => 'Uitnodigen en aanvragen',
     'Invite by email' => 'Uitnodigen per e-mail',
@@ -142,5 +143,5 @@ return [
     'Your request was successfully submitted to the space administrators.' => 'Uw aanvraag is succesvol naar de ruimte-beheerder verstuurd.',
     '{count} members' => '{count} leden',
     '{email} is not valid!' => '{email} is niet geldig!',
-    'I want to become a member because...' => '',
+    'Show as List' => '',
 ];

@@ -133,6 +133,7 @@ return [
     'Pending' => '',
     'Request Message' => '',
     'Search...' => '',
+    'Show as List' => '',
     'Shown on About Page.' => '',
     'Sorry, you are not allowed to leave this space!' => '',
     'To invite users to this space, please type their names below to find and pick them.' => '',

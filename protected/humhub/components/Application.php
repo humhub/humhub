@@ -52,6 +52,22 @@ class Application extends \yii\web\Application
     /**
      * @inheritdoc
      */
+    public function init()
+    {
+        if (version_compare(phpversion(), $this->minSupportedPhpVersion, '<')) {
+            throw new \Exception(sprintf(
+                'Installed PHP Version is too old! Required minimum version is PHP %s (Installed: %s)',
+                $this->minSupportedPhpVersion,
+                phpversion()
+            ));
+        }
+
+        parent::init();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function bootstrap()
     {
         $request = $this->getRequest();

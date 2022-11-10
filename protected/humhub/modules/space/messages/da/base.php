@@ -126,6 +126,7 @@ return [
     'Search...' => '',
     'Select all registered users' => '',
     'Settings could not be saved!' => '',
+    'Show as List' => '',
     'Shown on About Page.' => '',
     'Sorry, you are not allowed to leave this space!' => '',
     'Space' => '',

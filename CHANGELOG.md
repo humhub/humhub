@@ -1,6 +1,28 @@
 HumHub Changelog
 ================
 
+1.12.2 (Unreleased)
+-------------------
+- Fix #5851: Admin User Settings cannot saved 
+- Fix #5856: Fix SMTPS Config Migration
+- Fix #5854: Don't validate user language on approve
+- Fix #5875: LDAP user creation broken without email address
+- Fix #5877: Fix wrong empty profile stream message
+- Fix #5874: Fix adding licence key after removing it from marketplace
+- Enh #5891: Improve select2 width on people filters
+- Fix #5909: Fix optional parameter on ldap user searching
+
+1.12.1 (August 15, 2022)
+------------------------
+- Fix #5822: Fix content width in mobile view
+- Fix #5825: Fix format date to mysql on date stream filter
+- Fix #5832: Exception in file open dialog when last update user no longer exists 
+- Fix #5814: Fix numerated lists in mail summary content
+- Fix #5830: Fix cron job of search index rebuilding
+- Fix #5838: Fix deprecated null value for `file_exists()` on PHP 8.1
+- Enh #5846: Improved PHP minimum version checks
+- Fix #5845: Fix unknown `streamQuery` on load `Filter`
+
 1.12.0 (July 27, 2022)
 ----------------------
 

@@ -119,7 +119,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     public function testLinkWithMarkedText()
     {
         $this->assertConversionResult(
-            'Test [**Bold** Url](http://localhost/p/site)',
+            'Test [**Bold** Url](http://localhost:8080/p/site)',
             "Test Bold Url");
     }
 
@@ -129,8 +129,8 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     public function testConvertLinkifiedLink()
     {
         $this->assertConversionResult(
-            'Test http://localhost/p/site',
-            "Test http://localhost/p/site");
+            'Test http://localhost:8080/p/site',
+            "Test http://localhost:8080/p/site");
     }
 
     public function testConvertMailtoLink()
@@ -197,7 +197,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     public function testConvertImageWithTitleText()
     {
         $this->assertConversionResult(
-            'Test ![Image Label](http://localhost/static/img/logo.png "Image Title")',
+            'Test ![Image Label](http://localhost:8080/static/img/logo.png "Image Title")',
             'Test [Image]');
     }
 
@@ -207,7 +207,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     public function testConvertImageWithSizeToShortText()
     {
         $this->assertConversionResult(
-            'Test ![Scaled Image](http://localhost/static/img/logo.png "img6.jpg" =150x)',
+            'Test ![Scaled Image](http://localhost:8080/static/img/logo.png "img6.jpg" =150x)',
             'Test [Image]');
     }
 
@@ -217,7 +217,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     public function testConvertImageWithSizeAndNoTitleToShortText()
     {
         $this->assertConversionResult(
-            'Test ![Scaled Image](http://localhost/static/img/logo.png =150x)',
+            'Test ![Scaled Image](http://localhost:8080/static/img/logo.png =150x)',
             'Test [Image]');
     }
 
@@ -227,7 +227,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     public function testConvertImageWithImageAlignmentRight()
     {
         $this->assertConversionResult(
-            'Test ![Scaled Image>](http://localhost/static/img/logo.png =150x)',
+            'Test ![Scaled Image>](http://localhost:8080/static/img/logo.png =150x)',
             'Test [Image]');
     }
 
@@ -237,7 +237,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     public function testConvertImageWithImageAlignmentLeft()
     {
         $this->assertConversionResult(
-            'Test ![Scaled Image<](http://localhost/static/img/logo.png =150x)',
+            'Test ![Scaled Image<](http://localhost:8080/static/img/logo.png =150x)',
             'Test [Image]');
     }
 
@@ -247,7 +247,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     public function testConvertImageWithImageAlignmentCenter()
     {
         $this->assertConversionResult(
-            'Test ![Scaled Image><](http://localhost/static/img/logo.png =150x)',
+            'Test ![Scaled Image><](http://localhost:8080/static/img/logo.png =150x)',
             'Test [Image]');
     }
 
@@ -520,6 +520,17 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
         $this->assertConversionResult(
             "This is a list\n\n1. First Element\n2. Second Element",
             "This is a list 1. First Element 2. Second Element");
+    }
+
+    public function testConvertOrderedListWithCustomNumbers()
+    {
+        $this->assertConversionResult(
+            "This is a list\n\n21. November - First line\n22. November - Second line\n23. November - Third line",
+            'This is a list 21. November - First line 22. November - Second line 23. November - Third line');
+
+        $this->assertConversionResult(
+            "This is a list\n\n29. November - First line\n24. November - Second line\n15. November - Third line",
+            'This is a list 29. November - First line 24. November - Second line 15. November - Third line');
     }
 
     public function testConvertOrderedSubList()
