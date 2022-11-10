@@ -80,4 +80,6 @@ return [
     '{phpExtension} Support' => 'Supporto {phpExtension}',
     'Base URL' => '',
     'Detected URL: {currentBaseUrl}' => '',
+    'HumHub' => '',
+    'Marketplace API Connection' => '',
 ];

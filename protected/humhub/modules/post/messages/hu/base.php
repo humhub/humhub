@@ -8,6 +8,7 @@ return [
     'This space is archived.' => 'Ez egy archivált közösség.',
     'What\'s on your mind?' => 'Mi jár a fejedben?',
     'post' => 'bejegyzés',
+    'Post' => '',
     'Post could not be saved!' => '',
     'The post must not be empty!' => '',
 ];

@@ -8,6 +8,7 @@ return [
     'This space is archived.' => 'Aquest espai ha sigut arxivat',
     'What\'s on your mind?' => 'Què et passa pel cap?',
     'post' => 'la publicació',
+    'Post' => '',
     'Post could not be saved!' => '',
     'The post must not be empty!' => '',
 ];

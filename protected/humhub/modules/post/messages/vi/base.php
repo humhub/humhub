@@ -8,6 +8,7 @@ return [
     'This space is archived.' => 'Phòng làm việc này đã được đưa vào lưu trữ.',
     'What\'s on your mind?' => 'Bạn đang nghĩ gì?',
     'post' => 'post',
+    'Post' => '',
     'Post could not be saved!' => '',
     'The post must not be empty!' => '',
 ];

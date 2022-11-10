@@ -36,9 +36,6 @@ Module successfully enabled!
 No active Professional Edition license found!
 ' => '',
     '
-PROFESSIONAL EDITION
-' => '',
-    '
 The license could not be activated:
 ' => '',
     '
@@ -88,6 +85,7 @@ The license was successfully removed!
     'No license key? Find out more about the {pro} or contact us.' => '',
     'Not Installed' => '',
     'Official' => '',
+    'PROFESSIONAL EDITION' => '',
     'Partner' => '',
     'Professional Edition' => '',
     'Professional Edition is activated!' => '',

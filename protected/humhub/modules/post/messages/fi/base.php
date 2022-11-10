@@ -8,6 +8,7 @@ return [
     'This space is archived.' => 'Tämä sivu on arkistoitu.',
     'What\'s on your mind?' => 'Mitä sinulla on mielessä?',
     'post' => 'jukaisu',
+    'Post' => '',
     'Post could not be saved!' => '',
     'The post must not be empty!' => '',
 ];
