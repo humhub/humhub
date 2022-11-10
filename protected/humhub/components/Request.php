@@ -20,6 +20,11 @@ use Yii;
 class Request extends \yii\web\Request
 {
     /**
+     * @var bool automatically sets cookie secure flag when on secure connection
+     */
+    public $autoSetCookieSecureFlag = true;
+
+    /**
      * Http header name for view context information
      * @see \humhub\modules\ui\view\components\View::$viewContext
      */
@@ -37,10 +42,15 @@ class Request extends \yii\web\Request
             }
         }
 
+        if ($this->autoSetCookieSecureFlag && $this->isSecureConnection) {
+            $this->csrfCookie['secure'] = true;
+        }
+
         if ($this->cookieValidationKey == '') {
             $this->cookieValidationKey = 'installer';
         }
     }
+
 
     /**
      * @return string|null the value of http header `HUMHUB-VIEW-CONTEXT`
