@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.13.0 (Unreleased)
 -------------------
+- Enh #5821: Remove "regular" style of checkbox and radio
 - Enh #5827: Wall menu tabs for create content forms
 - Enh #5808: Add a menu to remove all members of a space
 - Enh #5841: Possibility to show Members/Followers as list from Space about page

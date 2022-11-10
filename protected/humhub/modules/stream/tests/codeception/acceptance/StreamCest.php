@@ -352,6 +352,13 @@ class StreamCest
         $I->waitForText($postTitle, null, '.s2_streamContent');
 
         $I->amGoingTo('filter stream by date from today');
+        /*
+        $I->jsClick('.wall-stream-filter-toggle');
+        $I->waitForElementVisible($dateFromFilter);
+        $I->executeJS("$('" . $dateFromFilter . "').val('" . date('n/j/y') . "').change();");
+        $I->waitForText($postTitle, 30, '.s2_streamContent');
+        */
+
         $I->waitForElementVisible('.wall-stream-filter-head');
         $I->click('Filter', '.wall-stream-filter-head');
         $I->wait(1);

@@ -164,37 +164,72 @@ a.input-field-addon-sm {
 }
 
 // Flatelements
-.regular-checkbox:focus + .regular-checkbox-box, input[type=checkbox]:focus {
-    border: 2px solid @text-color-highlight !important;
+.radio input[type=radio],
+.radio-inline input[type=radio],
+.checkbox input[type=checkbox],
+.checkbox-inline input[type=checkbox] {
+    position: relative;
+    margin-left: 0;
 }
 
-.regular-checkbox:checked + .regular-checkbox-box, input[type=checkbox]:checked {
-    border: 2px solid @info;
-    background: @info;
-    color: white;
+input[type=checkbox], input[type=radio] {
+    -webkit-appearance: none;
+    position: relative;
+    display: inline-block;
+    width: auto;
+    height: auto;
+    min-height: auto;
+    padding: 7px;
+    margin: -4px 2px 0 0;
+    vertical-align: middle;
+    background: white;
+    border: 2px solid #ccc;
+    border-radius: 3px;
+    &:disabled {
+        background: @background3 !important;
+        border: 2px solid @background3 !important;
+        cursor: not-allowed;
+    }
 }
 
-.regular-checkbox-box.disabled, input[type=checkbox]:disabled {
-    background: @background3 !important;
-    border: 2px solid @background3 !important;
-    cursor: not-allowed;
+input[type=checkbox] {
+    &:focus {
+        border: 2px solid @text-color-highlight !important;
+        outline: none;
+    }
+    &:checked {
+        border: 2px solid @info;
+        background: @info;
+        color: white;
+        &::after {
+            content: '\2714';
+            font-size: 14px;
+            position: absolute;
+            top: -3px;
+            left: 1px;
+            color: white;
+        }
+    }
 }
 
-.regular-radio:checked + .regular-radio-button:after, input[type=radio]:checked::after {
-    background: @info;
-}
-
-.regular-radio:checked + .regular-radio-button, input[type=radio]:checked {
-    background-color: transparent;
-    color: #99a1a7;
-    border: 2px solid @background3;
-    margin-right: 5px;
-}
-
-.regular-radio-button.disabled, input[type=radio]:disabled {
-    background: @background3 !important;
-    border: 2px solid @background3 !important;
-    cursor: not-allowed;
+input[type=radio] {
+    border-radius: 50%;
+    &:checked {
+        border: 2px solid @background3;
+        color: #99a1a7;
+        &::after {
+            content: ' ';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            background: @info;
+            text-shadow: none;
+            left: 3px;
+            font-size: 32px;
+        }
+    }
 }
 
 div.form-group {
