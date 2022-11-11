@@ -19,3 +19,5 @@ HumHub Changelog
 - Enh #5785: Adding option for custom .well-known routes
 - Enh #5100: Added SelfTest for HumHub API connectivity
 - Enh #5811: Don't require current password if not exists on force change password
+- Enh #5924: Auto add `secure` flag for cookie on detected SSL
+
