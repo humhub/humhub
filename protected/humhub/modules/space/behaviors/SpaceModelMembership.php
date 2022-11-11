@@ -425,9 +425,13 @@ class SpaceModelMembership extends Behavior
 
             $userInvite = Invite::findOne(['email' => $user->email]);
 
-            if ($userInvite !== null && $userInvite->source == Invite::SOURCE_INVITE && !$silent) {
-                InviteAccepted::instance()->from($user)->about($this->owner)
-                    ->send(User::findOne(['id' => $userInvite->user_originator_id]));
+            if ($userInvite !== null &&
+                !empty($userInvite->user_originator_id) &&
+                $userInvite->source == Invite::SOURCE_INVITE && !$silent) {
+                $originator = User::findOne(['id' => $userInvite->user_originator_id]);
+                if ($originator !== null) {
+                    InviteAccepted::instance()->from($user)->about($this->owner)->send($originator);
+                }
             }
         } else {
             // User is already member

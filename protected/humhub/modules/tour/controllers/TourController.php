@@ -9,6 +9,7 @@
 namespace humhub\modules\tour\controllers;
 
 use humhub\modules\space\models\Membership;
+use humhub\modules\tour\Module;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\space\models\Space;
@@ -35,11 +36,13 @@ class TourController extends \humhub\components\Controller
      */
     public function actionTourCompleted()
     {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('tour');
 
         // get section parameter from completed tour
         $section = Yii::$app->request->post('section');
 
-        if (!in_array($section, Yii::$app->params['tour']['acceptableNames'])) {
+        if (!in_array($section, $module->acceptableNames)) {
             return;
         }
 
@@ -101,7 +104,7 @@ class TourController extends \humhub\components\Controller
         }
 
         return $this->renderAjax('welcome', [
-                    'user' => $user
+            'user' => $user
         ]);
     }
 

@@ -251,9 +251,6 @@ $config = [
         // Allowed languages limitation (optional)
         'allowedLanguages' => [],
         'defaultPermissions' => [],
-        'tour' => [
-            'acceptableNames' => ['interface', 'administration', 'profile', 'spaces']
-        ],
         'richText' => [
             'class' => \humhub\modules\content\widgets\richtext\ProsemirrorRichText::class,
         ],
@@ -263,7 +260,7 @@ $config = [
         ],
         'enablePjax' => true,
         'dailyCronExecutionTime' => '18:00',
-    ]
+    ],
 ];
 
 return $config;
