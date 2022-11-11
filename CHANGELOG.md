@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.12.2 (Unreleased)
--------------------
+1.12.2 (November 11, 2022)
+--------------------------
 - Fix #5851: Admin User Settings cannot saved 
 - Fix #5856: Fix SMTPS Config Migration
 - Fix #5854: Don't validate user language on approve
