@@ -153,7 +153,7 @@ class InitialData
         $field->field_type_class = \humhub\modules\user\models\fieldtype\Select::class;
         $field->is_system = 1;
         if ($field->save()) {
-            $field->fieldType->options = "male=>Male\nfemale=>Female\ncustom=>Custom";
+            $field->fieldType->options = "male=>Male\nfemale=>Female\ndiverse=>Diverse";
             $field->fieldType->save();
         }
 
@@ -301,18 +301,6 @@ class InitialData
         }
 
         $field = new ProfileField();
-        $field->internal_name = "im_skype";
-        $field->title = 'Skype Nickname';
-        $field->sort_order = 500;
-        $field->profile_field_category_id = $cCommunication->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->maxLength = 100;
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
         $field->internal_name = "im_xmpp";
         $field->title = 'XMPP Jabber Address';
         $field->sort_order = 800;
@@ -361,6 +349,18 @@ class InitialData
         }
 
         $field = new ProfileField();
+        $field->internal_name = "url_instagram";
+        $field->title = 'Instagram URL';
+        $field->sort_order = 350;
+        $field->profile_field_category_id = $cSocial->id;
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
+        $field->is_system = 1;
+        if ($field->save()) {
+            $field->fieldType->validator = 'url';
+            $field->fieldType->save();
+        }
+
+        $field = new ProfileField();
         $field->internal_name = "url_xing";
         $field->title = 'Xing URL';
         $field->sort_order = 400;
@@ -397,21 +397,9 @@ class InitialData
         }
 
         $field = new ProfileField();
-        $field->internal_name = "url_flickr";
-        $field->title = 'Flickr URL';
+        $field->internal_name = "url_tiktok";
+        $field->title = 'TikTok URL';
         $field->sort_order = 700;
-        $field->profile_field_category_id = $cSocial->id;
-        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
-        $field->is_system = 1;
-        if ($field->save()) {
-            $field->fieldType->validator = 'url';
-            $field->fieldType->save();
-        }
-
-        $field = new ProfileField();
-        $field->internal_name = "url_myspace";
-        $field->title = 'MySpace URL';
-        $field->sort_order = 800;
         $field->profile_field_category_id = $cSocial->id;
         $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
         $field->is_system = 1;
