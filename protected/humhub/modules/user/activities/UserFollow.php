@@ -9,14 +9,16 @@
 namespace humhub\modules\user\activities;
 
 use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\content\models\Content;
+use Yii;
 
 /**
  * Activity when somebody follows an object
  *
  * @author luke
  */
-class UserFollow extends BaseActivity
+class UserFollow extends BaseActivity implements ConfigurableActivityInterface
 {
 
     /**
@@ -42,4 +44,19 @@ class UserFollow extends BaseActivity
         return $this->source->target->getUrl();
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getTitle()
+    {
+        return Yii::t('UserModule.activities', 'Following (User)');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDescription()
+    {
+        return Yii::t('UserModule.activities', 'Whenever a user follows another user.');
+    }
 }
