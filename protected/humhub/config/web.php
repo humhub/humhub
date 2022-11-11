@@ -51,7 +51,7 @@ $config = [
     ],
     'modules' => [
         'web' => [
-            'security' =>  [
+            'security' => [
                 "headers" => [
                     "Strict-Transport-Security" => "max-age=31536000",
                     "X-XSS-Protection" => "1; mode=block",
@@ -64,6 +64,11 @@ $config = [
             ]
         ]
     ],
+    'container' => [
+        'definitions' => [
+            'yii\web\Cookie' => ['\humhub\libs\CookieBuilder', 'build'],
+        ]
+    ]
 ];
 
 return $config;
