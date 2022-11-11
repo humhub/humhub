@@ -14,9 +14,19 @@ use humhub\modules\tour\widgets\Dashboard;
  */
 class Module extends \humhub\components\Module
 {
+    /**
+     * @var string[]
+     */
+    public $acceptableNames = ['interface', 'administration', 'profile', 'spaces'];
 
+    /**
+     * @inheridoc
+     */
     public $isCoreModule = true;
 
+    /**
+     * Event Callback
+     */
     public static function onDashboardSidebarInit($event)
     {
         if (Yii::$app->user->isGuest)
