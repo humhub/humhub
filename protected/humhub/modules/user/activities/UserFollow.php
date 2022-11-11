@@ -49,7 +49,7 @@ class UserFollow extends BaseActivity implements ConfigurableActivityInterface
      */
     public function getTitle()
     {
-        return Yii::t('UserModule.activities', 'User following');
+        return Yii::t('UserModule.activities', 'Following (User)');
     }
 
     /**
@@ -57,6 +57,6 @@ class UserFollow extends BaseActivity implements ConfigurableActivityInterface
      */
     public function getDescription()
     {
-        return Yii::t('UserModule.activities', 'Whenever a user follows another one.');
+        return Yii::t('UserModule.activities', 'Whenever a user follows another user.');
     }
 }
