@@ -105,7 +105,7 @@ return array (
   'Type Config' => 'Configuration de type',
   'Updated at' => 'Mis à jour le',
   'Updated by' => 'Mis à jour par',
-  'Url' => 'URL',
+  'Website URL' => 'URL',
   'Use as Directory filter' => 'Utiliser comme filtre du répertoire',
   'Username' => 'Identifiant',
   'Validator' => 'Validateur',

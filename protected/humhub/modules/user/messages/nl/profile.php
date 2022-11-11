@@ -105,7 +105,7 @@ return array (
   'Type Config' => 'Soort configuratie',
   'Updated at' => 'Aangepast op',
   'Updated by' => 'Aangepast door',
-  'Url' => 'URL',
+  'Website URL' => 'URL',
   'Use as Directory filter' => 'Gebruiken als indexfilter',
   'Username' => 'Gebruikernaam',
   'Validator' => 'Validatie',

@@ -105,7 +105,7 @@ return [
     'Type Config' => 'Configurazione dei tipi',
     'Updated at' => 'Aggiornato il',
     'Updated by' => 'Aggiornato da',
-    'Url' => 'Url',
+    'Website URL' => 'Website URL',
     'Use as Directory filter' => 'Usa come filtro Directory',
     'Username' => 'Nome utente',
     'Validator' => 'Validatore',

@@ -89,7 +89,7 @@ return [
     'Type Config' => 'Ayar Tipi',
     'Updated at' => 'Güncelleme zamanı',
     'Updated by' => 'Güncelleyen',
-    'Url' => 'Adres',
+    'Website URL' => 'Adres',
     'Username' => 'Kullanıcı adı',
     'Validator' => 'Doğrulayıcı',
     'Vimeo URL' => 'Vimeo Adres',

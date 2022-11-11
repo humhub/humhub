@@ -100,7 +100,7 @@ return [
     'Type Config' => 'Tyypin asetukset',
     'Updated at' => 'Päivitetty',
     'Updated by' => 'Päivittänyt',
-    'Url' => 'Url',
+    'Website URL' => 'Website URL',
     'Username' => 'Käyttäjänimi',
     'Validator' => 'Vahvistus',
     'Vimeo URL' => 'Vimeo URL',

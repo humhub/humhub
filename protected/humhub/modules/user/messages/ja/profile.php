@@ -105,7 +105,7 @@ return array (
   'Type Config' => 'タイプ構成',
   'Updated at' => 'で更新',
   'Updated by' => '更新されました。',
-  'Url' => 'Url',
+  'Website URL' => 'Website URL',
   'Use as Directory filter' => 'ディレクトリフィルタとして使用',
   'Username' => 'ユーザー名',
   'Validator' => 'バリデーター',

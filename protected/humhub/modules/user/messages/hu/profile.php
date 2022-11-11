@@ -105,7 +105,7 @@ return [
     'Type Config' => 'Típus Konfiguráció',
     'Updated at' => 'Frissítve',
     'Updated by' => 'Frissítette',
-    'Url' => 'Webcím (URL)',
+    'Website URL' => 'Webcím (URL)',
     'Username' => 'Felhasználónév',
     'Validator' => 'Ellenőrző',
     'Vimeo URL' => 'Vimeo URL',

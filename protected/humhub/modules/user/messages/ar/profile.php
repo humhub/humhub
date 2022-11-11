@@ -101,7 +101,7 @@ return [
     'Type Config' => 'اكتب التكوين',
     'Updated at' => 'تم التحديث في',
     'Updated by' => 'تم التحديث بواسطة',
-    'Url' => 'الرابط',
+    'Website URL' => 'الرابط',
     'Username' => 'اسم المستخدم',
     'Validator' => 'مدقق',
     'Vimeo URL' => 'رابط فيمو',

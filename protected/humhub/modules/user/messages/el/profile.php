@@ -108,7 +108,7 @@ return [
     'Translation Category ID' => '',
     'Twitter URL' => '',
     'Type Config' => '',
-    'Url' => '',
+    'Website URL' => '',
     'Use as Directory filter' => '',
     'Validator' => '',
     'Vimeo URL' => '',
