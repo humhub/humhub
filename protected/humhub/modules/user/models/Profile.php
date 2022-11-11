@@ -167,7 +167,7 @@ class Profile extends ActiveRecord
         Yii::t('UserModule.profile', 'Fax');
         Yii::t('UserModule.profile', 'XMPP Jabber Address');
 
-        Yii::t('UserModule.profile', 'Url');
+        Yii::t('UserModule.profile', 'Website URL');
         Yii::t('UserModule.profile', 'Facebook URL');
         Yii::t('UserModule.profile', 'LinkedIn URL');
         Yii::t('UserModule.profile', 'Xing URL');

@@ -21,3 +21,4 @@ HumHub Changelog
 - Enh #5811: Don't require current password if not exists on force change password
 - Enh #5923: Moved Tour configuration from Config Params to Module class 
 - Enh #5924: Auto add `secure` flag for cookie on detected SSL
+- Fix #5926: Renamed default profile field `Url` to `Website URL`
