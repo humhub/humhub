@@ -100,7 +100,7 @@ return [
     'Type Config' => 'Cấu hình kiểu',
     'Updated at' => 'Cập nhật lúc',
     'Updated by' => 'Cập nhật bởi',
-    'Url' => 'Địa chỉ URL',
+    'Website URL' => 'Địa chỉ URL',
     'Username' => 'Tên truy cập',
     'Validator' => 'Trình kiểm tra',
     'Vimeo URL' => 'Liên kết Vimeo',

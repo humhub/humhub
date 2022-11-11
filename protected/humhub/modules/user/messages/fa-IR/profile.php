@@ -91,7 +91,7 @@ return [
     'Type Config' => 'تنظیمات نوع',
     'Updated at' => 'به‌روزرسانی‌شده در',
     'Updated by' => 'به‌روزرسانی‌شده توسط',
-    'Url' => 'آدرس',
+    'Website URL' => 'آدرس',
     'Username' => 'نام کاربری',
     'Validator' => 'معتبرساز',
     'Vimeo URL' => 'آدرس Vimeo',

@@ -130,7 +130,7 @@ return [
             'fieldTypes' => []
         ]),
         'internal_name' => 'url',
-        'title' => 'Url',
+        'title' => 'Website URL',
         'description' => null,
         'sort_order' => 100,
         'required' => 0,

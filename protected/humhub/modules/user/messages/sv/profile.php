@@ -105,7 +105,7 @@ return [
     'Type Config' => 'Typ av konfig',
     'Updated at' => 'Uppdaterad',
     'Updated by' => 'Uppdaterad av',
-    'Url' => 'Url',
+    'Website URL' => 'Website URL',
     'Use as Directory filter' => 'Använd som katalogfilter',
     'Username' => 'Användarnamn',
     'Validator' => 'Validator',

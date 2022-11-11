@@ -108,7 +108,7 @@ return [
     'Type Config' => '',
     'Updated at' => '',
     'Updated by' => '',
-    'Url' => '',
+    'Website URL' => '',
     'Use as Directory filter' => '',
     'Username' => '',
     'Validator' => '',

@@ -94,7 +94,7 @@ return [
     'Type Config' => 'Nastavení typu',
     'Updated at' => 'Vytvořeno',
     'Updated by' => 'Vytvořil(a)',
-    'Url' => 'Webová stránka',
+    'Website URL' => 'Webová stránka',
     'Username' => 'Uživatelské jméno',
     'Validator' => 'Formát má odpovídat šabloně',
     'Vimeo URL' => 'Adresa profilu Vimeo',

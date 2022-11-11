@@ -105,7 +105,7 @@ return [
     'Type Config' => 'Tipo de configuração',
     'Updated at' => 'Atualizado em',
     'Updated by' => 'Atualizado por',
-    'Url' => 'Url',
+    'Website URL' => 'Website URL',
     'Username' => 'Nome de usuário',
     'Validator' => 'Validador',
     'Vimeo URL' => 'URL do Vimeo',

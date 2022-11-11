@@ -100,7 +100,7 @@ return [
     'Type Config' => 'Type konfigurasjon',
     'Updated at' => 'Oppdatert',
     'Updated by' => 'Oppdatert av',
-    'Url' => 'URL',
+    'Website URL' => 'URL',
     'Username' => 'Brukernavn',
     'Validator' => 'Validering',
     'Vimeo URL' => 'Vimeo URL',

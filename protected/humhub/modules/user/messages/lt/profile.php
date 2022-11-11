@@ -85,7 +85,7 @@ return [
     'Type Config' => 'Tipas Confing',
     'Updated at' => 'Atnaujinta',
     'Updated by' => 'Atnaujinta',
-    'Url' => 'Adresas',
+    'Website URL' => 'Adresas',
     'Username' => 'Vartotojo vardas',
     'Validator' => 'Vertintojas',
     'Vimeo URL' => 'Vimeio adresas',

@@ -85,7 +85,7 @@ return [
     'Type Config' => 'Type Config',
     'Updated at' => 'Opdateret den',
     'Updated by' => 'Opdateret af',
-    'Url' => 'Url',
+    'Website URL' => 'Website URL',
     'Username' => 'Brugernavn',
     'Validator' => 'Validering',
     'Vimeo URL' => 'Vimeo URL',

@@ -105,7 +105,7 @@ return [
     'Type Config' => 'Тип конфигурации',
     'Updated at' => 'Обновлено',
     'Updated by' => 'Обновлено пользователем',
-    'Url' => 'Сайт',
+    'Website URL' => 'Сайт',
     'Username' => 'Имя пользователя',
     'Validator' => 'Валидатор',
     'Vimeo URL' => 'Страница на Vimeo',

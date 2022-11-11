@@ -88,7 +88,7 @@ return [
     'Type Config' => '类型配置',
     'Updated at' => '修改时间',
     'Updated by' => '修改人',
-    'Url' => '网址',
+    'Website URL' => '网址',
     'Username' => '用户名',
     'Validator' => '验证器',
     'Visible' => '可见的',

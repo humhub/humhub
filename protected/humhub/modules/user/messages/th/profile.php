@@ -105,7 +105,7 @@ return [
     'Type Config' => 'พิมพ์ Config',
     'Updated at' => 'ปรับปรุงที่',
     'Updated by' => 'อัพเดทโดย',
-    'Url' => 'Url',
+    'Website URL' => 'Website URL',
     'Use as Directory filter' => 'ใช้เป็นตัวกรองไดเรกทอรี',
     'Username' => 'ชื่อผู้ใช้',
     'Validator' => 'เครื่องมือตรวจสอบ',

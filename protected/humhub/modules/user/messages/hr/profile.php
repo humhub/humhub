@@ -105,7 +105,7 @@ return [
     'Type Config' => 'Tip cnfig',
     'Updated at' => 'Ažurirano u',
     'Updated by' => 'Ažurirano od',
-    'Url' => 'URL',
+    'Website URL' => 'URL',
     'Username' => 'Korisničko ime',
     'Validator' => 'Validator',
     'Vimeo URL' => 'Vimeo URL',

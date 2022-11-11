@@ -314,7 +314,7 @@ class InitialData
 
         $field = new ProfileField();
         $field->internal_name = "url";
-        $field->title = 'Url';
+        $field->title = 'Website URL';
         $field->sort_order = 100;
         $field->profile_field_category_id = $cSocial->id;
         $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
