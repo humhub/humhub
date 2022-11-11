@@ -263,6 +263,11 @@ $config = [
         ],
         'enablePjax' => true,
         'dailyCronExecutionTime' => '18:00',
+        'container' => [
+            'definitions' => [
+                'yii\web\Cookie' => ['\humhub\libs\CookieBuilder', 'build'],
+            ]
+        ]
     ]
 ];
 
