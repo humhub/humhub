@@ -126,7 +126,7 @@ return array (
   'You can find more configuration options here:' => 'Vous trouverez plus d’options de configuration là :',
   'You\'re using no icon at the moment. Upload your logo now.' => 'Vous n\'utilisez pas d\'icône pour le moment. Chargez votre logo maintenant.',
   'You\'re using no logo at the moment. Upload your logo now.' => 'Vous n\'utilisez pas de logo pour le moment. Chargez votre logo maintenant.',
-  'e.g. 25 (for SMTP) or 587 (for SMTPS)' => 'par exemple 25 (pour SMTP) ou 587 (pour SMTPS)',
+  'e.g. 25 (for SMTP) or 465 (for SMTPS)' => 'par exemple 25 (pour SMTP) ou 465 (pour SMTPS)',
   'e.g. localhost' => 'par exemple « localhost »',
   'e.g. smtps://user:pass@smtp.example.com:port' => 'par exemple : smtps://identifiant:motdepasse@smtp.exemple.com:port',
   'never' => 'jamais',

@@ -24,3 +24,4 @@ HumHub Changelog
 - Enh #5924: Auto add `secure` flag for cookie on detected SSL
 - Fix #5926: Renamed default profile field `Url` to `Website URL`
 - Enh #5686: Add the logo image to the registration page
+- Fix #5856: Fixed Mail Settings Help Text SMTPS Port to 465 

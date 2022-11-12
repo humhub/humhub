@@ -126,7 +126,7 @@ return array (
   'You can find more configuration options here:' => 'U kunt hier meer configuratie-opties vinden:',
   'You\'re using no icon at the moment. Upload your logo now.' => 'U gebruikt momenteel geen pictogram. Upload nu uw logo.',
   'You\'re using no logo at the moment. Upload your logo now.' => 'U gebruikt momenteel geen logo. Upload nu uw logo.',
-  'e.g. 25 (for SMTP) or 587 (for SMTPS)' => 'bijv. 25 (voor SMTP) of 587 (voor SMTPS)',
+  'e.g. 25 (for SMTP) or 465 (for SMTPS)' => 'bijv. 25 (voor SMTP) of 465 (voor SMTPS)',
   'e.g. localhost' => 'bijv. localhost',
   'e.g. smtps://user:pass@smtp.example.com:port' => 'bijv. smtps://gebruiker:pas@smtp.voorbeeld.com:poort',
   'never' => 'nooit',

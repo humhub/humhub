@@ -103,7 +103,7 @@ class MailingSettingsForm extends Model
         return [
             'systemEmailReplyTo' => Yii::t('AdminModule.settings', 'Optional. Default reply address for system emails like notifications.'),
             'dsn' => Yii::t('AdminModule.settings', 'e.g. smtps://user:pass@smtp.example.com:port'),
-            'port' => Yii::t('AdminModule.settings', 'e.g. 25 (for SMTP) or 587 (for SMTPS)'),
+            'port' => Yii::t('AdminModule.settings', 'e.g. 25 (for SMTP) or 465 (for SMTPS)'),
             'hostname' => Yii::t('AdminModule.settings', 'e.g. localhost'),
         ];
     }
