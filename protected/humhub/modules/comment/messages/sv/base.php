@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Confirm</strong> comment deleting' => '<strong>Bekräfta</strong> borttagning av kommentar',
-  '<strong>Delete</strong> comment?' => '',
+  '<strong>Delete</strong> comment?' => '<strong>Ta bort</strong> kommentar?',
   '<strong>Permalink</strong> to this comment' => '<strong>Permalänk</strong> till den här kommentaren',
   'Cancel' => 'Avbryt',
   'Cancel Edit' => 'Radera ändring',
@@ -19,7 +19,7 @@ return array (
   'Read full comment...' => 'Läs hela kommentaren...',
   'Reason' => 'Anledning',
   'Reply' => 'Svara',
-  'Send a notification to author' => '',
+  'Send a notification to author' => 'Skicka ett meddelande till författaren',
   'Show' => 'Visa',
   'Show all {total} comments' => 'Visa alla {total} kommentarer',
   'Show {count} more comments' => 'Visa {count} fler kommentarer',

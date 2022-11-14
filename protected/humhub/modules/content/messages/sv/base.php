@@ -2,7 +2,7 @@
 return array (
   '(Also visible to non-members of this space)' => '(Även synligt för personer som inte är medlemmar i detta forum)',
   '<strong>Confirm</strong> post deletion' => '<strong>Bekräfta</strong> radering av inlägg',
-  '<strong>Delete</strong> content?' => '',
+  '<strong>Delete</strong> content?' => '<strong>Ta bort</strong> innehåll?',
   '<strong>Move</strong> content' => '<strong>Flytta</strong> Innehåll',
   '<strong>Permalink</strong> to this post' => '<strong>Permalänk</strong> till det här inlägget',
   'Add a member to notify' => 'Lägg till en medlem som ska notifieras',
@@ -41,7 +41,7 @@ return array (
   'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'Maximalt antal nålade objekt har uppnåtts! <br> Du kan bara fästa upp till {count} objekt samtidigt.',
   'Move content' => 'Flytta inehåll',
   'Move to archive' => 'Arkivera',
-  'New Updates Available!' => '',
+  'New Updates Available!' => 'Nya uppdateringar tillgängliga!',
   'No matches with your selected filters!' => 'Dina valda filter gav ingen träff!',
   'No tags found for the given query' => 'Inga taggar hittades för den givna frågan',
   'None' => 'Inga',
