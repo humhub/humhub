@@ -132,4 +132,16 @@ class Mailer extends \yii\symfonymailer\Mailer
 
         return false;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function setTransport($transport): void
+    {
+        try {
+            parent::setTransport($transport);
+        } catch (\Exception $ex) {
+            Yii::error('Could not set mailer transport: ' . $ex->getMessage(), 'base');
+        }
+    }
 }
