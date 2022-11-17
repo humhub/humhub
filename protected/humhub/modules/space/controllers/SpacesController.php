@@ -41,17 +41,6 @@ class SpacesController extends Controller
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getAccessRules()
-    {
-        return [
-            [ControllerAccess::RULE_LOGGED_IN_ONLY],
-            ['permissions' => [SpaceDirectoryAccess::class]],
-        ];
-    }
-
-    /**
      * Action to display spaces page
      */
     public function actionIndex()
