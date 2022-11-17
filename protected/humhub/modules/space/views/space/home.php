@@ -7,6 +7,7 @@
 use humhub\modules\activity\widgets\ActivityStreamViewer;
 use humhub\modules\content\widgets\WallCreateContentFormContainer;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\Module;
 use humhub\modules\space\modules\manage\widgets\PendingApprovals;
 use humhub\modules\space\widgets\Members;
 use humhub\modules\space\widgets\Sidebar;
@@ -24,6 +25,9 @@ if ($canCreateEntries) {
 } else {
     $emptyMessage = Yii::t('SpaceModule.base', '<b>You are not member of this space and there is no public content, yet!</b>');
 }
+
+/** @var Module $module */
+$module = Yii::$app->getModule('space');
 ?>
 
 <?php if ($canCreateEntries && !$isSingleContentRequest) : ?>
@@ -41,12 +45,15 @@ if ($canCreateEntries) {
 
 <?php
 $this->beginBlock('sidebar');
-$widgets = [
-    [ActivityStreamViewer::class, ['contentContainer' => $space], ['sortOrder' => 10]],
-    [PendingApprovals::class, ['space' => $space], ['sortOrder' => 20]]
-];
+$widgets = [];
 
-if (!Yii::$app->getModule('space')->settings->contentContainer($space)->get('hideMembersSidebar')) {
+if (!$module->settings->contentContainer($space)->get('hideActivities')) {
+    $widgets[] = [ActivityStreamViewer::class, ['contentContainer' => $space], ['sortOrder' => 10]];
+}
+
+$widgets[] = [PendingApprovals::class, ['space' => $space], ['sortOrder' => 20]];
+
+if (!$module->settings->contentContainer($space)->get('hideMembers')) {
     $widgets[] = [Members::class, ['space' => $space], ['sortOrder' => 30]];
 }
 ?>

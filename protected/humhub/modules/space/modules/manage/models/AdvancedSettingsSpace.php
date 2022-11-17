@@ -8,59 +8,66 @@
 
 namespace humhub\modules\space\modules\manage\models;
 
+use humhub\modules\content\components\ContentContainerSettingsManager;
+use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\Module;
 use Yii;
+use yii\base\InvalidCallException;
+use yii\base\Model;
 
 /**
  * AdvancedSettingsSpace
  *
  * @author Luke
  */
-class AdvancedSettingsSpace extends Space
+class AdvancedSettingsSpace extends Model
 {
+    /**
+     * @var Space
+     */
+    public $space;
 
     /**
-     * Contains the form value for indexUrl setting
-     * @var string|null 
+     * @var string|null
+     */
+    public $url = null;
+
+    /**
+     * @var string|null
      */
     public $indexUrl = null;
 
     /**
-     * Contains the form value for indexGuestUrl setting
-     * @var string|null 
+     * @var string|null
      */
     public $indexGuestUrl = null;
 
     /**
-     * To hide Members sidebar in the stream page
      * @var bool
      */
-    public $hideMembersSidebar = null;
+    public $hideMembers = false;
+
+    /**
+     * @var bool
+     */
+    public $hideActivities = false;
+
+    /**
+     * @var bool
+     */
+    public $hideAbout = false;
 
     /**
      * @inheritdoc
      */
     public function rules()
     {
-        $rules = parent::rules();
-        $rules[] = [['indexUrl'], 'string'];
-        $rules[] = [['indexGuestUrl'], 'string'];
-        $rules[] = [['hideMembersSidebar'], 'integer'];
-
-        return $rules;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function scenarios()
-    {
-        $scenarios = parent::scenarios();
-        $scenarios['edit'][] = 'indexUrl';
-        $scenarios['edit'][] = 'indexGuestUrl';
-        $scenarios['edit'][] = 'hideMembersSidebar';
-
-        return $scenarios;
+        return [
+            [['indexUrl', 'indexGuestUrl'], 'string'],
+            [['hideMembers', 'hideActivities', 'hideAbout'], 'boolean'],
+            ['url', UrlValidator::class, 'space' => $this->space]
+        ];
     }
 
     /**
@@ -68,41 +75,75 @@ class AdvancedSettingsSpace extends Space
      */
     public function attributeLabels()
     {
-        $labels = parent::attributeLabels();
-        $labels['indexUrl'] = Yii::t('SpaceModule.base', 'Homepage');
-        $labels['indexGuestUrl'] = Yii::t('SpaceModule.base', 'Homepage (Guests)');
-        $labels['hideMembersSidebar'] = Yii::t('SpaceModule.base', 'Hide Members sidebar in the stream page.');
+        return [
+            'url' => 'URL',
+            'indexUrl' => Yii::t('SpaceModule.base', 'Homepage'),
+            'indexGuestUrl' => Yii::t('SpaceModule.base', 'Homepage(Guests)'),
+            'hideMembers' => Yii::t('SpaceModule.base', 'Hide Members'),
+            'hideActivities' => Yii::t('SpaceModule.base', 'Hide Activity Sidebar Widget'),
+            'hideAbout' => Yii::t('SpaceModule.base', 'Hide About Page'),
+        ];
+    }
 
-        return $labels;
+
+    public function loadBySettings()
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('space');
+
+        $settings = $this->getSettingsManager();
+
+        $this->url = $this->space->url;
+        $this->indexUrl = $settings->get('indexUrl', null);
+        $this->indexGuestUrl = $settings->get('indexGuestUrl', null);
+        $this->hideMembers = $settings->get('hideMembers', false);
+        $this->hideAbout = $settings->get('hideAbout', $module->hideAboutPage);
+        $this->hideActivities = $settings->get('hideActivities', false);
     }
 
     /**
      * @inheritdoc
      */
-    public function afterSave($insert, $changedAttributes)
+    public function save(): bool
     {
-        if ($this->indexUrl != null) {
-            Yii::$app->getModule('space')->settings->contentContainer($this)->set('indexUrl', $this->indexUrl);
+        if (!$this->validate()) {
+            return false;
+        }
+
+        $settings = $this->getSettingsManager();
+
+        $this->space->url = $this->url;
+        $this->space->save();
+
+        if (empty($this->indexUrl)) {
+            $settings->set('indexUrl', $this->indexUrl);
         } else {
-            //Remove entry from db
-            Yii::$app->getModule('space')->settings->contentContainer($this)->delete('indexUrl');
+            $settings->delete('indexUrl');
         }
 
         if ($this->indexGuestUrl != null) {
-            Yii::$app->getModule('space')->settings->contentContainer($this)->set('indexGuestUrl', $this->indexGuestUrl);
+            $settings->set('indexGuestUrl', $this->indexGuestUrl);
         } else {
-            //Remove entry from db
-            Yii::$app->getModule('space')->settings->contentContainer($this)->delete('indexGuestUrl');
+            $settings->delete('indexGuestUrl');
         }
 
-        if ($this->hideMembersSidebar != null) {
-            Yii::$app->getModule('space')->settings->contentContainer($this)->set('hideMembersSidebar', $this->hideMembersSidebar);
-        } else {
-            //Remove entry from db
-            Yii::$app->getModule('space')->settings->contentContainer($this)->delete('hideMembersSidebar');
+        $settings->set('hideMembers', (bool)$this->hideMembers);
+        $settings->set('hideAbout', (bool)$this->hideAbout);
+        $settings->set('hideActivities', (bool)$this->hideActivities);
+
+        return true;
+    }
+
+    private function getSettingsManager(): ContentContainerSettingsManager
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('space');
+
+        if ($this->space === null) {
+            throw new InvalidCallException('Cannot use AdvancedSettingsSpace without Space!');
         }
 
-        return parent::afterSave($insert, $changedAttributes);
+        return $module->settings->contentContainer($this->space);
     }
 
 }

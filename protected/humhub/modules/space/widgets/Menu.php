@@ -67,7 +67,7 @@ class Menu extends LeftNavigation
         /** @var Module $module */
         $module = Yii::$app->getModule('space');
 
-        if (!$module->hideAboutPage) {
+        if (!((bool)$module->settings->contentContainer($this->space)->get('hideAbout'))) {
             $this->addAboutPage();
         }
     }

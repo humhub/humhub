@@ -33,7 +33,8 @@ class DefaultController extends Controller
     /**
      * @inheritdoc
      */
-    protected function getAccessRules() {
+    protected function getAccessRules()
+    {
         return [
             ['login'],
             [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_ADMIN], 'actions' => ['index', 'advanced']],
@@ -62,25 +63,26 @@ class DefaultController extends Controller
 
     public function actionAdvanced()
     {
-        $space = AdvancedSettingsSpace::findOne(['id' => $this->contentContainer->id]);
-        $space->scenario = 'edit';
-        $space->indexUrl = Yii::$app->getModule('space')->settings->space()->get('indexUrl');
-        $space->indexGuestUrl = Yii::$app->getModule('space')->settings->space()->get('indexGuestUrl');
-        $space->hideMembersSidebar = Yii::$app->getModule('space')->settings->space()->get('hideMembersSidebar');
+        $model = new AdvancedSettingsSpace(['space' => $this->contentContainer]);
+        $model->loadBySettings();
 
-        if ($space->load(Yii::$app->request->post()) && $space->validate() && $space->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            unset(UrlRule::$containerUrlMap[$this->contentContainer->guid]);
             $this->view->saved();
-            unset(UrlRule::$containerUrlMap[$space->guid]);
-            return $this->redirect($space->createUrl('advanced'));
+            return $this->redirect($this->contentContainer->createUrl('advanced'));
         }
 
         $indexModuleSelection = Menu::getAvailablePages();
-        unset($indexModuleSelection[Url::to(['/space/home', 'container' => $space])]);
+        unset($indexModuleSelection[Url::to(['/space/home', 'container' => $this->contentContainer])]);
 
         // To avoid infinit redirects of actionIndex we remove the stream value and set an empty selection instead
         $indexModuleSelection = ['' => Yii::t('SpaceModule.manage', 'Stream (Default)')] + $indexModuleSelection;
 
-        return $this->render('advanced', ['model' => $space, 'indexModuleSelection' => $indexModuleSelection]);
+        return $this->render('advanced', [
+            'model' => $model,
+            'space' => $this->contentContainer,
+            'indexModuleSelection' => $indexModuleSelection
+        ]);
     }
 
     /**
@@ -94,7 +96,7 @@ class DefaultController extends Controller
         // Create Activity when the space in archived
         SpaceArchived::instance()->from(Yii::$app->user->getIdentity())->about($space->owner)->save();
 
-        return $this->asJson( [
+        return $this->asJson([
             'success' => true,
             'space' => Chooser::getSpaceResult($space, true, ['isMember' => true])
         ]);

@@ -61,7 +61,7 @@ class Module extends \humhub\components\Module
     public $minimumSpaceUrlLength = 2;
 
     /**
-     * @var bool hide about page in space menu
+     * @var bool hide about page in space menu (default for advanced settings page)
      * @since 1.7
      */
     public $hideAboutPage = false;
