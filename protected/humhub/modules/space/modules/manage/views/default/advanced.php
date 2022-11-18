@@ -7,7 +7,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Url;
 
 /* @var $this \humhub\modules\ui\view\components\View
- * @var $model \humhub\modules\space\modules\manage\models\AdvancedSettingsSpace
+ * @var $model \humhub\modules\space\modules\manage\models\AdvancedSettings
  * @var $indexModuleSelection array
  * @var $space Space
  */

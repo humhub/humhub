@@ -64,10 +64,7 @@ class Menu extends LeftNavigation
             'isActive' => MenuLink::isActiveState('space', 'space', ['index', 'home']),
         ]));
 
-        /** @var Module $module */
-        $module = Yii::$app->getModule('space');
-
-        if (!((bool)$module->settings->contentContainer($this->space)->get('hideAbout'))) {
+        if (!$this->space->getAdvancedSettings()->hideAbout) {
             $this->addAboutPage();
         }
     }

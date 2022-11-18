@@ -25,7 +25,7 @@ class AboutPageSidebar extends Sidebar
             $this->widgets[] = [MyMembership::class, ['space' => $this->space], ['sortOrder' => 10]];
         }
 
-        if (!$module->settings->contentContainer($this->space)->get('hideMembers')) {
+        if (!$this->space->getAdvancedSettings()->hideMembers) {
             $this->widgets[] = [Members::class, ['space' => $this->space, 'orderByNewest' => true], ['sortOrder' => 20]];
         }
 

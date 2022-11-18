@@ -102,6 +102,11 @@ class Space extends ContentContainerActiveRecord implements Searchable
     public $defaultRoute = '/space/space';
 
     /**
+     * @var AdvancedSettings|null
+     */
+    private $_advancedSettings = null;
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -127,7 +132,10 @@ class Space extends ContentContainerActiveRecord implements Searchable
             [['url'], UrlValidator::class, 'space' => $this],
         ];
 
-        if (Yii::$app->getModule('space')->useUniqueSpaceNames) {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('space');
+
+        if ($module->useUniqueSpaceNames) {
             $rules[] = [['name'], 'unique', 'targetClass' => static::class, 'when' => function ($model) {
                 return $model->isAttributeChanged('name');
             }];
@@ -175,7 +183,9 @@ class Space extends ContentContainerActiveRecord implements Searchable
         ];
     }
 
-
+    /**
+     * @inheritDoc
+     */
     public function attributeHints()
     {
         return [
@@ -225,6 +235,21 @@ class Space extends ContentContainerActiveRecord implements Searchable
             Followable::class,
             CompatModuleManager::class,
         ];
+    }
+
+    /**
+     * Returns advanced space settings
+     *
+     * @return AdvancedSettings
+     */
+    public function getAdvancedSettings(): AdvancedSettings
+    {
+        if ($this->_advancedSettings === null) {
+            $this->_advancedSettings = new AdvancedSettings(['space' => $this]);
+            $this->_advancedSettings->loadBySettings();
+        }
+
+        return $this->_advancedSettings;
     }
 
     /**
@@ -436,8 +461,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
      * Used in edit scenario to check if the user really can create spaces
      * on this visibility.
      *
-     * @param type $attribute
-     * @param type $params
+     * @param string $attribute
+     * @param string $params
      */
     public function checkVisibility($attribute, $params)
     {

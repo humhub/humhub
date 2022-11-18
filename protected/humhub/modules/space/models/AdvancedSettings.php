@@ -6,22 +6,19 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\space\modules\manage\models;
+namespace humhub\modules\space\models;
 
-use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\space\components\UrlValidator;
-use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
 use Yii;
-use yii\base\InvalidCallException;
 use yii\base\Model;
 
 /**
- * AdvancedSettingsSpace
+ * AdvancedSettings
  *
  * @author Luke
  */
-class AdvancedSettingsSpace extends Model
+class AdvancedSettings extends Model
 {
     /**
      * @var Space
@@ -91,7 +88,7 @@ class AdvancedSettingsSpace extends Model
         /** @var Module $module */
         $module = Yii::$app->getModule('space');
 
-        $settings = $this->getSettingsManager();
+        $settings = $this->space->getSettings();
 
         $this->url = $this->space->url;
         $this->indexUrl = $settings->get('indexUrl', null);
@@ -110,7 +107,7 @@ class AdvancedSettingsSpace extends Model
             return false;
         }
 
-        $settings = $this->getSettingsManager();
+        $settings = $this->space->getSettings();
 
         $this->space->url = $this->url;
         $this->space->save();
@@ -133,17 +130,4 @@ class AdvancedSettingsSpace extends Model
 
         return true;
     }
-
-    private function getSettingsManager(): ContentContainerSettingsManager
-    {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('space');
-
-        if ($this->space === null) {
-            throw new InvalidCallException('Cannot use AdvancedSettingsSpace without Space!');
-        }
-
-        return $module->settings->contentContainer($this->space);
-    }
-
 }

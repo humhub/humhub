@@ -13,7 +13,7 @@ use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\space\components\UrlRule;
 use Yii;
 use humhub\modules\space\models\Space;
-use humhub\modules\space\modules\manage\models\AdvancedSettingsSpace;
+use humhub\modules\space\models\AdvancedSettings;
 use humhub\modules\space\widgets\Menu;
 use humhub\modules\space\widgets\Chooser;
 use humhub\modules\space\modules\manage\components\Controller;
@@ -63,7 +63,7 @@ class DefaultController extends Controller
 
     public function actionAdvanced()
     {
-        $model = new AdvancedSettingsSpace(['space' => $this->contentContainer]);
+        $model = new AdvancedSettings(['space' => $this->contentContainer]);
         $model->loadBySettings();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

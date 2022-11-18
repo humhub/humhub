@@ -304,10 +304,9 @@ class MembershipController extends ContentContainerController
 
     private function canViewMembers(): bool
     {
-        $settings = $this->module->settings->contentContainer($this->space);
-
-        if ($settings->get('hideMembers')) {
+        if ($this->space->getAdvancedSettings()->hideMembers) {
             $membership = $this->space->getMembership();
+
             return $membership->isPrivileged();
         }
 

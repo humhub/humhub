@@ -47,13 +47,13 @@ $module = Yii::$app->getModule('space');
 $this->beginBlock('sidebar');
 $widgets = [];
 
-if (!$module->settings->contentContainer($space)->get('hideActivities')) {
+if (!$space->getAdvancedSettings()->hideActivities) {
     $widgets[] = [ActivityStreamViewer::class, ['contentContainer' => $space], ['sortOrder' => 10]];
 }
 
 $widgets[] = [PendingApprovals::class, ['space' => $space], ['sortOrder' => 20]];
 
-if (!$module->settings->contentContainer($space)->get('hideMembers')) {
+if (!$space->getAdvancedSettings()->hideMembers) {
     $widgets[] = [Members::class, ['space' => $space], ['sortOrder' => 30]];
 }
 ?>
