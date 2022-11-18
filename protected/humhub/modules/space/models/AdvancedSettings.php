@@ -101,10 +101,11 @@ class AdvancedSettings extends Model
         $this->url = $this->space->url;
         $this->indexUrl = $settings->get('indexUrl', null);
         $this->indexGuestUrl = $settings->get('indexGuestUrl', null);
-        $this->hideMembers = $settings->get('hideMembers', false);
+
+        $this->hideMembers = $settings->get('hideMembers', $this->hideMembers);
         $this->hideAbout = $settings->get('hideAbout', $module->hideAboutPage);
-        $this->hideActivities = $settings->get('hideActivities', false);
-        $this->hideFollowers = $settings->get('hideFollowers', false);
+        $this->hideActivities = $settings->get('hideActivities', $this->hideActivities);
+        $this->hideFollowers = $settings->get('hideFollowers', $this->hideFollowers);
     }
 
     /**
