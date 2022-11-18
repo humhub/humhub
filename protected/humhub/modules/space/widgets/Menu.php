@@ -64,10 +64,7 @@ class Menu extends LeftNavigation
             'isActive' => MenuLink::isActiveState('space', 'space', ['index', 'home']),
         ]));
 
-        /** @var Module $module */
-        $module = Yii::$app->getModule('space');
-
-        if (!$module->hideAboutPage) {
+        if (!$this->space->getAdvancedSettings()->hideAbout) {
             $this->addAboutPage();
         }
     }
@@ -113,7 +110,9 @@ class Menu extends LeftNavigation
      */
     public static function getDefaultPageUrl($space)
     {
-        return static::getAvailablePageUrl($space, 'indexUrl');
+        $indexUrl = $space->getAdvancedSettings()->indexUrl;
+        return (!empty($indexUrl) && isset(static::getAvailablePages()[$indexUrl])) ?
+            $indexUrl : null;
     }
 
     /**
@@ -124,30 +123,8 @@ class Menu extends LeftNavigation
      */
     public static function getGuestsDefaultPageUrl($space)
     {
-        return static::getAvailablePageUrl($space, 'indexGuestUrl');
+        $indexUrl = $space->getAdvancedSettings()->indexGuestUrl;
+        return (!empty($indexUrl) && isset(static::getAvailablePages()[$indexUrl])) ?
+            $indexUrl : null;
     }
-
-
-    /**
-     * Get default Space page URL by setting name
-     *
-     * @param Space $space
-     * @param string $pageSettingName
-     * @return string|null
-     */
-    public static function getAvailablePageUrl(Space $space, string $pageSettingName): ?string
-    {
-        /* @var Module $spaceModule */
-        $spaceModule = Yii::$app->getModule('space');
-
-        $indexUrl = $spaceModule->settings->contentContainer($space)->get($pageSettingName);
-        if ($indexUrl === null) {
-            return null;
-        }
-
-        $pages = static::getAvailablePages();
-
-        return isset($pages[$indexUrl]) ? $indexUrl : null;
-    }
-
 }
