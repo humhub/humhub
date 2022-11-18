@@ -20,7 +20,6 @@ use humhub\modules\space\components\ActiveQuerySpace;
 use humhub\modules\space\Module;
 use humhub\modules\user\behaviors\Followable;
 use humhub\components\behaviors\GUID;
-use humhub\modules\content\components\behaviors\CompatModuleManager;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\components\UrlValidator;
@@ -61,7 +60,6 @@ use Yii;
  * @mixin \humhub\components\behaviors\GUID
  * @mixin \humhub\modules\space\behaviors\SpaceModelMembership
  * @mixin \humhub\modules\user\behaviors\Followable
- * @mixin \humhub\modules\content\components\behaviors\CompatModuleManager
  */
 class Space extends ContentContainerActiveRecord implements Searchable
 {
@@ -223,7 +221,6 @@ class Space extends ContentContainerActiveRecord implements Searchable
             GUID::class,
             SpaceModelMembership::class,
             Followable::class,
-            CompatModuleManager::class,
         ];
     }
 
