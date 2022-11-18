@@ -167,15 +167,4 @@ class UserProfileController extends Controller
 
         return $this->render('editField', ['hForm' => $form, 'field' => $field]);
     }
-
-    /**
-     * Reorder Fields action.
-     * @uses behaviors.ReorderContentBehavior
-     */
-    public function actionReorderFields()
-    {
-        // generate json response
-        echo json_encode($this->reorderContent('ProfileField', 200, 'The item order was successfully changed.'));
-    }
-
 }
