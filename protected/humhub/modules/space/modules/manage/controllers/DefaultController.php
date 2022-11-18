@@ -63,8 +63,7 @@ class DefaultController extends Controller
 
     public function actionAdvanced()
     {
-        $model = new AdvancedSettings(['space' => $this->contentContainer]);
-        $model->loadBySettings();
+        $model = $this->space->getAdvancedSettings();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             unset(UrlRule::$containerUrlMap[$this->contentContainer->guid]);
