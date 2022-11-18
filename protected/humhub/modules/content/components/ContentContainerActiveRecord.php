@@ -36,7 +36,7 @@ use yii\helpers\Url;
  * @property integer $contentcontainer_id
  * @property ContentContainerPermissionManager $permissionManager
  * @property ContentContainerSettingsManager $settings
- * @property ContentContainerModuleManager $moduleManager
+ * @property-read ContentContainerModuleManager $moduleManager
  * @property ContentContainer $contentContainerRecord
  *
  * @since 1.0
@@ -53,7 +53,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * @var ContentContainerModuleManager
      */
-    protected $moduleManager = null;
+    private $_moduleManager = null;
 
     /**
      * The behavior which will be attached to the base controller.
@@ -321,11 +321,13 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getModuleManager(): ?ContentContainerModuleManager
     {
-        if ($this->moduleManager !== null) {
-            return $this->moduleManager;
+        if ($this->_moduleManager !== null) {
+            return $this->_moduleManager;
         }
 
-        return $this->moduleManager = new ContentContainerModuleManager(['contentContainer' => $this]);
+        return $this->_moduleManager = new ContentContainerModuleManager([
+            'contentContainer' => $this
+        ]);
     }
 
     /**
