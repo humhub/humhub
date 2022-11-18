@@ -69,7 +69,7 @@ class AdvancedSettings extends Model
     {
         return [
             [['indexUrl', 'indexGuestUrl'], 'string'],
-            [['hideMembers', 'hideActivities', 'hideAbout'], 'boolean'],
+            [['hideMembers', 'hideActivities', 'hideAbout', 'hideFollowers'], 'boolean'],
             ['url', UrlValidator::class, 'space' => $this->space]
         ];
     }
