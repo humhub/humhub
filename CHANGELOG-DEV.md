@@ -25,4 +25,5 @@ HumHub Changelog
 - Fix #5926: Renamed default profile field `Url` to `Website URL`
 - Enh #5686: Add the logo image to the registration page
 - Fix #5856: Fixed Mail Settings Help Text SMTPS Port to 465 
+- Enh #5931: Show `Spaces` pages always when in Guest Mode
 - Enh #5929: Add property `createMode` for wall stream entry widget
