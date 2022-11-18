@@ -20,7 +20,6 @@ use humhub\modules\space\components\ActiveQuerySpace;
 use humhub\modules\space\Module;
 use humhub\modules\user\behaviors\Followable;
 use humhub\components\behaviors\GUID;
-use humhub\modules\content\components\behaviors\SettingsBehavior;
 use humhub\modules\content\components\behaviors\CompatModuleManager;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
@@ -60,7 +59,6 @@ use Yii;
  * @property User $ownerUser the owner of this space
  *
  * @mixin \humhub\components\behaviors\GUID
- * @mixin \humhub\modules\content\components\behaviors\SettingsBehavior
  * @mixin \humhub\modules\space\behaviors\SpaceModelMembership
  * @mixin \humhub\modules\user\behaviors\Followable
  * @mixin \humhub\modules\content\components\behaviors\CompatModuleManager
@@ -223,7 +221,6 @@ class Space extends ContentContainerActiveRecord implements Searchable
     {
         return [
             GUID::class,
-            SettingsBehavior::class,
             SpaceModelMembership::class,
             Followable::class,
             CompatModuleManager::class,

@@ -13,7 +13,6 @@ use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\behaviors\CompatModuleManager;
-use humhub\modules\content\components\behaviors\SettingsBehavior;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
@@ -318,7 +317,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     {
         return [
             GUID::class,
-            SettingsBehavior::class,
             Followable::class,
             CompatModuleManager::class
         ];
