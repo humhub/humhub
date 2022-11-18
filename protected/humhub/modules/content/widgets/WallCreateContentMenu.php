@@ -87,7 +87,7 @@ class WallCreateContentMenu extends Menu
             ];
             $url = $this->contentContainer->createUrl($wallEntryWidget->createRoute);
 
-            switch ($wallEntryWidget->editMode) {
+            switch ($wallEntryWidget->createMode) {
                 case WallStreamEntryWidget::EDIT_MODE_INLINE:
                     $menuOptions['htmlOptions'] = [
                         'data-action-click' => $wallEntryWidget->createFormMenuAction ?? 'loadForm',

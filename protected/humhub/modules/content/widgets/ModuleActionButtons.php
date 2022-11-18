@@ -9,7 +9,6 @@ namespace humhub\modules\content\widgets;
 
 use humhub\components\Module;
 use humhub\components\Widget;
-use humhub\modules\content\components\behaviors\CompatModuleManager;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\widgets\Button;
@@ -17,7 +16,7 @@ use Yii;
 
 /**
  * ModuleActionsButton shows actions for module of Content Container
- * 
+ *
  * @since 1.11
  * @author Luke
  */
@@ -30,7 +29,7 @@ class ModuleActionButtons extends Widget
     public $module;
 
     /**
-     * @var ContentContainerActiveRecord|CompatModuleManager
+     * @var ContentContainerActiveRecord
      */
     public $contentContainer;
 
@@ -46,15 +45,16 @@ class ModuleActionButtons extends Widget
     {
         $html = '';
 
-        if ($this->module->getContentContainerConfigUrl($this->contentContainer) && $this->contentContainer->isModuleEnabled($this->module->id)) {
+        if ($this->module->getContentContainerConfigUrl($this->contentContainer) &&
+            $this->contentContainer->moduleManager->isEnabled($this->module->id)) {
             $html .= Button::asLink(Yii::t('ContentModule.modules', 'Configure'), $this->module->getContentContainerConfigUrl($this->contentContainer))
                 ->cssClass('btn btn-sm btn-info configure-module-' . $this->module->id);
         }
 
-        if ($this->contentContainer->canDisableModule($this->module->id)) {
+        if ($this->contentContainer->moduleManager->canDisable($this->module->id)) {
             $html .= Button::asLink('<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('ContentModule.modules', 'Activated'), '#')
                 ->cssClass('btn btn-sm btn-info active disable disable-module-' . $this->module->id)
-                ->style($this->contentContainer->isModuleEnabled($this->module->id) ? '' : 'display:none')
+                ->style($this->contentContainer->moduleManager->isEnabled($this->module->id) ? '' : 'display:none')
                 ->options([
                     'data-action-click' => 'content.container.disableModule',
                     'data-action-url' => $this->getDisableUrl(),
@@ -66,7 +66,7 @@ class ModuleActionButtons extends Widget
 
         $html .= Button::asLink(Yii::t('ContentModule.modules', 'Enable'), '#')
             ->cssClass('btn btn-sm btn-info enable enable-module-' . $this->module->id)
-            ->style($this->contentContainer->isModuleEnabled($this->module->id) ? 'display:none' : '')
+            ->style($this->contentContainer->moduleManager->isEnabled($this->module->id) ? 'display:none' : '')
             ->options([
                 'data-action-click' => 'content.container.enableModule',
                 'data-action-url' => $this->getEnableUrl(),

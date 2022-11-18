@@ -108,6 +108,13 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     public $createRoute;
 
     /**
+     * Defines the way the creating of this wall entry is displayed.
+     *
+     * @var string
+     */
+    public $createMode;
+
+    /**
      * Route to edit the content
      *
      * @var string
@@ -115,7 +122,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     public $editRoute;
 
     /**
-     * Defines the way the edit of this wallentry is displayed.
+     * Defines the way the edit of this wall entry is displayed.
      *
      * @var string
      */
@@ -173,6 +180,11 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     public function init()
     {
         parent::init();
+
+        if ($this->createMode === null) {
+            $this->createMode = $this->editMode;
+        }
+
         if (!$this->renderOptions) {
             $this->renderOptions = (new WallStreamEntryOptions);
         }
