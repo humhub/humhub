@@ -32,7 +32,7 @@ use yii\helpers\Url;
         <?= $form->field($model, 'hideMembers')->checkbox(); ?>
         <?= $form->field($model, 'hideAbout')->checkbox(); ?>
         <?= $form->field($model, 'hideActivities')->checkbox(); ?>
-        <?= $form->field($model, 'hideFollower')->checkbox(); ?>
+        <?= $form->field($model, 'hideFollowers')->checkbox(); ?>
         <?= $form->field($model, 'indexUrl')->dropDownList($indexModuleSelection)->hint(Yii::t('SpaceModule.manage', 'the default start page of this space for members')) ?>
         <?= $form->field($model, 'indexGuestUrl')->dropDownList($indexModuleSelection)->hint(Yii::t('SpaceModule.manage', 'the default start page of this space for visitors')) ?>
 
