@@ -19,8 +19,6 @@ use humhub\modules\space\components\ActiveQuerySpace;
 use humhub\modules\space\Module;
 use humhub\modules\user\behaviors\Followable;
 use humhub\components\behaviors\GUID;
-use humhub\modules\content\components\behaviors\SettingsBehavior;
-use humhub\modules\content\components\behaviors\CompatModuleManager;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\components\UrlValidator;
@@ -59,10 +57,8 @@ use Yii;
  * @property User $ownerUser the owner of this space
  *
  * @mixin \humhub\components\behaviors\GUID
- * @mixin \humhub\modules\content\components\behaviors\SettingsBehavior
  * @mixin \humhub\modules\space\behaviors\SpaceModelMembership
  * @mixin \humhub\modules\user\behaviors\Followable
- * @mixin \humhub\modules\content\components\behaviors\CompatModuleManager
  */
 class Space extends ContentContainerActiveRecord implements Searchable
 {
@@ -230,10 +226,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
     {
         return [
             GUID::class,
-            SettingsBehavior::class,
             SpaceModelMembership::class,
             Followable::class,
-            CompatModuleManager::class,
         ];
     }
 
@@ -517,7 +511,9 @@ class Space extends ContentContainerActiveRecord implements Searchable
             return false;
         }
 
-        if (Yii::$app->getModule('space')->globalAdminCanAccessPrivateContent && $user->isSystemAdmin()) {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('space');
+        if ($module->globalAdminCanAccessPrivateContent && $user->isSystemAdmin()) {
             return true;
         }
 
@@ -700,5 +696,14 @@ class Space extends ContentContainerActiveRecord implements Searchable
     public function getGroupSpaces()
     {
         return $this->hasMany(GroupSpace::class, ['space_id' => 'id']);
+    }
+
+    /**
+     * @return bool
+     * @deprecated
+     */
+    public function isModuleEnabled($id)
+    {
+        return $this->moduleManager->isEnabled($id);
     }
 }

@@ -26,3 +26,5 @@ HumHub Changelog
 - Enh #5686: Add the logo image to the registration page
 - Fix #5856: Fixed Mail Settings Help Text SMTPS Port to 465 
 - Enh #5932: Added advanced space settings `Hide About Page`, `Hide Activity Sidebar Widget`, `Hide Follower` and `Hide Members`  
+- Enh #5931: Show `Spaces` pages always when in Guest Mode
+- Enh #5929: Add property `createMode` for wall stream entry widget
