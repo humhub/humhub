@@ -491,7 +491,9 @@ class Space extends ContentContainerActiveRecord implements Searchable
             return false;
         }
 
-        if (Yii::$app->getModule('space')->globalAdminCanAccessPrivateContent && $user->isSystemAdmin()) {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('space');
+        if ($module->globalAdminCanAccessPrivateContent && $user->isSystemAdmin()) {
             return true;
         }
 
