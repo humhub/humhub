@@ -677,4 +677,13 @@ class Space extends ContentContainerActiveRecord implements Searchable
     {
         return $this->hasMany(GroupSpace::class, ['space_id' => 'id']);
     }
+
+    /**
+     * @return bool
+     * @deprecated
+     */
+    public function isModuleEnabled($id)
+    {
+        return $this->moduleManager->isEnabled($id);
+    }
 }
