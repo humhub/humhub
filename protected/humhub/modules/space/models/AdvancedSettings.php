@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2022 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -14,8 +14,10 @@ use Yii;
 use yii\base\Model;
 
 /**
- * AdvancedSettings
+ * Model class for Advanced Settings of a Space. These settings are mainly stored via the
+ * Settings Manager as the Space Model.
  *
+ * @since 1.13
  * @author Luke
  */
 class AdvancedSettings extends Model
@@ -56,6 +58,11 @@ class AdvancedSettings extends Model
     public $hideAbout = false;
 
     /**
+     * @var bool
+     */
+    public $hideFollowers = false;
+
+    /**
      * @inheritdoc
      */
     public function rules()
@@ -79,6 +86,7 @@ class AdvancedSettings extends Model
             'hideMembers' => Yii::t('SpaceModule.base', 'Hide Members'),
             'hideActivities' => Yii::t('SpaceModule.base', 'Hide Activity Sidebar Widget'),
             'hideAbout' => Yii::t('SpaceModule.base', 'Hide About Page'),
+            'hideFollowers' => Yii::t('SpaceModule.base', 'Hide Followers'),
         ];
     }
 
@@ -96,6 +104,7 @@ class AdvancedSettings extends Model
         $this->hideMembers = $settings->get('hideMembers', false);
         $this->hideAbout = $settings->get('hideAbout', $module->hideAboutPage);
         $this->hideActivities = $settings->get('hideActivities', false);
+        $this->hideFollowers = $settings->get('hideFollowers', false);
     }
 
     /**
@@ -112,13 +121,13 @@ class AdvancedSettings extends Model
         $this->space->url = $this->url;
         $this->space->save();
 
-        if (empty($this->indexUrl)) {
+        if (!empty($this->indexUrl)) {
             $settings->set('indexUrl', $this->indexUrl);
         } else {
             $settings->delete('indexUrl');
         }
 
-        if ($this->indexGuestUrl != null) {
+        if (!empty($this->indexGuestUrl)) {
             $settings->set('indexGuestUrl', $this->indexGuestUrl);
         } else {
             $settings->delete('indexGuestUrl');
@@ -127,7 +136,9 @@ class AdvancedSettings extends Model
         $settings->set('hideMembers', (bool)$this->hideMembers);
         $settings->set('hideAbout', (bool)$this->hideAbout);
         $settings->set('hideActivities', (bool)$this->hideActivities);
+        $settings->set('hideFollowers', (bool)$this->hideFollowers);
 
         return true;
     }
+
 }

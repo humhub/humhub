@@ -161,6 +161,10 @@ class SpaceController extends ContentContainerController
      */
     public function actionFollowerList()
     {
+        if ($this->space->getAdvancedSettings()->hideFollowers) {
+            throw new HttpException(403);
+        }
+
         $query = User::find();
         $query->leftJoin('user_follow', 'user.id=user_follow.user_id AND object_model=:userClass AND user_follow.object_id=:spaceId', [':userClass' => Space::class, ':spaceId' => $this->getSpace()->id]);
         $query->orderBy(['user_follow.id' => SORT_DESC]);
