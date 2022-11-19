@@ -56,4 +56,5 @@ return [
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',
     'Removal of members queued' => '',
     'Remove all members' => '',
+    'The URL has already been taken.' => '',
 ];

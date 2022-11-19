@@ -49,6 +49,7 @@ return [
     'Show posts on dashboard' => '',
     'Space name' => '',
     'Space owner' => '',
+    'The URL has already been taken.' => '',
     'The url contains illegal characters!' => '',
     'This option will hide new content from this space at your dashboard' => '',
     'This option will show new content from this space at your dashboard' => '',

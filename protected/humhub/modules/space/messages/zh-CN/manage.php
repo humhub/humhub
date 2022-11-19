@@ -56,4 +56,5 @@ return [
     'Removal of members queued' => '',
     'Remove all members' => '',
     'Remove from space' => '',
+    'The URL has already been taken.' => '',
 ];

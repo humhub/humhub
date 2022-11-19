@@ -49,6 +49,7 @@ return [
     'Space name' => '',
     'Space owner' => '',
     'Stream (Default)' => '',
+    'The URL has already been taken.' => '',
     'The url contains illegal characters!' => '',
     'This option will hide new content from this space at your dashboard' => '',
     'This option will show new content from this space at your dashboard' => '',
