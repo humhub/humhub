@@ -221,6 +221,7 @@ humhub.module('content.form', function(module, require, $) {
             that.formPanel.find('[data-action-component], [data-ui-widget]').each(function () {
                 Widget.instance($(this));
             });
+            that.formPanel.find('input[type=text], textarea, .ProseMirror').eq(0).trigger('click').focus();
         }).catch(function(e) {
             module.log.error(e, true);
             loader.reset(that.formPanel);

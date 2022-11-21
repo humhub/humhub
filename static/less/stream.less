@@ -27,6 +27,25 @@
     .form-group, .help-block-error {
         margin: 0;
     }
+    .contentForm_options {
+        .form-group {
+            margin-bottom: 15px;
+            .checkbox label {
+                padding-left: 22px;
+                input[type=checkbox] {
+                    position: absolute;
+                    top: 4px;
+                    left: 0;
+                    &:focus {
+                        border-color: #ccc !important;
+                        &:checked {
+                            border-color: @info !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Empty stream info
