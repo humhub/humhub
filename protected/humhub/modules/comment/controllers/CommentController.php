@@ -62,21 +62,25 @@ class CommentController extends Controller
      */
     public function beforeAction($action)
     {
-        $modelClass = Yii::$app->request->get('objectModel', Yii::$app->request->post('objectModel'));
-        $modelPk = (int)Yii::$app->request->get('objectId', Yii::$app->request->post('objectId'));
+        if (parent::beforeAction($action)) {
+            $modelClass = Yii::$app->request->get('objectModel', Yii::$app->request->post('objectModel'));
+            $modelPk = (int)Yii::$app->request->get('objectId', Yii::$app->request->post('objectId'));
 
-        Helpers::CheckClassType($modelClass, [Comment::class, ContentActiveRecord::class]);
-        $this->target = $modelClass::findOne(['id' => $modelPk]);
+            Helpers::CheckClassType($modelClass, [Comment::class, ContentActiveRecord::class]);
+            $this->target = $modelClass::findOne(['id' => $modelPk]);
 
-        if (!$this->target) {
-            throw new NotFoundHttpException('Could not find underlying content or content addon record!');
+            if (!$this->target) {
+                throw new NotFoundHttpException('Could not find underlying content or content addon record!');
+            }
+
+            if (!$this->target->content->canView()) {
+                throw new ForbiddenHttpException();
+            }
+
+            return true;
         }
 
-        if (!$this->target->content->canView()) {
-            throw new ForbiddenHttpException();
-        }
-
-        return parent::beforeAction($action);
+        return false;
     }
 
 
