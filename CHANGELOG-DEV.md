@@ -1,7 +1,7 @@
 HumHub Changelog
 ================
 
-1.13.0 (Unreleased)
+1.13.0-beta.1 (Unreleased)
 -------------------
 - Enh #5821: Remove "regular" style of checkbox and radio
 - Enh #5827: Wall menu tabs for create content forms
