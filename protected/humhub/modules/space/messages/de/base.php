@@ -55,7 +55,7 @@ return array (
   'Hide Followers' => 'Follower verbergen',
   'Hide Members' => 'Mitglieder verbergen',
   'Homepage' => 'Homepage',
-  'Homepage (Guests)' => '',
+  'Homepage (Guests)' => 'Homepage (Gäste)',
   'I want to become a member because...' => 'Ich möchte Mitglied werden, weil...',
   'Invite' => 'Einladen',
   'Invite and request' => 'Einladung und Anfrage',
