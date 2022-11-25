@@ -146,5 +146,5 @@ return [
     'Hide Activity Sidebar Widget' => '',
     'Hide Followers' => '',
     'Hide Members' => '',
-    'Homepage(Guests)' => '',
+    'Homepage (Guests)' => '',
 ];

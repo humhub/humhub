@@ -118,7 +118,7 @@ return [
     'Hide Activity Sidebar Widget' => '',
     'Hide Followers' => '',
     'Hide Members' => '',
-    'Homepage(Guests)' => '',
+    'Homepage (Guests)' => '',
     'I want to become a member because...' => '',
     'Join' => '',
     'Max. 100 characters.' => '',

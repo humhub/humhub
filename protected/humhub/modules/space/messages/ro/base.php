@@ -69,7 +69,7 @@ return [
     'Hide Followers' => '',
     'Hide Members' => '',
     'Homepage' => '',
-    'Homepage(Guests)' => '',
+    'Homepage (Guests)' => '',
     'I want to become a member because...' => '',
     'Invite and request' => '',
     'Invite by email' => '',

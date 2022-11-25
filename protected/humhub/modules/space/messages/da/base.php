@@ -106,7 +106,7 @@ return [
     'Hide Followers' => '',
     'Hide Members' => '',
     'Homepage' => '',
-    'Homepage(Guests)' => '',
+    'Homepage (Guests)' => '',
     'I want to become a member because...' => '',
     'Join' => '',
     'Last Visit' => '',

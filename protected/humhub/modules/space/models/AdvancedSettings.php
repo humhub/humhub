@@ -82,7 +82,7 @@ class AdvancedSettings extends Model
         return [
             'url' => 'URL',
             'indexUrl' => Yii::t('SpaceModule.base', 'Homepage'),
-            'indexGuestUrl' => Yii::t('SpaceModule.base', 'Homepage(Guests)'),
+            'indexGuestUrl' => Yii::t('SpaceModule.base', 'Homepage (Guests)'),
             'hideMembers' => Yii::t('SpaceModule.base', 'Hide Members'),
             'hideActivities' => Yii::t('SpaceModule.base', 'Hide Activity Sidebar Widget'),
             'hideAbout' => Yii::t('SpaceModule.base', 'Hide About Page'),
