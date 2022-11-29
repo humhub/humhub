@@ -347,7 +347,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     public function getAuthKey()
     {
-        return $this->auth_key ?: $this->guid;
+        return empty($this->auth_key) ? $this->guid : $this->auth_key;
     }
 
     public function validateAuthKey($authKey)
