@@ -4,7 +4,9 @@ HumHub Changelog
 1.13.0-beta.2 (29 November, 2022)
 ---------------------------------
 - Enh #5951: Added default spacing between icon and text inside buttons
-- Enh #5950: Fixed failing updater when `user:auth_key` is not applied yet 
+- Fix #5950: Fixed failing updater when `user:auth_key` is not applied yet 
+- Fix #5953: Display issue left border from divider of dropdown menu 
+
 
 
 1.13.0-beta.1 (28 November, 2022)
