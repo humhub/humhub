@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.13.0-beta.2 (29 November, 2022)
+---------------------------------
+- Enh #5951: Added default spacing between icon and text inside buttons
+
+
 1.13.0-beta.1 (28 November, 2022)
 ---------------------------------
 - Enh #5821: Remove "regular" style of checkbox and radio
