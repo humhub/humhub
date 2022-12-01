@@ -4,6 +4,7 @@ HumHub Changelog
 1.13.0-beta.3 (Unreleased)
 ---------------------------------
 - Fix #5954: Clear margin bottom of fieldset control label
+- Fix #5958: Fixed members list in Space overview when Space members are hidden
 
 
 1.13.0-beta.2 (29 November, 2022)
