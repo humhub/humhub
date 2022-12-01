@@ -12,7 +12,7 @@ use humhub\modules\space\models\Space;
 
 /**
  * SpaceDirectoryIcons shows footer icons for spaces cards
- * 
+ *
  * @since 1.9
  * @author Luke
  */
@@ -30,7 +30,8 @@ class SpaceDirectoryIcons extends Widget
     public function run()
     {
         return $this->render('spaceDirectoryIcons', [
-            'space' => $this->space
+            'space' => $this->space,
+            'showMemberships' => !$this->space->getAdvancedSettings()->hideMembers
         ]);
     }
 
