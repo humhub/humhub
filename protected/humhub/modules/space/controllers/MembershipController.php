@@ -306,8 +306,7 @@ class MembershipController extends ContentContainerController
     {
         if ($this->space->getAdvancedSettings()->hideMembers) {
             $membership = $this->space->getMembership();
-
-            return $membership->isPrivileged();
+            return $membership->isPrivileged() ?? false;
         }
 
         return true;
