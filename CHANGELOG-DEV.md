@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.13.0-beta.3 (Unreleased)
+---------------------------------
+- Fix #5954: Clear margin bottom of fieldset control label
+
+
 1.13.0-beta.2 (29 November, 2022)
 ---------------------------------
 - Enh #5951: Added default spacing between icon and text inside buttons
