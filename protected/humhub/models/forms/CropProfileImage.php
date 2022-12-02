@@ -118,4 +118,21 @@ class CropProfileImage extends Model
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function load($data, $formName = null)
+    {
+        if (parent::load($data, $formName)) {
+            // Make sure the params are integer formatted
+            $this->cropX = intval($this->cropX);
+            $this->cropY = intval($this->cropY);
+            $this->cropW = intval($this->cropW);
+            $this->cropH = intval($this->cropH);
+            return true;
+        }
+
+        return false;
+    }
+
 }

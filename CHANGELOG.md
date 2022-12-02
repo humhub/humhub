@@ -4,6 +4,7 @@ HumHub Changelog
 1.12.3 (Unreleased)
 -------------------
 - Fix #5928: Invalid Mailer DSN breaks whole application
+- Fix #5960: Fix cropping of space banner
 
 1.12.2 (November 11, 2022)
 --------------------------
