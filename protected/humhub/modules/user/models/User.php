@@ -583,6 +583,9 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             $this->profile->user_id = $this->id;
         }
 
+        // Don't move this line under setUpApproved() because ContentContainer record should be created firstly
+        parent::afterSave($insert, $changedAttributes);
+
         // When insert an "::STATUS_ENABLED" user or update a user from status "::STATUS_NEED_APPROVAL" to "::STATUS_ENABLED"
         if ($this->status == User::STATUS_ENABLED &&
             (
@@ -596,8 +599,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         if (Yii::$app->user->id == $this->id) {
             Yii::$app->user->setIdentity($user);
         }
-
-        parent::afterSave($insert, $changedAttributes);
     }
 
 
