@@ -23,7 +23,7 @@ return array (
   'Admin' => 'Admin',
   'Administrator:' => 'Administrador:',
   'Administrators' => 'Administradores',
-  'Any' => 'Algum',
+  'Any' => 'Qualquer',
   'Archived' => 'Arquivado',
   'As owner you cannot revoke your membership!' => 'Como proprietário, você não pode revogar a sua inscrição!',
   'Blocked users' => 'Usuários bloqueados',
