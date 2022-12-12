@@ -16,12 +16,9 @@ use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\ContentContainerBlockedUsers;
 use humhub\modules\content\models\ContentContainerTagRelation;
-use humhub\modules\content\Module;
-use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module as UserModule;
 use Yii;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 /**
@@ -396,7 +393,9 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getTags(): array
     {
-        $tags = is_string($this->contentContainerRecord->tags_cached) ? trim($this->contentContainerRecord->tags_cached) : '';
+        $tags = ($this->contentContainerRecord instanceof ContentContainer) && is_string($this->contentContainerRecord->tags_cached)
+            ? trim($this->contentContainerRecord->tags_cached)
+            : '';
         return $tags === '' ? [] : preg_split('/\s*,\s*/', $tags);
     }
 
