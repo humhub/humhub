@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.12.3 (Unreleased)
--------------------
+1.12.3 (December 12, 2022)
+--------------------------
 - Fix #5928: Invalid Mailer DSN breaks whole application
 - Fix #5960: Fix cropping of space banner
 - Fix #5967: Fix creating of user from administration with enabled notification for default group
