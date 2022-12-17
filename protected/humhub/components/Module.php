@@ -30,9 +30,9 @@ use yii\web\AssetBundle;
 class Module extends \yii\base\Module
 {
     /**
-     * @var array the loaded module.json info file
+     * @var array|null the loaded module.json info file
      */
-    private $_moduleInfo = null;
+    private ?array $_moduleInfo = null;
 
     /**
      * @var string The path for module resources (images, javascripts)
@@ -302,13 +302,13 @@ class Module extends \yii\base\Module
      */
     protected function getModuleInfo()
     {
-        if ($this->_moduleInfo != null) {
+        if ($this->_moduleInfo !== null) {
             return $this->_moduleInfo;
         }
 
         $moduleJson = file_get_contents($this->getBasePath() . DIRECTORY_SEPARATOR . 'module.json');
 
-        return Json::decode($moduleJson);
+        return $this->_moduleInfo = Json::decode($moduleJson);
     }
 
     /**
