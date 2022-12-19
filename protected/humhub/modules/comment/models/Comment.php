@@ -230,6 +230,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             $objectCondition = ['object_model' => $model, 'object_id' => $id];
             $query = Comment::find();
             if ($currentCommentId && Comment::findOne(['id' => $currentCommentId])) {
+                // Get the current and one previous comment
                 $nearCommentIds = Comment::find()
                     ->select('id')
                     ->where($objectCondition)
@@ -237,16 +238,14 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
                     ->orderBy('created_at DESC')
                     ->limit($limit)
                     ->column();
-                if (count($nearCommentIds) < $limit) {
-                    $newerCommentIds = Comment::find()
-                        ->select('id')
-                        ->where($objectCondition)
-                        ->andWhere(['>', 'id', $currentCommentId])
-                        ->orderBy('created_at ASC')
-                        ->limit($limit - count($nearCommentIds))
-                        ->column();
-                    $nearCommentIds = array_merge($nearCommentIds, $newerCommentIds);
-                }
+                // Get all newer comments after the current comment
+                $newerCommentIds = Comment::find()
+                    ->select('id')
+                    ->where($objectCondition)
+                    ->andWhere(['>', 'id', $currentCommentId])
+                    ->orderBy('created_at ASC')
+                    ->column();
+                $nearCommentIds = array_merge($nearCommentIds, $newerCommentIds);
                 $query->where(['IN', 'id', $nearCommentIds]);
             } else {
                 $query->where($objectCondition);
