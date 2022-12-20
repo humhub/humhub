@@ -6,6 +6,7 @@ HumHub Changelog
 - Fix #5954: Clear margin bottom of fieldset control label
 - Fix #5958: Fixed members list in Space overview when Space members are hidden
 - Fix #5980: ModuleManager - Module Info is not cached properly
+- Fix #5982: Use modules method `getContentContainerName` in ContentContainer module overview 
 
 
 1.13.0-beta.2 (29 November, 2022)
