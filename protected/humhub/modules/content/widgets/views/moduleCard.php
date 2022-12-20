@@ -23,7 +23,7 @@ use humhub\modules\content\widgets\ModuleActionButtons;
         ]) ?>
     </div>
     <div class="card-body">
-        <div class="card-title"><?= $module->getName() ?></div>
+        <div class="card-title"><?= $module->getContentContainerName($contentContainer) ?></div>
     </div>
     <?= ModuleActionButtons::widget([
         'module' => $module,
