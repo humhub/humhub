@@ -61,10 +61,6 @@ class MembershipController extends ContentContainerController
     {
         Yii::$app->response->format = 'json';
 
-        if ($this->canViewMembers()) {
-            throw new HttpException(403);
-        }
-
         $space = $this->getSpace();
         $visibility = (int)$space->visibility;
         if ($visibility === Space::VISIBILITY_NONE && !$space->isMember() ||
