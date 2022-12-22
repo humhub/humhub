@@ -2,6 +2,10 @@ HumHub Changelog
 ================
 
 
+1.13.1 (Unreleased)
+--------------------------
+- Fix #5985: Space user search in picker 
+
 1.13.0 (December 21, 2022)
 --------------------------
 See also: HumHub 1.12 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_13) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
