@@ -203,6 +203,29 @@ class Helpers
     }
 
     /**
+     * Check if current code is called from the given class and method
+     *
+     * @param string|object $model
+     * @param string $method
+     * @return bool
+     * @since 1.14
+     */
+    public static function isCalledFromMethod($model, $method): bool
+    {
+        foreach (debug_backtrace() as $data) {
+            $isSameClassName = is_string($model) && isset($data['class']) && $model === $data['class'];
+            $isSameObject = is_object($model) && isset($data['object']) && get_class($data['object']) === get_class($model);
+            $isSameMethod = isset($data['function']) && $method === $data['function'];
+
+            if (($isSameClassName || $isSameObject) && $isSameMethod) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Check for sameness of two strings using an algorithm with timing
      * independent of the string values if the subject strings are of equal length.
      *
