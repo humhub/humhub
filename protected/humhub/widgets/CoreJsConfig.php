@@ -8,12 +8,12 @@
 
 namespace humhub\widgets;
 
-use humhub\libs\Url;
 use humhub\modules\admin\models\forms\CacheSettingsForm;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\UserPicker;
 use Yii;
 use yii\base\Widget;
+use yii\helpers\Url;
 
 /**
  * JSConfig LayoutAddition used to configure core js modules.
@@ -56,8 +56,8 @@ class CoreJsConfig extends Widget
                         'deleteUrl' => Url::to(['/file/file/delete'])
                     ],
                     'url' => [
-                        'download' => Url::toCurrentHost(['/file/file/download', 'download' => true, 'guid' => '-guid-'], true),
-                        'load' => Url::toCurrentHost(['/file/file/download', 'guid' => '-guid-'], true)
+                        'download' => Url::to(['/file/file/download', 'download' => true, 'guid' => '-guid-'], true),
+                        'load' => Url::to(['/file/file/download', 'guid' => '-guid-'], true)
                     ],
                     'text' => [
                         'error.upload' => Yii::t('base', 'Some files could not be uploaded:'),

@@ -9,7 +9,6 @@
 namespace humhub\components;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use Yii;
 
 /**
  * UrlManager
@@ -23,11 +22,6 @@ class UrlManager extends \yii\web\UrlManager
      * @var ContentContainerActiveRecord
      */
     public static $cachedLastContainerRecord;
-
-    /**
-     * @var bool True - to don't use current host from browser and force to defined host from settings
-     */
-    public $protectHost = true;
 
     /**
      * @inheritdoc
@@ -48,25 +42,5 @@ class UrlManager extends \yii\web\UrlManager
         }
 
         return parent::createUrl($params);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getHostInfo()
-    {
-        if (!$this->protectHost) {
-            return parent::getHostInfo();
-        }
-
-        $baseUrl = Yii::$app->settings->get('baseUrl');
-
-        if (empty($baseUrl)) {
-            return parent::getHostInfo();
-        }
-
-        $data = parse_url($baseUrl);
-
-        return $data['scheme'] . '://' . $data['host'] . (isset($data['port']) ? ':' . $data['port'] : '');
     }
 }
