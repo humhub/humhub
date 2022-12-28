@@ -11,13 +11,13 @@ namespace humhub\modules\file\models;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\ActiveRecord;
+use humhub\libs\Url;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\db\Exception;
-use yii\helpers\Url;
 use yii\web\UploadedFile;
 
 /**
@@ -168,7 +168,7 @@ class File extends FileCompat
         $params['guid'] = $this->guid;
         $params['hash_sha1'] = $this->getHash(8);
         array_unshift($params, '/file/file/download');
-        return Url::to($params, $absolute);
+        return Url::toCurrentHost($params, $absolute);
     }
 
     /**

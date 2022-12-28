@@ -25,6 +25,11 @@ class UrlManager extends \yii\web\UrlManager
     public static $cachedLastContainerRecord;
 
     /**
+     * @var bool True - to don't use current host from browser and force to defined host from settings
+     */
+    public $protectHost = true;
+
+    /**
      * @inheritdoc
      */
     public function createUrl($params)
@@ -50,6 +55,10 @@ class UrlManager extends \yii\web\UrlManager
      */
     public function getHostInfo()
     {
+        if (!$this->protectHost) {
+            return parent::getHostInfo();
+        }
+
         $baseUrl = Yii::$app->settings->get('baseUrl');
 
         if (empty($baseUrl)) {
