@@ -5,6 +5,7 @@ HumHub Changelog
 1.13.1 (Unreleased)
 --------------------------
 - Fix #5985: Space user search in picker 
+- Fix #5993: Broken images on installations with multiple URLs 
 
 1.13.0 (December 21, 2022)
 --------------------------
