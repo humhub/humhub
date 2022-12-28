@@ -32,8 +32,9 @@ class ContentContainerTest extends ContentModelTest
         $contentContainer = new ContentContainer(['guid' => 'xyz']);
         $contentContainer->setPolymorphicRelation($user);
 
+
         $this->assertFalse($contentContainer->save());
-        $this->assertNotEmpty($contentContainer->getErrors('class'));
+        $this->assertNotEmpty($contentContainer->getErrors('pk'));
     }
 
     public function testGuidRequired()

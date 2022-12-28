@@ -88,7 +88,7 @@ class ContentVisibilitySelect extends InputWidget
         $this->setDefaultValue();
 
         return
-            '<div class="checkbox regular-checkbox-container">' .
+            '<div class="checkbox">' .
             Html::activeCheckbox($this->model, $this->attribute, $this->options) .
             '</div';
     }

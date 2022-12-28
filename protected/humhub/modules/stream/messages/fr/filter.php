@@ -7,6 +7,6 @@ return array (
   'Date to' => 'Date : jusqu’au',
   'Scope' => 'Portée',
   'Sorting' => 'Tri',
-  'Topic' => 'Étiquette',
+  'Topic' => 'Sujet',
   'Visibility' => 'Visibilité',
 );

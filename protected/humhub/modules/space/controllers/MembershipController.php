@@ -8,15 +8,13 @@
 
 namespace humhub\modules\space\controllers;
 
-use humhub\components\behaviors\AccessControl;
-use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\components\ContentContainerControllerAccess;
-use humhub\modules\space\jobs\AddUsersToSpaceJob;
 use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\space\models\forms\RequestMembershipForm;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\Module;
 use humhub\modules\space\permissions\InviteUsers;
 use humhub\modules\space\widgets\MembershipButton;
 use humhub\modules\user\models\UserPicker;
@@ -33,7 +31,7 @@ use yii\web\HttpException;
  * memberships.
  *
  * @author Luke
- * @package humhub.modules_core.space.controllers
+ * @property Module $module
  * @since 0.5
  */
 class MembershipController extends ContentContainerController
@@ -49,7 +47,7 @@ class MembershipController extends ContentContainerController
                     'receive-notifications',
                     'search-invite',
                     'switch-dashboard-display'
-                    ]
+                ]
             ],
             [ContentContainerControllerAccess::RULE_AJAX_ONLY => ['members-list']],
         ];
@@ -62,6 +60,10 @@ class MembershipController extends ContentContainerController
     public function actionSearch()
     {
         Yii::$app->response->format = 'json';
+
+        if ($this->canViewMembers()) {
+            throw new HttpException(403);
+        }
 
         $space = $this->getSpace();
         $visibility = (int)$space->visibility;
@@ -200,10 +202,10 @@ class MembershipController extends ContentContainerController
         $model = new InviteForm(['space' => $this->getSpace()]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if($model->isQueuedJob()) {
+            if ($model->isQueuedJob()) {
                 $success = ($model->withoutInvite)
-                    ? Yii::t( 'SpaceModule.base', 'User memberships have been added to the queue')
-                    : Yii::t( 'SpaceModule.base', 'User invitations have been added to the queue');
+                    ? Yii::t('SpaceModule.base', 'User memberships have been added to the queue')
+                    : Yii::t('SpaceModule.base', 'User invitations have been added to the queue');
             } else {
                 $success = Yii::t('SpaceModule.base', 'Users has been invited.');
             }
@@ -261,6 +263,10 @@ class MembershipController extends ContentContainerController
      */
     public function actionMembersList()
     {
+        if (!$this->canViewMembers()) {
+            throw new HttpException(403);
+        }
+
         return $this->renderAjaxContent(UserListBox::widget([
             'query' => Membership::getSpaceMembersQuery($this->getSpace())->visible(),
             'title' => Yii::t('SpaceModule.manage', "<strong>Members</strong>"),
@@ -296,4 +302,13 @@ class MembershipController extends ContentContainerController
         return $this->redirect($this->request->getReferrer());
     }
 
+    private function canViewMembers(): bool
+    {
+        if ($this->space->getAdvancedSettings()->hideMembers) {
+            $membership = $this->space->getMembership();
+            return $membership->isPrivileged() ?? false;
+        }
+
+        return true;
+    }
 }

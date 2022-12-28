@@ -8,7 +8,6 @@
 
 namespace humhub\modules\space\models;
 
-use humhub\libs\ProfileImage;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\events\SearchAddEvent;
@@ -20,8 +19,6 @@ use humhub\modules\space\components\ActiveQuerySpace;
 use humhub\modules\space\Module;
 use humhub\modules\user\behaviors\Followable;
 use humhub\components\behaviors\GUID;
-use humhub\modules\content\components\behaviors\SettingsBehavior;
-use humhub\modules\content\components\behaviors\CompatModuleManager;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\components\UrlValidator;
@@ -60,10 +57,8 @@ use Yii;
  * @property User $ownerUser the owner of this space
  *
  * @mixin \humhub\components\behaviors\GUID
- * @mixin \humhub\modules\content\components\behaviors\SettingsBehavior
  * @mixin \humhub\modules\space\behaviors\SpaceModelMembership
  * @mixin \humhub\modules\user\behaviors\Followable
- * @mixin \humhub\modules\content\components\behaviors\CompatModuleManager
  */
 class Space extends ContentContainerActiveRecord implements Searchable
 {
@@ -103,6 +98,11 @@ class Space extends ContentContainerActiveRecord implements Searchable
     public $defaultRoute = '/space/space';
 
     /**
+     * @var AdvancedSettings|null
+     */
+    private $_advancedSettings = null;
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -124,13 +124,14 @@ class Space extends ContentContainerActiveRecord implements Searchable
             [['join_policy'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'checkVisibility'],
-            [['url'], 'unique', 'skipOnEmpty' => 'true'],
             [['guid', 'name'], 'string', 'max' => 45, 'min' => 2],
-            [['url'], 'string', 'max' => Yii::$app->getModule('space')->maximumSpaceUrlLength, 'min' => Yii::$app->getModule('space')->minimumSpaceUrlLength],
-            [['url'], UrlValidator::class],
+            [['url'], UrlValidator::class, 'space' => $this],
         ];
 
-        if (Yii::$app->getModule('space')->useUniqueSpaceNames) {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('space');
+
+        if ($module->useUniqueSpaceNames) {
             $rules[] = [['name'], 'unique', 'targetClass' => static::class, 'when' => function ($model) {
                 return $model->isAttributeChanged('name');
             }];
@@ -146,7 +147,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     {
         $scenarios = parent::scenarios();
 
-        $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'about', 'tagsField', 'blockedUsersField', 'join_policy', 'visibility', 'default_content_visibility', 'url'];
+        $scenarios[static::SCENARIO_EDIT] = ['name', 'color', 'description', 'about', 'tagsField', 'blockedUsersField', 'join_policy', 'visibility', 'default_content_visibility'];
         $scenarios[static::SCENARIO_CREATE] = ['name', 'color', 'description', 'join_policy', 'visibility'];
         $scenarios[static::SCENARIO_SECURITY_SETTINGS] = ['default_content_visibility', 'join_policy', 'visibility'];
 
@@ -178,7 +179,9 @@ class Space extends ContentContainerActiveRecord implements Searchable
         ];
     }
 
-
+    /**
+     * @inheritDoc
+     */
     public function attributeHints()
     {
         return [
@@ -223,11 +226,24 @@ class Space extends ContentContainerActiveRecord implements Searchable
     {
         return [
             GUID::class,
-            SettingsBehavior::class,
             SpaceModelMembership::class,
             Followable::class,
-            CompatModuleManager::class,
         ];
+    }
+
+    /**
+     * Returns advanced space settings
+     *
+     * @return AdvancedSettings
+     */
+    public function getAdvancedSettings(): AdvancedSettings
+    {
+        if ($this->_advancedSettings === null) {
+            $this->_advancedSettings = new AdvancedSettings(['space' => $this]);
+            $this->_advancedSettings->loadBySettings();
+        }
+
+        return $this->_advancedSettings;
     }
 
     /**
@@ -271,10 +287,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
             $this->url = UrlValidator::autogenerateUniqueSpaceUrl($this->name);
         }
 
-        if ($this->url == '') {
+        if (empty($this->url)) {
             $this->url = new \yii\db\Expression('NULL');
-        } else {
-            $this->url = mb_strtolower($this->url);
         }
 
         // Make sure visibility attribute is not empty
@@ -441,8 +455,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
      * Used in edit scenario to check if the user really can create spaces
      * on this visibility.
      *
-     * @param type $attribute
-     * @param type $params
+     * @param string $attribute
+     * @param string $params
      */
     public function checkVisibility($attribute, $params)
     {
@@ -497,7 +511,9 @@ class Space extends ContentContainerActiveRecord implements Searchable
             return false;
         }
 
-        if (Yii::$app->getModule('space')->globalAdminCanAccessPrivateContent && $user->isSystemAdmin()) {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('space');
+        if ($module->globalAdminCanAccessPrivateContent && $user->isSystemAdmin()) {
             return true;
         }
 
@@ -680,5 +696,14 @@ class Space extends ContentContainerActiveRecord implements Searchable
     public function getGroupSpaces()
     {
         return $this->hasMany(GroupSpace::class, ['space_id' => 'id']);
+    }
+
+    /**
+     * @return bool
+     * @deprecated
+     */
+    public function isModuleEnabled($id)
+    {
+        return $this->moduleManager->isEnabled($id);
     }
 }

@@ -8,6 +8,7 @@ return [
     'This space is archived.' => 'Tento prostor archivován.',
     'What\'s on your mind?' => 'Co se vám honí hlavou?',
     'post' => 'Příspěvek',
+    'Post' => '',
     'Post could not be saved!' => '',
     'The post must not be empty!' => '',
 ];

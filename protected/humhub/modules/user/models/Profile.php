@@ -157,7 +157,7 @@ class Profile extends ActiveRecord
         Yii::t('UserModule.profile', 'Gender');
         Yii::t('UserModule.profile', 'Male');
         Yii::t('UserModule.profile', 'Female');
-        Yii::t('UserModule.profile', 'Custom');
+        Yii::t('UserModule.profile', 'Diverse');
         Yii::t('UserModule.profile', 'Hide year in profile');
 
         Yii::t('UserModule.profile', 'Phone Private');
@@ -165,18 +165,16 @@ class Profile extends ActiveRecord
         Yii::t('UserModule.profile', 'Mobile');
         Yii::t('UserModule.profile', 'E-Mail');
         Yii::t('UserModule.profile', 'Fax');
-        Yii::t('UserModule.profile', 'Skype Nickname');
-        Yii::t('UserModule.profile', 'MSN');
         Yii::t('UserModule.profile', 'XMPP Jabber Address');
 
-        Yii::t('UserModule.profile', 'Url');
+        Yii::t('UserModule.profile', 'Website URL');
         Yii::t('UserModule.profile', 'Facebook URL');
         Yii::t('UserModule.profile', 'LinkedIn URL');
         Yii::t('UserModule.profile', 'Xing URL');
         Yii::t('UserModule.profile', 'YouTube URL');
         Yii::t('UserModule.profile', 'Vimeo URL');
-        Yii::t('UserModule.profile', 'Flickr URL');
-        Yii::t('UserModule.profile', 'MySpace URL');
+        Yii::t('UserModule.profile', 'TikTok URL');
+        Yii::t('UserModule.profile', 'Instagram URL');
         Yii::t('UserModule.profile', 'Twitter URL');
     }
 

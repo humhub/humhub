@@ -18,7 +18,6 @@ class Licence extends Model
      */
     const LICENCE_TYPE_CE = 'community';
     const LICENCE_TYPE_PRO = 'pro';
-    const LICENCE_TYPE_EE = 'enterprise';
 
     /**
      * @var string the licence type

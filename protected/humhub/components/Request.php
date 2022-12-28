@@ -20,6 +20,13 @@ use Yii;
 class Request extends \yii\web\Request
 {
     /**
+     * Whenever a secure connection is detected, force it.
+     * @var bool
+     * @since 1.13
+     */
+    public $autoEnsureSecureConnection = true;
+
+    /**
      * Http header name for view context information
      * @see \humhub\modules\ui\view\components\View::$viewContext
      */

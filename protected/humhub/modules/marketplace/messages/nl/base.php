@@ -10,9 +10,6 @@ Module successfully enabled!
 No active Professional Edition license found!
 ' => 'Geen actieve Professional Edition-licentie gevonden!',
   '
-PROFESSIONAL EDITION
-' => 'PROFESSIONAL EDITION',
-  '
 The license could not be activated:
 ' => 'De licentie kan niet worden geactiveerd:',
   '
@@ -82,6 +79,7 @@ The license was successfully removed!
   'Not Installed' => 'Niet geïnstalleerd',
   'Official' => 'Officieel',
   'Ok' => 'Ok',
+  'PROFESSIONAL EDITION' => 'PROFESSIONELE EDITIE',
   'Partner' => 'Partner',
   'Professional Edition' => 'Professionele Editie',
   'Professional Edition is activated!' => 'Professional Edition is geactiveerd!',

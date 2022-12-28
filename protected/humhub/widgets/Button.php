@@ -227,6 +227,10 @@ class Button extends BootstrapComponent
             $this->htmlOptions['data-action-method'] = $method;
         }
 
+        if ($this->text === null && $this->_icon !== null) {
+            $this->htmlOptions['class'] .= ' btn-icon-only';
+        }
+
         if ($this->_link) {
             $href = isset($this->htmlOptions['href']) ? $this->htmlOptions['href'] : null;
             return Html::a($this->getText(), $href, $this->htmlOptions);

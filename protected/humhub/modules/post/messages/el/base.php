@@ -8,6 +8,7 @@ return [
     'This space is archived.' => 'Αυτός ο χώρος είναι αρχειοθετημένος.',
     'What\'s on your mind?' => 'Τι έχεις στο μυαλό σου;',
     'post' => 'ανάρτηση',
+    'Post' => '',
     'Post could not be saved!' => '',
     'The post must not be empty!' => '',
 ];

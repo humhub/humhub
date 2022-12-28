@@ -8,6 +8,7 @@ return [
     'This space is archived.' => 'این انجمن بایگانی شده است.',
     'What\'s on your mind?' => 'به چه چیزی فکر می‌کنید؟',
     'post' => 'پست',
+    'Post' => '',
     'Post could not be saved!' => '',
     'The post must not be empty!' => '',
 ];

@@ -15,7 +15,7 @@ use Yii;
 
 /**
  * ModuleActionsButton shows actions for module of Space on creating it
- * 
+ *
  * @since 1.11
  * @author Luke
  */
@@ -46,7 +46,7 @@ class ModuleActionButtons extends Widget
 
         $html .= Button::asLink(Yii::t('SpaceModule.manage', 'Activate'), '#')
             ->cssClass('btn btn-sm btn-info enable')
-            ->style($this->space->isModuleEnabled($this->module->id) ? 'display:none' : '')
+            ->style($this->space->moduleManager->isEnabled($this->module->id) ? 'display:none' : '')
             ->loader()
             ->options([
                 'data-action-click' => 'content.container.enableModule',
@@ -55,7 +55,7 @@ class ModuleActionButtons extends Widget
 
         $html .= Button::asLink('<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('ContentModule.modules', 'Activated'), '#')
             ->cssClass('btn btn-sm btn-info active disable')
-            ->style(!$this->space->isModuleEnabled($this->module->id) ? 'display:none' : '')
+            ->style(!$this->space->moduleManager->isEnabled($this->module->id) ? 'display:none' : '')
             ->loader()
             ->options([
                 'data-action-click' => 'content.container.disableModule',

@@ -69,6 +69,7 @@ return [
     'Default Space' => '',
     'Enable Notifications' => '',
     'Find people by their profile data or user tags' => '',
+    'Following (User)' => '',
     'Force password change upon first login' => '',
     'Force password change upon next login' => '',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => '',
@@ -103,6 +104,7 @@ return [
     'Username contains invalid characters.' => '',
     'View your about page' => '',
     'Visible' => '',
+    'Whenever a user follows another user.' => '',
     'Your account is not approved yet!' => '',
     'Your are already logged in! - Logout first!' => '',
 ];

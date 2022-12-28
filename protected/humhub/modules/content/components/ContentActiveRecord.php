@@ -94,6 +94,19 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     protected $streamChannel = 'default';
 
     /**
+     * Holds an extra create permission by providing one of the following
+     *
+     *  - BasePermission class string
+     *  - Array of type ['class' => '...', 'callback' => '...']
+     *  - Anonymous function
+     *  - BasePermission instance
+     *
+     * @var string permission instance
+     * @since 1.13
+     */
+    protected $createPermission = ManageContent::class;
+
+    /**
      * Holds an extra manage permission by providing one of the following
      *
      *  - BasePermission class string
@@ -270,6 +283,31 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     }
 
     /**
+     * Returns the $createPermission settings interpretable by an PermissionManager instance.
+     *
+     * @since 1.13
+     * @see ContentActiveRecord::$createPermission
+     * @return null|object|string
+     */
+    public function getCreatePermission()
+    {
+        return $this->hasCreatePermission()
+            ? $this->getPermissionValue($this->createPermission)
+            : null;
+    }
+
+    /**
+     * Determines whether or not the record has an additional createPermission set.
+     *
+     * @since 1.13
+     * @return boolean
+     */
+    public function hasCreatePermission()
+    {
+        return !empty($this->createPermission);
+    }
+
+    /**
      * Returns the $managePermission settings interpretable by an PermissionManager instance.
      *
      * @since 1.2.1
@@ -278,29 +316,40 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function getManagePermission()
     {
-        if(!$this->hasManagePermission()) {
-            return null;
+        return $this->hasManagePermission()
+            ? $this->getPermissionValue($this->managePermission)
+            : null;
+    }
+
+    /**
+     * Returns the permission value interpretable by an PermissionManager instance.
+     *
+     * @since 1.13
+     * @see ContentActiveRecord::$managePermission, ContentActiveRecord::$createPermission
+     * @param string|array|null
+     * @return null|object|string
+     */
+    private function getPermissionValue($perm)
+    {
+        if (is_string($perm)) { // Simple Permission class specification
+            return $perm;
         }
 
-        if(is_string($this->managePermission)) { // Simple Permission class specification
-            return $this->managePermission;
-        }
-
-        if(is_array($this->managePermission)) {
-            if(isset($this->managePermission['class'])) { // ['class' => '...', 'callback' => '...']
-                $handler = $this->managePermission['class'].'::'.$this->managePermission['callback'];
+        if (is_array($perm)) {
+            if (isset($perm['class'])) { // ['class' => '...', 'callback' => '...']
+                $handler = $perm['class'].'::'.$perm['callback'];
                 return call_user_func($handler, $this);
             }
             // Simple Permission array specification
-            return $this->managePermission;
+            return $perm;
         }
 
-        if(is_callable($this->managePermission)) { // anonymous function
-            return $this->managePermission($this);
+        if (is_callable($perm)) { // anonymous function
+            return call_user_func($perm, $this);
         }
 
-        if($this->managePermission instanceof BasePermission) {
-            return $this->managePermission;
+        if ($perm instanceof BasePermission) {
+            return $perm;
         }
 
         return null;
@@ -358,7 +407,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
 
         if($this->wallEntryClass) {
             $class = $this->wallEntryClass;
-            $widget = new $class;
+            $widget = new $class(['model' => $this]);
             return $widget;
         }
 

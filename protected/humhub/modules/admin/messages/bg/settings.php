@@ -128,7 +128,7 @@ return [
     'User Display Name' => '',
     'User Display Name Subtitle' => '',
     'You can find more configuration options here:' => '',
-    'e.g. 25 (for SMTP) or 587 (for SMTPS)' => '',
+    'e.g. 25 (for SMTP) or 465 (for SMTPS)' => '',
     'e.g. localhost' => '',
     'e.g. smtps://user:pass@smtp.example.com:port' => '',
 ];

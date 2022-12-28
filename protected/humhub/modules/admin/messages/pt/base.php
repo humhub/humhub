@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<strong>Administration</strong> menu' => '<strong>Menu</strong> de administração',
-  '<strong>Maintenance</strong> Mode' => '<strong>Modo</strong> de manutenção',
+  '<strong>Administration</strong> menu' => 'Menu de <strong>administração</strong>',
+  '<strong>Maintenance</strong> Mode' => '<strong>Modo de manutenção</strong>',
   '<strong>Module</strong> Administration' => 'Administração de<strong> Módulos</strong>',
   '<strong>Warning</strong> incomplete setup!' => '<strong>Aviso</strong> configuração incompleta!',
   'About' => 'Sobre',
@@ -53,7 +53,7 @@ return array (
   'Proxy' => 'Proxy',
   'Search' => 'Pesquisa',
   'Search...' => 'Pesquisar...',
-  'Self test' => 'Teste ao próprio',
+  'Self test' => 'Autoteste',
   'Set as default' => 'Predefinir',
   'Settings' => 'Definições',
   'Sign up' => 'Criar conta',
@@ -62,7 +62,7 @@ return array (
   'The cron job for the background jobs (queue) does not seem to work properly.' => 'O cronjob para tarefas em segundo plano (fila) parece não estar a funcionar correctamente.',
   'The cron job for the regular tasks (cron) does not seem to work properly.' => 'O cronjob para tarefas regulares (cron) parece não estar a funcionar correctamente.',
   'Uninstall' => 'Desinstalar',
-  'User not found!' => 'Pessoa não encontrada!',
+  'User not found!' => 'Utilizador não encontrado!',
   'Userprofiles' => 'Perfis',
-  'Users' => 'Pessoas',
+  'Users' => 'Utilizadores',
 );

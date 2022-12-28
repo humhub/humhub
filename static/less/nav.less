@@ -136,7 +136,7 @@ ul.tab-menu-settings {
             }
         }
 
-        li:hover,
+        li:hover:not(.divider),
         li.selected {
             border-left: 3px solid @info;
             color: @text-color-contrast !important;
@@ -277,5 +277,78 @@ ul.tab-menu-settings {
 @media (max-width: 991px) {
     .controls-header {
         text-align: left !important;
+    }
+}
+
+// Widget "WallCreateContentMenu" / JS UI widget "content.form.CreateFormMenu":
+#contentFormMenu {
+    display: none;
+    &.menu-without-form a {
+        border-radius: 4px;
+    }
+    .nav-tabs {
+        margin-bottom: 0;
+        border: none;
+        float: right;
+        > li > a, > li.active > a {
+            color: #7A7A7A;
+            background: #fff;
+            border-color: #fff;
+            &:hover, &.active {
+                z-index: 1;
+                color: #333;
+            }
+        }
+    }
+    &:after {
+        content: " ";
+        clear: both;
+        display: block;
+    }
+
+    .content-create-menu-more {
+        > i {
+            border-radius: 4px 4px 0 0;
+            background: #fff;
+            margin-right: 3px;
+            padding: 10px 15px 11px;
+            font-size: 18px;
+            &:hover {
+                color: #333;
+            }
+        }
+        .dropdown-menu {
+            background-color: @background-color-main;
+            border: 1px solid #D7D7D7;
+            border-radius: 4px;
+            li {
+                a {
+                    color: @text-color-highlight;
+                }
+                border-left-color: @background-color-main;
+                &:hover, &.selected {
+                    color: @text-color-highlight;
+                    border-left-color: @info;
+                    background-color: @background-color-secondary !important;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 480px) {
+        .nav-tabs {
+            display: flex;
+            width: 100%;
+            > li {
+                flex-grow: 1;
+                text-align: center;
+                &.content-create-menu-more {
+                    flex-grow: 0.3;
+                    > i.fa {
+                        width: 100%;
+                    }
+                }
+            }
+        }
     }
 }

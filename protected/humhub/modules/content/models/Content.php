@@ -725,7 +725,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     }
 
     /**
-     * Checks if the given user can edit this content.
+     * Checks if the given user can edit/create this content.
      *
      * A user can edit a content if one of the following conditions are met:
      *
@@ -735,7 +735,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      *  - The user meets the additional condition implemented by the model records class own `canEdit()` function.
      *
      * @param User|integer $user user instance or user id
-     * @return bool can edit this content
+     * @return bool can edit/create this content
      * @throws Exception
      * @throws IntegrityException
      * @throws \Throwable
@@ -767,8 +767,13 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         $model = $this->getModel();
 
         // Check additional manage permission for the given container
-        if ($model->hasManagePermission() && $this->getContainer() && $this->getContainer()->getPermissionManager($user)->can($model->getManagePermission())) {
-            return true;
+        if ($this->container) {
+            if ($model->isNewRecord && $model->hasCreatePermission() && $this->container->getPermissionManager($user)->can($model->getCreatePermission())) {
+                return true;
+            }
+            if (!$model->isNewRecord && $model->hasManagePermission() && $this->container->getPermissionManager($user)->can($model->getManagePermission())) {
+                return true;
+            }
         }
 
         // Check if underlying models canEdit implementation

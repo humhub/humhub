@@ -9,6 +9,7 @@
 namespace humhub\components;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use Yii;
 
 /**
  * UrlManager
@@ -42,5 +43,21 @@ class UrlManager extends \yii\web\UrlManager
         }
 
         return parent::createUrl($params);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getHostInfo()
+    {
+        $baseUrl = Yii::$app->settings->get('baseUrl');
+
+        if (empty($baseUrl)) {
+            return parent::getHostInfo();
+        }
+
+        $data = parse_url($baseUrl);
+
+        return $data['scheme'] . '://' . $data['host'] . (isset($data['port']) ? ':' . $data['port'] : '');
     }
 }
