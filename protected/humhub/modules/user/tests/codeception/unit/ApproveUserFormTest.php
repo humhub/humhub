@@ -28,7 +28,7 @@ class ApproveUserFormTest extends HumHubDbTestCase
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->setApprovalDefaults();
         $this->assertEquals("Hello UnApproved User,\n\nYour account has been activated.\n\n" .
-            "Click here to login:\nhttp://localhost:8080/index-test.php?r=user%2Fauth%2Flogin\n\n" .
+            "Click here to login:\nhttp://localhost/index-test.php?r=user%2Fauth%2Flogin\n\n" .
             "Kind Regards\nAdmin Tester\n\n", $form->message);
 
         $settings = new AuthenticationSettingsForm();
@@ -68,7 +68,7 @@ Mit freundlichen Grüßen
 
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->setApprovalDefaults();
-        $this->assertEquals("Hey UnApproved User your account was approved by Admin Tester, please click <a href=\"http://localhost:8080/index-test.php?r=user%2Fauth%2Flogin\">http://localhost:8080/index-test.php?r=user/auth/login</a>"
+        $this->assertEquals("Hey UnApproved User your account was approved by Admin Tester, please click <a href=\"http://localhost/index-test.php?r=user%2Fauth%2Flogin\">http://localhost/index-test.php?r=user/auth/login</a>"
             , $form->message);
     }
 
@@ -86,7 +86,7 @@ Mit freundlichen Grüßen
 Dein Konto wurde aktiviert.
 
 Klicke hier um dich einzuloggen:
-http://localhost:8080/index-test.php?r=user%2Fauth%2Flogin
+http://localhost/index-test.php?r=user%2Fauth%2Flogin
 
 Mit freundlichen Grüßen
 Admin Tester", $form->message);
