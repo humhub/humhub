@@ -6,3 +6,5 @@ HumHub Changelog (DEVELOP)
 --------------------------
 
 No changes
+
+- Enh #4803: Added more panel styles (`panel-info` and `panel-primary`) 
