@@ -11,6 +11,7 @@ namespace activity\functional;
 
 use humhub\modules\comment\activities\NewComment;
 use humhub\modules\content\activities\ContentCreated;
+use humhub\modules\like\activities\Liked;
 use humhub\modules\space\models\Space;
 use activity\FunctionalTester;
 use yii\helpers\Url;
@@ -35,9 +36,9 @@ class ActivitySettingsCest
         $I->seeInField('#mailsummaryform-interval', '1' );
         $I->seeCheckboxIsChecked('[name="MailSummaryForm[limitSpacesMode]"]', '1');
         $I->seeOptionIsSelected('#mailsummaryform-limitspaces', 'Space 1');
-        $I->dontSeeCheckboxIsChecked('[value="humhub\modules\comment\activities\NewComment"]');
-        $I->seeCheckboxIsChecked('[value="humhub\modules\content\activities\ContentCreated"]');
-        $I->dontSeeCheckboxIsChecked('[value="humhub\modules\like\activities\Liked"]');
+        $I->dontSeeCheckboxIsChecked('[value="' . NewComment::class . '"]');
+        $I->seeCheckboxIsChecked('[value="' . ContentCreated::class .'"]');
+        $I->dontSeeCheckboxIsChecked('[value="' . Liked::class . '"]');
 
         $I->submitForm('.panel-body form', [
             'MailSummaryForm[interval]' => '2',
@@ -51,9 +52,9 @@ class ActivitySettingsCest
         $I->dontSeeCheckboxIsChecked('[name="MailSummaryForm[limitSpacesMode]"]', '0');
         $I->dontSeeCheckboxIsChecked('[name="MailSummaryForm[limitSpacesMode]"]', '1');
         $I->dontSeeOptionIsSelected('#mailsummaryform-limitspaces', 'Space 1');
-        $I->seeCheckboxIsChecked('[value="humhub\modules\comment\activities\NewComment"]');
-        $I->dontSeeCheckboxIsChecked('[value="humhub\modules\content\activities\ContentCreated"]');
-        $I->dontSeeCheckboxIsChecked('[value="humhub\modules\like\activities\Liked"]');
+        $I->seeCheckboxIsChecked('[value="' . NewComment::class .'"]');
+        $I->dontSeeCheckboxIsChecked('[value="' . ContentCreated::class . '"]');
+        $I->dontSeeCheckboxIsChecked('[value="' . Liked::class . '"]');
 
         $I->see('Reset to defaults');
         $I->sendAjaxPostRequest(Url::toRoute('/activity/user/reset'));
@@ -62,9 +63,9 @@ class ActivitySettingsCest
         $I->seeInField('#mailsummaryform-interval', '1' );
         $I->seeCheckboxIsChecked('[name="MailSummaryForm[limitSpacesMode]"]', '1');
         $I->seeOptionIsSelected('#mailsummaryform-limitspaces', 'Space 1');
-        $I->dontSeeCheckboxIsChecked('[value="humhub\modules\comment\activities\NewComment"]');
-        $I->seeCheckboxIsChecked('[value="humhub\modules\content\activities\ContentCreated"]');
-        $I->dontSeeCheckboxIsChecked('[value="humhub\modules\like\activities\Liked"]');
+        $I->dontSeeCheckboxIsChecked('[value="' . NewComment::class .'"]');
+        $I->seeCheckboxIsChecked('[value="' . ContentCreated::class . '"]');
+        $I->dontSeeCheckboxIsChecked('[value="' . Liked::class . '"]');
     }
 
 }
