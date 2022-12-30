@@ -176,7 +176,7 @@ class Birthday extends BaseType
     public function getUserValue(User $user, $raw = true): ?string
     {
         $internalName = $this->profileField->internal_name;
-        $birthdayDate = \DateTime::createFromFormat('Y-m-d', $user->profile->$internalName,
+        $birthdayDate = \DateTime::createFromFormat('Y-m-d', $user->profile->$internalName ?? '',
             new \DateTimeZone(Yii::$app->formatter->timeZone));
 
         $internalNameHideAge = $this->profileField->internal_name . '_hide_year';
