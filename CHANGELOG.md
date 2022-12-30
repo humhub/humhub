@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #5993: Broken images on installations with multiple URLs 
 - Fix #5996: Fix param type in strpos() (PHP 8.1)
 - Fix #5997: Possible NULL param value in Birthday field (PHP 8.1) 
+- Enh #6001: Added new `ContentActiveFixture` and migrated `PostFixture` to it
 
 1.13.0 (December 21, 2022)
 --------------------------
