@@ -6,6 +6,8 @@ HumHub Changelog
 --------------------------
 - Fix #5985: Space user search in picker 
 - Fix #5993: Broken images on installations with multiple URLs 
+- Fix #5996: Fix param type in strpos() (PHP 8.1)
+- Fix #5997: Possible NULL param value in Birthday field (PHP 8.1) 
 
 1.13.0 (December 21, 2022)
 --------------------------
