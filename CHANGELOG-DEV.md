@@ -7,4 +7,4 @@ HumHub Changelog (DEVELOP)
 
 - Enh #4803: Added more panel styles (`panel-info` and `panel-primary`) 
 - Enh #5972: Removed old vendor CSS prefixes (e.g. `-moz` or `-webkit`) 
-- Enh: Implement auto-generated id for checkbox list items
+- Enh #6006: Implement auto-generated id for checkbox list items
