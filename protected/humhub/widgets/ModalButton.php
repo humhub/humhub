@@ -15,12 +15,7 @@
 
 namespace humhub\widgets;
 
-
-use humhub\components\Widget;
-use humhub\libs\Html;
 use Yii;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
 
 /**
  * Helper class for creating buttons.
