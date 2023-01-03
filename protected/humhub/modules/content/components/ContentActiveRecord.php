@@ -8,22 +8,22 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\components\ActiveRecord;
+use humhub\libs\BasePermission;
+use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\models\Movable;
+use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
+use humhub\modules\content\widgets\WallEntry;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicLabel;
 use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\models\User;
+use humhub\widgets\Label;
 use Yii;
 use yii\base\Exception;
-use humhub\modules\content\widgets\WallEntry;
-use humhub\widgets\Label;
-use humhub\libs\BasePermission;
-use humhub\modules\content\permissions\ManageContent;
-use humhub\components\ActiveRecord;
-use humhub\modules\content\models\Content;
-use humhub\modules\content\interfaces\ContentOwner;
 use yii\base\InvalidConfigException;
 
 /**
@@ -61,6 +61,7 @@ use yii\base\InvalidConfigException;
  * @mixin Followable
  * @property User $createdBy
  * @property User $owner
+ * @property-read ContentPermissionManager $permissions
  * @author Luke
  */
 class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
@@ -92,6 +93,11 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * @var string|null the stream channel
      */
     protected $streamChannel = 'default';
+
+    /**
+     * @var ContentPermissionManager
+     */
+    protected $permissionManager = null;
 
     /**
      * Holds an extra create permission by providing one of the following
@@ -597,4 +603,39 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * @param ContentContainerActiveRecord|null $container
      */
     public function afterMove(ContentContainerActiveRecord $container = null) {}
+
+    /**
+     * Returns a ContentPermissionManager instance for this ContentActiveRecord as permission object
+     * and the given user (or current user if not given) as permission subject.
+     *
+     * @param User|null $user
+     * @return ContentPermissionManager
+     */
+    public function getPermissionManager(User $user = null): ContentPermissionManager
+    {
+        if ($user && !$user->is(Yii::$app->user->getIdentity())) {
+            return new ContentPermissionManager([
+                'model' => $this,
+                'subject' => $user
+            ]);
+        }
+
+        if ($this->permissionManager !== null) {
+            return $this->permissionManager;
+        }
+
+        return $this->permissionManager = new ContentPermissionManager([
+            'model' => $this
+        ]);
+    }
+
+    /**
+     * Returns a ContentPermissionManager instance for this ContentActiveRecord for the current user.
+     *
+     * @return ContentPermissionManager
+     */
+    public function getPermissions(): ContentPermissionManager
+    {
+        return $this->getPermissionManager();
+    }
 }

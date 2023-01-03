@@ -8,8 +8,6 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\libs\BasePermission;
-
 /**
  * Edit Link for Wall Entries
  *
@@ -33,7 +31,7 @@ class EditLink extends \yii\base\Widget
     public $url;
     
     /**
-     * @var defines the edit type of the wallentry
+     * @var string defines the edit type of the wallentry
      */
     public $mode;
 
@@ -43,11 +41,11 @@ class EditLink extends \yii\base\Widget
      */
     public function run()
     {
-        if(!$this->url) {
-            return;
+        if (!$this->url) {
+            return '';
         }
 
-        if ($this->model->content->canEdit()) {
+        if ($this->model->permissions->canEdit()) {
             return $this->render('editLink', [
                         'editUrl' => $this->url,
                         'mode' => $this->mode
@@ -56,5 +54,3 @@ class EditLink extends \yii\base\Widget
     }
 
 }
-
-?>

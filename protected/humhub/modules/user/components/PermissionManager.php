@@ -13,7 +13,6 @@ use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupPermission;
 use humhub\modules\user\models\User as UserModel;
 use Yii;
-use yii\base\Component;
 use yii\base\Module as BaseModule;
 use yii\db\ActiveRecord;
 
@@ -22,7 +21,7 @@ use yii\db\ActiveRecord;
  *
  * @author luke
  */
-class PermissionManager extends Component
+class PermissionManager extends AbstractPermissionManager
 {
 
     /**
@@ -51,16 +50,7 @@ class PermissionManager extends Component
     protected $_groupPermissions = [];
 
     /**
-     * Verifies a given $permission or $permission array for a permission subject.
-     *
-     * If $params['strict'] is set to true and a $permission array is given all given permissions
-     * have to be granted otherwise (default) only one permission test has to pass.
-     *
-     * @param string|array|BasePermission $permission
-     * @param array $params
-     * @param boolean $allowCaching
-     * @return boolean
-     * @throws \yii\base\InvalidConfigException
+     * @inheritdoc
      */
     public function can($permission, $params = [], $allowCaching = true)
     {
@@ -126,18 +116,6 @@ class PermissionManager extends Component
         }
 
         return false;
-    }
-
-    /**
-     * Returns the permission subject identity.
-     * If the permission objects $subject property is not set this method returns the currently
-     * logged in user identity.
-     *
-     * @return \humhub\modules\user\models\User
-     */
-    protected function getSubject()
-    {
-        return ($this->subject != null) ? $this->subject : Yii::$app->user->getIdentity();
     }
 
     /**
