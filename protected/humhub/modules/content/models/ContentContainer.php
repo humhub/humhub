@@ -10,9 +10,12 @@ namespace humhub\modules\content\models;
 
 
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\admin\permissions\ManageSpaces;
+use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -90,5 +93,19 @@ class ContentContainer extends ActiveRecord
     {
         $instance = static::findOne(['guid' => $guid]);
         return $instance ? $instance->getPolymorphicRelation() : null;
+    }
+
+    public function canManage(): bool
+    {
+        if ($this->class === Space::class) {
+            return Yii::$app->user->can(ManageSpaces::class);
+        }
+
+        if ($this->class === User::class) {
+            return Yii::$app->user->id == $this->pk ||
+                Yii::$app->user->can(ManageUsers::class);
+        }
+
+        return false;
     }
 }
