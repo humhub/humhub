@@ -60,7 +60,7 @@ class MoveController extends ContentContainerController
         foreach ($query->offset($pagination->offset)->limit($pagination->limit)->all() as $space) {
             $result = Chooser::getSpaceResult($space, false);
 
-            $canMove = $content->canMove($space);
+            $canMove = $content->model->permissions->canMove($space);
             if ($canMove !== true) {
                 $result['disabled'] = true;
                 $result['disabledText'] = $canMove;

@@ -59,6 +59,6 @@ class MoveContentLink extends WallEntryControlLink
     public function preventRender()
     {
         // We show the move content link in case the user is generally allowed to move content within the container not considering other move content checks.
-        return !$this->model->content->container || !$this->model->content->checkMovePermission();
+        return !$this->model->content->container || !$this->model->permissions->checkMovePermission();
     }
 }

@@ -11,15 +11,11 @@ namespace humhub\modules\content\models;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
-use humhub\components\Module;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\live\NewContent;
-use humhub\modules\content\permissions\CreatePrivateContent;
-use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
@@ -29,7 +25,6 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
-use yii\db\Expression;
 use yii\db\IntegrityException;
 use yii\helpers\Url;
 
@@ -69,6 +64,7 @@ use yii\helpers\Url;
  * @property integer $contentcontainer_id;
  * @property ContentContainer $contentContainer
  * @property ContentContainerActiveRecord $container
+ * @property-read ContentActiveRecord $model
  * @mixin PolymorphicRelation
  * @mixin GUID
  * @since 0.5
@@ -465,7 +461,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function move(ContentContainerActiveRecord $container = null, $force = false)
     {
-        $move = ($force) ? true : $this->canMove($container);
+        $move = ($force) ? true : $this->model->permissions->canMove($container);
 
         if ($move === true) {
             static::getDb()->transaction(function ($db) use ($container) {
@@ -480,73 +476,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         }
 
         return $move;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function canMove(ContentContainerActiveRecord $container = null)
-    {
-        $model = $this->getModel();
-
-        $canModelBeMoved = $this->isModelMovable($container);
-        if ($canModelBeMoved !== true) {
-            return $canModelBeMoved;
-        }
-
-        if (!$container) {
-            return $this->checkMovePermission() ? true : Yii::t('ContentModule.base', 'You do not have the permission to move this content.');
-        }
-
-        if ($container->contentcontainer_id === $this->contentcontainer_id) {
-            return Yii::t('ContentModule.base', 'The content can\'t be moved to its current space.');
-        }
-
-        // Check if the related module is installed on the target space
-        if (!$container->moduleManager->isEnabled($model->getModuleId())) {
-            /* @var $module Module */
-            $module = Yii::$app->getModule($model->getModuleId());
-            $moduleName = ($module instanceof ContentContainerModule) ? $module->getContentContainerName($container) : $module->getName();
-            return Yii::t('ContentModule.base', 'The module {moduleName} is not enabled on the selected target space.', ['moduleName' => $moduleName]);
-        }
-
-        // Check if the current user is allowed to move this content at all
-        if (!$this->checkMovePermission()) {
-            return Yii::t('ContentModule.base', 'You do not have the permission to move this content.');
-        }
-
-        // Check if the current user is allowed to move this content to the given target space
-        if (!$this->checkMovePermission($container)) {
-            return Yii::t('ContentModule.base', 'You do not have the permission to move this content to the given space.');
-        }
-
-        // Check if the content owner is allowed to create content on the target space
-        $ownerPermissions = $container->getPermissionManager($this->createdBy);
-        if ($this->isPrivate() && !$ownerPermissions->can(CreatePrivateContent::class)) {
-            return Yii::t('ContentModule.base', 'The author of this content is not allowed to create private content within the selected space.');
-        }
-
-        if ($this->isPublic() && !$ownerPermissions->can(CreatePublicContent::class)) {
-            return Yii::t('ContentModule.base', 'The author of this content is not allowed to create public content within the selected space.');
-        }
-
-        return true;
-    }
-
-    public function isModelMovable(ContentContainerActiveRecord $container = null)
-    {
-        $model = $this->getModel();
-        $canModelBeMoved = $model->canMove($container);
-        if ($canModelBeMoved !== true) {
-            return $canModelBeMoved;
-        }
-
-        // Check for legacy modules
-        if (!$model->getModuleId()) {
-            return Yii::t('ContentModule.base', 'This content type can\'t be moved due to a missing module-id setting.');
-        }
-
-        return true;
     }
 
     /**

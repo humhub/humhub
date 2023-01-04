@@ -19,21 +19,6 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 interface Movable
 {
     /**
-     * Defines if this instance is movable and either returns true or a string indicating why the instance can't be moved.
-     *
-     * If a [[ContentContainerActiveRecord]] is given this function may adds container specific checks as permission
-     * or visibility checks.
-     *
-     * Thus, instances may be movable but only to certain containers.
-     *
-     * @param ContentContainerActiveRecord|null $container the target container
-     * @return bool|string either true in case the instance can be moved, otherwise a string indicating why the instance
-     * can't be moved
-     *
-     */
-    public function canMove(ContentContainerActiveRecord $container = null);
-
-    /**
      * Implements the actual logic for moving the instance to the given [[ContentContainerActiveRecord]].
      *
      * If supported by the implementation a null [[ContentContainerActiveRecord]] can be set to detach the

@@ -564,6 +564,27 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     }
 
     /**
+     * Check if this model is movable to the requested container
+     *
+     * @param ContentContainerActiveRecord|null $container
+     * @return bool|string
+     */
+    public function isMovable(ContentContainerActiveRecord $container = null)
+    {
+        $canModelBeMoved = $this->canMove($container);
+        if ($canModelBeMoved !== true) {
+            return $canModelBeMoved;
+        }
+
+        // Check for legacy modules
+        if (!$this->getModuleId()) {
+            return Yii::t('ContentModule.base', 'This content type can\'t be moved due to a missing module-id setting.');
+        }
+
+        return true;
+    }
+
+    /**
      * Can be overwritten to define additional model specific checks.
      *
      * This function should also validate all existing sub-content entries to prevent data inconsistency.

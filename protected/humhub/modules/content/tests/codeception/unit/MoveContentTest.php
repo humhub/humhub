@@ -39,16 +39,16 @@ class MoveContentTest extends HumHubDbTestCase
         $this->assertEquals(2, $profilePost->created_by);
 
         // User is allowed to move this content
-        $this->assertTrue($profilePost->canMove() === true);
+        $this->assertTrue($profilePost->model->permissions->canMove() === true);
 
         // User is allowed to move this content to space2 as space admin
-        $this->assertTrue($profilePost->canMove($space2) === true);
+        $this->assertTrue($profilePost->model->permissions->canMove($space2) === true);
 
         // User is not allowed to move this content to space1
-        $this->assertTrue($profilePost->canMove($space1) !== true);
+        $this->assertTrue($profilePost->model->permissions->canMove($space1) !== true);
 
         // User is allowed to move this content to space3 as member
-        $this->assertTrue($profilePost->canMove($space3) === true);
+        $this->assertTrue($profilePost->model->permissions->canMove($space3) === true);
     }
 
     public function testCanMoveOtherProfileContentAsAdmin()
@@ -63,16 +63,16 @@ class MoveContentTest extends HumHubDbTestCase
         $this->assertEquals(2, $profilePost->created_by);
 
         // Admin is allowed to move this content
-        $this->assertTrue($profilePost->canMove() === true);
+        $this->assertTrue($profilePost->model->permissions->canMove() === true);
 
         // Admin is allowed to move this content to space2 as space admin
-        $this->assertTrue($profilePost->canMove($space2) === true);
+        $this->assertTrue($profilePost->model->permissions->canMove($space2) === true);
 
         // Admin is not allowed to move this content to space1 since author can't create private content
-        $this->assertTrue($profilePost->canMove($space1) !== true);
+        $this->assertTrue($profilePost->model->permissions->canMove($space1) !== true);
 
         // Admin is allowed to move this content to space3 as member
-        $this->assertTrue($profilePost->canMove($space3) === true);
+        $this->assertTrue($profilePost->model->permissions->canMove($space3) === true);
     }
 
     public function testCanMoveOtherProfileContentAsNonAdmin()
@@ -87,16 +87,16 @@ class MoveContentTest extends HumHubDbTestCase
         $this->assertEquals(2, $profilePost->created_by);
 
         // Admin is allowed to move this content
-        $this->assertTrue($profilePost->canMove()  !== true);
+        $this->assertTrue($profilePost->model->permissions->canMove()  !== true);
 
         // Admin is allowed to move this content to space2 as space admin
-        $this->assertTrue($profilePost->canMove($space2)  !== true);
+        $this->assertTrue($profilePost->model->permissions->canMove($space2)  !== true);
 
         // Admin is not allowed to move this content to space1 since author can't create private content
-        $this->assertTrue($profilePost->canMove($space1) !== true);
+        $this->assertTrue($profilePost->model->permissions->canMove($space1) !== true);
 
         // Admin is allowed to move this content to space3 as member
-        $this->assertTrue($profilePost->canMove($space3)  !== true);
+        $this->assertTrue($profilePost->model->permissions->canMove($space3)  !== true);
     }
 
     public function testCanMoveSpaceContentAsSpaceAdmin()
@@ -111,19 +111,19 @@ class MoveContentTest extends HumHubDbTestCase
         $post = Content::findOne(['id' => 12]);
 
         // Space Admin is allowed to move this content
-        $this->assertTrue($post->canMove() === true);
+        $this->assertTrue($post->model->permissions->canMove() === true);
 
         // Can not be moved to current space
-        $this->assertTrue($post->canMove($space2)  !== true);
+        $this->assertTrue($post->model->permissions->canMove($space2)  !== true);
 
         // Space Admin is not allowed to move this content to space1 since User1 is not member os space1
-        $this->assertTrue($post->canMove($space1) !== true);
+        $this->assertTrue($post->model->permissions->canMove($space1) !== true);
 
         // Space Admin is not allowed to move this content to space3 since User1 is only member os space3
-        $this->assertTrue($post->canMove($space3)  !== true);
+        $this->assertTrue($post->model->permissions->canMove($space3)  !== true);
 
         // Space Admin is allowed to move this content to space3 since User1 admin on space4
-        $this->assertTrue($post->canMove($space4) === true);
+        $this->assertTrue($post->model->permissions->canMove($space4) === true);
     }
 
     public function testCanMoveSpacePostAsUserManager()
@@ -140,19 +140,19 @@ class MoveContentTest extends HumHubDbTestCase
         $post = Content::findOne(['id' => 12]);
 
         // User Manager is allowed to move this content
-        $this->assertTrue($post->canMove() === true);
+        $this->assertTrue($post->model->permissions->canMove() === true);
 
         // Can not be moved to current space
-        $this->assertTrue($post->canMove($space2)  !== true);
+        $this->assertTrue($post->model->permissions->canMove($space2)  !== true);
 
         // User Manager is not allowed to move this content to space1 since User1 is not member os space1
-        $this->assertTrue($post->canMove($space1) === true);
+        $this->assertTrue($post->model->permissions->canMove($space1) === true);
 
         // User Manager is allowed to move this content to space3 since
-        $this->assertTrue($post->canMove($space3) === true);
+        $this->assertTrue($post->model->permissions->canMove($space3) === true);
 
         // Space Admin is allowed to move this content to space3  Space Admin User1 admin on space4
-        $this->assertTrue($post->canMove($space4) === true);
+        $this->assertTrue($post->model->permissions->canMove($space4) === true);
     }
 
     public function testCanMoveProfileContentAsUserManager()
@@ -170,16 +170,16 @@ class MoveContentTest extends HumHubDbTestCase
         $this->assertEquals(2, $profilePost->created_by);
 
         // User is allowed to move this content
-        $this->assertTrue($profilePost->canMove() === true);
+        $this->assertTrue($profilePost->model->permissions->canMove() === true);
 
         // User is allowed to move this content to space2 as space admin
-        $this->assertTrue($profilePost->canMove($space2) === true);
+        $this->assertTrue($profilePost->model->permissions->canMove($space2) === true);
 
         // User is not allowed to move this content to space1
-        $this->assertTrue($profilePost->canMove($space1) !== true);
+        $this->assertTrue($profilePost->model->permissions->canMove($space1) !== true);
 
         // User is allowed to move this content to space3 as member
-        $this->assertTrue($profilePost->canMove($space3) === true);
+        $this->assertTrue($profilePost->model->permissions->canMove($space3) === true);
     }
 
     public function testMoveProfileContent()

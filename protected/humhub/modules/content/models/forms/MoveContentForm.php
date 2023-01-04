@@ -66,7 +66,7 @@ class MoveContentForm extends Model
         if(!$targetContainer) {
             $this->addError($attribute, Yii::t('ContentModule.base', 'Invalid space selection.'));
         } else {
-            $result = $this->content->canMove($targetContainer);
+            $result = $this->content->model->permissions->canMove($targetContainer);
             if($result !== true) {
                 $this->addError($attribute, $result);
             }
@@ -106,6 +106,6 @@ class MoveContentForm extends Model
 
     public function isMovable()
     {
-        return $this->content->isModelMovable();
+        return $this->content->model->isMovable();
     }
 }
