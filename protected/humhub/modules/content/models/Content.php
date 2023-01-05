@@ -418,23 +418,14 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      * Checks if the current user can archive this content.
      * The content owner and the workspace admin can archive contents.
      *
+     * @deprecated
      * @return boolean
      * @throws Exception
      * @throws \yii\base\InvalidConfigException
      */
     public function canArchive()
     {
-        // Currently global content can not be archived
-        if (!$this->getContainer()) {
-            return $this->canEdit();
-        }
-
-        // No need to archive content on an archived container, content is marked as archived already
-        if ($this->getContainer()->isArchived()) {
-            return false;
-        }
-
-        return $this->getContainer()->permissionManager->can(new ManageContent());
+        return $this->model->permissions->canArchive();
     }
 
     /**
@@ -442,8 +433,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function archive()
     {
-        if ($this->canArchive()) {
-
+        if ($this->model->permissions->canArchive()) {
             if ($this->isPinned()) {
                 $this->unpin();
             }
@@ -476,6 +466,24 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         }
 
         return $move;
+    }
+
+    /**
+     * Defines if this instance is movable and either returns true or a string indicating why the instance can't be moved.
+     *
+     * If a [[ContentContainerActiveRecord]] is given this function may adds container specific checks as permission
+     * or visibility checks.
+     *
+     * Thus, instances may be movable but only to certain containers.
+     *
+     * @deprecated
+     * @param ContentContainerActiveRecord|null $container the target container
+     * @return bool|string either true in case the instance can be moved, otherwise a string indicating why the instance
+     * can't be moved
+     */
+    public function canMove(ContentContainerActiveRecord $container = null)
+    {
+        return $this->model->permissions->canMove($container);
     }
 
     /**
@@ -514,8 +522,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function unarchive()
     {
-        if ($this->canArchive()) {
-
+        if ($this->model->permissions->canArchive()) {
             $this->archived = 0;
             $this->save();
         }
@@ -663,6 +670,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      *  - The user is granted the managePermission set by the model record class
      *  - The user meets the additional condition implemented by the model records class own `canEdit()` function.
      *
+     * @deprecated
      * @param User|integer $user user instance or user id
      * @return bool can edit/create this content
      * @throws Exception

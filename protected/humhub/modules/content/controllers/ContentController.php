@@ -18,13 +18,11 @@ use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\widgets\AdminDeleteModal;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use Yii;
-use yii\base\BaseObject;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
-use yii\web\NotAcceptableHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -155,7 +153,7 @@ class ContentController extends Controller
         $id = (int)Yii::$app->request->get('id', '');
 
         $content = Content::findOne(['id' => $id]);
-        if ($content !== null && $content->canArchive()) {
+        if ($content !== null && $content->model->permissions->canArchive()) {
             $content->archive();
 
             $json['success'] = true;
@@ -179,7 +177,7 @@ class ContentController extends Controller
         $id = (int)Yii::$app->request->get('id', '');
 
         $content = Content::findOne(['id' => $id]);
-        if ($content !== null && $content->canArchive()) {
+        if ($content !== null && $content->model->permissions->canArchive()) {
             $content->unarchive();
 
             $json['success'] = true;

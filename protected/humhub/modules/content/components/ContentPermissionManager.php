@@ -14,6 +14,7 @@ use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\user\components\AbstractPermissionManager;
 use Yii;
+use yii\base\Exception;
 use yii\db\IntegrityException;
 
 /**
@@ -105,6 +106,7 @@ class ContentPermissionManager extends AbstractPermissionManager
     {
         return $this->canEdit();
     }
+
     /**
      * Defines if this instance is movable and either returns true or a string indicating why the instance can't be moved.
      *
@@ -184,5 +186,28 @@ class ContentPermissionManager extends AbstractPermissionManager
         }
 
         return $this->model->isOwner() || Yii::$app->user->can(ManageUsers::class) || $container->can(ManageContent::class);
+    }
+
+    /**
+     * Checks if the current user can archive this content.
+     * The content owner and the workspace admin can archive contents.
+     *
+     * @return bool
+     * @throws Exception
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function canArchive(): bool
+    {
+        // Currently global content can not be archived
+        if (!$this->model->content->container) {
+            return $this->canEdit();
+        }
+
+        // No need to archive content on an archived container, content is marked as archived already
+        if ($this->model->content->container->isArchived()) {
+            return false;
+        }
+
+        return $this->model->content->container->permissionManager->can(ManageContent::class);
     }
 }
