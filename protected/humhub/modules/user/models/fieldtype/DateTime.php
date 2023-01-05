@@ -20,6 +20,10 @@ use Yii;
  */
 class DateTime extends BaseType
 {
+    /**
+     * @inheritdoc
+     */
+    public $type = 'datetime';
 
     /**
      * Checkbox show also time picker
@@ -90,17 +94,14 @@ class DateTime extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition(User $user = null)
+    public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
-        return [$this->profileField->internal_name => [
-                'type' => 'datetime',
-                'format' => Yii::$app->formatter->dateInputFormat,
-                'class' => 'form-control',
-                'readonly' => (!$this->profileField->editable),
-                'dateTimePickerOptions' => [
-                    'pickTime' => ($this->showTimePicker)
-                ]
-        ]];
+        return parent::getFieldFormDefinition($user, [
+            'format' => Yii::$app->formatter->dateInputFormat,
+            'dateTimePickerOptions' => [
+                'pickTime' => ($this->showTimePicker)
+            ]
+        ]);
     }
 
     /**
