@@ -274,7 +274,7 @@ class HForm extends \yii\base\Component
                         break;
                     case 'checkboxlist':
                         if (isset($options['readOnly']) && $options['readOnly']) {
-                            $options['disabled'] = 'disabled';
+                            $options['itemOptions']['disabled'] = 'disabled';
                         }
 
                         $value = $model->$name;
