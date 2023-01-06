@@ -388,7 +388,7 @@ abstract class Stream extends Action
             $content = Content::findOne(['id' => $this->streamQuery->contentId]);
             if(!$content) {
                 $response->setError(400, Yii::t('StreamModule.base', 'The content could not be found.'));
-            } elseif (!$content->canView()) {
+            } elseif (!$content->model->permissions->canView()) {
                 $response->setError(403, Yii::t('StreamModule.base', 'You are not allowed to view this content.'));
             }
         }

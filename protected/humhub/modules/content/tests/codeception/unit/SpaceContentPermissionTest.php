@@ -8,16 +8,13 @@
 
 namespace tests\codeception\unit\modules\content;
 
-use Yii;
-use humhub\modules\friendship\models\Friendship;
+use Codeception\Specify;
+use humhub\modules\content\models\Content;
+use humhub\modules\post\models\Post;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
-use Codeception\Specify;
-use humhub\modules\post\models\Post;
-
-use humhub\modules\space\models\Space;
-use humhub\modules\content\models\Content;
-use humhub\modules\stream\actions\ContentContainerStream;
+use Yii;
 
 class SpaceContentPermissionTest extends HumHubDbTestCase
 {
@@ -63,93 +60,93 @@ class SpaceContentPermissionTest extends HumHubDbTestCase
 
     public function testOwnerPermissions()
     {
-        $this->assertTrue($this->privatePost->content->canView());
-        $this->assertTrue($this->privatePost->content->canEdit());
-        $this->assertTrue($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canEdit());
+        $this->assertTrue($this->privatePost->permissions->canView());
+        $this->assertTrue($this->privatePost->permissions->canEdit());
+        $this->assertTrue($this->privatePost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canEdit());
 
         $this->setSpaceVisibility(Space::VISIBILITY_NONE);
 
         $this->reloadPosts();
-        $this->assertTrue($this->privatePost->content->canView());
-        $this->assertTrue($this->privatePost->content->canEdit());
-        $this->assertTrue($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canEdit());
+        $this->assertTrue($this->privatePost->permissions->canView());
+        $this->assertTrue($this->privatePost->permissions->canEdit());
+        $this->assertTrue($this->privatePost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canEdit());
     }
 
     public function testModeratorPermission()
     {
         $user2 = User::findOne(['id' => 3]);
-        $this->assertTrue($this->privatePost->content->canView($user2));
-        $this->assertTrue($this->publicPost->content->canView($user2));
-        $this->assertTrue($this->publicPost->content->canEdit($user2));
-        $this->assertTrue($this->privatePost->content->canEdit($user2));
+        $this->assertTrue($this->privatePost->permissions->canView($user2));
+        $this->assertTrue($this->publicPost->permissions->canView($user2));
+        $this->assertTrue($this->publicPost->permissions->canEdit($user2));
+        $this->assertTrue($this->privatePost->permissions->canEdit($user2));
 
         // Test again with logged in user
         $this->becomeUser('User2');
         $this->reloadPosts();
-        $this->assertTrue($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canView());
-        $this->assertTrue($this->publicPost->content->canEdit());
-        $this->assertTrue($this->privatePost->content->canEdit());
+        $this->assertTrue($this->privatePost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canEdit());
+        $this->assertTrue($this->privatePost->permissions->canEdit());
 
         // Test with visiblity none, should not have any effect
         $this->setSpaceVisibility(Space::VISIBILITY_NONE);
         $this->reloadPosts();
-        $this->assertTrue($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canView());
-        $this->assertTrue($this->publicPost->content->canEdit());
-        $this->assertTrue($this->privatePost->content->canEdit());
+        $this->assertTrue($this->privatePost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canEdit());
+        $this->assertTrue($this->privatePost->permissions->canEdit());
     }
 
     public function testMemberPermission()
     {
         $user1 = User::findOne(['id' => 2]);
-        $this->assertTrue($this->privatePost->content->canView($user1));
-        $this->assertTrue($this->publicPost->content->canView($user1));
-        $this->assertFalse($this->publicPost->content->canEdit($user1));
-        $this->assertFalse($this->privatePost->content->canEdit($user1));
+        $this->assertTrue($this->privatePost->permissions->canView($user1));
+        $this->assertTrue($this->publicPost->permissions->canView($user1));
+        $this->assertFalse($this->publicPost->permissions->canEdit($user1));
+        $this->assertFalse($this->privatePost->permissions->canEdit($user1));
 
         // Test again with logged in user
         $this->becomeUser('User1');
         $this->reloadPosts();
-        $this->assertTrue($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canView());
-        $this->assertFalse($this->publicPost->content->canEdit());
-        $this->assertFalse($this->privatePost->content->canEdit());
+        $this->assertTrue($this->privatePost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canView());
+        $this->assertFalse($this->publicPost->permissions->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canEdit());
 
         // Test with visiblity none, should not have any effect
         $this->setSpaceVisibility(Space::VISIBILITY_NONE);
         $this->reloadPosts();
-        $this->assertTrue($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canView());
-        $this->assertFalse($this->publicPost->content->canEdit());
-        $this->assertFalse($this->privatePost->content->canEdit());
+        $this->assertTrue($this->privatePost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canView());
+        $this->assertFalse($this->publicPost->permissions->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canEdit());
     }
 
     public function testUserPermission()
     {
         $user3 = User::findOne(['id' => 4]);
-        $this->assertFalse($this->privatePost->content->canView($user3));
-        $this->assertTrue($this->publicPost->content->canView($user3));
-        $this->assertFalse($this->publicPost->content->canEdit($user3));
-        $this->assertFalse($this->privatePost->content->canEdit($user3));
+        $this->assertFalse($this->privatePost->permissions->canView($user3));
+        $this->assertTrue($this->publicPost->permissions->canView($user3));
+        $this->assertFalse($this->publicPost->permissions->canEdit($user3));
+        $this->assertFalse($this->privatePost->permissions->canEdit($user3));
 
         // Test again with logged in user
         $this->becomeUser('User3');
         $this->reloadPosts();
-        $this->assertFalse($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canView());
-        $this->assertFalse($this->publicPost->content->canEdit());
-        $this->assertFalse($this->privatePost->content->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canView());
+        $this->assertFalse($this->publicPost->permissions->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canEdit());
 
         // Test with visiblity none, should not have any effect
         $this->setSpaceVisibility(Space::VISIBILITY_NONE);
         $this->reloadPosts();
-        $this->assertFalse($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canView());
-        $this->assertFalse($this->publicPost->content->canEdit());
-        $this->assertFalse($this->privatePost->content->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canView());
+        $this->assertFalse($this->publicPost->permissions->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canEdit());
 
     }
 
@@ -165,10 +162,10 @@ class SpaceContentPermissionTest extends HumHubDbTestCase
         // Refresh cached permissions etc
         $this->reloadPosts();
 
-        $this->assertFalse($this->privatePost->content->canView());
-        $this->assertFalse($this->publicPost->content->canView());
-        $this->assertFalse($this->publicPost->content->canEdit());
-        $this->assertFalse($this->privatePost->content->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canView());
+        $this->assertFalse($this->publicPost->permissions->canView());
+        $this->assertFalse($this->publicPost->permissions->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canEdit());
 
         // Enable guest access
         Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', true);
@@ -176,17 +173,17 @@ class SpaceContentPermissionTest extends HumHubDbTestCase
         // Refresh cached permissions etc
         $this->reloadPosts();
 
-        $this->assertFalse($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canView());
-        $this->assertFalse($this->publicPost->content->canEdit());
-        $this->assertFalse($this->privatePost->content->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canView());
+        $this->assertFalse($this->publicPost->permissions->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canEdit());
 
         $this->setSpaceVisibility(Space::VISIBILITY_NONE);
         $this->reloadPosts();
-        $this->assertFalse($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canView());
-        $this->assertFalse($this->publicPost->content->canEdit());
-        $this->assertFalse($this->privatePost->content->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canView());
+        $this->assertFalse($this->publicPost->permissions->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canEdit());
     }
 
     protected function setSpaceVisibility($visibility)

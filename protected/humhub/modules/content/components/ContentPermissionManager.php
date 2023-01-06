@@ -12,7 +12,10 @@ use humhub\modules\content\Module;
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\components\AbstractPermissionManager;
+use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use yii\db\IntegrityException;
@@ -105,6 +108,87 @@ class ContentPermissionManager extends AbstractPermissionManager
     public function canDelete(): bool
     {
         return $this->canEdit();
+    }
+
+    /**
+     * Checks if user can view this content.
+     *
+     * @param User|integer|null $user
+     * @return bool can view this content
+     * @throws Exception
+     * @throws \Throwable
+     * @since 1.1
+     */
+    public function canView($user = null): bool
+    {
+        if (!$user && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+        } else if (!$user instanceof User) {
+            $user = User::findOne(['id' => $user]);
+        }
+
+        // Check global content visibility, private global content is visible for all users
+        if (empty($this->model->content->contentcontainer_id) && !Yii::$app->user->isGuest) {
+            return true;
+        }
+
+        // User can access own content
+        if ($user !== null && $this->model->isOwner($user)) {
+            return true;
+        }
+
+        // Check Guest Visibility
+        if (!$user) {
+            return $this->checkGuestAccess();
+        }
+
+        // Public visible content
+        if ($this->model->content->isPublic()) {
+            return true;
+        }
+
+        // Check system admin can see all content module configuration
+        if ($user->canViewAllContent()) {
+            return true;
+        }
+
+        return $this->model->content->isPrivate() &&
+            $this->model->content->container !== null &&
+            $this->model->content->container->canAccessPrivateContent($user);
+    }
+
+    /**
+     * Determines if a guest user is able to read this content.
+     * This is the case if all of the following conditions are met:
+     *
+     *  - The content is public
+     *  - The `auth.allowGuestAccess` setting is enabled
+     *  - The space or profile visibility is set to VISIBILITY_ALL
+     *
+     * @return bool
+     */
+    public function checkGuestAccess()
+    {
+        $isPublic = $this->model->content->isPublic();
+
+        if (!$isPublic || !AuthHelper::isGuestAccessEnabled()) {
+            return false;
+        }
+
+        // Global content
+        if (!$this->model->content->container) {
+            return $isPublic;
+        }
+
+        if ($this->model->content->container instanceof Space) {
+            return $isPublic && $this->model->content->container->visibility == Space::VISIBILITY_ALL;
+        }
+
+        if ($this->model->content->container instanceof User) {
+            return $isPublic && $this->model->content->container->visibility == User::VISIBILITY_ALL;
+        }
+
+        return false;
     }
 
     /**
@@ -205,6 +289,43 @@ class ContentPermissionManager extends AbstractPermissionManager
 
         // No need to archive content on an archived container, content is marked as archived already
         if ($this->model->content->container->isArchived()) {
+            return false;
+        }
+
+        return $this->model->content->container->permissionManager->can(ManageContent::class);
+    }
+
+    /**
+     * Checks if the user can lock comments for this content.
+     *
+     * @return bool
+     * @throws Exception
+     */
+    public function canLockComments(): bool
+    {
+        if (!$this->model->content->container) {
+            return $this->canEdit();
+        }
+
+        return $this->model->content->container->permissionManager->can(ManageContent::class);
+    }
+
+    /**
+     * Checks if the user can pin this content.
+     * This is only allowed for workspace owner.
+     *
+     * @return bool
+     * @throws Exception
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function canPin(): bool
+    {
+        // Currently global content can not be pinned
+        if (!$this->model->content->container) {
+            return false;
+        }
+
+        if ($this->model->content->isArchived()) {
             return false;
         }
 

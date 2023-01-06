@@ -23,7 +23,6 @@ use humhub\modules\comment\widgets\ShowMore;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\file\handler\FileHandlerCollection;
 use Yii;
-use yii\base\BaseObject;
 use yii\data\Pagination;
 use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
@@ -73,7 +72,7 @@ class CommentController extends Controller
                 throw new NotFoundHttpException('Could not find underlying content or content addon record!');
             }
 
-            if (!$this->target->content->canView()) {
+            if (!$this->target->content->model->permissions->canView()) {
                 throw new ForbiddenHttpException();
             }
 

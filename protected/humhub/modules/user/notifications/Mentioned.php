@@ -55,7 +55,7 @@ class Mentioned extends BaseNotification
     public function send(\humhub\modules\user\models\User $user)
     {
         // Do additional access check here, because the mentioned user may have no access to the content
-        if (!$this->source->content->canView($user)) {
+        if (!$this->source->content->model->permissions->canView($user)) {
             return;
         }
 

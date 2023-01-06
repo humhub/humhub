@@ -29,7 +29,7 @@ class LinkController extends Controller
         $activityId = Yii::$app->request->get('id');
         $activity = Activity::findOne(['id' => $activityId]);
 
-        if ($activity !== null && $activity->content->canView()) {
+        if ($activity !== null && $activity->permissions->canView()) {
             $this->redirect($activity->getActivityBaseClass()->getUrl());
         } else {
             throw new HttpException(403);

@@ -198,7 +198,7 @@ class File extends FileCompat
     {
         $object = $this->getPolymorphicRelation();
         if ($object !== null && ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord)) {
-            return $object->content->canView($userId);
+            return $object->content->model->permissions->canView($userId);
         }
 
         return true;

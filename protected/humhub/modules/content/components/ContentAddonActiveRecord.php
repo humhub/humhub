@@ -142,7 +142,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
      */
     public function canRead()
     {
-        return $this->content->canView();
+        return $this->content->model->permissions->canView();
     }
 
     /**

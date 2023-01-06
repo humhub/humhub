@@ -232,7 +232,7 @@ class ContentController extends Controller
             throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
         }
 
-        if (!$content->canView()) {
+        if (!$content->model->permissions->canView()) {
             throw new HttpException(403);
         }
 
@@ -294,7 +294,7 @@ class ContentController extends Controller
 
         if (!$content) {
             throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
-        } elseif (!$content->canLockComments()) {
+        } elseif (!$content->model->permissions->canLockComments()) {
             throw new HttpException(403);
         }
 
@@ -358,7 +358,7 @@ class ContentController extends Controller
             throw new NotFoundHttpException();
         }
 
-        if (!$content->canPin()) {
+        if (!$content->model->permissions->canPin()) {
             throw new ForbiddenHttpException();
         }
 
@@ -392,7 +392,7 @@ class ContentController extends Controller
         $json['success'] = false;
 
         $content = Content::findOne(['id' => Yii::$app->request->get('id', '')]);
-        if ($content !== null && $content->canPin()) {
+        if ($content !== null && $content->model->permissions->canPin()) {
             $content->unpin();
             $json['success'] = true;
         }

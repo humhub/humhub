@@ -8,16 +8,13 @@
 
 namespace tests\codeception\unit\modules\content;
 
-use Yii;
+use Codeception\Specify;
+use humhub\modules\content\models\Content;
 use humhub\modules\friendship\models\Friendship;
+use humhub\modules\post\models\Post;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
-use Codeception\Specify;
-use humhub\modules\post\models\Post;
-
-use humhub\modules\space\models\Space;
-use humhub\modules\content\models\Content;
-use humhub\modules\stream\actions\ContentContainerStream;
+use Yii;
 
 class ProfileContentPermissionTest extends HumHubDbTestCase
 {
@@ -55,10 +52,10 @@ class ProfileContentPermissionTest extends HumHubDbTestCase
 
     public function testOwnerPermissions()
     {
-        $this->assertTrue($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canView());
-        $this->assertTrue($this->publicPost->content->canEdit());
-        $this->assertTrue($this->privatePost->content->canEdit());
+        $this->assertTrue($this->privatePost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canEdit());
+        $this->assertTrue($this->privatePost->permissions->canEdit());
     }
 
     public function testOtherUserPermissions()
@@ -68,10 +65,10 @@ class ProfileContentPermissionTest extends HumHubDbTestCase
 
         $this->reloadPosts();
 
-        $this->assertFalse($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canView());
-        $this->assertFalse($this->publicPost->content->canEdit());
-        $this->assertFalse($this->privatePost->content->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canView());
+        $this->assertFalse($this->publicPost->permissions->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canEdit());
     }
 
     public function testFriendPermissions()
@@ -84,20 +81,20 @@ class ProfileContentPermissionTest extends HumHubDbTestCase
         Friendship::add($user3, $this->admin);
         $this->reloadPosts();
 
-        $this->assertTrue($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canView());
-        $this->assertFalse($this->publicPost->content->canEdit());
-        $this->assertFalse($this->privatePost->content->canEdit());
+        $this->assertTrue($this->privatePost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canView());
+        $this->assertFalse($this->publicPost->permissions->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canEdit());
 
         // Disable friendship system
         Yii::$app->getModule('friendship')->settings->set('enable', false);
 
         $this->reloadPosts();
 
-        $this->assertFalse($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canView());
-        $this->assertFalse($this->publicPost->content->canEdit());
-        $this->assertFalse($this->privatePost->content->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canView());
+        $this->assertFalse($this->publicPost->permissions->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canEdit());
     }
 
     public function testProfileGuestPermissions()
@@ -112,10 +109,10 @@ class ProfileContentPermissionTest extends HumHubDbTestCase
         // Test Guest Access with Profile visiblity ONLY REGISTERED
         $this->reloadPosts();
 
-        $this->assertFalse($this->privatePost->content->canView());
-        $this->assertFalse($this->publicPost->content->canView());
-        $this->assertFalse($this->publicPost->content->canEdit());
-        $this->assertFalse($this->privatePost->content->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canView());
+        $this->assertFalse($this->publicPost->permissions->canView());
+        $this->assertFalse($this->publicPost->permissions->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canEdit());
 
         // Test Guest Access with Profile visiblity ALL
         $this->admin->visibility = User::VISIBILITY_ALL;
@@ -123,20 +120,20 @@ class ProfileContentPermissionTest extends HumHubDbTestCase
 
         $this->reloadPosts();
 
-        $this->assertFalse($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canView());
-        $this->assertFalse($this->publicPost->content->canEdit());
-        $this->assertFalse($this->privatePost->content->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canView());
+        $this->assertTrue($this->publicPost->permissions->canView());
+        $this->assertFalse($this->publicPost->permissions->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canEdit());
 
         // Disable Guest Access
         Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', false);
 
         $this->reloadPosts();
 
-        $this->assertFalse($this->privatePost->content->canView());
-        $this->assertFalse($this->publicPost->content->canView());
-        $this->assertFalse($this->publicPost->content->canEdit());
-        $this->assertFalse($this->privatePost->content->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canView());
+        $this->assertFalse($this->publicPost->permissions->canView());
+        $this->assertFalse($this->publicPost->permissions->canEdit());
+        $this->assertFalse($this->privatePost->permissions->canEdit());
     }
 
     public function reloadPosts()
