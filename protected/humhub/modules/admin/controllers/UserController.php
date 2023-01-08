@@ -106,12 +106,13 @@ class UserController extends Controller
         }
 
         $canEditAdminFields = Yii::$app->user->isAdmin() || !$user->isSystemAdmin();
+        $canEditPassword = $canEditAdminFields && !$user->hasAuth('ldap');
 
         $user->scenario = 'editAdmin';
         $user->profile->scenario = Profile::SCENARIO_EDIT_ADMIN;
         $profile = $user->profile;
 
-        if ($canEditAdminFields) {
+        if ($canEditPassword) {
             if (!($password = PasswordEditForm::findOne(['user_id' => $user->id]))) {
                 $password = new PasswordEditForm();
                 $password->user_id = $user->id;
@@ -171,7 +172,7 @@ class UserController extends Controller
         }
 
         // Change Password Form
-        if ($canEditAdminFields) {
+        if ($canEditPassword) {
             $definition['elements']['Password'] = [
                 'type' => 'form',
                 'title' => Yii::t('AdminModule.user', 'Password'),
@@ -221,12 +222,12 @@ class UserController extends Controller
         $form = new HForm($definition);
         $form->models['User'] = $user;
         $form->models['Profile'] = $profile;
-        if ($canEditAdminFields) {
+        if ($canEditPassword) {
             $form->models['Password'] = $password;
         }
 
         if ($form->submitted('save') && $form->validate()) {
-            if ($canEditAdminFields) {
+            if ($canEditPassword) {
                 if (!empty($password->newPassword)) {
                     $password->setPassword($password->newPassword);
                 }

@@ -1,6 +1,10 @@
 HumHub Changelog (DEVELOP)
 ==========================
 
+1.14.1 (Unreleased)
+--------------------------
+- Ehn #6017: Hide Password Tab in administration for LDAP users
+
 
 1.14.0 (February 28, 2023)
 --------------------------
