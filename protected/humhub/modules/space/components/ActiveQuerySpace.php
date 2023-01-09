@@ -10,6 +10,7 @@
 namespace humhub\modules\space\components;
 
 use humhub\events\ActiveQueryEvent;
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
@@ -49,6 +50,10 @@ class ActiveQuerySpace extends ActiveQuery
             } catch (\Throwable $e) {
                 Yii::error($e, 'space');
             }
+        }
+
+        if ($user->can(ManageSpaces::class)) {
+            return $this;
         }
 
         if ($user !== null) {

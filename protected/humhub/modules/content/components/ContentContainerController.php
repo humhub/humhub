@@ -145,25 +145,23 @@ class ContentContainerController extends Controller
     }
 
     /**
-     * @param $guid
+     * @param string|null $guid
      * @return ContentContainerActiveRecord|null
      */
-    private function getContentContainerByGuid($guid)
+    private function getContentContainerByGuid(?string $guid): ?ContentContainerActiveRecord
     {
-        if (!empty($guid)) {
-            $contentContainer = ContentContainer::findOne(['guid' => $guid]);
-            if ($contentContainer !== null) {
-                /* @var Space|User $contentContainerClass */
-                $contentContainerClass = $contentContainer->class;
-
-                $query = $contentContainerClass::find()->where(['guid' => $guid]);
-                if (!$contentContainer->canManage()) {
-                    $query->visible();
-                }
-                return $query->one();
-            }
+        if (empty($guid)) {
+            return null;
         }
 
-        return null;
+        $contentContainer = ContentContainer::findOne(['guid' => $guid]);
+        if ($contentContainer === null) {
+            return null;
+        }
+
+        /* @var Space|User $contentContainerClass */
+        $contentContainerClass = $contentContainer->class;
+
+        return $contentContainerClass::find()->where(['guid' => $guid])->visible()->one();
     }
 }

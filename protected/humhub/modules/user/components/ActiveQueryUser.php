@@ -80,13 +80,20 @@ class ActiveQueryUser extends ActiveQuery
     {
         $this->trigger(self::EVENT_CHECK_VISIBILITY, new ActiveQueryEvent(['query' => $this]));
 
+        if (Yii::$app->user->can(ManageUsers::class)) {
+            return $this;
+        }
+
         $allowedVisibilities = [UserModel::VISIBILITY_ALL];
         if (!Yii::$app->user->isGuest) {
             $allowedVisibilities[] = UserModel::VISIBILITY_REGISTERED_ONLY;
         }
 
         return $this->active()
-            ->andWhere(['IN', 'user.visibility', $allowedVisibilities]);
+            ->andWhere(['OR',
+                ['user.id' => Yii::$app->user->id], // User can view own profile
+                ['IN', 'user.visibility', $allowedVisibilities]
+            ]);
     }
 
 
