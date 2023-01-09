@@ -8,9 +8,6 @@
 
 namespace humhub\modules\ui\form\widgets;
 
-use yii\bootstrap\Html;
-use yii\helpers\ArrayHelper;
-
 /**
  * A HumHub enhanced version of [[\yii\bootstrap\ActiveField]].
  *
@@ -82,26 +79,5 @@ class ActiveField extends \yii\bootstrap\ActiveField
         }
 
         return parent::end();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function checkboxList($items, $options = [])
-    {
-        if (!isset($options['item'])) {
-            $itemOptions = $options['itemOptions'] ?? [];
-            $encode = ArrayHelper::getValue($options, 'encode', true);
-            $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions, $encode) {
-                $options = array_merge([
-                    'label' => $encode ? Html::encode($label) : $label,
-                    'value' => $value,
-                    'id' => strtolower(preg_replace('/[^a-z0-9]+/i', '-', $name . '-' . $value)),
-                ], $itemOptions);
-                return '<div class="checkbox">' . Html::checkbox($name, $checked, $options) . '</div>';
-            };
-        }
-
-        return parent::checkboxList($items, $options);
     }
 }

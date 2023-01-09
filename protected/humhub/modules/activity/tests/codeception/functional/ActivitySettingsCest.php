@@ -70,7 +70,7 @@ class ActivitySettingsCest
 
     private function getActivityCheckboxSelector(string $className): string
     {
-        return '#mailsummaryform-activities-' . strtolower(preg_replace('/[^a-z0-9]+/i', '-', $className));
+        return '[value="' . str_replace('\\', '\\\5c ', $className) . '"]';
     }
 
 }
