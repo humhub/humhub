@@ -39,19 +39,6 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
     const EVENT_CHECK_ACTIVE = 'checkActive';
 
     /**
-     * For toggling on condition if required
-     * @var bool
-     */
-    protected $multiCharacterSearch = true;
-
-    /**
-     * During search, keyword will be walked through and each character of the set will be changed to another
-     * of the same set to create variants to maximise search.
-     * @var array
-     */
-    protected $multiCharacterSearchVariants = [['\'', '’', '`'], ['"', '”', '“']];
-
-    /**
      * Limit to active users
      *
      * @return ActiveQueryUser the query
@@ -112,105 +99,14 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     * @return self
-     */
-    public function search($keywords, ?array $fields = null): ActiveQuery
-    {
-        if (empty($keywords)) {
-            return $this;
-        }
-
-        $this->joinWith('profile')->joinWith('contentContainerRecord');
-
-        foreach ($this->setUpKeywords($keywords) as $keyword) {
-            $this->searchKeyword($keyword, $fields);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     * @return self
-     */
-    public function searchKeyword(string $keyword, ?array $fields = null): ActiveQuery
-    {
-        if (empty($fields)) {
-            $fields = $this->getSearchableFields();
-        }
-
-        $conditions = [];
-        foreach ($this->prepareKeywordVariants($keyword) as $variant) {
-            $subConditions = [];
-
-            foreach ($fields as $field) {
-                $subConditions[] = ['LIKE', $field, $variant];
-            }
-
-            $conditions[] = array_merge(['OR'], $subConditions);
-        }
-
-        return $this->andWhere(array_merge(['OR'], $conditions));
-    }
-
-    /**
-     * This function will look through keyword and prepare other variants of the words according to config
-     * This is used to search for different apostrophes and quotes characters as for now.
-     * Example: word "o'Surname", will create array ["o'Surname", "o’Surname", "o`Surname"]
-     *
-     * @param $keyword
-     * @return array
-     */
-    protected function prepareKeywordVariants($keyword)
-    {
-        $variants = [$keyword];
-
-        foreach ($this->multiCharacterSearchVariants as $set) {
-            foreach ($set as $character) {
-                if (strpos($keyword, $character) === false) {
-                    continue;
-                }
-
-                foreach ($set as $replaceWithCharacter) {
-                    if ($character === $replaceWithCharacter) {
-                        continue;
-                    }
-
-                    $variants[] = str_replace($character, $replaceWithCharacter, $keyword);
-                }
-            }
-        }
-
-        return $variants;
-    }
-
-    /**
-     * @param $value
-     * @return $this
-     */
-    public function setMultiCharacterSearch($value)
-    {
-        $this->multiCharacterSearch = (bool)$value;
-        return $this;
-    }
-
-    /**
-     * @param $array
-     * @return $this
-     */
-    public function setMultiCharacterSearchVariants($array)
-    {
-        $this->multiCharacterSearchVariants = $array;
-        return $this;
-    }
 
     /**
      * @inheritdoc
      */
     protected function getSearchableFields(): array
     {
+        $this->joinWith('profile')->joinWith('contentContainerRecord');
+
         $fields = ['user.username', 'contentcontainer.tags_cached'];
 
         /** @var Module $module */
