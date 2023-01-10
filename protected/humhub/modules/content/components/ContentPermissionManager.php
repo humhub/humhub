@@ -9,17 +9,18 @@ use yii\base\InvalidArgumentException;
 
 class ContentPermissionManager extends AbstractPermissionManager
 {
-
+    /**
+     * @var ContentActiveRecord
+     */
     public $content;
 
     protected function verify(BasePermission $permission)
     {
+        /** @var AbstractContentPermission $permission */
         if (!($permission instanceof AbstractContentPermission)) {
             throw new InvalidArgumentException(get_class($permission) . ' must be instance of ' . AbstractContentPermission::class);
         }
 
-
-
-        // TODO: Implement verify() method.
+        return $permission->verify($this->content, $this->subject);
     }
 }
