@@ -84,7 +84,7 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
 
         $allowedVisibilities = [UserModel::VISIBILITY_ALL];
         if ($user !== null) {
-            if ((new PermissionManager(['subject' => $user]))->can(ManageUsers::class)) {
+            if ((new GroupPermissionManager(['subject' => $user]))->can(ManageUsers::class)) {
                 return $this;
             }
 
@@ -254,7 +254,7 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
     public function administrableBy(UserModel $user)
     {
 
-        if (!(new PermissionManager(['subject' => $user]))->can([ManageUsers::class])) {
+        if (!(new GroupPermissionManager(['subject' => $user]))->can([ManageUsers::class])) {
             $this->joinWith('groups');
 
             $groupIds = [];

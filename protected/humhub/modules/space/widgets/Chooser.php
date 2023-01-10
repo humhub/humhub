@@ -10,7 +10,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\permissions\SpaceDirectoryAccess;
-use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\components\GroupPermissionManager;
 use humhub\modules\user\models\Follow;
 use Yii;
 use yii\db\Query;
@@ -198,7 +198,7 @@ class Chooser extends Widget
      */
     protected function canCreateSpace()
     {
-        /** @var PermissionManager $manager */
+        /** @var GroupPermissionManager $manager */
         $manager = Yii::$app->user->permissionmanager;
         return $manager->can(new CreatePublicSpace) || $manager->can(new CreatePrivateSpace());
     }

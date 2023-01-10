@@ -15,9 +15,9 @@ use yii\db\ActiveRecord;
 use Codeception\Test\Unit;
 use humhub\libs\BasePermission;
 use humhub\modules\activity\models\Activity;
-use humhub\modules\content\components\ContentContainerPermissionManager;
+use humhub\modules\content\components\ContentContainerGroupPermissionManager;
 use humhub\modules\notification\models\Notification;
-use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\components\GroupPermissionManager;
 use humhub\modules\user\models\User;
 use humhub\modules\friendship\models\Friendship;
 
@@ -306,7 +306,7 @@ class HumHubDbTestCase extends Unit
 
     public function setGroupPermission($groupId, $permission, $state = BasePermission::STATE_ALLOW)
     {
-        $permissionManger = new PermissionManager();
+        $permissionManger = new GroupPermissionManager();
         $permissionManger->setGroupState($groupId, $permission, $state);
         Yii::$app->user->permissionManager->clear();
     }
@@ -317,7 +317,7 @@ class HumHubDbTestCase extends Unit
         $permission,
         $state = BasePermission::STATE_ALLOW
     ) {
-        $permissionManger = new ContentContainerPermissionManager(['contentContainer' => $contentContainer]);
+        $permissionManger = new ContentContainerGroupPermissionManager(['contentContainer' => $contentContainer]);
         $permissionManger->setGroupState($groupId, $permission, $state);
         $contentContainer->permissionManager->clear();
     }

@@ -6,7 +6,7 @@ use humhub\modules\user\widgets\PermisionGridModuleFilter;
 use humhub\modules\user\widgets\PermissionGridEditor;
 use yii\helpers\Url;
 
-/* @var $defaultPermissionManager \humhub\modules\content\components\ContentContainerDefaultPermissionManager */
+/* @var $defaultPermissionManager \humhub\modules\content\components\ContentContainerDefaultGroupPermissionManager */
 /* @var $groups array */
 /* @var $groupId string */
 

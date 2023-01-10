@@ -34,7 +34,7 @@ class User extends \yii\web\User
     private $_authClients = null;
 
     /**
-     * @var PermissionManager
+     * @var GroupPermissionManager
      */
     protected $permissionManager = null;
 
@@ -106,7 +106,7 @@ class User extends \yii\web\User
      * @throws \yii\base\InvalidConfigException
      * @throws \Throwable
      * @since 1.2
-     * @see PermissionManager::can()
+     * @see GroupPermissionManager::can()
      */
     public function can($permission, $params = [], $allowCaching = true)
     {
@@ -114,7 +114,7 @@ class User extends \yii\web\User
     }
 
     /**
-     * @return PermissionManager instance with the related identity instance as permission subject.
+     * @return GroupPermissionManager instance with the related identity instance as permission subject.
      * @throws \Throwable
      */
     public function getPermissionManager()
@@ -122,7 +122,7 @@ class User extends \yii\web\User
         if ($this->permissionManager !== null) {
             return $this->permissionManager;
         }
-        $this->permissionManager = new PermissionManager(['subject' => $this->getIdentity()]);
+        $this->permissionManager = new GroupPermissionManager(['subject' => $this->getIdentity()]);
 
         return $this->permissionManager;
     }

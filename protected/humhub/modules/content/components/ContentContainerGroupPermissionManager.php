@@ -9,7 +9,7 @@
 namespace humhub\modules\content\components;
 
 use humhub\modules\content\models\ContentContainerDefaultPermission;
-use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\components\GroupPermissionManager;
 use humhub\modules\content\models\ContentContainerPermission;
 use humhub\libs\BasePermission;
 use Yii;
@@ -17,7 +17,7 @@ use Yii;
 /**
  * @inheritdoc
  */
-class ContentContainerPermissionManager extends PermissionManager
+class ContentContainerGroupPermissionManager extends GroupPermissionManager
 {
 
     /**
@@ -28,7 +28,7 @@ class ContentContainerPermissionManager extends PermissionManager
     /**
      * @inheritdoc
      */
-    public function verify(BasePermission $permission)
+    public function verify(\humhub\components\permission\BasePermission $permission)
     {
         $groupId = $this->contentContainer->getUserGroup($this->subject);
 

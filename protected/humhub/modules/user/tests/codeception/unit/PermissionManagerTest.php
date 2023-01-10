@@ -12,7 +12,7 @@ use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\SeeAdminInformation;
-use humhub\modules\user\tests\codeception\unit\PermissionManagerMock;
+use humhub\modules\user\tests\codeception\unit\GroupPermissionManagerMock;
 use tests\codeception\_support\HumHubDbTestCase;
 
 class PermissionManagerTest extends HumHubDbTestCase
@@ -24,7 +24,7 @@ class PermissionManagerTest extends HumHubDbTestCase
     public function testPermissionUser1()
     {
         $this->becomeUser('User1');
-        $permissionManager = new PermissionManagerMock();
+        $permissionManager = new GroupPermissionManagerMock();
 
         $tests = [
             [true, new ManageUsers],

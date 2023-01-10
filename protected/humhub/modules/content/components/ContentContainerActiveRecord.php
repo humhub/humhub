@@ -31,7 +31,7 @@ use yii\helpers\Url;
  * @property integer $visibility
  * @property string $guid
  * @property integer $contentcontainer_id
- * @property ContentContainerPermissionManager $permissionManager
+ * @property ContentContainerGroupPermissionManager $permissionManager
  * @property ContentContainerSettingsManager $settings
  * @property-read ContentContainerModuleManager $moduleManager
  * @property ContentContainer $contentContainerRecord
@@ -43,7 +43,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 {
 
     /**
-     * @var ContentContainerPermissionManager
+     * @var ContentContainerGroupPermissionManager
      */
     protected $permissionManager = null;
 
@@ -270,14 +270,14 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * The following example will check if the current user has MyPermission on the given $contentContainer
      *
      * ```php
-     * $contentContainer->can(MyPermisison::class);
+     * $contentContainer->can(MyPermission::class);
      * ```
      *
      * Note: This method is used to verify ContentContainerPermissions and not GroupPermissions.
      *
      * @param string|string[]|BasePermission $permission
      * @return boolean
-     * @see PermissionManager::can()
+     * @see GroupPermissionManager::can()
      * @since 1.2
      */
     public function can($permission, $params = [], $allowCaching = true)
@@ -286,16 +286,16 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     }
 
     /**
-     * Returns a ContentContainerPermissionManager instance for this ContentContainerActiveRecord as permission object
+     * Returns a ContentContainerGroupPermissionManager instance for this ContentContainerActiveRecord as permission object
      * and the given user (or current user if not given) as permission subject.
      *
      * @param User $user
-     * @return ContentContainerPermissionManager
+     * @return ContentContainerGroupPermissionManager
      */
     public function getPermissionManager(User $user = null)
     {
         if ($user && !$user->is(Yii::$app->user->getIdentity())) {
-            return new ContentContainerPermissionManager([
+            return new ContentContainerGroupPermissionManager([
                 'contentContainer' => $this,
                 'subject' => $user
             ]);
@@ -305,7 +305,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
             return $this->permissionManager;
         }
 
-        return $this->permissionManager = new ContentContainerPermissionManager([
+        return $this->permissionManager = new ContentContainerGroupPermissionManager([
             'contentContainer' => $this
         ]);
     }

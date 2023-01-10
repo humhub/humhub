@@ -10,7 +10,7 @@ namespace humhub\modules\admin\controllers;
 
 use humhub\modules\admin\models\forms\SpaceSettingsForm;
 use humhub\modules\admin\models\SpaceSearch;
-use humhub\modules\content\components\ContentContainerDefaultPermissionManager;
+use humhub\modules\content\components\ContentContainerDefaultGroupPermissionManager;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
@@ -142,7 +142,7 @@ class SpaceController extends Controller
      */
     public function actionPermissions()
     {
-        $defaultPermissionManager = new ContentContainerDefaultPermissionManager([
+        $defaultPermissionManager = new ContentContainerDefaultGroupPermissionManager([
             'contentContainerClass' => Space::class,
         ]);
 
