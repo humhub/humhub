@@ -9,3 +9,4 @@ HumHub Changelog (DEVELOP)
 - Enh #6006: Fix activity settings test
 - Fix #6018: Disable profile fields textarea and checkbox list when they are not editable
 - Ehn #6017: Hide Password Tab in administration for LDAP users
+- Enh #6031: On users list grid, show Auth mode badge only for sys admins
