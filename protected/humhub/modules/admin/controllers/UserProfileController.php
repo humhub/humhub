@@ -157,11 +157,13 @@ class UserProfileController extends Controller
             $fieldType = $form->models[$field->field_type_class];
 
             if ($field->save() && $fieldType->save()) {
+                $this->view->saved();
                 return $this->redirect(['/admin/user-profile']);
             }
         }
         if ($form->submitted('delete')) {
             $field->delete();
+            $this->view->success(Yii::t('AdminModule.user', 'Deleted'));
             return $this->redirect(['/admin/user-profile']);
         }
 
