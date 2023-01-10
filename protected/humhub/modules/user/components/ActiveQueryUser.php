@@ -10,10 +10,12 @@ namespace humhub\modules\user\components;
 
 use humhub\events\ActiveQueryEvent;
 use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\content\components\AbstractActiveQueryContentContainer;
 use humhub\modules\user\models\fieldtype\BaseTypeVirtual;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\ProfileField;
+use humhub\modules\user\models\User;
 use humhub\modules\user\models\User as UserModel;
 use humhub\modules\user\Module;
 use Yii;
@@ -24,17 +26,8 @@ use yii\db\ActiveQuery;
  *
  * @author luke
  */
-class ActiveQueryUser extends ActiveQuery
+class ActiveQueryUser extends AbstractActiveQueryContentContainer
 {
-    /**
-     * Query keywords will be broken down into array needles with this length
-     * Meaning, if you search for "word1 word2 word3" and MAX_SEARCH_NEEDLES being 2
-     * word3 will be left out, and search will only look for word1, word2.
-     *
-     * @var string
-     */
-    const MAX_SEARCH_NEEDLES = 5;
-
     /**
      * @event Event an event that is triggered when only visible users are requested via [[visible()]].
      */
@@ -73,20 +66,36 @@ class ActiveQueryUser extends ActiveQuery
      * Returns only users that should appear in user lists or in the search results.
      * Also only active (enabled) users are returned.
      *
-     * @return ActiveQueryUser the query
      * @since 1.2.3
+     * @inheritdoc
+     * @return self
      */
-    public function visible()
+    public function visible(?User $user = null): ActiveQuery
     {
         $this->trigger(self::EVENT_CHECK_VISIBILITY, new ActiveQueryEvent(['query' => $this]));
 
+        if ($user === null && !Yii::$app->user->isGuest) {
+            try {
+                $user = Yii::$app->user->getIdentity();
+            } catch (\Throwable $e) {
+                Yii::error($e, 'user');
+            }
+        }
+
         $allowedVisibilities = [UserModel::VISIBILITY_ALL];
-        if (!Yii::$app->user->isGuest) {
+        if ($user !== null) {
+            if ((new PermissionManager(['subject' => $user]))->can(ManageUsers::class)) {
+                return $this;
+            }
+
             $allowedVisibilities[] = UserModel::VISIBILITY_REGISTERED_ONLY;
         }
 
         return $this->active()
-            ->andWhere(['IN', 'user.visibility', $allowedVisibilities]);
+            ->andWhere(['OR',
+                ['user.id' => $user->id], // User can view own profile
+                ['IN', 'user.visibility', $allowedVisibilities]
+            ]);
     }
 
 
@@ -104,14 +113,10 @@ class ActiveQueryUser extends ActiveQuery
     }
 
     /**
-     * Performs a user full text search
-     *
-     * @param string|array $keywords
-     * @param array|null $fields if empty all searchable profile fields will be used
-     *
-     * @return ActiveQueryUser the query
+     * @inheritdoc
+     * @return self
      */
-    public function search($keywords, $fields = null)
+    public function search($keywords, ?array $fields = null): ActiveQuery
     {
         if (empty($keywords)) {
             return $this;
@@ -120,21 +125,20 @@ class ActiveQueryUser extends ActiveQuery
         $this->joinWith('profile')->joinWith('contentContainerRecord');
 
         foreach ($this->setUpKeywords($keywords) as $keyword) {
-            $this->andWhere(array_merge(['OR'], $this->createKeywordCondition($keyword, $fields)));
+            $this->searchKeyword($keyword, $fields);
         }
 
         return $this;
     }
 
     /**
-     * @param $keyword
-     * @param null $fields
-     * @return array
+     * @inheritdoc
+     * @return self
      */
-    protected function createKeywordCondition($keyword, $fields = null)
+    public function searchKeyword(string $keyword, ?array $fields = null): ActiveQuery
     {
         if (empty($fields)) {
-            $fields = $this->getSearchableUserFields();
+            $fields = $this->getSearchableFields();
         }
 
         $conditions = [];
@@ -148,20 +152,7 @@ class ActiveQueryUser extends ActiveQuery
             $conditions[] = array_merge(['OR'], $subConditions);
         }
 
-        return $conditions;
-    }
-
-    /**
-     * @param $keywords
-     * @return array
-     */
-    protected function setUpKeywords($keywords)
-    {
-        if (!is_array($keywords)) {
-            $keywords = explode(' ', $keywords);
-        }
-
-        return array_slice($keywords, 0, static::MAX_SEARCH_NEEDLES);
+        return $this->andWhere(array_merge(['OR'], $conditions));
     }
 
     /**
@@ -216,11 +207,9 @@ class ActiveQueryUser extends ActiveQuery
     }
 
     /**
-     * Returns a list of fields to be included in a user search.
-     *
-     * @return array
+     * @inheritdoc
      */
-    private function getSearchableUserFields()
+    protected function getSearchableFields(): array
     {
         $fields = ['user.username', 'contentcontainer.tags_cached'];
 
