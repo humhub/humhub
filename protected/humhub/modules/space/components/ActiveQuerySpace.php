@@ -11,9 +11,9 @@ namespace humhub\modules\space\components;
 
 use humhub\events\ActiveQueryEvent;
 use humhub\modules\admin\permissions\ManageSpaces;
+use humhub\modules\content\components\AbstractActiveQueryContentContainer;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
@@ -25,10 +25,8 @@ use yii\db\ActiveQuery;
  *
  * @since 1.4
  */
-class ActiveQuerySpace extends ActiveQuery
+class ActiveQuerySpace extends AbstractActiveQueryContentContainer
 {
-    const MAX_SEARCH_NEEDLES = 5;
-
     /**
      * @event Event an event that is triggered when only visible spaces are requested via [[visible()]].
      */
@@ -37,10 +35,10 @@ class ActiveQuerySpace extends ActiveQuery
     /**
      * Only returns spaces which are visible for this user
      *
-     * @param User|null $user
-     * @return ActiveQuerySpace the query
+     * @inheritdoc
+     * @return self
      */
-    public function visible(User $user = null)
+    public function visible(?User $user = null): ActiveQuery
     {
         $this->trigger(self::EVENT_CHECK_VISIBILITY, new ActiveQueryEvent(['query' => $this]));
 
@@ -52,11 +50,11 @@ class ActiveQuerySpace extends ActiveQuery
             }
         }
 
-        if ($user->can(ManageSpaces::class)) {
-            return $this;
-        }
-
         if ($user !== null) {
+            if ($user->can(ManageSpaces::class)) {
+                return $this;
+            }
+
             $this->andWhere(['OR',
                 ['IN', 'space.visibility', [Space::VISIBILITY_ALL, Space::VISIBILITY_REGISTERED_ONLY]],
                 ['AND',
@@ -72,13 +70,18 @@ class ActiveQuerySpace extends ActiveQuery
     }
 
     /**
-     * Performs a space full text search
-     *
-     * @param string|array $keywords
-     * @param array $columns
-     * @return ActiveQuerySpace the query
+     * @inerhitdoc
      */
-    public function search($keywords, $columns = ['space.name', 'space.description', 'contentcontainer.tags_cached'])
+    protected function getSearchableFields(): array
+    {
+        return ['space.name', 'space.description', 'contentcontainer.tags_cached'];
+    }
+
+    /**
+     * @inheritdoc
+     * @return self
+     */
+    public function search($keywords, ?array $fields = null): ActiveQuery
     {
         if (empty($keywords)) {
             return $this;
@@ -86,26 +89,36 @@ class ActiveQuerySpace extends ActiveQuery
 
         $this->joinWith('contentContainerRecord');
 
-        if (!is_array($keywords)) {
-            $keywords = explode(' ', $keywords);
-        }
-
-        foreach (array_slice($keywords, 0, static::MAX_SEARCH_NEEDLES) as $keyword) {
-            $conditions = [];
-            foreach ($columns as $field) {
-                $conditions[] = ['LIKE', $field, $keyword];
-            }
-            $this->andWhere(array_merge(['OR'], $conditions));
+        foreach ($this->setUpKeywords($keywords) as $keyword) {
+            $this->searchKeyword($keyword, $fields);
         }
 
         return $this;
     }
 
     /**
+     * @inheritdoc
+     * @return self
+     */
+    public function searchKeyword(string $keyword, ?array $fields = null): ActiveQuery
+    {
+        if (empty($fields)) {
+            $fields = $this->getSearchableFields();
+        }
+
+        $conditions = [];
+        foreach ($fields as $field) {
+            $conditions[] = ['LIKE', $field, $keyword];
+        }
+
+        return $this->andWhere(array_merge(['OR'], $conditions));
+    }
+
+    /**
      * Exclude blocked spaces for the given $user or for the current User
      *
-     * @param User $user
-     * @return ActiveQueryUser the query
+     * @param User|null $user
+     * @return self
      */
     public function filterBlockedSpaces(?User $user = null): ActiveQuerySpace
     {
