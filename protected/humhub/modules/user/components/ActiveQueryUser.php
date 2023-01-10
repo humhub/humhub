@@ -84,7 +84,7 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
 
         $allowedVisibilities = [UserModel::VISIBILITY_ALL];
         if ($user !== null) {
-            if ($user->can(ManageUsers::class)) {
+            if ((new PermissionManager(['subject' => $user]))->can(ManageUsers::class)) {
                 return $this;
             }
 
@@ -93,7 +93,7 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
 
         return $this->active()
             ->andWhere(['OR',
-                ['user.id' => Yii::$app->user->id], // User can view own profile
+                ['user.id' => $user->id], // User can view own profile
                 ['IN', 'user.visibility', $allowedVisibilities]
             ]);
     }
