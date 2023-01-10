@@ -22,7 +22,7 @@ class CanViewContent extends AbstractContentPermission
 
         // Check Guest Visibility
         if (!$user) {
-            return $this->checkGuestAccess();
+            return $this->checkGuestAccess($content);
         }
 
         // User can access own content
