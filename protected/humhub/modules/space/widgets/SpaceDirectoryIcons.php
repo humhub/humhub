@@ -8,7 +8,9 @@
 namespace humhub\modules\space\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
+use Yii;
 
 /**
  * SpaceDirectoryIcons shows footer icons for spaces cards
@@ -34,12 +36,12 @@ class SpaceDirectoryIcons extends Widget
         }
 
         $membership = $this->space->getMembership();
-        if (!$membership || !$membership->isPrivileged()) {
-            return '';
-        }
+        $membersCount = Membership::getSpaceMembersQuery($this->space)->active()->visible()->count();
 
         return $this->render('spaceDirectoryIcons', [
             'space' => $this->space,
+            'membersCount' => Yii::$app->formatter->asShortInteger($membersCount),
+            'canViewMembers' => $membership && $membership->isPrivileged(),
         ]);
     }
 
