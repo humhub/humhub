@@ -21,3 +21,6 @@ modules:
           port: 4444
           window_size: maximize
           restart: true
+          capabilities:
+            chromeOptions:
+              args: ["--lang=en-US"]
