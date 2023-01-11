@@ -5,18 +5,19 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
-use yii\helpers\Url;
-use yii\web\View;
+use humhub\widgets\Link;
+use yii\helpers\Html;
 
-/* @var $this View */
 /* @var $space Space */
-/* @var $showMemberships bool */
-?>
+/* @var $membersCount int */
+/* @var $canViewMembers bool */
 
-<?php if ($showMemberships): ?>
-    <a href="#" class="fa fa-users" data-action-click="ui.modal.load"
-       data-action-url="<?= Url::to(['/space/membership/members-list', 'container' => $space]) ?>">
-        <span><?= Yii::$app->formatter->asShortInteger(Membership::getSpaceMembersQuery($space)->active()->visible()->count()) ?></span></a>
+$text = ' <span>' . $membersCount . '</span>';
+$class = 'fa fa-users';
+?>
+<?php if ($canViewMembers) : ?>
+    <?= Link::withAction($text, 'ui.modal.load', $space->createUrl('/space/membership/members-list'))->cssClass($class) ?>
+<?php else: ?>
+    <?= Html::tag('span', $text, ['class' => $class]) ?>
 <?php endif; ?>
