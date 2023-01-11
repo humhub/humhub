@@ -29,9 +29,17 @@ class SpaceDirectoryIcons extends Widget
      */
     public function run()
     {
+        if ($this->space->getAdvancedSettings()->hideMembers) {
+            return '';
+        }
+
+        $membership = $this->space->getMembership();
+        if (!$membership || !$membership->isPrivileged()) {
+            return '';
+        }
+
         return $this->render('spaceDirectoryIcons', [
             'space' => $this->space,
-            'showMemberships' => !$this->space->getAdvancedSettings()->hideMembers
         ]);
     }
 
