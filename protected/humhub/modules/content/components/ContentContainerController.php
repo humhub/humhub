@@ -162,6 +162,6 @@ class ContentContainerController extends Controller
         /* @var Space|User $contentContainerClass */
         $contentContainerClass = $contentContainer->class;
 
-        return $contentContainerClass::find()->where(['guid' => $guid])->visible()->one();
+        return $contentContainerClass::find()->where(['guid' => $guid])->one();
     }
 }
