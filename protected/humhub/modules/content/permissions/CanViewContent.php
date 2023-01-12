@@ -26,13 +26,13 @@ class CanViewContent extends AbstractContentPermission
         }
 
         // User can access own content
-        if ($user !== null && $this->created_by == $user->id) {
+        if ($content->content->created_by == $user->id) {
             return true;
         }
 
 
         // Public visible content
-        if ($this->isPublic()) {
+        if ($content->content->isPublic()) {
             return true;
         }
 
@@ -41,9 +41,9 @@ class CanViewContent extends AbstractContentPermission
             return true;
         }
 
-        if ($this->isPrivate() && $this->getContainer() !== null && $this->getContainer()->canAccessPrivateContent($user)) {
-            return true;
-        }
+        return $content->content->isPrivate() &&
+            $content->content->container !== null &&
+            $content->content->container->canAccessPrivateContent($user);
     }
 
     /**
@@ -56,13 +56,13 @@ class CanViewContent extends AbstractContentPermission
      *
      * @return bool
      */
-    private function checkGuestAccess(ContentActiveRecord $content)
+    private function checkGuestAccess(ContentActiveRecord $content): bool
     {
         if (!$content->content->isPublic() || !AuthHelper::isGuestAccessEnabled()) {
             return false;
         }
 
-        // GLobal content
+        // Global content
         if (!$content->content->container) {
             return $content->content->isPublic();
         }

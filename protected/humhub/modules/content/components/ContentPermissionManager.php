@@ -21,6 +21,6 @@ class ContentPermissionManager extends AbstractPermissionManager
             throw new InvalidArgumentException(get_class($permission) . ' must be instance of ' . AbstractContentPermission::class);
         }
 
-        return $permission->verify($this->content, $this->subject);
+        return $permission->verify($this->content, $this->getSubject());
     }
 }
