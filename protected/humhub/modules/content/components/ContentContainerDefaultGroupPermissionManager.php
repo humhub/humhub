@@ -9,14 +9,14 @@
 namespace humhub\modules\content\components;
 
 use humhub\components\Module;
-use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\components\GroupPermissionManager;
 use humhub\modules\content\models\ContentContainerDefaultPermission;
 use Yii;
 
 /**
  * @inheritdoc
  */
-class ContentContainerDefaultPermissionManager extends PermissionManager
+class ContentContainerDefaultGroupPermissionManager extends GroupPermissionManager
 {
 
     /**

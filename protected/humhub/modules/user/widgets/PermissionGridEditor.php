@@ -36,7 +36,7 @@ class PermissionGridEditor extends GridView
     public $showHeader = false;
 
     /**
-     * @var \humhub\modules\user\components\PermissionManager
+     * @var \humhub\modules\user\components\GroupPermissionManager
      */
     public $permissionManager;
 

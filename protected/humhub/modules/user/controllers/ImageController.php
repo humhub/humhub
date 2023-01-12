@@ -11,7 +11,7 @@ namespace humhub\modules\user\controllers;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\controllers\ContainerImageController;
 use humhub\modules\content\models\ContentContainer;
-use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\components\GroupPermissionManager;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\web\HttpException;

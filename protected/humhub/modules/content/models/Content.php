@@ -23,7 +23,7 @@ use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\components\GroupPermissionManager;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
@@ -724,65 +724,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         }
     }
 
-    /**
-     * Checks if the given user can edit/create this content.
-     *
-     * A user can edit a content if one of the following conditions are met:
-     *
-     *  - User is the owner of the content
-     *  - User is system administrator and the content module setting `adminCanEditAllContent` is set to true (default)
-     *  - The user is granted the managePermission set by the model record class
-     *  - The user meets the additional condition implemented by the model records class own `canEdit()` function.
-     *
-     * @param User|integer $user user instance or user id
-     * @return bool can edit/create this content
-     * @throws Exception
-     * @throws IntegrityException
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
-     * @since 1.1
-     */
     public function canEdit($user = null)
     {
-        if (Yii::$app->user->isGuest) {
-            return false;
-        }
-
-        if ($user === null) {
-            $user = Yii::$app->user->getIdentity();
-        } else if (!($user instanceof User)) {
-            $user = User::findOne(['id' => $user]);
-        }
-
-        // Only owner can edit his content
-        if ($user !== null && $this->created_by == $user->id) {
-            return true;
-        }
-
-        // Global Admin can edit/delete arbitrarily content
-        if (Yii::$app->getModule('content')->adminCanEditAllContent && $user->isSystemAdmin()) {
-            return true;
-        }
-
-        $model = $this->getModel();
-
-        // Check additional manage permission for the given container
-        if ($this->container) {
-            if ($model->isNewRecord && $model->hasCreatePermission() && $this->container->getPermissionManager($user)->can($model->getCreatePermission())) {
-                return true;
-            }
-            if (!$model->isNewRecord && $model->hasManagePermission() && $this->container->getPermissionManager($user)->can($model->getManagePermission())) {
-                return true;
-            }
-        }
-
-        // Check if underlying models canEdit implementation
-        // ToDo: Implement this as interface
-        if (method_exists($model, 'canEdit') && $model->canEdit($user)) {
-            return true;
-        }
-
-        return false;
+        return $this->getModel()->getPermissionManager($user)->can($this->getModel()->editPermission);
     }
 
     /**
@@ -810,7 +754,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      * @return bool
      * @throws Exception
      * @throws \yii\base\InvalidConfigException
-     * @see PermissionManager::can()
+     * @see GroupPermissionManager::can()
      * @since 1.2.1
      */
     public function can($permission, $params = [], $allowCaching = true)
@@ -829,75 +773,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function canView($user = null)
     {
-        if (!$user && !Yii::$app->user->isGuest) {
-            $user = Yii::$app->user->getIdentity();
-        } else if (!$user instanceof User) {
-            $user = User::findOne(['id' => $user]);
-        }
-
-        // Check global content visibility, private global content is visible for all users
-        if (empty($this->contentcontainer_id) && !Yii::$app->user->isGuest) {
-            return true;
-        }
-
-        // User can access own content
-        if ($user !== null && $this->created_by == $user->id) {
-            return true;
-        }
-
-        // Check Guest Visibility
-        if (!$user) {
-            return $this->checkGuestAccess();
-        }
-
-        // Public visible content
-        if ($this->isPublic()) {
-            return true;
-        }
-
-        // Check system admin can see all content module configuration
-        if ($user->canViewAllContent()) {
-            return true;
-        }
-
-        if ($this->isPrivate() && $this->getContainer() !== null && $this->getContainer()->canAccessPrivateContent($user)) {
-            return true;
-        }
-
-        return false;
+        return $this->getModel()->getPermissionManager($user)->can($this->getModel()->viewPermission);
     }
 
-    /**
-     * Determines if a guest user is able to read this content.
-     * This is the case if all of the following conditions are met:
-     *
-     *  - The content is public
-     *  - The `auth.allowGuestAccess` setting is enabled
-     *  - The space or profile visibility is set to VISIBILITY_ALL
-     *
-     * @return bool
-     */
-    public function checkGuestAccess()
-    {
-        if (!$this->isPublic() || !AuthHelper::isGuestAccessEnabled()) {
-            return false;
-        }
 
-        // GLobal content
-        if (!$this->container) {
-            return $this->isPublic();
-        }
-
-        if ($this->container instanceof Space) {
-            return $this->isPublic() && $this->container->visibility == Space::VISIBILITY_ALL;
-        }
-
-        if ($this->container instanceof User) {
-            return $this->isPublic() && $this->container->visibility == User::VISIBILITY_ALL;
-        }
-
-        return false;
-    }
 
     /**
      * Updates the wall/stream sorting time of this content for "updated at" sorting
@@ -939,4 +818,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     {
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
     }
+
+
 }

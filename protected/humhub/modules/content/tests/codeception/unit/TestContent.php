@@ -27,6 +27,7 @@ class TestContent extends Post
     public function setManagePermission($managePermission = [])
     {
         $this->managePermission = $managePermission;
+        $this->getPermissionManager()->clear();
     }
 
     public function getContentName()

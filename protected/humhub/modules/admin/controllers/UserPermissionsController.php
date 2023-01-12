@@ -10,7 +10,7 @@ namespace humhub\modules\admin\controllers;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
-use humhub\modules\content\components\ContentContainerDefaultPermissionManager;
+use humhub\modules\content\components\ContentContainerDefaultGroupPermissionManager;
 use humhub\modules\content\models\ContentContainerDefaultPermission;
 use humhub\modules\content\models\ContentContainerPermission;
 use humhub\modules\content\models\ContentContainerSetting;
@@ -60,7 +60,7 @@ class UserPermissionsController extends Controller
      */
     public function actionIndex()
     {
-        $defaultPermissionManager = new ContentContainerDefaultPermissionManager([
+        $defaultPermissionManager = new ContentContainerDefaultGroupPermissionManager([
             'contentContainerClass' => User::class,
         ]);
 

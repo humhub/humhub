@@ -7,18 +7,21 @@
 
 namespace humhub\modules\user\tests\codeception\unit;
 
-use humhub\libs\BasePermission;
+use humhub\components\permission\BasePermission;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\SeeAdminInformation;
-use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\components\GroupPermissionManager;
 
-class PermissionManagerMock extends PermissionManager
+class GroupPermissionManagerMock extends GroupPermissionManager
 {
-    public $permissions = [
+    /**
+     * @inheritdoc
+     */
+    protected $permissions = [
         2 => [
             ManageUsers::class,
             ManageGroups::class
@@ -33,6 +36,9 @@ class PermissionManagerMock extends PermissionManager
         ]
     ];
 
+    /**
+     * @inheritdoc
+     */
     protected function verify(BasePermission $permission)
     {
         $subject = $this->getSubject();

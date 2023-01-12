@@ -26,7 +26,7 @@ use humhub\modules\user\authclient\Password as PasswordAuth;
 use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\behaviors\ProfileController;
 use humhub\modules\user\components\ActiveQueryUser;
-use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\components\GroupPermissionManager;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
@@ -834,7 +834,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             return true;
         }
 
-        if ((new PermissionManager(['subject' => $this]))->can([ManageUsers::class, ManageGroups::class])) {
+        if ((new GroupPermissionManager(['subject' => $this]))->can([ManageUsers::class, ManageGroups::class])) {
             return true;
         }
 
@@ -860,7 +860,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             return false;
         }
 
-        return (new PermissionManager(['subject' => $this]))->can(ManageUsers::class);
+        return (new GroupPermissionManager(['subject' => $this]))->can(ManageUsers::class);
     }
 
     /**

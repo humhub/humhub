@@ -3,7 +3,7 @@
 namespace tests\codeception\unit\modules\admin;
 
 use humhub\libs\BasePermission;
-use humhub\modules\content\components\ContentContainerDefaultPermissionManager;
+use humhub\modules\content\components\ContentContainerDefaultGroupPermissionManager;
 use humhub\modules\like\permissions\CanLike;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -25,7 +25,7 @@ class DefaultPermissionsTest extends HumHubDbTestCase
         $testState = BasePermission::STATE_DENY;
         $testPermission = new CanLike;
 
-        $defaultPermissionManager = new ContentContainerDefaultPermissionManager([
+        $defaultPermissionManager = new ContentContainerDefaultGroupPermissionManager([
             'contentContainerClass' => get_class($space),
         ]);
         $defaultPermission = $defaultPermissionManager->getById(get_class($testPermission), $testPermission->getModuleId());
@@ -53,7 +53,7 @@ class DefaultPermissionsTest extends HumHubDbTestCase
         $testState = BasePermission::STATE_ALLOW;
         $testPermission = new CanLike;
 
-        $defaultPermissionManager = new ContentContainerDefaultPermissionManager([
+        $defaultPermissionManager = new ContentContainerDefaultGroupPermissionManager([
             'contentContainerClass' => get_class($user),
         ]);
         $defaultPermission = $defaultPermissionManager->getById(get_class($testPermission), $testPermission->getModuleId());

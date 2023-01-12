@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  *
  */
- 
+
 namespace humhub\modules\content\components;
 
 
@@ -13,7 +13,7 @@ use Yii;
 use humhub\components\access\ActionAccessValidator;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\components\GroupPermissionManager;
 use humhub\modules\user\models\User;
 use yii\base\InvalidArgumentException;
 
@@ -81,7 +81,7 @@ class UserGroupAccessValidator extends ActionAccessValidator
             return false;
         }
 
-        $userPermissionManager =  new PermissionManager(['subject' => $this->access->user]);
+        $userPermissionManager =  new GroupPermissionManager(['subject' => $this->access->user]);
         return ($this->access->user->isSystemAdmin())
             || ($this->contentContainer instanceof Space && $userPermissionManager->can(ManageSpaces::class));
     }
