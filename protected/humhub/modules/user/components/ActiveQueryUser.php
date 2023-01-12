@@ -74,6 +74,8 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
     {
         $this->trigger(self::EVENT_CHECK_VISIBILITY, new ActiveQueryEvent(['query' => $this]));
 
+        $this->active();
+
         if ($user === null && !Yii::$app->user->isGuest) {
             try {
                 $user = Yii::$app->user->getIdentity();
@@ -83,19 +85,22 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
         }
 
         $allowedVisibilities = [UserModel::VISIBILITY_ALL];
-        if ($user !== null) {
-            if ((new PermissionManager(['subject' => $user]))->can(ManageUsers::class)) {
-                return $this;
-            }
-
-            $allowedVisibilities[] = UserModel::VISIBILITY_REGISTERED_ONLY;
+        if ($user === null) {
+            // Guest can view only public users
+            return $this->andWhere(['IN', 'user.visibility', $allowedVisibilities]);
         }
 
-        return $this->active()
-            ->andWhere(['OR',
-                ['user.id' => $user->id], // User can view own profile
-                ['IN', 'user.visibility', $allowedVisibilities]
-            ]);
+        if ((new PermissionManager(['subject' => $user]))->can(ManageUsers::class)) {
+            // Admin/manager can view users with any visibility status
+            return $this;
+        }
+
+        $allowedVisibilities[] = UserModel::VISIBILITY_REGISTERED_ONLY;
+
+        return $this->andWhere(['OR',
+            ['user.id' => $user->id], // User also can view own profile
+            ['IN', 'user.visibility', $allowedVisibilities]
+        ]);
     }
 
 

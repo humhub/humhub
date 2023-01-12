@@ -11,6 +11,9 @@ HumHub Changelog
 - Enh #6001: Added new `ContentActiveFixture` and migrated `PostFixture` to it
 - Fix #6007: Fix number of space members
 - Fix #6012: View own invisible profile
+- Fix #6027: Fix private user visibility by guest
+- Fix #6030: Use all searchable profile fields in UserPicker searching
+- Fix #6026: Fix visibility members counter for guests
 
 1.13.0 (December 21, 2022)
 --------------------------

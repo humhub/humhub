@@ -71,7 +71,7 @@ class UserPicker
             //Filter out users by means of the fillQuery or default the fillQuery
             $fillQuery = (isset($cfg['fillQuery'])) ? $cfg['fillQuery'] : UserFilter::find()->active();
             UserFilter::addKeywordFilter($fillQuery, $cfg['keyword'], ($cfg['maxResult'] - count($user)));
-            $fillQuery->andFilterWhere(['not in', 'id', self::getUserIdArray($user)]);
+            $fillQuery->andFilterWhere(['not in', 'user.id', self::getUserIdArray($user)]);
             $fillUser = $fillQuery->all();
             
             //Either the additional users are disabled (by default) or we disable them by permission
