@@ -16,7 +16,7 @@ class CanViewContent extends AbstractContentPermission
     public function verify(ContentActiveRecord $content, ?User $user): bool
     {
         // Check global content visibility, private global content is visible for all users
-        if (empty($this->contentcontainer_id) && $user !== null) {
+        if (empty($content->content->contentcontainer_id) && $user !== null) {
             return true;
         }
 

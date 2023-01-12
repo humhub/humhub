@@ -8,7 +8,7 @@
 
 namespace tests\codeception\unit\modules\content;
 
-use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\ContentContainerPermission;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\tests\codeception\unit\TestContent;
@@ -57,7 +57,7 @@ class ContentActiveRecordTest extends HumHubDbTestCase
 
         $this->assertFalse($model->content->canEdit());
 
-        $this->setPermission($space, Space::USERGROUP_MEMBER, new ManageContent, 1);
+        $this->setPermission($model, Space::USERGROUP_MEMBER, new ManageContent, 1);
 
         $this->assertTrue($model->content->canEdit());
 
@@ -70,16 +70,17 @@ class ContentActiveRecordTest extends HumHubDbTestCase
         $this->assertTrue($model->content->canEdit());
     }
 
-    function setPermission(ContentContainerActiveRecord $contentContianer, $groupId, $permission, $state = 1)
+    function setPermission(ContentActiveRecord $model, $groupId, $permission, $state = 1)
     {
         $groupPermission = new ContentContainerPermission();
         $groupPermission->permission_id = $permission->id;
         $groupPermission->group_id = $groupId;
-        $groupPermission->contentcontainer_id = $contentContianer->contentContainerRecord->id;
+        $groupPermission->contentcontainer_id = $model->content->contentContainer->id;
         $groupPermission->module_id = $permission->moduleId;
         $groupPermission->class = $permission->className();
         $groupPermission->state = $state;
         $groupPermission->save();
-        $contentContianer->getPermissionManager()->clear();
+        $model->getPermissionManager()->clear();
+        $model->content->container->getPermissionManager()->clear();
     }
 }

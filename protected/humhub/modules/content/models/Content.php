@@ -726,7 +726,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
 
     public function canEdit($user = null)
     {
-        return $this->getModel()->getPermissionManager()->can($this->getModel()->editPermission);
+        return $this->getModel()->getPermissionManager($user)->can($this->getModel()->editPermission);
     }
 
     /**
@@ -773,7 +773,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function canView($user = null)
     {
-        return $this->getModel()->getPermissionManager()->can($this->getModel()->viewPermission);
+        return $this->getModel()->getPermissionManager($user)->can($this->getModel()->viewPermission);
     }
 
 
