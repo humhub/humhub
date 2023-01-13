@@ -14,6 +14,7 @@ HumHub Changelog
 - Fix #6027: Fix private user visibility by guest
 - Fix #6030: Use all searchable profile fields in UserPicker searching
 - Fix #6026: Fix visibility members counter for guests
+- Fix #6041: Fix search of obsolete cached objects
 
 1.13.0 (December 21, 2022)
 --------------------------
