@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
+use humhub\libs\Helpers;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -29,7 +30,6 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
-use yii\db\Expression;
 use yii\db\IntegrityException;
 use yii\helpers\Url;
 
@@ -778,11 +778,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner
 
         // Check if underlying models canEdit implementation
         // ToDo: Implement this as interface
-        if (method_exists($model, 'canEdit') && $model->canEdit($user)) {
-            return true;
-        }
-
-        return false;
+        return method_exists($model, 'canEdit') &&
+            !Helpers::isCalledFromMethod($model, 'canEdit') &&
+            $model->canEdit($user);
     }
 
     /**
