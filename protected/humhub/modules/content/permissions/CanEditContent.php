@@ -21,14 +21,14 @@ use Yii;
 class CanEditContent extends AbstractContentPermission
 {
 
-    public function verify(ContentActiveRecord $content, ?User $user): bool
+    public function verify(?User $user = null): bool
     {
         if ($user === null) {
             return false;
         }
 
         // Only owner can edit his content
-        if ($content->content->created_by == $user->id) {
+        if ($this->content->created_by == $user->id) {
             return true;
         }
 
@@ -38,18 +38,18 @@ class CanEditContent extends AbstractContentPermission
         }
 
         // Check additional manage permission for the given container
-        if ($content->content->container) {
-            if ($content->isNewRecord && $content->hasCreatePermission() && $content->content->container->getPermissionManager($user)->can($content->getCreatePermission())) {
+        if ($this->container) {
+            if ($this->model->isNewRecord && $this->model->hasCreatePermission() && $this->container->getPermissionManager($user)->can($this->model->getCreatePermission())) {
                 return true;
             }
-            if (!$content->isNewRecord && $content->hasManagePermission() && $content->content->container->getPermissionManager($user)->can($content->getManagePermission())) {
+            if (!$this->model->isNewRecord && $this->model->hasManagePermission() && $this->container->getPermissionManager($user)->can($this->model->getManagePermission())) {
                 return true;
             }
         }
 
         // Check if underlying models canEdit implementation
         // ToDo: Implement this as interface
-        if (method_exists($content, 'canEdit') && $content->canEdit($user)) {
+        if (method_exists($this->model, 'canEdit') && $this->model->canEdit($user)) {
             return true;
         }
 

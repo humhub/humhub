@@ -613,7 +613,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     {
         if ($user && !$user->is(Yii::$app->user->getIdentity())) {
             return new ContentPermissionManager([
-                'content' => $this,
+                'model' => $this,
                 'subject' => $user
             ]);
         }
@@ -623,7 +623,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
         }
 
         return $this->permissionManager = new ContentPermissionManager([
-            'content' => $this
+            'model' => $this
         ]);
     }
 }

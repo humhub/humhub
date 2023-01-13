@@ -9,10 +9,7 @@ use yii\base\InvalidArgumentException;
 
 class ContentPermissionManager extends AbstractPermissionManager
 {
-    /**
-     * @var ContentActiveRecord
-     */
-    public $content;
+    public ContentActiveRecord $model;
 
     protected function verify(BasePermission $permission)
     {
@@ -21,6 +18,10 @@ class ContentPermissionManager extends AbstractPermissionManager
             throw new InvalidArgumentException(get_class($permission) . ' must be instance of ' . AbstractContentPermission::class);
         }
 
-        return $permission->verify($this->content, $this->getSubject());
+        if (!isset($permission->model)) {
+            $permission->model = $this->model;
+        }
+
+        return $permission->verify($this->getSubject());
     }
 }

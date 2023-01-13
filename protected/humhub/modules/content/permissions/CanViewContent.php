@@ -13,26 +13,26 @@ use humhub\modules\user\models\User;
 class CanViewContent extends AbstractContentPermission
 {
 
-    public function verify(ContentActiveRecord $content, ?User $user): bool
+    public function verify(?User $user = null): bool
     {
         // Check global content visibility, private global content is visible for all users
-        if (empty($content->content->contentcontainer_id) && $user !== null) {
+        if (empty($this->content->contentcontainer_id) && $user !== null) {
             return true;
         }
 
         // Check Guest Visibility
         if (!$user) {
-            return $this->checkGuestAccess($content);
+            return $this->checkGuestAccess();
         }
 
         // User can access own content
-        if ($content->content->created_by == $user->id) {
+        if ($this->content->created_by == $user->id) {
             return true;
         }
 
 
         // Public visible content
-        if ($content->content->isPublic()) {
+        if ($this->content->isPublic()) {
             return true;
         }
 
@@ -41,9 +41,9 @@ class CanViewContent extends AbstractContentPermission
             return true;
         }
 
-        return $content->content->isPrivate() &&
-            $content->content->container !== null &&
-            $content->content->container->canAccessPrivateContent($user);
+        return $this->content->isPrivate() &&
+            $this->container !== null &&
+            $this->container->canAccessPrivateContent($user);
     }
 
     /**
@@ -56,23 +56,23 @@ class CanViewContent extends AbstractContentPermission
      *
      * @return bool
      */
-    private function checkGuestAccess(ContentActiveRecord $content): bool
+    private function checkGuestAccess(): bool
     {
-        if (!$content->content->isPublic() || !AuthHelper::isGuestAccessEnabled()) {
+        if (!$this->content->isPublic() || !AuthHelper::isGuestAccessEnabled()) {
             return false;
         }
 
         // Global content
-        if (!$content->content->container) {
-            return $content->content->isPublic();
+        if (!$this->container) {
+            return true;
         }
 
-        if ($content->content->container instanceof Space) {
-            return $content->content->isPublic() && $content->content->container->visibility == Space::VISIBILITY_ALL;
+        if ($this->container instanceof Space) {
+            return $this->container->visibility == Space::VISIBILITY_ALL;
         }
 
-        if ($content->content->container instanceof User) {
-            return $content->content->isPublic() && $content->content->container->visibility == User::VISIBILITY_ALL;
+        if ($this->container instanceof User) {
+            return $this->container->visibility == User::VISIBILITY_ALL;
         }
 
         return false;
