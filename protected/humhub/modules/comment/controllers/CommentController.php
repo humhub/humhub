@@ -23,8 +23,6 @@ use humhub\modules\comment\widgets\ShowMore;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\file\handler\FileHandlerCollection;
 use Yii;
-use yii\base\BaseObject;
-use yii\data\Pagination;
 use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
@@ -89,30 +87,31 @@ class CommentController extends Controller
      */
     public function actionShow()
     {
-        //TODO: Dont use query logic in controller layer...
+        $commentId = Yii::$app->request->get('commentId');
+        $type = Yii::$app->request->get('type', ShowMore::TYPE_PREVIOUS);
+        $pageSize = Yii::$app->request->get('pageSize', $this->module->commentsBlockLoadSize);
 
-        $query = Comment::find();
-        $query->orderBy('created_at DESC');
-        $query->where(['object_model' => get_class($this->target), 'object_id' => $this->target->getPrimaryKey()]);
+        $comments = Comment::getMoreComments($this->target, $commentId, $type, $pageSize);
 
-        $pagination = new Pagination([
-            'totalCount' => Comment::GetCommentCount(get_class($this->target), $this->target->getPrimaryKey()),
-            'pageSize' => Yii::$app->request->get('pageSize', $this->module->commentsBlockLoadSize)
-        ]);
-
-        // If need to load more than 1 page per request
-        $pageNum = Yii::$app->request->get('pageNum', 1);
-
-        $query->offset($pagination->offset)->limit($pagination->limit * $pageNum);
-        $comments = array_reverse($query->all());
-
-        if ($pageNum > 1) {
-            $pagination->setPage($pagination->page + $pageNum - 1);
+        $output = '';
+        if ($type === ShowMore::TYPE_PREVIOUS) {
+            $output .= ShowMore::widget([
+                'object' => $this->target,
+                'pageSize' => $pageSize,
+                'commentId' => isset($comments[0]) ? $comments[0]->id : null,
+                'type' => $type,
+            ]);
         }
-
-        $output = ShowMore::widget(['pagination' => $pagination, 'object' => $this->target]);
         foreach ($comments as $comment) {
             $output .= CommentWidget::widget(['comment' => $comment]);
+        }
+        if ($type === ShowMore::TYPE_NEXT && count($comments) > 1) {
+            $output .= ShowMore::widget([
+                'object' => $this->target,
+                'pageSize' => $pageSize,
+                'commentId' => $comments[count($comments)-1]->id,
+                'type' => $type,
+            ]);
         }
 
         if (Yii::$app->request->get('mode') === 'popup') {

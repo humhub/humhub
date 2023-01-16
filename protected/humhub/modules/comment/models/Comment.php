@@ -13,6 +13,7 @@ use humhub\modules\comment\activities\NewComment;
 use humhub\modules\comment\live\NewComment as NewCommentLive;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\notifications\NewComment as NewCommentNotification;
+use humhub\modules\comment\widgets\ShowMore;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
@@ -238,12 +239,13 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
                     ->orderBy('created_at DESC')
                     ->limit($limit)
                     ->column();
-                // Get all newer comments after the current comment
+                // Get 1 newer comment after the current comment
                 $newerCommentIds = Comment::find()
                     ->select('id')
                     ->where($objectCondition)
                     ->andWhere(['>', 'id', $currentCommentId])
                     ->orderBy('created_at ASC')
+                    ->limit(1)
                     ->column();
                 $nearCommentIds = array_merge($nearCommentIds, $newerCommentIds);
                 $query->where(['IN', 'id', $nearCommentIds]);
@@ -281,6 +283,44 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         }
 
         return $commentCount;
+    }
+
+    /**
+     * Find more comments before or after a requested comment
+     *
+     * @param int|null $commentId ID of the latest comment from previous query
+     * @param string|null $type
+     * @param int|null $pageSize
+     * @param Comment|ContentActiveRecord
+     * @return Comment[]
+     */
+    public static function getMoreComments($object, ?int $commentId = null, ?string $type = null, ?int $pageSize = null): array
+    {
+        if (!$pageSize) {
+            /** @var Module $module */
+            $module = Yii::$app->getModule('comment');
+            $pageSize = $module->commentsBlockLoadSize;
+        }
+
+        $query = Comment::find()
+            ->where(['object_model' => get_class($object), 'object_id' => $object->getPrimaryKey()])
+            ->limit($pageSize);
+
+        if ($type === ShowMore::TYPE_NEXT) {
+            $query->orderBy(['created_at' => SORT_ASC]);
+            if ($commentId) {
+                $query->andWhere(['>', 'id', $commentId]);
+            }
+            $comments = $query->all();
+        } else {
+            $query->orderBy(['created_at' => SORT_DESC]);
+            if ($commentId) {
+                $query->andWhere(['<', 'id', $commentId]);
+            }
+            $comments = array_reverse($query->all());
+        }
+
+        return $comments;
     }
 
     /**
