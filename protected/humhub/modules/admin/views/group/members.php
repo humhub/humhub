@@ -89,19 +89,13 @@ AdminGroupAsset::register($this);
                     'class' => 'yii\grid\ActionColumn',
                     'options' => ['style' => 'width:40px; min-width:40px;'],
                     'buttons' => [
-                        'view' => function($url, $model) {
-                            return false;
-                        },
-                        'update' => function($url, $model) use ($group) {
-                            return false;
-                        },
-                        'delete' => function($url, $model) use ($group) {
-                            return Button::danger()
-                                ->tooltip(Yii::t('AdminModule.user', 'Remove from group'))
-                                ->action('admin.group.removeMember', Url::to(['remove-group-user', 'id' => $group->id, 'userId' => $model->id]))
-                                ->icon('remove')->xs()
-                                ->confirm();
-                        }
+                        'view' => fn($url, $model) => false,
+                        'update' => fn($url, $model) => false,
+                        'delete' => fn($url, $model) => Button::danger()
+                            ->tooltip(Yii::t('AdminModule.user', 'Remove from group'))
+                            ->action('admin.group.removeMember', Url::to(['remove-group-user', 'id' => $group->id, 'userId' => $model->id]))
+                            ->icon('remove')->xs()
+                            ->confirm()
                     ],
                 ],
             ],

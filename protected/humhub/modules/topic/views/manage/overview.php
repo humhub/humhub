@@ -58,21 +58,15 @@ use yii\helpers\Html;
                     'class' => 'yii\grid\ActionColumn',
                     'options' => ['width' => '80px'],
                     'buttons' => [
-                        'update' => function ($url, $model) use ($contentContainer) {
-                            /* @var $model \humhub\modules\topic\models\Topic */
-                            return ModalButton::primary()->load($contentContainer->createUrl('edit', ['id' => $model->id]))->icon('edit')->xs()->loader(false);
-                        },
-                        'view' => function ($url, $model) use ($contentContainer) {
-                            /* @var $model \humhub\modules\topic\models\Topic */
-                            return Button::primary()->link($model->getUrl())->icon('fa-filter')->xs()->loader(false);
-                        },
-                        'delete' => function ($url, $model) use ($contentContainer) {
-                            /* @var $model \humhub\modules\topic\models\Topic */
-                            return Button::danger()->icon('delete')->action('topic.removeOverviewTopic', $contentContainer->createUrl('delete', ['id' => $model->id]))->confirm(
-                                Yii::t('TopicModule.base', '<strong>Confirm</strong> topic deletion'),
-                                Yii::t('TopicModule.base', 'Do you really want to delete this topic?'),
-                                Yii::t('base', 'Delete'))->xs()->loader(false);
-                        },
+                        'update' => fn($url, $model) => /* @var $model \humhub\modules\topic\models\Topic */
+ModalButton::primary()->load($contentContainer->createUrl('edit', ['id' => $model->id]))->icon('edit')->xs()->loader(false),
+                        'view' => fn($url, $model) => /* @var $model \humhub\modules\topic\models\Topic */
+Button::primary()->link($model->getUrl())->icon('fa-filter')->xs()->loader(false),
+                        'delete' => fn($url, $model) => /* @var $model \humhub\modules\topic\models\Topic */
+Button::danger()->icon('delete')->action('topic.removeOverviewTopic', $contentContainer->createUrl('delete', ['id' => $model->id]))->confirm(
+                            Yii::t('TopicModule.base', '<strong>Confirm</strong> topic deletion'),
+                            Yii::t('TopicModule.base', 'Do you really want to delete this topic?'),
+                            Yii::t('base', 'Delete'))->xs()->loader(false),
                     ],
                 ],
             ]]);

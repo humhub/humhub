@@ -29,22 +29,13 @@ class CSPBuilder
     /**
      * @var array<int, string>
      */
-    private $requireSRIFor = [];
+    private array $requireSRIFor = [];
 
-    /**
-     * @var bool
-     */
-    private $needsCompile = true;
+    private bool $needsCompile = true;
 
-    /**
-     * @var string
-     */
-    private $compiled = '';
+    private string $compiled = '';
 
-    /**
-     * @var bool
-     */
-    private $reportOnly = false;
+    private bool $reportOnly = false;
 
     /**
      * @var bool
@@ -59,7 +50,7 @@ class CSPBuilder
     /**
      * @var string[]
      */
-    private static $directives = [
+    private static array $directives = [
         'base-uri',
         'default-src',
         'child-src',

@@ -105,18 +105,12 @@ use yii\helpers\Html;
                         'class' => 'yii\grid\ActionColumn',
                         'options' => ['style' => 'width:40px; min-width:40px;'],
                         'buttons' => [
-                            'view' => function ($url, $model) {
-                                return false;
-                            },
-                            'update' => function ($url, $model) {
-                                return false;
-                            },
-                            'delete' => function ($url, $model) use($space) {
-                                return Button::danger()->tooltip(Yii::t('SpaceModule.manage', 'Remove from space'))
-                                    ->link(['/space/manage/member/remove', 'userGuid' => $model->user->guid, 'container' => $space])
-                                    ->options(['data-method' => 'POST', 'data-confirm' => Yii::t('SpaceModule.manage', 'Are you sure you want to remove this member.') ])
-                                    ->icon('remove')->xs();
-                            }
+                            'view' => fn($url, $model) => false,
+                            'update' => fn($url, $model) => false,
+                            'delete' => fn($url, $model) => Button::danger()->tooltip(Yii::t('SpaceModule.manage', 'Remove from space'))
+                                ->link(['/space/manage/member/remove', 'userGuid' => $model->user->guid, 'container' => $space])
+                                ->options(['data-method' => 'POST', 'data-confirm' => Yii::t('SpaceModule.manage', 'Are you sure you want to remove this member.') ])
+                                ->icon('remove')->xs()
                         ],
                     ],
                 ],

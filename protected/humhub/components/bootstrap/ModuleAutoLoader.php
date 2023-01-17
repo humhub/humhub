@@ -116,9 +116,7 @@ class ModuleAutoLoader implements BootstrapInterface
      */
     private static function findModulesByPath($path)
     {
-        $hasConfigurationFile = function ($path) {
-            return is_file($path . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE);
-        };
+        $hasConfigurationFile = fn($path) => is_file($path . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE);
 
         return FileHelper::findDirectories(
             Yii::getAlias($path, true),

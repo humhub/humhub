@@ -38,12 +38,12 @@ use yii\validators\EmailValidator;
 class SpaceModelMembership extends Behavior
 {
 
-    private $_spaceOwner = null;
+    private ?\humhub\modules\user\models\User $_spaceOwner = null;
 
     /**
      * @var array cached membership results
      */
-    private $_memberships = [];
+    private array $_memberships = [];
 
     /**
      * Checks if given userId is Member of this Space.

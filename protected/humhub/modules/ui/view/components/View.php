@@ -35,10 +35,9 @@ class View extends \yii\web\View
     const BLOCK_SIDEBAR = 'sidebar';
 
     /**
-     * @var string page title
      * @see View::setPageTitle
      */
-    private $_pageTitle;
+    private ?string $_pageTitle = null;
 
     /**
      * @var array Contains javascript configurations, which will be appended to the view.
@@ -57,7 +56,7 @@ class View extends \yii\web\View
     /**
      * @var array contains already pre-loaded asset urls.
      */
-    private static $preloaded = [];
+    private static array $preloaded = [];
 
     /**
      * A viewContext is a simple string value which usually is set by a controller to define the context of a resulting view.
@@ -87,7 +86,7 @@ class View extends \yii\web\View
     private static $viewContext;
 
 
-    private $_viewMeta;
+    private ?\humhub\modules\ui\view\components\ViewMeta $_viewMeta = null;
 
 
     /**

@@ -61,9 +61,7 @@ class NotificationSettings extends Model
         if ($this->user) {
             // Note the user object has to be provided in the model constructor.
             $spaces = Yii::$app->notification->getSpaces($this->user);
-            $this->spaceGuids = array_map(function ($space) {
-                return $space->guid;
-            }, $spaces);
+            $this->spaceGuids = array_map(fn($space) => $space->guid, $spaces);
         } else {
             $this->spaceGuids = Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces');
         }

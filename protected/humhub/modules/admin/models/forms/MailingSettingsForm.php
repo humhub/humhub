@@ -66,12 +66,8 @@ class MailingSettingsForm extends Model
             [['allowSelfSignedCerts', 'useSmtps'], 'boolean'],
             ['systemEmailAddress', 'email'],
             ['port', 'integer', 'min' => 1, 'max' => 65535],
-            [['hostname', 'port'], 'required', 'when' => function ($model) {
-                return $model->transportType === self::TRANSPORT_SMTP;
-            }],
-            ['dsn', 'required', 'when' => function ($model) {
-                return $model->transportType === self::TRANSPORT_DSN;
-            }],
+            [['hostname', 'port'], 'required', 'when' => fn($model) => $model->transportType === self::TRANSPORT_SMTP],
+            ['dsn', 'required', 'when' => fn($model) => $model->transportType === self::TRANSPORT_DSN],
             [['transportType', 'hostname', 'username', 'password', 'useSmtps', 'allowSelfSignedCerts', 'systemEmailAddress', 'systemEmailName', 'systemEmailReplyTo'], 'string', 'max' => 255],
         ];
     }

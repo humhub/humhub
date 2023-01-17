@@ -27,10 +27,7 @@ class PeopleSettingsForm extends Model
     public $defaultSorting;
     public $defaultSortingGroup;
 
-    /**
-     * @var array Cached options for card details from tables of user profile and its categories
-     */
-    private $detailOptions;
+    private ?array $detailOptions = null;
 
     /**
      * @inheritdoc
@@ -57,9 +54,7 @@ class PeopleSettingsForm extends Model
             ['detail2', 'in', 'range' => $this->getDetailKeys()],
             ['detail3', 'in', 'range' => $this->getDetailKeys()],
             ['defaultSorting', 'in', 'range' => array_keys(self::getSortingOptions())],
-            ['defaultSortingGroup', 'required', 'when' => function ($model) {
-                return $model->defaultSorting == '';
-            }],
+            ['defaultSortingGroup', 'required', 'when' => fn($model) => $model->defaultSorting == ''],
         ];
     }
 
@@ -136,7 +131,7 @@ class PeopleSettingsForm extends Model
 
         foreach ($options as $key => $option) {
             if (is_array($option)) {
-                $keys = array_merge($keys, array_keys($option));
+                $keys = [...$keys, ...array_keys($option)];
             } else {
                 $keys[] = $key;
             }

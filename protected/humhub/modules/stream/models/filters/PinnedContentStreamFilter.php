@@ -68,8 +68,6 @@ class PinnedContentStreamFilter extends StreamQueryFilter
         $pinnedQuery->andWhere(['AND', ['content.pinned' => 1], ['content.contentcontainer_id' => $this->container->contentcontainer_id]]);
         $pinnedQuery->limit(1000);
         $this->pinnedContent = $pinnedQuery->all();
-        return array_map(function($content) {
-            return $content->id;
-        }, $this->pinnedContent);
+        return array_map(fn($content) => $content->id, $this->pinnedContent);
     }
 }

@@ -84,9 +84,7 @@ class HumHubHelper extends Module
 
     public function initModules()
     {
-        $modules = array_map(function (Module $module) {
-            return $module->id;
-        }, Yii::$app->moduleManager->getModules());
+        $modules = array_map(fn(Module $module) => $module->id, Yii::$app->moduleManager->getModules());
 
         Yii::$app->moduleManager->disableModules($modules);
 

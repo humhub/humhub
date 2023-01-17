@@ -26,7 +26,7 @@ use yii\db\ActiveQuery;
 class Followable extends Behavior
 {
 
-    private $_followerCache = [];
+    private array $_followerCache = [];
 
     /**
      * Return the follow record based on the owner record and the given user id

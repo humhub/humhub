@@ -48,9 +48,7 @@ AdminPendingRegistrationsAsset::register($this);
         [
             'class' => 'yii\grid\CheckboxColumn',
             'cssClass' => 'select-on-check-one',
-            'checkboxOptions' => function ($data) {
-                return ['id' => $data->id];
-            },
+            'checkboxOptions' => fn($data) => ['id' => $data->id],
             'contentOptions' => ['style' => 'width:auto; white-space: normal;'],
         ],
         'email',
@@ -66,28 +64,21 @@ AdminPendingRegistrationsAsset::register($this);
             'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'source', $types),
             'options' => ['width' => '40px'],
             'format' => 'raw',
-            'value' => function ($data) use ($types) {
-                return isset($types[$data->source]) ?: Html::encode($data->source);
-            },
+            'value' => fn($data) => isset($types[$data->source]) ?: Html::encode($data->source),
         ],
         [
             'header' => Yii::t('AdminModule.user', 'Actions'),
             'class' => 'yii\grid\ActionColumn',
             'template' => '{resend} {delete}',
             'buttons' => [
-                'resend' => function ($url, $model, $key) {
-                    return Button::primary()
-                        ->action('client.post', Url::to(['resend', 'id' => $model->id]))
-                        ->icon('envelope')
-                        ->xs();
-                },
-                'delete' => function ($url, $model, $key) {
-                    return
-                        Button::primary()
-                            ->action('client.post', Url::to(['delete', 'id' => $model->id]))
-                            ->icon('trash')
-                            ->xs();
-                },
+                'resend' => fn($url, $model, $key) => Button::primary()
+                    ->action('client.post', Url::to(['resend', 'id' => $model->id]))
+                    ->icon('envelope')
+                    ->xs(),
+                'delete' => fn($url, $model, $key) => Button::primary()
+                    ->action('client.post', Url::to(['delete', 'id' => $model->id]))
+                    ->icon('trash')
+                    ->xs(),
             ],
         ],
 

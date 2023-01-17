@@ -38,7 +38,7 @@ class ModuleStatus extends Widget
     /**
      * @var string|null Cached status of the module
      */
-    private $_status;
+    private ?string $_status = null;
 
     /**
      * @inheritdoc

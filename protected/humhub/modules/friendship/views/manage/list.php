@@ -28,9 +28,7 @@ use humhub\widgets\GridView;
                     'view' => function () {
                         return;
                     },
-                    'delete' => function($url, $model) {
-                        return Html::a(Yii::t('FriendshipModule.base', 'Unfriend'), ['/friendship/request/delete', 'userId' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']);
-                    },
+                    'delete' => fn($url, $model) => Html::a(Yii::t('FriendshipModule.base', 'Unfriend'), ['/friendship/request/delete', 'userId' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']),
                         ],
                     ]],
             ]);

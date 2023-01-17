@@ -49,10 +49,7 @@ class Registration extends HForm
      */
     public $enableUserApproval = false;
 
-    /**
-     * @var User
-     */
-    private $_user = null;
+    private ?\humhub\modules\user\models\User $_user = null;
 
     /**
      * @var Password

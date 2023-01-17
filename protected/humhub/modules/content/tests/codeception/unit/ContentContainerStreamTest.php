@@ -13,10 +13,7 @@ use humhub\modules\stream\actions\ContentContainerStream;
 class ContentContainerStreamTest extends HumHubDbTestCase
 {
 
-    /**
-     * @var Space
-     */
-    private $space;
+    private ?\humhub\modules\space\models\Space $space = null;
 
     public function _before()
     {
@@ -107,7 +104,7 @@ class ContentContainerStreamTest extends HumHubDbTestCase
 
         $wallEntries = $action->getStreamQuery()->all();
 
-        $wallEntryIds = array_map(static function($entry) {return $entry->id; }, $wallEntries);
+        $wallEntryIds = array_map(static fn($entry) => $entry->id, $wallEntries);
 
         return $wallEntryIds;
     }

@@ -55,10 +55,7 @@ class LogFilterForm extends Model
      */
     public $levels;
 
-    /**
-     * @var Pagination
-     */
-    private $pagination;
+    private ?\yii\data\Pagination $pagination = null;
 
     /**
      * @var ActiveQuery

@@ -78,9 +78,7 @@ class DownloadAction extends Action
         }
 
         $httpCache = new HttpCache();
-        $httpCache->lastModified = function () {
-            return Yii::$app->formatter->asTimestamp($this->file->updated_at);
-        };
+        $httpCache->lastModified = fn() => Yii::$app->formatter->asTimestamp($this->file->updated_at);
         $httpCache->etagSeed = function () {
             if (file_exists($this->getStoredFilePath())) {
                 return md5_file($this->getStoredFilePath());

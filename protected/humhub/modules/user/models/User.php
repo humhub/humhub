@@ -154,9 +154,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['username'], 'unique'],
             [['username'], 'string', 'max' => $userModule->maximumUsernameLength, 'min' => $userModule->minimumUsernameLength],
             // Client validation is disable due to invalid client pattern validation
-            [['username'], 'match', 'pattern' => $userModule->validUsernameRegexp, 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false, 'when' => function ($model, $attribute) {
-                return $model->getAttribute($attribute) !== $model->getOldAttribute($attribute);
-            }],
+            [['username'], 'match', 'pattern' => $userModule->validUsernameRegexp, 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false, 'when' => fn($model, $attribute) => $model->getAttribute($attribute) !== $model->getOldAttribute($attribute)],
             [['created_by', 'updated_by'], 'integer'],
             [['status'], 'in', 'range' => array_keys(self::getStatusOptions())],
             [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => Profile::SCENARIO_EDIT_ADMIN],
@@ -784,9 +782,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
 
         // Add user group ids
-        $groupIds = array_map(function ($group) {
-            return $group->id;
-        }, $this->groups);
+        $groupIds = array_map(fn($group) => $group->id, $this->groups);
         $attributes['groups'] = $groupIds;
 
         if (!$this->profile->isNewRecord) {

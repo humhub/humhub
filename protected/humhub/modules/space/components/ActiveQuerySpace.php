@@ -111,7 +111,7 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
             $conditions[] = ['LIKE', $field, $keyword];
         }
 
-        return $this->andWhere(array_merge(['OR'], $conditions));
+        return $this->andWhere([...['OR'], ...$conditions]);
     }
 
     /**

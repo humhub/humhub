@@ -56,10 +56,7 @@ class Mailer extends \yii\symfonymailer\Mailer
      */
     public $signingOptions = PKCS7_DETACHED;
 
-    /**
-     * @var SMimeSigner|null
-     */
-    private $signer = null;
+    private ?\Symfony\Component\Mime\Crypto\SMimeSigner $signer = null;
 
     /**
      * @inheritDoc

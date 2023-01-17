@@ -154,10 +154,10 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
                 $subConditions[] = ['LIKE', $field, $variant];
             }
 
-            $conditions[] = array_merge(['OR'], $subConditions);
+            $conditions[] = [...['OR'], ...$subConditions];
         }
 
-        return $this->andWhere(array_merge(['OR'], $conditions));
+        return $this->andWhere([...['OR'], ...$conditions]);
     }
 
     /**

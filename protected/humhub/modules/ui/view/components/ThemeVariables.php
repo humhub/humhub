@@ -37,10 +37,7 @@ class ThemeVariables extends Component
      */
     public $module;
 
-    /**
-     * @var boolean
-     */
-    private $settingsLoaded = false;
+    private bool $settingsLoaded = false;
 
     /**
      * @inheritdoc

@@ -39,7 +39,7 @@ class IconFactory  extends Component
     /**
      * @var [] array  of IconProvider instances associated with a provider id
      */
-    private static $provider = [];
+    private static array $provider = [];
 
     /**
      * @var IconFactory singleton instance

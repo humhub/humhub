@@ -132,9 +132,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
         $module = Yii::$app->getModule('space');
 
         if ($module->useUniqueSpaceNames) {
-            $rules[] = [['name'], 'unique', 'targetClass' => static::class, 'when' => function ($model) {
-                return $model->isAttributeChanged('name');
-            }];
+            $rules[] = [['name'], 'unique', 'targetClass' => static::class, 'when' => fn($model) => $model->isAttributeChanged('name')];
         }
 
         return $rules;

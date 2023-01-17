@@ -99,9 +99,7 @@ class FilterForm extends \yii\base\Model
     public function getNotifications()
     {
         if ($this->notifications == null) {
-            $this->notifications = array_filter(Yii::$app->notification->getNotifications(), function($notification) {
-                return $notification->getCategory() != null;
-            });
+            $this->notifications = array_filter(Yii::$app->notification->getNotifications(), fn($notification) => $notification->getCategory() != null);
         }
 
         return $this->notifications;

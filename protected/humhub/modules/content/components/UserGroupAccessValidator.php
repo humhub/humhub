@@ -28,7 +28,7 @@ class UserGroupAccessValidator extends ActionAccessValidator
 
     public $strict = false;
 
-    private $spaceGroupLevel = [
+    private array $spaceGroupLevel = [
         Space::USERGROUP_GUEST,
         Space::USERGROUP_USER,
         Space::USERGROUP_MEMBER,
@@ -37,7 +37,7 @@ class UserGroupAccessValidator extends ActionAccessValidator
         Space::USERGROUP_OWNER,
     ];
 
-    private $profileGroupLevel = [
+    private array $profileGroupLevel = [
         User::USERGROUP_GUEST,
         User::USERGROUP_USER,
         User::USERGROUP_FRIEND,

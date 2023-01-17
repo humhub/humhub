@@ -142,9 +142,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
                 $this->andWhere(['content.id' =>$contentTagQuery]);
             }
         } else if ($mode == 'OR') {
-            $names = array_map(function ($v) {
-                return $v->name;
-            }, $contentTags);
+            $names = array_map(fn($v) => $v->name, $contentTags);
 
             $this->joinWith('content.tags');
             $this->andWhere(['IS NOT', 'content_tag.id', new Expression('NULL')]);

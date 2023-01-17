@@ -35,12 +35,12 @@ class RichTextToPlainTextConverter extends RichTextToMarkdownConverter
     /**
      * @var int inline text counter used to skip block parsing if maxLength is reached
      */
-    private $textCount = 0;
+    private int $textCount = 0;
 
     /**
      * @var bool if true will skip further block parsing, this flag set if textCount reaches maxLength
      */
-    private $skipBlocks = false;
+    private bool $skipBlocks = false;
 
     /**
      * @inheritdoc

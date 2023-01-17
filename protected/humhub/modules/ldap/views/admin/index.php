@@ -44,14 +44,12 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin([
         'id' => 'authentication-settings-form',
-        'fieldConfig' => function ($model, $attribute) {
-            return [
-                'inputOptions' => [
-                    'class' => 'form-control',
-                    'readonly' => Yii::$app->getModule('user')->settings->isFixed('auth.ldap.' . $attribute)
-                ],
-            ];
-        }
+        'fieldConfig' => fn($model, $attribute) => [
+            'inputOptions' => [
+                'class' => 'form-control',
+                'readonly' => Yii::$app->getModule('user')->settings->isFixed('auth.ldap.' . $attribute)
+            ],
+        ]
     ]) ?>
 
     <?= $form->field($model, 'enabled')->checkbox() ?>

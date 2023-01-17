@@ -118,10 +118,7 @@ class SpreadsheetExport extends Component
      */
     private $formatter;
 
-    /**
-     * @var int
-     */
-    private $row = 1;
+    private int $row = 1;
 
     /**
      * Initializes the grid.

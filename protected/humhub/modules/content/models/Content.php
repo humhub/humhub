@@ -275,9 +275,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         if (count($this->notifyUsersOfNewContent) != 0) {
             // Add manually notified users
             $userQuery->union(
-                User::find()->active()->where(['IN', 'user.id', array_map(function (User $user) {
-                    return $user->id;
-                }, $this->notifyUsersOfNewContent)])
+                User::find()->active()->where(['IN', 'user.id', array_map(fn(User $user) => $user->id, $this->notifyUsersOfNewContent)])
             );
         }
 

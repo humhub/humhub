@@ -18,15 +18,9 @@ class ReadableContentQueryTest extends HumHubDbTestCase
      */
     private $user;
 
-    /**
-     * @var Space
-     */
-    private $publicSpace;
+    private ?\humhub\modules\space\models\Space $publicSpace = null;
 
-    /**
-     * @var Space
-     */
-    private $privateSpace;
+    private ?\humhub\modules\space\models\Space $privateSpace = null;
 
     private $globalPublicPost;
     private $globalPrivatePost;

@@ -28,10 +28,9 @@ class TimeZoneDropdownAddition extends JsInputWidget
     public $withOffset = false;
 
     /**
-     * @var array cached timeZone item array
      * @see TimezoneHelper::generateList()
      */
-    private $timeZoneItems;
+    private ?array $timeZoneItems = null;
 
     /**
      * @inheritdoc

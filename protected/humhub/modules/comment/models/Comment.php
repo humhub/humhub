@@ -150,9 +150,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
             // Remove mentioned users from followers query to avoid double notification
             if (count($mentionedUsers) !== 0) {
-                $followerQuery->andWhere(['NOT IN', 'user.id', array_map(function (User $user) {
-                    return $user->id;
-                }, $mentionedUsers)]);
+                $followerQuery->andWhere(['NOT IN', 'user.id', array_map(fn(User $user) => $user->id, $mentionedUsers)]);
             }
 
             // Update updated_at etc..

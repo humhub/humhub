@@ -41,9 +41,7 @@ class ThemeController extends \yii\console\Controller
 
         $themes = [];
         foreach (ThemeHelper::getThemes() as $theme) {
-            $parents = array_map(function ($t) {
-                return $t->name;
-            }, $theme->getParents());
+            $parents = array_map(fn($t) => $t->name, $theme->getParents());
             $themes[] = [$theme->name, implode(' > ', $parents), $theme->getBasePath()];
         }
 

@@ -32,7 +32,7 @@ class MimeHelper
     const ICON_FILE = 'mime-file';
 
     /** @var array Map for Extension to IconClass */
-    private static $extensionToIconClass = [
+    private static array $extensionToIconClass = [
         // Word
         'doc' => self::ICON_WORD,
         'docx' => self::ICON_WORD,

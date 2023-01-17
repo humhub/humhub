@@ -25,10 +25,7 @@ use yii\imagine\Image;
 class PreviewImage extends BaseConverter
 {
 
-    /**
-     * @var ImageInterface
-     */
-    private $_image;
+    private ?\Imagine\Image\ImageInterface $_image = null;
 
     /**
      * @var ImageInterface

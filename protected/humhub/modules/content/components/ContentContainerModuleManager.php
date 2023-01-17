@@ -27,15 +27,9 @@ class ContentContainerModuleManager extends \yii\base\Component
      */
     public $contentContainer;
 
-    /**
-     * @var array the available module ids
-     */
-    private $_available;
+    private ?array $_available = null;
 
-    /**
-     * @var array the cached states per module
-     */
-    private $_states;
+    private ?array $_states = null;
 
     /**
      * Disables a module for the content container

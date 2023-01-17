@@ -27,10 +27,7 @@ use yii\db\Expression;
  */
 abstract class ItemDrop extends Model
 {
-    /**
-     * @var ActiveRecord the model to resort
-     */
-    private $model;
+    private ?\yii\db\ActiveRecord $model = null;
 
     /**
      * @var string ActiveRecord model class

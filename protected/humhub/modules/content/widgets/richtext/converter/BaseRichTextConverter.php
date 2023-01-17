@@ -285,9 +285,7 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     protected function renderAbsy($blocks)
     {
         if(!empty($this->getExcludes())) {
-            $blocks = array_filter($blocks, function($block) {
-                return !in_array($block[0], $this->getExcludes(), true);
-            });
+            $blocks = array_filter($blocks, fn($block) => !in_array($block[0], $this->getExcludes(), true));
         }
 
         return parent::renderAbsy($blocks);

@@ -41,20 +41,11 @@ class ExportResult extends BaseObject
      */
     public $writerType = 'csv';
 
-    /**
-     * @var Spreadsheet Spreadsheet instance
-     */
-    private $spreadsheet;
+    private ?\PhpOffice\PhpSpreadsheet\Spreadsheet $spreadsheet = null;
 
-    /**
-     * @var string temporary files directory name
-     */
-    private $tempFileName;
+    private ?string $tempFileName = null;
 
-    /**
-     * @var string name of the result file.
-     */
-    private $resultFileName;
+    private ?string $resultFileName = null;
 
     /**
      * Destructor.
