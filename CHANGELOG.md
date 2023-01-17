@@ -15,6 +15,7 @@ HumHub Changelog
 - Fix #6030: Use all searchable profile fields in UserPicker searching
 - Fix #6026: Fix visibility members counter for guests
 - Fix #6041: Fix search of obsolete cached objects
+- Fix #6043: Fix permission to lock/unlock comment for admin
 
 1.13.0 (December 21, 2022)
 --------------------------

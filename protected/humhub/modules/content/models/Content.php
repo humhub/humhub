@@ -793,11 +793,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function canLockComments(): bool
     {
-        if (!$this->getContainer()) {
-            return $this->canEdit();
-        }
-
-        return $this->getContainer()->permissionManager->can(ManageContent::class);
+        return $this->canEdit();
     }
 
     /**
