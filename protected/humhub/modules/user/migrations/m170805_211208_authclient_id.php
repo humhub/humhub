@@ -11,7 +11,7 @@ class m170805_211208_authclient_id extends Migration
         $this->createIndex('unique_authclient_id', 'user', ['authclient_id'], true);
     }
 
-    public function safeDown()
+    public function safeDown(): bool
     {
         echo "m170805_211208_authclient_id cannot be reverted.\n";
 

@@ -11,7 +11,7 @@ class m141020_193931_rm_alsoliked extends Migration
         $this->delete('notification', 'class=:alsoLike', [':alsoLike' => 'AlsoLikesNotification']);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m141020_193931_rm_alsoliked does not support migration down.\n";
         return false;

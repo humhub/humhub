@@ -47,7 +47,7 @@ class Followable extends Behavior
      * @param boolean $withNotifications (since 1.2) sets the send_notifications setting of the membership default true
      * @return boolean
      */
-    public function follow($userId = null, $withNotifications = true)
+    public function follow($userId = null, $withNotifications = true): bool
     {
         if ($userId instanceof User) {
             $userId = $userId->id;
@@ -69,12 +69,7 @@ class Followable extends Behavior
         }
 
         $follow->send_notifications = $withNotifications;
-
-        if (!$follow->save()) {
-            return false;
-        }
-
-        return true;
+        return $follow->save();
     }
 
     /**
@@ -83,7 +78,7 @@ class Followable extends Behavior
      * @param int $userId
      * @return boolean
      */
-    public function unfollow($userId = null)
+    public function unfollow($userId = null): bool
     {
         if ($userId instanceof User) {
             $userId = $userId->id;
@@ -113,7 +108,7 @@ class Followable extends Behavior
      * @param boolean $withNotifications if true, only return true when also notifications enabled
      * @return boolean Is object followed by user
      */
-    public function isFollowedByUser($userId = null, $withNotifications = false)
+    public function isFollowedByUser($userId = null, $withNotifications = false): bool
     {
         if ($userId instanceof User) {
             $userId = $userId->id;

@@ -11,7 +11,7 @@ class m140902_091234_session_key_length extends Migration
         $this->alterColumn('user_http_session', 'id', 'char(64) NOT NULL');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m140902_091234_session_key_length does not support migration down.\n";
         return false;

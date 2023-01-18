@@ -375,10 +375,11 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function getWallOut($params = [])
     {
-        if(is_subclass_of($this->wallEntryClass, StreamEntryWidget::class, true)) {
+        if (is_subclass_of($this->wallEntryClass, StreamEntryWidget::class, true)) {
             $params['model'] = $this;
-        } else if(!empty($this->wallEntryClass)) {
-            $params['contentObject'] = $this; // legacy WallEntry widget
+        } elseif (!empty($this->wallEntryClass)) {
+            $params['contentObject'] = $this;
+            // legacy WallEntry widget
         }
 
         return call_user_func($this->wallEntryClass.'::widget', $params);

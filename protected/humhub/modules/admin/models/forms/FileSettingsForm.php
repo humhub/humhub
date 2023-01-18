@@ -66,7 +66,7 @@ class FileSettingsForm extends \yii\base\Model
      *
      * @return boolean
      */
-    public function save()
+    public function save(): bool
     {
         $settingsManager = Yii::$app->getModule('file')->settings;
         $settingsManager->set('maxFileSize', $this->maxFileSize * 1024 * 1024);

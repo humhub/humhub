@@ -108,7 +108,7 @@ class BasicSettingsForm extends \yii\base\Model
      * Saves the form
      * @return boolean
      */
-    public function save()
+    public function save(): bool
     {
         Yii::$app->settings->set('name', $this->name);
         Yii::$app->settings->set('baseUrl', $this->baseUrl);

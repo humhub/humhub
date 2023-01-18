@@ -62,11 +62,7 @@ class Registration extends HForm
      */
     public function init()
     {
-        if (Yii::$app->getModule('user')->settings->get('auth.needApproval')) {
-            $this->enableUserApproval = true;
-        } else {
-            $this->enableUserApproval = false;
-        }
+        $this->enableUserApproval = (bool) Yii::$app->getModule('user')->settings->get('auth.needApproval');
 
         return parent::init();
     }
@@ -192,7 +188,7 @@ class Registration extends HForm
     /**
      * Set models User, Profile and Password to Form
      */
-    protected function setModels()
+    protected function setModels(): bool
     {
         // Set Models
         $this->models['User'] = $this->getUser();
@@ -200,7 +196,7 @@ class Registration extends HForm
         $this->models['GroupUser'] = $this->getGroupUser();
         if ($this->enablePasswordForm) {
             $this->models['Password'] = $this->getPassword();
-            if (!isset($this->models['Password']->mustChangePassword)) {
+            if ($this->models['Password']->mustChangePassword === null) {
                 // Enable the checkbox by default on new user form:
                 $this->models['Password']->mustChangePassword = true;
             }
@@ -243,7 +239,7 @@ class Registration extends HForm
      *
      * @return boolean state
      */
-    public function register(\yii\authclient\ClientInterface $authClient = null)
+    public function register(\yii\authclient\ClientInterface $authClient = null): bool
     {
         if (!$this->validate()) {
             return false;
@@ -300,11 +296,7 @@ class Registration extends HForm
     {
         if ($this->_user === null) {
             $this->_user = new User();
-            if ($this->enableEmailField) {
-                $this->_user->scenario = 'registration_email';
-            } else {
-                $this->_user->scenario = 'registration';
-            }
+            $this->_user->scenario = $this->enableEmailField ? 'registration_email' : 'registration';
         }
 
         return $this->_user;

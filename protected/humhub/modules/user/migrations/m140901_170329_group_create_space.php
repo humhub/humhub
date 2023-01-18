@@ -12,7 +12,7 @@ class m140901_170329_group_create_space extends Migration
         $this->addColumn('group', 'can_create_private_spaces', 'INT(1) DEFAULT 1');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m140901_170329_group_create_space does not support migration down.\n";
         return false;

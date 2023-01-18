@@ -102,7 +102,7 @@ class PeopleQuery extends ActiveQueryUser
             ];
         }
 
-        if (empty($checkedFilteredFields)) {
+        if ($checkedFilteredFields === []) {
             return $this;
         }
 
@@ -227,7 +227,7 @@ class PeopleQuery extends ActiveQueryUser
 
     public function isLastPage(): bool
     {
-        return $this->pagination->getPage() == $this->pagination->getPageCount() - 1;
+        return $this->pagination->getPage() === $this->pagination->getPageCount() - 1;
     }
 
 }

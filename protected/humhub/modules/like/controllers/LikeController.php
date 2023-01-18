@@ -27,6 +27,9 @@ use yii\web\HttpException;
 class LikeController extends ContentAddonController
 {
 
+    public $parentContent;
+    public $contentModel;
+    public $contentId;
     /**
      * @param $action
      * @return bool

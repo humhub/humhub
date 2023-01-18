@@ -74,7 +74,7 @@ class SendMailSummary extends ActiveJob implements ExclusiveJobInterface, Retrya
     /**
      * @inheritDoc
      */
-    public function canRetry($attempt, $error)
+    public function canRetry($attempt, $error): bool
     {
         return false;
     }

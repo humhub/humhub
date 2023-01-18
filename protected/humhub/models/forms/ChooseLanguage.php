@@ -49,7 +49,7 @@ class ChooseLanguage extends Model
      * @since 1.2
      * @return boolean
      */
-    public function save()
+    public function save(): bool
     {
         if ($this->validate()) {
             $cookie = new \yii\web\Cookie([

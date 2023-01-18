@@ -75,11 +75,11 @@ class Licence extends Model
      *
      * @return bool
      */
-    public function register()
+    public function register(): bool
     {
         $result = LicenceManager::request('v1/pro/register', ['licenceKey' => $this->licenceKey]);
 
-        if (empty($result) || !is_array($result) || !isset($result['status'])) {
+        if ($result === [] || !is_array($result) || !isset($result['status'])) {
             $this->addError('licenceKey', Yii::t('MarketplaceModule.base', 'Could not connect to licence server!'));
             return false;
         }

@@ -15,6 +15,11 @@ use yii\helpers\ArrayHelper;
 
 class PickerFilterInput extends FilterInput
 {
+    public $category;
+    /**
+     * @var array<string, string>
+     */
+    public $options;
     /**
      * @inheritdoc
      */
@@ -40,7 +45,7 @@ class PickerFilterInput extends FilterInput
     protected function initFromRequest()
     {
         $filters = Yii::$app->request->get($this->category);
-        if (!is_array($filters) || empty($filters)) {
+        if (!is_array($filters) || $filters === []) {
             return;
         }
 
@@ -48,7 +53,7 @@ class PickerFilterInput extends FilterInput
             $this->pickerOptions['selection'] = $pickerItemClass::find()
                 ->where(['IN', $this->getPicker()->itemKey, $filters])
                 ->all();
-        } else if($pickerItems = $this->getPickerItems()) {
+        } elseif ($pickerItems = $this->getPickerItems()) {
             $this->pickerOptions['selection'] = array_intersect($filters, array_keys($pickerItems));
         }
     }

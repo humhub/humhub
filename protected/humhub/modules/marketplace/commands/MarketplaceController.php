@@ -182,7 +182,7 @@ class MarketplaceController extends Controller
         $installedModules = Yii::$app->moduleManager->getModules(['returnClass' => true]);
 
         foreach (ModuleEnabled::getEnabledIds() as $moduleId) {
-            if (!in_array($moduleId, array_keys($installedModules))) {
+            if (!array_key_exists($moduleId, $installedModules)) {
                 // Module seems to be installed - but cannot be loaded
                 // Try force re-install
                 try {
@@ -201,7 +201,7 @@ class MarketplaceController extends Controller
      * @param string $moduleId the module id
      * @return int the exit code
      */
-    public function actionEnable($moduleId)
+    public function actionEnable($moduleId): int
     {
         $this->stdout(Yii::t('MarketplaceModule.base', "--- Enable module: {moduleId} ---\n\n", ['moduleId' => $moduleId]), Console::BOLD);
 
@@ -224,7 +224,7 @@ class MarketplaceController extends Controller
      * @param string $moduleId the module id
      * @return int the exit code
      */
-    public function actionDisable($moduleId)
+    public function actionDisable($moduleId): int
     {
         if (!$this->confirm(Yii::t('MarketplaceModule.base', 'All {moduleId} module content will be deleted. Continue?', ['moduleId' => $moduleId]), false)) {
             return 1;
@@ -254,7 +254,7 @@ class MarketplaceController extends Controller
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\web\HttpException
      */
-    public function actionRegister($licenceKey)
+    public function actionRegister($licenceKey): int
     {
         if (empty($licenceKey)) {
             $this->stdout(Yii::t('MarketplaceModule.base', 'Module licence key cannot be empty!' . "\n"), Console::FG_RED, Console::BOLD);

@@ -46,6 +46,10 @@ use yii\helpers\Url;
  */
 class AbstractRichTextEditor extends JsInputWidget
 {
+    public $id;
+    public $form;
+    public $model;
+    public $attribute;
     const LAYOUT_BLOCK = 'block';
 
     const LAYOUT_INLINE = 'inline';
@@ -189,7 +193,7 @@ class AbstractRichTextEditor extends JsInputWidget
             $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
             $richText = $this->getLabel() . $richText;
         } else {
-            $input = Html::textarea(((!$this->name) ? 'richtext' : $this->name), $this->value, $inputOptions);
+            $input = Html::textarea((($this->name) ? $this->name : 'richtext'), $this->value, $inputOptions);
             $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
             $richText = $this->getLabel() . $richText;
         }
@@ -206,7 +210,7 @@ class AbstractRichTextEditor extends JsInputWidget
      * This method can be overwritten in order to prepend content after the actual rich text content.
      * @return string
      */
-    public function prepend() {
+    public function prepend(): string {
         return '';
     }
 
@@ -231,7 +235,7 @@ class AbstractRichTextEditor extends JsInputWidget
             return "";
         }
 
-        if ($this->label === true && $this->model != null) {
+        if ($this->label && $this->model != null) {
             return Html::activeLabel($this->model, $this->attribute, ['class' => 'control-label']);
         }
 

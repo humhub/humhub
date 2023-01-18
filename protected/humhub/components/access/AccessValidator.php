@@ -129,12 +129,12 @@ abstract class AccessValidator extends BaseObject
      * @param array|string $actionArray single action id or array of action ids
      * @return bool
      */
-    protected function isActionRelated($rule)
+    protected function isActionRelated($rule): bool
     {
         $actions = $this->extractActions($rule);
 
         // If no action array is given we consider the rule to be controller global
-        if (empty($actions)) {
+        if ($actions === []) {
             return true;
         }
 

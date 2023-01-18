@@ -25,6 +25,8 @@ use humhub\modules\content\models\ContentContainerPermission;
 class ContentContainerModule extends Module
 {
 
+    public $settings;
+    public $id;
     /**
      * @inheritdoc
      */
@@ -70,7 +72,7 @@ class ContentContainerModule extends Module
      * @param string $class the class of content container
      * @return boolean
      */
-    public function hasContentContainerType($class)
+    public function hasContentContainerType($class): bool
     {
         return in_array($class, $this->getContentContainerTypes());
     }
@@ -117,7 +119,7 @@ class ContentContainerModule extends Module
      * @param ContentContainerActiveRecord $container
      * @return string the config url
      */
-    public function getContentContainerConfigUrl(ContentContainerActiveRecord $container)
+    public function getContentContainerConfigUrl(ContentContainerActiveRecord $container): string
     {
         return "";
     }

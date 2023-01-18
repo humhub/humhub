@@ -24,7 +24,7 @@ class m210727_102150_follow_friend extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function safeDown(): bool
     {
         echo "m210727_102150_follow_friend cannot be reverted.\n";
 

@@ -20,7 +20,7 @@ class m221117_214310_rename_setting extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function safeDown(): bool
     {
         echo "m221117_214310_rename_setting cannot be reverted.\n";
 

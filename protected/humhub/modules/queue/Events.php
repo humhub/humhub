@@ -56,11 +56,9 @@ class Events extends BaseObject
      */
     public static function onQueueBeforePush(PushEvent $event)
     {
-        if ($event->job instanceof ExclusiveJobInterface) {
-            // Do not add exclusive jobs if already exists in queue
-            if (QueueHelper::isQueued($event->job)) {
-                $event->handled = true;
-            }
+        // Do not add exclusive jobs if already exists in queue
+        if ($event->job instanceof ExclusiveJobInterface && QueueHelper::isQueued($event->job)) {
+            $event->handled = true;
         }
     }
 

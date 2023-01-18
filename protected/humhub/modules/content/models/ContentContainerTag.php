@@ -24,10 +24,11 @@ use yii\db\ActiveQuery;
  */
 class ContentContainerTag extends ActiveRecord
 {
+    public $isNewRecord;
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'contentcontainer_tag';
     }

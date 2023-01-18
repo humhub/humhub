@@ -94,7 +94,7 @@ class InviteForm extends Model
      *
      * @return bool true if save was successful otherwise false
      */
-    public function save()
+    public function save(): bool
     {
         if(!$this->validate()) {
             return false;
@@ -114,10 +114,10 @@ class InviteForm extends Model
     /**
      * @return bool checks if user is allowed to add without invite
      */
-    public function isQueuedJob()
+    public function isQueuedJob(): bool
     {
         // Pre-check if adding without invite / adding all members was requested
-        if (!($this->withoutInvite || $this->allRegisteredUsers)) {
+        if (!$this->withoutInvite && !$this->allRegisteredUsers) {
             return false;
         }
 

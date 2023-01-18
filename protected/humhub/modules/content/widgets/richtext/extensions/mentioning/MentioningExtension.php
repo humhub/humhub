@@ -107,7 +107,7 @@ class MentioningExtension extends RichTextLinkExtension
         foreach ($this->scanExtension($text) as $match) {
             if($match->getExtensionId()) {
                 $mention = Mentioning::mention($match->getExtensionId(), $record);
-                if(!empty($mention)) {
+                if($mention !== []) {
                     $result[$this->key][] = $mention[0];
                 }
             }

@@ -24,10 +24,10 @@ use humhub\modules\queue\models\QueueExclusive;
 class QueueHelper extends BaseObject
 {
 
-    public static function isQueued(ExclusiveJobInterface $job)
+    public static function isQueued(ExclusiveJobInterface $job): bool
     {
         $queueExclusive = QueueExclusive::findOne(['id' => $job->getExclusiveJobId()]);
-        if ($queueExclusive === null || $queueExclusive->job_status == Queue::STATUS_DONE) {
+        if (!$queueExclusive instanceof \humhub\modules\queue\models\QueueExclusive || $queueExclusive->job_status == Queue::STATUS_DONE) {
             return false;
         }
 
@@ -55,7 +55,7 @@ class QueueHelper extends BaseObject
     public static function markAsQueued($jobQueueId, ExclusiveJobInterface $job)
     {
         $queueExclusive = QueueExclusive::findOne(['id' => $job->getExclusiveJobId()]);
-        if ($queueExclusive === null) {
+        if (!$queueExclusive instanceof \humhub\modules\queue\models\QueueExclusive) {
             $queueExclusive = new QueueExclusive();
             $queueExclusive->id = $job->getExclusiveJobId();
         }

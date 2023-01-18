@@ -51,7 +51,7 @@ class SpaceModelMembership extends Behavior
      * @param integer $userId
      * @return boolean
      */
-    public function isMember($userId = '')
+    public function isMember($userId = ''): bool
     {
         // Take current userid if none is given
         if ($userId == '' && !Yii::$app->user->isGuest) {
@@ -61,12 +61,7 @@ class SpaceModelMembership extends Behavior
         }
 
         $membership = $this->getMembership($userId);
-
-        if ($membership != null && $membership->status == Membership::STATUS_MEMBER) {
-            return true;
-        }
-
-        return false;
+        return $membership != null && $membership->status == Membership::STATUS_MEMBER;
     }
 
     /**
@@ -127,7 +122,7 @@ class SpaceModelMembership extends Behavior
      * @param User|integer|null $userId
      * @return boolean
      */
-    public function setSpaceOwner($user = null)
+    public function setSpaceOwner($user = null): bool
     {
         $userId = ($user instanceof User) ? $user->id : $user;
 
@@ -196,7 +191,7 @@ class SpaceModelMembership extends Behavior
      * @param integer $userId
      * @return boolean
      */
-    public function setAdmin($userId = null)
+    public function setAdmin($userId = null): bool
     {
         if ($userId instanceof User) {
             $userId = $userId->id;
@@ -242,7 +237,7 @@ class SpaceModelMembership extends Behavior
      * @param string $email
      * @param integer $originatorUserId
      */
-    public function inviteMemberByEMail($email, $originatorUserId)
+    public function inviteMemberByEMail($email, $originatorUserId): bool
     {
         // Invalid E-Mail
         $validator = new EmailValidator;
@@ -560,7 +555,7 @@ class SpaceModelMembership extends Behavior
     {
         if ($membership->originator && $membership->isCurrentUser()) {
             InviteDeclined::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($membership->originator);
-        } else if (Yii::$app->user->identity) {
+        } elseif (Yii::$app->user->identity) {
             InviteRevoked::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($user);
         }
     }

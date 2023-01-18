@@ -214,7 +214,7 @@ class LdapSettings extends Model
      *
      * @return boolean
      */
-    public function save()
+    public function save(): bool
     {
         /** @var SettingsManager $settings */
         $settings = Yii::$app->getModule('ldap')->settings;

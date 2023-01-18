@@ -42,7 +42,7 @@ class m140701_000611_profile_genderfield extends Migration
         }
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m140701_000611_profile_genderfield does not support migration down.\n";
         return false;

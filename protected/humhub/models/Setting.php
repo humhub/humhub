@@ -26,7 +26,7 @@ class Setting extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'setting';
     }
@@ -170,11 +170,7 @@ class Setting extends ActiveRecord
     {
         $module = null;
 
-        if ($moduleId === '' || $moduleId === 'base') {
-            $module = Yii::$app;
-        } else {
-            $module = Yii::$app->getModule($moduleId);
-        }
+        $module = $moduleId === '' || $moduleId === 'base' ? Yii::$app : Yii::$app->getModule($moduleId);
 
         if ($module === null) {
             throw new Exception('Could not find module: ' . $moduleId);

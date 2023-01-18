@@ -11,7 +11,7 @@ class m141020_193920_rm_alsocreated extends Migration
         $this->delete('notification', 'class=:alsoComment', [':alsoComment' => 'AlsoCommentedNotification']);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m141020_193920_rm_alsocreated does not support migration down.\n";
         return false;

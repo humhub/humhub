@@ -9,7 +9,7 @@ class m170110_151419_membership_notifications extends Migration
         $this->addColumn('space_membership', 'send_notifications', 'boolean default "0"');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m170110_151419_membership_notifications cannot be reverted.\n";
 

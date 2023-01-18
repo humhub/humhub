@@ -102,11 +102,7 @@ abstract class BaseConverter extends BaseObject
     public function applyFile(File $file)
     {
         $this->file = $file;
-        if ($this->canConvert($file)) {
-            return true;
-        }
-
-        return false;
+        return (bool) $this->canConvert($file);
     }
 
 }

@@ -18,10 +18,11 @@ use humhub\modules\user\models\User;
 class Password extends BaseFormAuth implements interfaces\PrimaryClient
 {
 
+    public $login;
     /**
      * @inheritdoc
      */
-    public function getId()
+    public function getId(): string
     {
         return 'local';
     }
@@ -29,7 +30,7 @@ class Password extends BaseFormAuth implements interfaces\PrimaryClient
     /**
      * @inheritdoc
      */
-    protected function defaultName()
+    protected function defaultName(): string
     {
         return 'password';
     }
@@ -37,7 +38,7 @@ class Password extends BaseFormAuth implements interfaces\PrimaryClient
     /**
      * @inheritdoc
      */
-    protected function defaultTitle()
+    protected function defaultTitle(): string
     {
         return 'Password';
     }
@@ -45,7 +46,7 @@ class Password extends BaseFormAuth implements interfaces\PrimaryClient
     /**
      * @inheritdoc
      */
-    public function auth()
+    public function auth(): bool
     {
         $user = $this->getUserByLogin();
 

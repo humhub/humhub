@@ -25,7 +25,7 @@ class m201130_073908_disable_legacy_richtextparser extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function safeDown(): bool
     {
         echo "m201130_073908_disable_legacy_richtextparser.\n";
 

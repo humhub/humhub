@@ -65,7 +65,7 @@ class HForm extends \yii\base\Component
         $this->trigger(static::EVENT_AFTER_INIT);
     }
 
-    public function submitted($buttonName = "")
+    public function submitted($buttonName = ""): bool
     {
         if (Yii::$app->request->method == 'POST') {
             if ($buttonName == "" || isset($_POST[$buttonName])) {
@@ -89,10 +89,8 @@ class HForm extends \yii\base\Component
         $hasErrors = false;
         $this->trigger(self::EVENT_BEFORE_VALIDATE);
 
-        if ($this->primaryModel !== null) {
-            if (!$this->primaryModel->validate()) {
-                $hasErrors = true;
-            }
+        if ($this->primaryModel !== null && !$this->primaryModel->validate()) {
+            $hasErrors = true;
         }
 
         foreach ($this->models as $model) {
@@ -146,9 +144,8 @@ class HForm extends \yii\base\Component
         $this->trigger(static::EVENT_BEFORE_RENDER);
 
         $out = $this->renderElements($this->definition['elements']);
-        $out .= $this->renderButtons($this->definition['buttons']);
 
-        return $out;
+        return $out . $this->renderButtons($this->definition['buttons']);
     }
 
     public function renderElements($elements, $forms = [])
@@ -186,7 +183,7 @@ class HForm extends \yii\base\Component
         return $output;
     }
 
-    public function renderFormEnd($element)
+    public function renderFormEnd($element): string
     {
         return "</fieldset>";
     }
@@ -210,8 +207,6 @@ class HForm extends \yii\base\Component
         if (isset($definition['isVisible']) && !$definition['isVisible']) {
             return;
         }
-
-        $output = "";
 
         // Determine Model
         $model = null;
@@ -357,6 +352,6 @@ class HForm extends \yii\base\Component
             return "No model for: FieldName: " . $name . " Forms: " . print_r($forms, 1) . "<br>";
         }
 
-        return $output;
+        return "";
     }
 }

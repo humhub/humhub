@@ -23,6 +23,11 @@ use humhub\modules\admin\models\forms\ApproveUserForm;
 class ApprovalController extends Controller
 {
     /**
+     * @var string
+     */
+    public $subLayout;
+    public $view;
+    /**
      * @inheritdoc
      */
     public $adminOnly = false;
@@ -59,7 +64,7 @@ class ApprovalController extends Controller
      * @return bool
      * @throws \Throwable
      */
-    public function checkCanApproveUsers($rule, $access)
+    public function checkCanApproveUsers($rule, $access): bool
     {
         if (!Yii::$app->user->getIdentity()->canApproveUsers()) {
             $access->code = 403;
@@ -112,10 +117,10 @@ class ApprovalController extends Controller
             $screenProfileFieldsId = Yii::$app->request->post('screenProfileFieldsId');
             $module->settings->user()->setSerialized(self::USER_SETTINGS_SCREEN_KEY, $screenProfileFieldsId);
         }
-        $profileFieldsColumns = !$screenProfileFieldsId ? [] : ProfileField::find()
+        $profileFieldsColumns = $screenProfileFieldsId ? ProfileField::find()
             ->where(['id' => $screenProfileFieldsId])
             ->indexBy('id')
-            ->all();
+            ->all() : [];
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,

@@ -20,7 +20,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  */
 class ContentContainerTagRelation extends ActiveRecord
 {
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'contentcontainer_tag_relation';
     }

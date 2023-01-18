@@ -54,7 +54,7 @@ class m150927_190830_create_contentcontainer extends Migration
         
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m150927_190830_create_contentcontainer cannot be reverted.\n";
 

@@ -43,6 +43,10 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 {
 
     /**
+     * @var mixed
+     */
+    public $created_by;
+    /**
      * @var ContentContainerPermissionManager
      */
     protected $permissionManager = null;
@@ -380,7 +384,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function hasTags()
     {
-        return count($this->getTags()) > 0;
+        return $this->getTags() !== [];
     }
 
     /**

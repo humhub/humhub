@@ -56,7 +56,7 @@ class m181029_160453_collation extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function safeDown(): bool
     {
         echo "m181029_160453_collation cannot be reverted.\n";
 

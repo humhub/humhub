@@ -72,11 +72,7 @@ class StreamSuppressQuery extends StreamQuery
     {
         // Hack to ensure booleans for suppressionsOnly parameter
         if (parent::load($data, $formName)) {
-            if ($this->suppressionsOnly == 'true') {
-                $this->suppressionsOnly = true;
-            } else {
-                $this->suppressionsOnly = false;
-            }
+            $this->suppressionsOnly = $this->suppressionsOnly == 'true';
         }
     }
 
@@ -101,7 +97,7 @@ class StreamSuppressQuery extends StreamQuery
             $this->isQueryExecuted = true;
             $result = parent::all();
 
-            if(!empty($result)) {
+            if($result !== []) {
                 $last = $result[count($result) - 1];
                 $this->lastContentId = $last->id;
             }
@@ -187,7 +183,7 @@ class StreamSuppressQuery extends StreamQuery
      *
      * @return boolean is suppressed item
      */
-    protected function isSuppressed(&$results, $content)
+    protected function isSuppressed(&$results, $content): bool
     {
         // Do not surpress if only particual contents are displayed
         if ($this->preventSuppression || !empty($this->includes)) {
@@ -271,7 +267,7 @@ class StreamSuppressQuery extends StreamQuery
     /**
      * @inheritdoc
      */
-    public function formName()
+    public function formName(): string
     {
         return 'StreamQuery';
     }

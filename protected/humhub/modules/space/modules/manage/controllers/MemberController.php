@@ -27,6 +27,7 @@ use humhub\modules\space\modules\manage\models\ChangeOwnerForm;
  */
 class MemberController extends Controller
 {
+    public $view;
     /**
      * @inheritdoc
      */

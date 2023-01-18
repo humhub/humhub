@@ -81,15 +81,10 @@ class Module extends \humhub\components\Module
      * @param Like|ContentActiveRecord $object
      * @return boolean can like
      */
-    public function canLike($object)
+    public function canLike($object): bool
     {
         $content = $object->content;
-
-        if (isset($content->container) && !$content->container->can(new permissions\CanLike())) {
-            return false;
-        }
-
-        return true;
+        return !($content->container !== null && !$content->container->can(new permissions\CanLike()));
     }
 
 }

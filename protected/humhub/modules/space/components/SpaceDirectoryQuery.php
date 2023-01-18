@@ -142,7 +142,7 @@ class SpaceDirectoryQuery extends ActiveQuerySpace
 
     public function isLastPage(): bool
     {
-        return $this->pagination->getPage() == $this->pagination->getPageCount() - 1;
+        return $this->pagination->getPage() === $this->pagination->getPageCount() - 1;
     }
 
 }

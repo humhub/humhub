@@ -73,7 +73,7 @@ class SecuritySettingsTest extends WebSecurityTest
         $this->assertNull($settings->getHeader('Content-Security-Policy'));
         $this->assertFalse($settings->isNonceSupportActive());
 
-        $this->assertNull($settings->getCSPHeader(true));
+        $this->assertNull($settings->getCSPHeader());
 
         $this->assertEmpty(Html::nonce());
         $this->assertEmpty(Security::getNonce());

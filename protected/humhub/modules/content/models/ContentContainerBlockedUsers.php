@@ -27,7 +27,7 @@ class ContentContainerBlockedUsers extends ActiveRecord
 {
     const BLOCKED_USERS_SETTING = 'blockedUsers';
 
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'contentcontainer_blocked_users';
     }
@@ -114,7 +114,7 @@ class ContentContainerBlockedUsers extends ActiveRecord
             }
         }
 
-        $contentContainer->settings->set(self::BLOCKED_USERS_SETTING, empty($newBlockedUserIds) ? null : implode(',', $newBlockedUserIds));
+        $contentContainer->settings->set(self::BLOCKED_USERS_SETTING, $newBlockedUserIds === [] ? null : implode(',', $newBlockedUserIds));
     }
 
     /**

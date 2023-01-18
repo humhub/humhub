@@ -250,7 +250,7 @@ class View extends \yii\web\View
     {
         $bundle = parent::registerAssetBundle($name, $position);
 
-        if ($bundle instanceof AssetBundle && !empty($bundle->preload)) {
+        if ($bundle instanceof AssetBundle && $bundle->preload !== []) {
             static::$preload = ArrayHelper::merge(static::$preload, $bundle->preload);
         }
 
@@ -334,7 +334,7 @@ class View extends \yii\web\View
         if (!Yii::$app->request->isAjax) {
             SiteIcon::registerMetaTags($this);
             LayoutHeader::registerHeadTags($this);
-            $this->meta->registerMetaTags($this);
+            $this->meta->registerMetaTags();
             parent::registerCsrfMetaTags();
         }
 

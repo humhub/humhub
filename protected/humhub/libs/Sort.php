@@ -29,7 +29,7 @@ class Sort
             $sortA = static::getSortValue($a, $field, $default);
             $sortB = static::getSortValue($b, $field, $default);
 
-            if ($sortA == $sortB) {
+            if ($sortA === $sortB) {
                 return 0;
             } elseif ($sortA < $sortB) {
                 return -1;

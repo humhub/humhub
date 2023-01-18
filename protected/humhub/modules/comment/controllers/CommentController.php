@@ -60,7 +60,7 @@ class CommentController extends Controller
     /**
      * @inheritDoc
      */
-    public function beforeAction($action)
+    public function beforeAction($action): bool
     {
         if (parent::beforeAction($action)) {
             $modelClass = Yii::$app->request->get('objectModel', Yii::$app->request->post('objectModel'));

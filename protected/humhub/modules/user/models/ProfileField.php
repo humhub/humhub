@@ -46,6 +46,7 @@ use yii\helpers\Html;
 class ProfileField extends ActiveRecord
 {
 
+    public $isNewRecord;
     /**
      * Field Type Instance
      */
@@ -54,7 +55,7 @@ class ProfileField extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'profile_field';
     }
@@ -269,11 +270,8 @@ class ProfileField extends ActiveRecord
             if ($this->internal_name != $currentProfileField->internal_name) {
                 $this->addError('internal_name', Yii::t('UserModule.profile', 'Internal name could not be changed!'));
             }
-        } else {
-            // Check if Internal Name is not in use yet
-            if (Profile::columnExists($this->internal_name)) {
-                $this->addError('internal_name', Yii::t('UserModule.profile', 'Internal name already in use!'));
-            }
+        } elseif (Profile::columnExists($this->internal_name)) {
+            $this->addError('internal_name', Yii::t('UserModule.profile', 'Internal name already in use!'));
         }
     }
 
@@ -294,7 +292,7 @@ class ProfileField extends ActiveRecord
             }
         } else {
             $profileFieldTypes = new fieldtype\BaseType();
-            if (!key_exists($this->field_type_class, $profileFieldTypes->getFieldTypes())) {
+            if (!array_key_exists($this->field_type_class, $profileFieldTypes->getFieldTypes())) {
                 $this->addError('field_type_class', Yii::t('UserModule.profile', 'Invalid field type!'));
             }
         }

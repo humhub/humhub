@@ -49,7 +49,7 @@ class TextConverter extends BaseConverter
     /**
      * @inheritdoc
      */
-    public function getId()
+    public function getId(): string
     {
         return 'text';
     }
@@ -57,20 +57,15 @@ class TextConverter extends BaseConverter
     /**
      * @inheritdoc
      */
-    protected function canConvert(File $file)
+    protected function canConvert(File $file): bool
     {
         $originalFile = $file->store->get();
 
         if (!is_file($originalFile)) {
             return false;
         }
-
-        if ($this->getConverter() === null) {
-            // No text converter found for given file
-            return false;
-        }
-
-        return true;
+        // No text converter found for given file
+        return $this->getConverter() !== null;
     }
 
     /**

@@ -24,17 +24,12 @@ class LdapHelper
      *
      * @return bool
      */
-    public static function isLdapAvailable()
+    public static function isLdapAvailable(): bool
     {
         if (!class_exists('Laminas\Ldap\Ldap')) {
             return false;
         }
-
-        if (!function_exists('ldap_bind')) {
-            return false;
-        }
-
-        return true;
+        return function_exists('ldap_bind');
     }
 
     /**
@@ -42,7 +37,7 @@ class LdapHelper
      *
      * @return bool
      */
-    public static function isLdapEnabled()
+    public static function isLdapEnabled(): bool
     {
         foreach (Yii::$app->authClientCollection->getClients() as $authClient) {
             if ($authClient instanceof LdapAuth) {

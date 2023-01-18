@@ -20,7 +20,7 @@ class m140513_180317_createlogging extends Migration
         ]);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m140513_180317_createlogging does not support migration down.\n";
 

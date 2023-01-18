@@ -149,7 +149,7 @@ class MailSummaryForm extends Model
      *
      * @return boolean
      */
-    public function loadCurrent()
+    public function loadCurrent(): bool
     {
         // Only load user settings when user is given and the user has own settings
         if ($this->user !== null && Yii::$app->getModule('activity')->settings->user($this->user)->get('mailSummaryInterval') !== null) {
@@ -162,11 +162,11 @@ class MailSummaryForm extends Model
         $this->interval = $settingsManager->get('mailSummaryInterval');
         $this->limitSpacesMode = $settingsManager->get('mailSummaryLimitSpacesMode');
         $mailSummaryLimitSpaces = $settingsManager->get('mailSummaryLimitSpaces');
-        $this->limitSpaces = (!empty($mailSummaryLimitSpaces)) ? explode(',', $mailSummaryLimitSpaces) : [];
+        $this->limitSpaces = (empty($mailSummaryLimitSpaces)) ? [] : explode(',', $mailSummaryLimitSpaces);
 
         // Since we store only disabled activities, we need to enable the difference
         $mailSummaryActivitySuppress = $settingsManager->get('mailSummaryActivitySuppress');
-        $suppressedActivities = (!empty($mailSummaryActivitySuppress)) ? explode(',', $mailSummaryActivitySuppress) : [];
+        $suppressedActivities = (empty($mailSummaryActivitySuppress)) ? [] : explode(',', $mailSummaryActivitySuppress);
         $this->activities = array_diff(array_keys($this->getActivitiesArray()), $suppressedActivities);
 
         return true;
@@ -177,7 +177,7 @@ class MailSummaryForm extends Model
      *
      * @return boolean success
      */
-    public function save()
+    public function save(): bool
     {
         if ($this->user !== null) {
             $settingsManager = Yii::$app->getModule('activity')->settings->user($this->user);
@@ -247,7 +247,7 @@ class MailSummaryForm extends Model
      */
     public function canResetAllUsers()
     {
-        return !isset($this->user) && Yii::$app->user->can(ManageUsers::class);
+        return $this->user === null && Yii::$app->user->can(ManageUsers::class);
     }
 
     /**

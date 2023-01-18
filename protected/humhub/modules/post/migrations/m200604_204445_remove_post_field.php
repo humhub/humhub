@@ -18,7 +18,7 @@ class m200604_204445_remove_post_field extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function safeDown(): bool
     {
         echo "m200604_204445_remove_post_field cannot be reverted.\n";
 

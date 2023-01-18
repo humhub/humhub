@@ -227,7 +227,7 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
      * @param $block
      * @return string
      */
-    protected function renderHr($line)
+    protected function renderHr($line): string
     {
         return "----------------------------------------\n\n";
     }

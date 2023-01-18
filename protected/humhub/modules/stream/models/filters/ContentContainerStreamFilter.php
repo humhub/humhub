@@ -21,6 +21,8 @@ use Yii;
  */
 class ContentContainerStreamFilter extends StreamQueryFilter
 {
+    public $streamQuery;
+    public $query;
     /**
      * @var ContentContainerActiveRecord
      */
@@ -42,9 +44,9 @@ class ContentContainerStreamFilter extends StreamQueryFilter
 
         // Limit to public posts when no member
         if (!$this->container->canAccessPrivateContent($user)) {
-            if(Yii::$app->user->isGuest) {
+            if (Yii::$app->user->isGuest) {
                 $this->query->andWhere('content.visibility = :visibility', [':visibility' => Content::VISIBILITY_PUBLIC]);
-            } else if (!Yii::$app->user->getIdentity()->canViewAllContent()) {
+            } elseif (!Yii::$app->user->getIdentity()->canViewAllContent()) {
                 // Limit only if current User/Admin cannot view all content
                 $this->query->andWhere('content.visibility = :visibility OR content.created_by = :userId', [
                     ':visibility' => Content::VISIBILITY_PUBLIC,

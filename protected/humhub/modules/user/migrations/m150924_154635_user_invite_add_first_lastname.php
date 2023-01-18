@@ -12,7 +12,7 @@ class m150924_154635_user_invite_add_first_lastname extends Migration
         
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m150924_154635_user_add_imported_flag cannot be reverted.\n";
 

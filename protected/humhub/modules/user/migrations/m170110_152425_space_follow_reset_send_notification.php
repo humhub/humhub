@@ -11,7 +11,7 @@ class m170110_152425_space_follow_reset_send_notification extends Migration
         $this->updateSilent('user_follow', ['send_notifications' => 0], ['object_model' => \humhub\modules\user\models\User::class]);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m170110_152425_space_follow_reset_send_notification cannot be reverted.\n";
 

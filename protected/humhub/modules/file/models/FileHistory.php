@@ -34,7 +34,7 @@ class FileHistory extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'file_history';
     }
@@ -104,7 +104,7 @@ class FileHistory extends ActiveRecord
      * @return bool
      * @throws \yii\db\IntegrityException
      */
-    public static function isEnabled(File $file)
+    public static function isEnabled(File $file): bool
     {
         if (!$file->isNewRecord && $file->isAssigned()) {
 

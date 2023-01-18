@@ -13,12 +13,12 @@ class TestNotification extends \humhub\modules\notification\components\BaseNotif
     public $requireOriginator = false;
     public $requireSource = false;
 
-    public function html()
+    public function html(): string
     {
         return '<h1>TestedMailViewNotificationHTML</h1>';
     }
     
-    public function text()
+    public function text(): string
     {
         return 'TestedMailViewNotificationText';
     }

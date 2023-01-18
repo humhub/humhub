@@ -12,7 +12,7 @@ class m150704_005418_namespace extends Migration
         $this->renameClass('Comment', Comment::class);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m150704_005418_namespace cannot be reverted.\n";
 

@@ -64,7 +64,7 @@ class WallCreateContentMenu extends Menu
 
     private function initEntries()
     {
-        if (!empty($this->entries)) {
+        if ($this->entries !== []) {
             return;
         }
 
@@ -123,12 +123,7 @@ class WallCreateContentMenu extends Menu
         if ($hasEntryWithForm && $countEntries > 1) {
             return true;
         }
-
-        if (!$hasEntryWithForm && $countEntries > 0) {
-            return true;
-        }
-
-        return false;
+        return !$hasEntryWithForm && $countEntries > 0;
     }
 
     /**

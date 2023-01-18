@@ -65,7 +65,7 @@ class Password extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'user_password';
     }
@@ -144,14 +144,9 @@ class Password extends ActiveRecord
      * @param string $password unhashed
      * @return boolean Success
      */
-    public function validatePassword($password)
+    public function validatePassword($password): bool
     {
-
-        if (Yii::$app->security->compareString($this->password, $this->hashPassword($password))) {
-            return true;
-        }
-
-        return false;
+        return (bool) Yii::$app->security->compareString($this->password, $this->hashPassword($password));
     }
 
     /**
@@ -199,14 +194,14 @@ class Password extends ActiveRecord
     {
         $userModule = Yii::$app->getModule('user');
         $additionalRules = $userModule->getPasswordStrength();
-        if (is_array($additionalRules) && ! empty($additionalRules)) {
+        if (is_array($additionalRules) && $additionalRules !== []) {
             foreach ($additionalRules as $pattern => $message) {
                 $errorMessage = $userModule->isCustomPasswordStrength() ?
                     Yii::t('UserModule.custom', $message) :
                     $message;
                 try {
                     preg_match($pattern, $this->$attribute, $matches);
-                    if (! count($matches)) {
+                    if ($matches === []) {
                         $this->addError($attribute, $errorMessage);
                     }
                 } catch (\Exception $exception) {

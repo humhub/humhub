@@ -32,7 +32,7 @@ class PrerequisitesList extends \yii\base\Widget
      *
      * @return boolean
      */
-    public static function hasError()
+    public static function hasError(): bool
     {
         foreach (SelfTest::getResults() as $check) {
             if ($check['state'] == 'ERROR') {

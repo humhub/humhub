@@ -108,7 +108,7 @@ class ContentVisibilitySelect extends InputWidget
     /**
      * @return bool
      */
-    private function shouldHide()
+    private function shouldHide(): bool
     {
         $contentContainer = $this->getContentContainer();
 
@@ -147,7 +147,7 @@ class ContentVisibilitySelect extends InputWidget
 
         if ($this->model instanceof ContentActiveRecord) {
             $this->_content = $this->model->content;
-        } elseif (isset($this->model->{$this->contentOwner}) && $this->model->{$this->contentOwner} instanceof ContentActiveRecord) {
+        } elseif (property_exists($this->model, 'contentOwner') && $this->model->{$this->contentOwner} !== null && $this->model->{$this->contentOwner} instanceof ContentActiveRecord) {
             $this->_content = $this->model->{$this->contentOwner}->content;
         } elseif ($this->model instanceof Content) {
             $this->_content = $this->model;

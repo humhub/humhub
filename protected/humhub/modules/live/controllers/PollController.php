@@ -51,7 +51,7 @@ class PollController extends Controller
     /**
      * @inheritdoc
      */
-    public function beforeAction($action)
+    public function beforeAction($action): bool
     {
         if (Yii::$app->user->isGuest) {
             return false;
@@ -132,7 +132,7 @@ class PollController extends Controller
      * @param LiveEvent $liveEvent
      * @return boolean is visible
      */
-    protected function checkVisibility(LiveEvent $liveEvent)
+    protected function checkVisibility(LiveEvent $liveEvent): bool
     {
         return true;
     }

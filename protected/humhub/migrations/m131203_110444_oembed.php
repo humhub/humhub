@@ -18,7 +18,7 @@ class m131203_110444_oembed extends Migration
         $this->renameColumn('post', 'original_message', 'message');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m131203_110444_oembed does not support migration down.\n";
         return false;

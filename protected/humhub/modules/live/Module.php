@@ -80,12 +80,12 @@ class Module extends \humhub\components\Module
                 $privateContainerQuery->union(Friendship::getFriendshipContainerIdQuery($user), true);
             }
 
-            foreach ($privateContainerQuery->all() as $id => $value) {
+            foreach (array_keys($privateContainerQuery->all()) as $id) {
                 $legitimation[Content::VISIBILITY_PRIVATE][] = $id;
             }
 
             // User sees public content of spaces and profiles the users follows
-            foreach (Follow::getFollowedContainerIdQuery($user)->all() as $id => $value) {
+            foreach (array_keys(Follow::getFollowedContainerIdQuery($user)->all()) as $id) {
                 $legitimation[Content::VISIBILITY_PUBLIC][] = $id;
             }
 

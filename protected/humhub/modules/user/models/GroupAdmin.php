@@ -21,7 +21,7 @@ class GroupAdmin extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'group_admin';
     }

@@ -11,7 +11,7 @@ class m140706_135210_lastlogin extends Migration
         $this->addColumn('user', 'last_login', 'DATETIME DEFAULT NULL');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m140706_135210_lastlogin does not support migration down.\n";
         return false;

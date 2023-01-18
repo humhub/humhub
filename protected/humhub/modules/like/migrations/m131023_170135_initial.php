@@ -18,7 +18,7 @@ class m131023_170135_initial extends Migration {
                 ], '');
     }
 
-    public function down() {
+    public function down(): bool {
         echo "m131023_170135_initial does not support migration down.\n";
         return false;
     }

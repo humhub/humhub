@@ -73,7 +73,7 @@ class FooterMenu extends Menu
     public function run()
     {
         // Make sure Footer on login for powered by
-        if (empty($this->entries) && $this->location === static::LOCATION_LOGIN) {
+        if ($this->entries === [] && $this->location === static::LOCATION_LOGIN) {
             return $this->render($this->template, $this->getViewParams());
         }
 

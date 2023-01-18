@@ -12,7 +12,7 @@ class m150704_005452_namespace extends Migration
         $this->renameClass('Space', Space::class);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m150704_005452_namespace cannot be reverted.\n";
 

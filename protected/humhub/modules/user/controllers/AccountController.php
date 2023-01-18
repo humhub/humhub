@@ -35,6 +35,12 @@ use yii\web\HttpException;
 class AccountController extends BaseAccountController
 {
 
+    public $view;
+    public $module;
+    /**
+     * @var string
+     */
+    public $subLayout;
     /**
      * @inheritdoc
      */
@@ -199,7 +205,7 @@ class AccountController extends BaseAccountController
         if (Yii::$app->request->post('dropDownColumnSubmit')) {
             Yii::$app->response->format = 'json';
             $permission = $this->getUser()->permissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
-            if ($permission === null) {
+            if (!$permission instanceof \humhub\libs\BasePermission) {
                 throw new HttpException(500, 'Could not find permission!');
             }
             $this->getUser()->permissionManager->setGroupState($currentGroup, $permission, Yii::$app->request->post('state'));

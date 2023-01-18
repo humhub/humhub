@@ -94,7 +94,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
      *
      * @return boolean
      */
-    public function save()
+    public function save(): bool
     {
         /* @var $module Module */
         $module = Yii::$app->getModule('user');

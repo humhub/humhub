@@ -21,6 +21,7 @@ use yii\helpers\Url;
  */
 class Overview extends JsWidget
 {
+    public $view;
     public $id = 'notification_widget';
 
     public $jsWidget = 'notification.NotificationDropDown';
@@ -30,7 +31,7 @@ class Overview extends JsWidget
         $this->view->registerJsConfig('notification', [
             'icon' => $this->view->theme->getBaseUrl().'/ico/notification-o.png',
             'loadEntriesUrl' => Url::to(['/notification/list']),
-            'sendDesktopNotifications' => boolval(Yii::$app->notification->getDesktopNoficationSettings(Yii::$app->user->getIdentity())),
+            'sendDesktopNotifications' => (bool) Yii::$app->notification->getDesktopNoficationSettings(Yii::$app->user->getIdentity()),
             'text' =>  [
                 'placeholder' => Yii::t('NotificationModule.base', 'There are no notifications yet.')
             ]

@@ -33,6 +33,11 @@ class GroupController extends Controller
 {
 
     /**
+     * @var string
+     */
+    public $subLayout;
+    public $view;
+    /**
      * @inheritdoc
      */
     public $adminOnly = false;
@@ -92,16 +97,13 @@ class GroupController extends Controller
                     '/admin/group/manage-group-users',
                     'id' => $group->id,
                 ]);
-            } else {
-                if (!empty($group->updateSpaceMemberships)) {
-                    $job = new ReassignGroupDefaultSpaces(['groupId' => $group->id]);
-                    if (!QueueHelper::isQueued($job)) {
-                        Yii::$app->queue->push($job);
-                    }
-
-                    $this->view->info(Yii::t('AdminModule.user',
-                        'The Space memberships of all group members will be updated. This may take up to several minutes.'));
+            } elseif (!empty($group->updateSpaceMemberships)) {
+                $job = new ReassignGroupDefaultSpaces(['groupId' => $group->id]);
+                if (!QueueHelper::isQueued($job)) {
+                    Yii::$app->queue->push($job);
                 }
+                $this->view->info(Yii::t('AdminModule.user',
+                    'The Space memberships of all group members will be updated. This may take up to several minutes.'));
             }
         }
 
@@ -250,7 +252,7 @@ class GroupController extends Controller
 
         $query = User::find()->where(['not exists', $subQuery]);
 
-        $result = UserPicker::filter([
+        return UserPicker::filter([
             'keyword' => $keyword,
             'query' => $query,
             'fillUser' => true,
@@ -258,8 +260,6 @@ class GroupController extends Controller
             'disabledText' => Yii::t('AdminModule.user',
                 'User is already a member of this group.'),
         ]);
-
-        return $result;
     }
 
     public function actionAdminUserSearch($keyword, $id)

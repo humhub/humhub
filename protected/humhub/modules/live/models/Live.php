@@ -21,7 +21,7 @@ class Live extends \humhub\components\ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'live';
     }

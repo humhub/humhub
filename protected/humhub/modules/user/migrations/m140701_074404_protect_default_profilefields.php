@@ -32,7 +32,7 @@ class m140701_074404_protect_default_profilefields extends Migration
                 ], 'title="General" OR title="Communication" OR title="Social bookmarks"');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m140701_074404_protect_default_profilefields does not support migration down.\n";
         return false;

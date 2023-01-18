@@ -13,7 +13,7 @@ class m160227_073020_birthday_date extends Migration
         }
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m160227_073020_birthday_date cannot be reverted.\n";
 

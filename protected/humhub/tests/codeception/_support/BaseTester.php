@@ -29,7 +29,7 @@ class BaseTester extends \Codeception\Actor
                 $this->haveFixtures(['space' => SpaceFixture::class]);
             }
             $this->spaces[$index] = $this->grabFixture('space', $index);
-        } else if (!isset($this->spaces)) {
+        } elseif (!isset($this->spaces)) {
             // Acceptance tests have no the methods above, try to get spaces from DB instead:
             $this->spaces = Space::find()->orderBy('id')->all();
             if (!isset($this->spaces[$index])) {

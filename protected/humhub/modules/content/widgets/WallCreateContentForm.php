@@ -56,7 +56,7 @@ abstract class WallCreateContentForm extends Widget
      *
      * @return string
      */
-    public function renderForm()
+    public function renderForm(): string
     {
         return '';
     }

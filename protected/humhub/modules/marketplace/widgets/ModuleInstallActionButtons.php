@@ -41,7 +41,7 @@ class ModuleInstallActionButtons extends Widget
     {
         $html = '';
 
-        if (!isset($this->module->latestCompatibleVersion) || $this->module->isInstalled()) {
+        if ($this->module->latestCompatibleVersion === null || $this->module->isInstalled()) {
             return '';
         }
 

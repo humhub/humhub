@@ -29,7 +29,7 @@ class TestContent extends Post
         $this->managePermission = $managePermission;
     }
 
-    public function getContentName()
+    public function getContentName(): string
     {
         return 'TestContent';
     }

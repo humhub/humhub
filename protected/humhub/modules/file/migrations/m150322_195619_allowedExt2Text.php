@@ -22,7 +22,7 @@ class m150322_195619_allowedExt2Text extends Migration
         }
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m150322_195619_allowedExt2Text does not support migration down.\n";
         return false;

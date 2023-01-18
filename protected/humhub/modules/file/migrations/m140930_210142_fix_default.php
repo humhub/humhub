@@ -12,7 +12,7 @@ class m140930_210142_fix_default extends Migration
         $this->alterColumn('file', 'object_id', "varchar(100) DEFAULT ''");
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m140930_210142_fix_default does not support migration down.\n";
         return false;

@@ -24,6 +24,10 @@ class Module extends \humhub\components\Module
 {
 
     /**
+     * @var string
+     */
+    public $layout;
+    /**
      * @event on configuration steps init
      */
     const EVENT_INIT_CONFIG_STEPS = 'steps';
@@ -95,13 +99,9 @@ class Module extends \humhub\components\Module
     /**
      * Checks if the application is already configured.
      */
-    public function isConfigured()
+    public function isConfigured(): bool
     {
-        if (Yii::$app->settings->get('secret') == '') {
-            return false;
-        }
-
-        return true;
+        return Yii::$app->settings->get('secret') != '';
     }
 
     /**

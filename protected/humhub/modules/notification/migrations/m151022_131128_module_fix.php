@@ -16,7 +16,7 @@ class m151022_131128_module_fix extends Migration
         $this->update('notification', ['module' => 'admin'], ['class' => 'humhub\modules\admin\notifications\NewVersionAvailable']);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m151022_131128_module_fix cannot be reverted.\n";
 

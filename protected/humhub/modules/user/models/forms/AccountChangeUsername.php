@@ -70,7 +70,7 @@ class AccountChangeUsername extends \yii\base\Model
     /**
      * Sends Change Username E-Mail
      */
-    public function sendChangeUsername()
+    public function sendChangeUsername(): bool
     {
         $user = Yii::$app->user->getIdentity();
         $user->username = $this->newUsername;

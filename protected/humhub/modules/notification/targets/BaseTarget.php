@@ -237,7 +237,7 @@ abstract class BaseTarget extends \yii\base\BaseObject
      * Checks if the settings for this target are editable.
      * @return boolean
      */
-    public function isEditable(user $user = null)
+    public function isEditable(user $user = null): bool
     {
         return true;
     }
@@ -267,7 +267,7 @@ abstract class BaseTarget extends \yii\base\BaseObject
             $enabled = Yii::$app->getModule('notification')->settings->get($settingKey, $category->getDefaultSetting($this));
         }
 
-        return ($enabled === null) ? $this->defaultSetting : boolval($enabled);
+        return ($enabled === null) ? $this->defaultSetting : (bool) $enabled;
     }
 
 }

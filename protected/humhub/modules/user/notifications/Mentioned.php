@@ -19,6 +19,7 @@ use humhub\modules\notification\components\BaseNotification;
 class Mentioned extends BaseNotification
 {
 
+    public $source;
     /**
      * @inheritdoc
      */
@@ -40,7 +41,7 @@ class Mentioned extends BaseNotification
     /**
      * @inheritdoc
      */
-    public function getViewName()
+    public function getViewName(): string
     {
         if ($this->source instanceof \humhub\modules\comment\models\Comment) {
             return 'mentionedComment';

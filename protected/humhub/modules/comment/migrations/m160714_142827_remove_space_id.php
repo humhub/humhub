@@ -14,7 +14,7 @@ class m160714_142827_remove_space_id extends Migration
         }
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m160714_142827_remove_space_id cannot be reverted.\n";
 

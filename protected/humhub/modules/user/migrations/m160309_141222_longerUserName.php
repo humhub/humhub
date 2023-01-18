@@ -9,7 +9,7 @@ class m160309_141222_longerUserName extends Migration
         $this->alterColumn('user', 'username', 'VARCHAR(50)');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m160309_141222_longerUserName cannot be reverted.\n";
 

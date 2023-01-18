@@ -51,7 +51,7 @@ class Friendship extends \humhub\components\ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'user_friendship';
     }
@@ -237,7 +237,7 @@ class Friendship extends \humhub\components\ActiveRecord
      * @param User $friend
      * @return bool
      */
-    public static function add($user, $friend)
+    public static function add($user, $friend): bool
     {
         $friendship = new Friendship();
         $friendship->user_id = $user->id;

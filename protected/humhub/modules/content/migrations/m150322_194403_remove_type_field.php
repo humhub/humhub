@@ -11,7 +11,7 @@ class m150322_194403_remove_type_field extends Migration
         $this->dropColumn('wall', 'type');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m150322_194403_remove_type_field does not support migration down.\n";
         return false;

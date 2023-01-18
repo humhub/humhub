@@ -15,7 +15,7 @@ class m170723_133338_content_tag_sort_order extends Migration
         $this->addColumn('content_tag',  'sort_order', 'int(11) DEFAULT 0');
     }
 
-    public function safeDown()
+    public function safeDown(): bool
     {
         echo "m170723_133337_content_filter cannot be reverted.\n";
 

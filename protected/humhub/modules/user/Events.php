@@ -57,10 +57,8 @@ class Events extends BaseObject
 
         $integrityController->showTestHeadline('User Module - ContentContainer (' . User::find()->count() . ' entries)');
         foreach (User::find()->joinWith(['contentContainerRecord'])->each() as $user) {
-            if ($user->contentContainerRecord === null) {
-                if ($integrityController->showFix('Deleting user ' . $user->id . ' without content container record!')) {
-                    $user->delete();
-                }
+            if ($user->contentContainerRecord === null && $integrityController->showFix('Deleting user ' . $user->id . ' without content container record!')) {
+                $user->delete();
             }
         }
 
@@ -72,58 +70,44 @@ class Events extends BaseObject
         }
 
         foreach (GroupUser::find()->joinWith(['user'])->each() as $groupUser) {
-            if ($groupUser->user == null) {
-                if ($integrityController->showFix('Deleting group admin ' . $groupUser->id . ' without existing user!')) {
-                    $groupUser->delete();
-                }
+            if ($groupUser->user == null && $integrityController->showFix('Deleting group admin ' . $groupUser->id . ' without existing user!')) {
+                $groupUser->delete();
             }
         }
 
         $integrityController->showTestHeadline('User Module - Password (' . Password::find()->count() . ' entries)');
         foreach (Password::find()->joinWith(['user'])->each() as $password) {
-            if ($password->user == null) {
-                if ($integrityController->showFix('Deleting password ' . $password->id . ' without existing user!')) {
-                    $password->delete();
-                }
+            if ($password->user == null && $integrityController->showFix('Deleting password ' . $password->id . ' without existing user!')) {
+                $password->delete();
             }
         }
 
         $integrityController->showTestHeadline('User Module - Profile (' . Profile::find()->count() . ' entries)');
         foreach (Profile::find()->joinWith(['user'])->each() as $profile) {
-            if ($profile->user == null) {
-                if ($integrityController->showFix('Deleting profile ' . $profile->user_id . ' without existing user!')) {
-                    $profile->delete();
-                }
+            if ($profile->user == null && $integrityController->showFix('Deleting profile ' . $profile->user_id . ' without existing user!')) {
+                $profile->delete();
             }
         }
 
         $integrityController->showTestHeadline('User Module - Mentioning (' . Mentioning::find()->count() . ' entries)');
         foreach (Mentioning::find()->joinWith(['user'])->each() as $mentioning) {
-            if ($mentioning->user == null) {
-                if ($integrityController->showFix('Deleting mentioning ' . $mentioning->id . ' of non existing user!')) {
-                    $mentioning->delete();
-                }
+            if ($mentioning->user == null && $integrityController->showFix('Deleting mentioning ' . $mentioning->id . ' of non existing user!')) {
+                $mentioning->delete();
             }
-            if ($mentioning->getPolymorphicRelation() == null) {
-                if ($integrityController->showFix('Deleting mentioning ' . $mentioning->id . ' of non target!')) {
-                    $mentioning->delete();
-                }
+            if ($mentioning->getPolymorphicRelation() == null && $integrityController->showFix('Deleting mentioning ' . $mentioning->id . ' of non target!')) {
+                $mentioning->delete();
             }
         }
 
         $integrityController->showTestHeadline('User Module - Follow (' . Follow::find()->count() . ' entries)');
         foreach (Follow::find()->joinWith(['user'])->each() as $follow) {
-            if ($follow->user == null) {
-                if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non existing user!')) {
-                    $follow->delete();
-                }
+            if ($follow->user == null && $integrityController->showFix('Deleting follow ' . $follow->id . ' of non existing user!')) {
+                $follow->delete();
             }
 
             try {
-                if ($follow->getTarget() == null) {
-                    if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non target!')) {
-                        $follow->delete();
-                    }
+                if ($follow->getTarget() == null && $integrityController->showFix('Deleting follow ' . $follow->id . ' of non target!')) {
+                    $follow->delete();
                 }
             } catch (\Exception $e) {
                 if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non target!')) {
@@ -138,10 +122,8 @@ class Events extends BaseObject
         }
         $integrityController->showTestHeadline('User Module - Content container (' . ContentContainer::find()->count() . ' entries)');
         foreach (ContentContainer::find()->where(['NOT IN', 'owner_user_id', $userIds])->each() as $contentContainer) {
-            if ($contentContainer['class'] == User::class && $contentContainer['pk'] == $contentContainer['owner_user_id']) {
-                if ($integrityController->showFix('Deleting content container ' . $contentContainer->id . ' without existing user!')) {
-                    $contentContainer->delete();
-                }
+            if ($contentContainer['class'] == User::class && $contentContainer['pk'] == $contentContainer['owner_user_id'] && $integrityController->showFix('Deleting content container ' . $contentContainer->id . ' without existing user!')) {
+                $contentContainer->delete();
             }
         }
     }

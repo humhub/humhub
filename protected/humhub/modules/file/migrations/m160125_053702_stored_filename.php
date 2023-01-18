@@ -18,7 +18,7 @@ class m160125_053702_stored_filename extends Migration
         }
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m160125_053702_stored_filename cannot be reverted.\n";
 

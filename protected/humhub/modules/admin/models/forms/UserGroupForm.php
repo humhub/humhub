@@ -80,7 +80,7 @@ class UserGroupForm extends Model
      * Aligns the given group selection with the db
      * @return boolean
      */
-    public function save()
+    public function save(): bool
     {
         //Check old group selection and remove non selected groups
         foreach ($this->currentGroups as $userGroup) {
@@ -117,7 +117,7 @@ class UserGroupForm extends Model
      * @param type $groupId $groupId groupId or Group model object
      * @return boolean true if user is member else false
      */
-    private function isCurrentlyMemberOf($groupId)
+    private function isCurrentlyMemberOf($groupId): bool
     {
         $groupId = ($groupId instanceof Group) ? $groupId->id : $groupId;
         foreach ($this->currentGroups as $userGroup) {

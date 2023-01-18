@@ -73,7 +73,7 @@ class Activity extends ContentActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'activity';
     }

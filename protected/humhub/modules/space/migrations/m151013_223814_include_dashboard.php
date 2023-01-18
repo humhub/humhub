@@ -10,7 +10,7 @@ class m151013_223814_include_dashboard extends Migration
         $this->addColumn('space_membership', 'show_at_dashboard', Schema::TYPE_BOOLEAN. ' DEFAULT 1');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m151013_223814_include_dashboard cannot be reverted.\n";
 

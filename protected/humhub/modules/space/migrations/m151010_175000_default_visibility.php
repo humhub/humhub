@@ -10,7 +10,7 @@ class m151010_175000_default_visibility extends Migration
         $this->addColumn('space', 'default_content_visibility', Schema::TYPE_BOOLEAN);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m151010_175000_default_visibility cannot be reverted.\n";
 

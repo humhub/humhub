@@ -48,7 +48,7 @@ class MailingDefaultsForm extends \yii\base\Model
      *
      * @return boolean
      */
-    public function save()
+    public function save(): bool
     {
         Yii::$app->getModule('notification')->settings->set('receive_email_notifications', $this->receive_email_notifications);
         Yii::$app->getModule('activity')->settings->set('receive_email_activities', $this->receive_email_activities);

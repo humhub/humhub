@@ -16,7 +16,7 @@ class m160205_203955_foreign_keys extends Migration
         }
     }
 
-    public function down()
+    public function down(): bool
     {
         $this->dropForeignKey('fk_like-created_by', 'like');
         $this->dropForeignKey('fk_like-target_user_id', 'like');

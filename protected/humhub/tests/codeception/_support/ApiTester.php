@@ -122,7 +122,7 @@ class ApiTester extends BaseTester
             $encodedUrlParams[] = $paramKey . '=' . urlencode($paramValue);
         }
 
-        if (!empty($encodedUrlParams)) {
+        if ($encodedUrlParams !== []) {
             $url .= (strpos($url, '?') === false ? '?' : '&') . implode('&', $encodedUrlParams);
         }
 

@@ -177,7 +177,7 @@ class m131023_164513_initial extends Migration
         $this->addPrimaryKey('pk_user_space_membership', 'user_space_membership', 'space_id,user_id');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m131023_164513_initial does not support migration down.\n";
         return false;

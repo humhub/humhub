@@ -47,7 +47,7 @@ class m150703_130157_migrate extends Migration
         }
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m150703_130157_migrate cannot be reverted.\n";
 

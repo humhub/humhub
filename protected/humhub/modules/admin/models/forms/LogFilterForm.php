@@ -278,7 +278,7 @@ class LogFilterForm extends Model
     /**
      * @inheritDoc
      */
-    public function formName()
+    public function formName(): string
     {
         return '';
     }

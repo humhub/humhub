@@ -79,7 +79,7 @@ class Module extends \humhub\components\Module
      * @throws \yii\base\Exception
      * @throws \yii\base\InvalidConfigException
      */
-    public function canComment($object)
+    public function canComment($object): bool
     {
         if (Yii::$app->user->isGuest) {
             return false;
@@ -87,20 +87,13 @@ class Module extends \humhub\components\Module
 
         $content = $object->content;
 
-        if ($content->container) {
-            if (!$content->container->permissionManager->can(CreateComment::class)) {
-                return false;
-            }
+        if ($content->container && !$content->container->permissionManager->can(CreateComment::class)) {
+            return false;
         }
 
         if ($content->isLockedComments()) {
             return false;
         }
-
-        if ($content->isArchived()) {
-            return false;
-        }
-
-        return true;
+        return !$content->isArchived();
     }
 }

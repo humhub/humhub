@@ -22,7 +22,7 @@ class m170119_160740_initial extends Migration
         }
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m170119_160740_initial cannot be reverted.\n";
 

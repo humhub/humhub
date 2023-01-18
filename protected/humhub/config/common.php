@@ -22,7 +22,7 @@ if (!defined('PKCS7_DETACHED')) {
     define('PKCS7_DETACHED', 64);
 }
 
-$config = [
+return [
     'name' => 'HumHub',
     'version' => '1.14.0-beta.1',
     'minRecommendedPhpVersion' => '7.4',
@@ -263,5 +263,3 @@ $config = [
         'dailyCronExecutionTime' => '18:00',
     ],
 ];
-
-return $config;

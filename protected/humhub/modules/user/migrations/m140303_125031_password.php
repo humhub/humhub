@@ -36,7 +36,7 @@ class m140303_125031_password extends Migration
         $this->dropColumn('user', 'password');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m140303_125031_password does not support migration down.\n";
         return false;

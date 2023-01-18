@@ -11,7 +11,7 @@ class m140930_205859_fix_default extends Migration
         $this->alterColumn('like', 'target_user_id', 'int(11) DEFAULT NULL');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m140930_205859_fix_default does not support migration down.\n";
         return false;

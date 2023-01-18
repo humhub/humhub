@@ -14,7 +14,7 @@ class m170118_162332_streamchannel extends Migration
         $this->createIndex('stream_channe', 'content', 'stream_channel', false);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m170118_162332_streamchannel cannot be reverted.\n";
 

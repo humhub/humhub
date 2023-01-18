@@ -58,7 +58,7 @@ class Tabs extends \yii\bootstrap\Tabs
     /**
      * @inheritdoc
      */
-    public function beforeRun()
+    public function beforeRun(): bool
     {
         if (!parent::beforeRun()) {
             return false;
@@ -82,7 +82,7 @@ class Tabs extends \yii\bootstrap\Tabs
             return $item['params'];
         }
 
-        return !empty($this->params) ? $this->params : [];
+        return empty($this->params) ? [] : $this->params;
     }
 
     /**
@@ -92,21 +92,16 @@ class Tabs extends \yii\bootstrap\Tabs
      * @param null $action
      * @return bool
      */
-    public function isCurrentRoute($moduleId = null, $controllerId = null, $actionId = null)
+    public function isCurrentRoute($moduleId = null, $controllerId = null, $actionId = null): bool
     {
         if ($moduleId && !(Yii::$app->controller->module && Yii::$app->controller->module->id == $moduleId)) {
             return false;
         }
 
-        if ($controllerId && !(Yii::$app->controller->id == $controllerId)) {
+        if ($controllerId && Yii::$app->controller->id != $controllerId) {
             return false;
         }
-
-        if ($actionId && !(Yii::$app->controller->action->id == $actionId)) {
-            return false;
-        }
-
-        return true;
+        return !($actionId && Yii::$app->controller->action->id != $actionId);
     }
 
     public function addItem($item)

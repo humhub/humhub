@@ -25,6 +25,8 @@ use humhub\modules\content\models\Content;
  */
 class PinnedContentStreamFilter extends StreamQueryFilter
 {
+    public $streamQuery;
+    public $query;
     /**
      * @var ContentContainerActiveRecord
      */
@@ -47,15 +49,14 @@ class PinnedContentStreamFilter extends StreamQueryFilter
 
          if ($this->streamQuery->isInitialQuery()) {
              $pinnedContentIds = $this->fetchPinnedContent();
-
              // Exclude pinned content from result, we've already fetched and cached them
-             if(!empty($pinnedContentIds)) {
+             if($pinnedContentIds !== []) {
                 $this->query->andWhere((['NOT IN', 'content.id', $pinnedContentIds]));
             }
-        } else if(!$this->streamQuery->isSingleContentQuery()) {
-            // All pinned entries of this container were loaded within the initial request, so don't include them here!
-            $this->query->andWhere(['OR', ['content.pinned' => 0], ['<>', 'content.contentcontainer_id', $this->container->contentcontainer_id]]);
-        }
+         } elseif (!$this->streamQuery->isSingleContentQuery()) {
+             // All pinned entries of this container were loaded within the initial request, so don't include them here!
+             $this->query->andWhere(['OR', ['content.pinned' => 0], ['<>', 'content.contentcontainer_id', $this->container->contentcontainer_id]]);
+         }
     }
 
     /**

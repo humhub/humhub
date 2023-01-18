@@ -75,7 +75,7 @@ class WallCreateContentFormContainer extends Widget
             ];
         }
 
-        if (empty($forms)) {
+        if ($forms === []) {
             return null;
         }
 

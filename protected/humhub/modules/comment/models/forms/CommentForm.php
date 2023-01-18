@@ -90,7 +90,7 @@ class CommentForm extends yii\base\Model
      * @return boolean
      * @throws ServerErrorHttpException
      */
-    public function save()
+    public function save(): bool
     {
         if(!$this->validate()) {
             return false;
@@ -112,7 +112,7 @@ class CommentForm extends yii\base\Model
     /**
      * @return string
      */
-    public function formName()
+    public function formName(): string
     {
         return '';
     }

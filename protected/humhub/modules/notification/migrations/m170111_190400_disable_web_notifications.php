@@ -13,7 +13,7 @@ class m170111_190400_disable_web_notifications extends Migration
         $this->addColumn('notification', 'send_web_notifications', 'boolean default "1"');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m170111_190400_disable_web_notifications cannot be reverted.\n";
 

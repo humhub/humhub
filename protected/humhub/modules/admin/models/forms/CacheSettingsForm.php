@@ -93,7 +93,7 @@ class CacheSettingsForm extends Model
      *
      * @return boolean
      */
-    public function save()
+    public function save(): bool
     {
         $settingsManager = Yii::$app->settings;
 

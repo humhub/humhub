@@ -33,7 +33,7 @@ class m211124_180441_admin_group_label extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function safeDown(): bool
     {
         echo "m211124_180441_admin_group_label cannot be reverted.\n";
 

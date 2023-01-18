@@ -21,7 +21,7 @@ class m221111_100450_rename_profile_url extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function safeDown(): bool
     {
         echo "m221111_100450_rename_profile_url cannot be reverted.\n";
 

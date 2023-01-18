@@ -67,12 +67,12 @@ class AuthClientHelpers
             /**
              * Make sure authClient is not double assigned
              */
-            if ($auth !== null && $auth->user_id != $user->id) {
+            if ($auth !== null && $auth->user_id !== $user->id) {
                 $auth->delete();
                 $auth = null;
             }
 
-            if ($auth === null) {
+            if (!$auth instanceof \humhub\modules\user\models\Auth) {
                 $auth = new Auth([
                     'user_id' => $user->id,
                     'source' => (string)$authClient->getId(),
@@ -108,7 +108,7 @@ class AuthClientHelpers
      * @param User $user
      * @return boolean succeed
      */
-    public static function updateUser(ClientInterface $authClient, User $user = null)
+    public static function updateUser(ClientInterface $authClient, User $user = null): bool
     {
         if ($user === null) {
             $user = self::getUserByAuthClient($authClient);
@@ -128,10 +128,8 @@ class AuthClientHelpers
                     } else {
                         $user->profile->setAttribute($attributeName, $attributes[$attributeName]);
                     }
-                } else {
-                    if ($user->profile->hasAttribute($attributeName)) {
-                        $user->profile->setAttribute($attributeName, '');
-                    }
+                } elseif ($user->profile->hasAttribute($attributeName)) {
+                    $user->profile->setAttribute($attributeName, '');
                 }
             }
 
@@ -206,11 +204,7 @@ class AuthClientHelpers
             $username[] = $attributes['family_name'];
         }
 
-        if (empty($username)) {
-            $username = Yii::$app->security->generateRandomString(8);
-        } else {
-            $username = implode('_', $username);
-        }
+        $username = empty($username) ? Yii::$app->security->generateRandomString(8) : implode('_', $username);
 
         $username = strtolower(substr($username, 0, 32));
         $usernameRandomSuffix = '';

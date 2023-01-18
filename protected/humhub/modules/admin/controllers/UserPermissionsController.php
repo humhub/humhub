@@ -29,6 +29,10 @@ class UserPermissionsController extends Controller
 {
 
     /**
+     * @var string
+     */
+    public $subLayout;
+    /**
      * @inheritdoc
      */
     public $adminOnly = false;
@@ -75,7 +79,7 @@ class UserPermissionsController extends Controller
         if (Yii::$app->request->post('dropDownColumnSubmit')) {
             Yii::$app->response->format = 'json';
             $permission = $defaultPermissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
-            if ($permission === null) {
+            if (!$permission instanceof \humhub\libs\BasePermission) {
                 throw new HttpException(500, 'Could not find permission!');
             }
             $defaultPermissionManager->setGroupState($groupId, $permission, Yii::$app->request->post('state'));
@@ -101,10 +105,10 @@ class UserPermissionsController extends Controller
             $newState = true;
         }
 
-        if ($oldState === true && $newState === false) {
+        if ($oldState && $newState === false) {
             ContentContainerPermission::deleteAll('contentcontainer_id IN (SELECT contentcontainer_id FROM user)');
             $userModule->settings->set('enableProfilePermissions', false);
-        } elseif ($oldState === false && $newState === true) {
+        } elseif ($oldState === false && $newState) {
             $userModule->settings->set('enableProfilePermissions', true);
         }
 

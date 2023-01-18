@@ -23,7 +23,7 @@ class StringHelper extends \yii\helpers\StringHelper
      * @param string $object_guid a binary string containing data.
      * @return string the guid
      */
-    public static function binaryToGuid($object_guid)
+    public static function binaryToGuid($object_guid): string
     {
         $hex_guid = bin2hex($object_guid);
 

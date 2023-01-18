@@ -40,7 +40,7 @@ class PeopleFilterPicker extends BasePicker
             throw new InvalidConfigException('Invalid filter key');
         }
 
-        if (empty($this->defaultResults)) {
+        if ($this->defaultResults === []) {
             $definition = $profileField->fieldType->getFieldFormDefinition();
             if (isset($definition[$profileField->internal_name]['type']) && $definition[$profileField->internal_name]['type'] === 'dropdownlist') {
                 $this->defaultResults = $definition[$profileField->internal_name]['items'];
@@ -131,7 +131,7 @@ class PeopleFilterPicker extends BasePicker
      */
     public function getSuggestions($keyword = '')
     {
-        if (empty($this->defaultResults)) {
+        if ($this->defaultResults === []) {
             return User::find()
                 ->select(['id' => $this->itemKey, 'text' => $this->itemKey])
                 ->visible()

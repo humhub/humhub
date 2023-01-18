@@ -57,14 +57,14 @@ if (!class_exists('\\Codeception\\Codecept')) {
             require_once __DIR__ . '/vendor/codeception/codeception/autoload.php';
         }
     } elseif (stream_resolve_include_path('Codeception/autoload.php')) {
-        require_once 'Codeception/autoload.php';
+        require_once __DIR__ . '/Codeception/autoload.php';
     } else {
         __c3_error('Codeception is not loaded. Please check that either PHAR or Composer package can be used');
     }
 }
 
 // phpunit codecoverage shimming
-if (!class_exists('PHP_CodeCoverage') and class_exists('SebastianBergmann\CodeCoverage\CodeCoverage')) {
+if (!class_exists('PHP_CodeCoverage') && class_exists('SebastianBergmann\CodeCoverage\CodeCoverage')) {
     class_alias('SebastianBergmann\CodeCoverage\CodeCoverage', 'PHP_CodeCoverage');
     class_alias('SebastianBergmann\CodeCoverage\Report\Text', 'PHP_CodeCoverage_Report_Text');
     class_alias('SebastianBergmann\CodeCoverage\Report\PHP', 'PHP_CodeCoverage_Report_PHP');
@@ -267,10 +267,8 @@ if (!defined('C3_CODECOVERAGE_MEDIATE_STORAGE')) {
     }
 }
 
-if (!is_dir(C3_CODECOVERAGE_MEDIATE_STORAGE)) {
-    if (mkdir(C3_CODECOVERAGE_MEDIATE_STORAGE, 0777, true) === false) {
-        __c3_error('Failed to create directory "' . C3_CODECOVERAGE_MEDIATE_STORAGE . '"');
-    }
+if (!is_dir(C3_CODECOVERAGE_MEDIATE_STORAGE) && !mkdir(C3_CODECOVERAGE_MEDIATE_STORAGE, 0777, true)) {
+    __c3_error('Failed to create directory "' . C3_CODECOVERAGE_MEDIATE_STORAGE . '"');
 }
 
 // evaluate base path for c3-related files
@@ -335,10 +333,8 @@ if ($requestedC3Report) {
         register_shutdown_function(
             function () use ($codeCoverage, $currentReport) {
                 $codeCoverage->stop();
-                if (!file_exists(dirname($currentReport))) { // verify directory exists
-                    if (!mkdir(dirname($currentReport), 0777, true)) {
-                        __c3_error("Can't write CodeCoverage report into $currentReport");
-                    }
+                // verify directory exists
+                if (!file_exists(dirname($currentReport)) && !mkdir(dirname($currentReport), 0777, true)) { __c3_error("Can't write CodeCoverage report into $currentReport");
                 }
 
                 // This will either lock the existing report for writing and return it along with a file pointer,

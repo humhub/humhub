@@ -144,6 +144,6 @@ class Module extends BaseModule
 
         $tags = explode(',', $tags);
 
-        return count($tags) === 1 && $tags[0] == $tag;
+        return count($tags) === 1 && $tags[0] === $tag;
     }
 }

@@ -106,7 +106,7 @@ class LinkedIn extends \yii\authclient\clients\LinkedIn
     /**
      * @inheritdoc
      */
-    protected function defaultName()
+    protected function defaultName(): string
     {
         return 'linkedin';
     }
@@ -114,7 +114,7 @@ class LinkedIn extends \yii\authclient\clients\LinkedIn
     /**
      * @inheritdoc
      */
-    protected function defaultTitle()
+    protected function defaultTitle(): string
     {
         return 'LinkedIn';
     }

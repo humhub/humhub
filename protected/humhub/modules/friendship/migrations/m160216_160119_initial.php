@@ -20,7 +20,7 @@ class m160216_160119_initial extends Migration
         $this->addForeignKey('fk-friend', 'user_friendship', 'friend_user_id', 'user', 'id', 'CASCADE');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m160216_160119_inital cannot be reverted.\n";
 

@@ -323,7 +323,7 @@ class NotificationManager
 
         // Save actual selection.
         foreach ($spaces as $space) {
-            $this->setSpaceSetting($user, $space);
+            $this->setSpaceSetting($space, $user);
         }
 
         $spaceIds = array_map(fn($space) => $space->id, $spaces);
@@ -391,7 +391,7 @@ class NotificationManager
      * @param Space $space which notifications will be followed / unfollowed
      * @param boolean $follow the setting value (true by default)
      */
-    public function setSpaceSetting(User $user = null, Space $space, $follow = true)
+    public function setSpaceSetting(Space $space, User $user = null, $follow = true)
     {
         /* @var $membership Membership */
         $membership = $space->getMembership($user->id);

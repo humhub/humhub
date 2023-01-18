@@ -9,7 +9,7 @@ class m170211_105743_show_in_stream extends Migration
         $this->addColumn('file', 'show_in_stream', $this->boolean()->defaultValue(true));
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m170211_105743_show_in_stream cannot be reverted.\n";
 

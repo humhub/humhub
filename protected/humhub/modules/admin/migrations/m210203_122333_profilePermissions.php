@@ -25,7 +25,7 @@ class m210203_122333_profilePermissions extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function safeDown(): bool
     {
         echo "m210203_122333_profilePermissions cannot be reverted.\n";
 

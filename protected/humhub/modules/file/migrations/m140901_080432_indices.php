@@ -11,7 +11,7 @@ class m140901_080432_indices extends Migration
         $this->createIndex('index_object', 'file', 'object_model, object_id', false);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m140901_080432_indices does not support migration down.\n";
         return false;

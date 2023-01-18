@@ -13,7 +13,7 @@ class m140930_212528_fix_default extends Migration
         $this->alterColumn('notification', 'created_by', "int(11) DEFAULT NULL");
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m140930_212528_fix_default does not support migration down.\n";
         return false;

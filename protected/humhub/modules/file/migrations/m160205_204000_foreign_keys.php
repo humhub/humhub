@@ -10,7 +10,7 @@ class m160205_204000_foreign_keys extends Migration
         $this->addForeignKey('fk_file-created_by', 'file', 'created_by', 'user', 'id', 'CASCADE', 'CASCADE');
     }
 
-    public function down()
+    public function down(): bool
     {
         $this->dropForeignKey('fk_file-created_by', 'file');
 

@@ -11,7 +11,7 @@ class m150302_114347_add_visibility extends Migration
         $this->addColumn('user', 'visibility', 'INT(1) DEFAULT 1');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m150302_114347_add_visibility does not support migration down.\n";
         return false;

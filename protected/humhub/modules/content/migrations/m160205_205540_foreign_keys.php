@@ -10,7 +10,7 @@ class m160205_205540_foreign_keys extends Migration
         $this->addForeignKey('fk_wall_entry-wall_id', 'wall_entry', 'wall_id', 'wall', 'id', 'CASCADE', 'CASCADE');
     }
 
-    public function down()
+    public function down(): bool
     {
         $this->dropForeignKey('fk_wall_entry-wall_id', 'wall');
         return true;

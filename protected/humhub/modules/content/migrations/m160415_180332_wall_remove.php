@@ -50,7 +50,7 @@ class m160415_180332_wall_remove extends Migration
         $this->dropTable('wall');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m160415_180332_wall_remove cannot be reverted.\n";
 

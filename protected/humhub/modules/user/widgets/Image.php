@@ -21,6 +21,12 @@ use humhub\modules\user\models\User;
  */
 class Image extends BaseImage
 {
+    public $tooltipText;
+    public $showTooltip;
+    /**
+     * @var array<string, string>|mixed[]|string[]|array<string, int>|array<string, mixed>
+     */
+    public $imageOptions;
     /**
      * @var \humhub\modules\user\models\User
      */
@@ -60,9 +66,7 @@ class Image extends BaseImage
             $html = Html::a($html, $this->user->getUrl(), $this->linkOptions);
         }
 
-        $html = Html::tag('span', $html, $this->htmlOptions);
-
-        return $html;
+        return Html::tag('span', $html, $this->htmlOptions);
     }
 
 }

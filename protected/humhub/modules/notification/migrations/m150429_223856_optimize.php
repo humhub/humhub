@@ -14,7 +14,7 @@ class m150429_223856_optimize extends Migration
         $this->createIndex('index_desktop_emailed', 'notification', 'emailed', false);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m150429_223856_optimize does not support migration down.\n";
         return false;

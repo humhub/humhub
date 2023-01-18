@@ -37,7 +37,7 @@ class ContentContainerHelper
             }
         }
 
-        if(static::$container && $type && !is_a(static::$container,  $type)) {
+        if(static::$container && $type && !static::$container instanceof $type) {
             return null;
         }
 

@@ -29,7 +29,7 @@ class Session extends ActiveRecord
     /**
      * @return string the associated database table name
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'user_http_session';
     }

@@ -14,7 +14,7 @@ class m140702_143912_notify_notification_unify extends Migration
         $this->delete('notification', 'class=:class', [':class' => 'TaskCreatedNotification']);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m140702_143912_notify_notification_unify does not support migration down.\n";
         return false;

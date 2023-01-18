@@ -12,7 +12,7 @@ class m171025_200312_utf8mb4_fixes extends Migration
         $this->alterColumn('contentcontainer', 'class', 'char(60) NOT NULL');
     }
 
-    public function safeDown()
+    public function safeDown(): bool
     {
         echo "m171025_200312_utf8mb4_fixes cannot be reverted.\n";
 

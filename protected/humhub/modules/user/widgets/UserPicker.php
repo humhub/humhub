@@ -195,7 +195,7 @@ class UserPicker extends \yii\base\Widget
             
             //Filter out users by means of the fillQuery or default the fillQuery
             $fillQuery = (isset($cfg['fillQuery'])) ? $cfg['fillQuery'] : UserFilter::find();
-            UserFilter::addKeywordFilter($fillQuery, $cfg['keyword'], ($cfg['maxResult'] - count($user)));
+            UserFilter::addKeywordFilter($fillQuery, $cfg['keyword']);
             $fillQuery->andFilterWhere(['not in', 'user.id', self::getUserIdArray($user)]);
             $fillUser = $fillQuery->all();
             

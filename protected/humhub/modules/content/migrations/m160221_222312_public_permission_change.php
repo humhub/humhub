@@ -20,7 +20,7 @@ class m160221_222312_public_permission_change extends Migration
         ]);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m160221_222312_public_permission_change cannot be reverted.\n";
 

@@ -46,7 +46,7 @@ class IncompleteSetupWarning extends Widget
 
         $problems = $this->getProblems();
 
-        if (count($problems) === 0) {
+        if ($problems === []) {
             return;
         }
 
@@ -79,7 +79,7 @@ class IncompleteSetupWarning extends Widget
     /**
      * @return bool queue worker status
      */
-    protected function checkQueue()
+    protected function checkQueue(): bool
     {
 
         // Only for database queue
@@ -108,14 +108,10 @@ class IncompleteSetupWarning extends Widget
     /**
      * @return bool cron status
      */
-    protected function checkCron()
+    protected function checkCron(): bool
     {
         $lastRun = (int)Yii::$app->settings->getUncached('cronLastRun');
-        if (empty($lastRun) || $lastRun < time() - 60 * 60) {
-            return false;
-        }
-
-        return true;
+        return !empty($lastRun) && $lastRun >= time() - 60 * 60;
     }
 
 }

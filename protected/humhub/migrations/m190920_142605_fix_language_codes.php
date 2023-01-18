@@ -33,7 +33,7 @@ class m190920_142605_fix_language_codes extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function safeDown(): bool
     {
         echo "m190920_142605_fix_language_codes cannot be reverted.\n";
 

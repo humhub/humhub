@@ -33,7 +33,7 @@ class PermissionManagerMock extends PermissionManager
         ]
     ];
 
-    protected function verify(BasePermission $permission)
+    protected function verify(BasePermission $permission): bool
     {
         $subject = $this->getSubject();
         if ($subject) {

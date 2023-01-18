@@ -10,7 +10,7 @@ class m150928_140718_setColorVariables extends Migration
         //\humhub\components\Theme::setColorVariables(Yii::$app->view->theme->name);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m150928_140718_setColorVariables cannot be reverted.\n";
 

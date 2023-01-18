@@ -84,7 +84,7 @@ class SpaceSettingsForm extends \yii\base\Model
         }
     }
 
-    public function save()
+    public function save(): bool
     {
         $this->getSettings()->set('defaultJoinPolicy', $this->defaultJoinPolicy);
         $this->getSettings()->set('defaultVisibility', $this->defaultVisibility);

@@ -11,7 +11,7 @@ class m150713_054441_timezone extends Migration
         $this->addColumn('user', 'time_zone', 'VARCHAR(100) DEFAULT NULL');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m150713_054441_timezone cannot be reverted.\n";
 

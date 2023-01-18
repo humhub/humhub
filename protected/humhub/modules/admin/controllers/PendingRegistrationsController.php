@@ -21,6 +21,11 @@ class PendingRegistrationsController extends Controller
 {
 
     /**
+     * @var string
+     */
+    public $subLayout;
+    public $view;
+    /**
      * @inheritDoc
      */
     public function init()

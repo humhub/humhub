@@ -14,6 +14,7 @@ use yii\db\Query;
 
 class TopicStreamFilter extends StreamQueryFilter
 {
+    public $query;
     const CATEGORY = 'topics';
 
     /**
@@ -35,7 +36,7 @@ class TopicStreamFilter extends StreamQueryFilter
 
     public function apply()
     {
-        if(empty($this->topics)) {
+        if($this->topics === []) {
             return;
         }
 

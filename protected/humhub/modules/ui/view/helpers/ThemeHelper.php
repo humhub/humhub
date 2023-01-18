@@ -164,7 +164,7 @@ class ThemeHelper
     {
         if (!$includeBaseTheme) {
             $theme = static::getThemeParent($theme);
-            if ($theme === null) {
+            if (!$theme instanceof \humhub\modules\ui\view\components\Theme) {
                 return [];
             }
         }

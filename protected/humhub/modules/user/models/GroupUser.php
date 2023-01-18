@@ -27,12 +27,13 @@ use humhub\modules\search\libs\SearchHelper;
 class GroupUser extends ActiveRecord
 {
 
+    public $scenario;
     const SCENARIO_REGISTRATION = 'registration';
 
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'group_user';
     }
@@ -129,18 +130,15 @@ class GroupUser extends ActiveRecord
      */
     public function validateGroupId()
     {
-        if ($this->scenario == static::SCENARIO_REGISTRATION) {
-            if ($this->group_id != '') {
-                $registrationGroups = Group::getRegistrationGroups();
-                foreach ($registrationGroups as $group) {
-                    if ($this->group_id == $group->id) {
-                        return;
-                    }
+        if ($this->scenario == static::SCENARIO_REGISTRATION && $this->group_id != '') {
+            $registrationGroups = Group::getRegistrationGroups();
+            foreach ($registrationGroups as $group) {
+                if ($this->group_id === $group->id) {
+                    return;
                 }
-
-                // Not found group in groups available during registration
-                $this->addError('group_id', 'Invalid group given!');
             }
+            // Not found group in groups available during registration
+            $this->addError('group_id', 'Invalid group given!');
         }
     }
 

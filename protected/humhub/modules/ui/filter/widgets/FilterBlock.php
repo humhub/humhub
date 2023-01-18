@@ -52,7 +52,7 @@ class FilterBlock extends Widget
      */
     public function run()
     {
-        if (empty($this->filters)) {
+        if ($this->filters === []) {
             return '';
         }
 

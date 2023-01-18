@@ -101,7 +101,7 @@ class FileValidator extends \yii\validators\FileValidator
      * @return bool
      * @throws \yii\base\InvalidConfigException
      */
-    protected function validateExtension($file)
+    protected function validateExtension($file): bool
     {
         $extension = mb_strtolower($file->extension, 'UTF-8');
 
@@ -117,11 +117,6 @@ class FileValidator extends \yii\validators\FileValidator
                 return false;
             }
         }
-
-        if (!in_array($extension, $this->extensions, true)) {
-            return false;
-        }
-
-        return true;
+        return in_array($extension, $this->extensions, true);
     }
 }

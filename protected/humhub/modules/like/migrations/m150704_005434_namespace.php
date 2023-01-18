@@ -12,7 +12,7 @@ class m150704_005434_namespace extends Migration
         $this->renameClass('Like', Like::class);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m150704_005434_namespace cannot be reverted.\n";
 

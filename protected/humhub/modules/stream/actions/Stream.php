@@ -345,7 +345,7 @@ abstract class Stream extends Action
 
         $entries = $this->streamQuery->all();
 
-        if(!empty($entries)) {
+        if($entries !== []) {
             $this->addResponseEntries($entries, $response);
         } else {
             $this->handleEmptyResponse($response);

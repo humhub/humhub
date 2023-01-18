@@ -21,7 +21,7 @@ class m141021_162639_oembed_setting extends Migration
         ]);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m141021_162639_oembed_setting does not support migration down.\n";
         return false;

@@ -57,11 +57,9 @@ class PhpMessageSource extends PhpMessageSourceYii
             $messages = $this->loadFallbackMessages($category, $fallbackLanguage, $messages, $messageFile);
         } elseif ($language === $fallbackSourceLanguage) {
             $messages = $this->loadFallbackMessages($category, $this->sourceLanguage, $messages, $messageFile);
-        } else {
-            if ($messages === null) {
-                // modification warning --> debug
-                Yii::debug("The message file for category '$category' does not exist: $messageFile", __METHOD__);
-            }
+        } elseif ($messages === null) {
+            // modification warning --> debug
+            Yii::debug("The message file for category '$category' does not exist: $messageFile", __METHOD__);
         }
 
         return (array)$messages;
@@ -86,7 +84,7 @@ class PhpMessageSource extends PhpMessageSourceYii
             // modification warning --> debug
             Yii::debug("The message file for category '$category' does not exist: $originalMessageFile "
                 . "Fallback file does not exist as well: $fallbackMessageFile", __METHOD__);
-        } elseif (empty($messages)) {
+        } elseif ($messages === []) {
             return $fallbackMessages;
         } elseif (!empty($fallbackMessages)) {
             foreach ($fallbackMessages as $key => $value) {

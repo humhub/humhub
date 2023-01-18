@@ -100,10 +100,8 @@ class FileHelper extends \yii\helpers\FileHelper
     {
         $relation = $file->getPolymorphicRelation();
 
-        if ($relation !== null && $relation instanceof ContentActiveRecord) {
-            if ($relation->content->container !== null) {
-                return $relation->content->container;
-            }
+        if ($relation !== null && $relation instanceof ContentActiveRecord && $relation->content->container !== null) {
+            return $relation->content->container;
         }
 
         return null;

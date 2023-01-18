@@ -30,7 +30,7 @@ class m131213_165552_user_optimize extends Migration
         $this->createIndex('unique_email', 'user_invite', 'email', true);
     }
 
-    public function down()
+    public function down(): bool
     {
 
         return true;

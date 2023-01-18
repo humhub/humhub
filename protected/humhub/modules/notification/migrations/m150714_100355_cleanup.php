@@ -30,7 +30,7 @@ class m150714_100355_cleanup extends Migration
         $this->update('notification', ['module' => 'user'], ['class' => 'humhub\modules\user\notifications\Mentioned']);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m150714_100355_cleanup cannot be reverted.\n";
 

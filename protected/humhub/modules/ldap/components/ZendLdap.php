@@ -95,7 +95,7 @@ class ZendLdap extends Ldap
                     if (!is_array($item))
                         continue;
 
-                    array_push($results, (array)$item);
+                    $results[] = (array)$item;
                 }
                 ldap_control_paged_result_response($resource, $result, $cookie);
             } while ($cookie);
@@ -129,7 +129,7 @@ class ZendLdap extends Ldap
                     continue;
                 }
 
-                array_push($results, (array)$item);
+                $results[] = (array)$item;
             }
 
             if (isset($controls['1.2.840.113556.1.4.319']['value']['cookie'])) {

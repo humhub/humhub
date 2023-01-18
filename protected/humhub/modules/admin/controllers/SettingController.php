@@ -39,6 +39,11 @@ class SettingController extends Controller
 {
 
     /**
+     * @var string
+     */
+    public $subLayout;
+    public $view;
+    /**
      * @inheritdoc
      */
     public $adminOnly = false;
@@ -308,16 +313,12 @@ class SettingController extends Controller
     {
         $logsCount = Log::find()->count();
         $dating = Log::find()
-            ->orderBy('log_time', 'asc')
+            ->orderBy('log_time')
             ->limit(1)
             ->one();
 
         // I wish..
-        if ($dating) {
-            $dating = date('Y-m-d H:i:s', $dating->log_time);
-        } else {
-            $dating = "the begining of time";
-        }
+        $dating = $dating ? date('Y-m-d H:i:s', $dating->log_time) : "the begining of time";
 
         $form = new LogsSettingsForm;
         $limitAgeOptions = $form->options;

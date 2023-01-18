@@ -29,7 +29,7 @@ class m141015_173305_follow_notifications extends Migration
         $this->dropTable('user_content');
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m141015_173305_follow_notifications does not support migration down.\n";
         return false;

@@ -198,7 +198,7 @@ class SpreadsheetExport extends Component
     protected function guessColumns($model)
     {
         if (is_array($model) || is_object($model)) {
-            foreach ($model as $name => $value) {
+            foreach (array_keys($model) as $name) {
                 $this->columns[] = (string)$name;
             }
         }
@@ -348,7 +348,7 @@ class SpreadsheetExport extends Component
     protected function applyAutoSize($spreadsheet)
     {
         $worksheet = $spreadsheet->getActiveSheet();
-        foreach ($this->columns as $columnIndex => $column) {
+        foreach (array_keys($this->columns) as $columnIndex) {
             $worksheet->getColumnDimensionByColumn($columnIndex + 1)->setAutoSize(true);
         }
     }

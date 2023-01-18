@@ -24,6 +24,13 @@ use yii\helpers\Url;
 class Button extends BootstrapComponent
 {
 
+    public $type;
+    /**
+     * @var array<string, string>|array<string, mixed>|array<string, null>
+     */
+    public $htmlOptions;
+    public $text;
+    public $_icon;
     public $_loader = true;
     public $_link = false;
 
@@ -194,11 +201,7 @@ class Button extends BootstrapComponent
             $this->htmlOptions['data-action-confirm-header'] = $title;
         }
 
-        if ($body) {
-            $this->htmlOptions['data-action-confirm'] = $body;
-        } else {
-            $this->htmlOptions['data-action-confirm'] = '';
-        }
+        $this->htmlOptions['data-action-confirm'] = $body ? $body : '';
 
         if ($confirmButtonText) {
             $this->htmlOptions['data-action-confirm-text'] = $confirmButtonText;
@@ -251,7 +254,7 @@ class Button extends BootstrapComponent
     /**
      * @inheritdoc
      */
-    public function getComponentBaseClass()
+    public function getComponentBaseClass(): string
     {
         return 'btn';
     }

@@ -73,10 +73,8 @@ class ContentContainerController extends Controller
         $this->contentContainer = $this->getContentContainerByGuid($guid);
 
 
-        if ($this->validContentContainerClasses !== null) {
-            if ($this->contentContainer === null || !in_array($this->contentContainer->className(), $this->validContentContainerClasses)) {
-                throw new HttpException(400);
-            }
+        if ($this->validContentContainerClasses !== null && (!$this->contentContainer instanceof \humhub\modules\content\components\ContentContainerActiveRecord || !in_array($this->contentContainer->className(), $this->validContentContainerClasses))) {
+            throw new HttpException(400);
         }
 
         if ($this->contentContainer !== null && $this->contentContainer->controllerBehavior) {
@@ -92,7 +90,7 @@ class ContentContainerController extends Controller
     /**
      * @inheritdoc
      */
-    public function beforeAction($action)
+    public function beforeAction($action): bool
     {
         if (!parent::beforeAction($action)) {
             return false;
@@ -155,7 +153,7 @@ class ContentContainerController extends Controller
         }
 
         $contentContainer = ContentContainer::findOne(['guid' => $guid]);
-        if ($contentContainer === null) {
+        if (!$contentContainer instanceof \humhub\modules\content\models\ContentContainer) {
             return null;
         }
 

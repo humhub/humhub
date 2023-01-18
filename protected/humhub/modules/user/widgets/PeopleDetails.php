@@ -49,7 +49,7 @@ class PeopleDetails extends Widget
             }
         }
 
-        if (empty($lines)) {
+        if ($lines === []) {
             return '';
         }
 

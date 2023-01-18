@@ -131,7 +131,7 @@ class User extends \yii\web\User
      * Determines if this user is able to change the password.
      * @return boolean
      */
-    public function canChangePassword()
+    public function canChangePassword(): bool
     {
         foreach ($this->getAuthClients() as $authClient) {
             if ($authClient->className() == Password::class) {
@@ -147,13 +147,9 @@ class User extends \yii\web\User
      * @return boolean
      * @throws \Throwable
      */
-    public function canChangeEmail()
+    public function canChangeEmail(): bool
     {
-        if (in_array('email', AuthClientHelpers::getSyncAttributesByUser($this->getIdentity()))) {
-            return false;
-        }
-
-        return true;
+        return !in_array('email', AuthClientHelpers::getSyncAttributesByUser($this->getIdentity()));
     }
 
     /**
@@ -161,20 +157,16 @@ class User extends \yii\web\User
      * @return boolean
      * @throws \Throwable
      */
-    public function canChangeUsername()
+    public function canChangeUsername(): bool
     {
-        if (in_array('username', AuthClientHelpers::getSyncAttributesByUser($this->getIdentity()))) {
-            return false;
-        }
-
-        return true;
+        return !in_array('username', AuthClientHelpers::getSyncAttributesByUser($this->getIdentity()));
     }
 
     /**
      * Determines if this user is able to delete his account.
      * @return boolean
      */
-    public function canDeleteAccount()
+    public function canDeleteAccount(): bool
     {
         foreach ($this->getAuthClients() as $authClient) {
             if ($authClient instanceof AutoSyncUsers) {

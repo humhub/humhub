@@ -22,7 +22,7 @@ class m171027_220519_exclusive_jobs extends Migration
         $this->addPrimaryKey('pk_queue_exclusive', $this->tableName, 'id');
     }
 
-    public function safeDown()
+    public function safeDown(): bool
     {
         echo "m171027_220519_exclusive_jobs cannot be reverted.\n";
 

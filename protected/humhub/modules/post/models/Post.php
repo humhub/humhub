@@ -58,7 +58,7 @@ class Post extends ContentActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'post';
     }
@@ -117,7 +117,7 @@ class Post extends ContentActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
-    public function getIcon()
+    public function getIcon(): string
     {
         return 'fa-comment';
     }

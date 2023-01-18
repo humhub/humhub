@@ -448,11 +448,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     {
         $event = new UserEvent(['user' => $this, 'result' => ['isVisible' => true]]);
         $this->trigger(self::EVENT_CHECK_VISIBILITY, $event);
-        if ($event->result['isVisible'] && $this->isActive() && $this->visibility !== self::VISIBILITY_HIDDEN) {
-            return true;
-        }
-
-        return false;
+        return $event->result['isVisible'] && $this->isActive() && $this->visibility !== self::VISIBILITY_HIDDEN;
     }
 
     /**
@@ -852,7 +848,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             return false;
         }
 
-        if ($user->id == $this->id) {
+        if ($user->id === $this->id) {
             return false;
         }
 
@@ -929,10 +925,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             return self::USERGROUP_SELF;
         }
 
-        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
-            if (Friendship::getStateForUser($this, $user) === Friendship::STATE_FRIENDS) {
-                return self::USERGROUP_FRIEND;
-            }
+        if (Yii::$app->getModule('friendship')->getIsEnabled() && Friendship::getStateForUser($this, $user) === Friendship::STATE_FRIENDS) {
+            return self::USERGROUP_FRIEND;
         }
 
         return self::USERGROUP_USER;

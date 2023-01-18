@@ -119,7 +119,7 @@ class ProfileImage
      * @return Boolean is there a profile image
      * @throws \yii\base\Exception
      */
-    public function hasImage()
+    public function hasImage(): bool
     {
         return file_exists($this->getPath('_org'));
     }
@@ -139,9 +139,8 @@ class ProfileImage
 
         $path .= $this->guid;
         $path .= $prefix;
-        $path .= '.jpg';
 
-        return $path;
+        return $path . '.jpg';
     }
 
     /**

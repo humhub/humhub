@@ -16,7 +16,7 @@ class FontAwesomeIconProvider implements IconProvider
     /**
      * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return 'fa';
     }

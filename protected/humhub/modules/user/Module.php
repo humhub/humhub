@@ -21,6 +21,7 @@ use Yii;
 class Module extends \humhub\components\Module
 {
 
+    public $settings;
     /**
      * @inheritdoc
      */
@@ -202,7 +203,7 @@ class Module extends \humhub\components\Module
      */
     public function getPasswordStrength()
     {
-        if (empty($this->passwordStrength)) {
+        if ($this->passwordStrength === []) {
             $this->passwordStrength = $this->getDefaultPasswordStrength();
         }
         return $this->passwordStrength;
@@ -275,18 +276,12 @@ class Module extends \humhub\components\Module
      * @param ContentActiveRecord $object
      * @return boolean can like
      */
-    public function canMention($object)
+    public function canMention($object): bool
     {
-//        $content = $object->content;
-
-//        if(!isset($content->container)) {
-//            return false;
-//        }
-
-        if ($object->permissionManager->can(CanMention::class)) {
-            return true;
-        }
-
-        return false;
+        //        $content = $object->content;
+        //        if(!isset($content->container)) {
+        //            return false;
+        //        }
+        return (bool) $object->permissionManager->can(CanMention::class);
     }
 }

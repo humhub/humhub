@@ -39,7 +39,7 @@ class Like extends ContentAddonActiveRecord
     /**
      * @return string the associated database table name
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'like';
     }

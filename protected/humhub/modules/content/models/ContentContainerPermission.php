@@ -24,7 +24,7 @@ class ContentContainerPermission extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'contentcontainer_permission';
     }

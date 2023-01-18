@@ -9,6 +9,17 @@ namespace humhub\widgets;
 class ModalDialog extends Modal
 {
 
+    public $body;
+    public $footer;
+    public $showClose;
+    public $header;
+    public $centerText;
+    public $initialLoader;
+    public $size;
+    public $animation;
+    public $closable;
+    public $backdrop;
+    public $keyboard;
     /**
      * @var
      */

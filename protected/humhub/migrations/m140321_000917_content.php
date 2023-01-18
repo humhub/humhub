@@ -24,7 +24,7 @@ class m140321_000917_content extends Migration
         $this->createIndex('index_user_id', 'content', 'user_id', false);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m140321_000917_content does not support migration down.\n";
         return false;

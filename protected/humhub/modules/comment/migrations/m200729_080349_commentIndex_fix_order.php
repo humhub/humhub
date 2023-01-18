@@ -24,7 +24,7 @@ class m200729_080349_commentIndex_fix_order extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function safeDown(): bool
     {
         echo "m200729_080349_commentIndex_fix_order cannot be reverted.\n";
 

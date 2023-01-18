@@ -220,7 +220,7 @@ class Events extends BaseObject
 
         $moduleCategories = (new OnlineModule(['module' => $module]))->categories;
 
-        return empty($moduleCategories) ? false : in_array($categoryId, $moduleCategories);
+        return $moduleCategories === [] ? false : in_array($categoryId, $moduleCategories);
     }
 
     /**

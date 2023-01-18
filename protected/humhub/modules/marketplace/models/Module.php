@@ -127,7 +127,7 @@ class Module extends Model
 
     public function __construct($config = [])
     {
-        foreach ($config as $name => $value) {
+        foreach (array_keys($config) as $name) {
             if (!property_exists($this, $name)) {
                 // Exclude new unknown property from marketplace API to avoid error
                 unset($config[$name]);

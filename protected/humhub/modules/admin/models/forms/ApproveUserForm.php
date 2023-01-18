@@ -182,7 +182,7 @@ class ApproveUserForm extends \yii\base\Model
     /**
      * @return bool
      */
-    public function bulkApprove()
+    public function bulkApprove(): bool
     {
         if (!$this->validate()) {
             return false;
@@ -200,7 +200,7 @@ class ApproveUserForm extends \yii\base\Model
     /**
      * @return bool
      */
-    public function bulkDecline()
+    public function bulkDecline(): bool
     {
         if (!$this->validate()) {
             return false;
@@ -325,10 +325,14 @@ class ApproveUserForm extends \yii\base\Model
      */
     public static function getDefaultDeclineMessage($userDisplayName = '{displayName}', $adminDisplayName = '{AdminName}')
     {
-        return Yii::t('AdminModule.user', "Hello {displayName},\n\n" .
-            "Your account request has been declined.\n\n" .
-            "Kind Regards\n" .
-            "{AdminName}\n\n",
+        return Yii::t('AdminModule.user', 'Hello {displayName},
+
+Your account request has been declined.
+
+Kind Regards
+{AdminName}
+
+',
             [
                 '{displayName}' => $userDisplayName,
                 '{AdminName}' => $adminDisplayName,

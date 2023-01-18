@@ -27,12 +27,12 @@ class TestNotificationCategory extends \humhub\modules\notification\components\N
         return $target->defaultSetting;
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'My Test Notification Category';
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         return 'Test Category';
     }

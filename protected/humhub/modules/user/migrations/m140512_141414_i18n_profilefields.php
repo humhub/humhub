@@ -18,7 +18,7 @@ class m140512_141414_i18n_profilefields extends Migration
                 
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m140512_141414_i18n_profilefields does not support migration down.\n";
         return false;

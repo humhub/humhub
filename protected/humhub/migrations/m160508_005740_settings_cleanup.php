@@ -81,7 +81,7 @@ class m160508_005740_settings_cleanup extends Migration
         $this->update('contentcontainer_setting', ['name' => 'enable_html5_desktop_notifications', 'module_id' => 'notification'], ['name' => 'receive_email_notifications']);
     }
 
-    public function down()
+    public function down(): bool
     {
         echo "m160508_005740_settings_cleanup cannot be reverted.\n";
 

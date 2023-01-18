@@ -35,7 +35,7 @@ class LikeLink extends \yii\base\Widget
         if (
             !Yii::$app->getModule('like')->isEnabled ||
             (
-                isset($this->object->content->container) &&
+                $this->object->content->container !== null &&
                 $this->object->content->container instanceof ContentContainerActiveRecord &&
                 !$this->object->content->container->can(CanLike::class)
             )

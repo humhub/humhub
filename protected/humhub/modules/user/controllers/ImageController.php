@@ -24,6 +24,11 @@ use yii\web\HttpException;
  */
 class ImageController extends ContainerImageController
 {
+    /**
+     * @var bool
+     */
+    public $requireContainer;
+    public $contentContainer;
     public $validContentContainerClasses = [User::class];
 
     public function init()
@@ -56,7 +61,7 @@ class ImageController extends ContainerImageController
         ];
     }
 
-    public function validateAccess($rule, $access)
+    public function validateAccess($rule, $access): bool
     {
         if (!static::canEditProfileImage($this->contentContainer)) {
             $access->code = 401;
@@ -67,7 +72,7 @@ class ImageController extends ContainerImageController
         return true;
     }
 
-    public static function canEditProfileImage(User $userProfile)
+    public static function canEditProfileImage(User $userProfile): bool
     {
         if (Yii::$app->user->isGuest) {
             return false;
@@ -79,11 +84,6 @@ class ImageController extends ContainerImageController
         if ($userProfile->is($user)) {
             return true;
         }
-
-        if (Yii::$app->getModule('user')->adminCanChangeUserProfileImages && Yii::$app->user->can(ManageUsers::class)) {
-            return true;
-        }
-
-        return false;
+        return Yii::$app->getModule('user')->adminCanChangeUserProfileImages && Yii::$app->user->can(ManageUsers::class);
     }
 }
