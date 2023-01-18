@@ -272,7 +272,7 @@ class User extends \yii\web\User
     public function loginRequired($checkAjax = true, $checkAcceptHeader = true)
     {
         // Fix 4700: Handle Microsoft Office Probe Requests
-        if (strpos(Yii::$app->request->getUserAgent(), 'Microsoft Office') !== false) {
+        if (strpos(Yii::$app->request->getUserAgent() ?? '', 'Microsoft Office') !== false) {
             Yii::$app->response->setStatusCode(200);
             Yii::$app->response->data = Yii::$app->controller->htmlRedirect(Yii::$app->request->getAbsoluteUrl());
             return Yii::$app->getResponse();

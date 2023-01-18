@@ -16,7 +16,7 @@ return array (
   'On this page you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => 'Ezen az oldalon megadhatod a felhasználók alapértelmezett viselkedését. Ezek a beállítások felülírhatók a felhasználók fiókbeállításainál.',
   'Only include spaces below to the mail summary' => 'Csak ezeket a közösségeket vegye bele az összesítőbe',
   'Reset to defaults' => 'Vissza az alapértelmezett beállításokhoz',
-  'See online:' => 'Online megtekintés:',
+  'See online:' => 'Megtekintés az oldalon:',
   'Spaces' => 'Közösségek',
   'There are no activities yet.' => 'Még nem történt semmi.',
   'Weekly' => 'Hetente',

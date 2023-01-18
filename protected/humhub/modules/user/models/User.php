@@ -872,6 +872,30 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
+     * Check if this user has at least one authentication or the authentication with requested type
+     *
+     * @param string|null $type
+     * @return bool
+     */
+    public function hasAuth(?string $type = null): bool
+    {
+        $auths = $this->getAuths();
+
+        if ($type === null) {
+            return $auths->exists();
+        }
+
+        foreach ($auths->all() as $auth) {
+            /* @var Auth $auth */
+            if ($auth->source === $type) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Return user groups
      *
      * @return array user groups

@@ -46,7 +46,7 @@ return array (
   'Space name' => 'Nom de cet espace',
   'Space owner' => 'Propriétaire de cet espace',
   'Stream (Default)' => 'Fil d\'actualités (par défaut)',
-  'The URL has already been taken.' => '',
+  'The URL has already been taken.' => 'L’URL est déjà prise.',
   'The url contains illegal characters!' => 'L\'URL introduite contient des caractères interdits.',
   'This option will hide new content from this space at your dashboard' => 'Masquer les publications de cet espace sur votre vue d\'ensemble',
   'This option will show new content from this space at your dashboard' => 'Afficher les publications de cet espace sur votre vue d\'ensemble',
