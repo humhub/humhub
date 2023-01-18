@@ -13,23 +13,20 @@ use humhub\modules\content\models\Content;
 class ReadableContentQueryTest extends HumHubDbTestCase
 {
 
-    /**
-     * @var User
-     */
-    private $user;
+    private ?\humhub\modules\user\models\User $user = null;
 
     private ?\humhub\modules\space\models\Space $publicSpace = null;
 
     private ?\humhub\modules\space\models\Space $privateSpace = null;
 
-    private $globalPublicPost;
-    private $globalPrivatePost;
-    private $publicSpacePublicPost;
-    private $publicSpacePrivatePost;
-    private $privateSpacePublicPost;
-    private $privateSpacePrivatePost;
-    private $profilePublicPost;
-    private $profilePrivatePost;
+    private ?\humhub\modules\post\models\Post $globalPublicPost = null;
+    private ?\humhub\modules\post\models\Post $globalPrivatePost = null;
+    private ?\humhub\modules\post\models\Post $publicSpacePublicPost = null;
+    private ?\humhub\modules\post\models\Post $publicSpacePrivatePost = null;
+    private ?\humhub\modules\post\models\Post $privateSpacePublicPost = null;
+    private ?\humhub\modules\post\models\Post $privateSpacePrivatePost = null;
+    private ?\humhub\modules\post\models\Post $profilePublicPost = null;
+    private ?\humhub\modules\post\models\Post $profilePrivatePost = null;
     private $posts = [];
 
     public function _before()

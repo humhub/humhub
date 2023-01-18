@@ -20,10 +20,9 @@ use humhub\modules\content\components\ContentContainerController;
 class ContentContainerHelper
 {
     /**
-     * @var ContentContainerActiveRecord container
      * @since 1.7
      */
-    private static $container;
+    private static ?\humhub\modules\content\components\ContentContainerActiveRecord $container = null;
 
     /**
      * @param string|null $type type filter available since 1.4

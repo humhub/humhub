@@ -57,10 +57,7 @@ class LogFilterForm extends Model
 
     private ?\yii\data\Pagination $pagination = null;
 
-    /**
-     * @var ActiveQuery
-     */
-    private $query;
+    private ?\yii\db\ActiveQuery $query = null;
 
     /**
      * @inheritdoc

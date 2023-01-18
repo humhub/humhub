@@ -124,9 +124,9 @@ class Module extends \yii\base\Module
      * the file is not published yet.
      *
      * @param string $relativePath relative file path e.g. /module_image.jpg
-     * @return string
+     * @return string|null
      */
-    public function getPublishedUrl($relativePath)
+    public function getPublishedUrl(string $relativePath): ?string
     {
         $path = $this->getAssetPath();
 
@@ -139,14 +139,16 @@ class Module extends \yii\base\Module
         if ($this->isPublished($relativePath)) {
             return Yii::$app->assetManager->getPublishedUrl($path) . $relativePath;
         }
+
+        return null;
     }
 
     /**
      * Checks if a specific asset file has already been published
      * @param string $relativePath
-     * @return string
+     * @return bool
      */
-    public function isPublished($relativePath)
+    public function isPublished(string $relativePath): bool
     {
         $path = $this->getAssetPath();
         $publishedPath = Yii::$app->assetManager->getPublishedPath($path);
@@ -221,7 +223,7 @@ class Module extends \yii\base\Module
      *
      * @return boolean
      */
-    public function enable()
+    public function enable(): bool
     {
         Yii::$app->moduleManager->enable($this);
         $this->migrate();
@@ -317,7 +319,7 @@ class Module extends \yii\base\Module
      */
     public function update()
     {
-        if($this->beforeUpdate() !== false) {
+        if($this->beforeUpdate()) {
             $this->migrate();
             $this->afterUpdate();
         }
@@ -330,7 +332,7 @@ class Module extends \yii\base\Module
      *
      * @return bool
      */
-    public function beforeUpdate()
+    public function beforeUpdate(): bool
     {
         return true;
     }
@@ -349,7 +351,7 @@ class Module extends \yii\base\Module
      *
      * @return string the configuration url
      */
-    public function getConfigUrl()
+    public function getConfigUrl(): string
     {
         return "";
     }
@@ -379,11 +381,7 @@ class Module extends \yii\base\Module
     public function getNotifications()
     {
         $class = get_class($this);
-        if (($pos = strrpos($class, '\\')) !== false) {
-            $notificationNamespace = substr($class, 0, $pos) . '\\notifications';
-        } else {
-            $notificationNamespace = '';
-        }
+        $notificationNamespace = ($pos = strrpos($class, '\\')) !== false ? substr($class, 0, $pos) . '\\notifications' : '';
 
         $notifications = [];
         $notificationDirectory = $this->getBasePath() . DIRECTORY_SEPARATOR . 'notifications';
@@ -419,11 +417,7 @@ class Module extends \yii\base\Module
     public function getActivityClasses()
     {
         $class = get_class($this);
-        if (($pos = strrpos($class, '\\')) !== false) {
-            $activityNamespace = substr($class, 0, $pos) . '\\activities';
-        } else {
-            $activityNamespace = '';
-        }
+        $activityNamespace = ($pos = strrpos($class, '\\')) !== false ? substr($class, 0, $pos) . '\\activities' : '';
 
         $activities = [];
         $activityDirectory = $this->getBasePath() . DIRECTORY_SEPARATOR . 'activities';
@@ -448,11 +442,7 @@ class Module extends \yii\base\Module
     public function getAssetClasses()
     {
         $class = get_class($this);
-        if (($pos = strrpos($class, '\\')) !== false) {
-            $assetNamespace = substr($class, 0, $pos) . '\\assets';
-        } else {
-            $assetNamespace = '';
-        }
+        $assetNamespace = ($pos = strrpos($class, '\\')) !== false ? substr($class, 0, $pos) . '\\assets' : '';
 
         $assets = [];
         $assetDirectory = $this->getBasePath() . DIRECTORY_SEPARATOR . 'assets';

@@ -32,7 +32,7 @@ class NotificationSettingsForm extends \yii\base\Widget
      * Spaces which should be added by default to the space chooser result as suggestion
      * @var Space[]
      */
-    private $defaultSpaces = [];
+    private array $defaultSpaces = [];
 
     /**
      * @inheritdoc

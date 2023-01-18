@@ -27,10 +27,7 @@ class PreviewImage extends BaseConverter
 
     private ?\Imagine\Image\ImageInterface $_image = null;
 
-    /**
-     * @var ImageInterface
-     */
-    private $_imageFile;
+    private ?string $_imageFile = null;
 
 
     /**

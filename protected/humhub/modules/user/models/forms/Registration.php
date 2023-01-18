@@ -51,20 +51,11 @@ class Registration extends HForm
 
     private ?\humhub\modules\user\models\User $_user = null;
 
-    /**
-     * @var Password
-     */
-    private $_password = null;
+    private ?\humhub\modules\user\models\Password $_password = null;
 
-    /**
-     * @var Group Id
-     */
-    private $_groupUser = null;
+    private ?\humhub\modules\user\models\GroupUser $_groupUser = null;
 
-    /**
-     * @var Profile
-     */
-    private $_profile = null;
+    private ?\humhub\modules\user\models\Profile $_profile = null;
 
     /**
      * @inheritdoc

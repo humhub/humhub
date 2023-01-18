@@ -28,10 +28,7 @@ use yii\base\Event;
 class LicenceManager extends Component
 {
 
-    /**
-     * @var Licence
-     */
-    private static $_licence = null;
+    private static ?\humhub\modules\marketplace\models\Licence $_licence = null;
 
     /**
      * @event Event an event that is triggered when the current licence is requested

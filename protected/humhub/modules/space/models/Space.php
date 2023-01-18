@@ -97,10 +97,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
      */
     public $defaultRoute = '/space/space';
 
-    /**
-     * @var AdvancedSettings|null
-     */
-    private $_advancedSettings = null;
+    private ?\humhub\modules\space\models\AdvancedSettings $_advancedSettings = null;
 
     /**
      * @inheritdoc

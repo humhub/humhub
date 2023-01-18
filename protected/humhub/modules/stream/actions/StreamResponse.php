@@ -35,7 +35,7 @@ class StreamResponse
     /**
      * @var StreamQuery the StreamQuery used to fetch the entries
      */
-    private $streamQuery;
+    private \humhub\modules\stream\models\StreamQuery $streamQuery;
 
     /**
      * @var int

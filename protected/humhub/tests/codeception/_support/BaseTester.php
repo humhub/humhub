@@ -15,7 +15,7 @@ class BaseTester extends \Codeception\Actor
     /**
      * @var Space[]
      */
-    private $spaces;
+    private ?array $spaces = null;
 
     public function getFixtureSpace(int $index) : ?Space
     {

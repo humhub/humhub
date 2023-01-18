@@ -26,10 +26,7 @@ use yii\validators\Validator;
 class ActiveRecord extends \yii\db\ActiveRecord
 {
 
-    /**
-     * @var \humhub\modules\file\components\FileManager
-     */
-    private $_fileManager;
+    private ?\humhub\modules\file\components\FileManager $_fileManager = null;
 
     /**
      * @var bool enable file history for attached files

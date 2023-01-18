@@ -31,7 +31,7 @@ class User extends \yii\web\User
     /**
      * @var ClientInterface[] the users authclients
      */
-    private $_authClients = null;
+    private ?array $_authClients = null;
 
     /**
      * @var PermissionManager

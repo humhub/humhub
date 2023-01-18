@@ -38,10 +38,7 @@ use Laminas\Ldap\Node;
 class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, ApprovalBypass, PrimaryClient
 {
 
-    /**
-     * @var Ldap
-     */
-    private $_ldap = null;
+    private ?\Laminas\Ldap\Ldap $_ldap = null;
 
     /**
      * @var string the auth client id

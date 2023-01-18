@@ -48,10 +48,8 @@ class ProfileField extends ActiveRecord
 
     /**
      * Field Type Instance
-     *
-     * @var BaseType
      */
-    private $_fieldType = null;
+    private ?object $_fieldType = null;
 
     /**
      * @inheritdoc

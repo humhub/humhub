@@ -43,10 +43,7 @@ class ViewMeta extends BaseObject
      */
     public $view;
 
-    /**
-     * @var ContentActiveRecord
-     */
-    private $content;
+    private ?\humhub\modules\content\components\ContentActiveRecord $content = null;
 
     /**
      * The type metadata to preview the content with Open Graph protocol
