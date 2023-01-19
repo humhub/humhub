@@ -223,7 +223,7 @@ class Module extends \yii\base\Module
      *
      * @return boolean
      */
-    public function enable(): bool
+    public function enable()
     {
         Yii::$app->moduleManager->enable($this);
         $this->migrate();
@@ -351,9 +351,9 @@ class Module extends \yii\base\Module
      *
      * @return string the configuration url
      */
-    public function getConfigUrl(): string
+    public function getConfigUrl()
     {
-        return "";
+        return '';
     }
 
     /**
