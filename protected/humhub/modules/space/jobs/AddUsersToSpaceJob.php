@@ -17,10 +17,7 @@ use yii\base\Exception;
 
 class AddUsersToSpaceJob extends ActiveJob
 {
-    /**
-     * @var Space target space
-     */
-    private $space;
+    private ?\humhub\modules\space\models\Space $space = null;
 
     /**
      * @var int
@@ -32,10 +29,7 @@ class AddUsersToSpaceJob extends ActiveJob
      */
     public $userIds;
 
-    /**
-     * @var User originator user
-     */
-    private $originator;
+    private ?\humhub\modules\user\models\User $originator = null;
 
     /**
      * @var User originator user id

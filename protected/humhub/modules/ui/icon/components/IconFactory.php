@@ -26,10 +26,7 @@ class IconFactory  extends Component
      */
     const EVENT_AFTER_INIT = 'afterInit';
 
-    /**
-     * @var IconProvider
-     */
-    private static $defaultProvider;
+    private static ?\humhub\modules\ui\icon\components\IconProvider $defaultProvider = null;
 
     /**
      * @var IconProvider
@@ -39,12 +36,9 @@ class IconFactory  extends Component
     /**
      * @var [] array  of IconProvider instances associated with a provider id
      */
-    private static $provider = [];
+    private static array $provider = [];
 
-    /**
-     * @var IconFactory singleton instance
-     */
-    private static $instance;
+    private static ?object $instance = null;
 
     /**
      * @return IconFactory singleton instance

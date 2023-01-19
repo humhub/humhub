@@ -326,9 +326,7 @@ class NotificationManager
             $this->setSpaceSetting($user, $space);
         }
 
-        $spaceIds = array_map(function ($space) {
-            return $space->id;
-        }, $spaces);
+        $spaceIds = array_map(fn($space) => $space->id, $spaces);
 
         // Update non selected membership spaces
         Membership::updateAll(['send_notifications' => 0], [
@@ -448,9 +446,7 @@ class NotificationManager
 
         $this->_categories = array_values($result);
 
-        usort($this->_categories, function ($a, $b) {
-            return $a->sortOrder - $b->sortOrder;
-        });
+        usort($this->_categories, fn($a, $b) => $a->sortOrder - $b->sortOrder);
 
         return $this->_categories;
     }

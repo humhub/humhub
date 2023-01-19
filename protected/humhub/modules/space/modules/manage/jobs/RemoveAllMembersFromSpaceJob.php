@@ -15,10 +15,7 @@ use yii\db\StaleObjectException;
 
 class RemoveAllMembersFromSpaceJob extends ActiveJob
 {
-    /**
-     * @var Space target space
-     */
-    private $space;
+    private ?\humhub\modules\space\models\Space $space = null;
 
     /**
      * @var int

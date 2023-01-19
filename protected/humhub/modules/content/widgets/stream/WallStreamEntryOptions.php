@@ -50,12 +50,12 @@ class WallStreamEntryOptions extends StreamEntryOptions
     /**
      * @var array contains option settings for wall entry addons widgets, e.g. used to disable widgets
      */
-    private $addonOptions = [];
+    private array $addonOptions = [];
 
     /**
      * @var array contains options settings for the wall entry controls menu, e.g. used to disable certain menu items
      */
-    private $controlsMenuOptions = [];
+    private array $controlsMenuOptions = [];
 
     /**
      * @var bool If true, all wall entry addons are disabled

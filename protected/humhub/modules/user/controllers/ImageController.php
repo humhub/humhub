@@ -79,11 +79,6 @@ class ImageController extends ContainerImageController
         if ($userProfile->is($user)) {
             return true;
         }
-
-        if (Yii::$app->getModule('user')->adminCanChangeUserProfileImages && Yii::$app->user->can(ManageUsers::class)) {
-            return true;
-        }
-
-        return false;
+        return Yii::$app->getModule('user')->adminCanChangeUserProfileImages && Yii::$app->user->can(ManageUsers::class);
     }
 }

@@ -58,9 +58,7 @@ class ContainerImageSet extends BaseImage
     private function getAvailableOptions()
     {
         $excludedParams = ['items', 'max', 'tooltipText', 'hiddenImageWidth', 'hiddenImageHeight'];
-        return array_filter(get_object_vars($this), function ($key) use ($excludedParams) {
-            return ! in_array($key, $excludedParams);
-        }, ARRAY_FILTER_USE_KEY);
+        return array_filter(get_object_vars($this), fn($key) => ! in_array($key, $excludedParams), ARRAY_FILTER_USE_KEY);
     }
 
     private function getOptionsForHiddenItems()

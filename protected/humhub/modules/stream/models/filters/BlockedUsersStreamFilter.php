@@ -11,10 +11,7 @@ use humhub\modules\user\models\User;
 
 class BlockedUsersStreamFilter extends StreamQueryFilter
 {
-    /**
-     * @var array IDs of the blocked users for the current User
-     */
-    private $blockedUsers;
+    private ?array $blockedUsers = null;
 
     public function init() {
         parent::init();

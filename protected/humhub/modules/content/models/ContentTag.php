@@ -204,11 +204,9 @@ class ContentTag extends ActiveRecord
      */
     public function validate($attributeNames = null, $clearErrors = true)
     {
-        if($attributeNames === null || in_array('addition', $attributeNames)) {
-            // the addition will only be validated if $tag->addition has been called
-            if($this->hasAddition() && !$this->addition->validate()) {
-                return false;
-            }
+        // the addition will only be validated if $tag->addition has been called
+        if(($attributeNames === null || in_array('addition', $attributeNames)) && ($this->hasAddition() && !$this->addition->validate())) {
+            return false;
         }
 
         return parent::validate($attributeNames, $clearErrors);
@@ -431,11 +429,7 @@ class ContentTag extends ActiveRecord
      */
     public static function findByName($name, $contentContainer = null)
     {
-        if($contentContainer) {
-            $query = static::findByContainer($contentContainer);
-        } else {
-            $query = static::find();
-        }
+        $query = $contentContainer ? static::findByContainer($contentContainer) : static::find();
 
         $query->andWhere(['content_tag.name' => $name]);
         return $query;
@@ -562,9 +556,9 @@ class ContentTag extends ActiveRecord
         }
 
         $instance = new static();
-        if(empty($condition)) {
+        if (empty($condition)) {
             $condition = ['type' => $instance->type];
-        } else if(!empty($condition) && !isset($condition['module_id']) && !isset($condition['type'])) {
+        } elseif (!empty($condition) && !isset($condition['module_id']) && !isset($condition['type'])) {
             $condition['type'] = $instance->type;
         }
 

@@ -131,9 +131,7 @@ abstract class Search extends Component
                 $meta['visibility'] = self::DOCUMENT_VISIBILITY_PRIVATE;
             }
 
-            $meta['contentTags'] = implode(', ', array_map(function(ContentTag $tag) {
-                return $tag->name;
-            }, $obj->content->tags));
+            $meta['contentTags'] = implode(', ', array_map(fn(ContentTag $tag) => $tag->name, $obj->content->tags));
 
         } elseif ($meta['type'] == self::DOCUMENT_TYPE_SPACE && $obj->visibility == Space::VISIBILITY_NONE) {
             $meta['visibility'] = self::DOCUMENT_VISIBILITY_PRIVATE;

@@ -73,9 +73,8 @@ class FileHandlerButtonDropdown extends \humhub\components\Widget
             }
             $output .= Html::endTag('ul');
         }
-        $output .= Html::endTag('div');
 
-        return $output;
+        return $output . Html::endTag('div');
     }
 
     /**

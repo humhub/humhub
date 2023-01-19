@@ -55,10 +55,7 @@ class ContentVisibilitySelect extends InputWidget
      */
     public $contentOwner = 'page';
 
-    /**
-     * @var Content
-     */
-    private $_content;
+    private ?\humhub\modules\content\models\Content $_content = null;
 
     /**
      * @inheritDoc

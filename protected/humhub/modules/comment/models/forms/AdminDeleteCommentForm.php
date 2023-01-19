@@ -26,9 +26,7 @@ class AdminDeleteCommentForm extends yii\base\Model
     public function rules()
     {
         return [
-            [['message'], 'required', 'when' => function ($model) {
-                return $model->notify;
-            }],
+            [['message'], 'required', 'when' => fn($model) => $model->notify],
             [['message'], 'string'],
             [['notify'], 'boolean']
         ];

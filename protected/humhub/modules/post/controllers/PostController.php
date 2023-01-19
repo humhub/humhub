@@ -77,9 +77,7 @@ class PostController extends ContentContainerController
 
         $post->load(Yii::$app->request->post(), 'Post');
 
-        return Post::getDb()->transaction(function ($db) use ($post) {
-            return WallCreateContentForm::create($post, $this->contentContainer);
-        });
+        return Post::getDb()->transaction(fn($db) => WallCreateContentForm::create($post, $this->contentContainer));
     }
 
     public function actionEdit($id)

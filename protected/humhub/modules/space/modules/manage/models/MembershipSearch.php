@@ -153,9 +153,8 @@ class MembershipSearch extends Membership
     {
         $groups = $space->getUserGroups();
         unset($groups[Space::USERGROUP_OWNER], $groups[Space::USERGROUP_GUEST], $groups[Space::USERGROUP_USER]);
-        $groups = array_merge(['' => Yii::t('SpaceModule.manage', 'Show all')], $groups);
 
-        return $groups;
+        return array_merge(['' => Yii::t('SpaceModule.manage', 'Show all')], $groups);
     }
 
 }

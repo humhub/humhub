@@ -194,11 +194,7 @@ class Button extends BootstrapComponent
             $this->htmlOptions['data-action-confirm-header'] = $title;
         }
 
-        if ($body) {
-            $this->htmlOptions['data-action-confirm'] = $body;
-        } else {
-            $this->htmlOptions['data-action-confirm'] = '';
-        }
+        $this->htmlOptions['data-action-confirm'] = $body ? $body : '';
 
         if ($confirmButtonText) {
             $this->htmlOptions['data-action-confirm-text'] = $confirmButtonText;

@@ -48,10 +48,8 @@ class ProfileField extends ActiveRecord
 
     /**
      * Field Type Instance
-     *
-     * @var BaseType
      */
-    private $_fieldType = null;
+    private ?object $_fieldType = null;
 
     /**
      * @inheritdoc
@@ -271,11 +269,8 @@ class ProfileField extends ActiveRecord
             if ($this->internal_name != $currentProfileField->internal_name) {
                 $this->addError('internal_name', Yii::t('UserModule.profile', 'Internal name could not be changed!'));
             }
-        } else {
-            // Check if Internal Name is not in use yet
-            if (Profile::columnExists($this->internal_name)) {
-                $this->addError('internal_name', Yii::t('UserModule.profile', 'Internal name already in use!'));
-            }
+        } elseif (Profile::columnExists($this->internal_name)) {
+            $this->addError('internal_name', Yii::t('UserModule.profile', 'Internal name already in use!'));
         }
     }
 

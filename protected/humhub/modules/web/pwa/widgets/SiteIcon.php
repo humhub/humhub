@@ -98,8 +98,7 @@ class SiteIcon extends Widget
 
     private static function buildFileName($size = null)
     {
-        $fileName = ($size === null) ? 'icon.png' : $size . 'x' . $size . '.png';
-        return $fileName;
+        return ($size === null) ? 'icon.png' : $size . 'x' . $size . '.png';
     }
 
     private static function getOriginalFile()

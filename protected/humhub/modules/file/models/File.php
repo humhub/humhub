@@ -69,10 +69,7 @@ class File extends FileCompat
      */
     public $old_updated_at;
 
-    /**
-     * @var \humhub\modules\file\components\StorageManagerInterface the storage manager
-     */
-    private $_store = null;
+    private ?object $_store = null;
 
     /**
      * @inheritdoc

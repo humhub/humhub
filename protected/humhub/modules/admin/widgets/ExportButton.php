@@ -48,12 +48,7 @@ class ExportButton extends Widget
         if (!parent::beforeRun()) {
             return false;
         }
-
-        if ($this->filter === null) {
-            return false;
-        }
-
-        return true;
+        return $this->filter !== null;
     }
 
 

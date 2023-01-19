@@ -143,6 +143,6 @@ class DashboardStreamActionTest extends HumHubDbTestCase
         $action->init();
 
         $streamEntries = $action->getStreamQuery()->all();
-        return  array_map(static function($entry) {return $entry->id; }, $streamEntries);
+        return  array_map(static fn($entry) => $entry->id, $streamEntries);
     }
 }

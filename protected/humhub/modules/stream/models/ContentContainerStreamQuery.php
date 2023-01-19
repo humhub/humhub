@@ -26,10 +26,7 @@ class ContentContainerStreamQuery extends WallStreamQuery
      */
     public $pinnedContentSupport = true;
 
-    /**
-     * @var PinnedContentStreamFilter
-     */
-    private $pinnedContentStreamFilter;
+    private ?\humhub\modules\stream\models\filters\PinnedContentStreamFilter $pinnedContentStreamFilter = null;
 
     /**
      * @inheritdoc

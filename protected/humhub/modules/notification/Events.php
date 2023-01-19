@@ -77,19 +77,15 @@ class Events extends \yii\base\BaseObject
             // Check if Space still exists
             if (!empty($notification->space_id)) {
                 $space = Space::findOne(['id' => $notification->space_id]);
-                if ($space === null) {
-                    if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " workspace seems to no longer exist!")) {
-                        $notification->delete();
-                    }
+                if ($space === null && $integrityChecker->showFix("Deleting notification id " . $notification->id . " workspace seems to no longer exist!")) {
+                    $notification->delete();
                 }
             }
 
             // Check if source object exists when defined
             try {
-                if ($notification->source_class != "" && $notification->getSourceObject() == null) {
-                    if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " source class set but seems to no longer exist!")) {
-                        $notification->delete();
-                    }
+                if ($notification->source_class != "" && $notification->getSourceObject() == null && $integrityChecker->showFix("Deleting notification id " . $notification->id . " source class set but seems to no longer exist!")) {
+                    $notification->delete();
                 }
             } catch (\Exception $e) {
                 // Handles errors for getSourceObject() calls
@@ -99,30 +95,22 @@ class Events extends \yii\base\BaseObject
             }
 
             // Check if target user exists
-            if ($notification->user == null) {
-                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " target user seems to no longer exist!")) {
-                    $notification->delete();
-                }
+            if ($notification->user == null && $integrityChecker->showFix("Deleting notification id " . $notification->id . " target user seems to no longer exist!")) {
+                $notification->delete();
             }
 
             // Check if target user exists
-            if (!class_exists($notification->class)) {
-                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid class!")) {
-                    $notification->delete();
-                }
+            if (!class_exists($notification->class) && $integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid class!")) {
+                $notification->delete();
             }
 
             // Check if module id is set
-            if ($notification->module == "") {
-                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid module!")) {
-                    $notification->delete();
-                }
+            if ($notification->module == "" && $integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid module!")) {
+                $notification->delete();
             }
 
-            if (!empty($notification->originator_user_id) && $notification->originator === null) {
-                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid originator!")) {
-                    $notification->delete();
-                }
+            if (!empty($notification->originator_user_id) && $notification->originator === null && $integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid originator!")) {
+                $notification->delete();
             }
 
 

@@ -31,17 +31,11 @@ use yii\helpers\Html;
                     'header' => Yii::t('SpaceModule.manage', 'Actions'),
                     'class' => 'yii\grid\ActionColumn',
                     'buttons' => [
-                        'view' => function () {
-                            return '';
-                        },
-                        'delete' => function ($url, $model) use ($space) {
-                            return Html::a(Yii::t('SpaceModule.base', 'Decline'), $space->createUrl('reject-applicant',
-                                ['userGuid' => $model->user->guid]), ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']);
-                        },
-                        'update' => function ($url, $model) use ($space) {
-                            return Html::a(Yii::t('SpaceModule.base', 'Accept'), $space->createUrl('approve-applicant',
-                                ['userGuid' => $model->user->guid]), ['class' => 'btn btn-primary btn-sm', 'data-method' => 'POST']);
-                        },
+                        'view' => fn() => '',
+                        'delete' => fn($url, $model) => Html::a(Yii::t('SpaceModule.base', 'Decline'), $space->createUrl('reject-applicant',
+                            ['userGuid' => $model->user->guid]), ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']),
+                        'update' => fn($url, $model) => Html::a(Yii::t('SpaceModule.base', 'Accept'), $space->createUrl('approve-applicant',
+                            ['userGuid' => $model->user->guid]), ['class' => 'btn btn-primary btn-sm', 'data-method' => 'POST']),
                     ],
                 ],
             ],

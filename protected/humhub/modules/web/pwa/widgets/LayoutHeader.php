@@ -51,9 +51,7 @@ class LayoutHeader extends Widget
 
     private static function registerServiceWorker(View $view)
     {
-        $cacheId = Yii::$app->cache->getOrSet('service-worker-cache-id', function () {
-            return time();
-        });
+        $cacheId = Yii::$app->cache->getOrSet('service-worker-cache-id', fn() => time());
         $serviceWorkUrl = Url::to(['/web/pwa-service-worker/index', 'v' => $cacheId]);
         $rootPath = Yii::getAlias('@web') . '/';
 

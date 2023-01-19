@@ -27,10 +27,7 @@ use yii\db\Expression;
  */
 abstract class ItemDrop extends Model
 {
-    /**
-     * @var ActiveRecord the model to resort
-     */
-    private $model;
+    private ?\yii\db\ActiveRecord $model = null;
 
     /**
      * @var string ActiveRecord model class
@@ -172,8 +169,8 @@ abstract class ItemDrop extends Model
     {
         if ($newIndex < 0) {
             return 0;
-        } else if ($newIndex >= count($itemsToSort) + 1) {
-           return count($itemsToSort) - 1;
+        } elseif ($newIndex >= count($itemsToSort) + 1) {
+            return count($itemsToSort) - 1;
         }
 
         return $newIndex;

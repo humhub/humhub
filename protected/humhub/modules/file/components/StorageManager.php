@@ -71,9 +71,7 @@ class StorageManager extends Component implements StorageManagerInterface
     public function getVariants($except = [])
     {
         return array_map(
-            function (string $s): string {
-                return basename($s);
-            },
+            fn(string $s): string => basename($s),
             FileHelper::findFiles($this->getPath(), ['except' => ArrayHelper::merge(['file'], $except)])
         );
     }

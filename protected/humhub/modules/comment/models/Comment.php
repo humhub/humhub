@@ -150,9 +150,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
             // Remove mentioned users from followers query to avoid double notification
             if (count($mentionedUsers) !== 0) {
-                $followerQuery->andWhere(['NOT IN', 'user.id', array_map(function (User $user) {
-                    return $user->id;
-                }, $mentionedUsers)]);
+                $followerQuery->andWhere(['NOT IN', 'user.id', array_map(fn(User $user) => $user->id, $mentionedUsers)]);
             }
 
             // Update updated_at etc..
@@ -217,7 +215,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             $limit = $module->commentsPreviewMax;
         }
 
-        $currentCommentId = intval($currentCommentId);
+        $currentCommentId = (int) $currentCommentId;
         $useCaching = empty($currentCommentId);// No need to cache comments for deep single comment view
 
         $cacheID = sprintf(static::CACHE_KEY_LIMITED, $model, $id);
@@ -314,12 +312,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         if (Yii::$app->user->isAdmin()) {
             return true;
         }
-
-        if ($this->content->container instanceof Space && $this->content->container->isAdmin($userId)) {
-            return true;
-        }
-
-        return false;
+        return $this->content->container instanceof Space && $this->content->container->isAdmin($userId);
     }
 
     /**

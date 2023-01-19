@@ -65,10 +65,8 @@ class Events extends \yii\base\BaseObject
         $integrityController->showTestHeadline("File Module (" . File::find()->count() . " entries)");
 
         foreach (File::find()->all() as $file) {
-            if ($file->object_model != "" && $file->object_id != "" && $file->getPolymorphicRelation() === null) {
-                if ($integrityController->showFix("Deleting file id " . $file->id . " without existing target!")) {
-                    $file->delete();
-                }
+            if ($file->object_model != "" && $file->object_id != "" && $file->getPolymorphicRelation() === null && $integrityController->showFix("Deleting file id " . $file->id . " without existing target!")) {
+                $file->delete();
             }
         }
     }

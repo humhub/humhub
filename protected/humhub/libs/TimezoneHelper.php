@@ -52,7 +52,7 @@ class TimezoneHelper
 
         $timezones = [];
         foreach ($regions as $region) {
-            $timezones = array_merge($timezones, DateTimeZone::listIdentifiers($region));
+            $timezones = [...$timezones, ...DateTimeZone::listIdentifiers($region)];
         }
 
         $timezone_offsets = [];

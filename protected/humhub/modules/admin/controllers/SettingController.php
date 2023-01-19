@@ -313,11 +313,7 @@ class SettingController extends Controller
             ->one();
 
         // I wish..
-        if ($dating) {
-            $dating = date('Y-m-d H:i:s', $dating->log_time);
-        } else {
-            $dating = "the begining of time";
-        }
+        $dating = $dating ? date('Y-m-d H:i:s', $dating->log_time) : "the begining of time";
 
         $form = new LogsSettingsForm;
         $limitAgeOptions = $form->options;

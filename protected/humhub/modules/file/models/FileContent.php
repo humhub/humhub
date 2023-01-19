@@ -61,11 +61,7 @@ class FileContent extends File
      */
     protected function setFileSize()
     {
-        if (function_exists('mb_strlen')) {
-            $this->size = mb_strlen($this->newFileContent, '8bit');
-        } else {
-            $this->size = strlen($this->newFileContent);
-        }
+        $this->size = function_exists('mb_strlen') ? mb_strlen($this->newFileContent, '8bit') : strlen($this->newFileContent);
     }
 
 }

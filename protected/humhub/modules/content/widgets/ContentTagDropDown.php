@@ -27,7 +27,7 @@ class ContentTagDropDown extends JsInputWidget
     public $promptValue = 0;
 
     public $items;
-    private $itemOptions = [];
+    private array $itemOptions = [];
 
     public function int()
     {

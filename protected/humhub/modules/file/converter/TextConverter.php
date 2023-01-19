@@ -64,13 +64,8 @@ class TextConverter extends BaseConverter
         if (!is_file($originalFile)) {
             return false;
         }
-
-        if ($this->getConverter() === null) {
-            // No text converter found for given file
-            return false;
-        }
-
-        return true;
+        // No text converter found for given file
+        return $this->getConverter() !== null;
     }
 
     /**

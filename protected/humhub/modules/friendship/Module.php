@@ -28,11 +28,7 @@ class Module extends \humhub\components\Module
      */
     public function getIsEnabled()
     {
-        if (Yii::$app->getModule('friendship')->settings->get('enable')) {
-            return true;
-        }
-
-        return false;
+        return (bool) Yii::$app->getModule('friendship')->settings->get('enable');
     }
 
     public function getName()

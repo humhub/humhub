@@ -31,11 +31,6 @@ class AuthHelper
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
-
-        if ($module->settings->get('auth.allowGuestAccess')) {
-            return true;
-        }
-
-        return false;
+        return (bool) $module->settings->get('auth.allowGuestAccess');
     }
 }

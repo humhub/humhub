@@ -95,6 +95,7 @@
         "codeception/specify": "^1.0",
         "codeception/verify": "~0.5.0 || ~1.1.0",
         "phpcompatibility/php-compatibility": "*",
+        "rector/rector": "^0.15.7",
         "symfony/browser-kit": ">=2.7 <=4.2.4",
         "yiisoft/yii2-debug": "~2.1.0",
         "yiisoft/yii2-faker": "~2.0.0",

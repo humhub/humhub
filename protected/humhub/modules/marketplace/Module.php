@@ -71,9 +71,9 @@ class Module extends BaseModule
         return Yii::t('MarketplaceModule.base', 'Marketplace');
     }
 
-    private $_onlineModuleManager = null;
+    private ?\humhub\modules\marketplace\components\OnlineModuleManager $_onlineModuleManager = null;
 
-    private $_humhubApi = null;
+    private ?\humhub\modules\marketplace\components\HumHubApiClient $_humhubApi = null;
 
     /**
      * @inheritDoc

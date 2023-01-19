@@ -189,7 +189,7 @@ class AbstractRichTextEditor extends JsInputWidget
             $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
             $richText = $this->getLabel() . $richText;
         } else {
-            $input = Html::textarea(((!$this->name) ? 'richtext' : $this->name), $this->value, $inputOptions);
+            $input = Html::textarea((($this->name) ? $this->name : 'richtext'), $this->value, $inputOptions);
             $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
             $richText = $this->getLabel() . $richText;
         }

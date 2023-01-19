@@ -209,14 +209,12 @@ class UserController extends Controller
 
         ];
 
-        if ($canEditAdminFields) {
-            if (!$user->isCurrentUser()) {
-                $definition['buttons']['delete'] = [
-                    'type' => 'submit',
-                    'label' => Yii::t('AdminModule.user', 'Delete'),
-                    'class' => 'btn btn-danger',
-                ];
-            }
+        if ($canEditAdminFields && !$user->isCurrentUser()) {
+            $definition['buttons']['delete'] = [
+                'type' => 'submit',
+                'label' => Yii::t('AdminModule.user', 'Delete'),
+                'class' => 'btn btn-danger',
+            ];
         }
 
         $form = new HForm($definition);

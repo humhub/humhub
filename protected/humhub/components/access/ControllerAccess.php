@@ -371,8 +371,8 @@ class ControllerAccess extends BaseObject
             $validator = $this->findValidator($ruleName);
 
             if (!$validator->run()) {
-                $this->reason = (!$this->reason) ? $validator->getReason() : $this->reason;
-                $this->code = (!$this->code) ? $validator->getCode() : $this->code;
+                $this->reason = ($this->reason) ? $this->reason : $validator->getReason();
+                $this->code = ($this->code) ? $this->code : $validator->getCode();
                 if (isset($validator->codeCallback)) {
                     $this->codeCallback = $validator->codeCallback;
                 }

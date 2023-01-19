@@ -43,22 +43,17 @@ class ViewMeta extends BaseObject
      */
     public $view;
 
-    /**
-     * @var ContentActiveRecord
-     */
-    private $content;
+    private ?\humhub\modules\content\components\ContentActiveRecord $content = null;
 
     /**
      * The type metadata to preview the content with Open Graph protocol
-     * @var string
      */
-    private $contentType;
+    private ?string $contentType = null;
 
     /**
      * The URL metadata to preview the content with Open Graph protocol
-     * @var string
      */
-    private $url;
+    private ?string $url = null;
 
     /**
      * The Preview Image Urls
@@ -66,15 +61,9 @@ class ViewMeta extends BaseObject
      */
     private $images = [];
 
-    /**
-     * @var string
-     */
-    private $title;
+    private ?string $title = null;
 
-    /**
-     * @var string
-     */
-    private $description;
+    private ?string $description = null;
 
     /**
      * Called by View to register Tags before rendering

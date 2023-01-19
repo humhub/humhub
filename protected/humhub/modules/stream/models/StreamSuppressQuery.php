@@ -72,11 +72,7 @@ class StreamSuppressQuery extends StreamQuery
     {
         // Hack to ensure booleans for suppressionsOnly parameter
         if (parent::load($data, $formName)) {
-            if ($this->suppressionsOnly == 'true') {
-                $this->suppressionsOnly = true;
-            } else {
-                $this->suppressionsOnly = false;
-            }
+            $this->suppressionsOnly = $this->suppressionsOnly == 'true';
         }
     }
 

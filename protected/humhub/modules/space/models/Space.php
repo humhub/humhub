@@ -97,10 +97,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
      */
     public $defaultRoute = '/space/space';
 
-    /**
-     * @var AdvancedSettings|null
-     */
-    private $_advancedSettings = null;
+    private ?\humhub\modules\space\models\AdvancedSettings $_advancedSettings = null;
 
     /**
      * @inheritdoc
@@ -132,9 +129,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
         $module = Yii::$app->getModule('space');
 
         if ($module->useUniqueSpaceNames) {
-            $rules[] = [['name'], 'unique', 'targetClass' => static::class, 'when' => function ($model) {
-                return $model->isAttributeChanged('name');
-            }];
+            $rules[] = [['name'], 'unique', 'targetClass' => static::class, 'when' => fn($model) => $model->isAttributeChanged('name')];
         }
 
         return $rules;
@@ -368,12 +363,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
         if ($this->join_policy == self::JOIN_POLICY_NONE) {
             return false;
         }
-
-        if ($this->isBlockedForUser(User::findOne($userId))) {
-            return false;
-        }
-
-        return true;
+        return !$this->isBlockedForUser(User::findOne($userId));
     }
 
     /**
@@ -393,12 +383,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
         if ($this->isMember($userId)) {
             return false;
         }
-
-        if ($this->join_policy == self::JOIN_POLICY_FREE) {
-            return true;
-        }
-
-        return false;
+        return $this->join_policy == self::JOIN_POLICY_FREE;
     }
 
     /**

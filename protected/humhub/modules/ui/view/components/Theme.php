@@ -48,7 +48,7 @@ class Theme extends BaseTheme
     /**
      * @inheritdoc
      */
-    private $_baseUrl = null;
+    private ?string $_baseUrl = null;
 
     /**
      * @var boolean indicates that resources should be published via assetManager

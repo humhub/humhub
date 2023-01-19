@@ -154,9 +154,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['username'], 'unique'],
             [['username'], 'string', 'max' => $userModule->maximumUsernameLength, 'min' => $userModule->minimumUsernameLength],
             // Client validation is disable due to invalid client pattern validation
-            [['username'], 'match', 'pattern' => $userModule->validUsernameRegexp, 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false, 'when' => function ($model, $attribute) {
-                return $model->getAttribute($attribute) !== $model->getOldAttribute($attribute);
-            }],
+            [['username'], 'match', 'pattern' => $userModule->validUsernameRegexp, 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false, 'when' => fn($model, $attribute) => $model->getAttribute($attribute) !== $model->getOldAttribute($attribute)],
             [['created_by', 'updated_by'], 'integer'],
             [['status'], 'in', 'range' => array_keys(self::getStatusOptions())],
             [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => Profile::SCENARIO_EDIT_ADMIN],
@@ -450,11 +448,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     {
         $event = new UserEvent(['user' => $this, 'result' => ['isVisible' => true]]);
         $this->trigger(self::EVENT_CHECK_VISIBILITY, $event);
-        if ($event->result['isVisible'] && $this->isActive() && $this->visibility !== self::VISIBILITY_HIDDEN) {
-            return true;
-        }
-
-        return false;
+        return $event->result['isVisible'] && $this->isActive() && $this->visibility !== self::VISIBILITY_HIDDEN;
     }
 
     /**
@@ -784,9 +778,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
 
         // Add user group ids
-        $groupIds = array_map(function ($group) {
-            return $group->id;
-        }, $this->groups);
+        $groupIds = array_map(fn($group) => $group->id, $this->groups);
         $attributes['groups'] = $groupIds;
 
         if (!$this->profile->isNewRecord) {
@@ -933,10 +925,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             return self::USERGROUP_SELF;
         }
 
-        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
-            if (Friendship::getStateForUser($this, $user) === Friendship::STATE_FRIENDS) {
-                return self::USERGROUP_FRIEND;
-            }
+        if (Yii::$app->getModule('friendship')->getIsEnabled() && Friendship::getStateForUser($this, $user) === Friendship::STATE_FRIENDS) {
+            return self::USERGROUP_FRIEND;
         }
 
         return self::USERGROUP_USER;

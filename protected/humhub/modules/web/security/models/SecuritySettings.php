@@ -57,10 +57,7 @@ class SecuritySettings extends Model
      */
     private static $rules;
 
-    /**
-     * @var CSPBuilder
-     */
-    private $csp;
+    private ?\humhub\modules\web\security\helpers\CSPBuilder $csp = null;
 
     /**
      * @var string defines the csp settings key
@@ -70,7 +67,7 @@ class SecuritySettings extends Model
     /**
      * @var bool this flag avoids resetting the nonce to the csp
      */
-    private $nonceAttached = false;
+    private bool $nonceAttached = false;
 
     /**
      * @return bool checks if any csp section has reporting enabled

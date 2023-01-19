@@ -88,11 +88,7 @@ class DropDownGridColumn extends DataColumn
             $i++;
         }
 
-        if (is_array($this->dropDownOptions)) {
-            $options = $this->dropDownOptions;
-        } else {
-            $options = $model[$this->dropDownOptions];
-        }
+        $options = is_array($this->dropDownOptions) ? $this->dropDownOptions : $model[$this->dropDownOptions];
 
         $inputName = (is_array($model)) ? $this->attribute : Html::getInputName($model, $this->attribute);
 

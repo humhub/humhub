@@ -103,11 +103,9 @@ class PasswordRecoveryController extends Controller
 
         if ($savedTokenInfo) {
             list($generatedToken, $generationTime) = explode('.', $savedTokenInfo);
-            if (\humhub\libs\Helpers::same($generatedToken, $token)) {
-                // Check token generation time
-                if ($generationTime + (24 * 60 * 60) >= time()) {
-                    return true;
-                }
+            // Check token generation time
+            if (\humhub\libs\Helpers::same($generatedToken, $token) && $generationTime + (24 * 60 * 60) >= time()) {
+                return true;
             }
         }
 

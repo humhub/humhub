@@ -33,7 +33,7 @@ class SecurityController extends Controller
         if ($space->load(Yii::$app->request->post()) && $space->save()) {
             $this->view->saved();
             return $this->redirect($space->createUrl('index'));
-        } else if(Yii::$app->request->post()) {
+        } elseif (Yii::$app->request->post()) {
             $this->view->error(Yii::t('SpaceModule.base', 'Settings could not be saved!'));
         }
 

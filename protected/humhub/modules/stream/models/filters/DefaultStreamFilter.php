@@ -64,7 +64,7 @@ class DefaultStreamFilter extends StreamQueryFilter
 
         if ($this->isFilterActive(self::FILTER_ARCHIVED)) {
             $this->filterArchived();
-        } else if (!$this->streamQuery->isSingleContentQuery()) {
+        } elseif (!$this->streamQuery->isSingleContentQuery()) {
             // Only omit archived content by default when we load more than one entry
             $this->unFilterArchived();
         }

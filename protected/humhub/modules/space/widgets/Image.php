@@ -36,11 +36,7 @@ class Image extends BaseImage
             $this->linkOptions['href'] = $this->space->getUrl();
         }
 
-        if ($this->space->color != null) {
-            $color = Html::encode($this->space->color);
-        } else {
-            $color = '#d7d7d7';
-        }
+        $color = $this->space->color != null ? Html::encode($this->space->color) : '#d7d7d7';
 
         if (!isset($this->htmlOptions['class'])) {
             $this->htmlOptions['class'] = '';
@@ -72,7 +68,7 @@ class Image extends BaseImage
             Html::addCssClass($this->linkOptions, 'tt');
         }
 
-        $defaultImage = (basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg' || basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg?cacheId=0') ? true : false;
+        $defaultImage = basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg' || basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg?cacheId=0';
 
         if (!$defaultImage) {
             $acronymHtmlOptions['class'] .= " hidden";

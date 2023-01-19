@@ -111,11 +111,7 @@ class IncompleteSetupWarning extends Widget
     protected function checkCron()
     {
         $lastRun = (int)Yii::$app->settings->getUncached('cronLastRun');
-        if (empty($lastRun) || $lastRun < time() - 60 * 60) {
-            return false;
-        }
-
-        return true;
+        return !empty($lastRun) && $lastRun >= time() - 60 * 60;
     }
 
 }

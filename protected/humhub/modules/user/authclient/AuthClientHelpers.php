@@ -128,10 +128,8 @@ class AuthClientHelpers
                     } else {
                         $user->profile->setAttribute($attributeName, $attributes[$attributeName]);
                     }
-                } else {
-                    if ($user->profile->hasAttribute($attributeName)) {
-                        $user->profile->setAttribute($attributeName, '');
-                    }
+                } elseif ($user->profile->hasAttribute($attributeName)) {
+                    $user->profile->setAttribute($attributeName, '');
                 }
             }
 
@@ -206,11 +204,7 @@ class AuthClientHelpers
             $username[] = $attributes['family_name'];
         }
 
-        if (empty($username)) {
-            $username = Yii::$app->security->generateRandomString(8);
-        } else {
-            $username = implode('_', $username);
-        }
+        $username = empty($username) ? Yii::$app->security->generateRandomString(8) : implode('_', $username);
 
         $username = strtolower(substr($username, 0, 32));
         $usernameRandomSuffix = '';

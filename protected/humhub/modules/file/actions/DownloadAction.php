@@ -78,20 +78,14 @@ class DownloadAction extends Action
         }
 
         $httpCache = new HttpCache();
-        $httpCache->lastModified = function () {
-            return Yii::$app->formatter->asTimestamp($this->file->updated_at);
-        };
+        $httpCache->lastModified = fn() => Yii::$app->formatter->asTimestamp($this->file->updated_at);
         $httpCache->etagSeed = function () {
             if (file_exists($this->getStoredFilePath())) {
                 return md5_file($this->getStoredFilePath());
             }
             return null;
         };
-        if (!$httpCache->beforeAction($this)) {
-            return false;
-        }
-
-        return true;
+        return $httpCache->beforeAction($this);
     }
 
     /**
@@ -161,11 +155,9 @@ class DownloadAction extends Action
             $variant = Yii::$app->request->get('suffix', null);
         }
 
-        if ($variant !== null) {
-            // Check if variant is available by file
-            if (!in_array($variant, $this->file->store->getVariants())) {
-                throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file variant!'));
-            }
+        // Check if variant is available by file
+        if ($variant !== null && !in_array($variant, $this->file->store->getVariants())) {
+            throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file variant!'));
         }
 
         $this->variant = $variant;

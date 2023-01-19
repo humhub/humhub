@@ -38,7 +38,7 @@ class ModuleStatus extends Widget
     /**
      * @var string|null Cached status of the module
      */
-    private $_status;
+    private ?string $_status = null;
 
     /**
      * @inheritdoc
@@ -61,13 +61,13 @@ class ModuleStatus extends Widget
 
         if ($onlineModule->isProOnly) {
             $this->_status = 'professional';
-        } else if ($onlineModule->isFeatured) {
+        } elseif ($onlineModule->isFeatured) {
             $this->_status = 'featured';
-        } else if (!$onlineModule->isThirdParty) {
+        } elseif (!$onlineModule->isThirdParty) {
             $this->_status = 'official';
-        } else if ($onlineModule->isPartner) {
+        } elseif ($onlineModule->isPartner) {
             $this->_status = 'partner';
-        } else if ($onlineModule->isDeprecated) {
+        } elseif ($onlineModule->isDeprecated) {
             $this->_status = 'deprecated';
         } else {
             $this->_status = 'none';

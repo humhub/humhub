@@ -50,11 +50,9 @@ class ThemeLoader implements BootstrapInterface
             EnvironmentChecker::preInstallChecks();
         }
 
-        if ($app->view->theme instanceof Theme) {
-            if (!Yii::$app->request->isConsoleRequest && !(Yii::$app instanceof ConsoleApplication)) {
-                // Register the theme (e.g. add core js/css header)
-                $app->view->theme->register();
-            }
+        if ($app->view->theme instanceof Theme && (!Yii::$app->request->isConsoleRequest && !(Yii::$app instanceof ConsoleApplication))) {
+            // Register the theme (e.g. add core js/css header)
+            $app->view->theme->register();
         }
 
     }

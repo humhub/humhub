@@ -55,6 +55,6 @@ class ActivityStreamViewer extends StreamViewer
             return $this->contentContainer->createUrl($this->streamAction);
         }
 
-        return Url::to(array_merge([$this->streamAction]));
+        return Url::to([...[$this->streamAction]]);
     }
 }

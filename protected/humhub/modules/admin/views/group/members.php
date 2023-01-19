@@ -81,27 +81,20 @@ AdminGroupAsset::register($this);
                         $noSelected = ($isManager) ? '' : 'selected';
                         $result = '<select class="editableCell form-control" data-action-change="admin.group.setManagerRole" data-action-url="' . $actionUrl . '" data-userid="' . $data->id . '"  data-groupid="' . $group->id . '">';
                         $result .= '<option value="0" ' . $noSelected . '>' . Yii::t('AdminModule.user', 'No') . '</option>';
-                        $result .= '<option value="1" ' . $yesSelected . '>' . Yii::t('AdminModule.user', 'Yes') . '</option>';
-                        return $result;
+                        return $result . ('<option value="1" ' . $yesSelected . '>' . Yii::t('AdminModule.user', 'Yes') . '</option>');
                     }
                 ],
                 [
                     'class' => 'yii\grid\ActionColumn',
                     'options' => ['style' => 'width:40px; min-width:40px;'],
                     'buttons' => [
-                        'view' => function($url, $model) {
-                            return false;
-                        },
-                        'update' => function($url, $model) use ($group) {
-                            return false;
-                        },
-                        'delete' => function($url, $model) use ($group) {
-                            return Button::danger()
-                                ->tooltip(Yii::t('AdminModule.user', 'Remove from group'))
-                                ->action('admin.group.removeMember', Url::to(['remove-group-user', 'id' => $group->id, 'userId' => $model->id]))
-                                ->icon('remove')->xs()
-                                ->confirm();
-                        }
+                        'view' => fn($url, $model) => false,
+                        'update' => fn($url, $model) => false,
+                        'delete' => fn($url, $model) => Button::danger()
+                            ->tooltip(Yii::t('AdminModule.user', 'Remove from group'))
+                            ->action('admin.group.removeMember', Url::to(['remove-group-user', 'id' => $group->id, 'userId' => $model->id]))
+                            ->icon('remove')->xs()
+                            ->confirm()
                     ],
                 ],
             ],

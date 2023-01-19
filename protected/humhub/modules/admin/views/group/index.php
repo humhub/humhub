@@ -35,28 +35,22 @@ use humhub\widgets\GridView;
             [
                 'attribute' => 'name',
                 'format' => 'html',
-                'value' => function (Group $group) {
-                    // Yii::t is available for default texts
-                    return Yii::t('AdminModule.base', $group->name) .
-                        ($group->is_default_group ? ' ' . Label::defaultType(Yii::t('AdminModule.user', 'Default')) : '') .
-                        ($group->is_protected ? ' ' . Label::defaultType(Yii::t('AdminModule.user', 'Protected')) : '');
-                }
+                'value' => fn(Group $group) => // Yii::t is available for default texts
+Yii::t('AdminModule.base', $group->name) .
+                    ($group->is_default_group ? ' ' . Label::defaultType(Yii::t('AdminModule.user', 'Default')) : '') .
+                    ($group->is_protected ? ' ' . Label::defaultType(Yii::t('AdminModule.user', 'Protected')) : '')
             ],
             [
                 'attribute' => 'description',
-                'value' => function (Group $group) {
-                    // Yii::t is available for default texts
-                    return Yii::t('AdminModule.base', $group->description);
-                }
+                'value' => fn(Group $group) => // Yii::t is available for default texts
+Yii::t('AdminModule.base', $group->description)
             ],
             [
                 'attribute' => 'members',
                 'label' => Yii::t('AdminModule.user', 'Members'),
                 'format' => 'raw',
                 'options' => ['style' => 'text-align:center;'],
-                'value' => function (Group $data) {
-                    return $data->getGroupUsers()->count();
-                }
+                'value' => fn(Group $data) => $data->getGroupUsers()->count()
             ],
             [
                 'class' => ActionColumn::class,

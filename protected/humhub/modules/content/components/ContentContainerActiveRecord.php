@@ -47,10 +47,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     protected $permissionManager = null;
 
-    /**
-     * @var ContentContainerModuleManager
-     */
-    private $_moduleManager = null;
+    private ?\humhub\modules\content\components\ContentContainerModuleManager $_moduleManager = null;
 
     /**
      * The behavior which will be attached to the base controller.

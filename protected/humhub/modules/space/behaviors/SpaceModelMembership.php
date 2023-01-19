@@ -38,12 +38,12 @@ use yii\validators\EmailValidator;
 class SpaceModelMembership extends Behavior
 {
 
-    private $_spaceOwner = null;
+    private ?\humhub\modules\user\models\User $_spaceOwner = null;
 
     /**
      * @var array cached membership results
      */
-    private $_memberships = [];
+    private array $_memberships = [];
 
     /**
      * Checks if given userId is Member of this Space.
@@ -61,12 +61,7 @@ class SpaceModelMembership extends Behavior
         }
 
         $membership = $this->getMembership($userId);
-
-        if ($membership != null && $membership->status == Membership::STATUS_MEMBER) {
-            return true;
-        }
-
-        return false;
+        return $membership != null && $membership->status == Membership::STATUS_MEMBER;
     }
 
     /**
@@ -560,7 +555,7 @@ class SpaceModelMembership extends Behavior
     {
         if ($membership->originator && $membership->isCurrentUser()) {
             InviteDeclined::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($membership->originator);
-        } else if (Yii::$app->user->identity) {
+        } elseif (Yii::$app->user->identity) {
             InviteRevoked::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($user);
         }
     }

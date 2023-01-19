@@ -72,12 +72,8 @@ class LinkedIn extends \yii\authclient\clients\LinkedIn
     protected function defaultNormalizeUserAttributeMap()
     {
         return [
-            'first_name' => function ($attributes) {
-                return array_values($attributes['firstName']['localized'])[0];
-            },
-            'last_name' => function ($attributes) {
-                return array_values($attributes['lastName']['localized'])[0];
-            },
+            'first_name' => fn($attributes) => array_values($attributes['firstName']['localized'])[0],
+            'last_name' => fn($attributes) => array_values($attributes['lastName']['localized'])[0],
         ];
     }
 

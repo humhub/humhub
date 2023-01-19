@@ -71,11 +71,9 @@ class ConfigController extends Controller
             }
 
             // When not at index action, verify that database is not already configured
-            if ($action->id != 'finished') {
-                if ($this->module->isConfigured()) {
-                    $this->redirect(['finished']);
-                    return false;
-                }
+            if ($action->id != 'finished' && $this->module->isConfigured()) {
+                $this->redirect(['finished']);
+                return false;
             }
 
             return true;

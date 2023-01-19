@@ -462,7 +462,7 @@ class UrlOembed extends ActiveRecord
             $url = $url['host'];
         }
 
-        return array_search($url, self::getAllowedDomains()) !== false;
+        return in_array($url, self::getAllowedDomains());
     }
 
     /**

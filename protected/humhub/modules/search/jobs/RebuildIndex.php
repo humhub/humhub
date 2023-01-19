@@ -25,7 +25,7 @@ class RebuildIndex extends ActiveJob implements ExclusiveJobInterface, Retryable
     /**
      * @var int maximum 2 hours
      */
-    private $maxExecutionTime = 60 * 60 * 2;
+    private int $maxExecutionTime = 60 * 60 * 2;
 
     /**
      * @inhertidoc

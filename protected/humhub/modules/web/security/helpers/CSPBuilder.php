@@ -29,22 +29,13 @@ class CSPBuilder
     /**
      * @var array<int, string>
      */
-    private $requireSRIFor = [];
+    private array $requireSRIFor = [];
 
-    /**
-     * @var bool
-     */
-    private $needsCompile = true;
+    private bool $needsCompile = true;
 
-    /**
-     * @var string
-     */
-    private $compiled = '';
+    private string $compiled = '';
 
-    /**
-     * @var bool
-     */
-    private $reportOnly = false;
+    private bool $reportOnly = false;
 
     /**
      * @var bool
@@ -59,7 +50,7 @@ class CSPBuilder
     /**
      * @var string[]
      */
-    private static $directives = [
+    private static array $directives = [
         'base-uri',
         'default-src',
         'child-src',
@@ -95,20 +86,14 @@ class CSPBuilder
     public function compile()
     {
         $ruleKeys = \array_keys($this->policies);
-        if (\in_array('report-only', $ruleKeys)) {
-            $this->reportOnly = !!$this->policies['report-only'];
-        } else {
-            $this->reportOnly = false;
-        }
+        $this->reportOnly = \in_array('report-only', $ruleKeys) ? !!$this->policies['report-only'] : false;
 
         $compiled = [];
 
         foreach (self::$directives as $dir) {
             if (\in_array($dir, $ruleKeys)) {
-                if (empty($ruleKeys)) {
-                    if ($dir === 'base-uri') {
-                        continue;
-                    }
+                if (empty($ruleKeys) && $dir === 'base-uri') {
+                    continue;
                 }
                 $compiled []= $this->compileSubgroup(
                     $dir,
@@ -372,8 +357,7 @@ class CSPBuilder
         $script = '',
         $algorithm = 'sha384'
     ) {
-        $ruleKeys = \array_keys($this->policies);
-        if (\in_array($directive, $ruleKeys)) {
+        if (array_key_exists($directive, $this->policies)) {
             $this->policies[$directive]['hashes'] []= [
                 $algorithm => base64_encode(
                     \hash($algorithm, $script, true)
@@ -419,8 +403,7 @@ class CSPBuilder
      */
     public function nonce($directive = 'script-src', $nonce = '')
     {
-        $ruleKeys = \array_keys($this->policies);
-        if (!\in_array($directive, $ruleKeys)) {
+        if (!array_key_exists($directive, $this->policies)) {
             return '';
         }
 
@@ -444,8 +427,7 @@ class CSPBuilder
         $hash = '',
         $algorithm = 'sha384'
     ) {
-        $ruleKeys = \array_keys($this->policies);
-        if (\in_array($directive, $ruleKeys)) {
+        if (array_key_exists($directive, $this->policies)) {
             $this->policies[$directive]['hashes'] []= [
                 $algorithm => $hash
             ];
@@ -762,15 +744,13 @@ class CSPBuilder
             foreach ($policies['allow'] as $url) {
                 $url = \filter_var($url, FILTER_SANITIZE_URL);
                 if ($url !== false) {
-                    if ($this->supportOldBrowsers) {
-                        if (\strpos($url, '://') === false) {
-                            if (($this->isHTTPSConnection() && $this->httpsTransformOnHttpsConnections)
-                                || !empty($this->policies['upgrade-insecure-requests'])) {
-                                // We only want HTTPS connections here.
-                                $ret .= 'https://'.$url.' ';
-                            } else {
-                                $ret .= 'https://'.$url.' http://'.$url.' ';
-                            }
+                    if ($this->supportOldBrowsers && \strpos($url, '://') === false) {
+                        if (($this->isHTTPSConnection() && $this->httpsTransformOnHttpsConnections)
+                            || !empty($this->policies['upgrade-insecure-requests'])) {
+                            // We only want HTTPS connections here.
+                            $ret .= 'https://'.$url.' ';
+                        } else {
+                            $ret .= 'https://'.$url.' http://'.$url.' ';
                         }
                     }
                     if (($this->isHTTPSConnection() && $this->httpsTransformOnHttpsConnections)

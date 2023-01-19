@@ -34,7 +34,7 @@ class SendMailSummary extends ActiveJob implements ExclusiveJobInterface, Retrya
     /**
      * @var int maximum 1 hour
      */
-    private $maxExecutionTime = 60 * 60 * 1;
+    private int $maxExecutionTime = 60 * 60 * 1;
 
     /**
      * @inhertidoc

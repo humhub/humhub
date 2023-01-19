@@ -45,7 +45,7 @@ class CheckForNewVersion extends ActiveJob
             $adminUserQuery = Group::getAdminGroup()->getUsers();
 
             $latestNotifiedVersion = $adminModule->settings->get('lastVersionNotify');
-            $adminsNotified = !($latestNotifiedVersion == "" || version_compare($latestVersion, $latestNotifiedVersion, ">"));
+            $adminsNotified = $latestNotifiedVersion != "" && !version_compare($latestVersion, $latestNotifiedVersion, ">");
             $newVersionAvailable = (version_compare($latestVersion, Yii::$app->version, ">"));
 
             $updateNotification = new NewVersionAvailable();

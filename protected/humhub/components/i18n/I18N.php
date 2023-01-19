@@ -75,11 +75,7 @@ class I18N extends BaseI18N
             $this->setDefaultLocale();
         }
 
-        if (!empty($user->time_zone)) {
-            Yii::$app->formatter->timeZone = $user->time_zone;
-        } else {
-            Yii::$app->formatter->timeZone = Yii::$app->timeZone;
-        }
+        Yii::$app->formatter->timeZone = empty($user->time_zone) ? Yii::$app->timeZone : $user->time_zone;
 
         Yii::$app->formatter->defaultTimeZone = Yii::$app->timeZone;
     }

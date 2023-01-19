@@ -86,12 +86,7 @@ abstract class MenuEntry extends BaseObject
         if (is_callable($this->isActive)) {
             call_user_func($this->isActive);
         }
-
-        if ($this->isActive) {
-            return true;
-        }
-
-        return false;
+        return $this->isActive;
     }
 
     /**
@@ -138,12 +133,7 @@ abstract class MenuEntry extends BaseObject
         if ($actionIds && !is_array($actionIds)) {
             $actionIds = [$actionIds];
         }
-
-        if (!empty($actionIds) && !in_array(Yii::$app->controller->action->id, $actionIds)) {
-            return false;
-        }
-
-        return true;
+        return !(!empty($actionIds) && !in_array(Yii::$app->controller->action->id, $actionIds));
     }
 
 
@@ -218,7 +208,7 @@ abstract class MenuEntry extends BaseObject
      */
     public function isVisible()
     {
-        return !($this->isVisible === false);
+        return $this->isVisible !== false;
     }
 
     /**

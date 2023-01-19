@@ -19,10 +19,7 @@ use yii\base\Model;
  */
 class GeneralModuleSettingsForm extends Model
 {
-    /**
-     * @var Module
-     */
-    private $marketplaceModule;
+    private ?\yii\base\Module $marketplaceModule = null;
 
     /**
      * @var bool

@@ -21,15 +21,11 @@ use humhub\widgets\GridView;
                 'header' => Yii::t('base', 'Actions'),
                 'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
-                    'update' => function ($url, $model) {
-                        return Html::a('Accept', ['/friendship/request/add', 'userId' => $model->id], ['class' => 'btn btn-success btn-sm', 'data-method' => 'POST']);
-                    },
+                    'update' => fn($url, $model) => Html::a('Accept', ['/friendship/request/add', 'userId' => $model->id], ['class' => 'btn btn-success btn-sm', 'data-method' => 'POST']),
                             'view' => function () {
                         return;
                     },
-                            'delete' => function($url, $model) {
-                        return Html::a('Deny', ['/friendship/request/delete', 'userId' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']);
-                    },
+                            'delete' => fn($url, $model) => Html::a('Deny', ['/friendship/request/delete', 'userId' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']),
                         ],
                     ]],
             ]);

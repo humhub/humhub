@@ -54,15 +54,9 @@ use humhub\widgets\TimeAgo;
                     'header' => Yii::t('SpaceModule.manage', 'Actions'),
                     'class' => 'yii\grid\ActionColumn',
                     'buttons' => [
-                        'view' => function () {
-                            return '';
-                        },
-                        'delete' => function ($url, $model) use ($space) {
-                            return Html::a(Yii::t('SpaceModule.base', 'Cancel'), $space->createUrl('remove', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-danger btn-sm', 'data-confirm' => 'Are you sure?', 'data-method' => 'POST']);
-                        },
-                        'update' => function () {
-                            return '';
-                        },
+                        'view' => fn() => '',
+                        'delete' => fn($url, $model) => Html::a(Yii::t('SpaceModule.base', 'Cancel'), $space->createUrl('remove', ['userGuid' => $model->user->guid]), ['class' => 'btn btn-danger btn-sm', 'data-confirm' => 'Are you sure?', 'data-method' => 'POST']),
+                        'update' => fn() => '',
                     ],
                 ],
             ],

@@ -15,7 +15,7 @@ UiImageSetAsset::register($this);
         foreach ($visibleItems as $item) {
             if ($item instanceof Space) {
                 echo SpaceImage::widget(array_merge($options, ['space' => $item]));
-            } else if ($item instanceof User) {
+            } elseif ($item instanceof User) {
                 unset($options['acronymCount']);
                 echo UserImage::widget(array_merge($options, ['user' => $item]));
             }
@@ -40,7 +40,7 @@ UiImageSetAsset::register($this);
                                 'height' => $hiddenItemsOptions['height'],
                                 'showTooltip' => false
                             ]));
-                        } else if ($item instanceof User) {
+                        } elseif ($item instanceof User) {
                             echo UserImage::widget(array_merge($options, [
                                 'user' => $item,
                                 'width' => $hiddenItemsOptions['width'],

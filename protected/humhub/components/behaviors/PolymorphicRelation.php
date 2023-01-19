@@ -44,10 +44,7 @@ class PolymorphicRelation extends Behavior
      */
     public $mustBeInstanceOf = [];
 
-    /**
-     * @var mixed the cached object
-     */
-    private $cached = null;
+    private ?\yii\db\ActiveRecord $cached = null;
 
     /**
      * Returns the Underlying Object
