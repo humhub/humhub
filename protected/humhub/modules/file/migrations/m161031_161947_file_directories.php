@@ -24,7 +24,7 @@ class m161031_161947_file_directories extends Migration
         }
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m161031_161947_file_directories cannot be reverted.\n";
 

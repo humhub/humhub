@@ -18,7 +18,7 @@ class m200323_162006_fix_visibility extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m200323_162006_fix_visibility cannot be reverted.\n";
 

@@ -31,7 +31,7 @@ use yii\base\InvalidArgumentException;
  */
 class ContentTagRelation extends ActiveRecord
 {
-    public static function tableName(): string
+    public static function tableName()
     {
         return "content_tag_relation";
     }

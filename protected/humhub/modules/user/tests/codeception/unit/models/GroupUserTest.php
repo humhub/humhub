@@ -26,7 +26,7 @@ class GroupUserTest extends HumHubDbTestCase
         $model = new GroupUser();
         $scenarios = $model->scenarios();
         $this->assertTrue(is_array($scenarios));
-        $this->assertTrue(array_key_exists(GroupUser::SCENARIO_REGISTRATION, $scenarios));
+        $this->assertTrue(key_exists(GroupUser::SCENARIO_REGISTRATION, $scenarios));
         $this->assertEquals(['group_id'], $scenarios[GroupUser::SCENARIO_REGISTRATION]);
     }
 

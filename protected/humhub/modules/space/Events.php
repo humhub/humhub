@@ -77,19 +77,25 @@ class Events extends BaseObject
         $integrityController->showTestHeadline("Space Module - Spaces (" . Space::find()->count() . " entries)");
         foreach (Space::find()->each() as $space) {
             foreach ($space->applicants as $applicant) {
-                if ($applicant->user == null && $integrityController->showFix("Deleting applicant record id " . $applicant->id . " without existing user!")) {
-                    $applicant->delete();
+                if ($applicant->user == null) {
+                    if ($integrityController->showFix("Deleting applicant record id " . $applicant->id . " without existing user!")) {
+                        $applicant->delete();
+                    }
                 }
             }
         }
 
         $integrityController->showTestHeadline("Space Module - Memberships (" . models\Membership::find()->count() . " entries)");
         foreach (models\Membership::find()->joinWith('space')->each() as $membership) {
-            if ($membership->space == null && $integrityController->showFix("Deleting space membership " . $membership->space_id . " without existing space!")) {
-                $membership->delete();
+            if ($membership->space == null) {
+                if ($integrityController->showFix("Deleting space membership " . $membership->space_id . " without existing space!")) {
+                    $membership->delete();
+                }
             }
-            if ($membership->user == null && $integrityController->showFix("Deleting space membership " . $membership->user_id . " without existing user!")) {
-                $membership->delete();
+            if ($membership->user == null) {
+                if ($integrityController->showFix("Deleting space membership " . $membership->user_id . " without existing user!")) {
+                    $membership->delete();
+                }
             }
         }
     }

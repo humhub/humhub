@@ -152,7 +152,7 @@ class NotificationSettings extends Model
      * @return boolean if the save process was successful else false
      * @throws \yii\web\HttpException
      */
-    public function save(): bool
+    public function save()
     {
         if (!$this->checkPermission()) {
             throw new HttpException(403);
@@ -235,7 +235,7 @@ class NotificationSettings extends Model
         }
     }
 
-    public function resetUserSettings(): bool
+    public function resetUserSettings()
     {
         if (!$this->user) {
             return false;
@@ -258,7 +258,7 @@ class NotificationSettings extends Model
      */
     public function canResetAllUsers()
     {
-        return $this->user === null && Yii::$app->user->can(ManageUsers::class);
+        return !isset($this->user) && Yii::$app->user->can(ManageUsers::class);
     }
 
     /**

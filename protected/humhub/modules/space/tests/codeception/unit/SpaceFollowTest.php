@@ -28,7 +28,7 @@ class SpaceFollowTest extends HumHubDbTestCase
         // Check if follow record was saved
         $follow = Follow::findOne(['object_model' => Space::class, 'object_id' => $space->id, 'user_id' => $userId]);
         $this->assertNotNull($follow);
-        $this->assertFalse((bool) $follow->send_notifications);
+        $this->assertFalse(boolval($follow->send_notifications));
 
         // Get all spaces this user follows and check if the new space is included
         $spaces = Follow::getFollowedSpacesQuery(Yii::$app->user->getIdentity())->all();

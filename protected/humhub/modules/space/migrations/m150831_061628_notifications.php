@@ -24,7 +24,7 @@ class m150831_061628_notifications extends Migration
         $this->update('notification', ['source_pk' => new yii\db\Expression('space_id'), 'source_class' => 'humhub\modules\space\models\Space'], ['class' => 'humhub\modules\space\notifications\InviteDeclined', 'source_class' => 'humhub\modules\user\models\User']);
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m150831_061628_notifications cannot be reverted.\n";
 

@@ -464,7 +464,7 @@ class SelfTest
         // Check Runtime Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Runtime');
         $path = Yii::getAlias('@runtime');
-        if (is_writable($path)) {
+        if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK'
@@ -480,7 +480,7 @@ class SelfTest
         // Check Assets Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Assets');
         $path = Yii::getAlias('@webroot/assets');
-        if (is_writable($path)) {
+        if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK'
@@ -496,7 +496,7 @@ class SelfTest
         // Check Uploads Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Uploads');
         $path = Yii::getAlias('@webroot/uploads');
-        if (is_writable($path)) {
+        if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK'
@@ -512,7 +512,7 @@ class SelfTest
         // Check Profile Image Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Profile Image');
         $path = Yii::getAlias('@webroot/uploads/profile_image');
-        if (is_writable($path)) {
+        if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK'
@@ -530,7 +530,7 @@ class SelfTest
         /** @var Module $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
         $path = Yii::getAlias($marketplaceModule->modulesPath);
-        if (is_writable($path)) {
+        if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK'
@@ -549,7 +549,7 @@ class SelfTest
             $path = dirname($path);
         }
 
-        if (is_writable($path)) {
+        if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK'
@@ -679,7 +679,7 @@ class SelfTest
         // Checks Table Collations
         $title = $driver['title'] . ' - ' . Yii::t('AdminModule.information', 'Table collations') . ' - ' . implode(', ', $tableCollations);
 
-        if ($tablesWithNotRecommendedCollations === []) {
+        if (empty($tablesWithNotRecommendedCollations)) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK'
@@ -698,7 +698,7 @@ class SelfTest
         // Checks Table Engines
         $title = $driver['title'] . ' - ' . Yii::t('AdminModule.information', 'Table engines') . ' - ' . implode(', ', $tableEngines);
 
-        if ($tablesWithNotRecommendedEngines === []) {
+        if (empty($tablesWithNotRecommendedEngines)) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK'

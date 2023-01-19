@@ -29,7 +29,7 @@ class m131023_165755_initial extends Migration
         $this->addPrimaryKey('pk_module_enabled', 'module_enabled', 'module_id');
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m131023_165755_initial does not support migration down.\n";
         return false;

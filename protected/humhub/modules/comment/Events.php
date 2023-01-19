@@ -45,7 +45,7 @@ class Events extends Component
      *
      * @param Event $event
      */
-    public static function onUserDelete($event): bool
+    public static function onUserDelete($event)
     {
         foreach (Comment::findAll(['created_by' => $event->sender->id]) as $comment) {
             $comment->delete();
@@ -68,13 +68,17 @@ class Events extends Component
         foreach (Comment::find()->each() as $c) {
 
             // Check underlying record exists
-            if ($c->source === null && $integrityController->showFix('Deleting comment id ' . $c->id . ' without existing target!')) {
-                $c->delete();
+            if ($c->source === null) {
+                if ($integrityController->showFix('Deleting comment id ' . $c->id . ' without existing target!')) {
+                    $c->delete();
+                }
             }
 
             // User exists
-            if ($c->user === null && $integrityController->showFix('Deleting comment id ' . $c->id . ' without existing user!')) {
-                $c->delete();
+            if ($c->user === null) {
+                if ($integrityController->showFix('Deleting comment id ' . $c->id . ' without existing user!')) {
+                    $c->delete();
+                }
             }
         }
     }

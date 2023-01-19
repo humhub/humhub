@@ -10,7 +10,7 @@ class m160225_180229_remove_website extends Migration
         $this->dropColumn('space', 'website');
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m160225_180229_remove_website cannot be reverted.\n";
 

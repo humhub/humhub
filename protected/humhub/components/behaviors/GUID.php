@@ -31,8 +31,10 @@ class GUID extends Behavior
 
     public function setGuid($event)
     {
-        if ($this->owner->isNewRecord && $this->owner->guid == "") {
-            $this->owner->guid = \humhub\libs\UUID::v4();
+        if ($this->owner->isNewRecord) {
+            if ($this->owner->guid == "") {
+                $this->owner->guid = \humhub\libs\UUID::v4();
+            }
         }
     }
 }

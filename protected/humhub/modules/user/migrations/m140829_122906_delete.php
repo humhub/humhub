@@ -16,7 +16,7 @@ class m140829_122906_delete extends Migration
         $this->alterColumn('user', 'status', 'tinyint(4)');
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m140829_122906_delete does not support migration down.\n";
         return false;

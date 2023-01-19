@@ -18,7 +18,7 @@ class m201020_130431_fix_default_file_setting_value extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m201020_130431_fix_default_file_setting_value cannot be reverted.\n";
 

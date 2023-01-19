@@ -81,7 +81,8 @@ AdminGroupAsset::register($this);
                         $noSelected = ($isManager) ? '' : 'selected';
                         $result = '<select class="editableCell form-control" data-action-change="admin.group.setManagerRole" data-action-url="' . $actionUrl . '" data-userid="' . $data->id . '"  data-groupid="' . $group->id . '">';
                         $result .= '<option value="0" ' . $noSelected . '>' . Yii::t('AdminModule.user', 'No') . '</option>';
-                        return $result . ('<option value="1" ' . $yesSelected . '>' . Yii::t('AdminModule.user', 'Yes') . '</option>');
+                        $result .= '<option value="1" ' . $yesSelected . '>' . Yii::t('AdminModule.user', 'Yes') . '</option>';
+                        return $result;
                     }
                 ],
                 [

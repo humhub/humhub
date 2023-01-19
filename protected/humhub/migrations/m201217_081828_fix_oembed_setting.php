@@ -38,7 +38,7 @@ class m201217_081828_fix_oembed_setting extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m201217_071828_fix_oembed_setting cannot be reverted.\n";
 

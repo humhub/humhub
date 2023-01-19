@@ -23,9 +23,6 @@ use yii\helpers\Url;
  */
 class Markdown extends JsInputWidget
 {
-    public $model;
-    public $attribute;
-    public $form;
     /**
      * @inheritdoc
      */
@@ -147,7 +144,7 @@ class Markdown extends JsInputWidget
 
         return [
             'preview-url' => $this->previewUrl,
-            'files-input-name' => empty($this->filesInputName) ? null : $this->filesInputName
+            'files-input-name' => !empty($this->filesInputName) ? $this->filesInputName : null
         ];
     }
 }

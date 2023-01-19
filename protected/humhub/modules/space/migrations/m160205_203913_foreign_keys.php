@@ -47,7 +47,7 @@ class m160205_203913_foreign_keys extends Migration
         }
     }
 
-    public function down(): bool
+    public function down()
     {
         $this->dropForeignKey('fk_space_membership-user_id', 'space_membership');
         $this->dropForeignKey('fk_space_membership-space_id', 'space_membership');

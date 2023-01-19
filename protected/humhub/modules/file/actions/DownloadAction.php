@@ -64,7 +64,7 @@ class DownloadAction extends Action
      * @inheritdoc
      * @throws HttpException
      */
-    public function beforeRun(): bool
+    public function beforeRun()
     {
         if (Yii::$app->request->isPjax) {
             throw new HttpException(400, 'File downloads are not allowed with pjax!');
@@ -85,7 +85,11 @@ class DownloadAction extends Action
             }
             return null;
         };
-        return $httpCache->beforeAction($this);
+        if (!$httpCache->beforeAction($this)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -155,9 +159,11 @@ class DownloadAction extends Action
             $variant = Yii::$app->request->get('suffix', null);
         }
 
-        // Check if variant is available by file
-        if ($variant !== null && !in_array($variant, $this->file->store->getVariants())) {
-            throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file variant!'));
+        if ($variant !== null) {
+            // Check if variant is available by file
+            if (!in_array($variant, $this->file->store->getVariants())) {
+                throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file variant!'));
+            }
         }
 
         $this->variant = $variant;

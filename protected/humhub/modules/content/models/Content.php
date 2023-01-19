@@ -133,7 +133,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     /**
      * @inheritdoc
      */
-    public static function tableName(): string
+    public static function tableName()
     {
         return 'content';
     }
@@ -202,8 +202,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             $this->pinned = 0;
         }
 
-        if ($insert && $this->created_by == "") {
-            $this->created_by = Yii::$app->user->id;
+        if ($insert) {
+            if ($this->created_by == "") {
+                $this->created_by = Yii::$app->user->id;
+            }
         }
 
         $this->stream_sort_date = date('Y-m-d G:i:s');
@@ -738,7 +740,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      * @throws \yii\base\InvalidConfigException
      * @since 1.1
      */
-    public function canEdit($user = null): bool
+    public function canEdit($user = null)
     {
         if (Yii::$app->user->isGuest) {
             return false;
@@ -746,7 +748,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
 
         if ($user === null) {
             $user = Yii::$app->user->getIdentity();
-        } elseif (!($user instanceof User)) {
+        } else if (!($user instanceof User)) {
             $user = User::findOne(['id' => $user]);
         }
 
@@ -771,9 +773,14 @@ class Content extends ActiveRecord implements Movable, ContentOwner
                 return true;
             }
         }
+
         // Check if underlying models canEdit implementation
         // ToDo: Implement this as interface
-        return method_exists($model, 'canEdit') && $model->canEdit($user);
+        if (method_exists($model, 'canEdit') && $model->canEdit($user)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -822,7 +829,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     {
         if (!$user && !Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
-        } elseif (!$user instanceof User) {
+        } else if (!$user instanceof User) {
             $user = User::findOne(['id' => $user]);
         }
 
@@ -850,7 +857,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         if ($user->canViewAllContent()) {
             return true;
         }
-        return $this->isPrivate() && $this->getContainer() !== null && $this->getContainer()->canAccessPrivateContent($user);
+
+        if ($this->isPrivate() && $this->getContainer() !== null && $this->getContainer()->canAccessPrivateContent($user)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

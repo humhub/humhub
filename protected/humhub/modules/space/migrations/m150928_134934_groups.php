@@ -16,7 +16,7 @@ class m150928_134934_groups extends Migration
         $this->dropColumn('space_membership', 'invite_role');
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m150928_134934_groups cannot be reverted.\n";
 

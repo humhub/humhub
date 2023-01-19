@@ -23,7 +23,7 @@ class ModuleEnabled extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName(): string
+    public static function tableName()
     {
         return 'module_enabled';
     }

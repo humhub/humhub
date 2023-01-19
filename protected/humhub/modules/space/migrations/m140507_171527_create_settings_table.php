@@ -23,7 +23,7 @@ class m140507_171527_create_settings_table extends Migration {
         $this->createIndex('idx_space_setting', 'space_setting', 'space_id, module_id, name', true);
     }
 
-    public function down(): bool {
+    public function down() {
         echo "m140507_171527_create_settings_table does not support migration down.\n";
         return false;
     }

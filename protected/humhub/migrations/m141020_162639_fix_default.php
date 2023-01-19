@@ -16,7 +16,7 @@ class m141020_162639_fix_default extends Migration
         $this->alterColumn('setting', 'updated_at', "datetime DEFAULT NULL");
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m141020_162639_fix_default does not support migration down.\n";
         return false;

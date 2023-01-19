@@ -37,7 +37,7 @@ class m171025_142030_queue_update extends Migration
         $this->createIndex('priority', $this->tableName, 'priority');
     }
 
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m171025_142030_queue_update cannot be reverted.\n";
 

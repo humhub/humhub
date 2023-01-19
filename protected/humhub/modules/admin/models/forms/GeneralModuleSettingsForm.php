@@ -57,7 +57,7 @@ class GeneralModuleSettingsForm extends Model
     /**
      * @return bool
      */
-    public function save(): bool
+    public function save()
     {
         if (!$this->validate()) {
             return false;

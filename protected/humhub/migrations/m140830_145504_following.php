@@ -42,7 +42,7 @@ class m140830_145504_following extends Migration
         $this->dropTable('user_follow');
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m140830_145504_following does not support migration down.\n";
         return false;

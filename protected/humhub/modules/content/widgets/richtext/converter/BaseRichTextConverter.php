@@ -239,7 +239,9 @@ abstract class BaseRichTextConverter extends GithubMarkdown
                 }
             }
 
-            return $this->onAfterParse($result);
+            $result = $this->onAfterParse($result);
+
+            return $result;
         } catch (\Throwable $t) {
             Yii::error($t);
             return '[ParserError]';
@@ -376,7 +378,11 @@ REGEXP;
                 ];
             } elseif (preg_match('/^([ \n]?\[(.*?)\])?/s', $markdown, $refMatches)) {
                 // reference style link
-                $key = empty($refMatches[2]) ? strtolower($text) : strtolower($refMatches[2]);
+                if (empty($refMatches[2])) {
+                    $key = strtolower($text);
+                } else {
+                    $key = strtolower($refMatches[2]);
+                }
                 return [
                     $text,
                     null, // url
@@ -507,7 +513,7 @@ REGEXP;
         }
 
         $target = Html::encode($this->getOption(static::OPTION_LINK_TARGET, '_blank'));
-        $targetAttr = $this->getOption(static::OPTION_PREV_LINK_TARGET, false) ? '' : " target=\"$target\"";
+        $targetAttr = !$this->getOption(static::OPTION_PREV_LINK_TARGET, false) ? " target=\"$target\"" : '';
 
         return '<a href="' . htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8') . '"'. $targetAttr
             . (empty($block['title']) ? '' : ' title="' . htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
@@ -539,7 +545,7 @@ REGEXP;
     {
         $result = parent::consumeOl($lines, $current);
 
-        if (is_array($lines) && $lines !== [] && !empty($result[0]['items'])) {
+        if (is_array($lines) && count($lines) > 0 && !empty($result[0]['items'])) {
             $result[0]['origNums'] = [];
             $i = array_keys($result[0]['items'])[0];
             foreach ($lines as $line) {

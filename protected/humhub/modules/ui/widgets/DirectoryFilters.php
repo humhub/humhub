@@ -118,7 +118,7 @@ abstract class DirectoryFilters extends Widget
                 $activeTags = empty($activeTags) ? [] : explode(',', $activeTags);
 
                 foreach ($data['tags'] as $tagKey => $tagLabel) {
-                    $isActiveTag = (empty($tagKey) && $activeTags === [])
+                    $isActiveTag = (empty($tagKey) && empty($activeTags))
                         || in_array($tagKey, $activeTags);
 
                     $inputHtml .= Button::none($tagLabel)

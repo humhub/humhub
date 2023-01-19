@@ -22,7 +22,7 @@ class TestTagOtherModule extends ContentTag
 {
     public $moduleId = 'otherTest';
 
-    public static function getLabel(): string
+    public static function getLabel()
     {
         return 'testCategory';
     }

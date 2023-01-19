@@ -19,7 +19,7 @@ class m141019_093319_mentioning extends Migration
         $this->createIndex('i_object', 'user_mentioning', 'object_model, object_id', false);
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m141019_093319_mentioning does not support migration down.\n";
         return false;

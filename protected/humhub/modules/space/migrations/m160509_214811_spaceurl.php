@@ -25,7 +25,7 @@ class m160509_214811_spaceurl extends Migration
         }
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m160509_214811_spaceurl cannot be reverted.\n";
 

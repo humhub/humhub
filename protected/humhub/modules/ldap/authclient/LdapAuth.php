@@ -38,7 +38,6 @@ use Laminas\Ldap\Node;
 class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, ApprovalBypass, PrimaryClient
 {
 
-    public $login;
     private ?\Laminas\Ldap\Ldap $_ldap = null;
 
     /**
@@ -275,13 +274,13 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     /**
      * @inheritdoc
      */
-    public function auth(): bool
+    public function auth()
     {
         $node = $this->getUserNode();
         if ($node !== null) {
             $this->setUserAttributes(array_merge(['dn' => $node], $node->getAttributes()));
             return true;
-        } elseif ($this->login instanceof Login) {
+        } else if ($this->login instanceof Login) {
             $this->countFailedLoginAttempts();
         }
 
@@ -333,7 +332,11 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                 $dateFormat = Yii::$app->params['ldap']['dateFields'][$name];
                 $date = DateTime::createFromFormat($dateFormat, $value);
 
-                $normalized[$name] = $date !== false ? $date->format('Y-m-d') : '';
+                if ($date !== false) {
+                    $normalized[$name] = $date->format('Y-m-d');
+                } else {
+                    $normalized[$name] = '';
+                }
             }
         }
 
@@ -400,7 +403,9 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
             // Rebind with administrative DN
             $this->getLdap()->bind();
 
-            return $this->getLdap()->getCanonicalAccountName($userName, Ldap::ACCTNAME_FORM_DN);
+            $dn = $this->getLdap()->getCanonicalAccountName($userName, Ldap::ACCTNAME_FORM_DN);
+
+            return $dn;
         } catch (LdapException $ex) {
             // User not found in LDAP
         }

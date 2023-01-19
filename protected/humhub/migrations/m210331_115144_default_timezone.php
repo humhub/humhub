@@ -22,7 +22,7 @@ class m210331_115144_default_timezone extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m210331_115144_default_timezone cannot be reverted.\n";
 

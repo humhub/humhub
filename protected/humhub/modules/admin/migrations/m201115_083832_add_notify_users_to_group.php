@@ -18,7 +18,7 @@ class m201115_083832_add_notify_users_to_group extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown(): bool
+    public function safeDown()
     {
         $this->dropColumn('group','notify_users');
         return true;

@@ -22,7 +22,7 @@ class m150910_223305_fix_user_follow extends Migration
         }
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m150910_223305_fix_user_follow cannot be reverted.\n";
 

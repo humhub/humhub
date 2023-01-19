@@ -26,7 +26,7 @@ class m170112_115052_settings extends Migration
         $this->dropColumn('user', 'last_activity_email');
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m170112_115052_settings cannot be reverted.\n";
 

@@ -12,7 +12,7 @@ class m141022_094635_addDefaults extends Migration
         $this->insert('setting', ['name'=>'defaultJoinPolicy', 'module_id'=>'space', 'value'=>'1']);
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m141022_094635_addDefaults does not support migration down.\n";
         return false;

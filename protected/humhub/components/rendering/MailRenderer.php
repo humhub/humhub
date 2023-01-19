@@ -20,7 +20,6 @@ namespace humhub\components\rendering;
 class MailRenderer extends DefaultViewPathRenderer
 {
 
-    public $parent;
     /**
      * @inheritdoc
      */
@@ -43,7 +42,7 @@ class MailRenderer extends DefaultViewPathRenderer
      * @param array $params
      * @return string
      */
-    public function renderText(Viewable $viewable, $params = []): string
+    public function renderText(Viewable $viewable, $params = [])
     {
         $textRenderer = new static([
             'subPath' => 'mails/plaintext',

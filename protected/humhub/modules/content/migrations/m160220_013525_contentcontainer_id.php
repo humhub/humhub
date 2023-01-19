@@ -55,7 +55,7 @@ class m160220_013525_contentcontainer_id extends Migration
         $this->dropColumn('content', 'user_id');
     }
 
-    public function down(): bool
+    public function down()
     {
 
         echo "m160220_013525_contentcontainer_id cannot be reverted.\n";

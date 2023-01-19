@@ -15,7 +15,7 @@ UiImageSetAsset::register($this);
         foreach ($visibleItems as $item) {
             if ($item instanceof Space) {
                 echo SpaceImage::widget(array_merge($options, ['space' => $item]));
-            } elseif ($item instanceof User) {
+            } else if ($item instanceof User) {
                 unset($options['acronymCount']);
                 echo UserImage::widget(array_merge($options, ['user' => $item]));
             }
@@ -34,20 +34,20 @@ UiImageSetAsset::register($this);
                     <div class="hidden-item">
                         <?php
                         if ($item instanceof Space) {
-            echo SpaceImage::widget(array_merge($options, [
-                'space' => $item,
-                'width' => $hiddenItemsOptions['width'],
-                'height' => $hiddenItemsOptions['height'],
-                'showTooltip' => false
-            ]));
-        } elseif ($item instanceof User) {
-            echo UserImage::widget(array_merge($options, [
-                'user' => $item,
-                'width' => $hiddenItemsOptions['width'],
-                'height' => $hiddenItemsOptions['height'],
-                'showTooltip' => false
-            ]));
-        }
+                            echo SpaceImage::widget(array_merge($options, [
+                                'space' => $item,
+                                'width' => $hiddenItemsOptions['width'],
+                                'height' => $hiddenItemsOptions['height'],
+                                'showTooltip' => false
+                            ]));
+                        } else if ($item instanceof User) {
+                            echo UserImage::widget(array_merge($options, [
+                                'user' => $item,
+                                'width' => $hiddenItemsOptions['width'],
+                                'height' => $hiddenItemsOptions['height'],
+                                'showTooltip' => false
+                            ]));
+                        }
                         if ($options['link']) {
                             echo '<span class="display-name-link">';
                             echo Html::a(Html::encode($item->getDisplayName()), $item->getUrl(), $options['linkOptions']);

@@ -97,8 +97,9 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     {
         $params = $_GET;
         unset($params[$this->clientIdGetParamName]);
+        $baseAuthUrl = array_merge(['/user/auth/external'], $params);
 
-        return array_merge(['/user/auth/external'], $params);
+        return $baseAuthUrl;
     }
 
     /**

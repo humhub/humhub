@@ -16,7 +16,7 @@ class TestActivity extends \humhub\modules\activity\components\BaseActivity {
 
     public $viewName = 'testNoView';
 
-    public function html(): string
+    public function html()
     {
         return 'Content of no view activity';
     }

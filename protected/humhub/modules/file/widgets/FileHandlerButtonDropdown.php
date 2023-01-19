@@ -46,7 +46,7 @@ class FileHandlerButtonDropdown extends \humhub\components\Widget
     public function run()
     {
 
-        if (!$this->primaryButton && $this->handlers === []) {
+        if (!$this->primaryButton && count($this->handlers) === 0) {
             return;
         }
 
@@ -60,7 +60,7 @@ class FileHandlerButtonDropdown extends \humhub\components\Widget
             $output .= $this->primaryButton;
         }
 
-        if ($this->handlers !== []) {
+        if (count($this->handlers) !== 0) {
             $output .= '<button type="button" class="btn ' . $this->cssButtonClass . ' dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>';
             
             $cssClass = ($this->pullRight) ? 'dropdown-menu dropdown-menu-right' : 'dropdown-menu';
@@ -73,8 +73,9 @@ class FileHandlerButtonDropdown extends \humhub\components\Widget
             }
             $output .= Html::endTag('ul');
         }
+        $output .= Html::endTag('div');
 
-        return $output . Html::endTag('div');
+        return $output;
     }
 
     /**

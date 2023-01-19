@@ -193,8 +193,10 @@ class Helpers
                     return true;
                 }
             }
-        } elseif (class_exists($className) && is_a($className, $type, true)) {
-            return true;
+        } else {
+            if (class_exists($className) && is_a($className, $type, true)) {
+                return true;
+            }
         }
 
         throw new Exception("Invalid class type! (" . $className . ")");

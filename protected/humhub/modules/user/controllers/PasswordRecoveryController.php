@@ -96,16 +96,18 @@ class PasswordRecoveryController extends Controller
         return $this->render('reset', ['model' => $model]);
     }
 
-    private function checkPasswordResetToken($user, $token): bool
+    private function checkPasswordResetToken($user, $token)
     {
         // Saved token - Format: randomToken.generationTime
         $savedTokenInfo = Yii::$app->getModule('user')->settings->contentContainer($user)->get('passwordRecoveryToken');
 
         if ($savedTokenInfo) {
             list($generatedToken, $generationTime) = explode('.', $savedTokenInfo);
-            // Check token generation time
-            if (\humhub\libs\Helpers::same($generatedToken, $token) && $generationTime + (24 * 60 * 60) >= time()) {
-                return true;
+            if (\humhub\libs\Helpers::same($generatedToken, $token)) {
+                // Check token generation time
+                if ($generationTime + (24 * 60 * 60) >= time()) {
+                    return true;
+                }
             }
         }
 

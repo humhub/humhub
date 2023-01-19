@@ -71,7 +71,7 @@ class SearchController extends \yii\console\Controller
         $results = Yii::$app->search->find($keyword, [
             'pageSize' => $pageSize,
             'page' => $page,
-            'model' => ($model !== "") ? explode(",", $model) : null
+            'model' => ($model != "") ? explode(",", $model) : null
         ]);
 
         print_r($results);

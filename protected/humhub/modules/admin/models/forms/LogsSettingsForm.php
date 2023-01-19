@@ -66,7 +66,7 @@ class LogsSettingsForm extends \yii\base\Model
      *
      * @return boolean
      */
-    public function save(): bool
+    public function save()
     {
         $settingsManager = Yii::$app->settings;
         $settingsManager->set('logsDateLimit', $this->logsDateLimit);

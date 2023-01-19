@@ -268,7 +268,7 @@ class Theme extends BaseTheme
         $parents = [];
         foreach ($parentPaths as $parentPath) {
             $theme = ThemeHelper::getThemeByPath($parentPath);
-            if (!$theme instanceof \humhub\modules\ui\view\components\Theme) {
+            if ($theme === null) {
                 Yii::$app->settings->delete('themeParents');
                 Yii::error('Could not load stored theme parent! - Deleted parent path.', 'ui');
                 return null;

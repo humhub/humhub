@@ -75,7 +75,7 @@ class UserFilter extends User
         return $jsonResult;
     }
     
-    private function containsUser($userArr, $user): bool
+    private function containsUser($userArr, $user)
     {
         foreach($userArr as $currentUser) {
             if($currentUser->id === $user->id) {

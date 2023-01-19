@@ -64,7 +64,7 @@ class AccountChangeEmail extends \yii\base\Model
     /**
      * Sends Change E-Mail E-Mail
      */
-    public function sendChangeEmail($approveUrl = ''): bool
+    public function sendChangeEmail($approveUrl = '')
     {
         $user = Yii::$app->user->getIdentity();
 

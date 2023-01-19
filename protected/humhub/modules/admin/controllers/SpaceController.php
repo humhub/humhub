@@ -29,11 +29,6 @@ class SpaceController extends Controller
 {
 
     /**
-     * @var string
-     */
-    public $subLayout;
-    public $view;
-    /**
      * @inheritdoc
      */
     public $adminOnly = false;
@@ -162,7 +157,7 @@ class SpaceController extends Controller
         if (Yii::$app->request->post('dropDownColumnSubmit')) {
             Yii::$app->response->format = 'json';
             $permission = $defaultPermissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
-            if (!$permission instanceof \humhub\libs\BasePermission) {
+            if ($permission === null) {
                 throw new HttpException(500, 'Could not find permission!');
             }
             $defaultPermissionManager->setGroupState($groupId, $permission, Yii::$app->request->post('state'));

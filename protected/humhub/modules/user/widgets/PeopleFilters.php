@@ -128,12 +128,13 @@ class PeopleFilters extends DirectoryFilters
 
     public static function getDefaultValue(string $filter): string
     {
-        if ($filter === 'sort') {
-            $defaultSorting = PeopleCard::config('defaultSorting');
-            if ($defaultSorting == '' && !PeopleSettingsForm::isDefaultGroupDefined()) {
-                return 'lastlogin';
-            }
-            return $defaultSorting;
+        switch ($filter) {
+            case 'sort':
+                $defaultSorting = PeopleCard::config('defaultSorting');
+                if ($defaultSorting == '' && !PeopleSettingsForm::isDefaultGroupDefined()) {
+                    return 'lastlogin';
+                }
+                return $defaultSorting;
         }
 
         return '';

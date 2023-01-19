@@ -95,7 +95,7 @@ class ExportResult extends BaseObject
      * Deletes associated directory with all internal files.
      * @return boolean whether file has been deleted.
      */
-    public function delete(): bool
+    public function delete()
     {
         if (!empty($this->tempFileName) && is_writable($this->tempFileName)) {
             FileHelper::unlink($this->tempFileName);

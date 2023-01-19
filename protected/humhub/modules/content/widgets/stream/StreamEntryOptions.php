@@ -162,7 +162,13 @@ class StreamEntryOptions extends Model
         if(!is_array($viewContexts)) {
             return $this->viewContext === $viewContexts;
         }
-        return in_array($this->viewContext, $viewContexts, true);
+
+        foreach ($viewContexts as $viewContext) {
+            if($this->viewContext === $viewContext) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

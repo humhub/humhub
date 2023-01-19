@@ -21,7 +21,6 @@ use humhub\modules\file\libs\FileHelper;
  */
 class JPlayerPlaylistWidget extends JsWidget
 {
-    public $init;
     /**
      * Contains the playlist.
      * @var \humhub\modules\file\models\File[]
@@ -38,7 +37,7 @@ class JPlayerPlaylistWidget extends JsWidget
      */
     public function run()
     {
-        if($this->playlist === []) {
+        if(empty($this->playlist)) {
             return;
         }
 

@@ -92,9 +92,11 @@ class CronController extends Controller
     {
         $lastRun = (int)Yii::$app->settings->getUncached('cronLastHourlyRun');
 
-        // Execute only once a hour
-        if (!empty($lastRun) && !$force && time() < $lastRun + 3600) {
-            return;
+        if (!empty($lastRun) && $force !== true) {
+            // Execute only once a hour
+            if (time() < $lastRun + 3600) {
+                return;
+            }
         }
 
         $this->trigger(self::EVENT_ON_HOURLY_RUN);
@@ -111,7 +113,7 @@ class CronController extends Controller
     {
         $lastRun = (int)Yii::$app->settings->getUncached('cronLastDailyRun');
 
-        if (!empty($lastRun) && !$force) {
+        if (!empty($lastRun) && $force !== true) {
             $lastTime = new DateTime('@' . $lastRun);
             $todayTime = DateTime::createFromFormat(
                 'Y-m-d H:i',

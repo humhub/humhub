@@ -13,7 +13,7 @@ class m140930_205511_fix_default extends Migration
         $this->alterColumn('activity', 'object_id', "varchar(100) DEFAULT ''");
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m140930_205511_fix_default does not support migration down.\n";
         return false;

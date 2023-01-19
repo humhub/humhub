@@ -20,9 +20,9 @@ $audios = [];
 foreach($files as $file) {
     if ($previewImage->applyFile($file)) {
         $images[] = $file;
-    } elseif (in_array(FileHelper::getExtension($file->file_name), $videoExtensions, true)) {
+    } else if (in_array(FileHelper::getExtension($file->file_name), $videoExtensions, true)) {
         $videos[] = $file;
-    } elseif (FileHelper::getExtension($file->file_name) === 'mp3') {
+    } else if (FileHelper::getExtension($file->file_name) === 'mp3') {
         $audios[]  = $file;
     }
 }
@@ -42,7 +42,7 @@ $galleryColumnClass =  ThemeHelper::isFluid() ? $fluidColumnClass : $nonFluidCol
         <?php if($showPreview) :?>
             <div class="post-files clearfix" id="post-files-<?= $object->getUniqueId() ?>">
 
-                <?php if($audios !== []) : ?>
+                <?php if(!empty($audios)) : ?>
                     <div class="<?= $fullWidthColumnClass ?>">
                         <?= JPlayerPlaylistWidget::widget(['playlist' => $audios]) ?>
                     </div>

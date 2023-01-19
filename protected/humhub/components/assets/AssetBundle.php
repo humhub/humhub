@@ -128,17 +128,17 @@ class AssetBundle extends BaseAssetBundle
             $this->css = $this->cssProd;
         }
 
-        if (!$this->isAsync() && $this->isDefer()) {
+        if(!$this->isAsync() && $this->isDefer()) {
             $this->jsOptions['defer'] = 'defer';
-        } elseif ($this->isAsync()) {
+        } else if($this->isAsync()) {
             $this->jsOptions['async'] = 'async';
         }
 
         $this->jsOptions['position'] = $this->getJsPosition();
 
-        if (!$useProdAssets && $this->forceCopy && !isset($this->publishOptions['forceCopy'])) {
+        if(!$useProdAssets && $this->forceCopy && !isset($this->publishOptions['forceCopy'])) {
             $this->publishOptions['forceCopy'] = true;
-        } elseif (!isset($this->publishOptions['forceCopy'])) {
+        } else if(!isset($this->publishOptions['forceCopy'])) {
             $this->publishOptions['forceCopy'] = false;
         }
 

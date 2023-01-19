@@ -54,7 +54,7 @@ class Collection extends Component
     public function getClients($load = true)
     {
         $clients = [];
-        foreach (array_keys($this->_clients) as $id) {
+        foreach ($this->_clients as $id => $client) {
             $clients[$id] = $this->getClient($id, $load);
         }
 
@@ -84,7 +84,7 @@ class Collection extends Component
      * @param string $id client id.
      * @return boolean whether client exist.
      */
-    public function hasClient($id): bool
+    public function hasClient($id)
     {
         return array_key_exists($id, $this->_clients);
     }
@@ -131,7 +131,9 @@ class Collection extends Component
      */
     protected function getDefaultClients()
     {
-        return ['password' => ['class' => Password::class]];
+        $clients = [];
+        $clients['password'] = ['class' => Password::class];
+        return $clients;
     }
 
 }

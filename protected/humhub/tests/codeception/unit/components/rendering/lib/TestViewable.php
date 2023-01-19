@@ -21,7 +21,7 @@ class TestViewable extends \yii\base\BaseObject implements \humhub\components\re
         return \yii\helpers\ArrayHelper::merge(['title' => 'TestTitle'], $params);
     }
 
-    public function html(): string
+    public function html()
     {
         return '<h1>TestView</h1>';
     }
@@ -31,7 +31,7 @@ class TestViewable extends \yii\base\BaseObject implements \humhub\components\re
         return null;
     }
 
-    public function text(): string
+    public function text()
     {
         return 'TestViewText';
     }

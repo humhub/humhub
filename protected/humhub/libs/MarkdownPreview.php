@@ -125,7 +125,11 @@ REGEXP;
                 ];
             } elseif (preg_match('/^([ \n]?\[(.*?)\])?/s', $markdown, $refMatches)) {
                 // reference style link
-                $key = empty($refMatches[2]) ? strtolower($text) : strtolower($refMatches[2]);
+                if (empty($refMatches[2])) {
+                    $key = strtolower($text);
+                } else {
+                    $key = strtolower($refMatches[2]);
+                }
                 return [
                     $text,
                     null, // url

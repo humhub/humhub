@@ -159,7 +159,7 @@ class ViewMeta extends BaseObject
         if (empty($this->images)) {
             // Use ContentContainer Image
             $contentContainer = ($this->content !== null) ? $this->content->content->container : null;
-            if (!$contentContainer instanceof \humhub\modules\content\components\ContentContainerActiveRecord && (property_exists($this->view->context, 'contentContainer') && $this->view->context->contentContainer !== null)) {
+            if ($contentContainer === null && isset($this->view->context->contentContainer)) {
                 $contentContainer = $this->view->context->contentContainer;
             }
 
@@ -207,7 +207,7 @@ class ViewMeta extends BaseObject
             $this->view->registerMetaTag(['property' => 'og:description', 'content' => StringHelper::truncate($this->description, 200)]);
         }
 
-        if ($this->images !== []) {
+        if (count($this->images) > 0) {
             $this->view->registerMetaTag(['name' => 'og:image', 'content' => $this->images[0]]);
         }
     }
@@ -231,7 +231,7 @@ class ViewMeta extends BaseObject
                 'property' => 'twitter:description',
                 'content' => StringHelper::truncate($this->description, 200)]);
         }
-        if ($this->images !== []) {
+        if (count($this->images) > 0) {
             $this->view->registerMetaTag(['name' => 'twitter:image', 'content' => $this->images[0]]);
         }
     }

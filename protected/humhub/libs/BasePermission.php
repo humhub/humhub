@@ -239,7 +239,7 @@ class BasePermission extends BaseObject
      * @param array Ids of additional fixed groups
      */
     public function addFixedGroups($groupIds) {
-        if (is_array($groupIds) && $groupIds !== []) {
+        if (is_array($groupIds) && !empty($groupIds)) {
             $this->fixedGroups = array_merge($this->fixedGroups, $groupIds);
         }
     }

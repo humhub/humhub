@@ -41,7 +41,7 @@ class RichTextLinkExtensionLegacyTest extends HumHubDbTestCase
     {
         $resultMatch = [];
 
-        $result = ProsemirrorRichText::replaceLinkExtension('[Text](test:id "title")', 'test', function($match) use (&$resultMatch): string {
+        $result = ProsemirrorRichText::replaceLinkExtension('[Text](test:id "title")', 'test', function($match) use (&$resultMatch) {
             $resultMatch = $match;
             return 'tested';
         });

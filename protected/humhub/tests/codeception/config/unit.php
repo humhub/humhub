@@ -25,7 +25,7 @@ $testConfig = [
     ],
 ];
 
-defined('YII_APP_BASE_PATH') || define('YII_APP_BASE_PATH', dirname(dirname(dirname(dirname(__DIR__)))));
+defined('YII_APP_BASE_PATH') or define('YII_APP_BASE_PATH', dirname(dirname(dirname(dirname(__DIR__)))));
 return yii\helpers\ArrayHelper::merge(
                 // Common Config
                 require(YII_APP_BASE_PATH . '/humhub/config/common.php'),

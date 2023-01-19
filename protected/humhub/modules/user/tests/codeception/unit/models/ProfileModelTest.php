@@ -19,9 +19,9 @@ class ProfileModelTest extends HumHubDbTestCase
     {
         $model = new Profile();
         $scenarios = $model->scenarios();
-        $this->assertTrue(array_key_exists(Profile::SCENARIO_EDIT_ADMIN, $scenarios));
-        $this->assertTrue(array_key_exists(Profile::SCENARIO_REGISTRATION, $scenarios));
-        $this->assertTrue(array_key_exists(Profile::SCENARIO_EDIT_PROFILE, $scenarios));
+        $this->assertTrue(key_exists(Profile::SCENARIO_EDIT_ADMIN, $scenarios));
+        $this->assertTrue(key_exists(Profile::SCENARIO_REGISTRATION, $scenarios));
+        $this->assertTrue(key_exists(Profile::SCENARIO_EDIT_PROFILE, $scenarios));
     }
 
     public function testReturnArrayOfAttributeLabels()

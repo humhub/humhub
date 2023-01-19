@@ -7,7 +7,7 @@ use humhub\libs\Helpers;
 use yii\helpers\Html;
 ?>
 
-<li<?= ($visible) ? '' : ' style="display:none"' ?> data-space-chooser-item <?= $data ?> data-space-guid="<?= $space->guid; ?>">
+<li<?= (!$visible) ? ' style="display:none"' : '' ?> data-space-chooser-item <?= $data ?> data-space-guid="<?= $space->guid; ?>">
     <a href="<?= $space->getUrl(); ?>">
         <div class="media">
             <?= Image::widget([

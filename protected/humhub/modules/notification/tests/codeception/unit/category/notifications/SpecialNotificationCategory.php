@@ -38,12 +38,12 @@ class SpecialNotificationCategory extends \humhub\modules\notification\component
         return !$user || $user->id != 2;
     }
 
-    public function getDescription(): string
+    public function getDescription()
     {
         return 'My Special Test Notification Category';
     }
 
-    public function getTitle(): string
+    public function getTitle()
     {
         return 'Test Special Category';
     }

@@ -35,7 +35,7 @@ class m210204_054203_fix_settings_unique_index extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m210204_054203_fix_settings_unique_index cannot be reverted.\n";
 

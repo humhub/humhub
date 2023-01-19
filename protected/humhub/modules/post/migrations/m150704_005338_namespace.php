@@ -11,7 +11,7 @@ class m150704_005338_namespace extends Migration
         $this->renameClass('Post', Post::class);
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m150704_005338_namespace cannot be reverted.\n";
 

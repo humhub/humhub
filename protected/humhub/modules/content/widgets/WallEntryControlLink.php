@@ -81,7 +81,7 @@ class WallEntryControlLink extends Widget
      *
      * @return bool true if this link should be rendered false if not
      */
-    public function preventRender(): bool
+    public function preventRender()
     {
         return false;
     }

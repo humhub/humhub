@@ -31,12 +31,6 @@ use humhub\modules\user\models\User;
  */
 class ContentContainerControllerAccess extends StrictAccess
 {
-    /**
-     * @var int
-     */
-    public $code;
-    public $user;
-    public $reason;
     const RULE_SPACE_ONLY = 'space';
     const RULE_PROFILE_ONLY = 'profile';
 
@@ -100,7 +94,7 @@ class ContentContainerControllerAccess extends StrictAccess
     /**
      * @return bool Space related access checks
      */
-    private function canAccessSpace(): bool
+    private function canAccessSpace()
     {
         if($this->contentContainer->isVisibleFor(Space::VISIBILITY_ALL)) {
             return true;

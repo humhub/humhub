@@ -10,7 +10,7 @@ class m160205_203939_foreign_keys extends Migration
         $this->addForeignKey('fk_notification-user_id', 'notification', 'user_id', 'user', 'id', 'CASCADE', 'CASCADE');
     }
 
-    public function down(): bool
+    public function down()
     {
         $this->dropForeignKey('fk_notification-user_id', 'notification');
 

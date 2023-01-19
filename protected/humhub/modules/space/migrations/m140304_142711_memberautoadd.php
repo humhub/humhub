@@ -9,7 +9,7 @@ class m140304_142711_memberautoadd extends Migration {
         $this->addColumn('space', 'auto_add_new_members', 'int(4) DEFAULT NULL');
     }
 
-    public function down(): bool {
+    public function down() {
         echo "m140304_142711_memberautoadd does not support migration down.\n";
         return false;
     }

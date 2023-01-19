@@ -86,7 +86,7 @@ class PeopleSettingsForm extends Model
      * Saves the form
      * @return boolean
      */
-    public function save(): bool
+    public function save()
     {
         Yii::$app->settings->set('people.detail1', $this->detail1);
         Yii::$app->settings->set('people.detail2', $this->detail2);

@@ -69,7 +69,7 @@ class m160229_162959_multiusergroups extends Migration
         $this->dropColumn('user', 'group_id');
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m160229_162959_multiusergroups cannot be reverted.\n";
 

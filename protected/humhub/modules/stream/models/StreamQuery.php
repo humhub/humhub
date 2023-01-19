@@ -434,7 +434,11 @@ class StreamQuery extends Model
      */
     protected function checkFrom()
     {
-        $this->from = empty($this->from) ? null : (int)$this->from;
+        if (empty($this->from)) {
+            $this->from = null;
+        } else {
+            $this->from = (int)$this->from;
+        }
     }
 
     /**
@@ -442,7 +446,11 @@ class StreamQuery extends Model
      */
     protected function checkTo()
     {
-        $this->to = empty($this->to) ? null : (int)$this->to;
+        if (empty($this->to)) {
+            $this->to = null;
+        } else {
+            $this->to = (int)$this->to;
+        }
     }
 
     /**
@@ -452,7 +460,7 @@ class StreamQuery extends Model
     {
         if (empty($this->limit)) {
             $this->limit = self::MAX_LIMIT;
-        } elseif (Yii::$app->request->isConsoleRequest) {
+        } else if (Yii::$app->request->isConsoleRequest) {
             $this->limit = (int)$this->limit;
         } else {
             $this->limit = ($this->limit > self::MAX_LIMIT) ? self::MAX_LIMIT : (int)$this->limit;

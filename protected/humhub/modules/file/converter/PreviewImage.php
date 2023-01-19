@@ -48,7 +48,7 @@ class PreviewImage extends BaseConverter
     /**
      * @inheritdoc
      */
-    public function getId(): string
+    public function getId()
     {
         return 'preview-image';
     }
@@ -109,7 +109,7 @@ class PreviewImage extends BaseConverter
     /**
      * @inheritdoc
      */
-    protected function canConvert(File $file): bool
+    protected function canConvert(File $file)
     {
         $originalFile = $file->store->get();
 

@@ -19,7 +19,7 @@ class m210310_103412_fix_hash extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m210310_103412_fix_hash cannot be reverted.\n";
 

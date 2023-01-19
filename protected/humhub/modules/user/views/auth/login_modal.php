@@ -24,7 +24,7 @@ use humhub\modules\user\widgets\AuthChoice;
             <?php if ($canRegister) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
-                        <li class="<?= (isset($_POST['Invite'])) ? "" : "active"; ?> tab-login"><a
+                        <li class="<?= (!isset($_POST['Invite'])) ? "active" : ""; ?> tab-login"><a
                                 href="#login"
                                 data-toggle="tab"><?= Yii::t('SpaceModule.base', 'Login'); ?></a>
                         </li>
@@ -39,7 +39,7 @@ use humhub\modules\user\widgets\AuthChoice;
 
 
             <div class="tab-content">
-                <div class="tab-pane <?= (isset($_POST['Invite'])) ? "" : "active"; ?>" id="login">
+                <div class="tab-pane <?= (!isset($_POST['Invite'])) ? "active" : ""; ?>" id="login">
 
                     <?php if (Yii::$app->session->hasFlash('error')): ?>
                         <div class="alert alert-danger" role="alert">

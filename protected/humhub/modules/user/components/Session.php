@@ -55,7 +55,7 @@ class Session extends DbSession
     /**
      * @inheritdoc
      */
-    public function writeSession($id, $data): bool
+    public function writeSession($id, $data)
     {
         // exception must be caught in session write handler
         // http://us.php.net/manual/en/function.session-set-save-handler.php

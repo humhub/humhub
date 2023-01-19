@@ -198,13 +198,15 @@ class UploadInput extends JsWidget
     public static function getSubmittedFiles($model, $attribute, $submitName)
     {
         $files = [];
-        if ($model && $attribute) {
+        if($model && $attribute) {
             $files = Html::getAttributeValue($model, $attribute);
-        } elseif ($submitName) {
+        } else if($submitName) {
             $postSubmit = $submitName;
+
             if(static::endsWith('[]', $postSubmit)) {
                 $postSubmit = substr($postSubmit, 0, -2);
             }
+
             $files = Yii::$app->request->post($postSubmit);
         }
 

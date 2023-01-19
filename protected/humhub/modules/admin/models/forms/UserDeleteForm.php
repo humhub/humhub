@@ -109,7 +109,7 @@ class UserDeleteForm extends Model
      * Perform user deletion
      * @since 1.3
      */
-    public function performDelete(): bool
+    public function performDelete()
     {
         if (!$this->validate()) {
             return false;

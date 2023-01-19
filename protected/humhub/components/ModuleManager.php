@@ -362,7 +362,7 @@ class ModuleManager extends Component
      * @param string $id
      * @return boolean
      */
-    public function hasModule($id): bool
+    public function hasModule($id)
     {
         return (array_key_exists($id, $this->modules));
     }
@@ -374,7 +374,7 @@ class ModuleManager extends Component
      * @throws Exception
      * @since 1.3.8
      */
-    public function isCoreModule($id): bool
+    public function isCoreModule($id)
     {
         if (!$this->hasModule($id)) {
             return false;
@@ -422,7 +422,7 @@ class ModuleManager extends Component
      * @return bool
      * @throws Exception
      */
-    public function canRemoveModule($moduleId): bool
+    public function canRemoveModule($moduleId)
     {
         $module = $this->getModule($moduleId);
 
@@ -433,7 +433,13 @@ class ModuleManager extends Component
         // Check is in dynamic/marketplace module folder
         /** @var ModuleMarketplace $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
-        return $marketplaceModule !== null && strpos($module->getBasePath(), Yii::getAlias($marketplaceModule->modulesPath)) !== false;
+        if ($marketplaceModule !== null) {
+            if (strpos($module->getBasePath(), Yii::getAlias($marketplaceModule->modulesPath)) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -59,7 +59,7 @@ class AddGroupMemberForm extends Model
      * @return bool
      * @throws HttpException
      */
-    public function save(): bool
+    public function save()
     {
         $group = $this->getGroup();
 

@@ -67,7 +67,7 @@ class ModuleAutoLoaderTest extends Unit
      */
     public function testInvalidModulePath()
     {
-        Yii::$app->params['moduleAutoloadPaths'][] = '/dev/null';
+        array_push(Yii::$app->params['moduleAutoloadPaths'], '/dev/null');
 
         try {
             ModuleAutoLoader::locateModules();

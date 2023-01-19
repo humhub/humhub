@@ -88,7 +88,12 @@ use yii\helpers\Html;
                         'class' => 'humhub\libs\DropDownGridColumn',
                         'attribute' => 'group_id',
                         'submitAttributes' => ['user_id'],
-                        'readonly' => fn($data): bool => (bool) $space->isSpaceOwner($data->user->id),
+                        'readonly' => function ($data) use ($space) {
+                            if ($space->isSpaceOwner($data->user->id)) {
+                                return true;
+                            }
+                            return false;
+                        },
                         'filter' => $groups,
                         'dropDownOptions' => $groups,
                         'value' =>

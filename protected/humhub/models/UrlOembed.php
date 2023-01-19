@@ -82,7 +82,7 @@ class UrlOembed extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName(): string
+    public static function tableName()
     {
         return 'url_oembed';
     }
@@ -462,7 +462,7 @@ class UrlOembed extends ActiveRecord
             $url = $url['host'];
         }
 
-        return in_array($url, self::getAllowedDomains());
+        return array_search($url, self::getAllowedDomains()) !== false;
     }
 
     /**

@@ -97,7 +97,11 @@ class OnlineModule extends Component
 
     public function isProOnly(): bool
     {
-        return !empty($this->info('professional_only'));
+        if (empty($this->info('professional_only'))) {
+            return false;
+        }
+
+        return true;
     }
 
     public function getIsProOnly(): bool

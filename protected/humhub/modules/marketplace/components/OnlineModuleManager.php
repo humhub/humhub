@@ -108,7 +108,7 @@ class OnlineModuleManager extends Component
         return (!is_dir($path));
     }
 
-    private function unzip($file, $folder): bool
+    private function unzip($file, $folder)
     {
         $zip = new ZipArchive;
         $res = $zip->open($file);
@@ -121,7 +121,7 @@ class OnlineModuleManager extends Component
         return true;
     }
 
-    private function downloadFile($fileName, $url, $sha256 = null): bool
+    private function downloadFile($fileName, $url, $sha256 = null)
     {
         if (is_file($fileName) && !empty($sha256) && hash_file('sha256', $fileName) === $sha256) {
             // File already downloaded
@@ -134,7 +134,7 @@ class OnlineModuleManager extends Component
             $httpClient->get($url)->addOptions(['timeout' => 300])->setOutputFile($fp)->send();
             fclose($fp);
         } catch (\yii\httpclient\Exception $e) {
-            throw new \Exception('Download failed.' . $e->getMessage(), $e->getCode(), $e);
+            throw new \Exception('Download failed.' . $e->getMessage());
         }
 
         if (!is_file($fileName)) {

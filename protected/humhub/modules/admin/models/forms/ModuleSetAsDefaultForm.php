@@ -77,7 +77,7 @@ class ModuleSetAsDefaultForm extends Model
     /**
      * @return bool
      */
-    public function save($validate = true): bool
+    public function save($validate = true)
     {
         if ($validate && !$this->validate()) {
             return false;

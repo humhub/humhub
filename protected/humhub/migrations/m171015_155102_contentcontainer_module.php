@@ -47,7 +47,7 @@ class m171015_155102_contentcontainer_module extends Migration
         $this->dropTable('space_module');
     }
 
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m171015_155102_contentcontainer_module cannot be reverted.\n";
 

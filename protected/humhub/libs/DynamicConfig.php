@@ -47,7 +47,7 @@ class DynamicConfig extends BaseObject
 
         // Load config file with 'file_get_contents' and 'eval'
         // because 'require' don't reload the file when it's changed on runtime
-        $configContent = str_replace(['<?php', '<?', '?>'], '', file_get_contents($configFile));
+        $configContent = str_replace(['<' . '?php', '<' . '?', '?' . '>'], '', file_get_contents($configFile));
         $config = eval($configContent);
 
         if (!is_array($config)) {
@@ -64,9 +64,9 @@ class DynamicConfig extends BaseObject
      */
     public static function save($config)
     {
-        $content = '<?php return ';
+        $content = '<' . '?php return ';
         $content .= var_export($config, true);
-        $content .= '; ?>';
+        $content .= '; ?' . '>';
 
         $configFile = self::getConfigFilePath();
         file_put_contents($configFile, $content);
@@ -193,7 +193,7 @@ class DynamicConfig extends BaseObject
      * @param $name
      * @return bool
      */
-    public static function needRewrite($moduleId, $name): bool
+    public static function needRewrite($moduleId, $name)
     {
         return (in_array($name, [
             'name', 'defaultLanguage', 'timeZone', 'cache.class', 'mailer.transportType',

@@ -30,7 +30,7 @@ class UrlOembedMock extends UrlOembed
         return static::$urlsLoaded;
     }
 
-    public static function isCached($url): bool
+    public static function isCached($url)
     {
         return array_key_exists($url, static::$cache);
     }

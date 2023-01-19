@@ -55,7 +55,7 @@ class MessageController extends \yii\console\controllers\MessageController
         }
 
         // Remove unrelated translation categories
-        foreach (array_keys($messages) as $category) {
+        foreach ($messages as $category => $msgs) {
             $categoryModule = $this->getModuleByCategory($category);
             if ($categoryModule == null || $categoryModule->id != $module->id) {
                 unset($messages[$category]);

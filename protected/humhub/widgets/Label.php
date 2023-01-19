@@ -86,7 +86,7 @@ class Label extends BootstrapComponent
     /**
      * @return string the bootstrap css base class
      */
-    public function getComponentBaseClass(): string
+    public function getComponentBaseClass()
     {
         return 'label';
     }

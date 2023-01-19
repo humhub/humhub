@@ -9,7 +9,7 @@ class m170810_220543_group_sort extends Migration
         $this->addColumn('group', 'sort_order', $this->integer()->defaultValue(100)->notNull());
     }
 
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m170810_220543_group_sort cannot be reverted.\n";
 

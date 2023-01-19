@@ -91,7 +91,7 @@ class AssetManager extends \yii\web\AssetManager
     {
         $options['forceCopy'] = true;
 
-        if ($bundle->sourcePath !== null && !($bundle->basePath !== null && $bundle->baseUrl !== null)) {
+        if ($bundle->sourcePath !== null && !isset($bundle->basePath, $bundle->baseUrl)) {
             $path = Yii::getAlias($bundle->sourcePath);
 
             if (!is_string($path) || ($src = realpath($path)) === false) {

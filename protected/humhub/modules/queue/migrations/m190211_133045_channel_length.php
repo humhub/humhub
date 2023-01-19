@@ -23,7 +23,7 @@ class m190211_133045_channel_length extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m190211_133045_channel_length cannot be reverted.\n";
 

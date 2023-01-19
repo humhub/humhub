@@ -29,7 +29,7 @@ class ShowMore extends \yii\base\Widget
     public function run()
     {
 
-        if (!$this->pagination->totalCount || $this->pagination->pageCount === $this->pagination->page + 1) {
+        if (!$this->pagination->totalCount || $this->pagination->pageCount == $this->pagination->page + 1) {
             return '';
         }
 
@@ -42,7 +42,7 @@ class ShowMore extends \yii\base\Widget
         ]);
 
         $moreCount = $this->pagination->pageSize;
-        if ($this->pagination->pageCount === $this->pagination->page + 2) {
+        if ($this->pagination->pageCount == $this->pagination->page + 2) {
             $moreCount = $this->pagination->totalCount - $this->pagination->pageSize - $this->pagination->offset;
         }
 

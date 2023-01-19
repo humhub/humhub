@@ -25,7 +25,7 @@ class m150703_033650_namespace extends Migration
         Yii::$app->db->createCommand("UPDATE notification SET originator_user_id = created_by")->execute();
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m150703_033650_namespace cannot be reverted.\n";
 

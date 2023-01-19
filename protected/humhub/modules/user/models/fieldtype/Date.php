@@ -57,7 +57,7 @@ class Date extends BaseType
      */
     public function getFormDefinition($definition = [])
     {
-        return $definition !== [] ? parent::getFormDefinition($definition) : [];
+        return count($definition) > 0 ? parent::getFormDefinition($definition) : [];
     } 
 
     /**

@@ -26,7 +26,7 @@ class Response extends \yii\web\Response
             $options['xHeader'] = 'X-Accel-Redirect';
             // make path relative to docroot
             $docroot = rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR);
-            if (substr($filePath, 0, strlen($docroot)) === $docroot) {
+            if (substr($filePath, 0, strlen($docroot)) == $docroot) {
                 $filePath = substr($filePath, strlen($docroot));
             }
         }

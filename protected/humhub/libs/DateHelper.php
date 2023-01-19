@@ -21,8 +21,8 @@ class DateHelper
 {
     const DB_DATE_FORMAT = 'Y-m-d H:i:s';
     const DB_DATE_FORMAT_PHP = 'php:Y-m-d H:i:s';
-    const REGEX_DBFORMAT_DATE = '/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2]\d|3[0-1])$/';
-    const REGEX_DBFORMAT_DATETIME = '/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2]\d|3[0-1]) (\d{2}):(\d{2}):(\d{2})$/';
+    const REGEX_DBFORMAT_DATE = '/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/';
+    const REGEX_DBFORMAT_DATETIME = '/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (\d{2}):(\d{2}):(\d{2})$/';
 
     /**
      * Returns the user timeZone or app timezone as fallback.

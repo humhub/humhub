@@ -39,16 +39,6 @@ use yii\base\Exception;
 class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
 {
 
-    public $source;
-    /**
-     * @var mixed
-     */
-    public $object_model;
-    /**
-     * @var mixed
-     */
-    public $object_id;
-    public $created_by;
     /**
      * @var boolean also update underlying contents last update stream sorting
      */
@@ -138,7 +128,11 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
      */
     public function canDelete()
     {
-        return $this->created_by == Yii::$app->user->id;
+        if ($this->created_by == Yii::$app->user->id) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -189,7 +183,12 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
 
         /** @var Module $contentModule */
         $contentModule = Yii::$app->getModule('content');
-        return $contentModule->adminCanEditAllContent && Yii::$app->user->isAdmin();
+
+        if ($contentModule->adminCanEditAllContent && Yii::$app->user->isAdmin()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -223,8 +222,10 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
     public function validate($attributes = null, $clearErrors = true)
     {
 
-        if ($this->source != null && (!$this->source instanceof ContentAddonActiveRecord && !$this->source instanceof ContentActiveRecord)) {
-            $this->addError('object_model', Yii::t('base', 'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!'));
+        if ($this->source != null) {
+            if (!$this->source instanceof ContentAddonActiveRecord && !$this->source instanceof ContentActiveRecord) {
+                $this->addError('object_model', Yii::t('base', 'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!'));
+            }
         }
 
         return parent::validate($attributes, $clearErrors);

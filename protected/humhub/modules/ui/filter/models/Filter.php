@@ -57,7 +57,7 @@ abstract class Filter extends Model
     /**
      * @inheridoc
      */
-    public function load($data, $formName = null): bool
+    public function load($data, $formName = null)
     {
         if (parent::load($data, $formName)) {
             $this->isLoaded = true;

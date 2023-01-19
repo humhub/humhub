@@ -92,7 +92,7 @@ class LogoImage
      *
      * @return Boolean is there a logo image
      */
-    public static function hasImage(): bool
+    public static function hasImage()
     {
         return file_exists(static::getOriginalFile());
     }
@@ -104,7 +104,8 @@ class LogoImage
 
     private static function buildFileName($maxWidth, $maxHeight)
     {
-        return $maxWidth . 'x' . $maxHeight . '.png';
+        $fileName = $maxWidth . 'x' . $maxHeight . '.png';
+        return $fileName;
     }
 
     private static function getOriginalFile()

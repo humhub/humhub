@@ -11,7 +11,7 @@ class m150703_012735_typelength extends Migration
         $this->alterColumn('activity', 'class', 'varchar(100) NOT NULL');
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m150703_012735_typelength cannot be reverted.\n";
 

@@ -37,7 +37,7 @@ class HumHubHelper extends Module
         UrlOembed::flush();
     }
 
-    public function fetchInviteToken($mail): string
+    public function fetchInviteToken($mail)
     {
         if ($mail instanceof Message) {
             $mail = $mail->getHtmlBody();

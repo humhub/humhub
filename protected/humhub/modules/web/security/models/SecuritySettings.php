@@ -217,7 +217,7 @@ class SecuritySettings extends Model
      * @param $header
      * @return bool
      */
-    public function isCSPHeaderKey($header): bool
+    public function isCSPHeaderKey($header)
     {
         return in_array($header, [
             static::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY,

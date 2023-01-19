@@ -68,7 +68,7 @@ class m160205_203840_foreign_keys extends Migration
         }
     }
 
-    public function down(): bool
+    public function down()
     {
         $this->dropForeignKey('fk_follow-user_id', 'user_follow');
         $this->dropForeignKey('fk_group-space_id', 'group');

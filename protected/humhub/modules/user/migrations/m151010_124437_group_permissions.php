@@ -44,7 +44,7 @@ class m151010_124437_group_permissions extends \humhub\components\Migration
         
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m151010_124437_group_permissions cannot be reverted.\n";
 

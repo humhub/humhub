@@ -52,7 +52,7 @@ class Twitter extends OAuth2
     /**
      * {@inheritdoc}
      */
-    protected function defaultName(): string
+    protected function defaultName()
     {
         return 'twitter';
     }
@@ -60,7 +60,7 @@ class Twitter extends OAuth2
     /**
      * {@inheritdoc}
      */
-    protected function defaultTitle(): string
+    protected function defaultTitle()
     {
         return 'Twitter';
     }

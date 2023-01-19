@@ -24,7 +24,7 @@ class TestTagSameModule extends ContentTag
 
     public $includeTypeQuery = true;
 
-    public static function getLabel(): string
+    public static function getLabel()
     {
         return 'testCategory';
     }

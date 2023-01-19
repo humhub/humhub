@@ -21,8 +21,6 @@ use humhub\libs\Helpers;
 class ContentCreated extends BaseNotification
 {
 
-    public $source;
-    public $record;
     /**
      * @inheritdoc
      */
@@ -93,7 +91,7 @@ class ContentCreated extends BaseNotification
             'contentInfo' => $contentInfo]);
     }
 
-    protected function isExplicitNotifyUser(User $user): bool
+    protected function isExplicitNotifyUser(User $user)
     {
         $content = $this->getContent();
         foreach ($content->notifyUsersOfNewContent as $notifyUser) {

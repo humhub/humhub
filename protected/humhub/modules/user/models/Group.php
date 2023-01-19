@@ -45,13 +45,12 @@ use Yii;
 class Group extends ActiveRecord
 {
 
-    public $isNewRecord;
     const SCENARIO_EDIT = 'edit';
 
     /**
      * @inheritdoc
      */
-    public static function tableName(): string
+    public static function tableName()
     {
         return 'group';
     }
@@ -337,7 +336,7 @@ class Group extends ActiveRecord
      * @return bool true - on success adding user, false - if already member or cannot be added by some reason
      * @throws \yii\base\InvalidConfigException
      */
-    public function addUser($user, $isManager = false): bool
+    public function addUser($user, $isManager = false)
     {
         if ($this->isMember($user)) {
             return false;
@@ -374,7 +373,7 @@ class Group extends ActiveRecord
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public function removeUser($user): bool
+    public function removeUser($user)
     {
         $groupUser = $this->getGroupUser($user);
         if (!$groupUser) {

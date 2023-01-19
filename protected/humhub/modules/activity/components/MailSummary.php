@@ -64,7 +64,7 @@ class MailSummary extends Component
     /**
      * Sends the summary mail to the user
      */
-    public function send(): bool
+    public function send()
     {
         if ($this->user === null || empty($this->user->email)) {
             return false;
@@ -154,14 +154,14 @@ class MailSummary extends Component
 
         // Handle suppressed activities
         $suppressedActivities = $this->getSuppressedActivities();
-        if ($suppressedActivities !== []) {
+        if (!empty($suppressedActivities)) {
             $query->leftJoin('activity ax', 'ax.id=content.object_id');
             $query->andWhere(['NOT IN', 'ax.class', $suppressedActivities]);
         }
 
         // Handle defined content container mode
         $limitContainer = $this->getLimitContentContainers();
-        if ($limitContainer !== []) {
+        if (!empty($limitContainer)) {
             $mode = ($this->getLimitContentContainerMode() == MailSummaryForm::LIMIT_MODE_INCLUDE) ? 'IN' : 'NOT IN';
             $query->andWhere([$mode, 'content.contentcontainer_id', $limitContainer]);
         }
@@ -198,8 +198,13 @@ class MailSummary extends Component
     protected function getLastSummaryDate()
     {
         $lastSent = (int) static::getModule()->settings->user($this->user)->get('mailSummaryLast');
+        if (empty($lastSent)) {
+            $lastSent = new Expression('NOW() - INTERVAL 24 HOUR');
+        } else {
+            $lastSent = date('Y-m-d G:i:s', $lastSent);
+        }
 
-        return empty($lastSent) ? new Expression('NOW() - INTERVAL 24 HOUR') : date('Y-m-d G:i:s', $lastSent);
+        return $lastSent;
     }
 
     /**

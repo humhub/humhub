@@ -18,7 +18,7 @@ class m140226_111945_ldap extends Migration
         $this->update('profile_field', ['ldap_attribute' => 'title'], "internal_name='title'");
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m140226_111945_ldap does not support migration down.\n";
         return false;

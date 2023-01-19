@@ -41,7 +41,7 @@ class m140703_104527_profile_birthdayfield extends Migration
         }
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m140703_104527_profile_birthdayfield does not support migration down.\n";
         return false;

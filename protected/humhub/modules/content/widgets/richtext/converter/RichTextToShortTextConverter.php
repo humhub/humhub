@@ -64,7 +64,7 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
      * @param $block
      * @return string
      */
-    protected function renderHr($line): string
+    protected function renderHr($line)
     {
         return "";
     }

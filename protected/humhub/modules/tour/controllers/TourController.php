@@ -75,7 +75,7 @@ class TourController extends \humhub\components\Controller
             }
         }
 
-        if (!$space instanceof \humhub\modules\space\models\Space) {
+        if ($space === null) {
             // If user is not member of any space, try to find a public space
             // to run tour in
             $space = Space::findOne(['and', ['!=', 'visibility' => Space::VISIBILITY_NONE], ['status' => Space::STATUS_ENABLED]]);
@@ -96,9 +96,11 @@ class TourController extends \humhub\components\Controller
         $user = Yii::$app->user->getIdentity();
         $profile = $user->profile;
 
-        if ($user->id == 1 && $user->load(Yii::$app->request->post()) && $user->validate() && $user->save() && ($profile->load(Yii::$app->request->post()) && $profile->validate() && $profile->save())) {
-            Yii::$app->getModule('tour')->settings->contentContainer($user)->set("welcome", 1);
-            return $this->redirect(['/dashboard/dashboard']);
+        if ($user->id == 1 && $user->load(Yii::$app->request->post()) && $user->validate() && $user->save()) {
+            if ($profile->load(Yii::$app->request->post()) && $profile->validate() && $profile->save()) {
+                Yii::$app->getModule('tour')->settings->contentContainer($user)->set("welcome", 1);
+                return $this->redirect(['/dashboard/dashboard']);
+            }
         }
 
         return $this->renderAjax('welcome', [

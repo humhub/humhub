@@ -102,7 +102,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
-    public static function tableName(): string
+    public static function tableName()
     {
         return 'space';
     }
@@ -344,7 +344,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
      *
      * @param $userId User Id of User
      */
-    public function canJoin($userId = ''): bool
+    public function canJoin($userId = '')
     {
         if (Yii::$app->user->isGuest) {
             return false;
@@ -363,7 +363,12 @@ class Space extends ContentContainerActiveRecord implements Searchable
         if ($this->join_policy == self::JOIN_POLICY_NONE) {
             return false;
         }
-        return !$this->isBlockedForUser(User::findOne($userId));
+
+        if ($this->isBlockedForUser(User::findOne($userId))) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -372,7 +377,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
      *
      * @param $userId User Id of User
      */
-    public function canJoinFree($userId = ''): bool
+    public function canJoinFree($userId = '')
     {
         // Take current userid if none is given
         if ($userId == '') {
@@ -383,7 +388,12 @@ class Space extends ContentContainerActiveRecord implements Searchable
         if ($this->isMember($userId)) {
             return false;
         }
-        return $this->join_policy == self::JOIN_POLICY_FREE;
+
+        if ($this->join_policy == self::JOIN_POLICY_FREE) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

@@ -419,7 +419,7 @@ class TestControllerAccess extends HumHubDbTestCase
         $this->assertEquals(null, $controllerAccess->reason);
     }
 
-    public function validateTestRule($rule, $access): bool
+    public function validateTestRule($rule, $access)
     {
         $this->assertEquals($access->owner, $this);
         if (!$rule['return']) {

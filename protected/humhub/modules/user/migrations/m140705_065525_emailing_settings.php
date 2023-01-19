@@ -65,7 +65,7 @@ class m140705_065525_emailing_settings extends Migration
         }
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m140705_065525_emailing_settings does not support migration down.\n";
         return false;

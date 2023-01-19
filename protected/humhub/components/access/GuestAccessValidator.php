@@ -19,7 +19,7 @@ class GuestAccessValidator extends AccessValidator
     /**
      * @inheritdoc
      */
-    public function run(): bool
+    public function run()
     {
         if ($this->access->isGuest() && !AuthHelper::isGuestAccessEnabled()) {
             $this->code = 401;

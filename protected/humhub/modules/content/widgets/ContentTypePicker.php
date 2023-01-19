@@ -16,8 +16,6 @@ use Yii;
 
 class ContentTypePicker extends MultiSelect
 {
-    public $placeholderMore;
-    public $items;
     /**
      * @var ContentContainerActiveRecord|null
      */
@@ -65,7 +63,7 @@ class ContentTypePicker extends MultiSelect
     /**
      * @inheritdoc
      */
-    protected function getItemText($item): string
+    protected function getItemText($item)
     {
         return ucfirst(parent::getItemText($item));
     }

@@ -74,7 +74,7 @@ class File extends FileCompat
     /**
      * @inheritdoc
      */
-    public static function tableName(): string
+    public static function tableName()
     {
         return 'file';
     }

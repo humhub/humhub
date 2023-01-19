@@ -30,7 +30,7 @@ class m151223_171310_fix_notifications extends Migration
         }
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m151223_171310_fix_notifications cannot be reverted.\n";
 

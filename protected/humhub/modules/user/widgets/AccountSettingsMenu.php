@@ -39,7 +39,7 @@ class AccountSettingsMenu extends TabMenu
             'url' => ['/user/account/connected-accounts'],
             'sortOrder' => 300,
             'isActive' => MenuLink::isActiveState('user', 'account', 'connected-accounts'),
-            'isVisible' => $this->getSecondaryAuthProviders() !== []
+            'isVisible' => count($this->getSecondaryAuthProviders()) !== 0
         ]));
 
 

@@ -17,7 +17,7 @@ class m151226_164234_authclient extends Migration
         $this->addForeignKey('fk_user_id', 'user_auth', 'user_id', 'user', 'id', 'CASCADE', 'CASCADE');
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m151226_164234_authclient cannot be reverted.\n";
 

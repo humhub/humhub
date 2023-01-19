@@ -18,7 +18,7 @@ class m200218_122109_profile_translation_fix2 extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m200217_122108_profile_translation_fix cannot be reverted.\n";
 

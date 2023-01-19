@@ -20,7 +20,7 @@ use humhub\components\access\ActionAccessValidator;
 
 class TestActionValidator extends ActionAccessValidator
 {
-    protected function validate($rule): bool
+    protected function validate($rule)
     {
         if(!$rule['return']) {
             $this->access->code = 404;

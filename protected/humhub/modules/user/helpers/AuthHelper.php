@@ -27,10 +27,15 @@ class AuthHelper
      *
      * @return boolean
      */
-    public static function isGuestAccessEnabled(): bool
+    public static function isGuestAccessEnabled()
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
-        return (bool) $module->settings->get('auth.allowGuestAccess');
+
+        if ($module->settings->get('auth.allowGuestAccess')) {
+            return true;
+        }
+
+        return false;
     }
 }

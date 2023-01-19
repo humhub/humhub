@@ -81,12 +81,17 @@ abstract class MenuEntry extends BaseObject
     /**
      * @return boolean is active
      */
-    public function getIsActive(): bool
+    public function getIsActive()
     {
         if (is_callable($this->isActive)) {
             call_user_func($this->isActive);
         }
-        return $this->isActive;
+
+        if ($this->isActive) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -112,7 +117,7 @@ abstract class MenuEntry extends BaseObject
         return $this;
     }
 
-    public static function isActiveState($moduleId = null, $controllerIds = [], $actionIds = []): bool
+    public static function isActiveState($moduleId = null, $controllerIds = [], $actionIds = [])
     {
         if ($moduleId && (!Yii::$app->controller->module || Yii::$app->controller->module->id !== $moduleId)) {
             return false;
@@ -133,7 +138,12 @@ abstract class MenuEntry extends BaseObject
         if ($actionIds && !is_array($actionIds)) {
             $actionIds = [$actionIds];
         }
-        return !(!empty($actionIds) && !in_array(Yii::$app->controller->action->id, $actionIds));
+
+        if (!empty($actionIds) && !in_array(Yii::$app->controller->action->id, $actionIds)) {
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -208,7 +218,7 @@ abstract class MenuEntry extends BaseObject
      */
     public function isVisible()
     {
-        return $this->isVisible !== false;
+        return !($this->isVisible === false);
     }
 
     /**
@@ -254,7 +264,7 @@ abstract class MenuEntry extends BaseObject
      * @return string the class name of this entry can be used to identify the entry if no id is given
      * @since 1.7
      */
-    public function getEntryClass(): string
+    public function getEntryClass()
     {
         return get_class($this);
     }

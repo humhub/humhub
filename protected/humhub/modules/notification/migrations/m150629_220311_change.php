@@ -17,7 +17,7 @@ class m150629_220311_change extends Migration
         $this->addColumn('notification', 'originator_user_id', 'int(11) DEFAULT NULL');
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m150629_220311_change cannot be reverted.\n";
 

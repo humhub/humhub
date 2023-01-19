@@ -30,7 +30,7 @@ class RebuildIndex extends ActiveJob implements ExclusiveJobInterface, Retryable
     /**
      * @inhertidoc
      */
-    public function getExclusiveJobId(): string
+    public function getExclusiveJobId()
     {
         return 'search.rebuild-index';
     }
@@ -54,7 +54,7 @@ class RebuildIndex extends ActiveJob implements ExclusiveJobInterface, Retryable
     /**
      * @inheritDoc
      */
-    public function canRetry($attempt, $error): bool
+    public function canRetry($attempt, $error)
     {
         return false;
     }

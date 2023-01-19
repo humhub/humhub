@@ -22,7 +22,7 @@ class m150704_005504_namespace extends Migration
         $this->renameClass('UserFollow', User::class);
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m150704_005504_namespace cannot be reverted.\n";
 

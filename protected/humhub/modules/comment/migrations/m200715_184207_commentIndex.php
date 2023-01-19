@@ -19,7 +19,7 @@ class m200715_184207_commentIndex extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m200715_184207_commentIndex cannot be reverted.\n";
 

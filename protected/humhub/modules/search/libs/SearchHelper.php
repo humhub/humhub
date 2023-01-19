@@ -31,7 +31,7 @@ class SearchHelper extends BaseObject
      * @param string $text
      * @return boolean
      */
-    public static function matchQuery($query, $text): bool
+    public static function matchQuery($query, $text)
     {
         foreach (explode(" ", $query) as $keyword) {
             if (!empty($keyword) && strpos($text, $keyword) !== false) {
@@ -48,7 +48,7 @@ class SearchHelper extends BaseObject
      * @param ActiveRecord $record
      * @return bool
      */
-    public static function queueUpdate(ActiveRecord $record): bool
+    public static function queueUpdate(ActiveRecord $record)
     {
         if ($record instanceof Searchable) {
             $pk = $record->getPrimaryKey();
@@ -69,7 +69,7 @@ class SearchHelper extends BaseObject
      * @param ActiveRecord $record
      * @return bool
      */
-    public static function queueDelete(ActiveRecord $record): bool
+    public static function queueDelete(ActiveRecord $record)
     {
         if ($record instanceof Searchable) {
             $pk = $record->getPrimaryKey();

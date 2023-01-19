@@ -17,7 +17,7 @@ class m140901_112246_addState extends Migration
         $this->update('space_module', ['state' => 1]);
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m140901_112246_addState does not support migration down.\n";
         return false;

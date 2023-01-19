@@ -43,12 +43,17 @@ class ExportButton extends Widget
      * @return bool whether the widget should continue to be executed.
      * @since 2.0.11
      */
-    public function beforeRun(): bool
+    public function beforeRun()
     {
         if (!parent::beforeRun()) {
             return false;
         }
-        return $this->filter !== null;
+
+        if ($this->filter === null) {
+            return false;
+        }
+
+        return true;
     }
 
 

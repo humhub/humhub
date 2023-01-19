@@ -39,7 +39,7 @@ class m170723_133337_content_tag extends Migration
         $this->addForeignKey('fk-content-tag-rel-tag-id', 'content_tag_relation', 'tag_id', 'content_tag', 'id', 'CASCADE');
     }
 
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m170723_133337_content_filter cannot be reverted.\n";
 

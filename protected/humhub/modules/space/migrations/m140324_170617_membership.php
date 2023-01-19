@@ -11,7 +11,7 @@ class m140324_170617_membership extends Migration {
         
     }
 
-    public function down(): bool {
+    public function down() {
         echo "m140324_170617_membership does not support migration down.\n";
         return false;
     }

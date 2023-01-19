@@ -65,7 +65,7 @@ class ImageSquareValidator extends \yii\validators\FileValidator
     }
 
 
-    private function isSquared($image): bool
+    private function isSquared($image)
     {
         if (false === ($imageInfo = getimagesize($image->tempName))) {
             return false;

@@ -29,7 +29,7 @@ class ContentContainer extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName(): string
+    public static function tableName()
     {
         return 'contentcontainer';
     }

@@ -25,7 +25,7 @@ class m140507_150421_create_settings_table extends Migration
         $this->createIndex('idx_user_setting', 'user_setting', 'user_id, module_id, name', true);
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m140507_150421_create_settings_table does not support migration down.\n";
         return false;

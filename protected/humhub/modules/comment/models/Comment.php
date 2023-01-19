@@ -43,14 +43,13 @@ use yii\helpers\Url;
  */
 class Comment extends ContentAddonActiveRecord implements ContentOwner
 {
-    public $isNewRecord;
     const CACHE_KEY_COUNT = 'commentCount_%s_%s';
     const CACHE_KEY_LIMITED = 'commentsLimited_%s_%s';
 
     /**
      * @inheritdoc
      */
-    public static function tableName(): string
+    public static function tableName()
     {
         return 'comment';
     }
@@ -216,7 +215,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             $limit = $module->commentsPreviewMax;
         }
 
-        $currentCommentId = (int) $currentCommentId;
+        $currentCommentId = intval($currentCommentId);
         $useCaching = empty($currentCommentId);// No need to cache comments for deep single comment view
 
         $cacheID = sprintf(static::CACHE_KEY_LIMITED, $model, $id);
@@ -299,7 +298,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         return $this->message;
     }
 
-    public function canDelete($userId = ''): bool
+    public function canDelete($userId = '')
     {
 
         if ($userId == '') {
@@ -313,7 +312,12 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         if (Yii::$app->user->isAdmin()) {
             return true;
         }
-        return $this->content->container instanceof Space && $this->content->container->isAdmin($userId);
+
+        if ($this->content->container instanceof Space && $this->content->container->isAdmin($userId)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

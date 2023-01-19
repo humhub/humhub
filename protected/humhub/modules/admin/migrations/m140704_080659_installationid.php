@@ -21,7 +21,7 @@ class m140704_080659_installationid extends Migration
         }
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m140704_080659_installationid does not support migration down.\n";
 

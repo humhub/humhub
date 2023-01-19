@@ -20,7 +20,7 @@ class m200715_171721_defaultOption extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m200715_171721_defaultOption cannot be reverted.\n";
 

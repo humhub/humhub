@@ -127,7 +127,7 @@ abstract class FilterNavigation extends JsWidget
      */
     public function initDefinitionFilters()
     {
-        if ($this->definition === []) {
+        if (empty($this->definition)) {
             return;
         }
 
@@ -263,7 +263,7 @@ abstract class FilterNavigation extends JsWidget
      */
     public function isAllowedFilter($filterId)
     {
-        if ($this->definition === []) {
+        if (empty($this->definition)) {
             return true;
         }
 

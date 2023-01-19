@@ -25,11 +25,6 @@ use yii\web\HttpException;
 class SecurityController extends Controller
 {
 
-    /**
-     * @var mixed
-     */
-    public $contentContainer;
-    public $view;
     public function actionIndex()
     {
         $space = $this->contentContainer;
@@ -38,7 +33,7 @@ class SecurityController extends Controller
         if ($space->load(Yii::$app->request->post()) && $space->save()) {
             $this->view->saved();
             return $this->redirect($space->createUrl('index'));
-        } elseif (Yii::$app->request->post()) {
+        } else if(Yii::$app->request->post()) {
             $this->view->error(Yii::t('SpaceModule.base', 'Settings could not be saved!'));
         }
 

@@ -411,7 +411,7 @@ class ContentController extends Controller
 
         $content = Content::findOne(['id' => Yii::$app->request->get('id', '')]);
         if ($content !== null) {
-            $switch = Yii::$app->request->get('switch', true) == 1;
+            $switch = (Yii::$app->request->get('switch', true) == 1) ? true : false;
             $obj = $content->getPolymorphicRelation();
             $obj->follow(Yii::$app->user->id, $switch);
             $json['success'] = true;

@@ -145,12 +145,12 @@ class AccessControl extends ActionFilter
         $this->controllerAccess = $this->getControllerAccess($this->rules);
 
         if (!$this->controllerAccess->run()) {
-            if ($this->controllerAccess->codeCallback !== null &&
+            if (isset($this->controllerAccess->codeCallback) &&
                 method_exists($this, $this->controllerAccess->codeCallback)) {
                 // Call a specific function for current action filter,
                 // may be used to filter a logged in user for some restriction e.g. "must change password"
                 call_user_func([$this, $this->controllerAccess->codeCallback]);
-            } elseif ($this->controllerAccess->code == 401) {
+            } else if ($this->controllerAccess->code == 401) {
                 $this->loginRequired();
             } else {
                 $this->forbidden();
@@ -174,7 +174,7 @@ class AccessControl extends ActionFilter
             $this->rules[] = [ControllerAccess::RULE_LOGGED_IN_ONLY];
         }
 
-        if ($this->guestAllowedActions !== []) {
+        if (!empty($this->guestAllowedActions)) {
             $this->rules[] = ['guestAccess' => $this->guestAllowedActions];
         }
     }

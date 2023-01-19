@@ -29,7 +29,7 @@ class m211022_152413_file_history extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m211022_152413_file_history cannot be reverted.\n";
 

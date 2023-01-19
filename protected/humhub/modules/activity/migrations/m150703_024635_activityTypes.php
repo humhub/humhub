@@ -22,7 +22,7 @@ class m150703_024635_activityTypes extends Migration
         $this->update('activity', ['class' => 'humhub\modules\user\activities\UserFollow'], ['class' => 'ActivityUserFollowsUser']);
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m150703_024635_activityTypes cannot be reverted.\n";
 

@@ -55,7 +55,7 @@ class ModuleActionButtons extends Widget
 
         $html .= Button::asLink('<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('ContentModule.modules', 'Activated'), '#')
             ->cssClass('btn btn-sm btn-info active disable')
-            ->style($this->space->moduleManager->isEnabled($this->module->id) ? '' : 'display:none')
+            ->style(!$this->space->moduleManager->isEnabled($this->module->id) ? 'display:none' : '')
             ->loader()
             ->options([
                 'data-action-click' => 'content.container.disableModule',

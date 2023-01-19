@@ -22,8 +22,6 @@ use humhub\modules\file\converter\TextConverter;
 class FilePreview extends JsWidget
 {
 
-    public $id;
-    public $init;
     /**
      * @inheritdoc
      */
@@ -156,13 +154,15 @@ class FilePreview extends JsWidget
      * @param File $file
      * @return boolean is highlighed
      */
-    protected function isHighlighed(File $file): bool
+    protected function isHighlighed(File $file)
     {
-        if (Yii::$app->controller instanceof SearchController && SearchController::$keyword !== null) {
-            $converter = new TextConverter();
-            if ($converter->applyFile($file) &&
-                    SearchHelper::matchQuery(SearchController::$keyword, $converter->getContentAsText())) {
-                return true;
+        if (Yii::$app->controller instanceof SearchController) {
+            if (SearchController::$keyword !== null) {
+                $converter = new TextConverter();
+                if ($converter->applyFile($file) &&
+                        SearchHelper::matchQuery(SearchController::$keyword, $converter->getContentAsText())) {
+                    return true;
+                }
             }
         }
 

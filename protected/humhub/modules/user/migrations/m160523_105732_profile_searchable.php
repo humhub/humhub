@@ -9,7 +9,7 @@ class m160523_105732_profile_searchable extends Migration
         $this->addColumn('profile_field', 'searchable', $this->boolean()->defaultValue(true));
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m160523_105732_profile_searchable cannot be reverted.\n";
 

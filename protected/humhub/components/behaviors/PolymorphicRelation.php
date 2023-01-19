@@ -105,7 +105,7 @@ class PolymorphicRelation extends Behavior
      * @param mixed $object
      * @return boolean
      */
-    private function validateUnderlyingObjectType($object): bool
+    private function validateUnderlyingObjectType($object)
     {
         if (count($this->mustBeInstanceOf) == 0) {
             return true;

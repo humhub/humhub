@@ -20,7 +20,7 @@ class m170224_100937_fix_default_modules extends Migration
         // TODO: All all to null
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m170224_100937_fix_default_modules cannot be reverted.\n";
 

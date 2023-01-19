@@ -10,7 +10,7 @@ class m160517_132535_group extends Migration
         $this->createIndex('index_groupuser', 'notification', ['user_id', 'class', 'group_key']);
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m160517_132534_group cannot be reverted.\n";
 

@@ -33,7 +33,7 @@ class OembedFetchEvent extends Event
         $urlOembed = UrlOembed::findOne(['url' => $this->url]);
         if ($urlOembed !== null) {
             $this->result =  trim(preg_replace('/\s+/', ' ', $urlOembed->preview));
-        } elseif ($this->providers) {
+        } else if ($this->providers) {
             $this->result =  trim(preg_replace('/\s+/', ' ', UrlOembed::loadUrl($this->url, $this->getProviderUrl())));
         }
     }

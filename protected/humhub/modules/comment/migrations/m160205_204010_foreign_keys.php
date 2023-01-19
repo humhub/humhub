@@ -10,7 +10,7 @@ class m160205_204010_foreign_keys extends Migration
         $this->addForeignKey('fk_comment-created_by', 'comment', 'created_by', 'user', 'id', 'CASCADE', 'CASCADE');
     }
 
-    public function down(): bool
+    public function down()
     {
         $this->dropForeignKey('fk_comment-created_by', 'comment');
 

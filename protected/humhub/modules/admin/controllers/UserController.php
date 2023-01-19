@@ -37,11 +37,6 @@ class UserController extends Controller
 {
 
     /**
-     * @var string
-     */
-    public $subLayout;
-    public $view;
-    /**
      * @inheritdoc
      */
     public $adminOnly = false;
@@ -214,12 +209,14 @@ class UserController extends Controller
 
         ];
 
-        if ($canEditAdminFields && !$user->isCurrentUser()) {
-            $definition['buttons']['delete'] = [
-                'type' => 'submit',
-                'label' => Yii::t('AdminModule.user', 'Delete'),
-                'class' => 'btn btn-danger',
-            ];
+        if ($canEditAdminFields) {
+            if (!$user->isCurrentUser()) {
+                $definition['buttons']['delete'] = [
+                    'type' => 'submit',
+                    'label' => Yii::t('AdminModule.user', 'Delete'),
+                    'class' => 'btn btn-danger',
+                ];
+            }
         }
 
         $form = new HForm($definition);

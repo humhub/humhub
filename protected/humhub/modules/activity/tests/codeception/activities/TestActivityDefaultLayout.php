@@ -14,7 +14,7 @@ class TestActivityDefaultLayout extends \humhub\modules\activity\components\Base
 
     public $moduleId = 'test';
 
-    public function html(): string
+    public function html()
     {
         return 'Content of default layout activity';
     }

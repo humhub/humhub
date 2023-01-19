@@ -24,7 +24,7 @@ class m150928_103711_permissions extends Migration
         }
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m150928_103711_permissions cannot be reverted.\n";
 

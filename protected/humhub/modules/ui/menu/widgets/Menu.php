@@ -26,7 +26,6 @@ use yii\web\View;
  */
 abstract class Menu extends JsWidget
 {
-    public $id;
     /**
      * @event MenuEvent an event raised before running the navigation widget.
      */
@@ -58,7 +57,7 @@ abstract class Menu extends JsWidget
      * @param MenuEntry $entry
      * @return boolean
      */
-    public function removeEntry($entry): bool
+    public function removeEntry($entry)
     {
         foreach ($this->entries as $i => $e) {
             if ($e === $entry) {
@@ -79,7 +78,7 @@ abstract class Menu extends JsWidget
     {
         $this->trigger(static::EVENT_RUN);
 
-        if (empty($this->template) || $this->entries === []) {
+        if (empty($this->template) || empty($this->entries)) {
             return '';
         }
 
@@ -282,7 +281,7 @@ abstract class Menu extends JsWidget
     public function getFirstEntry($type = null, $filterVisible = false)
     {
         $entries = $this->getEntries($type, $filterVisible);
-        if ($entries !== []) {
+        if (count($entries)) {
             return $entries[0];
         }
 

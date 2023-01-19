@@ -32,7 +32,6 @@ use humhub\modules\content\components\ContentContainerController;
 class WallEntry extends Widget
 {
 
-    public $widgetLayout;
     /**
      * Edit form is loaded to the wallentry itself.
      */

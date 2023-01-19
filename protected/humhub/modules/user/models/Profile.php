@@ -52,7 +52,6 @@ class Profile extends ActiveRecord
 {
 
 
-    public $scenario;
     /**
      * @since 1.3.2
      */
@@ -64,7 +63,7 @@ class Profile extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName(): string
+    public static function tableName()
     {
         return 'profile';
     }
@@ -287,7 +286,7 @@ class Profile extends ActiveRecord
      * @param String $name
      * @return Boolean
      */
-    public static function columnExists($name): bool
+    public static function columnExists($name)
     {
         Yii::$app->getDb()->getSchema()->refreshTableSchema(self::tableName());
         $table = Yii::$app->getDb()->getSchema()->getTableSchema(self::tableName(), true);
@@ -306,7 +305,7 @@ class Profile extends ActiveRecord
         $categories = [];
 
         foreach (ProfileFieldCategory::find()->orderBy('sort_order')->all() as $category) {
-            if ($this->getProfileFields($category) !== []) {
+            if (count($this->getProfileFields($category)) > 0) {
                 $categories[] = $category;
             }
         }

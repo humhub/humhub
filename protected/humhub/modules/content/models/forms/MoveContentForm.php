@@ -94,7 +94,7 @@ class MoveContentForm extends Model
         return $this->targetContainer;
     }
 
-    public function save(): bool
+    public function save()
     {
         if(!$this->validate()) {
             return false;

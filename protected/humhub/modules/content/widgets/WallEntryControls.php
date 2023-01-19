@@ -50,9 +50,9 @@ class WallEntryControls extends Menu
 
     public function initRenderOptions()
     {
-        if (!$this->renderOptions && $this->wallEntryWidget instanceof WallStreamEntryWidget) {
+        if(!$this->renderOptions && $this->wallEntryWidget instanceof WallStreamEntryWidget) {
             $this->renderOptions = $this->wallEntryWidget->renderOptions;
-        } elseif (!$this->renderOptions) {
+        } else if(!$this->renderOptions) {
             $this->renderOptions = new WallStreamEntryOptions();
         }
     }

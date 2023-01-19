@@ -18,7 +18,7 @@ class m220608_125539_displaysubformat extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m220608_125539_displaysubformat cannot be reverted.\n";
 

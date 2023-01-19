@@ -16,13 +16,6 @@ use yii\bootstrap\Html;
  */
 class Image extends BaseImage
 {
-    public $linkOptions;
-    public $htmlOptions;
-    public $width;
-    public $height;
-    public $showTooltip;
-    public $tooltipText;
-    public $link;
     /**
      * @var \humhub\modules\space\models\Space
      */
@@ -43,7 +36,11 @@ class Image extends BaseImage
             $this->linkOptions['href'] = $this->space->getUrl();
         }
 
-        $color = $this->space->color != null ? Html::encode($this->space->color) : '#d7d7d7';
+        if ($this->space->color != null) {
+            $color = Html::encode($this->space->color);
+        } else {
+            $color = '#d7d7d7';
+        }
 
         if (!isset($this->htmlOptions['class'])) {
             $this->htmlOptions['class'] = '';
@@ -75,7 +72,7 @@ class Image extends BaseImage
             Html::addCssClass($this->linkOptions, 'tt');
         }
 
-        $defaultImage = basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg' || basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg?cacheId=0';
+        $defaultImage = (basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg' || basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg?cacheId=0') ? true : false;
 
         if (!$defaultImage) {
             $acronymHtmlOptions['class'] .= " hidden";
@@ -93,7 +90,7 @@ class Image extends BaseImage
         ]);
     }
 
-    protected function getAcronym(): string
+    protected function getAcronym()
     {
         $acronym = '';
 

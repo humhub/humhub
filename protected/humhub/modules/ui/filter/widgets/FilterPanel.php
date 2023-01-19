@@ -34,7 +34,7 @@ class FilterPanel extends Widget
     public function run()
     {
 
-        if($this->blocks === []) {
+        if(empty($this->blocks)) {
             return '';
         }
 

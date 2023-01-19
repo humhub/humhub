@@ -162,7 +162,7 @@ class Controller extends \yii\web\Controller
      * @throws \yii\web\HttpException
      * @return boolean returns true in case the current request is a POST
      */
-    public function forcePostRequest(): bool
+    public function forcePostRequest()
     {
         if (Yii::$app->request->method != 'POST') {
             throw new \yii\web\HttpException(405, Yii::t('ContentModule.base', 'Invalid request method!'));
@@ -203,7 +203,7 @@ class Controller extends \yii\web\Controller
      *
      * @see \yii\web\Controller::beforeAction()
      */
-    public function beforeAction($action): bool
+    public function beforeAction($action)
     {
         if (parent::beforeAction($action)) {
             if (array_key_exists($this->action->id, $this->actionTitlesMap)) {
@@ -312,7 +312,7 @@ class Controller extends \yii\web\Controller
     public function isNotInterceptedAction(string $actionId = null) : bool
     {
         if ($actionId === null) {
-            if ($this->action->id !== null) {
+            if (isset($this->action->id)) {
                 $actionId = $this->action->id;
             } else {
                 return false;

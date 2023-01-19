@@ -77,15 +77,17 @@ class LicenceManager extends Component
         if (!empty($settings->get(static::SETTING_KEY_PE_LICENCE_KEY))) {
 
             // Update
-            if ($lastFetch + static::PE_FETCH_INTERVAL < time() && (!static::fetch() && $lastFetch + static::PE_FETCH_TOLERANCE < time())) {
-                $lastFetchDateTime = 'empty';
-                try {
-                    $lastFetchDateTime = Yii::$app->formatter->asDatetime($lastFetch, 'full');
-                } catch (InvalidConfigException $e) {
-                    Yii::error($e->getMessage(), 'marketplace');
+            if ($lastFetch + static::PE_FETCH_INTERVAL < time()) {
+                if (!static::fetch() && $lastFetch + static::PE_FETCH_TOLERANCE < time()) {
+                    $lastFetchDateTime = 'empty';
+                    try {
+                        $lastFetchDateTime = Yii::$app->formatter->asDatetime($lastFetch, 'full');
+                    } catch (InvalidConfigException $e) {
+                        Yii::error($e->getMessage(), 'marketplace');
+                    }
+                    Yii::error('Could not fetch PE licence since: ' . $lastFetchDateTime, 'marketplace');
+                    return $licence;
                 }
-                Yii::error('Could not fetch PE licence since: ' . $lastFetchDateTime, 'marketplace');
-                return $licence;
             }
 
             if (!empty($settings->get(static::SETTING_KEY_PE_LICENCED_TO)) && !empty($settings->get(static::SETTING_KEY_PE_MAX_USERS))) {
@@ -111,11 +113,11 @@ class LicenceManager extends Component
      *
      * @return bool The retrieval of the license worked, whether it is valid or not.
      */
-    public static function fetch(): bool
+    public static function fetch()
     {
         $result = static::request('v1/pro/get');
 
-        if ($result === [] || !is_array($result) || !isset($result['status'])) {
+        if (empty($result) || !is_array($result) || !isset($result['status'])) {
             // Connection failure
             return false;
         }
@@ -146,7 +148,7 @@ class LicenceManager extends Component
      *
      * @return boolean
      */
-    public static function remove(): bool
+    public static function remove()
     {
         $licenceKey = static::getModule()->settings->get('licenceKey');
         if (!empty($licenceKey)) {

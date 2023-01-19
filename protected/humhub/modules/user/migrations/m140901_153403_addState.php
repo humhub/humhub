@@ -17,7 +17,7 @@ class m140901_153403_addState extends Migration
         $this->update('user_module', ['state' => 1]);
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m140901_153403_addState does not support migration down.\n";
         return false;

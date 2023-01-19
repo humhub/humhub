@@ -54,7 +54,7 @@ class PeopleTagList extends Widget
             $tags = array_slice($tags, 0, $this->maxTags);
         }
 
-        if ($tags === []) {
+        if (empty($tags)) {
             return $html;
         }
 

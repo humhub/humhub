@@ -27,11 +27,10 @@ use yii\base\InvalidArgumentException;
 class Mentioning extends ActiveRecord
 {
 
-    public $user;
     /**
      * @inheritdoc
      */
-    public static function tableName(): string
+    public static function tableName()
     {
         return 'user_mentioning';
     }
@@ -132,7 +131,7 @@ class Mentioning extends ActiveRecord
      */
     public static function mention($guids, $record)
     {
-        if (!$record instanceof ContentActiveRecord && !$record instanceof ContentAddonActiveRecord) {
+        if (!($record instanceof ContentActiveRecord || $record instanceof ContentAddonActiveRecord)) {
             throw new InvalidArgumentException("Mentioning can only used in HActiveRecordContent or HActiveRecordContentAddon objects!");
         }
 

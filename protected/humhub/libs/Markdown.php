@@ -123,7 +123,11 @@ REGEXP;
             } elseif (preg_match('/\((.*?)\)/', $markdown, $refMatches)) {
 
                 // reference style link
-                $key = empty($refMatches[1]) ? strtolower($text) : strtolower($refMatches[1]);
+                if (empty($refMatches[1])) {
+                    $key = strtolower($text);
+                } else {
+                    $key = strtolower($refMatches[1]);
+                }
                 return [
                     $text,
                     $refMatches[1],

@@ -10,7 +10,7 @@ class m151106_090948_addColor extends Migration
         $this->addColumn('space', 'color', 'varchar(7)');
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m151106_090948_addColor cannot be reverted.\n";
 

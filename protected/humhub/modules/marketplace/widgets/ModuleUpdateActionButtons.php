@@ -38,7 +38,7 @@ class ModuleUpdateActionButtons extends Widget
     {
         $html = '';
 
-        if ($this->module->latestCompatibleVersion === null || !$this->module->isInstalled()) {
+        if (!isset($this->module->latestCompatibleVersion) || !$this->module->isInstalled()) {
             return $html;
         }
 

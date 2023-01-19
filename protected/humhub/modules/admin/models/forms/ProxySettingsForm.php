@@ -64,7 +64,7 @@ class ProxySettingsForm extends \yii\base\Model
      *
      * @return boolean
      */
-    public function save(): bool
+    public function save()
     {
         $settingsManager = Yii::$app->settings;
         $settingsManager->set('proxy.enabled', $this->enabled);

@@ -90,7 +90,7 @@ class CreateController extends Controller
         } elseif (!isset($visibilityOptions[$model->visibility])) {
             if (!function_exists('array_key_first')) {
                 // TEMPORARY until min. version raised to PHP 7.3+
-                foreach (array_keys($visibilityOptions) as $key) {
+                foreach ($visibilityOptions as $key => $unused) {
                     $model->visibility = $key;
                     break;
                 }

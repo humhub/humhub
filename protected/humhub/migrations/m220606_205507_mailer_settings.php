@@ -25,7 +25,7 @@ class m220606_205507_mailer_settings extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m220606_205507_mailer_settings cannot be reverted.\n";
 

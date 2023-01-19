@@ -61,13 +61,13 @@ class ModuleStatus extends Widget
 
         if ($onlineModule->isProOnly) {
             $this->_status = 'professional';
-        } elseif ($onlineModule->isFeatured) {
+        } else if ($onlineModule->isFeatured) {
             $this->_status = 'featured';
-        } elseif (!$onlineModule->isThirdParty) {
+        } else if (!$onlineModule->isThirdParty) {
             $this->_status = 'official';
-        } elseif ($onlineModule->isPartner) {
+        } else if ($onlineModule->isPartner) {
             $this->_status = 'partner';
-        } elseif ($onlineModule->isDeprecated) {
+        } else if ($onlineModule->isDeprecated) {
             $this->_status = 'deprecated';
         } else {
             $this->_status = 'none';

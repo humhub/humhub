@@ -85,7 +85,7 @@ class SiteIcon extends Widget
         return null;
     }
 
-    public static function hasImage(): bool
+    public static function hasImage()
     {
         return file_exists(static::getOriginalFile());
     }
@@ -98,7 +98,8 @@ class SiteIcon extends Widget
 
     private static function buildFileName($size = null)
     {
-        return ($size === null) ? 'icon.png' : $size . 'x' . $size . '.png';
+        $fileName = ($size === null) ? 'icon.png' : $size . 'x' . $size . '.png';
+        return $fileName;
     }
 
     private static function getOriginalFile()

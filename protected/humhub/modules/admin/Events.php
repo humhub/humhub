@@ -34,10 +34,12 @@ class Events extends \yii\base\BaseObject
             return;
         }
 
-        if (Yii::$app->getModule('user')->settings->get('auth.needApproval') && Yii::$app->user->getIdentity()->canApproveUsers()) {
-            $event->sender->addWidget(widgets\DashboardApproval::class, [], [
-                'sortOrder' => 99
-            ]);
+        if (Yii::$app->getModule('user')->settings->get('auth.needApproval')) {
+            if (Yii::$app->user->getIdentity()->canApproveUsers()) {
+                $event->sender->addWidget(widgets\DashboardApproval::class, [], [
+                    'sortOrder' => 99
+                ]);
+            }
         }
 
         $event->sender->addWidget(widgets\IncompleteSetupWarning::class, [], ['sortOrder' => 1]);

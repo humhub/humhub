@@ -72,9 +72,10 @@ class ActionColumn extends Column
             }
         }
         $html .= Html::endTag('ul');
+        $html .= Html::endTag('div');
 
 
-        return $html . Html::endTag('div');
+        return $html;
     }
 
     protected function getActions($model, $key, $index)

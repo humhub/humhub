@@ -48,7 +48,7 @@ class m210211_051243_container_tag extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m210211_051243_container_tag.\n";
 

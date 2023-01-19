@@ -83,7 +83,7 @@ class Notification extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName(): string
+    public static function tableName()
     {
         return 'notification';
     }

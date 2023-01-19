@@ -18,7 +18,7 @@ class m200930_151639_add_about extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m200930_151639_add_about cannot be reverted.\n";
 

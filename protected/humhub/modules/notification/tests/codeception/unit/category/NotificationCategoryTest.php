@@ -111,7 +111,7 @@ class NotificationCategoryTest extends HumHubDbTestCase
             ]
         ]);
 
-        $settingForm->save();
+        $settingForm->save($user);
 
         // Check this does not affect the decision for this user
         $this->assertFalse($webTarget->isEnabled($notification, $user));

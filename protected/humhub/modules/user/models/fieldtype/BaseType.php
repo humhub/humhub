@@ -109,7 +109,7 @@ class BaseType extends Model
      */
     public function getFieldTypes()
     {
-        return array_merge([
+        $fieldTypes = array_merge([
             Number::class => Yii::t('UserModule.profile', 'Number'),
             Text::class => Yii::t('UserModule.profile', 'Text'),
             TextArea::class => Yii::t('UserModule.profile', 'Text Area'),
@@ -126,6 +126,8 @@ class BaseType extends Model
             UserMemberSince::class => Yii::t('UserModule.profile', 'Creation date of the user'),
             UserLastLogin::class => Yii::t('UserModule.profile', 'Last login date of the user'),
         ], $this->fieldTypes);
+
+        return $fieldTypes;
     }
 
     /**
@@ -137,7 +139,7 @@ class BaseType extends Model
     final public function getFieldTypeItemOptions()
     {
         $result = [];
-        foreach (array_keys($this->getFieldTypes()) as $field_class) {
+        foreach ($this->getFieldTypes() as $field_class => $label) {
             $result[$field_class] = ['data-hidden-fields' => call_user_func($field_class.'::getHiddenFormFields')];
         }
         return $result;
@@ -169,7 +171,7 @@ class BaseType extends Model
     public function getTypeInstances($profileField = null)
     {
         $types = [];
-        foreach (array_keys($this->getFieldTypes()) as $className) {
+        foreach ($this->getFieldTypes() as $className => $title) {
             if (Helpers::CheckClassType($className, static::class)) {
                 /** @var BaseType $instance */
                 $instance = new $className;
@@ -236,9 +238,11 @@ class BaseType extends Model
     {
 
         // Bound to a profile field?
-        // Current Profile Field matches the selected profile field
-        if ($this->profileField != null && $this->profileField->field_type_class == get_class($this)) {
-            return parent::validate($attributes, $clearErrors);
+        if ($this->profileField != null) {
+            // Current Profile Field matches the selected profile field
+            if ($this->profileField->field_type_class == get_class($this)) {
+                return parent::validate($attributes, $clearErrors);
+            }
         }
 
         return true;
@@ -253,12 +257,12 @@ class BaseType extends Model
      * The ProfileFieldType Class itself can overwrite this behavior.
      * @throws Exception
      */
-    public function save(): bool
+    public function save()
     {
 
         $data = [];
 
-        foreach (array_keys($this->attributes) as $attributeName) {
+        foreach ($this->attributes as $attributeName => $value) {
             // Dont save profile field attribute
             if ($attributeName == 'profileField') {
                 continue;
@@ -320,7 +324,7 @@ class BaseType extends Model
      * This method should be overwritten by the child class.
      * @return bool
      */
-    public function addToProfileTable(): bool
+    public function addToProfileTable()
     {
         return true;
     }

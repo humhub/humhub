@@ -83,17 +83,23 @@ class CSPBuilder
      * @return string
      * @throws \TypeError
      */
-    public function compile(): string
+    public function compile()
     {
         $ruleKeys = \array_keys($this->policies);
-        $this->reportOnly = \in_array('report-only', $ruleKeys) ? (bool) $this->policies['report-only'] : false;
+        if (\in_array('report-only', $ruleKeys)) {
+            $this->reportOnly = !!$this->policies['report-only'];
+        } else {
+            $this->reportOnly = false;
+        }
 
         $compiled = [];
 
         foreach (self::$directives as $dir) {
             if (\in_array($dir, $ruleKeys)) {
-                if ($ruleKeys === [] && $dir === 'base-uri') {
-                    continue;
+                if (empty($ruleKeys)) {
+                    if ($dir === 'base-uri') {
+                        continue;
+                    }
                 }
                 $compiled []= $this->compileSubgroup(
                     $dir,
@@ -230,7 +236,7 @@ class CSPBuilder
      */
     public function disableOldBrowserSupport()
     {
-        $this->needsCompile = ($this->needsCompile || $this->supportOldBrowsers);
+        $this->needsCompile = ($this->needsCompile || $this->supportOldBrowsers !== false);
         $this->supportOldBrowsers = false;
         return $this;
     }
@@ -244,7 +250,7 @@ class CSPBuilder
      */
     public function enableOldBrowserSupport()
     {
-        $this->needsCompile = ($this->needsCompile || !$this->supportOldBrowsers);
+        $this->needsCompile = ($this->needsCompile || $this->supportOldBrowsers !== true);
         $this->supportOldBrowsers = true;
         return $this;
     }
@@ -357,7 +363,8 @@ class CSPBuilder
         $script = '',
         $algorithm = 'sha384'
     ) {
-        if (array_key_exists($directive, $this->policies)) {
+        $ruleKeys = \array_keys($this->policies);
+        if (\in_array($directive, $ruleKeys)) {
             $this->policies[$directive]['hashes'] []= [
                 $algorithm => base64_encode(
                     \hash($algorithm, $script, true)
@@ -403,7 +410,8 @@ class CSPBuilder
      */
     public function nonce($directive = 'script-src', $nonce = '')
     {
-        if (!array_key_exists($directive, $this->policies)) {
+        $ruleKeys = \array_keys($this->policies);
+        if (!\in_array($directive, $ruleKeys)) {
             return '';
         }
 
@@ -427,7 +435,8 @@ class CSPBuilder
         $hash = '',
         $algorithm = 'sha384'
     ) {
-        if (array_key_exists($directive, $this->policies)) {
+        $ruleKeys = \array_keys($this->policies);
+        if (\in_array($directive, $ruleKeys)) {
             $this->policies[$directive]['hashes'] []= [
                 $algorithm => $hash
             ];
@@ -504,7 +513,7 @@ class CSPBuilder
      * @return bool
      * @throws \Exception
      */
-    public function sendCSPHeader($legacy = true): bool
+    public function sendCSPHeader($legacy = true)
     {
         if (\headers_sent()) {
             throw new \Exception('Headers already sent!');
@@ -744,13 +753,15 @@ class CSPBuilder
             foreach ($policies['allow'] as $url) {
                 $url = \filter_var($url, FILTER_SANITIZE_URL);
                 if ($url !== false) {
-                    if ($this->supportOldBrowsers && \strpos($url, '://') === false) {
-                        if (($this->isHTTPSConnection() && $this->httpsTransformOnHttpsConnections)
-                            || !empty($this->policies['upgrade-insecure-requests'])) {
-                            // We only want HTTPS connections here.
-                            $ret .= 'https://'.$url.' ';
-                        } else {
-                            $ret .= 'https://'.$url.' http://'.$url.' ';
+                    if ($this->supportOldBrowsers) {
+                        if (\strpos($url, '://') === false) {
+                            if (($this->isHTTPSConnection() && $this->httpsTransformOnHttpsConnections)
+                                || !empty($this->policies['upgrade-insecure-requests'])) {
+                                // We only want HTTPS connections here.
+                                $ret .= 'https://'.$url.' ';
+                            } else {
+                                $ret .= 'https://'.$url.' http://'.$url.' ';
+                            }
                         }
                     }
                     if (($this->isHTTPSConnection() && $this->httpsTransformOnHttpsConnections)
@@ -870,7 +881,7 @@ class CSPBuilder
      */
     public function disableHttpsTransformOnHttpsConnections()
     {
-        $this->needsCompile = ($this->needsCompile || $this->httpsTransformOnHttpsConnections);
+        $this->needsCompile = ($this->needsCompile || $this->httpsTransformOnHttpsConnections !== false);
         $this->httpsTransformOnHttpsConnections = false;
 
         return $this;
@@ -885,7 +896,7 @@ class CSPBuilder
      */
     public function enableHttpsTransformOnHttpsConnections()
     {
-        $this->needsCompile = ($this->needsCompile || !$this->httpsTransformOnHttpsConnections);
+        $this->needsCompile = ($this->needsCompile || $this->httpsTransformOnHttpsConnections !== true);
         $this->httpsTransformOnHttpsConnections = true;
 
         return $this;

@@ -34,7 +34,7 @@ class ProfileFieldCategory extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName(): string
+    public static function tableName()
     {
         return 'profile_field_category';
     }

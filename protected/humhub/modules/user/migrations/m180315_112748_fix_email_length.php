@@ -15,7 +15,7 @@ class m180315_112748_fix_email_length extends Migration
         $this->alterColumn('user_invite', 'email', $this->char(150)->notNull());
     }
 
-    public function safeDown(): bool
+    public function safeDown()
     {
         echo "m180315_112748_fix_email_length cannot be reverted.\n";
 

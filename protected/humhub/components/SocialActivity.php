@@ -253,7 +253,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
 
         if ($this->source instanceof Comment) {
             $url = $this->source->getUrl();
-        } elseif ($this->hasContent()) {
+        } else if ($this->hasContent()) {
             $url = $this->getContent()->getUrl();
         } elseif ($this->source instanceof ContentContainerActiveRecord) {
             $url = $this->source->getUrl();
@@ -274,7 +274,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
     {
         $html = $this->html();
 
-        return empty($html) ? null : html_entity_decode(strip_tags($html));
+        return !empty($html) ? html_entity_decode(strip_tags($html)) : null;
     }
 
     /**
@@ -467,12 +467,17 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
      *
      * @return bool
      */
-    public function validate(): bool
+    public function validate()
     {
         if (empty($this->source) && $this->requireSource) {
             return false;
         }
-        return !(empty($this->originator) && $this->requireOriginator);
+
+        if (empty($this->originator) && $this->requireOriginator) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

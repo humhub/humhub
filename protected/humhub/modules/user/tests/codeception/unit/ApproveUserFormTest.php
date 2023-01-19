@@ -114,14 +114,10 @@ Admin Tester", $form->message);
         $this->becomeUser('Admin');
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->setDeclineDefaults();
-        $this->assertEquals('Hello UnApproved User,
-
-Your account request has been declined.
-
-Kind Regards
-Admin Tester
-
-', $form->message);
+        $this->assertEquals("Hello UnApproved User,\n\n" .
+            "Your account request has been declined.\n\n" .
+            "Kind Regards\n" .
+            "Admin Tester\n\n", $form->message);
 
         $settings = new AuthenticationSettingsForm();
         $this->assertEquals(ApproveUserForm::getDefaultDeclineMessage(), $settings->registrationDenialMailContent);

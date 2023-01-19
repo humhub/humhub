@@ -20,7 +20,7 @@ class m150204_103433_html5_notified extends Migration
         $this->update('notification', ['desktop_notified' => 1]);
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m150204_103433_html5_notified does not support migration down.\n";
         return false;

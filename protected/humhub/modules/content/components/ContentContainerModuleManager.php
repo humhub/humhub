@@ -38,7 +38,7 @@ class ContentContainerModuleManager extends \yii\base\Component
      * @return boolean
      * @throws \yii\base\Exception
      */
-    public function disable($id): bool
+    public function disable($id)
     {
         if ($this->canDisable($id)) {
             Yii::$app->moduleManager->getModule($id)->disableContentContainer($this->contentContainer);
@@ -60,7 +60,7 @@ class ContentContainerModuleManager extends \yii\base\Component
      * @return boolean
      * @throws \yii\base\Exception
      */
-    public function enable($id): bool
+    public function enable($id)
     {
         if ($this->canEnable($id)) {
             Yii::$app->moduleManager->getModule($id)->enableContentContainer($this->contentContainer);
@@ -81,7 +81,7 @@ class ContentContainerModuleManager extends \yii\base\Component
      * @param string $id the module id
      * @return boolean
      */
-    public function isEnabled($id): bool
+    public function isEnabled($id)
     {
         // Workaround for core post module
         if ($id === 'post') {
@@ -98,10 +98,14 @@ class ContentContainerModuleManager extends \yii\base\Component
      * @return boolean
      * @throws \yii\base\Exception
      */
-    public function canEnable($id): bool
+    public function canEnable($id)
     {
         $available = $this->getAvailable();
-        return !$this->isEnabled($id) && array_key_exists($id, $available);
+        if (!$this->isEnabled($id) && array_key_exists($id, $available)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -110,9 +114,13 @@ class ContentContainerModuleManager extends \yii\base\Component
      * @param string $id the module id
      * @return boolean
      */
-    public function canDisable($id): bool
+    public function canDisable($id)
     {
-        return $this->isEnabled($id) && self::getDefaultState($this->contentContainer->className(), $id) !== ContentContainerModuleState::STATE_FORCE_ENABLED;
+        if (!$this->isEnabled($id) || self::getDefaultState($this->contentContainer->className(), $id) === ContentContainerModuleState::STATE_FORCE_ENABLED) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -170,7 +178,7 @@ class ContentContainerModuleManager extends \yii\base\Component
     {
 
         $availableModules = $this->getAvailable();
-        foreach (array_keys($availableModules) as $moduleId) {
+        foreach ($availableModules as $moduleId => $module) {
             if (($this->isEnabled($moduleId) && !$this->canDisable($moduleId)) ||
                 (!$this->isEnabled($moduleId) && !$this->canEnable($moduleId))
             ) {
@@ -262,7 +270,7 @@ class ContentContainerModuleManager extends \yii\base\Component
     protected function getModuleStateRecord($id)
     {
         $moduleState = ContentContainerModuleState::findOne(['module_id' => $id, 'contentcontainer_id' => $this->contentContainer->contentcontainer_id]);
-        if (!$moduleState instanceof \humhub\modules\content\models\ContentContainerModuleState) {
+        if ($moduleState === null) {
             $moduleState = new ContentContainerModuleState;
             $moduleState->contentcontainer_id = $this->contentContainer->contentcontainer_id;
             $moduleState->module_id = $id;

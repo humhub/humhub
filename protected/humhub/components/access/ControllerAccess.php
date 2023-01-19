@@ -353,7 +353,7 @@ class ControllerAccess extends BaseObject
      * Runs the current $rule setting against all available validators
      * @return bool
      */
-    public function run(): bool
+    public function run()
     {
         $finished = [];
 
@@ -371,8 +371,8 @@ class ControllerAccess extends BaseObject
             $validator = $this->findValidator($ruleName);
 
             if (!$validator->run()) {
-                $this->reason = ($this->reason) ? $this->reason : $validator->getReason();
-                $this->code = ($this->code) ? $this->code : $validator->getCode();
+                $this->reason = (!$this->reason) ? $validator->getReason() : $this->reason;
+                $this->code = (!$this->code) ? $validator->getCode() : $this->code;
                 if (isset($validator->codeCallback)) {
                     $this->codeCallback = $validator->codeCallback;
                 }
@@ -484,7 +484,7 @@ class ControllerAccess extends BaseObject
     /**
      * @return bool makes sure the response type is json
      */
-    public function validateJsonResponse(): bool
+    public function validateJsonResponse()
     {
         Yii::$app->response->format = 'json';
 

@@ -15,8 +15,6 @@ use yii\db\Query;
 
 class DefaultStreamFilter extends StreamQueryFilter
 {
-    public $streamQuery;
-    public $query;
     /**
      * Default filters
      */
@@ -66,7 +64,7 @@ class DefaultStreamFilter extends StreamQueryFilter
 
         if ($this->isFilterActive(self::FILTER_ARCHIVED)) {
             $this->filterArchived();
-        } elseif (!$this->streamQuery->isSingleContentQuery()) {
+        } else if (!$this->streamQuery->isSingleContentQuery()) {
             // Only omit archived content by default when we load more than one entry
             $this->unFilterArchived();
         }
@@ -89,7 +87,7 @@ class DefaultStreamFilter extends StreamQueryFilter
         }
     }
 
-    public function isFilterActive($filter): bool
+    public function isFilterActive($filter)
     {
         return in_array($filter, $this->filters);
     }

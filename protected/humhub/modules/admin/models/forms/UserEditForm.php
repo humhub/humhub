@@ -131,7 +131,7 @@ class UserEditForm extends User
      * @param integer $groupId $groupId groupId or Group model object
      * @return boolean true if user is member else false
      */
-    private function isCurrentlyMemberOf($groupId): bool
+    private function isCurrentlyMemberOf($groupId)
     {
         $groupId = ($groupId instanceof Group) ? $groupId->id : $groupId;
         foreach ($this->currentGroups as $userGroup) {

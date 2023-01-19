@@ -55,7 +55,7 @@ class m160507_202611_settings extends Migration
         $this->dropTable('space_setting');
     }
 
-    public function down(): bool
+    public function down()
     {
         echo "m160507_202611_settings cannot be reverted.\n";
 
