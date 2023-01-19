@@ -84,12 +84,7 @@ class Module extends \humhub\components\Module
     public function canLike($object)
     {
         $content = $object->content;
-
-        if (isset($content->container) && !$content->container->can(new permissions\CanLike())) {
-            return false;
-        }
-
-        return true;
+        return !(isset($content->container) && !$content->container->can(new permissions\CanLike()));
     }
 
 }

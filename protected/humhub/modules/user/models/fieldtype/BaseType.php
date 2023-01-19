@@ -109,7 +109,7 @@ class BaseType extends Model
      */
     public function getFieldTypes()
     {
-        $fieldTypes = array_merge([
+        return array_merge([
             Number::class => Yii::t('UserModule.profile', 'Number'),
             Text::class => Yii::t('UserModule.profile', 'Text'),
             TextArea::class => Yii::t('UserModule.profile', 'Text Area'),
@@ -126,8 +126,6 @@ class BaseType extends Model
             UserMemberSince::class => Yii::t('UserModule.profile', 'Creation date of the user'),
             UserLastLogin::class => Yii::t('UserModule.profile', 'Last login date of the user'),
         ], $this->fieldTypes);
-
-        return $fieldTypes;
     }
 
     /**
@@ -238,11 +236,9 @@ class BaseType extends Model
     {
 
         // Bound to a profile field?
-        if ($this->profileField != null) {
-            // Current Profile Field matches the selected profile field
-            if ($this->profileField->field_type_class == get_class($this)) {
-                return parent::validate($attributes, $clearErrors);
-            }
+        // Current Profile Field matches the selected profile field
+        if ($this->profileField != null && $this->profileField->field_type_class == get_class($this)) {
+            return parent::validate($attributes, $clearErrors);
         }
 
         return true;

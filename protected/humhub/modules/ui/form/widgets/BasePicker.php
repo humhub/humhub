@@ -252,7 +252,7 @@ abstract class BasePicker extends JsInputWidget
         } elseif ($this->model != null) {
             return Html::activeDropDownList($this->model, $this->attribute, $selection, $options);
         } else {
-            $name = (!$this->name) ? 'pickerField' : $this->name;
+            $name = ($this->name) ? $this->name : 'pickerField';
             return Html::dropDownList($name, $this->value, $selection, $options);
         }
     }

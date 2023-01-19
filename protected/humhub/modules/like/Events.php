@@ -71,16 +71,12 @@ class Events extends \yii\base\BaseObject
         $integrityController->showTestHeadline("Like (" . Like::find()->count() . " entries)");
 
         foreach (Like::find()->each() as $like) {
-            if ($like->source === null) {
-                if ($integrityController->showFix("Deleting like id " . $like->id . " without existing target!")) {
-                    $like->delete();
-                }
+            if ($like->source === null && $integrityController->showFix("Deleting like id " . $like->id . " without existing target!")) {
+                $like->delete();
             }
             // User exists
-            if ($like->user === null) {
-                if ($integrityController->showFix("Deleting like id " . $like->id . " without existing user!")) {
-                    $like->delete();
-                }
+            if ($like->user === null && $integrityController->showFix("Deleting like id " . $like->id . " without existing user!")) {
+                $like->delete();
             }
         }
     }

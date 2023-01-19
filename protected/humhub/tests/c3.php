@@ -269,10 +269,8 @@ if (!defined('C3_CODECOVERAGE_MEDIATE_STORAGE')) {
     }
 }
 
-if (!is_dir(C3_CODECOVERAGE_MEDIATE_STORAGE)) {
-    if (mkdir(C3_CODECOVERAGE_MEDIATE_STORAGE, 0777, true) === false) {
-        __c3_error('Failed to create directory "' . C3_CODECOVERAGE_MEDIATE_STORAGE . '"');
-    }
+if (!is_dir(C3_CODECOVERAGE_MEDIATE_STORAGE) && mkdir(C3_CODECOVERAGE_MEDIATE_STORAGE, 0777, true) === false) {
+    __c3_error('Failed to create directory "' . C3_CODECOVERAGE_MEDIATE_STORAGE . '"');
 }
 
 // evaluate base path for c3-related files
@@ -337,10 +335,8 @@ if ($requestedC3Report) {
         register_shutdown_function(
             function () use ($codeCoverage, $currentReport) {
                 $codeCoverage->stop();
-                if (!file_exists(dirname($currentReport))) { // verify directory exists
-                    if (!mkdir(dirname($currentReport), 0777, true)) {
-                        __c3_error("Can't write CodeCoverage report into $currentReport");
-                    }
+                // verify directory exists
+                if (!file_exists(dirname($currentReport)) && !mkdir(dirname($currentReport), 0777, true)) { __c3_error("Can't write CodeCoverage report into $currentReport");
                 }
 
                 // This will either lock the existing report for writing and return it along with a file pointer,

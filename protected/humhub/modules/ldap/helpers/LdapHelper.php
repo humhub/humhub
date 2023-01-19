@@ -29,12 +29,7 @@ class LdapHelper
         if (!class_exists('Laminas\Ldap\Ldap')) {
             return false;
         }
-
-        if (!function_exists('ldap_bind')) {
-            return false;
-        }
-
-        return true;
+        return function_exists('ldap_bind');
     }
 
     /**

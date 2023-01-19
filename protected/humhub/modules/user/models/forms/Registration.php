@@ -62,11 +62,7 @@ class Registration extends HForm
      */
     public function init()
     {
-        if (Yii::$app->getModule('user')->settings->get('auth.needApproval')) {
-            $this->enableUserApproval = true;
-        } else {
-            $this->enableUserApproval = false;
-        }
+        $this->enableUserApproval = (bool) Yii::$app->getModule('user')->settings->get('auth.needApproval');
 
         return parent::init();
     }
@@ -300,11 +296,7 @@ class Registration extends HForm
     {
         if ($this->_user === null) {
             $this->_user = new User();
-            if ($this->enableEmailField) {
-                $this->_user->scenario = 'registration_email';
-            } else {
-                $this->_user->scenario = 'registration';
-            }
+            $this->_user->scenario = $this->enableEmailField ? 'registration_email' : 'registration';
         }
 
         return $this->_user;

@@ -267,7 +267,7 @@ abstract class BaseTarget extends \yii\base\BaseObject
             $enabled = Yii::$app->getModule('notification')->settings->get($settingKey, $category->getDefaultSetting($this));
         }
 
-        return ($enabled === null) ? $this->defaultSetting : boolval($enabled);
+        return ($enabled === null) ? $this->defaultSetting : (bool) $enabled;
     }
 
 }

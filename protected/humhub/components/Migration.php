@@ -330,7 +330,7 @@ class Migration extends \yii\db\Migration
      */
     private function getDsnAttribute(string $name): ?string
     {
-        return preg_match('/' . preg_quote($name) . '=([^;]*)/', $this->db->dsn, $match)
+        return preg_match('/' . preg_quote($name, '/') . '=([^;]*)/', $this->db->dsn, $match)
             ? $match[1]
             : null;
     }

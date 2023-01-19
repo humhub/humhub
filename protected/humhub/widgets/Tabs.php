@@ -82,7 +82,7 @@ class Tabs extends \yii\bootstrap\Tabs
             return $item['params'];
         }
 
-        return !empty($this->params) ? $this->params : [];
+        return empty($this->params) ? [] : $this->params;
     }
 
     /**
@@ -98,15 +98,10 @@ class Tabs extends \yii\bootstrap\Tabs
             return false;
         }
 
-        if ($controllerId && !(Yii::$app->controller->id == $controllerId)) {
+        if ($controllerId && Yii::$app->controller->id != $controllerId) {
             return false;
         }
-
-        if ($actionId && !(Yii::$app->controller->action->id == $actionId)) {
-            return false;
-        }
-
-        return true;
+        return !($actionId && Yii::$app->controller->action->id != $actionId);
     }
 
     public function addItem($item)

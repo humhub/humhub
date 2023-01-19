@@ -277,16 +277,10 @@ class Module extends \humhub\components\Module
      */
     public function canMention($object)
     {
-//        $content = $object->content;
-
-//        if(!isset($content->container)) {
-//            return false;
-//        }
-
-        if ($object->permissionManager->can(CanMention::class)) {
-            return true;
-        }
-
-        return false;
+        //        $content = $object->content;
+        //        if(!isset($content->container)) {
+        //            return false;
+        //        }
+        return (bool) $object->permissionManager->can(CanMention::class);
     }
 }

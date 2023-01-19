@@ -149,11 +149,7 @@ class User extends \yii\web\User
      */
     public function canChangeEmail()
     {
-        if (in_array('email', AuthClientHelpers::getSyncAttributesByUser($this->getIdentity()))) {
-            return false;
-        }
-
-        return true;
+        return !in_array('email', AuthClientHelpers::getSyncAttributesByUser($this->getIdentity()));
     }
 
     /**
@@ -163,11 +159,7 @@ class User extends \yii\web\User
      */
     public function canChangeUsername()
     {
-        if (in_array('username', AuthClientHelpers::getSyncAttributesByUser($this->getIdentity()))) {
-            return false;
-        }
-
-        return true;
+        return !in_array('username', AuthClientHelpers::getSyncAttributesByUser($this->getIdentity()));
     }
 
     /**

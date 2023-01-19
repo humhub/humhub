@@ -64,10 +64,8 @@ class FileExtension extends RichTextLinkExtension
 
         $result[$this->key] = [];
         foreach ($this->scanExtension($text) as $match) {
-            if($match->getExtensionId()) {
-                if($this->attach($record, $match->getExtensionId())) {
-                    $result[$this->key][] = $match->getExtensionId();
-                }
+            if($match->getExtensionId() && $this->attach($record, $match->getExtensionId())) {
+                $result[$this->key][] = $match->getExtensionId();
             }
         }
 

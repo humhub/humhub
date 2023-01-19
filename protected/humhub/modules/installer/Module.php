@@ -97,11 +97,7 @@ class Module extends \humhub\components\Module
      */
     public function isConfigured()
     {
-        if (Yii::$app->settings->get('secret') == '') {
-            return false;
-        }
-
-        return true;
+        return Yii::$app->settings->get('secret') != '';
     }
 
     /**

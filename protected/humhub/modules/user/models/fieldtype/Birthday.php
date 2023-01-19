@@ -196,11 +196,7 @@ class Birthday extends BaseType
          * when getUserValue is called but loadDefaults not $hideAge might be null
          */
         if ($hideAge === null) {
-            if ($this->defaultHideAge === self::DEFAULT_HIDE_AGE_YES) {
-                $hideAge = self::HIDE_AGE_YES;
-            } else {
-                $hideAge = self::HIDE_AGE_NO;
-            }
+            $hideAge = $this->defaultHideAge === self::DEFAULT_HIDE_AGE_YES ? self::HIDE_AGE_YES : self::HIDE_AGE_NO;
         }
 
         $longDate = Yii::$app->formatter->asDate($birthdayDate, 'long');
@@ -213,12 +209,12 @@ class Birthday extends BaseType
             
             $month = Yii::$app->formatter->asDate($birthdayDate, 'php:F');
             $day = Yii::$app->formatter->asDate($birthdayDate, 'php:d');
-            if (preg_match('/(' . preg_quote($day) . '.+' . preg_quote($month) . '|' . preg_quote($month) . '.+' . preg_quote($day) . ')/', $longDate, $m)) {
+            if (preg_match('/(' . preg_quote($day, '/') . '.+' . preg_quote($month, '/') . '|' . preg_quote($month, '/') . '.+' . preg_quote($day, '/') . ')/', $longDate, $m)) {
                 return $m[0];
             }
 
             $year = Yii::$app->formatter->asDate($birthdayDate, 'php:Y');
-            return preg_replace('/[,\s]*' . preg_quote($year) . '([^\d]+|$)/', '', $longDate);
+            return preg_replace('/[,\s]*' . preg_quote($year, '/') . '([^\d]+|$)/', '', $longDate);
         }
 
         $ageInYears = Yii::t(

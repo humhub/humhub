@@ -247,7 +247,7 @@ class ContentTagTest extends HumHubDbTestCase
 
     protected function createTestTag($name, $container = null)
     {
-        $container = (!$container) ? $this->space : $container;
+        $container = ($container) ? $container : $this->space;
 
         if(!$container) {
             $container = $this->space = Space::findOne(['id' => 3]);
@@ -259,7 +259,7 @@ class ContentTagTest extends HumHubDbTestCase
 
     protected function createOtherTestTag($name, $container = null)
     {
-        $container = (!$container) ? $this->space : $container;
+        $container = ($container) ? $container : $this->space;
 
         if(!$container) {
             $container = $this->space = Space::findOne(['id' => 3]);
@@ -271,7 +271,7 @@ class ContentTagTest extends HumHubDbTestCase
 
     protected function createOtherModuleTestTag($name, $container = null)
     {
-        $container = (!$container) ? $this->space : $container;
+        $container = ($container) ? $container : $this->space;
 
         if(!$container) {
             $container = $this->space = Space::findOne(['id' => 3]);

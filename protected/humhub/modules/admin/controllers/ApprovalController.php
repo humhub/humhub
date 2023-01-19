@@ -112,10 +112,10 @@ class ApprovalController extends Controller
             $screenProfileFieldsId = Yii::$app->request->post('screenProfileFieldsId');
             $module->settings->user()->setSerialized(self::USER_SETTINGS_SCREEN_KEY, $screenProfileFieldsId);
         }
-        $profileFieldsColumns = !$screenProfileFieldsId ? [] : ProfileField::find()
+        $profileFieldsColumns = $screenProfileFieldsId ? ProfileField::find()
             ->where(['id' => $screenProfileFieldsId])
             ->indexBy('id')
-            ->all();
+            ->all() : [];
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,

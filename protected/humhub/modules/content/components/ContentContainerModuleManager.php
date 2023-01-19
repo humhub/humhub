@@ -101,11 +101,7 @@ class ContentContainerModuleManager extends \yii\base\Component
     public function canEnable($id)
     {
         $available = $this->getAvailable();
-        if (!$this->isEnabled($id) && array_key_exists($id, $available)) {
-            return true;
-        }
-
-        return false;
+        return !$this->isEnabled($id) && array_key_exists($id, $available);
     }
 
     /**
@@ -116,11 +112,7 @@ class ContentContainerModuleManager extends \yii\base\Component
      */
     public function canDisable($id)
     {
-        if (!$this->isEnabled($id) || self::getDefaultState($this->contentContainer->className(), $id) === ContentContainerModuleState::STATE_FORCE_ENABLED) {
-            return false;
-        }
-
-        return true;
+        return $this->isEnabled($id) && self::getDefaultState($this->contentContainer->className(), $id) !== ContentContainerModuleState::STATE_FORCE_ENABLED;
     }
 
     /**

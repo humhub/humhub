@@ -77,17 +77,15 @@ class LicenceManager extends Component
         if (!empty($settings->get(static::SETTING_KEY_PE_LICENCE_KEY))) {
 
             // Update
-            if ($lastFetch + static::PE_FETCH_INTERVAL < time()) {
-                if (!static::fetch() && $lastFetch + static::PE_FETCH_TOLERANCE < time()) {
-                    $lastFetchDateTime = 'empty';
-                    try {
-                        $lastFetchDateTime = Yii::$app->formatter->asDatetime($lastFetch, 'full');
-                    } catch (InvalidConfigException $e) {
-                        Yii::error($e->getMessage(), 'marketplace');
-                    }
-                    Yii::error('Could not fetch PE licence since: ' . $lastFetchDateTime, 'marketplace');
-                    return $licence;
+            if ($lastFetch + static::PE_FETCH_INTERVAL < time() && (!static::fetch() && $lastFetch + static::PE_FETCH_TOLERANCE < time())) {
+                $lastFetchDateTime = 'empty';
+                try {
+                    $lastFetchDateTime = Yii::$app->formatter->asDatetime($lastFetch, 'full');
+                } catch (InvalidConfigException $e) {
+                    Yii::error($e->getMessage(), 'marketplace');
                 }
+                Yii::error('Could not fetch PE licence since: ' . $lastFetchDateTime, 'marketplace');
+                return $licence;
             }
 
             if (!empty($settings->get(static::SETTING_KEY_PE_LICENCED_TO)) && !empty($settings->get(static::SETTING_KEY_PE_MAX_USERS))) {

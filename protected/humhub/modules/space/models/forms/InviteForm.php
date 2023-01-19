@@ -117,7 +117,7 @@ class InviteForm extends Model
     public function isQueuedJob()
     {
         // Pre-check if adding without invite / adding all members was requested
-        if (!($this->withoutInvite || $this->allRegisteredUsers)) {
+        if (!$this->withoutInvite && !$this->allRegisteredUsers) {
             return false;
         }
 

@@ -162,11 +162,11 @@ class MailSummaryForm extends Model
         $this->interval = $settingsManager->get('mailSummaryInterval');
         $this->limitSpacesMode = $settingsManager->get('mailSummaryLimitSpacesMode');
         $mailSummaryLimitSpaces = $settingsManager->get('mailSummaryLimitSpaces');
-        $this->limitSpaces = (!empty($mailSummaryLimitSpaces)) ? explode(',', $mailSummaryLimitSpaces) : [];
+        $this->limitSpaces = (empty($mailSummaryLimitSpaces)) ? [] : explode(',', $mailSummaryLimitSpaces);
 
         // Since we store only disabled activities, we need to enable the difference
         $mailSummaryActivitySuppress = $settingsManager->get('mailSummaryActivitySuppress');
-        $suppressedActivities = (!empty($mailSummaryActivitySuppress)) ? explode(',', $mailSummaryActivitySuppress) : [];
+        $suppressedActivities = (empty($mailSummaryActivitySuppress)) ? [] : explode(',', $mailSummaryActivitySuppress);
         $this->activities = array_diff(array_keys($this->getActivitiesArray()), $suppressedActivities);
 
         return true;

@@ -363,12 +363,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
         if ($this->join_policy == self::JOIN_POLICY_NONE) {
             return false;
         }
-
-        if ($this->isBlockedForUser(User::findOne($userId))) {
-            return false;
-        }
-
-        return true;
+        return !$this->isBlockedForUser(User::findOne($userId));
     }
 
     /**
@@ -388,12 +383,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
         if ($this->isMember($userId)) {
             return false;
         }
-
-        if ($this->join_policy == self::JOIN_POLICY_FREE) {
-            return true;
-        }
-
-        return false;
+        return $this->join_policy == self::JOIN_POLICY_FREE;
     }
 
     /**

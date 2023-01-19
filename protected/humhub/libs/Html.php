@@ -108,11 +108,7 @@ class Html extends \yii\bootstrap\Html
     {
         $label = '';
 
-        if (!isset($options['label'])) {
-            $label = Yii::t('base', 'Back');
-        } else {
-            $label = $options['label'];
-        }
+        $label = isset($options['label']) ? $options['label'] : Yii::t('base', 'Back');
 
         if (!isset($options['showIcon']) || $options['showIcon'] === true) {
             $label = Icon::get('back')->asString().' '. $label;

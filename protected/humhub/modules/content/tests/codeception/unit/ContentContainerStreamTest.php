@@ -104,9 +104,7 @@ class ContentContainerStreamTest extends HumHubDbTestCase
 
         $wallEntries = $action->getStreamQuery()->all();
 
-        $wallEntryIds = array_map(static fn($entry) => $entry->id, $wallEntries);
-
-        return $wallEntryIds;
+        return array_map(static fn($entry) => $entry->id, $wallEntries);
     }
 
     private function createPrivatePost()

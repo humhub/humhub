@@ -198,13 +198,8 @@ class MailSummary extends Component
     protected function getLastSummaryDate()
     {
         $lastSent = (int) static::getModule()->settings->user($this->user)->get('mailSummaryLast');
-        if (empty($lastSent)) {
-            $lastSent = new Expression('NOW() - INTERVAL 24 HOUR');
-        } else {
-            $lastSent = date('Y-m-d G:i:s', $lastSent);
-        }
 
-        return $lastSent;
+        return empty($lastSent) ? new Expression('NOW() - INTERVAL 24 HOUR') : date('Y-m-d G:i:s', $lastSent);
     }
 
     /**

@@ -144,7 +144,7 @@ class Markdown extends JsInputWidget
 
         return [
             'preview-url' => $this->previewUrl,
-            'files-input-name' => !empty($this->filesInputName) ? $this->filesInputName : null
+            'files-input-name' => empty($this->filesInputName) ? null : $this->filesInputName
         ];
     }
 }

@@ -131,9 +131,7 @@ class Collection extends Component
      */
     protected function getDefaultClients()
     {
-        $clients = [];
-        $clients['password'] = ['class' => Password::class];
-        return $clients;
+        return ['password' => ['class' => Password::class]];
     }
 
 }

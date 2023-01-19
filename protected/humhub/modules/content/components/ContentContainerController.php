@@ -73,10 +73,8 @@ class ContentContainerController extends Controller
         $this->contentContainer = $this->getContentContainerByGuid($guid);
 
 
-        if ($this->validContentContainerClasses !== null) {
-            if ($this->contentContainer === null || !in_array($this->contentContainer->className(), $this->validContentContainerClasses)) {
-                throw new HttpException(400);
-            }
+        if ($this->validContentContainerClasses !== null && ($this->contentContainer === null || !in_array($this->contentContainer->className(), $this->validContentContainerClasses))) {
+            throw new HttpException(400);
         }
 
         if ($this->contentContainer !== null && $this->contentContainer->controllerBehavior) {

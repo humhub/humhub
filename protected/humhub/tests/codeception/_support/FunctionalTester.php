@@ -246,11 +246,11 @@ class FunctionalTester extends BaseTester
             $path = '/space/space';
         }
 
-        if(is_int($spaceOrIndexOrGuid)) {
+        if (is_int($spaceOrIndexOrGuid)) {
             $guid = $this->getFixtureSpaceGuid(--$spaceOrIndexOrGuid);
-        } else if(is_string($spaceOrIndexOrGuid)) {
+        } elseif (is_string($spaceOrIndexOrGuid)) {
             $guid = $spaceOrIndexOrGuid;
-        } else if($spaceOrIndexOrGuid instanceof Space) {
+        } elseif ($spaceOrIndexOrGuid instanceof Space) {
             $guid = $spaceOrIndexOrGuid->guid;
         } else {
             $guid = '';

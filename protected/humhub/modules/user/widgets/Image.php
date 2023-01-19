@@ -60,9 +60,7 @@ class Image extends BaseImage
             $html = Html::a($html, $this->user->getUrl(), $this->linkOptions);
         }
 
-        $html = Html::tag('span', $html, $this->htmlOptions);
-
-        return $html;
+        return Html::tag('span', $html, $this->htmlOptions);
     }
 
 }

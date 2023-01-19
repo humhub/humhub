@@ -139,9 +139,8 @@ class ProfileImage
 
         $path .= $this->guid;
         $path .= $prefix;
-        $path .= '.jpg';
 
-        return $path;
+        return $path . '.jpg';
     }
 
     /**

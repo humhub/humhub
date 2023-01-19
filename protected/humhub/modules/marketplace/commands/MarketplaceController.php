@@ -182,7 +182,7 @@ class MarketplaceController extends Controller
         $installedModules = Yii::$app->moduleManager->getModules(['returnClass' => true]);
 
         foreach (ModuleEnabled::getEnabledIds() as $moduleId) {
-            if (!in_array($moduleId, array_keys($installedModules))) {
+            if (!array_key_exists($moduleId, $installedModules)) {
                 // Module seems to be installed - but cannot be loaded
                 // Try force re-install
                 try {

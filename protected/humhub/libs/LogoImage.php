@@ -104,8 +104,7 @@ class LogoImage
 
     private static function buildFileName($maxWidth, $maxHeight)
     {
-        $fileName = $maxWidth . 'x' . $maxHeight . '.png';
-        return $fileName;
+        return $maxWidth . 'x' . $maxHeight . '.png';
     }
 
     private static function getOriginalFile()
