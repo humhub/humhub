@@ -87,9 +87,12 @@ class CommentController extends Controller
      */
     public function actionShow()
     {
-        $commentId = Yii::$app->request->get('commentId');
+        $commentId = (int) Yii::$app->request->get('commentId');
         $type = Yii::$app->request->get('type', ShowMore::TYPE_PREVIOUS);
-        $pageSize = Yii::$app->request->get('pageSize', $this->module->commentsBlockLoadSize);
+        $pageSize = (int) Yii::$app->request->get('pageSize', $this->module->commentsBlockLoadSize);
+        if ($pageSize > $this->module->commentsBlockLoadSize) {
+            $pageSize = $this->module->commentsBlockLoadSize;
+        }
 
         $comments = Comment::getMoreComments($this->target, $commentId, $type, $pageSize);
 

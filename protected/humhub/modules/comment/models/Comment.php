@@ -218,6 +218,10 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             $limit = $module->commentsPreviewMax;
         }
 
+        if ($model === self::class && $currentCommentId == $id) {
+            // No need to find current comment in sub-comments when parent comment is the current
+            $currentCommentId = null;
+        }
         $currentCommentId = intval($currentCommentId);
         $useCaching = empty($currentCommentId);// No need to cache comments for deep single comment view
 
