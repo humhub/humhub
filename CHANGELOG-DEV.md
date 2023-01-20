@@ -11,3 +11,4 @@ HumHub Changelog (DEVELOP)
 - Ehn #6017: Hide Password Tab in administration for LDAP users
 - Enh #6031: On users list grid, show Auth mode badge only for sys admins
 - Enh #6035: Added Estonian language
+- Fix #5956: Display all newer comments after current comment
