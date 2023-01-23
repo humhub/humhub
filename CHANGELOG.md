@@ -17,6 +17,7 @@ HumHub Changelog
 - Fix #6041: Fix search of obsolete cached objects
 - Fix #6043: Fix permission to lock/unlock comment for admin
 - Fix #6051: Fix visibility of "NEW UPDATES AVAILABLE!" for space creator
+- Fix #6055: Fix click event of notification filter
 
 1.13.0 (December 21, 2022)
 --------------------------
