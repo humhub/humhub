@@ -48,6 +48,8 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->skip([
         // Skip files:
         __DIR__ . '/protected/**/messages/**/*',
+        __DIR__ . '/protected/**/vendor/**/*',
+        __DIR__ . '/protected/**/node_modules/**/*',
         // PHP_74
         AddLiteralSeparatorToNumberRector::class,
         RestoreDefaultNullToNullableTypePropertyRector::class,
