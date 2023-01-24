@@ -4,27 +4,38 @@ namespace humhub\modules\notification\models\forms;
 
 use humhub\modules\notification\models\Notification;
 use Yii;
+use yii\base\Model;
+use yii\data\Pagination;
+use yii\db\ActiveQuery;
 
-class FilterForm extends \yii\base\Model
+/**
+ * Class FilterForm for filter notification list
+ */
+class FilterForm extends Model
 {
 
     /**
      * Contains the current module filters
-     * @var type array
+     * @var array
      */
     public $categoryFilter;
 
     /**
      * Contains all available module filter
-     * @var type array
+     * @var array
      */
     public $categoryFilterSelection;
 
     /**
      * Contains all notifications by modulenames
-     * @var type
+     * @var array
      */
     public $notifications;
+
+    /**
+     * @var ActiveQuery|null
+     */
+    public $query;
 
     /**
      * @inheritdoc
@@ -51,17 +62,23 @@ class FilterForm extends \yii\base\Model
      */
     public function init()
     {
-        $this->categoryFilter = [];
+        $this->categoryFilter = $this->getDefaultFilters();
+    }
 
-        foreach ($this->getCategoryFilterSelection() as $moduleName => $title) {
-            $this->categoryFilter [] = $moduleName;
-        }
+    /**
+     * Default filter selection
+     *
+     * @return array
+     */
+    public function getDefaultFilters(): array
+    {
+        return array_keys($this->getCategoryFilterSelection());
     }
 
     /**
      * Returns all Notifications classes of modules not selected in the filter
      *
-     * @return type
+     * @return array
      */
     public function getExcludeClassFilter()
     {
@@ -78,9 +95,9 @@ class FilterForm extends \yii\base\Model
 
     /**
      * Returns all available notification categories as checkbox list selection.
-     * @return type
+     * @return array
      */
-    public function getCategoryFilterSelection()
+    public function getCategoryFilterSelection(): array
     {
         if ($this->categoryFilterSelection == null) {
             $this->categoryFilterSelection = [];
@@ -94,9 +111,9 @@ class FilterForm extends \yii\base\Model
 
     /**
      * Returns all available BaseNotification classes with a NotificationCategory.
-     * @return type
+     * @return array
      */
-    public function getNotifications()
+    public function getNotifications(): array
     {
         if ($this->notifications == null) {
             $this->notifications = array_filter(Yii::$app->notification->getNotifications(), function($notification) {
@@ -109,24 +126,50 @@ class FilterForm extends \yii\base\Model
 
     /**
      * Checks if this filter is active (at least one filter selected)
-     * @return type
+     * @return bool
      */
-    public function hasFilter()
+    public function hasFilter(): bool
     {
         return $this->categoryFilter != null;
     }
 
     /**
      * Creates the filter query
-     * @return \yii\db\ActiveQuery
+     *
+     * @return ActiveQuery
      */
-    public function createQuery()
+    public function createQuery(): ActiveQuery
     {
-        $query = Notification::findGrouped();
-        if($this->hasFilter()) {
-            $query->andFilterWhere(['not in', 'class', $this->getExcludeClassFilter()]);
+        if (isset($this->query)) {
+            return $this->query;
         }
-        return $query;
+
+        $this->query = Notification::findGrouped();
+        if ($this->hasFilter()) {
+            $this->query->andFilterWhere(['not in', 'class', $this->getExcludeClassFilter()]);
+        }
+
+        return $this->query;
+    }
+
+    public function getPagination($pageSize): Pagination
+    {
+        $countQuery = clone $this->createQuery();
+        $pagination = new Pagination([
+            'totalCount' => $countQuery->count(),
+            'pageSize' => $pageSize
+        ]);
+        $this->query->offset($pagination->offset)->limit($pagination->limit);
+
+        // Don't display thу help param in pagination url
+        $pagination->params['reload'] = null;
+
+        // Append the not default filter selection to the pagination urls
+        if ($this->categoryFilter !== $this->getDefaultFilters()) {
+            $pagination->params['FilterForm']['categoryFilter'] = $this->categoryFilter;
+        }
+
+        return $pagination;
     }
 
 }
