@@ -41,7 +41,7 @@ class ActivityStreamViewer extends StreamViewer
         parent::__construct(array_merge($defaults, $config));
     }
 
-    public function getData()
+    protected function getData()
     {
         return [
             'stream' => $this->getStreamUrl(),

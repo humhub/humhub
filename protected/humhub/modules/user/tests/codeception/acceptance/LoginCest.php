@@ -22,11 +22,13 @@ class LoginCest
         $I->see('Password cannot be blank.');
 
         $I->amGoingTo('try to login with wrong credentials');
+        
         $loginPage->login('User1', 'wrong');
         $I->expectTo('see validations errors');
         $I->waitForText('User or Password incorrect.');
 
         $I->amGoingTo('try to login with correct credentials');
+        
         $loginPage->login('User1', '123qwe');
         $I->expectTo('see dashboard');
         $I->waitForText('User 2 Space 2 Post Public');
@@ -48,6 +50,7 @@ class LoginCest
         $I->wantTo('ensure that disabled user cannot login');
         $loginPage = LoginPage::openBy($I);
         $loginPage->login('DisabledUser', '123qwe');
+        
         $I->expectTo('see validations errors');
         $I->waitForText('Your account is disabled!');
     }
@@ -61,6 +64,7 @@ class LoginCest
         $I->wantTo('ensure that unapproved user cannot login');
         $loginPage = LoginPage::openBy($I);
         $loginPage->login('User3', '123qwe');
+        
         $I->expectTo('see validations errors');
         $I->waitForText('Your account is not approved yet!');
     }

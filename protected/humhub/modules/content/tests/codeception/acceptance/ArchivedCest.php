@@ -109,6 +109,7 @@ class ArchivedCest
         $I->amOnSpace(2, '/space/manage');
         $I->click('Archive');
         $I->amOnDashboard();
+        
         $archivedContents = array_merge($archivedContents, array_slice($notArchivedContents, 0, 4));
         $notArchivedContents = array_slice($notArchivedContents, 4);
         $I->dontSeeArchivedContents($archivedContents, $notArchivedContents);

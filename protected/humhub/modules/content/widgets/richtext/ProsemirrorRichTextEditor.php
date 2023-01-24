@@ -53,7 +53,7 @@ class ProsemirrorRichTextEditor extends AbstractRichTextEditor
     /**
      * @inheritdoc
      */
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'class' => 'ProsemirrorEditor '.$this->menuClass

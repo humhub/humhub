@@ -64,7 +64,7 @@ class Activity extends StreamEntryWidget
     /**
      * @inheritDoc
      */
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'class' => 'activity-entry'

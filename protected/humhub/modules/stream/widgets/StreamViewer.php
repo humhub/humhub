@@ -116,7 +116,7 @@ class StreamViewer extends JsWidget
         }
     }
 
-    public function getData()
+    protected function getData()
     {
         $result = [
             'content-delete-url' => Url::to(['/content/content/delete']),

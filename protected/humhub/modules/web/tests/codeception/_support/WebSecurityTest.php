@@ -15,7 +15,7 @@ class WebSecurityTest extends HumHubDbTestCase
     /**
      * @return Module
      */
-    public function _before()
+    protected function _before()
     {
         parent::_before();
         Security::setNonce(null);

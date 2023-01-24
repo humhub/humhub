@@ -19,7 +19,7 @@ class DBDateValidatorTest extends HumHubDbTestCase
 {
     protected $fixtureConfig = ['default'];
 
-    public function _before()
+    protected function _before()
     {
         parent::_before();
         Yii::$app->timeZone = 'Europe/Berlin';

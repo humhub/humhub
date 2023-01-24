@@ -8,7 +8,7 @@ class UrlOembedTest extends HumHubDbTestCase
 {
     public $fixtureConfig = ['default'];
 
-    public function _before()
+    protected function _before()
     {
         parent::_before();
         UrlOembedMock::setClient(new UrlOembedClientMock());

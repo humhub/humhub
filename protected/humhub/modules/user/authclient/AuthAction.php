@@ -27,7 +27,7 @@ class AuthAction extends \yii\authclient\AuthAction
      * @param StandaloneAuthClient $client
      * @return \yii\web\Response response instance.
      */
-    public function auth($client,  $authUrlParams = [])
+    protected function auth($client,  $authUrlParams = [])
     {
         Yii::$app->session->set('loginRememberMe', (boolean) Yii::$app->request->get('rememberMe'));
 
@@ -41,7 +41,7 @@ class AuthAction extends \yii\authclient\AuthAction
     /**
      * @inheritdoc
      */
-    public function authSuccess($client)
+    protected function authSuccess($client)
     {
         return parent::authSuccess($client);
     }

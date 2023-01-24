@@ -79,7 +79,7 @@ class PickerFilterInput extends FilterInput
     /**
      * @inheritdoc
      */
-    public function prepareOptions()
+    protected function prepareOptions()
     {
         parent::prepareOptions();
 
@@ -88,7 +88,7 @@ class PickerFilterInput extends FilterInput
 
     }
 
-    public function getWidgetOptions()
+    protected function getWidgetOptions()
     {
 
         return ArrayHelper::merge(parent::getWidgetOptions(), ['pickerClass' => $this->picker, 'pickerOptions' => $this->pickerOptions]);

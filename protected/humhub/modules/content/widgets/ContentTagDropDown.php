@@ -66,7 +66,7 @@ class ContentTagDropDown extends JsInputWidget
         }
     }
 
-    public function getAttributes()
+    protected function getAttributes()
     {
         $result = [
             'class' => 'form-control',

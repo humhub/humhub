@@ -64,7 +64,7 @@ class DownloadAction extends Action
      * @inheritdoc
      * @throws HttpException
      */
-    public function beforeRun()
+    protected function beforeRun()
     {
         if (Yii::$app->request->isPjax) {
             throw new HttpException(400, 'File downloads are not allowed with pjax!');

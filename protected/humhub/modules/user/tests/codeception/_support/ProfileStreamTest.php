@@ -17,7 +17,7 @@ class ProfileStreamTest extends HumHubDbTestCase
      */
     protected $user;
 
-    public function _before()
+    protected function _before()
     {
         Post::deleteAll();
         Content::deleteAll();

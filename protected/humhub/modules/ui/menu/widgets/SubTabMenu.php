@@ -29,7 +29,7 @@ abstract class SubTabMenu extends TabMenu
     /**
      * @inheritdoc
      */
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'class' => 'nav nav-tabs tab-sub-menu'

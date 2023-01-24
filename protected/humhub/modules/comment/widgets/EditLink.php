@@ -30,7 +30,7 @@ class EditLink extends WidgetMenuEntry
     /**
      * @inheritdoc
      */
-    public function renderEntry($extraHtmlOptions = [])
+    protected function renderEntry($extraHtmlOptions = [])
     {
         $editUrl = Url::to(['/comment/comment/edit',
             'objectModel' => $this->comment->object_model,

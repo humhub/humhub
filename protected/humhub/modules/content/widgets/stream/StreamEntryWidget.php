@@ -136,7 +136,7 @@ abstract class StreamEntryWidget extends JsWidget
     /**
      * @inheritDoc
      */
-    public function getData()
+    protected function getData()
     {
         $content = $this->model->content;
 

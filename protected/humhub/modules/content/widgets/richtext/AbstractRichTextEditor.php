@@ -265,7 +265,7 @@ class AbstractRichTextEditor extends JsInputWidget
     /**
      * @inheritdoc
      */
-    public function getData()
+    protected function getData()
     {
         $result = [
             'exclude' => $this->exclude,

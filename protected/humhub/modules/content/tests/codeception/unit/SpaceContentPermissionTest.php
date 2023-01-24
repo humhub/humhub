@@ -34,7 +34,7 @@ class SpaceContentPermissionTest extends HumHubDbTestCase
     public $publicPost;
     public $space;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->becomeUser('Admin');
@@ -43,7 +43,7 @@ class SpaceContentPermissionTest extends HumHubDbTestCase
         $this->space->save();
 
         $this->privatePost = new Post;
-        if (version_compare(PHP_VERSION, '7.4', '<')) {
+        if (PHP_VERSION_ID < 70400) {
             $this->privatePost->silentContentCreation = true;
         }
         $this->privatePost->message = "Private Space1 Post";
@@ -52,7 +52,7 @@ class SpaceContentPermissionTest extends HumHubDbTestCase
         $this->privatePost->save();
 
         $this->publicPost = new Post;
-        if (version_compare(PHP_VERSION, '7.4', '<')) {
+        if (PHP_VERSION_ID < 70400) {
             $this->publicPost->silentContentCreation = true;
         }
         $this->publicPost->message = "Public Space1 Post";

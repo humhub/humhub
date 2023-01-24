@@ -295,6 +295,7 @@ class Group extends ActiveRecord
             ':groupId' => $this->id,
         ]);
         $query->andWhere(['IS NOT', 'group_user.id', new \yii\db\Expression('NULL')]);
+        
         $query->multiple = true;
 
         return $query;

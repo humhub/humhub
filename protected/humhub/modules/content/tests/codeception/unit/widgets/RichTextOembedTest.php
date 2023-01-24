@@ -19,7 +19,7 @@ class RichTextOembedTest extends HumHubDbTestCase
      * Links
      */
 
-    public function _before()
+    protected function _before()
     {
         parent::_before();
 

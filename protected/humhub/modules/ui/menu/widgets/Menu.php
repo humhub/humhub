@@ -121,7 +121,7 @@ abstract class Menu extends JsWidget
     /**
      * @inheritdoc
      */
-    public function getData()
+    protected function getData()
     {
         return [
             'menu-id' => $this->id
@@ -281,7 +281,7 @@ abstract class Menu extends JsWidget
     public function getFirstEntry($type = null, $filterVisible = false)
     {
         $entries = $this->getEntries($type, $filterVisible);
-        if (count($entries)) {
+        if ($entries !== []) {
             return $entries[0];
         }
 

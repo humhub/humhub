@@ -33,7 +33,7 @@ class CheckboxListFilterInput extends CheckboxFilterInput
     /**
      * @inheritdoc
      */
-    public function prepareOptions()
+    protected function prepareOptions()
     {
         parent::prepareOptions();
         $this->options['data-action-click'] = $this->clickAction;

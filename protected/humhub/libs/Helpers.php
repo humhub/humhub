@@ -232,7 +232,7 @@ class Helpers
             return false;
         }
         $check = 0;
-        for ($i = 0; $i < $length; $i += 1) {
+        for ($i = 0; $i < $length; ++$i) {
             $check |= (ord($a[$i]) ^ ord($b[$i]));
         }
 

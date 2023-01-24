@@ -14,7 +14,7 @@ use Yii;
 
 class LegitimationTest extends HumHubDbTestCase
 {
-    public function _before()
+    protected function _before()
     {
         Follow::deleteAll();
         Friendship::deleteAll();
@@ -43,6 +43,7 @@ class LegitimationTest extends HumHubDbTestCase
         $user = User::findOne(['id' => 1]);
         $space1 = Space::findOne(['id' => 1]);
         $space1->addMember($user->id);
+        
         $legitimations = $module->getLegitimateContentContainerIds($user, false);
 
         static::assertCount(1, $legitimations[Content::VISIBILITY_OWNER]);

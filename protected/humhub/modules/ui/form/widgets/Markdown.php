@@ -121,7 +121,7 @@ class Markdown extends JsInputWidget
         return $textArea;
     }
 
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'rows' => $this->rows,
@@ -132,7 +132,7 @@ class Markdown extends JsInputWidget
         ];
     }
 
-    public function getData()
+    protected function getData()
     {
         if (empty($this->fileModel)) {
             $this->fileModel = $this->model;

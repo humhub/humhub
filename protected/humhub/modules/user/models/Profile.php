@@ -305,7 +305,7 @@ class Profile extends ActiveRecord
         $categories = [];
 
         foreach (ProfileFieldCategory::find()->orderBy('sort_order')->all() as $category) {
-            if (count($this->getProfileFields($category)) > 0) {
+            if ($this->getProfileFields($category) !== []) {
                 $categories[] = $category;
             }
         }

@@ -40,6 +40,7 @@ class UserController extends BaseAccountController
         $this->forcePostRequest();
         $model = new NotificationSettings(['user' => $this->getUser()]);
         $model->resetUserSettings();
+        
         $this->view->saved();
         $this->redirect(['index']);
     }

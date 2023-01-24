@@ -68,7 +68,7 @@ class Application extends \yii\web\Application
     /**
      * @inheritdoc
      */
-    public function bootstrap()
+    protected function bootstrap()
     {
         $request = $this->getRequest();
 

@@ -380,7 +380,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function hasTags()
     {
-        return count($this->getTags()) > 0;
+        return $this->getTags() !== [];
     }
 
     /**

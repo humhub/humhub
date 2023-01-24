@@ -44,6 +44,7 @@ class AccountCest
         //$I->amOnProfile();
         $directory = DirectoryPage::openBy($I);
         $directory->clickMembers();
+        
         $I->expectTo('see my user tags');
         $I->see('Tester');
         $I->see('Actor');

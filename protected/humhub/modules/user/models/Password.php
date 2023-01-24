@@ -201,7 +201,7 @@ class Password extends ActiveRecord
                     $message;
                 try {
                     preg_match($pattern, $this->$attribute, $matches);
-                    if (! count($matches)) {
+                    if ($matches === []) {
                         $this->addError($attribute, $errorMessage);
                     }
                 } catch (\Exception $exception) {

@@ -205,7 +205,7 @@ class User extends \yii\web\User
     /**
      * @inheritdoc
      */
-    public function afterLogin($identity, $cookieBased, $duration)
+    protected function afterLogin($identity, $cookieBased, $duration)
     {
         $identity->updateAttributes(['last_login' => date('Y-m-d G:i:s')]);
 

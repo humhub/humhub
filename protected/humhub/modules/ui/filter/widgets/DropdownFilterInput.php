@@ -41,7 +41,7 @@ class DropdownFilterInput extends FilterInput
     /**
      * @inheritdoc
      */
-    public function prepareOptions()
+    protected function prepareOptions()
     {
         parent::prepareOptions();
         $this->options['data-action-change'] = 'inputChange';

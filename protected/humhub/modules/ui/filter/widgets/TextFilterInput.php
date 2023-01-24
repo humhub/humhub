@@ -31,7 +31,7 @@ class TextFilterInput extends FilterInput
     /**
      * @inheritdoc
      */
-    public function prepareOptions()
+    protected function prepareOptions()
     {
         parent::prepareOptions();
 

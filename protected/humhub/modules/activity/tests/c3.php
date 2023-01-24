@@ -130,6 +130,7 @@ if (!defined('C3_CODECOVERAGE_MEDIATE_STORAGE')) {
 
         $phar = new PharData($path . '.tar');
         $phar->setSignatureAlgorithm(Phar::SHA1);
+        
         $files = $phar->buildFromDirectory($path . 'html');
         array_map('unlink', $files);
 
@@ -177,6 +178,7 @@ if (!defined('C3_CODECOVERAGE_MEDIATE_STORAGE')) {
 
         $phar = new PharData($path . '.tar');
         $phar->setSignatureAlgorithm(Phar::SHA1);
+        
         $files = $phar->buildFromDirectory($path . 'phpunit');
         array_map('unlink', $files);
 

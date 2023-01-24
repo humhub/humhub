@@ -30,7 +30,7 @@ class DropdownDivider extends MenuEntry
     /**
      * @inheritdoc
      */
-    public function renderEntry($extraHtmlOptions = [])
+    protected function renderEntry($extraHtmlOptions = [])
     {
         Html::addCssClass($extraHtmlOptions, 'divider');
         return Html::tag('li', '', $this->getHtmlOptions($extraHtmlOptions));

@@ -40,7 +40,7 @@ abstract class TabMenu extends Menu
     /**
      * @inheritdoc
      */
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'class' => 'tab-menu'

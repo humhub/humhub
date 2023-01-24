@@ -53,7 +53,7 @@ class CodeMirrorInputWidget extends JsInputWidget
         return $textArea;
     }
 
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'rows' => $this->rows,

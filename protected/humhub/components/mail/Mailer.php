@@ -94,7 +94,7 @@ class Mailer extends \yii\symfonymailer\Mailer
      * @inheritdoc
      * @param Message $message
      */
-    public function sendMessage($message): bool
+    protected function sendMessage($message): bool
     {
 
         // Remove example e-mails

@@ -8,7 +8,7 @@ use Yii;
 
 class TimeAgoWidgetTest extends HumHubDbTestCase
 {
-    public function _before()
+    protected function _before()
     {
         Yii::$app->params['formatter']['timeAgoStatic'] = false;
         Yii::$app->params['formatter']['timeAgoBefore'] = 172800;

@@ -17,7 +17,7 @@ class UploadProgress extends \humhub\widgets\JsWidget
     
     public $visible = false;
     
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'style' => 'margin:10px 0px'

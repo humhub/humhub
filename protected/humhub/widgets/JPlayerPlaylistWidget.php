@@ -66,14 +66,14 @@ class JPlayerPlaylistWidget extends JsWidget
         return $result;
     }
 
-    public function getData()
+    protected function getData()
     {
         return [
             'container-id' => '#'.$this->getContainerId()
         ];
     }
 
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'class' => 'jp-jplayer'

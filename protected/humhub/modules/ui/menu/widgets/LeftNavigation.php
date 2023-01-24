@@ -29,7 +29,7 @@ abstract class LeftNavigation extends Menu
     /**
      * @inheritdoc
      */
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'class' => 'panel panel-default left-navigation'

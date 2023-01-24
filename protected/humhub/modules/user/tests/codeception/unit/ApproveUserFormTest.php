@@ -16,7 +16,7 @@ class ApproveUserFormTest extends HumHubDbTestCase
      */
     public $unapprovedUser;
 
-    public function _before()
+    protected function _before()
     {
         Yii::$app->getModule('user')->settings->set('auth.needApproval', 1);
         $this->unapprovedUser = User::findOne(['id' => 6]);

@@ -110,6 +110,7 @@ class UserController extends Controller
 
         $user->scenario = 'editAdmin';
         $user->profile->scenario = Profile::SCENARIO_EDIT_ADMIN;
+        
         $profile = $user->profile;
 
         if ($canEditPassword) {

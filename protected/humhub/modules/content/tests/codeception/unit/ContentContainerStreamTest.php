@@ -15,7 +15,7 @@ class ContentContainerStreamTest extends HumHubDbTestCase
 
     private ?\humhub\modules\space\models\Space $space = null;
 
-    public function _before()
+    protected function _before()
     {
         parent::_before();
         $this->space = Space::findOne(['id' => 2]);

@@ -34,7 +34,7 @@ class ProfileContentPermissionTest extends HumHubDbTestCase
     public $publicPost;
     public $admin;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->becomeUser('Admin');

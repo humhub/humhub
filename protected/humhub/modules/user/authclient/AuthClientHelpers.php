@@ -207,6 +207,7 @@ class AuthClientHelpers
         $username = empty($username) ? Yii::$app->security->generateRandomString(8) : implode('_', $username);
 
         $username = strtolower(substr($username, 0, 32));
+        
         $usernameRandomSuffix = '';
         $user = User::find()->where(['username' => $username . $usernameRandomSuffix]);
 

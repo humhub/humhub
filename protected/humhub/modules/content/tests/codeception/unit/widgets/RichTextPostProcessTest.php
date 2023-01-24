@@ -19,7 +19,7 @@ use tests\codeception\_support\HumHubDbTestCase;
 class RichTextPostProcessTest extends HumHubDbTestCase
 {
 
-    public function _before()
+    protected function _before()
     {
         (new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt1',

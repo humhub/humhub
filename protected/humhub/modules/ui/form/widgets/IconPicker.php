@@ -61,7 +61,7 @@ class IconPicker extends Select2
     /**
      * @inheritdoc
      */
-    public function renderInput()
+    protected function renderInput()
     {
         $this->populateIconList();
         parent::renderInput();

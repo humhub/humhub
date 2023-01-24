@@ -97,6 +97,7 @@ class ContentTagTest extends HumHubDbTestCase
         $content = Content::findOne(1);
         $tag2 = new TestTagSameModule($content->getContainer(), 'test2');
         $tag2->save();
+        
         $content->addTag($tag2);
         $this->assertEquals(1, count($content->tagRelations));
 
@@ -175,6 +176,7 @@ class ContentTagTest extends HumHubDbTestCase
         $content = Content::findOne(1);
         $tag2 = new TestTagSameModule($content->getContainer(), 'test2');
         $tag2->save();
+        
         $content->addTag($tag2);
         $this->assertEquals(1, ContentTagRelation::find()->count());
 
@@ -227,6 +229,7 @@ class ContentTagTest extends HumHubDbTestCase
 
         $tag3 = new TestTagOtherModule($content->getContainer(), 'test3');
         $tag3->save();
+        
         $content->addTag($tag3);
         $this->assertEquals(3, count($content->tags));
 

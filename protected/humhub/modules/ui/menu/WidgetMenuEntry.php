@@ -35,7 +35,7 @@ class WidgetMenuEntry extends MenuEntry
      * @param array $extraHtmlOptions
      * @return string the Html link
      */
-    public function renderEntry($extraHtmlOptions = [])
+    protected function renderEntry($extraHtmlOptions = [])
     {
         try {
             return call_user_func($this->widgetClass.'::widget', $this->widgetOptions);

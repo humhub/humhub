@@ -23,7 +23,7 @@ namespace humhub\components\access;
  */
 class StrictAccess extends ControllerAccess
 {
-    public function getFixedRules()
+    protected function getFixedRules()
     {
         $fixed = parent::getFixedRules();
         $fixed[] = [self::RULE_STRICT];

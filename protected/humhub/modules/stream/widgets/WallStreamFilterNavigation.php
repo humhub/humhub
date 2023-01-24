@@ -334,7 +334,7 @@ class WallStreamFilterNavigation extends FilterNavigation
         ], static::FILTER_BLOCK_DATE_TO);
     }
 
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'class' => 'wallFilterPanel'

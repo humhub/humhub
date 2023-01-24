@@ -167,7 +167,7 @@ class ModuleControls extends Menu
     /**
      * @inheritdoc
      */
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'class' => 'nav nav-pills preferences'

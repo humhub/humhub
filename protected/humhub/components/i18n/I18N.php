@@ -213,7 +213,7 @@ class I18N extends BaseI18N
      */
     public function format($message, $params, $language)
     {
-        if (count($params) !== 0) {
+        if ($params !== []) {
             $fixedParams = [];
             // Try to fix old placeholder formats
             foreach ($params as $param => $value) {

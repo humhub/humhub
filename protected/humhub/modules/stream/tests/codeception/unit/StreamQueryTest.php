@@ -14,7 +14,7 @@ class StreamQueryTest extends HumHubDbTestCase
 {
     public $space;
 
-    public function _before()
+    protected function _before()
     {
         parent::_before();
 

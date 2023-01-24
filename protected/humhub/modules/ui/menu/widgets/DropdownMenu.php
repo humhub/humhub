@@ -30,7 +30,7 @@ abstract class DropdownMenu extends Menu
     /**
      * @inheritdoc
      */
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'class' => 'btn-group dropdown-navigation'

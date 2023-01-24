@@ -121,7 +121,7 @@ class Modal extends JsWidget
         ]);
     }
 
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'class' => "modal",
@@ -131,7 +131,7 @@ class Modal extends JsWidget
         ];
     }
 
-    public function getData()
+    protected function getData()
     {
         $result = [];
 

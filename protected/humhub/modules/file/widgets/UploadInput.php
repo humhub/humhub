@@ -229,7 +229,7 @@ class UploadInput extends JsWidget
         return substr($haystack, -strlen($needle)) === $needle;
     }
 
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'multiple' => ($this->multiple) ? 'multiple' : null,
@@ -237,7 +237,7 @@ class UploadInput extends JsWidget
         ];
     }
 
-    public function getData()
+    protected function getData()
     {
         $formSelector = ($this->form instanceof \yii\widgets\ActiveForm) ? '#' + $this->form->getId() : $this->form;
 

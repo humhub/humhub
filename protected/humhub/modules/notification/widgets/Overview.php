@@ -53,7 +53,7 @@ class Overview extends JsWidget
         ]);
     }
 
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'id' => 'notification_widget',
@@ -61,7 +61,7 @@ class Overview extends JsWidget
         ];
     }
 
-    public function getData()
+    protected function getData()
     {
         return [
             'ui-init' => ListController::getUpdates(),

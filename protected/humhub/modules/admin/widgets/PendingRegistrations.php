@@ -66,7 +66,7 @@ class PendingRegistrations extends JsWidget
     /**
      * @inheritDoc
      */
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'class' => 'PendingRegistrations'
@@ -76,7 +76,7 @@ class PendingRegistrations extends JsWidget
     /**
      * @inheritDoc
      */
-    public function getData()
+    protected function getData()
     {
         return [
             'url-delete-selected' => Url::to(['pending-registrations/delete-all-selected']),

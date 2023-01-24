@@ -194,7 +194,7 @@ abstract class AbstractRichText extends JsWidget
     /**
      * @inheritdoc
      */
-    public function getData()
+    protected function getData()
     {
         $result = [
             'exclude' => $this->exclude,

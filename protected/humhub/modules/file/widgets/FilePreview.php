@@ -88,7 +88,7 @@ class FilePreview extends JsWidget
         return Html::tag('div', '', $this->getOptions());
     }
 
-    public function getData()
+    protected function getData()
     {
         return [
             'prevent-popover' => $this->preventPopover,
@@ -98,7 +98,7 @@ class FilePreview extends JsWidget
         ];
     }
 
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'class' => 'well post-file-list'

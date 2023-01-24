@@ -308,6 +308,7 @@ class HumHubDbTestCase extends Unit
     {
         $permissionManger = new PermissionManager();
         $permissionManger->setGroupState($groupId, $permission, $state);
+        
         Yii::$app->user->permissionManager->clear();
     }
 
@@ -319,6 +320,7 @@ class HumHubDbTestCase extends Unit
     ) {
         $permissionManger = new ContentContainerPermissionManager(['contentContainer' => $contentContainer]);
         $permissionManger->setGroupState($groupId, $permission, $state);
+        
         $contentContainer->permissionManager->clear();
     }
 

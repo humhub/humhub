@@ -29,7 +29,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
     private ?\humhub\modules\post\models\Post $profilePrivatePost = null;
     private $posts = [];
 
-    public function _before()
+    protected function _before()
     {
         parent::_before();
 

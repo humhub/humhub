@@ -53,7 +53,7 @@ class MenuLink extends MenuEntry
      * @param array $extraHtmlOptions
      * @return string the Html link
      */
-    public function renderEntry($extraHtmlOptions = [])
+    protected function renderEntry($extraHtmlOptions = [])
     {
         // Set default html options and merge with extraoptions
         $this->getHtmlOptions($extraHtmlOptions);

@@ -118,7 +118,7 @@ class ContainerProfileHeader extends JsWidget
         ]);
     }
 
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'class' => 'panel panel-default panel-profile'

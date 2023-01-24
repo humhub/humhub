@@ -88,7 +88,7 @@ class ModuleAutoLoaderTest extends Unit
         return [
             ['@humhub/modules', count(self::EXPECTED_CORE_MODULES)],
             ['@humhub/invalid', 0],
-            ['@invalid/folder', 0]
+            ['@invalid/folder', 0],
         ];
     }
 }

@@ -207,7 +207,7 @@ class ViewMeta extends BaseObject
             $this->view->registerMetaTag(['property' => 'og:description', 'content' => StringHelper::truncate($this->description, 200)]);
         }
 
-        if (count($this->images) > 0) {
+        if ($this->images !== []) {
             $this->view->registerMetaTag(['name' => 'og:image', 'content' => $this->images[0]]);
         }
     }
@@ -231,7 +231,7 @@ class ViewMeta extends BaseObject
                 'property' => 'twitter:description',
                 'content' => StringHelper::truncate($this->description, 200)]);
         }
-        if (count($this->images) > 0) {
+        if ($this->images !== []) {
             $this->view->registerMetaTag(['name' => 'twitter:image', 'content' => $this->images[0]]);
         }
     }

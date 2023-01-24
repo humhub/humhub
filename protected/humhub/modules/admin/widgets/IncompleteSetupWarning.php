@@ -46,7 +46,7 @@ class IncompleteSetupWarning extends Widget
 
         $problems = $this->getProblems();
 
-        if (count($problems) === 0) {
+        if ($problems === []) {
             return;
         }
 

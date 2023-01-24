@@ -156,7 +156,7 @@ abstract class FilterNavigation extends JsWidget
         ]);
     }
 
-    public function getData()
+    protected function getData()
     {
         if ($this->componentId) {
             return [

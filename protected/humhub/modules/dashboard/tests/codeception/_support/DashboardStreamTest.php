@@ -15,13 +15,13 @@ use Yii;
 
 class DashboardStreamTest extends HumHubDbTestCase
 {
-    public function _before()
+    protected function _before()
     {
         parent::_before();
         Content::deleteAll();
     }
 
-    public function _after()
+    protected function _after()
     {
         $this->disableAutoIncludeProfilePosts();
         $this->enableFriendships(false);

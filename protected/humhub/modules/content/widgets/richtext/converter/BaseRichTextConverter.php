@@ -539,7 +539,7 @@ REGEXP;
     {
         $result = parent::consumeOl($lines, $current);
 
-        if (is_array($lines) && count($lines) > 0 && !empty($result[0]['items'])) {
+        if (is_array($lines) && $lines !== [] && !empty($result[0]['items'])) {
             $result[0]['origNums'] = [];
             $i = array_keys($result[0]['items'])[0];
             foreach ($lines as $line) {

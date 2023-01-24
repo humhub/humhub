@@ -60,7 +60,7 @@ class ModalDialog extends Modal
         ]);
     }
 
-    public function getAttributes()
+    protected function getAttributes()
     {
         $dialogClass = 'modal-dialog';
         $dialogClass .= $this->size ? ' modal-dialog-'.$this->size : '';
@@ -71,7 +71,7 @@ class ModalDialog extends Modal
             'class' => $dialogClass
         ];
     }
-    public function getData()
+    protected function getData()
     {
         return [
             'backdrop' => (!$this->closable || $this->backdrop === false) ? 'static' : 'true',

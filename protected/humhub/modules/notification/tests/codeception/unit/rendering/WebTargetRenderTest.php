@@ -30,6 +30,7 @@ class WebTargetRenderTest extends HumHubDbTestCase
     {
         $notification = notifications\TestNotification::instance()->about(Post::findOne(['id' => 1]));
         $notification->send(User::findOne(['id' => 1]));
+        
         $notification->viewName = 'special';
         $notification->saveRecord(User::findOne(['id' => 1]));
         $target = Yii::$app->notification->getTarget(WebTarget::class);

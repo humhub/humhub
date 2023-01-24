@@ -150,8 +150,10 @@ class DesignSettingsForm extends Model
         $settingsManager->set('paginationSize', $this->paginationSize);
         $settingsManager->set('displayNameFormat', $this->displayNameFormat);
         $settingsManager->set('displayNameSubFormat', $this->displayNameSubFormat);
+        
         Yii::$app->getModule('space')->settings->set('spaceOrder', $this->spaceOrder);
         Yii::$app->getModule('admin')->settings->set('defaultDateInputFormat', $this->dateInputDisplayFormat);
+        
         $settingsManager->set('horImageScrollOnMobile', $this->horImageScrollOnMobile);
         $settingsManager->set('useDefaultSwipeOnMobile', $this->useDefaultSwipeOnMobile);
 

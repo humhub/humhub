@@ -17,7 +17,7 @@ use Yii;
  */
 class DateHelperTest extends Unit
 {
-    public function _before()
+    protected function _before()
     {
         parent::_before();
         Yii::$app->timeZone = 'Europe/Berlin';

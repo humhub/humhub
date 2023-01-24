@@ -37,14 +37,14 @@ class PermisionGridModuleFilter extends JsWidget
         return Html::dropDownList('', [], ['all' => Yii::t('base', 'All')], $this->getOptions());
     }
 
-    public function getData()
+    protected function getData()
     {
         return [
             'action-change' => 'change',
         ];
     }
 
-    public function getAttributes()
+    protected function getAttributes()
     {
         return [
             'class' => 'form-control pull-right visible-md visible-lg',

@@ -58,6 +58,7 @@ class ProfileCest
         $I->dontSeeElement('.has-error');
 
         $I->amGoingTo('access my profiles about page');
+        
         $profile = $I->amOnProfile();
         $profile->clickAbout();
 
@@ -88,6 +89,7 @@ class ProfileCest
 
         $accountSettings = AccountSettingsPage::openBy($I);
         $accountSettings->clickPermissions();
+        
         $I->selectOption('select[data-attribute0*=ViewAboutPage]', 'Deny');
 
         $I->amUser1(true);
