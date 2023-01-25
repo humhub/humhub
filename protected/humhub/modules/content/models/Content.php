@@ -793,11 +793,20 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function canLockComments(): bool
     {
-        if (!$this->getContainer()) {
-            return $this->canEdit();
+        if (Yii::$app->user->isGuest) {
+            return false;
         }
 
-        return $this->getContainer()->permissionManager->can(ManageContent::class);
+        $user = Yii::$app->user->getIdentity();
+
+        // Global Admin can lock comments
+        if (Yii::$app->getModule('content')->adminCanEditAllContent && $user->isSystemAdmin()) {
+            return true;
+        }
+
+        return $this->container
+            ? $this->container->permissionManager->can(ManageContent::class)
+            : $this->canEdit();
     }
 
     /**
