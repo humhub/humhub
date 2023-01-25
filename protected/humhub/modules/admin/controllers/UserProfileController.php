@@ -136,7 +136,8 @@ class UserProfileController extends Controller
             $definition['buttons']['delete'] = [
                 'type' => 'submit',
                 'label' => Yii::t('AdminModule.user', 'Delete'),
-                'class' => 'btn btn-danger pull-right'
+                'class' => 'btn btn-danger pull-right',
+                'options' => ['data-action-confirm' => ''],
             ];
         }
 

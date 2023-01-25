@@ -195,9 +195,9 @@ class HForm extends \yii\base\Component
     {
         $output = "";
         foreach ($buttons as $buttonName => $definition) {
-            $definition['isVisible'] = isset($definition['isVisible']) ? $definition['isVisible'] : true;
-            if ($definition['type'] == 'submit' && $definition['isVisible']) {
-                $output .= \yii\helpers\Html::submitButton($definition['label'], ['name' => $buttonName, 'class' => $definition['class'], 'data-ui-loader' => '']);
+            $isVisible = $definition['isVisible'] ?? true;
+            if ($definition['type'] == 'submit' && $isVisible) {
+                $output .= \yii\helpers\Html::submitButton($definition['label'], array_merge(['name' => $buttonName, 'class' => $definition['class'], 'data-ui-loader' => ''], $definition['options'] ?? []));
                 $output .= "&nbsp;";
             }
         }

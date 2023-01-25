@@ -12,3 +12,4 @@ HumHub Changelog (DEVELOP)
 - Enh #6031: On users list grid, show Auth mode badge only for sys admins
 - Enh #6035: Added Estonian language
 - Fix #5956: Display all newer comments after current comment
+- Enh #6061: Administration: Add a confirmation on profile field delete button
