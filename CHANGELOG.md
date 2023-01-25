@@ -2,8 +2,8 @@ HumHub Changelog
 ================
 
 
-1.13.1 (Unreleased)
---------------------------
+1.13.1 (January 25, 2023)
+-------------------------
 - Fix #5985: Space user search in picker 
 - Fix #5993: Broken images on installations with multiple URLs 
 - Fix #5996: Fix param type in strpos() (PHP 8.1)
