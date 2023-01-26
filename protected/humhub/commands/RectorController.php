@@ -64,7 +64,7 @@ class RectorController extends Controller
         }
 
         $commands = [
-            'cd ' . Yii::getAlias('@config'),
+            'cd ' . Yii::getAlias('@humhub/config'),
             'php ' . $rector . ' process ' . $args,
         ];
 
