@@ -64,7 +64,7 @@ class RectorController extends Controller
         }
 
         $commands = [
-            'cd ' . Yii::getAlias('@webroot'),
+            'cd ' . Yii::getAlias('@config'),
             'php ' . $rector . ' process ' . $args,
         ];
 

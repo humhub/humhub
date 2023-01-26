@@ -12,18 +12,16 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->phpVersion(PhpVersion::PHP_74);
 
     $rectorConfig->paths([
-        __DIR__ . '/protected/humhub',
+        __DIR__ . '/../humhub',
     ]);
 
-    $rectorConfig->sets([
-        SetList::PHP_74,
-    ]);
+    $rectorConfig->sets([SetList::PHP_74]);
 
     $rectorConfig->skip([
         // Skip files:
-        __DIR__ . '/protected/**/messages/**/*',
-        __DIR__ . '/protected/**/vendor/**/*',
-        __DIR__ . '/protected/**/node_modules/**/*',
+        __DIR__ . '/../**/messages/**/*',
+        __DIR__ . '/../**/vendor/**/*',
+        __DIR__ . '/../**/node_modules/**/*',
         // PHP_74
         AddLiteralSeparatorToNumberRector::class,
         RestoreDefaultNullToNullableTypePropertyRector::class,
