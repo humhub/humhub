@@ -8,12 +8,14 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\db\ActiveQuery;
 use yii\db\Expression;
 
 /**
@@ -23,7 +25,7 @@ use yii\db\Expression;
  *
  * @author luke
  */
-class ActiveQueryContent extends \yii\db\ActiveQuery
+class ActiveQueryContent extends ActiveQuery
 {
 
     /**
@@ -49,8 +51,9 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
             $user = Yii::$app->user->getIdentity();
         }
 
-        $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
+        $this->andWhere(['content.state' => Content::STATE_PUBLISHED]);
 
+        $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
         $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::class]);
         $this->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::class]);
         $conditionSpace = '';
@@ -139,7 +142,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
                 $contentTagQuery = ContentTagRelation::find()->select('content_id');
                 $contentTagQuery->andWhere(['content_tag_relation.tag_id' => $contentTag->id]);
                 $contentTagQuery->andWhere('content_tag_relation.content_id=content.id');
-                $this->andWhere(['content.id' =>$contentTagQuery]);
+                $this->andWhere(['content.id' => $contentTagQuery]);
             }
         } else if ($mode == 'OR') {
             $names = array_map(function ($v) {

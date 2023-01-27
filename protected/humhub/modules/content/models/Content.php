@@ -59,6 +59,7 @@ use yii\helpers\Url;
  * @property integer $visibility
  * @property integer $pinned
  * @property integer $archived
+ * @property integer $state
  * @property integer $locked_comments
  * @property string $created_at
  * @property integer $created_by
@@ -102,6 +103,13 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      * @var int Owner visibility mode, only visible for contentContainer + content owner
      */
     const VISIBILITY_OWNER = 2;
+
+    const STATE_PUBLISHED = 1;
+    const STATE_DRAFT = 10;
+    const STATE_UNAPPROVED = 20;
+    const STATE_DECLINED = 25;
+    const STATE_ARCHIVED = 90;
+    const STATE_DELETED = 100;
 
     /**
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
