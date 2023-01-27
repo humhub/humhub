@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Confirm</strong> comment deleting' => '<strong>Conferma</strong> la cancellazione del commento',
-  '<strong>Delete</strong> comment?' => '',
+  '<strong>Delete</strong> comment?' => '<strong>Eliminare</strong> commento?',
   '<strong>Permalink</strong> to this comment' => '<strong>Link permanente</strong> a questo commento',
   'Cancel' => 'Annulla',
   'Cancel Edit' => 'Annulla Modifica',
@@ -19,7 +19,7 @@ return array (
   'Read full comment...' => 'Leggi il commento completo...',
   'Reason' => 'Motivo',
   'Reply' => 'Rispondi',
-  'Send a notification to author' => '',
+  'Send a notification to author' => 'Invia una notifica all\'autore',
   'Show' => 'Mostra',
   'Show all {total} comments' => 'Mostra tutti i {total} commenti',
   'Show {count} more comments' => 'Mostra altri {count} commenti',
