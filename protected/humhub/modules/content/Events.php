@@ -141,4 +141,14 @@ class Events extends BaseObject
         SearchHelper::queueDelete($record);
     }
 
+    /**
+     * Callback on daily cron job run
+     *
+     * @param \yii\base\Event $event
+     */
+    public static function onCronDailyRun($event): void
+    {
+        Yii::$app->queue->push(new jobs\PurgeDeletedContents());
+    }
+
 }

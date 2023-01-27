@@ -98,7 +98,7 @@ class ContentController extends Controller
             }
 
             $json = [
-                'success' => $contentObj->delete(),
+                'success' => $contentObj->softDelete(),
                 'uniqueId' => $contentObj->getUniqueId(),
                 'model' => $model,
                 'pk' => $id
@@ -223,7 +223,7 @@ class ContentController extends Controller
             }
         }
 
-        return $this->asJson(['success' => $content->delete()]);
+        return $this->asJson(['success' => $content->softDelete()]);
     }
 
     public function actionReload($id)

@@ -956,4 +956,15 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     {
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
     }
+
+    public function softDelete(): bool
+    {
+        // TODO: Delete Activities
+        // TODO: Delete Notifications
+
+        $this->state = self::STATE_DELETED;
+        $this->save();
+
+        return true;
+    }
 }

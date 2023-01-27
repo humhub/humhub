@@ -12,7 +12,11 @@ class m230127_195245_content_state extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('content', 'state', $this->tinyInteger()->defaultValue(1)->notNull());
+        $this->addColumn(
+            'content',
+            'state',
+            $this->tinyInteger()->defaultValue(1)->notNull()->after('visibility')
+        );
     }
 
     /**
