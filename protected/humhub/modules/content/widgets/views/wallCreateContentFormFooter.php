@@ -64,25 +64,31 @@ use yii\helpers\Html;
         <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>
 
         <!-- public checkbox -->
-        <?= Html::checkbox('visibility', '', ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true', 'title' => Yii::t('ContentModule.base', 'Content visibility') ]); ?>
+        <?= Html::checkbox('visibility', '', ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true']); ?>
+
+        <!-- draft checkbox -->
+        <?= Html::checkbox('isDraft', '', ['id' => 'contentForm_draft', 'class' => 'contentForm hidden', 'aria-hidden' => 'true']); ?>
 
         <!-- content sharing -->
         <div class="pull-right">
-
-            <span class="label label-info label-public hidden"><?= Yii::t('ContentModule.base', 'Public'); ?></span>
+            <span class="label-container">
+                <span class="label label-info label-public hidden"><?= Yii::t('ContentModule.base', 'Public'); ?></span>
+                <span class="label label-warning label-draft hidden"><?= Yii::t('ContentModule.base', 'Draft'); ?></span>
+            </span>
 
             <ul class="nav nav-pills preferences" style="right:0;top:5px">
                 <li class="dropdown">
-                    <a class="dropdown-toggle" style="padding:5px 10px" data-toggle="dropdown" href="#" aria-label="<?= Yii::t('base', 'Toggle post menu'); ?>" aria-haspopup="true">
-                        <?= Icon::get('cogs')?>
+                    <a class="dropdown-toggle" style="padding:5px 10px" data-toggle="dropdown" href="#"
+                       aria-label="<?= Yii::t('base', 'Toggle post menu'); ?>" aria-haspopup="true">
+                        <?= Icon::get('cogs') ?>
                     </a>
                     <ul class="dropdown-menu pull-right">
                         <li>
-                            <?= Link::withAction(Yii::t('ContentModule.base', 'Notify members'), 'notifyUser')->icon('bell')?>
+                            <?= Link::withAction(Yii::t('ContentModule.base', 'Notify members'), 'notifyUser')->icon('bell') ?>
                         </li>
                         <?php if (TopicPicker::showTopicPicker($contentContainer)) : ?>
                             <li>
-                                 <?= Link::withAction(Yii::t('ContentModule.base', 'Topics'), 'setTopics')->icon(Yii::$app->getModule('topic')->icon) ?>
+                                <?= Link::withAction(Yii::t('ContentModule.base', 'Topics'), 'setTopics')->icon(Yii::$app->getModule('topic')->icon) ?>
                             </li>
                         <?php endif; ?>
                         <?php if ($canSwitchVisibility): ?>
@@ -91,6 +97,10 @@ use yii\helpers\Html;
                                     ->id('contentForm_visibility_entry')->icon('unlock') ?>
                             </li>
                         <?php endif; ?>
+                        <li>
+                            <?= Link::withAction(Yii::t('ContentModule.base', 'Create as draft'), 'changeDraftState')
+                                ->id('contentForm_visibility_entry')->icon('edit') ?>
+                        </li>
                     </ul>
                 </li>
             </ul>

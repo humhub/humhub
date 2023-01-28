@@ -186,6 +186,16 @@ humhub.module('content.form', function(module, require, $) {
         }
     };
 
+    CreateForm.prototype.changeDraftState = function() {
+        if ($('#contentForm_draft').prop("checked")) {
+            $('.label-draft').addClass('hidden');
+            $('#contentForm_draft').prop("checked", false);
+        } else {
+            $('.label-draft').removeClass('hidden');
+            $('#contentForm_draft').prop("checked", true);
+        }
+    };
+
     const CreateFormMenu = Widget.extend();
 
     CreateFormMenu.prototype.init = function() {

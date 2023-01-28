@@ -115,6 +115,10 @@ abstract class WallCreateContentForm extends Widget
         $record->content->visibility = $visibility;
         $record->content->container = $contentContainer;
 
+        if ((bool)Yii::$app->request->post('isDraft', false)) {
+            $record->content->state = Content::STATE_DRAFT;
+        }
+
         // Handle Notify User Features of ContentFormWidget
         // ToDo: Check permissions of user guids
         $userGuids = Yii::$app->request->post('notifyUserInput');
@@ -129,7 +133,7 @@ abstract class WallCreateContentForm extends Widget
 
         if ($record->save()) {
             $topics = Yii::$app->request->post('postTopicInput');
-            if(!empty($topics)) {
+            if (!empty($topics)) {
                 Topic::attach($record->content, $topics);
             }
 
