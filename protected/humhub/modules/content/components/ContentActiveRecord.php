@@ -475,6 +475,13 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     }
 
     /**
+     * @deprected Please use `$this->content->softDelete()` instead of the default delete implementation!
+     */
+    public function delete() {
+        return parent::delete();
+    }
+
+    /**
      * @inheritdoc
      */
     public function afterDelete()
