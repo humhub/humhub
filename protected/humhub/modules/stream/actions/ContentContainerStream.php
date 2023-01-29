@@ -22,7 +22,6 @@ use yii\base\InvalidConfigException;
  */
 class ContentContainerStream extends Stream
 {
-
     /**
      * @inheritdoc
      */

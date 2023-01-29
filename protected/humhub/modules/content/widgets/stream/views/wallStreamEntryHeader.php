@@ -2,6 +2,7 @@
 
 use humhub\libs\Html;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\ArchivedIcon;
 use humhub\modules\content\widgets\LockCommentsIcon;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
@@ -28,6 +29,9 @@ $container = $model->content->container;
         <?= ArchivedIcon::getByModel($model) ?>
     <?php elseif ($renderOptions->isPinned($model)) : ?>
         <?= Icon::get('map-pin', ['htmlOptions' => ['class' => 'icon-pin tt', 'title' => Yii::t('ContentModule.base', 'Pinned')]]) ?>
+    <?php endif; ?>
+    <?php if ($model->content->state === Content::STATE_DRAFT): ?>
+        <span class="label label-danger"><?= Yii::t('ContentModule.base', 'Draft'); ?></span>
     <?php endif; ?>
 </div>
 

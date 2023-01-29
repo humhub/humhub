@@ -85,8 +85,6 @@ class DefaultStreamFilter extends StreamQueryFilter
         } elseif ($this->isFilterActive(self::FILTER_PUBLIC)) {
             $this->filterPublic();
         }
-
-        $this->filterState();
     }
 
     public function isFilterActive($filter)
@@ -155,12 +153,6 @@ class DefaultStreamFilter extends StreamQueryFilter
     protected function filterPrivate()
     {
         $this->query->andWhere(['content.visibility' => Content::VISIBILITY_PRIVATE]);
-        return $this;
-    }
-
-    protected function filterState()
-    {
-        $this->query->andWhere(['content.state' => Content::STATE_PUBLISHED]);
         return $this;
     }
 }
