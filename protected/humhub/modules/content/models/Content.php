@@ -200,21 +200,13 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             throw new Exception("Could not save content with object_model or object_id!");
         }
 
-        // Set some default values
-        if (!$this->archived) {
-            $this->archived = 0;
-        }
-        if (!$this->visibility) {
-            $this->visibility = self::VISIBILITY_PRIVATE;
-        }
-        if (!$this->pinned) {
-            $this->pinned = 0;
-        }
+        $this->archived ??= 0;
+        $this->visibility ??= self::VISIBILITY_PRIVATE;
+        $this->pinned ??= 0;
+        $this->state ??= Content::STATE_PUBLISHED;
 
         if ($insert) {
-            if ($this->created_by == "") {
-                $this->created_by = Yii::$app->user->id;
-            }
+            $this->created_by ??= Yii::$app->user->id;
         }
 
         $this->stream_sort_date = date('Y-m-d G:i:s');
@@ -231,15 +223,34 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function afterSave($insert, $changedAttributes)
     {
-        /* @var $contentSource ContentActiveRecord */
-        $contentSource = $this->getModel();
+        if (// New Content with State Published:
+            ($insert && $this->state == Content::STATE_PUBLISHED) ||
+            // Content Updated from Draft to Published
+            (in_array('state', $changedAttributes) &&
+                $this->state == Content::STATE_PUBLISHED &&
+                $changedAttributes['state'] == Content::STATE_DRAFT
+            )) {
+            $this->processNewContent();
+        }
+
+        SearchHelper::queueUpdate($this->getModel());
+
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    private function processNewContent()
+    {
+        $record = $this->getModel();
+
+        Yii::debug('Process new content: '. get_class($record). ' ID: '. $record->getPrimaryKey(), 'content');
 
         foreach ($this->notifyUsersOfNewContent as $user) {
-            $contentSource->follow($user->id);
+            $record->follow($user->id);
         }
 
         // TODO: handle ContentCreated notifications and live events for global content
-        if ($insert && !$this->isMuted()) {
+
+        if (!$this->isMuted()) {
             $this->notifyContentCreated();
         }
 
@@ -250,19 +261,16 @@ class Content extends ActiveRecord implements Movable, ContentOwner
                 'originator' => $this->createdBy->guid,
                 'contentContainerId' => $this->container->contentContainerRecord->id,
                 'visibility' => $this->visibility,
-                'sourceClass' => get_class($contentSource),
-                'sourceId' => $contentSource->getPrimaryKey(),
+                'sourceClass' => get_class($record),
+                'sourceId' => $record->getPrimaryKey(),
                 'silent' => $this->isMuted(),
                 'streamChannel' => $this->stream_channel,
                 'contentId' => $this->id,
-                'insert' => $insert
+                'insert' => true
             ]));
         }
-
-        SearchHelper::queueUpdate($contentSource);
-
-        parent::afterSave($insert, $changedAttributes);
     }
+
 
     /**
      * @return bool checks if the given content allows content creation notifications and activities
