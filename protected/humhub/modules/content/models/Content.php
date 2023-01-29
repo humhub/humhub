@@ -226,7 +226,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         if (// New Content with State Published:
             ($insert && $this->state == Content::STATE_PUBLISHED) ||
             // Content Updated from Draft to Published
-            (in_array('state', $changedAttributes) &&
+            (array_key_exists('state', $changedAttributes) &&
                 $this->state == Content::STATE_PUBLISHED &&
                 $changedAttributes['state'] == Content::STATE_DRAFT
             )) {
@@ -242,7 +242,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     {
         $record = $this->getModel();
 
-        Yii::debug('Process new content: '. get_class($record). ' ID: '. $record->getPrimaryKey(), 'content');
+        Yii::debug('Process new content: ' . get_class($record) . ' ID: ' . $record->getPrimaryKey(), 'content');
 
         foreach ($this->notifyUsersOfNewContent as $user) {
             $record->follow($user->id);

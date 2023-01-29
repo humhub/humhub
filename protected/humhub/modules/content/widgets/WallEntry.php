@@ -190,10 +190,11 @@ class WallEntry extends Widget
     {
         $result = [];
 
+        $this->addControl($result, [PublishDraftLink::class, ['content' => $this->contentObject], ['sortOrder' => 10]]);
+
         if (!empty($this->getEditUrl())) {
             $this->addControl($result, [EditLink::class, ['model' => $this->contentObject, 'mode' => $this->editMode, 'url' => $this->getEditUrl()], ['sortOrder' => 100]]);
         }
-
         $this->addControl($result, [PermaLink::class, ['content' => $this->contentObject], ['sortOrder' => 200]]);
 
         $this->addControl($result, [DeleteLink::class, ['content' => $this->contentObject], ['sortOrder' => 300]]);

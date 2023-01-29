@@ -322,6 +322,22 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         });
     };
 
+    /**
+     * Publish draft of this entry from the top of the stream.
+     * @param evt
+     */
+    StreamEntry.prototype.publishDraft = function (evt) {
+        var that = this;
+        this.loader();
+        client.post(evt.url).then(function (data) {
+            that.stream().init();
+            module.log.info(data.message, true);
+        }).catch(function (e) {
+            module.log.error(e, true);
+            that.loader(false);
+        });
+    };
+
 
     /**
      * Replaces this entries dom element.
