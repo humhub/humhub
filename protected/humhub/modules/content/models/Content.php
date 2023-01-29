@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
+use humhub\modules\activity\helpers\ActivityHelper;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -21,6 +22,7 @@ use humhub\modules\content\live\NewContent;
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\notification\models\Notification;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
@@ -29,7 +31,6 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
-use yii\db\Expression;
 use yii\db\IntegrityException;
 use yii\helpers\Url;
 
@@ -959,8 +960,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner
 
     public function softDelete(): bool
     {
-        // TODO: Delete Activities
-        // TODO: Delete Notifications
+        ActivityHelper::deleteActivitiesForRecord($this->getModel());
+
+        Notification::deleteAll([
+            'source_class' => get_class($this),
+            'source_pk' => $this->getPrimaryKey(),
+        ]);
 
         $this->state = self::STATE_DELETED;
         $this->save();
