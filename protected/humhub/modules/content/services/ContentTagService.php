@@ -40,7 +40,7 @@ class ContentTagService
      */
     public function addTag(ContentTag $tag)
     {
-        if (!empty($tag->contentcontainer_id) && $tag->contentcontainer_id != $this->content-contentcontainer_id) {
+        if (!empty($tag->contentcontainer_id) && $tag->contentcontainer_id != $this->content->contentcontainer_id) {
             throw new InvalidArgumentException(
                 Yii::t('ContentModule.base', 'Content Tag with invalid contentcontainer_id assigned.')
             );
