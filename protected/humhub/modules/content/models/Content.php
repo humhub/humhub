@@ -687,44 +687,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     }
 
     /**
-     * Adds a new ContentTagRelation for this content and the given $tag instance.
-     *
-     * @param ContentTag $tag
-     * @return bool if the provided tag is part of another ContentContainer
-     * @since 1.2.2
-     */
-    public function addTag(ContentTag $tag)
-    {
-        if (!empty($tag->contentcontainer_id) && $tag->contentcontainer_id != $this->contentcontainer_id) {
-            throw new InvalidArgumentException(Yii::t('ContentModule.base', 'Content Tag with invalid contentcontainer_id assigned.'));
-        }
-
-        if (ContentTagRelation::findBy($this, $tag)->count()) {
-            return true;
-        }
-
-        $this->refresh();
-
-        SearchHelper::queueUpdate($this->getPolymorphicRelation());
-
-        $contentRelation = new ContentTagRelation($this, $tag);
-        return $contentRelation->save();
-    }
-
-    /**
-     * Adds the given ContentTag array to this content.
-     *
-     * @param $tags ContentTag[]
-     * @since 1.3
-     */
-    public function addTags($tags)
-    {
-        foreach ($tags as $tag) {
-            $this->addTag($tag);
-        }
-    }
-
-    /**
      * Checks if the given user can edit/create this content.
      *
      * A user can edit a content if one of the following conditions are met:
