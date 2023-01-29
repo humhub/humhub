@@ -233,7 +233,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             $this->processNewContent();
         }
 
-        SearchHelper::queueUpdate($this->getModel());
+        if ($this->state === static::STATE_PUBLISHED) {
+            SearchHelper::queueUpdate($this->getModel());
+        } else {
+            SearchHelper::queueDelete($this->getModel());
+        }
 
         parent::afterSave($insert, $changedAttributes);
     }
