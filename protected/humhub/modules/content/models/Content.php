@@ -880,6 +880,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             return $this->checkGuestAccess();
         }
 
+        // If content is draft, in trash, unapproved - restrict view access to editors
+        if ($this->state !== static::STATE_PUBLISHED) {
+            return $this->canEdit();
+        }
+
         // Public visible content
         if ($this->isPublic()) {
             return true;
