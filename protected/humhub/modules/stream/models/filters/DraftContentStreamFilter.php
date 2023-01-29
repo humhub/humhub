@@ -22,7 +22,7 @@ class DraftContentStreamFilter extends StreamQueryFilter
      */
     public function apply()
     {
-        if ($this->streamQuery instanceof ActivityStreamQuery) {
+        if ($this->streamQuery instanceof ActivityStreamQuery && $this->streamQuery->activity) {
             return;
         }
 
