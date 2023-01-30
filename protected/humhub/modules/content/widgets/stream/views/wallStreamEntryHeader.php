@@ -32,6 +32,8 @@ $container = $model->content->container;
     <?php endif; ?>
     <?php if ($model->content->state === Content::STATE_DRAFT): ?>
         <span class="label label-danger"><?= Yii::t('ContentModule.base', 'Draft'); ?></span>
+    <?php elseif ($model->content->state === Content::STATE_DELETED): ?>
+        <span class="label label-danger"><?= Yii::t('ContentModule.base', 'Deleted'); ?></span>
     <?php endif; ?>
 </div>
 

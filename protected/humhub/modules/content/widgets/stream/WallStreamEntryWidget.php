@@ -6,6 +6,7 @@ namespace humhub\modules\content\widgets\stream;
 use Exception;
 use humhub\libs\Html;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\ArchiveLink;
 use humhub\modules\content\widgets\DeleteLink;
 use humhub\modules\content\widgets\LockCommentsLink;
@@ -325,6 +326,10 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
      */
     public function getControlsMenuEntries()
     {
+        if ($this->model->content->state === Content::STATE_DELETED) {
+            return [];
+        }
+
         if($this->renderOptions->isViewContext([WallStreamEntryOptions::VIEW_CONTEXT_SEARCH])) {
             return [
                 [PermaLink::class, ['content' => $this->model], ['sortOrder' => 200]]
