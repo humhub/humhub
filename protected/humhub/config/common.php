@@ -24,7 +24,7 @@ if (!defined('PKCS7_DETACHED')) {
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.13.1',
+    'version' => '1.13.2',
     'minRecommendedPhpVersion' => '7.4',
     'minSupportedPhpVersion' => '7.4',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
@@ -57,13 +57,18 @@ $config = [
                 [
                     'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
-                    'except' => ['yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403', 'yii\web\HttpException:404', 'yii\web\HttpException:405'],
+                    'except' => [
+                        'yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403',
+                        'yii\web\HttpException:404', 'yii\web\HttpException:405', 'yii\web\User::getIdentityAndDurationFromCookie'
+                    ],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
                 [
                     'class' => \yii\log\DbTarget::class,
                     'levels' => ['error', 'warning'],
-                    'except' => ['yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403', 'yii\web\HttpException:404', 'yii\web\HttpException:405'],
+                    'except' => [
+                        'yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403',
+                        'yii\web\HttpException:404', 'yii\web\HttpException:405', 'yii\web\User::getIdentityAndDurationFromCookie'],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
             ],
