@@ -27,7 +27,6 @@ use yii\db\Expression;
  */
 class ActiveQueryContent extends ActiveQuery
 {
-
     /**
      * Own content scope for userRelated
      * @see ActiveQueryContent::userRelated
@@ -37,6 +36,21 @@ class ActiveQueryContent extends ActiveQuery
     const USER_RELATED_SCOPE_FOLLOWED_SPACES = 3;
     const USER_RELATED_SCOPE_FOLLOWED_USERS = 4;
     const USER_RELATED_SCOPE_OWN_PROFILE = 5;
+
+    /**
+     * State filter that is used for queries. By default, only Published content is returned.
+     *
+     * Example to include drafts:
+     * ```
+     * $query = Post::find();
+     * $query->stateFilterCondition[] = ['content.state' => Content::STATE_DRAFT];
+     * $posts = $query->readable()->all();
+     * ```
+     *
+     * @since 1.14
+     * @var array
+     */
+    public $stateFilterCondition = ['OR', ['content.state' => Content::STATE_PUBLISHED]];
 
     /**
      * Only returns user readable records
@@ -51,7 +65,7 @@ class ActiveQueryContent extends ActiveQuery
             $user = Yii::$app->user->getIdentity();
         }
 
-        $this->andWhere(['content.state' => Content::STATE_PUBLISHED]);
+        $this->andWhere($this->stateFilterCondition);
 
         $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
         $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::class]);
@@ -75,7 +89,7 @@ class ActiveQueryContent extends ActiveQuery
             }
 
             // Build Access Check based on Space Content Container
-            $conditionSpace = 'space.id IS NOT NULL' . $conditionSpaceMembershipRestriction; // space content
+            $conditionSpace = 'space.id IS NOT NULL' . $conditionSpaceMembershipRestriction;
 
             // Build Access Check based on User Content Container
             $conditionUser = 'cuser.id IS NOT NULL AND (';                                         // user content

@@ -143,6 +143,8 @@ class StreamQuery extends Model
 
     /**
      * Per default only content with published state are returned.
+     *
+     * @note Used, for example, by the Recycle Bin module to display deleted content in the stream.
      * @var array
      */
     public $stateFilterCondition = ['OR', ['content.state' => Content::STATE_PUBLISHED]];
