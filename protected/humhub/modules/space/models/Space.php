@@ -262,12 +262,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
 
         if ($insert) {
             // Auto add creator as admin
-            $membership = new Membership();
-            $membership->space_id = $this->id;
-            $membership->user_id = $user->id;
-            $membership->status = Membership::STATUS_MEMBER;
-            $membership->group_id = self::USERGROUP_ADMIN;
-            $membership->save();
+            $this->addMember($user->id, 1, true, self::USERGROUP_ADMIN);
 
             $activity = new Created;
             $activity->source = $this;

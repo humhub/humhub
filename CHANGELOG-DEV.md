@@ -14,3 +14,4 @@ HumHub Changelog (DEVELOP)
 - Fix #5956: Display all newer comments after current comment
 - Enh #6061: Administration: Add a confirmation on profile field delete button
 - Enh #5699: Allow users to invite by link
+- Enh #6081: Added corresponding CSS variables for LESS color variables 

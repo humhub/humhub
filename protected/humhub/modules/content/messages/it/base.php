@@ -2,7 +2,7 @@
 return array (
   '(Also visible to non-members of this space)' => '(visibile anche a chi non è membro dello space)',
   '<strong>Confirm</strong> post deletion' => '<strong>Conferma</strong> la cancellazione dell\'articolo',
-  '<strong>Delete</strong> content?' => '',
+  '<strong>Delete</strong> content?' => '<strong>Eliminare</strong> i contenuti?',
   '<strong>Move</strong> content' => '<strong>Sposta</strong> contenuto',
   '<strong>Permalink</strong> to this post' => '<strong>Link permanente</strong> a questo articolo',
   'Add a member to notify' => 'Aggiungi i partecipanti che riceveranno notifica',
@@ -41,7 +41,7 @@ return array (
   'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'Raggiunto il numero massimo di elementi aggiuntivi. <br> Puoi aggiungere fino a {count} elementi contemporaneamente.',
   'Move content' => 'Sposta contentuto',
   'Move to archive' => 'Archivia',
-  'New Updates Available!' => '',
+  'New Updates Available!' => 'Nuovi aggiornamenti disponibili!',
   'No matches with your selected filters!' => 'Nessun risultato con i filtri che hai selezionato!',
   'No tags found for the given query' => 'Nessun tag trovato per la query data',
   'None' => 'Nessuno',
