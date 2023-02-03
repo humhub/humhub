@@ -46,11 +46,11 @@ $form = ActiveForm::begin([
                     </a>
                 </li>
                 <?php if ($canInviteByEmail) : ?>
-                <li class="<?= $isInviteByEmailTabActiveClass ?> tab-invite-by-email">
-                    <a href="#invite-by-email" data-toggle="tab">
-                        <?= Yii::t('SpaceModule.base', 'Invite by email'); ?>
-                    </a>
-                </li>
+                    <li class="<?= $isInviteByEmailTabActiveClass ?> tab-invite-by-email">
+                        <a href="#invite-by-email" data-toggle="tab">
+                            <?= Yii::t('SpaceModule.base', 'Invite by email'); ?>
+                        </a>
+                    </li>
                 <?php endif; ?>
                 <?php if ($canInviteByLink) : ?>
                     <li class="tab-invite-by-link">
@@ -111,19 +111,19 @@ $form = ActiveForm::begin([
                 <?= Yii::t('SpaceModule.base',
                     'You can also invite external users by link, which are not registered now. Just send them this secure link.'); ?>
                 <br><br>
-                <?php if (Yii::$app->controller->id === 'membership' && $model->space->isAdmin()) : ?>
-                    <?= ModalButton::danger(Yii::t('SpaceModule.base', 'Create a new secure link'))
-                        ->confirm(null, Yii::t('SpaceModule.base', 'The previous link will not work anymore!'))
-                        ->icon('refresh')
-                        ->sm()
-                        ->right()
-                        ->load($model->space->createUrl('/space/membership/reset-invite-link'))
-                    ?>
-                <?php endif; ?>
+
                 <div><strong><?= Yii::t('SpaceModule.base',
-                    'Share this secure link with your friends:') ?></strong></div>
+                            'Invite link') ?></strong></div>
                 <div class="input-group" style="width: 100%;">
                     <?= Html::textarea('secureLink', $model->getInviteLink(), ['readonly' => 'readonly', 'class' => 'form-control']) ?>
+                    <?php if (Yii::$app->controller->id === 'membership' && $model->space->isAdmin()) : ?>
+                        <a href="#" class="pull-right"
+                           data-action-confirm="<?= Yii::t('SpaceModule.base', 'The previous link will no longer work!') ?>"
+                           data-action-click="ui.modal.load"
+                           data-action-click-url="<?= $model->space->createUrl('/space/membership/reset-invite-link') ?>">
+                            <small><?= Yii::t('SpaceModule.base', 'Create new'); ?></small>
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
         <?php endif; ?>
@@ -131,13 +131,14 @@ $form = ActiveForm::begin([
     </div>
 </div>
 <div class="modal-footer">
-    <a id="space-invite-submit-btn" href="#" data-action-click="ui.modal.submit" data-action-submit class="btn btn-primary"
+    <a id="space-invite-submit-btn" href="#" data-action-click="ui.modal.submit" data-action-submit
+       class="btn btn-primary"
        data-ui-loader><?= $submitText ?></a>
     <?= Button::primary(Yii::t('SpaceModule.base',
         'Send link via email'))
-        ->link('mailto:'.
-            '?subject='.rawurlencode(Yii::t('UserModule.base', 'You\'ve been invited to join {space} on {appName}', ['space' => $model->space->name, 'appName' => Yii::$app->name])).
-            '&body='.rawurlencode($this->renderFile($this->findViewFile('@humhub/modules/user/views/mails/plaintext/UserInviteSpace'), [
+        ->link('mailto:' .
+            '?subject=' . rawurlencode(Yii::t('UserModule.base', 'You\'ve been invited to join {space} on {appName}', ['space' => $model->space->name, 'appName' => Yii::$app->name])) .
+            '&body=' . rawurlencode($this->renderFile($this->findViewFile('@humhub/modules/user/views/mails/plaintext/UserInviteSpace'), [
                 'originator' => Yii::$app->user->identity,
                 'space' => $model->space,
                 'registrationUrl' => $model->getInviteLink()
