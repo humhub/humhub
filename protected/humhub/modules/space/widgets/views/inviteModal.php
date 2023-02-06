@@ -109,7 +109,7 @@ $form = ActiveForm::begin([
         <?php if ($canInviteByLink) : ?>
             <div class="tab-pane" id="invite-by-link">
                 <?= Yii::t('SpaceModule.base',
-                    'You can also invite external users by link, which are not registered now. Just send them this secure link.'); ?>
+                    'You can invite external users who are currently not registered via link. All you need to do is share this secure link with them.'); ?>
                 <br><br>
 
                 <div><strong><?= Yii::t('SpaceModule.base',
@@ -118,10 +118,11 @@ $form = ActiveForm::begin([
                     <?= Html::textarea('secureLink', $model->getInviteLink(), ['readonly' => 'readonly', 'class' => 'form-control']) ?>
                     <?php if (Yii::$app->controller->id === 'membership' && $model->space->isAdmin()) : ?>
                         <a href="#" class="pull-right"
-                           data-action-confirm="<?= Yii::t('SpaceModule.base', 'The previous link will no longer work!') ?>"
+                           data-action-confirm-header="<?= Yii::t('SpaceModule.base', 'Create new link') ?>",
+                           data-action-confirm="<?= Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?') ?>"
                            data-action-click="ui.modal.load"
                            data-action-click-url="<?= $model->space->createUrl('/space/membership/reset-invite-link') ?>">
-                            <small><?= Yii::t('SpaceModule.base', 'Create new'); ?></small>
+                            <small><?= Yii::t('SpaceModule.base', 'Create new link'); ?></small>
                         </a>
                     <?php endif; ?>
                 </div>
@@ -135,7 +136,7 @@ $form = ActiveForm::begin([
        class="btn btn-primary"
        data-ui-loader><?= $submitText ?></a>
     <?= Button::primary(Yii::t('SpaceModule.base',
-        'Send link via email'))
+        'Send the link via email'))
         ->link('mailto:' .
             '?subject=' . rawurlencode(Yii::t('UserModule.base', 'You\'ve been invited to join {space} on {appName}', ['space' => $model->space->name, 'appName' => Yii::$app->name])) .
             '&body=' . rawurlencode($this->renderFile($this->findViewFile('@humhub/modules/user/views/mails/plaintext/UserInviteSpace'), [
