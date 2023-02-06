@@ -34,7 +34,7 @@ class InviteCest
 
         $I->amGoingTo('invite an non existing user email');
         $I->fillField('#emails', 'user1234@example.com');
-        $I->click('Invite new people', '#globalModal');
+        $I->click('Send invite', '#globalModal');
         $I->expectTo('see a confirm message');
         $I->seeSuccess();
     }
