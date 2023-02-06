@@ -28,7 +28,7 @@ class InviteCest
 
         $I->amGoingTo('invite an already existing user email');
         $I->fillField('#emails', 'user1@example.com');
-        $I->click('Invite new people', '#globalModal');
+        $I->click('Send invite', '#globalModal');
         $I->expectTo('see an error message');
         $I->waitForText('user1@example.com is already registered!');
 
