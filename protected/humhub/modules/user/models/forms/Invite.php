@@ -8,13 +8,19 @@
 
 namespace humhub\modules\user\models\forms;
 
+use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\user\Module;
 use Yii;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\base\Model;
 use humhub\modules\user\models\User;
+use yii\helpers\Url;
 
 /**
  * Invite Form Model
- * 
+ *
  * @since 1.1
  */
 class Invite extends Model
@@ -63,7 +69,7 @@ class Invite extends Model
 
     /**
      * E-Mails entered in form
-     * 
+     *
      * @return array the emails
      */
     public function getEmails()
@@ -76,4 +82,56 @@ class Invite extends Model
         return $emails;
     }
 
+    /**
+     * Checks if external user invitation setting is enabled
+     *
+     * @param bool $adminIsAlwaysAllowed
+     * @return bool
+     * @throws InvalidConfigException
+     * @throws \Throwable
+     */
+    public function canInviteByEmail(bool $adminIsAlwaysAllowed = false)
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+        return
+            (!Yii::$app->user->isGuest && $module->settings->get('auth.internalUsersCanInviteByEmail'))
+            || ($adminIsAlwaysAllowed && Yii::$app->user->can([ManageUsers::class, ManageGroups::class]));
+    }
+
+    /**
+     * Checks if external user invitation setting is enabled
+     *
+     * @param bool $adminIsAlwaysAllowed
+     * @return bool
+     * @throws \Throwable
+     * @throws InvalidConfigException
+     */
+    public function canInviteByLink(bool $adminIsAlwaysAllowed = false)
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+        return
+            (!Yii::$app->user->isGuest && $module->settings->get('auth.internalUsersCanInviteByLink'))
+            || ($adminIsAlwaysAllowed && Yii::$app->user->can([ManageUsers::class, ManageGroups::class]));
+    }
+
+    /**
+     * @param bool $forceResetToken
+     * @return string
+     * @throws Exception
+     */
+    public function getInviteLink($forceResetToken = false)
+    {
+        /* @var $module Module */
+        $module = Yii::$app->getModule('user');
+        $settings = $module->settings;
+
+        $token = $settings->get('registration.inviteToken');
+        if ($forceResetToken || !$token) {
+            $token = Yii::$app->security->generateRandomString(\humhub\modules\user\models\Invite::LINK_TOKEN_LENGTH);
+            $settings->set('registration.inviteToken', $token);
+        }
+        return Url::to(['/user/registration', 'token' => $token], true);
+    }
 }

@@ -18,13 +18,13 @@ class MailInviteCest
     {
         $I->wantTo('ensure that users can be invited by mail within the directory');
 
-        Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInvite', 1);
+        Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByEmail', 1);
 
         $I->amUser2();
         $I->amOnDirectory()->clickMembers();
         $I->amGoingTo('invite a user by mail');
 
-        $I->see('Send invite', 'a');
+        $I->see('Invite new people', 'a');
 
         $I->sendAjaxPostRequest(Url::to(['/user/invite']), ['Invite[emails]' => 'a@test.de,b@test.de']);
         $I->seeEmailIsSent(2);
@@ -64,7 +64,7 @@ class MailInviteCest
         $I->wantTo('ensure that users can be invited by mail within the directory');
 
         // Should also work with deactivated invite setting
-        Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInvite', 0);
+        Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByEmail', 0);
 
         $I->amAdmin();
         $I->amGoingTo('invte a user by mail');

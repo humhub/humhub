@@ -168,7 +168,6 @@ class CreateController extends Controller
         }
 
         return $this->renderAjax('invite', [
-            'canInviteExternal' => $model->canInviteExternal(),
             'model' => $model,
             'space' => $space
         ]);

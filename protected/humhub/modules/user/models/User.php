@@ -21,6 +21,7 @@ use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\jobs\DeleteDocument;
 use humhub\modules\search\jobs\UpdateDocument;
 use humhub\modules\space\helpers\MembershipHelper;
+use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\authclient\Password as PasswordAuth;
 use humhub\modules\user\behaviors\Followable;
@@ -621,19 +622,26 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     private function setUpApproved()
     {
-        $userInvite = Invite::findOne(['email' => $this->email]);
-
-        if ($userInvite !== null) {
-            // User was invited to a space
-            if ($userInvite->source == Invite::SOURCE_INVITE) {
-                $space = Space::findOne(['id' => $userInvite->space_invite_id]);
-                if ($space != null) {
-                    $space->addMember($this->id);
+        $spaceInviteId = Yii::$app->session->get(InviteForm::SESSION_SPACE_INVITE_ID);
+        if ($spaceInviteId !== null) {
+            Yii::$app->session->remove(InviteForm::SESSION_SPACE_INVITE_ID);
+        } else {
+            $userInvite = Invite::findOne(['email' => $this->email]);
+            if ($userInvite !== null) {
+                // User was invited to a space
+                if ($userInvite->source === Invite::SOURCE_INVITE) {
+                    $spaceInviteId = $userInvite->space_invite_id;
                 }
+                // Delete/Cleanup Invite Entry
+                $userInvite->delete();
             }
+        }
 
-            // Delete/Cleanup Invite Entry
-            $userInvite->delete();
+        if ($spaceInviteId !== null) {
+            $space = Space::findOne(['id' => $spaceInviteId]);
+            if ($space !== null) {
+                $space->addMember($this->id);
+            }
         }
 
         // Auto Add User to the default spaces

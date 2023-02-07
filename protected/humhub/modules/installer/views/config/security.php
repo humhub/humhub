@@ -23,6 +23,7 @@ use yii\bootstrap\Html;
         <?= $form->field($model, 'internalRequireApprovalAfterRegistration')->checkbox(); ?>
         <?= $form->field($model, 'allowGuestAccess')->checkbox(); ?>
         <?= $form->field($model, 'canInviteExternalUsersByEmail')->checkbox(); ?>
+        <?= $form->field($model, 'canInviteExternalUsersByLink')->checkbox(); ?>
         <?= $form->field($model, 'enableFriendshipModule')->checkbox(); ?>
 
         <hr>

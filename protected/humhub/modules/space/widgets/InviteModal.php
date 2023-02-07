@@ -31,7 +31,8 @@ class InviteModal extends Widget
         }
 
         return $this->render('inviteModal', [
-            'canInviteExternal' => Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite'),
+            'canInviteByEmail' => $this->model->canInviteByEmail(),
+            'canInviteByLink' => $this->model->canInviteByLink(),
             'submitText' => $this->submitText,
             'submitAction' => $this->submitAction,
             'model' => $this->model,
