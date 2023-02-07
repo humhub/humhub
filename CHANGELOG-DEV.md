@@ -10,6 +10,7 @@ HumHub Changelog (DEVELOP)
 - Fix #6018: Disable profile fields textarea and checkbox list when they are not editable
 - Ehn #6017: Hide Password Tab in administration for LDAP users
 - Enh #6031: On users list grid, show Auth mode badge only for sys admins
+- Enh #6033: Moved more logic into `AbstractQueryContentContainer`
 - Enh #6035: Added Estonian language
 - Fix #5956: Display all newer comments after current comment
 - Enh #6061: Administration: Add a confirmation on profile field delete button
