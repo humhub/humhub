@@ -46,7 +46,7 @@ class ModuleUpdateActionButtons extends Widget
             ->cssClass('btn btn-xs btn-info active')
             ->options(['data-action-click' => 'marketplace.update']);
 
-        $html .= Button::asLink(Yii::t('MarketplaceModule.base', 'Changelog'), $this->module->marketplaceUrl . '#changelog')
+        $html .= Button::asLink(Yii::t('MarketplaceModule.base', 'Changelog'), $this->module->marketplaceUrl . '/changelog')
             ->cssClass('btn btn-xs btn-info')
             ->options(['target' => '_blank']);
 
