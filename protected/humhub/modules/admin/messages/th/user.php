@@ -126,7 +126,6 @@ return [
     'Send & save' => 'ส่งและบันทึก',
     'Send invitation email' => 'ส่งอีเมลคำเชิญ',
     'Send invitation email again?' => 'ส่งอีเมลคำเชิญอีกครั้งหรือไม่',
-    'Send invite' => 'ส่งคำเชิญ',
     'Send notifications to users when added to or removed from the group.' => 'ส่งการแจ้งเตือนไปยังผู้ใช้เมื่อมีการเพิ่มหรือลบออกจากกลุ่ม',
     'Settings' => 'การตั้งค่า',
     'Show group selection at registration' => 'แสดงการเลือกกลุ่มเมื่อลงทะเบียน',
@@ -183,6 +182,8 @@ Kind Regards
 
 ' => '',
     'Invisible' => '',
+    'Invite new people' => '',
+    'Members can invite external users by link' => '',
     'No users were selected.' => '',
     'Protected group can not be deleted!' => '',
     'Select the profile fields you want to add as columns' => '',

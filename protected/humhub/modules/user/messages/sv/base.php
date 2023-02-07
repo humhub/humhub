@@ -68,7 +68,6 @@ return [
     'Register now and participate!' => 'Registrera dig och delta!',
     'Search...' => 'Sök...',
     'Security' => 'Säkerhet',
-    'Send invite' => 'Skicka inbjudan',
     'Settings' => 'Inställningar',
     'Show At Registration' => 'Visa vid registret',
     'Show all content' => 'Visa allt innehåll',
@@ -106,5 +105,9 @@ return [
     'invited you to join {space} on {name}.' => 'bjöd in dig att gå med i {space} på {name}.',
     'or' => 'eller',
     'Following (User)' => '',
+    'Invite by email' => '',
+    'Invite by link' => '',
+    'Invite new people' => '',
+    'The secure link has been copied in your clipboard!' => '',
     'Whenever a user follows another user.' => '',
 ];

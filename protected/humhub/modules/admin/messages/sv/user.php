@@ -155,7 +155,6 @@ Kind Regards
     'Send & save' => 'Skicka &amp; spara',
     'Send invitation email' => 'Skicka inbjudan via e-post',
     'Send invitation email again?' => 'Skicka inbjudningsmail igen?',
-    'Send invite' => 'Skicka inbjudan',
     'Send notifications to users when added to or removed from the group.' => 'Skicka meddelanden till användare när de läggs till eller tas bort från gruppen.',
     'Settings' => 'Inställningar',
     'Show group selection at registration' => 'Visa gruppval vid anmälan',
@@ -190,4 +189,6 @@ Kind Regards
     'Could not decline the user!' => '',
     'Deleted' => '',
     'Invisible' => '',
+    'Invite new people' => '',
+    'Members can invite external users by link' => '',
 ];

@@ -68,7 +68,6 @@ return [
     'Register now and participate!' => 'Registar agora e participar!',
     'Search...' => 'Pesquisar...',
     'Security' => 'Segurança',
-    'Send invite' => 'Enviar convite',
     'Settings' => 'Definições',
     'Show At Registration' => 'Mostrar no Registo',
     'Show all content' => 'Mostrar todo o conteúdo',
@@ -106,5 +105,9 @@ return [
     'invited you to join {space} on {name}.' => 'convidou-te para aderires ao Espaço {space} por {name}.',
     'or' => 'ou',
     'Following (User)' => '',
+    'Invite by email' => '',
+    'Invite by link' => '',
+    'Invite new people' => '',
+    'The secure link has been copied in your clipboard!' => '',
     'Whenever a user follows another user.' => '',
 ];
