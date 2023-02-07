@@ -9,6 +9,7 @@ namespace humhub\modules\space\widgets;
 
 use humhub\modules\space\models\Space;
 use yii\base\Widget;
+use yii\helpers\Url;
 
 /**
  * SpaceFollowers lists all followers of the Space
@@ -37,6 +38,10 @@ class SpaceFollowers extends Widget
         return $this->render('spaceFollowers', [
             'followers' => $followersQuery->limit(16)->all(),
             'totalFollowerCount' => $totalFollowerCount,
+            'showListOptions' => [
+                'data-action-click' => 'ui.modal.load',
+                'data-action-url' => Url::to(['/space/space/follower-list', 'container' => $this->space])
+            ]
         ]);
     }
 

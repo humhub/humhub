@@ -9,7 +9,6 @@ use humhub\components\Widget;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use Yii;
-use yii\helpers\Url;
 
 /**
  * This widget is used include the comments functionality to a wall entry.
@@ -81,9 +80,6 @@ class Comments extends Widget
             'comments' => $comments,
             'currentCommentId' => $currentCommentId,
             'id' => $this->object->getUniqueId(),
-            'isLimited' => $commentCount > $this->limit,
-            'total' => $commentCount,
-            'showMoreUrl' => $this->getShowMoreUrl(),
         ]);
     }
 
@@ -101,21 +97,5 @@ class Comments extends Widget
     public function getPageSize(): int
     {
         return $this->isFullViewMode() ? $this->module->commentsBlockLoadSizeViewMode : $this->module->commentsBlockLoadSize;
-    }
-
-    private function getShowMoreUrl(): string
-    {
-        $urlParams = ['/comment/comment/show',
-            'objectModel' => get_class($this->object),
-            'objectId' => $this->object->getPrimaryKey(),
-            'pageSize' => $this->pageSize,
-        ];
-
-        if ($this->pageSize <= $this->limit) {
-            // We should load second page together with first because on init page we already see the first page
-            $urlParams['pageNum'] = 2;
-        }
-
-        return Url::to($urlParams);
     }
 }

@@ -105,12 +105,26 @@ class Membership extends ActiveRecord
     /**
      * Determines if this membership is a full accepted membership.
      *
-     * @since v1.2.1
      * @return bool
+     * @since v1.2.1
      */
     public function isMember()
     {
         return $this->status == self::STATUS_MEMBER;
+    }
+
+    /**
+     * @since 1.13
+     * @return bool
+     */
+    public function isPrivileged(): bool
+    {
+        return ($this->isMember() &&
+            in_array($this->group_id, [
+                Space::USERGROUP_OWNER,
+                Space::USERGROUP_ADMIN,
+                Space::USERGROUP_MODERATOR
+            ]));
     }
 
     public function getUser()
@@ -232,11 +246,11 @@ class Membership extends ActiveRecord
     /**
      * Returns Space for user space membership
      *
-     * @since 1.0
      * @param \humhub\modules\user\models\User $user
      * @param boolean $memberOnly include only member status - no pending/invite states
      * @param boolean|null $withNotifications include only memberships with sendNotification setting
      * @return \yii\db\ActiveQuery for space model
+     * @since 1.0
      */
     public static function getUserSpaceQuery(User $user, $memberOnly = true, $withNotifications = null)
     {
@@ -280,9 +294,10 @@ class Membership extends ActiveRecord
      */
     public static function findByUser(
         User $user = null,
-        $membershipStatus = self::STATUS_MEMBER,
-        $spaceStatus = Space::STATUS_ENABLED
-    ) {
+             $membershipStatus = self::STATUS_MEMBER,
+             $spaceStatus = Space::STATUS_ENABLED
+    )
+    {
         if (!$user) {
             $user = Yii::$app->user->getIdentity();
         }
@@ -312,11 +327,11 @@ class Membership extends ActiveRecord
     /**
      * Returns a user query for space memberships
      *
-     * @since 1.1
      * @param Space $space
      * @param boolean $membersOnly Only return approved members
      * @param boolean|null $withNotifications include only memberships with sendNotification setting
      * @return \humhub\modules\user\components\ActiveQueryUser
+     * @since 1.1
      */
     public static function getSpaceMembersQuery(Space $space, $membersOnly = true, $withNotifications = null)
     {
@@ -353,18 +368,16 @@ class Membership extends ActiveRecord
             ->innerJoin('space_membership sm', 'space.id = sm.space_id')
             ->where('sm.user_id = :userId', [':userId' => $user->id])
             ->indexBy('id')
-            ->andWhere('space.status = :spaceStatusEnabled', [':spaceStatusEnabled' =>  Space::STATUS_ENABLED]);
+            ->andWhere('space.status = :spaceStatusEnabled', [':spaceStatusEnabled' => Space::STATUS_ENABLED]);
     }
 
     /**
      * Checks if the current logged in user is the related user of this membership record.
      *
-     * @since 1.3.9
      * @return bool
+     * @since 1.3.9
      */
-    public function isCurrentUser()
+    public function isCurrentUser(): bool
     {
         return !Yii::$app->user->isGuest && Yii::$app->user->identity->id === $this->user_id;
-    }
-
-}
+    }}

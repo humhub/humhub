@@ -1,12 +1,12 @@
 <?php
 return array (
-  '<strong>Administration</strong> menu' => 'Menu <strong>Amministrazione</strong>',
-  '<strong>Maintenance</strong> Mode' => 'Modalità <strong>Manutenzione</strong>',
-  '<strong>Module</strong> Administration' => '',
+  '<strong>Administration</strong> menu' => '<strong>Amministrazione</strong>Menu',
+  '<strong>Maintenance</strong> Mode' => '<strong>Manutenzione</strong>Modalità',
+  '<strong>Module</strong> Administration' => '<strong>Modulo</strong> Amministrazione',
   '<strong>Warning</strong> incomplete setup!' => '<strong>Attenzione</strong> configurazione non completata!',
   'About' => 'Informazioni',
   'Activate' => 'Attiva',
-  'Add Licence Key' => '',
+  'Add Licence Key' => 'Aggiungi chiave di licenza',
   'Admin' => 'Amministrazione',
   'Administration' => 'Amministrazione',
   'Administrative group' => 'Gruppo Amministrativo',

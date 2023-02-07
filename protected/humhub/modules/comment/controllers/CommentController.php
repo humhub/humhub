@@ -23,8 +23,6 @@ use humhub\modules\comment\widgets\ShowMore;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\file\handler\FileHandlerCollection;
 use Yii;
-use yii\base\BaseObject;
-use yii\data\Pagination;
 use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
@@ -62,21 +60,25 @@ class CommentController extends Controller
      */
     public function beforeAction($action)
     {
-        $modelClass = Yii::$app->request->get('objectModel', Yii::$app->request->post('objectModel'));
-        $modelPk = (int)Yii::$app->request->get('objectId', Yii::$app->request->post('objectId'));
+        if (parent::beforeAction($action)) {
+            $modelClass = Yii::$app->request->get('objectModel', Yii::$app->request->post('objectModel'));
+            $modelPk = (int)Yii::$app->request->get('objectId', Yii::$app->request->post('objectId'));
 
-        Helpers::CheckClassType($modelClass, [Comment::class, ContentActiveRecord::class]);
-        $this->target = $modelClass::findOne(['id' => $modelPk]);
+            Helpers::CheckClassType($modelClass, [Comment::class, ContentActiveRecord::class]);
+            $this->target = $modelClass::findOne(['id' => $modelPk]);
 
-        if (!$this->target) {
-            throw new NotFoundHttpException('Could not find underlying content or content addon record!');
+            if (!$this->target) {
+                throw new NotFoundHttpException('Could not find underlying content or content addon record!');
+            }
+
+            if (!$this->target->content->canView()) {
+                throw new ForbiddenHttpException();
+            }
+
+            return true;
         }
 
-        if (!$this->target->content->canView()) {
-            throw new ForbiddenHttpException();
-        }
-
-        return parent::beforeAction($action);
+        return false;
     }
 
 
@@ -85,30 +87,34 @@ class CommentController extends Controller
      */
     public function actionShow()
     {
-        //TODO: Dont use query logic in controller layer...
-
-        $query = Comment::find();
-        $query->orderBy('created_at DESC');
-        $query->where(['object_model' => get_class($this->target), 'object_id' => $this->target->getPrimaryKey()]);
-
-        $pagination = new Pagination([
-            'totalCount' => Comment::GetCommentCount(get_class($this->target), $this->target->getPrimaryKey()),
-            'pageSize' => Yii::$app->request->get('pageSize', $this->module->commentsBlockLoadSize)
-        ]);
-
-        // If need to load more than 1 page per request
-        $pageNum = Yii::$app->request->get('pageNum', 1);
-
-        $query->offset($pagination->offset)->limit($pagination->limit * $pageNum);
-        $comments = array_reverse($query->all());
-
-        if ($pageNum > 1) {
-            $pagination->setPage($pagination->page + $pageNum - 1);
+        $commentId = (int) Yii::$app->request->get('commentId');
+        $type = Yii::$app->request->get('type', ShowMore::TYPE_PREVIOUS);
+        $pageSize = (int) Yii::$app->request->get('pageSize', $this->module->commentsBlockLoadSize);
+        if ($pageSize > $this->module->commentsBlockLoadSize) {
+            $pageSize = $this->module->commentsBlockLoadSize;
         }
 
-        $output = ShowMore::widget(['pagination' => $pagination, 'object' => $this->target]);
+        $comments = Comment::getMoreComments($this->target, $commentId, $type, $pageSize);
+
+        $output = '';
+        if ($type === ShowMore::TYPE_PREVIOUS) {
+            $output .= ShowMore::widget([
+                'object' => $this->target,
+                'pageSize' => $pageSize,
+                'commentId' => isset($comments[0]) ? $comments[0]->id : null,
+                'type' => $type,
+            ]);
+        }
         foreach ($comments as $comment) {
             $output .= CommentWidget::widget(['comment' => $comment]);
+        }
+        if ($type === ShowMore::TYPE_NEXT && count($comments) > 1) {
+            $output .= ShowMore::widget([
+                'object' => $this->target,
+                'pageSize' => $pageSize,
+                'commentId' => $comments[count($comments)-1]->id,
+                'type' => $type,
+            ]);
         }
 
         if (Yii::$app->request->get('mode') === 'popup') {

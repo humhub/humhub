@@ -8,8 +8,8 @@
 
 namespace humhub\modules\user\models;
 
+use humhub\modules\user\components\ActiveQueryUser;
 use Yii;
-use \humhub\modules\user\models\UserPicker;
 
 /**
  * Special user model class for the purpose of searching users.
@@ -145,23 +145,17 @@ class UserFilter extends User
         
         return $query;
     }
-    
+
+    /**
+     * Filter users by keyword
+     *
+     * @param ActiveQueryUser $query
+     * @param string|array $keyword
+     * @return ActiveQueryUser
+     */
     public static function addKeywordFilter($query, $keyword)
     {
-        $query->joinWith('profile');
-        $parts = explode(" ", $keyword);
-        foreach ($parts as $part) {
-            $query->andFilterWhere(
-                    ['or',
-                        ['like', 'user.email', $part],
-                        ['like', 'user.username', $part],
-                        ['like', 'profile.firstname', $part],
-                        ['like', 'profile.lastname', $part],
-                        ['like', 'profile.title', $part]
-                    ]
-            );
-        }
-        return $query;
+        return $query->search($keyword);
     }
 
     /**

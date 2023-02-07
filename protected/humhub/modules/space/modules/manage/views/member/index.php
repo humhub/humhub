@@ -1,5 +1,7 @@
 <?php
 
+use humhub\modules\space\modules\manage\widgets\MemberHeaderControlsMenu;
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\Button;
 use humhub\widgets\GridView;
 use yii\bootstrap\ActiveForm;
@@ -23,7 +25,7 @@ use yii\helpers\Html;
 
         <?php $form = ActiveForm::begin(['method' => 'get']); ?>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <div class="input-group">
                     <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
                     <span class="input-group-btn">
@@ -33,6 +35,14 @@ use yii\helpers\Html;
             </div>
             <div class="col-md-4">
                 <?= Html::activeDropDownList($searchModel, 'group_id', MembershipSearch::getRoles($space), ['class' => 'form-control', 'data-action-change' => 'ui.form.submit']); ?>
+            </div>
+            <div class="col-md-2">
+                <div class="pull-right">
+                    <?= MemberHeaderControlsMenu::widget([
+                        'space' => $space,
+                        'label' => Icon::get('cog'),
+                    ]) ?>
+                </div>
             </div>
         </div>
         <?php ActiveForm::end(); ?>

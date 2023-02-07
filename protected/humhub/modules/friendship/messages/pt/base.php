@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>My</strong> friends' => 'Meus <strong>Amigos</strong>',
-  '<strong>Pending</strong> friend requests' => 'Pedidos de amizade<strong>Pendentes</strong>',
+  '<strong>Pending</strong> friend requests' => 'Pedidos de amizade<strong>pendentes</strong>',
   '<strong>Sent</strong> friend requests' => '<strong>Enviado</strong> pedido de amizade',
   'Accept Friend Request' => 'Aceitar Pedido de Amizade',
   'Deny friend request' => 'Recusar pedido de amizade',

@@ -18,7 +18,7 @@ return array (
   'An unknown error occurred while uploading.' => 'Une erreur inconnue s\'est produite pendant l\'envoi de fichiers.',
   'An unknown error occurred while uploading. Hint: check your upload_max_filesize and post_max_size php settings.' => 'Une erreur inconnue s\'est produite lors du chargement de fichiers. Vérifiez les paramètres "php upload_max_filesize" et "post_max_size"',
   'Back' => 'Retour',
-  'Back to dashboard' => 'Retour au fil d\'actualités',
+  'Back to dashboard' => 'Retour à la vue d\'ensemble',
   'Cancel' => 'Annuler',
   'Choose language:' => 'Choisir la langue :',
   'Close' => 'Fermer',

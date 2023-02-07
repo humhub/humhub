@@ -107,17 +107,14 @@ class Events extends BaseObject
      */
     public static function onTopMenuInit($event)
     {
-        if (Yii::$app->user->isGuest) {
-            return;
-        }
-
         /** @var Module $module */
         $module = Yii::$app->getModule('space');
         if ($module->hideSpacesPage) {
             return;
         }
 
-        if (!Yii::$app->user->can(SpaceDirectoryAccess::class)) {
+        if (!Yii::$app->user->isGuest &&
+            !Yii::$app->user->can(SpaceDirectoryAccess::class)) {
             return;
         }
 

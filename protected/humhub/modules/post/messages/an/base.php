@@ -8,6 +8,7 @@ return [
     'What\'s on your mind?' => 'En que yes pensando?',
     'post' => 'publicación',
     'Allows the user to create posts' => '',
+    'Post' => '',
     'Post could not be saved!' => '',
     'The post must not be empty!' => '',
 ];

@@ -4,6 +4,7 @@ return array (
   'Allows the user to create posts' => 'Erlaubt dem Benutzer das Erstellen von Beiträgen',
   'Create post' => 'Beitrag erstellen',
   'Edit your post...' => 'Bearbeite deinen Beitrag ...',
+  'Post' => 'Beitrag',
   'Post could not be saved!' => 'Beitrag konnte nicht gespeichert werden!',
   'The post must not be empty!' => 'Der Beitrag darf nicht leer sein!',
   'This space is archived.' => 'Dieser Space ist archiviert.',

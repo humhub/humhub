@@ -12,6 +12,7 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use yii\db\Expression;
 use yii\base\Widget;
+use yii\helpers\Url;
 
 /**
  * Space Members Snippet
@@ -46,13 +47,15 @@ class Members extends Widget
         $users = $this->getUserQuery()->all();
 
         return $this->render('members', [
-                    'space' => $this->space,
-                    'maxMembers' => $this->maxMembers,
-                    'users' => $users,
-                    'showListButton' => (count($users) == $this->maxMembers),
-                    'urlMembersList' => $this->space->createUrl('/space/membership/members-list'),
-                    'privilegedUserIds' => $this->getPrivilegedUserIds(),
-                    'totalMemberCount' => Membership::getSpaceMembersQuery($this->space)->visible()->count()
+            'users' => $users,
+            'showListButton' => count($users) == $this->maxMembers,
+            'urlMembersList' => $this->space->createUrl('/space/membership/members-list'),
+            'privilegedUserIds' => $this->getPrivilegedUserIds(),
+            'totalMemberCount' => Membership::getSpaceMembersQuery($this->space)->visible()->count(),
+            'showListOptions' => [
+                'data-action-click' => 'ui.modal.load',
+                'data-action-url' => Url::to(['/space/membership/members-list', 'container' => $this->space])
+            ]
         ]);
     }
 

@@ -23,6 +23,8 @@ use Yii;
  * Class View
  *
  * @property Theme $theme the Theme component
+ * @property ViewMeta $meta The View Meta Service
+ *
  * @inheritdoc
  */
 class View extends \yii\web\View
@@ -84,14 +86,32 @@ class View extends \yii\web\View
      */
     private static $viewContext;
 
+
+    private $_viewMeta;
+
+
+    /**
+     * @return ViewMeta
+     */
+    public function getMeta()
+    {
+        if ($this->_viewMeta === null) {
+            $this->_viewMeta = new ViewMeta(['view' => $this]);
+        }
+
+        return $this->_viewMeta;
+    }
+
+
     /**
      * Sets current page title
      *
      * @param string $title
+     * @param bool $prepend
      */
-    public function setPageTitle($title)
+    public function setPageTitle($title, $prepend = false)
     {
-        $this->_pageTitle = $title;
+        $this->_pageTitle = ($prepend) ? $title . ' - ' . $this->_pageTitle : $title;
     }
 
     /**
@@ -231,7 +251,7 @@ class View extends \yii\web\View
     {
         $bundle = parent::registerAssetBundle($name, $position);
 
-        if($bundle instanceof AssetBundle && !empty($bundle->preload)) {
+        if ($bundle instanceof AssetBundle && !empty($bundle->preload)) {
             static::$preload = ArrayHelper::merge(static::$preload, $bundle->preload);
         }
 
@@ -240,14 +260,14 @@ class View extends \yii\web\View
 
     protected function registerAssetFiles($name)
     {
-        if(Yii::$app->request->isAjax
+        if (Yii::$app->request->isAjax
             && (in_array($name, AppAsset::STATIC_DEPENDS)
                 || in_array($name, CoreBundleAsset::STATIC_DEPENDS)
                 || in_array($name, [AppAsset::BUNDLE_NAME, CoreBundleAsset::BUNDLE_NAME]))) {
             return;
         }
 
-       return parent::registerAssetFiles($name);
+        return parent::registerAssetFiles($name);
     }
 
     /**
@@ -315,6 +335,7 @@ class View extends \yii\web\View
         if (!Yii::$app->request->isAjax) {
             SiteIcon::registerMetaTags($this);
             LayoutHeader::registerHeadTags($this);
+            $this->meta->registerMetaTags($this);
             parent::registerCsrfMetaTags();
         }
 
@@ -326,7 +347,7 @@ class View extends \yii\web\View
 
         $this->js[self::POS_HEAD] = null;
 
-        return parent::renderHeadHtml(). (empty($lines) ? '' : implode("\n", $lines));
+        return parent::renderHeadHtml() . (empty($lines) ? '' : implode("\n", $lines));
     }
 
     /**
@@ -336,7 +357,7 @@ class View extends \yii\web\View
     {
         $cacheBustedUrl = $this->addCacheBustQuery($url);
         foreach (static::$preload as $fileName) {
-            if(strpos($url,$fileName)) {
+            if (strpos($url, $fileName)) {
                 $this->registerPreload($cacheBustedUrl, 'script');
             }
         }
@@ -352,7 +373,7 @@ class View extends \yii\web\View
     {
         $cacheBustedUrl = $this->addCacheBustQuery($url);
         foreach (static::$preload as $fileName) {
-            if(strpos($url,$fileName)) {
+            if (strpos($url, $fileName)) {
                 $this->registerPreload($cacheBustedUrl, 'style');
             }
         }
@@ -362,7 +383,7 @@ class View extends \yii\web\View
 
     protected function registerPreload($url, $as)
     {
-        if(!in_array($url, static::$preloaded, true)) {
+        if (!in_array($url, static::$preloaded, true)) {
             $this->registerLinkTag((['rel' => 'preload', 'as' => $as, 'href' => $url]));
             static::$preloaded[] = $url;
         }
@@ -483,8 +504,8 @@ class View extends \yii\web\View
      */
     private function registerViewContext()
     {
-        if(!empty(static::$viewContext)) {
-            $this->registerJs('humhub.modules.ui.view.setViewContext("'.static::$viewContext.'")', View::POS_END, 'viewContext');
+        if (!empty(static::$viewContext)) {
+            $this->registerJs('humhub.modules.ui.view.setViewContext("' . static::$viewContext . '")', View::POS_END, 'viewContext');
         }
     }
 

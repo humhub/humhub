@@ -31,8 +31,6 @@ class AboutVersion extends Widget
             } else {
                 return $this->render('about_version_pro', ['licence' => $licence]);
             }
-        } elseif ($licence->type === Licence::LICENCE_TYPE_EE) {
-            return $this->render('about_version_ee');
         } else {
             return $this->render('about_version');
         }

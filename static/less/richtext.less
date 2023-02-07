@@ -50,7 +50,6 @@
     }
 
     .ProseMirror-tooltip .ProseMirror-menu {
-        width: -webkit-fit-content;
         width: fit-content;
         white-space: pre;
     }
@@ -252,7 +251,6 @@
         left: 0;
         right: 0;
         z-index: 10;
-        -moz-box-sizing: border-box;
         box-sizing: border-box;
         overflow: visible;
     }
@@ -276,7 +274,6 @@
         left: 0;
         right: 0;
         z-index: 10;
-        -moz-box-sizing: border-box;
         box-sizing: border-box;
         overflow: visible;
         margin-top: -25px;
@@ -289,12 +286,6 @@
         float: left;
 
     }
-
-    @-moz-document url-prefix() {
-        .ProseMirror-menubar {
-            margin-top: -26px;
-        }
-    }
 }
 
 .ProsemirrorEditor {
@@ -303,7 +294,6 @@
         position: relative;
         word-wrap: break-word;
         white-space: pre-wrap;
-        -webkit-font-variant-ligatures: none;
         font-variant-ligatures: none;
     }
 
@@ -324,10 +314,6 @@
     }
 
     .ProseMirror-hideselection *::selection {
-        background: transparent;
-    }
-
-    .ProseMirror-hideselection *::-moz-selection {
         background: transparent;
     }
 
@@ -362,7 +348,6 @@
     }
 
     .ProseMirror-tooltip .ProseMirror-menu {
-        width: -webkit-fit-content;
         width: fit-content;
         white-space: pre;
     }

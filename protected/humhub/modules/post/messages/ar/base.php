@@ -8,6 +8,7 @@ return [
     'This space is archived.' => 'تمت أرشفة هذه المساحة.',
     'What\'s on your mind?' => 'ماذا يخطر ببالك؟',
     'post' => 'نشر',
+    'Post' => '',
     'Post could not be saved!' => '',
     'The post must not be empty!' => '',
 ];

@@ -314,11 +314,13 @@ humhub.module('notification', function (module, require, $) {
     };
 
     var handleFilterChanges = function () {
-        var filterForm = $("#notification_overview_filter");
+        var filterForm = $('#notification_overview_filter');
         filterForm.on('click', 'label', function(evt) {
-            evt.preventDefault();
-            var checkbox = $(this).children().first();
-            checkbox.prop("checked", !checkbox.prop( "checked"));
+            if (evt.target.isSameNode(this)) {
+                evt.preventDefault();
+                var checkbox = $(this).children().first();
+                checkbox.prop('checked', !checkbox.prop('checked'));
+            }
             event.trigger('humhub:notification:filterApplied', filterForm);
         });
     };
@@ -327,8 +329,6 @@ humhub.module('notification', function (module, require, $) {
         handleFilterChanges();
         if ($('#notification_overview_list').length) {
             OverviewWidget.instance('#notification_overview_list');
-        }
-        if ($('#notification_overview_list').length) {
             if (!$('#notification_overview_list li.new').length) {
                 $('#notification_overview_markseen').hide();
             }

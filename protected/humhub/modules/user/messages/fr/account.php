@@ -22,7 +22,7 @@ return array (
   'Enter your password to continue' => 'Indiquez votre mot de passe pour continuer',
   'Hello' => 'Bonjour',
   'Here you can edit your general profile data, which is visible in the about page of your profile.' => 'Vous pouvez modifier ici les données de votre profil, visibles dans votre page "À propos"',
-  'Hide introduction tour panel on dashboard' => 'Masquer le panneau "premiers pas" sur le fil d\'actualités',
+  'Hide introduction tour panel on dashboard' => 'Masquer le panneau "premiers pas" sur la vue d\'ensemble',
   'Invalid link! Please make sure that you entered the entire url.' => 'Lien invalide. Vérifiez que vous avez indiqué l\'URL complète.',
   'Language' => 'Langue',
   'Modules' => 'Modules',

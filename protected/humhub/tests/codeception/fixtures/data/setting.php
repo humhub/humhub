@@ -1,13 +1,14 @@
 <?php
 return [
     ['name' => 'name', 'value' => 'HumHub', 'module_id' => 'base'],
-    ['name' => 'baseUrl', 'value' => 'http://dev2/humhub_test', 'module_id' => 'base'],
+    ['name' => 'baseUrl', 'value' => 'http://localhost:8080', 'module_id' => 'base'],
     ['name' => 'paginationSize', 'value' => '10', 'module_id' => 'base'],
     ['name' => 'displayNameFormat', 'value' => '{profile.firstname} {profile.lastname}', 'module_id' => 'base'],
     ['name' => 'authInternal', 'value' => '1', 'module_id' => 'authentication'],
     ['name' => 'auth.needApproval', 'value' => '0', 'module_id' => 'user'],
     ['name' => 'auth.anonymousRegistration', 'value' => '1', 'module_id' => 'user'],
-    ['name' => 'auth.internalUsersCanInvite', 'value' => '1', 'module_id' => 'user'],
+    ['name' => 'auth.internalUsersCanInviteByEmail', 'value' => '1', 'module_id' => 'user'],
+    ['name' => 'auth.internalUsersCanInviteByLink', 'value' => '1', 'module_id' => 'user'],
     ['name' => 'mailer.transportType', 'value' => 'file', 'module_id' => 'base'],
     ['name' => 'mailer.systemEmailAddress', 'value' => 'social@example.com', 'module_id' => 'base'],
     ['name' => 'mailer.systemEmailName', 'value' => 'My Social Network', 'module_id' => 'base'],

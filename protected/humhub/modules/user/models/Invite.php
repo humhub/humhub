@@ -39,7 +39,8 @@ class Invite extends ActiveRecord
 
     const SOURCE_SELF = 'self';
     const SOURCE_INVITE = 'invite';
-    const TOKEN_LENGTH = 12;
+    const EMAIL_TOKEN_LENGTH = 12;
+    const LINK_TOKEN_LENGTH = 14; // Should be different that EMAIL_TOKEN_LENGTH
 
     public $captcha;
 
@@ -105,7 +106,7 @@ class Invite extends ActiveRecord
     public function beforeSave($insert)
     {
         if ($insert && $this->token == '') {
-            $this->token = Yii::$app->security->generateRandomString(self::TOKEN_LENGTH);
+            $this->token = Yii::$app->security->generateRandomString(self::EMAIL_TOKEN_LENGTH);
         }
 
         return parent::beforeSave($insert);
