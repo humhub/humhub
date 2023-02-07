@@ -66,7 +66,6 @@ return [
     'Register now and participate!' => 'ลงทะเบียนตอนนี้และเข้าร่วม',
     'Search...' => 'ค้นหา...',
     'Security' => 'ความปลอดภัย',
-    'Send invite' => 'ส่งคำเชิญ',
     'Settings' => 'การตั้งค่า',
     'Show At Registration' => 'แสดงเมื่อลงทะเบียน',
     'Show all content' => 'แสดงเนื้อหาทั้งหมด',
@@ -105,6 +104,10 @@ return [
     'or' => 'หรือ',
     'Allow users to mention you' => '',
     'Following (User)' => '',
+    'Invite by email' => '',
+    'Invite by link' => '',
+    'Invite new people' => '',
     'Mentioning' => '',
+    'The secure link has been copied in your clipboard!' => '',
     'Whenever a user follows another user.' => '',
 ];

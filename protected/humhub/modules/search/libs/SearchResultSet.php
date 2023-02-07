@@ -52,6 +52,10 @@ class SearchResultSet
         foreach ($this->results as $result) {
             /** @var $modelClass ActiveRecord */
             $modelClass = $result->model;
+            if (!class_exists($modelClass)) {
+                Yii::info('Could not find class ' . $modelClass, 'search');
+                continue;
+            }
             try {
                 $instance = $modelClass::findOne(['id' => $result->pk]);
             } catch (\Exception $ex) {

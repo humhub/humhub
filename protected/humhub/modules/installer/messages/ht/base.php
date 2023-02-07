@@ -40,6 +40,7 @@ return [
     'Port' => '',
     'Recommended <strong>Modules</strong>' => '',
     'Registered members can invite new users via email' => '',
+    'Registered members can invite new users via link' => '',
     'Security <strong>Settings</strong>' => '',
     'Set up example content (recommended)' => '',
     'Sign in' => '',

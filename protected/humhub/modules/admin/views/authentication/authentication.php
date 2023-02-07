@@ -26,7 +26,9 @@ $userModule = Yii::$app->getModule('user');
 
     <?= $form->field($model, 'showCaptureInRegisterForm')->checkbox(); ?>
 
-    <?= $form->field($model, 'internalUsersCanInvite')->checkbox(); ?>
+    <?= $form->field($model, 'internalUsersCanInviteByEmail')->checkbox(); ?>
+
+    <?= $form->field($model, 'internalUsersCanInviteByLink')->checkbox(); ?>
 
     <?= $form->field($model, 'internalRequireApprovalAfterRegistration')->checkbox(); ?>
 

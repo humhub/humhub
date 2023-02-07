@@ -45,13 +45,15 @@ class InviteController extends Controller
      * @return string the action result
      * @throws \yii\web\HttpException
      */
-    public function actionIndex()
+    public function actionIndex($adminIsAlwaysAllowed = false)
     {
-        if (!$this->canInvite()) {
+        $model = new InviteForm();
+
+        $canInviteByEmail = $model->canInviteByEmail($adminIsAlwaysAllowed);
+        $canInviteByLink = $model->canInviteByLink($adminIsAlwaysAllowed);
+        if (!$canInviteByEmail && !$canInviteByLink) {
             throw new HttpException(403, 'Invite denied!');
         }
-
-        $model = new InviteForm;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             foreach ($model->getEmails() as $email) {
@@ -63,7 +65,12 @@ class InviteController extends Controller
             ]);
         }
 
-        return $this->renderAjax('index', ['model' => $model]);
+        return $this->renderAjax('index', [
+            'model' => $model,
+            'canInviteByEmail' => $canInviteByEmail,
+            'canInviteByLink' => $canInviteByLink,
+            'adminIsAlwaysAllowed' => $adminIsAlwaysAllowed,
+        ]);
     }
 
     /**
@@ -89,17 +96,29 @@ class InviteController extends Controller
     }
 
     /**
-     * Checks if current user can invite new members
-     *
-     * @return boolean can invite new members
+     * @param $adminIsAlwaysAllowed
+     * @return string
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
      */
-    protected function canInvite()
+    public function actionResetInviteLink($adminIsAlwaysAllowed = false)
     {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('user');
+        $model = new InviteForm();
 
-        return $module->settings->get('auth.internalUsersCanInvite') ||
-            Yii::$app->user->can([new ManageUsers(), new ManageGroups()]);
+        if (!Yii::$app->user->can([ManageUsers::class, ManageGroups::class])) {
+            $this->forbidden();
+        }
+
+        $model->getInviteLink(true);
+
+        $this->view->saved();
+
+        return $this->renderAjax('index', [
+            'model' => $model,
+            'canInviteByEmail' => $model->canInviteByEmail($adminIsAlwaysAllowed),
+            'canInviteByLink' => $model->canInviteByLink($adminIsAlwaysAllowed),
+            'adminIsAlwaysAllowed' => $adminIsAlwaysAllowed,
+        ]);
     }
-
 }

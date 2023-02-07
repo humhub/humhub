@@ -1,9 +1,13 @@
 HumHub Changelog
 ================
 
+1.13.2 (Unreleased)
+-------------------------
+- Fix #5965: Suppress log warning 'Invalid session auth key attempted for user'
 
-1.13.1 (Unreleased)
---------------------------
+
+1.13.1 (January 25, 2023)
+-------------------------
 - Fix #5985: Space user search in picker 
 - Fix #5993: Broken images on installations with multiple URLs 
 - Fix #5996: Fix param type in strpos() (PHP 8.1)
@@ -11,6 +15,14 @@ HumHub Changelog
 - Enh #6001: Added new `ContentActiveFixture` and migrated `PostFixture` to it
 - Fix #6007: Fix number of space members
 - Fix #6012: View own invisible profile
+- Fix #6027: Fix private user visibility by guest
+- Fix #6030: Use all searchable profile fields in UserPicker searching
+- Fix #6026: Fix visibility members counter for guests
+- Fix #6041: Fix search of obsolete cached objects
+- Fix #6043: Fix permission to lock/unlock comment for admin
+- Fix #6051: Fix visibility of "NEW UPDATES AVAILABLE!" for space creator
+- Fix #6055: Fix click event of notification filter
+- Fix #6054: Fix pagination after filter notifications
 
 1.13.0 (December 21, 2022)
 --------------------------

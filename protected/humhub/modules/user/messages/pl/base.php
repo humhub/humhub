@@ -66,7 +66,6 @@ return [
     'Register now and participate!' => 'Zarejestruj się i dołącz do dyskusji!',
     'Search...' => 'Szukaj...',
     'Security' => 'Bezpieczeństwo',
-    'Send invite' => 'Wyślij zaproszenie',
     'Settings' => 'Ustawienia',
     'Show At Registration' => 'Pokaż w trakcie rejestracji',
     'Show all content' => 'Pokaż całą zawartość',
@@ -105,6 +104,10 @@ return [
     'or' => 'lub',
     'Allow users to mention you' => '',
     'Following (User)' => '',
+    'Invite by email' => '',
+    'Invite by link' => '',
+    'Invite new people' => '',
     'Mentioning' => '',
+    'The secure link has been copied in your clipboard!' => '',
     'Whenever a user follows another user.' => '',
 ];
