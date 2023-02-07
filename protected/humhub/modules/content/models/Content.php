@@ -105,11 +105,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     const VISIBILITY_OWNER = 2;
 
+    /**
+     * Content States - By default, only content with the "Published" state is returned.
+     */
     const STATE_PUBLISHED = 1;
     const STATE_DRAFT = 10;
-    const STATE_UNAPPROVED = 20;
-    const STATE_DECLINED = 25;
-    const STATE_ARCHIVED = 90;
     const STATE_DELETED = 100;
 
     /**
