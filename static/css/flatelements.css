@@ -5,7 +5,9 @@
 .onoffswitch {
     position: relative;
     width: 33px;
-    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     margin: 1px 5px 0 0;
     float: left;
 }
@@ -24,6 +26,9 @@
 .onoffswitch-inner {
     width: 200%;
     margin-left: -100%;
+    -moz-transition: margin 0.2s ease-in 0s;
+    -webkit-transition: margin 0.2s ease-in 0s;
+    -o-transition: margin 0.2s ease-in 0s;
     transition: margin 0.2s ease-in 0s;
 }
 
@@ -37,6 +42,8 @@
     color: white;
     font-family: Trebuchet, Arial, sans-serif;
     font-weight: bold;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
 
@@ -65,6 +72,9 @@
     top: 0;
     bottom: 0;
     right: 17px;
+    -moz-transition: all 0.2s ease-in 0s;
+    -webkit-transition: all 0.2s ease-in 0s;
+    -o-transition: all 0.2s ease-in 0s;
     transition: all 0.2s ease-in 0s;
 }
 
@@ -83,112 +93,4 @@
 
 .onoffswitch-clear {
     clear: both;
-}
-
-
-/*
-/* Checkboxes (Slider)
-/* --------------------------------------------------
-*/
-
-.regular-checkbox-container {
-    padding-left: 0;
-}
-
-.regular-checkbox {
-    opacity: 0;
-    width: 0;
-}
-
-.regular-checkbox + .regular-checkbox-box, input[type=checkbox] {
-    appearance: none;
-    background: none;
-    border: 2px solid #ccc;
-    padding: 7px;
-    border-radius: 3px;
-    display: inline-block;
-    position: relative;
-    float: left;
-    margin-right: 5px;
-}
-
-.regular-checkbox:focus + .regular-checkbox-box, input[type=checkbox]:focus {
-    border: 2px solid #494949;
-    outline: none;
-}
-
-.regular-checkbox:checked + .regular-checkbox-box, input[type=checkbox]:checked {
-    border: 2px solid #428bca;
-    background: #428bca;
-    color: white;
-}
-
-.regular-checkbox:checked + .regular-checkbox-box:after, input[type=checkbox]:checked::after {
-    content: '\2714';
-    font-size: 14px;
-    position: absolute;
-    top: -3px;
-    left: 1px;
-    color: white;
-    transition: margin 0.2s ease-in 0s;
-}
-
-input[type=checkbox].regular-checkbox, input[type=checkbox].regular-checkbox:focus {
-    position: absolute;
-}
-
-.regular-checkbox-clear {
-    clear: both;
-}
-
-/*
-/* Checkboxes (Slider)
-/* --------------------------------------------------
-*/
-.regular-radio-container {
-    padding-left: 0;
-}
-
-.regular-radio, input[type=radio].regular-radio {
-    display: none;
-}
-
-.regular-radio + .regular-radio-button, input[type=radio] {
-    appearance: none;
-    background: none;
-    border: 2px solid #ccc;
-    padding: 7px;
-    border-radius: 50px;
-    display: inline-block;
-    position: relative;
-    margin-right: 5px;
-    float: left;
-}
-
-.regular-radio:checked + .regular-radio-button:after, input[type=radio]:checked::after {
-    content: ' ';
-    width: 8px;
-    height: 8px;
-    border-radius: 50px;
-    position: absolute;
-    top: 3px;
-    background: #428bca;
-    text-shadow: 0px;
-    left: 3px;
-    font-size: 32px;
-}
-
-.regular-radio:checked + .regular-radio-button, input[type=radio]:checked {
-    background: none;
-    color: #99a1a7;
-    border: 2px solid #ccc;
-    margin-right: 5px;
-}
-
-.chk_rdo .form-group {
-    margin-bottom: 0px;
-}
-
-.chk_rdo .form-group label {
-    margin-bottom: 0px;
 }
