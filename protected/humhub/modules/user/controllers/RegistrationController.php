@@ -74,6 +74,13 @@ class RegistrationController extends Controller
         if ($inviteToken != '') {
             $spaceId = Yii::$app->request->get('spaceId');
             $this->handleInviteRegistration($inviteToken, $registration, $spaceId);
+
+            // If invited by link, enable email field
+            /* @var $module Module */
+            $module = Yii::$app->getModule('user');
+            if ($spaceId !== null || $module->settings->get('registration.inviteToken') === $inviteToken) {
+                $registration->enableEmailField = true;
+            }
         } elseif (Yii::$app->session->has('authClient')) {
             $authClient = Yii::$app->session->get('authClient');
             $this->handleAuthClientRegistration($authClient, $registration);
