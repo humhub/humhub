@@ -39,6 +39,7 @@ class ContentContainerStream extends Stream
     protected function initQuery($options = [])
     {
         $options['container'] = $this->contentContainer;
+
         return parent::initQuery($options);
     }
 }
