@@ -17,4 +17,5 @@ HumHub Changelog (DEVELOP)
 - Enh #5699: Allow users to invite by link
 - Enh #6081: Added corresponding CSS variables for LESS color variables 
 - Fix #6022: Fix Changelog Link with new Marketplace URL
-- Enh #5973: Stylesheet Prefix Cleanup and removed temporary style  
+- Enh #5973: Stylesheet Prefix Cleanup and removed temporary style
+- Enh #6077: Always display content tabs

@@ -28,16 +28,15 @@ humhub.module('content.form', function(module, require, $) {
 
         this.setDefaultVisibility();
         this.$.fadeIn('fast');
+        this.showMenu();
 
         if(!module.config['disabled']) {
-            var that = this;
             $('#contentFormBody').on('click.humhub:content:form dragover.humhub:content:form', function(evt) {
                 // Prevent fading in for topic remove button clicks
                 if($(evt.target).closest('.topic-remove-label').length) {
                     return;
                 }
 
-                that.showMenu();
                 $('.contentForm_options').fadeIn();
             });
         } else {
