@@ -46,14 +46,14 @@ class ContentTagService
             );
         }
 
-        if (ContentTagRelation::findBy($this, $tag)->count()) {
+        if (ContentTagRelation::findBy($this->content, $tag)->count()) {
             return true;
         }
 
         $this->content->refresh();
         SearchHelper::queueUpdate($this->content->getPolymorphicRelation());
 
-        $contentRelation = new ContentTagRelation($this, $tag);
+        $contentRelation = new ContentTagRelation($this->content, $tag);
 
         return $contentRelation->save();
     }
