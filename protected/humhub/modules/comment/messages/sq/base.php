@@ -14,8 +14,6 @@ return [
     'Edit your comment...' => 'Ndrysho komentin tuaj...',
     'Read full comment...' => 'Lexo tërë komentin....',
     'Reply' => 'Përgjigju',
-    'Show all {total} comments' => 'Shfaq gjitha {total} komentet',
-    'Show {count} more comments' => 'Shfaq {count} më shumë komente',
     'The comment must not be empty!' => 'Komenti nuk duhet të jetë i zbrazët!',
     'Whenever a new comment was written.' => 'Kurdo kur një koment është shkruar.',
     'Write a new comment...' => 'Shkruaj një koment të ri...',
@@ -30,4 +28,6 @@ return [
     'Reason' => '',
     'Send a notification to author' => '',
     'Show' => '',
+    'Show next {count} comments' => '',
+    'Show previous {count} comments' => '',
 ];

@@ -18,7 +18,7 @@
 
 
 //
-// Text color
+// Text colors
 // --------------------------------------------------
 
 // Default body text color.
@@ -45,7 +45,7 @@
 
 
 //
-// Text color
+// Background colors
 // --------------------------------------------------
 
 // main content background color should be in contrast with @text-color-main, @text-color-secondary and other text colors
@@ -91,3 +91,49 @@
 @mail-font-url: 'http://fonts.googleapis.com/css?family=Open+Sans:300,100,400,600';
 @mail-font-family: 'Open Sans', Arial, Tahoma, Helvetica, sans-serif;
 
+// CSS Variables
+:root {
+  // Colors for buttons status etc.
+  --default: @default;
+  --primary: @primary;
+  --info: @info;
+  --success: @success;
+  --warning: @warning;
+  --danger: @danger;
+  --link: @link;
+
+  // Text colors
+  --text-color-main: @text-color-main;
+  --text-color-secondary: @text-color-secondary;
+  --text-color-highlight: @text-color-highlight;
+  --text-color-soft: @text-color-soft;
+  --text-color-soft2: @text-color-soft2;
+  --text-color-soft3: @text-color-soft3;
+  --text-color-contrast: @text-color-contrast;
+
+  // Background colors
+  --background-color-main: @background-color-main;
+  --background-color-secondary: @background-color-secondary;
+  --background-color-page: @background-color-page;
+  --background-color-highlight: @background-color-highlight;
+  --background3: @background3;
+  --background4: @background4;
+
+  // Bootstrap Alert boxes
+  // Success
+  --background-color-success: @background-color-success;
+  --text-color-success: @text-color-success;
+  --border-color-success: @border-color-success;
+  // Warning
+  --background-color-warning: @background-color-warning;
+  --text-color-warning: @text-color-warning;
+  --border-color-warning: @border-color-warning;
+  // Danger
+  --background-color-danger: @background-color-danger;
+  --text-color-danger: @text-color-danger;
+  --border-color-danger: @border-color-danger;
+
+  // Fonts
+  --mail-font-url: @mail-font-url;
+  --mail-font-family: @mail-font-family;
+}

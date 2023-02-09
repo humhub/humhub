@@ -211,7 +211,34 @@ class MembershipController extends ContentContainerController
             ]);
         }
 
-        return $this->renderAjax('invite', ['model' => $model, 'space' => $model->space]);
+        return $this->renderAjax('invite', [
+            'model' => $model,
+            'space' => $model->space,
+        ]);
+    }
+
+
+    /**
+     * @return string
+     * @throws \yii\base\Exception
+     * @throws \yii\web\ForbiddenHttpException
+     */
+    public function actionResetInviteLink()
+    {
+        $model = new InviteForm(['space' => $this->getSpace()]);
+
+        if (!$model->space || !$model->space->isAdmin()) {
+            $this->forbidden();
+        }
+
+        $model->getInviteLink(true);
+
+        $this->view->saved();
+
+        return $this->renderAjax('invite', [
+            'model' => $model,
+            'space' => $model->space,
+        ]);
     }
 
     /**

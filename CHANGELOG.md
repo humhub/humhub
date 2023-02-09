@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.13.2 (Unreleased)
+-------------------------
+- Fix #5965: Suppress log warning 'Invalid session auth key attempted for user'
+
 
 1.13.1 (January 25, 2023)
 -------------------------
