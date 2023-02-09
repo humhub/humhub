@@ -975,6 +975,16 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
     }
 
+    /**
+     * Marks the content as deleted.
+     *
+     * Content which are marked as deleted will not longer returned in queries/stream/search.
+     * A cron job will remove these content permanently.
+     * If installed, such content can also be restored using the `recycle-bin` module.
+     *
+     * @return bool
+     * @since 1.14
+     */
     public function softDelete(): bool
     {
         ActivityHelper::deleteActivitiesForRecord($this->getModel());

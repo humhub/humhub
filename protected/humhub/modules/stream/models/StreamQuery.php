@@ -416,7 +416,7 @@ class StreamQuery extends Model
             if ($filterHandler instanceof StreamQueryFilter) {
                 $filterHandler->postProcessStreamResult($result);
             } else {
-                print "is string!: " . $filterHandler . "\n";
+                Yii::warning('StreamQuery::postProcessAll - invalid FilterHandler: ' . var_export($filterHandler, true), 'content');
             }
         }
         return $result;
