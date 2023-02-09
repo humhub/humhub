@@ -98,7 +98,7 @@ class ContentController extends Controller
             }
 
             $json = [
-                'success' => $contentObj->delete(),
+                'success' => $contentObj->softDelete(),
                 'uniqueId' => $contentObj->getUniqueId(),
                 'model' => $model,
                 'pk' => $id
@@ -211,7 +211,7 @@ class ContentController extends Controller
                 throw new BadRequestHttpException();
             }
 
-            if($form->notify) {
+            if ($form->notify) {
                 $contentDeleted = ContentDeleted::instance()
                     ->from(Yii::$app->user->getIdentity())
                     ->payload(['contentTitle' => (new ContentDeleted)->getContentPlainTextInfo($content), 'reason' => $form->message]);
@@ -223,7 +223,7 @@ class ContentController extends Controller
             }
         }
 
-        return $this->asJson(['success' => $content->delete()]);
+        return $this->asJson(['success' => $content->softDelete()]);
     }
 
     public function actionReload($id)
@@ -397,6 +397,25 @@ class ContentController extends Controller
         if ($content !== null && $content->canPin()) {
             $content->unpin();
             $json['success'] = true;
+        }
+
+        return $this->asJson($json);
+    }
+
+    public function actionPublishDraft()
+    {
+        $this->forcePostRequest();
+
+        $json = [];
+        $json['success'] = false;
+
+        $content = Content::findOne(['id' => Yii::$app->request->get('id', '')]);
+        if ($content !== null && $content->canEdit() && $content->state === Content::STATE_DRAFT) {
+            $content->state = Content::STATE_PUBLISHED;
+            $content->save();
+            $json['message'] = Yii::t('ContentModule.base', 'The content has been successfully published.');
+            $json['success'] = true;
+
         }
 
         return $this->asJson($json);

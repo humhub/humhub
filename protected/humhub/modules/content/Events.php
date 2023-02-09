@@ -9,6 +9,7 @@
 namespace humhub\modules\content;
 
 use humhub\commands\IntegrityController;
+use humhub\components\Event;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\search\interfaces\Searchable;
@@ -92,7 +93,7 @@ class Events extends BaseObject
     /**
      * On init of the WallEntryAddonWidget, attach the wall entry links widget.
      *
-     * @param CEvent $event
+     * @param Event $event
      */
     public static function onWallEntryAddonInit($event)
     {
@@ -105,13 +106,13 @@ class Events extends BaseObject
     /**
      * On rebuild of the search index, rebuild all user records
      *
-     * @param type $event
+     * @param Event $event
      */
     public static function onSearchRebuild($event)
     {
         foreach (Content::find()->each() as $content) {
             $contentObject = $content->getPolymorphicRelation();
-            if ($contentObject instanceof Searchable) {
+            if ($contentObject instanceof Searchable && $content->state === Content::STATE_PUBLISHED) {
                 Yii::$app->search->add($contentObject);
             }
         }
@@ -126,7 +127,10 @@ class Events extends BaseObject
     {
         /** @var ContentActiveRecord $record */
         $record = $event->sender;
-        SearchHelper::queueUpdate($record);
+
+        if ($record->content->state === Content::STATE_PUBLISHED) {
+            SearchHelper::queueUpdate($record);
+        }
     }
 
     /**
@@ -139,6 +143,16 @@ class Events extends BaseObject
         /** @var ContentActiveRecord $record */
         $record = $event->sender;
         SearchHelper::queueDelete($record);
+    }
+
+    /**
+     * Callback on daily cron job run
+     *
+     * @param \yii\base\Event $event
+     */
+    public static function onCronDailyRun($event): void
+    {
+        Yii::$app->queue->push(new jobs\PurgeDeletedContents());
     }
 
 }

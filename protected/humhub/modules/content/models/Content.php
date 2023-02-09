@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
+use humhub\modules\activity\helpers\ActivityHelper;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -21,6 +22,7 @@ use humhub\modules\content\live\NewContent;
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\notification\models\Notification;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
@@ -29,7 +31,6 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
-use yii\db\Expression;
 use yii\db\IntegrityException;
 use yii\helpers\Url;
 
@@ -59,6 +60,7 @@ use yii\helpers\Url;
  * @property integer $visibility
  * @property integer $pinned
  * @property integer $archived
+ * @property integer $state
  * @property integer $locked_comments
  * @property string $created_at
  * @property integer $created_by
@@ -102,6 +104,13 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      * @var int Owner visibility mode, only visible for contentContainer + content owner
      */
     const VISIBILITY_OWNER = 2;
+
+    /**
+     * Content States - By default, only content with the "Published" state is returned.
+     */
+    const STATE_PUBLISHED = 1;
+    const STATE_DRAFT = 10;
+    const STATE_DELETED = 100;
 
     /**
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
@@ -191,21 +200,13 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             throw new Exception("Could not save content with object_model or object_id!");
         }
 
-        // Set some default values
-        if (!$this->archived) {
-            $this->archived = 0;
-        }
-        if (!$this->visibility) {
-            $this->visibility = self::VISIBILITY_PRIVATE;
-        }
-        if (!$this->pinned) {
-            $this->pinned = 0;
-        }
+        $this->archived ??= 0;
+        $this->visibility ??= self::VISIBILITY_PRIVATE;
+        $this->pinned ??= 0;
+        $this->state ??= Content::STATE_PUBLISHED;
 
         if ($insert) {
-            if ($this->created_by == "") {
-                $this->created_by = Yii::$app->user->id;
-            }
+            $this->created_by ??= Yii::$app->user->id;
         }
 
         $this->stream_sort_date = date('Y-m-d G:i:s');
@@ -222,15 +223,38 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function afterSave($insert, $changedAttributes)
     {
-        /* @var $contentSource ContentActiveRecord */
-        $contentSource = $this->getModel();
+        if (// New Content with State Published:
+            ($insert && $this->state == Content::STATE_PUBLISHED) ||
+            // Content Updated from Draft to Published
+            (array_key_exists('state', $changedAttributes) &&
+                $this->state == Content::STATE_PUBLISHED &&
+                $changedAttributes['state'] == Content::STATE_DRAFT
+            )) {
+            $this->processNewContent();
+        }
+
+        if ($this->state === static::STATE_PUBLISHED) {
+            SearchHelper::queueUpdate($this->getModel());
+        } else {
+            SearchHelper::queueDelete($this->getModel());
+        }
+
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    private function processNewContent()
+    {
+        $record = $this->getModel();
+
+        Yii::debug('Process new content: ' . get_class($record) . ' ID: ' . $record->getPrimaryKey(), 'content');
 
         foreach ($this->notifyUsersOfNewContent as $user) {
-            $contentSource->follow($user->id);
+            $record->follow($user->id);
         }
 
         // TODO: handle ContentCreated notifications and live events for global content
-        if ($insert && !$this->isMuted()) {
+
+        if (!$this->isMuted()) {
             $this->notifyContentCreated();
         }
 
@@ -241,19 +265,16 @@ class Content extends ActiveRecord implements Movable, ContentOwner
                 'originator' => $this->createdBy->guid,
                 'contentContainerId' => $this->container->contentContainerRecord->id,
                 'visibility' => $this->visibility,
-                'sourceClass' => get_class($contentSource),
-                'sourceId' => $contentSource->getPrimaryKey(),
+                'sourceClass' => get_class($record),
+                'sourceId' => $record->getPrimaryKey(),
                 'silent' => $this->isMuted(),
                 'streamChannel' => $this->stream_channel,
                 'contentId' => $this->id,
-                'insert' => $insert
+                'insert' => true
             ]));
         }
-
-        SearchHelper::queueUpdate($contentSource);
-
-        parent::afterSave($insert, $changedAttributes);
     }
+
 
     /**
      * @return bool checks if the given content allows content creation notifications and activities
@@ -859,6 +880,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             return $this->checkGuestAccess();
         }
 
+        // If content is draft, in trash, unapproved - restrict view access to editors
+        if ($this->state !== static::STATE_PUBLISHED) {
+            return $this->canEdit();
+        }
+
         // Public visible content
         if ($this->isPublic()) {
             return true;
@@ -947,5 +973,30 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     public function isUpdated()
     {
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
+    }
+
+    /**
+     * Marks the content as deleted.
+     *
+     * Content which are marked as deleted will not longer returned in queries/stream/search.
+     * A cron job will remove these content permanently.
+     * If installed, such content can also be restored using the `recycle-bin` module.
+     *
+     * @return bool
+     * @since 1.14
+     */
+    public function softDelete(): bool
+    {
+        ActivityHelper::deleteActivitiesForRecord($this->getModel());
+
+        Notification::deleteAll([
+            'source_class' => get_class($this),
+            'source_pk' => $this->getPrimaryKey(),
+        ]);
+
+        $this->state = self::STATE_DELETED;
+        $this->save();
+
+        return true;
     }
 }

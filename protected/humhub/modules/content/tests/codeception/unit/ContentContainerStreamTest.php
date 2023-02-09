@@ -95,6 +95,40 @@ class ContentContainerStreamTest extends HumHubDbTestCase
         $this->assertTrue(in_array($w2, $ids));
     }
 
+    public function testDraftContent()
+    {
+        $this->becomeUser('User2');
+        $draft1Id = $this->createPost('Some Draft', Content::VISIBILITY_PRIVATE, Content::STATE_DRAFT);
+        $regular1Id = $this->createPost('Regular 1 by U2', Content::VISIBILITY_PRIVATE,);
+        $this->becomeUser('Admin');
+        $regular2Id = $this->createPost('Regular 2 by Admin', Content::VISIBILITY_PRIVATE);
+
+        $this->becomeUser('User2');
+        $ids = $this->getStreamActionIds($this->space, 2);
+
+        // Check draft is first for Author
+        $this->assertTrue($ids[0] === $draft1Id);
+
+        // Check draft is not visible for other users
+        $this->becomeUser('Admin');
+        $ids = $this->getStreamActionIds($this->space, 5);
+        $this->assertTrue(!in_array($draft1Id, $ids));
+    }
+
+    public function testDeletedContent()
+    {
+        $this->becomeUser('User2');
+        $deleteId = $this->createPost('Something to delete', Content::VISIBILITY_PRIVATE);
+
+        $post = Post::findOne(['id' => $deleteId]);
+        $post->content->softDelete();
+
+        $ids = $this->getStreamActionIds($this->space, 3);
+
+        // Deleted Content should not appear in stream
+        $this->assertTrue(!in_array($deleteId, $ids));
+    }
+
     private function getStreamActionIds($container, $limit = 4)
     {
         $action = new ContentContainerStream('stream', Yii::$app->controller, [
@@ -107,7 +141,9 @@ class ContentContainerStreamTest extends HumHubDbTestCase
 
         $wallEntries = $action->getStreamQuery()->all();
 
-        $wallEntryIds = array_map(static function($entry) {return $entry->id; }, $wallEntries);
+        $wallEntryIds = array_map(static function ($entry) {
+            return $entry->id;
+        }, $wallEntries);
 
         return $wallEntryIds;
     }
@@ -122,12 +158,13 @@ class ContentContainerStreamTest extends HumHubDbTestCase
         return $this->createPost('Public Post', Content::VISIBILITY_PUBLIC);
     }
 
-    private function createPost($message, $visibility)
+    private function createPost($message, $visibility, $state = Content::STATE_PUBLISHED)
     {
         $post = new Post;
         $post->message = $message;
         $post->content->setContainer($this->space);
         $post->content->visibility = $visibility;
+        $post->content->state = $state;
         $post->save();
 
         return $post->content->id;
