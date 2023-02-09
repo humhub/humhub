@@ -69,18 +69,14 @@ class RegistrationController extends Controller
          * @var \yii\authclient\BaseClient
          */
         $authClient = null;
-        $inviteToken = Yii::$app->request->get('token', '');
+        $inviteByEmailToken = Yii::$app->request->get('token', '');
+        $inviteByLinkToken = Yii::$app->request->get('inviteByLinkToken');
+        $inviteSpaceId = Yii::$app->request->get('inviteSpaceId');
 
-        if ($inviteToken != '') {
-            $spaceId = Yii::$app->request->get('spaceId');
-            $this->handleInviteRegistration($inviteToken, $registration, $spaceId);
-
-            // If invited by link, enable email field
-            /* @var $module Module */
-            $module = Yii::$app->getModule('user');
-            if ($spaceId !== null || $module->settings->get('registration.inviteToken') === $inviteToken) {
-                $registration->enableEmailField = true;
-            }
+        if ($inviteByEmailToken != '') {
+            $this->handleInviteByEmailRegistration($inviteByEmailToken, $registration);
+        } elseif ($inviteByLinkToken) {
+            $this->handleInviteByLinkRegistration($inviteByLinkToken, $inviteSpaceId, true);
         } elseif (Yii::$app->session->has('authClient')) {
             $authClient = Yii::$app->session->get('authClient');
             $this->handleAuthClientRegistration($authClient, $registration);
@@ -113,12 +109,62 @@ class RegistrationController extends Controller
     }
 
     /**
-     * @param $inviteToken
-     * @param Registration $form
-     * @param int|null $spaceId
+     * Invitation by link
+     * @param $token
+     * @param $spaceId
+     * @return string
      * @throws HttpException
      */
-    protected function handleInviteRegistration($inviteToken, Registration $form, $spaceId)
+    public function actionByLink($token = null, $spaceId = null)
+    {
+        /* @var $module Module */
+        $module = Yii::$app->getModule('user');
+        if (!$module->emailRequired) {
+            // Bypass email form
+            $this->redirect(['index', 'inviteByLinkToken' => $token, 'inviteSpaceId' => $spaceId]);
+        }
+
+        $this->handleInviteByLinkRegistration($token, $spaceId);
+
+        $invite = new Invite([
+            'source' => Invite::SOURCE_INVITE_BY_LINK,
+            'space_invite_id' => $spaceId,
+            'scenario' => 'invite',
+            'language' => Yii::$app->language,
+        ]);
+
+        if ($invite->load(Yii::$app->request->post()) && $invite->save()) {
+            $invite->sendInviteMail();
+            return $this->render('@user/views/auth/register_success', ['model' => $invite]);
+        }
+
+        return $this->render('byLink', [
+            'invite' => $invite,
+        ]);
+    }
+
+    /**
+     * @param $inviteToken
+     * @param Registration $form
+     * @throws HttpException
+     */
+    protected function handleInviteByEmailRegistration($inviteToken, Registration $form)
+    {
+        $userInvite = Invite::findOne(['token' => $inviteToken]);
+        if (!$userInvite) {
+            throw new HttpException(404, 'Invalid registration token!');
+        }
+        Yii::$app->setLanguage($userInvite->language);
+        $form->getUser()->email = $userInvite->email;
+    }
+
+    /**
+     * @param $inviteToken
+     * @param $spaceId
+     * @param bool $setSpaceIdInSession If email is not required, we need to keep the invite space ID in session to add the user to the space in User::setUpApproved()
+     * @throws HttpException
+     */
+    protected function handleInviteByLinkRegistration($inviteToken, $spaceId, $setSpaceIdInSession = false)
     {
         // If invited by link from a space
         if ($spaceId !== null) {
@@ -128,7 +174,9 @@ class RegistrationController extends Controller
                 && $space->settings->get('inviteToken') === $inviteToken
             ) {
                 Yii::$app->setLanguage($space->ownerUser->language);
-                Yii::$app->session->set(InviteForm::SESSION_SPACE_INVITE_ID, $spaceId);
+                if ($setSpaceIdInSession) {
+                    Yii::$app->session->set(InviteForm::SESSION_SPACE_INVITE_ID, $spaceId);
+                }
                 return;
             }
             throw new HttpException(404, 'Invalid registration token!');
@@ -137,19 +185,9 @@ class RegistrationController extends Controller
         // If invited by link globally
         /* @var $module Module */
         $module = Yii::$app->getModule('user');
-        if ($module->settings->get('registration.inviteToken') === $inviteToken) {
-            return;
+        if ($module->settings->get('registration.inviteToken') !== $inviteToken) {
+            throw new HttpException(404, 'Invalid registration token!');
         }
-
-        // If invited by email
-        $userInvite = Invite::findOne(['token' => $inviteToken]);
-        if ($userInvite) {
-            Yii::$app->setLanguage($userInvite->language);
-            $form->getUser()->email = $userInvite->email;
-            return;
-        }
-
-        throw new HttpException(404, 'Invalid registration token!');
     }
 
     /**
