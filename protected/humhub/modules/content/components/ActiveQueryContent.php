@@ -199,6 +199,10 @@ class ActiveQueryContent extends ActiveQuery
     public function userRelated($scopes = [], $user = null)
     {
         if ($user === null) {
+            if ( Yii::$app->user->isGuest) {
+                return $this->andWhere('false');
+            }
+
             $user = Yii::$app->user->getIdentity();
         }
 
