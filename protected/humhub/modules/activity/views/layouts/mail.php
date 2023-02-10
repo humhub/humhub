@@ -96,7 +96,7 @@ use yii\helpers\Html;
                                                                             <span
                                                                                 style="text-decoration: none; color: <?= $this->theme->variable('primary') ?>;"> - <a
                                                                                     href="<?= $url ?>"
-                                                                                    style="text-decoration: none; color: <?= $this->theme->variable('primary') ?>; "><?= Yii::t('ActivityModule.base', 'see online') ?></a></span>
+                                                                                    style="text-decoration: none; color: <?= $this->theme->variable('primary') ?>; font-weight: bold;"><?= Yii::t('ActivityModule.base', 'see online') ?></a></span>
                                                                             <!-- END: CONTENT LINK -->
                                                                         <?php endif; ?>
                                                                     </div>
