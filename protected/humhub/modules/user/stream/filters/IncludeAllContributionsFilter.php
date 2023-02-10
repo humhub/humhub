@@ -2,8 +2,6 @@
 
 namespace humhub\modules\user\stream\filters;
 
-use humhub\modules\admin\permissions\ManageSpaces;
-use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\space\models\Space;
 use humhub\modules\stream\models\filters\ContentContainerStreamFilter;
 use humhub\modules\user\models\User;
