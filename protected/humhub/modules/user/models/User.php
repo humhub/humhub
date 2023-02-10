@@ -11,6 +11,7 @@ namespace humhub\modules\user\models;
 use humhub\components\behaviors\GUID;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
@@ -754,12 +755,19 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Checks if the user is allowed to view all content
      *
+     * @param ContentContainerActiveRecord|string|null $container object or class name of the content container
      * @return bool
      * @since 1.8
      */
-    public function canViewAllContent()
+    public function canViewAllContent($container = null)
     {
-        return Yii::$app->getModule('content')->adminCanViewAllContent && $this->isSystemAdmin();
+        return
+            Yii::$app->getModule('content')->adminCanViewAllContent
+            && (
+                $this->isSystemAdmin()
+                || (($container instanceof Space || $container === Space::class) && $this->can(ManageSpaces::class))
+                || (($container instanceof self || $container === static::class) && $this->can(ManageUsers::class))
+            );
     }
 
     /**

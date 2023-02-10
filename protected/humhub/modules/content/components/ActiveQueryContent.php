@@ -77,13 +77,17 @@ class ActiveQueryContent extends ActiveQuery
         if ($user !== null) {
             $this->leftJoin('space_membership', 'contentcontainer.pk=space_membership.space_id AND contentcontainer.class=:spaceClass AND space_membership.user_id=:userId', [':userId' => $user->id, ':spaceClass' => Space::class]);
 
-            if ($user->canViewAllContent()) {
+            if ($user->canViewAllContent(Space::class)) {
                 // Don't restrict if user can view all content:
                 $conditionSpaceMembershipRestriction = '';
-                $conditionUserPrivateRestriction = '';
             } else {
                 // User must be a space's member OR Space and Content are public
                 $conditionSpaceMembershipRestriction = ' AND ( space_membership.status=3 OR (content.visibility=1 AND space.visibility != 0) )';
+            }
+            if ($user->canViewAllContent(User::class)) {
+                // Don't restrict if user can view all content:
+                $conditionUserPrivateRestriction = '';
+            } else {
                 // User can view only content of own profile
                 $conditionUserPrivateRestriction = ' AND content.contentcontainer_id=' . $user->contentcontainer_id;
             }
