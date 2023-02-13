@@ -622,46 +622,22 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     private function setUpApproved()
     {
-        $spaceInviteId = null;
+        $userInvite = Invite::findOne(['email' => $this->email]);
 
-        if (!Yii::$app->request->isConsoleRequest) {
-            Yii::$app->session->get(InviteForm::SESSION_SPACE_INVITE_ID);
-        }
-
-        if ($spaceInviteId !== null) {
-            Yii::$app->session->remove(InviteForm::SESSION_SPACE_INVITE_ID);
-        } else {
-            $userInvite = Invite::findOne(['email' => $this->email]);
-            if ($userInvite !== null) {
-                // User was invited to a space
-                if (in_array($userInvite->source, [Invite::SOURCE_INVITE, Invite::SOURCE_INVITE_BY_LINK], true)) {
-                    $spaceInviteId = $userInvite->space_invite_id;
+        if ($userInvite !== null) {
+            // User was invited to a space
+            if (in_array($userInvite->source, [Invite::SOURCE_INVITE, Invite::SOURCE_INVITE_BY_LINK], true)) {
+                $space = Space::findOne(['id' => $userInvite->space_invite_id]);
+                if ($space != null) {
+                    $space->addMember($this->id);
                 }
-                // Delete/Cleanup Invite Entry
-                $userInvite->delete();
             }
-        }
 
-        if ($spaceInviteId !== null) {
-            $space = Space::findOne(['id' => $spaceInviteId]);
-            if ($space !== null) {
-                $space->addMember($this->id);
-            }
-        }
-
-        // Auto Add User to the default spaces
-        foreach (Space::findAll(['auto_add_new_members' => 1]) as $space) {
-            $space->addMember($this->id);
-        }
-
-        /* @var $userModule Module */
-        $userModule = Yii::$app->getModule('user');
-
-        // Add User to the default group if no yet
-        if (!$this->hasGroup() && ($defaultGroup = $userModule->getDefaultGroup())) {
-            $defaultGroup->addUser($this);
+            // Delete/Cleanup Invite Entry
+            $userInvite->delete();
         }
     }
+
 
     /**
      * Returns users display name
