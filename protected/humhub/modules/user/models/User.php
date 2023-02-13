@@ -622,7 +622,12 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     private function setUpApproved()
     {
-        $spaceInviteId = Yii::$app->session->get(InviteForm::SESSION_SPACE_INVITE_ID);
+        $spaceInviteId = null;
+
+        if (!Yii::$app->request->isConsoleRequest) {
+            Yii::$app->session->get(InviteForm::SESSION_SPACE_INVITE_ID);
+        }
+
         if ($spaceInviteId !== null) {
             Yii::$app->session->remove(InviteForm::SESSION_SPACE_INVITE_ID);
         } else {

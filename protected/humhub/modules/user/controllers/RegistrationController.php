@@ -166,6 +166,10 @@ class RegistrationController extends Controller
      */
     protected function handleInviteByLinkRegistration($inviteToken, $spaceId, $setSpaceIdInSession = false)
     {
+        if (empty(Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInviteByLink'))) {
+            throw new HttpException(400, 'Invite by link is disabled!');
+        }
+
         // If invited by link from a space
         if ($spaceId !== null) {
             $space = Space::findOne($spaceId);
