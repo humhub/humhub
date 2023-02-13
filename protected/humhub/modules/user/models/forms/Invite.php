@@ -132,6 +132,6 @@ class Invite extends Model
             $token = Yii::$app->security->generateRandomString(\humhub\modules\user\models\Invite::LINK_TOKEN_LENGTH);
             $settings->set('registration.inviteToken', $token);
         }
-        return Url::to(['/user/registration', 'token' => $token], true);
+        return Url::to(['/user/registration/by-link', 'token' => $token], true);
     }
 }

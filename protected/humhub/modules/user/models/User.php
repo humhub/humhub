@@ -629,7 +629,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             $userInvite = Invite::findOne(['email' => $this->email]);
             if ($userInvite !== null) {
                 // User was invited to a space
-                if ($userInvite->source === Invite::SOURCE_INVITE) {
+                if (in_array($userInvite->source, [Invite::SOURCE_INVITE, Invite::SOURCE_INVITE_BY_LINK], true)) {
                     $spaceInviteId = $userInvite->space_invite_id;
                 }
                 // Delete/Cleanup Invite Entry
