@@ -109,7 +109,7 @@ class Invite extends ActiveRecord
      */
     public function beforeSave($insert)
     {
-        if ($insert && $this->token == '') {
+        if ($insert && empty($this->token)) {
             $this->token = Yii::$app->security->generateRandomString(self::EMAIL_TOKEN_LENGTH);
         }
 

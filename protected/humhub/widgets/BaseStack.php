@@ -59,18 +59,6 @@ class BaseStack extends Widget
      */
     public $template = '{content}';
 
-    /**
-     * Initializes the sidebar widget.
-     */
-    public function init()
-    {
-        // Yii 2.0.11 introduced own init event
-        if (version_compare(Yii::getVersion(), '2.0.11', '<')) {
-            $this->trigger(self::EVENT_INIT);
-        }
-
-        parent::init();
-    }
 
     /**
      * Runs the Navigation
@@ -78,7 +66,6 @@ class BaseStack extends Widget
     public function run()
     {
         $this->trigger(self::EVENT_RUN);
-
         $content = '';
 
         $hasContent = false;

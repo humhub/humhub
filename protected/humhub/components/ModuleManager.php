@@ -220,6 +220,11 @@ class ModuleManager extends Component
                 $eventHandler = $event['callback'] ?? $event[2];
                 if (method_exists($eventHandler[0], $eventHandler[1])) {
                     Event::on($eventClass, $eventName, $eventHandler);
+                } else {
+                    Yii::warning(sprintf(
+                        'Module with id %s tried to register invalid event callback (%s/%s)',
+                        $config['id'], $eventHandler[0], $eventHandler[1]
+                    ));
                 }
             }
         }
