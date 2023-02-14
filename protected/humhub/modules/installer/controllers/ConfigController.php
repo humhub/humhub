@@ -10,7 +10,6 @@ namespace humhub\modules\installer\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\modules\installer\forms\MailingForm;
 use humhub\modules\marketplace\Module;
 use humhub\modules\queue\driver\Sync;
 use humhub\modules\space\models\Space;
@@ -18,7 +17,6 @@ use humhub\modules\user\models\Group;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\base\BaseObject;
 use yii\base\InvalidConfigException;
 use yii\web\HttpException;
 
@@ -229,45 +227,6 @@ class ConfigController extends Controller
         }
     }
 
-    /**
-     * Configure SMTP
-     * Checking given SMTP configuration, writing them into a config file.
-     *
-     */
-    public function actionMailing()
-    {
-        $model = new MailingForm();
-        $model->systemEmailName = Yii::$app->settings->get('name');
-        $model->systemEmailAddress = 'noreply@' . Yii::$app->request->hostName;
-        $model->transportType = 'php';
-
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendTest) {
-                try {
-                    $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
-                        'message' => Yii::t('InstallerModule.base', 'Test message')
-                    ]);
-                    $mail->setTo($model->testEmailAddress);
-                    $mail->setSubject(Yii::t('InstallerModule.base', 'Test message'));
-
-                    if (!$mail->send()) {
-                        $errorMessage = Yii::t('InstallerModule.base', 'Could not send test email.');
-                    } else {
-                        $successMessage = Yii::t('InstallerModule.base', 'Email has been successfully sent to {testEmailAddress}. Check your inbox!', ['testEmailAddress' => $model->testEmailAddress]);
-                    }
-                } catch (\Exception $e) {
-                    $errorMessage = Yii::t('InstallerModule.base', 'Could not send test email.') . ' ' . $e->getMessage();
-                }
-
-            } else if ($model->save()) {
-                return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
-            }
-        }
-
-        // Render Template
-        return $this->render('mailing', ['model' => $model, 'errorMessage' => $errorMessage ?? '', 'successMessage' => $successMessage ?? '']);
-    }
 
     /**
      * Sample Data

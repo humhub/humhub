@@ -161,13 +161,7 @@ class SetupController extends Controller
      */
     public function actionCron()
     {
-        $model = new CronForm();
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            return $this->redirect(['/installer/setup/pretty-urls']);
-        }
-
-        return $this->render('cron', ['model' => $model]);
+        return $this->render('cron', []);
     }
 
     /**

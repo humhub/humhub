@@ -1,10 +1,6 @@
 <?php
 
-use humhub\modules\installer\forms\CronForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\bootstrap\Html;
-
-/** @var CronForm $model */
 
 ?>
 <div id="cron" class="panel panel-default animated fadeIn">
@@ -16,7 +12,7 @@ use yii\bootstrap\Html;
     <div class="panel-body">
         <p><?= Yii::t('InstallerModule.base', 'Asynchronous jobs in HumHub are used to run potentially heavy or scheduled tasks such as sending out summary mails, notifications or search index optimization.'); ?></p>
         <p>
-            <strong><?= Yii::t('InstallerModule.base', 'Cron job setup steps:') ?></strong>
+            <strong><?= Yii::t('InstallerModule.base', 'Installation Example:') ?></strong>
         </p>
         <p>
             <?= Yii::t('InstallerModule.base', 'Open the crontab of HumHub/PHP process user e.g. <code>{user}</code>.', ['user' => get_current_user()]) ?>
@@ -27,9 +23,9 @@ use yii\bootstrap\Html;
         </p>
 
         <p>
-            <?= Yii::t('InstallerModule.base', 'Add following line to the crontab:'); ?>
+            <?= Yii::t('InstallerModule.base', 'Add following lines to the crontab:'); ?>
             <br>
-            <kbd style="display: block; padding: 0.75rem 1rem;">
+            <kbd style="display: block;line-height:22px">
                 <span>
                 * * * * * <?= substr(get_include_path(), 2) ?> <?= $_SERVER['DOCUMENT_ROOT'] ?>/protected/yii queue/run >/dev/null 2>&1
                 <br>
@@ -40,14 +36,8 @@ use yii\bootstrap\Html;
 
         <p><?= Yii::t('InstallerModule.base', 'In our documentation we describe this topic in more detail: <a href="{link}">{link}</a>. If you have trouble setting up the job scheduling described in the documentation, please contact your provider to ask for support.', ['link' => 'https://docs.humhub.org/docs/admin/cron-jobs']); ?></p>
 
-        <?php $form = ActiveForm::begin(); ?>
+        <?= Html::a(Yii::t('base', 'Next'), ['/installer/setup/pretty-urls'], ['class' => 'btn btn-primary']) ?>
 
-        <?= $form->field($model, 'cron')->checkbox() ?>
-        <hr>
-
-        <?= Html::submitButton(Yii::t('base', 'Next'), ['class' => 'btn btn-primary']) ?>
-
-        <?php ActiveForm::end(); ?>
     </div>
 </div>
 

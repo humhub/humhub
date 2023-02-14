@@ -173,17 +173,6 @@ class Module extends \humhub\components\Module
         ];
 
         /**
-         * Step: Mailing
-         */
-        $this->configSteps['mailing'] = [
-            'sort' => 350,
-            'url' => Url::to(['/installer/config/mailing']),
-            'isCurrent' => function() {
-                return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'mailing');
-            },
-        ];
-
-        /**
          * Step: Setup Admin User
          */
         $this->configSteps['admin'] = [
