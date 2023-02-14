@@ -282,7 +282,8 @@ class Controller extends \yii\web\Controller
             Yii::$app->response->headers->add('X-PJAX-REDIRECT-URL', Url::to($url));
             return Yii::$app->getResponse();
         }
-        return Yii::$app->getResponse()->redirect(Url::to($url), $statusCode);
+
+        return parent::redirect($url, $statusCode);
     }
 
     /**

@@ -859,6 +859,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function canView($user = null)
     {
+        /** @var \humhub\modules\content\Module $module */
+        $module = Yii::$app->getModule('content');
+
         if (!$user && !Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
         } else if (!$user instanceof User) {
