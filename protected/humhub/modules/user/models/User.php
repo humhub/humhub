@@ -637,6 +637,19 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             // Delete/Cleanup Invite Entry
             $userInvite->delete();
         }
+
+        // Auto Add User to the default spaces
+        foreach (Space::findAll(['auto_add_new_members' => 1]) as $space) {
+            $space->addMember($this->id);
+        }
+
+        /* @var $userModule Module */
+        $userModule = Yii::$app->getModule('user');
+
+        // Add User to the default group if no yet
+        if (!$this->hasGroup() && ($defaultGroup = $userModule->getDefaultGroup())) {
+            $defaultGroup->addUser($this);
+        }
     }
 
 
@@ -744,7 +757,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     {
         /** @var \humhub\modules\content\Module $module */
         $module = Yii::$app->getModule('content');
-    
+
         return $module->adminCanViewAllContent && (
             $this->isSystemAdmin()
             || ($containerClass === Space::class && $this->can(ManageSpaces::class))
