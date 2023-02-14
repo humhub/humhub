@@ -8,6 +8,7 @@
 
 namespace humhub\modules\notification\widgets;
 
+use humhub\modules\notification\models\Notification;
 use Yii;
 
 /**
@@ -29,8 +30,10 @@ class UpdateNotificationCount extends \yii\base\Widget
             return;
         }
 
-        return $this->render('updateNotificationCount', [
-            'count' => \humhub\modules\notification\models\Notification::findUnseen()->count()
-        ]);
+        $this->view->registerJs('$(document).one("humhub:ready", function() {
+            if(humhub && humhub.modules.notification && humhub.modules.notification.menu) {
+                humhub.modules.notification.menu.updateCount(' . Notification::findUnseen()->count() . ');
+            }
+        });');
     }
 }
