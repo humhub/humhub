@@ -891,7 +891,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         }
 
         // Check system admin can see all content module configuration
-        if ($user->canViewAllContent()) {
+        if ($user->canViewAllContent(get_class($this->container))) {
             return true;
         }
 
