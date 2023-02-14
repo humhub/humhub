@@ -35,6 +35,7 @@ use yii\bootstrap\Html;
         </p>
 
         <p><?= Yii::t('InstallerModule.base', 'In our documentation we describe this topic in more detail: <a href="{link}">{link}</a>. If you have trouble setting up the job scheduling described in the documentation, please contact your provider to ask for support.', ['link' => 'https://docs.humhub.org/docs/admin/cron-jobs']); ?></p>
+        <hr>
 
         <?= Html::a(Yii::t('base', 'Next'), ['/installer/setup/pretty-urls'], ['class' => 'btn btn-primary']) ?>
 
