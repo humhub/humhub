@@ -755,19 +755,20 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Checks if the user is allowed to view all content
      *
-     * @param ContentContainerActiveRecord|string|null $container object or class name of the content container
+     * @param string|null $containerClass class name of the content container
      * @return bool
      * @since 1.8
      */
-    public function canViewAllContent($container = null)
+    public function canViewAllContent(?string $containerClass): bool
     {
-        return
-            Yii::$app->getModule('content')->adminCanViewAllContent
-            && (
-                $this->isSystemAdmin()
-                || (($container instanceof Space || $container === Space::class) && $this->can(ManageSpaces::class))
-                || (($container instanceof self || $container === static::class) && $this->can(ManageUsers::class))
-            );
+        /** @var \humhub\modules\content\Module $module */
+        $module = Yii::$app->getModule('content');
+    
+        return $module->adminCanViewAllContent && (
+            $this->isSystemAdmin()
+            || ($containerClass === Space::class && $this->can(ManageSpaces::class))
+            || ($containerClass === static::class && $this->can(ManageUsers::class))
+        );
     }
 
     /**
