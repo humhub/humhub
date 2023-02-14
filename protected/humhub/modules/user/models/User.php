@@ -759,7 +759,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      * @return bool
      * @since 1.8
      */
-    public function canViewAllContent(?string $containerClass): bool
+    public function canViewAllContent(?string $containerClass = null): bool
     {
         /** @var \humhub\modules\content\Module $module */
         $module = Yii::$app->getModule('content');
