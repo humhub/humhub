@@ -36,7 +36,7 @@ class AuthController extends Controller
      * after the response is generated.
      */
     const EVENT_AFTER_LOGIN = 'afterLogin';
-    
+
     /**
      * @event Triggered after an successful login but before checking user status
      */
@@ -192,8 +192,10 @@ class AuthController extends Controller
             return $this->login($user, $authClient);
         }
 
-        // Make sure we normalized user attributes before put it in session (anonymous functions)
-        $authClient->setNormalizeUserAttributeMap([]);
+        if ($authClient instanceof \humhub\modules\user\authclient\BaseClient) {
+            /** @var \humhub\modules\user\authclient\BaseClient $authClient */
+            $authClient->beforeSerialize();
+        }
 
         // Store authclient in session - for registration controller
         Yii::$app->session->set('authClient', $authClient);
