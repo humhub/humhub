@@ -77,7 +77,7 @@ var humhub = humhub || (function ($) {
      * ```
      *
      * A module can provide an `init` function, which by default is only called after the first initialization
-     * e.g. after a full page load when the document is ready or when loaded by means of ajax ajax.
+     * e.g. after a full page load when the document is ready or when loaded by means of ajax.
      * In case a modules `init` function need to be called also after each `pjax` request, the modules `initOnPjaxLoad` has to be
      * set to `true`:
      *
@@ -91,7 +91,7 @@ var humhub = humhub || (function ($) {
      * The order is given by the order of module calls and in case of core modules configured in the API's AssetBundle.
      *
      * A module can be received by using the required function within a module function.
-     * You can either depend on a module at initialisation time or within your functions or
+     * You can either depend on a module at initialization time or within your functions or
      * use the lazy flag of the require function.
      *
      * Usage:
