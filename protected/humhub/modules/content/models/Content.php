@@ -324,7 +324,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         $record = $this->getPolymorphicRelation();
 
         if ($record) {
-            $record->wipe();
+            $record->hardDelete();
         }
 
         parent::afterDelete();
@@ -999,8 +999,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         ]);
 
         $this->state = self::STATE_DELETED;
-        $this->save();
-
-        return true;
+        return $this->save();
     }
 }

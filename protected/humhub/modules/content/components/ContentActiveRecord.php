@@ -477,7 +477,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
 
     /**
      * Marks this content for deletion (soft delete).
-     * Use `wipe` method to delete record immediately.
+     * Use `hardDelete()` method to delete record immediately.
      *
      * @return bool|int
      */
@@ -492,7 +492,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * @return bool
      * @since 1.14
      */
-    public function wipe(): bool
+    public function hardDelete(): bool
     {
         return (parent::delete() !== false);
     }
