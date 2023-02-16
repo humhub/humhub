@@ -7,6 +7,7 @@
 
 namespace humhub\modules\space\widgets;
 
+use humhub\modules\activity\models\Activity;
 use humhub\modules\content\models\Content;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Membership;
@@ -17,58 +18,78 @@ use humhub\modules\ui\widgets\CounterSet;
 use Yii;
 use yii\helpers\Url;
 
-
-/**
- * Class HeaderCounterSet
- * @package humhub\modules\space\widgets
- */
 class HeaderCounterSet extends CounterSet
 {
-    /**
-     * @var Space
-     */
-    public $space;
 
+    public ?Space $space = null;
 
     /**
      * @inheritdoc
      */
     public function init()
     {
+        if (!$this->space) {
+            return;
+        }
 
-        $postQuery = Content::find()
-            ->where(['object_model' => Post::class, 'contentcontainer_id' => $this->space->contentContainerRecord->id]);
-        $this->counters[] = new CounterSetItem([
-            'label' => Yii::t('SpaceModule.base', 'Posts'),
-            'value' => $postQuery->count()
-        ]);
+        $this->addContentCounter();
 
         if (!$this->space->getAdvancedSettings()->hideMembers) {
-            $this->counters[] = new CounterSetItem([
-                'label' => Yii::t('SpaceModule.base', 'Members'),
-                'value' => Membership::getSpaceMembersQuery($this->space)->active()->visible()->count(),
-                'url' => Yii::$app->user->isGuest ? null : '#',
-                'linkOptions' => Yii::$app->user->isGuest ? [] : [
-                    'data-action-click' => 'ui.modal.load',
-                    'data-action-url' => Url::to(['/space/membership/members-list', 'container' => $this->space])
-                ]
-            ]);
+            $this->addMemberCounter();
         }
 
         /** @var Module $module */
         $module = Yii::$app->getModule('space');
         if (!$module->disableFollow && !$this->space->getAdvancedSettings()->hideFollowers) {
-            $this->counters[] = new CounterSetItem([
-                'label' => Yii::t('SpaceModule.base', 'Followers'),
-                'value' => $this->space->getFollowersQuery()->count(),
-                'url' => Yii::$app->user->isGuest ? null : '#',
-                'linkOptions' => Yii::$app->user->isGuest ? [] : [
-                    'data-action-click' => 'ui.modal.load',
-                    'data-action-url' => Url::to(['/space/space/follower-list', 'container' => $this->space])
-                ]
-            ]);
+            $this->addFollowerCounter();
         }
 
         parent::init();
     }
+
+    private function addContentCounter()
+    {
+        $postQuery = Content::find()->where(['contentcontainer_id' => $this->space->contentContainerRecord->id])
+            ->andWhere(['!=', 'object_model', Activity::class]);
+        $contentCount = $postQuery->count();
+        $this->counters[] = new CounterSetItem([
+            'label' => Yii::t(
+                'SpaceModule.base', '{count,plural,=0{Contents} =1{Content} other{Contents}}',
+                ['count' => $contentCount]
+            ),
+            'value' => $contentCount
+        ]);
+    }
+
+    private function addMemberCounter()
+    {
+        $memberCount = Membership::getSpaceMembersQuery($this->space)->active()->visible()->count();
+        $this->counters[] = new CounterSetItem([
+            'label' => Yii::t(
+                'SpaceModule.base', '{count,plural,=0{Members} =1{Member} other{Members}}',
+                ['count' => $memberCount]
+            ),
+            'value' => $memberCount,
+            'url' => Yii::$app->user->isGuest ? null : '#',
+            'linkOptions' => Yii::$app->user->isGuest ? [] : [
+                'data-action-click' => 'ui.modal.load',
+                'data-action-url' => Url::to(['/space/membership/members-list', 'container' => $this->space])
+            ]
+        ]);
+    }
+
+    private function addFollowerCounter()
+    {
+        $followerCount = $this->space->getFollowersQuery()->count();
+        $this->counters[] = new CounterSetItem([
+            'label' => Yii::t('SpaceModule.base', '{count,plural,=0{Followers} =1{Follower} other{Followers}}', ['count' => $followerCount]),
+            'value' => $followerCount,
+            'url' => Yii::$app->user->isGuest ? null : '#',
+            'linkOptions' => Yii::$app->user->isGuest ? [] : [
+                'data-action-click' => 'ui.modal.load',
+                'data-action-url' => Url::to(['/space/space/follower-list', 'container' => $this->space])
+            ]
+        ]);
+    }
+
 }
