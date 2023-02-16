@@ -285,7 +285,7 @@ humhub.module('notification', function (module, require, $) {
 
         // Workaround to include Mail Notification into Title
         // Mail Module triggers also `humhub:modules:notification:UpdateTitleNotificationCount` on New Messages
-        if (humhub.modules.mail.notification.getNewMessageCount) {
+        if (humhub.modules.mail && humhub.modules.mail.notification && humhub.modules.mail.notification.getNewMessageCount) {
             $count += humhub.modules.mail.notification.getNewMessageCount();
         }
 
