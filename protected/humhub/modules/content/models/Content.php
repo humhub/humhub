@@ -319,8 +319,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     {
         // Try delete the underlying object (Post, Question, Task, ...)
         $this->resetPolymorphicRelation();
-        if ($this->getPolymorphicRelation() !== null) {
-            $this->getPolymorphicRelation()->delete();
+
+        /** @var ContentActiveRecord $record */
+        $record = $this->getPolymorphicRelation();
+
+        if ($record) {
+            $record->wipe();
         }
 
         parent::afterDelete();
