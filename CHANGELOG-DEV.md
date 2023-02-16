@@ -21,4 +21,4 @@ HumHub Changelog (DEVELOP)
 - Enh #6077: Always display content tabs
 - Enh #5263: Allow members of groups other than system admin to view all content (groups that can manage users for profile content and groups that can manage spaces for space content)
 - Enh #6102: Also allow Messages module to inject new message count into page title
-
+- Enh #5904: Make Dynamic Post Font Size Optional
