@@ -88,7 +88,7 @@ class WallStreamFilterNavigation extends FilterNavigation
     const FILTER_VISIBILITY_PUBLIC = 'visibility_public';
     const FILTER_VISIBILITY_PRIVATE = 'visibility_private';
     const FILTER_ARCHIVED = 'entry_archived';
-
+    const FILTER_HIDDEN = 'entry_hidden';
     const FILTER_CONTENT_TYPE = 'content_type';
     const FILTER_TOPICS = 'topic';
     const FILTER_ORIGINATORS = 'originators';
@@ -211,6 +211,13 @@ class WallStreamFilterNavigation extends FilterNavigation
         $this->addFilter([
             'id' => static::FILTER_ARCHIVED,
             'title' =>  Yii::t('ContentModule.base', 'Archived'),
+            'sortOrder' => 200
+        ], static::FILTER_BLOCK_BASIC);
+
+
+        $this->addFilter([
+            'id' => static::FILTER_HIDDEN,
+            'title' =>  Yii::t('ContentModule.base', 'Hidden in Stream'),
             'sortOrder' => 200
         ], static::FILTER_BLOCK_BASIC);
     }
