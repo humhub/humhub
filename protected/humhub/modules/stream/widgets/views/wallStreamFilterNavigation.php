@@ -18,8 +18,6 @@ use yii\helpers\Html;
 $panelColumn1Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_1]) ? $panels[WallStreamFilterNavigation::PANEL_COLUMN_1] : null;
 $panelColumn2Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_2]) ? $panels[WallStreamFilterNavigation::PANEL_COLUMN_2] : null;
 $panelColumn3Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_3]) ? $panels[WallStreamFilterNavigation::PANEL_COLUMN_3] : null;
-$panelColumn4Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_4]) ? $panels[WallStreamFilterNavigation::PANEL_COLUMN_4] : null;
-
 ?>
 
 <?= Html::beginTag('div', $options) ?>

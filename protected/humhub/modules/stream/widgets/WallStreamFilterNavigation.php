@@ -12,10 +12,8 @@ use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\stream\models\filters\DateStreamFilter;
 use humhub\modules\ui\filter\widgets\DatePickerFilterInput;
-use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserPickerField;
-use kartik\widgets\DateTimePicker;
 use Yii;
 use humhub\modules\stream\models\filters\ContentTypeStreamFilter;
 use humhub\modules\stream\models\filters\DefaultStreamFilter;
@@ -35,7 +33,6 @@ use humhub\modules\ui\filter\widgets\FilterNavigation;
  * - [[PANEL_COLUMN_1]]
  * - [[PANEL_COLUMN_2]]
  * - [[PANEL_COLUMN_3]]
- * - [[PANEL_COLUMN_4]]
  *
  * and the following blocks and filters:
  *
@@ -69,7 +66,6 @@ class WallStreamFilterNavigation extends FilterNavigation
     const PANEL_COLUMN_1= 0;
     const PANEL_COLUMN_2 = 1;
     const PANEL_COLUMN_3 = 2;
-    const PANEL_COLUMN_4 = 3;
 
     const FILTER_BLOCK_BASIC = 'basic';
     const FILTER_BLOCK_VISIBILITY = 'visibility';
@@ -121,7 +117,6 @@ class WallStreamFilterNavigation extends FilterNavigation
         $this->filterPanels[static::PANEL_COLUMN_1] = [];
         $this->filterPanels[static::PANEL_COLUMN_2] = [];
         $this->filterPanels[static::PANEL_COLUMN_3] = [];
-        $this->filterPanels[static::PANEL_COLUMN_4] = [];
     }
 
     /**
