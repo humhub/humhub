@@ -314,7 +314,7 @@ class SettingController extends Controller
 
         // I wish..
         if ($dating) {
-            $dating = date('Y-m-d H:i:s', $dating->log_time);
+            $dating = date('Y-m-d H:i:s', (int) $dating->log_time);
         } else {
             $dating = "the begining of time";
         }
