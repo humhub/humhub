@@ -5,10 +5,14 @@ on:
         branches:
             - master
             - develop
+        paths-ignore:
+            - '*.md'
     pull_request:
         branches:
             - master
             - develop
+        paths-ignore:
+            - '*.md'
 
 permissions:
   contents: read
@@ -49,7 +53,7 @@ jobs:
             - name: Start Selenium
               run: |
                 docker run --detach --net=host --shm-size="2g" selenium/standalone-chrome
-          
+
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
 
