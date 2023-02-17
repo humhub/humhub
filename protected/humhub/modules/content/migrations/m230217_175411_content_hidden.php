@@ -15,9 +15,7 @@ class m230217_175411_content_hidden extends Migration
         $this->alterColumn('content', 'contentcontainer_id', $this->integer()->after('object_id'));
 
         $this->alterColumn('content', 'stream_sort_date', $this->datetime()->after('contentcontainer_id'));
-
-        $this->update('content', ['stream_channel' => 'default'], 'stream_channel IS NULL or stream_channel = ""');
-        $this->alterColumn('content', 'stream_channel', $this->string(15)->defaultValue('default')->notNull()->after('contentcontainer_id'));
+        $this->alterColumn('content', 'stream_channel', $this->string(15)->defaultValue('default')->after('contentcontainer_id'));
 
         $this->alterColumn('content', 'visibility', $this->tinyInteger()->defaultValue(0)->notNull());
         $this->alterColumn('content', 'pinned', $this->boolean()->defaultValue(false)->notNull());
