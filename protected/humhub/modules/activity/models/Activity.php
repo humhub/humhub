@@ -123,4 +123,13 @@ class Activity extends ContentActiveRecord
     {
         return $this->getPolymorphicRelation();
     }
+
+    /**
+     * @return bool|int
+     */
+    public function delete()
+    {
+        // Always hard delete activities
+        return $this->hardDelete();
+    }
 }
