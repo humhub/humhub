@@ -12,19 +12,18 @@ use humhub\components\behaviors\AccessControl;
 use humhub\components\Controller;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\forms\AdminDeleteContentForm;
+use humhub\modules\content\models\forms\ScheduleOptionsForm;
 use humhub\modules\content\Module;
 use humhub\modules\content\notifications\ContentDeleted;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\widgets\AdminDeleteModal;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use Yii;
-use yii\base\BaseObject;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
-use yii\web\NotAcceptableHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -437,5 +436,20 @@ class ContentController extends Controller
         }
 
         return $this->asJson($json);
+    }
+
+    public function actionScheduleOptions($id = null)
+    {
+        $scheduleOptions = new ScheduleOptionsForm([
+            'content' => $id ? Content::findOne($id) : null
+        ]);
+
+        if ($scheduleOptions->load(Yii::$app->request->post())) {
+            $scheduleOptions->save();
+        }
+
+        return $this->renderAjax('scheduleOptions', [
+            'scheduleOptions' => $scheduleOptions
+        ]);
     }
 }

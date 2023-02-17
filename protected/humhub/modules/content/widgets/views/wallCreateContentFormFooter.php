@@ -6,6 +6,7 @@
  */
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\models\Content;
 use humhub\modules\file\handler\BaseFileHandler;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\topic\widgets\TopicPicker;
@@ -24,6 +25,7 @@ use yii\helpers\Html;
 /* @var $canSwitchVisibility boolean */
 /* @var $contentContainer ContentContainerActiveRecord */
 /* @var $pickerUrl string */
+/* @var $scheduleUrl string */
 ?>
 
 <div id="notifyUserContainer" class="form-group" style="margin-top:15px;display:none">
@@ -66,8 +68,8 @@ use yii\helpers\Html;
         <!-- public checkbox -->
         <?= Html::checkbox('visibility', '', ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true']); ?>
 
-        <!-- draft checkbox -->
-        <?= Html::checkbox('isDraft', '', ['id' => 'contentForm_draft', 'class' => 'contentForm hidden', 'aria-hidden' => 'true']); ?>
+        <!-- state data -->
+        <?= Html::hiddenInput('state', Content::STATE_PUBLISHED) ?>
 
         <!-- content sharing -->
         <div class="pull-right">
@@ -98,8 +100,16 @@ use yii\helpers\Html;
                             </li>
                         <?php endif; ?>
                         <li>
-                            <?= Link::withAction(Yii::t('ContentModule.base', 'Create as draft'), 'changeDraftState')
-                                ->id('contentForm_visibility_entry')->icon('edit') ?>
+                            <?= Link::withAction(Yii::t('ContentModule.base', 'Create as draft'), 'changeState')
+                                    ->icon('edit')
+                                    ->options([
+                                        'data-state' => Content::STATE_DRAFT,
+                                        'data-state-title' => Yii::t('ContentModule.base', 'Draft')
+                                    ]) ?>
+                        </li>
+                        <li>
+                            <?= Link::withAction(Yii::t('ContentModule.base', 'Schedule Publication'), 'scheduleOptions', $scheduleUrl)
+                                ->icon('clock-o') ?>
                         </li>
                     </ul>
                 </li>

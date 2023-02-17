@@ -24,17 +24,23 @@ class StateBadge extends Widget
             return '';
         }
 
-        if ($this->model->content->state === Content::STATE_DRAFT) {
-            return Html::tag(
-                'span', Yii::t('ContentModule.base', 'Draft'),
-                ['class' => 'label label-danger label-state-draft']
-            );
-        } elseif ($this->model->content->state === Content::STATE_DELETED) {
-            return Html::tag(
-                'span', Yii::t('ContentModule.base', 'Deleted'),
-                ['class' => 'label label-danger label-state-deleted']
-            );
+        switch ($this->model->content->state) {
+            case Content::STATE_DRAFT:
+                return Html::tag('span', Yii::t('ContentModule.base', 'Draft'),
+                    ['class' => 'label label-danger label-state-draft']
+                );
+            case Content::STATE_SCHEDULED:
+                return Html::tag('span', Yii::t('ContentModule.modules', 'Scheduled at {dateTime}', [
+                        'dateTime' => Yii::$app->formatter->asDatetime($this->model->content->scheduled_at, 'short')
+                    ]),
+                    ['class' => 'label label-warning label-state-scheduled']
+                );
+            case Content::STATE_DELETED:
+                return Html::tag('span', Yii::t('ContentModule.base', 'Deleted'),
+                    ['class' => 'label label-danger label-state-deleted']
+                );
         }
 
+        return '';
     }
 }
