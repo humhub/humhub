@@ -7,6 +7,7 @@ HumHub Changelog
 - Fix #6084: Automatic LDAP user registration broken when not all req. attributes provided
 - Fix #6104: Fix update user with not existing group
 - Fix #6103: Fix null passing to parse_str()
+- Fix #6108: Fix log time in the `date()` function
 
 1.13.1 (January 25, 2023)
 -------------------------
