@@ -474,7 +474,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
-    public function getDisplayName()
+    public function getDisplayName(): string
     {
         return $this->name;
     }
@@ -482,7 +482,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
-    public function getDisplayNameSub()
+    public function getDisplayNameSub(): string
     {
         return $this->description;
     }

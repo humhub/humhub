@@ -92,7 +92,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @return string
      * @since 0.11.0
      */
-    public abstract function getDisplayName();
+    public abstract function getDisplayName(): string;
 
     /**
      * Returns a descriptive sub title of this container used in the frontend.
@@ -100,7 +100,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @return mixed
      * @since 1.4
      */
-    public abstract function getDisplayNameSub();
+    public abstract function getDisplayNameSub(): string;
 
     /**
      * Returns the Profile Image Object for this Content Base

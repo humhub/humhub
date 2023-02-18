@@ -22,7 +22,6 @@ use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\jobs\DeleteDocument;
 use humhub\modules\search\jobs\UpdateDocument;
 use humhub\modules\space\helpers\MembershipHelper;
-use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\authclient\Password as PasswordAuth;
 use humhub\modules\user\behaviors\Followable;
@@ -658,7 +657,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      *
      * @return string the users display name (e.g. firstname + lastname)
      */
-    public function getDisplayName()
+    public function getDisplayName(): string
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
