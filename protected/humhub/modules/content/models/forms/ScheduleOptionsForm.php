@@ -8,6 +8,7 @@
 namespace humhub\modules\content\models\forms;
 
 use DateTime;
+use DateTimeZone;
 use humhub\libs\DbDateValidator;
 use humhub\modules\content\models\Content;
 use Yii;
@@ -28,8 +29,10 @@ class ScheduleOptionsForm extends Model
         parent::init();
 
         if ($this->content instanceof Content && $this->content->scheduled_at !== null) {
+            $this->enabled = true;
             $this->date = $this->content->scheduled_at;
-            $this->time = substr($this->content->scheduled_at, 11, 5);
+            $scheduledDateTime = new DateTime($this->content->scheduled_at, new DateTimeZone('UTC'));
+            $this->time = Yii::$app->formatter->asTime($scheduledDateTime, 'short');
         }
 
         if ($this->date === null) {
@@ -69,8 +72,8 @@ class ScheduleOptionsForm extends Model
             return false;
         }
 
-        if ($this->content instanceof Content) {
-            $this->content->setState(Content::STATE_SCHEDULED);
+        if ($this->content instanceof Content && !$this->content->isNewRecord) {
+            $this->content->setState(Content::STATE_SCHEDULED, ['scheduled_at' => $this->date]);
             return $this->content->save();
         }
 

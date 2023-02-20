@@ -217,6 +217,7 @@ humhub.module('content.form', function(module, require, $) {
         if (stateInput.data('initial') !== undefined) {
             stateInput.val(stateInput.data('initial'));
         }
+        this.$.find('input[name^=scheduled]').remove();
         this.$.find('.label-content-state').hide();
     }
 
@@ -235,10 +236,6 @@ humhub.module('content.form', function(module, require, $) {
         }
 
         modal.post(evt, {data}).then(function () {
-            modalGlobal.on('click', '#scheduleoptionsform-enabled', function () {
-                modalGlobal.find('input[type=text]').prop('disabled', !$(this).is(':checked'));
-            });
-
             modalGlobal.one('submitted', function () {
                 if (modalGlobal.find('.has-error').length) {
                     return;
@@ -254,7 +251,6 @@ humhub.module('content.form', function(module, require, $) {
                     that.resetScheduleOption('scheduledTime');
                 }
 
-                modalGlobal.find('.hasDatepicker').datepicker('hide');
                 modal.global.close(true);
             });
         }).catch(function (e) {

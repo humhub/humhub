@@ -32,6 +32,8 @@ class ScheduledContentStreamFilter extends StreamQueryFilter
 
         if ($this->streamQuery->isInitialQuery()) {
             $this->fetchScheduledContent();
+        } else {
+            $this->streamQuery->stateFilterCondition[] = ['content.state' => Content::STATE_SCHEDULED];
         }
     }
 

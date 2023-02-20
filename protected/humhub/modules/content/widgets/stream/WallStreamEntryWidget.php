@@ -16,6 +16,7 @@ use humhub\modules\content\widgets\NotificationSwitchLink;
 use humhub\modules\content\widgets\PermaLink;
 use humhub\modules\content\widgets\PinLink;
 use humhub\modules\content\widgets\PublishDraftLink;
+use humhub\modules\content\widgets\ScheduleLink;
 use humhub\modules\content\widgets\VisibilityLink;
 use humhub\modules\dashboard\controllers\DashboardController;
 use humhub\modules\space\models\Space;
@@ -342,6 +343,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
             [DeleteLink::class, ['content' => $this->model], ['sortOrder' => 300]],
             new DropdownDivider(['sortOrder' => 350]),
             [VisibilityLink::class, ['contentRecord' => $this->model], ['sortOrder' => 400]],
+            [ScheduleLink::class, ['contentRecord' => $this->model], ['sortOrder' => 420]],
             [LockCommentsLink::class, ['contentRecord' => $this->model], ['sortOrder' => 450]],
             [NotificationSwitchLink::class, ['content' => $this->model], ['sortOrder' => 500]],
             [MoveContentLink::class, ['model' => $this->model], ['sortOrder' => 700]],

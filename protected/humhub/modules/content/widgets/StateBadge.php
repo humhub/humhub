@@ -1,8 +1,14 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
 namespace humhub\modules\content\widgets;
 
-
+use DateTime;
+use DateTimeZone;
 use humhub\components\Widget;
 use humhub\libs\Html;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -18,6 +24,10 @@ class StateBadge extends Widget
 {
     public ?ContentActiveRecord $model;
 
+    /**
+     * @throws \yii\base\InvalidConfigException
+     * @throws \Exception
+     */
     public function run()
     {
         if ($this->model === null) {
@@ -30,8 +40,9 @@ class StateBadge extends Widget
                     ['class' => 'label label-danger label-state-draft']
                 );
             case Content::STATE_SCHEDULED:
+                $scheduledDateTime = new DateTime($this->model->content->scheduled_at, new DateTimeZone('UTC'));
                 return Html::tag('span', Yii::t('ContentModule.modules', 'Scheduled at {dateTime}', [
-                        'dateTime' => Yii::$app->formatter->asDatetime($this->model->content->scheduled_at, 'short')
+                        'dateTime' => Yii::$app->formatter->asDatetime($scheduledDateTime, 'short')
                     ]),
                     ['class' => 'label label-warning label-state-scheduled']
                 );

@@ -446,12 +446,16 @@ class ContentController extends Controller
             'content' => $id ? Content::findOne($id) : null
         ]);
 
-        if ($scheduleOptions->load(Yii::$app->request->post())) {
-            $scheduleOptions->save();
+        if ($scheduleOptions->load(Yii::$app->request->post()) && $scheduleOptions->save()) {
+            // Disable in order to don't focus the date field because modal window will be closed anyway
+            $disableInputs = true;
+        } else {
+            $disableInputs = !$scheduleOptions->enabled;
         }
 
         return $this->renderAjax('scheduleOptions', [
-            'scheduleOptions' => $scheduleOptions
+            'scheduleOptions' => $scheduleOptions,
+            'disableInputs' => $disableInputs
         ]);
     }
 }
