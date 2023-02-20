@@ -21,7 +21,8 @@ use humhub\widgets\ModalDialog;
     <?php $form = ActiveForm::begin() ?>
     <?= Html::hiddenInput('state', Content::STATE_SCHEDULED) ?>
     <?= Html::hiddenInput('stateTitle', $scheduleOptions->getStateTitle()) ?>
-    <?= Html::hiddenInput('scheduled_at', $scheduleOptions->date) ?>
+    <?= Html::hiddenInput('scheduledDate', $scheduleOptions->date) ?>
+    <?= Html::hiddenInput('scheduledTime', $scheduleOptions->time) ?>
 
     <div class="modal-body">
         <?= $form->field($scheduleOptions, 'enabled')->checkbox() ?>

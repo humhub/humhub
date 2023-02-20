@@ -115,7 +115,7 @@ abstract class WallCreateContentForm extends Widget
         $record->content->visibility = $visibility;
         $record->content->container = $contentContainer;
         $record->content->setState(Yii::$app->request->post('state'), [
-            'scheduled_at' => Yii::$app->request->post('scheduled_at')
+            'scheduled_at' => Yii::$app->request->post('scheduledDate')
         ]);
 
         // Handle Notify User Features of ContentFormWidget

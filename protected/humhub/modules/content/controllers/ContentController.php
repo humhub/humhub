@@ -440,6 +440,8 @@ class ContentController extends Controller
 
     public function actionScheduleOptions($id = null)
     {
+        $this->forcePostRequest();
+
         $scheduleOptions = new ScheduleOptionsForm([
             'content' => $id ? Content::findOne($id) : null
         ]);

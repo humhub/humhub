@@ -222,10 +222,19 @@ humhub.module('content.form', function(module, require, $) {
 
     CreateForm.prototype.scheduleOptions = function(evt) {
         const that = this;
+        const modalGlobal = modal.global.$;
+        const scheduledDate = that.$.find('input[name=scheduledDate]');
+        const data = {};
 
-        modal.load(evt).then(function () {
-            const modalGlobal = modal.global.$;
+        if (scheduledDate.length) {
+            data.ScheduleOptionsForm = {
+                enabled: true,
+                date: scheduledDate.val(),
+                time: that.$.find('input[name=scheduledTime]').val()
+            };
+        }
 
+        modal.post(evt, {data}).then(function () {
             modalGlobal.on('click', '#scheduleoptionsform-enabled', function () {
                 modalGlobal.find('input[type=text]').prop('disabled', !$(this).is(':checked'));
             });
@@ -237,21 +246,38 @@ humhub.module('content.form', function(module, require, $) {
 
                 if (modalGlobal.find('#scheduleoptionsform-enabled').is(':checked')) {
                     that.changeState(modalGlobal.find('input[name=state]').val(), modalGlobal.find('input[name=stateTitle]').val());
-                    let scheduledAtInput = that.$.find('input[name=scheduled_at]');
-                    if (!scheduledAtInput.length) {
-                        scheduledAtInput = $('<input name="scheduled_at" type="hidden">');
-                        that.$.find('input[name=state]').after(scheduledAtInput);
-                    }
-                    scheduledAtInput.val(modalGlobal.find('input[name=scheduled_at]').val());
+                    that.setScheduleOption('scheduledDate', modalGlobal.find('input[name=scheduledDate]').val());
+                    that.setScheduleOption('scheduledTime', modalGlobal.find('input[name=scheduledTime]').val());
                 } else {
                     that.resetState();
+                    that.resetScheduleOption('scheduledDate');
+                    that.resetScheduleOption('scheduledTime');
                 }
 
+                modalGlobal.find('.hasDatepicker').datepicker('hide');
                 modal.global.close(true);
             });
         }).catch(function (e) {
             module.log.error(e, true);
         });
+    }
+
+    CreateForm.prototype.setScheduleOption = function(name, value) {
+        let input = this.$.find('input[name=' + name + ']');
+        if (input.length) {
+            if (value === undefined) {
+                input.remove();
+                return;
+            }
+        } else {
+            input = $('<input name="' + name + '" type="hidden">');
+            this.$.find('input[name=state]').after(input);
+        }
+        input.val(value);
+    }
+
+    CreateForm.prototype.resetScheduleOption = function(name) {
+        this.setScheduleOption(name);
     }
 
     const CreateFormMenu = Widget.extend();
