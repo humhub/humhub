@@ -23,4 +23,5 @@ HumHub Changelog (DEVELOP)
 - Enh #6102: Also allow Messages module to inject new message count into page title
 - Enh #6109: Added enabled Pretty URL as self test
 - Fix #6113: Ensure `displayNameSub` doesn't return NULL values 
-
+- Enh #6109: Added enabled Pretty URL as self test 
+- Enh #6119: Added UserInfoWidget for User Notification Settings 

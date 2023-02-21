@@ -13,18 +13,13 @@ use humhub\components\Controller;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\forms\AdminDeleteContentForm;
 use humhub\modules\content\Module;
-use humhub\modules\content\notifications\ContentDeleted;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\widgets\AdminDeleteModal;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use Yii;
-use yii\base\BaseObject;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
-use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
-use yii\web\HttpException;
-use yii\web\NotAcceptableHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -57,17 +52,15 @@ class ContentController extends Controller
      */
     public function actionDelete()
     {
-        Yii::$app->response->format = 'json';
-
         $this->forcePostRequest();
 
         $model = Yii::$app->request->get('model');
 
         // Due to backward compatibility we use the old delete mechanism in case a model parameter is provided
-        $id = (int)($model != null) ? Yii::$app->request->get('id') : Yii::$app->request->post('id');
+        $id = $model ? Yii::$app->request->get('id') : Yii::$app->request->post('id');
 
-        /* @var $contentObjs Content */
-        $contentObj = ($model != null) ? Content::Get($model, $id) : Content::findOne(['id' => $id]);
+        /* @var $contentObj Content */
+        $contentObj = $model ? Content::Get($model, $id) : Content::findOne(['id' => $id]);
 
         if (!$contentObj) {
             throw new NotFoundHttpException();
@@ -77,37 +70,19 @@ class ContentController extends Controller
             throw new ForbiddenHttpException();
         }
 
-        if ($contentObj !== null) {
-            $form = new AdminDeleteContentForm();
+        $form = new AdminDeleteContentForm(['content' => $contentObj]);
+        $form->load(Yii::$app->request->post());
 
-            if ($form->load(Yii::$app->request->post())) {
-                if (!$form->validate()) {
-                    throw new BadRequestHttpException();
-                }
-
-                if ($form->notify) {
-                    $contentDeleted = ContentDeleted::instance()
-                        ->from(Yii::$app->user->getIdentity())
-                        ->payload(['contentTitle' => (new ContentDeleted)->getContentPlainTextInfo($contentObj), 'reason' => $form->message]);
-                    $contentDeleted->saveRecord($contentObj->createdBy);
-
-                    $contentDeleted->record->updateAttributes([
-                        'send_web_notifications' => 1
-                    ]);
-                }
-            }
-
-            $json = [
-                'success' => $contentObj->softDelete(),
-                'uniqueId' => $contentObj->getUniqueId(),
-                'model' => $model,
-                'pk' => $id
-            ];
-        } else {
-            throw new HttpException(500, Yii::t('ContentModule.base', 'Could not delete content!'));
+        if (!$form->delete()) {
+            return $this->asJson(['error' => $form->getErrorsAsString()]);
         }
 
-        return $json;
+        return $this->asJson([
+            'success' => true,
+            'uniqueId' => $contentObj->getUniqueId(),
+            'model' => $model,
+            'pk' => $id
+        ]);
     }
 
     /**
@@ -126,7 +101,7 @@ class ContentController extends Controller
         }
 
         if (!$contentObj->canEdit()) {
-            throw new HttpException(400);
+            throw new ForbiddenHttpException();
         }
 
         return [
@@ -192,9 +167,7 @@ class ContentController extends Controller
     {
         $this->forcePostRequest();
 
-        $post = Yii::$app->request->post();
-
-        $content = Content::findOne(['id' => $post['id']]);
+        $content = Content::findOne(['id' => Yii::$app->request->post('id')]);
 
         if (!$content) {
             throw new NotFoundHttpException();
@@ -204,26 +177,14 @@ class ContentController extends Controller
             throw new ForbiddenHttpException();
         }
 
-        $form = new AdminDeleteContentForm();
+        $form = new AdminDeleteContentForm(['content' => $content]);
+        $form->load(Yii::$app->request->post());
 
-        if ($form->load($post)) {
-            if (!$form->validate()) {
-                throw new BadRequestHttpException();
-            }
-
-            if ($form->notify) {
-                $contentDeleted = ContentDeleted::instance()
-                    ->from(Yii::$app->user->getIdentity())
-                    ->payload(['contentTitle' => (new ContentDeleted)->getContentPlainTextInfo($content), 'reason' => $form->message]);
-                $contentDeleted->saveRecord($content->createdBy);
-
-                $contentDeleted->record->updateAttributes([
-                    'send_web_notifications' => 1
-                ]);
-            }
+        if (!$form->delete()) {
+            return $this->asJson(['error' => $form->getErrorsAsString()]);
         }
 
-        return $this->asJson(['success' => $content->softDelete()]);
+        return $this->asJson(['success' => true]);
     }
 
     public function actionReload($id)
@@ -231,11 +192,11 @@ class ContentController extends Controller
         $content = Content::findOne(['id' => $id]);
 
         if (!$content) {
-            throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
+            throw new NotFoundHttpException(Yii::t('ContentModule.base', 'Invalid content id given!'));
         }
 
         if (!$content->canView()) {
-            throw new HttpException(403);
+            throw new ForbiddenHttpException();
         }
 
         return StreamEntryResponse::getAsJson($content);
@@ -244,10 +205,9 @@ class ContentController extends Controller
     /**
      * Switches the content visibility for the given content.
      *
-     * @param type $id content id
+     * @param int $id content id
      * @return Response
      * @throws Exception
-     * @throws HttpException
      * @throws InvalidConfigException
      * @throws \Throwable
      * @throws \yii\db\IntegrityException
@@ -258,11 +218,11 @@ class ContentController extends Controller
         $content = Content::findOne(['id' => $id]);
 
         if (!$content) {
-            throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
+            throw new NotFoundHttpException(Yii::t('ContentModule.base', 'Invalid content id given!'));
         } elseif (!$content->canEdit()) {
-            throw new HttpException(403);
+            throw new ForbiddenHttpException();
         } elseif ($content->isPrivate() && !$content->container->permissionManager->can(new CreatePublicContent())) {
-            throw new HttpException(403);
+            throw new ForbiddenHttpException();
         }
 
         if ($content->isPrivate()) {
@@ -284,7 +244,6 @@ class ContentController extends Controller
      * @param bool $lockComments True to lock comments, False to unlock
      * @return Response
      * @throws Exception
-     * @throws HttpException
      * @throws InvalidConfigException
      * @throws \Throwable
      * @throws \yii\db\IntegrityException
@@ -295,9 +254,9 @@ class ContentController extends Controller
         $content = Content::findOne(['id' => $id]);
 
         if (!$content) {
-            throw new HttpException(400, Yii::t('ContentModule.base', 'Invalid content id given!'));
+            throw new NotFoundHttpException(Yii::t('ContentModule.base', 'Invalid content id given!'));
         } elseif (!$content->canLockComments()) {
-            throw new HttpException(403);
+            throw new ForbiddenHttpException();
         }
 
         $content->locked_comments = $lockComments;
@@ -313,7 +272,6 @@ class ContentController extends Controller
      * @param int $id Content id
      * @return Response
      * @throws Exception
-     * @throws HttpException
      * @throws InvalidConfigException
      * @throws \Throwable
      * @throws \yii\db\IntegrityException
@@ -329,7 +287,6 @@ class ContentController extends Controller
      * @param int $id Content id
      * @return Response
      * @throws Exception
-     * @throws HttpException
      * @throws InvalidConfigException
      * @throws \Throwable
      * @throws \yii\db\IntegrityException
@@ -345,7 +302,6 @@ class ContentController extends Controller
      * Returns JSON Output.
      * @return Response
      * @throws ForbiddenHttpException
-     * @throws HttpException
      * @throws NotFoundHttpException
      * @throws Exception
      * @throws InvalidConfigException

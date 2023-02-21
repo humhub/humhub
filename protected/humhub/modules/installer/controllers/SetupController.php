@@ -9,11 +9,12 @@
 namespace humhub\modules\installer\controllers;
 
 use humhub\components\access\ControllerAccess;
-use Yii;
 use humhub\components\Controller;
-use humhub\modules\installer\forms\DatabaseForm;
 use humhub\libs\DynamicConfig;
 use humhub\modules\admin\widgets\PrerequisitesList;
+use humhub\modules\installer\forms\CronForm;
+use humhub\modules\installer\forms\DatabaseForm;
+use Yii;
 
 /**
  * SetupController checks prerequisites and is responsible for database
@@ -130,7 +131,7 @@ class SetupController extends Controller
     }
 
     /**
-     * The init action imports the database structure & inital data
+     * The init action imports the database structure & initial data
      */
     public function actionInit()
     {
@@ -152,7 +153,22 @@ class SetupController extends Controller
 
         $this->module->setDatabaseInstalled();
 
-        return $this->redirect(['/installer/config/index']);
+        return $this->redirect(['/installer/setup/cron']);
     }
 
+    /**
+     * Crontab
+     */
+    public function actionCron()
+    {
+        return $this->render('cron', []);
+    }
+
+    /**
+     * Pretty URLs
+     */
+    public function actionPrettyUrls()
+    {
+        return $this->render('pretty-urls');
+    }
 }

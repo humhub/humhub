@@ -2,8 +2,8 @@
 
 namespace humhub\modules\content\models\forms;
 
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\notifications\ContentDeleted;
 use Yii;
 use yii\base\Model;
 
@@ -12,6 +12,11 @@ use yii\base\Model;
  */
 class AdminDeleteContentForm extends Model
 {
+    /**
+     * @var Content
+     */
+    public $content;
+
     /**
      * @var string
      */
@@ -42,5 +47,47 @@ class AdminDeleteContentForm extends Model
             'message' => Yii::t('CommentModule.base', 'Reason'),
             'notify' => Yii::t('CommentModule.base', 'Send a notification to author')
         ];
+    }
+
+    public function delete(): bool
+    {
+        if (!$this->validate()) {
+            return false;
+        }
+
+        if (!$this->notify()) {
+            return false;
+        }
+
+        return (bool) $this->content->softDelete();
+    }
+
+    public function notify(): bool
+    {
+        if (!$this->notify) {
+            return true;
+        }
+
+        $contentDeleted = ContentDeleted::instance()
+            ->from(Yii::$app->user->getIdentity())
+            ->payload([
+                'contentTitle' => (new ContentDeleted)->getContentPlainTextInfo($this->content),
+                'reason' => $this->message
+            ]);
+        if (!$contentDeleted->saveRecord($this->content->createdBy)) {
+            $this->addError('message', Yii::t('ContentModule.base', 'Cannot notify the author.'));
+            return false;
+        }
+
+        $contentDeleted->record->updateAttributes([
+            'send_web_notifications' => 1
+        ]);
+
+        return true;
+    }
+
+    public function getErrorsAsString(): string
+    {
+        return implode(' ', $this->getErrorSummary(true));
     }
 }
