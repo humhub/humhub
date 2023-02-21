@@ -229,9 +229,8 @@ humhub.module('content.form', function(module, require, $) {
 
         if (scheduledDate.length) {
             data.ScheduleOptionsForm = {
-                enabled: true,
-                date: scheduledDate.val(),
-                time: that.$.find('input[name=scheduledTime]').val()
+                enabled: 1,
+                date: scheduledDate.val()
             };
         }
 
@@ -244,11 +243,9 @@ humhub.module('content.form', function(module, require, $) {
                 if (modalGlobal.find('#scheduleoptionsform-enabled').is(':checked')) {
                     that.changeState(modalGlobal.find('input[name=state]').val(), modalGlobal.find('input[name=stateTitle]').val());
                     that.setScheduleOption('scheduledDate', modalGlobal.find('input[name=scheduledDate]').val());
-                    that.setScheduleOption('scheduledTime', modalGlobal.find('input[name=scheduledTime]').val());
                 } else {
                     that.resetState();
                     that.resetScheduleOption('scheduledDate');
-                    that.resetScheduleOption('scheduledTime');
                 }
 
                 modal.global.close(true);
@@ -260,12 +257,13 @@ humhub.module('content.form', function(module, require, $) {
 
     CreateForm.prototype.setScheduleOption = function(name, value) {
         let input = this.$.find('input[name=' + name + ']');
-        if (input.length) {
-            if (value === undefined) {
-                input.remove();
-                return;
-            }
-        } else {
+
+        if (value === undefined) {
+            input.remove();
+            return;
+        }
+
+        if (!input.length) {
             input = $('<input name="' + name + '" type="hidden">');
             this.$.find('input[name=state]').after(input);
         }

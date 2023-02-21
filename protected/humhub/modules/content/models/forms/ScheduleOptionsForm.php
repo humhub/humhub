@@ -28,11 +28,9 @@ class ScheduleOptionsForm extends Model
     {
         parent::init();
 
-        if ($this->content instanceof Content && $this->content->scheduled_at !== null) {
+        if ($this->hasContent() && $this->content->scheduled_at !== null) {
             $this->enabled = true;
             $this->date = $this->content->scheduled_at;
-            $scheduledDateTime = new DateTime($this->content->scheduled_at, new DateTimeZone('UTC'));
-            $this->time = Yii::$app->formatter->asTime($scheduledDateTime, 'short');
         }
 
         if ($this->date === null) {
@@ -40,7 +38,17 @@ class ScheduleOptionsForm extends Model
         }
 
         if ($this->time === null) {
+            $this->initTime();
+        }
+    }
+
+    private function initTime()
+    {
+        if ($this->date === null) {
             $this->time = '';
+        } else {
+            $scheduledDateTime = new DateTime($this->date, new DateTimeZone('UTC'));
+            $this->time = Yii::$app->formatter->asTime($scheduledDateTime, 'short');
         }
     }
 
@@ -66,18 +74,36 @@ class ScheduleOptionsForm extends Model
         ];
     }
 
+    public function load($data, $formName = null)
+    {
+        if (!parent::load($data, $formName)) {
+            return false;
+        }
+
+        if (!$this->isSubmitted() && !$this->hasContent()) {
+            $this->normalizeDate();
+            $this->initTime();
+        }
+
+        return true;
+    }
+
     public function save(): bool
     {
         if (!$this->validate()) {
             return false;
         }
 
-        if ($this->content instanceof Content && !$this->content->isNewRecord) {
-            $this->content->setState(Content::STATE_SCHEDULED, ['scheduled_at' => $this->date]);
+        if ($this->hasContent()) {
+            if ($this->enabled) {
+                $this->content->setState(Content::STATE_SCHEDULED, ['scheduled_at' => $this->date]);
+            } else {
+                $this->content->setState(Content::STATE_PUBLISHED);
+            }
             return $this->content->save();
         }
 
-        return true;
+        return $this->isSubmitted();
     }
 
     public function getStateTitle(): string
@@ -85,5 +111,26 @@ class ScheduleOptionsForm extends Model
         return Yii::t('ContentModule.modules', 'Scheduled at {dateTime}', [
             'dateTime' => Yii::$app->formatter->asDatetime($this->date, 'short')
         ]);
+    }
+
+    public function hasContent(): bool
+    {
+        return $this->content instanceof Content && !$this->content->isNewRecord;
+    }
+
+    public function isSubmitted(): bool
+    {
+        return Yii::$app->request->post('state') == Content::STATE_SCHEDULED;
+    }
+
+    private function normalizeDate()
+    {
+        if ($this->date === null) {
+            return;
+        }
+
+        $datetime = new DateTime('now', new DateTimeZone('UTC'));
+        $datetime->setTimestamp(strtotime($this->date));
+        $this->date = $datetime->format('Y-m-d H:i:s');
     }
 }
