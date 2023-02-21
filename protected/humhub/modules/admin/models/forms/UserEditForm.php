@@ -2,12 +2,11 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use humhub\libs\Html;
-use humhub\modules\user\models\GroupUser;
-use Yii;
-use humhub\modules\user\models\User;
-use humhub\modules\user\models\Group;
 use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\user\models\Group;
+use humhub\modules\user\models\GroupUser;
+use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * Description of UserEditForm
@@ -18,14 +17,13 @@ class UserEditForm extends User
 {
     /**
      * GroupId selection array of the form.
-     * @var type
+     * @var array
      */
     public $groupSelection;
 
     /**
      * Current member groups (models) of the given $user
-     * @var type
-     *
+     * @var Group[]
      */
     public $currentGroups;
 
@@ -103,19 +101,19 @@ class UserEditForm extends User
                 if (!$this->isCurrentlyMemberOf($groupId)) {
                     /* @var $group Group */
                     $group = Group::findOne(['id' => $groupId]);
-                    if(!$group->is_admin_group || Yii::$app->user->isAdmin()) {
+                    if ($group && (!$group->is_admin_group || Yii::$app->user->isAdmin())) {
                         $group->addUser($this);
                     }
                 }
             }
         }
 
-        return parent::afterSave($insert, $changedAttributes);
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
      * Checks if the given group (id or model object) is contained in the form selection
-     * @param integer $groupId groupId or Group model object
+     * @param int|Group $groupId groupId or Group model object
      * @return boolean true if contained in selection else false
      */
     private function isInGroupSelection($groupId)
