@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #6104: Fix update user with not existing group
 - Fix #6103: Fix null passing to parse_str()
 - Fix #6108: Fix log time in the `date()` function
+- Fix #6122: Fix deleting a content with empty reason
 
 1.13.1 (January 25, 2023)
 -------------------------
