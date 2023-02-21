@@ -147,12 +147,19 @@ class Events extends BaseObject
 
     /**
      * Callback on daily cron job run
-     *
-     * @param \yii\base\Event $event
      */
-    public static function onCronDailyRun($event): void
+    public static function onCronDailyRun(): void
     {
         Yii::$app->queue->push(new jobs\PurgeDeletedContents());
+    }
+
+
+    /**
+     * Callback on hourly cron job run
+     */
+    public static function onCronHourlyRun(): void
+    {
+        Yii::$app->queue->push(new jobs\PublishScheduledContents());
     }
 
 }
