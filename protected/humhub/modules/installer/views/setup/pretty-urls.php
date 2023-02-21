@@ -11,9 +11,9 @@ use yii\helpers\Url;
     </div>
 
     <div class="panel-body">
-        <p><?= Yii::t('InstallerModule.base', 'By default, the HumHub URL includes a <code>index.php</code> file part and looks like <a>https://example.com/index.php?r=dashboard%2Fdashboard</a>. Using the Pretty URL or URL Rewriting feature, shorter and more meaningful URLs can be created such as <a>https://temp.humhub.dev/dashboard</a>.'); ?></p>
-        <p><?= Yii::t('InstallerModule.base', 'To enable this feature, both the HumHub configuration and, possibly, the WebServer configuration must be modified.'); ?></p>
-        <p><?= Yii::t('InstallerModule.base', 'Modify the HumHub configuration file <code>{DOCUMENT_ROOT}/protected/config/common.php</code> and add following block:', ['DOCUMENT_ROOT' => $_SERVER['DOCUMENT_ROOT']]); ?></p>
+        <p><?= Yii::t('InstallerModule.base', 'Per default, the HumHub URL includes an <code>index.php</code> file in the address, resulting in a URL that looks like "<a>https://example.com/index.php?r=dashboard%2Fdashboard</a>" for example. By using the Pretty URL or URL Rewriting feature, it is possible to create shorter and easier to understand URLs, such as "<a>https://example.com/dashboard</a>".'); ?></p>
+        <p><?= Yii::t('InstallerModule.base', 'In order to activate this feature, it is necessary to edit the HumHub configuration and, potentially, the configuration of the WebServer.'); ?></p>
+        <p><?= Yii::t('InstallerModule.base', 'On HumHub\'s side, you will need to edit the configuration file <code>{configFile}</code> and add the following block:', ['{configFile}' => Yii::getAlias('@config/common.php')]); ?></p>
 
         <kbd style="display: block; padding: 0.75rem 1rem;">
             <div>
@@ -31,7 +31,7 @@ use yii\helpers\Url;
         </kbd>
         <br>
 
-        <p><?= Yii::t('InstallerModule.base', 'In our documentation we get into <a href="{link}">Pretty URLs</a> in more detail.', ['link' => 'https://docs.humhub.org/docs/admin/installation/#pretty-urls']); ?></p>
+        <p><?= Yii::t('InstallerModule.base', 'Our documentation provides a more detailed look into <a href="{link}" target="_blank">Pretty URLs</a>.', ['link' => 'https://docs.humhub.org/docs/admin/installation/#pretty-urls']); ?></p>
         <hr>
 
         <?= Html::a(Yii::t('base', 'Next'), Url::to(['/installer/config/index']), ['class' => 'btn btn-primary']) ?>
