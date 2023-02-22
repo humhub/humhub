@@ -24,6 +24,7 @@ use yii\base\Widget;
 class ScheduleLink extends Widget
 {
     public ContentActiveRecord $contentRecord;
+    public array $allowedStates = [Content::STATE_DRAFT, Content::STATE_SCHEDULED];
 
     /**
      * @inheritdoc
@@ -32,7 +33,7 @@ class ScheduleLink extends Widget
     {
         $content = $this->contentRecord->content;
 
-        if ((int) $content->state !== Content::STATE_SCHEDULED) {
+        if (!in_array($content->state, $this->allowedStates)) {
             return '';
         }
 

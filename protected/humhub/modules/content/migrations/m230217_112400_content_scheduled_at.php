@@ -16,7 +16,7 @@ class m230217_112400_content_scheduled_at extends Migration
         $this->safeAddColumn(Content::tableName(), 'scheduled_at', $this
             ->dateTime()
             ->null()
-            ->after('updated_by'));
+            ->after('locked_comments'));
     }
 
     /**
