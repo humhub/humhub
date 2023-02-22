@@ -75,7 +75,6 @@ use yii\helpers\Html;
         <div class="pull-right">
             <span class="label-container">
                 <span class="label label-info label-public hidden"><?= Yii::t('ContentModule.base', 'Public'); ?></span>
-                <span class="label label-warning label-draft hidden"><?= Yii::t('ContentModule.base', 'Draft'); ?></span>
             </span>
 
             <ul class="nav nav-pills preferences" style="right:0;top:5px">
