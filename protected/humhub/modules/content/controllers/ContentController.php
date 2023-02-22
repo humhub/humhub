@@ -401,9 +401,13 @@ class ContentController extends Controller
     {
         $this->forcePostRequest();
 
-        $scheduleOptions = new ScheduleOptionsForm([
-            'content' => $id ? Content::findOne($id) : null
-        ]);
+        $content = $id ? Content::findOne($id) : null;
+
+        if ($content instanceof Content && !$content->canEdit()) {
+            throw new ForbiddenHttpException();
+        }
+
+        $scheduleOptions = new ScheduleOptionsForm(['content' => $content]);
 
         if ($scheduleOptions->load(Yii::$app->request->post())) {
             // Disable in order to don't focus the date field because modal window will be closed anyway
