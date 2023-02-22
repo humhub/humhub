@@ -108,7 +108,7 @@ use yii\helpers\Html;
                                     ]) ?>
                         </li>
                         <li>
-                            <?= Link::withAction(Yii::t('ContentModule.base', 'Schedule Publication'), 'scheduleOptions', $scheduleUrl)
+                            <?= Link::withAction(Yii::t('ContentModule.base', 'Schedule publication'), 'scheduleOptions', $scheduleUrl)
                                 ->icon('clock-o') ?>
                         </li>
                     </ul>

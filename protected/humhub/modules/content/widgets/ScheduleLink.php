@@ -46,7 +46,7 @@ class ScheduleLink extends Widget
             return '';
         }
 
-        return Html::tag('li', Link::withAction(Yii::t('ContentModule.base', 'Schedule Publication'),
+        return Html::tag('li', Link::withAction(Yii::t('ContentModule.base', 'Schedule publication'),
                 'scheduleOptions',
                 $contentContainer->createUrl('/content/content/schedule-options', ['id' => $content->id]))
             ->icon('clock-o'));

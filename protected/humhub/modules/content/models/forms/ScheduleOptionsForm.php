@@ -70,7 +70,7 @@ class ScheduleOptionsForm extends Model
     public function attributeLabels()
     {
         return [
-            'enabled' => Yii::t('ContentModule.base', 'Enable schedule date time')
+            'enabled' => Yii::t('ContentModule.base', 'Activate the scheduled publication of this post')
         ];
     }
 
