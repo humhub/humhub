@@ -9,6 +9,7 @@ HumHub Changelog
 - Fix #6103: Fix null passing to parse_str()
 - Fix #6108: Fix log time in the `date()` function
 - Fix #6122: Fix deleting a content with empty reason
+- Fix #6128: Reset backuped content after submit form
 
 1.13.1 (January 25, 2023)
 -------------------------
