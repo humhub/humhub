@@ -17,7 +17,7 @@ use humhub\widgets\ModalDialog;
 /* @var ScheduleOptionsForm $scheduleOptions */
 /* @var bool $disableInputs */
 ?>
-<?php ModalDialog::begin(['header' => Yii::t('ContentModule.modules', '<strong>Scheduling </strong> Options')]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('ContentModule.base', '<strong>Scheduling </strong> Options')]) ?>
 
     <?php $form = ActiveForm::begin() ?>
     <?= Html::hiddenInput('state', Content::STATE_SCHEDULED) ?>
