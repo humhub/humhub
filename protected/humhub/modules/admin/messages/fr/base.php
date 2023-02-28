@@ -28,7 +28,7 @@ return array (
   'Default group for administrators of this HumHub Installation' => 'Groupe par défaut pour les administrateurs de cette installation HumHub',
   'Default group for all newly registered users of the network' => 'Groupe par défaut pour tous les utilisateurs venant de se créer un compte sur le réseau',
   'Delete all' => 'Tout supprimer',
-  'Delete selected rows' => 'Supprimer les colonnes sélectionnées',
+  'Delete selected rows' => 'Supprimer les lignes sélectionnées',
   'Design' => 'Design',
   'Files' => 'Fichiers',
   'General' => 'Général',

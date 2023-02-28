@@ -16,7 +16,7 @@ return array (
   'Are you sure you want to remove this member.' => 'Etes vous sur de vouloir retirer ce membre.',
   'Are you sure, that you want to delete this space? All published content will be removed!' => 'Êtes-vous certain de vouloir supprimer cet espace ? Tout le contenu publié sera définitivement supprimé également !',
   'As owner of this space you can transfer this role to another administrator in space.' => 'En tant que propriétaire de cet espace, vous pouvez transférer ce rôle à un administrateur de cet espace.',
-  'Cancel Membership' => 'Annuler l\'adhésion',
+  'Cancel Membership' => 'Quitter l’espace',
   'Choose if new content should be public or private by default' => 'Choisir si les nouveaux contenus doivent être publics ou privés par défaut',
   'Choose the kind of membership you want to provide for this workspace.' => 'Choisissez le type de participation à cet espace.',
   'Choose the modules you want to use for this Space. If you are undecided, you can also activate them later on via the Space settings.' => 'Choisissez les modules que vous souhaitez utiliser dans cet Espace. Vous pourrez également les activer plus tard dans les réglages de l’Espace.',
