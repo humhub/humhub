@@ -114,6 +114,9 @@ abstract class WallCreateContentForm extends Widget
 
         $record->content->visibility = $visibility;
         $record->content->container = $contentContainer;
+        $record->content->setState(Yii::$app->request->post('state'), [
+            'scheduled_at' => Yii::$app->request->post('scheduledDate')
+        ]);
 
         // Handle Notify User Features of ContentFormWidget
         // ToDo: Check permissions of user guids
@@ -129,7 +132,7 @@ abstract class WallCreateContentForm extends Widget
 
         if ($record->save()) {
             $topics = Yii::$app->request->post('postTopicInput');
-            if(!empty($topics)) {
+            if (!empty($topics)) {
                 Topic::attach($record->content, $topics);
             }
 

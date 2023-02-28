@@ -10,6 +10,7 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
     var client = require('client');
     var Widget = require('ui.widget').Widget;
     var additions = require('ui.additions');
+    var event = require('event');
 
     var MarkdownEditor = prosemirror.MarkdownEditor;
     var MentionProvider = prosemirror.MentionProvider;
@@ -74,9 +75,8 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
         })
 
         if (this.options.backupInterval) {
-            setInterval(function () {
-                that.backup();
-            }, this.options.backupInterval * 1000);
+            setInterval(() => this.backup(), this.options.backupInterval * 1000);
+            event.on('humhub:content:afterSubmit', () => this.resetBackup());
         }
     };
 
@@ -101,10 +101,13 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
         return {};
     }
 
-    RichTextEditor.prototype.backup = function() {
+    RichTextEditor.prototype.backup = function(currentValue) {
         var inputId = this.getInput().attr('id');
-        var currentValue = this.editor.serialize();
         var isBackuped = typeof this.backupedValue !== 'undefined';
+
+        if (typeof currentValue === 'undefined') {
+            currentValue = this.editor.serialize();
+        }
 
         if (!isBackuped && currentValue === '') {
             // Don't back up first empty value
@@ -131,6 +134,10 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
             sessionStorage.removeItem(this.options.backupCookieKey);
         }
     };
+
+    RichTextEditor.prototype.resetBackup = function() {
+        this.backup('');
+    }
 
     RichTextEditor.prototype.focus = function() {
         this.editor.view.focus();

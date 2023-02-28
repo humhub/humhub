@@ -359,6 +359,6 @@ class InviteForm extends Model
             $token = Yii::$app->security->generateRandomString(Invite::LINK_TOKEN_LENGTH);
             $this->space->settings->set('inviteToken', $token);
         }
-        return Url::to(['/user/registration', 'spaceId' => $this->space->id, 'token' => $token], true);
+        return Url::to(['/user/registration/by-link', 'token' => $token, 'spaceId' => $this->space->id], true);
     }
 }

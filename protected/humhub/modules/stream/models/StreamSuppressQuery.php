@@ -139,7 +139,7 @@ class StreamSuppressQuery extends StreamQuery
         $this->_query->limit = $originalLimit;
         $this->isQueryExecuted = true;
 
-        return $results;
+        return $this->postProcessAll($results);
     }
 
     /**

@@ -62,6 +62,7 @@ class LayoutHeader extends Widget
                 navigator.serviceWorker.register('$serviceWorkUrl', { scope: '$rootPath' })
                     .then(function (registration) {
                         if (typeof afterServiceWorkerRegistration === "function") {
+                            // Allow Modules like `fcm-push` to register after registration
                             afterServiceWorkerRegistration(registration);
                         }
                     })

@@ -7,6 +7,7 @@ use Yii;
 use yii\base\Exception;
 use yii\base\Model;
 use yii\db\IntegrityException;
+use yii\web\Controller;
 use yii\web\Response;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
@@ -82,7 +83,7 @@ class StreamEntryResponse extends Model
         return (new static([
             'id' => $content->id,
             'guid' => $content->guid,
-            'output' => Yii::$app->controller->renderAjaxPartial($streamEntry),
+            'output' => Yii::$app->controller instanceof Controller ? Yii::$app->controller->renderAjaxPartial($streamEntry) : '',
             'pinned' => (boolean) $content->pinned,
             'archived' => (boolean) $content->archived,
         ]))->asArray();

@@ -11,6 +11,7 @@ namespace humhub\modules\user\models;
 use humhub\components\behaviors\GUID;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
@@ -622,26 +623,19 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     private function setUpApproved()
     {
-        $spaceInviteId = Yii::$app->session->get(InviteForm::SESSION_SPACE_INVITE_ID);
-        if ($spaceInviteId !== null) {
-            Yii::$app->session->remove(InviteForm::SESSION_SPACE_INVITE_ID);
-        } else {
-            $userInvite = Invite::findOne(['email' => $this->email]);
-            if ($userInvite !== null) {
-                // User was invited to a space
-                if ($userInvite->source === Invite::SOURCE_INVITE) {
-                    $spaceInviteId = $userInvite->space_invite_id;
-                }
-                // Delete/Cleanup Invite Entry
-                $userInvite->delete();
-            }
-        }
+        $userInvite = Invite::findOne(['email' => $this->email]);
 
-        if ($spaceInviteId !== null) {
-            $space = Space::findOne(['id' => $spaceInviteId]);
-            if ($space !== null) {
-                $space->addMember($this->id);
+        if ($userInvite !== null) {
+            // User was invited to a space
+            if (in_array($userInvite->source, [Invite::SOURCE_INVITE, Invite::SOURCE_INVITE_BY_LINK], true)) {
+                $space = Space::findOne(['id' => $userInvite->space_invite_id]);
+                if ($space != null) {
+                    $space->addMember($this->id);
+                }
             }
+
+            // Delete/Cleanup Invite Entry
+            $userInvite->delete();
         }
 
         // Auto Add User to the default spaces
@@ -657,6 +651,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             $defaultGroup->addUser($this);
         }
     }
+
 
     /**
      * Returns users display name
@@ -754,12 +749,20 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Checks if the user is allowed to view all content
      *
+     * @param string|null $containerClass class name of the content container
      * @return bool
      * @since 1.8
      */
-    public function canViewAllContent()
+    public function canViewAllContent(?string $containerClass = null): bool
     {
-        return Yii::$app->getModule('content')->adminCanViewAllContent && $this->isSystemAdmin();
+        /** @var \humhub\modules\content\Module $module */
+        $module = Yii::$app->getModule('content');
+
+        return $module->adminCanViewAllContent && (
+            $this->isSystemAdmin()
+            || ($containerClass === Space::class && $this->can(ManageSpaces::class))
+            || ($containerClass === static::class && $this->can(ManageUsers::class))
+        );
     }
 
     /**
