@@ -23,7 +23,7 @@ return array (
   'The requested content is not valid or was removed!' => '',
   'There are no notifications yet.' => '目前沒有未讀的通知。',
   'This view allows you to configure your notification settings by selecting the desired targets for the given notification categories.' => '',
-  'Type' => '',
+  'Type' => '類型',
   'View online:' => '線上查看:',
   '{displayName} and {displayName2}' => '',
   '{displayName} and {number} others' => '',

@@ -46,8 +46,6 @@ return [
     'Unarchive' => 'Poista arkistosta',
     'e.g. example for {baseUrl}/s/example' => 'esim. esimerkki {baseUrl} esimerkille',
     'never' => 'Ei koskaan',
-    'the default start page of this space for members' => 'Sivu joka näkyy jäsenille ensimmäisenä',
-    'the default start page of this space for visitors' => 'Sivu joka näkyy vierailioille ensimmäisenä',
     'Activate' => '',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',
     'Are you sure you want to remove this member.' => '',

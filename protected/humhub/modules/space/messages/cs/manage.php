@@ -43,8 +43,6 @@ return [
     'Unarchive' => 'Obnovit z archívu',
     'e.g. example for {baseUrl}/s/example' => 'například. pro {baseUrl} ',
     'never' => 'nikdy',
-    'the default start page of this space for members' => 'výchozí stránka tohoto prostoru pro členy',
-    'the default start page of this space for visitors' => 'výchozí stránka tohoto prostoru pro návštěvníky',
     '-' => '',
     'Activate' => '',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',

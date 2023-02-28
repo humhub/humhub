@@ -31,7 +31,7 @@ return array (
   'Location' => '',
   'Objects' => '',
   'Paragraph' => '',
-  'People' => '',
+  'People' => 'Njerëzit',
   'Rows' => '',
   'Symbols' => '',
   'Title' => 'Titulli',

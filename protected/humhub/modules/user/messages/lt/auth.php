@@ -25,7 +25,7 @@ return array (
   'Go to login page' => 'Eikite į registracijos puslapį',
   'Group' => 'Grupė',
   'Hello {displayName}' => 'Sveiki {displayName}',
-  'Hello {displayName},' => '',
+  'Hello {displayName},' => 'Sveiki {displayName} ,',
   'If you don\'t use this link within 24 hours, it will expire.' => 'Jei nepasinaudosite šia nuoroda per 24 valandas, ji baigs galioti.',
   'If you\'re already a member, please login with your username/email and password.' => 'Jei Jūs jau esate nariu, prašome prisijungti su savo vartotojo vardu/elektroninio pašto adresu ir slaptažodžiu.',
   'Just enter your e-mail address. We\'ll send you recovery instructions!' => 'Tiesiog įveskite savo elektroninio pašto adresą. Mes Jums atsiųsime atnaujinimo instrukcijas!',

@@ -55,6 +55,4 @@ return [
     'The URL has already been taken.' => '',
     'The url contains illegal characters!' => '',
     'e.g. example for {baseUrl}/s/example' => '',
-    'the default start page of this space for members' => '',
-    'the default start page of this space for visitors' => '',
 ];
