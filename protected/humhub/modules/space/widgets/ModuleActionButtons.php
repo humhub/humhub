@@ -53,7 +53,7 @@ class ModuleActionButtons extends Widget
                 'data-action-url' => $this->space->createUrl('/space/manage/module/enable', ['moduleId' => $this->module->id]),
             ]);
 
-        $html .= Button::asLink('<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('ContentModule.modules', 'Activated'), '#')
+        $html .= Button::asLink('<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('ContentModule.base', 'Activated'), '#')
             ->cssClass('btn btn-sm btn-info active disable')
             ->style(!$this->space->moduleManager->isEnabled($this->module->id) ? 'display:none' : '')
             ->loader()
