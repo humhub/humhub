@@ -143,21 +143,4 @@ class Module extends \humhub\components\Module
         ];
     }
 
-    /**
-     * Check if the scheduled content can be published now
-     *
-     * @return bool
-     * @since 1.14
-     */
-    public function canPublishScheduledContent(): bool
-    {
-        $lastPublishTime = $this->settings->get('lastPublishScheduledTS');
-
-        if ($lastPublishTime === null) {
-            return true;
-        }
-
-        return time() >= $lastPublishTime + $this->publishScheduledInterval * 60;
-    }
-
 }

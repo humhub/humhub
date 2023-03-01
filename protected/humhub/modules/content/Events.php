@@ -155,24 +155,36 @@ class Events extends BaseObject
         Yii::$app->queue->push(new jobs\PurgeDeletedContents());
     }
 
-
     /**
      * Callback on before run cron action
      */
     public static function onCronBeforeAction($event): void
     {
-        /* @var $module Module */
-        $module = Yii::$app->getModule('content');
-
-        if ($module->canPublishScheduledContent()) {
+        if (self::canPublishScheduledContent()) {
             /* @var CronController $controller */
             $controller = $event->sender;
             $controller->stdout('Publish scheduled content... ');
-
-            Yii::$app->queue->push(new jobs\PublishScheduledContents());
-            $module->settings->set('lastPublishScheduledTS', time());
-
+            self::publishScheduledContent();
             $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
+        }
+    }
+
+    private static function getModule(): Module
+    {
+        return Yii::$app->getModule('content');
+    }
+
+    private static function canPublishScheduledContent(): bool
+    {
+        $lastPublishTime = self::getModule()->settings->get('lastPublishScheduledTS');
+        return $lastPublishTime === null ||
+            time() >= $lastPublishTime + self::getModule()->publishScheduledInterval * 60;
+    }
+
+    private static function publishScheduledContent()
+    {
+        if (Yii::$app->queue->push(new jobs\PublishScheduledContents())) {
+            self::getModule()->settings->set('lastPublishScheduledTS', time());
         }
     }
 
