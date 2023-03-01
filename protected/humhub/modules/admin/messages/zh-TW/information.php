@@ -16,7 +16,7 @@ return array (
   'Delayed' => '',
   'Detected URL: {currentBaseUrl}' => '',
   'Displaying {count} entries per page.' => '',
-  'Done' => '',
+  'Done' => '已完成',
   'Driver' => '',
   'Dynamic Config' => '',
   'Error' => '錯誤',

@@ -2,10 +2,10 @@
 return array (
   '
 Module successfully disabled!
-' => '',
+' => '模組停用成功!',
   '
 Module successfully enabled!
-' => '',
+' => '模組啟用成功!',
   '
 No active Professional Edition license found!
 ' => '',
@@ -22,10 +22,10 @@ The license was successfully removed!
 ' => '',
   '--- Disable module: {moduleId} ---
 
-' => '',
+' => '--- 停用模組: {moduleId} ---',
   '--- Enable module: {moduleId} ---
 
-' => '',
+' => '--- 啟用模組: {moduleId} ---',
   '<strong>Activate</strong> your Professional Edition' => '',
   'A new update is available (HumHub %version%)!' => '',
   'Add Licence Key' => '添加授權碼',
@@ -49,7 +49,7 @@ The license was successfully removed!
   'Featured' => '',
   'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => '',
   'Install' => '',
-  'Installed' => '',
+  'Installed' => '已安裝',
   'Installing module...' => '',
   'Invalid module licence key!
 ' => '',
@@ -68,9 +68,9 @@ The license was successfully removed!
   'Module licence key cannot be empty!
 ' => '',
   'Module not found or activated!
-' => '',
+' => '找不到模組或模組未啟用!',
   'Module not found!
-' => '',
+' => '找不到模組!',
   'More info' => '',
   'New' => '新建',
   'No compatible module version found!' => '',
@@ -87,7 +87,7 @@ The license was successfully removed!
   'Remove licence key' => '移除授權碼',
   'Save and update' => '保存且更新',
   'Stop updating' => '',
-  'Tags' => '',
+  'Tags' => '標籤',
   'The HumHub project does not guarantee the functionality, quality or the continuous development of this Module.' => '',
   'Third-party' => '第三方',
   'Third-party Modules are not covered by Professional Edition agreements.' => '',
