@@ -232,6 +232,7 @@ class ConfigController extends Controller
         }
     }
 
+
     /**
      * Sample Data
      */
@@ -541,7 +542,7 @@ class ConfigController extends Controller
 
         try {
             Yii::$app->user->logout();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             ;
         }
         return $this->render('finished');

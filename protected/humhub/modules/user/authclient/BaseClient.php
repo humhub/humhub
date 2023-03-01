@@ -34,7 +34,15 @@ class BaseClient extends \yii\authclient\BaseClient
      */
     protected function initUserAttributes()
     {
-        
+
     }
 
+    /**
+     * Workaround for serialization into session during the registration process
+     *
+     * @return void
+     */
+    public function beforeSerialize(): void
+    {
+    }
 }

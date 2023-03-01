@@ -28,10 +28,6 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
                     </div>
                 <?php endif; ?>
 
-                <?php if (AuthChoice::hasClients()): ?>
-                    <?= AuthChoice::widget() ?>
-                <?php endif; ?>
-
                 <?php $form = ActiveForm::begin(['id' => 'registration-form']); ?>
                 <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
                 <?php if ($invite->showCaptureInRegisterForm()) : ?>

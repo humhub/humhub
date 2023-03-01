@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
+use humhub\libs\DbDateValidator;
 use humhub\modules\activity\helpers\ActivityHelper;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -65,6 +66,7 @@ use yii\helpers\Url;
  * @property integer $archived
  * @property integer $hidden
  * @property integer $state
+ * @property string $scheduled_at
  * @property integer $locked_comments
  * @property string $created_at
  * @property integer $created_by
@@ -112,6 +114,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     const STATE_PUBLISHED = 1;
     const STATE_DRAFT = 10;
+    const STATE_SCHEDULED = 20;
     const STATE_DELETED = 100;
 
     /**
@@ -1000,7 +1003,54 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             'source_pk' => $this->getPrimaryKey(),
         ]);
 
-        $this->state = self::STATE_DELETED;
+        $this->setState(self::STATE_DELETED);
         return $this->save();
+    }
+
+    public static function getAllowedStates(): array
+    {
+        return [
+            self::STATE_PUBLISHED,
+            self::STATE_DRAFT,
+            self::STATE_SCHEDULED,
+            self::STATE_DELETED
+        ];
+    }
+
+    /**
+     * @param int|string|null $state
+     * @return bool
+     * @since 1.14
+     */
+    public function canChangeState($state): bool
+    {
+        return in_array($state, self::getAllowedStates());
+    }
+
+    /**
+     * @param int|string|null $state
+     * @param array $options Additional options depending on state
+     * @since 1.14
+     */
+    public function setState($state, array $options = [])
+    {
+        if (!$this->canChangeState($state)) {
+            return;
+        }
+
+        if ((int) $state === self::STATE_SCHEDULED) {
+            if (empty($options['scheduled_at'])) {
+                return;
+            }
+
+            $this->scheduled_at = $options['scheduled_at'];
+            (new DbDateValidator())->validateAttribute($this, 'scheduled_at');
+            if ($this->hasErrors('scheduled_at')) {
+                $this->scheduled_at = null;
+                return;
+            }
+        }
+
+        $this->state = $state;
     }
 }

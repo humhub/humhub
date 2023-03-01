@@ -46,8 +46,6 @@ return [
     'Unarchive' => 'Hủy lưu trữ',
     'e.g. example for {baseUrl}/s/example' => 'ví dụ: {baseUrl}/s/example',
     'never' => 'không bao giờ',
-    'the default start page of this space for members' => 'trang chủ mặc định của diễn đàn này dành cho thành viên',
-    'the default start page of this space for visitors' => 'trang chủ mặc định của diễn đàn này dành cho khách thăm',
     'Activate' => '',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',
     'Are you sure you want to remove this member.' => '',

@@ -51,8 +51,6 @@ return [
     'Unarchive' => 'Розпакувати',
     'e.g. example for {baseUrl}/s/example' => 'наприклад, для {baseUrl}/s/example',
     'never' => 'ніколи',
-    'the default start page of this space for members' => 'сторінка за замовченням цієї спільноти для членів',
-    'the default start page of this space for visitors' => 'сторінка за замовченням цієї спільноти для гостей',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',
     'Removal of members queued' => '',
     'Remove all members' => '',

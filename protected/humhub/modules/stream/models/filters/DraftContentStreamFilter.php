@@ -4,7 +4,6 @@ namespace humhub\modules\stream\models\filters;
 
 use humhub\modules\activity\stream\ActivityStreamQuery;
 use humhub\modules\content\models\Content;
-use humhub\modules\stream\models\StreamQuery;
 use Yii;
 
 /**
@@ -28,6 +27,8 @@ class DraftContentStreamFilter extends StreamQueryFilter
 
         if ($this->streamQuery->isInitialQuery()) {
             $this->fetchDraftContent();
+        } else {
+            $this->streamQuery->stateFilterCondition[] = ['content.state' => Content::STATE_DRAFT];
         }
     }
 

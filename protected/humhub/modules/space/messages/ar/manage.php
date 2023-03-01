@@ -48,8 +48,6 @@ return [
     'Unarchive' => 'إلغاء وضع الأرشيف',
     'e.g. example for {baseUrl}/s/example' => 'على سبيل المثال مثال لـ {baseUrl} / s / example',
     'never' => 'أبدا',
-    'the default start page of this space for members' => 'صفحة البداية الافتراضية لهذه المساحة للأعضاء',
-    'the default start page of this space for visitors' => 'صفحة البداية الافتراضية لهذه المساحة للزوار',
     'Activate' => '',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',
     'Are you sure you want to remove this member.' => '',

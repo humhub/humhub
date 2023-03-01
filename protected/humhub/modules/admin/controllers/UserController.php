@@ -149,7 +149,8 @@ class UserController extends Controller
                     'items' => UserEditForm::getGroupItems(),
                     'options' => [
                         'data-placeholder' => Yii::t('AdminModule.user', 'Select Groups'),
-                        'data-placeholder-more' => Yii::t('AdminModule.user', 'Add Groups...')
+                        'data-placeholder-more' => Yii::t('AdminModule.user', 'Add Groups...'),
+                        'data-tags' => 'false'
                     ],
                     'maxSelection' => 250,
                     'isVisible' => Yii::$app->user->can(new ManageGroups())

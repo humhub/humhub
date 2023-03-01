@@ -49,8 +49,6 @@ return [
     'Unarchive' => 'アーカイブの解除',
     'e.g. example for {baseUrl}/s/example' => '例が {baseUrl}/s/example にあります',
     'never' => 'なし',
-    'the default start page of this space for members' => 'メンバーがこのスペースにアクセスしたときの画面です',
-    'the default start page of this space for visitors' => 'メンバー以外がこのスペースにアクセスしたときの画面です',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',
     'Choose the modules you want to use for this Space. If you are undecided, you can also activate them later on via the Space settings.' => '',
     'Choose the modules you want to use for this Space. In order for the modules to be available to you here, they must have been previously installed by administrators of the network using the admin panel. If you cannot deactivate individual modules, it is because they have been set as the default for the entire network.' => '',

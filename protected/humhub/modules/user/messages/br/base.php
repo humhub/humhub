@@ -34,6 +34,7 @@ return [
     'Description' => '',
     'Disconnect account' => '',
     'E-Mail is already in use! - Try forgot password.' => '',
+    'E-Mail is already in use! Try to sign in.' => '',
     'Email' => '',
     'Enable Notifications' => '',
     'Find people by their profile data or user tags' => '',

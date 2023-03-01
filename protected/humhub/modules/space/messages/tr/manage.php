@@ -45,8 +45,6 @@ return [
     'Unarchive' => 'Arşivden çıkar',
     'e.g. example for {baseUrl}/s/example' => 'ör: {baseUrl}/s/örnek',
     'never' => 'asla',
-    'the default start page of this space for members' => 'sayfa üyeleri için gösterilecek varsayılan giriş sayfası',
-    'the default start page of this space for visitors' => 'misafirler için gösterilecek varsayılan giriş sayfası',
     'Activate' => '',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',
     'Are you sure you want to remove this member.' => '',
