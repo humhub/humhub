@@ -17,7 +17,7 @@ use humhub\widgets\ModalDialog;
 /* @var ScheduleOptionsForm $scheduleOptions */
 /* @var bool $disableInputs */
 ?>
-<?php ModalDialog::begin(['header' => Yii::t('ContentModule.base', '<strong>Scheduling </strong> Options')]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('ContentModule.base', '<strong>Scheduling</strong> Options')]) ?>
 
     <?php $form = ActiveForm::begin() ?>
     <?= Html::hiddenInput('state', Content::STATE_SCHEDULED) ?>
@@ -36,6 +36,9 @@ use humhub\widgets\ModalDialog;
                 <?= $form->field($scheduleOptions, 'time')
                     ->widget(TimePicker::class, ['disabled' => $disableInputs])
                     ->label(false) ?>
+            </div>
+            <div class="col-xs-12">
+                <p class="help-block"><?= Yii::t('ContentModule.base', 'Note: Due to technical reasons there may be a delay of a few minutes.') ?></p>
             </div>
         </div>
     </div>
