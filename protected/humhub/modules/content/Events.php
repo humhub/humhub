@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content;
 
+use humhub\commands\CronController;
 use humhub\commands\IntegrityController;
 use humhub\components\Event;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -17,6 +18,7 @@ use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\user\events\UserEvent;
 use Yii;
 use yii\base\BaseObject;
+use yii\helpers\Console;
 
 /**
  * Events provides callbacks to handle events.
@@ -155,11 +157,23 @@ class Events extends BaseObject
 
 
     /**
-     * Callback on hourly cron job run
+     * Callback on before run cron action
      */
-    public static function onCronHourlyRun(): void
+    public static function onCronBeforeAction($event): void
     {
-        Yii::$app->queue->push(new jobs\PublishScheduledContents());
+        /* @var $module Module */
+        $module = Yii::$app->getModule('content');
+
+        if ($module->canPublishScheduledContent()) {
+            /* @var CronController $controller */
+            $controller = $event->sender;
+            $controller->stdout('Publish scheduled content... ');
+
+            Yii::$app->queue->push(new jobs\PublishScheduledContents());
+            $module->settings->set('lastPublishScheduledTS', time());
+
+            $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
+        }
     }
 
 }

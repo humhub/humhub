@@ -86,6 +86,12 @@ class Module extends \humhub\components\Module
     public $richtextCompatMode = true;
 
     /**
+     * @var int Interval in minutes to run a publishing of the scheduled contents
+     * @since 1.14
+     */
+    public $publishScheduledInterval = 10;
+
+    /**
      * @param ContentContainerActiveRecord $container
      * @since 1.6
      * @return int
@@ -135,6 +141,23 @@ class Module extends \humhub\components\Module
         return [
             'humhub\modules\content\notifications\ContentCreated'
         ];
+    }
+
+    /**
+     * Check if the scheduled content can be published now
+     *
+     * @return bool
+     * @since 1.14
+     */
+    public function canPublishScheduledContent(): bool
+    {
+        $lastPublishTime = $this->settings->get('lastPublishScheduledTS');
+
+        if ($lastPublishTime === null) {
+            return true;
+        }
+
+        return time() >= $lastPublishTime + $this->publishScheduledInterval * 60;
     }
 
 }
