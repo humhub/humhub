@@ -38,7 +38,7 @@ return array (
   'First name' => '',
   'Followers' => 'Pengikut',
   'Following' => '',
-  'Friends' => '',
+  'Friends' => 'Sahabat',
   'Gender' => '',
   'General' => 'Umum',
   'Hide age per default' => '',

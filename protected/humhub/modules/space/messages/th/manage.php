@@ -49,8 +49,6 @@ return [
     'Unarchive' => 'ยกเลิกการเก็บถาวร',
     'e.g. example for {baseUrl}/s/example' => 'เช่น ตัวอย่างสำหรับ {baseUrl}/s/example',
     'never' => 'ไม่เคย',
-    'the default start page of this space for members' => 'หน้าเริ่มต้นเริ่มต้นของพื้นที่นี้สำหรับสมาชิก',
-    'the default start page of this space for visitors' => 'หน้าเริ่มต้นเริ่มต้นของพื้นที่นี้สำหรับผู้เยี่ยมชม',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',
     'Choose the modules you want to use for this Space. If you are undecided, you can also activate them later on via the Space settings.' => '',
     'Choose the modules you want to use for this Space. In order for the modules to be available to you here, they must have been previously installed by administrators of the network using the admin panel. If you cannot deactivate individual modules, it is because they have been set as the default for the entire network.' => '',

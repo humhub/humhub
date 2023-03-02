@@ -5,6 +5,7 @@ namespace humhub\modules\stream\models;
 use humhub\modules\stream\models\filters\BlockedUsersStreamFilter;
 use humhub\modules\stream\models\filters\DateStreamFilter;
 use humhub\modules\stream\models\filters\DraftContentStreamFilter;
+use humhub\modules\stream\models\filters\ScheduledContentStreamFilter;
 use humhub\modules\stream\models\filters\StreamQueryFilter;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -138,7 +139,8 @@ class StreamQuery extends Model
         OriginatorStreamFilter::class,
         BlockedUsersStreamFilter::class,
         DateStreamFilter::class,
-        DraftContentStreamFilter::class
+        DraftContentStreamFilter::class,
+        ScheduledContentStreamFilter::class
     ];
 
     /**
@@ -257,7 +259,7 @@ class StreamQuery extends Model
      */
     public function addFilter($filters)
     {
-        if (!is_string($filters)) {
+        if (is_string($filters)) {
             $this->filters[] = $filters;
         } elseif (is_array($filters)) {
             $this->filters = ArrayHelper::merge($this->filters, $filters);
@@ -382,6 +384,7 @@ class StreamQuery extends Model
      */
     public function query($build = false)
     {
+
         if ($build && !$this->_built) {
             $this->setupQuery();
         }

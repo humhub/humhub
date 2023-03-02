@@ -9,7 +9,7 @@ use yii\web\View;
 /* @var $name string */
 /** @var OEmbedProviderForm $model */
 
-parse_str($model->endpoint, $query);
+parse_str($model->endpoint ?? '', $query);
 
 $this->registerJs(<<<JS
     function initEndpointInputs() {

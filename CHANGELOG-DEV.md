@@ -23,3 +23,6 @@ HumHub Changelog (DEVELOP)
 - Enh #6102: Also allow Messages module to inject new message count into page title
 - Enh #5904: Make Dynamic Post Font Size Optional
 - Enh #6109: Added enabled Pretty URL as self test 
+- Enh #6109: Added enabled Pretty URL as self test
+- Enh #6119: Added UserInfoWidget for User Notification Settings 
+- Enh #6116: Scheduled content publishing

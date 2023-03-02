@@ -3,7 +3,7 @@ return array (
   '%moduleName% - Set as default module' => '%moduleName% - режим работы модуля',
   '<strong>General</strong> Settings' => '',
   '<strong>Module</strong> details' => '<strong>Информация о модуле</strong>',
-  'Activate' => '',
+  'Activate' => 'Активировать',
   'Activated' => 'Включен',
   'Allow module versions in beta status' => '',
   'Always activated' => 'Всегда включен',

@@ -3,7 +3,7 @@ return array (
   'Add image/file' => '',
   'Add link' => '',
   'Bold' => '',
-  'Close' => '',
+  'Close' => 'Закрити',
   'Code' => '',
   'Enter a url (e.g. http://example.com)' => '',
   'Heading' => '',
