@@ -6,7 +6,7 @@ return array (
   'Account settings' => '帳戶設定',
   'Actions' => '操作',
   'Add:' => '添加:',
-  'Administration' => '管理功能',
+  'Administration' => '系統管理',
   'All' => '全部',
   'Allow' => '允許',
   'Allow content from external source' => '允許來自外部來源的內容',
