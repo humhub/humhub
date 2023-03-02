@@ -58,19 +58,20 @@ use yii\helpers\Url;
  * @property string $guid
  * @property string $object_model
  * @property integer $object_id
+ * @property string $stream_sort_date
+ * @property string $stream_channel
+ * @property integer $contentcontainer_id
  * @property integer $visibility
  * @property integer $pinned
  * @property integer $archived
+ * @property integer $hidden
  * @property integer $state
+ * @property string $scheduled_at
  * @property integer $locked_comments
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
- * @property string $scheduled_at
- * @property string $stream_sort_date
- * @property string $stream_channel
- * @property integer $contentcontainer_id;
  * @property ContentContainer $contentContainer
  * @property ContentContainerActiveRecord $container
  * @mixin PolymorphicRelation
@@ -84,6 +85,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      * @since 1.6
      */
     const STREAM_CHANNEL_DEFAULT = 'default';
+
 
     /**
      * A array of user objects which should informed about this new content.
