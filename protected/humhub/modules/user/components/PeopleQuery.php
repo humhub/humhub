@@ -55,6 +55,7 @@ class PeopleQuery extends ActiveQueryUser
         parent::init();
 
         $this->available();
+        $this->filterInvisibleUsers();
 
         $this->filterByKeyword();
         $this->filterByGroup();
@@ -64,6 +65,11 @@ class PeopleQuery extends ActiveQueryUser
         $this->order();
 
         $this->paginate();
+    }
+
+    public function filterInvisibleUsers(): PeopleQuery
+    {
+        return $this->andWhere(['!=', 'user.visibility', User::VISIBILITY_HIDDEN]);
     }
 
     public function filterByKeyword(): PeopleQuery
