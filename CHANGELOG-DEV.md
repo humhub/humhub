@@ -24,3 +24,4 @@ HumHub Changelog (DEVELOP)
 - Enh #6109: Added enabled Pretty URL as self test
 - Enh #6119: Added UserInfoWidget for User Notification Settings 
 - Enh #6116: Scheduled content publishing
+- Enh #5625: Update jQuery UI to version 1.13
