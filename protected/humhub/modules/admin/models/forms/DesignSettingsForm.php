@@ -67,6 +67,7 @@ class DesignSettingsForm extends Model
     public function rules()
     {
         return [
+            ['paginationSize', 'required'],
             ['paginationSize', 'integer', 'max' => 200, 'min' => 1],
             ['theme', 'in', 'range' => $this->getThemes()],
             [['displayNameFormat', 'displayNameSubFormat', 'spaceOrder'], 'safe'],
