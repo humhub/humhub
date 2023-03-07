@@ -20,6 +20,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\Module as UserModule;
 use Yii;
 use yii\helpers\Url;
+use yii\web\IdentityInterface;
 
 /**
  * ContentContainerActiveRecord for ContentContainer Models e.g. Space or User.
@@ -289,7 +290,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * Returns a ContentContainerPermissionManager instance for this ContentContainerActiveRecord as permission object
      * and the given user (or current user if not given) as permission subject.
      *
-     * @param User $user
+     * @param User|IdentityInterface $user
      * @return ContentContainerPermissionManager
      */
     public function getPermissionManager(User $user = null)

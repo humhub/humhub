@@ -18,6 +18,8 @@ use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
+use humhub\modules\content\events\ContentEvent;
+use humhub\modules\content\events\ContentStateEvent;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\live\NewContent;
 use humhub\modules\content\permissions\CreatePrivateContent;
@@ -129,6 +131,16 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     public $muteDefaultSocialActivities = false;
 
     /**
+     * @event Event is used when a Content is soft deleted.
+     */
+    const EVENT_SOFT_DELETE = 'softDelete';
+
+    /**
+     * @event Event is used when a Content state is changed.
+     */
+    const EVENT_STATE_CHANGED = 'changedState';
+
+    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -236,6 +248,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner
                 $changedAttributes['state'] == Content::STATE_DRAFT
             )) {
             $this->processNewContent();
+
+            $this->trigger(self::EVENT_STATE_CHANGED, new ContentStateEvent([
+                'content' => $this,
+                'newState' => $this->state,
+                'previousState' => (isset($changedAttributes['state'])) ? $changedAttributes['state'] : null,
+            ]));
         }
 
         if ($this->state === static::STATE_PUBLISHED) {
@@ -1003,8 +1021,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             'source_pk' => $this->getPrimaryKey(),
         ]);
 
-        $this->setState(self::STATE_DELETED);
-        return $this->save();
+        if (!$this->save()) {
+            return false;
+        }
+
+        $this->trigger(self::EVENT_SOFT_DELETE, new ContentEvent(['content' => $this]));
+        return true;
     }
 
     public static function getAllowedStates(): array
@@ -1038,7 +1060,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             return;
         }
 
-        if ((int) $state === self::STATE_SCHEDULED) {
+        if ((int)$state === self::STATE_SCHEDULED) {
             if (empty($options['scheduled_at'])) {
                 return;
             }
@@ -1053,4 +1075,5 @@ class Content extends ActiveRecord implements Movable, ContentOwner
 
         $this->state = $state;
     }
+
 }
