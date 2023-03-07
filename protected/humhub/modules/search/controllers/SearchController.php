@@ -8,14 +8,13 @@
 
 namespace humhub\modules\search\controllers;
 
-use humhub\modules\user\widgets\Image;
-use Yii;
-use yii\data\Pagination;
 use humhub\components\Controller;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\search\models\forms\SearchForm;
 use humhub\modules\search\engine\Search;
+use Yii;
+use yii\data\Pagination;
 
 /**
  * Search Controller provides search functions inside the application.
@@ -43,7 +42,7 @@ class SearchController extends Controller
     {
         $this->appendPageTitle(\Yii::t('SearchModule.base', 'Search'));
         $this->view->setViewContext(static::VIEW_CONTEXT);
-        return parent::init();
+        parent::init();
     }
 
     /**
@@ -74,7 +73,7 @@ class SearchController extends Controller
         $options = [
             'page' => $model->page,
             'sort' => (empty($model->keyword)) ? 'title' : null,
-            'pageSize' => Yii::$app->settings->get('paginationSize'),
+            'pageSize' => $model->pageSize,
             'limitSpaces' => $limitSpaces
         ];
 

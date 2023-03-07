@@ -200,16 +200,16 @@ class PeopleQuery extends ActiveQueryUser
         switch (PeopleFilters::getValue('sort')) {
             case 'firstname':
                 $this->joinWith('profile');
-                $this->addOrderBy('profile.firstname');
+                $this->addOrderBy('profile.firstname, profile.lastname, user.id');
                 break;
 
             case 'lastname':
                 $this->joinWith('profile');
-                $this->addOrderBy('profile.lastname');
+                $this->addOrderBy('profile.lastname, profile.firstname, user.id');
                 break;
 
             case 'lastlogin':
-                $this->addOrderBy('last_login DESC');
+                $this->addOrderBy('last_login DESC, user.id');
                 break;
 
             default:
@@ -218,7 +218,7 @@ class PeopleQuery extends ActiveQueryUser
                     $this->addOrderBy('last_login DESC');
                 } else {
                     $this->leftJoin('group_user AS top_group_sorting', 'top_group_sorting.user_id = user.id AND top_group_sorting.group_id = :defaultGroupId', [':defaultGroupId' => $defaultSortingGroupId]);
-                    $this->addOrderBy('top_group_sorting.group_id DESC, last_login DESC');
+                    $this->addOrderBy('top_group_sorting.group_id DESC, last_login DESC, user.id');
                 }
         }
 

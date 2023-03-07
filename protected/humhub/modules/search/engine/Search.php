@@ -8,16 +8,16 @@
 
 namespace humhub\modules\search\engine;
 
-use Yii;
-use yii\base\Component;
-use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
-use humhub\modules\space\models\Space;
 use humhub\modules\search\events\SearchAttributesEvent;
+use humhub\modules\search\interfaces\Searchable;
+use humhub\modules\search\models\forms\SearchForm;
+use humhub\modules\space\models\Space;
+use yii\base\Component;
 
 /**
  * Description of HSearchComponent
@@ -159,12 +159,12 @@ abstract class Search extends Component
 
     protected function setDefaultFindOptions($options)
     {
-        if (!isset($options['page']) || $options['page'] == '') {
+        if (empty($options['page'])) {
             $options['page'] = 1;
         }
 
-        if (!isset($options['pageSize']) || $options['pageSize'] == '') {
-            $options['pageSize'] = Yii::$app->settings->get('paginationSize');
+        if (empty($options['pageSize'])) {
+            $options['pageSize'] = (new SearchForm())->pageSize;
         }
 
         if (!isset($options['checkPermissions'])) {
