@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #6122: Fix deleting a content with empty reason
 - Fix #6128: Reset backuped content after submit form
 - Fix #6142: Fix saving empty values in admin settings
+- Fix #6145: Fix duplicate people cards on sort
 
 1.13.1 (January 25, 2023)
 -------------------------
