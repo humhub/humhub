@@ -67,6 +67,7 @@ return [
     'Change Username' => '',
     'Default Group' => '',
     'Default Space' => '',
+    'E-Mail is already in use! Try to sign in.' => '',
     'Enable Notifications' => '',
     'Find people by their profile data or user tags' => '',
     'Following (User)' => '',

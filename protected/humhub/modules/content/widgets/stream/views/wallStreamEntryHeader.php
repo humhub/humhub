@@ -4,6 +4,7 @@ use humhub\libs\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\ArchivedIcon;
+use humhub\modules\content\widgets\HiddenIcon;
 use humhub\modules\content\widgets\LockCommentsIcon;
 use humhub\modules\content\widgets\StateBadge;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
@@ -90,6 +91,7 @@ $container = $model->content->container;
             <?php endif; ?>
 
             <?= VisibilityIcon::getByModel($model) ?>
+            <?= HiddenIcon::getByModel($model) ?>
             <?= LockCommentsIcon::getByModel($model) ?>
         </div>
     </div>

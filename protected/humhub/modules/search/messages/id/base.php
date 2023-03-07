@@ -2,7 +2,7 @@
 return array (
   '<strong>Search </strong> results' => '',
   'Advanced search settings' => '',
-  'All' => '',
+  'All' => 'Semua',
   'Content' => 'Konten',
   'Search' => 'Cari',
   'Search for user, spaces and content' => '',

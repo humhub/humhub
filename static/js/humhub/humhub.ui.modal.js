@@ -456,7 +456,7 @@ humhub.module('ui.modal', function (module, require, $) {
     Modal.prototype.focus = function () {
         var that = this;
         setTimeout(function() {
-            var $input = that.$.find('select:visible, input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first();
+            var $input = that.$.find('select:visible:not(:disabled), input[type="text"]:visible:not(:disabled), textarea:visible:not(:disabled), [contenteditable="true"]:visible:not(:disabled)').first();
 
             if($input.data('select2')) {
                 $input.select2('focus');

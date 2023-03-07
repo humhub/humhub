@@ -27,9 +27,9 @@ use yii\bootstrap\Html;
             <br>
             <kbd style="display: block;line-height:22px">
                 <span>
-                * * * * * <?= substr(get_include_path(), 2) ?> <?= $_SERVER['DOCUMENT_ROOT'] ?>/protected/yii queue/run >/dev/null 2>&1
+                * * * * * <?= Yii::getAlias('@app')?>/yii queue/run >/dev/null 2>&1
                 <br>
-                * * * * * <?= substr(get_include_path(), 2) ?> <?= $_SERVER['DOCUMENT_ROOT'] ?>/protected/yii cron/run >/dev/null 2>&1
+                * * * * * <?= Yii::getAlias('@app')?>/yii cron/run >/dev/null 2>&1
                 </span>
             </kbd>
         </p>

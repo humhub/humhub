@@ -1,17 +1,15 @@
 <?php
 
+use humhub\modules\space\models\AdvancedSettings;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 use humhub\widgets\Button;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Url;
 
-/* @var $this \humhub\modules\ui\view\components\View
- * @var $model \humhub\modules\space\modules\manage\models\AdvancedSettings
- * @var $indexModuleSelection array
- * @var $space Space
- */
-
+/* @var $model AdvancedSettings */
+/* @var $indexModuleSelection array */
+/* @var $space Space */
 ?>
 
 <div class="panel panel-default">
@@ -33,8 +31,8 @@ use yii\helpers\Url;
         <?= $form->field($model, 'hideAbout')->checkbox(); ?>
         <?= $form->field($model, 'hideActivities')->checkbox(); ?>
         <?= $form->field($model, 'hideFollowers')->checkbox(); ?>
-        <?= $form->field($model, 'indexUrl')->dropDownList($indexModuleSelection)->hint(Yii::t('SpaceModule.manage', 'the default start page of this space for members')) ?>
-        <?= $form->field($model, 'indexGuestUrl')->dropDownList($indexModuleSelection)->hint(Yii::t('SpaceModule.manage', 'the default start page of this space for visitors')) ?>
+        <?= $form->field($model, 'indexUrl')->dropDownList($indexModuleSelection) ?>
+        <?= $form->field($model, 'indexGuestUrl')->dropDownList($indexModuleSelection) ?>
 
         <?= Button::save()->submit() ?>
         <?= Button::danger(Yii::t('base', 'Delete'))->right()->link($space->createUrl('delete'))->visible($space->canDelete()) ?>

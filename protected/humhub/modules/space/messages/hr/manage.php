@@ -48,8 +48,6 @@ return [
     'Unarchive' => 'Dearhiviraj',
     'e.g. example for {baseUrl}/s/example' => 'e.g. primjer za {baseUrl}/s/primjer',
     'never' => 'nikada',
-    'the default start page of this space for members' => 'zadana početna stranica ovog prostora za članove',
-    'the default start page of this space for visitors' => 'zadana početna stranica ovog prostora za posjetitelje',
     'Activate' => '',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',
     'Choose the modules you want to use for this Space. If you are undecided, you can also activate them later on via the Space settings.' => '',

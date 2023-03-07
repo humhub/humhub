@@ -12,6 +12,7 @@ use humhub\components\behaviors\AccessControl;
 use humhub\components\Controller;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\forms\AdminDeleteContentForm;
+use humhub\modules\content\models\forms\ScheduleOptionsForm;
 use humhub\modules\content\Module;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\widgets\AdminDeleteModal;
@@ -20,6 +21,7 @@ use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\web\ForbiddenHttpException;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -393,5 +395,30 @@ class ContentController extends Controller
         }
 
         return $this->asJson($json);
+    }
+
+    public function actionScheduleOptions($id = null)
+    {
+        $this->forcePostRequest();
+
+        $content = $id ? Content::findOne($id) : null;
+
+        if ($content instanceof Content && !$content->canEdit()) {
+            throw new ForbiddenHttpException();
+        }
+
+        $scheduleOptions = new ScheduleOptionsForm(['content' => $content]);
+
+        if ($scheduleOptions->load(Yii::$app->request->post())) {
+            // Disable in order to don't focus the date field because modal window will be closed anyway
+            $disableInputs = $scheduleOptions->save();
+        } else {
+            $disableInputs = !$scheduleOptions->enabled;
+        }
+
+        return $this->renderAjax('scheduleOptions', [
+            'scheduleOptions' => $scheduleOptions,
+            'disableInputs' => $disableInputs
+        ]);
     }
 }
