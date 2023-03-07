@@ -27,6 +27,12 @@ class Module extends ContentContainerModule
     public $controllerNamespace = 'humhub\modules\post\controllers';
 
     /**
+     * @since 1.14
+     * @var bool Automatically increase font size for short posts.
+     */
+    public bool $enableDynamicFontSize = false;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
