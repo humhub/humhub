@@ -47,6 +47,11 @@ class Module extends \humhub\components\Module
     public $logoutUrl = null;
 
     /**
+     * @var string|array|null the route for password recovery
+     */
+    public $passwordRecoveryRoute = ['/user/password-recovery'];
+
+    /**
      * @var string the default route for user profiles
      */
     public $profileDefaultRoute = null;
