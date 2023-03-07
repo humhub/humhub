@@ -18,7 +18,7 @@ return array (
   'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => '',
   'One DN per line which should not be imported automatically.' => '',
   'Password' => '密碼',
-  'Port' => '',
+  'Port' => 'Port',
   'Specify your LDAP-backend used to fetch user accounts.' => '',
   'Status: Error! (Message: {message})' => '',
   'Status: OK! ({userCount} Users)' => '',

@@ -37,7 +37,7 @@ return array (
   'Information' => 'Informationen',
   'Invalid user state: {state}' => 'Ungültiger Benutzerstatus: {state}',
   'Invite by email' => 'Per E-Mail einladen',
-  'Invite by link' => '',
+  'Invite by link' => 'Per Link einladen',
   'Invited by' => 'Eingeladen von',
   'Logging' => 'Protokollierung',
   'Logs' => 'Protokolle',

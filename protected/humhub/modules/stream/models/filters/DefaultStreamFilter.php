@@ -24,6 +24,7 @@ class DefaultStreamFilter extends StreamQueryFilter
     const FILTER_INVOLVED = "entry_userinvolved";
     const FILTER_PRIVATE = "visibility_private";
     const FILTER_PUBLIC = "visibility_public";
+    const FILTER_HIDDEN = "entry_hidden";
 
     /**
      * Array of stream filters to apply to the query.
@@ -85,6 +86,14 @@ class DefaultStreamFilter extends StreamQueryFilter
         } elseif ($this->isFilterActive(self::FILTER_PUBLIC)) {
             $this->filterPublic();
         }
+
+        if ($this->isFilterActive(self::FILTER_HIDDEN)) {
+            $this->filterHidden();
+        } else if (!$this->streamQuery->isSingleContentQuery()) {
+            // Only omit hidden content by default when we load more than one entry
+            $this->unFilterHidden();
+        }
+
     }
 
     public function isFilterActive($filter)
@@ -153,6 +162,18 @@ class DefaultStreamFilter extends StreamQueryFilter
     protected function filterPrivate()
     {
         $this->query->andWhere(['content.visibility' => Content::VISIBILITY_PRIVATE]);
+        return $this;
+    }
+
+    private function filterHidden()
+    {
+        $this->query->andWhere(['content.hidden' => 1]);
+        return $this;
+    }
+
+    private function unFilterHidden()
+    {
+        $this->query->andWhere(['content.hidden' => 0]);
         return $this;
     }
 }

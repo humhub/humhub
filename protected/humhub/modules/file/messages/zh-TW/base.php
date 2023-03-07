@@ -4,7 +4,7 @@ return array (
   '<strong>Upload</strong> error' => '<strong>上傳</strong>錯誤',
   'Close' => '關閉',
   'Could not find requested file variant!' => '',
-  'Could not find requested file!' => '',
+  'Could not find requested file!' => '無法找到要求的文件!',
   'Could not upload File:' => '無法上傳文件:',
   'Created by:' => '',
   'Double file extensions are not allowed!' => '',
@@ -15,7 +15,7 @@ return array (
   'Last update by:' => '',
   'Size:' => '文件大小:',
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => '',
-  'The uploaded image is not a squared.' => '',
+  'The uploaded image is not a squared.' => '上傳的圖像不是正方形。',
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => '',
   'Upload files' => '上傳文件',
 );

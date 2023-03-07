@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content;
 
+use humhub\commands\CronController;
 use humhub\commands\IntegrityController;
 use humhub\components\Event;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -17,6 +18,7 @@ use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\user\events\UserEvent;
 use Yii;
 use yii\base\BaseObject;
+use yii\helpers\Console;
 
 /**
  * Events provides callbacks to handle events.
@@ -153,13 +155,37 @@ class Events extends BaseObject
         Yii::$app->queue->push(new jobs\PurgeDeletedContents());
     }
 
-
     /**
-     * Callback on hourly cron job run
+     * Callback on before run cron action
      */
-    public static function onCronHourlyRun(): void
+    public static function onCronBeforeAction($event): void
     {
-        Yii::$app->queue->push(new jobs\PublishScheduledContents());
+        if (self::canPublishScheduledContent()) {
+            /* @var CronController $controller */
+            $controller = $event->sender;
+            $controller->stdout('Publish scheduled content... ');
+            self::publishScheduledContent();
+            $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
+        }
+    }
+
+    private static function getModule(): Module
+    {
+        return Yii::$app->getModule('content');
+    }
+
+    private static function canPublishScheduledContent(): bool
+    {
+        $lastPublishTime = self::getModule()->settings->get('lastPublishScheduledTS');
+        return $lastPublishTime === null ||
+            time() >= $lastPublishTime + self::getModule()->publishScheduledInterval * 60;
+    }
+
+    private static function publishScheduledContent()
+    {
+        if (Yii::$app->queue->push(new jobs\PublishScheduledContents())) {
+            self::getModule()->settings->set('lastPublishScheduledTS', time());
+        }
     }
 
 }

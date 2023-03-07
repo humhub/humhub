@@ -24,7 +24,7 @@ return array (
   'Date(-time) field options' => '',
   'Datetime' => '',
   'Default value' => '',
-  'Description' => '',
+  'Description' => '描述',
   'Diverse' => '',
   'E-Mail' => 'E-mail',
   'E-mail address of the user' => '此用戶的E-mail地址',
