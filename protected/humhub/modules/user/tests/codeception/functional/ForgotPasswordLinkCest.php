@@ -11,7 +11,7 @@ use tests\codeception\_pages\LoginPage;
 use user\FunctionalTester;
 use Yii;
 
-class ResetPasswordCest
+class ForgotPasswordLinkCest
 {
     public function testDefaultForgotPasswordLink(FunctionalTester $I)
     {
