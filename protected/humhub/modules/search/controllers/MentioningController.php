@@ -15,7 +15,6 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\post\models\Post;
 use humhub\modules\search\Module;
-use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\User;
@@ -98,8 +97,8 @@ class MentioningController extends Controller
         }
 
         // Find space members
-        $users = Membership::getSpaceMembersQuery($space)
-            ->available()
+        $users = $space->getMemberListService()
+            ->getAvailableQuery()
             ->search($keyword)
             ->limit($this->module->mentioningSearchBoxResultLimit)
             ->orderBy(['space_membership.last_visit' => SORT_DESC])

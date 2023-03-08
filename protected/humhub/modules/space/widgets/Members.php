@@ -51,7 +51,7 @@ class Members extends Widget
             'showListButton' => count($users) == $this->maxMembers,
             'urlMembersList' => $this->space->createUrl('/space/membership/members-list'),
             'privilegedUserIds' => $this->getPrivilegedUserIds(),
-            'totalMemberCount' => Membership::getSpaceMembersQuery($this->space)->visible()->count(),
+            'totalMemberCount' => $this->space->getMemberListService()->getCount(),
             'showListOptions' => [
                 'data-action-click' => 'ui.modal.load',
                 'data-action-url' => Url::to(['/space/membership/members-list', 'container' => $this->space])
@@ -66,7 +66,7 @@ class Members extends Widget
      */
     protected function getUserQuery()
     {
-        $query = Membership::getSpaceMembersQuery($this->space)->active()->visible();
+        $query = $this->space->getMemberListService()->getQuery();
         $query->limit($this->maxMembers);
         if ($this->orderByNewest) {
             $query->orderBy('space_membership.created_at Desc');
