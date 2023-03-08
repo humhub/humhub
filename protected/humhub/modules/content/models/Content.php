@@ -1021,11 +1021,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             'source_pk' => $this->getPrimaryKey(),
         ]);
 
+        $this->setState(self::STATE_DELETED);
+
         if (!$this->save()) {
             return false;
         }
 
-        $this->setState(self::STATE_DELETED);
         $this->trigger(self::EVENT_SOFT_DELETE, new ContentEvent(['content' => $this]));
         return true;
     }
