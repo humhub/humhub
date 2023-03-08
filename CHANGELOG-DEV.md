@@ -28,3 +28,4 @@ HumHub Changelog (DEVELOP)
 - Enh #6116: Scheduled content publishing
 - Enh #6135: Added new ContentState and Content events (e.g. SoftDelete) 
 - Enh #5625: Update jQuery UI to version 1.13
+- Enh #6147: New space service `MemberListService`
