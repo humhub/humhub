@@ -39,7 +39,7 @@ class User extends \yii\web\User
      */
     public $mustChangePasswordRoute = '/user/must-change-password';
 
-    private ?AuthClientUserService $authClientUserService;
+    private ?AuthClientUserService $authClientUserService = null;
 
     /**
      * @inheritdoc

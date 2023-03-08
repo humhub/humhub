@@ -29,7 +29,7 @@ class AuthClientUserService
     /**
      * @var ClientInterface[]
      */
-    private ?array $_authClients;
+    private ?array $_authClients = null;
 
     public function __construct(User $user)
     {
