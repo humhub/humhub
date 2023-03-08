@@ -1025,6 +1025,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             return false;
         }
 
+        $this->setState(self::STATE_DELETED);
         $this->trigger(self::EVENT_SOFT_DELETE, new ContentEvent(['content' => $this]));
         return true;
     }
