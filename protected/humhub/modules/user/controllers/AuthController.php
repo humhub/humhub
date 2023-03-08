@@ -20,6 +20,7 @@ use humhub\modules\user\authclient\AuthClientHelpers;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\models\Session;
+use humhub\modules\user\services\AuthClientService;
 use humhub\modules\user\services\AuthClientUserService;
 use Yii;
 use yii\web\Cookie;
@@ -149,7 +150,9 @@ class AuthController extends Controller
             return $this->redirect(['/user/account/connected-accounts']);
         }
 
-        $user = AuthClientHelpers::getUserByAuthClient($authClient);
+        $authClientService = new AuthClientService($authClient);
+
+        $user = $authClientService->getUser();
 
         if (Yii::$app->settings->get('maintenanceMode') && !$user->isSystemAdmin()) {
             return $this->redirect(['/user/auth/login']);
@@ -188,7 +191,7 @@ class AuthController extends Controller
         }
 
         // Try automatically create user & login user
-        $user = AuthClientHelpers::createUser($authClient);
+        $user = $authClientService->createUser();
         if ($user !== null) {
             return $this->login($user, $authClient);
         }
@@ -225,7 +228,7 @@ class AuthController extends Controller
 
                 $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
             }
-            AuthClientHelpers::updateUser($authClient, $user);
+            (new AuthClientService($authClient))->updateUser($user);
 
             if ($success = Yii::$app->user->login($user, $duration)) {
                 Yii::$app->user->setCurrentAuthClient($authClient);
