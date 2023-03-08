@@ -8,9 +8,6 @@
 
 namespace humhub\modules\user\components;
 
-use humhub\modules\user\authclient\AuthClientHelpers;
-use humhub\modules\user\authclient\Password;
-use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User as UserModel;
