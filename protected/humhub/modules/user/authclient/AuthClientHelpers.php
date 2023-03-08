@@ -49,6 +49,16 @@ class AuthClientHelpers
         return null;
     }
 
+    /**
+     * @deprecated since 1.14
+     * @param ClientInterface $authClient
+     * @param User $user
+     * @return void
+     */
+    public static function storeAuthClientForUser(ClientInterface $authClient, User $user)
+    {
+        (new AuthClientUserService($user))->add($authClient);
+    }
 
     /**
      * Updates (or creates) a user in HumHub using AuthClients Attributes

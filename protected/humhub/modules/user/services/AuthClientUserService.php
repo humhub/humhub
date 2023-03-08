@@ -36,7 +36,7 @@ class AuthClientUserService
         $this->user = $user;
     }
 
-    public function add(ClientInterface $authClient)
+    public function add(ClientInterface $authClient): void
     {
         $attributes = $authClient->getUserAttributes();
 
@@ -69,7 +69,7 @@ class AuthClientUserService
         }
     }
 
-    public function remove(ClientInterface $authClient)
+    public function remove(ClientInterface $authClient): void
     {
         Auth::deleteAll([
             'user_id' => $this->user->id,
