@@ -60,8 +60,17 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                     <?php if ($passwordRecoveryRoute) : ?>
                     <div class="col-md-8 text-right">
                         <small>
-                            <a id="password-recovery-link" href="<?= Url::to($passwordRecoveryRoute); ?>"
-                               data-pjax-prevent><br><?= Yii::t('UserModule.auth', 'Forgot your password?') ?></a>
+                            <?= Html::a(
+                                Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),
+                                $passwordRecoveryRoute,
+                                [
+                                    'id' => 'password-recovery-link',
+                                    'target' => is_array($passwordRecoveryRoute) ? '_self' : '_blank',
+                                    'data' => [
+                                        'pjax-prevent' => true
+                                    ]
+                                ]
+                            ) ?>
                         </small>
                     </div>
                     <?php endif; ?>
