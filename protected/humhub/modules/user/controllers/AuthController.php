@@ -20,6 +20,7 @@ use humhub\modules\user\authclient\AuthClientHelpers;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\models\Session;
+use humhub\modules\user\services\AuthClientUserService;
 use Yii;
 use yii\web\Cookie;
 use yii\authclient\BaseClient;
@@ -144,7 +145,7 @@ class AuthController extends Controller
 
         // User already logged in - Add new authclient to existing user
         if (!Yii::$app->user->isGuest) {
-            AuthClientHelpers::storeAuthClientForUser($authClient, Yii::$app->user->getIdentity());
+            Yii::$app->user->getAuthClientUserService()->add($authClient);
             return $this->redirect(['/user/account/connected-accounts']);
         }
 
@@ -159,7 +160,7 @@ class AuthController extends Controller
             $user = User::findOne(['email' => $attributes['email']]);
             if ($user !== null) {
                 // Map current auth method to user with same e-mail address
-                AuthClientHelpers::storeAuthClientForUser($authClient, $user);
+                (new AuthClientUserService($user))->add($authClient);
             }
         }
 

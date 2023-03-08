@@ -10,6 +10,7 @@ namespace humhub\modules\user\authclient;
 
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\AuthClientUserService;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\helpers\VarDumper;
@@ -48,57 +49,6 @@ class AuthClientHelpers
         return null;
     }
 
-    /**
-     * Stores an authClient to an user record
-     *
-     * @param \yii\authclient\BaseClient $authClient
-     * @param User $user
-     */
-    public static function storeAuthClientForUser(ClientInterface $authClient, User $user)
-    {
-        $attributes = $authClient->getUserAttributes();
-
-        if ($authClient instanceof interfaces\PrimaryClient) {
-            $user->auth_mode = $authClient->getId();
-            $user->save();
-        } elseif (!empty($attributes['id'])) {
-            $auth = Auth::findOne(['source' => $authClient->getId(), 'source_id' => $attributes['id']]);
-
-            /**
-             * Make sure authClient is not double assigned
-             */
-            if ($auth !== null && $auth->user_id != $user->id) {
-                $auth->delete();
-                $auth = null;
-            }
-
-            if ($auth === null) {
-                $auth = new Auth([
-                    'user_id' => $user->id,
-                    'source' => (string)$authClient->getId(),
-                    'source_id' => (string)$attributes['id'],
-                ]);
-
-                $auth->save();
-            }
-        } else {
-            Yii::error('Could not store auth client without given ID attribute. User: ' . $user->displayName . ' (' . $user->id . ')', 'user');
-        }
-    }
-
-    /**
-     * Removes Authclient for a user
-     *
-     * @param \yii\authclient\BaseClient $authClient
-     * @param User $user
-     */
-    public static function removeAuthClientForUser(ClientInterface $authClient, User $user)
-    {
-        Auth::deleteAll([
-            'user_id' => $user->id,
-            'source' => (string)$authClient->getId()
-        ]);
-    }
 
     /**
      * Updates (or creates) a user in HumHub using AuthClients Attributes
@@ -260,52 +210,6 @@ class AuthClientHelpers
         }
 
         return $query;
-    }
-
-    /**
-     * Returns AuthClients used by given User
-     *
-     * @param User $user
-     * @return ClientInterface[] the users authclients
-     */
-    public static function getAuthClientsByUser(User $user)
-    {
-        $authClients = [];
-
-        foreach (Yii::$app->authClientCollection->getClients() as $client) {
-            /* @var $client ClientInterface */
-
-            // Add primary authClient
-            if ($user->auth_mode == $client->getId()) {
-                $authClients[] = $client;
-            }
-
-            // Add additional authClient
-            foreach ($user->auths as $auth) {
-                if ($auth->source == $client->getId()) {
-                    $authClients[] = $client;
-                }
-            }
-        }
-
-        return $authClients;
-    }
-
-    /**
-     * Returns a list of all synchornized user attributes
-     *
-     * @param User $user
-     * @return array attribute names
-     */
-    public static function getSyncAttributesByUser(User $user)
-    {
-        $attributes = [];
-        foreach (self::getAuthClientsByUser($user) as $authClient) {
-            if ($authClient instanceof interfaces\SyncAttributes) {
-                $attributes = array_merge($attributes, $authClient->getSyncAttributes());
-            }
-        }
-        return $attributes;
     }
 
 }
