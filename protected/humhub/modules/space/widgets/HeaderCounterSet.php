@@ -9,7 +9,6 @@ namespace humhub\modules\space\widgets;
 
 use humhub\modules\content\models\Content;
 use humhub\modules\post\models\Post;
-use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
 use humhub\modules\ui\widgets\CounterSetItem;
@@ -46,7 +45,7 @@ class HeaderCounterSet extends CounterSet
         if (!$this->space->getAdvancedSettings()->hideMembers) {
             $this->counters[] = new CounterSetItem([
                 'label' => Yii::t('SpaceModule.base', 'Members'),
-                'value' => Membership::getSpaceMembersQuery($this->space)->active()->visible()->count(),
+                'value' => $this->space->getMemberListService()->getCount(),
                 'url' => Yii::$app->user->isGuest ? null : '#',
                 'linkOptions' => Yii::$app->user->isGuest ? [] : [
                     'data-action-click' => 'ui.modal.load',

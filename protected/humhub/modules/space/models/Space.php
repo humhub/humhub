@@ -17,6 +17,7 @@ use humhub\modules\space\behaviors\SpaceModelMembership;
 use humhub\modules\space\behaviors\SpaceController;
 use humhub\modules\space\components\ActiveQuerySpace;
 use humhub\modules\space\Module;
+use humhub\modules\space\services\MemberListService;
 use humhub\modules\user\behaviors\Followable;
 use humhub\components\behaviors\GUID;
 use humhub\modules\space\permissions\CreatePrivateSpace;
@@ -32,6 +33,7 @@ use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\Invite;
 use humhub\modules\space\widgets\Wall;
 use humhub\modules\user\models\User as UserModel;
+use JetBrains\PhpStorm\Pure;
 use Yii;
 
 /**
@@ -529,7 +531,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
      * Be aware that this function will also include disabled users, in order to only include active and visible users use:
      *
      * ```
-     * Membership::getSpaceMembersQuery($this->space)->active()->visible()->count()
+     * $this->getMemberListService()->getQuery()
      * ```
      *
      * @return \yii\db\ActiveQuery
@@ -700,5 +702,14 @@ class Space extends ContentContainerActiveRecord implements Searchable
     public function isModuleEnabled($id)
     {
         return $this->moduleManager->isEnabled($id);
+    }
+
+    /**
+     * @return MemberListService
+     * @since 1.14
+     */
+    public function getMemberListService(): MemberListService
+    {
+        return new MemberListService($this);
     }
 }

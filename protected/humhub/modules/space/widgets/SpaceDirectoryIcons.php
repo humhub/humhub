@@ -8,7 +8,6 @@
 namespace humhub\modules\space\widgets;
 
 use humhub\components\Widget;
-use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use Yii;
 
@@ -36,7 +35,7 @@ class SpaceDirectoryIcons extends Widget
         }
 
         $membership = $this->space->getMembership();
-        $membersCount = Membership::getSpaceMembersQuery($this->space)->active()->visible()->count();
+        $membersCount = $this->space->getMemberListService()->getCount();
 
         return $this->render('spaceDirectoryIcons', [
             'space' => $this->space,
