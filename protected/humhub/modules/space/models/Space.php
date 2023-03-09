@@ -421,7 +421,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     public function archive()
     {
         $this->status = self::STATUS_ARCHIVED;
-        $this->save();
+        $this->save(false); // disable validation to force archiving even if some fields are not valid such as too long description, as the archive button is not part of the space settings form and validation errors are not displayed
     }
 
     /**
