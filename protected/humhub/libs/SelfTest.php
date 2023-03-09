@@ -407,6 +407,21 @@ class SelfTest
             ];
         }
 
+        // Checks proc_open Function
+        $title = 'PHP - ' . Yii::t('AdminModule.information', 'proc_open Function');
+        if (function_exists('proc_open')) {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'ERROR',
+                'hint' => Yii::t('AdminModule.information', 'Enable proc_open Function from php.ini')
+            ];
+        }
+
         // Checks Database Data
         $checks = self::getDatabaseResults($checks);
 
