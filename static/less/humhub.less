@@ -199,9 +199,13 @@
     @import "print.less";
 }
 
-@prev-directory: false;
-& when not(@prev-directory) {
+@prev-cards: false;
+& when not(@prev-cards) {
     @import "cards.less";
+}
+
+@prev-modules: false;
+& when not(@prev-modules) {
     @import "modules.less";
 }
 
