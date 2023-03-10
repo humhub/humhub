@@ -29,4 +29,4 @@ HumHub Changelog (DEVELOP)
 - Enh #6135: Added new ContentState and Content events (e.g. SoftDelete) 
 - Enh #5625: Update jQuery UI to version 1.13
 - Fix #4988: Unable to archive space on Form Validation errors
-- Eth #6123: Added check for proc_open Function in Requirement Checker 
+- Enh #6123: Added check for proc_open Function in Requirement Checker 
