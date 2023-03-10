@@ -13,6 +13,7 @@ HumHub Changelog
 - Fix #6141: Hide invisible users on People page even for admins
 - Fix #6142: Fix saving empty values in admin settings
 - Fix #6145: Fix duplicate people cards on sort
+- Fix #6152: Avoid duplicate container(Space/User) tags on save
 
 1.13.1 (January 25, 2023)
 -------------------------
