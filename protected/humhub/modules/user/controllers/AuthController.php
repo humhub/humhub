@@ -20,6 +20,8 @@ use humhub\modules\user\authclient\AuthClientHelpers;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\models\Session;
+use humhub\modules\user\services\AuthClientService;
+use humhub\modules\user\services\AuthClientUserService;
 use humhub\modules\user\Module;
 use Yii;
 use yii\web\Cookie;
@@ -148,11 +150,13 @@ class AuthController extends Controller
 
         // User already logged in - Add new authclient to existing user
         if (!Yii::$app->user->isGuest) {
-            AuthClientHelpers::storeAuthClientForUser($authClient, Yii::$app->user->getIdentity());
+            Yii::$app->user->getAuthClientUserService()->add($authClient);
             return $this->redirect(['/user/account/connected-accounts']);
         }
 
-        $user = AuthClientHelpers::getUserByAuthClient($authClient);
+        $authClientService = new AuthClientService($authClient);
+
+        $user = $authClientService->getUser();
 
         if (Yii::$app->settings->get('maintenanceMode') && !$user->isSystemAdmin()) {
             return $this->redirect(['/user/auth/login']);
@@ -163,7 +167,7 @@ class AuthController extends Controller
             $user = User::findOne(['email' => $attributes['email']]);
             if ($user !== null) {
                 // Map current auth method to user with same e-mail address
-                AuthClientHelpers::storeAuthClientForUser($authClient, $user);
+                (new AuthClientUserService($user))->add($authClient);
             }
         }
 
@@ -191,7 +195,7 @@ class AuthController extends Controller
         }
 
         // Try automatically create user & login user
-        $user = AuthClientHelpers::createUser($authClient);
+        $user = $authClientService->createUser();
         if ($user !== null) {
             return $this->login($user, $authClient);
         }
@@ -228,7 +232,7 @@ class AuthController extends Controller
 
                 $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
             }
-            AuthClientHelpers::updateUser($authClient, $user);
+            (new AuthClientService($authClient))->updateUser($user);
 
             if ($success = Yii::$app->user->login($user, $duration)) {
                 Yii::$app->user->setCurrentAuthClient($authClient);
