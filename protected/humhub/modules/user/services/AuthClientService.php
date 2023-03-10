@@ -14,6 +14,7 @@ use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\authclient\interfaces\PrimaryClient;
 use humhub\modules\user\authclient\interfaces\SyncAttributes;
 use humhub\modules\user\components\ActiveQueryUser;
+use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\models\User;
@@ -131,7 +132,7 @@ class AuthClientService
         unset($attributes['id'], $attributes['guid'], $attributes['contentcontainer_id'],
             $attributes['auth_mode'], $attributes['status']);
 
-        $attributes['username'] = AuthClientHelpers::generateUsername($attributes);
+        $attributes['username'] = AuthHelper::generateUsernameByAttributes($attributes);
         $registration->getUser()->setAttributes($attributes, false);
         $registration->getProfile()->setAttributes($attributes, false);
         $registration->getGroupUser()->setAttributes($attributes, false);
