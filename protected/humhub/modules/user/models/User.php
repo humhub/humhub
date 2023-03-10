@@ -60,7 +60,7 @@ use yii\web\IdentityInterface;
  * @property integer $contentcontainer_id
  * @property Profile $profile
  * @property Password $currentPassword
- *
+ * @property Auth[] $auths
  * @property string $displayName
  * @property string $displayNameSub
  * @mixin Followable

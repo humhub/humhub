@@ -10,6 +10,9 @@ namespace humhub\modules\user\authclient;
 
 use yii\authclient\OAuth2;
 
+/**
+ * @deprecated 1.14
+ */
 class Twitter extends OAuth2
 {
 

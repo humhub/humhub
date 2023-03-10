@@ -32,3 +32,4 @@ HumHub Changelog (DEVELOP)
 - Enh #6144: Added ability to change/disable `Forgot your password?` link
 - Fix #4988: Unable to archive space on Form Validation errors
 - Enh #6123: Added check for `proc_open` function in Requirement Checker 
+- Enh #6149: Added `AuthClientUserService` and `AuthClientService` instead of `AuthClientHelpers`
