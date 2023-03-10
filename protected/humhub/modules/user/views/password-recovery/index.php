@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\user\models\forms\AccountRecoverPassword;
 use humhub\widgets\Button;
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -8,6 +9,11 @@ use humhub\widgets\SiteLogo;
 use yii\captcha\Captcha;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
+
+/**
+ * @var $model AccountRecoverPassword
+ */
+
 ?>
 <div class="container" style="text-align: center;">
     <?= SiteLogo::widget(['place' => 'login']); ?>

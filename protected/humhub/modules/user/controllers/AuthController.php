@@ -22,6 +22,7 @@ use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\models\Session;
 use humhub\modules\user\services\AuthClientService;
 use humhub\modules\user\services\AuthClientUserService;
+use humhub\modules\user\Module;
 use Yii;
 use yii\web\Cookie;
 use yii\authclient\BaseClient;
@@ -30,6 +31,8 @@ use yii\authclient\BaseClient;
  * AuthController handles login and logout
  *
  * @since 0.5
+ *
+ * @property Module $module
  */
 class AuthController extends Controller
 {
@@ -120,6 +123,7 @@ class AuthController extends Controller
             'model' => $login,
             'invite' => $invite,
             'canRegister' => $invite->allowSelfInvite(),
+            'passwordRecoveryRoute' => $this->module->passwordRecoveryRoute,
         ];
 
         if (Yii::$app->settings->get('maintenanceMode')) {

@@ -22,7 +22,6 @@ use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\jobs\DeleteDocument;
 use humhub\modules\search\jobs\UpdateDocument;
 use humhub\modules\space\helpers\MembershipHelper;
-use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\authclient\Password as PasswordAuth;
 use humhub\modules\user\behaviors\Followable;
@@ -658,7 +657,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      *
      * @return string the users display name (e.g. firstname + lastname)
      */
-    public function getDisplayName()
+    public function getDisplayName(): string
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
@@ -689,7 +688,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      *
      * @return string the display name sub text
      */
-    public function getDisplayNameSub()
+    public function getDisplayNameSub(): string
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
@@ -701,7 +700,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $attributeName = Yii::$app->settings->get('displayNameSubFormat');
 
         if ($this->profile !== null && $this->profile->hasAttribute($attributeName)) {
-            return $this->profile->getAttribute($attributeName);
+            return $this->profile->getAttribute($attributeName) ?? '';
         }
 
         return '';
@@ -759,10 +758,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $module = Yii::$app->getModule('content');
 
         return $module->adminCanViewAllContent && (
-            $this->isSystemAdmin()
-            || ($containerClass === Space::class && $this->can(ManageSpaces::class))
-            || ($containerClass === static::class && $this->can(ManageUsers::class))
-        );
+                $this->isSystemAdmin()
+                || ($containerClass === Space::class && $this->can(ManageSpaces::class))
+                || ($containerClass === static::class && $this->can(ManageUsers::class))
+            );
     }
 
     /**
