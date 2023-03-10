@@ -37,7 +37,7 @@ return array (
   'Information' => 'Informatie',
   'Invalid user state: {state}' => 'Ongeldige gebruikersstatus: {state}',
   'Invite by email' => 'Uitnodigen per e-mail',
-  'Invite by link' => '',
+  'Invite by link' => 'Uitnodigen per link',
   'Invited by' => 'Uitgenodigd door',
   'Logging' => 'Logging',
   'Logs' => 'Logs',
