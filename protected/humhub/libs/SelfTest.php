@@ -407,8 +407,8 @@ class SelfTest
             ];
         }
 
-        // Checks proc_open Function
-        $title = 'PHP - ' . Yii::t('AdminModule.information', 'proc_open Function');
+        // Checks `proc_open` is on in Disabled Functions
+        $title = 'PHP - ' . Yii::t('AdminModule.information', 'Disabled Functions');
         if (function_exists('proc_open')) {
             $checks[] = [
                 'title' => $title,
@@ -417,8 +417,8 @@ class SelfTest
         } else {
             $checks[] = [
                 'title' => $title,
-                'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Enable proc_open Function from php.ini')
+                'state' => 'WARNING',
+                'hint' => Yii::t('AdminModule.information', 'Make sure that the `proc_open` function is not disabled.')
             ];
         }
 
