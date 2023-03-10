@@ -206,7 +206,7 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
      */
     public function available(?UserModel $user = null): ActiveQueryUser
     {
-        return $this->visible()->filterBlockedUsers($user);
+        return $this->visible($user)->filterBlockedUsers($user);
     }
 
 }
