@@ -407,6 +407,21 @@ class SelfTest
             ];
         }
 
+        // Checks `proc_open` is on in Disabled Functions
+        $title = 'PHP - ' . Yii::t('AdminModule.information', 'Disabled Functions');
+        if (function_exists('proc_open')) {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'WARNING',
+                'hint' => Yii::t('AdminModule.information', 'Make sure that the `proc_open` function is not disabled.')
+            ];
+        }
+
         // Checks Database Data
         $checks = self::getDatabaseResults($checks);
 
