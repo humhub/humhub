@@ -9,12 +9,14 @@
 namespace humhub\modules\space\modules\manage\controllers;
 
 use Yii;
+use yii\web\HttpException;
+use humhub\modules\content\models\Content;
+use humhub\modules\space\modules\manage\jobs\ChangeContentVisibilityJob;
 use humhub\modules\space\modules\manage\components\Controller;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\user\helpers\AuthHelper;
-use yii\web\HttpException;
 
 /**
  * SecurityController
@@ -24,17 +26,32 @@ use yii\web\HttpException;
  */
 class SecurityController extends Controller
 {
-
     public function actionIndex()
     {
         $space = $this->contentContainer;
         $space->scenario = Space::SCENARIO_SECURITY_SETTINGS;
 
-        if ($space->load(Yii::$app->request->post()) && $space->save()) {
-            $this->view->saved();
-            return $this->redirect($space->createUrl('index'));
-        } else if(Yii::$app->request->post()) {
-            $this->view->error(Yii::t('SpaceModule.base', 'Settings could not be saved!'));
+        if ($space->load(Yii::$app->request->post())) {
+            $visibilityChangedToPrivate = $space->isAttributeChanged('visibility') && $space->visibility == Space::VISIBILITY_NONE;
+            if ($space->save()) {
+                if ($visibilityChangedToPrivate) {
+                    Yii::$app->queue->push(new ChangeContentVisibilityJob([
+                        'contentContainerId' => $space->contentcontainer_id,
+                        'visibility' => Content::VISIBILITY_PRIVATE,
+                    ]));
+
+                    $this->view->warn(
+                        Yii::t('base', 'Saved') . '. ' .
+                        Yii::t('SpaceModule.base', 'All content will be changed from Public to Private.')
+                    );
+                } else {
+                    $this->view->saved();
+                }
+
+                return $this->redirect($space->createUrl('index'));
+            } elseif (Yii::$app->request->post()) {
+                $this->view->error(Yii::t('SpaceModule.base', 'Settings could not be saved!'));
+            }
         }
 
         $visibilities = [];
@@ -85,5 +102,4 @@ class SecurityController extends Controller
                     'groupId' => $groupId
         ]);
     }
-
 }
