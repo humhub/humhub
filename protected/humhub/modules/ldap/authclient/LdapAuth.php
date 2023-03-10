@@ -11,7 +11,6 @@ namespace humhub\modules\ldap\authclient;
 use DateTime;
 use humhub\libs\StringHelper;
 use humhub\modules\ldap\Module;
-use humhub\modules\user\authclient\AuthClientHelpers;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\authclient\interfaces\AutoSyncUsers;

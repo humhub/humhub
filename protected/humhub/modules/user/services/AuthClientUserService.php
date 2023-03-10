@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\services;
 
+use humhub\modules\user\authclient\Collection;
 use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
 use humhub\modules\user\authclient\interfaces\PrimaryClient;
 use humhub\modules\user\authclient\interfaces\SyncAttributes;
@@ -16,6 +17,8 @@ use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\authclient\ClientInterface;
+use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
 
 /**
  * AuthClient handling for users
@@ -116,10 +119,9 @@ class AuthClientUserService
      */
     public function canChangePassword(): bool
     {
-        foreach ($this->getClients() as $authClient) {
-            if (get_class($authClient) == Password::class) {
-                return true;
-            }
+        $primaryAuthClient = $this->getPrimaryClient();
+        if ($primaryAuthClient && get_class($primaryAuthClient) === Password::class) {
+            return true;
         }
 
         return false;
@@ -150,7 +152,7 @@ class AuthClientUserService
         if ($this->_authClients === null) {
             $this->_authClients = [];
 
-            foreach (Yii::$app->authClientCollection->getClients() as $client) {
+            foreach (AuthClientService::getCollection()->getClients() as $client) {
                 // Add primary authClient
                 if ($this->user->auth_mode == $client->getId()) {
                     $this->_authClients[] = $client;
@@ -168,4 +170,15 @@ class AuthClientUserService
         return $this->_authClients;
     }
 
+    private function getPrimaryClient(): ?ClientInterface
+    {
+        try {
+            return AuthClientService::getCollection()->getClient($this->user->auth_mode);
+        } catch (InvalidArgumentException $e) {
+            Yii::error('Could not get primary auth client for user: ' . $this->user->id, 'user');
+        } catch (InvalidConfigException $e) {
+            Yii::error($e, 'user');
+        }
+        return null;
+    }
 }

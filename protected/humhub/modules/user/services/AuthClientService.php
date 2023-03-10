@@ -8,8 +8,8 @@
 
 namespace humhub\modules\user\services;
 
-use humhub\modules\user\authclient\AuthClientHelpers;
 use humhub\modules\user\authclient\BaseClient;
+use humhub\modules\user\authclient\Collection;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\authclient\interfaces\PrimaryClient;
 use humhub\modules\user\authclient\interfaces\SyncAttributes;
@@ -173,5 +173,13 @@ class AuthClientService
         }
 
         return $query;
+    }
+
+    public static function getCollection(): Collection
+    {
+        /** @var Collection $authClientCollection */
+        $authClientCollection = Yii::$app->authClientCollection;
+
+        return $authClientCollection;
     }
 }
