@@ -1,5 +1,5 @@
 <?php
-\humhub\modules\admin\widgets\AdminMenu::markAsActive('space');
+\humhub\modules\admin\widgets\AdminMenu::markAsActive('spaces');
 ?>
 
 <?php $this->beginContent('@admin/views/layouts/main.php') ?>
