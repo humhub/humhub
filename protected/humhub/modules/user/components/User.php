@@ -175,6 +175,15 @@ class User extends \yii\web\User
     }
 
     /**
+     * @deprecated since 1.14
+     * @return boolean
+     */
+    public function canChangePassword()
+    {
+        return ($this->getAuthClientUserService())->canChangePassword();
+    }
+
+    /**
      * @return bool Check if current page is already URL to forcing user to change password
      * @since 1.8
      */
