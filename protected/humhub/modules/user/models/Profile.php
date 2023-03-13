@@ -9,7 +9,6 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
-use humhub\modules\user\authclient\AuthClientHelpers;
 use humhub\modules\user\services\AuthClientUserService;
 use Yii;
 

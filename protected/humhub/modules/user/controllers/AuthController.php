@@ -16,7 +16,6 @@ use humhub\modules\user\authclient\AuthAction;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\forms\Login;
-use humhub\modules\user\authclient\AuthClientHelpers;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\models\Session;
