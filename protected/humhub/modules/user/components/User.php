@@ -178,9 +178,9 @@ class User extends \yii\web\User
      * @deprecated since 1.14
      * @return boolean
      */
-    public function canChangePassword()
+    public function canDeleteAccount()
     {
-        return ($this->getAuthClientUserService())->canChangePassword();
+        return ($this->getAuthClientUserService())->canDeleteAccount();
     }
 
     /**
