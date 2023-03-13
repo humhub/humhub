@@ -14,6 +14,7 @@ use Yii;
  *
  * @inheritdoc
  * @package humhub\modules\ui\form\widgets
+ * @deprecated since 1.14
  */
 class TimePicker extends \kartik\time\TimePicker
 {

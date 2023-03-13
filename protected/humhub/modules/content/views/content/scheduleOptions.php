@@ -10,7 +10,6 @@ use humhub\modules\content\models\Content;
 use humhub\modules\content\models\forms\ScheduleOptionsForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\form\widgets\DatePicker;
-use humhub\modules\ui\form\widgets\TimePicker;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 
@@ -34,7 +33,7 @@ use humhub\widgets\ModalDialog;
             </div>
             <div class="col-sm-3 col-xs-6" style="padding-left:0">
                 <?= $form->field($scheduleOptions, 'time')
-                    ->widget(TimePicker::class, ['disabled' => $disableInputs])
+                    ->input('time', ['disabled' => $disableInputs])
                     ->label(false) ?>
             </div>
             <div class="col-xs-12">
@@ -54,6 +53,6 @@ use humhub\widgets\ModalDialog;
 
 <script <?= Html::nonce() ?>>
 $('#scheduleoptionsform-enabled').click(function () {
-    $(this).closest('form').find('input[type=text]').prop('disabled', !$(this).is(':checked'));
+    $(this).closest('form').find('input[type=text],input[type=time]').prop('disabled', !$(this).is(':checked'));
 });
 </script>
