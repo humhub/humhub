@@ -1,5 +1,5 @@
 <?php
-\humhub\modules\admin\widgets\AdminMenu::markAsActive(['/admin/setting']);
+\humhub\modules\admin\widgets\AdminMenu::markAsActive('settings');
 ?>
 
 <?php $this->beginContent('@admin/views/layouts/main.php') ?>
