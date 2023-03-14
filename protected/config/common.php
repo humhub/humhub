@@ -6,4 +6,7 @@
  * @see http://docs.humhub.org/dev-environment.html
  */
 return [
+    'params' => [
+        'moduleAutoloadPaths' => ['/app/modules/humhub'],
+    ],
 ];

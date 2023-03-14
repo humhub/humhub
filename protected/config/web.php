@@ -6,5 +6,12 @@
  * @see http://docs.humhub.org/dev-environment.html
  */
 return [
+    'bootstrap' => ['debug'],
+    'modules' => [
+        'debug' => [
+            'class' => 'yii\debug\Module',
+            'allowedIPs' => ['*'],
+        ],
+    ]
 ];
 

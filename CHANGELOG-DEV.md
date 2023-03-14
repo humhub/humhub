@@ -65,3 +65,4 @@ HumHub Changelog
 - Enh #6407: FileHandlerButtonDropdown - Possibility to have a custom CSS class
 - Enh #6079: Migrated Content Tag Logic into `ContentTagService` 
 - Enh #5718: Use Select2 plugin for all drop-down list fields
+- Enh #6132: Widget `AjaxButton` now deprecated. Consider use `data-action` instead
