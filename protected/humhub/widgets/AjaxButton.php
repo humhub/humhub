@@ -17,6 +17,8 @@ use yii\web\JsExpression;
 /**
  * AjaxButton is an replacement for Yii1 CHtml::AjaxButton
  *
+ * @deprecated since 1.14
+ *
  * @author luke
  */
 class AjaxButton extends Widget
