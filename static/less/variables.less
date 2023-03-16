@@ -57,8 +57,9 @@
 // page background which is also used for other ui components as comment box etc. - former @background2
 @background-color-page: #ededed;
 
-// text highlight
-@background-color-highlight: #fff8e0;
+// Informative highlighting color
+// (e.g. Comment Permalink, Shared Item, Calendar CurDay, Wiki Active Page Nav, Mail Module Speech Bubble)
+@background-color-highlight: lighten(desaturate(spin(@info, 4), 6), 42);
 
 // Additional background colors
 @background3: #d7d7d7;
