@@ -8,14 +8,14 @@ humhub.module('space', function (module, require, $) {
     var client = require('client');
     var additions = require('ui.additions');
     var event = require('event');
-    
+
     // Current space options (guid, image)
     var options;
-    
+
     var isSpacePage = function() {
         return $('.space-layout-container').length > 0;
     };
-    
+
     var setSpace = function(spaceOptions, pjax) {
         if(!module.options || module.options.guid !== spaceOptions.guid) {
             module.options = spaceOptions;
@@ -24,11 +24,11 @@ humhub.module('space', function (module, require, $) {
             }
         }
     };
-    
+
     var guid = function() {
         return (options) ? options.guid : null;
     };
-    
+
     var archive = function(evt) {
         client.post(evt).then(function(response) {
             if(response.success) {
@@ -40,7 +40,7 @@ humhub.module('space', function (module, require, $) {
             module.log.error(err, true);
         });
     };
-    
+
     var unarchive = function(evt) {
         client.post(evt).then(function(response) {
             if(response.success) {
@@ -53,11 +53,18 @@ humhub.module('space', function (module, require, $) {
             module.log.error(err, true);
         });
     };
-    
+
     var init = function() {
         if(!module.isSpacePage()) {
             module.options = undefined;
         }
+    };
+
+    var requestMembershipSend = function(event) {
+        setModalLoader(event);
+        client.submit(event).then(function(response) {
+            $("#globalModal").html(response.data)
+        });
     };
 
     module.export({
@@ -67,6 +74,7 @@ humhub.module('space', function (module, require, $) {
         archive : archive,
         unarchive : unarchive,
         isSpacePage: isSpacePage,
-        setSpace: setSpace
+        setSpace: setSpace,
+        requestMembershipSend: requestMembershipSend,
     });
 });
