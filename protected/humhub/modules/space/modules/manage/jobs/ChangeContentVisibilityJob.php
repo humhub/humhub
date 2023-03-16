@@ -19,9 +19,14 @@ class ChangeContentVisibilityJob extends ActiveJob
 
     public function run()
     {
-        Content::updateAll(
-            ['visibility' => $this->visibility],
-            ['contentcontainer_id' => $this->contentContainerId]
-        );
+        /** @var Content[] $contents */
+        $contents = Content::find()
+            ->where(['contentcontainer_id' => $this->contentContainerId])
+            ->each();
+
+        foreach ($contents as $content) {
+            $content->visibility = $this->visibility;
+            $content->save(false);
+        }
     }
 }
