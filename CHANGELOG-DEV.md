@@ -1,6 +1,11 @@
 HumHub Changelog (DEVELOP)
 ==========================
 
+1.14.0-beta.2 (Unreleased)
+------------------------------
+Enh #6173: Update theme variable `@background-color-highlight`
+
+
 1.14.0-beta.1 (March 10, 2023)
 ------------------------------
 
