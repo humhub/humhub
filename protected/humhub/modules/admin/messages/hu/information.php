@@ -82,6 +82,8 @@ return [
     '{imageExtension} Support' => '{imageExtension} Támogatás',
     '{phpExtension} Extension' => '{phpExtension} Kiterjesztés',
     '{phpExtension} Support' => '{phpExtension} Támogatás',
+    'Disabled Functions' => '',
     'HumHub Documentation' => '',
+    'Make sure that the `proc_open` function is not disabled.' => '',
     'Pretty URLs' => '',
 ];

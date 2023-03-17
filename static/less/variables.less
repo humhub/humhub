@@ -57,8 +57,13 @@
 // page background which is also used for other ui components as comment box etc. - former @background2
 @background-color-page: #ededed;
 
-// text highlight
-@background-color-highlight: #fff8e0;
+// Informative highlighting color
+// (e.g. Comment Permalink, Shared Item, Calendar CurDay, Wiki Active Page Nav, Mail Module Speech Bubble)
+@background-color-highlight: lighten(desaturate(spin(@info, 2), 17), 49);
+
+// Informative highlighting soft color
+// (e.g. Wiki Active Category)
+@background-color-highlight-soft: lighten(desaturate(spin(@info, 6), 16), 55);
 
 // Additional background colors
 @background3: #d7d7d7;
@@ -88,7 +93,6 @@
 // --------------------------------------------------
 
 // Mail Fonts
-@mail-font-url: 'http://fonts.googleapis.com/css?family=Open+Sans:300,100,400,600';
 @mail-font-family: 'Open Sans', Arial, Tahoma, Helvetica, sans-serif;
 
 // CSS Variables
@@ -116,6 +120,7 @@
   --background-color-secondary: @background-color-secondary;
   --background-color-page: @background-color-page;
   --background-color-highlight: @background-color-highlight;
+  --background-color-highlight-soft: @background-color-highlight-soft;
   --background3: @background3;
   --background4: @background4;
 
@@ -134,6 +139,5 @@
   --border-color-danger: @border-color-danger;
 
   // Fonts
-  --mail-font-url: @mail-font-url;
   --mail-font-family: @mail-font-family;
 }

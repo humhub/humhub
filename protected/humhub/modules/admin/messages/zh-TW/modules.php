@@ -29,7 +29,7 @@ return array (
   'Professional Edition' => '',
   'Save' => '儲存',
   'Space default state' => '',
-  'Spaces' => '空間',
+  'Spaces' => 'Space',
   'This module doesn\'t provide further information.' => '',
   'Try other keywords or remove filters.' => '請嘗試其他搜尋關鍵字，或者移除篩選條件。',
   'Update successful' => '升級成功',

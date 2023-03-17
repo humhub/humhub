@@ -24,6 +24,7 @@ use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\AuthClientUserService;
 use Yii;
 use yii\db\Query;
 use yii\web\HttpException;
@@ -105,8 +106,10 @@ class UserController extends Controller
             throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));
         }
 
+        $authClientUserService = new AuthClientUserService($user);
+
         $canEditAdminFields = Yii::$app->user->isAdmin() || !$user->isSystemAdmin();
-        $canEditPassword = $canEditAdminFields && !$user->hasAuth('ldap');
+        $canEditPassword = $canEditAdminFields && $authClientUserService->canChangePassword();
 
         $user->scenario = 'editAdmin';
         $user->profile->scenario = Profile::SCENARIO_EDIT_ADMIN;
@@ -137,11 +140,13 @@ class UserController extends Controller
                     'type' => 'text',
                     'class' => 'form-control',
                     'maxlength' => 25,
+                    'readonly' => !$authClientUserService->canChangeUsername(),
                 ],
                 'email' => [
                     'type' => 'text',
                     'class' => 'form-control',
                     'maxlength' => 100,
+                    'readonly' => !$authClientUserService->canChangeEmail()
                 ],
                 'groupSelection' => [
                     'id' => 'user_edit_groups',
