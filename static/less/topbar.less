@@ -209,6 +209,18 @@
 
     .dropdown-footer {
         margin: 10px 10px 5px;
+        .btn.btn-default {
+            border: 1px solid @default;
+            box-shadow: none;
+            &:hover {
+                border-color: @background3;
+                background: @background3;
+            }
+            &:active {
+                border-color: @text-color-secondary;
+                background: white;
+            }
+        }
     }
 
     a {
