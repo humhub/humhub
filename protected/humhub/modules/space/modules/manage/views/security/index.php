@@ -41,7 +41,8 @@ use humhub\libs\Html;
                 'class' => 'btn btn-primary',
                 'data' => [
                     'ui-loader' => '',
-                    'confirm-text' => Yii::t('SpaceModule.base', 'All content will be changed from Public to Private.'),
+                    'action-confirm-header' => Yii::t('SpaceModule.base', 'Change visibility'),
+                    'confirm-text' => Yii::t('SpaceModule.base', 'Warning: If you change the visibility settings of a Space from public to private, all content within that Space, including posts, comments, attachments etc. will also be set to private. This means that non-members will no longer be able to see, access, or interact with any of the content within that Space.'),
                 ],
             ]
         ); ?>
