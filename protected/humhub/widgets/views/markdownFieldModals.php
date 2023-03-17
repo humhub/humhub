@@ -6,7 +6,7 @@ use humhub\widgets\ModalDialog;
 
 ?>
 
-<div class="modal modal-top" id="markdown-modal-file-upload" tabindex="-1" role="dialog" aria-labelledby="addImageModalLabel" style="z-index:99999" aria-hidden="true">
+<div class="modal modal-top" id="markdown-modal-file-upload" tabindex="-1" role="dialog" style="z-index:99999" aria-hidden="true">
     <?php ModalDialog::begin(['header' => Yii::t('UiModule.markdownEditor', 'Add image/file')])?>
         <div class="modal-body">
 
@@ -33,7 +33,7 @@ use humhub\widgets\ModalDialog;
     <?php ModalDialog::end() ?>
 </div>
 
-<div class="modal modal-top" id="markdown-modal-add-link" tabindex="-1" role="dialog" style="z-index:99999" aria-labelledby="addLinkModalLabel" aria-hidden="true">
+<div class="modal modal-top" id="markdown-modal-add-link" tabindex="-1" role="dialog" style="z-index:99999" aria-hidden="true">
     <?php ModalDialog::begin(['header' => Yii::t('UiModule.markdownEditor', 'Add link')])?>
         <div class="modal-body">
             <div class="form-group">
