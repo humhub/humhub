@@ -53,7 +53,10 @@ AdminPendingRegistrationsAsset::register($this);
             },
             'contentOptions' => ['style' => 'width:auto; white-space: normal;'],
         ],
-        'email',
+        [
+            'attribute' => 'email',
+            'format' => 'email',
+        ],
         'originator.username',
         [
             'attribute' => 'language',
