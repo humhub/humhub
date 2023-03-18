@@ -38,4 +38,4 @@ Enh #6173: Theme variables `background-color-highlight` and `background-color-hi
 - Fix #4988: Unable to archive space on Form Validation errors
 - Enh #6123: Added check for `proc_open` function in Requirement Checker 
 - Enh #6149: Added `AuthClientUserService` and `AuthClientService` instead of `AuthClientHelpers`
-- Enh #6132: Widget `AjaxButton` now deprecated. Consider use `data-action` instead
+- Enh #6132: Widget `AjaxButton` and `ModalConfirm` were refactored and removed
