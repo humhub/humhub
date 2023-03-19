@@ -7,6 +7,7 @@ HumHub Changelog (DEVELOP)
 - Fix #6099: Empty buttons in GlobalConfirmModal footer
 - Fix #6100: Broken area reference in some modal boxes
 - Enh #5713: Disabling modules will be done in a background job
+- Enh #6171: Make email in user administration and user approval clickable
 
 1.14.0-beta.1 (March 10, 2023)
 ------------------------------
