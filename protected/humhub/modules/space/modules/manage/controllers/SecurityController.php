@@ -39,14 +39,9 @@ class SecurityController extends Controller
                         'contentContainerId' => $space->contentcontainer_id,
                         'visibility' => Content::VISIBILITY_PRIVATE,
                     ]));
-
-                    $this->view->warn(
-                        Yii::t('base', 'Saved') . '. ' .
-                        Yii::t('SpaceModule.base', 'All content will be changed from Public to Private.')
-                    );
-                } else {
-                    $this->view->saved();
                 }
+
+                $this->view->saved();
 
                 return $this->redirect($space->createUrl('index'));
             } elseif (Yii::$app->request->post()) {
