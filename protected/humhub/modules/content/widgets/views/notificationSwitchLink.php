@@ -26,7 +26,7 @@ ContentContainerAsset::register($this);
             ],
             'data' => [
                 'action-click' => 'content.container.turnOffNotifications',
-                'action-url' => Url::to(['/admin/module/set-as-default', 'moduleId' => $module->id]),
+                'action-url' => Url::to(['/content/content/notification-switch', 'id' => $content->id, 'switch' => 0]),
                 'content-id' => $content->id,
             ]
         ]
@@ -42,7 +42,7 @@ ContentContainerAsset::register($this);
             ],
             'data' => [
                 'action-click' => 'content.container.turnOnNotifications',
-                'action-url' => Url::to(['/admin/module/set-as-default', 'moduleId' => $module->id]),
+                'action-url' => Url::to(['/content/content/notification-switch', 'id' => $content->id, 'switch' => 1]),
             ]
         ]
     ); ?>
