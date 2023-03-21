@@ -9,6 +9,10 @@
 namespace humhub\components\behaviors;
 
 use humhub\components\access\ControllerAccess;
+use humhub\components\access\ManifestAccess;
+use humhub\components\Controller;
+use humhub\modules\web\pwa\controllers\ManifestController;
+use humhub\modules\web\pwa\controllers\ServiceWorkerController;
 use Yii;
 use yii\base\ActionFilter;
 use yii\web\HttpException;
@@ -230,7 +234,10 @@ class AccessControl extends ActionFilter
      */
     protected function forceChangePassword()
     {
-        if (!Yii::$app->user->isMustChangePasswordUrl()) {
+        $isMetaRequest = Yii::$app->controller instanceof Controller &&
+            Yii::$app->controller->getAccess() instanceof ManifestAccess;
+
+        if (Yii::$app->request->isGet && !$isMetaRequest && !Yii::$app->user->isMustChangePasswordUrl()) {
             Yii::$app->getResponse()->redirect([Yii::$app->user->mustChangePasswordRoute]);
         }
     }
