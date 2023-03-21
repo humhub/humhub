@@ -8,13 +8,13 @@
 
 namespace humhub\modules\user\models;
 
+use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\user\activities\UserFollow;
 use humhub\modules\user\notifications\Followed;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
 use yii\db\Query;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\events\FollowEvent;
@@ -225,14 +225,14 @@ class Follow extends ActiveRecord
      * Returns all active users following the given $target record.
      * If $withNotifications is set only follower with the given send_notifications setting are returned.
      *
-     * @param \humhub\components\ActiveRecord $target
+     * @param ActiveRecord $target
      * @param boolean $withNotifications
      * @return ActiveQueryUser
      */
-    public static function getFollowersQuery(\humhub\components\ActiveRecord $target, $withNotifications = null)
+    public static function getFollowersQuery(ActiveRecord $target, $withNotifications = null)
     {
         $subQuery = self::find()
-                ->where(['user_follow.object_model' => $target->class(), 'user_follow.object_id' => $target->getPrimaryKey()])
+                ->where(['user_follow.object_model' => get_class($target), 'user_follow.object_id' => $target->getPrimaryKey()])
                 ->andWhere('user_follow.user_id=user.id');
 
         if ($withNotifications === true) {

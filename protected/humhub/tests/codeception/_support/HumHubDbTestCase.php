@@ -2,7 +2,8 @@
 
 namespace tests\codeception\_support;
 
-use humhub\components\ActiveRecord;
+use Codeception\Test\Unit;
+use humhub\libs\BasePermission;
 use humhub\models\UrlOembed;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverter;
@@ -10,16 +11,15 @@ use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConvert
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\live\tests\codeception\fixtures\LiveFixture;
 use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
-use humhub\tests\codeception\fixtures\UrlOembedFixture;
-use Yii;
-use Codeception\Test\Unit;
-use humhub\libs\BasePermission;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentContainerPermissionManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\models\User;
 use humhub\modules\friendship\models\Friendship;
+use humhub\tests\codeception\fixtures\UrlOembedFixture;
+use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * @SuppressWarnings(PHPMD)
@@ -140,7 +140,7 @@ class HumHubDbTestCase extends Unit
     {
         $notificationQuery = Notification::find()->where([
             'class' => $class,
-            'source_class' => $source->class(),
+            'source_class' => get_class($source),
             'source_pk' => $source->getPrimaryKey(),
         ]);
         if(is_string($target_id)) {
