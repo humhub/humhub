@@ -7,6 +7,8 @@ HumHub Changelog (DEVELOP)
 - Fix #6099: Empty buttons in GlobalConfirmModal footer
 - Fix #6100: Broken area reference in some modal boxes
 - Enh #6171: Make email in user administration and user approval clickable
+- Enh #6184: Use same font for RichText editor as it looks on view mode
+- Enh #6181: Replace png "search" icon with font-awesome icon
 - Fix #5537: Space Starting Page gets lost when changing URL
 
 1.14.0-beta.1 (March 10, 2023)
@@ -41,3 +43,5 @@ HumHub Changelog (DEVELOP)
 - Fix #4988: Unable to archive space on Form Validation errors
 - Enh #6123: Added check for `proc_open` function in Requirement Checker 
 - Enh #6149: Added `AuthClientUserService` and `AuthClientService` instead of `AuthClientHelpers`
+- Enh #4712: When changing space Visibility to Private, the all content visibility will be changed to private too
+
