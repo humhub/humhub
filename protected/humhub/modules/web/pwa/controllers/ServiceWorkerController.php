@@ -8,7 +8,7 @@
 
 namespace humhub\modules\web\pwa\controllers;
 
-use humhub\components\access\ControllerAccess;
+use humhub\components\access\ManifestAccess;
 use humhub\components\Controller;
 use humhub\modules\ui\Module;
 use Yii;
@@ -30,8 +30,9 @@ class ServiceWorkerController extends Controller
      * Allow guest access independently from guest mode setting.
      *
      * @var string
+     * @inheritdoc
      */
-    public $access = ControllerAccess::class;
+    protected $access = ManifestAccess::class;
     public $baseJs;
     public $additionalJs;
 
