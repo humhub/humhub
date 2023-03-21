@@ -42,3 +42,5 @@ HumHub Changelog (DEVELOP)
 - Fix #4988: Unable to archive space on Form Validation errors
 - Enh #6123: Added check for `proc_open` function in Requirement Checker 
 - Enh #6149: Added `AuthClientUserService` and `AuthClientService` instead of `AuthClientHelpers`
+- Enh #4712: When changing space Visibility to Private, the all content visibility will be changed to private too
+
