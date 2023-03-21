@@ -2,6 +2,7 @@
 
 namespace tests\codeception\_support;
 
+use humhub\components\ActiveRecord;
 use humhub\models\UrlOembed;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverter;
@@ -11,7 +12,6 @@ use humhub\modules\live\tests\codeception\fixtures\LiveFixture;
 use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
 use humhub\tests\codeception\fixtures\UrlOembedFixture;
 use Yii;
-use yii\db\ActiveRecord;
 use Codeception\Test\Unit;
 use humhub\libs\BasePermission;
 use humhub\modules\activity\models\Activity;
@@ -140,7 +140,7 @@ class HumHubDbTestCase extends Unit
     {
         $notificationQuery = Notification::find()->where([
             'class' => $class,
-            'source_class' => $source->className(),
+            'source_class' => $source->class(),
             'source_pk' => $source->getPrimaryKey(),
         ]);
         if(is_string($target_id)) {
@@ -161,7 +161,7 @@ class HumHubDbTestCase extends Unit
 
     public function assertEqualsNotificationCount($count, $class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
     {
-        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => $source->className(), 'source_pk' => $source->getPrimaryKey()]);
+        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => $source->class(), 'source_pk' => $source->getPrimaryKey()]);
 
         if ($originator_id != null) {
             $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
@@ -176,7 +176,7 @@ class HumHubDbTestCase extends Unit
 
     public function assertHasNoNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
     {
-        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => $source->className(), 'source_pk' => $source->getPrimaryKey()]);
+        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => $source->class(), 'source_pk' => $source->getPrimaryKey()]);
 
         if ($originator_id != null) {
             $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
@@ -193,7 +193,7 @@ class HumHubDbTestCase extends Unit
     {
         $activity = Activity::findOne([
             'class' => $class,
-            'object_model' => $source->className(),
+            'object_model' => $source->class(),
             'object_id' => $source->getPrimaryKey(),
         ]);
         $this->assertNotNull($activity, $msg);

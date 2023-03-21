@@ -199,7 +199,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
      */
     public function getContentName()
     {
-        return $this->className();
+        return $this->class();
     }
 
     /**

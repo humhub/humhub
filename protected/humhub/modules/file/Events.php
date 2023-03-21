@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file;
 
+use humhub\components\ActiveRecord;
 use humhub\modules\search\engine\Search;
 use humhub\modules\file\models\File;
 use yii\base\Event;
@@ -80,13 +81,13 @@ class Events extends \yii\base\BaseObject
      */
     public static function onBeforeActiveRecordDelete($event)
     {
-
-        $model = $event->sender->className();
-        $pk = $event->sender->getPrimaryKey();
+        /* @var ActiveRecord $record */
+        $record = $event->sender;
+        $pk = $record->getPrimaryKey();
 
         // Check if primary key exists and is not array (multiple pk)
         if ($pk !== null && !is_array($pk)) {
-            foreach (File::find()->where(['object_id' => $pk, 'object_model' => $model])->all() as $file) {
+            foreach (File::find()->where(['object_id' => $pk, 'object_model' => $record->class()])->all() as $file) {
                 $file->delete();
             }
         }
@@ -112,7 +113,7 @@ class Events extends \yii\base\BaseObject
             $event->attributes['files'] = [];
         }
 
-        foreach (File::findAll(['object_model' => $event->record->className(), 'object_id' => $event->record->id]) as $file) {
+        foreach (File::findAll(['object_model' => $event->record->class(), 'object_id' => $event->record->id]) as $file) {
             /* @var $file File */
 
             $textContent = null;

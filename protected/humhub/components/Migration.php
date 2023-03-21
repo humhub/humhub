@@ -279,8 +279,8 @@ class Migration extends \yii\db\Migration
         ";
 
         Yii::$app->db->createCommand($updateSql, [
-            ':likeModelClass' => \humhub\modules\like\models\Like::className(),
-            ':likedActivityClass' => \humhub\modules\like\activities\Liked::className()
+            ':likeModelClass' => \humhub\modules\like\models\Like::class,
+            ':likedActivityClass' => \humhub\modules\like\activities\Liked::class
         ])->execute();
     }
 

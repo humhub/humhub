@@ -8,6 +8,7 @@
 
 namespace humhub\modules\notification;
 
+use humhub\components\ActiveRecord;
 use humhub\components\Event;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
@@ -170,9 +171,12 @@ class Events extends \yii\base\BaseObject
 
     public static function onActiveRecordDelete($event)
     {
+        /* @var ActiveRecord $record */
+        $record = $event->sender;
+
         models\Notification::deleteAll([
-            'source_class' => $event->sender->className(),
-            'source_pk' => $event->sender->getPrimaryKey(),
+            'source_class' => $record->class(),
+            'source_pk' => $record->getPrimaryKey(),
         ]);
     }
 

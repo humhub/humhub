@@ -404,7 +404,7 @@ abstract class BaseNotification extends SocialActivity
 
         if ($this->source !== null) {
             $condition['source_pk'] = $this->source->getPrimaryKey();
-            $condition['source_class'] = $this->source->className();
+            $condition['source_class'] = $this->source->class();
         }
 
         Notification::deleteAll($condition);

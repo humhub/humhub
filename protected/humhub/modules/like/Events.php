@@ -52,7 +52,7 @@ class Events extends \yii\base\BaseObject
         /** @var ActiveRecord $record */
         $record = $event->sender;
         if ($record->hasAttribute('id')) {
-            foreach (Like::findAll(['object_id' => $record->id, 'object_model' => $record->className()]) as $like) {
+            foreach (Like::findAll(['object_id' => $record->id, 'object_model' => $record->class()]) as $like) {
                 $like->delete();
             }
         }

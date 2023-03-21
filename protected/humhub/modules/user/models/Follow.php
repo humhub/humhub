@@ -225,14 +225,14 @@ class Follow extends ActiveRecord
      * Returns all active users following the given $target record.
      * If $withNotifications is set only follower with the given send_notifications setting are returned.
      *
-     * @param ActiveRecord $target
+     * @param \humhub\components\ActiveRecord $target
      * @param boolean $withNotifications
      * @return ActiveQueryUser
      */
-    public static function getFollowersQuery(ActiveRecord $target, $withNotifications = null)
+    public static function getFollowersQuery(\humhub\components\ActiveRecord $target, $withNotifications = null)
     {
         $subQuery = self::find()
-                ->where(['user_follow.object_model' => $target->className(), 'user_follow.object_id' => $target->getPrimaryKey()])
+                ->where(['user_follow.object_model' => $target->class(), 'user_follow.object_id' => $target->getPrimaryKey()])
                 ->andWhere('user_follow.user_id=user.id');
 
         if ($withNotifications === true) {

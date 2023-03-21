@@ -127,7 +127,7 @@ class ZendLuceneSearch extends Search
 
     public function delete(Searchable $obj)
     {
-        $this->deleteRecord($obj->className(), $obj->getPrimaryKey());
+        $this->deleteRecord($obj->class(), $obj->getPrimaryKey());
     }
 
 

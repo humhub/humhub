@@ -2,6 +2,7 @@
 
 namespace humhub\modules\file\widgets;
 
+use humhub\components\ActiveRecord;
 use Yii;
 use yii\base\Model;
 use yii\helpers\Html;
@@ -268,8 +269,8 @@ class UploadInput extends JsWidget
             $result['upload-hide-in-stream'] = '1';
         }
 
-        if ($this->model instanceof \yii\db\ActiveRecord && $this->attach) {
-            $result['upload-model'] = $this->model->className();
+        if ($this->model instanceof ActiveRecord && $this->attach) {
+            $result['upload-model'] = $this->model->class();
             $result['upload-model-id'] = $this->model->getPrimaryKey();
         }
 

@@ -112,17 +112,17 @@ abstract class Search extends Component
         $meta = [];
         $meta['type'] = $this->getDocumentType($obj);
         $meta['pk'] = $obj->getPrimaryKey();
-        $meta['model'] = $obj->className();
+        $meta['model'] = $obj->class();
 
         if ($obj instanceof ContentContainerActiveRecord) {
-            $meta['containerModel'] = $obj->className();
+            $meta['containerModel'] = $obj->class();
             $meta['containerPk'] = $obj->id;
         }
 
         // Add content related meta data
         if ($meta['type'] == self::DOCUMENT_TYPE_CONTENT) {
             if ($obj->content->container !== null) {
-                $meta['containerModel'] = $obj->content->container->className();
+                $meta['containerModel'] = $obj->content->container->class();
                 $meta['containerPk'] = $obj->content->container->id;
             }
             if ($obj->content->visibility == Content::VISIBILITY_PUBLIC) {

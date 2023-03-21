@@ -272,12 +272,12 @@ class File extends FileCompat
     /**
      * Returns all attached Files of the given $record.
      *
-     * @param \yii\db\ActiveRecord $record
+     * @param ActiveRecord $record
      * @return File[]
      */
-    public static function findByRecord(\yii\db\ActiveRecord $record)
+    public static function findByRecord(ActiveRecord $record): array
     {
-        return self::findAll(['object_model' => $record->className(), 'object_id' => $record->getPrimaryKey()]);
+        return self::findAll(['object_model' => $record->class(), 'object_id' => $record->getPrimaryKey()]);
     }
 
     /**

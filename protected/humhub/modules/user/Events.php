@@ -3,6 +3,7 @@
 namespace humhub\modules\user;
 
 use humhub\components\Event;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\models\User;
@@ -42,8 +43,11 @@ class Events extends BaseObject
      */
     public static function onContentDelete($event)
     {
-        Mentioning::deleteAll(['object_model' => $event->sender->className(), 'object_id' => $event->sender->getPrimaryKey()]);
-        Follow::deleteAll(['object_model' => $event->sender->className(), 'object_id' => $event->sender->getPrimaryKey()]);
+        /* @var ContentActiveRecord $content */
+        $content = $event->sender;
+
+        Mentioning::deleteAll(['object_model' => $content->class(), 'object_id' => $content->getPrimaryKey()]);
+        Follow::deleteAll(['object_model' => $content->class(), 'object_id' => $content->getPrimaryKey()]);
     }
 
     /**

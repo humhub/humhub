@@ -87,8 +87,8 @@ class PolymorphicRelation extends Behavior
     {
         if ($this->validateUnderlyingObjectType($object)) {
             $this->cached = $object;
-            if ($object instanceof \yii\db\ActiveRecord) {
-                $this->owner->setAttribute($this->classAttribute, $object->className());
+            if ($object instanceof \humhub\components\ActiveRecord) {
+                $this->owner->setAttribute($this->classAttribute, $object->class());
                 $this->owner->setAttribute($this->pkAttribute, $object->getPrimaryKey());
             }
         }
@@ -120,7 +120,7 @@ class PolymorphicRelation extends Behavior
             }
         }
 
-        Yii::error('Got invalid underlying object type! (' . $object->className() . ')');
+        Yii::error('Got invalid underlying object type! (' . get_class($object) . ')');
 
         return false;
     }

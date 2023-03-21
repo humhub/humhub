@@ -111,7 +111,7 @@ class BasePermission extends BaseObject
             return $this->id;
         }
 
-        return $this->className();
+        return static::class;
     }
 
     /**
