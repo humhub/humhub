@@ -4,11 +4,11 @@ return array (
   'Advanced search settings' => '',
   'All' => '',
   'Content' => 'Përmbajtja',
-  'Search' => '',
+  'Search' => 'Kërko',
   'Search for user, spaces and content' => '',
   'Search only in certain spaces:' => '',
   'Spaces' => 'Hapësirat',
   'Specify space' => '',
-  'Users' => '',
+  'Users' => 'Përdoruesit',
   'Your search returned no matches.' => '',
 );

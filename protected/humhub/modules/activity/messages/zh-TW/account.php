@@ -1,4 +1,4 @@
 <?php
 return array (
-  'E-Mail Summaries' => '郵件匯總',
+  'E-Mail Summaries' => 'E-mail 彙總',
 );

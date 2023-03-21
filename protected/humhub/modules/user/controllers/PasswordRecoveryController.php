@@ -9,12 +9,14 @@
 namespace humhub\modules\user\controllers;
 
 use humhub\components\access\ControllerAccess;
+use humhub\modules\user\Module as UserModule;
 use Yii;
 use yii\web\HttpException;
 use humhub\components\Controller;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\forms\AccountRecoverPassword;
+use yii\web\NotFoundHttpException;
 
 /**
  * Password Recovery
@@ -46,6 +48,18 @@ class PasswordRecoveryController extends Controller
                 'class' => 'yii\captcha\CaptchaAction',
             ]
         ];
+    }
+
+    public function beforeAction($action)
+    {
+        /** @var UserModule $userModule */
+        $userModule = Yii::$app->getModule('user');
+
+        if (!$userModule->passwordRecoveryRoute) {
+            throw new NotFoundHttpException();
+        }
+
+        return parent::beforeAction($action);
     }
 
     /**
@@ -86,7 +100,7 @@ class PasswordRecoveryController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->user_id = $user->id;
             $model->setPassword($model->newPassword);
-            
+
             if ($model->save()) {
                 Yii::$app->getModule('user')->settings->contentContainer($user)->delete('passwordRecoveryToken');
                 return $this->render('reset_success');
@@ -115,5 +129,3 @@ class PasswordRecoveryController extends Controller
     }
 
 }
-
-?>

@@ -401,16 +401,21 @@ class SpaceModelMembership extends Behavior
      * This can happens after an clicking "Request Membership" Link
      * after Approval or accepting an invite.
      *
-     * @param integer $userId
-     * @param integer $canLeave 0: user cannot cancel membership | 1: can cancel membership | 2: depending on space flag members_can_leave
+     * @param int $userId
+     * @param int $canLeave 0: user cannot cancel membership | 1: can cancel membership | 2: depending on space flag members_can_leave
      * @param bool $silent add member without any notifications
+     * @param string $groupId
      * @return bool
      * @throws \Throwable
      * @throws \yii\base\InvalidConfigException
      */
-    public function addMember($userId, $canLeave = 1, $silent = false)
+    public function addMember(int $userId, int $canLeave = 1, bool $silent = false, string $groupId = Space::USERGROUP_MEMBER): bool
     {
         $user = User::findOne(['id' => $userId]);
+        if (!$user) {
+            return false;
+        }
+
         $membership = $this->getMembership($userId);
 
         if ($membership === null) {
@@ -419,7 +424,7 @@ class SpaceModelMembership extends Behavior
                 'space_id' => $this->owner->id,
                 'user_id' => $userId,
                 'status' => Membership::STATUS_MEMBER,
-                'group_id' => Space::USERGROUP_MEMBER,
+                'group_id' => $groupId,
                 'can_cancel_membership' => $canLeave
             ]);
 
@@ -453,9 +458,12 @@ class SpaceModelMembership extends Behavior
 
             // Update Membership
             $membership->status = Membership::STATUS_MEMBER;
+            $membership->group_id = $groupId;
         }
 
-        $membership->save();
+        if (!$membership->save()) {
+            return false;
+        }
 
         MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_ADDED, new MemberEvent([
             'space' => $this->owner, 'user' => $user
@@ -474,6 +482,8 @@ class SpaceModelMembership extends Behavior
 
         // Delete pending approval request notifications for this user
         ApprovalRequest::instance()->from($user)->about($this->owner)->delete();
+
+        return true;
     }
 
     /**

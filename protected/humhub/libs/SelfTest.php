@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use humhub\models\Setting;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
@@ -406,6 +407,21 @@ class SelfTest
             ];
         }
 
+        // Checks `proc_open` is on in Disabled Functions
+        $title = 'PHP - ' . Yii::t('AdminModule.information', 'Disabled Functions');
+        if (function_exists('proc_open')) {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'WARNING',
+                'hint' => Yii::t('AdminModule.information', 'Make sure that the `proc_open` function is not disabled.')
+            ];
+        }
+
         // Checks Database Data
         $checks = self::getDatabaseResults($checks);
 
@@ -434,13 +450,29 @@ class SelfTest
                 ];
             }
 
+            if (Setting::isInstalled()) {
+                $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Pretty URLs');
+                if (Yii::$app->urlManager->enablePrettyUrl) {
+                    $checks[] = [
+                        'title' => $title,
+                        'state' => 'OK'
+                    ];
+                } else {
+                    $checks[] = [
+                        'title' => $title,
+                        'state' => 'WARNING',
+                        'hint' => Html::a(Yii::t('AdminModule.information', 'HumHub Documentation'), 'https://docs.humhub.org/docs/admin/installation#pretty-urls'),
+                    ];
+                }
+            }
+
             $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Base URL');
             $sslPort = 443;
             $httpPort = 80;
             $scheme = $_SERVER['REQUEST_SCHEME'] ?? (
-                isset($_SERVER['HTTPS'])
-                    ? ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1 || $_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
-                    : ($_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http'));
+            isset($_SERVER['HTTPS'])
+                ? ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1 || $_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
+                : ($_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http'));
             $currentBaseUrl = $scheme . '://' . $_SERVER['HTTP_HOST']
                 . (($scheme === 'https' && $_SERVER['SERVER_PORT'] == $sslPort) ||
                 ($scheme === 'http' && $_SERVER['SERVER_PORT'] == $httpPort) ? '' : ':' . $_SERVER['SERVER_PORT'])
@@ -610,7 +642,7 @@ class SelfTest
             ];
         } else {
             $allowedDriverTitles = [];
-            foreach(self::getSupportedDatabaseDrivers() as $allowedDriver) {
+            foreach (self::getSupportedDatabaseDrivers() as $allowedDriver) {
                 $allowedDriverTitles[] = $allowedDriver['title'];
             }
             $checks[] = [
@@ -745,7 +777,7 @@ class SelfTest
         $supportedDrivers = self::getSupportedDatabaseDrivers();
 
         // Firstly parse driver name from version:
-        if (preg_match('/(' . implode('|', array_keys($supportedDrivers)). ')/i', $driver['version'], $verMatch)) {
+        if (preg_match('/(' . implode('|', array_keys($supportedDrivers)) . ')/i', $driver['version'], $verMatch)) {
             $driver['name'] = strtolower($verMatch[1]);
         } else {
             $driver['name'] = Yii::$app->getDb()->getDriverName();

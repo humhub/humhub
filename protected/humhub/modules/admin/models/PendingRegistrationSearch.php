@@ -76,7 +76,7 @@ class PendingRegistrationSearch extends Invite
         $query->andFilterWhere(['like', 'username', $this->getAttribute('originator.username')]);
         $query->andFilterWhere(['like', 'user_invite.email', $this->email]);
         $query->andFilterWhere(['like', 'user_invite.language', $this->language]);
-        $query->andFilterWhere(['like', 'source', $this->source]);
+        $query->andFilterWhere(['source' => $this->source]);
 
         return $dataProvider;
     }

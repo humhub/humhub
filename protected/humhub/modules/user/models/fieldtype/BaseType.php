@@ -47,6 +47,12 @@ class BaseType extends Model
     const EVENT_INIT = "fieldTypesInit";
 
     /**
+     * @var string
+     * @since 1.13.1
+     */
+    public $type = 'text';
+
+    /**
      * Holds all profile field types
      *
      * Array
@@ -186,18 +192,19 @@ class BaseType extends Model
 
     /**
      * Return the Form Element to edit the value of the Field
-     * 
-     * @param User $user If a context exists, the user is passed through here. May be null e.g. when filtering multiple users.
+     *
+     * @param User|null $user If a context exists, the user is passed through here. May be null e.g. when filtering multiple users.
+     * @param array $options Additional options
      * @return array
      */
-    public function getFieldFormDefinition(User $user = null)
+    public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
         return [
-            $this->profileField->internal_name => [
-                'type' => 'text',
+            $this->profileField->internal_name => array_merge([
+                'type' => $this->type,
                 'class' => 'form-control',
-                'readonly' => (!$this->profileField->editable)
-            ]
+                'readonly' => !$this->profileField->editable
+            ], $options)
         ];
     }
 

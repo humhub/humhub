@@ -55,6 +55,4 @@ return [
     'This option will show new content from this space at your dashboard' => '',
     'Transfer ownership' => '',
     'e.g. example for {baseUrl}/s/example' => '',
-    'the default start page of this space for members' => '',
-    'the default start page of this space for visitors' => '',
 ];

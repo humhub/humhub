@@ -2,16 +2,23 @@
 
 namespace humhub\modules\comment\widgets;
 
+use humhub\modules\comment\models\Comment;
+use Yii;
+use yii\base\Widget;
 use yii\helpers\Url;
 
 /**
  * CommentsShowMoreWidget
  *
+ * @property-read int $count
+ *
  * @since 0.11
  * @author luke
  */
-class ShowMore extends \yii\base\Widget
+class ShowMore extends Widget
 {
+    const TYPE_PREVIOUS = 'previous';
+    const TYPE_NEXT = 'next';
 
     /**
      * Content Object
@@ -19,40 +26,61 @@ class ShowMore extends \yii\base\Widget
     public $object;
 
     /**
-     * @var \yii\data\Pagination;
+     * @var int
      */
-    public $pagination;
+    public $pageSize;
+
+    /**
+     * @var string Type of loaded comments: 'previous', 'next'
+     */
+    public $type = self::TYPE_PREVIOUS;
+
+    /**
+     * @var int|null ID of the latest comment from previous query
+     */
+    public $commentId;
+
+    /**
+     * @var int Cached count of the next/previous comments
+     */
+    private $_count;
 
     /**
      * Executes the widget.
      */
     public function run()
     {
-
-        if (!$this->pagination->totalCount || $this->pagination->pageCount == $this->pagination->page + 1) {
+        if (!$this->count) {
             return '';
         }
 
-        $showMoreUrl = Url::to([
-            '/comment/comment/show',
-            'objectModel' => get_class($this->object),
-            'objectId' => $this->object->getPrimaryKey(),
-            'pageSize' => $this->pagination->pageSize,
-            'page' => $this->pagination->page + 2
+        return $this->render('showMore', [
+            'text' => $this->getText(),
+            'showMoreUrl' => Url::to(['/comment/comment/show',
+                'objectModel' => get_class($this->object),
+                'objectId' => $this->object->getPrimaryKey(),
+                'pageSize' => $this->pageSize,
+                'commentId' => $this->commentId,
+                'type' => $this->type,
+            ]),
+            'type' => $this->type,
         ]);
+    }
 
-        $moreCount = $this->pagination->pageSize;
-        if ($this->pagination->pageCount == $this->pagination->page + 2) {
-            $moreCount = $this->pagination->totalCount - $this->pagination->pageSize - $this->pagination->offset;
+    private function getText(): string
+    {
+        return $this->type === self::TYPE_PREVIOUS
+            ? Yii::t('CommentModule.base', "Show previous {count} comments", ['{count}' => $this->count])
+            : Yii::t('CommentModule.base', "Show next {count} comments", ['{count}' => $this->count]);
+    }
+
+    public function getCount(): int
+    {
+        if ($this->_count === null) {
+            $this->_count = count(Comment::getMoreComments($this->object, $this->commentId, $this->type, $this->pageSize));
         }
 
-        return $this->render('showMore', [
-            'object' => $this->object,
-            'pagination' => $this->pagination,
-            'id' => $this->object->getUniqueId(),
-            'showMoreUrl' => $showMoreUrl,
-            'moreCount' => $moreCount
-        ]);
+        return $this->_count;
     }
 
 }

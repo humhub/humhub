@@ -18,8 +18,6 @@ $fileModule = Yii::$app->getModule('file');
 
 <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
-<?= $form->errorSummary($model); ?>
-
 <?= $form->field($model, 'maxFileSize')->textInput(['class' => 'form-control', 'readonly' => $fileModule->settings->isFixed('maxFileSize')]); ?>
 <p class="help-block" <?= ($model->maxFileSize > $maxUploadSize) ? 'style="color:' . $this->theme->variable('danger') . ' !important"' : '' ?>>
     <?= Yii::t('AdminModule.settings', 'PHP reported a maximum of {maxUploadSize} MB', ['{maxUploadSize}' => $maxUploadSizeText]); ?>

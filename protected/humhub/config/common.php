@@ -57,13 +57,21 @@ $config = [
                 [
                     'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
-                    'except' => ['yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403', 'yii\web\HttpException:404', 'yii\web\HttpException:405'],
+                    'except' => [
+                        'yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403',
+                        'yii\web\HttpException:404', 'yii\web\HttpException:405',
+                        'yii\web\User::getIdentityAndDurationFromCookie', 'yii\web\User::renewAuthStatus'
+                    ],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
                 [
                     'class' => \yii\log\DbTarget::class,
                     'levels' => ['error', 'warning'],
-                    'except' => ['yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403', 'yii\web\HttpException:404', 'yii\web\HttpException:405'],
+                    'except' => [
+                        'yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403',
+                        'yii\web\HttpException:404', 'yii\web\HttpException:405',
+                        'yii\web\User::getIdentityAndDurationFromCookie', 'yii\web\User::renewAuthStatus'
+                    ],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
             ],

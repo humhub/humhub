@@ -136,7 +136,8 @@ class UserProfileController extends Controller
             $definition['buttons']['delete'] = [
                 'type' => 'submit',
                 'label' => Yii::t('AdminModule.user', 'Delete'),
-                'class' => 'btn btn-danger pull-right'
+                'class' => 'btn btn-danger pull-right',
+                'options' => ['data-action-confirm' => ''],
             ];
         }
 
@@ -157,11 +158,13 @@ class UserProfileController extends Controller
             $fieldType = $form->models[$field->field_type_class];
 
             if ($field->save() && $fieldType->save()) {
+                $this->view->saved();
                 return $this->redirect(['/admin/user-profile']);
             }
         }
         if ($form->submitted('delete')) {
             $field->delete();
+            $this->view->success(Yii::t('AdminModule.user', 'Deleted'));
             return $this->redirect(['/admin/user-profile']);
         }
 

@@ -10,6 +10,7 @@
 namespace humhub\modules\topic\widgets;
 
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\models\Content;
 use humhub\widgets\ModalButton;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\content\widgets\WallEntryControlLink;
@@ -26,6 +27,10 @@ class ContentTopicButton extends WallEntryControlLink
 
     public function renderLink()
     {
+        if ($this->record->content->state === Content::STATE_DELETED) {
+            return '';
+        }
+
         return ModalButton::asLink(Yii::t('TopicModule.base', 'Topics'))->icon(Topic::getIcon())
             ->load(Url::to(['/topic/content-topic', 'contentId' => $this->record->content->id]));
     }

@@ -14,8 +14,6 @@ use humhub\modules\notification\models\forms\FilterForm;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\widgets\OverviewWidget;
 use Yii;
-use yii\data\Pagination;
-use yii\db\ActiveQuery;
 use yii\db\IntegrityException;
 
 /**
@@ -49,11 +47,9 @@ class OverviewController extends Controller
         $filterForm = $this->loadFilterForm($reload);
 
         if ($filterForm->hasFilter()) {
-            $query = $filterForm->createQuery();
-            $pagination = $this->preparePagination($query);
             $overview = OverviewWidget::widget([
-                'notifications' => $this->prepareNotifications($query->all()),
-                'pagination' => $pagination
+                'pagination' => $filterForm->getPagination(self::PAGINATION_PAGE_SIZE),
+                'notifications' => $this->prepareNotifications($filterForm->createQuery()->all()),
             ]);
         } else {
             $overview = OverviewWidget::widget([
@@ -61,25 +57,12 @@ class OverviewController extends Controller
             ]);
         }
 
-        return $reload ? $overview : $this->render('index', [
-            'overview' => $overview,
-            'filterForm' => $filterForm,
-        ]);
-    }
-
-    /**
-     * Creates a pagination instance from the given $query
-     *
-     * @param $query ActiveQuery
-     * @return Pagination
-     */
-    private function preparePagination($query)
-    {
-        $countQuery = clone $query;
-        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => static::PAGINATION_PAGE_SIZE]);
-        $query->offset($pagination->offset)->limit($pagination->limit);
-        return $pagination;
-
+        return $reload
+            ? $this->renderAjaxPartial($overview)
+            : $this->render('index', [
+                'overview' => $overview,
+                'filterForm' => $filterForm,
+            ]);
     }
 
     /**
@@ -88,7 +71,7 @@ class OverviewController extends Controller
      * @param bool $reload
      * @return FilterForm
      */
-    private function loadFilterForm($reload = false)
+    private function loadFilterForm(bool $reload = false): FilterForm
     {
         $filterForm = new FilterForm();
 
