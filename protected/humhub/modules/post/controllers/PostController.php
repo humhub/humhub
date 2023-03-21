@@ -43,7 +43,9 @@ class PostController extends ContentContainerController
             ->contentContainer($this->contentContainer)
             ->where(['post.id' => (int)$id])->one();
 
-        $this->checkContentIsReadable($post);
+        if (!$this->checkContentIsReadable($post)) {
+            return $this->renderNotAvailableContent();
+        }
 
         $this->view->setPageTitle(Yii::t('PostModule.base', 'Post'), true);
         $this->view->meta->setContent($post);

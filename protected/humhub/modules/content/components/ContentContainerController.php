@@ -163,11 +163,12 @@ class ContentContainerController extends Controller
             throw new NotFoundHttpException(Yii::t('base', 'The requested content cannot be displayed. Either it was deleted, you mistyped it or it is not available for you.'));
         }
 
-        if (!$record->content->canView($user)) {
-            throw new ForbiddenHttpException(Yii::t('base', 'This content is only available to members of this Space. Please become/request membership.'));
-        }
+        return $record->content->canView($user);
+    }
 
-        return true;
+    public function renderNotAvailableContent(): string
+    {
+        return $this->render('@content/views/content/notAvailable.php');
     }
 
     /**
