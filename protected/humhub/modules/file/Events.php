@@ -9,6 +9,7 @@
 namespace humhub\modules\file;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\search\engine\Search;
 use humhub\modules\file\models\File;
 use yii\base\Event;
@@ -87,7 +88,12 @@ class Events extends \yii\base\BaseObject
 
         // Check if primary key exists and is not array (multiple pk)
         if ($pk !== null && !is_array($pk)) {
-            foreach (File::find()->where(['object_id' => $pk, 'object_model' => $record->class()])->all() as $file) {
+            $class = get_class($record);
+            if ($record instanceof ContentActiveRecord) {
+                $class = $class::getObjectModel();
+            }
+
+            foreach (File::find()->where(['object_id' => $pk, 'object_model' => $class])->all() as $file) {
                 $file->delete();
             }
         }
@@ -113,7 +119,12 @@ class Events extends \yii\base\BaseObject
             $event->attributes['files'] = [];
         }
 
-        foreach (File::findAll(['object_model' => $event->record->class(), 'object_id' => $event->record->id]) as $file) {
+        $class = get_class($event->record);
+        if ($event->record instanceof ContentActiveRecord) {
+            $class = $class::getObjectModel();
+        }
+
+        foreach (File::findAll(['object_model' => $class, 'object_id' => $event->record->id]) as $file) {
             /* @var $file File */
 
             $textContent = null;

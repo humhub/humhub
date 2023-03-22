@@ -8,6 +8,7 @@
 namespace humhub\components\behaviors;
 
 use Exception;
+use humhub\modules\content\components\ContentActiveRecord;
 use ReflectionClass;
 use ReflectionException;
 use Yii;
@@ -88,7 +89,11 @@ class PolymorphicRelation extends Behavior
         if ($this->validateUnderlyingObjectType($object)) {
             $this->cached = $object;
             if ($object instanceof \humhub\components\ActiveRecord) {
-                $this->owner->setAttribute($this->classAttribute, $object->class());
+                $class = get_class($object);
+                if ($object instanceof ContentActiveRecord) {
+                    $class = $class::getObjectModel();
+                }
+                $this->owner->setAttribute($this->classAttribute, $class);
                 $this->owner->setAttribute($this->pkAttribute, $object->getPrimaryKey());
             }
         }

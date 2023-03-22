@@ -136,7 +136,7 @@ class ActiveQueryContent extends ActiveQuery
             $this->andWhere(['IS', 'contentcontainer.pk', new \yii\db\Expression('NULL')]);
         } else {
             $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
-            $this->andWhere(['contentcontainer.pk' => $container->id, 'contentcontainer.class' => $container->class()]);
+            $this->andWhere(['contentcontainer.pk' => $container->id, 'contentcontainer.class' => get_class($container)]);
         }
 
         return $this;

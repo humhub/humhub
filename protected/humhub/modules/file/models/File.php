@@ -277,7 +277,12 @@ class File extends FileCompat
      */
     public static function findByRecord(ActiveRecord $record): array
     {
-        return self::findAll(['object_model' => $record->class(), 'object_id' => $record->getPrimaryKey()]);
+        $class = get_class($record);
+        if ($record instanceof ContentActiveRecord) {
+            $class = $class::getObjectModel();
+        }
+
+        return self::findAll(['object_model' => $class, 'object_id' => $record->getPrimaryKey()]);
     }
 
     /**

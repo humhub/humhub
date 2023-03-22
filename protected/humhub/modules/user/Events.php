@@ -46,8 +46,10 @@ class Events extends BaseObject
         /* @var ContentActiveRecord $content */
         $content = $event->sender;
 
-        Mentioning::deleteAll(['object_model' => $content->class(), 'object_id' => $content->getPrimaryKey()]);
-        Follow::deleteAll(['object_model' => $content->class(), 'object_id' => $content->getPrimaryKey()]);
+        $class = get_class($content)::getObjectModel();
+
+        Mentioning::deleteAll(['object_model' => $class, 'object_id' => $content->getPrimaryKey()]);
+        Follow::deleteAll(['object_model' => $class, 'object_id' => $content->getPrimaryKey()]);
     }
 
     /**

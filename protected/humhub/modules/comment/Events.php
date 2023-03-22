@@ -130,7 +130,12 @@ class Events extends Component
             $event->attributes['comments'] = [];
         }
 
-        foreach (Comment::findAll(['object_model' => $event->record->class(), 'object_id' => $event->record->id]) as $comment) {
+        $class = get_class($event->record);
+        if ($event->record instanceof ContentActiveRecord) {
+            $class = $class::getObjectModel();
+        }
+
+        foreach (Comment::findAll(['object_model' => $class, 'object_id' => $event->record->id]) as $comment) {
             /* @var $comment Comment */
             $event->attributes['comments'][$comment->id] = [
                 'author' => ($comment->user !== null) ? $comment->user->displayName : '',

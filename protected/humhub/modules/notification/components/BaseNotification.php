@@ -403,8 +403,13 @@ abstract class BaseNotification extends SocialActivity
         }
 
         if ($this->source !== null) {
+            $sourceClass = get_class($this->source);
+            if ($this->source instanceof ContentActiveRecord) {
+                $sourceClass = $sourceClass::getObjectModel();
+            }
+
             $condition['source_pk'] = $this->source->getPrimaryKey();
-            $condition['source_class'] = $this->source->class();
+            $condition['source_class'] = $sourceClass;
         }
 
         Notification::deleteAll($condition);

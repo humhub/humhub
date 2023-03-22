@@ -122,7 +122,7 @@ class ContentContainerModuleManager extends \yii\base\Component
      */
     public function canDisable($id)
     {
-        if (!$this->isEnabled($id) || self::getDefaultState($this->contentContainer->class(), $id) === ContentContainerModuleState::STATE_FORCE_ENABLED) {
+        if (!$this->isEnabled($id) || self::getDefaultState(get_class($this->contentContainer), $id) === ContentContainerModuleState::STATE_FORCE_ENABLED) {
             return false;
         }
 
@@ -164,7 +164,7 @@ class ContentContainerModuleManager extends \yii\base\Component
 
         foreach (Yii::$app->moduleManager->getModules() as $id => $module) {
             if ($module instanceof ContentContainerModule && $module->isActivated &&
-                $module->hasContentContainerType($this->contentContainer->class())) {
+                $module->hasContentContainerType(get_class($this->contentContainer))) {
                 $this->_available[$module->id] = $module;
             }
         }

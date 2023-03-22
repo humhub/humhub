@@ -109,20 +109,25 @@ abstract class Search extends Component
 
     protected function getMetaInfoArray(Searchable $obj)
     {
+        $class = get_class($obj);
+        if ($obj instanceof ContentActiveRecord) {
+            $class = $class::getObjectModel();
+        }
+
         $meta = [];
         $meta['type'] = $this->getDocumentType($obj);
         $meta['pk'] = $obj->getPrimaryKey();
-        $meta['model'] = $obj->class();
+        $meta['model'] = $class;
 
         if ($obj instanceof ContentContainerActiveRecord) {
-            $meta['containerModel'] = $obj->class();
+            $meta['containerModel'] = get_class($obj);
             $meta['containerPk'] = $obj->id;
         }
 
         // Add content related meta data
         if ($meta['type'] == self::DOCUMENT_TYPE_CONTENT) {
             if ($obj->content->container !== null) {
-                $meta['containerModel'] = $obj->content->container->class();
+                $meta['containerModel'] = get_class($obj->content->container);
                 $meta['containerPk'] = $obj->content->container->id;
             }
             if ($obj->content->visibility == Content::VISIBILITY_PUBLIC) {

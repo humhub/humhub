@@ -3,6 +3,7 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
 use yii\base\Model;
 use yii\helpers\Html;
@@ -270,7 +271,11 @@ class UploadInput extends JsWidget
         }
 
         if ($this->model instanceof ActiveRecord && $this->attach) {
-            $result['upload-model'] = $this->model->class();
+            $class = get_class($this->model);
+            if ($this->model instanceof ContentActiveRecord) {
+                $class = $class::getObjectModel();
+            }
+            $result['upload-model'] = $class;
             $result['upload-model-id'] = $this->model->getPrimaryKey();
         }
 

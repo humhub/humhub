@@ -3,6 +3,7 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\content\components\ContentActiveRecord;
 
 /**
  * FileUploadButtonWidget creates an upload button / system.
@@ -45,10 +46,14 @@ class FileUploadButton extends \yii\base\Widget
      */
     public function run()
     {
-        $objectModel = "";
-        $objectId = "";
+        $objectModel = '';
+        $objectId = '';
         if ($this->object !== null) {
-            $objectModel = $this->object->class();
+            $class = get_class($this->object);
+            if ($this->object instanceof ContentActiveRecord) {
+                $class = $class::getObjectModel();
+            }
+            $objectModel = $class;
             $objectId = $this->object->getPrimaryKey();
         }
 

@@ -216,14 +216,4 @@ class ActiveRecord extends \yii\db\ActiveRecord
 
         return $validators;
     }
-
-    /**
-     * Get class name of this Active Record
-     *
-     * @return string
-     */
-    public function class(): string
-    {
-        return static::class;
-    }
 }

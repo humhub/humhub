@@ -476,14 +476,6 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     }
 
     /**
-     * @inheritdoc
-     */
-    public function class(): string
-    {
-        return static::getObjectModel();
-    }
-
-    /**
      * Marks this content for deletion (soft delete).
      * Use `hardDelete()` method to delete record immediately.
      *

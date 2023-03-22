@@ -10,6 +10,7 @@ namespace humhub\modules\like;
 
 use humhub\components\ActiveRecord;
 use humhub\components\Event;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\like\models\Like;
 use Yii;
 
@@ -52,7 +53,12 @@ class Events extends \yii\base\BaseObject
         /** @var ActiveRecord $record */
         $record = $event->sender;
         if ($record->hasAttribute('id')) {
-            foreach (Like::findAll(['object_id' => $record->id, 'object_model' => $record->class()]) as $like) {
+            $class = get_class($record);
+            if ($record instanceof ContentActiveRecord) {
+                $class = $class::getObjectModel();
+            }
+
+            foreach (Like::findAll(['object_id' => $record->id, 'object_model' => $class]) as $like) {
                 $like->delete();
             }
         }

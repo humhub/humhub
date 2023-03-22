@@ -10,6 +10,7 @@ namespace humhub\components;
 
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\comment\models\Comment;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
@@ -309,7 +310,11 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
         }
 
         if ($this->source) {
-            $result['source_class'] = $this->source->class();
+            $sourceClass = get_class($this->source);
+            if ($this->source instanceof ContentActiveRecord) {
+                $sourceClass = $sourceClass::getObjectModel();
+            }
+            $result['source_class'] = $sourceClass;
             $result['source_pk'] = $this->source->getPrimaryKey();
             $result['space_id'] = $this->source->getSpaceId();
         }
