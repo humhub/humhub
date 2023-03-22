@@ -9,8 +9,8 @@
 namespace humhub\modules\like;
 
 use humhub\components\ActiveRecord;
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Event;
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\like\models\Like;
 use Yii;
 
@@ -53,12 +53,7 @@ class Events extends \yii\base\BaseObject
         /** @var ActiveRecord $record */
         $record = $event->sender;
         if ($record->hasAttribute('id')) {
-            $class = get_class($record);
-            if ($record instanceof ContentActiveRecord) {
-                $class = $class::getObjectModel();
-            }
-
-            foreach (Like::findAll(['object_id' => $record->id, 'object_model' => $class]) as $like) {
+            foreach (Like::findAll(['object_id' => $record->id, 'object_model' => PolymorphicRelation::getObjectModel($record)]) as $like) {
                 $like->delete();
             }
         }

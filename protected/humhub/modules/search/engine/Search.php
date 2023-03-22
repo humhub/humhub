@@ -8,6 +8,7 @@
 
 namespace humhub\modules\search\engine;
 
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -109,15 +110,10 @@ abstract class Search extends Component
 
     protected function getMetaInfoArray(Searchable $obj)
     {
-        $class = get_class($obj);
-        if ($obj instanceof ContentActiveRecord) {
-            $class = $class::getObjectModel();
-        }
-
         $meta = [];
         $meta['type'] = $this->getDocumentType($obj);
         $meta['pk'] = $obj->getPrimaryKey();
-        $meta['model'] = $class;
+        $meta['model'] = PolymorphicRelation::getObjectModel($obj);
 
         if ($obj instanceof ContentContainerActiveRecord) {
             $meta['containerModel'] = get_class($obj);

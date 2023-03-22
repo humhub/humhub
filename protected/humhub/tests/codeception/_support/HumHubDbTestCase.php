@@ -3,9 +3,9 @@
 namespace tests\codeception\_support;
 
 use Codeception\Test\Unit;
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\libs\BasePermission;
 use humhub\models\UrlOembed;
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
@@ -162,12 +162,7 @@ class HumHubDbTestCase extends Unit
 
     public function assertEqualsNotificationCount($count, $class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
     {
-        $sourceClass = get_class($source);
-        if ($source instanceof ContentActiveRecord) {
-            $sourceClass = $sourceClass::getObjectModel();
-        }
-
-        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => $sourceClass, 'source_pk' => $source->getPrimaryKey()]);
+        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => PolymorphicRelation::getObjectModel($source), 'source_pk' => $source->getPrimaryKey()]);
 
         if ($originator_id != null) {
             $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
@@ -182,12 +177,7 @@ class HumHubDbTestCase extends Unit
 
     public function assertHasNoNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
     {
-        $sourceClass = get_class($source);
-        if ($source instanceof ContentActiveRecord) {
-            $sourceClass = $sourceClass::getObjectModel();
-        }
-
-        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => $sourceClass, 'source_pk' => $source->getPrimaryKey()]);
+        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => PolymorphicRelation::getObjectModel($source), 'source_pk' => $source->getPrimaryKey()]);
 
         if ($originator_id != null) {
             $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
@@ -202,14 +192,9 @@ class HumHubDbTestCase extends Unit
 
     public function assertHasActivity($class, ActiveRecord $source, $msg = '')
     {
-        $sourceClass = get_class($source);
-        if ($source instanceof ContentActiveRecord) {
-            $sourceClass = $sourceClass::getObjectModel();
-        }
-
         $activity = Activity::findOne([
             'class' => $class,
-            'object_model' => $sourceClass,
+            'object_model' => PolymorphicRelation::getObjectModel($source),
             'object_id' => $source->getPrimaryKey(),
         ]);
         $this->assertNotNull($activity, $msg);

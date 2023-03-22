@@ -13,6 +13,7 @@ use ReflectionClass;
 use ReflectionException;
 use Yii;
 use yii\base\Behavior;
+use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\db\BaseActiveRecord;
 use yii\db\IntegrityException;
@@ -88,15 +89,18 @@ class PolymorphicRelation extends Behavior
     {
         if ($this->validateUnderlyingObjectType($object)) {
             $this->cached = $object;
-            if ($object instanceof \humhub\components\ActiveRecord) {
-                $class = get_class($object);
-                if ($object instanceof ContentActiveRecord) {
-                    $class = $class::getObjectModel();
-                }
-                $this->owner->setAttribute($this->classAttribute, $class);
+            if ($object instanceof ActiveRecord) {
+                $this->owner->setAttribute($this->classAttribute, self::getObjectModel($object));
                 $this->owner->setAttribute($this->pkAttribute, $object->getPrimaryKey());
             }
         }
+    }
+
+    public static function getObjectModel(Model $object): string
+    {
+        return $object instanceof ContentActiveRecord
+            ? $object::getObjectModel()
+            : get_class($object);
     }
 
     /**

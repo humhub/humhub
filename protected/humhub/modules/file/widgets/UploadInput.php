@@ -3,12 +3,12 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\components\ActiveRecord;
-use humhub\modules\content\components\ContentActiveRecord;
+use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\file\models\File;
+use humhub\widgets\JsWidget;
 use Yii;
 use yii\base\Model;
 use yii\helpers\Html;
-use humhub\modules\file\models\File;
-use humhub\widgets\JsWidget;
 
 /**
  * The file input will upload files either to the given $url or to the default
@@ -271,11 +271,7 @@ class UploadInput extends JsWidget
         }
 
         if ($this->model instanceof ActiveRecord && $this->attach) {
-            $class = get_class($this->model);
-            if ($this->model instanceof ContentActiveRecord) {
-                $class = $class::getObjectModel();
-            }
-            $result['upload-model'] = $class;
+            $result['upload-model'] = PolymorphicRelation::getObjectModel($this->model);
             $result['upload-model-id'] = $this->model->getPrimaryKey();
         }
 

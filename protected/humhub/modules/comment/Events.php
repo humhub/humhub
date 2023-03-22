@@ -8,6 +8,7 @@
 
 namespace humhub\modules\comment;
 
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\comment\models\Comment;
@@ -130,12 +131,7 @@ class Events extends Component
             $event->attributes['comments'] = [];
         }
 
-        $class = get_class($event->record);
-        if ($event->record instanceof ContentActiveRecord) {
-            $class = $class::getObjectModel();
-        }
-
-        foreach (Comment::findAll(['object_model' => $class, 'object_id' => $event->record->id]) as $comment) {
+        foreach (Comment::findAll(['object_model' => PolymorphicRelation::getObjectModel($event->record), 'object_id' => $event->record->id]) as $comment) {
             /* @var $comment Comment */
             $event->attributes['comments'][$comment->id] = [
                 'author' => ($comment->user !== null) ? $comment->user->displayName : '',

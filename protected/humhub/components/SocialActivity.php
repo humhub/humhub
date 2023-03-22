@@ -8,22 +8,21 @@
 
 namespace humhub\components;
 
+use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\comment\models\Comment;
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\user\models\User;
-use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
-use humhub\modules\content\interfaces\ContentOwner;
 use Yii;
 use yii\base\BaseObject;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
-use Exception;
 
 /**
  * This class represents a social Activity triggered within the network.
@@ -310,11 +309,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
         }
 
         if ($this->source) {
-            $sourceClass = get_class($this->source);
-            if ($this->source instanceof ContentActiveRecord) {
-                $sourceClass = $sourceClass::getObjectModel();
-            }
-            $result['source_class'] = $sourceClass;
+            $result['source_class'] = PolymorphicRelation::getObjectModel($this->source);
             $result['source_pk'] = $this->source->getPrimaryKey();
             $result['space_id'] = $this->source->getSpaceId();
         }

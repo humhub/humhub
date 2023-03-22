@@ -8,6 +8,7 @@
 
 namespace humhub\modules\notification\components;
 
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\SocialActivity;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
@@ -403,13 +404,8 @@ abstract class BaseNotification extends SocialActivity
         }
 
         if ($this->source !== null) {
-            $sourceClass = get_class($this->source);
-            if ($this->source instanceof ContentActiveRecord) {
-                $sourceClass = $sourceClass::getObjectModel();
-            }
-
             $condition['source_pk'] = $this->source->getPrimaryKey();
-            $condition['source_class'] = $sourceClass;
+            $condition['source_class'] = PolymorphicRelation::getObjectModel($this->source);
         }
 
         Notification::deleteAll($condition);
