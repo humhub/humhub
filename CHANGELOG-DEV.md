@@ -10,6 +10,7 @@ HumHub Changelog (DEVELOP)
 - Enh #6184: Use same font for RichText editor as it looks on view mode
 - Enh #6181: Replace png "search" icon with font-awesome icon
 - Fix #5537: Space Starting Page gets lost when changing URL
+- Enh #5681: People: Add Group Description
 
 1.14.0-beta.1 (March 10, 2023)
 ------------------------------
