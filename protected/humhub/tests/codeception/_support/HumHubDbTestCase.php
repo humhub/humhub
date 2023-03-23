@@ -141,7 +141,7 @@ class HumHubDbTestCase extends Unit
     {
         $notificationQuery = Notification::find()->where([
             'class' => $class,
-            'source_class' => get_class($source),
+            'source_class' => PolymorphicRelation::getObjectModel($source),
             'source_pk' => $source->getPrimaryKey(),
         ]);
         if(is_string($target_id)) {

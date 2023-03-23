@@ -213,7 +213,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function getContentName()
     {
-        return static::class;
+        return static::getObjectModel();
     }
 
     /**

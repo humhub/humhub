@@ -9,6 +9,7 @@ namespace humhub\components\behaviors;
 
 use Exception;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 use ReflectionClass;
 use ReflectionException;
 use Yii;
@@ -98,7 +99,7 @@ class PolymorphicRelation extends Behavior
 
     public static function getObjectModel(Model $object): string
     {
-        return $object instanceof ContentActiveRecord
+        return $object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord
             ? $object::getObjectModel()
             : get_class($object);
     }
