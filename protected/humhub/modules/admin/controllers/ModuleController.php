@@ -87,7 +87,7 @@ class ModuleController extends Controller
         }
 
         if (QueueHelper::isQueued(new DisableModuleJob(['moduleId' => $moduleId]))) {
-            $this->view->error(Yii::t('AdminModule.modules', 'Could not enable requested module right now.'));
+            $this->view->error(Yii::t('AdminModule.modules', 'Deactivation of this module has not been completed yet. Please retry in a few minutes.'));
         } else {
             $module->enable();
         }
