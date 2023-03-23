@@ -9,6 +9,7 @@ HumHub Changelog (DEVELOP)
 - Enh #6171: Make email in user administration and user approval clickable
 - Enh #6184: Use same font for RichText editor as it looks on view mode
 - Enh #6181: Replace png "search" icon with font-awesome icon
+- Fix #5537: Space Starting Page gets lost when changing URL
 
 1.14.0-beta.1 (March 10, 2023)
 ------------------------------

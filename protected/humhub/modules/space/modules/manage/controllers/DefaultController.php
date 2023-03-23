@@ -71,9 +71,9 @@ class DefaultController extends Controller
         }
 
         $indexModuleSelection = Menu::getAvailablePages();
-        unset($indexModuleSelection[Url::to(['/space/home', 'container' => $this->contentContainer])]);
+        unset($indexModuleSelection[Url::to(['/space/space/home', 'container' => $this->contentContainer])]);
 
-        // To avoid infinit redirects of actionIndex we remove the stream value and set an empty selection instead
+        // To avoid infinite redirects of actionIndex we remove the stream value and set an empty selection instead
         $indexModuleSelection = ['' => Yii::t('SpaceModule.manage', 'Stream (Default)')] + $indexModuleSelection;
 
         return $this->render('advanced', [
