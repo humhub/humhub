@@ -13,8 +13,8 @@ use humhub\exceptions\InvalidArgumentTypeException;
 use Stringable;
 use Yii;
 use yii\base\Component;
-use yii\base\Exception;
 use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
 use yii\db\conditions\LikeCondition;
 use yii\db\StaleObjectException;
 use yii\helpers\Json;
@@ -28,9 +28,9 @@ use yii\helpers\Json;
 abstract class BaseSettingsManager extends Component
 {
     /**
-     * @var string|null module id this settings manager belongs to.
+     * @var string module id this settings manager belongs to.
      */
-    public ?string $moduleId = null;
+    public string $moduleId;
 
     /**
      * @var array|null of loaded settings
@@ -47,14 +47,19 @@ abstract class BaseSettingsManager extends Component
      */
     public function init()
     {
-        if ($this->moduleId === null) {
-            throw new Exception('Could not determine module id');
+        try {
+            if ($this->moduleId === '') {
+                throw new InvalidConfigException('Empty module id!', 1);
+            }
+        } catch (InvalidConfigException $t) {
+            throw $t;
+        } catch (\Throwable $t) {
+            throw new InvalidConfigException('Module id not set!', 2);
         }
 
         if (static::isDatabaseInstalled()) {
             $this->loadValues();
         }
-
 
         parent::init();
     }
@@ -63,12 +68,21 @@ abstract class BaseSettingsManager extends Component
      * Sets a settings value
      *
      * @param string $name
-     * @param string $value
+     * @param string|int|bool $value
+     *
+     * @return void
      */
-    public function set($name, $value)
+    public function set(string $name, $value)
     {
+        if ($name === '') {
+            throw new InvalidArgumentException(
+                sprintf('Argument #1 ($name) passed to %s may not be an empty string!', __METHOD__)
+            );
+        }
+
         if ($value === null) {
-            return $this->delete($name);
+             $this->delete($name);
+            return;
         }
 
         // Update database setting record
