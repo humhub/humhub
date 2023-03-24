@@ -859,13 +859,17 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             return $this->checkGuestAccess();
         }
 
-        // Public visible content
-        if ($this->isPublic()) {
+        // Check system admin can see all content module configuration
+        if ($user->canViewAllContent()) {
             return true;
         }
 
-        // Check system admin can see all content module configuration
-        if ($user->canViewAllContent()) {
+        if ($this->getContainer() !== null && !$this->getContainer()->canView($user)) {
+            return false;
+        }
+
+        // Public visible content
+        if ($this->isPublic()) {
             return true;
         }
 

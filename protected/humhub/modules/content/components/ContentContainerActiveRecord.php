@@ -159,6 +159,17 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     }
 
     /**
+     * Checks if the user is allowed to view a content in this container
+     *
+     * @param User|null $user
+     * @return bool
+     */
+    public function canView(?User $user = null): bool
+    {
+        return false;
+    }
+
+    /**
      * Returns the wall output for this content container.
      * This is e.g. used in search results.
      *
