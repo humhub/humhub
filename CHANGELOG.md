@@ -15,6 +15,7 @@ HumHub Changelog
 - Fix #6145: Fix duplicate people cards on sort
 - Fix #6152: Avoid duplicate container(Space/User) tags on save
 - Fix #6182: Fix Date and Datetime profile field type with null values on PHP 8.1+
+- Fix #6191: Deny to view a public content from private container
 
 1.13.1 (January 25, 2023)
 -------------------------
