@@ -9,9 +9,9 @@
 namespace humhub\modules\user\controllers;
 
 use humhub\components\access\ControllerAccess;
-use humhub\modules\space\models\forms\InviteForm;
-use humhub\modules\space\models\Space;
+use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
+use humhub\modules\user\widgets\AuthChoice;
 use Yii;
 use yii\base\Exception;
 use yii\web\HttpException;
@@ -71,12 +71,14 @@ class RegistrationController extends Controller
          */
         $authClient = null;
         $inviteToken = Yii::$app->request->get('token', '');
+        $showAuthClients = AuthChoice::hasClients();
 
         if ($inviteToken != '') {
             $this->handleInviteRegistration($inviteToken, $registration);
         } elseif (Yii::$app->session->has('authClient')) {
             $authClient = Yii::$app->session->get('authClient');
             $this->handleAuthClientRegistration($authClient, $registration);
+            $showAuthClients = false;
         } else {
             Yii::warning('Registration failed: No token (query) or authclient (session) found!', 'user');
             Yii::$app->session->setFlash('error', 'Registration failed.');
@@ -102,7 +104,10 @@ class RegistrationController extends Controller
             ]);
         }
 
-        return $this->render('index', ['hForm' => $registration]);
+        return $this->render('index', [
+            'hForm' => $registration,
+            'showAuthClient' => $showAuthClients,
+        ]);
     }
 
 
@@ -115,22 +120,13 @@ class RegistrationController extends Controller
      */
     public function actionByLink($token = null, $spaceId = null)
     {
-        if (empty($this->module->settings->get('auth.internalUsersCanInviteByLink'))) {
-            throw new HttpException(400, 'Invite by link is disabled!');
-        }
+        AuthHelper::handleInviteByLinkRegistration($token, $spaceId);
 
-        if ($spaceId !== null) {
-            // If invited by link from a space
-            $space = Space::findOne(['id' => (int)$spaceId]);
-            if ($space === null || $space->settings->get('inviteToken') !== $token) {
-                throw new HttpException(404, 'Invalid registration token!');
-            }
-
-            Yii::$app->setLanguage($space->ownerUser->language);
-        } else {
-            // If invited by link globally
-            if ($this->module->settings->get('registration.inviteToken') !== $token) {
-                throw new HttpException(404, 'Invalid registration token!');
+        // Check if all external auth clients can accept params in the return URL allowing to skip email validation
+        $allAuthClientsCanSkipEmailValidation = true;
+        foreach ((new AuthChoice())->clients as $client) {
+            if (!property_exists($client, 'parametersToKeepInReturnUrl')) {
+                $allAuthClientsCanSkipEmailValidation = false;
             }
         }
 
@@ -148,22 +144,8 @@ class RegistrationController extends Controller
 
         return $this->render('byLink', [
             'invite' => $invite,
+            'showAuthClients' => $allAuthClientsCanSkipEmailValidation,
         ]);
-    }
-
-    /**
-     * @param $inviteToken
-     * @param Registration $form
-     * @throws HttpException
-     */
-    protected function handleInviteByEmailRegistration($inviteToken, Registration $form)
-    {
-        $userInvite = Invite::findOne(['token' => $inviteToken]);
-        if (!$userInvite) {
-            throw new HttpException(404, 'Invalid registration token!');
-        }
-        Yii::$app->setLanguage($userInvite->language);
-        $form->getUser()->email = $userInvite->email;
     }
 
     /**

@@ -10,9 +10,11 @@
 namespace humhub\modules\user\helpers;
 
 
+use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
+use yii\web\HttpException;
 
 /**
  * Class AuthHelper
@@ -84,5 +86,33 @@ class AuthHelper
         }
 
         return $username . $usernameRandomSuffix;
+    }
+
+    /**
+     * @param string $token
+     * @param string|null $spaceId
+     * @return void
+     * @throws HttpException
+     */
+    public static function handleInviteByLinkRegistration(string $token, ?string $spaceId = null)
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if (empty($module->settings->get('auth.internalUsersCanInviteByLink'))) {
+            throw new HttpException(400, 'Invite by link is disabled!');
+        }
+
+        if ($spaceId !== null) {
+            // If invited by link from a space
+            $space = Space::findOne(['id' => (int)$spaceId]);
+            if ($space === null || $space->settings->get('inviteToken') !== $token) {
+                throw new HttpException(404, 'Invalid registration token!');
+            }
+            Yii::$app->setLanguage($space->ownerUser->language);
+        } else if ($module->settings->get('registration.inviteToken') !== $token) {
+            // If invited by link globally
+            throw new HttpException(404, 'Invalid registration token!');
+        }
     }
 }
