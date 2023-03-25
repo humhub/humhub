@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.13.2 (Unreleased)
 -------------------------
+- Fix #6195: Fix ModuleManager disabling logging when now modules set
 - Fix #5965: Suppress log warning 'Invalid session auth key attempted for user'
 - Fix #6084: Automatic LDAP user registration broken when not all req. attributes provided
 - Fix #6104: Fix update user with not existing group
