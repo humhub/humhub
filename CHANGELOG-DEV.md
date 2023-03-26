@@ -11,6 +11,7 @@ HumHub Changelog (DEVELOP)
 - Enh #6181: Replace png "search" icon with font-awesome icon
 - Fix #5537: Space Starting Page gets lost when changing URL
 - Enh #5681: People: Add Group Description
+- Enh: Updated translations. User module. Ukrainian
 
 1.14.0-beta.1 (March 10, 2023)
 ------------------------------
