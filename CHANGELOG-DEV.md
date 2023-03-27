@@ -12,6 +12,7 @@ HumHub Changelog (DEVELOP)
 - Fix #5537: Space Starting Page gets lost when changing URL
 - Enh #5681: People: Add Group Description
 - Enh #6197: Updated translations. User module. Ukrainian
+- Enh #6187: Deny custom input for Space Picker field
 
 1.14.0-beta.1 (March 10, 2023)
 ------------------------------
