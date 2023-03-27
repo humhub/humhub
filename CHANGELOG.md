@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.13.2 (Unreleased)
--------------------------
+1.13.2 (March 27, 2023)
+-----------------------
 - Fix #5965: Suppress log warning 'Invalid session auth key attempted for user'
 - Fix #6084: Automatic LDAP user registration broken when not all req. attributes provided
 - Fix #6104: Fix update user with not existing group
