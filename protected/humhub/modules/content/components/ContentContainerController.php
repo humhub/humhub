@@ -160,7 +160,7 @@ class ContentContainerController extends Controller
     protected function checkContentIsReadable(?ContentActiveRecord $record, $user = null): bool
     {
         if (!($record instanceof ContentActiveRecord)) {
-            throw new NotFoundHttpException(Yii::t('base', 'The requested content cannot be displayed. Either it was deleted, you mistyped it or it is not available for you.'));
+            throw new NotFoundHttpException(Yii::t('base', 'The requested content cannot be displayed. Either it was deleted, you mistyped it or it is currently not available for you.'));
         }
 
         return $record->content->canView($user);
