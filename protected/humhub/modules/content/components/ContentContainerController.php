@@ -168,7 +168,9 @@ class ContentContainerController extends Controller
 
     public function renderNotAvailableContent(): string
     {
-        return $this->render('@content/views/content/notAvailable.php');
+        return $this->render('@content/views/content/notAvailable.php', [
+            'container' => $this->contentContainer
+        ]);
     }
 
     /**
