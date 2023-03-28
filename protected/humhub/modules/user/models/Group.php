@@ -231,10 +231,10 @@ class Group extends ActiveRecord
         return self::findOne(['is_admin_group' => '1']);
     }
 
-    public static function getAdminGroupId()
+    public static function getAdminGroupId(): int
     {
         $adminGroupId = Yii::$app->getModule('user')->settings->get('group.adminGroupId');
-        if ($adminGroupId == null) {
+        if ($adminGroupId === null) {
             $adminGroupId = self::getAdminGroup()->id;
             Yii::$app->getModule('user')->settings->set('group.adminGroupId', $adminGroupId);
         }

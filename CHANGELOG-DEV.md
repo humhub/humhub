@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.15.0 (Unreleased)
 -------------------
+- Fix #6192: Where Group::getAdminGroupId() would sometimes return int, sometimes string
 - Enh #6260: Improve migration class
 - Fix #6199: Module manager Add types to properties
 - Enh #6236: Logging: Show log entries from migrations with category migration
