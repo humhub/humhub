@@ -1,10 +1,6 @@
 HumHub Changelog
 ================
 
-1.14.0 (Unreleased)
--------------------------
-- Fix #6196: Use class names for default logging targets in default common config
-
 1.13.2 (March 27, 2023)
 -----------------------
 - Fix #5965: Suppress log warning 'Invalid session auth key attempted for user'
