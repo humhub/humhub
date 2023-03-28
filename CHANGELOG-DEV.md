@@ -1,6 +1,10 @@
 HumHub Changelog (DEVELOP)
 ==========================
 
+1.14.0-beta.3 (Develop)
+------------------------------
+- Fix #6196: Use class names for default logging targets in default common config
+
 1.14.0-beta.2 (March 28, 2023)
 ------------------------------
 - Enh #6173: Theme variables `background-color-highlight` and `background-color-highlight-soft`
