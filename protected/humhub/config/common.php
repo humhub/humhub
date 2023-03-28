@@ -54,7 +54,7 @@ $config = [
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
-                [
+                \yii\log\FileTarget::class => [
                     'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
                     'except' => [
@@ -64,7 +64,7 @@ $config = [
                     ],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
-                [
+                \yii\log\DbTarget::class =>[
                     'class' => \yii\log\DbTarget::class,
                     'levels' => ['error', 'warning'],
                     'except' => [
