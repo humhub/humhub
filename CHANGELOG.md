@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.13.3 (Unreleased)
+--------------------
+- Fix #6195: Fix `ModuleManager` disabling logging when no modules set
+
 1.13.2 (March 27, 2023)
 -----------------------
 - Fix #5965: Suppress log warning 'Invalid session auth key attempted for user'
