@@ -1,7 +1,7 @@
 HumHub Changelog (DEVELOP)
 ==========================
 
-1.14.0-beta.2 (Unreleased)
+1.14.0-beta.2 (March 28, 2023)
 ------------------------------
 - Enh #6173: Theme variables `background-color-highlight` and `background-color-highlight-soft`
 - Fix #6099: Empty buttons in GlobalConfirmModal footer
