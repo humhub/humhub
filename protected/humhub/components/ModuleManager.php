@@ -70,9 +70,9 @@ class ModuleManager extends Component
      * List of all modules
      * This also contains installed but not enabled modules.
      *
-     * @param array $config moduleId-class pairs
+     * @param array $modules moduleId-class pairs
      */
-    protected $modules;
+    protected $modules = [];
 
     /**
      * List of all enabled module ids
