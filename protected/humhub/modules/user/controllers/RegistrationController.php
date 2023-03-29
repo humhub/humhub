@@ -9,6 +9,7 @@
 namespace humhub\modules\user\controllers;
 
 use humhub\components\access\ControllerAccess;
+use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
 use humhub\modules\user\widgets\AuthChoice;
@@ -107,7 +108,7 @@ class RegistrationController extends Controller
 
         return $this->render('index', [
             'hForm' => $registration,
-            'showAuthClient' => $showAuthClients,
+            'showAuthClients' => $showAuthClients,
         ]);
     }
 
@@ -127,8 +128,12 @@ class RegistrationController extends Controller
 
         // Check if all external auth clients can accept params in the return URL allowing to skip email validation
         $allAuthClientsCanSkipEmailValidation = true;
-        foreach ((new AuthChoice())->clients as $client) {
-            if (!property_exists($client, 'parametersToKeepInReturnUrl')) {
+        $collection = Yii::$app->get('authClientCollection');
+        foreach ($collection->getClients() as $client) {
+            if (
+                !$client instanceof BaseFormAuth
+                && !property_exists($client, 'parametersToKeepInReturnUrl')
+            ) {
                 $allAuthClientsCanSkipEmailValidation = false;
             }
         }
