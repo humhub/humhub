@@ -187,13 +187,13 @@ class AuthController extends Controller
                 if ($invite === null) {
                     $invite = new Invite([
                         'email' => $attributes['email'],
-                        'source' => Invite::SOURCE_INVITE_BY_LINK,
-                        'space_invite_id' => $inviteSpaceId,
                         'scenario' => 'invite',
                         'language' => Yii::$app->language,
-                        'skipCaptchaValidation' => true,
                     ]);
                 }
+                $invite->source = Invite::SOURCE_INVITE_BY_LINK;
+                $invite->space_invite_id = $inviteSpaceId;
+                $invite->skipCaptchaValidation = true;
                 if ($invite->save()) {
                     $inviteToken = $invite->token;
                 }
