@@ -744,6 +744,28 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
+     * @inheritdoc
+     */
+    public function canView(?User $user = null): bool
+    {
+        if ($this->visibility === User::VISIBILITY_ALL) {
+            return true;
+        }
+
+        $user = !$user && !Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : $user;
+
+        if (!$user) {
+            return false;
+        }
+
+        if ($this->visibility === User::VISIBILITY_REGISTERED_ONLY) {
+            return true;
+        }
+
+        return $this->visibility === User::VISIBILITY_HIDDEN && $this->canAccessPrivateContent($user);
+    }
+
+    /**
      * Checks if the user is allowed to view all content
      *
      * @return bool

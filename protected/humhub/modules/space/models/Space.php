@@ -518,6 +518,28 @@ class Space extends ContentContainerActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
+    public function canView(?User $user = null): bool
+    {
+        if ($this->visibility === Space::VISIBILITY_ALL) {
+            return true;
+        }
+
+        $user = !$user && !Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : $user;
+
+        if (!$user) {
+            return false;
+        }
+
+        if ($this->visibility === Space::VISIBILITY_REGISTERED_ONLY) {
+            return true;
+        }
+
+        return $this->visibility === Space::VISIBILITY_NONE && $this->canAccessPrivateContent($user);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getWallOut()
     {
         return Wall::widget(['space' => $this]);
