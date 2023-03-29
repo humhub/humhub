@@ -4,6 +4,7 @@ HumHub Changelog (DEVELOP)
 1.14.0-beta.3 (Develop)
 ------------------------------
 - Fix #6196: Use class names for default logging targets in default common config
+- Enh #5718: Placeholder for profile field "Country"
 
 1.14.0-beta.2 (March 28, 2023)
 ------------------------------
