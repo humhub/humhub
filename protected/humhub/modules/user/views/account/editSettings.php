@@ -17,7 +17,10 @@ use humhub\modules\user\widgets\UserPickerField;
 <?= $form->field($model, 'tags')->widget(ContainerTagPicker::class, ['minInput' => 2]); ?>
 
 <?php if (count($languages) > 1) : ?>
-    <?= $form->field($model, 'language')->dropDownList($languages, ['data-ui-select2' => '']); ?>
+    <?= $form->field($model, 'language')->dropDownList($languages, [
+        'data-ui-select2' => '',
+        'data-search-input-placeholder' => Yii::t('UserModule.base', 'Search...'),
+    ]); ?>
 <?php endif; ?>
 
 <?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(true), ['data-ui-select2' => '']); ?>

@@ -100,8 +100,7 @@ class CountrySelect extends Select
         return parent::getFieldFormDefinition($user, array_merge([
             'htmlOptions' => [
                 'data-ui-select2' => true,
-                'data-placeholder' => Yii::t('UserModule.profile', 'search...'),
-                'data-allow-clear' => 'true',
+                'data-search-input-placeholder' => Yii::t('UserModule.base', 'Search...'),
                 'style' => 'width:100%'
             ]
         ], $options));
