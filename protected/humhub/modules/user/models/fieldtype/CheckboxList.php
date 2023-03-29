@@ -120,10 +120,10 @@ class CheckboxList extends BaseType
      */
     public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
-        $result = parent::getFieldFormDefinition($user, [
+        $result = parent::getFieldFormDefinition($user, array_merge([
             'delimiter' => "\n",
             'items' => $this->getSelectItems(),
-        ]);
+        ], $options));
 
         if ($this->allowOther) {
             $result[$this->profileField->internal_name . '_other_selection'] = [
