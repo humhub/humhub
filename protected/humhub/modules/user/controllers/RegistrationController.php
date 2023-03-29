@@ -146,9 +146,9 @@ class RegistrationController extends Controller
 
         if ($invite->load(Yii::$app->request->post())) {
             // Deleting any previous email invitation or abandoned link invitation
-            $inviteByEmail = Invite::findOne(['email' => $invite->email]);
-            if ($inviteByEmail !== null) {
-                $inviteByEmail->delete();
+            $oldInvite = Invite::findOne(['email' => $invite->email]);
+            if ($oldInvite !== null) {
+                $oldInvite->delete();
             }
             if ($invite->save()) {
                 $invite->sendInviteMail();
