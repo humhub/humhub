@@ -153,6 +153,7 @@ $config = [
         ],
         'queue' => [
             'class' => \humhub\modules\queue\driver\MySQL::class,
+            'ttr' => PHP_INT_MAX,
         ],
         'urlManager' => [
             'class' => \humhub\components\UrlManager::class,
