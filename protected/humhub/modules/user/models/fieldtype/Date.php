@@ -65,12 +65,12 @@ class Date extends BaseType
      */
     public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
-        return parent::getFieldFormDefinition($user, [
+        return parent::getFieldFormDefinition($user, array_merge([
             'format' => Yii::$app->formatter->dateInputFormat,
             'dateTimePickerOptions' => [
                 'pickTime' => false
             ]
-        ]);
+        ], $options));
     }
 
     /**
