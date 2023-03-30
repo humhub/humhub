@@ -6,8 +6,8 @@ use humhub\widgets\Link;
 <div class="timeZoneInputContainer" style="display:none">
     <?= Html::label(Yii::t('base', 'Time Zone'), $id, ['class' => 'control-label'])?>
     <?php if($model) : ?>
-        <?= Html::activeDropDownList($model, $attribute, $timeZoneItems, ['id' => $id, 'data-action-change' => 'ui.form.elements.timeZoneSelected', 'data-ui-select2' => '', 'style' => 'width:100%']) ?>
+        <?= Html::activeSelect2($model, $attribute, $timeZoneItems, ['id' => $id, 'data-action-change' => 'ui.form.elements.timeZoneSelected', 'style' => 'width:100%']) ?>
     <?php elseif($name) : ?>
-        <?= Html::dropDownList($name, $value, $timeZoneItems, ['data-action-change' => 'ui.form.elements.timeZoneSelected', 'data-ui-select2' => '', 'style' => 'width:100%']) ?>
+        <?= Html::select2($name, $value, $timeZoneItems, ['data-action-change' => 'ui.form.elements.timeZoneSelected', 'style' => 'width:100%']) ?>
     <?php endif; ?>
 </div>

@@ -8,9 +8,9 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\libs\Iso3166Codes;
 use humhub\modules\user\models\User;
 use Yii;
-use humhub\libs\Iso3166Codes;
 
 /**
  * ProfileFieldTypeSelect handles numeric profile fields.
@@ -18,7 +18,7 @@ use humhub\libs\Iso3166Codes;
  * @package humhub.modules_core.user.models
  * @since 0.5
  */
-class CountrySelect extends Select
+class CountrySelect extends Select2
 {
 
     /**
@@ -99,8 +99,6 @@ class CountrySelect extends Select
     {
         return parent::getFieldFormDefinition($user, array_merge([
             'htmlOptions' => [
-                'data-ui-select2' => true,
-                'data-search-input-placeholder' => Yii::t('UserModule.base', 'Search...'),
                 'style' => 'width:100%'
             ]
         ], $options));

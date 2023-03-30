@@ -8,13 +8,15 @@
 
 namespace humhub\libs;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\space\models\Space;
 use humhub\modules\ui\icon\widgets\Icon;
+use humhub\modules\user\models\User;
 use humhub\modules\web\security\helpers\Security;
 use Yii;
 use yii\base\InvalidArgumentException;
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\user\models\User;
-use humhub\modules\space\models\Space;
+use yii\base\Model;
+use yii\helpers\ArrayHelper;
 
 /**
  * HTML Helpers
@@ -224,6 +226,40 @@ class Html extends \yii\bootstrap\Html
     public static function endContainer()
     {
         return static::endTag('div');
+    }
+
+    /**
+     * Generates a Select2 list for the given model attribute.
+     *
+     * @param Model $model
+     * @param string $attribute
+     * @param array $items
+     * @param array $options
+     * @return string
+     */
+    public static function activeSelect2(Model $model, string $attribute, array $items, array $options = []): string
+    {
+        return parent::activeDropDownList($model, $attribute, $items, ArrayHelper::merge([
+            'data-ui-select2' => true,
+            'data-search-input-placeholder' => Yii::t('base', 'Search...')
+        ], $options));
+    }
+
+    /**
+     * Generates a Select2 list.
+     *
+     * @param string $name
+     * @param string|bool|array|null $selection
+     * @param array $items
+     * @param array $options
+     * @return string
+     */
+    public static function select2(string $name, $selection = null, array $items = [], array $options = []): string
+    {
+        return parent::dropDownList($name, $selection, $items, ArrayHelper::merge([
+            'data-ui-select2' => true,
+            'data-search-input-placeholder' => Yii::t('base', 'Search...')
+        ], $options));
     }
 
 }

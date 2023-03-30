@@ -114,6 +114,7 @@ class BaseType extends Model
             Text::class => Yii::t('UserModule.profile', 'Text'),
             TextArea::class => Yii::t('UserModule.profile', 'Text Area'),
             Select::class => Yii::t('UserModule.profile', 'Select List'),
+            Select2::class => Yii::t('UserModule.profile', 'Select2 List'),
             Date::class => Yii::t('UserModule.profile', 'Date'),
             DateTime::class => Yii::t('UserModule.profile', 'Datetime'),
             Birthday::class => Yii::t('UserModule.profile', 'Birthday'),

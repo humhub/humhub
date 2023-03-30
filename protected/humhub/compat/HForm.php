@@ -11,13 +11,13 @@ namespace humhub\compat;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\components\FileManager;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
 use humhub\modules\ui\form\widgets\SortOrderField;
 use Yii;
 use yii\helpers\Html;
 use yii\widgets\ActiveField;
-use yii\widgets\ActiveForm;
 
 /**
  * HForm - Yii1 compatible form generator
@@ -265,6 +265,9 @@ class HForm extends \yii\base\Component
                         break;
                     case 'dropdownlist':
                         $field = $this->form->field($model, $name)->dropDownList($definition['items'], $options);
+                        break;
+                    case 'select2':
+                        $field = $this->form->field($model, $name)->select2($definition['items'], $options);
                         break;
                     case 'checkbox':
                         if (isset($options['readOnly']) && $options['readOnly']) {
