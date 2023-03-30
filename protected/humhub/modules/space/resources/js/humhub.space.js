@@ -54,6 +54,17 @@ humhub.module('space', function (module, require, $) {
         });
     };
 
+
+    var changeVisibilityOption = function(event) {
+        const submitButton = event.$trigger.closest('form').find(':submit');
+
+        if (event.$trigger.val() == 0) {
+            submitButton.attr('data-action-confirm', submitButton.data('confirm-text'))
+        } else {
+            submitButton.removeAttr('data-action-confirm')
+        }
+    };
+
     var init = function() {
         if(!module.isSpacePage()) {
             module.options = undefined;
@@ -76,5 +87,6 @@ humhub.module('space', function (module, require, $) {
         isSpacePage: isSpacePage,
         setSpace: setSpace,
         requestMembershipSend: requestMembershipSend,
+        changeVisibilityOption: changeVisibilityOption,
     });
 });

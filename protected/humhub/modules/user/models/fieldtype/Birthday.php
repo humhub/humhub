@@ -140,13 +140,13 @@ class Birthday extends BaseType
      */
     public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
-        $result = parent::getFieldFormDefinition($user, [
+        $result = parent::getFieldFormDefinition($user, array_merge([
             'format' => 'medium',
             'yearRange' => (date('Y') - 100) . ':' . date('Y'),
             'dateTimePickerOptions' => [
                 'pickTime' => false
             ]
-        ]);
+        ], $options));
 
         $result[$this->profileField->internal_name . '_hide_year'] = [
             'type' => 'checkbox',

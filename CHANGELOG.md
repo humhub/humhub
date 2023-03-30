@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.13.2 (Unreleased)
--------------------------
+1.13.2 (March 27, 2023)
+-----------------------
 - Fix #5965: Suppress log warning 'Invalid session auth key attempted for user'
 - Fix #6084: Automatic LDAP user registration broken when not all req. attributes provided
 - Fix #6104: Fix update user with not existing group
@@ -14,6 +14,7 @@ HumHub Changelog
 - Fix #6142: Fix saving empty values in admin settings
 - Fix #6145: Fix duplicate people cards on sort
 - Fix #6152: Avoid duplicate container(Space/User) tags on save
+- Fix #6182: Fix Date and Datetime profile field type with null values on PHP 8.1+
 
 1.13.1 (January 25, 2023)
 -------------------------

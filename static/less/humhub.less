@@ -209,7 +209,10 @@
     @import "modules.less";
 }
 
-@import "../css/select2Theme/build.less";
+@prev-select2: false;
+& when not(@prev-select2) {
+    @import "../css/select2Theme/build.less";
+}
 
 // LEGACY/DEPRECATED User- & Space picker
 ul.tag_input {
