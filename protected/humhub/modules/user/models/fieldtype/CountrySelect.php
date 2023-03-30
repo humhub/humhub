@@ -18,7 +18,7 @@ use Yii;
  * @package humhub.modules_core.user.models
  * @since 0.5
  */
-class CountrySelect extends Select2
+class CountrySelect extends Select
 {
 
     /**

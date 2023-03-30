@@ -17,11 +17,10 @@ use humhub\modules\user\widgets\UserPickerField;
 <?= $form->field($model, 'tags')->widget(ContainerTagPicker::class, ['minInput' => 2]); ?>
 
 <?php if (count($languages) > 1) : ?>
-    <?= $form->field($model, 'language')->select2($languages) ?>
+    <?= $form->field($model, 'language')->dropDownList($languages) ?>
 <?php endif; ?>
 
-<?= $form->field($model, 'timeZone')->select2(TimezoneHelper::generateList(true)); ?>
-
+<?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(true)); ?>
 <?php if ($model->isVisibilityViewable()): ?>
     <?= $form->field($model, 'visibility')->dropDownList($model->getVisibilityOptions(), [
         'disabled' => !$model->isVisibilityEditable()

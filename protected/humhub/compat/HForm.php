@@ -266,9 +266,6 @@ class HForm extends \yii\base\Component
                     case 'dropdownlist':
                         $field = $this->form->field($model, $name)->dropDownList($definition['items'], $options);
                         break;
-                    case 'select2':
-                        $field = $this->form->field($model, $name)->select2($definition['items'], $options);
-                        break;
                     case 'checkbox':
                         if (isset($options['readOnly']) && $options['readOnly']) {
                             $options['disabled'] = 'disabled';

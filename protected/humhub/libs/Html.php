@@ -15,7 +15,6 @@ use humhub\modules\user\models\User;
 use humhub\modules\web\security\helpers\Security;
 use Yii;
 use yii\base\InvalidArgumentException;
-use yii\base\Model;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -228,38 +227,49 @@ class Html extends \yii\bootstrap\Html
         return static::endTag('div');
     }
 
-    /**
-     * Generates a Select2 list for the given model attribute.
-     *
-     * @param Model $model
-     * @param string $attribute
-     * @param array $items
-     * @param array $options
-     * @return string
-     */
-    public static function activeSelect2(Model $model, string $attribute, array $items, array $options = []): string
+    public static function getDropDownListOptions(array $options = []): array
     {
-        return parent::activeDropDownList($model, $attribute, $items, ArrayHelper::merge([
+        if (isset($options['minimumResultsForSearch'])) {
+            $minimumResultsForSearch = (int) $options['minimumResultsForSearch'];
+            unset($options['minimumResultsForSearch']);
+        } else {
+            $minimumResultsForSearch = 5;
+        }
+
+        if ($minimumResultsForSearch >= 0 && isset($options['prompt'])) {
+            // Don't consider an empty option like "Please select:" as real option for searching
+            $minimumResultsForSearch++;
+        }
+
+        return ArrayHelper::merge([
             'data-ui-select2' => true,
-            'data-search-input-placeholder' => Yii::t('base', 'Search...')
-        ], $options));
+            'data-search-input-placeholder' => Yii::t('base', 'Search...'),
+            'data-minimum-results-for-search' => $minimumResultsForSearch,
+        ], $options);
     }
 
     /**
-     * Generates a Select2 list.
-     *
-     * @param string $name
-     * @param string|bool|array|null $selection
-     * @param array $items
-     * @param array $options
-     * @return string
+     * Override Active drop-down list to enable plugin Select2 with
+     *     searchable feature if items >= $options['minimumResultsForSearch'],
+     *     -1 - to never display the search box,
+     *      0 - always display the search box.
+     * @inheritdoc
      */
-    public static function select2(string $name, $selection = null, array $items = [], array $options = []): string
+    public static function activeDropDownList($model, $attribute, $items, $options = [])
     {
-        return parent::dropDownList($name, $selection, $items, ArrayHelper::merge([
-            'data-ui-select2' => true,
-            'data-search-input-placeholder' => Yii::t('base', 'Search...')
-        ], $options));
+        return parent::activeDropDownList($model, $attribute, $items, self::getDropDownListOptions($options));
+    }
+
+    /**
+     * Override drop-down list to enable plugin Select2 with
+     *     searchable feature if items >= $options['minimumResultsForSearch'],
+     *     -1 - to never display the search box,
+     *      0 - always display the search box.
+     * @inheritdoc
+     */
+    public static function dropDownList($name, $selection = null, $items = [], $options = [])
+    {
+        return parent::dropDownList($name, $selection, $items, self::getDropDownListOptions($options));
     }
 
 }

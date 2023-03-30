@@ -8,8 +8,7 @@
 
 namespace humhub\modules\ui\form\widgets;
 
-use Yii;
-use yii\helpers\ArrayHelper;
+use humhub\libs\Html;
 
 /**
  * A HumHub enhanced version of [[\yii\bootstrap\ActiveField]].
@@ -85,17 +84,14 @@ class ActiveField extends \yii\bootstrap\ActiveField
     }
 
     /**
-     * Renders a Select2 list
-     *
-     * @param array $items the option data items
-     * @param array $options the tag options in terms of name-value pairs
-     * @return self
+     * Override drop-down list to enable plugin Select2 with
+     *     searchable feature if items >= $options['minimumResultsForSearch'],
+     *     -1 - to never display the search box,
+     *      0 - always display the search box.
+     * @inheritdoc
      */
-    public function select2(array $items, array $options = []): self
+    public function dropDownList($items, $options = [])
     {
-        return $this->dropDownList($items, ArrayHelper::merge([
-            'data-ui-select2' => true,
-            'data-search-input-placeholder' => Yii::t('base', 'Search...')
-        ], $options));
+        return parent::dropDownList($items, Html::getDropDownListOptions($options));
     }
 }
