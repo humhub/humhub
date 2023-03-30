@@ -21,6 +21,7 @@ use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\events\ContentEvent;
 use humhub\modules\content\events\ContentStateEvent;
 use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\interfaces\SoftDeletable;
 use humhub\modules\content\live\NewContent;
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
@@ -80,7 +81,7 @@ use yii\helpers\Url;
  * @mixin GUID
  * @since 0.5
  */
-class Content extends ActiveRecord implements Movable, ContentOwner
+class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletable
 {
     /**
      * The default stream channel.
@@ -129,11 +130,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      * @deprecated since v1.2.3 use ContentActiveRecord::silentContentCreation instead.
      */
     public $muteDefaultSocialActivities = false;
-
-    /**
-     * @event Event is used when a Content is soft deleted.
-     */
-    const EVENT_SOFT_DELETE = 'softDelete';
 
     /**
      * @event Event is used when a Content state is changed.
@@ -336,6 +332,18 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     }
 
     /**
+     * Marks this content for deletion (soft delete).
+     * Use `hardDelete()` method to delete a content immediately.
+     *
+     * @return bool
+     * @inheritdoc
+     */
+    public function delete()
+    {
+        return $this->softDelete();
+    }
+
+    /**
      * @inheritdoc
      */
     public function afterDelete()
@@ -351,6 +359,62 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         }
 
         parent::afterDelete();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSoftDelete(): bool
+    {
+        $event = new ContentEvent();
+        $this->trigger(self::EVENT_BEFORE_SOFT_DELETE, $event);
+
+        return $event->isValid;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function softDelete(): bool
+    {
+        if (!$this->beforeSoftDelete()) {
+            return false;
+        }
+
+        ActivityHelper::deleteActivitiesForRecord($this->getModel());
+
+        Notification::deleteAll([
+            'source_class' => get_class($this),
+            'source_pk' => $this->getPrimaryKey(),
+        ]);
+
+        $this->setState(self::STATE_DELETED);
+
+        if (!$this->save()) {
+            return false;
+        }
+
+        $this->afterSoftDelete();
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSoftDelete()
+    {
+        $this->trigger(self::EVENT_AFTER_SOFT_DELETE);
+    }
+
+    /**
+     * Deletes this content immediately and permanently
+     *
+     * @return bool
+     * @since 1.14
+     */
+    public function hardDelete(): bool
+    {
+        return (parent::delete() !== false);
     }
 
     /**
@@ -1000,35 +1064,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     public function isUpdated()
     {
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
-    }
-
-    /**
-     * Marks the content as deleted.
-     *
-     * Content which are marked as deleted will not longer returned in queries/stream/search.
-     * A cron job will remove these content permanently.
-     * If installed, such content can also be restored using the `recycle-bin` module.
-     *
-     * @return bool
-     * @since 1.14
-     */
-    public function softDelete(): bool
-    {
-        ActivityHelper::deleteActivitiesForRecord($this->getModel());
-
-        Notification::deleteAll([
-            'source_class' => get_class($this),
-            'source_pk' => $this->getPrimaryKey(),
-        ]);
-
-        $this->setState(self::STATE_DELETED);
-
-        if (!$this->save()) {
-            return false;
-        }
-
-        $this->trigger(self::EVENT_SOFT_DELETE, new ContentEvent(['content' => $this]));
-        return true;
     }
 
     public static function getAllowedStates(): array

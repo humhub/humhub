@@ -22,7 +22,8 @@ class ActivityHelper
             ])->each();
 
             foreach ($modelsActivity as $activity) {
-                $activity->delete();
+                /* @var Activity $activity */
+                $activity->hardDelete();
             }
 
             Yii::debug('Deleted activities for ' . get_class($record) . " with PK " . $pk, 'activity');
