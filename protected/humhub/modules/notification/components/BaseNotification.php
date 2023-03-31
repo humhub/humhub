@@ -10,6 +10,7 @@ namespace humhub\modules\notification\components;
 
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\SocialActivity;
+use humhub\models\ClassMap;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\notification\jobs\SendBulkNotification;
@@ -405,7 +406,7 @@ abstract class BaseNotification extends SocialActivity
     {
         $condition = [];
 
-        $condition['class'] = static::class;
+        $condition['class_id'] = ClassMap::getIdByOneName(static::class);
 
         if ($user !== null) {
             $condition['user_id'] = $user->id;
@@ -417,7 +418,7 @@ abstract class BaseNotification extends SocialActivity
 
         if ($this->source !== null) {
             $condition['source_pk'] = $this->source->getPrimaryKey();
-            $condition['source_class'] = PolymorphicRelation::getObjectModel($this->source);
+            $condition['source_class_id'] = ClassMap::getIdBy($this->source);
         }
 
         Notification::deleteAll($condition);

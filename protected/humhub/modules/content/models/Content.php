@@ -14,6 +14,7 @@ use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
 use humhub\libs\ClassMapSupportTrait;
 use humhub\interfaces\ArchiveableInterface;
+use humhub\models\ClassMap;
 use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
 use humhub\modules\admin\permissions\ManageUsers;
@@ -429,7 +430,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         }
 
         Notification::deleteAll([
-            'source_class' => get_class($this),
+            'source_class_id' => ClassMap::getIdBy($this),
             'source_pk' => $this->getPrimaryKey(),
         ]);
 

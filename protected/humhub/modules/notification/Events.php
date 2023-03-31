@@ -11,6 +11,7 @@ namespace humhub\modules\notification;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Event;
+use humhub\models\ClassMap;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use Yii;
@@ -176,8 +177,8 @@ class Events extends \yii\base\BaseObject
         $record = $event->sender;
 
         models\Notification::deleteAll([
-            'source_class' => PolymorphicRelation::getObjectModel($record),
-            'source_pk' => $record->getPrimaryKey(),
+            'source_class_id' => ClassMap::getIdBy($event->sender),
+            'source_pk' => $event->sender->getPrimaryKey(),
         ]);
     }
 

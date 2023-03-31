@@ -5,6 +5,7 @@ namespace humhub\modules\notification\models;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
+use humhub\libs\ClassMapSupportTrait;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\user\models\User;
 use Yii;
@@ -18,9 +19,11 @@ use yii\db\Query;
  * This is the model class for table "notification".
  *
  * @property integer $id
+ * @property integer $class_id
  * @property string $class
  * @property integer $user_id
  * @property integer $seen
+ * @property integer $source_class_id
  * @property string $source_class
  * @property integer $source_pk
  * @property integer $space_id
@@ -38,6 +41,7 @@ use yii\db\Query;
  */
 class Notification extends ActiveRecord
 {
+    use ClassMapSupportTrait;
 
     /**
      * @var int number of found grouped notifications
@@ -100,7 +104,17 @@ class Notification extends ActiveRecord
                 'integer',
             ],
             [['class', 'source_class'], 'string', 'max' => 100],
+            [['class'], $this->getClassMapValidator('class_id')],
+            [['source_class'], $this->getClassMapValidator('source_class_id')],
             [['payload'], 'safe']
+        ];
+    }
+
+    protected static function classMappedFields(): array
+    {
+        return [
+            'class_id'        => 'class',
+            'source_class_id' => 'source_class',
         ];
     }
 
