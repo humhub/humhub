@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
+use humhub\libs\ClassMapSupportTrait;
 use humhub\interfaces\ArchiveableInterface;
 use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
@@ -66,6 +67,7 @@ use yii\helpers\Url;
  * @property integer $id
  * @property string $guid
  * @property string $object_model
+ * @property string $objet_class_id
  * @property integer $object_id
  * @property string $stream_sort_date
  * @property string $stream_channel
@@ -96,6 +98,8 @@ use yii\helpers\Url;
  */
 class Content extends ActiveRecord implements Movable, ContentOwner, ArchiveableInterface, EditableInterface, ViewableInterface, SoftDeletable
 {
+    use ClassMapSupportTrait;
+
     /**
      * The default stream channel.
      * @since 1.6
@@ -181,10 +185,15 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             [['object_id', 'visibility', 'pinned'], 'integer'],
             [['archived'], 'safe'],
             [['guid'], 'string', 'max' => 45],
-            [['object_model'], 'string', 'max' => 100],
-            [['object_model', 'object_id'], 'unique', 'targetAttribute' => ['object_model', 'object_id'], 'message' => 'The combination of Object Model and Object ID has already been taken.'],
+            [['object_model'], $this->getClassMapValidator('object_class_id')],
+            [['object_class_id', 'object_id'], 'unique', 'targetAttribute' => ['object_class_id', 'object_id'], 'message' => 'The combination of Object Model and Object ID has already been taken.'],
             [['guid'], 'unique']
         ];
+    }
+
+    protected static function classMappedFields(): array
+    {
+        return ['object_class_id' => 'object_model'];
     }
 
     /**
@@ -222,7 +231,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     public function beforeSave($insert)
     {
         if ($this->object_model == "" || $this->object_id == "") {
-            throw new Exception("Could not save content with object_model or object_id!");
+            throw new Exception("Could not save content with object_model or object_id being empty!");
         }
 
         $this->archived ??= 0;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -8,16 +9,19 @@
 
 namespace humhub\modules\stream\models\filters;
 
+use humhub\models\ClassMap;
+
 class ContentTypeStreamFilter extends StreamQueryFilter
 {
-    const CATEGORY_INCLUDES = 'includes';
-    const CATEGORY_EXCLUDES = 'excludes';
+    public const CATEGORY_INCLUDES = 'includes';
+    public const CATEGORY_EXCLUDES = 'excludes';
 
     public $includes;
 
     public $excludes;
 
-    public function init() {
+    public function init()
+    {
         $this->includes = $this->streamQuery->includes;
         $this->excludes = $this->streamQuery->excludes;
         parent::init();
@@ -38,27 +42,27 @@ class ContentTypeStreamFilter extends StreamQueryFilter
 
     public function apply()
     {
-        if(!empty($this->includes)) {
+        if (!empty($this->includes)) {
             if (is_string($this->includes)) {
                 $this->includes = [$this->includes];
             }
 
             if (count($this->includes) === 1) {
-                $this->query->andWhere(["content.object_model" => $this->includes[0]]);
+                $this->query->andWhere(["content.object_class_id" => ClassMap::getIdByName($this->includes[0])]);
             } elseif (!empty($this->includes)) {
-                $this->query->andWhere(['IN', 'content.object_model', $this->includes]);
+                $this->query->andWhere(['IN', 'content.object_class_id', ClassMap::getIdByManyNames($this->includes)]);
             }
         }
 
-        if(!empty($this->excludes)) {
+        if (!empty($this->excludes)) {
             if (is_string($this->excludes)) {
                 $this->excludes = [$this->excludes];
             }
 
             if (count($this->excludes) === 1) {
-                $this->query->andWhere(['!=', "content.object_model", $this->excludes[0]]);
+                $this->query->andWhere(['!=', "content.object_class_id" => ClassMap::getIdByName($this->includes[0])]);
             } elseif (!empty($this->excludes)) {
-                $this->query->andWhere(['NOT IN', 'content.object_model', $this->excludes]);
+                $this->query->andWhere(['NOT IN', 'content.object_class_id', ClassMap::getIdByManyNames($this->excludes)]);
             }
         }
     }

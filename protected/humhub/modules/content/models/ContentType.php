@@ -9,6 +9,7 @@
 namespace humhub\modules\content\models;
 
 
+use humhub\models\ClassMap;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use Yii;
@@ -74,8 +75,9 @@ class ContentType extends Model
             return static::$cache[$containerId];
         }
 
-        $query = (new Query())->select('object_model')
-            ->from('content')->distinct()
+        $query = ClassMap::joinClassMap(null, 'content', 'object_class_id', null, null, null, 'object_model')
+            ->select('object_model')
+            ->distinct()
             ->where(['stream_channel' => 'default']);
 
         if($container) {

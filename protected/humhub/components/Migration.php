@@ -541,7 +541,6 @@ class Migration extends \yii\db\Migration
         $this->updateSilent('activity', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('activity', ['class' => $newClass], ['class' => $oldClass]);
         $this->updateSilent('comment', ['object_model' => $newClass], ['object_model' => $oldClass]);
-        $this->updateSilent('content', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('file', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('like', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('notification', ['source_class' => $newClass], ['source_class' => $oldClass]);

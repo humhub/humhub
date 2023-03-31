@@ -612,7 +612,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     public function getContent()
     {
         return $this->hasOne(Content::class, ['object_id' => 'id'])
-            ->andWhere(['content.object_model' => static::getObjectModel()]);
+            ->andWhere(['content.object_class_id' => static::getObjectModelId()]);
     }
 
     public function getFiles()

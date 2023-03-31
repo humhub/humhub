@@ -8,6 +8,7 @@
 
 namespace humhub\modules\stream\models\filters;
 
+use humhub\models\ClassMap;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
 use Yii;
@@ -103,10 +104,9 @@ class DefaultStreamFilter extends StreamQueryFilter
 
     protected function filterFile()
     {
-        $fileSelector = (new Query())
+        $fileSelector = ClassMap::joinClassMap(null, 'file', 'object_model', 'class_name', null, null, null, $alias)
             ->select(["id"])
-            ->from('file')
-            ->where('file.object_model=content.object_model AND file.object_id=content.object_id')
+            ->where("$alias.id = content.object_class_id  AND file.object_id = content.object_id")
             ->limit(1);
 
         $fileSelectorSql = Yii::$app->db->getQueryBuilder()->build($fileSelector)[0];
