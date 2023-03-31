@@ -522,7 +522,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function afterSoftDelete()
     {
-        $this->trigger(self::EVENT_AFTER_SOFT_DELETE);
+        $this->trigger(self::EVENT_AFTER_SOFT_DELETE, new ModelEvent());
     }
 
     /**

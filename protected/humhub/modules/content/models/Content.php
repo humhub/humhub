@@ -366,7 +366,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      */
     public function beforeSoftDelete(): bool
     {
-        $event = new ContentEvent();
+        $event = new ContentEvent(['content' => $this]);
         $this->trigger(self::EVENT_BEFORE_SOFT_DELETE, $event);
 
         return $event->isValid;
@@ -403,7 +403,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      */
     public function afterSoftDelete()
     {
-        $this->trigger(self::EVENT_AFTER_SOFT_DELETE);
+        $this->trigger(self::EVENT_AFTER_SOFT_DELETE, new ContentEvent(['content' => $this]));
     }
 
     /**

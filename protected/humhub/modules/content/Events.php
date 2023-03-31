@@ -37,7 +37,7 @@ class Events extends BaseObject
     {
         // Delete user profile content on soft delete
         foreach (Content::findAll(['contentcontainer_id' => $event->user->contentcontainer_id]) as $content) {
-            $content->delete();
+            $content->hardDelete();
         }
     }
 
@@ -50,7 +50,7 @@ class Events extends BaseObject
     {
         $user = $event->sender;
         foreach (Content::findAll(['created_by' => $user->id]) as $content) {
-            $content->delete();
+            $content->hardDelete();
         }
     }
 
