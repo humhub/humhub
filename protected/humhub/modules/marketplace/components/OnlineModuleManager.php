@@ -27,10 +27,10 @@ use ZipArchive;
  */
 class OnlineModuleManager extends Component
 {
-    const EVENT_BEFORE_UPDATE = 'beforeUpdate';
-    const EVENT_AFTER_UPDATE = 'afterUpdate';
+    public const EVENT_BEFORE_UPDATE = 'beforeUpdate';
+    public const EVENT_AFTER_UPDATE = 'afterUpdate';
 
-    private $_modules = null;
+    private ?array $_modules = null;
 
     /**
      * Installs latest compatible module version
@@ -197,24 +197,22 @@ class OnlineModuleManager extends Component
         if (!$cached) {
             $this->_modules = null;
             Yii::$app->cache->delete('onlineModuleManager_modules');
-        }
-
-        if ($this->_modules !== null) {
+        } elseif ($this->_modules !== null) {
             return $this->_modules;
+        } else {
+            $this->_modules = Yii::$app->cache->get('onlineModuleManager_modules') ?: null;
         }
 
-        /** @var Module $module */
-        $module = Yii::$app->getModule('marketplace');
+        if ($this->_modules === null) {
+            /** @var Module $module */
+            $module = Yii::$app->getModule('marketplace');
 
-        $this->_modules = Yii::$app->cache->get('onlineModuleManager_modules');
-        if ($this->_modules === null || !is_array($this->_modules)) {
-            $this->_modules = HumHubAPI::request('v1/modules/list', [
-                'includeBetaVersions' => (boolean)$module->settings->get('includeBetaUpdates')
-            ]);
-
-            foreach ($module->moduleBlacklist as $blacklistedModuleId) {
-                unset($this->_modules[$blacklistedModuleId]);
-            }
+            $this->_modules = array_diff_key(
+                HumHubAPI::request('v1/modules/list', [
+                    'includeBetaVersions' => (bool)$module->settings->get('includeBetaUpdates')
+                ]),
+                array_flip($module->moduleBlacklist)
+            );
 
             Yii::$app->cache->set('onlineModuleManager_modules', $this->_modules, Yii::$app->settings->get('cache.expireTime'));
         }
@@ -285,7 +283,7 @@ class OnlineModuleManager extends Component
         }
 
         return HumHubAPI::request('v1/modules/info', [
-            'id' => $moduleId, 'includeBetaVersions' => (boolean)$module->settings->get('includeBetaUpdates')
+            'id' => $moduleId, 'includeBetaVersions' => (bool)$module->settings->get('includeBetaUpdates')
         ]);
     }
 

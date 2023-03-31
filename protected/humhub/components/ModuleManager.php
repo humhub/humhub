@@ -14,11 +14,13 @@ use ArrayAccess;
 use humhub\components\bootstrap\ModuleAutoLoader;
 use humhub\components\console\Application as ConsoleApplication;
 use humhub\exceptions\InvalidArgumentTypeException;
+use humhub\libs\ModuleInfo;
 use humhub\models\ModuleEnabled;
 use humhub\modules\admin\events\ModulesEvent;
 use humhub\modules\marketplace\Module as ModuleMarketplace;
 use Yii;
 use yii\base\Component;
+use yii\base\ErrorException;
 use yii\base\Event;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
@@ -73,23 +75,9 @@ class ModuleManager extends Component
      * List of all modules
      * This also contains installed but not enabled modules.
      *
-     * @param array $modules moduleId-class pairs
+     * @var ModuleInfo[] $modules indexed by moduleId
      */
     protected array $modules = [];
-
-    /**
-     * List of all enabled module ids
-     *
-     * @var array
-     */
-    protected array $enabledModules = [];
-
-    /**
-     * List of core module classes.
-     *
-     * @var array the core module class names
-     */
-    protected array $coreModules = [];
 
     /**
      * @var bool Prevent registration of several different modules with the same id.
@@ -105,31 +93,10 @@ class ModuleManager extends Component
     public array $overwriteModuleBasePath = [];
 
     /**
-     * Module Manager init
-     *
-     * Loads all enabled moduleId's from database
-     */
-    public function init()
-    {
-        parent::init();
-
-        // Either database installed and not in installed state
-        if (!Yii::$app->isInstalled() && !Yii::$app->isDatabaseInstalled()) {
-            return;
-        }
-
-        if (!Yii::$app->isDatabaseInstalled()) {
-            $this->enabledModules = [];
-        } else {
-            $this->enabledModules = ModuleEnabled::getEnabledIds();
-        }
-    }
-
-    /**
      * Registers a module to the manager
-     * This is usually done by config.php in modules root folder.
+     * This is usually done by config.php in the modules' root folder.
      *
-     * @param array $configs
+     * @param array<string, array> $configs the module's base path as key, and module configuration as value
      *
      * @throws InvalidConfigException
      * @see \humhub\components\bootstrap\ModuleAutoLoader::bootstrap
@@ -137,66 +104,69 @@ class ModuleManager extends Component
      */
     public function registerBulk(array $configs)
     {
-        foreach ($configs as $basePath => $config) {
-            $this->register($basePath, $config);
-        }
+        // register provided module configurations
+        array_walk($configs, fn($config, $basePath) => $this->register($basePath, $config));
+
+        // Check for any missing module registered in the module_enable table
+        array_walk(ModuleEnabled::getRegisteredModuleOverview()->modules, function ($module) {
+            if (!($this->modules[$module->moduleId] ?? null)) {
+                $this->modules[$module->moduleId] = ModuleInfo::instantiate([
+                    'moduleId' => $module->moduleId,
+                    'isRegistered' => true,
+                    'isMissing' => true,
+                ]);
+            }
+        });
     }
 
     /**
      * Registers a module
      *
-     * @param string $basePath the modules base path
-     * @param array $config the module configuration (config.php)
+     * @param string $basePath the module's base path
+     * @param array|null $config the module configuration (config.php)
      *
      * @throws InvalidConfigException
      */
-    public function register($basePath, $config = null)
+    public function register(string $basePath, ?array $config = null)
     {
-        if ($config === null && is_file($filename = $basePath . '/config.php')) {
+        $filename = $basePath . DIRECTORY_SEPARATOR . ModuleAutoLoader::CONFIGURATION_FILE;
+        if ($config === null && is_file($filename)) {
             $config = include $filename;
         }
 
         // Check mandatory config options
-        if (!isset($config['class']) || !isset($config['id'])) {
-            throw new InvalidConfigException('Module configuration requires an id and class attribute: ' . $basePath);
-        }
+        $moduleInfo = ModuleInfo::instantiate($config, $basePath);
 
-        $isCoreModule = (isset($config['isCoreModule']) && $config['isCoreModule']);
-        $isInstallerModule = (isset($config['isInstallerModule']) && $config['isInstallerModule']);
+        // ToDo: here we keep the *last* loaded module with a given id.
+        //       But when it comes to aliases further down below, then we consider only the *first" one
+        $this->modules[$moduleInfo->moduleId] = $moduleInfo;
 
-        $this->modules[$config['id']] = $config['class'];
-
-        if (isset($config['namespace'])) {
-            Yii::setAlias('@' . str_replace('\\', '/', $config['namespace']), $basePath);
+        if ($moduleInfo->namespace) {
+            Yii::setAlias('@' . str_replace('\\', '/', $moduleInfo->namespace), $basePath);
         }
 
         // Check if alias is not in use yet (e.g. don't register "web" module alias)
-        if (Yii::getAlias('@' . $config['id'], false) === false) {
-            Yii::setAlias('@' . $config['id'], $basePath);
+        if (Yii::getAlias('@' . $moduleInfo->moduleId, false) === false) {
+            Yii::setAlias('@' . $moduleInfo->moduleId, $basePath);
         }
 
-        if (isset($config['aliases']) && is_array($config['aliases'])) {
-            foreach ($config['aliases'] as $name => $value) {
-                Yii::setAlias($name, $value);
-            }
-        }
+        array_walk(
+            $moduleInfo->aliases,
+            static fn($value, $name) => Yii::setAlias($name, $value)
+        );
 
-        if (!Yii::$app->isInstalled() && $isInstallerModule) {
-            $this->enabledModules[] = $config['id'];
+        if (!Yii::$app->isInstalled() && $moduleInfo->isInstallerModule) {
+            $moduleInfo->isRegistered = true;
+        } elseif (Yii::$app->isInstalled() && Yii::$app->isDatabaseInstalled()) {
+            $registration = ModuleEnabled::getRegisteredModuleInfo($moduleInfo->moduleId);
+
+            $moduleInfo->isRegistered = $registration !== null;
+            $moduleInfo->isSuspended |= ($moduleInfo->isRegistered && $registration->isSuspended);
         }
 
         // Not enabled and no core/installer module
-        if (!$isCoreModule && !in_array($config['id'], $this->enabledModules)) {
+        if (!$moduleInfo->isCoreModule && !$moduleInfo->getIsActive()) {
             return $config['id'];
-        }
-
-        // Handle Submodules
-        if (!isset($config['modules'])) {
-            $config['modules'] = [];
-        }
-
-        if ($isCoreModule) {
-            $this->coreModules[] = $config['class'];
         }
 
         // Append URL Rules
@@ -205,17 +175,17 @@ class ModuleManager extends Component
         }
 
         $moduleConfig = [
-            'class' => $config['class'],
-            'modules' => $config['modules'],
+            'class' => $moduleInfo->class,
+            'modules' => $moduleInfo->modules,
         ];
 
         // Add config file values to module
-        if (isset(Yii::$app->modules[$config['id']]) && is_array(Yii::$app->modules[$config['id']])) {
-            $moduleConfig = ArrayHelper::merge($moduleConfig, Yii::$app->modules[$config['id']]);
+        if (isset(Yii::$app->modules[$moduleInfo->moduleId]) && is_array(Yii::$app->modules[$moduleInfo->moduleId])) {
+            $moduleConfig = ArrayHelper::merge($moduleConfig, Yii::$app->modules[$moduleInfo->moduleId]);
         }
 
         // Register Yii Module
-        Yii::$app->setModule($config['id'], $moduleConfig);
+        Yii::$app->setModule($moduleInfo->moduleId, $moduleConfig);
 
         // Register Event Handlers
         $this->registerEventHandlers($basePath, $config);
@@ -290,7 +260,10 @@ class ModuleManager extends Component
             }
 
             if (!is_array($eventHandler)) {
-                $error("property 'callback' must be a callable defined in the array-notation denoting a method of a class", $strict);
+                $error(
+                    "property 'callback' must be a callable defined in the array-notation denoting a method of a class",
+                    $strict
+                );
                 continue;
             }
 
@@ -335,35 +308,45 @@ class ModuleManager extends Component
      * @return array
      * @throws Exception
      */
-    public function getModules($options = [])
+    public function &getModules(array $options = []): array
     {
-        $options = array_merge([
+        $options = (object)array_merge([
             'includeCoreModules' => false,
+            'includeMissing' => false,
             'enabled' => false,
             'returnClass' => false,
         ], $options);
 
         $modules = [];
-        foreach ($this->modules as $id => $class) {
-            if (!$options['includeCoreModules'] && in_array($class, $this->coreModules)) {
+        $self = $this;
+
+        array_walk($this->modules, static function (ModuleInfo $module) use ($options, $self, &$modules) {
+            if (!$options->includeCoreModules && $module->isCoreModule) {
                 // Skip core modules
-                continue;
+                return;
             }
 
-            if ($options['enabled'] && !in_array($class, $this->coreModules) && !in_array($id, $this->enabledModules)) {
+            if (!$options->includeMissing && $module->isMissing) {
+                // Skip core modules
+                return;
+            }
+
+            if ($options->enabled && !$module->isCoreModule && !$module->getIsActive()) {
                 // Skip disabled modules
-                continue;
+                return;
             }
 
-            if ($options['returnClass']) {
-                $modules[$id] = $class;
-            } else {
-                $module = $this->getModule($id);
-                if ($module instanceof Module) {
-                    $modules[$id] = $module;
-                }
+            if ($options->returnClass) {
+                $modules[$module->moduleId] = $module->class;
+
+                return;
             }
-        }
+
+            $instance = $self->getModule($module->moduleId);
+            if ($instance instanceof Module) {
+                $modules[$module->moduleId] = $instance;
+            }
+        });
 
         return $modules;
     }
@@ -465,24 +448,23 @@ class ModuleManager extends Component
      */
     public function hasModule($id)
     {
-        return (array_key_exists($id, $this->modules));
+        return ($module = $this->modules[$id] ?? null) && !$module->isMissing && $module->getClassExists();
     }
 
     /**
-     * Returns weather or not the given module id belongs to an core module.
+     * Returns weather or not the given module id belongs to a core module.
+     *
+     * @param string $id
      *
      * @return bool
-     * @throws Exception
      * @since 1.3.8
      */
-    public function isCoreModule($id)
+    public function isCoreModule(string $id): bool
     {
-        if (!$this->hasModule($id)) {
-            return false;
-        }
-
-        return (in_array(get_class($this->getModule($id)), $this->coreModules));
+        /** @var ModuleInfo $module */
+        return ($module = $this->modules[$id]) && $module->isCoreModule;
     }
+
 
     /**
      * Returns a module instance by id
@@ -506,9 +488,9 @@ class ModuleManager extends Component
         }
 
         // Disabled Module
-        if (isset($this->modules[$id])) {
-            $class = $this->modules[$id];
-            return Yii::createObject($class, [$id, Yii::$app]);
+        /** @var ModuleInfo $module */
+        if ($module = $this->modules[$id] ?? null) {
+            return Yii::createObject($module->class, [$id, Yii::$app]);
         }
 
         if (is_dir($id) && is_file($id . '/config.php')) {
@@ -520,6 +502,56 @@ class ModuleManager extends Component
         }
 
         return null;
+    }
+
+    /**
+     * Returns a module instance by id
+     *
+     * @param string $id Module Id
+     *
+     * @return ModuleInfo
+     */
+    public function getModuleInfo(string $id): ?ModuleInfo
+    {
+        return $this->modules[$id] ?? null;
+    }
+
+    /**
+     * Returns a module instance by id
+     *
+     * @param string $file
+     *
+     * @return ModuleInfo
+     * @throws \yii\base\ErrorException
+     */
+    public function getModuleInfoByFilePath(string $file): ?ModuleInfo
+    {
+        $paths = array_filter(
+            $this->modules,
+            static function (ModuleInfo $module) use ($file) {
+                $path = $module->getClassFileDir();
+
+                return $path && str_starts_with($file, $path . DIRECTORY_SEPARATOR);
+            }
+        );
+
+        switch (count($paths)) {
+            case 0:
+                return null;
+
+            case 1:
+                return reset($paths);
+
+            default:
+                /** @noinspection JsonEncodingApiUsageInspection */
+                throw new ErrorException(
+                    sprintf(
+                        'The given file %s matches multiple modules: %s',
+                        $file,
+                        json_encode(array_column($paths, 'classFileDir', 'moduleId'))
+                    )
+                );
+        }
     }
 
     /**
@@ -622,7 +654,6 @@ class ModuleManager extends Component
             (new ModuleEnabled(['module_id' => $module->id]))->save();
         }
 
-        $this->enabledModules[] = $module->id;
         $this->register($module->getBasePath());
 
         $this->trigger(static::EVENT_AFTER_MODULE_ENABLE, new ModuleEvent(['module' => $module]));
@@ -656,8 +687,10 @@ class ModuleManager extends Component
             $moduleEnabled->delete();
         }
 
-        if (($key = array_search($module->id, $this->enabledModules, true)) !== false) {
-            unset($this->enabledModules[$key]);
+        $moduleInfo = $this->modules[$module->id] ?? null;
+        if ($moduleInfo !== null) {
+            /** @var ModuleInfo $moduleInfo */
+            $moduleInfo->isRegistered = false;
         }
 
         Yii::$app->setModule($module->id, null);
