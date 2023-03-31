@@ -488,6 +488,20 @@ class Migration extends \yii\db\Migration
     }
 
     /**
+     * Returns the field configuration for a FK field
+     *
+     * @return ColumnSchemaBuilder
+     * @since 1.16
+     * @noinspection PhpUnused
+     */
+    public function integerReferenceKeyUnsigned(): ColumnSchemaBuilder
+    {
+        return $this->integerReferenceKey()
+            ->unsigned()
+            ;
+    }
+
+    /**
      * Returns the field configuration for a timestamp field that does not get automatically updated by mysql in case it
      * being the first timestamp column in the table.
      *
@@ -520,6 +534,10 @@ class Migration extends \yii\db\Migration
      */
     protected function renameClass(string $oldClass, string $newClass): void
     {
+        if ($this->db->getTableSchema('class_map')) {
+            $this->updateSilent('class_map', ['class_name' => $newClass], ['class_name' => $oldClass]);
+        }
+
         $this->updateSilent('activity', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('activity', ['class' => $newClass], ['class' => $oldClass]);
         $this->updateSilent('comment', ['object_model' => $newClass], ['object_model' => $oldClass]);
