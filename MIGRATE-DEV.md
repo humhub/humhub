@@ -19,6 +19,7 @@ Version 1.16 (Unreleased)
 - `\humhub\modules\content\components\ContentAddonActiveRecord` on `canDelete()`, `canWrite()`, `canEdit()`
 - `\humhub\modules\content\models\Content` on `canEdit()`, `canView()`
 - `\humhub\modules\file\models\File` on `canRead()`, `canDelete()`
+- `\humhub\components\Migration::insertSilent(): string;` rather than `void`
 
 
 

@@ -15,6 +15,7 @@ use Traversable;
 use Yii;
 use yii\db\ColumnSchemaBuilder;
 use yii\db\Exception;
+use yii\db\Query;
 
 /**
  * Migration is the base class for representing a database migration.
@@ -222,6 +223,37 @@ class Migration extends \yii\db\Migration
         }
         $this->logWarning("Tried to add an already existing column '$column' on table '$table'");
         return false;
+    }
+
+
+    /**
+     * @since 1.16
+     * @see static::safeAddColumn()
+     * @see static::integerReferenceKey()
+     */
+    public function safeAddReferenceColumn(string $table, string $column): bool
+    {
+        return $this->safeAddColumn($table, $column, $this->integerReferenceKey());
+    }
+
+    /**
+     * @since 1.16
+     * @see static::safeAddColumn()
+     * @see static::integerReferenceKeyUnsigned()
+     */
+    public function safeAddUnsignedReferenceColumn(string $table, string $column): bool
+    {
+        return $this->safeAddColumn($table, $column, $this->integerReferenceKeyUnsigned());
+    }
+
+    /**
+     * @since 1.16
+     * @see static::safeAddColumn()
+     * @see static::integerReferenceKeyUnsigned()
+     */
+    public function safeAddGidReferenceColumn(string $table, string $column = 'gid'): bool
+    {
+        return $this->safeAddUnsignedReferenceColumn($table, $column);
     }
 
     /**
@@ -542,6 +574,10 @@ class Migration extends \yii\db\Migration
      */
     protected function renameClass(string $oldClass, string $newClass): void
     {
+        if ($this->db->getTableSchema('class_map')) {
+            $this->updateSilent('class_map', ['class_name' => $newClass], ['class_name' => $oldClass]);
+        }
+
         $this->updateSilent('activity', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('activity', ['class' => $newClass], ['class' => $oldClass]);
         $this->updateSilent('comment', ['object_model' => $newClass], ['object_model' => $oldClass]);
@@ -574,6 +610,23 @@ class Migration extends \yii\db\Migration
         ])->execute();
     }
 
+    public function createClassMapRecord(string $class, string $moduleID): int
+    {
+        $id = (new Query())->select('id')->from('class_map')->where(['class_name' => $class])->scalar();
+
+        if ($id !== false) {
+            return $id;
+        }
+
+        $m = (new Query())->select('module_id')->from('module_enabled')->where(['module_id' => $moduleID])->scalar();
+
+        if ($m === false) {
+            $this->insertSilent('module_enabled', ['module_id' => $moduleID]);
+        }
+
+        return (int)$this->insertSilent('class_map', ['class_name' => $class, 'module_id' => $moduleID]);
+    }
+
     /**
      * Creates and executes an UPDATE SQL statement without any output.
      * The method will properly escape the column names and bind the values to be updated.
@@ -600,9 +653,11 @@ class Migration extends \yii\db\Migration
      *
      * @throws Exception
      */
-    public function insertSilent(string $table, $columns): void
+    public function insertSilent(string $table, $columns): string
     {
         $this->db->createCommand()->insert($table, $columns)->execute();
+
+        return $this->db->getLastInsertID();
     }
 
     /**
