@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\content\interfaces\SoftDeletable;
 use humhub\modules\content\models\Movable;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
@@ -25,6 +26,7 @@ use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\interfaces\ContentOwner;
 use yii\base\InvalidConfigException;
+use yii\base\ModelEvent;
 
 /**
  * ContentActiveRecord is the base ActiveRecord [[\yii\db\ActiveRecord]] for Content.
@@ -63,7 +65,7 @@ use yii\base\InvalidConfigException;
  * @property User $owner
  * @author Luke
  */
-class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
+class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable, SoftDeletable
 {
     /**
      * @see StreamEntryWidget
@@ -480,17 +482,51 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * Use `hardDelete()` method to delete record immediately.
      *
      * @return bool|int
+     * @inheritdoc
      */
     public function delete()
     {
-        return $this->content->softDelete();
+        return $this->softDelete();
     }
 
     /**
-     * Deletes this content record immediately and permanently
-     *
-     * @return bool
-     * @since 1.14
+     * @inheritdoc
+     */
+    public function beforeSoftDelete(): bool
+    {
+        $event = new ModelEvent();
+        $this->trigger(self::EVENT_BEFORE_SOFT_DELETE, $event);
+
+        return $event->isValid;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function softDelete(): bool
+    {
+        if (!$this->beforeSoftDelete()) {
+            return false;
+        }
+
+        if (!$this->content->softDelete()) {
+            return false;
+        }
+
+        $this->afterSoftDelete();
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSoftDelete()
+    {
+        $this->trigger(self::EVENT_AFTER_SOFT_DELETE, new ModelEvent());
+    }
+
+    /**
+     * @inheritdoc
      */
     public function hardDelete(): bool
     {
@@ -498,13 +534,14 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     }
 
     /**
+     * This method is invoked after HARD deleting a record.
      * @inheritdoc
      */
     public function afterDelete()
     {
         $content = Content::findOne(['object_id' => $this->getPrimaryKey(), 'object_model' => static::getObjectModel()]);
         if ($content !== null) {
-            $content->delete();
+            $content->hardDelete();
         }
 
         parent::afterDelete();
