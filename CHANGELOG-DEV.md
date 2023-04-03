@@ -6,6 +6,7 @@ HumHub Changelog (DEVELOP)
 - Fix #6196: Use class names for default logging targets in default common config
 - Fix #6202: Invite by link is not possible for a user already invited by email
 - Fix #5718: Fix profile field "Country" to use js plugin Select2
+- Enh: HForm textarea() method is extended with { rows, cols } options.
 
 1.14.0-beta.2 (March 28, 2023)
 ------------------------------
