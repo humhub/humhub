@@ -7,6 +7,7 @@ HumHub Changelog (DEVELOP)
 - Fix #6202: Invite by link is not possible for a user already invited by email
 - Fix #5718: Fix profile field "Country" to use js plugin Select2
 - Enh #6214: Improve SoftDelete implementation
+- Enh #6130: Add default settings for space creation
 
 1.14.0-beta.2 (March 28, 2023)
 ------------------------------
