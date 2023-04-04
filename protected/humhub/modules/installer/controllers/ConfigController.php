@@ -143,6 +143,7 @@ class ConfigController extends Controller
             $form->internalRequireApprovalAfterRegistration = false;
             $form->internalAllowAnonymousRegistration = false;
             $form->canInviteExternalUsersByEmail = false;
+            $form->canInviteExternalUsersByLink = false;
             $form->enableFriendshipModule = false;
         }
 
@@ -151,6 +152,7 @@ class ConfigController extends Controller
             $form->internalRequireApprovalAfterRegistration = true;
             $form->internalAllowAnonymousRegistration = true;
             $form->canInviteExternalUsersByEmail = false;
+            $form->canInviteExternalUsersByLink = false;
             $form->enableFriendshipModule = false;
         }
 
@@ -159,6 +161,7 @@ class ConfigController extends Controller
             $form->internalRequireApprovalAfterRegistration = false;
             $form->internalAllowAnonymousRegistration = false;
             $form->canInviteExternalUsersByEmail = true;
+            $form->canInviteExternalUsersByLink = true;
             $form->enableFriendshipModule = true;
         }
 
@@ -167,6 +170,7 @@ class ConfigController extends Controller
             $form->internalRequireApprovalAfterRegistration = false;
             $form->internalAllowAnonymousRegistration = true;
             $form->canInviteExternalUsersByEmail = true;
+            $form->canInviteExternalUsersByLink = true;
             $form->enableFriendshipModule = false;
         }
 
@@ -174,7 +178,8 @@ class ConfigController extends Controller
             Yii::$app->getModule('user')->settings->set('auth.needApproval', $form->internalRequireApprovalAfterRegistration);
             Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', $form->internalAllowAnonymousRegistration);
             Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', $form->allowGuestAccess);
-            Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInvite', $form->canInviteExternalUsersByEmail);
+            Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByEmail', $form->canInviteExternalUsersByEmail);
+            Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', $form->canInviteExternalUsersByLink);
             Yii::$app->getModule('friendship')->settings->set('enable', $form->enableFriendshipModule);
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
@@ -226,6 +231,7 @@ class ConfigController extends Controller
             return $this->render('modules', ['modules' => $modules]);
         }
     }
+
 
     /**
      * Sample Data
@@ -536,7 +542,7 @@ class ConfigController extends Controller
 
         try {
             Yii::$app->user->logout();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             ;
         }
         return $this->render('finished');

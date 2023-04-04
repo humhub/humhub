@@ -8,7 +8,9 @@
 
 namespace humhub\modules\content;
 
+use humhub\commands\CronController;
 use humhub\commands\IntegrityController;
+use humhub\components\Event;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\search\interfaces\Searchable;
@@ -16,6 +18,7 @@ use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\user\events\UserEvent;
 use Yii;
 use yii\base\BaseObject;
+use yii\helpers\Console;
 
 /**
  * Events provides callbacks to handle events.
@@ -34,7 +37,7 @@ class Events extends BaseObject
     {
         // Delete user profile content on soft delete
         foreach (Content::findAll(['contentcontainer_id' => $event->user->contentcontainer_id]) as $content) {
-            $content->delete();
+            $content->hardDelete();
         }
     }
 
@@ -47,7 +50,7 @@ class Events extends BaseObject
     {
         $user = $event->sender;
         foreach (Content::findAll(['created_by' => $user->id]) as $content) {
-            $content->delete();
+            $content->hardDelete();
         }
     }
 
@@ -92,7 +95,7 @@ class Events extends BaseObject
     /**
      * On init of the WallEntryAddonWidget, attach the wall entry links widget.
      *
-     * @param CEvent $event
+     * @param Event $event
      */
     public static function onWallEntryAddonInit($event)
     {
@@ -105,13 +108,13 @@ class Events extends BaseObject
     /**
      * On rebuild of the search index, rebuild all user records
      *
-     * @param type $event
+     * @param Event $event
      */
     public static function onSearchRebuild($event)
     {
         foreach (Content::find()->each() as $content) {
             $contentObject = $content->getPolymorphicRelation();
-            if ($contentObject instanceof Searchable) {
+            if ($contentObject instanceof Searchable && $content->state === Content::STATE_PUBLISHED) {
                 Yii::$app->search->add($contentObject);
             }
         }
@@ -126,7 +129,10 @@ class Events extends BaseObject
     {
         /** @var ContentActiveRecord $record */
         $record = $event->sender;
-        SearchHelper::queueUpdate($record);
+
+        if ($record->content->state === Content::STATE_PUBLISHED) {
+            SearchHelper::queueUpdate($record);
+        }
     }
 
     /**
@@ -139,6 +145,47 @@ class Events extends BaseObject
         /** @var ContentActiveRecord $record */
         $record = $event->sender;
         SearchHelper::queueDelete($record);
+    }
+
+    /**
+     * Callback on daily cron job run
+     */
+    public static function onCronDailyRun(): void
+    {
+        Yii::$app->queue->push(new jobs\PurgeDeletedContents());
+    }
+
+    /**
+     * Callback on before run cron action
+     */
+    public static function onCronBeforeAction($event): void
+    {
+        if (self::canPublishScheduledContent()) {
+            /* @var CronController $controller */
+            $controller = $event->sender;
+            $controller->stdout('Publish scheduled content... ');
+            self::publishScheduledContent();
+            $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
+        }
+    }
+
+    private static function getModule(): Module
+    {
+        return Yii::$app->getModule('content');
+    }
+
+    private static function canPublishScheduledContent(): bool
+    {
+        $lastPublishTime = self::getModule()->settings->get('lastPublishScheduledTS');
+        return $lastPublishTime === null ||
+            time() >= $lastPublishTime + self::getModule()->publishScheduledInterval * 60;
+    }
+
+    private static function publishScheduledContent()
+    {
+        if (Yii::$app->queue->push(new jobs\PublishScheduledContents())) {
+            self::getModule()->settings->set('lastPublishScheduledTS', time());
+        }
     }
 
 }

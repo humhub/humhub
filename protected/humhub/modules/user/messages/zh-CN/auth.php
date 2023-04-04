@@ -25,7 +25,7 @@ return array (
   'Go to login page' => '去登录页',
   'Group' => '用户组',
   'Hello {displayName}' => '你好 {displayName}',
-  'Hello {displayName},' => '',
+  'Hello {displayName},' => '你好{displayName} ，',
   'If you don\'t use this link within 24 hours, it will expire.' => '如果你不在24小时内使用这个链接，它会自动过期',
   'If you\'re already a member, please login with your username/email and password.' => '如果你已经是会员，请登录',
   'Just enter your e-mail address. We\'ll send you recovery instructions!' => '输入你的邮箱。我们会发送找回密码的指令链接给你！',

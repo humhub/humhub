@@ -15,8 +15,6 @@
  *
  */
 humhub.module('stream.StreamEntry', function (module, require, $) {
-
-    var util = require('util');
     var client = require('client');
     var contentModule = require('content');
     var Content = contentModule.Content;
@@ -322,6 +320,22 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         });
     };
 
+    /**
+     * Publish draft of this entry from the top of the stream.
+     * @param evt
+     */
+    StreamEntry.prototype.publishDraft = function (evt) {
+        var that = this;
+        this.loader();
+        client.post(evt.url).then(function (data) {
+            that.stream().init();
+            module.log.info(data.message, true);
+        }).catch(function (e) {
+            module.log.error(e, true);
+            that.loader(false);
+        });
+    };
+
 
     /**
      * Replaces this entries dom element.
@@ -398,6 +412,21 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         }).catch(function (e) {
             module.log.error('Unexpected error', e, true);
             that.loader(false);
+        });
+    };
+
+    StreamEntry.prototype.scheduleOptions = function (evt) {
+        const that = this;
+        modal.post(evt).then(function () {
+            modal.global.$.one('submitted', function () {
+                if ($(this).find('.has-error').length) {
+                    return;
+                }
+                modal.global.close(true);
+                that.reload();
+            });
+        }).catch(function (e) {
+            module.log.error(e, true);
         });
     };
 

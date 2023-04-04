@@ -40,9 +40,6 @@ class LayoutAddons extends BaseStack
             $this->addWidget(StatusBar::class);
             if (Yii::$app->params['installed']) {
 
-                // Temporary fix until v1.6 then bundled with css pack
-                Yii::$app->view->registerCss('img { image-orientation: from-image; }', [], 'fix-orient');
-
                 $this->addWidget(BlueimpGallery::class);
                 $this->addWidget(MarkdownModals::class);
 

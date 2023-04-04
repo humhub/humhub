@@ -67,7 +67,7 @@ return array (
   'Show less' => 'Показать меньше',
   'Show more' => 'Показать больше',
   'Some files could not be uploaded:' => 'Некоторые файлы не могут быть загружены:',
-  'Stop impersonation' => '',
+  'Stop impersonation' => 'Прекратите выдавать себя за другого',
   'Text could not be copied to clipboard' => 'Текст не может быть скопирован в буфер обмена',
   'Text has been copied to clipboard' => 'Текст скопирован в буфер обмена',
   'The date has to be in the past.' => 'Дата должна быть в прошлом.',

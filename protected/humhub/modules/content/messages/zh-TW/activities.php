@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Contents' => '',
-  'Whenever a new content (e.g. post) has been created.' => '',
-  '{displayName} created a new {contentTitle}.' => '',
+  'Contents' => '內容',
+  'Whenever a new content (e.g. post) has been created.' => '每當建立了一篇新的內容 (例如: 貼文) 。',
+  '{displayName} created a new {contentTitle}.' => '{displayName} 建立了一篇新的 {contentTitle}。',
 );

@@ -25,7 +25,7 @@ return array (
   'Go to login page' => '',
   'Group' => '',
   'Hello {displayName}' => '',
-  'Hello {displayName},' => '',
+  'Hello {displayName},' => 'Halo nama {displayName} ,',
   'If you don\'t use this link within 24 hours, it will expire.' => '',
   'If you\'re already a member, please login with your username/email and password.' => '',
   'Just enter your e-mail address. We\'ll send you recovery instructions!' => '',

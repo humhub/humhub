@@ -33,6 +33,11 @@ class Birthday extends BaseType
     const HIDE_AGE_NO = 0;
 
     /**
+     * @inheritdoc
+     */
+    public $type = 'datetime';
+
+    /**
      * @var string hide age by default
      */
     public $defaultHideAge = self::DEFAULT_HIDE_AGE_NO;
@@ -133,24 +138,22 @@ class Birthday extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition(User $user = null)
+    public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
-        return [
-            $this->profileField->internal_name => [
-                'type' => 'datetime',
-                'format' => 'medium',
-                'class' => 'form-control',
-                'readonly' => (!$this->profileField->editable),
-                'yearRange' => (date('Y') - 100) . ':' . date('Y'),
-                'dateTimePickerOptions' => [
-                    'pickTime' => false
-                ]
-            ],
-            $this->profileField->internal_name . '_hide_year' => [
-                'type' => 'checkbox',
-                'readonly' => (!$this->profileField->editable)
-            ],
+        $result = parent::getFieldFormDefinition($user, array_merge([
+            'format' => 'medium',
+            'yearRange' => (date('Y') - 100) . ':' . date('Y'),
+            'dateTimePickerOptions' => [
+                'pickTime' => false
+            ]
+        ], $options));
+
+        $result[$this->profileField->internal_name . '_hide_year'] = [
+            'type' => 'checkbox',
+            'readonly' => !$this->profileField->editable
         ];
+
+        return $result;
     }
 
     /**

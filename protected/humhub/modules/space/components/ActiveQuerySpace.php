@@ -74,44 +74,9 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
      */
     protected function getSearchableFields(): array
     {
-        return ['space.name', 'space.description', 'contentcontainer.tags_cached'];
-    }
-
-    /**
-     * @inheritdoc
-     * @return self
-     */
-    public function search($keywords, ?array $fields = null): ActiveQuery
-    {
-        if (empty($keywords)) {
-            return $this;
-        }
-
         $this->joinWith('contentContainerRecord');
 
-        foreach ($this->setUpKeywords($keywords) as $keyword) {
-            $this->searchKeyword($keyword, $fields);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     * @return self
-     */
-    public function searchKeyword(string $keyword, ?array $fields = null): ActiveQuery
-    {
-        if (empty($fields)) {
-            $fields = $this->getSearchableFields();
-        }
-
-        $conditions = [];
-        foreach ($fields as $field) {
-            $conditions[] = ['LIKE', $field, $keyword];
-        }
-
-        return $this->andWhere(array_merge(['OR'], $conditions));
+        return ['space.name', 'space.description', 'contentcontainer.tags_cached'];
     }
 
     /**

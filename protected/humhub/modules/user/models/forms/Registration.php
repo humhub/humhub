@@ -14,6 +14,7 @@ use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\AuthClientUserService;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -291,7 +292,7 @@ class Registration extends HForm
             }
 
             if ($authClient !== null) {
-                \humhub\modules\user\authclient\AuthClientHelpers::storeAuthClientForUser($authClient, $this->models['User']);
+                (new AuthClientUserService($this->models['User']))->add($authClient);
                 $authClient->trigger(\humhub\modules\user\authclient\BaseClient::EVENT_CREATE_USER, new \yii\web\UserEvent(['identity' => $this->models['User']]));
             }
 

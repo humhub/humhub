@@ -33,7 +33,7 @@ class PinnedContentStreamFilter extends StreamQueryFilter
     /**
      * @var Content[]
      */
-    public $pinnedContent = [];
+    private $pinnedContent = [];
 
     /**
      * @inheritDoc
@@ -41,34 +41,44 @@ class PinnedContentStreamFilter extends StreamQueryFilter
     public function apply()
     {
         // Currently we only support pinned entries on container streams
-        if(!$this->container) {
+        if (!$this->container) {
             return;
         }
 
-         if ($this->streamQuery->isInitialQuery()) {
-             $pinnedContentIds = $this->fetchPinnedContent();
+        if ($this->streamQuery->isInitialQuery()) {
+            $pinnedContentIds = $this->fetchPinnedContent();
 
-             // Exclude pinned content from result, we've already fetched and cached them
-             if(!empty($pinnedContentIds)) {
+            // Exclude pinned content from result, we've already fetched and cached them
+            if (!empty($pinnedContentIds)) {
                 $this->query->andWhere((['NOT IN', 'content.id', $pinnedContentIds]));
             }
-        } else if(!$this->streamQuery->isSingleContentQuery()) {
+        } else if (!$this->streamQuery->isSingleContentQuery()) {
             // All pinned entries of this container were loaded within the initial request, so don't include them here!
             $this->query->andWhere(['OR', ['content.pinned' => 0], ['<>', 'content.contentcontainer_id', $this->container->contentcontainer_id]]);
         }
     }
 
     /**
+     * @inheritDoc
+     */
+    public function postProcessStreamResult(array &$results): void
+    {
+        $results = array_merge($this->pinnedContent, $results);
+    }
+
+    /**
      * Loads pinned content entries into [[pinnedContent]] by means of a cloned stream query.
      * @return array array of pinned content ids
      */
-    private function fetchPinnedContent()
+    private function fetchPinnedContent(): array
     {
         $pinnedQuery = clone $this->query;
-        $pinnedQuery->andWhere(['AND', ['content.pinned' => 1], ['content.contentcontainer_id' => $this->container->contentcontainer_id]]);
+        $pinnedQuery->andWhere(['AND', [
+            'content.pinned' => 1],
+            ['content.contentcontainer_id' => $this->container->contentcontainer_id]]);
         $pinnedQuery->limit(1000);
         $this->pinnedContent = $pinnedQuery->all();
-        return array_map(function($content) {
+        return array_map(function ($content) {
             return $content->id;
         }, $this->pinnedContent);
     }

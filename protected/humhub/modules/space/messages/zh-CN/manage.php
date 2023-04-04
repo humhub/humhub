@@ -43,8 +43,6 @@ return [
     'Unarchive' => '取消存档',
     'e.g. example for {baseUrl}/s/example' => '例如 转给example 用 {baseUrl}/s/example',
     'never' => '从不',
-    'the default start page of this space for members' => '这个空间成员默认的开始页',
-    'the default start page of this space for visitors' => '这个空间游客默认的开始页',
     '-' => '',
     'Activate' => '',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',

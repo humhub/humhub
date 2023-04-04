@@ -19,6 +19,10 @@ use Yii;
  */
 class MarkdownEditor extends BaseType
 {
+    /**
+     * @inheritdoc
+     */
+    public $type = 'markdown';
 
     /**
      * @inheritdoc
@@ -60,14 +64,11 @@ class MarkdownEditor extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition(User $user = null)
+    public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
-        return [$this->profileField->internal_name => [
-                'type' => 'markdown',
-                'class' => 'form-control',
-                'readonly' => (!$this->profileField->editable),
-                'rows' => '3'
-        ]];
+        return parent::getFieldFormDefinition($user, array_merge([
+            'rows' => '3'
+        ], $options));
     }
 
 }

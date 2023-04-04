@@ -20,6 +20,10 @@ use yii\helpers\ArrayHelper;
  */
 class Select extends BaseType
 {
+    /**
+     * @inheritdoc
+     */
+    public $type = 'dropdownlist';
 
     /**
      * All possible options.
@@ -98,15 +102,12 @@ class Select extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition(User $user = null)
+    public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
-        return [$this->profileField->internal_name => [
-                'type' => 'dropdownlist',
-                'class' => 'form-control',
-                'readonly' => (!$this->profileField->editable),
-                'items' => $this->getSelectItems(),
-                'prompt' => Yii::t('UserModule.profile', 'Please select:'),
-        ]];
+        return parent::getFieldFormDefinition($user, array_merge([
+            'items' => $this->getSelectItems(),
+            'prompt' => Yii::t('UserModule.profile', 'Please select:'),
+        ], $options));
     }
 
     /**

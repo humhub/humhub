@@ -82,7 +82,7 @@ class AdvancedSettings extends Model
         return [
             'url' => 'URL',
             'indexUrl' => Yii::t('SpaceModule.base', 'Homepage'),
-            'indexGuestUrl' => Yii::t('SpaceModule.base', 'Homepage (Guests)'),
+            'indexGuestUrl' => Yii::t('SpaceModule.base', 'Homepage (Non-members)'),
             'hideMembers' => Yii::t('SpaceModule.base', 'Hide Members'),
             'hideActivities' => Yii::t('SpaceModule.base', 'Hide Activity Sidebar Widget'),
             'hideAbout' => Yii::t('SpaceModule.base', 'Hide About Page'),
@@ -90,6 +90,16 @@ class AdvancedSettings extends Model
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'indexUrl' => Yii::t('SpaceModule.base', 'The default homepage for members of this Space'),
+            'indexGuestUrl' => Yii::t('SpaceModule.base', 'The default homepage for non-members and guests visiting this Space'),
+        ];
+    }
 
     public function loadBySettings()
     {
@@ -120,6 +130,24 @@ class AdvancedSettings extends Model
         $settings = $this->space->getSettings();
 
         $this->space->url = $this->url;
+
+        if ($this->space->isAttributeChanged('url')) {
+            if ($this->indexUrl) {
+                $this->indexUrl = str_replace(
+                    $this->space->getOldAttribute('url'),
+                    $this->space->url,
+                    $this->indexUrl
+                );
+            }
+            if ($this->indexGuestUrl) {
+                $this->indexGuestUrl = str_replace(
+                    $this->space->getOldAttribute('url'),
+                    $this->space->url,
+                    $this->indexGuestUrl
+                );
+            }
+        }
+
         $this->space->save();
 
         if (!empty($this->indexUrl)) {

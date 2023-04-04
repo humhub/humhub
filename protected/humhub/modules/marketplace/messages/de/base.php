@@ -97,5 +97,5 @@ The license was successfully removed!
   'Update all' => 'Alle aktualisieren',
   'Upgrade to Professional Edition' => 'Auf Professional Edition umsteigen',
   'Version:' => 'Version:',
-  'Your HumHub installation is up to date!' => 'Deine HumHub Installation ist auf dem neusten Stand.',
+  'Your HumHub installation is up to date!' => 'Deine HumHub Installation ist auf dem neuesten Stand.',
 );

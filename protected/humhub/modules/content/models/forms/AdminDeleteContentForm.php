@@ -59,7 +59,7 @@ class AdminDeleteContentForm extends Model
             return false;
         }
 
-        return (bool) $this->content->delete();
+        return $this->content->delete();
     }
 
     public function notify(): bool

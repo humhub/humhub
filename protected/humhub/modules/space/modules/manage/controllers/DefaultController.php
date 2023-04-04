@@ -11,15 +11,14 @@ namespace humhub\modules\space\modules\manage\controllers;
 use humhub\modules\content\components\ContentContainerControllerAccess;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\space\components\UrlRule;
-use Yii;
 use humhub\modules\space\models\Space;
-use humhub\modules\space\models\AdvancedSettings;
 use humhub\modules\space\widgets\Menu;
 use humhub\modules\space\widgets\Chooser;
 use humhub\modules\space\modules\manage\components\Controller;
 use humhub\modules\space\modules\manage\models\DeleteForm;
 use humhub\modules\space\activities\SpaceArchived;
 use humhub\modules\space\activities\SpaceUnArchived;
+use Yii;
 use yii\helpers\Url;
 
 /**
@@ -72,9 +71,9 @@ class DefaultController extends Controller
         }
 
         $indexModuleSelection = Menu::getAvailablePages();
-        unset($indexModuleSelection[Url::to(['/space/home', 'container' => $this->contentContainer])]);
+        unset($indexModuleSelection[Url::to(['/space/space/home', 'container' => $this->contentContainer])]);
 
-        // To avoid infinit redirects of actionIndex we remove the stream value and set an empty selection instead
+        // To avoid infinite redirects of actionIndex we remove the stream value and set an empty selection instead
         $indexModuleSelection = ['' => Yii::t('SpaceModule.manage', 'Stream (Default)')] + $indexModuleSelection;
 
         return $this->render('advanced', [

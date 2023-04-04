@@ -11,13 +11,15 @@ namespace humhub\modules\user\widgets;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\bootstrap\Html;
+use yii\base\InvalidConfigException;
+use humhub\modules\user\authclient\BaseFormAuth;
 
 class AuthChoice extends \yii\authclient\widgets\AuthChoice
 {
 
     /**
      * Used to retrieve the auth clients in a static way
-     * @var type
+     * @var string
      */
     private static $authclientCollection = 'authClientCollection';
 
@@ -63,7 +65,8 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
 
     /**
      * Returns default auth clients list.
-     * @return ClientInterface[] auth clients list.
+     * @return bool
+     * @throws InvalidConfigException
      */
     public static function hasClients()
     {
@@ -74,8 +77,8 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
 
     /**
      * Filters out clients which need login form
-     * @param type $clients
-     * @return \humhub\modules\user\authclient\BaseFormAuth
+     * @param $clients
+     * @return BaseFormAuth[]
      */
     private static function filterClients($clients)
     {

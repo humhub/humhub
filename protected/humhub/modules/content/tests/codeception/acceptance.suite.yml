@@ -19,3 +19,6 @@ modules:
       url: 'http://localhost:8080/'
       browser: chrome
       port: 4444
+      capabilities:
+        chromeOptions:
+          args: [ "--lang=en-US" ]
