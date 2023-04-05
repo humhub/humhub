@@ -20,7 +20,7 @@ class Module extends \humhub\components\Module
     public $acceptableNames = ['interface', 'administration', 'profile', 'spaces'];
 
     /**
-     * @inheridoc
+     * @inheritdoc
      */
     public $isCoreModule = true;
 
