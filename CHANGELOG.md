@@ -7,7 +7,7 @@ HumHub Changelog
 - Fix #6202: Invite by link is not possible for a user already invited by email
 - Fix #5718: Fix profile field "Country" to use js plugin Select2
 - Enh #6214: Improve SoftDelete implementation
-- Enh # : Removed deprecated MarkdownEditor usages
+- Enh #6225: Removed deprecated MarkdownEditor usages
 
 1.14.0-beta.2 (March 28, 2023)
 ------------------------------
