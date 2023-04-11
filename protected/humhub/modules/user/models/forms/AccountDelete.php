@@ -12,6 +12,7 @@ use Yii;
 use yii\base\Model;
 use humhub\modules\user\components\CheckPasswordValidator;
 use humhub\modules\user\models\User;
+use humhub\modules\user\models\Auth;
 use humhub\modules\user\jobs\SoftDeleteUser;
 
 /**
@@ -21,7 +22,6 @@ use humhub\modules\user\jobs\SoftDeleteUser;
  */
 class AccountDelete extends Model
 {
-
     /**
      * @var string the current password
      */
@@ -71,9 +71,10 @@ class AccountDelete extends Model
         $this->user->status = User::STATUS_DISABLED;
         $this->user->save();
 
+        Auth::deleteAll(['user_id' => $this->user->id]);
+
         Yii::$app->queue->push(new SoftDeleteUser(['user_id' => $this->user->id]));
 
         return true;
     }
-
 }

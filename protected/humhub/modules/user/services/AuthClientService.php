@@ -64,10 +64,11 @@ class AuthClientService
      * Updates (or creates) a user in HumHub using AuthClients Attributes
      * This method will be called after login or by cron sync.
      *
-     * @param User $user
-     * @return boolean succeed
+     * @param User|null $user
+     * @param bool $isOAuth
+     * @return bool succeed
      */
-    public function updateUser(User $user = null): bool
+    public function updateUser(User $user = null, bool $isOAuth = false): bool
     {
         if ($user === null) {
             $user = $this->getUser();
@@ -80,6 +81,7 @@ class AuthClientService
 
         if ($this->authClient instanceof SyncAttributes) {
             $attributes = $this->authClient->getUserAttributes();
+
             foreach ($this->authClient->getSyncAttributes() as $attributeName) {
                 if (isset($attributes[$attributeName])) {
                     if ($user->hasAttribute($attributeName) && !in_array($attributeName, ['id', 'guid', 'status', 'contentcontainer_id', 'auth_mode'])) {
@@ -95,7 +97,6 @@ class AuthClientService
             }
 
             if (count($user->getDirtyAttributes()) !== 0 && !$user->save()) {
-
                 Yii::warning('Could not update user (' . $user->id . '). Error: '
                     . VarDumper::dumpAsString($user->getErrors()), 'user');
 
@@ -105,6 +106,17 @@ class AuthClientService
             if (count($user->profile->getDirtyAttributes()) !== 0 && !$user->profile->save()) {
                 Yii::warning('Could not update user profile (' . $user->id . '). Error: '
                     . VarDumper::dumpAsString($user->profile->getErrors()), 'user');
+
+                return false;
+            }
+        } elseif ($isOAuth && $user->status === 0) {
+            // Change status if user logged in with OAuth and status is 0
+            $user->setAttribute('status', 1);
+
+            if (count($user->getDirtyAttributes()) !== 0 && !$user->save()) {
+                Yii::warning('Could not update user (' . $user->id . '). Error: '
+                    . VarDumper::dumpAsString($user->getErrors()), 'user');
+
                 return false;
             }
         }
@@ -129,8 +141,13 @@ class AuthClientService
         }
 
         // remove potentially unsafe attributes
-        unset($attributes['id'], $attributes['guid'], $attributes['contentcontainer_id'],
-            $attributes['auth_mode'], $attributes['status']);
+        unset(
+            $attributes['id'],
+            $attributes['guid'],
+            $attributes['contentcontainer_id'],
+            $attributes['auth_mode'],
+            $attributes['status']
+        );
 
         $attributes['username'] = AuthHelper::generateUsernameByAttributes($attributes);
         $registration->getUser()->setAttributes($attributes, false);

@@ -102,7 +102,7 @@ class AuthController extends Controller
         }
 
         // Login Form Handling
-        $login = new Login;
+        $login = new Login();
         if ($login->load(Yii::$app->request->post()) && $login->validate()) {
             return $this->onAuthSuccess($login->authClient);
         }
@@ -212,6 +212,36 @@ class AuthController extends Controller
     }
 
     /**
+     * Do log in user
+     *
+     * @param $user
+     * @param $authClient
+     * @param $redirectUrl
+     * @param $isOAuth
+     * @return array
+     */
+    protected function doLogin($user, $authClient, $redirectUrl, $isOAuth = false)
+    {
+        $duration = 0;
+
+        if (
+            ($authClient instanceof BaseFormAuth && $authClient->login->rememberMe) ||
+            !empty(Yii::$app->session->get('loginRememberMe'))
+        ) {
+            $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
+        }
+
+        (new AuthClientService($authClient))->updateUser($user, $isOAuth);
+
+        if ($success = Yii::$app->user->login($user, $duration)) {
+            Yii::$app->user->setCurrentAuthClient($authClient);
+            $redirectUrl = Yii::$app->user->returnUrl;
+        }
+
+        return [$success, $redirectUrl];
+    }
+
+    /**
      * Login user
      *
      * @param User $user
@@ -223,22 +253,15 @@ class AuthController extends Controller
         $redirectUrl = ['/user/auth/login'];
         $success = false;
         $this->trigger(static::EVENT_BEFORE_CHECKING_USER_STATUS, new UserEvent(['user' => $user]));
+
         if ($user->status == User::STATUS_ENABLED) {
-            $duration = 0;
-            if (
-                ($authClient instanceof BaseFormAuth && $authClient->login->rememberMe) ||
-                !empty(Yii::$app->session->get('loginRememberMe'))) {
-
-                $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
-            }
-            (new AuthClientService($authClient))->updateUser($user);
-
-            if ($success = Yii::$app->user->login($user, $duration)) {
-                Yii::$app->user->setCurrentAuthClient($authClient);
-                $redirectUrl = Yii::$app->user->returnUrl;
-            }
+            [$success, $redirectUrl] = $this->doLogin($user, $authClient, $redirectUrl);
         } elseif ($user->status == User::STATUS_DISABLED) {
-            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account is disabled!'));
+            if ($authClient->getId() === 'local') {
+                Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account is disabled!'));
+            } else {
+                [$success, $redirectUrl] = $this->doLogin($user, $authClient, $redirectUrl, true);
+            }
         } elseif ($user->status == User::STATUS_NEED_APPROVAL) {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account is not approved yet!'));
         } else {
@@ -311,6 +334,7 @@ class AuthController extends Controller
      * Sign in back to admin User who impersonated the current User
      *
      * @return \yii\console\Response|\yii\web\Response
+     * @throws \yii\web\HttpException
      */
     public function actionStopImpersonation()
     {
@@ -322,5 +346,4 @@ class AuthController extends Controller
 
         return $this->goBack();
     }
-
 }

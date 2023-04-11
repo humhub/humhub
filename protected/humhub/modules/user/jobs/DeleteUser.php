@@ -21,7 +21,6 @@ use humhub\modules\user\models\User;
  */
 class DeleteUser extends ActiveJob implements ExclusiveJobInterface
 {
-
     public $user_id;
 
     /**
@@ -45,9 +44,7 @@ class DeleteUser extends ActiveJob implements ExclusiveJobInterface
         if ($user === null) {
             return;
         }
-        
-        $user->delete();
-        
-    }
 
+        $user->delete();
+    }
 }
