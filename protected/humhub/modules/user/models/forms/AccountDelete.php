@@ -68,7 +68,7 @@ class AccountDelete extends Model
             return false;
         }
 
-        $this->user->status = User::STATUS_DISABLED;
+        $this->user->status = User::STATUS_SOFT_DELETED;
         $this->user->save();
 
         Auth::deleteAll(['user_id' => $this->user->id]);

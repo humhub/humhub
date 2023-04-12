@@ -214,13 +214,13 @@ class AuthController extends Controller
     /**
      * Do log in user
      *
-     * @param $user
-     * @param $authClient
-     * @param $redirectUrl
-     * @param $isOAuth
+     * @param User $user
+     * @param BaseClient $authClient
+     * @param array $redirectUrl
+     * @param bool $isNoLocalAuth
      * @return array
      */
-    protected function doLogin($user, $authClient, $redirectUrl, $isOAuth = false)
+    protected function doLogin($user, $authClient, $redirectUrl, $isNoLocalAuth = false)
     {
         $duration = 0;
 
@@ -231,7 +231,7 @@ class AuthController extends Controller
             $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
         }
 
-        (new AuthClientService($authClient))->updateUser($user, $isOAuth);
+        (new AuthClientService($authClient))->updateUser($user, $isNoLocalAuth);
 
         if ($success = Yii::$app->user->login($user, $duration)) {
             Yii::$app->user->setCurrentAuthClient($authClient);
@@ -256,12 +256,10 @@ class AuthController extends Controller
 
         if ($user->status == User::STATUS_ENABLED) {
             [$success, $redirectUrl] = $this->doLogin($user, $authClient, $redirectUrl);
+        } elseif ($user->status == User::STATUS_SOFT_DELETED && $authClient->getId() !== 'local') {
+            [$success, $redirectUrl] = $this->doLogin($user, $authClient, $redirectUrl, true);
         } elseif ($user->status == User::STATUS_DISABLED) {
-            if ($authClient->getId() === 'local') {
-                Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account is disabled!'));
-            } else {
-                [$success, $redirectUrl] = $this->doLogin($user, $authClient, $redirectUrl, true);
-            }
+            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account is disabled!'));
         } elseif ($user->status == User::STATUS_NEED_APPROVAL) {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account is not approved yet!'));
         } else {

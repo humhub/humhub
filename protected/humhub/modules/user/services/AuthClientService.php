@@ -65,10 +65,10 @@ class AuthClientService
      * This method will be called after login or by cron sync.
      *
      * @param User|null $user
-     * @param bool $isOAuth
+     * @param bool $isNoLocalAuth
      * @return bool succeed
      */
-    public function updateUser(User $user = null, bool $isOAuth = false): bool
+    public function updateUser(User $user = null, bool $isNoLocalAuth = false): bool
     {
         if ($user === null) {
             $user = $this->getUser();
@@ -109,9 +109,10 @@ class AuthClientService
 
                 return false;
             }
-        } elseif ($isOAuth && $user->status === 0) {
-            // Change status if user logged in with OAuth and status is 0
-            $user->setAttribute('status', 1);
+        } elseif ($isNoLocalAuth && $user->status === User::STATUS_SOFT_DELETED) {
+            // Change status from soft deleted to enabled
+            // if user logged in with no local auth method
+            $user->setAttribute('status', User::STATUS_ENABLED);
 
             if (count($user->getDirtyAttributes()) !== 0 && !$user->save()) {
                 Yii::warning('Could not update user (' . $user->id . '). Error: '
