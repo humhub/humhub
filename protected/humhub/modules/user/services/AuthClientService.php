@@ -65,10 +65,9 @@ class AuthClientService
      * This method will be called after login or by cron sync.
      *
      * @param User|null $user
-     * @param bool $isNoLocalAuth
      * @return bool succeed
      */
-    public function updateUser(User $user = null, bool $isNoLocalAuth = false): bool
+    public function updateUser(User $user = null): bool
     {
         if ($user === null) {
             $user = $this->getUser();
@@ -106,17 +105,6 @@ class AuthClientService
             if (count($user->profile->getDirtyAttributes()) !== 0 && !$user->profile->save()) {
                 Yii::warning('Could not update user profile (' . $user->id . '). Error: '
                     . VarDumper::dumpAsString($user->profile->getErrors()), 'user');
-
-                return false;
-            }
-        } elseif ($isNoLocalAuth && $user->status === User::STATUS_SOFT_DELETED) {
-            // Change status from soft deleted to enabled
-            // if user logged in with no local auth method
-            $user->setAttribute('status', User::STATUS_ENABLED);
-
-            if (count($user->getDirtyAttributes()) !== 0 && !$user->save()) {
-                Yii::warning('Could not update user (' . $user->id . '). Error: '
-                    . VarDumper::dumpAsString($user->getErrors()), 'user');
 
                 return false;
             }

@@ -217,10 +217,9 @@ class AuthController extends Controller
      * @param User $user
      * @param BaseClient $authClient
      * @param array $redirectUrl
-     * @param bool $isNoLocalAuth
      * @return array
      */
-    protected function doLogin($user, $authClient, $redirectUrl, $isNoLocalAuth = false)
+    private function doLogin($user, $authClient, $redirectUrl)
     {
         $duration = 0;
 
@@ -231,7 +230,7 @@ class AuthController extends Controller
             $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
         }
 
-        (new AuthClientService($authClient))->updateUser($user, $isNoLocalAuth);
+        (new AuthClientService($authClient))->updateUser($user);
 
         if ($success = Yii::$app->user->login($user, $duration)) {
             Yii::$app->user->setCurrentAuthClient($authClient);

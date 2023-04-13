@@ -71,8 +71,6 @@ class AccountDelete extends Model
         $this->user->status = User::STATUS_SOFT_DELETED;
         $this->user->save();
 
-        Auth::deleteAll(['user_id' => $this->user->id]);
-
         Yii::$app->queue->push(new SoftDeleteUser(['user_id' => $this->user->id]));
 
         return true;
