@@ -11,6 +11,8 @@ namespace humhub\modules\user\helpers;
 
 
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\forms\Registration;
+use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
@@ -94,7 +96,7 @@ class AuthHelper
      * @return void
      * @throws HttpException
      */
-    public static function handleInviteByLinkRegistration(string $token, ?string $spaceId = null)
+    public static function handleInviteByLinkRegistration(string $token, ?string $spaceId = null): void
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
@@ -113,6 +115,23 @@ class AuthHelper
         } else if ($module->settings->get('registration.inviteToken') !== $token) {
             // If invited by link globally
             throw new HttpException(404, 'Invalid registration token!');
+        }
+    }
+
+    /**
+     * @param $inviteToken
+     * @param Registration|null $form
+     * @throws HttpException
+     */
+    public static function handleInviteByEmailRegistration($inviteToken, Registration $form = null): void
+    {
+        $userInvite = Invite::findOne(['token' => $inviteToken]);
+        if (!$userInvite) {
+            throw new HttpException(404, 'Invalid registration token!');
+        }
+        Yii::$app->setLanguage($userInvite->language);
+        if ($form !== null) {
+            $form->getUser()->email = $userInvite->email;
         }
     }
 }

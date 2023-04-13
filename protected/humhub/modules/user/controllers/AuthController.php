@@ -176,26 +176,31 @@ class AuthController extends Controller
             return $this->login($user, $authClient);
         }
 
-        // Check if invited by link
         $inviteToken = null;
         if (!empty($attributes['email'])) {
             $inviteToken = Yii::$app->request->get('token');
             if ($inviteToken) {
-                $inviteSpaceId = Yii::$app->request->get('spaceId');
-                AuthHelper::handleInviteByLinkRegistration($inviteToken, $inviteSpaceId);
                 $invite = Invite::findOne(['email' => $attributes['email']]);
-                if ($invite === null) {
-                    $invite = new Invite([
-                        'email' => $attributes['email'],
-                        'scenario' => 'invite',
-                        'language' => Yii::$app->language,
-                    ]);
-                }
-                $invite->source = Invite::SOURCE_INVITE_BY_LINK;
-                $invite->space_invite_id = $inviteSpaceId;
-                $invite->skipCaptchaValidation = true;
-                if ($invite->save()) {
-                    $inviteToken = $invite->token;
+                if ($invite !== null && $invite->source === Invite::SOURCE_INVITE) {
+                    // Invite by email
+                    AuthHelper::handleInviteByEmailRegistration($inviteToken);
+                } else {
+                    // Invite by link
+                    $inviteSpaceId = Yii::$app->request->get('spaceId');
+                    AuthHelper::handleInviteByLinkRegistration($inviteToken, $inviteSpaceId);
+                    if ($invite === null) {
+                        $invite = new Invite([
+                            'email' => $attributes['email'],
+                            'scenario' => 'invite',
+                            'language' => Yii::$app->language,
+                        ]);
+                    }
+                    $invite->source = Invite::SOURCE_INVITE_BY_LINK;
+                    $invite->space_invite_id = $inviteSpaceId;
+                    $invite->skipCaptchaValidation = true;
+                    if ($invite->save()) {
+                        $inviteToken = $invite->token;
+                    }
                 }
             }
         }

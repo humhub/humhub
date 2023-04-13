@@ -76,7 +76,7 @@ class RegistrationController extends Controller
         $showAuthClients = AuthChoice::hasClients();
 
         if ($inviteToken != '') {
-            $this->handleInviteRegistration($inviteToken, $registration);
+            AuthHelper::handleInviteByEmailRegistration($inviteToken, $registration);
         } elseif (Yii::$app->session->has('authClient')) {
             $authClient = Yii::$app->session->get('authClient');
             $this->handleAuthClientRegistration($authClient, $registration);
@@ -161,21 +161,6 @@ class RegistrationController extends Controller
             'invite' => $invite,
             'showAuthClients' => $allAuthClientsCanSkipEmailValidation,
         ]);
-    }
-
-    /**
-     * @param $inviteToken
-     * @param Registration $form
-     * @throws HttpException
-     */
-    protected function handleInviteRegistration($inviteToken, Registration $form)
-    {
-        $userInvite = Invite::findOne(['token' => $inviteToken]);
-        if (!$userInvite) {
-            throw new HttpException(404, 'Invalid registration token!');
-        }
-        Yii::$app->setLanguage($userInvite->language);
-        $form->getUser()->email = $userInvite->email;
     }
 
     /**
