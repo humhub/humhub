@@ -9,8 +9,12 @@ use Yii;
 class ActivityHelper
 {
 
-    public static function deleteActivitiesForRecord(ActiveRecord $record)
+    public static function deleteActivitiesForRecord(?ActiveRecord $record)
     {
+        if ($record === null) {
+            return;
+        }
+
         $pk = $record->getPrimaryKey();
 
         // Check if primary key exists and is not array (multiple pk)
@@ -22,7 +26,8 @@ class ActivityHelper
             ])->each();
 
             foreach ($modelsActivity as $activity) {
-                $activity->delete();
+                /* @var Activity $activity */
+                $activity->hardDelete();
             }
 
             Yii::debug('Deleted activities for ' . get_class($record) . " with PK " . $pk, 'activity');
