@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'Settings' => 'Innstillinger',
     '<strong>CronJob</strong> Status' => '',
     '<strong>Queue</strong> Status' => '',
     'About HumHub' => '',
@@ -16,6 +17,7 @@ return [
     'Database migration results:' => '',
     'Delayed' => '',
     'Detected URL: {currentBaseUrl}' => '',
+    'Disabled Functions' => '',
     'Displaying {count} entries per page.' => '',
     'Done' => '',
     'Driver' => '',
@@ -23,6 +25,7 @@ return [
     'Error' => '',
     'Flush entries' => '',
     'HumHub' => '',
+    'HumHub Documentation' => '',
     'HumHub is currently in debug mode. Disable it when running on production!' => '',
     'ICU Data Version ({version})' => '',
     'ICU Data {icuMinVersion} or higher is required' => '',
@@ -38,6 +41,7 @@ return [
     'Last run (hourly):' => '',
     'Licences' => '',
     'Logging' => '',
+    'Make sure that the `proc_open` function is not disabled.' => '',
     'Make {filePath} writable for the Webserver/PHP!' => '',
     'Marketplace API Connection' => '',
     'Memory Limit ({memoryLimit})' => '',
@@ -50,6 +54,7 @@ return [
     'Permissions' => '',
     'Please refer to the documentation to setup the cronjobs and queue workers.' => '',
     'Prerequisites' => '',
+    'Pretty URLs' => '',
     'Profile Image' => '',
     'Queue successfully cleared.' => '',
     'Re-Run tests' => '',
@@ -64,7 +69,6 @@ return [
     'Select category..' => '',
     'Select day' => '',
     'Select level...' => '',
-    'Settings' => '',
     'Supported drivers: {drivers}' => '',
     'Table collations' => '',
     'Table engines' => '',

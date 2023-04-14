@@ -2,11 +2,11 @@
 
 namespace humhub\modules\user\models\forms;
 
+use humhub\libs\SafeBaseUrl;
 use humhub\modules\user\models\User;
 use humhub\modules\user\authclient\Password;
 use humhub\libs\UUID;
 use Yii;
-use yii\helpers\Url;
 use yii\base\Model;
 
 /**
@@ -85,7 +85,7 @@ class AccountRecoverPassword extends Model
             'text' => '@humhub/modules/user/views/mails/plaintext/RecoverPassword'
         ], [
             'user' => $user,
-            'linkPasswordReset' => Url::to(['/user/password-recovery/reset', 'token' => $token, 'guid' => $user->guid], true)
+            'linkPasswordReset' => SafeBaseUrl::to(['/user/password-recovery/reset', 'token' => $token, 'guid' => $user->guid], true)
         ]);
         $mail->setTo($user->email);
         $mail->setSubject(Yii::t('UserModule.account', 'Password Recovery'));

@@ -6,6 +6,7 @@
  */
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\models\Content;
 use humhub\modules\file\handler\BaseFileHandler;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\topic\widgets\TopicPicker;
@@ -24,6 +25,7 @@ use yii\helpers\Html;
 /* @var $canSwitchVisibility boolean */
 /* @var $contentContainer ContentContainerActiveRecord */
 /* @var $pickerUrl string */
+/* @var $scheduleUrl string */
 ?>
 
 <div id="notifyUserContainer" class="form-group" style="margin-top:15px;display:none">
@@ -64,25 +66,30 @@ use yii\helpers\Html;
         <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>
 
         <!-- public checkbox -->
-        <?= Html::checkbox('visibility', '', ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true', 'title' => Yii::t('ContentModule.base', 'Content visibility') ]); ?>
+        <?= Html::checkbox('visibility', '', ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true']); ?>
+
+        <!-- state data -->
+        <?= Html::hiddenInput('state', Content::STATE_PUBLISHED) ?>
 
         <!-- content sharing -->
         <div class="pull-right">
-
-            <span class="label label-info label-public hidden"><?= Yii::t('ContentModule.base', 'Public'); ?></span>
+            <span class="label-container">
+                <span class="label label-info label-public hidden"><?= Yii::t('ContentModule.base', 'Public'); ?></span>
+            </span>
 
             <ul class="nav nav-pills preferences" style="right:0;top:5px">
                 <li class="dropdown">
-                    <a class="dropdown-toggle" style="padding:5px 10px" data-toggle="dropdown" href="#" aria-label="<?= Yii::t('base', 'Toggle post menu'); ?>" aria-haspopup="true">
-                        <?= Icon::get('cogs')?>
+                    <a class="dropdown-toggle" style="padding:5px 10px" data-toggle="dropdown" href="#"
+                       aria-label="<?= Yii::t('base', 'Toggle post menu'); ?>" aria-haspopup="true">
+                        <?= Icon::get('cogs') ?>
                     </a>
                     <ul class="dropdown-menu pull-right">
                         <li>
-                            <?= Link::withAction(Yii::t('ContentModule.base', 'Notify members'), 'notifyUser')->icon('bell')?>
+                            <?= Link::withAction(Yii::t('ContentModule.base', 'Notify members'), 'notifyUser')->icon('bell') ?>
                         </li>
                         <?php if (TopicPicker::showTopicPicker($contentContainer)) : ?>
                             <li>
-                                 <?= Link::withAction(Yii::t('ContentModule.base', 'Topics'), 'setTopics')->icon(Yii::$app->getModule('topic')->icon) ?>
+                                <?= Link::withAction(Yii::t('ContentModule.base', 'Topics'), 'setTopics')->icon(Yii::$app->getModule('topic')->icon) ?>
                             </li>
                         <?php endif; ?>
                         <?php if ($canSwitchVisibility): ?>
@@ -91,6 +98,18 @@ use yii\helpers\Html;
                                     ->id('contentForm_visibility_entry')->icon('unlock') ?>
                             </li>
                         <?php endif; ?>
+                        <li>
+                            <?= Link::withAction(Yii::t('ContentModule.base', 'Create as draft'), 'changeState')
+                                    ->icon('edit')
+                                    ->options([
+                                        'data-state' => Content::STATE_DRAFT,
+                                        'data-state-title' => Yii::t('ContentModule.base', 'Draft')
+                                    ]) ?>
+                        </li>
+                        <li>
+                            <?= Link::withAction(Yii::t('ContentModule.base', 'Schedule publication'), 'scheduleOptions', $scheduleUrl)
+                                ->icon('clock-o') ?>
+                        </li>
                     </ul>
                 </li>
             </ul>

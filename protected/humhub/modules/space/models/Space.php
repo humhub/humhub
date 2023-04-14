@@ -262,12 +262,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
 
         if ($insert) {
             // Auto add creator as admin
-            $membership = new Membership();
-            $membership->space_id = $this->id;
-            $membership->user_id = $user->id;
-            $membership->status = Membership::STATUS_MEMBER;
-            $membership->group_id = self::USERGROUP_ADMIN;
-            $membership->save();
+            $this->addMember($user->id, 1, true, self::USERGROUP_ADMIN);
 
             $activity = new Created;
             $activity->source = $this;
@@ -426,7 +421,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     public function archive()
     {
         $this->status = self::STATUS_ARCHIVED;
-        $this->save();
+        $this->save(false); // disable validation to force archiving even if some fields are not valid such as too long description, as the archive button is not part of the space settings form and validation errors are not displayed
     }
 
     /**
@@ -479,7 +474,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
-    public function getDisplayName()
+    public function getDisplayName(): string
     {
         return $this->name;
     }
@@ -487,7 +482,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
-    public function getDisplayNameSub()
+    public function getDisplayNameSub(): string
     {
         return $this->description;
     }

@@ -7,12 +7,12 @@
 humhub.module('content', function (module, require, $) {
     var client = require('client');
     var util = require('util');
-    var object = util.object;
     var string = util.string;
     var actions = require('action');
     var Component = actions.Component;
     var event = require('event');
     var modal = require('ui.modal');
+    var status = require('ui.status');
 
     var DATA_CONTENT_KEY = "content-key";
     var DATA_CONTENT_DELETE_URL = "content-delete-url";
@@ -130,9 +130,13 @@ humhub.module('content', function (module, require, $) {
             client.post(deleteUrl, {
                 data: postData
             }).then(function (response) {
-                that.remove().then(function () {
-                    resolve(true);
-                });
+                if (response.response.success) {
+                    that.remove().then(function () {
+                        resolve(true);
+                    });
+                } else {
+                    status.error(response.response.error);
+                }
             }).catch(function (err) {
                 reject(err);
             }).finally(function () {

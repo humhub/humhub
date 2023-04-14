@@ -19,6 +19,10 @@ use Yii;
  */
 class Date extends BaseType
 {
+    /**
+     * @inheritdoc
+     */
+    public $type = 'datetime';
 
     /**
      * @inheritdoc
@@ -59,17 +63,14 @@ class Date extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition(User $user = null)
+    public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
-        return [$this->profileField->internal_name => [
-                'type' => 'datetime',
-                'format' => Yii::$app->formatter->dateInputFormat,
-                'class' => 'form-control',
-                'readonly' => (!$this->profileField->editable),
-                'dateTimePickerOptions' => [
-                    'pickTime' => false
-                ]
-        ]];
+        return parent::getFieldFormDefinition($user, array_merge([
+            'format' => Yii::$app->formatter->dateInputFormat,
+            'dateTimePickerOptions' => [
+                'pickTime' => false
+            ]
+        ], $options));
     }
 
     /**
@@ -78,7 +79,7 @@ class Date extends BaseType
     public function getUserValue(User $user, $raw = true): ?string
     {
         $internalName = $this->profileField->internal_name;
-        $date = \DateTime::createFromFormat('Y-m-d', $user->profile->$internalName,
+        $date = \DateTime::createFromFormat('Y-m-d', $user->profile->$internalName ?? '',
             new \DateTimeZone(Yii::$app->formatter->timeZone));
 
         if ($date === false)

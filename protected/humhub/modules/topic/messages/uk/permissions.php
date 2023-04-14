@@ -15,8 +15,10 @@
  * of the guide for details.
  *
  * NOTE: this file must be saved in UTF-8 encoding.
+ *
+ * @author: Yaro (https://yaro.info) glodov@gmail.com
  */
 return [
-    'Can add new topics' => '',
-    'Can edit and remove topics' => '',
+    'Can add new topics' => 'Може додавати нові теми',
+    'Can edit and remove topics' => 'Може редагувати та видаляти теми',
 ];

@@ -46,8 +46,6 @@ return [
     'Unarchive' => 'بیرون بردن از بایگانی',
     'e.g. example for {baseUrl}/s/example' => '{baseUrl}/s/example مثال براي',
     'never' => 'هرگز',
-    'the default start page of this space for members' => 'برگه‌ی آغازین پیش‌فرض این انجمن برای کاربران',
-    'the default start page of this space for visitors' => 'برگه‌ی آغازین پیش‌فرض این انجمن برای دیدارگران',
     'Activate' => '',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',
     'Are you sure you want to remove this member.' => '',

@@ -30,7 +30,10 @@ class Module extends \humhub\components\Module
     /**
      * @var array default content classes which are not suppressed when in a row
      */
-    public $defaultStreamSuppressQueryIgnore = [\humhub\modules\post\models\Post::class, \humhub\modules\activity\models\Activity::class];
+    public $defaultStreamSuppressQueryIgnore = [
+        \humhub\modules\post\models\Post::class,
+        \humhub\modules\activity\models\Activity::class
+    ];
 
     /**
      * @var int number of contents from which "Show more" appears in the stream

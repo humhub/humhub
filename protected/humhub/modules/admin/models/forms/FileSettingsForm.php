@@ -43,7 +43,9 @@ class FileSettingsForm extends \yii\base\Model
     {
         return [
             [['allowedExtensions'], 'match', 'pattern' => '/^[A-Za-z0-9_,]+$/u'],
-            [['maxFileSize', 'useXSendfile', 'excludeMediaFilesPreview'], 'integer'],
+            [['useXSendfile', 'excludeMediaFilesPreview'], 'integer'],
+            [['maxFileSize'], 'required'],
+            [['maxFileSize'], 'integer', 'min' => 1],
         ];
     }
 
@@ -69,7 +71,7 @@ class FileSettingsForm extends \yii\base\Model
     public function save()
     {
         $settingsManager = Yii::$app->getModule('file')->settings;
-        $settingsManager->set('maxFileSize', $this->maxFileSize * 1024 * 1024);
+        $settingsManager->set('maxFileSize', (int) $this->maxFileSize * 1024 * 1024);
         $settingsManager->set('excludeMediaFilesPreview', $this->excludeMediaFilesPreview);
         $settingsManager->set('useXSendfile', $this->useXSendfile);
         $settingsManager->set('allowedExtensions', strtolower($this->allowedExtensions));

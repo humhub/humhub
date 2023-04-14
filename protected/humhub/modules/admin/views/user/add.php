@@ -15,8 +15,8 @@ use humhub\modules\ui\form\widgets\ActiveForm;
             <?= Button::back(['index'], Yii::t('AdminModule.base', 'Back to overview'))
                 ->right(false) ?>
 
-            <?= ModalButton::success(Yii::t('AdminModule.user', 'Send invite'))
-                ->load(['/user/invite'])->icon('invite')->sm() ?>
+            <?= ModalButton::success(Yii::t('AdminModule.user', 'Invite new people'))
+                ->load(['/user/invite', 'adminIsAlwaysAllowed' => true])->icon('invite')->sm() ?>
         </div>
 
         <h4 class="pull-left"><?= Yii::t('AdminModule.user', 'Add new user') ?></h4>

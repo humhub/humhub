@@ -61,10 +61,6 @@ class MembershipController extends ContentContainerController
     {
         Yii::$app->response->format = 'json';
 
-        if ($this->canViewMembers()) {
-            throw new HttpException(403);
-        }
-
         $space = $this->getSpace();
         $visibility = (int)$space->visibility;
         if ($visibility === Space::VISIBILITY_NONE && !$space->isMember() ||
@@ -215,7 +211,34 @@ class MembershipController extends ContentContainerController
             ]);
         }
 
-        return $this->renderAjax('invite', ['model' => $model, 'space' => $model->space]);
+        return $this->renderAjax('invite', [
+            'model' => $model,
+            'space' => $model->space,
+        ]);
+    }
+
+
+    /**
+     * @return string
+     * @throws \yii\base\Exception
+     * @throws \yii\web\ForbiddenHttpException
+     */
+    public function actionResetInviteLink()
+    {
+        $model = new InviteForm(['space' => $this->getSpace()]);
+
+        if (!$model->space || !$model->space->isAdmin()) {
+            $this->forbidden();
+        }
+
+        $model->getInviteLink(true);
+
+        $this->view->saved();
+
+        return $this->renderAjax('invite', [
+            'model' => $model,
+            'space' => $model->space,
+        ]);
     }
 
     /**

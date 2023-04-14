@@ -24,6 +24,7 @@ use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\AuthClientUserService;
 use Yii;
 use yii\db\Query;
 use yii\web\HttpException;
@@ -105,13 +106,16 @@ class UserController extends Controller
             throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));
         }
 
+        $authClientUserService = new AuthClientUserService($user);
+
         $canEditAdminFields = Yii::$app->user->isAdmin() || !$user->isSystemAdmin();
+        $canEditPassword = $canEditAdminFields && $authClientUserService->canChangePassword();
 
         $user->scenario = 'editAdmin';
         $user->profile->scenario = Profile::SCENARIO_EDIT_ADMIN;
         $profile = $user->profile;
 
-        if ($canEditAdminFields) {
+        if ($canEditPassword) {
             if (!($password = PasswordEditForm::findOne(['user_id' => $user->id]))) {
                 $password = new PasswordEditForm();
                 $password->user_id = $user->id;
@@ -136,11 +140,13 @@ class UserController extends Controller
                     'type' => 'text',
                     'class' => 'form-control',
                     'maxlength' => 25,
+                    'readonly' => !$authClientUserService->canChangeUsername(),
                 ],
                 'email' => [
                     'type' => 'text',
                     'class' => 'form-control',
                     'maxlength' => 100,
+                    'readonly' => !$authClientUserService->canChangeEmail()
                 ],
                 'groupSelection' => [
                     'id' => 'user_edit_groups',
@@ -148,7 +154,8 @@ class UserController extends Controller
                     'items' => UserEditForm::getGroupItems(),
                     'options' => [
                         'data-placeholder' => Yii::t('AdminModule.user', 'Select Groups'),
-                        'data-placeholder-more' => Yii::t('AdminModule.user', 'Add Groups...')
+                        'data-placeholder-more' => Yii::t('AdminModule.user', 'Add Groups...'),
+                        'data-tags' => 'false'
                     ],
                     'maxSelection' => 250,
                     'isVisible' => Yii::$app->user->can(new ManageGroups())
@@ -171,7 +178,7 @@ class UserController extends Controller
         }
 
         // Change Password Form
-        if ($canEditAdminFields) {
+        if ($canEditPassword) {
             $definition['elements']['Password'] = [
                 'type' => 'form',
                 'title' => Yii::t('AdminModule.user', 'Password'),
@@ -221,12 +228,12 @@ class UserController extends Controller
         $form = new HForm($definition);
         $form->models['User'] = $user;
         $form->models['Profile'] = $profile;
-        if ($canEditAdminFields) {
+        if ($canEditPassword) {
             $form->models['Password'] = $password;
         }
 
         if ($form->submitted('save') && $form->validate()) {
-            if ($canEditAdminFields) {
+            if ($canEditPassword) {
                 if (!empty($password->newPassword)) {
                     $password->setPassword($password->newPassword);
                 }

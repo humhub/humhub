@@ -47,6 +47,7 @@ return [
     'Space name' => 'Nombre del Espacio',
     'Space owner' => 'Dueño del espacio',
     'Stream (Default)' => 'Flujo (predeterminado)',
+    'The URL has already been taken.' => 'Esta URL ya está ocupada.',
     'The url contains illegal characters!' => '¡La URL contiene caracteres no válidos!',
     'This option will hide new content from this space at your dashboard' => 'Esta opción oculta nuevos contenidos de este espacio en el panel de control',
     'This option will show new content from this space at your dashboard' => 'Esta opción muestra nuevos contenidos de este espacio en el panel de control',
@@ -54,7 +55,4 @@ return [
     'Unarchive' => 'Desarchivar',
     'e.g. example for {baseUrl}/s/example' => 'p. ej. ejemplo para {baseUrl}/s/ejemplo',
     'never' => 'Nunca',
-    'the default start page of this space for members' => 'la página de inicio por defecto para los miembros de este espacio',
-    'the default start page of this space for visitors' => 'la página de inicio por defecto para los visitantes de este espacio',
-    'The URL has already been taken.' => '',
 ];

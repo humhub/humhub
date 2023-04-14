@@ -15,7 +15,6 @@ use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\activity\components\ActivityWebRenderer;
 use humhub\components\behaviors\PolymorphicRelation;
 use yii\db\IntegrityException;
 use humhub\modules\activity\widgets\Activity as ActivityStreamEntryWidget;
@@ -123,5 +122,14 @@ class Activity extends ContentActiveRecord
     public function getSource()
     {
         return $this->getPolymorphicRelation();
+    }
+
+    /**
+     * @return bool|int
+     */
+    public function delete()
+    {
+        // Always hard delete activities
+        return $this->hardDelete();
     }
 }

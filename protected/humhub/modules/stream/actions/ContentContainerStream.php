@@ -22,7 +22,6 @@ use yii\base\InvalidConfigException;
  */
 class ContentContainerStream extends Stream
 {
-
     /**
      * @inheritdoc
      */
@@ -40,6 +39,7 @@ class ContentContainerStream extends Stream
     protected function initQuery($options = [])
     {
         $options['container'] = $this->contentContainer;
+
         return parent::initQuery($options);
     }
 }

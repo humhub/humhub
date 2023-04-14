@@ -66,6 +66,8 @@ class ContentContainerTagRelation extends ActiveRecord
             return;
         }
 
+        $newTags = array_unique($newTags);
+
         $existingTags = ContentContainerTag::find()
             ->select(['id', 'name'])
             ->where(['IN', 'name', $newTags])

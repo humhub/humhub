@@ -124,9 +124,8 @@ abstract class Stream extends Action
     public $limit = 4;
 
     /**
-     * Filters
-     *
-     * @var array
+     * Filters - A list of active filter id's (e.g. `visibility_private`)
+     * @var string[]
      */
     public $filters = [];
 

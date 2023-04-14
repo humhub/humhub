@@ -22,19 +22,25 @@ return [
     'All open registration invitations were successfully deleted.' => 'Minden nyitott regisztrációs kérés sikeresen törölve lett.',
     'All the personal data of this user will be irrevocably deleted.' => 'A felhasználó összes személyes adata visszavonhatatlanul törölve lesz.',
     'Allow' => 'Elfogad',
+    'Allow users to block each other' => 'A felhasználók letilthatják egymást',
     'Allow users to set individual permissions for their own profile?' => 'Engedélyezi a felhasználóknak egyéni jogosultságok beállítását a profiljukhoz?',
     'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'Engedélyezze a nem hitelesített felhasználók (vendégek) korlátozott hozzáférését',
     'Applied to new or existing users without any other group membership.' => 'Új vagy meglévő felhasználókra alkalmazza bármilyen csoporttagság nélkül.',
     'Apply' => 'Alkalmaz',
     'Approve' => 'Elfogadás',
+    'Approve all selected' => 'Az összes kiválasztott jóváhagyása',
     'Are you really sure that you want to disable this user?' => 'Biztos vagy benne, hogy letiltod ezt a felhasználót?',
     'Are you really sure that you want to enable this user?' => 'Biztos vagy benne, hogy engedélyezed ezt a felhasználót?',
     'Are you really sure that you want to impersonate this user?' => 'Biztos vagy benne, hogy meg akarod személyesíteni ezt a felhasználót?',
+    'Are you really sure? The selected users will be approved and notified by e-mail.' => 'Biztos vagy benne? A kiválasztott felhasználókat jóváhagyjuk és e-mailben értesítjük.',
+    'Are you really sure? The selected users will be deleted and notified by e-mail.' => 'Biztos vagy benne? A kiválasztott felhasználók törlésre kerülnek, és e-mailben értesítést kapnak.',
     'Are you really sure? Users who are not assigned to another group are automatically assigned to the default group.' => 'Tényleg biztos vagy benne? Azok a felhasználók, akik nincsenek hozzárendelve egy másik csoporthoz, automatikusan az alapértelmezett csoporthoz lesznek rendelve.',
     'Are you sure that you want to delete following user?' => 'Biztosan törölni akarod a következő felhasználót?',
     'Cancel' => 'Mégsem',
     'Click here to review' => 'Kattints ide az ellenőrzéshez',
     'Confirm user deletion' => 'A felhasználó törlésének megerősítése',
+    'Could not approve the user!' => 'Nem sikerült jóváhagyni a felhasználót!',
+    'Could not decline the user!' => 'Nem sikerült elutasítani a felhasználót!',
     'Could not load category.' => 'Kategória betöltése sikertelen.',
     'Create new group' => 'Új csoport létrehozása',
     'Create new profile category' => 'Új profil-kategória létrehozása',
@@ -43,10 +49,13 @@ return [
     'Deactivate individual profile permissions?' => 'Deaktiválja az egyes profilengedélyeket?',
     'Decline' => 'Nem vesz részt',
     'Decline & delete user: <strong>{displayName}</strong>' => 'Következő felhasználó elutasítása és törlése: <strong>{displayName}</strong>',
+    'Decline all selected' => 'Az összes kiválasztott elutasítása',
     'Default' => 'Alapértelmezett',
     'Default Profile Permissions' => 'Alapértelmezett profilengedélyek',
+    'Default Sorting' => 'Alapértelmezett rendezés',
     'Default content of the registration approval email' => 'A regisztrációt jóváhagyó e-mail alapértelmezett tartalma',
     'Default content of the registration denial email' => 'A regisztrációt elutasító e-mail alapértelmezett tartalma',
+    'Default group can not be deleted!' => 'Az alapértelmezett csoport nem törölhető!',
     'Default user idle timeout, auto-logout (in seconds, optional)' => 'Felhasználói tétlenség miatti időtúllépés, automatikus kijelentkezés alapértelmezett  időtartama (másodpercben, opcionális)',
     'Default user profile visibility' => 'Felhasználói profil láthatóságának alapértelmezése',
     'Delete' => 'Törlés',
@@ -55,6 +64,7 @@ return [
     'Delete invitation' => 'Meghívás törlése',
     'Delete invitation?' => 'Meghívó törlése?',
     'Delete spaces which are owned by this user' => 'A felhasználó tulajdonát képező közösségek törlése',
+    'Deleted' => 'Törölve',
     'Deleted invitation' => 'Törölt meghívás',
     'Deleted users' => 'Törölt felhasználók',
     'Disable' => 'Kikapcsolás',
@@ -74,11 +84,34 @@ return [
     'Group not found!' => 'A csoport nem található!',
     'Group user not found!' => 'A csoport  felhasználója nem található!',
     'Groups' => 'Csoportok',
+    'Hello {displayName},
+
+Your account has been activated.
+
+Click here to login:
+{loginUrl}
+
+Kind Regards
+{AdminName}
+
+' => 'Kedves {displayName}! Fiókod aktiváltuk. Kattints ide a bejelentkezéshez: {loginUrl} Üdvözlettel: {AdminName}',
+    'Hello {displayName},
+
+Your account request has been declined.
+
+Kind Regards
+{AdminName}
+
+' => 'Kedves {displayName}! Fiókkérelmed elutasították. Üdvözlettel: {AdminName}',
     'Here you can create or edit profile categories and fields.' => 'Itt profil-kategóriákat és mezőket hozhatsz létre vagy szerkeszthetsz.',
     'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Ha az egyedi profilengedélyek nem engedélyezettek, akkor a következő beállítások nem módosíthatók minden felhasználó számára. Ha egyedi profilengedélyek engedélyezettek, akkor a beállításokat csak alapértelmezettként lesznek beállítva, amelyeket a felhasználók testre szabhatnak. Ezután a következő bejegyzések ugyanabban a formában jelennek meg a felhasználói profil beállításaiban:',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Ha ezt az opciót nem választod ki, akkor a közösségek tulajdonjoga átkerül a fiókodba.',
     'Impersonate' => 'Megszemélyesítés',
     'Include captcha in registration form' => 'Captcha megjelenítése a regisztrációs űrlapon',
+    'Information 1' => 'Információ 1',
+    'Information 2' => 'Információ 2',
+    'Information 3' => 'Információ 3',
+    'Invisible' => 'Láthatatlan',
     'Invite not found!' => 'A meghívás nem található!',
     'Last login' => 'Utolsó bejelentkezés',
     'Last name' => 'Vezetéknév',
@@ -95,8 +128,10 @@ return [
     'New approval requests' => 'Új jóváhagyási kérelmek',
     'New users can register' => 'Új felhasználók is regisztrálhatnak',
     'No' => 'Nem',
+    'No users were selected.' => 'Nincsenek kiválasztott felhasználók.',
     'No value found!' => 'Nem található adat!',
     'None' => 'Nincs',
+    'Not visible' => 'Nem látható',
     'One or more user needs your approval as group admin.' => 'Egy vagy több felhasználónak szüksége van a jóváhagyásodra, mint csoport admin.',
     'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.' => 'Csak akkor alkalmazható, ha engedélyezett a korlátozott hozzáférés a nem hitelesített felhasználók számára. Csak az új felhasználókra vonatkozik.',
     'Overview' => 'Tartalomjegyzék',
@@ -106,20 +141,24 @@ return [
     'People' => 'Emberek',
     'Permanently delete' => 'Törölje véglegesen',
     'Permissions' => 'Engedélyek',
+    'Prioritised User Group' => 'Kiemelt felhasználói csoport',
     'Profile Permissions' => 'Profilengedélyek',
     'Profiles' => 'Profilok',
     'Protected' => 'Védett',
+    'Protected group can not be deleted!' => 'A védett csoport nem törölhető!',
     'Remove from group' => 'Eltávolítás a csoportból',
     'Require group admin approval after registration' => 'A regisztráció után kérje a csoport adminjának engedélyét',
     'Resend invitation email' => 'Meghívó e-mail újraküldése',
     'Save' => 'Mentés',
     'Search by name, email or id.' => 'Keresés név, email vagy azonosító szerint.',
     'Select Groups' => 'Csoportok kiválasztása',
+    'Select a prioritised group whose members are displayed before all others when the sorting option \'Default\' is selected. The users within the group and the users outside the group are additionally sorted by their last login.' => 'Válassz egy prioritást élvező csoportot, amelynek tagjai az összes többi előtt jelennek meg, ha az „Alapértelmezett” rendezési beállítást választja. A csoporton belüli és a csoporton kívüli felhasználók az utolsó bejelentkezési adataik szerint vannak rendezve.',
+    'Select the profile fields you want to add as columns' => 'Válaszd ki az oszlopként hozzáadni kívánt profilmezőket',
+    'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => 'Válaszd ki, hogy mely felhasználói adatok jelenjenek meg a „Személyek” áttekintésben. Bármilyen profilmezőt kiválaszthatod, még azokat is, amelyeket egyedileg hoztál létre.',
     'Send & decline' => 'Küldés és elutasítás',
     'Send & save' => 'Küldés és mentés',
     'Send invitation email' => 'Meghívó e-mail küldése',
     'Send invitation email again?' => 'Meghívólevél újraküldése?',
-    'Send invite' => 'Meghívás',
     'Send notifications to users when added to or removed from the group.' => 'Értesítéseket küldése a felhasználóknak, ha felveszik őket a csoportba vagy eltávolítják őket.',
     'Settings' => 'Beállítások',
     'Show group selection at registration' => 'Csoportválasztás megjelenítése a regisztrációkor',
@@ -127,6 +166,10 @@ return [
     'The Space memberships of all group members will be updated. This may take up to several minutes.' => 'Az összes csoporttag területi tagsága frissül. Ez akár néhány percet igénybe vehet.',
     'The following list contains all pending sign-ups and invites.' => 'Az alábbi lista tartalmazza az összes folyamatban lévő feliratkozást és meghívást.',
     'The following list contains all registered users awaiting an approval.' => 'Az alábbi lista tartalmazza a jóváhagyásra váró regisztrált felhasználókat.',
+    'The registration was approved and the user was notified by email.' => 'A regisztrációt jóváhagyták, és a felhasználót e-mailben értesítették.',
+    'The registration was declined and the user was notified by email.' => 'A regisztrációt elutasították, és a felhasználót e-mailben értesítették.',
+    'The registrations were approved and the users were notified by email.' => 'A regisztrációkat jóváhagyták, és a felhasználókat e-mailben értesítették.',
+    'The registrations were declined and the users were notified by email.' => 'A regisztrációkat elutasították, és a felhasználókat e-mailben értesítették.',
     'The selected invitations have been successfully deleted!' => 'A kiválasztott meghívókat sikeresen töröltük!',
     'The user is the owner of these spaces:' => 'A felhasználó tulajdonosa ezeknek a közösségeknek:',
     'This option allows you to determine whether users may set individual permissions for their own profiles.' => 'Ez az opció lehetővé teszi annak meghatározását, hogy a felhasználók beállíthatnak-e egyedi engedélyeket a saját profiljukhoz.',
@@ -141,53 +184,11 @@ return [
     'View profile' => 'Profil törlése',
     'Visible for members only' => 'Csak a tagok számára látható',
     'Visible for members+guests' => 'A tagok és vendégek számára is látható',
+    'Will be used as a filter in \'People\'.' => 'Szűrőként lesz használva az „Emberek” részben.',
     'Yes' => 'Igen',
     'You can only delete empty categories!' => 'Csak üres kategóriák törölhetők!',
     'You cannot delete yourself!' => 'Nem törölheted saját magad!',
     'never' => 'soha',
-    'Allow users to block each other' => '',
-    'Approve all selected' => '',
-    'Are you really sure? The selected users will be approved and notified by e-mail.' => '',
-    'Are you really sure? The selected users will be deleted and notified by e-mail.' => '',
-    'Could not approve the user!' => '',
-    'Could not decline the user!' => '',
-    'Decline all selected' => '',
-    'Default Sorting' => '',
-    'Default group can not be deleted!' => '',
-    'Deleted' => '',
-    'Hello {displayName},
-
-Your account has been activated.
-
-Click here to login:
-{loginUrl}
-
-Kind Regards
-{AdminName}
-
-' => '',
-    'Hello {displayName},
-
-Your account request has been declined.
-
-Kind Regards
-{AdminName}
-
-' => '',
-    'Information 1' => '',
-    'Information 2' => '',
-    'Information 3' => '',
-    'Invisible' => '',
-    'No users were selected.' => '',
-    'Not visible' => '',
-    'Prioritised User Group' => '',
-    'Protected group can not be deleted!' => '',
-    'Select a prioritised group whose members are displayed before all others when the sorting option \'Default\' is selected. The users within the group and the users outside the group are additionally sorted by their last login.' => '',
-    'Select the profile fields you want to add as columns' => '',
-    'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => '',
-    'The registration was approved and the user was notified by email.' => '',
-    'The registration was declined and the user was notified by email.' => '',
-    'The registrations were approved and the users were notified by email.' => '',
-    'The registrations were declined and the users were notified by email.' => '',
-    'Will be used as a filter in \'People\'.' => '',
+    'Invite new people' => '',
+    'Members can invite external users by link' => '',
 ];

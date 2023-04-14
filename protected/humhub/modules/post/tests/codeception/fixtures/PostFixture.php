@@ -8,12 +8,10 @@
 
 namespace humhub\modules\post\tests\codeception\fixtures;
 
-use yii\test\ActiveFixture;
+use tests\codeception\_support\ContentActiveFixture;
 
-class PostFixture extends ActiveFixture
+class PostFixture extends ContentActiveFixture
 {
-
     public $modelClass = 'humhub\modules\post\models\Post';
     public $dataFile = '@modules/post/tests/codeception/fixtures/data/post.php';
-
 }

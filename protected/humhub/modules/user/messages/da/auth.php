@@ -25,7 +25,7 @@ return array (
   'Go to login page' => 'Gå til log ind side',
   'Group' => 'Gruppe',
   'Hello {displayName}' => 'Hej {displayName}',
-  'Hello {displayName},' => '',
+  'Hello {displayName},' => 'Hej {displayName}',
   'If you don\'t use this link within 24 hours, it will expire.' => 'Hvis du ikke bruger dette link inden 24 timer, så udløber det.',
   'If you\'re already a member, please login with your username/email and password.' => 'Hvis du allerede er medlem, venligst log ind med brugernavn/e-mail og adgangskode.',
   'Just enter your e-mail address. We\'ll send you recovery instructions!' => '',

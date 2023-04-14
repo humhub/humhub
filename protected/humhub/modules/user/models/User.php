@@ -11,6 +11,7 @@ namespace humhub\modules\user\models;
 use humhub\components\behaviors\GUID;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
@@ -59,7 +60,7 @@ use yii\web\IdentityInterface;
  * @property integer $contentcontainer_id
  * @property Profile $profile
  * @property Password $currentPassword
- *
+ * @property Auth[] $auths
  * @property string $displayName
  * @property string $displayNameSub
  * @mixin Followable
@@ -580,6 +581,9 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             $this->profile->user_id = $this->id;
         }
 
+        // Don't move this line under setUpApproved() because ContentContainer record should be created firstly
+        parent::afterSave($insert, $changedAttributes);
+
         // When insert an "::STATUS_ENABLED" user or update a user from status "::STATUS_NEED_APPROVAL" to "::STATUS_ENABLED"
         if ($this->status == User::STATUS_ENABLED &&
             (
@@ -593,8 +597,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         if (Yii::$app->user->id == $this->id) {
             Yii::$app->user->setIdentity($user);
         }
-
-        parent::afterSave($insert, $changedAttributes);
     }
 
 
@@ -624,7 +626,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         if ($userInvite !== null) {
             // User was invited to a space
-            if ($userInvite->source == Invite::SOURCE_INVITE) {
+            if (in_array($userInvite->source, [Invite::SOURCE_INVITE, Invite::SOURCE_INVITE_BY_LINK], true)) {
                 $space = Space::findOne(['id' => $userInvite->space_invite_id]);
                 if ($space != null) {
                     $space->addMember($this->id);
@@ -649,12 +651,13 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
     }
 
+
     /**
      * Returns users display name
      *
      * @return string the users display name (e.g. firstname + lastname)
      */
-    public function getDisplayName()
+    public function getDisplayName(): string
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
@@ -685,7 +688,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      *
      * @return string the display name sub text
      */
-    public function getDisplayNameSub()
+    public function getDisplayNameSub(): string
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
@@ -697,7 +700,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $attributeName = Yii::$app->settings->get('displayNameSubFormat');
 
         if ($this->profile !== null && $this->profile->hasAttribute($attributeName)) {
-            return $this->profile->getAttribute($attributeName);
+            return $this->profile->getAttribute($attributeName) ?? '';
         }
 
         return '';
@@ -745,12 +748,20 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Checks if the user is allowed to view all content
      *
+     * @param string|null $containerClass class name of the content container
      * @return bool
      * @since 1.8
      */
-    public function canViewAllContent()
+    public function canViewAllContent(?string $containerClass = null): bool
     {
-        return Yii::$app->getModule('content')->adminCanViewAllContent && $this->isSystemAdmin();
+        /** @var \humhub\modules\content\Module $module */
+        $module = Yii::$app->getModule('content');
+
+        return $module->adminCanViewAllContent && (
+                $this->isSystemAdmin()
+                || ($containerClass === Space::class && $this->can(ManageSpaces::class))
+                || ($containerClass === static::class && $this->can(ManageUsers::class))
+            );
     }
 
     /**
@@ -868,6 +879,30 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function getAuths()
     {
         return $this->hasMany(Auth::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Check if this user has at least one authentication or the authentication with requested type
+     *
+     * @param string|null $type
+     * @return bool
+     */
+    public function hasAuth(?string $type = null): bool
+    {
+        $auths = $this->getAuths();
+
+        if ($type === null) {
+            return $auths->exists();
+        }
+
+        foreach ($auths->all() as $auth) {
+            /* @var Auth $auth */
+            if ($auth->source === $type) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

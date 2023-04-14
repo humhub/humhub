@@ -86,7 +86,7 @@ class Module extends \humhub\components\Module
             // return the current connection state.
             return Yii::$app->db->getIsActive();
         } catch (Exception $e) {
-            
+
         }
 
         return false;
@@ -173,7 +173,7 @@ class Module extends \humhub\components\Module
         ];
 
         /**
-         * Step:  Setup Admin User
+         * Step: Setup Admin User
          */
         $this->configSteps['admin'] = [
             'sort' => 400,
@@ -182,7 +182,6 @@ class Module extends \humhub\components\Module
                 return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'admin');
             },
         ];
-
 
         /**
          * Step: Sample Data

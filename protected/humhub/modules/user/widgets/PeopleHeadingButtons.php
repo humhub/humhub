@@ -9,6 +9,7 @@ namespace humhub\modules\user\widgets;
 
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\Menu;
+use humhub\modules\user\models\forms\Invite;
 use Yii;
 
 /**
@@ -31,9 +32,10 @@ class PeopleHeadingButtons extends Menu
 
     public function init()
     {
-        if (!Yii::$app->user->isGuest && Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInvite')) {
+        $invite = new Invite();
+        if ($invite->canInviteByLink() || $invite->canInviteByEmail()) {
             $this->addEntry(new MenuLink([
-                'label' => Yii::t('UserModule.base', 'Send invite'),
+                'label' => Yii::t('UserModule.base', 'Invite new people'),
                 'url' => ['/user/invite'],
                 'sortOrder' => 100,
                 'icon' => 'invite',

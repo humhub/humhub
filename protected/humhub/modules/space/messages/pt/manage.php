@@ -51,8 +51,6 @@ return [
     'Unarchive' => 'Desarquivar',
     'e.g. example for {baseUrl}/s/example' => 'e.g. exemplo para {baseUrl}/s/example',
     'never' => 'nunca',
-    'the default start page of this space for members' => 'a página de arranque padrão para membros deste espaço',
-    'the default start page of this space for visitors' => 'a página de arranque padrão para visitantes deste espaço',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',
     'Removal of members queued' => '',
     'Remove all members' => '',

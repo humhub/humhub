@@ -212,9 +212,9 @@ class AccountController extends BaseAccountController
     public function actionConnectedAccounts()
     {
         if (Yii::$app->request->isPost && Yii::$app->request->get('disconnect')) {
-            foreach (Yii::$app->user->getAuthClients() as $authClient) {
+            foreach (Yii::$app->user->getAuthClientUserService()->getClients() as $authClient) {
                 if ($authClient->getId() == Yii::$app->request->get('disconnect')) {
-                    \humhub\modules\user\authclient\AuthClientHelpers::removeAuthClientForUser($authClient, Yii::$app->user->getIdentity());
+                    Yii::$app->user->getAuthClientUserService()->remove($authClient);
                 }
             }
             return $this->redirect(['connected-accounts']);
@@ -232,7 +232,7 @@ class AccountController extends BaseAccountController
         }
 
         $activeAuthClientIds = [];
-        foreach (Yii::$app->user->getAuthClients() as $authClient) {
+        foreach (Yii::$app->user->getAuthClientUserService()->getClients() as $authClient) {
             $activeAuthClientIds[] = $authClient->getId();
         }
 
@@ -309,7 +309,7 @@ class AccountController extends BaseAccountController
      */
     public function actionDelete()
     {
-        if (!Yii::$app->user->canDeleteAccount()) {
+        if (!Yii::$app->user->getAuthClientUserService()->canDeleteAccount()) {
             throw new HttpException(500, 'Account deletion not allowed!');
         }
 
@@ -333,7 +333,7 @@ class AccountController extends BaseAccountController
      */
     public function actionChangeUsername()
     {
-        if (!Yii::$app->user->canChangeUsername()) {
+        if (!Yii::$app->user->getAuthClientUserService()->canChangeUsername()) {
             throw new HttpException(500, 'Change Username is not allowed');
         }
 
@@ -352,7 +352,7 @@ class AccountController extends BaseAccountController
      */
     public function actionChangeEmail()
     {
-        if (!Yii::$app->user->canChangeEmail()) {
+        if (!Yii::$app->user->getAuthClientUserService()->canChangeEmail()) {
             throw new HttpException(500, 'Change E-Mail is not allowed');
         }
 
@@ -402,7 +402,7 @@ class AccountController extends BaseAccountController
      */
     public function actionChangePassword()
     {
-        if (!Yii::$app->user->canChangePassword()) {
+        if (!Yii::$app->user->getAuthClientUserService()->canChangePassword()) {
             throw new HttpException(500, 'Password change is not allowed');
         }
 

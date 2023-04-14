@@ -15,6 +15,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 /* @var $model Login */
 /* @var $invite Invite */
 /* @var $info string */
+/* @var $passwordRecoveryRoute string|array|null */
 ?>
 
 <div class="container" style="text-align: center;">
@@ -56,12 +57,23 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                     <div class="col-md-4">
                         <?= Html::submitButton(Yii::t('UserModule.auth', 'Sign in'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary']); ?>
                     </div>
+                    <?php if ($passwordRecoveryRoute) : ?>
                     <div class="col-md-8 text-right">
                         <small>
-                            <a id="password-recovery-link" href="<?= Url::toRoute('/user/password-recovery'); ?>"
-                               data-pjax-prevent><br><?= Yii::t('UserModule.auth', 'Forgot your password?') ?></a>
+                            <?= Html::a(
+                                Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),
+                                $passwordRecoveryRoute,
+                                [
+                                    'id' => 'password-recovery-link',
+                                    'target' => is_array($passwordRecoveryRoute) ? '_self' : '_blank',
+                                    'data' => [
+                                        'pjax-prevent' => true,
+                                    ]
+                                ]
+                            ) ?>
                         </small>
                     </div>
+                    <?php endif; ?>
                 </div>
             <?php ActiveForm::end(); ?>
         </div>
@@ -136,5 +148,3 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
     <?php } ?>
 
 </script>
-
-
