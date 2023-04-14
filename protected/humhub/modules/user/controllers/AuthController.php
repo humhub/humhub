@@ -255,8 +255,6 @@ class AuthController extends Controller
 
         if ($user->status == User::STATUS_ENABLED) {
             [$success, $redirectUrl] = $this->doLogin($user, $authClient, $redirectUrl);
-        } elseif ($user->status == User::STATUS_SOFT_DELETED && $authClient->getId() !== 'local') {
-            [$success, $redirectUrl] = $this->doLogin($user, $authClient, $redirectUrl, true);
         } elseif ($user->status == User::STATUS_DISABLED) {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account is disabled!'));
         } elseif ($user->status == User::STATUS_NEED_APPROVAL) {
