@@ -415,7 +415,7 @@ class SpaceModelMembership extends Behavior
         int $canLeave = 1,
         bool $silent = false,
         string $groupId = Space::USERGROUP_MEMBER,
-        bool $showAtDashboard = true,
+        bool $showAtDashboard = true
     ): bool {
         $user = User::findOne(['id' => $userId]);
         if (!$user) {
