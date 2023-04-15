@@ -57,6 +57,7 @@ HumHub Changelog
 1.13.3 (Unreleased)
 --------------------
 - Fix #6195: Fix `ModuleManager` disabling logging when no modules set
+- Fix #6215: Fix timeout on php yii queue/run executed by command line
 
 1.13.2 (March 27, 2023)
 -----------------------
