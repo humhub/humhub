@@ -52,7 +52,7 @@ class Migration extends \yii\db\Migration
             if ($action() === false) {
                 $transaction->rollBack();
 
-                Yii::warning(sprintf('Migration %s was not applied', static::class), self::LOG_CATEGORY);
+                $this->logWarning('Migration {class} was not applied');
 
                 return false;
             }
@@ -76,7 +76,7 @@ class Migration extends \yii\db\Migration
             if (!$this->compact) {
                 echo "    > skipped create table $table, table does already exist ...\n";
             }
-            Yii::warning("Tried to create an already existing existing table '$table' in migration " . get_class($this));
+            $this->logWarning("Tried to create an already existing existing table '$table'");
         }
     }
 
@@ -88,7 +88,7 @@ class Migration extends \yii\db\Migration
             if (!$this->compact) {
                 echo "    > skipped drop table $table, table does not exist ...\n";
             }
-            Yii::warning("Tried to drop a non existing table '$table' in migration " . get_class($this));
+            $this->logWarning("Tried to drop a non existing table '$table'");
         }
     }
 
@@ -114,7 +114,7 @@ class Migration extends \yii\db\Migration
             if (!$this->compact) {
                 echo "    > skipped drop column $column from table $table, column does not exist ...\n";
             }
-            Yii::warning("Tried to drop a non existing column '$column' from table '$table' in migration " . get_class($this));
+            $this->logWarning("Tried to drop a non existing column '$column' from table '$table'");
         }
     }
 
@@ -126,7 +126,7 @@ class Migration extends \yii\db\Migration
             if (!$this->compact) {
                 echo "    > skipped add column $column from table $table, column does already exist ...\n";
             }
-            Yii::warning("Tried to add an already existing column '$column' on table '$table' in migration " . get_class($this));
+            $this->logWarning("Tried to add an already existing column '$column' on table '$table'");
         }
     }
 
@@ -178,7 +178,7 @@ class Migration extends \yii\db\Migration
             if (!$this->compact) {
                 echo "    > skipped create index $index in the table $table, index already exists ...\n";
             }
-            Yii::warning("Tried to create an already existing index '$index' on table '$table' in migration " . get_class($this));
+            $this->logWarning("Tried to create an already existing index '$index' on table '$table'");
             return;
         }
 
@@ -198,7 +198,7 @@ class Migration extends \yii\db\Migration
             if (!$this->compact) {
                 echo "    > skipped drop index $index from the table $table, index does not exist ...\n";
             }
-            Yii::warning("Tried to drop a non existing index '$index' from table '$table' in migration " . get_class($this));
+            $this->logWarning("Tried to drop a non existing index '$index' from table '$table'");
             return;
         }
 
@@ -219,7 +219,7 @@ class Migration extends \yii\db\Migration
             if (!$this->compact) {
                 echo "    > skipped create primary index $index in the table $table, primary index already exists ...\n";
             }
-            Yii::warning("Tried to create an already existing primary index '$index' on table '$table' in migration " . get_class($this));
+            $this->logWarning("Tried to create an already existing primary index '$index' on table '$table'");
             return;
         }
 
@@ -239,7 +239,7 @@ class Migration extends \yii\db\Migration
             if (!$this->compact) {
                 echo "    > skipped drop primary index $index from the table $table, primary index does not exist ...\n";
             }
-            Yii::warning("Tried to drop a non existing primary index '$index' from table '$table' in migration " . get_class($this));
+            $this->logWarning("Tried to drop a non existing primary index '$index' from table '$table'");
             return;
         }
 
@@ -260,7 +260,7 @@ class Migration extends \yii\db\Migration
             if (!$this->compact) {
                 echo "    > skipped create foreign index $index in the table $table, foreign index already exists ...\n";
             }
-            Yii::warning("Tried to create an already existing foreign index '$index' on table '$table' in migration " . get_class($this));
+            $this->logWarning("Tried to create an already existing foreign index '$index' on table '$table'");
             return;
         }
 
@@ -280,7 +280,7 @@ class Migration extends \yii\db\Migration
             if (!$this->compact) {
                 echo "    > skipped drop foreign index $index from the table $table, foreign index does not exist ...\n";
             }
-            Yii::warning("Tried to drop a non existing foreign index '$index' from table '$table' in migration " . get_class($this));
+            $this->logWarning("Tried to drop a non existing foreign index '$index' from table '$table'");
             return;
         }
 
@@ -385,6 +385,75 @@ class Migration extends \yii\db\Migration
     }
 
     /**
+     * @param string $message Message to be logged
+     * @param array $params Parameters to translate in message
+     * @return void
+     * @since 1.15.0
+     */
+    protected function logError(string $message, array $params = []): void
+    {
+        Yii::error($this->logTranslation($message, $params), self::LOG_CATEGORY);
+    }
+
+    /**
+     * @param string $message Message to be logged
+     * @param array $params Parameters to translate in message
+     * @return void
+     * @since 1.15.0
+     */
+    protected function logWarning(string $message, array $params = []): void
+    {
+        Yii::warning($this->logTranslation($message, $params), self::LOG_CATEGORY);
+    }
+
+    /**
+     * @param string $message Message to be logged
+     * @param array $params Parameters to translate in message
+     * @return void
+     * @since 1.15.0
+     */
+    protected function logInfo(string $message, array $params = []): void
+    {
+        Yii::info($this->logTranslation($message, $params), self::LOG_CATEGORY);
+    }
+
+    /**
+     * @param string $message Message to be logged
+     * @param array $params Parameters to translate in message
+     * @return void
+     * @since 1.15.0
+     */
+    protected function logDebug(string $message, array $params = []): void
+    {
+        Yii::debug($this->logTranslation($message, $params), self::LOG_CATEGORY);
+    }
+
+
+    /**
+     * Translate log messages
+     *
+     * @param string $message Message to be logged
+     * @param array $params Parameters to translate in message
+     * @return void
+     * @since 1.15.0
+     */
+    protected function logTranslation(string $message, array $params = []): string
+    {
+        // make sure the class is set
+        $params['class'] ??= static::class;
+
+        if (false === strpos('{class}', $message)) {
+            $message = "Migration {class}: $message";
+        }
+
+        // enclose keys in curly brackets
+        $params = array_combine(array_map(static fn($key) => "{{$key}}", $params), $params);
+
+        // replace "{key}" with "value"
+        return strtr($message, $params);
+    }
+
+    /**
      * Get data from database dsn config
      *
      * @param \Throwable $e The Throwable to be logged
@@ -393,19 +462,17 @@ class Migration extends \yii\db\Migration
      */
     protected function logException(\Throwable $e, string $method): void
     {
-        Yii::error(
-            sprintf(
-                'Migration %s::%s() failed: %s (%s:%d). See debug log for full trace.',
-                static::class,
-                $method,
-                $e->getMessage(),
-                $e->getFile(),
-                $e->getLine()
-            ),
-            self::LOG_CATEGORY
+        $this->logError(
+            'Migration {class}::{method}() failed: {message} ({file}:{line}). See debug log for full trace.',
+            [
+                'method' => $method,
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]
         );
 
-        Yii::debug($e->getTraceAsString(), self::LOG_CATEGORY);
+        $this->logDebug($e->getTraceAsString());
     }
 
     /**
