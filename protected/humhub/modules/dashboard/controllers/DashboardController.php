@@ -13,7 +13,6 @@ use humhub\components\Controller;
 use humhub\modules\dashboard\components\actions\DashboardStreamAction;
 use humhub\modules\ui\view\components\View;
 use Yii;
-use yii\base\DynamicModel;
 
 class DashboardController extends Controller
 {
@@ -74,18 +73,6 @@ class DashboardController extends Controller
      */
     public function actionIndex()
     {
-
-            $test = DynamicModel::validateData([
-                'date' => '123',
-            ], [
-               ['date', 'date', 'format' => 'php:Y-m-d']
-            ]);
-
-            $test->validate();
-
-            var_dump($test->getFirstErrors());
-
-        die;
         if (Yii::$app->user->isGuest) {
             return $this->render('index_guest', []);
         } else {
