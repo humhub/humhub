@@ -8,13 +8,12 @@
 
 namespace humhub\modules\activity\jobs;
 
+use Yii;
 use humhub\modules\activity\Module;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
-use Yii;
-use humhub\modules\queue\ActiveJob;
+use humhub\modules\queue\LongRunningActiveJob;
 use humhub\modules\activity\components\MailSummaryProcessor;
 use humhub\modules\activity\components\MailSummary;
-use yii\queue\RetryableJobInterface;
 
 /**
  * SendMailSummary
@@ -22,19 +21,13 @@ use yii\queue\RetryableJobInterface;
  * @since 1.2
  * @author Luke
  */
-class SendMailSummary extends ActiveJob implements ExclusiveJobInterface, RetryableJobInterface
+class SendMailSummary extends LongRunningActiveJob implements ExclusiveJobInterface
 {
 
     /**
      * @var int the interval
      */
     public $interval;
-
-
-    /**
-     * @var int maximum 1 hour
-     */
-    private $maxExecutionTime = 60 * 60 * 1;
 
     /**
      * @inhertidoc
@@ -61,14 +54,6 @@ class SendMailSummary extends ActiveJob implements ExclusiveJobInterface, Retrya
             Yii::error('Invalid summary interval given' . $this->interval, 'activity.job');
             return;
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getTtr()
-    {
-        return $this->maxExecutionTime;
     }
 
     /**

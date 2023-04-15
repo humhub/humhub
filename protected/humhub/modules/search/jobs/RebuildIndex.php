@@ -9,9 +9,8 @@
 namespace humhub\modules\search\jobs;
 
 use Yii;
-use humhub\modules\queue\ActiveJob;
+use humhub\modules\queue\LongRunningActiveJob;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
-use yii\queue\RetryableJobInterface;
 
 /**
  * RebuildIndex job
@@ -19,14 +18,8 @@ use yii\queue\RetryableJobInterface;
  * @since 1.3
  * @author Luke
  */
-class RebuildIndex extends ActiveJob implements ExclusiveJobInterface, RetryableJobInterface
+class RebuildIndex extends LongRunningActiveJob implements ExclusiveJobInterface
 {
-
-    /**
-     * @var int maximum 2 hours
-     */
-    private $maxExecutionTime = 60 * 60 * 2;
-
     /**
      * @inhertidoc
      */
@@ -48,7 +41,7 @@ class RebuildIndex extends ActiveJob implements ExclusiveJobInterface, Retryable
      */
     public function getTtr()
     {
-        return $this->maxExecutionTime;
+        return parent::getTtr() * 2;
     }
 
     /**
