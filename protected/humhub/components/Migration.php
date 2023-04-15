@@ -18,6 +18,55 @@ use Yii;
  */
 class Migration extends \yii\db\Migration
 {
+    public const LOG_CATEGORY = 'migration';
+
+    /**
+     * @inheritdoc
+     * @since 1.15.0
+     */
+    public function up()
+    {
+        return $this->saveUpDown([$this, 'safeUp']);
+    }
+
+    /**
+     * @inheritdoc
+     * @since 1.15.0
+     */
+    public function down()
+    {
+        return $this->saveUpDown([$this, 'safeDown']);
+    }
+
+    /**
+     * Helper function for self::up() and self::down()
+     *
+     * @param array $action
+     * @return bool|null
+     * @since 1.15.0
+     */
+    protected function saveUpDown(array $action): ?bool
+    {
+        $transaction = $this->db->beginTransaction();
+        try {
+            if ($action() === false) {
+                $transaction->rollBack();
+
+                Yii::warning(sprintf('Migration %s was not applied', static::class), self::LOG_CATEGORY);
+
+                return false;
+            }
+            $transaction->commit();
+        } catch (\Throwable $e) {
+            $this->printException($e);
+            $transaction->rollBack();
+            $this->logException($e, end($action));
+
+            return false;
+        }
+
+        return null;
+    }
 
     protected function safeCreateTable($table, $columns, $options = null)
     {
@@ -47,7 +96,7 @@ class Migration extends \yii\db\Migration
      * Check if the column already exists in the table
      *
      * @since 1.9.1
-     * @param string $index
+     * @param string $column
      * @param string $table
      * @return bool
      */
@@ -107,7 +156,7 @@ class Migration extends \yii\db\Migration
     protected function foreignIndexExists(string $index, string $table): bool
     {
         return (bool) $this->db->createCommand('SELECT * FROM information_schema.key_column_usage
-            WHERE REFERENCED_TABLE_NAME IS NOT NULL 
+            WHERE REFERENCED_TABLE_NAME IS NOT NULL
               AND TABLE_NAME = ' . $this->db->quoteValue($table) . '
               AND TABLE_SCHEMA = ' . $this->db->quoteValue($this->getDsnAttribute('dbname')). '
               AND CONSTRAINT_NAME = ' . $this->db->quoteValue($index))
@@ -333,5 +382,40 @@ class Migration extends \yii\db\Migration
         return preg_match('/' . preg_quote($name) . '=([^;]*)/', $this->db->dsn, $match)
             ? $match[1]
             : null;
+    }
+
+    /**
+     * Get data from database dsn config
+     *
+     * @param \Throwable $e The Throwable to be logged
+     * @param string $method The Method that was running
+     * @since 1.15.0
+     */
+    protected function logException(\Throwable $e, string $method): void
+    {
+        Yii::error(
+            sprintf(
+                'Migration %s::%s() failed: %s (%s:%d). See debug log for full trace.',
+                static::class,
+                $method,
+                $e->getMessage(),
+                $e->getFile(),
+                $e->getLine()
+            ),
+            self::LOG_CATEGORY
+        );
+
+        Yii::debug($e->getTraceAsString(), self::LOG_CATEGORY);
+    }
+
+    /**
+     * Required, since parent is private ...
+     *
+     * @param \Throwable $t
+     */
+    private function printException(\Throwable $t): void
+    {
+        echo 'Exception: ' . $t->getMessage() . ' (' . $t->getFile() . ':' . $t->getLine() . ")\n";
+        echo $t->getTraceAsString() . "\n";
     }
 }
