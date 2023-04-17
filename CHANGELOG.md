@@ -58,6 +58,7 @@ HumHub Changelog
 1.13.3 (Unreleased)
 --------------------
 - Fix #6195: Fix `ModuleManager` disabling logging when no modules set
+- Fix #6232: Fix Error DateValidator::parseDateValuePHP in php8.2
 
 1.13.2 (March 27, 2023)
 -----------------------
