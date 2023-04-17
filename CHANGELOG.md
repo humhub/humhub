@@ -7,7 +7,8 @@ HumHub Changelog
 - Fix #6202: Invite by link is not possible for a user already invited by email
 - Fix #5718: Fix profile field "Country" to use js plugin Select2
 - Enh #6214: Improved SoftDelete implementation
-- Fix #6221: Improved SaaS handling in installer 
+- Fix #6221: Improved SaaS handling in installer
+- Fix #6232: Fix Error DateValidator::parseDateValuePHP in php8.2
 
 1.14.0-beta.2 (March 28, 2023)
 ------------------------------
@@ -58,7 +59,7 @@ HumHub Changelog
 1.13.3 (Unreleased)
 --------------------
 - Fix #6195: Fix `ModuleManager` disabling logging when no modules set
-- Fix #6232: Fix Error DateValidator::parseDateValuePHP in php8.2
+
 
 1.13.2 (March 27, 2023)
 -----------------------
