@@ -39,14 +39,6 @@ class RebuildIndex extends LongRunningActiveJob implements ExclusiveJobInterface
     /**
      * @inheritDoc
      */
-    public function getTtr()
-    {
-        return parent::getTtr() * 2;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function canRetry($attempt, $error)
     {
         return false;

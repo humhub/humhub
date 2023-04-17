@@ -153,7 +153,6 @@ $config = [
         ],
         'queue' => [
             'class' => \humhub\modules\queue\driver\MySQL::class,
-            'ttr' => 600,
         ],
         'urlManager' => [
             'class' => \humhub\components\UrlManager::class,
