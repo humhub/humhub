@@ -18,5 +18,8 @@ use humhub\components\Module as BaseModule;
  */
 class Module extends BaseModule
 {
-    
+    /**
+     * @var int default ttr for Long Running Jobs
+     */
+    public $longRunningJobTtr = 60 * 60;
 }
