@@ -9,6 +9,7 @@
 namespace humhub\modules\space\notifications;
 
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\space\models\Membership;
 use Yii;
 use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
@@ -76,6 +77,18 @@ class ApprovalRequest extends BaseNotification
     public function category()
     {
         return new SpaceMemberNotificationCategory;
+    }
+
+    /**
+     * @inerhitdoc +
+     */
+    public function isActual()
+    {
+        return Membership::find()->where([
+            'user_id' => $this->originator->id,
+            'space_id' => $this->source->id,
+            'status' => Membership::STATUS_APPLICANT,
+        ])->exists();
     }
 
     /**

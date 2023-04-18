@@ -64,6 +64,10 @@ class NotificationManager
      */
     public function sendBulk(BaseNotification $notification, $userQuery)
     {
+        if (!$notification->isActual()) {
+            return;
+        }
+
         $processed = [];
         /** @var User $user */
         foreach ($userQuery->each() as $user)

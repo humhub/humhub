@@ -130,6 +130,16 @@ abstract class BaseNotification extends SocialActivity
     }
 
     /**
+     * Checks if notification is still actual before sending
+     *
+     * @return bool
+     */
+    public function isActual()
+    {
+        return true;
+    }
+
+    /**
      * @inheritdoc
      */
     public function getViewParams($params = [])
