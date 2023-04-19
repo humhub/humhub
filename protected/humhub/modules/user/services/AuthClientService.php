@@ -119,16 +119,6 @@ class AuthClientService
             return null;
         }
 
-        if (
-            $this->authClient->getId() === 'linkedin' &&
-            (empty($attributes['firstname']) || empty($attributes['lastname']))
-        ) {
-            $key = array_key_first($attributes['firstName']['localized']);
-            $attributes['firstname'] = $attributes['firstName']['localized'][$key];
-            $key = array_key_first($attributes['lastName']['localized']);
-            $attributes['lastname'] = $attributes['lastName']['localized'][$key];
-        }
-
         $registration = new \humhub\modules\user\models\forms\Registration();
         $registration->enablePasswordForm = false;
         $registration->enableEmailField = true;
