@@ -371,7 +371,7 @@ class AccountController extends BaseAccountController
      */
     public function actionChangeEmailValidate()
     {
-        if (!Yii::$app->user->canChangeEmail()) {
+        if (!Yii::$app->user->getAuthClientUserService()->canChangeEmail()) {
             throw new HttpException(500, 'Change E-Mail is not allowed');
         }
 
