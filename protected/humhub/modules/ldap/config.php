@@ -8,7 +8,6 @@
 use humhub\modules\admin\widgets\AuthenticationMenu;
 use humhub\modules\ldap\Events;
 use humhub\modules\user\authclient\Collection;
-use humhub\components\console\Application;
 
 /** @noinspection MissedFieldInspection */
 return [

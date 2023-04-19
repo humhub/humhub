@@ -8,7 +8,6 @@
 
 namespace humhub\modules\space\modules\manage\models;
 
-use humhub\modules\user\components\CheckPasswordValidator;
 use Yii;
 use yii\base\Model;
 

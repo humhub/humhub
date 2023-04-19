@@ -8,7 +8,6 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\libs\BasePermission;
 
 /**
  * Edit Link for Wall Entries

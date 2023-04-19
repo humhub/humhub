@@ -4,8 +4,6 @@ namespace humhub\modules\dashboard\stream;
 
 use humhub\modules\activity\stream\ActivityStreamQuery;
 use humhub\modules\dashboard\Module;
-use humhub\modules\dashboard\stream\filters\DashboardGuestStreamFilter;
-use humhub\modules\dashboard\stream\filters\DashboardMemberStreamFilter;
 use Yii;
 
 /**

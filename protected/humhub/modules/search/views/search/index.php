@@ -11,7 +11,6 @@ use yii\bootstrap\ActiveForm;
 use humhub\modules\search\models\forms\SearchForm;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\stream\actions\Stream;
 use humhub\widgets\LinkPager;
 
 humhub\modules\stream\assets\StreamAsset::register($this);

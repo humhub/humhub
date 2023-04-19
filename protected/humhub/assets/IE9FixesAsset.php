@@ -9,7 +9,6 @@
 namespace humhub\assets;
 
 use humhub\components\assets\WebStaticAssetBundle;
-use yii\web\AssetBundle;
 
 /**
  * IE9FixesAsset provides CSS/JS fixes for Internet Explorer 9 versions

@@ -8,7 +8,6 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
-use humhub\libs\Html;
 use Yii;
 
 /**

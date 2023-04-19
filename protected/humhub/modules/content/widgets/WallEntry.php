@@ -8,7 +8,6 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\dashboard\controllers\DashboardController;
 use humhub\modules\stream\actions\Stream;

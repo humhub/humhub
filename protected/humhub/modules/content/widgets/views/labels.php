@@ -1,7 +1,6 @@
 <?php
 
 use humhub\modules\post\models\Post;
-use humhub\widgets\Label;
 
 /**
  * This view shows common labels for wall entries.

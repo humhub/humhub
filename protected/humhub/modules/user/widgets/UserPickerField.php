@@ -5,7 +5,6 @@ namespace humhub\modules\user\widgets;
 use humhub\modules\user\models\User;
 use humhub\modules\ui\form\widgets\BasePicker;
 use Yii;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /**

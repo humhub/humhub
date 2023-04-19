@@ -9,10 +9,8 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\components\ActiveRecord;
-use humhub\modules\content\widgets\WallEntry;
 use humhub\modules\file\converter\PreviewImage;
 use Yii;
-use humhub\modules\content\components\ContentActiveRecord;
 
 /**
  * This widget is used include the files functionality to a wall entry.

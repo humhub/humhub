@@ -15,7 +15,6 @@ use yii\console\Response;
 use yii\db\IntegrityException;
 use yii\web\HttpException;
 use humhub\components\Controller;
-use humhub\components\behaviors\AccessControl;
 use humhub\modules\notification\models\Notification;
 use humhub\components\access\ControllerAccess;
 

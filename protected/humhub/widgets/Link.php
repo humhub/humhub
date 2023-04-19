@@ -16,9 +16,6 @@
 namespace humhub\widgets;
 
 
-use humhub\components\Widget;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
 
 /**
  * Helper class for creating links.

@@ -13,7 +13,6 @@ use humhub\modules\file\libs\FileHelper;
 use Yii;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
-use yii\imagine\Image;
 use yii\web\UploadedFile;
 
 /**

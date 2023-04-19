@@ -1,5 +1,4 @@
 <?php
-use yii\helpers\Html;
 use humhub\widgets\Link;
 use humhub\modules\ui\icon\widgets\Icon;
 

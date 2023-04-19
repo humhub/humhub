@@ -12,7 +12,6 @@ use Firebase\JWT\JWT;
 use humhub\modules\file\Module;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\helpers\Url;
 use yii\web\HttpException;
 use yii\base\Action;
 use humhub\modules\file\models\File;

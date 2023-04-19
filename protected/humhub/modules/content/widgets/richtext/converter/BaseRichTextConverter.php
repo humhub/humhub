@@ -19,7 +19,6 @@ use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtensio
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
 use Yii;
-use yii\base\InvalidArgumentException;
 
 /**
  * This class serves as base class for richtext converters used to convert HumHub richtext to other formats. The base

@@ -1,7 +1,6 @@
 <?php
 
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\widgets\WallEntryLabels;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicLabel;
 use humhub\modules\ui\view\components\View;

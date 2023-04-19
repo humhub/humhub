@@ -3,7 +3,6 @@
 namespace tests\codeception\unit\models;
 
 use humhub\modules\space\models\Space;
-use humhub\modules\user\models\Group;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;

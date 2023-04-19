@@ -8,7 +8,6 @@
 
 namespace humhub\modules\ui\view\components;
 
-use humhub\assets\AppAsset;
 use humhub\assets\CoreBundleAsset;
 use humhub\libs\BaseSettingsManager;
 use humhub\modules\ui\view\helpers\ThemeHelper;

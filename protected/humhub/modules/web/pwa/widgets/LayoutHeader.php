@@ -9,7 +9,6 @@
 namespace humhub\modules\web\pwa\widgets;
 
 use Yii;
-use yii\base\WidgetEvent;
 use yii\helpers\Url;
 use humhub\components\Widget;
 use humhub\modules\web\Module;

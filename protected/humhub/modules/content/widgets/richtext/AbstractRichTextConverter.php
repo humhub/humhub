@@ -9,9 +9,6 @@
 namespace humhub\modules\content\widgets\richtext;
 
 
-use humhub\components\ActiveRecord;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentAddonActiveRecord;
 use yii\base\BaseObject;
 
 /**

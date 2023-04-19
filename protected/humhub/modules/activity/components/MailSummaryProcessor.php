@@ -11,7 +11,6 @@ namespace humhub\modules\activity\components;
 use humhub\modules\activity\Module;
 use Yii;
 use yii\helpers\Console;
-use humhub\modules\activity\components\MailSummary;
 use humhub\modules\user\models\User;
 
 /**

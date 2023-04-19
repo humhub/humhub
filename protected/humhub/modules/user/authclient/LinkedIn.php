@@ -8,9 +8,6 @@
 
 namespace humhub\modules\user\authclient;
 
-use yii\authclient\OAuth2;
-use yii\web\HttpException;
-use Yii;
 
 /**
  * @deprecated 1.14

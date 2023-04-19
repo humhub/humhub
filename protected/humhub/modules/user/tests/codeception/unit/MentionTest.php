@@ -3,11 +3,9 @@
 namespace humhub\modules\user\tests\codeception\unit;
 
 use humhub\modules\comment\models\Comment;
-use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\models\Mentioning;
 use humhub\modules\user\notifications\Mentioned;
 use tests\codeception\_support\HumHubDbTestCase;
 

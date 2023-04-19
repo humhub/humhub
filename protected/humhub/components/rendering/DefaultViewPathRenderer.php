@@ -9,7 +9,6 @@
 namespace humhub\components\rendering;
 
 use Yii;
-use humhub\components\rendering\Viewable;
 
 /**
  * The DefaultViewPathRenderer is used to render Viewables.

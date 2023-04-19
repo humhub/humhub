@@ -1,6 +1,5 @@
 <?php
 
-use humhub\components\console\Application;
 
 /** @noinspection MissedFieldInspection */
 return [

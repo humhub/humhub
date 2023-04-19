@@ -2,7 +2,6 @@
 
 namespace humhub\modules\space\models\forms;
 
-use humhub\libs\UUID;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\space\jobs\AddUsersToSpaceJob;
 use humhub\modules\space\models\Membership;

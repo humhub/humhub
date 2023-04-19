@@ -2,20 +2,8 @@
 
 namespace humhub\modules\user\tests\codeception\unit\stream;
 
-use humhub\modules\comment\models\Comment;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
-use humhub\modules\content\widgets\richtext\RichText;
-use humhub\modules\post\models\Post;
-use humhub\modules\space\models\Space;
-use humhub\modules\stream\models\StreamQuery;
-use humhub\modules\user\models\Mentioning;
-use humhub\modules\user\models\User;
-use humhub\modules\user\notifications\Mentioned;
-use humhub\modules\user\stream\filters\IncludeAllContributionsFilter;
-use humhub\modules\user\stream\ProfileStreamQuery;
 use humhub\modules\user\tests\codeception\_support\ProfileStreamTest;
-use tests\codeception\_support\HumHubDbTestCase;
 use yii\base\Exception;
 
 class SimpleProfileStreamTest extends ProfileStreamTest

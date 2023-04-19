@@ -8,9 +8,7 @@
 
 namespace humhub\modules\content\widgets;
 
-use Yii;
 use yii\helpers\Url;
-use humhub\modules\content\components\ContentContainerController;
 
 /**
  * PinLinkWidget for Wall Entries shows a pin link.

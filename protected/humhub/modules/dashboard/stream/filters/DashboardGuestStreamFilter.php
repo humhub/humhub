@@ -3,7 +3,6 @@
 namespace humhub\modules\dashboard\stream\filters;
 
 use humhub\modules\stream\models\filters\StreamQueryFilter;
-use Yii;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;

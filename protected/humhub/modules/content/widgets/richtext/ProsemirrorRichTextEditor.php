@@ -9,7 +9,6 @@
 namespace humhub\modules\content\widgets\richtext;
 
 
-use humhub\modules\content\assets\ProseMirrorRichTextAsset;
 use humhub\modules\file\widgets\UploadInput;
 
 /**

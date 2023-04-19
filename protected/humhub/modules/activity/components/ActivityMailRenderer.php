@@ -8,7 +8,6 @@
 
 namespace humhub\modules\activity\components;
 
-use Yii;
 use humhub\components\rendering\MailLayoutRenderer;
 
 /**

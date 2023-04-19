@@ -5,7 +5,6 @@ namespace tests\codeception\_support;
 use Codeception\Module;
 use humhub\modules\activity\tests\codeception\fixtures\ActivityFixture;
 use humhub\modules\content\tests\codeception\fixtures\ContentFixture;
-use humhub\modules\file\models\FileHistory;
 use humhub\modules\file\tests\codeception\fixtures\FileFixture;
 use humhub\modules\file\tests\codeception\fixtures\FileHistoryFixture;
 use humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture;

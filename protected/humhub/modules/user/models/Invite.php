@@ -10,7 +10,6 @@ namespace humhub\modules\user\models;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\ActiveRecord;
-use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\Module;
 use humhub\widgets\Button;

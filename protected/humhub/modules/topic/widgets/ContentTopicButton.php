@@ -14,7 +14,6 @@ use humhub\modules\content\models\Content;
 use humhub\widgets\ModalButton;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\content\widgets\WallEntryControlLink;
-use humhub\widgets\Link;
 use Yii;
 use yii\helpers\Url;
 

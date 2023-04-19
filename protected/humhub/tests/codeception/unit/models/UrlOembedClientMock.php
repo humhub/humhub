@@ -5,7 +5,6 @@ namespace humhub\tests\codeception\unit\models;
 
 
 use humhub\libs\UrlOembedClient;
-use yii\helpers\Json;
 
 class UrlOembedClientMock implements UrlOembedClient
 {

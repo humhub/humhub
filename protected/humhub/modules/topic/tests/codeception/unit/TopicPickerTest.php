@@ -2,7 +2,6 @@
 
 namespace tests\codeception\unit;
 
-use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicPicker;

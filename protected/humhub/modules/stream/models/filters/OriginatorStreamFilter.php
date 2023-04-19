@@ -9,7 +9,6 @@
 namespace humhub\modules\stream\models\filters;
 
 
-use humhub\modules\stream\models\filters\StreamQueryFilter;
 use humhub\modules\user\models\User;
 
 class OriginatorStreamFilter extends StreamQueryFilter

@@ -16,12 +16,9 @@
 namespace humhub\tests\codeception\unit\components\access;
 
 
-use humhub\commands\TestController;
-use humhub\components\access\AccessValidator;
 use humhub\components\access\ControllerAccess;
 use humhub\components\access\StrictAccess;
 use tests\codeception\_support\HumHubDbTestCase;
-use Yii;
 
 class TestControllerAccess extends HumHubDbTestCase
 {

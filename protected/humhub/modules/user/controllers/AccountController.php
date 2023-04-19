@@ -20,8 +20,6 @@ use humhub\modules\user\models\forms\AccountChangeUsername;
 use humhub\modules\user\models\forms\AccountDelete;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\ProfileSettingsAutocomplete;
-use humhub\modules\user\widgets\ProfileSettingsPicker;
 use Yii;
 use yii\web\HttpException;
 

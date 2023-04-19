@@ -8,8 +8,6 @@
 
 namespace humhub\modules\content\widgets;
 
-use Yii;
-use humhub\modules\content\components\ContentContainerController;
 
 /**
  * PinLink for Wall Entries

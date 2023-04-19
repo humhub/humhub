@@ -8,7 +8,6 @@
 
 namespace humhub\modules\user\authclient;
 
-use Yii;
 
 /**
  * @deprecated 1.14

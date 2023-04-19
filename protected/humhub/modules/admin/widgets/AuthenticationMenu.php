@@ -12,7 +12,6 @@ use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\SubTabMenu;
 use Yii;
-use yii\helpers\Url;
 
 /**
  * Authentication Settings Menu

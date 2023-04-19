@@ -9,7 +9,6 @@
 namespace humhub\modules\admin\controllers;
 
 use humhub\modules\ui\menu\MenuLink;
-use Yii;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\widgets\AdminMenu;
 use yii\web\HttpException;

@@ -8,7 +8,6 @@
 
 namespace humhub\widgets\mails;
 
-use Yii;
 
 /**
  * Simple headline for mails.

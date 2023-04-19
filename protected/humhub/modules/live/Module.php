@@ -15,7 +15,6 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\models\Follow;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\models\Membership;
-use yii\db\Query;
 
 /**
  * Live module provides a live channel to the users browser.

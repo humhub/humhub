@@ -4,7 +4,6 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Html;
 use humhub\modules\admin\models\forms\StatisticSettingsForm;
 use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
-use yii\web\View;
 
 /* @var $model StatisticSettingsForm */
 

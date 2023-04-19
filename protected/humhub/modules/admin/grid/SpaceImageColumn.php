@@ -9,7 +9,6 @@
 namespace humhub\modules\admin\grid;
 
 use humhub\modules\space\widgets\Image as SpaceImage;
-use humhub\modules\space\models\Space;
 
 /**
  * SpaceColumn

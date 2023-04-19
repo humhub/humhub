@@ -4,9 +4,7 @@ namespace humhub\modules\web\security\models;
 
 use humhub\modules\web\security\helpers\Security;
 use Yii;
-use yii\base\InvalidConfigException;
 use yii\base\Model;
-use yii\helpers\Json;
 use yii\helpers\Url;
 use humhub\modules\web\security\helpers\CSPBuilder;
 use humhub\modules\web\security\Module;

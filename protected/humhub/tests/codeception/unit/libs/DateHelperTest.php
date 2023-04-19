@@ -9,7 +9,6 @@ namespace humhub\tests\codeception\unit\libs;
 
 use Codeception\Test\Unit;
 use humhub\libs\DateHelper;
-use humhub\libs\DbDateValidator;
 use Yii;
 
 /**

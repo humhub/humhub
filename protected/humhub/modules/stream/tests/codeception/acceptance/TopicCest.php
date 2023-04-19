@@ -7,7 +7,6 @@
 
 namespace stream\acceptance;
 
-use humhub\modules\content\models\Content;
 use stream\AcceptanceTester;
 
 class TopicCest

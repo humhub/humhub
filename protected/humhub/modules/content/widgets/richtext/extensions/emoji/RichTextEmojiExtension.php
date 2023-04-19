@@ -3,10 +3,8 @@
 namespace humhub\modules\content\widgets\richtext\extensions\emoji;
 
 use humhub\libs\EmojiMap;
-use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use humhub\modules\content\widgets\richtext\extensions\RichTextContentExtension;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtensionMatch;
-use humhub\components\ActiveRecord;
 
 /**
  * The emoji richtext extension is responsible for replacing richtext emoji syntax like :smile: to utf8 characters when

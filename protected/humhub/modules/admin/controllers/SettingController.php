@@ -28,7 +28,6 @@ use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\Log;
 use humhub\modules\notification\models\forms\NotificationSettings;
-use yii\base\BaseObject;
 
 /**
  * SettingController

@@ -11,7 +11,6 @@ namespace humhub\modules\admin\widgets;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\SubTabMenu;
 use Yii;
-use yii\helpers\Url;
 
 /**
  * Group Administration Menu

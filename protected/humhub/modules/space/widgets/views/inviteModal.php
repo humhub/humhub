@@ -12,7 +12,6 @@
 
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\Button;
-use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use yii\bootstrap\ActiveForm;
 use humhub\libs\Html;

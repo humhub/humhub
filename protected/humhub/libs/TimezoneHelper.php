@@ -11,7 +11,6 @@ namespace humhub\libs;
 use DateTime;
 use DateTimeZone;
 use Yii;
-use yii\db\Exception;
 
 /**
  * TimezoneHelpers

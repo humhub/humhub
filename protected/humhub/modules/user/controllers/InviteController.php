@@ -8,7 +8,6 @@
 
 namespace humhub\modules\user\controllers;
 
-use humhub\modules\user\Module;
 use Yii;
 use yii\web\Controller;
 use yii\web\HttpException;

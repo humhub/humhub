@@ -7,10 +7,8 @@
 
 namespace humhub\modules\space\controllers;
 
-use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\space\components\SpaceDirectoryQuery;
-use humhub\modules\space\permissions\SpaceDirectoryAccess;
 use humhub\modules\space\widgets\SpaceDirectoryCard;
 use Yii;
 use yii\helpers\Url;

@@ -2,9 +2,6 @@
 
 namespace tests\codeception\unit\models;
 
-use humhub\modules\user\models\Profile;
-use humhub\modules\user\models\ProfileField;
-use humhub\modules\user\models\ProfileFieldCategory;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserFilter;
 use tests\codeception\_support\HumHubDbTestCase;

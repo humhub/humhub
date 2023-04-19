@@ -12,7 +12,6 @@ use humhub\modules\post\models\Post;
 use Yii;
 use humhub\modules\stream\widgets\StreamViewer as BaseStreamViewer;
 use humhub\modules\user\models\User;
-use humhub\modules\post\permissions\CreatePost;
 
 /**
  * StreamViewer shows a users profile stream
