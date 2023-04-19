@@ -12,7 +12,6 @@ use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\Module;
 use Yii;
-use yii\base\InvalidConfigException;
 use yii\base\Model;
 
 /**
