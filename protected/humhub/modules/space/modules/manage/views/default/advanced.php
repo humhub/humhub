@@ -1,8 +1,10 @@
 <?php
 
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\models\AdvancedSettings;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
+use humhub\modules\ui\form\widgets\SortOrderField;
 use humhub\widgets\Button;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Url;
@@ -33,6 +35,9 @@ use yii\helpers\Url;
         <?= $form->field($model, 'hideFollowers')->checkbox(); ?>
         <?= $form->field($model, 'indexUrl')->dropDownList($indexModuleSelection) ?>
         <?= $form->field($model, 'indexGuestUrl')->dropDownList($indexModuleSelection) ?>
+        <?php if (Yii::$app->user->can(ManageSpaces::class)) : ?>
+            <?= $form->field($model, 'sortOrder')->widget(SortOrderField::class) ?>
+        <?php endif; ?>
 
         <?= Button::save()->submit() ?>
         <?= Button::danger(Yii::t('base', 'Delete'))->right()->link($space->createUrl('delete'))->visible($space->canDelete()) ?>

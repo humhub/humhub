@@ -6,4 +6,5 @@ HumHub Changelog
 - Enh #6236: Logging: Show log entries from migrations with category migration
 - Fix #6216: Spaces icon in admin menu
 - Fix #6229: Bug on saving forms: Zend OPcache API is restricted by "restrict_api"
-- Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method 
+- Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method
+- Enh #5668: Allow Admin to sort the Spaces in a custom order

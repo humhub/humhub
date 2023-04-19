@@ -46,6 +46,7 @@ use Yii;
  * @property integer $join_policy
  * @property integer $visibility
  * @property integer $status
+ * @property integer $sort_order
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
@@ -116,8 +117,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
     public function rules()
     {
         $rules = [
-            [['join_policy', 'visibility', 'status', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
-            [['name'], 'required'],
+            [['join_policy', 'visibility', 'status', 'sort_order', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
+            [['name', 'sort_order'], 'required'],
             [['description', 'about', 'color'], 'string'],
             [['tagsField', 'blockedUsersField'], 'safe'],
             [['description'], 'string', 'max' => 100],

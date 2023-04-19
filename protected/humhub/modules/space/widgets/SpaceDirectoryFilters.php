@@ -39,6 +39,7 @@ class SpaceDirectoryFilters extends DirectoryFilters
                 'title' => Yii::t('SpaceModule.base', 'Sorting'),
                 'type' => 'dropdown',
                 'options' => [
+                    'sortOrder' => Yii::t('SpaceModule.base', 'Default'),
                     'name' => Yii::t('SpaceModule.base', 'By Name'),
                     'newer' => Yii::t('SpaceModule.base', 'Newest first'),
                     'older' => Yii::t('SpaceModule.base', 'Oldest first'),

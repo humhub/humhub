@@ -305,9 +305,9 @@ class Membership extends ActiveRecord
         $query = Membership::find();
 
         if (Yii::$app->getModule('space')->settings->get('spaceOrder') == 0) {
-            $query->orderBy('space.name ASC');
+            $query->orderBy(['space.sort_order' => SORT_ASC, 'space.name' => SORT_ASC]);
         } else {
-            $query->orderBy('space_membership.last_visit DESC');
+            $query->orderBy(['space_membership.last_visit' => SORT_DESC]);
         }
 
         $query->joinWith('space')->where(['space_membership.user_id' => $user->id]);

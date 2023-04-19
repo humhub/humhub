@@ -176,7 +176,9 @@ class Follow extends ActiveRecord
             $subQuery->andWhere(['user_follow.send_notifications' => 0]);
         }
 
-        return Space::find()->where(['exists', $subQuery]);
+        return Space::find()
+            ->where(['exists', $subQuery])
+            ->orderBy(['space.sort_order' => SORT_ASC, 'space.name' => SORT_ASC]);
     }
 
     /**
