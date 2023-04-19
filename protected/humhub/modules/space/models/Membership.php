@@ -273,12 +273,10 @@ class Membership extends ActiveRecord
         }
 
         if (Yii::$app->getModule('space')->settings->get('spaceOrder') == 0) {
-            $query->orderBy('name ASC');
+            $query->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC]);
         } else {
-            $query->orderBy('last_visit DESC');
+            $query->orderBy(['last_visit' => SORT_DESC]);
         }
-
-        $query->orderBy(['name' => SORT_ASC]);
 
         return $query;
     }

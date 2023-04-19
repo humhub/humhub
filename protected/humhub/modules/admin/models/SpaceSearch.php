@@ -86,12 +86,16 @@ class SpaceSearch extends Space
         $dataProvider->setSort([
             'attributes' => [
                 'id',
+                'sort_order',
                 'name',
                 'visibility',
                 'join_policy',
                 'memberCount',
             ]
         ]);
+
+        $dataProvider->sort->defaultOrder = ['sort_order' => SORT_ASC];
+
         $dataProvider->sort->attributes['ownerUser.profile.lastname'] = [
             'asc' => ['profile.lastname' => SORT_ASC],
             'desc' => ['profile.lastname' => SORT_DESC],

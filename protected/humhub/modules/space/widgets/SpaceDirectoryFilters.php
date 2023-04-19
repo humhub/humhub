@@ -66,7 +66,7 @@ class SpaceDirectoryFilters extends DirectoryFilters
     {
         switch ($filter) {
             case 'sort':
-                return 'name';
+                return 'sortOrder';
         }
 
         return parent::getDefaultValue($filter);
