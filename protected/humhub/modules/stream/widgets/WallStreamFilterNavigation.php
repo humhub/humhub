@@ -14,6 +14,7 @@ use humhub\modules\stream\models\filters\DateStreamFilter;
 use humhub\modules\ui\filter\widgets\DatePickerFilterInput;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserPickerField;
+use Yii;
 use humhub\modules\stream\models\filters\ContentTypeStreamFilter;
 use humhub\modules\stream\models\filters\DefaultStreamFilter;
 use humhub\modules\stream\models\filters\TopicStreamFilter;

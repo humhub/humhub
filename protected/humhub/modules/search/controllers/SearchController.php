@@ -8,6 +8,8 @@
 
 namespace humhub\modules\search\controllers;
 
+use Yii;
+use yii\data\Pagination;
 use humhub\components\Controller;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
