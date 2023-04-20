@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.14.0 (Unreleased)
--------------------
+1.14.0 (April 20, 2023)
+-----------------------
 - Fix #6196: Use class names for default logging targets in default common config
 - Fix #6202: Invite by link is not possible for a user already invited by email
 - Fix #5718: Fix profile field "Country" to use js plugin Select2
