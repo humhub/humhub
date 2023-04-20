@@ -67,7 +67,6 @@ use yii\web\IdentityInterface;
  */
 class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
 {
-
     /**
      * User Status Flags
      */
@@ -585,7 +584,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         parent::afterSave($insert, $changedAttributes);
 
         // When insert an "::STATUS_ENABLED" user or update a user from status "::STATUS_NEED_APPROVAL" to "::STATUS_ENABLED"
-        if ($this->status == User::STATUS_ENABLED &&
+        if (
+            $this->status == User::STATUS_ENABLED &&
             (
                 $insert ||
                 (isset($changedAttributes['status']) && $changedAttributes['status'] == User::STATUS_NEED_APPROVAL)
@@ -818,7 +818,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getSpaces()
     {
-
         // TODO: SHOW ONLY REAL MEMBERSHIPS
         return $this->hasMany(Space::class, ['id' => 'space_id'])
             ->viaTable('space_membership', ['user_id' => 'id']);
@@ -1025,5 +1024,4 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         return $options;
     }
-
 }

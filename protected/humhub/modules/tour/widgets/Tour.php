@@ -5,7 +5,6 @@ namespace humhub\modules\tour\widgets;
 use humhub\modules\tour\assets\TourAsset;
 use Yii;
 
-
 /**
  * Will show the introduction tour
  *
@@ -15,21 +14,19 @@ use Yii;
  */
 class Tour extends \humhub\components\Widget
 {
-
     /**
      * Executes the widgets
      */
     public function run()
     {
-
-        if (Yii::$app->user->isGuest)
+        if (Yii::$app->user->isGuest) {
             return;
+        }
 
         // Active tour flag not set
         if (!isset($_GET['tour'])) {
             return;
         }
-
 
         // Tour only possible when we are in a module
         if (Yii::$app->controller->module === null) {
@@ -66,7 +63,4 @@ class Tour extends \humhub\components\Widget
     {
         // Dummy for old template version
     }
-
 }
-
-?>
