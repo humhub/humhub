@@ -9,6 +9,7 @@ HumHub Changelog
 - Enh #6214: Improved SoftDelete implementation
 - Fix #6221: Improved SaaS handling in installer
 - Fix #6232: Fix Error DateValidator::parseDateValuePHP in php8.2
+- Fix #6246: Can change email in `AccountController` 
 
 1.14.0-beta.2 (March 28, 2023)
 ------------------------------
