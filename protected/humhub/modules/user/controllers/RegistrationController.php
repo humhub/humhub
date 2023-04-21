@@ -130,7 +130,12 @@ class RegistrationController extends Controller
     public function actionByLink($token = null, $spaceId = null)
     {
         $linkRegistrationService = new LinkRegistrationService(Space::findOne(['id' => (int)$spaceId]));
-        if (!$linkRegistrationService->isValid($token)) {
+
+        if (!$linkRegistrationService->isEnabled()) {
+            throw new HttpException(404);
+        }
+
+        if ($token === null || !$linkRegistrationService->isValid($token)) {
             throw new HttpException(400, 'Invalid token provided!');
         }
 
