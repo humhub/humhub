@@ -7,3 +7,4 @@ HumHub Changelog
 - Fix #6216: Spaces icon in admin menu
 - Fix #6229: Bug on saving forms: Zend OPcache API is restricted by "restrict_api"
 - Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method 
+- Enh #6164: Invitation by link: when registering within an SSO, the email should only be requested on the service provider

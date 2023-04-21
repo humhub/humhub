@@ -11,6 +11,7 @@ namespace humhub\modules\user\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\components\Response;
+use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use humhub\modules\user\authclient\AuthAction;
 use humhub\modules\user\events\UserEvent;
@@ -23,6 +24,7 @@ use humhub\modules\user\services\AuthClientService;
 use humhub\modules\user\services\AuthClientUserService;
 use humhub\modules\user\Module;
 use Yii;
+use yii\captcha\CaptchaAction;
 use yii\web\Cookie;
 use yii\authclient\BaseClient;
 use yii\web\HttpException;
@@ -71,7 +73,7 @@ class AuthController extends Controller
     {
         return [
             'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
+                'class' => CaptchaAction::class,
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
             'external' => [
@@ -163,7 +165,7 @@ class AuthController extends Controller
         }
 
         // Check if e-mail is already in use with another auth method
-        if ($user === null && isset($attributes['email'])) {
+        if ($user === null && !empty($attributes['email'])) {
             $user = User::findOne(['email' => $attributes['email']]);
             if ($user !== null) {
                 // Map current auth method to user with same e-mail address
@@ -175,7 +177,36 @@ class AuthController extends Controller
             return $this->login($user, $authClient);
         }
 
-        if (!$authClient instanceof ApprovalBypass && !Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration')) {
+        $inviteToken = null;
+        if (!empty($attributes['email'])) {
+            $inviteToken = Yii::$app->request->get('token');
+            if ($inviteToken) {
+                $invite = Invite::findOne(['email' => $attributes['email']]);
+                if ($invite !== null && $invite->source === Invite::SOURCE_INVITE) {
+                    // Invite by email
+                    AuthHelper::handleInviteByEmailRegistration($inviteToken);
+                } else {
+                    // Invite by link
+                    $inviteSpaceId = Yii::$app->request->get('spaceId');
+                    AuthHelper::handleInviteByLinkRegistration($inviteToken, $inviteSpaceId);
+                    if ($invite === null) {
+                        $invite = new Invite([
+                            'email' => $attributes['email'],
+                            'scenario' => 'invite',
+                            'language' => Yii::$app->language,
+                        ]);
+                    }
+                    $invite->source = Invite::SOURCE_INVITE_BY_LINK;
+                    $invite->space_invite_id = $inviteSpaceId;
+                    $invite->skipCaptchaValidation = true;
+                    if ($invite->save()) {
+                        $inviteToken = $invite->token;
+                    }
+                }
+            }
+        }
+
+        if (!$inviteToken && !$authClient instanceof ApprovalBypass && !Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration')) {
             Yii::warning('Could not register user automatically: Anonymous registration disabled. AuthClient: ' . get_class($authClient), 'user');
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', "You're not registered."));
             return $this->redirect(['/user/auth/login']);
@@ -195,10 +226,11 @@ class AuthController extends Controller
         }
 
         // Try automatically create user & login user
-        $user = $authClientService->createUser();
-
-        if ($user !== null) {
-            return $this->login($user, $authClient);
+        if (!$inviteToken) {
+            $user = $authClientService->createUser();
+            if ($user !== null) {
+                return $this->login($user, $authClient);
+            }
         }
 
         if ($authClient instanceof \humhub\modules\user\authclient\BaseClient) {
@@ -210,7 +242,7 @@ class AuthController extends Controller
         Yii::$app->session->set('authClient', $authClient);
 
         // Start registration process
-        return $this->redirect(['/user/registration']);
+        return $this->redirect(['/user/registration', ['inviteToken' => $inviteToken]]);
     }
 
     /**

@@ -10,9 +10,13 @@
 namespace humhub\modules\user\helpers;
 
 
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\forms\Registration;
+use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
+use yii\web\HttpException;
 
 /**
  * Class AuthHelper
@@ -87,5 +91,50 @@ class AuthHelper
         }
 
         return $username . $usernameRandomSuffix;
+    }
+
+    /**
+     * @param string $token
+     * @param string|null $spaceId
+     * @return void
+     * @throws HttpException
+     */
+    public static function handleInviteByLinkRegistration(string $token, ?string $spaceId = null): void
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if (empty($module->settings->get('auth.internalUsersCanInviteByLink'))) {
+            throw new HttpException(400, 'Invite by link is disabled!');
+        }
+
+        if ($spaceId !== null) {
+            // If invited by link from a space
+            $space = Space::findOne(['id' => (int)$spaceId]);
+            if ($space === null || $space->settings->get('inviteToken') !== $token) {
+                throw new HttpException(404, 'Invalid registration token!');
+            }
+            Yii::$app->setLanguage($space->ownerUser->language);
+        } else if ($module->settings->get('registration.inviteToken') !== $token) {
+            // If invited by link globally
+            throw new HttpException(404, 'Invalid registration token!');
+        }
+    }
+
+    /**
+     * @param $inviteToken
+     * @param Registration|null $form
+     * @throws HttpException
+     */
+    public static function handleInviteByEmailRegistration($inviteToken, Registration $form = null): void
+    {
+        $userInvite = Invite::findOne(['token' => $inviteToken]);
+        if (!$userInvite) {
+            throw new HttpException(404, 'Invalid registration token!');
+        }
+        Yii::$app->setLanguage($userInvite->language);
+        if ($form !== null) {
+            $form->getUser()->email = $userInvite->email;
+        }
     }
 }
