@@ -9,11 +9,14 @@
 namespace humhub\modules\user\controllers;
 
 use humhub\components\access\ControllerAccess;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\authclient\BaseFormAuth;
-use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
+use humhub\modules\user\services\LinkRegistrationService;
+use humhub\modules\user\services\InviteRegistrationService;
 use humhub\modules\user\widgets\AuthChoice;
 use Yii;
+use yii\authclient\BaseClient;
 use yii\base\Exception;
 use yii\db\StaleObjectException;
 use yii\web\HttpException;
@@ -68,14 +71,17 @@ class RegistrationController extends Controller
         $registration = new Registration();
 
         /**
-         * @var \yii\authclient\BaseClient
+         * @var BaseClient
          */
         $authClient = null;
-        $inviteToken = Yii::$app->request->get('token', '');
         $showAuthClients = AuthChoice::hasClients();
 
-        if ($inviteToken != '') {
-            AuthHelper::handleInviteByEmailRegistration($inviteToken, $registration);
+        if (Yii::$app->request->get('token')) {
+            $inviteRegistrationService = new InviteRegistrationService(Yii::$app->request->get('token'));
+            if (!$inviteRegistrationService->isValid()) {
+                throw new HttpException(404, 'Invalid registration token!');
+            }
+            $inviteRegistrationService->populateRegistration($registration);
         } elseif (Yii::$app->session->has('authClient')) {
             $authClient = Yii::$app->session->get('authClient');
             $this->handleAuthClientRegistration($authClient, $registration);
@@ -123,7 +129,10 @@ class RegistrationController extends Controller
      */
     public function actionByLink($token = null, $spaceId = null)
     {
-        AuthHelper::handleInviteByLinkRegistration($token, $spaceId);
+        $linkRegistrationService = new LinkRegistrationService(Space::findOne(['id' => (int)$spaceId]));
+        if (!$linkRegistrationService->isValid($token)) {
+            throw new HttpException(400, 'Invalid token provided!');
+        }
 
         // Check if all external auth clients can accept params in the return URL allowing to skip email validation
         $allAuthClientsCanSkipEmailValidation = true;
@@ -137,27 +146,15 @@ class RegistrationController extends Controller
             }
         }
 
-        $invite = new Invite([
-            'source' => Invite::SOURCE_INVITE_BY_LINK,
-            'space_invite_id' => $spaceId,
-            'scenario' => 'invite',
-            'language' => Yii::$app->language,
-        ]);
-
-        if ($invite->load(Yii::$app->request->post())) {
-            // Deleting any previous email invitation or abandoned link invitation
-            $oldInvite = Invite::findOne(['email' => $invite->email]);
-            if ($oldInvite !== null) {
-                $oldInvite->delete();
-            }
-            if ($invite->save()) {
-                $invite->sendInviteMail();
-                return $this->render('@user/views/auth/register_success', ['model' => $invite]);
-            }
+        $form = new Invite(['source' => Invite::SOURCE_INVITE_BY_LINK]);
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $invite = $linkRegistrationService->convertToInvite($form->email);
+            $invite->sendInviteMail();
+            return $this->render('@user/views/auth/register_success', ['model' => $invite]);
         }
 
         return $this->render('byLink', [
-            'invite' => $invite,
+            'invite' => $form,
             'showAuthClients' => $allAuthClientsCanSkipEmailValidation,
         ]);
     }
@@ -165,7 +162,7 @@ class RegistrationController extends Controller
     /**
      * Already all registration data gathered
      *
-     * @param \yii\authclient\BaseClient $authClient
+     * @param BaseClient $authClient
      * @param Registration $registration
      * @throws Exception
      */

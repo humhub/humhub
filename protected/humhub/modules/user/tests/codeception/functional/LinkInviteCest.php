@@ -34,16 +34,20 @@ class LinkInviteCest
 
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', 1);
 
+
         // Generate Token
         $space = \humhub\modules\space\models\Space::findOne(['name' => 'Space 2']);
         $inviteForm = new \humhub\modules\space\models\forms\InviteForm();
         $inviteForm->space = $space;
         $inviteUrl = $inviteForm->getInviteLink();
 
-        $I->amOnRoute('/user/registration/by-link', ['token' => $space->settings->get('inviteToken'), 'spaceId' => $space->id]);
+        $linkRegistrationService = new \humhub\modules\user\services\LinkRegistrationService($space);
+
+
+        $I->amOnRoute('/user/registration/by-link', ['token' => $linkRegistrationService->getToken(), 'spaceId' => $space->id]);
         $I->seeResponseCodeIs(200);
 
-        $I->amOnRoute('/user/registration/by-link', ['token' => $space->settings->get('inviteToken'), 'spaceId' => 1]);
+        $I->amOnRoute('/user/registration/by-link', ['token' => $linkRegistrationService->getToken(), 'spaceId' => 1]);
         $I->seeResponseCodeIs(404);
     }
 

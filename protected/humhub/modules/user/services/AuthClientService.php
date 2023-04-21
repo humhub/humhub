@@ -18,6 +18,7 @@ use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\models\User;
+use humhub\modules\user\Module;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\helpers\VarDumper;
@@ -186,5 +187,41 @@ class AuthClientService
         $authClientCollection = Yii::$app->authClientCollection;
 
         return $authClientCollection;
+    }
+
+    public function autoMapToExistingUser(): void
+    {
+        $attributes = $this->authClient->getUserAttributes();
+
+        // Check if e-mail is already in use with another auth method
+        if ($this->getUser() === null && isset($attributes['email'])) {
+            $user = User::findOne(['email' => $attributes['email']]);
+            if ($user !== null) {
+                // Map current auth method to user with same e-mail address
+                (new AuthClientUserService($user))->add($this->authClient);
+            }
+        }
+    }
+
+    /**
+     * @return bool
+     * @since 1.15
+     */
+    public function allowSelfRegistration(): bool
+    {
+        // Always also AuthClients like LDAP to automatic registration
+        if ($this->authClient instanceof ApprovalBypass) {
+            return true;
+        }
+
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        // Anonymous Registration is enabled
+        if ($module->settings->get('auth.anonymousRegistration')) {
+            return true;
+        }
+
+        return false;
     }
 }

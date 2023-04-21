@@ -10,6 +10,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
+use humhub\modules\user\services\LinkRegistrationService;
 use Yii;
 use yii\base\Exception;
 use yii\base\Model;
@@ -354,11 +355,13 @@ class InviteForm extends Model
      */
     public function getInviteLink($forceResetToken = false)
     {
-        $token = $this->space->settings->get('inviteToken');
+        $linkRegistrationService = new LinkRegistrationService(null, $this->space);
+
+        $token = $linkRegistrationService->getToken();
         if ($forceResetToken || !$token) {
-            $token = Yii::$app->security->generateRandomString(Invite::LINK_TOKEN_LENGTH);
-            $this->space->settings->set('inviteToken', $token);
+            $token = $linkRegistrationService->setNewToken();
         }
+
         return Url::to(['/user/registration/by-link', 'token' => $token, 'spaceId' => $this->space->id], true);
     }
 }
