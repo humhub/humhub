@@ -355,7 +355,7 @@ class InviteForm extends Model
      */
     public function getInviteLink($forceResetToken = false)
     {
-        $linkRegistrationService = new LinkRegistrationService(null, $this->space);
+        $linkRegistrationService = new LinkRegistrationService($this->space);
 
         $token = $linkRegistrationService->getToken();
         if ($forceResetToken || !$token) {

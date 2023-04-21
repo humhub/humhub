@@ -41,7 +41,7 @@ final class LinkRegistrationService
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
 
-        return (!empty($module->settings->get(static::SETTING_VAR_ENABLED)));
+        return (!empty($module->settings->get(self::SETTING_VAR_ENABLED)));
     }
 
     public function getToken(): ?string
