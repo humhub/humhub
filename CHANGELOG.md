@@ -1,13 +1,15 @@
 HumHub Changelog
 ================
 
-1.14.0 (Unreleased)
--------------------
+1.14.0 (April 20, 2023)
+-----------------------
 - Fix #6196: Use class names for default logging targets in default common config
 - Fix #6202: Invite by link is not possible for a user already invited by email
 - Fix #5718: Fix profile field "Country" to use js plugin Select2
 - Enh #6214: Improved SoftDelete implementation
-- Fix #6221: Improved SaaS handling in installer 
+- Fix #6221: Improved SaaS handling in installer
+- Fix #6232: Fix Error DateValidator::parseDateValuePHP in php8.2
+- Fix #6246: Can change email in `AccountController` 
 
 1.14.0-beta.2 (March 28, 2023)
 ------------------------------
@@ -59,6 +61,7 @@ HumHub Changelog
 --------------------
 - Fix #6195: Fix `ModuleManager` disabling logging when no modules set
 - Fix #6215: Fix timeout on php yii queue/run executed by command line
+
 
 1.13.2 (March 27, 2023)
 -----------------------
