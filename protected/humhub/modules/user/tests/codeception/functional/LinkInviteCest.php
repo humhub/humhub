@@ -15,7 +15,7 @@ class LinkInviteCest
         $inviteUrl = $inviteForm->getInviteLink();
 
         $I->amOnPage($inviteUrl);
-        $I->seeResponseCodeIs(400);
+        $I->seeResponseCodeIs(404);
     }
 
     public function testInvalidToken(FunctionalTester $I)
