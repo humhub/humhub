@@ -212,6 +212,10 @@ class AuthController extends Controller
             return $this->redirect(['/user/auth/login']);
         }
 
+        if ($linkRegistrationService->isValid($inviteToken) && !empty($attributes['email'])) {
+            $linkRegistrationService->convertToInvite($attributes['email']);
+        }
+
         // Try automatic user creation
         $user = $authClientService->createUser();
         if ($user !== null) {

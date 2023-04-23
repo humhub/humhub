@@ -87,7 +87,7 @@ final class LinkRegistrationService
             'scenario' => 'invite',
             'language' => Yii::$app->language,
         ]);
-
+        $invite->skipCaptchaValidation = true;
         $invite->source = Invite::SOURCE_INVITE_BY_LINK;
         if ($this->space) {
             $invite->space_invite_id = $this->space->id;
