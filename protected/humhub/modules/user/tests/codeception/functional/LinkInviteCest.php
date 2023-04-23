@@ -25,7 +25,7 @@ class LinkInviteCest
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', 1);
 
         $I->amOnRoute('/user/registration/by-link', ['token' => 'abcd', 'spaceId' => 1]);
-        $I->seeResponseCodeIs(404);
+        $I->seeResponseCodeIs(400);
     }
 
     public function testValidTokenDifferentSpaceId(FunctionalTester $I)
