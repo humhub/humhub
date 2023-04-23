@@ -35,11 +35,6 @@ class AuthAction extends \yii\authclient\AuthAction
             return $client->authAction($this);
         }
 
-        // Allow adding token and spaceId params in the return URL
-        if (property_exists($client, 'parametersToKeepInReturnUrl')) {
-            $client->parametersToKeepInReturnUrl = array_merge($client->parametersToKeepInReturnUrl ?? [], ['token', 'spaceId']);
-        }
-
         return parent::auth($client, $authUrlParams);
     }
 

@@ -7,7 +7,6 @@ use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\space\jobs\AddUsersToSpaceJob;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\LinkRegistrationService;
@@ -104,7 +103,7 @@ class InviteForm extends Model
      */
     public function save()
     {
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             return false;
         }
 
@@ -355,9 +354,9 @@ class InviteForm extends Model
      */
     public function getInviteLink($forceResetToken = false)
     {
-        $linkRegistrationService = new LinkRegistrationService($this->space);
+        $linkRegistrationService = new LinkRegistrationService(null, $this->space);
 
-        $token = $linkRegistrationService->getToken();
+        $token = $linkRegistrationService->getStoredToken();
         if ($forceResetToken || !$token) {
             $token = $linkRegistrationService->setNewToken();
         }

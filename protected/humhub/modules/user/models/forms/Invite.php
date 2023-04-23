@@ -125,7 +125,7 @@ class Invite extends Model
     public function getInviteLink($forceResetToken = false)
     {
         $linkRegistrationService = new LinkRegistrationService();
-        $token = $linkRegistrationService->getToken();
+        $token = $linkRegistrationService->getStoredToken();
         if ($forceResetToken || !$token) {
             $token = $linkRegistrationService->setNewToken();
         }

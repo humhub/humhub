@@ -148,8 +148,6 @@ class AuthController extends Controller
      */
     public function onAuthSuccess(BaseClient $authClient)
     {
-        $attributes = $authClient->getUserAttributes();
-
         // User already logged in - Add new authclient to existing user
         if (!Yii::$app->user->isGuest) {
             Yii::$app->user->getAuthClientUserService()->add($authClient);
@@ -200,19 +198,17 @@ class AuthController extends Controller
             return $this->redirect(['/user/auth/login']);
         }
 
-        $inviteToken = (string) Yii::$app->request->get('token');
-
         $authClientService = new AuthClientService($authClient);
-        $tokenRegistrationService = new InviteRegistrationService($inviteToken);
-        $linkRegistrationService = new LinkRegistrationService(Space::findOne(['id' => (int)Yii::$app->request->get('spaceId')]));
+        $tokenRegistrationService = new InviteRegistrationService((string) Yii::$app->request->get('token'));
+        $linkRegistrationService = LinkRegistrationService::createFromRequest();
 
-        if (!$tokenRegistrationService->isValid() && !$linkRegistrationService->isValid($inviteToken) && !$authClientService->allowSelfRegistration()) {
+        if (!$tokenRegistrationService->isValid() && !$linkRegistrationService->isValid() && !$authClientService->allowSelfRegistration()) {
             Yii::warning('Could not register user automatically: Anonymous registration disabled. AuthClient: ' . get_class($authClient), 'user');
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', "You're not registered."));
             return $this->redirect(['/user/auth/login']);
         }
 
-        if ($linkRegistrationService->isValid($inviteToken) && !empty($attributes['email'])) {
+        if ($linkRegistrationService->isValid() && !empty($attributes['email'])) {
             $linkRegistrationService->convertToInvite($attributes['email']);
         }
 

@@ -10,7 +10,6 @@ namespace humhub\modules\user\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\LinkRegistrationService;
 use humhub\modules\user\services\InviteRegistrationService;
@@ -127,29 +126,19 @@ class RegistrationController extends Controller
      * @throws \Throwable
      * @throws StaleObjectException
      */
-    public function actionByLink($token = null, $spaceId = null)
+    public function actionByLink(?string $token = null, $spaceId = null)
     {
-        $linkRegistrationService = new LinkRegistrationService(Space::findOne(['id' => (int)$spaceId]));
+        $linkRegistrationService = new LinkRegistrationService($token, Space::findOne(['id' => (int)$spaceId]));
 
         if (!$linkRegistrationService->isEnabled()) {
             throw new HttpException(404);
         }
 
-        if ($token === null || !$linkRegistrationService->isValid($token)) {
+        if ($token === null || !$linkRegistrationService->isValid()) {
             throw new HttpException(400, 'Invalid token provided!');
         }
 
-        // Check if all external auth clients can accept params in the return URL allowing to skip email validation
-        $allAuthClientsCanSkipEmailValidation = true;
-        $collection = Yii::$app->get('authClientCollection');
-        foreach ($collection->getClients() as $client) {
-            if (
-                !$client instanceof BaseFormAuth
-                && !property_exists($client, 'parametersToKeepInReturnUrl')
-            ) {
-                $allAuthClientsCanSkipEmailValidation = false;
-            }
-        }
+        $linkRegistrationService->storeInSession();
 
         $form = new Invite(['source' => Invite::SOURCE_INVITE_BY_LINK]);
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
@@ -160,7 +149,7 @@ class RegistrationController extends Controller
 
         return $this->render('byLink', [
             'invite' => $form,
-            'showAuthClients' => $allAuthClientsCanSkipEmailValidation,
+            'showAuthClients' => true,
         ]);
     }
 

@@ -25,15 +25,31 @@ final class LinkRegistrationService
     const SETTING_VAR_SPACE_TOKEN = 'inviteToken';
     const SETTING_VAR_TOKEN = 'registration.inviteToken';
     private ?Space $space;
+    private ?string $token;
 
-    public function __construct(?Space $space = null)
+    public static function createFromRequest(): LinkRegistrationService
     {
+        $token = (string)Yii::$app->request->get('token', null);
+        $spaceId = (int)Yii::$app->request->get('spaceId');
+
+        if (!$token && Yii::$app->session->has(LinkRegistrationService::class . '::token')) {
+            $token = Yii::$app->session->get(LinkRegistrationService::class . '::token');
+            $spaceId = Yii::$app->session->get(LinkRegistrationService::class . '::spaceId', null);
+        }
+
+        return new LinkRegistrationService($token, Space::findOne(['id' => $spaceId]));
+    }
+
+
+    public function __construct(?string $token = null, ?Space $space = null)
+    {
+        $this->token = $token;
         $this->space = $space;
     }
 
-    public function isValid(string $token): bool
+    public function isValid(): bool
     {
-        return ($this->isEnabled() && $this->getToken() === $token);
+        return ($this->isEnabled() && $this->getStoredToken() === $this->token);
     }
 
     public function isEnabled(): bool
@@ -44,7 +60,7 @@ final class LinkRegistrationService
         return (!empty($module->settings->get(self::SETTING_VAR_ENABLED)));
     }
 
-    public function getToken(): ?string
+    public function getStoredToken(): ?string
     {
         if ($this->space) {
             // TODO: Find better solution
@@ -98,6 +114,12 @@ final class LinkRegistrationService
         }
 
         return $invite;
+    }
+
+    public function storeInSession()
+    {
+        Yii::$app->session->set(get_class($this) . '::token', $this->token);
+        Yii::$app->session->set(get_class($this) . '::spaceId', $this->space->id ?? null);
     }
 
 }

@@ -41,13 +41,11 @@ class LinkInviteCest
         $inviteForm->space = $space;
         $inviteUrl = $inviteForm->getInviteLink();
 
-        $linkRegistrationService = new \humhub\modules\user\services\LinkRegistrationService($space);
-
-
-        $I->amOnRoute('/user/registration/by-link', ['token' => $linkRegistrationService->getToken(), 'spaceId' => $space->id]);
+        $linkRegistrationService = new \humhub\modules\user\services\LinkRegistrationService(null, $space);
+        $I->amOnRoute('/user/registration/by-link', ['token' => $linkRegistrationService->getStoredToken(), 'spaceId' => $space->id]);
         $I->seeResponseCodeIs(200);
 
-        $I->amOnRoute('/user/registration/by-link', ['token' => $linkRegistrationService->getToken(), 'spaceId' => 1]);
+        $I->amOnRoute('/user/registration/by-link', ['token' => $linkRegistrationService->getStoredToken(), 'spaceId' => 1]);
         $I->seeResponseCodeIs(404);
     }
 
