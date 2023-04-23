@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.14.1 (Unreleased)
+-------------------
+- Fix #6251: Emulate execution on `readable()` content 
+
 1.14.0 (April 20, 2023)
 -----------------------
 - Fix #6196: Use class names for default logging targets in default common config
