@@ -4,6 +4,7 @@ HumHub Changelog
 1.14.1 (Unreleased)
 -------------------
 - Fix #6251: Emulate execution on `readable()` content 
+- Fix #6252: Fix event trigger for `Content::EVENT_STATE_CHANGED`
 
 1.14.0 (April 20, 2023)
 -----------------------
