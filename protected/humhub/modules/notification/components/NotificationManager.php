@@ -64,7 +64,7 @@ class NotificationManager
      */
     public function sendBulk(BaseNotification $notification, $userQuery)
     {
-        if (!$notification->isActual()) {
+        if (!$notification->isValid()) {
             return;
         }
 

@@ -80,9 +80,9 @@ class ApprovalRequest extends BaseNotification
     }
 
     /**
-     * @inerhitdoc +
+     * @inerhitdoc
      */
-    public function isActual()
+    public function isValid()
     {
         return Membership::find()->where([
             'user_id' => $this->originator->id,

@@ -130,11 +130,13 @@ abstract class BaseNotification extends SocialActivity
     }
 
     /**
-     * Checks if notification is still actual before sending
+     * Checks if notification is still valid before sending
      *
      * @return bool
+     *
+     * @since 1.15
      */
-    public function isActual()
+    public function isValid()
     {
         return true;
     }
