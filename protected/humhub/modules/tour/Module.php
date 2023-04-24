@@ -4,6 +4,7 @@ namespace humhub\modules\tour;
 
 use Yii;
 use humhub\modules\tour\widgets\Dashboard;
+use humhub\modules\user\models\User;
 
 /**
  * This module shows an introduction tour for new users
@@ -23,6 +24,41 @@ class Module extends \humhub\components\Module
      */
     public $isCoreModule = true;
 
+    public $autoStartOnNewAccounts = false;
+
+    /**
+     * Check is first login
+     *
+     * @param User $user
+     * @return bool
+     */
+    private function getIsFirstLogin(User $user): bool
+    {
+        $settings = Yii::$app->getModule('tour')->settings;
+        $showWelcome = (
+            $user->id == 1 &&
+            Yii::$app->getModule('installer')->settings->get('sampleData') != 1 &&
+            $settings->user()->get('welcome') != 1
+        );
+
+        return (
+            !$showWelcome &&
+            $user->updated_by === null &&
+            $user->created_at === $user->updated_at
+        );
+    }
+
+    /**
+     * Set updated_by for current user
+     *
+     * @param $identity
+     * @return void
+     */
+    private function setFirstLoginDone(User $user)
+    {
+        $user->updateAttributes(['updated_by' => $user->id]);
+    }
+
     /**
      * Event Callback
      */
@@ -32,22 +68,14 @@ class Module extends \humhub\components\Module
             return;
         }
 
-        $settings = Yii::$app->getModule('tour')->settings;
+        $module = Yii::$app->getModule('tour');
+        $settings = $module->settings;
 
         if ($settings->get('enable') == 1 && $settings->user()->get("hideTourPanel") != 1) {
-            $showWelcome = (
-                Yii::$app->user->id == 1 &&
-                Yii::$app->getModule('installer')->settings->get('sampleData') != 1 &&
-                $settings->user()->get('welcome') != 1
-            );
-            $autoStartOnNewAccounts = (
-                !$showWelcome &&
-                Yii::$app->user->identity->updated_by === null &&
-                Yii::$app->user->identity->created_at === Yii::$app->user->identity->updated_at
-            );
+             $module->autoStartOnNewAccounts = $module->getIsFirstLogin(Yii::$app->user->identity);
+            if ($module->autoStartOnNewAccounts) {
+                $module->setFirstLoginDone(Yii::$app->user->identity);
 
-            if ($autoStartOnNewAccounts) {
-                Yii::$app->user->selfSetUpdatedBy(Yii::$app->user->identity);
                 Yii::$app->getResponse()->redirect(['/dashboard/dashboard', 'tour' => true]);
             } else {
                 $event->sender->addWidget(Dashboard::class, [], ['sortOrder' => 100]);

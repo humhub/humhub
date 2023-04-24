@@ -148,17 +148,6 @@ class User extends \yii\web\User
     }
 
     /**
-     * Set updated_by for current user
-     *
-     * @param $identity
-     * @return void
-     */
-    public function selfSetUpdatedBy($identity)
-    {
-        $identity->updateAttributes(['updated_by' => $identity->id]);
-    }
-
-    /**
      * Checks if the system configuration allows access for guests
      *
      * @return boolean is guest access enabled and allowed
