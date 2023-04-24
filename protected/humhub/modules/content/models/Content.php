@@ -244,11 +244,13 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
                 $changedAttributes['state'] == Content::STATE_DRAFT
             )) {
             $this->processNewContent();
+        }
 
+        if ($insert || array_key_exists('state', $changedAttributes)) {
             $this->trigger(self::EVENT_STATE_CHANGED, new ContentStateEvent([
                 'content' => $this,
                 'newState' => $this->state,
-                'previousState' => (isset($changedAttributes['state'])) ? $changedAttributes['state'] : null,
+                'previousState' => $changedAttributes['state'] ?? null
             ]));
         }
 
