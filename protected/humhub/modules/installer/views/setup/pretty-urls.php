@@ -34,7 +34,7 @@ use yii\helpers\Url;
         <p><?= Yii::t('InstallerModule.base', 'Our documentation provides a more detailed look into <a href="{link}" target="_blank">Pretty URLs</a>.', ['link' => 'https://docs.humhub.org/docs/admin/installation/#pretty-urls']); ?></p>
         <hr>
 
-        <?= Html::a(Yii::t('base', 'Next'), Url::to(['/installer/config/index']), ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('base', 'Next'), ['finalize'], ['class' => 'btn btn-primary']) ?>
 
     </div>
 </div>

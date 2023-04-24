@@ -455,6 +455,16 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     }
 
     /**
+     * This method is called after state of the Content of this Active Record has been changed
+     *
+     * @param int|null $newState
+     * @param int|null $previousState
+     */
+    public function afterStateChange(?int $newState, ?int $previousState): void
+    {
+    }
+
+    /**
      * Returns the class used in the polymorphic content relation.
      * By default this function will return the static class.
      *

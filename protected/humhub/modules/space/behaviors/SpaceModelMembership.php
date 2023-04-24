@@ -404,13 +404,19 @@ class SpaceModelMembership extends Behavior
      * @param int $userId
      * @param int $canLeave 0: user cannot cancel membership | 1: can cancel membership | 2: depending on space flag members_can_leave
      * @param bool $silent add member without any notifications
+     * @param bool $showAtDashboard add member without any notifications
      * @param string $groupId
      * @return bool
      * @throws \Throwable
      * @throws \yii\base\InvalidConfigException
      */
-    public function addMember(int $userId, int $canLeave = 1, bool $silent = false, string $groupId = Space::USERGROUP_MEMBER): bool
-    {
+    public function addMember(
+        int $userId,
+        int $canLeave = 1,
+        bool $silent = false,
+        string $groupId = Space::USERGROUP_MEMBER,
+        bool $showAtDashboard = true
+    ): bool {
         $user = User::findOne(['id' => $userId]);
         if (!$user) {
             return false;
@@ -425,6 +431,7 @@ class SpaceModelMembership extends Behavior
                 'user_id' => $userId,
                 'status' => Membership::STATUS_MEMBER,
                 'group_id' => $groupId,
+                'show_at_dashboard' => $showAtDashboard,
                 'can_cancel_membership' => $canLeave
             ]);
 

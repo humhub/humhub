@@ -41,7 +41,7 @@ class IndexController extends Controller
     public function actionGo()
     {
         if ($this->module->checkDBConnection()) {
-            return $this->redirect(['setup/init']);
+            return $this->redirect(['setup/finalize']);
         } else {
             return $this->redirect(['setup/prerequisites']);
         }
