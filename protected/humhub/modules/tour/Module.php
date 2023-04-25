@@ -24,10 +24,16 @@ class Module extends \humhub\components\Module
      */
     public $isCoreModule = true;
 
+    /**
+     * @author yuriimaz
+    * @since 1.15
+    */
     public $autoStartOnNewAccounts = false;
 
     /**
      * Check is first login
+     * @author yuriimaz
+     * @since 1.15
      *
      * @param User $user
      * @return bool
@@ -50,8 +56,10 @@ class Module extends \humhub\components\Module
 
     /**
      * Set updated_by for current user
+     * @author yuriimaz
+     * @since 1.15
      *
-     * @param $identity
+     * @param User $user
      * @return void
      */
     private function setFirstLoginDone(User $user)
@@ -68,6 +76,7 @@ class Module extends \humhub\components\Module
             return;
         }
 
+        /** @var Module $module */
         $module = Yii::$app->getModule('tour');
         $settings = $module->settings;
 
