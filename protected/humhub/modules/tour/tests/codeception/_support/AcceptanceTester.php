@@ -20,7 +20,16 @@ class AcceptanceTester extends \AcceptanceTester
 {
     use _generated\AcceptanceTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+    public function checkOptionShowTour()
+    {
+        $this->wait(1);
+        $this->amOnRoute(['/admin/setting/basic']);
+
+        $this->see('Show introduction tour for new users');
+        $this->click('.field-basicsettingsform-tour label');
+        // $this->checkOption('#basicsettingsform-tour');
+
+        $this->click('Save');
+        $this->seeSuccess();
+    }
 }

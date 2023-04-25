@@ -25,9 +25,9 @@ class Module extends \humhub\components\Module
     public $isCoreModule = true;
 
     /**
-     * @author yuriimaz
-    * @since 1.15
-    */
+     * @var bool enable auto-start tour for new accounts
+     * @since 1.15
+     */
     public $autoStartOnNewAccounts = false;
 
     /**

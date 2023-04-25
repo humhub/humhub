@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -8,16 +9,25 @@
 namespace humhub\modules\tour\tests\codeception\acceptance;
 
 use tour\AcceptanceTester;
+use Yii;
 
 class AutoTourCest
 {
     /**
      * @param AcceptanceTester $I
      * @throws \Exception
-     * @skip This test fails in travis environment, needs to be fixed!
      */
     public function testAutoTour(AcceptanceTester $I)
     {
+        $I->amAdmin();
+        $I->amOnDashboard();
+
+        // Turn-on Show introduction tour for new users
+        if (Yii::$app->settings->get('enable') == 0) {
+            $I->checkOptionShowTour();
+        }
+
+        // Login how user
         $I->amUser();
 
         $I->waitForElementVisible('.popover.tour');
@@ -96,5 +106,11 @@ class AutoTourCest
 
         $I->waitForElementVisible('#wallStream');
         $I->seeInCurrentUrl('dashboard');
+
+        // Re-login how user
+        $I->amUser();
+        $I->wait(1);
+
+        $I->dontSeeElement('#getting-started-panel');
     }
 }
