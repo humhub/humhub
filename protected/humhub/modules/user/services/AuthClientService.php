@@ -95,7 +95,6 @@ class AuthClientService
             }
 
             if (count($user->getDirtyAttributes()) !== 0 && !$user->save()) {
-
                 Yii::warning('Could not update user (' . $user->id . '). Error: '
                     . VarDumper::dumpAsString($user->getErrors()), 'user');
 
@@ -129,10 +128,16 @@ class AuthClientService
         }
 
         // remove potentially unsafe attributes
-        unset($attributes['id'], $attributes['guid'], $attributes['contentcontainer_id'],
-            $attributes['auth_mode'], $attributes['status']);
+        unset(
+            $attributes['id'],
+            $attributes['guid'],
+            $attributes['contentcontainer_id'],
+            $attributes['auth_mode'],
+            $attributes['status']
+        );
 
         $attributes['username'] = AuthHelper::generateUsernameByAttributes($attributes);
+
         $registration->getUser()->setAttributes($attributes, false);
         $registration->getProfile()->setAttributes($attributes, false);
         $registration->getGroupUser()->setAttributes($attributes, false);
@@ -147,7 +152,7 @@ class AuthClientService
      */
     public function createUser(): ?User
     {
-        $registration = static::createRegistration($this->authClient);
+        $registration = static::createRegistration();
         if ($registration !== null && $registration->validate() && $registration->register($this->authClient)) {
             return $registration->getUser();
         }

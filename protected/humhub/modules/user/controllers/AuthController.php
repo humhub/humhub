@@ -25,6 +25,7 @@ use humhub\modules\user\Module;
 use Yii;
 use yii\web\Cookie;
 use yii\authclient\BaseClient;
+use yii\web\HttpException;
 
 /**
  * AuthController handles login and logout
@@ -102,7 +103,7 @@ class AuthController extends Controller
         }
 
         // Login Form Handling
-        $login = new Login;
+        $login = new Login();
         if ($login->load(Yii::$app->request->post()) && $login->validate()) {
             return $this->onAuthSuccess($login->authClient);
         }
@@ -195,6 +196,7 @@ class AuthController extends Controller
 
         // Try automatically create user & login user
         $user = $authClientService->createUser();
+
         if ($user !== null) {
             return $this->login($user, $authClient);
         }
@@ -223,12 +225,13 @@ class AuthController extends Controller
         $redirectUrl = ['/user/auth/login'];
         $success = false;
         $this->trigger(static::EVENT_BEFORE_CHECKING_USER_STATUS, new UserEvent(['user' => $user]));
+
         if ($user->status == User::STATUS_ENABLED) {
             $duration = 0;
             if (
                 ($authClient instanceof BaseFormAuth && $authClient->login->rememberMe) ||
-                !empty(Yii::$app->session->get('loginRememberMe'))) {
-
+                !empty(Yii::$app->session->get('loginRememberMe'))
+            ) {
                 $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
             }
             (new AuthClientService($authClient))->updateUser($user);
@@ -311,6 +314,7 @@ class AuthController extends Controller
      * Sign in back to admin User who impersonated the current User
      *
      * @return \yii\console\Response|\yii\web\Response
+     * @throws HttpException
      */
     public function actionStopImpersonation()
     {
@@ -322,5 +326,4 @@ class AuthController extends Controller
 
         return $this->goBack();
     }
-
 }

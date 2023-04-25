@@ -37,7 +37,7 @@ return array (
   'Information' => 'インフォメーション',
   'Invalid user state: {state}' => '無効なユーザー状態：{state}',
   'Invite by email' => 'Eメールアドレスで招待する',
-  'Invite by link' => '',
+  'Invite by link' => 'リンクで招待',
   'Invited by' => '招待者',
   'Logging' => 'ログ',
   'Logs' => 'ログ',
