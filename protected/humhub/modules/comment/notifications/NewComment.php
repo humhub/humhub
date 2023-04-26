@@ -71,11 +71,11 @@ class NewComment extends BaseNotification
     {
         $model = $this->getCommentedRecord();
 
-        if(!$model) {
+        if (!$model) {
             return null;
         }
 
-		return get_class($model) . '-' . $model->getPrimaryKey();
+        return get_class($model) . '-' . $model->getPrimaryKey();
     }
 
     /**
@@ -91,7 +91,7 @@ class NewComment extends BaseNotification
         $user = $this->record->user;
         $contentRecord = $this->getCommentedRecord();
 
-        if(!$contentRecord) {
+        if (!$contentRecord) {
             return '';
         }
 
@@ -130,7 +130,7 @@ class NewComment extends BaseNotification
         $user = $this->record->user;
         $contentRecord = $this->getCommentedRecord();
 
-        if(!$contentRecord) {
+        if (!$contentRecord) {
             return '';
         }
 
