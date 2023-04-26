@@ -9,7 +9,13 @@
 namespace humhub\components;
 
 use humhub\models\Setting;
+use humhub\modules\like\activities\Liked;
+use humhub\modules\like\models\Like;
+use Throwable;
+use Traversable;
 use Yii;
+use yii\db\ColumnSchemaBuilder;
+use yii\db\Exception;
 
 /**
  * Migration is the base class for representing a database migration.
@@ -19,6 +25,34 @@ use Yii;
 class Migration extends \yii\db\Migration
 {
     public const LOG_CATEGORY = 'migration';
+
+    /**
+     * @var string Main table of the current migration. MUST be overridden statically or initialized during
+     *             static::__construct() or static::init()
+     * @see static::safeAddForeignKeyToUserTable()
+     */
+    protected string $table;
+
+    /**
+     * @var string Name of the current database driver. Initialized during static::init().
+     * @see static::timestampWithoutAutoUpdate()
+     */
+    protected string $driverName;
+
+    /**
+     * Initializes static::$driverName
+     *
+     * @return void
+     * @since 1.15
+     * @noinspection ReturnTypeCanBeDeclaredInspection
+     * @see static::$driverName
+     */
+    public function init()
+    {
+        parent::init();
+
+        $this->driverName = $this->db->getDriverName();
+    }
 
     /**
      * @inheritdoc
@@ -57,7 +91,7 @@ class Migration extends \yii\db\Migration
                 return false;
             }
             $transaction->commit();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->printException($e);
             $transaction->rollBack();
             $this->logException($e, end($action));
@@ -68,7 +102,14 @@ class Migration extends \yii\db\Migration
         return null;
     }
 
-    protected function safeCreateTable($table, $columns, $options = null)
+    /**
+     * @param string $table
+     * @param $columns
+     * @param string|null $options
+     * @return void
+     * @see static::createTable()
+     */
+    protected function safeCreateTable(string $table, $columns, ?string $options = null): void
     {
         if (!$this->db->getTableSchema($table, true)) {
             $this->createTable($table, $columns, $options);
@@ -80,7 +121,13 @@ class Migration extends \yii\db\Migration
         }
     }
 
-    protected function safeDropTable($table)
+    /**
+     * @param string $table
+     * @return void
+     * @see static::dropTable()
+     * @noinspection PhpUnused
+     */
+    protected function safeDropTable(string $table): void
     {
         if ($this->db->getTableSchema($table, true)) {
             $this->dropTable($table);
@@ -95,18 +142,18 @@ class Migration extends \yii\db\Migration
     /**
      * Check if the column already exists in the table
      *
-     * @since 1.9.1
      * @param string $column
      * @param string $table
      * @return bool
+     * @since 1.9.1
      */
-    protected function columnExists($column, $table): bool
+    protected function columnExists(string $column, string $table): bool
     {
         $tableSchema = $this->db->getTableSchema($table, true);
         return $tableSchema && in_array($column, $tableSchema->columnNames, true);
     }
 
-    protected function safeDropColumn($table, $column)
+    protected function safeDropColumn(string $table, string $column): void
     {
         if ($this->columnExists($column, $table)) {
             $this->dropColumn($table, $column);
@@ -118,7 +165,14 @@ class Migration extends \yii\db\Migration
         }
     }
 
-    protected function safeAddColumn($table, $column, $type)
+    /**
+     * @param string $table table name
+     * @param string $column column name
+     * @param string|ColumnSchemaBuilder $type column type
+     * @return void
+     * @see static::addColumn()
+     */
+    protected function safeAddColumn(string $table, string $column, $type): void
     {
         if (!$this->columnExists($column, $table)) {
             $this->addColumn($table, $column, $type);
@@ -133,12 +187,13 @@ class Migration extends \yii\db\Migration
     /**
      * Check if the index already exists in the table
      *
-     * @since 1.9.1
      * @param string $index
      * @param string $table
      * @return bool
+     * @throws Exception
+     * @since 1.9.1
      */
-    protected function indexExists($index, $table): bool
+    protected function indexExists(string $index, string $table): bool
     {
         return (bool) $this->db->createCommand('SHOW KEYS FROM ' . $this->db->quoteTableName($table) .
             ' WHERE Key_name = ' . $this->db->quoteValue($index))
@@ -148,17 +203,18 @@ class Migration extends \yii\db\Migration
     /**
      * Check if the foreign index already exists in the table
      *
-     * @since 1.9.1
      * @param string $index
      * @param string $table
      * @return bool
+     * @throws Exception
+     * @since 1.9.1
      */
     protected function foreignIndexExists(string $index, string $table): bool
     {
         return (bool) $this->db->createCommand('SELECT * FROM information_schema.key_column_usage
             WHERE REFERENCED_TABLE_NAME IS NOT NULL
               AND TABLE_NAME = ' . $this->db->quoteValue($table) . '
-              AND TABLE_SCHEMA = ' . $this->db->quoteValue($this->getDsnAttribute('dbname')). '
+              AND TABLE_SCHEMA = ' . $this->db->quoteValue($this->getDsnAttribute('dbname')) . '
               AND CONSTRAINT_NAME = ' . $this->db->quoteValue($index))
             ->queryOne();
     }
@@ -166,13 +222,15 @@ class Migration extends \yii\db\Migration
     /**
      * Create an index if it doesn't exist yet
      *
-     * @since 1.9.1
      * @param string $index
      * @param string $table
      * @param string|array $columns
      * @param bool $unique
+     * @throws Exception
+     * @since 1.9.1
+     * @see static::createIndex()
      */
-    protected function safeCreateIndex($index, $table, $columns, $unique = false)
+    protected function safeCreateIndex(string $index, string $table, $columns, bool $unique = false): void
     {
         if ($this->indexExists($index, $table)) {
             if (!$this->compact) {
@@ -188,11 +246,14 @@ class Migration extends \yii\db\Migration
     /**
      * Drop an index if it exists in the table
      *
-     * @since 1.9.1
      * @param string $index
      * @param string $table
+     * @throws Exception
+     * @since 1.9.1
+     * @see static::dropIndex()
+     * @noinspection PhpUnused
      */
-    protected function safeDropIndex($index, $table)
+    protected function safeDropIndex(string $index, string $table): void
     {
         if (!$this->indexExists($index, $table)) {
             if (!$this->compact) {
@@ -208,12 +269,14 @@ class Migration extends \yii\db\Migration
     /**
      * Add a primary index if it doesn't exist yet
      *
-     * @since 1.9.1
      * @param string $index
      * @param string $table
      * @param string|array $columns
+     * @throws Exception
+     * @since 1.9.1
+     * @see static::addPrimaryKey()
      */
-    protected function safeAddPrimaryKey($index, $table, $columns)
+    protected function safeAddPrimaryKey(string $index, string $table, $columns): void
     {
         if ($this->indexExists('PRIMARY', $table)) {
             if (!$this->compact) {
@@ -229,11 +292,14 @@ class Migration extends \yii\db\Migration
     /**
      * Drop a primary index if it exists in the table
      *
-     * @since 1.9.1
      * @param string $index
      * @param string $table
+     * @throws Exception
+     * @since 1.9.1
+     * @see static::dropPrimaryKey()
+     * @noinspection PhpUnused
      */
-    protected function safeDropPrimaryKey($index, $table)
+    protected function safeDropPrimaryKey(string $index, string $table): void
     {
         if (!$this->indexExists('PRIMARY', $table)) {
             if (!$this->compact) {
@@ -249,12 +315,18 @@ class Migration extends \yii\db\Migration
     /**
      * Add a foreign index if it doesn't exist yet
      *
-     * @since 1.9.1
      * @param string $index
      * @param string $table
      * @param string|array $columns
+     * @param string $refTable
+     * @param string|array $refColumns
+     * @param string|null $delete
+     * @param string|null $update
+     * @throws Exception
+     * @since 1.9.1
+     * @see static::addForeignKey()
      */
-    protected function safeAddForeignKey($index, $table, $columns, $refTable, $refColumns, $delete = null, $update = null)
+    protected function safeAddForeignKey(string $index, string $table, $columns, string $refTable, $refColumns, ?string $delete = null, ?string $update = null): void
     {
         if ($this->foreignIndexExists($index, $table)) {
             if (!$this->compact) {
@@ -270,11 +342,13 @@ class Migration extends \yii\db\Migration
     /**
      * Drop a foreign if it exists in the table
      *
-     * @since 1.9.1
      * @param string $index
      * @param string $table
+     * @throws Exception
+     * @since 1.9.1
+     * @noinspection PhpUnused
      */
-    protected function safeDropForeignKey($index, $table)
+    protected function safeDropForeignKey(string $index, string $table): void
     {
         if (!$this->foreignIndexExists($index, $table)) {
             if (!$this->compact) {
@@ -288,6 +362,91 @@ class Migration extends \yii\db\Migration
     }
 
     /**
+     * Add a foreign key constraint to the user table on the field indicated.
+     *
+     * @param string $sourceField Source field referencing `user.id`
+     * @return void
+     * @throws Exception
+     * @see static::$table
+     * @since 1.15
+     */
+    public function safeAddForeignKeyToUserTable(string $sourceField): void
+    {
+        // add foreign key for table `user`
+        $this->safeAddForeignKey(
+            "fk-{$this->table}-$sourceField",
+            $this->table,
+            $sourceField,
+            'user',
+            'id',
+            'CASCADE',
+            'CASCADE'
+        );
+    }
+
+    /**
+     * Add a foreign key constraint to the user table on the `updated_by` field.
+     *
+     * @return void
+     * @throws Exception
+     * @see static::safeAddForeignKeyToUserTable()
+     * @since 1.15
+     * @noinspection PhpUnused
+     */
+    public function safeAddForeignKeyUpdatedBy(): void
+    {
+        $this->safeAddForeignKeyToUserTable('updated_by');
+    }
+
+    /**
+     * Add a foreign key constraint to the user table on the `created_by` field.
+     *
+     * @return void
+     * @throws Exception
+     * @see static::safeAddForeignKeyToUserTable()
+     * @since 1.15
+     * @noinspection PhpUnused
+     */
+    public function safeAddForeignKeyCreatedBy(): void
+    {
+        $this->safeAddForeignKeyToUserTable('created_by');
+    }
+
+
+    /**
+     * Returns the field configuration for a FK field
+     *
+     * @return ColumnSchemaBuilder
+     * @since 1.15
+     * @noinspection PhpUnused
+     */
+    public function integerReferenceKey(): ColumnSchemaBuilder
+    {
+        return $this->integer(11)
+            ->notNull()
+            ;
+    }
+
+    /**
+     * Returns the field configuration for a timestamp field that does not get automatically updated by mysql in case it
+     * being the first timestamp column in the table.
+     *
+     * @param $precision
+     * @return ColumnSchemaBuilder
+     * @since 1.15
+     * @see https://dev.mysql.com/doc/refman/8.0/en/timestamp-initialization.html
+     */
+    public function timestampWithoutAutoUpdate($precision = null): ColumnSchemaBuilder
+    {
+        // Make sure to define default table storage engine
+        return in_array($this->driverName, ['mysql', 'mysqli'], true)
+            ? $this->timestamp($precision)
+                ->append('DEFAULT CURRENT_TIMESTAMP')
+            : $this->timestamp($precision);
+    }
+
+
+    /**
      * Renames a class
      *
      * This is often required because some classes are also stored in database
@@ -297,9 +456,9 @@ class Migration extends \yii\db\Migration
      *
      * @param string $oldClass
      * @param string $newClass
-     * @throws \yii\db\Exception
+     * @throws Exception
      */
-    protected function renameClass($oldClass, $newClass)
+    protected function renameClass(string $oldClass, string $newClass): void
     {
         $this->updateSilent('activity', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('activity', ['class' => $newClass], ['class' => $oldClass]);
@@ -318,7 +477,7 @@ class Migration extends \yii\db\Migration
          * Looking up "NewLike" activities with this className
          * Since 0.20 the className changed to Like (is not longer the target object e.g. post)
          *
-         * Use raw query for better performace.
+         * Use raw query for better performance.
          */
         $updateSql = "
             UPDATE activity
@@ -328,8 +487,8 @@ class Migration extends \yii\db\Migration
         ";
 
         Yii::$app->db->createCommand($updateSql, [
-            ':likeModelClass' => \humhub\modules\like\models\Like::className(),
-            ':likedActivityClass' => \humhub\modules\like\activities\Liked::className()
+            ':likeModelClass' => Like::class,
+            ':likedActivityClass' => Liked::class
         ])->execute();
     }
 
@@ -338,12 +497,13 @@ class Migration extends \yii\db\Migration
      * The method will properly escape the column names and bind the values to be updated.
      *
      * @param string $table the table to be updated.
-     * @param array $columns the column data (name => value) to be updated.
+     * @param array|Traversable $columns the column data (name => value) to be updated.
      * @param array|string $condition the conditions that will be put in the WHERE part. Please
      * refer to [[Query::where()]] on how to specify conditions.
-     * @param array $params the parameters to be bound to the query.
+     * @param array|Traversable $params the parameters to be bound to the query.
+     * @throws Exception
      */
-    public function updateSilent($table, $columns, $condition = '', $params = [])
+    public function updateSilent(string $table, $columns, $condition = '', $params = []): void
     {
         $this->db->createCommand()->update($table, $columns, $condition, $params)->execute();
     }
@@ -352,9 +512,10 @@ class Migration extends \yii\db\Migration
      * Creates and executes an INSERT SQL statement without any output
      * The method will properly escape the column names, and bind the values to be inserted.
      * @param string $table the table that new rows will be inserted into.
-     * @param array $columns the column data (name => value) to be inserted into the table.
+     * @param array|Traversable $columns the column data (name => value) to be inserted into the table.
+     * @throws Exception
      */
-    public function insertSilent($table, $columns)
+    public function insertSilent(string $table, $columns): void
     {
         $this->db->createCommand()->insert($table, $columns)->execute();
     }
@@ -365,7 +526,7 @@ class Migration extends \yii\db\Migration
      * @return bool
      * @since 1.8
      */
-    protected function isInitialInstallation()
+    protected function isInitialInstallation(): bool
     {
         return (!Setting::isInstalled());
     }
@@ -411,6 +572,7 @@ class Migration extends \yii\db\Migration
      * @param array $params Parameters to translate in message
      * @return void
      * @since 1.15.0
+     * @noinspection PhpUnused
      */
     protected function logInfo(string $message, array $params = []): void
     {
@@ -456,11 +618,11 @@ class Migration extends \yii\db\Migration
     /**
      * Get data from database dsn config
      *
-     * @param \Throwable $e The Throwable to be logged
+     * @param Throwable $e The Throwable to be logged
      * @param string $method The Method that was running
      * @since 1.15.0
      */
-    protected function logException(\Throwable $e, string $method): void
+    protected function logException(Throwable $e, string $method): void
     {
         $this->logError(
             'Migration {class}::{method}() failed: {message} ({file}:{line}). See debug log for full trace.',
@@ -478,9 +640,9 @@ class Migration extends \yii\db\Migration
     /**
      * Required, since parent is private ...
      *
-     * @param \Throwable $t
+     * @param Throwable $t
      */
-    private function printException(\Throwable $t): void
+    private function printException(Throwable $t): void
     {
         echo 'Exception: ' . $t->getMessage() . ' (' . $t->getFile() . ':' . $t->getLine() . ")\n";
         echo $t->getTraceAsString() . "\n";
