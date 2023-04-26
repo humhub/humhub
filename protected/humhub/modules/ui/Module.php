@@ -17,7 +17,6 @@ use Yii;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */
@@ -42,12 +41,28 @@ class Module extends \humhub\components\Module
     ];
 
     /**
+     * @var int collapsed post block height
+     * @since 1.15
+     */
+    public int $collapsedPostHeight = 0;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        $this->collapsedPostHeight = Yii::$app->settings->get('collapsedPostHeight');
+    }
+
+    /**
      * @return static
      */
     public static function getModuleInstance()
     {
         /* @var $module static*/
-        $module =  Yii::$app->getModule('ui');
+        $module = Yii::$app->getModule('ui');
         return $module;
     }
 
@@ -60,7 +75,6 @@ class Module extends \humhub\components\Module
         return $this->iconAlias[$name] ?? $name;
     }
 
-
     /**
      * @inheritdoc
      */
@@ -68,5 +82,4 @@ class Module extends \humhub\components\Module
     {
         return Yii::t('UiModule.base', 'User Interface');
     }
-
 }

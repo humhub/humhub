@@ -41,6 +41,8 @@ $iconUrl = SiteIcon::getUrl(140);
 
     <?= $form->field($model, 'paginationSize'); ?>
 
+    <?= $form->field($model, 'collapsedPostHeight'); ?>
+
     <div class="row">
         <div class="col-md-6">
             <?= $form->field($model, 'displayNameFormat')->dropDownList(['{username}' => Yii::t('AdminModule.settings', 'Username (e.g. john)'), '{profile.firstname} {profile.lastname}' => Yii::t('AdminModule.settings', 'Firstname Lastname (e.g. John Doe)')]); ?>

@@ -11,6 +11,7 @@ namespace humhub\modules\post;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\post\models\Post;
+use Yii;
 
 /**
  * Post Submodule
@@ -20,7 +21,6 @@ use humhub\modules\post\models\Post;
  */
 class Module extends ContentContainerModule
 {
-
     /**
      * @inheritdoc
      */
@@ -54,4 +54,12 @@ class Module extends ContentContainerModule
         return [Post::class];
     }
 
+    /**
+     * @since 1.15
+     * @return int
+     */
+    public function getCollapsedPostHeight(): int
+    {
+        return Yii::$app->getModule('ui')->collapsedPostHeight;
+    }
 }

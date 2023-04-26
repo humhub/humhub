@@ -26,9 +26,9 @@ use humhub\modules\ui\view\helpers\ThemeHelper;
  */
 class DesignSettingsForm extends Model
 {
-
     public $theme;
     public $paginationSize;
+    public $collapsedPostHeight;
     public $displayNameFormat;
     public $displayNameSubFormat;
     public $spaceOrder;
@@ -38,7 +38,6 @@ class DesignSettingsForm extends Model
     public $horImageScrollOnMobile;
     public $useDefaultSwipeOnMobile;
     public $defaultStreamSort;
-
 
     /**
      * @inheritdoc
@@ -51,6 +50,7 @@ class DesignSettingsForm extends Model
 
         $this->theme = Yii::$app->view->theme->name;
         $this->paginationSize = $settingsManager->get('paginationSize');
+        $this->collapsedPostHeight = $settingsManager->get('collapsedPostHeight');
         $this->displayNameFormat = $settingsManager->get('displayNameFormat');
         $this->displayNameSubFormat = $settingsManager->get('displayNameSubFormat');
         $this->spaceOrder = Yii::$app->getModule('space')->settings->get('spaceOrder');
@@ -58,7 +58,6 @@ class DesignSettingsForm extends Model
         $this->horImageScrollOnMobile = $settingsManager->get('horImageScrollOnMobile');
         $this->useDefaultSwipeOnMobile = $settingsManager->get('useDefaultSwipeOnMobile');
         $this->defaultStreamSort = Yii::$app->getModule('stream')->settings->get('defaultSort');
-
     }
 
     /**
@@ -69,6 +68,8 @@ class DesignSettingsForm extends Model
         return [
             ['paginationSize', 'required'],
             ['paginationSize', 'integer', 'max' => 200, 'min' => 1],
+            ['collapsedPostHeight', 'required'],
+            ['collapsedPostHeight', 'integer', 'max' => 400, 'min' => 50],
             ['theme', 'in', 'range' => $this->getThemes()],
             [['displayNameFormat', 'displayNameSubFormat', 'spaceOrder'], 'safe'],
             [['horImageScrollOnMobile', 'useDefaultSwipeOnMobile'], 'boolean'],
@@ -88,6 +89,7 @@ class DesignSettingsForm extends Model
         return [
             'theme' => Yii::t('AdminModule.settings', 'Theme'),
             'paginationSize' => Yii::t('AdminModule.settings', 'Default pagination size (Entries per page)'),
+            'collapsedPostHeight' => Yii::t('AdminModule.settings', 'Default collapsed post height'),
             'displayNameFormat' => Yii::t('AdminModule.settings', 'User Display Name'),
             'displayNameSubFormat' => Yii::t('AdminModule.settings', 'User Display Name Subtitle'),
             'spaceOrder' => Yii::t('AdminModule.settings', 'Dropdown space order'),
@@ -149,6 +151,7 @@ class DesignSettingsForm extends Model
         }
 
         $settingsManager->set('paginationSize', $this->paginationSize);
+        $settingsManager->set('collapsedPostHeight', $this->collapsedPostHeight);
         $settingsManager->set('displayNameFormat', $this->displayNameFormat);
         $settingsManager->set('displayNameSubFormat', $this->displayNameSubFormat);
         Yii::$app->getModule('space')->settings->set('spaceOrder', $this->spaceOrder);
@@ -196,5 +199,4 @@ class DesignSettingsForm extends Model
         }
         return $availableAttributes;
     }
-
 }
