@@ -32,7 +32,6 @@ class Module extends \humhub\components\Module
 
     /**
      * Check is first login
-     * @author yuriimaz
      * @since 1.15
      *
      * @param User $user
@@ -56,7 +55,6 @@ class Module extends \humhub\components\Module
 
     /**
      * Set updated_by for current user
-     * @author yuriimaz
      * @since 1.15
      *
      * @param User $user
