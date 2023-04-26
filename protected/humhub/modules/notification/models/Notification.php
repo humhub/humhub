@@ -154,7 +154,6 @@ class Notification extends ActiveRecord
                     ->andWhere(['class' => $this->class, 'user_id' => $this->user_id, 'group_key' => $this->group_key])
                     ->one();
                 $params['originator'] = $params['record']->originator;
-
             } else {
                 $params['record'] = $this;
             }
@@ -190,7 +189,7 @@ class Notification extends ActiveRecord
     public function getSourceObject()
     {
         $sourceClass = $this->source_class;
-        if (class_exists($sourceClass) && $sourceClass != "") {
+        if ($sourceClass && class_exists($sourceClass)) {
             return $sourceClass::findOne(['id' => $this->source_pk]);
         }
         return null;
@@ -311,5 +310,4 @@ class Notification extends ActiveRecord
     {
         return self::findUnseen($user)->andWhere(['desktop_notified' => 0]);
     }
-
 }

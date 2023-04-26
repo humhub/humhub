@@ -29,12 +29,11 @@ use yii\helpers\Console;
  *   php yii installer/install-db
  *   php yii installer/write-site-config "$HUMHUB_NAME" "$HUMHUB_EMAIL"
  *   php yii installer/create-admin-account
- *
  */
 class InstallController extends Controller
 {
     /**
-     * Finished install without input. Useful for testing.
+     * Finished installation without input. Useful for testing.
      */
     public function actionAuto()
     {
@@ -49,7 +48,8 @@ class InstallController extends Controller
      * On success: Writes given settings to config-file and reloads it.
      * On failure: Throws exception
      */
-    public function actionWriteDbConfig($db_host, $db_name, $db_user, $db_pass) {
+    public function actionWriteDbConfig($db_host, $db_name, $db_user, $db_pass)
+    {
         $connectionString = "mysql:host=" . $db_host . ";dbname=" . $db_name;
         $dbConfig = [
             'class' => 'yii\db\Connection',
@@ -105,7 +105,7 @@ class InstallController extends Controller
     /**
      * Creates a new user account and adds it to the admin-group
      */
-    public function actionCreateAdminAccount($admin_user='admin', $admin_email='humhub@example.com', $admin_pass='test')
+    public function actionCreateAdminAccount($admin_user = 'admin', $admin_email = 'humhub@example.com', $admin_pass = 'test')
     {
         $user = new User();
         $user->username = $admin_user;
@@ -134,7 +134,8 @@ class InstallController extends Controller
     /**
      * Writes essential site settings to config file and sets installed state
      */
-    public function actionWriteSiteConfig($site_name='HumHub', $site_email='humhub@example.com'){
+    public function actionWriteSiteConfig($site_name = 'HumHub', $site_email = 'humhub@example.com')
+    {
         $this->stdout("Install Site:\n\n", Console::FG_YELLOW);
         InitialData::bootstrap();
 
@@ -151,7 +152,8 @@ class InstallController extends Controller
     /**
      * Sets the base url
      */
-    public function actionSetBaseUrl($base_url){
+    public function actionSetBaseUrl($base_url)
+    {
         $this->stdout("Setting base url", Console::FG_YELLOW);
         Yii::$app->settings->set('baseUrl', $base_url);
 

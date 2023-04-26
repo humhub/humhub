@@ -106,7 +106,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
     }
 
     /**
-     * Static initializer should be prefered over new initialization, since it makes use
+     * Static initializer should be preferred over new initialization, since it makes use
      * of Yii::createObject dependency injection/configuration.
      *
      * @param array $options

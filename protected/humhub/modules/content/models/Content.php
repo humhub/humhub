@@ -138,15 +138,15 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     public const STATE_DELETED = 100;
 
     /**
-     * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
+     * @var ContentContainerActiveRecord|null the Container (e.g. Space or User) where this content belongs to.
      */
-    protected $_container = null;
+    protected ?ContentContainerActiveRecord $_container = null;
 
     /**
      * @var bool flag to disable the creation of default social activities like activity and notifications in afterSave() at content creation.
      * @deprecated since v1.2.3 use ContentActiveRecord::silentContentCreation instead.
      */
-    public $muteDefaultSocialActivities = false;
+    public bool $muteDefaultSocialActivities = false;
 
     /**
      * @event Event is used when a Content state is changed.
