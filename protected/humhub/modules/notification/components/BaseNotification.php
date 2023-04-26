@@ -445,7 +445,7 @@ abstract class BaseNotification extends SocialActivity
 
         // Automatically mark similar notifications (same source) as seen
         $similarNotifications = Notification::find()
-            ->where(['source_class' => $this->record->source_class, 'source_pk' => $this->record->source_pk, 'user_id' => $this->record->user_id])
+            ->where(['source_class_id' => $this->record->source_class_id, 'source_pk' => $this->record->source_pk, 'user_id' => $this->record->user_id])
             ->andWhere(['!=', 'seen', '1']);
         foreach ($similarNotifications->all() as $notification) {
             /* @var $notification Notification */

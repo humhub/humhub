@@ -61,7 +61,7 @@ class Notification extends ActiveRecord
         return [
             [
                 'class' => PolymorphicRelation::class,
-                'classAttribute' => 'source_class',
+                'classAttribute' => 'source_class_id',
                 'pkAttribute' => 'source_pk',
                 'strict' => true,
                 'mustBeInstanceOf' => [
@@ -159,7 +159,7 @@ class Notification extends ActiveRecord
                 $params['record'] = $this;
             }
 
-            $object = new $this->class;
+            $object = new $this->class();
             Yii::configure($object, $params);
             return $object;
         }

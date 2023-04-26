@@ -12,6 +12,7 @@
 
 namespace tests\codeception\_support;
 
+use humhub\models\ClassMap;
 use Codeception\Configuration;
 use Codeception\Test\Unit;
 use humhub\libs\BasePermission;
@@ -133,6 +134,121 @@ class HumHubDbTestCase extends Unit
             'friendship' => ['class' => FriendshipFixture::class],
             'live' => [ 'class' => LiveFixture::class]
         ];
+    }
+
+    public function assertHasNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
+    {
+        $notificationQuery = Notification::find()->where([
+            'class' => $class,
+            'source_class_id' => ClassMap::getIdBy($source),
+            'source_pk' => $source->getPrimaryKey(),
+        ]);
+        if(is_string($target_id)) {
+            $msg = $target_id;
+            $target_id = null;
+        }
+
+        if ($originator_id != null) {
+            $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
+        }
+
+        if($target_id != null) {
+            $notificationQuery->andWhere(['user_id' => $target_id]);
+        }
+
+        $this->assertNotEmpty($notificationQuery->all(), $msg);
+    }
+
+    public function assertEqualsNotificationCount($count, $class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
+    {
+        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class_id' => ClassMap::getIdBy($source), 'source_pk' => $source->getPrimaryKey()]);
+
+        if ($originator_id != null) {
+            $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
+        }
+
+        if($target_id != null) {
+            $notificationQuery->andWhere(['user_id' => $target_id]);
+        }
+
+        $this->assertEquals($count, $notificationQuery->count(), $msg);
+    }
+
+    public function assertHasNoNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
+    {
+        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class_id' => ClassMap::getIdBy($source), 'source_pk' => $source->getPrimaryKey()]);
+
+        if ($originator_id != null) {
+            $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
+        }
+
+        if($target_id != null) {
+            $notificationQuery->andWhere(['user_id' => $target_id]);
+        }
+
+        $this->assertEmpty($notificationQuery->all(), $msg);
+    }
+
+    public function assertHasActivity($class, ActiveRecord $source, $msg = '')
+    {
+        $activity = Activity::findOne([
+            'class' => $class,
+            'object_model' => $source->className(),
+            'object_id' => $source->getPrimaryKey(),
+        ]);
+        $this->assertNotNull($activity, $msg);
+    }
+
+    /**
+     * @return \Codeception\Module\Yii2|\Codeception\Module
+     * @throws \Codeception\Exception\ModuleException
+     */
+    public function getYiiModule() {
+        return $this->getModule('Yii2');
+    }
+
+    /**
+     * @see assertSentEmail
+     * @since 1.3
+     */
+    public function assertMailSent($count = 0)
+    {
+        return $this->getYiiModule()->seeEmailIsSent($count);
+    }
+
+    /**
+     * @param int $count
+     * @throws \Codeception\Exception\ModuleException
+     * @since 1.3
+     */
+    public function assertSentEmail($count = 0)
+    {
+        return $this->getYiiModule()->seeEmailIsSent($count);
+    }
+
+    public function assertEqualsLastEmailTo($to, $strict = true)
+    {
+        if(is_string($to)) {
+            $to = [$to];
+        }
+
+        $message = $this->getYiiModule()->grabLastSentEmail();
+        $expected = $message->getTo();
+
+        foreach ($to as $email) {
+            $this->assertArrayHasKey($email, $expected);
+        }
+
+        if($strict) {
+            $this->assertEquals(count($to), count($expected));
+        }
+
+    }
+
+    public function assertEqualsLastEmailSubject($subject)
+    {
+        $message = $this->getYiiModule()->grabLastSentEmail();
+        $this->assertEquals($subject, str_replace(["\n", "\r"], '', $message->getSubject()));
     }
 
     /**

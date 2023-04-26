@@ -8,6 +8,7 @@
 
 namespace humhub\modules\comment\notifications;
 
+use humhub\models\ClassMap;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\notification\components\BaseNotification;
@@ -53,13 +54,16 @@ class NewComment extends BaseNotification
     public function send(User $user)
     {
         // Check if there is also a mention notification, so skip this notification
-        if (Notification::find()->where([
-            'class' => Mentioned::class,
-            'user_id' => $user->id,
-            'source_class' => get_class($this->source),
-            'source_pk' => $this->source->getPrimaryKey()])->count() > 0) {
-                return;
-            }
+        if (
+            Notification::find()->where([
+                'class' => Mentioned::class,
+                'user_id' => $user->id,
+                'source_class_id' => ClassMap::getIdBy($this->source),
+                'source_pk' => $this->source->getPrimaryKey()
+            ])->count() > 0
+        ) {
+            return;
+        }
 
         parent::send($user);
     }

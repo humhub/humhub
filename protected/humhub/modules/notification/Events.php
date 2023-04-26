@@ -43,7 +43,7 @@ class Events extends \yii\base\BaseObject
             $notification->delete();
         }
 
-        foreach (Notification::findAll(['source_class' => User::class, 'source_pk' => $user->id]) as $notification) {
+        foreach (Notification::findAll(['source_class_id' => ClassMap::getIdBy(User::class), 'source_pk' => $user->id]) as $notification) {
             $notification->delete();
         }
 
@@ -89,7 +89,7 @@ class Events extends \yii\base\BaseObject
 
             // Check if source object exists when defined
             try {
-                if ($notification->source_class != "" && $notification->getSourceObject() == null) {
+                if ("$notification->source_class_id" !== "" && $notification->getSourceObject() === null) {
                     if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " source class set but seems to no longer exist!")) {
                         $notification->delete();
                     }
