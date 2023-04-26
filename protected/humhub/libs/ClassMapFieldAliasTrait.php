@@ -26,27 +26,50 @@ trait ClassMapFieldAliasTrait
 
     public function __get($name)
     {
-        return $this->getClassMappedValueOf($name, '__get', false);
+        if ($key = $this->isClassMappedValue($name)) {
+            return $this->getClassMappedValueOf($name, '__get', false, $key);
+        }
+
+        return parent::__get($name);
     }
 
     public function __set($name, $value)
     {
-        return $this->setClassMappedValueFor($name, $value, '__set');
+        if ($key = $this->isClassMappedValue($name)) {
+            return $this->setClassMappedValueFor($name, $value, '__set', false, $key);
+        }
+
+        /** @noinspection PhpVoidFunctionResultUsedInspection */
+        return parent::__set($name, $value);
     }
 
     public function getAttribute($name)
     {
-        return $this->getClassMappedValueOf($name, 'getAttribute');
+        if ($key = $this->isClassMappedValue($name)) {
+            return $this->getClassMappedValueOf($name, 'getAttribute', true, $key);
+        }
+
+        return parent::__get($name);
     }
 
     public function setAttribute($name, $value)
     {
-        return $this->setClassMappedValueFor($name, $value, 'setAttribute', true);
+        if ($key = $this->isClassMappedValue($name)) {
+            return $this->setClassMappedValueFor($name, $value, 'setAttribute', true, $key);
+        }
+
+        /** @noinspection PhpVoidFunctionResultUsedInspection */
+        return parent::setAttribute($name, $value);
     }
 
     public function setOldAttribute($name, $value)
     {
-        return $this->setClassMappedValueFor($name, $value, 'setOldAttribute', true);
+        if ($key = $this->isClassMappedValue($name)) {
+            return $this->setClassMappedValueFor($name, $value, 'setOldAttribute', true, $key);
+        }
+
+        /** @noinspection PhpVoidFunctionResultUsedInspection */
+        return parent::setOldAttribute($name, $value);
     }
 
     abstract public function __isset($name);

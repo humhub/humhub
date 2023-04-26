@@ -52,7 +52,7 @@ trait ClassMapBaseTrait
      * @throws ReflectionException
      * @throws ErrorException
      */
-    protected function setClassMappedValueFor(string $name, $value, string $parentMethod, bool $setValueThroughParent = false)
+    protected function setClassMappedValueFor(string $name, $value, string $parentMethod, bool $setValueThroughParent = false, ?string $key = null)
     {
         $key ??= func_num_args() < 4 ? $this->isClassMappedValue($name) : null;
 
