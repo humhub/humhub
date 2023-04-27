@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aef03f20844e301f274b087c54836136",
+    "content-hash": "a15829d50a171c691d4ce726c2ca54a9",
     "packages": [
         {
             "name": "async-aws/core",
@@ -8988,12 +8988,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "e2b40a2"
+                "reference": "344ce388c65a3ce8866abdf033212c9323713317"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/e2b40a2",
-                "reference": "e2b40a2",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/344ce388c65a3ce8866abdf033212c9323713317",
+                "reference": "344ce388c65a3ce8866abdf033212c9323713317",
                 "shasum": ""
             },
             "require": {
