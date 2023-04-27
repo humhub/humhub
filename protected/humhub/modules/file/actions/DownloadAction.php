@@ -9,6 +9,7 @@
 namespace humhub\modules\file\actions;
 
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use humhub\modules\file\Module;
 use humhub\modules\user\models\User;
 use Yii;
@@ -249,7 +250,7 @@ class DownloadAction extends Action
     public static function getUserByDownloadToken(string $token, File $file)
     {
         try {
-            $decoded = JWT::decode($token, static::getDownloadTokenKey(), ['HS256']);
+            $decoded = JWT::decode($token, new Key(static::getDownloadTokenKey(), 'HS256'));
         } catch (\Exception $ex) {
             Yii::warning('Could not decode provided JWT token. ' . $ex->getMessage());
         }
@@ -274,7 +275,7 @@ class DownloadAction extends Action
             'sub' => $user->id,
             'aud' => $file->id
         ];
-        return JWT::encode($token, static::getDownloadTokenKey());
+        return JWT::encode($token, static::getDownloadTokenKey(), 'HS256');
     }
 
 
