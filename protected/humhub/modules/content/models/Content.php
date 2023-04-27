@@ -389,8 +389,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
             return false;
         }
 
-        ActivityHelper::deleteActivitiesForRecord($this->getModel());
-
         Notification::deleteAll([
             'source_class' => get_class($this),
             'source_pk' => $this->getPrimaryKey(),
