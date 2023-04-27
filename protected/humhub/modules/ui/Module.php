@@ -53,7 +53,8 @@ class Module extends \humhub\components\Module
     {
         parent::init();
 
-        $this->collapsedPostHeight = Yii::$app->settings->get('collapsedPostHeight');
+        $collapsedPostHeight = Yii::$app->settings->get('collapsedPostHeight');
+        $this->collapsedPostHeight = $collapsedPostHeight ?: 0;
     }
 
     /**
