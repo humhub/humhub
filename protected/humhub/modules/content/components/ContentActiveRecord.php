@@ -8,25 +8,28 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\components\ActiveRecord;
+use humhub\libs\BasePermission;
+use humhub\modules\activity\helpers\ActivityHelper;
+use humhub\modules\activity\models\Activity;
+use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\interfaces\SoftDeletable;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\models\Movable;
+use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicLabel;
 use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\models\User;
-use Yii;
-use yii\base\Exception;
 use humhub\modules\content\widgets\WallEntry;
 use humhub\widgets\Label;
-use humhub\libs\BasePermission;
-use humhub\modules\content\permissions\ManageContent;
-use humhub\components\ActiveRecord;
-use humhub\modules\content\models\Content;
-use humhub\modules\content\interfaces\ContentOwner;
+use Yii;
+use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\base\ModelEvent;
+use yii\db\ActiveQuery;
 
 /**
  * ContentActiveRecord is the base ActiveRecord [[\yii\db\ActiveRecord]] for Content.
@@ -462,6 +465,15 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function afterStateChange(?int $newState, ?int $previousState): void
     {
+        // Activities should be updated to same state as parent Record
+        $activitiesQuery = ActivityHelper::getActivitiesQuery($this);
+        if ($activitiesQuery instanceof ActiveQuery) {
+            foreach ($activitiesQuery->each() as $activity) {
+                /* @var Activity $activity */
+                $activity->content->setState($newState);
+                $activity->content->save();
+            }
+        }
     }
 
     /**
