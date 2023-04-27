@@ -759,8 +759,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         return $module->adminCanViewAllContent && (
                 $this->isSystemAdmin()
-                || ($containerClass === Space::class && $this->can(ManageSpaces::class))
-                || ($containerClass === static::class && $this->can(ManageUsers::class))
+                || ($containerClass === Space::class && (new PermissionManager(['subject' => $this]))->can(ManageSpaces::class))
+                || ($containerClass === static::class && (new PermissionManager(['subject' => $this]))->can(ManageUsers::class))
             );
     }
 
