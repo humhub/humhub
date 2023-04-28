@@ -9,6 +9,8 @@ HumHub Changelog
 - Enh #6255: Updated activities to same state as parent record
 - Enh #6248: If admins can view all contents, users allowed to manage spaces or users cannot view all content (they should be able)
 - Fix #6264: Fix date format for columns `created_at` and `updated_at`
+- Fix #6265: Broken HMTL in Visibility and Hidden Checkbox
+- Enh #6242: Submit button hidden when editing a comment having a long "code" line 
 
 1.14.0 (April 20, 2023)
 -----------------------
