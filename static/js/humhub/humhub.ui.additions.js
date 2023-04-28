@@ -425,5 +425,6 @@ function setModalLoader(evt) {
         modalFooter = $(evt.target).closest('.modal-footer');
     }
     modalFooter.find('.btn').hide();
-    modalFooter.find('.loader').removeClass('hidden');
+    modalFooter.find('.pagination').hide();
+    modalFooter.find('.loader').removeClass('hidden').show();
 }
