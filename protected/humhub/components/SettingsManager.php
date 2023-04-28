@@ -59,10 +59,15 @@ class SettingsManager extends BaseSettingsManager
     public function flushContentContainer(ContentContainerActiveRecord $container = null)
     {
         if ($container === null) {
+            $containers = $this->contentContainers;
             $this->contentContainers = [];
         } else {
+            // need to create an instance, if it does not already exist, in order to then flush the underlying cache
+            $containers = [$this->contentContainer($container)] ?? null;
             unset($this->contentContainers[$container->contentcontainer_id]);
         }
+
+        array_walk($containers, static fn(ContentContainerSettingsManager $container) => $container->invalidateCache());
     }
 
     /**
