@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.15.0 (Unreleased)
 -------------------
+- Fix #6259: Add json & pdo extensions as requirement; updating composer dependencies and node modules
 - Fix #6192: Where Group::getAdminGroupId() would sometimes return int, sometimes string
 - Enh #6260: Improve migration class
 - Fix #6199: Module manager Add types to properties
