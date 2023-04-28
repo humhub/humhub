@@ -7,6 +7,8 @@ HumHub Changelog
 - Enh #6252: Implement new method to handle changing of content active record state
 - Enh #6248: If admins can view all contents, users allowed to manage spaces or users cannot view all content (they should be able)
 - Enh #6255: Updated activities to same state as parent record
+- Enh #6248: If admins can view all contents, users allowed to manage spaces or users cannot view all content (they should be able)
+- Fix #6264: Fix date format for columns `created_at` and `updated_at`
 
 1.14.0 (April 20, 2023)
 -----------------------
