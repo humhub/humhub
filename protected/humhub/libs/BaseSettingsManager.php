@@ -9,6 +9,8 @@
 namespace humhub\libs;
 
 use humhub\components\SettingActiveRecord;
+use humhub\exceptions\InvalidArgumentTypeException;
+use Stringable;
 use Yii;
 use yii\base\Component;
 use yii\base\Exception;
@@ -243,18 +245,34 @@ abstract class BaseSettingsManager extends Component
     /**
      * Deletes all stored settings
      *
-     * @param string|null $prefix if set only delete settings with given name prefix (e.g. theme.)
+     * @param string|array|Stringable|null $prefix if set, only delete settings with given name prefix (e.g. "theme.")
+     *     Versions before 1.15 used the `$prefix` parameter as a full wildcard (`'%pattern%'`) and not actually as a prefix. Use
+     *     `$prefix = '%pattern%'` to get the old behaviour. Or use `$parameter = '%suffix'` if you want to match
+     *     against the end of the names.
      */
     public function deleteAll($prefix = null)
     {
         $query = $this->find();
+
         if ($prefix !== null) {
-            $query->andWhere(new LikeCondition('name', 'LIKE', $prefix));
+            if (StringHelper::isStringable($prefix)) {
+                if (false === strpos($prefix, "%")) {
+                    $prefix .= "%";
+                }
+            } elseif (!is_array($prefix)) {
+                throw new InvalidArgumentTypeException(
+                    __METHOD__,
+                    [1 => '$prefix'],
+                    ['string', 'int', 'null', \Stringable::class],
+                    $prefix
+                );
+            }
+
+            $query->andWhere(['LIKE', 'name', $prefix, false]);
         }
 
-        foreach ($query->all() as $setting) {
-            $this->delete($setting->name);
-        }
+        $settings = $query->all();
+        array_walk($settings, static fn($setting, $i, $self) => $self->delete($setting->name), $this);
     }
 
     /**
