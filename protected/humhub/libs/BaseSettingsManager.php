@@ -140,13 +140,16 @@ abstract class BaseSettingsManager extends Component
     /**
      * Returns value of setting
      *
-     * @param string $name the name of setting
+     * @param string|int $name the name of setting
      *
-     * @return string|null the setting value or null when not exists
+     * @return string|mixed|null the setting value or null when not exists
      */
     public function get(string $name, $default = null)
     {
-        return $this->_loaded[$name] ?? $default;
+        $value = $this->_loaded[$name] ?? null;
+
+        // make sure it is an int, if it is possible
+        return filter_var($value, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE) ?? $value ?? $default;
     }
 
     /**

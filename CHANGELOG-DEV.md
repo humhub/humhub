@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.15.0 (Unreleased)
 -------------------
+- Enh #6272: Always return integer from settings, if value can be converted
 - Fix #6267: SettingsManager::flushContentContainer() only clears the collection in the current instance, not the underlying cache
 - Enh #6271: Add input and type checks, as well as strict types to SettingsManager
 - Fix #6266: BaseSettingsManager::deleteAll() does use prefix as wildcard
