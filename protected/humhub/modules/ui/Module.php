@@ -44,18 +44,7 @@ class Module extends \humhub\components\Module
      * @var int collapsed post block height
      * @since 1.15
      */
-    public int $collapsedPostHeight = 0;
-
-    /**
-     * @inheritdoc
-     */
-    public function init()
-    {
-        parent::init();
-
-        $collapsedPostHeight = Yii::$app->settings->get('collapsedPostHeight');
-        $this->collapsedPostHeight = $collapsedPostHeight ?: 0;
-    }
+    public int $collapsedPostHeight = 300;
 
     /**
      * @return static

@@ -31,7 +31,6 @@ class InitialData
 
         Yii::$app->settings->set('baseUrl', \yii\helpers\BaseUrl::base(true));
         Yii::$app->settings->set('paginationSize', 10);
-        Yii::$app->settings->set('collapsedPostHeight', 380);
         Yii::$app->settings->set('displayNameFormat', '{profile.firstname} {profile.lastname}');
         Yii::$app->settings->set('horImageScrollOnMobile', true);
 

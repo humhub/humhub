@@ -3,7 +3,6 @@ return [
     ['name' => 'name', 'value' => 'HumHub', 'module_id' => 'base'],
     ['name' => 'baseUrl', 'value' => 'http://localhost:8080', 'module_id' => 'base'],
     ['name' => 'paginationSize', 'value' => '10', 'module_id' => 'base'],
-    ['name' => 'collapsedPostHeight', 'value' => '380', 'module_id' => 'base'],
     ['name' => 'displayNameFormat', 'value' => '{profile.firstname} {profile.lastname}', 'module_id' => 'base'],
     ['name' => 'authInternal', 'value' => '1', 'module_id' => 'authentication'],
     ['name' => 'auth.needApproval', 'value' => '0', 'module_id' => 'user'],
