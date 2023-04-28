@@ -46,7 +46,7 @@ return array (
   'Optional: Port of your MySQL Database Server. Leave empty to use default port.' => 'オプション: MySQLデータベースサーバーのポート。 デフォルトのポートを使用するには, 空のままにします。',
   'Our documentation provides a more detailed look into <a href="{link}" target="_blank">Pretty URLs</a>.' => 'ドキュメントでは、<a href="{link}">Pretty URL</a>について詳しく説明しています。',
   'Password' => 'パスワード',
-  'Per default, the HumHub URL includes an <code>index.php</code> file in the address, resulting in a URL that looks like "<a>https://example.com/index.php?r=dashboard%2Fdashboard</a>" for example. By using the Pretty URL or URL Rewriting feature, it is possible to create shorter and easier to understand URLs, such as "<a>https://example.com/dashboard</a>".' => 'デフォルトでは、HumHub URLのアドレスに <code>index.php</code>ファイルが含まれている為、”<a>https://example.com/index.php?r=dashboard%2Fdashboard</a>”のようなURLになります。  ”<a>https://example.com/dashboard</a>”のように、Pretty　URLやURLリライト機能を利用することで、より短くわかりやすいURLを作成することが出来ます。',
+  'Per default, the HumHub URL includes an <code>index.php</code> file in the address, resulting in a URL that looks like "<a>https://example.com/index.php?r=dashboard%2Fdashboard</a>" for example. By using the Pretty URL or URL Rewriting feature, it is possible to create shorter and easier to understand URLs, such as "<a>https://example.com/dashboard</a>".' => 'デフォルトでは、HumHub URLのアドレスに <code>index.php</code>ファイルが含まれている為、”<a>https://example.com/index.php?r=dashboard%2Fdashboard</a>”のようなURLになります。  ”<a>https://example.com/dashboard</a>”のように、Pretty URLやURLリライト機能を利用することで、より短くわかりやすいURLを作成することが出来ます。',
   'Port' => 'ポート',
   'Recommended <strong>Modules</strong>' => '推奨 <strong>モジュール</strong>',
   'Registered members can invite new users via email' => 'ログインユーザーは他のユーザーに招待状メールを出せる',
@@ -58,7 +58,7 @@ return array (
   'Social Network <strong>Name</strong>' => 'SNSの <strong>名前</strong>',
   'The installation completed successfully! Have fun with your new social network.' => 'インストールは正常に完了しました。あなたのSNSをお楽しみください。',
   'The name of the database you want to run HumHub in.' => 'HumHubを構築したいデータベースの名前を入れてください。',
-  'This overview shows all system requirements of HumHub.' => '下記はHumHubの全ての必須要件です。',
+  'This overview shows all system requirements of HumHub.' => '下記はHumHubのすべての必須要件です。',
   'This topic is covered in more detail in our <a href="{link}" target="_blank">documentation</a>. If you have trouble setting up the job scheduling described in the documentation, please contact your server administrator for support.' => 'このトピックについては、<a href="{link}">ドキュメント</a>で詳しく説明しています。
 ドキュメントに記載されているジョブスケジューリングの設定に問題がある場合は、サーバー管理者にサポートを依頼してください。',
   'This wizard will install and configure your own HumHub instance.<br><br>To continue, click Next.' => 'このウィザードでHumHubのインストールと初期設定をします。<br><br>続けるには「次」をクリックしてください。',
