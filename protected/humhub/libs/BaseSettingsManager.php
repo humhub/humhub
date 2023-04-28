@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use humhub\components\SettingActiveRecord;
 use Yii;
 use yii\base\Component;
 use yii\base\Exception;
@@ -24,21 +25,20 @@ use yii\helpers\Json;
  */
 abstract class BaseSettingsManager extends Component
 {
-
     /**
-     * @var string module id this settings manager belongs to.
+     * @var string|null module id this settings manager belongs to.
      */
-    public $moduleId = null;
+    public ?string $moduleId = null;
 
     /**
      * @var array|null of loaded settings
      */
-    protected $_loaded = null;
+    protected ?array $_loaded = null;
 
     /**
      * @var string settings model class name
      */
-    public $modelClass = 'humhub\models\Setting';
+    public string $modelClass = 'humhub\models\Setting';
 
     /**
      * @inheritdoc
@@ -94,11 +94,10 @@ abstract class BaseSettingsManager extends Component
     /**
      * Can be used to set object/arrays as a serialized values.
      *
-     *
      * @param string $name
      * @param mixed $value array or object
      */
-    public function setSerialized($name, $value)
+    public function setSerialized(string $name, $value)
     {
         $this->set($name, Json::encode($value));
     }
@@ -109,7 +108,7 @@ abstract class BaseSettingsManager extends Component
      * @param string $name
      * @param mixed $default the setting value or null when not exists
      */
-    public function getSerialized($name, $default = null)
+    public function getSerialized(string $name, $default = null)
     {
         $value = $this->get($name, $default);
         if (is_string($value)) {
@@ -126,20 +125,22 @@ abstract class BaseSettingsManager extends Component
      * Returns value of setting
      *
      * @param string $name the name of setting
+     *
      * @return string|null the setting value or null when not exists
      */
-    public function get($name, $default = null)
+    public function get(string $name, $default = null)
     {
-        return isset($this->_loaded[$name]) ? $this->_loaded[$name] : $default;
+        return $this->_loaded[$name] ?? $default;
     }
 
     /**
      * Returns the value of setting without any caching
      *
      * @param string $name the name of setting
+     *
      * @return string the setting value or null when not exists
      */
-    public function getUncached($name, $default = null)
+    public function getUncached(string $name, $default = null): ?string
     {
         $record = $this->find()->andWhere(['name' => $name])->one();
         return ($record !== null) ? $record->value : $default;
@@ -150,7 +151,7 @@ abstract class BaseSettingsManager extends Component
      *
      * @param string $name
      */
-    public function delete($name)
+    public function delete(string $name)
     {
         $record = $this->find()->andWhere(['name' => $name])->one();
         if ($record !== null) {
@@ -166,8 +167,6 @@ abstract class BaseSettingsManager extends Component
         if (isset($this->_loaded[$name])) {
             unset($this->_loaded[$name]);
         }
-
-        $this->invalidateCache();
     }
 
     /**
@@ -180,7 +179,7 @@ abstract class BaseSettingsManager extends Component
             $this->_loaded = [];
             $settings = &$this->_loaded;
 
-            array_map(function ($record) use (&$settings) {
+            array_map(static function ($record) use (&$settings) {
                 $settings[$record->name] = $record->value;
             }, $this->find()->all());
 
@@ -212,9 +211,11 @@ abstract class BaseSettingsManager extends Component
      *
      * @return string the cache key
      */
-    protected function getCacheKey()
+    protected function getCacheKey(): string
     {
-        return 'settings-' . $this->moduleId;
+        /** @var SettingActiveRecord $modelClass */
+        $modelClass = $this->modelClass;
+        return $modelClass::getCacheKey($this->moduleId);
     }
 
     /**
@@ -222,7 +223,7 @@ abstract class BaseSettingsManager extends Component
      */
     protected function createRecord()
     {
-        $model = new $this->modelClass;
+        $model = new $this->modelClass();
         $model->module_id = $this->moduleId;
 
         return $model;
