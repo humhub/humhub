@@ -35,7 +35,6 @@ class DesignSettingsForm extends Model
     public $icon;
     public $dateInputDisplayFormat;
     public $horImageScrollOnMobile;
-    public $useDefaultSwipeOnMobile;
     public $defaultStreamSort;
 
     /**
@@ -54,7 +53,6 @@ class DesignSettingsForm extends Model
         $this->spaceOrder = Yii::$app->getModule('space')->settings->get('spaceOrder');
         $this->dateInputDisplayFormat = Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat');
         $this->horImageScrollOnMobile = $settingsManager->get('horImageScrollOnMobile');
-        $this->useDefaultSwipeOnMobile = $settingsManager->get('useDefaultSwipeOnMobile');
         $this->defaultStreamSort = Yii::$app->getModule('stream')->settings->get('defaultSort');
     }
 
@@ -68,7 +66,7 @@ class DesignSettingsForm extends Model
             ['paginationSize', 'integer', 'max' => 200, 'min' => 1],
             ['theme', 'in', 'range' => $this->getThemes()],
             [['displayNameFormat', 'displayNameSubFormat', 'spaceOrder'], 'safe'],
-            [['horImageScrollOnMobile', 'useDefaultSwipeOnMobile'], 'boolean'],
+            [['horImageScrollOnMobile'], 'boolean'],
             ['logo', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => 100, 'minHeight' => 120],
             [['defaultStreamSort'], 'in', 'range' => array_keys($this->getDefaultStreamSortOptions())],
             ['icon', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => 256, 'minHeight' => 256],
@@ -92,7 +90,6 @@ class DesignSettingsForm extends Model
             'icon' => Yii::t('AdminModule.settings', 'Icon upload'),
             'dateInputDisplayFormat' => Yii::t('AdminModule.settings', 'Date input format'),
             'horImageScrollOnMobile' => Yii::t('AdminModule.settings', 'Horizontal scrolling images on a mobile device'),
-            'useDefaultSwipeOnMobile' => Yii::t('AdminModule.settings', 'Use the default swipe to show sidebar on a mobile device'),
         ];
     }
 
@@ -151,7 +148,6 @@ class DesignSettingsForm extends Model
         Yii::$app->getModule('space')->settings->set('spaceOrder', $this->spaceOrder);
         Yii::$app->getModule('admin')->settings->set('defaultDateInputFormat', $this->dateInputDisplayFormat);
         $settingsManager->set('horImageScrollOnMobile', $this->horImageScrollOnMobile);
-        $settingsManager->set('useDefaultSwipeOnMobile', $this->useDefaultSwipeOnMobile);
 
         Yii::$app->getModule('stream')->settings->set('defaultSort', $this->defaultStreamSort);
 

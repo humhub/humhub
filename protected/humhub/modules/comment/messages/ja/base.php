@@ -16,7 +16,7 @@ return array (
   'Edit' => '編集',
   'Edit your comment...' => 'コメントを編集する',
   'Permalink' => '固定リンク',
-  'Read full comment...' => 'コメントを全て読む',
+  'Read full comment...' => 'コメントをすべて読む',
   'Reason' => '理由',
   'Reply' => 'リプライ',
   'Send a notification to author' => '投稿者に通知を送る',

@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Hide all stream entries in this Space by default' => 'デフォルトでは、このスペースの全てのストリーム エントリを非表示にします',
-  'Hide all stream entries in your Profile by default' => 'デフォルトではプロファイル内の全てのストリーム エントリを非表示にします',
-  'Hide all stream entries of this module globally by default' => 'デフォルトでは、このモジュールの全てのストリーム エントリをグローバルに非表示にします',
+  'Hide all stream entries in this Space by default' => 'デフォルトでは、このスペースのすべてのストリーム エントリを非表示にします',
+  'Hide all stream entries in your Profile by default' => 'デフォルトではプロフィール内のすべてのストリーム エントリを非表示にします',
+  'Hide all stream entries of this module globally by default' => 'デフォルトでは、このモジュールのすべてのストリーム エントリをグローバルに非表示にします',
   'Hide stream entry' => 'ストリーム エントリを非表示',
   'Invalid icon.' => '無効なアイコンです。',
   'Note: Hidden entries can be made visible using the stream filtering options. Single stream entries can be marked as visible on an individual level.' => '注：非表示のエントリはストリーム フィルタリング オプションを使用して表示できます。単一のストリーム エントリは、個々のレベルで表示可能としてマークできます。',
