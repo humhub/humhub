@@ -123,15 +123,23 @@ abstract class BaseSettingsManager extends Component
      *
      * @param string $name
      * @param mixed $default the setting value or null when not exists
+     * @param bool $asArray whether to return objects in terms of associative arrays.
+     * @param bool $throwException if true then throw an exception upon error, rather than returning the serialized string
+     *
+     * @return mixed|string|null
      */
-    public function getSerialized(string $name, $default = null)
+    public function getSerialized(string $name, $default = null, bool $asArray = true, bool $throwException = false)
     {
         $value = $this->get($name, $default);
         if (is_string($value)) {
             try {
-                $value = Json::decode($value);
+                $value = Json::decode($value, $asArray);
             } catch (InvalidArgumentException $ex) {
                 Yii::error($ex->getMessage());
+
+                if ($throwException) {
+                    throw $ex;
+                }
             }
         }
         return $value;
