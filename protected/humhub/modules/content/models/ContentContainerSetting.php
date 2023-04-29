@@ -25,10 +25,10 @@ class ContentContainerSetting extends SettingActiveRecord
 {
 
     /** @inheritdoc */
-    protected const CACHE_KEY_FORMAT = 'settings-%s-%d';
+    public const CACHE_KEY_FORMAT = 'settings-%s-%d';
 
     /** @inheritdoc */
-    protected const CACHE_KEY_FIELDS = ['module_id', 'contentcontainer_id'];
+    public const CACHE_KEY_FIELDS = ['module_id', 'contentcontainer_id'];
 
     /**
      * @inheritdoc

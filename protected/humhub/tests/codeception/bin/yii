@@ -14,7 +14,7 @@ $consoleConfig = [
     ]
 ];
 
-$config = yii\helpers\ArrayHelper::merge(       
+$config = yii\helpers\ArrayHelper::merge(
                 // Common HumHub Config
                 require(YII_APP_BASE_PATH . '/humhub/config/common.php'),
                 // Console HumHub Config
