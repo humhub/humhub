@@ -20,7 +20,6 @@ class AutoTourCest
     public function testAutoTour(AcceptanceTester $I)
     {
         $I->amAdmin();
-        $I->amOnDashboard();
 
         // Turn-on Show introduction tour for new users
         if (Yii::$app->settings->get('enable') == 0) {
@@ -28,7 +27,7 @@ class AutoTourCest
         }
 
         // Login how user
-        $I->amUser();
+        $I->amUser1(true);
 
         $I->waitForElementVisible('.popover.tour');
         $I->see('Dashboard', '.popover.tour');
@@ -45,8 +44,6 @@ class AutoTourCest
         $I->waitForText('Space Menu', null, '.popover.tour');
         $I->wait(1);
         $I->click('Start space guide', '.popover.tour');
-
-        $I->wait(2);
 
         $I->waitForText('Once you have joined or created a new space', null, '.popover.tour');
         $I->wait(1);
@@ -100,17 +97,18 @@ class AutoTourCest
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Hurray! You\'re done!', null, '.popover.tour');
+        $I->waitForText('Hurray! The End.', null, '.popover.tour');
         $I->wait(1);
         $I->click('End guide', '.popover.tour');
 
         $I->waitForElementVisible('#wallStream');
+        $I->wait(2);
         $I->seeInCurrentUrl('dashboard');
 
         // Re-login how user
-        $I->amUser();
+        $I->amUser1(true);
         $I->wait(1);
 
-        $I->dontSeeElement('#getting-started-panel');
+        $I->dontSeeElement('.popover.tour');
     }
 }

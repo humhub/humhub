@@ -25,9 +25,10 @@ class AcceptanceTester extends \AcceptanceTester
         $this->wait(1);
         $this->amOnRoute(['/admin/setting/basic']);
 
+        $this->seeElement('.form-collapsible-fields');
+        $this->click('.form-collapsible-fields label');
         $this->see('Show introduction tour for new users');
         $this->click('.field-basicsettingsform-tour label');
-        // $this->checkOption('#basicsettingsform-tour');
 
         $this->click('Save');
         $this->seeSuccess();
