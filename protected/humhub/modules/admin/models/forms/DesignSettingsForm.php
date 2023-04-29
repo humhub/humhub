@@ -26,7 +26,6 @@ use humhub\modules\ui\view\helpers\ThemeHelper;
  */
 class DesignSettingsForm extends Model
 {
-
     public $theme;
     public $paginationSize;
     public $displayNameFormat;
@@ -37,7 +36,6 @@ class DesignSettingsForm extends Model
     public $dateInputDisplayFormat;
     public $horImageScrollOnMobile;
     public $defaultStreamSort;
-
 
     /**
      * @inheritdoc
@@ -56,7 +54,6 @@ class DesignSettingsForm extends Model
         $this->dateInputDisplayFormat = Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat');
         $this->horImageScrollOnMobile = $settingsManager->get('horImageScrollOnMobile');
         $this->defaultStreamSort = Yii::$app->getModule('stream')->settings->get('defaultSort');
-
     }
 
     /**
@@ -192,5 +189,4 @@ class DesignSettingsForm extends Model
         }
         return $availableAttributes;
     }
-
 }
