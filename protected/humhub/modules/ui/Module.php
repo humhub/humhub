@@ -41,12 +41,6 @@ class Module extends \humhub\components\Module
     ];
 
     /**
-     * @var int collapsed post block height
-     * @since 1.15
-     */
-    public int $collapsedPostHeight = 300;
-
-    /**
      * @return static
      */
     public static function getModuleInstance()

@@ -33,6 +33,12 @@ class Module extends ContentContainerModule
     public bool $enableDynamicFontSize = false;
 
     /**
+     * @since 1.15
+     * @var int collapsed post block height
+     */
+    public int $collapsedPostHeight = 300;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
@@ -52,14 +58,5 @@ class Module extends ContentContainerModule
     public function getContentClasses(?ContentContainerActiveRecord $contentContainer = null): array
     {
         return [Post::class];
-    }
-
-    /**
-     * @since 1.15
-     * @return int
-     */
-    public function getCollapsedPostHeight(): int
-    {
-        return Yii::$app->getModule('ui')->collapsedPostHeight;
     }
 }
