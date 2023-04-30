@@ -8,8 +8,8 @@
 
 namespace humhub\models;
 
+use humhub\components\SettingActiveRecord;
 use Yii;
-use yii\db\ActiveRecord;
 use yii\base\Exception;
 
 /**
@@ -20,7 +20,7 @@ use yii\base\Exception;
  * @property string $value
  * @property string $module_id
  */
-class Setting extends ActiveRecord
+class Setting extends SettingActiveRecord
 {
 
     /**

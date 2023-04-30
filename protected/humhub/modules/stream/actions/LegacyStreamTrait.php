@@ -72,7 +72,7 @@ trait LegacyStreamTrait
 
         // Fix for newly created content
         if ($content->created_at instanceof Expression) {
-            $content->created_at = date('Y-m-d G:i:s');
+            $content->created_at = date('Y-m-d H:i:s');
             $content->updated_at = $content->created_at;
         }
 

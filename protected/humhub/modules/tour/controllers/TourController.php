@@ -14,7 +14,6 @@ use Yii;
 use yii\web\HttpException;
 use humhub\modules\space\models\Space;
 
-
 /**
  * TourController
  *
@@ -64,7 +63,6 @@ class TourController extends \humhub\components\Controller
      */
     public function actionStartSpaceTour()
     {
-
         $space = null;
 
         // Loop over all spaces where the user is member
@@ -107,5 +105,4 @@ class TourController extends \humhub\components\Controller
             'user' => $user
         ]);
     }
-
 }

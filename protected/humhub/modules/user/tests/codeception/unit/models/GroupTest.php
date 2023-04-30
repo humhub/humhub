@@ -73,7 +73,10 @@ class GroupTest extends HumHubDbTestCase
     public function testReturnAdminGroupId()
     {
         $group = Group::findOne(['name' => 'Administrator']);
-        static::assertEquals($group->id, Group::getAdminGroupId());
+        // check for the uncached value
+        static::assertSame($group->id, Group::getAdminGroupId());
+        // now check again for the cached value
+        static::assertSame($group->id, Group::getAdminGroupId());
     }
 
     public function testCheckIfGroupHasManager()
