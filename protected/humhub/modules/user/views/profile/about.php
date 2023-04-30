@@ -3,7 +3,6 @@
 use humhub\modules\content\widgets\richtext\RichText;
 use yii\helpers\Html;
 use humhub\modules\user\models\fieldtype\MarkdownEditor;
-use humhub\widgets\MarkdownView;
 
 /**
  * @var $this \humhub\modules\ui\view\components\View
