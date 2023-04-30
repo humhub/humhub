@@ -4,9 +4,9 @@ use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\models\AdvancedSettings;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\form\widgets\SortOrderField;
 use humhub\widgets\Button;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Url;
 
 /* @var $model AdvancedSettings */
@@ -37,6 +37,10 @@ use yii\helpers\Url;
         <?= $form->field($model, 'indexGuestUrl')->dropDownList($indexModuleSelection) ?>
         <?php if (Yii::$app->user->can(ManageSpaces::class)) : ?>
             <?= $form->field($model, 'sortOrder')->widget(SortOrderField::class) ?>
+        <?php else: ?>
+            <?= $form->field($model, 'sortOrder')->widget(SortOrderField::class, [
+                'options' => ['disabled' => 'disabled']
+            ])->hint(Yii::t('SpaceModule.manage', 'Only platform administrators can change this value')) ?>
         <?php endif; ?>
 
         <?= Button::save()->submit() ?>

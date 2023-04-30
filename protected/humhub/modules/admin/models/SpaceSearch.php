@@ -8,11 +8,11 @@
 
 namespace humhub\modules\admin\models;
 
+use humhub\modules\space\models\Membership;
+use humhub\modules\space\models\Space;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use humhub\modules\space\models\Space;
-use humhub\modules\space\models\Membership;
 
 /**
  * SpaceSearch for administration
@@ -94,7 +94,7 @@ class SpaceSearch extends Space
             ]
         ]);
 
-        $dataProvider->sort->defaultOrder = ['sort_order' => SORT_ASC];
+        $dataProvider->sort->defaultOrder = ['sort_order' => SORT_ASC, 'name' => SORT_ASC];
 
         $dataProvider->sort->attributes['ownerUser.profile.lastname'] = [
             'asc' => ['profile.lastname' => SORT_ASC],

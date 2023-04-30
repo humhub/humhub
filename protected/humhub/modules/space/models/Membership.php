@@ -9,8 +9,8 @@
 namespace humhub\modules\space\models;
 
 use humhub\components\ActiveRecord;
-use humhub\modules\user\models\User;
 use humhub\modules\content\models\Content;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\db\Query;
 
@@ -114,8 +114,8 @@ class Membership extends ActiveRecord
     }
 
     /**
-     * @since 1.13
      * @return bool
+     * @since 1.13
      */
     public function isPrivileged(): bool
     {
@@ -273,9 +273,9 @@ class Membership extends ActiveRecord
         }
 
         if (Yii::$app->getModule('space')->settings->get('spaceOrder') == 0) {
-            $query->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC]);
+            $query->defaultOrderBy();
         } else {
-            $query->orderBy(['last_visit' => SORT_DESC]);
+            $query->orderBy(['space_membership.last_visit' => SORT_DESC]);
         }
 
         return $query;
@@ -378,4 +378,5 @@ class Membership extends ActiveRecord
     public function isCurrentUser(): bool
     {
         return !Yii::$app->user->isGuest && Yii::$app->user->identity->id === $this->user_id;
-    }}
+    }
+}

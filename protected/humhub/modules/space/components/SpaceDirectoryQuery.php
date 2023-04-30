@@ -117,7 +117,7 @@ class SpaceDirectoryQuery extends ActiveQuerySpace
     {
         switch (SpaceDirectoryFilters::getValue('sort')) {
             case 'sortOrder':
-                $this->addOrderBy(['space.sort_order' => SORT_ASC, 'space.name' => SORT_ASC]);
+                $this->defaultOrderBy();
                 break;
 
             case 'name':
