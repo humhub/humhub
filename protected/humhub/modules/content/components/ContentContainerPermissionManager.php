@@ -30,6 +30,10 @@ class ContentContainerPermissionManager extends PermissionManager
      */
     public function verify(BasePermission $permission)
     {
+        if (parent::verify($permission)) {
+            return true;
+        }
+
         $groupId = $this->contentContainer->getUserGroup($this->subject);
 
         if ($this->getGroupState($groupId, $permission) == BasePermission::STATE_ALLOW) {
