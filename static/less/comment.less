@@ -110,9 +110,12 @@
         .field-comment-message, .field-post-message {
             flex-grow: 1;
             flex-basis: min-content;
-            overflow: auto;
             [data-ui-markdown] {
                 word-break: break-word !important;
+                pre code {
+                    display: block;
+                    width: 0;
+                }
             }
         }
         .form-group, .help-block {
