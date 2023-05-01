@@ -8,9 +8,11 @@
 
 namespace humhub\modules\notification\components;
 
+use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainerSetting;
+use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\targets\BaseTarget;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
@@ -482,6 +484,22 @@ class NotificationManager
             $result[] = Yii::createObject($notificationClass);
         }
         return $result;
+    }
+
+
+
+    public function markAsReadRelatedNotifications(ContentAddonActiveRecord $model)
+    {
+        $notifications = Notification::find()->where([
+            'user_id' => Yii::$app->user->id,
+            'source_class' => $model->getSource()->classname(),
+        ]);
+
+        foreach ($notifications->each() as $notification) {
+            /** @var Notification $notification */
+            $notification->seen = 1;
+            $notification->save();
+        }
     }
 
 }
