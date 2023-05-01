@@ -17,3 +17,4 @@ HumHub Changelog
 - Enh #6215: Added `LongRunningActiveJob` to avoid timeout for long running queue jobs
 - Enh #6253: Remove `DefaultSwipeOnMobile` checkbox
 - Enh #10: Added `collapsedPostHeight` to the Post module for set collapsed post default height
+- Enh #6281: Fix Permission Managers difference
