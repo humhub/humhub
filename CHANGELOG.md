@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #6264: Fix date format for columns `created_at` and `updated_at`
 - Fix #6265: Broken HMTL in Visibility and Hidden Checkbox
 - Enh #6242: Submit button hidden when editing a comment having a long "code" line 
+- Fix #6282: Hard delete content records on integrity check
 
 1.14.0 (April 20, 2023)
 -----------------------

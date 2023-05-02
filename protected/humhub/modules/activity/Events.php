@@ -130,19 +130,19 @@ class Events extends BaseObject
                     $source = $a->getSource();
                 } catch (IntegrityException $ex) {
                     if ($integrityController->showFix('Deleting activity id ' . $a->id . ' without existing target! (' . $a->object_model . ')')) {
-                        $a->delete();
+                        $a->hardDelete();
                     }
                 }
             }
 
             // Check for moduleId is set
             if (empty($a->module) && $integrityController->showFix('Deleting activity id ' . $a->id . ' without module_id!')) {
-                $a->delete();
+                $a->hardDelete();
             }
 
             // Check Activity class exists
             if (!class_exists($a->class) && $integrityController->showFix('Deleting activity id ' . $a->id . ' class not exists! (' . $a->class . ')')) {
-                $a->delete();
+                $a->hardDelete();
             }
         }
     }
