@@ -14,6 +14,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\Module;
 use Yii;
 use yii\base\Exception;
+use yii\db\StaleObjectException;
 use yii\web\HttpException;
 use yii\authclient\ClientInterface;
 use humhub\components\Controller;
@@ -30,7 +31,6 @@ use humhub\modules\user\authclient\interfaces\ApprovalBypass;
  */
 class RegistrationController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -108,10 +108,12 @@ class RegistrationController extends Controller
 
     /**
      * Invitation by link
-     * @param $token
-     * @param $spaceId
+     * @param null $token
+     * @param null $spaceId
      * @return string
      * @throws HttpException
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
     public function actionByLink($token = null, $spaceId = null)
     {
@@ -141,9 +143,16 @@ class RegistrationController extends Controller
             'language' => Yii::$app->language,
         ]);
 
-        if ($invite->load(Yii::$app->request->post()) && $invite->save()) {
-            $invite->sendInviteMail();
-            return $this->render('@user/views/auth/register_success', ['model' => $invite]);
+        if ($invite->load(Yii::$app->request->post())) {
+            // Deleting any previous email invitation or abandoned link invitation
+            $oldInvite = Invite::findOne(['email' => $invite->email]);
+            if ($oldInvite !== null) {
+                $oldInvite->delete();
+            }
+            if ($invite->save()) {
+                $invite->sendInviteMail();
+                return $this->render('@user/views/auth/register_success', ['model' => $invite]);
+            }
         }
 
         return $this->render('byLink', [
@@ -182,9 +191,10 @@ class RegistrationController extends Controller
     }
 
     /**
+     * Already all registration data gathered
+     *
      * @param \yii\authclient\BaseClient $authClient
      * @param Registration $registration
-     * @return boolean already all registration data gathered
      * @throws Exception
      */
     protected function handleAuthClientRegistration(ClientInterface $authClient, Registration $registration)
@@ -206,7 +216,4 @@ class RegistrationController extends Controller
         $registration->getUser()->setAttributes($attributes, false);
         $registration->getProfile()->setAttributes($attributes, false);
     }
-
 }
-
-?>

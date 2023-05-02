@@ -581,7 +581,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     }
 
     /**
-     * @inheridoc
+     * @inheritdoc
      */
     public function beforeSerialize(): void
     {

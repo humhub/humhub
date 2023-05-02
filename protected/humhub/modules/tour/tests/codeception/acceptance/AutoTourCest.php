@@ -1,57 +1,49 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
-namespace tour\acceptance;
+namespace humhub\modules\tour\tests\codeception\acceptance;
 
 use tour\AcceptanceTester;
+use Yii;
 
-class TourCest
+class AutoTourCest
 {
     /**
      * @param AcceptanceTester $I
      * @throws \Exception
-     * @skip This test fails in travis environment, needs to be fixed!
      */
-    public function testTour(AcceptanceTester $I)
+    public function testAutoTour(AcceptanceTester $I)
     {
         $I->amAdmin();
-        $I->amOnDashboard();
 
-        $I->dontSeeElement('#getting-started-panel');
+        // Turn-on Show introduction tour for new users
+        if (Yii::$app->settings->get('enable') == 0) {
+            $I->checkOptionShowTour();
+        }
 
-        $I->checkOptionShowTour();
-
-        $I->amOnDashboard();
-        $I->waitForText('You are the first user here', null, '#globalModal');
-        $I->click('Save and close', '#globalModal');
-
-        $I->waitForElementVisible('#getting-started-panel');
-        $I->see('Guide: Administration (Modules)');
-
-        $I->wait(4);
-        $I->click('Guide: Overview');
+        // Login how user
+        $I->amUser1(true);
 
         $I->waitForElementVisible('.popover.tour');
         $I->see('Dashboard', '.popover.tour');
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Notifications', null,  '.popover.tour');
+        $I->waitForText('Notifications', null, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Account Menu',  null,'.popover.tour');
+        $I->waitForText('Account Menu', null, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
         $I->waitForText('Space Menu', null, '.popover.tour');
         $I->wait(1);
         $I->click('Start space guide', '.popover.tour');
-
-        $I->wait(2);
 
         $I->waitForText('Once you have joined or created a new space', null, '.popover.tour');
         $I->wait(1);
@@ -105,23 +97,18 @@ class TourCest
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Hurray! You\'re done!', null, '.popover.tour');
-        $I->wait(1);
-        $I->click('Administration (Modules)', '.popover.tour');
-
-        $I->waitForText('As an admin, you can manage the whole platform from here', null, '.popover.tour');
-        $I->wait(1);
-        $I->click('Next', '.popover.tour');
-
-        $I->waitForText('Modules', null, '.popover.tour');
-        $I->wait(1);
-        $I->click('Next', '.popover.tour');
-
-        $I->waitForText('Hurray! That\'s all for now.', null, '.popover.tour');
+        $I->waitForText('Hurray! The End.', null, '.popover.tour');
         $I->wait(1);
         $I->click('End guide', '.popover.tour');
 
         $I->waitForElementVisible('#wallStream');
+        $I->wait(2);
         $I->seeInCurrentUrl('dashboard');
+
+        // Re-login how user
+        $I->amUser1(true);
+        $I->wait(1);
+
+        $I->dontSeeElement('.popover.tour');
     }
 }
