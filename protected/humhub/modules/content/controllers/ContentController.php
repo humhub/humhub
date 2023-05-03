@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\controllers;
 
+use humhub\components\ActiveRecord;
 use humhub\components\behaviors\AccessControl;
 use humhub\components\Controller;
 use humhub\modules\content\models\Content;
@@ -21,7 +22,6 @@ use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\web\ForbiddenHttpException;
-use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -370,10 +370,15 @@ class ContentController extends Controller
         $content = Content::findOne(['id' => Yii::$app->request->get('id', '')]);
         if ($content !== null && $content->canEdit() && $content->state === Content::STATE_DRAFT) {
             $content->state = Content::STATE_PUBLISHED;
-            $content->save();
-            $json['message'] = Yii::t('ContentModule.base', 'The content has been successfully published.');
-            $json['success'] = true;
-
+            if ($content->save()) {
+                $model = $content->getPolymorphicRelation();
+                if ($model instanceof ActiveRecord) {
+                    // Save parent object to run post process extensions(e.g. mentioning) after the publishing
+                    $model->save();
+                }
+                $json['message'] = Yii::t('ContentModule.base', 'The content has been successfully published.');
+                $json['success'] = true;
+            }
         }
 
         return $this->asJson($json);

@@ -11,6 +11,7 @@ namespace humhub\modules\user\models;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\content\models\Content;
 use humhub\modules\user\notifications\Mentioned;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
@@ -133,6 +134,11 @@ class Mentioning extends ActiveRecord
     {
         if (!($record instanceof ContentActiveRecord || $record instanceof ContentAddonActiveRecord)) {
             throw new InvalidArgumentException("Mentioning can only used in HActiveRecordContent or HActiveRecordContentAddon objects!");
+        }
+
+        // Mention only for published content
+        if ($record->content->state != Content::STATE_PUBLISHED) {
+            return [];
         }
 
         if(is_string($guids)) {
