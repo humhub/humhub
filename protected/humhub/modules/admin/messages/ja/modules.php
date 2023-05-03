@@ -31,7 +31,7 @@ return array (
   'Space default state' => 'スペースのデフォルト状態',
   'Spaces' => 'スペース',
   'This module doesn\'t provide further information.' => 'このモジュールでは、これ以上の情報は提供されません。',
-  'Try other keywords or remove filters.' => '他のキーワードを試すかフィルターを削除してください.',
+  'Try other keywords or remove filters.' => '他のキーワードを試すかフィルターを削除してください。',
   'Update successful' => 'アップデート成功',
   'User default state' => 'ユーザーのデフォルト状態',
   'Users' => 'ユーザー',
