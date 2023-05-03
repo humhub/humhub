@@ -492,8 +492,8 @@ class NotificationManager
     {
         $notifications = Notification::find()->where([
             'user_id' => Yii::$app->user->id,
-            'source_class' => $model->getSource()->classname(),
-            'source_pk' => $model->getSource()->id,
+            'source_class' => $model->source->classname(),
+            'source_pk' => $model->source->id,
             'seen' => 0,
         ]);
 
