@@ -9,10 +9,12 @@
 namespace humhub\libs;
 
 use humhub\components\SettingActiveRecord;
+use humhub\exceptions\InvalidArgumentTypeException;
+use Stringable;
 use Yii;
 use yii\base\Component;
-use yii\base\Exception;
 use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
 use yii\db\conditions\LikeCondition;
 use yii\db\StaleObjectException;
 use yii\helpers\Json;
@@ -26,9 +28,9 @@ use yii\helpers\Json;
 abstract class BaseSettingsManager extends Component
 {
     /**
-     * @var string|null module id this settings manager belongs to.
+     * @var string module id this settings manager belongs to.
      */
-    public ?string $moduleId = null;
+    public string $moduleId;
 
     /**
      * @var array|null of loaded settings
@@ -45,14 +47,19 @@ abstract class BaseSettingsManager extends Component
      */
     public function init()
     {
-        if ($this->moduleId === null) {
-            throw new Exception('Could not determine module id');
+        try {
+            if ($this->moduleId === '') {
+                throw new InvalidConfigException('Empty module id!', 1);
+            }
+        } catch (InvalidConfigException $t) {
+            throw $t;
+        } catch (\Throwable $t) {
+            throw new InvalidConfigException('Module id not set!', 2);
         }
 
         if (static::isDatabaseInstalled()) {
             $this->loadValues();
         }
-
 
         parent::init();
     }
@@ -61,12 +68,21 @@ abstract class BaseSettingsManager extends Component
      * Sets a settings value
      *
      * @param string $name
-     * @param string $value
+     * @param string|int|bool $value
+     *
+     * @return void
      */
-    public function set($name, $value)
+    public function set(string $name, $value)
     {
+        if ($name === '') {
+            throw new InvalidArgumentException(
+                sprintf('Argument #1 ($name) passed to %s may not be an empty string!', __METHOD__)
+            );
+        }
+
         if ($value === null) {
-            return $this->delete($name);
+             $this->delete($name);
+            return;
         }
 
         // Update database setting record
@@ -107,15 +123,23 @@ abstract class BaseSettingsManager extends Component
      *
      * @param string $name
      * @param mixed $default the setting value or null when not exists
+     * @param bool $asArray whether to return objects in terms of associative arrays.
+     * @param bool $throwException if true then throw an exception upon error, rather than returning the serialized string
+     *
+     * @return mixed|string|null
      */
-    public function getSerialized(string $name, $default = null)
+    public function getSerialized(string $name, $default = null, bool $asArray = true, bool $throwException = false)
     {
         $value = $this->get($name, $default);
         if (is_string($value)) {
             try {
-                $value = Json::decode($value);
+                $value = Json::decode($value, $asArray);
             } catch (InvalidArgumentException $ex) {
                 Yii::error($ex->getMessage());
+
+                if ($throwException) {
+                    throw $ex;
+                }
             }
         }
         return $value;
@@ -124,13 +148,16 @@ abstract class BaseSettingsManager extends Component
     /**
      * Returns value of setting
      *
-     * @param string $name the name of setting
+     * @param string|int $name the name of setting
      *
-     * @return string|null the setting value or null when not exists
+     * @return string|mixed|null the setting value or null when not exists
      */
     public function get(string $name, $default = null)
     {
-        return $this->_loaded[$name] ?? $default;
+        $value = $this->_loaded[$name] ?? null;
+
+        // make sure it is an int, if it is possible
+        return filter_var($value, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE) ?? $value ?? $default;
     }
 
     /**
@@ -243,18 +270,34 @@ abstract class BaseSettingsManager extends Component
     /**
      * Deletes all stored settings
      *
-     * @param string|null $prefix if set only delete settings with given name prefix (e.g. theme.)
+     * @param string|array|Stringable|null $prefix if set, only delete settings with given name prefix (e.g. "theme.")
+     *     Versions before 1.15 used the `$prefix` parameter as a full wildcard (`'%pattern%'`) and not actually as a prefix. Use
+     *     `$prefix = '%pattern%'` to get the old behaviour. Or use `$parameter = '%suffix'` if you want to match
+     *     against the end of the names.
      */
     public function deleteAll($prefix = null)
     {
         $query = $this->find();
+
         if ($prefix !== null) {
-            $query->andWhere(new LikeCondition('name', 'LIKE', $prefix));
+            if (StringHelper::isStringable($prefix)) {
+                if (false === strpos($prefix, "%")) {
+                    $prefix .= "%";
+                }
+            } elseif (!is_array($prefix)) {
+                throw new InvalidArgumentTypeException(
+                    __METHOD__,
+                    [1 => '$prefix'],
+                    ['string', 'int', 'null', \Stringable::class],
+                    $prefix
+                );
+            }
+
+            $query->andWhere(['LIKE', 'name', $prefix, false]);
         }
 
-        foreach ($query->all() as $setting) {
-            $this->delete($setting->name);
-        }
+        $settings = $query->all();
+        array_walk($settings, static fn($setting, $i, $self) => $self->delete($setting->name), $this);
     }
 
     /**
