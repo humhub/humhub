@@ -2,7 +2,7 @@
 
 namespace humhub\modules\space\widgets;
 
-use yii\base\Widget;
+use humhub\components\Widget;
 
 class Wall extends Widget
 {
