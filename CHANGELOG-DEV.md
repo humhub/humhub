@@ -3,6 +3,11 @@ HumHub Changelog (DEVELOP)
 
 1.15.0 (Unreleased)
 -------------------
+- Enh #6270: Add tests for SettingsManager
+- Enh #6272: Always return integer from settings, if value can be converted
+- Fix #6267: SettingsManager::flushContentContainer() only clears the collection in the current instance, not the underlying cache
+- Enh #6271: Add input and type checks, as well as strict types to SettingsManager
+- Fix #6266: BaseSettingsManager::deleteAll() does use prefix as wildcard
 - Fix #6259: Add json & pdo extensions as requirement; updating composer dependencies and node modules
 - Fix #6192: Where Group::getAdminGroupId() would sometimes return int, sometimes string
 - Enh #6260: Improve migration class
@@ -18,3 +23,4 @@ HumHub Changelog (DEVELOP)
 - Enh #6253: Remove `DefaultSwipeOnMobile` checkbox
 - Enh #10: Added `collapsedPostHeight` to the Post module for set collapsed post default height
 - Enh #6002: Display more info when content record is not readable
+- Enh #6285: Change background color for confirmation of oembed content
