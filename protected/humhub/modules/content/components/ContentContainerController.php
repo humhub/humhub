@@ -166,7 +166,7 @@ class ContentContainerController extends Controller
         return $record->content->canView($user);
     }
 
-    public function renderNotAvailableContent(): string
+    protected function renderNotAvailableContent(): string
     {
         return $this->render('@content/views/content/notAvailable.php', [
             'container' => $this->contentContainer
