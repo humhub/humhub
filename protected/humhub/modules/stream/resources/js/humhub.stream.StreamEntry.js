@@ -329,7 +329,11 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         this.loader();
         client.post(evt.url).then(function (data) {
             that.reload();
-            module.log.info(data.message, true);
+            if (data.success) {
+                module.log.info(data.message, true);
+            } else {
+                module.log.error(data.error, true);
+            }
         }).catch(function (e) {
             module.log.error(e, true);
             that.loader(false);

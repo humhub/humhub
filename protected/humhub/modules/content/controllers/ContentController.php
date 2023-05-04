@@ -371,13 +371,11 @@ class ContentController extends Controller
         if ($content !== null && $content->canEdit() && $content->state === Content::STATE_DRAFT) {
             $content->state = Content::STATE_PUBLISHED;
             if ($content->save()) {
-                $model = $content->getPolymorphicRelation();
-                if ($model instanceof ActiveRecord) {
-                    // Save parent object to run post process extensions(e.g. mentioning) after the publishing
-                    $model->save();
-                }
                 $json['message'] = Yii::t('ContentModule.base', 'The content has been successfully published.');
                 $json['success'] = true;
+            } else {
+                $json['error'] = Yii::t('ContentModule.base', 'The content cannot be published!');
+                $json['success'] = false;
             }
         }
 

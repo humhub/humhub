@@ -236,17 +236,18 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      */
     public function afterSave($insert, $changedAttributes)
     {
-        if (// New Content with State Published:
-            ($insert && $this->state == Content::STATE_PUBLISHED) ||
-            // Content Updated from Draft to Published
-            (array_key_exists('state', $changedAttributes) &&
-                $this->state == Content::STATE_PUBLISHED &&
-                $changedAttributes['state'] == Content::STATE_DRAFT
-            )) {
-            $this->processNewContent();
-        }
+        if (array_key_exists('state', $changedAttributes)) {
+            $model = $this->getPolymorphicRelation();
 
-        if ($insert || array_key_exists('state', $changedAttributes)) {
+            if ($this->state == Content::STATE_PUBLISHED) {
+                // Run process for new content(Send notifications) only after publishing the Content
+                $this->processNewContent();
+                // Also run process for parent object in order to send notifications like mentioning users
+                if ($model instanceof ActiveRecord) {
+                    $model->afterSave($insert, $changedAttributes);
+                }
+            }
+
             $previousState = $changedAttributes['state'] ?? null;
             $this->trigger(self::EVENT_STATE_CHANGED, new ContentStateEvent([
                 'content' => $this,
@@ -254,7 +255,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
                 'previousState' => $previousState
             ]));
 
-            $model = $this->getPolymorphicRelation();
             if ($model instanceof ContentActiveRecord) {
                 $model->afterStateChange($this->state, $previousState);
             }
