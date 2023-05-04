@@ -12,6 +12,7 @@ HumHub Changelog
 - Enh #6242: Submit button hidden when editing a comment having a long "code" line 
 - Fix #6282: Hard delete content records on integrity check
 - Fix #6257: Fix error after publishing of a draft content
+- Fix #6273: Fix automatically login user after registration
 
 1.14.0 (April 20, 2023)
 -----------------------
