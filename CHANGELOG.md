@@ -13,6 +13,7 @@ HumHub Changelog
 - Fix #6282: Hard delete content records on integrity check
 - Fix #6257: Fix error after publishing of a draft content
 - Fix #6292: Messages: Notification Indicator Problem
+- Fix #6296: Update style variable `background-color-secondary`
 
 1.14.0 (April 20, 2023)
 -----------------------
