@@ -67,7 +67,7 @@ class Image extends BaseImage
                 $imgSize = 'img-size-large';
             }
             Html::addCssClass($this->htmlOptions, ['has-online-status', $imgSize]);
-            $userIsOnline = (new IsOnlineService($this->user->id))->getStatus();
+            $userIsOnline = (new IsOnlineService($this->user))->getStatus();
             $html .= Html::tag('span', '', ['class' => [
                 'user-online-status',
                 $userIsOnline ? 'user-is-online' : 'user-is-offline',

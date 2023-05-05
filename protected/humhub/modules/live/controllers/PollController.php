@@ -101,7 +101,7 @@ class PollController extends Controller
         Yii::$app->session->set('live.poll.lastQueryTime', $results['queryTime']);
 
         // Update "is online" status
-        (new IsOnlineService(Yii::$app->user->id))->updateStatus();
+        (new IsOnlineService(Yii::$app->user->identity))->updateStatus();
 
         Yii::$app->response->format = 'json';
         return $results;

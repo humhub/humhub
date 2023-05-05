@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\services;
 
+use humhub\modules\user\models\User;
 use Yii;
 
 /**
@@ -19,22 +20,22 @@ class IsOnlineService
 {
     protected const CACHE_IS_ONLINE_PREFIX = 'is_online_user_id_';
 
-    public int $userId;
+    public ?User $user;
 
-    public function __construct(int $userId)
+    public function __construct(User $user)
     {
-        $this->userId = $userId;
+        $this->user = $user;
     }
 
     public function updateStatus(): void
     {
-        if ($this->userId) {
-            Yii::$app->cache->set(self::CACHE_IS_ONLINE_PREFIX . $this->userId, true, 60); // Expires in 60 seconds
+        if ($this->user) {
+            Yii::$app->cache->set(self::CACHE_IS_ONLINE_PREFIX . $this->user->id, true, 60); // Expires in 60 seconds
         }
     }
 
     public function getStatus(): bool
     {
-        return $this->userId && (bool)Yii::$app->cache->get(self::CACHE_IS_ONLINE_PREFIX . $this->userId);
+        return $this->user && (bool)Yii::$app->cache->get(self::CACHE_IS_ONLINE_PREFIX . $this->user->id);
     }
 }
