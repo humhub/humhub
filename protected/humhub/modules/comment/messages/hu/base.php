@@ -28,6 +28,6 @@ return [
     'Write a new reply...' => 'Új válasz írása...',
     'comment' => 'hozzászólás',
     '{displayName} wrote a new comment ' => '{displayName} hozzászólt',
-    'Show next {count} comments' => '',
-    'Show previous {count} comments' => '',
+    'Show next {count} comments' => 'A következő {count} hozzászólás mutatása',
+    'Show previous {count} comments' => 'A megelőző {count} hozzászólás mutatása',
 ];
