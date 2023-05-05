@@ -89,7 +89,7 @@ class RegistrationController extends Controller
 
             // Autologin when user is enabled (no approval required)
             if ($registration->getUser()->status === User::STATUS_ENABLED) {
-                $registration->getUser()->refresh();
+                $registration->getUser()->refresh(); // https://github.com/humhub/humhub/issues/6273
                 Yii::$app->user->login($registration->getUser());
                 if (Yii::$app->request->getIsAjax()) {
                     return $this->htmlRedirect(Yii::$app->user->returnUrl);
