@@ -8,10 +8,11 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\modules\ui\widgets\BaseImage;
-use Yii;
 use humhub\libs\Html;
+use humhub\modules\ui\widgets\BaseImage;
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\IsOnlineService;
+use Yii;
 
 /**
  * Image shows the user profile image
@@ -30,6 +31,8 @@ class Image extends BaseImage
      * @inheritdoc
      */
     public $link = true;
+
+    public bool $showOnlineStatus = false;
 
     /**
      * @inheritdoc
@@ -56,13 +59,26 @@ class Image extends BaseImage
         $this->imageOptions['alt'] = Yii::t('base', 'Profile picture of {displayName}', ['displayName' => Html::encode($this->user->displayName)]);
         $html = Html::img($this->user->getProfileImage()->getUrl(), $this->imageOptions);
 
+        if ($this->showOnlineStatus) {
+            $imgSize = 'img-size-medium';
+            if ($this->width < 28) {
+                $imgSize = 'img-size-small';
+            } elseif ($this->width > 48) {
+                $imgSize = 'img-size-large';
+            }
+            Html::addCssClass($this->htmlOptions, ['has-online-status', $imgSize]);
+            $userIsOnline = (new IsOnlineService($this->user->id))->getStatus();
+            $html .= Html::tag('span', '', ['class' => [
+                'user-online-status',
+                $userIsOnline ? 'user-is-online' : 'user-is-offline',
+            ]]);
+        }
+
         if ($this->link) {
             $html = Html::a($html, $this->user->getUrl(), $this->linkOptions);
         }
 
-        $html = Html::tag('span', $html, $this->htmlOptions);
-
-        return $html;
+        return Html::tag('span', $html, $this->htmlOptions);
     }
 
 }

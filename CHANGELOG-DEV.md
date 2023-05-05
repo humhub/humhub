@@ -25,3 +25,4 @@ HumHub Changelog
 - Enh #6285: Change background color for confirmation of oembed content
 - Enh #6289: Refactored UserWall and Wall widgets
 - Fix #44: Mail Module Indicator Problem
+- Enh #6295: Add the possibility to display if users are online
