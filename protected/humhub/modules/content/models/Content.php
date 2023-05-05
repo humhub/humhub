@@ -244,12 +244,20 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
                 $changedAttributes['state'] == Content::STATE_DRAFT
             )) {
             $this->processNewContent();
+        }
 
+        if ($insert || array_key_exists('state', $changedAttributes)) {
+            $previousState = $changedAttributes['state'] ?? null;
             $this->trigger(self::EVENT_STATE_CHANGED, new ContentStateEvent([
                 'content' => $this,
                 'newState' => $this->state,
-                'previousState' => (isset($changedAttributes['state'])) ? $changedAttributes['state'] : null,
+                'previousState' => $previousState
             ]));
+
+            $model = $this->getPolymorphicRelation();
+            if ($model instanceof ContentActiveRecord) {
+                $model->afterStateChange($this->state, $previousState);
+            }
         }
 
         if ($this->state === static::STATE_PUBLISHED) {
@@ -380,8 +388,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
         if (!$this->beforeSoftDelete()) {
             return false;
         }
-
-        ActivityHelper::deleteActivitiesForRecord($this->getModel());
 
         Notification::deleteAll([
             'source_class' => get_class($this),

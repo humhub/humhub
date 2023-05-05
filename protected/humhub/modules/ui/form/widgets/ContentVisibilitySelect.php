@@ -90,7 +90,7 @@ class ContentVisibilitySelect extends InputWidget
         return
             '<div class="checkbox">' .
             Html::activeCheckbox($this->model, $this->attribute, $this->options) .
-            '</div';
+            '</div>';
     }
 
 

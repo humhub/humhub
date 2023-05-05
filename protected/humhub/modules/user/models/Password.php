@@ -57,7 +57,7 @@ class Password extends ActiveRecord
 
     public function beforeSave($insert)
     {
-        $this->created_at = date('Y-m-d G:i:s');
+        $this->created_at = date('Y-m-d H:i:s');
 
         return parent::beforeSave($insert);
     }

@@ -1,12 +1,28 @@
 HumHub Changelog
 ================
 
-1.14.0 (Unreleased)
+1.14.1 (Unreleased)
 -------------------
+- Fix #6251: Emulate execution on `readable()` content 
+- Enh #6252: Implement new method to handle changing of content active record state
+- Enh #6248: If admins can view all contents, users allowed to manage spaces or users cannot view all content (they should be able)
+- Enh #6255: Updated activities to same state as parent record
+- Enh #6248: If admins can view all contents, users allowed to manage spaces or users cannot view all content (they should be able)
+- Fix #6264: Fix date format for columns `created_at` and `updated_at`
+- Fix #6265: Broken HMTL in Visibility and Hidden Checkbox
+- Enh #6242: Submit button hidden when editing a comment having a long "code" line 
+- Fix #6282: Hard delete content records on integrity check
+- Fix #6257: Fix error after publishing of a draft content
+
+1.14.0 (April 20, 2023)
+-----------------------
 - Fix #6196: Use class names for default logging targets in default common config
 - Fix #6202: Invite by link is not possible for a user already invited by email
 - Fix #5718: Fix profile field "Country" to use js plugin Select2
-- Enh #6214: Improve SoftDelete implementation
+- Enh #6214: Improved SoftDelete implementation
+- Fix #6221: Improved SaaS handling in installer
+- Fix #6232: Fix Error DateValidator::parseDateValuePHP in php8.2
+- Fix #6246: Can change email in `AccountController` 
 
 1.14.0-beta.2 (March 28, 2023)
 ------------------------------
@@ -57,6 +73,7 @@ HumHub Changelog
 1.13.3 (Unreleased)
 --------------------
 - Fix #6195: Fix `ModuleManager` disabling logging when no modules set
+
 
 1.13.2 (March 27, 2023)
 -----------------------
