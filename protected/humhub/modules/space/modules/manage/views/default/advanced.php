@@ -40,7 +40,7 @@ use yii\helpers\Url;
         <?php else: ?>
             <?= $form->field($model, 'sortOrder')->widget(SortOrderField::class, [
                 'options' => ['disabled' => 'disabled']
-            ])->hint(Yii::t('SpaceModule.manage', 'Only platform administrators can change this value')) ?>
+            ])->hint(Yii::t('SpaceModule.manage', 'Only global administrators can change this value')) ?>
         <?php endif; ?>
 
         <?= Button::save()->submit() ?>
