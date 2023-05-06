@@ -8,6 +8,7 @@ use humhub\modules\user\widgets\UserPickerField;
 
 /* @var AccountSettings $model */
 /* @var array $languages */
+/* @var bool $isEnabledOnlineStatus */
 ?>
 
 <?php $this->beginContent('@user/views/account/_userSettingsLayout.php') ?>
@@ -26,6 +27,10 @@ use humhub\modules\user\widgets\UserPickerField;
     <?= $form->field($model, 'visibility')->dropDownList($model->getVisibilityOptions(), [
         'disabled' => !$model->isVisibilityEditable()
     ]); ?>
+<?php endif; ?>
+
+<?php if ($isEnabledOnlineStatus) : ?>
+    <?= $form->field($model, 'showOnlineStatus')->checkbox(); ?>
 <?php endif; ?>
 
 <?php if (Yii::$app->getModule('tour')->settings->get('enable') == 1) : ?>

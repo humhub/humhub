@@ -26,6 +26,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
     public $internalUsersCanInviteByLink;
     public $showRegistrationUserGroup;
     public $blockUsers;
+    public $showOnlineStatus;
     public $defaultUserIdleTimeoutSec;
     public $allowGuestAccess;
     public $showCaptureInRegisterForm;
@@ -50,6 +51,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
         $this->internalAllowAnonymousRegistration = $settingsManager->get('auth.anonymousRegistration');
         $this->showRegistrationUserGroup = $settingsManager->get('auth.showRegistrationUserGroup');
         $this->blockUsers = $module->allowBlockUsers();
+        $this->showOnlineStatus = $settingsManager->get('auth.showOnlineStatus');
         $this->defaultUserIdleTimeoutSec = $settingsManager->get('auth.defaultUserIdleTimeoutSec');
         $this->allowGuestAccess = $settingsManager->get('auth.allowGuestAccess');
         $this->showCaptureInRegisterForm = $settingsManager->get('auth.showCaptureInRegisterForm');
@@ -64,7 +66,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
     public function rules()
     {
         return [
-            [['internalUsersCanInviteByEmail', 'internalUsersCanInviteByLink', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess', 'showCaptureInRegisterForm', 'showRegistrationUserGroup', 'blockUsers'], 'boolean'],
+            [['internalUsersCanInviteByEmail', 'internalUsersCanInviteByLink', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess', 'showCaptureInRegisterForm', 'showRegistrationUserGroup', 'blockUsers', 'showOnlineStatus'], 'boolean'],
             ['defaultUserProfileVisibility', 'in', 'range' => array_keys(User::getVisibilityOptions(false))],
             ['defaultUserIdleTimeoutSec', 'integer', 'min' => 20],
             [['registrationApprovalMailContent', 'registrationDenialMailContent'], 'string']
@@ -83,6 +85,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
             'internalUsersCanInviteByLink' => Yii::t('AdminModule.user', 'Members can invite external users by link'),
             'showRegistrationUserGroup' => Yii::t('AdminModule.user', 'Show group selection at registration'),
             'blockUsers' => Yii::t('AdminModule.user', 'Allow users to block each other'),
+            'showOnlineStatus' => Yii::t('AdminModule.user', 'Show online status on the profile image'),
             'defaultUserIdleTimeoutSec' => Yii::t('AdminModule.user', 'Default user idle timeout, auto-logout (in seconds, optional)'),
             'allowGuestAccess' => Yii::t('AdminModule.user', 'Allow visitors limited access to content without an account (Adds visibility: "Guest")'),
             'showCaptureInRegisterForm' => Yii::t('AdminModule.user', 'Include captcha in registration form'),
@@ -109,6 +112,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
         $settingsManager->set('auth.anonymousRegistration', $this->internalAllowAnonymousRegistration);
         $settingsManager->set('auth.showRegistrationUserGroup', $this->showRegistrationUserGroup);
         $settingsManager->set('auth.blockUsers', $this->blockUsers);
+        $settingsManager->set('auth.showOnlineStatus', $this->showOnlineStatus);
         $settingsManager->set('auth.defaultUserIdleTimeoutSec', $this->defaultUserIdleTimeoutSec);
         $settingsManager->set('auth.allowGuestAccess', $this->allowGuestAccess);
 

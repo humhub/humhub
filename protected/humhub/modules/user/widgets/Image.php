@@ -59,7 +59,8 @@ class Image extends BaseImage
         $this->imageOptions['alt'] = Yii::t('base', 'Profile picture of {displayName}', ['displayName' => Html::encode($this->user->displayName)]);
         $html = Html::img($this->user->getProfileImage()->getUrl(), $this->imageOptions);
 
-        if ($this->showOnlineStatus && Yii::$app->user->id !== $this->user->id) {
+        $isOnlineService = new IsOnlineService($this->user);
+        if ($this->showOnlineStatus && Yii::$app->user->id !== $this->user->id && $isOnlineService->isEnabled()) {
             $imgSize = 'img-size-medium';
             if ($this->width < 28) {
                 $imgSize = 'img-size-small';
@@ -71,7 +72,7 @@ class Image extends BaseImage
             } else {
                 Html::addCssClass($this->htmlOptions, ['has-online-status', $imgSize]);
             }
-            $userIsOnline = (new IsOnlineService($this->user))->getStatus();
+            $userIsOnline = $isOnlineService->getStatus();
             $html .= Html::tag('span', '', [
                 'class' => ['tt user-online-status', $userIsOnline ? 'user-is-online' : 'user-is-offline'],
                 'title' => $userIsOnline ?

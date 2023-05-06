@@ -9,6 +9,7 @@
 namespace humhub\modules\user\services;
 
 use humhub\modules\user\models\User;
+use humhub\modules\user\Module;
 use Yii;
 
 /**
@@ -29,14 +30,29 @@ class IsOnlineService
 
     public function updateStatus(): void
     {
-        if ($this->user && !Yii::$app->cache->exists($this->getCacheKey())) {
+        if ($this->isEnabled() && !Yii::$app->cache->exists($this->getCacheKey())) {
             Yii::$app->cache->set($this->getCacheKey(), true, 60); // Expires in 60 seconds
         }
     }
 
     public function getStatus(): bool
     {
-        return $this->user && Yii::$app->cache->exists($this->getCacheKey());
+        return $this->isEnabled() && Yii::$app->cache->exists($this->getCacheKey());
+    }
+
+    public function isEnabled(): bool
+    {
+        if (!$this->user) {
+            return false;
+        }
+
+        /* @var $module Module */
+        $module = Yii::$app->getModule('user');
+        $settingsManager = $module->settings;
+        
+        return
+            $settingsManager->get('auth.showOnlineStatus')
+            && $this->user->settings->get('showOnlineStatus', true);
     }
 
     protected function getCacheKey(): string

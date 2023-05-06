@@ -23,6 +23,7 @@ class AccountSettings extends Model
 
     public $tags;
     public $language;
+    public $showOnlineStatus;
     public $show_introduction_tour;
     public $visibility;
     public $timeZone;
@@ -35,11 +36,13 @@ class AccountSettings extends Model
     {
         return [
             [['tags', 'blockedUsers'], 'safe'],
-            [['show_introduction_tour'], 'boolean'],
+            [['showOnlineStatus', 'show_introduction_tour'], 'boolean'],
             [['timeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
             ['visibility', 'in', 'range' => array_keys($this->getVisibilityOptions()),
-                'when' => function (self $model) {return $model->isVisibilityViewable() && $model->isVisibilityEditable();}],
+                'when' => function (self $model) {
+                    return $model->isVisibilityViewable() && $model->isVisibilityEditable();
+                }],
         ];
     }
 
@@ -51,6 +54,7 @@ class AccountSettings extends Model
         return [
             'tags' => Yii::t('UserModule.account', 'Profile Tags'),
             'language' => Yii::t('UserModule.account', 'Language'),
+            'showOnlineStatus' => Yii::t('UserModule.account', 'Show my "online" status to other users'),
             'show_introduction_tour' => Yii::t('UserModule.account', 'Hide introduction tour panel on dashboard'),
             'timeZone' => Yii::t('UserModule.account', 'TimeZone'),
             'visibility' => Yii::t('UserModule.account', 'Profile visibility'),
