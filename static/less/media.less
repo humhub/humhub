@@ -153,7 +153,7 @@ img {
     image-orientation: from-image;
 }
 
-span.has-online-status {
+.has-online-status {
     position: relative;
     display: inline-block;
     margin-bottom: 10px;
@@ -161,18 +161,19 @@ span.has-online-status {
     .user-online-status {
         aspect-ratio: 1 / 1;
         width: 40%;
-        border: 1px solid white;
         border-radius: 100%;
         position: absolute;
         right: -20%;
         bottom: -20%;
+        border: 1px solid transparent;
 
         &.user-is-online {
+            border-color: @background-color-main;
             background-color: @success;
         }
 
         &.user-is-offline {
-            background-color: transparent;
+            // Invisible but a color can be added in a custom theme
         }
     }
 
