@@ -14,8 +14,6 @@ use Yii;
 /**
  * Allow to know which users are currently online
  *
- * @property-read string $cacheKey
- *
  * @since 1.15
  */
 class IsOnlineService
@@ -31,14 +29,14 @@ class IsOnlineService
 
     public function updateStatus(): void
     {
-        if ($this->user && !Yii::$app->cache->exists($this->cacheKey)) {
-            Yii::$app->cache->set($this->cacheKey, true, 60); // Expires in 60 seconds
+        if ($this->user && !Yii::$app->cache->exists($this->getCacheKey())) {
+            Yii::$app->cache->set($this->getCacheKey(), true, 60); // Expires in 60 seconds
         }
     }
 
     public function getStatus(): bool
     {
-        return $this->user && Yii::$app->cache->exists($this->cacheKey);
+        return $this->user && Yii::$app->cache->exists($this->getCacheKey());
     }
 
     protected function getCacheKey(): string
