@@ -1,0 +1,16 @@
+sudo: required
+
+language: php
+
+services:
+  - docker
+
+before_install:
+  - docker-compose build
+  - docker-compose up -d
+  - sleep 60
+  - docker ps -a
+
+script:
+  - curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
+  - docker-compose exec -w '/var/www/localhost/htdocs/protected' -T humhub php yii test/email 'test@example.com' | grep 'Message successfully sent!' -q

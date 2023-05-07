@@ -1,0 +1,65 @@
+version: '3.1'
+services:
+  humhub:
+    restart: always
+    image: mriedmann/humhub:1.6.3
+    container_name: humhub
+    hostname: humhub
+    environment:
+      # 1 => true, set to "false" to disable.
+      HUMHUB_DB_USER: humhub
+      HUMHUB_DB_PASSWORD: humhub
+      HUMHUB_DB_HOST: 'db'
+      HUMHUB_DB_NAME: 'humhub'
+      HUMHUB_AUTO_INSTALL: 1
+      HUMHUB_DEBUG: 1
+      HUMHUB_PROTO: 'http'
+      HUMHUB_HOST: humhum.com # alt.humhub.com 
+      # Reverseproxy variables
+      VIRTUAL_HOST: humhum.com # alt.humhumb.com
+      # Let's encrpyt variables
+      LETSENCRYPT_HOST: humhum.com # alt.humhub.com 
+      LETSENCRYPT_EMAIL: admin@humhum.com
+      NGINX_KEEPALIVE_TIMEOUT: '65'
+      NGINX_CLIENT_MAX_BODY_SIZE: '10m'
+
+    volumes:
+      - '/opt/docker/humhub/data/humhub/protected/config:/var/www/localhost/htdocs/protected/config:Z'
+      - '/opt/docker/humhub/data/humhub/protected/modules:/var/www/localhost/htdocs/protected/modules:Z'
+      - '/opt/docker/humhub/data/humhub/uploads:/var/www/localhost/htdocs/uploads:Z'
+      - '/opt/docker/humhub/data/humhub/themes:/var/www/localhost/htdocs/themes/humhum:Z'
+      # Not strictly necessary, just to shut up the log file
+      - '/opt/docker/humhub/data/humhub/protected/runtime/logs:/var/www/localhost/htdocs/protected/runtime/logs/:Z'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    ports:
+      - 8080:80
+    networks:
+      - coltero
+
+  db:
+    restart: always
+    image: mariadb:latest
+    container_name: mariadb
+    hostname: humhub
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: 'humhub'
+      MYSQL_USER: humhub
+      MYSQL_PASSWORD: humhub
+    volumes:
+      - '/opt/docker/humhub/data/mariadb/:/var/lib/mysql:Z'
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - coltero
+
+networks:
+  coltero:
+    external: true

@@ -1,0 +1,23 @@
+name: Auto Release
+
+on:
+  repository_dispatch:
+    types: release
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Login to github registry
+      run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username mriedmann --password-stdin
+    - name: Login to docker-hub registry
+      run: echo "${{ secrets.DOCKERHUB_PAT }}" | docker login docker.io --username mriedmann --password-stdin
+    - name: Execute Release
+      id: release
+      run: |
+        . ./release.sh

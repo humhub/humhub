@@ -1,0 +1,38 @@
+name: Auto Update
+
+on:
+  repository_dispatch:
+    types: check-update
+  workflow_dispatch:
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set git config
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+    - name: Execute Update
+      id: update
+      run: |
+        . ./update.sh
+        { echo "CUR_VERSION=$CUR_VERSION"; echo "NEW_VERSION=$NEW_VERSION"; echo "GIT_BRANCH=$GIT_BRANCH"; } >> "$GITHUB_ENV"
+    - name: Check git status and log
+      run: |
+        git status
+        git log
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: "${{ env.GIT_BRANCH }}"
+    - name: pull-request
+      uses: repo-sync/pull-request@v2
+      with:
+        source_branch: "${{ env.GIT_BRANCH }}"                                 
+        destination_branch: "master"                      
+        pr_title: "Update to ${{ env.NEW_VERSION }}"
+        github_token: ${{ secrets.GITHUB_TOKEN }}
