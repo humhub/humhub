@@ -1,7 +1,6 @@
 <?php
 
 namespace humhub\modules\user\models;
-use humhub\libs\BasePermission;
 
 
 /**

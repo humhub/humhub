@@ -2,6 +2,10 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\modules\user\models\GroupUser;
+use Yii;
+use humhub\modules\user\models\User;
+use humhub\modules\user\models\Group;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupUser;

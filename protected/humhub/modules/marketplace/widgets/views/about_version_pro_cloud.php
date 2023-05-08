@@ -1,6 +1,5 @@
 <?php
 
-use yii\helpers\Url;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 ?>

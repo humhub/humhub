@@ -4,7 +4,6 @@
 namespace humhub\modules\content\widgets\richtext\converter;
 
 
-use humhub\libs\Helpers;
 use humhub\libs\Html;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;

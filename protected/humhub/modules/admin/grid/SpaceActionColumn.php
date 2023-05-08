@@ -10,8 +10,6 @@ namespace humhub\modules\admin\grid;
 
 use Yii;
 use humhub\libs\ActionColumn;
-use humhub\modules\space\models\Space;
-use humhub\modules\admin\controllers\UserController;
 
 /**
  * SpaceActionColumn

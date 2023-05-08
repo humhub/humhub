@@ -13,7 +13,6 @@ use humhub\libs\Helpers;
 use humhub\modules\user\models\fieldtype\BaseType;
 use Yii;
 use yii\db\ActiveQuery;
-use yii\helpers\Html;
 
 /**
  * This is the model class for table "profile_field".

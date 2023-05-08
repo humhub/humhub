@@ -9,7 +9,6 @@
 namespace humhub\modules\live;
 
 use Yii;
-use humhub\modules\live\Module;
 use humhub\modules\friendship\FriendshipEvent;
 use humhub\modules\space\MemberEvent;
 use humhub\modules\user\events\FollowEvent;

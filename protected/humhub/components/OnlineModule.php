@@ -7,7 +7,6 @@
 
 namespace humhub\components;
 
-use humhub\modules\marketplace\models\Licence;
 use humhub\modules\marketplace\models\Module as ModelModule;
 use humhub\modules\marketplace\Module as MarketplaceModule;
 use Yii;

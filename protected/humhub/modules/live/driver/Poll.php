@@ -8,10 +8,7 @@
 
 namespace humhub\modules\live\driver;
 
-use Yii;
-use yii\helpers\Json;
 use yii\helpers\Url;
-use humhub\modules\live\driver\BaseDriver;
 use humhub\modules\live\components\LiveEvent;
 use humhub\modules\live\models\Live;
 

@@ -2,11 +2,7 @@
 
 namespace admin\functional;
 
-use humhub\modules\admin\permissions\ManageModules;
-use humhub\modules\admin\permissions\ManageSpaces;
-use humhub\modules\admin\permissions\SeeAdminInformation;
 use humhub\modules\user\models\Invite;
-use tests\codeception\_pages\AdminPage;
 use admin\FunctionalTester;
 use Yii;
 

@@ -8,7 +8,6 @@
 
 namespace humhub\modules\comment\widgets;
 
-use humhub\components\ActiveRecord;
 use humhub\components\Widget;
 use humhub\modules\comment\models\Comment as CommentModel;
 use humhub\modules\comment\Module;

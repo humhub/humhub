@@ -10,7 +10,6 @@ namespace humhub\modules\content\controllers;
 
 use Yii;
 use humhub\components\Controller;
-use humhub\modules\content\models\WallEntry;
 use humhub\modules\content\models\Content;
 use yii\web\HttpException;
 

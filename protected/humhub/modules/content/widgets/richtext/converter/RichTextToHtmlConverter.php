@@ -9,12 +9,7 @@
 namespace humhub\modules\content\widgets\richtext\converter;
 
 
-use cebe\markdown\GithubMarkdown;
-use cebe\markdown\inline\LinkTrait;
 use humhub\libs\Html;
-use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
-use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtensionMatch;
-use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
 use yii\helpers\HtmlPurifier;
 use yii\helpers\Url;

@@ -11,7 +11,6 @@ namespace user\functional;
 use humhub\modules\user\models\User;
 use user\FunctionalTester;
 use Yii;
-use yii\helpers\Url;
 
 class ProfileImageAccessCest
 {

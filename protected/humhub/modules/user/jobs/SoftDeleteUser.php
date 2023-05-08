@@ -8,7 +8,6 @@
 
 namespace humhub\modules\user\jobs;
 
-use Yii;
 use yii\base\InvalidArgumentException;
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;

@@ -8,7 +8,6 @@
 
 namespace humhub\modules\content\widgets\richtext;
 
-use humhub\libs\EmojiMap;
 use humhub\libs\Helpers;
 use humhub\libs\ParameterEvent;
 use humhub\modules\content\widgets\richtext\extensions\emoji\RichTextEmojiExtension;

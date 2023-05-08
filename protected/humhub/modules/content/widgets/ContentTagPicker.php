@@ -8,8 +8,6 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\libs\Html;
-use Yii;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\ui\form\widgets\BasePicker;
 use humhub\modules\content\models\ContentTag;

@@ -5,7 +5,6 @@ namespace humhub\modules\content\widgets\stream;
 
 use humhub\modules\comment\widgets\Comments;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\content\widgets\ArchiveLink;
 use humhub\modules\content\widgets\DeleteLink;
 use humhub\modules\content\widgets\EditLink;
@@ -16,10 +15,8 @@ use humhub\modules\content\widgets\PinLink;
 use humhub\modules\content\widgets\VisibilityLink;
 use humhub\modules\content\widgets\WallEntryLinks;
 use humhub\modules\file\widgets\ShowFiles;
-use humhub\modules\space\models\Space;
 use humhub\modules\topic\widgets\ContentTopicButton;
 use humhub\modules\ui\menu\MenuEntry;
-use yii\base\Model;
 
 /**
  * This option class can be used to influence the rendering of a wall entry.

@@ -2,7 +2,6 @@
 
 use humhub\widgets\TopMenuRightStack;
 use humhub\modules\search\Events;
-use humhub\components\console\Application;
 use humhub\commands\CronController;
 
 return [

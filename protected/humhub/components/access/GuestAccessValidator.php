@@ -8,7 +8,6 @@
 namespace humhub\components\access;
 
 use humhub\modules\user\helpers\AuthHelper;
-use Yii;
 
 class GuestAccessValidator extends AccessValidator
 {

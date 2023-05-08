@@ -8,12 +8,10 @@
 
 namespace humhub\modules\ui\menu;
 
-use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\widgets\Menu;
 use humhub\libs\Html;
 use humhub\widgets\Link;
 use Yii;
-use yii\helpers\Url;
 
 /**
  * Class WidgetMenuEntry

@@ -12,7 +12,6 @@ namespace humhub\modules\stream\helpers;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use yii\helpers\Url;
 
 class StreamHelper
 {

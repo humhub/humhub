@@ -8,7 +8,6 @@
 
 namespace humhub\assets;
 
-use Yii;
 use yii\web\AssetBundle;
 
 /**

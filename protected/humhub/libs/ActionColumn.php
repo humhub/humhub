@@ -11,7 +11,6 @@ namespace humhub\libs;
 use humhub\widgets\Button;
 use yii\grid\Column;
 use yii\helpers\Url;
-use humhub\libs\Html;
 
 /**
  * Description of ActionColumn

@@ -10,7 +10,6 @@ namespace humhub\components;
 
 use Yii;
 use yii\helpers\Url;
-use yii\base\Exception;
 
 /**
  * @inheritdoc

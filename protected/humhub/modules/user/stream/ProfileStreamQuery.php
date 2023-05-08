@@ -3,10 +3,7 @@
 
 namespace humhub\modules\user\stream;
 
-use humhub\modules\stream\actions\ContentContainerStream;
 use humhub\modules\stream\models\filters\ContentContainerStreamFilter;
-use humhub\modules\stream\models\WallStreamQuery;
-use humhub\modules\user\models\User;
 use humhub\modules\user\stream\filters\IncludeAllContributionsFilter;
 use humhub\modules\stream\models\ContentContainerStreamQuery;
 

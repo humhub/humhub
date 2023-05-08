@@ -9,7 +9,6 @@
 
 namespace humhub\modules\content\tests\codeception\fixtures;
 
-use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;
 use yii\test\ActiveFixture;
 

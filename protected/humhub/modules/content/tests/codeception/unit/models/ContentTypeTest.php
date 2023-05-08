@@ -9,7 +9,6 @@
 namespace tests\codeception\unit\modules\content;
 
 use humhub\modules\content\models\Content;
-use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\ContentType;
 use humhub\modules\content\tests\codeception\unit\TestContent;
 use humhub\modules\post\models\Post;

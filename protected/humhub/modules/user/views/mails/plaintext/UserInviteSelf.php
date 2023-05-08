@@ -1,7 +1,6 @@
 <?php
 
 
-use yii\helpers\Html;
 
 /* @var $registrationUrl string */
 

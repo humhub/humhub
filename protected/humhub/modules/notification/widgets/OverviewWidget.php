@@ -5,7 +5,6 @@ namespace humhub\modules\notification\widgets;
 use humhub\widgets\JsWidget;
 use humhub\widgets\Reloadable;
 use Yii;
-use yii\helpers\Url;
 
 class OverviewWidget extends JsWidget implements Reloadable
 {

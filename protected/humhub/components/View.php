@@ -8,8 +8,6 @@
 
 namespace humhub\components;
 
-use Yii;
-use yii\helpers\Html;
 
 /**
  * @inheritdoc

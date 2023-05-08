@@ -2,7 +2,6 @@
 
 namespace humhub\modules\notification\tests\codeception\unit\rendering;
 
-use Yii;
 use tests\codeception\_support\HumHubDbTestCase;
 use humhub\modules\notification\models\Notification;
 use Codeception\Specify;

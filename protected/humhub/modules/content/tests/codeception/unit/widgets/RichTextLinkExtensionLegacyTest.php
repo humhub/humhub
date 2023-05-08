@@ -8,12 +8,7 @@
 
 namespace tests\codeception\unit\modules\content\widgets;
 
-use humhub\models\UrlOembed;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
-use humhub\modules\content\widgets\richtext\RichText;
-use humhub\modules\file\models\File;
-use humhub\modules\post\models\Post;
-use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 
 

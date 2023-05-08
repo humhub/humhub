@@ -8,15 +8,10 @@
 namespace humhub\modules\content\widgets\richtext\converter;
 
 
-use cebe\markdown\GithubMarkdown;
-use cebe\markdown\inline\LinkTrait;
 use humhub\libs\Helpers;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
-use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtensionMatch;
-use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
-use yii\helpers\Url;
 
 /**
  * This parser can be used to convert richtext or plain markdown to a plain text format used for example in

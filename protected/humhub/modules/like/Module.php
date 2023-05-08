@@ -10,7 +10,6 @@ namespace humhub\modules\like;
 
 use Yii;
 use humhub\modules\like\models\Like;
-use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentActiveRecord;
 
 /**

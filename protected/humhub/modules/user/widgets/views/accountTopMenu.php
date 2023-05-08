@@ -9,7 +9,6 @@
 use humhub\modules\ui\menu\DropdownDivider;
 use humhub\widgets\FooterMenu;
 use \yii\helpers\Html;
-use \yii\helpers\Url;
 use humhub\modules\user\widgets\Image;
 
 /* @var $this \humhub\modules\ui\view\components\View */

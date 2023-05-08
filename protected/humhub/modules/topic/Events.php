@@ -9,7 +9,6 @@
 namespace humhub\modules\topic;
 
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\ContentTopicButton;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\menu\MenuLink;

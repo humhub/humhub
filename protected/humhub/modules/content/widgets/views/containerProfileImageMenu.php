@@ -3,7 +3,6 @@
 use humhub\modules\file\widgets\Upload;
 use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
-use humhub\widgets\ModalConfirm;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $upload Upload */

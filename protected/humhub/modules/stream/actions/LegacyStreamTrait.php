@@ -8,7 +8,6 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
-use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use yii\db\ActiveQuery;

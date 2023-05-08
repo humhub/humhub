@@ -2,7 +2,6 @@
 
 namespace humhub\modules\content\widgets\richtext\extensions\link;
 
-use humhub\components\ActiveRecord;
 use humhub\modules\content\widgets\richtext\extensions\RichTextContentExtension;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtensionMatch;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;

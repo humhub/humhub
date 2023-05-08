@@ -9,10 +9,8 @@ namespace humhub\modules\ldap\controllers;
 
 
 use Exception;
-use humhub\components\SettingsManager;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\ldap\models\LdapSettings;
-use humhub\modules\user\authclient\LdapAuth;
 use Yii;
 use Laminas\Ldap\Exception\LdapException;
 use Laminas\Ldap\Ldap;

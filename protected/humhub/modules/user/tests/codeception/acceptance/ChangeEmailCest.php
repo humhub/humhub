@@ -2,7 +2,6 @@
 namespace user\acceptance;
 
 use user\AcceptanceTester;
-use tests\codeception\_pages\AccountSettingsPage;
 
 class ChangeEmailCest
 {

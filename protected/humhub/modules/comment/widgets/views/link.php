@@ -4,7 +4,6 @@ use humhub\modules\comment\widgets\CommentLink;
 use humhub\widgets\Button;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use \humhub\modules\comment\models\Comment;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $objectModel string */

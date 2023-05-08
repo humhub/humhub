@@ -8,10 +8,8 @@
 
 namespace humhub\modules\search\jobs;
 
-use humhub\components\ActiveRecord;
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
-use humhub\modules\search\interfaces\Searchable;
 use Yii;
 
 /**

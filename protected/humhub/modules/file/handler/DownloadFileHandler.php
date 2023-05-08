@@ -11,7 +11,6 @@ namespace humhub\modules\file\handler;
 use humhub\modules\file\models\File;
 use humhub\modules\file\widgets\FileDownload;
 use Yii;
-use yii\helpers\Url;
 
 /**
  * DownloadFileHandler provides the download link for a file

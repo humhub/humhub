@@ -1,6 +1,5 @@
 <?php
 
-use humhub\modules\file\libs\FileHelper;
 use yii\db\Migration;
 
 /**

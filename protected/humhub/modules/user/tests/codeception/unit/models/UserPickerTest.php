@@ -2,14 +2,8 @@
 
 namespace tests\codeception\unit\models;
 
-use humhub\modules\user\models\Profile;
-use humhub\modules\user\models\ProfileField;
-use humhub\modules\user\models\ProfileFieldCategory;
-use humhub\modules\user\models\User;
-use humhub\modules\user\models\UserFilter;
 use humhub\modules\user\models\UserPicker;
 use tests\codeception\_support\HumHubDbTestCase;
-use Yii;
 
 class UserPickerTest extends HumHubDbTestCase
 {

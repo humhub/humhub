@@ -2,7 +2,6 @@
 
 namespace humhub\modules\ui\form\widgets;
 
-use humhub\components\ActiveRecord;
 use Yii;
 use yii\base\Model;
 use yii\db\ActiveQuery;

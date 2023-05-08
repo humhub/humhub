@@ -13,7 +13,6 @@ use humhub\modules\user\Module;
 use Yii;
 use yii\helpers\Url;
 use yii\web\HttpException;
-use yii\db\Expression;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;

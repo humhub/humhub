@@ -2,7 +2,6 @@
 
 namespace humhub\modules\file\widgets;
 
-use yii\helpers\Html;
 
 /**
  * UploadButtonWidget renders an upload button with integrated file input.

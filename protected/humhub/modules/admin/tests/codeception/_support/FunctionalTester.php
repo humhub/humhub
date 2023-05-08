@@ -1,7 +1,6 @@
 <?php
 namespace admin;
 
-use humhub\modules\user\models\GroupPermission;
 
 /**
  * Inherited Methods

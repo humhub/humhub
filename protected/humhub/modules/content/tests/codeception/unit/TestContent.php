@@ -16,7 +16,6 @@
 namespace humhub\modules\content\tests\codeception\unit;
 
 
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\post\models\Post;
 

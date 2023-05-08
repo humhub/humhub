@@ -8,7 +8,6 @@
 
 namespace humhub\widgets;
 
-use humhub\assets\JplayerAsset;
 use humhub\assets\JplayerModuleAsset;
 use yii\helpers\Html;
 use humhub\libs\Helpers;

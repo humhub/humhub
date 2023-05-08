@@ -2,8 +2,6 @@
 
 namespace humhub\modules\activity\tests\codeception\activities;
 
-use Yii;
-use yii\helpers\Url;
 
 /**
  * Description of TestActivity
