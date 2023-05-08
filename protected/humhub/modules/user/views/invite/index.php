@@ -24,7 +24,6 @@ use yii\bootstrap\ActiveForm;
     'header' => Yii::t('UserModule.invite', '<strong>Invite</strong> new people'),
 ]) ?>
 <div class="modal-body">
-
     <?php if ($canInviteByEmail && $canInviteByLink): ?>
         <!-- Nav tabs -->
         <ul class="nav nav-tabs">
@@ -41,7 +40,7 @@ use yii\bootstrap\ActiveForm;
 
     <!-- Tab panes -->
     <div class="tab-content">
-        <?php if ($canInviteByEmail) : ?>
+        <?php if ($canInviteByEmail): ?>
             <div class="tab-pane active" id="invite-by-email">
                 <br/>
                 <strong><?= Yii::t('UserModule.invite', 'Please add the email addresses of people you want to invite below.') ?></strong>
@@ -56,17 +55,21 @@ use yii\bootstrap\ActiveForm;
             </div>
         <?php endif; ?>
 
-        <?php if ($canInviteByLink) : ?>
+        <?php if ($canInviteByLink): ?>
             <div class="tab-pane<?= $canInviteByEmail ? '' : ' active' ?>" id="invite-by-link">
                 <br/>
-                <strong><?= Yii::t('SpaceModule.base',
-                        'You can invite external users who are currently not registered via link. All you need to do is share this secure link with them.') ?></strong>
+                <strong>
+                    <?= Yii::t(
+                        'SpaceModule.base',
+                        'You can invite external users who are currently not registered via link. All you need to do is share this secure link with them.'
+                    ) ?>
+                </strong>
                 <br/><br/>
                 <div class="input-group" style="width: 100%;">
                     <?= Html::textarea('secureLink', $model->getInviteLink(), ['readonly' => 'readonly', 'class' => 'form-control']) ?>
-                    <?php if (Yii::$app->user->can([ManageUsers::class, ManageGroups::class])) : ?>
+                    <?php if (Yii::$app->user->can([ManageUsers::class, ManageGroups::class])): ?>
                         <a href="#" class="pull-right"
-                           data-action-confirm-header="<?= Yii::t('SpaceModule.base', 'Create new link') ?>",
+                           data-action-confirm-header="<?= Yii::t('SpaceModule.base', 'Create new link') ?>"
                            data-action-confirm="<?= Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?') ?>"
                            data-action-click="ui.modal.load"
                            data-action-click-url="<?= Url::to(['/user/invite/reset-invite-link', 'adminIsAlwaysAllowed' => $adminIsAlwaysAllowed]) ?>">
@@ -75,8 +78,7 @@ use yii\bootstrap\ActiveForm;
                     <?php endif; ?>
                 </div>
                 <br>
-                <?= Button::primary(Yii::t('SpaceModule.base',
-                    'Send the link via email'))
+                <?= Button::primary(Yii::t('SpaceModule.base', 'Send the link via email'))
                     ->link('mailto:' .
                         '?subject=' . rawurlencode(Yii::t('UserModule.invite', 'You\'ve been invited to join %appName%', ['%appName%' => Yii::$app->name])) .
                         '&body=' . rawurlencode($this->renderFile($this->findViewFile('@humhub/modules/user/views/mails/plaintext/UserInvite'), [
