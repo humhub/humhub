@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\handler\BaseFileHandler;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
@@ -7,7 +8,6 @@ use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\Button;
 use yii\helpers\Html;
-use humhub\modules\content\widgets\richtext\RichTextField;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $objectModel string */
@@ -25,7 +25,7 @@ $contentModule = Yii::$app->getModule('content');
     <?= Html::hiddenInput('objectModel', $objectModel); ?>
     <?= Html::hiddenInput('objectId', $objectId); ?>
 
-    <div class="comment-create-input-group">
+    <div class="content-create-input-group">
         <?= $form->field($comment, 'message')->widget(RichTextField::class, [
             'id' => 'comment_input_' . $comment->id,
             'layout' => RichTextField::LAYOUT_INLINE,
@@ -38,7 +38,7 @@ $contentModule = Yii::$app->getModule('content');
             ]
         ])->label(false) ?>
 
-        <div class="comment-buttons"><?php
+        <div class="upload-buttons"><?php
             $uploadButton = UploadButton::widget([
                 'id' => 'comment_upload_' . $comment->id,
                 'model' => $comment,
@@ -59,7 +59,7 @@ $contentModule = Yii::$app->getModule('content');
                 ->icon('send')
                 ->cssClass('btn-comment-submit')->sm()
                 ->action('editSubmit', $submitUrl)->submit();
-        ?></div>
+            ?></div>
     </div>
 
     <div id="comment_upload_progress_<?= $comment->id ?>" style="display:none; margin:10px 0;"></div>
