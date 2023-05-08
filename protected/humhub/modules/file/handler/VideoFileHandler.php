@@ -1,0 +1,30 @@
+<?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace humhub\modules\file\handler;
+
+use Yii;
+
+/**
+ * VideoFileHandler allows uploading video files type
+ */
+class VideoFileHandler extends BaseFileHandler
+{
+
+    /**
+     * @inheritdoc
+     */
+    public function getLinkAttributes()
+    {
+        return [
+            'label' => Yii::t('MailModule.base', 'Attach a video'),
+            'data-action-click' => 'file.uploadByType',
+            'data-action-params' => '{"type":"video/*"}', // Available types: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept
+        ];
+    }
+
+}

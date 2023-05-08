@@ -27,3 +27,4 @@ HumHub Changelog
 - Enh #6289: Refactored UserWall and Wall widgets
 - Fix #44: Mail Module Indicator Problem
 - Fix #6299: Fix ambiguous space sort order column
+- Enh #2590: Possibility to add a dropdown button to upload audio, image or video file type
