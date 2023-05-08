@@ -482,7 +482,7 @@ humhub.module('file', function (module, require, $) {
     var uploadByType = function (evt) {
         const selectedType = evt.$trigger;
         const type = evt.params.type;
-        const btnGroup = selectedType.parents('.btn-group');
+        const btnGroup = selectedType.closest('.btn-group');
         const inputBtn = btnGroup.children('.fileinput-button');
         const inputField = $(inputBtn.data('action-target'));
 
