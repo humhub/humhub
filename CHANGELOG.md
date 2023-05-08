@@ -15,6 +15,7 @@ HumHub Changelog
 - Fix #6273: Fix automatically login user after registration
 - Fix #6292: Messages: Notification Indicator Problem
 - Fix #6296: Update style variable `background-color-secondary`
+- Fix #6228: Administrators allowed to manage users cannot invite by email or by link if disabled in the settings
 
 1.14.0 (April 20, 2023)
 -----------------------
