@@ -115,7 +115,7 @@ class Events extends BaseObject
     {
         foreach (Content::find()->each() as $content) {
             $contentObject = $content->getPolymorphicRelation();
-            if ($contentObject instanceof Searchable && $content->state === Content::STATE_PUBLISHED) {
+            if ($contentObject instanceof Searchable && $content->getStateService()->is(Content::STATE_PUBLISHED)) {
                 Yii::$app->search->add($contentObject);
             }
         }
@@ -131,7 +131,7 @@ class Events extends BaseObject
         /** @var ContentActiveRecord $record */
         $record = $event->sender;
 
-        if ($record->content->state === Content::STATE_PUBLISHED) {
+        if ($record->content->getStateService()->is(Content::STATE_PUBLISHED)) {
             SearchHelper::queueUpdate($record);
         }
     }

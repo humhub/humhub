@@ -474,8 +474,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
         if ($activitiesQuery instanceof ActiveQuery) {
             foreach ($activitiesQuery->each() as $activity) {
                 /* @var Activity $activity */
-                $activity->content->setState($newState);
-                $activity->content->save();
+                $activity->content->getStateService()->update($newState);
             }
         }
     }

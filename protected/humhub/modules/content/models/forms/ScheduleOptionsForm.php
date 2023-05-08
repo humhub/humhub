@@ -29,7 +29,7 @@ class ScheduleOptionsForm extends Model
         parent::init();
 
         if ($this->hasContent() && $this->content->scheduled_at !== null) {
-            $this->enabled = $this->content->state == Content::STATE_SCHEDULED;
+            $this->enabled = $this->content->getStateService()->is(Content::STATE_SCHEDULED);
             $this->date = $this->content->scheduled_at;
         }
 
@@ -96,9 +96,9 @@ class ScheduleOptionsForm extends Model
 
         if ($this->hasContent()) {
             if ($this->enabled) {
-                $this->content->setState(Content::STATE_SCHEDULED, ['scheduled_at' => $this->date]);
+                $this->content->getStateService()->set(Content::STATE_SCHEDULED, ['scheduled_at' => $this->date]);
             } else {
-                $this->content->setState(Content::STATE_DRAFT);
+                $this->content->getStateService()->set(Content::STATE_DRAFT);
             }
             return $this->content->save();
         }

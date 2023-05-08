@@ -327,7 +327,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
      */
     public function getControlsMenuEntries()
     {
-        if ($this->model->content->state === Content::STATE_DELETED) {
+        if ($this->model->content->getStateService()->is(Content::STATE_DELETED)) {
             return [];
         }
 
