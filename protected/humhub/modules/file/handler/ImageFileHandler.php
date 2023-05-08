@@ -10,7 +10,8 @@ namespace humhub\modules\file\handler;
 use Yii;
 
 /**
- * AudioFileHandler allows uploading images files type
+ * ImageFileHandler allows uploading images files type
+ * @since 1.15
  */
 class ImageFileHandler extends BaseFileHandler
 {

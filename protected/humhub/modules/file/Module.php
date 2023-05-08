@@ -8,6 +8,10 @@
 
 namespace humhub\modules\file;
 
+use humhub\modules\file\handler\AudioFileHandler;
+use humhub\modules\file\handler\ImageFileHandler;
+use humhub\modules\file\handler\VideoFileHandler;
+
 /**
  * File Module
  *
@@ -103,4 +107,10 @@ class Module extends \humhub\components\Module
      * @var int The maximum megapixels(width*height) of processing image files.
      */
     public $imageMaxProcessingMP = 64;
+
+    /**
+     * @since 1.15
+     * @var string[] List of file types added to the upload dropdown button (must be classes extending the BaseFileHandler class)
+     */
+    public $defaultFileHandlers = [AudioFileHandler::class, ImageFileHandler::class, VideoFileHandler::class];
 }

@@ -11,6 +11,7 @@ use Yii;
 
 /**
  * VideoFileHandler allows uploading video files type
+ * @since 1.15
  */
 class VideoFileHandler extends BaseFileHandler
 {

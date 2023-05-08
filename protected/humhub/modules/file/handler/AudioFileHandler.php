@@ -11,6 +11,7 @@ use Yii;
 
 /**
  * AudioFileHandler allows uploading audio files type
+ * @since 1.15
  */
 class AudioFileHandler extends BaseFileHandler
 {
