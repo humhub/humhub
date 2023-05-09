@@ -13,6 +13,11 @@ HumHub Changelog
 - Enh #6242: Submit button hidden when editing a comment having a long "code" line 
 - Fix #6282: Hard delete content records on integrity check
 - Fix #6257: Fix error after publishing of a draft content
+- Fix #6273: Fix automatically login user after registration
+- Fix #6292: Messages: Notification Indicator Problem
+- Fix #6296: Update style variable `background-color-secondary`
+- Fix #6228: Administrators allowed to manage users cannot invite by email or by link if disabled in the settings
+- Fix #6293: Delete content from DB completely on purge content by cron job
 
 1.14.0 (April 20, 2023)
 -----------------------
