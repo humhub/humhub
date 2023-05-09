@@ -368,8 +368,7 @@ class ContentController extends Controller
 
         $content = Content::findOne(['id' => Yii::$app->request->get('id', '')]);
         if ($content !== null && $content->canEdit() && $content->getStateService()->isDraft()) {
-            $content->state = Content::STATE_PUBLISHED;
-            if ($content->save()) {
+            if ($content->getStateService()->publish()) {
                 $json['message'] = Yii::t('ContentModule.base', 'The content has been successfully published.');
                 $json['success'] = true;
             } else {

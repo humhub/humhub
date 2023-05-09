@@ -974,8 +974,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
             return $this->checkGuestAccess();
         }
 
-        // If content is draft, in trash, unapproved - restrict view access to editors
-        if ($this->state !== static::STATE_PUBLISHED) {
+        // If content is not published(draft, in trash, unapproved) - restrict view access to editors
+        if (!$this->getStateService()->isPublished()) {
             return $this->canEdit();
         }
 

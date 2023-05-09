@@ -137,7 +137,7 @@ class Mentioning extends ActiveRecord
         }
 
         // Mention only for published content
-        if ($record->content->state != Content::STATE_PUBLISHED) {
+        if (!$record->content->getStateService()->isPublished()) {
             return [];
         }
 

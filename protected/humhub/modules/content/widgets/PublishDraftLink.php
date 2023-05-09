@@ -20,9 +20,8 @@ class PublishDraftLink extends Widget
      */
     public function run()
     {
-        if ($this->content->content->state != Content::STATE_DRAFT ||
+        if (!$this->content->content->getStateService()->isDraft() ||
             !$this->content->content->canEdit()) {
-
             return '';
         }
 

@@ -41,6 +41,8 @@ class ContentStateService
      */
     public function is($state): bool
     {
+        // Always convert to integer before comparing,
+        // because right after save the content->state may be a string
         return (int) $this->content->state === (int) $state;
     }
 
