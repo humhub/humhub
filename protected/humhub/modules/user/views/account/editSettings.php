@@ -30,7 +30,7 @@ use humhub\modules\user\widgets\UserPickerField;
 <?php endif; ?>
 
 <?php if ($isEnabledOnlineStatus) : ?>
-    <?= $form->field($model, 'showOnlineStatus')->checkbox(); ?>
+    <?= $form->field($model, 'hideOnlineStatus')->checkbox(); ?>
 <?php endif; ?>
 
 <?php if (Yii::$app->getModule('tour')->settings->get('enable') == 1) : ?>

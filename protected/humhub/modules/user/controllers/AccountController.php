@@ -123,13 +123,13 @@ class AccountController extends BaseAccountController
         }
 
         $model->tags = $user->getTags();
-        $model->showOnlineStatus = $user->settings->get('showOnlineStatus', true);
+        $model->hideOnlineStatus = $user->settings->get('hideOnlineStatus');
         $model->show_introduction_tour = Yii::$app->getModule('tour')->settings->contentContainer($user)->get("hideTourPanel");
         $model->visibility = $user->visibility;
         $model->blockedUsers = $user->getBlockedUserGuids();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $user->settings->set('showOnlineStatus', $model->showOnlineStatus);
+            $user->settings->set('hideOnlineStatus', $model->hideOnlineStatus);
             Yii::$app->getModule('tour')->settings->contentContainer($user)->set('hideTourPanel', $model->show_introduction_tour);
 
             $user->scenario = User::SCENARIO_EDIT_ACCOUNT_SETTINGS;
@@ -158,7 +158,7 @@ class AccountController extends BaseAccountController
         return $this->render('editSettings', [
             'model' => $model,
             'languages' => $languages,
-            'isEnabledOnlineStatus' => (bool)$settingsManager->get('auth.showOnlineStatus'),
+            'isEnabledOnlineStatus' => !$settingsManager->get('auth.hideOnlineStatus'),
         ]);
     }
 

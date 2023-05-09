@@ -46,7 +46,7 @@ class UserListBox extends \yii\base\Widget
      */
     public $pageSize = null;
 
-    public bool $showOnlineStatus = false;
+    public bool $hideOnlineStatus = false;
 
     /**
      * @inheritdoc
@@ -73,7 +73,7 @@ class UserListBox extends \yii\base\Widget
             'title' => $this->title,
             'users' => $this->query->all(),
             'pagination' => $pagination,
-            'showOnlineStatus' => $this->showOnlineStatus,
+            'hideOnlineStatus' => $this->hideOnlineStatus,
         ]);
     }
 

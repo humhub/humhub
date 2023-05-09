@@ -32,7 +32,7 @@ class Image extends BaseImage
      */
     public $link = true;
 
-    public bool $showOnlineStatus = false;
+    public bool $hideOnlineStatus = false;
 
     /**
      * @inheritdoc
@@ -60,7 +60,7 @@ class Image extends BaseImage
         $html = Html::img($this->user->getProfileImage()->getUrl(), $this->imageOptions);
 
         $isOnlineService = new IsOnlineService($this->user);
-        if ($this->showOnlineStatus && Yii::$app->user->id !== $this->user->id && $isOnlineService->isEnabled()) {
+        if (!$this->hideOnlineStatus && $isOnlineService->isEnabled()) {
             $imgSize = 'img-size-medium';
             if ($this->width < 28) {
                 $imgSize = 'img-size-small';

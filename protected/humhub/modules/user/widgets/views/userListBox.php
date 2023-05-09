@@ -7,7 +7,7 @@ use humhub\widgets\ModalDialog;
 use yii\helpers\Html;
 
 /* @var $users \humhub\modules\user\models\User[] */
-/* @var bool $showOnlineStatus */
+/* @var bool $hideOnlineStatus */
 ?>
 
 <?php ModalDialog::begin(['header' => $title]) ?>
@@ -29,7 +29,7 @@ use yii\helpers\Html;
                             'user' => $user,
                             'link' => false,
                             'htmlOptions' => ['class' => 'media-object pull-left'],
-                            'showOnlineStatus' => $showOnlineStatus,
+                            'hideOnlineStatus' => $hideOnlineStatus,
                         ]) ?>
 
                         <div class="media-body">

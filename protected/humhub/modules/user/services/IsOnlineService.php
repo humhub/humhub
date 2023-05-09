@@ -49,10 +49,10 @@ class IsOnlineService
         /* @var $module Module */
         $module = Yii::$app->getModule('user');
         $settingsManager = $module->settings;
-        
+
         return
-            $settingsManager->get('auth.showOnlineStatus')
-            && $this->user->settings->get('showOnlineStatus', true);
+            !$settingsManager->get('auth.hideOnlineStatus')
+            && !$this->user->settings->get('hideOnlineStatus');
     }
 
     protected function getCacheKey(): string
