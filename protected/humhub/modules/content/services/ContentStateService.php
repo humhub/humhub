@@ -44,6 +44,26 @@ class ContentStateService
         return (int) $this->content->state === (int) $state;
     }
 
+    public function isPublished(): bool
+    {
+        return $this->is(Content::STATE_PUBLISHED);
+    }
+
+    public function isDraft(): bool
+    {
+        return $this->is(Content::STATE_DRAFT);
+    }
+
+    public function isScheduled(): bool
+    {
+        return $this->is(Content::STATE_SCHEDULED);
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->is(Content::STATE_DELETED);
+    }
+
     /**
      * Check if the requested state can be set to the Content
      *
@@ -93,5 +113,25 @@ class ContentStateService
     public function update($state, array $options = []): bool
     {
         return $this->set($state, $options) && $this->content->save();
+    }
+
+    public function publish(): bool
+    {
+        return $this->update(Content::STATE_PUBLISHED);
+    }
+
+    public function schedule(?string $date): bool
+    {
+        return $this->update(Content::STATE_SCHEDULED, ['scheduled_at' => $date]);
+    }
+
+    public function draft(): bool
+    {
+        return $this->update(Content::STATE_DRAFT);
+    }
+
+    public function delete(): bool
+    {
+        return $this->update(Content::STATE_DELETED);
     }
 }

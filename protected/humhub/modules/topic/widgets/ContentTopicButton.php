@@ -10,7 +10,6 @@
 namespace humhub\modules\topic\widgets;
 
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\models\Content;
 use humhub\widgets\ModalButton;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\content\widgets\WallEntryControlLink;
@@ -26,7 +25,7 @@ class ContentTopicButton extends WallEntryControlLink
 
     public function renderLink()
     {
-        if ($this->record->content->getStateService()->is(Content::STATE_DELETED)) {
+        if ($this->record->content->getStateService()->isDeleted()) {
             return '';
         }
 

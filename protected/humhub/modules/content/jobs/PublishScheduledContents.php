@@ -30,7 +30,7 @@ class PublishScheduledContents extends ActiveJob
             ->all();
 
         foreach ($contents as $content) {
-            $content->getStateService()->update(Content::STATE_PUBLISHED);
+            $content->getStateService()->publish();
         }
     }
 

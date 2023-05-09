@@ -238,7 +238,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
         if (array_key_exists('state', $changedAttributes)) {
             $model = $this->getPolymorphicRelation();
 
-            if ($this->getStateService()->is(Content::STATE_PUBLISHED)) {
+            if ($this->getStateService()->isPublished()) {
                 // Run process for new content(Send notifications) only after publishing the Content
                 $this->processNewContent();
                 // Also run process for parent object in order to send notifications like mentioning users
@@ -259,7 +259,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
             }
         }
 
-        if ($this->getStateService()->is(static::STATE_PUBLISHED)) {
+        if ($this->getStateService()->isPublished()) {
             SearchHelper::queueUpdate($this->getModel());
         } else {
             SearchHelper::queueDelete($this->getModel());
@@ -393,7 +393,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
             'source_pk' => $this->getPrimaryKey(),
         ]);
 
-        if (!$this->getStateService()->update(self::STATE_DELETED)) {
+        if (!$this->getStateService()->delete()) {
             return false;
         }
 
@@ -1078,7 +1078,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * @param int|string|null $state
      * @param array $options Additional options depending on state
      * @since 1.14
-     * @deprecated Use $this->getStateService()->set()
+     * @deprecated Use $this->getStateService()->set(). It will be deleted in v1.15.
      */
     public function setState($state, array $options = [])
     {

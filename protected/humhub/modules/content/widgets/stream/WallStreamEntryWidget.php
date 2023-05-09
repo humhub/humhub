@@ -6,7 +6,6 @@ namespace humhub\modules\content\widgets\stream;
 use Exception;
 use humhub\libs\Html;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\ArchiveLink;
 use humhub\modules\content\widgets\DeleteLink;
 use humhub\modules\content\widgets\LockCommentsLink;
@@ -327,7 +326,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
      */
     public function getControlsMenuEntries()
     {
-        if ($this->model->content->getStateService()->is(Content::STATE_DELETED)) {
+        if ($this->model->content->getStateService()->isDeleted()) {
             return [];
         }
 
