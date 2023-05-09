@@ -31,7 +31,6 @@ use humhub\modules\user\authclient\interfaces\ApprovalBypass;
  */
 class RegistrationController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -89,8 +88,8 @@ class RegistrationController extends Controller
 
             // Autologin when user is enabled (no approval required)
             if ($registration->getUser()->status === User::STATUS_ENABLED) {
-                Yii::$app->user->switchIdentity($registration->models['User']);
-                $registration->models['User']->updateAttributes(['last_login' => date('Y-m-d G:i:s')]);
+                $registration->getUser()->refresh(); // https://github.com/humhub/humhub/issues/6273
+                Yii::$app->user->login($registration->getUser());
                 if (Yii::$app->request->getIsAjax()) {
                     return $this->htmlRedirect(Yii::$app->user->returnUrl);
                 }
@@ -192,9 +191,10 @@ class RegistrationController extends Controller
     }
 
     /**
+     * Already all registration data gathered
+     *
      * @param \yii\authclient\BaseClient $authClient
      * @param Registration $registration
-     * @return boolean already all registration data gathered
      * @throws Exception
      */
     protected function handleAuthClientRegistration(ClientInterface $authClient, Registration $registration)
@@ -216,7 +216,4 @@ class RegistrationController extends Controller
         $registration->getUser()->setAttributes($attributes, false);
         $registration->getProfile()->setAttributes($attributes, false);
     }
-
 }
-
-?>

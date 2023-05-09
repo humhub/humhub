@@ -34,7 +34,7 @@ return array (
   'Are you really sure? The selected users will be approved and notified by e-mail.' => 'Bist du wirklich sicher? Alle ausgewählten Benutzer werden freigegeben und per E-Mail benachrichtigt.',
   'Are you really sure? The selected users will be deleted and notified by e-mail.' => 'Bist du wirklich sicher? Alle ausgewählten Benutzer werden gelöscht und per E-Mail benachrichtigt.',
   'Are you really sure? Users who are not assigned to another group are automatically assigned to the default group.' => 'Bist du dir sicher? Benutzer, die keiner anderen Gruppe zugewiesen sind, werden automatisch der Standardgruppe zugewiesen.',
-  'Are you sure that you want to delete following user?' => 'Bist du sicher, dass du diesen Benutzer folgen möchtest?',
+  'Are you sure that you want to delete following user?' => 'Bist du sicher, dass du folgenden Benutzer löschen möchtest?',
   'Cancel' => 'Abbrechen',
   'Click here to review' => 'Klicke hier, um zu überprüfen',
   'Confirm user deletion' => 'Löschen des Benutzers bestätigen',
