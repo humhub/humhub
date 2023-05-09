@@ -17,7 +17,7 @@ use yii\web\HttpException;
  * Handles the AccessControl for a Controller.
  *
  * Controller level AccessRules can be provided by either setting the [[rules]] array,
- * or by implementing a `getAccessRules()` function within the controller itself (prefered).
+ * or by implementing a `getAccessRules()` function within the controller itself (preferred).
  *
  * **Examples:**
  *

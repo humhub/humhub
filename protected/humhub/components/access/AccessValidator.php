@@ -8,9 +8,11 @@
 
 namespace humhub\components\access;
 
+use Psr\Log\NullLogger;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\base\BaseObject;
+use yii\base\InvalidConfigException;
 
 /**
  * AccessValidators are responsible for validating a given set of rules.
@@ -178,8 +180,10 @@ abstract class AccessValidator extends BaseObject
     /**
      * Extracts the ruleName from the given array.
      *
-     * @param $arr
+     * @param array|\ArrayIterator $arr
+     *
      * @return mixed|null
+     * @throws InvalidConfigException
      */
     protected function getRuleName($rule)
     {
@@ -187,12 +191,32 @@ abstract class AccessValidator extends BaseObject
             return null;
         }
 
-        $firstKey = current(array_keys($rule));
+        If (!is_array($rule))
+        {
+            if ($rule instanceof \ArrayIterator)
+            {
+                $rule = $rule->getArrayCopy();
+            }
+            else
+            {
+                throw new InvalidConfigException(
+                    "Invalid access validation rule: "
+                    . serialize($rule)
+                );
+            }
+        }
+
+        $firstKey = key($rule);
+
+        if ($firstKey === null) {
+            return null;
+        }
+
         if (is_string($firstKey)) {
             return $firstKey;
-        } else {
-            return $rule[$firstKey];
         }
+
+        return $rule[$firstKey];
     }
 
     /**

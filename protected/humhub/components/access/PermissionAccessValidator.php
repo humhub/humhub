@@ -8,8 +8,10 @@
 
 namespace humhub\components\access;
 
+use humhub\libs\BasePermission;
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
 
 class PermissionAccessValidator extends ActionAccessValidator
 {
@@ -33,14 +35,15 @@ class PermissionAccessValidator extends ActionAccessValidator
     /**
      * Checks if the user has the given $permission.
      *
-     * @param string|string[]| \humhub\libs\BasePermission $permission
+     * @param string|string[]|BasePermission $permission
      * @param array $params
-     * @param array $rule
      * @return bool true if the given $permission is granted
+     * @throws \Throwable
+     * @throws InvalidConfigException
      */
-    protected function verifyPermission($permission, $rule)
+    protected function verifyPermission($permission, $params)
     {
-        return Yii::$app->user->can($permission, $rule);
+        return Yii::$app->user->can($permission, $params);
     }
 
     protected function extractActions($rule)
