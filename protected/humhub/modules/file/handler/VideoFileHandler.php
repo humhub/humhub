@@ -22,7 +22,7 @@ class VideoFileHandler extends BaseFileHandler
     public function getLinkAttributes()
     {
         return [
-            'label' => Yii::t('MailModule.base', 'Attach a video'),
+            'label' => Yii::t('FileModule.base', 'Attach a video'),
             'data-action-click' => 'file.uploadByType',
             'data-action-params' => '{"type":"video/*"}', // Available types: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept
         ];

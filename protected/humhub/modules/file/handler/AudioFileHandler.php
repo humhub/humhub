@@ -22,7 +22,7 @@ class AudioFileHandler extends BaseFileHandler
     public function getLinkAttributes()
     {
         return [
-            'label' => Yii::t('MailModule.base', 'Attach an audio message'),
+            'label' => Yii::t('FileModule.base', 'Attach an audio message'),
             'data-action-click' => 'file.uploadByType',
             'data-action-params' => '{"type":"audio/*"}', // Available types: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept
         ];
