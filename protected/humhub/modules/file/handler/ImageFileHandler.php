@@ -7,6 +7,7 @@
 
 namespace humhub\modules\file\handler;
 
+use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
 
 /**
@@ -22,7 +23,7 @@ class ImageFileHandler extends BaseFileHandler
     public function getLinkAttributes()
     {
         return [
-            'label' => Yii::t('FileModule.base', 'Attach an image'),
+            'label' => Icon::get('camera') . Yii::t('FileModule.base', 'Attach an image'),
             'data-action-click' => 'file.uploadByType',
             'data-action-params' => '{"type":"image/*"}', // Available types: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept
         ];

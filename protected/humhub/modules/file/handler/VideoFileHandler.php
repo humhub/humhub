@@ -7,6 +7,7 @@
 
 namespace humhub\modules\file\handler;
 
+use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
 
 /**
@@ -22,7 +23,7 @@ class VideoFileHandler extends BaseFileHandler
     public function getLinkAttributes()
     {
         return [
-            'label' => Yii::t('FileModule.base', 'Attach a video'),
+            'label' => Icon::get('video-camera') . Yii::t('FileModule.base', 'Attach a video'),
             'data-action-click' => 'file.uploadByType',
             'data-action-params' => '{"type":"video/*"}', // Available types: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept
         ];
