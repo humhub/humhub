@@ -27,4 +27,5 @@ HumHub Changelog
 - Fix #44: Mail Module Indicator Problem
 - Fix #6299: Fix ambiguous space sort order column
 - Enh #6298: Move the "Write a new comment" field style to a generic field that can be used by other modules
-- Enh: Added {cols, rows} to textarea() control. Module information is localized with `docs/uk/README.md` or `README.uk.md`.
+- Enh #6310: Module information is localized with `docs/uk/README.md` or `README.uk.md`.
+- Enh #6311: Added {cols, rows} to textarea() control. 
