@@ -2,13 +2,13 @@
 
 namespace humhub\modules\content\controllers;
 
+use humhub\models\forms\CropProfileImage;
+use humhub\models\forms\ContentImageUpload;
+use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\content\models\ContentImage;
 use Yii;
 use yii\web\Response;
 use yii\web\UploadedFile;
-use humhub\libs\ProfileImage;
-use humhub\models\forms\CropProfileImage;
-use humhub\models\forms\UploadProfileImage;
-use humhub\modules\content\components\ContentContainerController;
 
 /**
  * Contains profile image and profile banner image upload actions.
@@ -72,7 +72,7 @@ abstract class ContainerImageController extends ContentContainerController
     {
         $files = UploadedFile::getInstancesByName($uploadName);
 
-        $model = new UploadProfileImage(['image' => isset($files[0]) ? $files[0] : null]);
+        $model = new ContentImageUpload(['image' => isset($files[0]) ? $files[0] : null]);
 
         if ($model->validate()) {
             try {
@@ -151,7 +151,8 @@ abstract class ContainerImageController extends ContentContainerController
 
     /**
      * @param $type
-     * @return ProfileImage
+     *
+     * @return ContentImage
      */
     protected function getImageByType($type)
     {

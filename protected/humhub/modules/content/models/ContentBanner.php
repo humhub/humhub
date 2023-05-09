@@ -2,12 +2,13 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017-2023 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\libs;
+namespace humhub\modules\content\models;
 
+use humhub\libs\Html;
 use humhub\modules\file\libs\ImageHelper;
 use Imagine\Image\Box;
 use Imagine\Image\ManipulatorInterface;
@@ -27,7 +28,7 @@ use yii\web\UploadedFile;
  * @since 0.5
  * @author Luke
  */
-class ProfileBannerImage extends ProfileImage
+class ContentBanner extends ContentImage
 {
 
     /**

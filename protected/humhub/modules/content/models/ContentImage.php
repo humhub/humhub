@@ -2,14 +2,13 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017-2023 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\libs;
+namespace humhub\modules\content\models;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\models\ContentContainer;
 use humhub\modules\file\libs\ImageHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
@@ -19,8 +18,8 @@ use Imagine\Image\ManipulatorInterface;
 use Imagine\Image\Point;
 use Yii;
 use yii\base\Exception;
-use yii\helpers\Url;
 use yii\helpers\FileHelper;
+use yii\helpers\Url;
 use yii\imagine\Image;
 use yii\web\UploadedFile;
 
@@ -37,7 +36,7 @@ use yii\web\UploadedFile;
  * @since 0.5
  * @author Luke
  */
-class ProfileImage
+class ContentImage
 {
 
     /**

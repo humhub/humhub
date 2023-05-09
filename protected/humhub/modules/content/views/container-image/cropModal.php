@@ -1,22 +1,21 @@
 <?php
 
-use humhub\libs\ProfileBannerImage;
+use humhub\modules\content\models\ContentBanner;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\ActiveForm;
-
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
-use yii\helpers\Html;
 use raoul2000\jcrop\JCropWidget;
+use yii\helpers\Html;
 use yii\helpers\Json;
 
 /* @var $this \humhub\modules\ui\view\components\View */
-/* @var $profileImage \humhub\libs\ProfileImage */
+/* @var $profileImage \humhub\modules\content\models\ContentImage */
 /* @var $model \humhub\models\forms\CropProfileImage */
 /* @var $container \humhub\modules\content\components\ContentContainerController */
 /* @var $submitUrl string */
 
-if($profileImage instanceof ProfileBannerImage) {
+if($profileImage instanceof ContentBanner) {
     $model->aspectRatio  = ($container instanceof Space)
         ? $this->theme->variable('space-profile-banner-ratio', $profileImage->getAspectRatio())
         : $this->theme->variable('user-profile-banner-ratio', $profileImage->getAspectRatio());

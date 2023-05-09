@@ -10,12 +10,12 @@ namespace humhub\modules\content\components;
 
 use humhub\components\ActiveRecord;
 use humhub\libs\BasePermission;
-use humhub\libs\ProfileBannerImage;
-use humhub\libs\ProfileImage;
+use humhub\modules\content\models\ContentBanner;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\ContentContainerBlockedUsers;
 use humhub\modules\content\models\ContentContainerTagRelation;
+use humhub\modules\content\models\ContentImage;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module as UserModule;
 use Yii;
@@ -80,12 +80,12 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * @var string
      */
-    public $profileImageClass = ProfileImage::class;
+    public $profileImageClass = ContentImage::class;
 
     /**
      * @var string
      */
-    public $profileBannerImageClass = ProfileBannerImage::class;
+    public $profileBannerImageClass = ContentBanner::class;
 
     /**
      * Returns the display name of content container
@@ -106,7 +106,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns the Profile Image Object for this Content Base
      *
-     * @return ProfileImage
+     * @return ContentImage
      */
     public function getProfileImage()
     {
@@ -116,7 +116,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns the Profile Banner Image Object for this Content Base
      *
-     * @return ProfileBannerImage
+     * @return ContentBanner
      */
     public function getProfileBannerImage()
     {

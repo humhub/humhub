@@ -11,6 +11,7 @@ namespace humhub\modules\installer\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\interfaces\StatableInterface;
+use humhub\modules\content\models\ContentImage;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\like\models\Like;
 use humhub\modules\marketplace\Module;
@@ -257,7 +258,7 @@ class ConfigController extends Controller
 
                 // Add sample image to admin
                 $admin = User::find()->where(['id' => 1])->one();
-                $adminImage = new \humhub\libs\ProfileImage($admin->guid);
+                $adminImage = new ContentImage($admin->guid);
                 $adminImage->setNew(Yii::getAlias("@webroot-static/resources/installer/user_male_1.jpg"));
 
                 $usersGroup = Group::findOne(['name' => 'Users']);
@@ -275,7 +276,7 @@ class ConfigController extends Controller
                 $userModel->tagsField = ['Microsoft Office', 'Marketing', 'SEM', 'Digital Native'];
                 $userModel->save();
 
-                $profileImage = new \humhub\libs\ProfileImage($userModel->guid);
+                $profileImage = new ContentImage($userModel->guid);
                 $profileImage->setNew(Yii::getAlias("@webroot-static/resources/installer/user_male_2.jpg"));
 
                 $profileModel->user_id = $userModel->id;
@@ -305,7 +306,7 @@ class ConfigController extends Controller
                 $userModel2->tagsField = ['Yoga', 'Travel', 'English', 'German', 'French'];
                 $userModel2->save();
 
-                $profileImage2 = new \humhub\libs\ProfileImage($userModel2->guid);
+                $profileImage2 = new ContentImage($userModel2->guid);
                 $profileImage2->setNew(Yii::getAlias("@webroot-static/resources/installer/user_female_1.jpg"));
 
                 $profileModel2->user_id = $userModel2->id;
