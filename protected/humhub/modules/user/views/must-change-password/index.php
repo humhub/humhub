@@ -31,7 +31,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Change password');
                     <hr>
                 <?php endif; ?>
 
-                <?= $form->field($model, 'newPassword')->passwordInput(['maxlength' => 45]); ?>
+                <?= $form->field($model, 'newPassword')->passwordInput(['maxlength' => 45 , 'pattern' => '^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$', 'oninvalid' => 'this.setCustomValidity(\'Please enter valid password format\')']); ?>
                 <?= $form->field($model, 'newPasswordConfirm')->passwordInput(['maxlength' => 45]); ?>
 
                 <hr>

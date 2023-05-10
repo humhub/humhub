@@ -14,7 +14,7 @@ use yii\bootstrap\Html;
         <hr>
     <?php endif; ?>
 
-    <?php echo $form->field($model, 'newPassword')->passwordInput(['maxlength' => 45]); ?>
+    <?php echo $form->field($model, 'newPassword')->passwordInput(['maxlength' => 45, 'pattern' => '^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$', 'oninvalid' => 'this.setCustomValidity(\'Please enter valid password format\')']); ?>
 
     <?php echo $form->field($model, 'newPasswordConfirm')->passwordInput(['maxlength' => 45]); ?>
 

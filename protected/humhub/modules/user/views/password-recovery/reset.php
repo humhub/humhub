@@ -18,7 +18,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password reset');
 
                 <?php $form = ActiveForm::begin(['enableClientValidation'=>false]); ?>
                 
-                    <?= $form->field($model, 'newPassword')->passwordInput(['class' => 'form-control', 'id' => 'new_password', 'maxlength' => 255, 'value' => ''])?>
+                    <?= $form->field($model, 'newPassword')->passwordInput(['class' => 'form-control', 'id' => 'new_password', 'maxlength' => 255, 'value' => '', 'pattern' => '^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$', 'oninvalid' => 'this.setCustomValidity(\'Please enter valid password format\')'])?>
 
                     <?= $form->field($model, 'newPasswordConfirm')->passwordInput(['class' => 'form-control', 'maxlength' => 255, 'value' => ''])?>
 
