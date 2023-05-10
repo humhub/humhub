@@ -31,7 +31,6 @@ use yii\db\IntegrityException;
  */
 class Events extends BaseObject
 {
-
     /**
      * Handles cron hourly run event to send mail summaries to the users
      *
@@ -155,5 +154,4 @@ class Events extends BaseObject
     {
         return Yii::$app->getModule('activity');
     }
-
 }

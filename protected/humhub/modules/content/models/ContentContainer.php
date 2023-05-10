@@ -25,7 +25,6 @@ use yii\db\ActiveRecord;
  */
 class ContentContainer extends ActiveRecord
 {
-
     /**
      * @inheritdoc
      */
@@ -87,5 +86,13 @@ class ContentContainer extends ActiveRecord
     {
         $instance = static::findOne(['guid' => $guid]);
         return $instance ? $instance->getPolymorphicRelation() : null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function hardDelete(): bool
+    {
+        return (parent::delete() !== false);
     }
 }

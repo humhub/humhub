@@ -20,7 +20,6 @@ use Yii;
  */
 class Events extends \yii\base\BaseObject
 {
-
     /**
      * On User delete, also delete all comments
      *
@@ -73,13 +72,14 @@ class Events extends \yii\base\BaseObject
         foreach (Like::find()->each() as $like) {
             if ($like->source === null) {
                 if ($integrityController->showFix("Deleting like id " . $like->id . " without existing target!")) {
-                    $like->delete();
+                    $like->hardDelete();
                 }
             }
+
             // User exists
             if ($like->user === null) {
                 if ($integrityController->showFix("Deleting like id " . $like->id . " without existing user!")) {
-                    $like->delete();
+                    $like->hardDelete();
                 }
             }
         }
@@ -95,7 +95,6 @@ class Events extends \yii\base\BaseObject
         $event->sender->addWidget(widgets\LikeLink::class, ['object' => $event->sender->object], ['sortOrder' => 20]);
     }
 
-
     /**
      * @return Module the like module
      */
@@ -103,5 +102,4 @@ class Events extends \yii\base\BaseObject
     {
         return Yii::$app->getModule('like');
     }
-
 }

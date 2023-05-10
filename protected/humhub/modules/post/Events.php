@@ -15,7 +15,6 @@ use humhub\modules\post\models\Post;
  */
 class Events extends \yii\base\BaseObject
 {
-
     /**
      * Callback to validate module database records.
      *
@@ -25,7 +24,7 @@ class Events extends \yii\base\BaseObject
     {
         $integrityController = $event->sender;
 
-        $integrityController->showTestHeadline("Post  Module - Posts (" . Post::find()->count() . " entries)");
+        $integrityController->showTestHeadline("Post Module - Posts (" . Post::find()->count() . " entries)");
         foreach (Post::find()->all() as $post) {
             /* @var Post $post */
             if (empty($post->content->id)) {
@@ -35,5 +34,4 @@ class Events extends \yii\base\BaseObject
             }
         }
     }
-
 }

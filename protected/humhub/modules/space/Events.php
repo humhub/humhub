@@ -25,7 +25,6 @@ use humhub\components\Event;
  */
 class Events extends BaseObject
 {
-
     /**
      * On rebuild of the search index, rebuild all space records
      *
@@ -79,7 +78,7 @@ class Events extends BaseObject
             foreach ($space->applicants as $applicant) {
                 if ($applicant->user == null) {
                     if ($integrityController->showFix("Deleting applicant record id " . $applicant->id . " without existing user!")) {
-                        $applicant->delete();
+                        $applicant->hardDelete();
                     }
                 }
             }
@@ -89,12 +88,13 @@ class Events extends BaseObject
         foreach (models\Membership::find()->joinWith('space')->each() as $membership) {
             if ($membership->space == null) {
                 if ($integrityController->showFix("Deleting space membership " . $membership->space_id . " without existing space!")) {
-                    $membership->delete();
+                    $membership->hardDelete();
                 }
             }
+
             if ($membership->user == null) {
                 if ($integrityController->showFix("Deleting space membership " . $membership->user_id . " without existing user!")) {
-                    $membership->delete();
+                    $membership->hardDelete();
                 }
             }
         }
@@ -113,8 +113,10 @@ class Events extends BaseObject
             return;
         }
 
-        if (!Yii::$app->user->isGuest &&
-            !Yii::$app->user->can(SpaceDirectoryAccess::class)) {
+        if (
+            !Yii::$app->user->isGuest &&
+            !Yii::$app->user->can(SpaceDirectoryAccess::class)
+        ) {
             return;
         }
 
@@ -127,5 +129,4 @@ class Events extends BaseObject
             'isActive' => MenuLink::isActiveState('space', 'spaces'),
         ]));
     }
-
 }

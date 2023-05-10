@@ -18,7 +18,6 @@ use humhub\modules\file\libs\FileHelper;
  */
 class FileCompat extends \humhub\components\ActiveRecord
 {
-
     /**
      * Returns all files belongs to a given HActiveRecord Object.
      *
@@ -33,7 +32,7 @@ class FileCompat extends \humhub\components\ActiveRecord
 
     /**
      * Returns the path of stored file
-     * 
+     *
      * @deprecated since version 1.2
      * @param string $suffix
      * @return string path to file
@@ -45,7 +44,7 @@ class FileCompat extends \humhub\components\ActiveRecord
 
     /**
      * Return the preview image url of the file
-     * 
+     *
      * @deprecated since version 1.2
      * @param int $maxWidth
      * @param int $maxHeight
@@ -96,7 +95,7 @@ class FileCompat extends \humhub\components\ActiveRecord
 
     /**
      * Returns an array with informations about the file
-     * 
+     *
      * @deprecated since version 1.2
      * @return type
      */
@@ -151,7 +150,7 @@ class FileCompat extends \humhub\components\ActiveRecord
 
     /**
      * Returns the extension of the file_name
-     * 
+     *
      * @deprecated since version 1.2
      * @return string the extension
      */
@@ -159,5 +158,4 @@ class FileCompat extends \humhub\components\ActiveRecord
     {
         return FileHelper::getExtension($this->file_name);
     }
-
 }

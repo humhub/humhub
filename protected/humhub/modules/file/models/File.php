@@ -144,6 +144,14 @@ class File extends FileCompat
     }
 
     /**
+     * @inheritdoc
+     */
+    public function hardDelete(): bool
+    {
+        return (parent::delete() !== false);
+    }
+
+    /**
      * Returns the url to this file
      *
      * Available params (see also: DownloadAction)

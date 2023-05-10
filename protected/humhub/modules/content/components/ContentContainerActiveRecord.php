@@ -42,7 +42,6 @@ use yii\web\IdentityInterface;
  */
 abstract class ContentContainerActiveRecord extends ActiveRecord
 {
-
     /**
      * @var ContentContainerPermissionManager
      */
@@ -93,7 +92,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @return string
      * @since 0.11.0
      */
-    public abstract function getDisplayName(): string;
+    abstract public function getDisplayName(): string;
 
     /**
      * Returns a descriptive sub title of this container used in the frontend.
@@ -101,7 +100,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @return mixed
      * @since 1.4
      */
-    public abstract function getDisplayNameSub(): string;
+    abstract public function getDisplayNameSub(): string;
 
     /**
      * Returns the Profile Image Object for this Content Base
@@ -208,7 +207,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
-            $contentContainer = new ContentContainer;
+            $contentContainer = new ContentContainer();
             $contentContainer->guid = $this->guid;
             $contentContainer->class = static::class;
             $contentContainer->pk = $this->getPrimaryKey();
@@ -233,6 +232,14 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         }
 
         parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function hardDelete(): bool
+    {
+        return (parent::delete() !== false);
     }
 
     /**
@@ -460,5 +467,4 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 
         return $userModule->allowBlockUsers();
     }
-
 }

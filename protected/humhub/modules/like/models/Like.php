@@ -30,7 +30,6 @@ use humhub\modules\like\notifications\NewLike;
  */
 class Like extends ContentAddonActiveRecord
 {
-
     /**
      * @inheritdoc
      */
@@ -118,5 +117,4 @@ class Like extends ContentAddonActiveRecord
         Yii::$app->cache->delete('likes_' . $this->object_model . "_" . $this->object_id);
         return parent::beforeDelete();
     }
-
 }

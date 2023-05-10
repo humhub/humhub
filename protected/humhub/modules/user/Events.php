@@ -22,7 +22,6 @@ use yii\base\BaseObject;
  */
 class Events extends BaseObject
 {
-
     /**
      * On rebuild of the search index, rebuild all user records
      *
@@ -59,7 +58,7 @@ class Events extends BaseObject
         foreach (User::find()->joinWith(['contentContainerRecord'])->each() as $user) {
             if ($user->contentContainerRecord === null) {
                 if ($integrityController->showFix('Deleting user ' . $user->id . ' without content container record!')) {
-                    $user->delete();
+                    $user->hardDelete();
                 }
             }
         }
@@ -74,7 +73,7 @@ class Events extends BaseObject
         foreach (GroupUser::find()->joinWith(['user'])->each() as $groupUser) {
             if ($groupUser->user == null) {
                 if ($integrityController->showFix('Deleting group admin ' . $groupUser->id . ' without existing user!')) {
-                    $groupUser->delete();
+                    $groupUser->hardDelete();
                 }
             }
         }
@@ -83,7 +82,7 @@ class Events extends BaseObject
         foreach (Password::find()->joinWith(['user'])->each() as $password) {
             if ($password->user == null) {
                 if ($integrityController->showFix('Deleting password ' . $password->id . ' without existing user!')) {
-                    $password->delete();
+                    $password->hardDelete();
                 }
             }
         }
@@ -92,7 +91,7 @@ class Events extends BaseObject
         foreach (Profile::find()->joinWith(['user'])->each() as $profile) {
             if ($profile->user == null) {
                 if ($integrityController->showFix('Deleting profile ' . $profile->user_id . ' without existing user!')) {
-                    $profile->delete();
+                    $profile->hardDelete();
                 }
             }
         }
@@ -101,12 +100,12 @@ class Events extends BaseObject
         foreach (Mentioning::find()->joinWith(['user'])->each() as $mentioning) {
             if ($mentioning->user == null) {
                 if ($integrityController->showFix('Deleting mentioning ' . $mentioning->id . ' of non existing user!')) {
-                    $mentioning->delete();
+                    $mentioning->hardDelete();
                 }
             }
             if ($mentioning->getPolymorphicRelation() == null) {
                 if ($integrityController->showFix('Deleting mentioning ' . $mentioning->id . ' of non target!')) {
-                    $mentioning->delete();
+                    $mentioning->hardDelete();
                 }
             }
         }
@@ -115,19 +114,19 @@ class Events extends BaseObject
         foreach (Follow::find()->joinWith(['user'])->each() as $follow) {
             if ($follow->user == null) {
                 if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non existing user!')) {
-                    $follow->delete();
+                    $follow->hardDelete();
                 }
             }
 
             try {
                 if ($follow->getTarget() == null) {
                     if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non target!')) {
-                        $follow->delete();
+                        $follow->hardDelete();
                     }
                 }
             } catch (\Exception $e) {
                 if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non target!')) {
-                    $follow->delete();
+                    $follow->hardDelete();
                 }
             }
         }
@@ -140,7 +139,7 @@ class Events extends BaseObject
         foreach (ContentContainer::find()->where(['NOT IN', 'owner_user_id', $userIds])->each() as $contentContainer) {
             if ($contentContainer['class'] == User::class && $contentContainer['pk'] == $contentContainer['owner_user_id']) {
                 if ($integrityController->showFix('Deleting content container ' . $contentContainer->id . ' without existing user!')) {
-                    $contentContainer->delete();
+                    $contentContainer->hardDelete();
                 }
             }
         }
@@ -181,5 +180,4 @@ class Events extends BaseObject
             'isActive' =>  MenuLink::isActiveState('user', 'people'),
         ]));
     }
-
 }

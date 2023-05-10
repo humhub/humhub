@@ -21,7 +21,6 @@ use humhub\modules\notification\models\Notification;
  */
 class Events extends \yii\base\BaseObject
 {
-
     /**
      * On User delete, also delete all posts
      *
@@ -54,7 +53,6 @@ class Events extends \yii\base\BaseObject
      */
     public static function onSpaceDelete($event)
     {
-
         foreach (Notification::findAll(['space_id' => $event->sender->id]) as $notification) {
             $notification->delete();
         }
@@ -67,7 +65,6 @@ class Events extends \yii\base\BaseObject
      */
     public static function onIntegrityCheck($event)
     {
-
         $integrityChecker = $event->sender;
         $integrityChecker->showTestHeadline("Notification Module (" . Notification::find()->count() . " entries)");
 
@@ -79,7 +76,7 @@ class Events extends \yii\base\BaseObject
                 $space = Space::findOne(['id' => $notification->space_id]);
                 if ($space === null) {
                     if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " workspace seems to no longer exist!")) {
-                        $notification->delete();
+                        $notification->hardDelete();
                     }
                 }
             }
@@ -88,44 +85,42 @@ class Events extends \yii\base\BaseObject
             try {
                 if ($notification->source_class != "" && $notification->getSourceObject() == null) {
                     if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " source class set but seems to no longer exist!")) {
-                        $notification->delete();
+                        $notification->hardDelete();
                     }
                 }
             } catch (\Exception $e) {
                 // Handles errors for getSourceObject() calls
                 if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " source class set but seems to no longer exist!")) {
-                    $notification->delete();
+                    $notification->hardDelete();
                 }
             }
 
             // Check if target user exists
             if ($notification->user == null) {
                 if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " target user seems to no longer exist!")) {
-                    $notification->delete();
+                    $notification->hardDelete();
                 }
             }
 
             // Check if target user exists
             if (!class_exists($notification->class)) {
                 if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid class!")) {
-                    $notification->delete();
+                    $notification->hardDelete();
                 }
             }
 
             // Check if module id is set
             if ($notification->module == "") {
                 if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid module!")) {
-                    $notification->delete();
+                    $notification->hardDelete();
                 }
             }
 
             if (!empty($notification->originator_user_id) && $notification->originator === null) {
                 if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid originator!")) {
-                    $notification->delete();
+                    $notification->hardDelete();
                 }
             }
-
-
         }
     }
 
@@ -182,5 +177,4 @@ class Events extends \yii\base\BaseObject
             $event->sender->addWidget(widgets\UpdateNotificationCount::class);
         }
     }
-
 }

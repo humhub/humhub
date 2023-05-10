@@ -16,7 +16,7 @@ use humhub\modules\file\converter\TextConverter;
 
 /**
  * Events provides callbacks to handle events.
- * 
+ *
  * @author luke
  */
 class Events extends \yii\base\BaseObject
@@ -67,7 +67,7 @@ class Events extends \yii\base\BaseObject
         foreach (File::find()->all() as $file) {
             if ($file->object_model != "" && $file->object_id != "" && $file->getPolymorphicRelation() === null) {
                 if ($integrityController->showFix("Deleting file id " . $file->id . " without existing target!")) {
-                    $file->delete();
+                    $file->hardDelete();
                 }
             }
         }
@@ -102,7 +102,7 @@ class Events extends \yii\base\BaseObject
 
     /**
      * Handles the SearchAttributesEvent and adds related files
-     * 
+     *
      * @since 1.2.3
      * @param SearchAttributesEvent $event
      */

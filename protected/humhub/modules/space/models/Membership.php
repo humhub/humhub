@@ -39,7 +39,6 @@ use yii\db\Query;
  */
 class Membership extends ActiveRecord
 {
-
     /**
      * @event \humhub\modules\space\MemberEvent
      */
@@ -59,7 +58,6 @@ class Membership extends ActiveRecord
 
     const USER_SPACES_CACHE_KEY = 'userSpaces_';
     const USER_SPACEIDS_CACHE_KEY = 'userSpaceIds_';
-
 
     /**
      * @inheritdoc
@@ -100,6 +98,14 @@ class Membership extends ActiveRecord
             'updated_by' => Yii::t('SpaceModule.base', 'Updated By'),
             'can_leave' => 'Can Leave'
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function hardDelete(): bool
+    {
+        return (parent::delete() !== false);
     }
 
     /**
@@ -294,10 +300,9 @@ class Membership extends ActiveRecord
      */
     public static function findByUser(
         User $user = null,
-             $membershipStatus = self::STATUS_MEMBER,
-             $spaceStatus = Space::STATUS_ENABLED
-    )
-    {
+        $membershipStatus = self::STATUS_MEMBER,
+        $spaceStatus = Space::STATUS_ENABLED
+    ) {
         if (!$user) {
             $user = Yii::$app->user->getIdentity();
         }
@@ -380,4 +385,5 @@ class Membership extends ActiveRecord
     public function isCurrentUser(): bool
     {
         return !Yii::$app->user->isGuest && Yii::$app->user->identity->id === $this->user_id;
-    }}
+    }
+}

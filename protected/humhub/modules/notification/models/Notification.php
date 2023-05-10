@@ -38,7 +38,6 @@ use yii\db\Query;
  */
 class Notification extends ActiveRecord
 {
-
     /**
      * @var int number of found grouped notifications
      */
@@ -105,6 +104,14 @@ class Notification extends ActiveRecord
     }
 
     /**
+     * @inheritdoc
+     */
+    public function hardDelete(): bool
+    {
+        return (parent::delete() !== false);
+    }
+
+    /**
      * Use getBaseModel instead.
      * @param array $params
      * @return BaseNotification
@@ -140,7 +147,6 @@ class Notification extends ActiveRecord
                     ->andWhere(['class' => $this->class, 'user_id' => $this->user_id, 'group_key' => $this->group_key])
                     ->one();
                 $params['originator'] = $params['record']->originator;
-
             } else {
                 $params['record'] = $this;
             }
@@ -297,5 +303,4 @@ class Notification extends ActiveRecord
     {
         return self::findUnseen($user)->andWhere(['desktop_notified' => 0]);
     }
-
 }

@@ -24,7 +24,6 @@ use yii\base\Event;
  */
 class Events extends Component
 {
-
     /**
      * On content deletion make sure to delete all its comments
      *
@@ -66,18 +65,17 @@ class Events extends Component
 
         // Loop over all comments
         foreach (Comment::find()->each() as $c) {
-
             // Check underlying record exists
             if ($c->source === null) {
                 if ($integrityController->showFix('Deleting comment id ' . $c->id . ' without existing target!')) {
-                    $c->delete();
+                    $c->hardDelete();
                 }
             }
 
             // User exists
             if ($c->user === null) {
                 if ($integrityController->showFix('Deleting comment id ' . $c->id . ' without existing user!')) {
-                    $c->delete();
+                    $c->hardDelete();
                 }
             }
         }
@@ -141,5 +139,4 @@ class Events extends Component
             Event::trigger(Search::class, Search::EVENT_SEARCH_ATTRIBUTES, new SearchAttributesEvent($event->attributes['comments'][$comment->id], $comment));
         }
     }
-
 }

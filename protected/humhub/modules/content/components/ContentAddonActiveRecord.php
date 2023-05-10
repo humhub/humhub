@@ -38,7 +38,6 @@ use yii\base\Exception;
  */
 class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
 {
-
     /**
      * @var boolean also update underlying contents last update stream sorting
      */
@@ -71,7 +70,6 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
      */
     public function getContent()
     {
-
         if ($this->_content != null) {
             return $this->_content;
         }
@@ -221,7 +219,6 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
      */
     public function validate($attributes = null, $clearErrors = true)
     {
-
         if ($this->source != null) {
             if (!$this->source instanceof ContentAddonActiveRecord && !$this->source instanceof ContentActiveRecord) {
                 $this->addError('object_model', Yii::t('base', 'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!'));
@@ -249,9 +246,16 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
         parent::afterSave($insert, $changedAttributes);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function hardDelete(): bool
+    {
+        return (parent::delete() !== false);
+    }
+
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'created_by']);
     }
-
 }

@@ -62,7 +62,6 @@ use Yii;
  */
 class Space extends ContentContainerActiveRecord implements Searchable
 {
-
     // Join Policies
     const JOIN_POLICY_NONE = 0; // No Self Join Possible
     const JOIN_POLICY_APPLICATION = 1; // Invitation and Application Possible
@@ -264,7 +263,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             // Auto add creator as admin
             $this->addMember($user->id, 1, true, self::USERGROUP_ADMIN);
 
-            $activity = new Created;
+            $activity = new Created();
             $activity->source = $this;
             $activity->originator = $user;
             $activity->create();
