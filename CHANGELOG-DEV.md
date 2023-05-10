@@ -22,6 +22,7 @@ HumHub Changelog
 - Enh #6215: Added `LongRunningActiveJob` to avoid timeout for long running queue jobs
 - Enh #6253: Remove `DefaultSwipeOnMobile` checkbox
 - Enh #10: Added `collapsedPostHeight` to the Post module for set collapsed post default height
+- Enh #6277: Bring back Pjax Functionality
 - Enh #6285: Change background color for confirmation of oembed content
 - Enh #6289: Refactored UserWall and Wall widgets
 - Fix #44: Mail Module Indicator Problem
