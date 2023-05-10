@@ -41,7 +41,7 @@ return array (
   'Export' => 'エクスポート',
   'Info:' => '情報：',
   'Invalid request method!' => '無効なリクエストです！',
-  'It looks like you may have taken the wrong turn.' => '道を間違ったかもしれません.',
+  'It looks like you may have taken the wrong turn.' => '道を間違ったかもしれません。',
   'Language' => '言語',
   'Loading...' => '読み込み中...',
   'Login' => 'ログイン',

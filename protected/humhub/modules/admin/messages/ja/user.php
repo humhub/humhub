@@ -3,7 +3,7 @@ return array (
   '<strong>Information</strong>' => '<strong>情報</strong>',
   '<strong>Profile</strong> Permissions' => '<strong>プロフィール</strong>の権限',
   '<strong>Settings</strong> and Configuration' => '<strong>設定</strong> と編集',
-  '<strong>User</strong> administration' => '<strong>ユーザー</strong> 管理',
+  '<strong>User</strong> administration' => '<strong>ユーザー</strong>管理',
   '<strong>Warning:</strong> All individual profile permission settings are reset to the default values!' => '<strong>警告：</strong>個々のプロフィールの権限設定はすべてデフォルト値にリセットされます。',
   'Accept user: <strong>{displayName}</strong> ' => 'ユーザーを承認：<strong>{displayName}</strong>',
   'Account' => 'アカウント',

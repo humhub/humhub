@@ -328,7 +328,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         var that = this;
         this.loader();
         client.post(evt.url).then(function (data) {
-            that.stream().init();
+            that.reload();
             module.log.info(data.message, true);
         }).catch(function (e) {
             module.log.error(e, true);

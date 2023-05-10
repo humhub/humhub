@@ -41,6 +41,7 @@ div.required.has-error > label:after {
 
 .form-group-search {
     position: relative;
+
     &:before {
         font: 14px FontAwesome;
         content: "\f002";
@@ -169,6 +170,7 @@ input[type=checkbox], input[type=radio] {
     background: white;
     border: 2px solid #ccc;
     border-radius: 3px;
+
     &:disabled {
         background: @background3 !important;
         border: 2px solid @background3 !important;
@@ -181,10 +183,12 @@ input[type=checkbox] {
         border: 2px solid @text-color-highlight !important;
         outline: none;
     }
+
     &:checked {
         border: 2px solid @info;
         background: @info;
         color: white;
+
         &::after {
             content: '\2714';
             font-size: 14px;
@@ -198,9 +202,11 @@ input[type=checkbox] {
 
 input[type=radio] {
     border-radius: 50%;
+
     &:checked {
         border: 2px solid @background3;
         color: #99a1a7;
+
         &::after {
             content: ' ';
             width: 8px;
@@ -301,6 +307,7 @@ div.form-group {
 .form-collapsible-fields-label {
     margin-bottom: 0px;
     padding: 12px;
+
     label {
         margin-bottom: 0;
     }
@@ -333,5 +340,72 @@ div.form-group {
 
     .iconOpen {
         display: inline;
+    }
+}
+
+// fileupload button
+.content_create,
+.content_edit {
+    .content-create-input-group {
+        display: flex;
+        align-items: flex-end;
+
+        > .form-group {
+            flex-grow: 1;
+            flex-basis: min-content;
+
+            [data-ui-markdown] {
+                word-break: break-word !important;
+
+                pre code {
+                    display: block;
+                    width: 0;
+                }
+            }
+        }
+
+        .form-group, .help-block {
+            margin: 0;
+        }
+    }
+
+    .upload-buttons {
+        white-space: nowrap;
+        padding-bottom: 6px;
+
+        .btn:not(.dropdown-toggle) {
+            margin-left: 6px;
+        }
+
+        .btn.fileinput-button, .fileinput-button + .dropdown-toggle {
+            background-color: fade(@link, 60%);
+        }
+
+        .btn.dropdown-toggle {
+            margin-left: 0;
+        }
+    }
+
+    .has-error + .upload-buttons {
+        padding-bottom: 22px;
+    }
+
+    .fileinput-button:active {
+        box-shadow: none !important;
+    }
+
+    @media (max-width: 414px) {
+        .content-create-input-group {
+            flex-direction: column;
+
+            > .form-group {
+                width: 100%;
+            }
+        }
+
+        .upload-buttons {
+            padding-bottom: 0 !important;
+            padding-top: 6px;
+        }
     }
 }

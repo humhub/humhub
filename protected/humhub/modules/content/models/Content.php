@@ -801,7 +801,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      */
     public function getTags($tagClass = ContentTag::class)
     {
-        return $this->hasMany($tagClass, ['id' => 'tag_id'])->via('tagRelations')->orderBy('sort_order');
+        return $this->hasMany($tagClass, ['id' => 'tag_id'])
+            ->via('tagRelations')
+            ->orderBy($tagClass::tableName() . '.sort_order');
     }
 
     /**

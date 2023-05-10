@@ -112,6 +112,7 @@ class CoreJsConfig extends Widget
                         "Wrap in block quote" => Yii::t('ContentModule.richtexteditor', 'Wrap in block quote'),
                         "Wrap in bullet list" => Yii::t('ContentModule.richtexteditor', "Wrap in bullet list"),
                         "Toggle code font" => Yii::t('ContentModule.richtexteditor', "Toggle code font"),
+                        "Switch editor mode" => Yii::t('ContentModule.richtexteditor', "Switch editor mode"),
                         "Change to code block" => Yii::t('ContentModule.richtexteditor', "Change to code block"),
                         "Code" => Yii::t('ContentModule.richtexteditor', "Code"),
                         "Toggle emphasis" => Yii::t('ContentModule.richtexteditor', "Toggle emphasis"),
