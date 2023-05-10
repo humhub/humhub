@@ -1071,7 +1071,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
 
     public function getStateService(): ContentStateService
     {
-        return new ContentStateService($this);
+        return new ContentStateService(['content' => $this]);
     }
 
     /**

@@ -9,28 +9,56 @@ namespace humhub\modules\content\services;
 
 use humhub\libs\DbDateValidator;
 use humhub\modules\content\models\Content;
+use yii\base\Component;
 
 /**
  * This service is used to extend Content record for state features
  * @since 1.14
  */
-class ContentStateService
+class ContentStateService extends Component
 {
+    const EVENT_INIT = 'init';
+
     public Content $content;
 
-    public function __construct(Content $content)
+    protected array $states = [];
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
     {
-        $this->content = $content;
+        parent::init();
+
+        $this->allowState(Content::STATE_PUBLISHED);
+        $this->allowState(Content::STATE_DRAFT);
+        $this->allowState(Content::STATE_SCHEDULED);
+        $this->allowState(Content::STATE_DELETED);
+
+        $this->trigger(self::EVENT_INIT);
     }
 
-    public static function getAllowedStates(): array
+    /**
+     * Allow a state for the Content
+     *
+     * @param int $state
+     */
+    public function allowState(int $state)
     {
-        return [
-            Content::STATE_PUBLISHED,
-            Content::STATE_DRAFT,
-            Content::STATE_SCHEDULED,
-            Content::STATE_DELETED
-        ];
+        $this->states[] = $state;
+    }
+
+    /**
+     * Exclude a state from the allowed list
+     *
+     * @param int $state
+     */
+    public function denyState(int $state)
+    {
+        $stateIndex = array_search($state, $this->states);
+        if ($stateIndex !== false) {
+            unset($this->states[$stateIndex]);
+        }
     }
 
     /**
@@ -74,7 +102,7 @@ class ContentStateService
      */
     public function canChange($state): bool
     {
-        return in_array((int) $state, self::getAllowedStates());
+        return in_array((int) $state, $this->states);
     }
 
     /**
