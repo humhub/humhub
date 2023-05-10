@@ -8,9 +8,9 @@
 
 namespace humhub\modules\file;
 
-use humhub\modules\file\handler\AudioFileHandler;
-use humhub\modules\file\handler\ImageFileHandler;
-use humhub\modules\file\handler\VideoFileHandler;
+use humhub\modules\file\handler\UploadAudioFileHandler;
+use humhub\modules\file\handler\UploadImageFileHandler;
+use humhub\modules\file\handler\UploadVideoFileHandler;
 
 /**
  * File Module
@@ -112,5 +112,5 @@ class Module extends \humhub\components\Module
      * @since 1.15
      * @var string[] List of file types added to the upload dropdown button (must be classes extending the BaseFileHandler class)
      */
-    public $defaultFileHandlers = [AudioFileHandler::class, ImageFileHandler::class, VideoFileHandler::class];
+    public $defaultFileHandlers = [UploadAudioFileHandler::class, UploadImageFileHandler::class, UploadVideoFileHandler::class];
 }
