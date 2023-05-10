@@ -26,7 +26,6 @@ use humhub\modules\search\libs\SearchHelper;
  */
 class GroupUser extends ActiveRecord
 {
-
     const SCENARIO_REGISTRATION = 'registration';
 
     /**
@@ -98,6 +97,14 @@ class GroupUser extends ActiveRecord
     /**
      * @inheritdoc
      */
+    public function hardDelete(): bool
+    {
+        return (parent::delete() !== false);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function afterDelete()
     {
         SearchHelper::queueUpdate($this->user);
@@ -143,5 +150,4 @@ class GroupUser extends ActiveRecord
             }
         }
     }
-
 }

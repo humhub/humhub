@@ -26,7 +26,6 @@ use yii\base\InvalidArgumentException;
  */
 class Mentioning extends ActiveRecord
 {
-
     /**
      * @inheritdoc
      */
@@ -77,6 +76,14 @@ class Mentioning extends ActiveRecord
         Mentioned::instance()->from($originator)->about($mentionedSource)->send($this->user);
 
         return parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function hardDelete(): bool
+    {
+        return (parent::delete() !== false);
     }
 
     /**
@@ -135,7 +142,7 @@ class Mentioning extends ActiveRecord
             throw new InvalidArgumentException("Mentioning can only used in HActiveRecordContent or HActiveRecordContentAddon objects!");
         }
 
-        if(is_string($guids)) {
+        if (is_string($guids)) {
             $guids = [$guids];
         }
 
@@ -143,7 +150,7 @@ class Mentioning extends ActiveRecord
 
         foreach ($guids as $guid) {
             $user = User::findOne(['guid' => $guid]);
-            if(!$user) {
+            if (!$user) {
                 continue;
             }
 
@@ -178,5 +185,4 @@ class Mentioning extends ActiveRecord
     {
         return $this->hasOne(\humhub\modules\user\models\User::class, ['id' => 'user_id']);
     }
-
 }

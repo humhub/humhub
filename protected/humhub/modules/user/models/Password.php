@@ -29,7 +29,6 @@ use humhub\modules\user\components\CheckPasswordValidator;
  */
 class Password extends ActiveRecord
 {
-
     /**
      * Additional Fields for Scenarios
      */
@@ -146,7 +145,6 @@ class Password extends ActiveRecord
      */
     public function validatePassword($password)
     {
-
         if (Yii::$app->security->compareString($this->password, $this->hashPassword($password))) {
             return true;
         }
@@ -220,11 +218,20 @@ class Password extends ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        if ($this->user->isAttributeChanged('auth_key') &&
+        if (
+            $this->user->isAttributeChanged('auth_key') &&
             $this->user->save() &&
-            $this->user->isCurrentUser()) {
+            $this->user->isCurrentUser()
+        ) {
             Yii::$app->user->switchIdentity($this->user);
         }
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function hardDelete(): bool
+    {
+        return (parent::delete() !== false);
+    }
 }
