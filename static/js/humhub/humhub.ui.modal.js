@@ -699,7 +699,7 @@ humhub.module('ui.modal', function (module, require, $) {
     var unload = function() {
         $('.modal').each(function () {
             var modal = Modal.instance(this);
-            if (modal && typeof modal.close === 'function') {
+            if (modal && typeof modal.close === 'function' && !$(this).find('.exclude-from-pjax-client').length ) {
                 modal.close();
             }
         });
