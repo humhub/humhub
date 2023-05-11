@@ -18,6 +18,7 @@ class ScheduledCest
         $I->click('#contentFormBody ul.preferences');
         $datetime = (new Datetime('tomorrow'))->setTime(19, 15);
         $this->updateSchedulingOptions($I, $datetime);
+        $I->see('Save scheduling', '#post_submit_button');
         $I->click('#post_submit_button', '#contentFormBody');
 
         $I->wantTo('ensure the scheduled content has a proper badge.');
@@ -44,7 +45,7 @@ class ScheduledCest
     private function getLabelText(?Datetime $datetime = null): string
     {
         return $datetime instanceof DateTime
-            ? 'SCHEDULED AT ' . Yii::$app->formatter->asDatetime($datetime, self::DATE_FORMAT)
+            ? 'SCHEDULED FOR ' . Yii::$app->formatter->asDatetime($datetime, self::DATE_FORMAT)
             : 'DRAFT';
     }
 
