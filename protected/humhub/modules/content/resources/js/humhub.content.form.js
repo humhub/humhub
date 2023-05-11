@@ -187,9 +187,10 @@ humhub.module('content.form', function(module, require, $) {
         }
     };
 
-    CreateForm.prototype.changeState = function(state, title) {
+    CreateForm.prototype.changeState = function(state, title, buttonTitle) {
         const stateInput = this.$.find('input[name=state]');
         let stateLabel = this.$.find('.label-content-state');
+        const button = this.$.find('#post_submit_button');
 
         if (!stateLabel.length) {
             stateLabel = $('<span>').addClass('label label-warning label-content-state');
@@ -197,10 +198,14 @@ humhub.module('content.form', function(module, require, $) {
         }
 
         if (stateInput.data('initial') === undefined) {
-            stateInput.data('initial', stateInput.val());
+            stateInput.data('initial', {
+                state: stateInput.val(),
+                buttonTitle: button.html()
+            });
         }
 
         if (typeof(state) === 'object') {
+            buttonTitle = state.$target.data('button-title');
             title = state.$target.data('state-title');
             state = state.$target.data('state');
             if (stateInput.val() == state) {
@@ -210,12 +215,16 @@ humhub.module('content.form', function(module, require, $) {
 
         stateInput.val(state);
         stateLabel.show().html(title);
+        button.html(buttonTitle);
     }
 
     CreateForm.prototype.resetState = function() {
         const stateInput = this.$.find('input[name=state]');
-        if (stateInput.data('initial') !== undefined) {
-            stateInput.val(stateInput.data('initial'));
+        const button = this.$.find('#post_submit_button');
+        const initial = stateInput.data('initial');
+        if (initial !== undefined) {
+            stateInput.val(initial.state);
+            button.html(initial.buttonTitle);
         }
         this.$.find('input[name^=scheduled]').remove();
         this.$.find('.label-content-state').hide();
@@ -241,7 +250,10 @@ humhub.module('content.form', function(module, require, $) {
                 }
 
                 if (modalGlobal.find('#scheduleoptionsform-enabled').is(':checked')) {
-                    that.changeState(modalGlobal.find('input[name=state]').val(), modalGlobal.find('input[name=stateTitle]').val());
+                    that.changeState(
+                        modalGlobal.find('input[name=state]').val(),
+                        modalGlobal.find('input[name=stateTitle]').val(),
+                        modalGlobal.find('input[name=buttonTitle]').val());
                     that.setScheduleOption('scheduledDate', modalGlobal.find('input[name=scheduledDate]').val());
                 } else {
                     that.resetState();
