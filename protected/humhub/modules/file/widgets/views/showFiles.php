@@ -1,28 +1,28 @@
 <?php
 
-use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\widgets\FilePreview;
+use humhub\modules\file\libs\FileHelper;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 use humhub\widgets\JPlayerPlaylistWidget;
 use yii\helpers\Html;
 
-/* @var  $showPreview boolean */
-/* @var  $files \humhub\modules\file\models\File[] */
 /* @var  $previewImage \humhub\modules\file\converter\PreviewImage */
+/* @var  $files \humhub\modules\file\models\File[] */
 /* @var  $object \humhub\components\ActiveRecord */
 /* @var  $excludeMediaFilesPreview boolean */
+/* @var  $showPreview boolean */
 
 $videoExtensions = ['webm', 'mp4', 'ogv', 'mov'];
 $images = [];
 $videos = [];
 $audios = [];
 
-foreach($files as $file) {
+foreach ($files as $file) {
     if ($previewImage->applyFile($file)) {
         $images[] = $file;
-    } else if (in_array(FileHelper::getExtension($file->file_name), $videoExtensions, true)) {
+    } elseif (in_array(FileHelper::getExtension($file->file_name), $videoExtensions, true)) {
         $videos[] = $file;
-    } else if (FileHelper::getExtension($file->file_name) === 'mp3') {
+    } elseif (FileHelper::getExtension($file->file_name) === 'mp3') {
         $audios[]  = $file;
     }
 }
@@ -34,15 +34,13 @@ $fluidColumnClass = 'col-media col-xs-3 col-sm-3 col-md-2';
 $galleryColumnClass =  ThemeHelper::isFluid() ? $fluidColumnClass : $nonFluidColumnClass;
 ?>
 
-<?php if (count($files) > 0) : ?>
+<?php if (count($files) > 0): ?>
     <!-- hideOnEdit mandatory since 1.2 -->
     <div class="hideOnEdit">
         <!-- Show Images as Thumbnails -->
-
-        <?php if($showPreview) :?>
+        <?php if ($showPreview):?>
             <div class="post-files clearfix" id="post-files-<?= $object->getUniqueId() ?>">
-
-                <?php if(!empty($audios)) : ?>
+                <?php if (!empty($audios)): ?>
                     <div class="<?= $fullWidthColumnClass ?>">
                         <?= JPlayerPlaylistWidget::widget(['playlist' => $audios]) ?>
                     </div>
@@ -84,7 +82,6 @@ $galleryColumnClass =  ThemeHelper::isFluid() ? $fluidColumnClass : $nonFluidCol
                         </a>
                     </div>
                 <?php endforeach; ?>
-
             </div>
         <?php endif; ?>
 
@@ -94,6 +91,5 @@ $galleryColumnClass =  ThemeHelper::isFluid() ? $fluidColumnClass : $nonFluidCol
             'items' => $files,
             'model' => $object,
         ]) ?>
-
     </div>
 <?php endif; ?>
