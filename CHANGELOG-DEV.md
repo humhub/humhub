@@ -26,6 +26,7 @@ HumHub Changelog
 - Enh #6285: Change background color for confirmation of oembed content
 - Enh #6289: Refactored UserWall and Wall widgets
 - Fix #44: Mail Module Indicator Problem
+- Enh #6295: Add the possibility to display if users are online
 - Fix #6299: Fix ambiguous space sort order column
 - Enh #2590: Possibility to add a dropdown button to upload audio, image or video file type
 - Enh #6298: Move the "Write a new comment" field style to a generic field that can be used by other modules
