@@ -17,7 +17,8 @@ HumHub Changelog
 - Fix #6296: Update style variable `background-color-secondary`
 - Fix #6228: Administrators allowed to manage users cannot invite by email or by link if disabled in the settings
 - Fix #6293: Delete content from DB completely on purge content by cron job
-- Fix #6316: Dashboard Activity Sidebar Loading Speed 
+- Fix #6316: Dashboard Activity Sidebar Loading Speed
+- Fix #6262: Fix visibility of deleted content
 
 1.14.0 (April 20, 2023)
 -----------------------
