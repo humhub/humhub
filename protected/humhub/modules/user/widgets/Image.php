@@ -76,8 +76,8 @@ class Image extends BaseImage
             $html .= Html::tag('span', '', [
                 'class' => ['tt user-online-status', $userIsOnline ? 'user-is-online' : 'user-is-offline'],
                 'title' => $userIsOnline ?
-                    Yii::t('UserModule.base', 'Currently online') :
-                    Yii::t('UserModule.base', 'Currently offline'),
+                    Yii::t('UserModule.base', 'Online') :
+                    Yii::t('UserModule.base', 'Offline'),
             ]);
         }
 
