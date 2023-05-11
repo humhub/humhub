@@ -27,6 +27,7 @@ HumHub Changelog
 - Enh #6289: Refactored UserWall and Wall widgets
 - Fix #44: Mail Module Indicator Problem
 - Fix #6299: Fix ambiguous space sort order column
+- Enh #2590: Possibility to add a dropdown button to upload audio, image or video file type
 - Enh #6298: Move the "Write a new comment" field style to a generic field that can be used by other modules
 - Enh #6310: Module information is localized with `docs/uk/README.md` or `README.uk.md`.
 - Enh #6311: Added {cols, rows} to textarea() control. 
