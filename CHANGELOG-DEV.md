@@ -30,3 +30,4 @@ HumHub Changelog
 - Enh #6298: Move the "Write a new comment" field style to a generic field that can be used by other modules
 - Enh #6310: Module information is localized with `docs/uk/README.md` or `README.uk.md`.
 - Enh #6311: Added {cols, rows} to textarea() control. 
+- Enh #49: File Converter Logging Issue
