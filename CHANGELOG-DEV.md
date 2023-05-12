@@ -34,3 +34,4 @@ HumHub Changelog
 - Enh #6311: Added {cols, rows} to textarea() control. 
 - Enh #6304: Update button title on creating of not published content
 - Enh #6319: Duplicate File Converter Logs
+- Fix #5962: Make top menu shrink and grow on resize window
