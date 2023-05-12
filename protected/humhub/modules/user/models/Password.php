@@ -187,7 +187,7 @@ class Password extends ActiveRecord
         $this->salt = UUID::v4();
         $this->algorithm = $this->defaultAlgorithm;
         $this->password = $this->hashPassword($newPassword);
-        $this->user->auth_key = Yii::$app->security->generateRandomString(32);
+        $this->user && $this->user->auth_key = Yii::$app->security->generateRandomString(32);
     }
 
     public function getUser()
