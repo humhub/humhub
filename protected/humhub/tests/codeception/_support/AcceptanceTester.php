@@ -329,7 +329,7 @@ class AcceptanceTester extends BaseTester
         } else {
             $select2Input = $selector . ' ~ span input';
             $this->fillField($select2Input, $search);
-            $this->waitForText($search, null, '.select2-results__option.select2-results__option--highlighted .highlight');
+            $this->waitForText($search, null, '.select2-results__option.select2-results__option--highlighted .picker-text');
             $this->pressKey($select2Input, WebDriverKeys::ENTER);
         }
     }
