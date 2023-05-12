@@ -219,16 +219,9 @@ class Password extends ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        $isAuthKeyChanged = $this->user->isAttributeChanged('auth_key');
-
-        if ($this->isAttributeChanged('password') || $isAuthKeyChanged) {
-            !$isAuthKeyChanged && $this->user->auth_key = Yii::$app->security->generateRandomString(32);
-            $this->user->save();
-
-            if ($this->user->isCurrentUser()) {
-                Yii::$app->user->switchIdentity($this->user);
-            }
-        }
+        $this->user->auth_key = Yii::$app->security->generateRandomString(32);
+        $this->user->save();
+        $this->user->isCurrentUser() && Yii::$app->user->switchIdentity($this->user);
     }
 
 }
