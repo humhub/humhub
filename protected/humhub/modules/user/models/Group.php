@@ -231,10 +231,10 @@ class Group extends ActiveRecord
         return self::findOne(['is_admin_group' => '1']);
     }
 
-    public static function getAdminGroupId()
+    public static function getAdminGroupId(): int
     {
         $adminGroupId = Yii::$app->getModule('user')->settings->get('group.adminGroupId');
-        if ($adminGroupId == null) {
+        if ($adminGroupId === null) {
             $adminGroupId = self::getAdminGroup()->id;
             Yii::$app->getModule('user')->settings->set('group.adminGroupId', $adminGroupId);
         }
@@ -347,7 +347,7 @@ class Group extends ActiveRecord
         $newGroupUser = new GroupUser();
         $newGroupUser->user_id = $userId;
         $newGroupUser->group_id = $this->id;
-        $newGroupUser->created_at = date('Y-m-d G:i:s');
+        $newGroupUser->created_at = date('Y-m-d H:i:s');
         $newGroupUser->created_by = Yii::$app->user->id;
         $newGroupUser->is_group_manager = $isManager;
         if ($newGroupUser->save() && !Yii::$app->user->isGuest) {

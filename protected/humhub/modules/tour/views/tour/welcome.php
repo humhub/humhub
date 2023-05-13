@@ -26,22 +26,18 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
 <div class="modal-dialog modal-dialog-medium animated fadeIn">
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title"
-                id="myModalLabel">
-                    <?= Yii::t('TourModule.base', 'Howdy <strong>%firstname%</strong>, thank you for using %community%.', ['%firstname%' => $user->profile->firstname, '%community%' => Html::encode(Yii::$app->name)]); ?>
+            <h4 class="modal-title" id="myModalLabel">
+                <?= Yii::t('TourModule.base', 'Howdy <strong>%firstname%</strong>, thank you for using %community%.', ['%firstname%' => $user->profile->firstname, '%community%' => Html::encode(Yii::$app->name)]); ?>
             </h4>
         </div>
         <div class="modal-body">
             <div class="text-center">
                 <?= Yii::t('TourModule.base', 'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.'); ?>
-                <br><br>
-                <br>
+                <br><br><br>
             </div>
 
             <div class="row">
-
                 <div class="col-md-3" data-ui-widget="humhub.content.container.Header" data-ui-init>
-
                     <div class="image-upload-container profile-user-photo-container" style="width: 140px; height: 140px;">
                         <?= Html::img($user->getProfileImage()->getUrl(), [
                             'id' => 'welcome-modal-profile-image',
@@ -60,15 +56,15 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
                                 'dropZone' => '#welcome-modal-profile-image',
                                 'options' => ['class' => 'profile-upload-input']]) ?>
                         </div>
-
                     </div>
+
                     <p class="help-block text-center">
                         <?= Icon::get('arrow-up')?>
                         <br>
                         <?= Yii::t('TourModule.base', 'Drag a photo here or click to browse your files'); ?>
                     </p>
-
                 </div>
+
                 <div class="col-md-9">
                     <?php $form = ActiveForm::begin(); ?>
                     <div class="row">
@@ -117,7 +113,6 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
                         </div>
                     </div>
 
-
                     <div class="row">
                         <div class="col-md-12 text-right">
                             <hr>
@@ -126,15 +121,9 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
                         </div>
                     </div>
 
-
                     <?php ActiveForm::end(); ?>
                 </div>
-
-
             </div>
         </div>
-
-
     </div>
-
 </div>

@@ -1,20 +1,20 @@
 <?php
 
+use humhub\modules\admin\grid\SpaceActionColumn;
+use humhub\modules\admin\grid\SpaceImageColumn;
+use humhub\modules\admin\grid\SpaceTitleColumn;
+use humhub\modules\admin\models\SpaceSearch;
+use humhub\modules\admin\widgets\SpaceGridView;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\widgets\ModalButton;
-use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use humhub\modules\admin\widgets\SpaceGridView;
-use humhub\modules\admin\grid\SpaceActionColumn;
-use humhub\modules\admin\grid\SpaceTitleColumn;
-use humhub\modules\admin\grid\SpaceImageColumn;
-use humhub\modules\admin\models\SpaceSearch;
+use yii\helpers\Html;
 use yii\helpers\Url;
 
-/* @var $searchModel SpaceSearch*/
+/* @var $searchModel SpaceSearch */
 ?>
 
 <?php if (Yii::$app->user->can([CreatePublicSpace::class, CreatePrivateSpace::class])) : ?>

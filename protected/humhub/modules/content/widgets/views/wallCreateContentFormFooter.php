@@ -103,7 +103,8 @@ use yii\helpers\Html;
                                     ->icon('edit')
                                     ->options([
                                         'data-state' => Content::STATE_DRAFT,
-                                        'data-state-title' => Yii::t('ContentModule.base', 'Draft')
+                                        'data-state-title' => Yii::t('ContentModule.base', 'Draft'),
+                                        'data-button-title' => Yii::t('ContentModule.base', 'Save as draft')
                                     ]) ?>
                         </li>
                         <li>
