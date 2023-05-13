@@ -35,3 +35,4 @@ HumHub Changelog
 - Enh #6304: Update button title on creating of not published content
 - Enh #6319: Duplicate File Converter Logs
 - Fix #5962: Make top menu shrink and grow on resize window
+- Enh #6327: Fix PHP error when calling `Password::setPassword`
