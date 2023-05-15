@@ -216,6 +216,8 @@ humhub.module('content.form', function(module, require, $) {
         stateInput.val(state);
         stateLabel.show().html(title);
         button.html(buttonTitle);
+        this.$.find('.preferences [data-action-click=notifyUser]').parent().hide();
+        this.$.find('#notifyUserContainer').hide();
     }
 
     CreateForm.prototype.resetState = function() {
@@ -228,6 +230,11 @@ humhub.module('content.form', function(module, require, $) {
         }
         this.$.find('input[name^=scheduled]').remove();
         this.$.find('.label-content-state').hide();
+        this.$.find('.preferences [data-action-click=notifyUser]').parent().show();
+        const notifyUserContainer = this.$.find('#notifyUserContainer');
+        if (notifyUserContainer.find('ul .select2-selection__clear').length) {
+            notifyUserContainer.show();
+        }
     }
 
     CreateForm.prototype.scheduleOptions = function(evt) {

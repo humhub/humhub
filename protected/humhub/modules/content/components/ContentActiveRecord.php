@@ -451,8 +451,12 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
             $this->content->object_id = $this->getPrimaryKey();
         }
 
-        // Always save content
-        $this->content->save();
+        if (!$insert || $this->content->isNewRecord) {
+            // Save a Content only on each update of this Record or when the Content is creating first time.
+            // Don't update the Content twice during inserting of this Record
+            //   in order to don't touch the column `updated_at` when action is "creating" really.
+            $this->content->save();
+        }
 
         parent::afterSave($insert, $changedAttributes);
     }
@@ -470,8 +474,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
         if ($activitiesQuery instanceof ActiveQuery) {
             foreach ($activitiesQuery->each() as $activity) {
                 /* @var Activity $activity */
-                $activity->content->setState($newState);
-                $activity->content->save();
+                $activity->content->getStateService()->update($newState);
             }
         }
     }
