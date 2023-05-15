@@ -87,6 +87,10 @@ class Module extends \humhub\components\Module
 
         $content = $object->content;
 
+        if (!$content->getStateService()->isPublished()) {
+            return false;
+        }
+
         if ($content->container) {
             if (!$content->container->permissionManager->can(CreateComment::class)) {
                 return false;

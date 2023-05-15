@@ -12,6 +12,7 @@ HumHub Changelog
 - Enh #6242: Submit button hidden when editing a comment having a long "code" line 
 - Fix #6282: Hard delete content records on integrity check
 - Fix #6257: Fix error after publishing of a draft content
+- Fix #6258: Send notification to mentioned user only after publishing of a content
 - Fix #6273: Fix automatically login user after registration
 - Fix #6292: Messages: Notification Indicator Problem
 - Fix #6296: Update style variable `background-color-secondary`
