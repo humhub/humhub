@@ -32,6 +32,7 @@ use yii\base\Exception;
  *
  * @property-read Content $content
  * @property-read User $user
+ * @property-read ContentAddonActiveRecord|ContentActiveRecord $source
  * @author Lucas Bartholemy <lucas@bartholemy.com>
  * @package humhub.components
  * @since 0.5

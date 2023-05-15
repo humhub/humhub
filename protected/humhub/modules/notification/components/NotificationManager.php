@@ -8,9 +8,11 @@
 
 namespace humhub\modules\notification\components;
 
+use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainerSetting;
+use humhub\modules\notification\jobs\MarkAsReadJob;
 use humhub\modules\notification\targets\BaseTarget;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
@@ -484,4 +486,14 @@ class NotificationManager
         return $result;
     }
 
+
+
+    public function markAsReadRelatedNotifications(ContentAddonActiveRecord $model)
+    {
+        Yii::$app->queue->push(new MarkAsReadJob([
+            'sourceClass' => $model->className(),
+            'sourcePk' => $model->id,
+            'userId' => Yii::$app->user->id,
+        ]));
+    }
 }

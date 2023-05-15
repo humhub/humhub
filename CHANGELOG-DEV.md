@@ -20,6 +20,7 @@ HumHub Changelog
 - Enh #29: AutoStart Tour for new Users
 - Fix #6243: Do not send notification when ApprovalRequest is not valid
 - Enh #6215: Added `LongRunningActiveJob` to avoid timeout for long running queue jobs
+- Enh #6280: Comment notifications automatically mark as seen
 - Enh #6253: Remove `DefaultSwipeOnMobile` checkbox
 - Enh #10: Added `collapsedPostHeight` to the Post module for set collapsed post default height
 - Enh #6277: Bring back Pjax Functionality

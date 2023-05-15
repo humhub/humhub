@@ -160,6 +160,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             $this->refresh();
 
             NewCommentNotification::instance()->from($this->user)->about($this)->sendBulk($followerQuery);
+            Yii::$app->notification->markAsReadRelatedNotifications($this);
 
             if ($this->content->container) {
                 Yii::$app->live->send(new NewCommentLive([
