@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.14.1 (Unreleased)
--------------------
+1.14.1 (May 15, 2023)
+---------------------
 - Fix #6251: Emulate execution on `readable()` content 
 - Enh #6252: Implement new method to handle changing of content active record state
 - Enh #6255: Updated activities to same state as parent record
