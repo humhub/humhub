@@ -21,7 +21,6 @@ use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\web\ForbiddenHttpException;
-use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -368,12 +367,14 @@ class ContentController extends Controller
         $json['success'] = false;
 
         $content = Content::findOne(['id' => Yii::$app->request->get('id', '')]);
-        if ($content !== null && $content->canEdit() && $content->state === Content::STATE_DRAFT) {
-            $content->state = Content::STATE_PUBLISHED;
-            $content->save();
-            $json['message'] = Yii::t('ContentModule.base', 'The content has been successfully published.');
-            $json['success'] = true;
-
+        if ($content !== null && $content->canEdit() && $content->getStateService()->isDraft()) {
+            if ($content->getStateService()->publish()) {
+                $json['message'] = Yii::t('ContentModule.base', 'The content has been successfully published.');
+                $json['success'] = true;
+            } else {
+                $json['error'] = Yii::t('ContentModule.base', 'The content cannot be published!');
+                $json['success'] = false;
+            }
         }
 
         return $this->asJson($json);

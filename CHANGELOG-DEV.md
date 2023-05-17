@@ -36,3 +36,4 @@ HumHub Changelog
 - Enh #6319: Duplicate File Converter Logs
 - Fix #5962: Make top menu shrink and grow on resize window
 - Enh #6328: Add arrows for gridview sort columns
+- Enh #6327: PHP error when calling `Password::setPassword` on unsaved User records 

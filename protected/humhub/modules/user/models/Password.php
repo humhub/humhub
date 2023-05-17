@@ -187,7 +187,6 @@ class Password extends ActiveRecord
         $this->salt = UUID::v4();
         $this->algorithm = $this->defaultAlgorithm;
         $this->password = $this->hashPassword($newPassword);
-        $this->user->auth_key = Yii::$app->security->generateRandomString(32);
     }
 
     public function getUser()
@@ -220,11 +219,9 @@ class Password extends ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        if ($this->user->isAttributeChanged('auth_key') &&
-            $this->user->save() &&
-            $this->user->isCurrentUser()) {
-            Yii::$app->user->switchIdentity($this->user);
-        }
+        $this->user->auth_key = Yii::$app->security->generateRandomString(32);
+        $this->user->save();
+        $this->user->isCurrentUser() && Yii::$app->user->switchIdentity($this->user);
     }
 
 }
