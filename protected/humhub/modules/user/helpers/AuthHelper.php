@@ -10,9 +10,13 @@
 namespace humhub\modules\user\helpers;
 
 
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\forms\Registration;
+use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
+use yii\web\HttpException;
 
 /**
  * Class AuthHelper
@@ -88,4 +92,5 @@ class AuthHelper
 
         return $username . $usernameRandomSuffix;
     }
+
 }
