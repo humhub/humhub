@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -20,7 +21,6 @@ use yii\helpers\Console;
  */
 class ThemeController extends \yii\console\Controller
 {
-
     /**
      * {@inheritdoc}
      */
@@ -74,8 +74,7 @@ class ThemeController extends \yii\console\Controller
         $theme->activate();
 
         $this->stdout("\nSuccessfully switched to theme: \n", Console::BOLD);
-        $this->stdout(Yii::$app->view->theme->name. "\n\n", Console::FG_GREEN);
+        $this->stdout(Yii::$app->view->theme->name . "\n\n", Console::FG_GREEN);
         return ExitCode::OK;
     }
-
 }

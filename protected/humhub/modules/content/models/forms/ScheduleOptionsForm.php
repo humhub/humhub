@@ -29,7 +29,7 @@ class ScheduleOptionsForm extends Model
         parent::init();
 
         if ($this->hasContent() && $this->content->scheduled_at !== null) {
-            $this->enabled = $this->content->state == Content::STATE_SCHEDULED;
+            $this->enabled = $this->content->getStateService()->isScheduled();
             $this->date = $this->content->scheduled_at;
         }
 
@@ -96,11 +96,9 @@ class ScheduleOptionsForm extends Model
 
         if ($this->hasContent()) {
             if ($this->enabled) {
-                $this->content->setState(Content::STATE_SCHEDULED, ['scheduled_at' => $this->date]);
-            } else {
-                $this->content->setState(Content::STATE_DRAFT);
+                return $this->content->getStateService()->schedule($this->date);
             }
-            return $this->content->save();
+            return $this->content->getStateService()->draft();
         }
 
         return $this->isSubmitted();
@@ -108,7 +106,7 @@ class ScheduleOptionsForm extends Model
 
     public function getStateTitle(): string
     {
-        return Yii::t('ContentModule.base', 'Scheduled at {dateTime}', [
+        return Yii::t('ContentModule.base', 'Scheduled for {dateTime}', [
             'dateTime' => Yii::$app->formatter->asDatetime($this->date, 'short')
         ]);
     }

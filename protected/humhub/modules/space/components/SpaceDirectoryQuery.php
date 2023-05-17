@@ -116,12 +116,16 @@ class SpaceDirectoryQuery extends ActiveQuerySpace
     public function order(): SpaceDirectoryQuery
     {
         switch (SpaceDirectoryFilters::getValue('sort')) {
+            case 'sortOrder':
+                $this->defaultOrderBy();
+                break;
+
             case 'name':
                 $this->addOrderBy('space.name');
                 break;
 
             case 'newer':
-                $this->addOrderBy('space.created_at DESC');
+                $this->addOrderBy(['space.created_at' => SORT_DESC]);
                 break;
 
             case 'older':

@@ -44,7 +44,7 @@ class LayoutAddons extends BaseStack
                 $this->addWidget(MarkdownModals::class);
 
                 if (Yii::$app->params['enablePjax']) {
-                    $this->addWidget(Pjax::class);
+                    $this->addWidget(PjaxLayoutContent::class);
                 }
             }
         }
