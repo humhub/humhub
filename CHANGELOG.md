@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.14.2 (Unreleased)
+-------------------
+Fix #6257: Editing Draft lead to unexpected error
+
 1.14.1 (May 15, 2023)
 ---------------------
 - Fix #6251: Emulate execution on `readable()` content 
