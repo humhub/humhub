@@ -193,7 +193,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
             dataType: 'html',
         }).status({
             200: function (response) {
-                that.$.html(response.html);
+                that.$.replaceWith(response.html);
                 that.apply();
                 that.highlight();
             },
