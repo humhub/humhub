@@ -50,7 +50,10 @@ $placeholder = ($isNestedComment)
             'id' => 'newCommentForm_' . $id,
             'form' => $form,
             'layout' => RichTextField::LAYOUT_INLINE,
-            'pluginOptions' => ['maxHeight' => '300px'],
+            'pluginOptions' => [
+                'maxHeight' => '300px',
+                'markdownEditorMode' => Yii::$app->user->getIdentity()->settings->get('markdownEditorMode'),
+            ],
             'mentioningUrl' => $mentioningUrl,
             'placeholder' => $placeholder,
             'events' => [
