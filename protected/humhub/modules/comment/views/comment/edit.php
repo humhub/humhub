@@ -29,10 +29,7 @@ $contentModule = Yii::$app->getModule('content');
         <?= $form->field($comment, 'message')->widget(RichTextField::class, [
             'id' => 'comment_input_' . $comment->id,
             'layout' => RichTextField::LAYOUT_INLINE,
-            'pluginOptions' => [
-                'maxHeight' => '300px',
-                'markdownEditorMode' => Yii::$app->user->getIdentity()->settings->get('markdownEditorMode'),
-            ],
+            'pluginOptions' => ['maxHeight' => '300px'],
             'placeholder' => Yii::t('CommentModule.base', 'Edit your comment...'),
             'focus' => true,
             'events' => [

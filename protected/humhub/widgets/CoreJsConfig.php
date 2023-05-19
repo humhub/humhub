@@ -104,6 +104,7 @@ class CoreJsConfig extends Widget
                     'oembed' => [
                         'max' => Yii::$app->getModule('content')->maxOembeds
                     ],
+                    'markdownEditorMode' => Yii::$app->user->getIdentity()->settings->get('markdownEditorMode'),
                     'mention' => [
                         'minInput' => 0,
                         'minInputText' => Yii::t('base', 'Please type at least {count} characters', ['count' => 2])

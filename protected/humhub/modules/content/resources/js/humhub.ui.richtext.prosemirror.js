@@ -33,6 +33,7 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
             },
             emoji: module.config.emoji,
             oembed: module.config.oembed,
+            markdownEditorMode: module.config.markdownEditorMode,
             translate: function (key) {
                 return module.text(key);
             }
@@ -79,7 +80,7 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
             event.on('humhub:content:afterSubmit', () => this.resetBackup());
         }
 
-        if (this.options.pluginOptions.markdownEditorMode) {
+        if (this.options.markdownEditorMode) {
             this.editor.showSourceView();
         }
     };
@@ -168,10 +169,7 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
     RichText.prototype.init = function () {
         // If in edit mode we do not actually render, we just hold the content
         if (!this.options.edit) {
-            console.log('markdownEditorMode:', this.options.markdownEditorMode);
-            this.editor = this.options.markdownEditorMode
-                ? new MarkdownView(this.$, this.options)
-                : new MarkdownEditor(this.$, this.options);
+            this.editor = new MarkdownEditor(this.$, this.options);
             this.$.html(this.editor.render());
             additions.applyTo(this.$, {filter: ['highlightCode']});
             this.$.find('table').wrap('<div class="table-responsive"></div>');

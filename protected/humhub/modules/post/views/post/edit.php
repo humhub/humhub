@@ -22,10 +22,7 @@ use yii\bootstrap\ActiveForm;
             'id' => 'post_input_' . $model->post->id,
             'layout' => RichTextField::LAYOUT_INLINE,
             'focus' => true,
-            'pluginOptions' => [
-                'maxHeight' => '300px',
-                'markdownEditorMode' => Yii::$app->user->getIdentity()->settings->get('markdownEditorMode'),
-            ],
+            'pluginOptions' => ['maxHeight' => '300px'],
             'placeholder' => Yii::t('PostModule.base', 'Edit your post...')
         ])->label(false) ?>
 
