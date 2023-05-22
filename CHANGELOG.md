@@ -3,9 +3,9 @@ HumHub Changelog
 
 1.14.2 (May 22, 2023)
 ----------------------
-Fix #6257: Editing Draft lead to unexpected error
-Fix #6333: Fix installer 
-Fix #6342: Fix file uploading
+- Fix #6257: Editing Draft lead to unexpected error
+- Fix #6333: Fix installer crash on fresh installs 
+- Fix #6342: Fix broken file uploading
 
 1.14.1 (May 15, 2023)
 ---------------------
