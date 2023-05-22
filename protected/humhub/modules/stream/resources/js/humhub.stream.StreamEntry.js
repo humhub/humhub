@@ -193,7 +193,9 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
             dataType: 'html',
         }).status({
             200: function (response) {
-                that.$.replaceWith(response.html);
+                const updatedEntry = $(response.html)
+                that.$.replaceWith(updatedEntry);
+                that.$ = updatedEntry;
                 that.apply();
                 that.highlight();
             },
