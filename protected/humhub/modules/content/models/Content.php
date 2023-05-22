@@ -221,7 +221,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
             $this->created_by ??= Yii::$app->user->id;
         }
 
-        $this->stream_sort_date = date('Y-m-d G:i:s');
+        $this->stream_sort_date = date('Y-m-d H:i:s');
 
         if ($this->created_by == "") {
             throw new Exception("Could not save content without created_by!");
@@ -1033,7 +1033,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      */
     public function updateStreamSortTime()
     {
-        $this->updateAttributes(['stream_sort_date' => date('Y-m-d G:i:s')]);
+        $this->updateAttributes(['stream_sort_date' => date('Y-m-d H:i:s')]);
     }
 
     /**
