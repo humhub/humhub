@@ -4,6 +4,7 @@ HumHub Changelog
 1.14.2 (Unreleased)
 -------------------
 Fix #6257: Editing Draft lead to unexpected error
+Fix #6333: Fix installation
 
 1.14.1 (May 15, 2023)
 ---------------------
