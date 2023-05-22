@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.14.3 (Unreleased)
+----------------------
+- Fix #6345: Fix updating of post on wall stream
+
 1.14.2 (May 22, 2023)
 ----------------------
 - Fix #6257: Editing Draft lead to unexpected error
