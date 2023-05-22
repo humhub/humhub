@@ -21,16 +21,16 @@ class RequestMembershipCest
 
         $I->amUser1();
         $I->amOnSpace1();
-        $I->seeElement('#requestMembershipButton');
-        $I->click('#requestMembershipButton');
+        $I->seeElement('[data-space-request-membership]');
+        $I->click('[data-space-request-membership]');
 
-        $I->waitForText('Request space membership', null,'#globalModal');
+        $I->waitForText('Request Membership', null,'#globalModal');
         $I->fillField('#request-message', 'Hi, I want to join this space.');
         $I->click('Send', '#globalModal');
         $I->waitForText('Your request was successfully submitted to the space administrators.');
         $I->click('Close', '#globalModal');
 
-        $I->waitForText('Cancel pending membership application');
+        $I->waitForText('Pending');
 
         $I->amAdmin(true);
         $I->seeInNotifications('Peter Tester requests membership for the space Space 1', true);
@@ -57,16 +57,16 @@ class RequestMembershipCest
 
         $I->amUser1();
         $I->amOnSpace1();
-        $I->seeElement('#requestMembershipButton');
-        $I->click('#requestMembershipButton');
+        $I->seeElement('[data-space-request-membership]');
+        $I->click('[data-space-request-membership]');
 
-        $I->waitForText('Request space membership', null,'#globalModal');
+        $I->waitForText('Request Membership', null,'#globalModal');
         $I->fillField('#request-message', 'Hi, I want to join this space.');
         $I->click('Send', '#globalModal');
         $I->waitForText('Your request was successfully submitted to the space administrators.');
         $I->click('Close', '#globalModal');
 
-        $I->waitForText('Cancel pending membership application');
+        $I->waitForText('Pending');
 
         $I->amAdmin(true);
         $I->seeInNotifications('Peter Tester requests membership for the space Space 1', true);
@@ -81,8 +81,8 @@ class RequestMembershipCest
         $I->see('Pending Approvals');
         $I->click('Pending Approvals');
 
-        $I->waitForText('Reject');
-        $I->click('Reject');
+        $I->waitForText('Decline');
+        $I->click('Decline');
 
         $I->waitForElementVisible('#wallStream');
         $I->dontSeeInNotifications('Peter Tester requests membership for the space Space 1');
@@ -90,7 +90,7 @@ class RequestMembershipCest
         $I->amUser1(true);
 
         $I->seeInNotifications('Admin Tester declined your membership request for the space Space 1', true);
-        $I->waitForElementVisible('#requestMembershipButton');
+        $I->waitForElementVisible('[data-space-request-membership]');
     }
 
     /**
@@ -103,20 +103,22 @@ class RequestMembershipCest
 
         $I->amUser1();
         $I->amOnSpace1();
-        $I->seeElement('#requestMembershipButton');
-        $I->click('#requestMembershipButton');
+        $I->seeElement('[data-space-request-membership]');
+        $I->click('[data-space-request-membership]');
 
-        $I->waitForText('Request space membership', null,'#globalModal');
+        $I->waitForText('Request Membership', null,'#globalModal');
         $I->fillField('#request-message', 'Hi, I want to join this space.');
         $I->click('Send', '#globalModal');
         $I->waitForText('Your request was successfully submitted to the space administrators.');
         $I->click('Close', '#globalModal');
 
-        $I->waitForText('Cancel pending membership application');
-        $I->click('Cancel pending membership application');
-        $I->waitForText('Admin Space 2 Post Private', null,'#wallStream'); // Back to dashboard
+        $I->waitForText('Pending');
+        $I->click('Pending');
+        $I->waitForText('Confirm');
+        $I->click('Confirm');
+        $I->waitForText('Join'); // Back to dashboard
         $I->amOnSpace1();
-        $I->waitForText('Request membership', null,'#requestMembershipButton');
+        $I->waitForText('Join', null,'[data-space-request-membership]');
 
         $I->amAdmin(true);
         $I->dontSeeInNotifications('Peter Tester requests membership for the space Space 1');

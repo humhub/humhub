@@ -8,14 +8,13 @@
 
 namespace humhub\modules\content\components;
 
-use humhub\modules\user\helpers\AuthHelper;
-use Yii;
-use yii\web\HttpException;
 use humhub\components\Controller;
 use humhub\modules\content\models\ContentContainer;
-use humhub\modules\content\components\ContentContainerModule;
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\components\ContentContainerControllerAccess;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\models\User;
+use Yii;
+use yii\web\HttpException;
 
 /**
  * Controller is the base class of web controllers which acts in scope of a ContentContainer (e.g. Space or User).
@@ -32,7 +31,6 @@ use humhub\modules\content\components\ContentContainerControllerAccess;
  *
  * Based on the current ContentContainer a behavior (defined in ContentContainerActiveRecord::controllerBehavior) will be automatically
  * attached to this controller instance.
-
  * The attached behavior will perform basic access checks, adds the container sublayout and perform other tasks
  * (e.g. the space behavior will update the last visit membership attribute).
  *
@@ -72,12 +70,8 @@ class ContentContainerController extends Controller
 
         // Load the ContentContainer
         $guid = Yii::$app->request->get('cguid', Yii::$app->request->get('sguid', Yii::$app->request->get('uguid')));
-        if (!empty($guid)) {
-            $contentContainerModel = ContentContainer::findOne(['guid' => $guid]);
-            if ($contentContainerModel !== null) {
-                $this->contentContainer = $contentContainerModel->getPolymorphicRelation();
-            }
-        }
+        $this->contentContainer = $this->getContentContainerByGuid($guid);
+
 
         if ($this->validContentContainerClasses !== null) {
             if ($this->contentContainer === null || !in_array($this->contentContainer->className(), $this->validContentContainerClasses)) {
@@ -88,7 +82,12 @@ class ContentContainerController extends Controller
         if ($this->contentContainer !== null && $this->contentContainer->controllerBehavior) {
             $this->attachBehavior('containerControllerBehavior', ['class' => $this->contentContainer->controllerBehavior]);
         }
+
+        if ($this->contentContainer !== null && $this->contentContainer->isBlockedForUser()) {
+            throw new HttpException(400, 'You are blocked for this page!');
+        }
     }
+
 
     /**
      * @inheritdoc
@@ -111,7 +110,7 @@ class ContentContainerController extends Controller
 
         $this->checkModuleIsEnabled();
 
-        if($this->contentContainer) {
+        if ($this->contentContainer) {
             $this->view->registerJsConfig('content.container', [
                 'guid' => $this->contentContainer->guid
             ]);
@@ -129,11 +128,7 @@ class ContentContainerController extends Controller
      */
     public function getAccess()
     {
-        if($this->contentContainer) {
-            return new ContentContainerControllerAccess(['contentContainer' => $this->contentContainer]);
-        }
-
-        return parent::getAccess();
+        return new ContentContainerControllerAccess(['contentContainer' => $this->contentContainer]);
     }
 
     /**
@@ -144,9 +139,29 @@ class ContentContainerController extends Controller
     protected function checkModuleIsEnabled()
     {
         if ($this->module instanceof ContentContainerModule && $this->contentContainer !== null &&
-                !$this->contentContainer->moduleManager->isEnabled($this->module->id)) {
+            !$this->contentContainer->moduleManager->isEnabled($this->module->id)) {
             throw new HttpException(405, Yii::t('base', 'Module is not enabled on this content container!'));
         }
     }
 
+    /**
+     * @param string|null $guid
+     * @return ContentContainerActiveRecord|null
+     */
+    private function getContentContainerByGuid(?string $guid): ?ContentContainerActiveRecord
+    {
+        if (empty($guid)) {
+            return null;
+        }
+
+        $contentContainer = ContentContainer::findOne(['guid' => $guid]);
+        if ($contentContainer === null) {
+            return null;
+        }
+
+        /* @var Space|User $contentContainerClass */
+        $contentContainerClass = $contentContainer->class;
+
+        return $contentContainerClass::find()->where(['guid' => $guid])->one();
+    }
 }

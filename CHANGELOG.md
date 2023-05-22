@@ -1,10 +1,640 @@
 HumHub Changelog
 ================
 
-1.8.3 (Unreleased)
+1.14.2 (Unreleased)
+-------------------
+Fix #6257: Editing Draft lead to unexpected error
+
+1.14.1 (May 15, 2023)
+---------------------
+- Fix #6251: Emulate execution on `readable()` content 
+- Enh #6252: Implement new method to handle changing of content active record state
+- Enh #6255: Updated activities to same state as parent record
+- Enh #6248: If admins can view all contents, users allowed to manage spaces or users cannot view all content (they should be able)
+- Fix #6264: Fix date format for columns `created_at` and `updated_at`
+- Fix #6265: Broken HMTL in Visibility and Hidden Checkbox
+- Enh #6242: Submit button hidden when editing a comment having a long "code" line 
+- Fix #6282: Hard delete content records on integrity check
+- Fix #6257: Fix error after publishing of a draft content
+- Fix #6258: Send notification to mentioned user only after publishing of a content
+- Fix #6273: Fix automatically login user after registration
+- Fix #6292: Messages: Notification Indicator Problem
+- Fix #6296: Update style variable `background-color-secondary`
+- Fix #6228: Administrators allowed to manage users cannot invite by email or by link if disabled in the settings
+- Fix #6293: Delete content from DB completely on purge content by cron job
+- Fix #6316: Dashboard Activity Sidebar Loading Speed
+- Fix #6262: Fix visibility of deleted content
+
+1.14.0 (April 20, 2023)
+-----------------------
+- Fix #6196: Use class names for default logging targets in default common config
+- Fix #6202: Invite by link is not possible for a user already invited by email
+- Fix #5718: Fix profile field "Country" to use js plugin Select2
+- Enh #6214: Improved SoftDelete implementation
+- Fix #6221: Improved SaaS handling in installer
+- Fix #6232: Fix Error DateValidator::parseDateValuePHP in php8.2
+- Fix #6246: Can change email in `AccountController` 
+
+1.14.0-beta.2 (March 28, 2023)
+------------------------------
+- Enh #6173: Theme variables background-color-highlight and background-color-highlight-soft
+- Fix #6099: Empty buttons in GlobalConfirmModal footer
+- Fix #6100: Broken area reference in some modal boxes
+- Enh #6171: Make email in user administration and user approval clickable
+- Enh #6184: Use same font for RichText editor as it looks on view mode
+- Enh #6181: Replace png "search" icon with font-awesome icon
+- Fix #5537: Space Starting Page gets lost when changing URL
+- Enh #5681: People: Add Group Description
+- Enh #6197: Updated translations. User module. Ukrainian
+- Enh #6187: Deny custom input for Space Picker field
+
+1.14.0-beta.1 (March 10, 2023)
+------------------------------
+- Enh #4803: Added more panel styles (panel-info and panel-primary)
+- Enh #5972: Removed old vendor CSS prefixes (e.g. -moz or -webkit)
+- Enh #6006: Fix activity settings test
+- Fix #6018: Disable profile fields textarea and checkbox list when they are not editable
+- Ehn #6017: Hide Password Tab in administration for LDAP users
+- Enh #6031: On users list grid, show Auth mode badge only for sys admins
+- Enh #6033: Moved more logic into AbstractQueryContentContainer
+- Enh #6035: Added Estonian language
+- Fix #5956: Display all newer comments after current comment
+- Enh #6061: Administration: Add a confirmation on profile field delete button
+- Enh #5699: Allow users to invite by link
+- Enh #6081: Added corresponding CSS variables for LESS color variables
+- Fix #6022: Fix Changelog Link with new Marketplace URL
+- Enh #5973: Stylesheet Prefix Cleanup and removed temporary style
+- Enh #6077: Always display content tabs
+- Enh #5263: Allow members of groups other than system admin to view all content (groups that can manage users for profile content and groups that can - manage spaces for space content)
+- Enh #6102: Also allow Messages module to inject new message count into page title
+- Enh #6109: Added enabled Pretty URL as self test
+- Fix #6113: Ensure displayNameSub doesn't return NULL values
+- Enh #5904: Make Dynamic Post Font Size Optional
+- Enh #6109: Added enabled Pretty URL as self test
+- Enh #6119: Added UserInfoWidget for User Notification Settings
+- Enh #6116: Scheduled content publishing
+- Enh #6135: Added new ContentState and Content events (e.g. SoftDelete)
+- Enh #5625: Update jQuery UI to version 1.13
+- Enh #6144: Added ability to change/disable Forgot your password? link
+- Fix #4988: Unable to archive space on Form Validation errors
+- Enh #6123: Added check for proc_open function in Requirement Checker
+- Enh #6149: Added AuthClientUserService and AuthClientService instead of AuthClientHelpers
+- Enh #4712: When changing space Visibility to Private, the all content visibility will be changed to private too
+
+1.13.3 (Unreleased)
+--------------------
+- Fix #6195: Fix `ModuleManager` disabling logging when no modules set
+
+
+1.13.2 (March 27, 2023)
+-----------------------
+- Fix #5965: Suppress log warning 'Invalid session auth key attempted for user'
+- Fix #6084: Automatic LDAP user registration broken when not all req. attributes provided
+- Fix #6104: Fix update user with not existing group
+- Fix #6103: Fix null passing to parse_str()
+- Fix #6108: Fix log time in the `date()` function
+- Fix #6122: Fix deleting a content with empty reason
+- Fix #6128: Reset backuped content after submit form
+- Fix #6141: Hide invisible users on People page even for admins
+- Fix #6142: Fix saving empty values in admin settings
+- Fix #6145: Fix duplicate people cards on sort
+- Fix #6152: Avoid duplicate container(Space/User) tags on save
+- Fix #6182: Fix Date and Datetime profile field type with null values on PHP 8.1+
+
+1.13.1 (January 25, 2023)
+-------------------------
+- Fix #5985: Space user search in picker 
+- Fix #5993: Broken images on installations with multiple URLs 
+- Fix #5996: Fix param type in strpos() (PHP 8.1)
+- Fix #5997: Possible NULL param value in Birthday field (PHP 8.1) 
+- Enh #6001: Added new `ContentActiveFixture` and migrated `PostFixture` to it
+- Fix #6007: Fix number of space members
+- Fix #6012: View own invisible profile
+- Fix #6027: Fix private user visibility by guest
+- Fix #6030: Use all searchable profile fields in UserPicker searching
+- Fix #6026: Fix visibility members counter for guests
+- Fix #6041: Fix search of obsolete cached objects
+- Fix #6043: Fix permission to lock/unlock comment for admin
+- Fix #6051: Fix visibility of "NEW UPDATES AVAILABLE!" for space creator
+- Fix #6055: Fix click event of notification filter
+- Fix #6054: Fix pagination after filter notifications
+
+1.13.0 (December 21, 2022)
+--------------------------
+See also: HumHub 1.12 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_13) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+- Fix #5954: Clear margin bottom of fieldset control label
+- Fix #5958: Fixed members list in Space overview when Space members are hidden
+- Fix #5980: ModuleManager - Module Info is not cached properly
+- Fix #5982: Use modules method getContentContainerName in ContentContainer module overview
+
+1.13.0-beta.2 (29 November, 2022)
+---------------------------------
+- Enh #5951: Added default spacing between icon and text inside buttons
+- Fix #5950: Fixed failing updater when user:auth_key is not applied yet
+- Fix #5953: Display issue left border from divider of dropdown menu
+
+1.13.0-beta.1 (28 November, 2022)
+---------------------------------
+- Enh #5821: Remove "regular" style of checkbox and radio
+- Enh #5827: Wall menu tabs for create content forms
+- Enh #5808: Add a menu to remove all members of a space
+- Enh #5841: Possibility to show Members/Followers as list from Space about page
+- Enh #5850: Display all levels by default on info logging page
+- Enh #5864: Use Base URL from general settings for all generated absolute URLs
+- Enh #5868 #3506: Add Open Graph support to have preview of the pages on other websites (Facebook, Twitter, etc.)
+- Enh #5872: Invalidate active sessions after password changing
+- Enh #5820: Selftest for base URL
+- Enh #5891: Improve select2 width on people filters
+- Enh #5894: Remove EE from Licence Manager
+- Fix #5903: ContentContainerModule::getEnabledContentContainers() returns an empty array
+- Enh #5908: New filter ActiveQueryUser->available()
+- Enh #5785: Adding option for custom .well-known routes
+- Enh #5100: Added SelfTest for HumHub API connectivity
+- Enh #5811: Don't require current password if not exists on force change password
+- Enh #5913: Possibility to configure the "Follow" activity in the e-mail summaries
+- Enh #5923: Moved Tour configuration from Config Params to Module class
+- Enh #5924: Auto add secure flag for cookie on detected SSL
+- Fix #5926: Renamed default profile field Url to Website URL
+- Enh #5686: Add the logo image to the registration page
+- Fix #5856: Fixed Mail Settings Help Text SMTPS Port to 465
+- Enh #5932: Added advanced space settings Hide About Page, Hide Activity Sidebar Widget, Hide Follower and Hide Members
+- Enh #5931: Show Spaces pages always when in Guest Mode
+- Enh #5929: Add property createMode for wall stream entry widget
+
+1.12.3 (December 12, 2022)
+--------------------------
+- Fix #5928: Invalid Mailer DSN breaks whole application
+- Fix #5960: Fix cropping of space banner
+- Fix #5967: Fix creating of user from administration with enabled notification for default group
+- Fix #5966: Fix invalid message pattern without initialized source language
+
+1.12.2 (November 11, 2022)
+--------------------------
+- Fix #5851: Admin User Settings cannot saved 
+- Fix #5856: Fix SMTPS Config Migration
+- Fix #5854: Don't validate user language on approve
+- Fix #5875: LDAP user creation broken without email address
+- Fix #5877: Fix wrong empty profile stream message
+- Fix #5874: Fix adding licence key after removing it from marketplace
+- Enh #5891: Improve select2 width on people filters
+- Enh #5906: Allow Space Invites with empty originator
+- Fix #5909: Fix optional parameter on ldap user searching
+
+1.12.1 (August 15, 2022)
+------------------------
+- Fix #5822: Fix content width in mobile view
+- Fix #5825: Fix format date to mysql on date stream filter
+- Fix #5832: Exception in file open dialog when last update user no longer exists 
+- Fix #5814: Fix numerated lists in mail summary content
+- Fix #5830: Fix cron job of search index rebuilding
+- Fix #5838: Fix deprecated null value for `file_exists()` on PHP 8.1
+- Enh #5846: Improved PHP minimum version checks
+- Fix #5845: Fix unknown `streamQuery` on load `Filter`
+
+1.12.0 (July 27, 2022)
+----------------------
+
+See also: HumHub 1.12 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_12) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+- Enh #5788: Limit picker results for country filter on "People" page
+- Fix #5779: Fix user settings updating on disabled visibility "Guest"
+- Enh #5809: Improve checkbox and radio styles on load page
+- Fix #5807: SMTP Mail component not loading with empty `Port` config value
+
+
+1.12.0-beta.1 (June 27, 2022)
+-----------------------------
+- Enh #5655: Possibility to archive and lock comments on global contents
+- Enh #3593: Allow SSO provider to register and auto create username on registration
+- Enh #5695: Truncate long profile texts in People cards
+- Enh #5499: Add new Date Range Stream Filter option
+- Enh #5602: Added API to inject additional validation rules by modules on demand
+- Enh #5741: Possibility to Like global contents
+- Enh #5560: Possibility to create custom profile field types via Events
+- Enh #5739: Added Event in `MentioningController` raised after searching for space members on mentioning request
+- Enh #5752: Improved Display Name Subtitle Usage and Administration
+- Enh #5757: Make sure `setupApproved` is always called when status changes
+- Enh #5598: Added `cy` Welsh language
+- Fix #5338: Content topic/visibility changes are  re-indexed in search index
+- Enh #5535: Invisible users
+- Enh #5747: Switch Mailer Library to `Symfony Mailer`
+- Fix #5766: Fix email markdown format
+- Enh #5747: Switch Mailer Library to `Symfony Mailer`
+- Enh #5769: Added more right margin on wall entries
+- Enh #5767: Display placeholder for date filter
+- Enh #5747: Switch Mailer Library to `Symfony Mailer`
+- Fix #5765: Fix rendering content form on external modules
+
+
+1.11.5 (Unreleased)
+---------------------
+- Fix #5806: Alignments for People filters with Select2 mode
+- Fix #5813: Fix deprecated null value for hour param in `mktime()`
+
+
+1.11.4 (July 6, 2022)
+---------------------
+This release also fixes a [security](https://github.com/humhub/humhub/security/advisories/GHSA-p7h3-73v7-959c) issue. 
+HumHub was vulnerable to a stored Cross-Site Scripting (XSS) vulnerability. For exploitation, the user would need a permission to administer Spaces.
+An update is STRONGLY recommended.
+
+- Fix #5776: Hide beta modules on disabled filter
+- Fix #5799: Incorrect selection when multiple custom filters are in place 
+- Fix #5780: Don't hide icon "remove item" on picker
+- Fix #5800: Hide data of disabled users on picker filters on "People" page
+- Fix #5791: Fix XSS in membership confirmation 
+
+1.11.3 (June 27, 2022)
+----------------------
+- Fix: #5736: Fix status message on user approval 
+- Fix #5734: Fix error message when uninstall module and module folder is not writable
+- Fix #5740: Fix logout action on force change password
+- Fix #5735: OEmbed migration might fail with more complex Endpoint URLs
+- Fix #5760: Fix context menu position on the right window side
+- Fix #5759: Fix tests on enable space module
+- Fix #5773: Fix PHP 8 incompatibility with conversion false to array
+- Fix #5775: Missing encoding of profile labels in profile field administration
+
+
+1.11.2 (May 30, 2022)
+---------------------
+- Fix: #5652: Fix undefined UrlOembed provider pattern
+- Fix #5660: Individual modules marked with "Official" label in Marketplace
+- Fix #5657: Fix links of user counters in container headers
+- Fix #5676: Use 404 page for deleted content request
+- Fix #5679: Fix message on decline multiple users
+- Enh #5690: Use theme colors in marketplace modules
+- Fix #5689: Check value on color picker
+- Fix #5691: Fix attach file to profile markdown field
+- Fix #5693: Scroll to comment on single view
+- Fix #5709: Fix input size for placeholder length in picker field
+- Fix #5704: Don't send notification for non-member of private space
+- Fix #5716: Fix saving of OEmbed provider endpoint URL
+- Fix #5706: Fix confirmation window for buttons
+- Fix #5724: Deny custom input for UserPicker field
+- Fix #5659: Improve module loading error handling
+
+1.11.1 (April 22, 2022)
+-----------------------
+
+See also: HumHub 1.11 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_11) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+Warning: The minimum PHP version is now `PHP 7.4`!
+
+- Fix: #5654: Added `laminas/laminas-zendframework-bridge` to legacy support `Zend\Http` usage in 3rd party modules
+- Enh: Updated translations
+
+
+1.11.0 (April 20, 2022)
+-----------------------
+
+See also: HumHub 1.11 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_11) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+Warning: The minimum PHP version is now `PHP 7.4`!
+
+- Fix #5637: Allow update setting "include beta updates" on modules page
+- Fix #5648: Introduce new config value for min. required PHP version
+
+
+1.11.0-beta.3 (April 13, 2022)
+------------------------------
+
+Warning: The minimum PHP version is now `PHP 7.4`!
+
+- Fix #5603: Syntax error in database view installer
+- Fix #5605: Fix warning on render ajax content on register file after View::endPage()
+- Fix #5608: Remove duplicated field "Hostname" on install
+- Fix #5612: Fix RichText post process event pass data
+- Enh #5610: Show menu item "Add Licence Key" for purchased modules
+- Enh #5599: Introduce a variables in the Space model to call ProfileImage and ProfileBannerImage classes
+- Enh #5621: Optimize footer views
+- Fix #5616: Don't display oEmbed confirmation in text field
+- Fix #5631: Fix enabling module on functional tests
+- Fix #5633: Fix tests NonceCest
+- Fix #5635: Fix cached comments
+
+
+1.11.0-beta.2 (March 18, 2022)
+------------------------------
+
+Warning: The minimum PHP version is now `PHP 7.4`!
+
+- Fix #5434: Hide disabled next/prev buttons on guide first/last steps
+- Fix #5456: `canImpersonate` only possible for SystemAdmins
+- Enh #5462: Added Single Page Post View
+- Enh #5476: Rework modules administration section
+- Enh #5472: New interface `TabbedFormModel` for activate first tab with error input
+- Enh #5224: Add reply-to email in the settings
+- Enh #5471: On the pending approval page, add grouped actions and custom columns
+- Enh #5490: Display confirmation message before display embedded content
+- Enh #5258: Display who invited the user on the Approval page
+- Enh #5475: Option for forbidden usernames
+- Enh #4890: Allow to define actions in a controller which should not be intercepted by other actions
+- Enh #5503: Allow profile fields link prefixes like "tel://"
+- Enh #5510: oEmbed support for other social networks, redesign of oEmbed settings pages
+- Fix #5534: Statistic input loading problem
+- Enh #5523: Option to include E-Mail address to search
+- Enh #5352: Remove "NewMembers" widget from Core
+- Fix #5478: Avoid permalinks on comments related to a global content (not in a container) to crash.
+- Enh #5538: People - Show Text Profile Field Filters as DropDown with AutoComplete
+- Fix #5547: Remove Google Fonts from E-mails
+- Enh #5536: Optional notification w/ reason when admin deletes content/comment
+- Fix #5549: Topic icon is missing in TopicPicker search
+- Fix #5556: Formatted output for date fields in "About me" profile area.
+- Fix #5553: Cannot have two or more users without email when emailRequired is disabled.
+- Fix #5506: Modal: Close Icon optimization
+- Fix #5564: Close modal button doesn't work after form validation
+- Fix #5533: Users can't live in UTC
+- Fix #5460: Untranslatable string New Updates in Stream
+- Fix #5573: Allow replying for sub comments
+- Fix #5518: Number of activities reported in the mail summary is always limited to 20
+- Enh #5358: Remove deprecated "Directory" module
+- Fix #5524: Mentioning Permission
+- Fix #5529: Tooltip: improving readability
+- Enh #5298: Added Followers to Space About Page
+- Enh #4558: Deprecate CompatModuleManager
+- Enh #5323: Remove deprecated "Setting" classes
+- Enh #5381: Optimize module states query
+- Enh #4823: Removed CHTML and CActiveForm classes as well as usages (plus refactoring)
+- Fix #5449: File - Update info after `setStoredFileContent` and `setStoredFile`
+- Enh #5127: LDAP: Reset mapping for single user only
+- Enh #5522: Add content id in the file table
+- Fix #5581: Fix long words in comment form
+- Fix #5578: Improved `rememberMe` parameter handling for thirdparty auth provider
+- Fix #5304: In a button, data-action-cancel-text doesn't work
+- Fix #5340: Mobile navigation: width detection problem
+- Enh #5432: Possibility to add buttons in the People page with a module
+- Fix #5585: Don't force password change on user simulating
+- Fix #5591: Fix people/space cards banner
+- Enh #5575: Add content topics to search
+
+
+1.10.4 (April 19, 2022)
+-----------------------
+
+This release also fixes a [critical security](https://github.com/humhub/humhub/security/advisories/GHSA-2h35-f226-3f57) issue. Users who were forced to change their password by an administrator could perform unauthorized actions and retrieve other users' data. An update is STRONGLY recommended.
+
+- Fix #5480: `el` language file in Admin section broken
+- Fix #5479: Fix ContentContainerPermissionAccess without provided container
+- Fix #5513: Fix PermaLink controller error for content without container
+- Fix #5517: Don't send "Follows" notification on request friendship
+- Fix #5563: Limit backup duration of RichText editor for 2 hours
+- Enh #5601: Backup RichText in sessionStorage
+- Fix #5638: Removed return values from `codeCallback`
+- Fix #5634: Fix tests NonceCest
+- Fix #5644: Fix console command space/assign-all-members
+
+1.10.3 (December 20, 2021)
+--------------------------
+
+See also: [HumHub 1.10 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_10) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md). This release also includes a [security fix](https://github.com/humhub/humhub/security/advisories/GHSA-f5hc-5wfr-7v74). It could have been possible for registered users to become unauthorized members of private Spaces. Thanks to [Huntr](https://huntr.dev/bounties/943dad83-f0ed-4c74-ba81-7dfce7ca0ef2/) and @brenu.
+
+- Fix #5465: Fix empty RichText
+- Fix #5466: Default `.htaccess.dist` broken
+- Fix #5469: Mixed up title for Space membership button
+- Fix #5464: Fix comment highlighting on permalink
+- Fix #5473: Insufficient member invite check on Space creation 
+
+1.10.2 (December 7, 2021)
+-------------------------
+
+See also: [HumHub 1.10 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_10) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+- Fix #5450: Fix confirmation before close a form with unsaved changes on modal window
+- Fix #5453: Fix migration of default group
+- Enh #5461: Added Event after a new file content (new version) is stored
+- Enh #5457: Use permalink comment in notifications
+
+
+1.10.1 (November 26, 2021)
+--------------------------
+
+See also: [HumHub 1.10 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_10) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+- Fix #5445: Checkbox view style unaligned
+- Fix #5447: Comments disappeard
+- Enh: Updated translations 
+
+
+1.10.0 (November 25, 2021)
+---------------------------------
+
+See also: [HumHub 1.10 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_10) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+- Enh #5437: Tests with MySQL Galera compatibility
+- Fix #5427: Fix deep comment link with enabled caching
+- Enh #5435: Allow non modal links in header counter
+- Enh #5436: Better usage of UserPicker in Form Definition
+- Fix #5441: No deletion of file variants in CLI tools
+- Fix #5443: Fix misplaced checkboxes on installer forms
+
+1.10.0-beta.3 (November 12, 2021)
+---------------------------------
+- Enh #5437: Tests with MySQL Galera compatibility
+- Fix #5427: Fix deep comment link with enabled caching
+- Enh #5435: Allow non modal links in header counter
+- Enh #5436: Better usage of UserPicker in Form Definition
+- Fix #5441: No deletion of file variants in CLI tools
+
+
+1.10.0-beta.2 (November 12, 2021)
+---------------------------------
+- Enh #5403: Confirmation before close a not saved modal form
+- Fix #5401: Fix profile field value result type 
+- Fix #5402: Fix mentioning search in comment content
+- Enh #5418: Allow to detach file from simple ActiveRecord
+
+
+1.10.0-beta.1 (October 27, 2021)
+--------------------------------
+- Enh #4399: Direct deep links to comments and highlighting
+- Enh #4242: More failsafe module loading when reading module config
+- Enh #5197: Default `.htaccess` - Remove `Options +FollowSymLinks` 
+- Enh #4495: Allow locking comments per content
+- Enh #3688: Use `Image` widget in user list
+- Enh #5194: Confirm leave page for Post & Comment forms
+- Enh #5188: People/Spaces: Endless Scrolling
+- Enh #5216: Separate View document button
+- Enh #5229: Use `RichTextField` for user approval messages
+- Enh #100: Allow additional toggle for elements with context menu
+- Enh #5170: `UserPicker`: Allow zero as min input size
+- Enh #4133: Backup a content of `RichTextEditor`
+- Enh #100: Extend upload buttons to use a paste zone
+- Enh #5256: Limit uploading profile images (Thanks to @tuhin1729 for discovering the issue.) 
+- Enh #5257: Delete old unread notifications of inactive users
+- Fix #5143: Unlimited page size for profile fields
+- Enh #5269: Allow adding new item on ui selector
+- Enh #5005: Possibility to invite a registered user to a space by email
+- Enh #3546: Sign in back from impersonate mode
+- Fix #5282: On account creation, registration form has HTML tag set with English language
+- Enh #5280: Allow to set the number of contents from which `Show {i} more.` appears in the stream
+- Enh #5303: Unassigned files are only accessibly for creator 
+- Enh #5293: Added File History API for versioning
+- Enh #4399: Changed default `@warning` color to `#FC4A64`
+- Enh #5302: Improve checkbox widget ContentVisibilitySelect 
+- Enh #5151: ContentContainer scoped URL Rules
+- Enh #5094: Reflect and reload Stream filters by URL
+- Enh $4879: Refactoring of `Followable` behavior
+- Enh $4879: Added supported of "protected" module groups
+- Enh #5330: Added option to hide "Spaces" top menu item
+- Enh #5080: Show available module updates directly in admin menu
+- Fix #5331: Fix js error on pjax open "Directory" page
+- Enh #5333: Module's events handlers registration: check if method exists
+- Enh #5300: Blocking users for space
+- Enh #5347: Caching added for group permissions (reduced db queries)
+- Enh #5349: Archived Spaces on Spaces directory
+- Enh #4945: Collapsible-fields now accessible by tab and enable/closable by keypress, check-boxes now focusable
+- Enh #5354: Space - pending invites and approvals: add the image of the users
+- Enh #5361: Optimize People directory details query
+- Enh #5357: SpaceChooser - lazy load added, widget refactoring.
+- Fix #5360: Mentioning search fails apostrophe in a user's displayName
+- Fix #5359: Removed encoding of user's name in UserPicker
+- Enh #5363: Optimize duplicated SQL queries on profile edit
+- Enh #5362: Optimize getting of ContentContainer tags
+- Fix #5386: Fixed empty stream in archived space
+
+1.9.3 (Unreleased)
+------------------
+- Fix #5372: Text shortening in Japanese broken - Fix truncating of multi-byte strings
+- Fix #5398: Fix checking of foreign table index
+
+
+1.9.2 (October 15, 2021)
+------------------------
+- Fix #5265: Fix logging filter "Error" when not entries
+- Fix #5285: Layout too wide for container pages without sidebar 
+- Fix #5307: Fix reset of the space homepage settings
+- Fix #5301: Change people default sorting in administration broken
+- Fix #5313: ContentContainer Tags were not cleared when all tags are deleted
+- Fix #5316: Fix filter "I'm involved" on dashboard
+- Fix #5324: Theme Loader broken when module is provided via string
+- Fix #5327: Fix update container tags by not original model
+- Fix #5342: Fix mime type detection for extensions: dotx, xltx, potx
+
+
+1.9.1 (August 30, 2021)
+-----------------------
+
+See also: [HumHub 1.9 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_9)
+
+- Fix #5172: Missing translations for "New Member" and "New Spaces" directory widgets
+- Fix #5195: Fix export users with tags data
+- Fix #5200: Auto creating following for friends
+- Fix #5187: Fix birthday with hidden year in a language-specific format
+- Enh #5189: Reduce minimum character limit for space and user tags to 2 chars
+- Enh #5189: Hide tags on space chooser if no keyword inside tags
+- Fix #5215: Fix links to old directory
+- Fix #5096: Render links in email notifications
+- Fix #5095: Fix space between URLs and text in notification message
+- Fix #5238: Typo in Offline Page Text
+- Fix #5204: Migration of container tags
+- Fix #5238: Typo in Offline Page Text 
+- Fix #5247: Fix translate with not defined language
+- Fix #5252: Removed "strong&gt;" from the Dutch translations
+- Enh #5259: Protection of the logout action by POST method. (Thanks to @avjesadiya13 and @VishnuChebolu for disclosing the problem.)
+- Fix #5262: Fix visibility of email requiring on backoffice add user form
+
+
+1.9.0 (July 22, 2021)
+---------------------
+
+See also: [HumHub 1.9 - Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_9)
+
+Note: HumHub version 1.9+ requires PHP 7.3 or higher!
+
+- Fix #5174: Tour module crashes with enabled tags field
+- Fix #5176: Closing the action confirmation modal window on top close icon
+- Fix #5177: Move directory widgets
+- Enh #5049: Required profile field should not be required in administration (Fix for checkbox field type)
+- Fix #5009: Fix video thumbnail on Safari browser
+- Fix #5182: Password field should not be required if user has no password
+
+
+1.9.0-beta.2 (July 14, 2021)
+----------------------------
+
+Note: HumHub version 1.9+ requires PHP 7.3 or higher!
+
+- Fix #5128: Prerequisites: Increase PHP Min version to 7.3
+- Fix #5135: Remove checking for PCNTL extension (revert #5065 and #5071)
+- Fix #5136: Fix get value of user profile fields with types "Checkbox List" and "Checkbox"
+- Fix #5137: Fix convert to short integer on PHP 8
+- Enh #5144: Show sort order in profile fields settings
+- Fix #5149: Use a link mode for space button "Join" from space header
+- Fix #4830: Fix Prerequisites / Self Test translations
+- Fix #4459: Make UserFollow activity public
+- Enh #3824: Run acceptance tests with pretty URLs
+- Enh #5169: Enable more than 50 groups to a user
+
+
+1.9.0-beta.1 (June 15, 2021)
+----------------------------
+
+Note: HumHub version 1.9+ requires PHP 7.3 or higher!
+
+- Fix #5071: Add CLI hint to PCTL Requirements Warning
+
+
+1.9.0-beta.1 (June 15, 2021)
+----------------------------
+
+Note: HumHub version 1.9+ requires PHP 7.3 or higher!
+
+- Enh #3733: Forbid to open AJAX actions as separate page
+- Enh #677: Allow to create new database and set database port on installation wizard
+- Fix #4877: Check for writable uploads/profile_image directory
+- Enh #4868: Reset email summaries / notifications settings for all users
+- Enh #4884: New Space module setting to allow all users to add users without invite
+- Enh #4902: Added CodeMirror and created form field widget 
+- Enh #4964: New CLI command to delete users 
+- Enh #4871: Configurable default timezone for guests
+- Enh #5019: Alternative `DashboardMemberStreamFilter` based on Live module `LegitmationIDs`
+- Fix #4626: Visibility of content in profile stream of archived spaces
+- Chg #5016: Allow impersonate for `ManageUsers` permission
+- Enh #5043: Improved Space membership lookup caching
+- Enh #4935: Render images in email messages
+- Enh #5037: `RichTextToShortTextConverter` renders images as `[Image]`
+- Enh #5042: Improved Space/User PrettyURL performance
+- Enh #4958: Add possibility to register purchased modules via CLI
+- Enh #4894: Implemented `.label-light` label variant
+- Enh #5012: Space: Allow change space owner also for users `ManageSpaces` with permission
+- Enh #5045: Removed deprecated `Yii::$app->formatterApp` component
+- Enh #5026: Tests for tokenized image urls in email message
+- Enh #5049: Required profile field should not be required in administration
+- Enh #5065: Add checking for php `PCNTL` extension
+- Enh #5073: Enhance Rest API tests
+- Fix #5078: Fix enabling of REST module on run API tests
+- Enh #4776: Added `acknowledge` option to all relevant forms
+- Enh #4757: Updated to `PHPUnit 8.5`
+- Enh #4790: Added more logging on authentication errors
+- Fix #5054: Force `InnoDB` Table Engine on migration and added engine configuration option
+- Enh #4862: Tag picker for Space and User containers
+- Enh #4927: Hide post input field on single entry stream
+- Enh #5062: Show user ID on admin user edit page
+- Enh #4848: Include space tags in the space’s “About” page 
+- Enh #5061: Preserve linebreaks and added "ReadMore" option in Logging
+- Enh #4982: Skip DN List to avoid duplicated ldap error logs 
+- Fix #5088: Set max length option to space description input
+- Enh #5089: Allow to follow users independently of friendship
+- Enh #34: Removed membership icon from my Spaces chooser
+- Enh #117: Show/Hide the “Following” buttons depending on updated friendship/membership state after AJAX action
+- Enh #5102: Use short number format for Space members count on Space Directory
+- Fix #5101: Fix to allow admin editing of not required profile fields
+- Enh #123: New sorting option "Default" for people directory page
+- Fix #122: Fix button "Load more" initialization on Pjax loading
+- Enh #5114: Added `EVENT_BEFORE_CHECKING_USER_STATUS` in `AuthController.php` to give the possibility to add an event before checking the user status
+- Fix #5122: `RichText::output` produces `p` HTML element instead of `div`
+
+
+1.8.3 (July 14, 2021)
 ----------------------
 - Fix #29: Fix login form view on browser back button after footer link
 - Fix #5066: Fix pin and archive global content without container
+- Fix #5107: Fix captcha client validation after request new code
+- Fix #22: Fix misplaced OEmbed provider buttons on general settings form
+- Fix #5130: Don't require type for first param of the function ProsemirrorRichText::replaceLinkExtension()
+- Fix #5155: Open basedir restriction error in with PHP 7.4.21/8.0.8
 
 
 1.8.2 (April 26, 2021)
@@ -206,7 +836,6 @@ HumHub Changelog
 
 1.7.0-beta.1 (October 16, 2020)
 -------------------------------
-
 - Fix #4327: Internationalization of user approval/decline message text
 - Fix #4139: Dashboard post input on mobile cuts editor menu
 - Fix #4328: Top navigation overlaps post input richtext menu on dashboard page

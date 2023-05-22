@@ -8,6 +8,7 @@
 
 namespace humhub\modules\search\engine;
 
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\search\commands\SearchController;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\libs\SearchResult;
@@ -69,6 +70,10 @@ class ZendLuceneSearch extends Search
     {
         // Get Primary Key
         $attributes = $obj->getSearchAttributes();
+
+        if ($obj instanceof ContentActiveRecord) {
+            $attributes[] = implode(' ', $obj->content->getTags()->select('name')->column());
+        }
 
         $index = $this->getIndex();
 

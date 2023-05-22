@@ -1,8 +1,10 @@
 <?php
 
+use humhub\libs\Html;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\Invite;
 use yii\captcha\Captcha;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use humhub\modules\user\widgets\AuthChoice;
@@ -11,6 +13,7 @@ use humhub\modules\user\widgets\AuthChoice;
 /* @var $model Login */
 /* @var $invite Invite */
 /* @var $info string */
+/* @var $passwordRecoveryRoute string|array|null */
 ?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
@@ -69,13 +72,26 @@ use humhub\modules\user\widgets\AuthChoice;
                             </button>
 
                         </div>
+                        <?php if ($passwordRecoveryRoute) : ?>
                         <div class="col-md-8 text-right">
                             <small>
-                                <a id="recoverPasswordBtn" href="#" data-action-click="ui.modal.load" data-action-url="<?= Url::to(['/user/password-recovery']) ?>">
-                                    <?= Yii::t('UserModule.auth', 'Forgot your password?') ?>
-                                </a>
+                                <?= Html::a(
+                                    Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),
+                                    $passwordRecoveryRoute,
+                                    ArrayHelper::merge([
+                                        'id' => 'recoverPasswordBtn',
+                                    ], is_array($passwordRecoveryRoute) ? [
+                                        'data' => [
+                                            'action-click' => 'ui.modal.load',
+                                            'action-url' => Url::to($passwordRecoveryRoute),
+                                        ]
+                                    ] : [
+                                        'target' => '_blank',
+                                    ]),
+                                ) ?>
                             </small>
                         </div>
+                        <?php endif; ?>
                     </div>
 
                     <?php ActiveForm::end(); ?>
@@ -85,14 +101,19 @@ use humhub\modules\user\widgets\AuthChoice;
                     <div class="tab-pane <?= (isset($_POST['Invite'])) ? "active" : ""; ?>"
                          id="register">
 
-                        <p><?= Yii::t('UserModule.auth', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
+                        <?php if (AuthChoice::hasClients()): ?>
+                            <?= AuthChoice::widget() ?>
+                        <?php else: ?>
+                            <p><?= Yii::t('UserModule.auth', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
+                        <?php endif; ?>
+
                         <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 
                         <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => Yii::t('UserModule.auth', 'email')]); ?>
                         <?php if ($invite->showCaptureInRegisterForm()) : ?>
                             <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
                             <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
-                            'captchaAction' => 'auth/captcha',
+                            'captchaAction' => '/user/auth/captcha',
                         ])->label(false); ?>
                         <?php endif; ?>
                         <hr>

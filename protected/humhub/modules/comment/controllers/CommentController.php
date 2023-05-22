@@ -11,19 +11,22 @@ namespace humhub\modules\comment\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\libs\Helpers;
+use humhub\modules\comment\models\Comment;
+use humhub\modules\comment\models\forms\AdminDeleteCommentForm;
 use humhub\modules\comment\models\forms\CommentForm;
 use humhub\modules\comment\Module;
-use humhub\modules\comment\widgets\Form;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\models\Content;
-use Yii;
-use yii\data\Pagination;
-use yii\web\HttpException;
-use yii\helpers\Url;
-use humhub\modules\comment\models\Comment;
+use humhub\modules\comment\notifications\CommentDeleted;
+use humhub\modules\comment\widgets\AdminDeleteModal;
 use humhub\modules\comment\widgets\Comment as CommentWidget;
+use humhub\modules\comment\widgets\Form;
 use humhub\modules\comment\widgets\ShowMore;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\file\handler\FileHandlerCollection;
+use Yii;
+use yii\helpers\Url;
+use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -57,21 +60,25 @@ class CommentController extends Controller
      */
     public function beforeAction($action)
     {
-        $modelClass = Yii::$app->request->get('objectModel', Yii::$app->request->post('objectModel'));
-        $modelPk = (int) Yii::$app->request->get('objectId', Yii::$app->request->post('objectId'));
+        if (parent::beforeAction($action)) {
+            $modelClass = Yii::$app->request->get('objectModel', Yii::$app->request->post('objectModel'));
+            $modelPk = (int)Yii::$app->request->get('objectId', Yii::$app->request->post('objectId'));
 
-        Helpers::CheckClassType($modelClass, [Comment::class, ContentActiveRecord::class]);
-        $this->target = $modelClass::findOne(['id' => $modelPk]);
+            Helpers::CheckClassType($modelClass, [Comment::class, ContentActiveRecord::class]);
+            $this->target = $modelClass::findOne(['id' => $modelPk]);
 
-        if (!$this->target) {
-            throw new NotFoundHttpException('Could not find underlying content or content addon record!');
+            if (!$this->target) {
+                throw new NotFoundHttpException('Could not find underlying content or content addon record!');
+            }
+
+            if (!$this->target->content->canView()) {
+                throw new ForbiddenHttpException();
+            }
+
+            return true;
         }
 
-        if (!$this->target->content->canView()) {
-            throw new ForbiddenHttpException();
-        }
-
-        return parent::beforeAction($action);
+        return false;
     }
 
 
@@ -80,23 +87,34 @@ class CommentController extends Controller
      */
     public function actionShow()
     {
-        //TODO: Dont use query logic in controller layer...
+        $commentId = (int) Yii::$app->request->get('commentId');
+        $type = Yii::$app->request->get('type', ShowMore::TYPE_PREVIOUS);
+        $pageSize = (int) Yii::$app->request->get('pageSize', $this->module->commentsBlockLoadSize);
+        if ($pageSize > $this->module->commentsBlockLoadSize) {
+            $pageSize = $this->module->commentsBlockLoadSize;
+        }
 
-        $query = Comment::find();
-        $query->orderBy('created_at DESC');
-        $query->where(['object_model' => get_class($this->target), 'object_id' => $this->target->getPrimaryKey()]);
+        $comments = Comment::getMoreComments($this->target, $commentId, $type, $pageSize);
 
-        $pagination = new Pagination([
-            'totalCount' => Comment::GetCommentCount(get_class($this->target), $this->target->getPrimaryKey()),
-            'pageSize' => $this->module->commentsBlockLoadSize
-        ]);
-
-        $query->offset($pagination->offset)->limit($pagination->limit);
-        $comments = array_reverse($query->all());
-
-        $output = ShowMore::widget(['pagination' => $pagination, 'object' => $this->target]);
+        $output = '';
+        if ($type === ShowMore::TYPE_PREVIOUS) {
+            $output .= ShowMore::widget([
+                'object' => $this->target,
+                'pageSize' => $pageSize,
+                'commentId' => isset($comments[0]) ? $comments[0]->id : null,
+                'type' => $type,
+            ]);
+        }
         foreach ($comments as $comment) {
             $output .= CommentWidget::widget(['comment' => $comment]);
+        }
+        if ($type === ShowMore::TYPE_NEXT && count($comments) > 1) {
+            $output .= ShowMore::widget([
+                'object' => $this->target,
+                'pageSize' => $pageSize,
+                'commentId' => $comments[count($comments)-1]->id,
+                'type' => $type,
+            ]);
         }
 
         if (Yii::$app->request->get('mode') === 'popup') {
@@ -127,7 +145,8 @@ class CommentController extends Controller
 
             return $this->renderAjaxContent(Form::widget([
                 'object' => $this->target,
-                'model' => $form->comment
+                'model' => $form->comment,
+                'isHidden' => false,
             ]));
         });
     }
@@ -164,7 +183,8 @@ class CommentController extends Controller
             'comment' => $comment,
             'objectModel' => $comment->object_model,
             'objectId' => $comment->object_id,
-            'submitUrl' => $submitUrl
+            'submitUrl' => $submitUrl,
+            'fileHandlers' => FileHandlerCollection::getByType([FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE]),
         ]);
     }
 
@@ -182,7 +202,10 @@ class CommentController extends Controller
             throw new ForbiddenHttpException();
         }
 
-        return $this->renderAjaxContent(CommentWidget::widget(['comment' => $comment]));
+        return $this->renderAjaxContent(CommentWidget::widget([
+            'comment' => $comment,
+            'showBlocked' => Yii::$app->request->get('showBlocked'),
+        ]));
     }
 
     /**
@@ -200,13 +223,57 @@ class CommentController extends Controller
 
         $comment = $this->getComment($id);
 
-        if(!$comment->canDelete()) {
+        if (!$comment->canDelete()) {
             throw new ForbiddenHttpException();
         }
 
-        $comment->delete();
+        $form = new AdminDeleteCommentForm();
 
-        return $this->asJson(['success' => true]);
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            if (!$form->validate()) {
+                throw new BadRequestHttpException();
+            }
+
+            if ($form->notify) {
+                $commentDeleted = CommentDeleted::instance()
+                    ->from(Yii::$app->user->getIdentity())
+                    ->about($comment->getCommentedRecord())
+                    ->payload(['commentText' => (new CommentDeleted())->getContentPreview($comment, 30), 'reason' => $form->message]);
+                $commentDeleted->saveRecord($comment->createdBy);
+
+                $commentDeleted->record->updateAttributes([
+                    'send_web_notifications' => 1
+                ]);
+            }
+        }
+
+        return $this->asJson(['success' => $comment->delete()]);
+    }
+
+    /**
+     * Returns modal content for admin to delete comment
+     *
+     * @throws NotFoundHttpException
+     * @throws ForbiddenHttpException
+     */
+    public function actionGetAdminDeleteModal($id)
+    {
+        Yii::$app->response->format = 'json';
+
+        $comment = $this->getComment($id);
+
+        if (!$comment->canDelete()) {
+            throw new ForbiddenHttpException();
+        }
+
+        return [
+            'header' => Yii::t('CommentModule.base', '<strong>Delete</strong> comment?'),
+            'body' => AdminDeleteModal::widget([
+                'model' => new AdminDeleteCommentForm()
+            ]),
+            'confirmText' => Yii::t('CommentModule.base', 'Confirm'),
+            'cancelText' => Yii::t('CommentModule.base', 'Cancel'),
+        ];
     }
 
     /**
@@ -218,7 +285,7 @@ class CommentController extends Controller
     {
         $comment = Comment::findOne(['id' => $id]);
 
-        if(!$comment) {
+        if (!$comment) {
             throw new NotFoundHttpException();
         }
 

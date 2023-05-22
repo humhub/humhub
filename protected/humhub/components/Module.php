@@ -8,29 +8,31 @@
 
 namespace humhub\components;
 
-use humhub\modules\activity\components\BaseActivity;
-use humhub\modules\activity\models\Activity;
-use Yii;
-use yii\helpers\Json;
 use humhub\models\Setting;
+use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\content\models\ContentContainerSetting;
+use Yii;
+use yii\helpers\Json;
 use yii\web\AssetBundle;
-use yii\web\HttpException;
 
 /**
  * Base Class for Modules / Extensions
  *
+ * @property-read string $name
+ * @property-read string $description
+ * @property-read bool $isActivated
  * @property SettingsManager $settings
+ * @mixin OnlineModule
  * @author luke
  */
 class Module extends \yii\base\Module
 {
     /**
-     * @var array the loaded module.json info file
+     * @var array|null the loaded module.json info file
      */
-    private $_moduleInfo = null;
+    private ?array $_moduleInfo = null;
 
     /**
      * @var string The path for module resources (images, javascripts)
@@ -205,6 +207,16 @@ class Module extends \yii\base\Module
     }
 
     /**
+     * Check this module is activated
+     *
+     * @return bool
+     */
+    public function getIsActivated(): bool
+    {
+        return (bool) Yii::$app->hasModule($this->id);
+    }
+
+    /**
      * Enables this module
      *
      * @return boolean
@@ -290,13 +302,13 @@ class Module extends \yii\base\Module
      */
     protected function getModuleInfo()
     {
-        if ($this->_moduleInfo != null) {
+        if ($this->_moduleInfo !== null) {
             return $this->_moduleInfo;
         }
 
         $moduleJson = file_get_contents($this->getBasePath() . DIRECTORY_SEPARATOR . 'module.json');
 
-        return Json::decode($moduleJson);
+        return $this->_moduleInfo = Json::decode($moduleJson);
     }
 
     /**

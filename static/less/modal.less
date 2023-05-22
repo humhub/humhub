@@ -11,8 +11,6 @@
 // --------------------------------------------------
 .modal-dialog.fadeIn,
 .modal-dialog.pulse {
-    -webkit-animation-duration: 200ms;
-    -moz-animation-duration: 200ms;
     animation-duration: 200ms;
 }
 
@@ -96,11 +94,7 @@ body.modal-open {
 }
 
 .modal-content {
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
     box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
-    -webkit-box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
     border: none;
 
     .modal-header {
@@ -111,6 +105,13 @@ body.modal-open {
         .close {
             margin-top: 2px;
             margin-right: 5px;
+            opacity: 1;
+            color: @primary;
+            font-size: 28px;
+
+            &:hover {
+                opacity: 0.9;
+            }
         }
     }
 

@@ -21,6 +21,11 @@ use yii\helpers\Html;
 class CheckboxList extends BaseType
 {
     /**
+     * @inheritdoc
+     */
+    public $type = 'checkboxlist';
+
+    /**
      * All possible options.
      * One entry per line.
      * key=>value format
@@ -111,19 +116,14 @@ class CheckboxList extends BaseType
     }
 
     /**
-     * Return the Form Element to edit the value of the Field
+     * @inheritdoc
      */
-    public function getFieldFormDefinition()
+    public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
-        $result = [
-            $this->profileField->internal_name => [
-                'type' => 'checkboxlist',
-                'delimiter' => "\n",
-                'class' => 'form-control',
-                'items' => $this->getSelectItems(),
-                'readonly' => (!$this->profileField->editable),
-            ]
-        ];
+        $result = parent::getFieldFormDefinition($user, array_merge([
+            'delimiter' => "\n",
+            'items' => $this->getSelectItems(),
+        ], $options));
 
         if ($this->allowOther) {
             $result[$this->profileField->internal_name . '_other_selection'] = [
@@ -172,19 +172,15 @@ class CheckboxList extends BaseType
     }
 
     /**
-     * Returns value of option
-     *
-     * @param User $user
-     * @param Boolean $raw Output Key
-     * @return String
+     * @inheritdoc
      */
-    public function getUserValue($user, $raw = true)
+    public function getUserValue(User $user, $raw = true): ?string
     {
         $internalName = $this->profileField->internal_name;
         $internalNameOther = $internalName . '_other_selection';
 
         $value = $user->profile->$internalName;
-        if (!$raw) {
+        if (!$raw && $value !== null) {
 
             $options = $this->getSelectItems();
             $translatedValues = [];

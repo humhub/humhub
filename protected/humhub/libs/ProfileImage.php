@@ -18,6 +18,7 @@ use Imagine\Image\Box;
 use Imagine\Image\ManipulatorInterface;
 use Imagine\Image\Point;
 use Yii;
+use yii\base\Exception;
 use yii\helpers\Url;
 use yii\helpers\FileHelper;
 use yii\imagine\Image;
@@ -167,13 +168,16 @@ class ProfileImage
      * Sets a new profile image by given temp file
      *
      * @param mixed $file CUploadedFile or file path
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function setNew($file)
     {
         if ($file instanceof UploadedFile) {
             $file = $file->tempName;
         }
+
+        ImageHelper::checkMaxDimensions($file);
+
         $this->delete();
 
         // Convert image to uploaded JPEG, fix orientation and remove additional meta information

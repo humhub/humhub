@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\User;
 use Yii;
 
 /**
@@ -30,6 +31,11 @@ class Birthday extends BaseType
 
     const HIDE_AGE_YES = 1;
     const HIDE_AGE_NO = 0;
+
+    /**
+     * @inheritdoc
+     */
+    public $type = 'datetime';
 
     /**
      * @var string hide age by default
@@ -132,24 +138,22 @@ class Birthday extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition()
+    public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
-        return [
-            $this->profileField->internal_name => [
-                'type' => 'datetime',
-                'format' => 'medium',
-                'class' => 'form-control',
-                'readonly' => (!$this->profileField->editable),
-                'yearRange' => (date('Y') - 100) . ':' . date('Y'),
-                'dateTimePickerOptions' => [
-                    'pickTime' => false
-                ]
-            ],
-            $this->profileField->internal_name . '_hide_year' => [
-                'type' => 'checkbox',
-                'readonly' => (!$this->profileField->editable)
-            ],
+        $result = parent::getFieldFormDefinition($user, array_merge([
+            'format' => 'medium',
+            'yearRange' => (date('Y') - 100) . ':' . date('Y'),
+            'dateTimePickerOptions' => [
+                'pickTime' => false
+            ]
+        ], $options));
+
+        $result[$this->profileField->internal_name . '_hide_year'] = [
+            'type' => 'checkbox',
+            'readonly' => !$this->profileField->editable
         ];
+
+        return $result;
     }
 
     /**
@@ -172,10 +176,10 @@ class Birthday extends BaseType
     /**
      * @inheritdoc
      */
-    public function getUserValue($user, $raw = true)
+    public function getUserValue(User $user, $raw = true): ?string
     {
         $internalName = $this->profileField->internal_name;
-        $birthdayDate = \DateTime::createFromFormat('Y-m-d', $user->profile->$internalName,
+        $birthdayDate = \DateTime::createFromFormat('Y-m-d', $user->profile->$internalName ?? '',
             new \DateTimeZone(Yii::$app->formatter->timeZone));
 
         $internalNameHideAge = $this->profileField->internal_name . '_hide_year';
@@ -199,11 +203,22 @@ class Birthday extends BaseType
             }
         }
 
+        $longDate = Yii::$app->formatter->asDate($birthdayDate, 'long');
+
         /*
          * - user set hide age yes
          */
         if ($hideAge === self::HIDE_AGE_YES) {
-            return Yii::$app->formatter->asDate($birthdayDate, 'dd. MMMM');
+            // See: https://github.com/humhub/humhub/issues/5187#issuecomment-888178022
+            
+            $month = Yii::$app->formatter->asDate($birthdayDate, 'php:F');
+            $day = Yii::$app->formatter->asDate($birthdayDate, 'php:d');
+            if (preg_match('/(' . preg_quote($day) . '.+' . preg_quote($month) . '|' . preg_quote($month) . '.+' . preg_quote($day) . ')/', $longDate, $m)) {
+                return $m[0];
+            }
+
+            $year = Yii::$app->formatter->asDate($birthdayDate, 'php:Y');
+            return preg_replace('/[,\s]*' . preg_quote($year) . '([^\d]+|$)/', '', $longDate);
         }
 
         $ageInYears = Yii::t(
@@ -212,7 +227,7 @@ class Birthday extends BaseType
             ['%y' => $birthdayDate->diff(new \DateTime())->y]
         );
 
-        return Yii::$app->formatter->asDate($birthdayDate, 'long') . ' (' . $ageInYears . ')';
+        return $longDate . ' (' . $ageInYears . ')';
     }
 
     /**

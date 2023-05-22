@@ -11,7 +11,12 @@ humhub.module('user.login', function (module, require, $) {
                 $this.data('originalUrl', original);
             }
 
-            $this.attr('href', checked ? original + '&rememberMe=1' : original);
+            var url = new URL(original, window.location.origin);
+            if(checked) {
+                url.searchParams.set('rememberMe', 1);
+            }
+
+            $this.attr('href', url.toString());
         });
 
     };

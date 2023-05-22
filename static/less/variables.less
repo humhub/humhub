@@ -11,14 +11,14 @@
 @primary: #435f6f;
 @info: #21A1B3;
 @success: #97d271;
-@warning: #f8b763;
+@warning: #FFC107;
 @danger: #FC4A64;
 @link: @info;
 @isFluid: false;
 
 
 //
-// Text color
+// Text colors
 // --------------------------------------------------
 
 // Default body text color.
@@ -45,20 +45,25 @@
 
 
 //
-// Text color
+// Background colors
 // --------------------------------------------------
 
 // main content background color should be in contrast with @text-color-main, @text-color-secondary and other text colors
 @background-color-main: #fff;
 
 // used beside others for tabs - former @background1
-@background-color-secondary: #f7f7f7;
+@background-color-secondary: #f8f8f8;
 
 // page background which is also used for other ui components as comment box etc. - former @background2
 @background-color-page: #ededed;
 
-// text highlight
-@background-color-highlight: #fff8e0;
+// Informative highlighting color
+// (e.g. Comment Permalink, Shared Item, Calendar CurDay, Wiki Active Page Nav, Mail Module Speech Bubble)
+@background-color-highlight: lighten(desaturate(spin(@info, 2), 17), 49);
+
+// Informative highlighting soft color
+// (e.g. Wiki Active Category)
+@background-color-highlight-soft: lighten(desaturate(spin(@info, 6), 16), 55);
 
 // Additional background colors
 @background3: #d7d7d7;
@@ -88,6 +93,51 @@
 // --------------------------------------------------
 
 // Mail Fonts
-@mail-font-url: 'http://fonts.googleapis.com/css?family=Open+Sans:300,100,400,600';
 @mail-font-family: 'Open Sans', Arial, Tahoma, Helvetica, sans-serif;
 
+// CSS Variables
+:root {
+  // Colors for buttons status etc.
+  --default: @default;
+  --primary: @primary;
+  --info: @info;
+  --success: @success;
+  --warning: @warning;
+  --danger: @danger;
+  --link: @link;
+
+  // Text colors
+  --text-color-main: @text-color-main;
+  --text-color-secondary: @text-color-secondary;
+  --text-color-highlight: @text-color-highlight;
+  --text-color-soft: @text-color-soft;
+  --text-color-soft2: @text-color-soft2;
+  --text-color-soft3: @text-color-soft3;
+  --text-color-contrast: @text-color-contrast;
+
+  // Background colors
+  --background-color-main: @background-color-main;
+  --background-color-secondary: @background-color-secondary;
+  --background-color-page: @background-color-page;
+  --background-color-highlight: @background-color-highlight;
+  --background-color-highlight-soft: @background-color-highlight-soft;
+  --background3: @background3;
+  --background4: @background4;
+
+  // Bootstrap Alert boxes
+  // Success
+  --background-color-success: @background-color-success;
+  --text-color-success: @text-color-success;
+  --border-color-success: @border-color-success;
+  // Warning
+  --background-color-warning: @background-color-warning;
+  --text-color-warning: @text-color-warning;
+  --border-color-warning: @border-color-warning;
+  // Danger
+  --background-color-danger: @background-color-danger;
+  --text-color-danger: @text-color-danger;
+  --border-color-danger: @border-color-danger;
+
+  // Fonts
+  --mail-font-family: @mail-font-family;
+}

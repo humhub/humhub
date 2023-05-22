@@ -2,6 +2,10 @@
 
 namespace humhub\modules\stream\models;
 
+use humhub\modules\stream\models\filters\BlockedUsersStreamFilter;
+use humhub\modules\stream\models\filters\DateStreamFilter;
+use humhub\modules\stream\models\filters\DraftContentStreamFilter;
+use humhub\modules\stream\models\filters\ScheduledContentStreamFilter;
 use humhub\modules\stream\models\filters\StreamQueryFilter;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -133,7 +137,19 @@ class StreamQuery extends Model
         TopicStreamFilter::class,
         ContentTypeStreamFilter::class,
         OriginatorStreamFilter::class,
+        BlockedUsersStreamFilter::class,
+        DateStreamFilter::class,
+        DraftContentStreamFilter::class,
+        ScheduledContentStreamFilter::class
     ];
+
+    /**
+     * Per default only content with published state are returned.
+     *
+     * @note Used, for example, by the Recycle Bin module to display deleted content in the stream.
+     * @var array
+     */
+    public $stateFilterCondition = ['OR', ['content.state' => Content::STATE_PUBLISHED]];
 
     /**
      * The content query.
@@ -154,7 +170,7 @@ class StreamQuery extends Model
     {
         return [
             [['limit', 'from', 'to', 'contentId'], 'number'],
-            [['sort'], 'safe']
+            [['sort'], 'safe'],
         ];
     }
 
@@ -243,7 +259,7 @@ class StreamQuery extends Model
      */
     public function addFilter($filters)
     {
-        if (!is_string($filters)) {
+        if (is_string($filters)) {
             $this->filters[] = $filters;
         } elseif (is_array($filters)) {
             $this->filters = ArrayHelper::merge($this->filters, $filters);
@@ -368,6 +384,7 @@ class StreamQuery extends Model
      */
     public function query($build = false)
     {
+
         if ($build && !$this->_built) {
             $this->setupQuery();
         }
@@ -382,7 +399,30 @@ class StreamQuery extends Model
      */
     public function all()
     {
-        return $this->query(!$this->_built)->all();
+        return $this->postProcessAll(
+            $this->query(!$this->_built)->all()
+        );
+    }
+
+    /**
+     * @param Content[] $result
+     * @return Content[]
+     * @since 1.14
+     */
+    protected function postProcessAll(array $result)
+    {
+        /**
+         * Allow FilterHandler to directly modify the stream content result
+         * e.g. (e.g. Pinned/Drafts) can inject additional content on the first stream batch
+         */
+        foreach ($this->filterHandlers as $filterHandler) {
+            if ($filterHandler instanceof StreamQueryFilter) {
+                $filterHandler->postProcessStreamResult($result);
+            } else {
+                Yii::warning('StreamQuery::postProcessAll - invalid FilterHandler: ' . var_export($filterHandler, true), 'content');
+            }
+        }
+        return $result;
     }
 
     /**
@@ -397,6 +437,8 @@ class StreamQuery extends Model
         $this->checkTo();
         $this->setupCriteria();
         $this->setupFilters();
+
+        $this->_query->andWhere($this->stateFilterCondition);
 
         if (!empty($this->channel)) {
             $this->channel($this->channel);
@@ -454,10 +496,12 @@ class StreamQuery extends Model
      */
     protected function checkLimit()
     {
-        if (empty($this->limit) || $this->limit > self::MAX_LIMIT) {
+        if (empty($this->limit)) {
             $this->limit = self::MAX_LIMIT;
-        } else {
+        } else if (Yii::$app->request->isConsoleRequest) {
             $this->limit = (int)$this->limit;
+        } else {
+            $this->limit = ($this->limit > self::MAX_LIMIT) ? self::MAX_LIMIT : (int)$this->limit;
         }
     }
 
@@ -541,8 +585,8 @@ class StreamQuery extends Model
     {
         $this->beforeApplyFilters();
 
-        foreach ($this->filterHandlers as $handler) {
-            $this->prepareHandler($handler)->apply();
+        foreach (array_keys($this->filterHandlers) as $i) {
+            $this->prepareHandler($this->filterHandlers[$i])->apply();
         }
 
         $this->afterApplyFilters();
@@ -604,14 +648,25 @@ class StreamQuery extends Model
      * @throws InvalidConfigException
      * @since 1.6
      */
-    public function addFilterHandler($handler, $overwrite = true)
+    public function addFilterHandler($handler, $overwrite = true, $prepend = false)
     {
         if ($overwrite) {
             $this->removeFilterHandler($handler);
         }
 
         $handler = $this->prepareHandler($handler);
-        return $this->filterHandlers[] = $handler;
+
+        /**
+         * Some Filters must be prepended, when other filters rely on them.
+         * E.g. `ContentContainerStreamFilter` is required for `DraftContentStreamFilter` which clones
+         * the current query to get all drafts (for ContentContainer or Dashboard)
+         */
+        if ($prepend) {
+            array_unshift($this->filterHandlers, $handler);
+        } else {
+            $this->filterHandlers[] = $handler;
+        }
+        return $handler;
     }
 
     /**
@@ -662,9 +717,9 @@ class StreamQuery extends Model
      * @throws InvalidConfigException
      * @since 1.6
      */
-    public function getFilterHandler($handlerToRemove)
+    public function getFilterHandler($class): ?StreamQueryFilter
     {
-        $handlerToRemoveClass = is_string($handlerToRemove) ? $handlerToRemove : get_class($handlerToRemove);
+        $handlerToRemoveClass = is_string($class) ? $class : get_class($class);
         foreach ($this->filterHandlers as $handler) {
             if (is_a($handler, $handlerToRemoveClass, true)) {
                 return $this->prepareHandler($handler);
@@ -680,8 +735,7 @@ class StreamQuery extends Model
      * @throws InvalidConfigException
      * @since 1.6
      */
-    private
-    function prepareHandler($handler)
+    private function prepareHandler(&$handler)
     {
         if (is_string($handler)) {
             $handler = Yii::createObject([

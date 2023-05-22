@@ -36,7 +36,7 @@ module.exports = function (grunt) {
                 }
             },
             testServer: {
-                command: "php -S localhost:8080"
+                command: "php -S localhost:8080 index-test.php"
             },
             testRun: {
                 command: function() {

@@ -2,9 +2,9 @@
 return array (
   '<strong>Search </strong> results' => '',
   'Advanced search settings' => '',
-  'All' => '',
-  'Content' => '',
-  'Search' => '',
+  'All' => 'Всі',
+  'Content' => 'Зміст',
+  'Search' => 'Пошук',
   'Search for user, spaces and content' => '',
   'Search only in certain spaces:' => '',
   'Spaces' => '',

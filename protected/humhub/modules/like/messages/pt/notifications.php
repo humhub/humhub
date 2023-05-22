@@ -1,10 +1,10 @@
 <?php
 return array (
-  'Likes' => 'Laiques',
-  'Receive Notifications when someone likes your content.' => 'Receber notificações quando alguém laica o teu conteúdo.',
-  'View Online' => 'Ver online',
-  '{displayNames} likes your {contentTitle}.' => '{displayNames} laicou o teu {contentTitle}.',
-  '{displayNames} likes {contentTitle}.' => '{displayNames} laicou {contentTitle}.',
-  '{displayName} likes your {contentTitle}.' => '{displayName} laicou o teu {contentTitle}.',
-  '{displayName} likes {contentTitle}.' => '{displayName} laicou {contentTitle}.',
+  'Likes' => 'Gostos',
+  'Receive Notifications when someone likes your content.' => 'Receber notificações quando alguém gosta do teu conteúdo.',
+  'View Online' => 'Ver Online',
+  '{displayNames} likes your {contentTitle}.' => '{displayNames} gostam do teu {contentTitle}.',
+  '{displayNames} likes {contentTitle}.' => '{displayNames} gostam de {contentTitle}.',
+  '{displayName} likes your {contentTitle}.' => '{displayName} gosta do teu {contentTitle}.',
+  '{displayName} likes {contentTitle}.' => '{displayName} gosta de {contentTitle}.',
 );

@@ -113,13 +113,10 @@ humhub.module('ui.modal', function (module, require, $) {
      * @returns {undefined}
      */
     Modal.prototype.close = function (reset) {
-        var that = this;
-        this.$.fadeOut('fast', function () {
-            that.$.modal('hide');
-            if (reset) {
-                that.reset();
-            }
-        });
+        this.$.modal('hide');
+        if (reset) {
+            this.reset();
+        }
     };
 
     /**
@@ -459,7 +456,7 @@ humhub.module('ui.modal', function (module, require, $) {
     Modal.prototype.focus = function () {
         var that = this;
         setTimeout(function() {
-            var $input = that.$.find('select:visible, input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first();
+            var $input = that.$.find('select:visible:not(:disabled), input[type="text"]:visible:not(:disabled), textarea:visible:not(:disabled), [contenteditable="true"]:visible:not(:disabled)').first();
 
             if($input.data('select2')) {
                 $input.select2('focus');
@@ -526,14 +523,13 @@ humhub.module('ui.modal', function (module, require, $) {
         //Init handler
         var that = this;
         if (cfg['handler']) {
-            $confirmButton.one('click', function (evt) {
+            $confirmButton.one('click', function () {
                 that.clear();
                 cfg['handler'](true);
             });
-        }
 
-        if (cfg['handler']) {
-            $cancelButton.one('click', function (evt) {
+            var $closeButtonsIcons = this.$.find('[data-modal-close]');
+            $closeButtonsIcons.one('click', function () {
                 that.clear();
                 cfg['handler'](false);
             });
@@ -558,6 +554,10 @@ humhub.module('ui.modal', function (module, require, $) {
 
         $(document).on('shown.bs.modal', '.modal.in', function (event) {
             _setModalsAndBackdropsOrder();
+        });
+
+        $(document).on('hide.bs.modal', '.modal', function (event) {
+            $(this).addClass('fade');
         });
 
         $(document).on('hidden.bs.modal', '.modal', function (event) {

@@ -3,6 +3,7 @@ return array (
   'New Content' => 'Nuevo Contenido',
   'Receive Notifications for new content you follow.' => 'Recibir Notificaciones de nuevo contenido que sigues.',
   'View Online' => 'Ver en línea',
+  'Your {contentTitle} has been deleted by {displayName} for \'{reason}\'' => '{displayName} ha borrado {contentTitle} porque \'{reason}\'',
   '{displayName} created {contentTitle}.' => '{displayName} ha creado {contentTitle}.',
   '{displayName} posted on your profile {contentTitle}.' => '{displayName} ha publicado en su perfil {contentTitle}.',
   '{originator} just wrote {contentInfo}' => '{originator} acaba de escribir {contentInfo}',

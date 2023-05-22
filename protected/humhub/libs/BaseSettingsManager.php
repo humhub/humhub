@@ -11,6 +11,7 @@ namespace humhub\libs;
 use Yii;
 use yii\base\Component;
 use yii\base\Exception;
+use yii\base\InvalidArgumentException;
 use yii\db\conditions\LikeCondition;
 use yii\db\StaleObjectException;
 use yii\helpers\Json;
@@ -48,7 +49,10 @@ abstract class BaseSettingsManager extends Component
             throw new Exception('Could not determine module id');
         }
 
-        $this->loadValues();
+        if (static::isDatabaseInstalled()) {
+            $this->loadValues();
+        }
+
 
         parent::init();
     }
@@ -109,7 +113,11 @@ abstract class BaseSettingsManager extends Component
     {
         $value = $this->get($name, $default);
         if (is_string($value)) {
-            $value = Json::decode($value);
+            try {
+                $value = Json::decode($value);
+            } catch (InvalidArgumentException $ex) {
+                Yii::error($ex->getMessage());
+            }
         }
         return $value;
     }

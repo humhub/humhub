@@ -9,13 +9,15 @@
 
 namespace humhub\modules\space\components;
 
+use humhub\events\ActiveQueryEvent;
+use humhub\modules\admin\permissions\ManageSpaces;
+use humhub\modules\content\components\AbstractActiveQueryContentContainer;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
+use humhub\modules\user\Module;
 use Yii;
 use yii\db\ActiveQuery;
-use yii\db\Expression;
 
 
 /**
@@ -23,18 +25,23 @@ use yii\db\Expression;
  *
  * @since 1.4
  */
-class ActiveQuerySpace extends ActiveQuery
+class ActiveQuerySpace extends AbstractActiveQueryContentContainer
 {
-    const MAX_SEARCH_NEEDLES = 5;
+    /**
+     * @event Event an event that is triggered when only visible spaces are requested via [[visible()]].
+     */
+    const EVENT_CHECK_VISIBILITY = 'checkVisibility';
 
     /**
      * Only returns spaces which are visible for this user
      *
-     * @param User|null $user
-     * @return ActiveQuerySpace the query
+     * @inheritdoc
+     * @return self
      */
-    public function visible(User $user = null)
+    public function visible(?User $user = null): ActiveQuery
     {
+        $this->trigger(self::EVENT_CHECK_VISIBILITY, new ActiveQueryEvent(['query' => $this]));
+
         if ($user === null && !Yii::$app->user->isGuest) {
             try {
                 $user = Yii::$app->user->getIdentity();
@@ -44,47 +51,58 @@ class ActiveQuerySpace extends ActiveQuery
         }
 
         if ($user !== null) {
-
-            $spaceIds = array_map(function (Membership $membership) {
-                return $membership->space_id;
-            }, Membership::findAll(['user_id' => $user->id]));
+            if ($user->can(ManageSpaces::class)) {
+                return $this;
+            }
 
             $this->andWhere(['OR',
-                ['!=', 'space.visibility', Space::VISIBILITY_NONE],
-                ['IN', 'space.id', $spaceIds]
+                ['IN', 'space.visibility', [Space::VISIBILITY_ALL, Space::VISIBILITY_REGISTERED_ONLY]],
+                ['AND',
+                    ['=', 'space.visibility', Space::VISIBILITY_NONE],
+                    ['IN', 'space.id', Membership::find()->select('space_id')->where(['user_id' => $user->id])]
+                ]
             ]);
         } else {
-            $this->andWhere(['space.visibility' => Space::VISIBILITY_ALL]);
+            $this->andWhere(['!=', 'space.visibility', Space::VISIBILITY_NONE]);
         }
+
         return $this;
     }
 
     /**
-     * Performs a space full text search
-     *
-     * @param string|array $keywords
-     * @param array $columns
-     * @return ActiveQuerySpace the query
+     * @inerhitdoc
      */
-    public function search($keywords, $columns = ['space.name', 'space.description', 'contentcontainer.tags_cached'])
+    protected function getSearchableFields(): array
     {
-        if (empty($keywords)) {
+        $this->joinWith('contentContainerRecord');
+
+        return ['space.name', 'space.description', 'contentcontainer.tags_cached'];
+    }
+
+    /**
+     * Exclude blocked spaces for the given $user or for the current User
+     *
+     * @param User|null $user
+     * @return self
+     */
+    public function filterBlockedSpaces(?User $user = null): ActiveQuerySpace
+    {
+        if ($user === null && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        if (!($user instanceof User)) {
             return $this;
         }
 
-        $this->joinWith('contentContainerRecord');
-
-        if (!is_array($keywords)) {
-            $keywords = explode(' ', $keywords);
+        /* @var Module $userModule */
+        $userModule = Yii::$app->getModule('user');
+        if (!$userModule->allowBlockUsers()) {
+            return $this;
         }
 
-        foreach (array_slice($keywords, 0, static::MAX_SEARCH_NEEDLES) as $keyword) {
-            $conditions = [];
-            foreach ($columns as $field) {
-                $conditions[] = ['LIKE', $field, $keyword];
-            }
-            $this->andWhere(array_merge(['OR'], $conditions));
-        }
+        $this->leftJoin('contentcontainer_blocked_users', 'contentcontainer_blocked_users.contentcontainer_id=space.contentcontainer_id AND contentcontainer_blocked_users.user_id=:blockedUserId', [':blockedUserId' => $user->id]);
+        $this->andWhere('contentcontainer_blocked_users.user_id IS NULL');
 
         return $this;
     }

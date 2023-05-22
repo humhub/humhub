@@ -30,6 +30,29 @@ class BaseType extends Model
 {
 
     /**
+     * @event Event an event raised after init. Can be used to add custom field types.
+     * 
+     * Example config.php:
+     *     'events' => [
+     *         [BaseType::class, BaseType::EVENT_INIT, [Events::class, 'onFieldTypesInit']]
+     *     ]
+     * 
+     * Example Events.php:
+     *     public static function onFieldTypesInit($event) {
+     *         $event->sender->addFieldType(CustomFieldType::class, "Custom field");
+     *     }
+     * 
+     * @since 1.12
+     */
+    const EVENT_INIT = "fieldTypesInit";
+
+    /**
+     * @var string
+     * @since 1.13.1
+     */
+    public $type = 'text';
+
+    /**
      * Holds all profile field types
      *
      * Array
@@ -46,13 +69,27 @@ class BaseType extends Model
      */
     public $profileField = null;
 
-
     /**
      * @var boolean is a virtual field (readonly)
      * @see BaseTypeVirtual
      * @since 1.6
      */
     public $isVirtual = false;
+
+    /**
+     * @var boolean can be used as directory filter (readonly)
+     * @since 1.9
+     */
+    public $canBeDirectoryFilter = false;
+
+    /**
+     * @inheritdoc
+     */
+    public function init() {
+        parent::init();
+
+        $this->trigger(self::EVENT_INIT);
+    }
 
     /**
      * Links a ProfileField to the ProfileFieldType.
@@ -155,16 +192,19 @@ class BaseType extends Model
 
     /**
      * Return the Form Element to edit the value of the Field
+     *
+     * @param User|null $user If a context exists, the user is passed through here. May be null e.g. when filtering multiple users.
+     * @param array $options Additional options
      * @return array
      */
-    public function getFieldFormDefinition()
+    public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
         return [
-            $this->profileField->internal_name => [
-                'type' => 'text',
+            $this->profileField->internal_name => array_merge([
+                'type' => $this->type,
                 'class' => 'form-control',
-                'readonly' => (!$this->profileField->editable)
-            ]
+                'readonly' => !$this->profileField->editable
+            ], $options)
         ];
     }
 
@@ -313,7 +353,7 @@ class BaseType extends Model
      * @param bool $raw
      * @return string
      */
-    public function getUserValue($user, $raw = true)
+    public function getUserValue(User $user, $raw = true): ?string
     {
         $internalName = $this->profileField->internal_name;
 

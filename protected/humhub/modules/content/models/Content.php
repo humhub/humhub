@@ -16,11 +16,17 @@ use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
+use humhub\modules\content\events\ContentEvent;
+use humhub\modules\content\events\ContentStateEvent;
 use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\interfaces\SoftDeletable;
 use humhub\modules\content\live\NewContent;
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\content\services\ContentStateService;
+use humhub\modules\notification\models\Notification;
+use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\helpers\AuthHelper;
@@ -28,7 +34,6 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
-use yii\db\Expression;
 use yii\db\IntegrityException;
 use yii\helpers\Url;
 
@@ -55,29 +60,34 @@ use yii\helpers\Url;
  * @property string $guid
  * @property string $object_model
  * @property integer $object_id
+ * @property string $stream_sort_date
+ * @property string $stream_channel
+ * @property integer $contentcontainer_id
  * @property integer $visibility
  * @property integer $pinned
  * @property integer $archived
+ * @property integer $hidden
+ * @property integer $state
+ * @property string $scheduled_at
+ * @property integer $locked_comments
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
- * @property string $stream_sort_date
- * @property string $stream_channel
- * @property integer $contentcontainer_id;
  * @property ContentContainer $contentContainer
  * @property ContentContainerActiveRecord $container
  * @mixin PolymorphicRelation
  * @mixin GUID
  * @since 0.5
  */
-class Content extends ActiveRecord implements Movable, ContentOwner
+class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletable
 {
     /**
      * The default stream channel.
      * @since 1.6
      */
     const STREAM_CHANNEL_DEFAULT = 'default';
+
 
     /**
      * A array of user objects which should informed about this new content.
@@ -102,6 +112,14 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     const VISIBILITY_OWNER = 2;
 
     /**
+     * Content States - By default, only content with the "Published" state is returned.
+     */
+    const STATE_PUBLISHED = 1;
+    const STATE_DRAFT = 10;
+    const STATE_SCHEDULED = 20;
+    const STATE_DELETED = 100;
+
+    /**
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
      */
     protected $_container = null;
@@ -111,6 +129,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      * @deprecated since v1.2.3 use ContentActiveRecord::silentContentCreation instead.
      */
     public $muteDefaultSocialActivities = false;
+
+    /**
+     * @event Event is used when a Content state is changed.
+     */
+    const EVENT_STATE_CHANGED = 'changedState';
 
     /**
      * @inheritdoc
@@ -189,21 +212,13 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             throw new Exception("Could not save content with object_model or object_id!");
         }
 
-        // Set some default values
-        if (!$this->archived) {
-            $this->archived = 0;
-        }
-        if (!$this->visibility) {
-            $this->visibility = self::VISIBILITY_PRIVATE;
-        }
-        if (!$this->pinned) {
-            $this->pinned = 0;
-        }
+        $this->archived ??= 0;
+        $this->visibility ??= self::VISIBILITY_PRIVATE;
+        $this->pinned ??= 0;
+        $this->state ??= Content::STATE_PUBLISHED;
 
         if ($insert) {
-            if ($this->created_by == "") {
-                $this->created_by = Yii::$app->user->id;
-            }
+            $this->created_by ??= Yii::$app->user->id;
         }
 
         $this->stream_sort_date = date('Y-m-d G:i:s');
@@ -220,15 +235,52 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function afterSave($insert, $changedAttributes)
     {
-        /* @var $contentSource ContentActiveRecord */
-        $contentSource = $this->getModel();
+        if (array_key_exists('state', $changedAttributes)) {
+            $model = $this->getPolymorphicRelation();
+
+            if ($this->getStateService()->isPublished()) {
+                // Run process for new content(Send notifications) only after publishing the Content
+                $this->processNewContent();
+                // Also run process for parent object in order to send notifications like mentioning users
+                if ($model instanceof ActiveRecord) {
+                    $model->afterSave($insert, $changedAttributes);
+                }
+            }
+
+            $previousState = $changedAttributes['state'] ?? null;
+            $this->trigger(self::EVENT_STATE_CHANGED, new ContentStateEvent([
+                'content' => $this,
+                'newState' => $this->state,
+                'previousState' => $previousState
+            ]));
+
+            if ($model instanceof ContentActiveRecord) {
+                $model->afterStateChange($this->state, $previousState);
+            }
+        }
+
+        if ($this->getStateService()->isPublished()) {
+            SearchHelper::queueUpdate($this->getModel());
+        } else {
+            SearchHelper::queueDelete($this->getModel());
+        }
+
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    private function processNewContent()
+    {
+        $record = $this->getModel();
+
+        Yii::debug('Process new content: ' . get_class($record) . ' ID: ' . $record->getPrimaryKey(), 'content');
 
         foreach ($this->notifyUsersOfNewContent as $user) {
-            $contentSource->follow($user->id);
+            $record->follow($user->id);
         }
 
         // TODO: handle ContentCreated notifications and live events for global content
-        if ($insert && !$this->isMuted()) {
+
+        if (!$this->isMuted()) {
             $this->notifyContentCreated();
         }
 
@@ -239,17 +291,16 @@ class Content extends ActiveRecord implements Movable, ContentOwner
                 'originator' => $this->createdBy->guid,
                 'contentContainerId' => $this->container->contentContainerRecord->id,
                 'visibility' => $this->visibility,
-                'sourceClass' => get_class($contentSource),
-                'sourceId' => $contentSource->getPrimaryKey(),
+                'sourceClass' => get_class($record),
+                'sourceId' => $record->getPrimaryKey(),
                 'silent' => $this->isMuted(),
                 'streamChannel' => $this->stream_channel,
                 'contentId' => $this->id,
-                'insert' => $insert
+                'insert' => true
             ]));
         }
-
-        parent::afterSave($insert, $changedAttributes);
     }
+
 
     /**
      * @return bool checks if the given content allows content creation notifications and activities
@@ -288,17 +339,85 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     }
 
     /**
+     * Marks this content for deletion (soft delete).
+     * Use `hardDelete()` method to delete a content immediately.
+     *
+     * @return bool
+     * @inheritdoc
+     */
+    public function delete()
+    {
+        return $this->softDelete();
+    }
+
+    /**
      * @inheritdoc
      */
     public function afterDelete()
     {
         // Try delete the underlying object (Post, Question, Task, ...)
         $this->resetPolymorphicRelation();
-        if ($this->getPolymorphicRelation() !== null) {
-            $this->getPolymorphicRelation()->delete();
+
+        /** @var ContentActiveRecord $record */
+        $record = $this->getPolymorphicRelation();
+
+        if ($record) {
+            $record->hardDelete();
         }
 
         parent::afterDelete();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSoftDelete(): bool
+    {
+        $event = new ContentEvent(['content' => $this]);
+        $this->trigger(self::EVENT_BEFORE_SOFT_DELETE, $event);
+
+        return $event->isValid;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function softDelete(): bool
+    {
+        if (!$this->beforeSoftDelete()) {
+            return false;
+        }
+
+        Notification::deleteAll([
+            'source_class' => get_class($this),
+            'source_pk' => $this->getPrimaryKey(),
+        ]);
+
+        if (!$this->getStateService()->delete()) {
+            return false;
+        }
+
+        $this->afterSoftDelete();
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSoftDelete()
+    {
+        $this->trigger(self::EVENT_AFTER_SOFT_DELETE, new ContentEvent(['content' => $this]));
+    }
+
+    /**
+     * Deletes this content immediately and permanently
+     *
+     * @return bool
+     * @since 1.14
+     */
+    public function hardDelete(): bool
+    {
+        return (parent::delete() !== false);
     }
 
     /**
@@ -322,13 +441,23 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     }
 
     /**
-     * Checks if the content visiblity is set to private.
+     * Checks if the content visibility is set to private.
      *
      * @return boolean
      */
     public function isPrivate()
     {
         return $this->visibility == self::VISIBILITY_PRIVATE;
+    }
+
+    /**
+     * Checks if comments are locked for the content.
+     *
+     * @return bool
+     */
+    public function isLockedComments(): bool
+    {
+        return (bool)$this->locked_comments;
     }
 
     /**
@@ -416,7 +545,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     {
         // Currently global content can not be archived
         if (!$this->getContainer()) {
-            return false;
+            return $this->canEdit();
         }
 
         // No need to archive content on an archived container, content is marked as archived already
@@ -691,6 +820,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner
 
         $this->refresh();
 
+        SearchHelper::queueUpdate($this->getPolymorphicRelation());
+
         $contentRelation = new ContentTagRelation($this, $tag);
         return $contentRelation->save();
     }
@@ -709,7 +840,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     }
 
     /**
-     * Checks if the given user can edit this content.
+     * Checks if the given user can edit/create this content.
      *
      * A user can edit a content if one of the following conditions are met:
      *
@@ -719,7 +850,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      *  - The user meets the additional condition implemented by the model records class own `canEdit()` function.
      *
      * @param User|integer $user user instance or user id
-     * @return bool can edit this content
+     * @return bool can edit/create this content
      * @throws Exception
      * @throws IntegrityException
      * @throws \Throwable
@@ -751,8 +882,13 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         $model = $this->getModel();
 
         // Check additional manage permission for the given container
-        if ($model->hasManagePermission() && $this->getContainer() && $this->getContainer()->getPermissionManager($user)->can($model->getManagePermission())) {
-            return true;
+        if ($this->container) {
+            if ($model->isNewRecord && $model->hasCreatePermission() && $this->container->getPermissionManager($user)->can($model->getCreatePermission())) {
+                return true;
+            }
+            if (!$model->isNewRecord && $model->hasManagePermission() && $this->container->getPermissionManager($user)->can($model->getManagePermission())) {
+                return true;
+            }
         }
 
         // Check if underlying models canEdit implementation
@@ -762,6 +898,30 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         }
 
         return false;
+    }
+
+    /**
+     * Checks if the user can lock comments for this content.
+     *
+     * @return bool
+     * @throws Exception
+     */
+    public function canLockComments(): bool
+    {
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+
+        $user = Yii::$app->user->getIdentity();
+
+        // Global Admin can lock comments
+        if (Yii::$app->getModule('content')->adminCanEditAllContent && $user->isSystemAdmin()) {
+            return true;
+        }
+
+        return $this->container
+            ? $this->container->permissionManager->can(ManageContent::class)
+            : $this->canEdit();
     }
 
     /**
@@ -814,13 +974,18 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             return $this->checkGuestAccess();
         }
 
+        // If content is not published(draft, in trash, unapproved) - restrict view access to editors
+        if (!$this->getStateService()->isPublished()) {
+            return $this->canEdit();
+        }
+
         // Public visible content
         if ($this->isPublic()) {
             return true;
         }
 
         // Check system admin can see all content module configuration
-        if ($user->canViewAllContent()) {
+        if ($user->canViewAllContent(get_class($this->container))) {
             return true;
         }
 
@@ -903,4 +1068,21 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     {
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
     }
+
+    public function getStateService(): ContentStateService
+    {
+        return new ContentStateService(['content' => $this]);
+    }
+
+    /**
+     * @param int|string|null $state
+     * @param array $options Additional options depending on state
+     * @since 1.14
+     * @deprecated Use $this->getStateService()->set(). It will be deleted in v1.15.
+     */
+    public function setState($state, array $options = [])
+    {
+        $this->getStateService()->set($state, $options);
+    }
+
 }

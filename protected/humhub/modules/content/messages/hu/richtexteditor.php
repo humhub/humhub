@@ -48,6 +48,7 @@ return array (
   'Wrap in bullet list' => 'Felsorolás használata',
   'Wrap in ordered list' => 'Számozás használata',
   '[Code Block]' => '[Kód blokk]',
+  '[Image]' => '[Kép]',
   '[Invalid file]' => '[Érvénytelen fájl]',
   '[Table]' => '[Táblázat]',
 );

@@ -1,6 +1,8 @@
 <?php
-return array (
-  'Collapse' => 'Lipat',
-  'Read more' => '',
-  'User Interface' => '',
-);
+
+return [
+    'Collapse' => 'Lipat',
+    'Read more' => '',
+    'Reset filters' => '',
+    'User Interface' => '',
+];

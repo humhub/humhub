@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\modules\user\models\User;
 use Yii;
 
 /**
@@ -18,23 +19,15 @@ use Yii;
  */
 class TextArea extends BaseType
 {
-
     /**
-     * Rules for validating the Field Type Settings Form
-     *
-     * @return type
+     * @inheritdoc
      */
-    public function rules()
-    {
-        return [
-                #array('maxLength, alphaNumOnly', 'safe'),
-        ];
-    }
+    public $type = 'textarea';
 
     /**
      * Returns Form Definition for edit/create this field.
      *
-     * @return Array Form Definition
+     * @return array Form Definition
      */
     public function getFormDefinition($definition = [])
     {
@@ -62,31 +55,23 @@ class TextArea extends BaseType
     }
 
     /**
-     * Returns the Field Rules, to validate users input
-     *
-     * @param type $rules
-     * @return type
+     * @inheritdoc
      */
     public function getFieldRules($rules = [])
     {
-
         $rules[] = [$this->profileField->internal_name, 'safe'];
 
         return parent::getFieldRules($rules);
     }
 
     /**
-     * Return the Form Element to edit the value of the Field
+     * @inheritdoc
      */
-    public function getFieldFormDefinition()
+    public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
-        return [$this->profileField->internal_name => [
-                'type' => 'textarea',
-                'class' => 'form-control',
-                'rows' => '3'
-        ]];
+        return parent::getFieldFormDefinition($user, array_merge([
+            'rows' => '3'
+        ], $options));
     }
 
 }
-
-?>

@@ -31,6 +31,7 @@ use yii\base\Exception;
  * - updated_at
  *
  * @property-read Content $content
+ * @property-read User $user
  * @author Lucas Bartholemy <lucas@bartholemy.com>
  * @package humhub.components
  * @since 0.5
@@ -117,6 +118,18 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
 
         $this->_source = $className::findOne(['id' => $pk]);
         return $this->_source;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if ($insert && !$this->getContent()->getStateService()->isPublished()) {
+            return false;
+        }
+
+        return parent::beforeSave($insert);
     }
 
     /**

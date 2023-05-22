@@ -66,19 +66,6 @@ class LogFilterForm extends Model
     private $query;
 
     /**
-     * @inheritDoc
-     */
-    public function init()
-    {
-        if($this->levels === null) {
-            $this->levels = [Logger::LEVEL_ERROR];
-        }
-
-        parent::init();
-    }
-
-
-    /**
      * @inheritdoc
      */
     public function rules()
@@ -241,6 +228,13 @@ class LogFilterForm extends Model
             $result[$level] = static::getLevelLabel($level);
         }
 
+        if (is_array($this->levels)) {
+            foreach ($this->levels as $defaultLevel) {
+                if (!isset($result[$defaultLevel]) && ($defaultLevelTitle = static::getLevelLabel($defaultLevel))) {
+                    $result[$defaultLevel] = $defaultLevelTitle;
+                }
+            }
+        }
 
         return $result;
     }

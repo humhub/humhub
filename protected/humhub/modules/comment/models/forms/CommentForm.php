@@ -76,7 +76,7 @@ class CommentForm extends yii\base\Model
             return true;
         }
 
-        // Allow empty message only with file attachments
+        // Allow empty message only With attachments
         if (!empty($this->fileList) || (!$this->comment->isNewRecord && $this->comment->fileManager->find()->count())) {
             return true;
         }

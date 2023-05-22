@@ -2,7 +2,8 @@
 return array (
   'New Content' => '',
   'Receive Notifications for new content you follow.' => '',
-  'View Online' => '',
+  'View Online' => 'Дивитись Онлайн',
+  'Your {contentTitle} has been deleted by {displayName} for \'{reason}\'' => '',
   '{displayName} created {contentTitle}.' => '',
   '{displayName} posted on your profile {contentTitle}.' => '',
   '{originator} just wrote {contentInfo}' => '',

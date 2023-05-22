@@ -86,6 +86,12 @@ class Module extends \humhub\components\Module
     public $richtextCompatMode = true;
 
     /**
+     * @var int Interval in minutes to run a publishing of the scheduled contents
+     * @since 1.14
+     */
+    public $publishScheduledInterval = 10;
+
+    /**
      * @param ContentContainerActiveRecord $container
      * @since 1.6
      * @return int

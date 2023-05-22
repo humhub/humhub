@@ -15,9 +15,10 @@ use yii\helpers\Html;
 /* @var $panels [] */
 /* @var $options [] */
 
-$leftPanelBlocks = isset($panels[WallStreamFilterNavigation::PANEL_POSITION_LEFT]) ? $panels[WallStreamFilterNavigation::PANEL_POSITION_LEFT] : null;
-$centerPanelBlocks = isset($panels[WallStreamFilterNavigation::PANEL_POSITION_CENTER]) ? $panels[WallStreamFilterNavigation::PANEL_POSITION_CENTER] : null;
-$rightPanelBlocks = isset($panels[WallStreamFilterNavigation::PANEL_POSITION_RIGHT]) ? $panels[WallStreamFilterNavigation::PANEL_POSITION_RIGHT] : null;
+$panelColumn1Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_1]) ? $panels[WallStreamFilterNavigation::PANEL_COLUMN_1] : null;
+$panelColumn2Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_2]) ? $panels[WallStreamFilterNavigation::PANEL_COLUMN_2] : null;
+$panelColumn3Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_3]) ? $panels[WallStreamFilterNavigation::PANEL_COLUMN_3] : null;
+$panelColumn4Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_4]) ? $panels[WallStreamFilterNavigation::PANEL_COLUMN_4] : null;
 
 ?>
 
@@ -32,9 +33,9 @@ $rightPanelBlocks = isset($panels[WallStreamFilterNavigation::PANEL_POSITION_RIG
         <div class="wall-stream-filter-body" style="display:none">
             <div class="filter-root">
                 <div class="row">
-                    <?= FilterPanel::widget(['blocks' => $leftPanelBlocks, 'span' => count($panels)])?>
-                    <?= FilterPanel::widget(['blocks' => $centerPanelBlocks, 'span' => count($panels)])?>
-                    <?= FilterPanel::widget(['blocks' => $rightPanelBlocks, 'span' => count($panels)])?>
+                    <?= FilterPanel::widget(['blocks' => $panelColumn1Blocks, 'span' => count($panels)])?>
+                    <?= FilterPanel::widget(['blocks' => $panelColumn2Blocks, 'span' => count($panels)])?>
+                    <?= FilterPanel::widget(['blocks' => $panelColumn3Blocks, 'span' => count($panels)])?>
                 </div>
             </div>
         </div>

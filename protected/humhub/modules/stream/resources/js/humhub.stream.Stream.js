@@ -48,6 +48,13 @@ humhub.module('stream.Stream', function (module, require, $) {
      */
     var DATA_STREAM_CONTENTID = 'stream-contentid';
 
+
+    /**
+     * If a data-stream-commentid is set on the stream the Comment will be marked
+     * @type String
+     */
+    var DATA_STREAM_COMMENTID = 'stream-commentid';
+
     var StreamState = function (stream) {
         this.stream = stream;
         this.lastContentId = 0;
@@ -163,8 +170,9 @@ humhub.module('stream.Stream', function (module, require, $) {
      */
     Stream.prototype.init = function () {
         if (this.state) {
-            // When reloading the stream we ignroe the content id
+            // When reloading the stream we ignore the content id
             this.$.data(DATA_STREAM_CONTENTID, null);
+            this.$.data(DATA_STREAM_COMMENTID, null);
         }
 
         this.state = new StreamState(this);
@@ -229,12 +237,19 @@ humhub.module('stream.Stream', function (module, require, $) {
     Stream.prototype.loadInit = function () {
         // content Id data is only relevant for the first request
         var contentId = this.$.data(DATA_STREAM_CONTENTID);
+        var commentId = this.$.data(DATA_STREAM_COMMENTID);
 
-        this.state.firstRequest = new StreamRequest(this, {
+        var requestData = {
             contentId: contentId,
             viewContext: contentId ? 'detail' : null,
             limit: this.options.initLoadCount
-        });
+        };
+
+        if (commentId) {
+            requestData.commentId = commentId;
+        }
+
+        this.state.firstRequest = new StreamRequest(this, requestData);
 
         return this.state.firstRequest.load();
     };
@@ -550,8 +565,11 @@ humhub.module('stream.Stream', function (module, require, $) {
         var hasEntries = this.hasEntries();
 
         this.$.find('.streamMessage').remove();
+        this.clearFilterErrors();
 
-        if(!hasEntries && this.isShowSingleEntry()) {
+        if (this.hasFilterErrors()) {
+            this.displayFilterErrors();
+        } else if (!hasEntries && this.isShowSingleEntry()) {
             // we only show an error if we load a single entry we are not allowed to view, otherwise just reload the stream
             if(request && request.response && request.response.errorCode && request.response.errorCode === 403) {
                 this.setStreamMessage(request.response.error);
@@ -597,6 +615,35 @@ humhub.module('stream.Stream', function (module, require, $) {
         }));
     };
 
+    Stream.prototype.hasFilterErrors = function () {
+        return this.request &&
+            this.request.response &&
+            typeof this.request.response.filterErrors === 'object';
+    };
+
+    Stream.prototype.displayFilterErrors = function () {
+        if (!this.hasFilterErrors()) {
+            return;
+        }
+
+        var errors = this.request.response.filterErrors;
+
+        for (var filter in errors) {
+            var filterInput = this.filter.$.find('[data-filter-category="' + filter + '"]');
+            if (filterInput.length) {
+                filterInput.parent()
+                    .addClass('has-error')
+                    .append('<div class="help-block help-block-error">' + errors[filter] + '</div>');
+            }
+        }
+    };
+
+    Stream.prototype.clearFilterErrors = function () {
+        this.filter.$.find('[data-filter-category]').parent()
+            .removeClass('has-error')
+            .find('div.help-block.help-block-error').remove();
+    };
+
     Stream.prototype.onSingleEntryStream = function () {
         this.filter.hide();
     };
@@ -625,7 +672,7 @@ humhub.module('stream.Stream', function (module, require, $) {
     };
 
     Stream.prototype.hasActiveFilters = function () {
-        return this.filter && this.filter.getActiveFilterCount({exclude: ['sort']}) > 0;
+        return this.filter && this.filter.getActiveFilterCount({exclude: ['sort', 'scope']}) > 0;
     };
 
     /**

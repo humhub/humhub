@@ -7,8 +7,9 @@
 
 namespace stream\acceptance;
 
-use humhub\modules\content\models\Content;
+use DateTime;
 use stream\AcceptanceTester;
+use Yii;
 
 class StreamCest
 {
@@ -25,7 +26,7 @@ class StreamCest
 
         $I->createPost('This is my stream test post!');
 
-        $newEntrySelector = '[data-content-key="12"]';
+        $newEntrySelector = '[data-content-key="15"]';
 
         $I->waitForElementVisible($newEntrySelector);
         $I->see('This is my stream test post', '.wall-entry');
@@ -33,7 +34,7 @@ class StreamCest
         $I->amGoingTo('Delte my new post');
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->wait(1);
-        $I->click('Delete','[data-content-key="12"]');
+        $I->click('Delete', '[data-content-key="15"]');
 
         $I->waitForElementVisible('#globalModalConfirm', 5);
         $I->see('Confirm post deletion');
@@ -78,7 +79,7 @@ class StreamCest
 
         $I->waitForElementVisible($newEntrySelector, 20);
         $I->expectTo('see my archived post');
-        $I->waitForText('This is my stream test post', null,'.wall-entry');
+        $I->waitForText('This is my stream test post', null, '.wall-entry');
 
         $I->amGoingTo('unarchive this post again');
 
@@ -90,7 +91,7 @@ class StreamCest
         }
 
         $I->expectTo('See my unarchived post again');
-        $I->see('No matches with your selected filters!','.streamMessage');
+        $I->see('No matches with your selected filters!', '.streamMessage');
         $I->dontSee('This is my stream test post', '.wall-entry');
 
         $I->amGoingTo('check if my post is visible without archived');
@@ -128,7 +129,7 @@ class StreamCest
 
         $I->createPost('This is my second stream test post!');
 
-        $newEntrySelector2 = '[data-content-key="17"]';
+        $newEntrySelector2 = '[data-stream-entry]:nth-of-type(3)';
         $I->waitForElementVisible($newEntrySelector2);
         $I->expectTo('my new post beeing the latest entry');
         $I->waitForText('This is my second stream test post', null, '.s2_streamContent div:nth-child(1)');
@@ -187,7 +188,7 @@ class StreamCest
 
         $I->waitForElementVisible($newEntrySelector . ' .content_edit', 20);
         $I->fillField($newEntrySelector . ' [contenteditable]', 'This is my edited post!');
-        $I->click('Save', $newEntrySelector);
+        $I->click('button[data-action-click=editSubmit]', $newEntrySelector);
 
         $I->wait(1);
         $I->seeElement($newEntrySelector);
@@ -265,15 +266,16 @@ class StreamCest
 
         $I->click('Comment', $postSelector);
         $I->wait(1);
-        $I->waitForElementVisible($postSelector.' .comment-container', null );
-        $I->fillField($postSelector.' .comment_create .humhub-ui-richtext', 'My Comment');
-        $I->click('Send', $postSelector.' .comment_create');
-        $I->waitForText('My Comment', null, $postSelector.' .comment');
+        $I->waitForElementVisible($postSelector . ' .comment-container', null);
+        $I->fillField($postSelector . ' .comment_create .humhub-ui-richtext', 'My Comment');
+        $I->click('[data-action-click=submit]', $postSelector . ' .comment_create');
+        $I->waitForText('My Comment', null, $postSelector . ' .comment');
 
 
         $I->amGoingTo('reactivate the involved filter.');
         $I->expectTo('see the commented post after the stream reload.');
 
+        $I->scrollTop();
         $I->click('[data-filter-id="entry_userinvolved"]');
         $I->wait(1);
         $I->waitForText('Involved Post.');
@@ -309,12 +311,12 @@ class StreamCest
         $I->see('POST2', '.s2_streamContent > [data-stream-entry]:nth-of-type(4)');
         $I->see('POST1', '.s2_streamContent > [data-stream-entry]:nth-of-type(5)');
 
-        $post4Selector = '[data-stream-entry][data-content-key="21"]';
+        $post4Selector = '[data-stream-entry]:nth-of-type(2)';
 
         $I->click('Comment', $post4Selector);
         $I->wait(1);
         $I->fillField($post4Selector . ' [contenteditable]', 'My Comment!');
-        $I->click('Send', $post4Selector . ' .comment-buttons');
+        $I->click('[data-action-click=submit]', $post4Selector . ' .comment-buttons');
 
         $I->scrollTop();
 
@@ -329,6 +331,49 @@ class StreamCest
         $I->see('POST3', '.s2_streamContent > [data-stream-entry]:nth-of-type(3)');
         $I->see('POST2', '.s2_streamContent > [data-stream-entry]:nth-of-type(4)');
         $I->see('POST1', '.s2_streamContent > [data-stream-entry]:nth-of-type(5)');
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     * @throws \Exception
+     */
+    public function testDateFilter(AcceptanceTester $I)
+    {
+        $I->amAdmin();
+        $I->amOnSpace1();
+        $I->wantToTest('the stream date filters');
+        $I->amGoingTo('create a new post');
+
+        $postTitle = 'Post for test date filter';
+        $today = Yii::$app->formatter->asDate(new DateTime(), 'short');
+        $yesterday = Yii::$app->formatter->asDate((new DateTime())->modify('-1 day'), 'short');
+
+        $I->createPost($postTitle);
+        $I->waitForText($postTitle, null, '.s2_streamContent');
+
+        $I->amGoingTo('filter stream by date from today');
+        /*
+        $I->jsClick('.wall-stream-filter-toggle');
+        $I->waitForElementVisible($dateFromFilter);
+        $I->executeJS("$('" . $dateFromFilter . "').val('" . date('n/j/y') . "').change();");
+        $I->waitForText($postTitle, 30, '.s2_streamContent');
+        */
+
+        $I->waitForElementVisible('.wall-stream-filter-head');
+        $I->click('Filter', '.wall-stream-filter-head');
+        $I->wait(1);
+        $I->waitForElementVisible('[data-filter-id=date_from]');
+        $I->fillDateFilter('date_from', $today);
+
+        /* FIX ME
+        $I->waitForText($postTitle, 10, '.s2_streamContent');
+
+        $I->amGoingTo('filter stream by date until yesterday');
+        $I->fillDateFilter('date_from', '');
+        $I->fillDateFilter('date_to', $yesterday);
+        $I->waitForElement('.s2_streamContent > .stream-end', 10);
+        $I->dontSee($postTitle, '.s2_streamContent');
+        */
     }
 
     // Filtering

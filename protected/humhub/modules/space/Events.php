@@ -8,6 +8,8 @@
 
 namespace humhub\modules\space;
 
+use humhub\modules\space\permissions\SpaceDirectoryAccess;
+use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
@@ -96,6 +98,34 @@ class Events extends BaseObject
                 }
             }
         }
+    }
+
+    /**
+     * On build of the TopMenu
+     *
+     * @param Event $event
+     */
+    public static function onTopMenuInit($event)
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('space');
+        if ($module->hideSpacesPage) {
+            return;
+        }
+
+        if (!Yii::$app->user->isGuest &&
+            !Yii::$app->user->can(SpaceDirectoryAccess::class)) {
+            return;
+        }
+
+        $event->sender->addEntry(new MenuLink([
+            'id' => 'spaces',
+            'icon' => 'dot-circle-o',
+            'label' => Yii::t('SpaceModule.base', 'Spaces'),
+            'url' => ['/space/spaces'],
+            'sortOrder' => 250,
+            'isActive' => MenuLink::isActiveState('space', 'spaces'),
+        ]));
     }
 
 }

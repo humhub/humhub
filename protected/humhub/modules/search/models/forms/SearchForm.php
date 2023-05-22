@@ -24,13 +24,16 @@ class SearchForm extends Model
     public $keyword = '';
     public $scope = '';
     public $page = 1;
+    public $pageSize;
     public $limitSpaceGuids = [];
 
     public function init()
     {
-        if (Yii::$app->request->get('page')) {
-            $this->page = Yii::$app->request->get('page');
-        }
+        $page = (int) Yii::$app->request->get('page');
+        $this->page = $page < 1 ? 1 : $page;
+
+        $pageSize = (int) Yii::$app->settings->get('paginationSize');
+        $this->pageSize = $pageSize < 1 ? 1 : $pageSize;
     }
 
     /**

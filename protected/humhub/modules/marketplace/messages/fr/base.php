@@ -2,57 +2,59 @@
 return array (
   '
 Module successfully disabled!
-' => 'Module déactivé avec succès',
+' => 'Module désactivé avec succès.',
   '
 Module successfully enabled!
-' => 'Module activé avec succès',
+' => 'Module activé avec succès.',
   '
 No active Professional Edition license found!
-' => 'Aucune licence Edition Professionnelle trouvé !',
-  '
-PROFESSIONAL EDITION
-' => 'EDITION PROFESSIONNELLE',
+' => 'Aucune licence Édition Professionnelle trouvée !',
   '
 The license could not be activated:
-' => 'La licence n\'a pu être activé:',
+' => 'La licence n\'a pu être activée :',
   '
 The license was successfully activated!
 
-' => 'La licence a été activé avec succès !',
+' => 'La licence a été activée avec succès !',
   '
 The license was successfully removed!
 
-' => 'La licence a été supprimé avec succès !',
+' => 'La licence a été supprimée avec succès !',
   '--- Disable module: {moduleId} ---
 
-' => '--- Désactivation module: {moduleId} ---',
+' => '--- Désactivation du module : {moduleId} ---',
   '--- Enable module: {moduleId} ---
 
-' => '--- Activation module: {moduleId} ---',
-  '<strong>Activate</strong> your Professional Edition' => '<strong>Activer</strong> l\'Edition Professionnelle',
+' => '--- Activation du module: {moduleId} ---',
+  '<strong>Activate</strong> your Professional Edition' => '<strong>Activer</strong> votre Édition Professionnelle',
+  'A new update is available (HumHub %version%)!' => 'Une nouvelle mise à jour est disponible (Humhub %version%) !',
+  'Add Licence Key' => 'Ajouter une clé de licence',
   'Add purchased module by licence key' => 'Ajouter un module acheté par sa clé de licence',
-  'All modules are up to date!' => 'Tous les modules sont à jour.',
+  'All' => 'Toutes',
   'All {moduleId} module content will be deleted. Continue?' => 'Tout le contenu du module {moduleId} sera supprimé. Continuer ?',
-  'Available updates' => 'Mise(s) à jour disponible(s)',
-  'Browse online' => 'Voir en ligne',
+  'Available Updates' => 'Mises à jour disponibles',
   'Buy' => 'Acheter',
   'Buy (%price%)' => 'Acheter (%price%)',
-  'Could not connect to licence server!' => 'Connexion impossible au serveur de licence!',
-  'Could not extract module!' => 'Impossible d\'extraire le module.',
-  'Could not remove old module path!' => 'Suppression impossible de l\'ancien chemin du module!',
+  'Categories' => 'Catégories',
+  'Changelog' => 'Journal des modifications',
+  'Community' => 'Communauté',
+  'Could not connect to HumHub API!
+' => 'Connexion impossible à l’API de HumHub !',
+  'Could not connect to licence server!' => 'Connexion impossible au serveur de licences !',
+  'Could not extract module!' => 'Impossible d\'extraire le module !',
+  'Could not remove old module path!' => 'Suppression impossible de l\'ancien chemin du module !',
   'Could not update licence. Error: ' => 'Mise à jour de la licence impossible. Erreur:',
   'Download of module failed!' => 'Erreur de téléchargement du module.',
   'Edit licence' => 'Modifier la licence',
-  'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => '',
-  'Include Community Modules' => 'Inclure les modules développés par la communauté',
-  'Include beta updates' => 'Inclure les mises à jour beta',
+  'Featured' => 'À la une',
+  'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => 'Si ce module porte la mention <strong>Communauté</strong>, il n’est ni testé ni contrôlé par l’équipe du projet HumHub.',
   'Install' => 'Installer',
   'Installed' => 'Installé',
-  'Installed version:' => 'Version installée :',
-  'Installing module...' => 'Installation du module...',
-  'Latest compatible Version:' => 'Dernière version compatible :',
-  'Latest compatible version:' => 'Dernière version compatible :',
+  'Installing module...' => 'Installation du module…',
+  'Invalid module licence key!
+' => 'Clé de licence du module non valide !',
   'Latest version:' => 'Dernière version :',
+  'Learn more' => 'En savoir plus',
   'Licence Key:' => 'Clé de licence :',
   'Licence key' => 'Clé de licence',
   'Licenced for max. {number} users.' => 'Licence pour max. {number} utilisateurs.',
@@ -61,31 +63,39 @@ The license was successfully removed!
   'Max. users:' => 'Utilisateurs max. :',
   'Module directory %modulePath% is not writeable!' => 'Le dossier du module %modulePath% est en lecture seule.',
   'Module download failed! (%error%)' => 'Erreur de téléchargement du module (%error%)',
+  'Module licence added!
+' => 'Licence du module ajoutée !',
+  'Module licence key cannot be empty!
+' => 'La clé de licence du module ne peut pas être vide !',
   'Module not found or activated!
-' => 'Module introuvable ou activé',
+' => 'Module introuvable ou activé !',
   'Module not found!
 ' => 'Module introuvable !',
   'More info' => 'Plus d\'infos',
-  'No compatible module version found!' => 'Version du module non compatible.',
-  'No license key? Find out more about the {pro} or contact us.' => 'Pas de clef de licence? Obtenez plus d\'informations sur {pro} ou contactez-nous.',
-  'No modules found!' => 'Aucun module trouvé.',
+  'New' => 'Nouveau',
+  'No compatible module version found!' => 'Aucune version compatible du module n’a été trouvée.',
+  'No license key? Find out more about the {pro} or contact us.' => 'Pas de clé de licence ? Obtenez plus d\'informations sur {pro} ou contactez-nous.',
   'No purchased modules found!' => 'Aucun module acheté trouvé.',
+  'Not Installed' => 'Non installé',
+  'Official' => 'Officiel',
   'Ok' => 'Ok',
-  'Professional Edition is activated!' => 'L\'Edition Professionnelle est activée!',
-  'Purchases' => 'Achats',
+  'PROFESSIONAL EDITION' => 'ÉDITION PROFESSIONNELLE',
+  'Partner' => 'Partenaire',
+  'Professional Edition' => 'Édition Professionnelle',
+  'Professional Edition is activated!' => 'L\'Édition Professionnelle est activée !',
   'Register' => 'S\'enregistrer',
   'Remove licence key' => 'Supprimer la clé de licence',
   'Save and update' => 'Enregistrer et mettre à jour',
-  'Search' => 'Recherche',
-  'The HumHub project does not guarantee the functionality, quality or the continuous development of this Module.' => '',
+  'Stop updating' => 'Arrêter de mettre à jour',
+  'Tags' => 'Étiquettes',
+  'The HumHub project does not guarantee the functionality, quality or the continuous development of this Module.' => 'Le projet HumHub ne garantit pas le fonctionnement, la qualité ou le développement continu de ce module.',
   'Third-party' => 'Tierces-parties',
-  'Third-party Modules are not covered by Professional Edition agreements.' => '',
+  'Third-party Modules are not covered by Professional Edition agreements.' => 'Les modules de tierces-parties ne sont pas couverts par les accords de l’Édition Professionnelle.',
   'Third-party disclaimer' => 'Avertissement externe',
   'This Module was developed by a third-party.' => 'Ce module a été développé par une une tierce-partie',
   'Update' => 'Mettre à jour',
-  'Updating module...' => 'Mise à jour du module...',
-  'Upgrade to Professional Edition' => 'Passer à la version Professionnelle',
+  'Update all' => 'Tout mettre à jour',
+  'Upgrade to Professional Edition' => 'Passer à l’Édition Professionnelle',
   'Version:' => 'Version :',
-  'View Changelog' => 'Afficher le journal des modifications',
-  'search for available modules online' => 'rechercher des modules disponibles en ligne',
+  'Your HumHub installation is up to date!' => 'Votre installation HumHub est à jour !',
 );

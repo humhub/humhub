@@ -20,12 +20,12 @@ use yii\helpers\Html;
 /* @var $dataProvider \yii\data\ActiveDataProvider */
 /* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
 /* @var $addModel \humhub\modules\topic\models\Topic */
-
+/* @var $title string */
 ?>
 
 
 <div class="panel panel-default">
-    <div class="panel-heading"><?= Yii::t('TopicModule.base', '<strong>Topic</strong> Overview'); ?></div>
+    <div class="panel-heading"><?= $title ?></div>
 
     <?php if ($contentContainer instanceof Space) : ?>
         <?= DefaultMenu::widget(['space' => $contentContainer]); ?>
@@ -36,6 +36,7 @@ use yii\helpers\Html;
     <div class="panel-body">
 
         <?php $form = ActiveForm::begin(); ?>
+        <p><?= Yii::t('TopicModule.base', 'Add topics that you will use in your posts. Topics can be personal interests or general terms. When posting, you can select them by choosing "Topics" and it will be easier for other users to find your posts related to that topic.') ?></p>
         <div class="form-group">
             <div class="input-group">
                 <?= Html::activeTextInput($addModel, 'name', ['style' => 'height:36px', 'class' => 'form-control', 'placeholder' => Yii::t('TopicModule.base', 'Add Topic')]) ?>

@@ -3,7 +3,7 @@ return array (
   '<strong>Search </strong> results' => '',
   'Advanced search settings' => '',
   'All' => '',
-  'Content' => '',
+  'Content' => 'Innhold',
   'Search' => '',
   'Search for user, spaces and content' => '',
   'Search only in certain spaces:' => '',

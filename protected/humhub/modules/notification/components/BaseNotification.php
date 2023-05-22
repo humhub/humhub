@@ -8,21 +8,25 @@
 
 namespace humhub\modules\notification\components;
 
-use Yii;
-use yii\base\InvalidConfigException;
-use yii\bootstrap\Html;
-use yii\db\Expression;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
-use yii\mail\MessageInterface;
 use humhub\components\SocialActivity;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\notification\jobs\SendBulkNotification;
 use humhub\modules\notification\jobs\SendNotification;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\targets\BaseTarget;
 use humhub\modules\notification\targets\WebTarget;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
+use Yii;
+use yii\base\InvalidConfigException;
+use yii\bootstrap\Html;
+use yii\db\Expression;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
+use yii\helpers\Url;
+use yii\mail\MessageInterface;
 
 
 /**
@@ -72,6 +76,14 @@ abstract class BaseNotification extends SocialActivity
      * @inheritdoc
      */
     public $recordClass = Notification::class;
+
+    /**
+     * Additional user data available for the notification
+     *
+     * @var array|null
+     * @since 1.11
+     */
+    public $payload = null;
 
     /**
      * Priority flag, if set to true, this Notification type will be marked as high priority.
@@ -129,6 +141,10 @@ abstract class BaseNotification extends SocialActivity
             $date = $this->getContent()->updated_at;
         } else {
             $date = null;
+        }
+
+        if(!empty($this->record->payload)) {
+            $this->payload = Json::decode($this->record->payload);
         }
 
         if($this->hasContent()) {
@@ -198,6 +214,14 @@ abstract class BaseNotification extends SocialActivity
             return;
         }
 
+        if ($this->isBlockedFromUser($user)) {
+            return;
+        }
+
+        if ($this->isBlockedForUser($user)) {
+            return;
+        }
+
         Yii::$app->queue->push(new SendNotification(['notification' => $this, 'recipientId' => $user->id]));
     }
 
@@ -221,6 +245,51 @@ abstract class BaseNotification extends SocialActivity
     public function isOriginator(User $user)
     {
         return $this->originator && $this->originator->id === $user->id;
+    }
+
+    /**
+     * Checks if the originator blocked the given $user in order to avoid receive any notifications from the $user.
+     *
+     * @param User $user
+     * @return boolean
+     * @since 1.10
+     */
+    public function isBlockedFromUser(User $user): bool
+    {
+        return $this->originator && $user->isBlockedForUser($this->originator);
+    }
+
+    /**
+     * Checks if the source is blocked for the receiver $user.
+     * For example, if the $user is not a member of a private Space
+     *
+     * @param User $user
+     * @return bool
+     * @since 1.11.2
+     */
+    public function isBlockedForUser(User $user): bool
+    {
+        if ($this->isSpaceContent()) {
+            /* @var Space $space */
+            $space = $this->source->content->container;
+            return $space->visibility === Space::VISIBILITY_NONE &&
+                !$space->isMember($user);
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the source is a Content from a Space
+     *
+     * @return bool
+     * @since 1.11.2
+     */
+    private function isSpaceContent(): bool
+    {
+        return ($this->source instanceof ContentActiveRecord ||
+                $this->source instanceof ContentAddonActiveRecord) &&
+            $this->source->content->container instanceof Space;
     }
 
     /**
@@ -250,6 +319,10 @@ abstract class BaseNotification extends SocialActivity
 
         if ($this->originator) {
             $notification->originator_user_id = $this->originator->id;
+        }
+
+        if ($this->payload) {
+            $notification->payload = Json::encode($this->payload);
         }
 
         if (!$notification->save()) {
@@ -290,6 +363,24 @@ abstract class BaseNotification extends SocialActivity
         }
         $this->originator = $originator;
         $this->record->originator_user_id = $originator->id;
+
+        return $this;
+    }
+
+    /**
+     * Set additional data
+     *
+     * @since 1.11
+     * @param $payload
+     * @return $this
+     */
+    public function payload($payload)
+    {
+        if (!$payload) {
+            return $this;
+        }
+        $this->payload = $payload;
+        $this->record->payload = $payload;
 
         return $this;
     }

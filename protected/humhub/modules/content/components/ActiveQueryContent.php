@@ -8,12 +8,14 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\db\ActiveQuery;
 use yii\db\Expression;
 
 /**
@@ -23,9 +25,8 @@ use yii\db\Expression;
  *
  * @author luke
  */
-class ActiveQueryContent extends \yii\db\ActiveQuery
+class ActiveQueryContent extends ActiveQuery
 {
-
     /**
      * Own content scope for userRelated
      * @see ActiveQueryContent::userRelated
@@ -35,6 +36,21 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
     const USER_RELATED_SCOPE_FOLLOWED_SPACES = 3;
     const USER_RELATED_SCOPE_FOLLOWED_USERS = 4;
     const USER_RELATED_SCOPE_OWN_PROFILE = 5;
+
+    /**
+     * State filter that is used for queries. By default, only Published content is returned.
+     *
+     * Example to include drafts:
+     * ```
+     * $query = Post::find();
+     * $query->stateFilterCondition[] = ['content.state' => Content::STATE_DRAFT];
+     * $posts = $query->readable()->all();
+     * ```
+     *
+     * @since 1.14
+     * @var array
+     */
+    public $stateFilterCondition = ['OR', ['content.state' => Content::STATE_PUBLISHED]];
 
     /**
      * Only returns user readable records
@@ -49,8 +65,9 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
             $user = Yii::$app->user->getIdentity();
         }
 
-        $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
+        $this->andWhere($this->stateFilterCondition);
 
+        $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
         $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::class]);
         $this->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::class]);
         $conditionSpace = '';
@@ -60,19 +77,23 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
         if ($user !== null) {
             $this->leftJoin('space_membership', 'contentcontainer.pk=space_membership.space_id AND contentcontainer.class=:spaceClass AND space_membership.user_id=:userId', [':userId' => $user->id, ':spaceClass' => Space::class]);
 
-            if ($user->canViewAllContent()) {
+            if ($user->canViewAllContent(Space::class)) {
                 // Don't restrict if user can view all content:
                 $conditionSpaceMembershipRestriction = '';
-                $conditionUserPrivateRestriction = '';
             } else {
                 // User must be a space's member OR Space and Content are public
                 $conditionSpaceMembershipRestriction = ' AND ( space_membership.status=3 OR (content.visibility=1 AND space.visibility != 0) )';
+            }
+            if ($user->canViewAllContent(User::class)) {
+                // Don't restrict if user can view all content:
+                $conditionUserPrivateRestriction = '';
+            } else {
                 // User can view only content of own profile
                 $conditionUserPrivateRestriction = ' AND content.contentcontainer_id=' . $user->contentcontainer_id;
             }
 
             // Build Access Check based on Space Content Container
-            $conditionSpace = 'space.id IS NOT NULL' . $conditionSpaceMembershipRestriction; // space content
+            $conditionSpace = 'space.id IS NOT NULL' . $conditionSpaceMembershipRestriction;
 
             // Build Access Check based on User Content Container
             $conditionUser = 'cuser.id IS NOT NULL AND (';                                         // user content
@@ -92,7 +113,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
             $conditionUser = 'cuser.id IS NOT NULL and cuser.visibility=' . User::VISIBILITY_ALL . ' AND content.visibility=1';
             $globalCondition .= 'content.contentcontainer_id IS NULL AND content.visibility=1';
         } else {
-            $this->emulateExecution();
+            return $this->emulateExecution();
         }
 
         $this->andWhere("{$conditionSpace} OR {$conditionUser} OR {$globalCondition}");
@@ -139,7 +160,7 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
                 $contentTagQuery = ContentTagRelation::find()->select('content_id');
                 $contentTagQuery->andWhere(['content_tag_relation.tag_id' => $contentTag->id]);
                 $contentTagQuery->andWhere('content_tag_relation.content_id=content.id');
-                $this->andWhere(['content.id' =>$contentTagQuery]);
+                $this->andWhere(['content.id' => $contentTagQuery]);
             }
         } else if ($mode == 'OR') {
             $names = array_map(function ($v) {
@@ -182,6 +203,10 @@ class ActiveQueryContent extends \yii\db\ActiveQuery
     public function userRelated($scopes = [], $user = null)
     {
         if ($user === null) {
+            if ( Yii::$app->user->isGuest) {
+                return $this->andWhere('false');
+            }
+
             $user = Yii::$app->user->getIdentity();
         }
 

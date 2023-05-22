@@ -6,6 +6,7 @@ return array (
   'Login required for this section.' => 'Login necessário para essa seção',
   'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => 'Modo de manutenção ativado: Você foi desconectado automaticamente e não terá mais acesso à plataforma até que a manutenção seja concluída.',
   'Maintenance mode is active. Only Administrators can access the platform.' => 'O modo de manutenção está ativo. Apenas administradores podem acessar a plataforma.',
+  'The specified URL cannot be called directly.' => 'A URL especificada não pode ser chamada diretamente.',
   'You are not allowed to perform this action.' => 'Você não tem permissão para executar esta ação.',
   'You are not permitted to access this section.' => 'Você não tem autorização para acessar essa seção.',
   'You must change password.' => 'Você deve alterar a senha.',

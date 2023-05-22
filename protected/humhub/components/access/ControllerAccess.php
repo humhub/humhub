@@ -528,7 +528,8 @@ class ControllerAccess extends BaseObject
      */
     public function validateMustChangePassword()
     {
-        return $this->isGuest() || Yii::$app->user->isMustChangePasswordUrl() || !$this->user->mustChangePassword();
+        return $this->isGuest() || Yii::$app->user->isMustChangePasswordUrl() || !$this->user->mustChangePassword() ||
+            ($this->owner->module->id == 'user' && $this->owner->id == 'auth' && $this->owner->action->id == 'logout');
     }
 
     /**
@@ -539,7 +540,7 @@ class ControllerAccess extends BaseObject
     {
         return !Yii::$app->settings->get('maintenanceMode') ||
             $this->isAdmin() ||
-            ($this->owner->module->id == 'user' && $this->owner->id == 'auth' && $this->owner->action->id == 'login');
+            ($this->owner->module->id == 'user' && $this->owner->id == 'auth' && in_array($this->owner->action->id, ['login', 'external']));
     }
 
     /**

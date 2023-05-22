@@ -17,14 +17,15 @@ use yii\bootstrap\ActiveForm;
 ?>
 
 <?php ModalDialog::begin(['header' => Yii::t('TopicModule.base', '<strong>Manage</strong> Topics')]) ?>
-    <?php $form = ActiveForm::begin() ?>
-        <div class="modal-body">
-            <?=  $form->field($model, 'topics')->widget(TopicPicker::class, ['contentContainer' => $model->getContentContainer()])->label(false) ?>
-        </div>
+<?php $form = ActiveForm::begin() ?>
+<div class="modal-body">
+    <?= $form->field($model, 'topics')->widget(TopicPicker::class, ['contentContainer' => $model->getContentContainer()])->label(false) ?>
+</div>
 
-        <div class="modal-footer">
-            <?= ModalButton::submitModal()?>
-            <?= ModalButton::cancel() ?>
-        </div>
-    <?php ActiveForm::end() ?>
-<?php ModalDialog::end()?>
+<div class="modal-footer">
+    <?= ModalButton::submitModal() ?>
+    <?= ModalButton::cancel() ?>
+</div>
+
+<?php ActiveForm::end() ?>
+<?php ModalDialog::end() ?>

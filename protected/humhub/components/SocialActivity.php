@@ -8,13 +8,8 @@
 
 namespace humhub\components;
 
-use Yii;
-use yii\base\BaseObject;
-use yii\helpers\Html;
-use yii\helpers\Json;
-use yii\helpers\Url;
-use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\comment\models\Comment;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
@@ -22,6 +17,12 @@ use humhub\modules\user\models\User;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\interfaces\ContentOwner;
+use Yii;
+use yii\base\BaseObject;
+use yii\helpers\Html;
+use yii\helpers\Json;
+use yii\helpers\Url;
+use Exception;
 
 /**
  * This class represents a social Activity triggered within the network.
@@ -36,7 +37,7 @@ use humhub\modules\content\interfaces\ContentOwner;
  * @since 1.1
  * @author buddha
  */
-abstract class SocialActivity extends BaseObject implements rendering\Viewable, \Serializable
+abstract class SocialActivity extends BaseObject implements rendering\Viewable
 {
 
     /**
@@ -250,7 +251,9 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable, 
     {
         $url = '#';
 
-        if ($this->hasContent()) {
+        if ($this->source instanceof Comment) {
+            $url = $this->source->getUrl();
+        } else if ($this->hasContent()) {
             $url = $this->getContent()->getUrl();
         } elseif ($this->source instanceof ContentContainerActiveRecord) {
             $url = $this->source->getUrl();
@@ -480,12 +483,12 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable, 
     /**
      * Serializes the $source and $originator fields.
      *
-     * @return string
+     * @return array
      * @link http://php.net/manual/en/function.serialize.php
      * @since 1.2
      * @see ActiveRecord::serialize() for the serialization of your $source
      */
-    public function serialize()
+    public function __serialize(): array
     {
         $sourceClass = null;
         $sourcePk = null;
@@ -497,24 +500,23 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable, 
 
         $originatorId = ($this->originator != null) ? $this->originator->id : null;
 
-        return serialize([
+        return [
             'sourceClass' => $sourceClass,
             'sourcePk' => $sourcePk,
             'originator_id' => $originatorId
-        ]);
+        ];
     }
 
     /**
      * Unserializes the given string, calls the init() function and sets the $source and $originator fields (and $record indirectyl).
      *
-     * @param string $serialized
+     * @param array $serialized
      * @link http://php.net/manual/en/function.unserialize.php
      * @see ActiveRecord::unserialize() for the serialization of your $source
      */
-    public function unserialize($serialized)
+    public function __unserialize($unserializedArr)
     {
         $this->init();
-        $unserializedArr = unserialize($serialized);
 
         if (isset($unserializedArr['originator_id'])) {
             $user = User::findOne(['id' => $unserializedArr['originator_id']]);

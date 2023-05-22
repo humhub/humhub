@@ -8,6 +8,7 @@ use humhub\modules\admin\grid\CheckboxColumn;
 use yii\data\ArrayDataProvider;
 use yii\grid\ActionColumn;
 use yii\helpers\Url;
+use yii\helpers\Html;
 
 /* @var $category ProfileFieldCategory */
 
@@ -23,13 +24,13 @@ use yii\helpers\Url;
     <br/>
 
 <?= GridView::widget([
-    'dataProvider' => new ArrayDataProvider(['allModels' => $category->fields]),
+    'dataProvider' => new ArrayDataProvider(['allModels' => $category->fields, 'pagination' => ['pageSize' => 0]]),
     'layout' => '{items}',
     'columns' => [
         [
             'attribute' => 'title',
             'content' => function (ProfileField $model, $key, $index, $that) {
-                return Yii::t($model->getTranslationCategory(), $that->getDataCellValue($model, $key, $index));
+                return Html::encode(Yii::t($model->getTranslationCategory(), $that->getDataCellValue($model, $key, $index)));
             }
         ],
         [
@@ -77,6 +78,9 @@ use yii\helpers\Url;
                 }
                 return $that->getDataCellValue($model, $key, $index);
             }
+        ],
+        [
+            'attribute' => 'sort_order',
         ],
         [
             'header' => '&nbsp;',

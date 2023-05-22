@@ -6,6 +6,7 @@ return array (
   'Login required for this section.' => 'このセクションではログインが必要です。',
   'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => 'メンテナンスモードがアクティブ化されました：自動的にログアウトされ、メンテナンスが完了するまでプラットフォームにアクセスできなくなります。',
   'Maintenance mode is active. Only Administrators can access the platform.' => 'メンテナンスモードがアクティブです。 管理者のみがプラットフォームにアクセスできます。',
+  'The specified URL cannot be called directly.' => '指定された URL を直接呼び出すことはできません。',
   'You are not allowed to perform this action.' => 'この操作を実行することはできません。',
   'You are not permitted to access this section.' => 'このセクションにはアクセスできません。',
   'You must change password.' => 'パスワードを変更する必要があります。',

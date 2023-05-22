@@ -8,7 +8,7 @@ class CreateSpaceCest
 {
 
     /**
-     * Create private space
+     * Create Private Spaces
      *
      * @param AcceptanceTester $I
      * @throws \Exception
@@ -20,10 +20,10 @@ class CreateSpaceCest
         $I->amGoingTo('create a new space and invite another user');
 
         $I->click('#space-menu');
-        $I->waitForText('Create new space');
-        $I->click('Create new space');
+        $I->waitForText('Create Space');
+        $I->click('Create Space');
 
-        $I->waitForText('Create new space', 30, '#globalModal');
+        $I->waitForText('Create Space', 30, '#globalModal');
         $I->fillField('Space[name]', 'Space 1');
         $I->fillField('Space[description]', 'SpaceDescription');
 

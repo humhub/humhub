@@ -127,15 +127,19 @@ class StreamViewer extends JsWidget
             'stream-empty-filter-class' => $this->messageStreamEmptyWithFiltersCss
         ];
 
-        if (!empty(Yii::$app->request->getQueryParam('contentId'))) {
-            $result['stream-contentid'] = Yii::$app->request->getQueryParam('contentId');
+        $contentId = (int) Yii::$app->request->getQueryParam('contentId');
+        if ($contentId > 0) {
+            $result['stream-contentid'] = $contentId;
         }
 
-        if (Yii::$app->request->getQueryParam('topicId')) {
-            $topic = Topic::findOne((int) Yii::$app->request->getQueryParam('topicId'));
-            if ($topic) {
-                $result['stream-topic'] = ['id' => $topic->id, 'name' => $topic->name];
-            }
+        $commentId = (int) Yii::$app->request->getQueryParam('commentId');
+        if ($commentId > 0) {
+            $result['stream-commentid'] = $commentId;
+        }
+
+        $topicId = (int) Yii::$app->request->getQueryParam('topicId');
+        if ($topicId > 0 && $topic = Topic::findOne($topicId)) {
+            $result['stream-topic'] = ['id' => $topic->id, 'name' => $topic->name];
         }
 
         return $result;

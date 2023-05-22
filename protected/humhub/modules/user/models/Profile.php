@@ -8,9 +8,9 @@
 
 namespace humhub\modules\user\models;
 
-use humhub\modules\user\authclient\AuthClientHelpers;
+use humhub\components\ActiveRecord;
+use humhub\modules\user\services\AuthClientUserService;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "profile".
@@ -94,6 +94,12 @@ class Profile extends ActiveRecord
      */
     public function scenarios()
     {
+        static $scenarios;
+
+        if (!empty($scenarios)) {
+            return $scenarios;
+        }
+
         $scenarios = parent::scenarios();
         $scenarios[static::SCENARIO_EDIT_ADMIN] = [];
         $scenarios[static::SCENARIO_REGISTRATION] = [];
@@ -102,12 +108,12 @@ class Profile extends ActiveRecord
         // Get synced attributes if user is set
         $syncAttributes = [];
         if ($this->user !== null) {
-            $syncAttributes = AuthClientHelpers::getSyncAttributesByUser($this->user);
+            $syncAttributes = (new AuthClientUserService($this->user))->getSyncAttributes();
         }
 
         foreach (ProfileField::find()->all() as $profileField) {
             // Some fields consist of multiple field definitions (e.g. Birthday)
-            foreach ($profileField->fieldType->getFieldFormDefinition() as $fieldName => $definition) {
+            foreach ($profileField->fieldType->getFieldFormDefinition($this->user) as $fieldName => $definition) {
 
                 // Skip automatically synced attributes (readonly)
                 if (in_array($profileField->internal_name, $syncAttributes)) {
@@ -151,7 +157,7 @@ class Profile extends ActiveRecord
         Yii::t('UserModule.profile', 'Gender');
         Yii::t('UserModule.profile', 'Male');
         Yii::t('UserModule.profile', 'Female');
-        Yii::t('UserModule.profile', 'Custom');
+        Yii::t('UserModule.profile', 'Diverse');
         Yii::t('UserModule.profile', 'Hide year in profile');
 
         Yii::t('UserModule.profile', 'Phone Private');
@@ -159,18 +165,16 @@ class Profile extends ActiveRecord
         Yii::t('UserModule.profile', 'Mobile');
         Yii::t('UserModule.profile', 'E-Mail');
         Yii::t('UserModule.profile', 'Fax');
-        Yii::t('UserModule.profile', 'Skype Nickname');
-        Yii::t('UserModule.profile', 'MSN');
         Yii::t('UserModule.profile', 'XMPP Jabber Address');
 
-        Yii::t('UserModule.profile', 'Url');
+        Yii::t('UserModule.profile', 'Website URL');
         Yii::t('UserModule.profile', 'Facebook URL');
         Yii::t('UserModule.profile', 'LinkedIn URL');
         Yii::t('UserModule.profile', 'Xing URL');
         Yii::t('UserModule.profile', 'YouTube URL');
         Yii::t('UserModule.profile', 'Vimeo URL');
-        Yii::t('UserModule.profile', 'Flickr URL');
-        Yii::t('UserModule.profile', 'MySpace URL');
+        Yii::t('UserModule.profile', 'TikTok URL');
+        Yii::t('UserModule.profile', 'Instagram URL');
         Yii::t('UserModule.profile', 'Twitter URL');
     }
 
@@ -179,6 +183,12 @@ class Profile extends ActiveRecord
      */
     public function attributeLabels()
     {
+        static $labels;
+
+        if (!empty($labels)) {
+            return $labels;
+        }
+
         $labels = [];
         foreach (ProfileField::find()->all() as $profileField) {
             /** @var ProfileField $profileField */
@@ -203,7 +213,7 @@ class Profile extends ActiveRecord
 
         $syncAttributes = [];
         if ($this->user !== null) {
-            $syncAttributes = AuthClientHelpers::getSyncAttributesByUser($this->user);
+            $syncAttributes = (new AuthClientUserService($this->user))->getSyncAttributes();
         }
 
         $safeAttributes = $this->safeAttributes();
@@ -223,11 +233,6 @@ class Profile extends ActiveRecord
                 /** @var ProfileField $profileField */
                 $profileField->editable = true;
 
-                // Don't show not required fields
-                if ($profileField->required === 0){
-                    continue;
-                }
-
                 if (!in_array($profileField->internal_name, $safeAttributes)) {
                     if ($profileField->visible && $this->scenario != 'registration') {
                         $profileField->editable = false;
@@ -241,7 +246,7 @@ class Profile extends ActiveRecord
                     $profileField->editable = false;
                 }
 
-                $fieldDefinition = $profileField->fieldType->getFieldFormDefinition();
+                $fieldDefinition = $profileField->fieldType->getFieldFormDefinition($this->user);
 
                 if(isset($fieldDefinition[$profileField->internal_name]) && !empty($profileField->description)) {
                     $fieldDefinition[$profileField->internal_name]['hint'] =  Yii::t($profileFieldCategory->getTranslationCategory(), $profileField->description);

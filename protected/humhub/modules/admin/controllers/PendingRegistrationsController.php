@@ -59,7 +59,8 @@ class PendingRegistrationsController extends Controller
             'searchModel' => $searchModel,
             'types' => [
                 null => null,
-                PendingRegistrationSearch::SOURCE_INVITE => Yii::t('AdminModule.base', 'Invite'),
+                PendingRegistrationSearch::SOURCE_INVITE => Yii::t('AdminModule.base', 'Invite by email'),
+                PendingRegistrationSearch::SOURCE_INVITE_BY_LINK => Yii::t('AdminModule.base', 'Invite by link'),
                 PendingRegistrationSearch::SOURCE_SELF => Yii::t('AdminModule.base', 'Sign up'),
             ]
         ]);
@@ -170,8 +171,6 @@ class PendingRegistrationsController extends Controller
         if (Yii::$app->request->isPost) {
 
             $ids = Yii::$app->request->post('id');
-            Yii::error(Yii::$app->request->post());
-            Yii::error($ids);
             if (!empty($ids)) {
                 foreach ($ids as $id) {
                     $invitation = Invite::findOne(['id' => $id]);

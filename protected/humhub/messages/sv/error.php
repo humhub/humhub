@@ -6,6 +6,7 @@ return array (
   'Login required for this section.' => 'Inloggning krävs för den här ytan.',
   'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => 'Underhållsläge är aktiverat: Du har loggats ut automatiskt och kommer inte längre ha åtkomst till plattformen förrän underhållet har slutförts.',
   'Maintenance mode is active. Only Administrators can access the platform.' => 'Underhållsläge är aktiverat. Endast administratörer kan komma åt plattformen.',
+  'The specified URL cannot be called directly.' => 'Den angivna webbadressen kan inte anropas direkt.',
   'You are not allowed to perform this action.' => 'Du har inte tillåtelse att utföra denna åtgärd.',
   'You are not permitted to access this section.' => 'Du har inte tillträde till denna yta.',
   'You must change password.' => 'Du måste byta lösenord.',

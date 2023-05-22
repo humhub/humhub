@@ -1,43 +1,52 @@
 <?php
 
-use humhub\modules\comment\widgets\Form;
-use humhub\modules\comment\widgets\Comment;
-use yii\helpers\Url;
 use humhub\libs\Html;
+use humhub\modules\comment\models\Comment as CommentModel;
+use humhub\modules\comment\widgets\Comment;
+use humhub\modules\comment\widgets\Form;
+use humhub\modules\comment\widgets\ShowMore;
+use humhub\modules\content\components\ContentActiveRecord;
 
-/* @var $this \humhub\modules\ui\view\components\View */
-/* @var $object \humhub\modules\content\components\ContentActiveRecord */
-/* @var $comments \humhub\modules\comment\models\Comment[] */
-/* @var $objectModel string */
-/* @var $objectId int */
+/* @var $object ContentActiveRecord|CommentModel */
+/* @var $comments CommentModel[] */
+/* @var $currentCommentId int */
 /* @var $id string unqiue object id */
-/* @var $isLimited boolean */
-/* @var $total int */
-
 ?>
 <div class="well well-small comment-container" style="display:none;" id="comment_<?= $id; ?>">
     <div class="comment <?php if (Yii::$app->user->isGuest): ?>guest-mode<?php endif; ?>"
          id="comments_area_<?= $id; ?>">
 
-        <?php if ($isLimited): ?>
-            <a href="#" class="show show-all-link" data-ui-loader data-action-click="comment.showAll"
-               data-action-url="<?= Url::to(['/comment/comment/show', 'objectModel' => $objectModel, 'objectId' => $objectId]) ?>">
-                <?= Yii::t('CommentModule.base', 'Show all {total} comments', ['{total}' => $total]) ?>
-            </a>
-            <hr class="comments-start-separator">
-        <?php endif; ?>
+        <?= ShowMore::widget([
+            'object' => $object,
+            'commentId' => isset($comments[0]) ? $comments[0]->id : null,
+            'type' => ShowMore::TYPE_PREVIOUS,
+        ]); ?>
 
         <?php foreach ($comments as $comment) : ?>
-            <?= Comment::widget(['comment' => $comment]); ?>
+            <?= Comment::widget([
+                'comment' => $comment,
+                'additionalClass' => ($currentCommentId == $comment->id ? 'comment-current' : ''),
+            ]); ?>
         <?php endforeach; ?>
+
+        <?php if ($currentCommentId && count($comments) > 1) : ?>
+            <?= ShowMore::widget([
+                'object' => $object,
+                'commentId' => $comments[count($comments)-1]->id,
+                'type' => ShowMore::TYPE_NEXT,
+            ]); ?>
+        <?php endif; ?>
     </div>
 
     <?= Form::widget(['object' => $object]); ?>
 </div>
 
 <script <?= Html::nonce() ?>>
-    <?php if (count($comments) != 0): ?>
+<?php if (count($comments) != 0): ?>
     // make comments visible at this point to fixing autoresizing issue for textareas in Firefox
     $('#comment_<?= $id; ?>').show();
-    <?php endif;  ?>
+<?php endif; ?>
+<?php if (!empty($currentCommentId)) : ?>
+    $('#comment_<?= $currentCommentId ?>').get(0).scrollIntoView();
+<?php endif; ?>
 </script>

@@ -8,7 +8,6 @@
 
 namespace humhub\modules\space\widgets;
 
-use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
@@ -65,10 +64,7 @@ class Menu extends LeftNavigation
             'isActive' => MenuLink::isActiveState('space', 'space', ['index', 'home']),
         ]));
 
-        /** @var Module $module */
-        $module = Yii::$app->getModule('space');
-
-        if (!$module->hideAboutPage) {
+        if (!$this->space->getAdvancedSettings()->hideAbout) {
             $this->addAboutPage();
         }
     }
@@ -114,44 +110,21 @@ class Menu extends LeftNavigation
      */
     public static function getDefaultPageUrl($space)
     {
-        $settings = Yii::$app->getModule('space')->settings;
-
-        $indexUrl = $settings->contentContainer($space)->get('indexUrl');
-        if ($indexUrl !== null) {
-            $pages = static::getAvailablePages();
-            if (isset($pages[$indexUrl])) {
-                return $indexUrl;
-            }
-
-            //Either the module was deactivated or url changed
-            $settings->contentContainer($space)->delete('indexUrl');
-        }
-
-        return null;
+        $indexUrl = $space->getAdvancedSettings()->indexUrl;
+        return (!empty($indexUrl) && isset(static::getAvailablePages()[$indexUrl])) ?
+            $indexUrl : null;
     }
 
     /**
-     * Returns space default / homepage
+     * Returns space default / homepage for guests
      *
      * @param $space Space
      * @return string|null the url to redirect or null for default home
      */
     public static function getGuestsDefaultPageUrl($space)
     {
-        $settings = Yii::$app->getModule('space')->settings;
-
-        $indexUrl = $settings->contentContainer($space)->get('indexGuestUrl');
-        if ($indexUrl !== null) {
-            $pages = static::getAvailablePages();
-            if (isset($pages[$indexUrl])) {
-                return $indexUrl;
-            }
-
-            //Either the module was deactivated or url changed
-            $settings->contentContainer($space)->delete('indexGuestUrl');
-        }
-
-        return null;
+        $indexUrl = $space->getAdvancedSettings()->indexGuestUrl;
+        return (!empty($indexUrl) && isset(static::getAvailablePages()[$indexUrl])) ?
+            $indexUrl : null;
     }
-
 }

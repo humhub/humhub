@@ -30,6 +30,16 @@ class Module extends \humhub\components\Module
     public $commentsPreviewMax = 2;
 
     /**
+     * @var int Maximum comments to load at once on VIEW mode
+     */
+    public $commentsBlockLoadSizeViewMode = 25;
+
+    /**
+     * @var int Maximum comments to show initially on VIEW mode
+     */
+    public $commentsPreviewMaxViewMode = 25;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
@@ -75,17 +85,20 @@ class Module extends \humhub\components\Module
             return false;
         }
 
-        // Only allow one level of subcomments
-        if (Comment::isSubComment($object)) {
+        $content = $object->content;
+
+        if (!$content->getStateService()->isPublished()) {
             return false;
         }
 
-        $content = $object->content;
-
-        if($content->container) {
+        if ($content->container) {
             if (!$content->container->permissionManager->can(CreateComment::class)) {
                 return false;
             }
+        }
+
+        if ($content->isLockedComments()) {
+            return false;
         }
 
         if ($content->isArchived()) {

@@ -30,7 +30,7 @@ class UserMenu extends TabMenu
     public function init()
     {
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.user', 'Users'),
+            'label' => Yii::t('AdminModule.user', 'Overview'),
             'url' => ['/admin/user/index'],
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState('admin', ['user', 'pending-registrations']),
@@ -78,6 +78,14 @@ class UserMenu extends TabMenu
             'sortOrder' => 500,
             'isActive' => MenuLink::isActiveState('admin', 'group'),
             'isVisible' => Yii::$app->user->can(ManageGroups::class)
+        ]));
+
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.user', 'People'),
+            'url' => ['/admin/user-people'],
+            'sortOrder' => 600,
+            'isActive' => MenuLink::isActiveState('admin', 'user-people'),
+            'isVisible' => Yii::$app->user->can(ManageSettings::class)
         ]));
 
 

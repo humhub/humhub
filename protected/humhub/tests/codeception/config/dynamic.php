@@ -13,9 +13,6 @@
     ],
     'mailer' => 
      [
-      'transport' => 
-       [
-      ],
       'useFileTransport' => true,
     ],
     'cache' => 

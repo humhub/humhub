@@ -1,61 +1,33 @@
 <?php
 
-use yii\helpers\Html;
+use humhub\modules\content\components\ContentContainerModule;
+use humhub\modules\content\widgets\ModuleCard;
+use humhub\modules\space\models\Space;
+use humhub\modules\ui\view\helpers\ThemeHelper;
+
+/* @var Space $space */
+/* @var ContentContainerModule[] $availableModules */
 ?>
+<div class="<?php if (ThemeHelper::isFluid()) : ?>container-fluid<?php else: ?>container container-content-modules-col-3<?php endif; ?> container-cards container-modules container-content-modules">
+    <h4><?= Yii::t('SpaceModule.manage', '<strong>Space</strong> Modules'); ?></h4>
+    <div class="help-block"><?= Yii::t('SpaceModule.manage', 'Choose the modules you want to use for this Space. In order for the modules to be available to you here, they must have been previously installed by administrators of the network using the admin panel. If you cannot deactivate individual modules, it is because they have been set as the default for the entire network.') ?></div>
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <?= Yii::t('SpaceModule.manage', '<strong>Space</strong> Modules'); ?>
-    </div>
-    <div class="panel-body">
-
-        <?php if (count($availableModules) == 0) : ?>
-            <p><?= Yii::t('SpaceModule.manage', 'Currently there are no modules available for this space!'); ?></p>
-        <?php else : ?>
-            <?= Yii::t('SpaceModule.manage', 'Enhance this space with modules.'); ?><br>
-        <?php endif; ?>
-
-
-        <?php foreach ($availableModules as $moduleId => $module): ?>
-            <hr>
-            <div class="media">
-                <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
-                     style="width: 64px; height: 64px;"
-                     src="<?= $module->getContentContainerImage($space); ?>">
-
-                <div class="media-body">
-                    <h4 class="media-heading"><?= $module->getContentContainerName($space); ?>
-                        <?php if ($space->isModuleEnabled($moduleId)) : ?>
-                            <small><span class="label label-success"><?= Yii::t('SpaceModule.manage', 'Activated'); ?></span></small>
-                        <?php endif; ?>
-                    </h4>
-
-                    <p><?= $module->getContentContainerDescription($space); ?></p>
-
-                    <?php if ($space->canDisableModule($moduleId)) : ?>
-                        <a href="#" style="<?= $space->isModuleEnabled($moduleId) ? '' : 'display:none' ?>"
-                           data-action-click="content.container.disableModule" 
-                           data-action-url="<?= $space->createUrl('/space/manage/module/disable', ['moduleId' => $moduleId]) ?>" data-reload="1"
-                           data-action-confirm="<?= Yii::t('SpaceModule.manage', 'Are you sure? *ALL* module data for this space will be deleted!') ?>"
-                           class="btn btn-sm btn-primary disable disable-module-<?= $moduleId ?>" data-ui-loader>
-                               <?= Yii::t('SpaceModule.manage', 'Disable') ?>
-                        </a>
-                    <?php endif; ?>
-
-                    <?php if ($module->getContentContainerConfigUrl($space) && $space->isModuleEnabled($moduleId)) : ?>
-                        <a href="<?= $module->getContentContainerConfigUrl($space) ?>" class="btn btn-sm btn-default configure-module-<?= $moduleId ?>">
-                            <?= Yii::t('SpaceModule.manage', 'Configure') ?>
-                        </a>
-                    <?php endif; ?>
-                    
-                    <a href="#"  style="<?= $space->isModuleEnabled($moduleId) ? 'display:none' : '' ?>"
-                       data-action-click="content.container.enableModule" data-action-url="<?= $space->createUrl('/space/manage/module/enable', ['moduleId' => $moduleId]) ?>" data-reload="1"
-                       class="btn btn-sm btn-primary enable enable-module-<?= $moduleId ?>" data-ui-loader>
-                        <?= Yii::t('SpaceModule.manage', 'Enable') ?>
-                    </a>
+    <div class="row cards">
+        <?php if (empty($availableModules)) : ?>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <?= Yii::t('SpaceModule.manage', 'Currently there are no modules available for this space!'); ?>
+                    </div>
                 </div>
             </div>
-        <?php endforeach; ?>
+        <?php endif; ?>
 
+        <?php foreach ($availableModules as $module) : ?>
+            <?= ModuleCard::widget([
+                'contentContainer' => $space,
+                'module' => $module,
+            ]); ?>
+        <?php endforeach; ?>
     </div>
 </div>

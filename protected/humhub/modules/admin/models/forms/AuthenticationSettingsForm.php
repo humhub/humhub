@@ -8,10 +8,10 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use humhub\modules\user\models\Group;
+use humhub\libs\DynamicConfig;
+use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
-use humhub\libs\DynamicConfig;
 
 /**
  * AuthenticationSettingsForm
@@ -22,8 +22,10 @@ class AuthenticationSettingsForm extends \yii\base\Model
 {
     public $internalAllowAnonymousRegistration;
     public $internalRequireApprovalAfterRegistration;
-    public $internalUsersCanInvite;
+    public $internalUsersCanInviteByEmail;
+    public $internalUsersCanInviteByLink;
     public $showRegistrationUserGroup;
+    public $blockUsers;
     public $defaultUserIdleTimeoutSec;
     public $allowGuestAccess;
     public $showCaptureInRegisterForm;
@@ -42,10 +44,12 @@ class AuthenticationSettingsForm extends \yii\base\Model
         $module = Yii::$app->getModule('user');
         $settingsManager = $module->settings;
 
-        $this->internalUsersCanInvite = $settingsManager->get('auth.internalUsersCanInvite');
+        $this->internalUsersCanInviteByEmail = $settingsManager->get('auth.internalUsersCanInviteByEmail');
+        $this->internalUsersCanInviteByLink = $settingsManager->get('auth.internalUsersCanInviteByLink');
         $this->internalRequireApprovalAfterRegistration = $settingsManager->get('auth.needApproval');
         $this->internalAllowAnonymousRegistration = $settingsManager->get('auth.anonymousRegistration');
         $this->showRegistrationUserGroup = $settingsManager->get('auth.showRegistrationUserGroup');
+        $this->blockUsers = $module->allowBlockUsers();
         $this->defaultUserIdleTimeoutSec = $settingsManager->get('auth.defaultUserIdleTimeoutSec');
         $this->allowGuestAccess = $settingsManager->get('auth.allowGuestAccess');
         $this->showCaptureInRegisterForm = $settingsManager->get('auth.showCaptureInRegisterForm');
@@ -60,8 +64,8 @@ class AuthenticationSettingsForm extends \yii\base\Model
     public function rules()
     {
         return [
-            [['internalUsersCanInvite', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess', 'showCaptureInRegisterForm', 'showRegistrationUserGroup'], 'boolean'],
-            ['defaultUserProfileVisibility', 'in', 'range' => [1, 2]],
+            [['internalUsersCanInviteByEmail', 'internalUsersCanInviteByLink', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess', 'showCaptureInRegisterForm', 'showRegistrationUserGroup', 'blockUsers'], 'boolean'],
+            ['defaultUserProfileVisibility', 'in', 'range' => array_keys(User::getVisibilityOptions(false))],
             ['defaultUserIdleTimeoutSec', 'integer', 'min' => 20],
             [['registrationApprovalMailContent', 'registrationDenialMailContent'], 'string']
         ];
@@ -75,8 +79,10 @@ class AuthenticationSettingsForm extends \yii\base\Model
         return [
             'internalRequireApprovalAfterRegistration' => Yii::t('AdminModule.user', 'Require group admin approval after registration'),
             'internalAllowAnonymousRegistration' => Yii::t('AdminModule.user', 'New users can register'),
-            'internalUsersCanInvite' => Yii::t('AdminModule.user', 'Members can invite external users by email'),
+            'internalUsersCanInviteByEmail' => Yii::t('AdminModule.user', 'Members can invite external users by email'),
+            'internalUsersCanInviteByLink' => Yii::t('AdminModule.user', 'Members can invite external users by link'),
             'showRegistrationUserGroup' => Yii::t('AdminModule.user', 'Show group selection at registration'),
+            'blockUsers' => Yii::t('AdminModule.user', 'Allow users to block each other'),
             'defaultUserIdleTimeoutSec' => Yii::t('AdminModule.user', 'Default user idle timeout, auto-logout (in seconds, optional)'),
             'allowGuestAccess' => Yii::t('AdminModule.user', 'Allow visitors limited access to content without an account (Adds visibility: "Guest")'),
             'showCaptureInRegisterForm' => Yii::t('AdminModule.user', 'Include captcha in registration form'),
@@ -97,10 +103,12 @@ class AuthenticationSettingsForm extends \yii\base\Model
         $module = Yii::$app->getModule('user');
         $settingsManager = $module->settings;
 
-        $settingsManager->set('auth.internalUsersCanInvite', $this->internalUsersCanInvite);
+        $settingsManager->set('auth.internalUsersCanInviteByEmail', $this->internalUsersCanInviteByEmail);
+        $settingsManager->set('auth.internalUsersCanInviteByLink', $this->internalUsersCanInviteByLink);
         $settingsManager->set('auth.needApproval', $this->internalRequireApprovalAfterRegistration);
         $settingsManager->set('auth.anonymousRegistration', $this->internalAllowAnonymousRegistration);
         $settingsManager->set('auth.showRegistrationUserGroup', $this->showRegistrationUserGroup);
+        $settingsManager->set('auth.blockUsers', $this->blockUsers);
         $settingsManager->set('auth.defaultUserIdleTimeoutSec', $this->defaultUserIdleTimeoutSec);
         $settingsManager->set('auth.allowGuestAccess', $this->allowGuestAccess);
 

@@ -1,12 +1,13 @@
 <?php
 
-use yii\helpers\Url;
 use humhub\libs\Html;
+use humhub\modules\admin\models\forms\UserDeleteForm;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\space\widgets\Image as SpaceImage;
+use humhub\widgets\Button;
 use yii\bootstrap\ActiveForm;
 
-/* @var $model \yii\base\Model */
+/* @var $model UserDeleteForm */
 ?>
 <div class="panel-body">
     <h4><?= Yii::t('AdminModule.user', 'Confirm user deletion'); ?></h4>
@@ -40,7 +41,7 @@ use yii\bootstrap\ActiveForm;
                     <h4 class="media-heading"><?= Html::containerLink($space); ?></h4>
                     <?= Yii::t('SpaceModule.base', '{count} members', ['count' => $space->getMemberships()->count()]); ?>
                 </div>
-            </div>    
+            </div>
         <?php endforeach; ?>
     <?php else: ?>
         <p><?= Yii::t('AdminModule.user', 'This user owns no spaces.'); ?></p>
@@ -56,7 +57,11 @@ use yii\bootstrap\ActiveForm;
 
     <br />
     <hr>
-    <?= Html::submitButton(Yii::t('UserModule.account', 'Delete account'), ['class' => 'btn btn-danger', 'data-ui-loader' => '']); ?>
-    <?= Html::a(Yii::t('AdminModule.user', 'Cancel'), Url::to(['/admin/user/edit', 'id' => $model->user->id]), ['class' => 'btn btn-primary pull-right']); ?>
+    <?= Button::danger(Yii::t('UserModule.account', 'Delete account'))
+        ->confirm()
+        ->submit() ?>
+    <?= Button::primary(Yii::t('AdminModule.user', 'Cancel'))
+        ->link(['/admin/user/edit', 'id' => $model->user->id])
+        ->right() ?>
     <?php ActiveForm::end(); ?>
 </div>

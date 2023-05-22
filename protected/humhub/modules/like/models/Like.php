@@ -94,12 +94,14 @@ class Like extends ContentAddonActiveRecord
     {
         Yii::$app->cache->delete('likes_' . $this->object_model . "_" . $this->object_id);
 
-        \humhub\modules\like\activities\Liked::instance()->about($this)->save();
+        if ($insert) {
+            \humhub\modules\like\activities\Liked::instance()->about($this)->save();
 
-        if ($this->getSource() instanceof ContentOwner && $this->getSource()->content->createdBy !== null) {
-            // This is required for comments where $this->getSoruce()->createdBy contains the comment author.
-            $target = isset($this->getSource()->createdBy) ? $this->getSource()->createdBy : $this->getSource()->content->createdBy;
-            NewLike::instance()->from(Yii::$app->user->getIdentity())->about($this)->send($target);
+            if ($this->getSource() instanceof ContentOwner && $this->getSource()->content->createdBy !== null) {
+                // This is required for comments where $this->getSoruce()->createdBy contains the comment author.
+                $target = isset($this->getSource()->createdBy) ? $this->getSource()->createdBy : $this->getSource()->content->createdBy;
+                NewLike::instance()->from(Yii::$app->user->getIdentity())->about($this)->send($target);
+            }
         }
 
         $this->automaticContentFollowing = Yii::$app->getModule('like')->autoFollowLikedContent;

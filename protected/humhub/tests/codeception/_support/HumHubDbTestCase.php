@@ -22,17 +22,6 @@ use humhub\modules\user\models\User;
 use humhub\modules\friendship\models\Friendship;
 
 /**
- * Inherited Methods
- * @method void wantToTest($text)
- * @method void wantTo($text)
- * @method void execute($callable)
- * @method void expectTo($prediction)
- * @method void expect($prediction)
- * @method void amGoingTo($argumentation)
- * @method void am($role)
- * @method void lookForwardTo($achieveValue)
- * @method void comment($description)
- * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = null)
  * @SuppressWarnings(PHPMD)
  */
 class HumHubDbTestCase extends Unit
@@ -140,6 +129,7 @@ class HumHubDbTestCase extends Unit
             'content' => ['class' => \humhub\modules\content\tests\codeception\fixtures\ContentFixture::class],
             'notification' => ['class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::class],
             'file' => ['class' => \humhub\modules\file\tests\codeception\fixtures\FileFixture::class],
+            'file_history' => ['class' => \humhub\modules\file\tests\codeception\fixtures\FileHistoryFixture::class],
             'activity' => ['class' => \humhub\modules\activity\tests\codeception\fixtures\ActivityFixture::class],
             'friendship' => ['class' => \humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture::class],
             'live' => [ 'class' => LiveFixture::class]

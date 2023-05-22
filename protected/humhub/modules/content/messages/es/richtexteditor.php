@@ -48,6 +48,7 @@ return array (
   'Wrap in bullet list' => 'Convertir en una lista',
   'Wrap in ordered list' => 'Convertir en una lista ordenada',
   '[Code Block]' => '[Bloque de código]',
+  '[Image]' => '[Imagen]',
   '[Invalid file]' => '[Archivo inválido]',
   '[Table]' => '[Tabla]',
 );

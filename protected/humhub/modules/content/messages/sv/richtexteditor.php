@@ -48,6 +48,7 @@ return array (
   'Wrap in bullet list' => 'Paketera i punktlista',
   'Wrap in ordered list' => 'Paketera i ordnad lista',
   '[Code Block]' => '[Kodblock]',
+  '[Image]' => '[Bild]',
   '[Invalid file]' => '[Felaktig fil]',
   '[Table]' => '[Tabell]',
 );

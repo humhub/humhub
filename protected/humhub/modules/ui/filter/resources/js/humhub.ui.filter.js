@@ -181,12 +181,25 @@ humhub.module('ui.filter', function(module, require, $) {
         return Widget.instance(this.$).hasValues();
     };
 
+    var DatePickerInput = FilterInput.extend(function($node, filter) {
+        FilterInput.call(this, $node, filter);
+    });
+
+    DatePickerInput.prototype.getValue = function() {
+        return this.$.val();
+    };
+
+    DatePickerInput.prototype.isActive = function() {
+        return this.getValue() && this.getValue().length;
+    };
+
     var filterTypes = {
         'checkbox': CheckBoxInput,
         'radio': RadioInput,
         'picker': PickerInput,
         'dropdown': TextInput, // don't need a custom input type here
-        'text': TextInput
+        'text': TextInput,
+        'date-picker': DatePickerInput
     };
 
     var addFilterType = function(key, inputClass) {

@@ -52,6 +52,7 @@ class CoreBundleAsset extends WebStaticAssetBundle
         CoreExtensionAsset::class,
         ProsemirrorEditorAsset::class,
         ProseMirrorRichTextAsset::class,
+        JqueryCookieAsset::class,
         UserAsset::class,
         LiveAsset::class,
         NotificationAsset::class,

@@ -1,6 +1,7 @@
 <?php
 return array (
   'Collapse' => 'Redueix',
-  'Read more' => '',
-  'User Interface' => '',
+  'Read more' => 'Llegir més',
+  'Reset filters' => 'Esborrar filtres',
+  'User Interface' => 'Interfície d\'usuari',
 );

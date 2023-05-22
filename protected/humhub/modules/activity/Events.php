@@ -8,7 +8,9 @@
 
 namespace humhub\modules\activity;
 
+use humhub\components\ActiveRecord;
 use humhub\modules\activity\components\MailSummary;
+use humhub\modules\activity\helpers\ActivityHelper;
 use humhub\modules\activity\jobs\SendMailSummary;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\admin\permissions\ManageSettings;
@@ -19,7 +21,7 @@ use Yii;
 use yii\base\ActionEvent;
 use yii\base\BaseObject;
 use yii\base\Event;
-use yii\db\ActiveRecord;
+use yii\base\InvalidArgumentException;
 use yii\db\IntegrityException;
 
 /**
@@ -66,23 +68,10 @@ class Events extends BaseObject
     public static function onActiveRecordDelete(Event $event)
     {
         if (!($event->sender instanceof ActiveRecord)) {
-            throw new \LogicException('The handler can be applied only to the \yii\db\ActiveRecord.');
+            throw new InvalidArgumentException('The handler can be applied only to the \humhub\components\ActiveRecord.');
         }
 
-        /** @var \yii\db\ActiveRecord $activeRecordModel */
-        $activeRecordModel = $event->sender;
-        $pk = $activeRecordModel->getPrimaryKey();
-
-        // Check if primary key exists and is not array (multiple pk)
-        if ($pk !== null && !is_array($pk)) {
-            $modelsActivity = Activity::find()->where([
-                'object_id' => $pk,
-                'object_model' => get_class($activeRecordModel)
-            ])->each();
-            foreach ($modelsActivity as $activity) {
-                $activity->delete();
-            }
-        }
+        ActivityHelper::deleteActivitiesForRecord($event->sender);
     }
 
     public static function onAccountMenuInit($event)
@@ -141,19 +130,19 @@ class Events extends BaseObject
                     $source = $a->getSource();
                 } catch (IntegrityException $ex) {
                     if ($integrityController->showFix('Deleting activity id ' . $a->id . ' without existing target! (' . $a->object_model . ')')) {
-                        $a->delete();
+                        $a->hardDelete();
                     }
                 }
             }
 
             // Check for moduleId is set
             if (empty($a->module) && $integrityController->showFix('Deleting activity id ' . $a->id . ' without module_id!')) {
-                $a->delete();
+                $a->hardDelete();
             }
 
             // Check Activity class exists
             if (!class_exists($a->class) && $integrityController->showFix('Deleting activity id ' . $a->id . ' class not exists! (' . $a->class . ')')) {
-                $a->delete();
+                $a->hardDelete();
             }
         }
     }

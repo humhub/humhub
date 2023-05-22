@@ -49,10 +49,15 @@ class ManageController extends ContentContainerController
             $this->view->error($model->getFirstError('name'));
         }
 
+        $title = $this->contentContainer instanceof User
+            ? Yii::t('UserModule.account', '<strong>Account</strong> Settings')
+            : Yii::t('TopicModule.base', '<strong>Topic</strong> Overview');
+
         return $this->render('overview', [
             'contentContainer' => $this->contentContainer,
             'dataProvider' => $this->getTopicProvider(),
-            'addModel' => new Topic()
+            'addModel' => new Topic(),
+            'title' => $title
         ]);
     }
 

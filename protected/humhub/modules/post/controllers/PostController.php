@@ -8,21 +8,57 @@
 
 namespace humhub\modules\post\controllers;
 
-use humhub\modules\content\widgets\stream\StreamEntryWidget;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
+use humhub\modules\content\widgets\stream\StreamEntryWidget;
+use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\file\handler\FileHandlerCollection;
+use humhub\modules\post\models\forms\PostEditForm;
 use humhub\modules\post\models\Post;
 use humhub\modules\post\permissions\CreatePost;
-use humhub\modules\stream\actions\Stream;
+use humhub\modules\post\widgets\Form;
 use Yii;
+use yii\web\ForbiddenHttpException;
+use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 /**
- * @package humhub.modules_core.post.controllers
  * @since 0.5
  */
 class PostController extends ContentContainerController
 {
+    /**
+     * @param $id
+     * @return string
+     * @throws HttpException
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     */
+    public function actionView($id)
+    {
+        /** @var Post $post */
+        $post = Post::find()
+            ->contentContainer($this->contentContainer)
+            ->readable()->where(['post.id' => (int)$id])->one();
+
+        if ($post === null) {
+            throw new HttpException(404);
+        }
+
+        $this->view->setPageTitle(Yii::t('PostModule.base', 'Post'), true);
+        $this->view->meta->setContent($post);
+        $this->view->meta->setDescription(RichTextToPlainTextConverter::process($post->message));
+        $this->view->meta->setImages($post->fileManager->findAll());
+
+        return $this->render('view', [
+            'post' => $post,
+            'contentContainer' => $this->contentContainer,
+            'renderOptions' => new StreamEntryOptions(['viewContext' => WallStreamEntryOptions::VIEW_CONTEXT_DETAIL]),
+        ]);
+    }
+
 
     /**
      * @return array|mixed
@@ -32,40 +68,59 @@ class PostController extends ContentContainerController
      */
     public function actionPost()
     {
+        $post = new Post($this->contentContainer);
+
         // Check createPost Permission
-        if (!$this->contentContainer->getPermissionManager()->can(new CreatePost())) {
+        if (!$post->content->canEdit()) {
             return [];
         }
 
-        $post = new Post($this->contentContainer);
-        $post->message = Yii::$app->request->post('message');
+        $post->load(Yii::$app->request->post(), 'Post');
 
-        return Post::getDb()->transaction(function($db) use($post) {
+        return Post::getDb()->transaction(function ($db) use ($post) {
             return WallCreateContentForm::create($post, $this->contentContainer);
         });
     }
 
     public function actionEdit($id)
     {
-        $model = Post::findOne(['id' => $id]);
+        $post = Post::findOne(['id' => $id]);
+        if (!$post) {
+            throw new NotFoundHttpException();
+        }
 
-        if (!$model->content->canEdit()) {
+        $model = new PostEditForm(['post' => $post]);
+
+        if (!$post->content->canEdit()) {
             $this->forbidden();
         }
 
         if ($model->load(Yii::$app->request->post())) {
             // Reload record to get populated updated_at field
-            if ($model->validate() && $model->save()) {
-                $model = Post::findOne(['id' => $id]);
-                return $this->renderAjaxContent(StreamEntryWidget::renderStreamEntry($model));
+            if ($model->save()) {
+                $post = Post::findOne(['id' => $id]);
+                return $this->renderAjaxContent(StreamEntryWidget::renderStreamEntry($post));
             } else {
                 Yii::$app->response->statusCode = 400;
             }
         }
 
         return $this->renderAjax('edit', [
-            'post' => $model,
+            'model' => $model,
+            'fileHandlers' => FileHandlerCollection::getByType([FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE]),
+            'submitUrl' => $post->content->container->createUrl('/post/post/edit', ['id' => $post->id]),
         ]);
+    }
+
+    public function actionCreateForm()
+    {
+        if (!(new Post($this->contentContainer))->content->canEdit()) {
+            throw new ForbiddenHttpException();
+        }
+
+        return $this->renderAjaxPartial(Form::widget([
+            'contentContainer' => $this->contentContainer,
+        ]));
     }
 
 }

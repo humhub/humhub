@@ -4,11 +4,12 @@ use humhub\libs\ActionColumn;
 use humhub\modules\admin\models\GroupSearch;
 use humhub\modules\admin\widgets\GroupMenu;
 use humhub\modules\user\models\Group;
+use humhub\widgets\Label;
 use humhub\widgets\Link;
 use yii\helpers\Url;
 use humhub\widgets\GridView;
 
-/* @var $searchModel GroupSearch*/
+/* @var $searchModel GroupSearch */
 ?>
 <div class="panel-body">
     <div class="pull-right">
@@ -35,11 +36,19 @@ use humhub\widgets\GridView;
                 'attribute' => 'name',
                 'format' => 'html',
                 'value' => function (Group $group) {
-                    return $group->name .
-                        ($group->is_default_group ? ' <span class="badge">' . Yii::t('AdminModule.user', 'Default') . '</span>' : '');
+                    // Yii::t is available for default texts
+                    return Yii::t('AdminModule.base', $group->name) .
+                        ($group->is_default_group ? ' ' . Label::defaultType(Yii::t('AdminModule.user', 'Default')) : '') .
+                        ($group->is_protected ? ' ' . Label::defaultType(Yii::t('AdminModule.user', 'Protected')) : '');
                 }
             ],
-            'description',
+            [
+                'attribute' => 'description',
+                'value' => function (Group $group) {
+                    // Yii::t is available for default texts
+                    return Yii::t('AdminModule.base', $group->description);
+                }
+            ],
             [
                 'attribute' => 'members',
                 'label' => Yii::t('AdminModule.user', 'Members'),
@@ -51,13 +60,13 @@ use humhub\widgets\GridView;
             ],
             [
                 'class' => ActionColumn::class,
-                'actions' => function($group, $key, $index) {
+                'actions' => function ($group, $key, $index) {
                     /* @var $group Group */
-                    if($group->is_admin_group && !Yii::$app->user->isAdmin()) {
+                    if ($group->is_admin_group && !Yii::$app->user->isAdmin()) {
                         return [];
                     }
 
-                    return  [
+                    return [
                         Yii::t('AdminModule.user', 'Settings') => ['edit'],
                         '---',
                         Yii::t('AdminModule.user', 'Permissions') => ['manage-permissions'],

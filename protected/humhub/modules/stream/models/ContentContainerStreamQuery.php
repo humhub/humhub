@@ -7,6 +7,7 @@ namespace humhub\modules\stream\models;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\stream\models\filters\ContentContainerStreamFilter;
 use humhub\modules\stream\models\filters\PinnedContentStreamFilter;
+use humhub\modules\stream\models\filters\StreamQueryFilter;
 use yii\base\InvalidConfigException;
 
 /**
@@ -27,11 +28,6 @@ class ContentContainerStreamQuery extends WallStreamQuery
     public $pinnedContentSupport = true;
 
     /**
-     * @var PinnedContentStreamFilter
-     */
-    private $pinnedContentStreamFilter;
-
-    /**
      * @inheritdoc
      * @throws InvalidConfigException
      */
@@ -39,25 +35,15 @@ class ContentContainerStreamQuery extends WallStreamQuery
     {
         parent::beforeApplyFilters();
 
-        $this->addFilterHandler(new ContentContainerStreamFilter(['container' => $this->container]));
+        $this->addFilterHandler(
+            new ContentContainerStreamFilter(['container' => $this->container]),
+            true,
+            true
+        );
 
-        $this->pinnedContentStreamFilter = new PinnedContentStreamFilter(['container' => $this->container]);
-
-        if($this->pinnedContentSupport) {
-            $this->addFilterHandler($this->pinnedContentStreamFilter);
+        if ($this->pinnedContentSupport) {
+            $this->addFilterHandler(new PinnedContentStreamFilter(['container' => $this->container]));
         }
 
     }
-
-    public function all()
-    {
-        $result = parent::all();
-
-        if(!empty($this->pinnedContentStreamFilter->pinnedContent)) {
-            $result = array_merge($this->pinnedContentStreamFilter->pinnedContent, $result);
-        }
-
-        return $result;
-    }
-
 }

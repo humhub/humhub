@@ -159,18 +159,23 @@ class LdapController extends \yii\console\Controller
 
 
     /**
-     * Clears the 'authclient_id' entries in the user table.
-     * Useful if the ldap ids changed.
+     * Resets the LDAP mapping of all or a certain account.
      *
      * @param string $id the auth client id (default: ldap)
+     * @param string $userName UserName, if set, the assignment will be deleted for this user only.
      * @return int status code
      */
-    public function actionMappingClear($id = 'ldap')
+    public function actionMappingClear($id = 'ldap', $userName = null)
     {
         $this->stdout("*** LDAP Flush user id mappings for AuthClient ID: " . $id . "\n\n");
-        User::updateAll(['authclient_id' => new Expression('NULL')], ['auth_mode' => $id]);
 
-        $this->stdout("Mappings cleared!\n");
+        if ($userName === null) {
+            User::updateAll(['authclient_id' => new Expression('NULL')], ['auth_mode' => $id]);
+        } else {
+            User::updateAll(['authclient_id' => new Expression('NULL')], ['auth_mode' => $id, 'username' => $userName]);
+        }
+
+        $this->stdout("Mapping(s) cleared!\n");
         return ExitCode::OK;
     }
 

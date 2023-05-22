@@ -8,23 +8,28 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\components\ActiveRecord;
+use humhub\libs\BasePermission;
+use humhub\modules\activity\helpers\ActivityHelper;
+use humhub\modules\activity\models\Activity;
+use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\interfaces\SoftDeletable;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\models\Movable;
+use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicLabel;
 use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\models\User;
-use Yii;
-use yii\base\Exception;
 use humhub\modules\content\widgets\WallEntry;
 use humhub\widgets\Label;
-use humhub\libs\BasePermission;
-use humhub\modules\content\permissions\ManageContent;
-use humhub\components\ActiveRecord;
-use humhub\modules\content\models\Content;
-use humhub\modules\content\interfaces\ContentOwner;
+use Yii;
+use yii\base\Exception;
 use yii\base\InvalidConfigException;
+use yii\base\ModelEvent;
+use yii\db\ActiveQuery;
 
 /**
  * ContentActiveRecord is the base ActiveRecord [[\yii\db\ActiveRecord]] for Content.
@@ -63,7 +68,7 @@ use yii\base\InvalidConfigException;
  * @property User $owner
  * @author Luke
  */
-class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
+class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable, SoftDeletable
 {
     /**
      * @see StreamEntryWidget
@@ -92,6 +97,19 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * @var string|null the stream channel
      */
     protected $streamChannel = 'default';
+
+    /**
+     * Holds an extra create permission by providing one of the following
+     *
+     *  - BasePermission class string
+     *  - Array of type ['class' => '...', 'callback' => '...']
+     *  - Anonymous function
+     *  - BasePermission instance
+     *
+     * @var string permission instance
+     * @since 1.13
+     */
+    protected $createPermission = ManageContent::class;
 
     /**
      * Holds an extra manage permission by providing one of the following
@@ -145,13 +163,13 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function __construct($contentContainer = [], $visibility = null, $config = [])
     {
-        if(is_array($contentContainer)) {
+        if (is_array($contentContainer)) {
             parent::__construct($contentContainer);
-        } elseif($contentContainer instanceof ContentContainerActiveRecord) {
+        } elseif ($contentContainer instanceof ContentContainerActiveRecord) {
             $this->content->setContainer($contentContainer);
-            if(is_array($visibility)) {
+            if (is_array($visibility)) {
                 $config = $visibility;
-            } elseif($visibility !== null) {
+            } elseif ($visibility !== null) {
                 $this->content->visibility = $visibility;
             }
             parent::__construct($config);
@@ -181,7 +199,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
         if ($name === 'content') {
             $content = parent::__get('content');
 
-            if(!$content) {
+            if (!$content) {
                 $content = new Content();
                 $content->setPolymorphicRelation($this);
                 $this->populateRelation('content', $content);
@@ -235,7 +253,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
             $labels[] = Label::danger(Yii::t('ContentModule.base', 'Pinned'))->icon('fa-map-pin')->sortOrder(100);
         }
 
-        if($this->content->isArchived()) {
+        if ($this->content->isArchived()) {
             $labels[] = Label::warning(Yii::t('ContentModule.base', 'Archived'))->icon('fa-archive')->sortOrder(200);
         }
 
@@ -270,37 +288,73 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     }
 
     /**
+     * Returns the $createPermission settings interpretable by an PermissionManager instance.
+     *
+     * @return null|object|string
+     * @see ContentActiveRecord::$createPermission
+     * @since 1.13
+     */
+    public function getCreatePermission()
+    {
+        return $this->hasCreatePermission()
+            ? $this->getPermissionValue($this->createPermission)
+            : null;
+    }
+
+    /**
+     * Determines whether or not the record has an additional createPermission set.
+     *
+     * @return boolean
+     * @since 1.13
+     */
+    public function hasCreatePermission()
+    {
+        return !empty($this->createPermission);
+    }
+
+    /**
      * Returns the $managePermission settings interpretable by an PermissionManager instance.
      *
-     * @since 1.2.1
-     * @see ContentActiveRecord::$managePermission
      * @return null|object|string
+     * @see ContentActiveRecord::$managePermission
+     * @since 1.2.1
      */
     public function getManagePermission()
     {
-        if(!$this->hasManagePermission()) {
-            return null;
+        return $this->hasManagePermission()
+            ? $this->getPermissionValue($this->managePermission)
+            : null;
+    }
+
+    /**
+     * Returns the permission value interpretable by an PermissionManager instance.
+     *
+     * @param string|array|null
+     * @return null|object|string
+     * @since 1.13
+     * @see ContentActiveRecord::$managePermission, ContentActiveRecord::$createPermission
+     */
+    private function getPermissionValue($perm)
+    {
+        if (is_string($perm)) { // Simple Permission class specification
+            return $perm;
         }
 
-        if(is_string($this->managePermission)) { // Simple Permission class specification
-            return $this->managePermission;
-        }
-
-        if(is_array($this->managePermission)) {
-            if(isset($this->managePermission['class'])) { // ['class' => '...', 'callback' => '...']
-                $handler = $this->managePermission['class'].'::'.$this->managePermission['callback'];
+        if (is_array($perm)) {
+            if (isset($perm['class'])) { // ['class' => '...', 'callback' => '...']
+                $handler = $perm['class'] . '::' . $perm['callback'];
                 return call_user_func($handler, $this);
             }
             // Simple Permission array specification
-            return $this->managePermission;
+            return $perm;
         }
 
-        if(is_callable($this->managePermission)) { // anonymous function
-            return $this->managePermission($this);
+        if (is_callable($perm)) { // anonymous function
+            return call_user_func($perm, $this);
         }
 
-        if($this->managePermission instanceof BasePermission) {
-            return $this->managePermission;
+        if ($perm instanceof BasePermission) {
+            return $perm;
         }
 
         return null;
@@ -309,8 +363,8 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     /**
      * Determines weather or not this records has an additional managePermission set.
      *
-     * @since 1.2.1
      * @return boolean
+     * @since 1.2.1
      */
     public function hasManagePermission()
     {
@@ -321,18 +375,18 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * Returns the wall output widget of this content.
      *
      * @param array $params optional parameters for WallEntryWidget
-     * @deprecated since 1.7 use StreamEntryWidget::renderStreamEntry()
      * @return string
+     * @deprecated since 1.7 use StreamEntryWidget::renderStreamEntry()
      */
     public function getWallOut($params = [])
     {
-        if(is_subclass_of($this->wallEntryClass, StreamEntryWidget::class, true)) {
+        if (is_subclass_of($this->wallEntryClass, StreamEntryWidget::class, true)) {
             $params['model'] = $this;
-        } else if(!empty($this->wallEntryClass)) {
+        } else if (!empty($this->wallEntryClass)) {
             $params['contentObject'] = $this; // legacy WallEntry widget
         }
 
-        return call_user_func($this->wallEntryClass.'::widget', $params);
+        return call_user_func($this->wallEntryClass . '::widget', $params);
     }
 
     /**
@@ -345,20 +399,20 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function getWallEntryWidget()
     {
-        if(empty($this->wallEntryClass)) {
+        if (empty($this->wallEntryClass)) {
             return null;
         }
 
-        if (is_subclass_of($this->wallEntryClass, WallEntry::class) ) {
+        if (is_subclass_of($this->wallEntryClass, WallEntry::class)) {
             $class = $this->wallEntryClass;
             $widget = new $class;
             $widget->contentObject = $this;
             return $widget;
         }
 
-        if($this->wallEntryClass) {
+        if ($this->wallEntryClass) {
             $class = $this->wallEntryClass;
-            $widget = new $class;
+            $widget = new $class(['model' => $this]);
             return $widget;
         }
 
@@ -397,10 +451,32 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
             $this->content->object_id = $this->getPrimaryKey();
         }
 
-        // Always save content
-        $this->content->save();
+        if (!$insert || $this->content->isNewRecord) {
+            // Save a Content only on each update of this Record or when the Content is creating first time.
+            // Don't update the Content twice during inserting of this Record
+            //   in order to don't touch the column `updated_at` when action is "creating" really.
+            $this->content->save();
+        }
 
         parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * This method is called after state of the Content of this Active Record has been changed
+     *
+     * @param int|null $newState
+     * @param int|null $previousState
+     */
+    public function afterStateChange(?int $newState, ?int $previousState): void
+    {
+        // Activities should be updated to same state as parent Record
+        $activitiesQuery = ActivityHelper::getActivitiesQuery($this);
+        if ($activitiesQuery instanceof ActiveQuery) {
+            foreach ($activitiesQuery->each() as $activity) {
+                /* @var Activity $activity */
+                $activity->content->getStateService()->update($newState);
+            }
+        }
     }
 
     /**
@@ -421,18 +497,76 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      *
      * @return string
      */
-    public static function getObjectModel() {
+    public static function getObjectModel()
+    {
         return static::class;
     }
 
     /**
+     * Marks this content for deletion (soft delete).
+     * Use `hardDelete()` method to delete record immediately.
+     *
+     * @return bool|int
+     * @inheritdoc
+     */
+    public function delete()
+    {
+        return $this->softDelete();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSoftDelete(): bool
+    {
+        $event = new ModelEvent();
+        $this->trigger(self::EVENT_BEFORE_SOFT_DELETE, $event);
+
+        return $event->isValid;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function softDelete(): bool
+    {
+        if (!$this->beforeSoftDelete()) {
+            return false;
+        }
+
+        if (!$this->content->softDelete()) {
+            return false;
+        }
+
+        $this->afterSoftDelete();
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSoftDelete()
+    {
+        $this->trigger(self::EVENT_AFTER_SOFT_DELETE, new ModelEvent());
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function hardDelete(): bool
+    {
+        return (parent::delete() !== false);
+    }
+
+    /**
+     * This method is invoked after HARD deleting a record.
      * @inheritdoc
      */
     public function afterDelete()
     {
         $content = Content::findOne(['object_id' => $this->getPrimaryKey(), 'object_model' => static::getObjectModel()]);
         if ($content !== null) {
-            $content->delete();
+            $content->hardDelete();
         }
 
         parent::afterDelete();
@@ -450,8 +584,8 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * Checks if the given user or the current logged in user if no user was given, is the owner of this content
      * @param null $user
      * @return bool
-     * @since 1.3
      * @throws \Throwable
+     * @since 1.3
      */
     public function isOwner($user = null)
     {
@@ -520,13 +654,13 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function canMove(ContentContainerActiveRecord $container = null)
     {
-        if(!$this->canMove) {
+        if (!$this->canMove) {
             return Yii::t('ContentModule.base', 'This content type can\'t be moved.');
         }
 
-        if($container && is_string($this->canMove) && is_subclass_of($this->canMove, BasePermission::class)) {
+        if ($container && is_string($this->canMove) && is_subclass_of($this->canMove, BasePermission::class)) {
             $ownerPermissions = $container->getPermissionManager($this->content->createdBy);
-            if(!$ownerPermissions->can($this->canMove)) {
+            if (!$ownerPermissions->can($this->canMove)) {
                 return Yii::t('ContentModule.base', 'The author of this content is not allowed to create this type of content within this space.');
             }
         }
@@ -547,5 +681,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * in order to define model specific logic as moving sub-content or other related.
      * @param ContentContainerActiveRecord|null $container
      */
-    public function afterMove(ContentContainerActiveRecord $container = null) {}
+    public function afterMove(ContentContainerActiveRecord $container = null)
+    {
+    }
 }

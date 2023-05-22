@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\modules\post\models\Post;
 use Yii;
 use humhub\modules\stream\widgets\StreamViewer as BaseStreamViewer;
 use humhub\modules\user\models\User;
@@ -44,20 +45,18 @@ class StreamViewer extends BaseStreamViewer
     {
         parent::init();
 
-        $canCreatePost = $this->contentContainer->permissionManager->can(CreatePost::class);
+        $canCreatePost = (new Post($this->contentContainer))->content->canEdit();
 
         if (empty($this->messageStreamEmptyCss) && $canCreatePost) {
             $this->messageStreamEmptyCss = 'placeholder-empty-stream';
         }
 
-        if (empty($this->messageStreamEmpty)) {
-            if ($canCreatePost) {
-                $this->messageStreamEmpty = $this->contentContainer->is(Yii::$app->user->getIdentity())
-                    ? Yii::t('UserModule.profile', '<b>Your profile stream is still empty</b><br>Get started and post something...')
-                    : Yii::t('UserModule.profile', '<b>This profile stream is still empty</b><br>Be the first and post something...');
-            } else {
-                $this->messageStreamEmpty = Yii::t('UserModule.profile', '<b>This profile stream is still empty!</b>');
-            }
+        if ($canCreatePost) {
+            $this->messageStreamEmpty = $this->contentContainer->is(Yii::$app->user->getIdentity())
+                ? Yii::t('UserModule.profile', '<b>Your profile stream is still empty</b><br>Get started and post something...')
+                : Yii::t('UserModule.profile', '<b>This profile stream is still empty</b><br>Be the first and post something...');
+        } else {
+            $this->messageStreamEmpty = Yii::t('UserModule.profile', '<b>This profile stream is still empty!</b>');
         }
     }
 

@@ -8,7 +8,6 @@
 
 namespace humhub\modules\ui\form\widgets;
 
-
 /**
  * A HumHub enhanced version of [[\yii\bootstrap\ActiveField]].
  *

@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Add Topics' => 'Ajouter des étiquettes',
-  'Manage Topics' => 'Gérer les étiquettes',
+  'Add Topics' => 'Ajouter des sujets',
+  'Manage Topics' => 'Gérer les sujets',
 );

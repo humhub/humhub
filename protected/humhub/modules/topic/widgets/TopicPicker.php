@@ -106,6 +106,21 @@ class TopicPicker extends ContentTagPicker
 
     /**
      * @inheritdoc
+     * @param $tags
+     * @return array
+     */
+    public static function jsonResult($tags)
+    {
+        $result = parent::jsonResult($tags);
+        foreach($result as $key => $tag) {
+            $result[$key]['image'] = Yii::$app->getModule('topic')->icon;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
      */
     public function getItemImage($item)
     {
@@ -120,7 +135,7 @@ class TopicPicker extends ContentTagPicker
         $result = parent::getData();
         $allowMultiple = $this->maxSelection !== 1;
         $result['placeholder'] = Yii::t('TopicModule.widgets_TopicPicker', 'Select {n,plural,=1{topic} other{topics}}', ['n' => ($allowMultiple) ? 2 : 1]);
-        $result['placeholder-more'] = Yii::t('TopicModule.widgets_TopicPicker', 'Add topic');
+        $result['placeholder-more'] = Yii::t('TopicModule.widgets_TopicPicker', 'Select topic...');
         $result['no-result'] = Yii::t('TopicModule.widgets_TopicPicker', 'No topics found for the given query');
 
         if ($this->maxSelection) {

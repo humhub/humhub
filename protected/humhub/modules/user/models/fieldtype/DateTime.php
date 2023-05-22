@@ -8,8 +8,9 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
-use Yii;
 use humhub\libs\DbDateValidator;
+use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * ProfileFieldTypeDateTime
@@ -19,6 +20,10 @@ use humhub\libs\DbDateValidator;
  */
 class DateTime extends BaseType
 {
+    /**
+     * @inheritdoc
+     */
+    public $type = 'datetime';
 
     /**
      * Checkbox show also time picker
@@ -87,34 +92,32 @@ class DateTime extends BaseType
     }
 
     /**
-     * Return the Form Element to edit the value of the Field
+     * @inheritdoc
      */
-    public function getFieldFormDefinition()
+    public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
-        return [$this->profileField->internal_name => [
-                'type' => 'datetime',
-                'format' => Yii::$app->formatter->dateInputFormat,
-                'class' => 'form-control',
-                'readonly' => (!$this->profileField->editable),
-                'dateTimePickerOptions' => [
-                    'pickTime' => ($this->showTimePicker)
-                ]
-        ]];
+        return parent::getFieldFormDefinition($user, array_merge([
+            'format' => Yii::$app->formatter->dateInputFormat,
+            'dateTimePickerOptions' => [
+                'pickTime' => ($this->showTimePicker)
+            ]
+        ], $options));
     }
 
     /**
      * @inheritdoc
      */
-    public function getUserValue($user, $raw = true)
+    public function getUserValue(User $user, $raw = true): ?string
     {
-
         $internalName = $this->profileField->internal_name;
-        $date = $user->profile->$internalName;
 
-        if ($date == '' || $date == '0000-00-00 00:00:00')
-            return '';
+        $date = \DateTime::createFromFormat('Y-m-d H:i:s', $user->profile->$internalName ?? '',
+            new \DateTimeZone(Yii::$app->formatter->timeZone));
 
-        return \yii\helpers\Html::encode($date);
+        if ($date === false)
+            return "";
+
+        return $raw ? \yii\helpers\Html::encode($user->profile->$internalName) : Yii::$app->formatter->asDatetime($date, 'long');
     }
 
 }

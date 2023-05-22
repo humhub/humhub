@@ -23,10 +23,6 @@
 @dropdown-box-shadow: 0 6px 12px rgba(0,0,0,.175);
 @clear-selection-color: @dropdown-arrow-color;
 
-
-
-
-
 //
 // Mixins
 // --------------------------------------------------
@@ -80,16 +76,8 @@
     }
 }
 
-
-
-
-
 .select2-container--humhub {
     display: block;
-
-
-
-
 
     /*------------------------------------*\
             #COMMON STYLES
@@ -98,6 +86,7 @@
     .select2-selection {
         .humhub-input-defaults;
         outline: 0;
+        min-height: 35px;
     }
 
     /**
@@ -123,32 +112,6 @@
             font-weight: normal;
         }
 
-        &::-webkit-input-placeholder {
-            color: @input-color-placeholder;
-            font-weight: normal;
-        }
-
-        /* Firefox 18- */
-        &:-moz-placeholder {
-            color: @input-color-placeholder;
-            font-weight: normal;
-        }
-
-        /**
-         * Firefox 19+
-         *
-         * @see http://stackoverflow.com/questions/24236240/color-for-styled-placeholder-text-is-muted-in-firefox
-         */
-        &::-moz-placeholder {
-            color: @input-color-placeholder;
-            font-weight: normal;
-            opacity: 1;
-        }
-
-        &:-ms-input-placeholder {
-            color: @input-color-placeholder;
-            font-weight: normal;
-        }
     }
 
     /**
@@ -326,10 +289,6 @@
         }
     }
 
-
-
-
-
     /*------------------------------------*\
             #DROPDOWN
     \*------------------------------------*/
@@ -356,10 +315,6 @@
         max-height: 400px;
         overflow-y: auto;
     }
-
-
-
-
 
     /*------------------------------------*\
             #SINGLE SELECT2
@@ -404,10 +359,6 @@
             color: @input-color-placeholder;
         }
     }
-
-
-
-
 
     /*------------------------------------*\
         #MULTIPLE SELECT2
@@ -513,10 +464,6 @@
             margin-top: @padding-base-vertical;
         }
     }
-
-
-
-
 
     /**
      * Address humhub control sizing classes
@@ -634,10 +581,6 @@
         }
     }
 
-
-
-
-
     /*------------------------------------*\
         #RTL SUPPORT
     \*------------------------------------*/
@@ -696,10 +639,6 @@
         }
     }
 }
-
-
-
-
 
 /*------------------------------------*\
     #ADDITIONAL GOODIES

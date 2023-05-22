@@ -1,7 +1,11 @@
 <?php
 
+use humhub\modules\user\widgets\Image;
 use yii\helpers\Html;
 use humhub\widgets\Link;
+
+/* @var $applicants \humhub\modules\space\models\Membership[] */
+/* @var $space \humhub\modules\space\models\Space */
 ?>
 
 <div class="panel panel-danger">
@@ -9,25 +13,18 @@ use humhub\widgets\Link;
     <div class="panel-body">
         <table width="100%" border="0" cellpadding="0" cellspacing="0">
             <?php foreach ($applicants as $membership) : ?>
-                <?php $user = $membership->user; ?>
                 <tr>
-                    <td align="left" valign="top" width="30">
-                        <a href="<?= $user->getUrl(); ?>" alt="<?= Html::encode($user->displayName); ?>">
-                            <img class="img-rounded tt img_margin"
-                                 src="<?= $user->getProfileImage()->getUrl(); ?>" height="24" width="24"
-                                 alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;"
-                                 data-toggle="tooltip" data-placement="top" title=""
-                                 data-original-title="<?= Html::encode($user->displayName); ?>"/>
-                        </a>
+                    <td style="padding-right:12px;vertical-align: top">
+                        <?= Image::widget(['user' => $membership->user]); ?>
                     </td>
-
-                    <td align="left" valign="top">
-                        <strong><?= Html::encode($user->displayName); ?></strong><br>
-                        <?= Html::encode($membership->request_message); ?><br>
+                    <td style="vertical-align: top">
+                        <strong><?= Html::encode($membership->user->displayName); ?></strong><br>
+                        <?= Html::encode($membership->user->displayNameSub); ?><br>
+                        <i><small><?= Html::encode($membership->request_message); ?></small></i><br>
 
                         <hr>
-                        <?= Link::success(Yii::t('SpaceModule.base', 'Accept'))->post($space->createUrl('/space/manage/member/approve-applicant', ['userGuid' => $user->guid]))->sm() ?>
-                        <?= Link::danger(Yii::t('SpaceModule.base', 'Decline'))->post($space->createUrl('/space/manage/member/reject-applicant', ['userGuid' => $user->guid]))->sm() ?>
+                        <?= Link::success(Yii::t('SpaceModule.base', 'Accept'))->post($space->createUrl('/space/manage/member/approve-applicant', ['userGuid' => $membership->user->guid]))->sm() ?>
+                        <?= Link::danger(Yii::t('SpaceModule.base', 'Decline'))->post($space->createUrl('/space/manage/member/reject-applicant', ['userGuid' => $membership->user->guid]))->sm() ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

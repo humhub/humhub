@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -8,6 +9,7 @@
 namespace humhub\modules\admin\controllers;
 
 use humhub\compat\HForm;
+use humhub\components\export\ArrayColumn;
 use humhub\components\export\DateTimeColumn;
 use humhub\components\export\SpreadsheetExport;
 use humhub\modules\admin\components\Controller;
@@ -23,6 +25,7 @@ use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\AuthClientUserService;
 use Yii;
 use yii\db\Query;
 use yii\web\HttpException;
@@ -34,7 +37,6 @@ use yii\web\HttpException;
  */
 class UserController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -104,13 +106,16 @@ class UserController extends Controller
             throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));
         }
 
+        $authClientUserService = new AuthClientUserService($user);
+
         $canEditAdminFields = Yii::$app->user->isAdmin() || !$user->isSystemAdmin();
+        $canEditPassword = $canEditAdminFields && $authClientUserService->canChangePassword();
 
         $user->scenario = 'editAdmin';
         $user->profile->scenario = Profile::SCENARIO_EDIT_ADMIN;
         $profile = $user->profile;
 
-        if ($canEditAdminFields) {
+        if ($canEditPassword) {
             if (!($password = PasswordEditForm::findOne(['user_id' => $user->id]))) {
                 $password = new PasswordEditForm();
                 $password->user_id = $user->id;
@@ -135,11 +140,13 @@ class UserController extends Controller
                     'type' => 'text',
                     'class' => 'form-control',
                     'maxlength' => 25,
+                    'readonly' => !$authClientUserService->canChangeUsername(),
                 ],
                 'email' => [
                     'type' => 'text',
                     'class' => 'form-control',
                     'maxlength' => 100,
+                    'readonly' => !$authClientUserService->canChangeEmail()
                 ],
                 'groupSelection' => [
                     'id' => 'user_edit_groups',
@@ -147,8 +154,10 @@ class UserController extends Controller
                     'items' => UserEditForm::getGroupItems(),
                     'options' => [
                         'data-placeholder' => Yii::t('AdminModule.user', 'Select Groups'),
-                        'data-placeholder-more' => Yii::t('AdminModule.user', 'Add Groups...')
+                        'data-placeholder-more' => Yii::t('AdminModule.user', 'Add Groups...'),
+                        'data-tags' => 'false'
                     ],
+                    'maxSelection' => 250,
                     'isVisible' => Yii::$app->user->can(new ManageGroups())
                 ],
             ],
@@ -158,16 +167,18 @@ class UserController extends Controller
             $definition['elements']['User']['elements']['status'] = [
                 'type' => 'dropdownlist',
                 'class' => 'form-control',
-                'items' => [
-                    User::STATUS_ENABLED => Yii::t('AdminModule.user', 'Enabled'),
-                    User::STATUS_DISABLED => Yii::t('AdminModule.user', 'Disabled'),
-                    User::STATUS_NEED_APPROVAL => Yii::t('AdminModule.user', 'Unapproved'),
-                ],
+                'items' => User::getStatusOptions(false),
+            ];
+
+            $definition['elements']['User']['elements']['visibility'] = [
+                'type' => 'dropdownlist',
+                'class' => 'form-control',
+                'items' => User::getVisibilityOptions(),
             ];
         }
 
         // Change Password Form
-        if ($canEditAdminFields) {
+        if ($canEditPassword) {
             $definition['elements']['Password'] = [
                 'type' => 'form',
                 'title' => Yii::t('AdminModule.user', 'Password'),
@@ -217,12 +228,12 @@ class UserController extends Controller
         $form = new HForm($definition);
         $form->models['User'] = $user;
         $form->models['Profile'] = $profile;
-        if ($canEditAdminFields) {
+        if ($canEditPassword) {
             $form->models['Password'] = $password;
         }
 
         if ($form->submitted('save') && $form->validate()) {
-            if ($canEditAdminFields) {
+            if ($canEditPassword) {
                 if (!empty($password->newPassword)) {
                     $password->setPassword($password->newPassword);
                 }
@@ -250,11 +261,17 @@ class UserController extends Controller
         $registration->enableEmailField = true;
         $registration->enableUserApproval = false;
         $registration->enableMustChangePassword = true;
+
         if ($registration->submitted('save') && $registration->validate() && $registration->register()) {
             return $this->redirect(['edit', 'id' => $registration->getUser()->id]);
         }
 
-        return $this->render('add', ['hForm' => $registration]);
+        return $this->render('add', [
+            'hForm' => $registration,
+            'canInviteByEmail' => Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInviteByEmail'),
+            'canInviteByLink' => Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInviteByLink'),
+            'adminIsAlwaysAllowed' => false,
+        ]);
     }
 
     /**
@@ -351,28 +368,11 @@ class UserController extends Controller
 
         $this->checkUserAccess($user);
 
-        if (!static::canImpersonate($user)) {
+        if (!Yii::$app->user->impersonate($user)) {
             throw new HttpException(403);
         }
 
-        Yii::$app->user->switchIdentity($user);
-
         return $this->goHome();
-    }
-
-    /**
-     * Determines if the current user can impersonate given user.
-     *
-     * @param User $user
-     * @return boolean can impersonate
-     */
-    public static function canImpersonate($user)
-    {
-        if (!Yii::$app->getModule('admin')->allowUserImpersonate) {
-            return false;
-        }
-
-        return Yii::$app->user->can([new ManageUsers()]) && $user->id != Yii::$app->user->getIdentity()->id;
     }
 
     /**
@@ -413,7 +413,10 @@ class UserController extends Controller
             'username',
             'email',
             'auth_mode',
-            'tags',
+            [
+                'class' => ArrayColumn::class,
+                'attribute' => 'tags',
+            ],
             'language',
             'time_zone',
             [

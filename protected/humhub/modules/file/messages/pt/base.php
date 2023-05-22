@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Open</strong> file' => '<strong>Abrir</strong> ficheiro',
-  '<strong>Upload</strong> error' => 'Erro ao <strong>actualizar</strong>',
+  '<strong>Upload</strong> error' => 'Erro de <strong>carregamento</strong>',
   'Close' => 'Fechar',
   'Could not find requested file variant!' => 'Não foi possível encontrar a versão do ficheiro solicitada!',
   'Could not find requested file!' => 'Não foi possível encontrar o ficheiro solicitado!',
@@ -12,7 +12,6 @@ return array (
   'File {fileName} could not be uploaded!' => 'Não foi possível carregar o ficheiro {fileName}!',
   'Insufficient permissions!' => 'Permissões insuficientes!',
   'Invalid Mime-Type' => 'Mime-Type inválido',
-  'Invalid file name detected!' => 'Nome de ficheiro inválido detectado!',
   'Last update by:' => 'Última atualização por:',
   'Size:' => 'Tamanho:',
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'Lamento, apenas é possível carregar até {n,plural,=1{# ficheiro} other{# ficheiros}} simultaneamente.',

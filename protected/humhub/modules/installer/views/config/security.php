@@ -1,7 +1,10 @@
 <?php
 
-use yii\widgets\ActiveForm;
+use humhub\modules\installer\forms\SecurityForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\bootstrap\Html;
+
+/* @var SecurityForm $model */
 ?>
 <div id="name-form" class="panel panel-default animated fadeIn">
 
@@ -20,9 +23,9 @@ use yii\bootstrap\Html;
         <?= $form->field($model, 'internalRequireApprovalAfterRegistration')->checkbox(); ?>
         <?= $form->field($model, 'allowGuestAccess')->checkbox(); ?>
         <?= $form->field($model, 'canInviteExternalUsersByEmail')->checkbox(); ?>
+        <?= $form->field($model, 'canInviteExternalUsersByLink')->checkbox(); ?>
         <?= $form->field($model, 'enableFriendshipModule')->checkbox(); ?>
 
-        <br>
         <hr>
 
         <?php echo Html::submitButton(Yii::t('base', 'Next'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>

@@ -15,12 +15,12 @@ modules:
     - tests\codeception\_support\WebHelper
     - tests\codeception\_support\DynamicFixtureHelper
   config:
-    WebDriver:
-      url: 'http://localhost:8080/'
-      browser: chrome
-      window_size: maximize
-      restart: true
-      port: 4444
-      capabilities:
-          chromeOptions:
-              w3c: false
+      WebDriver:
+          url: 'http://localhost:8080/'
+          browser: chrome
+          port: 4444
+          window_size: maximize
+          restart: true
+          capabilities:
+            chromeOptions:
+              args: ["--lang=en-US"]

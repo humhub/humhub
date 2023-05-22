@@ -8,14 +8,12 @@
 
 namespace humhub\modules\comment\models;
 
-use humhub\modules\comment\Module;
-use Yii;
-use yii\base\Exception;
-use yii\db\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\comment\activities\NewComment;
 use humhub\modules\comment\live\NewComment as NewCommentLive;
+use humhub\modules\comment\Module;
 use humhub\modules\comment\notifications\NewComment as NewCommentNotification;
+use humhub\modules\comment\widgets\ShowMore;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
@@ -23,6 +21,10 @@ use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use Yii;
+use yii\base\Exception;
+use yii\db\ActiveRecord;
+use yii\helpers\Url;
 
 
 /**
@@ -36,11 +38,14 @@ use humhub\modules\user\models\User;
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
+ * @property-read string $url @since 1.10.2
  *
  * @since 0.5
  */
 class Comment extends ContentAddonActiveRecord implements ContentOwner
 {
+    const CACHE_KEY_COUNT = 'commentCount_%s_%s';
+    const CACHE_KEY_LIMITED = 'commentsLimited_%s_%s';
 
     /**
      * @inheritdoc
@@ -116,8 +121,8 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
     public static function flushCommentCache($model, $id)
     {
-        Yii::$app->cache->delete('commentCount_' . $model . '_' . $id);
-        Yii::$app->cache->delete('commentsLimited_' . $model . '_' . $id);
+        Yii::$app->cache->delete(sprintf(static::CACHE_KEY_COUNT, $model, $id));
+        Yii::$app->cache->delete(sprintf(static::CACHE_KEY_LIMITED, $model, $id));
     }
 
     /**
@@ -142,7 +147,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         $mentionedUsers = (isset($processResult['mentioning'])) ? $processResult['mentioning'] : [];
 
         if ($insert) {
-            $followerQuery = $this->getCommentedRecord()->getFollowers(null, true, true);
+            $followerQuery = $this->getCommentedRecord()->getFollowersWithNotificationQuery();
 
             // Remove mentioned users from followers query to avoid double notification
             if (count($mentionedUsers) !== 0) {
@@ -198,13 +203,14 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     /**
      * Returns a limited amount of comments
      *
-     * @param $model
-     * @param $id
+     * @param string $model
+     * @param int $id
      * @param int|null $limit when null the default limit will used
+     * @param int|null $currentCommentId ID of the current Comment which should be visible on the limited result
      *
      * @return Comment[] the comments
      */
-    public static function GetCommentsLimited($model, $id, $limit = null)
+    public static function GetCommentsLimited($model, $id, $limit = null, $currentCommentId = null)
     {
         if ($limit === null) {
             /** @var Module $module */
@@ -212,24 +218,54 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             $limit = $module->commentsPreviewMax;
         }
 
-        $cacheID = sprintf("commentsLimited_%s_%s", $model, $id);
-        $comments = Yii::$app->cache->get($cacheID);
+        if ($model === self::class && $currentCommentId == $id) {
+            // No need to find current comment in sub-comments when parent comment is the current
+            $currentCommentId = null;
+        }
+        $currentCommentId = intval($currentCommentId);
+        $useCaching = empty($currentCommentId);// No need to cache comments for deep single comment view
 
-        if ($comments === false) {
-            $commentCount = self::GetCommentCount($model, $id);
-
-            $query = Comment::find();
-            $query->offset($commentCount - $limit);
-            $query->orderBy('created_at ASC');
-            $query->limit($limit);
-            $query->where(['object_model' => $model, 'object_id' => $id]);
-            $query->joinWith('user');
-
-            $comments = $query->all();
-            Yii::$app->cache->set($cacheID, $comments, Yii::$app->settings->get('cache.expireTime'));
+        $cacheID = sprintf(static::CACHE_KEY_LIMITED, $model, $id);
+        $comments = $useCaching ? Yii::$app->cache->get($cacheID) : [];
+        if (!is_array($comments)) {
+            $comments = [];
         }
 
-        return $comments;
+        if (!isset($comments[$limit]) || !is_array($comments[$limit])) {
+            $objectCondition = ['object_model' => $model, 'object_id' => $id];
+            $query = Comment::find();
+            if ($currentCommentId && Comment::findOne(['id' => $currentCommentId])) {
+                // Get the current and one previous comment
+                $nearCommentIds = Comment::find()
+                    ->select('id')
+                    ->where($objectCondition)
+                    ->andWhere(['<=', 'id', $currentCommentId])
+                    ->orderBy('created_at DESC')
+                    ->limit($limit)
+                    ->column();
+                // Get 1 newer comment after the current comment
+                $newerCommentIds = Comment::find()
+                    ->select('id')
+                    ->where($objectCondition)
+                    ->andWhere(['>', 'id', $currentCommentId])
+                    ->orderBy('created_at ASC')
+                    ->limit(1)
+                    ->column();
+                $nearCommentIds = array_merge($nearCommentIds, $newerCommentIds);
+                $query->where(['IN', 'id', $nearCommentIds]);
+            } else {
+                $query->where($objectCondition);
+                $query->limit($limit);
+            }
+            $query->orderBy('created_at DESC, id dESC');
+            $comments[$limit] = array_reverse($query->all());
+
+            if ($useCaching) {
+                Yii::$app->cache->set($cacheID, $comments, Yii::$app->settings->get('cache.expireTime'));
+            }
+        }
+
+        return $comments[$limit];
     }
 
     /**
@@ -242,7 +278,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
      */
     public static function GetCommentCount($model, $id)
     {
-        $cacheID = sprintf("commentCount_%s_%s", $model, $id);
+        $cacheID = sprintf(static::CACHE_KEY_COUNT, $model, $id);
         $commentCount = Yii::$app->cache->get($cacheID);
 
         if ($commentCount === false) {
@@ -251,6 +287,44 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         }
 
         return $commentCount;
+    }
+
+    /**
+     * Find more comments before or after a requested comment
+     *
+     * @param int|null $commentId ID of the latest comment from previous query
+     * @param string|null $type
+     * @param int|null $pageSize
+     * @param Comment|ContentActiveRecord
+     * @return Comment[]
+     */
+    public static function getMoreComments($object, ?int $commentId = null, ?string $type = null, ?int $pageSize = null): array
+    {
+        if (!$pageSize) {
+            /** @var Module $module */
+            $module = Yii::$app->getModule('comment');
+            $pageSize = $module->commentsBlockLoadSize;
+        }
+
+        $query = Comment::find()
+            ->where(['object_model' => get_class($object), 'object_id' => $object->getPrimaryKey()])
+            ->limit($pageSize);
+
+        if ($type === ShowMore::TYPE_NEXT) {
+            $query->orderBy(['created_at' => SORT_ASC]);
+            if ($commentId) {
+                $query->andWhere(['>', 'id', $commentId]);
+            }
+            $comments = $query->all();
+        } else {
+            $query->orderBy(['created_at' => SORT_DESC]);
+            if ($commentId) {
+                $query->andWhere(['<', 'id', $commentId]);
+            }
+            $comments = array_reverse($query->all());
+        }
+
+        return $comments;
     }
 
     /**
@@ -311,5 +385,21 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     public static function isSubComment($object)
     {
         return $object instanceof Comment && $object->object_model === Comment::class;
+    }
+
+    /**
+     * Get comment permalink URL
+     *
+     * @param bool|string $scheme the URI scheme to use in the generated URL
+     * @return string
+     * @since 1.10.2
+     */
+    public function getUrl($scheme = true): string
+    {
+        if ($this->isNewRecord) {
+            return $this->content->getUrl();
+        }
+
+        return Url::to(['/comment/perma', 'id' => $this->id], $scheme);
     }
 }

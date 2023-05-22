@@ -74,7 +74,6 @@ class MailContentEntry extends \yii\base\Widget
         } elseif ($this->content instanceof ContentOwner) {
             $content = RichTextToEmailHtmlConverter::process($this->content->getContentDescription(), [
                 RichTextToEmailHtmlConverter::OPTION_RECEIVER_USER => $this->receiver,
-                RichTextToHtmlConverter::OPTION_LINK_AS_TEXT => true,
                 RichTextToHtmlConverter::OPTION_CACHE_KEY => RichTextToHtmlConverter::buildCacheKeyForContent($this->content, 'mail_entry'),
             ]);
 

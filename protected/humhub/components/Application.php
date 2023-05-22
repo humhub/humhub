@@ -29,6 +29,16 @@ class Application extends \yii\web\Application
     private $_homeUrl = null;
 
     /**
+     * @var string Minimum PHP version that recommended to work without issues
+     */
+    public $minRecommendedPhpVersion;
+
+    /**
+     * @var string Minimum PHP version that may works but probably with small issues
+     */
+    public $minSupportedPhpVersion;
+
+    /**
      * @inheritdoc
      */
     public function __construct($config = [])
@@ -37,6 +47,22 @@ class Application extends \yii\web\Application
         unset($config['components']['formatterApp']);
 
         parent::__construct($config);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        if (version_compare(phpversion(), $this->minSupportedPhpVersion, '<')) {
+            throw new \Exception(sprintf(
+                'Installed PHP Version is too old! Required minimum version is PHP %s (Installed: %s)',
+                $this->minSupportedPhpVersion,
+                phpversion()
+            ));
+        }
+
+        parent::init();
     }
 
     /**
@@ -99,5 +125,17 @@ class Application extends \yii\web\Application
         \yii\base\Widget::$autoIdPrefix = 'h' . mt_rand(1, 999999) . 'w';
 
         return parent::beforeAction($action);
+    }
+
+    /**
+     * Switch current language
+     *
+     * @param string $value
+     */
+    public function setLanguage($value)
+    {
+        if (!empty($value)) {
+            $this->language = $value;
+        }
     }
 }

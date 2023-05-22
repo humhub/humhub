@@ -6,6 +6,7 @@ return array (
   'Login required for this section.' => 'Dla tej sekcji wymagane jest zalogowanie się.',
   'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => 'Tryb konserwacji aktywny: Zostałeś automatycznie wylogowany i nie będziesz miał dostępu do platformy do czasu zakończenia prac konserwacyjnych.',
   'Maintenance mode is active. Only Administrators can access the platform.' => 'Tryb konserwacji jest aktywny. Tylko administratorzy mają dostęp do platformy.',
+  'The specified URL cannot be called directly.' => 'Podany adres nie może zostać wywołany bezpośrednio.',
   'You are not allowed to perform this action.' => 'Brak uprawnień do przeprowadzenia tej operacji.',
   'You are not permitted to access this section.' => 'Nie masz uprawnień do przeglądania tej sekcji.',
   'You must change password.' => 'Musisz zmienić hasło.',

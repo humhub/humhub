@@ -1,10 +1,13 @@
 <?php
-return array (
-  'Author' => '',
-  'Content' => 'Turinys',
-  'Content Type' => '',
-  'Scope' => 'Apimtis',
-  'Sorting' => 'Rūšiavimas',
-  'Topic' => '',
-  'Visibility' => 'Matomumas',
-);
+
+return [
+    'Content' => 'Turinys',
+    'Scope' => 'Apimtis',
+    'Sorting' => 'Rūšiavimas',
+    'Visibility' => 'Matomumas',
+    'Author' => '',
+    'Content Type' => '',
+    'Date from' => '',
+    'Date to' => '',
+    'Topic' => '',
+];

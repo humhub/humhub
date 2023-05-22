@@ -41,8 +41,13 @@ class ThemeHelper
 
         // Collect themes provided by modules
         foreach (Yii::$app->getModules() as $id => $module) {
-            if (is_array($module)) {
-                $module = Yii::$app->getModule($id);
+            if (is_array($module) || is_string($module)) {
+                try {
+                    $module = Yii::$app->getModule($id);
+                } catch (\Exception $ex) {
+                    Yii::error('Could not load module to fetch themes! Module: ' . $id . ' Error: ' . $ex->getMessage(), 'ui');
+                    continue;
+                }
             }
 
             $moduleThemePath = $module->getBasePath() . DIRECTORY_SEPARATOR . 'themes';

@@ -5,10 +5,17 @@ on:
         branches:
             - master
             - develop
+        paths-ignore:
+            - '*.md'
     pull_request:
         branches:
             - master
             - develop
+        paths-ignore:
+            - '*.md'
+
+permissions:
+  contents: read
 
 jobs:
     tests:
@@ -25,10 +32,10 @@ jobs:
                     - ubuntu-latest
 
                 php-version:
-                    - "7.2"
-                    - "7.3"
                     - "7.4"
                     - "8.0"
+                    - "8.1"
+                    - "8.2"
 
                 mysql-version:
                     - "5.7"
@@ -44,23 +51,27 @@ jobs:
                 options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
         steps:
+            - name: Start Selenium
+              run: |
+                docker run --detach --net=host --shm-size="2g" selenium/standalone-chrome
+
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
 
-            - name: Setup cache environment
-              id: cache-env
-              uses: shivammathur/cache-extensions@v1
-              with:
-                php-version: ${{ matrix.php-version }}
-                extensions: ${{ env.extensions }}
-                key: ${{ env.key }}
+#            - name: Setup cache environment
+#              id: cache-env
+#              uses: shivammathur/cache-extensions@v1
+#              with:
+#                php-version: ${{ matrix.php-version }}
+#                extensions: ${{ env.extensions }}
+#                key: ${{ env.key }}
 
-            - name: Cache extensions
-              uses: actions/cache@v1
-              with:
-                path: ${{ steps.cache-env.outputs.dir }}
-                key: ${{ steps.cache-env.outputs.key }}
-                restore-keys: ${{ steps.cache-env.outputs.key }}
+#            - name: Cache extensions
+#              uses: actions/cache@v1
+#              with:
+#                path: ${{ steps.cache-env.outputs.dir }}
+#                key: ${{ steps.cache-env.outputs.key }}
+#                restore-keys: ${{ steps.cache-env.outputs.key }}
 
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
@@ -85,12 +96,12 @@ jobs:
                             php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
 
             - name: Install dependencies with composer
-              run: composer update --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi
+              run: composer install --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi
 
-            - name: Verify MySQL connection from host
-              run: |
-                sudo apt-get update && sudo apt-get install -y mysql-client
-                mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -proot -e "SHOW DATABASES"
+#            - name: Verify MySQL connection from host
+#              run: |
+#                sudo apt-get update && sudo apt-get install -y mysql-client-8.0 mysql-common
+#                mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -proot -e "SHOW DATABASES"
 
             - name: Install npm dependencies
               run: npm install
@@ -108,10 +119,10 @@ jobs:
               run: php protected/humhub/tests/codeception/bin/yii search/rebuild
 
             - name: Run test server
-              run: php --server 127.0.0.1:8080 &>/tmp/phpserver.log &
+              run: php --server 127.0.0.1:8080 index-test.php &>/tmp/phpserver.log &
 
-            - name: Setup chromedriver
-              run: chromedriver --url-base=/wd/hub &
+#            - name: Setup chromedriver
+#              run: chromedriver --url-base=/wd/hub &
 
             - name: Valdiate test server
               run: sleep 5 && curl --fail --head http://127.0.0.1:8080/index-test.php

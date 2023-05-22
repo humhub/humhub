@@ -50,6 +50,8 @@ class AbstractRichTextEditor extends JsInputWidget
 
     const LAYOUT_INLINE = 'inline';
 
+    const BACKUP_COOKIE_KEY = 'RichTextEditor.backup';
+
     /**
      * @var string richtext feature preset e.g: 'markdown', 'normal', 'full'
      */
@@ -84,6 +86,17 @@ class AbstractRichTextEditor extends JsInputWidget
     protected $mentioningRoute = "/search/mentioning";
 
     /**
+     * Back up content each X seconds, 0 - to don't back up
+     * NOTE: If id is not specified for this editor
+     *       then interval will be forced to 0,
+     *       so back up will be disabled,
+     *       because impossible to back up with random id
+     *
+     * @var int
+     */
+    public $backupInterval = 3;
+
+    /**
      * RichText plugin supported for this instance.
      * By default all features will be included.
      *
@@ -104,6 +117,12 @@ class AbstractRichTextEditor extends JsInputWidget
      * @var array
      */
     public $pluginOptions = [];
+
+    /**
+     * Options for field of active form
+     * @var array
+     */
+    public $fieldOptions = [];
 
     /**
      * If set to true the picker will be focused automatically.
@@ -140,15 +159,29 @@ class AbstractRichTextEditor extends JsInputWidget
      */
     public $label = false;
 
-        /**
-         * @inhertidoc
-         */
+    /**
+     * @inhertidoc
+     */
+    public function beforeRun()
+    {
+        if (empty($this->id)) {
+            // No reason to back up a content with random input ID,
+            // because on next page reloading we cannot know previous input ID
+            $this->backupInterval = 0;
+        }
+
+        return parent::beforeRun();
+    }
+
+    /**
+     * @inhertidoc
+     */
     public function run()
     {
         $inputOptions = $this->getInputAttributes();
 
         if ($this->form != null) {
-            $input = $this->form->field($this->model, $this->attribute)->textarea($inputOptions)->label(false);
+            $input = $this->form->field($this->model, $this->attribute, $this->fieldOptions)->textarea($inputOptions)->label(false);
             $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
             $richText = $this->getLabel() . $richText;
         } elseif ($this->model != null) {
@@ -161,7 +194,7 @@ class AbstractRichTextEditor extends JsInputWidget
             $richText = $this->getLabel() . $richText;
         }
 
-        return $input . $richText . $this->prepend();
+        return $richText . $input . $this->prepend();
     }
 
     /**
@@ -238,6 +271,8 @@ class AbstractRichTextEditor extends JsInputWidget
             'exclude' => $this->exclude,
             'include' => $this->include,
             'mentioning-url' => $this->getMentioningUrl(),
+            'backup-interval' => $this->backupInterval,
+            'backup-cookie-key' => self::BACKUP_COOKIE_KEY,
             'plugin-options' => $this->pluginOptions,
             'focus' => $this->focus
         ];

@@ -8,8 +8,6 @@ use Laminas\Ldap\Ldap;
 use Laminas\Ldap\Filter;
 use Laminas\Ldap\Dn;
 use Laminas\Ldap\Exception;
-use Laminas\Ldap\Exception\LdapException;
-use Traversable;
 use Laminas\Ldap\ErrorHandler;
 
 
@@ -42,7 +40,7 @@ class ZendLdap extends Ldap
      * @throws Exception\LdapException
      */
     public function multiPageSearch(
-        $filter, $basedn = null, $scope, array $attributes = array(), $sort = null,
+        $filter, $basedn, $scope, array $attributes = array(), $sort = null,
         $collectionClass = null, $timelimit = 0, $pageSize = 10000
     )
     {

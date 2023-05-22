@@ -48,6 +48,7 @@ return array (
   'Wrap in bullet list' => 'Obejmij w listę punktowaną',
   'Wrap in ordered list' => 'Obejmij w listę po kolei',
   '[Code Block]' => '[Blok Kodu]',
+  '[Image]' => '[Obraz]',
   '[Invalid file]' => '[błędny plik]',
   '[Table]' => '[Tabela]',
 );

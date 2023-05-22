@@ -15,10 +15,12 @@
  * of the guide for details.
  *
  * NOTE: this file must be saved in UTF-8 encoding.
+ *
+ * @author: Yaro (https://yaro.info) glodov@gmail.com
  */
 return [
-    'Add topic' => '',
-    'No topics found for the given query' => '',
-    'Select {n,plural,=1{topic} other{topics}}' => '',
-    'This field only allows a maximum of {n,plural,=1{# topic} other{# topics}}' => '',
+    'Select topic...' => 'Виберіть тему...',
+    'No topics found for the given query' => 'Тем за запитом не знайдено',
+    'Select {n,plural,=1{topic} other{topics}}' => 'Виберіть {n,plural,=1{тему} other{теми}}',
+    'This field only allows a maximum of {n,plural,=1{# topic} other{# topics}}' => 'Це поле дозволяє максимально {n,plural,=1{# тему} other{# теми}}',
 ];

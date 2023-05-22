@@ -8,7 +8,6 @@
 
 namespace humhub\modules\content\models;
 
-
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use yii\db\ActiveRecord;
@@ -89,5 +88,4 @@ class ContentContainer extends ActiveRecord
         $instance = static::findOne(['guid' => $guid]);
         return $instance ? $instance->getPolymorphicRelation() : null;
     }
-
 }

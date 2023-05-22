@@ -21,11 +21,14 @@ use humhub\modules\space\widgets\MembershipButton;
                 <div class="controls controls-header pull-right">
                     <?= HeaderControls::widget(['widgets' => [
                         [InviteButton::class, ['space' => $container], ['sortOrder' => 10]],
-                        [MembershipButton::class, ['space' => $container], ['sortOrder' => 20]],
+                        [MembershipButton::class, [
+                            'space' => $container,
+                            'options' => ['becomeMember' => ['mode' => 'link']],
+                        ], ['sortOrder' => 20]],
                         [FollowButton::class, [
                             'space' => $container,
                             'followOptions' => ['class' => 'btn btn-primary'],
-                            'unfollowOptions' => ['class' => 'btn btn-info']
+                            'unfollowOptions' => ['class' => 'btn btn-primary active']
                         ], ['sortOrder' => 30]]
                     ]]); ?>
                     <?= HeaderControlsMenu::widget(['space' => $container]); ?>

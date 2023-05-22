@@ -132,7 +132,7 @@ class Collection extends Component
     protected function getDefaultClients()
     {
         $clients = [];
-        $clients['password'] = ['class' => Password::class];
+        $clients['local'] = ['class' => Password::class];
         return $clients;
     }
 

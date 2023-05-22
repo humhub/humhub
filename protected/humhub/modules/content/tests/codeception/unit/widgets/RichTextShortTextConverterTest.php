@@ -46,6 +46,13 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
             "Test...", ['maxLength' => 5]);
     }
 
+    public function testConvertMultiByteTextWithMaxLength()
+    {
+        $this->assertConversionResult(
+            '相*ウ*ヨ報<br />夫チエ**景東署**シイ連苦ワ径特サニコワ政深ちぎ見敗ぜあじも内庫ゅしづぽ児意泉ねッを黒能わぱふ緩昇ろじ帯北悩びぞば。',
+            "相ウヨ報 夫チエ景東...", [RichTextToShortTextConverter::OPTION_MAX_LENGTH => 10]);
+    }
+
     /**
      * @throws \yii\base\InvalidConfigException
      */
@@ -515,6 +522,17 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
             "This is a list 1. First Element 2. Second Element");
     }
 
+    public function testConvertOrderedListWithCustomNumbers()
+    {
+        $this->assertConversionResult(
+            "This is a list\n\n21. November - First line\n22. November - Second line\n23. November - Third line",
+            'This is a list 21. November - First line 22. November - Second line 23. November - Third line');
+
+        $this->assertConversionResult(
+            "This is a list\n\n29. November - First line\n24. November - Second line\n15. November - Third line",
+            'This is a list 29. November - First line 24. November - Second line 15. November - Third line');
+    }
+
     public function testConvertOrderedSubList()
     {
         $this->assertConversionResult(
@@ -781,7 +799,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
             "This **is a long** text we will truncate",
             "This is a...", [
             RichTextToShortTextConverter::OPTION_CACHE_KEY => 'test2',
-            RichTextToShortTextConverter::OPTION_MAX_LENGTH => 11
+            RichTextToShortTextConverter::OPTION_MAX_LENGTH => 9
             ]);
 
         $this->assertConversionResult(

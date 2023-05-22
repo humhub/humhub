@@ -6,7 +6,7 @@
     .btn_container {
         position: relative;
 
-        .label-public {
+        .label-container {
             position: absolute;
             right: 40px;
             top: 11px;
@@ -23,10 +23,29 @@
     }
 }
 
-#contentFormError {
-    color: @danger;
-    padding-left: 0;
-    list-style: none;
+#contentFormBody {
+    .form-group, .help-block-error {
+        margin: 0;
+    }
+    .contentForm_options {
+        .form-group {
+            margin-bottom: 15px;
+            .checkbox label {
+                padding-left: 22px;
+                input[type=checkbox] {
+                    position: absolute;
+                    top: 4px;
+                    left: 0;
+                    &:focus {
+                        border-color: #ccc !important;
+                        &:checked {
+                            border-color: @info !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Empty stream info
@@ -162,6 +181,7 @@
 
     .wall-entry-body {
         padding-left: @wallEntryContentLeftPadding;
+        padding-right: @wallEntryContentLeftPadding;
 
         .wall-entry-content {
             margin-bottom: 5px;
@@ -206,9 +226,8 @@
         margin-bottom: 0;
 
         .comment {
-            .show-all-link {
+            .showMore a {
                 font-size: 12px;
-                cursor: pointer;
             }
         }
     }
@@ -280,6 +299,7 @@
 @media (max-width: 767px) {
     .wall-entry .wall-entry-body {
         padding-left: @wallEntryContentLeftPaddingMobile;
+        padding-right: @wallEntryContentLeftPaddingMobile;
     }
 
     #wallStream {
@@ -373,8 +393,6 @@
 
         .btn, .label {
             box-shadow: 0 0 2px @text-color-secondary;
-            -webkit-box-shadow: 0 0 2px @text-color-secondary;
-            -moz-box-shadow: 0 0 2px @text-color-secondary;
         }
     }
 }

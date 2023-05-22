@@ -195,9 +195,9 @@ class HForm extends \yii\base\Component
     {
         $output = "";
         foreach ($buttons as $buttonName => $definition) {
-            $definition['isVisible'] = isset($definition['isVisible']) ? $definition['isVisible'] : true;
-            if ($definition['type'] == 'submit' && $definition['isVisible']) {
-                $output .= \yii\helpers\Html::submitButton($definition['label'], ['name' => $buttonName, 'class' => $definition['class'], 'data-ui-loader' => '']);
+            $isVisible = $definition['isVisible'] ?? true;
+            if ($definition['type'] == 'submit' && $isVisible) {
+                $output .= \yii\helpers\Html::submitButton($definition['label'], array_merge(['name' => $buttonName, 'class' => $definition['class'], 'data-ui-loader' => ''], $definition['options'] ?? []));
                 $output .= "&nbsp;";
             }
         }
@@ -259,7 +259,8 @@ class HForm extends \yii\base\Component
                     case 'multiselectdropdown':
                         $field = $this->form->field($model, $name)->widget(MultiSelect::class, [
                             'items' => $definition['items'],
-                            'options' => $definition['options']
+                            'options' => $definition['options'],
+                            'maxSelection' => $definition['maxSelection'] ?? 50,
                         ]);
                         break;
                     case 'dropdownlist':
@@ -273,7 +274,7 @@ class HForm extends \yii\base\Component
                         break;
                     case 'checkboxlist':
                         if (isset($options['readOnly']) && $options['readOnly']) {
-                            $options['disabled'] = 'disabled';
+                            $options['itemOptions']['disabled'] = 'disabled';
                         }
 
                         $value = $model->$name;
@@ -332,6 +333,11 @@ class HForm extends \yii\base\Component
                         $field = $this->form->field($model, $name)->widget(SortOrderField::class, $options);
                         break;
                     default:
+                        if (method_exists($definition['type'], 'widget')) {
+                            $field = $this->form->field($model, $name)->widget($definition['type'], $options);
+                            break;
+                        }
+
                         return "Field Type " . $definition['type'] . " not supported by Compat HForm";
                 }
 

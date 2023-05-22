@@ -61,10 +61,34 @@ class Module extends \humhub\components\Module
     public $minimumSpaceUrlLength = 2;
 
     /**
-     * @var bool hide about page in space menu
+     * @var bool hide about page in space menu (default value for advanced settings page)
      * @since 1.7
      */
     public $hideAboutPage = false;
+
+    /**
+     * @var bool Hide "Spaces" in top menu
+     * @since 1.10
+     */
+    public $hideSpacesPage = false;
+
+    /**
+     * @var bool Hide Activity Sidebar Widget (default value for advanced settings page)
+     * @since 1.13
+     */
+    public $hideActivities = false;
+
+    /**
+     * @var bool Hide Members (default value for advanced settings page)
+     * @since 1.13
+     */
+    public $hideMembers = false;
+
+    /**
+     * @var bool Hide Followers (default value for advanced settings page)
+     * @since 1.13
+     */
+    public $hideFollowers = false;
 
     /**
      * @inheritdoc
@@ -80,6 +104,7 @@ class Module extends \humhub\components\Module
         }
 
         return [
+            new permissions\SpaceDirectoryAccess(),
             new permissions\CreatePrivateSpace(),
             new permissions\CreatePublicSpace(),
         ];

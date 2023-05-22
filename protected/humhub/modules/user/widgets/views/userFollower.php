@@ -3,15 +3,16 @@
 use yii\helpers\Html;
 use humhub\modules\user\models\User;
 
-$followers = $user->getFollowers(User::find()->limit(16));
+/* @var User[] $followers */
+/* @var User[] $following */
 ?>
-<?php if (count($followers) > 0) { ?>
+<?php if (count($followers) > 0) : ?>
     <div class="panel panel-default follower" id="profile-follower-panel">
 
         <!-- Display panel menu widget -->
         <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'profile-follower-panel']); ?>
 
-        <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>User</strong> followers'); ?></div>
+        <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>Followers</strong>'); ?></div>
 
         <div class="panel-body">
             <?php foreach ($followers as $follower): ?>
@@ -25,19 +26,16 @@ $followers = $user->getFollowers(User::find()->limit(16));
             <?php endforeach; ?>
         </div>
     </div>
-<?php } ?>
+<?php endif; ?>
 
-<?php
-$following = $user->getFollowingObjects(User::find()->limit(16));
-?>
-<?php if (count($following) > 0) { ?>
+<?php if (count($following) > 0) : ?>
     <div class="panel panel-default follower" id="profile-following-panel">
 
         <!-- Display panel menu widget -->
         <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'profile-following-panel']); ?>
 
         <div class="panel-heading">
-            <?php echo Yii::t('UserModule.base', '<strong>Following</strong> user'); ?>
+            <?php echo Yii::t('UserModule.base', '<strong>Following</strong>'); ?>
         </div>
 
         <div class="panel-body">
@@ -52,5 +50,4 @@ $following = $user->getFollowingObjects(User::find()->limit(16));
             <?php endforeach; ?>
         </div>
     </div>
-
-<?php } ?>
+<?php endif; ?>

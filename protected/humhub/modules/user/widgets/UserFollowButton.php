@@ -10,7 +10,6 @@ namespace humhub\modules\user\widgets;
 
 use Yii;
 use yii\bootstrap\Html;
-use humhub\modules\friendship\models\Friendship;
 
 /**
  * UserFollowButton
@@ -44,7 +43,7 @@ class UserFollowButton extends \yii\base\Widget
     /**
      * @var array options for unfollow button 
      */
-    public $unfollowOptions = ['class' => 'btn btn-info'];
+    public $unfollowOptions = ['class' => 'btn btn-primary active'];
 
     /**
      * @inheritdoc
@@ -52,10 +51,10 @@ class UserFollowButton extends \yii\base\Widget
     public function init()
     {
         if ($this->followLabel === null) {
-            $this->followLabel = Yii::t("UserModule.base", "Follow");
+            $this->followLabel = Yii::t('UserModule.base', 'Follow');
         }
         if ($this->unfollowLabel === null) {
-            $this->unfollowLabel = Yii::t("UserModule.base", "Unfollow");
+            $this->unfollowLabel = '<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('UserModule.base', 'Following');
         }
 
         if (!isset($this->followOptions['class'])) {
@@ -110,6 +109,11 @@ class UserFollowButton extends \yii\base\Widget
         // Add Action Url
         $this->followOptions['data-ui-loader'] = '';
         $this->unfollowOptions['data-ui-loader'] = '';
+
+        // Confirm action "Unfollow"
+        $this->unfollowOptions['data-action-confirm'] = Yii::t('SpaceModule.base', 'Would you like to unfollow {userName}?', [
+            '{userName}' => '<strong>' . Html::encode($this->user->getDisplayName()) . '</strong>'
+        ]);
 
         $module = Yii::$app->getModule('user');
 

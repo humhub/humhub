@@ -2,5 +2,6 @@
 return array (
   'Collapse' => 'Recolher',
   'Read more' => 'Ler mais',
-  'User Interface' => 'Interface humana',
+  'Reset filters' => 'Redefinir filtros',
+  'User Interface' => 'Interface de Utilizador',
 );

@@ -1,7 +1,9 @@
 <?php
 
-use humhub\modules\space\widgets\MembershipButton;
 use humhub\libs\Html;
+
+/* @var $spaceId int */
+/* @var $newMembershipButton string */
 ?>
 
 <div class="modal-dialog animated fadeIn">
@@ -9,7 +11,7 @@ use humhub\libs\Html;
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
-                <?= Yii::t('SpaceModule.base', "<strong>Request</strong> space membership"); ?>
+                <?= Yii::t('SpaceModule.base', '<strong>Request</strong> Membership'); ?>
             </h4>
         </div>
         <div class="modal-body">
@@ -28,5 +30,5 @@ use humhub\libs\Html;
     </div>
 </div>
 <script <?= Html::nonce() ?>>
-    $('#requestMembershipButton').replaceWith('<?= MembershipButton::widget(['space' => $space]) ?>');
+    $('[data-space-request-membership=<?= $spaceId ?>]').replaceWith('<?= $newMembershipButton ?>');
 </script>
