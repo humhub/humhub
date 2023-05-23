@@ -494,6 +494,7 @@ class ConfigController extends Controller
             $space->auto_add_new_members = 1;
             $space->color = '#6fdbe8';
             $space->save();
+            $space->refresh();
 
             // activate all available modules for this space
             foreach ($space->moduleManager->getAvailable() as $module) {
