@@ -82,7 +82,7 @@ class AdminMenu extends LeftNavigation
             'id' => 'spaces',
             'label' => Yii::t('AdminModule.base', 'Spaces'),
             'url' => ['/admin/space'],
-            'icon' => 'inbox',
+            'icon' => 'dot-circle-o',
             'sortOrder' => 400,
             'isActive' => MenuLink::isActiveState('admin', 'space'),
             'isVisible' => Yii::$app->user->can([

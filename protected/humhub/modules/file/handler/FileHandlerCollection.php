@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\handler;
 
+use humhub\modules\file\Module;
 use Yii;
 
 /**
@@ -57,6 +58,15 @@ class FileHandlerCollection extends \yii\base\Component
 
         $this->trigger(self::EVENT_INIT);
 
+        // Register default handlers
+        if ($this->type === self::TYPE_CREATE) {
+            /** @var Module $module */
+            $module = Yii::$app->getModule('file');
+            foreach ($module->defaultFileHandlers as $handlerClass) {
+                $this->register(new $handlerClass());
+            }
+        }
+
         // Register Core Handler
         if ($this->type === self::TYPE_EXPORT) {
             $this->register(Yii::createObject(['class' => DownloadFileHandler::class]));
@@ -91,10 +101,10 @@ class FileHandlerCollection extends \yii\base\Component
 
         foreach ($types as $type) {
             $handlers = array_merge($handlers, Yii::createObject([
-                        'class' => static::class,
-                        'file' => $file,
-                        'type' => $type
-                    ])->handlers);
+                'class' => static::class,
+                'file' => $file,
+                'type' => $type
+            ])->handlers);
         }
         return $handlers;
     }
@@ -104,7 +114,7 @@ class FileHandlerCollection extends \yii\base\Component
      */
     protected function sortHandler()
     {
-        usort($this->handlers, function(BaseFileHandler $a, BaseFileHandler $b) {
+        usort($this->handlers, function (BaseFileHandler $a, BaseFileHandler $b) {
             return strcmp($a->position, $b->position);
         });
     }

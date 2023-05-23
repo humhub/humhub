@@ -11,6 +11,7 @@ namespace humhub\modules\user\models\forms;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\Module;
+use humhub\modules\user\services\LinkRegistrationService;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
@@ -123,15 +124,12 @@ class Invite extends Model
      */
     public function getInviteLink($forceResetToken = false)
     {
-        /* @var $module Module */
-        $module = Yii::$app->getModule('user');
-        $settings = $module->settings;
-
-        $token = $settings->get('registration.inviteToken');
+        $linkRegistrationService = new LinkRegistrationService();
+        $token = $linkRegistrationService->getStoredToken();
         if ($forceResetToken || !$token) {
-            $token = Yii::$app->security->generateRandomString(\humhub\modules\user\models\Invite::LINK_TOKEN_LENGTH);
-            $settings->set('registration.inviteToken', $token);
+            $token = $linkRegistrationService->setNewToken();
         }
+
         return Url::to(['/user/registration/by-link', 'token' => $token], true);
     }
 }

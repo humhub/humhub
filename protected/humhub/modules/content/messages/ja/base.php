@@ -27,7 +27,7 @@ return array (
   'Content has been moved to {spacename}' => 'コンテンツは{spacename}に移動されました。',
   'Could not find requested content!' => '要求されたコンテンツが見つかりませんでした。',
   'Create as draft' => '下書きとして作成',
-  'Created at:' => '：に作成',
+  'Created at:' => '作成日時：',
   'Created by me' => '私が作成',
   'Creation time' => '作成時間',
   'Delete' => '削除',
