@@ -1,11 +1,11 @@
 <?php
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\admin\widgets;
+namespace humhub\modules\marketplace\widgets;
 
 use humhub\components\Module;
 use humhub\components\OnlineModule;
@@ -40,7 +40,7 @@ class ModuleCard extends Widget
         parent::init();
 
         if (empty($this->template)) {
-            $this->template = '<hr><div class="row">{card}</div>';
+            $this->template = '<div class="card card-module col-lg-3 col-md-4 col-sm-6 col-lg-12">{card}</div>';
         }
 
         if (empty($this->view)) {

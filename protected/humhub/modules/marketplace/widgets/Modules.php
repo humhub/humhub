@@ -1,20 +1,23 @@
 <?php
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\admin\widgets;
+namespace humhub\modules\marketplace\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\marketplace\Module;
+use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Button;
 use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
  * Modules displays the modules list
  *
- * @since 1.11
+ * @since 1.15
  * @author Luke
  */
 class Modules extends Widget
@@ -38,33 +41,40 @@ class Modules extends Widget
 
     private function initDefaultGroups()
     {
-        $modules = Yii::$app->moduleManager->getModules();
+        /* @var Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
 
-        $activeModules = [];
-        $inactiveModules = [];
-        foreach ($modules as $module) {
-            if ($module->isActivated) {
-                $activeModules[] = $module;
-            } else {
-                $inactiveModules[] = $module;
-            }
+        $updateModules = $marketplaceModule->onlineModuleManager->getAvailableUpdateModules();
+        if ($updateModulesCount = count($updateModules)) {
+            $updateAllButton = Button::primary(Yii::t('MarketplaceModule.base', 'Update all'))
+                ->options([
+                    'data-stop-title' => Icon::get('pause') . ' &nbsp; ' . Yii::t('MarketplaceModule.base', 'Stop updating'),
+                    'data-stop-class' => 'btn btn-warning pull-right',
+                ])
+                ->action('marketplace.updateAll')
+                ->loader(false)
+                ->cssClass('active pull-right');
+
+            $this->addGroup('availableUpdates', [
+                'title' => Yii::t('MarketplaceModule.base', 'Available Updates'),
+                'modules' => $updateModules,
+                'count' => $updateModulesCount,
+                'view' => '@humhub/modules/marketplace/widgets/views/moduleUpdateCard',
+                'groupTemplate' => '<div class="container-module-updates">' . $updateAllButton . '{group}</div>',
+                'moduleTemplate' => '<div class="card card-module col-lg-2 col-md-3 col-sm-4 col-xs-6">{card}</div>',
+                'sortOrder' => 10,
+            ]);
         }
 
-        $this->addGroup('active', [
-            'title' => Yii::t('AdminModule.modules', 'Active Modules'),
-            'modules' => $activeModules,
-            'count' => count($activeModules),
-            'noModulesMessage' => Yii::t('AdminModule.base', 'No modules installed yet. Install some to enhance the functionality!'),
-            'sortOrder' => 100,
-        ]);
-
-        $this->addGroup('inactive', [
-            'title' => Yii::t('AdminModule.modules', 'Inactive Modules'),
-            'modules' => $inactiveModules,
-            'count' => count($inactiveModules),
-            'noModulesMessage' => Yii::t('AdminModule.base', 'No modules installed yet. Install some to enhance the functionality!'),
-            'sortOrder' => 200,
-        ]);
+        $onlineModules = $marketplaceModule->onlineModuleManager->getNotInstalledModules();
+        if ($onlineModulesCount = count($onlineModules)) {
+            $this->addGroup('notInstalled', [
+                'title' => false,
+                'modules' => Yii::$app->moduleManager->filterModules($onlineModules),
+                'count' => $onlineModulesCount,
+                'sortOrder' => 200,
+            ]);
+        }
     }
 
     public function addGroup(string $groupType, array $group)

@@ -31,6 +31,11 @@ class BrowseController extends Controller
         ];
     }
 
+    public function actionIndex()
+    {
+        $this->subLayout = '@admin/views/layouts/module';
+        return $this->render('index');
+    }
 
     /**
      * Returns the thirdparty disclaimer

@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\admin\widgets;
+namespace humhub\modules\marketplace\widgets;
 
 use humhub\components\Module;
 use humhub\components\OnlineModule;

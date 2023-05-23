@@ -5,27 +5,20 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\MenuEntry;
+use humhub\widgets\Button;
 
 /* @var MenuEntry[] $entries */
-/* @var array $options */
 ?>
-
-<?= Html::beginTag('ul', $options)?>
-    <li class="dropdown ">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#"
-           aria-label="<?= Yii::t('base', 'Toggle stream entry menu'); ?>" aria-haspopup="true">
-            <?= Icon::get('dropdownToggle') ?>
-        </a>
-
-        <ul class="dropdown-menu pull-right">
-            <?php foreach ($entries as $entry) : ?>
-                <li>
-                    <?= $entry->render() ?>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    </li>
-<?= Html::endTag('ul')?>
+<?= Button::defaultType(Icon::get('cog') . Icon::get('dropdownToggle'))
+    ->options(['data-toggle' => 'dropdown'])
+    ->sm()
+    ->loader(false) ?>
+<ul class="dropdown-menu pull-right">
+    <?php foreach ($entries as $entry) : ?>
+        <li>
+            <?= $entry->render() ?>
+        </li>
+    <?php endforeach; ?>
+</ul>

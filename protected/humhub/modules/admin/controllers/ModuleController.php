@@ -29,11 +29,6 @@ class ModuleController extends Controller
     /**
      * @inheritdoc
      */
-    public $subLayout = '@admin/views/layouts/module';
-
-    /**
-     * @inheritdoc
-     */
     public $adminOnly = false;
 
     /**

@@ -6,10 +6,10 @@
  */
 
 use humhub\libs\Html;
-use humhub\modules\admin\widgets\ModuleControls;
-use humhub\modules\admin\widgets\ModuleStatus;
 use humhub\modules\marketplace\models\Module;
-use humhub\modules\marketplace\widgets\ModuleInstallActionButtons;
+use humhub\modules\marketplace\widgets\ModuleActionButtons;
+use humhub\modules\marketplace\widgets\ModuleControls;
+use humhub\modules\marketplace\widgets\ModuleStatus;
 use humhub\modules\ui\icon\widgets\Icon;
 
 /* @var Module $module */
@@ -30,5 +30,5 @@ use humhub\modules\ui\icon\widgets\Icon;
         <div><?= $module->latestVersion ?></div>
         <div><?= $module->description ?></div>
     </div>
-    <?= ModuleInstallActionButtons::widget(['module' => $module]) ?>
+    <?= ModuleActionButtons::widget(['module' => $module]) ?>
 </div>

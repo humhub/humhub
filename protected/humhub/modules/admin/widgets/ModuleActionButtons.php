@@ -30,7 +30,7 @@ class ModuleActionButtons extends Widget
     /**
      * @var string Template for buttons
      */
-    public $template = '<div class="card-footer text-right">{buttons}</div>';
+    public $template = '{buttons}';
 
     /**
      * @inheritdoc
@@ -42,14 +42,8 @@ class ModuleActionButtons extends Widget
         if ($this->module->isActivated) {
             if ($this->module->getConfigUrl() != '') {
                 $html .= Button::asLink(Yii::t('AdminModule.modules', 'Configure'), $this->module->getConfigUrl())
-                    ->cssClass('btn btn-sm btn-info');
+                    ->cssClass('btn btn-sm btn-info active');
             }
-            $html .= Button::asLink('<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('AdminModule.modules', 'Activated'), Url::to(['/admin/module/disable', 'moduleId' => $this->module->id]))
-                ->cssClass('btn btn-sm btn-info active')
-                ->options([
-                    'data-method' => 'POST',
-                    'data-confirm' => Yii::t('AdminModule.modules', 'Are you sure? *ALL* module data will be lost!')
-                ]);
         } else {
             $html .= Button::asLink(Yii::t('AdminModule.modules', 'Activate'), Url::to(['/admin/module/enable', 'moduleId' => $this->module->id]))
                 ->cssClass('btn btn-sm btn-info')
