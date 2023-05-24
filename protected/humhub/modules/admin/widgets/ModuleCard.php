@@ -40,7 +40,7 @@ class ModuleCard extends Widget
         parent::init();
 
         if (empty($this->template)) {
-            $this->template = '<hr><div class="row">{card}</div>';
+            $this->template = '<div class="module-row row">{card}</div>';
         }
 
         if (empty($this->view)) {

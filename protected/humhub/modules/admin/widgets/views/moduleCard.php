@@ -14,7 +14,7 @@ use humhub\modules\ui\icon\widgets\Icon;
 /* @var $module Module */
 /* @var $isFeaturedModule bool */
 ?>
-<div class="col-xs-2 col-sm-1 text-center">
+<div class="col-xs-2 col-sm-1 module-icon">
     <?= Html::img($module->getImage(), [
         'class' => 'media-object img-rounded',
         'data-src' => 'holder.js/34x34',
@@ -24,10 +24,10 @@ use humhub\modules\ui\icon\widgets\Icon;
 </div>
 <div class="col-xs-10 col-sm-3 col-md-2">
     <?= $module->getName() . ($isFeaturedModule ? '&nbsp;' . Icon::get('star')->color('info') : '') ?>
-    <br><small class="text-muted"><?= Yii::t('AdminModule.base', 'Version') . ' ' . $module->getVersion() ?></small>
+    <br><small><?= Yii::t('AdminModule.base', 'Version') . ' ' . $module->getVersion() ?></small>
 </div>
 <div class="col-xs-6 col-sm-5 col-md-6"><?= $module->getDescription() ?></div>
-<div class="col-xs-5 col-sm-3 text-nowrap text-right">
+<div class="col-xs-5 col-sm-3 module-actions">
     <?= ModuleActionButtons::widget(['module' => $module]) ?>
     <?= ModuleControls::widget(['module' => $module]) ?>
 </div>

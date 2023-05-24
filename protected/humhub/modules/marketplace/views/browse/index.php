@@ -20,7 +20,7 @@ CardsAsset::register($this);
     <div class="panel-heading">
         <strong><?= Yii::t('MarketplaceModule.base', 'Marketplace') ?></strong>
         <?= Button::asLink(Icon::get('cog'))
-            ->action('ui.modal.load', ['/admin/module/module-settings'])
+            ->action('ui.modal.load', ['/marketplace/browse/module-settings'])
             ->cssClass('module-settings-icon')
             ->tooltip(Yii::t('MarketplaceModule.base', 'Settings')) ?>
     </div>

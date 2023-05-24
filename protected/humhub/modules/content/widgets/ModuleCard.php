@@ -7,7 +7,7 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\modules\admin\widgets\ModuleCard as AdminModuleCard;
+use humhub\modules\marketplace\widgets\ModuleCard as MarketplaceModuleCard;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
@@ -16,7 +16,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  * @since 1.11
  * @author Luke
  */
-class ModuleCard extends AdminModuleCard
+class ModuleCard extends MarketplaceModuleCard
 {
 
     /**

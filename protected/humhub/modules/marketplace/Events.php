@@ -11,7 +11,6 @@ namespace humhub\modules\marketplace;
 use humhub\components\Module as CoreModule;
 use humhub\components\OnlineModule;
 use humhub\modules\admin\events\ModulesEvent;
-use humhub\modules\admin\widgets\ModuleControls;
 use humhub\modules\marketplace\models\Module as ModelModule;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\AccountTopMenu;
@@ -30,7 +29,7 @@ class Events extends BaseObject
      */
     public static function onConsoleApplicationInit($event)
     {
-        if (!self::getEnabledMarketplaceModule()) {
+        if (!Module::isEnabled()) {
             return;
         }
 
@@ -44,17 +43,9 @@ class Events extends BaseObject
         Yii::$app->queue->push(new jobs\ModuleCleanupsJob());
     }
 
-    private static function getEnabledMarketplaceModule(): ?Module
-    {
-        /* @var Module $marketplaceModule */
-        $marketplaceModule = Yii::$app->getModule('marketplace');
-
-        return $marketplaceModule->enabled ? $marketplaceModule : null;
-    }
-
     public static function onAdminModuleManagerAfterFilterModules(ModulesEvent $event)
     {
-        if (!self::getEnabledMarketplaceModule()) {
+        if (!Module::isEnabled()) {
             return;
         }
 
@@ -85,7 +76,7 @@ class Events extends BaseObject
      */
     private static function isFilteredModuleByCategory($module): bool
     {
-        $categoryId = Yii::$app->request->get('categoryId', null);
+        $categoryId = Yii::$app->request->get('categoryId');
 
         if (empty($categoryId)) {
             return true;
@@ -102,7 +93,7 @@ class Events extends BaseObject
      */
     private static function isFilteredModuleByTags($module): bool
     {
-        $tags = Yii::$app->request->get('tags', null);
+        $tags = Yii::$app->request->get('tags');
 
         if (empty($tags)) {
             return true;
@@ -143,50 +134,9 @@ class Events extends BaseObject
         return false;
     }
 
-    public static function onAdminModuleControlsInit($event)
-    {
-        if (!self::getEnabledMarketplaceModule()) {
-            return;
-        }
-
-        /* @var ModuleControls $moduleControls */
-        $moduleControls = $event->sender;
-
-        $module = $moduleControls->module;
-
-        if (!($module instanceof ModelModule)) {
-            return;
-        }
-
-        /** @var \humhub\modules\marketplace\models\Module $module */
-
-        if ($module->isNonFree) {
-            $moduleControls->addEntry(new MenuLink([
-                'id' => 'marketplace-licence-key',
-                'label' => Yii::t('MarketplaceModule.base', 'Add Licence Key'),
-                'url' => ['/marketplace/purchase'],
-                'htmlOptions' => ['data-target' => '#globalModal'],
-                'icon' => 'key',
-                'sortOrder' => 1000,
-            ]));
-        }
-
-        if ($module->isThirdParty) {
-            $moduleControls->addEntry(new MenuLink([
-                'id' => 'marketplace-third-party',
-                'label' => Yii::t('MarketplaceModule.base', 'Third-party')
-                    . ($module->isCommunity ? ' - ' . Yii::t('MarketplaceModule.base', 'Community') : ''),
-                'url' => ['/marketplace/browse/thirdparty-disclaimer'],
-                'htmlOptions' => ['data-target' => '#globalModal'],
-                'icon' => 'info-circle',
-                'sortOrder' => 1100,
-            ]));
-        }
-    }
-
     public static function onAccountTopMenuInit($event)
     {
-        if (!self::getEnabledMarketplaceModule()) {
+        if (!Module::isEnabled()) {
             return;
         }
 

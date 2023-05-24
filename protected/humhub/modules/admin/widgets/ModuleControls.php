@@ -36,7 +36,7 @@ class ModuleControls extends Menu
     public function init()
     {
         $this->initControls();
-        return parent::init();
+        parent::init();
     }
 
     public function initControls()

@@ -8,7 +8,6 @@
 
 use humhub\commands\CronController;
 use humhub\components\ModuleManager;
-use humhub\modules\admin\widgets\ModuleControls;
 use humhub\modules\marketplace\Events;
 use humhub\modules\marketplace\Module;
 use humhub\modules\user\widgets\AccountTopMenu;
@@ -25,7 +24,6 @@ return [
     'events' => [
         [CronController::class, CronController::EVENT_ON_HOURLY_RUN, [Events::class, 'onHourlyCron']],
         [ModuleManager::class, ModuleManager::EVENT_AFTER_FILTER_MODULES, [Events::class, 'onAdminModuleManagerAfterFilterModules']],
-        [ModuleControls::class, ModuleControls::EVENT_INIT, [Events::class, 'onAdminModuleControlsInit']],
         [AccountTopMenu::class, AccountTopMenu::EVENT_INIT, [Events::class, 'onAccountTopMenuInit']],
     ]
 ];

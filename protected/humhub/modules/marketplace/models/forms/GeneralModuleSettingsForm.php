@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\admin\models\forms;
+namespace humhub\modules\marketplace\models\forms;
 
 use humhub\modules\marketplace\Module;
 use Yii;
@@ -15,7 +15,7 @@ use yii\base\Model;
  * ModuleFilterSettingsForm is used to modify module filter settings
  *
  * @package humhub.modules_core.admin.forms
- * @since 1.11
+ * @since 1.15
  */
 class GeneralModuleSettingsForm extends Model
 {

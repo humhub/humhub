@@ -9,9 +9,11 @@ namespace humhub\modules\marketplace\controllers;
 
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\marketplace\models\forms\GeneralModuleSettingsForm;
 use humhub\modules\marketplace\Module;
 use Yii;
 use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * Class BrowseController
@@ -33,6 +35,10 @@ class BrowseController extends Controller
 
     public function actionIndex()
     {
+        if (!Module::isEnabled()) {
+            throw new NotFoundHttpException();
+        }
+
         $this->subLayout = '@admin/views/layouts/module';
         return $this->render('index');
     }
@@ -46,7 +52,6 @@ class BrowseController extends Controller
     {
         return $this->renderAjax('thirdpartyDisclaimer', []);
     }
-
 
     /**
      * Installs a given moduleId from marketplace
@@ -62,6 +67,28 @@ class BrowseController extends Controller
         }
 
         return $this->redirect(['/admin/module/list']);
+    }
+
+    /**
+     * Module settings
+     * @return string
+     */
+    public function actionModuleSettings()
+    {
+        if (!Module::isEnabled()) {
+            throw new NotFoundHttpException();
+        }
+
+        $moduleSettingsForm = new GeneralModuleSettingsForm();
+
+        if ($moduleSettingsForm->load(Yii::$app->request->post()) && $moduleSettingsForm->save()) {
+            $this->view->saved();
+            return $this->redirect(['/marketplace/browse']);
+        }
+
+        return $this->renderAjax('moduleSettings', [
+            'settings' => $moduleSettingsForm,
+        ]);
     }
 
 }
