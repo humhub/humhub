@@ -10,7 +10,6 @@ namespace humhub\components\console;
 
 use humhub\libs\BaseSettingsManager;
 use Yii;
-use yii\base\InvalidConfigException;
 use yii\console\Exception;
 use yii\helpers\Url;
 use yii\web\Session;
@@ -135,10 +134,9 @@ class Application extends \yii\console\Application
 
     /**
      * @return Session the session component.
-     * @throws InvalidConfigException
      */
     public function getSession(): Session
     {
-        return $this->get('session');
+        return new Session();
     }
 }
