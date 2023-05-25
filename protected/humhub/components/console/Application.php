@@ -10,8 +10,10 @@ namespace humhub\components\console;
 
 use humhub\libs\BaseSettingsManager;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\console\Exception;
 use yii\helpers\Url;
+use yii\web\Session;
 
 /**
  * Description of Application
@@ -131,4 +133,12 @@ class Application extends \yii\console\Application
         $this->_homeUrl = $value;
     }
 
+    /**
+     * @return Session the session component.
+     * @throws InvalidConfigException
+     */
+    public function getSession(): Session
+    {
+        return $this->get('session');
+    }
 }
