@@ -37,7 +37,7 @@ use humhub\modules\user\widgets\UserPickerField;
     <?= $form->field($model, 'show_introduction_tour')->checkbox(); ?>
 <?php endif; ?>
 
-<?= $form->field($model, 'markdownEditorMode')->radioList($model->getEditorModeList()) ?>
+<?= $form->field($model, 'markdownEditorMode')->dropDownList($model->getEditorModeList(), ['data-ui-select2' => '']) ?>
 
 <?php if (Yii::$app->getModule('user')->allowBlockUsers()): ?>
     <?= $form->field($model, 'blockedUsers')->widget(UserPickerField::class, ['minInput' => 2]); ?>
