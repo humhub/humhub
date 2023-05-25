@@ -2,6 +2,7 @@ humhub.module('marketplace', function (module, require, $) {
     const client = require('client');
     const loader = require('ui.loader');
     const status = require('ui.status');
+    const modal = require('ui.modal');
 
     const update = function (evt) {
         startUpdate(evt);
@@ -126,9 +127,39 @@ humhub.module('marketplace', function (module, require, $) {
         });
     }
 
+    const install = function(evt) {
+        const installButton = evt.$trigger;
+        const moduleId = installButton.data('module-id');
+
+        modal.post(evt, {data: {moduleId}}).then(function () {
+            const activateButton = modal.global.$.find('[data-action-click="marketplace.activate"]').clone();
+            if (activateButton.length) {
+                installButton.after(activateButton.addClass('btn-sm'));
+            }
+            installButton.remove();
+        }).catch(function (e) {
+            module.log.error(e, true);
+        });
+    }
+
+    const activate = function(evt) {
+        const moduleId = evt.$trigger.data('module-id');
+        const moduleCard = $('button[data-module-id="' + moduleId + '"]').closest('.card');
+
+        modal.post(evt, {data: {moduleId}}).then(function () {
+            if (moduleCard.length) {
+                moduleCard.hide('slow', function(){ $(this).remove() });
+            }
+        }).catch(function (e) {
+            module.log.error(e, true);
+        });
+    }
+
     module.export({
         update,
         updateAll,
         registerLicenceKey,
+        install,
+        activate
     });
 });

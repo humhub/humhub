@@ -12,7 +12,6 @@ use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\marketplace\models\forms\GeneralModuleSettingsForm;
 use humhub\modules\marketplace\Module;
 use Yii;
-use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -33,24 +32,30 @@ class BrowseController extends Controller
         ];
     }
 
-    public function actionIndex()
+    /**
+     * @inheritdoc
+     */
+    public function beforeAction($action)
     {
         if (!Module::isEnabled()) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException(Yii::t('MarketplaceModule.base', 'Marketplace is disabled.'));
         }
 
+        return parent::beforeAction($action);
+    }
+
+    public function actionIndex()
+    {
         $this->subLayout = '@admin/views/layouts/module';
         return $this->render('index');
     }
 
     /**
      * Returns the thirdparty disclaimer
-     *
-     * @throws HttpException
      */
     public function actionThirdpartyDisclaimer()
     {
-        return $this->renderAjax('thirdpartyDisclaimer', []);
+        return $this->renderAjax('thirdpartyDisclaimer');
     }
 
     /**
@@ -60,13 +65,33 @@ class BrowseController extends Controller
     {
         $this->forcePostRequest();
 
-        $moduleId = Yii::$app->request->get('moduleId');
+        $moduleId = Yii::$app->request->post('moduleId');
 
         if (!Yii::$app->moduleManager->hasModule($moduleId)) {
             $this->module->onlineModuleManager->install($moduleId);
         }
 
-        return $this->redirect(['/admin/module/list']);
+        return $this->renderAjax('installed', ['moduleId' => $moduleId]);
+    }
+
+    /**
+     * Activates a module after installation
+     */
+    public function actionActivate()
+    {
+        $this->forcePostRequest();
+
+        $module = Yii::$app->moduleManager->getModule(Yii::$app->request->post('moduleId'));
+
+        if ($module === null) {
+            throw new NotFoundHttpException(Yii::t('MarketplaceModule.base', 'Could not find the requested module!'));
+        }
+
+        $module->enable();
+
+        return $this->renderAjax('activated', [
+            'moduleConfigUrl' => $module->getConfigUrl()
+        ]);
     }
 
     /**
@@ -75,10 +100,6 @@ class BrowseController extends Controller
      */
     public function actionModuleSettings()
     {
-        if (!Module::isEnabled()) {
-            throw new NotFoundHttpException();
-        }
-
         $moduleSettingsForm = new GeneralModuleSettingsForm();
 
         if ($moduleSettingsForm->load(Yii::$app->request->post()) && $moduleSettingsForm->save()) {

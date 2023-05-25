@@ -68,13 +68,9 @@ class ModuleActionButtons extends Widget
                 ->loader(false);
         } else {
             $html .= Button::primary(Yii::t('MarketplaceModule.base', 'Install'))
-                ->link(['/marketplace/browse/install', 'moduleId' => $this->module->id])
-                ->sm()
-                ->options([
-                    'data-method' => 'POST',
-                    'data-loader' => 'modal',
-                    'data-message' => Yii::t('MarketplaceModule.base', 'Installing module...'),
-                ]);
+                ->action('marketplace.install', ['/marketplace/browse/install'])
+                ->options(['data-module-id' => $this->module->id])
+                ->sm();
         }
 
         if (trim($html) === '') {
