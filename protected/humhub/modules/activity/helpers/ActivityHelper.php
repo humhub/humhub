@@ -25,7 +25,9 @@ class ActivityHelper
 
         return Activity::find()->where([
             'object_id' => $pk,
-            'object_model' => get_class($record)
+            'object_model' => method_exists($record, 'getObjectModel') ?
+                $record::getObjectModel() :
+                get_class($record),
         ]);
     }
 
