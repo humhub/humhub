@@ -42,7 +42,7 @@ use yii\helpers\Url;
  *
  * @since 0.5
  */
-class Comment extends ContentAddonActiveRecord implements ContentOwner
+class Comment extends ContentAddonActiveRecord
 {
     const CACHE_KEY_COUNT = 'commentCount_%s_%s';
     const CACHE_KEY_LIMITED = 'commentsLimited_%s_%s';
