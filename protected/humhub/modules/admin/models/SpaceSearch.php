@@ -49,14 +49,6 @@ class SpaceSearch extends Space
     /**
      * @inheritdoc
      */
-    public static function className()
-    {
-        return Space::class;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [

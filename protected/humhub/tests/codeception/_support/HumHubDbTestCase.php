@@ -2,6 +2,9 @@
 
 namespace tests\codeception\_support;
 
+use Codeception\Test\Unit;
+use humhub\components\behaviors\PolymorphicRelation;
+use humhub\libs\BasePermission;
 use Codeception\Configuration;
 use Codeception\Exception\ModuleException;
 use Codeception\Module;
@@ -28,8 +31,6 @@ use humhub\tests\codeception\fixtures\UrlOembedFixture;
 use TypeError;
 use Yii;
 use yii\db\ActiveRecord;
-use Codeception\Test\Unit;
-use humhub\libs\BasePermission;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentContainerPermissionManager;
 use humhub\modules\notification\models\Notification;
@@ -157,7 +158,7 @@ class HumHubDbTestCase extends Unit
     {
         $notificationQuery = Notification::find()->where([
             'class' => $class,
-            'source_class' => $source->className(),
+            'source_class' => PolymorphicRelation::getObjectModel($source),
             'source_pk' => $source->getPrimaryKey(),
         ]);
         if (is_string($target_id)) {
@@ -178,7 +179,7 @@ class HumHubDbTestCase extends Unit
 
     public function assertEqualsNotificationCount($count, $class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
     {
-        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => $source->className(), 'source_pk' => $source->getPrimaryKey()]);
+        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => PolymorphicRelation::getObjectModel($source), 'source_pk' => $source->getPrimaryKey()]);
 
         if ($originator_id != null) {
             $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
@@ -193,7 +194,7 @@ class HumHubDbTestCase extends Unit
 
     public function assertHasNoNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
     {
-        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => $source->className(), 'source_pk' => $source->getPrimaryKey()]);
+        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => PolymorphicRelation::getObjectModel($source), 'source_pk' => $source->getPrimaryKey()]);
 
         if ($originator_id != null) {
             $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
@@ -210,7 +211,7 @@ class HumHubDbTestCase extends Unit
     {
         $activity = Activity::findOne([
             'class' => $class,
-            'object_model' => $source->className(),
+            'object_model' => PolymorphicRelation::getObjectModel($source),
             'object_id' => $source->getPrimaryKey(),
         ]);
         $this->assertNotNull($activity, $msg);
