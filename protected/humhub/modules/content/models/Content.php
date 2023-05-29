@@ -12,8 +12,6 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
-use humhub\libs\DbDateValidator;
-use humhub\modules\activity\helpers\ActivityHelper;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -21,10 +19,12 @@ use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\events\ContentEvent;
 use humhub\modules\content\events\ContentStateEvent;
 use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\interfaces\SoftDeletable;
 use humhub\modules\content\live\NewContent;
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\content\services\ContentStateService;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
@@ -80,7 +80,7 @@ use yii\helpers\Url;
  * @mixin GUID
  * @since 0.5
  */
-class Content extends ActiveRecord implements Movable, ContentOwner
+class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletable
 {
     /**
      * The default stream channel.
@@ -129,11 +129,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      * @deprecated since v1.2.3 use ContentActiveRecord::silentContentCreation instead.
      */
     public $muteDefaultSocialActivities = false;
-
-    /**
-     * @event Event is used when a Content is soft deleted.
-     */
-    const EVENT_SOFT_DELETE = 'softDelete';
 
     /**
      * @event Event is used when a Content state is changed.
@@ -240,23 +235,31 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function afterSave($insert, $changedAttributes)
     {
-        if (// New Content with State Published:
-            ($insert && $this->state == Content::STATE_PUBLISHED) ||
-            // Content Updated from Draft to Published
-            (array_key_exists('state', $changedAttributes) &&
-                $this->state == Content::STATE_PUBLISHED &&
-                $changedAttributes['state'] == Content::STATE_DRAFT
-            )) {
-            $this->processNewContent();
+        if (array_key_exists('state', $changedAttributes)) {
+            $model = $this->getPolymorphicRelation();
 
+            if ($this->getStateService()->isPublished()) {
+                // Run process for new content(Send notifications) only after publishing the Content
+                $this->processNewContent();
+                // Also run process for parent object in order to send notifications like mentioning users
+                if ($model instanceof ActiveRecord) {
+                    $model->afterSave($insert, $changedAttributes);
+                }
+            }
+
+            $previousState = $changedAttributes['state'] ?? null;
             $this->trigger(self::EVENT_STATE_CHANGED, new ContentStateEvent([
                 'content' => $this,
                 'newState' => $this->state,
-                'previousState' => (isset($changedAttributes['state'])) ? $changedAttributes['state'] : null,
+                'previousState' => $previousState
             ]));
+
+            if ($model instanceof ContentActiveRecord) {
+                $model->afterStateChange($this->state, $previousState);
+            }
         }
 
-        if ($this->state === static::STATE_PUBLISHED) {
+        if ($this->getStateService()->isPublished()) {
             SearchHelper::queueUpdate($this->getModel());
         } else {
             SearchHelper::queueDelete($this->getModel());
@@ -336,6 +339,18 @@ class Content extends ActiveRecord implements Movable, ContentOwner
     }
 
     /**
+     * Marks this content for deletion (soft delete).
+     * Use `hardDelete()` method to delete a content immediately.
+     *
+     * @return bool
+     * @inheritdoc
+     */
+    public function delete()
+    {
+        return $this->softDelete();
+    }
+
+    /**
      * @inheritdoc
      */
     public function afterDelete()
@@ -351,6 +366,58 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         }
 
         parent::afterDelete();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSoftDelete(): bool
+    {
+        $event = new ContentEvent(['content' => $this]);
+        $this->trigger(self::EVENT_BEFORE_SOFT_DELETE, $event);
+
+        return $event->isValid;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function softDelete(): bool
+    {
+        if (!$this->beforeSoftDelete()) {
+            return false;
+        }
+
+        Notification::deleteAll([
+            'source_class' => get_class($this),
+            'source_pk' => $this->getPrimaryKey(),
+        ]);
+
+        if (!$this->getStateService()->delete()) {
+            return false;
+        }
+
+        $this->afterSoftDelete();
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSoftDelete()
+    {
+        $this->trigger(self::EVENT_AFTER_SOFT_DELETE, new ContentEvent(['content' => $this]));
+    }
+
+    /**
+     * Deletes this content immediately and permanently
+     *
+     * @return bool
+     * @since 1.14
+     */
+    public function hardDelete(): bool
+    {
+        return (parent::delete() !== false);
     }
 
     /**
@@ -731,7 +798,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner
      */
     public function getTags($tagClass = ContentTag::class)
     {
-        return $this->hasMany($tagClass, ['id' => 'tag_id'])->via('tagRelations')->orderBy('sort_order');
+        return $this->hasMany($tagClass, ['id' => 'tag_id'])
+            ->via('tagRelations')
+            ->orderBy($tagClass::tableName() . '.sort_order');
     }
 
     /**
@@ -907,8 +976,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner
             return $this->checkGuestAccess();
         }
 
-        // If content is draft, in trash, unapproved - restrict view access to editors
-        if ($this->state !== static::STATE_PUBLISHED) {
+        // If content is not published(draft, in trash, unapproved) - restrict view access to editors
+        if (!$this->getStateService()->isPublished()) {
             return $this->canEdit();
         }
 
@@ -1002,80 +1071,20 @@ class Content extends ActiveRecord implements Movable, ContentOwner
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
     }
 
-    /**
-     * Marks the content as deleted.
-     *
-     * Content which are marked as deleted will not longer returned in queries/stream/search.
-     * A cron job will remove these content permanently.
-     * If installed, such content can also be restored using the `recycle-bin` module.
-     *
-     * @return bool
-     * @since 1.14
-     */
-    public function softDelete(): bool
+    public function getStateService(): ContentStateService
     {
-        ActivityHelper::deleteActivitiesForRecord($this->getModel());
-
-        Notification::deleteAll([
-            'source_class' => get_class($this),
-            'source_pk' => $this->getPrimaryKey(),
-        ]);
-
-        $this->setState(self::STATE_DELETED);
-
-        if (!$this->save()) {
-            return false;
-        }
-
-        $this->trigger(self::EVENT_SOFT_DELETE, new ContentEvent(['content' => $this]));
-        return true;
-    }
-
-    public static function getAllowedStates(): array
-    {
-        return [
-            self::STATE_PUBLISHED,
-            self::STATE_DRAFT,
-            self::STATE_SCHEDULED,
-            self::STATE_DELETED
-        ];
-    }
-
-    /**
-     * @param int|string|null $state
-     * @return bool
-     * @since 1.14
-     */
-    public function canChangeState($state): bool
-    {
-        return in_array($state, self::getAllowedStates());
+        return new ContentStateService(['content' => $this]);
     }
 
     /**
      * @param int|string|null $state
      * @param array $options Additional options depending on state
      * @since 1.14
+     * @deprecated Use $this->getStateService()->set(). It will be deleted in v1.15.
      */
     public function setState($state, array $options = [])
     {
-        if (!$this->canChangeState($state)) {
-            return;
-        }
-
-        if ((int)$state === self::STATE_SCHEDULED) {
-            if (empty($options['scheduled_at'])) {
-                return;
-            }
-
-            $this->scheduled_at = $options['scheduled_at'];
-            (new DbDateValidator())->validateAttribute($this, 'scheduled_at');
-            if ($this->hasErrors('scheduled_at')) {
-                $this->scheduled_at = null;
-                return;
-            }
-        }
-
-        $this->state = $state;
+        $this->getStateService()->set($state, $options);
     }
 
 }

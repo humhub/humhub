@@ -93,7 +93,12 @@ class Events extends \yii\base\BaseObject
      */
     public static function onWallEntryLinksInit($event)
     {
-        $event->sender->addWidget(widgets\LikeLink::class, ['object' => $event->sender->object], ['sortOrder' => 20]);
+        /** @var Module $module */
+        $module = Yii::$app->getModule('like');
+
+        if ($module->canLike($event->sender->object)) {
+            $event->sender->addWidget(widgets\LikeLink::class, ['object' => $event->sender->object], ['sortOrder' => 20]);
+        }
     }
 
 

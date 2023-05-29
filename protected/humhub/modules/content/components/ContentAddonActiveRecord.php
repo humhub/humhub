@@ -121,6 +121,18 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
     }
 
     /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if ($insert && !$this->getContent()->getStateService()->isPublished()) {
+            return false;
+        }
+
+        return parent::beforeSave($insert);
+    }
+
+    /**
      * Checks if the given / or current user can delete this content.
      * Currently only the creator can remove.
      *

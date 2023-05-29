@@ -42,6 +42,9 @@
 .ProsemirrorEditor {
     .ProseMirror {
         padding-right: 12px;
+        &.form-control {
+            font-size: inherit;
+        }
     }
 
     .ProseMirror-menu {
@@ -75,6 +78,10 @@
 
         .ProseMirror-menu-group.last {
             border-right: none;
+        }
+
+        .ProseMirror-icon {
+            background: transparent;
         }
 
         .seperator {
@@ -139,7 +146,10 @@
         cursor: pointer;
     }
 
-    .ProseMirror-menu-dropdown-item div[title], .ProseMirror-menu-submenu-wrap {
+    .ProseMirror-menu-dropdown-item div[title],
+    .ProseMirror-menu-dropdown-item a.ProseMirror-menu-trigger,
+    .ProseMirror-menu-submenu-wrap {
+        display: block;
         padding: 4px;
     }
 
@@ -204,7 +214,6 @@
     .ProseMirror-icon span {
         vertical-align: text-top;
     }
-
 }
 
 /**
@@ -289,7 +298,6 @@
 }
 
 .ProsemirrorEditor {
-
     .ProseMirror {
         position: relative;
         word-wrap: break-word;
@@ -569,7 +577,7 @@
 
 .atwho-view .cur {
     border-left: 3px solid #59d6e4;
-    background-color: #f7f7f7 !important;
+    background-color: @background-color-secondary !important;
 }
 
 .atwho-user,

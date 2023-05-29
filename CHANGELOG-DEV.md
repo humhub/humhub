@@ -1,43 +1,42 @@
-HumHub Changelog (DEVELOP)
-==========================
+HumHub Changelog
 
-1.14.0-beta.2 (Unreleased)
-------------------------------
-- Enh #6173: Theme variables `background-color-highlight` and `background-color-highlight-soft`
-- Fix #6099: Empty buttons in GlobalConfirmModal footer
-- Fix #6100: Broken area reference in some modal boxes
-- Enh #6171: Make email in user administration and user approval clickable
+1.15.0 (Unreleased)
+-------------------
+- Enh #6270: Add tests for SettingsManager
+- Enh #6272: Always return integer from settings, if value can be converted
+- Fix #6267: SettingsManager::flushContentContainer() only clears the collection in the current instance, not the underlying cache
+- Enh #6271: Add input and type checks, as well as strict types to SettingsManager
+- Fix #6266: BaseSettingsManager::deleteAll() does use prefix as wildcard
+- Fix #6259: Add json & pdo extensions as requirement; updating composer dependencies and node modules
+- Fix #6192: Where Group::getAdminGroupId() would sometimes return int, sometimes string
+- Enh #6260: Improve migration class
+- Fix #6199: Module manager Add types to properties
+- Fix #6189: Module settings survive deactivation in cache
+- Enh #6236: Logging: Show log entries from migrations with category migration
+- Fix #6216: Spaces icon in admin menu
+- Fix #6229: Bug on saving forms: Zend OPcache API is restricted by "restrict_api"
+- Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method 
+- Enh #6164: Invitation by link: when registering within an SSO, the email should only be requested on the service provider
+- Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method
+- Enh #5668: Allow Admin to sort the Spaces in a custom order
+- Enh #29: AutoStart Tour for new Users
+- Fix #6243: Do not send notification when ApprovalRequest is not valid
+- Enh #6215: Added `LongRunningActiveJob` to avoid timeout for long running queue jobs
+- Enh #6253: Remove `DefaultSwipeOnMobile` checkbox
+- Enh #10: Added `collapsedPostHeight` to the Post module for set collapsed post default height
+- Enh #6277: Bring back Pjax Functionality
+- Enh #6285: Change background color for confirmation of oembed content
+- Enh #6289: Refactored UserWall and Wall widgets
+- Fix #44: Mail Module Indicator Problem
+- Enh #6295: Add the possibility to display if users are online
+- Fix #6299: Fix ambiguous space sort order column
+- Enh #2590: Possibility to add a dropdown button to upload audio, image or video file type
+- Enh #6298: Move the "Write a new comment" field style to a generic field that can be used by other modules
+- Enh #6310: Module information is localized with `docs/uk/README.md` or `README.uk.md`.
+- Enh #6311: Added {cols, rows} to textarea() control. 
+- Enh #6304: Update button title on creating of not published content
+- Enh #6319: Duplicate File Converter Logs
+- Fix #5962: Make top menu shrink and grow on resize window
+- Enh #6328: Add arrows for gridview sort columns
+- Enh #6327: PHP error when calling `Password::setPassword` on unsaved User records 
 - Enh #6169: Replace deprecated `yii\base\BaseObject::className()`
-
-1.14.0-beta.1 (March 10, 2023)
-------------------------------
-
-- Enh #4803: Added more panel styles (`panel-info` and `panel-primary`)
-- Enh #5972: Removed old vendor CSS prefixes (e.g. `-moz` or `-webkit`)
-- Enh #6006: Fix activity settings test
-- Fix #6018: Disable profile fields textarea and checkbox list when they are not editable
-- Ehn #6017: Hide Password Tab in administration for LDAP users
-- Enh #6031: On users list grid, show Auth mode badge only for sys admins
-- Enh #6033: Moved more logic into `AbstractQueryContentContainer`
-- Enh #6035: Added Estonian language
-- Fix #5956: Display all newer comments after current comment
-- Enh #6061: Administration: Add a confirmation on profile field delete button
-- Enh #5699: Allow users to invite by link
-- Enh #6081: Added corresponding CSS variables for LESS color variables 
-- Fix #6022: Fix Changelog Link with new Marketplace URL
-- Enh #5973: Stylesheet Prefix Cleanup and removed temporary style
-- Enh #6077: Always display content tabs
-- Enh #5263: Allow members of groups other than system admin to view all content (groups that can manage users for profile content and groups that can manage spaces for space content)
-- Enh #6102: Also allow Messages module to inject new message count into page title
-- Enh #6109: Added enabled Pretty URL as self test
-- Fix #6113: Ensure `displayNameSub` doesn't return NULL values 
-- Enh #5904: Make Dynamic Post Font Size Optional
-- Enh #6109: Added enabled Pretty URL as self test
-- Enh #6119: Added UserInfoWidget for User Notification Settings 
-- Enh #6116: Scheduled content publishing
-- Enh #6135: Added new ContentState and Content events (e.g. SoftDelete) 
-- Enh #5625: Update jQuery UI to version 1.13
-- Enh #6144: Added ability to change/disable `Forgot your password?` link
-- Fix #4988: Unable to archive space on Form Validation errors
-- Enh #6123: Added check for `proc_open` function in Requirement Checker 
-- Enh #6149: Added `AuthClientUserService` and `AuthClientService` instead of `AuthClientHelpers`

@@ -113,7 +113,7 @@ class ActiveQueryContent extends ActiveQuery
             $conditionUser = 'cuser.id IS NOT NULL and cuser.visibility=' . User::VISIBILITY_ALL . ' AND content.visibility=1';
             $globalCondition .= 'content.contentcontainer_id IS NULL AND content.visibility=1';
         } else {
-            $this->emulateExecution();
+            return $this->emulateExecution();
         }
 
         $this->andWhere("{$conditionSpace} OR {$conditionUser} OR {$globalCondition}");

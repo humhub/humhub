@@ -57,9 +57,9 @@ abstract class BaseTypeVirtual extends BaseType
      */
     public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
-        return parent::getFieldFormDefinition($user, [
+        return parent::getFieldFormDefinition($user, array_merge([
             'isVisible' => false,
-        ]);
+        ], $options));
     }
 
     /**

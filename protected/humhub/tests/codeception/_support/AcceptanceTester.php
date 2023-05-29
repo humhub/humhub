@@ -148,7 +148,7 @@ class AcceptanceTester extends BaseTester
         $this->wait(1);
 
         if($topics) {
-            $this->click('.dropdown-toggle', '.contentForm_options');
+            $this->click('.dropdown-toggle', '.contentForm_options .preferences');
             $this->wait(1);
             $this->click('Topics', '.contentForm_options');
             $this->waitForElementVisible('#postTopicContainer');
@@ -329,14 +329,9 @@ class AcceptanceTester extends BaseTester
         } else {
             $select2Input = $selector . ' ~ span input';
             $this->fillField($select2Input, $search);
-            $this->waitForElementVisible('.select2-container--open');
-            $this->waitForElementVisible('.select2-results__option.select2-results__option--highlighted');
-            $this->see($search, '.select2-container--open');
-            $this->wait(1);
+            $this->waitForText($search, null, '.select2-results__option.select2-results__option--highlighted .picker-text');
             $this->pressKey($select2Input, WebDriverKeys::ENTER);
         }
-
-
     }
 
     public function dontSeeInNotifications($text)

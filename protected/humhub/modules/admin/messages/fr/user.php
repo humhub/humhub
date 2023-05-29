@@ -123,7 +123,7 @@ Kind Regards
   'Member since' => 'Inscrit depuis',
   'Members' => 'Inscrits',
   'Members can invite external users by email' => 'Les membres peuvent inviter des nouvelles personnes par e-mail',
-  'Members can invite external users by link' => '',
+  'Members can invite external users by link' => 'Les membres peuvent inviter des personnes externes via un lien',
   'Message' => 'Message',
   'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)' => 'La valeur minimum est de 20 secondes. Si non définie, la session expirera après 1400 secondes (24 minutes), quelle que soit l\'activité (expiration de session par défaut)',
   'New approval requests' => 'Nouvelle demande d\'approbation',

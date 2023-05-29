@@ -18,10 +18,8 @@ use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\forms\AccountChangeEmail;
 use humhub\modules\user\models\forms\AccountChangeUsername;
 use humhub\modules\user\models\forms\AccountDelete;
-use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\ProfileSettingsAutocomplete;
-use humhub\modules\user\widgets\ProfileSettingsPicker;
+use humhub\modules\user\Module;
 use Yii;
 use yii\web\HttpException;
 
@@ -125,11 +123,13 @@ class AccountController extends BaseAccountController
         }
 
         $model->tags = $user->getTags();
+        $model->hideOnlineStatus = $user->settings->get('hideOnlineStatus');
         $model->show_introduction_tour = Yii::$app->getModule('tour')->settings->contentContainer($user)->get("hideTourPanel");
         $model->visibility = $user->visibility;
         $model->blockedUsers = $user->getBlockedUserGuids();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $user->settings->set('hideOnlineStatus', $model->hideOnlineStatus);
             Yii::$app->getModule('tour')->settings->contentContainer($user)->set('hideTourPanel', $model->show_introduction_tour);
 
             $user->scenario = User::SCENARIO_EDIT_ACCOUNT_SETTINGS;
@@ -151,7 +151,15 @@ class AccountController extends BaseAccountController
         $col = new \Collator(Yii::$app->language);
         $col->asort($languages);
 
-        return $this->render('editSettings', ['model' => $model, 'languages' => $languages]);
+        /* @var $module Module */
+        $module = Yii::$app->getModule('user');
+        $settingsManager = $module->settings;
+
+        return $this->render('editSettings', [
+            'model' => $model,
+            'languages' => $languages,
+            'isEnabledOnlineStatus' => !$settingsManager->get('auth.hideOnlineStatus'),
+        ]);
     }
 
     /**
@@ -371,7 +379,7 @@ class AccountController extends BaseAccountController
      */
     public function actionChangeEmailValidate()
     {
-        if (!Yii::$app->user->canChangeEmail()) {
+        if (!Yii::$app->user->getAuthClientUserService()->canChangeEmail()) {
             throw new HttpException(500, 'Change E-Mail is not allowed');
         }
 

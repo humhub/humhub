@@ -7,10 +7,9 @@
 
 use humhub\libs\Html;
 use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\PeopleActionButtons;
 use humhub\modules\user\widgets\Image;
+use humhub\modules\user\widgets\PeopleActionButtons;
 use humhub\modules\user\widgets\PeopleDetails;
-use humhub\modules\user\widgets\PeopleIcons;
 use humhub\modules\user\widgets\PeopleTagList;
 use yii\web\View;
 

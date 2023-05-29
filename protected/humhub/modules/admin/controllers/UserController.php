@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -36,7 +37,6 @@ use yii\web\HttpException;
  */
 class UserController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -261,11 +261,17 @@ class UserController extends Controller
         $registration->enableEmailField = true;
         $registration->enableUserApproval = false;
         $registration->enableMustChangePassword = true;
+
         if ($registration->submitted('save') && $registration->validate() && $registration->register()) {
             return $this->redirect(['edit', 'id' => $registration->getUser()->id]);
         }
 
-        return $this->render('add', ['hForm' => $registration]);
+        return $this->render('add', [
+            'hForm' => $registration,
+            'canInviteByEmail' => Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInviteByEmail'),
+            'canInviteByLink' => Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInviteByLink'),
+            'adminIsAlwaysAllowed' => false,
+        ]);
     }
 
     /**
