@@ -40,3 +40,8 @@ HumHub Changelog
 - Enh #6328: Add arrows for gridview sort columns
 - Enh #6327: PHP error when calling `Password::setPassword` on unsaved User records
 - Enh #2: Store Default Markdown Editor Mode
+- Enh #6355: Fix limit results in People: Country Filter
+- Enh #6327: PHP error when calling `Password::setPassword` on unsaved User records 
+- Enh #6356: Added SqlDataProvider support for `ImageColumn` and `DisplayNameColumn`
+- Enh #6169: Replace deprecated `yii\base\BaseObject::className()`
+- Enh #6361: Use `LongRunningActiveJob` on more active jobs 
