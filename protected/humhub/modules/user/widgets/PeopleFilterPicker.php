@@ -96,9 +96,6 @@ class PeopleFilterPicker extends BasePicker
      */
     protected function getData()
     {
-//        var_dump((new \Exception())->getTraceAsString());
-//        var_dump(parent::getDa/ta());die;
-
         $result = parent::getData();
         $result['placeholder'] = '';
         $result['no-result'] = Yii::t('UserModule.chooser', 'No results found.');
