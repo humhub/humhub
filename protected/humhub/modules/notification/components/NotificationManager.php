@@ -158,7 +158,7 @@ class NotificationManager
     public function getTarget($class)
     {
         foreach ($this->getTargets() as $target) {
-            if ($target->className() == $class) {
+            if (get_class($target) == $class) {
                 return $target;
             }
         }
