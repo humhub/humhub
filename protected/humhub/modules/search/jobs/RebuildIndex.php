@@ -8,9 +8,9 @@
 
 namespace humhub\modules\search\jobs;
 
-use Yii;
-use humhub\modules\queue\LongRunningActiveJob;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
+use humhub\modules\queue\LongRunningActiveJob;
+use Yii;
 
 /**
  * RebuildIndex job
@@ -34,13 +34,5 @@ class RebuildIndex extends LongRunningActiveJob implements ExclusiveJobInterface
     public function run()
     {
         Yii::$app->search->rebuild();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function canRetry($attempt, $error)
-    {
-        return false;
     }
 }
