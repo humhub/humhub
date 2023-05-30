@@ -83,6 +83,12 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     const VISIBILITY_HIDDEN = 3; // Invisible
 
     /**
+     * User Markdown Editor Modes
+     */
+    const EDITOR_RICH_TEXT = 0;
+    const EDITOR_PLAIN = 1;
+
+    /**
      * User Groups
      */
     const USERGROUP_SELF = 'u_self';
