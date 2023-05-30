@@ -2,6 +2,9 @@
 
 namespace humhub\modules\file\widgets;
 
+use humhub\components\ActiveRecord;
+use humhub\components\behaviors\PolymorphicRelation;
+
 /**
  * FileUploadButtonWidget creates an upload button / system.
  *
@@ -34,7 +37,7 @@ class FileUploadButton extends \yii\base\Widget
      * The HActiveRecord which the uploaded files belongs to.
      * Leave empty when object not exists yet.
      *
-     * @var HActiveRecord
+     * @var ActiveRecord
      */
     public $object = null;
 
@@ -43,10 +46,10 @@ class FileUploadButton extends \yii\base\Widget
      */
     public function run()
     {
-        $objectModel = "";
-        $objectId = "";
+        $objectModel = '';
+        $objectId = '';
         if ($this->object !== null) {
-            $objectModel = $this->object->className();
+            $objectModel = PolymorphicRelation::getObjectModel($this->object);
             $objectId = $this->object->getPrimaryKey();
         }
 
