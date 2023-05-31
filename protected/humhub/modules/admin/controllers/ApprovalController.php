@@ -143,7 +143,7 @@ class ApprovalController extends Controller
             $this->view->error(Yii::t('AdminModule.user', 'Could not send the message to the user!'));
         }
 
-        return $this->render('approve', [
+        return $this->render('send-message', [
             'model' => $model->user,
             'approveFormModel' => $model
         ]);
