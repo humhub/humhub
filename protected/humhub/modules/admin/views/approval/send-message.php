@@ -22,7 +22,7 @@ use yii\helpers\Url;
     <?= $form->field($approveFormModel, 'message')->widget(RichTextField::class, ['exclude' => ['oembed', 'upload']]); ?>
 
     <hr>
-    <?= Button::save(Yii::t('AdminModule.user', 'Send & save'))->submit(); ?>
+    <?= Button::save(Yii::t('AdminModule.user', 'Send'))->submit(); ?>
     <?= Button::primary(Yii::t('AdminModule.user', 'Cancel'))->link(Url::to(['index'])); ?>
 
     <?php ActiveForm::end(); ?>
