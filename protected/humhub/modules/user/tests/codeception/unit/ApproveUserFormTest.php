@@ -45,7 +45,8 @@ class ApproveUserFormTest extends HumHubDbTestCase
         $form->setSendMessageDefaults();
         $this->assertEquals("Hallo UnApproved User,
 
-Können Sie uns die Gründe nennen, warum Sie ein Konto erstellen möchten?
+Die Erstellung Ihres Kontos wird derzeit überprüft.
+Können Sie uns die Motivation hinter Ihrer Anmeldung nennen?
 
 Mit freundlichen Grüßen
 Admin Tester", $form->message);
