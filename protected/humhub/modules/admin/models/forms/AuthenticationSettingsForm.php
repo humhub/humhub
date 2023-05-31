@@ -31,6 +31,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
     public $allowGuestAccess;
     public $showCaptureInRegisterForm;
     public $defaultUserProfileVisibility;
+    public $registrationSendMessageMailContent;
     public $registrationApprovalMailContent;
     public $registrationDenialMailContent;
 
@@ -56,6 +57,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
         $this->allowGuestAccess = $settingsManager->get('auth.allowGuestAccess');
         $this->showCaptureInRegisterForm = $settingsManager->get('auth.showCaptureInRegisterForm');
         $this->defaultUserProfileVisibility = $settingsManager->get('auth.defaultUserProfileVisibility');
+        $this->registrationSendMessageMailContent = $settingsManager->get('auth.registrationSendMessageMailContent', ApproveUserForm::getDefaultSendMessageMailContent());
         $this->registrationApprovalMailContent = $settingsManager->get('auth.registrationApprovalMailContent', ApproveUserForm::getDefaultApprovalMessage());
         $this->registrationDenialMailContent = $settingsManager->get('auth.registrationDenialMailContent', ApproveUserForm::getDefaultDeclineMessage());
     }
@@ -69,7 +71,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
             [['internalUsersCanInviteByEmail', 'internalUsersCanInviteByLink', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess', 'showCaptureInRegisterForm', 'showRegistrationUserGroup', 'blockUsers', 'hideOnlineStatus'], 'boolean'],
             ['defaultUserProfileVisibility', 'in', 'range' => array_keys(User::getVisibilityOptions(false))],
             ['defaultUserIdleTimeoutSec', 'integer', 'min' => 20],
-            [['registrationApprovalMailContent', 'registrationDenialMailContent'], 'string']
+            [['registrationSendMessageMailContent', 'registrationApprovalMailContent', 'registrationDenialMailContent'], 'string']
         ];
     }
 
@@ -90,6 +92,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
             'allowGuestAccess' => Yii::t('AdminModule.user', 'Allow visitors limited access to content without an account (Adds visibility: "Guest")'),
             'showCaptureInRegisterForm' => Yii::t('AdminModule.user', 'Include captcha in registration form'),
             'defaultUserProfileVisibility' => Yii::t('AdminModule.user', 'Default user profile visibility'),
+            'registrationSendMessageMailContent' => Yii::t('AdminModule.user', 'Default content of the email when sending a message to the user'),
             'registrationApprovalMailContent' => Yii::t('AdminModule.user', 'Default content of the registration approval email'),
             'registrationDenialMailContent' => Yii::t('AdminModule.user', 'Default content of the registration denial email'),
         ];
@@ -125,6 +128,13 @@ class AuthenticationSettingsForm extends \yii\base\Model
         }
 
         if ($settingsManager->get('auth.needApproval')) {
+            if (empty($this->registrationSendMessageMailContent) || $this->registrationSendMessageMailContent === ApproveUserForm::getDefaultSendMessageMailContent()) {
+                $this->registrationSendMessageMailContent = ApproveUserForm::getDefaultSendMessageMailContent();
+                $settingsManager->delete('auth.registrationSendMessageMailContent');
+            } else {
+                $settingsManager->set('auth.registrationSendMessageMailContent', $this->registrationSendMessageMailContent);
+            }
+
             if (empty($this->registrationApprovalMailContent) || $this->registrationApprovalMailContent === ApproveUserForm::getDefaultApprovalMessage()) {
                 $this->registrationApprovalMailContent = ApproveUserForm::getDefaultApprovalMessage();
                 $settingsManager->delete('auth.registrationApprovalMailContent');

@@ -22,6 +22,47 @@ class ApproveUserFormTest extends HumHubDbTestCase
         $this->unapprovedUser = User::findOne(['id' => 6]);
     }
 
+    public function testDefaultSendMessage()
+    {
+        $this->becomeUser('Admin');
+        $form = new ApproveUserForm($this->unapprovedUser->id);
+        $form->setSendMessageDefaults();
+        $this->assertEquals("Hello UnApproved User,\n\nYour account creation is under review.\nCould you tell us the motivation behind your registration?\n\n" .
+            "Kind Regards\nAdmin Tester\n\n", $form->message);
+
+        $settings = new AuthenticationSettingsForm();
+        $this->assertEquals(ApproveUserForm::getDefaultSendMessageMailContent(), $settings->registrationSendMessageMailContent);
+    }
+
+    public function testSendMessageIsSentInUserLanguage()
+    {
+        $this->becomeUser('Admin');
+
+        $this->unapprovedUser->setAttribute('language', 'de');
+
+        $form = new ApproveUserForm($this->unapprovedUser->id);
+        $form->user->setAttribute('language', 'de');
+        $form->setSendMessageDefaults();
+        $this->assertEquals("Hallo UnApproved User,
+
+Können Sie uns die Gründe nennen, warum Sie ein Konto erstellen möchten?
+
+Mit freundlichen Grüßen
+Admin Tester", $form->message);
+    }
+
+    public function testOverwrittenSendMessage()
+    {
+        $this->becomeUser('Admin');
+
+        $this->setSendMessage('Hey {displayName}, {AdminName} has a question about your account creation.');
+
+        $form = new ApproveUserForm($this->unapprovedUser->id);
+        $form->setSendMessageDefaults();
+        $this->assertEquals("Hey UnApproved User, Admin Tester has a question about your account creation."
+            , $form->message);
+    }
+
     public function testDefaultApproveMessage()
     {
         $this->becomeUser('Admin');
@@ -135,6 +176,14 @@ Admin Tester", $form->message);
             , $form->message);
     }
 
+    public function testAdminCanSendMessageToUnapprovedUser()
+    {
+        $this->becomeUser('Admin');
+        $form = new ApproveUserForm($this->unapprovedUser->id);
+        $this->assertTrue($form->sendMessage());
+        $this->assertSendMessage();
+    }
+
     public function testAdminCanApproveUnapprovedUser()
     {
         $this->becomeUser('Admin');
@@ -175,6 +224,15 @@ Admin Tester", $form->message);
         }
     }
 
+    public function testGroupManagerCanSendMessageUnapprovedUser()
+    {
+        // User2 is group_manager of group 3, UnApproved User is member of group 3
+        $this->becomeUser('User2');
+        $form = new ApproveUserForm($this->unapprovedUser->id);
+        $this->assertTrue($form->sendMessage());
+        $this->assertSendMessage();
+    }
+
     public function testGroupManagerCanApproveUnapprovedUser()
     {
         // User2 is group_manager of group 3, UnApproved User is member of group 3
@@ -200,6 +258,22 @@ Admin Tester", $form->message);
         $this->assertUnapproved();
     }
 
+    public function testNonGroupManagerCannotSendMessageUnapprovedUser()
+    {
+        // User2 is group_manager of group 3, UnApproved User is member of group 3
+        $this->becomeUser('User1');
+
+        try {
+            $form = new ApproveUserForm($this->unapprovedUser->id);
+            $form->sendMessage();
+            $this->assertFalse(true);
+        } catch (NotFoundHttpException $e) {
+            $this->assertTrue(true);
+        }
+
+        $this->assertSendMessage();
+    }
+
     public function testNonGroupManagerCannotDeclineUnapprovedUser()
     {
         // User2 is group_manager of group 3, UnApproved User is member of group 3
@@ -214,6 +288,18 @@ Admin Tester", $form->message);
         }
 
         $this->assertUnapproved();
+    }
+
+    private function assertSendMessage(User $user = null)
+    {
+        if (!$user) {
+            $user = $this->unapprovedUser;
+        }
+
+        $this->assertMailSent(1);
+        $this->assertEqualsLastEmailSubject('About the account request for \'UnApproved User\'.');
+        $this->assertEqualsLastEmailTo($user->email);
+        $this->assertNull(User::findOne(['id' => $this->unapprovedUser->id]));
     }
 
     private function assertDeclined(User $user = null)
@@ -249,6 +335,13 @@ Admin Tester", $form->message);
         $this->assertEqualsLastEmailTo($user->email);
         $user = User::findOne(['id' => $user->id]);
         $this->assertEquals(User::STATUS_ENABLED, $user->status);
+    }
+
+    private function setSendMessage($message)
+    {
+        $authSettings = new AuthenticationSettingsForm();
+        $authSettings->registrationSendMessageMailContent = $message;
+        $this->assertTrue($authSettings->save());
     }
 
     private function setApprovalMessage($message)

@@ -9,13 +9,13 @@
 namespace humhub\modules\admin\controllers;
 
 use humhub\components\access\ControllerAccess;
+use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\models\forms\ApproveUserForm;
 use humhub\modules\admin\models\UserApprovalSearch;
 use humhub\modules\admin\Module;
 use humhub\modules\user\models\ProfileField;
 use Yii;
 use yii\web\HttpException;
-use humhub\modules\admin\components\Controller;
-use humhub\modules\admin\models\forms\ApproveUserForm;
 
 /**
  * ApprovalController handels new user approvals
@@ -122,6 +122,30 @@ class ApprovalController extends Controller
             'searchModel' => $searchModel,
             'availableProfileFields' => $availableProfileFields,
             'profileFieldsColumns' => $profileFieldsColumns,
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return string|\yii\console\Response|\yii\web\Response
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionSendMessage($id)
+    {
+        $model = new ApproveUserForm($id);
+        $model->setSendMessageDefaults();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->sendMessage()) {
+                $this->view->success(Yii::t('AdminModule.user', 'The message is sent to the user by email.'));
+                return $this->redirect(['index']);
+            }
+            $this->view->error(Yii::t('AdminModule.user', 'Could not send the message to the user!'));
+        }
+
+        return $this->render('approve', [
+            'model' => $model->user,
+            'approveFormModel' => $model
         ]);
     }
 

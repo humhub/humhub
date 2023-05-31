@@ -1,16 +1,16 @@
 <?php
 
-use humhub\modules\admin\controllers\ApprovalController;
-use humhub\modules\user\models\ProfileField;
-use humhub\widgets\Button;
-use yii\grid\ActionColumn;
-use humhub\modules\admin\models\UserApprovalSearch;
-use yii\data\ActiveDataProvider;
 use humhub\libs\Html;
-use humhub\widgets\GridView;
-use humhub\modules\user\grid\ImageColumn;
+use humhub\modules\admin\controllers\ApprovalController;
+use humhub\modules\admin\grid\ApprovalActionColumn;
+use humhub\modules\admin\models\UserApprovalSearch;
 use humhub\modules\user\grid\DisplayNameColumn;
+use humhub\modules\user\grid\ImageColumn;
+use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
+use humhub\widgets\Button;
+use humhub\widgets\GridView;
+use yii\data\ActiveDataProvider;
 
 /** @var $searchModel UserApprovalSearch */
 /** @var $dataProvider ActiveDataProvider */
@@ -40,11 +40,14 @@ foreach ($profileFieldsColumns as $profileField) {
 }
 $columns[] = 'created_at';
 $columns[] = [
-    'class' => ActionColumn::class,
-    'options' => ['style' => 'width:105px;'],
+    'class' => ApprovalActionColumn::class,
+    'options' => ['style' => 'width:140px;'],
     'buttons' => [
         'view' => function ($url, $model) {
             return Button::defaultType()->link(['/admin/user/edit', 'id' => $model->id])->icon('edit')->sm()->tooltip(Yii::t('AdminModule.user', 'Edit'));
+        },
+        'sendMessage' => function ($url, $model) {
+            return Button::primary()->link(['send-message', 'id' => $model->id])->icon('paper-plane')->sm()->tooltip(Yii::t('AdminModule.user', 'Send a message'));
         },
         'update' => function ($url, $model) {
             return Button::success()->link(['approve', 'id' => $model->id])->icon('check')->sm()->tooltip(Yii::t('AdminModule.user', 'Approve'));
