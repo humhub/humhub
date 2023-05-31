@@ -3,6 +3,7 @@
 use humhub\libs\Html;
 use humhub\modules\admin\controllers\ApprovalController;
 use humhub\modules\admin\grid\ApprovalActionColumn;
+use humhub\modules\admin\models\forms\ApproveUserForm;
 use humhub\modules\admin\models\UserApprovalSearch;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
@@ -41,13 +42,18 @@ foreach ($profileFieldsColumns as $profileField) {
 $columns[] = 'created_at';
 $columns[] = [
     'class' => ApprovalActionColumn::class,
-    'options' => ['style' => 'width:140px;'],
+    'options' => ['style' => 'width:160px;'],
     'buttons' => [
         'view' => function ($url, $model) {
             return Button::defaultType()->link(['/admin/user/edit', 'id' => $model->id])->icon('edit')->sm()->tooltip(Yii::t('AdminModule.user', 'Edit'));
         },
         'sendMessage' => function ($url, $model) {
-            return Button::primary()->link(['send-message', 'id' => $model->id])->icon('paper-plane')->sm()->tooltip(Yii::t('AdminModule.user', 'Send a message'));
+            $nbMsgSent = ApproveUserForm::getNumberMessageSent($model->id);
+            return
+                Button::primary($nbMsgSent ?: '')->link(['send-message', 'id' => $model->id])->icon('paper-plane')->sm()->tooltip(
+                    Yii::t('AdminModule.user', 'Send a message') .
+                    ($nbMsgSent ? ' (' . Yii::t('AdminModule.user', '{nbMsgSent} already sent', ['nbMsgSent' => $nbMsgSent]) . ')' : '')
+                );
         },
         'update' => function ($url, $model) {
             return Button::success()->link(['approve', 'id' => $model->id])->icon('check')->sm()->tooltip(Yii::t('AdminModule.user', 'Approve'));

@@ -48,6 +48,7 @@ class ApproveUserForm extends \yii\base\Model
      */
     protected $_isBulkAction = false;
 
+    public const USER_SETTINGS_NB_MSG_SENT = 'approvalNbMessageSent';
 
     /**
      * @inerhitdoc
@@ -152,7 +153,14 @@ class ApproveUserForm extends \yii\base\Model
             $this->setSendMessageDefaults();
         }
 
-        return $this->send();
+        if ($this->send()) {
+            Yii::$app->settings->user($this->user)->set(self::USER_SETTINGS_NB_MSG_SENT,
+                static::getNumberMessageSent($this->user->id) + 1
+            );
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -172,7 +180,12 @@ class ApproveUserForm extends \yii\base\Model
         $this->user->status = User::STATUS_ENABLED;
         $this->user->setScenario(User::SCENARIO_APPROVE);
 
-        return $this->user->save() && $this->send();
+        if ($this->user->save() && $this->send()) {
+            Yii::$app->settings->user($this->user)->delete(self::USER_SETTINGS_NB_MSG_SENT);
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -187,9 +200,12 @@ class ApproveUserForm extends \yii\base\Model
             $this->setDeclineDefaults();
         }
 
-        return $this->validate() &&
-            $this->send() &&
-            $this->user->delete();
+        if ($this->validate() && $this->send() && $this->user->delete()) {
+            Yii::$app->settings->user($this->user)->delete(self::USER_SETTINGS_NB_MSG_SENT);
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -397,4 +413,18 @@ class ApproveUserForm extends \yii\base\Model
                 '{AdminName}' => $adminDisplayName,
             ]);
     }
+
+    /**
+     * @param int $userId
+     * @return int
+     * @throws \Throwable
+     */
+    public static function getNumberMessageSent(int $userId): int
+    {
+        $user = User::findOne($userId);
+        return $user !== null ?
+            (int)Yii::$app->settings->user($user)->get(self::USER_SETTINGS_NB_MSG_SENT, 0) :
+            0;
+    }
+
 }

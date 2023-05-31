@@ -22,9 +22,6 @@ use yii\web\HttpException;
  */
 class ApprovalController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
     public $adminOnly = false;
 
     public const ACTION_APPROVE = 'approve';
