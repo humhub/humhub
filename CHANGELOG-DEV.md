@@ -15,7 +15,7 @@ HumHub Changelog
 - Enh #6236: Logging: Show log entries from migrations with category migration
 - Fix #6216: Spaces icon in admin menu
 - Fix #6229: Bug on saving forms: Zend OPcache API is restricted by "restrict_api"
-- Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method 
+- Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method
 - Enh #6164: Invitation by link: when registering within an SSO, the email should only be requested on the service provider
 - Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method
 - Enh #5668: Allow Admin to sort the Spaces in a custom order
@@ -33,7 +33,7 @@ HumHub Changelog
 - Enh #2590: Possibility to add a dropdown button to upload audio, image or video file type
 - Enh #6298: Move the "Write a new comment" field style to a generic field that can be used by other modules
 - Enh #6310: Module information is localized with `docs/uk/README.md` or `README.uk.md`.
-- Enh #6311: Added {cols, rows} to textarea() control. 
+- Enh #6311: Added {cols, rows} to textarea() control.
 - Enh #6304: Update button title on creating of not published content
 - Enh #6319: Duplicate File Converter Logs
 - Fix #5962: Make top menu shrink and grow on resize window
@@ -41,7 +41,8 @@ HumHub Changelog
 - Enh #6327: PHP error when calling `Password::setPassword` on unsaved User records
 - Enh #2: Store Default Markdown Editor Mode
 - Enh #6355: Fix limit results in People: Country Filter
-- Enh #6327: PHP error when calling `Password::setPassword` on unsaved User records 
+- Enh #6327: PHP error when calling `Password::setPassword` on unsaved User records
 - Enh #6356: Added SqlDataProvider support for `ImageColumn` and `DisplayNameColumn`
 - Enh #6169: Replace deprecated `yii\base\BaseObject::className()`
-- Enh #6361: Use `LongRunningActiveJob` on more active jobs 
+- Enh #6361: Use `LongRunningActiveJob` on more active jobs
+- Enh #6363: Add an event in the NotificationManager to allow removing some notifications categories in the settings
