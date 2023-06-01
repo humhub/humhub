@@ -46,4 +46,3 @@ HumHub Changelog
 - Enh #6169: Replace deprecated `yii\base\BaseObject::className()`
 - Enh #6361: Use `LongRunningActiveJob` on more active jobs
 - Enh #6363: Add an event in the NotificationManager to allow removing some notifications categories in the settings
-- Enh #6335: Pending approvals: possibility to send a message
