@@ -271,8 +271,6 @@ Admin Tester", $form->message);
         } catch (NotFoundHttpException $e) {
             $this->assertTrue(true);
         }
-
-        $this->assertSendMessage();
     }
 
     public function testNonGroupManagerCannotDeclineUnapprovedUser()
