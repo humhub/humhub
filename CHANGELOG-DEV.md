@@ -4,8 +4,7 @@ HumHub Changelog
 -------------------
 - Enh #6270: Add tests for SettingsManager
 - Enh #6272: Always return integer from settings, if value can be converted
-- Fix #6267: SettingsManager::flushContentContainer() only clears the collection in the current instance, not the
-  underlying cache
+- Fix #6267: SettingsManager::flushContentContainer() only clears the collection in the current instance, not the underlying cache
 - Enh #6271: Add input and type checks, as well as strict types to SettingsManager
 - Fix #6266: BaseSettingsManager::deleteAll() does use prefix as wildcard
 - Fix #6259: Add json & pdo extensions as requirement; updating composer dependencies and node modules
@@ -17,8 +16,7 @@ HumHub Changelog
 - Fix #6216: Spaces icon in admin menu
 - Fix #6229: Bug on saving forms: Zend OPcache API is restricted by "restrict_api"
 - Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method
-- Enh #6164: Invitation by link: when registering within an SSO, the email should only be requested on the service
-  provider
+- Enh #6164: Invitation by link: when registering within an SSO, the email should only be requested on the service provider
 - Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method
 - Enh #5668: Allow Admin to sort the Spaces in a custom order
 - Enh #29: AutoStart Tour for new Users
