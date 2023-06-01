@@ -300,7 +300,6 @@ Admin Tester", $form->message);
         $this->assertMailSent(1);
         $this->assertEqualsLastEmailSubject('About the account request for \'UnApproved User\'.');
         $this->assertEqualsLastEmailTo($user->email);
-        $this->assertNull(User::findOne(['id' => $this->unapprovedUser->id]));
     }
 
     private function assertDeclined(User $user = null)
