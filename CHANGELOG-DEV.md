@@ -2,7 +2,6 @@ HumHub Changelog
 
 1.15.0 (Unreleased)
 -------------------
-
 - Enh #6270: Add tests for SettingsManager
 - Enh #6272: Always return integer from settings, if value can be converted
 - Fix #6267: SettingsManager::flushContentContainer() only clears the collection in the current instance, not the
