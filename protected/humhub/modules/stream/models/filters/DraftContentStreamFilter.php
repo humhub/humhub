@@ -25,11 +25,20 @@ class DraftContentStreamFilter extends StreamQueryFilter
             return;
         }
 
-        if ($this->streamQuery->isInitialQuery()) {
+        if ($this->canPinDraftContent()) {
             $this->fetchDraftContent();
         } else {
             $this->streamQuery->stateFilterCondition[] = ['content.state' => Content::STATE_DRAFT];
         }
+    }
+
+    private function canPinDraftContent(): bool
+    {
+        if (empty($this->streamQuery->pinnedContentSupport)) {
+            return false;
+        }
+
+        return $this->streamQuery->isInitialQuery();
     }
 
     /**
