@@ -476,7 +476,7 @@ class SpaceModelMembership extends Behavior
             'space' => $this->owner, 'user' => $user
         ]));
 
-        if (!$silent) {
+        if (!$silent && !$this->owner->settings->get('hideMembers')) {
             // Create Activity
             MemberAdded::instance()->from($user)->about($this->owner)->save();
         }
@@ -560,7 +560,10 @@ class SpaceModelMembership extends Behavior
      */
     private function handleCancelMemberEvent(User $user)
     {
-        MemberRemoved::instance()->about($this->owner)->from($user)->create();
+        if (!$this->owner->settings->get('hideMembers')) {
+            MemberRemoved::instance()->about($this->owner)->from($user)->create();
+        }
+
         MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_REMOVED,
             new MemberEvent(['space' => $this->owner, 'user' => $user]));
     }
