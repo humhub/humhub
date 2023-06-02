@@ -274,7 +274,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
      * base type as follows:
      *
      * ```
-     * public static function getObjectModel() {
+     * public static function getObjectModel(): string {
      *     return BaseType::class
      * }
      * ```
