@@ -4,7 +4,7 @@ return array (
   '<strong>Edit</strong> account' => '',
   '<strong>Hurray!</strong> The End.' => '',
   '<strong>Hurray!</strong> You\'re done!' => '',
-  '<strong>Profile</strong> menu' => '',
+  '<strong>Profile</strong> menu' => 'Меню <strong>Профіля</strong>',
   '<strong>Profile</strong> photo' => '',
   '<strong>Profile</strong> stream' => '',
   '<strong>User profile</strong>' => '',

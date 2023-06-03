@@ -29,10 +29,10 @@ return array (
   'Professional Edition' => '',
   'Save' => 'Зберегти',
   'Space default state' => '',
-  'Spaces' => '',
+  'Spaces' => 'Спільноти',
   'This module doesn\'t provide further information.' => '',
-  'Try other keywords or remove filters.' => '',
+  'Try other keywords or remove filters.' => 'Спробуйте інші ключові слова або змініть фільтри.',
   'Update successful' => '',
   'User default state' => '',
-  'Users' => '',
+  'Users' => 'Користувачі',
 );

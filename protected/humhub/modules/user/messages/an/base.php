@@ -85,6 +85,8 @@ return [
     'Missing ID AuthClient Attribute from AuthClient.' => '',
     'Name' => '',
     'No results found!' => '',
+    'Offline' => '',
+    'Online' => '',
     'Password changed' => '',
     'Password needs to be at least {chars} characters long.' => '',
     'Pending Requests' => '',
