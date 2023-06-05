@@ -48,6 +48,7 @@ return [
     'Wrap in block quote' => 'Legg inn blokk sitat',
     'Wrap in bullet list' => 'Legg inn punktliste',
     'Wrap in ordered list' => 'legg inn sortert liste',
+    'Switch editor mode' => '',
     '[Code Block]' => '',
     '[Image]' => '',
     '[Invalid file]' => '',

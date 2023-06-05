@@ -35,6 +35,7 @@ return [
     'Don\'t receive notifications for new content' => '',
     'Hide posts on dashboard' => '',
     'Invited By' => '',
+    'Only global administrators can change this value' => '',
     'Pending Approvals' => '',
     'Pending Invites' => '',
     'Permissions are assigned to different user-roles. To edit a permission, select the user-role you want to edit and change the drop-down value of the given permission.' => '',

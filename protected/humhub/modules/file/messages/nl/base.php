@@ -19,4 +19,7 @@ return [
     'The uploaded image is not a squared.' => 'De geüploade afbeelding is niet vierkant.',
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Dit upload veld kan maximaal {n,plural,=1{# bestand} other {# bestanden}} bevatten.',
     'Upload files' => 'Upload bestanden',
+    'Attach a video' => '',
+    'Attach an audio message' => '',
+    'Attach an image' => '',
 ];

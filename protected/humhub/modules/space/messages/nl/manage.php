@@ -55,4 +55,5 @@ return [
     'Unarchive' => 'Dearchiveer',
     'e.g. example for {baseUrl}/s/example' => 'Dat is bijvoorbeeld voor {baseUrl}/s/voorbeeld',
     'never' => 'nooit',
+    'Only global administrators can change this value' => '',
 ];

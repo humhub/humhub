@@ -102,12 +102,10 @@ return [
     'overwrite' => true,
     'phpFileHeader' => '',
     'phpDocBlock' => '',
-    /*
-      // Message categories to ignore
-      'ignoreCategories' => [
-      'yii',
-      ],
-     */
+    // Message categories to ignore
+    'ignoreCategories' => [
+        'yii',
+    ],
 
     /*
       // 'db' output format is for saving messages to database.

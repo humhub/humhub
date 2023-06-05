@@ -49,6 +49,7 @@ return [
     'Wrap in bullet list' => 'التفاف في قائمة التعداد النقطي',
     'Wrap in ordered list' => 'التفاف في قائمة مرتبة',
     '[Invalid file]' => '[ملف غير صالح]',
+    'Switch editor mode' => '',
     '[Code Block]' => '',
     '[Image]' => '',
     '[Table]' => '',
