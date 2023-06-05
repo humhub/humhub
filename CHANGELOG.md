@@ -6,6 +6,7 @@ HumHub Changelog
 - Fix #6345: Fix updating of post on wall stream
 - Fix #6351: Error when config `defaultReloadableScripts` is not array
 - Fix #6359: Avoid double call of `afterSave` on creating of a published content
+- Fix #6373: Use integer format for Content columns "visibility" and "state" right after creating
 
 1.14.2 (May 22, 2023)
 ----------------------
