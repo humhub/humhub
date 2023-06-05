@@ -4,7 +4,8 @@ HumHub Changelog
 1.14.3 (Unreleased)
 ----------------------
 - Fix #6345: Fix updating of post on wall stream
-- Fix #6351: Error when config `defaultReloadableScripts` is not array 
+- Fix #6351: Error when config `defaultReloadableScripts` is not array
+- Fix #6359: Avoid double call of `afterSave` on creating of a published content
 
 1.14.2 (May 22, 2023)
 ----------------------
