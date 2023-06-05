@@ -106,7 +106,7 @@ class ScheduleOptionsForm extends Model
 
     public function getStateTitle(): string
     {
-        return Yii::t('ContentModule.base', 'Scheduled at {dateTime}', [
+        return Yii::t('ContentModule.base', 'Scheduled for {dateTime}', [
             'dateTime' => Yii::$app->formatter->asDatetime($this->date, 'short')
         ]);
     }

@@ -16,7 +16,7 @@ return array (
   'Manage modules' => '',
   'Open space' => '',
   'Overview' => '',
-  'Permissions' => '',
+  'Permissions' => 'Дозволи',
   'Search by name, description, id or owner.' => '',
   'Settings' => 'Налаштування',
   'Space Settings' => '',

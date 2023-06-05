@@ -19,4 +19,7 @@ return [
     'The uploaded image is not a squared.' => 'Hình ảnh được upload không vuông',
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Trường upload chỉ cho phép tối đa {n,plural,=1{# file} other{# files}}.',
     'Upload files' => 'Upload files',
+    'Attach a video' => '',
+    'Attach an audio message' => '',
+    'Attach an image' => '',
 ];

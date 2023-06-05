@@ -8,10 +8,10 @@
 
 namespace humhub\modules\live\jobs;
 
-use Yii;
-use humhub\modules\live\models\Live;
-use humhub\modules\queue\ActiveJob;
 use humhub\modules\live\driver\Poll;
+use humhub\modules\live\models\Live;
+use humhub\modules\queue\LongRunningActiveJob;
+use Yii;
 
 /**
  * DatabaseCleanup removes old live events
@@ -19,7 +19,7 @@ use humhub\modules\live\driver\Poll;
  * @since 1.2
  * @author Luke
  */
-class DatabaseCleanup extends ActiveJob
+class DatabaseCleanup extends LongRunningActiveJob
 {
 
     /**

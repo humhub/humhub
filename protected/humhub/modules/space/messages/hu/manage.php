@@ -55,4 +55,5 @@ return [
     'Unarchive' => 'Archiválás visszavonása',
     'e.g. example for {baseUrl}/s/example' => 'pl.: példa erre: {baseUrl}/s/pelda',
     'never' => 'soha',
+    'Only global administrators can change this value' => '',
 ];

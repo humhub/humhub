@@ -64,7 +64,11 @@ return [
     'Blocked users' => '',
     'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => '',
     'Enter your password to continue' => '',
+    'Hide my online status' => '',
+    'Markdown Editor Mode' => '',
+    'Plain' => '',
     'Profile Tags' => '',
+    'Rich Text' => '',
     'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.' => '',
     'You cannot use this username.' => '',
 ];

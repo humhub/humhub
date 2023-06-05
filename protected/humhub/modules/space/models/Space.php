@@ -8,29 +8,29 @@
 
 namespace humhub\modules\space\models;
 
+use humhub\components\behaviors\GUID;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
-use humhub\modules\search\interfaces\Searchable;
+use humhub\modules\content\models\Content;
 use humhub\modules\search\events\SearchAddEvent;
+use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\jobs\DeleteDocument;
 use humhub\modules\search\jobs\UpdateDocument;
-use humhub\modules\space\behaviors\SpaceModelMembership;
+use humhub\modules\space\activities\Created;
 use humhub\modules\space\behaviors\SpaceController;
+use humhub\modules\space\behaviors\SpaceModelMembership;
 use humhub\modules\space\components\ActiveQuerySpace;
+use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\Module;
-use humhub\modules\user\behaviors\Followable;
-use humhub\components\behaviors\GUID;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
-use humhub\modules\space\components\UrlValidator;
-use humhub\modules\space\activities\Created;
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\models\Content;
-use humhub\modules\user\helpers\AuthHelper;
-use humhub\modules\user\models\GroupSpace;
-use humhub\modules\user\models\User;
-use humhub\modules\user\models\Follow;
-use humhub\modules\user\models\Invite;
 use humhub\modules\space\widgets\Wall;
+use humhub\modules\user\behaviors\Followable;
+use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\models\Follow;
+use humhub\modules\user\models\GroupSpace;
+use humhub\modules\user\models\Invite;
+use humhub\modules\user\models\User;
 use humhub\modules\user\models\User as UserModel;
 use Yii;
 
@@ -46,6 +46,7 @@ use Yii;
  * @property integer $join_policy
  * @property integer $visibility
  * @property integer $status
+ * @property integer $sort_order
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
@@ -116,7 +117,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     public function rules()
     {
         $rules = [
-            [['join_policy', 'visibility', 'status', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
+            [['join_policy', 'visibility', 'status', 'sort_order', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
             [['name'], 'required'],
             [['description', 'about', 'color'], 'string'],
             [['tagsField', 'blockedUsersField'], 'safe'],

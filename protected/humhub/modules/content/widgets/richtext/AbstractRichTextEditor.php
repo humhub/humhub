@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
 
 namespace humhub\modules\content\widgets\richtext;
@@ -206,7 +206,8 @@ class AbstractRichTextEditor extends JsInputWidget
      * This method can be overwritten in order to prepend content after the actual rich text content.
      * @return string
      */
-    public function prepend() {
+    public function prepend()
+    {
         return '';
     }
 
@@ -227,7 +228,7 @@ class AbstractRichTextEditor extends JsInputWidget
      */
     public function getLabel()
     {
-        if(!$this->label) {
+        if (!$this->label) {
             return "";
         }
 
@@ -259,7 +260,7 @@ class AbstractRichTextEditor extends JsInputWidget
 
         $config = ArrayHelper::merge(static::$renderer, $params);
         unset($config['class']);
-        return call_user_func(static::$renderer['class'].'::output', $content, $config);
+        return call_user_func(static::$renderer['class'] . '::output', $content, $config);
     }
 
     /**
@@ -277,11 +278,11 @@ class AbstractRichTextEditor extends JsInputWidget
             'focus' => $this->focus
         ];
 
-        if(!empty($this->preset)) {
+        if (!empty($this->preset)) {
             $result['preset'] = $this->preset;
         }
 
-        if(!empty($this->placeholder)) {
+        if (!empty($this->placeholder)) {
             $result['placeholder'] = $this->placeholder;
         }
 

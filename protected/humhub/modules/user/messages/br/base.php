@@ -63,6 +63,8 @@ return [
     'No results found!' => '',
     'No users found.' => '',
     'Notifications' => '',
+    'Offline' => '',
+    'Online' => '',
     'Password' => '',
     'Password changed' => '',
     'Password needs to be at least {chars} characters long.' => '',

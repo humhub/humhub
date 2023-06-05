@@ -8,8 +8,9 @@
 
 namespace humhub\modules\content\components;
 
-use Yii;
+use humhub\components\SettingActiveRecord;
 use humhub\libs\BaseSettingsManager;
+use Yii;
 
 /**
  * ContentContainerSettingManager
@@ -23,18 +24,18 @@ class ContentContainerSettingsManager extends BaseSettingsManager
     /**
      * @inheritdoc
      */
-    public $modelClass = 'humhub\modules\content\models\ContentContainerSetting';
+    public string $modelClass = 'humhub\modules\content\models\ContentContainerSetting';
 
     /**
      * @var ContentContainerActiveRecord the content container this settings manager belongs to
      */
     public $contentContainer;
-    
+
     /**
      * Returns the setting value of this container for the given setting $name.
      * If there is not container specific setting, this function will search for a global setting or
      * return default or null if there is also no global setting.
-     * 
+     *
      * @param string $name
      * @param string $default
      * @return boolean
@@ -45,12 +46,12 @@ class ContentContainerSettingsManager extends BaseSettingsManager
         return ($result !== null) ? $result
             : Yii::$app->getModule($this->moduleId)->settings->get($name, $default);
     }
-    
+
     /**
      * Returns the setting value of this container for the given setting $name.
      * If there is not container specific setting, this function will search for a global setting or
      * return default or null if there is also no global setting.
-     * 
+     *
      * @param string $name
      * @param string $default
      * @return boolean
@@ -83,9 +84,11 @@ class ContentContainerSettingsManager extends BaseSettingsManager
     /**
      * @inheritdoc
      */
-    protected function getCacheKey()
+    protected function getCacheKey(): string
     {
-        return parent::getCacheKey() . '-' . $this->contentContainer->contentcontainer_id;
+        /** @var \humhub\components\SettingActiveRecord $modelClass */
+        $modelClass = $this->modelClass;
+        return $modelClass::getCacheKey($this->moduleId, $this->contentContainer->contentcontainer_id);
     }
 
 }

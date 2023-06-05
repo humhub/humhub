@@ -10,9 +10,13 @@
 namespace humhub\modules\user\helpers;
 
 
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\forms\Registration;
+use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
+use yii\web\HttpException;
 
 /**
  * Class AuthHelper
@@ -58,13 +62,12 @@ class AuthHelper
         }
 
         $username = [];
-        if (isset($attributes['firstname'])) {
+        if (isset($attributes['firstname']) && !empty($attributes['firstname'])) {
             $username[] = $attributes['firstname'];
         }
-        if (isset($attributes['lasttname'])) {
-            $username[] = $attributes['lasttname'];
-        }
-        if (isset($attributes['family_name'])) {
+        if (isset($attributes['lastname']) && !empty($attributes['lastname'])) {
+            $username[] = $attributes['lastname'];
+        } elseif (isset($attributes['family_name']) && !empty($attributes['family_name'])) {
             $username[] = $attributes['family_name'];
         }
 
@@ -72,6 +75,10 @@ class AuthHelper
             $username = Yii::$app->security->generateRandomString(8);
         } else {
             $username = implode('_', $username);
+        }
+
+        if (empty($username) || $username === '_') {
+            $username = explode("@", $attributes['email'])[0];
         }
 
         $username = strtolower(substr($username, 0, 32));
@@ -85,4 +92,5 @@ class AuthHelper
 
         return $username . $usernameRandomSuffix;
     }
+
 }

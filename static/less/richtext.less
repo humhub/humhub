@@ -80,6 +80,10 @@
             border-right: none;
         }
 
+        .ProseMirror-icon {
+            background: transparent;
+        }
+
         .seperator {
             border-right: 1px solid #ddd;
             margin-right: 2px;
@@ -142,7 +146,10 @@
         cursor: pointer;
     }
 
-    .ProseMirror-menu-dropdown-item div[title], .ProseMirror-menu-submenu-wrap {
+    .ProseMirror-menu-dropdown-item div[title],
+    .ProseMirror-menu-dropdown-item a.ProseMirror-menu-trigger,
+    .ProseMirror-menu-submenu-wrap {
+        display: block;
         padding: 4px;
     }
 
@@ -208,6 +215,22 @@
         vertical-align: text-top;
     }
 
+    .ProseMirror-editor-source{
+        border: 2px solid #ededed;
+        border-radius: 0 4px 4px 4px;
+        box-sizing: border-box;
+        display: block;
+        min-height: 36px;
+        resize: vertical;
+        overflow: auto;
+        outline: none;
+        padding: 7px 12px;
+        width: 100%;
+    }
+
+    .ProseMirror-editor-source:focus {
+        border: 2px solid #0b97c4;
+    }
 }
 
 /**
@@ -292,7 +315,6 @@
 }
 
 .ProsemirrorEditor {
-
     .ProseMirror {
         position: relative;
         word-wrap: break-word;

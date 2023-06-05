@@ -8,6 +8,7 @@
 
 namespace humhub\modules\notification\components;
 
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\SocialActivity;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
@@ -127,6 +128,18 @@ abstract class BaseNotification extends SocialActivity
     protected function category()
     {
         return null;
+    }
+
+    /**
+     * Checks if notification is still valid before sending
+     *
+     * @return bool
+     *
+     * @since 1.15
+     */
+    public function isValid()
+    {
+        return true;
     }
 
     /**
@@ -404,7 +417,7 @@ abstract class BaseNotification extends SocialActivity
 
         if ($this->source !== null) {
             $condition['source_pk'] = $this->source->getPrimaryKey();
-            $condition['source_class'] = $this->source->className();
+            $condition['source_class'] = PolymorphicRelation::getObjectModel($this->source);
         }
 
         Notification::deleteAll($condition);

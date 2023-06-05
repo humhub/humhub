@@ -8,8 +8,8 @@
 
 namespace humhub\models;
 
+use humhub\components\SettingActiveRecord;
 use Yii;
-use yii\db\ActiveRecord;
 use yii\base\Exception;
 
 /**
@@ -20,7 +20,7 @@ use yii\base\Exception;
  * @property string $value
  * @property string $module_id
  */
-class Setting extends ActiveRecord
+class Setting extends SettingActiveRecord
 {
 
     /**
@@ -132,31 +132,27 @@ class Setting extends ActiveRecord
      */
     public static function fixModuleIdAndName($name, $moduleId)
     {
-        if ($name == 'allowGuestAccess' && $moduleId == 'authentication_internal') {
-            return ['allowGuestAccess', 'user'];
-        } elseif ($name == 'defaultUserGroup' && $moduleId == 'authentication_internal') {
-            return ['auth.allowGuestAccess', 'user'];
-        } elseif ($name == 'systemEmailAddress' && $moduleId == 'mailing') {
-            return ['mailer.systemEmailAddress', 'user'];
-        } elseif ($name == 'systemEmailName' && $moduleId == 'mailing') {
-            return ['mailer.systemEmailName', 'user'];
-        } elseif ($name == 'systemEmailReplyTo' && $moduleId == 'mailing') {
-            return ['mailer.systemEmailReplyTo', 'user'];
-        } elseif ($name == 'enabled' && $moduleId == 'proxy') {
-            return ['proxy.enabled', 'base'];
-        } elseif ($name == 'server' && $moduleId == 'proxy') {
-            return ['proxy.server', 'base'];
-        } elseif ($name == 'port' && $moduleId == 'proxy') {
-            return ['proxy.port', 'base'];
-        } elseif ($name == 'user' && $moduleId == 'proxy') {
-            return ['proxy.user', 'base'];
-        } elseif ($name == 'pass' && $moduleId == 'proxy') {
-            return ['proxy.password', 'base'];
-        } elseif ($name == 'noproxy' && $moduleId == 'proxy') {
-            return ['proxy.noproxy', 'base'];
-        }
+        static $translation = [
+            'authentication_internal' => [
+                'allowGuestAccess' => ['allowGuestAccess', 'user'],
+                'defaultUserGroup' => ['auth.allowGuestAccess', 'user'],
+            ],
+            'mailing' => [
+                'systemEmailAddress' => ['mailer.systemEmailAddress', 'user'],
+                'mailing' => ['mailer.systemEmailName', 'user'],
+                'systemEmailReplyTo' => ['mailer.systemEmailReplyTo', 'user'],
+            ],
+            'proxy' => [
+                'enabled' => ['proxy.enabled', 'base'],
+                'server' => ['proxy.server', 'base'],
+                'port' => ['proxy.port', 'base'],
+                'user' => ['proxy.user', 'base'],
+                'pass' => ['proxy.password', 'base'],
+                'noproxy' => ['proxy.noproxy', 'base']
+            ]
+        ];
 
-        return [$name, $moduleId];
+        return $translation[$moduleId][$name] ?? [$name, $moduleId];
     }
 
     /**
