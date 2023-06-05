@@ -160,6 +160,8 @@ $config = [
         ],
         'urlManager' => [
             'class' => \humhub\components\UrlManager::class,
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
         ],
         'live' => [
             'class' => \humhub\modules\live\components\Sender::class,
