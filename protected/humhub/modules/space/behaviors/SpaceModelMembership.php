@@ -230,7 +230,9 @@ class SpaceModelMembership extends Behavior
         }
 
         if (!isset($this->_memberships[$userId])) {
-            $this->_memberships[$userId] = Membership::findOne(['user_id' => $userId, 'space_id' => $this->owner->id]);
+            $this->_memberships[$userId] = Yii::$app->runtimeCache->getOrSet(__METHOD__ . $userId, function() use ($userId) {
+                return Membership::findOne(['user_id' => $userId, 'space_id' => $this->owner->id]);
+            });
         }
 
         return $this->_memberships[$userId];

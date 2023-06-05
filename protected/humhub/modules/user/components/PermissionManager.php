@@ -226,7 +226,10 @@ class PermissionManager extends Component
         // array_fill_keys is done in order to record group ids, even if no records found
         // recorded group id will not be fetched again
         $this->_groupPermissions += array_fill_keys($ids, []);
-        $result = $this->getQuery()->andWhere(['group_id' => $ids])->all();
+
+        $result = Yii::$app->runtimeCache->getOrSet($ids, function() use ($ids) {
+            return $this->getQuery()->andWhere(['group_id' => $ids])->all();
+        });
 
         foreach ($result as $group) {
             /** @var GroupPermission | ActiveRecord $group */

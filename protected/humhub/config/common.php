@@ -110,6 +110,10 @@ $config = [
         'cache' => [
             'class' => \yii\caching\DummyCache::class,
         ],
+        'runtimeCache' => [
+            'class' => \yii\caching\ArrayCache::class,
+            'serializer' => false,
+        ],
         'mailer' => [
             'class' => \humhub\components\mail\Mailer::class,
             'viewPath' => '@humhub/views/mail',
@@ -156,6 +160,8 @@ $config = [
         ],
         'urlManager' => [
             'class' => \humhub\components\UrlManager::class,
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
         ],
         'live' => [
             'class' => \humhub\modules\live\components\Sender::class,
