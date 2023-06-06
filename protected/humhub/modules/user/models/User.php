@@ -328,7 +328,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     public static function findIdentity($id)
     {
-        return Yii::$app->runtimeCache->getOrSet(User::class . 'record' . $id, function() use ($id) {
+        return Yii::$app->runtimeCache->getOrSet(User::class . '#' . $id, function() use ($id) {
             return static::findOne(['id' => $id]);
         });
     }

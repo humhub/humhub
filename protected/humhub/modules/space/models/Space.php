@@ -364,7 +364,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             return false;
         }
 
-        $user = Yii::$app->runtimeCache->getOrSet(User::class . 'record' . $userId, function() use ($userId) {
+        $user = Yii::$app->runtimeCache->getOrSet(User::class . '#' . $userId, function() use ($userId) {
             return User::findOne($userId);
         });
 
@@ -673,11 +673,14 @@ class Space extends ContentContainerActiveRecord implements Searchable
         $owner = $this->getOwnerUser()->one();
         $groups[self::USERGROUP_OWNER][] = $owner;
 
-        $query = Membership::find()->joinWith('user');
-        $query->andWhere(['IN', 'group_id', [self::USERGROUP_ADMIN, self::USERGROUP_MODERATOR]]);
-        $query->andWhere(['space_id' => $this->id]);
-        $query->andWhere(['!=', 'user_id', $owner->id]);
-        $query->andWhere(['user.status' => User::STATUS_ENABLED]);
+        $query = Membership::find()
+            ->with('user')
+            ->with('user.profile')
+            ->andWhere(['IN', 'group_id', [self::USERGROUP_ADMIN, self::USERGROUP_MODERATOR]])
+            ->andWhere(['space_id' => $this->id])
+            ->andWhere(['!=', 'user_id', $owner->id])
+            ->andWhere(['user.status' => User::STATUS_ENABLED])
+        ;
 
         foreach ($query->all() as $membership) {
             $groups[$membership->group_id][] = $membership->user;
