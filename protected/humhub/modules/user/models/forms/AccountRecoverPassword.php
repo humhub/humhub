@@ -28,9 +28,8 @@ class AccountRecoverPassword extends Model
         return [
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'canRecoverPassword'],
             ['verifyCode', 'captcha', 'captchaAction' => '/user/auth/captcha'],
-            ['email', 'exist', 'targetClass' => User::class, 'targetAttribute' => 'email', 'message' => Yii::t('UserModule.account', '{attribute} "{value}" was not found!')],
+            ['email', 'verifyEmail'],
         ];
     }
 
@@ -47,19 +46,30 @@ class AccountRecoverPassword extends Model
     }
 
     /**
-     * Checks if we can recover users password.
-     * This may not possible on e.g. LDAP accounts.
+     * Checks email for existing and if it can be recovered
      */
-    public function canRecoverPassword($attribute, $params)
+    public function verifyEmail($attribute)
     {
+        if ($this->getErrors('verifyCode')) {
+            // Don't start to check email while captcha code is wrong
+            return;
+        }
 
-        if ($this->email !== '') {
-            $user = User::findOne(['email' => $this->email]);
-            $passwordAuth = new Password();
+        $user = User::findOne(['email' => $this->email]);
 
-            if ($user != null && $user->auth_mode !== $passwordAuth->getId()) {
-                $this->addError($attribute, Yii::t('UserModule.account', Yii::t('UserModule.account', 'Password recovery is not possible on your account type!')));
-            }
+        if ($user === null) {
+            $this->addError($attribute, Yii::t('UserModule.account', Yii::t('UserModule.account', '{attribute} "{value}" was not found!', [
+                'attribute' => $this->getAttributeLabel($attribute),
+                'value' => $this->email
+            ])));
+            return;
+        }
+
+        // Checks if we can recover users password.
+        // This may not possible on e.g. LDAP accounts.
+        $passwordAuth = new Password();
+        if ($user->auth_mode !== $passwordAuth->getId()) {
+            $this->addError($attribute, Yii::t('UserModule.account', Yii::t('UserModule.account', 'Password recovery is not possible on your account type!')));
         }
     }
 
