@@ -59,7 +59,7 @@ class AccountRecoverPassword extends Model
 
         if ($user === null) {
             $this->addError($attribute, Yii::t('UserModule.account', Yii::t('UserModule.account', '{attribute} "{value}" was not found!', [
-                'attribute' => $attribute,
+                'attribute' => $this->getAttributeLabel($attribute),
                 'value' => $this->email
             ])));
             return;
