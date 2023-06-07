@@ -241,9 +241,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
             if ($this->getStateService()->isPublished()) {
                 // Run process for new content(Send notifications) only after publishing the Content
                 $this->processNewContent();
-                // Also run process for parent object in order to send notifications like mentioning users
-                if ($model instanceof ActiveRecord) {
-                    $model->afterSave($insert, $changedAttributes);
+                // Also run process for parent object in order to send notifications like mentioning users,
+                // for case when it was not published on creating
+                if (!$insert && $model instanceof ActiveRecord) {
+                    $model->afterSave(false, []);
                 }
             }
 
