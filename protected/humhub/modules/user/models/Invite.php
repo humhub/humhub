@@ -10,10 +10,8 @@ namespace humhub\modules\user\models;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\ActiveRecord;
-use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\Module;
-use humhub\widgets\Button;
 use Yii;
 use yii\helpers\Url;
 
@@ -74,9 +72,6 @@ class Invite extends ActiveRecord
             [['email'], 'required'],
             [['email'], 'unique'],
             [['email'], 'email'],
-            [['email'], 'unique', 'targetClass' => User::class, 'message' => ($this->source === self::SOURCE_INVITE_BY_LINK ?
-                Yii::t('UserModule.base', 'E-Mail is already in use! Try to sign in.') :
-                Yii::t('UserModule.base', 'E-Mail is already in use! - Try forgot password.'))],
             [['captcha'], 'captcha', 'captchaAction' => 'user/auth/captcha', 'on' => static::SOURCE_INVITE],
         ];
     }
