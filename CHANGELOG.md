@@ -7,7 +7,8 @@ HumHub Changelog
 - Fix #6351: Error when config `defaultReloadableScripts` is not array
 - Fix #6359: Avoid double call of `afterSave` on creating of a published content
 - Fix #6373: Use integer format for Content columns "visibility" and "state" right after creating
-- Fix #6377: Forgot Password - Display email input error after successful captcha verification. 
+- Fix #6377: Forgot Password - Display email input error after successful captcha verification.
+- Fix #6378: Fix visibility of the link "Uninstall" on Windows server
 
 1.14.2 (May 22, 2023)
 ----------------------
