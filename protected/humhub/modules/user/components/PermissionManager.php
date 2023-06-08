@@ -227,7 +227,7 @@ class PermissionManager extends Component
         // recorded group id will not be fetched again
         $this->_groupPermissions += array_fill_keys($ids, []);
 
-        $result = Yii::$app->runtimeCache->getOrSet($ids, function() use ($ids) {
+        $result = Yii::$app->runtimeCache->getOrSet(__METHOD__ . implode(',', $ids), function() use ($ids) {
             return $this->getQuery()->andWhere(['group_id' => $ids])->all();
         });
 
