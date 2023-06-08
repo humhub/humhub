@@ -674,7 +674,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
         $groups[self::USERGROUP_OWNER][] = $owner;
 
         $query = Membership::find()
-            ->with('user')
+            ->joinWith('user')
             ->with('user.profile')
             ->andWhere(['IN', 'group_id', [self::USERGROUP_ADMIN, self::USERGROUP_MODERATOR]])
             ->andWhere(['space_id' => $this->id])
