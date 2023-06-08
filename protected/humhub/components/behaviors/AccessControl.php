@@ -212,6 +212,7 @@ class AccessControl extends ActionFilter
      */
     protected function forbidden()
     {
+        //
         throw new HttpException($this->controllerAccess->code, $this->controllerAccess->reason);
     }
 
