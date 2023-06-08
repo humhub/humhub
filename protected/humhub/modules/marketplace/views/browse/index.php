@@ -6,6 +6,7 @@
  */
 
 use humhub\assets\CardsAsset;
+use humhub\modules\marketplace\assets\Assets;
 use humhub\modules\marketplace\widgets\ModuleFilters;
 use humhub\modules\marketplace\widgets\Modules;
 use humhub\modules\ui\icon\widgets\Icon;
@@ -15,6 +16,7 @@ use humhub\widgets\Button;
 /* @var $this View */
 
 CardsAsset::register($this);
+Assets::register($this);
 ?>
 <div class="panel panel-default">
     <div class="panel-heading">
