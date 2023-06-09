@@ -113,11 +113,13 @@ class ContentStateService extends Component
      */
     public function set($state, array $options = []): bool
     {
+        $state = (int) $state;
+
         if (!$this->canChange($state)) {
             return false;
         }
 
-        if ((int) $state === Content::STATE_SCHEDULED) {
+        if ($state === Content::STATE_SCHEDULED) {
             if (empty($options['scheduled_at'])) {
                 return false;
             }

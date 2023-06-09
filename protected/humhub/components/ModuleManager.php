@@ -434,7 +434,10 @@ class ModuleManager extends Component
         /** @var ModuleMarketplace $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
         if ($marketplaceModule !== null) {
-            if (strpos($module->getBasePath(), Yii::getAlias($marketplaceModule->modulesPath)) !== false) {
+            // Normalize paths before comparing in order to fix issues like Windows path separators `\`
+            $modulePath = FileHelper::normalizePath($module->getBasePath());
+            $aliasPath = FileHelper::normalizePath(Yii::getAlias($marketplaceModule->modulesPath));
+            if (strpos($modulePath, $aliasPath) !== false) {
                 return true;
             }
         }
