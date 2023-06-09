@@ -246,7 +246,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
      * @param mixed $value
      * @return bool
      */
-    public function columnValueCanBeNormalized(?ColumnSchema $column, $value): bool
+    private function columnValueCanBeNormalized(?ColumnSchema $column, $value): bool
     {
         if ($column === null) {
             return false;
