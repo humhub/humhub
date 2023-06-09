@@ -5,12 +5,12 @@
 
 
 <?= Yii::t('UserModule.base',
-    'You just tried registering at %appName% with this email address, but you already have an account connected to this email address.',
+    'You tried registering an account with %appName%, but already have an account associated with this email address.',
     ['%appName%' => Yii::$app->name]) ?>
 
-<?= Yii::t('UserModule.base', 'Did you forget the password?') ?>
+<?= Yii::t('UserModule.base', 'Did you forget your password?') ?>
 
-<?= Yii::t('UserModule.base', 'If it wasn\'t you, just discard this message.') ?>
+<?= Yii::t('UserModule.base', 'If this wasn\'t you, you can disregard this message.') ?>
 
 
 <?= Yii::t('UserModule.base', 'Password recovery') ?>: <?= $passwordRecoveryUrl ?>
