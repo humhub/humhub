@@ -8,8 +8,10 @@
 namespace humhub\components\behaviors;
 
 use Exception;
+use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\post\models\Post;
 use ReflectionClass;
 use ReflectionException;
 use Yii;
@@ -64,10 +66,14 @@ class PolymorphicRelation extends Behavior
             return $this->cached;
         }
 
-        $object = static::loadActiveRecord(
-            $this->owner->getAttribute($this->classAttribute),
-            $this->owner->getAttribute($this->pkAttribute)
-        );
+        if ($this->owner->getAttribute($this->classAttribute) == Post::class && $this->owner->isRelationPopulated('post')) {
+            $object = $this->owner->post;
+        } else {
+            $object = static::loadActiveRecord(
+                $this->owner->getAttribute($this->classAttribute),
+                $this->owner->getAttribute($this->pkAttribute)
+            );
+        }
 
         if ($this->strict && !$object && !empty($this->classAttribute) && !empty($this->pkAttribute)) {
             throw new IntegrityException('Call to an inconsistent polymorphic relation detected on ' . get_class($this->owner) . ' (' . $this->owner->getAttribute($this->classAttribute) . ':' . $this->owner->getAttribute($this->pkAttribute) . ')');
