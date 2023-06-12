@@ -98,7 +98,8 @@ class PasswordRecoveryController extends Controller
 
         $model = new Password();
 
-        if ($user->getPasswordRecoveryService()->reset($model)) {
+        if ($model->load(Yii::$app->request->post()) &&
+            $user->getPasswordRecoveryService()->reset($model)) {
             return $this->render('reset_success');
         }
 

@@ -75,7 +75,7 @@ class PasswordRecoveryService
         return false;
     }
 
-    private function getSavedToken(): ?array
+    public function getSavedToken(): ?array
     {
         // Saved token - Format: randomToken.generationTime
         $tokenData = $this->user->getSettings()->get(self::SETTING_TOKEN);
@@ -124,15 +124,16 @@ class PasswordRecoveryService
      */
     public function reset(Password $password): bool
     {
-        $password->scenario = 'registration';
+        if (!$password->validate()) {
+            return false;
+        }
 
-        if ($password->load(Yii::$app->request->post()) && $password->validate()) {
-            $password->user_id = $this->user->id;
-            $password->setPassword($password->newPassword);
-            if ($password->save()) {
-                $this->user->getSettings()->delete(self::SETTING_TOKEN);
-                return true;
-            }
+        $password->scenario = 'registration';
+        $password->user_id = $this->user->id;
+        $password->setPassword($password->newPassword);
+        if ($password->save()) {
+            $this->user->getSettings()->delete(self::SETTING_TOKEN);
+            return true;
         }
 
         return false;
