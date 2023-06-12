@@ -63,6 +63,11 @@ class AccountRecoverPassword extends Model
             return;
         }
 
+        if ($user->getPasswordRecoveryService()->isLimited()) {
+            $this->addError($attribute, Yii::t('UserModule.account', Yii::t('UserModule.account', 'You cannot request password recovery more often than 10 minutes!')));
+            return;
+        }
+
         // Checks if we can recover users password.
         // This may not possible on e.g. LDAP accounts.
         $passwordAuth = new Password();

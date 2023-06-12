@@ -10,15 +10,15 @@ namespace humhub\modules\user\services;
 use humhub\libs\Helpers;
 use humhub\libs\SafeBaseUrl;
 use humhub\libs\UUID;
-use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
-use humhub\modules\user\Module;
 use Yii;
 
 class PasswordRecoveryService
 {
     const SETTING_TOKEN = 'passwordRecoveryToken';
+    const TOKEN_MAX_LIFE_TIME = 24 * 60 * 60;
+    const LIMIT_EMAIL_SEND_TIME = 10 * 60;
 
     public User $user;
 
@@ -27,12 +27,19 @@ class PasswordRecoveryService
         $this->user = $user;
     }
 
-    private function getSettingsManager(): ContentContainerSettingsManager
+    /**
+     * Check if email sending is limited with 10 minute pause
+     *
+     * @return bool
+     */
+    public function isLimited(): bool
     {
-        /* @var Module $userModule */
-        $userModule = Yii::$app->getModule('user');
+        $savedToken = $this->getSavedToken();
+        if ($savedToken === null) {
+            return false;
+        }
 
-        return $userModule->settings->contentContainer($this->user);
+        return (int) $savedToken['time'] + self::LIMIT_EMAIL_SEND_TIME >= time();
     }
 
     /**
@@ -47,8 +54,6 @@ class PasswordRecoveryService
 
         $token = UUID::v4();
 
-        $this->getSettingsManager()->set(self::SETTING_TOKEN, $token . '.' . time());
-
         $mail = Yii::$app->mailer->compose([
             'html' => '@humhub/modules/user/views/mails/RecoverPassword',
             'text' => '@humhub/modules/user/views/mails/plaintext/RecoverPassword'
@@ -62,7 +67,32 @@ class PasswordRecoveryService
         $mail->setTo($this->user->email);
         $mail->setSubject(Yii::t('UserModule.account', 'Password Recovery'));
 
-        return $mail->send();
+        if ($mail->send()) {
+            $this->user->getSettings()->set(self::SETTING_TOKEN, $token . '.' . time());
+            return true;
+        }
+
+        return false;
+    }
+
+    private function getSavedToken(): ?array
+    {
+        // Saved token - Format: randomToken.generationTime
+        $tokenData = $this->user->getSettings()->get(self::SETTING_TOKEN);
+
+        if (!is_string($tokenData)) {
+            return null;
+        }
+
+        $tokenData = explode('.', $tokenData);
+        if (count($tokenData) !== 2) {
+            return null;
+        }
+
+        return [
+            'key' => $tokenData[0],
+            'time' => $tokenData[1]
+        ];
     }
 
     /**
@@ -73,19 +103,17 @@ class PasswordRecoveryService
      */
     public function checkToken(?string $token): bool
     {
-        // Saved token - Format: randomToken.generationTime
-        $savedTokenInfo = $this->getSettingsManager()->get(self::SETTING_TOKEN);
-        if (!$savedTokenInfo) {
+        $savedToken = $this->getSavedToken();
+        if ($savedToken === null) {
             return false;
         }
 
-        list($generatedToken, $generationTime) = explode('.', $savedTokenInfo);
-        if (!Helpers::same($generatedToken, $token)) {
+        if (!Helpers::same($savedToken['key'], $token)) {
             return false;
         }
 
         // Token must not be older than 24 hours
-        return (int) $generationTime + (24 * 60 * 60) >= time();
+        return (int) $savedToken['time'] + self::TOKEN_MAX_LIFE_TIME >= time();
     }
 
     /**
@@ -102,7 +130,7 @@ class PasswordRecoveryService
             $password->user_id = $this->user->id;
             $password->setPassword($password->newPassword);
             if ($password->save()) {
-                $this->getSettingsManager()->delete(self::SETTING_TOKEN);
+                $this->user->getSettings()->delete(self::SETTING_TOKEN);
                 return true;
             }
         }
