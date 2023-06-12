@@ -1,9 +1,9 @@
 .ProsemirrorEditor.fullscreen {
+    height: calc(100vh - 3px);
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
-    height: calc(100vh - 3px);
     z-index: 9998;
 
     .ProseMirror-menubar-wrapper {
@@ -15,9 +15,9 @@
     }
 
     .ProseMirror {
+        height: calc(100% - 26px);
         position: static;
         overflow: auto;
-        height: calc(100% - 26px);
     }
 
     .ProseMirror-menubar {
@@ -63,7 +63,7 @@
     }
 
     .ProseMirror-menuseparator {
-        border-right: 1px solid #ddd;
+        border-right: 1px solid @background3;
         margin-right: 3px;
     }
 
@@ -73,7 +73,7 @@
 
     .ProseMirror-menuitem {
         .ProseMirror-menu-group {
-            border-right: 1px solid #ddd;
+            border-right: 1px solid @background3;
         }
 
         .ProseMirror-menu-group.last {
@@ -85,7 +85,7 @@
         }
 
         .seperator {
-            border-right: 1px solid #ddd;
+            border-right: 1px solid @background3;
             margin-right: 2px;
             padding-right: 2px;
         }
@@ -102,7 +102,7 @@
     }
 
     .ProseMirror-menu-dropdown-wrap {
-        padding: 1px 0 1px 0;
+        padding: 1px 0;
         display: inline-block;
         position: relative;
     }
@@ -129,8 +129,8 @@
     .ProseMirror-menu-dropdown-menu, .ProseMirror-menu-submenu {
         position: absolute;
         background: white;
-        color: #666;
-        border: 1px solid #aaa;
+        color: @text-color-soft;
+        border: 1px solid @text-color-soft2;
         border-bottom-left-radius: 4px;
         border-bottom-right-radius: 4px;
     }
@@ -153,7 +153,7 @@
     }
 
     .ProseMirror-menu-dropdown-item:hover {
-        background: #f2f2f2;
+        background: @background-color-secondary;
     }
 
     .ProseMirror-menu-submenu-wrap {
@@ -179,7 +179,7 @@
     }
 
     .ProseMirror-menu-active {
-        background: #eee;
+        background: @background-color-page;
         border-radius: 4px;
         border: 1px solid @background-color-page !important;
     }
@@ -215,7 +215,7 @@
     }
 
     .ProseMirror-editor-source {
-        border: 2px solid #ededed;
+        border: 2px solid @background-color-page;
         border-radius: 0 4px 4px 4px;
         box-sizing: border-box;
         display: block;
@@ -228,7 +228,7 @@
     }
 
     .ProseMirror-editor-source:focus {
-        border: 2px solid #21A1B3;
+        border: 2px solid @info;
     }
 }
 
@@ -265,12 +265,12 @@
 
     .ProseMirror-menubar {
         background-color: @background-color-secondary;
+        border: 1px solid @background3;
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
-        border: 1px solid #ddd;
+        color: @text-color-soft;
         position: relative;
         min-height: 1em;
-        color: #666;
         padding: 1px 6px 1px 0;
         top: 0;
         left: 0;
@@ -285,7 +285,6 @@
  * Editor style attached at the top of input only visible on focus
  */
 .ProsemirrorEditor.focusMenu {
-
     .form-control:focus {
         border-top-left-radius: 0 !important;
     }
@@ -293,7 +292,7 @@
     .ProseMirror-menubar {
         display: table;
         min-height: 1em;
-        color: #666;
+        color: @text-color-soft;
         padding: 2px 6px;
         top: 0;
         left: 0;
@@ -342,7 +341,7 @@
     }
 
     .ProseMirror-selectednode {
-        outline: 2px dashed #8cf;
+        outline: 2px dashed lighten(@info, 30%);
     }
 
     /* Make sure li selections wrap around markers */
@@ -358,7 +357,7 @@
         right: -2px;
         top: -2px;
         bottom: -2px;
-        border: 2px solid #8cf;
+        border: 2px solid lighten(@info, 30%);
         pointer-events: none;
     }
 
@@ -459,7 +458,7 @@
     }
 
     .ProseMirror [data-mention] {
-        color: @link
+        color: @link;
     }
 
     .ProseMirror {
@@ -476,7 +475,7 @@
     }
 
     .ProseMirror p {
-        margin-bottom: 1em
+        margin-bottom: 1em;
     }
 
     .ProseMirror-textblock-dropdown {
@@ -498,14 +497,14 @@
     }
 
     .ProseMirror .column-resize-handle {
+        background-color: lighten(@info, 40%);
+        pointer-events: none;
         position: absolute;
         right: -2px;
         top: 0;
         bottom: 0;
         width: 4px;
         z-index: 20;
-        background-color: #adf;
-        pointer-events: none;
     }
 
     .ProseMirror.resize-cursor {
@@ -516,15 +515,15 @@
     /* Give selected cells a blue overlay */
 
     .ProseMirror .selectedCell:after {
-        z-index: 2;
-        position: absolute;
+        background: rgba(200, 200, 255, 0.4);
         content: "";
+        pointer-events: none;
+        position: absolute;
         left: 0;
         right: 0;
         top: 0;
         bottom: 0;
-        background: rgba(200, 200, 255, 0.4);
-        pointer-events: none;
+        z-index: 2;
     }
 
     .ProseMirror-menubar-wrapper {
@@ -566,7 +565,7 @@
     position: absolute;
     left: 2px;
     top: 1px;
-    color: #666;
+    color: @text-color-soft;
     border: none;
     background: transparent;
     padding: 0;
@@ -578,8 +577,8 @@
 }
 
 .ProseMirror-invalid {
-    background: #ffc;
-    border: 1px solid #cc7;
+    background: lighten(@warning, 40%);
+    border: 1px solid lighten(@warning, 10%);
     border-radius: 4px;
     padding: 5px 10px;
     position: absolute;
@@ -592,26 +591,26 @@
 }
 
 .atwho-view .cur {
-    border-left: 3px solid #59d6e4;
+    border-left: 3px solid lighten(@info, 30%);
     background-color: @background-color-secondary !important;
 }
 
 .atwho-user,
 .atwho-space,
 .atwho-input a {
-    color: #59d6e4;
+    color: @link;
 }
 
 .atwho-input a:hover {
-    color: #59d6e4;
+    color: @link;
 }
 
 .atwho-view strong {
-    background-color: #f9f0d2;
+    background-color: lighten(@warning, 40%);
 }
 
 .atwho-view .cur strong {
-    background-color: #f9f0d2;
+    background-color: lighten(@warning, 40%);
 }
 
 [data-emoji-category] {
@@ -627,7 +626,7 @@
     }
 
     .atwho-emoji-entry.cur {
-        background-color: #ededed !important;
+        background-color: @background-color-page !important;
     }
 }
 
@@ -664,7 +663,6 @@
 }
 
 @media screen and (max-width: 768px) {
-
     .ProsemirrorEditor.focusMenu {
         .form-control:focus {
             border-top-right-radius: 0 !important;
