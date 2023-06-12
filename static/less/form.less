@@ -145,7 +145,7 @@ a.input-field-addon-sm {
 }
 
 .timeZoneInputContainer ~ .help-block {
-    margin: 0px;
+    margin: 0;
 }
 
 // Flatelements
@@ -305,7 +305,7 @@ div.form-group {
 }
 
 .form-collapsible-fields-label {
-    margin-bottom: 0px;
+    margin-bottom: 0;
     padding: 12px;
 
     label {
@@ -343,16 +343,17 @@ div.form-group {
     }
 }
 
-// fileupload button
+// editor
 .content_create,
 .content_edit {
     .content-create-input-group {
         display: flex;
         align-items: flex-end;
+        flex-direction: column;
 
         > .form-group {
             flex-grow: 1;
-            flex-basis: min-content;
+            width: 100%;
 
             [data-ui-markdown] {
                 word-break: break-word !important;
@@ -369,9 +370,10 @@ div.form-group {
         }
     }
 
+    // fileupload button
     .upload-buttons {
         white-space: nowrap;
-        padding-bottom: 6px;
+        padding-top: 6px;
 
         .btn:not(.dropdown-toggle) {
             margin-left: 6px;
@@ -392,20 +394,5 @@ div.form-group {
 
     .fileinput-button:active {
         box-shadow: none !important;
-    }
-
-    @media (max-width: 414px) {
-        .content-create-input-group {
-            flex-direction: column;
-
-            > .form-group {
-                width: 100%;
-            }
-        }
-
-        .upload-buttons {
-            padding-bottom: 0 !important;
-            padding-top: 6px;
-        }
     }
 }
