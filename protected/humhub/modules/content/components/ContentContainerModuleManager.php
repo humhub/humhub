@@ -323,19 +323,21 @@ class ContentContainerModuleManager extends \yii\base\Component
      */
     public function getContentClasses(): array
     {
-        $contentClasses = [];
-        foreach ($this->getEnabled() as $moduleId) {
-            $module = Yii::$app->getModule($moduleId);
-            foreach ($module->getContentClasses($this->contentContainer) as $class) {
-                $content = new $class($this->contentContainer);
-                if (!($content instanceof ContentActiveRecord)) {
-                    throw new InvalidConfigException($class . ' must be instance of ContentActiveRecord!');
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->contentContainer->id, function() {
+            $contentClasses = [];
+            foreach ($this->getEnabled() as $moduleId) {
+                $module = Yii::$app->getModule($moduleId);
+                foreach ($module->getContentClasses($this->contentContainer) as $class) {
+                    $content = new $class($this->contentContainer);
+                    if (!($content instanceof ContentActiveRecord)) {
+                        throw new InvalidConfigException($class . ' must be instance of ContentActiveRecord!');
+                    }
+                    $contentClasses[] = $content;
                 }
-                $contentClasses[] = $content;
             }
-        }
 
-        return $contentClasses;
+            return $contentClasses;
+        });
     }
 
 }
