@@ -14,7 +14,6 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\forms\AccountRecoverPassword;
 use humhub\modules\user\Module as UserModule;
-use humhub\modules\user\services\PasswordRecoveryService;
 use Yii;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
@@ -86,16 +85,20 @@ class PasswordRecoveryController extends Controller
 
     /**
      * Resets users password based on given token
+     * @return string
      * @throws HttpException
      */
     public function actionReset()
     {
         $user = User::findOne(['guid' => Yii::$app->request->get('guid')]);
 
-        $model = new Password();
-        $passwordRecoveryService = new PasswordRecoveryService($user);
+        if ($user === null || !$user->getPasswordRecoveryService()->checkToken(Yii::$app->request->get('token'))) {
+            throw new NotFoundHttpException(Yii::t('UserModule.base', 'It looks like you clicked on an invalid password reset link. Please try again.'));
+        }
 
-        if ($passwordRecoveryService->reset($model, Yii::$app->request->get('token'))) {
+        $model = new Password();
+
+        if ($user->getPasswordRecoveryService()->reset($model)) {
             return $this->render('reset_success');
         }
 

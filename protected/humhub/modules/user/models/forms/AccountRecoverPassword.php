@@ -4,7 +4,6 @@ namespace humhub\modules\user\models\forms;
 
 use humhub\modules\user\models\User;
 use humhub\modules\user\authclient\Password;
-use humhub\modules\user\services\PasswordRecoveryService;
 use Yii;
 use yii\base\Model;
 
@@ -85,7 +84,7 @@ class AccountRecoverPassword extends Model
 
         $user = User::findOne(['email' => $this->email]);
 
-        return (new PasswordRecoveryService($user))->sendRecoveryInfo();
+        return $user && $user->getPasswordRecoveryService()->sendRecoveryInfo();
     }
 
 }

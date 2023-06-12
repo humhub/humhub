@@ -15,14 +15,14 @@ use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
-use yii\web\HttpException;
-use yii\web\NotFoundHttpException;
 
 class PasswordRecoveryService
 {
-    public ?User $user;
+    const SETTING_TOKEN = 'passwordRecoveryToken';
 
-    public function __construct(?User $user)
+    public User $user;
+
+    public function __construct(User $user)
     {
         $this->user = $user;
     }
@@ -42,16 +42,12 @@ class PasswordRecoveryService
      */
     public function sendRecoveryInfo(): bool
     {
-        if ($this->user === null) {
-            return false;
-        }
-
         // Switch to users language - if specified
         Yii::$app->setLanguage($this->user->language);
 
         $token = UUID::v4();
 
-        $this->getSettingsManager()->set('passwordRecoveryToken', $token . '.' . time());
+        $this->getSettingsManager()->set(self::SETTING_TOKEN, $token . '.' . time());
 
         $mail = Yii::$app->mailer->compose([
             'html' => '@humhub/modules/user/views/mails/RecoverPassword',
@@ -75,14 +71,10 @@ class PasswordRecoveryService
      * @param string|null $token
      * @return bool
      */
-    private function checkToken(?string $token): bool
+    public function checkToken(?string $token): bool
     {
-        if ($this->user === null) {
-            return false;
-        }
-
         // Saved token - Format: randomToken.generationTime
-        $savedTokenInfo = $this->getSettingsManager()->get('passwordRecoveryToken');
+        $savedTokenInfo = $this->getSettingsManager()->get(self::SETTING_TOKEN);
         if (!$savedTokenInfo) {
             return false;
         }
@@ -96,27 +88,21 @@ class PasswordRecoveryService
         return (int) $generationTime + (24 * 60 * 60) >= time();
     }
 
-
     /**
      * Reset a password with checking a provided token
      *
-     * @param string|null $token
+     * @param Password $password
      * @return bool
-     * @throws HttpException
      */
-    public function reset(Password $password, ?string $token): bool
+    public function reset(Password $password): bool
     {
-        if (!$this->checkToken($token)) {
-            throw new NotFoundHttpException(Yii::t('UserModule.base', 'It looks like you clicked on an invalid password reset link. Please try again.'));
-        }
-
         $password->scenario = 'registration';
 
         if ($password->load(Yii::$app->request->post()) && $password->validate()) {
             $password->user_id = $this->user->id;
             $password->setPassword($password->newPassword);
             if ($password->save()) {
-                $this->getSettingsManager()->delete('passwordRecoveryToken');
+                $this->getSettingsManager()->delete(self::SETTING_TOKEN);
                 return true;
             }
         }
