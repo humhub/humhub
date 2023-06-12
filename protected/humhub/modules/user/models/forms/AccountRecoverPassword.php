@@ -2,10 +2,9 @@
 
 namespace humhub\modules\user\models\forms;
 
-use humhub\libs\SafeBaseUrl;
 use humhub\modules\user\models\User;
 use humhub\modules\user\authclient\Password;
-use humhub\libs\UUID;
+use humhub\modules\user\services\PasswordRecoveryService;
 use Yii;
 use yii\base\Model;
 
@@ -76,30 +75,17 @@ class AccountRecoverPassword extends Model
     /**
      * Sends this user a new password by E-Mail
      *
+     * @return bool
      */
     public function recover(): bool
     {
-        $user = User::findOne(['email' => $this->email]);
-        if (!$user) {
+        if (!$this->validate()) {
             return false;
         }
 
-        // Switch to users language - if specified
-        Yii::$app->setLanguage($user->language);
+        $user = User::findOne(['email' => $this->email]);
 
-        $token = UUID::v4();
-        Yii::$app->getModule('user')->settings->contentContainer($user)->set('passwordRecoveryToken', $token . '.' . time());
-
-        $mail = Yii::$app->mailer->compose([
-            'html' => '@humhub/modules/user/views/mails/RecoverPassword',
-            'text' => '@humhub/modules/user/views/mails/plaintext/RecoverPassword'
-        ], [
-            'user' => $user,
-            'linkPasswordReset' => SafeBaseUrl::to(['/user/password-recovery/reset', 'token' => $token, 'guid' => $user->guid], true)
-        ]);
-        $mail->setTo($user->email);
-        $mail->setSubject(Yii::t('UserModule.account', 'Password Recovery'));
-        return $mail->send();
+        return (new PasswordRecoveryService($user))->sendRecoveryInfo();
     }
 
 }
