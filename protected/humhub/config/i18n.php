@@ -57,7 +57,8 @@ return [
         'sq',
         'cy',
         'sw',
-        'et'
+        'et',
+        'sr'
     ],
     // string, the name of the function for translating messages.
     // Defaults to 'Yii::t'. This is used as a mark to find the messages to be
