@@ -38,7 +38,6 @@ return [
     'Your e-mail address has been successfully changed to {email}.' => '你的电子邮箱已成功修改为{email}',
     'Your friends' => '你的朋友',
     'Your password has been successfully changed!' => '你的密码已被成功修改！',
-    '{attribute} "{value}" was not found!' => '{attribute} "{value}" 找不到!',
     '<strong>Account</strong> Settings' => '',
     '<strong>Permissions</strong>' => '',
     '<strong>User</strong> Account' => '',

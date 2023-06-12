@@ -38,7 +38,6 @@ return [
     'Your e-mail address has been successfully changed to {email}.' => 'Vaše e-mailová adresa byla úspěšně změněna na: {email}',
     'Your friends' => 'Vaši přátelé',
     'Your password has been successfully changed!' => 'Vaše heslo bylo úspěšně změněno!',
-    '{attribute} "{value}" was not found!' => '{attribute} "{value}" nebyl nalezen!',
     '<strong>Account</strong> Settings' => '',
     '<strong>Permissions</strong>' => '',
     '<strong>User</strong> Account' => '',

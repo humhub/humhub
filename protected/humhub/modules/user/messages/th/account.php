@@ -55,7 +55,6 @@ return [
     'Your password has been successfully changed!' => 'รหัสผ่านของคุณถูกเปลี่ยนเรียบร้อยแล้ว!',
     'Your username has been changed' => 'ชื่อผู้ใช้ของคุณมีการเปลี่ยนแปลง',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'ชื่อผู้ใช้ของคุณได้รับการเปลี่ยนเรียบร้อยแล้ว <br> เราเพิ่งส่งอีเมลแจ้งข้อมูลใหม่ถึงคุณ',
-    '{attribute} "{value}" was not found!' => 'ไม่พบ {attribute} "{value}"!',
     '<strong>Account</strong> Settings' => '',
     '<strong>User</strong> Account' => '',
     'Account Settings' => '',

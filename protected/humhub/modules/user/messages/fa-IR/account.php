@@ -41,7 +41,6 @@ return [
     'Your e-mail address has been successfully changed to {email}.' => 'آدرس ایمیل شما با موفقیت به {email} تغییر یافت.',
     'Your friends' => 'دوستان شما',
     'Your password has been successfully changed!' => 'گذرواژ شما با موفقیت تغییر یافت!',
-    '{attribute} "{value}" was not found!' => '{attribute} "{value}" یافت نشد!',
     '<strong>Account</strong> Settings' => '',
     '<strong>Permissions</strong>' => '',
     '<strong>User</strong> Account' => '',

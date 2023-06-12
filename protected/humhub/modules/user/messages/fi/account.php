@@ -46,7 +46,6 @@ return [
     'Your friends' => 'Kaverit',
     'Your password has been successfully changed!' => 'Salasanasi on onnistuneesti vaihdettu!',
     'Your username has been changed' => 'Käyttäjätunnuksesi on vaihdettu',
-    '{attribute} "{value}" was not found!' => '{attribute} "{value}" ei löytynyt!',
     '<strong>Account</strong> Settings' => '',
     '<strong>Permissions</strong>' => '',
     '<strong>User</strong> Account' => '',

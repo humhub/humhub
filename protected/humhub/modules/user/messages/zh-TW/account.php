@@ -65,5 +65,4 @@ return [
     'You have successfully changed your username.<br>Your new username is {newUsername}.' => '',
     'Your friends' => '',
     'Your username has been changed' => '',
-    '{attribute} "{value}" was not found!' => '',
 ];

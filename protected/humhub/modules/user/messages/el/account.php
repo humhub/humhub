@@ -15,7 +15,6 @@ return [
     'Save profile' => 'Αποθήκευση προφίλ',
     'The entered e-mail address is already in use by another user.' => 'Το e-mail που δηλώσατε είναι καταχωρημένο σε άλλο χρήστη.',
     'Users' => 'Χρήστες',
-    '{attribute} "{value}" was not found!' => '{attribute} "{value}" δεν βρέθηκε!',
     '<strong>Account</strong> Settings' => '',
     '<strong>Confirm</strong></strong> your new email address' => '',
     '<strong>Permissions</strong>' => '',

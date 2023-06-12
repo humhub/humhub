@@ -54,7 +54,6 @@ return [
     'Your password has been successfully changed!' => 'Twoje hasła zostało z powodzeniem zmienione!',
     'Your username has been changed' => 'Twoja nazwa użytkownika została zmieniona',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Twoja nazwa użytkownika została pomyślnie zmieniona.<br /> Wysłaliśmy Ci wiadomość e-mail z tą informacją.',
-    '{attribute} "{value}" was not found!' => '{attribute} "{value}" nie zostało znalezione!',
     '<strong>Account</strong> Settings' => '',
     '<strong>User</strong> Account' => '',
     'Account Settings' => '',

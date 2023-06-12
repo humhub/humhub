@@ -53,7 +53,6 @@ return [
     'Your password has been successfully changed!' => 'Паролата ви е била променена успешно!',
     'Your username has been changed' => 'Вашето потребителско име е променено',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Вашето потребителско име е успешно променено.<br>Току-що ви изпратихме имейл с нова информация.',
-    '{attribute} "{value}" was not found!' => '{attribute} "{value}" не бе намерен!',
     '<strong>Account</strong> Settings' => '',
     '<strong>User</strong> Account' => '',
     'Account Settings' => '',

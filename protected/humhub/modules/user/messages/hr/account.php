@@ -51,7 +51,6 @@ return [
     'Your password has been successfully changed!' => 'Vaša lozinka je uspiješno promijenjena!',
     'Your username has been changed' => 'Vaše korisničko ime je promijenjeno',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Vaše korisničko ime uspješno je promijenjeno.<br>Upravo smo vam poslali e-mail s novim informacijama.',
-    '{attribute} "{value}" was not found!' => '{attribute} "{value}" nije pronađen!',
     '<strong>Account</strong> Settings' => '',
     '<strong>Permissions</strong>' => '',
     '<strong>User</strong> Account' => '',

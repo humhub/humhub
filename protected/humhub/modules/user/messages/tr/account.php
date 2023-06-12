@@ -41,7 +41,6 @@ return [
     'Your e-mail address has been successfully changed to {email}.' => 'Yeni mail adresin {email} adresi ile başarıyla değiştirildi.',
     'Your friends' => 'Arkadaşların',
     'Your password has been successfully changed!' => 'Şifren başarı ile değiştirildi!',
-    '{attribute} "{value}" was not found!' => '{attribute} "{value}" bulunamadı!',
     '<strong>Account</strong> Settings' => '',
     '<strong>Permissions</strong>' => '',
     '<strong>User</strong> Account' => '',

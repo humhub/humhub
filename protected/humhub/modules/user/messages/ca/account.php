@@ -61,7 +61,6 @@ return [
     'Your password has been successfully changed!' => 'La teva constrasenya s\'ha modificat correctament!',
     'Your username has been changed' => 'El teu nom d\'usuari ha estat canviat',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'El teu nom d\'usuari s\'ha canviat correctament. <br> T\'acabem d\'enviar un e-mail amb la nova informació.',
-    '{attribute} "{value}" was not found!' => '{attribute} "{value}" no s\'ha trobat!',
     'Hide my online status' => '',
     'Markdown Editor Mode' => '',
     'Plain' => '',

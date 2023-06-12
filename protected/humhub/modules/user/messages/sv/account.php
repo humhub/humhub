@@ -61,7 +61,6 @@ return [
     'Your password has been successfully changed!' => 'Ditt lösenord har ändrats!',
     'Your username has been changed' => 'Ditt användarnamn har ändrats',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Ditt användarnamn har ändrats. <br> Vi har precis skickat ett e-postmeddelande till dig med ny information.',
-    '{attribute} "{value}" was not found!' => '{attribute} "{value}" kunde inte hittas!',
     'Hide my online status' => '',
     'Markdown Editor Mode' => '',
     'Plain' => '',

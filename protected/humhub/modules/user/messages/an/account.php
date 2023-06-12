@@ -28,7 +28,6 @@ return [
     'Your e-mail address has been successfully changed to {email}.' => 'A dirección de correu s\'ha cambiau correctament a {email}.',
     'Your friends' => 'Os tuyos amigos',
     'Your password has been successfully changed!' => 'A tuya clau s\'ha cambiau correctament!',
-    '{attribute} "{value}" was not found!' => '{attribute} "{value}" no s\'ha trobau!',
     '<strong>Account</strong> Settings' => '',
     '<strong>Confirm</strong></strong> your new email address' => '',
     '<strong>Permissions</strong>' => '',

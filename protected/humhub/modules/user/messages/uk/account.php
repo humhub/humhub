@@ -61,7 +61,6 @@ return [
     'Your password has been successfully changed!' => 'Ваш пароль успішно змінено!',
     'Your username has been changed' => 'Ваше ім\'я користувача було змінено',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Ваше ім\'я користувача успішно змінено. <br> Ми щойно надіслали вам електронний лист із новою інформацією.',
-    '{attribute} "{value}" was not found!' => '{attribute} "{value}" не знайдено!',
     'Hide my online status' => '',
     'Markdown Editor Mode' => '',
     'Plain' => '',

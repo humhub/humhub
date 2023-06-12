@@ -53,7 +53,6 @@ return [
     'Your password has been successfully changed!' => 'Ваш пароль успешно изменен!',
     'Your username has been changed' => 'Ваше имя пользователя было изменено',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Ваше имя пользователя было успешно изменено.<br>Мы только что отправили Вам электронное письмо с новой информацией.',
-    '{attribute} "{value}" was not found!' => '{attribute} со значением "{value}" не найден!',
     '<strong>Account</strong> Settings' => '',
     '<strong>User</strong> Account' => '',
     'Account Settings' => '',

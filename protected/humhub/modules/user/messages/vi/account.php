@@ -50,7 +50,6 @@ return [
     'Your password has been successfully changed!' => 'Mật khẩu của bạn đã được đổi thành công!',
     'Your username has been changed' => 'Username của bạn đã được đổi.',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Username của bạn đã được đổi thành công. <br /> Chúng tôi vừa gửi một email tới địa chỉ email của bạn về thông tin tài khoản mới này.',
-    '{attribute} "{value}" was not found!' => '{attribute} không tìm thấy "{value}"',
     '<strong>Account</strong> Settings' => '',
     '<strong>Permissions</strong>' => '',
     '<strong>User</strong> Account' => '',

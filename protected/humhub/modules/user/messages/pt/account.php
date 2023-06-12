@@ -61,7 +61,6 @@ return [
     'Your password has been successfully changed!' => 'A tua palavra-passe foi alterada com êxito!',
     'Your username has been changed' => 'O teu nome de utilizadorfoi alterado',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'O teu nome de utilizador foi alterado com êxito. <br> Acabámos de enviar-te um email com a nova informação.',
-    '{attribute} "{value}" was not found!' => '"{value}" do {attribute} não foi encontrado!',
     'Hide my online status' => '',
     'Markdown Editor Mode' => '',
     'Plain' => '',

@@ -65,5 +65,4 @@ return [
     'Your password has been successfully changed!' => '',
     'Your username has been changed' => '',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => '',
-    '{attribute} "{value}" was not found!' => '',
 ];
