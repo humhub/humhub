@@ -112,6 +112,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     const EVENT_BEFORE_SOFT_DELETE = 'beforeSoftDelete';
 
     /**
+     * @inheritdoc
+     */
+    public $containerClass = self::class;
+
+    /**
      * A initial group for the user assigned while registration.
      * @var string|int
      */

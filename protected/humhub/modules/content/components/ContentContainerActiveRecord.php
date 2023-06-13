@@ -44,6 +44,11 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 {
 
     /**
+     * @var string
+     */
+    public $containerClass;
+
+    /**
      * @var ContentContainerPermissionManager
      */
     protected $permissionManager = null;
@@ -210,7 +215,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         if ($insert) {
             $contentContainer = new ContentContainer;
             $contentContainer->guid = $this->guid;
-            $contentContainer->class = static::class;
+            $contentContainer->class = $this->containerClass;
             $contentContainer->pk = $this->getPrimaryKey();
             if ($this instanceof User) {
                 $contentContainer->owner_user_id = $this->id;
@@ -242,7 +247,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     {
         ContentContainer::deleteAll([
             'pk' => $this->getPrimaryKey(),
-            'class' => static::class
+            'class' => $this->containerClass
         ]);
 
         parent::afterDelete();

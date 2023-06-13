@@ -90,6 +90,11 @@ class Space extends ContentContainerActiveRecord implements Searchable
     /**
      * @inheritdoc
      */
+    public $containerClass = self::class;
+
+    /**
+     * @inheritdoc
+     */
     public $controllerBehavior = SpaceController::class;
 
     /**
