@@ -415,10 +415,3 @@ humhub.module('ui.additions', function (module, require, $) {
 
     };
 })(jQuery, window);
-
-/**
- * @deprecated since v1.2
- */
-function setModalLoader() {
-    humhub.require('ui.modal').footerLoader();
-}

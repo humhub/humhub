@@ -51,4 +51,4 @@ HumHub Changelog
 - Enh #6369: Don't pin draft and scheduled contents on dashboard
 - Enh #6370: Remove FlatElements CSS
 - Enh #6384: Added Serbian(sr) language
-- Enh #6389: Refactor deprecated `setModalLoader()` usage
+- Enh #6389: Remove deprecated JS function `setModalLoader()`
