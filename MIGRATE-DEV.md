@@ -13,6 +13,7 @@ Version 1.15 (Unreleased)
   want to match against the end of the names.
 - `\humhub\libs\BaseSettingsManager::get()` now returns a pure int in case the (trimmed) value can be converted 
 - New `PolymorphicRelation::getObjectModel()`: should replace `get_class()`
+- Removed deprecated javascript method `setModalLoader()`
 
 
 ### Type restrictions
