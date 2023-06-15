@@ -221,7 +221,9 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     {
         return $this->render($this->layoutBody, [
             'model' => $this->model,
-            'topics' => Topic::findByContent($this->model->content)->all(),
+            'topics' => Topic::findByContent($this->model->content)
+                ->with('parent', 'addition')
+                ->all(),
             'renderOptions' => $this->renderOptions,
             'content' => $this->renderContent(),
             'header' => $this->renderHeader(),
