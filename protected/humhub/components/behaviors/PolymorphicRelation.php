@@ -12,6 +12,7 @@ use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\post\models\Post;
+use humhub\modules\space\models\Space;
 use ReflectionClass;
 use ReflectionException;
 use Yii;
@@ -62,12 +63,18 @@ class PolymorphicRelation extends Behavior
      */
     public function getPolymorphicRelation()
     {
-        if ($this->cached !== null) {
-            return $this->cached;
+        $cacheKey = __METHOD__ . $this->owner->getAttribute($this->classAttribute) . $this->owner->getAttribute($this->pkAttribute);
+
+        if ($cached = Yii::$app->runtimeCache->get($cacheKey)) {
+            return $cached;
         }
 
         if ($this->owner->getAttribute($this->classAttribute) == Post::class && $this->owner->isRelationPopulated('post')) {
             $object = $this->owner->post;
+        } elseif ($this->owner->getAttribute($this->classAttribute) == Activity::class && $this->owner->isRelationPopulated('activity')) {
+            $object = $this->owner->activity;
+        } elseif ($this->owner->getAttribute($this->classAttribute) == Space::class && $this->owner->isRelationPopulated('space')) {
+            $object = $this->owner->space;
         } else {
             $object = static::loadActiveRecord(
                 $this->owner->getAttribute($this->classAttribute),
@@ -80,7 +87,8 @@ class PolymorphicRelation extends Behavior
         }
 
         if ($object !== null && $this->validateUnderlyingObjectType($object)) {
-            $this->cached = $object;
+            Yii::$app->runtimeCache->set($cacheKey, $object);
+
             return $object;
         }
 
