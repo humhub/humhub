@@ -58,8 +58,8 @@
     }
 
     .ProseMirror-menuitem {
+        display: flex;
         margin-right: 0;
-        display: inline-block;
     }
 
     .ProseMirror-menuseparator {
@@ -69,6 +69,12 @@
 
     .ProseMirror-menubar-wrapper {
         z-index: 200;
+    }
+
+    .ProseMirror-menu-group {
+        display: flex;
+        flex-wrap: wrap;
+        min-height: 24px;
     }
 
     .ProseMirror-menuitem {
@@ -193,12 +199,12 @@
     }
 
     .ProseMirror-icon {
-        display: inline-block;
-        line-height: .8;
-        vertical-align: -2px; /* Compensate for padding */
-        padding: 1px 7px;
-        cursor: pointer;
         border: 1px solid transparent;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1px 6px;/* Compensate for padding */
     }
 
     .ProseMirror-menu-disabled.ProseMirror-icon {
@@ -207,7 +213,6 @@
 
     .ProseMirror-icon svg {
         fill: currentColor;
-        height: 1em;
     }
 
     .ProseMirror-icon span {
@@ -293,7 +298,7 @@
         display: table;
         min-height: 1em;
         color: @text-color-soft;
-        padding: 2px 6px;
+        padding: 2px;
         top: 0;
         left: 0;
         right: 0;
