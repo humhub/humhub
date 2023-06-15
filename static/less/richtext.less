@@ -74,7 +74,7 @@
     .ProseMirror-menu-group {
         display: flex;
         flex-wrap: wrap;
-        min-height: 24px;
+        min-height: 22px;
     }
 
     .ProseMirror-menuitem {
@@ -92,8 +92,6 @@
 
         .seperator {
             border-right: 1px solid @background3;
-            margin-right: 2px;
-            padding-right: 2px;
         }
     }
 
@@ -104,11 +102,11 @@
     .ProseMirror-menu-dropdown {
         cursor: pointer;
         position: relative;
-        padding-right: 15px !important;
+        padding-right: 14px !important;
     }
 
     .ProseMirror-menu-dropdown-wrap {
-        padding: 1px 0;
+        padding: 0;
         display: inline-block;
         position: relative;
     }
@@ -204,7 +202,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 1px 6px;/* Compensate for padding */
+        padding: 0 5px;/* Compensate for padding */
     }
 
     .ProseMirror-menu-disabled.ProseMirror-icon {
@@ -213,6 +211,7 @@
 
     .ProseMirror-icon svg {
         fill: currentColor;
+        height: 20px;
     }
 
     .ProseMirror-icon span {
@@ -276,7 +275,7 @@
         color: @text-color-soft;
         position: relative;
         min-height: 1em;
-        padding: 1px 6px 1px 0;
+        padding: 1px 2px 1px 0;
         top: 0;
         left: 0;
         right: 0;
@@ -295,25 +294,23 @@
     }
 
     .ProseMirror-menubar {
-        display: table;
-        min-height: 1em;
+        background: white;
+        border: 1px solid @text-color-soft2;
+        border-bottom: 0;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        box-sizing: border-box;
         color: @text-color-soft;
-        padding: 2px;
+        display: table;
+        float: left;
+        margin-top: -25px;
+        min-height: 1em;
+        overflow: visible;
+        padding: 1px 0;
         top: 0;
         left: 0;
         right: 0;
         z-index: 10;
-        box-sizing: border-box;
-        overflow: visible;
-        margin-top: -25px;
-        background: white;
-        border: 1px solid @text-color-soft2;
-        border-bottom: 0;
-        border-top: 1px solid @text-color-soft2;
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
-        float: left;
-
     }
 }
 
