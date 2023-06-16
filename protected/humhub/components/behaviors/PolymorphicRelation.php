@@ -63,10 +63,8 @@ class PolymorphicRelation extends Behavior
      */
     public function getPolymorphicRelation()
     {
-        $cacheKey = __METHOD__ . $this->owner->getAttribute($this->classAttribute) . $this->owner->getAttribute($this->pkAttribute);
-
-        if ($cached = Yii::$app->runtimeCache->get($cacheKey)) {
-            return $cached;
+        if ($this->cached !== null) {
+            return $this->cached;
         }
 
         if ($this->owner->getAttribute($this->classAttribute) == Post::class && $this->owner->isRelationPopulated('post')) {
@@ -87,7 +85,7 @@ class PolymorphicRelation extends Behavior
         }
 
         if ($object !== null && $this->validateUnderlyingObjectType($object)) {
-            Yii::$app->runtimeCache->set($cacheKey, $object);
+            $this->cached = $object;
 
             return $object;
         }
