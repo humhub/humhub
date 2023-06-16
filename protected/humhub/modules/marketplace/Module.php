@@ -138,4 +138,23 @@ class Module extends BaseModule
 
         return $this->_humhubApi;
     }
+
+    /**
+     * Check if the modules list is filtered by single tag
+     *
+     * @param string $tag
+     * @return bool
+     */
+    public function isFilteredBySingleTag(string $tag): bool
+    {
+        $tags = Yii::$app->request->get('tags');
+
+        if (empty($tags)) {
+            return false;
+        }
+
+        $tags = explode(',', $tags);
+
+        return count($tags) === 1 && $tags[0] == $tag;
+    }
 }

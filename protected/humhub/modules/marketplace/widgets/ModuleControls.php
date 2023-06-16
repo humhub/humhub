@@ -32,6 +32,10 @@ class ModuleControls extends \humhub\modules\admin\widgets\ModuleControls
     {
         parent::init();
 
+        if (!($this->module instanceof Module)) {
+            return;
+        }
+
         if ($this->module->isNonFree) {
             $this->addEntry(new MenuLink([
                 'id' => 'marketplace-licence-key',

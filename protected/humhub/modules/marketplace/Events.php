@@ -12,6 +12,7 @@ use humhub\components\Module as CoreModule;
 use humhub\components\OnlineModule;
 use humhub\modules\admin\events\ModulesEvent;
 use humhub\modules\marketplace\models\Module as ModelModule;
+use humhub\modules\marketplace\widgets\ModuleFilters;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\AccountTopMenu;
 use Yii;
@@ -93,7 +94,7 @@ class Events extends BaseObject
      */
     private static function isFilteredModuleByTags($module): bool
     {
-        $tags = Yii::$app->request->get('tags');
+        $tags = Yii::$app->request->get('tags', ModuleFilters::getDefaultValue('tags'));
 
         if (empty($tags)) {
             return true;
@@ -102,6 +103,25 @@ class Events extends BaseObject
         $tags = explode(',', $tags);
 
         $onlineModule = new OnlineModule(['module' => $module]);
+
+        $searchInstalled = in_array('installed', $tags);
+        $searchNotInstalled = in_array('uninstalled', $tags);
+        if ($searchInstalled && $searchNotInstalled && count($tags) === 2) {
+            // No need to filter when only 2 tags "Installed" and "Not Installed" are selected
+            return true;
+        }
+        if ($searchInstalled && !$searchNotInstalled && !$onlineModule->isInstalled) {
+            // Exclude all NOT Installed modules when requested only Installed modules
+            return false;
+        }
+        if (!$searchInstalled && $searchNotInstalled && $onlineModule->isInstalled) {
+            // Exclude all Installed modules when requested only NOT Installed modules
+            return false;
+        }
+        if (($searchInstalled || $searchNotInstalled) && count($tags) === 1) {
+            // No need to next filter when only 1 tag "Installed" or "Not Installed" is selected
+            return true;
+        }
 
         foreach ($tags as $tag) {
             switch ($tag) {

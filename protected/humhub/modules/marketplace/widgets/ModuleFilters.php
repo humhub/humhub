@@ -63,8 +63,10 @@ class ModuleFilters extends DirectoryFilters
         $this->addFilter('tags', [
             'title' => Yii::t('MarketplaceModule.base', 'Tags'),
             'type' => 'tags',
+            'multiple' => true,
             'tags' => [
                 '' => Yii::t('MarketplaceModule.base', 'All'),
+                'uninstalled' => Yii::t('MarketplaceModule.base', 'Uninstalled'),
                 'professional' => Yii::t('MarketplaceModule.base', 'Professional Edition'),
                 'featured' => Yii::t('MarketplaceModule.base', 'Featured'),
                 'official' => Yii::t('MarketplaceModule.base', 'Official'),
@@ -74,6 +76,16 @@ class ModuleFilters extends DirectoryFilters
             'wrapperClass' => 'col-md-12 form-search-filter-tags',
             'sortOrder' => 20000,
         ]);
+    }
+
+    public static function getDefaultValue(string $filter): string
+    {
+        switch ($filter) {
+            case 'tags':
+                return 'uninstalled';
+        }
+
+        return parent::getDefaultValue($filter);
     }
 
     /**
