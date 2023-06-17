@@ -52,3 +52,4 @@ HumHub Changelog
 - Enh #6370: Remove FlatElements CSS
 - Enh #6384: Added Serbian(sr) language
 - Enh #6389: Remove deprecated JS function `setModalLoader()`
+- Enh #6393: The installer should clear all caches early
