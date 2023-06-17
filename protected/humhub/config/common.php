@@ -274,12 +274,6 @@ $config = [
         'enablePjax' => true,
         'dailyCronExecutionTime' => '18:00',
     ],
-    'container' => [
-        'definitions' => [
-            //todo: Remove after Yii 2.0.48 release
-            \yii\validators\DateValidator::class => humhub\components\validators\DateValidator::class,
-        ]
-    ]
 ];
 
 return $config;
