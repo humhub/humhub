@@ -2,6 +2,9 @@
 return array (
   '<strong>Open</strong> file' => 'ファイルを<strong>オープン</strong>',
   '<strong>Upload</strong> error' => '<strong>アップロード</strong> エラー',
+  'Attach a video' => 'ビデオを添付する',
+  'Attach an audio message' => '音声メッセージを添付する',
+  'Attach an image' => '画像を添付する',
   'Close' => '閉じる',
   'Could not find requested file variant!' => '要求されたファイル群は見つかりませんでした！',
   'Could not find requested file!' => '要求されたファイルが見つかりませんでした！',

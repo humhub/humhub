@@ -17,4 +17,12 @@ abstract class LongRunningActiveJob extends ActiveJob implements RetryableJobInt
 
         return $module->longRunningJobTtr;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function canRetry($attempt, $error)
+    {
+        return false;
+    }
 }

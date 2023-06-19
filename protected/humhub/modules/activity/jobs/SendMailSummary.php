@@ -8,12 +8,12 @@
 
 namespace humhub\modules\activity\jobs;
 
-use Yii;
+use humhub\modules\activity\components\MailSummary;
+use humhub\modules\activity\components\MailSummaryProcessor;
 use humhub\modules\activity\Module;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
 use humhub\modules\queue\LongRunningActiveJob;
-use humhub\modules\activity\components\MailSummaryProcessor;
-use humhub\modules\activity\components\MailSummary;
+use Yii;
 
 /**
  * SendMailSummary
@@ -55,13 +55,4 @@ class SendMailSummary extends LongRunningActiveJob implements ExclusiveJobInterf
             return;
         }
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function canRetry($attempt, $error)
-    {
-        return false;
-    }
-
 }

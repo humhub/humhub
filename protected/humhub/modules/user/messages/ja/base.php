@@ -61,6 +61,8 @@ return array (
   'No results found!' => '結果がありません',
   'No users found.' => 'ユーザーはいません',
   'Notifications' => '通知',
+  'Offline' => 'オフライン',
+  'Online' => 'オンライン',
   'Password' => 'パスワード',
   'Password changed' => 'パスワードが変更されました',
   'Password needs to be at least {chars} characters long.' => 'パスワードは {chars} 文字以上にする必要があります。',

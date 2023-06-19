@@ -39,8 +39,7 @@ class PeopleFilterPicker extends BasePicker
         if ($profileField === null) {
             throw new InvalidConfigException('Invalid filter key');
         }
-
-        if (empty($this->defaultResults)) {
+        if (empty($this->defaultResults) && $profileField->internal_name != 'country') {
             $definition = $profileField->fieldType->getFieldFormDefinition();
             if (isset($definition[$profileField->internal_name]['type']) && $definition[$profileField->internal_name]['type'] === 'dropdownlist') {
                 $this->defaultResults = $definition[$profileField->internal_name]['items'];
@@ -101,6 +100,7 @@ class PeopleFilterPicker extends BasePicker
         $result['placeholder'] = '';
         $result['no-result'] = Yii::t('UserModule.chooser', 'No results found.');
         $result['maximum-selected'] = '';
+
         return $result;
     }
 
@@ -142,7 +142,6 @@ class PeopleFilterPicker extends BasePicker
                 ->asArray()
                 ->all();
         }
-
         $result = [];
         foreach ($this->defaultResults as $itemKey => $itemText) {
             if ($keyword !== '' && stripos($itemText, $keyword) === false) {

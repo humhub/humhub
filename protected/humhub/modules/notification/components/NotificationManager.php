@@ -8,6 +8,8 @@
 
 namespace humhub\modules\notification\components;
 
+use humhub\components\Event;
+use humhub\components\Module;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainerSetting;
@@ -17,7 +19,6 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\User;
-use humhub\components\Module;
 use Yii;
 
 /**
@@ -30,6 +31,10 @@ use Yii;
  */
 class NotificationManager
 {
+    /**
+     * Sends the notifications categories in the results
+     */
+    public const EVENT_SEARCH_MODULE_NOTIFICATIONS = 'searchModuleNotifications';
 
     /**
      *
@@ -70,8 +75,7 @@ class NotificationManager
 
         $processed = [];
         /** @var User $user */
-        foreach ($userQuery->each() as $user)
-        {
+        foreach ($userQuery->each() as $user) {
             if (in_array($user->id, $processed)) {
                 continue;
             }
@@ -97,7 +101,7 @@ class NotificationManager
                     $target->send($notification, $user);
                 }
             } else {
-                Yii::debug('Could not store notification '.get_class($notification). ' for user '. $user->id);
+                Yii::debug('Could not store notification ' . get_class($notification) . ' for user ' . $user->id);
             }
 
             $processed[] = $user->id;
@@ -131,7 +135,7 @@ class NotificationManager
             $this->_targets = [];
             foreach ($this->targets as $targetClass => $targetConfig) {
                 $targetConfig = is_array($targetConfig) ? $targetConfig : [];
-                if(!isset($targetConfig['class'])) { // Allow class overwrites
+                if (!isset($targetConfig['class'])) { // Allow class overwrites
                     $targetConfig['class'] = $targetClass;
                 }
                 $this->_targets[] = Yii::createObject($targetConfig);
@@ -158,7 +162,7 @@ class NotificationManager
     public function getTarget($class)
     {
         foreach ($this->getTargets() as $target) {
-            if ($target->className() == $class) {
+            if (get_class($target) == $class) {
                 return $target;
             }
         }
@@ -277,7 +281,7 @@ class NotificationManager
 
         $result = array_merge($memberSpaces, $followSpaces);
 
-        if($this->isUntouchedSettings($user)) {
+        if ($this->isUntouchedSettings($user)) {
             $result = array_merge($result, Space::findAll(['guid' => Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces')]));
         }
 
@@ -461,7 +465,7 @@ class NotificationManager
 
     /**
      * Searches for all Notifications exported by modules.
-     * @return type
+     * @return array
      * @throws \yii\base\Exception
      */
     protected function searchModuleNotifications()
@@ -472,7 +476,11 @@ class NotificationManager
                 $result = array_merge($result, $this->createNotifications($module->getNotifications()));
             }
         }
-        return $result;
+
+        $evt = new Event(['result' => $result]);
+        Event::trigger($this, static::EVENT_SEARCH_MODULE_NOTIFICATIONS, $evt);
+
+        return $evt->result;
     }
 
     protected function createNotifications($notificationClasses)

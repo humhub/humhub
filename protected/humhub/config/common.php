@@ -110,6 +110,10 @@ $config = [
         'cache' => [
             'class' => \yii\caching\DummyCache::class,
         ],
+        'runtimeCache' => [
+            'class' => \yii\caching\ArrayCache::class,
+            'serializer' => false,
+        ],
         'mailer' => [
             'class' => \humhub\components\mail\Mailer::class,
             'viewPath' => '@humhub/views/mail',
@@ -220,6 +224,7 @@ $config = [
             'sq' => 'Shqip',
             'cy' => 'Cymraeg',
             'sw' => 'Kiswahili',
+            'sr' => 'Сербисцх',
         ],
         'ldap' => [
             // LDAP date field formats

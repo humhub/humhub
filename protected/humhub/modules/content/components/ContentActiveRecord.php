@@ -19,11 +19,11 @@ use humhub\modules\content\models\Movable;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
+use humhub\modules\content\widgets\WallEntry;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicLabel;
 use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\models\User;
-use humhub\modules\content\widgets\WallEntry;
 use humhub\widgets\Label;
 use Yii;
 use yii\base\Exception;
@@ -218,7 +218,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function getContentName()
     {
-        return static::class;
+        return static::getObjectModel();
     }
 
     /**
@@ -487,7 +487,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      * base type as follows:
      *
      * ```
-     * public static function getObjectModel() {
+     * public static function getObjectModel(): string {
      *     return BaseType::class
      * }
      * ```
@@ -497,7 +497,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      *
      * @return string
      */
-    public static function getObjectModel()
+    public static function getObjectModel(): string
     {
         return static::class;
     }

@@ -1,8 +1,23 @@
 HumHub Changelog
 ================
 
-1.14.1 (Unreleased)
--------------------
+1.14.3 (Unreleased)
+----------------------
+- Fix #6345: Fix updating of post on wall stream
+- Fix #6351: Error when config `defaultReloadableScripts` is not array
+- Fix #6359: Avoid double call of `afterSave` on creating of a published content
+- Fix #6373: Use integer format for Content columns "visibility" and "state" right after creating
+- Fix #6377: Forgot Password - Display email input error after successful captcha verification.
+- Fix #6378: Fix visibility of the link "Uninstall" on Windows server
+
+1.14.2 (May 22, 2023)
+----------------------
+- Fix #6257: Editing Draft lead to unexpected error
+- Fix #6333: Fix installer crash on fresh installs 
+- Fix #6342: Fix broken file uploading
+
+1.14.1 (May 15, 2023)
+---------------------
 - Fix #6251: Emulate execution on `readable()` content 
 - Enh #6252: Implement new method to handle changing of content active record state
 - Enh #6248: If admins can view all contents, users allowed to manage spaces or users cannot view all content (they should be able)

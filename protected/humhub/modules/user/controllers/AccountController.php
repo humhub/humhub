@@ -32,7 +32,6 @@ use yii\web\HttpException;
  */
 class AccountController extends BaseAccountController
 {
-
     /**
      * @inheritdoc
      */
@@ -94,7 +93,6 @@ class AccountController extends BaseAccountController
         $form = new HForm($definition, $user->profile);
         $form->showErrorSummary = true;
         if ($form->submitted('save') && $form->validate() && $form->save()) {
-
             // Trigger search refresh
             $user->save();
 
@@ -124,12 +122,14 @@ class AccountController extends BaseAccountController
 
         $model->tags = $user->getTags();
         $model->hideOnlineStatus = $user->settings->get('hideOnlineStatus');
+        $model->markdownEditorMode = $user->settings->get("markdownEditorMode");
         $model->show_introduction_tour = Yii::$app->getModule('tour')->settings->contentContainer($user)->get("hideTourPanel");
         $model->visibility = $user->visibility;
         $model->blockedUsers = $user->getBlockedUserGuids();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $user->settings->set('hideOnlineStatus', $model->hideOnlineStatus);
+            $user->settings->set('markdownEditorMode', $model->markdownEditorMode);
             Yii::$app->getModule('tour')->settings->contentContainer($user)->set('hideTourPanel', $model->show_introduction_tour);
 
             $user->scenario = User::SCENARIO_EDIT_ACCOUNT_SETTINGS;
@@ -345,7 +345,7 @@ class AccountController extends BaseAccountController
             throw new HttpException(500, 'Change Username is not allowed');
         }
 
-        $model = new AccountChangeUsername;
+        $model = new AccountChangeUsername();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->sendChangeUsername()) {
             return $this->render('changeUsername_success', ['model' => $model]);
@@ -364,7 +364,7 @@ class AccountController extends BaseAccountController
             throw new HttpException(500, 'Change E-Mail is not allowed');
         }
 
-        $model = new AccountChangeEmail;
+        $model = new AccountChangeEmail();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->sendChangeEmail()) {
             return $this->render('changeEmail_success', ['model' => $model]);
@@ -505,7 +505,4 @@ class AccountController extends BaseAccountController
 
         return Yii::$app->user->getIdentity();
     }
-
 }
-
-?>

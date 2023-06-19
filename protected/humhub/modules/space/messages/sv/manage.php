@@ -54,5 +54,6 @@ return [
     'Unarchive' => 'Återställ',
     'e.g. example for {baseUrl}/s/example' => 't.ex. exempel för {baseUrl}/s/example',
     'never' => 'aldrig',
+    'Only global administrators can change this value' => '',
     'The URL has already been taken.' => '',
 ];
