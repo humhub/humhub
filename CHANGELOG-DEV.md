@@ -53,3 +53,5 @@ HumHub Changelog
 - Enh #6384: Added Serbian(sr) language
 - Enh #6389: Remove deprecated JS function `setModalLoader()`
 - Enh #6394: Removed custom DateValidator.php after Yii 2.0.48 release
+- Enh #6393: The installer should clear all caches early
+- Fix #6391: Fix initialization of account profile field type "Markdown"
