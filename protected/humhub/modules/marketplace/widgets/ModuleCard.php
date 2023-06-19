@@ -40,7 +40,7 @@ class ModuleCard extends Widget
         parent::init();
 
         if (empty($this->template)) {
-            $this->template = '<div class="card card-module col-lg-3 col-md-4 col-sm-6 col-lg-12">{card}</div>';
+            $this->template = '<div class="card card-module col-lg-3 col-md-4 col-sm-6 col-lg-12" data-module="{moduleId}">{card}</div>';
         }
 
         if (empty($this->view)) {
@@ -60,7 +60,7 @@ class ModuleCard extends Widget
             'isFeaturedModule' => $onlineModule->isFeatured,
         ]);
 
-        return str_replace('{card}', $card, $this->template);
+        return str_replace(['{card}', '{moduleId}'], [$card, $this->module->id], $this->template);
     }
 
 }

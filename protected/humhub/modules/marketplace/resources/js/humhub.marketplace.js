@@ -120,6 +120,11 @@ humhub.module('marketplace', function (module, require, $) {
 
         client.post(form.attr('action'), {data: {licenceKey}}).then(function (response) {
             form.closest('.modal-dialog').after(response.html).remove();
+            if (typeof response.data.purchasedModules === 'object') {
+                Object.entries(response.data.purchasedModules).forEach(([moduleId, moduleCard]) => {
+                    $('.card-module[data-module=' + moduleId + ']').replaceWith(moduleCard);
+                });
+            }
         }).catch(function (err) {
             module.log.error(err);
             status.error(err.message);

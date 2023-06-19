@@ -10,7 +10,9 @@ namespace humhub\modules\marketplace\controllers;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\marketplace\models\Module as ModelModule;
 use humhub\modules\marketplace\Module;
+use humhub\modules\marketplace\widgets\ModuleCard;
 use Yii;
 
 /**
@@ -51,13 +53,13 @@ class PurchaseController extends Controller
             $result = HumHubAPI::request('v1/modules/registerPaid', ['licenceKey' => $licenceKey]);
             if (!isset($result['status'])) {
                 $hasError = true;
-                $message = 'Could not connect to HumHub API!';
+                $message = Yii::t('MarketplaceModule.base', 'Could not connect to HumHub API!');
             } elseif ($result['status'] == 'ok' || $result['status'] == 'created') {
-                $message = 'Module licence added!';
+                $message = Yii::t('MarketplaceModule.base', 'Module licence added!');
                 $licenceKey = '';
             } else {
                 $hasError = true;
-                $message = 'Invalid module licence key!';
+                $message = Yii::t('MarketplaceModule.base', 'Invalid module licence key!');
             }
         }
 
@@ -71,11 +73,25 @@ class PurchaseController extends Controller
             }
         }
 
-        return $this->renderAjax('list', [
+        $html = $this->renderAjax('list', [
             'modules' => $modules,
             'licenceKey' => $licenceKey,
             'hasError' => $hasError,
             'message' => $message,
+        ]);
+
+        if (Yii::$app->request->isGet) {
+            return $html;
+        }
+
+        $moduleCards = [];
+        foreach ($modules as $moduleId => $module) {
+            $moduleCards[$moduleId] = ModuleCard::widget(['module' => new ModelModule($module)]);
+        }
+
+        return $this->asJson([
+            'purchasedModules' => $moduleCards,
+            'html' => $html
         ]);
     }
 
