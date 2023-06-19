@@ -131,6 +131,9 @@ humhub.module('marketplace', function (module, require, $) {
         const installButton = evt.$trigger;
         const moduleId = installButton.data('module-id');
 
+        modal.global.setHeader(module.config.text.installing);
+        modal.global.show();
+
         modal.post(evt, {data: {moduleId}}).then(function () {
             const activateButton = modal.global.$.find('[data-action-click="marketplace.activate"]').clone();
             if (activateButton.length) {
