@@ -19,4 +19,7 @@ return [
     'The uploaded image is not a squared.' => 'الصورة التي تم تحميلها ليست مربعة.',
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'يسمح حقل التحميل هذا بحد أقصى {n، plural، = 1 {# file} آخر {# files}}.',
     'Upload files' => 'رفع ملفات',
+    'Attach a video' => '',
+    'Attach an audio message' => '',
+    'Attach an image' => '',
 ];

@@ -54,8 +54,6 @@ return [
     'Your password has been successfully changed!' => 'كلمة السر الخاصة بك تم تغييرها بنجاح!',
     'Your username has been changed' => 'تم تغيير اسم المستخدم الخاص بك',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'تم تغيير اسم المستخدم الخاص بك بنجاح. <br> لقد أرسلنا لك للتو رسالة بريد إلكتروني تحتوي على معلومات جديدة.',
-    '{attribute} "{value}" was not found!' => '{attribute} "{value}" غير موجود!
-',
     '<strong>Account</strong> Settings' => '',
     '<strong>Permissions</strong>' => '',
     '<strong>User</strong> Account' => '',
@@ -64,7 +62,11 @@ return [
     'Blocked users' => '',
     'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => '',
     'Enter your password to continue' => '',
+    'Hide my online status' => '',
+    'Markdown Editor Mode' => '',
+    'Plain' => '',
     'Profile Tags' => '',
+    'Rich Text' => '',
     'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.' => '',
     'You cannot use this username.' => '',
 ];

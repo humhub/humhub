@@ -49,7 +49,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     {
         if ($insert) {
             if ($this->hasAttribute('created_at') && $this->created_at == "") {
-                $this->created_at = date('Y-m-d G:i:s');
+                $this->created_at = date('Y-m-d H:i:s');
             }
 
             if (isset(Yii::$app->user) && $this->hasAttribute('created_by') && $this->created_by == "") {
@@ -58,9 +58,9 @@ class ActiveRecord extends \yii\db\ActiveRecord
         }
 
         if ($this->hasAttribute('updated_at')) {
-            $this->updated_at = date('Y-m-d G:i:s');
+            $this->updated_at = date('Y-m-d H:i:s');
         }
-        if (isset(Yii::$app->user) && $this->hasAttribute('updated_by')) {
+        if (isset(Yii::$app->user->id) && $this->hasAttribute('updated_by')) {
             $this->updated_by = Yii::$app->user->id;
         }
 
@@ -73,11 +73,11 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($this->hasAttribute('created_at') && $this->created_at instanceof Expression) {
-            $this->created_at = date('Y-m-d G:i:s');
+            $this->created_at = date('Y-m-d H:i:s');
         }
 
         if($this->hasAttribute('updated_at') && $this->updated_at instanceof Expression) {
-            $this->updated_at = date('Y-m-d G:i:s');
+            $this->updated_at = date('Y-m-d H:i:s');
         }
 
         parent::afterSave($insert, $changedAttributes);

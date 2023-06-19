@@ -8,6 +8,8 @@
 
 namespace humhub\modules\content\models;
 
+use humhub\components\SettingActiveRecord;
+
 /**
  * This is the model class for table "contentcontainer_setting".
  *
@@ -19,8 +21,14 @@ namespace humhub\modules\content\models;
  * @property ContentContainer $contentcontainer
  * @since 1.1
  */
-class ContentContainerSetting extends \yii\db\ActiveRecord
+class ContentContainerSetting extends SettingActiveRecord
 {
+
+    /** @inheritdoc */
+    public const CACHE_KEY_FORMAT = 'settings-%s-%d';
+
+    /** @inheritdoc */
+    public const CACHE_KEY_FIELDS = ['module_id', 'contentcontainer_id'];
 
     /**
      * @inheritdoc

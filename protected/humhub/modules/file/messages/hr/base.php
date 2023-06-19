@@ -19,4 +19,7 @@ return [
     'The uploaded image is not a squared.' => 'Prenesena slika nije u kvadratu.',
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Ovo polje za prijenos dopušta samo najviše {n,plural,=1{# file} other{# files}}.',
     'Upload files' => 'Učitaj datoteke',
+    'Attach a video' => '',
+    'Attach an audio message' => '',
+    'Attach an image' => '',
 ];

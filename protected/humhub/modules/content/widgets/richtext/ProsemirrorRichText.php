@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
 
 namespace humhub\modules\content\widgets\richtext;
@@ -139,7 +139,7 @@ class ProsemirrorRichText extends AbstractRichText
     public function init()
     {
         parent::init();
-        if($this->edit) {
+        if ($this->edit) {
             // In edit mode we only render a hidden rich text element
             $this->visible = false;
         }
@@ -148,15 +148,16 @@ class ProsemirrorRichText extends AbstractRichText
     /**
      * @inheritdoc
      */
-    public function run() {
-        if($this->minimal) {
+    public function run()
+    {
+        if ($this->minimal) {
             return static::convert($this->text, static::FORMAT_SHORTTEXT, ['maxLength' => $this->maxLength]);
         }
 
         $output = $this->parseOutput();
 
         // E.g. when initializing empty editor
-        if(empty($output)) {
+        if (empty($output)) {
             return $output;
         }
 
@@ -191,7 +192,8 @@ class ProsemirrorRichText extends AbstractRichText
      * @return string
      * @deprecated since 1.8 use `RichTextExtension::onBeforeOutput()` to manipulate output
      */
-    protected function parseOutput() {
+    protected function parseOutput()
+    {
         return $this->text;
     }
 

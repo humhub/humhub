@@ -1,5 +1,5 @@
 <?php
 return array (
   'Pinned' => 'ピン留め',
-  'Unpinned' => '',
+  'Unpinned' => 'ピン解除',
 );

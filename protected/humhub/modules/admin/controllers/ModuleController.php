@@ -184,11 +184,20 @@ class ModuleController extends Controller
             throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
         }
 
+        $locale = Yii::$app->language;
+        $trials = [
+            $module->getBasePath() . DIRECTORY_SEPARATOR . "README.$locale.md",
+            $module->getBasePath() . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . $locale . DIRECTORY_SEPARATOR . "README.md",
+            $module->getBasePath() . DIRECTORY_SEPARATOR . "README.md",
+            $module->getBasePath() . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . "README.md"
+        ];
+
         $readmeMd = "";
-        if (file_exists($module->getBasePath() . DIRECTORY_SEPARATOR . 'README.md')) {
-            $readmeMd = file_get_contents($module->getBasePath() . DIRECTORY_SEPARATOR . 'README.md');
-        } elseif (file_exists($module->getBasePath() . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . 'README.md')) {
-            $readmeMd = file_get_contents($module->getBasePath() . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . 'README.md');
+        foreach ($trials as $file) {
+            if (file_exists($file)) {
+                $readmeMd = file_get_contents($file);
+                break;
+            }
         }
 
         return $this->renderAjax('info', ['name' => $module->getName(), 'description' => $module->getDescription(), 'content' => $readmeMd]);

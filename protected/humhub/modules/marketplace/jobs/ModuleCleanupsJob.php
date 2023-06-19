@@ -10,11 +10,11 @@ namespace humhub\modules\marketplace\jobs;
 
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\marketplace\Module;
-use humhub\modules\queue\ActiveJob;
+use humhub\modules\queue\LongRunningActiveJob;
 use Yii;
 use yii\base\ErrorException;
 
-class ModuleCleanupsJob extends ActiveJob
+class ModuleCleanupsJob extends LongRunningActiveJob
 {
     public $backupKeepTime = 60 * 60 * 24 * 14;
     public $downloadKeepTime = 60 * 60 * 24 * 30;

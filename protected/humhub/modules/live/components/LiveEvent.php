@@ -41,7 +41,7 @@ abstract class LiveEvent extends \yii\base\BaseObject
         unset($data['contentContainerId']);
 
         return [
-            'type' => str_replace('\\', '.', $this->className()),
+            'type' => str_replace('\\', '.', get_class($this)),
             'contentContainerId' => $this->contentContainerId,
             'visibility' => $this->visibility,
             'data' => $data

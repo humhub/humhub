@@ -49,8 +49,12 @@ class ContentTagPicker extends BasePicker
 
     protected function findDefaults()
     {
-        $query = call_user_func([$this->itemClass, 'findByContainer'], $this->contentContainer, true);
-        return $query->limit($this->limit)->all();
+        $query = call_user_func([$this->itemClass, 'findByContainer'], $this->contentContainer, true)
+            ->limit($this->limit);
+
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function() use ($query) {
+            return $query->all();
+        });
     }
 
     public static function search($term, $contentContainer = null, $includeGlobal = false)

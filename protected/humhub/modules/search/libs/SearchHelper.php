@@ -45,10 +45,10 @@ class SearchHelper extends BaseObject
     /**
      * Queues search index update of an active record
      *
-     * @param ActiveRecord $record
+     * @param ActiveRecord|null $record
      * @return bool
      */
-    public static function queueUpdate(ActiveRecord $record)
+    public static function queueUpdate(?ActiveRecord $record)
     {
         if ($record instanceof Searchable) {
             $pk = $record->getPrimaryKey();
@@ -66,10 +66,10 @@ class SearchHelper extends BaseObject
     /**
      * Queues search index delete of an active record
      *
-     * @param ActiveRecord $record
+     * @param ActiveRecord|null $record
      * @return bool
      */
-    public static function queueDelete(ActiveRecord $record)
+    public static function queueDelete(?ActiveRecord $record)
     {
         if ($record instanceof Searchable) {
             $pk = $record->getPrimaryKey();

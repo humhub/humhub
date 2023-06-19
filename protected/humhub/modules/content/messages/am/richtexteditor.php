@@ -48,6 +48,7 @@ return [
     'Wrap in block quote' => 'በደማቅ ጥቅስ አጠቃል',
     'Wrap in bullet list' => 'በዝርዝር ነጥብ አጠቃል',
     'Wrap in ordered list' => 'በቅደም ተከተላዊ ዝርዝር አጠቃል',
+    'Switch editor mode' => '',
     '[Code Block]' => '',
     '[Image]' => '',
     '[Invalid file]' => '',
