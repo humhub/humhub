@@ -247,10 +247,7 @@
         min-height: 100px;
     }
 
-    .ProseMirror-menu-group {
-        padding: 5px;
-    }
-
+    .ProseMirror-menu-group,
     .ProseMirror-menuitem .ProseMirror-menu-group {
         padding: 2px;
     }
@@ -268,20 +265,20 @@
     }
 
     .ProseMirror-menubar {
-        background-color: @background-color-secondary;
+        background: white;
         border: 1px solid @background3;
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
+        box-sizing: border-box;
         color: @text-color-soft;
         position: relative;
         min-height: 1em;
-        padding: 1px 2px 1px 0;
+        overflow: visible;
+        padding: 1px 0;
         top: 0;
         left: 0;
         right: 0;
         z-index: 10;
-        box-sizing: border-box;
-        overflow: visible;
     }
 }
 
