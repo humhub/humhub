@@ -80,7 +80,7 @@ class ModuleController extends Controller
 
         $module->enable();
 
-        return $this->redirect(['/admin/module/list']);
+        return $this->redirectToModules();
     }
 
     /**
@@ -90,7 +90,6 @@ class ModuleController extends Controller
      */
     public function actionDisable()
     {
-
         $this->forcePostRequest();
 
         $moduleId = Yii::$app->request->get('moduleId');
@@ -102,7 +101,7 @@ class ModuleController extends Controller
 
         $module->disable();
 
-        return $this->redirect(['/admin/module/list']);
+        return $this->redirectToModules();
     }
 
 
@@ -118,7 +117,7 @@ class ModuleController extends Controller
         $module = Yii::$app->moduleManager->getModule($moduleId);
         $module->publishAssets(true);
 
-        return $this->redirect(['/admin/module/list']);
+        return $this->redirectToModules();
     }
 
     /**
@@ -147,7 +146,8 @@ class ModuleController extends Controller
 
             Yii::$app->moduleManager->removeModule($module->id);
         }
-        return $this->redirect(['/admin/module/list']);
+
+        return $this->redirectToModules();
     }
 
 
@@ -212,6 +212,13 @@ class ModuleController extends Controller
         }
 
         return $this->renderAjax('setAsDefault', ['module' => $module, 'model' => $model]);
+    }
+
+    private function redirectToModules()
+    {
+        return Yii::$app->request->get('from') === 'marketplace'
+            ? $this->redirect(['/marketplace/browse', 'tags' => ''])
+            : $this->redirect(['/admin/module/list']);
     }
 
 }

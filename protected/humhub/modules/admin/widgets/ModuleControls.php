@@ -31,6 +31,11 @@ class ModuleControls extends Menu
     public $template = '@admin/widgets/views/moduleControls';
 
     /**
+     * @var string|null
+     */
+    public $from;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -85,7 +90,7 @@ class ModuleControls extends Menu
                 $this->addEntry(new MenuLink([
                     'id' => 'default',
                     'label' => Yii::t('AdminModule.base', 'Set as default'),
-                    'url' => ['/admin/module/set-as-default', 'moduleId' => $this->module->id],
+                    'url' => $this->getActionUrl('/admin/module/set-as-default'),
                     'htmlOptions' => ['data-target' => '#globalModal'],
                     'icon' => 'check-square',
                     'sortOrder' => 200,
@@ -95,7 +100,7 @@ class ModuleControls extends Menu
             $this->addEntry(new MenuLink([
                 'id' => 'deactivate',
                 'label' => Yii::t('AdminModule.base', 'Deactivate'),
-                'url' => ['/admin/module/disable', 'moduleId' => $this->module->id],
+                'url' => $this->getActionUrl('/admin/module/disable'),
                 'htmlOptions' => [
                     'data-method' => 'POST',
                     'data-confirm' => Yii::t('AdminModule.modules', 'Are you sure? *ALL* module data will be lost!'),
@@ -107,7 +112,7 @@ class ModuleControls extends Menu
             $this->addEntry(new MenuLink([
                 'id' => 'deactivate',
                 'label' => Yii::t('AdminModule.base', 'Activate'),
-                'url' => ['/admin/module/enable', 'moduleId' => $this->module->id],
+                'url' => $this->getActionUrl('/admin/module/enable'),
                 'htmlOptions' => [
                     'data-method' => 'POST',
                     'data-loader' => 'modal',
@@ -122,7 +127,7 @@ class ModuleControls extends Menu
             $this->addEntry(new MenuLink([
                 'id' => 'uninstall',
                 'label' => Yii::t('AdminModule.base', 'Uninstall'),
-                'url' => ['/admin/module/remove', 'moduleId' => $this->module->id],
+                'url' => $this->getActionUrl('/admin/module/remove'),
                 'htmlOptions' => [
                     'data-method' => 'POST',
                     'data-confirm' => Yii::t('AdminModule.modules', 'Are you sure? *ALL* module related data and files will be lost!'),
@@ -172,6 +177,17 @@ class ModuleControls extends Menu
         return [
             'class' => 'nav nav-pills preferences'
         ];
+    }
+
+    private function getActionUrl(string $url): array
+    {
+        $url = [$url, 'moduleId' => $this->module->id];
+
+        if (!empty($this->from)) {
+            $url['from'] = $this->from;
+        }
+
+        return $url;
     }
 
 }

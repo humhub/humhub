@@ -44,14 +44,17 @@ class ModuleInstalledActionButtons extends Widget
                 $html .= Button::asLink(Yii::t('AdminModule.modules', 'Configure'), $this->module->getConfigUrl())
                     ->cssClass('btn btn-sm btn-info');
             }
-            $html .= Button::asLink('<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('AdminModule.modules', 'Activated'), Url::to(['/admin/module/disable', 'moduleId' => $this->module->id]))
-                    ->cssClass('btn btn-sm btn-info active')
-                    ->options([
-                        'data-method' => 'POST',
-                        'data-confirm' => Yii::t('AdminModule.modules', 'Are you sure? *ALL* module data will be lost!')
-                    ]);
+            $html .= Button::asLink(Yii::t('AdminModule.modules', 'Activated'),
+                Url::to(['/admin/module/disable', 'moduleId' => $this->module->id, 'from' => 'marketplace']))
+                ->icon('check')
+                ->cssClass('btn btn-sm btn-info active')
+                ->options([
+                    'data-method' => 'POST',
+                    'data-confirm' => Yii::t('AdminModule.modules', 'Are you sure? *ALL* module data will be lost!')
+                ]);
         } else {
-            $html .= Button::asLink(Yii::t('AdminModule.modules', 'Activate'), Url::to(['/admin/module/enable', 'moduleId' => $this->module->id]))
+            $html .= Button::asLink(Yii::t('AdminModule.modules', 'Activate'),
+                Url::to(['/admin/module/enable', 'moduleId' => $this->module->id, 'from' => 'marketplace']))
                 ->cssClass('btn btn-sm btn-info')
                 ->options([
                     'data-method' => 'POST',

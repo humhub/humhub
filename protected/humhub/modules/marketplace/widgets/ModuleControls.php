@@ -26,6 +26,11 @@ class ModuleControls extends \humhub\modules\admin\widgets\ModuleControls
     /**
      * @inheritdoc
      */
+    public $from = 'marketplace';
+
+    /**
+     * @inheritdoc
+     */
     public $template = '@marketplace/widgets/views/moduleControls';
 
     public function init()
