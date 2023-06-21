@@ -69,7 +69,7 @@ class AccountRecoverPassword extends Model
         // This may not possible on e.g. LDAP accounts.
         $passwordAuth = new Password();
         if ($user->auth_mode !== $passwordAuth->getId()) {
-            $this->addError($attribute, Yii::t('UserModule.account', Yii::t('UserModule.account', 'Password recovery is not possible on your account type!')));
+            $this->addError($attribute, Yii::t('UserModule.account', Yii::t('UserModule.account', 'Password recovery disabled. Please contact your system administrator.')));
         }
     }
 
