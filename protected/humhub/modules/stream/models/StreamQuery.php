@@ -514,20 +514,6 @@ class StreamQuery extends Model
             ->joinWith('createdBy')
             ->joinWith('contentContainer')
 
-            ->with('post')
-            ->with('post.files')
-            ->with('post.content')
-            ->with('post.content.createdBy')
-            ->with('post.content.createdBy.profile')
-            ->with('post.content.contentContainer')
-            ->with('post.content.tagRelations')
-
-            ->with('activity')
-            ->with('activity.content')
-            ->with('activity.content.createdBy')
-            ->with('activity.content.createdBy.profile')
-            ->with('activity.content.contentContainer')
-
             ->limit($this->limit);
 
         if (!Yii::$app->getModule('stream')->showDeactivatedUserContent) {

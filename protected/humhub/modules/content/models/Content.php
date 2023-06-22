@@ -782,16 +782,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
         return $this->hasOne(ContentContainer::class, ['id' => 'contentcontainer_id']);
     }
 
-    public function getPost()
-    {
-        return $this->hasOne(Post::class, ['id' => 'object_id']);
-    }
-
-    public function getActivity()
-    {
-        return $this->hasOne(Activity::class, ['id' => 'object_id']);
-    }
-
     /**
      * Returns the ContentTagRelation query.
      *
