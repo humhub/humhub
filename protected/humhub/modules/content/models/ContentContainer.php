@@ -90,9 +90,4 @@ class ContentContainer extends ActiveRecord
         $instance = static::findOne(['guid' => $guid]);
         return $instance ? $instance->getPolymorphicRelation() : null;
     }
-
-    public function getSpace()
-    {
-        return $this->hasOne(Space::class, ['id' => 'pk']);
-    }
 }
