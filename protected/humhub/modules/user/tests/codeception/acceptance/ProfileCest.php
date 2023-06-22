@@ -20,7 +20,7 @@ class ProfileCest
         $I->amGoingTo('save access my account settings');
         $I->amUser();
         $I->clickAccountDropDown();
-        $I->click('Account settings');
+        $I->click('Settings');
         $I->expectTo('see the profile edit form');
 
         $I->waitForElementVisible('#profile-tabs', 20);
