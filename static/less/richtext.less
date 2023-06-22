@@ -64,7 +64,7 @@
 
     .ProseMirror-menuseparator {
         border-right: 1px solid @background3;
-        margin-right: 3px;
+        margin-right: 1px;
     }
 
     .ProseMirror-menubar-wrapper {
@@ -126,23 +126,26 @@
         top: calc(50% - 2px);
     }
 
-    .ProseMirror-menu-submenu {
-        border-top-right-radius: 4px;
-    }
-
     .ProseMirror-menu-dropdown-menu, .ProseMirror-menu-submenu {
-        position: absolute;
-        background: white;
-        color: @text-color-soft;
+        background: @background-color-main;
         border: 1px solid @text-color-soft2;
         border-bottom-left-radius: 4px;
         border-bottom-right-radius: 4px;
+        color: @text-color-highlight;
+        position: absolute;
+
+        .ProseMirror-menu-active {
+            background: @background-color-secondary;
+            border-left: 2px solid @info;
+            opacity: 1 !important;
+            padding: 4px 7px 4px 5px;
+        }
     }
 
     .ProseMirror-menu-dropdown-menu {
-        z-index: 15;
-        min-width: 6em;
         margin-top: 2px;
+        min-width: 6em;
+        z-index: 15;
     }
 
     .ProseMirror-menu-dropdown-item {
@@ -153,7 +156,7 @@
     .ProseMirror-menu-dropdown-item a.ProseMirror-menu-trigger,
     .ProseMirror-menu-submenu-wrap {
         display: block;
-        padding: 4px;
+        padding: 4px 7px;
     }
 
     .ProseMirror-menu-dropdown-item:hover {
@@ -165,10 +168,10 @@
     }
 
     .ProseMirror-menu-submenu-label:after {
-        content: "";
         border-top: 4px solid transparent;
         border-bottom: 4px solid transparent;
         border-left: 4px solid currentColor;
+        content: "";
         opacity: .6;
         position: absolute;
         right: 4px;
@@ -176,33 +179,44 @@
     }
 
     .ProseMirror-menu-submenu {
+        background: @background-color-main;
+        border-top-right-radius: 4px;
         display: none;
         min-width: 4em;
         left: 100%;
         top: 0;
     }
 
-    .ProseMirror-menu-active {
-        background: @background-color-page;
-        border-radius: 4px;
-        border: 1px solid @background-color-page !important;
-    }
-
     .ProseMirror-menu-disabled {
         opacity: .3;
     }
 
-    .ProseMirror-menu-submenu-wrap:hover .ProseMirror-menu-submenu, .ProseMirror-menu-submenu-wrap-active .ProseMirror-menu-submenu {
+    .ProseMirror-menu-submenu-wrap:hover .ProseMirror-menu-submenu,
+    .ProseMirror-menu-submenu-wrap-active .ProseMirror-menu-submenu {
         display: block;
     }
 
     .ProseMirror-icon {
         border: 1px solid transparent;
+        border-radius: 4px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 0 5px;/* Compensate for padding */
+        min-width: 28px;
+        padding: 0 5px;
+
+        &.ProseMirror-menu-active {
+            border-color: @text-color-soft3;
+        }
+
+        &.ProseMirror-menu-tableOption,
+        &.ProseMirror-menu-insertEmoji {
+            svg {
+                padding-top: 1px;
+                padding-left: 1px;
+            }
+        }
     }
 
     .ProseMirror-menu-disabled.ProseMirror-icon {
@@ -210,7 +224,7 @@
     }
 
     .ProseMirror-icon svg {
-        fill: currentColor;
+        fill: @text-color-highlight;
         height: 20px;
     }
 
@@ -270,11 +284,11 @@
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
         box-sizing: border-box;
-        color: @text-color-soft;
+        color: @text-color-highlight;
         position: relative;
         min-height: 1em;
         overflow: visible;
-        padding: 1px 0;
+        padding: 2px 0;
         top: 0;
         left: 0;
         right: 0;
@@ -297,13 +311,13 @@
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
         box-sizing: border-box;
-        color: @text-color-soft;
+        color: @text-color-highlight;
         display: table;
         float: left;
-        margin-top: -25px;
+        margin-top: -27px;
         min-height: 1em;
         overflow: visible;
-        padding: 1px 0;
+        padding: 2px 0;
         top: 0;
         left: 0;
         right: 0;
