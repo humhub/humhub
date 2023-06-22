@@ -14,7 +14,7 @@ Version 1.15 (Unreleased)
 - `\humhub\libs\BaseSettingsManager::get()` now returns a pure int in case the (trimmed) value can be converted 
 - New `PolymorphicRelation::getObjectModel()`: should replace `get_class()`
 - Removed deprecated javascript method `setModalLoader()`
-
+- Javascript CSP Nonces are now required and enabled by default! See: https://docs.humhub.org/docs/develop/javascript/
 
 ### Type restrictions
 - `\humhub\libs\BaseSettingsManager` and its child classes on fields, method parameters, & return types

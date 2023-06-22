@@ -189,13 +189,13 @@ class SecuritySettings extends Model
      * @return null|string
      * @throws \Exception
      */
-    public function getHeader($header)
+    public function getHeader(string $header): ?string
     {
         if ($this->isCSPHeaderKey($header)) {
 
             // Make sure a nonce has been created and attached
             if(!$this->isNonceSupportActive() && !$this->isReportOnlyCSP()) {
-                Security::setNonce(null);
+                Security::setNonce();
             } elseif (!$this->nonceAttached ) {
                 $this->csp->nonce('script-src', Security::getNonce(true));
                 $this->nonceAttached = true;
@@ -207,11 +207,41 @@ class SecuritySettings extends Model
             }
         }
 
-        if (isset(static::$rules['headers'][$header])) {
-            return static::$rules['headers'][$header];
+        return $this->applyHeaderMasks($header);
+    }
+
+    /**
+     * Converts mask in header param like 'Content-Security-Policy' to proper value:
+     *  - {{ nonce }} is converted to 'nonce-xZnHrdklZksbCle1zhrmDj9g'
+     *                when config `web.csp.nonce` === `true`, otherwise
+     *
+     * @param string $header
+     * @return string|null
+     */
+    private function applyHeaderMasks(string $header): ?string
+    {
+        if (!isset(static::$rules['headers'][$header])) {
+            return null;
         }
 
-        return null;
+        $headerValue = static::$rules['headers'][$header];
+
+        if (is_string($headerValue)) {
+            $headerValue = $this->applyMaskNonce($headerValue);
+        }
+
+        return $headerValue;
+    }
+
+    private function applyMaskNonce(string $value): string
+    {
+        if (strpos($value, '{{ nonce }}') === false) {
+            return $value;
+        }
+
+        $nonce = $this->isNonceSupportActive() ? Security::getNonce(true) : null;
+
+        return str_replace('{{ nonce }}', $nonce ? '\'nonce-' . $nonce . '\'' : '', $value);
     }
 
     /**
