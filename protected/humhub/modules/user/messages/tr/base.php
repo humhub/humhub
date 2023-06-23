@@ -31,7 +31,6 @@ return [
     'Followers' => 'Takipçiler',
     'Following' => 'Takip edilenler',
     'Friends' => 'Arkadaşlar',
-    'General' => 'Genel',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'Burada, kimlik doğrulamada tek oturum açma gibi harici hizmetleri kullanmak için harici servis sağlayıcısına bağlanabilirsiniz.',
     'Invite by email' => 'Email ile davet et',
     'Invited by' => 'Tarafından davet edildi',

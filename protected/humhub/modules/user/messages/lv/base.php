@@ -4,7 +4,6 @@ return [
     '<strong>Group</strong> members - {group}' => '<strong>Grupas</strong> dalībnieki - {group}',
     'Delete' => 'Dzēst',
     'Description' => 'Apraksts',
-    'General' => 'Galvenais',
     'Language' => 'Valoda',
     'Modules' => 'Moduļi',
     'Password' => 'Parole',

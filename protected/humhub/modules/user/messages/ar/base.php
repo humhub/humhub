@@ -33,7 +33,6 @@ return [
     'Followers' => 'متابعون',
     'Following' => 'التالية',
     'Friends' => 'اصحاب',
-    'General' => 'العام',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'هنا يمكنك الاتصال بموفر الخدمة الخارجية لاستخدام خدمات خارجية مثل علامة واحدة على المصادقة.
 ',
     'Invite by email' => 'دعوة بواسطة البريد الالكترونى',

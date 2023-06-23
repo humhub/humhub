@@ -32,7 +32,6 @@ return [
     'Followers' => 'Seuraajat',
     'Following' => 'Seuraa',
     'Friends' => 'Kaverit',
-    'General' => 'Yleistä',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'Täällä voit muodostaa yhteyden ulkoiseen palveluntarjoajaan ulkoisten palveluiden käyttämiseen, kuten kirjautumiseen samalla tunnuksella.',
     'Invite by email' => 'Kutsu sähköpostitse',
     'Invited by' => 'Kutsunut',

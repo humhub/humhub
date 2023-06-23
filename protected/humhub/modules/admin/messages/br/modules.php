@@ -15,6 +15,7 @@ return [
     'Configure' => '',
     'Could not find requested module!' => '',
     'Deactivated' => '',
+    'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => '',
     'Deprecated' => '',
     'Enable module...' => '',
     'Featured' => '',

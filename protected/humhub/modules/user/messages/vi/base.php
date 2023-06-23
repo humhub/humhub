@@ -32,7 +32,6 @@ return [
     'Followers' => 'Người theo dõi',
     'Following' => 'Theo dõi',
     'Friends' => 'Bạn bè',
-    'General' => 'Chung',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'Ở đây bạn có thể kết nối tới nhà cung cấp dịch vụ bên ngoài để sử dụng các dịch vụ ngoài khác như: Dịch vụ đăng nhập một cửa (SSO)',
     'Invite by email' => 'Mời qua email',
     'Invited by' => 'Mời bởi',

@@ -32,7 +32,6 @@ return [
     'Followers' => 'Pratioci',
     'Following' => 'Prati',
     'Friends' => 'Prijatelji',
-    'General' => 'Općenito',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'Ovdje se možete povezati s vanjskim davateljem usluga za korištenje vanjskih usluga kao što je jedan znak na autentičnosti.',
     'Invite by email' => 'Poziv email-om',
     'Invited by' => 'Poziv od',

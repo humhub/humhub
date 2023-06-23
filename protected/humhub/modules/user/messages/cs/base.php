@@ -31,7 +31,6 @@ return [
     'Followers' => 'sleduje mě',
     'Following' => 'sleduji',
     'Friends' => 'Přátelé',
-    'General' => 'Obecné',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'Zde se můžete připojit k externímu poskytovateli služeb, pokud používáte externí služby jako jediný znak při autentizaci.',
     'Invite by email' => 'Pozvat e-mailem',
     'Language' => 'Jazyk',

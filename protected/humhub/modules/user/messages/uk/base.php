@@ -41,7 +41,6 @@ return [
     'Force password change upon first login' => 'Примусова зміна пароля під час першого входу',
     'Force password change upon next login' => 'Примусова зміна пароля під час наступного входу',
     'Friends' => 'Друзі',
-    'General' => 'Загальне',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'Тут ви можете підключитися до зовнішнього постачальника послуг для використання зовнішніх послуг, таких як єдиний знак автентифікації.',
     'Invited by' => 'Запрошений',
     'Language' => 'Мова',
