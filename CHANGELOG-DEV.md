@@ -57,3 +57,4 @@ HumHub Changelog
 - Fix #6391: Fix initialization of account profile field type "Markdown"
 - Enh #5713: Disabling modules will be done in a background job
 - Enh #6400: Enable nonce in config web header
+- Enh #6405: Uploading a file larger than PHP's limits does not tell the user about the file weight issue

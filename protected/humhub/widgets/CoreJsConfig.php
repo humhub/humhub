@@ -9,6 +9,7 @@
 namespace humhub\widgets;
 
 use humhub\modules\admin\models\forms\CacheSettingsForm;
+use humhub\modules\file\validators\FileValidator;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserPicker;
@@ -61,8 +62,8 @@ class CoreJsConfig extends Widget
                     ],
                     'text' => [
                         'error.upload' => Yii::t('base', 'Some files could not be uploaded:'),
-                        'error.unknown' => Yii::$app->user->isAdmin() ?
-                            Yii::t('base', 'An unknown error occurred while uploading. Hint: check your upload_max_filesize and post_max_size php settings.') : Yii::t('base', 'An unknown error occurred while uploading.'),
+                        'error.unknown' => Yii::t('base', 'An unknown error occurred while downloading. Check if your file weight is less than {maxUploadSize}.', ['maxUploadSize' => Yii::$app->formatter->asShortSize((new FileValidator)->getSizeLimit())]) . (Yii::$app->user->isAdmin() ?
+                                '(' . Yii::t('base', 'verify your upload_max_filesize and post_max_size php settings.') . ')' : ''),
                         'success.delete' => Yii::t('base', 'The file has been deleted.')
                     ]
                 ],
@@ -167,32 +168,32 @@ class CoreJsConfig extends Widget
                     'displayUrl' => Url::to(['/oembed/display']),
                 ],
                 'ui.markdown', [
-                    'text' => [
-                        'Bold' => Yii::t('UiModule.markdownEditor', 'Bold'),
-                        'Italic' => Yii::t('UiModule.markdownEditor', 'Italic'),
-                        'Heading' => Yii::t('UiModule.markdownEditor', 'Heading'),
-                        'URL/Link' => Yii::t('UiModule.markdownEditor', 'URL/Link'),
-                        'Image/File' => Yii::t('UiModule.markdownEditor', 'Image/File'),
-                        'Image' => Yii::t('UiModule.markdownEditor', 'Image'),
-                        'List' => Yii::t('UiModule.markdownEditor', 'List'),
-                        'Preview' => Yii::t('UiModule.markdownEditor', 'Preview'),
-                        'strong text' => Yii::t('UiModule.markdownEditor', 'strong text'),
-                        'emphasized text' => Yii::t('UiModule.markdownEditor', 'emphasized text'),
-                        'heading text' => Yii::t('UiModule.markdownEditor', 'heading text'),
-                        'enter link description here' => Yii::t('UiModule.markdownEditor', 'enter link description here'),
-                        'Insert Hyperlink' => Yii::t('UiModule.markdownEditor', 'Insert Hyperlink'),
-                        'enter image description here' => Yii::t('UiModule.markdownEditor', 'enter image description here'),
-                        'Insert Image Hyperlink' => Yii::t('UiModule.markdownEditor', 'Insert Image Hyperlink'),
-                        'enter image title here' => Yii::t('UiModule.markdownEditor', 'enter image title here'),
-                        'list text here' => Yii::t('UiModule.markdownEditor', 'list text here'),
-                        'Quote' => Yii::t('UiModule.markdownEditor', 'Quote'),
-                        'quote here' => Yii::t('UiModule.markdownEditor', 'quote here'),
-                        'Code' => Yii::t('UiModule.markdownEditor', 'Code'),
-                        'code text here' => Yii::t('UiModule.markdownEditor', 'code text here'),
-                        'Unordered List' => Yii::t('UiModule.markdownEditor', 'Unordered List'),
-                        'Ordered List' => Yii::t('UiModule.markdownEditor', 'Ordered List'),
-                    ]
-                ],
+                'text' => [
+                    'Bold' => Yii::t('UiModule.markdownEditor', 'Bold'),
+                    'Italic' => Yii::t('UiModule.markdownEditor', 'Italic'),
+                    'Heading' => Yii::t('UiModule.markdownEditor', 'Heading'),
+                    'URL/Link' => Yii::t('UiModule.markdownEditor', 'URL/Link'),
+                    'Image/File' => Yii::t('UiModule.markdownEditor', 'Image/File'),
+                    'Image' => Yii::t('UiModule.markdownEditor', 'Image'),
+                    'List' => Yii::t('UiModule.markdownEditor', 'List'),
+                    'Preview' => Yii::t('UiModule.markdownEditor', 'Preview'),
+                    'strong text' => Yii::t('UiModule.markdownEditor', 'strong text'),
+                    'emphasized text' => Yii::t('UiModule.markdownEditor', 'emphasized text'),
+                    'heading text' => Yii::t('UiModule.markdownEditor', 'heading text'),
+                    'enter link description here' => Yii::t('UiModule.markdownEditor', 'enter link description here'),
+                    'Insert Hyperlink' => Yii::t('UiModule.markdownEditor', 'Insert Hyperlink'),
+                    'enter image description here' => Yii::t('UiModule.markdownEditor', 'enter image description here'),
+                    'Insert Image Hyperlink' => Yii::t('UiModule.markdownEditor', 'Insert Image Hyperlink'),
+                    'enter image title here' => Yii::t('UiModule.markdownEditor', 'enter image title here'),
+                    'list text here' => Yii::t('UiModule.markdownEditor', 'list text here'),
+                    'Quote' => Yii::t('UiModule.markdownEditor', 'Quote'),
+                    'quote here' => Yii::t('UiModule.markdownEditor', 'quote here'),
+                    'Code' => Yii::t('UiModule.markdownEditor', 'Code'),
+                    'code text here' => Yii::t('UiModule.markdownEditor', 'code text here'),
+                    'Unordered List' => Yii::t('UiModule.markdownEditor', 'Unordered List'),
+                    'Ordered List' => Yii::t('UiModule.markdownEditor', 'Ordered List'),
+                ]
+            ],
                 'log' => [
                     'traceLevel' => (YII_DEBUG) ? 'DEBUG' : 'INFO',
                     'text' => [
