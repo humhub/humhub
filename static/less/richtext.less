@@ -92,6 +92,7 @@
 
         .seperator {
             border-right: 1px solid @background3;
+            border-radius: 0;
         }
     }
 
@@ -109,10 +110,6 @@
         padding: 0;
         display: inline-block;
         position: relative;
-    }
-
-    .ProseMirror-menu-dropdown-right {
-        right: 0;
     }
 
     .ProseMirror-menu-dropdown:after {
@@ -672,6 +669,12 @@
         overflow-wrap: initial;
         word-break: initial;
         hyphens: initial;
+    }
+}
+
+@media screen and (max-width: 460px) {
+    .ProsemirrorEditor .ProseMirror-menu-dropdown-right {
+        right: 0;
     }
 }
 
