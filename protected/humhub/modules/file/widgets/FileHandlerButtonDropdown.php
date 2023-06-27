@@ -8,8 +8,8 @@
 
 namespace humhub\modules\file\widgets;
 
-use yii\helpers\ArrayHelper;
 use humhub\libs\Html;
+use yii\helpers\ArrayHelper;
 
 /**
  * FileHandlerButtonWidget shows a dropdown with different file handlers
@@ -26,6 +26,12 @@ class FileHandlerButtonDropdown extends \humhub\components\Widget
     public $primaryButton;
 
     /**
+     * @var string the default parent css class
+     * You can make the menu drop up by replacing it with 'btn-group dropup'
+     */
+    public $cssClass = 'btn-group';
+
+    /**
      * @var string the default css bootstrap button class
      */
     public $cssButtonClass = 'btn-success';
@@ -34,7 +40,7 @@ class FileHandlerButtonDropdown extends \humhub\components\Widget
      * @var \humhub\modules\file\handler\BaseFileHandler[] the handlers to show
      */
     public $handlers;
-    
+
     /**
      * @var boolean if true the dropdown-menu will be assigned with an dropdown-menu-right class.
      */
@@ -50,7 +56,7 @@ class FileHandlerButtonDropdown extends \humhub\components\Widget
             return;
         }
 
-        $output = Html::beginTag('div', ['class' => 'btn-group']);
+        $output = Html::beginTag('div', ['class' => $this->cssClass]);
 
         if (!$this->primaryButton) {
             $firstButton = array_shift($this->handlers)->getLinkAttributes();
@@ -62,9 +68,9 @@ class FileHandlerButtonDropdown extends \humhub\components\Widget
 
         if (count($this->handlers) !== 0) {
             $output .= '<button type="button" class="btn ' . $this->cssButtonClass . ' dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>';
-            
+
             $cssClass = ($this->pullRight) ? 'dropdown-menu dropdown-menu-right' : 'dropdown-menu';
-            
+
             $output .= Html::beginTag('ul', ['class' => $cssClass]);
             foreach ($this->handlers as $handler) {
                 $output .= Html::beginTag('li');
@@ -80,15 +86,15 @@ class FileHandlerButtonDropdown extends \humhub\components\Widget
 
     /**
      * Renders the file handle link
-     * 
+     *
      * @param array $options the HTML options
      * @return string the rendered HTML tag
      */
     protected function renderLink($options)
     {
-        
+
         $options['data-action-process'] = 'file-handler';
-        
+
         $label = ArrayHelper::remove($options, 'label', 'Label');
 
         if (isset($options['url'])) {
