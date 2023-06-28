@@ -269,7 +269,7 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     {
         $evt = new Event(['result' => $text]);
         Event::trigger($this, static::EVENT_BEFORE_PARSE, $evt);
-        $text = $evt->result;
+        $text = $evt->getValue();
 
         // Remove leading new backslash new lines e.g. "Test\\\n" -> "Test"
         $text = preg_replace('/\\\\(\n|\r){1,2}$/', '', $text);
@@ -314,7 +314,7 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     {
         $evt = new Event(['result' => $text]);
         Event::trigger($this, static::EVENT_AFTER_PARSE, $evt);
-        $text = $evt->result;
+        $text = $evt->getValue();
 
         foreach ($this->extensions as $extension) {
             $text = $extension->onAfterConvert($text, $this->format, $this->options);

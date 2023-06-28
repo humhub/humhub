@@ -203,8 +203,8 @@ class ActiveRecord extends \yii\db\ActiveRecord
         $event = new Event();
         $this->trigger(self::EVENT_APPEND_RULES, $event);
 
-        if (is_array($event->result)) {
-            foreach ($event->result as $rule) {
+        if (is_array($rules = $event->getValue())) {
+            foreach ($rules as $rule) {
                 if ($rule instanceof Validator) {
                     $validators->append($rule);
                 } elseif (is_array($rule) && isset($rule[0], $rule[1])) { // attributes, validator type

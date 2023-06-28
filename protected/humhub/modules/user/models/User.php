@@ -458,7 +458,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     {
         $event = new UserEvent(['user' => $this, 'result' => ['isVisible' => true]]);
         $this->trigger(self::EVENT_CHECK_VISIBILITY, $event);
-        if ($event->result['isVisible'] && $this->isActive() && $this->visibility !== self::VISIBILITY_HIDDEN) {
+        if ($event->value['isVisible'] && $this->isActive() && $this->visibility !== self::VISIBILITY_HIDDEN) {
             return true;
         }
 
