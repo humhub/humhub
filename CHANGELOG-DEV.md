@@ -1,6 +1,20 @@
 HumHub Changelog
 ================
 
+## Advantages
+- Re-use of components (image upload/preview/cropping/deletion)
+- Image options from file module settings are respected on all uploads and preview generateions
+- De-duplication of redundant code sections/functionality
+- Allows access restriction/control
+- Cannot read image, if user-guid is known
+- Cannot guess user-guid from image-guid
+-
+
+## Questions
+- Difference between canRead() and canView()
+- \humhub\libs\Helpers::CheckClassType(): Cleaning the class name but not returning it
+
+
 1.15.0 (Unreleased)
 -------------------
 - Fix #6423: log.fata in frontend logging is redirected to log.fatal, which did not work

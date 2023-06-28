@@ -8,7 +8,7 @@ $unarchiveLink = Url::to(['/content/content/unarchive', 'id' => $id]);
 
 ?>
 <li>
-    <?php if ($object->content->isArchived()): ?>
+    <?php if ($data->content->isArchived()): ?>
         <a href="#" data-action-click="unarchive" data-action-url="<?= $unarchiveLink ?>">
             <i class="fa fa-archive"></i> <?= Yii::t('ContentModule.base', 'Unarchive'); ?>
         </a>

@@ -13,11 +13,11 @@ use humhub\interfaces\StatableInterface;
 use humhub\libs\StatableTrait;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
-use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
+use humhub\modules\file\models\AttachedImage;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\search\events\SearchAddEvent;
 use humhub\modules\search\interfaces\Searchable;
@@ -30,9 +30,11 @@ use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\behaviors\ProfileController;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\controllers\ImageController;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
+use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\user\services\PasswordRecoveryService;
 use humhub\modules\user\services\UserStateService;
 use humhub\modules\user\widgets\UserWall;
@@ -64,7 +66,7 @@ use yii\web\IdentityInterface;
  * @property integer $contentcontainer_id
  * @property Profile $profile
  * @property Password $currentPassword
- * @property Auth[] $auths
+ *
  * @property string $displayName
  * @property string $displayNameSub
  * @mixin Followable
@@ -135,6 +137,13 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      * @var string
      */
     public $defaultRoute = '/user/profile';
+
+    protected string $headerImageUploadUrl       = '/user/image/upload';
+    protected string $headerImageCropUrl         = '/user/image/crop';
+    protected string $headerImageDeleteUrl       = '/user/image/delete';
+    protected string $headerControlViewPath      = '@user/widgets/views/profileHeaderControls.php';
+    protected string $headerClassPrefix          = 'profile';
+    public string $headerImageControllerClass = ImageController::class;
 
     /**
      * @inheritdoc
@@ -348,7 +357,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         return Yii::createObject(ActiveQueryUser::class, [get_called_class()]);
     }
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -1054,5 +1063,28 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function getPasswordRecoveryService(): PasswordRecoveryService
     {
         return new PasswordRecoveryService($this);
+    }
+
+
+    public function renderAttachedImage(array $widgetOptions, array $imageOptions, AttachedImage $image): string
+    {
+        $htmlOptions = [];
+
+        if (isset($imageOptions['htmlOptions'])) {
+            $htmlOptions = $imageOptions['htmlOptions'];
+            unset($imageOptions['htmlOptions']);
+        }
+
+        $widgetOptions['user']         = $this;
+        $widgetOptions['imageOptions'] = $imageOptions;
+        $widgetOptions['htmlOptions']  = $htmlOptions;
+
+        return UserImage::widget($widgetOptions);
+    }
+
+    protected function canEditHeaderImages(): bool
+    {
+        /** @TODO move this out of ImageController layer... */
+        return ImageController::canEditProfileImage($this);
     }
 }

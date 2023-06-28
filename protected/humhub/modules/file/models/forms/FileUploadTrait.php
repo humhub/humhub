@@ -9,7 +9,9 @@
 namespace humhub\modules\file\models\forms;
 
 use humhub\modules\file\libs\FileControllerInterface;
+use humhub\modules\file\libs\ImageControllerInterface;
 use humhub\modules\file\models\File;
+use humhub\modules\file\validators\FileValidator;
 use Yii;
 use yii\web\UploadedFile;
 

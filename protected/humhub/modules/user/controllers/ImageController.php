@@ -11,9 +11,9 @@ namespace humhub\modules\user\controllers;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\controllers\ContainerImageController;
 use humhub\modules\content\models\ContentContainer;
-use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\db\IntegrityException;
 use yii\web\HttpException;
 
 /**
@@ -21,11 +21,17 @@ use yii\web\HttpException;
  *
  * @since 1.2
  * @author Luke
+ *
+ * @property-read array[] $accessRules
  */
 class ImageController extends ContainerImageController
 {
     public $validContentContainerClasses = [User::class];
 
+    /**
+     * @throws IntegrityException
+     * @throws HttpException
+     */
     public function init()
     {
         $legacyUserGuid = Yii::$app->request->get('userGuid');
@@ -49,16 +55,16 @@ class ImageController extends ContainerImageController
         }
     }
 
-    public function getAccessRules()
+    public function getAccessRules(): array
     {
         return [
             ['validateAccess'],
         ];
     }
 
-    public function validateAccess($rule, $access)
+    public function validateAccess($rule, $access): bool
     {
-        if (!static::canEditProfileImage($this->contentContainer)) {
+        if (!$this->contentContainer instanceof User || !static::canEditProfileImage($this->contentContainer)) {
             $access->code = 401;
             $access->reason = 'Not authorized!';
             return false;
@@ -67,7 +73,7 @@ class ImageController extends ContainerImageController
         return true;
     }
 
-    public static function canEditProfileImage(User $userProfile)
+    public static function canEditProfileImage(User $userProfile): bool
     {
         if (Yii::$app->user->isGuest) {
             return false;

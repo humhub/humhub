@@ -41,7 +41,7 @@ use yii\helpers\Html;
  * @property integer $searchable
  * @property integer $directory_filter
  *
- * @property-read BaseType $fieldType
+ * @property-read BaseType|null $fieldType
  */
 class ProfileField extends ActiveRecord
 {
@@ -51,7 +51,7 @@ class ProfileField extends ActiveRecord
      *
      * @var BaseType
      */
-    private $_fieldType = null;
+    private ?BaseType $_fieldType = null;
 
     /**
      * @inheritdoc

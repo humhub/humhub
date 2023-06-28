@@ -10,17 +10,23 @@ namespace humhub\modules\content\components;
 
 use humhub\components\ActiveRecord;
 use humhub\libs\BasePermission;
-use humhub\modules\content\models\ContentBanner;
+use humhub\modules\content\controllers\ContainerImageController;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\models\ContentBanner;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\ContentContainerBlockedUsers;
 use humhub\modules\content\models\ContentContainerTagRelation;
 use humhub\modules\content\models\ContentImage;
+use humhub\modules\content\widgets\ContainerProfileHeader;
+use humhub\modules\file\libs\FileControllerInterface;
+use humhub\modules\file\models\AttachedImage;
+use humhub\modules\file\models\AttachedImageIntermediateInterface;
+use humhub\modules\file\models\AttachedImageOwnerInterface;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module as UserModule;
+use Throwable;
 use Yii;
 use yii\helpers\Url;
-use yii\web\IdentityInterface;
 
 /**
  * ContentContainerActiveRecord for ContentContainer Models e.g. Space or User.
@@ -40,19 +46,8 @@ use yii\web\IdentityInterface;
  * @since 1.0
  * @author Luke
  */
-abstract class ContentContainerActiveRecord extends ActiveRecord
+abstract class ContentContainerActiveRecord extends ActiveRecord implements AttachedImageOwnerInterface
 {
-
-    /**
-     * @var ContentContainerPermissionManager
-     */
-    protected $permissionManager = null;
-
-    /**
-     * @var ContentContainerModuleManager
-     */
-    private $_moduleManager = null;
-
     /**
      * The behavior which will be attached to the base controller.
      *
@@ -78,14 +73,50 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public $blockedUsersField;
 
     /**
-     * @var string
+     * @var ContentImage|string
      */
     public $profileImageClass = ContentImage::class;
+    protected ?AttachedImage $profileImage = null;
 
     /**
-     * @var string
+     * @var ContentBanner|string
      */
     public $profileBannerImageClass = ContentBanner::class;
+    protected ?AttachedImage $profileBannerImage = null;
+
+    public string $headerImageControllerClass;
+
+    /**
+     * @var ContentContainerPermissionManager
+     */
+    protected ?ContentContainerPermissionManager $permissionManager = null;
+
+    /**
+     * @var ContentContainerModuleManager
+     */
+    private $_moduleManager = null;
+
+    protected string $headerImageUploadUrl = '/file/image/upload';
+    protected string $headerImageCropUrl   = '/file/image/crop';
+    protected string $headerImageDeleteUrl = '/file/image/delete';
+    protected string $headerControlViewPath = '@content/widgets/views/profileHeaderControls.php';
+
+    protected string $headerClassPrefix     = 'container';
+
+    public static function tableName()
+    {
+        return 'contentcontainer';
+    }
+
+    public function getAttachedImage(array $config): ?\humhub\modules\file\models\AttachedImage
+    {
+        // TODO: Implement getAttachedImage() method.
+    }
+
+    public function getAttachedImages(): array
+    {
+        // TODO: Implement getAttachedImages() method.
+    }
 
     /**
      * Returns the display name of content container
@@ -104,24 +135,35 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     abstract public function getDisplayNameSub(): string;
 
     /**
-     * Returns the Profile Image Object for this Content Base
-     *
-     * @return ContentImage
+     * @return FileControllerInterface|string
      */
-    public function getProfileImage()
+    public function getHeaderImageControllerClass(): string
     {
-        return new $this->profileImageClass($this);
+        return $this->headerImageControllerClass;
     }
 
     /**
      * Returns the Profile Banner Image Object for this Content Base
      *
-     * @return ContentBanner
+     * @return ContentBanner|null
      */
-    public function getProfileBannerImage()
+    public function getProfileBannerImage(?string $defaultImage = null): ContentBanner
     {
-        return new $this->profileBannerImageClass($this);
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this->profileBannerImage ??= $this->profileBannerImageClass::findOneByRecord($this) ?? new $this->profileBannerImageClass($this, $defaultImage);
     }
+
+    /**
+     * Returns the Profile Image Object for this Content Base
+     *
+     * @return ContentImage|null
+     */
+    public function getProfileImage(?string $defaultImage = null): ?ContentImage
+    {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this->profileImage ??= $this->profileImageClass::findOneByRecord($this) ?? new $this->profileImageClass($this, $defaultImage);
+    }
+
 
     /**
      * Should be overwritten by implementation
@@ -160,6 +202,92 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function canAccessPrivateContent(User $user = null)
     {
         return false;
+    }
+
+    protected function canEditHeaderImages(): bool
+    {
+        return false;
+    }
+
+    public function initializeHeaderWidget(ContainerProfileHeader $header)
+    {
+        $header->imageUploadUrl    = $this->createUrlHeaderContainerImageUpload();
+        $header->coverUploadUrl    = $this->createUrlHeaderCoverImageUpload();
+        $header->coverCropUrl      = $this->createUrlHeaderCoverImageCrop();
+        $header->imageCropUrl      = $this->createUrlHeaderContainerImageCrop();
+        $header->imageDeleteUrl    = $this->createUrlHeaderContainerImageDelete();
+        $header->coverDeleteUrl    = $this->createUrlHeaderCoverImageDelete();
+        $header->headerControlView = $this->headerControlViewPath();
+        $header->classPrefix       = $this->headerClassPrefix;
+
+        // This is required in order to stay compatible with old themes...
+        $controller = $this->getHeaderImageControllerClass();
+
+        $config = [];
+
+        if (is_subclass_of($controller, ContentContainerController::class)) {
+            $config['contentContainer']             = $this;
+            $config['validContentContainerClasses'] = [static::class];
+        }
+
+        $header->imageUploadName
+            =
+        $header->imageUploadName = $controller::getFileListParameterNameStatically(null, null, $config);
+        $header->canEdit = $this->canEditHeaderImages();
+    }
+
+    protected function headerControlViewPath(): string
+    {
+        return $this->headerControlViewPath;
+    }
+
+    public function createUrlImageUpload(string $type = null): string
+    {
+        return $this->createUrl($this->headerImageUploadUrl, ['type' => $type]);
+    }
+
+    protected function createUrlHeaderCoverImageUpload(): string
+    {
+        return $this->createUrlImageUpload(ContainerImageController::TYPE_PROFILE_BANNER_IMAGE);
+    }
+
+    protected function createUrlHeaderContainerImageUpload(): string
+    {
+        return $this->createUrlImageUpload(ContainerImageController::TYPE_PROFILE_IMAGE);
+    }
+
+    public function createUrlImageView()
+    {
+    }
+
+    public function createUrlImageCrop(string $type = null): string
+    {
+        return $this->createUrl($this->headerImageCropUrl, ['type' => $type]);
+    }
+
+    protected function createUrlHeaderContainerImageCrop(): string
+    {
+        return $this->createUrlImageCrop(ContainerImageController::TYPE_PROFILE_IMAGE);
+    }
+
+    protected function createUrlHeaderCoverImageCrop(): string
+    {
+        return $this->createUrlImageCrop(ContainerImageController::TYPE_PROFILE_BANNER_IMAGE);
+    }
+
+    public function createUrlImageDelete(string $type = null): string
+    {
+        return $this->createUrl($this->headerImageDeleteUrl, ['type' => $type]);
+    }
+
+    protected function createUrlHeaderCoverImageDelete(): string
+    {
+        return $this->createUrlImageDelete(ContainerImageController::TYPE_PROFILE_BANNER_IMAGE);
+    }
+
+    protected function createUrlHeaderContainerImageDelete(): string
+    {
+        return $this->createUrlImageDelete(ContainerImageController::TYPE_PROFILE_IMAGE);
     }
 
     /**
@@ -256,7 +384,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns the related ContentContainer model (e.g. Space or User)
      *
-     * @return ContentContainer
+     * @return AttachedImageIntermediateInterface
      * @see ContentContainer
      */
     public function getContentContainerRecord()
@@ -296,10 +424,10 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * Returns a ContentContainerPermissionManager instance for this ContentContainerActiveRecord as permission object
      * and the given user (or current user if not given) as permission subject.
      *
-     * @param User|IdentityInterface $user
+     * @param User|null $user
      *
      * @return ContentContainerPermissionManager
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function getPermissionManager(User $user = null)
     {

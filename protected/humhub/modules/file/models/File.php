@@ -98,11 +98,18 @@ class File extends FileCompat implements FileInterface, ViewableInterface
     }
 
     public const CATEGORY_ATTACHED_FILE = 16;
+    public const CATEGORY_ATTACHED_IMAGE = self::CATEGORY_ATTACHED_FILE + self::CATEGORY_VARIANT_1;         // 17 = 16 + 1
+    public const CATEGORY_BANNER_IMAGE = self::CATEGORY_ATTACHED_FILE + self::CATEGORY_VARIANT_1 + self::CATEGORY_VARIANT_2;         // 19 = 16 + 1 + 2
+    // @see https://developers.facebook.com/docs/sharing/webmasters
+    public const CATEGORY_OG_IMAGE = self::CATEGORY_ATTACHED_FILE + self::CATEGORY_VARIANT_1 + self::CATEGORY_VARIANT_4;         // 21 = 16 + 1 + 4
+    public const CATEGORY_RESERVED_4_NOT_IMAGE = 4;
+    public const CATEGORY_RESERVED_8_NOT_IMAGE = 8;
     public const CATEGORY_VARIANT_1 = 1;
     public const CATEGORY_VARIANT_2 = 2;
     public const CATEGORY_VARIANT_4 = 4;
     public const CATEGORY_VARIANT_8 = 8;
 
+    public const WELL_KNOWN_METADATA_IMG_ALT_TEXT = 'img.alt';
     public const WELL_KNOWN_METADATA_UPLOAD_HASH = 'file._upload.hash';
     public const WELL_KNOWN_METADATA_UPLOAD_MIMETYPE = 'file._upload.mimetype';
     public const WELL_KNOWN_METADATA_UPLOAD_SIZE = 'file._upload.size';
@@ -283,11 +290,20 @@ class File extends FileCompat implements FileInterface, ViewableInterface
      *                      'hash_sha1' => string,
      *                      ]
      *
-     * @return FileUploadInterface|File
+     * @return FileUploadInterface|AttachedImage
      */
     public static function instantiate($row)
     {
         $category = $row['category'] ?? null;
+
+        if (
+            $category !== null && $category & self::CATEGORY_ATTACHED_IMAGE && (!is_subclass_of(
+                static::class,
+                AttachedImage::class
+            ))
+        ) {
+            return new AttachedImage();
+        }
 
         return parent::instantiate($row);
     }

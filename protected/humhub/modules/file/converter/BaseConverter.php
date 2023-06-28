@@ -18,14 +18,17 @@ use yii\base\BaseObject;
  *
  * @since 1.2
  * @author Luke
+ *
+ * @property-read string $filename
+ * @property-read string $id
+ * @property-read string $url
  */
 abstract class BaseConverter extends BaseObject
 {
-
     /**
-     * @var File the file record
+     * @var File|null the file record
      */
-    public $file;
+    public ?File $file = null;
 
     /**
      * All options used for the converted file variant.
@@ -52,8 +55,10 @@ abstract class BaseConverter extends BaseObject
 
     /**
      * Convert file
+     * @param $fileName
+     * @return static
      */
-    abstract protected function convert($fileName);
+    abstract protected function convert(?string $fileName = null): self;
 
     /**
      * Returns if the given file can be converted
@@ -67,8 +72,8 @@ abstract class BaseConverter extends BaseObject
      */
     public function getFilename()
     {
-        $this->convert($this->getId());
-        return $this->getId();
+        $this->convert($id = $this->getId());
+        return $id;
     }
 
     /**
@@ -78,7 +83,7 @@ abstract class BaseConverter extends BaseObject
      * @return string the id
      * @since 1.7
      */
-    public function getId()
+    public function getId(): string
     {
         return 'v' . sprintf('%x', crc32(get_class($this) . http_build_query($this->options)));
     }
@@ -90,7 +95,7 @@ abstract class BaseConverter extends BaseObject
      */
     public function getUrl()
     {
-        return $this->file == null ? '' : $this->file->getUrl($this->getFileName());
+        return $this->file === null ? '' : $this->file->getUrl($this->getFileName());
     }
 
     /**
@@ -99,7 +104,7 @@ abstract class BaseConverter extends BaseObject
      * @param \humhub\modules\file\models\File $file
      * @return boolean returns false if file cannot be converted
      */
-    public function applyFile(File $file)
+    public function applyFile(File $file): bool
     {
         $this->file = $file;
         if ($this->canConvert($file)) {
@@ -109,4 +114,13 @@ abstract class BaseConverter extends BaseObject
         return false;
     }
 
+    /**
+     * @param array $config
+     * @return static
+     * @since 1.15
+     */
+    public static function create(array $config = []): BaseConverter
+    {
+        return new static($config);
+    }
 }

@@ -1,7 +1,5 @@
 <?php
 
-use humhub\modules\content\models\ContentBanner;
-use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
@@ -10,29 +8,13 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 
 /* @var $this \humhub\modules\ui\view\components\View */
-/* @var $profileImage \humhub\modules\content\models\ContentImage */
+/* @var $attachedImage \humhub\modules\file\models\AttachedImage */
 /* @var $model \humhub\models\forms\CropProfileImage */
 /* @var $container \humhub\modules\content\components\ContentContainerController */
 /* @var $submitUrl string */
 
-if($profileImage instanceof ContentBanner) {
-    $model->aspectRatio  = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-banner-ratio', $profileImage->getAspectRatio())
-        : $this->theme->variable('user-profile-banner-ratio', $profileImage->getAspectRatio());
-
-    $cropSelect  = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-banner-crop', '0, 0, ' . $profileImage->width() . ', ' . $profileImage->height())
-        : $this->theme->variable('user-profile-banner-crop', '0, 0, ' . $profileImage->width() . ', ' . $profileImage->height());
-} else {
-    $model->aspectRatio  = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-image-ratio', $profileImage->getAspectRatio())
-        : $this->theme->variable('user-profile-image-ratio', $profileImage->getAspectRatio());
-
-    $cropSelect  = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-image-crop', '0, 0, ' . $profileImage->width() . ', ' . $profileImage->height())
-        : $this->theme->variable('user-profile-image-crop', '0, 0, ' . $profileImage->width() . ', ' . $profileImage->height());
-}
-
+$model->aspectRatio  = $attachedImage->getAspectRatioThemed($this->theme);
+$cropSelect  = $attachedImage->getCropAreaThemed($this->theme);
 $model->cropSetSelect = Json::decode('['.$cropSelect.']');
 
 ?>

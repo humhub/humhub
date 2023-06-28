@@ -1143,7 +1143,7 @@ This release also brings a [security update](https://github.com/yiisoft/yii2/sec
 ------------------
 - Fix #3945: Default object-src policy prevents loading pdf on safari
 - Fix #3963: Richtext/Markdown links not highlighted by default
-- Fix #3986: Cannot use yii\helpers\Html as Html because the name is already in use in `humhub\libs\ProfileBannerImage`
+- Fix #3986: Cannot use yii\helpers\Html as Html because the name is already in use in `humhub\modules\content\libs\ProfileBannerImage`
 
 
 1.4.4 (March 24, 2020)

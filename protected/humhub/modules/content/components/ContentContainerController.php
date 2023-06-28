@@ -68,10 +68,15 @@ class ContentContainerController extends Controller
     {
         parent::init();
 
-        // Load the ContentContainer
-        $guid = Yii::$app->request->get('cguid', Yii::$app->request->get('sguid', Yii::$app->request->get('uguid')));
-        $this->contentContainer = $this->getContentContainerByGuid($guid);
+        if ($this->contentContainer === null)
+        {
+            // Load the ContentContainer
+            $guid = Yii::$app->request->get('cguid')
+                ?? Yii::$app->request->get('sguid')
+                ?? Yii::$app->request->get('uguid');
 
+            $this->contentContainer = $this->getContentContainerByGuid($guid);
+        }
 
         if ($this->validContentContainerClasses !== null) {
             if ($this->contentContainer === null || !in_array(get_class($this->contentContainer), $this->validContentContainerClasses)) {

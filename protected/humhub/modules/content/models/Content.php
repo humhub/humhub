@@ -40,7 +40,6 @@ use humhub\modules\user\models\User;
 use Throwable;
 use Yii;
 use yii\base\Exception;
-use yii\db\ActiveQuery;
 use yii\db\IntegrityException;
 use yii\helpers\Url;
 
@@ -226,13 +225,21 @@ class Content extends ActiveRecord implements Movable, ContentOwner, EditableInt
             throw new Exception("Could not save content with object_model or object_id!");
         }
 
-        $this->archived ??= 0;
-        $this->visibility ??= self::VISIBILITY_PRIVATE;
-        $this->pinned ??= 0;
-        $this->state ??= Content::STATE_PUBLISHED;
+        // Set some default values
+        if (!$this->archived) {
+            $this->archived = 0;
+        }
+        if (!$this->visibility) {
+            $this->visibility = self::VISIBILITY_PRIVATE;
+        }
+        if (!$this->pinned) {
+            $this->pinned = 0;
+        }
 
         if ($insert) {
-            $this->created_by ??= Yii::$app->user->id;
+            if ($this->created_by == "") {
+                $this->created_by = Yii::$app->user->id;
+            }
         }
 
         $this->stream_sort_date = date('Y-m-d G:i:s');
@@ -356,19 +363,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner, EditableInt
     }
 
     /**
-     * Marks this content for deletion (soft delete).
-     * Use `hardDelete()` method to delete a content immediately.
-     *
-     * @return bool
      * @inheritdoc
-     */
-    public function delete()
-    {
-        return $this->softDelete();
-    }
-
-    /**
-     * @inheritdoc
+     * @throws IntegrityException
      */
     public function afterDelete()
     {
@@ -810,9 +806,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, EditableInt
      */
     public function getTags($tagClass = ContentTag::class)
     {
-        return $this->hasMany($tagClass, ['id' => 'tag_id'])
-            ->via('tagRelations')
-            ->orderBy($tagClass::tableName() . '.sort_order');
+        return $this->hasMany($tagClass, ['id' => 'tag_id'])->via('tagRelations')->orderBy('sort_order');
     }
 
     /**
@@ -986,7 +980,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, EditableInt
         }
 
         // Check system admin can see all content module configuration
-        if ($user->canViewAllContent(get_class($this->container))) {
+        if ($user->canViewAllContent()) {
             return true;
         }
 

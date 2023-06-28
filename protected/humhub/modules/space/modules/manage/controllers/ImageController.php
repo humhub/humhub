@@ -20,8 +20,8 @@ use humhub\modules\space\models\Space;
 class ImageController extends ContainerImageController
 {
     public $validContentContainerClasses = [Space::class];
-    public $imageUploadName = 'spacefiles';
-    public $bannerUploadName = 'bannerfiles';
+    public string $imageUploadName = 'spacefiles';
+    public string $bannerUploadName = 'bannerfiles';
 
     public function getAccessRules(): array
     {

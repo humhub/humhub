@@ -1,14 +1,13 @@
 <?php
-
-/**
+/*
  * @link      https://www.humhub.org/
  * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
  * @license   https://www.humhub.com/licences
  */
 
-namespace humhub\exceptions;
+namespace humhub\modules\file\models;
 
-class InvalidConfigTypeException extends InvalidConfigException
+trait AttachedImageOwnerTrait
 {
-    use InvalidTypeExceptionTrait;
+
 }

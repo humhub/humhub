@@ -8,61 +8,44 @@
 
 namespace humhub\exceptions;
 
-/**
- * @since 1.15
- */
 trait InvalidTypeExceptionTrait
 {
-    //  public properties
-
-    public string $methodName;
-    public $parameter;
-    public array $validType = [];
-
-    /**
-     * @var mixed|null
-     */
-    public $givenValue;
-
     /**
      * @param string $method
      * @param int|array $parameter = [
      *                                     int => string,       // position, or [ position => name ] of the  argument
      *                                     ]
-     * @param array|string|null $validType
-     * @param null $givenValue
+     * @param array|string|null $valid
+     * @param null $given
      */
     public function __construct(
         $method = '',
         $parameter = null,
-        $validType = [],
-        $givenValue = null,
+        $valid = [],
+        $given = null,
         $nullable = false,
+        $suffix = null,
         $code = 0,
         $previous = null
     ) {
+        $valid = (array)($valid ?? ['mixed']);
 
-        $this->methodName = $method;
-        $this->parameter = $parameter;
-        $this->validType = (array)($validType ?? ['mixed']);
-        $this->givenValue = $givenValue;
-
-        if ($nullable && !in_array('null', $this->validType, true)) {
-            $this->validType[] = 'null';
+        if ($nullable && !in_array('null', $this->valid, true)) {
+            $valid[] = 'null';
         }
 
-        $message = sprintf(
-            '%s passed to %s must be of type %s, %s given.',
-            $this->formatPrologue(func_get_args()),
-            $this->methodName,
-            implode(', ', $this->validType),
-            get_debug_type($this->givenValue)
-        );
+        $givenType = get_debug_type($given);
+        if (is_scalar($given)) {
+            $givenType .= " ($given)";
+        }
 
-        parent::__construct($message, $code, $previous);
+        parent::__construct($method, $parameter, $valid, $givenType, $suffix, $code, $previous);
     }
 
-    abstract protected function formatPrologue(array $constructArguments): string;
+    protected function formatValid(): string
+    {
+        return 'of type ' . implode(', ', $this->valid);
+    }
 
     public function getName(): string
     {

@@ -9,94 +9,60 @@
 namespace humhub\modules\content\models;
 
 use humhub\libs\Html;
-use humhub\modules\file\libs\ImageHelper;
-use Imagine\Image\Box;
-use Imagine\Image\ManipulatorInterface;
-use yii\imagine\Image;
-use yii\web\UploadedFile;
+use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\models\File;
+use Yii;
 
 /**
- * ProfileBannerImage is responsible for the profile banner images.
+ * ContentBanner is responsible for the profile banner images.
  *
  * This class handles all tasks related to profile images.
- * Will used for Space or User Profiles.
+ * Will be used for Space or User Profiles.
  *
  * Prefixes:
  *  "" = Resized profile image
- *  "_org" = Orginal uploaded file
+ *  "_original" = Original uploaded file
  *
- * @since 0.5
- * @author Luke
+ * @since  1.15
  */
-class ContentBanner extends ContentImage
+class ContentBanner extends ContentAttachedImage
 {
+    // protected properties
 
-    /**
-     * @var Integer width of the Image
-     */
-    protected $width = 1134;
+    public int $width = 1134;
+    public int $height = 192;
+    public int $maxWidth = 2000;
+    public ?int $squared = null;
+    public ?string $defaultImage = 'default_banner';
 
-    /**
-     * @var Integer height of the Image
-     */
-    protected $height = 192;
-
-    /**
-     * @var String folder name inside the uploads directory
-     */
-    protected $folder_images = 'profile_image/banner';
-
-
-    /**
-     * Constructor of Profile Image
-     *
-     * UserId is optional, if not given the current user will used
-     *
-     * @param string $guid
-     * @param string $defaultImage
-     */
-    public function __construct($guid, $defaultImage = 'default_banner')
-    {
-        parent::__construct($guid, $defaultImage);
-    }
-
-    /**
-     * Sets a new profile image by given temp file
-     *
-     * @param \yii\web\UploadedFile $file
-     * @throws \yii\base\Exception
-     */
-    public function setNew($file)
-    {
-        if ($file instanceof UploadedFile) {
-            $file = $file->tempName;
-        }
-
-        $this->delete();
-
-        // Make sure original file is max. 800 width
-        $image = Image::getImagine()->open($file);
-        ImageHelper::fixJpegOrientation($image, $file);
-        if ($image->getSize()->getWidth() > 2000) {
-            $image->resize($image->getSize()->widen(2000));
-        }
-        $image->save($this->getPath('_org'), ['format' => 'jpg']);
-
-        // Create version
-        $image->thumbnail(new Box($this->width, $this->height), ManipulatorInterface::THUMBNAIL_OUTBOUND)
-            ->save($this->getPath(''));
-    }
+    public static ?int $defaultFilterCategory = File::CATEGORY_BANNER_IMAGE;
 
     /**
      * @inheritDoc
      */
-    public function render($width = 32, $cfg = [])
+    public function render($width = 32, array $cfg = []): string
     {
-        if(is_int($width)) {
+        if (is_int($width)) {
             $width .= 'px';
         }
 
         Html::addCssStyle($cfg, ['width' => $width]);
-        return Html::img($this->getUrl(),$cfg);
+
+        return Html::img($this->getUrl(), $cfg);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function normalizeOldRecordImage(string $guid, $folder_images = 'profile_image/banner')
+    {
+        // use different default value for $folder_images
+        parent::normalizeOldRecordImage($guid, $folder_images);
+
+        $parent = dirname(rtrim(Yii::getAlias('@webroot/uploads/' . $folder_images)), '\/');
+
+        if (empty(FileHelper::findDirectories($parent))) {
+            FileHelper::removeDirectory($parent);
+        }
     }
 }
