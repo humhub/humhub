@@ -24,7 +24,6 @@ use yii\base\Exception;
  */
 class StreamSuppressQuery extends StreamQuery
 {
-
     /**
      * @var boolean marks query as executed
      */
@@ -101,7 +100,7 @@ class StreamSuppressQuery extends StreamQuery
             $this->isQueryExecuted = true;
             $result = parent::all();
 
-            if(!empty($result)) {
+            if (!empty($result)) {
                 $last = $result[count($result) - 1];
                 $this->lastContentId = $last->id;
             }
@@ -157,7 +156,6 @@ class StreamSuppressQuery extends StreamQuery
 
         foreach ($this->_query->batch($originalLimit) as $contents) {
             foreach ($contents as $content) {
-
                 // End of suppression row
                 if (isset($results[0]) && $results[0]->object_model != $content->object_model) {
                     break 2;
@@ -275,5 +273,4 @@ class StreamSuppressQuery extends StreamQuery
     {
         return 'StreamQuery';
     }
-
 }

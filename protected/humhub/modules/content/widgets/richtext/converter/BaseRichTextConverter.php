@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2020 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\content\widgets\richtext\converter;
 
 use cebe\markdown\GithubMarkdown;
@@ -337,7 +343,6 @@ abstract class BaseRichTextConverter extends GithubMarkdown
 
         # Otherwise parse the sequence normally
         return parent::parseEscape($text);
-
     }
 
     /**

@@ -20,15 +20,13 @@ use humhub\modules\space\models\Space;
 class ImageController extends ContainerImageController
 {
     public $validContentContainerClasses = [Space::class];
+    public $imageUploadName = 'spacefiles';
+    public $bannerUploadName = 'bannerfiles';
 
-    public function getAccessRules()
+    public function getAccessRules(): array
     {
         return [
             [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_ADMIN]],
         ];
     }
-
-    public $imageUploadName = 'spacefiles';
-    public $bannerUploadName = 'bannerfiles';
-
 }

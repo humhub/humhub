@@ -90,7 +90,13 @@ class File extends FileCompat implements ViewableInterface
     {
         return [
             [['mime_type'], 'string', 'max' => 150],
-            [['mime_type'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\.ä\/\-\+]/', 'message' => Yii::t('FileModule.base', 'Invalid Mime-Type')],
+            [
+                ['mime_type'],
+                'match',
+                'not' => true,
+                'pattern' => '/[^a-zA-Z0-9\.ä\/\-\+]/',
+                'message' => Yii::t('FileModule.base', 'Invalid Mime-Type')
+            ],
             [['file_name', 'title'], 'string', 'max' => 255],
             [['size'], 'integer'],
         ];
@@ -175,8 +181,12 @@ class File extends FileCompat implements ViewableInterface
     /**
      * Get hash
      *
-     * @param int Return number of first chars of the file hash, 0 - unlimit
+     * @param int $length Return number of first chars of the file hash, 0 - unlimited
+     *
      * @return string
+     * @throws ErrorException
+     * @throws InvalidFileGuid
+     * @throws \yii\base\Exception
      */
     public function getHash($length = 0)
     {
@@ -184,7 +194,9 @@ class File extends FileCompat implements ViewableInterface
             $this->updateAttributes(['hash_sha1' => sha1_file($this->store->get())]);
         }
 
-        return $length ? substr($this->hash_sha1, 0, $length) : $this->hash_sha1;
+        return $length
+            ? substr($this->hash_sha1, 0, $length)
+            : $this->hash_sha1;
     }
 
     /**
@@ -259,12 +271,14 @@ class File extends FileCompat implements ViewableInterface
      */
     public function isAssigned()
     {
-        return ($this->object_model != "");
+        return (!empty($this->object_model));
     }
 
     /**
      * Checks if this file is attached to the given record
+     *
      * @param ActiveRecord $record
+     *
      * @return bool
      */
     public function isAssignedTo(ActiveRecord $record)
@@ -275,8 +289,8 @@ class File extends FileCompat implements ViewableInterface
     /**
      * Returns the StorageManager
      *
-     * @return \humhub\modules\file\components\StorageManagerInterface
-     * @throws \yii\base\InvalidConfigException
+     * @return StorageManagerInterface
+     * @throws InvalidConfigException
      */
     public function getStore()
     {
@@ -292,6 +306,7 @@ class File extends FileCompat implements ViewableInterface
      * Returns all attached Files of the given $record.
      *
      * @param ActiveRecord $record
+     *
      * @return File[]
      */
     public static function findByRecord(ActiveRecord $record): array
@@ -303,6 +318,7 @@ class File extends FileCompat implements ViewableInterface
      * Get File History by ID
      *
      * @param int $fileHistoryId
+     *
      * @return FileHistory|null
      */
     public function getFileHistoryById($fileHistoryId): ?FileHistory
