@@ -21,7 +21,6 @@ use humhub\modules\user\models\Group;
  */
 class InitialData
 {
-
     public static function bootstrap()
     {
         // Seems database is already initialized
@@ -74,7 +73,7 @@ class InitialData
 
 
         // Add Categories
-        $cGeneral = new ProfileFieldCategory;
+        $cGeneral = new ProfileFieldCategory();
         $cGeneral->title = "General";
         $cGeneral->sort_order = 100;
         $cGeneral->visibility = 1;
@@ -84,7 +83,7 @@ class InitialData
             throw new Exception(print_r($cGeneral->getErrors(), true));
         }
 
-        $cCommunication = new ProfileFieldCategory;
+        $cCommunication = new ProfileFieldCategory();
         $cCommunication->title = "Communication";
         $cCommunication->sort_order = 200;
         $cCommunication->visibility = 1;
@@ -92,7 +91,7 @@ class InitialData
         $cCommunication->description = '';
         $cCommunication->save();
 
-        $cSocial = new ProfileFieldCategory;
+        $cSocial = new ProfileFieldCategory();
         $cSocial->title = "Social bookmarks";
         $cSocial->sort_order = 300;
         $cSocial->visibility = 1;
@@ -112,8 +111,9 @@ class InitialData
         $field->required = 1;
         $field->show_at_registration = 1;
         if ($field->save()) {
-            $field->fieldType->maxLength = 20;
-            $field->fieldType->save();
+            $type = $field->fieldType;
+            $type->maxLength = 20;
+            $type->save();
         } else {
             throw new Exception(print_r($field->getErrors(), true));
         }
@@ -428,5 +428,4 @@ class InitialData
         $group->is_default_group = 1;
         $group->save();
     }
-
 }

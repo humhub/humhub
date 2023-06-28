@@ -2,10 +2,17 @@
 
 namespace humhub\modules\content\interfaces;
 
+use humhub\modules\content\components\ActiveQueryContent;
+use humhub\modules\content\models\Content;
+
 /**
  * Interface for classes which are able to return content instances.
  *
- * @see \humhub\modules\content\models\Content
+ * @property Content $content content instance of this content owner
+ * @property string $contentName name of the content like 'comment', 'post'
+ * @property string $contentDescription a plaintext, markdown or richtext description e.g. the message of a post
+ *
+ * @see Content
  * @author buddha
  * @since 1.2
  */
@@ -13,7 +20,7 @@ interface ContentOwner
 {
 
     /**
-     * @returns \humhub\modules\content\models\Content content instance of this content owner
+     * @returns \yii\db\ActiveQuery|ActiveQueryContent|Content content instance of this content owner
      */
     public function getContent();
 

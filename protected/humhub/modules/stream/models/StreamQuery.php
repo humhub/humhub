@@ -30,6 +30,8 @@ use yii\helpers\ArrayHelper;
  *
  * @author buddha
  * @since 1.2
+ *
+ * @property-read string $modelClass
  */
 class StreamQuery extends Model implements StatableQueryInterface
 {
@@ -525,7 +527,7 @@ class StreamQuery extends Model implements StatableQueryInterface
     {
         if (empty($this->limit)) {
             $this->limit = self::MAX_LIMIT;
-        } else if (Yii::$app->request->isConsoleRequest) {
+        } elseif (Yii::$app->request->isConsoleRequest) {
             $this->limit = (int)$this->limit;
         } else {
             $this->limit = ($this->limit > self::MAX_LIMIT) ? self::MAX_LIMIT : (int)$this->limit;
@@ -565,7 +567,9 @@ class StreamQuery extends Model implements StatableQueryInterface
                             "content.stream_sort_date = (SELECT stream_sort_date FROM content wd WHERE wd.id=:from)",
                             "content.id > :from"
                         ],
-                    ], [':from' => $this->from]);
+                    ],
+                    [':from' => $this->from]
+                );
             } elseif (!empty($this->to)) {
                 $this->_query->andWhere(
                     ['or',
@@ -574,7 +578,9 @@ class StreamQuery extends Model implements StatableQueryInterface
                             "content.stream_sort_date = (SELECT stream_sort_date FROM content wd WHERE wd.id=:to)",
                             "content.id < :to"
                         ],
-                    ], [':to' => $this->to]);
+                    ],
+                    [':to' => $this->to]
+                );
             }
         } else {
             $this->_query->orderBy('content.id DESC');
