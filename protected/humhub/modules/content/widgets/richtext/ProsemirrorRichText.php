@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\content\widgets\richtext;
 
 use humhub\libs\Helpers;
@@ -141,7 +147,11 @@ class ProsemirrorRichText extends AbstractRichText
      */
     public function run()
     {
-        $output = $this->text;
+        if ($this->minimal) {
+            return static::convert($this->text, static::FORMAT_SHORTTEXT, ['maxLength' => $this->maxLength]);
+        }
+
+        $output = $this->parseOutput();
 
         // E.g. when initializing empty editor
         if (empty($output)) {
@@ -165,5 +175,54 @@ class ProsemirrorRichText extends AbstractRichText
         $this->trigger(self::EVENT_AFTER_OUTPUT, new ParameterEvent(['output' => &$output]));
 
         return trim($output);
+    }
+
+    /**
+     * Prior of 1.8 this function was used for preparing the richtext output. In 1.8 we richtext extensions should be
+     * used to manipulate the richtext output.
+     *
+     * @return string
+     * @deprecated since 1.8 use `RichTextExtension::onBeforeOutput()` to manipulate output
+     */
+    protected function parseOutput()
+    {
+        return $this->text;
+    }
+
+    /**
+     * Can be used to scan for link extensions of the form [<text>](<extension>:<url> "<title>") in which the actual meaning
+     * of the placeholders is up to the extension itself.
+     *
+     * @param $text string rich text content to parse
+     * @param $extension string|null extension string if not given all extension types will be included
+     * @return array
+     * @deprecated since 1.8 use `ProsemirrorRichTextConverter::scanLinkExtension()`
+     */
+    public static function scanLinkExtension($text, $extension = null)
+    {
+        $matches = [];
+        $result = RichTextLinkExtension::scanLinkExtension($text, $extension);
+        foreach ($result as $match) {
+            $matches[] = $match->match;
+        }
+
+        return $matches;
+    }
+
+    /**
+     * Can be used to scan and replace link extensions of the form [<text>](<extension>:<url> "<title>") in which the actual meaning
+     * of the placeholders is up to the extension itself.
+     *
+     * @param string|null $text string rich text content to parse
+     * @param string|null $extension extension string if not given all extension types will be included
+     * @param callable $callback
+     * @return mixed
+     * @deprecated since 1.8 use `ProsemirrorRichTextConverter::replaceLinkExtension()`
+     */
+    public static function replaceLinkExtension(?string $text, ?string $extension, callable $callback)
+    {
+        return RichTextLinkExtension::replaceLinkExtension($text, $extension, function (RichTextLinkExtensionMatch $match) use ($callback) {
+            return $callback($match->match);
+        });
     }
 }

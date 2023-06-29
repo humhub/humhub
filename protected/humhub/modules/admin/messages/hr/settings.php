@@ -91,7 +91,6 @@ return [
     'These settings refer to the appearance of your social network.' => 'Te se postavke odnose na izgled vaše društvene mreže.',
     'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&amp;format=json)',
     'Use X-Sendfile for File Downloads' => 'Koristite X-Sendfile za preuzimanje datoteka',
-    'Use the default swipe to show sidebar on a mobile device' => 'Upotrijebite zadani potez (swipe) za prikaz bočne trake na mobilnom uređaju',
     'User' => 'Korisnik',
     'User Settings' => 'Korisničke postavke',
     'Username' => 'Korisničko ime',

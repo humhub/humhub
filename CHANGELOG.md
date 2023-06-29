@@ -1,8 +1,23 @@
 HumHub Changelog
 ================
 
-1.14.1 (Unreleased)
--------------------
+1.14.3 (Unreleased)
+----------------------
+- Fix #6345: Fix updating of post on wall stream
+- Fix #6351: Error when config `defaultReloadableScripts` is not array
+- Fix #6359: Avoid double call of `afterSave` on creating of a published content
+- Fix #6373: Use integer format for Content columns "visibility" and "state" right after creating
+- Fix #6377: Forgot Password - Display email input error after successful captcha verification.
+- Fix #6378: Fix visibility of the link "Uninstall" on Windows server
+
+1.14.2 (May 22, 2023)
+----------------------
+- Fix #6257: Editing Draft lead to unexpected error
+- Fix #6333: Fix installer crash on fresh installs 
+- Fix #6342: Fix broken file uploading
+
+1.14.1 (May 15, 2023)
+---------------------
 - Fix #6251: Emulate execution on `readable()` content 
 - Enh #6252: Implement new method to handle changing of content active record state
 - Enh #6248: If admins can view all contents, users allowed to manage spaces or users cannot view all content (they should be able)
@@ -11,6 +26,16 @@ HumHub Changelog
 - Fix #6264: Fix date format for columns `created_at` and `updated_at`
 - Fix #6265: Broken HMTL in Visibility and Hidden Checkbox
 - Enh #6242: Submit button hidden when editing a comment having a long "code" line 
+- Fix #6282: Hard delete content records on integrity check
+- Fix #6257: Fix error after publishing of a draft content
+- Fix #6258: Send notification to mentioned user only after publishing of a content
+- Fix #6273: Fix automatically login user after registration
+- Fix #6292: Messages: Notification Indicator Problem
+- Fix #6296: Update style variable `background-color-secondary`
+- Fix #6228: Administrators allowed to manage users cannot invite by email or by link if disabled in the settings
+- Fix #6293: Delete content from DB completely on purge content by cron job
+- Fix #6316: Dashboard Activity Sidebar Loading Speed
+- Fix #6262: Fix visibility of deleted content
 
 1.14.0 (April 20, 2023)
 -----------------------

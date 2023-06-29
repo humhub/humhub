@@ -19,11 +19,11 @@ use humhub\modules\content\models\Movable;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
+use humhub\modules\content\widgets\WallEntry;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicLabel;
 use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\models\User;
-use humhub\modules\content\widgets\WallEntry;
 use humhub\widgets\Label;
 use Yii;
 use yii\base\Exception;
@@ -218,7 +218,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function getContentName()
     {
-        return static::class;
+        return static::getObjectModel();
     }
 
     /**
@@ -451,8 +451,12 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
             $this->content->object_id = $this->getPrimaryKey();
         }
 
-        // Always save content
-        $this->content->save();
+        if (!$insert || $this->content->isNewRecord) {
+            // Save a Content only on each update of this Record or when the Content is creating first time.
+            // Don't update the Content twice during inserting of this Record
+            //   in order to don't touch the column `updated_at` when action is "creating" really.
+            $this->content->save();
+        }
 
         parent::afterSave($insert, $changedAttributes);
     }
@@ -470,8 +474,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
         if ($activitiesQuery instanceof ActiveQuery) {
             foreach ($activitiesQuery->each() as $activity) {
                 /* @var Activity $activity */
-                $activity->content->setState($newState);
-                $activity->content->save();
+                $activity->content->getStateService()->update($newState);
             }
         }
     }
@@ -484,7 +487,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      * base type as follows:
      *
      * ```
-     * public static function getObjectModel() {
+     * public static function getObjectModel(): string {
      *     return BaseType::class
      * }
      * ```
@@ -494,7 +497,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      *
      * @return string
      */
-    public static function getObjectModel()
+    public static function getObjectModel(): string
     {
         return static::class;
     }

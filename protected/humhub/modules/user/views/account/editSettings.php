@@ -8,6 +8,7 @@ use humhub\modules\user\widgets\UserPickerField;
 
 /* @var AccountSettings $model */
 /* @var array $languages */
+/* @var bool $isEnabledOnlineStatus */
 ?>
 
 <?php $this->beginContent('@user/views/account/_userSettingsLayout.php') ?>
@@ -16,7 +17,7 @@ use humhub\modules\user\widgets\UserPickerField;
 
 <?= $form->field($model, 'tags')->widget(ContainerTagPicker::class, ['minInput' => 2]); ?>
 
-<?php if (count($languages) > 1) : ?>
+<?php if (count($languages) > 1): ?>
     <?= $form->field($model, 'language')->dropDownList($languages, ['data-ui-select2' => '']); ?>
 <?php endif; ?>
 
@@ -28,11 +29,17 @@ use humhub\modules\user\widgets\UserPickerField;
     ]); ?>
 <?php endif; ?>
 
-<?php if (Yii::$app->getModule('tour')->settings->get('enable') == 1) : ?>
+<?php if ($isEnabledOnlineStatus): ?>
+    <?= $form->field($model, 'hideOnlineStatus')->checkbox(); ?>
+<?php endif; ?>
+
+<?php if (Yii::$app->getModule('tour')->settings->get('enable') == 1): ?>
     <?= $form->field($model, 'show_introduction_tour')->checkbox(); ?>
 <?php endif; ?>
 
-<?php if (Yii::$app->getModule('user')->allowBlockUsers()) : ?>
+<?= $form->field($model, 'markdownEditorMode')->dropDownList($model->getEditorModeList(), ['data-ui-select2' => '']) ?>
+
+<?php if (Yii::$app->getModule('user')->allowBlockUsers()): ?>
     <?= $form->field($model, 'blockedUsers')->widget(UserPickerField::class, ['minInput' => 2]); ?>
 <?php endif; ?>
 

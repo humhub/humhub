@@ -110,6 +110,10 @@ $config = [
         'cache' => [
             'class' => \yii\caching\DummyCache::class,
         ],
+        'runtimeCache' => [
+            'class' => \yii\caching\ArrayCache::class,
+            'serializer' => false,
+        ],
         'mailer' => [
             'class' => \humhub\components\mail\Mailer::class,
             'viewPath' => '@humhub/views/mail',
@@ -220,6 +224,7 @@ $config = [
             'sq' => 'Shqip',
             'cy' => 'Cymraeg',
             'sw' => 'Kiswahili',
+            'sr' => 'Сербисцх',
         ],
         'ldap' => [
             // LDAP date field formats
@@ -269,12 +274,6 @@ $config = [
         'enablePjax' => true,
         'dailyCronExecutionTime' => '18:00',
     ],
-    'container' => [
-        'definitions' => [
-            //todo: Remove after Yii 2.0.48 release
-            \yii\validators\DateValidator::class => humhub\components\validators\DateValidator::class,
-        ]
-    ]
 ];
 
 return $config;

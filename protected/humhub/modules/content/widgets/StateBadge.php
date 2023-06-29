@@ -41,7 +41,7 @@ class StateBadge extends Widget
                 );
             case Content::STATE_SCHEDULED:
                 $scheduledDateTime = new DateTime($this->model->content->scheduled_at, new DateTimeZone('UTC'));
-                return Html::tag('span', Yii::t('ContentModule.base', 'Scheduled at {dateTime}', [
+                return Html::tag('span', Yii::t('ContentModule.base', 'Scheduled for {dateTime}', [
                         'dateTime' => Yii::$app->formatter->asDatetime($scheduledDateTime, 'short')
                     ]),
                     ['class' => 'label label-warning label-state-scheduled']

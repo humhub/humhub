@@ -24,7 +24,7 @@ class AccountProfileMenu extends TabMenu
     public function init()
     {
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.base', 'General'),
+            'label' => Yii::t('UserModule.base', 'Profile'),
             'url' => ['/user/account/edit'],
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState('user', 'account', 'edit')

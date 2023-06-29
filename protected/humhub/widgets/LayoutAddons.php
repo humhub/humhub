@@ -42,7 +42,7 @@ class LayoutAddons extends BaseStack
                 $this->addWidget(BlueimpGallery::class);
 
                 if (Yii::$app->params['enablePjax']) {
-                    $this->addWidget(Pjax::class);
+                    $this->addWidget(PjaxLayoutContent::class);
                 }
             }
         }

@@ -261,7 +261,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         }
 
         return $this->hasOne(ContentContainer::class, ['pk' => 'id'])
-            ->andOnCondition(['class' => $this->className()]);
+            ->andOnCondition(['class' => get_class($this)]);
     }
 
     /**
