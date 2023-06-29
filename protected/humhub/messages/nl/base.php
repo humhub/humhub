@@ -62,6 +62,7 @@ return array (
   'Save' => 'Opslaan',
   'Saved' => 'Opgeslagen',
   'Search' => 'Zoeken',
+  'Search...' => 'Zoeken...',
   'Select Me' => 'Klik op mij',
   'Settings' => 'Instellingen',
   'Show less' => 'Toon minder',

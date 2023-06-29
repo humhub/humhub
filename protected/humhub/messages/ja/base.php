@@ -62,6 +62,7 @@ return array (
   'Save' => '保存',
   'Saved' => '保存しました',
   'Search' => '検索',
+  'Search...' => '探す...',
   'Select Me' => '自分を選ぶ',
   'Settings' => '設定',
   'Show less' => '少なく表示',

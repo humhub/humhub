@@ -62,6 +62,7 @@ return array (
   'Save' => 'Desa',
   'Saved' => 'Desat',
   'Search' => 'Cerca',
+  'Search...' => 'Cercar...',
   'Select Me' => 'Selecciona’m',
   'Settings' => 'Configuració',
   'Show less' => 'Mostra’n menys',

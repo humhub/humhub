@@ -62,6 +62,7 @@ return array (
   'Save' => 'Zapisz',
   'Saved' => 'Zapisano',
   'Search' => 'Szukaj',
+  'Search...' => 'Szukaj...',
   'Select Me' => 'Wybierz mnie',
   'Settings' => 'Ustawienia',
   'Show less' => 'Pokaż mniej',
