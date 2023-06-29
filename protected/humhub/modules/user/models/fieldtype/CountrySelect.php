@@ -8,9 +8,9 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\libs\Iso3166Codes;
 use humhub\modules\user\models\User;
 use Yii;
-use humhub\libs\Iso3166Codes;
 
 /**
  * ProfileFieldTypeSelect handles numeric profile fields.

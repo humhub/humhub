@@ -52,6 +52,7 @@ HumHub Changelog
 - Enh #6375: Performance Improvements
 - Enh #6369: Don't pin draft and scheduled contents on dashboard
 - Enh #6370: Remove FlatElements CSS
+- Enh #6379: Normalize integer columns after load data to ActiveRecord
 - Enh #6384: Added Serbian(sr) language
 - Enh #6389: Remove deprecated JS function `setModalLoader()`
 - Enh #6394: Removed custom DateValidator.php after Yii 2.0.48 release
@@ -61,3 +62,4 @@ HumHub Changelog
 - Enh #6400: Enable nonce in config web header
 - Enh #6407: FileHandlerButtonDropdown - Possibility to have a custom CSS class
 - Enh #6079: Migrated Content Tag Logic into `ContentTagService` 
+- Enh #5718: Use Select2 plugin for all drop-down list fields

@@ -48,7 +48,7 @@ return array (
   'Logout' => 'ログアウト',
   'Menu' => 'メニュー',
   'Module is not enabled on this content container!' => 'このコンテンツコンテナに有効なモジュールがありません。',
-  'My Profile' => '',
+  'My Profile' => 'マイプロフィール',
   'New profile image' => '新しいプロフィール画像',
   'Next' => '次',
   'No error information given.' => 'エラー情報はありません。',
