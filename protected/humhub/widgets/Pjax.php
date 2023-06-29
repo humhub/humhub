@@ -1,60 +1,19 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\widgets;
 
-use Yii;
-use yii\helpers\Json;
-use humhub\assets\PjaxAsset;
+use yii\helpers\ArrayHelper;
 
-/**
- * Pjax Widget
- *
- * @author Luke
- */
-class Pjax extends \humhub\components\Widget
+class Pjax extends \yii\widgets\Pjax
 {
+    public $timeout = 30000;
 
-    /**
-     * @var array options passed to pjax scrpit
-     */
-    public $clientOptions = [];
-
-    /**
-     * @inheritdoc
-     */
     public function init()
     {
-        $this->clientOptions['pushRedirect'] = true;
-        $this->clientOptions['replaceRedirect'] = true;
-        $this->clientOptions['cache'] = false;
-        $this->clientOptions['timeout'] = 5000;
+        $this->options = ArrayHelper::merge($this->options, [
+            'class' => ['exclude-from-pjax-client'],
+        ]);
 
         parent::init();
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function run()
-    {
-        $view = $this->getView();
-        PjaxAsset::register($view);
-        
-        $view->registerJsConfig('client.pjax', [
-            'active' => self::isActive(),
-            'options' => $this->clientOptions
-        ]);
-    }
-    
-    public static function isActive()
-    {
-        return Yii::$app->params['enablePjax'];
-    }
-
 }

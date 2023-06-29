@@ -44,9 +44,13 @@ class SpaceDirectoryIcons extends Widget
             $membersCountQuery->visible();
         }
 
+        $count = Yii::$app->runtimeCache->getOrSet(__METHOD__ . Yii::$app->user->id, function() use ($membersCountQuery) {
+            return $membersCountQuery->count();
+        });
+
         return $this->render('spaceDirectoryIcons', [
             'space' => $this->space,
-            'membersCount' => Yii::$app->formatter->asShortInteger($membersCountQuery->count()),
+            'membersCount' => Yii::$app->formatter->asShortInteger($count),
             'canViewMembers' => $membership && $membership->isPrivileged(),
         ]);
     }

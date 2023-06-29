@@ -22,6 +22,7 @@ use humhub\widgets\ModalDialog;
     <?php $form = ActiveForm::begin() ?>
     <?= Html::hiddenInput('state', Content::STATE_SCHEDULED) ?>
     <?= Html::hiddenInput('stateTitle', $scheduleOptions->getStateTitle()) ?>
+    <?= Html::hiddenInput('buttonTitle', Yii::t('ContentModule.base', 'Save scheduling')) ?>
     <?= Html::hiddenInput('scheduledDate', $scheduleOptions->date) ?>
 
     <div class="modal-body">

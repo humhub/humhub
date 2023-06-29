@@ -8,18 +8,17 @@
 
 namespace humhub\modules\user\jobs;
 
-use Yii;
-use yii\base\InvalidArgumentException;
-use humhub\modules\queue\ActiveJob;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
+use humhub\modules\queue\LongRunningActiveJob;
 use humhub\modules\user\models\User;
+use yii\base\InvalidArgumentException;
 
 /**
  * Deletes a user
  *
  * @author Luke
  */
-class DeleteUser extends ActiveJob implements ExclusiveJobInterface
+class DeleteUser extends LongRunningActiveJob implements ExclusiveJobInterface
 {
     public $user_id;
 

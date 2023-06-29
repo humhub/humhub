@@ -19,4 +19,7 @@ return [
     'The uploaded image is not a squared.' => 'Den uppladdade bilden är inte en kvadrerad bild.',
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Det här uppladdningsfältet tillåter endast uppladdning av maximalt {n,plural,=1{# file} other{# files}}.',
     'Upload files' => 'Ladda upp filer',
+    'Attach a video' => '',
+    'Attach an audio message' => '',
+    'Attach an image' => '',
 ];

@@ -69,14 +69,14 @@ class FixtureHelper extends Module
     {
         return [
             'user' => ['class' => UserFullFixture::class],
-            'group' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupFixture::className()],
-            'group_permission' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture::className()],
-            'settings' => ['class' => \humhub\tests\codeception\fixtures\SettingFixture::className()],
-            'space' => [ 'class' => \humhub\modules\space\tests\codeception\fixtures\SpaceFixture::className()],
-            'space_membership' => [ 'class' => \humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture::className()],
-            'contentcontainer' => [ 'class' => \humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture::className()],
-            'notification' => [ 'class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::className()],
-            'activity' => [ 'class' => \humhub\modules\activity\tests\codeception\fixtures\ActivityFixture::className()],
+            'group' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupFixture::class],
+            'group_permission' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture::class],
+            'settings' => ['class' => \humhub\tests\codeception\fixtures\SettingFixture::class],
+            'space' => [ 'class' => \humhub\modules\space\tests\codeception\fixtures\SpaceFixture::class],
+            'space_membership' => [ 'class' => \humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture::class],
+            'contentcontainer' => [ 'class' => \humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture::class],
+            'notification' => [ 'class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::class],
+            'activity' => [ 'class' => \humhub\modules\activity\tests\codeception\fixtures\ActivityFixture::class],
             'live' => [ 'class' => LiveFixture::class],
         ];
     }

@@ -56,4 +56,17 @@ abstract class StreamQueryFilter extends QueryFilter
     {
     }
 
+    /**
+     * @return bool
+     * @since v1.15
+     */
+    public function allowPinContent(): bool
+    {
+        if (empty($this->streamQuery->pinnedContentSupport)) {
+            return false;
+        }
+
+        return $this->streamQuery->isInitialQuery();
+    }
+
 }

@@ -8,15 +8,15 @@ use yii\helpers\Url;
     <?php
     // Temporary workaround till panel widget rewrite in 0.10 verion
     $removeOptionHtml = "<li>" . \humhub\widgets\ModalConfirm::widget([
-                'uniqueID' => 'hide-panel-button',
-                'title' => Yii::t('TourModule.base', '<strong>Remove</strong> tour panel'),
-                'message' => Yii::t('TourModule.base', 'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.'),
-                'buttonTrue' => Yii::t('TourModule.base', 'Ok'),
-                'buttonFalse' => Yii::t('TourModule.base', 'Cancel'),
-                'linkContent' => '<i class="fa fa-eye-slash"></i> ' . Yii::t('TourModule.base', ' Remove panel'),
-                'linkHref' => Url::to(["/tour/tour/hide-panel", "ajax" => 1]),
-                'confirmJS' => '$(".panel-tour").slideToggle("slow")'
-                    ], true) . "</li>";
+        'uniqueID' => 'hide-panel-button',
+        'title' => Yii::t('TourModule.base', '<strong>Remove</strong> tour panel'),
+        'message' => Yii::t('TourModule.base', 'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.'),
+        'buttonTrue' => Yii::t('TourModule.base', 'Ok'),
+        'buttonFalse' => Yii::t('TourModule.base', 'Cancel'),
+        'linkContent' => '<i class="fa fa-eye-slash"></i> ' . Yii::t('TourModule.base', ' Remove panel'),
+        'linkHref' => Url::to(["/tour/tour/hide-panel", "ajax" => 1]),
+        'confirmJS' => '$(".panel-tour").slideToggle("slow")'
+    ], true) . "</li>";
     ?>
 
     <!-- Display panel menu widget -->
@@ -57,12 +57,10 @@ use yii\helpers\Url;
     </div>
 </div>
 
-<?php if ($showWelcome) : ?>
+<?php if ($showWelcome): ?>
     <script <?= Html::nonce() ?>>
-
         $(document).on('humhub:ready', function () {
             humhub.modules.ui.modal.global.load( "<?= Url::to(['/tour/tour/welcome']) ?>");
         });
-
     </script>
 <?php endif; ?>

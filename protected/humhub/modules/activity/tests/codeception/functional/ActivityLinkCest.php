@@ -33,7 +33,7 @@ class ActivityLinkCest
         $activity = TestActivity::instance()->about(Post::findOne(1))->create();
 
         $I->amOnRoute('/activity/link', ['id' => $activity->record->id]);
-        $I->see('Account settings');
+        $I->see('Settings');
     }
 
     public function testNonViewableNotification(FunctionalTester $I)

@@ -4,7 +4,6 @@ use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\User;
 use humhub\widgets\AjaxButton;
-use humhub\widgets\LoaderWidget;
 
 /**
  * @var $module \humhub\components\Module
@@ -51,8 +50,8 @@ use humhub\widgets\LoaderWidget;
                 'label' => Yii::t('AdminModule.modules', 'Save'),
                 'ajaxOptions' => [
                     'type' => 'POST',
-                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
-                    'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
+                    'beforeSend' => new yii\web\JsExpression('humhub.require("ui.modal").footerLoader'),
+                    'success' => new yii\web\JsExpression('humhub.require("ui.modal").setContent'),
                     'url' => \yii\helpers\Url::to(['/admin/module/set-as-default', 'moduleId' => $module->id]),
                 ],
                 'htmlOptions' => ['class' => 'btn btn-primary']
@@ -61,8 +60,6 @@ use humhub\widgets\LoaderWidget;
             <button type="button" class="btn btn-primary" data-dismiss="modal">
                 <?= Yii::t('AdminModule.modules', 'Close'); ?>
             </button>
-
-            <?= LoaderWidget::widget(['id' => 'default-loader', 'cssClass' => 'loader-modal hidden']); ?>
         </div>
 
         <?php $form::end(); ?>

@@ -70,7 +70,7 @@ class ContentHiddenCheckbox extends InputWidget
             '<div class="checkbox">' .
             Html::activeCheckbox($this->model, $this->attribute, $this->options) .
             Html::activeHint($this->model, $this->attribute, $this->hintOptions) .
-            '</div';
+            '</div>';
 
     }
 
