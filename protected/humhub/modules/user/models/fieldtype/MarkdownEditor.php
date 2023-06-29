@@ -72,4 +72,3 @@ class MarkdownEditor extends BaseType
     }
 
 }
-?>

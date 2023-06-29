@@ -41,7 +41,7 @@ CardsAsset::register($this);
     </div>
     <?php endif; ?>
 
-    <?php foreach ($spaces->all() as $space) : ?>
+    <?php foreach ($spaces->with('contentContainerRecord')->all() as $space) : ?>
         <?= SpaceDirectoryCard::widget(['space' => $space]); ?>
     <?php endforeach; ?>
 </div>

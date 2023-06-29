@@ -31,6 +31,7 @@ use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
+use humhub\modules\user\services\PasswordRecoveryService;
 use humhub\modules\user\widgets\UserWall;
 use Yii;
 use yii\base\Exception;
@@ -67,7 +68,6 @@ use yii\web\IdentityInterface;
  */
 class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
 {
-
     /**
      * User Status Flags
      */
@@ -82,6 +82,12 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members
     const VISIBILITY_ALL = 2; // Visible for all (also guests)
     const VISIBILITY_HIDDEN = 3; // Invisible
+
+    /**
+     * User Markdown Editor Modes
+     */
+    const EDITOR_RICH_TEXT = 0;
+    const EDITOR_PLAIN = 1;
 
     /**
      * User Groups
@@ -323,7 +329,9 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id]);
+        return Yii::$app->runtimeCache->getOrSet(User::class . '#' . $id, function() use ($id) {
+            return static::findOne(['id' => $id]);
+        });
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
@@ -585,7 +593,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         parent::afterSave($insert, $changedAttributes);
 
         // When insert an "::STATUS_ENABLED" user or update a user from status "::STATUS_NEED_APPROVAL" to "::STATUS_ENABLED"
-        if ($this->status == User::STATUS_ENABLED &&
+        if (
+            $this->status == User::STATUS_ENABLED &&
             (
                 $insert ||
                 (isset($changedAttributes['status']) && $changedAttributes['status'] == User::STATUS_NEED_APPROVAL)
@@ -759,8 +768,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         return $module->adminCanViewAllContent && (
                 $this->isSystemAdmin()
-                || ($containerClass === Space::class && $this->can(ManageSpaces::class))
-                || ($containerClass === static::class && $this->can(ManageUsers::class))
+                || ($containerClass === Space::class && (new PermissionManager(['subject' => $this]))->can(ManageSpaces::class))
+                || ($containerClass === static::class && (new PermissionManager(['subject' => $this]))->can(ManageUsers::class))
             );
     }
 
@@ -818,7 +827,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getSpaces()
     {
-
         // TODO: SHOW ONLY REAL MEMBERSHIPS
         return $this->hasMany(Space::class, ['id' => 'space_id'])
             ->viaTable('space_membership', ['user_id' => 'id']);
@@ -1026,4 +1034,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         return $options;
     }
 
+    public function getPasswordRecoveryService(): PasswordRecoveryService
+    {
+        return new PasswordRecoveryService($this);
+    }
 }

@@ -41,6 +41,7 @@ return [
     'Horizontal rule' => '',
     'Insert horizontal rule' => '',
     'Objects' => '',
+    'Switch editor mode' => '',
     'Toggle code font' => '',
     'Toggle emphasis' => '',
     'Toggle strikethrough' => '',

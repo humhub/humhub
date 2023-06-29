@@ -111,7 +111,10 @@ class CacheSettingsForm extends Model
         /* @var $module Module */
         $module = Yii::$app->getModule('admin');
         $instance = new static();
-        $urls = array_merge($instance->getReloadableScriptsAsArray(), $module->defaultReloadableScripts);
+        $urls = $instance->getReloadableScriptsAsArray();
+        if (is_array($module->defaultReloadableScripts)) {
+            $urls = array_merge($urls, $module->defaultReloadableScripts);
+        }
         $event = new FetchReloadableScriptsEvent(['urls' => $urls]);
         $instance->trigger(static::EVENT_FETCH_RELOADABLE_SCRIPTS, $event);
         return $event->urls;

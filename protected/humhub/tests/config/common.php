@@ -21,6 +21,9 @@ return [
         'queue' => [
             'class' => 'humhub\modules\queue\driver\Instant',
         ],
+        'runtimeCache' => [
+            'class' => \yii\caching\DummyCache::class
+        ],
     ],
     'params' => [
         'installed' => true,

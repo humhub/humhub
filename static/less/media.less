@@ -152,3 +152,45 @@ audio, canvas, progress, video {
 img {
     image-orientation: from-image;
 }
+
+.has-online-status {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 10px;
+
+    .user-online-status {
+        aspect-ratio: 1 / 1;
+        width: 30%;
+        border-radius: 100%;
+        position: absolute;
+        right: -10%;
+        bottom: -10%;
+        border: 1px solid transparent;
+
+        &.user-is-online {
+            border-color: @background-color-main;
+            background-color: @success;
+        }
+
+        &.user-is-offline {
+            // Invisible but a color can be added in a custom theme
+        }
+    }
+
+    &.img-size-small {
+        margin-bottom: 5px;
+
+        .user-online-status {
+            width: 10px;
+            right: -3px;
+            bottom: -3px;
+        }
+    }
+
+    &.img-size-large .user-online-status {
+        width: 20px;
+        right: -5px;
+        bottom: -5px;
+        border-width: 2px;
+    }
+}

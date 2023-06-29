@@ -8,10 +8,13 @@
 namespace humhub\components\behaviors;
 
 use Exception;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 use ReflectionClass;
 use ReflectionException;
 use Yii;
 use yii\base\Behavior;
+use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\db\BaseActiveRecord;
 use yii\db\IntegrityException;
@@ -87,11 +90,18 @@ class PolymorphicRelation extends Behavior
     {
         if ($this->validateUnderlyingObjectType($object)) {
             $this->cached = $object;
-            if ($object instanceof \yii\db\ActiveRecord) {
-                $this->owner->setAttribute($this->classAttribute, $object->className());
+            if ($object instanceof ActiveRecord) {
+                $this->owner->setAttribute($this->classAttribute, self::getObjectModel($object));
                 $this->owner->setAttribute($this->pkAttribute, $object->getPrimaryKey());
             }
         }
+    }
+
+    public static function getObjectModel(Model $object): string
+    {
+        return $object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord
+            ? $object::getObjectModel()
+            : get_class($object);
     }
 
     /**
@@ -120,7 +130,7 @@ class PolymorphicRelation extends Behavior
             }
         }
 
-        Yii::error('Got invalid underlying object type! (' . $object->className() . ')');
+        Yii::error('Got invalid underlying object type! (' . get_class($object) . ')');
 
         return false;
     }

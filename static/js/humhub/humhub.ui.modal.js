@@ -129,6 +129,13 @@ humhub.module('ui.modal', function (module, require, $) {
     };
 
     /**
+     * Sets the loader to footer in order to inactivate the action buttons
+     */
+    Modal.prototype.footerLoader = function () {
+        loader.set(this.getFooter(), {css: {padding: '13px 0 14px'}});
+    }
+
+    /**
      * Sets the default content (a loader animation)
      * @returns {undefined}
      */
@@ -699,7 +706,7 @@ humhub.module('ui.modal', function (module, require, $) {
     var unload = function() {
         $('.modal').each(function () {
             var modal = Modal.instance(this);
-            if (modal && typeof modal.close === 'function') {
+            if (modal && typeof modal.close === 'function' && !$(this).find('.exclude-from-pjax-client').length ) {
                 modal.close();
             }
         });
@@ -756,6 +763,14 @@ humhub.module('ui.modal', function (module, require, $) {
         };
     };
 
+    const footerLoader = function () {
+        module.global.footerLoader();
+    }
+
+    const setContent = function (html) {
+        module.global.setContent(html);
+    }
+
     module.export({
         init: init,
         sortOrder: 100,
@@ -767,6 +782,8 @@ humhub.module('ui.modal', function (module, require, $) {
         load: load,
         unload: unload,
         show: show,
-        submit: submit
+        submit: submit,
+        footerLoader,
+        setContent
     });
 });

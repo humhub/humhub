@@ -117,7 +117,6 @@ return [
     'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => '',
     'Use SMTPS' => '',
     'Use X-Sendfile for File Downloads' => '',
-    'Use the default swipe to show sidebar on a mobile device' => '',
     'User Display Name' => '',
     'User Display Name Subtitle' => '',
     'User Settings' => '',

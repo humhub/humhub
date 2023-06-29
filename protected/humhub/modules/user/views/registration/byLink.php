@@ -7,7 +7,10 @@ use humhub\libs\Html;
 use humhub\modules\user\models\Invite;
 use yii\captcha\Captcha;
 
-/* @var $invite Invite */
+/**
+ * @var $invite Invite
+ * @var $showAuthClients bool
+ */
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
 ?>
@@ -22,6 +25,10 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
                 <?= Yii::t('UserModule.auth', '<strong>Account</strong> registration') ?>
             </div>
             <div class="panel-body">
+                <?php if ($showAuthClients && AuthChoice::hasClients()): ?>
+                    <?= AuthChoice::widget() ?>
+                <?php endif; ?>
+
                 <?php if (Yii::$app->session->hasFlash('error')): ?>
                     <div class="alert alert-danger" role="alert">
                         <?= Yii::$app->session->getFlash('error') ?>
