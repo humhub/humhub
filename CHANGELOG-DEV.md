@@ -16,6 +16,7 @@ HumHub Changelog
 - Fix #6189: Module settings survive deactivation in cache
 - Enh #6236: Logging: Show log entries from migrations with category migration
 - Fix #6216: Spaces icon in admin menu
+- Chg #6212: Revise email sender (always use the system name)
 - Fix #6229: Bug on saving forms: Zend OPcache API is restricted by "restrict_api"
 - Enh #6225: Removed deprecated MarkdownEditor usages
 - Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method
