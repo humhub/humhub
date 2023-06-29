@@ -7,8 +7,8 @@ return array (
   'Search' => 'Пошук',
   'Search for user, spaces and content' => '',
   'Search only in certain spaces:' => '',
-  'Spaces' => '',
+  'Spaces' => 'Спільноти',
   'Specify space' => '',
-  'Users' => '',
-  'Your search returned no matches.' => '',
+  'Users' => 'Користувачі',
+  'Your search returned no matches.' => 'Ваш пошук не дав відповідей.',
 );

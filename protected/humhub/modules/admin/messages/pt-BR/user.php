@@ -191,6 +191,7 @@ Atenciosamente, {AdminName}',
     'You can only delete empty categories!' => 'Você só pode apagar categorias vazias!',
     'You cannot delete yourself!' => 'Você não pode se deletar!',
     'never' => 'nunca',
+    'Hide online status of users' => '',
     'Invite new people' => '',
     'Members can invite external users by link' => '',
 ];

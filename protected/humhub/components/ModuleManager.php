@@ -33,65 +33,65 @@ class ModuleManager extends Component
      * @event triggered before a module is enabled
      * @since 1.3
      */
-    const EVENT_BEFORE_MODULE_ENABLE = 'beforeModuleEnabled';
+    public const EVENT_BEFORE_MODULE_ENABLE = 'beforeModuleEnabled';
 
     /**
      * @event triggered after a module is enabled
      * @since 1.3
      */
-    const EVENT_AFTER_MODULE_ENABLE = 'afterModuleEnabled';
+    public const EVENT_AFTER_MODULE_ENABLE = 'afterModuleEnabled';
 
     /**
      * @event triggered before a module is disabled
      * @since 1.3
      */
-    const EVENT_BEFORE_MODULE_DISABLE = 'beforeModuleDisabled';
+    public const EVENT_BEFORE_MODULE_DISABLE = 'beforeModuleDisabled';
 
     /**
      * @event triggered after a module is disabled
      * @since 1.3
      */
-    const EVENT_AFTER_MODULE_DISABLE = 'afterModuleDisabled';
+    public const EVENT_AFTER_MODULE_DISABLE = 'afterModuleDisabled';
 
     /**
      * @event triggered after filter modules
      * @since 1.11
      */
-    const EVENT_AFTER_FILTER_MODULES = 'afterFilterModules';
+    public const EVENT_AFTER_FILTER_MODULES = 'afterFilterModules';
 
     /**
      * Create a backup on module folder deletion
      *
      * @var boolean
      */
-    public $createBackup = true;
+    public bool $createBackup = true;
 
     /**
      * List of all modules
      * This also contains installed but not enabled modules.
      *
-     * @param array $config moduleId-class pairs
+     * @param array $modules moduleId-class pairs
      */
-    protected $modules;
+    protected array $modules = [];
 
     /**
      * List of all enabled module ids
      *
      * @var array
      */
-    protected $enabledModules = [];
+    protected array $enabledModules = [];
 
     /**
      * List of core module classes.
      *
      * @var array the core module class names
      */
-    protected $coreModules = [];
+    protected array $coreModules = [];
 
     /**
      * @var bool Prevent registration of several different modules with the same id.
      */
-    public $preventDuplicatedModules = true;
+    public bool $preventDuplicatedModules = true;
 
     /**
      * List of module paths that should be overwritten
@@ -99,7 +99,7 @@ class ModuleManager extends Component
      *
      * @var array
      */
-    public $overwriteModuleBasePath = [];
+    public array $overwriteModuleBasePath = [];
 
     /**
      * Module Manager init
@@ -434,7 +434,10 @@ class ModuleManager extends Component
         /** @var ModuleMarketplace $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
         if ($marketplaceModule !== null) {
-            if (strpos($module->getBasePath(), Yii::getAlias($marketplaceModule->modulesPath)) !== false) {
+            // Normalize paths before comparing in order to fix issues like Windows path separators `\`
+            $modulePath = FileHelper::normalizePath($module->getBasePath());
+            $aliasPath = FileHelper::normalizePath(Yii::getAlias($marketplaceModule->modulesPath));
+            if (strpos($modulePath, $aliasPath) !== false) {
                 return true;
             }
         }

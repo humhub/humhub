@@ -112,6 +112,7 @@ Kind Regards
     'Information 2' => 'Információ 2',
     'Information 3' => 'Információ 3',
     'Invisible' => 'Láthatatlan',
+    'Invite new people' => 'Hívjon meg új embereket',
     'Invite not found!' => 'A meghívás nem található!',
     'Last login' => 'Utolsó bejelentkezés',
     'Last name' => 'Vezetéknév',
@@ -123,6 +124,7 @@ Kind Regards
     'Member since' => 'Tagság kezdete',
     'Members' => 'Tagok',
     'Members can invite external users by email' => 'A tagok meghívhatnak külső felhasználókat e-mailben',
+    'Members can invite external users by link' => 'A tagok külső felhasználókat hívhatnak meg linken keresztül',
     'Message' => 'Üzenet',
     'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)' => 'A minimális érték 20 másodperc. Ha nincs beállítva, a munkamenet időtúllépés 1400 másodperc (24 perc) elteltével történik meg, a tevékenységtől függetlenül (alapértelmezett munkamenet időtúllépés) időtúllépés)',
     'New approval requests' => 'Új jóváhagyási kérelmek',
@@ -189,6 +191,5 @@ Kind Regards
     'You can only delete empty categories!' => 'Csak üres kategóriák törölhetők!',
     'You cannot delete yourself!' => 'Nem törölheted saját magad!',
     'never' => 'soha',
-    'Invite new people' => '',
-    'Members can invite external users by link' => '',
+    'Hide online status of users' => '',
 ];

@@ -79,14 +79,15 @@ class Events extends BaseObject
 
         $integrityController->showTestHeadline('Content Objects (' . Content::find()->count() . ' entries)');
         foreach (Content::find()->each() as $content) {
+            /* @var Content $content */
             if ($content->createdBy == null) {
                 if ($integrityController->showFix('Deleting content id ' . $content->id . ' of type ' . $content->object_model . ' without valid user!')) {
-                    $content->delete();
+                    $content->hardDelete();
                 }
             }
             if ($content->getPolymorphicRelation() === null) {
                 if ($integrityController->showFix('Deleting content id ' . $content->id . ' of type ' . $content->object_model . ' without valid content object!')) {
-                    $content->delete();
+                    $content->hardDelete();
                 }
             }
         }
@@ -113,8 +114,9 @@ class Events extends BaseObject
     public static function onSearchRebuild($event)
     {
         foreach (Content::find()->each() as $content) {
+            /* @var Content $content */
             $contentObject = $content->getPolymorphicRelation();
-            if ($contentObject instanceof Searchable && $content->state === Content::STATE_PUBLISHED) {
+            if ($contentObject instanceof Searchable && $content->getStateService()->isPublished()) {
                 Yii::$app->search->add($contentObject);
             }
         }
@@ -130,7 +132,7 @@ class Events extends BaseObject
         /** @var ContentActiveRecord $record */
         $record = $event->sender;
 
-        if ($record->content->state === Content::STATE_PUBLISHED) {
+        if ($record->content->getStateService()->isPublished()) {
             SearchHelper::queueUpdate($record);
         }
     }

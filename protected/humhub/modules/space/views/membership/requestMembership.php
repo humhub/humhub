@@ -5,7 +5,6 @@ use humhub\modules\space\models\forms\RequestMembershipForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\AjaxButton;
-use humhub\widgets\LoaderWidget;
 
 /**
  * @var $space Space
@@ -39,8 +38,8 @@ use humhub\widgets\LoaderWidget;
                 'label' => Yii::t('SpaceModule.base', 'Send'),
                 'ajaxOptions' => [
                     'type' => 'POST',
-                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(evt); }'),
-                    'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
+                    'beforeSend' => new yii\web\JsExpression('humhub.require("ui.modal").footerLoader'),
+                    'success' => new yii\web\JsExpression('humhub.require("ui.modal").setContent'),
                     'url' => $space->createUrl('/space/membership/request-membership-form'),
                 ],
                 'htmlOptions' => [
@@ -51,8 +50,6 @@ use humhub\widgets\LoaderWidget;
             <button type="button" class="btn btn-default" data-dismiss="modal">
                 <?= Yii::t('SpaceModule.base', 'Close'); ?>
             </button>
-
-            <?= LoaderWidget::widget(['id' => 'send-loader', 'cssClass' => 'loader-modal hidden']); ?>
         </div>
         <?php $form::end(); ?>
     </div>

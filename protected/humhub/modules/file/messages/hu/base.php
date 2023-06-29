@@ -19,4 +19,7 @@ return [
     'The uploaded image is not a squared.' => 'A feltöltött kép nem négyzet alakú.',
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Ez a feltöltési mező maximum {n,plural,=1{# fájl} other{# fájl}} feltöltését teszi lehetővé.',
     'Upload files' => 'Fájlok feltöltése',
+    'Attach a video' => '',
+    'Attach an audio message' => '',
+    'Attach an image' => '',
 ];

@@ -31,6 +31,7 @@ return [
     'Invited By' => '',
     'Members' => '',
     'Modules' => '',
+    'Only global administrators can change this value' => '',
     'Owner' => '',
     'Pending Approvals' => '',
     'Pending Invites' => '',

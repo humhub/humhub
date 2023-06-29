@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
 
 namespace humhub\modules\content\widgets\richtext;
@@ -42,9 +42,9 @@ class RichTextField extends AbstractRichTextEditor
      */
     public static function widget($config = [])
     {
-        if(!isset($config['class'])) {
+        if (!isset($config['class'])) {
             $richtextClass = Yii::$app->params['richText']['class'];
-            return call_user_func($richtextClass.'::editorWidget', $config);
+            return call_user_func($richtextClass . '::editorWidget', $config);
         }
 
         return parent::widget($config);

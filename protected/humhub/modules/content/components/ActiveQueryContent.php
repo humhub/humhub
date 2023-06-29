@@ -113,7 +113,7 @@ class ActiveQueryContent extends ActiveQuery
             $conditionUser = 'cuser.id IS NOT NULL and cuser.visibility=' . User::VISIBILITY_ALL . ' AND content.visibility=1';
             $globalCondition .= 'content.contentcontainer_id IS NULL AND content.visibility=1';
         } else {
-            $this->emulateExecution();
+            return $this->emulateExecution();
         }
 
         $this->andWhere("{$conditionSpace} OR {$conditionUser} OR {$globalCondition}");
@@ -136,7 +136,7 @@ class ActiveQueryContent extends ActiveQuery
             $this->andWhere(['IS', 'contentcontainer.pk', new \yii\db\Expression('NULL')]);
         } else {
             $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
-            $this->andWhere(['contentcontainer.pk' => $container->id, 'contentcontainer.class' => $container->className()]);
+            $this->andWhere(['contentcontainer.pk' => $container->id, 'contentcontainer.class' => get_class($container)]);
         }
 
         return $this;
@@ -218,7 +218,7 @@ class ActiveQueryContent extends ActiveQuery
         if (in_array(self::USER_RELATED_SCOPE_OWN_PROFILE, $scopes)) {
             $conditions[] = 'contentcontainer.pk=:userId AND class=:userClass';
             $params[':userId'] = $user->id;
-            $params[':userClass'] = $user->className();
+            $params[':userClass'] = User::class;
         }
 
         if (in_array(self::USER_RELATED_SCOPE_SPACES, $scopes)) {

@@ -11,4 +11,3 @@ return [
         ['class' => Sidebar::class, 'event' => Sidebar::EVENT_INIT, 'callback' => [Module::class, 'onDashboardSidebarInit']],
     ],
 ];
-?>

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\models;
 
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\Module;
 use Yii;
@@ -63,11 +64,18 @@ class AdvancedSettings extends Model
     public $hideFollowers = false;
 
     /**
+     * @var int
+     */
+    public $sortOrder;
+
+    /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
+            [['sortOrder'], 'required'],
+            [['sortOrder'], 'integer'],
             [['indexUrl', 'indexGuestUrl'], 'string'],
             [['hideMembers', 'hideActivities', 'hideAbout', 'hideFollowers'], 'boolean'],
             ['url', UrlValidator::class, 'space' => $this->space]
@@ -117,6 +125,7 @@ class AdvancedSettings extends Model
         $this->hideAbout = $settings->get('hideAbout', $defaultSettings->defaultHideAbout);
         $this->hideActivities = $settings->get('hideActivities', $defaultSettings->defaultHideActivities);
         $this->hideFollowers = $settings->get('hideFollowers', $defaultSettings->defaultHideFollowers);
+        $this->sortOrder = $this->space->sort_order;
     }
 
     /**
@@ -147,6 +156,10 @@ class AdvancedSettings extends Model
                     $this->indexGuestUrl
                 );
             }
+        }
+
+        if (Yii::$app->user->can(ManageSpaces::class)) {
+            $this->space->sort_order = $this->sortOrder;
         }
 
         $this->space->save();
