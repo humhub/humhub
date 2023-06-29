@@ -55,4 +55,5 @@ return [
     'Unarchive' => 'Archivierung aufheben',
     'e.g. example for {baseUrl}/s/example' => 'z. B. example für {baseUrl}/s/example',
     'never' => 'Nie',
+    'Only global administrators can change this value' => '',
 ];

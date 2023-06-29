@@ -225,31 +225,7 @@ class HForm extends \yii\base\Component
         }
 
         if ($model) {
-            $options = [];
-
-            if (isset($definition['id'])) {
-                $options['id'] = $definition['id'];
-            }
-
-            if (isset($definition['readonly']) && $definition['readonly']) {
-                $options['readOnly'] = true;
-                $options['disabled'] = true;
-            }
-
-            if (isset($definition['value'])) {
-                $options['value'] = $definition['value'];
-            }
-
-            if (isset($definition['prompt']) && $definition['prompt']) {
-                $options['prompt'] = $definition['prompt'];
-            }
-            if (isset($definition['label']) && $definition['label']) {
-                $options['label'] = $definition['label'];
-            }
-
-            if (isset($definition['htmlOptions']) && is_array($definition['htmlOptions'])) {
-                $options = array_merge($options, $definition['htmlOptions']);
-            }
+            $options = $this->getOptionsFromDefinition($definition);
 
             if (isset($definition['type'])) {
                 switch ($definition['type']) {
@@ -358,5 +334,34 @@ class HForm extends \yii\base\Component
         }
 
         return $output;
+    }
+
+    /**
+     * Translates definition array into options.
+     *
+     * @param array $definition Input field definition.
+     *
+     * @return array The associated array of options.
+     */
+    private function getOptionsFromDefinition($definition)
+    {
+        $options = [];
+
+        foreach (['id', 'value', 'prompt', 'label', 'rows', 'cols'] as $name) {
+            if (isset($definition[$name])) {
+                $options[$name] = $definition[$name];
+            }
+        }
+
+        if (isset($definition['readonly']) && $definition['readonly']) {
+            $options['readOnly'] = true;
+            $options['disabled'] = true;
+        }
+
+        if (isset($definition['htmlOptions']) && is_array($definition['htmlOptions'])) {
+            $options = array_merge($options, $definition['htmlOptions']);
+        }
+
+        return $options;
     }
 }

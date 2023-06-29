@@ -57,7 +57,8 @@ return [
         'sq',
         'cy',
         'sw',
-        'et'
+        'et',
+        'sr'
     ],
     // string, the name of the function for translating messages.
     // Defaults to 'Yii::t'. This is used as a mark to find the messages to be
@@ -102,12 +103,10 @@ return [
     'overwrite' => true,
     'phpFileHeader' => '',
     'phpDocBlock' => '',
-    /*
-      // Message categories to ignore
-      'ignoreCategories' => [
-      'yii',
-      ],
-     */
+    // Message categories to ignore
+    'ignoreCategories' => [
+        'yii',
+    ],
 
     /*
       // 'db' output format is for saving messages to database.

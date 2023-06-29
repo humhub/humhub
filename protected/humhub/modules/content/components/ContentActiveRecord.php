@@ -8,23 +8,28 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\components\ActiveRecord;
+use humhub\libs\BasePermission;
+use humhub\modules\activity\helpers\ActivityHelper;
+use humhub\modules\activity\models\Activity;
+use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\interfaces\SoftDeletable;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\models\Movable;
+use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
+use humhub\modules\content\widgets\WallEntry;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicLabel;
 use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\models\User;
+use humhub\widgets\Label;
 use Yii;
 use yii\base\Exception;
-use humhub\modules\content\widgets\WallEntry;
-use humhub\widgets\Label;
-use humhub\libs\BasePermission;
-use humhub\modules\content\permissions\ManageContent;
-use humhub\components\ActiveRecord;
-use humhub\modules\content\models\Content;
-use humhub\modules\content\interfaces\ContentOwner;
 use yii\base\InvalidConfigException;
+use yii\base\ModelEvent;
+use yii\db\ActiveQuery;
 
 /**
  * ContentActiveRecord is the base ActiveRecord [[\yii\db\ActiveRecord]] for Content.
@@ -63,7 +68,7 @@ use yii\base\InvalidConfigException;
  * @property User $owner
  * @author Luke
  */
-class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
+class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable, SoftDeletable
 {
     /**
      * @see StreamEntryWidget
@@ -213,7 +218,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function getContentName()
     {
-        return static::class;
+        return static::getObjectModel();
     }
 
     /**
@@ -446,10 +451,32 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
             $this->content->object_id = $this->getPrimaryKey();
         }
 
-        // Always save content
-        $this->content->save();
+        if (!$insert || $this->content->isNewRecord) {
+            // Save a Content only on each update of this Record or when the Content is creating first time.
+            // Don't update the Content twice during inserting of this Record
+            //   in order to don't touch the column `updated_at` when action is "creating" really.
+            $this->content->save();
+        }
 
         parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * This method is called after state of the Content of this Active Record has been changed
+     *
+     * @param int|null $newState
+     * @param int|null $previousState
+     */
+    public function afterStateChange(?int $newState, ?int $previousState): void
+    {
+        // Activities should be updated to same state as parent Record
+        $activitiesQuery = ActivityHelper::getActivitiesQuery($this);
+        if ($activitiesQuery instanceof ActiveQuery) {
+            foreach ($activitiesQuery->each() as $activity) {
+                /* @var Activity $activity */
+                $activity->content->getStateService()->update($newState);
+            }
+        }
     }
 
     /**
@@ -460,7 +487,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * base type as follows:
      *
      * ```
-     * public static function getObjectModel() {
+     * public static function getObjectModel(): string {
      *     return BaseType::class
      * }
      * ```
@@ -470,7 +497,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      *
      * @return string
      */
-    public static function getObjectModel()
+    public static function getObjectModel(): string
     {
         return static::class;
     }
@@ -480,17 +507,51 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * Use `hardDelete()` method to delete record immediately.
      *
      * @return bool|int
+     * @inheritdoc
      */
     public function delete()
     {
-        return $this->content->softDelete();
+        return $this->softDelete();
     }
 
     /**
-     * Deletes this content record immediately and permanently
-     *
-     * @return bool
-     * @since 1.14
+     * @inheritdoc
+     */
+    public function beforeSoftDelete(): bool
+    {
+        $event = new ModelEvent();
+        $this->trigger(self::EVENT_BEFORE_SOFT_DELETE, $event);
+
+        return $event->isValid;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function softDelete(): bool
+    {
+        if (!$this->beforeSoftDelete()) {
+            return false;
+        }
+
+        if (!$this->content->softDelete()) {
+            return false;
+        }
+
+        $this->afterSoftDelete();
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSoftDelete()
+    {
+        $this->trigger(self::EVENT_AFTER_SOFT_DELETE, new ModelEvent());
+    }
+
+    /**
+     * @inheritdoc
      */
     public function hardDelete(): bool
     {
@@ -498,13 +559,14 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     }
 
     /**
+     * This method is invoked after HARD deleting a record.
      * @inheritdoc
      */
     public function afterDelete()
     {
         $content = Content::findOne(['object_id' => $this->getPrimaryKey(), 'object_model' => static::getObjectModel()]);
         if ($content !== null) {
-            $content->delete();
+            $content->hardDelete();
         }
 
         parent::afterDelete();

@@ -11,9 +11,10 @@ namespace humhub\components;
 use humhub\components\access\ControllerAccess;
 use humhub\components\access\StrictAccess;
 use humhub\components\behaviors\AccessControl;
+use humhub\modules\user\services\IsOnlineService;
 use Yii;
-use yii\helpers\Url;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\ForbiddenHttpException;
 
 /**
@@ -68,8 +69,8 @@ class Controller extends \yii\web\Controller
     /**
      * Returns access rules for the standard access control behavior.
      *
-     * @see AccessControl
      * @return array the access permissions
+     * @see AccessControl
      */
     protected function getAccessRules()
     {
@@ -159,8 +160,8 @@ class Controller extends \yii\web\Controller
     /**
      * Throws HttpException in case the request is not an post request, otherwise returns true.
      *
-     * @throws \yii\web\HttpException
      * @return boolean returns true in case the current request is a POST
+     * @throws \yii\web\HttpException
      */
     public function forcePostRequest()
     {
@@ -220,6 +221,8 @@ class Controller extends \yii\web\Controller
 
             if (!Yii::$app->request->isAjax || Yii::$app->request->isPjax) {
                 $this->setJsViewStatus();
+                // Update "is online" status ony on full page loads
+                (new IsOnlineService(Yii::$app->user->identity))->updateStatus();
             }
 
             return true;
@@ -305,11 +308,11 @@ class Controller extends \yii\web\Controller
     /**
      * Check if action cannot be intercepted
      *
-     * @since 1.9
-     * @param string|null $actionId, NULL - to use current action
+     * @param string|null $actionId , NULL - to use current action
      * @return bool
+     * @since 1.9
      */
-    public function isNotInterceptedAction(string $actionId = null) : bool
+    public function isNotInterceptedAction(string $actionId = null): bool
     {
         if ($actionId === null) {
             if (isset($this->action->id)) {

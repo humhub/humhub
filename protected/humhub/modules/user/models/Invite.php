@@ -47,6 +47,11 @@ class Invite extends ActiveRecord
     public $captcha;
 
     /**
+     * @var bool
+     */
+    public $skipCaptchaValidation = false;
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -238,8 +243,13 @@ class Invite extends ActiveRecord
         return (!Yii::$app->settings->get('maintenanceMode') && Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration'));
     }
 
+    /**
+     * @return bool
+     */
     public function showCaptureInRegisterForm()
     {
-        return (Yii::$app->getModule('user')->settings->get('auth.showCaptureInRegisterForm'));
+        return
+            !$this->skipCaptchaValidation
+            && (Yii::$app->getModule('user')->settings->get('auth.showCaptureInRegisterForm'));
     }
 }

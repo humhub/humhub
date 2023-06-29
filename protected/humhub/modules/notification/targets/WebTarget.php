@@ -39,7 +39,7 @@ class WebTarget extends BaseTarget
     public function handle(BaseNotification $notification, User $user)
     {
         if (!$notification->record) {
-            throw new Exception('Notification record not found for BaseNotification "' . $notification->className() . '"');
+            throw new Exception('Notification record not found for BaseNotification "' . get_class($notification) . '"');
         }
 
         $notification->record->send_web_notifications = true;

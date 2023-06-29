@@ -34,6 +34,7 @@ return [
     'Paragraph' => '',
     'People' => '',
     'Rows' => '',
+    'Switch editor mode' => '',
     'Symbols' => '',
     'Title' => '',
     'Toggle code font' => '',

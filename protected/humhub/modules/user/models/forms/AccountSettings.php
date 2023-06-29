@@ -20,9 +20,10 @@ use yii\base\Model;
  */
 class AccountSettings extends Model
 {
-
     public $tags;
     public $language;
+    public $hideOnlineStatus;
+    public $markdownEditorMode;
     public $show_introduction_tour;
     public $visibility;
     public $timeZone;
@@ -35,11 +36,14 @@ class AccountSettings extends Model
     {
         return [
             [['tags', 'blockedUsers'], 'safe'],
-            [['show_introduction_tour'], 'boolean'],
+            [['hideOnlineStatus', 'show_introduction_tour'], 'boolean'],
+            [['markdownEditorMode'], 'in', 'range' => [0, 1]],
             [['timeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
             ['visibility', 'in', 'range' => array_keys($this->getVisibilityOptions()),
-                'when' => function (self $model) {return $model->isVisibilityViewable() && $model->isVisibilityEditable();}],
+                'when' => function (self $model) {
+                    return $model->isVisibilityViewable() && $model->isVisibilityEditable();
+                }],
         ];
     }
 
@@ -51,6 +55,8 @@ class AccountSettings extends Model
         return [
             'tags' => Yii::t('UserModule.account', 'Profile Tags'),
             'language' => Yii::t('UserModule.account', 'Language'),
+            'hideOnlineStatus' => Yii::t('UserModule.account', 'Hide my online status'),
+            'markdownEditorMode' => Yii::t('UserModule.account', 'Markdown Editor Mode'),
             'show_introduction_tour' => Yii::t('UserModule.account', 'Hide introduction tour panel on dashboard'),
             'timeZone' => Yii::t('UserModule.account', 'TimeZone'),
             'visibility' => Yii::t('UserModule.account', 'Profile visibility'),
@@ -103,4 +109,11 @@ class AccountSettings extends Model
         return $options;
     }
 
+    public function getEditorModeList(): array
+    {
+        return [
+            User::EDITOR_RICH_TEXT => Yii::t('UserModule.account', 'Rich Text'),
+            User::EDITOR_PLAIN => Yii::t('UserModule.account', 'Plain'),
+        ];
+    }
 }

@@ -34,6 +34,7 @@ return [
     'Don\'t receive notifications for new content' => '',
     'Hide posts on dashboard' => '',
     'Invited By' => '',
+    'Only global administrators can change this value' => '',
     'Owner' => '',
     'Pending Approvals' => '',
     'Pending Invites' => '',

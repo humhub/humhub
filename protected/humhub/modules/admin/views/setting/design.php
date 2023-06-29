@@ -64,7 +64,6 @@ $iconUrl = SiteIcon::getUrl(140);
     <br>
     <br>
     <?= $form->field($model, 'horImageScrollOnMobile')->checkbox(); ?>
-    <?= $form->field($model, 'useDefaultSwipeOnMobile')->checkbox(); ?>
 
 
     <div class="well">

@@ -8,29 +8,27 @@
 
 namespace humhub\modules\installer\controllers;
 
+use humhub\commands\MigrateController;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\libs\DynamicConfig;
 use humhub\modules\admin\widgets\PrerequisitesList;
-use humhub\modules\installer\forms\CronForm;
 use humhub\modules\installer\forms\DatabaseForm;
+use humhub\modules\installer\Module;
 use Yii;
 
 /**
- * SetupController checks prerequisites and is responsible for database
- * connection and schema setup.
+ * SetupController checks prerequisites and is responsible for database connection and schema setup.
  *
+ * @property Module $module
  * @since 0.5
  */
 class SetupController extends Controller
 {
     /**
-     * Allow guest access independently from guest mode setting.
-     *
-     * @var string
+     * @inheritdoc
      */
     public $access = ControllerAccess::class;
-
 
     const PASSWORD_PLACEHOLDER = 'n0thingToSeeHere!';
 
@@ -47,6 +45,8 @@ class SetupController extends Controller
      */
     public function actionPrerequisites()
     {
+        Yii::$app->cache->flush();
+
         return $this->render('prerequisites', ['hasError' => PrerequisitesList::hasError()]);
     }
 
@@ -120,7 +120,8 @@ class SetupController extends Controller
 
                 DynamicConfig::save($config);
 
-                return $this->redirect(['init']);
+                return $this->redirect(['migrate']);
+
             } catch (\Exception $e) {
                 $errorMessage = $e->getMessage();
             }
@@ -130,31 +131,17 @@ class SetupController extends Controller
         return $this->render('database', ['model' => $model, 'errorMessage' => $errorMessage]);
     }
 
-    /**
-     * The init action imports the database structure & initial data
-     */
-    public function actionInit()
-    {
 
+    public function actionMigrate()
+    {
         if (!$this->module->checkDBConnection()) {
-            return $this->redirect(['/installer/setup/database']);
+            return $this->redirect(['/installer/setup/database', 'dbFailed' => 1]);
         }
 
-        // Flush Caches
-        Yii::$app->cache->flush();
-
-        // Disable max execution time to avoid timeouts during database installation
-        @ini_set('max_execution_time', 0);
-
-        // Migrate Up Database
-        \humhub\commands\MigrateController::webMigrateAll();
-
-        DynamicConfig::rewrite();
-
-        $this->module->setDatabaseInstalled();
-
-        return $this->redirect(['/installer/setup/cron']);
+        $this->initDatabase();
+        return $this->redirect(['cron']);
     }
+
 
     /**
      * Crontab
@@ -171,4 +158,36 @@ class SetupController extends Controller
     {
         return $this->render('pretty-urls');
     }
+
+    public function actionFinalize()
+    {
+        if (!$this->module->checkDBConnection()) {
+            return $this->redirect(['/installer/setup/database', 'dbFailed' => 1]);
+        }
+
+        Yii::$app->cache->flush();
+
+        // Start the migration a second time here to retry any migrations aborted by timeouts.
+        // In addition, in SaaS hosting, no setup step is required and only this action is executed directly.
+        $this->initDatabase();
+
+        return $this->redirect(['/installer/config']);
+    }
+
+    private function initDatabase()
+    {
+        // Flush Caches
+        Yii::$app->cache->flush();
+
+        // Disable max execution time to avoid timeouts during database installation
+        @ini_set('max_execution_time', 0);
+
+        // Migrate Up Database
+        MigrateController::webMigrateAll();
+
+        DynamicConfig::rewrite();
+
+        $this->module->setDatabaseInstalled();
+    }
+
 }

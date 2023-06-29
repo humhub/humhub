@@ -16,6 +16,7 @@ class DraftCest
         $I->waitForText('Create as draft');
         $I->click('Create as draft');
         $I->waitForText('DRAFT', '10', '.label-container');
+        $I->see('Save as draft', '#post_submit_button');
         $I->click('#post_submit_button', '#contentFormBody');
 
         $I->wantTo('ensure draft has a draft badge.');
