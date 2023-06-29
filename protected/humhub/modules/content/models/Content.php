@@ -25,6 +25,7 @@ use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\services\ContentStateService;
+use humhub\modules\content\services\ContentTagService;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
@@ -802,6 +803,29 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
         return $this->hasMany($tagClass, ['id' => 'tag_id'])
             ->via('tagRelations')
             ->orderBy($tagClass::tableName() . '.sort_order');
+    }
+
+    /**
+     * Adds a new ContentTagRelation for this content and the given $tag instance.
+     *
+     * @param ContentTag $tag
+     * @return bool if the provided tag is part of another ContentContainer
+     * @deprecated since 1.15
+     */
+    public function addTag(ContentTag $tag)
+    {
+        return (new ContentTagService($this))->addTag($tag);
+    }
+
+    /**
+     * Adds the given ContentTag array to this content.
+     *
+     * @param $tags ContentTag[]
+     * @deprecated since 1.15
+     */
+    public function addTags($tags)
+    {
+        (new ContentTagService($this))->addTags($tags);
     }
 
     /**
