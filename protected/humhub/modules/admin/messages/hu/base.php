@@ -37,7 +37,7 @@ return array (
   'Information' => 'Információ',
   'Invalid user state: {state}' => 'Érvénytelen felhasználói állapot: {state}',
   'Invite by email' => 'Meghívás e-mailben',
-  'Invite by link' => '',
+  'Invite by link' => 'Meghívás linken keresztül',
   'Invited by' => 'Meghívta:',
   'Logging' => 'Naplózás',
   'Logs' => 'Logok',

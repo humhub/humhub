@@ -15,11 +15,10 @@ use yii\helpers\Url;
  */
 class JsWidget extends Widget
 {
-
     /**
      * Defines the select input field id
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public $id;
 
@@ -32,7 +31,7 @@ class JsWidget extends Widget
     /*
      * Used to overwrite select input field attributes. This array can be used for overwriting
      * texts, or other picker settings.
-     * 
+     *
      * @var []
      */
     public $options = [];
@@ -45,7 +44,7 @@ class JsWidget extends Widget
 
     /**
      * Auto init flag.
-     * @var mixed 
+     * @var mixed
      */
     public $init = false;
 
@@ -56,7 +55,7 @@ class JsWidget extends Widget
     public $visible = true;
 
     /**
-     * @var string html container element. 
+     * @var string html container element.
      */
     public $container = 'div';
 
@@ -70,15 +69,15 @@ class JsWidget extends Widget
     public $fadeIn = false;
 
     /**
-     * @var string html content. 
+     * @var string html content.
      */
     public $content;
-        
+
     /**
      * Default implementation of JsWidget.
      * This will render a widget html element specified by $container and $content and the given $options/$event attributes.
      * This function should be overwritten for widgets with a more complex rendering.
-     * 
+     *
      * @return string
      */
     public function run()
@@ -90,7 +89,7 @@ class JsWidget extends Widget
      * Assembles all widget attributes and data settings of this widget.
      * Those attributes/options are are normally transfered to the js client by ordinary html attributes
      * or by using data-* attributes.
-     * 
+     *
      * @return array
      */
     protected function getOptions()
@@ -121,11 +120,11 @@ class JsWidget extends Widget
             $this->options['data']['widget-action-' . $event] = $handler;
         }
 
-        if($this->jsWidget) {
+        if ($this->jsWidget) {
             $this->options['data']['ui-widget'] = $this->jsWidget;
         }
 
-        if($this->fadeIn) {
+        if ($this->fadeIn) {
             $fadeIn = $this->fadeIn === true ? 'fast' : $this->fadeIn;
             $this->options['data']['widget-fade-in'] = $fadeIn;
             $this->visible = false;
@@ -135,10 +134,10 @@ class JsWidget extends Widget
             $this->options['data']['ui-init'] = $this->init;
         }
 
-        if($this instanceof Reloadable) {
+        if ($this instanceof Reloadable) {
             $reloadUrl = $this->getReloadUrl();
 
-            if(is_array($reloadUrl)) {
+            if (is_array($reloadUrl)) {
                 $reloadUrl['reload'] = true;
             }
 
@@ -149,9 +148,9 @@ class JsWidget extends Widget
     /**
      * Returns the html id of this widget, if no id is set this function will generate
      * an id if $autoGenerate is set to true (default).
-     * 
+     *
      * Note that the id is automatically included within the <code>getOptions()<code> function.
-     * 
+     *
      * @param boolean $autoGenerate
      * @return string
      */
@@ -165,11 +164,11 @@ class JsWidget extends Widget
     }
 
     /**
-     * Returns an array of data-* attributes to configure your clientside js widget. 
+     * Returns an array of data-* attributes to configure your clientside js widget.
      * Note that this function does not require to add the data- prefix. This will be done by Yii.
-     * 
+     *
      * The data-* attributes should be inserted to the widgets root element.
-     * 
+     *
      * @return []
      */
     protected function getData()
@@ -185,5 +184,4 @@ class JsWidget extends Widget
     {
         return [];
     }
-
 }

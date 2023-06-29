@@ -123,7 +123,6 @@ return [
     'Test message' => '',
     'Url Pattern' => '',
     'Use SMTPS' => '',
-    'Use the default swipe to show sidebar on a mobile device' => '',
     'User Display Name' => '',
     'User Display Name Subtitle' => '',
     'You can find more configuration options here:' => '',

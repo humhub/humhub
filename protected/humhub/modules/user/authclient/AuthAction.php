@@ -20,7 +20,6 @@ use Yii;
  */
 class AuthAction extends \yii\authclient\AuthAction
 {
-
     /**
      * @inheritdoc
      *
@@ -29,13 +28,14 @@ class AuthAction extends \yii\authclient\AuthAction
      */
     public function auth($client,  $authUrlParams = [])
     {
-        Yii::$app->session->set('loginRememberMe', (boolean) Yii::$app->request->get('rememberMe'));
+        $rememberMe = (bool)Yii::$app->request->get('rememberMe');
+        Yii::$app->session->set('loginRememberMe', $rememberMe);
 
         if ($client instanceof StandaloneAuthClient) {
             return $client->authAction($this);
         }
 
-        return parent::auth($client);
+        return parent::auth($client, $authUrlParams);
     }
 
     /**

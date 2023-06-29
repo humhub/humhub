@@ -8,10 +8,12 @@
 
 namespace humhub\modules\admin\grid;
 
+use humhub\libs\Helpers;
+use humhub\modules\space\models\Space;
+use humhub\widgets\Label;
 use Yii;
 use yii\bootstrap\Html;
-use humhub\modules\space\models\Space;
-use humhub\libs\Helpers;
+
 /**
  * TitleColumn
  *
@@ -33,7 +35,9 @@ class SpaceTitleColumn extends SpaceBaseColumn
         }
 
         if ($this->label === null) {
-            $this->label = Yii::t('SpaceModule.base', 'Name');
+            $this->label = Space::find()->where(['not', ['sort_order' => 100]])->count() ?
+                Yii::t('SpaceModule.base', 'Name / Sort order') :
+                Yii::t('SpaceModule.base', 'Name');
         }
     }
 
@@ -46,11 +50,14 @@ class SpaceTitleColumn extends SpaceBaseColumn
 
         $badge = '';
         if ($space->status == Space::STATUS_ARCHIVED) {
-            $badge = '&nbsp;<span class="badge">'.Yii::t('SpaceModule.base', 'Archived').'</span>';
+            $badge = '&nbsp;<span class="badge">' . Yii::t('SpaceModule.base', 'Archived') . '</span>';
         }
-        
-        return '<div>' . Html::encode($space->name) . $badge . '<br> ' .
-                '<small>' . Html::encode(Helpers::trimText($space->description, 100)) . '</small></div>';
+
+        return Html::tag('div',
+            Html::encode($space->name) . $badge .
+            ($space->sort_order === 100 ? '' : ' ' . Label::defaultType($space->sort_order)) .
+            '<br> ' . '<small>' . Html::encode(Helpers::trimText($space->description, 100)) . '</small>'
+        );
     }
 
 }

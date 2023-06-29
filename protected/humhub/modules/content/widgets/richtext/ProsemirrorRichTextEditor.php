@@ -1,13 +1,12 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
 
 namespace humhub\modules\content\widgets\richtext;
-
 
 use humhub\modules\content\assets\ProseMirrorRichTextAsset;
 use humhub\modules\file\widgets\UploadInput;
@@ -34,13 +33,13 @@ class ProsemirrorRichTextEditor extends AbstractRichTextEditor
      */
     public $menuClass;
 
-    public static  $renderer = [
+    public static $renderer = [
         'class' => ProsemirrorRichText::class
     ];
 
     public function init()
     {
-        if($this->layout === static::LAYOUT_BLOCK) {
+        if ($this->layout === static::LAYOUT_BLOCK) {
             $this->exclude[] = 'resizeNav';
             $this->menuClass = static::MENU_CLASS_PLAIN;
         } else {
@@ -56,7 +55,7 @@ class ProsemirrorRichTextEditor extends AbstractRichTextEditor
     public function getAttributes()
     {
         return [
-            'class' => 'ProsemirrorEditor '.$this->menuClass
+            'class' => 'ProsemirrorEditor ' . $this->menuClass
         ];
     }
 
@@ -66,7 +65,7 @@ class ProsemirrorRichTextEditor extends AbstractRichTextEditor
     public function prepend()
     {
         return UploadInput::widget([
-            'id' => $this->getId(true).'-file-upload',
+            'id' => $this->getId(true) . '-file-upload',
             'hideInStream' => true
         ]);
     }

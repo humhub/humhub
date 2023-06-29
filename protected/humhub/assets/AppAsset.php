@@ -69,7 +69,6 @@ class AppAsset extends WebStaticAssetBundle
         NProgressStyleAsset::class,
         Select2StyleAsset::class,
         BlueimpGalleryStyleAsset::class,
-        FlatelementsStyleAsset::class,
 
 
         /**

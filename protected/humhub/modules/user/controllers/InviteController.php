@@ -26,7 +26,6 @@ use humhub\widgets\ModalClose;
  */
 class InviteController extends Controller
 {
-
     /**
      * @inheritdoc
      */

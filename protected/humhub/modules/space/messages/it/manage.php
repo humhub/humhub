@@ -55,4 +55,5 @@ return [
     'Unarchive' => 'Ripristina',
     'e.g. example for {baseUrl}/s/example' => 'per esempio per {baseUrl}/s/esempio',
     'never' => 'mai',
+    'Only global administrators can change this value' => '',
 ];

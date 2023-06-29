@@ -8,8 +8,10 @@
 
 namespace humhub\modules\user\grid;
 
+use humhub\modules\user\models\User;
 use yii\db\ActiveRecord;
 use yii\grid\DataColumn;
+use yii\helpers\ArrayHelper;
 
 /**
  * BaseColumn for user grid fields
@@ -26,19 +28,27 @@ abstract class BaseColumn extends DataColumn
     public $userAttribute = null;
 
     /**
-     * Returns the user record 
-     * 
-     * @param ActiveRecord $record
-     * @return \humhub\modules\user\models\User the user model
+     * Returns the user record
+     *
+     * @param ActiveRecord|array $record
+     * @return User the user model
      */
-    public function getUser(ActiveRecord $record)
+    public function getUser($record)
     {
-        if ($this->userAttribute === null) {
-            return $record;
-        }
-
         $attributeName = $this->userAttribute;
-        return $record->$attributeName;
-    }
 
+        if ($record instanceof ActiveRecord) {
+            if ($attributeName === null) {
+                return $record;
+            }
+
+            return $record->$attributeName;
+        } elseif(is_array($record)) {
+            $attribute = $this->userAttribute ?: 'id';
+
+            return User::findOne([$attribute => ArrayHelper::getValue($record, $attribute)]);
+        } else {
+            throw new \InvalidArgumentException;
+        }
+    }
 }

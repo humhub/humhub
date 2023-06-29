@@ -1,17 +1,17 @@
 <?php
 
+use humhub\modules\comment\models\Comment;
 use humhub\modules\content\Module;
+use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\handler\BaseFileHandler;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
+use humhub\modules\file\widgets\FilePreview;
+use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\Button;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use humhub\modules\content\widgets\richtext\RichTextField;
-use humhub\modules\file\widgets\UploadButton;
-use humhub\modules\file\widgets\FilePreview;
-use humhub\modules\comment\models\Comment;
 
 /* @var $this View */
 /* @var $objectModel string */
@@ -32,7 +32,7 @@ $placeholder = ($isNestedComment)
     : Yii::t('CommentModule.base', 'Write a new comment...');
 ?>
 
-<div id="comment_create_form_<?= $id ?>" class="comment_create" data-ui-widget="comment.Form"
+<div id="comment_create_form_<?= $id ?>" class="comment_create content_create" data-ui-widget="comment.Form"
      style="<?php if ($isHidden): ?>display:none<?php endif; ?>">
 
     <hr>
@@ -45,7 +45,7 @@ $placeholder = ($isNestedComment)
     <?= Html::hiddenInput('objectModel', $objectModel) ?>
     <?= Html::hiddenInput('objectId', $objectId) ?>
 
-    <div class="comment-create-input-group">
+    <div class="content-create-input-group">
         <?= $form->field($model, 'message')->widget(RichTextField::class, [
             'id' => 'newCommentForm_' . $id,
             'form' => $form,
@@ -59,7 +59,7 @@ $placeholder = ($isNestedComment)
             ]
         ])->label(false) ?>
 
-        <div class="comment-buttons"><?php
+        <div class="upload-buttons"><?php
             $uploadButton = UploadButton::widget([
                 'id' => 'comment_create_upload_' . $id,
                 'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
@@ -80,7 +80,7 @@ $placeholder = ($isNestedComment)
                 ->icon('send')
                 ->cssClass('btn-comment-submit')->sm()
                 ->action('submit', $submitUrl)->submit();
-        ?></div>
+            ?></div>
     </div>
 
     <div id="comment_create_upload_progress_<?= $id ?>" style="display:none;margin:10px 0px;"></div>

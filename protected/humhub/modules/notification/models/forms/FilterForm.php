@@ -87,7 +87,7 @@ class FilterForm extends Model
         foreach ($this->getNotifications() as $notification) {
             $categoryId = $notification->getCategory()->id;
             if (!in_array($categoryId, $this->categoryFilter)) {
-                $result[] = $notification->className();
+                $result[] = get_class($notification);
             }
         }
         return $result;

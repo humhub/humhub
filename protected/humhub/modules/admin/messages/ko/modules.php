@@ -14,6 +14,7 @@ return [
     'Are you sure? *ALL* module related data and files will be lost!' => '',
     'Configure' => '',
     'Deactivated' => '',
+    'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => '',
     'Deprecated' => '',
     'Enable module...' => '',
     'Featured' => '',

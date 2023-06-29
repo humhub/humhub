@@ -55,4 +55,5 @@ return [
     'Unarchive' => 'Désarchiver',
     'e.g. example for {baseUrl}/s/example' => 'p.ex. pour {baseUrl}/s/exemple',
     'never' => 'jamais',
+    'Only global administrators can change this value' => '',
 ];

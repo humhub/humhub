@@ -106,4 +106,13 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
 
         return $this;
     }
+
+    /**
+     * @return ActiveQuerySpace
+     */
+    public function defaultOrderBy(): ActiveQuerySpace
+    {
+        $this->orderBy(['space.sort_order' => SORT_ASC, 'space.name' => SORT_ASC]);
+        return $this;
+    }
 }

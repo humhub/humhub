@@ -33,6 +33,7 @@ return array (
   'Paragraph' => '段落',
   'People' => '人',
   'Rows' => '行',
+  'Switch editor mode' => 'エディターモードを切り替える',
   'Symbols' => 'シンボル',
   'Title' => 'タイトル',
   'Toggle code font' => 'コードフォントの切り替え',

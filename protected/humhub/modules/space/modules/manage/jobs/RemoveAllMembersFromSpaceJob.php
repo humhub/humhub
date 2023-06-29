@@ -8,12 +8,12 @@
 
 namespace humhub\modules\space\modules\manage\jobs;
 
-use humhub\modules\queue\ActiveJob;
+use humhub\modules\queue\LongRunningActiveJob;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use yii\db\StaleObjectException;
 
-class RemoveAllMembersFromSpaceJob extends ActiveJob
+class RemoveAllMembersFromSpaceJob extends LongRunningActiveJob
 {
     /**
      * @var Space target space
