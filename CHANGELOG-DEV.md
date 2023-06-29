@@ -1,7 +1,6 @@
 HumHub Changelog
 ================
 
-<<<<<<< HEAD
 1.15.0 (Unreleased)
 -------------------
 - Fix #6220: User Soft Delete doesn't remove third party auth references
@@ -106,4 +105,3 @@ Enh #6173: Theme variables `background-color-highlight` and `background-color-hi
 - Enh #6123: Added check for `proc_open` function in Requirement Checker 
 - Enh #6149: Added `AuthClientUserService` and `AuthClientService` instead of `AuthClientHelpers`
 - Enh #6132: Widget `AjaxButton` and `ModalConfirm` were refactored and removed
->>>>>>> 6db96437a (Enh #6132: Refactor and Remove AjaxButton)

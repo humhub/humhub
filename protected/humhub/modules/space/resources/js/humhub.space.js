@@ -65,7 +65,6 @@ humhub.module('space', function (module, require, $) {
         }
     };
 
-
     var init = function() {
         if(!module.isSpacePage()) {
             module.options = undefined;
