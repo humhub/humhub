@@ -8,6 +8,8 @@
 
 namespace humhub\modules\ui\form\widgets;
 
+use humhub\libs\Html;
+
 /**
  * A HumHub enhanced version of [[\yii\bootstrap\ActiveField]].
  *
@@ -79,5 +81,17 @@ class ActiveField extends \yii\bootstrap\ActiveField
         }
 
         return parent::end();
+    }
+
+    /**
+     * Override drop-down list to enable plugin Select2 with
+     *     searchable feature if items >= $options['minimumResultsForSearch'],
+     *     -1 - to never display the search box,
+     *      0 - always display the search box.
+     * @inheritdoc
+     */
+    public function dropDownList($items, $options = [])
+    {
+        return parent::dropDownList($items, Html::getDropDownListOptions($options));
     }
 }

@@ -8,13 +8,14 @@
 
 namespace humhub\libs;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\space\models\Space;
 use humhub\modules\ui\icon\widgets\Icon;
+use humhub\modules\user\models\User;
 use humhub\modules\web\security\helpers\Security;
 use Yii;
 use yii\base\InvalidArgumentException;
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\user\models\User;
-use humhub\modules\space\models\Space;
+use yii\helpers\ArrayHelper;
 
 /**
  * HTML Helpers
@@ -224,6 +225,51 @@ class Html extends \yii\bootstrap\Html
     public static function endContainer()
     {
         return static::endTag('div');
+    }
+
+    public static function getDropDownListOptions(array $options = []): array
+    {
+        if (isset($options['minimumResultsForSearch'])) {
+            $minimumResultsForSearch = (int) $options['minimumResultsForSearch'];
+            unset($options['minimumResultsForSearch']);
+        } else {
+            $minimumResultsForSearch = 5;
+        }
+
+        if ($minimumResultsForSearch >= 0 && isset($options['prompt'])) {
+            // Don't consider an empty option like "Please select:" as real option for searching
+            $minimumResultsForSearch++;
+        }
+
+        return ArrayHelper::merge([
+            'data-ui-select2' => true,
+            'data-search-input-placeholder' => Yii::t('base', 'Search...'),
+            'data-minimum-results-for-search' => $minimumResultsForSearch,
+        ], $options);
+    }
+
+    /**
+     * Override Active drop-down list to enable plugin Select2 with
+     *     searchable feature if items >= $options['minimumResultsForSearch'],
+     *     -1 - to never display the search box,
+     *      0 - always display the search box.
+     * @inheritdoc
+     */
+    public static function activeDropDownList($model, $attribute, $items, $options = [])
+    {
+        return parent::activeDropDownList($model, $attribute, $items, self::getDropDownListOptions($options));
+    }
+
+    /**
+     * Override drop-down list to enable plugin Select2 with
+     *     searchable feature if items >= $options['minimumResultsForSearch'],
+     *     -1 - to never display the search box,
+     *      0 - always display the search box.
+     * @inheritdoc
+     */
+    public static function dropDownList($name, $selection = null, $items = [], $options = [])
+    {
+        return parent::dropDownList($name, $selection, $items, self::getDropDownListOptions($options));
     }
 
 }
