@@ -60,3 +60,4 @@ HumHub Changelog
 - Enh #5713: Disabling modules will be done in a background job
 - Enh #6400: Enable nonce in config web header
 - Enh #6407: FileHandlerButtonDropdown - Possibility to have a custom CSS class
+- Enh #6079: Migrated Content Tag Logic into `ContentTagService` 
