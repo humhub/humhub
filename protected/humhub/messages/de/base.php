@@ -48,7 +48,7 @@ return array (
   'Logout' => 'Ausloggen',
   'Menu' => 'Menü',
   'Module is not enabled on this content container!' => 'Dieses Modul ist in diesem Content Container nicht aktiviert!',
-  'My Profile' => '',
+  'My Profile' => 'Mein Profil',
   'New profile image' => 'Neues Profilbild',
   'Next' => 'Weiter',
   'No error information given.' => 'Keine Fehlerbeschreibung verfügbar.',

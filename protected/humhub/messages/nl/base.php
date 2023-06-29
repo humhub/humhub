@@ -48,7 +48,7 @@ return array (
   'Logout' => 'Uitloggen',
   'Menu' => 'Menu',
   'Module is not enabled on this content container!' => 'Module is niet op deze inhoud container ingeschakeld!',
-  'My Profile' => '',
+  'My Profile' => 'Mijn profiel',
   'New profile image' => 'Nieuwe profielfoto',
   'Next' => 'Volgende',
   'No error information given.' => 'Geen fout informatie beschikbaar.',
