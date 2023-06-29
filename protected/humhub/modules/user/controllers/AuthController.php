@@ -238,6 +238,35 @@ class AuthController extends Controller
 
 
     /**
+     * Do log in user
+     *
+     * @param User $user
+     * @param BaseClient $authClient
+     * @param array $redirectUrl
+     * @return array
+     */
+    private function doLogin($user, $authClient, $redirectUrl)
+    {          
+        $duration = 0;
+
+        if (
+            ($authClient instanceof BaseFormAuth && $authClient->login->rememberMe) ||
+            !empty(Yii::$app->session->get('loginRememberMe'))
+        ) {
+            $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
+        }
+
+        (new AuthClientService($authClient))->updateUser($user);
+
+        if ($success = Yii::$app->user->login($user, $duration)) {
+            Yii::$app->user->setCurrentAuthClient($authClient);
+            $redirectUrl = Yii::$app->user->returnUrl;
+        }
+
+        return [$success, $redirectUrl];
+    }
+
+    /**
      * Login user
      *
      * @param User $user
@@ -251,19 +280,7 @@ class AuthController extends Controller
         $this->trigger(static::EVENT_BEFORE_CHECKING_USER_STATUS, new UserEvent(['user' => $user]));
 
         if ($user->status == User::STATUS_ENABLED) {
-            $duration = 0;
-            if (
-                ($authClient instanceof BaseFormAuth && $authClient->login->rememberMe) ||
-                !empty(Yii::$app->session->get('loginRememberMe'))
-            ) {
-                $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
-            }
-            (new AuthClientService($authClient))->updateUser($user);
-
-            if ($success = Yii::$app->user->login($user, $duration)) {
-                Yii::$app->user->setCurrentAuthClient($authClient);
-                $redirectUrl = Yii::$app->user->returnUrl;
-            }
+            [$success, $redirectUrl] = $this->doLogin($user, $authClient, $redirectUrl);
         } elseif ($user->status == User::STATUS_DISABLED) {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account is disabled!'));
         } elseif ($user->status == User::STATUS_NEED_APPROVAL) {

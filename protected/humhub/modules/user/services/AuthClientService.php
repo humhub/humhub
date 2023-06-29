@@ -65,8 +65,8 @@ class AuthClientService
      * Updates (or creates) a user in HumHub using AuthClients Attributes
      * This method will be called after login or by cron sync.
      *
-     * @param User $user
-     * @return boolean succeed
+     * @param User|null $user
+     * @return bool succeed
      */
     public function updateUser(User $user = null): bool
     {
@@ -81,6 +81,7 @@ class AuthClientService
 
         if ($this->authClient instanceof SyncAttributes) {
             $attributes = $this->authClient->getUserAttributes();
+
             foreach ($this->authClient->getSyncAttributes() as $attributeName) {
                 if (isset($attributes[$attributeName])) {
                     if ($user->hasAttribute($attributeName) && !in_array($attributeName, ['id', 'guid', 'status', 'contentcontainer_id', 'auth_mode'])) {
@@ -105,6 +106,7 @@ class AuthClientService
             if (count($user->profile->getDirtyAttributes()) !== 0 && !$user->profile->save()) {
                 Yii::warning('Could not update user profile (' . $user->id . '). Error: '
                     . VarDumper::dumpAsString($user->profile->getErrors()), 'user');
+
                 return false;
             }
         }
