@@ -4,21 +4,22 @@
  * @license https://www.humhub.com/licences
  * @since 1.8
  */
-humhub.module('ui.richtext.prosemirror', function(module, require, $) {
 
-    var object = require('util').object;
-    var client = require('client');
-    var Widget = require('ui.widget').Widget;
-    var additions = require('ui.additions');
+humhub.module('ui.richtext.prosemirror', function (module, require, $) {
+    const object = require('util').object;
+    const client = require('client');
+    const Widget = require('ui.widget').Widget;
+    const additions = require('ui.additions');
+    const event = require('event');
 
-    var MarkdownEditor = prosemirror.MarkdownEditor;
-    var MentionProvider = prosemirror.MentionProvider;
+    const MarkdownEditor = prosemirror.MarkdownEditor;
+    const MentionProvider = prosemirror.MentionProvider;
 
-    var RichTextEditor = Widget.extend();
+    const RichTextEditor = Widget.extend();
 
     RichTextEditor.component = 'humhub-ui-richtexteditor';
 
-    RichTextEditor.prototype.getDefaultOptions = function() {
+    RichTextEditor.prototype.getDefaultOptions = function () {
         return {
             attributes:  {
                 'class': 'atwho-input form-control humhub-ui-richtext',
@@ -28,61 +29,65 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
                 provider: new HumHubMentionProvider(module.config.mention)
             },
             link: {
-              validate: module.config.validate
+                validate: module.config.validate
             },
             emoji: module.config.emoji,
             oembed: module.config.oembed,
-            translate: function(key) {
+            markdownEditorMode: module.config.markdownEditorMode,
+            translate: function (key) {
                 return module.text(key);
             }
         };
     };
 
-    RichTextEditor.prototype.init = function() {
-        if(this.options.placeholder) {
+    RichTextEditor.prototype.init = function () {
+        if (this.options.placeholder) {
             this.options.placeholder = {
                 text: this.options.placeholder,
                 'class' : 'placeholder atwho-placeholder'
             };
         }
 
-        if(this.options.disabled) {
+        if (this.options.disabled) {
             setTimeout($.proxy(this.disable, this), 50);
         }
 
-        //var options = $.extend({}, this.options, {exclude: ['blockquote', 'bullet_list', 'strong', 'code', 'code_block', 'em', 'image', 'list_item', 'ordered_list', 'heading', 'link', 'clipboard']});
+        // const options = $.extend({}, this.options, {exclude: ['blockquote', 'bullet_list', 'strong', 'code', 'code_block', 'em', 'image', 'list_item', 'ordered_list', 'heading', 'link', 'clipboard']});
 
         this.editor = new MarkdownEditor(this.$, this.options);
         this.editor.init(this.getInitValue());
 
-        if(this.options.focus) {
+        if (this.options.focus) {
             this.editor.view.focus();
         }
 
-        var that = this;
-        this.$.on('focusout', function() {
+        const that = this;
+        this.$.on('focusout', function () {
             that.getInput().val(that.editor.serialize()).trigger('blur');
-        }).on('clear', function() {
+        }).on('clear', function () {
             that.editor.clear();
-        }).on('focus', function() {
+        }).on('focus', function () {
             that.focus();
         });
 
-        this.$.find('.humhub-ui-richtext').on('focus', function() {
+        this.$.find('.humhub-ui-richtext').on('focus', function () {
             that.focus();
             that.getInput().val(that.editor.serialize()).trigger('blur');
         })
 
         if (this.options.backupInterval) {
-            setInterval(function () {
-                that.backup();
-            }, this.options.backupInterval * 1000);
+            setInterval(() => this.backup(), this.options.backupInterval * 1000);
+            event.on('humhub:content:afterSubmit', () => this.resetBackup());
+        }
+
+        if (this.options.markdownEditorMode) {
+            this.editor.showSourceView();
         }
     };
 
-    RichTextEditor.prototype.getInitValue = function() {
-        var inputId = this.getInput().attr('id');
-        var backup = this.getBackup();
+    RichTextEditor.prototype.getInitValue = function () {
+        const inputId = this.getInput().attr('id');
+        const backup = this.getBackup();
 
         if (typeof backup[inputId] === 'string' && backup[inputId] !== '') {
             return backup[inputId];
@@ -91,8 +96,8 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
         return this.$.find('[data-ui-richtext]').text();
     }
 
-    RichTextEditor.prototype.getBackup = function() {
-        var backup = sessionStorage.getItem(this.options.backupCookieKey);
+    RichTextEditor.prototype.getBackup = function () {
+        const backup = sessionStorage.getItem(this.options.backupCookieKey);
 
         if (typeof backup === 'string' && backup !== '') {
             return JSON.parse(backup);
@@ -101,10 +106,13 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
         return {};
     }
 
-    RichTextEditor.prototype.backup = function() {
-        var inputId = this.getInput().attr('id');
-        var currentValue = this.editor.serialize();
-        var isBackuped = typeof this.backupedValue !== 'undefined';
+    RichTextEditor.prototype.backup = function (currentValue) {
+        const inputId = this.getInput().attr('id');
+        const isBackuped = typeof this.backupedValue !== 'undefined';
+
+        if (typeof currentValue === 'undefined') {
+            currentValue = this.editor.serialize();
+        }
 
         if (!isBackuped && currentValue === '') {
             // Don't back up first empty value
@@ -118,7 +126,7 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
 
         this.backupedValue = currentValue;
 
-        var backup = this.getBackup();
+        const backup = this.getBackup();
         if (this.backupedValue === '' && typeof backup[inputId] !== 'undefined') {
             delete backup[inputId];
         } else {
@@ -132,11 +140,15 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
         }
     };
 
-    RichTextEditor.prototype.focus = function() {
+    RichTextEditor.prototype.resetBackup = function () {
+        this.backup('');
+    }
+
+    RichTextEditor.prototype.focus = function () {
         this.editor.view.focus();
     };
 
-    RichTextEditor.prototype.disable = function(tooltip) {
+    RichTextEditor.prototype.disable = function (tooltip) {
         tooltip = tooltip || this.options.disabledText;
         $(this.editor.view.dom).removeAttr('contenteditable').attr({
             disabled: 'disabled',
@@ -146,18 +158,17 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
         });
     };
 
-    RichTextEditor.prototype.getInput = function() {
-        return $('#'+this.$.attr('id')+'_input');
-
+    RichTextEditor.prototype.getInput = function () {
+        return $('#' + this.$.attr('id') + '_input');
     };
 
-    var RichText = Widget.extend();
+    const RichText = Widget.extend();
 
     RichText.component = 'humhub-ui-richtext';
 
-    RichText.prototype.init = function() {
+    RichText.prototype.init = function () {
         // If in edit mode we do not actually render, we just hold the content
-        if(!this.options.edit) {
+        if (!this.options.edit) {
             this.editor = new MarkdownEditor(this.$, this.options);
             this.$.html(this.editor.render());
             additions.applyTo(this.$, {filter: ['highlightCode']});
@@ -170,29 +181,29 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
         document.execCommand('enableInlineTableEditing', false, 'false');
     };
 
-    HumHubMentionProvider = function(options) {
+    HumHubMentionProvider = function (options) {
         MentionProvider.call(this, options);
     };
 
     object.inherits(HumHubMentionProvider, MentionProvider);
 
-    HumHubMentionProvider.prototype.find = function(query, node) {
-        if(this.xhr) {
+    HumHubMentionProvider.prototype.find = function (query, node) {
+        if (this.xhr) {
             this.xhr.abort();
         }
 
-        var that = this;
-        var $editor = Widget.closest(node);
+        const that = this;
+        const $editor = Widget.closest(node);
 
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             client.get($editor.options.mentioningUrl, {
                 data: {keyword: query},
-                beforeSend: function(jqXHR) {
+                beforeSend: function (jqXHR) {
                     that.xhr = jqXHR;
                 }
-            }).then(function(response) {
+            }).then(function (response) {
                 resolve(response.data);
-            }).catch(function(err) {
+            }).catch(function (err) {
                 reject(reject)
             });
         });
@@ -204,16 +215,16 @@ humhub.module('ui.richtext.prosemirror', function(module, require, $) {
      * @param $containerLink
      * @returns {string}
      */
-    var buildMentioning = function($containerLink) {
-        var username = $containerLink.text();
-        var guid = $containerLink.data('guid');
-        var url = $containerLink.attr('href');
-        return '['+username+'](mention:'+guid+' "'+url+'")';
+    const buildMentioning = function ($containerLink) {
+        const username = $containerLink.text();
+        const guid = $containerLink.data('guid');
+        const url = $containerLink.attr('href');
+        return '[' + username + '](mention:' + guid + ' "' + url + '")';
     };
 
     module.export({
         initOnPjaxLoad: true,
-        unload: function(pjax) {
+        unload: function (pjax) {
             $('.humhub-richtext-provider').remove();
             $('.ProseMirror-prompt').remove();
         },

@@ -13,6 +13,7 @@ use humhub\components\ActiveRecord;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\Module;
+use humhub\widgets\Button;
 use Yii;
 use yii\helpers\Url;
 
@@ -39,9 +40,16 @@ class Invite extends ActiveRecord
 
     const SOURCE_SELF = 'self';
     const SOURCE_INVITE = 'invite';
-    const TOKEN_LENGTH = 12;
+    const SOURCE_INVITE_BY_LINK = 'invite_by_link';
+    const EMAIL_TOKEN_LENGTH = 12;
+    const LINK_TOKEN_LENGTH = 14; // Should be different that EMAIL_TOKEN_LENGTH
 
     public $captcha;
+
+    /**
+     * @var bool
+     */
+    public $skipCaptchaValidation = false;
 
     /**
      * @inheritdoc
@@ -66,7 +74,9 @@ class Invite extends ActiveRecord
             [['email'], 'required'],
             [['email'], 'unique'],
             [['email'], 'email'],
-            [['email'], 'unique', 'targetClass' => User::class, 'message' => Yii::t('UserModule.base', 'E-Mail is already in use! - Try forgot password.')],
+            [['email'], 'unique', 'targetClass' => User::class, 'message' => ($this->source === self::SOURCE_INVITE_BY_LINK ?
+                Yii::t('UserModule.base', 'E-Mail is already in use! Try to sign in.') :
+                Yii::t('UserModule.base', 'E-Mail is already in use! - Try forgot password.'))],
             [['captcha'], 'captcha', 'captchaAction' => 'user/auth/captcha', 'on' => static::SOURCE_INVITE],
         ];
     }
@@ -105,7 +115,7 @@ class Invite extends ActiveRecord
     public function beforeSave($insert)
     {
         if ($insert && $this->token == '') {
-            $this->token = Yii::$app->security->generateRandomString(self::TOKEN_LENGTH);
+            $this->token = Yii::$app->security->generateRandomString(self::EMAIL_TOKEN_LENGTH);
         }
 
         return parent::beforeSave($insert);
@@ -146,7 +156,7 @@ class Invite extends ActiveRecord
         $registrationUrl = Url::to(['/user/registration', 'token' => $this->token], true);
 
         // User requested registration link by its self
-        if ($this->source == self::SOURCE_SELF) {
+        if ($this->source === self::SOURCE_SELF || $this->source === self::SOURCE_INVITE_BY_LINK) {
             $mail = Yii::$app->mailer->compose([
                 'html' => '@humhub/modules/user/views/mails/UserInviteSelf',
                 'text' => '@humhub/modules/user/views/mails/plaintext/UserInviteSelf'
@@ -233,8 +243,13 @@ class Invite extends ActiveRecord
         return (!Yii::$app->settings->get('maintenanceMode') && Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration'));
     }
 
+    /**
+     * @return bool
+     */
     public function showCaptureInRegisterForm()
     {
-        return (Yii::$app->getModule('user')->settings->get('auth.showCaptureInRegisterForm'));
+        return
+            !$this->skipCaptchaValidation
+            && (Yii::$app->getModule('user')->settings->get('auth.showCaptureInRegisterForm'));
     }
 }

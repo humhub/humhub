@@ -3,6 +3,9 @@
 return [
     '<strong>Open</strong> file' => '',
     '<strong>Upload</strong> error' => '',
+    'Attach a video' => '',
+    'Attach an audio message' => '',
+    'Attach an image' => '',
     'Close' => '',
     'Could not find requested file variant!' => '',
     'Could not find requested file!' => '',

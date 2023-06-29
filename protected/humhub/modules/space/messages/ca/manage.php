@@ -54,7 +54,6 @@ return [
     'Unarchive' => 'Treu-la de l\'arxiu',
     'e.g. example for {baseUrl}/s/example' => 'exemple per {baseUrl}/s/example',
     'never' => 'mai',
-    'the default start page of this space for members' => 'la pàgina d\'inici predeterminada d\'aquest espai per als membres',
-    'the default start page of this space for visitors' => 'la pàgina d\'inici predeterminada d\'aquest espai per als visitants',
+    'Only global administrators can change this value' => '',
     'The URL has already been taken.' => '',
 ];

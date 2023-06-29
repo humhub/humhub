@@ -41,6 +41,7 @@ return [
     'Currently there are no modules available for this space!' => '',
     'Don\'t receive notifications for new content' => '',
     'Hide posts on dashboard' => '',
+    'Only global administrators can change this value' => '',
     'Permissions are assigned to different user-roles. To edit a permission, select the user-role you want to edit and change the drop-down value of the given permission.' => '',
     'Please type the name of the space to proceed.' => '',
     'Receive Notifications for new content' => '',
@@ -55,6 +56,4 @@ return [
     'Unarchive' => '',
     'e.g. example for {baseUrl}/s/example' => '',
     'never' => '',
-    'the default start page of this space for members' => '',
-    'the default start page of this space for visitors' => '',
 ];

@@ -74,7 +74,6 @@ return [
     'Select Groups' => 'Označit skupiny',
     'Send & decline' => 'Odmítnout',
     'Send & save' => 'Poslat a uložit',
-    'Send invite' => 'Poslat pozvánku',
     'Settings' => 'Nastavení',
     'Subject' => 'Předmět',
     'The following list contains all registered users awaiting an approval.' => 'Seznam obsahující všechny registrované uživatele čekající na schválení.',
@@ -147,6 +146,7 @@ Kind Regards
 {AdminName}
 
 ' => '',
+    'Hide online status of users' => '',
     'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => '',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => '',
     'Impersonate' => '',
@@ -155,10 +155,12 @@ Kind Regards
     'Information 2' => '',
     'Information 3' => '',
     'Invisible' => '',
+    'Invite new people' => '',
     'Invite not found!' => '',
     'List pending registrations' => '',
     'Make the group selectable at registration.' => '',
     'Member since' => '',
+    'Members can invite external users by link' => '',
     'No users were selected.' => '',
     'None' => '',
     'Not visible' => '',

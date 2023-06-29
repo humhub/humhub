@@ -54,7 +54,6 @@ return [
     'Unarchive' => 'Återställ',
     'e.g. example for {baseUrl}/s/example' => 't.ex. exempel för {baseUrl}/s/example',
     'never' => 'aldrig',
-    'the default start page of this space for members' => 'Startsida som standard för det här forumets medlemmar',
-    'the default start page of this space for visitors' => 'Startsida som standard för det här forumets besökare',
+    'Only global administrators can change this value' => '',
     'The URL has already been taken.' => '',
 ];

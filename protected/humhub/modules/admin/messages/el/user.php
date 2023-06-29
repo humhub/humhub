@@ -112,7 +112,6 @@ return [
     'Send & save' => 'Αποστολή &amp; αποθήκευση',
     'Send invitation email' => 'Αποστολή πρόσκλησης ηλ. ταχυδρομείου',
     'Send invitation email again?' => 'Ξαναστείλε μήνυμα πρόσκλησης;',
-    'Send invite' => 'Αποστολή πρόσκλησης',
     'Send notifications to users when added to or removed from the group.' => 'Αποστολή ενημέρωσης στους χρήστες όταν προστιθενται η αφαιρούνται απο το γκρουπ',
     'Settings' => 'Ρυθμίσεις',
     'Show group selection at registration' => 'Εμφάνιση επιλογής ομάδας στην εγγραφή',
@@ -168,12 +167,15 @@ Kind Regards
 {AdminName}
 
 ' => '',
+    'Hide online status of users' => '',
     'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => '',
     'Information 1' => '',
     'Information 2' => '',
     'Information 3' => '',
     'Invisible' => '',
+    'Invite new people' => '',
     'Make the group selectable at registration.' => '',
+    'Members can invite external users by link' => '',
     'No users were selected.' => '',
     'Not visible' => '',
     'Prioritised User Group' => '',

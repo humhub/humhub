@@ -24,7 +24,7 @@ if (!defined('PKCS7_DETACHED')) {
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.14.0-beta.1',
+    'version' => '1.15.0-dev',
     'minRecommendedPhpVersion' => '7.4',
     'minSupportedPhpVersion' => '7.4',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
@@ -54,16 +54,24 @@ $config = [
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
-                [
+                \yii\log\FileTarget::class => [
                     'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
-                    'except' => ['yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403', 'yii\web\HttpException:404', 'yii\web\HttpException:405'],
+                    'except' => [
+                        'yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403',
+                        'yii\web\HttpException:404', 'yii\web\HttpException:405',
+                        'yii\web\User::getIdentityAndDurationFromCookie', 'yii\web\User::renewAuthStatus'
+                    ],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
-                [
+                \yii\log\DbTarget::class =>[
                     'class' => \yii\log\DbTarget::class,
                     'levels' => ['error', 'warning'],
-                    'except' => ['yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403', 'yii\web\HttpException:404', 'yii\web\HttpException:405'],
+                    'except' => [
+                        'yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403',
+                        'yii\web\HttpException:404', 'yii\web\HttpException:405',
+                        'yii\web\User::getIdentityAndDurationFromCookie', 'yii\web\User::renewAuthStatus'
+                    ],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
             ],
@@ -101,6 +109,10 @@ $config = [
         ],
         'cache' => [
             'class' => \yii\caching\DummyCache::class,
+        ],
+        'runtimeCache' => [
+            'class' => \yii\caching\ArrayCache::class,
+            'serializer' => false,
         ],
         'mailer' => [
             'class' => \humhub\components\mail\Mailer::class,
@@ -212,6 +224,7 @@ $config = [
             'sq' => 'Shqip',
             'cy' => 'Cymraeg',
             'sw' => 'Kiswahili',
+            'sr' => 'Сербисцх',
         ],
         'ldap' => [
             // LDAP date field formats

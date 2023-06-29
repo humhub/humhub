@@ -1,9 +1,5 @@
 <?php
-/**
- * Message translations.
- *
- * @author Yaro (https://yaro.info) glodov@gmail.com
- */
+
 return [
     '-' => '-',
     '<strong>Create</strong> Space' => '<strong>Створити</strong> нову спільноту',
@@ -13,14 +9,18 @@ return [
     '<strong>Space</strong> Modules' => '<strong>Спільнота</strong> модулі',
     '<strong>Space</strong> settings' => '<strong>Спільнота</strong> налаштування',
     'Actions' => 'Дії',
+    'Activate' => 'Активувати',
     'Add <strong>Modules</strong>' => 'Додати <strong>Модулі</strong>',
     'Advanced access settings' => 'Розширені налаштування доступу',
     'Archive' => 'Архів',
+    'Are you sure you want to remove this member.' => 'Ви впевнені, що хочете видалити цього члена спільноти?',
     'Are you sure, that you want to delete this space? All published content will be removed!' => 'Ви впевнені, що хочете видалити цю спільноту? Всі опубліковані матеріали будуть видалені!',
     'As owner of this space you can transfer this role to another administrator in space.' => 'Ви, як власник, цієї спільноти можете передавати цю роль іншому адміністратору спільноти.',
     'Cancel Membership' => 'Скасувати Членство',
     'Choose if new content should be public or private by default' => 'Оберіть тип нового вмісту: публічний чи приватний за замовченням',
     'Choose the kind of membership you want to provide for this workspace.' => 'Виберіть тип членства який Ви хочете надавати в цій спільноті.',
+    'Choose the modules you want to use for this Space. If you are undecided, you can also activate them later on via the Space settings.' => 'Виберіть модулі які Ви хочете використовувати у спільноті. Якщо Ви не впевнені, то можете активувати їх пізніше в налаштуваннях Спільноти',
+    'Choose the modules you want to use for this Space. In order for the modules to be available to you here, they must have been previously installed by administrators of the network using the admin panel. If you cannot deactivate individual modules, it is because they have been set as the default for the entire network.' => 'Виберіть модулі які Ви хочете використовувати у спільності. Для того щоб вони були доступні тут, адміністратор має встановити їх в панелі управління. Якщо Ви не можете виключити модуль, це означає, що він встановлений для всієї мережі адміністратором.',
     'Choose the security level for this workspace to define the visibleness.' => 'Виберіть рівень безпеки цієї спільноти визначаючи видимість.',
     'Currently there are no modules available for this space!' => 'Зараз немає доступним модулів в цій спільноті!',
     'Delete' => 'Видалити',
@@ -51,10 +51,9 @@ return [
     'Unarchive' => 'Розпакувати',
     'e.g. example for {baseUrl}/s/example' => 'наприклад, для {baseUrl}/s/example',
     'never' => 'ніколи',
-    'the default start page of this space for members' => 'сторінка за замовченням цієї спільноти для членів',
-    'the default start page of this space for visitors' => 'сторінка за замовченням цієї спільноти для гостей',
-    'Activate' => 'Активувати',
-    'Are you sure you want to remove this member.' => 'Ви впевнені, що хочете видалити цього члена спільноти?',
-    'Choose the modules you want to use for this Space. If you are undecided, you can also activate them later on via the Space settings.' => 'Виберіть модулі які Ви хочете використовувати у спільноті. Якщо Ви не впевнені, то можете активувати їх пізніше в налаштуваннях Спільноти',
-    'Choose the modules you want to use for this Space. In order for the modules to be available to you here, they must have been previously installed by administrators of the network using the admin panel. If you cannot deactivate individual modules, it is because they have been set as the default for the entire network.' => 'Виберіть модулі які Ви хочете використовувати у спільності. Для того щоб вони були доступні тут, адміністратор має встановити їх в панелі управління. Якщо Ви не можете виключити модуль, це означає, що він встановлений для всієї мережі адміністратором.',
+    'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',
+    'Only global administrators can change this value' => '',
+    'Removal of members queued' => '',
+    'Remove all members' => '',
+    'The URL has already been taken.' => '',
 ];

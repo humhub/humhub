@@ -21,7 +21,6 @@ use humhub\modules\file\converter\TextConverter;
  */
 class FilePreview extends JsWidget
 {
-
     /**
      * @inheritdoc
      */
@@ -113,7 +112,7 @@ class FilePreview extends JsWidget
 
         foreach ($files as $file) {
             if ($file) {
-                if(is_string($file)) {
+                if (is_string($file)) {
                     $file = File::findOne(['guid' => $file]);
                 }
                 $result[] = ArrayHelper::merge(FileHelper::getFileInfos($file), ['highlight' => $this->isHighlighed($file)]);
@@ -133,11 +132,11 @@ class FilePreview extends JsWidget
             return $this->items;
         }
 
-        if(!($this->model instanceof ActiveRecord) && $this->attribute) {
+        if (!($this->model instanceof ActiveRecord) && $this->attribute) {
             return Html::getAttributeValue($this->model, $this->attribute);
         }
 
-        if(!($this->model instanceof ActiveRecord)) {
+        if (!($this->model instanceof ActiveRecord)) {
             return [];
         }
 
@@ -159,8 +158,10 @@ class FilePreview extends JsWidget
         if (Yii::$app->controller instanceof SearchController) {
             if (SearchController::$keyword !== null) {
                 $converter = new TextConverter();
-                if ($converter->applyFile($file) &&
-                        SearchHelper::matchQuery(SearchController::$keyword, $converter->getContentAsText())) {
+                if (
+                    $converter->applyFile($file) &&
+                    SearchHelper::matchQuery(SearchController::$keyword, $converter->getContentAsText())
+                ) {
                     return true;
                 }
             }
@@ -168,5 +169,4 @@ class FilePreview extends JsWidget
 
         return false;
     }
-
 }

@@ -100,7 +100,6 @@ return [
     'Send & save' => 'حفظ و إرسال',
     'Send invitation email' => 'إرسال بريد إلكتروني للدعوة',
     'Send invitation email again?' => 'هل تريد إرسال بريد إلكتروني للدعوة مرة أخرى؟',
-    'Send invite' => 'ارسال دعوة',
     'Settings' => 'الإعدادات',
     'Subject' => 'الموضوع',
     'The following list contains all pending sign-ups and invites.' => 'تحتوي القائمة التالية على جميع عمليات الاشتراك والدعوات المعلقة.',
@@ -165,12 +164,15 @@ Kind Regards
 {AdminName}
 
 ' => '',
+    'Hide online status of users' => '',
     'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => '',
     'Information 1' => '',
     'Information 2' => '',
     'Information 3' => '',
     'Invisible' => '',
+    'Invite new people' => '',
     'Make the group selectable at registration.' => '',
+    'Members can invite external users by link' => '',
     'No users were selected.' => '',
     'Not visible' => '',
     'Prioritised User Group' => '',

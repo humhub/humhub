@@ -1,8 +1,8 @@
 <?php
 
+use humhub\commands\CronController;
 use humhub\modules\content\Events;
 use humhub\commands\IntegrityController;
-use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
@@ -23,6 +23,7 @@ return [
         ['class' => ContentActiveRecord::class, 'event' => ContentActiveRecord::EVENT_AFTER_INSERT, 'callback' => [Events::class, 'onContentActiveRecordSave']],
         ['class' => ContentActiveRecord::class, 'event' => ContentActiveRecord::EVENT_AFTER_UPDATE, 'callback' => [Events::class, 'onContentActiveRecordSave']],
         ['class' => ContentActiveRecord::class, 'event' => ContentActiveRecord::EVENT_AFTER_DELETE, 'callback' => [Events::class, 'onContentActiveRecordDelete']],
+        ['class' => CronController::class, 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => [Events::class, 'onCronDailyRun']],
+        ['class' => CronController::class, 'event' => CronController::EVENT_BEFORE_ACTION, 'callback' => [Events::class, 'onCronBeforeAction']]
     ],
 ];
-?>

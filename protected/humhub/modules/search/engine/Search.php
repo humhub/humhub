@@ -8,16 +8,17 @@
 
 namespace humhub\modules\search\engine;
 
-use Yii;
-use yii\base\Component;
-use humhub\modules\search\interfaces\Searchable;
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
-use humhub\modules\space\models\Space;
 use humhub\modules\search\events\SearchAttributesEvent;
+use humhub\modules\search\interfaces\Searchable;
+use humhub\modules\search\models\forms\SearchForm;
+use humhub\modules\space\models\Space;
+use yii\base\Component;
 
 /**
  * Description of HSearchComponent
@@ -112,17 +113,17 @@ abstract class Search extends Component
         $meta = [];
         $meta['type'] = $this->getDocumentType($obj);
         $meta['pk'] = $obj->getPrimaryKey();
-        $meta['model'] = $obj->className();
+        $meta['model'] = PolymorphicRelation::getObjectModel($obj);
 
         if ($obj instanceof ContentContainerActiveRecord) {
-            $meta['containerModel'] = $obj->className();
+            $meta['containerModel'] = get_class($obj);
             $meta['containerPk'] = $obj->id;
         }
 
         // Add content related meta data
         if ($meta['type'] == self::DOCUMENT_TYPE_CONTENT) {
             if ($obj->content->container !== null) {
-                $meta['containerModel'] = $obj->content->container->className();
+                $meta['containerModel'] = get_class($obj->content->container);
                 $meta['containerPk'] = $obj->content->container->id;
             }
             if ($obj->content->visibility == Content::VISIBILITY_PUBLIC) {
@@ -159,12 +160,12 @@ abstract class Search extends Component
 
     protected function setDefaultFindOptions($options)
     {
-        if (!isset($options['page']) || $options['page'] == '') {
+        if (empty($options['page'])) {
             $options['page'] = 1;
         }
 
-        if (!isset($options['pageSize']) || $options['pageSize'] == '') {
-            $options['pageSize'] = Yii::$app->settings->get('paginationSize');
+        if (empty($options['pageSize'])) {
+            $options['pageSize'] = (new SearchForm())->pageSize;
         }
 
         if (!isset($options['checkPermissions'])) {

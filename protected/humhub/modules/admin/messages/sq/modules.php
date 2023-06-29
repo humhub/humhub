@@ -1,20 +1,22 @@
 <?php
 
 return [
+    'Activate' => 'Aktivizoni',
+    'Configure' => 'Konfiguro',
     'Spaces' => 'Hapësirat',
+    'Users' => 'Përdoruesit',
     '%moduleName% - Set as default module' => '',
     '<strong>General</strong> Settings' => '',
     '<strong>Module</strong> details' => '',
-    'Activate' => '',
     'Activated' => '',
     'Allow module versions in beta status' => '',
     'Always activated' => '',
     'Are you sure? *ALL* module data will be lost!' => '',
     'Are you sure? *ALL* module related data and files will be lost!' => '',
     'Close' => '',
-    'Configure' => '',
     'Could not find requested module!' => '',
     'Deactivated' => '',
+    'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => '',
     'Deprecated' => '',
     'Enable module...' => '',
     'Featured' => '',
@@ -35,5 +37,4 @@ return [
     'Try other keywords or remove filters.' => '',
     'Update successful' => '',
     'User default state' => '',
-    'Users' => '',
 ];

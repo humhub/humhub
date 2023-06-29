@@ -74,44 +74,9 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
      */
     protected function getSearchableFields(): array
     {
-        return ['space.name', 'space.description', 'contentcontainer.tags_cached'];
-    }
-
-    /**
-     * @inheritdoc
-     * @return self
-     */
-    public function search($keywords, ?array $fields = null): ActiveQuery
-    {
-        if (empty($keywords)) {
-            return $this;
-        }
-
         $this->joinWith('contentContainerRecord');
 
-        foreach ($this->setUpKeywords($keywords) as $keyword) {
-            $this->searchKeyword($keyword, $fields);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     * @return self
-     */
-    public function searchKeyword(string $keyword, ?array $fields = null): ActiveQuery
-    {
-        if (empty($fields)) {
-            $fields = $this->getSearchableFields();
-        }
-
-        $conditions = [];
-        foreach ($fields as $field) {
-            $conditions[] = ['LIKE', $field, $keyword];
-        }
-
-        return $this->andWhere(array_merge(['OR'], $conditions));
+        return ['space.name', 'space.description', 'contentcontainer.tags_cached'];
     }
 
     /**
@@ -139,6 +104,15 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
         $this->leftJoin('contentcontainer_blocked_users', 'contentcontainer_blocked_users.contentcontainer_id=space.contentcontainer_id AND contentcontainer_blocked_users.user_id=:blockedUserId', [':blockedUserId' => $user->id]);
         $this->andWhere('contentcontainer_blocked_users.user_id IS NULL');
 
+        return $this;
+    }
+
+    /**
+     * @return ActiveQuerySpace
+     */
+    public function defaultOrderBy(): ActiveQuerySpace
+    {
+        $this->orderBy(['space.sort_order' => SORT_ASC, 'space.name' => SORT_ASC]);
         return $this;
     }
 }

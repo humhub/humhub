@@ -31,6 +31,7 @@ return [
     'Members' => '',
     'Modules' => '',
     'Next' => '',
+    'Only global administrators can change this value' => '',
     'Owner' => '',
     'Pending Approvals' => '',
     'Pending Invites' => '',
@@ -55,6 +56,4 @@ return [
     'Unarchive' => '',
     'e.g. example for {baseUrl}/s/example' => '',
     'never' => '',
-    'the default start page of this space for members' => '',
-    'the default start page of this space for visitors' => '',
 ];

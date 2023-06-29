@@ -86,7 +86,6 @@ return [
     'Send & save' => 'فرستادن و ذخیره',
     'Send invitation email' => 'فرستادن ایمیل دعوت',
     'Send invitation email again?' => 'ایمیل دعوت را دوباره بفرستم؟',
-    'Send invite' => 'فرستادن دعوت',
     'Settings' => 'تنظیمات',
     'Subject' => 'موضوع',
     'The following list contains all registered users awaiting an approval.' => 'فهرست زیر شامل کاربران ثبت‌شده‌ای است که در انتظار تایید هستند.',
@@ -154,6 +153,7 @@ Kind Regards
 {AdminName}
 
 ' => '',
+    'Hide online status of users' => '',
     'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => '',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => '',
     'Impersonate' => '',
@@ -162,9 +162,11 @@ Kind Regards
     'Information 2' => '',
     'Information 3' => '',
     'Invisible' => '',
+    'Invite new people' => '',
     'Invite not found!' => '',
     'List pending registrations' => '',
     'Make the group selectable at registration.' => '',
+    'Members can invite external users by link' => '',
     'No users were selected.' => '',
     'Not visible' => '',
     'Prioritised User Group' => '',

@@ -44,7 +44,7 @@ class ContentContainerStreamFilter extends StreamQueryFilter
         if (!$this->container->canAccessPrivateContent($user)) {
             if(Yii::$app->user->isGuest) {
                 $this->query->andWhere('content.visibility = :visibility', [':visibility' => Content::VISIBILITY_PUBLIC]);
-            } else if (!Yii::$app->user->getIdentity()->canViewAllContent()) {
+            } else if (!Yii::$app->user->getIdentity()->canViewAllContent(get_class($this->container))) {
                 // Limit only if current User/Admin cannot view all content
                 $this->query->andWhere('content.visibility = :visibility OR content.created_by = :userId', [
                     ':visibility' => Content::VISIBILITY_PUBLIC,

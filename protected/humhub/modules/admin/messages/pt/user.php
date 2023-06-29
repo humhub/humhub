@@ -53,6 +53,7 @@ return [
     'Delete invitation' => 'Apagar convite',
     'Delete invitation?' => 'Apagar convite?',
     'Delete spaces which are owned by this user' => 'Apagar espaços detidos por esta pessoa',
+    'Deleted' => 'Eliminada',
     'Deleted invitation' => 'Convites apagados',
     'Deleted users' => 'Contas apagadas.',
     'Disable' => 'Desactivar',
@@ -117,7 +118,6 @@ return [
     'Send & save' => 'Guardar &amp; Enviar',
     'Send invitation email' => 'Enviar email de convite',
     'Send invitation email again?' => 'Enviar email de convite outra vez?',
-    'Send invite' => 'Enviar convite',
     'Send notifications to users when added to or removed from the group.' => 'Enviar notificações a contas quando adicionadas ou removidas do grupo.',
     'Settings' => 'Definições',
     'Show group selection at registration' => 'Mostrar selecção do grupo no registo',
@@ -154,7 +154,6 @@ return [
     'Decline all selected' => '',
     'Default Sorting' => '',
     'Default group can not be deleted!' => '',
-    'Deleted' => '',
     'Hello {displayName},
 
 Your account has been activated.
@@ -174,10 +173,13 @@ Kind Regards
 {AdminName}
 
 ' => '',
+    'Hide online status of users' => '',
     'Information 1' => '',
     'Information 2' => '',
     'Information 3' => '',
     'Invisible' => '',
+    'Invite new people' => '',
+    'Members can invite external users by link' => '',
     'No users were selected.' => '',
     'Not visible' => '',
     'Prioritised User Group' => '',

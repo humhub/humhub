@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'Base URL' => 'Base URL',
     'Checking HumHub software prerequisites.' => 'Checker HumHub software forudsætninger.',
     'Database' => 'Database',
     'Displaying {count} entries per page.' => 'Viser {count} opslag pr side.',
@@ -24,7 +25,6 @@ return [
     'About HumHub' => '',
     'Assets' => '',
     'Background Jobs' => '',
-    'Base URL' => '',
     'Current limit is: {currentLimit}' => '',
     'Database collation' => '',
     'Database connection time: {dbTime} - Configured time zone: {time}' => '',
@@ -32,9 +32,11 @@ return [
     'Database migration results:' => '',
     'Delayed' => '',
     'Detected URL: {currentBaseUrl}' => '',
+    'Disabled Functions' => '',
     'Driver' => '',
     'Dynamic Config' => '',
     'HumHub' => '',
+    'HumHub Documentation' => '',
     'ICU Data Version ({version})' => '',
     'ICU Data {icuMinVersion} or higher is required' => '',
     'ICU Version ({version})' => '',
@@ -45,6 +47,7 @@ return [
     'Install {phpExtension} Extension for APC Caching' => '',
     'Install {phpExtension} Extension for DB Caching' => '',
     'Install {phpExtension} Extension for e-mail S/MIME support.' => '',
+    'Make sure that the `proc_open` function is not disabled.' => '',
     'Make {filePath} writable for the Webserver/PHP!' => '',
     'Marketplace API Connection' => '',
     'Memory Limit ({memoryLimit})' => '',
@@ -56,6 +59,7 @@ return [
     'Permissions' => '',
     'Please refer to the documentation to setup the cronjobs and queue workers.' => '',
     'Prerequisites' => '',
+    'Pretty URLs' => '',
     'Profile Image' => '',
     'Queue successfully cleared.' => '',
     'Recommended collation is {collation}' => '',

@@ -10,6 +10,7 @@ namespace humhub\modules\space\widgets;
 use humhub\components\Widget;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use Yii;
 
 /**
@@ -36,11 +37,20 @@ class SpaceDirectoryIcons extends Widget
         }
 
         $membership = $this->space->getMembership();
-        $membersCount = Membership::getSpaceMembersQuery($this->space)->active()->visible()->count();
+        $membersCountQuery = Membership::getSpaceMembersQuery($this->space)->active();
+        if (Yii::$app->user->isGuest) {
+            $membersCountQuery->andWhere(['!=', 'user.visibility', User::VISIBILITY_HIDDEN]);
+        } else {
+            $membersCountQuery->visible();
+        }
+
+        $count = Yii::$app->runtimeCache->getOrSet(__METHOD__ . Yii::$app->user->id, function() use ($membersCountQuery) {
+            return $membersCountQuery->count();
+        });
 
         return $this->render('spaceDirectoryIcons', [
             'space' => $this->space,
-            'membersCount' => Yii::$app->formatter->asShortInteger($membersCount),
+            'membersCount' => Yii::$app->formatter->asShortInteger($count),
             'canViewMembers' => $membership && $membership->isPrivileged(),
         ]);
     }

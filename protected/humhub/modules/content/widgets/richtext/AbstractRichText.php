@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
 
 namespace humhub\modules\content\widgets\richtext;
@@ -186,8 +186,8 @@ abstract class AbstractRichText extends JsWidget
     public function init()
     {
         parent::init();
-        if(!static::$editorClass) {
-            throw new InvalidArgumentException('No editor class set for rich text '.static::class);
+        if (!static::$editorClass) {
+            throw new InvalidArgumentException('No editor class set for rich text ' . static::class);
         }
     }
 
@@ -204,7 +204,7 @@ abstract class AbstractRichText extends JsWidget
             'ui-richtext' => true
         ];
 
-        if(!empty($this->preset)) {
+        if (!empty($this->preset)) {
             $result['preset'] = $this->preset;
         }
 
@@ -225,7 +225,7 @@ abstract class AbstractRichText extends JsWidget
         $result = [];
         $original = $text;
 
-        if(empty($text)) {
+        if (empty($text)) {
             $result['text'] = $text;
             return $result;
         }
@@ -234,7 +234,7 @@ abstract class AbstractRichText extends JsWidget
             $text = $extension->onPostProcess($text, $record, $attribute, $result);
         }
 
-        if($record && $attribute && $original !== $text) {
+        if ($record && $attribute && $original !== $text) {
             $record->updateAttributes([$attribute => $text]);
         }
 
@@ -263,7 +263,7 @@ abstract class AbstractRichText extends JsWidget
     {
         $result = [];
         foreach (static::$extensions as $extension) {
-            $result[] = call_user_func($extension.'::instance');
+            $result[] = call_user_func($extension . '::instance');
         }
 
         return $result;
@@ -274,7 +274,7 @@ abstract class AbstractRichText extends JsWidget
      */
     public static function editorWidget($config = [])
     {
-        return call_user_func(static::getEditorClass().'::widget', $config);
+        return call_user_func(static::getEditorClass() . '::widget', $config);
     }
 
     /**
@@ -282,7 +282,7 @@ abstract class AbstractRichText extends JsWidget
      * @throws \yii\base\InvalidConfigException
      * @since 1.8
      */
-    public static function getConverter() : AbstractRichTextConverter
+    public static function getConverter(): AbstractRichTextConverter
     {
         return Yii::createObject(['class' => static::getConverterClass()]);
     }
@@ -291,7 +291,7 @@ abstract class AbstractRichText extends JsWidget
      * @return string
      * @since 1.8
      */
-    public static function getConverterClass() : string
+    public static function getConverterClass(): string
     {
         return static::$converterClass;
     }
@@ -299,7 +299,7 @@ abstract class AbstractRichText extends JsWidget
     /**
      * @return string
      */
-    public static function getEditorClass() : string
+    public static function getEditorClass(): string
     {
         return static::$editorClass;
     }
@@ -314,7 +314,7 @@ abstract class AbstractRichText extends JsWidget
      * @return string render result
      * @throws \Exception
      */
-    public static function output($text, $config = []) : string
+    public static function output($text, $config = []): string
     {
         $config['text'] = $text;
         return static::widget($config);
@@ -340,7 +340,7 @@ abstract class AbstractRichText extends JsWidget
      * @since 1.8
      * @see AbstractRichTextConverter
      */
-    public static function convert(?string $content, $format = self::FORMAT_PLAINTEXT, $options = []) : string
+    public static function convert(?string $content, $format = self::FORMAT_PLAINTEXT, $options = []): string
     {
         $converter = static::getConverter();
 

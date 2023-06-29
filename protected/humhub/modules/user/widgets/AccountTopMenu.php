@@ -60,13 +60,13 @@ class AccountTopMenu extends Menu
         $user = Yii::$app->user->getIdentity();
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('base', 'My profile'),
+            'label' => Yii::t('base', 'My Profile'),
             'icon' => 'user',
             'url' => $user->createUrl('/user/profile/home'),
             'sortOrder' => 100]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('base', 'Account settings'),
+            'label' => Yii::t('base', 'Settings'),
             'icon' => 'edit',
             'url' => Url::toRoute('/user/account/edit'),
             'sortOrder' => 200,

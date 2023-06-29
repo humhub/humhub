@@ -14,8 +14,11 @@ class DeleteActivityTest extends HumHubDbTestCase
         $post = Post::findOne(1);
         $activity = TestActivity::instance()->about($post)->create();
         $record = $activity->record;
-        $this->assertNotNull(Activity::findOne(['id' => $record->id]));
+        $this->assertNull(Activity::find()->where(['id' => $record->id])->readable()->one());
         $post->delete();
+        $this->assertNotNull(Activity::findOne(['id' => $record->id]));
+        $this->assertNull(Activity::find()->where(['id' => $record->id])->readable()->one());
+        $post->hardDelete();
         $this->assertNull(Activity::findOne(['id' => $record->id]));
     }
 

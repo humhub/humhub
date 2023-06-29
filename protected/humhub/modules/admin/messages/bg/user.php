@@ -54,6 +54,7 @@ return [
     'Delete invitation' => 'Изтриване на покана',
     'Delete invitation?' => 'Изтриване на покана?',
     'Delete spaces which are owned by this user' => 'Изтриване на пространства, които са собственост на този потребител',
+    'Deleted' => 'Изтрита',
     'Deleted invitation' => 'Изтрита покана',
     'Deleted users' => 'Изтрити потребители',
     'Disable' => 'Деактивиране',
@@ -118,7 +119,6 @@ return [
     'Send & save' => 'Изпращане и запазване',
     'Send invitation email' => 'Изпрати имейл с покана',
     'Send invitation email again?' => 'Изпрати имейл с покана отново?',
-    'Send invite' => 'Изпращане на покана',
     'Send notifications to users when added to or removed from the group.' => 'Изпращайте известия до потребителите при добавяне или премахване от групата.',
     'Settings' => 'Настройки',
     'Show group selection at registration' => 'Показване на избора на група при регистрация',
@@ -154,7 +154,6 @@ return [
     'Decline all selected' => '',
     'Default Sorting' => '',
     'Default group can not be deleted!' => '',
-    'Deleted' => '',
     'Hello {displayName},
 
 Your account has been activated.
@@ -174,10 +173,13 @@ Kind Regards
 {AdminName}
 
 ' => '',
+    'Hide online status of users' => '',
     'Information 1' => '',
     'Information 2' => '',
     'Information 3' => '',
     'Invisible' => '',
+    'Invite new people' => '',
+    'Members can invite external users by link' => '',
     'No users were selected.' => '',
     'Not visible' => '',
     'Prioritised User Group' => '',

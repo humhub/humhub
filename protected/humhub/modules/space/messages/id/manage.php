@@ -2,6 +2,7 @@
 
 return [
     'Actions' => 'Aksi',
+    'Activate' => 'Aktifkan',
     'Delete' => 'Hapus',
     'Members' => 'Anggota',
     'Modules' => 'Modul',
@@ -16,7 +17,6 @@ return [
     '<strong>Security</strong> settings' => '',
     '<strong>Space</strong> Modules' => '',
     '<strong>Space</strong> settings' => '',
-    'Activate' => '',
     'Add <strong>Modules</strong>' => '',
     'Advanced access settings' => '',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',
@@ -34,6 +34,7 @@ return [
     'Don\'t receive notifications for new content' => '',
     'Hide posts on dashboard' => '',
     'Invited By' => '',
+    'Only global administrators can change this value' => '',
     'Pending Approvals' => '',
     'Pending Invites' => '',
     'Permissions are assigned to different user-roles. To edit a permission, select the user-role you want to edit and change the drop-down value of the given permission.' => '',
@@ -55,6 +56,4 @@ return [
     'Transfer ownership' => '',
     'e.g. example for {baseUrl}/s/example' => '',
     'never' => '',
-    'the default start page of this space for members' => '',
-    'the default start page of this space for visitors' => '',
 ];

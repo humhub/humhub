@@ -22,11 +22,19 @@ class UserFollower extends \yii\base\Widget
     public function run()
     {
         return $this->render('userFollower', [
-            'followers' => $this->user->getFollowersQuery()->limit(16)->all(),
-            'following' => $this->user->getFollowingQuery(User::find())->limit(16)->all(),
+            'followers' => $this
+                ->user
+                ->getFollowersQuery()
+                ->with('profile')
+                ->limit(16)
+                ->all(),
+            'following' => $this
+                ->user
+                ->getFollowingQuery(User::find())
+                ->with('profile')
+                ->limit(16)
+                ->all(),
         ]);
     }
 
 }
-
-?>

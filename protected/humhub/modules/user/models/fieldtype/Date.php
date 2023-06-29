@@ -65,12 +65,12 @@ class Date extends BaseType
      */
     public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
-        return parent::getFieldFormDefinition($user, [
+        return parent::getFieldFormDefinition($user, array_merge([
             'format' => Yii::$app->formatter->dateInputFormat,
             'dateTimePickerOptions' => [
                 'pickTime' => false
             ]
-        ]);
+        ], $options));
     }
 
     /**
@@ -79,7 +79,7 @@ class Date extends BaseType
     public function getUserValue(User $user, $raw = true): ?string
     {
         $internalName = $this->profileField->internal_name;
-        $date = \DateTime::createFromFormat('Y-m-d', $user->profile->$internalName,
+        $date = \DateTime::createFromFormat('Y-m-d', $user->profile->$internalName ?? '',
             new \DateTimeZone(Yii::$app->formatter->timeZone));
 
         if ($date === false)

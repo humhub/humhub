@@ -33,6 +33,7 @@ return [
     'Don\'t receive notifications for new content' => '',
     'Hide posts on dashboard' => '',
     'Invited By' => '',
+    'Only global administrators can change this value' => '',
     'Owner' => '',
     'Pending Approvals' => '',
     'Pending Invites' => '',
@@ -55,6 +56,4 @@ return [
     'Transfer ownership' => '',
     'e.g. example for {baseUrl}/s/example' => '',
     'never' => '',
-    'the default start page of this space for members' => '',
-    'the default start page of this space for visitors' => '',
 ];

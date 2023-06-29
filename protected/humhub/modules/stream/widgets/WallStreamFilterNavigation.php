@@ -12,11 +12,8 @@ use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\stream\models\filters\DateStreamFilter;
 use humhub\modules\ui\filter\widgets\DatePickerFilterInput;
-use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserPickerField;
-use kartik\widgets\DateTimePicker;
-use Yii;
 use humhub\modules\stream\models\filters\ContentTypeStreamFilter;
 use humhub\modules\stream\models\filters\DefaultStreamFilter;
 use humhub\modules\stream\models\filters\TopicStreamFilter;
@@ -26,6 +23,7 @@ use humhub\modules\ui\filter\widgets\PickerFilterInput;
 use humhub\modules\ui\filter\widgets\RadioFilterInput;
 use humhub\modules\stream\actions\Stream;
 use humhub\modules\ui\filter\widgets\FilterNavigation;
+use Yii;
 
 /**
  * Predefines the default stream filters of a content stream.
@@ -88,7 +86,7 @@ class WallStreamFilterNavigation extends FilterNavigation
     const FILTER_VISIBILITY_PUBLIC = 'visibility_public';
     const FILTER_VISIBILITY_PRIVATE = 'visibility_private';
     const FILTER_ARCHIVED = 'entry_archived';
-
+    const FILTER_HIDDEN = 'entry_hidden';
     const FILTER_CONTENT_TYPE = 'content_type';
     const FILTER_TOPICS = 'topic';
     const FILTER_ORIGINATORS = 'originators';
@@ -211,6 +209,13 @@ class WallStreamFilterNavigation extends FilterNavigation
         $this->addFilter([
             'id' => static::FILTER_ARCHIVED,
             'title' =>  Yii::t('ContentModule.base', 'Archived'),
+            'sortOrder' => 200
+        ], static::FILTER_BLOCK_BASIC);
+
+
+        $this->addFilter([
+            'id' => static::FILTER_HIDDEN,
+            'title' =>  Yii::t('ContentModule.base', 'Hidden'),
             'sortOrder' => 200
         ], static::FILTER_BLOCK_BASIC);
     }

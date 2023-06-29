@@ -20,11 +20,22 @@ use humhub\modules\post\models\Post;
  */
 class Module extends ContentContainerModule
 {
-
     /**
      * @inheritdoc
      */
     public $controllerNamespace = 'humhub\modules\post\controllers';
+
+    /**
+     * @since 1.14
+     * @var bool Automatically increase font size for short posts.
+     */
+    public bool $enableDynamicFontSize = false;
+
+    /**
+     * @since 1.15
+     * @var int collapsed post block height
+     */
+    public int $collapsedPostHeight = 300;
 
     /**
      * @inheritdoc
@@ -47,5 +58,4 @@ class Module extends ContentContainerModule
     {
         return [Post::class];
     }
-
 }

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\models;
 
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\Module;
 use Yii;
@@ -63,11 +64,18 @@ class AdvancedSettings extends Model
     public $hideFollowers = false;
 
     /**
+     * @var int
+     */
+    public $sortOrder;
+
+    /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
+            [['sortOrder'], 'required'],
+            [['sortOrder'], 'integer'],
             [['indexUrl', 'indexGuestUrl'], 'string'],
             [['hideMembers', 'hideActivities', 'hideAbout', 'hideFollowers'], 'boolean'],
             ['url', UrlValidator::class, 'space' => $this->space]
@@ -82,7 +90,7 @@ class AdvancedSettings extends Model
         return [
             'url' => 'URL',
             'indexUrl' => Yii::t('SpaceModule.base', 'Homepage'),
-            'indexGuestUrl' => Yii::t('SpaceModule.base', 'Homepage (Guests)'),
+            'indexGuestUrl' => Yii::t('SpaceModule.base', 'Homepage (Non-members)'),
             'hideMembers' => Yii::t('SpaceModule.base', 'Hide Members'),
             'hideActivities' => Yii::t('SpaceModule.base', 'Hide Activity Sidebar Widget'),
             'hideAbout' => Yii::t('SpaceModule.base', 'Hide About Page'),
@@ -90,6 +98,16 @@ class AdvancedSettings extends Model
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'indexUrl' => Yii::t('SpaceModule.base', 'The default homepage for members of this Space'),
+            'indexGuestUrl' => Yii::t('SpaceModule.base', 'The default homepage for non-members and guests visiting this Space'),
+        ];
+    }
 
     public function loadBySettings()
     {
@@ -102,10 +120,11 @@ class AdvancedSettings extends Model
         $this->indexUrl = $settings->get('indexUrl', null);
         $this->indexGuestUrl = $settings->get('indexGuestUrl', null);
 
-        $this->hideMembers = $settings->get('hideMembers', $this->hideMembers);
-        $this->hideAbout = $settings->get('hideAbout', $module->hideAboutPage);
-        $this->hideActivities = $settings->get('hideActivities', $this->hideActivities);
-        $this->hideFollowers = $settings->get('hideFollowers', $this->hideFollowers);
+        $this->hideMembers = (bool)$settings->get('hideMembers', $this->hideMembers);
+        $this->hideAbout = (bool)$settings->get('hideAbout', $module->hideAboutPage);
+        $this->hideActivities = (bool)$settings->get('hideActivities', $this->hideActivities);
+        $this->hideFollowers = (bool)$settings->get('hideFollowers', $this->hideFollowers);
+        $this->sortOrder = $this->space->sort_order;
     }
 
     /**
@@ -120,6 +139,28 @@ class AdvancedSettings extends Model
         $settings = $this->space->getSettings();
 
         $this->space->url = $this->url;
+
+        if ($this->space->isAttributeChanged('url')) {
+            if ($this->indexUrl) {
+                $this->indexUrl = str_replace(
+                    $this->space->getOldAttribute('url'),
+                    $this->space->url,
+                    $this->indexUrl
+                );
+            }
+            if ($this->indexGuestUrl) {
+                $this->indexGuestUrl = str_replace(
+                    $this->space->getOldAttribute('url'),
+                    $this->space->url,
+                    $this->indexGuestUrl
+                );
+            }
+        }
+
+        if (Yii::$app->user->can(ManageSpaces::class)) {
+            $this->space->sort_order = $this->sortOrder;
+        }
+
         $this->space->save();
 
         if (!empty($this->indexUrl)) {

@@ -1,9 +1,12 @@
 <?php
 
 return [
+    'Close' => 'Закрити',
     '<strong>Open</strong> file' => '',
     '<strong>Upload</strong> error' => '',
-    'Close' => '',
+    'Attach a video' => '',
+    'Attach an audio message' => '',
+    'Attach an image' => '',
     'Could not find requested file variant!' => '',
     'Could not find requested file!' => '',
     'Could not upload File:' => '',

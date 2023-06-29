@@ -55,6 +55,7 @@ return [
     'Delete invitation' => 'ลบคำเชิญ',
     'Delete invitation?' => 'ลบคำเชิญ?',
     'Delete spaces which are owned by this user' => 'ลบช่องว่างที่ผู้ใช้รายนี้เป็นเจ้าของ',
+    'Deleted' => 'ถูกลบ',
     'Deleted invitation' => 'คำเชิญที่ถูกลบ',
     'Deleted users' => 'ผู้ใช้ที่ถูกลบ',
     'Disable' => 'ปิดการใช้งาน',
@@ -126,7 +127,6 @@ return [
     'Send & save' => 'ส่งและบันทึก',
     'Send invitation email' => 'ส่งอีเมลคำเชิญ',
     'Send invitation email again?' => 'ส่งอีเมลคำเชิญอีกครั้งหรือไม่',
-    'Send invite' => 'ส่งคำเชิญ',
     'Send notifications to users when added to or removed from the group.' => 'ส่งการแจ้งเตือนไปยังผู้ใช้เมื่อมีการเพิ่มหรือลบออกจากกลุ่ม',
     'Settings' => 'การตั้งค่า',
     'Show group selection at registration' => 'แสดงการเลือกกลุ่มเมื่อลงทะเบียน',
@@ -162,7 +162,6 @@ return [
     'Could not decline the user!' => '',
     'Decline all selected' => '',
     'Default group can not be deleted!' => '',
-    'Deleted' => '',
     'Hello {displayName},
 
 Your account has been activated.
@@ -182,7 +181,10 @@ Kind Regards
 {AdminName}
 
 ' => '',
+    'Hide online status of users' => '',
     'Invisible' => '',
+    'Invite new people' => '',
+    'Members can invite external users by link' => '',
     'No users were selected.' => '',
     'Protected group can not be deleted!' => '',
     'Select the profile fields you want to add as columns' => '',

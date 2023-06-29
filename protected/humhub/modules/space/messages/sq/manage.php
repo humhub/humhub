@@ -1,7 +1,9 @@
 <?php
 
 return [
+    'Activate' => 'Aktivizoni',
     'Delete' => 'Fshij',
+    'Modules' => 'Modulet',
     '-' => '',
     '<strong>Create</strong> Space' => '',
     '<strong>Manage</strong> members' => '',
@@ -10,7 +12,6 @@ return [
     '<strong>Space</strong> Modules' => '',
     '<strong>Space</strong> settings' => '',
     'Actions' => '',
-    'Activate' => '',
     'Add <strong>Modules</strong>' => '',
     'Advanced access settings' => '',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',
@@ -29,8 +30,8 @@ return [
     'Hide posts on dashboard' => '',
     'Invited By' => '',
     'Members' => '',
-    'Modules' => '',
     'Next' => '',
+    'Only global administrators can change this value' => '',
     'Owner' => '',
     'Pending Approvals' => '',
     'Pending Invites' => '',
@@ -55,6 +56,4 @@ return [
     'Unarchive' => '',
     'e.g. example for {baseUrl}/s/example' => '',
     'never' => '',
-    'the default start page of this space for members' => '',
-    'the default start page of this space for visitors' => '',
 ];

@@ -33,6 +33,7 @@ return array (
   'Paragraph' => 'Paragraaf',
   'People' => 'Mensen',
   'Rows' => 'Rijen',
+  'Switch editor mode' => 'Wissel van editormodus',
   'Symbols' => 'Symbolen',
   'Title' => 'Titel',
   'Toggle code font' => 'Code',
