@@ -31,7 +31,6 @@ return [
     'Followers' => '被关注',
     'Following' => '关注',
     'Friends' => '好友',
-    'General' => '一般',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => '在这里，您可以连接到外部服务提供商，使用外部服务，如登录验证。',
     'Invite by email' => '通过邮件邀请',
     'Language' => '语言',

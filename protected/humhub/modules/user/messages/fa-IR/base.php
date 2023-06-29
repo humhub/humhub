@@ -30,7 +30,6 @@ return [
     'Followers' => 'دنبال‌کننده‌ها',
     'Following' => 'دنبال‌شونده‌ها',
     'Friends' => 'دوستان',
-    'General' => 'کلی',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'اينجا تنظيمات اتصال به سرويس دهندگان خارجي مهيا مي شود.',
     'Invite by email' => 'دعوت با ایمیل',
     'Invited by' => 'دعوت شده توسط',

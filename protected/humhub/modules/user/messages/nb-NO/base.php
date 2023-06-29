@@ -31,7 +31,6 @@ return [
     'Followers' => 'Følgere',
     'Following' => 'Følger',
     'Friends' => 'Venner',
-    'General' => 'Generelt',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'Her kan du koble til eksterne tjenesteleverandører for bruk av eksterne tjenester som for eksempel single sign-on-godkjenning.',
     'Invite by email' => 'Inviter med en e-mail',
     'Invited by' => 'Invitert av',

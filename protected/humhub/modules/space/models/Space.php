@@ -31,7 +31,6 @@ use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\GroupSpace;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
-use humhub\modules\user\models\User as UserModel;
 use Yii;
 
 /**
@@ -365,7 +364,11 @@ class Space extends ContentContainerActiveRecord implements Searchable
             return false;
         }
 
-        if ($this->isBlockedForUser(User::findOne($userId))) {
+        $user = Yii::$app->runtimeCache->getOrSet(User::class . '#' . $userId, function() use ($userId) {
+            return User::findOne($userId);
+        });
+
+        if ($this->isBlockedForUser($user)) {
             return false;
         }
 
@@ -670,11 +673,14 @@ class Space extends ContentContainerActiveRecord implements Searchable
         $owner = $this->getOwnerUser()->one();
         $groups[self::USERGROUP_OWNER][] = $owner;
 
-        $query = Membership::find()->joinWith('user');
-        $query->andWhere(['IN', 'group_id', [self::USERGROUP_ADMIN, self::USERGROUP_MODERATOR]]);
-        $query->andWhere(['space_id' => $this->id]);
-        $query->andWhere(['!=', 'user_id', $owner->id]);
-        $query->andWhere(['user.status' => UserModel::STATUS_ENABLED]);
+        $query = Membership::find()
+            ->joinWith('user')
+            ->with('user.profile')
+            ->andWhere(['IN', 'group_id', [self::USERGROUP_ADMIN, self::USERGROUP_MODERATOR]])
+            ->andWhere(['space_id' => $this->id])
+            ->andWhere(['!=', 'user_id', $owner->id])
+            ->andWhere(['user.status' => User::STATUS_ENABLED])
+        ;
 
         foreach ($query->all() as $membership) {
             $groups[$membership->group_id][] = $membership->user;

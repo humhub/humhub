@@ -1,4 +1,5 @@
 HumHub Changelog
+================
 
 1.15.0 (Unreleased)
 -------------------
@@ -15,6 +16,7 @@ HumHub Changelog
 - Enh #6236: Logging: Show log entries from migrations with category migration
 - Fix #6216: Spaces icon in admin menu
 - Fix #6229: Bug on saving forms: Zend OPcache API is restricted by "restrict_api"
+- Enh #6225: Removed deprecated MarkdownEditor usages
 - Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method
 - Enh #6164: Invitation by link: when registering within an SSO, the email should only be requested on the service provider
 - Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method
@@ -47,6 +49,15 @@ HumHub Changelog
 - Enh #6361: Use `LongRunningActiveJob` on more active jobs
 - Enh #6363: Add an event in the NotificationManager to allow removing some notifications categories in the settings
 - Enh #6371: Space Hide Member Option disables Member Joined/Left Activities
+- Enh #6375: Performance Improvements
 - Enh #6369: Don't pin draft and scheduled contents on dashboard
 - Enh #6370: Remove FlatElements CSS
 - Enh #6379: Normalize integer columns after load data to ActiveRecord
+- Enh #6384: Added Serbian(sr) language
+- Enh #6389: Remove deprecated JS function `setModalLoader()`
+- Enh #6394: Removed custom DateValidator.php after Yii 2.0.48 release
+- Enh #6393: The installer should clear all caches early
+- Fix #6391: Fix initialization of account profile field type "Markdown"
+- Enh #5713: Disabling modules will be done in a background job
+- Enh #6400: Enable nonce in config web header
+- Enh #6407: FileHandlerButtonDropdown - Possibility to have a custom CSS class

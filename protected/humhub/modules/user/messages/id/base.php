@@ -10,7 +10,6 @@ return [
     'Follow' => 'Mengikuti',
     'Followers' => 'Pengikut',
     'Friends' => 'Sahabat',
-    'General' => 'Umum',
     'Invited by' => 'Diundang oleh',
     'Language' => 'Bahasa',
     'Modules' => 'Modul',

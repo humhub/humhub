@@ -18,7 +18,6 @@ return [
     'Follow' => 'Følg',
     'Followers' => 'Følgere',
     'Following' => 'Følger',
-    'General' => 'Generelt',
     'Invite by email' => 'Inviter via e-mail',
     'Language' => 'Sprog',
     'Modules' => 'Moduler',

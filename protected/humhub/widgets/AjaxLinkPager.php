@@ -25,14 +25,14 @@ class AjaxLinkPager extends \humhub\widgets\LinkPager
      * 
      * @var string
      */
-    public $jsBeforeSend = 'function(){ setModalLoader(); }';
+    public $jsBeforeSend = 'humhub.require("ui.modal").footerLoader';
 
     /**
      * Success Javascript Expression
      * 
-     * @var string 
+     * @var string
      */
-    public $jsSuccess = 'function(html){ $("#globalModal").html(html); }';
+    public $jsSuccess = 'humhub.require("ui.modal").setContent';
 
     /**
      * @inheritdoc

@@ -48,7 +48,6 @@ return [
     'Force password change upon first login' => '',
     'Force password change upon next login' => '',
     'Friends' => '',
-    'General' => '',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => '',
     'Invite by email' => '',
     'Invite by link' => '',

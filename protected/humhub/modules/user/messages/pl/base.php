@@ -40,7 +40,6 @@ return [
     'Force password change upon first login' => 'Wymuś zmianę hasła po pierwszym zalogowaniu',
     'Force password change upon next login' => 'Wymuś zmianę hasła po kolejnym zalogowaniu',
     'Friends' => 'Znajomi',
-    'General' => 'Ogólne',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'Tutaj możesz się połączyć z zewnętrznymi dostawcami i użyć zewnętrznych usług takich jak autoryzacja single sign.',
     'Invite by email' => 'Zaproś przez e-mail',
     'Invited by' => 'Zaproszony przez',

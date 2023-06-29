@@ -2,7 +2,6 @@
 
 return [
     'Delete' => 'Fshij',
-    'General' => 'Gjeneral',
     'Invited by' => 'I ftuar nga',
     'Language' => 'Gjuhe',
     'Modules' => 'Modulet',

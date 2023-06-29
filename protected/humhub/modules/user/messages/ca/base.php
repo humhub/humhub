@@ -31,7 +31,6 @@ return [
     'Followers' => 'Seguidors',
     'Following' => 'Seguint',
     'Friends' => 'Amics',
-    'General' => 'General',
     'Invite by email' => 'Convida per correu electrònic',
     'Invited by' => 'Convidat per',
     'Language' => 'Llengua',

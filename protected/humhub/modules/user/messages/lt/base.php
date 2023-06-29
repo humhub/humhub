@@ -17,7 +17,6 @@ return [
     'Follow' => 'Sekti',
     'Followers' => 'Sekėjai',
     'Following' => 'Sekami',
-    'General' => 'Pagrindinis',
     'Invite by email' => 'Pakviesti elektroniniu paštu',
     'Language' => 'Kalba',
     'Modules' => 'Moduliai',

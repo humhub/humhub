@@ -23,8 +23,7 @@ return [
     '<strong>Account</strong> Settings' => '',
     '<strong>Confirm</strong></strong> your new email address' => '',
     '<strong>Permissions</strong>' => '',
-    '<strong>User</strong> Account' => '',
-    'Account Settings' => '',
+    '<strong>Your</strong> Account' => '',
     'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.' => '',
     'Blocked users' => '',
     'Changing the username can make some links unusable, for example old links to the profile.' => '',
@@ -33,6 +32,7 @@ return [
     'Do you really want to delete your icon image?' => '',
     'Do you really want to delete your logo image?' => '',
     'E-Mail change' => '',
+    'General' => '',
     'Hello' => '',
     'Here you can edit your general profile data, which is visible in the about page of your profile.' => '',
     'Hide introduction tour panel on dashboard' => '',
@@ -65,5 +65,4 @@ return [
     'Your password has been successfully changed!' => '',
     'Your username has been changed' => '',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => '',
-    '{attribute} "{value}" was not found!' => '',
 ];

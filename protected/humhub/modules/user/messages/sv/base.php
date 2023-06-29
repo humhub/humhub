@@ -41,7 +41,6 @@ return [
     'Force password change upon first login' => 'Tvinga uppdatering av lösenord vid första inloggning',
     'Force password change upon next login' => 'Tvinga uppdatering av lösenord vid nästa inloggning',
     'Friends' => 'Vänner',
-    'General' => 'Allmän',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'Här kan du koppla mot externa tjänster som single sign on autentisering.',
     'Invite by email' => 'Inbjudan via e-post',
     'Invited by' => 'Inbjuden av',

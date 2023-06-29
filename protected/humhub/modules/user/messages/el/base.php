@@ -10,7 +10,6 @@ return [
     'Description' => 'Περιγραφή',
     'Follow' => 'Ακολούθησε',
     'Friends' => 'Φίλοι',
-    'General' => 'Γενικά',
     'Invited by' => 'Προσκλήθηκε από τον/την',
     'Language' => 'Γλώσσα',
     'Modules' => 'Ενότητες',

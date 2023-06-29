@@ -415,15 +415,3 @@ humhub.module('ui.additions', function (module, require, $) {
 
     };
 })(jQuery, window);
-
-/**
- * @deprecated since v1.2
- */
-function setModalLoader(evt) {
-    var modalFooter = $('.modal-footer');
-    if (typeof evt === 'object') {
-        modalFooter = $(evt.target).closest('.modal-footer');
-    }
-    modalFooter.find('.btn').hide();
-    modalFooter.find('.loader').removeClass('hidden');
-}

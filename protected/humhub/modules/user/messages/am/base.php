@@ -3,7 +3,6 @@
 return [
     '<strong>Group</strong> members - {group}' => 'የ<strong>ቡድን</strong> አባላት - {group}',
     'Delete' => 'አስወግድ',
-    'General' => 'አጠቃላይ',
     'Invited by' => 'ጋባዡ፦ ',
     'Language' => 'ቋንቋ',
     'Modules' => 'ሞጁሎች',

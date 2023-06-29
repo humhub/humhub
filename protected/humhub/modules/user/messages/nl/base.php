@@ -43,7 +43,6 @@ return [
     'Force password change upon first login' => 'Forceer nieuw wachtwoord na de eerste inlog',
     'Force password change upon next login' => 'Forceer nieuw wachtwoord na de volgende inlog',
     'Friends' => 'Vrienden',
-    'General' => 'Algemeen',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'Hier kunt u verbinding maken met andere websites om daarmee snel in te loggen.',
     'Invite by email' => 'Uitnodigen per e-mail',
     'Invite by link' => 'Uitnodigen met link',
@@ -62,6 +61,8 @@ return [
     'No results found!' => 'Geen resultaten gevonden!',
     'No users found.' => 'Geen gebruikers gevonden.',
     'Notifications' => 'Meldingen',
+    'Offline' => 'Offline',
+    'Online' => 'Online',
     'Password' => 'Wachtwoord',
     'Password changed' => 'Wachtwoord is veranderd',
     'Password needs to be at least {chars} characters long.' => 'Wachtwoord moet minstens {chars} tekens lang zijn.',
@@ -111,6 +112,4 @@ return [
     'invited you to join {name}.' => 'heeft uw uitgenodigd om lid te worden van {name}.',
     'invited you to join {space} on {name}.' => 'nodigt u uit om deel te nemen aan {space} op {name}.',
     'or' => 'of',
-    'Offline' => '',
-    'Online' => '',
 ];

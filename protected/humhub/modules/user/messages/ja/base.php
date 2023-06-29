@@ -43,7 +43,6 @@ return [
     'Force password change upon first login' => '初回ログイン時にパスワードの強制変更',
     'Force password change upon next login' => '次回ログイン時に強制的にパスワード変更する',
     'Friends' => '友達',
-    'General' => '一般設定',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'ここではシングル サインオン認証などの外部サービスを使用する為に外部サービス プロバイダーに接続できます。',
     'Invite by email' => 'Eメールアドレスで招待する',
     'Invite by link' => 'リンクで招待',
@@ -62,6 +61,8 @@ return [
     'No results found!' => '結果がありません',
     'No users found.' => 'ユーザーはいません',
     'Notifications' => '通知',
+    'Offline' => 'オフライン',
+    'Online' => 'オンライン',
     'Password' => 'パスワード',
     'Password changed' => 'パスワードが変更されました',
     'Password needs to be at least {chars} characters long.' => 'パスワードは {chars} 文字以上にする必要があります。',
@@ -111,6 +112,4 @@ return [
     'invited you to join {name}.' => 'はあなたを"{name}"に招待しました。',
     'invited you to join {space} on {name}.' => 'はあなたを"{name}"のスペース"{space}"に招待しました。',
     'or' => 'または',
-    'Offline' => '',
-    'Online' => '',
 ];

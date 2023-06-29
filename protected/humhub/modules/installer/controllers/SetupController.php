@@ -45,6 +45,8 @@ class SetupController extends Controller
      */
     public function actionPrerequisites()
     {
+        Yii::$app->cache->flush();
+
         return $this->render('prerequisites', ['hasError' => PrerequisitesList::hasError()]);
     }
 
@@ -162,6 +164,8 @@ class SetupController extends Controller
         if (!$this->module->checkDBConnection()) {
             return $this->redirect(['/installer/setup/database', 'dbFailed' => 1]);
         }
+
+        Yii::$app->cache->flush();
 
         // Start the migration a second time here to retry any migrations aborted by timeouts.
         // In addition, in SaaS hosting, no setup step is required and only this action is executed directly.

@@ -43,7 +43,6 @@ return [
     'Force password change upon first login' => 'A jelszó megváltoztatásának kényszerítése az első bejelentkezéskor',
     'Force password change upon next login' => 'A jelszó megváltoztatásának kényszerítése a következő bejelentkezéskor',
     'Friends' => 'Ismerősök',
-    'General' => 'Általános',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'Itt külső szolgáltatóhoz csatlakozhatsz olyan külső szolgáltatások igénybe vételéhez, mint például az egyszeri feliratkozást igénylő hitelesítés.',
     'Invite by email' => 'Meghívás e-mailben',
     'Invite by link' => 'Meghívás linken keresztül',

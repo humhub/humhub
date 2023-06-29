@@ -15,7 +15,6 @@ return [
     'Followers' => '粉絲',
     'Following' => '追蹤',
     'Friends' => '朋友',
-    'General' => '一般資訊',
     'Invite by email' => '透過E-mail邀請',
     'Invite by link' => '透過連結邀請',
     'Language' => '語言',

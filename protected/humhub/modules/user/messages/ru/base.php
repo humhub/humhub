@@ -36,7 +36,6 @@ return [
     'Force password change upon first login' => 'Обязать сменить пароль при первом входе',
     'Force password change upon next login' => 'Обязать сменить пароль при следующем входе',
     'Friends' => 'Друзья',
-    'General' => 'Личная информация',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'Здесь Вы можете подключиться к внешнему сервису для использования внешних служб, таких как единый вход в системах аутентификации.',
     'Invite by email' => 'Пригласить с помощью электронной почты',
     'Invited by' => 'Приглашен(ы)',

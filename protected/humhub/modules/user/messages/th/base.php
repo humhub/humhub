@@ -40,7 +40,6 @@ return [
     'Force password change upon first login' => 'บังคับเปลี่ยนรหัสผ่านเมื่อเข้าสู่ระบบครั้งแรก',
     'Force password change upon next login' => 'บังคับเปลี่ยนรหัสผ่านเมื่อเข้าสู่ระบบครั้งต่อไป',
     'Friends' => 'เพื่อน',
-    'General' => 'ทั่วไป',
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'ที่นี่ คุณสามารถเชื่อมต่อกับผู้ให้บริการภายนอกเพื่อใช้บริการภายนอก เช่น การลงชื่อเพียงครั้งเดียวในการรับรองความถูกต้อง',
     'Invite by email' => 'เชิญทางอีเมล์',
     'Invited by' => 'ได้รับเชิญจาก',

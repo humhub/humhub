@@ -10,10 +10,12 @@ namespace humhub\modules\admin\controllers;
 
 use humhub\components\Module;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\jobs\DisableModuleJob;
 use humhub\modules\admin\models\forms\GeneralModuleSettingsForm;
 use humhub\modules\admin\models\forms\ModuleSetAsDefaultForm;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentContainerModule;
+use humhub\modules\queue\helpers\QueueHelper;
 use Yii;
 use yii\base\Exception;
 use yii\web\HttpException;
@@ -84,7 +86,11 @@ class ModuleController extends Controller
             throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
         }
 
-        $module->enable();
+        if (QueueHelper::isQueued(new DisableModuleJob(['moduleId' => $moduleId]))) {
+            $this->view->error(Yii::t('AdminModule.modules', 'Deactivation of this module has not been completed yet. Please retry in a few minutes.'));
+        } else {
+            $module->enable();
+        }
 
         return $this->redirect(['/admin/module/list']);
     }
@@ -106,7 +112,8 @@ class ModuleController extends Controller
             throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
         }
 
-        $module->disable();
+        Yii::$app->queue->push(new DisableModuleJob(['moduleId' => $moduleId]));
+        Yii::$app->moduleManager->disable($module);
 
         return $this->redirect(['/admin/module/list']);
     }

@@ -27,7 +27,6 @@ return [
     'Followers' => 'Seguidors',
     'Following' => 'Seguindo',
     'Friends' => 'Amigos',
-    'General' => 'Cheneral',
     'Language' => 'Luenga',
     'Modules' => 'Modulos',
     'My Account' => 'Cuenta',
