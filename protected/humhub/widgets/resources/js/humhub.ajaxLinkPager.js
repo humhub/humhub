@@ -4,7 +4,6 @@ humhub.module('humhub.ajaxLinkPager', function (module, require, $) {
 
     var setPage = function(event) {
         modal.footerLoader();
-        setModalLoader(event);
         client.post(event).then(function(response) {
             modal.setContent(response.data);
         });
