@@ -13,6 +13,7 @@ return array (
   'Configure' => '設定',
   'Could not find requested module!' => '要求されたモジュールが見つかりませんでした。',
   'Deactivated' => '停止',
+  'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => 'このモジュールの非アクティブ化はまだ完了していません。数分後に再試行してください。',
   'Deprecated' => '非推奨',
   'Enable module...' => 'モジュールを有効にしています...',
   'Featured' => '特徴',

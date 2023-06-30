@@ -13,7 +13,7 @@ class ChangeEmailCest
         $I->amGoingTo('change email address');
         $I->amUser();
         $I->clickAccountDropDown();
-        $I->click('Account settings');
+        $I->click('Settings');
         $I->waitForElementVisible('#profile-tabs', 20);
         $I->expectTo('see the profile edit form');
 
