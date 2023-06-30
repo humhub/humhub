@@ -62,6 +62,7 @@ return array (
   'Save' => 'Spara',
   'Saved' => 'Sparad',
   'Search' => 'Sök',
+  'Search...' => 'Sök...',
   'Select Me' => 'Välj mig själv',
   'Settings' => 'inställningar',
   'Show less' => 'Visa mindre',

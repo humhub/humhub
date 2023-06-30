@@ -9,6 +9,7 @@
 namespace humhub\modules\topic\models;
 
 use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\services\ContentTagService;
 use humhub\modules\stream\helpers\StreamHelper;
 use humhub\modules\content\models\Content;
 use humhub\modules\topic\permissions\AddTopic;
@@ -105,6 +106,6 @@ class Topic extends ContentTag
             }
         }
 
-        $content->addTags($result);
+        (new ContentTagService($content))->addTags($result);
     }
 }

@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.15.0 (Unreleased)
 -------------------
+- Fix #6220: User Soft Delete doesn't remove third party auth references
 - Enh #6270: Add tests for SettingsManager
 - Enh #6272: Always return integer from settings, if value can be converted
 - Fix #6267: SettingsManager::flushContentContainer() only clears the collection in the current instance, not the underlying cache
@@ -15,6 +16,7 @@ HumHub Changelog
 - Fix #6189: Module settings survive deactivation in cache
 - Enh #6236: Logging: Show log entries from migrations with category migration
 - Fix #6216: Spaces icon in admin menu
+- Chg #6212: Revise email sender (always use the system name)
 - Fix #6229: Bug on saving forms: Zend OPcache API is restricted by "restrict_api"
 - Enh #6225: Removed deprecated MarkdownEditor usages
 - Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method
@@ -62,3 +64,5 @@ HumHub Changelog
 - Enh #6400: Enable nonce in config web header
 - Enh #6407: FileHandlerButtonDropdown - Possibility to have a custom CSS class
 - Enh #6130: Add default settings for space creation
+- Enh #6079: Migrated Content Tag Logic into `ContentTagService` 
+- Enh #5718: Use Select2 plugin for all drop-down list fields

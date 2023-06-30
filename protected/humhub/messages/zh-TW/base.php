@@ -62,6 +62,7 @@ return array (
   'Save' => '儲存',
   'Saved' => '已儲存',
   'Search' => '搜尋',
+  'Search...' => '搜尋...',
   'Select Me' => '選我',
   'Settings' => '设置',
   'Show less' => '顯示較少',

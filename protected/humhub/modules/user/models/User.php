@@ -31,6 +31,7 @@ use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
+use humhub\modules\user\services\PasswordRecoveryService;
 use humhub\modules\user\widgets\UserWall;
 use Yii;
 use yii\base\Exception;
@@ -1031,5 +1032,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
 
         return $options;
+    }
+
+    public function getPasswordRecoveryService(): PasswordRecoveryService
+    {
+        return new PasswordRecoveryService($this);
     }
 }
