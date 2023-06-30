@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space;
 
+use humhub\modules\admin\models\forms\SpaceSettingsForm;
 use humhub\modules\user\models\User;
 use Yii;
 
@@ -91,6 +92,11 @@ class Module extends \humhub\components\Module
     public $hideFollowers = false;
 
     /**
+     * @var SpaceSettingsForm|null
+     */
+    private ?SpaceSettingsForm $defaultSettings = null;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
@@ -130,4 +136,15 @@ class Module extends \humhub\components\Module
         ];
     }
 
+    /**
+     * @return SpaceSettingsForm
+     */
+    public function getDefaultSettings(): SpaceSettingsForm
+    {
+        if ($this->defaultSettings === null) {
+            $this->defaultSettings = new SpaceSettingsForm(['settingsManager' => $this->settings]);
+            $this->defaultSettings->loadBySettings();
+        }
+        return $this->defaultSettings;
+    }
 }
