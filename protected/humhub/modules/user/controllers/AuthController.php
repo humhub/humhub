@@ -11,22 +11,21 @@ namespace humhub\modules\user\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\components\Response;
-use humhub\modules\space\models\Space;
-use humhub\modules\user\models\User;
 use humhub\modules\user\authclient\AuthAction;
-use humhub\modules\user\events\UserEvent;
-use humhub\modules\user\models\Invite;
-use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\authclient\BaseFormAuth;
+use humhub\modules\user\events\UserEvent;
+use humhub\modules\user\models\forms\Login;
+use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\Session;
-use humhub\modules\user\services\AuthClientService;
+use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
+use humhub\modules\user\services\AuthClientService;
 use humhub\modules\user\services\InviteRegistrationService;
 use humhub\modules\user\services\LinkRegistrationService;
 use Yii;
+use yii\authclient\BaseClient;
 use yii\captcha\CaptchaAction;
 use yii\web\Cookie;
-use yii\authclient\BaseClient;
 use yii\web\HttpException;
 
 /**
@@ -199,7 +198,7 @@ class AuthController extends Controller
         }
 
         $authClientService = new AuthClientService($authClient);
-        $tokenRegistrationService = new InviteRegistrationService((string) Yii::$app->request->get('token'));
+        $tokenRegistrationService = new InviteRegistrationService((string)Yii::$app->request->get('token'));
         $linkRegistrationService = LinkRegistrationService::createFromRequest();
 
         if (!$tokenRegistrationService->isValid() && !$linkRegistrationService->isValid() && !$authClientService->allowSelfRegistration()) {
@@ -289,16 +288,23 @@ class AuthController extends Controller
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Unknown user status!'));
         }
 
-        $result = Yii::$app->request->getIsAjax() ? $this->htmlRedirect($redirectUrl) : $this->redirect($redirectUrl);
-
         if ($success) {
+            // Add space invite
+            $linkRegistrationService = LinkRegistrationService::createFromRequest();
+            if (
+                $linkRegistrationService->isValid()
+                && $linkRegistrationService->inviteToSpace(Yii::$app->user->identity)
+            ) {
+                $redirectUrl = $linkRegistrationService->getSpace()->getUrl();
+            }
+
             $this->trigger(static::EVENT_AFTER_LOGIN, new UserEvent(['user' => Yii::$app->user->identity]));
             if (method_exists($authClient, 'onSuccessLogin')) {
                 $authClient->onSuccessLogin();
             }
         }
 
-        return $result;
+        return Yii::$app->request->getIsAjax() ? $this->htmlRedirect($redirectUrl) : $this->redirect($redirectUrl);
     }
 
     /**
