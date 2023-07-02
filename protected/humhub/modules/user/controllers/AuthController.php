@@ -288,14 +288,14 @@ class AuthController extends Controller
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Unknown user status!'));
         }
 
-        $result = Yii::$app->request->getIsAjax() ? $this->htmlRedirect($redirectUrl) : $this->redirect($redirectUrl);
-
         if ($success) {
             // Add space invite
             $linkRegistrationService = LinkRegistrationService::createFromRequest();
-            if ($linkRegistrationService->isValid()) {
-                $linkRegistrationService->inviteToSpace(Yii::$app->user->identity);
-                // TODO: $result should be a redirection to the invited space if inviteToSpace returns true and we don't need to wait for cron
+            if (
+                $linkRegistrationService->isValid()
+                && $linkRegistrationService->inviteToSpace(Yii::$app->user->identity)
+            ) {
+                $redirectUrl = $linkRegistrationService->getSpace()->getUrl();
             }
 
             $this->trigger(static::EVENT_AFTER_LOGIN, new UserEvent(['user' => Yii::$app->user->identity]));
@@ -304,7 +304,7 @@ class AuthController extends Controller
             }
         }
 
-        return $result;
+        return Yii::$app->request->getIsAjax() ? $this->htmlRedirect($redirectUrl) : $this->redirect($redirectUrl);
     }
 
     /**

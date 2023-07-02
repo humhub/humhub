@@ -54,9 +54,12 @@ class RegistrationController extends Controller
     {
         if (!Yii::$app->user->isGuest) {
             $linkRegistrationService = LinkRegistrationService::createFromRequest();
-            if ($linkRegistrationService->isValid()) {
-                $linkRegistrationService->inviteToSpace(Yii::$app->user->identity);
-                return $this->goHome(); // TODO: replace with the invited space if inviteToSpace returns true and we don't need to wait for cron
+
+            if (
+                $linkRegistrationService->isValid()
+                && $linkRegistrationService->inviteToSpace(Yii::$app->user->identity)
+            ) {
+                return $this->redirect($linkRegistrationService->getSpace()->getUrl());
             }
             throw new HttpException(401, Yii::t('UserModule.base', 'Your are already logged in! - Logout first!'));
         }

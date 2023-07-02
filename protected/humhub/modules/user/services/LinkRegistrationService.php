@@ -129,9 +129,14 @@ final class LinkRegistrationService
     public function inviteToSpace(?User $user): bool
     {
         if ($this->space && $user) {
-            $this->space->inviteMember($user->id, $this->space->ownerUser->id); // TODO: should not be done by cron
+            $this->space->inviteMember($user->id, $this->space->ownerUser->id, false);
             return true;
         }
         return false;
+    }
+
+    public function getSpace(): ?Space
+    {
+        return $this->space;
     }
 }
