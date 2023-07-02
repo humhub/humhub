@@ -56,7 +56,7 @@ AdminAsset::register($this);
                 Yii::t('AdminModule.modules', 'Save'), '#', [
                     'class' => ['btn', 'btn-primary'],
                     'data' => [
-                        'action-click' => 'admin.setAsDefault',
+                        'action-click' => 'admin.moduleSetAsDefault',
                         'action-url' => Url::to(['/admin/module/set-as-default', 'moduleId' => $module->id]),
                     ]
                 ]
@@ -69,7 +69,6 @@ AdminAsset::register($this);
                     ]
                 ]
             ) ?>
-            <?= LoaderWidget::widget(['id' => 'default-loader', 'cssClass' => 'loader-modal hidden']); ?>
         </div>
 
         <?php $form::end(); ?>

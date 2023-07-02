@@ -56,8 +56,6 @@ SpaceAsset::register($this);
                     ],
                 ]
             ) ?>
-
-            <?= LoaderWidget::widget(['id' => 'send-loader', 'cssClass' => 'loader-modal hidden']); ?>
         </div>
         <?php $form::end(); ?>
     </div>

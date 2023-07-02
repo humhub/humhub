@@ -71,7 +71,7 @@ humhub.module('space', function (module, require, $) {
         }
     };
 
-    var requestMembershipSend = function(event) {
+    var ÏÏrequestMembershipSend = function(event) {
         modal.footerLoader();
         client.submit(event).then(function(response) {
             modal.setContent(response.data);

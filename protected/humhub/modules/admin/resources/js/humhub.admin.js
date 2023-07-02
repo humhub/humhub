@@ -145,7 +145,7 @@ humhub.module('admin', function (module, require, $) {
         });
     };
 
-    var setAsDefault = function(event) {
+    var moduleSetAsDefault = function(event) {
         modal.footerLoader();
         client.submit(event).then(function(response) {
             modal.setContent(response.data);
@@ -161,6 +161,6 @@ humhub.module('admin', function (module, require, $) {
         changeIcon: changeIcon,
         changeMaintenanceMode: changeMaintenanceMode,
         changeIndividualProfilePermissions: changeIndividualProfilePermissions,
-        setAsDefault: setAsDefault,
+        moduleSetAsDefault: moduleSetAsDefault,
     });
 });
