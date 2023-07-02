@@ -246,7 +246,7 @@ class AuthController extends Controller
      * @return array
      */
     private function doLogin($user, $authClient, $redirectUrl)
-    {          
+    {
         $duration = 0;
 
         if (
