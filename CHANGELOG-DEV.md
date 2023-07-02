@@ -63,6 +63,9 @@ HumHub Changelog
 - Enh #5713: Disabling modules will be done in a background job
 - Enh #6400: Enable nonce in config web header
 - Enh #6407: FileHandlerButtonDropdown - Possibility to have a custom CSS class
-- Enh #6079: Migrated Content Tag Logic into `ContentTagService` 
+- Enh #6130: Add default settings for space creation
+- Enh #6079: Migrated Content Tag Logic into `ContentTagService`
 - Enh #5718: Use Select2 plugin for all drop-down list fields
 - Enh #6132: Widget `AjaxButton` now deprecated. Consider use `data-action` instead
+- Enh #6411: Make invite by link from a space work for registered users
+- Enh #6409: Redirect to the invited space after registration
