@@ -3,7 +3,7 @@ return array (
   '<strong>Account</strong> Settings' => '<strong>アカウント</strong>の設定',
   '<strong>Confirm</strong></strong> your new email address' => '<strong>確認</strong> あなたの新しいEメールアドレスです。',
   '<strong>Permissions</strong>' => '<strong>権限</strong>',
-  '<strong>Your</strong> Account' => '',
+  '<strong>Your</strong> Account' => '<strong>あなたの</strong>アカウント',
   '<strong>Your</strong> profile' => '<strong>あなたの</strong>プロフィール',
   'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.' => 'プロフィールにタグを追加して、あなたの説明やスキルや興味を強調します。あなたのタグはプロフィールやディレクトリに表示されます。',
   'All your personal data will be irrevocably deleted.' => 'あなたのデータすべてが削除されます。',

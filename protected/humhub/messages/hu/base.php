@@ -63,6 +63,7 @@ return array (
   'Save' => 'Mentés',
   'Saved' => 'Mentve',
   'Search' => 'Keresés',
+  'Search...' => 'Keresés...',
   'Select Me' => 'Válassz ki',
   'Settings' => 'Beállítások',
   'Show less' => 'Kevesebb mutatása',

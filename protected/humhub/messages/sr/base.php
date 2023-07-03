@@ -63,6 +63,7 @@ return [
     'Save' => '',
     'Saved' => '',
     'Search' => '',
+    'Search...' => '',
     'Select Me' => '',
     'Settings' => '',
     'Show less' => '',
