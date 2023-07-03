@@ -77,8 +77,8 @@ class Application extends \yii\console\Application
                 if (Yii::getAlias('@webroot-static', false) === false) {
                     Yii::setAlias('@webroot-static', '@webroot/static');
                 }
-                $this->urlManager->scriptUrl = $baseUrl;
-                $this->urlManager->baseUrl = $baseUrl;
+                $this->urlManager->scriptUrl = '';
+                $this->urlManager->baseUrl = '';
 
                 // Set hostInfo based on given baseUrl
                 $urlParts = parse_url($baseUrl);
