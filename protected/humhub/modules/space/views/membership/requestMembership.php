@@ -1,15 +1,19 @@
 <?php
 
 use humhub\libs\Html;
+use humhub\modules\space\assets\SpaceAsset;
 use humhub\modules\space\models\forms\RequestMembershipForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\widgets\AjaxButton;
+use humhub\widgets\LoaderWidget;
 
 /**
+ * @var $this \yii\web\View
  * @var $space Space
  * @var $model RequestMembershipForm
  */
+
+SpaceAsset::register($this);
 
 ?>
 <div class="modal-dialog animated fadeIn">
@@ -34,22 +38,24 @@ use humhub\widgets\AjaxButton;
         </div>
         <div class="modal-footer">
             <hr/>
-            <?= AjaxButton::widget([
-                'label' => Yii::t('SpaceModule.base', 'Send'),
-                'ajaxOptions' => [
-                    'type' => 'POST',
-                    'beforeSend' => new yii\web\JsExpression('humhub.require("ui.modal").footerLoader'),
-                    'success' => new yii\web\JsExpression('humhub.require("ui.modal").setContent'),
-                    'url' => $space->createUrl('/space/membership/request-membership-form'),
-                ],
-                'htmlOptions' => [
-                    'class' => 'btn btn-primary'
+            <?= Html::a(
+                Yii::t('SpaceModule.base', 'Send'), '#', [
+                    'class' => ['btn', 'btn-primary'],
+                    'data' => [
+                        'action-click' => 'space.requestMembershipSend',
+                        'action-url' => $space->createUrl('/space/membership/request-membership-form'),
+                    ]
                 ]
-            ]); ?>
+            ) ?>
 
-            <button type="button" class="btn btn-default" data-dismiss="modal">
-                <?= Yii::t('SpaceModule.base', 'Close'); ?>
-            </button>
+            <?= Html::button(
+                Yii::t('SpaceModule.base', 'Close'), [
+                    'class' => ['btn', 'btn-primary'],
+                    'data' => [
+                        'dismiss' => 'modal',
+                    ],
+                ]
+            ) ?>
         </div>
         <?php $form::end(); ?>
     </div>

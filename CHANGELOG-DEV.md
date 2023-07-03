@@ -66,5 +66,6 @@ HumHub Changelog
 - Enh #6130: Add default settings for space creation
 - Enh #6079: Migrated Content Tag Logic into `ContentTagService`
 - Enh #5718: Use Select2 plugin for all drop-down list fields
+- Enh #6132: Widget `AjaxButton` now deprecated. Consider use `data-action` instead
 - Enh #6411: Make invite by link from a space work for registered users
 - Enh #6409: Redirect to the invited space after registration

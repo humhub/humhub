@@ -19,6 +19,7 @@ Version 1.15 (Unreleased)
 ### Deprecations
 
 - `Content::addTags()` and `Content::addTag()` are now deprecated. Use `ContentTagService` instead.
+- Removed deprecated classes `humhub\widgets\AjaxButton` and `humhub\widgets\ModalConfirm`
 
 
 ### Type restrictions
