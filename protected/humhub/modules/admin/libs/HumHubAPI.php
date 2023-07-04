@@ -10,8 +10,6 @@ namespace humhub\modules\admin\libs;
 
 use humhub\modules\marketplace\Module;
 use Yii;
-use yii\helpers\Json;
-use humhub\libs\CURLHelper;
 
 /**
  * HumHubAPI provides access to humhub.com for fetching available modules or latest version.

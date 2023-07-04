@@ -20,6 +20,7 @@ use yii\helpers\Url;
  * @property-read string $image
  * @property-read string $checkoutUrl
  * @property-read bool $isNonFree
+ * @property-read bool $isActivated
  *
  * @since 1.11
  */
@@ -147,6 +148,11 @@ class Module extends Model
         return $this->latestVersion;
     }
 
+    public function getInstalledVersion(): string
+    {
+        return Yii::$app->moduleManager->getModule($this->id)->getVersion();
+    }
+
     public function getImage(): string
     {
         return empty($this->moduleImageUrl)
@@ -157,6 +163,16 @@ class Module extends Model
     public function isInstalled(): bool
     {
         return Yii::$app->moduleManager->hasModule($this->id);
+    }
+
+    public function getIsActivated(): bool
+    {
+        return Yii::$app->moduleManager->getModule($this->id)->isActivated;
+    }
+
+    public function getConfigUrl(): string
+    {
+        return Yii::$app->moduleManager->getModule($this->id)->getConfigUrl();
     }
 
     public function isProFeature(): bool

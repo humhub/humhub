@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\components\Module;
+use humhub\modules\marketplace\models\Module;
 use humhub\modules\marketplace\widgets\ModuleCard;
 
 /* @var string $type */

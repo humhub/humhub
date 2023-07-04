@@ -9,10 +9,8 @@ use humhub\components\Module;
 use humhub\libs\Html;
 use humhub\modules\admin\widgets\ModuleActionButtons;
 use humhub\modules\admin\widgets\ModuleControls;
-use humhub\modules\ui\icon\widgets\Icon;
 
 /* @var $module Module */
-/* @var $isFeaturedModule bool */
 ?>
 <div class="col-xs-2 col-sm-1 module-icon">
     <?= Html::img($module->getImage(), [
@@ -23,7 +21,7 @@ use humhub\modules\ui\icon\widgets\Icon;
     ]) ?>
 </div>
 <div class="col-xs-10 col-sm-3 col-md-2">
-    <?= $module->getName() . ($isFeaturedModule ? '&nbsp;' . Icon::get('star')->color('info') : '') ?>
+    <?= $module->getName() ?>
     <br><small><?= Yii::t('AdminModule.base', 'Version') . ' ' . $module->getVersion() ?></small>
 </div>
 <div class="col-xs-6 col-sm-5 col-md-6"><?= $module->getDescription() ?></div>

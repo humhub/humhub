@@ -66,24 +66,25 @@ class Modules extends Widget
             ]);
         }
 
-        $installedModules = Yii::$app->moduleManager->getModules();
-        ArrayHelper::multisort($installedModules, 'isActivated', SORT_DESC);
-
-        $this->addGroup('installed', [
-            'title' => Yii::t('AdminModule.modules', 'Installed'),
-            'modules' => Yii::$app->moduleManager->filterModules($installedModules),
-            'count' => count($installedModules),
-            'view' => '@humhub/modules/marketplace/widgets/views/moduleInstalledCard',
-            'noModulesMessage' => Yii::t('AdminModule.base', 'No modules installed yet. Install some to enhance the functionality!'),
-            'sortOrder' => 100,
-        ]);
-
-        $onlineModules = $marketplaceModule->onlineModuleManager->getNotInstalledModules();
-        if ($onlineModulesCount = count($onlineModules)) {
+        $notInstalledModules = $marketplaceModule->onlineModuleManager->getNotInstalledModules();
+        if ($notInstalledModulesCount = count($notInstalledModules)) {
             $this->addGroup('notInstalled', [
                 'title' => Yii::t('AdminModule.modules', 'Uninstalled'),
-                'modules' => Yii::$app->moduleManager->filterModules($onlineModules),
-                'count' => $onlineModulesCount,
+                'modules' => Yii::$app->moduleManager->filterModules($notInstalledModules),
+                'count' => $notInstalledModulesCount,
+                'sortOrder' => 100,
+            ]);
+        }
+
+        $installedModules = $marketplaceModule->onlineModuleManager->getInstalledModules();
+        if ($installedModulesCount = count($installedModules)) {
+            ArrayHelper::multisort($installedModules, 'isActivated', SORT_DESC);
+            $this->addGroup('installed', [
+                'title' => Yii::t('AdminModule.modules', 'Installed'),
+                'modules' => Yii::$app->moduleManager->filterModules($installedModules),
+                'count' => $installedModulesCount,
+                'view' => '@humhub/modules/marketplace/widgets/views/moduleInstalledCard',
+                'noModulesMessage' => Yii::t('AdminModule.base', 'No modules installed yet. Install some to enhance the functionality!'),
                 'sortOrder' => 200,
             ]);
         }

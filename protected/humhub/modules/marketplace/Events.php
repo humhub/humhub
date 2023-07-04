@@ -9,7 +9,6 @@
 namespace humhub\modules\marketplace;
 
 use humhub\components\Module as CoreModule;
-use humhub\components\OnlineModule;
 use humhub\modules\admin\events\ModulesEvent;
 use humhub\modules\marketplace\models\Module as ModelModule;
 use humhub\modules\marketplace\widgets\ModuleFilters;
@@ -42,9 +41,10 @@ class Events extends BaseObject
     {
         Yii::$app->queue->push(new jobs\PeActiveCheckJob());
         Yii::$app->queue->push(new jobs\ModuleCleanupsJob());
+        Yii::$app->queue->push(new jobs\CacheAvailableUpdatesJob());
     }
 
-    public static function onAdminModuleManagerAfterFilterModules(ModulesEvent $event)
+    public static function onMarketplaceAfterFilterModules(ModulesEvent $event)
     {
         if (!Module::isEnabled()) {
             return;
@@ -83,16 +83,14 @@ class Events extends BaseObject
             return true;
         }
 
-        $moduleCategories = (new OnlineModule(['module' => $module]))->categories;
-
-        return empty($moduleCategories) ? false : in_array($categoryId, $moduleCategories);
+        return is_array($module->categories) && in_array($categoryId, $module->categories);
     }
 
     /**
-     * @param CoreModule|ModelModule $module
+     * @param ModelModule $module
      * @return bool
      */
-    private static function isFilteredModuleByTags($module): bool
+    private static function isFilteredModuleByTags(ModelModule $module): bool
     {
         $tags = Yii::$app->request->get('tags', ModuleFilters::getDefaultValue('tags'));
 
@@ -102,19 +100,17 @@ class Events extends BaseObject
 
         $tags = explode(',', $tags);
 
-        $onlineModule = new OnlineModule(['module' => $module]);
-
         $searchInstalled = in_array('installed', $tags);
         $searchNotInstalled = in_array('uninstalled', $tags);
         if ($searchInstalled && $searchNotInstalled && count($tags) === 2) {
             // No need to filter when only 2 tags "Installed" and "Not Installed" are selected
             return true;
         }
-        if ($searchInstalled && !$searchNotInstalled && !$onlineModule->isInstalled) {
+        if ($searchInstalled && !$searchNotInstalled && !$module->isInstalled()) {
             // Exclude all NOT Installed modules when requested only Installed modules
             return false;
         }
-        if (!$searchInstalled && $searchNotInstalled && $onlineModule->isInstalled) {
+        if (!$searchInstalled && $searchNotInstalled && $module->isInstalled()) {
             // Exclude all Installed modules when requested only NOT Installed modules
             return false;
         }
@@ -126,22 +122,22 @@ class Events extends BaseObject
         foreach ($tags as $tag) {
             switch ($tag) {
                 case 'professional':
-                    if ($onlineModule->isProOnly) {
+                    if ($module->isProOnly()) {
                         return true;
                     }
                     break;
                 case 'featured':
-                    if ($onlineModule->isFeatured) {
+                    if ($module->featured) {
                         return true;
                     }
                     break;
                 case 'official':
-                    if (!$onlineModule->isThirdParty) {
+                    if (!$module->isThirdParty) {
                         return true;
                     }
                     break;
                 case 'partner':
-                    if ($onlineModule->isPartner) {
+                    if ($module->isPartner) {
                         return true;
                     }
                     break;
@@ -165,7 +161,7 @@ class Events extends BaseObject
 
         $menu->addEntry(new MenuLink([
             'label' => Yii::t('MarketplaceModule.base', 'Marketplace'),
-            'icon' => 'download',
+            'icon' => 'cubes',
             'url' => Url::toRoute('/marketplace/browse'),
             'sortOrder' => 450,
         ]));

@@ -8,7 +8,6 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\components\Module;
-use humhub\components\OnlineModule;
 use humhub\components\Widget;
 
 /**
@@ -53,11 +52,8 @@ class ModuleCard extends Widget
      */
     public function run()
     {
-        $onlineModule = new OnlineModule(['module' => $this->module]);
-
         $card = $this->render($this->view, [
             'module' => $this->module,
-            'isFeaturedModule' => $onlineModule->isFeatured,
         ]);
 
         return str_replace('{card}', $card, $this->template);

@@ -23,7 +23,7 @@ return [
     ],
     'events' => [
         [CronController::class, CronController::EVENT_ON_HOURLY_RUN, [Events::class, 'onHourlyCron']],
-        [ModuleManager::class, ModuleManager::EVENT_AFTER_FILTER_MODULES, [Events::class, 'onAdminModuleManagerAfterFilterModules']],
+        [ModuleManager::class, ModuleManager::EVENT_AFTER_FILTER_MODULES, [Events::class, 'onMarketplaceAfterFilterModules']],
         [AccountTopMenu::class, AccountTopMenu::EVENT_INIT, [Events::class, 'onAccountTopMenuInit']],
     ]
 ];

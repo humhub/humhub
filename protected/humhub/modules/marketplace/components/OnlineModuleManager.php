@@ -292,20 +292,37 @@ class OnlineModuleManager extends Component
      */
     public function getNotInstalledModules(): array
     {
-        /** @var Module $module */
+        /* @var Module $module */
         $marketplaceModule = Yii::$app->getModule('marketplace');
 
-        $modules = $this->getModules();
+        $modules = [];
 
-        foreach ($modules as $o => $module) {
+        foreach ($this->getModules() as $module) {
             $onlineModule = new ModelModule($module);
-            if ($onlineModule->isInstalled() ||
-                !$onlineModule->latestCompatibleVersion ||
-                ($onlineModule->isDeprecated && $marketplaceModule->hideLegacyModules)) {
-                unset($modules[$o]);
-                continue;
+            if (!$onlineModule->isInstalled() &&
+                $onlineModule->latestCompatibleVersion &&
+                !($onlineModule->isDeprecated && $marketplaceModule->hideLegacyModules)) {
+                $modules[] = $onlineModule;
             }
-            $modules[$o] = $onlineModule;
+        }
+
+        return $modules;
+    }
+
+    /**
+     * Get only installed modules
+     *
+     * @return ModelModule[]
+     */
+    public function getInstalledModules(): array
+    {
+        $modules = [];
+
+        foreach ($this->getModules() as $module) {
+            $onlineModule = new ModelModule($module);
+            if ($onlineModule->isInstalled()) {
+                $modules[] = $onlineModule;
+            }
         }
 
         return $modules;
