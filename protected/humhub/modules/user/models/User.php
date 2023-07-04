@@ -31,6 +31,7 @@ use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
+use humhub\modules\user\services\PasswordRecoveryService;
 use humhub\modules\user\widgets\UserWall;
 use Yii;
 use yii\base\Exception;
@@ -328,7 +329,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     public static function findIdentity($id)
     {
-        return Yii::$app->runtimeCache->getOrSet(User::class . '#' . $id, function() use ($id) {
+        return Yii::$app->runtimeCache->getOrSet(User::class . '#' . $id, function () use ($id) {
             return static::findOne(['id' => $id]);
         });
     }
@@ -635,9 +636,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         if ($userInvite !== null) {
             // User was invited to a space
             if (in_array($userInvite->source, [Invite::SOURCE_INVITE, Invite::SOURCE_INVITE_BY_LINK], true)) {
-                $space = Space::findOne(['id' => $userInvite->space_invite_id]);
-                if ($space != null) {
+                $space = $userInvite->space;
+                if ($space !== null) {
                     $space->addMember($this->id);
+                    Yii::$app->user->setReturnUrl($space->createUrl());
                 }
             }
 
@@ -1031,5 +1033,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
 
         return $options;
+    }
+
+    public function getPasswordRecoveryService(): PasswordRecoveryService
+    {
+        return new PasswordRecoveryService($this);
     }
 }

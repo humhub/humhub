@@ -20,7 +20,6 @@ use yii\base\InvalidArgumentException;
  */
 class DeleteUser extends LongRunningActiveJob implements ExclusiveJobInterface
 {
-
     public $user_id;
 
     /**
@@ -46,7 +45,5 @@ class DeleteUser extends LongRunningActiveJob implements ExclusiveJobInterface
         }
 
         $user->delete();
-
     }
-
 }

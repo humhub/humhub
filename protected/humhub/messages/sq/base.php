@@ -62,6 +62,7 @@ return array (
   'Save' => '',
   'Saved' => '',
   'Search' => 'Kërko',
+  'Search...' => 'Kërko...',
   'Select Me' => '',
   'Settings' => 'Cilësimet',
   'Show less' => '',

@@ -62,6 +62,7 @@ return array (
   'Save' => 'Сохранить',
   'Saved' => 'Сохранено',
   'Search' => 'Поиск',
+  'Search...' => 'Поиск...',
   'Select Me' => 'Выбери',
   'Settings' => 'Настройки',
   'Show less' => 'Показать меньше',

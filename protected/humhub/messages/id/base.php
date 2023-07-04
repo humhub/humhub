@@ -62,6 +62,7 @@ return array (
   'Save' => 'Simpan',
   'Saved' => 'Tersimpan',
   'Search' => 'Cari',
+  'Search...' => 'Cari...',
   'Select Me' => 'Pilih saya',
   'Settings' => 'Pengaturan',
   'Show less' => 'Tampilkan lebih sedikit',

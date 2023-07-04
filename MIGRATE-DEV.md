@@ -16,5 +16,11 @@ Version 1.15 (Unreleased)
 - Removed deprecated javascript method `setModalLoader()`
 - Javascript CSP Nonces are now required and enabled by default! See: https://docs.humhub.org/docs/develop/javascript/
 
+### Deprecations
+
+- `Content::addTags()` and `Content::addTag()` are now deprecated. Use `ContentTagService` instead.
+- Removed deprecated classes `humhub\widgets\AjaxButton` and `humhub\widgets\ModalConfirm`
+
+
 ### Type restrictions
 - `\humhub\libs\BaseSettingsManager` and its child classes on fields, method parameters, & return types

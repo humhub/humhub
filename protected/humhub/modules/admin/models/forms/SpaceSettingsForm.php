@@ -2,7 +2,9 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\components\SettingsManager;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\Module;
 use Yii;
 
 /**
@@ -11,49 +13,81 @@ use Yii;
  */
 class SpaceSettingsForm extends \yii\base\Model
 {
-
+    /**
+     * @var int
+     */
     public $defaultVisibility;
+
+    /**
+     * @var int
+     */
     public $defaultJoinPolicy;
+
+    /**
+     * @var int
+     */
     public $defaultContentVisibility;
+
+    /**
+     * @var string[]
+     */
     public $defaultSpaceGuid = [];
+
+    /**
+     * @var Space[]
+     */
     public $defaultSpaces;
 
-    private $settings;
-
     /**
-     * @inheritdoc
+     * @var string|null
      */
-    public function init()
-    {
-        $this->defaultJoinPolicy = $this->getSettings()->get('defaultJoinPolicy');
-        $this->defaultVisibility = $this->getSettings()->get('defaultVisibility');
-        $this->defaultContentVisibility = $this->getSettings()->get('defaultContentVisibility');
-        $this->defaultSpaces = \humhub\modules\space\models\Space::findAll(['auto_add_new_members' => 1]);
-    }
-
-    private function getSettings()
-    {
-        if(!$this->settings) {
-            $this->settings = Yii::$app->getModule('space')->settings;
-        }
-        return $this->settings;
-    }
+    public $defaultIndexRoute = null;
 
     /**
-     * Declares the validation rules.
+     * @var string|null
+     */
+    public $defaultIndexGuestRoute = null;
+
+    /**
+     * @var bool
+     */
+    public $defaultHideMembers = false;
+
+    /**
+     * @var bool
+     */
+    public $defaultHideActivities = false;
+
+    /**
+     * @var bool
+     */
+    public $defaultHideAbout = false;
+
+    /**
+     * @var bool
+     */
+    public $defaultHideFollowers = false;
+
+    /**
+     * @var SettingsManager|null
+     */
+    public ?SettingsManager $settingsManager;
+
+    /**
+     * @inerhitdoc
      */
     public function rules()
     {
         return [
             [['defaultVisibility', 'defaultJoinPolicy', 'defaultContentVisibility'], 'integer'],
             ['defaultSpaceGuid', 'checkSpaceGuid'],
+            [['defaultIndexRoute', 'defaultIndexGuestRoute'], 'string'],
+            [['defaultHideMembers', 'defaultHideActivities', 'defaultHideAbout', 'defaultHideFollowers'], 'boolean'],
         ];
     }
 
     /**
-     * Declares customized attribute labels.
-     * If not declared here, an attribute would have a label that is
-     * the same as its name with the first letter in upper case.
+     * @inerhitdoc
      */
     public function attributeLabels()
     {
@@ -62,20 +96,26 @@ class SpaceSettingsForm extends \yii\base\Model
             'defaultVisibility' => Yii::t('AdminModule.space', 'Default Visibility'),
             'defaultJoinPolicy' => Yii::t('AdminModule.space', 'Default Join Policy'),
             'defaultContentVisibility' => Yii::t('AdminModule.space', 'Default Content Visiblity'),
+            'defaultIndexRoute' => Yii::t('AdminModule.space', 'Default homepage'),
+            'defaultIndexGuestRoute' => Yii::t('AdminModule.space', 'Default homepage (Non-members)'),
+            'defaultHideMembers' => Yii::t('AdminModule.space', 'Default "Hide Members"'),
+            'defaultHideActivities' => Yii::t('AdminModule.space', 'Default "Hide Activity Sidebar Widget"'),
+            'defaultHideAbout' => Yii::t('AdminModule.space', 'Default "Hide About Page"'),
+            'defaultHideFollowers' => Yii::t('AdminModule.space', 'Default "Hide Followers"'),
         ];
     }
 
     /**
      * This validator function checks the defaultSpaceGuid.
-     * @param type $attribute
-     * @param type $params
+     * @param $attribute
+     * @param $params
      */
     public function checkSpaceGuid($attribute, $params)
     {
         if (!empty($this->defaultSpaceGuid)) {
             foreach ($this->defaultSpaceGuid as $spaceGuid) {
                 if ($spaceGuid != "") {
-                    $space = \humhub\modules\space\models\Space::findOne(['guid' => $spaceGuid]);
+                    $space = Space::findOne(['guid' => $spaceGuid]);
                     if ($space == null) {
                         $this->addError($attribute, Yii::t('AdminModule.space', "Invalid space"));
                     }
@@ -84,15 +124,52 @@ class SpaceSettingsForm extends \yii\base\Model
         }
     }
 
-    public function save()
+    /**
+     * @return void
+     */
+    public function loadBySettings(): void
     {
-        $this->getSettings()->set('defaultJoinPolicy', $this->defaultJoinPolicy);
-        $this->getSettings()->set('defaultVisibility', $this->defaultVisibility);
-        $this->getSettings()->set('defaultContentVisibility', $this->defaultContentVisibility);
+        /** @var Module $module */
+        $module = Yii::$app->getModule('space');
+
+        $this->defaultJoinPolicy = (int)$this->settingsManager->get('defaultJoinPolicy');
+        $this->defaultVisibility = (int)$this->settingsManager->get('defaultVisibility');
+        $this->defaultContentVisibility = (int)$this->settingsManager->get('defaultContentVisibility');
+        $this->defaultSpaces = Space::findAll(['auto_add_new_members' => 1]);
+        $this->defaultIndexRoute = $this->settingsManager->get('defaultIndexRoute');
+        $this->defaultIndexGuestRoute = $this->settingsManager->get('defaultIndexGuestRoute');
+        $this->defaultHideMembers = $this->settingsManager->get('defaultHideMembers', $module->hideMembers);
+        $this->defaultHideActivities = $this->settingsManager->get('defaultHideActivities', $module->hideActivities);
+        $this->defaultHideAbout = $this->settingsManager->get('defaultHideAbout', $module->hideAboutPage);
+        $this->defaultHideFollowers = $this->settingsManager->get('defaultHideFollowers', $module->hideFollowers);
+    }
+
+    /**
+     * @return bool
+     */
+    public function save(): bool
+    {
+        if (!$this->validate()) {
+            return false;
+        }
+
+        $this->settingsManager->set('defaultJoinPolicy', $this->defaultJoinPolicy);
+        $this->settingsManager->set('defaultVisibility', $this->defaultVisibility);
+        $this->settingsManager->set('defaultContentVisibility', $this->defaultContentVisibility);
+        $this->settingsManager->set('defaultIndexRoute', $this->defaultIndexRoute);
+        $this->settingsManager->set('defaultIndexGuestRoute', $this->defaultIndexGuestRoute);
+        $this->settingsManager->set('defaultHideMembers', $this->defaultHideMembers);
+        $this->settingsManager->set('defaultHideActivities', $this->defaultHideActivities);
+        $this->settingsManager->set('defaultHideAbout', $this->defaultHideAbout);
+        $this->settingsManager->set('defaultHideFollowers', $this->defaultHideFollowers);
         $this->updateDefaultSpaces();
+
         return true;
     }
 
+    /**
+     * @return void
+     */
     private function updateDefaultSpaces()
     {
         // Remove Old Default Spaces

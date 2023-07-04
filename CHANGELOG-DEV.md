@@ -1,7 +1,9 @@
 HumHub Changelog
+================
 
 1.15.0 (Unreleased)
 -------------------
+- Fix #6220: User Soft Delete doesn't remove third party auth references
 - Enh #6270: Add tests for SettingsManager
 - Enh #6272: Always return integer from settings, if value can be converted
 - Fix #6267: SettingsManager::flushContentContainer() only clears the collection in the current instance, not the underlying cache
@@ -14,7 +16,9 @@ HumHub Changelog
 - Fix #6189: Module settings survive deactivation in cache
 - Enh #6236: Logging: Show log entries from migrations with category migration
 - Fix #6216: Spaces icon in admin menu
+- Chg #6212: Revise email sender (always use the system name)
 - Fix #6229: Bug on saving forms: Zend OPcache API is restricted by "restrict_api"
+- Enh #6225: Removed deprecated MarkdownEditor usages
 - Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method
 - Enh #6164: Invitation by link: when registering within an SSO, the email should only be requested on the service provider
 - Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method
@@ -50,6 +54,7 @@ HumHub Changelog
 - Enh #6375: Performance Improvements
 - Enh #6369: Don't pin draft and scheduled contents on dashboard
 - Enh #6370: Remove FlatElements CSS
+- Enh #6379: Normalize integer columns after load data to ActiveRecord
 - Enh #6384: Added Serbian(sr) language
 - Enh #6389: Remove deprecated JS function `setModalLoader()`
 - Enh #6394: Removed custom DateValidator.php after Yii 2.0.48 release
@@ -58,3 +63,10 @@ HumHub Changelog
 - Enh #5713: Disabling modules will be done in a background job
 - Enh #6400: Enable nonce in config web header
 - Enh #6405: Uploading a file larger than PHP's limits does not tell the user about the file weight issue
+- Enh #6407: FileHandlerButtonDropdown - Possibility to have a custom CSS class
+- Enh #6130: Add default settings for space creation
+- Enh #6079: Migrated Content Tag Logic into `ContentTagService`
+- Enh #5718: Use Select2 plugin for all drop-down list fields
+- Enh #6132: Widget `AjaxButton` now deprecated. Consider use `data-action` instead
+- Enh #6411: Make invite by link from a space work for registered users
+- Enh #6409: Redirect to the invited space after registration
