@@ -669,27 +669,29 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getDisplayName(): string
     {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('user');
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function() {
+            /** @var Module $module */
+            $module = Yii::$app->getModule('user');
 
-        if ($module->displayNameCallback !== null) {
-            return call_user_func($module->displayNameCallback, $this);
-        }
+            if ($module->displayNameCallback !== null) {
+                return call_user_func($module->displayNameCallback, $this);
+            }
 
-        $name = '';
+            $name = '';
 
-        $format = Yii::$app->settings->get('displayNameFormat');
+            $format = Yii::$app->settings->get('displayNameFormat');
 
-        if ($this->profile !== null && $format == '{profile.firstname} {profile.lastname}') {
-            $name = $this->profile->firstname . ' ' . $this->profile->lastname;
-        }
+            if ($this->profile !== null && $format == '{profile.firstname} {profile.lastname}') {
+                $name = $this->profile->firstname . ' ' . $this->profile->lastname;
+            }
 
-        // Return always username as fallback
-        if ($name == '' || $name == ' ') {
-            return $this->username;
-        }
+            // Return always username as fallback
+            if ($name == '' || $name == ' ') {
+                return $this->username;
+            }
 
-        return $name;
+            return $name;
+        });
     }
 
     /**

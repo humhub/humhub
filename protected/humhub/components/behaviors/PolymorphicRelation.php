@@ -75,6 +75,7 @@ class PolymorphicRelation extends Behavior
 
         if ($object !== null && $this->validateUnderlyingObjectType($object)) {
             $this->cached = $object;
+
             return $object;
         }
 
