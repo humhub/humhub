@@ -8,6 +8,7 @@
 namespace humhub\modules\marketplace\models;
 
 use humhub\modules\marketplace\Module as MarketplaceModule;
+use humhub\modules\marketplace\services\FilterService;
 use Yii;
 use yii\base\Model;
 use yii\helpers\Url;
@@ -196,5 +197,10 @@ class Module extends Model
     public function getCheckoutUrl(): string
     {
         return str_replace('-returnToUrl-', Url::to(['/marketplace/purchase/list'], true), $this->checkoutUrl);
+    }
+
+    public function getFilterService(): FilterService
+    {
+        return new FilterService($this);
     }
 }
