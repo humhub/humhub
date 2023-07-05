@@ -186,9 +186,10 @@ class OnlineModuleManager extends Component
      *  - latestVersion
      *  - latestCompatibleVersion
      *
+     * @param bool $cached
      * @return array of modules
      */
-    public function getModules($cached = true)
+    public function getModules(bool $cached = true)
     {
         if (!$cached) {
             $this->_modules = null;
@@ -322,6 +323,25 @@ class OnlineModuleManager extends Component
             $onlineModule = new ModelModule($module);
             if ($onlineModule->isInstalled()) {
                 $modules[] = $onlineModule;
+            }
+        }
+
+        return $modules;
+    }
+
+    /**
+     * Get only purchased modules
+     *
+     * @param bool $cached
+     * @return ModelModule[]
+     */
+    public function getPurchasedModules(bool $cached = true): array
+    {
+        $modules = $this->getModules($cached);
+
+        foreach ($modules as $i => $module) {
+            if (!isset($module['purchased']) || !$module['purchased']) {
+                unset($modules[$i]);
             }
         }
 
