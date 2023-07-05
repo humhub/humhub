@@ -22,13 +22,12 @@ SpaceAsset::register($this);
         </div>
         <div class="modal-body">
             <div class="container container-cards container-modules container-create-space-modules">
-                <div class="row cards">
-                    <?php foreach ($availableModules as $moduleId => $module) : ?>
-                        <?= ContainerModule::widget([
-                            'contentContainer' => $space,
+                <div class="modules-group">
+                    <?php foreach ($availableModules as $module) : ?>
+                        <?= $this->render('module-entry', [
+                            'space' => $space,
                             'module' => $module,
-                            'view' => '@humhub/modules/space/views/create/moduleCard'
-                        ]); ?>
+                        ]) ?>
                     <?php endforeach; ?>
                 </div>
             </div>
