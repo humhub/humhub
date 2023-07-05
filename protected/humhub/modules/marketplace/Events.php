@@ -14,6 +14,7 @@ use humhub\modules\marketplace\models\Module as ModelModule;
 use humhub\modules\marketplace\widgets\ModuleFilters;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\AccountTopMenu;
+use humhub\widgets\Label;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\Event;
@@ -37,11 +38,10 @@ class Events extends BaseObject
         $application->controllerMap['module'] = commands\MarketplaceController::class;
     }
 
-    public static function onHourlyCron($event)
+    public static function onHourlyCron()
     {
         Yii::$app->queue->push(new jobs\PeActiveCheckJob());
         Yii::$app->queue->push(new jobs\ModuleCleanupsJob());
-        Yii::$app->queue->push(new jobs\CacheAvailableUpdatesJob());
     }
 
     public static function onMarketplaceAfterFilterModules(ModulesEvent $event)
@@ -159,8 +159,13 @@ class Events extends BaseObject
         /* @var AccountTopMenu $menu */
         $menu = $event->sender;
 
+        /* @var Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+        $updatesCount = count($marketplaceModule->onlineModuleManager->getModuleUpdates());
+        $updatesCountInfo = $updatesCount > 0 ? ' ' . Label::defaultType($updatesCount) : '';
+
         $menu->addEntry(new MenuLink([
-            'label' => Yii::t('MarketplaceModule.base', 'Marketplace'),
+            'label' => Yii::t('MarketplaceModule.base', 'Marketplace') . $updatesCountInfo,
             'icon' => 'cubes',
             'url' => Url::toRoute('/marketplace/browse'),
             'sortOrder' => 450,

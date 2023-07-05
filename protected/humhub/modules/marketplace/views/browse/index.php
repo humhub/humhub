@@ -8,7 +8,7 @@
 use humhub\assets\CardsAsset;
 use humhub\modules\marketplace\assets\Assets;
 use humhub\modules\marketplace\widgets\ModuleFilters;
-use humhub\modules\marketplace\widgets\Modules;
+use humhub\modules\marketplace\widgets\ModuleGroups;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\Button;
@@ -31,4 +31,4 @@ Assets::register($this);
     </div>
 </div>
 
-<?= Modules::widget() ?>
+<?= ModuleGroups::widget() ?>

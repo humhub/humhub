@@ -1,28 +1,27 @@
 <?php
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\components\Module;
 use humhub\components\Widget;
+use humhub\libs\Html;
 use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
  * Modules displays the modules list
  *
- * @since 1.11
+ * @since 1.15
  * @author Luke
  */
-class Modules extends Widget
+class InstalledModuleList extends Widget
 {
-    /**
-     * @var array
-     */
-    public $groups;
+    public array $groups = [];
 
     /**
      * @inheritdoc
@@ -38,6 +37,7 @@ class Modules extends Widget
 
     private function initDefaultGroups()
     {
+        /* @var Module[] $modules */
         $modules = Yii::$app->moduleManager->getModules();
 
         $activeModules = [];
@@ -51,18 +51,16 @@ class Modules extends Widget
         }
 
         $this->addGroup('active', [
-            'title' => Yii::t('AdminModule.modules', 'Active Modules'),
+            'title' => Yii::t('AdminModule.base', 'Active Modules'),
             'modules' => $activeModules,
             'count' => count($activeModules),
-            'noModulesMessage' => Yii::t('AdminModule.base', 'No modules installed yet. Install some to enhance the functionality!'),
             'sortOrder' => 100,
         ]);
 
         $this->addGroup('inactive', [
-            'title' => Yii::t('AdminModule.modules', 'Inactive Modules'),
+            'title' => Yii::t('AdminModule.base', 'Inactive Modules'),
             'modules' => $inactiveModules,
             'count' => count($inactiveModules),
-            'noModulesMessage' => Yii::t('AdminModule.base', 'No modules installed yet. Install some to enhance the functionality!'),
             'sortOrder' => 200,
         ]);
     }
@@ -77,7 +75,7 @@ class Modules extends Widget
      */
     public function run()
     {
-        $modules = '';
+        $modulesList = '';
 
         foreach ($this->groups as $groupType => $group) {
             if (empty($group['count'])) {
@@ -85,16 +83,15 @@ class Modules extends Widget
             }
 
             $group['type'] = $groupType;
-            $renderedGroup = $this->render('moduleGroup', $group);
 
-            if (isset($group['groupTemplate'])) {
-                $renderedGroup = str_replace('{group}', $renderedGroup, $group['groupTemplate']);
-            }
-
-            $modules .= $renderedGroup;
+            $modulesList .= $this->render('installed-module-group', $group);
         }
 
-        return $modules;
+        if ($modulesList === '') {
+            return Html::tag('p', Yii::t('AdminModule.base', 'No modules installed yet. Install some to enhance the functionality!'));
+        }
+
+        return $modulesList;
     }
 
 }

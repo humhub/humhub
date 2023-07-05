@@ -10,6 +10,7 @@ namespace humhub\modules\admin\controllers;
 
 use humhub\components\Module;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\jobs\DisableModuleJob;
 use humhub\modules\admin\models\forms\ModuleSetAsDefaultForm;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentContainerModule;

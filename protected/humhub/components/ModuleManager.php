@@ -330,7 +330,7 @@ class ModuleManager extends Component
             foreach ($searchFields as $searchField) {
                 if (stripos($searchField, $keyword) !== false) {
                     $keywordFound = true;
-                    continue;
+                    break;
                 }
             }
 

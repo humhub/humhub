@@ -126,7 +126,7 @@ class ModuleFilters extends DirectoryFilters
             ];
         }
 
-        return $this->render('moduleUpdateInfo', $info);
+        return $this->render('module-update-info', $info);
     }
 
 }

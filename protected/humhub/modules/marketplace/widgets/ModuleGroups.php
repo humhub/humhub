@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -20,12 +20,9 @@ use yii\helpers\ArrayHelper;
  * @since 1.15
  * @author Luke
  */
-class Modules extends Widget
+class ModuleGroups extends Widget
 {
-    /**
-     * @var array
-     */
-    public $groups;
+    public array $groups = [];
 
     /**
      * @inheritdoc
@@ -59,7 +56,7 @@ class Modules extends Widget
                 'title' => Yii::t('MarketplaceModule.base', 'Available Updates'),
                 'modules' => $updateModules,
                 'count' => $updateModulesCount,
-                'view' => '@humhub/modules/marketplace/widgets/views/moduleUpdateCard',
+                'view' => 'module-update-card',
                 'groupTemplate' => '<div class="container-module-updates">' . $updateAllButton . '{group}</div>',
                 'moduleTemplate' => '<div class="card card-module col-lg-2 col-md-3 col-sm-4 col-xs-6">{card}</div>',
                 'sortOrder' => 10,
@@ -72,6 +69,7 @@ class Modules extends Widget
                 'title' => Yii::t('AdminModule.modules', 'Uninstalled'),
                 'modules' => Yii::$app->moduleManager->filterModules($notInstalledModules),
                 'count' => $notInstalledModulesCount,
+                'view' => 'module-uninstalled-card',
                 'sortOrder' => 100,
             ]);
         }
@@ -83,7 +81,7 @@ class Modules extends Widget
                 'title' => Yii::t('AdminModule.modules', 'Installed'),
                 'modules' => Yii::$app->moduleManager->filterModules($installedModules),
                 'count' => $installedModulesCount,
-                'view' => '@humhub/modules/marketplace/widgets/views/moduleInstalledCard',
+                'view' => 'module-installed-card',
                 'noModulesMessage' => Yii::t('AdminModule.base', 'No modules installed yet. Install some to enhance the functionality!'),
                 'sortOrder' => 200,
             ]);
@@ -127,7 +125,7 @@ class Modules extends Widget
                 }
             }
             $group['type'] = $groupType;
-            $renderedGroup = $this->render('moduleGroup', $group);
+            $renderedGroup = $this->render('module-group', $group);
 
             if (isset($group['groupTemplate'])) {
                 $renderedGroup = str_replace('{group}', $renderedGroup, $group['groupTemplate']);

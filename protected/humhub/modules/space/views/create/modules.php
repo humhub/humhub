@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\content\widgets\ModuleCard;
+use humhub\modules\content\widgets\ContainerModule;
 use humhub\modules\space\assets\SpaceAsset;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\view\components\View;
@@ -24,7 +24,7 @@ SpaceAsset::register($this);
             <div class="container container-cards container-modules container-create-space-modules">
                 <div class="row cards">
                     <?php foreach ($availableModules as $moduleId => $module) : ?>
-                        <?= ModuleCard::widget([
+                        <?= ContainerModule::widget([
                             'contentContainer' => $space,
                             'module' => $module,
                             'view' => '@humhub/modules/space/views/create/moduleCard'

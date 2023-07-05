@@ -24,7 +24,6 @@ use yii\web\AssetBundle;
  * @property-read string $description
  * @property-read bool $isActivated
  * @property SettingsManager $settings
- * @mixin OnlineModule
  * @author luke
  */
 class Module extends \yii\base\Module

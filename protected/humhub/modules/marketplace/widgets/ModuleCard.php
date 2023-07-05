@@ -26,10 +26,7 @@ class ModuleCard extends Widget
      */
     public $template;
 
-    /**
-     * @var string
-     */
-    public $view;
+    public string $view;
 
     public function init()
     {
@@ -40,7 +37,7 @@ class ModuleCard extends Widget
         }
 
         if (empty($this->view)) {
-            $this->view = 'moduleCard';
+            $this->view = 'module-card';
         }
     }
 

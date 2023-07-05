@@ -17,7 +17,7 @@ use Yii;
  * @since 1.15
  * @author Luke
  */
-class ModuleAvailableUpdates extends Widget
+class AvailableModuleUpdatesInfo extends Widget
 {
     private int $count;
 
@@ -47,7 +47,7 @@ class ModuleAvailableUpdates extends Widget
      */
     public function run()
     {
-        return $this->render('moduleAvailableUpdates', ['count' => $this->count]);
+        return $this->render('available-module-updates-info', ['count' => $this->count]);
     }
 
 }
