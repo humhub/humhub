@@ -11,7 +11,6 @@ use humhub\components\Widget;
 use humhub\modules\marketplace\models\Module;
 use humhub\widgets\Button;
 use Yii;
-use yii\helpers\Url;
 
 /**
  * ModuleInstalledActionButtons shows actions for module
@@ -44,23 +43,15 @@ class ModuleInstalledActionButtons extends Widget
                 $html .= Button::asLink(Yii::t('AdminModule.modules', 'Configure'), $this->module->getConfigUrl())
                     ->cssClass('btn btn-sm btn-info');
             }
-            $html .= Button::asLink(Yii::t('AdminModule.modules', 'Activated'),
-                Url::to(['/admin/module/disable', 'moduleId' => $this->module->id, 'from' => 'marketplace']))
+            $html .= Button::info(Yii::t('AdminModule.modules', 'Activated'))
+                ->link(['/admin/module/list'])
                 ->icon('check')
-                ->cssClass('btn btn-sm btn-info active')
-                ->options([
-                    'data-method' => 'POST',
-                    'data-confirm' => Yii::t('AdminModule.modules', 'Are you sure? *ALL* module data will be lost!')
-                ]);
+                ->cssClass('active')
+                ->sm();
         } else {
-            $html .= Button::asLink(Yii::t('AdminModule.modules', 'Activate'),
-                Url::to(['/admin/module/enable', 'moduleId' => $this->module->id, 'from' => 'marketplace']))
-                ->cssClass('btn btn-sm btn-info')
-                ->options([
-                    'data-method' => 'POST',
-                    'data-loader' => 'modal',
-                    'data-message' => Yii::t('AdminModule.modules', 'Enable module...')
-                ]);
+            $html .= Button::info(Yii::t('AdminModule.modules', 'Activate'))
+                ->link(['/admin/module/list'])
+                ->sm();
         }
 
         if (trim($html) === '') {

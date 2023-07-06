@@ -9,6 +9,7 @@ namespace humhub\modules\marketplace\models;
 
 use humhub\modules\marketplace\Module as MarketplaceModule;
 use humhub\modules\marketplace\services\FilterService;
+use humhub\widgets\Link;
 use Yii;
 use yii\base\Model;
 use yii\helpers\Url;
@@ -202,5 +203,10 @@ class Module extends Model
     public function getFilterService(): FilterService
     {
         return new FilterService($this);
+    }
+
+    public function marketplaceLink(string $text): Link
+    {
+        return Link::asLink($text, $this->marketplaceUrl)->blank();
     }
 }

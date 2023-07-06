@@ -16,18 +16,18 @@ use humhub\modules\ui\icon\widgets\Icon;
 <div class="card-panel">
     <?= ModuleStatus::widget(['module' => $module]) ?>
     <div class="card-header">
-        <?= Html::img($module->getImage(), [
+        <?= $module->marketplaceLink(Html::img($module->getImage(), [
             'class' => 'media-object img-rounded',
             'data-src' => 'holder.js/94x94',
             'alt' => '94x94',
             'style' => 'width:94px;height:94px',
-        ]) ?>
+        ])) ?>
         <?= ModuleControls::widget(['module' => $module]) ?>
     </div>
     <div class="card-body">
-        <div class="card-title"><?= $module->name . ($module->featured ? ' ' . Icon::get('star')->color('info') : '') ?></div>
+        <div class="card-title"><?= $module->marketplaceLink($module->name) . ($module->featured ? ' ' . Icon::get('star')->color('info') : '') ?></div>
         <div><?= $module->getInstalledVersion() ?></div>
-        <div><?= $module->description ?></div>
+        <div><?= $module->marketplaceLink($module->description) ?></div>
     </div>
     <?= ModuleInstalledActionButtons::widget(['module' => $module]) ?>
 </div>
