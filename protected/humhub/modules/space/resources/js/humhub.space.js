@@ -8,6 +8,7 @@ humhub.module('space', function (module, require, $) {
     var client = require('client');
     var additions = require('ui.additions');
     var event = require('event');
+    var modal = require('ui.modal');
 
     // Current space options (guid, image)
     var options;
@@ -70,6 +71,12 @@ humhub.module('space', function (module, require, $) {
         }
     };
 
+    var requestMembershipSend = function(event) {
+        client.submit(event).then(function(response) {
+            modal.setContent(response.data);
+        });
+    };
+
     module.export({
         init: init,
         initOnPjaxLoad: true,
@@ -78,6 +85,7 @@ humhub.module('space', function (module, require, $) {
         unarchive : unarchive,
         isSpacePage: isSpacePage,
         setSpace: setSpace,
+        requestMembershipSend: requestMembershipSend,
         changeVisibilityOption: changeVisibilityOption,
     });
 });

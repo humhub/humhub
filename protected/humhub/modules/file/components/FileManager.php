@@ -14,6 +14,7 @@ use humhub\modules\search\libs\SearchHelper;
 use Yii;
 use yii\base\Component;
 use humhub\modules\file\models\File;
+use yii\helpers\ArrayHelper;
 
 /**
  * FileManager
@@ -112,10 +113,18 @@ class FileManager extends Component
      */
     public function findStreamFiles($showInStream = true)
     {
-        if ($showInStream) {
-            return $this->find()->andWhere(['show_in_stream' => 1])->all();
+        if ($this->record->isRelationPopulated('files')) {
+            return ArrayHelper::getValue(
+                ArrayHelper::index($this->record->files, null, 'show_in_stream'),
+                +$showInStream,
+                []
+            );
         } else {
-            return $this->find()->andWhere(['show_in_stream' => 0])->all();
+            if ($showInStream) {
+                return $this->find()->andWhere(['show_in_stream' => 1])->all();
+            } else {
+                return $this->find()->andWhere(['show_in_stream' => 0])->all();
+            }
         }
     }
 }
