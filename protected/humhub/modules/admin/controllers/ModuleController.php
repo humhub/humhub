@@ -182,9 +182,7 @@ class ModuleController extends Controller
 
     private function redirectToModules()
     {
-        return Yii::$app->request->get('from') === 'marketplace'
-            ? $this->redirect(['/marketplace/browse', 'tags' => ''])
-            : $this->redirect(['/admin/module/list']);
+        return $this->redirect(['/admin/module/list']);
     }
 
 }
