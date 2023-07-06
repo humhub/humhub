@@ -71,3 +71,4 @@ HumHub Changelog
 - Enh #6411: Make invite by link from a space work for registered users
 - Enh #6409: Redirect to the invited space after registration
 - Enh #6386: Fix absolute base URL in console commands
+- Fix #79: Fix Headline HelpText Style
