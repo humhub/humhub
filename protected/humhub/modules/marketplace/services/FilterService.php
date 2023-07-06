@@ -11,6 +11,9 @@ use humhub\modules\marketplace\models\Module;
 use humhub\modules\marketplace\widgets\ModuleFilters;
 use Yii;
 
+/**
+ * @since 1.15
+ */
 class FilterService
 {
     private Module $module;

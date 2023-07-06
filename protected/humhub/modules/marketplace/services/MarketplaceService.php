@@ -10,8 +10,13 @@ namespace humhub\modules\marketplace\services;
 use humhub\modules\admin\libs\HumHubAPI;
 use Yii;
 
+/**
+ * @since 1.15
+ */
 class MarketplaceService
 {
+    const API_URL_ADD_LICENCE_KEY = 'v1/modules/registerPaid';
+
     public static function addLicenceKey(?string $licenceKey): array
     {
         $result = [
@@ -24,7 +29,7 @@ class MarketplaceService
             return $result;
         }
 
-        $response = HumHubAPI::request('v1/modules/registerPaid', ['licenceKey' => $licenceKey]);
+        $response = HumHubAPI::request(self::API_URL_ADD_LICENCE_KEY, ['licenceKey' => $licenceKey]);
 
         if (!isset($response['status'])) {
             $result['hasError'] = true;

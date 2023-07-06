@@ -387,11 +387,12 @@ class ModuleManager extends Component
      * Returns a module instance by id
      *
      * @param string $id Module Id
-     * @return Module|object
+     * @param bool $throwOnMissingModule true - to throw exception, false - to return null
+     * @return Module|object|null
      * @throws Exception
      * @throws InvalidConfigException
      */
-    public function getModule($id)
+    public function getModule($id, $throwOnMissingModule = true)
     {
         // Enabled Module
         if (Yii::$app->hasModule($id)) {
@@ -404,7 +405,11 @@ class ModuleManager extends Component
             return Yii::createObject($class, [$id, Yii::$app]);
         }
 
-        throw new Exception('Could not find/load requested module: ' . $id);
+        if ($throwOnMissingModule) {
+            throw new Exception('Could not find/load requested module: ' . $id);
+        }
+
+        return null;
     }
 
     /**

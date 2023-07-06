@@ -11,6 +11,7 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\marketplace\models\forms\GeneralModuleSettingsForm;
 use humhub\modules\marketplace\Module;
+use humhub\modules\marketplace\services\ModuleService;
 use Yii;
 use yii\web\NotFoundHttpException;
 
@@ -65,13 +66,11 @@ class BrowseController extends Controller
     {
         $this->forcePostRequest();
 
-        $moduleId = Yii::$app->request->post('moduleId');
+        $this->getModuleService()->install();
 
-        if (!Yii::$app->moduleManager->hasModule($moduleId)) {
-            $this->module->onlineModuleManager->install($moduleId);
-        }
-
-        return $this->renderAjax('installed', ['moduleId' => $moduleId]);
+        return $this->renderAjax('installed', [
+            'moduleId' => Yii::$app->request->post('moduleId')
+        ]);
     }
 
     /**
@@ -81,16 +80,14 @@ class BrowseController extends Controller
     {
         $this->forcePostRequest();
 
-        $module = Yii::$app->moduleManager->getModule(Yii::$app->request->post('moduleId'));
+        $moduleService = $this->getModuleService();
 
-        if ($module === null) {
+        if (!$moduleService->activate()) {
             throw new NotFoundHttpException(Yii::t('MarketplaceModule.base', 'Could not find the requested module!'));
         }
 
-        $module->enable();
-
         return $this->renderAjax('activated', [
-            'moduleConfigUrl' => $module->getConfigUrl()
+            'moduleConfigUrl' => $moduleService->module->getConfigUrl()
         ]);
     }
 
@@ -110,6 +107,11 @@ class BrowseController extends Controller
         return $this->renderAjax('moduleSettings', [
             'settings' => $moduleSettingsForm,
         ]);
+    }
+
+    private function getModuleService(): ModuleService
+    {
+        return new ModuleService(Yii::$app->request->post('moduleId'));
     }
 
 }
