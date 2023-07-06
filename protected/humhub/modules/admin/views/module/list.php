@@ -14,7 +14,7 @@ use humhub\modules\marketplace\widgets\MarketplaceLink;
         <?= Yii::t('AdminModule.base', '<strong>Module</strong> Configuration') ?>
         <?= MarketplaceLink::info(Yii::t('AdminModule.base', 'Marketplace'))
             ->icon('cubes')
-            ->right()->xs() ?>
+            ->right()->sm() ?>
 
         <h4><?= Yii::t('AdminModule.base', 'Overview') ?></h4>
         <div class="help-block">
