@@ -10,6 +10,7 @@ namespace humhub\modules\marketplace;
 
 use humhub\modules\admin\events\ModulesEvent;
 use humhub\modules\marketplace\models\Module as ModelModule;
+use humhub\modules\marketplace\services\MarketplaceService;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\AccountTopMenu;
 use humhub\widgets\Label;
@@ -40,6 +41,7 @@ class Events extends BaseObject
     {
         Yii::$app->queue->push(new jobs\PeActiveCheckJob());
         Yii::$app->queue->push(new jobs\ModuleCleanupsJob());
+        Yii::$app->queue->push(new jobs\RefreshPendingModuleUpdateCountJob());
     }
 
     public static function onMarketplaceAfterFilterModules(ModulesEvent $event)
@@ -69,9 +71,7 @@ class Events extends BaseObject
         /* @var AccountTopMenu $menu */
         $menu = $event->sender;
 
-        /* @var Module $marketplaceModule */
-        $marketplaceModule = Yii::$app->getModule('marketplace');
-        $updatesCount = count($marketplaceModule->onlineModuleManager->getModuleUpdates());
+        $updatesCount = (new MarketplaceService())->getPendingModuleUpdateCount();
         $updatesCountInfo = $updatesCount > 0 ? ' ' . Label::defaultType($updatesCount) : '';
 
         $menu->addEntry(new MenuLink([

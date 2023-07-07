@@ -9,6 +9,7 @@ namespace humhub\modules\marketplace\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\marketplace\Module;
+use humhub\modules\marketplace\services\MarketplaceService;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\Button;
 use Yii;
@@ -42,7 +43,9 @@ class ModuleGroups extends Widget
         $marketplaceModule = Yii::$app->getModule('marketplace');
 
         $updateModules = $marketplaceModule->onlineModuleManager->getAvailableUpdateModules();
-        if ($updateModulesCount = count($updateModules)) {
+        $updateModulesCount = count($updateModules);
+        (new MarketplaceService())->refreshPendingModuleUpdateCount($updateModulesCount);
+        if ($updateModulesCount) {
             $updateAllButton = Button::primary(Yii::t('MarketplaceModule.base', 'Update all'))
                 ->options([
                     'data-stop-title' => Icon::get('pause') . ' &nbsp; ' . Yii::t('MarketplaceModule.base', 'Stop updating'),

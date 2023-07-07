@@ -9,7 +9,7 @@ namespace humhub\modules\admin\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\marketplace\Module;
-use Yii;
+use humhub\modules\marketplace\services\MarketplaceService;
 
 /**
  * Displays info of available updates for modules
@@ -30,10 +30,7 @@ class AvailableModuleUpdatesInfo extends Widget
             return false;
         }
 
-        /* @var Module $marketplaceModule */
-        $marketplaceModule = Yii::$app->getModule('marketplace');
-
-        $this->count = count($marketplaceModule->onlineModuleManager->getModuleUpdates());
+        $this->count = (new MarketplaceService())->getPendingModuleUpdateCount();
 
         if ($this->count === 0) {
             return false;
