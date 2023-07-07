@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\content\widgets\richtext\extensions\link;
-
 
 use yii\base\Model;
 use yii\helpers\Url;
@@ -43,21 +41,21 @@ class LinkParserBlock extends Model
      */
     public $result;
 
-    public function getMarkdown() : ?string
+    public function getMarkdown(): ?string
     {
         return $this->block[static::BLOCK_KEY_MD] ?? null;
     }
 
-    public function getUrl() : ?string
+    public function getUrl(): ?string
     {
         return $this->block[static::BLOCK_KEY_URL] ?? null;
     }
 
-    public function toAbsoluteUrl() : void
+    public function toAbsoluteUrl(): void
     {
         $url = $this->getUrl();
-        if($url && $url[0] === '/') {
-            $url = Url::base(true).$url;
+        if ($url && $url[0] === '/') {
+            $url = Url::base(true) . $url;
         }
 
         $this->setUrl($url);
@@ -68,7 +66,7 @@ class LinkParserBlock extends Model
         $this->block[static::BLOCK_KEY_URL] = $url;
     }
 
-    public function getText() : ?array
+    public function getText(): ?array
     {
         return $this->block[static::BLOCK_KEY_TEXT] ?? null;
     }
@@ -79,7 +77,7 @@ class LinkParserBlock extends Model
         $this->setParsedText($text);
     }
 
-    public function getTitle() : ?string
+    public function getTitle(): ?string
     {
         return $this->block[static::BLOCK_KEY_TITLE] ?? null;
     }
@@ -89,7 +87,7 @@ class LinkParserBlock extends Model
         $this->block[static::BLOCK_KEY_TITLE] = $title;
     }
 
-    public function getFileId() : ?string
+    public function getFileId(): ?string
     {
         return $this->block[static::BLOCK_KEY_FILE_ID] ?? null;
     }
@@ -144,11 +142,11 @@ class LinkParserBlock extends Model
 
     private function textToBlockFormat(string $text)
     {
-        if($this->isImage()) {
+        if ($this->isImage()) {
             return $text;
         }
 
-        if(!$text) {
+        if (!$text) {
             $text = '';
         }
 

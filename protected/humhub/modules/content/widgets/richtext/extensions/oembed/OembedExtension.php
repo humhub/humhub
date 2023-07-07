@@ -13,7 +13,6 @@ use yii\helpers\Html;
  * This LinkExtension is used to represent mentionings in the richtext as:
  *
  * [<name>](mention:<guid> "<url>")
- *
  */
 class OembedExtension extends RichTextLinkExtension
 {
@@ -29,24 +28,26 @@ class OembedExtension extends RichTextLinkExtension
      */
     private $oembeds = [];
 
-    public function onBeforeConvertLink(LinkParserBlock $linkBlock) : void
+    public function onBeforeConvertLink(LinkParserBlock $linkBlock): void
     {
         $linkBlock->setUrl($this->cutExtensionKeyFromUrl($linkBlock->getUrl()));
     }
 
-    public function onBeforeOutput(ProsemirrorRichText $richtext, string $output) : string {
+    public function onBeforeOutput(ProsemirrorRichText $richtext, string $output): string
+    {
         $this->oembeds = static::parseOembeds($output, static::$maxOembed);
         return $output;
     }
 
-    public function onAfterOutput(ProsemirrorRichText $richtext, string $output) : string {
+    public function onAfterOutput(ProsemirrorRichText $richtext, string $output): string
+    {
         return $output . $this->buildOembedOutput();
     }
 
     /**
      * @return string html extension holding the actual oembed dom nodes which will be embedded into the rich text
      */
-    private function buildOembedOutput() : string
+    private function buildOembedOutput(): string
     {
         $result = '';
         foreach ($this->oembeds as $url => $oembed) {
@@ -56,10 +57,9 @@ class OembedExtension extends RichTextLinkExtension
         return Html::tag('div', $result, ['class' => 'richtext-oembed-container', 'style' => 'display:none']);
     }
 
-    public static function builOembed($url) : string
+    public static function builOembed($url): string
     {
-
-        return static::buildLink($url, 'oembed:'.$url);
+        return static::buildLink($url, 'oembed:' . $url);
     }
 
     public static function parseOembeds($text, $max = 100)
@@ -67,13 +67,13 @@ class OembedExtension extends RichTextLinkExtension
         $result = [];
         $oembedCount = 0;
         foreach (static::scanLinkExtension($text) as $match) {
-            if($oembedCount === $max) {
+            if ($oembedCount === $max) {
                 break;
             }
 
-            if(!empty($match->getExtensionId())) {
-                $oembedPreview =  UrlOembed::getOEmbed($match->getExtensionId());
-                if(!empty($oembedPreview)) {
+            if (!empty($match->getExtensionId())) {
+                $oembedPreview = UrlOembed::getOEmbed($match->getExtensionId());
+                if (!empty($oembedPreview)) {
                     $oembedCount++;
                     $result[$match->getExtensionId()] = $oembedPreview;
                 }
@@ -83,9 +83,9 @@ class OembedExtension extends RichTextLinkExtension
         return $result;
     }
 
-    public static function buildOembedNotFound($url) : string
+    public static function buildOembedNotFound($url): string
     {
-        return '['.$url.']('.$url.')';
+        return '[' . $url . '](' . $url . ')';
     }
 
     /**
@@ -102,7 +102,7 @@ class OembedExtension extends RichTextLinkExtension
     {
         $result[$this->key] = [];
         foreach ($this->scanExtension($text) as $match) {
-            if($match->getExtensionId() && UrlOembed::hasOEmbedSupport($match->getExtensionId())) {
+            if ($match->getExtensionId() && UrlOembed::hasOEmbedSupport($match->getExtensionId())) {
                 UrlOembed::preload($match->getExtensionId());
                 $result[$this->key][] = $match->getExtensionId();
             }
