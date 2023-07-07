@@ -75,17 +75,17 @@ class ModuleStatus extends Widget
     {
         switch ($this->status) {
             case 'professional':
-                return Yii::t('AdminModule.modules', 'Professional Edition');
+                return Yii::t('MarketplaceModule.base', 'Professional Edition');
             case 'featured':
-                return Yii::t('AdminModule.modules', 'Featured');
+                return Yii::t('MarketplaceModule.base', 'Featured');
             case 'official':
-                return Yii::t('AdminModule.modules', 'Official');
+                return Yii::t('MarketplaceModule.base', 'Official');
             case 'partner':
-                return Yii::t('AdminModule.modules', 'Partner');
+                return Yii::t('MarketplaceModule.base', 'Partner');
             case 'deprecated':
-                return Yii::t('AdminModule.modules', 'Deprecated');
+                return Yii::t('MarketplaceModule.base', 'Deprecated');
             case 'new':
-                return Yii::t('AdminModule.modules', 'New');
+                return Yii::t('MarketplaceModule.base', 'New');
         }
 
         return '';

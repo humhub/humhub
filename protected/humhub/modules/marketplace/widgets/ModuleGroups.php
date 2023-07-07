@@ -69,7 +69,7 @@ class ModuleGroups extends Widget
         $notInstalledModules = $marketplaceModule->onlineModuleManager->getNotInstalledModules();
         if ($notInstalledModulesCount = count($notInstalledModules)) {
             $this->addGroup('notInstalled', [
-                'title' => Yii::t('AdminModule.modules', 'Uninstalled'),
+                'title' => Yii::t('MarketplaceModule.base', 'Uninstalled'),
                 'modules' => Yii::$app->moduleManager->filterModules($notInstalledModules),
                 'count' => $notInstalledModulesCount,
                 'view' => 'module-uninstalled-card',
@@ -81,11 +81,11 @@ class ModuleGroups extends Widget
         if ($installedModulesCount = count($installedModules)) {
             ArrayHelper::multisort($installedModules, 'isActivated', SORT_DESC);
             $this->addGroup('installed', [
-                'title' => Yii::t('AdminModule.modules', 'Installed'),
+                'title' => Yii::t('MarketplaceModule.base', 'Installed'),
                 'modules' => Yii::$app->moduleManager->filterModules($installedModules),
                 'count' => $installedModulesCount,
                 'view' => 'module-installed-card',
-                'noModulesMessage' => Yii::t('AdminModule.base', 'No modules installed yet. Install some to enhance the functionality!'),
+                'noModulesMessage' => Yii::t('MarketplaceModule.base', 'No modules installed yet. Install some to enhance the functionality!'),
                 'sortOrder' => 200,
             ]);
         }

@@ -12,7 +12,7 @@ use humhub\widgets\ModalDialog;
 
 /* @var GeneralModuleSettingsForm $settings */
 ?>
-<?php ModalDialog::begin(['header' => Yii::t('AdminModule.modules', '<strong>General</strong> Settings')]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('MarketplaceModule.base', '<strong>General</strong> Settings')]) ?>
 
     <?php $form = ActiveForm::begin() ?>
 

@@ -31,7 +31,7 @@ class ModuleControls extends Menu
         if ($this->module->marketplaceUrl) {
             $this->addEntry(new MenuLink([
                 'id' => 'marketplace-info',
-                'label' => Yii::t('AdminModule.base', 'Information'),
+                'label' => Yii::t('MarketplaceModule.base', 'Information'),
                 'url' => $this->module->marketplaceUrl,
                 'htmlOptions' => ['rel' => 'noopener', 'target' => '_blank'],
                 'icon' => 'external-link',

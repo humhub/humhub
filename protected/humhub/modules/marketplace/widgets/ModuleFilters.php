@@ -40,8 +40,8 @@ class ModuleFilters extends DirectoryFilters
         $marketplaceModule = Yii::$app->getModule('marketplace');
 
         $this->addFilter('keyword', [
-            'title' => Yii::t('AdminModule.base', 'Search'),
-            'placeholder' => Yii::t('AdminModule.base', 'Search...'),
+            'title' => Yii::t('MarketplaceModule.base', 'Search'),
+            'placeholder' => Yii::t('MarketplaceModule.base', 'Search...'),
             'type' => 'input',
             'wrapperClass' => 'col-md-7 form-search-filter-keyword',
             'afterInput' => Html::submitButton(Icon::get('search'), ['class' => 'form-button-search']),

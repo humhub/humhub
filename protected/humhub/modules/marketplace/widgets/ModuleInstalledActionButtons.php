@@ -40,16 +40,16 @@ class ModuleInstalledActionButtons extends Widget
 
         if ($this->module->isActivated) {
             if ($this->module->getConfigUrl() != '') {
-                $html .= Button::asLink(Yii::t('AdminModule.modules', 'Configure'), $this->module->getConfigUrl())
+                $html .= Button::asLink(Yii::t('MarketplaceModule.base', 'Configure'), $this->module->getConfigUrl())
                     ->cssClass('btn btn-sm btn-info');
             }
-            $html .= Button::info(Yii::t('AdminModule.modules', 'Activated'))
+            $html .= Button::info(Yii::t('MarketplaceModule.base', 'Activated'))
                 ->link(['/admin/module/list'])
                 ->icon('check')
                 ->cssClass('active')
                 ->sm();
         } else {
-            $html .= Button::info(Yii::t('AdminModule.modules', 'Activate'))
+            $html .= Button::info(Yii::t('MarketplaceModule.base', 'Activate'))
                 ->link(['/admin/module/list'])
                 ->sm();
         }
