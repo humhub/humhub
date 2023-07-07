@@ -72,3 +72,4 @@ HumHub Changelog
 - Enh #6409: Redirect to the invited space after registration
 - Enh #6386: Fix absolute base URL in console commands
 - Fix #79: Fix Headline HelpText Style
+- Fix #6418: Fix login from modal window
