@@ -80,10 +80,11 @@ class Profile extends ActiveRecord
         ];
 
         foreach (ProfileField::find()->all() as $profileField) {
-            if ($profileField->getFieldType()->isVirtual) {
+            $fieldType = $profileField->getFieldType();
+            if ($fieldType === null || $fieldType->isVirtual) {
                 continue;
             }
-            $rules = array_merge($rules, $profileField->getFieldType()->getFieldRules());
+            $rules = array_merge($rules, $fieldType->getFieldRules());
         }
 
         return $rules;
