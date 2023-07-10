@@ -196,7 +196,11 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Rea
             }
         }
 
-        if ($this->created_by == $user->id) {
+        if (!$user instanceof User && !($user = User::findOne(['id' => $user]))) {
+            return false;
+        }
+
+        if ($this->created_by === $user->id) {
             return true;
         }
 
