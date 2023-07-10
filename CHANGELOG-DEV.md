@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.15.0 (Unreleased)
 -------------------
+- Fix #6423: log.fata in frontend logging is redirected to log.fatal, which did not work
 - Fix #6220: User Soft Delete doesn't remove third party auth references
 - Enh #6270: Add tests for SettingsManager
 - Enh #6272: Always return integer from settings, if value can be converted
