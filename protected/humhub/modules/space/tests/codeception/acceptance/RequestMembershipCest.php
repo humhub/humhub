@@ -71,7 +71,7 @@ class RequestMembershipCest
         $I->amAdmin(true);
         $I->seeInNotifications('Peter Tester requests membership for the space Space 1', true);
 
-        $I->waitForText('New member request', null, '.panel-danger');
+        $I->waitForText('Pending approvals', null, '.tab-menu .active');
 
         $I->click('.dropdown-navigation', '.controls-header');
         $I->waitForText('Members', null, '.controls-header');
