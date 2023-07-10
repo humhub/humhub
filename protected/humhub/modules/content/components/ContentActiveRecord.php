@@ -10,6 +10,7 @@ namespace humhub\modules\content\components;
 
 use humhub\components\ActiveRecord;
 use humhub\libs\BasePermission;
+use humhub\libs\StatableTrait;
 use humhub\modules\activity\helpers\ActivityHelper;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\interfaces\ContentOwner;
@@ -72,6 +73,15 @@ use yii\db\ActiveQuery;
  */
 class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable, SoftDeletable
 {
+    use StatableTrait;
+
+    /**
+     * Content States - By default, only content with the "Published" state is returned.
+     *
+     * @const array<string,int>
+     */
+    public const STATES_AVAILABLE = Content::STATES_AVAILABLE;
+
     /**
      * @see StreamEntryWidget
      * @var string the StreamEntryWidget widget class
@@ -384,7 +394,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     {
         if (is_subclass_of($this->wallEntryClass, StreamEntryWidget::class, true)) {
             $params['model'] = $this;
-        } else if (!empty($this->wallEntryClass)) {
+        } elseif (!empty($this->wallEntryClass)) {
             $params['contentObject'] = $this; // legacy WallEntry widget
         }
 
@@ -407,7 +417,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
 
         if (is_subclass_of($this->wallEntryClass, WallEntry::class)) {
             $class = $this->wallEntryClass;
-            $widget = new $class;
+            $widget = new $class();
             $widget->contentObject = $this;
             return $widget;
         }
@@ -549,7 +559,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function afterSoftDelete()
     {
-        $this->trigger(self::EVENT_AFTER_SOFT_DELETE, new ModelEvent());
+        $this->trigger(SoftDeletable::EVENT_AFTER_SOFT_DELETE, new ModelEvent());
     }
 
     /**
@@ -598,7 +608,6 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
         }
 
         return $this->content->created_by === $user->getId();
-
     }
 
     /**

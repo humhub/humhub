@@ -8,11 +8,12 @@
 
 namespace humhub\components\access;
 
+use humhub\libs\StatableInterface;
 use humhub\modules\user\helpers\AuthHelper;
-use Yii;
 use humhub\modules\user\models\User;
-use yii\base\InvalidArgumentException;
+use Yii;
 use yii\base\BaseObject;
+use yii\base\InvalidArgumentException;
 use yii\web\Controller;
 
 /**
@@ -497,8 +498,8 @@ class ControllerAccess extends BaseObject
     public function validateDisabledUser()
     {
         return $this->isGuest() ||
-            ($this->user->status !== User::STATUS_DISABLED &&
-                $this->user->status !== User::STATUS_SOFT_DELETED);
+            ($this->user->status !== StatableInterface::STATUS_DISABLED &&
+                $this->user->status !== StatableInterface::STATUS_SOFT_DELETED);
     }
 
     /**
@@ -506,7 +507,7 @@ class ControllerAccess extends BaseObject
      */
     public function validateUnapprovedUser()
     {
-        return $this->isGuest() || $this->user->status !== User::STATUS_NEED_APPROVAL;
+        return $this->isGuest() || $this->user->status !== StatableInterface::STATUS_NEED_APPROVAL;
     }
 
     /**

@@ -6,7 +6,7 @@
  */
 
 use humhub\libs\Html;
-use humhub\modules\content\models\Content;
+use humhub\libs\StatableInterface;
 use humhub\modules\content\models\forms\ScheduleOptionsForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\form\widgets\DatePicker;
@@ -20,7 +20,7 @@ use humhub\widgets\ModalDialog;
 <?php ModalDialog::begin(['header' => Yii::t('ContentModule.base', '<strong>Scheduling</strong> Options')]) ?>
 
     <?php $form = ActiveForm::begin() ?>
-    <?= Html::hiddenInput('state', Content::STATE_SCHEDULED) ?>
+    <?= Html::hiddenInput('state', StatableInterface::STATE_SCHEDULED) ?>
     <?= Html::hiddenInput('stateTitle', $scheduleOptions->getStateTitle()) ?>
     <?= Html::hiddenInput('buttonTitle', Yii::t('ContentModule.base', 'Save scheduling')) ?>
     <?= Html::hiddenInput('scheduledDate', $scheduleOptions->date) ?>

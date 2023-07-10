@@ -2,6 +2,7 @@
 
 namespace user\acceptance;
 
+use humhub\libs\StatableInterface;
 use humhub\modules\user\models\User;
 use tests\codeception\_pages\LoginPage;
 use user\AcceptanceTester;
@@ -55,7 +56,7 @@ class LoginCest
     public function testUnApprovedUser(AcceptanceTester $I)
     {
         $user = User::findOne(['id' => 4]);
-        $user->status = User::STATUS_NEED_APPROVAL;
+        $user->status = StatableInterface::STATUS_NEED_APPROVAL;
         $user->save();
 
         $I->wantTo('ensure that unapproved user cannot login');

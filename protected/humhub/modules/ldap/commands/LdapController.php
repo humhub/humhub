@@ -9,15 +9,16 @@
 namespace humhub\modules\ldap\commands;
 
 use Exception;
+use humhub\libs\StatableInterface;
 use humhub\modules\ldap\authclient\LdapAuth;
 use humhub\modules\user\models\User;
+use Laminas\Ldap\Ldap;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\console\ExitCode;
 use yii\console\widgets\Table;
 use yii\db\Expression;
 use yii\helpers\Console;
-use Laminas\Ldap\Ldap;
 
 /**
  * Console tools for manage Ldap
@@ -85,8 +86,8 @@ class LdapController extends \yii\console\Controller
 
         $this->stdout("LDAP connection successful!\n\n", Console::FG_GREEN);
 
-        $activeUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => User::STATUS_ENABLED])->count();
-        $disabledUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => User::STATUS_DISABLED])->count();
+        $activeUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => StatableInterface::STATUS_ENABLED])->count();
+        $disabledUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => StatableInterface::STATUS_DISABLED])->count();
 
         $this->stdout("LDAP user count:\t\t" . $userCount . " users.\n");;
         $this->stdout("HumHub user count (active):\t" . $activeUserCount . " users.\n");

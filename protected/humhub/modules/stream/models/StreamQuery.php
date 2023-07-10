@@ -2,23 +2,28 @@
 
 namespace humhub\modules\stream\models;
 
+use humhub\libs\StatableActiveQuery;
+use humhub\libs\StatableActiveQueryInterface;
+use humhub\libs\StatableActiveQueryTrait;
+use humhub\libs\StatableInterface;
+use humhub\libs\StatableQueryInterface;
+use humhub\modules\content\models\Content;
+use humhub\modules\stream\actions\Stream;
 use humhub\modules\stream\models\filters\BlockedUsersStreamFilter;
+use humhub\modules\stream\models\filters\ContentTypeStreamFilter;
 use humhub\modules\stream\models\filters\DateStreamFilter;
+use humhub\modules\stream\models\filters\DefaultStreamFilter;
 use humhub\modules\stream\models\filters\DraftContentStreamFilter;
+use humhub\modules\stream\models\filters\OriginatorStreamFilter;
 use humhub\modules\stream\models\filters\ScheduledContentStreamFilter;
 use humhub\modules\stream\models\filters\StreamQueryFilter;
+use humhub\modules\stream\models\filters\TopicStreamFilter;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
-use humhub\modules\stream\actions\Stream;
-use humhub\modules\stream\models\filters\ContentTypeStreamFilter;
-use humhub\modules\stream\models\filters\DefaultStreamFilter;
-use humhub\modules\stream\models\filters\OriginatorStreamFilter;
-use humhub\modules\stream\models\filters\TopicStreamFilter;
-use humhub\modules\content\models\Content;
-use humhub\modules\user\models\User;
 
 /**
  * Description of StreamQuery
@@ -26,28 +31,30 @@ use humhub\modules\user\models\User;
  * @author buddha
  * @since 1.2
  */
-class StreamQuery extends Model
+class StreamQuery extends Model implements StatableQueryInterface
 {
+    use StatableActiveQueryTrait;
+
     /**
      * @event Event triggered before filterHandlers are applied, this can be used to add custom stream filters.
      */
-    const EVENT_BEFORE_FILTER = 'beforeFilter';
+    public const EVENT_BEFORE_FILTER = 'beforeFilter';
 
     /**
      * @event Event triggered after filterHandlers are applied.
      */
-    const EVENT_AFTER_FILTER = 'afterFilter';
+    public const EVENT_AFTER_FILTER = 'afterFilter';
 
     /**
      * Default channels
      */
-    const CHANNEL_DEFAULT = 'default';
-    const CHANNEL_ACTIVITY = 'activity';
+    public const CHANNEL_DEFAULT = 'default';
+    public const CHANNEL_ACTIVITY = 'activity';
 
     /**
      * Maximum wall entries per request
      */
-    const MAX_LIMIT = 20;
+    public const MAX_LIMIT = 20;
 
     /**
      * Can be set to filter specific content types.
@@ -143,18 +150,12 @@ class StreamQuery extends Model
         ScheduledContentStreamFilter::class
     ];
 
-    /**
-     * Per default only content with published state are returned.
-     *
-     * @note Used, for example, by the Recycle Bin module to display deleted content in the stream.
-     * @var array
-     */
-    public $stateFilterCondition = ['OR', ['content.state' => Content::STATE_PUBLISHED]];
+    public string $stateColumn = 'content.state';
 
     /**
      * The content query.
      *
-     * @var ActiveQuery
+     * @var StatableActiveQuery
      */
     protected $_query;
 
@@ -207,7 +208,7 @@ class StreamQuery extends Model
     public function init()
     {
         $this->_query = Content::find();
-        // Set default user after initialization so it's avialable without assambling the query.
+        // Set default user after initialization, so it's available without assembling the query.
         $this->checkUser();
     }
 
@@ -392,6 +393,31 @@ class StreamQuery extends Model
         return $this->_query;
     }
 
+    public function getModelClass(): string
+    {
+        return $this->_query->modelClass;
+    }
+
+    /**
+     * @return array
+     */
+    public function getReturnedStates(): ?array
+    {
+        return $this->_query->getReturnedStates();
+    }
+
+    /**
+     * @param array|string|null $returnedStates
+     *
+     * @return StatableActiveQueryInterface|StatableActiveQuery
+     */
+    public function setReturnedStates($returnedStates): StatableQueryInterface
+    {
+        $this->_query->setReturnedStates($returnedStates);
+
+        return $this;
+    }
+
     /**
      * Returns the query result.
      *
@@ -437,8 +463,6 @@ class StreamQuery extends Model
         $this->checkTo();
         $this->setupCriteria();
         $this->setupFilters();
-
-        $this->_query->andWhere($this->stateFilterCondition);
 
         if (!empty($this->channel)) {
             $this->channel($this->channel);
@@ -517,7 +541,7 @@ class StreamQuery extends Model
             ->limit($this->limit);
 
         if (!Yii::$app->getModule('stream')->showDeactivatedUserContent) {
-            $this->_query->andWhere(['user.status' => User::STATUS_ENABLED]);
+            $this->_query->andWhere(['user.status' => StatableInterface::STATUS_ENABLED]);
         }
 
         if ($this->contentId) {

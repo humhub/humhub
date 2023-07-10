@@ -7,24 +7,26 @@
 
 namespace humhub\modules\content\interfaces;
 
+use humhub\libs\StatableInterface;
+
 /**
  * Interface for classes which are deletable softly.
  *
  * @see \humhub\modules\content\models\Content
  * @since 1.14
  */
-interface SoftDeletable
+interface SoftDeletable extends StatableInterface
 {
     /**
      * @event ModelEvent an event that is triggered before soft deleting a record.
      * You may set [[ModelEvent::isValid]] to be `false` to stop the deletion.
      */
-    const EVENT_BEFORE_SOFT_DELETE = 'beforeSoftDelete';
+    public const EVENT_BEFORE_SOFT_DELETE = 'beforeSoftDelete';
 
     /**
      * @event Event an event that is triggered after a record is deleted softly.
      */
-    const EVENT_AFTER_SOFT_DELETE = 'afterSoftDelete';
+    public const EVENT_AFTER_SOFT_DELETE = 'afterSoftDelete';
 
     /**
      * This method is invoked before soft deleting a record.

@@ -10,6 +10,7 @@ namespace humhub\modules\notification\components;
 
 use humhub\components\Event;
 use humhub\components\Module;
+use humhub\libs\StatableInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainerSetting;
@@ -92,7 +93,7 @@ class NotificationManager
                 continue;
             }
 
-            if ($user->status != User::STATUS_ENABLED) {
+            if ($user->status != StatableInterface::STATUS_ENABLED) {
                 continue;
             }
 

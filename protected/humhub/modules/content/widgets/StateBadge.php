@@ -11,8 +11,8 @@ use DateTime;
 use DateTimeZone;
 use humhub\components\Widget;
 use humhub\libs\Html;
+use humhub\libs\StatableInterface;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\models\Content;
 use Yii;
 
 /**
@@ -35,18 +35,18 @@ class StateBadge extends Widget
         }
 
         switch ($this->model->content->state) {
-            case Content::STATE_DRAFT:
+            case StatableInterface::STATE_DRAFT:
                 return Html::tag('span', Yii::t('ContentModule.base', 'Draft'),
                     ['class' => 'label label-danger label-state-draft']
                 );
-            case Content::STATE_SCHEDULED:
+            case StatableInterface::STATE_SCHEDULED:
                 $scheduledDateTime = new DateTime($this->model->content->scheduled_at, new DateTimeZone('UTC'));
                 return Html::tag('span', Yii::t('ContentModule.base', 'Scheduled for {dateTime}', [
                         'dateTime' => Yii::$app->formatter->asDatetime($scheduledDateTime, 'short')
                     ]),
                     ['class' => 'label label-warning label-state-scheduled']
                 );
-            case Content::STATE_DELETED:
+            case StatableInterface::STATE_DELETED:
                 return Html::tag('span', Yii::t('ContentModule.base', 'Deleted'),
                     ['class' => 'label label-danger label-state-deleted']
                 );

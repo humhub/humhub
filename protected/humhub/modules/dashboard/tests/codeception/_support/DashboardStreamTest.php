@@ -4,12 +4,12 @@
 namespace dashboard;
 
 
+use humhub\libs\StatableInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\dashboard\Module;
 use humhub\modules\dashboard\stream\DashboardStreamQuery;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 
@@ -59,7 +59,7 @@ class DashboardStreamTest extends HumHubDbTestCase
      */
     public function getUserByVisibility($visibility)
     {
-        return Space::findOne(['visibility' => $visibility, 'status' => User::STATUS_ENABLED]);
+        return Space::findOne(['visibility' => $visibility, 'status' => StatableInterface::STATUS_ENABLED]);
     }
 
     /**
