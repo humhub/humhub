@@ -12,7 +12,9 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
+use humhub\interfaces\EditableInterface;
 use humhub\interfaces\StateServiceInterface;
+use humhub\interfaces\ViewableInterface;
 use humhub\libs\StatableTrait;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\activities\ContentCreated as ActivitiesContentCreated;
@@ -91,7 +93,7 @@ use yii\helpers\Url;
  * @mixin GUID
  * @since 0.5
  */
-class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletable
+class Content extends ActiveRecord implements Movable, ContentOwner, EditableInterface, ViewableInterface, SoftDeletable
 {
     use StatableTrait;
 
@@ -854,15 +856,17 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * @throws \yii\base\InvalidConfigException
      * @since 1.1
      */
-    public function canEdit($user = null)
+    public function canEdit($user = null): bool
     {
-        if (Yii::$app->user->isGuest) {
+        $appUser = Yii::$app->user;
+
+        if ($appUser->isGuest) {
             return false;
         }
 
         if ($user === null) {
-            $user = Yii::$app->user->getIdentity();
-        } else if (!($user instanceof User)) {
+            $user = $appUser->getIdentity();
+        } elseif (!($user instanceof User)) {
             $user = User::findOne(['id' => $user]);
         }
 
@@ -880,17 +884,17 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
 
         // Check additional manage permission for the given container
         if ($this->container) {
-            if ($model->isNewRecord && $model->hasCreatePermission() && $this->container->getPermissionManager($user)->can($model->getCreatePermission())) {
+            if (($isNewRecord = $model->isNewRecord) && $model->hasCreatePermission() && $this->container->getPermissionManager($user)->can($model->getCreatePermission())) {
                 return true;
             }
-            if (!$model->isNewRecord && $model->hasManagePermission() && $this->container->getPermissionManager($user)->can($model->getManagePermission())) {
+            if (!$isNewRecord && $model->hasManagePermission() && $this->container->getPermissionManager($user)->can($model->getManagePermission())) {
                 return true;
             }
         }
 
         // Check if underlying models canEdit implementation
-        // ToDo: Implement this as interface
-        if (method_exists($model, 'canEdit') && $model->canEdit($user)) {
+        // ToDo: Send deprecation waring when not implementing EditableInterface
+        if (($model instanceof EditableInterface || method_exists($model, 'canEdit')) && $model->canEdit($user)) {
             return true;
         }
 
@@ -948,11 +952,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * @throws Throwable
      * @since 1.1
      */
-    public function canView($user = null)
+    public function canView($user = null): bool
     {
         if (!$user && !Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
-        } else if (!$user instanceof User) {
+        } elseif (!$user instanceof User) {
             $user = User::findOne(['id' => $user]);
         }
 
@@ -1065,5 +1069,4 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     {
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
     }
-
 }

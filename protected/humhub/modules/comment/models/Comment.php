@@ -343,7 +343,7 @@ class Comment extends ContentAddonActiveRecord
         return $this->message;
     }
 
-    public function canDelete($userId = '')
+    public function canDelete($userId = ''): bool
     {
 
         if ($userId == '') {
