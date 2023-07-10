@@ -254,7 +254,7 @@ class CoreJsConfig extends Widget
                             'buttonClose' => Yii::t('base', 'Close'),
                         ],
                         'deleteConfirm' => [
-                            'header' => Yii::t('ContentModule.base', '<strong>Delete content?</strong>'),
+                            'header' => Yii::t('ContentModule.base', '<strong>Delete</strong> content?'),
                             'body' => Yii::t('ContentModule.base', 'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.'),
                             'confirmText' => Yii::t('ContentModule.base', 'Delete'),
                             'cancelText' => Yii::t('ContentModule.base', 'Cancel'),
