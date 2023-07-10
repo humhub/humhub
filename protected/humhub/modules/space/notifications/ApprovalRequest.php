@@ -13,7 +13,6 @@ use humhub\modules\space\models\Membership;
 use Yii;
 use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
 
 /**
  * SpaceApprovalRequestNotification
@@ -105,8 +104,8 @@ class ApprovalRequest extends BaseNotification
 
     public function getUrl()
     {
-        return $this->source->space->getUrl() . '/manage/member/pending-approvals';
-     }
+        return $this->source->getUrl() . 'space/manage/member/pending-approvals';
+    }
 
     /**
      * @inheritdoc
