@@ -8,6 +8,7 @@
 namespace humhub\modules\content\services;
 
 use humhub\libs\DbDateValidator;
+use humhub\libs\StatableInterface;
 use humhub\modules\content\models\Content;
 use yii\base\Component;
 
@@ -30,10 +31,10 @@ class ContentStateService extends Component
     {
         parent::init();
 
-        $this->allowState(Content::STATE_PUBLISHED);
-        $this->allowState(Content::STATE_DRAFT);
-        $this->allowState(Content::STATE_SCHEDULED);
-        $this->allowState(Content::STATE_DELETED);
+        $this->allowState(StatableInterface::STATE_PUBLISHED);
+        $this->allowState(StatableInterface::STATE_DRAFT);
+        $this->allowState(StatableInterface::STATE_SCHEDULED);
+        $this->allowState(StatableInterface::STATE_DELETED);
 
         $this->trigger(self::EVENT_INIT);
     }
@@ -76,22 +77,22 @@ class ContentStateService extends Component
 
     public function isPublished(): bool
     {
-        return $this->is(Content::STATE_PUBLISHED);
+        return $this->is(StatableInterface::STATE_PUBLISHED);
     }
 
     public function isDraft(): bool
     {
-        return $this->is(Content::STATE_DRAFT);
+        return $this->is(StatableInterface::STATE_DRAFT);
     }
 
     public function isScheduled(): bool
     {
-        return $this->is(Content::STATE_SCHEDULED);
+        return $this->is(StatableInterface::STATE_SCHEDULED);
     }
 
     public function isDeleted(): bool
     {
-        return $this->is(Content::STATE_DELETED);
+        return $this->is(StatableInterface::STATE_DELETED);
     }
 
     /**
@@ -119,7 +120,7 @@ class ContentStateService extends Component
             return false;
         }
 
-        if ($state === Content::STATE_SCHEDULED) {
+        if ($state === StatableInterface::STATE_SCHEDULED) {
             if (empty($options['scheduled_at'])) {
                 return false;
             }
@@ -149,21 +150,21 @@ class ContentStateService extends Component
 
     public function publish(): bool
     {
-        return $this->update(Content::STATE_PUBLISHED);
+        return $this->update(StatableInterface::STATE_PUBLISHED);
     }
 
     public function schedule(?string $date): bool
     {
-        return $this->update(Content::STATE_SCHEDULED, ['scheduled_at' => $date]);
+        return $this->update(StatableInterface::STATE_SCHEDULED, ['scheduled_at' => $date]);
     }
 
     public function draft(): bool
     {
-        return $this->update(Content::STATE_DRAFT);
+        return $this->update(StatableInterface::STATE_DRAFT);
     }
 
     public function delete(): bool
     {
-        return $this->update(Content::STATE_DELETED);
+        return $this->update(StatableInterface::STATE_DELETED);
     }
 }

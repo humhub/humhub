@@ -12,8 +12,10 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
-use humhub\modules\activity\models\Activity;
 use humhub\modules\admin\permissions\ManageUsers;
+use humhub\libs\StatableInterface;
+use humhub\libs\StatableTrait;
+use humhub\modules\content\activities\ContentCreated as ActivitiesContentCreated;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
@@ -22,21 +24,20 @@ use humhub\modules\content\events\ContentStateEvent;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\interfaces\SoftDeletable;
 use humhub\modules\content\live\NewContent;
+use humhub\modules\content\notifications\ContentCreated as NotificationsContentCreated;
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\services\ContentStateService;
-use humhub\modules\content\services\ContentTagService;
 use humhub\modules\notification\models\Notification;
-use humhub\modules\post\models\Post;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
+use Throwable;
 use Yii;
 use yii\base\Exception;
-use yii\base\InvalidArgumentException;
 use yii\db\IntegrityException;
 use yii\helpers\Url;
 
@@ -85,12 +86,26 @@ use yii\helpers\Url;
  */
 class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletable
 {
+    use StatableTrait;
+
+    /**
+     * Content States - By default, only content with the "Published" state is returned.
+     *
+     * @const array<string,int>
+     */
+    public const STATES_AVAILABLE
+        = [
+            'published' => StatableInterface::STATE_PUBLISHED,
+            'draft' => StatableInterface::STATE_DRAFT,
+            'scheduled' => StatableInterface::STATE_SCHEDULED,
+            'deleted' => StatableInterface::STATE_DELETED,
+        ];
+
     /**
      * The default stream channel.
      * @since 1.6
      */
-    const STREAM_CHANNEL_DEFAULT = 'default';
-
+    public const STREAM_CHANNEL_DEFAULT = 'default';
 
     /**
      * A array of user objects which should informed about this new content.
@@ -102,25 +117,17 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     /**
      * @var int The private visibility mode (e.g. for space member content or user profile posts for friends)
      */
-    const VISIBILITY_PRIVATE = 0;
+    public const VISIBILITY_PRIVATE = 0;
 
     /**
      * @var int Public visibility mode, e.g. content which are visibile for followers
      */
-    const VISIBILITY_PUBLIC = 1;
+    public const VISIBILITY_PUBLIC = 1;
 
     /**
      * @var int Owner visibility mode, only visible for contentContainer + content owner
      */
-    const VISIBILITY_OWNER = 2;
-
-    /**
-     * Content States - By default, only content with the "Published" state is returned.
-     */
-    const STATE_PUBLISHED = 1;
-    const STATE_DRAFT = 10;
-    const STATE_SCHEDULED = 20;
-    const STATE_DELETED = 100;
+    public const VISIBILITY_OWNER = 2;
 
     /**
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
@@ -243,7 +250,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
 
             if ($this->getStateService()->isPublished()) {
                 // Run process for new content(Send notifications) only after publishing the Content
-                $this->processNewContent();
+                $this->processNewContent($insert);
                 // Also run process for parent object in order to send notifications like mentioning users,
                 // for case when it was not published on creating
                 if (!$insert && $model instanceof ActiveRecord) {
@@ -272,7 +279,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
         parent::afterSave($insert, $changedAttributes);
     }
 
-    private function processNewContent()
+    protected function processNewContent($insert)
     {
         $record = $this->getModel();
 
@@ -283,8 +290,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
         }
 
         // TODO: handle ContentCreated notifications and live events for global content
-
-        if (!$this->isMuted()) {
+        if ($insert && !$this->isMuted()) {
             $this->notifyContentCreated();
         }
 
@@ -300,11 +306,14 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
                 'silent' => $this->isMuted(),
                 'streamChannel' => $this->stream_channel,
                 'contentId' => $this->id,
-                'insert' => true
+                'insert' => $insert
             ]));
         }
-    }
 
+        SearchHelper::queueUpdate($record);
+
+        parent::afterSave($insert, []);
+    }
 
     /**
      * @return bool checks if the given content allows content creation notifications and activities
@@ -332,12 +341,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
             );
         }
 
-        \humhub\modules\content\notifications\ContentCreated::instance()
+        NotificationsContentCreated::instance()
             ->from($this->createdBy)
             ->about($contentSource)
             ->sendBulk($userQuery);
 
-        \humhub\modules\content\activities\ContentCreated::instance()
+        ActivitiesContentCreated::instance()
             ->from($this->createdBy)
             ->about($contentSource)->save();
     }
@@ -359,7 +368,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      */
     public function afterDelete()
     {
-        // Try delete the underlying object (Post, Question, Task, ...)
+        // Try to delete the underlying object (Post, Question, Task, ...)
         $this->resetPolymorphicRelation();
 
         /** @var ContentActiveRecord $record */
@@ -378,7 +387,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     public function beforeSoftDelete(): bool
     {
         $event = new ContentEvent(['content' => $this]);
-        $this->trigger(self::EVENT_BEFORE_SOFT_DELETE, $event);
+        $this->trigger(SoftDeletable::EVENT_BEFORE_SOFT_DELETE, $event);
 
         return $event->isValid;
     }
@@ -410,7 +419,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      */
     public function afterSoftDelete()
     {
-        $this->trigger(self::EVENT_AFTER_SOFT_DELETE, new ContentEvent(['content' => $this]));
+        $this->trigger(SoftDeletable::EVENT_AFTER_SOFT_DELETE, new ContentEvent(['content' => $this]));
     }
 
     /**
@@ -576,7 +585,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
 
     /**
      * {@inheritdoc}
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function move(ContentContainerActiveRecord $container = null, $force = false)
     {
@@ -675,7 +684,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * @param ContentContainerActiveRecord|null $container
      * @return bool determines if the current user is generally permitted to move content on the given container (or the related container if no container was provided)
      * @throws IntegrityException
-     * @throws \Throwable
+     * @throws Throwable
      * @throws \yii\base\InvalidConfigException
      */
     public function checkMovePermission(ContentContainerActiveRecord $container = null)
@@ -839,7 +848,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * @return bool can edit/create this content
      * @throws Exception
      * @throws IntegrityException
-     * @throws \Throwable
+     * @throws Throwable
      * @throws \yii\base\InvalidConfigException
      * @since 1.1
      */
@@ -934,7 +943,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * @param User|integer $user
      * @return boolean can view this content
      * @throws Exception
-     * @throws \Throwable
+     * @throws Throwable
      * @since 1.1
      */
     public function canView($user = null)

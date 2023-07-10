@@ -73,9 +73,6 @@ class PinnedContentStreamFilter extends StreamQueryFilter
     private function fetchPinnedContent(): array
     {
         $pinnedQuery = clone $this->query;
-        if (!empty($this->streamQuery->stateFilterCondition)) {
-            $pinnedQuery->andWhere($this->streamQuery->stateFilterCondition);
-        }
         $pinnedQuery->andWhere(['content.pinned' => 1]);
         $pinnedQuery->andWhere(['content.contentcontainer_id' => $this->container->contentcontainer_id]);
         $pinnedQuery->limit(1000);

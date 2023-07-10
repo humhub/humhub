@@ -8,12 +8,13 @@
 
 namespace humhub\modules\dashboard\stream\filters;
 
-use Yii;
+use humhub\libs\StatableInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\dashboard\Module;
-use humhub\modules\stream\models\filters\StreamQueryFilter;
 use humhub\modules\space\models\Space;
+use humhub\modules\stream\models\filters\StreamQueryFilter;
 use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * Stream filter handling dashboard content stream visibility for members of the network.
@@ -85,7 +86,7 @@ class DashboardMemberStreamFilterLegitimation extends StreamQueryFilter
             'userContainer.id = contentcontainer.pk AND contentcontainer.class = :userModel',
             [':userModel' => User::class]
         );
-        $this->query->andWhere(['OR', 'userContainer.id IS NULL', ['userContainer.status' => User::STATUS_ENABLED]]);
+        $this->query->andWhere(['OR', 'userContainer.id IS NULL', ['userContainer.status' => StatableInterface::STATUS_ENABLED]]);
     }
 
     /**

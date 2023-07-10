@@ -9,6 +9,7 @@
 
 namespace humhub\modules\marketplace\components;
 
+use humhub\libs\StatableInterface;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\marketplace\models\Licence;
 use humhub\modules\marketplace\Module;
@@ -16,8 +17,8 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Component;
-use yii\base\InvalidConfigException;
 use yii\base\Event;
+use yii\base\InvalidConfigException;
 
 
 /**
@@ -185,7 +186,7 @@ class LicenceManager extends Component
     private static function getStats()
     {
         return [
-            'tua' => User::find()->andWhere(['status' => User::STATUS_ENABLED])->count(),
+            'tua' => User::find()->andWhere(['status' => StatableInterface::STATUS_ENABLED])->count(),
             'tu' => User::find()->count(),
             'ts' => Space::find()->count(),
         ];

@@ -2,14 +2,14 @@
 
 namespace humhub\modules\dashboard\stream\filters;
 
-use humhub\modules\friendship\models\Friendship;
-use Yii;
+use humhub\libs\StatableInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\dashboard\Module;
 use humhub\modules\space\models\Membership;
-use humhub\modules\stream\models\filters\StreamQueryFilter;
 use humhub\modules\space\models\Space;
+use humhub\modules\stream\models\filters\StreamQueryFilter;
 use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * Stream filter handling dashboard content stream visibility for members of the network.
@@ -35,7 +35,7 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
             ':userId' => $this->user->id,
             ':spaceMembershipStatus' => Membership::STATUS_MEMBER,
             ':spaceEnabledStatus' => Space::STATUS_ENABLED,
-            ':userEnabledStatus' => User::STATUS_ENABLED,
+            ':userEnabledStatus' => StatableInterface::STATUS_ENABLED,
             ':userModel' => User::class,
             ':spaceModel' => Space::class,
             ':visibilityPrivate' => Content::VISIBILITY_PRIVATE,

@@ -2,6 +2,7 @@
 
 namespace humhub\modules\stream\models\filters;
 
+use humhub\libs\StatableInterface;
 use humhub\modules\activity\stream\ActivityStreamQuery;
 use humhub\modules\content\models\Content;
 use Yii;
@@ -28,7 +29,7 @@ class DraftContentStreamFilter extends StreamQueryFilter
         if ($this->allowPinContent()) {
             $this->fetchDraftContent();
         } else {
-            $this->streamQuery->stateFilterCondition[] = ['content.state' => Content::STATE_DRAFT];
+            $this->streamQuery->andWhereState(StatableInterface::STATE_DRAFT);
         }
     }
 
@@ -39,7 +40,7 @@ class DraftContentStreamFilter extends StreamQueryFilter
     {
         $draftQuery = clone $this->query;
         $draftQuery->andWhere([
-                'AND', ['content.state' => Content::STATE_DRAFT],
+                'AND', ['content.state' => StatableInterface::STATE_DRAFT],
                 ['content.created_by' => Yii::$app->user->id]]
         );
         $draftQuery->limit(100);

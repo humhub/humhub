@@ -16,11 +16,12 @@
 namespace humhub\modules\content\components;
 
 
-use Yii;
 use humhub\components\access\StrictAccess;
+use humhub\libs\StatableInterface;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * Class ContentContainerControllerAccess
@@ -147,7 +148,7 @@ class ContentContainerControllerAccess extends StrictAccess
      */
     private function canAccessUser()
     {
-        if($this->contentContainer->status == User::STATUS_NEED_APPROVAL) {
+        if($this->contentContainer->status == StatableInterface::STATUS_NEED_APPROVAL) {
             $this->reason = Yii::t('UserModule.profile', 'This user account is not approved yet!');
             $this->code = 404;
             return false;

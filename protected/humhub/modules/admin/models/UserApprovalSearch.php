@@ -8,10 +8,11 @@
 
 namespace humhub\modules\admin\models;
 
+use humhub\libs\StatableInterface;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use humhub\modules\user\models\User;
 
 /**
  * Description of UserSearch
@@ -81,7 +82,7 @@ class UserApprovalSearch extends User
 
         $query->administrableBy(Yii::$app->user->getIdentity());
 
-        $query->andWhere(['user.status' => User::STATUS_NEED_APPROVAL]);
+        $query->andWhere(['user.status' => StatableInterface::STATUS_NEED_APPROVAL]);
         $query->andFilterWhere(['id' => $this->id]);
         $query->andFilterWhere(['like', 'user.id', $this->id]);
         $query->andFilterWhere(['like', 'user.username', $this->username]);
@@ -94,7 +95,7 @@ class UserApprovalSearch extends User
 
     public static function getUserApprovalCount()
     {
-        return User::find()->where(['user.status' => User::STATUS_NEED_APPROVAL])->count();
+        return User::find()->where(['user.status' => StatableInterface::STATUS_NEED_APPROVAL])->count();
     }
 
 }

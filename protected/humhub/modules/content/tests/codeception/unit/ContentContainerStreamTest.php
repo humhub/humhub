@@ -2,6 +2,7 @@
 
 namespace tests\codeception\unit\modules\content;
 
+use humhub\libs\StatableInterface;
 use humhub\modules\stream\models\filters\DefaultStreamFilter;
 use Yii;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -99,7 +100,7 @@ class ContentContainerStreamTest extends HumHubDbTestCase
     public function testDraftContent()
     {
         $this->becomeUser('User2');
-        $draft1Id = $this->createPost('Some Draft', ['visibility' => Content::VISIBILITY_PRIVATE, 'state' => Content::STATE_DRAFT]);
+        $draft1Id = $this->createPost('Some Draft', ['visibility' => Content::VISIBILITY_PRIVATE, 'state' => StatableInterface::STATE_DRAFT]);
         $regular1Id = $this->createPost('Regular 1 by U2', ['visibility' => Content::VISIBILITY_PRIVATE]);
         $this->becomeUser('Admin');
         $regular2Id = $this->createPost('Regular 2 by Admin', ['visibility' => Content::VISIBILITY_PRIVATE]);
@@ -187,7 +188,7 @@ class ContentContainerStreamTest extends HumHubDbTestCase
             $content['visibility'] = Content::VISIBILITY_PRIVATE;
         }
         if (!isset($content['state'])) {
-            $content['state'] = Content::STATE_PUBLISHED;
+            $content['state'] = StatableInterface::STATE_PUBLISHED;
         }
 
         $post = new Post;

@@ -8,9 +8,9 @@
 
 namespace humhub\components;
 
-use Yii;
-use humhub\modules\user\models\User;
 use humhub\modules\file\components\FileManager;
+use humhub\modules\user\models\User;
+use Yii;
 use yii\base\InvalidConfigException;
 use yii\db\ColumnSchema;
 use yii\db\Expression;
@@ -22,11 +22,10 @@ use yii\validators\Validator;
  * @property FileManager $fileManager
  * @property User $createdBy
  * @property User $updatedBy
- * @author luke
+ * @property-read String $uniqueId
  */
 class ActiveRecord extends \yii\db\ActiveRecord
 {
-
     /**
      * @var \humhub\modules\file\components\FileManager
      */
@@ -61,7 +60,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
         if ($this->hasAttribute('updated_at')) {
             $this->updated_at = date('Y-m-d H:i:s');
         }
-        if (isset(Yii::$app->user->id) && $this->hasAttribute('updated_by')) {
+        if (isset(Yii::$app->user) && $this->hasAttribute('updated_by')) {
             $this->updated_by = Yii::$app->user->id;
         }
 

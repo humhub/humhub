@@ -8,9 +8,10 @@
 
 namespace humhub\modules\admin\grid;
 
-use Yii;
 use humhub\libs\ActionColumn;
+use humhub\libs\StatableInterface;
 use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * UserActionColumn
@@ -19,7 +20,6 @@ use humhub\modules\user\models\User;
  */
 class UserActionColumn extends ActionColumn
 {
-
     /**
      * @inheritdoc
      */
@@ -28,16 +28,16 @@ class UserActionColumn extends ActionColumn
         /** @var User $model */
 
         $actions = [];
-        if ($model->status == User::STATUS_SOFT_DELETED) {
+        if ($model->status == StatableInterface::STATUS_SOFT_DELETED) {
             $actions[Yii::t('AdminModule.user', 'Permanently delete')] = ['delete'];
         } else {
             $actions[Yii::t('base', 'Edit')] = ['edit'];
 
-            if(Yii::$app->user->isAdmin() || !$model->isSystemAdmin()) {
+            if (Yii::$app->user->isAdmin() || !$model->isSystemAdmin()) {
                 $actions[] = '---';
-                if ($model->status == User::STATUS_DISABLED) {
+                if ($model->status == StatableInterface::STATUS_DISABLED) {
                     $actions[Yii::t('AdminModule.user', 'Enable')] = ['enable', 'linkOptions' => ['data-method' => 'post', 'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure that you want to enable this user?')]];
-                } elseif ($model->status == User::STATUS_ENABLED) {
+                } elseif ($model->status == StatableInterface::STATUS_ENABLED) {
                     $actions[Yii::t('AdminModule.user', 'Disable')] = ['disable', 'linkOptions' => ['data-method' => 'post', 'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure that you want to disable this user?')]];
                 }
                 if (!$model->isCurrentUser()) {
@@ -46,7 +46,7 @@ class UserActionColumn extends ActionColumn
             }
 
 
-            if ($model->status == User::STATUS_ENABLED) {
+            if ($model->status == StatableInterface::STATUS_ENABLED) {
                 $actions[] = '---';
                 if (Yii::$app->user->canImpersonate($model)) {
                     $actions[Yii::t('AdminModule.user', 'Impersonate')] = ['impersonate', 'linkOptions' => ['data-method' => 'post', 'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure that you want to impersonate this user?')]];
@@ -58,5 +58,4 @@ class UserActionColumn extends ActionColumn
 
         return parent::renderDataCellContent($model, $key, $index);
     }
-
 }
