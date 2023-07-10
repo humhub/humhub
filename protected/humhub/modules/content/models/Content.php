@@ -12,8 +12,11 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
-use humhub\modules\activity\models\Activity;
+use humhub\interfaces\ArchiveableInterface;
+use humhub\interfaces\EditableInterface;
+use humhub\interfaces\ViewableInterface;
 use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\content\activities\ContentCreated as ActivitiesContentCreated;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
@@ -22,21 +25,22 @@ use humhub\modules\content\events\ContentStateEvent;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\interfaces\SoftDeletable;
 use humhub\modules\content\live\NewContent;
+use humhub\modules\content\notifications\ContentCreated as NotificationsContentCreated;
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\services\ContentStateService;
 use humhub\modules\content\services\ContentTagService;
 use humhub\modules\notification\models\Notification;
-use humhub\modules\post\models\Post;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
+use Throwable;
 use Yii;
 use yii\base\Exception;
-use yii\base\InvalidArgumentException;
+use yii\db\ActiveQuery;
 use yii\db\IntegrityException;
 use yii\helpers\Url;
 
@@ -78,19 +82,24 @@ use yii\helpers\Url;
  * @property string $updated_at
  * @property integer $updated_by
  * @property ContentContainer $contentContainer
+ * @property-read mixed $contentName
+ * @property-read mixed $content
+ * @property-read ActiveQuery $tagRelations
+ * @property-read ContentActiveRecord $model
+ * @property-read mixed $contentDescription
+ * @property-read StateServiceInterface $stateService
  * @property ContentContainerActiveRecord $container
  * @mixin PolymorphicRelation
  * @mixin GUID
  * @since 0.5
  */
-class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletable
+class Content extends ActiveRecord implements Movable, ContentOwner, ArchiveableInterface, EditableInterface, ViewableInterface, SoftDeletable
 {
     /**
      * The default stream channel.
      * @since 1.6
      */
-    const STREAM_CHANNEL_DEFAULT = 'default';
-
+    public const STREAM_CHANNEL_DEFAULT = 'default';
 
     /**
      * A array of user objects which should informed about this new content.
@@ -102,25 +111,25 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     /**
      * @var int The private visibility mode (e.g. for space member content or user profile posts for friends)
      */
-    const VISIBILITY_PRIVATE = 0;
+    public const VISIBILITY_PRIVATE = 0;
 
     /**
      * @var int Public visibility mode, e.g. content which are visibile for followers
      */
-    const VISIBILITY_PUBLIC = 1;
+    public const VISIBILITY_PUBLIC = 1;
 
     /**
      * @var int Owner visibility mode, only visible for contentContainer + content owner
      */
-    const VISIBILITY_OWNER = 2;
+    public const VISIBILITY_OWNER = 2;
 
     /**
      * Content States - By default, only content with the "Published" state is returned.
      */
-    const STATE_PUBLISHED = 1;
-    const STATE_DRAFT = 10;
-    const STATE_SCHEDULED = 20;
-    const STATE_DELETED = 100;
+    public const STATE_PUBLISHED = 1;
+    public const STATE_DRAFT = 10;
+    public const STATE_SCHEDULED = 20;
+    public const STATE_DELETED = 100;
 
     /**
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
@@ -136,7 +145,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     /**
      * @event Event is used when a Content state is changed.
      */
-    const EVENT_STATE_CHANGED = 'changedState';
+    public const EVENT_STATE_CHANGED = 'changedState';
 
     /**
      * @inheritdoc
@@ -332,12 +341,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
             );
         }
 
-        \humhub\modules\content\notifications\ContentCreated::instance()
+        NotificationsContentCreated::instance()
             ->from($this->createdBy)
             ->about($contentSource)
             ->sendBulk($userQuery);
 
-        \humhub\modules\content\activities\ContentCreated::instance()
+        ActivitiesContentCreated::instance()
             ->from($this->createdBy)
             ->about($contentSource)->save();
     }
@@ -359,7 +368,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      */
     public function afterDelete()
     {
-        // Try delete the underlying object (Post, Question, Task, ...)
+        // Try to delete the underlying object (Post, Question, Task, ...)
         $this->resetPolymorphicRelation();
 
         /** @var ContentActiveRecord $record */
@@ -544,19 +553,31 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * @throws Exception
      * @throws \yii\base\InvalidConfigException
      */
-    public function canArchive(): bool
+    public function canArchive($user = null): bool
     {
-        // Currently global content can not be archived
-        if (!$this->getContainer()) {
-            return $this->canEdit();
-        }
+        $appUser = Yii::$app->user;
 
-        // No need to archive content on an archived container, content is marked as archived already
-        if ($this->getContainer()->isArchived()) {
+        if ($appUser->isGuest) {
             return false;
         }
 
-        return $this->getContainer()->permissionManager->can(new ManageContent());
+        if ($user === null) {
+            $user = $appUser->getIdentity();
+        } elseif (!($user instanceof User)) {
+            $user = User::findOne(['id' => $user]);
+        }
+
+        // Currently global content can not be archived
+        if (!$container = $this->getContainer()) {
+            return $this->canEdit($user);
+        }
+
+        // No need to archive content on an archived container, content is marked as archived already
+        if ($container->isArchived()) {
+            return false;
+        }
+
+        return $container->getPermissionManager($user)->can(new ManageContent());
     }
 
     /**
@@ -576,7 +597,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
 
     /**
      * {@inheritdoc}
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function move(ContentContainerActiveRecord $container = null, $force = false)
     {
@@ -675,7 +696,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * @param ContentContainerActiveRecord|null $container
      * @return bool determines if the current user is generally permitted to move content on the given container (or the related container if no container was provided)
      * @throws IntegrityException
-     * @throws \Throwable
+     * @throws Throwable
      * @throws \yii\base\InvalidConfigException
      */
     public function checkMovePermission(ContentContainerActiveRecord $container = null)
@@ -770,7 +791,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * Relation to ContentContainer model
      * Note: this is not a Space or User instance!
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      * @since 1.1
      */
     public function getContentContainer()
@@ -781,7 +802,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     /**
      * Returns the ContentTagRelation query.
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      * @since 1.2.2
      */
     public function getTagRelations()
@@ -792,7 +813,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     /**
      * Returns all content related tags ContentTags related to this content.
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      * @since 1.2.2
      */
     public function getTags($tagClass = ContentTag::class)
@@ -839,19 +860,21 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * @return bool can edit/create this content
      * @throws Exception
      * @throws IntegrityException
-     * @throws \Throwable
+     * @throws Throwable
      * @throws \yii\base\InvalidConfigException
      * @since 1.1
      */
-    public function canEdit($user = null)
+    public function canEdit($user = null): bool
     {
-        if (Yii::$app->user->isGuest) {
+        $appUser = Yii::$app->user;
+
+        if ($appUser->isGuest) {
             return false;
         }
 
         if ($user === null) {
-            $user = Yii::$app->user->getIdentity();
-        } else if (!($user instanceof User)) {
+            $user = $appUser->getIdentity();
+        } elseif (!($user instanceof User)) {
             $user = User::findOne(['id' => $user]);
         }
 
@@ -869,17 +892,17 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
 
         // Check additional manage permission for the given container
         if ($this->container) {
-            if ($model->isNewRecord && $model->hasCreatePermission() && $this->container->getPermissionManager($user)->can($model->getCreatePermission())) {
+            if (($isNewRecord = $model->isNewRecord) && $model->hasCreatePermission() && $this->container->getPermissionManager($user)->can($model->getCreatePermission())) {
                 return true;
             }
-            if (!$model->isNewRecord && $model->hasManagePermission() && $this->container->getPermissionManager($user)->can($model->getManagePermission())) {
+            if (!$isNewRecord && $model->hasManagePermission() && $this->container->getPermissionManager($user)->can($model->getManagePermission())) {
                 return true;
             }
         }
 
         // Check if underlying models canEdit implementation
-        // ToDo: Implement this as interface
-        if (method_exists($model, 'canEdit') && $model->canEdit($user)) {
+        // ToDo: Send deprecation waring when not implementing EditableInterface
+        if (($model instanceof EditableInterface || method_exists($model, 'canEdit')) && $model->canEdit($user)) {
             return true;
         }
 
@@ -934,14 +957,14 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * @param User|integer $user
      * @return boolean can view this content
      * @throws Exception
-     * @throws \Throwable
+     * @throws Throwable
      * @since 1.1
      */
-    public function canView($user = null)
+    public function canView($user = null): bool
     {
         if (!$user && !Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
-        } else if (!$user instanceof User) {
+        } elseif (!$user instanceof User) {
             $user = User::findOne(['id' => $user]);
         }
 
@@ -1070,5 +1093,4 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     {
         $this->getStateService()->set($state, $options);
     }
-
 }
