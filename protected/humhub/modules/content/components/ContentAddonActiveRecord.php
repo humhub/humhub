@@ -9,6 +9,9 @@
 namespace humhub\modules\content\components;
 
 use humhub\components\ActiveRecord;
+use humhub\interfaces\DeletableInterface;
+use humhub\interfaces\EditableInterface;
+use humhub\interfaces\ReadableInterface;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;
@@ -36,9 +39,8 @@ use yii\base\Exception;
  * @package humhub.components
  * @since 0.5
  */
-class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
+class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, ReadableInterface, EditableInterface, DeletableInterface
 {
-
     /**
      * @var boolean also update underlying contents last update stream sorting
      */
@@ -136,9 +138,10 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
      * Checks if the given / or current user can delete this content.
      * Currently only the creator can remove.
      *
+     * @param null $userId
      * @return boolean
      */
-    public function canDelete()
+    public function canDelete($userId = null): bool
     {
         if ($this->created_by == Yii::$app->user->id) {
             return true;
@@ -150,11 +153,12 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
     /**
      * Check if current user can read this object
      *
+     * @param string $userId
      * @return boolean
      */
-    public function canRead()
+    public function canRead($userId = ""): bool
     {
-        return $this->content->canView();
+        return $this->content->canView($userId);
     }
 
     /**
@@ -162,24 +166,27 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
      *
      * @return boolean
      * @deprecated since 1.4
+     * @see static::canEdit()
      */
-    public function canWrite()
+    public function canWrite($userId = "")
     {
-        return $this->canEdit();
+        return $this->canEdit($userId);
     }
 
     /**
      * Checks if this record can be edited
      *
-     * @param User|null $user the user
+     * @param User|int|null $user the user
      * @return boolean
      * @since 1.4
      */
-    public function canEdit(User $user = null)
+    public function canEdit($user = null): bool
     {
         if ($user === null && Yii::$app->user->isGuest) {
             return false;
-        } elseif ($user === null) {
+        }
+
+        if ($user === null) {
             /** @var User $user */
             try {
                 $user = Yii::$app->user->getIdentity();
