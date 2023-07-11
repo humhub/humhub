@@ -1,14 +1,14 @@
 <?php
 
-/**
+/*
  * @link      https://www.humhub.org/
  * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
  * @license   https://www.humhub.com/licences
  */
 
-namespace humhub\exceptions;
+namespace humhub\components;
 
-class InvalidArgumentTypeException extends InvalidArgumentException
+class Model extends \yii\base\Model
 {
-    use InvalidTypeExceptionTrait;
+    use ModelTrait;
 }
