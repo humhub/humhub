@@ -15,15 +15,12 @@ use humhub\modules\marketplace\widgets\MarketplaceLink;
         <?= MarketplaceLink::info(Yii::t('AdminModule.base', 'Marketplace'))
             ->icon('cubes')
             ->right()->sm() ?>
-
-        <h4><?= Yii::t('AdminModule.base', 'Overview') ?></h4>
+    </div>
+    <div class="panel-body">
         <div class="help-block">
             <?= Yii::t('AdminModule.base', 'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.') ?>
         </div>
-
         <?= AvailableModuleUpdatesInfo::widget() ?>
-    </div>
-    <div class="panel-body">
         <?= InstalledModuleList::widget() ?>
         <?= MarketplaceLink::primary(Yii::t('AdminModule.base', 'Visit Marketplace'))
             ->icon('external-link') ?>

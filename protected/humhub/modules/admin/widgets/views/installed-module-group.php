@@ -15,7 +15,7 @@ use yii\web\View;
 /* @var Module[] $modules */
 ?>
 <div class="modules-group">
-    <strong><?= $title ?> (<span class="group-modules-count-<?= $type ?>"><?= $count ?></span>) :</strong>
+    <strong><?= $title ?> (<span class="group-modules-count-<?= $type ?>"><?= $count ?></span>):</strong>
 
     <?php foreach ($modules as $module) : ?>
         <?= $this->render('installed-module', ['module' => $module]) ?>
