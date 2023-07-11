@@ -75,3 +75,4 @@ HumHub Changelog
 - Fix #79: Fix Headline HelpText Style
 - Fix #6418: Fix login from modal window
 - Fix #6415: Fix caching keys on space directory
+- Fix #6424: Fix width of select2 dropdown inputs
