@@ -12,8 +12,8 @@ use humhub\modules\marketplace\widgets\MarketplaceLink;
 <div class="panel panel-default">
     <div class="panel-heading">
         <?= Yii::t('AdminModule.base', '<strong>Module</strong> Configuration') ?>
-        <?= MarketplaceLink::info(Yii::t('AdminModule.base', 'Marketplace'))
-            ->icon('cubes')
+        <?= MarketplaceLink::info(Yii::t('AdminModule.base', 'Add more modules'))
+            ->icon('external-link')
             ->right()->sm() ?>
     </div>
     <div class="panel-body">

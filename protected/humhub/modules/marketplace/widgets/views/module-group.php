@@ -17,7 +17,7 @@ use humhub\modules\marketplace\widgets\ModuleCard;
 /* @var Module[] $modules */
 ?>
 <?php if ($title !== false) : ?>
-    <h4 class="modules-type"><?= $title ?> (<span class="group-modules-count-<?= $type ?>"><?= $count ?></span>)</h4>
+    <h4 class="modules-type"><?= $title ?> (<span class="group-modules-count-<?= $type ?>"><?= $count ?></span>):</h4>
 <?php endif; ?>
 
 <div class="row cards">
