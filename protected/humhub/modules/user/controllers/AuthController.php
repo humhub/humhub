@@ -297,14 +297,22 @@ class AuthController extends Controller
             ) {
                 $redirectUrl = $linkRegistrationService->getSpace()->getUrl();
             }
+        }
 
+        // NOTE: The method `htmlRedirect` renders `Html::nonce()`, so it must be run before
+        //       a resetting of nonce on the event `humhub\modules\web\Events\onAfterLogin`
+        $result = Yii::$app->request->getIsAjax()
+            ? $this->htmlRedirect($redirectUrl)
+            : $this->redirect($redirectUrl);
+
+        if ($success) {
             $this->trigger(static::EVENT_AFTER_LOGIN, new UserEvent(['user' => Yii::$app->user->identity]));
             if (method_exists($authClient, 'onSuccessLogin')) {
                 $authClient->onSuccessLogin();
             }
         }
 
-        return Yii::$app->request->getIsAjax() ? $this->htmlRedirect($redirectUrl) : $this->redirect($redirectUrl);
+        return $result;
     }
 
     /**

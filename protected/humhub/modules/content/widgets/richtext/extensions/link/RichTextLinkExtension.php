@@ -40,7 +40,7 @@ class RichTextLinkExtension extends RichTextContentExtension
      * @param RichTextExtensionMatch $match
      * @return string
      */
-    public function initMatch(array $match) : RichTextExtensionMatch
+    public function initMatch(array $match): RichTextExtensionMatch
     {
         return new RichTextLinkExtensionMatch(['match' => $match]);
     }
@@ -48,18 +48,18 @@ class RichTextLinkExtension extends RichTextContentExtension
 
     public static function convertToPlainText($text, $url)
     {
-        if(!static::validateNonExtensionUrl($url)) {
+        if (!static::validateNonExtensionUrl($url)) {
             return $text;
         }
 
-        return trim($text).'('.$url.')';
+        return trim($text) . '(' . $url . ')';
     }
 
     public static function validateNonExtensionUrl($url)
     {
         $protocols = ['http', 'https', 'mailto', '#', 'ftp', 'ftps', '/'];
         foreach ($protocols as $protocol) {
-            if(strpos($url, $protocol . ':') === 0) {
+            if (strpos($url, $protocol . ':') === 0) {
                 return true;
             }
         }
@@ -76,36 +76,36 @@ class RichTextLinkExtension extends RichTextContentExtension
         return static::getLinkExtensionPattern($this->key);
     }
 
-    public function validateExtensionUrl(string $url) : bool
+    public function validateExtensionUrl(string $url): bool
     {
         return strpos($url, $this->key . ':') === 0;
     }
 
-    public static function buildLink(string $text, string $url, string $title = null) : string
+    public static function buildLink(string $text, string $url, string $title = null): string
     {
-        if(!$title) {
-            return '['.$text.']('.$url.')';
+        if (!$title) {
+            return '[' . $text . '](' . $url . ')';
         }
 
-        return '['.$text.']('.$url.' "'.$title.'")';
+        return '[' . $text . '](' . $url . ' "' . $title . '")';
     }
 
-    public static function buildExtensionLink(string $text, string $extensionId, string $title = null, string $addition = '') : string
+    public static function buildExtensionLink(string $text, string $extensionId, string $title = null, string $addition = ''): string
     {
-        if(!empty($addition)) {
-            $addition = ' '.$addition;
+        if (!empty($addition)) {
+            $addition = ' ' . $addition;
         }
 
-        if(!$title) {
-            return '['.$text.']('.static::instance()->key.':'.$extensionId.$addition.')';
+        if (!$title) {
+            return '[' . $text . '](' . static::instance()->key . ':' . $extensionId . $addition . ')';
         }
 
-        return '['.$text.']('.static::instance()->key.':'.$extensionId.' "'.$title.'"'.$addition.')';
+        return '[' . $text . '](' . static::instance()->key . ':' . $extensionId . ' "' . $title . '"' . $addition . ')';
     }
 
-    public function cutExtensionKeyFromUrl(string $url) : string
+    public function cutExtensionKeyFromUrl(string $url): string
     {
-        if(!$this->validateExtensionUrl($url)) {
+        if (!$this->validateExtensionUrl($url)) {
             return $url;
         }
 
@@ -116,14 +116,14 @@ class RichTextLinkExtension extends RichTextContentExtension
      * @param string $extension the extension to parse, if not set all extensions are included
      * @return string the regex pattern for a given extension or all extension if no specific extension string is given
      */
-    public static function getLinkExtensionPattern($extension = '[a-zA-Z-_]+') : string
+    public static function getLinkExtensionPattern($extension = '[a-zA-Z-_]+'): string
     {
-        if($extension === null) {
-            $extension  = '[a-zA-Z-_]+';
+        if ($extension === null) {
+            $extension = '[a-zA-Z-_]+';
         }
 
         // [<text>](<extension>:<id> "<title>" <addition>   )
-        return '/(?<!\\\\)!?\[([^\]]*)\]\(('.$extension.'):{1}([^\)\s]*)(?:\s)?(?:"([^"]*)")?(?:\s)?([^\)]*)\)/is';
+        return '/(?<!\\\\)!?\[([^\]]*)\]\((' . $extension . '):{1}([^\)\s]*)(?:\s)?(?:"([^"]*)")?(?:\s)?([^\)]*)\)/is';
     }
 
     public function onBeforeConvert(string $text, string $format, array $options = []): string
@@ -136,11 +136,13 @@ class RichTextLinkExtension extends RichTextContentExtension
         // TODO: Implement onBeforeConvertLink() method.
     }
 
-    public function onBeforeOutput(ProsemirrorRichText $richtext, string $output): string {
+    public function onBeforeOutput(ProsemirrorRichText $richtext, string $output): string
+    {
         return $output;
     }
 
-    public function onAfterOutput(ProsemirrorRichText $richtext, string $output): string  {
+    public function onAfterOutput(ProsemirrorRichText $richtext, string $output): string
+    {
         return $output;
     }
 }

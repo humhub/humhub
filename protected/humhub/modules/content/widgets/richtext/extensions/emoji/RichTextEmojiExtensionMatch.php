@@ -1,22 +1,16 @@
 <?php
 
-
 namespace humhub\modules\content\widgets\richtext\extensions\emoji;
 
-
-use humhub\libs\EmojiMap;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtensionMatch;
 
 /**
  * Richtext emoji extension match contains the result of the following emoji format:
  *
  * :<emojiName>:
- *
- * @package humhub\modules\content\widgets\richtext\extensions\emoji
  */
 class RichTextEmojiExtensionMatch extends RichTextExtensionMatch
 {
-
     /**
      * Returns the full match string
      * @return string

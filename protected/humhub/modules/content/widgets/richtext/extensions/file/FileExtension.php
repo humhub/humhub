@@ -16,7 +16,6 @@ use yii\web\UploadedFile;
  * This LinkExtension is used to represent mentionings in the richtext as:
  *
  * [<name>](mention:<guid> "<url>")
- *
  */
 class FileExtension extends RichTextLinkExtension
 {
@@ -25,13 +24,13 @@ class FileExtension extends RichTextLinkExtension
     /**
      * @inheritDoc
      */
-    public function onBeforeConvertLink(LinkParserBlock $linkBlock) : void
+    public function onBeforeConvertLink(LinkParserBlock $linkBlock): void
     {
         $guid = $this->cutExtensionKeyFromUrl($linkBlock->getUrl());
 
         $file = File::findOne(['guid' => $guid]);
 
-        if(!$file) {
+        if (!$file) {
             $linkBlock->setResult($linkBlock->getParsedText());
             return;
         }
@@ -39,15 +38,15 @@ class FileExtension extends RichTextLinkExtension
         $linkBlock->setBlock($linkBlock->getParsedText(), $file->getUrl(), null, $file->id);
     }
 
-    public static function buildFileLink(File $file) : string
+    public static function buildFileLink(File $file): string
     {
 
-        return static::buildLink($file->file_name, 'file-guid:'.$file->guid, $file->getUrl([], true));
+        return static::buildLink($file->file_name, 'file-guid:' . $file->guid, $file->getUrl([], true));
     }
 
-    public static function buildFileNotFound($name, $guid) : string
+    public static function buildFileNotFound($name, $guid): string
     {
-        return '['.$name.'](mention:'.$guid.' "#")';
+        return '[' . $name . '](mention:' . $guid . ' "#")';
     }
 
     public function onBeforeConvert(string $text, string $format, array $options = []): string
@@ -57,24 +56,24 @@ class FileExtension extends RichTextLinkExtension
 
     public function onPostProcess(string $text, ActiveRecord $record, ?string $attribute, array &$result): string
     {
-        if($record->isNewRecord) {
+        if ($record->isNewRecord) {
             // We can't attach files to unpersisted records
             return $text;
         }
 
         $result[$this->key] = [];
         foreach ($this->scanExtension($text) as $match) {
-            if($match->getExtensionId()) {
-                if($this->attach($record, $match->getExtensionId())) {
+            if ($match->getExtensionId()) {
+                if ($this->attach($record, $match->getExtensionId())) {
                     $result[$this->key][] = $match->getExtensionId();
                 }
             }
         }
 
-        $text = static::replaceLinkExtension($text, 'data', function(RichTextLinkExtensionMatch $match) use($record, &$result) {
-            if($match->getExtensionId()) {
+        $text = static::replaceLinkExtension($text, 'data', function (RichTextLinkExtensionMatch $match) use ($record, &$result) {
+            if ($match->getExtensionId()) {
                 $file = $this->parseBase64Data($match->getExtensionId(), $record);
-                if($file && $file->guid) {
+                if ($file && $file->guid) {
                     $result[$this->key][] = $file->guid;
                     //return '['.$file->file_name.'](file-guid:'.$file->guid.' "'.$file->file_name.'"'.(isset($match[4]) ? $match[4] : '').')';
                     return $this->buildExtensionLink($file->file_name, $file->guid, $file->file_name, $match->getAddition());
@@ -95,7 +94,7 @@ class FileExtension extends RichTextLinkExtension
         try {
             $file = File::findOne(['guid' => $fileGuid]);
 
-            if(!$file) {
+            if (!$file) {
                 return false;
             }
 
@@ -118,26 +117,26 @@ class FileExtension extends RichTextLinkExtension
         try {
             preg_match('/^([-\w.]+\/[-\w.+]+);([^,]+),([a-zA-Z0-9\/\r\n+]*={0,2})$/s', $dataStr, $matches);
 
-            if(!isset($matches[1]) || !isset($matches[3])) {
+            if (!isset($matches[1]) || !isset($matches[3])) {
                 return false;
             }
 
             $mime = $matches[1];
             $extensions = FileHelper::getExtensionsByMimeType($mime);
 
-            if(empty($extensions)) {
+            if (empty($extensions)) {
                 return false;
             }
 
             $extension = end($extensions);
             $data = $this->decode_base64($matches[3]);
 
-            if(!$data) {
+            if (!$data) {
                 return false;
             }
 
             $uploadedFile = new UploadedFile([
-                'name' => 'someFile.'.$extension,
+                'name' => 'someFile.' . $extension,
                 'tempName' => $this->createTmpFile($data),
                 'size' => strlen($data),
                 'type' => $mime,
@@ -146,11 +145,11 @@ class FileExtension extends RichTextLinkExtension
             $fileUpload = new FileUpload(['show_in_stream' => 0]);
             $fileUpload->setUploadedFile($uploadedFile);
 
-            if(!$fileUpload->save()) {
+            if (!$fileUpload->save()) {
                 return false;
             }
 
-            $fileUpload->updateAttributes(['file_name' => $fileUpload->guid.'.'.$extension]);
+            $fileUpload->updateAttributes(['file_name' => $fileUpload->guid . '.' . $extension]);
 
             // Since the file is not a real upload, FileUpload won't set the content automatically
             $fileUpload->setStoredFileContent($data);
@@ -174,7 +173,7 @@ class FileExtension extends RichTextLinkExtension
         // Decode the string in strict mode and check the results
         $decoded = base64_decode($s, true);
 
-        if($decoded === false) {
+        if ($decoded === false) {
             return false;
         }
 

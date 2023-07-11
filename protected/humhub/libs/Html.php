@@ -243,6 +243,7 @@ class Html extends \yii\bootstrap\Html
 
         return ArrayHelper::merge([
             'data-ui-select2' => true,
+            'style' => 'width:100%',
             'data-search-input-placeholder' => Yii::t('base', 'Search...'),
             'data-minimum-results-for-search' => $minimumResultsForSearch,
         ], $options);

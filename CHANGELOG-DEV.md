@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.15.0 (Unreleased)
 -------------------
+- Fix #6423: log.fata in frontend logging is redirected to log.fatal, which did not work
 - Fix #6220: User Soft Delete doesn't remove third party auth references
 - Enh #6270: Add tests for SettingsManager
 - Enh #6272: Always return integer from settings, if value can be converted
@@ -72,3 +73,6 @@ HumHub Changelog
 - Enh #6409: Redirect to the invited space after registration
 - Enh #6386: Fix absolute base URL in console commands
 - Fix #79: Fix Headline HelpText Style
+- Fix #6418: Fix login from modal window
+- Fix #6415: Fix caching keys on space directory
+- Fix #6424: Fix width of select2 dropdown inputs
