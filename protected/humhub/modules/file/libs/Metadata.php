@@ -1,14 +1,18 @@
 <?php
 
-/**
+/*
  * @link      https://www.humhub.org/
  * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
  * @license   https://www.humhub.com/licences
  */
 
-namespace humhub\exceptions;
+namespace humhub\modules\file\libs;
 
-class InvalidArgumentTypeException extends InvalidArgumentException
+use humhub\libs\StdClass;
+
+/**
+ * @property string|null {$file._upload.hash}
+ */
+class Metadata extends StdClass
 {
-    use InvalidTypeExceptionTrait;
 }

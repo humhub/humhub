@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
@@ -7,7 +8,7 @@
 
 namespace tests\codeception\unit\modules\file;
 
-use humhub\modules\file\models\FileUpload;
+use humhub\modules\file\models\forms\FileUpload;
 use humhub\modules\file\Module;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
@@ -89,11 +90,15 @@ class FileValidatorTest extends HumHubDbTestCase
         $this->assertValidatedFileName("<svgonload=alert(1)>.jpg", '_svgonload=alert(1)_.jpg');
 
         $this->assertTrue($this->createFile("test.jpg.exe")->validate());
+
         /** @var Module $module */
         $module = Yii::$app->getModule('file');
+        // create file, while double extensions are allowed, as otherwise the File::setUploadedFile method would already sanitize the file name
+        $file = $this->createFile("test.jpg.exe");
+        // now disallow double extension ...
         $module->denyDoubleFileExtensions = true;
-        $this->assertFalse($this->createFile("test.jpg.exe")->validate());
-
+        // ... and test for failure
+        $this->assertFalse($file->validate());
     }
 
     private function createFile($name)

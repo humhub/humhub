@@ -26,6 +26,8 @@ use yii\validators\Validator;
  */
 class ActiveRecord extends \yii\db\ActiveRecord
 {
+    use ModelTrait;
+
     /**
      * @var \humhub\modules\file\components\FileManager
      */
@@ -40,7 +42,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     /**
      * @event Event is used to append rules what defined in [[rules()]].
      */
-    const EVENT_APPEND_RULES = 'appendRules';
+    public const EVENT_APPEND_RULES = 'appendRules';
 
     /**
      * @inheritdoc
