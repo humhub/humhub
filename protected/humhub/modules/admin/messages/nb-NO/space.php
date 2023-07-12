@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>Behandle</strong> grupper',
+    '<strong>Manage</strong> Spaces' => '<strong>Behandle</strong> grupper',
     'Add new space' => 'Legg til ny gruppe',
     'Change owner' => 'Bytt eier',
     'Default Content Visiblity' => 'Standard innholdssynlighet',

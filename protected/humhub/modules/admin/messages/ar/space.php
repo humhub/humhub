@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => 'الوحدات <strong>ادارة</strong>',
+    '<strong>Manage</strong> Spaces' => 'الوحدات <strong>ادارة</strong>',
     'Add new space' => 'أضف باحة جديدة',
     'Change owner' => 'تغير المالك',
     'Default Content Visiblity' => 'رؤية المحتوى الافتراضي',

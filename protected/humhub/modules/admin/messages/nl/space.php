@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>Beheer</strong> ruimtes',
+    '<strong>Manage</strong> Spaces' => '<strong>Beheer</strong> ruimtes',
     'Add new space' => 'Nieuwe ruimte toevoegen.',
     'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'Door gebruikersrollen te gebruiken, kunt u verschillende rechtengroepen binnen een ruimte maken. Deze kunnen ook worden geïndividualiseerd door geautoriseerde gebruikers voor elke ruimte en zijn alleen relevant voor die specifieke ruimte.',
     'Change owner' => 'Wijzig eigenaar',

@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Manage</strong> spaces' => '<strong>Διαχείριση</strong> χώρων',
+  '<strong>Manage</strong> Spaces' => '<strong>Διαχείριση</strong> χώρων',
   'Add new space' => 'Προσθήκη νέου χώρου',
   'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'Χρησιμοποιώντας ρόλους χρηστών, μπορείς να δημιουργήσεεις διαφορετικές ομάδες αδειών σε ένα χώρο. Αυτά μπορούν επίσης να εξατομικευτούν από εξουσιοδοτημένους χρήστες για κάθε χώρο και σχετίζονται μόνο με τον συγκεκριμένο χώρο.',
   'Change owner' => 'Αλλαγή κατόχου',

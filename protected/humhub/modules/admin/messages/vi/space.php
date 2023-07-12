@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>Quản lý</strong> các diễn đàn',
+    '<strong>Manage</strong> Spaces' => '<strong>Quản lý</strong> các diễn đàn',
     'Add new space' => 'Thêm diễn đàn mới',
     'Change owner' => 'Thay đổi chủ sở hữu',
     'Default Content Visiblity' => 'Thiết lập hiển thị nội dung mặc định',

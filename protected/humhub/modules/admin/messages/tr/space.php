@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>Mekan</strong> Yönetimi',
+    '<strong>Manage</strong> Spaces' => '<strong>Mekan</strong> Yönetimi',
     'Add new space' => 'Yeni mekan ekle',
     'Change owner' => 'Sahibini değiştir',
     'Default Content Visiblity' => 'Varsayılan İçerik Görünürlüğü',

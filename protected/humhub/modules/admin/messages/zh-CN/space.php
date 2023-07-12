@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>管理</strong> 空间',
+    '<strong>Manage</strong> Spaces' => '<strong>管理</strong> 空间',
     'Add new space' => '增加新的空间',
     'Default Content Visiblity' => '默认内容可见性',
     'Default Join Policy' => '默认加入规则',

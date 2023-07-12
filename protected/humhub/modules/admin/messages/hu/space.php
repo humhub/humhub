@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => 'Közösségek <strong>kezelése</strong>',
+    '<strong>Manage</strong> Spaces' => 'Közösségek <strong>kezelése</strong>',
     'Add new space' => 'Új közösség hozzáadása',
     'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'Az engedélyek különböző felhasználói szerepkörökhöz vannak rendelve. Alapértelmezett engedély szerkesztéséhez válassza ki a szerkeszteni kívánt felhasználói szerepkört, és módosítsa a megadott engedély értékét a legördülő menüben.',
     'Change owner' => 'Tulajdonos megváltoztatása',

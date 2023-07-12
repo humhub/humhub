@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>Tvarkyti</strong> erdves',
+    '<strong>Manage</strong> Spaces' => '<strong>Tvarkyti</strong> erdves',
     'Default Join Policy' => 'Numatytoji prisijungimo politika',
     'Default Visibility' => 'Numatytasis matomumas',
     'Default space' => 'Numatytoji erdvė',

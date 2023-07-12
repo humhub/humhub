@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>Hallitse</strong> sivuja',
+    '<strong>Manage</strong> Spaces' => '<strong>Hallitse</strong> sivuja',
     'Add new space' => 'Lisää uusi sivu',
     'Change owner' => 'Vaihda omistajaa',
     'Default Content Visiblity' => 'Oletus Sisällön Näkyvyys',

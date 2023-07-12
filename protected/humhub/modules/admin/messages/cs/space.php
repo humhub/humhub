@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>Správa</strong> prostorů',
+    '<strong>Manage</strong> Spaces' => '<strong>Správa</strong> prostorů',
     'Add new space' => 'Přidat nový prostor',
     'Default Content Visiblity' => 'Výchozí viditelnost příspěvků',
     'Default Join Policy' => 'Výchozí pravidlo, kdo se může stát členem prostoru',

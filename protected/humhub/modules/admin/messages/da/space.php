@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>Administrer</strong> sider',
+    '<strong>Manage</strong> Spaces' => '<strong>Administrer</strong> sider',
     'Default Content Visiblity' => 'Standard Indholds Visning',
     'Default Join Policy' => 'Standard Deltagelsespolitik',
     'Default Visibility' => 'Standard Synlighed',

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => 'Spaces <strong>verwalten</strong>',
+    '<strong>Manage</strong> Spaces' => 'Spaces <strong>verwalten</strong>',
     'Add new space' => 'Neuen Space hinzufügen',
     'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'Durch die Verwendung von Benutzerrollen, kannst du unterschiedliche Rechtegruppen innerhalb eins Space kreieren. Diese können von berechtigten Benutzern ebenfalls für jeden Space individualisiert werden.',
     'Change owner' => 'Besitzer ändern',

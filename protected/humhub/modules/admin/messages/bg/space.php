@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>Управление</strong> на раздели',
+    '<strong>Manage</strong> Spaces' => '<strong>Управление</strong> на раздели',
     'Add new space' => 'Добавяне на нов раздел',
     'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'Използвайки потребителски роли, можете да създадете различни групи разрешения в рамките на Раздела. Те също могат да бъдат индивидуализирани от оторизирани потребители за всяко пространство и са от значение само за това конкретния Раздел.',
     'Change owner' => 'Смяна на собственика',

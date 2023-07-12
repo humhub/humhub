@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Manage</strong> spaces' => '<strong>Gestisci</strong> spazi',
+  '<strong>Manage</strong> Spaces' => '<strong>Gestisci</strong> spazi',
   'Add new space' => 'Aggiungi nuovo spazio',
   'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'Utilizzando i ruoli utente, puoi creare diversi gruppi di autorizzazioni all\'interno di uno spazio. Questi possono anche essere personalizzati dagli utenti autorizzati per ogni singolo Spazio e sono rilevanti solo per quello specifico Spazio.',
   'Change owner' => 'Cambia proprietario',

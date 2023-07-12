@@ -15,7 +15,7 @@ return [
     'Permissions' => 'ፈቃዶች',
     'Search by name, description, id or owner.' => 'በስም፣ በመግለጫ፣ በመለያ ወይም በባለቤት ይፈልጉ',
     'Settings' => 'ማስተካከያዎች',
-    '<strong>Manage</strong> spaces' => '',
+    '<strong>Manage</strong> Spaces' => '',
     'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => '',
     'Default Space Permissions' => '',
     'Default Space(s)' => '',

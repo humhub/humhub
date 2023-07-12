@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>Zarządzaj</strong> strefami',
+    '<strong>Manage</strong> Spaces' => '<strong>Zarządzaj</strong> strefami',
     'Add new space' => 'Dodaj nową strefę',
     'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'Używając ról użytkowników, możesz tworzyć różne grupy uprawnień w strefie. Które również mogą być dopasowane przez autoryzowanych użytkowników w każdej strefie i mają wpływ tylko na wybraną strefę.',
     'Change owner' => 'Zmień właściciela',

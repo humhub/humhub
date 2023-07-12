@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Manage</strong> spaces' => '<strong>Hantera</strong> forum',
+  '<strong>Manage</strong> Spaces' => '<strong>Hantera</strong> forum',
   'Add new space' => 'Lägg till forum',
   'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'Genom att använda användarroller kan du skapa olika behörighetsgrupper inom ett forum. Dessa kan också individualiseras av behöriga användare för varje forum och är endast relevanta för det specifika forumet.',
   'Change owner' => 'Ändra ägare',

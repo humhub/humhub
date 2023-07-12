@@ -2,7 +2,7 @@
 
 return [
     'Settings' => 'Impostatii',
-    '<strong>Manage</strong> spaces' => '',
+    '<strong>Manage</strong> Spaces' => '',
     'Add new space' => '',
     'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => '',
     'Change owner' => '',

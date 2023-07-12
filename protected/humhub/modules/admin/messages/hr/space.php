@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>Upravljaj</strong> prostorima',
+    '<strong>Manage</strong> Spaces' => '<strong>Upravljaj</strong> prostorima',
     'Add new space' => 'Dodaj novi prostor',
     'Change owner' => 'Promijeni vlasnika',
     'Default Content Visiblity' => 'Zadana vidljivost sadržaja',

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>Управление сообществами</strong>',
+    '<strong>Manage</strong> Spaces' => '<strong>Управление сообществами</strong>',
     'Add new space' => 'Добавить новое сообщество',
     'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'Используя пользовательские роли, вы можете создавать различные группы разрешений в Сообществе. Они также могут быть индивидуализированы авторизованными пользователями для каждого Сообщества и относятся только к этому конкретному Сообществу.',
     'Change owner' => 'Сменить владельца сообщества',

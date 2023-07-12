@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>مدیریت</strong> انجمن‌ها',
+    '<strong>Manage</strong> Spaces' => '<strong>مدیریت</strong> انجمن‌ها',
     'Add new space' => 'افزودن انجمن جدید',
     'Change owner' => 'تغییر مالک',
     'Default Content Visiblity' => 'حالت نمایش محتوای پیش‌فرض',
