@@ -298,12 +298,12 @@ class OnlineModuleManager extends Component
 
         $modules = [];
 
-        foreach ($this->getModules() as $module) {
+        foreach ($this->getModules() as $moduleId => $module) {
             $onlineModule = new ModelModule($module);
             if (!$onlineModule->isInstalled() &&
                 $onlineModule->latestCompatibleVersion &&
                 !($onlineModule->isDeprecated && $marketplaceModule->hideLegacyModules)) {
-                $modules[] = $onlineModule;
+                $modules[$moduleId] = $onlineModule;
             }
         }
 
@@ -319,10 +319,10 @@ class OnlineModuleManager extends Component
     {
         $modules = [];
 
-        foreach ($this->getModules() as $module) {
+        foreach ($this->getModules() as $moduleId => $module) {
             $onlineModule = new ModelModule($module);
             if ($onlineModule->isInstalled()) {
-                $modules[] = $onlineModule;
+                $modules[$moduleId] = $onlineModule;
             }
         }
 
