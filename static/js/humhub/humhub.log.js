@@ -213,6 +213,12 @@ humhub.module('log', function (module, require, $) {
         module.getRootLogger().fatal(msg, error, setStatus);
     };
 
+    var fata = function (msg, error, setStatus) {
+        let logger = module.getRootLogger();
+        logger.warn("log.fata is deprecated since 1.15. Please correct to log.fatal!");
+        logger.fatal(msg, error, setStatus);
+    };
+
     module.export({
         init: init,
         sortOrder: 100,
@@ -225,7 +231,8 @@ humhub.module('log', function (module, require, $) {
         success: success,
         warn: warn,
         error: error,
-        fata: fatal,
+        fatal: fatal,
+        fata: fata,
         TRACE_TRACE: TRACE_TRACE,
         TRACE_DEBUG: TRACE_DEBUG,
         TRACE_INFO: TRACE_INFO,
