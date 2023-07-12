@@ -37,7 +37,7 @@ class RequestMembershipCest
 
         $I->waitForText('Pending Approvals', null, '.tab-menu .active');
         $I->see('Hi, I want to join this space.', '.grid-view');
-        $I->click('Accept', '.grid-view .btn');
+        $I->click('Accept', '.grid-view');
 
         $I->wait(1);
 
