@@ -227,7 +227,7 @@ class PermissionCest
 
         $I->amOnPage(['/admin/module']);
         $I->expectTo('not to see permission denied message');
-        $I->see('Module Configuration');
+        $I->see('Module administration');
 
         $I->amOnPage(['/marketplace/browse']);
         $I->see('Marketplace');
