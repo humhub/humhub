@@ -2,7 +2,6 @@
 
 return [
     '(Also visible to non-members of this space)' => '(Também visível para não membros deste espaço)',
-    '<strong>Confirm</strong> post deletion' => '<strong>Confirma</strong> exclusão do post',
     '<strong>Delete</strong> content?' => '<strong>Deletar</strong> conteúdo?',
     '<strong>Move</strong> content' => '<strong> Mover  strong&gt; conteúdo</strong>',
     '<strong>Permalink</strong> to this post' => '<strong>Link permanente</strong> para este post',
@@ -29,7 +28,6 @@ return [
     'Creation time' => 'Hora de criação',
     'Delete' => 'Deletar',
     'Deleted' => 'Apagado',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'Você realmente deseja excluir este post? Todos os comentários e curtidas serão perdidos!',
     'Edit' => 'Editar',
     'Enable' => 'Habilitar',
     'Filter' => 'Filtro',
@@ -100,6 +98,7 @@ return [
     'Activate scheduling' => '',
     'Cannot notify the author.' => '',
     'Create as draft' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'Note: Due to technical reasons there may be a delay of a few minutes.' => '',

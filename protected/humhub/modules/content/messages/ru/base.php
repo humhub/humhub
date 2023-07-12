@@ -2,7 +2,6 @@
 
 return [
     '(Also visible to non-members of this space)' => '(Может быть видно не только участникам сообщества)',
-    '<strong>Confirm</strong> post deletion' => '<strong>Подтвердить</strong> удаление записи',
     '<strong>Move</strong> content' => '<strong>Перемещение</strong> содержимого',
     '<strong>Permalink</strong> to this post' => '<strong>Постоянная ссылка</strong> для этой записи',
     'Activated' => 'Включен',
@@ -23,7 +22,6 @@ return [
     'Created by me' => 'Созданные мной',
     'Creation time' => 'Время создания',
     'Delete' => 'Удалить',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'Вы действительно хотите удалить эту запись? Все лайки и комментарии будут утеряны!',
     'Edit' => 'Редактировать',
     'Enable' => 'Включить',
     'Filter' => 'Фильтр',
@@ -92,6 +90,7 @@ return [
     'Create as draft' => '',
     'Created at:' => '',
     'Deleted' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'Lock comments' => '',

@@ -3,7 +3,6 @@
 return [
     'Content' => 'Vsebina',
     '(Also visible to non-members of this space)' => '',
-    '<strong>Confirm</strong> post deletion' => '',
     '<strong>Delete</strong> content?' => '',
     '<strong>Move</strong> content' => '',
     '<strong>Permalink</strong> to this post' => '',
@@ -33,7 +32,7 @@ return [
     'Creation time' => '',
     'Delete' => '',
     'Deleted' => '',
-    'Do you really want to delete this post? All likes and comments will be lost!' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Edit' => '',
     'Enable' => '',

@@ -24,4 +24,10 @@ return [
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Met deze opties kunt u de standaardrechten voor alle ruimtes instellen. Geautoriseerde gebruikers kunnen deze voor elke ruimte individualiseren. Verdere vermeldingen worden toegevoegd met de installatie van nieuwe modules.',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Deze lijst geeft een overzicht van alle ruimtes met acties om de ruimte te bekijken, veranderen en verwijderen.',
     'Update Space memberships also for existing members.' => 'Werk ruimte-lidmaatschappen ook bij voor bestaande leden.',
+    'Default "Hide About Page"' => '',
+    'Default "Hide Activity Sidebar Widget"' => '',
+    'Default "Hide Followers"' => '',
+    'Default "Hide Members"' => '',
+    'Default homepage' => '',
+    'Default homepage (Non-members)' => '',
 ];

@@ -2,7 +2,6 @@
 
 return [
     '(Also visible to non-members of this space)' => '(ผู้ที่ไม่ใช่สมาชิกของ Space นี้สามารถมองเห็นได้)',
-    '<strong>Confirm</strong> post deletion' => '<strong>ยืนยัน</strong> ลบโพสต์',
     '<strong>Delete</strong> content?' => '<strong>ลบ</strong> เนื้อหา?',
     '<strong>Move</strong> content' => '<strong>ย้าย</strong> เนื้อหา',
     '<strong>Permalink</strong> to this post' => '<strong>ลิงก์ถาวร</strong> ไปยังโพสต์นี้',
@@ -27,7 +26,6 @@ return [
     'Creation time' => 'เวลาสร้าง',
     'Delete' => 'ลบ',
     'Deleted' => 'ถูกลบ',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'คุณต้องการลบโพสต์นี้จริงหรือ ไลค์และคอมเมนต์ทั้งหมดจะหายไป!',
     'Edit' => 'แก้ไข',
     'Enable' => 'เปิดใช้งาน',
     'Filter' => 'กรอง',
@@ -95,6 +93,7 @@ return [
     'Comments are locked' => '',
     'Comments are unlocked' => '',
     'Create as draft' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'New Updates Available!' => '',

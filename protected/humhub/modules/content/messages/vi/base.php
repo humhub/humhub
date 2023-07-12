@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Confirm</strong> post deletion' => '<strong>Xác nhận</strong> xóa bài viết',
     '<strong>Move</strong> content' => '<strong>Di chuyển</strong> nội dung',
     '<strong>Permalink</strong> to this post' => '<strong>Liên kết</strong> của bài viết này',
     'Activated' => 'Đã được kích hoạt',
@@ -22,7 +21,6 @@ return [
     'Creation time' => 'Thời gian tạo',
     'Delete' => 'Xóa',
     'Deleted' => 'Đã xóa',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'Bạn có chắc chắn muốn xóa bài viết này? Tất cả yêu thích và bình luận sẽ bị mất!',
     'Edit' => 'Chỉnh sửa',
     'Enable' => 'Kích hoạt',
     'Filter' => 'Lọc',
@@ -81,6 +79,7 @@ return [
     'Comments are unlocked' => '',
     'Create as draft' => '',
     'Created at:' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'Last updated {time}' => '',

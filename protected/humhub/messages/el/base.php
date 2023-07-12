@@ -15,8 +15,6 @@ return [
     'An unexpected error occurred while loading the search result.' => 'Παρουσιάστηκε μη αναμενόμενο σφάλμα κατά τη φόρτωση του αποτελέσματος αναζήτησης.',
     'An unexpected error occurred. If this keeps happening, please contact a site administrator.' => 'Προέκυψε ένα μη αναμενόμενο σφάλμα. Αν αυτό εξακολουθεί να συμβαίνει, επικοινωνήστε με τον διαχειριστή ιστότοπου.',
     'An unexpected server error occurred. If this keeps happening, please contact a site administrator.' => 'Παρουσιάστηκε ένα μη αναμενόμενο σφάλμα διακομιστή. Αν αυτό εξακολουθεί να συμβαίνει, επικοινωνήστε με τον διαχειριστή ιστότοπου.',
-    'An unknown error occurred while uploading.' => 'Παρουσιάστηκε ένα άγνωστο σφάλμα κατά το ανέβασμα.',
-    'An unknown error occurred while uploading. Hint: check your upload_max_filesize and post_max_size php settings.' => 'Παρουσιάστηκε ένα άγνωστο σφάλμα κατά το ανέβασμα. Υπόδειξη: ελέγξτε το upload_max_filesize και post_max_size στις ρυθμίσεις του php.',
     'Back' => 'Πίσω',
     'Back to dashboard' => 'Πίσω στο ταμπλό',
     'Cancel' => 'Ακύρωση',
@@ -88,6 +86,8 @@ return [
     '{nFormatted}B' => '{nFormatted}B',
     '{nFormatted}K' => '{nFormatted}K',
     '{nFormatted}M' => '{nFormatted}M',
+    'An unexpected error occurred. Please check whether your file exceeds the allowed upload limit of {maxUploadSize}.' => '',
     'My Profile' => '',
     'Search...' => '',
+    'verify your upload_max_filesize and post_max_size php settings.' => '',
 ];

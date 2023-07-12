@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Confirm</strong> post deletion' => '<strong>Apstiprināt</strong> ieraksta dzēšanu',
     '<strong>Permalink</strong> to this post' => '<strong>Pastāvīgā saite</strong> uz šo ierakstu',
     'Activated' => 'Aktivizēti',
     'Add a member to notify' => 'Pievienot dalībnieku lai notificētu',
@@ -14,7 +13,6 @@ return [
     'Content' => 'Saturs',
     'Could not find requested content!' => 'Nevar atrast pieprasīto saturu!',
     'Delete' => 'Dzēst',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'Vai tiešām vēlies dzēst šo ierakstu? Visi patīk un komentāri tiks dzēsti!',
     'Edit' => 'Rediģēt',
     'Invalid content id given!' => 'Norādīts kļūdains satura id!',
     'Invalid request method!' => 'Kļūdaina pieprasījuma metode!',
@@ -55,6 +53,7 @@ return [
     'Created by me' => '',
     'Creation time' => '',
     'Deleted' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Enable' => '',
     'Filter' => '',

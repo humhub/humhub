@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Confirm</strong> post deletion' => '<strong>Bekreft</strong> sletting av innlegg',
     '<strong>Move</strong> content' => '<strong>Flytt</strong> innhold',
     '<strong>Permalink</strong> to this post' => '@@@@',
     'Activated' => 'Aktivert',
@@ -22,7 +21,6 @@ return [
     'Creation time' => 'Opprettet',
     'Delete' => 'Slett',
     'Deleted' => 'Slettet',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'Ønsker du virkelig og slette dette innlegget? Alle likes og kommentarer vil bli tapt!',
     'Edit' => 'Rediger',
     'Enable' => 'Aktiver',
     'Filter' => 'Filter',
@@ -81,6 +79,7 @@ return [
     'Comments are unlocked' => '',
     'Create as draft' => '',
     'Created at:' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'Last updated {time}' => '',

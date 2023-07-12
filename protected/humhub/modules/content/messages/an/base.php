@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Confirm</strong> post deletion' => '<strong>Confirmar</strong> a eliminación d\'a publicación',
     '<strong>Permalink</strong> to this post' => '<strong>Vinclo</strong> a ista publicación',
     'Add a member to notify' => 'Adhibir un miembro pa notificar-le',
     'Archived' => 'Archivau',
@@ -15,7 +14,6 @@ return [
     'Created by me' => 'Creyau per yo',
     'Creation time' => 'Hora de creyación',
     'Delete' => 'Eliminar',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'Seguro que quiers borrar ista publicación? Totz os "me fa goyo" y comentarios tamién se borrarán!',
     'Edit' => 'Editar',
     'Filter' => 'Filtro',
     'Invalid content id given!' => 'ID de conteniu invalida!',
@@ -57,6 +55,7 @@ return [
     'Create as draft' => '',
     'Created at:' => '',
     'Deleted' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Enable' => '',
     'Hidden' => '',

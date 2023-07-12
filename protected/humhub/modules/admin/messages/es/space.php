@@ -24,4 +24,10 @@ return [
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Estas opciones le permiten establecer los permisos predeterminados para todos los espacios. Los usuarios autorizados pueden individualizarlos para cada Espacio. Se agregan más entradas con la instalación de nuevos módulos.',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Esta vista general contiene una lista de cada espacio con acciones para ver, editar y eliminar espacios.',
     'Update Space memberships also for existing members.' => 'Actualizar la pertenencia al espacio también en el caso de sus miembros actuales.',
+    'Default "Hide About Page"' => '',
+    'Default "Hide Activity Sidebar Widget"' => '',
+    'Default "Hide Followers"' => '',
+    'Default "Hide Members"' => '',
+    'Default homepage' => '',
+    'Default homepage (Non-members)' => '',
 ];

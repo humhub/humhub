@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Confirm</strong> post deletion' => '<strong>تأكيد</strong> رغبتك في الحذف',
     '<strong>Move</strong> content' => 'محتوى <strong> نقل </strong>',
     '<strong>Permalink</strong> to this post' => 'الوصلة الدائمة لهذه المحتويات',
     'Activated' => 'تم التفعيل',
@@ -21,7 +20,6 @@ return [
     'Created by me' => 'التي كتبتها أنا',
     'Creation time' => 'حسب وقت النشر',
     'Delete' => 'حذف',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'هل انت متأكد من رغبتك في حذف هذه المحتويات؟ جميع الردود و نقاط الإعجاب ستختفي!',
     'Edit' => 'تحرير',
     'Enable' => 'تفعيل',
     'Filter' => 'تصفية',
@@ -81,6 +79,7 @@ return [
     'Create as draft' => '',
     'Created at:' => '',
     'Deleted' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'Last updated {time}' => '',

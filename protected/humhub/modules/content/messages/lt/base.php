@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Confirm</strong> post deletion' => '<strong>Patvirtinti</strong> įrašo ištrynimą',
     '<strong>Permalink</strong> to this post' => '<strong>Priskirti</strong> nuorodą šiam įrašui',
     'Activated' => 'Aktyvuota',
     'Add a member to notify' => 'Pridėti narį prie pranešimų',
@@ -17,7 +16,6 @@ return [
     'Created by me' => 'Sukurta mano',
     'Creation time' => 'Sukūrimo laikas',
     'Delete' => 'Ištrinti',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'Ar tikrai norite ištrinti šį įrašą? Visi komentarai bus ištrinti!',
     'Edit' => 'Taisyti',
     'Enable' => 'Įgalinti',
     'Filter' => 'Filtras',
@@ -50,6 +48,7 @@ return [
     'Create as draft' => '',
     'Created at:' => '',
     'Deleted' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'I\'m involved' => '',

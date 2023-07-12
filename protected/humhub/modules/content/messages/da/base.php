@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Confirm</strong> post deletion' => '<strong>Bekræft</strong> opslag sletning',
     '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> til dette opslag',
     'Activated' => 'Aktiveret',
     'Add a member to notify' => 'Tilføjet et medlem til notifikation',
@@ -17,7 +16,6 @@ return [
     'Created by me' => 'Oprettet af mig',
     'Creation time' => 'Oprettelsestidspunkt',
     'Delete' => 'Slet',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'Vil du virkelig slette dette opslag? Alle syntes godt om og kommentarer vil gå tabt!',
     'Edit' => 'Rediger',
     'Enable' => 'Aktiver',
     'Filter' => 'Filter',
@@ -52,6 +50,7 @@ return [
     'Create as draft' => '',
     'Created at:' => '',
     'Deleted' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'I\'m involved' => '',

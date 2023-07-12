@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Confirm</strong> post deletion' => '<strong>Vahvista</strong> julkaisun poistaminen',
     '<strong>Move</strong> content' => '<strong>Siirrä</strong> sisältöä',
     '<strong>Permalink</strong> to this post' => '<strong>Pysyvä</strong> linkki tähän viestiin',
     'Activated' => 'Aktivoitu',
@@ -22,7 +21,6 @@ return [
     'Creation time' => 'Luomisaika',
     'Delete' => 'Poista',
     'Deleted' => 'Poistettu',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'Haluatko todella poistaa tämän julkaisun? Kaikki tykkäykset ja kommentit poistetaan!',
     'Edit' => 'Muokkaa',
     'Enable' => 'Ota käyttöön',
     'Filter' => 'Suodatin',
@@ -81,6 +79,7 @@ return [
     'Comments are unlocked' => '',
     'Create as draft' => '',
     'Created at:' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'Last updated {time}' => '',

@@ -24,4 +24,10 @@ return [
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Тези опции ви позволяват да зададете разрешенията по подразбиране за всички Раздели. Упълномощените потребители могат да ги индивидуализират за всяко пространство. Допълнителни записи се добавят с инсталирането на нови модули.',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Този общ преглед съдържа списък на всеки раздел с действия за преглед, редактиране и изтриване на раздели.',
     'Update Space memberships also for existing members.' => 'Актуализирайте членството в раздела също за съществуващи членове.',
+    'Default "Hide About Page"' => '',
+    'Default "Hide Activity Sidebar Widget"' => '',
+    'Default "Hide Followers"' => '',
+    'Default "Hide Members"' => '',
+    'Default homepage' => '',
+    'Default homepage (Non-members)' => '',
 ];

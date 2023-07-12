@@ -2,7 +2,6 @@
 
 return [
     '(Also visible to non-members of this space)' => '(Vidljivo i nečlanovima ovog prostora)',
-    '<strong>Confirm</strong> post deletion' => '<strong>Potvrdi</strong> brisanje objave',
     '<strong>Move</strong> content' => '<strong>Premjesti</strong> sadržaj',
     '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> na ovu objavu',
     'Activated' => 'Aktivirano',
@@ -24,7 +23,6 @@ return [
     'Creation time' => 'Vrijeme kreiranja',
     'Delete' => 'Obriši',
     'Deleted' => 'Obrisano',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'Želite li doista izbrisati taj post? Svi \'\'like-ovi\'\' i komentari bit će izgubljeni!',
     'Edit' => 'Uredi',
     'Enable' => 'Omogući',
     'Filter' => 'Filter',
@@ -92,6 +90,7 @@ return [
     'Comments are unlocked' => '',
     'Create as draft' => '',
     'Created at:' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'Lock comments' => '',

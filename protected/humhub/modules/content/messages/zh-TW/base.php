@@ -2,7 +2,6 @@
 
 return [
     '(Also visible to non-members of this space)' => '(不屬於這個Space的成員也能夠看得到)',
-    '<strong>Confirm</strong> post deletion' => '<strong>確認</strong>刪除貼文',
     '<strong>Delete</strong> content?' => '<strong>刪除</strong>內容?',
     '<strong>Move</strong> content' => '<strong>移動</strong>內容',
     '<strong>Permalink</strong> to this post' => '這篇貼文的<strong>永久連結</strong>',
@@ -25,7 +24,6 @@ return [
     'Created by me' => '我建立的貼文',
     'Creation time' => '建立時間',
     'Delete' => '刪除',
-    'Do you really want to delete this post? All likes and comments will be lost!' => '您確定真的要刪除這個貼文嗎? 將會失去所有的按讚跟留言!',
     'Edit' => '編輯',
     'Enable' => '開啟',
     'Filter' => '篩選器',
@@ -76,6 +74,7 @@ return [
     'Create as draft' => '',
     'Created at:' => '',
     'Deleted' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'Invalid space selection.' => '',

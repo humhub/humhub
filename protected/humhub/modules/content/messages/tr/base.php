@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Confirm</strong> post deletion' => 'Gönderi silinmesini <strong>Onayla</strong>',
     '<strong>Move</strong> content' => '<strong>İçeriği</strong> taşı',
     '<strong>Permalink</strong> to this post' => '<strong>İçerik</strong> bağlantısı',
     'Activated' => 'Aktif',
@@ -26,7 +25,6 @@ return [
     'Created by me' => 'Benim tarafımdan oluşturuldu',
     'Creation time' => 'Oluşturulma zamanı',
     'Delete' => 'Sil',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'Bu gönderiyi silmek istediğine emin misin? Tüm yorumlar ve beğeniler kaybolacak!',
     'Edit' => 'Düzenle',
     'Enable' => 'Etkinleştirme',
     'Filter' => 'Filtre',
@@ -97,6 +95,7 @@ return [
     'Cannot notify the author.' => '',
     'Create as draft' => '',
     'Deleted' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'New Updates Available!' => '',

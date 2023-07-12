@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Confirm</strong> post deletion' => '<strong>تایید</strong> حذف پست',
     '<strong>Move</strong> content' => '<strong>جابجایی</strong> محتوا',
     '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> به این پست',
     'Activated' => 'فعال شد',
@@ -20,7 +19,6 @@ return [
     'Created by me' => 'ایجادشده توسط من',
     'Creation time' => 'زمان ایجاد',
     'Delete' => 'حذف',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'آیا واقعا می‌خواهید این پست را حذف کنید؟ همه‌ی دیدگاه‌ها و پسندها حذف خواهد شد!',
     'Edit' => 'ویرایش',
     'Enable' => 'فعال',
     'Filter' => 'پالایه',
@@ -73,6 +71,7 @@ return [
     'Create as draft' => '',
     'Created at:' => '',
     'Deleted' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'I\'m involved' => '',

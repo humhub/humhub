@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Confirm</strong> post deletion' => '<strong>确认</strong> 删除记录',
     '<strong>Permalink</strong> to this post' => '获取该记录<strong>链接</strong>',
     'Activated' => '启用',
     'Add a member to notify' => '增加一个通知成员',
@@ -18,7 +17,6 @@ return [
     'Created by me' => '我创建的',
     'Creation time' => '创建时间',
     'Delete' => '删除',
-    'Do you really want to delete this post? All likes and comments will be lost!' => '你真的想删除该记录？喜欢和评论内容都将丢失！',
     'Edit' => '编辑',
     'Enable' => '生效',
     'Filter' => '筛选',
@@ -61,6 +59,7 @@ return [
     'Create as draft' => '',
     'Created at:' => '',
     'Deleted' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'I\'m involved' => '',

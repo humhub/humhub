@@ -2,7 +2,6 @@
 
 return [
     '(Also visible to non-members of this space)' => '(Вижда се и за нечленове на това пространство)',
-    '<strong>Confirm</strong> post deletion' => '<strong>Потвърждение</strong> след изтриване',
     '<strong>Move</strong> content' => '<strong>Преместване</strong> на съдържание',
     '<strong>Permalink</strong> to this post' => '<strong>Постоянна връзка</strong> към тази публикация',
     'Activated' => 'Активиран',
@@ -24,7 +23,6 @@ return [
     'Creation time' => 'Време на създаване',
     'Delete' => 'Изтрий',
     'Deleted' => 'Изтрита',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'Наистина ли искате да изтриете тази публикация? Всички харесвания и коментари ще бъдат загубени!',
     'Edit' => 'Редакция',
     'Enable' => 'Активиране',
     'Filter' => 'Филтър',
@@ -92,6 +90,7 @@ return [
     'Comments are unlocked' => '',
     'Create as draft' => '',
     'Created at:' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'Lock comments' => '',
