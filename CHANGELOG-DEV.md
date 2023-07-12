@@ -74,6 +74,7 @@ HumHub Changelog
 - Enh #6386: Fix absolute base URL in console commands
 - Fix #79: Fix Headline HelpText Style
 - Fix #6418: Fix login from modal window
+- Fix #6395: Link notification for pending space approval to manage page
 - Fix #6415: Fix caching keys on space directory
 - Fix #6424: Fix width of select2 dropdown inputs
 - Fix #6425: Fix default dropdown select2 options
