@@ -162,7 +162,7 @@ class ContentContainerModuleManager extends \yii\base\Component
 
         $this->_available = [];
 
-        foreach (Yii::$app->moduleManager->getModules() as $id => $module) {
+        foreach (Yii::$app->moduleManager->getModules() as $module) {
             if ($module instanceof ContentContainerModule && $module->isActivated &&
                 $module->hasContentContainerType(get_class($this->contentContainer))) {
                 $this->_available[$module->id] = $module;

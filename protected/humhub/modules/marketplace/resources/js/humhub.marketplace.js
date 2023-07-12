@@ -2,6 +2,7 @@ humhub.module('marketplace', function (module, require, $) {
     const client = require('client');
     const loader = require('ui.loader');
     const status = require('ui.status');
+    const modal = require('ui.modal');
 
     const update = function (evt) {
         startUpdate(evt);
@@ -119,6 +120,11 @@ humhub.module('marketplace', function (module, require, $) {
 
         client.post(form.attr('action'), {data: {licenceKey}}).then(function (response) {
             form.closest('.modal-dialog').after(response.html).remove();
+            if (typeof response.data.purchasedModules === 'object') {
+                Object.entries(response.data.purchasedModules).forEach(([moduleId, moduleCard]) => {
+                    $('.card-module[data-module=' + moduleId + ']').replaceWith(moduleCard);
+                });
+            }
         }).catch(function (err) {
             module.log.error(err);
             status.error(err.message);
@@ -126,9 +132,44 @@ humhub.module('marketplace', function (module, require, $) {
         });
     }
 
+    const install = function(evt) {
+        const installButton = evt.$trigger;
+        const moduleId = installButton.data('module-id');
+
+        modal.global.setHeader(module.config.text.installing);
+        modal.global.$.removeClass('fade');
+        modal.global.$.find('button[data-modal-close]').hide();
+        modal.global.show();
+
+        modal.post(evt, {data: {moduleId}}).then(function () {
+            const activateButton = modal.global.$.find('[data-action-click="marketplace.activate"]').clone();
+            if (activateButton.length) {
+                installButton.after(activateButton.addClass('btn-sm'));
+            }
+            installButton.remove();
+        }).catch(function (e) {
+            module.log.error(e, true);
+        });
+    }
+
+    const activate = function(evt) {
+        const moduleId = evt.$trigger.data('module-id');
+        const moduleCard = $('button[data-module-id="' + moduleId + '"]').closest('.card');
+
+        modal.post(evt, {data: {moduleId}}).then(function () {
+            if (moduleCard.length) {
+                moduleCard.hide('slow', function(){ $(this).remove() });
+            }
+        }).catch(function (e) {
+            module.log.error(e, true);
+        });
+    }
+
     module.export({
         update,
         updateAll,
         registerLicenceKey,
+        install,
+        activate
     });
 });

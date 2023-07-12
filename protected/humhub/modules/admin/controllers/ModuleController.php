@@ -11,13 +11,11 @@ namespace humhub\modules\admin\controllers;
 use humhub\components\Module;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\jobs\DisableModuleJob;
-use humhub\modules\admin\models\forms\GeneralModuleSettingsForm;
 use humhub\modules\admin\models\forms\ModuleSetAsDefaultForm;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\queue\helpers\QueueHelper;
 use Yii;
-use yii\base\Exception;
 use yii\web\HttpException;
 
 /**
@@ -27,11 +25,6 @@ use yii\web\HttpException;
  */
 class ModuleController extends Controller
 {
-
-    /**
-     * @inheritdoc
-     */
-    public $subLayout = '@admin/views/layouts/module';
 
     /**
      * @inheritdoc
@@ -92,7 +85,7 @@ class ModuleController extends Controller
             $module->enable();
         }
 
-        return $this->redirect(['/admin/module/list']);
+        return $this->redirectToModules();
     }
 
     /**
@@ -102,7 +95,6 @@ class ModuleController extends Controller
      */
     public function actionDisable()
     {
-
         $this->forcePostRequest();
 
         $moduleId = Yii::$app->request->get('moduleId');
@@ -115,7 +107,7 @@ class ModuleController extends Controller
         Yii::$app->queue->push(new DisableModuleJob(['moduleId' => $moduleId]));
         Yii::$app->moduleManager->disable($module);
 
-        return $this->redirect(['/admin/module/list']);
+        return $this->redirectToModules();
     }
 
 
@@ -131,7 +123,7 @@ class ModuleController extends Controller
         $module = Yii::$app->moduleManager->getModule($moduleId);
         $module->publishAssets(true);
 
-        return $this->redirect(['/admin/module/list']);
+        return $this->redirectToModules();
     }
 
     /**
@@ -160,47 +152,8 @@ class ModuleController extends Controller
 
             Yii::$app->moduleManager->removeModule($module->id);
         }
-        return $this->redirect(['/admin/module/list']);
-    }
 
-
-    /**
-     * Returns more information about an installed module.
-     *
-     * @return string
-     * @throws HttpException
-     */
-    public function actionInfo()
-    {
-
-        $moduleId = Yii::$app->request->get('moduleId');
-        try {
-            $module = Yii::$app->moduleManager->getModule($moduleId);
-        } catch (Exception $e) {
-            throw new HttpException(404, 'Module not found!');
-        }
-
-        if ($module == null) {
-            throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
-        }
-
-        $locale = Yii::$app->language;
-        $trials = [
-            $module->getBasePath() . DIRECTORY_SEPARATOR . "README.$locale.md",
-            $module->getBasePath() . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . $locale . DIRECTORY_SEPARATOR . "README.md",
-            $module->getBasePath() . DIRECTORY_SEPARATOR . "README.md",
-            $module->getBasePath() . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . "README.md"
-        ];
-
-        $readmeMd = "";
-        foreach ($trials as $file) {
-            if (file_exists($file)) {
-                $readmeMd = file_get_contents($file);
-                break;
-            }
-        }
-
-        return $this->renderAjax('info', ['name' => $module->getName(), 'description' => $module->getDescription(), 'content' => $readmeMd]);
+        return $this->redirectToModules();
     }
 
     /**
@@ -227,22 +180,9 @@ class ModuleController extends Controller
         return $this->renderAjax('setAsDefault', ['module' => $module, 'model' => $model]);
     }
 
-    /**
-     * Module settings
-     * @return string
-     */
-    public function actionModuleSettings()
+    private function redirectToModules()
     {
-        $moduleSettingsForm = new GeneralModuleSettingsForm();
-
-        if ($moduleSettingsForm->load(Yii::$app->request->post()) && $moduleSettingsForm->save()) {
-            $this->view->saved();
-            return $this->redirect(['/admin/module/list']);
-        }
-
-        return $this->renderAjax('moduleSettings', [
-            'settings' => $moduleSettingsForm,
-        ]);
+        return $this->redirect(['/admin/module/list']);
     }
 
 }

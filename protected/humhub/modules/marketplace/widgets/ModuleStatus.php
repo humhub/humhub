@@ -5,11 +5,10 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\admin\widgets;
+namespace humhub\modules\marketplace\widgets;
 
-use humhub\components\Module;
-use humhub\components\OnlineModule;
 use humhub\components\Widget;
+use humhub\modules\marketplace\models\Module;
 use Yii;
 
 /**
@@ -25,10 +24,7 @@ use Yii;
 class ModuleStatus extends Widget
 {
 
-    /**
-     * @var Module
-     */
-    public $module;
+    public Module $module;
 
     /**
      * @var string HTML wrapper around the status
@@ -57,17 +53,15 @@ class ModuleStatus extends Widget
             return $this->_status;
         }
 
-        $onlineModule = new OnlineModule(['module' => $this->module]);
-
-        if ($onlineModule->isProOnly) {
+        if ($this->module->isProOnly()) {
             $this->_status = 'professional';
-        } else if ($onlineModule->isFeatured) {
+        } else if ($this->module->featured) {
             $this->_status = 'featured';
-        } else if (!$onlineModule->isThirdParty) {
+        } else if (!$this->module->isThirdParty) {
             $this->_status = 'official';
-        } else if ($onlineModule->isPartner) {
+        } else if ($this->module->isPartner) {
             $this->_status = 'partner';
-        } else if ($onlineModule->isDeprecated) {
+        } else if ($this->module->isDeprecated) {
             $this->_status = 'deprecated';
         } else {
             $this->_status = 'none';
@@ -81,17 +75,17 @@ class ModuleStatus extends Widget
     {
         switch ($this->status) {
             case 'professional':
-                return Yii::t('AdminModule.modules', 'Professional Edition');
+                return Yii::t('MarketplaceModule.base', 'Professional Edition');
             case 'featured':
-                return Yii::t('AdminModule.modules', 'Featured');
+                return Yii::t('MarketplaceModule.base', 'Featured');
             case 'official':
-                return Yii::t('AdminModule.modules', 'Official');
+                return Yii::t('MarketplaceModule.base', 'Official');
             case 'partner':
-                return Yii::t('AdminModule.modules', 'Partner');
+                return Yii::t('MarketplaceModule.base', 'Partner');
             case 'deprecated':
-                return Yii::t('AdminModule.modules', 'Deprecated');
+                return Yii::t('MarketplaceModule.base', 'Deprecated');
             case 'new':
-                return Yii::t('AdminModule.modules', 'New');
+                return Yii::t('MarketplaceModule.base', 'New');
         }
 
         return '';

@@ -1,12 +1,12 @@
 <?php
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
-use humhub\components\Module;
-use humhub\modules\admin\widgets\ModuleCard;
+use humhub\modules\marketplace\models\Module;
+use humhub\modules\marketplace\widgets\ModuleCard;
 
 /* @var string $type */
 /* @var string|bool $title */
@@ -17,15 +17,15 @@ use humhub\modules\admin\widgets\ModuleCard;
 /* @var Module[] $modules */
 ?>
 <?php if ($title !== false) : ?>
-    <h4 class="modules-type"><?= $title ?> (<span class="group-modules-count-<?= $type ?>"><?= $count ?></span>)</h4>
+    <h4 class="modules-type"><?= $title ?> (<span class="group-modules-count-<?= $type ?>"><?= $count ?></span>):</h4>
 <?php endif; ?>
 
 <div class="row cards">
     <?php if (empty($modules)) : ?>
         <div class="col-md-12 cards-no-results">
             <?php if ($count) : ?>
-                <strong><?= Yii::t('AdminModule.modules', 'No modules found.') ?></strong><br/>
-                <?= Yii::t('AdminModule.modules', 'Try other keywords or remove filters.') ?>
+                <strong><?= Yii::t('MarketplaceModule.base', 'No modules found.') ?></strong><br/>
+                <?= Yii::t('MarketplaceModule.base', 'Try other keywords or remove filters.') ?>
             <?php elseif (isset($noModulesMessage)) : ?>
                 <strong><?= $noModulesMessage ?></strong>
             <?php endif; ?>

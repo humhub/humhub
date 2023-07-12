@@ -5,14 +5,14 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\modules\admin\models\forms\GeneralModuleSettingsForm;
+use humhub\modules\marketplace\models\forms\GeneralModuleSettingsForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 
 /* @var GeneralModuleSettingsForm $settings */
 ?>
-<?php ModalDialog::begin(['header' => Yii::t('AdminModule.modules', '<strong>General</strong> Settings')]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('MarketplaceModule.base', '<strong>General</strong> Settings')]) ?>
 
     <?php $form = ActiveForm::begin() ?>
 

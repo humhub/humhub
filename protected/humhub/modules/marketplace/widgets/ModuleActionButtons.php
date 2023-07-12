@@ -10,7 +10,6 @@ namespace humhub\modules\marketplace\widgets;
 use humhub\components\Widget;
 use humhub\modules\marketplace\models\Licence;
 use humhub\modules\marketplace\models\Module;
-use humhub\modules\marketplace\Module as MarketplaceModule;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\Button;
 use Yii;
@@ -21,7 +20,7 @@ use Yii;
  * @since 1.11
  * @author Luke
  */
-class ModuleInstallActionButtons extends Widget
+class ModuleActionButtons extends Widget
 {
 
     /**
@@ -69,13 +68,9 @@ class ModuleInstallActionButtons extends Widget
                 ->loader(false);
         } else {
             $html .= Button::primary(Yii::t('MarketplaceModule.base', 'Install'))
-                ->link(['/marketplace/browse/install', 'moduleId' => $this->module->id])
-                ->sm()
-                ->options([
-                    'data-method' => 'POST',
-                    'data-loader' => 'modal',
-                    'data-message' => Yii::t('MarketplaceModule.base', 'Installing module...'),
-                ]);
+                ->action('marketplace.install', ['/marketplace/browse/install'])
+                ->options(['data-module-id' => $this->module->id])
+                ->sm();
         }
 
         if (trim($html) === '') {
