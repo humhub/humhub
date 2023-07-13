@@ -78,3 +78,4 @@ HumHub Changelog
 - Fix #6415: Fix caching keys on space directory
 - Fix #6424: Fix width of select2 dropdown inputs
 - Fix #6425: Fix default dropdown select2 options
+- Fix #6428: Translation for custom profile field is served from wrong file
