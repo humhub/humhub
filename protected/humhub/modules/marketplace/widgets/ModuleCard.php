@@ -33,11 +33,13 @@ class ModuleCard extends Widget
         parent::init();
 
         if (empty($this->template)) {
-            $this->template = '<div class="card card-module col-lg-3 col-md-4 col-sm-6 col-lg-12" data-module="{moduleId}">{card}</div>';
+            $this->template = '<div class="card card-module col-lg-3 col-md-4 col-sm-6 col-xs-6" data-module="{moduleId}">{card}</div>';
         }
 
         if (empty($this->view)) {
-            $this->view = 'module-card';
+            $this->view = $this->module->isInstalled()
+                ? 'module-installed-card'
+                : 'module-uninstalled-card';
         }
     }
 
