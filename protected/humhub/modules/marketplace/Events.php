@@ -9,6 +9,7 @@
 namespace humhub\modules\marketplace;
 
 use humhub\modules\admin\events\ModulesEvent;
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\marketplace\models\Module as ModelModule;
 use humhub\modules\marketplace\services\MarketplaceService;
 use humhub\modules\ui\menu\MenuLink;
@@ -64,7 +65,9 @@ class Events extends BaseObject
 
     public static function onAccountTopMenuInit($event)
     {
-        if (!Module::isEnabled()) {
+        if (!Module::isEnabled() ||
+            !Yii::$app->user->isAdmin() ||
+            !Yii::$app->user->can(ManageModules::class)) {
             return;
         }
 
