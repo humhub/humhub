@@ -9,7 +9,7 @@
 
 namespace humhub\modules\marketplace\components;
 
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\marketplace\models\Licence;
 use humhub\modules\marketplace\Module;
@@ -186,7 +186,7 @@ class LicenceManager extends Component
     private static function getStats()
     {
         return [
-            'tua' => User::find()->andWhere(['status' => StatableInterface::STATUS_ENABLED])->count(),
+            'tua' => User::find()->andWhere(['status' => StatableInterface::STATE_ENABLED])->count(),
             'tu' => User::find()->count(),
             'ts' => Space::find()->count(),
         ];

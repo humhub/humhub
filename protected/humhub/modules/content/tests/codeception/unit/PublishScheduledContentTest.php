@@ -8,7 +8,7 @@
 namespace tests\codeception\unit\modules\content;
 
 use DateTime;
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\jobs\PublishScheduledContents;
 use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\post\models\Post;

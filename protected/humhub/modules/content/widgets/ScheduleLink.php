@@ -7,8 +7,8 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\interfaces\StatableInterface;
 use humhub\libs\Html;
-use humhub\libs\StatableInterface;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\widgets\Link;

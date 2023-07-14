@@ -5,18 +5,18 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\file\handler\BaseFileHandler;
+use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
+use humhub\modules\file\widgets\UploadButton;
+use humhub\modules\file\widgets\UploadProgress;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\widgets\UserPickerField;
-use humhub\modules\file\widgets\UploadButton;
-use humhub\modules\file\widgets\FileHandlerButtonDropdown;
-use humhub\modules\file\widgets\UploadProgress;
-use humhub\widgets\Link;
 use humhub\widgets\Button;
+use humhub\widgets\Link;
 use yii\helpers\Html;
 
 /* @var $submitUrl string */

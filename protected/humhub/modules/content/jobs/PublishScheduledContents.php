@@ -10,7 +10,7 @@ namespace humhub\modules\content\jobs;
 
 use DateTime;
 use DateTimeZone;
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\queue\ActiveJob;
 

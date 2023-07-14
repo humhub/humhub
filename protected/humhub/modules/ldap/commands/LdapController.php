@@ -9,7 +9,7 @@
 namespace humhub\modules\ldap\commands;
 
 use Exception;
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\ldap\authclient\LdapAuth;
 use humhub\modules\user\models\User;
 use Laminas\Ldap\Ldap;
@@ -86,8 +86,8 @@ class LdapController extends \yii\console\Controller
 
         $this->stdout("LDAP connection successful!\n\n", Console::FG_GREEN);
 
-        $activeUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => StatableInterface::STATUS_ENABLED])->count();
-        $disabledUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => StatableInterface::STATUS_DISABLED])->count();
+        $activeUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => StatableInterface::STATE_ENABLED])->count();
+        $disabledUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => StatableInterface::STATE_DISABLED])->count();
 
         $this->stdout("LDAP user count:\t\t" . $userCount . " users.\n");;
         $this->stdout("HumHub user count (active):\t" . $activeUserCount . " users.\n");

@@ -8,7 +8,7 @@
 
 namespace humhub\modules\user\models\forms;
 
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\user\components\CheckPasswordValidator;
 use humhub\modules\user\jobs\SoftDeleteUser;
 use humhub\modules\user\models\User;
@@ -68,7 +68,7 @@ class AccountDelete extends Model
             return false;
         }
 
-        $this->user->status = StatableInterface::STATUS_SOFT_DELETED;
+        $this->user->status = StatableInterface::STATE_SOFT_DELETED;
         $this->user->save();
 
         Yii::$app->queue->push(new SoftDeleteUser(['user_id' => $this->user->id]));

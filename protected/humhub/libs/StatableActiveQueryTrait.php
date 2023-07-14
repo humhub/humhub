@@ -8,6 +8,8 @@
 
 namespace humhub\libs;
 
+use humhub\interfaces\StatableActiveQueryInterface;
+use humhub\interfaces\StatableQueryInterface;
 use humhub\modules\content\components\ActiveQueryContent;
 
 trait StatableActiveQueryTrait
@@ -29,6 +31,24 @@ trait StatableActiveQueryTrait
      */
     public array $stateFilterCondition = ['OR'];
 
+    protected ?array $returnedStates = null;
+
+    public function init()
+    {
+        $this->initReturnedStates();
+
+        parent::init();
+    }
+
+    public function initReturnedStates(): self
+    {
+        $this->returnedStates = $this->getModelClass()::getStateServiceTemplate()->getDefaultQueriedStates();
+
+        $this->trigger(StatableQueryInterface::EVENT_INIT_DEFAULT_QUERIED_STATES);
+
+        return $this;
+    }
+
     public function setMultiple(bool $multiple = true): StatableActiveQueryInterface
     {
         $this->multiple = $multiple;
@@ -41,26 +61,29 @@ trait StatableActiveQueryTrait
      */
     public function prepare($builder)
     {
+        $modelClass = $this->getModelClass();
         $query = parent::prepare($builder);
-        $table = $this instanceof ActiveQueryContent ? 'content' : $this->modelClass::tableName();
+        $table = $this instanceof ActiveQueryContent ? 'content' : $modelClass::tableName();
 
         if (
-            $query->from !== $table
+            (is_array($query->from) ? !in_array($table, $query->from, true) : $query->from !== $table)
             && ($query->join === null || !in_array($table, $query->join, true))
         ) {
             return $query;
         }
 
-        if (false === strpos($this->stateColumn, '.')) {
-            $this->stateColumn = $this->modelClass::tableName() . '.' . $this->stateColumn;
+        $stateColumn = $modelClass::getStateServiceTemplate()->getField();
+
+        if (false === strpos($stateColumn, '.')) {
+            $stateColumn = $table . '.' . $stateColumn;
         }
 
         if (count($this->stateFilterCondition) > 1) {
             $condition = $this->stateFilterCondition;
-            $condition[] = [$this->stateColumn => $this->returnedStates];
+            $condition[] = [$stateColumn => $this->returnedStates];
             $query->andWhere($condition);
         } elseif ($this->returnedStates) {
-            $query->andWhere([$this->stateColumn => $this->returnedStates]);
+            $query->andWhere([$stateColumn => $this->returnedStates]);
         }
 
         return $query;

@@ -18,6 +18,7 @@ use humhub\modules\content\interfaces\SoftDeletable;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\Movable;
 use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\content\services\ActiveContentStateService;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\content\widgets\WallEntry;
@@ -68,19 +69,16 @@ use yii\db\ActiveQuery;
  * @mixin Followable
  * @property User $createdBy
  * @property User $owner
+ * @property-read string $contentName
+ * @property-read null|string $icon
+ * @property-read null|WallEntry|WallStreamEntryWidget $wallEntryWidget
+ * @property-read string $contentDescription
  * @property-read File[] $files
  * @author Luke
  */
 class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable, SoftDeletable
 {
     use StatableTrait;
-
-    /**
-     * Content States - By default, only content with the "Published" state is returned.
-     *
-     * @const array<string,int>
-     */
-    public const STATES_AVAILABLE = Content::STATES_AVAILABLE;
 
     /**
      * @see StreamEntryWidget
@@ -512,6 +510,11 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     public static function getObjectModel(): string
     {
         return static::class;
+    }
+
+    public static function getStateServiceClass(): string
+    {
+        return ActiveContentStateService::class;
     }
 
     /**

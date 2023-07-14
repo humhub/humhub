@@ -7,7 +7,7 @@
 
 namespace humhub\modules\content\interfaces;
 
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 
 /**
  * Interface for classes which are deletable softly.

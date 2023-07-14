@@ -8,8 +8,8 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\interfaces\StatableInterface;
 use humhub\libs\Html;
-use humhub\libs\StatableInterface;
 use humhub\modules\ui\widgets\BaseImage;
 use humhub\modules\user\services\IsOnlineService;
 use Yii;
@@ -39,7 +39,7 @@ class Image extends BaseImage
      */
     public function run()
     {
-        if ($this->user->status == StatableInterface::STATUS_SOFT_DELETED) {
+        if ($this->user->status == StatableInterface::STATE_SOFT_DELETED) {
             $this->link = false;
         }
 

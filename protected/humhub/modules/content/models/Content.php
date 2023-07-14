@@ -12,9 +12,9 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
-use humhub\modules\admin\permissions\ManageUsers;
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StateServiceInterface;
 use humhub\libs\StatableTrait;
+use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\activities\ContentCreated as ActivitiesContentCreated;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -38,6 +38,7 @@ use humhub\modules\user\models\User;
 use Throwable;
 use Yii;
 use yii\base\Exception;
+use yii\db\ActiveQuery;
 use yii\db\IntegrityException;
 use yii\helpers\Url;
 
@@ -79,6 +80,12 @@ use yii\helpers\Url;
  * @property string $updated_at
  * @property integer $updated_by
  * @property ContentContainer $contentContainer
+ * @property-read mixed $contentName
+ * @property-read mixed $content
+ * @property-read ActiveQuery $tagRelations
+ * @property-read ContentActiveRecord $model
+ * @property-read mixed $contentDescription
+ * @property-read StateServiceInterface $stateService
  * @property ContentContainerActiveRecord $container
  * @mixin PolymorphicRelation
  * @mixin GUID
@@ -87,19 +94,6 @@ use yii\helpers\Url;
 class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletable
 {
     use StatableTrait;
-
-    /**
-     * Content States - By default, only content with the "Published" state is returned.
-     *
-     * @const array<string,int>
-     */
-    public const STATES_AVAILABLE
-        = [
-            'published' => StatableInterface::STATE_PUBLISHED,
-            'draft' => StatableInterface::STATE_DRAFT,
-            'scheduled' => StatableInterface::STATE_SCHEDULED,
-            'deleted' => StatableInterface::STATE_DELETED,
-        ];
 
     /**
      * The default stream channel.
@@ -143,7 +137,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     /**
      * @event Event is used when a Content state is changed.
      */
-    const EVENT_STATE_CHANGED = 'changedState';
+    public const EVENT_STATE_CHANGED = 'changedState';
 
     /**
      * @inheritdoc
@@ -211,6 +205,14 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     public function getModel()
     {
         return $this->getPolymorphicRelation();
+    }
+
+    /**
+     * @return string
+     */
+    public static function getStateServiceClass(): string
+    {
+        return ContentStateService::class;
     }
 
     /**
@@ -779,7 +781,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * Relation to ContentContainer model
      * Note: this is not a Space or User instance!
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      * @since 1.1
      */
     public function getContentContainer()
@@ -790,7 +792,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     /**
      * Returns the ContentTagRelation query.
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      * @since 1.2.2
      */
     public function getTagRelations()
@@ -801,7 +803,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     /**
      * Returns all content related tags ContentTags related to this content.
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      * @since 1.2.2
      */
     public function getTags($tagClass = ContentTag::class)
@@ -1062,22 +1064,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     public function isUpdated()
     {
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
-    }
-
-    public function getStateService(): ContentStateService
-    {
-        return new ContentStateService(['content' => $this]);
-    }
-
-    /**
-     * @param int|string|null $state
-     * @param array $options Additional options depending on state
-     * @since 1.14
-     * @deprecated Use $this->getStateService()->set(). It will be deleted in v1.15.
-     */
-    public function setState($state, array $options = [])
-    {
-        $this->getStateService()->set($state, $options);
     }
 
 }

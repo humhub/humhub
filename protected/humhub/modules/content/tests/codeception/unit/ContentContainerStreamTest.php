@@ -2,15 +2,14 @@
 
 namespace tests\codeception\unit\modules\content;
 
-use humhub\libs\StatableInterface;
-use humhub\modules\stream\models\filters\DefaultStreamFilter;
-use Yii;
-use tests\codeception\_support\HumHubDbTestCase;
-use humhub\modules\post\models\Post;
-
-use humhub\modules\space\models\Space;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\models\Content;
+use humhub\modules\post\models\Post;
+use humhub\modules\space\models\Space;
 use humhub\modules\stream\actions\ContentContainerStream;
+use humhub\modules\stream\models\filters\DefaultStreamFilter;
+use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
 class ContentContainerStreamTest extends HumHubDbTestCase
 {

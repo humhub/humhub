@@ -8,7 +8,8 @@
 
 namespace humhub\modules\stream\models\filters;
 
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
+use humhub\libs\StatableActiveQuery;
 use humhub\modules\activity\stream\ActivityStreamQuery;
 use humhub\modules\content\models\Content;
 use Yii;
@@ -44,10 +45,10 @@ class ScheduledContentStreamFilter extends StreamQueryFilter
      */
     private function fetchScheduledContent(): void
     {
+        /** @var StatableActiveQuery $scheduledQuery */
         $scheduledQuery = clone $this->query;
-        $scheduledQuery->andWhere([
-            'AND', ['content.state' => StatableInterface::STATE_SCHEDULED],
-            ['content.created_by' => Yii::$app->user->id]]);
+        $scheduledQuery->whereState(StatableInterface::STATE_SCHEDULED);
+        $scheduledQuery->andWhere(['content.created_by' => Yii::$app->user->id]);
         $scheduledQuery->limit(100);
         $this->scheduledContent = $scheduledQuery->all();
     }

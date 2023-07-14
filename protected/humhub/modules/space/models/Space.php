@@ -9,7 +9,7 @@
 namespace humhub\modules\space\models;
 
 use humhub\components\behaviors\GUID;
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
@@ -680,7 +680,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             ->andWhere(['IN', 'group_id', [self::USERGROUP_ADMIN, self::USERGROUP_MODERATOR]])
             ->andWhere(['space_id' => $this->id])
             ->andWhere(['!=', 'user_id', $owner->id])
-            ->andWhere(['user.status' => StatableInterface::STATUS_ENABLED])
+            ->andWhere(['user.status' => StatableInterface::STATE_ENABLED])
         ;
 
         foreach ($query->all() as $membership) {

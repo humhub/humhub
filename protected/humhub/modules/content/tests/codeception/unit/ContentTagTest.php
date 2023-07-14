@@ -16,7 +16,7 @@
 namespace humhub\modules\content\tests\codeception\unit;
 
 
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;

@@ -8,7 +8,7 @@
 
 namespace humhub\modules\dashboard\stream\filters;
 
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\dashboard\Module;
 use humhub\modules\space\models\Space;
@@ -86,7 +86,7 @@ class DashboardMemberStreamFilterLegitimation extends StreamQueryFilter
             'userContainer.id = contentcontainer.pk AND contentcontainer.class = :userModel',
             [':userModel' => User::class]
         );
-        $this->query->andWhere(['OR', 'userContainer.id IS NULL', ['userContainer.status' => StatableInterface::STATUS_ENABLED]]);
+        $this->query->andWhere(['OR', 'userContainer.id IS NULL', ['userContainer.status' => StatableInterface::STATE_ENABLED]]);
     }
 
     /**

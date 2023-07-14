@@ -9,7 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
 use humhub\modules\admin\permissions\ManageGroups;
@@ -219,7 +219,7 @@ class Group extends ActiveRecord
              WHERE group_user.id IS NULL
                AND user.status != :userStatusSoftDeleted', [
             ':defaultGroupId' => $this->id,
-            ':userStatusSoftDeleted' => StatableInterface::STATUS_SOFT_DELETED,
+            ':userStatusSoftDeleted' => StatableInterface::STATE_SOFT_DELETED,
         ])->execute();
     }
 
@@ -408,7 +408,7 @@ class Group extends ActiveRecord
     public static function notifyAdminsForUserApproval($user)
     {
         // No admin approval required
-        if ($user->status != StatableInterface::STATUS_NEED_APPROVAL ||
+        if ($user->status != StatableInterface::STATE_NEEDS_APPROVAL ||
             !Yii::$app->getModule('user')->settings->get('auth.needApproval', 'user')) {
             return;
         }

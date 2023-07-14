@@ -9,7 +9,7 @@
 namespace humhub\modules\user\models\forms;
 
 use humhub\compat\HForm;
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Password;
@@ -265,7 +265,7 @@ class Registration extends HForm
 
         $this->models['User']->language = Yii::$app->i18n->getAllowedLanguage();
         if ($this->enableUserApproval) {
-            $this->models['User']->status = StatableInterface::STATUS_NEED_APPROVAL;
+            $this->models['User']->status = StatableInterface::STATE_NEEDS_APPROVAL;
             $this->models['User']->registrationGroupId = $this->models['GroupUser']->group_id;
         }
 
