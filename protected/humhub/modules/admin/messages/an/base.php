@@ -65,6 +65,7 @@ return [
     'Proxy' => '',
     'Self test' => '',
     'Set as default' => '',
+    'Show in Marketplace' => '',
     'Statistics' => '',
     'The cron job for the background jobs (queue) does not seem to work properly.' => '',
     'The cron job for the regular tasks (cron) does not seem to work properly.' => '',

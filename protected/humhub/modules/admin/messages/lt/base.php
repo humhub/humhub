@@ -67,6 +67,7 @@ return [
     'People' => '',
     'Permissions' => '',
     'Self test' => '',
+    'Show in Marketplace' => '',
     'The cron job for the background jobs (queue) does not seem to work properly.' => '',
     'The cron job for the regular tasks (cron) does not seem to work properly.' => '',
     'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => '',

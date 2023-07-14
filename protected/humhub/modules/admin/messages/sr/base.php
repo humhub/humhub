@@ -61,6 +61,7 @@ return [
     'Self test' => '',
     'Set as default' => '',
     'Settings' => '',
+    'Show in Marketplace' => '',
     'Sign up' => '',
     'Spaces' => '',
     'Statistics' => '',

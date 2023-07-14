@@ -62,6 +62,7 @@ return [
     'Proxy' => '',
     'Self test' => '',
     'Set as default' => '',
+    'Show in Marketplace' => '',
     'Sign up' => '',
     'Spaces' => '',
     'Statistics' => '',

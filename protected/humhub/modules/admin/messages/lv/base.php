@@ -66,6 +66,7 @@ return [
     'Pending user registrations' => '',
     'People' => '',
     'Set as default' => '',
+    'Show in Marketplace' => '',
     'Sign up' => '',
     'The cron job for the background jobs (queue) does not seem to work properly.' => '',
     'The cron job for the regular tasks (cron) does not seem to work properly.' => '',

@@ -70,6 +70,7 @@ return [
     'Inactive Modules' => '',
     'Install Updates' => '',
     'Keep your system up-to-date and benefit from the latest improvements.' => '',
+    'Show in Marketplace' => '',
     'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => '',
     'Updates available for {count} of your modules' => '',
     'Version' => '',
