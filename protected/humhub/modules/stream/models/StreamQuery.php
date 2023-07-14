@@ -2,11 +2,11 @@
 
 namespace humhub\modules\stream\models;
 
+use humhub\interfaces\StatableActiveQueryInterface;
+use humhub\interfaces\StatableInterface;
+use humhub\interfaces\StatableQueryInterface;
 use humhub\libs\StatableActiveQuery;
-use humhub\libs\StatableActiveQueryInterface;
 use humhub\libs\StatableActiveQueryTrait;
-use humhub\libs\StatableInterface;
-use humhub\libs\StatableQueryInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\stream\actions\Stream;
 use humhub\modules\stream\models\filters\BlockedUsersStreamFilter;
@@ -150,8 +150,6 @@ class StreamQuery extends Model implements StatableQueryInterface
         ScheduledContentStreamFilter::class
     ];
 
-    public string $stateColumn = 'content.state';
-
     /**
      * The content query.
      *
@@ -210,6 +208,8 @@ class StreamQuery extends Model implements StatableQueryInterface
         $this->_query = Content::find();
         // Set default user after initialization, so it's available without assembling the query.
         $this->checkUser();
+
+        parent::init();
     }
 
     /**
@@ -393,9 +393,12 @@ class StreamQuery extends Model implements StatableQueryInterface
         return $this->_query;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getModelClass(): string
     {
-        return $this->_query->modelClass;
+        return $this->_query->getModelClass();
     }
 
     /**
@@ -541,7 +544,7 @@ class StreamQuery extends Model implements StatableQueryInterface
             ->limit($this->limit);
 
         if (!Yii::$app->getModule('stream')->showDeactivatedUserContent) {
-            $this->_query->andWhere(['user.status' => StatableInterface::STATUS_ENABLED]);
+            $this->_query->andWhere(['user.status' => StatableInterface::STATE_ENABLED]);
         }
 
         if ($this->contentId) {

@@ -8,8 +8,8 @@
 
 namespace humhub\modules\installer\commands;
 
+use humhub\interfaces\StatableInterface;
 use humhub\libs\DynamicConfig;
-use humhub\libs\StatableInterface;
 use humhub\libs\UUID;
 use humhub\modules\installer\libs\InitialData;
 use humhub\modules\user\models\Group;
@@ -111,7 +111,7 @@ class InstallController extends Controller
         $user = new User();
         $user->username = $admin_user;
         $user->email = $admin_email;
-        $user->status = StatableInterface::STATUS_ENABLED;
+        $user->status = StatableInterface::STATE_ENABLED;
         $user->language = '';
         if (!$user->save()) {
             throw new Exception("Could not save user");

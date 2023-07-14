@@ -2,7 +2,7 @@
 
 namespace humhub\modules\dashboard\stream\filters;
 
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
 use humhub\modules\stream\models\filters\StreamQueryFilter;
@@ -37,7 +37,7 @@ class DashboardGuestStreamFilter extends StreamQueryFilter
         $publicProfilesSql = (new Query())
             ->select("contentcontainer_id")
             ->from('user')
-            ->where(['user.status' => StatableInterface::STATUS_ENABLED])
+            ->where(['user.status' => StatableInterface::STATE_ENABLED])
             ->andWhere(['user.visibility' =>  User::VISIBILITY_ALL]);
 
         $this->query->andFilterWhere(['OR',

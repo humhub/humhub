@@ -2,7 +2,7 @@
 
 namespace humhub\modules\dashboard\stream\filters;
 
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\dashboard\Module;
 use humhub\modules\space\models\Membership;
@@ -35,7 +35,7 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
             ':userId' => $this->user->id,
             ':spaceMembershipStatus' => Membership::STATUS_MEMBER,
             ':spaceEnabledStatus' => Space::STATUS_ENABLED,
-            ':userEnabledStatus' => StatableInterface::STATUS_ENABLED,
+            ':userEnabledStatus' => StatableInterface::STATE_ENABLED,
             ':userModel' => User::class,
             ':spaceModel' => Space::class,
             ':visibilityPrivate' => Content::VISIBILITY_PRIVATE,

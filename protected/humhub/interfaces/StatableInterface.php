@@ -1,12 +1,12 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
+/*
+ * @link      https://www.humhub.org/
  * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
+ * @license   https://www.humhub.com/licences
  */
 
-namespace humhub\libs;
+namespace humhub\interfaces;
 
 use humhub\exceptions\InvalidStateException;
 use yii\base\InvalidArgumentException;
@@ -25,25 +25,27 @@ interface StatableInterface
     /**
      * Record States - By default, only content with the "Published" state is returned.
      */
-    public const STATUS_DISABLED = 0;
-    public const STATUS_ENABLED = 1;
+    public const STATE_DISABLED = 0;
+    public const STATE_ENABLED = 1;
     public const STATE_PUBLISHED = 1;
-    public const STATUS_NEED_APPROVAL = 2;
-    public const STATUS_SOFT_DELETED = 3;
+    public const STATE_NEEDS_APPROVAL = 2;
+    public const STATE_SOFT_DELETED = 3;
     public const STATE_DRAFT = 10;
     public const STATE_SCHEDULED = 20;
     public const STATE_DELETED = 100;
 
     /**
-     * @param int|string|null $state
-     * @param array           $options Additional options depending on state
+     * Content States - By default, only content with the "Published" state is returned.
      *
-     * @since 1.14
+     * @const array<string,int>
      */
-    public function setState(
-        $state,
-        array $options = []
-    );
+    public const STATE_NAMES
+        = [
+            'published' => StatableInterface::STATE_PUBLISHED,
+            'draft' => StatableInterface::STATE_DRAFT,
+            'scheduled' => StatableInterface::STATE_SCHEDULED,
+            'deleted' => StatableInterface::STATE_DELETED,
+        ];
 
     /**
      * @param int|string|null $state
@@ -52,10 +54,7 @@ interface StatableInterface
      * @return bool
      * @since 1.14
      */
-    public function canChangeState(
-        $state,
-        array $options = []
-    ): bool;
+    public function canChangeState($state, array $options = []): bool;
 
     /**
      * @param string          $attribute the attribute currently being validated
@@ -66,41 +65,16 @@ interface StatableInterface
      * @return bool
      * @since 1.15
      */
-    public function validateStateAttribute(
-        string $attribute,
-        $params,
-        InlineValidator $validator,
-        $current
-    ): bool;
+    public function validateStateAttribute(string $attribute, $params, InlineValidator $validator, $current): bool;
+
+
+    public function getStateService(): StateServiceInterface;
 
     /**
-     *
-     * @param null|int|string $filterByState Used to check if a given state is available. Set to null to get all
-     *                                       available states (subject to the moderation by the $options parameter).
-     * @param array           $options       Allowed states can be moderated by the $options parameter
-     *
-     * @return array
+     * @return string|StateServiceInterface
      */
-    public static function getAllowedStates(
-        ?string $filterByState = null,
-        array $options = []
-    ): array;
-
-    /**
-     * @param int|string|null $state State ID or key-word, or null to get all
-     *
-     * @return array
-     */
-    public static function getStateByName($state = null): array;
-
-    /**
-     * Get translated names of the states
-     *
-     * @param int|string|null $state
-     *
-     * @return array
-     */
-    public static function getStateNames($state = null): array;
+    public static function getStateServiceClass(): string;
+    public static function getStateServiceTemplate(): StateServiceInterface;
 
     /**
      * @param int[]|InvalidStateException|InvalidArgumentException $result         Out parameter with the normalized
@@ -119,13 +93,7 @@ interface StatableInterface
      * @return bool
      * @throws InvalidStateException|InvalidArgumentException
      */
-    public static function validateState(
-        &$result,
-        $state,
-        array $params = [],
-        bool $allowArray = false,
-        bool $throwException = true
-    ): bool;
+    public static function validateState(&$result, $state, array $params = [], bool $allowArray = false, bool $throwException = true): bool;
 
     public static function findOne($condition, $allowedStates = null);
 

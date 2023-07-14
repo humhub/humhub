@@ -8,7 +8,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\jobs\DeleteUser;
@@ -50,7 +50,7 @@ class UserDeleteForm extends Model
      */
     public function init()
     {
-        if ($this->user->status == StatableInterface::STATUS_SOFT_DELETED) {
+        if ($this->user->status == StatableInterface::STATE_SOFT_DELETED) {
             $this->deleteContributions = true;
         }
     }
@@ -63,7 +63,7 @@ class UserDeleteForm extends Model
         $rules = [];
         $rules[] = [['deleteSpaces'], 'boolean'];
 
-        if ($this->user->status != StatableInterface::STATUS_SOFT_DELETED) {
+        if ($this->user->status != StatableInterface::STATE_SOFT_DELETED) {
             $rules[] = [['deleteContributions'], 'boolean'];
         }
 
@@ -99,7 +99,7 @@ class UserDeleteForm extends Model
     public function load($data, $formName = null)
     {
         // Handle empty form submit
-        if ($this->user->status == StatableInterface::STATUS_SOFT_DELETED && Yii::$app->request->isPost) {
+        if ($this->user->status == StatableInterface::STATE_SOFT_DELETED && Yii::$app->request->isPost) {
             return true;
         }
 

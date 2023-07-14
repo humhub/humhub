@@ -8,7 +8,7 @@
 
 namespace user\functional;
 
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\user\models\User;
 use user\FunctionalTester;
 
@@ -23,7 +23,7 @@ class UserAccessCest
         $I->amGoingTo('to deactivate the current user');
 
         $user = User::findOne(3);
-        $user->status = StatableInterface::STATUS_DISABLED;
+        $user->status = StatableInterface::STATE_DISABLED;
         $user->save();
 
         $I->amOnPage(['/dashboard/dashboard']);
@@ -38,7 +38,7 @@ class UserAccessCest
         $I->amGoingTo('to deactivate the current user');
 
         $user = User::findOne(3);
-        $user->status = StatableInterface::STATUS_NEED_APPROVAL;
+        $user->status = StatableInterface::STATE_NEEDS_APPROVAL;
         $user->save();
 
         $I->amOnPage(['/dashboard/dashboard']);

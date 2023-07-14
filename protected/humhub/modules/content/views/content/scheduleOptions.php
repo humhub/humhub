@@ -5,8 +5,8 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\interfaces\StatableInterface;
 use humhub\libs\Html;
-use humhub\libs\StatableInterface;
 use humhub\modules\content\models\forms\ScheduleOptionsForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\form\widgets\DatePicker;

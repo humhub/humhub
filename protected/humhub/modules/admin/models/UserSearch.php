@@ -8,7 +8,7 @@
 
 namespace humhub\modules\admin\models;
 
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -151,14 +151,14 @@ class UserSearch extends User
 
     public static function getStatusAttributes()
     {
-        $countActive = User::find()->where(['user.status' => StatableInterface::STATUS_ENABLED])->count();
-        $countDisabled = User::find()->where(['user.status' => StatableInterface::STATUS_DISABLED])->count();
-        $countSoftDeleted = User::find()->where(['user.status' => StatableInterface::STATUS_SOFT_DELETED])->count();
+        $countActive = User::find()->where(['user.status' => StatableInterface::STATE_ENABLED])->count();
+        $countDisabled = User::find()->where(['user.status' => StatableInterface::STATE_DISABLED])->count();
+        $countSoftDeleted = User::find()->where(['user.status' => StatableInterface::STATE_SOFT_DELETED])->count();
 
         return [
-            StatableInterface::STATUS_ENABLED => Yii::t('AdminModule.user', 'Active users') . ' (' . $countActive . ')',
-            StatableInterface::STATUS_DISABLED => Yii::t('AdminModule.user', 'Disabled users') . ' (' . $countDisabled . ')',
-            StatableInterface::STATUS_SOFT_DELETED => Yii::t('AdminModule.user', 'Deleted users') . ' (' . $countSoftDeleted . ')',
+            StatableInterface::STATE_ENABLED => Yii::t('AdminModule.user', 'Active users') . ' (' . $countActive . ')',
+            StatableInterface::STATE_DISABLED => Yii::t('AdminModule.user', 'Disabled users') . ' (' . $countDisabled . ')',
+            StatableInterface::STATE_SOFT_DELETED => Yii::t('AdminModule.user', 'Deleted users') . ' (' . $countSoftDeleted . ')',
         ];
     }
 

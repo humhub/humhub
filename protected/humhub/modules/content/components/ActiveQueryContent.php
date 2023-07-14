@@ -8,9 +8,8 @@
 
 namespace humhub\modules\content\components;
 
-use humhub\libs\StatableActiveQueryInterface;
+use humhub\interfaces\StatableActiveQueryInterface;
 use humhub\libs\StatableActiveQueryTrait;
-use humhub\libs\StatableInterface;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;
 use humhub\modules\space\models\Space;
@@ -40,13 +39,6 @@ class ActiveQueryContent extends ActiveQuery implements StatableActiveQueryInter
     public const USER_RELATED_SCOPE_FOLLOWED_SPACES = 3;
     public const USER_RELATED_SCOPE_FOLLOWED_USERS = 4;
     public const USER_RELATED_SCOPE_OWN_PROFILE = 5;
-
-    public string $stateColumn = 'content.state';
-
-    protected ?array $returnedStates
-        = [
-            StatableInterface::STATE_PUBLISHED,
-        ];
 
     /**
      * Only returns user readable records

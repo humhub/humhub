@@ -12,7 +12,7 @@ use humhub\compat\HForm;
 use humhub\components\export\ArrayColumn;
 use humhub\components\export\DateTimeColumn;
 use humhub\components\export\SpreadsheetExport;
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\PasswordEditForm;
 use humhub\modules\admin\models\forms\UserDeleteForm;
@@ -82,7 +82,7 @@ class UserController extends Controller
     public function actionList()
     {
         $searchModel = new UserSearch();
-        $searchModel->status = StatableInterface::STATUS_ENABLED;
+        $searchModel->status = StatableInterface::STATE_ENABLED;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $showPendingRegistrations = (Invite::find()->count() > 0 && Yii::$app->user->can([new ManageUsers(), new ManageGroups()]));
 
@@ -334,7 +334,7 @@ class UserController extends Controller
             throw new HttpException(404);
         }
 
-        $user->status = StatableInterface::STATUS_ENABLED;
+        $user->status = StatableInterface::STATE_ENABLED;
         $user->save();
 
         return $this->redirect(['list']);
@@ -348,7 +348,7 @@ class UserController extends Controller
 
         $this->checkUserAccess($user);
 
-        $user->status = StatableInterface::STATUS_DISABLED;
+        $user->status = StatableInterface::STATE_DISABLED;
         $user->save();
 
         return $this->redirect(['list']);

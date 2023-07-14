@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use humhub\interfaces\StatableActiveQueryInterface;
 use yii\db\ActiveQuery;
 
 /**
@@ -15,17 +16,7 @@ use yii\db\ActiveQuery;
  */
 
 
-/**
- * @property int[]|null $returnedStates
- */
 class StatableActiveQuery extends ActiveQuery implements StatableActiveQueryInterface
 {
     use StatableActiveQueryTrait;
-
-    public string $stateColumn = 'state';
-
-    protected ?array $returnedStates
-        = [
-            StatableInterface::STATE_PUBLISHED,
-        ];
 }

@@ -9,8 +9,8 @@ namespace humhub\modules\content\models\forms;
 
 use DateTime;
 use DateTimeZone;
+use humhub\interfaces\StatableInterface;
 use humhub\libs\DbDateValidator;
-use humhub\libs\StatableInterface;
 use humhub\modules\content\models\Content;
 use Yii;
 use yii\base\Model;

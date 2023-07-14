@@ -4,7 +4,7 @@
 namespace dashboard;
 
 
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\dashboard\Module;
 use humhub\modules\dashboard\stream\DashboardStreamQuery;
@@ -59,7 +59,7 @@ class DashboardStreamTest extends HumHubDbTestCase
      */
     public function getUserByVisibility($visibility)
     {
-        return Space::findOne(['visibility' => $visibility, 'status' => StatableInterface::STATUS_ENABLED]);
+        return Space::findOne(['visibility' => $visibility, 'status' => StatableInterface::STATE_ENABLED]);
     }
 
     /**

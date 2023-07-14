@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\icon\widgets\Icon;
@@ -153,7 +154,7 @@ class Html extends \yii\bootstrap\Html
         }
 
         if ($container instanceof User) {
-            if ($container->status == StatableInterface::STATUS_SOFT_DELETED) {
+            if ($container->status == StatableInterface::STATE_SOFT_DELETED) {
                 return static::beginTag('strike') . static::encode($container->displayName) . static::endTag('strike');
             }
             return static::a(static::encode($container->displayName), $container->getUrl(), $options);

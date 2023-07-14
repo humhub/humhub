@@ -9,7 +9,7 @@
 namespace humhub\modules\ldap\authclient;
 
 use DateTime;
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\libs\StringHelper;
 use humhub\modules\ldap\components\ZendLdap;
 use humhub\modules\ldap\Module;
@@ -519,14 +519,14 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
             if ($this->idAttribute !== null) {
                 foreach ((new AuthClientService($this))->getUsersQuery()->each() as $user) {
                     $foundInLdap = in_array($user->authclient_id, $ids);
-                    if ($foundInLdap && $user->status === StatableInterface::STATUS_DISABLED) {
+                    if ($foundInLdap && $user->status === StatableInterface::STATE_DISABLED) {
                         // Enable disabled users that have been found in ldap
-                        $user->status = StatableInterface::STATUS_ENABLED;
+                        $user->status = StatableInterface::STATE_ENABLED;
                         $user->save();
                         Yii::info('Enabled user' . $user->username . ' (' . $user->id . ') - found in LDAP!', 'ldap');
-                    } elseif (!$foundInLdap && $user->status == StatableInterface::STATUS_ENABLED) {
+                    } elseif (!$foundInLdap && $user->status == StatableInterface::STATE_ENABLED) {
                         // Disable users that were not found in ldap
-                        $user->status = StatableInterface::STATUS_DISABLED;
+                        $user->status = StatableInterface::STATE_DISABLED;
                         $user->save();
                         Yii::warning('Disabled user' . $user->username . ' (' . $user->id . ') - not found in LDAP!', 'ldap');
                     }

@@ -2,7 +2,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
@@ -89,7 +89,7 @@ class ApproveUserForm extends \yii\base\Model
                 throw new NotFoundHttpException(Yii::t('AdminModule.base', 'User not found!'));
             }
 
-            if ($this->user->status !== StatableInterface::STATUS_NEED_APPROVAL) {
+            if ($this->user->status !== StatableInterface::STATE_NEEDS_APPROVAL) {
                 throw new NotFoundHttpException(Yii::t('AdminModule.base', 'Invalid user state: {state}', ['state' => $this->user->status]));
             }
         }
@@ -112,7 +112,7 @@ class ApproveUserForm extends \yii\base\Model
     private function getUsers($ids)
     {
         return User::find()
-            ->andWhere(['user.id' => $ids, 'user.status' => StatableInterface::STATUS_NEED_APPROVAL])
+            ->andWhere(['user.id' => $ids, 'user.status' => StatableInterface::STATE_NEEDS_APPROVAL])
             ->administrableBy($this->admin)->all();
     }
 
@@ -157,7 +157,7 @@ class ApproveUserForm extends \yii\base\Model
             return false;
         }
 
-        $this->user->status = StatableInterface::STATUS_ENABLED;
+        $this->user->status = StatableInterface::STATE_ENABLED;
         $this->user->setScenario(User::SCENARIO_APPROVE);
 
         return $this->user->save() && $this->send();

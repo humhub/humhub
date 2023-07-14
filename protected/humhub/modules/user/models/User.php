@@ -9,7 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\behaviors\GUID;
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\libs\StatableTrait;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
@@ -34,6 +34,7 @@ use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\PasswordRecoveryService;
+use humhub\modules\user\services\UserStateService;
 use humhub\modules\user\widgets\UserWall;
 use Yii;
 use yii\base\Exception;
@@ -71,16 +72,6 @@ use yii\web\IdentityInterface;
 class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable, StatableInterface
 {
     use StatableTrait;
-
-    /**
-     * User Status Flags
-     */
-    public const STATES_AVAILABLE        = [
-        'disabled' => StatableInterface::STATUS_DISABLED,
-        'enabled' => StatableInterface::STATUS_ENABLED,
-        'need approval' => StatableInterface::STATUS_NEED_APPROVAL,
-        'deleted' => StatableInterface::STATUS_SOFT_DELETED,
-    ];
 
     /**
      * Visibility Modes
@@ -454,7 +445,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function isActive()
     {
-        return $this->status === StatableInterface::STATUS_ENABLED;
+        return $this->status === StatableInterface::STATE_ENABLED;
     }
 
     /**
@@ -534,7 +525,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $this->updateAttributes([
             'email' => new Expression('NULL'),
             'username' => 'deleted-' . $this->id,
-            'status' => StatableInterface::STATUS_SOFT_DELETED,
+            'status' => StatableInterface::STATE_SOFT_DELETED,
             'authclient_id' => new Expression('NULL')
         ]);
 
@@ -564,7 +555,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             }
 
             if ($this->status == '') {
-                $this->status = StatableInterface::STATUS_ENABLED;
+                $this->status = StatableInterface::STATE_ENABLED;
             }
         }
 
@@ -592,7 +583,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $this->updateSearch();
 
         if ($insert) {
-            if ($this->status == StatableInterface::STATUS_NEED_APPROVAL) {
+            if ($this->status == StatableInterface::STATE_NEEDS_APPROVAL) {
                 Group::notifyAdminsForUserApproval($this);
             }
             $this->profile->user_id = $this->id;
@@ -603,10 +594,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         // When insert an "::STATUS_ENABLED" user or update a user from status "::STATUS_NEED_APPROVAL" to "::STATUS_ENABLED"
         if (
-            $this->status == StatableInterface::STATUS_ENABLED &&
+            $this->status == StatableInterface::STATE_ENABLED &&
             (
                 $insert ||
-                (isset($changedAttributes['status']) && $changedAttributes['status'] == StatableInterface::STATUS_NEED_APPROVAL)
+                (isset($changedAttributes['status']) && $changedAttributes['status'] == StatableInterface::STATE_NEEDS_APPROVAL)
             )
         ) {
             $this->setUpApproved();
@@ -1014,16 +1005,30 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
     }
 
+    /**
+     * @return string
+     */
+    public static function getStateServiceClass(): string
+    {
+        return UserStateService::class;
+    }
+
+    /**
+     * ToDo: MDR -> use interface, use UserStateService
+     * @param bool $withDeleted
+     *
+     * @return array
+     */
     public static function getStatusOptions(bool $withDeleted = true): array
     {
         $options = [
-            StatableInterface::STATUS_ENABLED => Yii::t('AdminModule.user', 'Enabled'),
-            StatableInterface::STATUS_DISABLED => Yii::t('AdminModule.user', 'Disabled'),
-            StatableInterface::STATUS_NEED_APPROVAL => Yii::t('AdminModule.user', 'Unapproved'),
+            StatableInterface::STATE_ENABLED => Yii::t('AdminModule.user', 'Enabled'),
+            StatableInterface::STATE_DISABLED => Yii::t('AdminModule.user', 'Disabled'),
+            StatableInterface::STATE_NEEDS_APPROVAL => Yii::t('AdminModule.user', 'Unapproved'),
         ];
 
         if ($withDeleted) {
-            $options[StatableInterface::STATUS_SOFT_DELETED] = Yii::t('AdminModule.user', 'Deleted');
+            $options[StatableInterface::STATE_SOFT_DELETED] = Yii::t('AdminModule.user', 'Deleted');
         }
 
         return $options;

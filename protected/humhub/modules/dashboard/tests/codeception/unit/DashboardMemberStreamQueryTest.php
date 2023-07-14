@@ -3,7 +3,7 @@
 namespace dashboard\unit;
 
 use dashboard\DashboardStreamTest;
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\models\Space;
@@ -263,7 +263,7 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
     {
         $this->enableAutoIncludeProfilePostsAll();
         $this->assertUserDoesNotSeeProfileContent(User::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, null,
-            StatableInterface::STATUS_DISABLED);
+            StatableInterface::STATE_DISABLED);
     }
 
 
@@ -322,10 +322,10 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
     {
         $this->enableAutoIncludeProfilePostsAdmin();
         $this->assertUserDoesNotSeeProfileContent(User::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, User::findOne(['id' => 1]),
-            StatableInterface::STATUS_DISABLED);
+            StatableInterface::STATE_DISABLED);
     }
 
-    private function assertUserDoesSeeProfileContent($userVisibility, $contentVisibility, $user = null , $status = StatableInterface::STATUS_ENABLED)
+    private function assertUserDoesSeeProfileContent($userVisibility, $contentVisibility, $user = null , $status = StatableInterface::STATE_ENABLED)
     {
         $user1 = User::findOne(['id' => 2]);
         $user2 = $user ?? User::findOne(['id' => 3]);
@@ -338,7 +338,7 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
         static::assertEquals($content->id, $stream[0]->id);
     }
 
-    private function assertUserDoesNotSeeProfileContent($userVisibility, $contentVisibility,  $user = null, $status = StatableInterface::STATUS_ENABLED)
+    private function assertUserDoesNotSeeProfileContent($userVisibility, $contentVisibility,  $user = null, $status = StatableInterface::STATE_ENABLED)
     {
         $user1 = User::findOne(['id' => 2]);
         $user2 = $user ?? User::findOne(['id' => 3]);
@@ -376,10 +376,10 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
     public function testFollowingUserDoesNotSeeContentOfDisabledProfile()
     {
         $this->assertFollowingUserDoesNotSeeProfileContent(User::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC,
-            StatableInterface::STATUS_DISABLED);
+            StatableInterface::STATE_DISABLED);
     }
 
-    private function assertFollowingUserDoesSeeProfileContent($userVisibility, $contentVisibility, $status = StatableInterface::STATUS_ENABLED)
+    private function assertFollowingUserDoesSeeProfileContent($userVisibility, $contentVisibility, $status = StatableInterface::STATE_ENABLED)
     {
         $user1 = User::findOne(['id' => 2]);
         $user2 = User::findOne(['id' => 3]);
@@ -395,7 +395,7 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
         static::assertEquals($content->id, $stream[0]->id);
     }
 
-    private function assertFollowingUserDoesNotSeeProfileContent($userVisibility, $contentVisibility, $status = StatableInterface::STATUS_ENABLED)
+    private function assertFollowingUserDoesNotSeeProfileContent($userVisibility, $contentVisibility, $status = StatableInterface::STATE_ENABLED)
     {
         $user1 = User::findOne(['id' => 2]);
         $user2 = User::findOne(['id' => 3]);
@@ -428,7 +428,7 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
     public function testFriendUserDoesNotSeeContentOfDisabledProfile()
     {
         $this->assertFriendUserDoesNotSeeProfileContent(Content::VISIBILITY_PUBLIC, false,
-            StatableInterface::STATUS_DISABLED);
+            StatableInterface::STATE_DISABLED);
     }
 
     public function testFriendRequestedUserDoesSeePublicContent()
@@ -441,7 +441,7 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
         $this->assertFriendUserDoesNotSeeProfileContent(Content::VISIBILITY_PRIVATE, true);
     }
 
-    private function assertFriendUserDoesSeeProfileContent($contentVisibility, $requested = false, $status = StatableInterface::STATUS_ENABLED)
+    private function assertFriendUserDoesSeeProfileContent($contentVisibility, $requested = false, $status = StatableInterface::STATE_ENABLED)
     {
         $this->enableFriendships();
 
@@ -465,7 +465,7 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
         static::assertEquals($content->id, $stream[0]->id);
     }
 
-    private function assertFriendUserDoesNotSeeProfileContent($contentVisibility, $requested = false, $status = StatableInterface::STATUS_ENABLED)
+    private function assertFriendUserDoesNotSeeProfileContent($contentVisibility, $requested = false, $status = StatableInterface::STATE_ENABLED)
     {
         $this->enableFriendships();
 

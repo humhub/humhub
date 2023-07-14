@@ -9,9 +9,9 @@
 namespace humhub\modules\user\components;
 
 use humhub\events\ActiveQueryEvent;
-use humhub\libs\StatableActiveQueryInterface;
+use humhub\interfaces\StatableActiveQueryInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\libs\StatableActiveQueryTrait;
-use humhub\libs\StatableInterface;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\AbstractActiveQueryContentContainer;
 use humhub\modules\user\models\fieldtype\BaseTypeVirtual;
@@ -45,13 +45,6 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer implements Sta
      */
     public const EVENT_CHECK_ACTIVE = 'checkActive';
 
-    public string $stateColumn = 'status';
-
-    protected ?array $returnedStates
-        = [
-            StatableInterface::STATUS_ENABLED,
-        ];
-
     /**
      * Limit to active users
      *
@@ -60,7 +53,8 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer implements Sta
     public function active()
     {
         $this->trigger(self::EVENT_CHECK_ACTIVE, new ActiveQueryEvent(['query' => $this]));
-        return $this->andWhere(['user.status' => StatableInterface::STATUS_ENABLED]);
+        //ToDo: MDR
+        return $this->andWhere(['user.status' => StatableInterface::STATE_ENABLED]);
     }
 
     /**

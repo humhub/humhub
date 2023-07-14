@@ -10,7 +10,7 @@ namespace humhub\modules\installer\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\like\models\Like;
 use humhub\modules\marketplace\Module;
@@ -268,7 +268,7 @@ class ConfigController extends Controller
                 $profileModel = $userModel->profile;
                 $profileModel->scenario = 'registration';
 
-                $userModel->status = StatableInterface::STATUS_ENABLED;
+                $userModel->status = StatableInterface::STATE_ENABLED;
                 $userModel->username = "david1986";
                 $userModel->email = "david.roberts@example.com";
                 $userModel->language = '';
@@ -298,7 +298,7 @@ class ConfigController extends Controller
                 $profileModel2 = $userModel2->profile;
                 $profileModel2->scenario = 'registration';
 
-                $userModel2->status = StatableInterface::STATUS_ENABLED;
+                $userModel2->status = StatableInterface::STATE_ENABLED;
                 $userModel2->username = "sara1989";
                 $userModel2->email = "sara.schuster@example.com";
                 $userModel2->language = '';
@@ -462,7 +462,7 @@ class ConfigController extends Controller
 
         if ($form->submitted('save') && $form->validate()) {
 
-            $form->models['User']->status = StatableInterface::STATUS_ENABLED;
+            $form->models['User']->status = StatableInterface::STATE_ENABLED;
             $form->models['User']->language = '';
             $form->models['User']->tagsField = ['Administration', 'Support', 'HumHub'];
             $form->models['User']->save();

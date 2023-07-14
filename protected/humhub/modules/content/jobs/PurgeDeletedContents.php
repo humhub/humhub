@@ -8,7 +8,7 @@
 
 namespace humhub\modules\content\jobs;
 
-use humhub\libs\StatableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\queue\LongRunningActiveJob;
 use Yii;

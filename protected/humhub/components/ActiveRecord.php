@@ -76,7 +76,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
             $this->created_at = date('Y-m-d H:i:s');
         }
 
-        if($this->hasAttribute('updated_at') && $this->updated_at instanceof Expression) {
+        if ($this->hasAttribute('updated_at') && $this->updated_at instanceof Expression) {
             $this->updated_at = date('Y-m-d H:i:s');
         }
 
@@ -179,7 +179,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function __unserialize($unserializedArr)
     {
         $this->init();
-        $this->setAttributes($unserializedArr['attributes'],false);
+        $this->setAttributes($unserializedArr['attributes'], false);
         $this->setOldAttributes($unserializedArr['oldAttributes']);
     }
 
