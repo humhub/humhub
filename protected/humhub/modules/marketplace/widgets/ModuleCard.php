@@ -37,7 +37,9 @@ class ModuleCard extends Widget
         }
 
         if (empty($this->view)) {
-            $this->view = 'module-card';
+            $this->view = $this->module->isInstalled()
+                ? 'module-installed-card'
+                : 'module-uninstalled-card';
         }
     }
 
