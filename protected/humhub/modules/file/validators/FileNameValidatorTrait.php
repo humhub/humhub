@@ -15,13 +15,11 @@ use humhub\modules\file\models\File;
 use humhub\modules\file\libs\FileHelper;
 
 /**
- * FileValidator
+ * FileNameValidatorTrait
  *
- * @inheritdoc
- * @since 1.2
- * @author Luke
+ * @since 1.15
  */
-class FileValidator extends \yii\validators\FileValidator
+trait FileNameValidatorTrait
 {
 
     /**
