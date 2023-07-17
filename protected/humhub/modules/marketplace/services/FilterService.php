@@ -17,12 +17,15 @@ use Yii;
 class FilterService
 {
     private Module $module;
+    private string $moduleId;
     private int $categoryId;
     private array $tags;
 
     public function __construct(Module $module, ?int $categoryId = null, ?array $tags = null)
     {
         $this->module = $module;
+
+        $this->moduleId = $moduleId ?? Yii::$app->request->get('id', '');
 
         $this->categoryId = $categoryId ?? Yii::$app->request->get('categoryId', 0);
 
@@ -36,7 +39,25 @@ class FilterService
 
     public function isFiltered(): bool
     {
-        return $this->isFilteredByCategory() && $this->isFilteredByTags();
+        return $this->isFilteredById() &&
+            $this->isFilteredByCategory() &&
+            $this->isFilteredByTags();
+    }
+
+    public function isFilteredById(): bool
+    {
+        if (empty($this->moduleId)) {
+            // All modules
+            return true;
+        }
+
+        if ($this->moduleId === $this->module->id) {
+            // Force tags to "All" on filter by module ID
+            $this->tags = [];
+            return true;
+        }
+
+        return false;
     }
 
     public function isFilteredByCategory(): bool
