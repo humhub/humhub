@@ -82,7 +82,7 @@ class ModuleFilters extends DirectoryFilters
     {
         switch ($filter) {
             case 'tags':
-                return 'uninstalled';
+                return self::isFilteredById() ? '' : 'uninstalled';
         }
 
         return parent::getDefaultValue($filter);
@@ -127,6 +127,11 @@ class ModuleFilters extends DirectoryFilters
         }
 
         return $this->render('module-update-info', $info);
+    }
+
+    public static function isFilteredById(): bool
+    {
+        return Yii::$app->request->get('id', '') !== '';
     }
 
 }

@@ -103,7 +103,7 @@ class InstalledModuleControls extends Menu
             $this->addEntry(new MenuLink([
                 'id' => 'info',
                 'label' => Yii::t('AdminModule.base', 'Show in Marketplace'),
-                'url' => ['/marketplace/browse', 'keyword' => $this->module->id, 'tags' => ''],
+                'url' => ['/marketplace/browse', 'id' => $this->module->id],
                 'icon' => 'info-circle',
                 'sortOrder' => 600,
             ]));
