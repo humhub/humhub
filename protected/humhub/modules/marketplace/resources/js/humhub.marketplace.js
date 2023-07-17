@@ -136,6 +136,7 @@ humhub.module('marketplace', function (module, require, $) {
         const installButton = evt.$trigger;
         const moduleId = installButton.data('module-id');
 
+        modal.global.reset();
         modal.global.setHeader(module.config.text.installing);
         modal.global.$.removeClass('fade');
         modal.global.$.find('button[data-modal-close]').hide();
