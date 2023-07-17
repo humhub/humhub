@@ -80,3 +80,4 @@ HumHub Changelog
 - Fix #6425: Fix default dropdown select2 options
 - Fix #6428: Translation for custom profile field is served from wrong file
 - Fix #6429: Fix Marketplace view
+- Fix #6383: Remove permission verifying from archive methods

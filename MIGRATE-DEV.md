@@ -15,6 +15,8 @@ Version 1.15 (Unreleased)
 - New `PolymorphicRelation::getObjectModel()`: should replace `get_class()`
 - Removed deprecated javascript method `setModalLoader()`
 - Javascript CSP Nonces are now required and enabled by default! See: https://docs.humhub.org/docs/develop/javascript/
+- Use the verifying `Content->canArchive()` before run the methods `Content->archive()`
+  and `Content->archive()`, because it was removed from within there.
 
 ### Deprecations
 
@@ -41,5 +43,3 @@ Version 1.15 (Unreleased)
 - `humhub\widgets\MarkdownFieldModals`
 - `humhub\modules\ui\form\widgets\Markdown`
 - 
-
-
