@@ -64,7 +64,6 @@ The license was successfully removed!
     'Information' => '',
     'Install' => '',
     'Installed' => '',
-    'Installing module...' => '',
     'Invalid module licence key!' => '',
     'Invalid module licence key!
 ' => '',
