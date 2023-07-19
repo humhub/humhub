@@ -81,3 +81,4 @@ HumHub Changelog
 - Fix #6428: Translation for custom profile field is served from wrong file
 - Fix #6429: Fix Marketplace view
 - Fix #6383: Remove permission verifying from archive methods
+- Enh #6439: Add collapsible filter state in URL

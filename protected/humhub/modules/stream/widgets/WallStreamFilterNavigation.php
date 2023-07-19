@@ -345,4 +345,9 @@ class WallStreamFilterNavigation extends FilterNavigation
             'class' => 'wallFilterPanel'
         ];
     }
+
+    public function isCollapsed(): bool
+    {
+        return !Yii::$app->request->get('filters_visible', 0);
+    }
 }
