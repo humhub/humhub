@@ -170,6 +170,8 @@ humhub.module('ui.picker', function (module, require, $) {
             if ($node.data('picker-focus')) {
                 Widget.instance($node).focus();
             }
+
+            Widget.instance($node).fire('afterInitSelect2');
         });
     };
 
