@@ -18,7 +18,7 @@ class ScheduledCest
         $I->click('#contentFormBody ul.preferences');
         $datetime = (new Datetime('tomorrow'))->setTime(19, 15);
         $this->updateSchedulingOptions($I, $datetime);
-        $I->see('Save scheduling', '#post_submit_button');
+        $I->see('Submit', '#post_submit_button');
         $I->click('#post_submit_button', '#contentFormBody');
 
         $I->wantTo('ensure the scheduled content has a proper badge.');
