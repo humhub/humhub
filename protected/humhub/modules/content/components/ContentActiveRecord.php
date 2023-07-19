@@ -469,12 +469,18 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function afterStateChange(?int $newState, ?int $previousState): void
     {
-        // Activities should be updated to same state as parent Record
         $activitiesQuery = ActivityHelper::getActivitiesQuery($this);
         if ($activitiesQuery instanceof ActiveQuery) {
             foreach ($activitiesQuery->each() as $activity) {
                 /* @var Activity $activity */
-                $activity->content->getStateService()->update($newState);
+                if ($newState !== Content::STATE_PUBLISHED) {
+                    // If parent Record is created/updated as not Published then all Activities should be
+                    // deleted completely from DB because new Activity will be created on next publishing
+                    $activity->hardDelete();
+                } else if (!$activity->content->getStateService()->isPublished()) {
+                    // Activities should be published only when parent Record has been published too
+                    $activity->content->getStateService()->publish();
+                }
             }
         }
     }

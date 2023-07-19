@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #6377: Forgot Password - Display email input error after successful captcha verification.
 - Fix #6378: Fix visibility of the link "Uninstall" on Windows server
 - Fix #6404: Fix visibility of global content on dashboard for registered users
+- Fix #6433: Fix duplicate activities after restore soft deleted content
 
 1.14.2 (May 22, 2023)
 ----------------------
