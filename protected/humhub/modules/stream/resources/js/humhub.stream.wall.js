@@ -18,6 +18,7 @@ humhub.module('stream.wall', function (module, require, $) {
     var Widget = require('ui.widget').Widget;
     var event = require('event');
     var Filter = require('ui.filter').Filter;
+    var Url = require('ui.filter').Url;
     var string = require('util').string;
     var topic = require('topic');
     var view = require('ui.view');
@@ -382,11 +383,6 @@ humhub.module('stream.wall', function (module, require, $) {
 
     WallStreamFilter.prototype.initFilterCount = function () {
         this.updateFilterCount();
-
-        var activeFiltersCount = parseInt(this.$.find('.filterCount').text().replace(/^.+?(\d+).+?$/, '$1'));
-        if (activeFiltersCount > 0 && this.$.find('.wall-stream-filter-body').is(':hidden')) {
-            this.toggleFilterPanel();
-        }
     }
 
     WallStreamFilter.prototype.updateFilterCount = function () {
@@ -414,7 +410,9 @@ humhub.module('stream.wall', function (module, require, $) {
     };
 
     WallStreamFilter.prototype.toggleFilterPanel = function() {
-        this.$.find('.wall-stream-filter-body').slideToggle();
+        const filters = this.$.find('.wall-stream-filter-body');
+        Url.updateParam('filters_visible', filters.is(':visible') ? 0 : 1);
+        filters.slideToggle();
     };
 
     WallStreamFilter.template = {
