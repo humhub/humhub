@@ -119,12 +119,11 @@ class InstalledModuleControls extends Menu
     /**
      * @inerhitdoc
      */
-    public function run()
+    public function beforeRun()
     {
         if (!Yii::$app->user->can(ManageModules::class)) {
-            return '';
+            return false;
         }
-        return parent::run();
+        return parent::beforeRun();
     }
-
 }
