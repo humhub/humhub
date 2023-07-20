@@ -82,3 +82,4 @@ HumHub Changelog
 - Fix #6429: Fix Marketplace view
 - Fix #6383: Remove permission verifying from archive methods
 - Enh #6439: Add collapsible filter state in URL
+- Chg #6174: Users allowed to manage settings can access to module configurations
