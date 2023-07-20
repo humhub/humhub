@@ -5,9 +5,12 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\widgets\AvailableModuleUpdatesInfo;
 use humhub\modules\admin\widgets\InstalledModuleList;
 use humhub\modules\marketplace\widgets\MarketplaceLink;
+
 ?>
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -20,6 +23,19 @@ use humhub\modules\marketplace\widgets\MarketplaceLink;
         <div class="help-block">
             <?= Yii::t('AdminModule.base', 'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.') ?>
         </div>
+
+        <?php if (!Yii::$app->user->can(ManageModules::class)) : ?>
+            <div class="alert alert-info">
+                <?= Yii::t('AdminModule.base', 'As you don\'t have the permission to enable, disable, or uninstall modules, please ask an administrator to do it.') ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!Yii::$app->user->can(ManageSettings::class)) : ?>
+            <div class="alert alert-info">
+                <?= Yii::t('AdminModule.base', 'As you don\'t have the permission to configure modules, please ask an administrator to do it.') ?>
+            </div>
+        <?php endif; ?>
+
         <?= AvailableModuleUpdatesInfo::widget() ?>
         <?= InstalledModuleList::widget() ?>
         <?= MarketplaceLink::primary(Yii::t('AdminModule.base', 'Visit Marketplace'))
