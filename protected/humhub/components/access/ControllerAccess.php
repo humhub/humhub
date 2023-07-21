@@ -497,8 +497,8 @@ class ControllerAccess extends BaseObject
     public function validateDisabledUser()
     {
         return $this->isGuest() ||
-            ($this->user->status !== User::STATUS_DISABLED &&
-                $this->user->status !== User::STATUS_SOFT_DELETED);
+            ($this->user->state !== User::STATE_DISABLED &&
+                $this->user->state !== User::STATE_SOFT_DELETED);
     }
 
     /**
@@ -506,7 +506,7 @@ class ControllerAccess extends BaseObject
      */
     public function validateUnapprovedUser()
     {
-        return $this->isGuest() || $this->user->status !== User::STATUS_NEED_APPROVAL;
+        return $this->isGuest() || $this->user->state !== User::STATE_NEEDS_APPROVAL;
     }
 
     /**

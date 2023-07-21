@@ -31,7 +31,7 @@ use yii\db\Query;
  * @property integer $space_id
  * @property integer $user_id
  * @property string|null $originator_user_id
- * @property integer|null $status
+ * @property integer|null $state
  * @property string|null $request_message
  * @property string|null $last_visit
  * @property integer $show_at_dashboard
@@ -66,7 +66,7 @@ class Membership extends ActiveRecord implements FindInstanceInterface, Statable
     public const EVENT_MEMBER_ADDED = 'memberAdded';
 
     /**
-     * Status Codes
+     * State Codes
      */
     public const STATE_INVITED = 1;     //ToDo: StatableInterface::STATE_DRAFT;
     public const STATE_APPLICANT = 2;   //ToDo: StatableInterface::STATE_NEEDS_APPROVAL;
@@ -106,7 +106,7 @@ class Membership extends ActiveRecord implements FindInstanceInterface, Statable
     {
         return [
             [['space_id', 'user_id'], 'required'],
-            [['space_id', 'user_id', 'originator_user_id', 'status', 'created_by', 'updated_by'], 'integer'],
+            [['space_id', 'user_id', 'originator_user_id', 'state', 'created_by', 'updated_by'], 'integer'],
             [['request_message'], 'string'],
             [['last_visit', 'created_at', 'group_id', 'updated_at'], 'safe']
         ];
@@ -121,7 +121,7 @@ class Membership extends ActiveRecord implements FindInstanceInterface, Statable
             'space_id' => 'Space ID',
             'user_id' => 'User ID',
             'originator_user_id' => Yii::t('SpaceModule.base', 'Originator User ID'),
-            'status' => Yii::t('SpaceModule.base', 'Status'),
+            'state' => Yii::t('SpaceModule.base', 'Status'),
             'request_message' => Yii::t('SpaceModule.base', 'Request Message'),
             'last_visit' => Yii::t('SpaceModule.base', 'Last Visit'),
             'created_at' => Yii::t('SpaceModule.base', 'Created At'),
@@ -140,7 +140,7 @@ class Membership extends ActiveRecord implements FindInstanceInterface, Statable
      */
     public function isMember()
     {
-        return $this->status == self::STATUS_MEMBER;
+        return $this->state == self::STATE_MEMBER;
     }
 
     /**
@@ -170,6 +170,22 @@ class Membership extends ActiveRecord implements FindInstanceInterface, Statable
     public function getSpace()
     {
         return $this->hasOneCached(Space::class, ['id' => 'space_id']);
+    }
+
+    /**
+     * @deprecated since 1.16. Please use static::$state instead.
+     */
+    public function getStatus(): ?int
+    {
+        return $this->state;
+    }
+
+    /**
+     * @deprecated since 1.16. Please use static::$state instead.
+     */
+    public function setStatus(?int $state): void
+    {
+        $this->state = $state;
     }
 
     public function beforeSave($insert)
@@ -298,7 +314,7 @@ class Membership extends ActiveRecord implements FindInstanceInterface, Statable
      * Returns Space for user space membership
      *
      * @param \humhub\modules\user\models\User $user
-     * @param boolean $memberOnly include only member status - no pending/invite states
+     * @param boolean $memberOnly include only member state - no pending/invite states
      * @param boolean|null $withNotifications include only memberships with sendNotification setting
      * @return \yii\db\ActiveQuery for space model
      * @since 1.0
@@ -314,7 +330,7 @@ class Membership extends ActiveRecord implements FindInstanceInterface, Statable
         );
 
         if ($memberOnly) {
-            $query->andWhere(['space_membership.status' => self::STATUS_MEMBER]);
+            $query->andWhere(['space_membership.state' => self::STATE_MEMBER]);
         }
 
         if ($withNotifications === true) {
@@ -336,8 +352,8 @@ class Membership extends ActiveRecord implements FindInstanceInterface, Statable
      * Returns an ActiveQuery selcting all memberships for the given $user.
      *
      * @param User|null $user
-     * @param integer $membershipStatus the status of the Space by default self::STATUS_MEMBER.
-     * @param integer $spaceStatus the status of the Space by default Space::STATUS_ENABLED.
+     * @param integer $membershipState the state of the Space by default self::STATE_MEMBER.
+     * @param integer $spaceState the state of the Space by default Space::STATE_ENABLED.
      *
      * @return ActiveQuery
      * @throws \Throwable
@@ -345,8 +361,8 @@ class Membership extends ActiveRecord implements FindInstanceInterface, Statable
      */
     public static function findByUser(
         ?User $user = null,
-        $membershipStatus = self::STATUS_MEMBER,
-        $spaceStatus = Space::STATUS_ENABLED
+        $membershipState = self::STATE_MEMBER,
+        $spaceState = Space::STATE_ENABLED
     ) {
         if (!$user) {
             $user = Yii::$app->user->getIdentity();
@@ -363,12 +379,12 @@ class Membership extends ActiveRecord implements FindInstanceInterface, Statable
         $query->joinWith('space')->where(['space_membership.user_id' => $user->id]);
         $query->joinWith('space.contentContainerRecord');
 
-        if ($spaceStatus) {
-            $query->andWhere(['space.status' => $spaceStatus]);
+        if ($spaceState) {
+            $query->andWhere(['space.state' => $spaceState]);
         }
 
-        if ($membershipStatus) {
-            $query->whereState($membershipStatus);
+        if ($membershipState) {
+            $query->whereState($membershipState);
         }
 
         return $query;
@@ -389,7 +405,7 @@ class Membership extends ActiveRecord implements FindInstanceInterface, Statable
         $query->join('LEFT JOIN', 'space_membership', 'space_membership.user_id=user.id');
 
         if ($membersOnly) {
-            $query->andWhere(['space_membership.status' => self::STATUS_MEMBER]);
+            $query->andWhere(['space_membership.state' => self::STATE_MEMBER]);
         }
 
         if ($withNotifications === true) {
@@ -418,7 +434,7 @@ class Membership extends ActiveRecord implements FindInstanceInterface, Statable
             ->innerJoin('space_membership sm', 'space.id = sm.space_id')
             ->where('sm.user_id = :userId', [':userId' => $user->id])
             ->indexBy('id')
-            ->andWhere('space.status = :spaceStatusEnabled', [':spaceStatusEnabled' => Space::STATUS_ENABLED]);
+            ->andWhere('space.state = :spaceStateEnabled', [':spaceStateEnabled' => Space::STATE_ENABLED]);
     }
 
     /**

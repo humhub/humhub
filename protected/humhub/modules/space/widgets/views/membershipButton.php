@@ -17,7 +17,7 @@ if ($membership === null) {
             echo Html::a($options['becomeMember']['title'], $options['becomeMember']['url'], $options['becomeMember']['attrs']);
         }
     }
-} elseif ($membership->status == Membership::STATUS_INVITED) {
+} elseif ($membership->state == Membership::STATE_INVITED) {
     ?>
     <div class="<?= $options['acceptInvite']['groupClass'] ?>">
         <?= Html::a($options['acceptInvite']['title'], '#', $options['acceptInvite']['attrs']); ?>
@@ -30,9 +30,9 @@ if ($membership === null) {
         </ul>
     </div>
     <?php
-} elseif ($membership->status == Membership::STATUS_APPLICANT) {
+} elseif ($membership->state == Membership::STATE_APPLICANT) {
     echo Html::a($options['cancelPendingMembership']['title'], $space->createUrl('/space/membership/revoke-membership'), $options['cancelPendingMembership']['attrs']);
-} elseif ($membership->status == Membership::STATUS_MEMBER) {
+} elseif ($membership->state == Membership::STATE_MEMBER) {
     if ($canCancelMembership && $options['cancelMembership']['visible']) {
         echo Html::a($options['cancelMembership']['title'], '#', $options['cancelMembership']['attrs']);
     } elseif (!$canCancelMembership && $options['cannotCancelMembership']['visible']) {

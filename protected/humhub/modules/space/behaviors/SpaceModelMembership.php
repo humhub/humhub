@@ -58,7 +58,7 @@ class SpaceModelMembership extends Behavior
 
         $membership = $this->getMembership($user);
 
-        if ($membership !== null && (int)$membership->status === Membership::STATUS_MEMBER) {
+        if ($membership !== null && (int)$membership->state === Membership::STATE_MEMBER) {
             return true;
         }
 
@@ -106,7 +106,7 @@ class SpaceModelMembership extends Behavior
 
         $membership = $this->getMembership($user);
 
-        return ($membership && $membership->group_id == Space::USERGROUP_ADMIN && $membership->status == Membership::STATUS_MEMBER);
+        return ($membership && $membership->group_id == Space::USERGROUP_ADMIN && $membership->state == Membership::STATE_MEMBER);
     }
 
     /**
@@ -263,7 +263,7 @@ class SpaceModelMembership extends Behavior
         $membership = new Membership([
             'space_id' => $this->owner->id,
             'user_id' => $user->id,
-            'status' => Membership::STATUS_APPLICANT,
+            'state' => Membership::STATE_APPLICANT,
             'group_id' => Space::USERGROUP_MEMBER,
             'request_message' => $message
         ]);
@@ -312,14 +312,14 @@ class SpaceModelMembership extends Behavior
         $membership = $this->getMembership($userId);
 
         if ($membership != null) {
-            switch ($membership->status) {
-                case Membership::STATUS_APPLICANT:
+            switch ($membership->state) {
+                case Membership::STATE_APPLICANT:
                     // If user is an applicant of this space add user and return.
                     $this->addMember($userId);
-                case Membership::STATUS_MEMBER:
+                case Membership::STATE_MEMBER:
                     // If user is already a member just ignore the invitation.
                     return;
-                case Membership::STATUS_INVITED:
+                case Membership::STATE_INVITED:
                     // If user is already invited, remove old invite notification and retrigger
                     $oldNotification = new InviteNotification(['source' => $this->owner]);
                     $oldNotification->delete(User::findInstance($userId));
@@ -329,7 +329,7 @@ class SpaceModelMembership extends Behavior
             $membership = new Membership([
                 'space_id' => $this->owner->id,
                 'user_id' => $userId,
-                'status' => Membership::STATUS_INVITED,
+                'state' => Membership::STATE_INVITED,
                 'group_id' => Space::USERGROUP_MEMBER
             ]);
         }
@@ -397,7 +397,7 @@ class SpaceModelMembership extends Behavior
             $membership = new Membership([
                 'space_id' => $this->owner->id,
                 'user_id' => $user->id,
-                'status' => Membership::STATUS_MEMBER,
+                'state' => Membership::STATE_MEMBER,
                 'group_id' => $groupId,
                 'show_at_dashboard' => $showAtDashboard,
                 'can_cancel_membership' => $canLeave
@@ -415,24 +415,24 @@ class SpaceModelMembership extends Behavior
             }
         } else {
             // User is already a member
-            if ($membership->status == Membership::STATUS_MEMBER) {
+            if ($membership->state == Membership::STATE_MEMBER) {
                 return true;
             }
 
             // User requested membership
-            if ($membership->status == Membership::STATUS_APPLICANT && !$silent) {
+            if ($membership->state == Membership::STATE_APPLICANT && !$silent) {
                 ApprovalRequestAccepted::instance()
                     ->from(Yii::$app->user->getIdentity())->about($this->owner)->send($user);
             }
 
             // User was invited
-            if ($membership->status == Membership::STATUS_INVITED && !$silent) {
+            if ($membership->state == Membership::STATE_INVITED && !$silent) {
                 InviteAccepted::instance()->from($user)->about($this->owner)
                     ->send(User::findInstance($membership->originator_user_id));
             }
 
             // Update Membership
-            $membership->status = Membership::STATUS_MEMBER;
+            $membership->state = Membership::STATE_MEMBER;
             $membership->group_id = $groupId;
         }
 
@@ -512,12 +512,12 @@ class SpaceModelMembership extends Behavior
         ApprovalRequest::instance()->from($user)->about($this->owner)->delete();
         InviteNotification::instance()->about($this->owner)->delete($user);
 
-        switch ($membership->status) {
-            case Membership::STATUS_MEMBER:
+        switch ($membership->state) {
+            case Membership::STATE_MEMBER:
                 return $this->handleCancelMemberEvent($user);
-            case Membership::STATUS_INVITED:
+            case Membership::STATE_INVITED:
                 return $this->handleCancelInvitationEvent($membership, $user);
-            case Membership::STATUS_APPLICANT:
+            case Membership::STATE_APPLICANT:
                 return $this->handleCancelApplicantEvent($membership, $user);
         }
     }

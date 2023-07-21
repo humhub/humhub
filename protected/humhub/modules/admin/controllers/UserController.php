@@ -81,7 +81,7 @@ class UserController extends Controller
     public function actionList()
     {
         $searchModel = new UserSearch();
-        $searchModel->status = User::STATUS_ENABLED;
+        $searchModel->state = User::STATE_ENABLED;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $showPendingRegistrations = (Invite::find()->count() > 0 && Yii::$app->user->can([new ManageUsers(), new ManageGroups()]));
 
@@ -164,7 +164,7 @@ class UserController extends Controller
         ];
 
         if ($canEditAdminFields) {
-            $definition['elements']['User']['elements']['status'] = [
+            $definition['elements']['User']['elements']['state'] = [
                 'type' => 'dropdownlist',
                 'class' => 'form-control',
                 'items' => User::getStateOptions(false),
@@ -333,7 +333,7 @@ class UserController extends Controller
             throw new HttpException(404);
         }
 
-        $user->status = User::STATUS_ENABLED;
+        $user->state = User::STATE_ENABLED;
         $user->save();
 
         return $this->redirect(['list']);
@@ -347,7 +347,7 @@ class UserController extends Controller
 
         $this->checkUserAccess($user);
 
-        $user->status = User::STATUS_DISABLED;
+        $user->state = User::STATE_DISABLED;
         $user->save();
 
         return $this->redirect(['list']);
@@ -409,7 +409,7 @@ class UserController extends Controller
         $userColumns = [
             'id',
             'guid',
-            'status',
+            'state',
             'username',
             'email',
             'auth_mode',

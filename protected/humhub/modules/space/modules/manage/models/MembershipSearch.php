@@ -33,9 +33,9 @@ class MembershipSearch extends Membership
     public $roleId;
 
     /**
-     * @var int Status of members to display
+     * @var int State of members to display
      */
-    public $status = Membership::STATUS_MEMBER;
+    public $state = Membership::STATE_MEMBER;
 
     /**
      * @inheritdoc
@@ -52,7 +52,7 @@ class MembershipSearch extends Membership
     public function rules()
     {
         return [
-            [['user_id', 'status'], 'integer'],
+            [['user_id', 'state'], 'integer'],
             [['user.profile.firstname', 'user.profile.lastname', 'user.username', 'group_id', 'freeText'], 'safe']
         ];
     }
@@ -75,7 +75,7 @@ class MembershipSearch extends Membership
     public function search($params)
     {
         $query = Membership::find();
-        $query->andWhere(['space_membership.status' => $this->status]);
+        $query->andWhere(['space_membership.state' => $this->state]);
         $query->joinWith([
             'user',
             'user.profile',

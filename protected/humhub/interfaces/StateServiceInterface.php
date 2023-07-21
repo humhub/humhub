@@ -142,8 +142,8 @@ interface StateServiceInterface
      *        If the latter is set to false, then it can be either a single state (numeric value or its name) or an array with a
      *        single state as the key and array of conditions as the value.
      *        If $allowArray is set to true, then in addition to the above, the array is allowed to have multiple elements. However,
-     *        in this case, all status must be given as array values. If a status is bound to a condition, both must be provided
-     *        within an array with exactly one element having the status as key and an array of conditions as value.
+     *        in this case, all states must be given as array values. If a state is bound to a condition, both must be provided
+     *        within an array with exactly one element having the state as key and an array of conditions as value.
      * @param array|null $params Parameters used for getAllowedStates()
      * @param bool $allowArray Determines if $state may be an array of states.
      * @param bool $throwException Determines if an Exception shall be thrown upon error, or just false returned

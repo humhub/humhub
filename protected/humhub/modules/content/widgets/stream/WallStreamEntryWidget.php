@@ -374,7 +374,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
         }
 
         // Don't show edit link, when content container is space and archived
-        if ($this->model->content->container instanceof Space && $this->model->content->container->status == Space::STATUS_ARCHIVED) {
+        if ($this->model->content->container instanceof Space && $this->model->content->container->state == Space::STATE_ARCHIVED) {
             return "";
         }
 

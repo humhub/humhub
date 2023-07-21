@@ -47,7 +47,7 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'status'], 'integer'],
+            [['id', 'state'], 'integer'],
             [['username', 'email', 'created_at', 'profile.firstname', 'profile.lastname', 'last_login', 'freeText'], 'safe'],
         ];
     }
@@ -115,14 +115,14 @@ class UserSearch extends User
                 ['like', 'concat(profile.lastname, " ", profile.firstname)', $this->freeText],
             ]);
 
-            if (!empty($this->status)) {
-                $query->whereState($this->status);
+            if (!empty($this->state)) {
+                $query->whereState($this->state);
             }
             return $dataProvider;
         }
 
         $query->andFilterWhere(['id' => $this->id]);
-        $query->whereState($this->status);
+        $query->whereState($this->state);
         $query->andFilterWhere(['like', 'user.id', $this->id]);
         $query->andFilterWhere(['like', 'user.username', $this->username]);
         $query->andFilterWhere(['like', 'user.email', $this->email]);
@@ -148,16 +148,25 @@ class UserSearch extends User
         return $dataProvider;
     }
 
+    /**
+     * @deprecated since 1.16. Please use static::getStateAttributes()
+     * @see static::getStateAttributes()
+     */
     public static function getStatusAttributes()
     {
-        $countActive = User::find()->whereState(User::STATUS_ENABLED)->count();
-        $countDisabled = User::find()->whereState(User::STATUS_DISABLED)->count();
-        $countSoftDeleted = User::find()->whereState(User::STATUS_SOFT_DELETED)->count();
+        return static::getStateAttributes();
+    }
+
+    public static function getStateAttributes()
+    {
+        $countActive = User::find()->whereState(User::STATE_ENABLED)->count();
+        $countDisabled = User::find()->whereState(User::STATE_DISABLED)->count();
+        $countSoftDeleted = User::find()->whereState(User::STATE_SOFT_DELETED)->count();
 
         return [
-            User::STATUS_ENABLED => Yii::t('AdminModule.user', 'Active users') . ' (' . $countActive . ')',
-            User::STATUS_DISABLED => Yii::t('AdminModule.user', 'Disabled users') . ' (' . $countDisabled . ')',
-            User::STATUS_SOFT_DELETED => Yii::t('AdminModule.user', 'Deleted users') . ' (' . $countSoftDeleted . ')',
+            User::STATE_ENABLED => Yii::t('AdminModule.user', 'Active users') . ' (' . $countActive . ')',
+            User::STATE_DISABLED => Yii::t('AdminModule.user', 'Disabled users') . ' (' . $countDisabled . ')',
+            User::STATE_SOFT_DELETED => Yii::t('AdminModule.user', 'Deleted users') . ' (' . $countSoftDeleted . ')',
         ];
     }
 

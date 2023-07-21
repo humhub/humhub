@@ -103,7 +103,7 @@ class RegistrationController extends Controller
             Yii::$app->session->remove('authClient');
 
             // Autologin when user is enabled (no approval required)
-            if ($registration->getUser()->status === User::STATUS_ENABLED) {
+            if ($registration->getUser()->state === User::STATE_ENABLED) {
                 $registration->getUser()->refresh(); // https://github.com/humhub/humhub/issues/6273
                 Yii::$app->user->login($registration->getUser());
                 if (Yii::$app->request->getIsAjax()) {
@@ -114,7 +114,7 @@ class RegistrationController extends Controller
 
             return $this->render('success', [
                 'form' => $registration,
-                'needApproval' => ($registration->getUser()->status === User::STATUS_NEED_APPROVAL)
+                'needApproval' => ($registration->getUser()->state === User::STATE_NEEDS_APPROVAL)
             ]);
         }
 

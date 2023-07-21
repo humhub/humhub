@@ -28,12 +28,13 @@ class MembershipTest extends HumHubDbTestCase
         // check cached version
         $membership = Membership::findInstance([1, Yii::$app->user->id]);
         $this->assertNotNull($membership);
-        $this->assertEquals($membership->status, Membership::STATUS_APPLICANT);
+        $this->assertEquals($membership->state, Membership::STATE_APPLICANT);
+        $this->assertEquals($membership->status, Membership::STATE_APPLICANT);
 
         // check uncached version
         $membership = Membership::findOne(['space_id' => 1, 'user_id' => Yii::$app->user->id]);
         $this->assertNotNull($membership);
-        $this->assertEquals($membership->status, Membership::STATUS_APPLICANT);
+        $this->assertEquals($membership->state, Membership::STATE_APPLICANT);
 
         $this->becomeUser('Admin');
 
@@ -70,12 +71,12 @@ class MembershipTest extends HumHubDbTestCase
         // check cached version
         $membership = Membership::findInstance([1, Yii::$app->user->id]);
         $this->assertNotNull($membership);
-        $this->assertEquals($membership->status, Membership::STATUS_APPLICANT);
+        $this->assertEquals($membership->state, Membership::STATE_APPLICANT);
 
         // check uncached version
         $membership = Membership::findOne(['space_id' => 1, 'user_id' => Yii::$app->user->id]);
         $this->assertNotNull($membership);
-        $this->assertEquals($membership->status, Membership::STATUS_APPLICANT);
+        $this->assertEquals($membership->state, Membership::STATE_APPLICANT);
 
         $this->becomeUser('Admin');
 

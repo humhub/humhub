@@ -24,7 +24,7 @@ class MyMembership extends Widget
      */
     public function run()
     {
-        $membership = Membership::findInstance([$this->space->id, Yii::$app->user->id], null,['status' => Membership::STATUS_MEMBER]);
+        $membership = Membership::findInstance([$this->space->id, Yii::$app->user->id], null, ['state' => Membership::STATE_MEMBER]);
 
         return $this->render('myMembership', [
             'role' => $this->space->getUserGroup(),

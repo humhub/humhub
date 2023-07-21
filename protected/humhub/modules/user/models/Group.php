@@ -228,9 +228,9 @@ class Group extends ActiveRecord implements FindInstanceInterface
               FROM user
               LEFT JOIN group_user ON group_user.user_id = user.id
              WHERE group_user.id IS NULL
-               AND user.status != :userStatusSoftDeleted', [
+               AND user.state != :userStateSoftDeleted', [
             ':defaultGroupId' => $this->id,
-            ':userStatusSoftDeleted' => User::STATUS_SOFT_DELETED,
+            ':userStateSoftDeleted' => User::STATE_SOFT_DELETED,
         ])->execute();
     }
 
@@ -410,7 +410,7 @@ class Group extends ActiveRecord implements FindInstanceInterface
     public static function notifyAdminsForUserApproval($user)
     {
         // No admin approval required
-        if ($user->status != User::STATUS_NEED_APPROVAL ||
+        if ($user->state != User::STATE_NEEDS_APPROVAL ||
             !Yii::$app->getModule('user')->settings->get('auth.needApproval', 'user')) {
             return;
         }

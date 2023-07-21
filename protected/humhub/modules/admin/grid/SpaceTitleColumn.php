@@ -49,7 +49,7 @@ class SpaceTitleColumn extends SpaceBaseColumn
         $space = $this->getSpace($model);
 
         $badge = '';
-        if ($space->status == Space::STATUS_ARCHIVED) {
+        if ($space->state == Space::STATE_ARCHIVED) {
             $badge = '&nbsp;<span class="badge">' . Yii::t('SpaceModule.base', 'Archived') . '</span>';
         }
 

@@ -13,6 +13,7 @@ use humhub\components\StatableActiveQueryTrait;
 use humhub\interfaces\StatableActiveQueryInterface;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;
+use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
@@ -77,6 +78,9 @@ class ActiveQueryContent extends CacheableActiveQuery implements StatableActiveQ
             $user = Yii::$app->user->getIdentity();
         }
 
+        $params = [
+        ];
+
         $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
         $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::class]);
         $this->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::class]);
@@ -90,7 +94,8 @@ class ActiveQueryContent extends CacheableActiveQuery implements StatableActiveQ
                 $conditionSpaceMembershipRestriction = '';
             } else {
                 // User must be a space's member OR Space and Content are public
-                $conditionSpaceMembershipRestriction = ' AND ( space_membership.status=3 OR (content.visibility=1 AND space.visibility != 0) )';
+                $conditionSpaceMembershipRestriction = ' AND ( space_membership.state=:membershipIsMember OR (content.visibility=1 AND space.visibility != 0) )';
+                $params[':membershipIsMember'] = Membership::STATE_MEMBER;
             }
             if ($user->canViewAllContent(User::class)) {
                 // Don't restrict if user can view all content:
@@ -126,7 +131,7 @@ class ActiveQueryContent extends CacheableActiveQuery implements StatableActiveQ
 
         $this->prefixTableNameToUnqualifiedColumnNames();
 
-        $this->andWhere("{$conditionSpace} OR {$conditionUser} OR {$globalCondition}");
+        $this->andWhere("{$conditionSpace} OR {$conditionUser} OR {$globalCondition}", $params);
 
 
         return $this;
@@ -236,7 +241,7 @@ class ActiveQueryContent extends CacheableActiveQuery implements StatableActiveQ
                 ->select("sm.id")
                 ->from('space_membership')
                 ->leftJoin('space sm', 'sm.id=space_membership.space_id')
-                ->where('space_membership.user_id=:userId AND space_membership.status=' . \humhub\modules\space\models\Membership::STATUS_MEMBER);
+                ->where('space_membership.user_id=:userId AND space_membership.state=' . \humhub\modules\space\models\Membership::STATE_MEMBER);
             $conditions[] = 'contentcontainer.pk IN (' . Yii::$app->db->getQueryBuilder()->build($spaceMemberships)[0] . ') AND contentcontainer.class = :spaceClass';
             $params[':userId'] = $user->id;
             $params[':spaceClass'] = Space::class;

@@ -55,7 +55,7 @@ class LoginCest
     public function testUnApprovedUser(AcceptanceTester $I)
     {
         $user = User::findOne(['id' => 4]);
-        $user->status = User::STATUS_NEED_APPROVAL;
+        $user->state = User::STATE_NEEDS_APPROVAL;
         $user->save();
 
         $I->wantTo('ensure that unapproved user cannot login');

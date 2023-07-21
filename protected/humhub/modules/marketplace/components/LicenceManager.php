@@ -185,7 +185,7 @@ class LicenceManager extends Component
     private static function getStats()
     {
         return [
-            'tua' => User::find()->andWhere(['status' => User::STATUS_ENABLED])->count(),
+            'tua' => User::find()->whereState(User::STATE_ENABLED)->count(),
             'tu' => User::find()->count(),
             'ts' => Space::find()->count(),
         ];

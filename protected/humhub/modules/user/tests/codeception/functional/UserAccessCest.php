@@ -22,7 +22,7 @@ class UserAccessCest
         $I->amGoingTo('to deactivate the current user');
 
         $user = User::findOne(3);
-        $user->status = User::STATUS_DISABLED;
+        $user->state = User::STATE_DISABLED;
         $user->save();
 
         $I->amOnPage(['/dashboard/dashboard']);
@@ -37,7 +37,7 @@ class UserAccessCest
         $I->amGoingTo('to deactivate the current user');
 
         $user = User::findOne(3);
-        $user->status = User::STATUS_NEED_APPROVAL;
+        $user->state = User::STATE_NEEDS_APPROVAL;
         $user->save();
 
         $I->amOnPage(['/dashboard/dashboard']);

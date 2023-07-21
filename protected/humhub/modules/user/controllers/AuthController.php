@@ -46,7 +46,7 @@ class AuthController extends Controller
     /**
      * @event Triggered after an successful login but before checking user status
      */
-    const EVENT_BEFORE_CHECKING_USER_STATUS = 'beforeCheckingUserStatus';
+    const EVENT_BEFORE_CHECKING_USER_STATUS = 'beforeCheckingUserState';
 
     /**
      * @inheritdoc
@@ -278,11 +278,11 @@ class AuthController extends Controller
         $success = false;
         $this->trigger(static::EVENT_BEFORE_CHECKING_USER_STATUS, new UserEvent(['user' => $user]));
 
-        if ($user->status == User::STATUS_ENABLED) {
+        if ($user->state == User::STATE_ENABLED) {
             [$success, $redirectUrl] = $this->doLogin($user, $authClient, $redirectUrl);
-        } elseif ($user->status == User::STATUS_DISABLED) {
+        } elseif ($user->state == User::STATE_DISABLED) {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account is disabled!'));
-        } elseif ($user->status == User::STATUS_NEED_APPROVAL) {
+        } elseif ($user->state == User::STATE_NEEDS_APPROVAL) {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account is not approved yet!'));
         } else {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Unknown user status!'));

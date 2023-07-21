@@ -68,7 +68,7 @@ class AccountDelete extends Model
             return false;
         }
 
-        $this->user->status = User::STATUS_SOFT_DELETED;
+        $this->user->state = User::STATE_SOFT_DELETED;
         $this->user->save();
 
         Yii::$app->queue->push(new SoftDeleteUser(['user_id' => $this->user->id]));

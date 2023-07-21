@@ -41,7 +41,7 @@ class Image extends BaseImage
      */
     public function run()
     {
-        if ($this->user->status == User::STATUS_SOFT_DELETED) {
+        if ($this->user->state == User::STATE_SOFT_DELETED) {
             $this->link = false;
         }
 

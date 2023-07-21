@@ -138,7 +138,7 @@ class InviteForm extends Model
         if (Yii::$app->getModule('space')->membersCanAddWithoutInvite === true) {
             $membership = Membership::findInstance([$this->space->id, Yii::$app->user->identity->id]);
 
-            if ($membership && $membership->status == Membership::STATUS_MEMBER) {
+            if ($membership && $membership->state == Membership::STATE_MEMBER) {
                 return true;
             }
         }
@@ -215,7 +215,7 @@ class InviteForm extends Model
     {
         $membership = Membership::findInstance([$this->space->id, $user->id]);
 
-        if ($membership && (int)$membership->status === Membership::STATUS_MEMBER) {
+        if ($membership && (int)$membership->state === Membership::STATE_MEMBER) {
             return false;
         }
 

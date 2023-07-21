@@ -47,7 +47,7 @@ class MemberController extends Controller
         $space = $this->getSpace();
         $searchModel = new MembershipSearch();
         $searchModel->space_id = $space->id;
-        $searchModel->status = Membership::STATUS_MEMBER;
+        $searchModel->state = Membership::STATE_MEMBER;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         // User Group Change
@@ -86,7 +86,7 @@ class MemberController extends Controller
         $space = $this->getSpace();
         $searchModel = new MembershipSearch();
         $searchModel->space_id = $space->id;
-        $searchModel->status = Membership::STATUS_INVITED;
+        $searchModel->state = Membership::STATE_INVITED;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('pending-invitations', [
@@ -104,7 +104,7 @@ class MemberController extends Controller
         $space = $this->getSpace();
         $searchModel = new MembershipSearch();
         $searchModel->space_id = $space->id;
-        $searchModel->status = Membership::STATUS_APPLICANT;
+        $searchModel->state = Membership::STATE_APPLICANT;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('pending-approvals', [
@@ -145,7 +145,7 @@ class MemberController extends Controller
 
         if ($user != null) {
             $membership = $space->getMembership($user->id);
-            if ($membership != null && $membership->status == Membership::STATUS_APPLICANT) {
+            if ($membership != null && $membership->state == Membership::STATE_APPLICANT) {
                 $space->addMember($user->id);
             }
         }

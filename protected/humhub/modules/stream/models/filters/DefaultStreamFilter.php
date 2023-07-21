@@ -119,20 +119,20 @@ class DefaultStreamFilter extends StreamQueryFilter
         $this->query->leftJoin('space AS spaceArchived', 'contentcontainer.pk = spaceArchived.id AND contentcontainer.class = :spaceClass', [':spaceClass' => Space::class]);
 
         if (!empty($this->streamQuery->container->contentcontainer_id)) {
-            $this->query->andWhere('(spaceArchived.status != :statusArchived OR spaceArchived.status IS NULL OR spaceArchived.contentcontainer_id = :containerId)',
-                [':statusArchived' => Space::STATUS_ARCHIVED, ':containerId' => $this->streamQuery->container->contentcontainer_id]);
+            $this->query->andWhere('(spaceArchived.state != :stateArchived OR spaceArchived.state IS NULL OR spaceArchived.contentcontainer_id = :containerId)',
+                [':stateArchived' => Space::STATE_ARCHIVED, ':containerId' => $this->streamQuery->container->contentcontainer_id]);
         } else {
-            $this->query->andWhere('(spaceArchived.status != :statusArchived OR spaceArchived.status IS NULL)', [':statusArchived' => Space::STATUS_ARCHIVED]);
+            $this->query->andWhere('(spaceArchived.state != :stateArchived OR spaceArchived.state IS NULL)', [':stateArchived' => Space::STATE_ARCHIVED]);
         }
 
-        $this->query->andWhere('(content.archived != 1 OR content.archived IS NULL OR spaceArchived.status = :statusArchived)', [':statusArchived' => Space::STATUS_ARCHIVED]);
+        $this->query->andWhere('(content.archived != 1 OR content.archived IS NULL OR spaceArchived.state = :stateArchived)', [':stateArchived' => Space::STATE_ARCHIVED]);
         return $this;
     }
 
     protected function filterArchived()
     {
         $this->query->leftJoin('space AS spaceArchived', 'contentcontainer.pk = spaceArchived.id AND contentcontainer.class = :spaceClass', [':spaceClass' => Space::class]);
-        $this->query->andWhere('(content.archived = 1 OR spaceArchived.status = :statusArchived)', [':statusArchived' => Space::STATUS_ARCHIVED]);
+        $this->query->andWhere('(content.archived = 1 OR spaceArchived.state = :stateArchived)', [':stateArchived' => Space::STATE_ARCHIVED]);
         return $this;
     }
 

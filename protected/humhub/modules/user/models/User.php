@@ -51,7 +51,7 @@ use yii\web\User as WebUser;
  *
  * @property integer $id
  * @property string $guid
- * @property integer $status
+ * @property integer $state
  * @property string $username
  * @property string $email
  * @property string $auth_mode
@@ -171,7 +171,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Fi
                 return $model->getAttribute($attribute) !== $model->getOldAttribute($attribute);
             }],
             [['created_by', 'updated_by'], 'integer'],
-            [['status'], 'in', 'range' => array_keys($this->getStateService()->getStateOptions())],
+            [['state'], 'in', 'range' => array_keys($this->getStateService()->getStateOptions())],
             [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => Profile::SCENARIO_EDIT_ADMIN],
             [['tagsField', 'blockedUsersField'], 'safe'],
             [['guid'], 'string', 'max' => 45],
@@ -290,7 +290,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Fi
     {
         $scenarios = parent::scenarios();
         $scenarios[static::SCENARIO_LOGIN] = ['username', 'password'];
-        $scenarios[static::SCENARIO_EDIT_ADMIN] = ['username', 'email', 'status', 'visibility', 'language', 'tagsField'];
+        $scenarios[static::SCENARIO_EDIT_ADMIN] = ['username', 'email', 'state', 'visibility', 'language', 'tagsField'];
         $scenarios[static::SCENARIO_EDIT_ACCOUNT_SETTINGS] = ['language', 'visibility', 'time_zone', 'tagsField', 'blockedUsersField'];
         $scenarios[static::SCENARIO_REGISTRATION_EMAIL] = ['username', 'email', 'time_zone'];
         $scenarios[static::SCENARIO_REGISTRATION] = ['username', 'time_zone'];
@@ -306,7 +306,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Fi
         return [
             'id' => 'ID',
             'guid' => 'Guid',
-            'status' => Yii::t('UserModule.base', 'Status'),
+            'state' => Yii::t('UserModule.base', 'Status'),
             'username' => Yii::t('UserModule.base', 'Username'),
             'email' => Yii::t('UserModule.base', 'Email'),
             'profile.firstname' => Yii::t('UserModule.profile', 'First name'),
@@ -481,11 +481,27 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Fi
     }
 
     /**
-     * @return bool true if the user status is enabled else false
+     * @deprecated since 1.16. Please use static::$state instead.
+     */
+    public function getStatus(): ?int
+    {
+        return $this->state;
+    }
+
+    /**
+     * @deprecated since 1.16. Please use static::$state instead.
+     */
+    public function setStatus(?int $state): void
+    {
+        $this->state = $state;
+    }
+
+    /**
+     * @return bool true if the user state is enabled else false
      */
     public function isActive()
     {
-        return $this->status === User::STATUS_ENABLED;
+        return $this->state === User::STATE_ENABLED;
     }
 
     /**
@@ -565,7 +581,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Fi
         $this->updateAttributes([
             'email' => new Expression('NULL'),
             'username' => 'deleted-' . $this->id,
-            'status' => User::STATUS_SOFT_DELETED,
+            'state' => User::STATE_SOFT_DELETED,
             'authclient_id' => new Expression('NULL')
         ]);
 
@@ -594,8 +610,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Fi
                 }
             }
 
-            if ($this->status == '') {
-                $this->status = self::STATUS_ENABLED;
+            if ($this->state == '') {
+                $this->state = self::STATE_ENABLED;
             }
         }
 
@@ -625,7 +641,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Fi
         $this->updateSearch();
 
         if ($insert) {
-            if ($this->status == User::STATUS_NEED_APPROVAL) {
+            if ($this->state == User::STATE_NEEDS_APPROVAL) {
                 Group::notifyAdminsForUserApproval($this);
             }
             $this->profile->user_id = $this->id;
@@ -634,12 +650,12 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Fi
         // Don't move this line under setUpApproved() because ContentContainer record should be created firstly
         parent::afterSave($insert, $changedAttributes);
 
-        // When insert an "::STATUS_ENABLED" user or update a user from status "::STATUS_NEED_APPROVAL" to "::STATUS_ENABLED"
+        // When insert an "::STATE_ENABLED" user or update a user from state "::STATE_NEEDS_APPROVAL" to "::STATE_ENABLED"
         if (
-            $this->status == User::STATUS_ENABLED &&
+            $this->state == StatableInterface::STATE_ENABLED &&
             (
                 $insert ||
-                (isset($changedAttributes['status']) && $changedAttributes['status'] == User::STATUS_NEED_APPROVAL)
+                (isset($changedAttributes['state']) && $changedAttributes['state'] == User::STATE_NEEDS_APPROVAL)
             )
         ) {
             $this->setUpApproved();

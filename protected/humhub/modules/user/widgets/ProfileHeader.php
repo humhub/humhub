@@ -83,7 +83,7 @@ class ProfileHeader extends \yii\base\Widget
     {
         return Membership::getUserSpaceQuery($this->user)
             ->andWhere(['!=', 'space.visibility', Space::VISIBILITY_NONE])
-            ->andWhere(['space.status' => Space::STATUS_ENABLED])
+            ->andWhere(['space.state' => Space::STATE_ENABLED])
             ->count();
     }
 

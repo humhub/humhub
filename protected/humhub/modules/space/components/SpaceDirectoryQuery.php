@@ -86,7 +86,7 @@ class SpaceDirectoryQuery extends ActiveQuerySpace
     {
         return $this->innerJoin('space_membership', 'space_membership.space_id = space.id')
             ->andWhere(['space_membership.user_id' => Yii::$app->user->id])
-            ->andWhere(['space_membership.status' => Membership::STATUS_MEMBER]);
+            ->andWhere(['space_membership.state' => Membership::STATE_MEMBER]);
     }
 
     public function filterByConnectionFollow(): SpaceDirectoryQuery
@@ -97,19 +97,19 @@ class SpaceDirectoryQuery extends ActiveQuerySpace
 
     public function filterByConnectionNone(): SpaceDirectoryQuery
     {
-        return $this->andWhere('space.id NOT IN (SELECT space_id FROM space_membership WHERE user_id = :userId AND status = :memberStatus)')
+        return $this->andWhere('space.id NOT IN (SELECT space_id FROM space_membership WHERE user_id = :userId AND state = :memberState)')
             ->andWhere('space.id NOT IN (SELECT object_id FROM user_follow WHERE user_id = :userId AND user_follow.object_model = :spaceClass)')
             ->addParams([
                 ':userId' => Yii::$app->user->id,
-                ':memberStatus' => Membership::STATUS_MEMBER,
+                ':memberState' => Membership::STATE_MEMBER,
                 ':spaceClass' => Space::class,
             ]);
     }
 
     public function filterByConnectionArchived(bool $showArchived = false): SpaceDirectoryQuery
     {
-        return $this->andWhere('space.status ' . ($showArchived ? '=' : '!=') . ' :spaceStatus', [
-            ':spaceStatus' => Space::STATUS_ARCHIVED,
+        return $this->andWhere('space.state ' . ($showArchived ? '=' : '!=') . ' :spaceState', [
+            ':spaceState' => Space::STATE_ARCHIVED,
         ]);
     }
 

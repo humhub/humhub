@@ -257,7 +257,7 @@ class MembershipController extends ContentContainerController
         }
 
         // Check if Memberhip is really an invitation
-        if ($membership->status == Membership::STATUS_INVITED) {
+        if ($membership->state == Membership::STATE_INVITED) {
             $space->addMember($membership->user_id);
         }
 

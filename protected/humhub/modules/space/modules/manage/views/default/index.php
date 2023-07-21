@@ -41,11 +41,11 @@ use humhub\widgets\Button;
         <div class="pull-right">
             <?= Button::warning(Yii::t('SpaceModule.manage', 'Archive'))
                 ->action('space.archive', $model->createUrl('/space/manage/default/archive'))
-                ->cssClass('archive')->style(($model->status == Space::STATUS_ENABLED) ? 'display:inline' : 'display:none') ?>
+                ->cssClass('archive')->style(($model->state == Space::STATE_ENABLED) ? 'display:inline' : 'display:none') ?>
 
             <?= Button::warning(Yii::t('SpaceModule.manage', 'Unarchive'))
                 ->action('space.unarchive', $model->createUrl('/space/manage/default/unarchive'))
-                ->cssClass('unarchive')->style(($model->status == Space::STATUS_ARCHIVED) ? 'display:inline' : 'display:none') ?>
+                ->cssClass('unarchive')->style(($model->state == Space::STATE_ARCHIVED) ? 'display:inline' : 'display:none') ?>
         </div>
 
         <?php ActiveForm::end(); ?>

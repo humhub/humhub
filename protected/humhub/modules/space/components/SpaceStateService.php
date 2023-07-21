@@ -31,7 +31,6 @@ class SpaceStateService extends StateService
      * @var Content
      */
     public ActiveRecord $record;
-    public string $field = 'status';
 
     public function initStates(): self
     {

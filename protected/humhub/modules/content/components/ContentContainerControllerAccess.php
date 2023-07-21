@@ -137,7 +137,7 @@ class ContentContainerControllerAccess extends StrictAccess
      */
     private function canAccessUser()
     {
-        if($this->contentContainer->status == User::STATUS_NEED_APPROVAL) {
+        if($this->contentContainer->state == User::STATE_NEEDS_APPROVAL) {
             $this->reason = Yii::t('UserModule.profile', 'This user account is not approved yet!');
             $this->code = 404;
             return false;

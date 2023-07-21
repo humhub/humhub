@@ -235,7 +235,7 @@ Admin Tester", $form->message);
         }
 
         $user = User::findOne(['id' => $user->id]);
-        $this->assertEquals(User::STATUS_NEED_APPROVAL, $user->status);
+        $this->assertEquals(User::STATE_NEEDS_APPROVAL, $user->state);
     }
 
     private function assertApproved(User $user = null)
@@ -248,7 +248,7 @@ Admin Tester", $form->message);
         $this->assertEqualsLastEmailSubject('Account Request for \'UnApproved User\' has been approved.');
         $this->assertEqualsLastEmailTo($user->email);
         $user = User::findOne(['id' => $user->id]);
-        $this->assertEquals(User::STATUS_ENABLED, $user->status);
+        $this->assertEquals(User::STATE_ENABLED, $user->state);
     }
 
     private function setApprovalMessage($message)

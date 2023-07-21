@@ -49,7 +49,7 @@ class DashboardStreamTest extends HumHubDbTestCase
      */
     public function getSpaceByVisibility($visibility)
     {
-        return Space::findOne(['visibility' => $visibility, 'status' => Space::STATUS_ENABLED]);
+        return Space::findOne(['visibility' => $visibility, 'state' => Space::STATE_ENABLED]);
     }
 
 
@@ -59,7 +59,7 @@ class DashboardStreamTest extends HumHubDbTestCase
      */
     public function getUserByVisibility($visibility)
     {
-        return Space::findOne(['visibility' => $visibility, 'status' => User::STATUS_ENABLED]);
+        return Space::findOne(['visibility' => $visibility, 'state' => User::STATE_ENABLED]);
     }
 
     /**

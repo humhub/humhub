@@ -85,8 +85,8 @@ class LdapController extends \yii\console\Controller
 
         $this->stdout("LDAP connection successful!\n\n", Console::FG_GREEN);
 
-        $activeUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => User::STATUS_ENABLED])->count();
-        $disabledUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => User::STATUS_DISABLED])->count();
+        $activeUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'state' => User::STATE_ENABLED])->count();
+        $disabledUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'state' => User::STATE_DISABLED])->count();
 
         $this->stdout("LDAP user count:\t\t" . $userCount . " users.\n");;
         $this->stdout("HumHub user count (active):\t" . $activeUserCount . " users.\n");

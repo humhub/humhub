@@ -585,7 +585,7 @@ class StreamQuery extends Model implements StatableQueryInterface
             ->limit($this->limit);
 
         if (!Yii::$app->getModule('stream')->showDeactivatedUserContent) {
-            $this->_query->andWhere(['user.status' => StatableInterface::STATE_ENABLED]);
+            $this->_query->andWhereState(StatableInterface::STATE_ENABLED);
         }
 
         if ($this->contentId) {

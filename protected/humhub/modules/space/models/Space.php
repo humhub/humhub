@@ -50,7 +50,7 @@ use Yii;
  * @property string $url
  * @property integer $join_policy
  * @property integer $visibility
- * @property integer $status
+ * @property integer $state
  * @property integer $sort_order
  * @property string $created_at
  * @property integer $created_by
@@ -122,7 +122,7 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
     public function rules()
     {
         $rules = [
-            [['join_policy', 'visibility', 'status', 'sort_order', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
+            [['join_policy', 'visibility', 'state', 'sort_order', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
             [['name'], 'required'],
             [['description', 'about', 'color'], 'string'],
             [['tagsField', 'blockedUsersField'], 'safe'],
@@ -173,7 +173,7 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
             'about' => Yii::t('SpaceModule.base', 'About'),
             'join_policy' => Yii::t('SpaceModule.base', 'Join Policy'),
             'visibility' => Yii::t('SpaceModule.base', 'Visibility'),
-            'status' => Yii::t('SpaceModule.base', 'Status'),
+            'state' => Yii::t('SpaceModule.base', 'Status'),
             'tagsField' => Yii::t('SpaceModule.base', 'Tags'),
             'created_at' => Yii::t('SpaceModule.base', 'Created At'),
             'created_by' => Yii::t('SpaceModule.base', 'Created By'),
@@ -434,7 +434,7 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
      */
     public function archive()
     {
-        $this->status = self::STATUS_ARCHIVED;
+        $this->state = self::STATE_ARCHIVED;
         $this->save(false); // disable validation to force archiving even if some fields are not valid such as too long description, as the archive button is not part of the space settings form and validation errors are not displayed
     }
 
@@ -443,7 +443,7 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
      */
     public function unarchive()
     {
-        $this->status = self::STATUS_ENABLED;
+        $this->state = self::STATE_ENABLED;
         $this->save();
     }
 
@@ -455,7 +455,7 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
      */
     public function isArchived()
     {
-        return $this->status === self::STATE_ARCHIVED;
+        return $this->state === self::STATE_ARCHIVED;
     }
 
     /**
@@ -510,6 +510,22 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
     }
 
     /**
+     * @deprecated since 1.16. Please use static::$state instead.
+     */
+    public function getStatus(): ?int
+    {
+        return $this->state;
+    }
+
+    /**
+     * @deprecated since 1.16. Please use static::$state instead.
+     */
+    public function setStatus(?int $state): void
+    {
+        $this->state = $state;
+    }
+
+    /**
      * @inheritdoc
      */
     public function canAccessPrivateContent(User $user = null)
@@ -538,7 +554,7 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
     }
 
     /**
-     * Returns all Membership relations with status = STATUS_MEMBER.
+     * Returns all Membership relations with state = STATE_MEMBER.
      *
      * Be aware that this function will also include disabled users, in order to only include active and visible users use:
      *
@@ -551,17 +567,17 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
     public function getMemberships()
     {
         $query = $this->hasMany(Membership::class, ['space_id' => 'id']);
-        $query->andWhere(['space_membership.status' => Membership::STATUS_MEMBER]);
+        $query->andWhere(['space_membership.state' => Membership::STATE_MEMBER]);
         $query->addOrderBy(['space_membership.group_id' => SORT_DESC]);
 
         return $query;
     }
 
-    public function getMembershipUser($status = null)
+    public function getMembershipUser($state = null)
     {
-        $status = ($status == null) ? Membership::STATUS_MEMBER : $status;
+        $state = ($state == null) ? Membership::STATE_MEMBER : $state;
         $query = User::find();
-        $query->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:space_id AND space_membership.status=:member', ['space_id' => $this->id, 'member' => $status]);
+        $query->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:space_id AND space_membership.state=:member', ['space_id' => $this->id, 'member' => $state]);
         $query->andWhere('space_membership.space_id IS NOT NULL');
         $query->addOrderBy(['space_membership.group_id' => SORT_DESC]);
 
@@ -573,7 +589,7 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
         $query = User::find();
         $query->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:space_id ', ['space_id' => $this->id]);
         $query->andWhere('space_membership.space_id IS NULL');
-        $query->orWhere(['!=', 'space_membership.status', Membership::STATUS_MEMBER]);
+        $query->orWhere(['!=', 'space_membership.state', Membership::STATE_MEMBER]);
         $query->addOrderBy(['space_membership.group_id' => SORT_DESC]);
 
         return $query;
@@ -582,7 +598,7 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
     public function getApplicants()
     {
         $query = $this->hasMany(Membership::class, ['space_id' => 'id']);
-        $query->andWhere(['space_membership.status' => Membership::STATUS_APPLICANT]);
+        $query->andWhere(['space_membership.state' => Membership::STATE_APPLICANT]);
 
         return $query;
     }
@@ -697,7 +713,7 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
             ->andWhere(['IN', 'group_id', [self::USERGROUP_ADMIN, self::USERGROUP_MODERATOR]])
             ->andWhere(['space_id' => $this->id])
             ->andWhere(['!=', 'user_id', $owner->id])
-            ->andWhere(['user.status' => User::STATUS_ENABLED])
+            ->andWhere(['user.state' => User::STATE_ENABLED])
         ;
 
         foreach ($query->all() as $membership) {
