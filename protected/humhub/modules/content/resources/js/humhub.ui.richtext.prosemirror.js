@@ -66,14 +66,7 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
             that.getInput().val(that.editor.serialize()).trigger('blur');
         }).on('clear', function () {
             that.editor.clear();
-        }).on('focus', function () {
-            that.focus();
         });
-
-        this.$.find('.humhub-ui-richtext').on('focus', function () {
-            that.focus();
-            that.getInput().val(that.editor.serialize()).trigger('blur');
-        })
 
         if (this.options.backupInterval) {
             setInterval(() => this.backup(), this.options.backupInterval * 1000);
