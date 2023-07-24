@@ -10,6 +10,7 @@ namespace humhub\modules\space\models;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\modules\live\Module;
 use humhub\modules\user\models\User;
 use InvalidArgumentException;
 use Yii;
@@ -435,5 +436,6 @@ class Membership extends ActiveRecord
         unset(self::$membership_cache[$spaceId][$userId]);
 
         Yii::$app->runtimeCache->delete(__CLASS__ . "_$spaceId-$userId");
+        Yii::$app->cache->delete(Module::$legitimateCachePrefix . $userId);
     }
 }
