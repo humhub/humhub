@@ -83,3 +83,4 @@ HumHub Changelog
 - Fix #6383: Remove permission verifying from archive methods
 - Enh #6439: Add collapsible filter state in URL
 - Enh #6440: Sort user groups by `group.sort_order` and alphabetically
+- Enh #6454: Account deletion confirmation
