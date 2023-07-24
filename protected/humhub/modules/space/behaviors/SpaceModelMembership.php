@@ -208,6 +208,7 @@ class SpaceModelMembership extends Behavior
         if ($membership != null) {
             $membership->group_id = Space::USERGROUP_ADMIN;
             $membership->save();
+            Yii::$app->runtimeCache->delete(__CLASS__ . '::getMembership' . $userId . '-' . $this->owner->id);
             return true;
         }
 
@@ -305,6 +306,8 @@ class SpaceModelMembership extends Behavior
 
         $membership->save();
 
+        Yii::$app->runtimeCache->delete(__CLASS__ . '::getMembership' . $userId . '-' . $this->owner->id);
+
         ApprovalRequest::instance()->from($user)->about($this->owner)->withMessage($message)->sendBulk($this->getAdminsQuery());
     }
 
@@ -375,6 +378,8 @@ class SpaceModelMembership extends Behavior
         if (!$membership->save()) {
             throw new Exception('Could not save membership!' . print_r($membership->getErrors(), 1));
         }
+
+        Yii::$app->runtimeCache->delete(__CLASS__ . '::getMembership' . $userId . '-' . $this->owner->id);
 
         if ($sendInviteNotification) {
             $this->sendInviteNotification($userId, $originatorId);
@@ -474,6 +479,8 @@ class SpaceModelMembership extends Behavior
             return false;
         }
 
+        Yii::$app->runtimeCache->delete(__CLASS__ . '::getMembership' . $userId . '-' . $this->owner->id);
+
         MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_ADDED, new MemberEvent([
             'space' => $this->owner, 'user' => $user
         ]));
@@ -541,6 +548,8 @@ class SpaceModelMembership extends Behavior
     private function handleRemoveMembershipEvent(Membership $membership, User $user)
     {
         unset($this->_memberships[$user->id]);
+
+        Yii::$app->runtimeCache->delete(__CLASS__ . '::getMembership' . $user->id . '-' . $this->owner->id);
 
         // Get rid of old notifications
         ApprovalRequest::instance()->from($user)->about($this->owner)->delete();
