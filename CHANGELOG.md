@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #6378: Fix visibility of the link "Uninstall" on Windows server
 - Fix #6404: Fix visibility of global content on dashboard for registered users
 - Fix #6441: Display topics and content types in filters header on load page with selected filters
+- Fix #6433: Avoid duplicate activities on save published content
 
 1.14.2 (May 22, 2023)
 ----------------------
