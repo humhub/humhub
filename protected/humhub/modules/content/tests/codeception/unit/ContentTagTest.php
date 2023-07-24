@@ -171,11 +171,10 @@ class ContentTagTest extends HumHubDbTestCase
 
         $content->delete();
         $this->assertEquals(1, Content::find()->where(['id' => 1])->count());
-        $this->assertEquals(0, Content::find()->where(['id' => 1, 'state' => Content::STATE_PUBLISHED])->count());
+        $this->assertEquals(0, Content::find()->where(['id' => 1])->whereState(Content::STATE_PUBLISHED)->count());
 
         $content->hardDelete();
-        $this->assertEquals(0, Content::find()->where(['id' => 1])->count());
-
+        $this->assertEquals(0, Content::find()->where(['id' => 1])->whereStateAny()->count());
     }
 
     public function testTagContentRelation()

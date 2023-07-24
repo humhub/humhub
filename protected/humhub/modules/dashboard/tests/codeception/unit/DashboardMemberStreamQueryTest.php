@@ -62,8 +62,8 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
 
     private function assertSpaceMemberDoesSee($spaceVisibility, $contentVisibility, $showAtDashboard = 1, $state = Space::STATUS_ENABLED)
     {
-        $user = User::findOne(['id' => 3]);
-        $space = Space::findOne(['id' => 1]);
+        $user = User::findInstance(3);
+        $space = Space::findInstance(1);
         $space->updateAttributes(['status' => $state, 'visibility' => $spaceVisibility]);
 
         $membership = $space->getMembership($user->id);
@@ -442,13 +442,13 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
 
         $user1 = User::findInstance(2);
 
-        $user1->updateAttributes(['status' => $status]);
+        $user1->getStateService()->set($status)->save();
 
         $user2 = User::findInstance(3);
 
         static::assertTrue(Friendship::add($user2, $user1));
 
-        if(!$requested) {
+        if (!$requested) {
             static::assertTrue(Friendship::add($user1, $user2));
         }
 
@@ -466,13 +466,13 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
 
         $user1 = User::findInstance(2);
 
-        $user1->updateAttributes(['status' => $status]);
+        $user1->getStateService()->set($status)->save();
 
         $user2 = User::findInstance(3);
 
         static::assertTrue(Friendship::add($user2, $user1));
 
-        if(!$requested) {
+        if (!$requested) {
             static::assertTrue(Friendship::add($user1, $user2));
         }
 

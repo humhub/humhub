@@ -12,6 +12,7 @@ use humhub\modules\activity\stream\ActivityStreamQuery;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\stream\actions\ContentContainerStream;
+use humhub\modules\stream\models\StreamQuery;
 
 /**
  * This action can be used as container related wall- and activity stream. This stream action can be used as wall stream
@@ -37,7 +38,7 @@ class ActivityStreamAction extends ContentContainerStream
     /**
      * @inheritDoc
      */
-    public function initQuery($options = [])
+    public function initQuery($options = []): StreamQuery
     {
         $options['activity'] = $this->activity;
         return parent::initQuery($options);

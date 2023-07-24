@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\components\FindInstanceTrait;
 use humhub\interfaces\FindInstanceInterface;
 use humhub\libs\BasePermission;
+use humhub\components\StatableTrait;
 use humhub\modules\activity\helpers\ActivityHelper;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\interfaces\ContentOwner;
@@ -19,6 +20,7 @@ use humhub\modules\content\interfaces\SoftDeletable;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\Movable;
 use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\content\services\ActiveContentStateService;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\content\widgets\WallEntry;
@@ -80,6 +82,9 @@ use yii\db\ActiveQueryInterface;
 class ContentActiveRecord extends ActiveRecord implements ContentOwner, FindInstanceInterface, Movable, SoftDeletable
 {
     use FindInstanceTrait;
+    use StatableTrait {
+        StatableTrait::find insteadof FindInstanceTrait;
+    }
 
     /**
      * @see StreamEntryWidget
@@ -483,11 +488,11 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, FindInst
     public function afterStateChange(?int $newState, ?int $previousState): void
     {
         // Activities should be updated to same state as parent Record
-        $activitiesQuery = ActivityHelper::getActivitiesQuery($this);
+        $activitiesQuery = ActivityHelper::getActivitiesQuery($this)->whereStateAny();
         if ($activitiesQuery instanceof ActiveQuery) {
             foreach ($activitiesQuery->each() as $activity) {
                 /* @var Activity $activity */
-                $activity->content->getStateService()->update($newState);
+                $activity->getStateService()->update($newState);
             }
         }
     }
@@ -513,6 +518,11 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, FindInst
     public static function getObjectModel(): string
     {
         return static::class;
+    }
+
+    public static function getStateServiceClass(): string
+    {
+        return ActiveContentStateService::class;
     }
 
     /**
@@ -625,6 +635,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, FindInst
         return $content instanceof ActiveQueryInterface
             ? $content
                 ->andWhere(['content.object_model' => $getObjectModel])
+                ->whereStateAny()
             : $content;
     }
 

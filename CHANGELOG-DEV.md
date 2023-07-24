@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.16.0 (Unreleased)
+--------------------------
+- Enh #6430: Introduce Statable interfaces and implementation
+
 1.15.0-beta.2 (Unreleased)
 --------------------------
 - Fix #6519: Ensure e-mails would always have a sender address set

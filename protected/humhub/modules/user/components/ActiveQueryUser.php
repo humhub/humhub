@@ -8,7 +8,10 @@
 
 namespace humhub\modules\user\components;
 
+use humhub\components\StatableActiveQueryTrait;
 use humhub\events\ActiveQueryEvent;
+use humhub\interfaces\StatableActiveQueryInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\AbstractActiveQueryContentContainer;
 use humhub\modules\user\models\fieldtype\BaseTypeVirtual;
@@ -25,28 +28,37 @@ use yii\db\ActiveQuery;
  * ActiveQueryUser is used to query User records.
  *
  * @author luke
+ *
+ * @property-read string[] $searchableFields
+ * @method self whereDefaultFilter(array|null $config = null)
+ * @method self andWhereDefaultFilter(array|null $config = null)
+ * @method self whereState(array|string|null $state)
+ * @method self andWhereState(array|string|null $state)
  */
-class ActiveQueryUser extends AbstractActiveQueryContentContainer
+class ActiveQueryUser extends AbstractActiveQueryContentContainer implements StatableActiveQueryInterface
 {
+    use StatableActiveQueryTrait;
+
     /**
      * @event Event an event that is triggered when only visible users are requested via [[visible()]].
      */
-    const EVENT_CHECK_VISIBILITY = 'checkVisibility';
+    public const EVENT_CHECK_VISIBILITY = 'checkVisibility';
 
     /**
      * @event Event an event that is triggered when only active users are requested via [[active()]].
      */
-    const EVENT_CHECK_ACTIVE = 'checkActive';
+    public const EVENT_CHECK_ACTIVE = 'checkActive';
 
     /**
      * Limit to active users
      *
      * @return ActiveQueryUser the query
      */
-    public function active()
+    public function active(): ActiveQueryUser
     {
         $this->trigger(self::EVENT_CHECK_ACTIVE, new ActiveQueryEvent(['query' => $this]));
-        return $this->andWhere(['user.status' => UserModel::STATUS_ENABLED]);
+
+        return $this->andWhereDefaultFilter();
     }
 
     /**
@@ -208,5 +220,4 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
     {
         return $this->visible($user)->filterBlockedUsers($user);
     }
-
 }

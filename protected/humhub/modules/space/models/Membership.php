@@ -11,14 +11,17 @@ namespace humhub\modules\space\models;
 use humhub\components\ActiveRecord;
 use humhub\components\CacheableActiveQuery;
 use humhub\components\FindInstanceTrait;
+use humhub\components\StatableActiveQuery;
+use humhub\components\StatableTrait;
 use humhub\exceptions\InvalidArgumentException;
 use humhub\interfaces\FindInstanceInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\live\Module;
+use humhub\modules\space\components\MembershipStateService;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\db\ActiveQuery;
-use yii\db\ActiveQueryInterface;
 use yii\db\Query;
 
 /**
@@ -43,10 +46,14 @@ use yii\db\Query;
  * @property Space $space
  * @property User $user
  * @property User|null $originator
+ * @method StatableActiveQuery static find()
  */
-class Membership extends ActiveRecord implements FindInstanceInterface
+class Membership extends ActiveRecord implements FindInstanceInterface, StatableInterface
 {
     use FindInstanceTrait;
+    use StatableTrait {
+        StatableTrait::find insteadof FindInstanceTrait;
+    }
 
     /**
      * @event \humhub\modules\space\MemberEvent
@@ -61,9 +68,24 @@ class Membership extends ActiveRecord implements FindInstanceInterface
     /**
      * Status Codes
      */
-    public const STATUS_INVITED = 1;
-    public const STATUS_APPLICANT = 2;
-    public const STATUS_MEMBER = 3;
+    public const STATE_INVITED = 1;     //ToDo: StatableInterface::STATE_DRAFT;
+    public const STATE_APPLICANT = 2;   //ToDo: StatableInterface::STATE_NEEDS_APPROVAL;
+    public const STATE_MEMBER = 3;      //ToDo: StatableInterface::STATE_ENABLED;
+
+    /**
+     * @deprecated since 1.16; use self::STATE_INVITED
+     */
+    public const STATUS_INVITED = self::STATE_INVITED;
+
+    /**
+     * @deprecated since 1.16; use self::STATE_MEMBER
+     */
+    public const STATUS_MEMBER = self::STATE_MEMBER;
+
+    /**
+     * @deprecated since 1.16; use self::STATE_APPLICANT
+     */
+    public const STATUS_APPLICANT = self::STATE_APPLICANT;
 
     public const USER_SPACES_CACHE_KEY = 'userSpaces_';
     public const USER_SPACEIDS_CACHE_KEY = 'userSpaceIds_';
@@ -200,6 +222,12 @@ class Membership extends ActiveRecord implements FindInstanceInterface
         return $query->count();
     }
 
+
+    public static function getStateServiceClass(): string
+    {
+        return MembershipStateService::class;
+    }
+
     /**
      * Returns a list of all spaces of the given userId
      *
@@ -260,7 +288,8 @@ class Membership extends ActiveRecord implements FindInstanceInterface
         }
 
         $query = self::find()->joinWith('space')->orderBy($orderBy);
-        $query->where(['user_id' => $userId, 'space_membership.status' => self::STATUS_MEMBER]);
+        $query->where(['user_id' => $userId]);
+        $query->whereState(self::STATE_MEMBER);
 
         return $query;
     }
@@ -339,7 +368,7 @@ class Membership extends ActiveRecord implements FindInstanceInterface
         }
 
         if ($membershipStatus) {
-            $query->andWhere(['space_membership.status' => $membershipStatus]);
+            $query->whereState($membershipStatus);
         }
 
         return $query;

@@ -11,6 +11,7 @@ namespace humhub\components;
 use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\exceptions\InvalidConfigTypeException;
 use humhub\interfaces\FindInstanceInterface;
+use humhub\interfaces\StatableInterface;
 use Throwable;
 use Yii;
 
@@ -24,7 +25,7 @@ trait FindInstanceTrait
 {
     public static function find()
     {
-        return Yii::createObject(CacheableActiveQuery::class, [static::class]);
+        return new CacheableActiveQuery(static::class);
     }
 
     /**
@@ -89,7 +90,12 @@ trait FindInstanceTrait
             /**
              * @return self|array|null
              */
-            $find = static fn(): ?self => static::find()->where($criteria)->one();
+            $find = static fn(): ?self => static::class instanceof StatableInterface
+                ? static::find()
+                    ->where($criteria)
+                    ->whereStateAny()
+                    ->one()
+                : static::find()->where($criteria)->one();
 
             if ($config['cached'] ?? true) {
                 $identifier = Yii::$app->runtimeCache->getOrSet(CacheableActiveQuery::normaliseObjectIdentifier(static::class, $criteria), $find);

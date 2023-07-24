@@ -15,7 +15,10 @@ use humhub\components\CacheableActiveQuery;
 use humhub\components\FindInstanceTrait;
 use humhub\components\Module;
 use humhub\interfaces\FindInstanceInterface;
+use humhub\interfaces\StateServiceInterface;
+use humhub\components\StatableTrait;
 use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\content\activities\ContentCreated as ActivitiesContentCreated;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
@@ -24,21 +27,22 @@ use humhub\modules\content\events\ContentStateEvent;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\interfaces\SoftDeletable;
 use humhub\modules\content\live\NewContent;
+use humhub\modules\content\notifications\ContentCreated as NotificationsContentCreated;
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\services\ContentStateService;
 use humhub\modules\content\services\ContentTagService;
 use humhub\modules\notification\models\Notification;
-use humhub\modules\post\models\Post;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
+use Throwable;
 use Yii;
 use yii\base\Exception;
-use yii\db\ActiveQueryInterface;
+use yii\db\ActiveQuery;
 use yii\db\IntegrityException;
 use yii\helpers\Url;
 
@@ -80,6 +84,12 @@ use yii\helpers\Url;
  * @property string $updated_at
  * @property integer $updated_by
  * @property ContentContainer $contentContainer
+ * @property-read mixed $contentName
+ * @property-read mixed $content
+ * @property-read ActiveQuery $tagRelations
+ * @property-read ContentActiveRecord $model
+ * @property-read mixed $contentDescription
+ * @property-read StateServiceInterface $stateService
  * @property ContentContainerActiveRecord $container
  * @mixin PolymorphicRelation
  * @mixin GUID
@@ -88,13 +98,15 @@ use yii\helpers\Url;
 class Content extends ActiveRecord implements FindInstanceInterface, Movable, ContentOwner, SoftDeletable
 {
     use FindInstanceTrait;
+    use StatableTrait {
+        StatableTrait::find insteadof FindInstanceTrait;
+    }
 
     /**
      * The default stream channel.
      * @since 1.6
      */
-    const STREAM_CHANNEL_DEFAULT = 'default';
-
+    public const STREAM_CHANNEL_DEFAULT = 'default';
 
     /**
      * A array of user objects which should informed about this new content.
@@ -106,25 +118,17 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
     /**
      * @var int The private visibility mode (e.g. for space member content or user profile posts for friends)
      */
-    const VISIBILITY_PRIVATE = 0;
+    public const VISIBILITY_PRIVATE = 0;
 
     /**
      * @var int Public visibility mode, e.g. content which are visibile for followers
      */
-    const VISIBILITY_PUBLIC = 1;
+    public const VISIBILITY_PUBLIC = 1;
 
     /**
      * @var int Owner visibility mode, only visible for contentContainer + content owner
      */
-    const VISIBILITY_OWNER = 2;
-
-    /**
-     * Content States - By default, only content with the "Published" state is returned.
-     */
-    const STATE_PUBLISHED = 1;
-    const STATE_DRAFT = 10;
-    const STATE_SCHEDULED = 20;
-    const STATE_DELETED = 100;
+    public const VISIBILITY_OWNER = 2;
 
     /**
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
@@ -140,7 +144,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
     /**
      * @event Event is used when a Content state is changed.
      */
-    const EVENT_STATE_CHANGED = 'changedState';
+    public const EVENT_STATE_CHANGED = 'changedState';
 
     /**
      * @inheritdoc
@@ -210,6 +214,14 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
         return $this->getPolymorphicRelation();
     }
 
+    /**
+     * @return string
+     */
+    public static function getStateServiceClass(): string
+    {
+        return ContentStateService::class;
+    }
+
     public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
     {
         $config['stringKey'] ??= 'guid';
@@ -253,7 +265,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
 
         if (array_key_exists('state', $changedAttributes)) {
             // Run process for new content(Send notifications) only after changing state
-            $this->processNewContent();
+            $this->processNewContent($insert);
 
             $model = $this->getModel();
             if (!$insert && $model instanceof ContentActiveRecord && $this->getStateService()->isPublished()) {
@@ -283,14 +295,15 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
         parent::afterSave($insert, $changedAttributes);
     }
 
-    private function processNewContent()
+    protected function processNewContent($insert)
     {
-        if (!$this->getStateService()->isPublished()) {
+        $stateService = $this->getStateService();
+        if (!$stateService->isPublished()) {
             // Don't notify about not published Content
             return;
         }
 
-        if ($this->getStateService()->wasPublished()) {
+        if ($stateService->wasPublished()) {
             // No need to notify twice for already published Content before
             return;
         }
@@ -304,8 +317,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
         }
 
         // TODO: handle ContentCreated notifications and live events for global content
-
-        if (!$this->isMuted()) {
+        if ($insert && !$this->isMuted()) {
             $this->notifyContentCreated();
         }
 
@@ -321,11 +333,10 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
                 'silent' => $this->isMuted(),
                 'streamChannel' => $this->stream_channel,
                 'contentId' => $this->id,
-                'insert' => true
+                'insert' => $insert
             ]));
         }
     }
-
 
     /**
      * @return bool checks if the given content allows content creation notifications and activities
@@ -353,14 +364,15 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
             );
         }
 
-        \humhub\modules\content\notifications\ContentCreated::instance()
+        NotificationsContentCreated::instance()
             ->from($this->createdBy)
             ->about($contentSource)
             ->sendBulk($userQuery);
 
-        \humhub\modules\content\activities\ContentCreated::instance()
+        ActivitiesContentCreated::instance()
             ->from($this->createdBy)
-            ->about($contentSource)->save();
+            ->about($contentSource)
+            ->save();
     }
 
     /**
@@ -599,7 +611,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
 
     /**
      * {@inheritdoc}
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function move(ContentContainerActiveRecord $container = null, $force = false)
     {
@@ -698,7 +710,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
      * @param ContentContainerActiveRecord|null $container
      * @return bool determines if the current user is generally permitted to move content on the given container (or the related container if no container was provided)
      * @throws IntegrityException
-     * @throws \Throwable
+     * @throws Throwable
      * @throws \yii\base\InvalidConfigException
      */
     public function checkMovePermission(ContentContainerActiveRecord $container = null)
@@ -793,7 +805,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
      * Relation to ContentContainer model
      * Note: this is not a Space or User instance!
      *
-     * @return \yii\db\ActiveQuery|ContentContainer
+     * @return ActiveQuery|ContentContainer
      * @since 1.1
      */
     public function getContentContainer()
@@ -804,7 +816,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
     /**
      * Returns the ContentTagRelation query.
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      * @since 1.2.2
      */
     public function getTagRelations()
@@ -815,7 +827,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
     /**
      * Returns all content related tags ContentTags related to this content.
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      * @since 1.2.2
      */
     public function getTags($tagClass = ContentTag::class)
@@ -862,7 +874,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
      * @return bool can edit/create this content
      * @throws Exception
      * @throws IntegrityException
-     * @throws \Throwable
+     * @throws Throwable
      * @throws \yii\base\InvalidConfigException
      * @since 1.1
      */
@@ -953,7 +965,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
      * @param User|integer $user
      * @return boolean can view this content
      * @throws Exception
-     * @throws \Throwable
+     * @throws Throwable
      * @since 1.1
      */
     public function canView($user = null)
@@ -1069,21 +1081,4 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
     {
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
     }
-
-    public function getStateService(): ContentStateService
-    {
-        return new ContentStateService(['content' => $this]);
-    }
-
-    /**
-     * @param int|string|null $state
-     * @param array $options Additional options depending on state
-     * @since 1.14
-     * @deprecated Use $this->getStateService()->set(). It will be deleted in v1.15.
-     */
-    public function setState($state, array $options = [])
-    {
-        $this->getStateService()->set($state, $options);
-    }
-
 }

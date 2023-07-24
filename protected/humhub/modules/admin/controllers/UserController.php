@@ -167,7 +167,7 @@ class UserController extends Controller
             $definition['elements']['User']['elements']['status'] = [
                 'type' => 'dropdownlist',
                 'class' => 'form-control',
-                'items' => User::getStatusOptions(false),
+                'items' => User::getStateOptions(false),
             ];
 
             $definition['elements']['User']['elements']['visibility'] = [

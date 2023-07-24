@@ -9,7 +9,8 @@
 namespace humhub\modules\content\components;
 
 use humhub\components\CacheableActiveQuery;
-use humhub\modules\content\models\Content;
+use humhub\components\StatableActiveQueryTrait;
+use humhub\interfaces\StatableActiveQueryInterface;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;
 use humhub\modules\space\models\Space;
@@ -22,35 +23,46 @@ use yii\db\Expression;
  * ActiveQueryContent is an enhanced ActiveQuery with additional selectors for especially content.
  *
  * @inheritdoc
- *
- * @author luke
  */
-class ActiveQueryContent extends CacheableActiveQuery
+class ActiveQueryContent extends CacheableActiveQuery implements StatableActiveQueryInterface
 {
+    use StatableActiveQueryTrait {
+        andWhereDefaultFilter as StatableActiveQueryTrait_andWhereDefaultFilter;
+    }
+
     /**
      * Own content scope for userRelated
      * @see ActiveQueryContent::userRelated
      */
-    const USER_RELATED_SCOPE_OWN = 1;
-    const USER_RELATED_SCOPE_SPACES = 2;
-    const USER_RELATED_SCOPE_FOLLOWED_SPACES = 3;
-    const USER_RELATED_SCOPE_FOLLOWED_USERS = 4;
-    const USER_RELATED_SCOPE_OWN_PROFILE = 5;
+    public const USER_RELATED_SCOPE_OWN = 1;
+    public const USER_RELATED_SCOPE_SPACES = 2;
+    public const USER_RELATED_SCOPE_FOLLOWED_SPACES = 3;
+    public const USER_RELATED_SCOPE_FOLLOWED_USERS = 4;
+    public const USER_RELATED_SCOPE_OWN_PROFILE = 5;
+
+    public const FILTER_CONTEXT_READABLE = 'readable';
+
 
     /**
-     * State filter that is used for queries. By default, only Published content is returned.
+     * @inerhitdoc
      *
-     * Example to include drafts:
-     * ```
-     * $query = Post::find();
-     * $query->stateFilterCondition[] = ['content.state' => Content::STATE_DRAFT];
-     * $posts = $query->readable()->all();
-     * ```
+     * @param null|array $config = ['context' => 'name of the context', 'user' => $user]
      *
-     * @since 1.14
-     * @var array
+     * @return self the query
+     * @throws \Throwable
      */
-    public $stateFilterCondition = ['OR', ['content.state' => Content::STATE_PUBLISHED]];
+    public function andWhereDefaultFilter(?array $config = null): self
+    {
+        $config ??= [];
+
+        switch ($config['context'] ?? null) {
+            case self::FILTER_CONTEXT_READABLE:
+            case self::FILTER_CONTEXT_DEFAULT:
+                $this->readable($config['user'] ?? null);
+        }
+
+        return $this->StatableActiveQueryTrait_andWhereDefaultFilter($config);
+    }
 
     /**
      * Only returns user readable records
@@ -65,13 +77,9 @@ class ActiveQueryContent extends CacheableActiveQuery
             $user = Yii::$app->user->getIdentity();
         }
 
-        $this->andWhere($this->stateFilterCondition);
-
         $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
         $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::class]);
         $this->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::class]);
-        $conditionSpace = '';
-        $conditionUser = '';
         $globalCondition = '';
 
         if ($user !== null) {
@@ -115,6 +123,8 @@ class ActiveQueryContent extends CacheableActiveQuery
         } else {
             return $this->emulateExecution();
         }
+
+        $this->prefixTableNameToUnqualifiedColumnNames();
 
         $this->andWhere("{$conditionSpace} OR {$conditionUser} OR {$globalCondition}");
 
@@ -162,7 +172,7 @@ class ActiveQueryContent extends CacheableActiveQuery
                 $contentTagQuery->andWhere('content_tag_relation.content_id=content.id');
                 $this->andWhere(['content.id' => $contentTagQuery]);
             }
-        } else if ($mode == 'OR') {
+        } elseif ($mode == 'OR') {
             $names = array_map(function ($v) {
                 return $v->name;
             }, $contentTags);
@@ -203,7 +213,7 @@ class ActiveQueryContent extends CacheableActiveQuery
     public function userRelated($scopes = [], $user = null)
     {
         if ($user === null) {
-            if ( Yii::$app->user->isGuest) {
+            if (Yii::$app->user->isGuest) {
                 return $this->andWhere('false');
             }
 
@@ -268,5 +278,4 @@ class ActiveQueryContent extends CacheableActiveQuery
 
         return $this;
     }
-
 }

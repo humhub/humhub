@@ -9,6 +9,7 @@ namespace humhub\components\behaviors;
 
 use Exception;
 use humhub\interfaces\FindInstanceInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use ReflectionClass;
@@ -172,6 +173,10 @@ class PolymorphicRelation extends Behavior
             if (count($primaryKeyNames) !== 1) {
                 Yii::error('Could not load polymorphic relation! Only one primary key is supported!');
                 return null;
+            }
+
+            if ($class->implementsInterface(StatableInterface::class)) {
+                return $className::find()->where([$primaryKeyNames[0] => $primaryKey])->whereStateAny()->one();
             }
 
             return $class->isSubclassOf(FindInstanceInterface::class)

@@ -159,7 +159,7 @@ abstract class Stream extends Action
     protected $streamQuery;
 
     /**
-     * @var string suppress similar content types in a row
+     * @var string|StreamQuery suppress similar content types in a row
      */
     public $streamQueryClass = WallStreamQuery::class;
 
@@ -233,7 +233,7 @@ abstract class Stream extends Action
      * @throws \yii\base\InvalidConfigException
      * @since 1.6
      */
-    protected function initQuery($options = [])
+    protected function initQuery($options = []): StreamQuery
     {
         $options['class'] = $this->streamQueryClass;
         $instance = Yii::createObject($options);

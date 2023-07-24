@@ -5,13 +5,14 @@ namespace humhub\modules\activity\helpers;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\content\components\ActiveQueryContent;
 use Yii;
 use yii\db\ActiveQuery;
 
 class ActivityHelper
 {
 
-    public static function getActivitiesQuery(?ActiveRecord $record): ?ActiveQuery
+    public static function getActivitiesQuery(?ActiveRecord $record): ?ActiveQueryContent
     {
         if ($record === null) {
             return null;

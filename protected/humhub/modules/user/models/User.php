@@ -11,7 +11,9 @@ namespace humhub\modules\user\models;
 use humhub\components\behaviors\GUID;
 use humhub\components\CacheableActiveQuery;
 use humhub\components\FindInstanceTrait;
+use humhub\components\StatableTrait;
 use humhub\interfaces\FindInstanceInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSpaces;
@@ -35,6 +37,7 @@ use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\PasswordRecoveryService;
+use humhub\modules\user\services\UserStateService;
 use humhub\modules\user\widgets\UserWall;
 use Yii;
 use yii\base\Exception;
@@ -68,19 +71,16 @@ use yii\web\User as WebUser;
  * @property Auth[] $auths
  * @property string $displayName
  * @property string $displayNameSub
+ * @property-read UserStateService $stateService
  * @mixin Followable
+ * @method UserStateService getStateService()
  */
-class User extends ContentContainerActiveRecord implements IdentityInterface, FindInstanceInterface, Searchable
+class User extends ContentContainerActiveRecord implements IdentityInterface, FindInstanceInterface, Searchable, StatableInterface
 {
     use FindInstanceTrait;
-
-    /**
-     * User Status Flags
-     */
-    public const STATUS_DISABLED = 0;
-    public const STATUS_ENABLED = 1;
-    public const STATUS_NEED_APPROVAL = 2;
-    public const STATUS_SOFT_DELETED = 3;
+    use StatableTrait {
+        StatableTrait::find insteadof FindInstanceTrait;
+    }
 
     /**
      * Visibility Modes
@@ -171,7 +171,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Fi
                 return $model->getAttribute($attribute) !== $model->getOldAttribute($attribute);
             }],
             [['created_by', 'updated_by'], 'integer'],
-            [['status'], 'in', 'range' => array_keys(self::getStatusOptions())],
+            [['status'], 'in', 'range' => array_keys($this->getStateService()->getStateOptions())],
             [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => Profile::SCENARIO_EDIT_ADMIN],
             [['tagsField', 'blockedUsersField'], 'safe'],
             [['guid'], 'string', 'max' => 45],
@@ -1047,19 +1047,22 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Fi
         }
     }
 
-    public static function getStatusOptions(bool $withDeleted = true): array
+    /**
+     * @return string
+     */
+    public static function getStateServiceClass(): string
     {
-        $options = [
-            self::STATUS_ENABLED => Yii::t('AdminModule.user', 'Enabled'),
-            self::STATUS_DISABLED => Yii::t('AdminModule.user', 'Disabled'),
-            self::STATUS_NEED_APPROVAL => Yii::t('AdminModule.user', 'Unapproved'),
-        ];
+        return UserStateService::class;
+    }
 
-        if ($withDeleted) {
-            $options[self::STATUS_SOFT_DELETED] = Yii::t('AdminModule.user', 'Deleted');
-        }
-
-        return $options;
+    /**
+     * @param bool $withDeleted
+     *
+     * @return array
+     */
+    public static function getStateOptions(bool $withDeleted = true): array
+    {
+        return static::getStateServiceTemplate()->getStateOptions(['withDeleted' => $withDeleted]);
     }
 
     public static function getVisibilityOptions($allowHidden = true): array

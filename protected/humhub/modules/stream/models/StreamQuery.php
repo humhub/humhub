@@ -2,23 +2,29 @@
 
 namespace humhub\modules\stream\models;
 
+use humhub\components\StatableActiveQuery;
+use humhub\components\StatableActiveQueryTrait;
+use humhub\interfaces\StatableActiveQueryInterface;
+use humhub\interfaces\StatableInterface;
+use humhub\interfaces\StatableQueryInterface;
+use humhub\modules\content\models\Content;
+use humhub\modules\stream\actions\Stream;
 use humhub\modules\stream\models\filters\BlockedUsersStreamFilter;
+use humhub\modules\stream\models\filters\ContentTypeStreamFilter;
 use humhub\modules\stream\models\filters\DateStreamFilter;
+use humhub\modules\stream\models\filters\DefaultStreamFilter;
 use humhub\modules\stream\models\filters\DraftContentStreamFilter;
+use humhub\modules\stream\models\filters\OriginatorStreamFilter;
 use humhub\modules\stream\models\filters\ScheduledContentStreamFilter;
 use humhub\modules\stream\models\filters\StreamQueryFilter;
+use humhub\modules\stream\models\filters\TopicStreamFilter;
+use humhub\modules\user\models\User;
 use Yii;
+use yii\base\Event;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
-use humhub\modules\stream\actions\Stream;
-use humhub\modules\stream\models\filters\ContentTypeStreamFilter;
-use humhub\modules\stream\models\filters\DefaultStreamFilter;
-use humhub\modules\stream\models\filters\OriginatorStreamFilter;
-use humhub\modules\stream\models\filters\TopicStreamFilter;
-use humhub\modules\content\models\Content;
-use humhub\modules\user\models\User;
 
 /**
  * Description of StreamQuery
@@ -26,28 +32,32 @@ use humhub\modules\user\models\User;
  * @author buddha
  * @since 1.2
  */
-class StreamQuery extends Model
+class StreamQuery extends Model implements StatableQueryInterface
 {
+    use StatableActiveQueryTrait {
+        init as private StatableActiveQueryTrait_init;
+    }
+
     /**
      * @event Event triggered before filterHandlers are applied, this can be used to add custom stream filters.
      */
-    const EVENT_BEFORE_FILTER = 'beforeFilter';
+    public const EVENT_BEFORE_FILTER = 'beforeFilter';
 
     /**
      * @event Event triggered after filterHandlers are applied.
      */
-    const EVENT_AFTER_FILTER = 'afterFilter';
+    public const EVENT_AFTER_FILTER = 'afterFilter';
 
     /**
      * Default channels
      */
-    const CHANNEL_DEFAULT = 'default';
-    const CHANNEL_ACTIVITY = 'activity';
+    public const CHANNEL_DEFAULT = 'default';
+    public const CHANNEL_ACTIVITY = 'activity';
 
     /**
      * Maximum wall entries per request
      */
-    const MAX_LIMIT = 20;
+    public const MAX_LIMIT = 20;
 
     /**
      * Can be set to filter specific content types.
@@ -144,17 +154,9 @@ class StreamQuery extends Model
     ];
 
     /**
-     * Per default only content with published state are returned.
-     *
-     * @note Used, for example, by the Recycle Bin module to display deleted content in the stream.
-     * @var array
-     */
-    public $stateFilterCondition = ['OR', ['content.state' => Content::STATE_PUBLISHED]];
-
-    /**
      * The content query.
      *
-     * @var ActiveQuery
+     * @var StatableActiveQuery
      */
     protected $_query;
 
@@ -207,8 +209,24 @@ class StreamQuery extends Model
     public function init()
     {
         $this->_query = Content::find();
-        // Set default user after initialization so it's avialable without assambling the query.
+
+        // Set the default user after initialization, so it's available without assembling the query.
         $this->checkUser();
+
+        $callback = static function (Event $event) {
+            /** @var self $query */
+            $query = $event->sender;
+
+            if ($query->getStateFilterList() === null && count($query->getStateFilterCondition()) <= 1) {
+                $query->setStateFilterList([StatableInterface::STATE_PUBLISHED]);
+            }
+        };
+
+        $this->on(StatableQueryInterface::EVENT_INIT_DEFAULT_QUERIED_STATES, $callback);
+
+        $this->StatableActiveQueryTrait_init();
+
+        $this->off(StatableQueryInterface::EVENT_INIT_DEFAULT_QUERIED_STATES, $callback);
     }
 
     /**
@@ -393,12 +411,64 @@ class StreamQuery extends Model
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getModelClass(): string
+    {
+        return $this->_query->getModelClass();
+    }
+
+    /**
+     * @return array
+     */
+    public function getStateFilterList(): ?array
+    {
+        return $this->_query->getStateFilterList();
+    }
+
+    /**
+     * @param array|string|null $stateFilterList
+     *
+     * @return StatableActiveQueryInterface|StatableActiveQuery
+     */
+    public function setStateFilterList($stateFilterList): StatableQueryInterface
+    {
+        $this->_query->setStateFilterList($stateFilterList);
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getStateFilterCondition(): array
+    {
+        return $this->_query->getStateFilterCondition();
+    }
+
+    /**
+     * @param array|string|null $stateFilterCondition
+     *
+     * @return StatableActiveQueryInterface|StatableActiveQuery
+     */
+    public function setStateFilterCondition($stateFilterCondition): self
+    {
+        $this->_query->setStateFilterCondition($stateFilterCondition);
+
+        return $this;
+    }
+
+    /**
      * Returns the query result.
      *
      * @return Content[]
      */
     public function all()
     {
+        if ($this->contentId !== null) {
+            $this->_query->whereStateAny();
+        }
+
         return $this->postProcessAll(
             $this->query(!$this->_built)->all()
         );
@@ -437,8 +507,6 @@ class StreamQuery extends Model
         $this->checkTo();
         $this->setupCriteria();
         $this->setupFilters();
-
-        $this->_query->andWhere($this->stateFilterCondition);
 
         if (!empty($this->channel)) {
             $this->channel($this->channel);
@@ -517,7 +585,7 @@ class StreamQuery extends Model
             ->limit($this->limit);
 
         if (!Yii::$app->getModule('stream')->showDeactivatedUserContent) {
-            $this->_query->andWhere(['user.status' => User::STATUS_ENABLED]);
+            $this->_query->andWhere(['user.status' => StatableInterface::STATE_ENABLED]);
         }
 
         if ($this->contentId) {

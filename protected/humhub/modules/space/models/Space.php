@@ -11,7 +11,9 @@ namespace humhub\modules\space\models;
 use humhub\components\behaviors\GUID;
 use humhub\components\CacheableActiveQuery;
 use humhub\components\FindInstanceTrait;
+use humhub\components\StatableTrait;
 use humhub\interfaces\FindInstanceInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
@@ -23,6 +25,7 @@ use humhub\modules\space\activities\Created;
 use humhub\modules\space\behaviors\SpaceController;
 use humhub\modules\space\behaviors\SpaceModelMembership;
 use humhub\modules\space\components\ActiveQuerySpace;
+use humhub\modules\space\components\SpaceStateService;
 use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\Module;
 use humhub\modules\space\permissions\CreatePrivateSpace;
@@ -63,33 +66,32 @@ use Yii;
  * @mixin \humhub\modules\space\behaviors\SpaceModelMembership
  * @mixin \humhub\modules\user\behaviors\Followable
  */
-class Space extends ContentContainerActiveRecord implements FindInstanceInterface, Searchable
+class Space extends ContentContainerActiveRecord implements FindInstanceInterface, Searchable, StatableInterface
 {
     use FindInstanceTrait;
+    use StatableTrait {
+        StatableTrait::find insteadof FindInstanceTrait;
+    }
 
     // Join Policies
-    const JOIN_POLICY_NONE = 0; // No Self Join Possible
-    const JOIN_POLICY_APPLICATION = 1; // Invitation and Application Possible
-    const JOIN_POLICY_FREE = 2; // Free for All
+    public const JOIN_POLICY_NONE = 0; // No Self Join Possible
+    public const JOIN_POLICY_APPLICATION = 1; // Invitation and Application Possible
+    public const JOIN_POLICY_FREE = 2; // Free for All
     // Visibility: Who can view the space content.
-    const VISIBILITY_NONE = 0; // Private: This space is invisible for non-space-members
-    const VISIBILITY_REGISTERED_ONLY = 1; // Only registered users (no guests)
-    const VISIBILITY_ALL = 2; // Public: All Users (Members and Guests)
-    // Status
-    const STATUS_DISABLED = 0;
-    const STATUS_ENABLED = 1;
-    const STATUS_ARCHIVED = 2;
+    public const VISIBILITY_NONE = 0; // Private: This space is invisible for non-space-members
+    public const VISIBILITY_REGISTERED_ONLY = 1; // Only registered users (no guests)
+    public const VISIBILITY_ALL = 2; // Public: All Users (Members and Guests)
     // UserGroups
-    const USERGROUP_OWNER = 'owner';
-    const USERGROUP_ADMIN = 'admin';
-    const USERGROUP_MODERATOR = 'moderator';
-    const USERGROUP_MEMBER = 'member';
-    const USERGROUP_USER = 'user';
-    const USERGROUP_GUEST = 'guest';
+    public const USERGROUP_OWNER = 'owner';
+    public const USERGROUP_ADMIN = 'admin';
+    public const USERGROUP_MODERATOR = 'moderator';
+    public const USERGROUP_MEMBER = 'member';
+    public const USERGROUP_USER = 'user';
+    public const USERGROUP_GUEST = 'guest';
     // Model Scenarios
-    const SCENARIO_CREATE = 'create';
-    const SCENARIO_EDIT = 'edit';
-    const SCENARIO_SECURITY_SETTINGS = 'security_settings';
+    public const SCENARIO_CREATE = 'create';
+    public const SCENARIO_EDIT = 'edit';
+    public const SCENARIO_SECURITY_SETTINGS = 'security_settings';
 
     /**
      * @inheritdoc
@@ -453,7 +455,7 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
      */
     public function isArchived()
     {
-        return $this->status === self::STATUS_ARCHIVED;
+        return $this->status === self::STATE_ARCHIVED;
     }
 
     /**
@@ -668,6 +670,14 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
         /* @var $module Module */
         $module = Yii::$app->getModule('space');
         return $module->settings->contentContainer($this);
+    }
+
+    /**
+     * @return string
+     */
+    public static function getStateServiceClass(): string
+    {
+        return SpaceStateService::class;
     }
 
     /**

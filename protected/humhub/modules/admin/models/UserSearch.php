@@ -116,13 +116,13 @@ class UserSearch extends User
             ]);
 
             if (!empty($this->status)) {
-                $query->andFilterWhere(['user.status' => $this->status]);
+                $query->whereState($this->status);
             }
             return $dataProvider;
         }
 
         $query->andFilterWhere(['id' => $this->id]);
-        $query->andFilterWhere(['user.status' => $this->status]);
+        $query->whereState($this->status);
         $query->andFilterWhere(['like', 'user.id', $this->id]);
         $query->andFilterWhere(['like', 'user.username', $this->username]);
         $query->andFilterWhere(['like', 'user.email', $this->email]);
@@ -150,9 +150,9 @@ class UserSearch extends User
 
     public static function getStatusAttributes()
     {
-        $countActive = User::find()->where(['user.status' => User::STATUS_ENABLED])->count();
-        $countDisabled = User::find()->where(['user.status' => User::STATUS_DISABLED])->count();
-        $countSoftDeleted = User::find()->where(['user.status' => User::STATUS_SOFT_DELETED])->count();
+        $countActive = User::find()->whereState(User::STATUS_ENABLED)->count();
+        $countDisabled = User::find()->whereState(User::STATUS_DISABLED)->count();
+        $countSoftDeleted = User::find()->whereState(User::STATUS_SOFT_DELETED)->count();
 
         return [
             User::STATUS_ENABLED => Yii::t('AdminModule.user', 'Active users') . ' (' . $countActive . ')',

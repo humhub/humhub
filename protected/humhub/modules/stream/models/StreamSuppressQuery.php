@@ -96,12 +96,13 @@ class StreamSuppressQuery extends StreamQuery
      */
     public function all()
     {
-        // Only suppress on 3 or more contents to deliever
+        // Only suppress on 3 or more contents to deliver
         if (!$this->isSuppressionActive()) {
             $this->isQueryExecuted = true;
+
             $result = parent::all();
 
-            if(!empty($result)) {
+            if (!empty($result)) {
                 $last = $result[count($result) - 1];
                 $this->lastContentId = $last->id;
             }
