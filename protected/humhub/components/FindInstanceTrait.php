@@ -92,10 +92,10 @@ trait FindInstanceTrait
             $find = static fn(): ?self => static::find()->where($criteria)->one();
 
             if ($config['cached'] ?? true) {
-                $identifier = Yii::$app->runtimeCache->getOrSet(CacheableActiveQuery::normaliseObjectIdentifier(static::class, $criteria), $find);
+                $identifier = Yii::$app->runtimeCache->getOrSet(RuntimeBaseCache::normaliseObjectIdentifier(static::class, $criteria), $find);
             } else {
                 $identifier = $find();
-                Yii::$app->runtimeCache->set(CacheableActiveQuery::normaliseObjectIdentifier(static::class, $criteria), $identifier);
+                Yii::$app->runtimeCache->set(RuntimeBaseCache::normaliseObjectIdentifier(static::class, $criteria), $identifier);
             }
 
             return $filter($identifier);
@@ -176,7 +176,7 @@ trait FindInstanceTrait
         }
         unset($value);
 
-        $identifier = CacheableActiveQuery::normaliseObjectIdentifier($class, $identifiers + $fields, $idUsed);
+        $identifier = RuntimeBaseCache::normaliseObjectIdentifier($class, $identifiers + $fields, $idUsed);
 
         return (!$idUsed || empty($record = Yii::$app->runtimeCache->get($identifier)))
             ? $this->hasOne($class, $condition)
@@ -185,35 +185,35 @@ trait FindInstanceTrait
 
     public function afterDelete()
     {
-        CacheableActiveQuery::cacheProcessVariants('delete', $this);
+        Yii::$app->runtimeCache->delete($this);
 
         parent::afterDelete();
     }
 
     public function afterSave($insert, $changedAttributes)
     {
-        CacheableActiveQuery::cacheProcessVariants('delete', $this);
+        Yii::$app->runtimeCache->delete($this);
 
         parent::afterSave($insert, $changedAttributes);
     }
 
     public static function deleteAll($condition = null, $params = [])
     {
-        CacheableActiveQuery::cacheDeleteByClass(static::class, $condition);
+        RuntimeBaseCache::cacheDeleteByClass(static::class, $condition);
 
         return parent::deleteAll($condition, $params);
     }
 
     public static function updateAll($attributes, $condition = '', $params = [])
     {
-        CacheableActiveQuery::cacheDeleteByClass(static::class, $condition);
+        RuntimeBaseCache::cacheDeleteByClass(static::class, $condition);
 
         return parent::updateAll($attributes, $condition, $params);
     }
 
     public static function updateAllCounters($counters, $condition = '', $params = [])
     {
-        CacheableActiveQuery::cacheDeleteByClass(static::class, $condition);
+        RuntimeBaseCache::cacheDeleteByClass(static::class, $condition);
 
         return parent::updateAllCounters($counters, $condition, $params);
     }

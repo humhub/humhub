@@ -9,7 +9,6 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\behaviors\GUID;
-use humhub\components\CacheableActiveQuery;
 use humhub\components\FindInstanceTrait;
 use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\admin\Module as AdminModule;
@@ -620,7 +619,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Fi
         // and update the cache at the same time
         $user = self::findInstance($this->id, ['cached' => false]);
 
-        CacheableActiveQuery::cacheProcessVariants('delete', $this);
+        Yii::$app->runtimeCache->delete($this);
 
         $this->updateSearch();
 

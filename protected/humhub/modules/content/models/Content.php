@@ -30,7 +30,6 @@ use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\services\ContentStateService;
 use humhub\modules\content\services\ContentTagService;
 use humhub\modules\notification\models\Notification;
-use humhub\modules\post\models\Post;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
@@ -249,7 +248,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
      */
     public function afterSave($insert, $changedAttributes)
     {
-        CacheableActiveQuery::cacheProcessVariants('delete', $this);
+        Yii::$app->runtimeCache->delete($this);
 
         if (array_key_exists('state', $changedAttributes)) {
             // Run process for new content(Send notifications) only after changing state
@@ -380,7 +379,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
      */
     public function afterDelete()
     {
-        CacheableActiveQuery::cacheProcessVariants('delete', $this);
+        Yii::$app->runtimeCache->delete($this);
 
         // Try to delete the underlying object (Post, Question, Task, ...)
         $this->resetPolymorphicRelation();

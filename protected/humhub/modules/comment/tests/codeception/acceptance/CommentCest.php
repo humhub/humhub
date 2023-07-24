@@ -21,7 +21,7 @@ class CommentCest
         $I->amOnSpace2();
         $I->waitForText('Admin Space 2 Post Private');
 
-        $postEntry = '.wall_humhubmodulespostmodelsPost_13';
+        $postEntry = '.wall_humhub_modules_post_models_Post__13';
         $commentSection  = $postEntry.' .comment-container';
 
         $I->click('Comment', $postEntry);
