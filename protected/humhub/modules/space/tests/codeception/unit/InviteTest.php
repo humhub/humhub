@@ -23,6 +23,12 @@ class InviteTest extends HumHubDbTestCase
         $this->assertMailSent(1, 'Approval notification admin mail');
         $this->assertHasNotification(\humhub\modules\space\notifications\Invite::class, $space, Yii::$app->user->id, 'Invite Request Notification');
 
+        // check cached version
+        $membership = \humhub\modules\space\models\Membership::findMembership(1, 2);
+        $this->assertNotNull($membership);
+        $this->assertEquals($membership->status, \humhub\modules\space\models\Membership::STATUS_INVITED);
+
+        // check uncached version
         $membership = \humhub\modules\space\models\Membership::findOne(['space_id' => 1, 'user_id' => 2]);
         $this->assertNotNull($membership);
         $this->assertEquals($membership->status, \humhub\modules\space\models\Membership::STATUS_INVITED);
@@ -45,6 +51,12 @@ class InviteTest extends HumHubDbTestCase
         $this->assertMailSent(1, 'Approval notification admin mail');
         $this->assertHasNotification(\humhub\modules\space\notifications\Invite::class, $space, Yii::$app->user->id, 'Invite Request Notification');
 
+        // check cached version
+        $membership = \humhub\modules\space\models\Membership::findMembership(1, 2);
+        $this->assertNotNull($membership);
+        $this->assertEquals($membership->status, \humhub\modules\space\models\Membership::STATUS_INVITED);
+
+        // check uncached version
         $membership = \humhub\modules\space\models\Membership::findOne(['space_id' => 1, 'user_id' => 2]);
         $this->assertNotNull($membership);
         $this->assertEquals($membership->status, \humhub\modules\space\models\Membership::STATUS_INVITED);
