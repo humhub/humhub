@@ -26,13 +26,13 @@ use humhub\modules\marketplace\widgets\MarketplaceLink;
 
         <?php if (!Yii::$app->user->can(ManageModules::class)) : ?>
             <div class="alert alert-info">
-                <?= Yii::t('AdminModule.base', 'You do not have the permission to manage modules. Please contact the administrator for further information."') ?>
+                <?= Yii::t('AdminModule.base', 'You do not have the permission to manage modules. Please contact the administrator for further information.') ?>
             </div>
         <?php endif; ?>
 
         <?php if (!Yii::$app->user->can(ManageSettings::class)) : ?>
             <div class="alert alert-info">
-                <?= Yii::t('AdminModule.base', 'You do not have the permission to configure modules. Please contact the administrator for further information."') ?>
+                <?= Yii::t('AdminModule.base', 'You do not have the permission to configure modules. Please contact the administrator for further information.') ?>
             </div>
         <?php endif; ?>
 
