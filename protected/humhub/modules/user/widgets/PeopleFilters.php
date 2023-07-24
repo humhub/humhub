@@ -41,7 +41,11 @@ class PeopleFilters extends DirectoryFilters
 
         // Group
         $groupOptions = [];
-        $groups = Group::findAll(['show_at_directory' => 1]);
+        /* @var Group[] $groups */
+        $groups = Group::find()
+            ->where(['show_at_directory' => 1])
+            ->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC])
+            ->all();
         if ($groups) {
             $groupOptions[''] = Yii::t('UserModule.base', 'Any');
             foreach ($groups as $group) {

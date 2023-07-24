@@ -11,6 +11,7 @@ namespace humhub\components;
 use humhub\components\access\ControllerAccess;
 use humhub\components\access\StrictAccess;
 use humhub\components\behaviors\AccessControl;
+use humhub\models\Setting;
 use humhub\modules\user\services\IsOnlineService;
 use Yii;
 use yii\helpers\Html;
@@ -221,8 +222,11 @@ class Controller extends \yii\web\Controller
 
             if (!Yii::$app->request->isAjax || Yii::$app->request->isPjax) {
                 $this->setJsViewStatus();
-                // Update "is online" status ony on full page loads
-                (new IsOnlineService(Yii::$app->user->identity))->updateStatus();
+
+                if (Setting::isInstalled()) {
+                    // Update "is online" status ony on full page loads
+                    (new IsOnlineService(Yii::$app->user->identity))->updateStatus();
+                }
             }
 
             return true;
