@@ -4,6 +4,7 @@ namespace tests\codeception\_support;
 
 use Codeception\Test\Unit;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\components\RuntimeDummyCache;
 use humhub\libs\BasePermission;
 use Codeception\Configuration;
 use Codeception\Exception\ModuleException;
@@ -53,6 +54,8 @@ class HumHubDbTestCase extends Unit
 
     public $time;
 
+    public $runtimeCache = RuntimeDummyCache::class;
+
 
     protected function setUp(): void
     {
@@ -84,6 +87,12 @@ class HumHubDbTestCase extends Unit
         RichTextToPlainTextConverter::flushCache();
         RichTextToMarkdownConverter::flushCache();
         UrlOembed::flush();
+        $this->flushRuntimeCache();
+    }
+
+    public function flushRuntimeCache(): void
+    {
+        Yii::$app->set('runtimeCache', new $this->runtimeCache());
     }
 
     protected function deleteMails()

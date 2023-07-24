@@ -30,7 +30,6 @@ use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\services\ContentStateService;
 use humhub\modules\content\services\ContentTagService;
 use humhub\modules\notification\models\Notification;
-use humhub\modules\post\models\Post;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
@@ -250,7 +249,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
     public function afterSave($insert, $changedAttributes)
     {
         if (!$insert) {
-            CacheableActiveQuery::cacheProcessVariants('delete', $this);
+            Yii::$app->runtimeCache->delete($this);
         }
 
         if (array_key_exists('state', $changedAttributes)) {
@@ -365,12 +364,6 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
             ->about($contentSource)->save();
     }
 
-    public function unsetCache()
-    {
-        // delete the content record from the cache
-        CacheableActiveQuery::cacheProcessVariants('delete', $this);
-    }
-
     /**
      * Marks this content for deletion (soft delete).
      * Use `hardDelete()` method to delete a content immediately.
@@ -388,7 +381,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
      */
     public function afterDelete()
     {
-        $this->unsetCache();
+        Yii::$app->runtimeCache->delete($this);
 
         // Try to delete the underlying object (Post, Question, Task, ...)
         $this->resetPolymorphicRelation();

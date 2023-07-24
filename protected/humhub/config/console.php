@@ -20,7 +20,7 @@ return [
             'loginUrl' => ['/user/auth/login']
         ],
         'runtimeCache' => [
-            'class' => \yii\caching\DummyCache::class
+            'class' => \humhub\components\RuntimeDummyCache::class
         ],
     ],
 ];

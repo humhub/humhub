@@ -8,10 +8,13 @@
 
 namespace humhub\components;
 
+use humhub\exceptions\InvalidArgumentTypeException;
+use humhub\interfaces\UniqueIdentifiersInterface;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\file\components\FileManager;
 use yii\base\InvalidConfigException;
+use yii\db\ActiveRecord as DbActiveRecord;
 use yii\db\ColumnSchema;
 use yii\db\Expression;
 use yii\validators\Validator;
@@ -24,7 +27,7 @@ use yii\validators\Validator;
  * @property User $updatedBy
  * @author luke
  */
-class ActiveRecord extends \yii\db\ActiveRecord
+class ActiveRecord extends DbActiveRecord implements UniqueIdentifiersInterface
 {
 
     /**
@@ -85,14 +88,59 @@ class ActiveRecord extends \yii\db\ActiveRecord
     }
 
     /**
-     * Returns a unique id for this record/model
-     *
-     * @return String Unique Id of this record
+     * @inheritdoc
      */
-    public function getUniqueId()
+    public function getUniqueId(): string
     {
-        return str_replace('\\', '', get_class($this)) . "_" . $this->primaryKey;
+        return RuntimeBaseCache::normaliseObjectIdentifier($this, $this->getPrimaryKey(true));
     }
+
+    /**
+     * @inheritdoc
+     * @since 1.15
+     */
+    public function getUniqueIDs(?array $keys = null): array
+    {
+        $uniqueIDs[] = $this->getUniqueId();
+
+        $tableSchema = static::getTableSchema();
+
+        if ($keys === null) {
+            $keys = array_intersect(['id', 'guid'], $tableSchema->getColumnNames());
+        }
+
+        foreach ($keys as $i => &$key) {
+            if (!is_array($key)) {
+                if (!is_string($key)) {
+                    throw new InvalidArgumentTypeException(__METHOD__, [1 => "\$keys[$i]"], ['array', 'string'], $key);
+                }
+
+                if ([$key] === $tableSchema->primaryKey) {
+                    continue;
+                }
+
+                $uniqueIDs[] = RuntimeBaseCache::normaliseObjectIdentifier($this, $this->$key);
+
+                continue;
+            }
+
+            if ($key === $tableSchema->primaryKey) {
+                continue;
+            }
+
+            $key = array_flip($key);
+
+            foreach ($key as $property => &$value) {
+                $value = $this->$property;
+            }
+            unset($value);
+
+            $uniqueIDs[] = RuntimeBaseCache::normaliseObjectIdentifier($this, $key);
+        }
+
+        return $uniqueIDs;
+    }
+
 
     /**
      * Relation to User defined in created_by attribute

@@ -38,7 +38,7 @@ class Yii {
  * @property \humhub\modules\live\components\Sender $live
  * @property \yii\mutex\Mutex $mutex
  * @property \yii\web\User|__WebUser $user
- * @property \yii\caching\ArrayCache $runtimeCache
+ * @property \humhub\interfaces\RuntimeCacheInterface $runtimeCache
  */
 class __Application {
 }

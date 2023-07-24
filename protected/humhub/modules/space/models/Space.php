@@ -9,7 +9,6 @@
 namespace humhub\modules\space\models;
 
 use humhub\components\behaviors\GUID;
-use humhub\components\CacheableActiveQuery;
 use humhub\components\FindInstanceTrait;
 use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -255,7 +254,7 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
      */
     public function afterSave($insert, $changedAttributes)
     {
-        CacheableActiveQuery::cacheProcessVariants('delete', $this);
+        Yii::$app->runtimeCache->delete($this);
 
         parent::afterSave($insert, $changedAttributes);
 

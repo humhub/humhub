@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.15.0-beta.2 (Unreleased)
 --------------------------
+- Enh #6482: New RuntimeCache implementation (See #6375, #6457, & #6463)
 - Fix #6472: Initialization of account profile field type "Markdown"
 - Fix #6471: Wording "Default Homepage" in Space Default Settings
 - Fix #6468: Module Administration - Marketplace Links broken without Pretty URLs
