@@ -62,11 +62,6 @@ class Membership extends ActiveRecord
     const USER_SPACES_CACHE_KEY = 'userSpaces_';
     const USER_SPACEIDS_CACHE_KEY = 'userSpaceIds_';
 
-    /**
-     * @var mixed|null
-     */
-    protected static array $membership_cache = [];
-
 
     /**
      * @inheritdoc
@@ -425,16 +420,11 @@ class Membership extends ActiveRecord
             throw new InvalidArgumentException("Argument #1 (\$user) must be a User object or user ID.");
         }
 
-        // make sure, the space has an entry
-        self::$membership_cache[$spaceId] ??= [];
-
-        return self::$membership_cache[$spaceId][$userId] ??= Yii::$app->runtimeCache->getOrSet(__CLASS__ . "_$spaceId-$userId", fn() => Membership::findOne(['user_id' => $userId, 'space_id' => $spaceId]));
+        return Yii::$app->runtimeCache->getOrSet(__CLASS__ . "_$spaceId-$userId", fn() => Membership::findOne(['user_id' => $userId, 'space_id' => $spaceId]));
     }
 
     public static function unsetCache(int $spaceId, int $userId)
     {
-        unset(self::$membership_cache[$spaceId][$userId]);
-
         Yii::$app->runtimeCache->delete(__CLASS__ . "_$spaceId-$userId");
         Yii::$app->cache->delete(Module::$legitimateCachePrefix . $userId);
     }
