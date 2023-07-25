@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.15.0 (Unreleased)
 -------------------
+- Fix #6461: Test server support to serve web module's `/manifest.json`, `/sw.js`, & `/offline.pwa.html`
 - Enh #6460: Test server output: print application requests
 - Fix #6423: log.fata in frontend logging is redirected to log.fatal, which did not work
 - Fix #6220: User Soft Delete doesn't remove third party auth references
