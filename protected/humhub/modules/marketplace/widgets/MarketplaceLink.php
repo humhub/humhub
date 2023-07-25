@@ -7,8 +7,10 @@
 
 namespace humhub\modules\marketplace\widgets;
 
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\marketplace\Module;
 use humhub\widgets\Button;
+use Yii;
 
 class MarketplaceLink extends Button
 {
@@ -27,7 +29,7 @@ class MarketplaceLink extends Button
      */
     public function beforeRun()
     {
-        if (!Module::isEnabled()) {
+        if (!Module::isEnabled() || !Yii::$app->user->can(ManageModules::class)) {
             return false;
         }
 

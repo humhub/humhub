@@ -9,17 +9,17 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\components\Application;
+use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\admin\permissions\ManageSettings;
+use humhub\modules\admin\permissions\ManageSpaces;
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\admin\permissions\SeeAdminInformation;
 use humhub\modules\marketplace\services\MarketplaceService;
 use humhub\modules\ui\menu\MenuEntry;
-use humhub\widgets\Label;
-use humhub\modules\admin\permissions\ManageModules;
-use humhub\modules\admin\permissions\ManageSpaces;
-use humhub\modules\admin\permissions\SeeAdminInformation;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\LeftNavigation;
-use humhub\modules\admin\permissions\ManageUsers;
-use humhub\modules\admin\permissions\ManageSettings;
-use humhub\modules\admin\permissions\ManageGroups;
+use humhub\widgets\Label;
 use Yii;
 
 /**
@@ -99,7 +99,7 @@ class AdminMenu extends LeftNavigation
             'sortOrder' => 500,
             'htmlOptions' => ['class' => 'modules'],
             'isActive' => MenuLink::isActiveState('admin', 'module'),
-            'isVisible' => Yii::$app->user->can(ManageModules::class)
+            'isVisible' => Yii::$app->user->can(ManageModules::class) || Yii::$app->user->can(ManageSettings::class)
         ]));
 
         $this->addEntry(new MenuLink([
