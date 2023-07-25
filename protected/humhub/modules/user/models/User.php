@@ -9,6 +9,9 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\components\CacheableActiveQuery;
+use humhub\components\FindInstanceTrait;
+use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSpaces;
@@ -33,11 +36,13 @@ use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\PasswordRecoveryService;
 use humhub\modules\user\widgets\UserWall;
+use Throwable;
 use Yii;
 use yii\base\Exception;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\web\IdentityInterface;
+use yii\web\User as WebUser;
 
 /**
  * This is the model class for table "user".
@@ -66,8 +71,10 @@ use yii\web\IdentityInterface;
  * @property string $displayNameSub
  * @mixin Followable
  */
-class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
+class User extends ContentContainerActiveRecord implements IdentityInterface, FindInstanceInterface, Searchable
 {
+    use FindInstanceTrait;
+
     /**
      * User Status Flags
      */
@@ -329,14 +336,45 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     public static function findIdentity($id)
     {
-        return Yii::$app->runtimeCache->getOrSet(User::class . '#' . $id, function () use ($id) {
-            return static::findOne(['id' => $id]);
-        });
+        return static::findInstance($id);
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
         return static::findOne(['guid' => $token]);
+    }
+
+    /**
+     * @param User|WebUser|int|string|null $identifier User or User ID. Null for current user
+     *
+     * @inheritdoc
+     * @since 1.15
+     * @noinspection PhpDocMissingThrowsInspection
+     */
+    public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
+    {
+        if ($identifier !== 0 && $identifier !== '0' && empty($identifier)) {
+            if (array_key_exists('onEmpty', $config)) {
+                return $config['onEmpty'];
+            }
+
+            $identifier = Yii::$app->user;
+        }
+
+        if ($identifier instanceof WebUser) {
+            /** @noinspection PhpUnhandledExceptionInspection */
+            $identifier = $identifier->getIdentity();
+
+            if ($identifier === null) {
+                return null;
+            }
+        }
+
+        $config['onEmpty'] ??= null;
+        $config['stringKey'] = 'guid';
+        $config['exceptionMessageSuffix'] ??= '(must be a User object or User ID or null for the current user)';
+
+        return self::findInstanceHelper($identifier, $config, $simpleCondition);
     }
 
     /**
@@ -346,7 +384,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public static function find()
     {
-        return Yii::createObject(ActiveQueryUser::class, [get_called_class()]);
+        return Yii::createObject(ActiveQueryUser::class, [static::class]);
     }
 
     public function getId()
@@ -576,9 +614,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function afterSave($insert, $changedAttributes)
     {
-        // Make sure we get an direct User model instance
-        // (e.g. not UserEditForm) for search rebuild
-        $user = User::findOne(['id' => $this->id]);
+        // Make sure we get a pure User model instance (e.g. not UserEditForm) for search rebuild
+        // and update the cache at the same time
+        $user = self::findInstance($this->id, ['cached' => false]);
+
+        CacheableActiveQuery::cacheProcessVariants('delete', $this);
 
         $this->updateSearch();
 
@@ -669,7 +709,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getDisplayName(): string
     {
-        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function() {
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function () {
             /** @var Module $module */
             $module = Yii::$app->getModule('user');
 

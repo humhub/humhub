@@ -28,7 +28,7 @@ trait FindInstanceTrait
     }
 
     /**
-     * @param self|int|string|array|null $identifier User or User ID. Null for current user
+     * @param self|int|string|null $identifier User or User ID. Null for current user
      * @param array $config = [
      *     'cached' => true,                    // use cached results
      *     'onEmpty' => null,                   // if provided, use this value in case of empty $identifier
@@ -45,7 +45,7 @@ trait FindInstanceTrait
      * @see FindInstanceInterface::findInstance
      * @noinspection PhpDocMissingThrowsInspection
      */
-    protected static function findInstanceHelper($identifier, array $config = [], iterable $simpleCondition = []): ?self
+    protected static function findInstanceHelper($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
     {
         $filter = static function ($identifier) use (&$config, &$simpleCondition) {
             if (is_object($identifier)) {
@@ -57,6 +57,8 @@ trait FindInstanceTrait
             }
             return $identifier;
         };
+
+        $config ??= [];
 
         if ($identifier instanceof static) {
             return $filter($identifier);
