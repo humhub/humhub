@@ -131,6 +131,12 @@ class AuthController extends Controller
             Yii::$app->session->setFlash('error', ControllerAccess::getMaintenanceModeWarningText());
         }
 
+        // Redirect to the latest-visited page after login or registration
+        $referrerUrl = Yii::$app->request->getReferrer();
+        if (strpos('registration', $referrerUrl) === false) {
+            Yii::$app->user->setReturnUrl($referrerUrl);
+        }
+
         if (Yii::$app->request->isAjax) {
             return $this->renderAjax('login_modal', $loginParams);
         }

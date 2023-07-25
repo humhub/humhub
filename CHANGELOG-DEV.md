@@ -85,3 +85,4 @@ HumHub Changelog
 - Chg #6174: Users allowed to manage settings can access to module configurations
 - Enh #6440: Sort user groups by `group.sort_order` and alphabetically
 - Enh #6454: Account deletion confirmation
+- Enh #6458: Redirect to the latest-visited page after login or registration
