@@ -20,7 +20,7 @@ interface FindInstanceInterface
      * @param self|int|string|array|null $identifier Object identifying information. Can be an instance of self (which
      *        will be simply returned), a one-dimensional PK as int or string, or an array of pk information.
      *        If null, the default instance (e.g., active User) would be returned.
-     * @param array $config = [
+     * @param null|array $config = [
      *     'cached' => true,                    // use cached results
      *     'nullable' => false,                 // allow null values on for $identifier
      *     'onEmpty' => null,                   // if provided, use this value in case of empty $identifier
@@ -29,12 +29,15 @@ interface FindInstanceInterface
      *     'stringKey' => string,               // If provided, this key will be used to look up string keys, e.g. 'guid'
      *     'exception' => Throwable,            // throw this exception rather than InvalidArgumentTypeException
      *     ]
+     * @param iterable $simpleCondition         // ['field' => 'value']-filter to be applied on the resulting object,
+     *                                             otherwise return $config['onEmpty'] or null
      *
      * @return self|null
      *
-     * @throws InvalidArgumentTypeException|InvalidConfigTypeException
+     * @throws InvalidArgumentTypeException
+     * @throws InvalidConfigTypeException
      */
-    public static function findInstance($identifier, array $config = []): ?self;
+    public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self;
 
     /**
      * @param self|int|string|null $identifier User or User ID. Null for current user
