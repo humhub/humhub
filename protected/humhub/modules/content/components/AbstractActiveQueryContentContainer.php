@@ -2,6 +2,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\components\CacheableActiveQuery;
 use humhub\modules\user\models\User;
 use yii\db\ActiveQuery;
 
@@ -10,7 +11,7 @@ use yii\db\ActiveQuery;
  *
  * @since 1.13.1
  */
-abstract class AbstractActiveQueryContentContainer extends ActiveQuery
+abstract class AbstractActiveQueryContentContainer extends CacheableActiveQuery
 {
     /**
      * Query keywords will be broken down into array needles with this length
