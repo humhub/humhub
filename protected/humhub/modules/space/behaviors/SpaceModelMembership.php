@@ -37,7 +37,6 @@ use yii\validators\EmailValidator;
  */
 class SpaceModelMembership extends Behavior
 {
-
     private ?User $_spaceOwner = null;
 
     /**
@@ -404,9 +403,11 @@ class SpaceModelMembership extends Behavior
 
             $userInvite = Invite::findOne(['email' => $user->email]);
 
-            if ($userInvite !== null &&
+            if (
+                $userInvite !== null &&
                 !empty($userInvite->user_originator_id) &&
-                $userInvite->source == Invite::SOURCE_INVITE && !$silent) {
+                $userInvite->source == Invite::SOURCE_INVITE && !$silent
+            ) {
                 $originator = User::findOne(['id' => $userInvite->user_originator_id]);
                 if ($originator !== null) {
                     InviteAccepted::instance()->from($user)->about($this->owner)->send($originator);
@@ -531,8 +532,11 @@ class SpaceModelMembership extends Behavior
             MemberRemoved::instance()->about($this->owner)->from($user)->create();
         }
 
-        MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_REMOVED,
-            new MemberEvent(['space' => $this->owner, 'user' => $user]));
+        MemberEvent::trigger(
+            Membership::class,
+            Membership::EVENT_MEMBER_REMOVED,
+            new MemberEvent(['space' => $this->owner, 'user' => $user])
+        );
     }
 
     /**
@@ -547,7 +551,7 @@ class SpaceModelMembership extends Behavior
     {
         if ($membership->originator && $membership->isCurrentUser()) {
             InviteDeclined::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($membership->originator);
-        } else if (Yii::$app->user->identity) {
+        } elseif (Yii::$app->user->identity) {
             InviteRevoked::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($user);
         }
     }
@@ -567,5 +571,4 @@ class SpaceModelMembership extends Behavior
             ApprovalRequestDeclined::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($user);
         }
     }
-
 }

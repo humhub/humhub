@@ -39,7 +39,6 @@ use yii\helpers\Url;
  */
 abstract class SocialActivity extends BaseObject implements rendering\Viewable
 {
-
     /**
      * User which performed the activity.
      *
@@ -151,9 +150,9 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
         // If no suffix is given, we assume a php file.
         if (!strpos($this->viewName, '.')) {
             return $this->viewName . '.php';
-        } else {
-            return $this->viewName;
         }
+
+        return $this->viewName;
     }
 
     /**
@@ -234,7 +233,9 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
     {
         if ($this->source instanceof ContentContainerActiveRecord) {
             return $this->source;
-        } elseif ($this->hasContent()) {
+        }
+
+        if ($this->hasContent()) {
             return $this->getContent()->getContainer();
         }
 
@@ -253,7 +254,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
 
         if ($this->source instanceof Comment) {
             $url = $this->source->getUrl();
-        } else if ($this->hasContent()) {
+        } elseif ($this->hasContent()) {
             $url = $this->getContent()->getUrl();
         } elseif ($this->source instanceof ContentContainerActiveRecord) {
             $url = $this->source->getUrl();
@@ -536,6 +537,5 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
                 $this->about($source);
             }
         }
-
     }
 }

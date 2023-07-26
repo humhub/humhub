@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -30,8 +31,8 @@ class ContentTopicController extends Controller
         $form = new ContentTopicsForm(['content' => $content]);
 
         if ($form->load(Yii::$app->request->post()) && $form->save()) {
-            $entrySelector = '$(\'[data-ui-widget="stream.StreamEntry"][data-content-key='.$content->id.']\')';
-            return ModalClose::widget(['script' => 'humhub.modules.action.Component.instance('.$entrySelector.').reload()']);
+            $entrySelector = '$(\'[data-ui-widget="stream.StreamEntry"][data-content-key=' . $content->id . ']\')';
+            return ModalClose::widget(['script' => 'humhub.modules.action.Component.instance(' . $entrySelector . ').reload()']);
         }
 
         return $this->renderAjax('edit', ['model' => $form]);

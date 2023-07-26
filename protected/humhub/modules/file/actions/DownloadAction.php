@@ -213,7 +213,9 @@ class DownloadAction extends Action
             $variantParts = pathinfo($this->variant);
             $orgParts = pathinfo($this->file->file_name);
             return $orgParts['filename'] . '_' . $variantParts['filename'] . '.' . $variantParts['extension'];
-        } elseif (FileHelper::hasExtension($this->file->file_name)) {
+        }
+
+        if (FileHelper::hasExtension($this->file->file_name)) {
             // Use extension of original file
             $parts = pathinfo($this->file->file_name);
             return $parts['filename'] . '_' . $this->variant . '.' . $parts['extension'];

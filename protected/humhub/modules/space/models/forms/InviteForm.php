@@ -235,7 +235,6 @@ class InviteForm extends Model
     {
         // Check if email field is not empty
         if ($this->$attribute != '') {
-
             $invites = $this->$attribute;
 
             foreach ($invites as $userGuid) {
@@ -286,8 +285,10 @@ class InviteForm extends Model
 
                 $validator = new EmailValidator();
                 if (!$validator->validate($email)) {
-                    $this->addError($attribute,
-                        Yii::t('SpaceModule.base', "{email} is not valid!", ["{email}" => $email]));
+                    $this->addError(
+                        $attribute,
+                        Yii::t('SpaceModule.base', "{email} is not valid!", ["{email}" => $email])
+                    );
                     continue;
                 }
 

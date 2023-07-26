@@ -19,7 +19,6 @@ use humhub\modules\space\models\Space;
  */
 class UrlRule extends ContentContainerUrlRule
 {
-
     /**
      * @inheritdoc
      */
@@ -71,5 +70,4 @@ class UrlRule extends ContentContainerUrlRule
     {
         return ($contentContainer instanceof Space);
     }
-
 }

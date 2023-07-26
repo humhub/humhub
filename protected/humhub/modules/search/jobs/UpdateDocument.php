@@ -22,7 +22,6 @@ use Yii;
  */
 class UpdateDocument extends ActiveJob implements ExclusiveJobInterface
 {
-
     /**
      * @var string class name of the active record
      */
@@ -55,5 +54,4 @@ class UpdateDocument extends ActiveJob implements ExclusiveJobInterface
             }
         }
     }
-
 }

@@ -122,5 +122,4 @@ class PostController extends ContentContainerController
             'contentContainer' => $this->contentContainer,
         ]));
     }
-
 }

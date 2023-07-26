@@ -30,7 +30,6 @@ use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\services\ContentStateService;
 use humhub\modules\content\services\ContentTagService;
 use humhub\modules\notification\models\Notification;
-use humhub\modules\post\models\Post;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
@@ -38,7 +37,6 @@ use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
-use yii\db\ActiveQueryInterface;
 use yii\db\IntegrityException;
 use yii\helpers\Url;
 

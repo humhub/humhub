@@ -33,7 +33,6 @@ use yii\helpers\Console;
  */
 class SpaceController extends \yii\console\Controller
 {
-
     public function actionAssignAllMembers($spaceId)
     {
         $space = Space::findOne(['id' => $spaceId]);
@@ -42,18 +41,13 @@ class SpaceController extends \yii\console\Controller
             return;
         }
 
-        $countMembers = 0;
         $countAssigns = 0;
 
         $this->stdout("\nAdding Members:\n\n");
 
         foreach (User::find()->active()->all() as $user) {
-            if ($space->isMember($user->id)) {
-                $countMembers++;
-            } else {
+            if (!$space->isMember($user->id)) {
                 $this->stdout("\t" . $user->displayName . " added. \n", Console::FG_YELLOW);
-
-                #Yii::app()->user->setId($user->id);
 
                 Yii::$app->user->switchIdentity($user);
                 $space->addMember($user->id);
@@ -63,5 +57,4 @@ class SpaceController extends \yii\console\Controller
 
         $this->stdout("\nAdded " . $countAssigns . " new members to space " . $space->name . "\n", Console::FG_GREEN);
     }
-
 }

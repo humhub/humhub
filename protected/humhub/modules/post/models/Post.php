@@ -48,7 +48,7 @@ class Post extends ContentActiveRecord implements Searchable
     /**
      * Scenarios
      */
-    const SCENARIO_AJAX_VALIDATION = 'ajaxValidation';
+    public const SCENARIO_AJAX_VALIDATION = 'ajaxValidation';
 
     /**
      * @inheritdoc
@@ -167,5 +167,4 @@ class Post extends ContentActiveRecord implements Searchable
     {
         return Url::to(['/post/post/view', 'id' => $this->id, 'contentContainer' => $this->content->container]);
     }
-
 }

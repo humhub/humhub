@@ -192,5 +192,4 @@ class SpaceSettingsForm extends \yii\base\Model
             }
         }
     }
-
 }

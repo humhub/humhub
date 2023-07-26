@@ -49,22 +49,22 @@ class Membership extends CachedActiveRecord
     /**
      * @event \humhub\modules\space\MemberEvent
      */
-    const EVENT_MEMBER_REMOVED = 'memberRemoved';
+    public const EVENT_MEMBER_REMOVED = 'memberRemoved';
 
     /**
      * @event \humhub\modules\space\MemberEvent
      */
-    const EVENT_MEMBER_ADDED = 'memberAdded';
+    public const EVENT_MEMBER_ADDED = 'memberAdded';
 
     /**
      * Status Codes
      */
-    const STATUS_INVITED = 1;
-    const STATUS_APPLICANT = 2;
-    const STATUS_MEMBER = 3;
+    public const STATUS_INVITED = 1;
+    public const STATUS_APPLICANT = 2;
+    public const STATUS_MEMBER = 3;
 
-    const USER_SPACES_CACHE_KEY = 'userSpaces_';
-    const USER_SPACEIDS_CACHE_KEY = 'userSpaceIds_';
+    public const USER_SPACES_CACHE_KEY = 'userSpaces_';
+    public const USER_SPACEIDS_CACHE_KEY = 'userSpaceIds_';
 
 
     /**
@@ -327,10 +327,9 @@ class Membership extends CachedActiveRecord
      */
     public static function findByUser(
         ?User $user = null,
-             $membershipStatus = self::STATUS_MEMBER,
-             $spaceStatus = Space::STATUS_ENABLED
-    )
-    {
+        $membershipStatus = self::STATUS_MEMBER,
+        $spaceStatus = Space::STATUS_ENABLED
+    ) {
         if (!$user) {
             $user = Yii::$app->user->getIdentity();
         }

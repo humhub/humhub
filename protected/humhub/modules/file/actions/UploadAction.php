@@ -28,7 +28,6 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  */
 class UploadAction extends Action
 {
-
     /**
      * The record to whom this files belongs to.
      * Optional, since "free" files can also attached to a record later.
@@ -99,9 +98,9 @@ class UploadAction extends Action
             }
             $this->afterFileUpload($file);
             return array_merge(['error' => false], FileHelper::getFileInfos($file));
-        } else {
-            return $this->getErrorResponse($file);
         }
+
+        return $this->getErrorResponse($file);
     }
 
     protected function isHideInStreamRequest()
@@ -137,7 +136,6 @@ class UploadAction extends Action
 
 
         if ($model != '' && $pk != '' && Helpers::CheckClassType($model, \yii\db\ActiveRecord::class)) {
-
             $record = $model::findOne(['id' => $pk]);
             if ($record !== null && ($record instanceof ContentActiveRecord || $record instanceof ContentAddonActiveRecord)) {
                 if ($record->content->canEdit()) {
@@ -168,5 +166,4 @@ class UploadAction extends Action
             'size' => Html::encode($file->size)
         ];
     }
-
 }

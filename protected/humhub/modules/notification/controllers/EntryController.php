@@ -26,7 +26,6 @@ use humhub\components\access\ControllerAccess;
  */
 class EntryController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -51,11 +50,11 @@ class EntryController extends Controller
     {
         $notificationModel = Notification::findOne(['id' => $id, 'user_id' => Yii::$app->user->id]);
 
-        if($notificationModel) {
+        if ($notificationModel) {
             $notification = $notificationModel->getBaseModel();
 
-            if(!$notification) {
-                throw new HttpException(404, Yii::t('NotificationModule.base','The requested content is not valid or was removed!'));
+            if (!$notification) {
+                throw new HttpException(404, Yii::t('NotificationModule.base', 'The requested content is not valid or was removed!'));
             }
 
             $url = $notification->getUrl();
@@ -67,8 +66,8 @@ class EntryController extends Controller
             $url = $this->getContentUrl($cId);
         }
 
-        if(!$url) {
-            throw new HttpException(404, Yii::t('NotificationModule.base','The requested content is not valid or was removed!'));
+        if (!$url) {
+            throw new HttpException(404, Yii::t('NotificationModule.base', 'The requested content is not valid or was removed!'));
         }
 
         return $this->redirect($url);
@@ -81,22 +80,22 @@ class EntryController extends Controller
      * @throws \Throwable
      * @throws Exception
      */
-    private function getContentUrl($cId = null) {
-        if($cId === null) {
+    private function getContentUrl($cId = null)
+    {
+        if ($cId === null) {
             return null;
         }
 
         $content = Content::findOne(['id' => $cId]);
 
-        if(!$content) {
+        if (!$content) {
             return null;
         }
 
-        if(!$content->canView()) {
+        if (!$content->canView()) {
             throw new HttpException(403);
         }
 
         return $content->getUrl();
     }
-
 }

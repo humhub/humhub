@@ -25,7 +25,6 @@ use Laminas\Ldap\Ldap;
  */
 class LdapController extends \yii\console\Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -56,7 +55,6 @@ class LdapController extends \yii\console\Controller
         }
 
         print "\n\n";
-
     }
 
     /**
@@ -88,7 +86,8 @@ class LdapController extends \yii\console\Controller
         $activeUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => User::STATUS_ENABLED])->count();
         $disabledUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => User::STATUS_DISABLED])->count();
 
-        $this->stdout("LDAP user count:\t\t" . $userCount . " users.\n");;
+        $this->stdout("LDAP user count:\t\t" . $userCount . " users.\n");
+        ;
         $this->stdout("HumHub user count (active):\t" . $activeUserCount . " users.\n");
         $this->stdout("HumHub user count (disabled):\t" . $disabledUserCount . " users.\n\n");
 
@@ -109,7 +108,6 @@ class LdapController extends \yii\console\Controller
         try {
             $ldapAuthClient = $this->getAuthClient($id);
             $ldapAuthClient->syncUsers();
-
         } catch (Exception $ex) {
             $this->stderr("Error: " . $ex->getMessage() . "\n\n");
             return ExitCode::UNSPECIFIED_ERROR;
@@ -147,8 +145,6 @@ class LdapController extends \yii\console\Controller
             }
 
             echo Table::widget(['headers' => ['ID', 'Username', 'E-Mail'], 'rows' => $users]);
-
-
         } catch (Exception $ex) {
             $this->stderr("Error: " . $ex->getMessage() . "\n\n");
             return ExitCode::UNSPECIFIED_ERROR;
@@ -239,7 +235,6 @@ class LdapController extends \yii\console\Controller
             $this->stdout("Checked:\t" . $i . " users.\n");
             $this->stdout("Remapped 'authclient_id' value:\t" . $d . " users.\n");
             $this->stdout("Remapped 'auth_mode' value:\t" . $m . " users.\n");
-
         } catch (Exception $ex) {
             $this->stderr("Error: " . $ex->getMessage() . "\n\n");
             return ExitCode::UNSPECIFIED_ERROR;

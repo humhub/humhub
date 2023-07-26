@@ -23,7 +23,6 @@ use humhub\modules\notification\models\Notification;
  */
 class Events extends \yii\base\BaseObject
 {
-
     /**
      * On User delete, also delete all posts
      *
@@ -126,8 +125,6 @@ class Events extends \yii\base\BaseObject
                     $notification->delete();
                 }
             }
-
-
         }
     }
 
@@ -187,5 +184,4 @@ class Events extends \yii\base\BaseObject
             $event->sender->addWidget(widgets\UpdateNotificationCount::class);
         }
     }
-
 }

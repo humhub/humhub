@@ -68,11 +68,13 @@ class UserController extends Controller
     {
         if (Yii::$app->user->can([new ManageUsers(), new ManageGroups()])) {
             return $this->redirect(['list']);
-        } elseif (Yii::$app->user->can(ManageSettings::class)) {
-            return $this->redirect(['/admin/authentication']);
-        } else {
-            return $this->forbidden();
         }
+
+        if (Yii::$app->user->can(ManageSettings::class)) {
+            return $this->redirect(['/admin/authentication']);
+        }
+
+        return $this->forbidden();
     }
 
     /**
@@ -102,7 +104,7 @@ class UserController extends Controller
         $user = UserEditForm::findOne(['id' => Yii::$app->request->get('id')]);
         $user->initGroupSelection();
 
-        if ($user == null) {
+        if ($user === null) {
             throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));
         }
 

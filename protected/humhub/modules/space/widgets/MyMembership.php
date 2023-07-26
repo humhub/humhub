@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\space\widgets;
-
 
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;

@@ -63,11 +63,11 @@ class MoveContentForm extends Model
     {
         $targetContainer = $this->getTargetContainer();
 
-        if(!$targetContainer) {
+        if (!$targetContainer) {
             $this->addError($attribute, Yii::t('ContentModule.base', 'Invalid space selection.'));
         } else {
             $result = $this->content->canMove($targetContainer);
-            if($result !== true) {
+            if ($result !== true) {
                 $this->addError($attribute, $result);
             }
         }
@@ -83,10 +83,10 @@ class MoveContentForm extends Model
      */
     public function getTargetContainer()
     {
-        if(!$this->targetContainer) {
+        if (!$this->targetContainer) {
             $target = isset($this->target[0]) ? $this->target[0] : null;
 
-            if($target) {
+            if ($target) {
                 $this->targetContainer = Space::findOne(['guid' => $target]);
             }
         }
@@ -96,7 +96,7 @@ class MoveContentForm extends Model
 
     public function save()
     {
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             return false;
         }
 

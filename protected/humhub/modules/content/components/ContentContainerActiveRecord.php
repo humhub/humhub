@@ -92,7 +92,7 @@ abstract class ContentContainerActiveRecord extends CachedActiveRecord
      * @return string
      * @since 0.11.0
      */
-    public abstract function getDisplayName(): string;
+    abstract public function getDisplayName(): string;
 
     /**
      * Returns a descriptive sub title of this container used in the frontend.
@@ -100,7 +100,7 @@ abstract class ContentContainerActiveRecord extends CachedActiveRecord
      * @return mixed
      * @since 1.4
      */
-    public abstract function getDisplayNameSub(): string;
+    abstract public function getDisplayNameSub(): string;
 
     /**
      * Returns the Profile Image Object for this Content Base
@@ -207,7 +207,7 @@ abstract class ContentContainerActiveRecord extends CachedActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
-            $contentContainer = new ContentContainer;
+            $contentContainer = new ContentContainer();
             $contentContainer->guid = $this->guid;
             $contentContainer->class = static::class;
             $contentContainer->pk = $this->getPrimaryKey();
@@ -289,8 +289,10 @@ abstract class ContentContainerActiveRecord extends CachedActiveRecord
      * Returns a ContentContainerPermissionManager instance for this ContentContainerActiveRecord as permission object
      * and the given user (or current user if not given) as permission subject.
      *
-     * @param User|IdentityInterface $user
+     * @param User|null $user
+     *
      * @return ContentContainerPermissionManager
+     * @throws \Throwable
      */
     public function getPermissionManager(User $user = null)
     {
@@ -301,11 +303,7 @@ abstract class ContentContainerActiveRecord extends CachedActiveRecord
             ]);
         }
 
-        if ($this->permissionManager !== null) {
-            return $this->permissionManager;
-        }
-
-        return $this->permissionManager = new ContentContainerPermissionManager([
+        return $this->permissionManager ??= new ContentContainerPermissionManager([
             'contentContainer' => $this
         ]);
     }
@@ -459,5 +457,4 @@ abstract class ContentContainerActiveRecord extends CachedActiveRecord
 
         return $userModule->allowBlockUsers();
     }
-
 }

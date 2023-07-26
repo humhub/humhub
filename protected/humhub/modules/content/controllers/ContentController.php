@@ -33,7 +33,6 @@ use yii\web\Response;
  */
 class ContentController extends Controller
 {
-
     /**
      * @inheritdoc
      */

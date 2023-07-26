@@ -29,7 +29,6 @@ use yii\web\HttpException;
  */
 class CreateController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -60,7 +59,7 @@ class CreateController extends Controller
     public function actionCreate($visibility = null, $skip = 0)
     {
         // User cannot create spaces (public or private)
-        if (!Yii::$app->user->permissionmanager->can(new CreatePublicSpace) && !Yii::$app->user->permissionmanager->can(new CreatePrivateSpace)) {
+        if (!Yii::$app->user->permissionmanager->can(new CreatePublicSpace()) && !Yii::$app->user->permissionmanager->can(new CreatePrivateSpace())) {
             throw new HttpException(400, 'You are not allowed to create spaces!');
         }
 
@@ -74,13 +73,13 @@ class CreateController extends Controller
         }
 
         $visibilityOptions = [];
-        if (AuthHelper::isGuestAccessEnabled() && Yii::$app->user->permissionmanager->can(new CreatePublicSpace)) {
+        if (AuthHelper::isGuestAccessEnabled() && Yii::$app->user->permissionmanager->can(new CreatePublicSpace())) {
             $visibilityOptions[Space::VISIBILITY_ALL] = Yii::t('SpaceModule.base', 'Public (Members & Guests)');
         }
-        if (Yii::$app->user->permissionmanager->can(new CreatePublicSpace)) {
+        if (Yii::$app->user->permissionmanager->can(new CreatePublicSpace())) {
             $visibilityOptions[Space::VISIBILITY_REGISTERED_ONLY] = Yii::t('SpaceModule.base', 'Public (Members only)');
         }
-        if (Yii::$app->user->permissionmanager->can(new CreatePrivateSpace)) {
+        if (Yii::$app->user->permissionmanager->can(new CreatePrivateSpace())) {
             $visibilityOptions[Space::VISIBILITY_NONE] = Yii::t('SpaceModule.base', 'Private (Invisible)');
         }
 
@@ -139,15 +138,13 @@ class CreateController extends Controller
 
         if (count($installableModules) === 0) {
             return $this->actionInvite($space);
-        } else {
-            return $this->renderAjax('modules', ['space' => $space, 'availableModules' => $installableModules]);
         }
+
+        return $this->renderAjax('modules', ['space' => $space, 'availableModules' => $installableModules]);
     }
 
     /**
      * Invite user
-     *
-     * @throws Exception
      */
     public function actionInvite($space = null, $spaceId = null)
     {
@@ -172,5 +169,4 @@ class CreateController extends Controller
             'space' => $space
         ]);
     }
-
 }

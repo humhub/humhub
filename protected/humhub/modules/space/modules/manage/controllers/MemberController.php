@@ -30,7 +30,8 @@ class MemberController extends Controller
     /**
      * @inheritdoc
      */
-    protected function getAccessRules() {
+    protected function getAccessRules()
+    {
         return [
             ['login'],
             [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_ADMIN], 'actions' => [
@@ -59,7 +60,6 @@ class MemberController extends Controller
             }
 
             if ($membership->load(Yii::$app->request->post()) && $membership->save()) {
-
                 ChangedRolesMembership::instance()
                     ->about($membership)
                     ->from(Yii::$app->user->identity)
