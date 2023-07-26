@@ -63,7 +63,6 @@ class ProfileContentPermissionTest extends HumHubDbTestCase
 
     public function testOtherUserPermissions()
     {
-        $user3 = User::findOne(['id' => 4]);
         $this->becomeUser('User3');
 
         $this->reloadPosts();
