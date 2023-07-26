@@ -84,7 +84,7 @@ class InviteController extends Controller
         $userInvite->source = Invite::SOURCE_INVITE;
         $userInvite->user_originator_id = Yii::$app->user->getIdentity()->id;
 
-        $existingInvite = Invite::findOne(['email' => $email]);
+        $existingInvite = Invite::findInstance($email);
         if ($existingInvite !== null) {
             $userInvite->token = $existingInvite->token;
             $existingInvite->delete();

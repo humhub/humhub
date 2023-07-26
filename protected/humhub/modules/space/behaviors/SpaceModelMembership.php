@@ -211,18 +211,18 @@ class SpaceModelMembership extends Behavior
     public function inviteMemberByEMail($email, $originatorUserId)
     {
         // Invalid E-Mail
-        $validator = new EmailValidator;
+        $validator = new EmailValidator();
         if (!$validator->validate($email)) {
             return false;
         }
 
         // User already registered
-        $user = User::findOne(['email' => $email]);
+        $user = User::findInstance(['email' => $email]);
         if ($user != null) {
             return false;
         }
 
-        $userInvite = Invite::findOne(['email' => $email]);
+        $userInvite = Invite::findInstance($email);
         // No invite yet
         if ($userInvite == null) {
             // Invite EXTERNAL user
@@ -251,12 +251,12 @@ class SpaceModelMembership extends Behavior
     /**
      * Requests Membership
      *
-     * @param integer $userId
+     * @param User|int|string|null $user
      * @param string $message
      */
-    public function requestMembership($userId, $message = '')
+    public function requestMembership($user, $message = '')
     {
-        $user = ($userId instanceof User) ? $userId : User::findOne(['id' => $userId]);
+        $user = User::findInstance($user);
 
         // Add Membership
         $membership = new Membership([
@@ -321,7 +321,7 @@ class SpaceModelMembership extends Behavior
                 case Membership::STATUS_INVITED:
                     // If user is already invited, remove old invite notification and retrigger
                     $oldNotification = new InviteNotification(['source' => $this->owner]);
-                    $oldNotification->delete(User::findOne(['id' => $userId]));
+                    $oldNotification->delete(User::findInstance($userId));
                     break;
             }
         } else {
@@ -355,66 +355,67 @@ class SpaceModelMembership extends Behavior
     {
         $notification = new InviteNotification([
             'source' => $this->owner,
-            'originator' => User::findOne(['id' => $originatorId])
+            'originator' => User::findInstance($originatorId)
         ]);
 
-        $notification->send(User::findOne(['id' => $userId]));
+        $notification->send(User::findInstance($userId));
     }
 
     /**
-     * Adds an member to this space.
+     * Adds a member to this space.
      *
-     * This can happens after an clicking "Request Membership" Link
-     * after Approval or accepting an invite.
+     * This can happen after clicking on a "Request Membership" Link
+     * after Approval or accepting an invitation.
      *
-     * @param int $userId
+     * @param User|int|string|null $user
      * @param int $canLeave 0: user cannot cancel membership | 1: can cancel membership | 2: depending on space flag members_can_leave
      * @param bool $silent add member without any notifications
      * @param bool $showAtDashboard add member without any notifications
      * @param string $groupId
+     *
      * @return bool
      * @throws \Throwable
      * @throws \yii\base\InvalidConfigException
      */
     public function addMember(
-        int $userId,
+        $user,
         int $canLeave = 1,
         bool $silent = false,
         string $groupId = Space::USERGROUP_MEMBER,
         bool $showAtDashboard = true
     ): bool {
-        $user = User::findOne(['id' => $userId]);
+        $user = User::findInstance($user);
         if (!$user) {
             return false;
         }
 
-        $membership = $this->getMembership($userId);
+        $membership = $this->getMembership($user);
 
         if ($membership === null) {
             // Add Membership
             $membership = new Membership([
                 'space_id' => $this->owner->id,
-                'user_id' => $userId,
+                'user_id' => $user->id,
                 'status' => Membership::STATUS_MEMBER,
                 'group_id' => $groupId,
                 'show_at_dashboard' => $showAtDashboard,
                 'can_cancel_membership' => $canLeave
             ]);
 
-            $userInvite = Invite::findOne(['email' => $user->email]);
+            $userInvite = Invite::findInstance($user->email);
 
             if (
                 $userInvite !== null &&
                 !empty($userInvite->user_originator_id) &&
                 $userInvite->source == Invite::SOURCE_INVITE && !$silent
             ) {
-                $originator = User::findOne(['id' => $userInvite->user_originator_id]);
+                $originator = User::findInstance($userInvite->user_originator_id);
                 if ($originator !== null) {
                     InviteAccepted::instance()->from($user)->about($this->owner)->send($originator);
                 }
             }
         } else {
-            // User is already member
+            // User is already a member
             if ($membership->status == Membership::STATUS_MEMBER) {
                 return true;
             }
@@ -428,7 +429,7 @@ class SpaceModelMembership extends Behavior
             // User was invited
             if ($membership->status == Membership::STATUS_INVITED && !$silent) {
                 InviteAccepted::instance()->from($user)->about($this->owner)
-                    ->send(User::findOne(['id' => $membership->originator_user_id]));
+                    ->send(User::findInstance($membership->originator_user_id));
             }
 
             // Update Membership
@@ -450,7 +451,7 @@ class SpaceModelMembership extends Behavior
         }
 
         // Members can't also follow the space
-        $this->owner->unfollow($userId);
+        $this->owner->unfollow($user);
 
         // Delete invite notification for this user
         InviteNotification::instance()->about($this->owner)->delete($user);
@@ -475,7 +476,7 @@ class SpaceModelMembership extends Behavior
             $userId = Yii::$app->user->id;
         }
 
-        $user = User::findOne(['id' => $userId]);
+        $user = User::findInstance($userId);
         $membership = $this->getMembership($userId);
 
         if (!$membership) {
@@ -506,7 +507,7 @@ class SpaceModelMembership extends Behavior
      */
     private function handleRemoveMembershipEvent(Membership $membership, User $user)
     {
-        Membership::unsetCache($this->owner->id, $user->id);
+        Membership::unsetCache([$this->owner->id, $user->id]);
 
         // Get rid of old notifications
         ApprovalRequest::instance()->from($user)->about($this->owner)->delete();

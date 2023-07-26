@@ -31,7 +31,7 @@ class RemoveAllMembersFromSpaceJob extends LongRunningActiveJob
     public function init()
     {
         parent::init();
-        $this->space = Space::findOne(['id' => $this->spaceId]);
+        $this->space = Space::findInstance($this->spaceId);
     }
 
     /**

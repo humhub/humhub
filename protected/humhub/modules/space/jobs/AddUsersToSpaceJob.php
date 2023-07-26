@@ -58,8 +58,8 @@ class AddUsersToSpaceJob extends LongRunningActiveJob
     public function init()
     {
         parent::init();
-        $this->space = Space::findOne(['id' => $this->spaceId]);
-        $this->originator = User::findOne(['id' => $this->originatorId]);
+        $this->space = Space::findInstance($this->spaceId);
+        $this->originator = User::findInstance($this->originatorId);
     }
 
     /**
@@ -83,7 +83,7 @@ class AddUsersToSpaceJob extends LongRunningActiveJob
     {
         foreach ($users as $user) {
             try {
-                $user = ($user instanceof User) ? $user : User::findOne(['id' => $user]);
+                $user = User::findInstance($user);
 
                 if (!$user || $user->id === $this->originator->id) {
                     continue;

@@ -101,7 +101,7 @@ class UserController extends Controller
      */
     public function actionEdit()
     {
-        $user = UserEditForm::findOne(['id' => Yii::$app->request->get('id')]);
+        $user = UserEditForm::findInstance(Yii::$app->request->get('id'));
         $user->initGroupSelection();
 
         if ($user === null) {
@@ -282,7 +282,7 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $user = User::findOne(['id' => $id]);
+        $user = User::findInstance($id);
 
         $this->checkUserAccess($user);
 
@@ -318,7 +318,7 @@ class UserController extends Controller
      */
     public function actionViewProfile($id)
     {
-        $user = User::findOne(['id' => $id]);
+        $user = User::findInstance($id);
         if ($user === null) {
             throw new HttpException(404);
         }
@@ -330,7 +330,7 @@ class UserController extends Controller
     {
         $this->forcePostRequest();
 
-        $user = User::findOne(['id' => $id]);
+        $user = User::findInstance($id);
         if ($user === null) {
             throw new HttpException(404);
         }
@@ -345,7 +345,7 @@ class UserController extends Controller
     {
         $this->forcePostRequest();
 
-        $user = User::findOne(['id' => $id]);
+        $user = User::findInstance($id);
 
         $this->checkUserAccess($user);
 
@@ -366,7 +366,7 @@ class UserController extends Controller
     {
         $this->forcePostRequest();
 
-        $user = User::findOne(['id' => $id]);
+        $user = User::findInstance($id);
 
         $this->checkUserAccess($user);
 

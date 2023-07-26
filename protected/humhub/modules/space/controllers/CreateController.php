@@ -148,7 +148,7 @@ class CreateController extends Controller
      */
     public function actionInvite($space = null, $spaceId = null)
     {
-        $space = ($space == null) ? Space::findOne(['id' => $spaceId]) : $space;
+        $space = Space::findInstance($space ?? $spaceId);
 
         if (!$space) {
             throw new HttpException(404);

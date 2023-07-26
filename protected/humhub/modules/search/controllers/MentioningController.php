@@ -92,7 +92,7 @@ class MentioningController extends Controller
     {
         $keyword = (string)Yii::$app->request->get('keyword');
 
-        $space = Space::findOne(['id' => (int) $id]);
+        $space = Space::findInstance($id);
         if (!$space || !(new Post($space))->content->canEdit()) {
             throw new HttpException(403, 'Access denied!');
         }
@@ -132,7 +132,7 @@ class MentioningController extends Controller
         $contentId = (int)Yii::$app->request->get('id');
         $keyword = (string)Yii::$app->request->get('keyword');
 
-        if (!($content = Content::findOne(['id' => $contentId]))) {
+        if (!($content = Content::findInstance($contentId))) {
             throw new HttpException(403, 'Access denied!');
         }
 

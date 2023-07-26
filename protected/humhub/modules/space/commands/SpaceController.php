@@ -35,8 +35,8 @@ class SpaceController extends \yii\console\Controller
 {
     public function actionAssignAllMembers($spaceId)
     {
-        $space = Space::findOne(['id' => $spaceId]);
-        if ($space == null) {
+        $space = Space::findInstance($spaceId);
+        if ($space === null) {
             print "Error: Space not found! Check id!\n\n";
             return;
         }
@@ -46,11 +46,11 @@ class SpaceController extends \yii\console\Controller
         $this->stdout("\nAdding Members:\n\n");
 
         foreach (User::find()->active()->all() as $user) {
-            if (!$space->isMember($user->id)) {
+            if (!$space->isMember($user)) {
                 $this->stdout("\t" . $user->displayName . " added. \n", Console::FG_YELLOW);
 
                 Yii::$app->user->switchIdentity($user);
-                $space->addMember($user->id);
+                $space->addMember($user);
                 $countAssigns++;
             }
         }

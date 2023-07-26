@@ -262,7 +262,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
      */
     public function testMentioningToText()
     {
-        $user = User::findOne(['id' => 1]);
+        $user = User::findInstance(1);
 
         $this->assertConversionResult(
             'Test mention ' . MentioningExtension::buildMentioning($user),
@@ -280,7 +280,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
 
     public function testMentionInActiveUser()
     {
-        $user = User::findOne(['id' => 2]);
+        $user = User::findInstance(2);
         $user->updateAttributes(['status' => User::STATUS_DISABLED]);
 
         $this->assertConversionResult(
@@ -291,7 +291,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
 
     public function testMentionEmptyText()
     {
-        $user = User::findOne(['id' => 1]);
+        $user = User::findInstance(1);
 
         $this->assertConversionResult(
             'Test mention [](mention:' . $user->guid . ')',

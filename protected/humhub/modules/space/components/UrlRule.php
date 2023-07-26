@@ -52,7 +52,7 @@ class UrlRule extends ContentContainerUrlRule
      */
     protected static function getContentContainerByGuid(string $guid): ?ContentContainerActiveRecord
     {
-        return Space::findOne(['guid' => $guid]);
+        return Space::findInstance($guid);
     }
 
     /**

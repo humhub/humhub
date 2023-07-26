@@ -123,7 +123,7 @@ class MemberController extends Controller
 
         $space = $this->getSpace();
         $userGuid = Yii::$app->request->get('userGuid');
-        $user = User::findOne(['guid' => $userGuid]);
+        $user = User::findInstance($userGuid);
 
         if ($user != null) {
             $space->removeMember($user->id);
@@ -141,7 +141,7 @@ class MemberController extends Controller
 
         $space = $this->getSpace();
         $userGuid = Yii::$app->request->get('userGuid');
-        $user = User::findOne(['guid' => $userGuid]);
+        $user = User::findInstance($userGuid);
 
         if ($user != null) {
             $membership = $space->getMembership($user->id);
@@ -162,7 +162,7 @@ class MemberController extends Controller
 
         $space = $this->getSpace();
         $userGuid = Yii::$app->request->get('userGuid');
-        $user = User::findOne(['guid' => $userGuid]);
+        $user = User::findInstance($userGuid);
 
         if ($space->isSpaceOwner($user->id)) {
             throw new HttpException(500, 'Owner cannot be removed!');

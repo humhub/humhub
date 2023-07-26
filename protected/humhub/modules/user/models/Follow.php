@@ -10,6 +10,7 @@ namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\activities\UserFollow;
@@ -144,7 +145,10 @@ class Follow extends ActiveRecord
     {
         try {
             $targetClass = $this->object_model;
-            if ($targetClass != "" && is_subclass_of($targetClass, ActiveRecord::class)) {
+            if (is_subclass_of($targetClass, FindInstanceInterface::class)) {
+                return $targetClass::findInstance($this->object_id);
+            }
+            if (is_subclass_of($targetClass, ActiveRecord::class)) {
                 return $targetClass::findOne(['id' => $this->object_id]);
             }
         } catch (\Exception $e) {

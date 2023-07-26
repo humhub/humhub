@@ -53,7 +53,7 @@ class MoveController extends ContentContainerController
         $countQuery = clone $query;
         $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSizeParam' => 'limit']);
 
-        $content = Content::findOne(['id' => $contentId]);
+        $content = Content::findInstance($contentId);
 
         $json = [];
         foreach ($query->offset($pagination->offset)->limit($pagination->limit)->all() as $space) {

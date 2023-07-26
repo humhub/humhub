@@ -21,18 +21,14 @@ class UserFilter extends User
     /**
      * Returns a UserFilter instance for the given $user or the current user identity
      * if $user is not provided.
-     * 
-     * @param type $user
-     * @return type
+     *
+     * @param User|int|string|null $user
+     * @return self|null
      */
-    public static function forUser($user = null)
+    public static function forUser($user = null): ?UserFilter
     {
-        if ($user == null) {
-            $user = Yii::$app->user->getIdentity();
-        }
-
-        $userId = ($user instanceof User) ? $user->id : $user;
-        return self::findIdentity($userId);
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return self::findIdentity($user);
     }
 
     /**

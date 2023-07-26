@@ -151,7 +151,7 @@ class Post extends ContentActiveRecord implements Searchable
      */
     private function getPostAuthorName()
     {
-        $user = User::findOne(['id' => $this->created_by]);
+        $user = User::findInstance($this->created_by);
 
         if ($user !== null && $user->isActive()) {
             return $user->getDisplayName();

@@ -259,7 +259,7 @@ class Module extends \humhub\components\Module
      */
     public function setDefaultGroup($id)
     {
-        $group = Group::findOne(['id' => $id]);
+        $group = Group::findInstance($id);
         if ($group && !$group->is_admin_group && !$group->is_default_group) {
             $group->is_default_group = 1;
             $group->save();

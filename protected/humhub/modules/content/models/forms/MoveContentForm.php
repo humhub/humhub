@@ -38,7 +38,7 @@ class MoveContentForm extends Model
      */
     public function init()
     {
-        $this->content = Content::findOne(['id' => $this->id]);
+        $this->content = Content::findInstance($this->id);
     }
 
     /**
@@ -87,7 +87,7 @@ class MoveContentForm extends Model
             $target = isset($this->target[0]) ? $this->target[0] : null;
 
             if ($target) {
-                $this->targetContainer = Space::findOne(['guid' => $target]);
+                $this->targetContainer = Space::findInstance($target);
             }
         }
 

@@ -9,6 +9,7 @@
 namespace humhub\modules\stream\actions;
 
 use humhub\components\Request;
+use humhub\interfaces\StatableQueryInterface;
 use humhub\modules\stream\events\StreamResponseEvent;
 use humhub\modules\user\models\User;
 use Yii;
@@ -384,7 +385,7 @@ abstract class Stream extends Action
     private function handleEmptyResponse(StreamResponse $response)
     {
         if ($this->streamQuery->isSingleContentQuery()) {
-            $content = Content::findOne(['id' => $this->streamQuery->contentId]);
+            $content = Content::findInstance($this->streamQuery->contentId);
             if (!$content) {
                 $response->setError(400, Yii::t('StreamModule.base', 'The content could not be found.'));
             } elseif (!$content->canView()) {

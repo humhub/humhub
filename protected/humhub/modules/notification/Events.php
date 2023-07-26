@@ -77,7 +77,7 @@ class Events extends \yii\base\BaseObject
 
             // Check if Space still exists
             if (!empty($notification->space_id)) {
-                $space = Space::findOne(['id' => $notification->space_id]);
+                $space = Space::findInstance($notification->space_id);
                 if ($space === null) {
                     if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " workspace seems to no longer exist!")) {
                         $notification->delete();
