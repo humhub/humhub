@@ -8,6 +8,7 @@
 namespace humhub\components\behaviors;
 
 use Exception;
+use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use ReflectionClass;
@@ -58,9 +59,9 @@ class PolymorphicRelation extends Behavior
      * @return mixed
      * @throws IntegrityException
      */
-    public function getPolymorphicRelation()
+    public function getPolymorphicRelation(bool $autoload = true)
     {
-        if ($this->cached !== null) {
+        if (!$autoload || $this->cached !== null) {
             return $this->cached;
         }
 
@@ -150,6 +151,10 @@ class PolymorphicRelation extends Behavior
             return null;
         }
 
+        if ($cached = Yii::$app->runtimeCache->get("$className#$primaryKey")) {
+            return $cached;
+        }
+
         try {
             $class = new ReflectionClass($className);
         } catch (ReflectionException $e) {
@@ -169,7 +174,9 @@ class PolymorphicRelation extends Behavior
                 return null;
             }
 
-            return $className::findOne([$primaryKeyNames[0] => $primaryKey]);
+            return $class->isSubclassOf(FindInstanceInterface::class)
+                ? $className::findInstance($primaryKey)
+                : $className::findOne([$primaryKeyNames[0] => $primaryKey]);
         } catch (Exception $ex) {
             Yii::error('Could not load polymorphic relation! Error: "' . $ex->getMessage());
         }

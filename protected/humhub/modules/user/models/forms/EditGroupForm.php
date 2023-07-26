@@ -54,7 +54,7 @@ class EditGroupForm extends Group
         $newSpaceIds = [];
         if (is_array($this->defaultSpaceGuid)) {
             foreach ($this->defaultSpaceGuid as $spaceGuid) {
-                $space = Space::findOne(['guid' => $spaceGuid]);
+                $space = Space::findInstance($spaceGuid);
                 if ($space !== null) {
                     $newSpaceIds[] = $space->id;
                 }

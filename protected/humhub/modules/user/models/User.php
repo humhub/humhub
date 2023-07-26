@@ -342,7 +342,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Fi
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['guid' => $token]);
+        return static::findInstance($token);
     }
 
     /**
@@ -523,6 +523,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Fi
     /**
      *
      * @throws Exception
+     * @throws \Throwable
      * @since 1.3
      */
     public function softDelete()
@@ -672,7 +673,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Fi
 
     private function setUpApproved()
     {
-        $userInvite = Invite::findOne(['email' => $this->email]);
+        $userInvite = Invite::findInstance($this->email);
 
         if ($userInvite !== null) {
             // User was invited to a space

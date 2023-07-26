@@ -277,7 +277,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
 
     public function testMentionEmptyText()
     {
-        $user = User::findOne(['id' => 1]);
+        $user = User::findInstance(1);
 
         $this->assertConversionResult(
             'Test mention [](mention:' . $user->guid . ')',

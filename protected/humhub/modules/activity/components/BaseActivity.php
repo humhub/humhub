@@ -102,9 +102,13 @@ abstract class BaseActivity extends SocialActivity
     public function about($source)
     {
         parent::about($source);
-        $this->record->content->visibility = $this->getContentVisibility();
-        if (!$this->record->content->container && $this->getContentContainer()) {
-            $this->container($this->getContentContainer());
+
+        $content = $this->record->content;
+
+        $content->visibility = $this->getContentVisibility();
+
+        if (!$content->container && $contentContainer = $this->getContentContainer()) {
+            $this->container($contentContainer);
         }
 
         return $this;
@@ -131,15 +135,18 @@ abstract class BaseActivity extends SocialActivity
     private function saveModelInstance()
     {
         $this->record->setPolymorphicRelation($this->source);
-        $this->record->content->visibility = $this->getContentVisibility();
 
-        if (!$this->record->content->container && $this->getContentContainer()) {
-            $this->record->content->container = $this->getContentContainer();
+        $content = $this->record->content;
+
+        $content->visibility = $this->getContentVisibility();
+
+        if (!$content->container && $contentContainer = $this->getContentContainer()) {
+            $content->container = $contentContainer;
         }
 
-        $this->record->content->created_by = $this->getOriginatorId();
+        $content->created_by = $this->getOriginatorId();
 
-        if ($this->record->content->created_by == null) {
+        if ($content->created_by == null) {
             throw new InvalidConfigException('Could not determine originator for activity!');
         }
 
