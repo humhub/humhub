@@ -16,6 +16,7 @@ use humhub\modules\comment\models\Comment;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
+use humhub\modules\space\models\Membership;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use Yii;
@@ -198,6 +199,10 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
     {
         $container = $this->getContentContainer();
 
+        if (!$container && $this->source instanceof Membership) {
+            return $this->source->space;
+        }
+
         return ($container instanceof Space) ? $container : null;
     }
 
@@ -234,7 +239,9 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
     {
         if ($this->source instanceof ContentContainerActiveRecord) {
             return $this->source;
-        } elseif ($this->hasContent()) {
+        }
+
+        if ($this->hasContent()) {
             return $this->getContent()->getContainer();
         }
 
@@ -519,7 +526,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
         $this->init();
 
         if (isset($unserializedArr['originator_id'])) {
-            $user = User::findOne(['id' => $unserializedArr['originator_id']]);
+            $user = User::findInstance($unserializedArr['originator_id']);
             if ($user !== null) {
                 $this->from($user);
             }

@@ -78,7 +78,7 @@ class SpaceController extends Controller
      */
     public function actionOpen($id, $section = null)
     {
-        $space = Space::findOne(['id' => $id]);
+        $space = Space::findInstance($id);
         if ($space === null) {
             throw new HttpException(404);
         }

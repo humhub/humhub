@@ -71,13 +71,7 @@ class MentioningExtension extends RichTextLinkExtension
 
     private function findContainer($guid): ?ContentContainerActiveRecord
     {
-        $result = User::findOne(['guid' => $guid]);
-
-        if (!$result) {
-            $result = Space::findOne(['guid' => $guid]);
-        }
-
-        return $result;
+        return User::findInstance($guid, ['stringKey' => 'guid']) ?? Space::findInstance($guid);
     }
 
     public static function buildMentioning(ContentContainerActiveRecord $container, $urlScheme = false): string

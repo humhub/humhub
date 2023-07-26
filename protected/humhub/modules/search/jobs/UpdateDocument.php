@@ -9,6 +9,7 @@
 namespace humhub\modules\search\jobs;
 
 use humhub\components\ActiveRecord;
+use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
 use humhub\modules\search\interfaces\Searchable;
@@ -22,7 +23,6 @@ use Yii;
  */
 class UpdateDocument extends ActiveJob implements ExclusiveJobInterface
 {
-
     /**
      * @var string class name of the active record
      */
@@ -48,12 +48,17 @@ class UpdateDocument extends ActiveJob implements ExclusiveJobInterface
     public function run()
     {
         $class = $this->activeRecordClass;
-        if (is_subclass_of($class, ActiveRecord::class)) {
+
+        if (is_subclass_of($class, FindInstanceInterface::class)) {
+            $record = $class::findInstance($this->primaryKey);
+        } elseif (is_subclass_of($class, ActiveRecord::class)) {
             $record = $class::findOne(['id' => $this->primaryKey]);
-            if ($record !== null && $record instanceof Searchable) {
-                Yii::$app->search->update($record);
-            }
+        } else {
+            return;
+        }
+
+        if ($record instanceof Searchable) {
+            Yii::$app->search->update($record);
         }
     }
-
 }

@@ -128,7 +128,7 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
                 $container = User::findOne(['guid' => $hit[2]]);
                 $name = ($container) ? $container->getDisplayName() : 'unknown';
             } else {
-                $container = Space::findOne(['guid' => $hit[2]]);
+                $container = Space::findInstance($hit[2]);
                 $name = ($container) ? $container->name : 'unknown';
             }
 

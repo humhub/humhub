@@ -38,7 +38,7 @@ final class LinkRegistrationService
             $spaceId = Yii::$app->session->get(LinkRegistrationService::class . '::spaceId', null);
         }
 
-        return new LinkRegistrationService($token, Space::findOne(['id' => $spaceId]));
+        return new LinkRegistrationService($token, Space::findInstance($spaceId));
     }
 
 

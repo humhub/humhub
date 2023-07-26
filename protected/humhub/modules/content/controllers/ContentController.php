@@ -57,11 +57,11 @@ class ContentController extends Controller
 
         $model = Yii::$app->request->get('model');
 
-        // Due to backward compatibility we use the old delete mechanism in case a model parameter is provided
+        // Due to backward compatibility, we use the old delete mechanism in case a model parameter is provided
         $id = $model ? Yii::$app->request->get('id') : Yii::$app->request->post('id');
 
         /* @var $contentObj Content */
-        $contentObj = $model ? Content::Get($model, $id) : Content::findOne(['id' => $id]);
+        $contentObj = $model ? Content::Get($model, $id) : Content::findInstance($id);
 
         if (!$contentObj) {
             throw new NotFoundHttpException();
@@ -95,7 +95,7 @@ class ContentController extends Controller
 
         $id = Yii::$app->request->post('id');
 
-        $contentObj = Content::findOne(['id' => $id]);
+        $contentObj = Content::findInstance($id);
 
         if (!$contentObj) {
             throw new NotFoundHttpException();
@@ -122,9 +122,7 @@ class ContentController extends Controller
      */
     public function actionArchive()
     {
-        $this->forcePostRequest();
-
-        $content = Content::findOne(Yii::$app->request->get('id'));
+        $content = $this->findContent();
 
         $result = $content instanceof Content &&
             $content->canArchive() &&
@@ -140,9 +138,7 @@ class ContentController extends Controller
      */
     public function actionUnarchive()
     {
-        $this->forcePostRequest();
-
-        $content = Content::findOne(Yii::$app->request->get('id'));
+        $content = $this->findContent();
 
         $result = $content instanceof Content &&
             $content->canArchive() &&
@@ -153,9 +149,7 @@ class ContentController extends Controller
 
     public function actionDeleteId()
     {
-        $this->forcePostRequest();
-
-        $content = Content::findOne(['id' => Yii::$app->request->post('id')]);
+        $content = $this->findContent();
 
         if (!$content) {
             throw new NotFoundHttpException();
@@ -177,7 +171,7 @@ class ContentController extends Controller
 
     public function actionReload($id)
     {
-        $content = Content::findOne(['id' => $id]);
+        $content = Content::findInstance($id);
 
         if (!$content) {
             throw new NotFoundHttpException(Yii::t('ContentModule.base', 'Invalid content id given!'));
@@ -202,8 +196,7 @@ class ContentController extends Controller
      */
     public function actionToggleVisibility($id)
     {
-        $this->forcePostRequest();
-        $content = Content::findOne(['id' => $id]);
+        $content = $this->findContent($id);
 
         if (!$content) {
             throw new NotFoundHttpException(Yii::t('ContentModule.base', 'Invalid content id given!'));
@@ -238,8 +231,7 @@ class ContentController extends Controller
      */
     public function switchCommentsStatus(int $id, bool $lockComments): Response
     {
-        $this->forcePostRequest();
-        $content = Content::findOne(['id' => $id]);
+        $content = $this->findContent($id);
 
         if (!$content) {
             throw new NotFoundHttpException(Yii::t('ContentModule.base', 'Invalid content id given!'));
@@ -296,9 +288,7 @@ class ContentController extends Controller
      */
     public function actionPin()
     {
-        $this->forcePostRequest();
-
-        $content = Content::findOne(['id' => Yii::$app->request->get('id', '')]);
+        $content = $this->findContent();
 
         if (!$content) {
             throw new NotFoundHttpException();
@@ -332,12 +322,11 @@ class ContentController extends Controller
      */
     public function actionUnPin()
     {
-        $this->forcePostRequest();
-
         $json = [];
         $json['success'] = false;
 
-        $content = Content::findOne(['id' => Yii::$app->request->get('id', '')]);
+        $content = $this->findContent();
+
         if ($content !== null && $content->canPin()) {
             $content->unpin();
             $json['success'] = true;
@@ -348,12 +337,11 @@ class ContentController extends Controller
 
     public function actionPublishDraft()
     {
-        $this->forcePostRequest();
-
         $json = [];
         $json['success'] = false;
 
-        $content = Content::findOne(['id' => Yii::$app->request->get('id', '')]);
+        $content = $this->findContent();
+
         if ($content !== null && $content->canEdit() && $content->getStateService()->isDraft()) {
             if ($content->getStateService()->publish()) {
                 $json['message'] = Yii::t('ContentModule.base', 'The content has been successfully published.');
@@ -374,7 +362,7 @@ class ContentController extends Controller
         $json = [];
         $json['success'] = false; // default
 
-        $content = Content::findOne(['id' => Yii::$app->request->get('id', '')]);
+        $content = Content::findInstance(['id' => Yii::$app->request->get('id', '')]);
         if ($content !== null) {
             $switch = (Yii::$app->request->get('switch', true) == 1) ? true : false;
             $obj = $content->getPolymorphicRelation();
@@ -389,7 +377,7 @@ class ContentController extends Controller
     {
         $this->forcePostRequest();
 
-        $content = $id ? Content::findOne($id) : null;
+        $content = $id ? Content::findInstance($id) : null;
 
         if ($content instanceof Content && !$content->canEdit()) {
             throw new ForbiddenHttpException();
@@ -408,5 +396,16 @@ class ContentController extends Controller
             'scheduleOptions' => $scheduleOptions,
             'disableInputs' => $disableInputs
         ]);
+    }
+
+    /**
+     * @return array|Content|\yii\db\ActiveRecord|\yii\db\ActiveRecordInterface|null
+     * @throws \yii\web\HttpException
+     */
+    public function findContent($id = null)
+    {
+        $this->forcePostRequest();
+
+        return Content::findInstance($id ?? Yii::$app->request->get('id', ''));
     }
 }
