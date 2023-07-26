@@ -280,9 +280,9 @@ class Group extends ActiveRecord implements FindInstanceInterface
      *
      * @return GroupUser|null
      */
-    public function getGroupUser($user)
+    public function getGroupUser($user): ?GroupUser
     {
-        $userId = ($user instanceof User) ? $user->id : $user;
+        $userId = User::findInstanceAsId($user);
         return GroupUser::findOne(['user_id' => $userId, 'group_id' => $this->id]);
     }
 
@@ -350,23 +350,18 @@ class Group extends ActiveRecord implements FindInstanceInterface
      */
     public function addUser($user, $isManager = false)
     {
-        if ($this->isMember($user)) {
+        if (null === ($user = User::findInstance($user)) || $this->isMember($user)) {
             return false;
         }
 
-        $userId = ($user instanceof User) ? $user->id : $user;
-
         $newGroupUser = new GroupUser();
-        $newGroupUser->user_id = $userId;
+        $newGroupUser->user_id = $user->id;
         $newGroupUser->group_id = $this->id;
         $newGroupUser->created_at = date('Y-m-d H:i:s');
         $newGroupUser->created_by = Yii::$app->user->id;
         $newGroupUser->is_group_manager = $isManager;
         if ($newGroupUser->save() && !Yii::$app->user->isGuest) {
             if ($this->notify_users) {
-                if (!($user instanceof User)) {
-                    $user = User::findOne(['id' => $user]);
-                }
                 IncludeGroupNotification::instance()
                     ->about($this)
                     ->from(Yii::$app->user->identity)
@@ -387,16 +382,12 @@ class Group extends ActiveRecord implements FindInstanceInterface
      */
     public function removeUser($user)
     {
-        $groupUser = $this->getGroupUser($user);
-        if (!$groupUser) {
+        if (null === ($user = User::findInstance($user)) || null === ($groupUser = $this->getGroupUser($user))) {
             return false;
         }
 
         if ($groupUser->delete()) {
             if ($this->notify_users) {
-                if (!($user instanceof User)) {
-                    $user = User::findOne(['id' => $user]);
-                }
                 ExcludeGroupNotification::instance()
                     ->about($this)
                     ->from(Yii::$app->user->identity)

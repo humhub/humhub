@@ -245,7 +245,7 @@ class InviteForm extends Model
                     continue;
                 }
 
-                $user = User::findOne(['guid' => $userGuid]);
+                $user = User::findInstance($userGuid);
 
                 if ($user === null) {
                     $this->addError($attribute, Yii::t('SpaceModule.base', 'User not found!'));
@@ -291,7 +291,7 @@ class InviteForm extends Model
                     continue;
                 }
 
-                $user = User::findOne(['email' => $email]);
+                $user = User::findInstance($email, ['stringKey' => 'email']);
                 if ($user) {
                     $this->addUserToInviteList($user);
                 } else {

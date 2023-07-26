@@ -9,6 +9,7 @@
 namespace humhub\modules\content\components;
 
 use humhub\components\ActiveRecord;
+use humhub\interfaces\FindInstanceInterface;
 use humhub\libs\BasePermission;
 use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
@@ -176,7 +177,9 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public static function findByGuid($token)
     {
-        return static::findOne(['guid' => $token]);
+        return is_subclass_of(static::class, FindInstanceInterface::class)
+            ? static::findInstance($token, ['stringKey' => 'guid'])
+            : static::findOne(['guid' => $token]);
     }
 
     /**

@@ -36,7 +36,7 @@ class SendNotification extends ActiveJob
      */
     public function run()
     {
-        $recipient = User::findOne(['id' => $this->recipientId]);
+        $recipient = User::findInstance($this->recipientId);
         if ($recipient !== null) {
             Yii::$app->notification->send($this->notification, $recipient);
         }
