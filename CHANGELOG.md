@@ -1,7 +1,7 @@
 HumHub Changelog
 ================
 
-1.14.3 (Unreleased)
+1.14.3 (July 27, 2023)
 ----------------------
 - Fix #6345: Fix updating of post on wall stream
 - Fix #6351: Error when config `defaultReloadableScripts` is not array
