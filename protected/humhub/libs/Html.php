@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\icon\widgets\Icon;
@@ -116,7 +117,7 @@ class Html extends \yii\bootstrap\Html
         }
 
         if (!isset($options['showIcon']) || $options['showIcon'] === true) {
-            $label = Icon::get('back')->asString().' '. $label;
+            $label = Icon::get('back')->asString() . ' ' . $label;
         }
 
         if (empty($url)) {
@@ -150,8 +151,10 @@ class Html extends \yii\bootstrap\Html
 
         if ($container instanceof Space) {
             return static::a(static::encode($container->name), $container->getUrl(), $options);
-        } elseif ($container instanceof User) {
-            if ($container->status == User::STATUS_SOFT_DELETED) {
+        }
+
+        if ($container instanceof User) {
+            if ($container->status == StatableInterface::STATE_SOFT_DELETED) {
                 return static::beginTag('strike') . static::encode($container->displayName) . static::endTag('strike');
             }
             return static::a(static::encode($container->displayName), $container->getUrl(), $options);
@@ -278,5 +281,4 @@ class Html extends \yii\bootstrap\Html
     {
         return parent::dropDownList($name, $selection, $items, self::getDropDownListOptions($options));
     }
-
 }

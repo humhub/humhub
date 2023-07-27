@@ -5,18 +5,18 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\models\Content;
 use humhub\modules\file\handler\BaseFileHandler;
+use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
+use humhub\modules\file\widgets\UploadButton;
+use humhub\modules\file\widgets\UploadProgress;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\widgets\UserPickerField;
-use humhub\modules\file\widgets\UploadButton;
-use humhub\modules\file\widgets\FileHandlerButtonDropdown;
-use humhub\modules\file\widgets\UploadProgress;
-use humhub\widgets\Link;
 use humhub\widgets\Button;
+use humhub\widgets\Link;
 use yii\helpers\Html;
 
 /* @var $submitUrl string */
@@ -69,7 +69,7 @@ use yii\helpers\Html;
         <?= Html::checkbox('visibility', '', ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true']); ?>
 
         <!-- state data -->
-        <?= Html::hiddenInput('state', Content::STATE_PUBLISHED) ?>
+        <?= Html::hiddenInput('state', StatableInterface::STATE_PUBLISHED) ?>
 
         <!-- content sharing -->
         <div class="pull-right">
@@ -102,7 +102,7 @@ use yii\helpers\Html;
                             <?= Link::withAction(Yii::t('ContentModule.base', 'Create as draft'), 'changeState')
                                     ->icon('edit')
                                     ->options([
-                                        'data-state' => Content::STATE_DRAFT,
+                                        'data-state' => StatableInterface::STATE_DRAFT,
                                         'data-state-title' => Yii::t('ContentModule.base', 'Draft'),
                                         'data-button-title' => Yii::t('ContentModule.base', 'Save as draft')
                                     ]) ?>

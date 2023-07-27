@@ -20,9 +20,9 @@ interface StorageManagerInterface
      * Checks if the requested file or version exists.
      *
      * @param string $variant optional the variant string
-     * @return boolean
+     * @return string|null
      */
-    public function has($variant = null);
+    public function has($variant = null): ?string;
 
     /**
      * Returns the complete file path to the stored file (variant).
@@ -62,7 +62,7 @@ interface StorageManagerInterface
      * Deletes a stored file (-variant)
      *
      * If not variant is given, also all file variants will be deleted
-     * @param string $variant the variant identifier
+     * @param string $variant the variant identifier, or a RegEx to match against the entire path
      * @param string[] $except exclude following variants from deletion
      */
     public function delete($variant = null, $except = []);
@@ -79,5 +79,5 @@ interface StorageManagerInterface
      *
      * @param \humhub\modules\file\models\File $file
      */
-    public function setFile(\humhub\modules\file\models\File $file);
+    public function setFile(\humhub\modules\file\models\File $file): self;
 }

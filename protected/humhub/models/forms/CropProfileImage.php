@@ -14,14 +14,15 @@ use yii\web\JsExpression;
 /**
  * CropProfileImageForm is a form for image cropping.
  *
- * Will used by user or space profile image cropping.
+ * Will be used by attached images (e.g. user or space profile images) cropping.
  *
  * @package humhub.forms
  * @since 0.5
+ *
+ * @property-read array $pluginOptions
  */
 class CropProfileImage extends Model
 {
-
     /**
      * @var Int X Coordinates of the area
      */
@@ -90,7 +91,7 @@ class CropProfileImage extends Model
     /**
      * Declares the validation rules.
      *
-     * @return Array Validation Rules
+     * @return array Validation Rules
      */
     public function rules()
     {
@@ -134,5 +135,4 @@ class CropProfileImage extends Model
 
         return false;
     }
-
 }

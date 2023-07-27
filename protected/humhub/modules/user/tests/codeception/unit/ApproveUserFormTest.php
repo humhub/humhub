@@ -2,6 +2,7 @@
 
 namespace tests\codeception\unit;
 
+use humhub\interfaces\StatableInterface;
 use humhub\modules\admin\models\forms\ApproveUserForm;
 use humhub\modules\admin\models\forms\AuthenticationSettingsForm;
 use humhub\modules\user\models\User;
@@ -235,7 +236,7 @@ Admin Tester", $form->message);
         }
 
         $user = User::findOne(['id' => $user->id]);
-        $this->assertEquals(User::STATUS_NEED_APPROVAL, $user->status);
+        $this->assertEquals(StatableInterface::STATE_NEEDS_APPROVAL, $user->status);
     }
 
     private function assertApproved(User $user = null)
@@ -248,7 +249,7 @@ Admin Tester", $form->message);
         $this->assertEqualsLastEmailSubject('Account Request for \'UnApproved User\' has been approved.');
         $this->assertEqualsLastEmailTo($user->email);
         $user = User::findOne(['id' => $user->id]);
-        $this->assertEquals(User::STATUS_ENABLED, $user->status);
+        $this->assertEquals(StatableInterface::STATE_ENABLED, $user->status);
     }
 
     private function setApprovalMessage($message)

@@ -35,5 +35,4 @@ class DashboardStreamQuery extends ActivityStreamQuery
                 'user' => $this->user]));
         }
     }
-
 }

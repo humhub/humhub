@@ -7,10 +7,10 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\interfaces\StatableInterface;
 use humhub\libs\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\models\Content;
 use humhub\widgets\Link;
 use Yii;
 use yii\base\Widget;
@@ -24,7 +24,7 @@ use yii\base\Widget;
 class ScheduleLink extends Widget
 {
     public ContentActiveRecord $contentRecord;
-    public array $allowedStates = [Content::STATE_DRAFT, Content::STATE_SCHEDULED];
+    public array $allowedStates = [StatableInterface::STATE_DRAFT, StatableInterface::STATE_SCHEDULED];
 
     /**
      * @inheritdoc

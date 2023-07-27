@@ -10,10 +10,14 @@ namespace humhub\modules\file\actions;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use humhub\interfaces\StatableInterface;
+use humhub\libs\UUID;
 use humhub\modules\file\Module;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\helpers\Url;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
+use yii\db\IntegrityException;
 use yii\web\HttpException;
 use yii\base\Action;
 use humhub\modules\file\models\File;
@@ -24,10 +28,7 @@ use yii\filters\HttpCache;
  * DownloadAction
  *
  * @since 1.2
- *
- * @property-read string $storedFilePath
- * @property-read string $fileName
- * @property-read Module $module
+ * @author Luke
  */
 class DownloadAction extends Action
 {
@@ -38,12 +39,12 @@ class DownloadAction extends Action
     public bool $enableHttpCache = true;
 
     /**
-     * @var File|null the requested file object
+     * @var File the requested file object
      */
-    protected ?File $file = null;
+    protected File $file;
 
     /**
-     * @var string|null the requested file variant
+     * @var string the requested file variant
      */
     protected ?string $variant = null;
 
@@ -58,9 +59,9 @@ class DownloadAction extends Action
      */
     public function init()
     {
-        $this->loadFile(Yii::$app->request->get('guid'), Yii::$app->request->get('token'));
+        $this->loadFile(Yii::$app->request->get('guid'), Yii::$app->request->get('token'), Yii::$app->request->get('state'));
         $this->download = (bool)Yii::$app->request->get('download', false);
-        $this->loadVariant(Yii::$app->request->get('variant'));
+        $this->loadVariant(Yii::$app->request->get('variant', null));
         $this->checkFileExists();
     }
 
@@ -107,7 +108,7 @@ class DownloadAction extends Action
         $mimeType = FileHelper::getMimeTypeByExtension($fileName);
 
         $options = [
-            'inline' => (!$this->download && in_array($mimeType, $this->getModule()->inlineMimeTypes, true)),
+            'inline' => (!$this->download && in_array($mimeType, $this->getModule()->inlineMimeTypes)),
             'mimeType' => $mimeType
         ];
 
@@ -123,12 +124,23 @@ class DownloadAction extends Action
      *
      * @param string $guid
      * @param string|null $token
-     *
+     * @param int|string|null $state
+     * @return File the loaded file instance
+     * @throws Exception
      * @throws HttpException
+     * @throws IntegrityException
+     * @throws InvalidConfigException
+     * @throws \Throwable
      */
-    protected function loadFile(string $guid, ?string $token = null)
+    protected function loadFile(string $guid, ?string $token = null, $state = StatableInterface::STATE_PUBLISHED): File
     {
-        $file = File::findOne(['guid' => $guid]);
+        if (!UUID::is_valid($guid)) {
+            throw new HttpException(400, Yii::t('FileModule.base', 'Invalid parameter value for {parameter}!', ['parameter' => 'guid']));
+        }
+
+        $state ??= StatableInterface::STATE_PUBLISHED;
+
+        $file = File::findByGuid($guid, $state);
 
         if ($file === null) {
             throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
@@ -139,35 +151,33 @@ class DownloadAction extends Action
             $user = static::getUserByDownloadToken($token, $file);
         }
 
-        // File is not assigned to any database record (yet)
-        if (empty($file->object_model) && (Yii::$app->user->isGuest || $file->created_by != Yii::$app->user->id)) {
-            throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
-        }
-
         if (!$file->canRead($user)) {
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
         }
 
-        $this->file = $file;
+        if ($state !== StatableInterface::STATE_PUBLISHED && !$file->canEdit()) {
+            throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
+        }
+
+        return $this->file = $file;
     }
 
 
     /**
      * Loads a variant and verifies
      *
-     * @param string|null $variant
-     *
+     * @param string $variant
      * @throws HttpException
      */
     protected function loadVariant($variant)
     {
         // For compatibility reasons (prior 1.1) check the old 'suffix' parameter
         if ($variant === null) {
-            $variant = Yii::$app->request->get('suffix');
+            $variant = Yii::$app->request->get('suffix', null);
         }
 
         // Check if variant is available by file
-        if (($variant !== null) && !in_array($variant, $this->file->store->getVariants(), true)) {
+        if (($variant !== null) && !in_array($variant, $this->file->store->getVariants())) {
             throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file variant!'));
         }
 
@@ -181,6 +191,7 @@ class DownloadAction extends Action
      */
     protected function getModule()
     {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return Yii::$app->getModule('file');
     }
 
@@ -191,7 +202,7 @@ class DownloadAction extends Action
      */
     protected function checkFileExists()
     {
-        if (!file_exists($this->file->store->get($this->variant))) {
+        if (!$this->file->store->has($this->variant)) {
             throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
         }
     }
@@ -213,7 +224,9 @@ class DownloadAction extends Action
             $variantParts = pathinfo($this->variant);
             $orgParts = pathinfo($this->file->file_name);
             return $orgParts['filename'] . '_' . $variantParts['filename'] . '.' . $variantParts['extension'];
-        } elseif (FileHelper::hasExtension($this->file->file_name)) {
+        }
+
+        if (FileHelper::hasExtension($this->file->file_name)) {
             // Use extension of original file
             $parts = pathinfo($this->file->file_name);
             return $parts['filename'] . '_' . $this->variant . '.' . $parts['extension'];

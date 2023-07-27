@@ -218,14 +218,12 @@ class Module extends \yii\base\Module
     /**
      * Enables this module
      *
-     * @return boolean
+     * @return string
      */
     public function enable()
     {
         Yii::$app->moduleManager->enable($this);
-        $this->migrate();
-
-        return true;
+        return $this->migrate();
     }
 
     /**
@@ -285,12 +283,13 @@ class Module extends \yii\base\Module
     /**
      * Execute all not applied module migrations
      */
-    public function migrate()
+    public function migrate(): ?string
     {
         $migrationPath = $this->basePath . '/migrations';
         if (is_dir($migrationPath)) {
-            \humhub\commands\MigrateController::webMigrateUp($migrationPath);
+            return \humhub\commands\MigrateController::webMigrateUp($migrationPath);
         }
+        return null;
     }
 
     /**

@@ -8,46 +8,21 @@
 
 namespace humhub\models\forms;
 
-use Yii;
-use yii\base\Model;
+trigger_error(
+    sprintf(
+        'Class %s is deprecated. Please use %s instead.',
+        UploadProfileImage::class,
+        ContentImageUpload::class
+    ),
+    E_USER_DEPRECATED
+);
+
 
 /**
- * UploadProfileImageForm allows uploads of profile images.
- *
- * Profile images will used by spaces or users.
- *
- * @package humhub.forms
- * @since 0.5
+ * @since      0.5
+ * @deprecated since 1.15
+ * @see        ContentImageUpload
  */
-class UploadProfileImage extends Model
+class UploadProfileImage extends ContentImageUpload
 {
-
-    /**
-     * @var String uploaded image
-     */
-    public $image;
-
-    /**
-     * Declares the validation rules.
-     *
-     * @return Array Validation Rules
-     */
-    public function rules()
-    {
-        return [
-            ['image', 'required'],
-            ['image', 'file', 'extensions' => 'jpg, jpeg, png, tiff', 'maxSize' => Yii::$app->getModule('file')->settings->get('maxFileSize')],
-        ];
-    }
-
-    /**
-     * Declares attribute labels.
-     */
-    public function attributeLabels()
-    {
-        return [
-            'image' => Yii::t('base', 'New profile image'),
-        ];
-    }
-
 }

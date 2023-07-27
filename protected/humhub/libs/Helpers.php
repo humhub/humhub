@@ -179,24 +179,31 @@ class Helpers
     /**
      * Checks if the class has this class as one of its parents
      *
-     * @param string $className
-     * @param string $type
+     * @param string|object $className
+     * @param string|array  $type
+     *
      * @return boolean
+     * @throws Exception
      */
-    public static function CheckClassType($className, $type = '')
+    public static function CheckClassType($className, $type = ''): bool
     {
+        $type = (array) $type;
+
+        if (is_object($className)) {
+            return array_reduce($type, static fn(bool $valid, string $class): bool => $valid || $className instanceof $class, false);
+        }
+
+        //ToDo: Why is this? - Cleaning the class name but not returning it, would still leave the original className invalid
         $className = preg_replace('/[^a-z0-9_\-\\\]/i', '', $className);
 
-        if (is_array($type)) {
-            foreach ($type as $t) {
-                if (class_exists($className) && is_a($className, $t, true)) {
-                    return true;
-                }
-            }
-        } else {
-            if (class_exists($className) && is_a($className, $type, true)) {
-                return true;
-            }
+        if (!class_exists($className))
+        {
+            return false;
+        }
+
+        if (array_reduce($type, static fn(bool $valid, string $class): bool => $valid || is_a($className, $class, true), false))
+        {
+            return true;
         }
 
         throw new Exception("Invalid class type! (" . $className . ")");

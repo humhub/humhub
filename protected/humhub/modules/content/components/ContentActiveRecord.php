@@ -10,6 +10,7 @@ namespace humhub\modules\content\components;
 
 use humhub\components\ActiveRecord;
 use humhub\libs\BasePermission;
+use humhub\libs\StatableTrait;
 use humhub\modules\activity\helpers\ActivityHelper;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\interfaces\ContentOwner;
@@ -17,6 +18,7 @@ use humhub\modules\content\interfaces\SoftDeletable;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\Movable;
 use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\content\services\ActiveContentStateService;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\content\widgets\WallEntry;
@@ -67,11 +69,17 @@ use yii\db\ActiveQuery;
  * @mixin Followable
  * @property User $createdBy
  * @property User $owner
+ * @property-read string $contentName
+ * @property-read null|string $icon
+ * @property-read null|WallEntry|WallStreamEntryWidget $wallEntryWidget
+ * @property-read string $contentDescription
  * @property-read File[] $files
  * @author Luke
  */
 class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable, SoftDeletable
 {
+    use StatableTrait;
+
     /**
      * @see StreamEntryWidget
      * @var string the StreamEntryWidget widget class
@@ -384,7 +392,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     {
         if (is_subclass_of($this->wallEntryClass, StreamEntryWidget::class, true)) {
             $params['model'] = $this;
-        } else if (!empty($this->wallEntryClass)) {
+        } elseif (!empty($this->wallEntryClass)) {
             $params['contentObject'] = $this; // legacy WallEntry widget
         }
 
@@ -407,7 +415,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
 
         if (is_subclass_of($this->wallEntryClass, WallEntry::class)) {
             $class = $this->wallEntryClass;
-            $widget = new $class;
+            $widget = new $class();
             $widget->contentObject = $this;
             return $widget;
         }
@@ -504,6 +512,11 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
         return static::class;
     }
 
+    public static function getStateServiceClass(): string
+    {
+        return ActiveContentStateService::class;
+    }
+
     /**
      * Marks this content for deletion (soft delete).
      * Use `hardDelete()` method to delete record immediately.
@@ -549,7 +562,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function afterSoftDelete()
     {
-        $this->trigger(self::EVENT_AFTER_SOFT_DELETE, new ModelEvent());
+        $this->trigger(SoftDeletable::EVENT_AFTER_SOFT_DELETE, new ModelEvent());
     }
 
     /**
@@ -598,7 +611,6 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
         }
 
         return $this->content->created_by === $user->getId();
-
     }
 
     /**

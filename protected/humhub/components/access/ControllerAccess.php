@@ -8,11 +8,12 @@
 
 namespace humhub\components\access;
 
+use humhub\interfaces\StatableInterface;
 use humhub\modules\user\helpers\AuthHelper;
-use Yii;
 use humhub\modules\user\models\User;
-use yii\base\InvalidArgumentException;
+use Yii;
 use yii\base\BaseObject;
+use yii\base\InvalidArgumentException;
 use yii\web\Controller;
 
 /**
@@ -172,7 +173,13 @@ class ControllerAccess extends BaseObject
     /**
      * Only AJAX request is allowed for the actions
      */
-    const RULE_AJAX_ONLY = 'ajax';
+    public const RULE_AJAX_ONLY = 'ajax';
+
+    /**
+     * Only used internally, e.g. for an abstract class to force child classes to actually implement access control
+     * @since 1.15
+     */
+    public const RULE_ACCESS_DENIED = 'denied';
 
     /**
      * @var array fixed rules will always be added to the current rule set
@@ -287,6 +294,12 @@ class ControllerAccess extends BaseObject
             self::RULE_AJAX_ONLY => 'validateAjaxOnlyRequest',
             'reason' => Yii::t('error', 'The specified URL cannot be called directly.'),
             'code' => 405
+        ]);
+
+        $this->registerValidator([
+            self::RULE_ACCESS_DENIED => 'validateAccessDenied',
+            'reason' => Yii::t('error', 'Access has been categorically denied due to a configuration error.'),
+            'code' => 500
         ]);
     }
 
@@ -497,8 +510,8 @@ class ControllerAccess extends BaseObject
     public function validateDisabledUser()
     {
         return $this->isGuest() ||
-            ($this->user->status !== User::STATUS_DISABLED &&
-                $this->user->status !== User::STATUS_SOFT_DELETED);
+            ($this->user->status !== StatableInterface::STATE_DISABLED &&
+                $this->user->status !== StatableInterface::STATE_SOFT_DELETED);
     }
 
     /**
@@ -506,7 +519,7 @@ class ControllerAccess extends BaseObject
      */
     public function validateUnapprovedUser()
     {
-        return $this->isGuest() || $this->user->status !== User::STATUS_NEED_APPROVAL;
+        return $this->isGuest() || $this->user->status !== StatableInterface::STATE_NEEDS_APPROVAL;
     }
 
     /**
@@ -540,7 +553,17 @@ class ControllerAccess extends BaseObject
     {
         return !Yii::$app->settings->get('maintenanceMode') ||
             $this->isAdmin() ||
-            ($this->owner->module->id == 'user' && $this->owner->id == 'auth' && in_array($this->owner->action->id, ['login', 'external']));
+            ($this->owner->module->id === 'user' && $this->owner->id == 'auth' && $this->owner->action->id == 'login');
+    }
+
+    /**
+     * @return bool Denies access with a 500 Internal Server Error code
+     * @since 1.15
+     * @noinspection PhpUnused
+     */
+    public function validateAccessDenied(): bool
+    {
+        return false;
     }
 
     /**

@@ -9,6 +9,9 @@
 namespace humhub\modules\user\components;
 
 use humhub\events\ActiveQueryEvent;
+use humhub\interfaces\StatableActiveQueryInterface;
+use humhub\interfaces\StatableInterface;
+use humhub\libs\StatableActiveQueryTrait;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\AbstractActiveQueryContentContainer;
 use humhub\modules\user\models\fieldtype\BaseTypeVirtual;
@@ -25,18 +28,22 @@ use yii\db\ActiveQuery;
  * ActiveQueryUser is used to query User records.
  *
  * @author luke
+ *
+ * @property-read string[] $searchableFields
  */
-class ActiveQueryUser extends AbstractActiveQueryContentContainer
+class ActiveQueryUser extends AbstractActiveQueryContentContainer implements StatableActiveQueryInterface
 {
+    use StatableActiveQueryTrait;
+
     /**
      * @event Event an event that is triggered when only visible users are requested via [[visible()]].
      */
-    const EVENT_CHECK_VISIBILITY = 'checkVisibility';
+    public const EVENT_CHECK_VISIBILITY = 'checkVisibility';
 
     /**
      * @event Event an event that is triggered when only active users are requested via [[active()]].
      */
-    const EVENT_CHECK_ACTIVE = 'checkActive';
+    public const EVENT_CHECK_ACTIVE = 'checkActive';
 
     /**
      * Limit to active users
@@ -46,7 +53,8 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
     public function active()
     {
         $this->trigger(self::EVENT_CHECK_ACTIVE, new ActiveQueryEvent(['query' => $this]));
-        return $this->andWhere(['user.status' => UserModel::STATUS_ENABLED]);
+        //ToDo: MDR
+        return $this->andWhere(['user.status' => StatableInterface::STATE_ENABLED]);
     }
 
     /**

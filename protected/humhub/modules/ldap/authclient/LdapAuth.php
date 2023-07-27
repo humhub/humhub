@@ -9,7 +9,9 @@
 namespace humhub\modules\ldap\authclient;
 
 use DateTime;
+use humhub\interfaces\StatableInterface;
 use humhub\libs\StringHelper;
+use humhub\modules\ldap\components\ZendLdap;
 use humhub\modules\ldap\Module;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
@@ -20,14 +22,13 @@ use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use humhub\modules\user\services\AuthClientService;
+use Laminas\Ldap\Exception\LdapException;
+use Laminas\Ldap\Ldap;
+use Laminas\Ldap\Node;
 use Yii;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
-use Laminas\Ldap\Exception\LdapException;
-use Laminas\Ldap\Ldap;
-use humhub\modules\ldap\components\ZendLdap;
-use Laminas\Ldap\Node;
 
 /**
  * LDAP Authentication
@@ -518,14 +519,14 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
             if ($this->idAttribute !== null) {
                 foreach ((new AuthClientService($this))->getUsersQuery()->each() as $user) {
                     $foundInLdap = in_array($user->authclient_id, $ids);
-                    if ($foundInLdap && $user->status === User::STATUS_DISABLED) {
+                    if ($foundInLdap && $user->status === StatableInterface::STATE_DISABLED) {
                         // Enable disabled users that have been found in ldap
-                        $user->status = User::STATUS_ENABLED;
+                        $user->status = StatableInterface::STATE_ENABLED;
                         $user->save();
                         Yii::info('Enabled user' . $user->username . ' (' . $user->id . ') - found in LDAP!', 'ldap');
-                    } elseif (!$foundInLdap && $user->status == User::STATUS_ENABLED) {
+                    } elseif (!$foundInLdap && $user->status == StatableInterface::STATE_ENABLED) {
                         // Disable users that were not found in ldap
-                        $user->status = User::STATUS_DISABLED;
+                        $user->status = StatableInterface::STATE_DISABLED;
                         $user->save();
                         Yii::warning('Disabled user' . $user->username . ' (' . $user->id . ') - not found in LDAP!', 'ldap');
                     }

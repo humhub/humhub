@@ -10,7 +10,9 @@ namespace humhub\modules\installer\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\comment\models\Comment;
+use humhub\modules\content\models\ContentImage;
 use humhub\modules\like\models\Like;
 use humhub\modules\marketplace\Module;
 use humhub\modules\post\models\Post;
@@ -256,7 +258,7 @@ class ConfigController extends Controller
 
                 // Add sample image to admin
                 $admin = User::find()->where(['id' => 1])->one();
-                $adminImage = new \humhub\libs\ProfileImage($admin->guid);
+                $adminImage = new ContentImage($admin->guid);
                 $adminImage->setNew(Yii::getAlias("@webroot-static/resources/installer/user_male_1.jpg"));
 
                 $usersGroup = Group::findOne(['name' => 'Users']);
@@ -267,14 +269,14 @@ class ConfigController extends Controller
                 $profileModel = $userModel->profile;
                 $profileModel->scenario = 'registration';
 
-                $userModel->status = User::STATUS_ENABLED;
+                $userModel->status = StatableInterface::STATE_ENABLED;
                 $userModel->username = "david1986";
                 $userModel->email = "david.roberts@example.com";
                 $userModel->language = '';
                 $userModel->tagsField = ['Microsoft Office', 'Marketing', 'SEM', 'Digital Native'];
                 $userModel->save();
 
-                $profileImage = new \humhub\libs\ProfileImage($userModel->guid);
+                $profileImage = new ContentImage($userModel->guid);
                 $profileImage->setNew(Yii::getAlias("@webroot-static/resources/installer/user_male_2.jpg"));
 
                 $profileModel->user_id = $userModel->id;
@@ -297,14 +299,14 @@ class ConfigController extends Controller
                 $profileModel2 = $userModel2->profile;
                 $profileModel2->scenario = 'registration';
 
-                $userModel2->status = User::STATUS_ENABLED;
+                $userModel2->status = StatableInterface::STATE_ENABLED;
                 $userModel2->username = "sara1989";
                 $userModel2->email = "sara.schuster@example.com";
                 $userModel2->language = '';
                 $userModel2->tagsField = ['Yoga', 'Travel', 'English', 'German', 'French'];
                 $userModel2->save();
 
-                $profileImage2 = new \humhub\libs\ProfileImage($userModel2->guid);
+                $profileImage2 = new ContentImage($userModel2->guid);
                 $profileImage2->setNew(Yii::getAlias("@webroot-static/resources/installer/user_female_1.jpg"));
 
                 $profileModel2->user_id = $userModel2->id;
@@ -461,7 +463,7 @@ class ConfigController extends Controller
 
         if ($form->submitted('save') && $form->validate()) {
 
-            $form->models['User']->status = User::STATUS_ENABLED;
+            $form->models['User']->status = StatableInterface::STATE_ENABLED;
             $form->models['User']->language = '';
             $form->models['User']->tagsField = ['Administration', 'Support', 'HumHub'];
             $form->models['User']->save();

@@ -8,7 +8,8 @@
 
 namespace humhub\modules\content\components;
 
-use humhub\modules\content\models\Content;
+use humhub\interfaces\StatableActiveQueryInterface;
+use humhub\libs\StatableActiveQueryTrait;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;
 use humhub\modules\space\models\Space;
@@ -25,32 +26,19 @@ use yii\db\Expression;
  *
  * @author luke
  */
-class ActiveQueryContent extends ActiveQuery
+class ActiveQueryContent extends ActiveQuery implements StatableActiveQueryInterface
 {
+    use StatableActiveQueryTrait;
+
     /**
      * Own content scope for userRelated
      * @see ActiveQueryContent::userRelated
      */
-    const USER_RELATED_SCOPE_OWN = 1;
-    const USER_RELATED_SCOPE_SPACES = 2;
-    const USER_RELATED_SCOPE_FOLLOWED_SPACES = 3;
-    const USER_RELATED_SCOPE_FOLLOWED_USERS = 4;
-    const USER_RELATED_SCOPE_OWN_PROFILE = 5;
-
-    /**
-     * State filter that is used for queries. By default, only Published content is returned.
-     *
-     * Example to include drafts:
-     * ```
-     * $query = Post::find();
-     * $query->stateFilterCondition[] = ['content.state' => Content::STATE_DRAFT];
-     * $posts = $query->readable()->all();
-     * ```
-     *
-     * @since 1.14
-     * @var array
-     */
-    public $stateFilterCondition = ['OR', ['content.state' => Content::STATE_PUBLISHED]];
+    public const USER_RELATED_SCOPE_OWN = 1;
+    public const USER_RELATED_SCOPE_SPACES = 2;
+    public const USER_RELATED_SCOPE_FOLLOWED_SPACES = 3;
+    public const USER_RELATED_SCOPE_FOLLOWED_USERS = 4;
+    public const USER_RELATED_SCOPE_OWN_PROFILE = 5;
 
     /**
      * Only returns user readable records
@@ -64,8 +52,6 @@ class ActiveQueryContent extends ActiveQuery
         if ($user === null && !Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
         }
-
-        $this->andWhere($this->stateFilterCondition);
 
         $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
         $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::class]);
@@ -162,7 +148,7 @@ class ActiveQueryContent extends ActiveQuery
                 $contentTagQuery->andWhere('content_tag_relation.content_id=content.id');
                 $this->andWhere(['content.id' => $contentTagQuery]);
             }
-        } else if ($mode == 'OR') {
+        } elseif ($mode == 'OR') {
             $names = array_map(function ($v) {
                 return $v->name;
             }, $contentTags);
@@ -203,7 +189,7 @@ class ActiveQueryContent extends ActiveQuery
     public function userRelated($scopes = [], $user = null)
     {
         if ($user === null) {
-            if ( Yii::$app->user->isGuest) {
+            if (Yii::$app->user->isGuest) {
                 return $this->andWhere('false');
             }
 
@@ -268,5 +254,4 @@ class ActiveQueryContent extends ActiveQuery
 
         return $this;
     }
-
 }

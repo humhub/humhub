@@ -19,14 +19,14 @@ abstract class AbstractActiveQueryContentContainer extends ActiveQuery
      *
      * @var int
      */
-    const MAX_SEARCH_NEEDLES = 5;
+    public const MAX_SEARCH_NEEDLES = 5;
 
     /**
      * During search, keyword will be walked through and each character of the set will be changed to another
      * of the same set to create variants to maximise search.
      * @var array
      */
-    protected $multiCharacterSearchVariants = [['\'', '’', '`'], ['"', '”', '“']];
+    protected array $multiCharacterSearchVariants = [['\'', '’', '`'], ['"', '”', '“']];
 
     /**
      * Filter query by visible records for the given or current user

@@ -10,6 +10,7 @@ namespace humhub\modules\content\jobs;
 
 use DateTime;
 use DateTimeZone;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\queue\ActiveJob;
 
@@ -25,7 +26,7 @@ class PublishScheduledContents extends ActiveJob
 
         /* @var Content[] $contents*/
         $contents = Content::find()
-            ->where(['state' => Content::STATE_SCHEDULED])
+            ->where(['state' => StatableInterface::STATE_SCHEDULED])
             ->andWhere(['<=', 'scheduled_at', $now->format('Y-m-d H:i:s')])
             ->all();
 

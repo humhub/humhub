@@ -11,6 +11,7 @@ namespace humhub\modules\user\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\components\Response;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\user\authclient\AuthAction;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\events\UserEvent;
@@ -198,7 +199,7 @@ class AuthController extends Controller
         }
 
         $authClientService = new AuthClientService($authClient);
-        $tokenRegistrationService = new InviteRegistrationService((string)Yii::$app->request->get('token'));
+        $tokenRegistrationService = new InviteRegistrationService((string) Yii::$app->request->get('token'));
         $linkRegistrationService = LinkRegistrationService::createFromRequest();
 
         if (!$tokenRegistrationService->isValid() && !$linkRegistrationService->isValid() && !$authClientService->allowSelfRegistration()) {
@@ -278,11 +279,11 @@ class AuthController extends Controller
         $success = false;
         $this->trigger(static::EVENT_BEFORE_CHECKING_USER_STATUS, new UserEvent(['user' => $user]));
 
-        if ($user->status == User::STATUS_ENABLED) {
+        if ($user->status == StatableInterface::STATE_ENABLED) {
             [$success, $redirectUrl] = $this->doLogin($user, $authClient, $redirectUrl);
-        } elseif ($user->status == User::STATUS_DISABLED) {
+        } elseif ($user->status == StatableInterface::STATE_DISABLED) {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account is disabled!'));
-        } elseif ($user->status == User::STATUS_NEED_APPROVAL) {
+        } elseif ($user->status == StatableInterface::STATE_NEEDS_APPROVAL) {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account is not approved yet!'));
         } else {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Unknown user status!'));

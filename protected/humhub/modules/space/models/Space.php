@@ -9,9 +9,12 @@
 namespace humhub\modules\space\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\models\ContentImage;
+use humhub\modules\file\models\AttachedImage;
 use humhub\modules\search\events\SearchAddEvent;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\jobs\DeleteDocument;
@@ -22,8 +25,10 @@ use humhub\modules\space\behaviors\SpaceModelMembership;
 use humhub\modules\space\components\ActiveQuerySpace;
 use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\Module;
+use humhub\modules\space\modules\manage\controllers\ImageController;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
+use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\space\widgets\Wall;
 use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\helpers\AuthHelper;
@@ -31,6 +36,7 @@ use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\GroupSpace;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
+use Throwable;
 use Yii;
 
 /**
@@ -45,7 +51,6 @@ use Yii;
  * @property integer $join_policy
  * @property integer $visibility
  * @property integer $status
- * @property integer $sort_order
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
@@ -62,30 +67,29 @@ use Yii;
  */
 class Space extends ContentContainerActiveRecord implements Searchable
 {
-
     // Join Policies
-    const JOIN_POLICY_NONE = 0; // No Self Join Possible
-    const JOIN_POLICY_APPLICATION = 1; // Invitation and Application Possible
-    const JOIN_POLICY_FREE = 2; // Free for All
+    public const JOIN_POLICY_NONE = 0; // No Self Join Possible
+    public const JOIN_POLICY_APPLICATION = 1; // Invitation and Application Possible
+    public const JOIN_POLICY_FREE = 2; // Free for All
     // Visibility: Who can view the space content.
-    const VISIBILITY_NONE = 0; // Private: This space is invisible for non-space-members
-    const VISIBILITY_REGISTERED_ONLY = 1; // Only registered users (no guests)
-    const VISIBILITY_ALL = 2; // Public: All Users (Members and Guests)
+    public const VISIBILITY_NONE = 0; // Private: This space is invisible for non-space-members
+    public const VISIBILITY_REGISTERED_ONLY = 1; // Only registered users (no guests)
+    public const VISIBILITY_ALL = 2; // Public: All Users (Members and Guests)
     // Status
-    const STATUS_DISABLED = 0;
-    const STATUS_ENABLED = 1;
-    const STATUS_ARCHIVED = 2;
+    public const STATUS_DISABLED = 0;
+    public const STATUS_ENABLED = 1;
+    public const STATUS_ARCHIVED = 2;
     // UserGroups
-    const USERGROUP_OWNER = 'owner';
-    const USERGROUP_ADMIN = 'admin';
-    const USERGROUP_MODERATOR = 'moderator';
-    const USERGROUP_MEMBER = 'member';
-    const USERGROUP_USER = 'user';
-    const USERGROUP_GUEST = 'guest';
+    public const USERGROUP_OWNER = 'owner';
+    public const USERGROUP_ADMIN = 'admin';
+    public const USERGROUP_MODERATOR = 'moderator';
+    public const USERGROUP_MEMBER = 'member';
+    public const USERGROUP_USER = 'user';
+    public const USERGROUP_GUEST = 'guest';
     // Model Scenarios
-    const SCENARIO_CREATE = 'create';
-    const SCENARIO_EDIT = 'edit';
-    const SCENARIO_SECURITY_SETTINGS = 'security_settings';
+    public const SCENARIO_CREATE = 'create';
+    public const SCENARIO_EDIT = 'edit';
+    public const SCENARIO_SECURITY_SETTINGS = 'security_settings';
 
     /**
      * @inheritdoc
@@ -96,6 +100,13 @@ class Space extends ContentContainerActiveRecord implements Searchable
      * @inheritdoc
      */
     public $defaultRoute = '/space/space';
+
+    protected string $headerImageUploadUrl       = '/space/manage/image/upload';
+    protected string $headerImageCropUrl         = '/space/manage/image/crop';
+    protected string $headerImageDeleteUrl       = '/space/manage/image/delete';
+    protected string $headerControlViewPath      = '@space/widgets/views/profileHeaderControls.php';
+    protected string $headerClassPrefix          = 'space';
+    public string $headerImageControllerClass = ImageController::class;
 
     /**
      * @var AdvancedSettings|null
@@ -116,7 +127,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     public function rules()
     {
         $rules = [
-            [['join_policy', 'visibility', 'status', 'sort_order', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
+            [['join_policy', 'visibility', 'status', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
             [['name'], 'required'],
             [['description', 'about', 'color'], 'string'],
             [['tagsField', 'blockedUsersField'], 'safe'],
@@ -264,7 +275,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             // Auto add creator as admin
             $this->addMember($user->id, 1, true, self::USERGROUP_ADMIN);
 
-            $activity = new Created;
+            $activity = new Created();
             $activity->source = $this;
             $activity->originator = $user;
             $activity->create();
@@ -425,7 +436,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     public function archive()
     {
         $this->status = self::STATUS_ARCHIVED;
-        $this->save(false); // disable validation to force archiving even if some fields are not valid such as too long description, as the archive button is not part of the space settings form and validation errors are not displayed
+        $this->save();
     }
 
     /**
@@ -492,11 +503,12 @@ class Space extends ContentContainerActiveRecord implements Searchable
     }
 
     /**
+     * @param string|null $defaultImage
      * @inheritDoc
      */
-    public function getProfileImage()
+    public function getProfileImage(?string $defaultImage = 'default_space'): ContentImage
     {
-        return new $this->profileImageClass($this, 'default_space');
+        return $this->profileImage ??= parent::getProfileImage($defaultImage);
     }
 
     /**
@@ -679,7 +691,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             ->andWhere(['IN', 'group_id', [self::USERGROUP_ADMIN, self::USERGROUP_MODERATOR]])
             ->andWhere(['space_id' => $this->id])
             ->andWhere(['!=', 'user_id', $owner->id])
-            ->andWhere(['user.status' => User::STATUS_ENABLED])
+            ->andWhere(['user.status' => StatableInterface::STATE_ENABLED])
         ;
 
         foreach ($query->all() as $membership) {
@@ -707,5 +719,23 @@ class Space extends ContentContainerActiveRecord implements Searchable
     public function isModuleEnabled($id)
     {
         return $this->moduleManager->isEnabled($id);
+    }
+
+    /**
+     * @pinheritdoc
+     * @throws Throwable
+     * @since 1.15
+     */
+    public function renderAttachedImage(array $widgetOptions, array $imageOptions, AttachedImage $image): string
+    {
+        $widgetOptions['space']       = $this;
+        $widgetOptions['htmlOptions'] = $imageOptions;
+
+        return SpaceImage::widget($widgetOptions);
+    }
+
+    protected function canEditHeaderImages(): bool
+    {
+        return !Yii::$app->user->isGuest && $this->isAdmin();
     }
 }

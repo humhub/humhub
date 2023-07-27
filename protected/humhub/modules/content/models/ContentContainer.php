@@ -10,7 +10,9 @@ namespace humhub\modules\content\models;
 
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\space\models\Space;
+use humhub\modules\file\models\AttachedImageIntermediateInterface;
+use humhub\modules\file\models\AttachedImageOwnerInterface;
+use yii\base\InvalidCallException;
 use yii\db\ActiveRecord;
 
 /**
@@ -24,9 +26,8 @@ use yii\db\ActiveRecord;
  * @property string $tags_cached readonly, a comma separted list of assigned tags
  * @mixin PolymorphicRelation
  */
-class ContentContainer extends ActiveRecord
+class ContentContainer extends ActiveRecord implements AttachedImageIntermediateInterface
 {
-
     /**
      * @inheritdoc
      */
@@ -88,5 +89,15 @@ class ContentContainer extends ActiveRecord
     {
         $instance = static::findOne(['guid' => $guid]);
         return $instance ? $instance->getPolymorphicRelation() : null;
+    }
+
+    public function findImageOwner(): ?AttachedImageOwnerInterface
+    {
+        return static::findRecord($this->guid);
+    }
+
+    public static function getImageOwnerClass(): string
+    {
+        throw new InvalidCallException(sprintf('Method %s must be implemented by subclass', __METHOD__));
     }
 }

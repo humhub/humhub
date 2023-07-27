@@ -49,7 +49,7 @@ class TextConverter extends BaseConverter
     /**
      * @inheritdoc
      */
-    public function getId()
+    public function getId(): string
     {
         return 'text';
     }
@@ -76,12 +76,12 @@ class TextConverter extends BaseConverter
     /**
      * @inheritdoc
      */
-    protected function convert($fileName)
+    protected function convert(?string $fileName = null): BaseConverter
     {
-        $convertedFile = $this->file->store->get($fileName);
+        $convertedFile = $this->file->store->get($fileName ?? $this->getId());
 
         if (is_file($convertedFile)) {
-            return;
+            return $this;
         }
 
         $textContent = '';
@@ -101,6 +101,8 @@ class TextConverter extends BaseConverter
                 file_put_contents($convertedFile, $textContent);
             }
         }
+
+        return $this;
     }
 
     /**

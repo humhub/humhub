@@ -2,14 +2,15 @@
 
 namespace humhub\modules\content\widgets\richtext\extensions\file;
 
+use humhub\components\ActiveRecord;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtensionMatch;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\models\FileUpload;
+use humhub\modules\file\models\forms\FileUploadInterface;
 use Yii;
-use humhub\components\ActiveRecord;
 use yii\web\UploadedFile;
 
 /**
@@ -109,8 +110,10 @@ class FileExtension extends RichTextLinkExtension
 
     /**
      * Parses the base64 data string and creates and attaches the file to the record
+     *
      * @param $dataStr
-     * @return bool|FileUpload
+     *
+     * @return bool|FileUploadInterface
      */
     private function parseBase64Data($dataStr, ActiveRecord $record)
     {

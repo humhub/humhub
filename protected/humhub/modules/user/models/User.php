@@ -9,13 +9,15 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\interfaces\StatableInterface;
+use humhub\libs\StatableTrait;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
-use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
+use humhub\modules\file\models\AttachedImage;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\search\events\SearchAddEvent;
 use humhub\modules\search\interfaces\Searchable;
@@ -28,10 +30,13 @@ use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\behaviors\ProfileController;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\controllers\ImageController;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
+use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\user\services\PasswordRecoveryService;
+use humhub\modules\user\services\UserStateService;
 use humhub\modules\user\widgets\UserWall;
 use Yii;
 use yii\base\Exception;
@@ -61,61 +66,55 @@ use yii\web\IdentityInterface;
  * @property integer $contentcontainer_id
  * @property Profile $profile
  * @property Password $currentPassword
- * @property Auth[] $auths
+ *
  * @property string $displayName
  * @property string $displayNameSub
  * @mixin Followable
  */
-class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
+class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable, StatableInterface
 {
-    /**
-     * User Status Flags
-     */
-    const STATUS_DISABLED = 0;
-    const STATUS_ENABLED = 1;
-    const STATUS_NEED_APPROVAL = 2;
-    const STATUS_SOFT_DELETED = 3;
+    use StatableTrait;
 
     /**
      * Visibility Modes
      */
-    const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members
-    const VISIBILITY_ALL = 2; // Visible for all (also guests)
-    const VISIBILITY_HIDDEN = 3; // Invisible
+    public const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members
+    public const VISIBILITY_ALL = 2; // Visible for all (also guests)
+    public const VISIBILITY_HIDDEN = 3; // Invisible
 
     /**
      * User Markdown Editor Modes
      */
-    const EDITOR_RICH_TEXT = 0;
-    const EDITOR_PLAIN = 1;
+    public const EDITOR_RICH_TEXT = 0;
+    public const EDITOR_PLAIN = 1;
 
     /**
      * User Groups
      */
-    const USERGROUP_SELF = 'u_self';
-    const USERGROUP_FRIEND = 'u_friend';
-    const USERGROUP_USER = 'u_user';
-    const USERGROUP_GUEST = 'u_guest';
+    public const USERGROUP_SELF = 'u_self';
+    public const USERGROUP_FRIEND = 'u_friend';
+    public const USERGROUP_USER = 'u_user';
+    public const USERGROUP_GUEST = 'u_guest';
 
     /**
      * Scenarios
      */
-    const SCENARIO_EDIT_ADMIN = 'editAdmin';
-    const SCENARIO_LOGIN = 'login';
-    const SCENARIO_REGISTRATION = 'registration';
-    const SCENARIO_REGISTRATION_EMAIL = 'registration_email';
-    const SCENARIO_EDIT_ACCOUNT_SETTINGS = 'editAccountSettings';
-    const SCENARIO_APPROVE = 'approve';
+    public const SCENARIO_EDIT_ADMIN = 'editAdmin';
+    public const SCENARIO_LOGIN = 'login';
+    public const SCENARIO_REGISTRATION = 'registration';
+    public const SCENARIO_REGISTRATION_EMAIL = 'registration_email';
+    public const SCENARIO_EDIT_ACCOUNT_SETTINGS = 'editAccountSettings';
+    public const SCENARIO_APPROVE = 'approve';
 
     /**
      * @event Event an event that is triggered when the user visibility is checked via [[isVisible()]].
      */
-    const EVENT_CHECK_VISIBILITY = 'checkVisibility';
+    public const EVENT_CHECK_VISIBILITY = 'checkVisibility';
 
     /**
      * @event UserEvent an event that is triggered when the user is soft deleted (without contents) and also before complete deletion.
      */
-    const EVENT_BEFORE_SOFT_DELETE = 'beforeSoftDelete';
+    public const EVENT_BEFORE_SOFT_DELETE = 'beforeSoftDelete';
 
     /**
      * A initial group for the user assigned while registration.
@@ -138,6 +137,13 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      * @var string
      */
     public $defaultRoute = '/user/profile';
+
+    protected string $headerImageUploadUrl       = '/user/image/upload';
+    protected string $headerImageCropUrl         = '/user/image/crop';
+    protected string $headerImageDeleteUrl       = '/user/image/delete';
+    protected string $headerControlViewPath      = '@user/widgets/views/profileHeaderControls.php';
+    protected string $headerClassPrefix          = 'profile';
+    public string $headerImageControllerClass = ImageController::class;
 
     /**
      * @inheritdoc
@@ -256,12 +262,14 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function __get($name)
     {
-        if ($name == 'super_admin') {
+        if ($name === 'super_admin') {
             /**
              * Replacement for old super_admin flag version
              */
             return $this->isSystemAdmin();
-        } elseif ($name == 'profile') {
+        }
+
+        if ($name === 'profile') {
             /**
              * Ensure there is always a related Profile Model also when it's
              * not really exists yet.
@@ -349,7 +357,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         return Yii::createObject(ActiveQueryUser::class, [get_called_class()]);
     }
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -446,7 +454,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function isActive()
     {
-        return $this->status === User::STATUS_ENABLED;
+        return $this->status === StatableInterface::STATE_ENABLED;
     }
 
     /**
@@ -459,7 +467,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     {
         $event = new UserEvent(['user' => $this, 'result' => ['isVisible' => true]]);
         $this->trigger(self::EVENT_CHECK_VISIBILITY, $event);
-        if ($event->result['isVisible'] && $this->isActive() && $this->visibility !== self::VISIBILITY_HIDDEN) {
+        if ($event->value['isVisible'] && $this->isActive() && $this->visibility !== self::VISIBILITY_HIDDEN) {
             return true;
         }
 
@@ -484,6 +492,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      *
      * @throws Exception
+     * @throws \Throwable
      * @since 1.3
      */
     public function softDelete()
@@ -525,7 +534,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $this->updateAttributes([
             'email' => new Expression('NULL'),
             'username' => 'deleted-' . $this->id,
-            'status' => User::STATUS_SOFT_DELETED,
+            'status' => StatableInterface::STATE_SOFT_DELETED,
             'authclient_id' => new Expression('NULL')
         ]);
 
@@ -555,7 +564,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             }
 
             if ($this->status == '') {
-                $this->status = self::STATUS_ENABLED;
+                $this->status = StatableInterface::STATE_ENABLED;
             }
         }
 
@@ -583,7 +592,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $this->updateSearch();
 
         if ($insert) {
-            if ($this->status == User::STATUS_NEED_APPROVAL) {
+            if ($this->status == StatableInterface::STATE_NEEDS_APPROVAL) {
                 Group::notifyAdminsForUserApproval($this);
             }
             $this->profile->user_id = $this->id;
@@ -594,10 +603,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
         // When insert an "::STATUS_ENABLED" user or update a user from status "::STATUS_NEED_APPROVAL" to "::STATUS_ENABLED"
         if (
-            $this->status == User::STATUS_ENABLED &&
+            $this->status == StatableInterface::STATE_ENABLED &&
             (
                 $insert ||
-                (isset($changedAttributes['status']) && $changedAttributes['status'] == User::STATUS_NEED_APPROVAL)
+                (isset($changedAttributes['status']) && $changedAttributes['status'] == StatableInterface::STATE_NEEDS_APPROVAL)
             )
         ) {
             $this->setUpApproved();
@@ -1005,16 +1014,30 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
     }
 
+    /**
+     * @return string
+     */
+    public static function getStateServiceClass(): string
+    {
+        return UserStateService::class;
+    }
+
+    /**
+     * ToDo: MDR -> use interface, use UserStateService
+     * @param bool $withDeleted
+     *
+     * @return array
+     */
     public static function getStatusOptions(bool $withDeleted = true): array
     {
         $options = [
-            self::STATUS_ENABLED => Yii::t('AdminModule.user', 'Enabled'),
-            self::STATUS_DISABLED => Yii::t('AdminModule.user', 'Disabled'),
-            self::STATUS_NEED_APPROVAL => Yii::t('AdminModule.user', 'Unapproved'),
+            StatableInterface::STATE_ENABLED => Yii::t('AdminModule.user', 'Enabled'),
+            StatableInterface::STATE_DISABLED => Yii::t('AdminModule.user', 'Disabled'),
+            StatableInterface::STATE_NEEDS_APPROVAL => Yii::t('AdminModule.user', 'Unapproved'),
         ];
 
         if ($withDeleted) {
-            $options[self::STATUS_SOFT_DELETED] = Yii::t('AdminModule.user', 'Deleted');
+            $options[StatableInterface::STATE_SOFT_DELETED] = Yii::t('AdminModule.user', 'Deleted');
         }
 
         return $options;
@@ -1040,5 +1063,28 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public function getPasswordRecoveryService(): PasswordRecoveryService
     {
         return new PasswordRecoveryService($this);
+    }
+
+
+    public function renderAttachedImage(array $widgetOptions, array $imageOptions, AttachedImage $image): string
+    {
+        $htmlOptions = [];
+
+        if (isset($imageOptions['htmlOptions'])) {
+            $htmlOptions = $imageOptions['htmlOptions'];
+            unset($imageOptions['htmlOptions']);
+        }
+
+        $widgetOptions['user']         = $this;
+        $widgetOptions['imageOptions'] = $imageOptions;
+        $widgetOptions['htmlOptions']  = $htmlOptions;
+
+        return UserImage::widget($widgetOptions);
+    }
+
+    protected function canEditHeaderImages(): bool
+    {
+        /** @TODO move this out of ImageController layer... */
+        return ImageController::canEditProfileImage($this);
     }
 }

@@ -10,11 +10,11 @@ namespace humhub\modules\user\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\models\Invite;
-use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\InviteRegistrationService;
 use humhub\modules\user\services\LinkRegistrationService;
@@ -103,7 +103,7 @@ class RegistrationController extends Controller
             Yii::$app->session->remove('authClient');
 
             // Autologin when user is enabled (no approval required)
-            if ($registration->getUser()->status === User::STATUS_ENABLED) {
+            if ($registration->getUser()->status === StatableInterface::STATE_ENABLED) {
                 $registration->getUser()->refresh(); // https://github.com/humhub/humhub/issues/6273
                 Yii::$app->user->login($registration->getUser());
                 if (Yii::$app->request->getIsAjax()) {
@@ -114,7 +114,7 @@ class RegistrationController extends Controller
 
             return $this->render('success', [
                 'form' => $registration,
-                'needApproval' => ($registration->getUser()->status === User::STATUS_NEED_APPROVAL)
+                'needApproval' => ($registration->getUser()->status === StatableInterface::STATE_NEEDS_APPROVAL)
             ]);
         }
 

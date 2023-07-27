@@ -214,7 +214,7 @@ abstract class AbstractRichText extends JsWidget
         $evt = new Event(['result' => array_merge($result, ['text' => $text, 'record' => $record, 'attribute' => $attribute])]);
         Event::trigger(static::class, static::EVENT_POST_PROCESS, $evt);
 
-        return $evt->result;
+        return $evt->getValue();
     }
 
     /**

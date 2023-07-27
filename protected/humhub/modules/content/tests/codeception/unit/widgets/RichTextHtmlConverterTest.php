@@ -8,6 +8,7 @@
 
 namespace tests\codeception\unit\modules\content\widgets;
 
+use humhub\interfaces\StatableInterface;
 use humhub\libs\EmojiMap;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
@@ -307,7 +308,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     public function testMentionInActiveUser()
     {
         $user = User::findOne(['id' => 2]);
-        $user->updateAttributes(['status' => User::STATUS_DISABLED]);
+        $user->updateAttributes(['status' => StatableInterface::STATE_DISABLED]);
 
         $this->assertConversionResult(
             'Test mention ' . MentioningExtension::buildMentioning($user),

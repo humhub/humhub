@@ -28,14 +28,17 @@ use yii\helpers\Html;
 
 ContainerHeaderAsset::register($this);
 
+$contentImage = $container->getProfileImage();
+$contentBanner = $container->getProfileBannerImage();
+
 // if the default banner image is displaying change padding to the lower image height
-$bannerProgressBarPadding = $container->getProfileBannerImage()->hasImage() ? '90px 350px' : '50px 350px';
+$bannerProgressBarPadding = $contentBanner->hasImage() ? '90px 350px' : '50px 350px';
 $bannerUpload = Upload::withName($coverUploadName, ['url' => $coverUploadUrl]);
 
 $profileImageUpload = Upload::withName($imageUploadName, ['url' => $imageUploadUrl]);
 
-$profileImageWidth = $container->getProfileImage()->width();
-$profileImageHeight = $container->getProfileImage()->height();
+$profileImageWidth = $contentImage->width;
+$profileImageHeight = $contentImage->height;
 ?>
 
 <?= Html::beginTag('div', $options) ?>
@@ -44,7 +47,7 @@ $profileImageHeight = $container->getProfileImage()->height();
 
     <div class="image-upload-container profile-banner-image-container">
         <!-- profile image output-->
-        <?= $container->getProfileBannerImage()->render('width:100%', ['class' => 'img-profile-header-background']) ?>
+        <?= $contentBanner->render('100%', ['class' => 'img-profile-header-background']) ?>
 
         <!-- show user name and title -->
         <div class="img-profile-data">
@@ -52,16 +55,16 @@ $profileImageHeight = $container->getProfileImage()->height();
             <h2 class="<?= $classPrefix ?>"><?= Html::encode($subTitle) ?></h2>
         </div>
 
-        <?php if ($canEdit) : ?>
+        <?php if ($canEdit): ?>
             <div class="image-upload-loader" style="padding:<?= $bannerProgressBarPadding ?>">
                 <?= $bannerUpload->progress() ?>
             </div>
         <?php endif; ?>
 
-        <?php if ($canEdit) : ?>
+        <?php if ($canEdit): ?>
             <?= $this->render('containerProfileImageMenu', [
                 'upload' => $bannerUpload,
-                'hasImage' => $container->getProfileBannerImage()->hasImage(),
+                'hasImage' => $contentBanner->hasImage(),
                 'cropUrl' => $coverCropUrl,
                 'deleteUrl' => $coverDeleteUrl,
                 'dropZone' => '.profile-banner-image-container',
@@ -73,22 +76,22 @@ $profileImageHeight = $container->getProfileImage()->height();
     <div class="image-upload-container profile-user-photo-container"
          style="width: <?= $profileImageWidth ?>px; height: <?= $profileImageHeight ?>px;">
 
-        <?php if ($container->getProfileImage()->hasImage()) : ?>
-            <a data-ui-gallery="spaceHeader" href="<?= $container->profileImage->getUrl('_org') ?>">
-                <?= $container->getProfileImage()->render($profileImageWidth - 10, ['class' => 'img-profile-header-background profile-user-photo', 'link' => false]) ?>
+        <?php if ($contentImage->hasImage()): ?>
+            <a data-ui-gallery="spaceHeader" href="<?= $container->profileImage->getUrl('_original') ?>">
+                <?= $contentImage->render($profileImageWidth - 10, ['class' => 'img-profile-header-background profile-user-photo', 'link' => false]) ?>
             </a>
-        <?php else : ?>
-            <?= $container->getProfileImage()->render($profileImageHeight - 10, ['class' => 'img-profile-header-background profile-user-photo']) ?>
+        <?php else: ?>
+            <?= $contentImage->render($profileImageHeight - 10, ['class' => 'img-profile-header-background profile-user-photo']) ?>
         <?php endif; ?>
 
-        <?php if ($canEdit) : ?>
+        <?php if ($canEdit): ?>
             <div class="image-upload-loader" style="padding-top: 60px;">
                 <?= $profileImageUpload->progress() ?>
             </div>
 
             <?= $this->render('containerProfileImageMenu', [
                 'upload' => $profileImageUpload,
-                'hasImage' => $container->getProfileImage()->hasImage(),
+                'hasImage' => $contentImage->hasImage(),
                 'deleteUrl' => $imageDeleteUrl,
                 'cropUrl' => $imageCropUrl,
                 'dropZone' => '.profile-user-photo-container',

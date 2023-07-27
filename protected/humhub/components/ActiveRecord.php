@@ -8,9 +8,9 @@
 
 namespace humhub\components;
 
-use Yii;
-use humhub\modules\user\models\User;
 use humhub\modules\file\components\FileManager;
+use humhub\modules\user\models\User;
+use Yii;
 use yii\base\InvalidConfigException;
 use yii\db\ColumnSchema;
 use yii\db\Expression;
@@ -22,10 +22,11 @@ use yii\validators\Validator;
  * @property FileManager $fileManager
  * @property User $createdBy
  * @property User $updatedBy
- * @author luke
+ * @property-read String $uniqueId
  */
 class ActiveRecord extends \yii\db\ActiveRecord
 {
+    use ModelTrait;
 
     /**
      * @var \humhub\modules\file\components\FileManager
@@ -41,7 +42,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     /**
      * @event Event is used to append rules what defined in [[rules()]].
      */
-    const EVENT_APPEND_RULES = 'appendRules';
+    public const EVENT_APPEND_RULES = 'appendRules';
 
     /**
      * @inheritdoc
@@ -61,7 +62,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
         if ($this->hasAttribute('updated_at')) {
             $this->updated_at = date('Y-m-d H:i:s');
         }
-        if (isset(Yii::$app->user->id) && $this->hasAttribute('updated_by')) {
+        if (isset(Yii::$app->user) && $this->hasAttribute('updated_by')) {
             $this->updated_by = Yii::$app->user->id;
         }
 
@@ -77,7 +78,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
             $this->created_at = date('Y-m-d H:i:s');
         }
 
-        if($this->hasAttribute('updated_at') && $this->updated_at instanceof Expression) {
+        if ($this->hasAttribute('updated_at') && $this->updated_at instanceof Expression) {
             $this->updated_at = date('Y-m-d H:i:s');
         }
 
@@ -180,7 +181,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function __unserialize($unserializedArr)
     {
         $this->init();
-        $this->setAttributes($unserializedArr['attributes'],false);
+        $this->setAttributes($unserializedArr['attributes'], false);
         $this->setOldAttributes($unserializedArr['oldAttributes']);
     }
 
@@ -202,8 +203,8 @@ class ActiveRecord extends \yii\db\ActiveRecord
         $event = new Event();
         $this->trigger(self::EVENT_APPEND_RULES, $event);
 
-        if (is_array($event->result)) {
-            foreach ($event->result as $rule) {
+        if (is_array($rules = $event->getValue())) {
+            foreach ($rules as $rule) {
                 if ($rule instanceof Validator) {
                     $validators->append($rule);
                 } elseif (is_array($rule) && isset($rule[0], $rule[1])) { // attributes, validator type
