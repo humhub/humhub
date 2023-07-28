@@ -239,16 +239,14 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     public function afterSave($insert, $changedAttributes)
     {
         if (array_key_exists('state', $changedAttributes)) {
-            $model = $this->getPolymorphicRelation();
+            // Run process for new content(Send notifications) only after changing state
+            $this->processNewContent();
 
-            if ($this->getStateService()->isPublished()) {
-                // Run process for new content(Send notifications) only after publishing the Content
-                $this->processNewContent();
-                // Also run process for parent object in order to send notifications like mentioning users,
-                // for case when it was not published on creating
-                if (!$insert && $model instanceof ActiveRecord) {
-                    $model->afterSave(false, []);
-                }
+            $model = $this->getModel();
+            if (!$insert && $model instanceof ContentActiveRecord && $this->getStateService()->isPublished()) {
+                // Run process to send notifications like mentioning users, for cases when
+                // it was not published on creating or on updating published Content
+                $model->afterSave(false, []);
             }
 
             $previousState = $changedAttributes['state'] ?? null;
@@ -274,6 +272,16 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
 
     private function processNewContent()
     {
+        if (!$this->getStateService()->isPublished()) {
+            // Don't notify about not published Content
+            return;
+        }
+
+        if ($this->getStateService()->wasPublished()) {
+            // No need to notify twice for already published Content before
+            return;
+        }
+
         $record = $this->getModel();
 
         Yii::debug('Process new content: ' . get_class($record) . ' ID: ' . $record->getPrimaryKey(), 'content');

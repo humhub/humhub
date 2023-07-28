@@ -8,6 +8,8 @@
 namespace humhub\modules\content\services;
 
 use humhub\libs\DbDateValidator;
+use humhub\modules\activity\helpers\ActivityHelper;
+use humhub\modules\content\activities\ContentCreated;
 use humhub\modules\content\models\Content;
 use yii\base\Component;
 
@@ -77,6 +79,22 @@ class ContentStateService extends Component
     public function isPublished(): bool
     {
         return $this->is(Content::STATE_PUBLISHED);
+    }
+
+    public function wasPublished(): bool
+    {
+        $activityQuery = ActivityHelper::getActivitiesQuery($this->content->getPolymorphicRelation());
+
+        if ($activityQuery === null) {
+            return false;
+        }
+
+        $contentCreatedActivity = new ContentCreated();
+
+        return $activityQuery
+            ->andWhere(['class' => get_class($contentCreatedActivity)])
+            ->andWhere(['module' => $contentCreatedActivity->moduleId])
+            ->exists();
     }
 
     public function isDraft(): bool
