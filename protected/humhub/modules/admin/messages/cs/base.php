@@ -75,4 +75,6 @@ return [
     'Updates available for {count} of your modules' => '',
     'Version' => '',
     'Visit Marketplace' => '',
+    'You do not have the permission to configure modules. Please contact the administrator for further information.' => '',
+    'You do not have the permission to manage modules. Please contact the administrator for further information.' => '',
 ];
