@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: buddha
- * Date: 02.02.2019
- * Time: 13:31
- */
 
 namespace humhub\widgets;
 
@@ -18,8 +12,6 @@ namespace humhub\widgets;
  */
 interface Reloadable
 {
-    /**
-     * @return string|array url used to reload this widget
-     */
+    // @return string|array url used to reload this widget
     public function getReloadUrl();
 }
