@@ -12,6 +12,8 @@ namespace humhub\widgets;
  */
 interface Reloadable
 {
-    // @return string|array url used to reload this widget
+    /**
+     * @return string|array url used to reload this widget
+     */
     public function getReloadUrl();
 }
