@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.15.0 (Unreleased)
--------------------
+1.15.0-beta.1 (July 31, 2023)
+-----------------------------
 - Fix #6461: Test server support to serve web module's `/manifest.json`, `/sw.js`, & `/offline.pwa.html`
 - Enh #6460: Test server output: print application requests
 - Fix #6423: log.fata in frontend logging is redirected to log.fatal, which did not work
