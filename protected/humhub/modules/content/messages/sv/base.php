@@ -2,7 +2,6 @@
 
 return [
     '(Also visible to non-members of this space)' => '(Även synligt för personer som inte är medlemmar i detta forum)',
-    '<strong>Confirm</strong> post deletion' => '<strong>Bekräfta</strong> radering av inlägg',
     '<strong>Delete</strong> content?' => '<strong>Ta bort</strong> innehåll?',
     '<strong>Move</strong> content' => '<strong>Flytta</strong> Innehåll',
     '<strong>Permalink</strong> to this post' => '<strong>Permalänk</strong> till det här inlägget',
@@ -29,7 +28,6 @@ return [
     'Creation time' => 'Skapad',
     'Delete' => 'Ta bort',
     'Deleted' => 'Raderat',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'Vill du verkligen radera det här inlägget? Alla gillanden samt kommentarer tas bort!',
     'Edit' => 'Ändra',
     'Enable' => 'Aktivera',
     'Filter' => 'Filtrera',
@@ -100,11 +98,15 @@ return [
     'Activate scheduling' => '',
     'Cannot notify the author.' => '',
     'Create as draft' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'Note: Due to technical reasons there may be a delay of a few minutes.' => '',
     'Publish draft' => '',
+    'Save as draft' => '',
+    'Save scheduling' => '',
     'Schedule publication' => '',
-    'Scheduled at {dateTime}' => '',
+    'Scheduled for {dateTime}' => '',
+    'The content cannot be published!' => '',
     'The content has been successfully published.' => '',
 ];

@@ -15,6 +15,14 @@ namespace humhub\components;
  */
 class Response extends \yii\web\Response
 {
+    public function init()
+    {
+        if (defined('YII_ENV_TEST') && YII_ENV_TEST && class_exists('indexTextResponseCode', false)) {
+            \indexTextResponseCode::$response = $this;
+        }
+
+        parent::init();
+    }
 
     /**
      * @inheritdoc

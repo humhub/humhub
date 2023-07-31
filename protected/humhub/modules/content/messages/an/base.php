@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Confirm</strong> post deletion' => '<strong>Confirmar</strong> a eliminación d\'a publicación',
     '<strong>Permalink</strong> to this post' => '<strong>Vinclo</strong> a ista publicación',
     'Add a member to notify' => 'Adhibir un miembro pa notificar-le',
     'Archived' => 'Archivau',
@@ -15,7 +14,6 @@ return [
     'Created by me' => 'Creyau per yo',
     'Creation time' => 'Hora de creyación',
     'Delete' => 'Eliminar',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'Seguro que quiers borrar ista publicación? Totz os "me fa goyo" y comentarios tamién se borrarán!',
     'Edit' => 'Editar',
     'Filter' => 'Filtro',
     'Invalid content id given!' => 'ID de conteniu invalida!',
@@ -57,6 +55,7 @@ return [
     'Create as draft' => '',
     'Created at:' => '',
     'Deleted' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Enable' => '',
     'Hidden' => '',
@@ -73,8 +72,10 @@ return [
     'Note: Due to technical reasons there may be a delay of a few minutes.' => '',
     'Private' => '',
     'Publish draft' => '',
+    'Save as draft' => '',
+    'Save scheduling' => '',
     'Schedule publication' => '',
-    'Scheduled at {dateTime}' => '',
+    'Scheduled for {dateTime}' => '',
     'Select type...' => '',
     'Specify who can see this content.' => '',
     'Target Space' => '',
@@ -82,6 +83,7 @@ return [
     'The author of this content is not allowed to create public content within the selected space.' => '',
     'The author of this content is not allowed to create this type of content within this space.' => '',
     'The content can\'t be moved to its current space.' => '',
+    'The content cannot be published!' => '',
     'The content has been archived.' => '',
     'The content has been deleted.' => '',
     'The content has been successfully published.' => '',

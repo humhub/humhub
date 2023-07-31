@@ -34,6 +34,7 @@ return [
     'Paragraph' => 'Параграф',
     'People' => 'Люди',
     'Rows' => 'Строки',
+    'Switch editor mode' => 'Переключить режим редактора',
     'Symbols' => 'Символы',
     'Title' => 'Заголовок',
     'Toggle code font' => 'Стиль для кода',

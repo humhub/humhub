@@ -1,22 +1,31 @@
 <?php
 
 use humhub\libs\Html;
+use humhub\modules\tour\assets\TourAsset;
 use yii\helpers\Url;
+
+TourAsset::register($this);
 
 ?>
 <div class="panel panel-default panel-tour" id="getting-started-panel">
     <?php
-    // Temporary workaround till panel widget rewrite in 0.10 verion
-    $removeOptionHtml = "<li>" . \humhub\widgets\ModalConfirm::widget([
-                'uniqueID' => 'hide-panel-button',
-                'title' => Yii::t('TourModule.base', '<strong>Remove</strong> tour panel'),
-                'message' => Yii::t('TourModule.base', 'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.'),
-                'buttonTrue' => Yii::t('TourModule.base', 'Ok'),
-                'buttonFalse' => Yii::t('TourModule.base', 'Cancel'),
-                'linkContent' => '<i class="fa fa-eye-slash"></i> ' . Yii::t('TourModule.base', ' Remove panel'),
-                'linkHref' => Url::to(["/tour/tour/hide-panel", "ajax" => 1]),
-                'confirmJS' => '$(".panel-tour").slideToggle("slow")'
-                    ], true) . "</li>";
+
+    $removeOptionHtml = Html::tag(
+        'li',
+        Html::a(
+            Yii::t('TourModule.base', '<strong>Remove</strong> tour panel'),
+            Url::to(["/tour/tour/hide-panel", "ajax" => 1]), [
+                'data' => [
+                    'action-click' => 'tour.hidePanel',
+                    'action-confirm-header' => Html::tag('i', '', ['class' => ['fa', 'fa-eye-slash']]) . Yii::t('TourModule.base', ' Remove panel'),
+                    'action-confirm' => Yii::t('TourModule.base', 'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.'),
+                    'action-confirm-text' => Yii::t('TourModule.base', 'Ok'),
+                    'action-cancel-text' => Yii::t('TourModule.base', 'Cancel'),
+                ],
+            ]
+        )
+    );
+
     ?>
 
     <!-- Display panel menu widget -->
@@ -57,12 +66,10 @@ use yii\helpers\Url;
     </div>
 </div>
 
-<?php if ($showWelcome) : ?>
+<?php if ($showWelcome): ?>
     <script <?= Html::nonce() ?>>
-
         $(document).on('humhub:ready', function () {
             humhub.modules.ui.modal.global.load( "<?= Url::to(['/tour/tour/welcome']) ?>");
         });
-
     </script>
 <?php endif; ?>

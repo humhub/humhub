@@ -4,6 +4,7 @@ namespace tests\codeception\_support;
 
 use Codeception\Module;
 use humhub\modules\activity\tests\codeception\fixtures\ActivityFixture;
+use humhub\modules\content\tests\codeception\fixtures\ContentContainerSettingFixture;
 use humhub\modules\content\tests\codeception\fixtures\ContentFixture;
 use humhub\modules\file\models\FileHistory;
 use humhub\modules\file\tests\codeception\fixtures\FileFixture;
@@ -125,6 +126,7 @@ class DynamicFixtureHelper extends Module
             'url_oembed' => ['class' => UrlOembedFixture::class],
             'group_permission' => ['class' => GroupPermissionFixture::class],
             'settings' => ['class' => SettingFixture::class],
+            'contentcontainer_settings' => ['class' => ContentContainerSettingFixture::class],
             'space' => [ 'class' => SpaceFixture::class],
             'space_membership' => [ 'class' => SpaceMembershipFixture::class],
             'content' => ['class' => ContentFixture::class],

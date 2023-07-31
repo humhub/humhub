@@ -189,6 +189,7 @@ Kind Regards
     'You can only delete empty categories!' => 'Puoi cancellare solo categorie vuote!',
     'You cannot delete yourself!' => 'Non puoi eliminare te stesso!',
     'never' => 'mai',
+    'Hide online status of users' => '',
     'Invite new people' => '',
     'Members can invite external users by link' => '',
 ];

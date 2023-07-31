@@ -33,38 +33,38 @@ class ModuleManager extends Component
      * @event triggered before a module is enabled
      * @since 1.3
      */
-    const EVENT_BEFORE_MODULE_ENABLE = 'beforeModuleEnabled';
+    public const EVENT_BEFORE_MODULE_ENABLE = 'beforeModuleEnabled';
 
     /**
      * @event triggered after a module is enabled
      * @since 1.3
      */
-    const EVENT_AFTER_MODULE_ENABLE = 'afterModuleEnabled';
+    public const EVENT_AFTER_MODULE_ENABLE = 'afterModuleEnabled';
 
     /**
      * @event triggered before a module is disabled
      * @since 1.3
      */
-    const EVENT_BEFORE_MODULE_DISABLE = 'beforeModuleDisabled';
+    public const EVENT_BEFORE_MODULE_DISABLE = 'beforeModuleDisabled';
 
     /**
      * @event triggered after a module is disabled
      * @since 1.3
      */
-    const EVENT_AFTER_MODULE_DISABLE = 'afterModuleDisabled';
+    public const EVENT_AFTER_MODULE_DISABLE = 'afterModuleDisabled';
 
     /**
      * @event triggered after filter modules
      * @since 1.11
      */
-    const EVENT_AFTER_FILTER_MODULES = 'afterFilterModules';
+    public const EVENT_AFTER_FILTER_MODULES = 'afterFilterModules';
 
     /**
      * Create a backup on module folder deletion
      *
      * @var boolean
      */
-    public $createBackup = true;
+    public bool $createBackup = true;
 
     /**
      * List of all modules
@@ -72,26 +72,26 @@ class ModuleManager extends Component
      *
      * @param array $modules moduleId-class pairs
      */
-    protected $modules = [];
+    protected array $modules = [];
 
     /**
      * List of all enabled module ids
      *
      * @var array
      */
-    protected $enabledModules = [];
+    protected array $enabledModules = [];
 
     /**
      * List of core module classes.
      *
      * @var array the core module class names
      */
-    protected $coreModules = [];
+    protected array $coreModules = [];
 
     /**
      * @var bool Prevent registration of several different modules with the same id.
      */
-    public $preventDuplicatedModules = true;
+    public bool $preventDuplicatedModules = true;
 
     /**
      * List of module paths that should be overwritten
@@ -99,7 +99,7 @@ class ModuleManager extends Component
      *
      * @var array
      */
-    public $overwriteModuleBasePath = [];
+    public array $overwriteModuleBasePath = [];
 
     /**
      * Module Manager init
@@ -330,7 +330,7 @@ class ModuleManager extends Component
             foreach ($searchFields as $searchField) {
                 if (stripos($searchField, $keyword) !== false) {
                     $keywordFound = true;
-                    continue;
+                    break;
                 }
             }
 
@@ -387,11 +387,12 @@ class ModuleManager extends Component
      * Returns a module instance by id
      *
      * @param string $id Module Id
-     * @return Module|object
+     * @param bool $throwOnMissingModule true - to throw exception, false - to return null
+     * @return Module|object|null
      * @throws Exception
      * @throws InvalidConfigException
      */
-    public function getModule($id)
+    public function getModule($id, $throwOnMissingModule = true)
     {
         // Enabled Module
         if (Yii::$app->hasModule($id)) {
@@ -404,7 +405,11 @@ class ModuleManager extends Component
             return Yii::createObject($class, [$id, Yii::$app]);
         }
 
-        throw new Exception('Could not find/load requested module: ' . $id);
+        if ($throwOnMissingModule) {
+            throw new Exception('Could not find/load requested module: ' . $id);
+        }
+
+        return null;
     }
 
     /**

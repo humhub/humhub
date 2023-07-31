@@ -18,6 +18,7 @@ use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\models\User;
+use humhub\modules\user\Module;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\helpers\VarDumper;
@@ -64,8 +65,8 @@ class AuthClientService
      * Updates (or creates) a user in HumHub using AuthClients Attributes
      * This method will be called after login or by cron sync.
      *
-     * @param User $user
-     * @return boolean succeed
+     * @param User|null $user
+     * @return bool succeed
      */
     public function updateUser(User $user = null): bool
     {
@@ -80,6 +81,7 @@ class AuthClientService
 
         if ($this->authClient instanceof SyncAttributes) {
             $attributes = $this->authClient->getUserAttributes();
+
             foreach ($this->authClient->getSyncAttributes() as $attributeName) {
                 if (isset($attributes[$attributeName])) {
                     if ($user->hasAttribute($attributeName) && !in_array($attributeName, ['id', 'guid', 'status', 'contentcontainer_id', 'auth_mode'])) {
@@ -95,7 +97,6 @@ class AuthClientService
             }
 
             if (count($user->getDirtyAttributes()) !== 0 && !$user->save()) {
-
                 Yii::warning('Could not update user (' . $user->id . '). Error: '
                     . VarDumper::dumpAsString($user->getErrors()), 'user');
 
@@ -105,6 +106,7 @@ class AuthClientService
             if (count($user->profile->getDirtyAttributes()) !== 0 && !$user->profile->save()) {
                 Yii::warning('Could not update user profile (' . $user->id . '). Error: '
                     . VarDumper::dumpAsString($user->profile->getErrors()), 'user');
+
                 return false;
             }
         }
@@ -129,10 +131,16 @@ class AuthClientService
         }
 
         // remove potentially unsafe attributes
-        unset($attributes['id'], $attributes['guid'], $attributes['contentcontainer_id'],
-            $attributes['auth_mode'], $attributes['status']);
+        unset(
+            $attributes['id'],
+            $attributes['guid'],
+            $attributes['contentcontainer_id'],
+            $attributes['auth_mode'],
+            $attributes['status']
+        );
 
         $attributes['username'] = AuthHelper::generateUsernameByAttributes($attributes);
+
         $registration->getUser()->setAttributes($attributes, false);
         $registration->getProfile()->setAttributes($attributes, false);
         $registration->getGroupUser()->setAttributes($attributes, false);
@@ -147,7 +155,7 @@ class AuthClientService
      */
     public function createUser(): ?User
     {
-        $registration = static::createRegistration($this->authClient);
+        $registration = static::createRegistration();
         if ($registration !== null && $registration->validate() && $registration->register($this->authClient)) {
             return $registration->getUser();
         }
@@ -181,5 +189,41 @@ class AuthClientService
         $authClientCollection = Yii::$app->authClientCollection;
 
         return $authClientCollection;
+    }
+
+    public function autoMapToExistingUser(): void
+    {
+        $attributes = $this->authClient->getUserAttributes();
+
+        // Check if e-mail is already in use with another auth method
+        if ($this->getUser() === null && isset($attributes['email'])) {
+            $user = User::findOne(['email' => $attributes['email']]);
+            if ($user !== null) {
+                // Map current auth method to user with same e-mail address
+                (new AuthClientUserService($user))->add($this->authClient);
+            }
+        }
+    }
+
+    /**
+     * @return bool
+     * @since 1.15
+     */
+    public function allowSelfRegistration(): bool
+    {
+        // Always also AuthClients like LDAP to automatic registration
+        if ($this->authClient instanceof ApprovalBypass) {
+            return true;
+        }
+
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        // Anonymous Registration is enabled
+        if ($module->settings->get('auth.anonymousRegistration')) {
+            return true;
+        }
+
+        return false;
     }
 }

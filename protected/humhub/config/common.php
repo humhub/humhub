@@ -24,7 +24,7 @@ if (!defined('PKCS7_DETACHED')) {
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.14.3',
+    'version' => '1.15.0-dev',
     'minRecommendedPhpVersion' => '7.4',
     'minSupportedPhpVersion' => '7.4',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
@@ -109,6 +109,10 @@ $config = [
         ],
         'cache' => [
             'class' => \yii\caching\DummyCache::class,
+        ],
+        'runtimeCache' => [
+            'class' => \yii\caching\ArrayCache::class,
+            'serializer' => false,
         ],
         'mailer' => [
             'class' => \humhub\components\mail\Mailer::class,
@@ -220,6 +224,7 @@ $config = [
             'sq' => 'Shqip',
             'cy' => 'Cymraeg',
             'sw' => 'Kiswahili',
+            'sr' => 'Сербисцх',
         ],
         'ldap' => [
             // LDAP date field formats
@@ -269,12 +274,6 @@ $config = [
         'enablePjax' => true,
         'dailyCronExecutionTime' => '18:00',
     ],
-    'container' => [
-        'definitions' => [
-            //todo: Remove after Yii 2.0.48 release
-            \yii\validators\DateValidator::class => humhub\components\validators\DateValidator::class,
-        ]
-    ]
 ];
 
 return $config;

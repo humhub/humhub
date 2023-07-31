@@ -54,6 +54,7 @@ class PeopleQuery extends ActiveQueryUser
     {
         parent::init();
 
+        $this->eagerLoading();
         $this->available();
         $this->filterInvisibleUsers();
 
@@ -236,6 +237,14 @@ class PeopleQuery extends ActiveQueryUser
     public function isLastPage(): bool
     {
         return $this->pagination->getPage() == $this->pagination->getPageCount() - 1;
+    }
+
+    public function eagerLoading(): PeopleQuery
+    {
+        return $this
+            ->with('profile')
+            ->with('contentContainerRecord')
+            ;
     }
 
 }

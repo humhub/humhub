@@ -35,9 +35,9 @@ class RequestMembershipCest
         $I->amAdmin(true);
         $I->seeInNotifications('Peter Tester requests membership for the space Space 1', true);
 
-        $I->waitForText('New member request',null, '.panel-danger');
-        $I->see('Hi, I want to join this space.', '.panel-danger');
-        $I->click('Accept', '.panel-danger');
+        $I->waitForText('Pending Approvals', null, '.tab-menu .active');
+        $I->see('Hi, I want to join this space.', '.grid-view');
+        $I->click('Accept', '.grid-view');
 
         $I->wait(1);
 
@@ -71,7 +71,7 @@ class RequestMembershipCest
         $I->amAdmin(true);
         $I->seeInNotifications('Peter Tester requests membership for the space Space 1', true);
 
-        $I->waitForText('New member request', null, '.panel-danger');
+        $I->waitForText('Pending Approvals', null, '.tab-menu .active');
 
         $I->click('.dropdown-navigation', '.controls-header');
         $I->waitForText('Members', null, '.controls-header');

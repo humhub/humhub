@@ -1,4 +1,11 @@
 <?php
+
+/*
+ * @link      https://www.humhub.org/
+ * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
+ * @license   https://www.humhub.com/licences
+ */
+
 return [
     ['name' => 'name', 'value' => 'HumHub', 'module_id' => 'base'],
     ['name' => 'baseUrl', 'value' => 'http://localhost:8080', 'module_id' => 'base'],
@@ -67,4 +74,6 @@ return [
     ['name' => 'defaultLanguage', 'value' => 'en-US', 'module_id' => 'base'],
     ['name' => 'maintenanceMode', 'value' => '0', 'module_id' => 'base'],
     ['name' => 'enableProfilePermissions', 'value' => '1', 'module_id' => 'user'],
+    ['name' => 'testSetting', 'value' => 'Test Setting for Base', 'module_id' => 'base' ],
+    ['name' => 'testSetting0', 'value' => 'Test Setting 0 for Base', 'module_id' => 'base', ],
 ];

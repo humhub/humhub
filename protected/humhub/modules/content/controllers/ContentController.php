@@ -122,22 +122,15 @@ class ContentController extends Controller
      */
     public function actionArchive()
     {
-        Yii::$app->response->format = 'json';
         $this->forcePostRequest();
 
-        $json = [];
-        $json['success'] = false;
+        $content = Content::findOne(Yii::$app->request->get('id'));
 
-        $id = (int)Yii::$app->request->get('id', '');
-
-        $content = Content::findOne(['id' => $id]);
-        if ($content !== null && $content->canArchive()) {
+        $result = $content instanceof Content &&
+            $content->canArchive() &&
             $content->archive();
 
-            $json['success'] = true;
-        }
-
-        return $json;
+        return $this->asJson(['success' => $result]);
     }
 
     /**
@@ -149,19 +142,13 @@ class ContentController extends Controller
     {
         $this->forcePostRequest();
 
-        $json = [];
-        $json['success'] = false;   // default
+        $content = Content::findOne(Yii::$app->request->get('id'));
 
-        $id = (int)Yii::$app->request->get('id', '');
-
-        $content = Content::findOne(['id' => $id]);
-        if ($content !== null && $content->canArchive()) {
+        $result = $content instanceof Content &&
+            $content->canArchive() &&
             $content->unarchive();
 
-            $json['success'] = true;
-        }
-
-        return $this->asJson($json);
+        return $this->asJson(['success' => $result]);
     }
 
     public function actionDeleteId()

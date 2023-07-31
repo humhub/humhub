@@ -8,6 +8,7 @@
 namespace humhub\modules\marketplace\controllers;
 
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\marketplace\components\LicenceManager;
 use humhub\modules\marketplace\Module;
 use Yii;
@@ -20,6 +21,15 @@ use Yii;
  */
 class LicenceController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public function getAccessRules()
+    {
+        return [
+            ['permissions' => ManageModules::class]
+        ];
+    }
 
     public function actionIndex()
     {

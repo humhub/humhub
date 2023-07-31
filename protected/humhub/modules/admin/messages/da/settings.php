@@ -121,7 +121,6 @@ return [
     'These settings refer to the appearance of your social network.' => '',
     'Url Pattern' => '',
     'Use SMTPS' => '',
-    'Use the default swipe to show sidebar on a mobile device' => '',
     'User Display Name' => '',
     'User Display Name Subtitle' => '',
     'User Settings' => '',

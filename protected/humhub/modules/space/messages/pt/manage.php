@@ -52,6 +52,7 @@ return [
     'e.g. example for {baseUrl}/s/example' => 'e.g. exemplo para {baseUrl}/s/example',
     'never' => 'nunca',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',
+    'Only global administrators can change this value' => '',
     'Removal of members queued' => '',
     'Remove all members' => '',
     'The URL has already been taken.' => '',

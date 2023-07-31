@@ -1,9 +1,15 @@
 <?php
 
+use humhub\modules\user\models\forms\Registration;
 use humhub\widgets\SiteLogo;
 use yii\bootstrap\ActiveForm;
 use humhub\modules\user\widgets\AuthChoice;
 use humhub\libs\Html;
+
+/**
+ * @var $hForm Registration
+ * @var $showAuthClients bool
+ */
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
 ?>
@@ -18,7 +24,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
                 <?= Yii::t('UserModule.auth', '<strong>Account</strong> registration') ?>
             </div>
             <div class="panel-body">
-                <?php if (AuthChoice::hasClients()): ?>
+                <?php if ($showAuthClients): ?>
                     <?= AuthChoice::widget() ?>
                 <?php endif; ?>
 
