@@ -26,8 +26,8 @@ return [
     'Default "Hide Members"' => '',
     'Default Space Permissions' => '',
     'Default Space(s)' => '',
-    'Default homepage' => '',
-    'Default homepage (Non-members)' => '',
+    'Default Homepage' => '',
+    'Default Homepage (Non-members)' => '',
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => '',
     'Update Space memberships also for existing members.' => '',
 ];
