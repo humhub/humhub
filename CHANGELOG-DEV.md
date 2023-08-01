@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.15.0-beta.2 (Unreleased)
+--------------------------
+- Fix #6472: Initialization of account profile field type "Markdown" 
+
 1.15.0-beta.1 (July 31, 2023)
 -----------------------------
 - Fix #6461: Test server support to serve web module's `/manifest.json`, `/sw.js`, & `/offline.pwa.html`
