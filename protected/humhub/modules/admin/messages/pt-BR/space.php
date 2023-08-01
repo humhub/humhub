@@ -28,6 +28,6 @@ return [
     'Default "Hide Activity Sidebar Widget"' => '',
     'Default "Hide Followers"' => '',
     'Default "Hide Members"' => '',
-    'Default homepage' => '',
-    'Default homepage (Non-members)' => '',
+    'Default Homepage' => '',
+    'Default Homepage (Non-members)' => '',
 ];
