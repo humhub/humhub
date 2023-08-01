@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #6468: Module Administration - Marketplace Links broken without Pretty URLs
 - Enh #6469: Added Info text for Marketplace page 
 - Fix #112: Reorder Table Rows
+- Fix #91: Allow Zoom In, into images
 
 1.15.0-beta.1 (July 31, 2023)
 -----------------------------
