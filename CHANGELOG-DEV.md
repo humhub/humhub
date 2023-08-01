@@ -3,7 +3,8 @@ HumHub Changelog
 
 1.15.0-beta.2 (Unreleased)
 --------------------------
-- Fix #6472: Initialization of account profile field type "Markdown" 
+- Fix #6472: Initialization of account profile field type "Markdown"
+- Fix #6471: Wording "Default Homepage" in Space Default Settings 
 
 1.15.0-beta.1 (July 31, 2023)
 -----------------------------
