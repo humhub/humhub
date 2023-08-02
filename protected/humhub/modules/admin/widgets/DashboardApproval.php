@@ -14,7 +14,6 @@ use humhub\modules\admin\models\UserApprovalSearch;
  */
 class DashboardApproval extends Widget
 {
-
     public function run()
     {
         $users = new UserApprovalSearch();
@@ -22,5 +21,4 @@ class DashboardApproval extends Widget
             return $this->render('dashboardApproval', []);
         }
     }
-
 }

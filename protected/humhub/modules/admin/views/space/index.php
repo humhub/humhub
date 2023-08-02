@@ -17,7 +17,7 @@ use yii\helpers\Url;
 /* @var $searchModel SpaceSearch */
 ?>
 
-<?php if (Yii::$app->user->can([CreatePublicSpace::class, CreatePrivateSpace::class])) : ?>
+<?php if (Yii::$app->user->can([CreatePublicSpace::class, CreatePrivateSpace::class])): ?>
     <?= ModalButton::success(Yii::t('AdminModule.space', 'Add new space'))->load(['/space/create'])
         ->icon('add')->right()->sm() ?>
 <?php endif; ?>

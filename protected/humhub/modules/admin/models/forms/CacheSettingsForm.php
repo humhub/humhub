@@ -128,5 +128,4 @@ class CacheSettingsForm extends Model
 
         return [];
     }
-
 }

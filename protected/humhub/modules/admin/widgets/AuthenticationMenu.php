@@ -21,7 +21,6 @@ use yii\helpers\Url;
  */
 class AuthenticationMenu extends SubTabMenu
 {
-
     /**
      * @inheritdoc
      */
@@ -44,5 +43,4 @@ class AuthenticationMenu extends SubTabMenu
 
         parent::init();
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 humhub\modules\admin\widgets\SettingsMenu::markAsActive(['/admin/setting/advanced']);
 ?>
 <div class="panel-body">

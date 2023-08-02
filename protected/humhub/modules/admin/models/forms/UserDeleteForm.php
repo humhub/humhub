@@ -23,7 +23,6 @@ use humhub\modules\space\models\Space;
  */
 class UserDeleteForm extends Model
 {
-
     /**
      * @var User the user record to delete
      */
@@ -147,5 +146,4 @@ class UserDeleteForm extends Model
         $this->_spaces = MembershipHelper::getOwnSpaces($this->user);
         return $this->_spaces;
     }
-
 }

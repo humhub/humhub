@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var $this View
  * @var FileSettingsForm $model

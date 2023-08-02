@@ -22,7 +22,6 @@ use yii\base\Event;
  */
 class Events extends BaseObject
 {
-
     /**
      * On Init of Dashboard Sidebar, add the approve notification widget
      *

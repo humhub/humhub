@@ -9,7 +9,7 @@ use yii\helpers\Html;
 <?= AboutVersion::widget(); ?>
 <br/>
 
-<?php if ($isNewVersionAvailable) : ?>
+<?php if ($isNewVersionAvailable): ?>
     <div class="alert alert-danger">
         <p>
             <strong><?= Yii::t('AdminModule.information', 'There is a new update available! (Latest version: %version%)', ['%version%' => $latestVersion]); ?></strong><br>
@@ -27,7 +27,7 @@ use yii\helpers\Html;
 
 <br>
 
-<?php if (YII_DEBUG) : ?>
+<?php if (YII_DEBUG): ?>
     <p class="alert alert-danger">
         <strong><?= Yii::t('AdminModule.information', 'HumHub is currently in debug mode. Disable it when running on production!'); ?></strong><br>
         <?= Yii::t('AdminModule.information', 'See installation manual for more details.'); ?>

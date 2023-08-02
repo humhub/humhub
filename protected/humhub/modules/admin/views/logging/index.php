@@ -51,7 +51,8 @@ if ($filter->day) {
                     'placeholder' => Yii::t('AdminModule.information', 'Search term...'),
                     'maxlength' => 200,
                     'style' => 'height:40px'
-                ])->label(false) ?>
+                ]
+            )->label(false) ?>
         </div>
         <div class="col-md-2" style="padding-right:0">
             <?= $form->field($filter, 'day')->widget(DatePicker::class, [

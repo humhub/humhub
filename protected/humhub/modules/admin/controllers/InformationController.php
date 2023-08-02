@@ -29,7 +29,6 @@ use Yii;
  */
 class InformationController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -151,5 +150,4 @@ class InformationController extends Controller
             'canClearQueue' => $canClearQueue
         ]);
     }
-
 }

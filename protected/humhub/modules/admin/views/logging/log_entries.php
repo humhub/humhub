@@ -26,8 +26,7 @@ use yii\log\Logger;
     <?php endif; ?>
 
     <ul class="media-list">
-        <?php foreach ($logEntries as $entry) : ?>
-
+        <?php foreach ($logEntries as $entry): ?>
             <li class="media">
                 <div class="media-body" style="word-break: break-word">
 

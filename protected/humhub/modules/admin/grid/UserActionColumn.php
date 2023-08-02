@@ -19,7 +19,6 @@ use humhub\modules\user\models\User;
  */
 class UserActionColumn extends ActionColumn
 {
-
     /**
      * @inheritdoc
      */
@@ -58,5 +57,4 @@ class UserActionColumn extends ActionColumn
 
         return parent::renderDataCellContent($model, $key, $index);
     }
-
 }

@@ -1,4 +1,6 @@
-<?php use humhub\modules\admin\widgets\InformationMenu;
+<?php
+
+use humhub\modules\admin\widgets\InformationMenu;
 
 $this->beginContent('@admin/views/layouts/main.php') ?>
     <div class="panel panel-default">

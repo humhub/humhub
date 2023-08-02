@@ -21,7 +21,6 @@ use yii\web\HttpException;
  */
 class IndexController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -44,5 +43,4 @@ class IndexController extends Controller
 
         return $this->redirect($firstVisible->getUrl());
     }
-
 }

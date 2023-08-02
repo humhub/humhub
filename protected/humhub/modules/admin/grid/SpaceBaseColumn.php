@@ -20,7 +20,6 @@ use yii\grid\DataColumn;
  */
 abstract class SpaceBaseColumn extends DataColumn
 {
-
     /**
      * @var string|null name of space model attribute
      */
@@ -41,5 +40,4 @@ abstract class SpaceBaseColumn extends DataColumn
         $attributeName = $this->spaceAttribute;
         return $record->$attributeName;
     }
-
 }

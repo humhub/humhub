@@ -144,5 +144,4 @@ class AuthenticationSettingsForm extends Model
         DynamicConfig::rewrite();
         return true;
     }
-
 }

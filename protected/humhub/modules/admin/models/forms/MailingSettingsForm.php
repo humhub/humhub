@@ -44,8 +44,9 @@ class MailingSettingsForm extends Model
         $this->dsn = $settingsManager->get('mailer.dsn');
         $this->hostname = $settingsManager->get('mailer.hostname');
         $this->username = $settingsManager->get('mailer.username');
-        if ($settingsManager->get('mailer.password') != '')
+        if ($settingsManager->get('mailer.password') != '') {
             $this->password = '---invisible---';
+        }
 
         $this->useSmtps = $settingsManager->get('mailer.useSmtps');
         $this->port = $settingsManager->get('mailer.port');
@@ -152,5 +153,4 @@ class MailingSettingsForm extends Model
             self::TRANSPORT_CONFIG => Yii::t('AdminModule.settings', 'Configuration (Use settings from configuration file)'),
         ];
     }
-
 }

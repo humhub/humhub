@@ -31,7 +31,6 @@ use yii\bootstrap\ActiveForm;
         </p>
 
         <?php if (count($model->getOwningSpaces()) !== 0): ?>
-
             <p><b><?= Yii::t('AdminModule.user', 'The user is the owner of these spaces:'); ?></b></p>
 
             <?php foreach ($model->getOwningSpaces() as $space): ?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -22,7 +23,6 @@ use yii\web\Response;
 
 class PendingRegistrationsController extends Controller
 {
-
     /**
      * @inheritDoc
      */
@@ -172,7 +172,6 @@ class PendingRegistrationsController extends Controller
     public function actionDeleteAllSelected()
     {
         if (Yii::$app->request->isPost) {
-
             $ids = Yii::$app->request->post('id');
             if (!empty($ids)) {
                 foreach ($ids as $id) {

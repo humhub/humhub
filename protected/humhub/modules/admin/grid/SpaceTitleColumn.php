@@ -22,7 +22,6 @@ use yii\bootstrap\Html;
  */
 class SpaceTitleColumn extends SpaceBaseColumn
 {
-
     /**
      * @inheritdoc
      */
@@ -53,11 +52,11 @@ class SpaceTitleColumn extends SpaceBaseColumn
             $badge = '&nbsp;<span class="badge">' . Yii::t('SpaceModule.base', 'Archived') . '</span>';
         }
 
-        return Html::tag('div',
+        return Html::tag(
+            'div',
             Html::encode($space->name) . $badge .
             ($space->sort_order === 100 ? '' : ' ' . Label::defaultType($space->sort_order)) .
             '<br> ' . '<small>' . Html::encode(Helpers::trimText($space->description, 100)) . '</small>'
         );
     }
-
 }

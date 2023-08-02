@@ -19,7 +19,6 @@ use humhub\modules\user\models\Group;
  */
 class BaseAdminPermission extends BasePermission
 {
-
     /**
      * @inheritdoc
      */
@@ -58,5 +57,4 @@ class BaseAdminPermission extends BasePermission
 
         return parent::getDefaultState($groupId);
     }
-
 }

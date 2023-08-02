@@ -11,7 +11,6 @@ use yii\base\Model;
  */
 class MailingDefaultsForm extends Model
 {
-
     public $receive_email_activities;
     public $receive_email_notifications;
 
@@ -56,5 +55,4 @@ class MailingDefaultsForm extends Model
 
         return true;
     }
-
 }

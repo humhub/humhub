@@ -193,5 +193,4 @@ class SpaceSettingsForm extends Model
             }
         }
     }
-
 }

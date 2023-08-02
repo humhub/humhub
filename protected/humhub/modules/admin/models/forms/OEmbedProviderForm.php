@@ -11,7 +11,6 @@ use yii\base\Model;
  */
 class OEmbedProviderForm extends Model
 {
-
     public $name;
     public $endpoint;
     public $pattern;
@@ -47,5 +46,4 @@ class OEmbedProviderForm extends Model
             'access_token' => Yii::t('AdminModule.settings', 'Access Token'),
         ];
     }
-
 }

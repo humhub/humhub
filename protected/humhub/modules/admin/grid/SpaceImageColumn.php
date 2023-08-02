@@ -19,7 +19,6 @@ use humhub\modules\space\models\Space;
  */
 class SpaceImageColumn extends SpaceBaseColumn
 {
-
     /**
      * @inheritdoc
      */
@@ -36,5 +35,4 @@ class SpaceImageColumn extends SpaceBaseColumn
     {
         return SpaceImage::widget(['space' => $this->getSpace($model), 'width' => 34, 'link' => true]);
     }
-
 }

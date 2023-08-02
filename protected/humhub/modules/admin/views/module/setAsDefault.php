@@ -37,14 +37,14 @@ AdminAsset::register($this);
             <br>
 
             <div class="row">
-                <?php if ($module->hasContentContainerType(Space::class)) : ?>
+                <?php if ($module->hasContentContainerType(Space::class)): ?>
                     <div class="col-md-6">
                         <?= $form->field($model, 'spaceDefaultState')->radioList($model->getStatesList())
                             ->label(Yii::t('AdminModule.modules', 'Spaces')); ?>
                     </div>
                 <?php endif; ?>
 
-                <?php if ($module->hasContentContainerType(User::class)) : ?>
+                <?php if ($module->hasContentContainerType(User::class)): ?>
                     <div class="col-md-6">
                         <?= $form->field($model, 'userDefaultState')->radioList($model->getStatesList())
                             ->label(Yii::t('AdminModule.modules', 'Users')); ?>
@@ -56,7 +56,9 @@ AdminAsset::register($this);
 
         <div class="modal-footer">
             <?= Html::a(
-                Yii::t('AdminModule.modules', 'Save'), '#', [
+                Yii::t('AdminModule.modules', 'Save'),
+                '#',
+                [
                     'class' => ['btn', 'btn-primary'],
                     'data' => [
                         'action-click' => 'admin.moduleSetAsDefault',
@@ -65,7 +67,8 @@ AdminAsset::register($this);
                 ]
             ) ?>
             <?= Html::button(
-                Yii::t('AdminModule.modules', 'Close'), [
+                Yii::t('AdminModule.modules', 'Close'),
+                [
                     'class' => ['btn', 'btn-primary'],
                     'data' => [
                         'dismiss' => 'modal',

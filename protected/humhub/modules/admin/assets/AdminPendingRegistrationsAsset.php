@@ -31,5 +31,4 @@ class AdminPendingRegistrationsAsset extends AssetBundle
     public $js = [
         'js/humhub.admin.PendingRegistrations.js'
     ];
-
 }

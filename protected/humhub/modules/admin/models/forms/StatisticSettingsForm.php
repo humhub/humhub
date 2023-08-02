@@ -12,7 +12,6 @@ use yii\base\Model;
  */
 class StatisticSettingsForm extends Model
 {
-
     public $trackingHtmlCode;
 
     /**
@@ -58,5 +57,4 @@ class StatisticSettingsForm extends Model
 
         return true;
     }
-
 }

@@ -11,8 +11,10 @@ use yii\helpers\Html;
 
 $this->registerJsConfig('admin', $adminSettingsJsConfig = ['text' => [
     'maintenanceMode.header' => Yii::t('AdminModule.settings', '<strong>Maintenance</strong> Mode'),
-    'maintenanceMode.question.enable' => Yii::t('AdminModule.settings',
-            'Activate maintenance mode and disable access to the platform for non-admin users?<br><br>') .
+    'maintenanceMode.question.enable' => Yii::t(
+        'AdminModule.settings',
+        'Activate maintenance mode and disable access to the platform for non-admin users?<br><br>'
+    ) .
         '<div class="alert alert-danger">' .
         Yii::t('AdminModule.settings', '<strong>Warning:</strong> All users will be immediately logged out, except admins.') .
         '</div>',
@@ -38,7 +40,7 @@ AdminAsset::register($this);
     <?= $form->field($model, 'baseUrl'); ?>
 
     <?php $allowedLanguages = Yii::$app->i18n->getAllowedLanguages(); ?>
-    <?php if (count($allowedLanguages) > 1) : ?>
+    <?php if (count($allowedLanguages) > 1): ?>
         <?= $languageDropDown = $form->field($model, 'defaultLanguage')->dropDownList($allowedLanguages); ?>
     <?php endif; ?>
     <?= $form->field($model, 'defaultTimeZone')->dropDownList(TimezoneHelper::generateList(true), ['disabled' => Yii::$app->settings->isFixed('defaultTimeZone')]); ?>

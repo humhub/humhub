@@ -14,7 +14,6 @@ use humhub\widgets\JsWidget;
 use Yii;
 use yii\data\ActiveDataProvider;
 
-
 /**
  * PendingRegistrations shows a grid view of all open/pending UserInvites
  *
@@ -54,13 +53,15 @@ class PendingRegistrations extends JsWidget
      */
     public function run()
     {
-        return $this->render('pending-registrations',
+        return $this->render(
+            'pending-registrations',
             [
                 'dataProvider' => $this->dataProvider,
                 'searchModel' => $this->searchModel,
                 'types' => $this->types,
                 'options' => $this->getOptions(),
-            ]);
+            ]
+        );
     }
 
     /**

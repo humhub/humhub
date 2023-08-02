@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\admin\models\forms;
-
 
 use DateTime;
 use Exception;
@@ -199,7 +197,6 @@ class LogFilterForm extends Model
 
             $this->query->andWhere(['<=', 'log_time', $end]);
             $this->query->andWhere(['>=', 'log_time', $start]);
-
         } catch (Exception $e) {
             Yii::error($e, 'admin');
         }

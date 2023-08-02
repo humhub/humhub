@@ -22,7 +22,6 @@ use Yii;
  */
 class TrackingWidget extends Widget
 {
-
     /**
      * @inheritdoc
      */
@@ -37,5 +36,4 @@ class TrackingWidget extends Widget
         $twig = new Environment(new ArrayLoader(['trackingHtmlCode' => $trackingCode]));
         return $twig->render('trackingHtmlCode', ['nonce' => Security::getNonce()]);
     }
-
 }

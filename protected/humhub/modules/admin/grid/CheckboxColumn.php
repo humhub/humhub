@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\admin\grid;
-
 
 use humhub\libs\Html;
 use humhub\modules\user\models\ProfileField;
@@ -10,7 +8,6 @@ use yii\grid\DataColumn;
 
 class CheckboxColumn extends DataColumn
 {
-
     public $attribute;
 
     public $disabled = true;
@@ -31,6 +28,5 @@ class CheckboxColumn extends DataColumn
             return Html::checkbox($attr, $model->$attr, ['disabled' => $this->disabled]);
         };
         parent::init();
-
     }
 }

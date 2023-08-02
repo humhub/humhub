@@ -10,7 +10,6 @@ namespace humhub\modules\admin\controllers;
 
 use humhub\modules\admin\permissions\ManageUsers;
 use Yii;
-
 use yii\web\HttpException;
 use humhub\compat\HForm;
 use humhub\modules\admin\components\Controller;
@@ -25,7 +24,6 @@ use humhub\modules\user\models\fieldtype\BaseType;
  */
 class UserProfileController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -70,7 +68,7 @@ class UserProfileController extends Controller
 
         $category = ProfileFieldCategory::findOne(['id' => $id]);
         if ($category == null) {
-            $category = new ProfileFieldCategory;
+            $category = new ProfileFieldCategory();
         }
 
         $category->translation_category = $category->getTranslationCategory();
@@ -90,11 +88,13 @@ class UserProfileController extends Controller
         $id = (int)Yii::$app->request->get('id');
 
         $category = ProfileFieldCategory::findOne(['id' => $id]);
-        if ($category == null)
+        if ($category == null) {
             throw new HttpException(500, Yii::t('AdminModule.user', 'Could not load category.'));
+        }
 
-        if (count($category->fields) != 0)
+        if (count($category->fields) != 0) {
             throw new HttpException(500, Yii::t('AdminModule.user', 'You can only delete empty categories!'));
+        }
 
         $category->delete();
 
@@ -152,7 +152,6 @@ class UserProfileController extends Controller
 
         // Form Submitted?
         if ($form->submitted('save') && $form->validate()) {
-
             // Use ProfileField Instance from Form with new Values
             $field = $form->models['ProfileField'];
             $fieldType = $form->models[$field->field_type_class];

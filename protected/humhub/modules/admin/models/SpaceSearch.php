@@ -21,7 +21,6 @@ use yii\data\ActiveDataProvider;
  */
 class SpaceSearch extends Space
 {
-
     public $freeText;
     public $memberCount;
     public $owner;
@@ -140,5 +139,4 @@ class SpaceSearch extends Space
             Space::VISIBILITY_NONE => Yii::t('SpaceModule.base', 'Private') . ' (' . $countPrivate . ')',
         ];
     }
-
 }

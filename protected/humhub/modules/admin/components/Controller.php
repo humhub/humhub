@@ -19,7 +19,6 @@ use Yii;
  */
 class Controller extends \humhub\components\Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -78,5 +77,4 @@ class Controller extends \humhub\components\Controller
 
         return [];
     }
-
 }

@@ -38,7 +38,6 @@ use yii\base\BaseObject;
  */
 class SettingController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -127,7 +126,7 @@ class SettingController extends Controller
      */
     public function actionCaching()
     {
-        $form = new CacheSettingsForm;
+        $form = new CacheSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             Yii::$app->cache->flush();
             Yii::$app->assetManager->clear();
@@ -147,7 +146,7 @@ class SettingController extends Controller
      */
     public function actionStatistic()
     {
-        $form = new StatisticSettingsForm;
+        $form = new StatisticSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([
@@ -180,7 +179,7 @@ class SettingController extends Controller
      */
     public function actionMailingServer()
     {
-        $form = new MailingSettingsForm;
+        $form = new MailingSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             return $this->redirect(['/admin/setting/mailing-server-test']);
         }
@@ -205,7 +204,9 @@ class SettingController extends Controller
 
             if ($mail->send()) {
                 $this->view->info(
-                    Yii::t('AdminModule.settings', 'Saved and sent test email to: {address}',
+                    Yii::t(
+                        'AdminModule.settings',
+                        'Saved and sent test email to: {address}',
                         ['address' => $user->email]
                     )
                 );
@@ -222,7 +223,7 @@ class SettingController extends Controller
 
     public function actionDesign()
     {
-        $form = new DesignSettingsForm;
+        $form = new DesignSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([
@@ -240,7 +241,7 @@ class SettingController extends Controller
      */
     public function actionFile()
     {
-        $form = new FileSettingsForm;
+        $form = new FileSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([
@@ -274,7 +275,7 @@ class SettingController extends Controller
      */
     public function actionProxy()
     {
-        $form = new ProxySettingsForm;
+        $form = new ProxySettingsForm();
 
 
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
@@ -320,10 +321,9 @@ class SettingController extends Controller
             $dating = "the begining of time";
         }
 
-        $form = new LogsSettingsForm;
+        $form = new LogsSettingsForm();
         $limitAgeOptions = $form->options;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-
             $timeAgo = strtotime($form->logsDateLimit);
             Log::deleteAll(['<', 'log_time', $timeAgo]);
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.settings', 'Saved'));
@@ -345,7 +345,7 @@ class SettingController extends Controller
      */
     public function actionOembedEdit()
     {
-        $form = new OEmbedProviderForm;
+        $form = new OEmbedProviderForm();
 
         $name = Yii::$app->request->get('name');
         $providers = UrlOembed::getProviders();
@@ -398,7 +398,7 @@ class SettingController extends Controller
         return $this->redirect(
             [
                 'caching'
-            ]);
+            ]
+        );
     }
-
 }

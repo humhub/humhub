@@ -27,7 +27,6 @@ use yii\web\HttpException;
  */
 class SpaceController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -180,5 +179,4 @@ class SpaceController extends Controller
             'groupId' => $groupId,
         ]);
     }
-
 }

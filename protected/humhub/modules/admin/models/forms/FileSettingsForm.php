@@ -16,7 +16,6 @@ use yii\base\Model;
  */
 class FileSettingsForm extends Model
 {
-
     public $maxFileSize;
     public $excludeMediaFilesPreview;
     public $useXSendfile;
@@ -79,5 +78,4 @@ class FileSettingsForm extends Model
 
         return true;
     }
-
 }

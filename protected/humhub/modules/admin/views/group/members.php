@@ -105,8 +105,7 @@ AdminGroupAsset::register($this);
                         ],
                     ],
                 ],
-            ]
-        );
+            ]);
         ?>
     </div>
 </div>

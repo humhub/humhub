@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -43,8 +44,10 @@ use humhub\widgets\mails\MailButtonList;
                     'buttons' => [
                         humhub\widgets\mails\MailButton::widget([
                             'url' => $url,
-                            'text' => Yii::t('SpaceModule.notification',
-                                'View Online'),
+                            'text' => Yii::t(
+                                'SpaceModule.notification',
+                                'View Online'
+                            ),
                         ]),
                     ],
                 ]);

@@ -24,7 +24,6 @@ use yii\db\Expression;
  */
 class UserSearch extends User
 {
-
     /**
      * @var ActiveQueryUser
      */
@@ -162,5 +161,4 @@ class UserSearch extends User
             User::STATUS_SOFT_DELETED => Yii::t('AdminModule.user', 'Deleted users') . ' (' . $countSoftDeleted . ')',
         ];
     }
-
 }

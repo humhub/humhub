@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) HumHub GmbH & Co. KG
@@ -17,7 +18,7 @@ use yii\web\View;
 <div class="modules-group">
     <strong><?= $title ?> (<span class="group-modules-count-<?= $type ?>"><?= $count ?></span>):</strong>
 
-    <?php foreach ($modules as $module) : ?>
+    <?php foreach ($modules as $module): ?>
         <?= $this->render('installed-module', ['module' => $module]) ?>
     <?php endforeach; ?>
 </div>

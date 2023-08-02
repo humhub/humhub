@@ -21,7 +21,6 @@ use humhub\modules\admin\models\Log;
  */
 class LoggingController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -78,5 +77,4 @@ class LoggingController extends Controller
 
         return $this->redirect(['index']);
     }
-
 }
