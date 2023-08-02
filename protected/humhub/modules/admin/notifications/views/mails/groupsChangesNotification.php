@@ -18,6 +18,7 @@
 /* @var $space humhub\modules\space\models\Space */
 /* @var $record Notification */
 /* @var $html string */
+
 /* @var $text string */
 
 use humhub\modules\content\components\ContentContainerActiveRecord;

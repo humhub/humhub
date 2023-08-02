@@ -2,6 +2,7 @@
 /**
  * This is the initial test bootstrap, which will load the default test bootstrap from the humhub core
  */
+
 // Parse the environment arguments (Note: only simple --env ENV is supported no comma sepration merge...)
 use Codeception\Configuration;
 use Codeception\Util\Autoload;
