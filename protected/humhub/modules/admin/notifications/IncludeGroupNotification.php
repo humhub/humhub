@@ -9,6 +9,7 @@ namespace humhub\modules\admin\notifications;
 
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\user\models\Group;
+use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -45,10 +46,10 @@ class IncludeGroupNotification extends BaseNotification
      */
     public function getMailSubject()
     {
-        return \Yii::t(
+        return Yii::t(
             'AdminModule.notification',
             'Notify from {appName}. You were added to the group.',
-            ['appName' => \Yii::$app->name]
+            ['appName' => Yii::$app->name]
         );
     }
 
@@ -57,7 +58,7 @@ class IncludeGroupNotification extends BaseNotification
      */
     public function html()
     {
-        return \Yii::t(
+        return Yii::t(
             'AdminModule.notification',
             '{displayName} added you to group {groupName}',
             [

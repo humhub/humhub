@@ -4,7 +4,11 @@ namespace humhub\modules\admin\models\forms;
 
 use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
 use humhub\modules\user\Module;
+use Throwable;
 use Yii;
+use yii\base\InvalidConfigException;
+use yii\base\Model;
+use yii\db\StaleObjectException;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use humhub\modules\user\models\User;
@@ -15,7 +19,7 @@ use yii\web\NotFoundHttpException;
  * @package humhub.forms
  * @since 0.5
  */
-class ApproveUserForm extends \yii\base\Model
+class ApproveUserForm extends Model
 {
     /**
      * @var User
@@ -52,8 +56,8 @@ class ApproveUserForm extends \yii\base\Model
     /**
      * @inerhitdoc
      * @param $usersId int|string|array
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws Throwable
+     * @throws InvalidConfigException
      */
     public function __construct($usersId)
     {
@@ -75,7 +79,7 @@ class ApproveUserForm extends \yii\base\Model
 
     /**
      * @inerhitdoc
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      * @throws ForbiddenHttpException
      * @throws NotFoundHttpException
      */
@@ -105,8 +109,8 @@ class ApproveUserForm extends \yii\base\Model
     /**
      * @param $ids array
      * @return array|User|User[]|null
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws Throwable
+     * @throws InvalidConfigException
      */
     private function getUsers($ids)
     {
@@ -165,8 +169,8 @@ class ApproveUserForm extends \yii\base\Model
     /**
      * Declines user by sending denial mail and deleting the user.
      * @return bool
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function decline(): bool
     {

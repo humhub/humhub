@@ -66,7 +66,7 @@ class UserProfileController extends Controller
      */
     public function actionEditCategory()
     {
-        $id = (int) Yii::$app->request->get('id');
+        $id = (int)Yii::$app->request->get('id');
 
         $category = ProfileFieldCategory::findOne(['id' => $id]);
         if ($category == null) {
@@ -87,7 +87,7 @@ class UserProfileController extends Controller
      */
     public function actionDeleteCategory()
     {
-        $id = (int) Yii::$app->request->get('id');
+        $id = (int)Yii::$app->request->get('id');
 
         $category = ProfileFieldCategory::findOne(['id' => $id]);
         if ($category == null)

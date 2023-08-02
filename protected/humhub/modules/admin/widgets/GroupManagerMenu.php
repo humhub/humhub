@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\modules\user\models\Group;
 use Yii;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\SubTabMenu;
@@ -19,7 +20,7 @@ class GroupManagerMenu extends SubTabMenu
 {
 
     /**
-     * @var \humhub\modules\user\models\Group
+     * @var Group
      */
     public $group;
 

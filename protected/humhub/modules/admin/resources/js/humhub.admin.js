@@ -145,9 +145,9 @@ humhub.module('admin', function (module, require, $) {
         });
     };
 
-    var moduleSetAsDefault = function(event) {
+    var moduleSetAsDefault = function (event) {
         modal.footerLoader();
-        client.submit(event).then(function(response) {
+        client.submit(event).then(function (response) {
             modal.setContent(response.data);
         });
     };

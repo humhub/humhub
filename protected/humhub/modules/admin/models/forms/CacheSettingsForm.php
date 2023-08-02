@@ -54,9 +54,9 @@ class CacheSettingsForm extends Model
     public function attributeLabels()
     {
         return [
-            'type' => \Yii::t('AdminModule.settings', 'Cache Backend'),
-            'expireTime' => \Yii::t('AdminModule.settings', 'Default Expire Time (in seconds)'),
-            'reloadableScripts' => \Yii::t('AdminModule.settings', 'Prevent client caching of following scripts'),
+            'type' => Yii::t('AdminModule.settings', 'Cache Backend'),
+            'expireTime' => Yii::t('AdminModule.settings', 'Default Expire Time (in seconds)'),
+            'reloadableScripts' => Yii::t('AdminModule.settings', 'Prevent client caching of following scripts'),
         ];
     }
 
@@ -66,13 +66,13 @@ class CacheSettingsForm extends Model
     public function getTypes()
     {
         $cacheTypes = [
-            'yii\caching\DummyCache' => \Yii::t('AdminModule.settings', 'No caching'),
-            'yii\caching\FileCache' => \Yii::t('AdminModule.settings', 'File'),
-            'yii\caching\ApcCache' => \Yii::t('AdminModule.settings', 'APC(u)'),
+            'yii\caching\DummyCache' => Yii::t('AdminModule.settings', 'No caching'),
+            'yii\caching\FileCache' => Yii::t('AdminModule.settings', 'File'),
+            'yii\caching\ApcCache' => Yii::t('AdminModule.settings', 'APC(u)'),
         ];
 
         if (isset(Yii::$app->redis)) {
-            $cacheTypes['yii\redis\Cache'] = \Yii::t('AdminModule.settings', 'Redis');
+            $cacheTypes['yii\redis\Cache'] = Yii::t('AdminModule.settings', 'Redis');
         }
 
         return $cacheTypes;
@@ -84,7 +84,7 @@ class CacheSettingsForm extends Model
     public function checkCacheType($attribute, $params)
     {
         if ($this->type == 'yii\caching\ApcCache' && !function_exists('apc_add') && !function_exists('apcu_add')) {
-            $this->addError($attribute, \Yii::t('AdminModule.settings', "PHP APC(u) Extension missing - Type not available!"));
+            $this->addError($attribute, Yii::t('AdminModule.settings', "PHP APC(u) Extension missing - Type not available!"));
         }
     }
 
@@ -122,7 +122,7 @@ class CacheSettingsForm extends Model
 
     public function getReloadableScriptsAsArray()
     {
-        if(is_string($this->reloadableScripts) && !empty($this->reloadableScripts)) {
+        if (is_string($this->reloadableScripts) && !empty($this->reloadableScripts)) {
             return array_map('trim', explode("\n", $this->reloadableScripts));
         }
 

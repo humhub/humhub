@@ -10,7 +10,7 @@ use humhub\widgets\Button;
 ?>
 <div class="panel-body">
     <div class="pull-right">
-        <?= Button::back(['index'], Yii::t('AdminModule.base', 'Back to overview'))?>
+        <?= Button::back(['index'], Yii::t('AdminModule.base', 'Back to overview')) ?>
     </div>
 
     <?php if (!$group->isNewRecord) : ?>
@@ -21,12 +21,14 @@ use humhub\widgets\Button;
 </div>
 
 <?php if (!$group->isNewRecord) : ?>
-    <br />
+    <br/>
 <?php endif; ?>
 
 <?php if (!$group->isNewRecord) : ?>
     <?php if ($group->is_admin_group) : ?>
-        <div class="pull-right"><span class="label label-danger"><?= Yii::t('AdminModule.base', 'Administrative group'); ?></span>&nbsp;&nbsp;</div>
+        <div class="pull-right"><span
+                class="label label-danger"><?= Yii::t('AdminModule.base', 'Administrative group'); ?></span>&nbsp;&nbsp;
+        </div>
     <?php endif; ?>
     <?= GroupManagerMenu::widget(['group' => $group]); ?>
 <?php endif; ?>

@@ -3,6 +3,7 @@
 namespace humhub\modules\admin\models\forms;
 
 use Yii;
+use yii\base\Model;
 
 /**
  * FileSettingsForm
@@ -13,7 +14,7 @@ use Yii;
  *
  * @since 0.5
  */
-class FileSettingsForm extends \yii\base\Model
+class FileSettingsForm extends Model
 {
 
     public $maxFileSize;
@@ -71,7 +72,7 @@ class FileSettingsForm extends \yii\base\Model
     public function save()
     {
         $settingsManager = Yii::$app->getModule('file')->settings;
-        $settingsManager->set('maxFileSize', (int) $this->maxFileSize * 1024 * 1024);
+        $settingsManager->set('maxFileSize', (int)$this->maxFileSize * 1024 * 1024);
         $settingsManager->set('excludeMediaFilesPreview', $this->excludeMediaFilesPreview);
         $settingsManager->set('useXSendfile', $this->useXSendfile);
         $settingsManager->set('allowedExtensions', strtolower($this->allowedExtensions));

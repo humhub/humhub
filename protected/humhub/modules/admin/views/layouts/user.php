@@ -1,10 +1,12 @@
-<?php $this->beginContent('@admin/views/layouts/main.php') ?>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <?= Yii::t('AdminModule.user', '<strong>User</strong> administration'); ?>
-    </div>
-    <?= \humhub\modules\admin\widgets\UserMenu::widget(); ?>
+<?php use humhub\modules\admin\widgets\UserMenu;
 
-    <?= $content; ?>
-</div>
+$this->beginContent('@admin/views/layouts/main.php') ?>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <?= Yii::t('AdminModule.user', '<strong>User</strong> administration'); ?>
+        </div>
+        <?= UserMenu::widget(); ?>
+
+        <?= $content; ?>
+    </div>
 <?php $this->endContent(); ?>

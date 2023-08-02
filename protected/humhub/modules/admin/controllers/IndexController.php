@@ -38,11 +38,11 @@ class IndexController extends Controller
         /* @var $firstVisible MenuLink */
         $firstVisible = $adminMenu->getFirstEntry(MenuLink::class, true);
 
-        if(!$firstVisible) {
+        if (!$firstVisible) {
             throw new HttpException(403);
         }
 
-		return $this->redirect($firstVisible->getUrl());
+        return $this->redirect($firstVisible->getUrl());
     }
 
 }

@@ -3,11 +3,12 @@
 namespace humhub\modules\admin\models\forms;
 
 use Yii;
+use yii\base\Model;
 
 /**
  * ProxySettingsForm
  */
-class ProxySettingsForm extends \yii\base\Model
+class ProxySettingsForm extends Model
 {
 
     public $enabled;

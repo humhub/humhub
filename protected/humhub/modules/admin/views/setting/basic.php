@@ -4,6 +4,7 @@ use humhub\libs\TimezoneHelper;
 use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\DataSaved;
 use yii\helpers\Html;
 
 /* @var BasicSettingsForm $model */
@@ -67,7 +68,7 @@ AdminAsset::register($this);
     <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
     <!-- show flash message after saving -->
-    <?php \humhub\widgets\DataSaved::widget(); ?>
+    <?php DataSaved::widget(); ?>
 
     <?php ActiveForm::end(); ?>
 </div>

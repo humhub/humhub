@@ -1,8 +1,9 @@
 <?php
 
+use humhub\modules\admin\models\PendingRegistrationSearch;
 use humhub\modules\admin\widgets\PendingRegistrations;
 
-/** @var $searchModel \humhub\modules\admin\models\PendingRegistrationSearch */
+/** @var $searchModel PendingRegistrationSearch */
 /** @var $dataProvider yii\data\ActiveDataProvider */
 /** @var $types array */
 

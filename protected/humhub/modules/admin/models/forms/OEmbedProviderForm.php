@@ -3,12 +3,13 @@
 namespace humhub\modules\admin\models\forms;
 
 use Yii;
+use yii\base\Model;
 
 /**
  * @package humhub.modules_core.admin.forms
  * @since 0.10
  */
-class OEmbedProviderForm extends \yii\base\Model
+class OEmbedProviderForm extends Model
 {
 
     public $name;
@@ -25,7 +26,7 @@ class OEmbedProviderForm extends \yii\base\Model
             [['name', 'pattern', 'endpoint'], 'string'],
             [['name', 'pattern', 'endpoint'], 'required'],
             ['endpoint', 'url'],
-            ['access_token', 'required', 'when' => function($model) {
+            ['access_token', 'required', 'when' => function ($model) {
                 parse_str($model->endpoint, $query);
                 return isset($query['access_token']);
             }]

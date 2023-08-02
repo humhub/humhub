@@ -5,6 +5,7 @@ use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
+use humhub\widgets\DataSaved;
 use yii\helpers\Html;
 
 /* @var AuthenticationSettingsForm $model */
@@ -54,7 +55,7 @@ $userModule = Yii::$app->getModule('user');
 
     <?= Html::submitButton(Yii::t('AdminModule.user', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
-    <?= \humhub\widgets\DataSaved::widget(); ?>
+    <?= DataSaved::widget(); ?>
     <?php ActiveForm::end(); ?>
 </div>
 <?php $this->endContent(); ?>

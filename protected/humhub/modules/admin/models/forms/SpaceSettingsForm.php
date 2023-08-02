@@ -6,12 +6,13 @@ use humhub\components\SettingsManager;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
 use Yii;
+use yii\base\Model;
 
 /**
  * @package humhub.modules_core.admin.forms
  * @since 0.10
  */
-class SpaceSettingsForm extends \yii\base\Model
+class SpaceSettingsForm extends Model
 {
     /**
      * @var int

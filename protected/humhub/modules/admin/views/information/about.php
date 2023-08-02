@@ -2,11 +2,12 @@
 
 use humhub\modules\marketplace\widgets\AboutVersion;
 use yii\helpers\Html;
+
 ?>
 
 
 <?= AboutVersion::widget(); ?>
-<br />
+<br/>
 
 <?php if ($isNewVersionAvailable) : ?>
     <div class="alert alert-danger">
@@ -18,7 +19,7 @@ use yii\helpers\Html;
 <?php elseif ($isUpToDate): ?>
     <div class="alert alert-info">
         <p>
-            <strong><?= Yii::t('AdminModule.information', 'This HumHub installation is up to date!'); ?></strong><br />
+            <strong><?= Yii::t('AdminModule.information', 'This HumHub installation is up to date!'); ?></strong><br/>
             <?= Html::a("https://www.humhub.org", "https://www.humhub.org"); ?>
         </p>
     </div>

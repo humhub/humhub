@@ -20,7 +20,7 @@ use yii\log\Logger;
 
 LogAsset::register($this);
 
-if($filter->day) {
+if ($filter->day) {
     // Workaround since 10/03/2020 is changed to 03/10/2020 e.g. in UK english
     $filter->day = DateHelper::parseDateTime($filter->day);
 }
@@ -42,8 +42,8 @@ if($filter->day) {
 </style>
 
 <div id="admin-log-root">
-    <div class="row" data-ui-widget="admin.log.LogFilterForm" data-ui-init="1" >
-    <?php $form = ActiveForm::begin(['action' => Url::to(['/admin/logging/index'])]) ?>
+    <div class="row" data-ui-widget="admin.log.LogFilterForm" data-ui-init="1">
+        <?php $form = ActiveForm::begin(['action' => Url::to(['/admin/logging/index'])]) ?>
 
         <div class="col-md-3 col-md-push-1" style="padding-right:0">
             <?= $form->field($filter, 'term')->textInput(
@@ -71,7 +71,7 @@ if($filter->day) {
             <?= $form->field($filter, 'category')->dropDownList($filter->getCategorySelection(), ['style' => 'height:40px'])->label(false) ?>
         </div>
 
-    <?php ActiveForm::end() ?>
+        <?php ActiveForm::end() ?>
     </div>
 
     <?= $this->render('log_entries', ['pagination' => $pagination, 'logEntries' => $logEntries]) ?>

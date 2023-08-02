@@ -179,8 +179,8 @@ class PeopleSettingsForm extends Model
         $defaultSortingGroupId = PeopleCard::config('defaultSortingGroup');
 
         return $defaultSortingGroupId && Group::find()
-            ->where(['id' => $defaultSortingGroupId])
-            ->exists();
+                ->where(['id' => $defaultSortingGroupId])
+                ->exists();
     }
 
 }

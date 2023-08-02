@@ -8,9 +8,12 @@
 
 namespace humhub\modules\admin\controllers;
 
+use humhub\commands\MigrateController;
+use humhub\libs\SelfTest;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\components\DatabaseInfo;
 use humhub\modules\admin\libs\HumHubAPI;
+use humhub\modules\admin\permissions\SeeAdminInformation;
 use humhub\modules\queue\driver\MySQL;
 use humhub\modules\queue\helpers\QueueHelper;
 use humhub\modules\queue\interfaces\QueueInfoInterface;
@@ -49,7 +52,7 @@ class InformationController extends Controller
     public function getAccessRules()
     {
         return [
-            ['permissions' => \humhub\modules\admin\permissions\SeeAdminInformation::class],
+            ['permissions' => SeeAdminInformation::class],
         ];
     }
 
@@ -75,7 +78,7 @@ class InformationController extends Controller
 
     public function actionPrerequisites()
     {
-        return $this->render('prerequisites', ['checks' => \humhub\libs\SelfTest::getResults()]);
+        return $this->render('prerequisites', ['checks' => SelfTest::getResults()]);
     }
 
     public function actionDatabase()
@@ -92,7 +95,7 @@ class InformationController extends Controller
             [
                 'rebuildSearchRunning' => QueueHelper::isQueued($rebuildSearchJob),
                 'databaseName' => $databaseInfo->getDatabaseName(),
-                'migrate' => \humhub\commands\MigrateController::webMigrateAll(),
+                'migrate' => MigrateController::webMigrateAll(),
             ]
         );
     }
@@ -102,8 +105,8 @@ class InformationController extends Controller
      */
     public function actionBackgroundJobs()
     {
-        $lastRunHourly = (int) Yii::$app->settings->getUncached('cronLastHourlyRun');
-        $lastRunDaily = (int) Yii::$app->settings->getUncached('cronLastDailyRun');
+        $lastRunHourly = (int)Yii::$app->settings->getUncached('cronLastHourlyRun');
+        $lastRunDaily = (int)Yii::$app->settings->getUncached('cronLastDailyRun');
 
         $queue = Yii::$app->queue;
 
@@ -134,7 +137,7 @@ class InformationController extends Controller
             $reflect = new ReflectionClass($queue);
             $driverName = $reflect->getShortName();
         } catch (ReflectionException $e) {
-            Yii::error('Could not determine queue driver: '. $e->getMessage());
+            Yii::error('Could not determine queue driver: ' . $e->getMessage());
         }
 
         return $this->render('background-jobs', [

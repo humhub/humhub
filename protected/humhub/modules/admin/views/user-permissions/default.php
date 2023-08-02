@@ -2,11 +2,13 @@
 
 use humhub\libs\Html;
 use humhub\modules\admin\assets\AdminAsset;
+use humhub\modules\content\components\ContentContainerDefaultPermissionManager;
+use humhub\modules\user\Module;
 use humhub\modules\user\widgets\PermisionGridModuleFilter;
 use humhub\modules\user\widgets\PermissionGridEditor;
 use yii\helpers\Url;
 
-/* @var $defaultPermissionManager \humhub\modules\content\components\ContentContainerDefaultPermissionManager */
+/* @var $defaultPermissionManager ContentContainerDefaultPermissionManager */
 /* @var $groups array */
 /* @var $groupId string */
 
@@ -26,7 +28,7 @@ $this->registerJsConfig('admin', $adminSettingsJsConfig = ['text' => [
     'enableProfilePermissions.button.disable' => Yii::t('AdminModule.user', 'Deactivate'),
 ]]);
 
-/** @var \humhub\modules\user\Module $userModule */
+/** @var Module $userModule */
 $userModule = Yii::$app->getModule('user');
 $enabledProfilePermissions = (boolean)$userModule->settings->get('enableProfilePermissions', false);
 

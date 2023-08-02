@@ -1,17 +1,20 @@
 <?php
 
+use humhub\components\Module;
 use humhub\libs\Html;
 use humhub\modules\admin\assets\AdminAsset;
+use humhub\modules\admin\models\forms\ModuleSetAsDefaultForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\User;
 use humhub\widgets\LoaderWidget;
 use yii\helpers\Url;
+use yii\web\View;
 
 /**
- * @var $this \yii\web\View
- * @var $module \humhub\components\Module
- * @var $model \humhub\modules\admin\models\forms\ModuleSetAsDefaultForm
+ * @var $this View
+ * @var $module Module
+ * @var $model ModuleSetAsDefaultForm
  */
 
 AdminAsset::register($this);
