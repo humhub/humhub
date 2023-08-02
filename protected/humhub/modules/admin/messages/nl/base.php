@@ -74,4 +74,6 @@ return array (
   'Users' => 'Gebruikers',
   'Version' => 'Versie',
   'Visit Marketplace' => 'Bezoek de Marktplaats',
+  'You do not have the permission to configure modules. Please contact the administrator for further information.' => 'U heeft geen toestemming om modules te configureren. Neem contact op met de beheerder voor meer informatie.',
+  'You do not have the permission to manage modules. Please contact the administrator for further information.' => 'U heeft geen rechten om modules te beheren. Neem contact op met de beheerder voor meer informatie.',
 );

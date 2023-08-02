@@ -523,9 +523,8 @@
     }
 
     /* Give selected cells a blue overlay */
-
     .ProseMirror .selectedCell:after {
-        background: rgba(200, 200, 255, 0.4);
+        background: rgba(200, 255, 255, 0.4);
         content: "";
         pointer-events: none;
         position: absolute;
@@ -552,13 +551,13 @@
 
 .ProseMirror-prompt {
     background: white;
-    padding: 5px 10px 5px 15px;
     border: 1px solid silver;
-    position: fixed;
     border-radius: 3px;
+    box-shadow: -.5px 2px 5px rgba(0, 0, 0, .2);
+    padding: 5px 10px 5px 15px;
+    position: fixed;
     min-width: 300px;
     z-index: 999999;
-    box-shadow: -.5px 2px 5px rgba(0, 0, 0, .2);
 
     h5 {
         font-weight: bold;
@@ -572,13 +571,13 @@
 }
 
 .ProseMirror-prompt-close {
+    background: transparent;
+    color: @text-color-soft;
+    padding: 0;
     position: absolute;
     left: 2px;
     top: 1px;
-    color: @text-color-soft;
     border: none;
-    background: transparent;
-    padding: 0;
 }
 
 .ProseMirror-prompt-close:after {

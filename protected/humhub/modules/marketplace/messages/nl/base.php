@@ -131,4 +131,6 @@ The license was successfully removed!
     'Well done! You have successful installed an activated the module!' => 'Goed gedaan! U heeft de module succesvol geïnstalleerd en geactiveerd!',
     'Would you like to jump straight to it?' => 'Wilt u er meteen naartoe?',
     'Your HumHub installation is up to date!' => 'Uw HumHub-software is geheel bijgewerkt.',
+    'After installing the required module, all you have to do is activate it. After that you can instantly start using the module or function. Please note that some modules need to be configured before use.' => '',
+    'Find all the modules you can add to your network in our HumHub Marketplace. Discover numerous add-ons and features that customize the software and give you the possibility to configure your network to your needs.' => '',
 ];

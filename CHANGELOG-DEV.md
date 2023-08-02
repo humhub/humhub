@@ -1,8 +1,16 @@
 HumHub Changelog
 ================
 
-1.15.0 (Unreleased)
--------------------
+1.15.0-beta.2 (Unreleased)
+--------------------------
+- Fix #6472: Initialization of account profile field type "Markdown"
+- Fix #6471: Wording "Default Homepage" in Space Default Settings
+- Fix #6468: Module Administration - Marketplace Links broken without Pretty URLs
+- Enh #6469: Added Info text for Marketplace page 
+- Fix #112: Reorder Table Rows
+
+1.15.0-beta.1 (July 31, 2023)
+-----------------------------
 - Fix #6461: Test server support to serve web module's `/manifest.json`, `/sw.js`, & `/offline.pwa.html`
 - Enh #6460: Test server output: print application requests
 - Enh #6451: Introduce Archiveable, Deletable, Editable, Readable, & Viewable Interfaces
