@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
@@ -16,7 +17,7 @@ use humhub\widgets\Button;
     ->sm()
     ->loader(false) ?>
 <ul class="dropdown-menu pull-right">
-    <?php foreach ($entries as $entry) : ?>
+    <?php foreach ($entries as $entry): ?>
         <li>
             <?= $entry->render() ?>
         </li>

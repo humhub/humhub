@@ -31,6 +31,4 @@ class CleanupPendingRegistrations extends ActiveJob
 
         Invite::deleteAll(['<', 'created_at', Yii::$app->formatter->asDatetime(time() - $module->cleanupPendingRegistrationInterval, 'php:Y-m-d H:i:s')]);
     }
-
-
 }

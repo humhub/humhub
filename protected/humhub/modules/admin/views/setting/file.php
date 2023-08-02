@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var $this \humhub\modules\ui\view\components\View
  * @var \humhub\modules\admin\models\forms\FileSettingsForm $model

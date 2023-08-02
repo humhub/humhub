@@ -14,7 +14,6 @@ use humhub\libs\TimezoneHelper;
  */
 class BasicSettingsForm extends \yii\base\Model
 {
-
     public $name;
     public $baseUrl;
     public $defaultLanguage;
@@ -93,12 +92,10 @@ class BasicSettingsForm extends \yii\base\Model
         return [
             'defaultTimeZone' => Yii::t('AdminModule.settings', 'Reported database time: {dateTime}', [
                     'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime())
-                ]
-            ),
+                ]),
             'timeZone' => Yii::t('AdminModule.settings', 'Reported database time: {dateTime}', [
                     'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime())
-                ]
-            ),
+                ]),
             'baseUrl' => Yii::t('AdminModule.settings', 'E.g. http://example.com/humhub'),
             'maintenanceModeInfo' => Yii::t('AdminModule.settings', 'Add custom info text for maintenance mode. Displayed on the login page.'),
         ];
@@ -126,5 +123,4 @@ class BasicSettingsForm extends \yii\base\Model
 
         return true;
     }
-
 }

@@ -12,13 +12,11 @@ use Yii;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\TabMenu;
 
-
 /**
  * Group Administration Menu
  */
 class InformationMenu extends TabMenu
 {
-
     /**
      * @inheritdoc
      */
@@ -61,5 +59,4 @@ class InformationMenu extends TabMenu
 
         parent::init();
     }
-
 }

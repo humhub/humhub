@@ -19,7 +19,6 @@ use humhub\modules\admin\models\Log;
  */
 class CleanupLog extends ActiveJob
 {
-
     /**
      * @var int seconds before delete old log messages
      */
@@ -32,5 +31,4 @@ class CleanupLog extends ActiveJob
     {
         Log::deleteAll(['<', 'log_time', time() - $this->cleanupInterval]);
     }
-
 }

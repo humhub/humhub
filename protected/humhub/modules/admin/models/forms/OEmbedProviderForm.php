@@ -10,7 +10,6 @@ use Yii;
  */
 class OEmbedProviderForm extends \yii\base\Model
 {
-
     public $name;
     public $endpoint;
     public $pattern;
@@ -25,7 +24,7 @@ class OEmbedProviderForm extends \yii\base\Model
             [['name', 'pattern', 'endpoint'], 'string'],
             [['name', 'pattern', 'endpoint'], 'required'],
             ['endpoint', 'url'],
-            ['access_token', 'required', 'when' => function($model) {
+            ['access_token', 'required', 'when' => function ($model) {
                 parse_str($model->endpoint, $query);
                 return isset($query['access_token']);
             }]
@@ -46,5 +45,4 @@ class OEmbedProviderForm extends \yii\base\Model
             'access_token' => Yii::t('AdminModule.settings', 'Access Token'),
         ];
     }
-
 }

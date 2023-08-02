@@ -3,7 +3,6 @@
 use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Html;
 
-
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $model \humhub\modules\admin\models\forms\LogFilterForm */
 ?>

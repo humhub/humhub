@@ -204,5 +204,4 @@ class ApprovalController extends Controller
             throw new HttpException(400, 'Invalid action!');
         }
     }
-
 }

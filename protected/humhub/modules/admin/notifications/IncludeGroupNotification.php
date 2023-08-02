@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -37,7 +38,7 @@ class IncludeGroupNotification extends BaseNotification
      */
     public function category()
     {
-        return new AdminNotificationCategory;
+        return new AdminNotificationCategory();
     }
 
     /**

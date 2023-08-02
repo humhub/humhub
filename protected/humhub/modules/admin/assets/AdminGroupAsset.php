@@ -13,7 +13,6 @@ use yii\web\View;
 
 class AdminGroupAsset extends AssetBundle
 {
-
     /**
      * @inheritdoc
      */
@@ -28,5 +27,4 @@ class AdminGroupAsset extends AssetBundle
     public $js = [
         'js/humhub.admin.group.js'
     ];
-
 }

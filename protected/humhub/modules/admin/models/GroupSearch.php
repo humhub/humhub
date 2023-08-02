@@ -19,7 +19,6 @@ use humhub\modules\user\models\Group;
  */
 class GroupSearch extends Group
 {
-
     public function rules()
     {
         return [
@@ -71,5 +70,4 @@ class GroupSearch extends Group
 
         return $dataProvider;
     }
-
 }

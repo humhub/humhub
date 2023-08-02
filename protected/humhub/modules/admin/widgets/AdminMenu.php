@@ -175,5 +175,4 @@ class AdminMenu extends LeftNavigation
         $updatesCount = (new MarketplaceService())->getPendingModuleUpdateCount();
         return $updatesCount > 0 ? '&nbsp;&nbsp;' . Label::danger($updatesCount) : '';
     }
-
 }

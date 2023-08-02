@@ -34,5 +34,4 @@ class ManageModules extends BaseAdminPermission
         $this->title = \Yii::t('AdminModule.permissions', 'Manage Modules');
         $this->description = \Yii::t('AdminModule.permissions', 'Can manage modules within the \'Administration ->  Modules\' section.');
     }
-
 }

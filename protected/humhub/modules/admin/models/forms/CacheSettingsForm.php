@@ -122,11 +122,10 @@ class CacheSettingsForm extends Model
 
     public function getReloadableScriptsAsArray()
     {
-        if(is_string($this->reloadableScripts) && !empty($this->reloadableScripts)) {
+        if (is_string($this->reloadableScripts) && !empty($this->reloadableScripts)) {
             return array_map('trim', explode("\n", $this->reloadableScripts));
         }
 
         return [];
     }
-
 }

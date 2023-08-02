@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
@@ -18,7 +19,6 @@ use Yii;
  */
 class MaintenanceModeWarning extends Widget
 {
-
     /**
      * {@inheritdoc}
      */
@@ -30,5 +30,4 @@ class MaintenanceModeWarning extends Widget
 
         return $this->render('maintenanceModeWarning');
     }
-
 }

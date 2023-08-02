@@ -18,7 +18,6 @@ use Yii;
  */
 class HumHubAPI
 {
-
     /**
      * HumHub API
      *
@@ -64,5 +63,4 @@ class HumHubAPI
 
         return $latestVersion;
     }
-
 }

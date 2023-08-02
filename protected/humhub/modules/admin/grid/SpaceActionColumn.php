@@ -20,7 +20,6 @@ use humhub\modules\admin\controllers\UserController;
  */
 class SpaceActionColumn extends ActionColumn
 {
-
     /**
      * @inheritdoc
      */
@@ -39,5 +38,4 @@ class SpaceActionColumn extends ActionColumn
 
         return parent::renderDataCellContent($model, $key, $index);
     }
-
 }

@@ -31,5 +31,4 @@ class LogAsset extends AssetBundle
     public $js = [
         'js/humhub.admin.log.js'
     ];
-
 }

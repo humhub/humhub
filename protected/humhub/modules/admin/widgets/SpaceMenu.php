@@ -54,5 +54,4 @@ class SpaceMenu extends TabMenu
 
         parent::init();
     }
-
 }

@@ -26,7 +26,6 @@ use yii\web\HttpException;
  */
 class ModuleController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -187,5 +186,4 @@ class ModuleController extends Controller
     {
         return $this->redirect(['/admin/module/list']);
     }
-
 }

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use humhub\modules\admin\widgets\PrerequisitesList;
+
 ?>
 <p><?= Yii::t('AdminModule.information', 'Checking HumHub software prerequisites.'); ?></p>
 

@@ -29,5 +29,4 @@ class ManageGroups extends BaseAdminPermission
         $this->title = \Yii::t('AdminModule.permissions', 'Manage Groups');
         $this->description = \Yii::t('AdminModule.permissions', 'Can manage users and groups');
     }
-
 }

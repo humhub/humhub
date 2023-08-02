@@ -26,7 +26,6 @@ use Yii;
  */
 class InformationController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -134,7 +133,7 @@ class InformationController extends Controller
             $reflect = new ReflectionClass($queue);
             $driverName = $reflect->getShortName();
         } catch (ReflectionException $e) {
-            Yii::error('Could not determine queue driver: '. $e->getMessage());
+            Yii::error('Could not determine queue driver: ' . $e->getMessage());
         }
 
         return $this->render('background-jobs', [
@@ -148,5 +147,4 @@ class InformationController extends Controller
             'canClearQueue' => $canClearQueue
         ]);
     }
-
 }

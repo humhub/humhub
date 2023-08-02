@@ -18,7 +18,6 @@ use humhub\modules\ui\menu\widgets\SubTabMenu;
  */
 class AdvancedSettingMenu extends SubTabMenu
 {
-
     /**
      * @inheritdoc
      */
@@ -89,5 +88,4 @@ class AdvancedSettingMenu extends SubTabMenu
 
         parent::init();
     }
-
 }

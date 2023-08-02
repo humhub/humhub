@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
@@ -20,7 +21,6 @@ use yii\base\Model;
  */
 class PeopleSettingsForm extends Model
 {
-
     public $detail1;
     public $detail2;
     public $detail3;
@@ -182,5 +182,4 @@ class PeopleSettingsForm extends Model
             ->where(['id' => $defaultSortingGroupId])
             ->exists();
     }
-
 }

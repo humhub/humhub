@@ -21,7 +21,6 @@ use humhub\modules\user\models\User;
  */
 class UserSearch extends User
 {
-
     /**
      * @var \humhub\modules\user\components\ActiveQueryUser
      */
@@ -160,5 +159,4 @@ class UserSearch extends User
             User::STATUS_SOFT_DELETED => Yii::t('AdminModule.user', 'Deleted users') . ' (' . $countSoftDeleted . ')',
         ];
     }
-
 }

@@ -13,5 +13,4 @@ namespace humhub\modules\admin\widgets;
  */
 class SpaceGridView extends \humhub\widgets\GridView
 {
-
 }

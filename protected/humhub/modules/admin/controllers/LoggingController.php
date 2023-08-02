@@ -21,7 +21,6 @@ use humhub\modules\admin\models\Log;
  */
 class LoggingController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -32,7 +31,7 @@ class LoggingController extends Controller
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Logging'));
         $this->subLayout = '@admin/views/layouts/information';
 
-		return parent::init();
+        return parent::init();
     }
 
     /**
@@ -49,7 +48,7 @@ class LoggingController extends Controller
     {
         $filter = new LogFilterForm();
 
-        if(Yii::$app->request->post()) {
+        if (Yii::$app->request->post()) {
             $filter->load(Yii::$app->request->post());
         } else {
             $filter->load(Yii::$app->request->get());
@@ -61,7 +60,7 @@ class LoggingController extends Controller
             'pagination' => $filter->getPagination(),
         ];
 
-        if(Yii::$app->request->isAjax && !Yii::$app->request->isPjax) {
+        if (Yii::$app->request->isAjax && !Yii::$app->request->isPjax) {
             return $this->asJson([
                 'html' => $this->renderPartial('log_entries', $params),
                 'url' => $filter->getUrl()
@@ -76,7 +75,6 @@ class LoggingController extends Controller
         $this->forcePostRequest();
         Log::deleteAll();
 
-		return $this->redirect(['index']);
+        return $this->redirect(['index']);
     }
-
 }

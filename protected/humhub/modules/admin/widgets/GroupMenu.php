@@ -31,5 +31,4 @@ class GroupMenu extends SubTabMenu
         ]));
         parent::init();
     }
-
 }

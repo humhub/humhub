@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
@@ -48,5 +49,4 @@ class AvailableModuleUpdatesInfo extends Widget
     {
         return $this->render('available-module-updates-info', ['count' => $this->count]);
     }
-
 }

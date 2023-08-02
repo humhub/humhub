@@ -20,7 +20,6 @@ use humhub\modules\user\models\User;
  */
 class UserApprovalSearch extends User
 {
-
     public function attributes()
     {
         // add related fields to searchable attributes
@@ -96,5 +95,4 @@ class UserApprovalSearch extends User
     {
         return User::find()->where(['user.status' => User::STATUS_NEED_APPROVAL])->count();
     }
-
 }

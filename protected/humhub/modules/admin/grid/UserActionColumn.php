@@ -19,7 +19,6 @@ use humhub\modules\user\models\User;
  */
 class UserActionColumn extends ActionColumn
 {
-
     /**
      * @inheritdoc
      */
@@ -33,7 +32,7 @@ class UserActionColumn extends ActionColumn
         } else {
             $actions[Yii::t('base', 'Edit')] = ['edit'];
 
-            if(Yii::$app->user->isAdmin() || !$model->isSystemAdmin()) {
+            if (Yii::$app->user->isAdmin() || !$model->isSystemAdmin()) {
                 $actions[] = '---';
                 if ($model->status == User::STATUS_DISABLED) {
                     $actions[Yii::t('AdminModule.user', 'Enable')] = ['enable', 'linkOptions' => ['data-method' => 'post', 'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure that you want to enable this user?')]];
@@ -58,5 +57,4 @@ class UserActionColumn extends ActionColumn
 
         return parent::renderDataCellContent($model, $key, $index);
     }
-
 }

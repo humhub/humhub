@@ -23,7 +23,6 @@ use humhub\modules\admin\libs\HumHubAPI;
  */
 class NewVersionAvailable extends BaseNotification
 {
-
     /**
      * @inheritdoc
      */
@@ -52,7 +51,7 @@ class NewVersionAvailable extends BaseNotification
      */
     public function category()
     {
-        return new AdminNotificationCategory;
+        return new AdminNotificationCategory();
     }
 
     /**
@@ -70,7 +69,4 @@ class NewVersionAvailable extends BaseNotification
     {
         return Yii::t('AdminModule.notification', "There is a new HumHub Version ({version}) available.", ['version' => Html::tag('strong', $this->getLatestHumHubVersion())]);
     }
-
 }
-
-?>

@@ -18,7 +18,6 @@ use humhub\libs\SelfTest;
  */
 class PrerequisitesList extends \yii\base\Widget
 {
-
     /**
      * @inheritdoc
      */
@@ -42,5 +41,4 @@ class PrerequisitesList extends \yii\base\Widget
 
         return false;
     }
-
 }

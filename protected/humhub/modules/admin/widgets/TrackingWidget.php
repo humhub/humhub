@@ -21,7 +21,6 @@ use Yii;
  */
 class TrackingWidget extends \humhub\components\Widget
 {
-
     /**
      * @inheritdoc
      */
@@ -29,12 +28,11 @@ class TrackingWidget extends \humhub\components\Widget
     {
         $trackingCode = Yii::$app->settings->get('trackingHtmlCode');
 
-        if(!$trackingCode) {
+        if (!$trackingCode) {
             return '';
         }
 
         $twig = new Environment(new ArrayLoader(['trackingHtmlCode' => $trackingCode]));
         return $twig->render('trackingHtmlCode', ['nonce' => Security::getNonce()]);
     }
-
 }

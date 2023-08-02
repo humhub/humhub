@@ -20,7 +20,7 @@ use yii\log\Logger;
 
 LogAsset::register($this);
 
-if($filter->day) {
+if ($filter->day) {
     // Workaround since 10/03/2020 is changed to 03/10/2020 e.g. in UK english
     $filter->day = DateHelper::parseDateTime($filter->day);
 }
@@ -51,7 +51,8 @@ if($filter->day) {
                     'placeholder' => Yii::t('AdminModule.information', 'Search term...'),
                     'maxlength' => 200,
                     'style' => 'height:40px'
-                ])->label(false) ?>
+                ]
+            )->label(false) ?>
         </div>
         <div class="col-md-2" style="padding-right:0">
             <?= $form->field($filter, 'day')->widget(DatePicker::class, [

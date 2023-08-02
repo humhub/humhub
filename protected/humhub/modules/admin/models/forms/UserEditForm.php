@@ -69,7 +69,7 @@ class UserEditForm extends User
 
     public function getGroupLabel()
     {
-        if(!Yii::$app->user->isAdmin() && $this->isSystemAdmin()) {
+        if (!Yii::$app->user->isAdmin() && $this->isSystemAdmin()) {
             return Yii::t('AdminModule.base', 'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)');
         }
 
@@ -88,7 +88,7 @@ class UserEditForm extends User
                 if (!$this->isInGroupSelection($userGroup)) {
                     /* @var $groupUser GroupUser */
                     $groupUser = $this->getGroupUsers()->where(['group_id' => $userGroup->id])->one();
-                    if(!$groupUser->group->is_admin_group || Yii::$app->user->isAdmin()) {
+                    if (!$groupUser->group->is_admin_group || Yii::$app->user->isAdmin()) {
                         $groupUser->delete();
                     }
                 }
@@ -148,7 +148,7 @@ class UserEditForm extends User
      */
     public static function getGroupItems($groups = null)
     {
-        if(!$groups) {
+        if (!$groups) {
             $groups = (Yii::$app->user->isAdmin()) ? Group::find()->all() :  Group::findAll(['is_admin_group' => '0']) ;
         }
 

@@ -20,7 +20,6 @@ use Yii;
  */
 class Events extends \yii\base\BaseObject
 {
-
     /**
      * On Init of Dashboard Sidebar, add the approve notification widget
      *
@@ -60,8 +59,9 @@ class Events extends \yii\base\BaseObject
     /**
      * @param $event UserEvent
      */
-    public static function onSwitchUser($event) {
-        if(Yii::$app instanceof Application) {
+    public static function onSwitchUser($event)
+    {
+        if (Yii::$app instanceof Application) {
             AdminMenu::reset();
         }
     }

@@ -18,7 +18,6 @@ use humhub\modules\admin\permissions\ManageSettings;
  */
 class SettingsMenu extends TabMenu
 {
-
     /**
      * @inheritdoc
      */
@@ -59,5 +58,4 @@ class SettingsMenu extends TabMenu
 
         parent::init();
     }
-
 }

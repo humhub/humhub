@@ -9,7 +9,6 @@ use Yii;
  */
 class ProxySettingsForm extends \yii\base\Model
 {
-
     public $enabled;
     public $server;
     public $port;
@@ -76,5 +75,4 @@ class ProxySettingsForm extends \yii\base\Model
 
         return true;
     }
-
 }

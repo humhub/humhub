@@ -17,7 +17,6 @@ use humhub\modules\space\models\Space;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */
@@ -109,5 +108,4 @@ class Module extends \humhub\components\Module
 
         return [];
     }
-
 }

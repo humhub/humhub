@@ -17,7 +17,6 @@ use humhub\modules\ui\menu\widgets\SubTabMenu;
  */
 class GroupManagerMenu extends SubTabMenu
 {
-
     /**
      * @var \humhub\modules\user\models\Group
      */
@@ -52,5 +51,4 @@ class GroupManagerMenu extends SubTabMenu
 
         parent::init();
     }
-
 }
