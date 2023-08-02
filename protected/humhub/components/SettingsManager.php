@@ -118,13 +118,49 @@ class SettingsManager extends BaseSettingsManager
      * Indicates this setting is fixed in configuration file and cannot be
      * changed at runtime.
      *
-     * @param string|int $name
-     *
+     * @param string $name
      * @return boolean
      */
     public function isFixed(string $name): bool
     {
-        return isset(Yii::$app->params['fixed-settings'][$this->moduleId][$name]);
+        return $this->getFixed($name) !== null;
+    }
+
+    /**
+     * Get the fixed setting value from configuration file.
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function getFixed(string $name)
+    {
+        if (!isset(Yii::$app->params['fixed-settings'][$this->moduleId][$name])) {
+            return null;
+        }
+
+        $value = Yii::$app->params['fixed-settings'][$this->moduleId][$name];
+
+        if (!is_array($value)) {
+            // Simple value without conditions
+            return $value;
+        }
+
+        // Find a fixed value by condition depending on other settings
+        foreach ($value as $fixedValue => $conditions) {
+            $isFixed = true;
+            foreach ($conditions as $conditionSetting => $conditionValue) {
+                if ($name === $conditionSetting || $this->get($conditionSetting) !== $conditionValue) {
+                    // Deny to use same setting name in conditions OR condition is not matched
+                    $isFixed = false;
+                    break;
+                }
+            }
+            if ($isFixed === true) {
+                return $fixedValue;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -132,10 +168,8 @@ class SettingsManager extends BaseSettingsManager
      */
     public function get(string $name, $default = null)
     {
-        if ($this->isFixed($name)) {
-            return Yii::$app->params['fixed-settings'][$this->moduleId][$name];
-        }
+        $fixedValue = $this->getFixed($name);
 
-        return parent::get($name, $default);
+        return $fixedValue ?? parent::get($name, $default);
     }
 }
