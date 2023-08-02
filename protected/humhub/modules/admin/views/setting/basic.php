@@ -12,9 +12,9 @@ use yii\helpers\Html;
 $this->registerJsConfig('admin', $adminSettingsJsConfig = ['text' => [
     'maintenanceMode.header' => Yii::t('AdminModule.settings', '<strong>Maintenance</strong> Mode'),
     'maintenanceMode.question.enable' => Yii::t(
-            'AdminModule.settings',
-            'Activate maintenance mode and disable access to the platform for non-admin users?<br><br>'
-        ) .
+        'AdminModule.settings',
+        'Activate maintenance mode and disable access to the platform for non-admin users?<br><br>'
+    ) .
         '<div class="alert alert-danger">' .
         Yii::t('AdminModule.settings', '<strong>Warning:</strong> All users will be immediately logged out, except admins.') .
         '</div>',
