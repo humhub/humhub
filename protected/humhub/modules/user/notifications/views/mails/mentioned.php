@@ -9,6 +9,7 @@
 /* @var $source yii\db\ActiveRecord */
 /* @var $contentContainer ContentContainerActiveRecord */
 /* @var $space humhub\modules\space\models\Space */
+
 /* @var $record Notification */
 
 use humhub\modules\content\components\ContentContainerActiveRecord;

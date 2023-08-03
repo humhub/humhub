@@ -5,8 +5,8 @@ use humhub\modules\space\widgets\Image;
 
 ?>
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>
-    <strong><?= Yii::t('UserModule.account', 'Your account cannot be deleted!'); ?></strong><br/>
-    <br/>
+<strong><?= Yii::t('UserModule.account', 'Your account cannot be deleted!'); ?></strong><br/>
+<br/>
 <?= Yii::t('UserModule.account', 'You are currently the owner of following spaces:'); ?><br/>
 
 <?php foreach ($ownSpaces as $space): ?>
@@ -20,9 +20,9 @@ use humhub\modules\space\widgets\Image;
         </div>
     </div>
 <?php endforeach; ?>
-    <br/>
+<br/>
 
-    <strong><?= Yii::t('UserModule.account', 'You must transfer ownership or delete these spaces before you can delete your account.'); ?></strong>
-    <br/>
-    <br/>
+<strong><?= Yii::t('UserModule.account', 'You must transfer ownership or delete these spaces before you can delete your account.'); ?></strong>
+<br/>
+<br/>
 <?php $this->endContent(); ?>

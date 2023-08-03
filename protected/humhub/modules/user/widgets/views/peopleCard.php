@@ -20,9 +20,11 @@ use yii\web\View;
 
 <div class="card-panel">
     <div
-        class="card-bg-image"<?php if ($user->getProfileBannerImage()->hasImage()):
-            ?> style="background-image: url('<?= $user->getProfileBannerImage()->getUrl() ?>')"<?php
-                             endif; ?>></div>
+        class="card-bg-image"
+        <?php if ($user->getProfileBannerImage()->hasImage()): ?>
+            style="background-image: url('<?= $user->getProfileBannerImage()->getUrl() ?>')"
+        <?php endif; ?>>
+    </div>
     <div class="card-header">
         <?= Image::widget([
             'user' => $user,

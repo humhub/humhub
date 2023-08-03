@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 /* @var $viewable humhub\modules\user\notifications\Mentioned */
 /* @var $originator \humhub\modules\user\models\User */
+
 /* @var $record Notification */
 
 use humhub\modules\notification\models\Notification;
@@ -22,8 +23,7 @@ use humhub\widgets\mails\MailButtonList;
                     'comment' => $comment,
                     'date' => $date,
                     'space' => $space,
-                ]);
-?>
+                ]); ?>
             </td>
         </tr>
         <tr>

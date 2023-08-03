@@ -427,11 +427,12 @@ class Group extends ActiveRecord
         foreach ($group->manager as $manager) {
             Yii::$app->i18n->setUserLocale($manager);
 
-            $html = Yii::t(
-                'UserModule.auth',
-                'Hello {displayName},',
-                ['displayName' => $manager->displayName]
-            ) . "<br><br>\n\n" .
+            $html =
+                Yii::t(
+                    'UserModule.auth',
+                    'Hello {displayName},',
+                    ['displayName' => $manager->displayName]
+                ) . "<br><br>\n\n" .
                 Yii::t(
                     'UserModule.auth',
                     'a new user {displayName} needs approval.',
