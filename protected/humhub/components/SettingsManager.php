@@ -140,13 +140,21 @@ class SettingsManager extends BaseSettingsManager
 
         $value = Yii::$app->params['fixed-settings'][$this->moduleId][$name];
 
-        if (!is_array($value)) {
-            // Simple value without conditions
-            return $value;
+        if (is_array($value)) {
+            return $this->getFixedFromArray($name, $value);
         }
 
+        if (is_callable($value)) {
+            return call_user_func($value, $this);
+        }
+
+        return $value;
+    }
+
+    protected function getFixedFromArray(string $name, array $array)
+    {
         // Find a fixed value by condition depending on other settings
-        foreach ($value as $fixedValue => $conditions) {
+        foreach ($array as $fixedValue => $conditions) {
             $isFixed = true;
             foreach ($conditions as $conditionSetting => $conditionValue) {
                 if ($name === $conditionSetting || $this->get($conditionSetting) !== $conditionValue) {
