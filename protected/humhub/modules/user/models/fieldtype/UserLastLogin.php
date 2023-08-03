@@ -19,7 +19,6 @@ use Yii;
  */
 class UserLastLogin extends BaseTypeVirtual
 {
-
     /**
      * @inheritDoc
      * @throws \yii\base\InvalidConfigException
@@ -30,6 +29,6 @@ class UserLastLogin extends BaseTypeVirtual
             return '-';
         }
 
-        return Yii::$app->formatter->asDate($user->last_login,'long');
+        return Yii::$app->formatter->asDate($user->last_login, 'long');
     }
 }

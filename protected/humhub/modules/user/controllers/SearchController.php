@@ -14,7 +14,6 @@ use humhub\modules\user\widgets\Image;
 use Yii;
 use yii\web\Controller;
 
-
 /**
  * Search Controller provides action for searching users.
  *
@@ -23,7 +22,6 @@ use yii\web\Controller;
  */
 class SearchController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -71,7 +69,7 @@ class SearchController extends Controller
         $query = User::find()->visible()->search((string)Yii::$app->request->get('keyword'));
 
         foreach ($query->limit(10)->all() as $container) {
-            if($container->permissionManager->can(CanMention::class)) {
+            if ($container->permissionManager->can(CanMention::class)) {
                 $results[] = [
                     'guid' => $container->guid,
                     'type' => 'u',
@@ -85,5 +83,3 @@ class SearchController extends Controller
         return $this->asJson($results);
     }
 }
-
-?>

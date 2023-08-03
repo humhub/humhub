@@ -2,6 +2,7 @@
 
 use humhub\modules\ui\mail\DefaultMailStyle;
 use yii\helpers\Html;
+
 ?>
 <tr>
     <td align="center" valign="top"   class="fix-box">

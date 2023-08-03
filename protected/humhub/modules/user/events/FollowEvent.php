@@ -18,7 +18,6 @@ use yii\base\Event;
  */
 class FollowEvent extends Event
 {
-
     /**
      * @var \humhub\modules\user\models\User
      */
@@ -28,5 +27,4 @@ class FollowEvent extends Event
      * @var \humhub\components\ActiveRecord the followed item
      */
     public $target;
-
 }

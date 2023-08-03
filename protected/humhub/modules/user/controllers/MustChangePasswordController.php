@@ -20,7 +20,6 @@ use Yii;
  */
 class MustChangePasswordController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -58,5 +57,4 @@ class MustChangePasswordController extends Controller
 
         return $this->render('index', ['model' => $model]);
     }
-
 }

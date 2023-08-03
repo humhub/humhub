@@ -208,5 +208,4 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
     {
         return $this->visible($user)->filterBlockedUsers($user);
     }
-
 }

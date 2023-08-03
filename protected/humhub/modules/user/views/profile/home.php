@@ -13,7 +13,9 @@ use humhub\modules\user\widgets\UserTags;
 /* @var $isSingleContentRequest bool */
 ?>
 
-<div data-stream-create-content="stream.wall.WallStream"<?php if ($isSingleContentRequest) : ?> style="display:none"<?php endif; ?>>
+<div data-stream-create-content="stream.wall.WallStream"<?php if ($isSingleContentRequest):
+    ?> style="display:none"<?php
+                                                        endif; ?>>
     <?= WallCreateContentFormContainer::widget(['contentContainer' => $user]); ?>
 </div>
 

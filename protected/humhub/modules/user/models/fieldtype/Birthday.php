@@ -20,7 +20,6 @@ use Yii;
  */
 class Birthday extends BaseType
 {
-
     /**
      * The public property $defaultHideAge is configured by loadFieldConfig in BaseType and looks like an integer
      * but is stored as string. The value for $hideAge (the user input) looks like an integer and is stored as integer.
@@ -179,8 +178,11 @@ class Birthday extends BaseType
     public function getUserValue(User $user, $raw = true): ?string
     {
         $internalName = $this->profileField->internal_name;
-        $birthdayDate = \DateTime::createFromFormat('Y-m-d', $user->profile->$internalName ?? '',
-            new \DateTimeZone(Yii::$app->formatter->timeZone));
+        $birthdayDate = \DateTime::createFromFormat(
+            'Y-m-d',
+            $user->profile->$internalName ?? '',
+            new \DateTimeZone(Yii::$app->formatter->timeZone)
+        );
 
         $internalNameHideAge = $this->profileField->internal_name . '_hide_year';
         $hideAge = $user->profile->$internalNameHideAge;
@@ -210,7 +212,7 @@ class Birthday extends BaseType
          */
         if ($hideAge === self::HIDE_AGE_YES) {
             // See: https://github.com/humhub/humhub/issues/5187#issuecomment-888178022
-            
+
             $month = Yii::$app->formatter->asDate($birthdayDate, 'php:F');
             $day = Yii::$app->formatter->asDate($birthdayDate, 'php:d');
             if (preg_match('/(' . preg_quote($day) . '.+' . preg_quote($month) . '|' . preg_quote($month) . '.+' . preg_quote($day) . ')/', $longDate, $m)) {
@@ -241,5 +243,4 @@ class Birthday extends BaseType
             $profile->$internalNameHideAge = $this->defaultHideAge;
         }
     }
-
 }

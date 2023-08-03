@@ -21,7 +21,7 @@ use yii\helpers\Html;
 <div id="userlist-content">
 
     <ul class="media-list">
-        <?php foreach ($users as $user) : ?>
+        <?php foreach ($users as $user): ?>
             <li>
                 <a href="<?= $user->getUrl(); ?>" data-modal-close="1">
                     <div class="media">

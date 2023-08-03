@@ -1,8 +1,8 @@
 <?php
 
 namespace humhub\modules\user\models;
-use humhub\libs\BasePermission;
 
+use humhub\libs\BasePermission;
 
 /**
  * This is the model class for table "group_permission".

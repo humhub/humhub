@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -16,7 +17,6 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
 
-
 /**
  * Class ProfileHeaderCounter
  *
@@ -25,7 +25,6 @@ use yii\helpers\Url;
  */
 class ProfileHeaderCounterSet extends CounterSet
 {
-
     /**
      * @var User
      */
@@ -87,5 +86,4 @@ class ProfileHeaderCounterSet extends CounterSet
 
         parent::init();
     }
-
 }

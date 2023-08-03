@@ -28,7 +28,6 @@ use humhub\components\Controller;
  */
 class ProfileController extends Behavior
 {
-
     /**
      * @var User the user
      */
@@ -87,11 +86,8 @@ class ProfileController extends Behavior
 
         $this->owner->prependPageTitle($this->user->displayName);
 
-        if(empty($this->owner->subLayout)) {
+        if (empty($this->owner->subLayout)) {
             $this->owner->subLayout = "@humhub/modules/user/views/profile/_layout";
         }
     }
-
 }
-
-?>

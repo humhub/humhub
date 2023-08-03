@@ -19,7 +19,6 @@ use humhub\modules\space\models\Membership;
  */
 class UserSpaces extends \yii\base\Widget
 {
-
     /**
      * @var \humhub\modules\user\models\User
      */
@@ -47,7 +46,4 @@ class UserSpaces extends \yii\base\Widget
                     'showMoreLink' => $showMoreLink,
         ]);
     }
-
 }
-
-?>

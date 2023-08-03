@@ -26,7 +26,6 @@ use humhub\modules\search\libs\SearchHelper;
  */
 class GroupUser extends ActiveRecord
 {
-
     const SCENARIO_REGISTRATION = 'registration';
 
     /**
@@ -143,5 +142,4 @@ class GroupUser extends ActiveRecord
             }
         }
     }
-
 }

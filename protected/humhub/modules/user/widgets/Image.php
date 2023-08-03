@@ -87,5 +87,4 @@ class Image extends BaseImage
 
         return Html::tag('span', $html, $this->htmlOptions);
     }
-
 }

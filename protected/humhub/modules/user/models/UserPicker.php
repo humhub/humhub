@@ -15,7 +15,6 @@ use humhub\modules\user\models\UserFilter;
  */
 class UserPicker
 {
-
     /**
      * Creates a json user array used in the userpicker js frontend.
      * The $cfg is used to specify the filter values the following values are available:
@@ -53,58 +52,57 @@ class UserPicker
             'fillUser' => false,
             'filter' => null
         ];
-        
+
         $cfg = ($cfg == null) ? $defaultCfg : array_merge($defaultCfg, $cfg);
-        
+
         //If no initial query is given we use getFriends if friendship module is enabled otherwise all users
-        if(!isset($cfg['query'])) {
+        if (!isset($cfg['query'])) {
             $cfg['query'] = UserFilter::find();
         }
-        
+
         //Filter the initial query and disable user without the given permission
         $user = UserFilter::filter($cfg['query'], $cfg['keyword'], $cfg['maxResult'], null, $cfg['active']);
         $jsonResult = self::asJSON($user, $cfg['permission'], 2, $cfg['disabledText']);
-        
+
         //Fill the result with additional users if it's allowed and the result count less than maxResult
-        if(count($user) < $cfg['maxResult'] && (isset($cfg['fillQuery']) || $cfg['fillUser']) ) {
-            
+        if (count($user) < $cfg['maxResult'] && (isset($cfg['fillQuery']) || $cfg['fillUser'])) {
             //Filter out users by means of the fillQuery or default the fillQuery
             $fillQuery = (isset($cfg['fillQuery'])) ? $cfg['fillQuery'] : UserFilter::find()->active();
             UserFilter::addKeywordFilter($fillQuery, $cfg['keyword'], ($cfg['maxResult'] - count($user)));
             $fillQuery->andFilterWhere(['not in', 'user.id', self::getUserIdArray($user)]);
             $fillUser = $fillQuery->all();
-            
+
             //Either the additional users are disabled (by default) or we disable them by permission
             $disableCondition = (isset($cfg['permission'])) ? $cfg['permission']  : $cfg['disableFillUser'];
             $jsonResult = array_merge($jsonResult, self::asJSON($fillUser, $disableCondition, 1, $cfg['disabledText']));
-        }   
-        
-        if($cfg['filter'] != null) {
+        }
+
+        if ($cfg['filter'] != null) {
             array_walk($jsonResult, $cfg['filter']);
         }
-        
+
         return $jsonResult;
     }
-    
+
     /**
      * Assambles all user Ids of the given $users into an array
-     * 
+     *
      * @param array $users array of user models
      * @return array user id array
      */
     private static function getUserIdArray($users)
     {
         $result = [];
-        foreach($users as $user) {
+        foreach ($users as $user) {
             $result[] = $user->id;
         }
         return $result;
     }
-        
+
     /**
      * Creates an json result with user information arrays. A user will be marked
      * as disabled, if the permission check fails on this user.
-     * 
+     *
      * @param type $users
      * @param type $permission
      * @return type
@@ -128,7 +126,7 @@ class UserPicker
      * Creates a single user-information array for the given $user. A user will be marked
      * as disabled, if the given $permission check fails on this user. If the second argument
      * is of type boolean, the it will define the disabled field of the result directly.
-     * 
+     *
      * @param type $user
      * @param \humhub\libs\BasePermission|boolean|null if boolean is given
      * @return type
@@ -136,10 +134,10 @@ class UserPicker
     private static function createJSONUserInfo($user, $permission = null, $priority = null, $disabledText = null)
     {
         $disabled = false;
-        
-        if($permission != null && $permission instanceof \humhub\libs\BasePermission) {
+
+        if ($permission != null && $permission instanceof \humhub\libs\BasePermission) {
             $disabled = !$user->getPermissionManager()->can($permission);
-        } elseif($permission != null) {
+        } elseif ($permission != null) {
             $disabled = $permission;
         }
 

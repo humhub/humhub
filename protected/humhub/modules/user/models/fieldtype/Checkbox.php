@@ -77,7 +77,7 @@ class Checkbox extends BaseType
     {
         $columnName = $this->profileField->internal_name;
         if (!\humhub\modules\user\models\Profile::columnExists($columnName)) {
-            $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName, 'INT(1) DEFAULT '.$this->default);
+            $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName, 'INT(1) DEFAULT ' . $this->default);
             Yii::$app->db->createCommand($query)->execute();
         }
 
@@ -94,7 +94,7 @@ class Checkbox extends BaseType
     {
         $profileField = $this->profileField;
         if ($profileField->required) {
-            $rules[] = [$profileField->internal_name, function($attribute) use ($profileField) {
+            $rules[] = [$profileField->internal_name, function ($attribute) use ($profileField) {
                 if (!$this->$attribute) {
                     $this->addError($attribute, Yii::t('UserModule.profile', '{attribute} is required!', ['{attribute}' => $profileField->title]));
                 }

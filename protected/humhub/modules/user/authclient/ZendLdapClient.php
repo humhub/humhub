@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
@@ -6,7 +7,6 @@
  */
 
 namespace humhub\modules\user\authclient;
-
 
 use humhub\modules\ldap\authclient\LdapAuth;
 
@@ -19,5 +19,4 @@ use humhub\modules\ldap\authclient\LdapAuth;
  */
 class ZendLdapClient extends LdapAuth
 {
-
 }

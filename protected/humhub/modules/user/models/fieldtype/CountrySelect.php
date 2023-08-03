@@ -20,7 +20,6 @@ use Yii;
  */
 class CountrySelect extends Select
 {
-
     /**
      * Returns Form Definition for edit/create this field.
      *
@@ -61,7 +60,6 @@ class CountrySelect extends Select
             }
         } else {
             foreach (explode(",", $this->options) as $code) {
-
                 $key = trim($code);
                 $value = iso3166Codes::country($key, true);
                 if (!empty($key) && $key !== $value) {
@@ -70,7 +68,7 @@ class CountrySelect extends Select
             }
         }
 
-        // Sort countries list based on user language   
+        // Sort countries list based on user language
         $col = new \Collator(Yii::$app->language);
         $col->asort($items);
 
@@ -101,5 +99,4 @@ class CountrySelect extends Select
             'htmlOptions' => ['data-ui-select2' => true, 'style' => 'width:100%']
         ], $options));
     }
-
 }

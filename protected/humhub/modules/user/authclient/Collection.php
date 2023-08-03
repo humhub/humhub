@@ -22,7 +22,6 @@ use yii\base\InvalidArgumentException;
  */
 class Collection extends Component
 {
-
     /**
      * @event Event an event raised before the clients are set.
      */
@@ -135,5 +134,4 @@ class Collection extends Component
         $clients['local'] = ['class' => Password::class];
         return $clients;
     }
-
 }

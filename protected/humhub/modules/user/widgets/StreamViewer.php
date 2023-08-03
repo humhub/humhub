@@ -22,7 +22,6 @@ use humhub\modules\post\permissions\CreatePost;
  */
 class StreamViewer extends BaseStreamViewer
 {
-
     /**
      * @var string the path to Stream Action to use
      */
@@ -59,5 +58,4 @@ class StreamViewer extends BaseStreamViewer
             $this->messageStreamEmpty = Yii::t('UserModule.profile', '<b>This profile stream is still empty!</b>');
         }
     }
-
 }

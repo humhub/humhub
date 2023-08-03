@@ -11,14 +11,10 @@ namespace humhub\modules\user\widgets;
  */
 class UserTags extends \yii\base\Widget
 {
-
     public $user;
 
     public function run()
     {
         return $this->render('userTags', ['user' => $this->user]);
     }
-
 }
-
-?>

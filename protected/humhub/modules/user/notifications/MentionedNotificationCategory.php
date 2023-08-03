@@ -12,7 +12,6 @@ use humhub\modules\notification\components\NotificationCategory;
  */
 class MentionedNotificationCategory extends NotificationCategory
 {
-
     /**
      * @inheritdoc
      */
@@ -33,5 +32,4 @@ class MentionedNotificationCategory extends NotificationCategory
     {
         return Yii::t('UserModule.notification', 'Receive Notifications when someone mentioned you in a post.');
     }
-
 }

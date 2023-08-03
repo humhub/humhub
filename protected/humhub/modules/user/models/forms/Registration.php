@@ -269,7 +269,6 @@ class Registration extends HForm
         }
 
         if ($this->models['User']->save()) {
-
             // Save User Profile
             $this->models['Profile']->user_id = $this->models['User']->id;
             $this->models['Profile']->save();
@@ -285,8 +284,10 @@ class Registration extends HForm
                 // Save User Password
                 $this->models['Password']->user_id = $this->models['User']->id;
                 $this->models['Password']->setPassword($this->models['Password']->newPassword);
-                if ($this->models['Password']->save() &&
-                    $this->enableMustChangePassword) {
+                if (
+                    $this->models['Password']->save() &&
+                    $this->enableMustChangePassword
+                ) {
                     $this->models['User']->setMustChangePassword($this->models['Password']->mustChangePassword);
                 }
             }

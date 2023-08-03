@@ -44,5 +44,4 @@ final class InviteRegistrationService
             $registration->getUser()->email = $invite->email;
         }
     }
-
 }

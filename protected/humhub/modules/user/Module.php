@@ -20,7 +20,6 @@ use Yii;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */
@@ -170,7 +169,7 @@ class Module extends \humhub\components\Module
                 new permissions\ViewAboutPage(),
             ];
 
-            if(Yii::$app->getModule('friendship')->getIsEnabled()) {
+            if (Yii::$app->getModule('friendship')->getIsEnabled()) {
                 $permissions[] = new permissions\CanMention();
             }
 

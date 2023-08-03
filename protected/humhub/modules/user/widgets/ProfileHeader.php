@@ -22,7 +22,6 @@ use Yii;
  */
 class ProfileHeader extends \yii\base\Widget
 {
-
     /**
      * @var User
      */
@@ -86,7 +85,4 @@ class ProfileHeader extends \yii\base\Widget
             ->andWhere(['space.status' => Space::STATUS_ENABLED])
             ->count();
     }
-
 }
-
-?>

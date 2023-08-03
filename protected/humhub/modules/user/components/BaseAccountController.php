@@ -19,7 +19,6 @@ use humhub\components\access\ControllerAccess;
  */
 class BaseAccountController extends \humhub\components\Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -62,5 +61,4 @@ class BaseAccountController extends \humhub\components\Controller
 
         return $this->user;
     }
-
 }

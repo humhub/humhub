@@ -30,4 +30,3 @@ return [
         ['class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => [Events::class, 'onTopMenuInit']],
     ]
 ];
-?>

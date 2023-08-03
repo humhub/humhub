@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Url;
+
 ?>
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">

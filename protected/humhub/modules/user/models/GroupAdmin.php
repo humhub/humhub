@@ -17,7 +17,6 @@ use humhub\components\ActiveRecord;
  */
 class GroupAdmin extends ActiveRecord
 {
-
     /**
      * @inheritdoc
      */
@@ -63,5 +62,4 @@ class GroupAdmin extends ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
-
 }

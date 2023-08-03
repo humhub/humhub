@@ -98,9 +98,11 @@ use yii\helpers\Html;
                                                 <tr>
                                                     <td style="font-size: 14px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:center; ">
 
-                                                        <?= Yii::t('UserModule.base',
+                                                        <?= Yii::t(
+                                                            'UserModule.base',
                                                             'You tried registering an account with %appName%, but already have an account associated with this email address.',
-                                                            ['%appName%' => Html::encode(Yii::$app->name)]) ?>
+                                                            ['%appName%' => Html::encode(Yii::$app->name)]
+                                                        ) ?>
                                                         <br>
                                                         <?= Yii::t('UserModule.base', 'Did you forget your password?') ?>
                                                         <br>

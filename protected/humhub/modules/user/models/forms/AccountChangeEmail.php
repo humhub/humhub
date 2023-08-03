@@ -20,7 +20,6 @@ use humhub\modules\user\components\CheckPasswordValidator;
  */
 class AccountChangeEmail extends \yii\base\Model
 {
-
     /**
      * @var string the users password
      */
@@ -84,5 +83,4 @@ class AccountChangeEmail extends \yii\base\Model
 
         return true;
     }
-
 }

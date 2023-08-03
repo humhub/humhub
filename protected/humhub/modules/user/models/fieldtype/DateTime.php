@@ -62,7 +62,7 @@ class DateTime extends BaseType
                                 'class' => 'form-control',
                             ],
                         ]
-        ]]);
+                    ]]);
     }
 
     /**
@@ -111,15 +111,16 @@ class DateTime extends BaseType
     {
         $internalName = $this->profileField->internal_name;
 
-        $date = \DateTime::createFromFormat('Y-m-d H:i:s', $user->profile->$internalName ?? '',
-            new \DateTimeZone(Yii::$app->formatter->timeZone));
+        $date = \DateTime::createFromFormat(
+            'Y-m-d H:i:s',
+            $user->profile->$internalName ?? '',
+            new \DateTimeZone(Yii::$app->formatter->timeZone)
+        );
 
-        if ($date === false)
+        if ($date === false) {
             return "";
+        }
 
         return $raw ? \yii\helpers\Html::encode($user->profile->$internalName) : Yii::$app->formatter->asDatetime($date, 'long');
     }
-
 }
-
-?>

@@ -19,7 +19,6 @@ use yii\db\Expression;
  */
 class Session extends DbSession
 {
-
     /**
      * @inheritdoc
      */
@@ -45,8 +44,10 @@ class Session extends DbSession
     public function getCookieParams()
     {
         $params = parent::getCookieParams();
-        if (Yii::$app->request->autoEnsureSecureConnection &&
-            Yii::$app->request->isSecureConnection) {
+        if (
+            Yii::$app->request->autoEnsureSecureConnection &&
+            Yii::$app->request->isSecureConnection
+        ) {
             $params['secure'] = true;
         }
         return $params;
@@ -66,7 +67,7 @@ class Session extends DbSession
             }
 
             $expire = time() + $this->getTimeout();
-            $query = new Query;
+            $query = new Query();
             $exists = $query->select(['id'])
                 ->from($this->sessionTable)
                 ->where(['id' => $id])
@@ -96,5 +97,4 @@ class Session extends DbSession
 
         return true;
     }
-
 }

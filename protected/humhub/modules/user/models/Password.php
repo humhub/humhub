@@ -29,7 +29,6 @@ use humhub\modules\user\components\CheckPasswordValidator;
  */
 class Password extends ActiveRecord
 {
-
     /**
      * Additional Fields for Scenarios
      */
@@ -223,5 +222,4 @@ class Password extends ActiveRecord
         $this->user->save();
         $this->user->isCurrentUser() && Yii::$app->user->switchIdentity($this->user);
     }
-
 }

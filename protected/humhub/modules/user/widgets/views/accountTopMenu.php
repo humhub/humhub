@@ -23,7 +23,7 @@ $userModel = Yii::$app->user->identity;
 ?>
 
 <?php if (Yii::$app->user->isGuest): ?>
-    <?php if (!empty($entries)) : ?>
+    <?php if (!empty($entries)): ?>
         <?= $entries[0]->render() ?>
     <?php endif; ?>
 <?php else: ?>
@@ -51,9 +51,13 @@ $userModel = Yii::$app->user->identity;
         </a>
         <ul class="dropdown-menu pull-right">
             <?php foreach ($entries as $entry): ?>
-                <?php if (!($entry instanceof DropdownDivider)) : ?><li><?php endif; ?>
+                <?php if (!($entry instanceof DropdownDivider)):
+                    ?><li><?php
+                endif; ?>
                 <?= $entry->render() ?>
-                <?php if (!($entry instanceof DropdownDivider)) : ?></li><?php endif; ?>
+                <?php if (!($entry instanceof DropdownDivider)):
+                    ?></li><?php
+                endif; ?>
             <?php endforeach; ?>
             <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_ACCOUNT_MENU]); ?>
         </ul>

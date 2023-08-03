@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
@@ -23,7 +24,6 @@ use yii\helpers\Url;
  */
 class PeopleController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -94,5 +94,4 @@ class PeopleController extends Controller
     {
         return $this->asJson((new PeopleFilterPicker(['itemKey' => $field]))->getSuggestions($keyword));
     }
-
 }

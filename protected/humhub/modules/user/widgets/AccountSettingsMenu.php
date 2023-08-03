@@ -19,7 +19,6 @@ use humhub\modules\ui\menu\widgets\TabMenu;
  */
 class AccountSettingsMenu extends TabMenu
 {
-
     /**
      * @inheritdoc
      * @throws \yii\base\InvalidConfigException
@@ -63,5 +62,4 @@ class AccountSettingsMenu extends TabMenu
 
         return $clients;
     }
-
 }

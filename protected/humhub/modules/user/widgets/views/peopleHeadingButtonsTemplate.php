@@ -11,7 +11,7 @@ use yii\helpers\Html;
 /* @var $entries MenuEntry[] */
 ?>
 
-<?php foreach ($entries as $entry) : ?>
+<?php foreach ($entries as $entry): ?>
     <?php
     $htmlOptions = $entry->getHtmlOptions();
     if ($entry->getIsActive()) {

@@ -7,4 +7,4 @@ use humhub\modules\content\widgets\ContainerProfileHeader;
 
 ?>
 
-<?= ContainerProfileHeader::widget(['container' => $user]) ?>
+<?= ContainerProfileHeader::widget(['container' => $user]);

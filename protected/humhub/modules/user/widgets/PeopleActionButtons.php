@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
@@ -19,7 +20,6 @@ use humhub\modules\user\models\User;
  */
 class PeopleActionButtons extends Widget
 {
-
     /**
      * @var User
      */
@@ -67,5 +67,4 @@ class PeopleActionButtons extends Widget
             ],
         ]);
     }
-
 }

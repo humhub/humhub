@@ -6,7 +6,7 @@ use humhub\modules\user\models\User;
 /* @var User[] $followers */
 /* @var User[] $following */
 ?>
-<?php if (count($followers) > 0) : ?>
+<?php if (count($followers) > 0): ?>
     <div class="panel panel-default follower" id="profile-follower-panel">
 
         <!-- Display panel menu widget -->
@@ -28,7 +28,7 @@ use humhub\modules\user\models\User;
     </div>
 <?php endif; ?>
 
-<?php if (count($following) > 0) : ?>
+<?php if (count($following) > 0): ?>
     <div class="panel panel-default follower" id="profile-following-panel">
 
         <!-- Display panel menu widget -->

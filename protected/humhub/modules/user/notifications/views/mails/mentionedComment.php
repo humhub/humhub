@@ -18,7 +18,7 @@
                 'date' => $date,
                 'space' => $space,
             ]);
-                ?>
+?>
         </td>
     </tr>
     <tr>

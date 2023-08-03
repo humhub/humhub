@@ -2,6 +2,7 @@
 
 use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\bootstrap\Html;
+
 ?>
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php'); ?>
     <div class="help-block">

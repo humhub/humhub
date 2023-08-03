@@ -68,7 +68,9 @@ class AuthClientUserService
             }
         } else {
             Yii::error(
-                'Could not store auth client without given ID attribute. User: ' . $this->user->displayName . ' (' . $this->user->id . ')', 'user');
+                'Could not store auth client without given ID attribute. User: ' . $this->user->displayName . ' (' . $this->user->id . ')',
+                'user'
+            );
         }
     }
 

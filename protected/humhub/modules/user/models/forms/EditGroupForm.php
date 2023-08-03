@@ -16,7 +16,6 @@ use Yii;
  */
 class EditGroupForm extends Group
 {
-
     public $managerGuids = [];
     public $defaultSpaceGuid = [];
     public $updateSpaceMemberships = false;

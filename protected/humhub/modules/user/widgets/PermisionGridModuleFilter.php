@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
@@ -6,7 +7,6 @@
  */
 
 namespace humhub\modules\user\widgets;
-
 
 use humhub\libs\Html;
 use humhub\modules\user\assets\PermissionGridModuleFilterAsset;
@@ -51,5 +51,4 @@ class PermisionGridModuleFilter extends JsWidget
             'style' => 'width:150px'
         ];
     }
-
 }

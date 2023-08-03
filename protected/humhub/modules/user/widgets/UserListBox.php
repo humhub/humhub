@@ -30,7 +30,6 @@ use Yii;
  */
 class UserListBox extends \yii\base\Widget
 {
-
     /**
      * @var \yii\db\ActiveQuery
      */
@@ -76,5 +75,4 @@ class UserListBox extends \yii\base\Widget
             'hideOnlineStatus' => $this->hideOnlineStatus,
         ]);
     }
-
 }

@@ -29,7 +29,6 @@ use humhub\modules\user\permissions\ViewAboutPage;
  */
 class ProfileMenu extends LeftNavigation
 {
-
     /**
      * @var User
      */
@@ -80,7 +79,4 @@ class ProfileMenu extends LeftNavigation
 
         return parent::run();
     }
-
 }
-
-?>

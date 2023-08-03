@@ -11,7 +11,6 @@ use humhub\components\Widget;
 
 class UserWall extends Widget
 {
-
     /**
      * @var User $user
      */
@@ -21,5 +20,4 @@ class UserWall extends Widget
     {
         return $this->render('userWall', ['user' => $this->user]);
     }
-
 }

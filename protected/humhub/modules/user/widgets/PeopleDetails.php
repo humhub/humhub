@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
@@ -20,7 +21,6 @@ use yii\helpers\StringHelper;
  */
 class PeopleDetails extends Widget
 {
-
     /**
      * @var User
      */
@@ -87,5 +87,4 @@ class PeopleDetails extends Widget
 
         return StringHelper::truncate($profileFields[$internalName]->getUserValue($this->user, false), 200, '...', null, true);
     }
-
 }

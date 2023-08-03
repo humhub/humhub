@@ -13,7 +13,6 @@ namespace humhub\modules\user\authclient;
  */
 class Live extends \yii\authclient\clients\Live
 {
-
     /**
      * @inheritdoc
      */
@@ -44,5 +43,4 @@ class Live extends \yii\authclient\clients\Live
             },
         ];
     }
-
 }

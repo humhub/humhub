@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -161,7 +162,6 @@ class CheckboxList extends BaseType
             } else {
                 $items[trim($option)] = Yii::t($this->profileField->getTranslationCategory(), trim($option));
             }
-
         }
 
         if ($this->allowOther) {
@@ -181,7 +181,6 @@ class CheckboxList extends BaseType
 
         $value = $user->profile->$internalName;
         if (!$raw && $value !== null) {
-
             $options = $this->getSelectItems();
             $translatedValues = [];
             if (is_string($value)) {

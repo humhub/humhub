@@ -16,7 +16,6 @@ use humhub\modules\user\authclient\BaseFormAuth;
 
 class AuthChoice extends \yii\authclient\widgets\AuthChoice
 {
-
     /**
      * Used to retrieve the auth clients in a static way
      * @var string
@@ -84,7 +83,6 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     {
         $result = [];
         foreach ($clients as $client) {
-
             // Don't show clients which need login form
             if (!$client instanceof \humhub\modules\user\authclient\BaseFormAuth) {
                 $result[] = $client;
@@ -110,7 +108,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
      */
     public function init()
     {
-        if(count($this->getClients()) == 0) {
+        if (count($this->getClients()) == 0) {
             return;
         } else {
             return parent::init();
@@ -122,7 +120,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
      */
     public function run()
     {
-        if(count($this->getClients()) == 0) {
+        if (count($this->getClients()) == 0) {
             return;
         } else {
             return parent::run();
@@ -204,5 +202,4 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         return;
         parent::clientLink($client, $text, $htmlOptions);
     }
-
 }

@@ -20,10 +20,9 @@ use humhub\modules\user\authclient\AuthAction;
  */
 interface StandaloneAuthClient
 {
-
     /**
      * Custom auth action implementation
-     * 
+     *
      * @param AuthAction $authAction
      * @return \yii\web\Response response instance.
      */

@@ -13,7 +13,7 @@ use Yii;
 
 /**
  * Markdown Profile Field
- * 
+ *
  * @since 1.1
  */
 class MarkdownEditor extends BaseType
@@ -59,5 +59,4 @@ class MarkdownEditor extends BaseType
         $rules[] = [$this->profileField->internal_name, 'safe'];
         return parent::getFieldRules($rules);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
@@ -85,7 +86,7 @@ class PeopleQuery extends ActiveQueryUser
         $fields = Yii::$app->request->get('fields', []);
 
         // Remove empty filters
-        $fields = array_filter($fields, function($value) {
+        $fields = array_filter($fields, function ($value) {
             return $value !== '';
         });
 
@@ -246,5 +247,4 @@ class PeopleQuery extends ActiveQueryUser
             ->with('contentContainerRecord')
             ;
     }
-
 }

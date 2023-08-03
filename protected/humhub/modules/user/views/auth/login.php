@@ -4,7 +4,7 @@ use humhub\libs\Html;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\Invite;
 use yii\captcha\Captcha;
-use \yii\helpers\Url;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use humhub\modules\user\widgets\AuthChoice;
 use humhub\widgets\SiteLogo;
@@ -38,7 +38,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
             <?php if (AuthChoice::hasClients()): ?>
                 <?= AuthChoice::widget([]) ?>
             <?php else: ?>
-                <?php if ($canRegister) : ?>
+                <?php if ($canRegister): ?>
                     <p><?= Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password."); ?></p>
                 <?php else: ?>
                     <p><?= Yii::t('UserModule.auth', "Please login with your username/email and password."); ?></p>
@@ -57,7 +57,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                     <div class="col-md-4">
                         <?= Html::submitButton(Yii::t('UserModule.auth', 'Sign in'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary']); ?>
                     </div>
-                    <?php if ($passwordRecoveryRoute) : ?>
+                    <?php if ($passwordRecoveryRoute): ?>
                     <div class="col-md-8 text-right">
                         <small>
                             <?= Html::a(
@@ -81,7 +81,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
     <br>
 
-    <?php if ($canRegister) : ?>
+    <?php if ($canRegister): ?>
         <div id="register-form"
              class="panel panel-default animated bounceInLeft"
              style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
@@ -98,7 +98,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
                 <?php $form = ActiveForm::begin(['id' => 'invite-form']); ?>
                 <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
-                <?php if ($invite->showCaptureInRegisterForm()) : ?>
+                <?php if ($invite->showCaptureInRegisterForm()): ?>
                     <div id="registration-form-captcha" style="display: none;">
                         <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
 

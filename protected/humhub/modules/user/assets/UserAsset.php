@@ -24,5 +24,4 @@ class UserAsset extends AssetBundle
         'js/humhub.user.js',
         'js/humhub.user.login.js',
     ];
-
 }

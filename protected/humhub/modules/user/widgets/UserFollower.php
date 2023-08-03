@@ -13,7 +13,6 @@ use humhub\modules\user\models\User;
  */
 class UserFollower extends \yii\base\Widget
 {
-
     /**
      * @var User
      */
@@ -36,5 +35,4 @@ class UserFollower extends \yii\base\Widget
                 ->all(),
         ]);
     }
-
 }

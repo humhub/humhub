@@ -1,6 +1,5 @@
 <?php
 
-
 use humhub\modules\ui\mail\DefaultMailStyle;
 use yii\helpers\Html;
 

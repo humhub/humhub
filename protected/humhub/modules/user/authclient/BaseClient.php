@@ -18,7 +18,6 @@ use humhub\modules\user\services\AuthClientService;
  */
 class BaseClient extends \yii\authclient\BaseClient
 {
-
     /**
      * @event Event an event raised on update user data.
      * @see AuthClientService::updateUser()
@@ -36,7 +35,6 @@ class BaseClient extends \yii\authclient\BaseClient
      */
     protected function initUserAttributes()
     {
-
     }
 
     /**

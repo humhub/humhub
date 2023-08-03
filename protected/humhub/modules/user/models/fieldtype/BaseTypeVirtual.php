@@ -91,6 +91,4 @@ abstract class BaseTypeVirtual extends BaseType
         $this->profileField->directory_filter = 0;
         return parent::save();
     }
-
-
 }

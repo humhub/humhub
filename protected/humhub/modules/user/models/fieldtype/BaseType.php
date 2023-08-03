@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -28,20 +29,19 @@ use yii\helpers\Json;
  */
 class BaseType extends Model
 {
-
     /**
      * @event Event an event raised after init. Can be used to add custom field types.
-     * 
+     *
      * Example config.php:
      *     'events' => [
      *         [BaseType::class, BaseType::EVENT_INIT, [Events::class, 'onFieldTypesInit']]
      *     ]
-     * 
+     *
      * Example Events.php:
      *     public static function onFieldTypesInit($event) {
      *         $event->sender->addFieldType(CustomFieldType::class, "Custom field");
      *     }
-     * 
+     *
      * @since 1.12
      */
     const EVENT_INIT = "fieldTypesInit";
@@ -85,7 +85,8 @@ class BaseType extends Model
     /**
      * @inheritdoc
      */
-    public function init() {
+    public function init()
+    {
         parent::init();
 
         $this->trigger(self::EVENT_INIT);
@@ -140,7 +141,7 @@ class BaseType extends Model
     {
         $result = [];
         foreach ($this->getFieldTypes() as $field_class => $label) {
-            $result[$field_class] = ['data-hidden-fields' => call_user_func($field_class.'::getHiddenFormFields')];
+            $result[$field_class] = ['data-hidden-fields' => call_user_func($field_class . '::getHiddenFormFields')];
         }
         return $result;
     }
@@ -174,7 +175,7 @@ class BaseType extends Model
         foreach ($this->getFieldTypes() as $className => $title) {
             if (Helpers::CheckClassType($className, static::class)) {
                 /** @var BaseType $instance */
-                $instance = new $className;
+                $instance = new $className();
                 if ($profileField !== null) {
                     $instance->profileField = $profileField;
 

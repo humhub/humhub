@@ -17,7 +17,6 @@ use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\Module;
 use Yii;
 
-
 /**
  * This is the model class for table "group".
  *
@@ -44,7 +43,6 @@ use Yii;
  */
 class Group extends ActiveRecord
 {
-
     const SCENARIO_EDIT = 'edit';
 
     /**
@@ -184,8 +182,6 @@ class Group extends ActiveRecord
         }
 
         parent::afterSave($insert, $changedAttributes);
-
-
     }
 
     /**
@@ -407,8 +403,10 @@ class Group extends ActiveRecord
     public static function notifyAdminsForUserApproval($user)
     {
         // No admin approval required
-        if ($user->status != User::STATUS_NEED_APPROVAL ||
-            !Yii::$app->getModule('user')->settings->get('auth.needApproval', 'user')) {
+        if (
+            $user->status != User::STATUS_NEED_APPROVAL ||
+            !Yii::$app->getModule('user')->settings->get('auth.needApproval', 'user')
+        ) {
             return;
         }
 
@@ -420,13 +418,18 @@ class Group extends ActiveRecord
         $approvalUrl = \yii\helpers\Url::to(["/admin/approval"], true);
 
         foreach ($group->manager as $manager) {
-
             Yii::$app->i18n->setUserLocale($manager);
 
-            $html = Yii::t('UserModule.auth', 'Hello {displayName},',
-                    ['displayName' => $manager->displayName]) . "<br><br>\n\n" .
-                Yii::t('UserModule.auth', 'a new user {displayName} needs approval.',
-                    ['displayName' => $user->displayName]) . "<br><br>\n\n" .
+            $html = Yii::t(
+                'UserModule.auth',
+                'Hello {displayName},',
+                ['displayName' => $manager->displayName]
+            ) . "<br><br>\n\n" .
+                Yii::t(
+                    'UserModule.auth',
+                    'a new user {displayName} needs approval.',
+                    ['displayName' => $user->displayName]
+                ) . "<br><br>\n\n" .
                 Yii::t('UserModule.auth', 'Please click on the link below to view request:') .
                 "<br>\n\n" .
                 \yii\helpers\Html::a($approvalUrl, $approvalUrl) . "<br/> <br/>\n";

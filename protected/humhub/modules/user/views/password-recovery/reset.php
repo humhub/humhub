@@ -16,7 +16,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password reset');
             <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Change</strong> your password'); ?></div>
             <div class="panel-body">
 
-                <?php $form = ActiveForm::begin(['enableClientValidation'=>false]); ?>
+                <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
                 
                     <?= $form->field($model, 'newPassword')->passwordInput(['class' => 'form-control', 'id' => 'new_password', 'maxlength' => 255, 'value' => ''])?>
 

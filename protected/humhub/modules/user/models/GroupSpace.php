@@ -77,5 +77,3 @@ class GroupSpace extends ActiveRecord
         return $this->hasOne(Space::class, ['id' => 'space_id']);
     }
 }
-
-

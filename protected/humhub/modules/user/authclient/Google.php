@@ -15,7 +15,6 @@ use Yii;
  */
 class Google extends \yii\authclient\clients\Google
 {
-
     /**
      * @inheritdoc
      */
@@ -56,5 +55,4 @@ class Google extends \yii\authclient\clients\Google
             },
         ];
     }
-
 }

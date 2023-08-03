@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
@@ -13,13 +14,12 @@ use humhub\modules\user\models\User;
 
 /**
  * PeopleActionsButton shows directory options (following or friendship) for listed users
- * 
+ *
  * @since 1.9
  * @author Luke
  */
 class PeopleCard extends Widget
 {
-
     /**
      * @var User
      */
@@ -48,5 +48,4 @@ class PeopleCard extends Widget
 
         return isset($peopleSettingsForm->$name) ? $peopleSettingsForm->$name : '';
     }
-
 }

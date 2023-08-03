@@ -18,7 +18,6 @@ use humhub\modules\user\widgets\Image as UserImage;
  */
 class ImageColumn extends BaseColumn
 {
-
     /**
      * @inheritdoc
      */
@@ -35,5 +34,4 @@ class ImageColumn extends BaseColumn
     {
         return UserImage::widget(['user' => $this->getUser($model), 'width' => 34]);
     }
-
 }

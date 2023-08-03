@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
@@ -19,7 +20,6 @@ use humhub\components\Widget;
  */
 class PeopleTagList extends Widget
 {
-
     /**
      * @var \humhub\modules\user\models\User
      */
@@ -70,5 +70,4 @@ class PeopleTagList extends Widget
 
         return str_replace('{tags}', $html, $this->template);
     }
-
 }

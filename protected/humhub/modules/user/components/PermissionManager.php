@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -24,7 +25,6 @@ use yii\db\ActiveRecord;
  */
 class PermissionManager extends Component
 {
-
     /**
      * User identity.
      * @var \humhub\modules\user\models\User
@@ -227,7 +227,7 @@ class PermissionManager extends Component
         // recorded group id will not be fetched again
         $this->_groupPermissions += array_fill_keys($ids, []);
 
-        $result = Yii::$app->runtimeCache->getOrSet(__METHOD__ . implode(',', $ids), function() use ($ids) {
+        $result = Yii::$app->runtimeCache->getOrSet(__METHOD__ . implode(',', $ids), function () use ($ids) {
             return $this->getQuery()->andWhere(['group_id' => $ids])->all();
         });
 
@@ -279,8 +279,10 @@ class PermissionManager extends Component
 
         foreach ($this->_groupPermissions[$groupId] as $groupPermission) {
             /** @var $groupPermission GroupPermission */
-            if ($groupPermission->permission_id == $permission->getId()
-                && $groupPermission->module_id == $permission->getModuleId()) {
+            if (
+                $groupPermission->permission_id == $permission->getId()
+                && $groupPermission->module_id == $permission->getModuleId()
+            ) {
                 return $groupPermission;
             }
         }
@@ -418,7 +420,7 @@ class PermissionManager extends Component
      */
     protected function createPermissionRecord()
     {
-        return new GroupPermission;
+        return new GroupPermission();
     }
 
     /**
@@ -482,7 +484,7 @@ class PermissionManager extends Component
      */
     public static function findUsersByPermission($permission)
     {
-        $pm = new static;
+        $pm = new static();
 
         $allowedGroupIds = [];
         foreach (Group::find()->all() as $group) {
@@ -493,5 +495,4 @@ class PermissionManager extends Component
 
         return UserModel::find()->joinWith('groupUsers')->andWhere(['IN', 'group_user.group_id', $allowedGroupIds]);
     }
-
 }

@@ -18,7 +18,6 @@ use Yii;
  */
 class Number extends BaseType
 {
-
     /**
      * Maximum Int Value
      *
@@ -68,7 +67,7 @@ class Number extends BaseType
                                 'class' => 'form-control',
                             ],
                         ]
-        ]]);
+                    ]]);
     }
 
     /**
@@ -106,7 +105,4 @@ class Number extends BaseType
 
         return parent::getFieldRules($rules);
     }
-
 }
-
-?>

@@ -24,7 +24,6 @@ use yii\base\BaseObject;
  */
 class Events extends BaseObject
 {
-
     /**
      * On rebuild of the search index, rebuild all user records
      *
@@ -186,5 +185,4 @@ class Events extends BaseObject
             'isActive' =>  MenuLink::isActiveState('user', 'people'),
         ]));
     }
-
 }

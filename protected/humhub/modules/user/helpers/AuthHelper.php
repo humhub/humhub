@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
@@ -8,7 +7,6 @@
  */
 
 namespace humhub\modules\user\helpers;
-
 
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\forms\Registration;
@@ -26,7 +24,6 @@ use yii\web\HttpException;
  */
 class AuthHelper
 {
-
     /**
      * Checks if limited access is allowed for unauthenticated users.
      *
@@ -92,5 +89,4 @@ class AuthHelper
 
         return $username . $usernameRandomSuffix;
     }
-
 }

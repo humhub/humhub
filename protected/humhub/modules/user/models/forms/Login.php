@@ -8,13 +8,11 @@ use humhub\modules\user\authclient\BaseFormAuth;
 use Yii;
 use yii\base\Model;
 
-
 /**
  * LoginForm is the model behind the login form.
  */
 class Login extends Model
 {
-
     /**
      * @var string user's username or email address
      */
@@ -99,7 +97,6 @@ class Login extends Model
                 if ($authClient->isDelayedLoginAction()) {
                     $authClientDelayed = $authClient;
                 }
-
             }
         }
 
@@ -120,5 +117,4 @@ class Login extends Model
 
         parent::afterValidate();
     }
-
 }

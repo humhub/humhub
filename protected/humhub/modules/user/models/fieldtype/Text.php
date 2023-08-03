@@ -20,7 +20,6 @@ use yii\helpers\Html;
  */
 class Text extends BaseType
 {
-
     const VALIDATOR_EMAIL = "email";
     const VALIDATOR_URL = "url";
 
@@ -219,5 +218,4 @@ class Text extends BaseType
 
         return Html::encode($value);
     }
-
 }

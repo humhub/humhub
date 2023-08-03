@@ -16,7 +16,6 @@ use humhub\modules\user\models\User;
  */
 class ViewAboutPage extends \humhub\libs\BasePermission
 {
-
     /**
      * @inheritdoc
      */
@@ -69,5 +68,4 @@ class ViewAboutPage extends \humhub\libs\BasePermission
      * @inheritdoc
      */
     protected $moduleId = 'user';
-
 }

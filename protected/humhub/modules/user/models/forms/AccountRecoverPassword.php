@@ -14,7 +14,6 @@ use yii\base\Model;
  */
 class AccountRecoverPassword extends Model
 {
-
     public $verifyCode;
     public $email;
 
@@ -91,5 +90,4 @@ class AccountRecoverPassword extends Model
 
         return $user && $user->getPasswordRecoveryService()->sendRecoveryInfo();
     }
-
 }

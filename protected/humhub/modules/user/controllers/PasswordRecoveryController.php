@@ -25,7 +25,6 @@ use yii\web\NotFoundHttpException;
  */
 class PasswordRecoveryController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -98,12 +97,13 @@ class PasswordRecoveryController extends Controller
 
         $model = new Password();
 
-        if ($model->load(Yii::$app->request->post()) &&
-            $user->getPasswordRecoveryService()->reset($model)) {
+        if (
+            $model->load(Yii::$app->request->post()) &&
+            $user->getPasswordRecoveryService()->reset($model)
+        ) {
             return $this->render('reset_success');
         }
 
         return $this->render('reset', ['model' => $model]);
     }
-
 }

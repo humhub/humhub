@@ -18,7 +18,6 @@ use humhub\modules\notification\components\BaseNotification;
  */
 class Mentioned extends BaseNotification
 {
-
     /**
      * @inheritdoc
      */
@@ -34,7 +33,7 @@ class Mentioned extends BaseNotification
      */
     public function category()
     {
-        return new MentionedNotificationCategory;
+        return new MentionedNotificationCategory();
     }
 
     /**

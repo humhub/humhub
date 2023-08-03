@@ -2,8 +2,9 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+
 ?>
-<?php if ($user->hasTags()) : ?>
+<?php if ($user->hasTags()): ?>
     <div id="user-tags-panel" class="panel panel-default" style="position: relative;">
 
         <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'user-tags-panel']); ?>

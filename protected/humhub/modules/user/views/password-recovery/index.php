@@ -38,7 +38,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
                         'captchaAction' => '/user/auth/captcha',
                         'options' => ['class' => 'form-control', 'placeholder' => Yii::t('UserModule.auth', 'Enter security code above')]
                     ])->label(false);
-                    ?>
+?>
                 </div>
 
                 <hr>
@@ -60,7 +60,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
     });
 
     // Shake panel after wrong validation
-    <?php if ($model->hasErrors()) : ?>
+    <?php if ($model->hasErrors()): ?>
     $('#password-recovery-form').removeClass('bounceIn');
     $('#password-recovery-form').addClass('shake');
     $('#app-title').removeClass('fadeIn');

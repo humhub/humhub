@@ -37,7 +37,7 @@ class TextArea extends BaseType
                         'title' => Yii::t('UserModule.profile', 'Text area field options'),
                         'elements' => [
                         ]
-        ]]);
+                    ]]);
     }
 
     /**
@@ -50,7 +50,7 @@ class TextArea extends BaseType
             $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName, 'TEXT');
             Yii::$app->db->createCommand($query)->execute();
         }
-        
+
         return parent::save();
     }
 
@@ -73,5 +73,4 @@ class TextArea extends BaseType
             'rows' => '3'
         ], $options));
     }
-
 }

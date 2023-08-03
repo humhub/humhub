@@ -24,7 +24,7 @@ use humhub\modules\user\widgets\AuthChoice;
         <div class="modal-body">
             <br/>
 
-            <?php if ($canRegister) : ?>
+            <?php if ($canRegister): ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
                         <li class="<?= (!isset($_POST['Invite'])) ? "active" : ""; ?> tab-login"><a
@@ -52,13 +52,13 @@ use humhub\modules\user\widgets\AuthChoice;
 
                    <?php if (AuthChoice::hasClients()): ?>
                         <?= AuthChoice::widget([]) ?>
-                    <?php else: ?>
-                        <?php if ($canRegister) : ?>
+                   <?php else: ?>
+                        <?php if ($canRegister): ?>
                             <p><?= Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password."); ?></p>
                         <?php else: ?>
                             <p><?= Yii::t('UserModule.auth', "Please login with your username/email and password."); ?></p>
                         <?php endif; ?>
-                    <?php endif; ?>
+                   <?php endif; ?>
 
                     <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
                     <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.auth', 'username or email')]); ?>
@@ -72,7 +72,7 @@ use humhub\modules\user\widgets\AuthChoice;
                             </button>
 
                         </div>
-                        <?php if ($passwordRecoveryRoute) : ?>
+                        <?php if ($passwordRecoveryRoute): ?>
                         <div class="col-md-8 text-right">
                             <small>
                                 <?= Html::a(
@@ -97,7 +97,7 @@ use humhub\modules\user\widgets\AuthChoice;
                     <?php ActiveForm::end(); ?>
                 </div>
 
-                <?php if ($canRegister) : ?>
+                <?php if ($canRegister): ?>
                     <div class="tab-pane <?= (isset($_POST['Invite'])) ? "active" : ""; ?>"
                          id="register">
 
@@ -110,7 +110,7 @@ use humhub\modules\user\widgets\AuthChoice;
                         <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 
                         <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => Yii::t('UserModule.auth', 'email')]); ?>
-                        <?php if ($invite->showCaptureInRegisterForm()) : ?>
+                        <?php if ($invite->showCaptureInRegisterForm()): ?>
                             <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
                             <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
                             'captchaAction' => '/user/auth/captcha',

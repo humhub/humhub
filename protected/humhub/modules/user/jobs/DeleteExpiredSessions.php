@@ -19,7 +19,6 @@ use humhub\modules\user\models\Session;
  */
 class DeleteExpiredSessions extends ActiveJob
 {
-
     /**
      * @inheritdoc
      */
@@ -29,5 +28,4 @@ class DeleteExpiredSessions extends ActiveJob
             $session->delete();
         }
     }
-
 }

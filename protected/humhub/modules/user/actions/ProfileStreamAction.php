@@ -1,6 +1,5 @@
 <?php
 
-
 namespace humhub\modules\user\actions;
 
 use humhub\modules\stream\actions\ContentContainerStream;
@@ -24,7 +23,7 @@ class ProfileStreamAction extends ContentContainerStream
      */
     protected function beforeRun()
     {
-        if(!$this->contentContainer instanceof User) {
+        if (!$this->contentContainer instanceof User) {
             return false;
         }
 

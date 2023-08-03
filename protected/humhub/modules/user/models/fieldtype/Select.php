@@ -70,7 +70,7 @@ class Select extends BaseType
                                 'hint' => Yii::t('UserModule.profile', 'One option per line. Key=>Value Format (e.g. yes=>Yes)')
                             ],
                         ]
-        ]], $definition));
+                    ]], $definition));
     }
 
     /**
@@ -120,7 +120,6 @@ class Select extends BaseType
         $items = [];
 
         foreach (explode("\n", $this->options) as $option) {
-
             if (strpos($option, "=>") !== false) {
                 list($key, $value) = explode("=>", $option);
                 $items[trim($key)] = Yii::t($this->profileField->getTranslationCategory(), trim($value));
@@ -149,5 +148,4 @@ class Select extends BaseType
 
         return $value;
     }
-
 }

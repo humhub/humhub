@@ -33,7 +33,6 @@ use humhub\modules\space\models\Space;
  */
 class ProfileController extends ContentContainerController
 {
-
     /**
      * @inheritdoc
      */
@@ -153,5 +152,4 @@ class ProfileController extends ContentContainerController
         $title = Yii::t('UserModule.base', '<strong>Member</strong> in these spaces');
         return $this->renderAjaxContent(ListBox::widget(['query' => $query, 'title' => $title]));
     }
-
 }

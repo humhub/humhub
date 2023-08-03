@@ -50,8 +50,6 @@ use Yii;
  */
 class Profile extends ActiveRecord
 {
-
-
     /**
      * @since 1.3.2
      */
@@ -114,7 +112,6 @@ class Profile extends ActiveRecord
         foreach (ProfileField::find()->all() as $profileField) {
             // Some fields consist of multiple field definitions (e.g. Birthday)
             foreach ($profileField->fieldType->getFieldFormDefinition($this->user) as $fieldName => $definition) {
-
                 // Skip automatically synced attributes (readonly)
                 if (in_array($profileField->internal_name, $syncAttributes)) {
                     continue;
@@ -219,7 +216,6 @@ class Profile extends ActiveRecord
         $safeAttributes = $this->safeAttributes();
 
         foreach (ProfileFieldCategory::find()->orderBy('sort_order')->all() as $profileFieldCategory) {
-
             $category = [
                 'type' => 'form',
                 'title' => Yii::t($profileFieldCategory->getTranslationCategory(), $profileFieldCategory->title),
@@ -248,7 +244,7 @@ class Profile extends ActiveRecord
 
                 $fieldDefinition = $profileField->fieldType->getFieldFormDefinition($this->user);
 
-                if(isset($fieldDefinition[$profileField->internal_name]) && !empty($profileField->description)) {
+                if (isset($fieldDefinition[$profileField->internal_name]) && !empty($profileField->description)) {
                     $fieldDefinition[$profileField->internal_name]['hint'] =  Yii::t($profileField->getTranslationCategory() ?: $profileFieldCategory->getTranslationCategory(), $profileField->description);
                 }
 
@@ -363,5 +359,4 @@ class Profile extends ActiveRecord
             Yii::error('Could not soft delete profile!');
         }
     }
-
 }

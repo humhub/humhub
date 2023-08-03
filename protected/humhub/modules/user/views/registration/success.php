@@ -14,7 +14,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
             <div
                 class="panel-heading"><?php echo Yii::t('UserModule.auth', '<strong>Your account</strong> has been successfully created!'); ?></div>
             <div class="panel-body">
-                <?php if ($needApproval) : ?>
+                <?php if ($needApproval): ?>
                     <p><?php echo Yii::t('UserModule.auth', 'After activating your account by the administrator, you will receive a notification by email.'); ?></p>
                     <br/>
                     <a href="<?php echo Url::home() ?>" class="btn btn-primary" data-ui-loader data-pjax-prevent><?php echo Yii::t('UserModule.auth', 'back to home') ?></a>

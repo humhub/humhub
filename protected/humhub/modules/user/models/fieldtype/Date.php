@@ -51,14 +51,14 @@ class Date extends BaseType
         ];
         return parent::getFieldRules($rules);
     }
-    
+
     /**
      * @inheritdoc
      */
     public function getFormDefinition($definition = [])
     {
         return count($definition) > 0 ? parent::getFormDefinition($definition) : [];
-    } 
+    }
 
     /**
      * @inheritdoc
@@ -79,13 +79,16 @@ class Date extends BaseType
     public function getUserValue(User $user, $raw = true): ?string
     {
         $internalName = $this->profileField->internal_name;
-        $date = \DateTime::createFromFormat('Y-m-d', $user->profile->$internalName ?? '',
-            new \DateTimeZone(Yii::$app->formatter->timeZone));
+        $date = \DateTime::createFromFormat(
+            'Y-m-d',
+            $user->profile->$internalName ?? '',
+            new \DateTimeZone(Yii::$app->formatter->timeZone)
+        );
 
-        if ($date === false)
+        if ($date === false) {
             return "";
+        }
 
         return $raw ? \yii\helpers\Html::encode($user->profile->$internalName) : Yii::$app->formatter->asDate($date, 'long');
     }
-
 }

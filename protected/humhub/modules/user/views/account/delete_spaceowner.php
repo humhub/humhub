@@ -1,6 +1,8 @@
 <?php
+
 use humhub\libs\Html;
 use humhub\modules\space\widgets\Image;
+
 ?>
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>
     <strong><?= Yii::t('UserModule.account', 'Your account cannot be deleted!'); ?></strong><br />

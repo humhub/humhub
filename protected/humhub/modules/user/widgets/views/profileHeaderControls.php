@@ -23,7 +23,7 @@ use humhub\modules\user\widgets\UserFollowButton;
                             [FriendshipButton::class, ['user' => $container], []],
                         ]
                     ]);
-                    ?>
+?>
                 </div>
             </div>
         </div>

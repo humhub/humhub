@@ -669,7 +669,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getDisplayName(): string
     {
-        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function() {
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function () {
             /** @var Module $module */
             $module = Yii::$app->getModule('user');
 

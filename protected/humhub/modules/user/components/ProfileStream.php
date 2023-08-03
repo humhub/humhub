@@ -16,5 +16,4 @@ namespace humhub\modules\user\components;
  */
 class ProfileStream extends \humhub\modules\user\actions\ProfileStreamAction
 {
-
 }

@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+
 ?>
 <?php if (count($spaces) > 0) { ?>
     <div id="user-spaces-panel" class="panel panel-default members" style="position: relative;">

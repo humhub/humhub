@@ -17,7 +17,6 @@ use Yii;
  */
 class IncludeAllContributionsFilter extends ContentContainerStreamFilter
 {
-
     const SCOPE_ALL = 'all';
     const SCOPE_PROFILE = 'profile';
 
@@ -41,7 +40,7 @@ class IncludeAllContributionsFilter extends ContentContainerStreamFilter
      */
     public function apply()
     {
-        if(!$this->isActive()) {
+        if (!$this->isActive()) {
             return parent::apply();
         }
 
@@ -51,7 +50,8 @@ class IncludeAllContributionsFilter extends ContentContainerStreamFilter
         $this->query->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::class]);
         $this->query->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::class]);
 
-        $this->query->leftJoin('space_membership',
+        $this->query->leftJoin(
+            'space_membership',
             'contentcontainer.pk=space_membership.space_id AND contentcontainer.class=:spaceClass AND space_membership.user_id=:userId',
             [':userId' => $queryUser->id, ':spaceClass' => Space::class]
         );

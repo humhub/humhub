@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
@@ -143,5 +144,4 @@ class PeopleFilters extends DirectoryFilters
 
         return '';
     }
-
 }

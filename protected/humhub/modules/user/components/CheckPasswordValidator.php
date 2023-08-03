@@ -19,7 +19,6 @@ use humhub\modules\user\models\User as ModelUser;
  */
 class CheckPasswordValidator extends Validator
 {
-
     /**
      * @var User the user
      */
@@ -59,5 +58,4 @@ class CheckPasswordValidator extends Validator
 
         return !empty($user->currentPassword->password);
     }
-
 }

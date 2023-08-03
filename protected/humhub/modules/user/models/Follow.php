@@ -32,7 +32,6 @@ use yii\db\Query;
  */
 class Follow extends ActiveRecord
 {
-
     /**
      * @event \humhub\modules\user\events\FollowEvent
      */
@@ -245,5 +244,4 @@ class Follow extends ActiveRecord
 
         return User::find()->visible()->andWhere(['exists', $subQuery]);
     }
-
 }

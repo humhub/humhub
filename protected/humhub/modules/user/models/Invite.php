@@ -38,7 +38,6 @@ use yii\helpers\Url;
  */
 class Invite extends ActiveRecord
 {
-
     const SOURCE_SELF = 'self';
     const SOURCE_INVITE = 'invite';
     const SOURCE_INVITE_BY_LINK = 'invite_by_link';
@@ -202,7 +201,6 @@ class Invite extends ActiveRecord
             // Switch back to users language
             Yii::$app->setLanguage(Yii::$app->user->language);
         } elseif ($this->source == self::SOURCE_INVITE) {
-
             // Switch to systems default language
             if ($module->sendInviteMailsInGlobalLanguage) {
                 Yii::$app->setLanguage(Yii::$app->settings->get('defaultLanguage'));

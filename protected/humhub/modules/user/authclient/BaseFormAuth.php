@@ -21,7 +21,6 @@ use humhub\modules\user\models\forms\Login;
  */
 class BaseFormAuth extends BaseClient
 {
-
     /**
      * @var Login the login form model
      */
@@ -179,5 +178,4 @@ class BaseFormAuth extends BaseClient
         // but we should reset in order to avoid issues on tests where it may be used by different users after `$I->logout();`
         $this->loginUser = null;
     }
-
 }

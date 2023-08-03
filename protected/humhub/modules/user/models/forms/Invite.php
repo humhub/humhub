@@ -26,7 +26,6 @@ use yii\helpers\Url;
  */
 class Invite extends Model
 {
-
     /**
      * @var string user's username or email address
      */
