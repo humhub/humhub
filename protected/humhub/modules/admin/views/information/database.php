@@ -24,8 +24,8 @@ use humhub\modules\ui\view\components\View;
         <?= Html::a(
             'Rebuild search index',
             ['/admin/information/database', 'rebuildSearch' => 1],
-            ['class' => 'btn btn-primary pull-right', 'data-method' => 'post', 'data-ui-loader' => '']);
-        ?>
+            ['class' => 'btn btn-primary pull-right', 'data-method' => 'post', 'data-ui-loader' => '']
+        ); ?>
     <?php endif; ?>
 
     <p>

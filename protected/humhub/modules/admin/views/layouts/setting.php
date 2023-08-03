@@ -3,6 +3,8 @@
 use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\admin\widgets\SettingsMenu;
 
+/** @var $content string */
+
 AdminMenu::markAsActive('settings');
 ?>
 
