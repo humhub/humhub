@@ -60,8 +60,7 @@ $iconUrl = SiteIcon::getUrl(140);
     <?= $form->field($model, 'dateInputDisplayFormat')->dropDownList([
         '' => Yii::t('AdminModule.settings', 'Auto format based on user language - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'short')]),
         'php:d/m/Y' => Yii::t('AdminModule.settings', 'Fixed format (dd/mm/yyyy) - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'php:d/m/Y')]),
-    ]);
-?>
+    ]); ?>
     <strong><?= Yii::t('AdminModule.settings', 'Mobile appearance'); ?></strong>
     <br>
     <br>

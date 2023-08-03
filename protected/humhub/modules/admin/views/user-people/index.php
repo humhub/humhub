@@ -31,9 +31,7 @@ use humhub\widgets\Button;
 
     <?= $form->field($model, 'defaultSorting')->dropDownList(PeopleSettingsForm::getSortingOptions()); ?>
     <div
-        id="defaultSortingGroupSelector"<?php if ($model->defaultSorting !== ''):
-            ?> style="display:none"<?php
-                                        endif; ?>>
+        id="defaultSortingGroupSelector"<?php if ($model->defaultSorting !== ''): ?> style="display:none"<?php endif; ?>>
         <?= $form->field($model, 'defaultSortingGroup')->dropDownList(PeopleSettingsForm::getSortingGroupOptions()); ?>
     </div>
 

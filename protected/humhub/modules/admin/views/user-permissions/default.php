@@ -20,12 +20,11 @@ $this->registerJsConfig('admin', $adminSettingsJsConfig = ['text' => [
     'enableProfilePermissions.question.enable' => Yii::t('AdminModule.user', 'Allow users to set individual permissions for their own profile?'),
     'enableProfilePermissions.button.enable' => Yii::t('AdminModule.user', 'Allow'),
 
-    'enableProfilePermissions.question.disable' => Yii::t(
-        'AdminModule.user',
-        'Deactivate individual profile permissions?'
-    ) . '<br><br>' .
-        '<div class="alert alert-danger">' .
-        Yii::t('AdminModule.user', '<strong>Warning:</strong> All individual profile permission settings are reset to the default values!') .
+    'enableProfilePermissions.question.disable' => Yii::t('AdminModule.user', 'Deactivate individual profile permissions?') . '<br><br><div class="alert alert-danger">' .
+        Yii::t(
+            'AdminModule.user',
+            '<strong>Warning:</strong> All individual profile permission settings are reset to the default values!'
+        ) .
         '</div>',
     'enableProfilePermissions.button.disable' => Yii::t('AdminModule.user', 'Deactivate'),
 ]]);
