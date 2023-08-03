@@ -8,7 +8,7 @@ HumHub Changelog
 - Fix #6468: Module Administration - Marketplace Links broken without Pretty URLs
 - Enh #6469: Added Info text for Marketplace page 
 - Fix #112: Reorder Table Rows
-- Fix #6469: Fix module disabling in queue
+- Fix #6476: Fix module disabling in queue
 
 1.15.0-beta.1 (July 31, 2023)
 -----------------------------
