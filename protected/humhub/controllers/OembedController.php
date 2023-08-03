@@ -24,7 +24,7 @@ class OembedController extends Controller
      */
     public function getAccessRules()
     {
-        return [['login']];
+             return [['login']];
     }
 
     /**
@@ -35,8 +35,9 @@ class OembedController extends Controller
     public function actionIndex()
     {
         $urls = Yii::$app->request->post('urls', []);
-        $result = [];
-        foreach ($urls as $url) {
+        $result = array();
+        foreach ($urls as 
+                 $url) {
             $oembed = UrlOembed::getOEmbed($url, true);
             if ($oembed) {
                 $result[$url] = $oembed;
