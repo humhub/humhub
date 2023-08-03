@@ -24,6 +24,9 @@ class OembedController extends Controller
      */
     public function getAccessRules()
     {
+
+
+        
              return [['login']];
     }
 
