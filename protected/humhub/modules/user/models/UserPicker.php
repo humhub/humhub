@@ -2,6 +2,8 @@
 
 namespace humhub\modules\user\models;
 
+use humhub\libs\BasePermission;
+use Throwable;
 use Yii;
 use yii\helpers\Html;
 use humhub\modules\user\models\UserFilter;
@@ -37,7 +39,7 @@ class UserPicker
      *
      * @param type $cfg filter configuration
      * @return type json representation used by the userpicker
-     * @throws \Throwable
+     * @throws Throwable
      */
     public static function filter($cfg = null)
     {
@@ -73,7 +75,7 @@ class UserPicker
             $fillUser = $fillQuery->all();
 
             //Either the additional users are disabled (by default) or we disable them by permission
-            $disableCondition = (isset($cfg['permission'])) ? $cfg['permission']  : $cfg['disableFillUser'];
+            $disableCondition = (isset($cfg['permission'])) ? $cfg['permission'] : $cfg['disableFillUser'];
             $jsonResult = array_merge($jsonResult, self::asJSON($fillUser, $disableCondition, 1, $cfg['disabledText']));
         }
 
@@ -128,14 +130,14 @@ class UserPicker
      * is of type boolean, the it will define the disabled field of the result directly.
      *
      * @param type $user
-     * @param \humhub\libs\BasePermission|boolean|null if boolean is given
+     * @param BasePermission|boolean|null if boolean is given
      * @return type
      */
     private static function createJSONUserInfo($user, $permission = null, $priority = null, $disabledText = null)
     {
         $disabled = false;
 
-        if ($permission != null && $permission instanceof \humhub\libs\BasePermission) {
+        if ($permission != null && $permission instanceof BasePermission) {
             $disabled = !$user->getPermissionManager()->can($permission);
         } elseif ($permission != null) {
             $disabled = $permission;

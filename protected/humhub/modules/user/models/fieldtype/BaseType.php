@@ -134,8 +134,8 @@ class BaseType extends Model
     /**
      * Returns additional form field item options for all field types.
      *
-     * @internal
      * @return array
+     * @internal
      */
     final public function getFieldTypeItemOptions()
     {

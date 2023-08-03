@@ -15,8 +15,12 @@ use humhub\modules\user\models\GroupPermission;
 use humhub\modules\user\models\User as UserModel;
 use Yii;
 use yii\base\Component;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\base\Module as BaseModule;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 
 /**
  * Description of PermissionManager
@@ -27,7 +31,7 @@ class PermissionManager extends Component
 {
     /**
      * User identity.
-     * @var \humhub\modules\user\models\User
+     * @var UserModel
      */
     public $subject;
 
@@ -60,7 +64,7 @@ class PermissionManager extends Component
      * @param array $params
      * @param boolean $allowCaching
      * @return boolean
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function can($permission, $params = [], $allowCaching = true)
     {
@@ -133,7 +137,7 @@ class PermissionManager extends Component
      * If the permission objects $subject property is not set this method returns the currently
      * logged in user identity.
      *
-     * @return \humhub\modules\user\models\User
+     * @return UserModel
      */
     protected function getSubject()
     {
@@ -156,8 +160,8 @@ class PermissionManager extends Component
      * @param string|BasePermission $permission either permission class or instance
      * @param string $state
      * @throws \Exception
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\db\StaleObjectException
+     * @throws InvalidConfigException
+     * @throws StaleObjectException
      */
     public function setGroupState($groupId, $permission, $state)
     {
@@ -333,7 +337,7 @@ class PermissionManager extends Component
      * @param string $permissionId
      * @param string $moduleId
      * @return BasePermission|null
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function getById($permissionId, $moduleId)
     {
@@ -351,11 +355,11 @@ class PermissionManager extends Component
 
     /**
      * Not used anymore, permissions are now prefetched into $_groupPermissions array
-     * @deprecated since 1.10
-     *
      * @param $groupId
      * @param BasePermission $permission
-     * @return array|null|\yii\db\ActiveRecord
+     * @return array|null|ActiveRecord
+     * @deprecated since 1.10
+     *
      */
     protected function getGroupStateRecord($groupId, BasePermission $permission)
     {
@@ -370,7 +374,7 @@ class PermissionManager extends Component
      * Returns a list of all Permission objects
      *
      * @return array of BasePermissions
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function getPermissions()
     {
@@ -396,7 +400,7 @@ class PermissionManager extends Component
      *
      * @param BaseModule $module
      * @return array of BasePermissions
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     protected function getModulePermissions(BaseModule $module)
     {
@@ -416,7 +420,7 @@ class PermissionManager extends Component
     /**
      * Creates a Permission Database record
      *
-     * @return \yii\db\ActiveRecord
+     * @return ActiveRecord
      */
     protected function createPermissionRecord()
     {
@@ -426,7 +430,7 @@ class PermissionManager extends Component
     /**
      * Creates a Permission Database Query
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     protected function getQuery()
     {
@@ -439,8 +443,8 @@ class PermissionManager extends Component
      * @param int $groupId id of the group
      * @param bool $returnOnlyChangeable
      * @return array the permission array
-     * @throws \yii\base\Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws Exception
+     * @throws InvalidConfigException
      */
     public function createPermissionArray($groupId, $returnOnlyChangeable = false)
     {
@@ -478,9 +482,9 @@ class PermissionManager extends Component
     /**
      * Returns a query for users which are granted given permission
      *
-     * @since 1.3.8
      * @param BasePermission $permission
      * @return ActiveQueryUser
+     * @since 1.3.8
      */
     public static function findUsersByPermission($permission)
     {

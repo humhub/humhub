@@ -19,7 +19,8 @@ use humhub\modules\user\widgets\AuthChoice;
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel"><?= Yii::t('UserModule.auth', '<strong>Join</strong> the network'); ?></h4>
+            <h4 class="modal-title"
+                id="myModalLabel"><?= Yii::t('UserModule.auth', '<strong>Join</strong> the network'); ?></h4>
         </div>
         <div class="modal-body">
             <br/>
@@ -50,15 +51,15 @@ use humhub\modules\user\widgets\AuthChoice;
                         </div>
                     <?php endif; ?>
 
-                   <?php if (AuthChoice::hasClients()): ?>
+                    <?php if (AuthChoice::hasClients()): ?>
                         <?= AuthChoice::widget([]) ?>
-                   <?php else: ?>
+                    <?php else: ?>
                         <?php if ($canRegister): ?>
                             <p><?= Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password."); ?></p>
                         <?php else: ?>
                             <p><?= Yii::t('UserModule.auth', "Please login with your username/email and password."); ?></p>
                         <?php endif; ?>
-                   <?php endif; ?>
+                    <?php endif; ?>
 
                     <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
                     <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.auth', 'username or email')]); ?>
@@ -67,30 +68,32 @@ use humhub\modules\user\widgets\AuthChoice;
                     <hr>
                     <div class="row">
                         <div class="col-md-4">
-                            <button href="#" id="login-button" data-ui-loader type="submit" class="btn btn-primary" data-action-click="ui.modal.submit" data-action-url="<?= Url::to(['/user/auth/login']) ?>">
+                            <button href="#" id="login-button" data-ui-loader type="submit" class="btn btn-primary"
+                                    data-action-click="ui.modal.submit"
+                                    data-action-url="<?= Url::to(['/user/auth/login']) ?>">
                                 <?= Yii::t('UserModule.auth', 'Sign in') ?>
                             </button>
 
                         </div>
                         <?php if ($passwordRecoveryRoute): ?>
-                        <div class="col-md-8 text-right">
-                            <small>
-                                <?= Html::a(
-                                    Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),
-                                    $passwordRecoveryRoute,
-                                    ArrayHelper::merge([
-                                        'id' => 'recoverPasswordBtn',
-                                    ], is_array($passwordRecoveryRoute) ? [
-                                        'data' => [
-                                            'action-click' => 'ui.modal.load',
-                                            'action-url' => Url::to($passwordRecoveryRoute),
-                                        ]
-                                    ] : [
-                                        'target' => '_blank',
-                                    ]),
-                                ) ?>
-                            </small>
-                        </div>
+                            <div class="col-md-8 text-right">
+                                <small>
+                                    <?= Html::a(
+                                        Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),
+                                        $passwordRecoveryRoute,
+                                        ArrayHelper::merge([
+                                            'id' => 'recoverPasswordBtn',
+                                        ], is_array($passwordRecoveryRoute) ? [
+                                            'data' => [
+                                                'action-click' => 'ui.modal.load',
+                                                'action-url' => Url::to($passwordRecoveryRoute),
+                                            ]
+                                        ] : [
+                                            'target' => '_blank',
+                                        ]),
+                                    ) ?>
+                                </small>
+                            </div>
                         <?php endif; ?>
                     </div>
 
@@ -113,12 +116,13 @@ use humhub\modules\user\widgets\AuthChoice;
                         <?php if ($invite->showCaptureInRegisterForm()): ?>
                             <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
                             <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
-                            'captchaAction' => '/user/auth/captcha',
-                        ])->label(false); ?>
+                                'captchaAction' => '/user/auth/captcha',
+                            ])->label(false); ?>
                         <?php endif; ?>
                         <hr>
 
-                        <a href="#" class="btn btn-primary" data-ui-loader data-action-click="ui.modal.submit" data-action-url="<?= Url::to(['/user/auth/login']) ?>">
+                        <a href="#" class="btn btn-primary" data-ui-loader data-action-click="ui.modal.submit"
+                           data-action-url="<?= Url::to(['/user/auth/login']) ?>">
                             <?= Yii::t('UserModule.auth', 'Register') ?>
                         </a>
 
@@ -133,7 +137,7 @@ use humhub\modules\user\widgets\AuthChoice;
 
 </div>
 
-<script <?= \humhub\libs\Html::nonce() ?>>
+<script <?= Html::nonce() ?>>
     $(document).on('humhub:ready', function () {
         $('#login_username').focus();
     });

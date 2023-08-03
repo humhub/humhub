@@ -14,6 +14,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\Module;
 use Yii;
 use yii\captcha\CaptchaValidator;
+use yii\db\ActiveQuery;
 use yii\helpers\Url;
 
 /**
@@ -273,7 +274,7 @@ class Invite extends ActiveRecord
     /**
      * Return user which triggered this invite
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getOriginator()
     {
@@ -283,7 +284,7 @@ class Invite extends ActiveRecord
     /**
      * Return space which is involved in this invite
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getSpace()
     {

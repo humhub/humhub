@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user\controllers;
 
+use Collator;
+use Exception;
 use humhub\compat\HForm;
 use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\space\helpers\MembershipHelper;
@@ -18,10 +20,14 @@ use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\forms\AccountChangeEmail;
 use humhub\modules\user\models\forms\AccountChangeUsername;
 use humhub\modules\user\models\forms\AccountDelete;
+use humhub\modules\user\models\forms\AccountSettings;
+use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
+use Throwable;
 use Yii;
 use yii\web\HttpException;
+use yii\web\Response;
 
 /**
  * AccountController provides all standard actions for the current logged in
@@ -59,7 +65,7 @@ class AccountController extends BaseAccountController
 
     /**
      * Redirect to current users profile
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function actionIndex()
     {
@@ -72,7 +78,7 @@ class AccountController extends BaseAccountController
 
     /**
      * Edit Users Profile
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function actionEdit()
     {
@@ -113,7 +119,7 @@ class AccountController extends BaseAccountController
         /** @var User $user */
         $user = Yii::$app->user->getIdentity();
 
-        $model = new \humhub\modules\user\models\forms\AccountSettings();
+        $model = new AccountSettings();
         $model->language = Yii::$app->i18n->getAllowedLanguage($user->language);
         $model->timeZone = $user->time_zone;
         if (empty($model->timeZone)) {
@@ -148,7 +154,7 @@ class AccountController extends BaseAccountController
 
         // Sort countries list based on user language
         $languages = Yii::$app->i18n->getAllowedLanguages();
-        $col = new \Collator(Yii::$app->language);
+        $col = new Collator(Yii::$app->language);
         $col->asort($languages);
 
         /* @var $module Module */
@@ -175,7 +181,7 @@ class AccountController extends BaseAccountController
 
     /**
      * Change Account
-     * @throws \Exception
+     * @throws Exception
      * @todo Add Group
      */
     public function actionPermissions()
@@ -268,9 +274,9 @@ class AccountController extends BaseAccountController
     }
 
     /**
-     * @return array|AccountController|\yii\console\Response|\yii\web\Response
+     * @return array|AccountController|\yii\console\Response|Response
      * @throws HttpException
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function actionEnableModule()
     {
@@ -290,9 +296,9 @@ class AccountController extends BaseAccountController
     }
 
     /**
-     * @return array|AccountController|\yii\console\Response|\yii\web\Response
+     * @return array|AccountController|\yii\console\Response|Response
      * @throws HttpException
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function actionDisableModule()
     {
@@ -394,7 +400,7 @@ class AccountController extends BaseAccountController
         }
 
         // Check if E-Mail is in use, e.g. by other user
-        $emailAvailablyCheck = \humhub\modules\user\models\User::findOne(['email' => $email]);
+        $emailAvailablyCheck = User::findOne(['email' => $email]);
         if ($emailAvailablyCheck != null) {
             throw new HttpException(404, Yii::t('UserModule.account', 'The entered e-mail address is already in use by another user.'));
         }
@@ -414,7 +420,7 @@ class AccountController extends BaseAccountController
             throw new HttpException(500, 'Password change is not allowed');
         }
 
-        $userPassword = new \humhub\modules\user\models\Password();
+        $userPassword = new Password();
         $userPassword->scenario = 'changePassword';
 
         if ($userPassword->load(Yii::$app->request->post()) && $userPassword->validate()) {
@@ -491,7 +497,7 @@ class AccountController extends BaseAccountController
      *
      * @return User the user
      * @throws HttpException
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function getUser()
     {

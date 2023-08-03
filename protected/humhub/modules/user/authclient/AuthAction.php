@@ -10,6 +10,7 @@ namespace humhub\modules\user\authclient;
 
 use humhub\modules\user\authclient\interfaces\StandaloneAuthClient;
 use Yii;
+use yii\web\Response;
 
 /**
  * Extended version of AuthAction with AuthClient support which are not handled
@@ -24,7 +25,7 @@ class AuthAction extends \yii\authclient\AuthAction
      * @inheritdoc
      *
      * @param StandaloneAuthClient $client
-     * @return \yii\web\Response response instance.
+     * @return Response response instance.
      */
     public function auth($client, $authUrlParams = [])
     {

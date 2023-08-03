@@ -12,7 +12,9 @@ use humhub\components\ActiveRecord;
 use humhub\libs\Helpers;
 use humhub\modules\user\models\fieldtype\BaseType;
 use Yii;
+use yii\base\Exception;
 use yii\db\ActiveQuery;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /**
@@ -146,7 +148,7 @@ class ProfileField extends ActiveRecord
      * Returns the ProfileFieldType Class for this Profile Field
      *
      * @return BaseType
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function getFieldType(): ?BaseType
     {
@@ -239,7 +241,7 @@ class ProfileField extends ActiveRecord
                     ],
                     'profile_field_category_id' => [
                         'type' => 'dropdownlist',
-                        'items' => \yii\helpers\ArrayHelper::map($categories, 'id', 'title'),
+                        'items' => ArrayHelper::map($categories, 'id', 'title'),
                         'class' => 'form-control',
                     ],
                     'field_type_class' => [

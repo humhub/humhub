@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\modules\user\components\PermissionManager;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
@@ -35,7 +36,7 @@ class PermissionGridEditor extends GridView
     public $showHeader = false;
 
     /**
-     * @var \humhub\modules\user\components\PermissionManager
+     * @var PermissionManager
      */
     public $permissionManager;
 

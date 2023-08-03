@@ -244,7 +244,6 @@ class PeopleQuery extends ActiveQueryUser
     {
         return $this
             ->with('profile')
-            ->with('contentContainerRecord')
-            ;
+            ->with('contentContainerRecord');
     }
 }

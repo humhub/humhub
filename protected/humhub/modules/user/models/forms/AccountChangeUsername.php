@@ -12,13 +12,14 @@ use humhub\modules\user\Module;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\user\components\CheckPasswordValidator;
+use yii\base\Model;
 
 /**
  * Form Model for username change
  *
  * @since 1.4
  */
-class AccountChangeUsername extends \yii\base\Model
+class AccountChangeUsername extends Model
 {
     /**
      * @var string the users password

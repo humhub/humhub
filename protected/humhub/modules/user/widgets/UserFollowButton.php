@@ -8,7 +8,9 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\modules\user\models\User;
 use Yii;
+use yii\base\Widget;
 use yii\bootstrap\Html;
 
 /**
@@ -17,10 +19,10 @@ use yii\bootstrap\Html;
  * @author luke
  * @since 0.11
  */
-class UserFollowButton extends \yii\base\Widget
+class UserFollowButton extends Widget
 {
     /**
-     * @var \humhub\modules\user\models\User
+     * @var User
      */
     public $user;
 
@@ -78,7 +80,7 @@ class UserFollowButton extends \yii\base\Widget
      */
     public function run()
     {
-        if ($this->user->isCurrentUser() || \Yii::$app->user->isGuest) {
+        if ($this->user->isCurrentUser() || Yii::$app->user->isGuest) {
             return;
         }
 
@@ -122,6 +124,6 @@ class UserFollowButton extends \yii\base\Widget
         }
 
         return Html::a($this->unfollowLabel, '#', $this->unfollowOptions) .
-                Html::a($this->followLabel, '#', $this->followOptions);
+            Html::a($this->followLabel, '#', $this->followOptions);
     }
 }

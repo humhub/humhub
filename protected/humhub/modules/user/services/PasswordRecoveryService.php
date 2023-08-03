@@ -40,7 +40,7 @@ class PasswordRecoveryService
             return false;
         }
 
-        return (int) $savedToken['time'] + self::LIMIT_EMAIL_SEND_TIME >= time();
+        return (int)$savedToken['time'] + self::LIMIT_EMAIL_SEND_TIME >= time();
     }
 
     /**
@@ -114,7 +114,7 @@ class PasswordRecoveryService
         }
 
         // Token must not be older than 24 hours
-        return (int) $savedToken['time'] + self::TOKEN_MAX_LIFE_TIME >= time();
+        return (int)$savedToken['time'] + self::TOKEN_MAX_LIFE_TIME >= time();
     }
 
     /**

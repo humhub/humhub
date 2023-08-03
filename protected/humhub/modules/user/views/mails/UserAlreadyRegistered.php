@@ -34,7 +34,8 @@ use yii\helpers\Html;
                                                     <td width="auto" align="center" valign="middle" height="28"
                                                         style=" background-color:<?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>; background-clip: padding-box; font-size:26px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; text-align:center; font-weight: 300; padding-left:18px; padding-right:18px; ">
 
-                                                        <span style="color:  <?= Yii::$app->view->theme->variable('text-color-highlight', '#555') ?>; font-weight: 300;">
+                                                        <span
+                                                            style="color:  <?= Yii::$app->view->theme->variable('text-color-highlight', '#555') ?>; font-weight: 300;">
                                                             <?= Yii::t('UserModule.base', 'Welcome to %appName%', ['%appName%' => '<strong>' . Html::encode(Yii::$app->name) . '</strong>']); ?>
                                                         </span>
                                                     </td>
@@ -74,7 +75,8 @@ use yii\helpers\Html;
 
                     <!-- start container width 560px -->
                     <table width="540" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                           bgcolor="#ffffff" style="background-color:<?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>;">
+                           bgcolor="#ffffff"
+                           style="background-color:<?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>;">
 
 
                         <!-- start text content -->
@@ -131,7 +133,8 @@ use yii\helpers\Html;
                                                     <td width="auto" align="center" valign="middle" height="32"
                                                         style=" background-color:<?= $this->theme->variable('primary'); ?>;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; text-align:center;  color:#ffffff; font-weight: 600; padding-left:30px; padding-right:30px; padding-top: 5px; padding-bottom: 5px;">
 
-                                                        <span style="color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#fff') ?>; font-weight: 300;">
+                                                        <span
+                                                            style="color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#fff') ?>; font-weight: 300;">
                                                             <a href="<?= $passwordRecoveryUrl ?>"
                                                                style="text-decoration: none; color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#fff') ?>; font-weight: 300;">
                                                                 <strong><?= Yii::t('UserModule.base', 'Password recovery') ?></strong>

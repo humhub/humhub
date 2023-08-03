@@ -46,18 +46,18 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
             <?php endif; ?>
 
             <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]); ?>
-                <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username'), 'aria-label' => $model->getAttributeLabel('username')])->label(false); ?>
-                <?= $form->field($model, 'password')
-                    ->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password'), 'aria-label' => $model->getAttributeLabel('password')])
-                    ->label(false); ?>
-                <?= $form->field($model, 'rememberMe')->checkbox(); ?>
+            <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username'), 'aria-label' => $model->getAttributeLabel('username')])->label(false); ?>
+            <?= $form->field($model, 'password')
+                ->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password'), 'aria-label' => $model->getAttributeLabel('password')])
+                ->label(false); ?>
+            <?= $form->field($model, 'rememberMe')->checkbox(); ?>
 
-                <hr>
-                <div class="row">
-                    <div class="col-md-4">
-                        <?= Html::submitButton(Yii::t('UserModule.auth', 'Sign in'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary']); ?>
-                    </div>
-                    <?php if ($passwordRecoveryRoute): ?>
+            <hr>
+            <div class="row">
+                <div class="col-md-4">
+                    <?= Html::submitButton(Yii::t('UserModule.auth', 'Sign in'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary']); ?>
+                </div>
+                <?php if ($passwordRecoveryRoute): ?>
                     <div class="col-md-8 text-right">
                         <small>
                             <?= Html::a(
@@ -73,8 +73,8 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                             ) ?>
                         </small>
                     </div>
-                    <?php endif; ?>
-                </div>
+                <?php endif; ?>
+            </div>
             <?php ActiveForm::end(); ?>
         </div>
     </div>

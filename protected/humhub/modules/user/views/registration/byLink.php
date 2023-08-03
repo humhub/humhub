@@ -53,24 +53,24 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
             </div>
         </div>
 
-    <?= humhub\widgets\LanguageChooser::widget(); ?>
-</div>
+        <?= humhub\widgets\LanguageChooser::widget(); ?>
+    </div>
 
-<script <?= Html::nonce() ?>>
+    <script <?= Html::nonce() ?>>
 
-    // Shake panel after wrong validation
-    <?php if ($invite->hasErrors()) { ?>
-    $('#create-account-form').removeClass('bounceInLeft');
-    $('#create-account-form').addClass('shake');
-    $('#app-title').removeClass('fadeIn');
-    <?php } ?>
+        // Shake panel after wrong validation
+        <?php if ($invite->hasErrors()) { ?>
+        $('#create-account-form').removeClass('bounceInLeft');
+        $('#create-account-form').addClass('shake');
+        $('#app-title').removeClass('fadeIn');
+        <?php } ?>
 
-    <?php if ($invite->showCaptureInRegisterForm()) { ?>
-    $('#register-email').on('focus', function () {
-        $('#registration-form-captcha').fadeIn(500);
-    });
-    <?php } ?>
+        <?php if ($invite->showCaptureInRegisterForm()) { ?>
+        $('#register-email').on('focus', function () {
+            $('#registration-form-captcha').fadeIn(500);
+        });
+        <?php } ?>
 
-</script>
+    </script>
 
 

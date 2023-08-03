@@ -14,6 +14,7 @@ use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
+use yii\base\Exception;
 use yii\web\HttpException;
 
 /**
@@ -47,7 +48,7 @@ class AuthHelper
      *
      * @param $attributes
      * @return string
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public static function generateUsernameByAttributes($attributes): string
     {

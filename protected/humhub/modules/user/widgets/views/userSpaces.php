@@ -1,5 +1,7 @@
 <?php
 
+use humhub\modules\space\widgets\Image;
+use humhub\widgets\PanelMenu;
 use yii\helpers\Html;
 
 ?>
@@ -7,7 +9,7 @@ use yii\helpers\Html;
     <div id="user-spaces-panel" class="panel panel-default members" style="position: relative;">
 
         <!-- Display panel menu widget -->
-        <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'user-spaces-panel']); ?>
+        <?php echo PanelMenu::widget(['id' => 'user-spaces-panel']); ?>
 
         <div class="panel-heading">
             <?php echo Yii::t('UserModule.base', '<strong>Member</strong> of these Spaces'); ?>
@@ -16,7 +18,7 @@ use yii\helpers\Html;
         <div class="panel-body">
             <?php foreach ($spaces as $space): ?>
                 <?php
-                echo \humhub\modules\space\widgets\Image::widget([
+                echo Image::widget([
                     'space' => $space,
                     'width' => 24,
                     'htmlOptions' => [

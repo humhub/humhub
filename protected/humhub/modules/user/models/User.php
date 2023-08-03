@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models;
 
+use DateTimeZone;
 use humhub\components\behaviors\GUID;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
@@ -35,6 +36,7 @@ use humhub\modules\user\services\PasswordRecoveryService;
 use humhub\modules\user\widgets\UserWall;
 use Yii;
 use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\web\IdentityInterface;
@@ -231,7 +233,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function validateTimeZone($attribute, $params)
     {
-        if (!in_array($this->$attribute, \DateTimeZone::listIdentifiers())) {
+        if (!in_array($this->$attribute, DateTimeZone::listIdentifiers())) {
             $this->$attribute = null;
         }
     }
@@ -381,7 +383,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     /**
      * Returns all GroupUser relations of this user as ActiveQuery
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getGroupUsers()
     {
@@ -390,7 +392,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     /**
      * Returns all Group relations of this user as ActiveQuery
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getGroups()
     {
@@ -408,7 +410,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     /**
      * Returns all GroupUser relations this user is a manager of as ActiveQuery.
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getManagerGroupsUser()
     {
@@ -417,7 +419,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     /**
      * Returns all Groups this user is a maanger of as ActiveQuery.
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getManagerGroups()
     {
@@ -430,7 +432,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Returns all user this user is related as friend as ActiveQuery.
      * Returns null if the friendship module is deactivated.
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getFriends()
     {
@@ -847,7 +849,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      * User can approve other users
      *
      * @return boolean
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function canApproveUsers()
     {

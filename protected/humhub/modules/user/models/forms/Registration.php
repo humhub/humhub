@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models\forms;
 
 use humhub\compat\HForm;
+use humhub\modules\user\authclient\BaseClient;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Password;
@@ -16,7 +17,9 @@ use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use humhub\modules\user\services\AuthClientUserService;
 use Yii;
+use yii\authclient\ClientInterface;
 use yii\helpers\ArrayHelper;
+use yii\web\UserEvent;
 
 /**
  * Description of Registration
@@ -256,7 +259,7 @@ class Registration extends HForm
      *
      * @return boolean state
      */
-    public function register(\yii\authclient\ClientInterface $authClient = null)
+    public function register(ClientInterface $authClient = null)
     {
         if (!$this->validate()) {
             return false;
@@ -294,10 +297,10 @@ class Registration extends HForm
 
             if ($authClient !== null) {
                 (new AuthClientUserService($this->models['User']))->add($authClient);
-                $authClient->trigger(\humhub\modules\user\authclient\BaseClient::EVENT_CREATE_USER, new \yii\web\UserEvent(['identity' => $this->models['User']]));
+                $authClient->trigger(BaseClient::EVENT_CREATE_USER, new UserEvent(['identity' => $this->models['User']]));
             }
 
-            $this->trigger(self::EVENT_AFTER_REGISTRATION, new \yii\web\UserEvent(['identity' => $this->models['User']]));
+            $this->trigger(self::EVENT_AFTER_REGISTRATION, new UserEvent(['identity' => $this->models['User']]));
 
             return true;
         }

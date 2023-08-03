@@ -2,7 +2,9 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\libs\BasePermission;
 use Yii;
+use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use humhub\modules\user\models\UserFilter;
@@ -34,7 +36,7 @@ use humhub\modules\user\models\UserFilter;
  * @deprecated since 1.2 use UserPickerField widget for rendering a picker and \humhub\modules\user\models\UserPicker for search queries.
  * @author Luke
  */
-class UserPicker extends \yii\base\Widget
+class UserPicker extends Widget
 {
     /**
      * Id of input element which should replaced
@@ -132,15 +134,15 @@ class UserPicker extends \yii\base\Widget
         }
 
         return $this->render('userPicker', [
-                    'userSearchUrl' => $this->userSearchUrl,
-                    'maxUsers' => $this->maxUsers,
-                    'currentValue' => $currentValue,
-                    'inputId' => $this->inputId,
-                    'focus' => $this->focus,
-                    'userGuid' => $this->userGuid,
-                    'userRole' => $this->userRole,
-                    'data' => json_encode($this->data),
-                    'placeholderText' => $this->placeholderText,
+            'userSearchUrl' => $this->userSearchUrl,
+            'maxUsers' => $this->maxUsers,
+            'currentValue' => $currentValue,
+            'inputId' => $this->inputId,
+            'focus' => $this->focus,
+            'userGuid' => $this->userGuid,
+            'userRole' => $this->userRole,
+            'data' => json_encode($this->data),
+            'placeholderText' => $this->placeholderText,
         ]);
     }
 
@@ -198,7 +200,7 @@ class UserPicker extends \yii\base\Widget
             $fillUser = $fillQuery->all();
 
             //Either the additional users are disabled (by default) or we disable them by permission
-            $disableCondition = (isset($cfg['permission'])) ? $cfg['permission']  : $cfg['disableFillUser'];
+            $disableCondition = (isset($cfg['permission'])) ? $cfg['permission'] : $cfg['disableFillUser'];
             $jsonResult = array_merge($jsonResult, UserPicker::asJSON($fillUser, $disableCondition, 1));
         }
 
@@ -255,7 +257,7 @@ class UserPicker extends \yii\base\Widget
     {
         $disabled = false;
 
-        if ($permission != null && $permission instanceof \humhub\libs\BasePermission) {
+        if ($permission != null && $permission instanceof BasePermission) {
             $disabled = !$user->getPermissionManager()->can($permission);
         } elseif ($permission != null) {
             $disabled = $permission;

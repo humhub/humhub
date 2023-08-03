@@ -21,6 +21,7 @@ namespace humhub\modules\user\widgets;
  */
 
 use Yii;
+use yii\base\Widget;
 
 /**
  * ProfileEditButtonWidget
@@ -29,7 +30,7 @@ use Yii;
  * @package humhub.modules_core.user.widgets
  * @since 0.11
  */
-class ProfileEditButton extends \yii\base\Widget
+class ProfileEditButton extends Widget
 {
     public $user;
 

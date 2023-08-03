@@ -6,8 +6,9 @@ use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\widgets\PeopleCard;
 use humhub\modules\user\widgets\PeopleFilters;
 use humhub\modules\user\widgets\PeopleHeadingButtons;
+use yii\web\View;
 
-/* @var $this \yii\web\View */
+/* @var $this View */
 /* @var $people PeopleQuery */
 
 CardsAsset::register($this);

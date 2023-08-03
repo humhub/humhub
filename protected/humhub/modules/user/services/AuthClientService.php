@@ -22,6 +22,7 @@ use humhub\modules\user\Module;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\helpers\VarDumper;
+use yii\web\UserEvent;
 
 /**
  * AuthClientService
@@ -77,7 +78,7 @@ class AuthClientService
             }
         }
 
-        $this->authClient->trigger(BaseClient::EVENT_UPDATE_USER, new \yii\web\UserEvent(['identity' => $user]));
+        $this->authClient->trigger(BaseClient::EVENT_UPDATE_USER, new UserEvent(['identity' => $user]));
 
         if ($this->authClient instanceof SyncAttributes) {
             $attributes = $this->authClient->getUserAttributes();
@@ -122,7 +123,7 @@ class AuthClientService
             return null;
         }
 
-        $registration = new \humhub\modules\user\models\forms\Registration();
+        $registration = new Registration();
         $registration->enablePasswordForm = false;
         $registration->enableEmailField = true;
 

@@ -2,6 +2,9 @@
 
 namespace humhub\modules\user\models;
 
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
+
 /**
  * This is the model class for table "user_auth".
  *
@@ -12,7 +15,7 @@ namespace humhub\modules\user\models;
  *
  * @property User $user
  */
-class Auth extends \yii\db\ActiveRecord
+class Auth extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -48,7 +51,7 @@ class Auth extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUser()
     {

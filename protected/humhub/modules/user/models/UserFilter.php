@@ -42,8 +42,8 @@ class UserFilter extends User
      * @param type $maxResults
      * @param type $friendsOnly
      * @param type $permission
-     * @deprecated since 1.2 use
      * @return type
+     * @deprecated since 1.2 use
      */
     public function getUserPickerResult($keywords = null, $maxResults = null, $friendsOnly = false, $permission = null)
     {

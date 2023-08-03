@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\user\Module;
 use humhub\modules\user\services\AuthClientUserService;
 use Yii;
 
@@ -245,7 +246,7 @@ class Profile extends ActiveRecord
                 $fieldDefinition = $profileField->fieldType->getFieldFormDefinition($this->user);
 
                 if (isset($fieldDefinition[$profileField->internal_name]) && !empty($profileField->description)) {
-                    $fieldDefinition[$profileField->internal_name]['hint'] =  Yii::t($profileField->getTranslationCategory() ?: $profileFieldCategory->getTranslationCategory(), $profileField->description);
+                    $fieldDefinition[$profileField->internal_name]['hint'] = Yii::t($profileField->getTranslationCategory() ?: $profileFieldCategory->getTranslationCategory(), $profileField->description);
                 }
 
                 $category['elements'] = array_merge($category['elements'], $fieldDefinition);
@@ -347,7 +348,7 @@ class Profile extends ActiveRecord
     public function softDelete()
     {
         $module = Yii::$app->getModule('user');
-        /* @var $module \humhub\modules\user\Module */
+        /* @var $module Module */
 
         foreach (array_keys($this->getAttributes()) as $name) {
             if (!in_array($name, $module->softDeleteKeepProfileFields) && $name !== 'user_id') {

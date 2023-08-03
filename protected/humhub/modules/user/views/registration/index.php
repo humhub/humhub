@@ -48,9 +48,9 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
     // Shake panel after wrong validation
     <?php foreach ($hForm->models as $model): ?>
         <?php if ($model->hasErrors()): ?>
-            $('#create-account-form').removeClass('bounceIn');
-            $('#create-account-form').addClass('shake');
-            $('#app-title').removeClass('fadeIn');
+    $('#create-account-form').removeClass('bounceIn');
+    $('#create-account-form').addClass('shake');
+    $('#app-title').removeClass('fadeIn');
         <?php endif; ?>
     <?php endforeach; ?>
 

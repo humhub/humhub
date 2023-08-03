@@ -7,13 +7,16 @@
  */
 
 use humhub\modules\ui\menu\DropdownDivider;
+use humhub\modules\ui\menu\MenuEntry;
+use humhub\modules\ui\menu\widgets\DropdownMenu;
+use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\Image;
 use humhub\widgets\FooterMenu;
 use yii\helpers\Html;
 
-/* @var $this \humhub\modules\ui\view\components\View */
-/* @var $menu \humhub\modules\ui\menu\widgets\DropdownMenu */
-/* @var $entries \humhub\modules\ui\menu\MenuEntry[] */
+/* @var $this View */
+/* @var $menu DropdownMenu */
+/* @var $entries MenuEntry[] */
 /* @var $options [] */
 
 /** @var \humhub\modules\user\models\User $userModel */

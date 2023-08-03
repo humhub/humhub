@@ -88,8 +88,8 @@ class BaseFormAuth extends BaseClient
     /**
      * Get a failed login attempts count
      *
-     * @since 1.8
      * @return int
+     * @since 1.8
      */
     public function getFailedLoginAttemptsCount()
     {

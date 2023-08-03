@@ -9,12 +9,14 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\notifications\Mentioned;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "user_mentioning".
@@ -42,7 +44,7 @@ class Mentioning extends ActiveRecord
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::class,
+                'class' => PolymorphicRelation::class,
                 'mustBeInstanceOf' => [ContentActiveRecord::class, ContentAddonActiveRecord::class],
             ],
         ];
@@ -177,10 +179,10 @@ class Mentioning extends ActiveRecord
     /**
      * Related user
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUser()
     {
-        return $this->hasOne(\humhub\modules\user\models\User::class, ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 }

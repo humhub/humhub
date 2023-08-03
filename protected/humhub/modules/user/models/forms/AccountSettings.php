@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models\forms;
 
+use DateTimeZone;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
@@ -38,7 +39,7 @@ class AccountSettings extends Model
             [['tags', 'blockedUsers'], 'safe'],
             [['hideOnlineStatus', 'show_introduction_tour'], 'boolean'],
             [['markdownEditorMode'], 'in', 'range' => [0, 1]],
-            [['timeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
+            [['timeZone'], 'in', 'range' => DateTimeZone::listIdentifiers()],
             ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
             ['visibility', 'in', 'range' => array_keys($this->getVisibilityOptions()),
                 'when' => function (self $model) {

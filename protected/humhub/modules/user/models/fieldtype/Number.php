@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\modules\user\models\Profile;
 use Yii;
 
 /**
@@ -52,22 +53,22 @@ class Number extends BaseType
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-                    get_class($this) => [
-                        'type' => 'form',
-                        'title' => Yii::t('UserModule.profile', 'Number field options'),
-                        'elements' => [
-                            'maxValue' => [
-                                'label' => Yii::t('UserModule.profile', 'Maximum value'),
-                                'type' => 'text',
-                                'class' => 'form-control',
-                            ],
-                            'minValue' => [
-                                'label' => Yii::t('UserModule.profile', 'Minimum value'),
-                                'type' => 'text',
-                                'class' => 'form-control',
-                            ],
-                        ]
-                    ]]);
+            get_class($this) => [
+                'type' => 'form',
+                'title' => Yii::t('UserModule.profile', 'Number field options'),
+                'elements' => [
+                    'maxValue' => [
+                        'label' => Yii::t('UserModule.profile', 'Maximum value'),
+                        'type' => 'text',
+                        'class' => 'form-control',
+                    ],
+                    'minValue' => [
+                        'label' => Yii::t('UserModule.profile', 'Minimum value'),
+                        'type' => 'text',
+                        'class' => 'form-control',
+                    ],
+                ]
+            ]]);
     }
 
     /**
@@ -76,8 +77,8 @@ class Number extends BaseType
     public function save()
     {
         $columnName = $this->profileField->internal_name;
-        if (!\humhub\modules\user\models\Profile::columnExists($columnName)) {
-            $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName, 'INT');
+        if (!Profile::columnExists($columnName)) {
+            $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), $columnName, 'INT');
             Yii::$app->db->createCommand($query)->execute();
         }
 

@@ -23,7 +23,7 @@ use Yii;
 class Image extends BaseImage
 {
     /**
-     * @var \humhub\modules\user\models\User
+     * @var User
      */
     public $user;
 

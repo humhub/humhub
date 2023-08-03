@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user\authclient\interfaces;
 
+use humhub\modules\user\models\User;
+
 /**
  * PrimaryClient authclient interface
  *
@@ -21,8 +23,8 @@ interface PrimaryClient
     /**
      * Returns the user model of this auth client
      *
+     * @return User
      * @since 1.2.2
-     * @return \humhub\modules\user\models\User
      */
     public function getUser();
 }

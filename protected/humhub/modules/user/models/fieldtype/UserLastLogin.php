@@ -10,6 +10,7 @@ namespace humhub\modules\user\models\fieldtype;
 
 use humhub\libs\Html;
 use Yii;
+use yii\base\InvalidConfigException;
 
 /**
  * UserLastLogin is a virtual profile field
@@ -21,7 +22,7 @@ class UserLastLogin extends BaseTypeVirtual
 {
     /**
      * @inheritDoc
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function getVirtualUserValue($user, $raw = true)
     {
