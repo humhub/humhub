@@ -9,6 +9,7 @@ HumHub Changelog
 - Enh #6469: Added Info text for Marketplace page 
 - Fix #112: Reorder Table Rows
 - Fix #6476: Fix module disabling in queue
+- Enh #6469: Implement conditions for `fixed-settings` in config
 
 1.15.0-beta.1 (July 31, 2023)
 -----------------------------
