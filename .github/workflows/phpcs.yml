@@ -27,3 +27,4 @@ jobs:
                   files: "**.php" # you may customize glob as needed
                   phpcs_path: php phpcs.phar
                   standard: phpcs.xml
+                  scope: "files"
