@@ -50,7 +50,16 @@ class StorageManager extends Component implements StorageManagerInterface
      */
     public function has($variant = null): bool
     {
-        return file_exists($this->get($variant));
+        if (file_exists($this->get($variant))) {
+            return true;
+        }
+
+        if ($variant === null) {
+            // Try to restore only original file
+            return $this->restoreMissedOriginalFile();
+        }
+
+        return false;
     }
 
     /**
@@ -60,7 +69,6 @@ class StorageManager extends Component implements StorageManagerInterface
     {
         if ($variant === null) {
             $variant = $this->originalFileName;
-            $this->restoreMissedOriginalFile();
         }
 
         return $this->getPath() . DIRECTORY_SEPARATOR . $variant;
@@ -68,25 +76,27 @@ class StorageManager extends Component implements StorageManagerInterface
 
     /**
      * Restore original file from the latest version if it was missed by some reason
+     *
+     * @return bool TRUE if original file is restored successfully or if it already exists
      */
-    protected function restoreMissedOriginalFile()
+    protected function restoreMissedOriginalFile(): bool
     {
         $originalFilePath = $this->getPath() . DIRECTORY_SEPARATOR . $this->originalFileName;
 
         if (file_exists($originalFilePath)) {
             // Original File exists as expected, nothing to restore
-            return;
+            return true;
         }
 
         $latestHistoryFile = $this->file->getHistoryFiles()->limit(1)->one();
         if (!$latestHistoryFile instanceof FileHistory) {
             // File has no any history version, impossible to restore
-            return;
+            return false;
         }
 
         // Copy the latest version to original File path
-        copy($latestHistoryFile->getFileStorePath(), $originalFilePath);
-        @chmod($originalFilePath, $this->fileMode);
+        return copy($latestHistoryFile->getFileStorePath(), $originalFilePath) &&
+            @chmod($originalFilePath, $this->fileMode);
     }
 
     /**

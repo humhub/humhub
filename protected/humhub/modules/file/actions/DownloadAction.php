@@ -188,7 +188,7 @@ class DownloadAction extends Action
      */
     protected function checkFileExists()
     {
-        if (!file_exists($this->file->store->get($this->variant))) {
+        if (!$this->file->store->has($this->variant)) {
             throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
         }
     }
