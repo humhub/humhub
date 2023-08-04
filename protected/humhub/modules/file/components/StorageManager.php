@@ -10,10 +10,10 @@ namespace humhub\modules\file\components;
 
 use humhub\modules\file\models\File;
 use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\models\FileHistory;
 use Yii;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
-use yii\imagine\Image;
 use yii\web\UploadedFile;
 
 /**
@@ -60,9 +60,33 @@ class StorageManager extends Component implements StorageManagerInterface
     {
         if ($variant === null) {
             $variant = $this->originalFileName;
+            $this->restoreMissedOriginalFile();
         }
 
         return $this->getPath() . DIRECTORY_SEPARATOR . $variant;
+    }
+
+    /**
+     * Restore original file from the latest version if it was missed by some reason
+     */
+    protected function restoreMissedOriginalFile()
+    {
+        $originalFilePath = $this->getPath() . DIRECTORY_SEPARATOR . $this->originalFileName;
+
+        if (file_exists($originalFilePath)) {
+            // Original File exists as expected, nothing to restore
+            return;
+        }
+
+        $latestHistoryFile = $this->file->getHistoryFiles()->limit(1)->one();
+        if (!$latestHistoryFile instanceof FileHistory) {
+            // File has no any history version, impossible to restore
+            return;
+        }
+
+        // Copy the latest version to original File path
+        copy($latestHistoryFile->getFileStorePath(), $originalFilePath);
+        @chmod($originalFilePath, $this->fileMode);
     }
 
     /**
