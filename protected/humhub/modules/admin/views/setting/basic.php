@@ -41,7 +41,6 @@ AdminAsset::register($this);
         <?= $languageDropDown = $form->field($model, 'defaultLanguage')->dropDownList($allowedLanguages); ?>
     <?php endif; ?>
     <?= $form->field($model, 'defaultTimeZone')->dropDownList(TimezoneHelper::generateList(true), ['disabled' => Yii::$app->settings->isFixed('defaultTimeZone')]); ?>
-    <?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(true), ['disabled' => Yii::$app->settings->isFixed('timeZone')]); ?>
 
     <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Dashboard')); ?>
     <?= $form->field($model, 'tour')->checkbox(); ?>
