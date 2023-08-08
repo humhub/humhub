@@ -3,7 +3,6 @@
 use humhub\modules\user\models\Password;
 use humhub\widgets\Button;
 use yii\helpers\Url;
-use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use humhub\widgets\SiteLogo;
 
@@ -35,11 +34,11 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Change password');
                 <?= $form->field($model, 'newPasswordConfirm')->passwordInput(['maxlength' => 45]); ?>
 
                 <hr>
-                <?= Html::submitButton(Yii::t('UserModule.auth', 'Confirm'), ['class' => 'btn btn-primary pull-left', 'data-ui-loader' => ""]); ?>
+                <?= Button::primary(Yii::t('UserModule.auth', 'Confirm'))->submit()->left() ?>
 
                 <?php ActiveForm::end(); ?>
 
-                <?= Button::danger(Yii::t('UserModule.auth', 'Log out'))->link(Url::toRoute('/user/auth/logout'), false)->options(['data-method' => 'POST'])->right() ?>
+                <?= Button::defaultType(Yii::t('UserModule.auth', 'Log out'))->link(Url::toRoute('/user/auth/logout'), false)->options(['data-method' => 'POST'])->right() ?>
 
             </div>
         </div>
