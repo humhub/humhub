@@ -349,8 +349,6 @@ class File extends FileCompat
         if ($this->store->has() && FileHistory::isEnabled($this) && !$skipHistoryEntry) {
             FileHistory::createEntryForFile($this);
         }
-
-        $this->store->delete(null, [FileHistory::VARIANT_PREFIX . '*']);
     }
 
     /**
