@@ -10,7 +10,6 @@ namespace humhub\widgets;
 
 use humhub\modules\admin\widgets\TrackingWidget;
 use humhub\modules\tour\widgets\Tour;
-use humhub\modules\ui\form\widgets\MarkdownModals;
 use Yii;
 
 /**
@@ -41,10 +40,9 @@ class LayoutAddons extends BaseStack
             if (Yii::$app->params['installed']) {
 
                 $this->addWidget(BlueimpGallery::class);
-                $this->addWidget(MarkdownModals::class);
 
                 if (Yii::$app->params['enablePjax']) {
-                    $this->addWidget(Pjax::class);
+                    $this->addWidget(PjaxLayoutContent::class);
                 }
             }
         }

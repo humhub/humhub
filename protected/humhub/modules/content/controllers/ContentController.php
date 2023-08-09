@@ -21,7 +21,6 @@ use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\web\ForbiddenHttpException;
-use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -123,22 +122,15 @@ class ContentController extends Controller
      */
     public function actionArchive()
     {
-        Yii::$app->response->format = 'json';
         $this->forcePostRequest();
 
-        $json = [];
-        $json['success'] = false;
+        $content = Content::findOne(Yii::$app->request->get('id'));
 
-        $id = (int)Yii::$app->request->get('id', '');
-
-        $content = Content::findOne(['id' => $id]);
-        if ($content !== null && $content->canArchive()) {
+        $result = $content instanceof Content &&
+            $content->canArchive() &&
             $content->archive();
 
-            $json['success'] = true;
-        }
-
-        return $json;
+        return $this->asJson(['success' => $result]);
     }
 
     /**
@@ -150,19 +142,13 @@ class ContentController extends Controller
     {
         $this->forcePostRequest();
 
-        $json = [];
-        $json['success'] = false;   // default
+        $content = Content::findOne(Yii::$app->request->get('id'));
 
-        $id = (int)Yii::$app->request->get('id', '');
-
-        $content = Content::findOne(['id' => $id]);
-        if ($content !== null && $content->canArchive()) {
+        $result = $content instanceof Content &&
+            $content->canArchive() &&
             $content->unarchive();
 
-            $json['success'] = true;
-        }
-
-        return $this->asJson($json);
+        return $this->asJson(['success' => $result]);
     }
 
     public function actionDeleteId()
@@ -368,12 +354,14 @@ class ContentController extends Controller
         $json['success'] = false;
 
         $content = Content::findOne(['id' => Yii::$app->request->get('id', '')]);
-        if ($content !== null && $content->canEdit() && $content->state === Content::STATE_DRAFT) {
-            $content->state = Content::STATE_PUBLISHED;
-            $content->save();
-            $json['message'] = Yii::t('ContentModule.base', 'The content has been successfully published.');
-            $json['success'] = true;
-
+        if ($content !== null && $content->canEdit() && $content->getStateService()->isDraft()) {
+            if ($content->getStateService()->publish()) {
+                $json['message'] = Yii::t('ContentModule.base', 'The content has been successfully published.');
+                $json['success'] = true;
+            } else {
+                $json['error'] = Yii::t('ContentModule.base', 'The content cannot be published!');
+                $json['success'] = false;
+            }
         }
 
         return $this->asJson($json);

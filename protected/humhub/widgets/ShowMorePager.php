@@ -15,10 +15,12 @@ use yii\web\JsExpression;
 
 /**
  * ShowMore ajax pager
- * 
+ *
  * @inheritdoc
  * @since 1.1.1
  * @author luke
+ *
+ * @todo should be deleted
  */
 class ShowMorePager extends \humhub\widgets\LinkPager
 {
@@ -31,9 +33,9 @@ class ShowMorePager extends \humhub\widgets\LinkPager
 
     /**
      * AjaxButton widget options
-     * 
+     *
      * @see AjaxButton
-     * @var array 
+     * @var array
      */
     public $ajaxButtonOptions = [];
 

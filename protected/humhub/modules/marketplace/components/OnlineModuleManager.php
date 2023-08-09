@@ -186,9 +186,10 @@ class OnlineModuleManager extends Component
      *  - latestVersion
      *  - latestCompatibleVersion
      *
+     * @param bool $cached
      * @return array of modules
      */
-    public function getModules($cached = true)
+    public function getModules(bool $cached = true)
     {
         if (!$cached) {
             $this->_modules = null;
@@ -292,20 +293,56 @@ class OnlineModuleManager extends Component
      */
     public function getNotInstalledModules(): array
     {
-        /** @var Module $module */
+        /* @var Module $module */
         $marketplaceModule = Yii::$app->getModule('marketplace');
 
-        $modules = $this->getModules();
+        $modules = [];
 
-        foreach ($modules as $o => $module) {
+        foreach ($this->getModules() as $moduleId => $module) {
             $onlineModule = new ModelModule($module);
-            if ($onlineModule->isInstalled() ||
-                !$onlineModule->latestCompatibleVersion ||
-                ($onlineModule->isDeprecated && $marketplaceModule->hideLegacyModules)) {
-                unset($modules[$o]);
-                continue;
+            if (!$onlineModule->isInstalled() &&
+                $onlineModule->latestCompatibleVersion &&
+                !($onlineModule->isDeprecated && $marketplaceModule->hideLegacyModules)) {
+                $modules[$moduleId] = $onlineModule;
             }
-            $modules[$o] = $onlineModule;
+        }
+
+        return $modules;
+    }
+
+    /**
+     * Get only installed modules
+     *
+     * @return ModelModule[]
+     */
+    public function getInstalledModules(): array
+    {
+        $modules = [];
+
+        foreach ($this->getModules() as $moduleId => $module) {
+            $onlineModule = new ModelModule($module);
+            if ($onlineModule->isInstalled()) {
+                $modules[$moduleId] = $onlineModule;
+            }
+        }
+
+        return $modules;
+    }
+
+    /**
+     * Get only purchased modules
+     *
+     * @param bool $cached
+     * @return ModelModule[]
+     */
+    public function getPurchasedModules(bool $cached = true): array
+    {
+        $modules = $this->getModules($cached);
+
+        foreach ($modules as $i => $module) {
+            if (!isset($module['purchased']) || !$module['purchased']) {
+                unset($modules[$i]);
+            }
         }
 
         return $modules;

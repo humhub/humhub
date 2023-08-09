@@ -19,5 +19,8 @@ return [
             'enableSession' => false,
             'loginUrl' => ['/user/auth/login']
         ],
+        'runtimeCache' => [
+            'class' => \yii\caching\DummyCache::class
+        ],
     ],
 ];

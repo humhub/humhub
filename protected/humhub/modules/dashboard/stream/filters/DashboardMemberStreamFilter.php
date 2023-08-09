@@ -88,6 +88,7 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
 
         // We subscribe to own container, space memberships and following container
         $containerFilterOrContidion = ['OR',
+            'content.contentcontainer_id IS NULL', // Global content
             'space_membership.user_id IS NOT NULL',
             'user_follow.id IS NOT NULL' // In case of "include follow all profiles", this will only include space follows
         ];

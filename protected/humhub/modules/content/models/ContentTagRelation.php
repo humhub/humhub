@@ -3,18 +3,8 @@
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
-
-/**
- * Created by PhpStorm.
- * User: buddha
- * Date: 23.07.2017
- * Time: 22:06
- */
-
 namespace humhub\modules\content\models;
-
 
 use humhub\components\ActiveRecord;
 use yii\base\InvalidArgumentException;

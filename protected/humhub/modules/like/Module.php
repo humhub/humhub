@@ -85,6 +85,14 @@ class Module extends \humhub\components\Module
     {
         $content = $object->content;
 
+        if (!$this->isEnabled) {
+            return false;
+        }
+
+        if (!$content->getStateService()->isPublished()) {
+            return false;
+        }
+
         if (isset($content->container) && !$content->container->can(new permissions\CanLike())) {
             return false;
         }

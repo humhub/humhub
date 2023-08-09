@@ -19,4 +19,7 @@ return [
     'The uploaded image is not a squared.' => 'Wgrany obraz nie jest kwadratem.',
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'To pole wgrywania pozwala na maksymalne wgranie {n,plural,=1{# pliku} other{# plików}}.',
     'Upload files' => 'Wczytaj plik',
+    'Attach a video' => '',
+    'Attach an audio message' => '',
+    'Attach an image' => '',
 ];

@@ -12,6 +12,7 @@ use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\file\components\FileManager;
 use yii\base\InvalidConfigException;
+use yii\db\ColumnSchema;
 use yii\db\Expression;
 use yii\validators\Validator;
 
@@ -60,7 +61,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
         if ($this->hasAttribute('updated_at')) {
             $this->updated_at = date('Y-m-d H:i:s');
         }
-        if (isset(Yii::$app->user) && $this->hasAttribute('updated_by')) {
+        if (isset(Yii::$app->user->id) && $this->hasAttribute('updated_by')) {
             $this->updated_by = Yii::$app->user->id;
         }
 
@@ -215,5 +216,46 @@ class ActiveRecord extends \yii\db\ActiveRecord
         }
 
         return $validators;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setAttributes($values, $safeOnly = true)
+    {
+        if (is_array($values)) {
+            $schema = static::getTableSchema();
+
+            foreach ($values as $name => $value) {
+                // Make sure integers are stored with correct data type
+                $column = $schema->getColumn($name);
+                if ($this->columnValueCanBeNormalized($column, $value)) {
+                    $values[$name] = $column->phpTypecast($value);
+                }
+            }
+        }
+
+        parent::setAttributes($values, $safeOnly);
+    }
+
+    /**
+     * Check when the column value can be normalized to correct format,
+     * e.g. string formatted value '123' should be converted to integer value 123
+     *
+     * @param ColumnSchema|null $column
+     * @param mixed $value
+     * @return bool
+     */
+    private function columnValueCanBeNormalized(?ColumnSchema $column, $value): bool
+    {
+        if ($column === null) {
+            return false;
+        }
+
+        if ($column->phpType === 'integer') {
+            return is_string($value) && preg_match('/^\d+$/', $value);
+        }
+
+        return false;
     }
 }

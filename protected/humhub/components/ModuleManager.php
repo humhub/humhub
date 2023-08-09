@@ -330,7 +330,7 @@ class ModuleManager extends Component
             foreach ($searchFields as $searchField) {
                 if (stripos($searchField, $keyword) !== false) {
                     $keywordFound = true;
-                    continue;
+                    break;
                 }
             }
 
@@ -387,11 +387,12 @@ class ModuleManager extends Component
      * Returns a module instance by id
      *
      * @param string $id Module Id
-     * @return Module|object
+     * @param bool $throwOnMissingModule true - to throw exception, false - to return null
+     * @return Module|object|null
      * @throws Exception
      * @throws InvalidConfigException
      */
-    public function getModule($id)
+    public function getModule($id, $throwOnMissingModule = true)
     {
         // Enabled Module
         if (Yii::$app->hasModule($id)) {
@@ -404,7 +405,11 @@ class ModuleManager extends Component
             return Yii::createObject($class, [$id, Yii::$app]);
         }
 
-        throw new Exception('Could not find/load requested module: ' . $id);
+        if ($throwOnMissingModule) {
+            throw new Exception('Could not find/load requested module: ' . $id);
+        }
+
+        return null;
     }
 
     /**
@@ -434,7 +439,10 @@ class ModuleManager extends Component
         /** @var ModuleMarketplace $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
         if ($marketplaceModule !== null) {
-            if (strpos($module->getBasePath(), Yii::getAlias($marketplaceModule->modulesPath)) !== false) {
+            // Normalize paths before comparing in order to fix issues like Windows path separators `\`
+            $modulePath = FileHelper::normalizePath($module->getBasePath());
+            $aliasPath = FileHelper::normalizePath(Yii::getAlias($marketplaceModule->modulesPath));
+            if (strpos($modulePath, $aliasPath) !== false) {
                 return true;
             }
         }

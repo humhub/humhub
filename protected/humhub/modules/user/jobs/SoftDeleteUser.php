@@ -22,7 +22,6 @@ use humhub\modules\user\models\User;
  */
 class SoftDeleteUser extends ActiveJob implements ExclusiveJobInterface
 {
-
     public $user_id;
 
     /**
@@ -46,8 +45,7 @@ class SoftDeleteUser extends ActiveJob implements ExclusiveJobInterface
         if ($user === null) {
             return;
         }
-        
+
         $user->softDelete();
     }
-
 }

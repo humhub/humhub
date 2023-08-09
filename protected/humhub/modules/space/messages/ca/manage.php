@@ -54,5 +54,6 @@ return [
     'Unarchive' => 'Treu-la de l\'arxiu',
     'e.g. example for {baseUrl}/s/example' => 'exemple per {baseUrl}/s/example',
     'never' => 'mai',
+    'Only global administrators can change this value' => '',
     'The URL has already been taken.' => '',
 ];

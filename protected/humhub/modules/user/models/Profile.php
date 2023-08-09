@@ -249,7 +249,7 @@ class Profile extends ActiveRecord
                 $fieldDefinition = $profileField->fieldType->getFieldFormDefinition($this->user);
 
                 if(isset($fieldDefinition[$profileField->internal_name]) && !empty($profileField->description)) {
-                    $fieldDefinition[$profileField->internal_name]['hint'] =  Yii::t($profileFieldCategory->getTranslationCategory(), $profileField->description);
+                    $fieldDefinition[$profileField->internal_name]['hint'] =  Yii::t($profileField->getTranslationCategory() ?: $profileFieldCategory->getTranslationCategory(), $profileField->description);
                 }
 
                 $category['elements'] = array_merge($category['elements'], $fieldDefinition);

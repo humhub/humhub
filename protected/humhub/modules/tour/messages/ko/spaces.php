@@ -4,7 +4,7 @@ return array (
   '<strong>Posts</strong>' => '',
   '<strong>Profile Guide</strong>' => '',
   '<strong>Space</strong>' => '',
-  '<strong>Space</strong> members' => '',
+  '<strong>Space</strong> members' => '<strong>방</strong> 멤버',
   '<strong>Space</strong> navigation menu' => '',
   '<strong>Space</strong> preferences' => '',
   '<strong>Writing</strong> posts' => '',

@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Confirm</strong> post deletion' => '<strong>Bekræft</strong> opslag sletning',
     '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> til dette opslag',
     'Activated' => 'Aktiveret',
     'Add a member to notify' => 'Tilføjet et medlem til notifikation',
@@ -17,7 +16,6 @@ return [
     'Created by me' => 'Oprettet af mig',
     'Creation time' => 'Oprettelsestidspunkt',
     'Delete' => 'Slet',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'Vil du virkelig slette dette opslag? Alle syntes godt om og kommentarer vil gå tabt!',
     'Edit' => 'Rediger',
     'Enable' => 'Aktiver',
     'Filter' => 'Filter',
@@ -52,6 +50,7 @@ return [
     'Create as draft' => '',
     'Created at:' => '',
     'Deleted' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'I\'m involved' => '',
@@ -68,8 +67,10 @@ return [
     'Note: Due to technical reasons there may be a delay of a few minutes.' => '',
     'Pin to top' => '',
     'Publish draft' => '',
+    'Save as draft' => '',
+    'Save scheduling' => '',
     'Schedule publication' => '',
-    'Scheduled at {dateTime}' => '',
+    'Scheduled for {dateTime}' => '',
     'Select type...' => '',
     'Specify who can see this content.' => '',
     'Tag' => '',
@@ -78,6 +79,7 @@ return [
     'The author of this content is not allowed to create public content within the selected space.' => '',
     'The author of this content is not allowed to create this type of content within this space.' => '',
     'The content can\'t be moved to its current space.' => '',
+    'The content cannot be published!' => '',
     'The content has been archived.' => '',
     'The content has been deleted.' => '',
     'The content has been successfully published.' => '',

@@ -9,7 +9,9 @@
 namespace humhub\widgets;
 
 use humhub\modules\admin\models\forms\CacheSettingsForm;
+use humhub\modules\file\validators\FileValidator;
 use humhub\modules\ui\icon\widgets\Icon;
+use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserPicker;
 use Yii;
 use yii\base\Widget;
@@ -22,7 +24,6 @@ use yii\helpers\Url;
  */
 class CoreJsConfig extends Widget
 {
-
     public function run()
     {
 
@@ -61,8 +62,8 @@ class CoreJsConfig extends Widget
                     ],
                     'text' => [
                         'error.upload' => Yii::t('base', 'Some files could not be uploaded:'),
-                        'error.unknown' => Yii::$app->user->isAdmin() ?
-                            Yii::t('base', 'An unknown error occurred while uploading. Hint: check your upload_max_filesize and post_max_size php settings.') : Yii::t('base', 'An unknown error occurred while uploading.'),
+                        'error.unknown' => Yii::t('base', 'An unexpected error occurred. Please check whether your file exceeds the allowed upload limit of {maxUploadSize}.', ['maxUploadSize' => Yii::$app->formatter->asShortSize((new FileValidator)->getSizeLimit())]) . (Yii::$app->user->isAdmin() ?
+                                '(' . Yii::t('base', 'verify your upload_max_filesize and post_max_size php settings.') . ')' : ''),
                         'success.delete' => Yii::t('base', 'The file has been deleted.')
                     ]
                 ],
@@ -104,6 +105,9 @@ class CoreJsConfig extends Widget
                     'oembed' => [
                         'max' => Yii::$app->getModule('content')->maxOembeds
                     ],
+                    'markdownEditorMode' => Yii::$app->user->getIdentity()
+                        ? Yii::$app->user->getIdentity()->settings->get('markdownEditorMode')
+                        : User::EDITOR_RICH_TEXT,
                     'mention' => [
                         'minInput' => 0,
                         'minInputText' => Yii::t('base', 'Please type at least {count} characters', ['count' => 2])
@@ -112,6 +116,7 @@ class CoreJsConfig extends Widget
                         "Wrap in block quote" => Yii::t('ContentModule.richtexteditor', 'Wrap in block quote'),
                         "Wrap in bullet list" => Yii::t('ContentModule.richtexteditor', "Wrap in bullet list"),
                         "Toggle code font" => Yii::t('ContentModule.richtexteditor', "Toggle code font"),
+                        "Switch editor mode" => Yii::t('ContentModule.richtexteditor', "Switch editor mode"),
                         "Change to code block" => Yii::t('ContentModule.richtexteditor', "Change to code block"),
                         "Code" => Yii::t('ContentModule.richtexteditor', "Code"),
                         "Toggle emphasis" => Yii::t('ContentModule.richtexteditor', "Toggle emphasis"),
@@ -249,8 +254,8 @@ class CoreJsConfig extends Widget
                             'buttonClose' => Yii::t('base', 'Close'),
                         ],
                         'deleteConfirm' => [
-                            'header' => Yii::t('ContentModule.base', '<strong>Confirm</strong> post deletion'),
-                            'body' => Yii::t('ContentModule.base', 'Do you really want to delete this post? All likes and comments will be lost!'),
+                            'header' => Yii::t('ContentModule.base', '<strong>Delete</strong> content?'),
+                            'body' => Yii::t('ContentModule.base', 'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.'),
                             'confirmText' => Yii::t('ContentModule.base', 'Delete'),
                             'cancelText' => Yii::t('ContentModule.base', 'Cancel'),
                         ]
@@ -291,7 +296,7 @@ class CoreJsConfig extends Widget
                         'success.unarchived' => Yii::t('base', 'The space has been unarchived.'),
                     ]
                 ],
-            ]);
+            ]
+        );
     }
-
 }

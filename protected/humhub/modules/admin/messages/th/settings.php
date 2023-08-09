@@ -101,7 +101,6 @@ return [
     'These settings refer to the appearance of your social network.' => 'การตั้งค่าเหล่านี้อ้างอิงถึงลักษณะที่ปรากฏของเครือข่ายโซเชียลของคุณ',
     'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'ใช้ %url% เป็นตัวยึดตำแหน่งสำหรับ URL รูปแบบต้องเป็น JSON (เช่น http://www.youtube.com/oembed?url=%url%&amp;format=json)',
     'Use X-Sendfile for File Downloads' => 'ใช้ X-Sendfile สำหรับการดาวน์โหลดไฟล์',
-    'Use the default swipe to show sidebar on a mobile device' => 'ช้การปัดเริ่มต้นเพื่อแสดงแถบด้านข้างบนอุปกรณ์มือถือ',
     'User' => 'ผู้ใช้',
     'User Settings' => 'การตั้งค่าผู้ใช้',
     'Username' => 'ชื่อผู้ใช้',

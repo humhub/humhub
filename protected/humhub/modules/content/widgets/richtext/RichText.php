@@ -1,12 +1,5 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- *
- */
-
 namespace humhub\modules\content\widgets\richtext;
 
 use Yii;
@@ -57,11 +50,11 @@ abstract class RichText extends AbstractRichText
      */
     public static function widget($config = [])
     {
-        if(!isset($config['class'])) {
+        if (!isset($config['class'])) {
             $config = ArrayHelper::merge(Yii::$app->params['richText'], $config);
         }
 
-        return call_user_func($config['class'].'::'.'widget', $config);
+        return call_user_func($config['class'] . '::' . 'widget', $config);
     }
 
     /**
@@ -69,23 +62,23 @@ abstract class RichText extends AbstractRichText
      */
     public static function postProcess($text, $record, $attribute = null)
     {
-        return call_user_func(Yii::$app->params['richText']['class'].'::postProcess', $text, $record, $attribute);
+        return call_user_func(Yii::$app->params['richText']['class'] . '::postProcess', $text, $record, $attribute);
     }
 
     /**
      * @return string
      */
-    public static function getEditorClass() : string
+    public static function getEditorClass(): string
     {
-        return call_user_func(Yii::$app->params['richText']['class'].'::getEditorClass');
+        return call_user_func(Yii::$app->params['richText']['class'] . '::getEditorClass');
     }
 
     /**
      * @return string
      * @since 1.8
      */
-    public static function getConverterClass() : string
+    public static function getConverterClass(): string
     {
-        return call_user_func(Yii::$app->params['richText']['class'].'::getConverterClass');
+        return call_user_func(Yii::$app->params['richText']['class'] . '::getConverterClass');
     }
 }

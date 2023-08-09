@@ -8,8 +8,9 @@
 
 namespace humhub\modules\admin\components;
 
-use Yii;
 use humhub\components\behaviors\AccessControl;
+use humhub\modules\admin\permissions\ManageSettings;
+use Yii;
 
 /**
  * Base controller for administration section
@@ -38,7 +39,7 @@ class Controller extends \humhub\components\Controller
     {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Administration'));
 
-		parent::init();
+        parent::init();
     }
 
     /**
@@ -63,15 +64,15 @@ class Controller extends \humhub\components\Controller
     /**
      * Returns access rules for the standard access control behavior
      *
-     * @see AccessControl
      * @return array the access permissions
+     * @see AccessControl
      */
     public function getAccessRules()
     {
-        // Use by default ManageModule permission, if method is not overwritten by custom module
-        if ($this->module->id != 'admin') {
+        // Use by default ManageSettings permission if method is not overwritten by custom module
+        if ($this->module->id !== 'admin') {
             return [
-                ['permission' => \humhub\modules\admin\permissions\ManageModules::class]
+                ['permission' => ManageSettings::class]
             ];
         }
 

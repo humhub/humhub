@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\content\widgets\richtext\converter;
 
 use humhub\libs\Html;
@@ -15,8 +9,8 @@ use humhub\modules\file\models\File;
 use humhub\modules\user\models\User;
 
 /**
- * This parser can be used to convert HumHub richtext directly to email html in order to view images from email inbox where
- * user is not logged in so access is restricted.
+ * This parser can be used to convert HumHub richtext directly to email html in order to view images
+ * from email inbox where user is not logged in so access is restricted.
  *
  * @since 1.8.2
  */

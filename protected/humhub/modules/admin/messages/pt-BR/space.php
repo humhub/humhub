@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>Gerenciar</strong> espaços',
+    '<strong>Manage</strong> Spaces' => '<strong>Gerenciar</strong> espaços',
     'Add new space' => 'Adicionar novo espaço',
     'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'Usando funções de usuário, você pode criar diferentes grupos de permissão dentro de um Espaço. Eles também podem ser individualizados por usuários autorizados para cada um dos espaços e são relevantes apenas para aquele espaço específico.',
     'Change owner' => 'Alterar proprietário',
@@ -24,4 +24,10 @@ return [
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Essas opções permitem que você defina as permissões padrão para todos os Espaços. Os usuários autorizados podem individualizá-los para cada Espaço. Outras entradas são adicionadas com a instalação de novos módulos.',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Esta Visão Global contém uma lista de ações para cada espaço como visualizar, editar e excluir espaços.',
     'Update Space memberships also for existing members.' => 'Atualize as associações do Espaço também para os membros existentes.',
+    'Default "Hide About Page"' => '',
+    'Default "Hide Activity Sidebar Widget"' => '',
+    'Default "Hide Followers"' => '',
+    'Default "Hide Members"' => '',
+    'Default Homepage' => '',
+    'Default Homepage (Non-members)' => '',
 ];

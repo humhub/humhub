@@ -37,7 +37,7 @@ class StreamCest
         $I->click('Delete', '[data-content-key="15"]');
 
         $I->waitForElementVisible('#globalModalConfirm', 5);
-        $I->see('Confirm post deletion');
+        $I->see('Delete content?');
         $I->click('Delete', '#globalModalConfirm');
 
         $I->waitForElementNotVisible($newEntrySelector);
@@ -222,7 +222,7 @@ class StreamCest
         $I->click('Delete');
 
         $I->waitForElementVisible('#globalModalConfirm', 5);
-        $I->see('Confirm post deletion');
+        $I->see('Delete content?');
         $I->click('Delete', '#globalModalConfirm');
 
         $I->waitForText('This space is still empty!');
@@ -316,7 +316,7 @@ class StreamCest
         $I->click('Comment', $post4Selector);
         $I->wait(1);
         $I->fillField($post4Selector . ' [contenteditable]', 'My Comment!');
-        $I->click('[data-action-click=submit]', $post4Selector . ' .comment-buttons');
+        $I->click('[data-action-click=submit]', $post4Selector . ' .upload-buttons');
 
         $I->scrollTop();
 

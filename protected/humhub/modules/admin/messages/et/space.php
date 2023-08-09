@@ -1,15 +1,21 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '',
+    '<strong>Manage</strong> Spaces' => '',
     'Add new space' => '',
     'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => '',
     'Change owner' => '',
+    'Default "Hide About Page"' => '',
+    'Default "Hide Activity Sidebar Widget"' => '',
+    'Default "Hide Followers"' => '',
+    'Default "Hide Members"' => '',
     'Default Content Visiblity' => '',
     'Default Join Policy' => '',
     'Default Space Permissions' => '',
     'Default Space(s)' => '',
     'Default Visibility' => '',
+    'Default Homepage' => '',
+    'Default Homepage (Non-members)' => '',
     'Default space' => '',
     'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => '',
     'Invalid space' => '',

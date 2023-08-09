@@ -12,8 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
-use humhub\libs\DbDateValidator;
-use humhub\modules\activity\helpers\ActivityHelper;
+use humhub\modules\activity\models\Activity;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -26,7 +25,10 @@ use humhub\modules\content\live\NewContent;
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\content\services\ContentStateService;
+use humhub\modules\content\services\ContentTagService;
 use humhub\modules\notification\models\Notification;
+use humhub\modules\post\models\Post;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
@@ -236,17 +238,17 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      */
     public function afterSave($insert, $changedAttributes)
     {
-        if (// New Content with State Published:
-            ($insert && $this->state == Content::STATE_PUBLISHED) ||
-            // Content Updated from Draft to Published
-            (array_key_exists('state', $changedAttributes) &&
-                $this->state == Content::STATE_PUBLISHED &&
-                $changedAttributes['state'] == Content::STATE_DRAFT
-            )) {
+        if (array_key_exists('state', $changedAttributes)) {
+            // Run process for new content(Send notifications) only after changing state
             $this->processNewContent();
-        }
 
-        if ($insert || array_key_exists('state', $changedAttributes)) {
+            $model = $this->getModel();
+            if (!$insert && $model instanceof ContentActiveRecord && $this->getStateService()->isPublished()) {
+                // Run process to send notifications like mentioning users, for cases when
+                // it was not published on creating or on updating published Content
+                $model->afterSave(false, []);
+            }
+
             $previousState = $changedAttributes['state'] ?? null;
             $this->trigger(self::EVENT_STATE_CHANGED, new ContentStateEvent([
                 'content' => $this,
@@ -254,13 +256,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
                 'previousState' => $previousState
             ]));
 
-            $model = $this->getPolymorphicRelation();
             if ($model instanceof ContentActiveRecord) {
                 $model->afterStateChange($this->state, $previousState);
             }
         }
 
-        if ($this->state === static::STATE_PUBLISHED) {
+        if ($this->getStateService()->isPublished()) {
             SearchHelper::queueUpdate($this->getModel());
         } else {
             SearchHelper::queueDelete($this->getModel());
@@ -271,6 +272,16 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
 
     private function processNewContent()
     {
+        if (!$this->getStateService()->isPublished()) {
+            // Don't notify about not published Content
+            return;
+        }
+
+        if ($this->getStateService()->wasPublished()) {
+            // No need to notify twice for already published Content before
+            return;
+        }
+
         $record = $this->getModel();
 
         Yii::debug('Process new content: ' . get_class($record) . ' ID: ' . $record->getPrimaryKey(), 'content');
@@ -394,9 +405,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
             'source_pk' => $this->getPrimaryKey(),
         ]);
 
-        $this->setState(self::STATE_DELETED);
-
-        if (!$this->save()) {
+        if (!$this->getStateService()->delete()) {
             return false;
         }
 
@@ -466,11 +475,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     /**
      * Checks if the content object is pinned
      *
-     * @return Boolean
+     * @return bool
      */
-    public function isPinned()
+    public function isPinned(): bool
     {
-        return ($this->pinned);
+        return (bool)$this->pinned;
     }
 
     /**
@@ -488,7 +497,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      */
     public function unpin()
     {
-
         $this->pinned = 0;
         $this->updateAttributes(['pinned']);
     }
@@ -501,7 +509,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * @throws Exception
      * @throws \yii\base\InvalidConfigException
      */
-    public function canPin()
+    public function canPin(): bool
     {
         // Currently global content can not be pinned
         if (!$this->getContainer()) {
@@ -531,7 +539,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * @return boolean
      * @throws Exception
      */
-    public function isArchived()
+    public function isArchived(): bool
     {
         return $this->archived || ($this->getContainer() !== null && $this->getContainer()->isArchived());
     }
@@ -544,7 +552,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * @throws Exception
      * @throws \yii\base\InvalidConfigException
      */
-    public function canArchive()
+    public function canArchive(): bool
     {
         // Currently global content can not be archived
         if (!$this->getContainer()) {
@@ -561,20 +569,17 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
 
     /**
      * Archives the content object
+     *
+     * @return bool
      */
-    public function archive()
+    public function archive(): bool
     {
-        if ($this->canArchive()) {
-
-            if ($this->isPinned()) {
-                $this->unpin();
-            }
-
-            $this->archived = 1;
-            if (!$this->save()) {
-                throw new Exception("Could not archive content!" . print_r($this->getErrors(), 1));
-            }
+        if ($this->isPinned()) {
+            $this->unpin();
         }
+
+        $this->archived = 1;
+        return $this->save();
     }
 
     /**
@@ -700,14 +705,13 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
 
     /**
      * Unarchives the content object
+     *
+     * @return bool
      */
-    public function unarchive()
+    public function unarchive(): bool
     {
-        if ($this->canArchive()) {
-
-            $this->archived = 0;
-            $this->save();
-        }
+        $this->archived = 0;
+        return $this->save();
     }
 
     /**
@@ -801,7 +805,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      */
     public function getTags($tagClass = ContentTag::class)
     {
-        return $this->hasMany($tagClass, ['id' => 'tag_id'])->via('tagRelations')->orderBy('sort_order');
+        return $this->hasMany($tagClass, ['id' => 'tag_id'])
+            ->via('tagRelations')
+            ->orderBy($tagClass::tableName() . '.sort_order');
     }
 
     /**
@@ -809,37 +815,22 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      *
      * @param ContentTag $tag
      * @return bool if the provided tag is part of another ContentContainer
-     * @since 1.2.2
+     * @deprecated since 1.15
      */
     public function addTag(ContentTag $tag)
     {
-        if (!empty($tag->contentcontainer_id) && $tag->contentcontainer_id != $this->contentcontainer_id) {
-            throw new InvalidArgumentException(Yii::t('ContentModule.base', 'Content Tag with invalid contentcontainer_id assigned.'));
-        }
-
-        if (ContentTagRelation::findBy($this, $tag)->count()) {
-            return true;
-        }
-
-        $this->refresh();
-
-        SearchHelper::queueUpdate($this->getPolymorphicRelation());
-
-        $contentRelation = new ContentTagRelation($this, $tag);
-        return $contentRelation->save();
+        return (new ContentTagService($this))->addTag($tag);
     }
 
     /**
      * Adds the given ContentTag array to this content.
      *
      * @param $tags ContentTag[]
-     * @since 1.3
+     * @deprecated since 1.15
      */
     public function addTags($tags)
     {
-        foreach ($tags as $tag) {
-            $this->addTag($tag);
-        }
+        (new ContentTagService($this))->addTags($tags);
     }
 
     /**
@@ -977,8 +968,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
             return $this->checkGuestAccess();
         }
 
-        // If content is draft, in trash, unapproved - restrict view access to editors
-        if ($this->state !== static::STATE_PUBLISHED) {
+        // If content is not published(draft, in trash, unapproved) - restrict view access to editors
+        if (!$this->getStateService()->isPublished()) {
             return $this->canEdit();
         }
 
@@ -1072,51 +1063,20 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
     }
 
-    public static function getAllowedStates(): array
+    public function getStateService(): ContentStateService
     {
-        return [
-            self::STATE_PUBLISHED,
-            self::STATE_DRAFT,
-            self::STATE_SCHEDULED,
-            self::STATE_DELETED
-        ];
-    }
-
-    /**
-     * @param int|string|null $state
-     * @return bool
-     * @since 1.14
-     */
-    public function canChangeState($state): bool
-    {
-        return in_array($state, self::getAllowedStates());
+        return new ContentStateService(['content' => $this]);
     }
 
     /**
      * @param int|string|null $state
      * @param array $options Additional options depending on state
      * @since 1.14
+     * @deprecated Use $this->getStateService()->set(). It will be deleted in v1.15.
      */
     public function setState($state, array $options = [])
     {
-        if (!$this->canChangeState($state)) {
-            return;
-        }
-
-        if ((int)$state === self::STATE_SCHEDULED) {
-            if (empty($options['scheduled_at'])) {
-                return;
-            }
-
-            $this->scheduled_at = $options['scheduled_at'];
-            (new DbDateValidator())->validateAttribute($this, 'scheduled_at');
-            if ($this->hasErrors('scheduled_at')) {
-                $this->scheduled_at = null;
-                return;
-            }
-        }
-
-        $this->state = $state;
+        $this->getStateService()->set($state, $options);
     }
 
 }

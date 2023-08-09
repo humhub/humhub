@@ -42,6 +42,7 @@ return [
     'Choose the modules you want to use for this Space. In order for the modules to be available to you here, they must have been previously installed by administrators of the network using the admin panel. If you cannot deactivate individual modules, it is because they have been set as the default for the entire network.' => '',
     'Don\'t receive notifications for new content' => '',
     'Invited By' => '',
+    'Only global administrators can change this value' => '',
     'Pending Approvals' => '',
     'Pending Invites' => '',
     'Permissions are assigned to different user-roles. To edit a permission, select the user-role you want to edit and change the drop-down value of the given permission.' => '',
