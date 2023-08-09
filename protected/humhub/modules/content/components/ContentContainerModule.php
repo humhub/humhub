@@ -67,12 +67,23 @@ class ContentContainerModule extends Module
     /**
      * Checks whether the module is enabled the given content container class.
      *
-     * @param string $class the class of content container
+     * @param string $containerClass the class of content container
      * @return boolean
      */
-    public function hasContentContainerType($class)
+    public function hasContentContainerType($containerClass)
     {
-        return in_array($class, $this->getContentContainerTypes());
+        $contentContainerModuleStates = ContentContainerModuleState::findAll(['module_id' => $this->id, 'module_state' => ContentContainerModuleState::STATE_NOT_AVAILABLE]);
+        foreach ($contentContainerModuleStates as $contentContainerModuleState) {
+            $contentContainer = $contentContainerModuleState->contentContainer;
+            if (
+                $contentContainer === null
+                || $contentContainer->class === $containerClass
+            ) {
+                return false;
+            }
+        }
+
+        return in_array($containerClass, $this->getContentContainerTypes());
     }
 
     /**
