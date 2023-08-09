@@ -146,6 +146,8 @@ humhub.module('admin', function (module, require, $) {
     };
 
     var moduleSetAsDefault = function(event) {
+        event.$form = event.$trigger.closest('form');
+        event.length = event.$form.length;
         modal.footerLoader();
         client.submit(event).then(function(response) {
             modal.setContent(response.data);
