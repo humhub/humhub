@@ -9,6 +9,8 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use humhub\components\FindInstanceTrait;
+use humhub\interfaces\FindInstanceInterface;
 use humhub\libs\Helpers;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
@@ -45,10 +47,14 @@ use yii\helpers\Url;
  * @property GroupUser[] groupUsers
  * @property GroupSpace[] groupSpaces
  */
-class Group extends ActiveRecord
+class Group extends ActiveRecord implements FindInstanceInterface
 {
+    use FindInstanceTrait {
+        afterDelete as __FindInstanceTrait_afterDelete;
+        afterSave as __FindInstanceTrait_afterSave;
+    }
 
-    const SCENARIO_EDIT = 'edit';
+    public const SCENARIO_EDIT = 'edit';
 
     /**
      * @inheritdoc
@@ -70,6 +76,11 @@ class Group extends ActiveRecord
             ['show_at_registration', 'validateShowAtRegistration'],
             ['is_default_group', 'validateIsDefaultGroup'],
         ];
+    }
+
+    public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
+    {
+        return self::findInstanceHelper($identifier, $config, $simpleCondition);
     }
 
     /**
@@ -182,13 +193,11 @@ class Group extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($this->is_default_group) {
-            // Only single group can be default:
-            Group::updateAll(['is_default_group' => '0'], ['!=', 'id', $this->id]);
+            // Only one single group can be default:
+            self::updateAll(['is_default_group' => '0'], ['!=', 'id', $this->id]);
         }
 
-        parent::afterSave($insert, $changedAttributes);
-
-
+        $this->__FindInstanceTrait_afterSave($insert, $changedAttributes);
     }
 
     /**
@@ -202,7 +211,7 @@ class Group extends ActiveRecord
             $defaultGroup->assignDefaultGroup();
         }
 
-        parent::afterDelete();
+        $this->__FindInstanceTrait_afterDelete();
     }
 
     /**

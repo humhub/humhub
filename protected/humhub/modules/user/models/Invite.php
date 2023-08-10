@@ -10,6 +10,8 @@ namespace humhub\modules\user\models;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\ActiveRecord;
+use humhub\components\FindInstanceTrait;
+use humhub\interfaces\FindInstanceInterface;
 use humhub\libs\Helpers;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\Module;
@@ -37,14 +39,15 @@ use yii\helpers\Url;
  *
  * @property Space $space
  */
-class Invite extends ActiveRecord
+class Invite extends ActiveRecord implements FindInstanceInterface
 {
+    use FindInstanceTrait;
 
-    const SOURCE_SELF = 'self';
-    const SOURCE_INVITE = 'invite';
-    const SOURCE_INVITE_BY_LINK = 'invite_by_link';
-    const EMAIL_TOKEN_LENGTH = 12;
-    const LINK_TOKEN_LENGTH = 14; // Should be different that EMAIL_TOKEN_LENGTH
+    public const SOURCE_SELF = 'self';
+    public const SOURCE_INVITE = 'invite';
+    public const SOURCE_INVITE_BY_LINK = 'invite_by_link';
+    public const EMAIL_TOKEN_LENGTH = 12;
+    public const LINK_TOKEN_LENGTH = 14; // Should be different that EMAIL_TOKEN_LENGTH
 
     public $captcha;
 
@@ -107,6 +110,15 @@ class Invite extends ActiveRecord
             'language' => Yii::t('base', 'Language'),
         ];
     }
+
+    public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
+    {
+        $config['stringKey'] ??= 'email';
+        $config['onEmpty'] = null;
+
+        return self::findInstanceHelper($identifier, $config, $simpleCondition);
+    }
+
 
     /**
      * @inheritdoc
