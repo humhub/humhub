@@ -362,29 +362,25 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
     /**
      * Indicates that this user can join this workspace
      *
-     * @param User|int|string $userId User ID of User
+     * @param User|int|string|null $user User ID of User
      */
-    public function canJoin($userId = '')
+    public function canJoin($user = null): bool
     {
         if (Yii::$app->user->isGuest) {
             return false;
         }
 
         // Take current userId if none is given
-        $userId = User::findInstanceAsId($userId);
+        $user = User::findInstance($user);
 
         // Checks if User is already a member
-        if ($this->isMember($userId)) {
+        if ($this->isMember($user)) {
             return false;
         }
 
         if ($this->join_policy == self::JOIN_POLICY_NONE) {
             return false;
         }
-
-        $user = Yii::$app->runtimeCache->getOrSet(User::class . '#' . $userId, function() use ($userId) {
-            return User::findOne($userId);
-        });
 
         if ($this->isBlockedForUser($user)) {
             return false;
@@ -394,20 +390,14 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
     }
 
     /**
-     * Indicates that this user can join this workspace w
-     * ithout permission
+     * Indicates that this user can join this workspace without permission
      *
-     * @param $userId User Id of User
+     * @param User|int|string|null $user User ID of User
      */
-    public function canJoinFree($userId = '')
+    public function canJoinFree($user = null): bool
     {
-        // Take current userid if none is given
-        if ($userId == '') {
-            $userId = Yii::$app->user->id;
-        }
-
         // Checks if User is already member
-        if ($this->isMember($userId)) {
+        if ($this->isMember($user)) {
             return false;
         }
 
