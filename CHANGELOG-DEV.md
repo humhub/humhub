@@ -8,6 +8,9 @@ HumHub Changelog
 - Fix #6468: Module Administration - Marketplace Links broken without Pretty URLs
 - Enh #6469: Added Info text for Marketplace page 
 - Fix #112: Reorder Table Rows
+- Fix #6476: Fix module disabling in queue
+- Enh #6469: Implement conditions for `fixed-settings` in config
+- Fix #6457: Regression with membership cache. Also move cache to `Membership::findMembership`.
 
 1.15.0-beta.1 (July 31, 2023)
 -----------------------------

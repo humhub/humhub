@@ -108,7 +108,7 @@ class ModuleController extends Controller
         }
 
         Yii::$app->queue->push(new DisableModuleJob(['moduleId' => $moduleId]));
-        Yii::$app->moduleManager->disable($module);
+        $this->view->info(Yii::t('AdminModule.modules', 'Module deactivation in progress. This process may take a moment.'));
 
         return $this->redirectToModules();
     }
